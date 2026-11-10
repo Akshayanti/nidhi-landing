@@ -82,23 +82,25 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
         <div class="nav-dropdown">
           <button
             class:list={['nav-link', 'nav-dropdownToggle', { active: barePath.startsWith(group.button.activePath) }]}
-            aria-haspopup="true"
             aria-expanded="false"
             data-attr={group.button.attr}
           >
             {strings.nav.buttons[group.button.key]}
             <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
           </button>
-          <ul class="nav-dropdownMenu" role="menu">
+          {/* A list of links to pages, opened by a button: navigation, not an
+              application menu. It claims no menu roles, which would promise
+              arrow keys between the items (the language picker says the same). */}
+          <ul class="nav-dropdownMenu">
             {group.entries.map((entry) => (
               'children' in entry ? null : (
                 <>
-                  {entry.dividerBefore && <li role="none" class="nav-dropdownDivider" aria-hidden="true"></li>}
-                  <li role="none">
+                  {entry.dividerBefore && <li class="nav-dropdownDivider" aria-hidden="true"></li>}
+                  <li>
                     <a
                       href={href(entry.href)}
                       class:list={[{ active: isMenuActive(entry) }]}
-                      role="menuitem"
+                      aria-current={isMenuActive(entry) ? 'page' : undefined}
                       data-attr={`nav-${entry.attr}`}
                     >
                       {navLabel(strings, entry.key, 'menu')}
@@ -378,6 +380,13 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     background: var(--color-bg);
     color: var(--color-deep-blue);
     outline: none;
+  }
+
+  /* Where the keyboard is: the same bar the language picker uses. The
+     background and text colour above differ too little from the other rows
+     to show it on their own (1.05:1 in light, 1.15:1 in dark). */
+  .nav-dropdownMenu a:focus-visible {
+    box-shadow: inset 3px 0 0 var(--color-teal);
   }
 
   .nav-link {
@@ -694,17 +703,15 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     }
 
     function onMenuKeydown(e) {
-      if (e.key === 'Escape') { closeMenu(); toggle.focus(); return; }
-      if (e.key !== 'Tab' || !isOpen()) return;
-      var links = menu.querySelectorAll('a');
-      var first = links[0];
-      var last = links[links.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); closeMenu();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); closeMenu();
-      }
+      if (e.key === 'Escape') { closeMenu(); toggle.focus(); }
     }
+
+    // Tab moves through the links like any others. Once the focus has left
+    // the dropdown (past its last link, or back before its button) it
+    // closes, so the focus is never left on a link that is no longer shown.
+    dropdown.addEventListener('focusout', function(e) {
+      if (isOpen() && e.relatedTarget && !dropdown.contains(e.relatedTarget)) closeMenu();
+    });
 
     toggle.addEventListener('click', function(e) {
       e.preventDefault();
