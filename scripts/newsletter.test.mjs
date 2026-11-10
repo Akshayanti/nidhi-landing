@@ -492,10 +492,23 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
 
   it('two days of confirmations, reminders and welcomes leave room for a lesson', () => {
     const ctx = load();
-    const [confirmations, welcomes, quota] = ['MAX_CONFIRMATIONS_PER_DAY_', 'MAX_WELCOMES_PER_DAY_', 'QUOTA_DAILY_RECIPIENTS'].map((name) => vm.runInContext(name, ctx));
-    // Reminders are owed only for confirmations that were sent, so they share that limit.
-    const worstDay = confirmations + confirmations + welcomes;
-    assert.ok(2 * worstDay + 900 <= quota, `2 x ${worstDay} + a list of 900 must fit in ${quota}`);
+    const [confirmations, reminders, welcomes, quota] = ['MAX_CONFIRMATIONS_PER_DAY_', 'MAX_REMINDERS_PER_DAY_', 'MAX_WELCOMES_PER_DAY_', 'QUOTA_DAILY_RECIPIENTS'].map((name) => vm.runInContext(name, ctx));
+    assert.ok(2 * (confirmations + reminders + welcomes) + 900 <= quota, `2 x ${confirmations + reminders + welcomes} + a list of 900 must fit in ${quota}`);
+  });
+
+  it('reminders stop at their own daily limit, and the readers left out are reminded by a later run', () => {
+    const due = ['a@x.io', 'b@x.io', 'c@x.io'].map((email, i) => row(email, 'pending', 4, { confirm: tok(String(i + 1)) }));
+    const ctx = load(due);
+    vm.runInContext('MAX_REMINDERS_PER_DAY_ = 2;', ctx);
+    assert.equal(json(ctx.handleRemindPending()).reminded, 2);
+    assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io']);
+    assert.equal(find(ctx, 'c@x.io')[8], '', 'not stamped, so still due');
+    // The same day: nothing more. The next day: the one left out.
+    assert.equal(json(ctx.handleRemindPending()).reminded, 0);
+    const next = NOW + DAY;
+    vm.runInContext(`Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(${next}); } static now() { return ${next}; } };`, ctx);
+    assert.equal(json(ctx.handleRemindPending()).reminded, 1);
+    assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io', 'c@x.io']);
   });
 
   it('welcome mails stop at their own daily limit; the reader is confirmed all the same', () => {

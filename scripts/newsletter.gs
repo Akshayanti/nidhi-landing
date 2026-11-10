@@ -730,14 +730,19 @@ var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 // Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
 // account, not per UTC day. Three kinds of mail follow from a sign-up, each
 // with a daily limit of this size: the confirmation; the reminder, owed for
-// a confirmation three days earlier (a request past the limit adds no row,
-// so no reminder is owed for it); and the welcome, sent when someone
-// confirms (MAX_WELCOMES_PER_DAY_). In the worst 24 hours a flood can take
+// a confirmation three days earlier (MAX_REMINDERS_PER_DAY_); and the
+// welcome, sent when someone confirms (MAX_WELCOMES_PER_DAY_). In the worst 24 hours a flood can take
 // two UTC days of each: six times this limit, 600 mails. That leaves 900 for
 // a lesson, which goes to every confirmed reader. So a lesson still goes out
 // in full while the list is under 900 readers. Raise the list past that and
 // these limits, or the mail service, have to change with it.
 var MAX_CONFIRMATIONS_PER_DAY_ = 100;
+
+// Reminder mails in one UTC day. Reminders are owed for rows admitted three
+// days earlier, but runs that were late or failed could bring several days'
+// worth on one day; this keeps the day's total to the figure counted above.
+// A reader left out stays due and is reminded by a later run.
+var MAX_REMINDERS_PER_DAY_ = 100;
 
 // Welcome mails in one UTC day. Past it a reader is still confirmed, and the
 // page they land on says so; only the extra mail is skipped.
@@ -971,12 +976,17 @@ function pendingRowFor_(sh, email, confirmToken) {
   return { row: row, values: values };
 }
 
-/** Stamps reminder_sent_at for a reader still due one; false if not, or if another run got there first. */
+/**
+ * Stamps reminder_sent_at for a reader still due one; false if not, if
+ * another run got there first, or if the day's reminders are used up. A
+ * reader left out by the limit is not stamped, so a later run takes them.
+ */
 function claimReminder_(email, confirmToken, when) {
   return withSheetLock_(function () {
     var sh = sheet_();
     var found = pendingRowFor_(sh, email, confirmToken);
     if (!found || found.values[COL.reminderSentAt - 1]) return false;
+    if (!takeDailySlot_('reminder_mails', MAX_REMINDERS_PER_DAY_)) return false;
     sh.getRange(found.row, COL.reminderSentAt).setValue(when);
     return true;
   });
