@@ -35,9 +35,10 @@
  *      Statuses: pending | confirmed | unsubscribed
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
- *      that reports per-check ok/error for properties, web app URL, Gmail
- *      advanced service, Sheet access (including the exact tab used and
- *      header row match), and FROM_EMAIL sendability.
+ *      that says ok or not for properties, web app URL, Gmail advanced
+ *      service, Sheet access and FROM_EMAIL sendability. It is public, so it
+ *      gives no reasons: those are in the execution log (Apps Script →
+ *      Executions).
  *
  * Endpoints (relative to /exec URL):
  *
@@ -92,14 +93,18 @@
  *   Reminder test: not a web action. Run testRemindFromEditor from the
  *   Apps Script editor (see its comment).
  *
- *   GET  ?action=health             Per-dependency ok/error JSON report.
- *                                   Safe to call; never modifies anything.
+ *   GET  ?action=health             Per-dependency ok or not, as JSON; the
+ *                                   reasons go to the execution log. Safe
+ *                                   to call; never modifies anything.
  *
- *   GET  ?action=scan_bounces       Signed (&sig=hmac-of-"scan_bounces").
- *                                   Scans the FROM_EMAIL inbox for
- *                                   mailer-daemon replies in the last 14
- *                                   days, marks matching Sheet rows as
- *                                   `bounced` so future sends skip them.
+ *   GET  ?action=scan_bounces       Signed: &ts=<unix seconds>&sig=<hmac of
+ *                                   "scan_bounces:<ts>">, good for five
+ *                                   minutes. Reads Google's delivery
+ *                                   failure reports about this script's
+ *                                   mail in the FROM_EMAIL inbox from the
+ *                                   last 14 days and marks the rows they
+ *                                   name as `bounced` so future sends skip
+ *                                   them.
  *                                   Idempotent. Triggered daily by the
  *                                   deploy workflow; can be curled
  *                                   manually with a signed URL.
@@ -200,17 +205,21 @@ function verifyRequestSignature_(rawBody, signatureHex) {
   return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
 }
 
+// How far a scan_bounces request's time may be from this script's clock.
+var SCAN_SIGNATURE_WINDOW_MS_ = 5 * 60 * 1000;
+
 /**
- * Verify scan-bounces signature. No body (GET-style trigger), so we sign a
- * fixed constant. The action is idempotent (marking bounced rows as
- * bounced is a no-op on repeat), so replay-safety over the constant isn't
- * a risk worth solving with a timestamp.
+ * Verify a scan_bounces request. There is no body to sign, so the caller
+ * signs the action's name with the time it was made, `scan_bounces:<unix
+ * seconds>`, and sends that time as `ts`. A signature is good for five
+ * minutes either side of this script's clock and then for nothing: one that
+ * is seen later (in a log, say) cannot be used again.
  */
-function verifyScanBouncesSig_(signatureHex) {
-  if (!signatureHex) return false;
-  if (!/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
-  var cfg = config_();
-  var expected = hmacHex_(cfg.hmacSecret, 'scan_bounces');
+function verifyScanBouncesSig_(signatureHex, ts) {
+  if (!signatureHex || !/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
+  if (!/^[0-9]{9,11}$/.test(String(ts || ''))) return false;
+  if (Math.abs(Date.now() - Number(ts) * 1000) > SCAN_SIGNATURE_WINDOW_MS_) return false;
+  var expected = hmacHex_(config_().hmacSecret, 'scan_bounces:' + ts);
   return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
 }
 
@@ -362,6 +371,9 @@ function buildMimeMessage_(opts) {
     'List-ID: ' + opts.listId,
     'Precedence: bulk',
     'Auto-Submitted: auto-generated',
+    // Ties a delivery failure report back to this mail and this recipient
+    // (see mailRef_ and the bounce scanner).
+    'X-Nidhi-Ref: ' + mailRef_(opts.to),
   ];
   if (opts.messageId) headers.push('Message-ID: <' + opts.messageId + '>');
 
@@ -437,9 +449,12 @@ function doGet(e) {
       config_().siteUrl + '/blog/'
     ));
   } catch (err) {
+    // The message can name the spreadsheet, its tabs or the sending account,
+    // so it is logged here and the caller gets a fixed sentence.
+    console.error('[newsletter] GET failed: ' + err);
     return htmlResponse_(pageTemplate_(
       'Something went wrong',
-      String(err && err.message ? err.message : err),
+      'Please try again in a little while.',
       'Go to the blog',
       safeSiteUrl_() + '/blog/'
     ));
@@ -458,9 +473,35 @@ function doPost(e) {
     if (action === 'count')           return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    console.error('[newsletter] POST failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// Longest token the count action will hash: the real one is 64 characters, so
+// anything longer is not it and is not worth hashing.
+var MAX_TOKEN_LENGTH_ = 128;
 
 // The newsletter's size, for the line in the site's newsletter boxes ("20+
 // readers get new lessons by email."). The site's build asks once per build
@@ -477,8 +518,9 @@ function doPost(e) {
 var COUNT_TOKEN_SHA256_ = 'cdf92fa17035c66fef3933ee54661e0bf3422fa8ead803f1818bce8a86e0e6d8';
 
 function handleCount_(e) {
-  var given = String((e.parameter && e.parameter.token) || '');
-  if (!given || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
+  // From the body only: a token in the address would end up in logs.
+  var given = String(formBody_(e).token || '');
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
     return jsonResponse_({ ok: false, error: 'forbidden' });
   }
   var seen = {};
@@ -527,14 +569,20 @@ function withUtm_(url, campaign) {
 // ============================================================================
 
 function handleHealth_() {
-  var report = { ok: true, checks: {}, web_app_url: null };
+  var report = { ok: true, checks: {} };
 
+  // The result is public, so it says only ok or not. The reason, which can
+  // name the spreadsheet, its size, the sending account and its aliases, is
+  // logged for the owner (Apps Script → Executions).
   function check(name, fn) {
     try {
-      report.checks[name] = { ok: true, info: fn() || null };
+      var info = fn();
+      report.checks[name] = { ok: true };
+      if (info) console.log('[newsletter] health check ' + name + ': ' + JSON.stringify(info));
     } catch (err) {
       report.ok = false;
-      report.checks[name] = { ok: false, error: String(err && err.message ? err.message : err) };
+      report.checks[name] = { ok: false };
+      console.error('[newsletter] health check ' + name + ' failed: ' + err);
     }
   }
 
@@ -542,22 +590,17 @@ function handleHealth_() {
     var required = ['SHEET_ID', 'SHEET_NAME', 'FROM_NAME', 'FROM_EMAIL', 'SITE_URL', 'HMAC_SECRET'];
     var missing = required.filter(function (k) { return !prop_(k); });
     if (missing.length) throw new Error('Missing: ' + missing.join(', '));
-    return { configured: required };
   });
 
   check('web_app_url', function () {
-    var url = ScriptApp.getService().getUrl();
-    if (!url) throw new Error('ScriptApp.getService().getUrl() returned empty — not deployed as a web app?');
-    report.web_app_url = url;
-    return { url: url };
+    if (!ScriptApp.getService().getUrl()) throw new Error('ScriptApp.getService().getUrl() returned empty: not deployed as a web app?');
   });
 
   check('gmail_advanced_service', function () {
     if (typeof Gmail === 'undefined') {
       throw new Error('Gmail advanced service not enabled. Apps Script → Services → + → Gmail API → Add.');
     }
-    var profile = Gmail.Users.getProfile('me');
-    return { authorized_as: profile.emailAddress };
+    return { authorized_as: Gmail.Users.getProfile('me').emailAddress };
   });
 
   check('sheet_access', function () {
@@ -575,7 +618,7 @@ function handleHealth_() {
         '. Missing/wrong: ' + mismatched.join(', ')
       );
     }
-    return { sheet_id: cfg.sheetId, sheet_name: cfg.sheetName, rows: sh.getLastRow() };
+    return { sheet_name: cfg.sheetName, rows: sh.getLastRow() };
   });
 
   check('from_email_sendable', function () {
@@ -678,9 +721,46 @@ function ensureFromEmailSendable_() {
 // Subscribe
 // ============================================================================
 
+// A second submit for an address that is still waiting to confirm sends no
+// second mail inside this window, and leaves the row as it is, so the link
+// in the first mail keeps working. One form clicked many times, or a script
+// aimed at someone else's address, could otherwise mail them every time:
+// this allows four a day at most. A reader whose mail went astray can try
+// again later, and the 3-day reminder carries the link too.
+var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
+
+// Confirmation mails this script will send in one UTC day. Past it, a
+// request changes nothing at all: no row is added (each would be owed a
+// reminder mail three days on) and no existing row is touched (its link must
+// keep working). The site cannot read this script's reply, so a real reader
+// who signs up after the limit is hit sees the usual message and gets no mail
+// that day; the limit is logged as an error so the owner sees it. That is the
+// price of not letting a script send mail without end from this address.
+//
+// Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
+// account, not per UTC day. Three kinds of mail follow from a sign-up, each
+// with a daily limit of this size: the confirmation; the reminder, owed for
+// a confirmation three days earlier (MAX_REMINDERS_PER_DAY_); and the
+// welcome, sent when someone confirms (MAX_WELCOMES_PER_DAY_). In the worst 24 hours a flood can take
+// two UTC days of each: six times this limit, 600 mails. That leaves 900 for
+// a lesson, which goes to every confirmed reader. So a lesson still goes out
+// in full while the list is under 900 readers. Raise the list past that and
+// these limits, or the mail service, have to change with it.
+var MAX_CONFIRMATIONS_PER_DAY_ = 100;
+
+// Reminder mails in one UTC day. Reminders are owed for rows admitted three
+// days earlier, but runs that were late or failed could bring several days'
+// worth on one day; this keeps the day's total to the figure counted above.
+// A reader left out stays due and is reminded by a later run.
+var MAX_REMINDERS_PER_DAY_ = 100;
+
+// Welcome mails in one UTC day. Past it a reader is still confirmed, and the
+// page they land on says so; only the extra mail is skipped.
+var MAX_WELCOMES_PER_DAY_ = 100;
+
 function handleSubscribe_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
-  var source = String((e.parameter && e.parameter.source) || '').slice(0, 200);
+  var source = cleanSource_(e.parameter && e.parameter.source);
   if (!isValidEmail_(email)) return jsonResponse_({ ok: false, error: 'invalid_email' });
 
   var now = new Date();
@@ -690,32 +770,67 @@ function handleSubscribe_(e) {
   // Find-then-write happens under the lock: two submits for one new address
   // cannot both append, and the row reset below cannot land on a row that a
   // deletion has just moved someone else into.
-  var alreadyConfirmed = withSheetLock_(function () {
+  var outcome = withSheetLock_(function () {
     var sh = sheet_();
     var row = findSubscriberRow_(sh, email);
+    if (row !== 0) {
+      var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+      var status = String(values[COL.status - 1] || '').toLowerCase();
+      if (status === 'confirmed') return 'confirmed';
+      var createdAt = values[COL.createdAt - 1];
+      if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
+    }
+    // Checked before anything is written: past the limit nothing changes.
+    if (!takeDailySlot_('confirm_mails', MAX_CONFIRMATIONS_PER_DAY_)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
-      return false;
+    } else {
+      // pending, unsubscribed or bounced: reset to pending with fresh tokens.
+      // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
+      sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
+        'pending', source, now, '', '', confirmToken, unsubToken, '',
+      ]]);
     }
-    var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
-    if (status === 'confirmed') return true;
-    // pending, unsubscribed or bounced: reset to pending with fresh tokens.
-    // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
-    sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
-      'pending', source, now, '', '', confirmToken, unsubToken, '',
-    ]]);
-    return false;
+    return 'pending';
   });
 
-  if (alreadyConfirmed) {
-    // Already subscribed — don't leak that fact. Silently succeed.
+  // The reply is the same in every case: it must not say whether an address
+  // is on the list, was just asked for, or hit the day's limit.
+  if (outcome === 'confirmed') {
     trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
     return jsonResponse_({ ok: true });
   }
-
+  if (outcome === 'recent') return jsonResponse_({ ok: true });
+  if (outcome === 'capped') {
+    console.error('[newsletter] daily confirmation limit reached (' + MAX_CONFIRMATIONS_PER_DAY_ + '): nothing written, nothing sent');
+    return jsonResponse_({ ok: true });
+  }
   sendConfirmationEmail_(email, confirmToken);
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
+}
+
+/**
+ * Counts one mail of a kind (`confirm_mails`, `welcome_mails`) against
+ * today's limit; false once the limit is reached. Call inside the lock. The
+ * day is read here, inside the lock, not when the request arrived: a request
+ * that waited for the lock across midnight would otherwise count against
+ * yesterday and, clearing "the other days", wipe today's count.
+ */
+function takeDailySlot_(kind, limit) {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  var prefix = kind + ':';
+  var key = prefix + today;
+  var used = Number(prop_(key)) || 0;
+  if (used >= limit) return false;
+  props_().setProperty(key, String(used + 1));
+  if (used === 0) {
+    // First of the day: drop this kind's counters of days before today. A
+    // later day cannot exist, and today's is never dropped.
+    var all = props_().getProperties();
+    for (var k in all) if (k.indexOf(prefix) === 0 && k.slice(prefix.length) < today) props_().deleteProperty(k);
+  }
+  return true;
 }
 
 // ============================================================================
@@ -871,12 +986,17 @@ function pendingRowFor_(sh, email, confirmToken) {
   return { row: row, values: values };
 }
 
-/** Stamps reminder_sent_at for a reader still due one; false if not, or if another run got there first. */
+/**
+ * Stamps reminder_sent_at for a reader still due one; false if not, if
+ * another run got there first, or if the day's reminders are used up. A
+ * reader left out by the limit is not stamped, so a later run takes them.
+ */
 function claimReminder_(email, confirmToken, when) {
   return withSheetLock_(function () {
     var sh = sheet_();
     var found = pendingRowFor_(sh, email, confirmToken);
     if (!found || found.values[COL.reminderSentAt - 1]) return false;
+    if (!takeDailySlot_('reminder_mails', MAX_REMINDERS_PER_DAY_)) return false;
     sh.getRange(found.row, COL.reminderSentAt).setValue(when);
     return true;
   });
@@ -987,6 +1107,8 @@ function handleConfirm_(e) {
     sh.getRange(row, COL.confirmedAt).setValue(new Date());
     sh.getRange(row, COL.unsubscribedAt).setValue('');
     sh.getRange(row, COL.confirmToken).setValue('');
+    // Counted here, under the lock, so the day's welcome mails have a limit too.
+    who.welcome = takeDailySlot_('welcome_mails', MAX_WELCOMES_PER_DAY_);
     return who;
   });
 
@@ -1000,7 +1122,8 @@ function handleConfirm_(e) {
   // so the subscriber sees an immediate "you're in" beyond the landing
   // page. Non-fatal — if Gmail hiccups, we still confirm the row.
   try {
-    sendWelcomeEmail_(email, unsubToken);
+    if (found.welcome) sendWelcomeEmail_(email, unsubToken);
+    else console.error('[newsletter] daily welcome limit reached (' + MAX_WELCOMES_PER_DAY_ + '): reader confirmed, welcome mail not sent');
   } catch (err) {
     // Welcome email is non-blocking (the subscriber IS confirmed regardless),
     // but we still want a signal so a silent Gmail outage doesn't mean
@@ -1099,7 +1222,9 @@ function handleSendPost_(e) {
   try {
     ensureFromEmailSendable_();
   } catch (err) {
-    return jsonResponse_({ ok: false, error: 'from_email_not_sendable: ' + err.message });
+    // The reason names the account and its aliases: logged, not returned.
+    console.error('[newsletter] from_email_not_sendable: ' + err.message);
+    return jsonResponse_({ ok: false, error: 'from_email_not_sendable' });
   }
 
   var payload = JSON.parse(raw);
@@ -1342,76 +1467,264 @@ function emailDomain_(email) {
 //
 // Gmail's advanced API doesn't expose bounce webhooks for consumer accounts
 // / free Workspace tiers. The only way to notice that a subscriber's
-// address is dead is to look at `mailer-daemon` bounce replies sitting in
-// the FROM_EMAIL inbox. This job scans the last 14 days of such replies,
-// extracts failed recipient addresses, and flips matching Sheet rows from
-// `confirmed` → `bounced` so we stop burning Workspace quota on dead
-// addresses.
+// address is dead is to look at the delivery failure reports sitting in the
+// FROM_EMAIL inbox. This job reads the last 14 days of them and flips the
+// matching Sheet rows to `bounced`, so they get no more mail.
+//
+// A report counts only if all of this holds, because anyone can send this
+// inbox a message that merely looks like one (see failedRecipients_):
+//   - it is from Google's own delivery subsystem, mailer-daemon@googlemail.com,
+//     and is a delivery report by its structure, not by its subject;
+//   - for that recipient, in that recipient's own block of the report, it
+//     says `Action: failed` with a 5.x.x status. A delay notice or a full
+//     mailbox reported as 4.x.x is not one;
+//   - the mail it returns carries a reference this script made for that
+//     same recipient (X-Nidhi-Ref), within the last 14 days and for the
+//     reader's current sign-up. So the report is about a mail this script
+//     sent to that reader. Mail sent before this header existed has none: a
+//     failure of one of those is not acted on, and the next mail will be;
+//   - Gmail found the report signed by googlemail.com. The reference shows
+//     which mail a report is about; this shows the report is Google's.
 //
 // `bounced` is outside the enum in listConfirmedSubscribers_() — which
-// filters on status==='confirmed' — so marked rows are implicitly dropped
-// from all future fan-outs. Re-subscribing via the public form overwrites
-// the row back to `pending` and goes through the normal double-opt-in
-// flow, which acts as a manual "we think this address works again" check.
-//
-// Why a single 14-day window:
-//  - Shorter than 14d and a weekly cron would miss bounces that arrived
-//    between runs;
-//  - Longer and we'd repeatedly re-process the same old bounces on every
-//    daily run (harmless, just wasteful).
-//
-// The extracted address set intentionally over-matches (any `<…@…>` in the
-// bounce body) and we filter to addresses actually present in our sheet,
-// so we can't accidentally mark a stranger's email.
+// filters on status==='confirmed' — so marked rows are dropped from all
+// future fan-outs, and a pending row that bounced gets no reminder.
+// Re-subscribing via the public form puts the row back to `pending` and
+// goes through the normal double opt-in.
+
+/**
+ * A reference carried by every mail this script sends, in the X-Nidhi-Ref
+ * header: the time the mail was made (unix seconds), a dot, and an HMAC of
+ * the recipient's address and that time under the script's secret.
+ *
+ * A delivery failure report returns the headers of the mail that failed, so
+ * a genuine report about a mail to someone carries a reference made for
+ * that someone. Nobody without the secret can write one for another
+ * address. Each mail has its own, and one is honoured only for a mail sent
+ * in the last 14 days and after the reader's current sign-up, so a
+ * reference seen in a forwarded mail goes stale and never outlives a
+ * re-subscription. On its own it shows which mail a report is about, not
+ * that the report is genuine: for that the report must also come through
+ * Google's own sender checks (see authenticatedByGoogle_). It says nothing
+ * about the reader to anyone: it is in their own mail.
+ */
+function mailRef_(email, seconds) {
+  var ts = String(seconds === undefined ? Math.floor(Date.now() / 1000) : seconds);
+  return ts + '.' + hmacHex_(config_().hmacSecret, 'mail-ref:' + String(email || '').trim().toLowerCase() + ':' + ts).slice(0, 40);
+}
+
+/** The time (ms) a reference was made for `email`, or 0 if it is not one this script wrote for that address. */
+function mailRefTime_(ref, email) {
+  var m = /^([0-9]{9,11})\.([0-9a-f]{40})$/.exec(String(ref || '').trim());
+  if (!m) return 0;
+  return constantTimeEquals_(mailRef_(email, m[1]), m[1] + '.' + m[2]) ? Number(m[1]) * 1000 : 0;
+}
+
+/**
+ * Whether Gmail, receiving this message, found it to be signed by
+ * googlemail.com. Gmail writes what it found in an Authentication-Results
+ * header that it puts above everything the message arrived with, under its
+ * own name (mx.google.com); only that first header is read, since a sender
+ * can put any such header of their own lower down. A From line alone can be
+ * written by anyone. It has to be the signature itself that passed (dkim):
+ * a sender-policy pass alone (dmarc by way of spf) says where the message
+ * came from and nothing about its To line or its content being as signed.
+ */
+function authenticatedByGoogle_(outerHeaders) {
+  var first = /^Authentication-Results:[ \t]*([^\r\n]*)$/im.exec(outerHeaders);
+  if (!first) return false;
+  var results = first[1];
+  if (!/^mx\.google\.com[ \t]*;/i.test(results)) return false;
+  // The domain must end there: googlemail.com.example.org is someone else's.
+  var dkim = /\bdkim=pass\b[^;]*\bheader\.(?:i=@|d=)googlemail\.com(?![\w.-])/i.test(results);
+  return dkim;
+}
+
+// The only sender whose reports are read: the address alone, or a display
+// name followed by the address in angle brackets.
+var BOUNCE_SENDER_ = /^(?:[^<>]*<mailer-daemon@googlemail\.com>|mailer-daemon@googlemail\.com)$/i;
+
+// Reports looked at in one scan, at most. Reaching it is logged.
+var BOUNCE_MAX_THREADS_ = 1000;
+
+/** Whether a header's value is exactly `address`: alone, or one display name with no brackets or commas, then the address in angle brackets. */
+function isExactly_(value, address) {
+  var v = String(value).trim().toLowerCase();
+  if (v === address) return true;
+  var m = /^([^<>,]*)<([^<>]*)>$/.exec(v);
+  return Boolean(m) && m[2] === address;
+}
+
+/**
+ * A report from Google's delivery subsystem that was not acted on, and why.
+ * Logged for the owner: it is either a forgery, or a sign that Google's
+ * reports no longer look the way this expects and real bounces are being
+ * passed over.
+ */
+function skipped_(why) {
+  console.error('[newsletter] bounce scan: a report from mailer-daemon@googlemail.com was not acted on: ' + why);
+  return [];
+}
+
+/** Headers as single lines: a folded header continues on lines that start with white space. */
+function unfold_(text) {
+  return String(text).replace(/\r?\n[ \t]+/g, ' ');
+}
+
+/**
+ * The addresses one message reports as permanently failed, lower-cased; none
+ * unless the message is a delivery report, read by its structure:
+ *
+ *   - the message itself is a multipart/report of type delivery-status;
+ *   - in its message/delivery-status part, each recipient has a block of its
+ *     own, and that block says `Action: failed` with a 5.x.x status for that
+ *     recipient. A recipient whose block says delayed, or 4.x.x, is not
+ *     taken because another recipient in the same report failed;
+ *   - the part that returns the original mail carries a reference this
+ *     script made for that same recipient (X-Nidhi-Ref);
+ *   - the report is addressed to this script's own sending address, and
+ *     Gmail found it to be signed by googlemail.com.
+ *
+ * Text that only looks like these fields, in a quoted message or in the
+ * human-readable part, is not read as them. Each result is
+ * `{ email, sentAt }`, `sentAt` being when the returned mail was made.
+ */
+function failedRecipients_(msg) {
+  var from = '';
+  try { from = String(msg.getFrom() || '').trim(); } catch (_) { return []; }
+  if (!BOUNCE_SENDER_.test(from)) return [];
+  var raw = '';
+  try { raw = String(msg.getRawContent() || ''); } catch (_) { return skipped_('it could not be read'); }
+
+  var split = /\r?\n\r?\n/.exec(raw);
+  if (!split) return skipped_('it has no line between its headers and its body');
+  var outer = unfold_(raw.slice(0, split.index));
+  var body = raw.slice(split.index + split[0].length);
+  // A report about a mail this script sent comes back to the address it was
+  // sent from. A report about someone else's mail is addressed to them, and
+  // stays so if it is passed on with Google's signature intact, since the To
+  // line is part of what is signed.
+  // There must be exactly one To line: a signature covers the last one, so
+  // a second one put above it would be read here and signed by nobody.
+  var sender = String(config_().fromEmail).toLowerCase();
+  var toLines = outer.match(/^To:[^\r\n]*$/gim) || [];
+  if (toLines.length !== 1 || !isExactly_(toLines[0].replace(/^To:/i, ''), sender)) return skipped_('it is not addressed to this script and nobody else');
+  if (!authenticatedByGoogle_(outer)) {
+    // Worth a look by the owner: either a forgery, or Google's reports no
+    // longer arrive the way this expects and real bounces are being passed over.
+    return skipped_('Gmail did not find it signed by googlemail.com');
+  }
+  // Exactly one type line, for the same reason as the To line: the type
+  // names the boundary the signed body is read by, so a second one put
+  // above the signed one would change what is read without breaking the
+  // signature.
+  var typeLines = outer.match(/^Content-Type:[^\r\n]*$/gim) || [];
+  if (typeLines.length !== 1) return skipped_('it does not have exactly one type');
+  var type = /^Content-Type:[ \t]*multipart\/report\b([^\r\n]*)$/i.exec(typeLines[0]);
+  if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return skipped_('it is not a delivery report by its type');
+  var boundary = /boundary[ \t]*=[ \t]*(?:"([^"]+)"|([^\s;]+))/i.exec(type[1]);
+  if (!boundary) return skipped_('its type names no boundary');
+  // A part starts at a line that is the boundary and nothing else. What
+  // stands before the first such line and after the closing one (the
+  // boundary followed by two more dashes) is not part of the report.
+  var marker = (boundary[1] || boundary[2]).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var text = '\n' + body;
+  var close = new RegExp('\\r?\\n--' + marker + '--[ \\t]*(?=\\r?\\n|$)').exec(text);
+  if (!close) return skipped_('it has no closing boundary line');
+  var parts = text.slice(0, close.index).split(new RegExp('\\r?\\n--' + marker + '[ \\t]*(?=\\r?\\n)'));
+  parts.shift();
+  // Something to read, the status, the returned mail: three parts, in that order.
+  if (parts.length !== 3) return skipped_('it does not have exactly three parts');
+
+  // A delivery report has its parts in a fixed order: something to read,
+  // then the status, then the returned mail. The second and third are read
+  // as exactly that, by their position.
+  var partOf = function (index, kind) {
+    var cut = /\r?\n\r?\n/.exec(parts[index]);
+    if (!cut) return null;
+    if (!kind.test(unfold_(parts[index].slice(0, cut.index)))) return null;
+    return parts[index].slice(cut.index + cut[0].length);
+  };
+  if (partOf(0, /^Content-Type:[ \t]*(?:message\/delivery-status|message\/rfc822|text\/rfc822-headers)\b/im) !== null) return skipped_('its first part is not something to read');
+  var status = partOf(1, /^Content-Type:[ \t]*message\/delivery-status\b/im);
+  var returned = partOf(2, /^Content-Type:[ \t]*(?:message\/rfc822|text\/rfc822-headers)\b/im);
+  var original = null;
+  if (returned !== null) {
+    // The returned mail: its own headers come first.
+    var end = /\r?\n\r?\n/.exec(returned);
+    original = unfold_(end ? returned.slice(0, end.index) : returned);
+  }
+  if (status === null || !original) return skipped_('its second and third parts are not a status and a returned mail');
+  // The returned mail is one this script sent: from its own address, with
+  // one reference.
+  var fromLines = original.match(/^From:[^\r\n]*$/gim) || [];
+  if (fromLines.length !== 1 || !isExactly_(fromLines[0].replace(/^From:/i, ''), sender)) return skipped_('the mail it returns is not from this script');
+  var refLines = original.match(/^X-Nidhi-Ref:[^\r\n]*$/gim) || [];
+  if (refLines.length !== 1) return skipped_('the mail it returns does not carry one reference');
+  var refLine = /^X-Nidhi-Ref:[ \t]*(\S+)[ \t]*$/i.exec(refLines[0]);
+  if (!refLine) return skipped_('the reference in the mail it returns cannot be read');
+
+  var out = [];
+  unfold_(status).split(/\r?\n\r?\n/).forEach(function (block) {
+    var who = /^Final-Recipient:[ \t]*rfc822[ \t]*;[ \t]*<?([^\s<>;,]+@[^\s<>;,]+)>?[ \t]*$/im.exec(block);
+    var action = /^Action:[ \t]*([A-Za-z]+)[ \t]*$/im.exec(block);
+    var code = /^Status:[ \t]*([0-9])\.[0-9]+\.[0-9]+/im.exec(block);
+    if (!who || !action || !code) return;
+    if (action[1].toLowerCase() !== 'failed' || code[1] !== '5') return;
+    var addr = who[1].toLowerCase();
+    // The returned mail was one of ours, made for this very address.
+    var sentAt = mailRefTime_(refLine[1], addr);
+    if (sentAt && !out.some(function (x) { return x.email === addr; })) out.push({ email: addr, sentAt: sentAt });
+  });
+  if (out.length === 0) return skipped_('it reports no permanent failure of the address its returned mail was made for');
+  return out;
+}
 
 function handleScanBounces_(e) {
   var sig = (e && e.parameter && e.parameter.sig) || '';
-  if (!verifyScanBouncesSig_(sig)) {
+  var ts = (e && e.parameter && e.parameter.ts) || '';
+  if (!verifyScanBouncesSig_(sig, ts)) {
     return jsonResponse_({ ok: false, error: 'bad_signature' });
   }
 
-  var cfg = config_();
-
-  // Broad Gmail query — we over-match on purpose and then filter candidates
-  // against the Sheet. Bounces come from `mailer-daemon@googlemail.com`
-  // in most cases; the subject heuristic catches forwarding-service
-  // bounces that spoof a different From.
-  var query = 'in:inbox (from:mailer-daemon OR from:postmaster OR subject:"Delivery Status Notification") newer_than:14d';
-  var threads;
+  // Every report in the inbox from the last 14 days, a page at a time. The
+  // search finds threads; a thread can hold older messages, so each message's
+  // own date is checked as well.
+  var query = 'in:inbox from:mailer-daemon@googlemail.com newer_than:14d';
+  var oldest = Date.now() - 14 * 24 * 60 * 60 * 1000;
+  var scanned = 0;
+  // address -> its newest failed mail: when it was sent and when that was reported
+  var failedAt = {};
   try {
-    threads = GmailApp.search(query, 0, 200);
-  } catch (err) {
-    return jsonResponse_({ ok: false, error: 'gmail_search_failed: ' + err });
-  }
-
-  // Build a Set of all addresses appearing in bounce bodies.
-  var candidates = {};
-  for (var t = 0; t < threads.length; t++) {
-    var msgs = threads[t].getMessages();
-    for (var m = 0; m < msgs.length; m++) {
-      var msg = msgs[m];
-      var haystack = '';
-      try { haystack += (msg.getSubject() || '') + '\n'; } catch (_) {}
-      try { haystack += (msg.getPlainBody() || ''); } catch (_) {}
-      // Match both `<user@host>` bracketed forms and bare addresses — bounce
-      // reports vary wildly between providers.
-      var re = /([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})/g;
-      var match;
-      while ((match = re.exec(haystack)) !== null) {
-        var addr = match[1].toLowerCase();
-        if (addr.indexOf('mailer-daemon') === 0) continue;
-        if (addr.indexOf('postmaster@') === 0)   continue;
-        if (addr === cfg.fromEmail.toLowerCase())  continue;
-        // Skip common noise: Google-generated bounce-report from lines.
-        if (/@googlemail\.com$/i.test(addr)) continue;
-        if (/@google\.com$/i.test(addr))     continue;
-        candidates[addr] = true;
+    var start = 0;
+    for (; start < BOUNCE_MAX_THREADS_; start += 100) {
+      var threads = GmailApp.search(query, start, 100);
+      scanned += threads.length;
+      for (var t = 0; t < threads.length; t++) {
+        var msgs = threads[t].getMessages();
+        for (var i = 0; i < msgs.length; i++) {
+          var when = NaN;
+          try { when = msgs[i].getDate().getTime(); } catch (_) { /* no date: not read */ }
+          // An older message in a thread the search found is outside the 14
+          // days by design; one with no date at all is worth a line.
+          if (isNaN(when)) { skipped_('its date cannot be read'); continue; }
+          if (!(when >= oldest)) continue;
+          failedRecipients_(msgs[i]).forEach(function (x) {
+            // The mail that failed was itself sent in the last 14 days, and
+            // before its report.
+            if (!(x.sentAt >= oldest && x.sentAt <= when)) { skipped_('the mail it returns was not sent in the last 14 days and before the report'); return; }
+            if (!failedAt[x.email] || failedAt[x.email].sentAt < x.sentAt) failedAt[x.email] = { reported: when, sentAt: x.sentAt };
+          });
+        }
       }
+      if (threads.length < 100) break;
     }
+    if (start >= BOUNCE_MAX_THREADS_) console.error('[newsletter] bounce scan: more than ' + BOUNCE_MAX_THREADS_ + ' report threads in 14 days; the oldest were not read');
+  } catch (err) {
+    console.error('[newsletter] bounce scan: reading the inbox failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'gmail_search_failed' });
   }
 
-  // Filter to addresses that actually exist in the Sheet (and are currently
-  // confirmed) — everything else is noise from the bounce body.
   // The inbox scan above took a while; the Sheet is read and written here in
   // one go under the lock, so each row number is used while it is still right.
   var markedAddrs = withSheetLock_(function () {
@@ -1421,10 +1734,18 @@ function handleScanBounces_(e) {
     if (last < 2) return out;
     var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
     for (var r = 0; r < rows.length; r++) {
-      var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
-      var rowStatus = String(rows[r][1] || '').toLowerCase();
-      if (rowStatus !== 'confirmed') continue;
-      if (!candidates[rowEmail]) continue;
+      var rowEmail = String(rows[r][COL.email - 1] || '').trim().toLowerCase();
+      var rowStatus = String(rows[r][COL.status - 1] || '').toLowerCase();
+      if (rowStatus !== 'confirmed' && rowStatus !== 'pending') continue;
+      var failure = failedAt[rowEmail];
+      if (!failure) continue;
+      // The mail that failed must have been sent for this sign-up: one made
+      // before it (an earlier subscription's), or a row whose date cannot be
+      // read, is left alone. A reference holds whole seconds and a mail is
+      // made after its row, so the two are compared in seconds, with no
+      // allowance.
+      var since = Math.floor(new Date(rows[r][COL.createdAt - 1]).getTime() / 1000) * 1000;
+      if (!(since <= failure.sentAt)) continue;
       sh.getRange(r + 2, COL.status).setValue('bounced');
       sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
       out.push(rowEmail);
@@ -1446,8 +1767,8 @@ function handleScanBounces_(e) {
 
   return jsonResponse_({
     ok: true,
-    threads_scanned: threads.length,
-    candidates: Object.keys(candidates).length,
+    threads_scanned: scanned,
+    candidates: Object.keys(failedAt).length,
     marked_bounced: marked,
   });
 }
@@ -1691,11 +2012,11 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
  *   2. Prints its length, first/last 4 chars, and format sanity checks
  *      (hex-only? whitespace? newline at end?). Safe to share the first/
  *      last 4 chars — they're not enough to reconstruct the secret.
- *   3. Computes HMAC-SHA256 of the literal string "scan_bounces" with
+ *   3. Computes HMAC-SHA256 of the literal string "secret-check" with
  *      the current secret, and prints it. You can then run the same
  *      HMAC locally with your GH Actions copy of the secret:
  *
- *        printf 'scan_bounces' \
+ *        printf 'secret-check' \
  *          | openssl dgst -sha256 -hmac 'PASTE-SECRET-HERE' \
  *          | awk '{print $NF}'
  *
@@ -1725,13 +2046,13 @@ function debugHmacSecret() {
 
   // Sign the same fixed string the GH Actions bounce-scan step signs.
   // Reproduce locally with:
-  //   printf 'scan_bounces' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
-  var sig = hmacHex_(s, 'scan_bounces');
-  console.log('HMAC-SHA256("scan_bounces") with this secret:');
+  //   printf 'secret-check' | openssl dgst -sha256 -hmac 'SECRET' | awk '{print $NF}'
+  var sig = hmacHex_(s, 'secret-check');
+  console.log('HMAC-SHA256("secret-check") with this secret (a comparison value only: it opens nothing):');
   console.log('  ' + sig);
   console.log('');
   console.log('Reproduce on your terminal (with the SAME secret value you pasted into the GH Actions NEWSLETTER_HMAC_SECRET):');
-  console.log('  printf \'scan_bounces\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
+  console.log('  printf \'secret-check\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
   console.log('');
   console.log('Match? secrets are byte-identical — bad_signature is NOT a secret problem.');
   console.log('Differ? the two copies are different values. Regenerate with openssl rand -hex 32 and paste to both.');
@@ -1845,8 +2166,24 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
 
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
+// An address is written into a spreadsheet cell, where a value that starts
+// with = + - or @ is read as a formula, so an address may not start with one
+// (very few do). It also may not hold white space, double quotes, brackets or
+// the marks that separate addresses in a list. Letters of any script, and an
+// apostrophe (o'brien@...), are fine.
 function isValidEmail_(s) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
+}
+
+/**
+ * The page a sign-up came from, as the site sends it: a path on the site.
+ * Anything else is dropped, since the request can say anything and the value
+ * goes into a spreadsheet cell and an analytics event.
+ */
+function cleanSource_(raw) {
+  var s = String(raw || '');
+  // `$` also matches before a final line break, so that is ruled out by itself.
+  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) && !/[\r\n]/.test(s) ? s : '';
 }
 
 function escapeHtml_(s) {

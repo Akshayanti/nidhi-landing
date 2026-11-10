@@ -212,13 +212,13 @@ def render_welcome_email(
 
 def main() -> None:
     confirmation_html = render_confirmation_email(
-        email="akshayantimatter@gmail.com",
+        email="reader@example.com",
         token=SAMPLE_TOKEN,
         site_url=SITE_URL,
         from_name=FROM_NAME,
     )
     welcome_html = render_welcome_email(
-        email="akshayantimatter@gmail.com",
+        email="reader@example.com",
         unsub_token=SAMPLE_TOKEN,
         site_url=SITE_URL,
         from_name=FROM_NAME,
