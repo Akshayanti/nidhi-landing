@@ -424,7 +424,7 @@ describe('newsletter.gs: bounce scan', () => {
 describe('newsletter.gs: what a request can make it write, send or say', () => {
   const sub = (ctx, fields) => json(ctx.doPost(req({ action: 'subscribe', ...fields })));
 
-  it('a repeat within ten minutes sends no second mail and keeps the first link working', () => {
+  it('a repeat within six hours sends no second mail and keeps the first link working', () => {
     const ctx = load();
     assert.deepEqual(sub(ctx, { email: 'new@x.io' }), { ok: true });
     const first = find(ctx, 'new@x.io')[6];
@@ -432,18 +432,44 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     assert.deepEqual(ctx.rec.mails, ['new@x.io']);
     assert.equal(find(ctx, 'new@x.io')[6], first);
     assert.deepEqual(emails(ctx), ['new@x.io']);
+    // Five hours on: still inside the window.
+    const young = load([row('p@x.io', 'pending', 5 / 24, { confirm: tok('1'), unsub: tok('2') })]);
+    sub(young, { email: 'p@x.io' });
+    assert.deepEqual([young.rec.mails, find(young, 'p@x.io')[6]], [[], tok('1')]);
+    // Seven hours on: a new mail, with a new link.
+    const old = load([row('p@x.io', 'pending', 7 / 24, { confirm: tok('1'), unsub: tok('2') })]);
+    sub(old, { email: 'p@x.io' });
+    assert.deepEqual(old.rec.mails, ['p@x.io']);
+    assert.notEqual(find(old, 'p@x.io')[6], tok('1'));
   });
 
-  it('stops sending confirmations at the day’s limit, still writes the row and says the same', () => {
-    const ctx = load();
+  it('past the day’s limit a request changes nothing: no row, no mail, and a waiting reader’s link still works', () => {
+    const ctx = load([row('waiting@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
     vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_ = 2;', ctx);
     for (const email of ['a@x.io', 'b@x.io', 'c@x.io', 'd@x.io']) assert.deepEqual(sub(ctx, { email }), { ok: true });
     assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io']);
-    assert.deepEqual(emails(ctx), ['a@x.io', 'b@x.io', 'c@x.io', 'd@x.io']);
-    assert.equal(find(ctx, 'c@x.io')[1], 'pending');
-    assert.match(find(ctx, 'c@x.io')[6], /^[0-9a-f]{64}$/, 'the reminder can still carry its confirm link');
-    // Yesterday's count is dropped by the first sign-up of a new day.
+    assert.deepEqual(emails(ctx), ['waiting@x.io', 'a@x.io', 'b@x.io']);
+    // Someone else submits the waiting reader's address after the limit: their row is untouched.
+    const before = JSON.stringify(find(ctx, 'waiting@x.io'));
+    assert.deepEqual(sub(ctx, { email: 'waiting@x.io' }), { ok: true });
+    assert.equal(JSON.stringify(find(ctx, 'waiting@x.io')), before);
+    ctx.doPost(req({ action: 'confirm', t: tok('1') }));
+    assert.equal(find(ctx, 'waiting@x.io')[1], 'confirmed');
+  });
+
+  it('the limit is per UTC day: the next day starts from nothing and drops the old count', () => {
+    const ctx = load();
+    vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_ = 1;', ctx);
+    sub(ctx, { email: 'a@x.io' });
+    sub(ctx, { email: 'b@x.io' });
+    assert.deepEqual(ctx.rec.mails, ['a@x.io']);
     assert.deepEqual(Object.keys(ctx.rec.props).filter((k) => k.startsWith('confirm_mails:')), ['confirm_mails:2026-11-10']);
+    // The script's clock moves to the next day.
+    const next = NOW + DAY;
+    vm.runInContext(`Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(${next}); } static now() { return ${next}; } };`, ctx);
+    sub(ctx, { email: 'b@x.io' });
+    assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io']);
+    assert.deepEqual(Object.keys(ctx.rec.props).filter((k) => k.startsWith('confirm_mails:')), ['confirm_mails:2026-11-11']);
   });
 
   it('keeps only a site path as the source', () => {
@@ -458,6 +484,8 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
       ['g@x.io', `/${'a'.repeat(300)}`, ''],
       ['h@x.io', 'https://example.com/', ''],
       ['i@x.io', undefined, ''],
+      ['j@x.io', '/blog/\n', ''],
+      ['k@x.io', '/blog/\r\n=1+1', ''],
     ];
     for (const [email, source] of cases) sub(ctx, { email, source });
     for (const [email, , kept] of cases) assert.equal(find(ctx, email)[2], kept, String(email));
@@ -467,17 +495,20 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     const ctx = load();
     for (const email of [
       '=importdata("https://x.example/?a@b.c"&a2)', '=1+1@x.io', '+cmd@x.io', '-2+3@x.io', '@sum@x.io',
-      'a"b@x.io', "a'b@x.io", 'a(b)@x.io', 'a@x.io, b@y.io', 'a b@x.io', 'a@b', 'plain', `${'a'.repeat(250)}@x.io`,
+      'a"b@x.io', 'a(b)@x.io', 'a@x.io\n=1+1', 'a@x.io\t=1+1', 'a@x.io, b@y.io', 'a b@x.io', 'a@b', 'plain', `${'a'.repeat(250)}@x.io`,
     ]) {
       assert.deepEqual(sub(ctx, { email }), { ok: false, error: 'invalid_email' }, email);
     }
     assert.deepEqual(emails(ctx), []);
     assert.deepEqual(ctx.rec.mails, []);
+    // White space around an address is trimmed, as it always was.
+    assert.deepEqual(sub(ctx, { email: ' Reader@x.io\n' }), { ok: true });
+    assert.deepEqual(emails(ctx), ['reader@x.io']);
   });
 
   it('still takes ordinary addresses, tags, subdomains and other scripts', () => {
     const ctx = load();
-    const good = ['a@x.io', 'first.last+tag@mail.example.co.uk', 'user_name-1@sub-domain.example.org', 'रमेश@उदाहरण.भारत', 'jörg@müller.de'];
+    const good = ['a@x.io', 'first.last+tag@mail.example.co.uk', 'user_name-1@sub-domain.example.org', "o'brien@example.ie", 'रमेश@उदाहरण.भारत', 'jörg@müller.de'];
     for (const email of good) assert.deepEqual(sub(ctx, { email }), { ok: true }, email);
     assert.deepEqual(emails(ctx), good);
   });

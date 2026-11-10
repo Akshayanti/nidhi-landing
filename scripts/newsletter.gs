@@ -712,14 +712,22 @@ function ensureFromEmailSendable_() {
 // ============================================================================
 
 // A second submit for an address that is still waiting to confirm sends no
-// second mail inside this window: one form, clicked many times, or a script
-// aimed at someone else's address, would otherwise mail them every time.
-var RESEND_COOLDOWN_MS_ = 10 * 60 * 1000;
+// second mail inside this window, and leaves the row as it is, so the link
+// in the first mail keeps working. One form clicked many times, or a script
+// aimed at someone else's address, could otherwise mail them every time:
+// this allows four a day at most. A reader whose mail went astray can try
+// again later, and the 3-day reminder carries the link too.
+var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 
 // Confirmation mails this script will send in one UTC day. Well under the
 // Workspace limit, so a flood of sign-ups cannot use up the day's mail and
-// stop a lesson from going out. Past it, the row is still written and the
-// 3-day reminder carries the same confirm link.
+// stop a lesson from going out. Past it, a request changes nothing at all:
+// no row is added (each would be owed a reminder mail three days on) and no
+// existing row is touched (its link must keep working). The site cannot read
+// this script's reply, so a real reader who signs up after the limit is hit
+// sees the usual message and gets no mail that day; the limit is logged as
+// an error so the owner sees it. That is the price of not letting a script
+// send mail without end from this address.
 var MAX_CONFIRMATIONS_PER_DAY_ = 400;
 
 function handleSubscribe_(e) {
@@ -744,7 +752,8 @@ function handleSubscribe_(e) {
       var createdAt = values[COL.createdAt - 1];
       if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
     }
-    var result = takeConfirmationSlot_(now) ? 'pending' : 'capped';
+    // Checked before anything is written: past the limit nothing changes.
+    if (!takeConfirmationSlot_(now)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
     } else {
@@ -754,7 +763,7 @@ function handleSubscribe_(e) {
         'pending', source, now, '', '', confirmToken, unsubToken, '',
       ]]);
     }
-    return result;
+    return 'pending';
   });
 
   // The reply is the same in every case: it must not say whether an address
@@ -765,10 +774,10 @@ function handleSubscribe_(e) {
   }
   if (outcome === 'recent') return jsonResponse_({ ok: true });
   if (outcome === 'capped') {
-    console.error('[newsletter] daily confirmation limit reached (' + MAX_CONFIRMATIONS_PER_DAY_ + '): row written, mail not sent');
-  } else {
-    sendConfirmationEmail_(email, confirmToken);
+    console.error('[newsletter] daily confirmation limit reached (' + MAX_CONFIRMATIONS_PER_DAY_ + '): nothing written, nothing sent');
+    return jsonResponse_({ ok: true });
   }
+  sendConfirmationEmail_(email, confirmToken);
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
 }
@@ -1917,11 +1926,12 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
 // An address is written into a spreadsheet cell, where a value that starts
-// with = + - or @ is read as a formula. So it must start with something else,
-// and it may not hold the characters a formula or a display name is built
-// from. Letters of any script are fine.
+// with = + - or @ is read as a formula, so an address may not start with one
+// (very few do). It also may not hold white space, double quotes, brackets or
+// the marks that separate addresses in a list. Letters of any script, and an
+// apostrophe (o'brien@...), are fine.
 function isValidEmail_(s) {
-  return s.length <= 254 && /^[^\s@=+\-'"()<>,;:\\\[\]][^\s@'"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s);
+  return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
 }
 
 /**
@@ -1931,7 +1941,8 @@ function isValidEmail_(s) {
  */
 function cleanSource_(raw) {
   var s = String(raw || '');
-  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) ? s : '';
+  // `$` also matches before a final line break, so that is ruled out by itself.
+  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) && !/[\r\n]/.test(s) ? s : '';
 }
 
 function escapeHtml_(s) {

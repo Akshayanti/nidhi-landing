@@ -140,11 +140,12 @@ function sheet_() {
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
 // An address is written into a spreadsheet cell, where a value that starts
-// with = + - or @ is read as a formula. So it must start with something else,
-// and it may not hold the characters a formula or a display name is built
-// from. Letters of any script are fine. (Same rule as scripts/newsletter.gs.)
+// with = + - or @ is read as a formula, so an address may not start with one
+// (very few do). It also may not hold white space, double quotes, brackets or
+// the marks that separate addresses in a list. Letters of any script, and an
+// apostrophe (o'brien@...), are fine. (Same rule as scripts/newsletter.gs.)
 function isValidEmail_(s) {
-  return s.length <= 254 && /^[^\s@=+\-'"()<>,;:\\\[\]][^\s@'"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s);
+  return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
 }
 
 /**
@@ -155,7 +156,8 @@ function isValidEmail_(s) {
  */
 function cleanSource_(raw) {
   var s = String(raw || '');
-  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) ? s : '';
+  // `$` also matches before a final line break, so that is ruled out by itself.
+  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) && !/[\r\n]/.test(s) ? s : '';
 }
 
 // ============================================================================
@@ -466,7 +468,11 @@ function sameString_(a, b) {
 
 // New rows this script will add in one UTC day. A script posting made-up
 // addresses could otherwise fill the sheet and push up the number the site
-// shows. Past it, the reply is the same and nothing is written.
+// shows without end. Past it, the reply is the same and nothing is written.
+// The site cannot read this script's reply, so a real reader who signs up
+// after the limit is hit that day sees the usual message and is not added;
+// the limit is logged as an error so the owner sees it. A normal day brings
+// a handful of sign-ups, so only a flood reaches it.
 var MAX_SIGNUPS_PER_DAY_ = 500;
 
 function handleWaitlist_(e) {
