@@ -728,15 +728,20 @@ var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 // price of not letting a script send mail without end from this address.
 //
 // Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
-// account, not per UTC day. In the worst 24 hours a flood can take two days'
-// confirmations (the end of one UTC day and the start of the next) and two
-// days' reminders, each reminder being owed for a confirmation three days
-// earlier: four times this limit, 400 mails. That leaves 1,100 for a lesson,
-// which goes to every confirmed reader. So a lesson still goes out in full
-// while the list is under 1,100 readers; the quota warning in send_post
-// fires at 1,200. Raise the list past that and this limit, or the mail
-// service, has to change with it.
+// account, not per UTC day. Three kinds of mail follow from a sign-up, each
+// with a daily limit of this size: the confirmation; the reminder, owed for
+// a confirmation three days earlier (a request past the limit adds no row,
+// so no reminder is owed for it); and the welcome, sent when someone
+// confirms (MAX_WELCOMES_PER_DAY_). In the worst 24 hours a flood can take
+// two UTC days of each: six times this limit, 600 mails. That leaves 900 for
+// a lesson, which goes to every confirmed reader. So a lesson still goes out
+// in full while the list is under 900 readers. Raise the list past that and
+// these limits, or the mail service, have to change with it.
 var MAX_CONFIRMATIONS_PER_DAY_ = 100;
+
+// Welcome mails in one UTC day. Past it a reader is still confirmed, and the
+// page they land on says so; only the extra mail is skipped.
+var MAX_WELCOMES_PER_DAY_ = 100;
 
 function handleSubscribe_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
@@ -761,7 +766,7 @@ function handleSubscribe_(e) {
       if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
     }
     // Checked before anything is written: past the limit nothing changes.
-    if (!takeConfirmationSlot_()) return 'capped';
+    if (!takeDailySlot_('confirm_mails', MAX_CONFIRMATIONS_PER_DAY_)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
     } else {
@@ -791,23 +796,24 @@ function handleSubscribe_(e) {
 }
 
 /**
- * Counts one confirmation mail against today's limit; false once the limit
- * is reached. Call inside the lock. The day is read here, inside the lock,
- * not when the request arrived: a request that waited for the lock across
- * midnight would otherwise count against yesterday and, clearing "the other
- * days", wipe today's count.
+ * Counts one mail of a kind (`confirm_mails`, `welcome_mails`) against
+ * today's limit; false once the limit is reached. Call inside the lock. The
+ * day is read here, inside the lock, not when the request arrived: a request
+ * that waited for the lock across midnight would otherwise count against
+ * yesterday and, clearing "the other days", wipe today's count.
  */
-function takeConfirmationSlot_() {
+function takeDailySlot_(kind, limit) {
   var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
-  var key = 'confirm_mails:' + today;
+  var prefix = kind + ':';
+  var key = prefix + today;
   var used = Number(prop_(key)) || 0;
-  if (used >= MAX_CONFIRMATIONS_PER_DAY_) return false;
+  if (used >= limit) return false;
   props_().setProperty(key, String(used + 1));
   if (used === 0) {
-    // First of the day: drop the counters of days before today. A later day
-    // cannot exist, and today's is never dropped.
+    // First of the day: drop this kind's counters of days before today. A
+    // later day cannot exist, and today's is never dropped.
     var all = props_().getProperties();
-    for (var k in all) if (k.indexOf('confirm_mails:') === 0 && k.slice('confirm_mails:'.length) < today) props_().deleteProperty(k);
+    for (var k in all) if (k.indexOf(prefix) === 0 && k.slice(prefix.length) < today) props_().deleteProperty(k);
   }
   return true;
 }
@@ -1081,6 +1087,8 @@ function handleConfirm_(e) {
     sh.getRange(row, COL.confirmedAt).setValue(new Date());
     sh.getRange(row, COL.unsubscribedAt).setValue('');
     sh.getRange(row, COL.confirmToken).setValue('');
+    // Counted here, under the lock, so the day's welcome mails have a limit too.
+    who.welcome = takeDailySlot_('welcome_mails', MAX_WELCOMES_PER_DAY_);
     return who;
   });
 
@@ -1094,7 +1102,8 @@ function handleConfirm_(e) {
   // so the subscriber sees an immediate "you're in" beyond the landing
   // page. Non-fatal — if Gmail hiccups, we still confirm the row.
   try {
-    sendWelcomeEmail_(email, unsubToken);
+    if (found.welcome) sendWelcomeEmail_(email, unsubToken);
+    else console.error('[newsletter] daily welcome limit reached (' + MAX_WELCOMES_PER_DAY_ + '): reader confirmed, welcome mail not sent');
   } catch (err) {
     // Welcome email is non-blocking (the subscriber IS confirmed regardless),
     // but we still want a signal so a silent Gmail outage doesn't mean

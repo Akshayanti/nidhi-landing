@@ -490,11 +490,24 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     assert.deepEqual(ctx.rec.mails, ['late@x.io'], 'the limit of 2 holds');
   });
 
-  it('the day’s confirmations, twice over, with their reminders, leave room for a lesson', () => {
-    const limit = vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_', load());
-    const quota = vm.runInContext('QUOTA_DAILY_RECIPIENTS', load());
-    // Two UTC days of confirmations and two of reminders can fall in one 24 hours.
-    assert.ok(4 * limit + 1100 <= quota, `4 x ${limit} + a list of 1,100 must fit in ${quota}`);
+  it('two days of confirmations, reminders and welcomes leave room for a lesson', () => {
+    const ctx = load();
+    const [confirmations, welcomes, quota] = ['MAX_CONFIRMATIONS_PER_DAY_', 'MAX_WELCOMES_PER_DAY_', 'QUOTA_DAILY_RECIPIENTS'].map((name) => vm.runInContext(name, ctx));
+    // Reminders are owed only for confirmations that were sent, so they share that limit.
+    const worstDay = confirmations + confirmations + welcomes;
+    assert.ok(2 * worstDay + 900 <= quota, `2 x ${worstDay} + a list of 900 must fit in ${quota}`);
+  });
+
+  it('welcome mails stop at their own daily limit; the reader is confirmed all the same', () => {
+    const ctx = load([
+      row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') }),
+      row('b@x.io', 'pending', 1, { confirm: tok('3'), unsub: tok('4') }),
+    ]);
+    vm.runInContext('MAX_WELCOMES_PER_DAY_ = 1;', ctx);
+    ctx.doPost(req({ action: 'confirm', t: tok('1') }));
+    ctx.doPost(req({ action: 'confirm', t: tok('3') }));
+    assert.deepEqual(ctx.rec.mails, ['a@x.io']);
+    assert.deepEqual([find(ctx, 'a@x.io')[1], find(ctx, 'b@x.io')[1]], ['confirmed', 'confirmed']);
   });
 
   it('keeps only a site path as the source', () => {
