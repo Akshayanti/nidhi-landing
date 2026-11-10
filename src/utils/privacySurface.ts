@@ -450,7 +450,8 @@ export interface HolderScan {
  */
 /**
  * Whether the name at [at, end) is only being tested inside the condition
- * that opens at `from`. Every bracket around it, up to the condition's own,
+ * that opens at `from`. What stands right before it must start a test, not
+ * hand it on. Every bracket around it, up to the condition's own,
  * must be one that only groups: a `(` that follows `(`, `!`, `&&` or `||`.
  * A `(` after anything else (a name, `)`, `]`, `?.`, whatever a call can be
  * written with) may be a call, which can keep what it is given; so can `[`
@@ -458,6 +459,12 @@ export interface HolderScan {
  * end the test: a closing bracket, `&&`, `||` or a comparison.
  */
 function isTest(text: string, from: number, at: number, end: number): boolean {
+  // What stands right before the name (and the `window.` it may hang from)
+  // must itself start a test: the bracket, `!`, `&&`, `||`, or one of those
+  // then `typeof`. Any other word there (`yield`, `await`, `return`, `void`,
+  // a comma) can hand the object on.
+  const lead = text.slice(from, at).replace(/(?:window|globalThis|self|root)\s*\.\s*$/, '').trimEnd();
+  if (!/(?:\(|!|&&|\|\|)(?:\s*typeof)?$/.test(lead)) return false;
   let depth = 0;
   for (let i = at - 1; i > from; i--) {
     const c = text[i];
