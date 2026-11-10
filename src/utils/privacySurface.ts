@@ -522,8 +522,15 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
     for (const m of text.matchAll(/(?<![\w$.])(?:if|while)\s*\(/g)) {
       const open = m.index + m[0].length - 1;
       const inner = balanced(text, open);
-      // `yield` takes the whole expression after it, however that is written, and hands it to the caller.
-      if (inner === null || /(?<![=!<>])=(?![=>])|=>|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(inner)) continue;
+      // A condition that assigns, counts up or down, or yields is not one
+      // this accepts. Assignment is found by what is left once the
+      // comparisons are taken out (`===`, `!==`, `==`, `!=`, and a single
+      // `<=` or `>=`): any `=` still there assigns, whatever stands before it
+      // (`=`, `+=`, `<<=`, `>>>=`, `&&=`, `??=`) or after it (`=>`). `yield`
+      // takes the whole expression after it and hands it to the caller.
+      if (inner === null) continue;
+      const compared = inner.replace(/===|!==|==|!=/g, '  ').replace(/(?<![<>])[<>]=/g, '  ');
+      if (/=|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(compared)) continue;
       conditions.push([open, open + inner.length + 1]);
     }
     for (const m of text.matchAll(HELD)) {
