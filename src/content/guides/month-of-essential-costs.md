@@ -52,6 +52,7 @@ dependsOn:
   - "How steady your income is, and whether others share the costs."
   - "Your country's safety net: unemployment benefits and health cover change what you'd need to pay yourself."
 lessons: ["emergency-fund", "cash-flow-101", "budgeting"]
+related: ["will-my-money-last-until-payday", "how-do-i-list-my-accounts-and-regular-payments", "how-much-will-the-same-shopping-cost-after-inflation"]
 references:
   - title: "Household budget"
     publisher: "Wikipedia"

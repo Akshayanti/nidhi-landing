@@ -1,0 +1,94 @@
+---
+/**
+ * One group of How-to guides (/how-to/<group>/), in whichever language it was
+ * asked for: the group's introduction and all its live guides.
+ *
+ * Built and switched off (src/utils/guideLayers.ts): while group pages are
+ * not public, no route asks for this page, so none is built and none reaches
+ * the sitemap. English comes from src/pages/how-to/[slug].astro (which also
+ * serves the guides), the other languages from
+ * src/pages/[locale]/how-to/[group].astro.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LessonsInEnglish from '../LessonsInEnglish.astro';
+import { GUIDE_HUB, getGuides, guidePath, guideReadingMinutes } from '../../utils/guides';
+import { format } from '../../i18n/format';
+import { DEFAULT_LOCALE, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props { locale?: Locale; group: string }
+const { locale = DEFAULT_LOCALE, group } = Astro.props;
+const strings = dict(locale);
+const { howTo } = strings;
+const siteUrl = 'https://nidhi.today';
+const hubHref = localizedPath(locale, GUIDE_HUB);
+const pageUrl = new URL(localizedPath(locale, `${GUIDE_HUB}${group}/`), siteUrl).href;
+const guides = (await getGuides()).filter((g) => g.data.group === group);
+const name = howTo.groups[group];
+const english = locale !== DEFAULT_LOCALE;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: howTo.crumbHome, item: new URL(localizedPath(locale, '/'), siteUrl).href },
+    { '@type': 'ListItem', position: 2, name: howTo.name, item: new URL(hubHref, siteUrl).href },
+    { '@type': 'ListItem', position: 3, name, item: pageUrl },
+  ],
+};
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name,
+  itemListElement: guides.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: g.data.title, url: `${siteUrl}${guidePath(g.data.slug)}` })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={`${name}: ${howTo.name} | nidhi`}
+  description={howTo.groupIntros[group]}
+  jsonLd={[breadcrumbSchema, itemListSchema]}
+>
+  <section class="htg">
+    <div class="htg-wrap">
+      <nav class="htg-crumbs" aria-label={strings.a11y.breadcrumb}>
+        <a href={localizedPath(locale, '/')}>{howTo.crumbHome}</a> <span aria-hidden="true">/</span> <a href={hubHref}>{howTo.name}</a> <span aria-hidden="true">/</span> <span>{name}</span>
+      </nav>
+      <h1 class="htg-h1">{name}</h1>
+      <p class="htg-lede">{howTo.groupIntros[group]}</p>
+      <LessonsInEnglish locale={locale} />
+      <ul class="htg-cards" role="list">
+        {guides.map((g) => (
+          <li>
+            <a class="htg-card link-card" href={guidePath(g.data.slug)} hreflang={english ? 'en' : undefined}>
+              <span class="htg-card-q" lang="en">{g.data.title}</span>
+              <span class="htg-card-o" lang="en">{g.data.outcome}</span>
+              <span class="htg-card-meta">
+                {format(howTo.readTime, { n: guideReadingMinutes(g.data) })}
+                {english && <> · {howTo.inEnglish}</>}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="htg-back"><a href={hubHref}><span aria-hidden="true">←</span> {howTo.name}</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .htg { padding: var(--space-8) 0 var(--space-16); }
+  .htg-wrap { max-width: 52rem; margin: 0 auto; padding: 0 var(--space-4); }
+  .htg-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-4); }
+  .htg-crumbs a { color: var(--color-deep-blue); }
+  .htg-h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: 1.15; }
+  .htg-lede { font-size: 1.075rem; line-height: 1.6; margin: 0 0 var(--space-4); max-width: 40rem; }
+  .htg-cards { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-3); }
+  .htg-card { display: grid; gap: var(--space-2); height: 100%; padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-control-edge); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; align-content: start; }
+  .htg-card-q { font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem; line-height: 1.3; color: var(--color-deep-blue); }
+  .htg-card-o { font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.5; }
+  .htg-card-meta { font-size: 0.8rem; color: var(--color-text-muted); }
+  .htg-back { margin-top: var(--space-8); }
+  .htg-back a { color: var(--color-deep-blue); font-weight: 600; }
+</style>

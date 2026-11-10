@@ -1,0 +1,95 @@
+---
+/**
+ * /how-to/situation/<slug>/: a recognisable moment and the guides that help
+ * with it, in the order that usually helps. English, like the guides.
+ *
+ * Built and switched off (src/utils/guideLayers.ts): getSituations() returns
+ * nothing until the council makes the layer public, and then only pages that
+ * list at least three live guides. Content lives in src/content/situations/.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { GUIDE_HUB, getSituations, guidePath, guideReadingMinutes, situationPath } from '../../../utils/guides';
+
+export async function getStaticPaths() {
+  const built = await getSituations();
+  const isDev = import.meta.env.DEV;
+  const now = new Date();
+  const lessons = (await getCollection('blog')).filter((l) => isDev || l.data.pubDate <= now);
+  return built.map(({ situation, guides }) => ({
+    params: { slug: situation.data.slug },
+    props: {
+      situation: situation.data,
+      guides: guides.map((g) => ({ slug: g.data.slug, title: g.data.title, outcome: g.data.outcome, minutes: guideReadingMinutes(g.data) })),
+      lessons: situation.data.lessons
+        .map((s) => lessons.find((l) => l.data.slug === s))
+        .filter((l): l is NonNullable<typeof l> => Boolean(l))
+        .map((l) => ({ slug: l.data.slug, title: l.data.title })),
+    },
+  }));
+}
+
+const { situation: s, guides, lessons } = Astro.props;
+const siteUrl = 'https://nidhi.today';
+const url = `${siteUrl}${situationPath(s.slug)}`;
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'How-to', item: `${siteUrl}${GUIDE_HUB}` },
+    { '@type': 'ListItem', position: 2, name: s.title, item: url },
+  ],
+};
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: s.title,
+  itemListElement: guides.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: g.title, url: `${siteUrl}${guidePath(g.slug)}` })),
+};
+---
+
+<BaseLayout title={`${s.title} | nidhi`} description={s.description} jsonLd={[breadcrumbSchema, itemListSchema]}>
+  <section class="hts">
+    <div class="hts-wrap">
+      <nav class="hts-crumbs" aria-label="Breadcrumb"><a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">›</span> <span>{s.title}</span></nav>
+      <h1 class="hts-h1">{s.title}</h1>
+      <p class="hts-intro">{s.intro}</p>
+      <ol class="hts-list">
+        {guides.map((g) => (
+          <li>
+            <a class="hts-card link-card" href={guidePath(g.slug)}>
+              <span class="hts-q">{g.title}</span>
+              <span class="hts-o">{g.outcome}</span>
+              <span class="hts-m">{g.minutes} min read</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <p class="hts-note">The order is one that often helps; start wherever your question is.</p>
+      {lessons.length > 0 && (
+        <>
+          <h2 class="hts-h2">Go deeper</h2>
+          <ul>{lessons.map((l) => <li><a href={`/blog/${l.slug}/`}>{l.title}</a></li>)}</ul>
+        </>
+      )}
+      <p class="hts-back"><a href={GUIDE_HUB}>All how-to guides <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hts { padding: var(--space-8) 0 var(--space-16); }
+  .hts-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
+  .hts-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
+  .hts-crumbs a { color: var(--color-deep-blue); }
+  .hts-h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); color: var(--color-deep-blue); margin: 0 0 var(--space-3); line-height: 1.2; }
+  .hts-intro { font-size: 1.075rem; line-height: 1.6; }
+  .hts-list { margin: var(--space-6) 0 0; padding-inline-start: 1.5rem; display: grid; gap: var(--space-3); }
+  .hts-card { display: grid; gap: var(--space-1); padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-control-edge); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; }
+  .hts-q { font-family: var(--font-heading); font-weight: 700; color: var(--color-deep-blue); }
+  .hts-o { font-size: 0.92rem; color: var(--color-text-secondary); }
+  .hts-m { font-size: 0.8rem; color: var(--color-text-muted); }
+  .hts-note { font-size: 0.9rem; color: var(--color-text-secondary); margin-top: var(--space-4); }
+  .hts-h2 { font-size: 1.1rem; margin-top: var(--space-8); }
+  .hts-back { margin-top: var(--space-8); }
+</style>

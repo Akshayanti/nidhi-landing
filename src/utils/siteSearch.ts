@@ -27,6 +27,13 @@ const STOP = new Set([
   'do', 'does', 'did', 'how', 'what', 'why', 'when', 'which', 'who', 'where', 'should', 'can', 'could', 'would', 'will',
   'to', 'of', 'for', 'in', 'on', 'at', 'by', 'with', 'from', 'and', 'or', 'if', 'this', 'that', 'there', 'about',
   'much', 'many', 'get', 'got', 'need', 'want', 'have', 'has', 'any', 'some', 'money', 'really', 'just', 'so', 'than',
+  // The How-to hub is searched in every language (with each language's own
+  // phrases for the guides), so the commonest filler words of those go too.
+  // Spanish, Czech (accents already taken out), Hindi, Marathi.
+  'como', 'que', 'mi', 'mis', 'el', 'la', 'los', 'las', 'un', 'una', 'de', 'del', 'en', 'y', 'o', 'es', 'se', 'por', 'para', 'con', 'puedo', 'dinero',
+  'jak', 'co', 'je', 'se', 'si', 'mam', 'muj', 'moje', 'na', 'do', 'v', 've', 'z', 'a', 'i', 'k', 'to', 'penize',
+  'मैं', 'मेरा', 'मेरी', 'मेरे', 'क्या', 'कैसे', 'है', 'हैं', 'का', 'की', 'के', 'को', 'में', 'से', 'और', 'या', 'पर', 'यह', 'पैसे', 'पैसों', 'अपने', 'अपना', 'अपनी', 'करूँ', 'करें', 'होता', 'होती',
+  'मी', 'माझा', 'माझी', 'माझे', 'काय', 'कसे', 'कसा', 'कशी', 'आहे', 'आहेत', 'चा', 'ची', 'चे', 'ला', 'मध्ये', 'आणि', 'किंवा', 'हे', 'पैसे', 'पैशांचा', 'माझ्या', 'आपल्या', 'तुमच्या', 'करू', 'करायचे',
 ]);
 
 /**
@@ -65,14 +72,18 @@ const SYNONYMS: Record<string, string[]> = {
   tax: ['taxes', 'taxation'],
 };
 
-/** Lower-case words, with apostrophes and accents taken out. */
+/**
+ * Lower-case words, with apostrophes and Latin accents taken out ("půjčka"
+ * matches "pujcka"). Letters of any script are kept, with their combining
+ * marks, so a Hindi or Marathi word stays one word.
+ */
 export function words(text: string): string[] {
   return text
     .toLowerCase()
     .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/['’]s\b/g, '')
-    .split(/[^a-z0-9%]+/)
+    .split(/[^\p{L}\p{M}\p{N}%]+/u)
     .filter(Boolean);
 }
 

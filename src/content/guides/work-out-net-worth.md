@@ -51,6 +51,7 @@ dependsOn:
   - "Which assets and debts are included, and which values are estimates or still unknown."
   - "How easily you could reach each asset if you needed it. The lesson on liquidity explains why that matters."
 lessons: ["how-to-calculate-net-worth", "what-is-net-worth"]
+related: ["how-do-i-list-what-i-owe", "how-do-i-list-my-accounts-and-regular-payments", "how-much-will-the-same-shopping-cost-after-inflation"]
 tool:
   url: "/free/multi-currency-net-worth/"
   label: "Net worth calculator"

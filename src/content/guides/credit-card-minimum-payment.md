@@ -56,6 +56,7 @@ dependsOn:
   - "Whether your income is steady enough to commit to a fixed amount each month."
   - "Rules where you live. Some countries require statements to show how long minimum payments would take, and some limit how long a card can stay in long-running debt."
 lessons: ["credit-and-credit-scores", "liabilities"]
+related: ["how-do-i-list-what-i-owe", "what-does-a-zero-percent-instalment-plan-really-cost", "how-do-i-compare-two-loan-offers"]
 references:
   - title: "Credit card interest"
     publisher: "Wikipedia"

@@ -45,6 +45,7 @@ dependsOn:
   - "What your savings earn after inflation. The lesson on purchasing power compares a few examples, and their limits."
   - "Where you live: inflation differs a lot between countries and over time."
 lessons: ["purchasing-power", "saving-vs-investing"]
+related: ["how-do-i-work-out-a-month-of-essential-costs", "how-do-i-work-out-my-net-worth"]
 tool:
   url: "/free/inflation-calculator/"
   label: "Inflation calculator"

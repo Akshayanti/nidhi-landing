@@ -48,6 +48,7 @@ dependsOn:
   - "Limits, ID checks, and how the money is collected at the other end."
   - "How much you send: a fixed fee weighs more on a small amount than on a large one."
 lessons: ["managing-money-across-currencies"]
+related: ["how-can-i-check-a-money-website-is-real", "how-can-i-check-a-suspicious-money-message"]
 references:
   - title: "Remittance Prices Worldwide"
     publisher: "World Bank"

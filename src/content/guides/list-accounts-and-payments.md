@@ -53,6 +53,7 @@ dependsOn:
   - "Whether a payment is still worth it to you, and its notice period or cancellation terms."
   - "Rules where you live: how old pensions move and how closing a card affects a credit record differ by country."
 lessons: ["account-consolidation-and-financial-data-hygiene", "financial-dashboard", "cash-flow-101"]
+related: ["how-do-i-work-out-my-net-worth", "how-do-i-work-out-a-month-of-essential-costs", "how-can-i-check-a-suspicious-money-message"]
 references:
   - title: "Direct debit"
     publisher: "Wikipedia"

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { prepare, queryWords, search, type SearchItem } from './siteSearch.ts';
+import { prepare, queryWords, search, words, type SearchItem } from './siteSearch.ts';
 
 const items: SearchItem[] = [
   { id: 'credit-and-credit-scores', kind: 'lesson', title: 'Credit and Credit Scores: What They Are and Why They Matter', terms: ['credit', 'debt'], text: 'How credit works and how a score is built.' },
@@ -40,5 +40,19 @@ describe('site search', () => {
 
   it('returns nothing for a query of filler words only', () => {
     assert.deepEqual(ids('how do I'), []);
+  });
+
+  it('keeps words in any script, and takes Latin accents out', () => {
+    assert.deepEqual(words('कर्ज़ की सूची'), ['कर्ज़', 'की', 'सूची'].map((w) => w.normalize('NFKD')));
+    assert.deepEqual(words('Půjčka a úrok'), ['pujcka', 'a', 'urok']);
+  });
+
+  it('finds a guide by a phrase in another language, ignoring that language\'s filler words', () => {
+    const index = prepare([
+      { id: 'owe', kind: 'guide', title: 'How do I list what I owe?', terms: ['debt', 'कर्ज़ों की सूची', 'seznam dluhů'], text: '' },
+      { id: 'scam', kind: 'guide', title: 'How can I check a suspicious money message?', terms: ['scam', 'धोखा'], text: '' },
+    ]);
+    assert.deepEqual(search(index, 'मैं अपने कर्ज़ों की सूची कैसे बनाऊँ').map((r) => r.id)[0], 'owe');
+    assert.deepEqual(search(index, 'seznam dluhu').map((r) => r.id), ['owe']);
   });
 });

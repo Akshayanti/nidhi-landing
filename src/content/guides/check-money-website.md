@@ -54,6 +54,7 @@ dependsOn:
   - "Where to report a fake site: many countries have a police, consumer or fraud reporting service."
   - "What your bank can do if you've already typed in details: the guide on suspicious messages lists what many people do first."
 lessons: ["recognizing-and-avoiding-financial-scams-and-fraud"]
+related: ["how-can-i-check-a-suspicious-money-message", "how-do-i-compare-money-transfer-quotes"]
 references:
   - title: "Website spoofing"
     publisher: "Wikipedia"

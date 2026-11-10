@@ -47,7 +47,7 @@ One per guide, from a reusable set: a timeline with a running balance, a filled 
 
 ## Search and SEO
 
-- Search on `/blog/` (`src/utils/siteSearch.ts`) covers lessons and guides: words matched separately, filler words dropped, word starts only ("rent" finds "renting", not "current"), a few everyday words mapped to the lessons' words, FAQ questions and "In this lesson" phrases included. Guides come first on a tie. What is typed stays in memory.
+- Search on `/blog/` (`src/utils/siteSearch.ts`) covers lessons and guides (the hub has its own guide search, below): words matched separately, filler words dropped, word starts only ("rent" finds "renting", not "current"), a few everyday words mapped to the lessons' words, FAQ questions and "In this lesson" phrases included. Guides come first on a tie. What is typed stays in memory.
 - Reader-question titles, answer-led meta descriptions, Article and BreadcrumbList structured data, sitemap entries dated by `lastChecked`, links both ways between guides and lessons, one line in `llms.txt`. No HowTo or FAQ schema: Google dropped those rich results.
 
 ## Where readers find it
@@ -55,6 +55,26 @@ One per guide, from a reusable set: a timeline with a running balance, a filled 
 The hub (`/how-to/`, grouped as "Getting through the month", "I owe money", "Taking stock", "Money across borders", "Is this safe?"). On `/blog/`, a two-way start band, "Where would you like to start?": the path from the start on one side, and on the other "One money question?" with three guide questions (`FEATURED_GUIDES` in `src/utils/guides.ts`) and a link to all of them; also a line under a search with no results. On the home page, a card at the top of the Lessons section, and a "Can I get help with just one money question?" item in the FAQ (and its FAQPage data); the hero carries no How-to link, so it doesn't compete with the situations. One line under a lesson's TL;DR and one near its end; a quiet line on the volunteer page; the Instagram bio through `/how-to/ig/`.
 
 The FAQ item has no click label, so the two original questions keep `home-faq-1` and `home-faq-2`, as the privacy notice records them.
+
+## Finding guides as the set grows
+
+Designed by the council on Nov 10, 2026 (three stages, unanimous), after the owner asked how readers will find guides once there are many; the owner then asked for every layer to be built at once, so nothing has to be set up later.
+
+**Live now**
+- A "Search the guides" box at the top of `/how-to/` in every language: guides only, in the page's memory (no field name, no form action, nothing in the address, nothing sent). Each language adds its own everyday phrases for the guides (`src/i18n/strings/howToAliases.ts`, council-reviewed; coverage reviewed at about 25 guides). The search keeps letters of any script, and drops common filler words in all five languages. With no guide match, up to three "Lessons that may help".
+- "Common questions" under the box (`COMMON_GUIDES` in `src/utils/guides.ts`), and links to each group.
+- "Related questions" on every guide: two or three chosen by hand in the guide's `related` field (any group; the build fails on an unknown slug or the guide itself). It replaced the old automatic "Other short guides".
+
+**Built and switched off** (`src/utils/guideLayers.ts`, three flags, all false)
+- Group pages, `/how-to/<group>/` in every language, with the group's introduction; the hub then shows four guides per group and "All N in this group". Off: no page is built and nothing reaches the sitemap.
+- Situation pages, `/how-to/situation/<slug>/` (English), from `src/content/situations/`, and a "What's happening?" row on the hub. A published situation needs at least three live guides, or the build fails. None is written in advance.
+- Filters on the hub, over the facets the guides carry (today only the group), one value at a time, in memory.
+
+A guide count never switches a layer on. The build prints a notice when a layer reaches its review count (group pages: one group at 10 or the hub at 30; situations: 30; filters: 50), and the council switches it on after its review. Turning one on changes the flag and its test in the same commit (`src/utils/guideLayers.test.ts`, which checks each layer both ways).
+
+**Not built yet, on purpose:** the `countries` and `moments` (life event) fields. Each is added with the first real guide that needs it, so its meaning comes from content; the filters then pick it up.
+
+No new analytics labels or storage, so no privacy changelog entry.
 
 ## Upkeep (`src/content.config.ts`, `src/utils/guides.ts`)
 

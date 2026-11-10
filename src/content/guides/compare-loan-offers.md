@@ -47,6 +47,7 @@ dependsOn:
   - "Fixed or variable rates, and how much a rise would cost you."
   - "Rules where you live: what APR must include, and your rights to cancel or repay early, differ by country."
 lessons: ["understanding-loan-terms", "liabilities"]
+related: ["how-do-i-list-what-i-owe", "what-does-a-zero-percent-instalment-plan-really-cost", "what-does-the-minimum-payment-on-my-credit-card-mean"]
 tool:
   url: "/free/loan-comparison/"
   label: "Loan comparison"

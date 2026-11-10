@@ -9,9 +9,25 @@
  * but is not published yet is simply not linked until it is.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { HOW_TO_ALIASES } from '../i18n/strings/howToAliases';
+import { GUIDE_LAYERS, SITUATION_MIN_GUIDES, reviewNotices, situationBuilt } from './guideLayers';
 
 export const GUIDE_HUB = '/how-to/';
 export const GUIDE_GROUPS = ['month', 'owe', 'stock', 'borders', 'safe'] as const;
+
+/**
+ * The "Common questions" under the hub's search box: 4 to 6 guides for a
+ * reader who doesn't know the word for their problem. Chosen by the council;
+ * a guide that is not live yet is skipped.
+ */
+export const COMMON_GUIDES = [
+  'will-my-money-last-until-payday',
+  'how-do-i-list-what-i-owe',
+  'what-does-the-minimum-payment-on-my-credit-card-mean',
+  'how-can-i-check-a-suspicious-money-message',
+  'how-do-i-compare-two-loan-offers',
+  'how-do-i-work-out-my-net-worth',
+] as const;
 /**
  * The three guides named on /blog/'s "One money question?" side, one per
  * problem a scared reader recognises at a glance. Chosen by the council; a
@@ -55,6 +71,9 @@ export async function getGuides(): Promise<Guide[]> {
   const now = new Date();
   const [guides, lessons] = await Promise.all([getCollection('guides'), getCollection('blog')]);
   assertGuides(guides, lessons);
+  assertGuideLists(guides);
+  const live = guides.filter((g) => isDev || g.data.pubDate <= now);
+  noticeLayers(live);
   return guides
     .filter((g) => isDev || g.data.pubDate <= now)
     .sort((a, b) =>
@@ -80,11 +99,74 @@ export function assertGuides(guides: Guide[], lessons: CollectionEntry<'blog'>[]
         throw new Error(`Guide ${d.slug}: lesson "${f.lesson}" no longer contains "${f.value}". Update the guide and the lesson together.`);
       }
     }
+    for (const r of d.related) {
+      if (r === d.slug) throw new Error(`Guide ${d.slug}: lists itself as a related question`);
+      if (!guides.some((o) => o.data.slug === r)) throw new Error(`Guide ${d.slug}: related guide "${r}" does not exist`);
+    }
     if (d.form === 'example' && !d.stepsHeading) throw new Error(`Guide ${d.slug}: a worked example needs a stepsHeading`);
     for (const c of d.corrections ?? []) {
       if (c.date > d.lastChecked) throw new Error(`Guide ${d.slug}: a correction dated after lastChecked; move lastChecked too`);
     }
   }
+}
+
+/** Checks that hold across guides: the lists of guide slugs kept outside the guides. */
+export function assertGuideLists(guides: Guide[]): void {
+  const slugs = new Set(guides.map((g) => g.data.slug));
+  for (const [list, ids] of [['FEATURED_GUIDES', FEATURED_GUIDES], ['COMMON_GUIDES', COMMON_GUIDES]] as const) {
+    for (const id of ids) if (!slugs.has(id)) throw new Error(`${list} names "${id}", which is no guide`);
+  }
+  for (const [locale, aliases] of Object.entries(HOW_TO_ALIASES)) {
+    for (const id of Object.keys(aliases ?? {})) {
+      if (!slugs.has(id)) throw new Error(`How-to search phrases (${locale}) name "${id}", which is no guide`);
+    }
+  }
+}
+
+let noticed = false;
+/** Once per build: say which switched-off layers have reached their review count. */
+function noticeLayers(live: Guide[]): void {
+  if (noticed) return;
+  noticed = true;
+  const perGroup = new Map<string, number>();
+  for (const g of live) perGroup.set(g.data.group, (perGroup.get(g.data.group) ?? 0) + 1);
+  for (const line of reviewNotices({ guides: live.length, largestGroup: Math.max(0, ...perGroup.values()) })) {
+    console.warn(line);
+  }
+}
+
+export type Situation = CollectionEntry<'situations'>;
+
+/**
+ * Situation pages that are built: none while the layer is off; when on, the
+ * published ones (all in dev) that list enough live guides. A published page
+ * with too few is a build error rather than a quietly missing page.
+ */
+export async function getSituations(): Promise<{ situation: Situation; guides: Guide[] }[]> {
+  const isDev = import.meta.env.DEV;
+  const now = new Date();
+  const [situations, guides] = await Promise.all([getCollection('situations'), getGuides()]);
+  const bySlug = new Map(guides.map((g) => [g.data.slug, g]));
+  const all = await getCollection('guides');
+  for (const s of situations) {
+    for (const id of s.data.guides) {
+      if (!all.some((g) => g.data.slug === id)) throw new Error(`Situation ${s.data.slug}: guide "${id}" does not exist`);
+    }
+  }
+  if (!GUIDE_LAYERS.situationPagesPublic) return [];
+  return situations
+    .filter((s) => isDev || s.data.pubDate <= now)
+    .map((s) => {
+      const live = s.data.guides.map((id) => bySlug.get(id)).filter((g): g is Guide => Boolean(g));
+      if (!situationBuilt(live.length)) {
+        throw new Error(`Situation ${s.data.slug}: ${live.length} live guides; a situation page needs at least ${SITUATION_MIN_GUIDES}`);
+      }
+      return { situation: s, guides: live };
+    });
+}
+
+export function situationPath(slug: string): string {
+  return `${GUIDE_HUB}situation/${slug}/`;
 }
 
 /** Lesson slug → the guides that name it as their main lesson, for the line under a lesson's TL;DR. */

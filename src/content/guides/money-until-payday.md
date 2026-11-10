@@ -68,6 +68,7 @@ dependsOn:
   - "How steady your income is. With pay that changes month to month, the lesson on cash flow forecasting shows how people plan around the months that run short."
   - "What counts as essential for you. It's different for a student, a parent, or someone supporting family abroad."
 lessons: ["cash-flow-101", "cash-flow-forecasting"]
+related: ["how-do-i-work-out-a-month-of-essential-costs", "how-do-i-list-my-accounts-and-regular-payments", "how-do-i-list-what-i-owe"]
 references:
   - title: "Cash flow"
     publisher: "Wikipedia"

@@ -1,0 +1,326 @@
+---
+/**
+ * One How-to guide (/how-to/<slug>/), rendered by src/pages/how-to/[slug].astro. English only, like the lessons: a guide
+ * is content, and every edition links to it at this one address.
+ *
+ * The order is the one the council agreed (docs/plans/how-to-guides.md): the
+ * answer first with what the page can and cannot solve, then what you need,
+ * then the steps (or, for "See it, try it", the worked example first), a clear
+ * place to stop, what depends on you, and deeper study at the end.
+ *
+ * No analytics labels here: the section launched without any, so it needed no
+ * privacy changelog entry. Links carry no data-attr on purpose.
+ */
+import { existsSync } from 'node:fs';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuideVisual from '../../components/GuideVisual.astro';
+import { GUIDE_HUB, guidePath, guideReadingMinutes, type Guide } from '../../utils/guides';
+import { DEFAULT_LOCALE, dict } from '../../i18n';
+
+interface Props {
+  guide: Guide;
+  lessons: { slug: string; title: string; description: string }[];
+  /** The guide's related questions that are live, in its own order. */
+  related: { slug: string; title: string }[];
+}
+
+const { guide, lessons, related } = Astro.props;
+const g = guide.data;
+const { howTo } = dict(DEFAULT_LOCALE);
+const minutes = guideReadingMinutes(g);
+const siteUrl = 'https://nidhi.today';
+const url = `${siteUrl}${guidePath(g.slug)}`;
+const dateFmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const groupName = howTo.groups[g.group];
+const shareImage = `/brand/social/how-to/${g.slug}.png`;
+const hasShareImage = existsSync(`public${shareImage}`);
+const visualFirst = g.form === 'example';
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: g.title,
+  description: g.description,
+  datePublished: g.pubDate.toISOString(),
+  dateModified: g.lastChecked.toISOString(),
+  inLanguage: 'en',
+  author: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/about/` },
+  publisher: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/` },
+  image: `${siteUrl}${hasShareImage ? shareImage : '/brand/social/og-image.png'}`,
+  url,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+};
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'How-to', item: `${siteUrl}${GUIDE_HUB}` },
+    { '@type': 'ListItem', position: 2, name: g.title, item: url },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${g.seoTitle ?? g.title} | nidhi`}
+  description={g.description}
+  image={hasShareImage ? shareImage : undefined}
+  imageAlt={hasShareImage ? `${g.title} A short guide from nidhi.` : undefined}
+  article={{ publishedTime: g.pubDate, modifiedTime: g.lastChecked, tags: [] }}
+  jsonLd={[articleSchema, breadcrumbSchema]}
+>
+  <article class="guide">
+    <div class="guide-wrap">
+      <nav class="guide-crumbs" aria-label="Breadcrumb">
+        <a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">›</span> <span>{groupName}</span>
+      </nav>
+
+      <p class="guide-meta">
+        <span>{minutes} min read</span>
+        <span aria-hidden="true">·</span>
+        <span>Last checked <time datetime={g.lastChecked.toISOString()}>{dateFmt(g.lastChecked)}</time></span>
+      </p>
+      {(g.corrections ?? []).map((c) => (
+        <p class="guide-correction"><strong>Corrected on <time datetime={c.date.toISOString()}>{dateFmt(c.date)}</time>:</strong> {c.note}</p>
+      ))}
+
+      <h1 class="guide-title">{g.title}</h1>
+      <p class="guide-outcome">{g.outcome}</p>
+
+      <section class="guide-answer" aria-labelledby="guide-answer-h">
+        <h2 id="guide-answer-h" class="guide-label">Short answer</h2>
+        {g.answer.map((p) => <p>{p}</p>)}
+      </section>
+
+      <div class="guide-scope">
+        <div><h2 class="guide-label">This page helps you</h2><p>{g.scope.can}</p></div>
+        <div><h2 class="guide-label">It can't</h2><p>{g.scope.cannot}</p></div>
+      </div>
+
+      {g.protective && (
+        <section class="guide-protect" aria-labelledby="guide-protect-h">
+          <h2 id="guide-protect-h">{g.protective.heading}</h2>
+          <div class="guide-protect-cols">
+            <div>
+              <h3>Now</h3>
+              <ol>{g.protective.now.map((t) => <li>{t}</li>)}</ol>
+            </div>
+            <div>
+              <h3>This can wait a little</h3>
+              <ul>{g.protective.canWait.map((t) => <li>{t}</li>)}</ul>
+            </div>
+          </div>
+          {g.protective.note && <p class="guide-protect-note">{g.protective.note}</p>}
+        </section>
+      )}
+
+      <section class="guide-needs" aria-labelledby="guide-needs-h">
+        <h2 id="guide-needs-h" class="guide-label">You'll need</h2>
+        {g.needs.length > 0
+          ? <ul>{g.needs.map((n) => <li>{n}</li>)}</ul>
+          : <p>Nothing. You can read this anywhere.</p>}
+        {g.taskTime && <p class="guide-time">Doing it with your own papers takes {g.taskTime}.</p>}
+        {!g.taskTime && g.taskTimeNote && <p class="guide-time">{g.taskTimeNote}</p>}
+      </section>
+
+      {visualFirst && <GuideVisual visual={g.visual} />}
+
+      <section class="guide-steps" aria-labelledby="guide-steps-h">
+        <h2 id="guide-steps-h">{g.stepsHeading ?? 'Step by step'}</h2>
+        <ol class="guide-step-list">
+          {g.steps.map((s, i) => (
+            <li class="guide-step">
+              <span class="guide-step-n" aria-hidden="true">{i + 1}</span>
+              <div>
+                <h3 class="guide-step-action">{s.action}</h3>
+                <p>{s.why}</p>
+                {s.example && <p class="guide-step-example"><span>Example:</span> {s.example}</p>}
+                {s.caution && <p class="guide-step-caution"><span>Careful:</span> {s.caution}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {!visualFirst && <GuideVisual visual={g.visual} />}
+
+      <section class="guide-stop" aria-labelledby="guide-stop-h">
+        <h2 id="guide-stop-h">You can stop here</h2>
+        <p>{g.stopHere}</p>
+      </section>
+
+      {g.template && (
+        <section class="guide-template" aria-labelledby="guide-template-h">
+          <h2 id="guide-template-h">{g.template.title}</h2>
+          <p class="guide-template-note no-print">A blank copy to fill in on paper. Nothing you write here is sent anywhere. <button type="button" class="guide-print" data-guide-print>Print this page</button></p>
+          <div class="guide-template-wrap">
+            <table class="guide-template-table">
+              <thead><tr>{g.template.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
+              <tbody>{Array.from({ length: g.template.rows }, () => <tr>{g.template!.columns.map(() => <td></td>)}</tr>)}</tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      <section class="guide-depends" aria-labelledby="guide-depends-h">
+        <h2 id="guide-depends-h">What depends on you</h2>
+        <p>{g.leftToYou}</p>
+        <ul>{g.dependsOn.map((d) => <li>{d}</li>)}</ul>
+      </section>
+
+      {related.length > 0 && (
+        <nav class="guide-others" aria-labelledby="guide-others-h">
+          <h2 id="guide-others-h" class="guide-label">Related questions</h2>
+          <ul>{related.map((o) => <li><a href={guidePath(o.slug)}>{o.title}</a></li>)}</ul>
+          <p><a href={GUIDE_HUB}>All how-to guides <span aria-hidden="true">→</span></a></p>
+        </nav>
+      )}
+
+      <section class="guide-deeper" aria-labelledby="guide-deeper-h">
+        <h2 id="guide-deeper-h">Go deeper</h2>
+        {lessons.length > 0 && (
+          <ul class="guide-lessons">
+            {lessons.map((l, i) => (
+              <li>
+                <a class="guide-lesson link-card" href={`/blog/${l.slug}/`}>
+                  <span class="guide-lesson-k">{i === 0 ? 'The full lesson' : 'Also'}</span>
+                  <span class="guide-lesson-t">{l.title}</span>
+                  <span class="guide-lesson-d">{l.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        {g.tool && <p class="guide-tool">Try it with your own numbers: <a href={g.tool.url}>{g.tool.label}</a>. Free, and what you enter stays in your browser.</p>}
+        <h3 class="guide-label">Further reading</h3>
+        <ul class="guide-refs">
+          {g.references.map((r) => (
+            <li><a href={r.url} target="_blank" rel="noopener noreferrer">{r.title}&#x2060;<span aria-hidden="true"> ↗</span><span class="guide-sr"> (opens in a new tab)</span></a> <span class="guide-ref-pub">{r.publisher}</span></li>
+          ))}
+        </ul>
+        {g.sources && g.sources.length > 0 && (
+          <details class="guide-sources">
+            <summary class="disclosure">Sources</summary>
+            <ul>{g.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.title}</a></li>)}</ul>
+          </details>
+        )}
+      </section>
+
+      <p class="guide-note">This guide explains how to work something out or check it. It is not personal advice: rules, costs and protections differ by country and by provider.</p>
+
+      <p class="guide-print-foot">{g.title} From nidhi.today{guidePath(g.slug)}. Last checked {dateFmt(g.lastChecked)}. Guides can change: the latest version is at this address.</p>
+    </div>
+  </article>
+</BaseLayout>
+
+<script is:inline>
+  document.querySelectorAll('[data-guide-print]').forEach(function (b) {
+    b.addEventListener('click', function () { window.print(); });
+  });
+</script>
+
+<style>
+  .guide { padding: var(--space-8) 0 var(--space-16); }
+  .guide-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
+  .guide-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
+  .guide-crumbs a { color: var(--color-deep-blue); }
+  .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.875rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
+  .guide-correction { font-size: 0.9rem; padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
+  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
+  .guide-outcome { color: var(--color-text-secondary); margin: 0 0 var(--space-5); }
+  .guide-label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-2);
+  }
+  .guide-answer {
+    background: var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-4);
+    font-size: 1.075rem;
+    line-height: 1.6;
+  }
+  .guide-answer p { margin: 0; }
+  .guide-answer p + p { margin-top: var(--space-2); }
+  .guide-scope { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-5); font-size: 0.95rem; }
+  .guide-scope p { margin: 0; color: var(--color-text-secondary); }
+  @media (max-width: 34rem) { .guide-scope { grid-template-columns: 1fr; gap: var(--space-3); } }
+
+  .guide-protect {
+    border: 1px solid var(--color-border);
+    border-inline-start: 4px solid var(--color-deep-blue);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-5);
+    background: var(--color-bg-white);
+  }
+  .guide-protect h2 { font-size: 1.1rem; color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
+  .guide-protect h3 { font-size: 0.95rem; margin: 0 0 var(--space-2); }
+  .guide-protect-cols { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-4); }
+  @media (max-width: 34rem) { .guide-protect-cols { grid-template-columns: 1fr; } }
+  .guide-protect ol, .guide-protect ul { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--space-2); font-size: 0.95rem; }
+  .guide-protect-note { margin: var(--space-3) 0 0; font-size: 0.9rem; color: var(--color-text-secondary); }
+
+  .guide-needs { margin-bottom: var(--space-5); }
+  .guide-needs ul { margin: 0; padding-inline-start: 1.2em; }
+  .guide-needs p { margin: 0; }
+  .guide-time { margin-top: var(--space-2) !important; font-size: 0.9rem; color: var(--color-text-secondary); }
+
+  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
+  .guide-step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
+  .guide-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: var(--space-3); }
+  .guide-step-n {
+    width: 2rem; height: 2rem; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--color-teal); color: var(--color-bg-white); font-weight: 700;
+  }
+  .guide-step-action { font-size: 1.05rem; margin: 0.2rem 0 var(--space-1); }
+  .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
+  .guide-step-example, .guide-step-caution { font-size: 0.93rem; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+  .guide-step-example { background: var(--color-bg); border: 1px solid var(--color-border-light); }
+  .guide-step-caution { border-inline-start: 3px solid var(--color-warning); background: var(--color-bg-white); }
+  .guide-step-example span, .guide-step-caution span { font-weight: 700; }
+
+  .guide-stop {
+    margin-top: var(--space-8);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-teal);
+  }
+  .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: 1.1rem !important; }
+  .guide-stop p { margin: 0; }
+
+  .guide-template-note { font-size: 0.9rem; color: var(--color-text-secondary); }
+  .guide-print { margin-inline-start: var(--space-2); font: inherit; font-size: 0.875rem; padding: 2px 10px; border-radius: var(--radius-sm); border: 1px solid var(--color-control-edge); background: var(--color-bg-white); color: var(--color-deep-blue); cursor: pointer; }
+  .guide-template-wrap { overflow-x: auto; }
+  .guide-template-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .guide-template-table th { text-align: start; padding: var(--space-2); border: 1px solid var(--color-border); background: var(--color-border-light); }
+  .guide-template-table td { height: 2.2rem; border: 1px solid var(--color-border); }
+
+  .guide-depends ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .guide-lessons { list-style: none; padding: 0; margin: 0 0 var(--space-4); display: grid; gap: var(--space-3); }
+  .guide-lesson { display: grid; gap: 2px; padding: var(--space-3) 40px var(--space-3) var(--space-4); border: 1px solid var(--color-control-edge); border-radius: var(--radius-md); text-decoration: none; color: inherit; }
+  .guide-lesson-k { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); }
+  .guide-lesson-t { font-weight: 700; color: var(--color-deep-blue); }
+  .guide-lesson-d { font-size: 0.9rem; color: var(--color-text-secondary); }
+  .guide-tool { font-size: 0.95rem; }
+  .guide-refs { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
+  .guide-ref-pub { font-size: 0.85rem; color: var(--color-text-muted); }
+  .guide-sources { margin-top: var(--space-3); font-size: 0.9rem; }
+  .guide-note { margin-top: var(--space-8); font-size: 0.85rem; color: var(--color-text-muted); }
+  .guide-others { margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-border-light); }
+  .guide-others ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-1); }
+  .guide-print-foot { display: none; }
+  .guide-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media print {
+    .guide-others, .no-print, .guide-crumbs { display: none; }
+    .guide-print-foot { display: block; margin-top: var(--space-6); font-size: 0.85rem; border-top: 1px solid #999; padding-top: var(--space-2); }
+    .guide-step, .guide-stop, .guide-protect, .guide-template { break-inside: avoid; }
+    .guide-sources { display: block; }
+  }
+</style>

@@ -244,6 +244,12 @@ const guides = defineCollection({
     dependsOn: z.array(z.string().min(1)).min(2).max(5),
     /** Lesson slugs for deeper study, main one first. Unpublished ones are skipped until they go live. */
     lessons: z.array(z.string()).min(1).max(3),
+    /**
+     * Two or three other guides a reader of this one may need next, chosen by
+     * hand (any group). Shown as "Related questions"; one not live yet is
+     * skipped. The build fails on a slug that is no guide, or on this guide.
+     */
+    related: z.array(z.string()).min(2).max(3),
     tool: z.object({ url: z.string().startsWith('/free/'), label: z.string().min(1) }).optional(),
     /** Two or three global references for further reading. */
     references: z.array(z.object({
@@ -275,4 +281,31 @@ const guides = defineCollection({
   }),
 });
 
-export const collections = { blog, guides };
+/**
+ * How-to situation pages (/how-to/situation/<slug>/): a recognisable moment
+ * ("Something arrived in the post", "Moving to a new country") and the guides
+ * that help with it, in order. English, like the guides.
+ *
+ * Built and switched off (src/utils/guideLayers.ts): no page is made until the
+ * council has reviewed the layer, and a page needs at least three live guides.
+ * None is written in advance: each one starts from a real cluster of guides.
+ * Files starting with an underscore are notes, not pages.
+ */
+const situations = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/situations' }),
+  schema: z.object({
+    slug: z.string().regex(/^[a-z0-9-]+$/),
+    /** In the reader's words: "Something arrived in the post". */
+    title: z.string().min(1),
+    description: z.string().max(170),
+    /** Two or three plain sentences: what the guides below help with, and what they don't. */
+    intro: z.string().min(1),
+    /** Guide slugs, in the order that usually helps; not a sequence everyone must follow. */
+    guides: z.array(z.string()).min(3).max(8),
+    lessons: z.array(z.string()).max(3).default([]),
+    pubDate: z.coerce.date(),
+    lastChecked: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, guides, situations };

@@ -57,6 +57,7 @@ dependsOn:
   - "Whether you would buy it at this price if you had to pay today."
   - "Rules where you live: how these plans are regulated, and whether they show up on your credit record, differ by country and provider."
 lessons: ["zero-percent-instalments", "mental-accounting", "credit-and-credit-scores"]
+related: ["what-does-the-minimum-payment-on-my-credit-card-mean", "how-do-i-list-what-i-owe", "will-my-money-last-until-payday"]
 references:
   - title: "Buy now, pay later"
     publisher: "Wikipedia"

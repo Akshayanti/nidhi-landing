@@ -1,0 +1,22 @@
+---
+/**
+ * /<locale>/how-to/<group>/: a group of How-to guides outside English. None is
+ * built while group pages are switched off (src/utils/guideLayers.ts).
+ */
+import HowToGroupPage from '../../../components/pages/HowToGroupPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../i18n/routes.ts';
+import { GUIDE_GROUPS, getGuides } from '../../../utils/guides';
+import { groupPageIds } from '../../../utils/guideLayers';
+
+export async function getStaticPaths() {
+  const guides = await getGuides();
+  const counts = Object.fromEntries(GUIDE_GROUPS.map((id) => [id, guides.filter((g) => g.data.group === id).length]));
+  const groups = groupPageIds(counts);
+  return localizedStaticPaths().flatMap((p) => groups.map((group) => ({ params: { ...p.params, group } })));
+}
+
+const locale = routeLocale(Astro.params);
+const group = Astro.params.group as string;
+---
+
+<HowToGroupPage locale={locale} group={group} />

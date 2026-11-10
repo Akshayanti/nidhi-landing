@@ -53,6 +53,7 @@ dependsOn:
   - "Rules where you live: protections, hardship options and how missed payments are recorded differ by country."
   - "What helps you keep going. The lesson on getting out of debt compares paying the smallest balance first with paying the highest rate first."
 lessons: ["how-to-get-out-of-debt", "liabilities"]
+related: ["what-does-the-minimum-payment-on-my-credit-card-mean", "how-do-i-compare-two-loan-offers", "how-do-i-work-out-my-net-worth"]
 references:
   - title: "Annual percentage rate"
     publisher: "Wikipedia"

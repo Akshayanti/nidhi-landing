@@ -59,6 +59,7 @@ dependsOn:
   - "What your bank can do: rules on refunds after fraud differ a lot by country and by type of payment."
   - "How you paid: card payments may have dispute options that bank transfers, cash and crypto don't."
 lessons: ["recognizing-and-avoiding-financial-scams-and-fraud"]
+related: ["how-can-i-check-a-money-website-is-real", "how-do-i-list-my-accounts-and-regular-payments"]
 references:
   - title: "Phishing"
     publisher: "Wikipedia"
