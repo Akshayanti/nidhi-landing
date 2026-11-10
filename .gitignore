@@ -30,7 +30,14 @@ scripts/__pycache__/
 # from `outputs/` and per-reel TTS mp3 + VTT from `public/audio/`; both
 # are deleted after a successful render and only ever exist mid-pipeline.
 remotion/outputs/
-remotion/public/
+remotion/public/audio/
+
+# Working notes and local output that are not part of the site. Listed so
+# that one `git add -A` cannot publish them.
+reports/
+research_notes/
+logs/
+.shot-tmp.mjs
 
 # Security and privacy weaknesses of the site: kept on the machine, never in
 # this public repository (CLAUDE.md, "Two Projects").
