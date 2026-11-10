@@ -582,7 +582,7 @@ export const cs: Dict = {
         before: 'Události zobrazení a opuštění stránky, přes ',
         link: 'PostHog Cloud EU',
         after:
-          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádný účet. Události stránky, na které jste, spojuje náhodné ID; pokud na cookie liště nesouhlasíte, platí jen pro tuto stránku a nikdy se neukládá ve vašem prohlížeči, takže vaše návštěvy nejsou propojené. Totéž platí pro události nástrojů níže. Dva druhy stránek je neodesílají: krátké odkazy, které vás přesměrují na jinou stránku (zobrazení odešle až stránka, na kterou vedou), a neveřejná interní stránka pro tvorbu QR kódů, na kterou nikde nevede odkaz; nespouští žádnou webovou analytiku a kódy vytváří přímo v zařízení.',
+          '. Patří sem navštívená adresa URL, adresa URL, ze které návštěva přišla, přibližná poloha na úrovni země (odvozená z vaší IP adresy, kterou PostHog potom zahodí) a váš prohlížeč, operační systém a velikost zobrazovací oblasti. Žádné jméno, žádný e-mail, žádný účet. Události stránky, na které jste, spojuje náhodné ID; dokud na cookie liště nedáte souhlas, platí jen pro tuto stránku a nikdy se neukládá ve vašem prohlížeči, takže vaše návštěvy nejsou propojené. Totéž platí pro události nástrojů níže. Dva druhy stránek je neodesílají: krátké odkazy, které vás přesměrují na jinou stránku (zobrazení odešle až stránka, na kterou vedou), a neveřejná interní stránka pro tvorbu QR kódů, na kterou nikde nevede odkaz; nespouští žádnou webovou analytiku a kódy vytváří přímo v zařízení.',
       },
       freeTools: {
         before:
@@ -623,7 +623,7 @@ export const cs: Dict = {
         'Náhodné ID návštěvníka, které PostHog ukládá ve vašem prohlížeči (localStorage), aby propojil vaše návštěvy. Neobsahuje jméno ani e-mail, ale protože propojuje vaše návštěvy v čase, odliší váš prohlížeč od ostatních. Proto je pseudonymní, ne anonymní, a čeká na váš souhlas. Když později souhlas odmítnete, smaže se; potom ID platí jen pro stránku, na které právě jste, takže pozdější události se s dřívějšími nepropojí.',
       planner: {
         anonymous:
-          'Pokud na cookie liště nesouhlasíte: zobrazení stránek a události používání, například kterou obrazovku jste otevřeli nebo že jste přidali účet, spustili projekci nebo uložili scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
+          'Dokud na cookie liště nedáte souhlas: zobrazení stránek a události používání, například kterou obrazovku jste otevřeli nebo že jste přidali účet, spustili projekci nebo uložili scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
         consented:
           'Jen pokud souhlasíte: tytéž události, propojené s kódem vytvořeným z vašeho účtu, abychom viděli, kde se jeden člověk napříč návštěvami zasekává. Kód neobsahuje vaše jméno, e-mail ani ID účtu a nedá se na ně převést zpět, ale když nás požádáte o dohledání nebo smazání vašich událostí, dokážeme ho s vaším účtem spárovat. PostHog pak ve vašem prohlížeči ukládá náhodné ID návštěvníka, aby propojil vaše návštěvy.',
       },
@@ -702,7 +702,7 @@ export const cs: Dict = {
       reading: {
         before: 'Které lekce máte přečtené (',
         after:
-          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé trase „Začněte tam, kde jste“.',
+          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé trase v části „Co z toho se týká vás?“.',
       },
       subscription: {
         before: 'Zda je váš odběr newsletteru potvrzený (',
@@ -734,7 +734,7 @@ export const cs: Dict = {
       },
       waitlist: {
         lead: 'Čekací listina:',
-        rest: ' abychom vám poslali přesně jeden e-mail, až se vám otevře přístup k plánovači nidhi: vaši pozvánku do bety. Nic dalšího. Žádný newsletter, žádná série e-mailů, žádná propagace.',
+        rest: ' abychom vám poslali přesně jeden e-mail, až se vám otevře přístup k plánovači nidhi: vaši pozvánku do bety. Nic dalšího. Žádný newsletter, žádná série e-mailů, žádná křížová propagace.',
       },
       volunteers: {
         lead: 'Dobrovolná pomoc:',
@@ -835,7 +835,7 @@ export const cs: Dict = {
       intro:
         'Podle obecného nařízení o ochraně osobních údajů (GDPR) a podobných předpisů máte právo se nás zeptat, co o vás máme, nechat to opravit, exportovat, omezit, jak to používáme, vznést proti tomu námitku nebo to nechat smazat.',
       unsubscribe:
-        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc i u revizních tabulek nám napište a vyřadíme vás i s vašimi revizními soubory, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to na požádání uděláme i ručně.',
+        'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc i u revizních tabulek nám napište a vyřadíme vás i s vašimi revizními soubory, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to uděláme ručně.',
       analytics: {
         before:
           'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud jste na cookie liště souhlasili; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',

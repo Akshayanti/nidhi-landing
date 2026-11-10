@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'privacy-notice-wording-nov-10',
+        text: {
+          en: 'A few corrections to the privacy notice’s wording: it quoted a home page heading that has since been renamed, and some sentences in Hindi, Spanish and Czech had drifted from the English. The net worth calculator’s page now says, as the notice does, that exchange rates are fetched when the page opens and again if you change your spending currency. Nothing about what is collected changes.',
+          hi: 'प्राइवेसी नोटिस के शब्दों में कुछ सुधार हुए हैं: उसमें होम पेज के एक शीर्षक का ज़िक्र था जिसका नाम बदल चुका है, और हिंदी, स्पैनिश और चेक के कुछ वाक्य अंग्रेज़ी से थोड़े अलग हो गए थे। नेट वर्थ कैलकुलेटर का पेज अब वही कहता है जो नोटिस कहता है: विनिमय दरें पेज खुलने पर लाई जाती हैं, और खर्च की मुद्रा बदलने पर दोबारा। जो जानकारी इकट्ठा होती है, उसमें कोई बदलाव नहीं है।',
+          es: 'Algunas correcciones en la redacción del aviso de privacidad: citaba un título de la página de inicio que ya tiene otro nombre, y algunas frases en hindi, español y checo se habían apartado del inglés. La página de la calculadora de patrimonio neto dice ahora, como el aviso, que los tipos de cambio se consultan al abrir la página y otra vez si cambias la moneda de tus gastos. No cambia nada de lo que se recoge.',
+          cs: 'Několik oprav ve znění zásad ochrany soukromí: citovaly nadpis z\u00a0úvodní stránky, který se mezitím přejmenoval, a\u00a0některé věty v\u00a0hindštině, španělštině a\u00a0češtině se odchýlily od angličtiny. Stránka kalkulačky čistého jmění teď říká totéž co zásady: kurzy se stahují při otevření stránky a\u00a0znovu, pokud změníte měnu svých výdajů. Na tom, co se sbírá, se nic nemění.',
+          mr: 'गोपनीयता सूचनेच्या शब्दांत काही दुरुस्त्या झाल्या आहेत: तिच्यात मुख्यपृष्ठावरील एका शीर्षकाचा उल्लेख होता, ज्याचे नाव आता बदलले आहे, आणि हिंदी, स्पॅनिश आणि चेकमधील काही वाक्ये इंग्रजीपासून थोडी वेगळी झाली होती. निव्वळ संपत्ती कॅल्क्युलेटरचे पान आता सूचनेप्रमाणेच सांगते: विनिमय दर पान उघडल्यावर आणले जातात, आणि खर्चाचे चलन बदलल्यावर पुन्हा. जी माहिती गोळा होते, त्यात काहीही बदल नाही.',
+        },
+      },
+      {
         id: 'how-to-guides',
         text: {
           en: 'There’s a new How-to section: short guides that each answer one everyday money question, with the answer first, then what to check, and a link to the full lesson. The first ones cover getting through the month, debts and loans, taking stock of your accounts and net worth, sending money abroad, and checking whether a message or a website is genuine. At the top of the learning path you can now choose between starting from the first lesson and a guide for one question. The How-to page has its own search, which also understands some everyday words in Hindi, Spanish, Czech and Marathi. Search on the learning path now also understands whole questions and everyday words like “credit card”, and finds the guides too.',
