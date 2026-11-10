@@ -2,8 +2,12 @@
  * newsletter.gs: the actions anyone can reach, and what happens when two
  * executions touch the subscriber sheet at once. The script runs in Google's
  * Apps Script runtime, so it is loaded into a Node VM with a fake of the
- * services it uses. The fake sheet refuses any write made without the script
- * lock, which is the rule the handlers must keep.
+ * services it uses. The fake holds the handlers to the rules that keep row
+ * numbers honest:
+ *   - a sheet write needs the script lock, and a read of the sheet made since
+ *     the lock was taken (a row number found before the lock is stale);
+ *   - writes are flushed before the lock is released;
+ *   - no mail goes out while the lock is held.
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
@@ -26,20 +30,23 @@ const row = (email, status, ageDays, { confirm = '', unsub = '', reminded = '' }
 function load(dataRows = []) {
   const rows = [HEADERS.slice(), ...dataRows.map((r) => r.slice())];
   const props = { SHEET_ID: 'sheet', SHEET_NAME: 'tab', FROM_EMAIL: 'updates@nidhi.today', HMAC_SECRET: SECRET };
-  const rec = { rows, props, mails: [], locked: false, lockTakes: 0, onSend: null, uuid: 0 };
+  const rec = { rows, props, mails: [], locked: false, lockTakes: 0, onSend: null, uuid: 0, readInLock: false, dirty: false, refuseLock: false };
 
   const mustHoldLock = (what) => {
     if (!rec.locked) throw new Error(`${what} without the script lock`);
+    if (!rec.readInLock) throw new Error(`${what} with no read of the sheet since the lock was taken`);
+    rec.dirty = true;
   };
+  const read = (value) => { rec.readInLock = true; return value; };
   const sheet = {
-    getLastRow: () => rows.length,
+    getLastRow: () => read(rows.length),
     getLastColumn: () => HEADERS.length,
     getName: () => 'tab',
     appendRow: (values) => { mustHoldLock('appendRow'); rows.push(values.concat(Array(HEADERS.length).fill('')).slice(0, HEADERS.length)); },
     deleteRow: (n) => { mustHoldLock('deleteRow'); rows.splice(n - 1, 1); },
     getRange: (r, c, nr = 1, nc = 1) => ({
-      getValues: () => rows.slice(r - 1, r - 1 + nr).map((x) => x.slice(c - 1, c - 1 + nc)),
-      getValue: () => rows[r - 1][c - 1],
+      getValues: () => read(rows.slice(r - 1, r - 1 + nr).map((x) => x.slice(c - 1, c - 1 + nc))),
+      getValue: () => read(rows[r - 1][c - 1]),
       setValue: (v) => { mustHoldLock('setValue'); rows[r - 1][c - 1] = v; },
       setValues: (vs) => {
         mustHoldLock('setValues');
@@ -68,7 +75,10 @@ function load(dataRows = []) {
     },
     ContentService: { MimeType: { JSON: 1 }, createTextOutput: (s) => ({ s, setMimeType() { return this; } }) },
     HtmlService: { XFrameOptionsMode: { ALLOWALL: 1 }, createHtmlOutput: (s) => ({ html: s, ...html() }) },
-    SpreadsheetApp: { openById: () => ({ getSheetByName: () => sheet, getSheets: () => [sheet] }) },
+    SpreadsheetApp: {
+      openById: () => ({ getSheetByName: () => sheet, getSheets: () => [sheet] }),
+      flush: () => { rec.dirty = false; },
+    },
     PropertiesService: {
       getScriptProperties: () => ({
         getProperty: (k) => (k in props ? props[k] : null),
@@ -80,12 +90,20 @@ function load(dataRows = []) {
     ScriptApp: { getService: () => ({ getUrl: () => 'https://example.invalid/exec' }) },
     LockService: {
       getScriptLock: () => ({
+        // The real waitLock throws on a timeout. This one returns quietly when
+        // told to refuse, so the handlers' own hasLock check is what is tested.
         waitLock: () => {
+          if (rec.refuseLock) return;
           if (rec.locked) throw new Error('lock taken twice');
           rec.locked = true;
+          rec.readInLock = false;
           rec.lockTakes++;
         },
-        releaseLock: () => { rec.locked = false; },
+        hasLock: () => rec.locked,
+        releaseLock: () => {
+          if (rec.dirty) throw new Error('lock released before the sheet writes were flushed');
+          rec.locked = false;
+        },
       }),
     },
     Gmail: {
@@ -148,6 +166,7 @@ describe('newsletter.gs: no public reminder test', () => {
     assert.equal(find(ctx, 'p@x.io')[8], '', 'reminder_sent_at is left alone');
     ctx.rec.props.TEST_REMIND_EMAIL = 'nobody@x.io';
     assert.throws(() => ctx.testRemindFromEditor());
+    assert.equal(ctx.rec.locked, false, 'the lock is given back when the lookup fails');
   });
 });
 
@@ -158,6 +177,18 @@ describe('newsletter.gs: sheet writes hold the lock', () => {
     assert.deepEqual(emails(ctx), ['new@x.io']);
     assert.deepEqual(ctx.rec.mails, ['new@x.io']);
     assert.equal(ctx.rec.lockTakes, 1);
+  });
+
+  it('a request that cannot take the lock fails without touching the sheet', () => {
+    const ctx = load([row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    const before = JSON.stringify(ctx.rec.rows);
+    ctx.rec.refuseLock = true;
+    assert.equal(json(ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }))).ok, false);
+    assert.equal(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('2') }))).ok, false);
+    ctx.doPost(req({ action: 'confirm', t: tok('1') }));
+    assert.throws(() => ctx.handleRemindPending());
+    assert.equal(JSON.stringify(ctx.rec.rows), before);
+    assert.deepEqual(ctx.rec.mails, []);
   });
 
   it('a second subscribe for the same address reuses the row', () => {
@@ -229,8 +260,10 @@ describe('newsletter.gs: reminder run', () => {
       inner = json(ctx.handleRemindPending());
     };
     const outer = json(ctx.handleRemindPending());
-    assert.deepEqual(inner, { ok: true, reminded: 0, deleted: 0, utc_hour: 9 });
-    assert.equal(outer.reminded, 2);
+    // The second run found the first reader claimed and took the other one;
+    // the first run then found that one claimed. One mail each, in total.
+    assert.deepEqual(inner, { ok: true, reminded: 1, deleted: 0, utc_hour: 9 });
+    assert.deepEqual(outer, { ok: true, reminded: 1, deleted: 2, utc_hour: 9 });
     assert.deepEqual(ctx.rec.mails.slice().sort(), ['due1@x.io', 'due2@x.io']);
     assert.deepEqual(emails(ctx), ['keep@x.io', 'due1@x.io', 'fresh@x.io', 'due2@x.io', 'done@x.io']);
   });
@@ -272,6 +305,31 @@ describe('newsletter.gs: reminder run', () => {
     again.handleRemindPending();
     assert.equal(find(again, 'due1@x.io')[1], 'confirmed');
     assert.ok(find(again, 'due1@x.io')[8], 'a confirmed row is left as it is');
+  });
+
+  it('claims one reader at a time, so a run that is cut off loses no one else', () => {
+    const ctx = load(sheet());
+    const stamped = [];
+    ctx.rec.onSend = () => {
+      stamped.push(ctx.rec.rows.slice(1).filter((r) => r[1] === 'pending' && r[8]).map((r) => r[0]));
+    };
+    ctx.handleRemindPending();
+    // When the first mail went out, the second reader had not been claimed.
+    assert.deepEqual(stamped, [['due1@x.io', 'done@x.io'], ['due1@x.io', 'due2@x.io', 'done@x.io']]);
+  });
+
+  it('stops taking readers when its time is up and leaves them for the next run', () => {
+    const ctx = load(sheet());
+    let clock = NOW;
+    ctx.Date.now = () => clock;
+    ctx.rec.onSend = () => { clock += 5 * 60 * 1000; };
+    const out = json(ctx.handleRemindPending());
+    assert.deepEqual([out.reminded, out.left_for_next_run], [1, 1]);
+    assert.equal(find(ctx, 'due2@x.io')[8], '', 'still due');
+    ctx.rec.onSend = null;
+    clock = NOW;
+    assert.equal(json(ctx.handleRemindPending()).reminded, 1);
+    assert.deepEqual(ctx.rec.mails, ['due1@x.io', 'due2@x.io']);
   });
 
   it('does nothing outside the sending hours', () => {
@@ -317,8 +375,16 @@ describe('newsletter.gs: one fan-out per lesson', () => {
 
   it('a claim left by a run that died is taken over', () => {
     const ctx = load(list());
-    ctx.rec.props['sending:https://nidhi.today/blog/x/'] = String(NOW - 8 * 60 * 1000);
+    ctx.rec.props['sending:https://nidhi.today/blog/x/'] = `${NOW - 8 * 60 * 1000}:dead`;
     assert.equal(send(ctx).sent, 2);
+  });
+
+  it('a run that was taken over does not release the newer claim', () => {
+    const ctx = load(list());
+    const key = 'sending:https://nidhi.today/blog/x/';
+    ctx.rec.onSend = () => { ctx.rec.props[key] = `${NOW}:the-run-that-took-over`; };
+    send(ctx);
+    assert.equal(ctx.rec.props[key], `${NOW}:the-run-that-took-over`);
   });
 
   it('a bad signature sends nothing', () => {

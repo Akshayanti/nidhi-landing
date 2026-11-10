@@ -275,11 +275,20 @@ var LOCK_WAIT_MS_ = 20000;
  */
 function withSheetLock_(fn) {
   var lock = LockService.getScriptLock();
+  // waitLock throws when the wait runs out. hasLock is checked as well, so
+  // nothing below can ever run without the lock.
   lock.waitLock(LOCK_WAIT_MS_);
+  if (!lock.hasLock()) throw new Error('Could not take the script lock.');
   try {
     return fn();
   } finally {
-    lock.releaseLock();
+    // Sheet writes are buffered. They are committed before the lock is given
+    // up, or the next execution could read the Sheet as it was before them.
+    try {
+      SpreadsheetApp.flush();
+    } finally {
+      lock.releaseLock();
+    }
   }
 }
 
@@ -736,14 +745,17 @@ function testRemindFromEditor() {
   var email = normalizeEmail_(prop_('TEST_REMIND_EMAIL'));
   if (!email) throw new Error('Set the script property TEST_REMIND_EMAIL first.');
 
-  var sh = sheet_();
-  var row = findSubscriberRow_(sh, email);
-  if (row === 0) throw new Error('TEST_REMIND_EMAIL is not in the sheet.');
-  var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
-  if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') {
-    throw new Error('TEST_REMIND_EMAIL is not a pending subscriber.');
-  }
-  var confirmToken = String(values[COL.confirmToken - 1] || '').trim();
+  // Row lookup and read share one lock, so the token read is this address's.
+  var confirmToken = withSheetLock_(function () {
+    var sh = sheet_();
+    var row = findSubscriberRow_(sh, email);
+    if (row === 0) throw new Error('TEST_REMIND_EMAIL is not in the sheet.');
+    var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+    if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') {
+      throw new Error('TEST_REMIND_EMAIL is not a pending subscriber.');
+    }
+    return String(values[COL.confirmToken - 1] || '').trim();
+  });
   if (!confirmToken) throw new Error('No confirm token on that row.');
 
   sendReminderEmail_(email, confirmToken);
@@ -760,21 +772,21 @@ function handleRemindPending() {
   }
 
   var now = new Date();
+  var started = Date.now();
   var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
   var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
   var dayMs = 24 * 60 * 60 * 1000;
 
-  // Step 1, under the lock: read the Sheet once, claim every row that is due
-  // a reminder by stamping reminder_sent_at, and delete the expired rows.
-  // The row numbers come from a snapshot taken inside the lock, so they are
-  // still right when they are used. Stamping before sending is what stops
-  // two overlapping runs from both mailing the same person.
+  // Step 1, under the lock: read the Sheet once, delete the expired rows and
+  // list the rows that are due a reminder. The row numbers come from a
+  // snapshot taken inside the lock, so they are still right when the rows
+  // are deleted. Nothing is remembered by row number past this point.
   var plan = withSheetLock_(function () {
-    var toRemind = [];
+    var due = [];
     var expired = [];
     var sh = sheet_();
     var last = sh.getLastRow();
-    if (last < 2) return { toRemind: toRemind, expired: expired };
+    if (last < 2) return { due: due, expired: expired };
 
     var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
     var rowsToDelete = [];
@@ -799,34 +811,73 @@ function handleRemindPending() {
 
       var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
       if (!email || !confirmToken) continue;
-
-      sh.getRange(r + 2, COL.reminderSentAt).setValue(now);
-      toRemind.push({ email: email, confirmToken: confirmToken, days: Math.round(ageMs / dayMs) });
+      due.push({ email: email, confirmToken: confirmToken, days: Math.round(ageMs / dayMs) });
     }
 
     // Bottom-up, so a deletion never shifts a row still to be deleted.
     for (var d = rowsToDelete.length - 1; d >= 0; d--) sh.deleteRow(rowsToDelete[d]);
-    return { toRemind: toRemind, expired: expired };
+    return { due: due, expired: expired };
   });
 
-  // Step 2, outside the lock: the slow part.
   plan.expired.forEach(function (x) {
     trackPosthog_('blog_pending_expired', distinctIdForEmail_(x.email), { days_since_signup: x.days });
   });
 
+  // Step 2, one reader at a time: claim the row under the lock (stamp
+  // reminder_sent_at), then send outside it. Claiming first is what stops two
+  // overlapping runs from both mailing the same person; claiming one at a
+  // time means a run that is cut off has at most one claim without a mail,
+  // and every reader it did not reach is still due on the next run.
   var sent = 0;
-  plan.toRemind.forEach(function (x) {
+  var left = 0;
+  for (var i = 0; i < plan.due.length; i++) {
+    if (Date.now() - started > REMIND_TIME_BUDGET_MS_) { left = plan.due.length - i; break; }
+    var x = plan.due[i];
+    if (!claimReminder_(x.email, x.confirmToken, now)) continue;
     try {
       sendReminderEmail_(x.email, x.confirmToken);
-      trackPosthog_('blog_pending_reminded', distinctIdForEmail_(x.email), { days_since_signup: x.days });
-      sent++;
     } catch (err) {
       console.warn('handleRemindPending: failed for ' + x.email + ': ' + err);
       releaseReminderClaim_(x.email, x.confirmToken);
+      continue;
     }
-  });
+    sent++;
+    trackPosthog_('blog_pending_reminded', distinctIdForEmail_(x.email), { days_since_signup: x.days });
+  }
 
-  return jsonResponse_({ ok: true, reminded: sent, deleted: plan.expired.length, utc_hour: utcHour });
+  var reply = { ok: true, reminded: sent, deleted: plan.expired.length, utc_hour: utcHour };
+  if (left) reply.left_for_next_run = left;
+  return jsonResponse_(reply);
+}
+
+// A reminder run stops taking new readers after this long, well inside Apps
+// Script's 6 minute limit. The rest are picked up by the next hourly run.
+var REMIND_TIME_BUDGET_MS_ = 4 * 60 * 1000;
+
+/**
+ * The row for `email`, as { row, values }, only if it is still a pending
+ * subscriber holding `confirmToken`. Call it inside the lock. The reader may
+ * have confirmed, unsubscribed, expired or subscribed afresh since the row
+ * was first read, and a row number from then means nothing now.
+ */
+function pendingRowFor_(sh, email, confirmToken) {
+  var row = findSubscriberRow_(sh, email);
+  if (row === 0) return null;
+  var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+  if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') return null;
+  if (String(values[COL.confirmToken - 1] || '').trim() !== confirmToken) return null;
+  return { row: row, values: values };
+}
+
+/** Stamps reminder_sent_at for a reader still due one; false if not, or if another run got there first. */
+function claimReminder_(email, confirmToken, when) {
+  return withSheetLock_(function () {
+    var sh = sheet_();
+    var found = pendingRowFor_(sh, email, confirmToken);
+    if (!found || found.values[COL.reminderSentAt - 1]) return false;
+    sh.getRange(found.row, COL.reminderSentAt).setValue(when);
+    return true;
+  });
 }
 
 /**
@@ -839,12 +890,8 @@ function releaseReminderClaim_(email, confirmToken) {
   try {
     withSheetLock_(function () {
       var sh = sheet_();
-      var row = findSubscriberRow_(sh, email);
-      if (row === 0) return;
-      var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
-      if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') return;
-      if (String(values[COL.confirmToken - 1] || '').trim() !== confirmToken) return;
-      sh.getRange(row, COL.reminderSentAt).setValue('');
+      var found = pendingRowFor_(sh, email, confirmToken);
+      if (found) sh.getRange(found.row, COL.reminderSentAt).setValue('');
     });
   } catch (err) {
     console.warn('releaseReminderClaim_: ' + err);
@@ -1068,31 +1115,49 @@ function handleSendPost_(e) {
   // is still sending, and without this both would mail the same readers. The
   // reply is shaped like a partial send, so the caller leaves the guid
   // unmarked and a later run resumes or finds it already sent.
-  if (!claimSend_(payload.guid)) {
+  var claim = claimSend_(payload.guid);
+  if (!claim) {
     return jsonResponse_({ ok: true, sent: 0, failed: 0, partial: true, in_progress: true });
   }
   try {
     return sendPostFanOut_(cfg, payload, seenKey);
   } finally {
-    props_().deleteProperty(sendingKey_(payload.guid));
+    releaseSend_(payload.guid, claim);
   }
 }
 
 // A claim older than this is a run that died without cleaning up. Apps
-// Script stops an execution at 6 minutes, so no live run is older.
+// Script stops an execution at 6 minutes, and the fan-out stops itself after
+// 5, so no live run is older.
 var SEND_CLAIM_MAX_AGE_MS_ = 7 * 60 * 1000;
 
 function sendingKey_(guid) { return 'sending:' + guid; }
 
-/** Takes the per-guid send claim; false when another run holds a fresh one. */
+/**
+ * Takes the per-guid send claim and returns its value ("<time>:<random>"),
+ * or '' when another run holds a fresh one.
+ */
 function claimSend_(guid) {
   return withSheetLock_(function () {
     var key = sendingKey_(guid);
-    var since = Number(prop_(key)) || 0;
-    if (since && Date.now() - since < SEND_CLAIM_MAX_AGE_MS_) return false;
-    props_().setProperty(key, String(Date.now()));
-    return true;
+    var since = Number(String(prop_(key)).split(':')[0]) || 0;
+    if (since && Date.now() - since < SEND_CLAIM_MAX_AGE_MS_) return '';
+    var claim = Date.now() + ':' + Utilities.getUuid();
+    props_().setProperty(key, claim);
+    return claim;
   });
+}
+
+/** Gives the claim back, only if it is still this run's: a run that was taken over leaves the new claim alone. */
+function releaseSend_(guid, claim) {
+  try {
+    withSheetLock_(function () {
+      var key = sendingKey_(guid);
+      if (prop_(key) === claim) props_().deleteProperty(key);
+    });
+  } catch (err) {
+    console.warn('releaseSend_: ' + err);
+  }
 }
 
 function sendPostFanOut_(cfg, payload, seenKey) {
