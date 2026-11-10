@@ -407,6 +407,14 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
 
 const HELD = /(?<![\w$])(?:localStorage|sessionStorage|posthog)(?![\w$])/g;
 
+// The methods that may be called on them outside the pinned files. None
+// returns the object or a part of it.
+const DIRECT_CALLS: Record<string, string[]> = {
+  localStorage: ['getItem', 'setItem', 'removeItem'],
+  sessionStorage: ['getItem', 'setItem', 'removeItem'],
+  posthog: ['capture', 'identify', 'set_config'],
+};
+
 export interface HolderScan {
   /** `file: sha256 <first 16 hex>` for each file named in `wholeFiles`. */
   pinned: string[];
@@ -423,11 +431,15 @@ export interface HolderScan {
  * follow. Outside the files named in `wholeFiles`, each appearance of
  * `localStorage`, `sessionStorage` or `posthog` must be one of:
  *
- *   - a method called on it, there and then: `localStorage.getItem(...)`,
- *     `window.posthog?.capture?.(...)`;
- *   - inside the condition of an `if` or a `while` that assigns nothing:
- *     `if (window.posthog)`, `if (!window.posthog?.__loaded || ...)`;
- *   - right after `typeof`;
+ *   - one of a fixed list of its methods called on it, there and then:
+ *     `localStorage.getItem(...)`, `window.posthog?.capture?.(...)`. The list
+ *     is closed because a method can hand the object back
+ *     (`localStorage.valueOf()` is the object itself);
+ *   - a test of whether it, or a member of it, is there, in the condition of
+ *     an `if` or a `while` that assigns nothing: `if (window.posthog)`,
+ *     `if (!window.posthog?.__loaded || typeof window.posthog.set_config !==
+ *     'function')`. It must stand in the condition itself, not inside a call
+ *     made there (`if (list.push(localStorage))` keeps it);
  *   - its name in a string that is not an index: `persistence: 'localStorage'`.
  *
  * Anything else, keeping it or a part of it in a variable, returning it,
@@ -436,6 +448,27 @@ export interface HolderScan {
  * named in `wholeFiles` and pinned by its whole content, so any edit to it
  * at all is looked at.
  */
+/**
+ * Whether the name at [at, end) is only being tested inside the condition
+ * that opens at `from`. It must not sit inside a call made in the condition
+ * (the innermost bracket around it is the condition's own, or one that only
+ * groups), and what follows it, after at most two member names, must end the
+ * test: a closing bracket, `&&`, `||` or a comparison.
+ */
+function isTest(text: string, from: number, at: number, end: number): boolean {
+  let depth = 0;
+  for (let i = at - 1; i > from; i--) {
+    if (text[i] === ')' || text[i] === ']' || text[i] === '}') depth++;
+    else if (text[i] === '[' || text[i] === '{') { if (depth === 0) return false; depth--; }
+    else if (text[i] === '(') {
+      if (depth > 0) { depth--; continue; }
+      // An unmatched bracket inside the condition: a call if a name, `)` or `]` stands before it.
+      if (/[\w$)\]]\s*$/.test(text.slice(from + 1, i))) return false;
+    }
+  }
+  return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
+}
+
 export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderScan {
   const pinned: string[] = [];
   const unresolved: string[] = [];
@@ -458,15 +491,14 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
       const before = text.slice(Math.max(0, at - 40), at);
       const after = text.slice(at + m[0].length, at + m[0].length + 80);
       const quote = text[at - 1];
+      const call = /^\s*\??\.\s*([A-Za-z_$][\w$]*)\s*(?:\?\.)?\s*\(/.exec(after);
       const plain =
         // Its name in a string, unless the string is an index (`window['localStorage']`).
         ((quote === "'" || quote === '"' || quote === '`') && after[0] === quote && !/\[\s*$/.test(text.slice(Math.max(0, at - 12), at - 1))) ||
-        // A method called on it, there and then.
-        /^\s*\??\.\s*[A-Za-z_$][\w$]*\s*(?:\?\.)?\s*\(/.test(after) ||
-        // Right after `typeof`.
-        /typeof\s+(?:[A-Za-z_$][\w$]*\s*\.\s*)?$/.test(before) ||
-        // Inside a condition that assigns nothing.
-        conditions.some(([from, to]) => at > from && at < to);
+        // One of its permitted methods, called there and then.
+        (call !== null && DIRECT_CALLS[m[0]].includes(call[1])) ||
+        // A test of whether it, or a member of it, is there.
+        conditions.some(([from, to]) => at > from && at < to && isTest(text, from, at, at + m[0].length));
       if (plain) continue;
       const lineStart = text.lastIndexOf('\n', at) + 1;
       const lineEnd = text.indexOf('\n', at);

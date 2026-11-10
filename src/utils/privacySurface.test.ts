@@ -419,9 +419,9 @@ const EXPECTED_MENTIONS = [
 // What is done with storage or PostHog once a variable holds it spells none
 // of the names above (`ls.amount = v`, `people.set(...)`), and following an
 // object through variables in text does not work. So nothing holds them:
-// outside the files below, storage and PostHog are only called directly,
-// tested in a condition, asked about with `typeof`, or named in a string
-// (see scanHolders). Three files do more (the consent runtime keeps storage
+// outside the files below, storage and PostHog only have one of a fixed list
+// of methods called on them, are tested in a condition, or are named in a
+// string (see scanHolders). Three files do more (the consent runtime keeps storage
 // in variables and returns it; Analytics.astro replaces PostHog with a
 // stand-in when analytics are off; the type file declares its shape). They
 // are pinned by their whole content: any edit to them is a reason to look.
@@ -852,7 +852,10 @@ describe('privacy surface reader: hosts and requests', () => {
       "if (!window.posthog?.__loaded || typeof window.posthog.set_config !== 'function') return;",
       "if (typeof localStorage !== 'undefined') localStorage.getItem('nidhi-a');",
       "while (window.posthog && tries < 3) tries += 1;",
-      "posthog.init(key, { persistence: on ? 'localStorage' : 'memory' });",
+      "if ((window.posthog && ready) || force) window.posthog.capture('e');",
+      "if (typeof window.posthog === 'undefined' || !window.posthog.__loaded) return;",
+      "if (isReady(flag) && window.posthog) window.posthog.identify(id);",
+      "const options = { persistence: on ? 'localStorage' : 'memory' };",
     ]) {
       assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
     }
@@ -878,6 +881,18 @@ describe('privacy surface reader: hosts and requests', () => {
       'if (ready) { keep(window.posthog); }',
       'const send = window.posthog.capture;',
       'const send = window.posthog?.capture?.bind(window.posthog);',
+      'const held = [];\nif (held.push(window.localStorage)) { use(); }\nheld[0].amount = typedAmount;',
+      'if (keep(window.posthog)) go();',
+      'if (ok && save(window.posthog.people)) go();',
+      'while (list.push(sessionStorage) < 2) step();',
+      'const store = localStorage.valueOf();\nstore.amount = typedAmount;',
+      'const again = window.posthog.init(key, {}, "x");',
+      'localStorage.clear();',
+      'const k = localStorage.key(0);',
+      'if (window.posthog.people.set({ amount })) go();',
+      'if ([localStorage][0].amount) go();',
+      "const t = typeof localStorage;",
+      'if (a) b(); else c(window.posthog);',
       'export const store = { s: localStorage };',
     ]) {
       assert.notDeepEqual(scanHolders(file(source), []).unresolved, [], source);
