@@ -940,7 +940,11 @@ async function worker() {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         result = await run(browser, base, job);
-        if (browser.connected || attempt === 1) break;
+        // A page or a window that went away under the run (closed by hand,
+        // or by the machine) says nothing about the site: run it once more.
+        const lostPage = result.problems.some((p) => /the run stopped while .*(Session closed|Target closed|detached Frame|Connection closed|page has been closed)/.test(p));
+        if (attempt === 1 || (browser.connected && !lostPage)) break;
+        if (browser.connected) continue;
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {} };
         if (attempt === 1) break;
@@ -959,7 +963,7 @@ async function worker() {
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
     if (result.note.unreachable.length) console.log(`       note: reached without the pointer (cut off or covered on this layout): ${result.note.unreachable.join(', ')}`);
-    if (PLANT && !caught) console.log('       - the two planted leaks were not both caught, or something else went wrong:');
+    if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
   }
   await browser.close().catch(() => {});
@@ -974,7 +978,7 @@ if (across.length) failed += 1;
 console.log(`\n${matrix.length - failed + (across.length ? 1 : 0)} of ${matrix.length} runs ${PLANT ? 'caught the planted leak' : 'clean'} in ${Math.round((Date.now() - started) / 1000)} s.`);
 if (failed) {
   console.log(PLANT
-    ? 'The check missed a leak it was handed. Fix the check before trusting a clean run.'
+    ? 'A self-test run did not end as it should: either a planted leak was missed or the run itself went wrong. Fix that before trusting a clean run.'
     : 'A failure here is a privacy bug or a check that could not see the events. Fix it before merging (CLAUDE.md, "Free tools keep inputs out of URLs", rule 6).');
   process.exit(1);
 }
