@@ -114,6 +114,8 @@ describe('tool privacy checks: files and local addresses', () => {
     ['a CSV name', 'net-worth.csv', 'file name'],
     ['a blob address', 'blob:http://127.0.0.1:4000/0b1c2d3e-aaaa', 'blob: or data:'],
     ['a data address', 'data:text/csv;base64,QUJD', 'blob: or data:'],
+    ['an encoded blob address', 'blob%3Ahttp%3A%2F%2F127.0.0.1%3A4000%2F0b1c2d3e', 'blob: or data:'],
+    ['an encoded file name', 'net%2Dworth%2Ecsv', 'file name'],
   ]) {
     it(`fails a run that sends ${what}`, () => {
       const { problems } = judge([...cleanEvents(), ev('$autocapture', { $elements_chain: CHAIN, href: value })]);
@@ -173,6 +175,13 @@ describe('tool privacy checks: tool addresses', () => {
     for (const url of [`${ORIGIN}/free/loan-comparison/`, `${ORIGIN}/hi/free/loan-comparison/?utm_source=share&utm_medium=referral`, '/mr/free/inflation-calculator/', `${ORIGIN}/free/`, 'https://example.com/free/x/?a=1#b']) {
       assert.deepEqual(addressProblems(ev('$pageview', { $current_url: url }), ORIGIN), [], url);
     }
+  });
+
+  it('rejects state in a tool address written with the live site’s name, or percent-encoded', () => {
+    for (const url of ['https://nidhi.today/free/loan-comparison/?c=INR', 'https://nidhi.today/hi/free/loan-comparison/#c=INR', encodeURIComponent(`${ORIGIN}/free/loan-comparison/?c=INR`)]) {
+      assert.notDeepEqual(addressProblems(ev('$pageview', { $referrer: url }), ORIGIN), [], url);
+    }
+    assert.deepEqual(addressProblems(ev('$pageview', { $referrer: 'https://nidhi.today/free/loan-comparison/?utm_source=share' }), ORIGIN), []);
   });
 
   for (const url of [`${ORIGIN}/free/loan-comparison/?c=INR`, `${ORIGIN}/free/loan-comparison/#c=INR`, `${ORIGIN}/es/free/monte-carlo-simulator/?utm_source=share&s=1`, '/cs/free/invest-or-pay-off/#faq']) {
@@ -293,8 +302,11 @@ describe('tool privacy checks: reading request bodies', () => {
     assert.ok(problems.some((p) => p.includes('could not be decoded')));
   });
 
-  it('an empty body is nothing to check', () => {
+  it('an event request that arrives with no body fails the run; a request that carries no events may be empty', () => {
     assert.deepEqual(decodeBody('u', Buffer.alloc(0), gunzipSync), { text: '', json: null, empty: true });
+    const lost = judge(cleanEvents(), { extraRequests: [{ url: 'https://eu.i.posthog.com/i/v0/e/', body: Buffer.alloc(0) }] });
+    assert.ok(lost.problems.some((p) => p.includes('arrived with no body')));
+    assert.deepEqual(judge(cleanEvents(), { extraRequests: [{ url: 'https://eu.i.posthog.com/flags/?v=2', body: Buffer.alloc(0) }] }).problems, []);
   });
 });
 

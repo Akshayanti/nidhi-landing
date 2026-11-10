@@ -43,7 +43,12 @@
 //
 // What a clean run shows is that nothing typed was sent during these steps,
 // in the forms findLeaks reads. It is evidence about the steps taken, on the
-// build tested, not a proof about every possible click.
+// build tested, not a proof about every possible click. Its known limits:
+// the distinctive values go into the amount and name fields (a rate or a
+// number of years cannot be told apart from any other small number); up to
+// eight charts and six result cards are clicked; nothing inside a link is
+// clicked, since that would leave the page; and a value that was changed
+// before it was sent (rounded, split, hashed) would not be recognised.
 //
 // Nothing reaches PostHog. The build must be a test build (a dummy key
 // PostHog rejects); only the SDK's static scripts load from PostHog; the
@@ -322,6 +327,13 @@ async function watch(page, requests, problems, note) {
       if (leaks.length) problems.push(`a ${req.isNavigationRequest() ? 'page load' : 'request'} to ${url.hostname}${url.pathname} carries what was typed in its address${posthog ? '' : ' or body'}: ${leaks.join(', ')}`);
     }
 
+    // Nor may the address of the page a request comes from, where another
+    // site would be told it (the Referer header).
+    if (url.hostname !== '127.0.0.1') {
+      const referer = findLeaks((req.headers().referer || '').split('#')[0]);
+      if (referer.length) problems.push(`a request to ${url.hostname} names the page it came from with what was typed in it: ${referer.join(', ')}`);
+    }
+
     if (!posthog) {
       // The exchange-rate provider is answered here too: the check makes no
       // request to anyone but the local server and PostHog's script host.
@@ -381,7 +393,10 @@ async function visible(page, selector) {
       const s = getComputedStyle(node);
       const link = node.closest('a[href]') || node.querySelector('a[href]');
       const switchLink = node.matches('a[data-lang-switch]');
-      return r.width > 1 && r.height > 1 && s.visibility !== 'hidden' && s.display !== 'none' && !node.disabled && (!link || switchLink);
+      // A closed <details> keeps its content laid out, with a size, but not
+      // shown: the browser's own test knows the difference.
+      const shown = typeof node.checkVisibility !== 'function' || node.checkVisibility({ visibilityProperty: true, contentVisibilityAuto: true });
+      return shown && r.width > 1 && r.height > 1 && s.visibility !== 'hidden' && s.display !== 'none' && !node.disabled && (!link || switchLink);
     }).catch(() => false);
     if (ok) out.push(el);
   }
@@ -395,30 +410,81 @@ async function visible(page, selector) {
  * click meant for a button must never land on a link.
  */
 async function press(page, el, times = 1, gap = 60) {
+  // Where the element's centre is, and whether that point really is the element.
+  const measure = (block) => el.evaluate((node, where) => {
+    if (where) {
+      // Leave the field that has the focus first, as a tap elsewhere would:
+      // a field can redraw what is below it when it loses the focus, and a
+      // click that began before that would end on something else.
+      const active = document.activeElement;
+      if (active && active !== node && active !== document.body && !node.contains(active)) active.blur();
+      node.scrollIntoView({ block: where, inline: 'nearest', behavior: 'instant' });
+    }
+    const r = node.getBoundingClientRect();
+    // The centre first, then other points on it: a container can cut part of
+    // an element off, and then its centre belongs to something else.
+    let over = 'nothing: the point is outside the window';
+    for (const [fx, fy] of [[0.5, 0.5], [0.25, 0.5], [0.75, 0.5], [0.5, 0.25], [0.5, 0.75], [0.1, 0.5], [0.9, 0.5]]) {
+      const x = r.left + r.width * fx;
+      const y = r.top + r.height * fy;
+      const hit = document.elementFromPoint(x, y);
+      if (!hit) continue;
+      // The point must be the element itself or something inside it. A label
+      // around a checkbox or a radio button counts too: clicking it is how
+      // that control is used.
+      const label = hit.closest('label');
+      if (hit === node || node.contains(hit) || (label && label.contains(node))) return { x, y };
+      over = `${hit.tagName.toLowerCase()}.${String(hit.className).split(' ')[0]}`;
+    }
+    return { covered: over };
+  }, block);
+
   let point = null;
   try {
     // Middle of the window first; if something sits over it there, lower and higher.
     for (const block of ['center', 'end', 'start']) {
-      point = await el.evaluate((node, where) => {
-        node.scrollIntoView({ block: where, inline: 'nearest', behavior: 'instant' });
-        const r = node.getBoundingClientRect();
-        const x = r.left + r.width / 2;
-        const y = r.top + r.height / 2;
-        const hit = document.elementFromPoint(x, y);
-        if (!hit) return { covered: 'nothing: the point is outside the window' };
-        const same = hit === node || node.contains(hit) || (hit.contains(node) && !hit.closest('a[href]'));
-        return same ? { x, y } : { covered: `${hit.tagName.toLowerCase()}.${String(hit.className).split(' ')[0]}` };
-      }, block);
+      point = await measure(block);
       if (point && !point.covered) break;
+    }
+    // The page may still be settling (a notice opening or closing moves what
+    // is below it, sometimes a moment after the focus moves): click only once
+    // the point has stayed put for three looks in a row.
+    let still = 0;
+    for (let i = 0; i < 20 && point && !point.covered && still < 3; i++) {
+      await sleep(90);
+      const again = await measure(null);
+      still = !again.covered && Math.abs(again.x - point.x) < 1 && Math.abs(again.y - point.y) < 1 ? still + 1 : 0;
+      point = again;
     }
   } catch { return false; }
   if (!point || point.covered) {
     if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
     return false;
   }
-  for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
+  if (times > 1) {
+    for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
+    return true;
+  }
+  // One click, watched: if the element moves away as the button goes down
+  // (pressing can take the focus from something that then redraws the page),
+  // that click is lost, as it would be for a reader, who then clicks again.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await page.mouse.move(point.x, point.y);
+    await page.mouse.down();
+    await sleep(40);
+    const under = await measure(null).catch(() => ({ covered: 'gone' }));
+    await page.mouse.up();
+    await sleep(gap);
+    // Gone or replaced after the click is what a click often does: it counted.
+    if (under.covered === 'gone' || (!under.covered && Math.abs(under.x - point.x) < 2 && Math.abs(under.y - point.y) < 2)) return true;
+    if (page.nidhiNote) page.nidhiNote.moved = (page.nidhiNote.moved || 0) + 1;
+    await sleep(350);
+    point = await measure(null).catch(() => ({ covered: 'gone' }));
+    if (point.covered) return point.covered === 'gone';
+  }
   return true;
 }
+
 async function choose(page, selector, { last = false, nth = 0 } = {}) {
   const found = await visible(page, selector);
   return last ? found[found.length - 1] : found[nth];
@@ -431,14 +497,39 @@ async function click(page, selector, where = {}) {
   return true;
 }
 
+/**
+ * Types `value` into a field, replacing what is there. The field is found
+ * even inside a closed section (a "More options" panel is opened the way a
+ * reader would, by its summary), and the typing is checked: the field must
+ * have the focus before a key is pressed and hold the value afterwards. A
+ * value that lands in another field would make the tool invalid, and then
+ * nothing after it would be exercised.
+ */
 async function fill(page, selector, value, where = {}) {
-  const el = await choose(page, selector, where);
+  let el = await choose(page, selector, where);
+  if (!el) {
+    // Open every closed section that holds a match, then look again.
+    for (const hidden of await page.$$(selector)) {
+      const summary = await hidden.evaluateHandle((node) => {
+        const details = node.closest('details:not([open])');
+        return details ? details.querySelector(':scope > summary') : null;
+      });
+      const asElement = summary.asElement();
+      if (asElement) { await press(page, asElement); await sleep(200); }
+    }
+    el = await choose(page, selector, where);
+  }
   if (!el) throw new Error(`no visible field for ${selector}`);
   // A field under an adornment (a currency sign, say) is reached with the keyboard instead.
   if (!(await press(page, el))) await el.focus();
   // Select what is there, so that typing replaces it.
-  await el.evaluate((node) => { node.focus(); if (typeof node.select === 'function') node.select(); });
-  await el.type(String(value), { delay: 5 });
+  const focused = await el.evaluate((node) => { node.focus(); if (typeof node.select === 'function') node.select(); return document.activeElement === node; });
+  if (!focused) throw new Error(`the field for ${selector} could not take the focus`);
+  await page.keyboard.type(String(value), { delay: 5 });
+  const held = await el.evaluate((node) => node.value);
+  // Grouping marks a field adds as it formats are not a difference.
+  const bare = (v) => String(v).replace(/[\s.,'  ]/g, '');
+  if (bare(held) !== bare(value)) throw new Error(`the field for ${selector} holds "${held}" after "${value}" was typed`);
   await page.keyboard.press('Tab');
   await sleep(150);
 }
@@ -466,19 +557,66 @@ async function pressButtons(page, note, pressed) {
     await press(page, el);
     await sleep(250);
     // A dialog opened by a button: use its controls, the one that closes it last.
+    const DIALOG = 'astro-island [role="dialog"], astro-island dialog[open]';
     const inner = [];
     for (const d of await visible(page, 'astro-island [role="dialog"] button, astro-island dialog[open] button')) {
       const name = await d.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`).catch(() => '');
-      inner.push([/cancel|close/i.test(name) ? 1 : 0, d]);
+      inner.push([/cancel|close/i.test(name) ? 1 : 0, d, name.trim()]);
     }
-    for (const [, d] of inner.sort((x, y) => x[0] - y[0])) { await press(page, d); await sleep(250); }
+    for (const [, d, name] of inner.sort((x, y) => x[0] - y[0])) {
+      // A control the pointer cannot reach (cut off by its container, say) is
+      // still used, the way a keyboard or a screen reader would use it, and
+      // the run's notes say so.
+      if (!(await press(page, d))) {
+        const done = await d.evaluate((node) => { if (!node.isConnected) return false; node.click(); return true; }).catch(() => false);
+        if (done) note.unreachable.add(name);
+      }
+      await sleep(300);
+    }
     await page.keyboard.press('Escape');
+    await sleep(200);
+    // The dialog has to be gone before anything behind it can be used.
+    for (let i = 0; i < 3 && (await page.$(DIALOG)); i++) {
+      const closer = await page.$('astro-island [role="dialog"] [data-attr*="cancel"], astro-island [role="dialog"] [class*="ancel"], astro-island [role="dialog"] [class*="lose"]');
+      if (closer) await closer.evaluate((node) => node.click()).catch(() => {});
+      await sleep(300);
+    }
+    if (await page.$(DIALOG)) note.stuck = `the dialog opened by ${label} could not be closed`;
   }
   return resets;
 }
 
+/** Clicks every field and changes every choice the tool offers. Returns the fields it found. */
+async function makeChoices(page, note) {
+  const island = 'astro-island';
+  // Click inputs, and change every choice the tool offers.
+  note.step = 'clicking inputs and choices';
+  const inputs = await visible(page, `${island} input[type="text"], ${island} input[type="number"]`);
+  for (const el of inputs) await press(page, el);
+  // A choice from a list: its next option, chosen as the browser does it.
+  for (const el of await visible(page, `${island} select`)) {
+    const next = await el.evaluate((node) => {
+      const options = [...node.options].filter((o) => !o.disabled && o.value !== node.value && o.value !== '');
+      return options.length ? options[0].value : null;
+    }).catch(() => null);
+    if (next === null) continue;
+    await press(page, el);
+    await page.keyboard.press('Escape');
+    await el.select(next).catch(() => {});
+    await sleep(200);
+  }
+  for (const selector of [`${island} input[type="checkbox"]`, `${island} summary`, `${island} [role="tab"]`, `${island} input[type="radio"]`]) {
+    for (const el of await visible(page, selector)) {
+      await press(page, el);
+      await sleep(120);
+    }
+  }
+  await sleep(400);
+  return inputs;
+}
+
 /** Everything a reader can do on one tool page. Returns what could not be done. */
-async function useTool(page, tool, note, downloads) {
+async function useTool(page, tool, note, downloads, sent) {
   const island = 'astro-island';
   const failed = [];
 
@@ -506,29 +644,7 @@ async function useTool(page, tool, note, downloads) {
   // The link the tool itself made, if it copied one.
   note.shared = await page.evaluate(() => window.__copied || '').catch(() => '');
 
-  // Click inputs, and change every choice the tool offers.
-  note.step = 'clicking inputs and choices';
-  const inputs = await visible(page, `${island} input[type="text"], ${island} input[type="number"]`);
-  for (const el of inputs) await press(page, el);
-  // A choice from a list: its next option, chosen as the browser does it.
-  for (const el of await visible(page, `${island} select`)) {
-    const next = await el.evaluate((node) => {
-      const options = [...node.options].filter((o) => !o.disabled && o.value !== node.value && o.value !== '');
-      return options.length ? options[0].value : null;
-    }).catch(() => null);
-    if (next === null) continue;
-    await press(page, el);
-    await page.keyboard.press('Escape');
-    await el.select(next).catch(() => {});
-    await sleep(200);
-  }
-  for (const selector of [`${island} input[type="checkbox"]`, `${island} summary`, `${island} [role="tab"]`, `${island} input[type="radio"]`]) {
-    for (const el of await visible(page, selector)) {
-      await press(page, el);
-      await sleep(120);
-    }
-  }
-  await sleep(400);
+  const inputs = await makeChoices(page, note);
 
   // Result cards and charts.
   note.step = 'clicking charts and results';
@@ -566,9 +682,39 @@ async function useTool(page, tool, note, downloads) {
   await sleep(4200);
 
   // Buttons that only appeared after the choices were made, then reset.
-  const resets = await pressButtons(page, note, pressed);
+  let resets = await pressButtons(page, note, pressed);
   note.buttons = pressed.size;
   await sleep(500);
+
+  // Every step the tool must take has to show in what it sent. A click can
+  // miss while the page is still moving, so whatever has not been seen yet
+  // is done again, a few times, before the run is judged. PostHog sends its
+  // events in batches every few seconds, hence the wait.
+  const missing = () => tool.mustSend.filter((need) => need !== 'reset' && !sent().has(need));
+  for (let again = 1; again <= 3; again++) {
+    await sleep(3600);
+    const todo = missing();
+    if (todo.length === 0) break;
+    note.retried = `${again}: ${todo.join(', ')}`;
+    note.step = `doing again: ${todo.join(', ')}`;
+    if (todo.some((need) => /removed/.test(need)) && tool.removeNamedRow) await tool.removeNamedRow(page);
+    resets = await pressButtons(page, note, new Set());
+    // From the second go, a button the pointer keeps missing (the page moves
+    // under it) is used the way a keyboard uses it, and the notes say so.
+    if (again >= 2) {
+      const DIRECT = { 'exported:xlsx': '[data-attr$="export-xlsx"]', 'exported:pdf': '[data-attr$="export-pdf"]', share_copied: '[data-attr*="share-copy"], [data-attr$="-share"]' };
+      await sleep(3600);
+      for (const need of missing()) {
+        if (!DIRECT[need]) continue;
+        const button = await page.$(`${island} ${DIRECT[need].split(', ').join(`, ${island} `)}`);
+        if (button && (await button.evaluate((node) => { node.click(); return true; }).catch(() => false))) note.unreachable.add(need);
+        await sleep(400);
+      }
+    }
+    await makeChoices(page, note);
+    // A section that was left open is closed and opened once more.
+    for (const el of await visible(page, `${island} summary`)) { await press(page, el); await sleep(150); }
+  }
 
   // The exports really happened: a spreadsheet was saved and the print dialog was asked for.
   const saved = existsSync(downloads) ? readdirSync(downloads) : [];
@@ -593,7 +739,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   // `phase` names the part of the run a request belongs to: using the tool,
   // the # share link, the language switch, the old ? link. `opening` holds
   // the addresses the check itself is loading.
-  const note = { phase: 'use', covered: new Set(), opening: new Set() };
+  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), opening: new Set() };
   const context = await browser.createBrowserContext();
   const downloads = mkdtempSync(join(tmpdir(), 'nidhi-privacy-'));
   let page;
@@ -655,8 +801,24 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     } else if ((await visible(page, '#cookie-overlay')).length) {
       problems.push('the cookie banner was shown although consent was already given');
     }
-    const { resets, failed } = await useTool(page, tool, note, downloads);
+    // What the tool has sent so far while being used, as `name` and `name:format`.
+    const prefix = tool.ownEvents.source.replace(/^\^/, '');
+    const sent = () => {
+      const names = new Set();
+      for (const r of requests) {
+        if (r.phase !== 'use') continue;
+        for (const e of eventsIn(decodeBody(r.url, r.body, gunzipSync).json)) {
+          if (!e.event.startsWith(prefix)) continue;
+          const name = e.event.slice(prefix.length);
+          names.add(name);
+          if (e.properties && e.properties.format) names.add(`${name}:${e.properties.format}`);
+        }
+      }
+      return names;
+    };
+    const { resets, failed } = await useTool(page, tool, note, downloads, sent);
     problems.push(...failed);
+    if (note.stuck) problems.push(note.stuck);
     const state = await page.evaluate((g) => window[g] || '', tool.global);
     if (!state) problems.push('the tool published no state for the language switch, so the share-link steps had nothing to carry');
     if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}`);
@@ -730,7 +892,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   });
   result.problems.unshift(...problems);
   result.problems = [...new Set(result.problems)];
-  const notes = { ...note, covered: [...note.covered], opening: undefined };
+  const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], opening: undefined };
   if (DUMP) {
     mkdirSync(DUMP, { recursive: true });
     writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
@@ -796,6 +958,7 @@ async function worker() {
     if (!ok) failed++;
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
+    if (result.note.unreachable.length) console.log(`       note: reached without the pointer (cut off or covered on this layout): ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log('       - the two planted leaks were not both caught, or something else went wrong:');
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
   }
