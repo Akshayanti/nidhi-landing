@@ -10,6 +10,8 @@
 
 ## Brand Identity
 
+Who nidhi is for and how it speaks are in [`brand-identity.md`](brand-identity.md). This section covers the visual identity.
+
 The nidhi brand identity is built from two palette colors used as a pair:
 
 | Role | Light mode | Dark mode | Where you see it |

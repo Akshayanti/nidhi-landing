@@ -4,6 +4,8 @@ One page checklist for anyone producing nidhi content (people, Claude, Codex). I
 
 ## Who it is for
 
+This is the Instagram audience. The site's audience is wider (every life stage) and is set in [`../brand-identity.md`](../brand-identity.md), which also holds the voice rules.
+
 - Global expats from anywhere, living anywhere except North America. Europe is the largest segment, money in €, examples rotate across expat hubs. No US or Canada targeting, no US-only products, tax or culture. Don't frame the account as single-country (EU-only or India-only). [PLAYBOOK §1]
 - Write for a reader new to the topic, often anxious about money ("Eva-type"). Problem first, plain words, one idea at a time. A chart that reads as math homework makes things worse. [PLAYBOOK §8, blog-content-plan Rule 9]
 
