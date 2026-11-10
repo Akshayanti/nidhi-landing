@@ -32,7 +32,20 @@ export interface SourceFile {
   text: string;
 }
 
-/** Every code file under `srcDir`, tests left out. */
+/**
+ * `text` with its comments blanked out, so a mention in a comment is never
+ * read as code. Line breaks are kept. A `//` counts as a comment only at the
+ * start of a line or after white space or one of `;{}(),`: the `//` of an
+ * address always follows a colon or a quote.
+ */
+export function withoutComments(text: string): string {
+  const blank = (m: string): string => m.replace(/[^\n]/g, ' ');
+  return text
+    .replace(/\/\*[\s\S]*?\*\//g, blank)
+    .replace(/(^|[\s;{}(),])\/\/[^\n]*/g, (m, lead: string) => lead + blank(m.slice(lead.length)));
+}
+
+/** Every code file under `srcDir`, tests left out, comments blanked. */
 export function codeFiles(srcDir: string): SourceFile[] {
   const out: SourceFile[] = [];
   const walk = (dir: string): void => {
@@ -41,7 +54,7 @@ export function codeFiles(srcDir: string): SourceFile[] {
       if (statSync(full).isDirectory()) { walk(full); continue; }
       const path = relative(srcDir, full).split('\\').join('/');
       if (!CODE.test(name) || /\.test\./.test(name) || WORDS.test(path) || SELF.test(path)) continue;
-      out.push({ path, text: readFileSync(full, 'utf8') });
+      out.push({ path, text: withoutComments(readFileSync(full, 'utf8')) });
     }
   };
   walk(srcDir);
@@ -110,44 +123,67 @@ export interface EventScan {
   unresolved: string[];
 }
 
-// A component's own `track(...)` wrapper, or PostHog called directly.
-const CAPTURE = /(?<![\w.])track\(|posthog\??\.capture\??\.?\(/g;
+// A component's own `track(...)` wrapper, or `capture` called on anything.
+const CAPTURE = /(?<![\w.])track\s*\(|\bcapture\s*\??\.?\s*\(/g;
+
+// Ways of reaching PostHog that this reader cannot follow: an index, another
+// name for it, or its methods pulled out of it.
+const POSTHOG_ALIAS = [
+  /\bposthog\s*\??\.?\s*\[/g,
+  /(?:const|let|var)\s+\{[^}]*\}\s*=\s*(?:window\.|root\.)?posthog\b/g,
+  /(?:const|let|var)\s+(?!ph\b)[\w$]+\s*=\s*(?:window\.|root\.)?posthog\s*[;\n]/g,
+  /\b(?:const|let|var)\s+[\w$]+\s*=\s*[\w$.?]*\bcapture\s*[;\n]/g,
+];
 
 /** Every analytics event the site's code sends, with its properties. */
 export function scanEvents(files: SourceFile[]): EventScan {
   const calls: EventCall[] = [];
   const unresolved: string[] = [];
   for (const { path, text } of files) {
+    for (const pattern of POSTHOG_ALIAS) {
+      for (const m of text.matchAll(pattern)) unresolved.push(`${path}: ${m[0].trim()}`);
+    }
     for (const m of text.matchAll(CAPTURE)) {
       const open = m.index + m[0].length - 1;
-      // `function track(event, properties)` and the wrapper's own body forward
-      // what they were given: the calls that give it are the ones read here.
-      const before = text.slice(Math.max(0, m.index - 12), m.index);
-      if (/function\s+$/.test(before)) continue;
-      // A mention in a comment is not a call.
-      const line = text.slice(text.lastIndexOf('\n', m.index) + 1, m.index);
-      if (/^\s*(\/\/|\*|\/\*)/.test(line) || /(^|[^:])\/\//.test(line)) continue;
+      // `function track(event, properties)` is the wrapper's own definition.
+      if (/function\s+$/.test(text.slice(Math.max(0, m.index - 12), m.index))) continue;
       const args = balanced(text, open);
       if (args === null) { unresolved.push(`${path}: ${text.slice(m.index, m.index + 60)}`); continue; }
-      const [first, second] = topLevelParts(args);
-      if (first === 'event' && second === 'properties') continue;
+      const [first, second, ...rest] = topLevelParts(args);
+      // The wrapper's body forwards what it was given; the calls that give it are read instead.
+      if (first === 'event' && second === 'properties' && rest.length === 0) continue;
       const name = /^'([^'\\]+)'$|^"([^"\\]+)"$/.exec(first ?? '');
       if (!name) { unresolved.push(`${path}: ${m[0]}${args.slice(0, 60)}`); continue; }
+      const event = name[1] ?? name[2];
       const properties: Record<string, string> = {};
       if (second !== undefined) {
-        if (!second.startsWith('{')) { unresolved.push(`${path}: ${name[1] ?? name[2]} ${second.slice(0, 60)}`); continue; }
+        const body = second.startsWith('{') ? balanced(second, 0) : null;
+        if (body === null) { unresolved.push(`${path}: ${event} ${second.slice(0, 60)}`); continue; }
         let ok = true;
-        for (const part of topLevelParts(balanced(second, 0) ?? '')) {
+        for (const part of topLevelParts(body)) {
+          // `name: expression` or the shorthand `name`. A spread, a computed
+          // or quoted name, or a method is not read, and says so.
           const pair = /^([A-Za-z_$][\w$]*)\s*(?::\s*([\s\S]+))?$/.exec(part);
           if (!pair) { ok = false; break; }
-          properties[pair[1]] = (pair[2] ?? pair[1]).trim();
+          properties[pair[1]] = (pair[2] ?? pair[1]).replace(/\s+/g, ' ').trim();
         }
-        if (!ok) { unresolved.push(`${path}: ${name[1] ?? name[2]} ${second.slice(0, 60)}`); continue; }
+        if (!ok) { unresolved.push(`${path}: ${event} ${second.slice(0, 60)}`); continue; }
       }
-      calls.push({ event: name[1] ?? name[2], properties, file: path });
+      calls.push({ event, properties, file: path });
     }
   }
   return { calls, unresolved };
+}
+
+/** Every PostHog method the code calls, as `file: method`, sorted. `capture` is read by `scanEvents`. */
+export function scanPosthogCalls(files: SourceFile[]): string[] {
+  const out = new Set<string>();
+  for (const { path, text } of files) {
+    for (const m of text.matchAll(/\b(?:posthog|ph)\s*\??\.\s*([A-Za-z_$][\w$]*)\s*\??\.?\s*\(/g)) {
+      if (m[1] !== 'capture') out.add(`${path}: ${m[1]}`);
+    }
+  }
+  return [...out].sort();
 }
 
 /** Event name to the sorted names of every property any call gives it. */
@@ -167,25 +203,33 @@ export interface StorageScan {
   unresolved: string[];
 }
 
-const STORAGE_CALL = /(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|getItem|removeItem)\(\s*([^,)\s]+)/g;
+// Any receiver: the storage object is often held in a variable (`ls.setItem`).
+const STORAGE_CALL = /\.\s*(setItem|getItem|removeItem)\s*\(/g;
 const KEY_LITERAL = /^['"]([^'"\\]+)['"]$/;
+const NAME = /^[A-Za-z_$][\w$]*$/;
+// Storage reached without a method this reader follows: a property or an index.
+const STORAGE_OTHER = /(?:(?<![\w$.])|(?<=\b(?:window|self|globalThis|root)\.))(?:localStorage|sessionStorage)\s*(?:\[|\.\s*(?!setItem\b|getItem\b|removeItem\b|length\b|key\b)[A-Za-z_$])/g;
 
 /** Every localStorage and sessionStorage key, plus the consent cookie's name. */
 export function scanStorage(files: SourceFile[]): StorageScan {
   const keys = new Set<string>();
   const unresolved: string[] = [];
   for (const { path, text } of files) {
+    for (const m of text.matchAll(STORAGE_OTHER)) unresolved.push(`${path}: ${m[0]}`);
     for (const m of text.matchAll(STORAGE_CALL)) {
-      const arg = m[1];
+      const args = balanced(text, m.index + m[0].length - 1);
+      const arg = args === null ? '' : (topLevelParts(args)[0] ?? '');
       const literal = KEY_LITERAL.exec(arg);
       if (literal) { keys.add(literal[1]); continue; }
-      // A name: its values are the string literals assigned to it in this file.
-      const assigned = [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${arg.replace(/[$]/g, '\\$')}\\s*=\\s*(['"])([^'"\\\\]+)\\1`, 'g'))];
-      if (/^[A-Za-z_$][\w$]*$/.test(arg) && assigned.length > 0) for (const a of assigned) keys.add(a[2]);
-      else unresolved.push(`${path}: ${m[0]}`);
+      // A name: its values are the whole string literals assigned to it in this file.
+      const assigned = NAME.test(arg)
+        ? [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${arg.replace(/\$/g, '\\$')}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`, 'g'))]
+        : [];
+      if (assigned.length > 0) for (const a of assigned) keys.add(a[2]);
+      else unresolved.push(`${path}: ${m[1]}(${arg.replace(/\s+/g, ' ').slice(0, 60)})`);
     }
     // The one cookie the site sets (consentRuntime.js) is written as KEY + '='.
-    if (/document\.cookie\s*=/.test(text)) {
+    if (/document\s*\.\s*cookie\s*=[^=]/.test(text)) {
       const name = /var KEY = '([^']+)';/.exec(text);
       if (name) keys.add(name[1]);
       else unresolved.push(`${path}: document.cookie =`);
@@ -201,7 +245,8 @@ const OWN_OR_NAMESPACE = new Set(['nidhi.today', 'www.w3.org', 'schema.org', 'sc
 export function scanHosts(files: SourceFile[]): Record<string, string[]> {
   const out: Record<string, Set<string>> = {};
   for (const { path, text } of files) {
-    for (const m of text.matchAll(/https?:\/\/([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/g)) {
+    // `https://host`, and the protocol-relative `//host` when it opens a quoted string.
+    for (const m of text.matchAll(/(?:https?:\/\/|["'`(]\/\/)([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/g)) {
       const host = m[1].toLowerCase();
       if (OWN_OR_NAMESPACE.has(host)) continue;
       (out[host] ??= new Set()).add(path);
@@ -210,16 +255,26 @@ export function scanHosts(files: SourceFile[]): Record<string, string[]> {
   return Object.fromEntries(Object.keys(out).sort().map((k) => [k, [...out[k]].sort()]));
 }
 
-/** Every call that makes the browser (or the build) ask a server for something, as `file: what it asks`. */
+// Everything that makes a browser ask a server for something from script.
+const REQUEST = /\b(fetch|sendBeacon|importScripts)\s*\(|\bnew\s+(XMLHttpRequest|EventSource|WebSocket|Image|Worker|SharedWorker)\b/g;
+
+/** Every such call, as `file: call(first argument)`, sorted. The files that hold one are `requestFiles`. */
 export function scanRequests(files: SourceFile[]): string[] {
   const out: string[] = [];
   for (const { path, text } of files) {
-    for (const m of text.matchAll(/(?<![\w.])(fetch|sendBeacon|XMLHttpRequest|EventSource|WebSocket|importScripts)\(/g)) {
+    for (const m of text.matchAll(REQUEST)) {
+      if (m[2]) { out.push(`${path}: new ${m[2]}`); continue; }
       const args = balanced(text, m.index + m[0].length - 1);
       const first = args === null ? '?' : (topLevelParts(args)[0] ?? '');
       out.push(`${path}: ${m[1]}(${first.replace(/\s+/g, ' ')})`);
     }
-    for (const m of text.matchAll(/navigator\.sendBeacon\(/g)) out.push(`${path}: ${m[0]}`);
   }
   return out.sort();
+}
+
+/** The names of the build-time settings the code reads (`import.meta.env.PUBLIC_*`): what reaches the browser. */
+export function scanPublicEnv(files: SourceFile[]): string[] {
+  const out = new Set<string>();
+  for (const { text } of files) for (const m of text.matchAll(/\bPUBLIC_[A-Z0-9_]+\b/g)) out.add(m[0]);
+  return [...out].sort();
 }

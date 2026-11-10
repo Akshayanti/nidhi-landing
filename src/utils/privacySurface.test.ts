@@ -17,7 +17,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { scanLabels } from './analyticsLabels.ts';
-import { codeFiles, eventProperties, scanEvents, scanHosts, scanRequests, scanStorage } from './privacySurface.ts';
+import {
+  codeFiles, eventProperties, scanEvents, scanHosts, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, withoutComments,
+  type SourceFile,
+} from './privacySurface.ts';
 
 const SRC = resolve(import.meta.dirname, '..');
 const FILES = codeFiles(SRC);
@@ -195,18 +198,47 @@ const EXPECTED_HOSTS: Record<string, 'request' | 'link'> = {
 };
 
 // Every call that asks a server for something, as `file: call(first argument)`.
+// A renamed file or variable changes a line here without changing what is
+// sent: update the line, no changelog entry.
 const EXPECTED_REQUESTS = [
   // Same-origin data files (/data/inflation/...), fetched on demand.
   'components/InflationCalculator.tsx: fetch(url)',
   'components/InvestOrPayOff.tsx: fetch(url)',
+  // The simulation runs in a worker built from the site's own code.
+  'components/MonteCarloSimulator.tsx: new Worker',
   'components/MultiCurrencyNetWorth.tsx: fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`)',
   // The newsletter and waitlist Apps Script endpoints.
   'components/SubscribeSection.astro: fetch(endpoint)',
   'components/WaitlistSection.astro: fetch(endpoint)',
   'pages/confirm.astro: fetch(endpoint)',
+  // The internal QR studio draws its own SVG (a blob: address) onto a canvas.
+  'pages/studio/qr.astro: new Image',
   'pages/unsubscribe.astro: fetch(endpoint)',
   // Build time only: the list sizes shown on the site.
   'utils/listCount.ts: fetch(endpoint)',
+];
+
+// PostHog methods the code calls, other than `capture` (see EXPECTED_EVENTS).
+const EXPECTED_POSTHOG_CALLS = [
+  'components/Analytics.astro: init',
+  // Heatmaps are paused while a page shows what a click position could give away.
+  'components/InvestOrPayOff.tsx: set_config',
+  'components/LearnHome.tsx: set_config',
+  // The subscriber's distinct id: a hash of the address, as the notice describes.
+  'components/SubscribeSection.astro: identify',
+  // The cookie banner's answer, applied to a running PostHog.
+  'utils/shared/consentRuntime.js: reset',
+  'utils/shared/consentRuntime.js: set_config',
+];
+
+// Build-time settings the code reads. Their values are the deploy's, not the
+// source's: the two endpoints are the newsletter and waitlist Apps Scripts.
+const EXPECTED_PUBLIC_ENV = ['PUBLIC_ANALYTICS_TEST', 'PUBLIC_NEWSLETTER_ENDPOINT', 'PUBLIC_POSTHOG_KEY', 'PUBLIC_WAITLIST_ENDPOINT'];
+
+// Storage calls whose key is not a fixed string, each with its reason.
+const EXPECTED_DYNAMIC_STORAGE = [
+  // Removes PostHog's own keys (ph_..., __ph...) when consent is not given.
+  'utils/shared/consentRuntime.js: removeItem(k)',
 ];
 
 describe('privacy surface: click labels', () => {
@@ -245,7 +277,8 @@ describe('privacy surface: browser storage', () => {
   const scan = scanStorage(FILES);
 
   it('every storage call names a key this test can read', () => {
-    assert.deepEqual(scan.unresolved, [], 'write the key as a string, or as a constant assigned a string in the same file');
+    assert.deepEqual(scan.unresolved, EXPECTED_DYNAMIC_STORAGE,
+      `write the key as a string, or as a constant assigned a string in the same file${RULE}`);
   });
 
   it('the storage keys are the pinned keys', () => {
@@ -275,6 +308,27 @@ describe('privacy surface: outside hosts and requests', () => {
   it('the requests the code makes are the pinned requests', () => {
     const actual = scanRequests(FILES);
     assert.deepEqual(actual, EXPECTED_REQUESTS.slice().sort(), diff('Requests', actual, EXPECTED_REQUESTS));
+  });
+
+  it('a host pinned as a link is never named in a file that makes requests', () => {
+    const hosts = scanHosts(FILES);
+    const requesting = new Set(scanRequests(FILES).filter((r) => !/: new (Image|Worker)$/.test(r)).map((r) => r.split(': ')[0]));
+    for (const [host, kind] of Object.entries(EXPECTED_HOSTS)) {
+      if (kind !== 'link') continue;
+      for (const file of hosts[host] ?? []) {
+        assert.ok(!requesting.has(file), `${host} is pinned as a link, but ${file} also makes requests: check it is not one of them${RULE}`);
+      }
+    }
+  });
+
+  it('the build-time settings the code reads are the pinned ones', () => {
+    const actual = scanPublicEnv(FILES);
+    assert.deepEqual(actual, EXPECTED_PUBLIC_ENV, diff('Settings', actual, EXPECTED_PUBLIC_ENV));
+  });
+
+  it('the PostHog methods the code calls are the pinned ones', () => {
+    const actual = scanPosthogCalls(FILES);
+    assert.deepEqual(actual, EXPECTED_POSTHOG_CALLS, diff('PostHog calls', actual, EXPECTED_POSTHOG_CALLS));
   });
 
   it('PostHog is started on the pinned host and nowhere else', () => {
@@ -313,5 +367,133 @@ describe('privacy surface: what click capture is told to ignore', () => {
 
   it('is what autocapture and dead-click capture are given', () => {
     assert.match(ANALYTICS, /window\.nidhiClickCapture = \{ element_attribute_ignorelist: IGNORED_ATTRIBUTES \};/);
+  });
+});
+
+// -----------------------------------------------------------------------------
+// The reader itself. It reads source as text, so it is a tripwire, not a
+// proof: what it cannot follow it must report, never skip. What is actually
+// sent is checked in a browser by scripts/verify-tool-privacy.mjs.
+// -----------------------------------------------------------------------------
+
+const file = (text: string, path = 'components/X.tsx'): SourceFile[] => [{ path, text: withoutComments(text) }];
+
+describe('privacy surface reader: events', () => {
+  it('reads the wrapper, PostHog called directly, and spacing or optional calls', () => {
+    const { calls, unresolved } = scanEvents(file(`
+      track('a_one', { count: rows.length, currency });
+      track ('a_two');
+      window.posthog.capture('a_three', { mode: 'x' }, { send_instantly: true });
+      window.posthog?.capture?.('a_four', {
+        // why
+        via: 'click',
+      });
+      posthog . capture ("a_five", { on });
+    `));
+    assert.deepEqual(unresolved, []);
+    assert.deepEqual(eventProperties(calls), { a_five: ['on'], a_four: ['via'], a_one: ['count', 'currency'], a_three: ['mode'], a_two: [] });
+    assert.equal(calls[0].properties.count, 'rows.length');
+    assert.equal(calls[0].properties.currency, 'currency');
+  });
+
+  it('skips the wrapper’s own definition and a mention in a comment', () => {
+    const { calls, unresolved } = scanEvents(file(`
+      // track('not_sent', { amount }) is what we never do
+      /* posthog.capture('nor_this') */
+      function track(event: string, properties?: Record<string, unknown>) {
+        window.posthog?.capture?.(event, properties);
+      }
+    `));
+    assert.deepEqual([calls, unresolved], [[], []]);
+  });
+
+  it('reports what it cannot read instead of skipping it', () => {
+    for (const source of [
+      "track(name, { count });", // the event name is not a string
+      "track('e', props);", // the properties are not written out
+      "track('e', { ...props });", // a spread
+      "track('e', { [key]: 1 });", // a computed name
+      "posthog['capture']('e', { amount });", // an index
+      "const ph2 = window.posthog;\nph2.capture('e');", // another name
+      "const { capture } = posthog;", // its methods pulled out
+      "const send = window.posthog.capture;", // the method under another name
+    ]) {
+      assert.notDeepEqual(scanEvents(file(source)).unresolved, [], source);
+    }
+  });
+
+  it('lists the other PostHog methods called', () => {
+    assert.deepEqual(scanPosthogCalls(file("posthog.identify(id); window.posthog?.register?.({ a: 1 }); ph.set_config(c); posthog.capture('e');")),
+      ['components/X.tsx: identify', 'components/X.tsx: register', 'components/X.tsx: set_config']);
+  });
+});
+
+describe('privacy surface reader: storage', () => {
+  it('reads literal keys and constants, on any receiver', () => {
+    const scan = scanStorage(file(`
+      const STORAGE_KEY = 'nidhi-a';
+      var OTHER = "nidhi-b";
+      localStorage.setItem('nidhi-c', '1');
+      window.sessionStorage.getItem(STORAGE_KEY);
+      ls.removeItem(OTHER);
+      store . setItem (
+        'nidhi-d',
+        value,
+      );
+    `));
+    assert.deepEqual(scan, { keys: ['nidhi-a', 'nidhi-b', 'nidhi-c', 'nidhi-d'], unresolved: [] });
+  });
+
+  it('reports a key it cannot resolve, and storage used without a method', () => {
+    for (const source of [
+      "localStorage.setItem(prefix + id, v);",
+      "localStorage.setItem(keys[i], v);",
+      "const KEY = 'nidhi-a' + suffix;\nlocalStorage.setItem(KEY, v);",
+      "localStorage.setItem(`nidhi-${id}`, v);",
+      "localStorage['nidhi-x'] = v;",
+      "window.localStorage.nidhiX = v;",
+      "sessionStorage.clear();",
+    ]) {
+      assert.notDeepEqual(scanStorage(file(source)).unresolved, [], source);
+    }
+  });
+
+  it('does not take a catalog entry named localStorage for storage', () => {
+    assert.deepEqual(scanStorage(file('const t = strings.privacy.localStorage.label;')).unresolved, []);
+  });
+});
+
+describe('privacy surface reader: hosts and requests', () => {
+  it('finds hosts in every form, and leaves comments and this site out', () => {
+    const hosts = scanHosts(file(`
+      // see https://commented.example.org/docs
+      const A = 'https://a.example.org/v1';
+      const B = "//b.example.org/x.js";
+      const C = \`http://c.example.org/\${id}\`;
+      const own = 'https://nidhi.today/learn/';
+    `));
+    assert.deepEqual(Object.keys(hosts), ['a.example.org', 'b.example.org', 'c.example.org']);
+  });
+
+  it('finds requests however they are written', () => {
+    assert.deepEqual(scanRequests(file(`
+      fetch(url, { method: 'POST' });
+      window.fetch (endpoint);
+      navigator.sendBeacon(target, body);
+      const x = new XMLHttpRequest();
+      new WebSocket(addr);
+      // fetch(commented)
+      prefetch(link);
+    `)), [
+      'components/X.tsx: fetch(endpoint)',
+      'components/X.tsx: fetch(url)',
+      'components/X.tsx: new WebSocket',
+      'components/X.tsx: new XMLHttpRequest',
+      'components/X.tsx: sendBeacon(target)',
+    ]);
+  });
+
+  it('lists the build-time settings read', () => {
+    assert.deepEqual(scanPublicEnv(file('const e = import.meta.env.PUBLIC_B_ENDPOINT || import.meta.env.PUBLIC_A;')), ['PUBLIC_A', 'PUBLIC_B_ENDPOINT']);
   });
 });

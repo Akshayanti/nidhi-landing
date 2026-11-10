@@ -55,6 +55,7 @@ interface Page {
   /** Fires `type` on `target`; returns whether the default was prevented. */
   fire(type: 'click' | 'auxclick', target: unknown, init?: Click): boolean;
   href(locale: string): string | null;
+  window: Record<string, any>;
 }
 
 /** A page at `address` whose switch offers `targets`, with `state` in the tool's window property. */
@@ -86,6 +87,7 @@ function page(address: string, opts: { targets?: string[]; toolStateGlobal?: str
   runInNewContext(SOURCE, { window, globalThis: window, URLSearchParams });
   window.nidhiLangSwitch(PREFIXES, opts.toolStateGlobal ?? '');
   return {
+    window,
     links,
     assigned,
     opened,
@@ -206,9 +208,12 @@ describe('langSwitch: tool state is carried at click time, never in an href', ()
   it('reads the state at click time, so it carries what is on screen now', () => {
     const p = page('/free/loan-comparison/', { toolStateGlobal: GLOBAL, state: '' });
     assert.equal(p.fire('click', p.links[1]), false, 'nothing to carry yet');
-    const later = page('/free/loan-comparison/', { toolStateGlobal: GLOBAL, state: 'c=EUR' });
-    later.fire('click', later.links[1]);
-    assert.deepEqual(later.assigned, ['/hi/free/loan-comparison/#c=EUR']);
+    // The tool publishes its state as the reader types, after the script ran.
+    p.window[GLOBAL] = 'c=EUR';
+    p.fire('click', p.links[1]);
+    p.window[GLOBAL] = 'c=INR&n=3';
+    p.fire('click', p.links[1]);
+    assert.deepEqual(p.assigned, ['/hi/free/loan-comparison/#c=EUR', '/hi/free/loan-comparison/#c=INR&n=3']);
   });
 
   it('a page that is not a tool carries nothing and listens for nothing', () => {
