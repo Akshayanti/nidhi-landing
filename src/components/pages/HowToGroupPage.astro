@@ -82,11 +82,12 @@ const itemListSchema = {
   .htg-wrap { max-width: 52rem; margin: 0 auto; padding: 0 var(--space-4); }
   .htg-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-4); }
   .htg-crumbs a { color: var(--color-deep-blue); }
-  .htg-h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--color-text-primary); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: 1.15; }
+  .htg-h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: 1.15; }
   .htg-lede { font-size: 1.075rem; line-height: 1.6; margin: 0 0 var(--space-4); max-width: 40rem; }
   .htg-cards { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-3); }
   .htg-card { display: grid; gap: var(--space-2); height: 100%; padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; align-content: start; }
   .htg-card::after { color: var(--color-text-muted) !important; }
+  .htg-card:hover { border-color: var(--color-link-edge); }
   .htg-card:hover .htg-card-q { text-decoration: underline; }
   .htg-card-q { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; line-height: 1.3; color: var(--color-text-primary); }
   .htg-card-o { font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.5; }

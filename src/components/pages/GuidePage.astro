@@ -225,7 +225,7 @@ const breadcrumbSchema = {
   .guide-crumbs a { color: var(--color-deep-blue); }
   .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.875rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
   .guide-correction { font-size: 0.9rem; padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
-  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-text-primary); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
+  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
   .guide-outcome { color: var(--color-text-secondary); margin: 0 0 var(--space-5); }
   /* Calm by design (council, Nov 10 2026): headings and labels in text colour,
      blue only for links, two surfaces only (the short answer and the stop). */
@@ -238,8 +238,10 @@ const breadcrumbSchema = {
   }
   .guide-wrap a:not(.guide-lesson) { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
   .guide-wrap a:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; border-radius: 2px; }
+  /* The one branded surface: where reading starts. */
+  .guide-answer .guide-label { color: var(--color-teal); }
   .guide-answer {
-    background: var(--color-border-light);
+    background: color-mix(in srgb, var(--color-teal) 9%, var(--color-bg-white));
     border-radius: var(--radius-md);
     padding: var(--space-4) var(--space-5);
     margin-bottom: var(--space-4);
@@ -272,13 +274,13 @@ const breadcrumbSchema = {
   .guide-needs p { margin: 0; }
   .guide-time { margin-top: var(--space-2) !important; font-size: 0.9rem; color: var(--color-text-secondary); }
 
-  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-text-primary); margin: var(--space-8) 0 var(--space-3); }
+  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
   .guide-step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
   .guide-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: var(--space-3); }
   .guide-step-n {
     width: 2rem; height: 2rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;
-    border: 1.5px solid var(--color-text-secondary); color: var(--color-text-primary); font-weight: 700;
+    background: var(--color-teal); color: var(--color-bg-white); font-weight: 700;
   }
   .guide-step-action { font-size: 1.05rem; margin: 0.2rem 0 var(--space-1); }
   .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
@@ -293,7 +295,7 @@ const breadcrumbSchema = {
     border-radius: var(--radius-md);
     background: var(--color-border-light);
   }
-  .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: 1.1rem !important; }
+  .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: 1.1rem !important; color: var(--color-text-primary); }
   .guide-stop p { margin: 0; }
 
   .guide-template-note { font-size: 0.9rem; color: var(--color-text-secondary); }
@@ -329,4 +331,7 @@ const breadcrumbSchema = {
     .guide-step, .guide-stop, .guide-protect, .guide-template { break-inside: avoid; }
     .guide-sources { display: block; }
   }
+  :global([data-theme="dark"]) .guide-answer { background: var(--color-bg-white); border: 1px solid var(--palette-teal-dark); }
+  :global([data-theme="dark"]) .guide-answer .guide-label { color: var(--palette-teal-dark); }
+  :global([data-theme="dark"]) .guide-step-n { background: var(--palette-teal-dark); color: var(--color-bg); }
 </style>
