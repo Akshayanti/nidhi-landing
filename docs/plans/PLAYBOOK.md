@@ -39,7 +39,7 @@ Agreed, not yet applied (try them case by case): the lesson's key figure near th
 
 **Language:** English, with a money context that's EU-dominant (€, EU examples) but cosmopolitan — expat hubs globally (Lisbon, Berlin, Helsinki, Bangkok, Dubai, Singapore) rotate in as examples.
 
-Open question for the owner: is "global expats" the Instagram audience only? The lessons are written for the anxious newcomer to money (`blog-content-plan.md`), the global pass widened every lesson beyond the EU, and the site is in five languages.
+This is the Instagram audience only (owner, 2026-11-10). The site is written for every stage of a working life, from a first job to retirement: see [`../brand-identity.md`](../brand-identity.md).
 
 ---
 

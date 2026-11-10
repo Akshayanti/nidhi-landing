@@ -41,6 +41,8 @@ nidhi also keeps working as finances become more sophisticated. Mainstream consu
 
 ### Who it is for
 
+The site's audience and voice are set in [`brand-identity.md`](brand-identity.md); this section describes who the planner serves.
+
 Two situations bring people to nidhi, and they can overlap. The first is a confidence and knowledge problem: "I know I should understand my finances better, but I don't know where to start." That might be someone with a first salary, savings but no plan, or a feeling that financial terms are intimidating. They may have an entirely ordinary, single-currency financial life, and they are core nidhi users. The second is a complexity problem: "My finances have become complicated and normal tools don't represent my life properly." If "can I afford this?" cannot be answered without rebuilding a spreadsheet, nidhi is built for you. If your retirement plan changes depending on where you eventually live, nidhi is built for you. If you are comparing a property purchase, a career change, or another major financial decision and want to see the path each option puts you on, nidhi is built for you. If your financial picture is spread across accounts, assets, debts, and future expenses, in more than one currency, nidhi is built for you.
 
 The product is not aimed at one demographic. It serves people building wealth for the first time, people deep into financial independence and early-retirement planning, people working out a traditional retirement with confidence intervals, people saving for a specific goal like a down payment, and people who simply want clarity about whether they are building wealth or standing still. The same engine answers all of those questions; only the messaging changes.

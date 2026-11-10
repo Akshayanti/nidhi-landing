@@ -44,12 +44,14 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | Suku bunga yang Anda masukkan harus berada di antara 0% dan 100%. | Suku bunga yang kamu masukkan harus berada di antara 0% dan 100%. | Suku bunga yang dimasukkan harus berada di antara 0% dan 100%. |
 | A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | Jika Anda terlambat membayar, Anda tidak sendirian, dan ada cara untuk mendapatkan bantuan. | Jika kamu terlambat membayar, kamu tidak sendirian, dan ada cara untuk mendapatkan bantuan. | Terlambat membayar bukan hal yang harus dihadapi sendirian, dan ada cara untuk mendapatkan bantuan. (A reworded sentence, since the English has no pronoun-free form.) |
 
-Things to weigh: warmth against respect; whether one form reads well across
+Who the site is for and how it speaks are in [`../brand-identity.md`](../brand-identity.md): the same page has to work for someone in their first job and for a retired reader who would send it to their family. Things to weigh: warmth against respect; whether one form reads well across
 ages and regions; consistency, since a page that switches forms reads as
 careless; and whether leaving the pronoun out sounds natural or stiff in each
 context. The other editions split: Spanish uses the informal *tú*, while Hindi
 (आप), Czech (*vy*) and Marathi (तुम्ही) use the polite form. That is a
 reference, not a rule for Indonesian.
+
+**Volunteer's advice (2026-11-10):** *kamu*.
 
 **Status:** open. The volunteer advises; the owner decides after the council.
 One person's view is not proof of what readers prefer, so a point the
