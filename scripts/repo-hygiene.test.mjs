@@ -9,7 +9,7 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -25,6 +25,19 @@ describe('security.txt', () => {
     assert.equal(fields.Contact, 'mailto:hello@nidhi.today');
     assert.equal(fields.Canonical, 'https://nidhi.today/.well-known/security.txt');
     assert.equal(fields['Preferred-Languages'], 'en');
+  });
+
+  it('is published: the deploy does not leave out folders that start with a dot', () => {
+    // actions/upload-pages-artifact skips hidden files unless told otherwise;
+    // without this the file is in the repository and a 404 on the site.
+    const upload = /uses: actions\/upload-pages-artifact@v\d+\n\s+with:\n((?:\s{10}.*\n)+)/.exec(read('.github/workflows/deploy.yml'));
+    assert.ok(upload, 'no Pages upload step');
+    assert.match(upload[1], /^\s+include-hidden-files: true$/m);
+  });
+
+  it('nothing else in public/ starts with a dot, so nothing else is published by that', () => {
+    assert.deepEqual(readdirSync(join(ROOT, 'public')).filter((name) => name.startsWith('.')), ['.well-known']);
+    assert.deepEqual(readdirSync(join(ROOT, 'public/.well-known')), ['security.txt']);
   });
 
   it('has not lapsed, and will not within 30 days', () => {
