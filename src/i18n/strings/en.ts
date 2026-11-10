@@ -893,7 +893,7 @@ export const en = {
       reading: {
         before: 'Which lessons you’ve read (',
         after:
-          '), so we can show a subtle “read” indicator next time and suggest your next lesson on the homepage and the learning path, including the next step on each “Start wherever you are” route.',
+          '), so we can show a subtle “read” indicator next time and suggest your next lesson on the homepage and the learning path, including the next step on each route under “Which sounds like you?”.',
       },
       subscription: {
         before: 'Whether you’ve confirmed your newsletter subscription (',

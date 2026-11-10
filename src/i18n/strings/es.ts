@@ -736,7 +736,7 @@ export const es: Dict = {
       reading: {
         before: 'Qué lecciones has leído (',
         after:
-          '), para mostrarte un discreto indicador de «leída» la próxima vez y sugerirte tu siguiente lección en la página de inicio y en la ruta de aprendizaje, incluido el siguiente paso de cada recorrido de «Empieza donde estés».',
+          '), para mostrarte un discreto indicador de «leída» la próxima vez y sugerirte tu siguiente lección en la página de inicio y en la ruta de aprendizaje, incluido el siguiente paso de cada recorrido de «¿Cuál se parece a tu caso?».',
       },
       subscription: {
         before: 'Si has confirmado tu suscripción al boletín (',
@@ -869,7 +869,7 @@ export const es: Dict = {
       intro:
         'Según el RGPD (y normativas similares), tienes derecho a preguntarnos qué datos tenemos sobre ti, a rectificarlos, a exportarlos, a limitar cómo los usamos, a oponerte a su uso o a suprimirlos.',
       unsubscribe:
-        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera, del formulario de voluntariado y de las hojas de revisión, escríbenos y te eliminaremos, junto con tus archivos de revisión y el crédito en el sitio si lo hay. Si colaboraste, solo conservamos el registro de tu permiso, como se indica más arriba. En cualquiera de estos casos, lo haremos a mano si nos lo pides.',
+        'En el caso del boletín, puedes cancelar la suscripción con un enlace de un clic en cada correo que enviamos, y eso también programa la eliminación descrita arriba. En el caso de la lista de espera, del formulario de voluntariado y de las hojas de revisión, escríbenos y te eliminaremos, junto con tus archivos de revisión y el crédito en el sitio si lo hay. Si colaboraste, solo conservamos el registro de tu permiso, como se indica más arriba. En cualquiera de estos casos, lo haremos a mano.',
       analytics: {
         before:
           'En este sitio, los eventos de analítica no están enlazados con tu nombre ni con tu cuenta, así que no podemos buscar «tus» eventos. Las excepciones son los eventos del boletín y las páginas vistas enlazadas con tu código del boletín: esos podemos encontrarlos y borrarlos cuando nos lo pidas. En el planificador, los eventos se enlazan contigo solo si dijiste que sí en el aviso de cookies; entonces también podemos encontrarlos y borrarlos. Decir que no no borra los eventos ya enviados. Decir que no, o usar un bloqueador de contenido, no rompe nada en ninguno de los dos sitios. Puedes cambiar tu respuesta en cualquier momento con ',

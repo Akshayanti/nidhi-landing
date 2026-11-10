@@ -132,7 +132,7 @@ export const multiCurrencyNetWorthEn = {
         {
           strong: 'All computation is client-side.',
           rest:
-            ' Your asset names, values, and totals never leave your browser. The only network request is a one-time exchange rate fetch from Frankfurter, which carries your functional currency code (e.g. ',
+            ' Your asset names, values, and totals never leave your browser. The only network request fetches exchange rates from Frankfurter when the page opens, and again if you change your functional currency. It carries that currency’s code (e.g. ',
           after: ') and nothing about your assets.',
         },
       ] as NetWorthExplainerItem[],
@@ -541,7 +541,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'सारी गणना आपके डिवाइस पर होती है।',
           rest:
-            ' आपकी संपत्तियों के नाम, रकमें और जोड़ कभी आपके ब्राउज़र से बाहर नहीं जाते। एकमात्र नेटवर्क अनुरोध Frankfurter से विनिमय दरें लाने का है, जिसमें सिर्फ़ आपकी खर्च की मुद्रा का कोड जाता है (जैसे ',
+            ' आपकी संपत्तियों के नाम, रकमें और जोड़ कभी आपके ब्राउज़र से बाहर नहीं जाते। एकमात्र नेटवर्क अनुरोध Frankfurter से विनिमय दरें लाने का है: पेज खुलने पर, और अपनी खर्च की मुद्रा बदलने पर दोबारा। उसमें सिर्फ़ उस मुद्रा का कोड जाता है (जैसे ',
           after: ') और आपकी संपत्तियों के बारे में कुछ नहीं।',
         },
       ],
@@ -909,7 +909,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Todo el cálculo se hace en tu dispositivo.',
           rest:
-            ' Los nombres, valores y totales de tus activos nunca salen de tu navegador. La única petición de red es una consulta puntual de los tipos de cambio a Frankfurter, que lleva el código de tu moneda de referencia (por ejemplo, ',
+            ' Los nombres, valores y totales de tus activos nunca salen de tu navegador. La única petición de red consulta los tipos de cambio a Frankfurter cuando se abre la página, y otra vez si cambias tu moneda de referencia. Lleva el código de esa moneda (por ejemplo, ',
           after: ') y nada sobre tus activos.',
         },
       ],
@@ -1289,7 +1289,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Veškeré výpočty probíhají u vás.',
           rest:
-            ' Názvy aktiv, hodnoty a součty nikdy neopustí váš prohlížeč. Jediný síťový požadavek je jednorázové stažení kurzů ze služby Frankfurter, které nese kód měny vašich výdajů (např. ',
+            ' Názvy aktiv, hodnoty a součty nikdy neopustí váš prohlížeč. Jediný síťový požadavek stahuje kurzy ze služby Frankfurter při otevření stránky a znovu, pokud změníte měnu svých výdajů. Nese kód této měny (např. ',
           after: ') a nic o vašem majetku.',
         },
       ] as NetWorthExplainerItem[],
@@ -1647,7 +1647,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
         {
           strong: 'सर्व हिशेब तुमच्या डिव्हाइसवर होतो.',
-          rest: ' तुमच्या मालमत्तेची नावे, मूल्ये आणि बेरजा तुमच्या ब्राउझरबाहेर कधीच जात नाहीत. नेटवर्कवरची एकमेव विनंती म्हणजे Frankfurter कडून एकदा विनिमय दर आणणे, आणि तिच्यात फक्त तुमच्या खर्चाच्या चलनाचा कोड असतो (उदा. ',
+          rest: ' तुमच्या मालमत्तेची नावे, मूल्ये आणि बेरजा तुमच्या ब्राउझरबाहेर कधीच जात नाहीत. नेटवर्कवरची एकमेव विनंती म्हणजे Frankfurter कडून विनिमय दर आणणे: पान उघडल्यावर, आणि तुम्ही तुमचे खर्चाचे चलन बदलल्यावर पुन्हा. तिच्यात फक्त त्या चलनाचा कोड असतो (उदा. ',
           after: '), तुमच्या मालमत्तेबद्दल काहीही नाही.',
         },
       ],
