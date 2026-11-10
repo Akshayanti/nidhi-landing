@@ -10,20 +10,22 @@ const { locale = DEFAULT_LOCALE } = Astro.props;
 const strings = dict(locale);
 ---
 
-<div class="theme-toggle" id="theme-toggle" role="radiogroup" aria-label={strings.theme.groupLabel}>
-  <button class="theme-btn" data-mode="light" data-attr="theme-light" role="radio" aria-label={strings.theme.light} title={strings.theme.lightTitle}>
+{/* Three buttons, one of them pressed. Not radio buttons: that role promises
+    arrow keys within the group and a single tab stop, which these do not have. */}
+<div class="theme-toggle" id="theme-toggle" role="group" aria-label={strings.theme.groupLabel}>
+  <button class="theme-btn" data-mode="light" data-attr="theme-light" aria-pressed="false" aria-label={strings.theme.light} title={strings.theme.lightTitle}>
     <svg class="theme-icon" aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="10" cy="10" r="3.5"/>
       <path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.1 4.1l1 1M14.9 14.9l1 1M4.1 15.9l1-1M14.9 5.1l1-1"/>
     </svg>
   </button>
-  <button class="theme-btn" data-mode="system" data-attr="theme-system" role="radio" aria-label={strings.theme.system} title={strings.theme.systemTitle}>
+  <button class="theme-btn" data-mode="system" data-attr="theme-system" aria-pressed="false" aria-label={strings.theme.system} title={strings.theme.systemTitle}>
     <svg class="theme-icon" aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <rect x="2" y="3" width="16" height="11" rx="2"/>
       <path d="M7 17h6M10 14v3"/>
     </svg>
   </button>
-  <button class="theme-btn" data-mode="dark" data-attr="theme-dark" role="radio" aria-label={strings.theme.dark} title={strings.theme.darkTitle}>
+  <button class="theme-btn" data-mode="dark" data-attr="theme-dark" aria-pressed="false" aria-label={strings.theme.dark} title={strings.theme.darkTitle}>
     <svg class="theme-icon" aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M17.5 10.5A7.5 7.5 0 019 .5 7.5 7.5 0 1017.5 10.5z"/>
     </svg>
@@ -109,7 +111,7 @@ const strings = dict(locale);
       var buttons = toggle.querySelectorAll('.theme-btn');
       buttons.forEach(function(btn) {
         btn.setAttribute('data-active', btn.getAttribute('data-mode') === mode ? 'true' : 'false');
-        btn.setAttribute('aria-checked', btn.getAttribute('data-mode') === mode ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', btn.getAttribute('data-mode') === mode ? 'true' : 'false');
       });
     }
 
