@@ -1562,7 +1562,8 @@ function unfold_(text) {
  *     taken because another recipient in the same report failed;
  *   - the part that returns the original mail carries a reference this
  *     script made for that same recipient (X-Nidhi-Ref);
- *   - Gmail found the report itself to be signed by googlemail.com.
+ *   - the report is addressed to this script's own sending address, and
+ *     Gmail found it to be signed by googlemail.com.
  *
  * Text that only looks like these fields, in a quoted message or in the
  * human-readable part, is not read as them. Each result is
@@ -1579,6 +1580,13 @@ function failedRecipients_(msg) {
   if (!split) return [];
   var outer = unfold_(raw.slice(0, split.index));
   var body = raw.slice(split.index + split[0].length);
+  // A report about a mail this script sent comes back to the address it was
+  // sent from. A report about someone else's mail is addressed to them, and
+  // stays so if it is passed on with Google's signature intact, since the To
+  // line is part of what is signed.
+  var to = /^To:[ \t]*([^\r\n]*)$/im.exec(outer);
+  var sender = String(config_().fromEmail).toLowerCase();
+  if (!to || !new RegExp('^(?:[^<>,]*<' + sender.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '>|' + sender.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')$', 'i').test(to[1].trim())) return [];
   if (!authenticatedByGoogle_(outer)) {
     // Worth a look by the owner: either a forgery, or Google's reports no
     // longer arrive the way this expects and real bounces are being passed over.
@@ -1589,9 +1597,17 @@ function failedRecipients_(msg) {
   if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return [];
   var boundary = /boundary[ \t]*=[ \t]*(?:"([^"]+)"|([^\s;]+))/i.exec(type[1]);
   if (!boundary) return [];
-  // A part starts at a line that is the boundary and nothing else.
+  // A part starts at a line that is the boundary and nothing else. What
+  // stands before the first such line and after the closing one (the
+  // boundary followed by two more dashes) is not part of the report.
   var marker = (boundary[1] || boundary[2]).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  var parts = ('\n' + body).split(new RegExp('\\r?\\n--' + marker + '(?:--)?[ \\t]*(?=\\r?\\n|$)'));
+  var text = '\n' + body;
+  var close = new RegExp('\\r?\\n--' + marker + '--[ \\t]*(?=\\r?\\n|$)').exec(text);
+  if (!close) return [];
+  var parts = text.slice(0, close.index).split(new RegExp('\\r?\\n--' + marker + '[ \\t]*(?=\\r?\\n)'));
+  parts.shift();
+  // Something to read, the status, the returned mail: three parts, in that order.
+  if (parts.length !== 3) return [];
 
   // A delivery report has its parts in a fixed order: something to read,
   // then the status, then the returned mail. Exactly one of each of the
@@ -1614,7 +1630,13 @@ function failedRecipients_(msg) {
     }
   }
   if (status === null || !original) return [];
-  var refLine = /^X-Nidhi-Ref:[ \t]*(\S+)[ \t]*$/im.exec(original);
+  // The returned mail is one this script sent: from its own address, with
+  // one reference.
+  var sentFrom = /^From:[ \t]*([^\r\n]*)$/im.exec(original);
+  if (!sentFrom || sentFrom[1].toLowerCase().indexOf('<' + sender + '>') === -1) return [];
+  var refLines = original.match(/^X-Nidhi-Ref:[^\r\n]*$/gim) || [];
+  if (refLines.length !== 1) return [];
+  var refLine = /^X-Nidhi-Ref:[ \t]*(\S+)[ \t]*$/i.exec(refLines[0]);
   if (!refLine) return [];
 
   var out = [];
@@ -1690,9 +1712,11 @@ function handleScanBounces_(e) {
       if (!failure) continue;
       // The mail that failed must have been sent for this sign-up: one made
       // before it (an earlier subscription's), or a row whose date cannot be
-      // read, is left alone. A mail is made a moment after its row.
-      var since = new Date(rows[r][COL.createdAt - 1]).getTime();
-      if (!(since - 60000 <= failure.sentAt)) continue;
+      // read, is left alone. A reference holds whole seconds and a mail is
+      // made after its row, so the two are compared in seconds, with no
+      // allowance.
+      var since = Math.floor(new Date(rows[r][COL.createdAt - 1]).getTime() / 1000) * 1000;
+      if (!(since <= failure.sentAt)) continue;
       sh.getRange(r + 2, COL.status).setValue('bounced');
       sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
       out.push(rowEmail);

@@ -431,21 +431,24 @@ describe('newsletter.gs: bounce scan', () => {
     from = 'Mail Delivery Subsystem <mailer-daemon@googlemail.com>', ageDays = 1, readable = 'Address not found',
     outerType = 'multipart/report; boundary="b1"; report-type=delivery-status', statusType = 'message/delivery-status',
     returned = recipients[0][0], returnedRef = ref(recipients[0][0]), returnedBody = 'Hello', auth = [GOOGLE], extraParts = [],
+    to = 'updates@nidhi.today', returnedFrom = '"nidhi" <updates@nidhi.today>', preamble = [], epilogue = [],
   } = {}) => ({
     getFrom: () => from,
     getDate: () => new Date(NOW - ageDays * DAY),
     getRawContent: () => [
       'Delivered-To: updates@nidhi.today', ...auth,
-      `From: ${from}`, 'Subject: Delivery Status Notification (Failure)', `Content-Type: ${outerType}`, `X-Failed-Recipients: ${recipients.map((r) => r[0]).join(', ')}`, '',
+      `From: ${from}`, `To: ${to}`, 'Subject: Delivery Status Notification (Failure)', `Content-Type: ${outerType}`, `X-Failed-Recipients: ${recipients.map((r) => r[0]).join(', ')}`, '',
+      ...preamble,
       '--b1', 'Content-Type: text/plain; charset="UTF-8"', '', readable, '',
       '--b1', `Content-Type: ${statusType}`, '',
       'Reporting-MTA: dns; googlemail.com', 'Arrival-Date: Mon, 09 Nov 2026 10:00:00 -0800 (PST)', '',
       ...recipients.flatMap(([to, action, status]) => [`Final-Recipient: rfc822; ${to}`, `Action: ${action}`, `Status: ${status}`, 'Diagnostic-Code: smtp; 550 5.1.1 no such user', '']),
       '--b1', 'Content-Type: message/rfc822', '',
-      'From: "nidhi" <updates@nidhi.today>', `To: ${returned}`, 'List-ID: nidhi blog newsletter <newsletter.nidhi.today>', `X-Nidhi-Ref: ${returnedRef}`, 'Subject: A lesson', '',
+      `From: ${returnedFrom}`, `To: ${returned}`, 'List-ID: nidhi blog newsletter <newsletter.nidhi.today>', `X-Nidhi-Ref: ${returnedRef}`, 'Subject: A lesson', '',
       returnedBody, '',
       ...extraParts,
       '--b1--', '',
+      ...epilogue,
     ].join('\r\n'),
   });
   const failed = (to, options) => report([[to, 'failed', '5.1.1']], options);
@@ -502,6 +505,15 @@ describe('newsletter.gs: bounce scan', () => {
     ['a report with a second status part', { extraParts: ['--b1', 'Content-Type: message/delivery-status', '', 'Final-Recipient: rfc822; gone@x.io', 'Action: failed', 'Status: 5.1.1', ''] }],
     // The leaked reference: a forwarded newsletter shows a real, fresh
     // reference for gone@x.io, and someone builds a report around it.
+    // The transplant: someone copies a fresh reference for gone@x.io into a
+    // mail of their own, gets Google's genuine report of its failure, and
+    // passes that report on with its signature intact.
+    ['a genuine Google report about someone else’s mail, addressed to them', { to: 'attacker@evil.example' }],
+    ['the same addressed to both', { to: 'attacker@evil.example, updates@nidhi.today' }],
+    ['a report whose returned mail was not sent from this script’s address', { returnedFrom: 'Attacker <attacker@evil.example>' }],
+    ['a returned mail carrying two references', { extraParts: [] , returnedBody: 'x', returnedRef: `${ref('gone@x.io')}\r\nX-Nidhi-Ref: ${ref('gone@x.io')}` }],
+    ['status fields in the text before the first part', { statusType: 'text/plain', preamble: ['Content-Type: message/delivery-status', '', 'Final-Recipient: rfc822; gone@x.io', 'Action: failed', 'Status: 5.1.1', ''] }],
+    ['a report that never closes', { epilogue: [], extraParts: ['--b1', 'Content-Type: text/plain', '', 'more', ''] }],
     ['a report built around a real reference, which Gmail did not find signed by googlemail.com', { auth: ['Authentication-Results: mx.google.com; dkim=pass header.i=@evil.example; spf=pass smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com'] }],
     ['the same with no authentication result at all', { auth: [] }],
     ['the same with the forger’s own result below Gmail’s', { auth: ['Authentication-Results: mx.google.com; dkim=none; spf=fail smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com', GOOGLE] }],
@@ -518,6 +530,13 @@ describe('newsletter.gs: bounce scan', () => {
       untouched(ctx);
     });
   }
+
+  it('reads a report whose parts are followed by text after the closing line', () => {
+    const ctx = load(subscribers());
+    inbox(ctx, failed('gone@x.io', { epilogue: ['This is an epilogue.', '--b1', 'Content-Type: message/delivery-status', '', 'Final-Recipient: rfc822; a@x.io', 'Action: failed', 'Status: 5.1.1', ''] }));
+    assert.equal(scan(ctx).marked_bounced, 1);
+    assert.equal(find(ctx, 'a@x.io')[1], 'confirmed', 'what follows the closing line is not read');
+  });
 
   it('a reference does not outlive a re-subscription', () => {
     // The reader left and signed up again yesterday; a reference from a mail
