@@ -89,6 +89,9 @@
  *                                   `reminder_sent_at` column so each pending
  *                                   subscriber gets at most one reminder.
  *
+ *   Reminder test: not a web action. Run testRemindFromEditor from the
+ *   Apps Script editor (see its comment).
+ *
  *   GET  ?action=health             Per-dependency ok/error JSON report.
  *                                   Safe to call; never modifies anything.
  *
@@ -256,6 +259,30 @@ function sheet_() {
   return sh;
 }
 
+// How long a request waits for the lock before it gives up with an error.
+var LOCK_WAIT_MS_ = 20000;
+
+/**
+ * Runs `fn` while holding the script lock, so no other execution of this
+ * script can change the Sheet between a handler finding a row and writing to
+ * it. Every handler that reads the Sheet and then writes goes through here,
+ * and looks its row up inside the lock: a row number found before the lock
+ * was taken may belong to someone else by the time it is used.
+ *
+ * Mail and analytics calls stay outside the lock. They take seconds, and
+ * holding the lock for them would make a reader's subscribe request wait
+ * behind a reminder run.
+ */
+function withSheetLock_(fn) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(LOCK_WAIT_MS_);
+  try {
+    return fn();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 function findSubscriberRow_(sh, email) {
   email = email.toLowerCase().trim();
   var last = sh.getLastRow();
@@ -392,7 +419,6 @@ function doGet(e) {
     if (action === 'confirm')         return handleConfirm_(e);
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
     if (action === 'remind_pending')  return handleRemindPending();
-    if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
@@ -418,7 +444,6 @@ function doPost(e) {
     if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
     if (action === 'remind_pending')  return handleRemindPending();
-    if (action === 'test_remind')     return handleTestRemind_(e);
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     if (action === 'count')           return handleCount_(e);
@@ -649,27 +674,34 @@ function handleSubscribe_(e) {
   var source = String((e.parameter && e.parameter.source) || '').slice(0, 200);
   if (!isValidEmail_(email)) return jsonResponse_({ ok: false, error: 'invalid_email' });
 
-  var sh = sheet_();
-  var row = findSubscriberRow_(sh, email);
   var now = new Date();
-
   var confirmToken = randomToken_();
   var unsubToken = randomToken_();
 
-  if (row === 0) {
-    sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
-  } else {
-    var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
-    if (status === 'confirmed') {
-      // Already subscribed — don't leak that fact. Silently succeed.
-      trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
-      return jsonResponse_({ ok: true });
+  // Find-then-write happens under the lock: two submits for one new address
+  // cannot both append, and the row reset below cannot land on a row that a
+  // deletion has just moved someone else into.
+  var alreadyConfirmed = withSheetLock_(function () {
+    var sh = sheet_();
+    var row = findSubscriberRow_(sh, email);
+    if (row === 0) {
+      sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
+      return false;
     }
-    // pending or unsubscribed: reset to pending with fresh tokens.
+    var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
+    if (status === 'confirmed') return true;
+    // pending, unsubscribed or bounced: reset to pending with fresh tokens.
     // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
     sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
       'pending', source, now, '', '', confirmToken, unsubToken, '',
     ]]);
+    return false;
+  });
+
+  if (alreadyConfirmed) {
+    // Already subscribed — don't leak that fact. Silently succeed.
+    trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
+    return jsonResponse_({ ok: true });
   }
 
   sendConfirmationEmail_(email, confirmToken);
@@ -691,40 +723,31 @@ function handleSubscribe_(e) {
 // gets at most one reminder. Repeated calls are harmless no-ops.
 
 /**
- * Sends a single test reminder to a specific email, bypassing the time gate and
- * without updating reminder_sent_at (so the real bulk handler still processes
- * the row normally later). Only works on pending subscribers.
+ * Sends one test reminder, for checking how the reminder mail looks. Run it
+ * from the Apps Script editor only (Run → testRemindFromEditor): it is not
+ * reachable over the web, because a public version would tell anyone whether
+ * an address is on the list and would mail a pending address on every call.
  *
- * GET/POST ?action=test_remind&email=you@example.com
+ * Set the script property TEST_REMIND_EMAIL to the address first. It must be
+ * a pending subscriber. The time gate is bypassed and reminder_sent_at is
+ * not updated, so the hourly run still handles the row normally later.
  */
-function handleTestRemind_(e) {
-  var email = String((e && e.parameter && e.parameter.email) || '').toLowerCase().trim();
-  if (!email) return jsonResponse_({ ok: false, error: 'missing email parameter' });
+function testRemindFromEditor() {
+  var email = normalizeEmail_(prop_('TEST_REMIND_EMAIL'));
+  if (!email) throw new Error('Set the script property TEST_REMIND_EMAIL first.');
 
   var sh = sheet_();
-  var last = sh.getLastRow();
-  if (last < 2) return jsonResponse_({ ok: false, error: 'no rows in sheet' });
-
-  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
-  for (var r = 0; r < rows.length; r++) {
-    var row = rows[r];
-    var rowEmail = String(row[COL.email - 1] || '').toLowerCase().trim();
-    if (rowEmail !== email) continue;
-
-    if (String(row[COL.status - 1] || '').toLowerCase() !== 'pending') {
-      return jsonResponse_({ ok: false, error: 'subscriber is not pending', status: String(row[COL.status - 1] || '') });
-    }
-
-    var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
-    if (!confirmToken) return jsonResponse_({ ok: false, error: 'no confirm token found for this email' });
-
-    sendReminderEmail_(email, confirmToken);
-    trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
-      days_since_signup: 'test',
-    });
-    return jsonResponse_({ ok: true, email: email });
+  var row = findSubscriberRow_(sh, email);
+  if (row === 0) throw new Error('TEST_REMIND_EMAIL is not in the sheet.');
+  var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+  if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') {
+    throw new Error('TEST_REMIND_EMAIL is not a pending subscriber.');
   }
-  return jsonResponse_({ ok: false, error: 'email not found in sheet' });
+  var confirmToken = String(values[COL.confirmToken - 1] || '').trim();
+  if (!confirmToken) throw new Error('No confirm token on that row.');
+
+  sendReminderEmail_(email, confirmToken);
+  console.log('testRemindFromEditor: reminder sent.');
 }
 
 function handleRemindPending() {
@@ -736,69 +759,96 @@ function handleRemindPending() {
     return jsonResponse_({ ok: true, skipped: 'outside_window', utc_hour: utcHour });
   }
 
-  var cfg = config_();
-  var sh = sheet_();
-  var last = sh.getLastRow();
-  if (last < 2) return jsonResponse_({ ok: true, processed: 0 });
-
-  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
   var now = new Date();
   var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
   var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
-  var sent = 0;
-  var deleted = 0;
-  var rowsToDelete = [];
+  var dayMs = 24 * 60 * 60 * 1000;
 
-  for (var r = 0; r < rows.length; r++) {
-    var row = rows[r];
+  // Step 1, under the lock: read the Sheet once, claim every row that is due
+  // a reminder by stamping reminder_sent_at, and delete the expired rows.
+  // The row numbers come from a snapshot taken inside the lock, so they are
+  // still right when they are used. Stamping before sending is what stops
+  // two overlapping runs from both mailing the same person.
+  var plan = withSheetLock_(function () {
+    var toRemind = [];
+    var expired = [];
+    var sh = sheet_();
+    var last = sh.getLastRow();
+    if (last < 2) return { toRemind: toRemind, expired: expired };
 
-    // Must be pending.
-    if (String(row[COL.status - 1] || '').toLowerCase() !== 'pending') continue;
+    var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+    var rowsToDelete = [];
+    for (var r = 0; r < rows.length; r++) {
+      var row = rows[r];
+      if (String(row[COL.status - 1] || '').toLowerCase() !== 'pending') continue;
 
-    var createdAt = row[COL.createdAt - 1];
-    var ageMs = createdAt ? now.getTime() - new Date(createdAt).getTime() : 0;
-
-    // Older than 7 days: remove entirely.
-    if (createdAt && ageMs >= sevenDaysMs) {
-      rowsToDelete.push(r);
+      var createdAt = row[COL.createdAt - 1];
+      var ageMs = createdAt ? now.getTime() - new Date(createdAt).getTime() : 0;
       var email = String(row[COL.email - 1] || '').trim();
-      try {
-        trackPosthog_('blog_pending_expired', distinctIdForEmail_(email), {
-          days_since_signup: Math.round(ageMs / (24 * 60 * 60 * 1000)),
-        });
-      } catch (_) {}
-      continue;
+
+      // Older than 7 days: remove entirely.
+      if (createdAt && ageMs >= sevenDaysMs) {
+        rowsToDelete.push(r + 2); // 0-indexed data row → sheet row
+        expired.push({ email: email, days: Math.round(ageMs / dayMs) });
+        continue;
+      }
+
+      // Older than 3 days, with no reminder yet.
+      if (!createdAt || ageMs < threeDaysMs) continue;
+      if (row[COL.reminderSentAt - 1]) continue;
+
+      var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
+      if (!email || !confirmToken) continue;
+
+      sh.getRange(r + 2, COL.reminderSentAt).setValue(now);
+      toRemind.push({ email: email, confirmToken: confirmToken, days: Math.round(ageMs / dayMs) });
     }
 
-    // Must be older than 3 days to qualify for a reminder.
-    if (!createdAt || ageMs < threeDaysMs) continue;
+    // Bottom-up, so a deletion never shifts a row still to be deleted.
+    for (var d = rowsToDelete.length - 1; d >= 0; d--) sh.deleteRow(rowsToDelete[d]);
+    return { toRemind: toRemind, expired: expired };
+  });
 
-    // Must not have already received a reminder.
-    if (row[COL.reminderSentAt - 1]) continue;
+  // Step 2, outside the lock: the slow part.
+  plan.expired.forEach(function (x) {
+    trackPosthog_('blog_pending_expired', distinctIdForEmail_(x.email), { days_since_signup: x.days });
+  });
 
-    var email = String(row[COL.email - 1] || '').trim();
-    var confirmToken = String(row[COL.confirmToken - 1] || '').trim();
-    if (!email || !confirmToken) continue;
-
+  var sent = 0;
+  plan.toRemind.forEach(function (x) {
     try {
-      sendReminderEmail_(email, confirmToken);
-      sh.getRange(r + 2, COL.reminderSentAt).setValue(now);
-      trackPosthog_('blog_pending_reminded', distinctIdForEmail_(email), {
-        days_since_signup: Math.round(ageMs / (24 * 60 * 60 * 1000)),
-      });
+      sendReminderEmail_(x.email, x.confirmToken);
+      trackPosthog_('blog_pending_reminded', distinctIdForEmail_(x.email), { days_since_signup: x.days });
       sent++;
     } catch (err) {
-      console.warn('handleRemindPending: failed for ' + email + ': ' + err);
+      console.warn('handleRemindPending: failed for ' + x.email + ': ' + err);
+      releaseReminderClaim_(x.email, x.confirmToken);
     }
-  }
+  });
 
-  // Delete rows in reverse order so indices don't shift.
-  for (var d = rowsToDelete.length - 1; d >= 0; d--) {
-    sh.deleteRow(rowsToDelete[d] + 2); // +2: 0-indexed data rows → 1-indexed + header row
-    deleted++;
-  }
+  return jsonResponse_({ ok: true, reminded: sent, deleted: plan.expired.length, utc_hour: utcHour });
+}
 
-  return jsonResponse_({ ok: true, reminded: sent, deleted: deleted, prague_hour: pragueHour });
+/**
+ * A reminder that could not be sent gives its claim back, so the next hourly
+ * run tries again. The row is found again by address, and only a row that is
+ * still pending with the same confirm token is touched: the reader may have
+ * confirmed, unsubscribed or subscribed afresh while the mail was failing.
+ */
+function releaseReminderClaim_(email, confirmToken) {
+  try {
+    withSheetLock_(function () {
+      var sh = sheet_();
+      var row = findSubscriberRow_(sh, email);
+      if (row === 0) return;
+      var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+      if (String(values[COL.status - 1] || '').toLowerCase() !== 'pending') return;
+      if (String(values[COL.confirmToken - 1] || '').trim() !== confirmToken) return;
+      sh.getRange(row, COL.reminderSentAt).setValue('');
+    });
+  } catch (err) {
+    console.warn('releaseReminderClaim_: ' + err);
+  }
 }
 
 /**
@@ -871,23 +921,31 @@ function sendReminderEmail_(email, confirmToken) {
 function handleConfirm_(e) {
   var cfg = config_();
   var token = (e.parameter && e.parameter.t) || '';
-  var sh = sheet_();
-  var row = findRowByToken_(sh, COL.confirmToken, token);
 
-  if (row === 0) {
+  // Lookup and write under one lock, so the row found by the token is the
+  // row written to. Flip status to confirmed; clear unsubscribedAt in case
+  // this row was previously unsubscribed; invalidate the confirm token so
+  // the link is single-use. Unsub token stays intact.
+  var found = withSheetLock_(function () {
+    var sh = sheet_();
+    var row = findRowByToken_(sh, COL.confirmToken, token);
+    if (row === 0) return null;
+    var who = {
+      email: String(sh.getRange(row, COL.email).getValue()).trim(),
+      unsubToken: String(sh.getRange(row, COL.unsubToken).getValue()).trim(),
+    };
+    sh.getRange(row, COL.status).setValue('confirmed');
+    sh.getRange(row, COL.confirmedAt).setValue(new Date());
+    sh.getRange(row, COL.unsubscribedAt).setValue('');
+    sh.getRange(row, COL.confirmToken).setValue('');
+    return who;
+  });
+
+  if (!found) {
     return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=confirm');
   }
-
-  var email = String(sh.getRange(row, COL.email).getValue()).trim();
-  var unsubToken = String(sh.getRange(row, COL.unsubToken).getValue()).trim();
-
-  // Flip status to confirmed; clear unsubscribedAt in case this row was
-  // previously unsubscribed; invalidate the confirm token so the link is
-  // single-use. Unsub token stays intact.
-  sh.getRange(row, COL.status).setValue('confirmed');
-  sh.getRange(row, COL.confirmedAt).setValue(new Date());
-  sh.getRange(row, COL.unsubscribedAt).setValue('');
-  sh.getRange(row, COL.confirmToken).setValue('');
+  var email = found.email;
+  var unsubToken = found.unsubToken;
 
   // Welcome email: land softly in the inbox right after the opt-in click
   // so the subscriber sees an immediate "you're in" beyond the landing
@@ -917,18 +975,6 @@ function handleConfirm_(e) {
 function handleUnsubscribe_(e, method) {
   var cfg = config_();
   var token = (e.parameter && e.parameter.t) || '';
-  var sh = sheet_();
-  var row = findRowByToken_(sh, COL.unsubToken, token);
-
-  if (row === 0) {
-    if (method === 'POST') {
-      return jsonResponse_({ ok: false, error: 'invalid_token' });
-    }
-    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
-  }
-
-  var email = String(sh.getRange(row, COL.email).getValue()).trim();
-  var currentStatus = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
 
   // Idempotency: a second unsubscribe for the same token is a no-op. This
   // happens in practice when the user double-clicks the "Unsubscribe me"
@@ -936,11 +982,27 @@ function handleUnsubscribe_(e, method) {
   // clicks the email-body link's landing page, or when the row was already
   // auto-marked by the bounce scanner. Without this guard we'd re-stamp
   // unsubscribed_at and re-fire blog_unsubscribe, double-counting exits in
-  // PostHog retention.
-  if (currentStatus !== 'unsubscribed') {
+  // PostHog retention. Lookup, check and write share one lock.
+  var result = withSheetLock_(function () {
+    var sh = sheet_();
+    var row = findRowByToken_(sh, COL.unsubToken, token);
+    if (row === 0) return null;
+    var who = String(sh.getRange(row, COL.email).getValue()).trim();
+    var currentStatus = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
+    if (currentStatus === 'unsubscribed') return { email: who, changed: false };
     sh.getRange(row, COL.status).setValue('unsubscribed');
     sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
-    trackPosthog_('blog_unsubscribe', distinctIdForEmail_(email), { method: method });
+    return { email: who, changed: true };
+  });
+
+  if (!result) {
+    if (method === 'POST') {
+      return jsonResponse_({ ok: false, error: 'invalid_token' });
+    }
+    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+  }
+  if (result.changed) {
+    trackPosthog_('blog_unsubscribe', distinctIdForEmail_(result.email), { method: method });
   }
 
   // Gmail's RFC 8058 one-click unsubscribe POSTs and expects a 2xx JSON
@@ -1001,7 +1063,53 @@ function handleSendPost_(e) {
     return jsonResponse_({ ok: true, skipped: 'already_sent', sent: 0 });
   }
 
-  var subscribers = listConfirmedSubscribers_();
+  // One fan-out per guid at a time. If the caller's HTTP request fails while
+  // this script keeps running, the next workflow run arrives while the first
+  // is still sending, and without this both would mail the same readers. The
+  // reply is shaped like a partial send, so the caller leaves the guid
+  // unmarked and a later run resumes or finds it already sent.
+  if (!claimSend_(payload.guid)) {
+    return jsonResponse_({ ok: true, sent: 0, failed: 0, partial: true, in_progress: true });
+  }
+  try {
+    return sendPostFanOut_(cfg, payload, seenKey);
+  } finally {
+    props_().deleteProperty(sendingKey_(payload.guid));
+  }
+}
+
+// A claim older than this is a run that died without cleaning up. Apps
+// Script stops an execution at 6 minutes, so no live run is older.
+var SEND_CLAIM_MAX_AGE_MS_ = 7 * 60 * 1000;
+
+function sendingKey_(guid) { return 'sending:' + guid; }
+
+/** Takes the per-guid send claim; false when another run holds a fresh one. */
+function claimSend_(guid) {
+  return withSheetLock_(function () {
+    var key = sendingKey_(guid);
+    var since = Number(prop_(key)) || 0;
+    if (since && Date.now() - since < SEND_CLAIM_MAX_AGE_MS_) return false;
+    props_().setProperty(key, String(Date.now()));
+    return true;
+  });
+}
+
+function sendPostFanOut_(cfg, payload, seenKey) {
+  // Checked again now that the claim is held: the run that held it before
+  // may have finished this guid in the meantime.
+  if (prop_(seenKey)) {
+    return jsonResponse_({ ok: true, skipped: 'already_sent', sent: 0 });
+  }
+
+  // One mail per address, even if the Sheet holds the address twice.
+  var seenEmails = {};
+  var subscribers = listConfirmedSubscribers_().filter(function (s) {
+    var key = (s.email || '').toLowerCase();
+    if (seenEmails[key]) return false;
+    seenEmails[key] = true;
+    return true;
+  });
   if (subscribers.length === 0) {
     props_().setProperty(seenKey, String(new Date().getTime()));
     return jsonResponse_({ ok: true, sent: 0 });
@@ -1237,34 +1345,33 @@ function handleScanBounces_(e) {
 
   // Filter to addresses that actually exist in the Sheet (and are currently
   // confirmed) — everything else is noise from the bounce body.
-  var sh = sheet_();
-  var last = sh.getLastRow();
-  if (last < 2) {
-    return jsonResponse_({
-      ok: true, threads_scanned: threads.length,
-      candidates: Object.keys(candidates).length, marked_bounced: 0,
-    });
-  }
+  // The inbox scan above took a while; the Sheet is read and written here in
+  // one go under the lock, so each row number is used while it is still right.
+  var markedAddrs = withSheetLock_(function () {
+    var out = [];
+    var sh = sheet_();
+    var last = sh.getLastRow();
+    if (last < 2) return out;
+    var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+    for (var r = 0; r < rows.length; r++) {
+      var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
+      var rowStatus = String(rows[r][1] || '').toLowerCase();
+      if (rowStatus !== 'confirmed') continue;
+      if (!candidates[rowEmail]) continue;
+      sh.getRange(r + 2, COL.status).setValue('bounced');
+      sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
+      out.push(rowEmail);
+    }
+    return out;
+  });
+  var marked = markedAddrs.length;
 
-  var marked = 0;
-  var markedAddrs = [];
-  var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
-  for (var r = 0; r < rows.length; r++) {
-    var rowEmail = String(rows[r][0] || '').trim().toLowerCase();
-    var rowStatus = String(rows[r][1] || '').toLowerCase();
-    if (rowStatus !== 'confirmed') continue;
-    if (!candidates[rowEmail]) continue;
-
-    sh.getRange(r + 2, COL.status).setValue('bounced');
-    sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
-    marked++;
-    markedAddrs.push(rowEmail);
-
-    trackPosthog_('blog_subscriber_bounced', distinctIdForEmail_(rowEmail), {
-      email_domain: emailDomain_(rowEmail),
+  markedAddrs.forEach(function (addr) {
+    trackPosthog_('blog_subscriber_bounced', distinctIdForEmail_(addr), {
+      email_domain: emailDomain_(addr),
       via: 'mailer_daemon_scan',
     });
-  }
+  });
 
   if (marked > 0) {
     console.warn('scan_bounces: marked ' + marked + ' row(s) as bounced: ' + markedAddrs.join(', '));
