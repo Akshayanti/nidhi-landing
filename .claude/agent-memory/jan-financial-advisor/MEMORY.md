@@ -1,0 +1,1 @@
+- [Editorial voice and canonical figures](project_editorial_voice_and_canonical_figures.md) — lesson voice rule plus the return figures, debt threshold, priority order the corpus must agree on
