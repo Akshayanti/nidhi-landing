@@ -349,7 +349,19 @@ export function scanPublicEnv(files: SourceFile[]): string[] {
 const SENSITIVE = [
   'posthog', 'capture', 'track', 'localStorage', 'sessionStorage', 'setItem', 'getItem', 'removeItem', 'cookie', 'indexedDB', 'caches',
   'fetch', 'sendBeacon', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'importScripts', 'Worker', 'Image',
+  // A request can also be made by building an element that loads something,
+  // by sending a form, or by going to an address.
+  'createElement', 'innerHTML', 'outerHTML', 'insertAdjacentHTML', 'setAttribute', 'location', 'submit', 'navigator',
   'eval', 'Function',
+];
+
+// Two more, counted only where they act: `src` and `open` are ordinary words
+// in markup and prose (every image has a `src=`), so the count is of a
+// property being set (`.src =`, `.srcset =`) and of a method being called
+// (`.open(`), on anything.
+const SENSITIVE_FORMS: [string, RegExp][] = [
+  ['.src=', /\.\s*src(?:set)?\s*=(?!=)/g],
+  ['.open(', /\.\s*open\s*\??\.?\s*\(/g],
 ];
 
 /**
@@ -377,6 +389,10 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
       // counting both keeps the second from hiding.
       const n = [...raw.matchAll(new RegExp(`(?<![\\w$])${word}(?![\\w$])`, 'g'))].length;
       if (n > 0) out.push(`${path}: ${word} x${n}`);
+    }
+    for (const [name, pattern] of SENSITIVE_FORMS) {
+      const n = [...raw.matchAll(pattern)].length;
+      if (n > 0) out.push(`${path}: ${name} x${n}`);
     }
   }
   return out.sort();
