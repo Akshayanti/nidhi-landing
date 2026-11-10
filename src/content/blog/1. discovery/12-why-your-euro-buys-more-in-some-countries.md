@@ -83,7 +83,7 @@ Same drink. Same basic ingredients. Very different prices. The reason isn't that
     <rect x="160" y="285" width="90" height="35" class="fig-fill-warn"/>
     <text x="205" y="345" text-anchor="middle" class="fig-label">Helsinki</text>
     <text x="205" y="363" text-anchor="middle" class="fig-tick">€4.50 each</text>
-    <text x="205" y="275" text-anchor="middle" class="fig-label" style="fill: var(--color-warning);">1</text>
+    <text x="205" y="275" text-anchor="middle" class="fig-label fig-text-warn">1</text>
     <rect x="320" y="271" width="90" height="49" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
     <text x="365" y="345" text-anchor="middle" class="fig-label">Berlin</text>
     <text x="365" y="363" text-anchor="middle" class="fig-tick">€3.20 each</text>

@@ -244,6 +244,16 @@ html:is([lang="hi"], [lang="mr"]) {
   /* Semantic */
   --color-success:          var(--semantic-success-light);
   --color-warning:          var(--semantic-warning-light);
+  /* Lesson figures: the ink of a label painted on a filled shape, the text
+     colour for an orange figure, and the line round a shape whose fill is
+     too close to the page to show its edge. The fills turn light in dark
+     mode, so the ink turns dark with them; orange never holds white (2.7:1),
+     so its label is dark in both themes. Checked by scripts/lint-figures.mjs. */
+  --fig-on-fill:            var(--neutral-white);
+  --fig-on-warn:            var(--neutral-page-bg-dark);
+  --fig-text-warn:          var(--palette-deep-orange);
+  --fig-outline:            #595959;
+  --fig-outline-warn:       var(--fig-outline);
   --color-danger:           var(--semantic-danger-light);
   --color-info:             var(--semantic-info-light);
 
@@ -355,6 +365,10 @@ html:is([lang="hi"], [lang="mr"]) {
 
   --color-success:          var(--semantic-success-dark);
   --color-warning:          var(--semantic-warning-dark);
+  --fig-on-fill:            var(--neutral-page-bg-dark);
+  --fig-text-warn:          var(--semantic-warning-dark);
+  --fig-outline:            #BDBDBD;
+  --fig-outline-warn:       none; /* the dark orange fill stands clear of the dark card (9.6:1) */
   --color-danger:           var(--semantic-danger-dark);
   --color-info:             var(--semantic-info-dark);
 
@@ -1131,8 +1145,8 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
 .prose figure svg .fig-tick { font: 400 12px var(--font-heading); fill: var(--color-text-muted); }
-.prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--neutral-white); }
-.prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--neutral-white); }
+.prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--fig-on-fill); }
+.prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--fig-on-fill); }
 .prose figure svg .fig-num-blue { font: 700 28px var(--font-heading); fill: var(--color-deep-blue); }
 .prose figure svg .fig-quote-large { font: 600 20px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-quote-small { font: 400 14px var(--font-heading); fill: var(--color-text-muted); font-style: italic; }
@@ -1142,12 +1156,19 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-fill-blue-soft { fill: var(--color-deep-blue); fill-opacity: 0.12; }
 .prose figure svg .fig-fill-teal { fill: var(--color-teal); }
 .prose figure svg .fig-fill-teal-soft { fill: var(--color-teal); fill-opacity: 0.14; }
-.prose figure svg .fig-fill-warn { fill: var(--color-warning); }
+.prose figure svg .fig-fill-warn { fill: var(--color-warning); stroke: var(--fig-outline-warn); stroke-width: 1; }
 .prose figure svg .fig-fill-warn-soft { fill: var(--color-warning); fill-opacity: 0.14; }
 .prose figure svg .fig-fill-success { fill: var(--color-success); }
 .prose figure svg .fig-fill-text { fill: var(--color-text-primary); }
 .prose figure svg .fig-fill-muted { fill: var(--color-border-light); }
 .prose figure svg .fig-fill-card { fill: var(--color-bg); }
+
+/* A label on a filled shape, and orange text on the page. These come after
+   the text classes above, so they decide the colour whichever of those the
+   label also carries. A figure never writes a colour of its own. */
+.prose figure svg .fig-on-fill { fill: var(--fig-on-fill); }
+.prose figure svg .fig-on-warn { fill: var(--fig-on-warn); }
+.prose figure svg .fig-text-warn { fill: var(--fig-text-warn); }
 
 .prose figure svg .fig-stroke-blue { stroke: var(--color-deep-blue); fill: none; }
 .prose figure svg .fig-stroke-teal { stroke: var(--color-teal); fill: none; }

@@ -119,7 +119,7 @@ Once the credit card is gone, you roll the full €460 into the store card at 12
     <text x="466" y="144" class="fig-tick">M12</text>
     <text x="80" y="170" class="fig-sublabel">Credit card · €6,500 · 22%</text>
     <rect x="380" y="158" width="153.3" height="16" rx="3" class="fig-fill-warn-soft" stroke="var(--color-warning)" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <text x="539.3" y="170" class="fig-tick" style="fill: var(--color-warning); font-weight: 600;">M23 · 22% compounding throughout</text>
+    <text x="539.3" y="170" class="fig-tick fig-text-warn" style="font-weight: 600;">M23 · 22% compounding throughout</text>
     <text x="80" y="196" class="fig-sublabel">Student loan · €14,000 · 4%</text>
     <rect x="380" y="184" width="260" height="16" rx="3" class="fig-fill-blue"/>
     <text x="646" y="196" class="fig-tick">M39</text>

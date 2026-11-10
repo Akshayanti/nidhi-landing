@@ -87,10 +87,10 @@ Applying for multiple new credit lines in a short period suggests financial pres
     <text x="440" y="44" text-anchor="middle" class="fig-title">What moves your score</text>
     <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Ranked as in FICO&#8217;s published weights; other systems differ</text>
     <rect x="120" y="98" width="600" height="34" rx="6" class="fig-fill-teal"/>
-    <text x="134" y="120" text-anchor="start" class="fig-label" style="fill: var(--neutral-white);">Paying on time</text>
-    <text x="706" y="120" text-anchor="end" class="fig-tick" style="fill: var(--neutral-white);">biggest lever</text>
+    <text x="134" y="120" text-anchor="start" class="fig-label fig-on-fill">Paying on time</text>
+    <text x="706" y="120" text-anchor="end" class="fig-tick fig-on-fill">biggest lever</text>
     <rect x="120" y="146" width="468" height="34" rx="6" class="fig-fill-blue"/>
-    <text x="134" y="168" text-anchor="start" class="fig-label" style="fill: var(--neutral-white);">How much credit you use</text>
+    <text x="134" y="168" text-anchor="start" class="fig-label fig-on-fill">How much credit you use</text>
     <rect x="120" y="194" width="360" height="34" rx="6" class="fig-fill-blue-soft fig-stroke-blue" stroke-width="1.5"/>
     <text x="134" y="216" text-anchor="start" class="fig-label">Length of history</text>
     <rect x="120" y="242" width="250" height="34" rx="6" class="fig-fill-muted"/>

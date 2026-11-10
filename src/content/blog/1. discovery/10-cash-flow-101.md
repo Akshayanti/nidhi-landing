@@ -108,7 +108,7 @@ If you earn €3,000 and spend €2,400, your savings rate is 20%. For tracking 
     <text x="440" y="66" text-anchor="middle" class="fig-subtitle">Cash flow is what is left after the money has moved</text>
     <rect x="320" y="100" width="240" height="56" rx="10" class="fig-fill-blue"/>
     <text x="440" y="130" text-anchor="middle" class="fig-num-md">€3,000 in</text>
-    <text x="440" y="148" text-anchor="middle" class="fig-tick" style="fill: var(--neutral-white);">income this month</text>
+    <text x="440" y="148" text-anchor="middle" class="fig-tick fig-on-fill">income this month</text>
     <path d="M 440,156 L 440,196" class="fig-stroke-muted" stroke-width="2"/>
     <path d="M 432,188 L 440,198 L 448,188 Z" class="fig-fill-muted"/>
     <rect x="300" y="198" width="280" height="52" rx="10" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
@@ -122,7 +122,7 @@ If you earn €3,000 and spend €2,400, your savings rate is 20%. For tracking 
     <path d="M 432,282 L 440,292 L 448,282 Z" class="fig-fill-teal"/>
     <rect x="320" y="292" width="240" height="62" rx="10" class="fig-fill-teal"/>
     <text x="440" y="322" text-anchor="middle" class="fig-num-md">€600 left</text>
-    <text x="440" y="340" text-anchor="middle" class="fig-tick" style="fill: var(--neutral-white);">your cash flow · 20% savings rate</text>
+    <text x="440" y="340" text-anchor="middle" class="fig-tick fig-on-fill">your cash flow · 20% savings rate</text>
     <text x="440" y="408" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative. Savings rate calculated on net (take-home) income.</text>
   </svg>
   <figcaption>Your salary is the top box. Your cash flow is the bottom one. Most people watch the top and never measure the bottom, which is the number that actually builds wealth.</figcaption>

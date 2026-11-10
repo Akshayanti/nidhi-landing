@@ -117,7 +117,7 @@ The number went up. The value went down. You gained over €1,600 in interest bu
     <text x="110" y="155" text-anchor="end" class="fig-sublabel">€10,000</text>
     <text x="730" y="92" class="fig-label" style="fill: var(--color-deep-blue);">€11,614</text>
     <text x="730" y="110" class="fig-tick">nominal balance</text>
-    <text x="730" y="335" class="fig-label" style="fill: var(--color-warning);">€5,537</text>
+    <text x="730" y="335" class="fig-label fig-text-warn">€5,537</text>
     <text x="730" y="353" class="fig-tick">what it buys</text>
     <text x="600" y="225" text-anchor="middle" class="fig-eyebrow">PURCHASING POWER LOST</text>
     <text x="440" y="465" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · 0.5% nominal interest, 2.5% inflation, compounded annually</text>
