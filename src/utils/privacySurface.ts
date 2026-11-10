@@ -450,20 +450,24 @@ export interface HolderScan {
  */
 /**
  * Whether the name at [at, end) is only being tested inside the condition
- * that opens at `from`. It must not sit inside a call made in the condition
- * (the innermost bracket around it is the condition's own, or one that only
- * groups), and what follows it, after at most two member names, must end the
- * test: a closing bracket, `&&`, `||` or a comparison.
+ * that opens at `from`. Every bracket around it, up to the condition's own,
+ * must be one that only groups: a `(` that follows `(`, `!`, `&&` or `||`.
+ * A `(` after anything else (a name, `)`, `]`, `?.`, whatever a call can be
+ * written with) may be a call, which can keep what it is given; so can `[`
+ * and `{`. And what follows the name, after at most two member names, must
+ * end the test: a closing bracket, `&&`, `||` or a comparison.
  */
 function isTest(text: string, from: number, at: number, end: number): boolean {
   let depth = 0;
   for (let i = at - 1; i > from; i--) {
-    if (text[i] === ')' || text[i] === ']' || text[i] === '}') depth++;
-    else if (text[i] === '[' || text[i] === '{') { if (depth === 0) return false; depth--; }
-    else if (text[i] === '(') {
+    const c = text[i];
+    if (c === ')' || c === ']' || c === '}') depth++;
+    else if (c === '[' || c === '{') { if (depth === 0) return false; depth--; }
+    else if (c === '(') {
       if (depth > 0) { depth--; continue; }
-      // An unmatched bracket inside the condition: a call if a name, `)` or `]` stands before it.
-      if (/[\w$)\]]\s*$/.test(text.slice(from + 1, i))) return false;
+      // An open bracket around the name: accepted only if it plainly groups.
+      const before = text.slice(from, i).trimEnd();
+      if (!/(?:\(|!|&&|\|\|)$/.test(before)) return false;
     }
   }
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
