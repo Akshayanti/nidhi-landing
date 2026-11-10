@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-11',
+    items: [
+      {
+        id: 'net-worth-rates-and-csv-amounts',
+        text: {
+          en: 'Two more fixes to the net worth calculator. After you change your spending currency it no longer shows a total worked out with the previous currency’s exchange rates: it waits for the new rates, and says so if they cannot be loaded. And amounts in an uploaded CSV file are read the way the file writes numbers, so “2500,50” is two thousand five hundred and a half, not a quarter of a million.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर में दो और सुधार हुए हैं। खर्च की मुद्रा बदलने के बाद वह अब पिछली मुद्रा की विनिमय दरों से निकला कुल जोड़ नहीं दिखाता: नई दरों का इंतज़ार करता है, और वे लोड न हो सकें तो यह बताता है। और अपलोड की गई CSV फ़ाइल की रकमें वैसे ही पढ़ी जाती हैं जैसे फ़ाइल में संख्याएँ लिखी हैं, इसलिए “2500,50” का मतलब ढाई हज़ार और पचास पैसे है, ढाई लाख नहीं।',
+          es: 'Dos correcciones más en la calculadora de patrimonio neto. Después de cambiar la moneda de tus gastos ya no muestra un total calculado con los tipos de cambio de la moneda anterior: espera a los nuevos y avisa si no se pueden cargar. Y las cantidades de un archivo CSV subido se leen como el archivo escribe los números, así que «2500,50» son dos mil quinientos con cincuenta, no un cuarto de millón.',
+          cs: 'Další dvě opravy v\u00a0kalkulačce čistého jmění. Po změně měny výdajů už neukazuje součet spočítaný s\u00a0kurzy předchozí měny: čeká na nové kurzy a\u00a0řekne, když se je nepodaří načíst. A\u00a0částky v\u00a0nahraném souboru CSV se čtou tak, jak soubor čísla zapisuje, takže „2500,50“ je dva tisíce pět set a\u00a0půl, ne čtvrt milionu.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये आणखी दोन दुरुस्त्या झाल्या आहेत. खर्चाचे चलन बदलल्यानंतर तो आता आधीच्या चलनाच्या विनिमय दरांनी काढलेली एकूण बेरीज दाखवत नाही: नव्या दरांची वाट पाहतो, आणि ते लोड झाले नाहीत तर तसे सांगतो. आणि अपलोड केलेल्या CSV\u00a0फाइलमधील रकमा फाइलमध्ये संख्या जशा लिहिल्या आहेत तशाच वाचल्या जातात, त्यामुळे “2500,50” म्हणजे अडीच हजार आणि अर्धा, अडीच लाख नाही.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-10',
     items: [
       {
