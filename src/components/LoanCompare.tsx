@@ -191,13 +191,13 @@ function engineWarning(raw: string, s: Strings): string {
 // interactions where the analytical value is high and the privacy cost is
 // low (no principal, no rates, no fees, no user-typed vendor names).
 //
-// `posthog.capture` works regardless of cookie-consent state. What's
+// PostHog's capture call works regardless of cookie-consent state. What's
 // gated on consent is `autocapture` (the auto-watching of clicks on
 // elements with `data-attr`). Explicit captures here therefore work for
 // both consented and anonymous users, and we keep the property payloads
 // strictly non-PII so that's safe.
 // -----------------------------------------------------------------------------
-// `window.posthog` is declared once, in src/types/posthog.d.ts.
+// The PostHog object on `window` is declared once, in the types file under src/types/.
 
 function track(event: string, properties?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;

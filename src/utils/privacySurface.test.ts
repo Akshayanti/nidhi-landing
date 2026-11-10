@@ -298,7 +298,7 @@ const EXPECTED_MENTIONS = [
   'components/LearnHome.tsx: getItem x1',
   'components/LearnHome.tsx: localStorage x1',
   'components/LearnHome.tsx: location x2',
-  'components/LearnHome.tsx: posthog x6',
+  'components/LearnHome.tsx: posthog x4',
   'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',
@@ -306,7 +306,7 @@ const EXPECTED_MENTIONS = [
   'components/LoanCompare.tsx: cookie x1',
   'components/LoanCompare.tsx: location x5',
   'components/LoanCompare.tsx: navigator x1',
-  'components/LoanCompare.tsx: posthog x4',
+  'components/LoanCompare.tsx: posthog x1',
   'components/LoanCompare.tsx: track x25',
   'components/MonteCarloSimulator.tsx: Worker x2',
   'components/MonteCarloSimulator.tsx: capture x1',
@@ -318,15 +318,15 @@ const EXPECTED_MENTIONS = [
   'components/MultiCurrencyNetWorth.tsx: fetch x2',
   'components/MultiCurrencyNetWorth.tsx: location x5',
   'components/MultiCurrencyNetWorth.tsx: navigator x1',
-  'components/MultiCurrencyNetWorth.tsx: posthog x3',
+  'components/MultiCurrencyNetWorth.tsx: posthog x1',
   'components/MultiCurrencyNetWorth.tsx: track x18',
   'components/SubscribeSection.astro: capture x7',
   'components/SubscribeSection.astro: cookie x1',
   'components/SubscribeSection.astro: fetch x1',
   'components/SubscribeSection.astro: getItem x2',
-  'components/SubscribeSection.astro: localStorage x11',
+  'components/SubscribeSection.astro: localStorage x7',
   'components/SubscribeSection.astro: location x2',
-  'components/SubscribeSection.astro: posthog x14',
+  'components/SubscribeSection.astro: posthog x13',
   'components/SubscribeSection.astro: removeItem x3',
   'components/SubscribeSection.astro: setAttribute x1',
   'components/SubscribeSection.astro: setItem x2',
@@ -340,7 +340,7 @@ const EXPECTED_MENTIONS = [
   'components/WaitlistSection.astro: capture x2',
   'components/WaitlistSection.astro: fetch x1',
   'components/WaitlistSection.astro: getItem x1',
-  'components/WaitlistSection.astro: localStorage x3',
+  'components/WaitlistSection.astro: localStorage x2',
   'components/WaitlistSection.astro: location x2',
   'components/WaitlistSection.astro: posthog x4',
   'components/WaitlistSection.astro: setAttribute x1',
@@ -357,7 +357,6 @@ const EXPECTED_MENTIONS = [
   'components/pages/InvestOrPayOffPage.astro: location x1',
   'components/pages/MonteCarloPage.astro: setAttribute x1',
   'components/pages/MultiCurrencyNetWorthPage.astro: fetch x1',
-  'i18n/config.ts: localStorage x1',
   'i18n/config.ts: navigator x1',
   'layouts/BlogIndex.astro: location x2',
   'layouts/BlogPost.astro: cookie x1',
@@ -420,8 +419,9 @@ const EXPECTED_MENTIONS = [
 // of the names above (`ls.amount = v`, `people.set(...)`), and following an
 // object through variables in text does not work. So nothing holds them:
 // outside the files below, storage and PostHog only have one of a fixed list
-// of methods called on them, are tested in a condition, or are named in a
-// string (see scanHolders). Three files do more (the consent runtime keeps storage
+// of methods called on them, or are tested in a condition (see scanHolders).
+// Their names are not written in a string either, since a string can be
+// used to reach them. Three files do more (the consent runtime keeps storage
 // in variables and returns it; Analytics.astro replaces PostHog with a
 // stand-in when analytics are off; the type file declares its shape). They
 // are pinned by their whole content: any edit to them is a reason to look.
@@ -863,13 +863,38 @@ describe('privacy surface reader: hosts and requests', () => {
       "if (typeof window.posthog === 'undefined' || !window.posthog.__loaded) return;",
       "if (isReady(flag) && window.posthog) window.posthog.identify(id);",
       "if (!(window.posthog && ready)) return;",
+      "if ((window.posthog) !== undefined) window.posthog.capture('e');",
+      "if (count <= 3 && tries >= 1 && window.posthog) window.posthog.capture('e');",
+      "if (a == b && c != d && window.posthog) window.posthog.capture('e');",
+      "if ((window.posthog) != null && ready) window.posthog.capture('e');",
       "if (mode === 'on' && window.posthog) window.posthog.capture('e');",
       "if ((kind === \"a)\" || kind === 'b(') && window.posthog) window.posthog.capture('e');",
       "if (!!window.posthog) window.posthog.capture('e');",
       "if (ready && !window.posthog?.__loaded) return;",
-      "const options = { persistence: on ? 'localStorage' : 'memory' };",
     ]) {
       assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
+    }
+  });
+
+  it('a comment is given no pass: a name spelt in one is refused like any other', () => {
+    // Nothing decides what a comment is, so nothing made to look like one can
+    // hide code. The price is that a comment says "browser storage" and
+    // "PostHog's capture call" instead of spelling the names.
+    for (const source of [
+      '// localStorage holds the answer when cookies are blocked',
+      '  // posthog is a stub until the SDK loads',
+      '/**\n * Reads sessionStorage once.\n * posthog.capture is never called here.\n */\nrun();',
+      '/* localStorage */',
+      '{/* posthog note in markup */}',
+      '<!-- localStorage is not used on this page -->',
+      '<!--\n  posthog\n-->\n<p>text</p>',
+      'const s = `\n// ${localStorage.amount = typedAmount}\n`;',
+      'const s = `\n * ${window.posthog.people.set({ amount: typedAmount })}\n`;',
+      'const s = `\n<!-- ${send(sessionStorage)} -->\n`;',
+      '/* note */\nconst s = localStorage;',
+      '/*\n note\n*/ const s = localStorage;',
+    ]) {
+      assert.notDeepEqual(scanHolders(file(source), []).unresolved, [], source);
     }
   });
 
@@ -881,6 +906,20 @@ describe('privacy surface reader: hosts and requests', () => {
       'const people = window.posthog.people;\npeople.set({ amount: typedAmount });',
       "const store = (typeof window !== 'undefined' && window.localStorage) || null;\nstore.amount = typedAmount;",
       "const store = window['localStorage'];",
+      'const re = /[/*]/; const store = localStorage;\nstore.amount = typedAmount;',
+      'const re = /[/*]/;\nlocalStorage.amount = typedAmount; /* */',
+      'const s = "localStorage.getItem(\'x\')";',
+      "const s = 'if (window.posthog) {}';",
+      'const s = `${localStorage.getItem("k")}`;',
+      "go(); // then localStorage is read",
+      "go(); /* posthog */ more();",
+      "a\n* localStorage.length;",
+      "const store = window[('localStorage')];\nstore.amount = typedAmount;",
+      "const store = window[                    'localStorage'];",
+      'const store = window[`localStorage`];',
+      "const name = 'localStorage';\nconst store = window[name];",
+      "const options = { persistence: on ? 'localStorage' : 'memory' };",
+      "const ph = globalThis[\"posthog\"];",
       'localStorage.amount = typedAmount;',
       "localStorage['amount'] = typedAmount;",
       'function storage() { return window.localStorage; }',
@@ -911,6 +950,37 @@ describe('privacy surface reader: hosts and requests', () => {
       'if (keep!(window.posthog)) {}',
       'if ((localStorage).clear()) go();',
       'if ((localStorage)           .clear()) go();',
+      'if ((localStorage)!.clear()) go();',
+      'if ((window.posthog) = { capture: noop }) go();',
+      'if ((window.posthog) ||= stub) go();',
+      'if ((localStorage) += 1) go();',
+      'if ((window.posthog)++) go();',
+      'if ((window.posthog) <<= 1) go();',
+      '// if (\n(window.posthog);\nfoo(bar));',
+      'keep( // if (\n  window.posthog)',
+      'keep( /* if ( */ window.posthog)',
+      'keep( /*\n if (\n*/ window.posthog)',
+      'keep(/if [(]/ && window.posthog)',
+      'keep(/while [(]/.test(s) || localStorage)',
+      "keep('if (' && window.posthog)",
+      'keep(`if (` && window.posthog)',
+      'const all = [ // if (\n (window.posthog)\n// )\n];',
+      '<!-- if ( --> {keep(window.posthog)}',
+      'if (ready; window.posthog) go();',
+      '/* if ( */ (window.posthog);\nfoo(bar));',
+      '/* while ( */\nkeep(localStorage);\n/* ) */',
+      'if ((window.posthog) >>= 1) go();',
+      'if ((window.posthog) >>>= 1) go();',
+      'if ((window.posthog) **= 2) go();',
+      'if ((window.posthog) &&= stub) go();',
+      'if ((window.posthog) ??= stub) go();',
+      'if (a <= b && (window.posthog) <<= 1) go();',
+      'if ((window.posthog)!.people.set({ amount })) go();',
+      'if ((window.posthog) ! .people) go();',
+      'if ((window.posthog)!!.people) go();',
+      'if ((window.posthog)![key]) go();',
+      'if ((window.posthog as any).people.set({ amount })) go();',
+      'if (window.posthog!.people) go();',
       `if ((localStorage)${' '.repeat(400)}.clear()) go();`,
       'if ((localStorage)\n\n  .clear()) go();',
       'if ((localStorage)/*x*/.clear()) go();',

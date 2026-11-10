@@ -429,7 +429,8 @@ export interface HolderScan {
  * for it has had a next case (a copy of a copy, a member kept in a variable,
  * a guard expression that hands the object on). So there is nothing to
  * follow. Outside the files named in `wholeFiles`, each appearance of
- * `localStorage`, `sessionStorage` or `posthog` must be one of:
+ * `localStorage`, `sessionStorage` or `posthog` in the file exactly as
+ * written, comments included, must be one of:
  *
  *   - one of a fixed list of its methods called on it, there and then:
  *     `localStorage.getItem(...)`, `window.posthog?.capture?.(...)`. The list
@@ -440,10 +441,10 @@ export interface HolderScan {
  *     `if (!window.posthog?.__loaded || typeof window.posthog.set_config !==
  *     'function')`. It must stand in the condition itself, not inside a call
  *     made there (`if (list.push(localStorage))` keeps it);
- *   - its name in a string that is not an index: `persistence: 'localStorage'`.
  *
  * Anything else, keeping it or a part of it in a variable, returning it,
- * passing it on, indexing it, setting a property on it, is listed as
+ * passing it on, indexing it, setting a property on it, or writing its name
+ * in a string (`window['localStorage']` reaches it that way), is listed as
  * unresolved, and the test fails. A file that needs to do such a thing is
  * named in `wholeFiles` and pinned by its whole content, so any edit to it
  * at all is looked at.
@@ -474,10 +475,12 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
   // inside one (`keep(")" && x)`) is text, not a bracket.
   const hollow = (m: string): string => m[0] + ' '.repeat(m.length - 2) + m[0];
   const text = whole.slice(0, from) + whole.slice(from, at).replace(/'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/g, hollow) + whole.slice(at);
-  // Nothing that looks like a comment may be left before the name: the
-  // blanking keeps a `//` that follows `https:`, and what stands after it
-  // would then be read as code.
-  if (/\/\/|\/\*/.test(text.slice(from, at))) return false;
+  // No `/` at all may stand between the condition's bracket and the name,
+  // nor the end of a markup comment. A `/` there opens or closes a comment
+  // or a regular expression, and the `if (` that was found may then be
+  // inside it, with the name outside: `keep(/if [(]/ && window.posthog)`
+  // and `keep( /* if ( */ window.posthog)` both hand the object to `keep`.
+  if (/\/|-->/.test(text.slice(from, at))) return false;
   // A quote left over is a string this could not pair up: refuse.
   if (/['"`]/.test(text.slice(from, at).replace(/'\s*'|"\s*"|`\s*`/g, ''))) return false;
   // What stands right before the name (and the `window.` it may hang from)
@@ -500,16 +503,25 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
       const inner = balanced(text, i);
       // However much white space (or a comment, which is white space by
       // now) stands between the bracket and what carries it on.
-      if (inner === null || /^(?:\?\.|\.|\[|\(|`)/.test(text.slice(i + inner.length + 2).trimStart())) return false;
+      // TypeScript's `!` after the bracket carries it on as well: `(x)!.y`.
+      // A comparison (`!==`, `!=`) does not.
+      // (A `/` there would be a comment or a division: neither ends a test.)
+      if (inner === null || /^(?:\?\.|\.|\[|\(|`|\/|!(?!=))/.test(text.slice(i + inner.length + 2).trimStart())) return false;
     }
   }
   return /^(?:\s*\??\.\s*[A-Za-z_$][\w$]*){0,2}\s*(?:\)|&&|\|\||[!=]==?(?!=))/.test(text.slice(end, end + 120));
 }
 
+/** Whether a position preceded on its line by `before` is inside a string: an odd number of some quote mark stands before it. */
+function insideString(before: string): boolean {
+  const plain = before.replace(/\\./g, '');
+  return ['"', "'", '`'].some((q) => plain.split(q).length % 2 === 0);
+}
+
 export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderScan {
   const pinned: string[] = [];
   const unresolved: string[] = [];
-  for (const { path, text, raw } of files) {
+  for (const { path, raw } of files) {
     if (wholeFiles.includes(path)) {
       pinned.push(`${path}: sha256 ${createHash('sha256').update(raw).digest('hex').slice(0, 16)}`);
       continue;
@@ -517,29 +529,45 @@ export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderSc
     // The conditions of every `if` and `while`, as [start, end) ranges, left
     // out when they assign anything.
     const conditions: [number, number][] = [];
-    for (const m of text.matchAll(/(?<![\w$.])(?:if|while)\s*\(/g)) {
+    for (const m of raw.matchAll(/(?<![\w$.])(?:if|while)\s*\(/g)) {
       const open = m.index + m[0].length - 1;
-      const inner = balanced(text, open);
-      // `yield` takes the whole expression after it, however that is written, and hands it to the caller.
-      if (inner === null || /(?<![=!<>])=(?![=>])|=>|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(inner)) continue;
+      const inner = balanced(raw, open);
+      // A condition that assigns, counts up or down, or yields is not one
+      // this accepts. Assignment is found by what is left once the
+      // comparisons are taken out (`===`, `!==`, `==`, `!=`, and a single
+      // `<=` or `>=`): any `=` still there assigns, whatever stands before it
+      // (`=`, `+=`, `<<=`, `>>>=`, `&&=`, `??=`) or after it (`=>`). `yield`
+      // takes the whole expression after it and hands it to the caller.
+      if (inner === null) continue;
+      // An `if (` that follows a `//` on its line may be in a comment, and
+      // its bracket would then pair with one that belongs to real code on a
+      // later line: `keep( // if (` then `window.posthog)`. A condition holds
+      // no `;` either.
+      if (raw.slice(raw.lastIndexOf('\n', m.index) + 1, m.index).includes('//') || inner.includes(';')) continue;
+      const compared = inner.replace(/===|!==|==|!=/g, '  ').replace(/(?<![<>])[<>]=/g, '  ');
+      if (/=|\+\+|--|(?<![\w$.])yield(?![\w$])/.test(compared)) continue;
       conditions.push([open, open + inner.length + 1]);
     }
-    for (const m of text.matchAll(HELD)) {
+    // The names are looked for in the file exactly as written, and every
+    // one found is judged, wherever it stands. Nothing is set aside as a
+    // comment: whatever decides what a comment is (or a string, or a regular
+    // expression) can be fooled, and a name it set aside would go unseen.
+    // The price is that a comment may not spell these names either; it says
+    // "browser storage" or "PostHog" instead.
+    for (const m of raw.matchAll(HELD)) {
       const at = m.index;
-      const before = text.slice(Math.max(0, at - 40), at);
-      const after = text.slice(at + m[0].length, at + m[0].length + 80);
-      const quote = text[at - 1];
+      const lineStart = raw.lastIndexOf('\n', at) + 1;
+      const lineEnd = raw.indexOf('\n', at);
+      // Inside a string on its line: a name in a string can be used to reach the object.
+      if (insideString(raw.slice(lineStart, at))) { unresolved.push(`${path}: ${raw.slice(lineStart, lineEnd === -1 ? raw.length : lineEnd).trim()}`); continue; }
+      const after = raw.slice(at + m[0].length, at + m[0].length + 80);
       const call = /^\s*\??\.\s*([A-Za-z_$][\w$]*)\s*(?:\?\.)?\s*\(/.exec(after);
       const plain =
-        // Its name in a string, unless the string is an index (`window['localStorage']`).
-        ((quote === "'" || quote === '"' || quote === '`') && after[0] === quote && !/\[\s*$/.test(text.slice(Math.max(0, at - 12), at - 1))) ||
         // One of its permitted methods, called there and then.
         (call !== null && DIRECT_CALLS[m[0]].includes(call[1])) ||
         // A test of whether it, or a member of it, is there.
-        conditions.some(([from, to]) => at > from && at < to && isTest(text, from, at, at + m[0].length));
+        conditions.some(([from, to]) => at > from && at < to && isTest(raw, from, at, at + m[0].length));
       if (plain) continue;
-      const lineStart = text.lastIndexOf('\n', at) + 1;
-      const lineEnd = text.indexOf('\n', at);
       unresolved.push(`${path}: ${raw.slice(lineStart, lineEnd === -1 ? raw.length : lineEnd).trim()}`);
     }
   }
