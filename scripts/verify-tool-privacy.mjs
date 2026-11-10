@@ -240,6 +240,14 @@ async function watch(page, requests, problems) {
   page.on('request', (req) => {
     let url;
     try { url = new URL(req.url()); } catch { req.continue(); return; }
+    // No request of any kind, to any address, may carry what was typed: an
+    // image, a script or a fetch to the site's own server would put it in a
+    // server log. The one exception is the page load the check itself makes
+    // when it opens an old ?-style link.
+    if (!req.isNavigationRequest()) {
+      const leaks = findLeaks(`${req.url()} ${isPosthog(url.hostname) ? '' : req.postData() || ''}`);
+      if (leaks.length && !isPosthog(url.hostname)) problems.push(`a request to ${url.hostname}${url.pathname} carries what was typed: ${leaks.join(', ')}`);
+    }
     if (!isPosthog(url.hostname)) {
       // The exchange-rate provider is answered here too: the check makes no
       // request to anyone but the local server and PostHog's script host.
@@ -486,7 +494,15 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     await cdp.send('Page.setInterceptFileChooserDialog', { enabled: true }).catch(() => {});
     await page.goto(base + address, { waitUntil: 'domcontentloaded', timeout: 60000 });
     await waitForTool(page);
-    if (PLANT) await page.evaluate((amount) => window.posthog.capture('free_planted_leak', { amount }), A1);
+    if (PLANT) {
+      // One leak through analytics, one through an image on the site's own server.
+      await page.evaluate((amount) => {
+        window.posthog.capture('free_planted_leak', { amount });
+        const img = document.createElement('img');
+        img.src = `/?planted=${amount}`;
+        document.body.appendChild(img);
+      }, A1);
+    }
     // If the page goes somewhere it was not sent, say during which step.
     page.on('framenavigated', (frame) => {
       if (frame !== page.mainFrame() || note.leaving) return;
@@ -628,7 +644,8 @@ async function worker() {
       browser = await launch();
     }
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
-    const caught = result.problems.some((p) => p.includes('carries what was typed'));
+    // Both planted leaks: the event sent to PostHog and the image asked of the site's own server.
+    const caught = result.problems.some((p) => /^a request to \/.*carries what was typed/.test(p)) && result.problems.some((p) => /^a request to 127\.0\.0\.1\/ carries what was typed/.test(p));
     const ok = PLANT ? caught : result.problems.length === 0;
     done++;
     if (!ok) failed++;
