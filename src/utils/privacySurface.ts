@@ -40,9 +40,22 @@ export interface SourceFile {
  */
 export function withoutComments(text: string): string {
   const blank = (m: string): string => m.replace(/[^\n]/g, ' ');
+  // Inside a quoted string on the same line, `//` is text, not a comment.
+  const inString = (before: string): boolean => {
+    const plain = before.replace(/\\./g, '');
+    return ['"', "'", '`'].some((q) => plain.split(q).length % 2 === 0);
+  };
   return text
     .replace(/\/\*[\s\S]*?\*\//g, blank)
-    .replace(/(^|[\s;{}(),])\/\/[^\n]*/g, (m, lead: string) => lead + blank(m.slice(lead.length)));
+    .split('\n')
+    .map((line) => {
+      for (const m of line.matchAll(/(^|[\s;{}(),])\/\//g)) {
+        const at = m.index + m[1].length;
+        if (!inString(line.slice(0, at))) return line.slice(0, at) + blank(line.slice(at));
+      }
+      return line;
+    })
+    .join('\n');
 }
 
 /** Every code file under `srcDir`, tests left out, comments blanked. */
@@ -210,6 +223,18 @@ const NAME = /^[A-Za-z_$][\w$]*$/;
 // Storage reached without a method this reader follows: a property or an index.
 const STORAGE_OTHER = /(?:(?<![\w$.])|(?<=\b(?:window|self|globalThis|root)\.))(?:localStorage|sessionStorage)\s*(?:\[|\.\s*(?!setItem\b|getItem\b|removeItem\b|length\b|key\b)[A-Za-z_$])/g;
 
+/** The string `name` is bound to, when the file binds it exactly once, to a literal; else null. */
+function boundLiteral(text: string, name: string): string | null {
+  const n = name.replace(/\$/g, '\\$');
+  const declared = [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${n}\\b`, 'g'))];
+  const literal = new RegExp(`(?:const|let|var)\\s+${n}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`).exec(text);
+  if (declared.length !== 1 || !literal) return null;
+  // Reassigned, or also the name of a parameter or a destructured value.
+  const assigned = [...text.matchAll(new RegExp(`(?<![\\w$.])${n}\\s*(?:[-+*/|&?]{0,2}=)(?!=)`, 'g'))].length;
+  const param = new RegExp(`function[^(]*\\([^)]*(?<![\\w$.])${n}(?![\\w$])[^)]*\\)|\\(([^()]*(?<![\\w$.])${n}(?![\\w$])[^()]*)\\)\\s*=>|(?<![\\w$.])${n}\\s*=>|[{,]\\s*${n}\\s*[,}][^;\\n]*=`).test(text);
+  return assigned === 1 && !param ? literal[2] : null;
+}
+
 /** Every localStorage and sessionStorage key, plus the consent cookie's name. */
 export function scanStorage(files: SourceFile[]): StorageScan {
   const keys = new Set<string>();
@@ -221,11 +246,11 @@ export function scanStorage(files: SourceFile[]): StorageScan {
       const arg = args === null ? '' : (topLevelParts(args)[0] ?? '');
       const literal = KEY_LITERAL.exec(arg);
       if (literal) { keys.add(literal[1]); continue; }
-      // A name: its values are the whole string literals assigned to it in this file.
-      const assigned = NAME.test(arg)
-        ? [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${arg.replace(/\$/g, '\\$')}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`, 'g'))]
-        : [];
-      if (assigned.length > 0) for (const a of assigned) keys.add(a[2]);
+      // A name stands for a key only when the file binds it once, to one whole
+      // string literal, and never again: not redeclared, not reassigned, not a
+      // parameter of any function. Anything else could be any key.
+      const key = NAME.test(arg) ? boundLiteral(text, arg) : null;
+      if (key !== null) keys.add(key);
       else unresolved.push(`${path}: ${m[1]}(${arg.replace(/\s+/g, ' ').slice(0, 60)})`);
     }
     // The one cookie the site sets (consentRuntime.js) is written as KEY + '='.
@@ -256,7 +281,7 @@ export function scanHosts(files: SourceFile[]): Record<string, string[]> {
 }
 
 // Everything that makes a browser ask a server for something from script.
-const REQUEST = /\b(fetch|sendBeacon|importScripts)\s*\(|\bnew\s+(XMLHttpRequest|EventSource|WebSocket|Image|Worker|SharedWorker)\b/g;
+const REQUEST = /\b(fetch|sendBeacon|importScripts)\s*(?:\?\.)?\s*\(|\bnew\s+(?:[\w$]+\s*\.\s*)*(XMLHttpRequest|EventSource|WebSocket|Image|Worker|SharedWorker)\b/g;
 
 /** Every such call, as `file: call(first argument)`, sorted. The files that hold one are `requestFiles`. */
 export function scanRequests(files: SourceFile[]): string[] {
@@ -277,4 +302,34 @@ export function scanPublicEnv(files: SourceFile[]): string[] {
   const out = new Set<string>();
   for (const { text } of files) for (const m of text.matchAll(/\bPUBLIC_[A-Z0-9_]+\b/g)) out.add(m[0]);
   return [...out].sort();
+}
+
+// Every word through which code can reach analytics, browser storage or the
+// network. The readers above understand the usual ways of writing a call; a
+// way they do not understand still has to spell one of these words.
+const SENSITIVE = [
+  'posthog', 'capture', 'localStorage', 'sessionStorage', 'cookie', 'indexedDB', 'caches',
+  'fetch', 'sendBeacon', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'importScripts', 'Worker', 'Image',
+  'eval', 'Function',
+];
+
+/**
+ * How many times each file spells each sensitive word, as `file: word xN`,
+ * sorted. This is the closed half of the surface: an alias
+ * (`const ph = window.posthog`), an index (`window['posthog']`), a property
+ * write (`ls.amount = v`, after `const ls = localStorage`) or an optional call
+ * (`fetch?.(...)`) each add a mention, whatever the readers above make of
+ * them. `skip` names files that are words only (the privacy notice).
+ */
+export function scanMentions(files: SourceFile[], skip: RegExp | null = null): string[] {
+  const out: string[] = [];
+  for (const { path, text } of files) {
+    if (skip && skip.test(path)) continue;
+    for (const word of SENSITIVE) {
+      // Not part of a longer name, nor of a hyphenated class or id (`cookie-btn`).
+      const n = [...text.matchAll(new RegExp(`(?<![\\w$-])${word}(?![\\w$-])`, 'g'))].length;
+      if (n > 0) out.push(`${path}: ${word} x${n}`);
+    }
+  }
+  return out.sort();
 }

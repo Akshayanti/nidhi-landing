@@ -18,7 +18,7 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { scanLabels } from './analyticsLabels.ts';
 import {
-  codeFiles, eventProperties, scanEvents, scanHosts, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, withoutComments,
+  codeFiles, eventProperties, scanEvents, scanHosts, scanMentions, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, withoutComments,
   type SourceFile,
 } from './privacySurface.ts';
 
@@ -241,6 +241,68 @@ const EXPECTED_DYNAMIC_STORAGE = [
   'utils/shared/consentRuntime.js: removeItem(k)',
 ];
 
+// The closed half of the surface: how many times each file spells each word
+// through which code can reach analytics, storage or the network. The readers
+// above understand the usual ways of writing a call. A way they do not
+// understand (another name for PostHog, an index, a property written on a
+// storage object held in a variable) still has to spell one of these words,
+// and so changes a count here. When a count changes, read the change: if it
+// is a new way of sending or storing, the rule at the top of this file
+// applies; if it is not (a moved line, a new check for `window.posthog`),
+// update the count. The privacy notice's own page is left out: it is words.
+const NOTICE_PAGE = /^components\/pages\/PrivacyPage\.astro$/;
+const EXPECTED_MENTIONS = [
+  'components/Analytics.astro: capture x3',
+  'components/Analytics.astro: localStorage x4',
+  'components/Analytics.astro: posthog x11',
+  'components/BaseHead.astro: localStorage x1',
+  'components/CookieConsent.astro: cookie x8',
+  'components/InflationCalculator.tsx: capture x1',
+  'components/InflationCalculator.tsx: fetch x1',
+  'components/InflationCalculator.tsx: posthog x1',
+  'components/InvestOrPayOff.tsx: capture x1',
+  'components/InvestOrPayOff.tsx: fetch x1',
+  'components/InvestOrPayOff.tsx: posthog x2',
+  'components/LearnHome.tsx: localStorage x1',
+  'components/LearnHome.tsx: posthog x1',
+  'components/LearningPath.tsx: localStorage x6',
+  'components/LoanCompare.tsx: capture x1',
+  'components/LoanCompare.tsx: posthog x1',
+  'components/MonteCarloSimulator.tsx: Worker x2',
+  'components/MonteCarloSimulator.tsx: capture x1',
+  'components/MonteCarloSimulator.tsx: posthog x1',
+  'components/MultiCurrencyNetWorth.tsx: capture x1',
+  'components/MultiCurrencyNetWorth.tsx: fetch x1',
+  'components/MultiCurrencyNetWorth.tsx: posthog x1',
+  'components/SubscribeSection.astro: capture x6',
+  'components/SubscribeSection.astro: fetch x1',
+  'components/SubscribeSection.astro: localStorage x7',
+  'components/SubscribeSection.astro: posthog x13',
+  'components/ThemeToggle.astro: localStorage x3',
+  'components/WaitlistSection.astro: capture x2',
+  'components/WaitlistSection.astro: fetch x1',
+  'components/WaitlistSection.astro: localStorage x2',
+  'components/WaitlistSection.astro: posthog x4',
+  'components/pages/HomePage.astro: localStorage x1',
+  'layouts/BlogPost.astro: localStorage x2',
+  'pages/confirm.astro: capture x1',
+  'pages/confirm.astro: fetch x1',
+  'pages/confirm.astro: localStorage x1',
+  'pages/confirm.astro: posthog x2',
+  'pages/studio/qr.astro: Image x1',
+  'pages/unsubscribe.astro: capture x1',
+  'pages/unsubscribe.astro: fetch x1',
+  'pages/unsubscribe.astro: localStorage x1',
+  'pages/unsubscribe.astro: posthog x2',
+  'types/posthog.d.ts: capture x1',
+  'types/posthog.d.ts: posthog x1',
+  'utils/listCount.ts: fetch x1',
+  'utils/shared/consentRuntime.js: cookie x2',
+  'utils/shared/consentRuntime.js: localStorage x3',
+  'utils/shared/consentRuntime.js: posthog x1',
+  'utils/shared/consentRuntime.js: sessionStorage x1',
+];
+
 describe('privacy surface: click labels', () => {
   const scan = scanLabels(SRC);
 
@@ -310,6 +372,9 @@ describe('privacy surface: outside hosts and requests', () => {
     assert.deepEqual(actual, EXPECTED_REQUESTS.slice().sort(), diff('Requests', actual, EXPECTED_REQUESTS));
   });
 
+  // Stricter than it needs to be, on purpose: a link in a file that also
+  // fetches is not wrong, but it is where a link could quietly become a
+  // request. Move the link's address to another file, or reclassify the host.
   it('a host pinned as a link is never named in a file that makes requests', () => {
     const hosts = scanHosts(FILES);
     const requesting = new Set(scanRequests(FILES).filter((r) => !/: new (Image|Worker)$/.test(r)).map((r) => r.split(': ')[0]));
@@ -329,6 +394,15 @@ describe('privacy surface: outside hosts and requests', () => {
   it('the PostHog methods the code calls are the pinned ones', () => {
     const actual = scanPosthogCalls(FILES);
     assert.deepEqual(actual, EXPECTED_POSTHOG_CALLS, diff('PostHog calls', actual, EXPECTED_POSTHOG_CALLS));
+  });
+
+  it('every mention of analytics, storage or the network is a pinned one', () => {
+    const actual = scanMentions(FILES, NOTICE_PAGE);
+    assert.deepEqual(actual, EXPECTED_MENTIONS, diff('Mentions', actual, EXPECTED_MENTIONS));
+  });
+
+  it('the privacy notice page, left out of that count, runs no script of its own', () => {
+    assert.doesNotMatch(NOTICE, /<script\b/);
   });
 
   it('PostHog is started on the pinned host and nowhere else', () => {
@@ -422,6 +496,17 @@ describe('privacy surface reader: events', () => {
     }
   });
 
+  it('counts a way of reaching PostHog that it cannot read', () => {
+    const before = scanMentions(file("window.posthog.capture('e');"));
+    for (const source of [
+      "const ph = window.posthog;\nph['capture']('free_inflation_reset', { amount: typedAmount });",
+      "const send = window['posthog'].capture;\nsend('free_new_event', { amount });",
+      "globalThis['posthog']['capture']('e', { amount });",
+    ]) {
+      assert.notDeepEqual(scanMentions(file(`window.posthog.capture('e');\n${source}`)), before, source);
+    }
+  });
+
   it('lists the other PostHog methods called', () => {
     assert.deepEqual(scanPosthogCalls(file("posthog.identify(id); window.posthog?.register?.({ a: 1 }); ph.set_config(c); posthog.capture('e');")),
       ['components/X.tsx: identify', 'components/X.tsx: register', 'components/X.tsx: set_config']);
@@ -458,6 +543,25 @@ describe('privacy surface reader: storage', () => {
     }
   });
 
+  it('does not take an unrelated binding of the same name for the key', () => {
+    for (const source of [
+      "function save(key, value) { localStorage.setItem(key, value); }\nfunction other() { const key = 'nidhi-theme-mode'; }",
+      "const save = (key) => localStorage.setItem(key, '1');\nconst key = 'nidhi-theme-mode';",
+      "let key = 'nidhi-a';\nkey = other;\nlocalStorage.setItem(key, v);",
+      "const key = 'nidhi-a';\n{ const key = 'nidhi-b'; localStorage.setItem(key, v); }",
+    ]) {
+      const scan = scanStorage(file(source));
+      assert.deepEqual(scan.keys, [], source);
+      assert.notDeepEqual(scan.unresolved, [], source);
+    }
+  });
+
+  it('counts storage reached through another name', () => {
+    const before = scanMentions(file("localStorage.setItem('nidhi-a', v);"));
+    const after = scanMentions(file("localStorage.setItem('nidhi-a', v);\nconst ls = localStorage;\nls.privateAmount = typedAmount;"));
+    assert.notDeepEqual(after, before);
+  });
+
   it('does not take a catalog entry named localStorage for storage', () => {
     assert.deepEqual(scanStorage(file('const t = strings.privacy.localStorage.label;')).unresolved, []);
   });
@@ -479,6 +583,8 @@ describe('privacy surface reader: hosts and requests', () => {
     assert.deepEqual(scanRequests(file(`
       fetch(url, { method: 'POST' });
       window.fetch (endpoint);
+      window.fetch?.(other, { method: 'POST', body });
+      new window.EventSource(addr);
       navigator.sendBeacon(target, body);
       const x = new XMLHttpRequest();
       new WebSocket(addr);
@@ -486,11 +592,20 @@ describe('privacy surface reader: hosts and requests', () => {
       prefetch(link);
     `)), [
       'components/X.tsx: fetch(endpoint)',
+      'components/X.tsx: fetch(other)',
       'components/X.tsx: fetch(url)',
+      'components/X.tsx: new EventSource',
       'components/X.tsx: new WebSocket',
       'components/X.tsx: new XMLHttpRequest',
       'components/X.tsx: sendBeacon(target)',
     ]);
+  });
+
+  it('keeps code that follows a // inside a string on the same line', () => {
+    const text = withoutComments("const a = 'https://x.example.org // not a comment'; fetch(a); // a comment fetch(b)");
+    assert.match(text, /fetch\(a\)/);
+    assert.doesNotMatch(text, /fetch\(b\)/);
+    assert.deepEqual(scanRequests([{ path: 'x.ts', text }]), ['x.ts: fetch(a)']);
   });
 
   it('lists the build-time settings read', () => {
