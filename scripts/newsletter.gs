@@ -35,9 +35,10 @@
  *      Statuses: pending | confirmed | unsubscribed
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
- *      that reports per-check ok/error for properties, web app URL, Gmail
- *      advanced service, Sheet access (including the exact tab used and
- *      header row match), and FROM_EMAIL sendability.
+ *      that says ok or not for properties, web app URL, Gmail advanced
+ *      service, Sheet access and FROM_EMAIL sendability. It is public, so it
+ *      gives no reasons: those are in the execution log (Apps Script →
+ *      Executions).
  *
  * Endpoints (relative to /exec URL):
  *
@@ -92,8 +93,9 @@
  *   Reminder test: not a web action. Run testRemindFromEditor from the
  *   Apps Script editor (see its comment).
  *
- *   GET  ?action=health             Per-dependency ok/error JSON report.
- *                                   Safe to call; never modifies anything.
+ *   GET  ?action=health             Per-dependency ok or not, as JSON; the
+ *                                   reasons go to the execution log. Safe
+ *                                   to call; never modifies anything.
  *
  *   GET  ?action=scan_bounces       Signed (&sig=hmac-of-"scan_bounces").
  *                                   Scans the FROM_EMAIL inbox for
@@ -437,9 +439,12 @@ function doGet(e) {
       config_().siteUrl + '/blog/'
     ));
   } catch (err) {
+    // The message can name the spreadsheet, its tabs or the sending account,
+    // so it is logged here and the caller gets a fixed sentence.
+    console.error('[newsletter] GET failed: ' + err);
     return htmlResponse_(pageTemplate_(
       'Something went wrong',
-      String(err && err.message ? err.message : err),
+      'Please try again in a little while.',
       'Go to the blog',
       safeSiteUrl_() + '/blog/'
     ));
@@ -458,9 +463,35 @@ function doPost(e) {
     if (action === 'count')           return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
-    return jsonResponse_({ ok: false, error: String(err && err.message ? err.message : err) });
+    console.error('[newsletter] POST failed: ' + err);
+    return jsonResponse_({ ok: false, error: 'error' });
   }
 }
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// Longest token the count action will hash: the real one is 64 characters, so
+// anything longer is not it and is not worth hashing.
+var MAX_TOKEN_LENGTH_ = 128;
 
 // The newsletter's size, for the line in the site's newsletter boxes ("20+
 // readers get new lessons by email."). The site's build asks once per build
@@ -477,8 +508,9 @@ function doPost(e) {
 var COUNT_TOKEN_SHA256_ = 'cdf92fa17035c66fef3933ee54661e0bf3422fa8ead803f1818bce8a86e0e6d8';
 
 function handleCount_(e) {
-  var given = String((e.parameter && e.parameter.token) || '');
-  if (!given || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
+  // From the body only: a token in the address would end up in logs.
+  var given = String(formBody_(e).token || '');
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
     return jsonResponse_({ ok: false, error: 'forbidden' });
   }
   var seen = {};
@@ -527,14 +559,20 @@ function withUtm_(url, campaign) {
 // ============================================================================
 
 function handleHealth_() {
-  var report = { ok: true, checks: {}, web_app_url: null };
+  var report = { ok: true, checks: {} };
 
+  // The result is public, so it says only ok or not. The reason, which can
+  // name the spreadsheet, its size, the sending account and its aliases, is
+  // logged for the owner (Apps Script → Executions).
   function check(name, fn) {
     try {
-      report.checks[name] = { ok: true, info: fn() || null };
+      var info = fn();
+      report.checks[name] = { ok: true };
+      if (info) console.log('[newsletter] health check ' + name + ': ' + JSON.stringify(info));
     } catch (err) {
       report.ok = false;
-      report.checks[name] = { ok: false, error: String(err && err.message ? err.message : err) };
+      report.checks[name] = { ok: false };
+      console.error('[newsletter] health check ' + name + ' failed: ' + err);
     }
   }
 
@@ -542,22 +580,17 @@ function handleHealth_() {
     var required = ['SHEET_ID', 'SHEET_NAME', 'FROM_NAME', 'FROM_EMAIL', 'SITE_URL', 'HMAC_SECRET'];
     var missing = required.filter(function (k) { return !prop_(k); });
     if (missing.length) throw new Error('Missing: ' + missing.join(', '));
-    return { configured: required };
   });
 
   check('web_app_url', function () {
-    var url = ScriptApp.getService().getUrl();
-    if (!url) throw new Error('ScriptApp.getService().getUrl() returned empty — not deployed as a web app?');
-    report.web_app_url = url;
-    return { url: url };
+    if (!ScriptApp.getService().getUrl()) throw new Error('ScriptApp.getService().getUrl() returned empty: not deployed as a web app?');
   });
 
   check('gmail_advanced_service', function () {
     if (typeof Gmail === 'undefined') {
       throw new Error('Gmail advanced service not enabled. Apps Script → Services → + → Gmail API → Add.');
     }
-    var profile = Gmail.Users.getProfile('me');
-    return { authorized_as: profile.emailAddress };
+    return { authorized_as: Gmail.Users.getProfile('me').emailAddress };
   });
 
   check('sheet_access', function () {
@@ -575,7 +608,7 @@ function handleHealth_() {
         '. Missing/wrong: ' + mismatched.join(', ')
       );
     }
-    return { sheet_id: cfg.sheetId, sheet_name: cfg.sheetName, rows: sh.getLastRow() };
+    return { sheet_name: cfg.sheetName, rows: sh.getLastRow() };
   });
 
   check('from_email_sendable', function () {
@@ -678,9 +711,46 @@ function ensureFromEmailSendable_() {
 // Subscribe
 // ============================================================================
 
+// A second submit for an address that is still waiting to confirm sends no
+// second mail inside this window, and leaves the row as it is, so the link
+// in the first mail keeps working. One form clicked many times, or a script
+// aimed at someone else's address, could otherwise mail them every time:
+// this allows four a day at most. A reader whose mail went astray can try
+// again later, and the 3-day reminder carries the link too.
+var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
+
+// Confirmation mails this script will send in one UTC day. Past it, a
+// request changes nothing at all: no row is added (each would be owed a
+// reminder mail three days on) and no existing row is touched (its link must
+// keep working). The site cannot read this script's reply, so a real reader
+// who signs up after the limit is hit sees the usual message and gets no mail
+// that day; the limit is logged as an error so the owner sees it. That is the
+// price of not letting a script send mail without end from this address.
+//
+// Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
+// account, not per UTC day. Three kinds of mail follow from a sign-up, each
+// with a daily limit of this size: the confirmation; the reminder, owed for
+// a confirmation three days earlier (MAX_REMINDERS_PER_DAY_); and the
+// welcome, sent when someone confirms (MAX_WELCOMES_PER_DAY_). In the worst 24 hours a flood can take
+// two UTC days of each: six times this limit, 600 mails. That leaves 900 for
+// a lesson, which goes to every confirmed reader. So a lesson still goes out
+// in full while the list is under 900 readers. Raise the list past that and
+// these limits, or the mail service, have to change with it.
+var MAX_CONFIRMATIONS_PER_DAY_ = 100;
+
+// Reminder mails in one UTC day. Reminders are owed for rows admitted three
+// days earlier, but runs that were late or failed could bring several days'
+// worth on one day; this keeps the day's total to the figure counted above.
+// A reader left out stays due and is reminded by a later run.
+var MAX_REMINDERS_PER_DAY_ = 100;
+
+// Welcome mails in one UTC day. Past it a reader is still confirmed, and the
+// page they land on says so; only the extra mail is skipped.
+var MAX_WELCOMES_PER_DAY_ = 100;
+
 function handleSubscribe_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
-  var source = String((e.parameter && e.parameter.source) || '').slice(0, 200);
+  var source = cleanSource_(e.parameter && e.parameter.source);
   if (!isValidEmail_(email)) return jsonResponse_({ ok: false, error: 'invalid_email' });
 
   var now = new Date();
@@ -690,32 +760,67 @@ function handleSubscribe_(e) {
   // Find-then-write happens under the lock: two submits for one new address
   // cannot both append, and the row reset below cannot land on a row that a
   // deletion has just moved someone else into.
-  var alreadyConfirmed = withSheetLock_(function () {
+  var outcome = withSheetLock_(function () {
     var sh = sheet_();
     var row = findSubscriberRow_(sh, email);
+    if (row !== 0) {
+      var values = sh.getRange(row, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+      var status = String(values[COL.status - 1] || '').toLowerCase();
+      if (status === 'confirmed') return 'confirmed';
+      var createdAt = values[COL.createdAt - 1];
+      if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
+    }
+    // Checked before anything is written: past the limit nothing changes.
+    if (!takeDailySlot_('confirm_mails', MAX_CONFIRMATIONS_PER_DAY_)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
-      return false;
+    } else {
+      // pending, unsubscribed or bounced: reset to pending with fresh tokens.
+      // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
+      sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
+        'pending', source, now, '', '', confirmToken, unsubToken, '',
+      ]]);
     }
-    var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
-    if (status === 'confirmed') return true;
-    // pending, unsubscribed or bounced: reset to pending with fresh tokens.
-    // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
-    sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
-      'pending', source, now, '', '', confirmToken, unsubToken, '',
-    ]]);
-    return false;
+    return 'pending';
   });
 
-  if (alreadyConfirmed) {
-    // Already subscribed — don't leak that fact. Silently succeed.
+  // The reply is the same in every case: it must not say whether an address
+  // is on the list, was just asked for, or hit the day's limit.
+  if (outcome === 'confirmed') {
     trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
     return jsonResponse_({ ok: true });
   }
-
+  if (outcome === 'recent') return jsonResponse_({ ok: true });
+  if (outcome === 'capped') {
+    console.error('[newsletter] daily confirmation limit reached (' + MAX_CONFIRMATIONS_PER_DAY_ + '): nothing written, nothing sent');
+    return jsonResponse_({ ok: true });
+  }
   sendConfirmationEmail_(email, confirmToken);
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
   return jsonResponse_({ ok: true });
+}
+
+/**
+ * Counts one mail of a kind (`confirm_mails`, `welcome_mails`) against
+ * today's limit; false once the limit is reached. Call inside the lock. The
+ * day is read here, inside the lock, not when the request arrived: a request
+ * that waited for the lock across midnight would otherwise count against
+ * yesterday and, clearing "the other days", wipe today's count.
+ */
+function takeDailySlot_(kind, limit) {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  var prefix = kind + ':';
+  var key = prefix + today;
+  var used = Number(prop_(key)) || 0;
+  if (used >= limit) return false;
+  props_().setProperty(key, String(used + 1));
+  if (used === 0) {
+    // First of the day: drop this kind's counters of days before today. A
+    // later day cannot exist, and today's is never dropped.
+    var all = props_().getProperties();
+    for (var k in all) if (k.indexOf(prefix) === 0 && k.slice(prefix.length) < today) props_().deleteProperty(k);
+  }
+  return true;
 }
 
 // ============================================================================
@@ -871,12 +976,17 @@ function pendingRowFor_(sh, email, confirmToken) {
   return { row: row, values: values };
 }
 
-/** Stamps reminder_sent_at for a reader still due one; false if not, or if another run got there first. */
+/**
+ * Stamps reminder_sent_at for a reader still due one; false if not, if
+ * another run got there first, or if the day's reminders are used up. A
+ * reader left out by the limit is not stamped, so a later run takes them.
+ */
 function claimReminder_(email, confirmToken, when) {
   return withSheetLock_(function () {
     var sh = sheet_();
     var found = pendingRowFor_(sh, email, confirmToken);
     if (!found || found.values[COL.reminderSentAt - 1]) return false;
+    if (!takeDailySlot_('reminder_mails', MAX_REMINDERS_PER_DAY_)) return false;
     sh.getRange(found.row, COL.reminderSentAt).setValue(when);
     return true;
   });
@@ -987,6 +1097,8 @@ function handleConfirm_(e) {
     sh.getRange(row, COL.confirmedAt).setValue(new Date());
     sh.getRange(row, COL.unsubscribedAt).setValue('');
     sh.getRange(row, COL.confirmToken).setValue('');
+    // Counted here, under the lock, so the day's welcome mails have a limit too.
+    who.welcome = takeDailySlot_('welcome_mails', MAX_WELCOMES_PER_DAY_);
     return who;
   });
 
@@ -1000,7 +1112,8 @@ function handleConfirm_(e) {
   // so the subscriber sees an immediate "you're in" beyond the landing
   // page. Non-fatal — if Gmail hiccups, we still confirm the row.
   try {
-    sendWelcomeEmail_(email, unsubToken);
+    if (found.welcome) sendWelcomeEmail_(email, unsubToken);
+    else console.error('[newsletter] daily welcome limit reached (' + MAX_WELCOMES_PER_DAY_ + '): reader confirmed, welcome mail not sent');
   } catch (err) {
     // Welcome email is non-blocking (the subscriber IS confirmed regardless),
     // but we still want a signal so a silent Gmail outage doesn't mean
@@ -1099,7 +1212,9 @@ function handleSendPost_(e) {
   try {
     ensureFromEmailSendable_();
   } catch (err) {
-    return jsonResponse_({ ok: false, error: 'from_email_not_sendable: ' + err.message });
+    // The reason names the account and its aliases: logged, not returned.
+    console.error('[newsletter] from_email_not_sendable: ' + err.message);
+    return jsonResponse_({ ok: false, error: 'from_email_not_sendable' });
   }
 
   var payload = JSON.parse(raw);
@@ -1845,8 +1960,24 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
 
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
+// An address is written into a spreadsheet cell, where a value that starts
+// with = + - or @ is read as a formula, so an address may not start with one
+// (very few do). It also may not hold white space, double quotes, brackets or
+// the marks that separate addresses in a list. Letters of any script, and an
+// apostrophe (o'brien@...), are fine.
 function isValidEmail_(s) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
+}
+
+/**
+ * The page a sign-up came from, as the site sends it: a path on the site.
+ * Anything else is dropped, since the request can say anything and the value
+ * goes into a spreadsheet cell and an analytics event.
+ */
+function cleanSource_(raw) {
+  var s = String(raw || '');
+  // `$` also matches before a final line break, so that is ruled out by itself.
+  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) && !/[\r\n]/.test(s) ? s : '';
 }
 
 function escapeHtml_(s) {
