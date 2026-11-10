@@ -1,5 +1,6 @@
 import { toolsEs } from './tools/index.ts';
 import { learnEs } from './learn.ts';
+import { howToEs } from './howTo.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -1096,7 +1097,7 @@ export const es: Dict = {
       link: 'Más información',
     },
     faq: {
-      heading: 'Dos preguntas frecuentes',
+      heading: 'Preguntas frecuentes',
       items: [
         {
           q: '¿Cuánto cuesta nidhi?',
@@ -1147,5 +1148,6 @@ export const es: Dict = {
   },
 
   ...learnEs,
+  ...howToEs,
   tools: toolsEs,
 };

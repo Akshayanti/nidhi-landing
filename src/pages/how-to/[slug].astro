@@ -1,0 +1,50 @@
+---
+/**
+ * /how-to/<slug>/: a guide, or (once group pages are public) a group page.
+ *
+ * Both live one level under /how-to/, so one route serves both: a guide's slug
+ * is its question, a group's is a short id (month, owe...), and the build
+ * fails if the two ever collide. Guides are English only; group pages exist in
+ * every language (see src/pages/[locale]/how-to/[group].astro).
+ */
+import { getCollection } from 'astro:content';
+import GuidePage from '../../components/pages/GuidePage.astro';
+import HowToGroupPage from '../../components/pages/HowToGroupPage.astro';
+import { GUIDE_GROUPS, getGuides } from '../../utils/guides';
+import { groupPageIds } from '../../utils/guideLayers';
+
+export async function getStaticPaths() {
+  const guides = await getGuides();
+  const isDev = import.meta.env.DEV;
+  const now = new Date();
+  const lessons = (await getCollection('blog')).filter((l) => isDev || l.data.pubDate <= now);
+  const lessonBySlug = new Map(lessons.map((l) => [l.data.slug, { slug: l.data.slug, title: l.data.title, description: l.data.description }]));
+  const guideBySlug = new Map(guides.map((g) => [g.data.slug, g]));
+  const counts = Object.fromEntries(GUIDE_GROUPS.map((id) => [id, guides.filter((g) => g.data.group === id).length]));
+  const groups = groupPageIds(counts);
+  for (const id of GUIDE_GROUPS) {
+    if (guideBySlug.has(id)) throw new Error(`A guide's slug "${id}" is also a How-to group id`);
+  }
+  return [
+    ...guides.map((guide) => ({
+      params: { slug: guide.data.slug },
+      props: {
+        kind: 'guide' as const,
+        guide,
+        lessons: guide.data.lessons.map((s) => lessonBySlug.get(s)).filter((l): l is NonNullable<typeof l> => Boolean(l)),
+        related: guide.data.related
+          .map((s) => guideBySlug.get(s))
+          .filter((g): g is NonNullable<typeof g> => Boolean(g))
+          .map((g) => ({ slug: g.data.slug, title: g.data.title })),
+      },
+    })),
+    ...groups.map((group) => ({ params: { slug: group }, props: { kind: 'group' as const, group } })),
+  ];
+}
+
+const props = Astro.props;
+---
+
+{props.kind === 'guide'
+  ? <GuidePage guide={props.guide} lessons={props.lessons} related={props.related} />
+  : <HowToGroupPage locale="en" group={props.group} />}

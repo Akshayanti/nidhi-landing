@@ -1,5 +1,6 @@
 import { toolsHi } from './tools/index.ts';
 import { learnHi } from './learn.ts';
+import { howToHi } from './howTo.ts';
 import type { Dict } from './types.ts';
 
 /**
@@ -1156,7 +1157,7 @@ export const hi: Dict = {
       link: 'और जानें',
     },
     faq: {
-      heading: 'दो आम सवाल',
+      heading: 'आम सवाल',
       items: [
         {
           q: 'nidhi इस्तेमाल करने में कितना खर्च आता है?',
@@ -1219,6 +1220,7 @@ export const hi: Dict = {
    * as the tools below.
    */
   ...learnHi,
+  ...howToHi,
 
   /**
    * The free tools' copy. Assembled from one module per tool: see

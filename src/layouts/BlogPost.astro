@@ -60,9 +60,11 @@ interface Props {
   localRules?: LocalRuleArea[];
   /** Place within the level among published lessons; null outside the ladder. */
   seriesPosition?: { index: number; total: number } | null;
+  /** How-to guides that name this lesson as their main one (src/utils/guides.ts). */
+  guides?: { slug: string; title: string; minutes: number }[];
 }
 
-const { title, seoTitle, description, tldr, pubDate, updatedDate, corrections = [], level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, corrections = [], level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [], guides = [] } = Astro.props;
 // A lesson is English in every edition, so its chrome reads the English names.
 // Ladder levels only: an Inclusive Finances guide is not a step in a series.
 const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
@@ -249,6 +251,10 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           <span class="tldr-label">TL;DR</span>
           <ul class="post-tldr-list">{tldr.map((bullet) => <li>{bullet}</li>)}</ul>
         </div>
+        {/* One plain line, not a box, so the lesson body moves down by a line at most. */}
+        {guides.map((g) => (
+          <p class="post-howto-line">Short version: <a href={`/how-to/${g.slug}/`}>{g.title}</a> <span class="post-howto-min">({g.minutes}-min how-to)</span></p>
+        ))}
         {/*
           What the lesson covers, before the reader commits to it. Plain text
           under a small label, so it reads as a preview and not as a box to
@@ -411,6 +417,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
               </details>
             ))}
           </section>
+        )}
+
+        {guides.length > 0 && (
+          <p class="post-howto-end">
+            {guides.length === 1 ? 'The short how-to for this lesson: ' : 'Short how-tos for this lesson: '}
+            {guides.map((g, i) => <>{i > 0 && ', '}<a href={`/how-to/${g.slug}/`}>{g.title}</a></>)}
+          </p>
         )}
 
         {referentialReading && referentialReading.length > 0 && (
@@ -867,6 +880,16 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     color: var(--color-text-secondary);
     line-height: 1.5;
   }
+
+  .post-howto-line {
+    margin: calc(var(--space-2) * -1) 0 var(--space-4);
+    padding: 0 var(--space-5);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+  .post-howto-line a, .post-howto-end a { font-weight: 600; }
+  .post-howto-min { color: var(--color-text-muted); white-space: nowrap; }
+  .post-howto-end { margin: var(--space-6) 0; font-size: 0.95rem; }
 
   .post-tldr-list li + li {
     margin-top: var(--space-1);

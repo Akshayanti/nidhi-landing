@@ -1,0 +1,213 @@
+---
+/**
+ * A How-to guide's one visual, from the small reusable set agreed for the
+ * section: a timeline with a running balance, a filled table, a document with
+ * numbered notes, and a message with its warning signs marked.
+ *
+ * Built from HTML text and tables, never an image: it reads aloud, prints,
+ * zooms, translates in the browser and can be corrected like any other text.
+ * Meaning never rests on colour alone: a balance below zero also says so in
+ * words, and every marked sign is numbered and listed.
+ *
+ * The values come from the guide's frontmatter, where they are written once.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+type Visual = CollectionEntry<'guides'>['data']['visual'];
+interface Props { visual: Visual }
+const { visual } = Astro.props;
+
+const fmt = (n: number) => Math.abs(n).toLocaleString('en-GB', { maximumFractionDigits: 2 });
+
+let timeline: { day: string; label: string; amount: number; balance: number }[] = [];
+let peak = 1;
+if (visual.kind === 'timeline') {
+  let balance = visual.start.balance;
+  timeline = visual.events.map((e) => {
+    balance += e.amount;
+    return { ...e, balance };
+  });
+  peak = Math.max(visual.start.balance, ...timeline.map((t) => Math.abs(t.balance)), 1);
+}
+const lastBalance = timeline.length ? timeline[timeline.length - 1].balance : 0;
+// Notes are numbered in order, skipping lines that have none, so the marks run 1, 2, 3.
+let noteCount = 0;
+const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, n: l.note ? ++noteCount : 0 })) : [];
+---
+
+<figure class="gv" data-kind={visual.kind}>
+  {visual.kind === 'timeline' && (
+    <ol class="gv-tl" role="list">
+      <li class="gv-tl-row gv-tl-start">
+        <span class="gv-tl-day">{visual.start.label}</span>
+        <span class="gv-tl-what">Balance</span>
+        <span class="gv-tl-amt"></span>
+        <span class="gv-tl-bal">{visual.currency}{fmt(visual.start.balance)}</span>
+        <span class="gv-tl-bar" aria-hidden="true"><i style={`width:${(visual.start.balance / peak) * 100}%`}></i></span>
+      </li>
+      {timeline.map((t) => (
+        <li class:list={['gv-tl-row', { 'gv-tl-neg': t.balance < 0 }]}>
+          <span class="gv-tl-day">{t.day}</span>
+          <span class="gv-tl-what">{t.label}</span>
+          <span class="gv-tl-amt">{t.amount < 0 ? '−' : '+'}{visual.currency}{fmt(t.amount)}</span>
+          <span class="gv-tl-bal">{t.balance < 0 ? `${visual.currency}${fmt(t.balance)} below zero` : `${visual.currency}${fmt(t.balance)}`}</span>
+          <span class="gv-tl-bar" aria-hidden="true"><i style={`width:${(Math.max(t.balance, 0) / peak) * 100}%`}></i></span>
+        </li>
+      ))}
+      <li class="gv-tl-row gv-tl-end">
+        <span class="gv-tl-day">{visual.end.label}</span>
+        <span class="gv-tl-what">Left over</span>
+        <span class="gv-tl-amt"></span>
+        <span class="gv-tl-bal"><strong>{lastBalance < 0 ? `${visual.currency}${fmt(lastBalance)} short` : `${visual.currency}${fmt(lastBalance)}`}</strong></span>
+      </li>
+    </ol>
+  )}
+
+  {visual.kind === 'table' && (
+    <div class="gv-table-wrap">
+      <table class="gv-table">
+        <thead><tr>{visual.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
+        <tbody>
+          {visual.rows.map((r) => <tr>{r.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}
+        </tbody>
+        {visual.total && (
+          <tfoot><tr>{visual.total.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr></tfoot>
+        )}
+      </table>
+    </div>
+  )}
+
+  {visual.kind === 'annotated' && (
+    <div class="gv-doc">
+      <p class="gv-doc-title">{visual.title}</p>
+      <dl class="gv-doc-lines">
+        {docLines.map((l) => (
+          <div class="gv-doc-line">
+            <dt>{l.n > 0 && <span class="gv-mark" aria-hidden="true">{l.n}</span>}{l.label}</dt>
+            <dd>{l.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <ol class="gv-notes" role="list">
+        {docLines.filter((l) => l.n > 0).map((l) => (
+          <li><span class="gv-mark" aria-hidden="true">{l.n}</span><span><strong>{l.label}.</strong> {l.note}</span></li>
+        ))}
+      </ol>
+    </div>
+  )}
+
+  {visual.kind === 'message' && (() => {
+    let n = 0;
+    const numbered = visual.parts.map((p) => ({ ...p, n: p.sign ? ++n : 0 }));
+    return (
+      <div class="gv-msg">
+        <p class="gv-msg-from">From: {visual.from}</p>
+        <p class="gv-msg-body">
+          {numbered.map((p) => p.sign
+            ? <><mark class="gv-msg-sign">{p.text}</mark><span class="gv-mark" aria-hidden="true">{p.n}</span>{' '}</>
+            : <>{p.text}{' '}</>)}
+        </p>
+        <ol class="gv-notes" role="list">
+          {numbered.filter((p) => p.sign).map((p) => (
+            <li><span class="gv-mark" aria-hidden="true">{p.n}</span><span><strong>“{p.text}”</strong> {p.sign}</span></li>
+          ))}
+        </ol>
+      </div>
+    );
+  })()}
+
+  <figcaption class="gv-cap">{visual.caption}</figcaption>
+</figure>
+
+<style>
+  .gv {
+    margin: var(--space-6) 0;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-white);
+  }
+  /* A table needs no card around it: light rules are enough (council, Nov 10 2026). */
+  .gv[data-kind="table"] { border: none; padding: 0; background: transparent; }
+  .gv-cap {
+    margin-top: var(--space-3);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  .gv-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 1.35em;
+    height: 1.35em;
+    margin-inline: 0.2em 0.35em;
+    border-radius: 999px;
+    background: var(--color-text-primary);
+    color: var(--color-bg-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: 0.1em;
+  }
+  .gv-notes {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+    font-size: 0.92rem;
+  }
+  .gv-notes li { display: flex; gap: var(--space-1); align-items: baseline; }
+
+  /* Timeline */
+  .gv-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .gv-tl-row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
+    grid-template-areas: "day what amt" "day bal bal" "bar bar bar";
+    column-gap: var(--space-3);
+    row-gap: 2px;
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 0.95rem;
+  }
+  .gv-tl-day { grid-area: day; font-weight: 700; color: var(--color-text-primary); }
+  .gv-tl-what { grid-area: what; }
+  .gv-tl-amt { grid-area: amt; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .gv-tl-bal { grid-area: bal; color: var(--color-text-secondary); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+  .gv-tl-bal::before { content: "Balance after: "; }
+  .gv-tl-start .gv-tl-bal::before, .gv-tl-end .gv-tl-bal::before { content: ""; }
+  .gv-tl-bar { grid-area: bar; height: 6px; background: var(--color-border-light); border-radius: 3px; overflow: hidden; }
+  .gv-tl-bar i { display: block; height: 100%; background: var(--color-teal); border-radius: 3px; }
+  .gv-tl-neg .gv-tl-bal { color: var(--color-danger); font-weight: 600; }
+  .gv-tl-end { border-bottom: none; }
+  .gv-tl-end .gv-tl-bal { font-size: 1rem; color: var(--color-text-primary); }
+
+  /* Table */
+  .gv-table-wrap { overflow-x: auto; }
+  .gv-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+  .gv-table th, .gv-table td { text-align: start; padding: var(--space-2); border-bottom: 1px solid var(--color-border-light); vertical-align: top; }
+  .gv-table thead th { font-size: 0.85rem; color: var(--color-text-secondary); }
+  .gv-table tbody th { font-weight: 600; color: var(--color-text-primary); }
+  .gv-table tfoot th, .gv-table tfoot td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--color-border); }
+
+  /* Annotated document */
+  .gv-doc-title { font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-3); font-family: var(--font-heading); }
+  .gv-doc-lines { margin: 0; display: grid; gap: 0; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-bg); }
+  .gv-doc-line { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-light); }
+  .gv-doc-line:last-child { border-bottom: none; }
+  .gv-doc-line dt { display: flex; align-items: baseline; }
+  .gv-doc-line dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; }
+
+  /* Message */
+  .gv-msg-from { margin: 0 0 var(--space-2); font-size: 0.85rem; color: var(--color-text-secondary); }
+  .gv-msg-body { margin: 0; padding: var(--space-3) var(--space-4); background: var(--color-bg); border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 4px; border: 1px solid var(--color-border-light); line-height: 1.7; }
+  .gv-msg-sign { background: transparent; color: inherit; text-decoration: underline wavy var(--color-warning); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+
+  @media print {
+    .gv { break-inside: avoid; border-color: #999; }
+    .gv-mark { background: none; color: #000; border: 1px solid #000; }
+    .gv-tl-bar { display: none; }
+  }
+</style>
