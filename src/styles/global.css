@@ -482,12 +482,17 @@ html:is([lang="hi"], [lang="mr"]) body {
   line-height: 1.75; /* Latin rule: 1.6 */
 }
 
-html:is([lang="hi"], [lang="mr"]) h1,
-html:is([lang="hi"], [lang="mr"]) h2,
-html:is([lang="hi"], [lang="mr"]) h3,
-html:is([lang="hi"], [lang="mr"]) h4,
-html:is([lang="hi"], [lang="mr"]) h5,
-html:is([lang="hi"], [lang="mr"]) h6 {
+/* The two `:not()` do not exclude anything (no element has the class `_`):
+   they are there for their weight. A page's own title class is written in a
+   scoped <style>, where Astro adds an attribute to it, so `.lc-pageTitle`
+   weighs two classes and used to beat this rule on the home page, the tools
+   hub, every tool, the how-to hub and the privacy page: their Hindi and
+   Marathi titles kept the Latin tracking and leading. With the two extra
+   classes this rule outweighs any single title class, so a new page gets it
+   without having to remember. A rule a page writes for Devanagari itself
+   (`html:is([lang='hi'], [lang='mr']) .hero-copy h1`) still weighs more, and
+   is how a page says it wants something else. */
+html:is([lang="hi"], [lang="mr"]) :is(h1, h2, h3, h4, h5, h6):not(._):not(._) {
   line-height: 1.4; /* Latin rule: 1.25 */
   letter-spacing: normal;
 }
