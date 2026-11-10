@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'loan-optional-boxes-errors',
+        text: {
+          en: 'In the loan comparison, an optional box that cannot be read is now an error. A fee typed as “€2,500”, an extra payment typed with words or a lump sum in the wrong form used to count as zero without a word, which could make an offer look free of fees; now the box is marked and the offer shows no result until it is fixed or cleared.',
+          hi: 'लोन की तुलना में अब वह वैकल्पिक बॉक्स गलती माना जाता है जिसे पढ़ा नहीं जा सकता। “€2,500” की तरह लिखा शुल्क, शब्दों के साथ लिखी अतिरिक्त किस्त या गलत रूप में लिखी एकमुश्त रकम पहले बिना कुछ कहे शून्य गिनी जाती थी, जिससे कोई ऑफ़र बिना शुल्क का दिख सकता था; अब उस बॉक्स पर निशान लगता है और उसे ठीक या खाली करने तक ऑफ़र का नतीजा नहीं दिखता।',
+          es: 'En el comparador de préstamos, una casilla opcional que no se puede leer es ahora un error. Una comisión escrita como «€2,500», un pago extra escrito con palabras o un pago único con un formato incorrecto contaban antes como cero sin aviso, y una oferta podía parecer libre de comisiones; ahora la casilla se marca y la oferta no muestra resultado hasta que se corrige o se vacía.',
+          cs: 'Ve srovnání úvěrů je teď nepovinné pole, které nejde přečíst, chybou. Poplatek zapsaný jako „€2,500“, mimořádná splátka zapsaná slovy nebo jednorázová splátka ve špatném tvaru se dříve bez upozornění počítaly jako nula, takže nabídka mohla vypadat jako bez poplatků; teď se pole označí a\u00a0nabídka neukáže výsledek, dokud pole neopravíte nebo nevymažete.',
+          mr: 'कर्जांच्या तुलनेत आता वाचता न येणारी पर्यायी चौकट ही चूक मानली जाते. “€2,500” असे लिहिलेले शुल्क, शब्दांसह लिहिलेला अतिरिक्त हप्ता किंवा चुकीच्या स्वरूपात लिहिलेली एकरकमी रक्कम आधी काहीही न सांगता शून्य धरली जायची, त्यामुळे एखादी ऑफर शुल्काशिवाय असल्यासारखी दिसू शकायची; आता त्या चौकटीवर खूण येते आणि ती दुरुस्त किंवा रिकामी करेपर्यंत ऑफरचा निकाल दिसत नाही.',
+        },
+      },
+      {
         id: 'loan-ends-on-its-term',
         text: {
           en: 'The loan comparison now ends a loan on the term you type. A 30-year loan used to show as 30 years and 1 month, with a 361st payment of a few cents, in about half of all cases; those cents are now part of the last payment, as a lender would do it.',
