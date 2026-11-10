@@ -1325,7 +1325,7 @@ export const en = {
       link: 'Learn more',
     },
     faq: {
-      heading: 'Two common questions',
+      heading: 'Common questions',
       /**
        * Questions and answers. The same text is printed on the page and
        * published as FAQPage structured data, so it is written once here.

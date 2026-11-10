@@ -1157,7 +1157,7 @@ export const hi: Dict = {
       link: 'और जानें',
     },
     faq: {
-      heading: 'दो आम सवाल',
+      heading: 'आम सवाल',
       items: [
         {
           q: 'nidhi इस्तेमाल करने में कितना खर्च आता है?',

@@ -11,7 +11,17 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export const GUIDE_HUB = '/how-to/';
-export const GUIDE_GROUPS = ['month', 'owe', 'borders', 'safe'] as const;
+export const GUIDE_GROUPS = ['month', 'owe', 'stock', 'borders', 'safe'] as const;
+/**
+ * The three guides named on /blog/'s "One money question?" side, one per
+ * problem a scared reader recognises at a glance. Chosen by the council; a
+ * guide that is not live yet is skipped.
+ */
+export const FEATURED_GUIDES = [
+  'will-my-money-last-until-payday',
+  'how-do-i-list-what-i-owe',
+  'how-can-i-check-a-suspicious-money-message',
+] as const;
 export type GuideGroup = (typeof GUIDE_GROUPS)[number];
 
 export type Guide = CollectionEntry<'guides'>;

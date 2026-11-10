@@ -200,7 +200,7 @@ const guides = defineCollection({
     /** One line under the title: what the reader will have at the end. */
     outcome: z.string().min(1),
     /** Which hub group it sits in (src/utils/guides.ts). */
-    group: z.enum(['month', 'owe', 'borders', 'safe']),
+    group: z.enum(['month', 'owe', 'stock', 'borders', 'safe']),
     /** The answer, in two or three plain sentences, before anything else. */
     answer: z.array(z.string().min(1)).min(1).max(3),
     /** What this page can and cannot solve, side by side under the answer. */

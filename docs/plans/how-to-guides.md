@@ -52,7 +52,9 @@ One per guide, from a reusable set: a timeline with a running balance, a filled 
 
 ## Where readers find it
 
-The hub (`/how-to/`, grouped as "Getting through the month", "I owe money", "Money across borders", "Is this safe?"); a line at the top of `/blog/` and under a search with no results; a line under the home page's "Which sounds like you?"; one line under a lesson's TL;DR and one near its end; a quiet line on the volunteer page; the Instagram bio through `/how-to/ig/`.
+The hub (`/how-to/`, grouped as "Getting through the month", "I owe money", "Taking stock", "Money across borders", "Is this safe?"). On `/blog/`, a two-way start band, "Where would you like to start?": the path from the start on one side, and on the other "One money question?" with three guide questions (`FEATURED_GUIDES` in `src/utils/guides.ts`) and a link to all of them; also a line under a search with no results. On the home page, a card at the top of the Lessons section, and a "Can I get help with just one money question?" item in the FAQ (and its FAQPage data); the hero carries no How-to link, so it doesn't compete with the situations. One line under a lesson's TL;DR and one near its end; a quiet line on the volunteer page; the Instagram bio through `/how-to/ig/`.
+
+The FAQ item has no click label, so the two original questions keep `home-faq-1` and `home-faq-2`, as the privacy notice records them.
 
 ## Upkeep (`src/content.config.ts`, `src/utils/guides.ts`)
 

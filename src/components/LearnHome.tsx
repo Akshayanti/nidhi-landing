@@ -67,7 +67,14 @@ interface LearnHomeProps {
   /** Lesson id → FAQ questions and "In this lesson" phrases, searched too. */
   lessonText: Record<string, string>;
   /** The How-to words search needs, and the hub's address in this language. */
-  howTo: { label: string; empty: string; link: string; href: string };
+  howTo: {
+    label: string; empty: string; link: string; href: string;
+    /** The two-way start band: its heading, the How-to side's words, and the guides it names. */
+    startHeading: string; oneQuestion: string; body: string; all: string;
+    /** Outside English: the guides are in English. */
+    inEnglish?: string;
+    featured: { title: string; href: string }[];
+  };
   /** Every published lesson, ladder lessons in reading order first. */
   lessons: LearnLesson[];
   inclusiveCount: number;
@@ -305,68 +312,95 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
 
   useEffect(() => { setShowAll(false); }, [trimmed]);
 
+  const band = guides.length > 0 && howTo.featured.length > 0;
+  const StartH = band ? 'h3' : 'h2';
+
   return (
     <div className="learn-home">
-      {/* Without a lesson to start, this card has no heading of its own: the
-          label is left off rather than pointing at an id that is not there.
-          A language whose lessons are still being written is the case. */}
-      <section className="learn-card" aria-labelledby={nextInfo ? 'learn-start-h' : undefined}>
-        {finished ? (
-          <div className="learn-startText">
-            <p className="learn-eyebrow">{strings.finishedEyebrow}</p>
-            <h2 id="learn-start-h">{format(strings.finishedHeading, { count: core.length })}</h2>
-            <p className="learn-sub">{strings.finishedSub}</p>
-          </div>
-        ) : returning && nextInfo ? (
-          <div className="learn-startText">
-            <p className="learn-eyebrow">{strings.returningEyebrow}</p>
-            <h2 id="learn-start-h" lang="en">{nextInfo.lesson.title}</h2>
-            <p className="learn-sub">
-              {format(strings.returningSub, { level: nextInfo.levelLabel, index: nextInfo.index, total: nextInfo.total })} <span className="learn-muted">· {nextInfo.lesson.readingTime} {strings.minRead}</span>
-            </p>
-            <div className="learn-bar" aria-hidden="true">
-              <i style={{ width: `${(nextInfo.levelRead / nextInfo.total) * 100}%`, background: `var(--level-${nextInfo.lesson.level})` }} />
-            </div>
-            <p className="learn-note">{format(strings.returningNote, { read: nextInfo.levelRead, total: nextInfo.total, level: nextInfo.levelLabel })}</p>
-          </div>
-        ) : nextInfo ? (
-          <div className="learn-startText">
-            <p className="learn-eyebrow">{strings.newEyebrow}</p>
-            <h2 id="learn-start-h">{format(strings.newHeading, { level: nextInfo.levelLabel })}</h2>
-            <p className="learn-sub">
-              {/* The title is an English lesson's, so it gets its own `lang` inside a line in the page's language. */}
-              {strings.newSub.split('{title}')[0]}<span lang="en">{nextInfo.lesson.title}</span>{strings.newSub.split('{title}')[1] ?? ''}{' '}<span className="learn-muted">{nextInfo.lesson.readingTime} {strings.minRead}</span>
-            </p>
-          </div>
-        ) : null}
-        <div className="learn-actions">
-          {!finished && nextInfo && (
-            <a
-              className="learn-btn learn-btnPrimary"
-              href={nextInfo.lesson.href}
-              data-attr={returning ? 'blog-start-continue' : 'blog-start-first-lesson'}
-            >
-              {returning ? strings.continueReading : strings.readLesson1}
-            </a>
-          )}
+      {/* Two ways in, side by side: the path from the start, or one question
+          answered by a short guide (council, Nov 10 2026). Without live
+          guides, the start card stands alone as before. */}
+      <section className={band ? 'learn-starts' : undefined} aria-labelledby={band ? 'learn-starts-h' : undefined}>
+        {band && <h2 id="learn-starts-h" className="learn-startsHeading">{howTo.startHeading}</h2>}
+        <div className={band ? 'learn-startsGrid' : undefined}>
+          {/* Without a lesson to start, this card has no heading of its own: the
+              label is left off rather than pointing at an id that is not there.
+              A language whose lessons are still being written is the case. */}
+          <section className="learn-card" aria-labelledby={nextInfo ? 'learn-start-h' : undefined}>
           {finished ? (
-            <a className="learn-btn learn-btnPrimary" href={inclusiveHref} data-attr="blog-start-inclusive">{strings.exploreInclusive}</a>
-          ) : (
-            <button
-              type="button"
-              className="learn-btn learn-btnSecondary"
-              aria-expanded={helperOpen}
-              aria-controls="learn-helper"
-              onClick={toggleHelper}
-              data-attr="blog-level-helper"
-            >
-              {helperOpen ? strings.helperClose : strings.helperOpen}
-            </button>
+            <div className="learn-startText">
+              <p className="learn-eyebrow">{strings.finishedEyebrow}</p>
+              <StartH id="learn-start-h">{format(strings.finishedHeading, { count: core.length })}</StartH>
+              <p className="learn-sub">{strings.finishedSub}</p>
+            </div>
+          ) : returning && nextInfo ? (
+            <div className="learn-startText">
+              <p className="learn-eyebrow">{strings.returningEyebrow}</p>
+              <StartH id="learn-start-h" lang="en">{nextInfo.lesson.title}</StartH>
+              <p className="learn-sub">
+                {format(strings.returningSub, { level: nextInfo.levelLabel, index: nextInfo.index, total: nextInfo.total })} <span className="learn-muted">· {nextInfo.lesson.readingTime} {strings.minRead}</span>
+              </p>
+              <div className="learn-bar" aria-hidden="true">
+                <i style={{ width: `${(nextInfo.levelRead / nextInfo.total) * 100}%`, background: `var(--level-${nextInfo.lesson.level})` }} />
+              </div>
+              <p className="learn-note">{format(strings.returningNote, { read: nextInfo.levelRead, total: nextInfo.total, level: nextInfo.levelLabel })}</p>
+            </div>
+          ) : nextInfo ? (
+            <div className="learn-startText">
+              <p className="learn-eyebrow">{strings.newEyebrow}</p>
+              <StartH id="learn-start-h">{format(strings.newHeading, { level: nextInfo.levelLabel })}</StartH>
+              <p className="learn-sub">
+                {/* The title is an English lesson's, so it gets its own `lang` inside a line in the page's language. */}
+                {strings.newSub.split('{title}')[0]}<span lang="en">{nextInfo.lesson.title}</span>{strings.newSub.split('{title}')[1] ?? ''}{' '}<span className="learn-muted">{nextInfo.lesson.readingTime} {strings.minRead}</span>
+              </p>
+            </div>
+          ) : null}
+          <div className="learn-actions">
+            {!finished && nextInfo && (
+              <a
+                className="learn-btn learn-btnPrimary"
+                href={nextInfo.lesson.href}
+                data-attr={returning ? 'blog-start-continue' : 'blog-start-first-lesson'}
+              >
+                {returning ? strings.continueReading : strings.readLesson1}
+              </a>
+            )}
+            {finished ? (
+              <a className="learn-btn learn-btnPrimary" href={inclusiveHref} data-attr="blog-start-inclusive">{strings.exploreInclusive}</a>
+            ) : (
+              <button
+                type="button"
+                className="learn-btn learn-btnSecondary"
+                aria-expanded={helperOpen}
+                aria-controls="learn-helper"
+                onClick={toggleHelper}
+                data-attr="blog-level-helper"
+              >
+                {helperOpen ? strings.helperClose : strings.helperOpen}
+              </button>
+            )}
+          </div>
+          </section>
+          {band && (
+            <div className="learn-card learn-howtoCard">
+              <div className="learn-startText">
+                <p className="learn-eyebrow">{howTo.oneQuestion}</p>
+                <p className="learn-sub">{howTo.body}</p>
+              </div>
+              <ul className="learn-howtoList" role="list">
+                {howTo.featured.map((g) => (
+                  <li key={g.href}><a href={g.href} lang="en">{g.title}</a></li>
+                ))}
+              </ul>
+              <p className="learn-howtoAll">
+                <a href={howTo.href}>{format(howTo.all, { count: guides.length })}&nbsp;<span aria-hidden="true">&rarr;</span></a>
+              </p>
+              {howTo.inEnglish && <p className="learn-note">{howTo.inEnglish}</p>}
+            </div>
           )}
         </div>
-
         {helperOpen && (
-          <div id="learn-helper" className="learn-helper ph-no-capture" ref={helperRef}>
+          <div id="learn-helper" className="learn-card learn-helper ph-no-capture" ref={helperRef}>
             {step === 0 && (
               <fieldset className="learn-helperQuestion">
                 <legend tabIndex={-1} data-helper-focus>

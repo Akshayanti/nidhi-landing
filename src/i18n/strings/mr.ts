@@ -968,7 +968,7 @@ export const mr: Dict = {
       link: 'अधिक जाणून घ्या',
     },
     faq: {
-      heading: 'दोन नेहमीचे प्रश्न',
+      heading: 'नेहमीचे प्रश्न',
       items: [
         {
           q: 'nidhi ला किती खर्च येतो?',

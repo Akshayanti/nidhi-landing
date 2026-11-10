@@ -1097,7 +1097,7 @@ export const es: Dict = {
       link: 'Más información',
     },
     faq: {
-      heading: 'Dos preguntas frecuentes',
+      heading: 'Preguntas frecuentes',
       items: [
         {
           q: '¿Cuánto cuesta nidhi?',

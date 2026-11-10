@@ -1054,7 +1054,7 @@ export const cs: Dict = {
       link: 'Zjistit více',
     },
     faq: {
-      heading: 'Dvě časté otázky',
+      heading: 'Časté otázky',
       items: [
         {
           q: 'Kolik nidhi stojí?',
