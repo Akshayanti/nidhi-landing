@@ -51,8 +51,8 @@ export function sourceFile(path: string, raw: string): SourceFile {
  * template strings run until their closing backtick. Whenever it is unsure,
  * it keeps the text: an apostrophe in a page's prose is taken for an open
  * string until the line ends, which can only leave a comment in, never take
- * code out. A `//` starts a comment wherever it stands, except right after
- * a colon, where it is the `//` of an address in a page's text.
+ * code out. A `//` starts a comment wherever it stands, except in a web
+ * address written in a page's text (`http://x` or `https://x`).
  */
 export function withoutComments(text: string): string {
   let out = '';
@@ -73,7 +73,7 @@ export function withoutComments(text: string): string {
       i = stop - 1;
       continue;
     }
-    if (c === '/' && text[i + 1] === '/' && text[i - 1] !== ':') {
+    if (c === '/' && text[i + 1] === '/' && !(/https?:$/.test(text.slice(Math.max(0, i - 6), i)) && /[A-Za-z0-9]/.test(text[i + 2] || ''))) {
       const end = text.indexOf('\n', i);
       const stop = end === -1 ? text.length : end;
       out += ' '.repeat(stop - i);
@@ -474,6 +474,10 @@ function isTest(whole: string, from: number, at: number, end: number): boolean {
   // inside one (`keep(")" && x)`) is text, not a bracket.
   const hollow = (m: string): string => m[0] + ' '.repeat(m.length - 2) + m[0];
   const text = whole.slice(0, from) + whole.slice(from, at).replace(/'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/g, hollow) + whole.slice(at);
+  // Nothing that looks like a comment may be left before the name: the
+  // blanking keeps a `//` that follows `https:`, and what stands after it
+  // would then be read as code.
+  if (/\/\/|\/\*/.test(text.slice(from, at))) return false;
   // A quote left over is a string this could not pair up: refuse.
   if (/['"`]/.test(text.slice(from, at).replace(/'\s*'|"\s*"|`\s*`/g, ''))) return false;
   // What stands right before the name (and the `window.` it may hang from)

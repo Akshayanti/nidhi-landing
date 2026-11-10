@@ -838,6 +838,7 @@ describe('privacy surface reader: hosts and requests', () => {
   });
 
   it('a // is a comment wherever it stands, except in an address', () => {
+    assert.doesNotMatch(withoutComments('a ? x://fetch(b)\nc ? https://)&&fetch(b)'), /fetch\(b\)/);
     const text = withoutComments("0//`\nfetch(a);//fetch(b)\nconst c = 1;//`\nfetch(d); <a href=\"x\">see https://e.example.org/path</a> fetch(f);");
     for (const kept of ['fetch(a)', 'fetch(d)', 'https://e.example.org/path', 'fetch(f)']) assert.ok(text.includes(kept), kept);
     assert.doesNotMatch(text, /fetch\(b\)|`/);
@@ -909,6 +910,9 @@ describe('privacy surface reader: hosts and requests', () => {
       'if (keep /*!*/ (window.posthog)) {}',
       'if (keep!(window.posthog)) {}',
       'if (keep(")" && window.posthog)) {}',
+      'if (keep(cond ? x://)&&\n(window.posthog))) {}',
+      'if (keep(cond ? https://a)&&\n(window.posthog))) {}',
+      'if (keep(cond ? http://)&&\n(window.posthog))) {}',
       "if (keep(')' && window.posthog)) {}",
       'if (keep(`)` && window.posthog)) {}',
       'if (keep("\\")" && window.posthog)) {}',
