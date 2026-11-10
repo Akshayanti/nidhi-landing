@@ -415,8 +415,13 @@ describe('newsletter.gs: bounce scan', () => {
     row('gone@x.io', 'confirmed', 30, { unsub: tok('2') }),
     row('waiting@x.io', 'pending', 2, { confirm: tok('3'), unsub: tok('4') }),
   ];
-  // The reference this script writes into every mail it sends to `to`.
-  const ref = (to, secret = SECRET) => crypto.createHmac('sha256', secret).update(`mail-ref:${to.toLowerCase()}`).digest('hex').slice(0, 40);
+  // A reference as this script writes it into a mail to `to`, made `sentDaysAgo` days ago.
+  const ref = (to, { sentDaysAgo = 2, secret = SECRET } = {}) => {
+    const ts = String(Math.floor((NOW - sentDaysAgo * DAY) / 1000));
+    return `${ts}.${crypto.createHmac('sha256', secret).update(`mail-ref:${to.toLowerCase()}:${ts}`).digest('hex').slice(0, 40)}`;
+  };
+  // What Gmail writes above a message it found signed by googlemail.com.
+  const GOOGLE = 'Authentication-Results: mx.google.com; dkim=pass header.i=@googlemail.com header.s=20230601 header.b=abc; spf=pass (google.com: best guess record) smtp.helo=mail-sor-f41.google.com; dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=googlemail.com';
   /**
    * A delivery report as Google writes it: multipart/report with a readable
    * part, a message/delivery-status part with one block per recipient, and
@@ -425,11 +430,12 @@ describe('newsletter.gs: bounce scan', () => {
   const report = (recipients, {
     from = 'Mail Delivery Subsystem <mailer-daemon@googlemail.com>', ageDays = 1, readable = 'Address not found',
     outerType = 'multipart/report; boundary="b1"; report-type=delivery-status', statusType = 'message/delivery-status',
-    returned = recipients[0][0], returnedRef = ref(recipients[0][0]), returnedBody = 'Hello',
+    returned = recipients[0][0], returnedRef = ref(recipients[0][0]), returnedBody = 'Hello', auth = [GOOGLE], extraParts = [],
   } = {}) => ({
     getFrom: () => from,
     getDate: () => new Date(NOW - ageDays * DAY),
     getRawContent: () => [
+      'Delivered-To: updates@nidhi.today', ...auth,
       `From: ${from}`, 'Subject: Delivery Status Notification (Failure)', `Content-Type: ${outerType}`, `X-Failed-Recipients: ${recipients.map((r) => r[0]).join(', ')}`, '',
       '--b1', 'Content-Type: text/plain; charset="UTF-8"', '', readable, '',
       '--b1', `Content-Type: ${statusType}`, '',
@@ -438,6 +444,7 @@ describe('newsletter.gs: bounce scan', () => {
       '--b1', 'Content-Type: message/rfc822', '',
       'From: "nidhi" <updates@nidhi.today>', `To: ${returned}`, 'List-ID: nidhi blog newsletter <newsletter.nidhi.today>', `X-Nidhi-Ref: ${returnedRef}`, 'Subject: A lesson', '',
       returnedBody, '',
+      ...extraParts,
       '--b1--', '',
     ].join('\r\n'),
   });
@@ -445,19 +452,22 @@ describe('newsletter.gs: bounce scan', () => {
   const inbox = (ctx, ...messages) => { ctx.GmailApp.search = (_q, start) => (start === 0 ? messages.map((m) => ({ getMessages: () => [m] })) : []); };
   const untouched = (ctx) => assert.deepEqual(ctx.rec.rows.slice(1).map((r) => r[1]), ['confirmed', 'confirmed', 'pending']);
 
-  it('every mail the script sends carries the reference for its own recipient', () => {
+  it('every mail the script sends carries a reference made for its own recipient at that moment', () => {
     const ctx = load();
     let mime = '';
     ctx.rec.onSend = (_to, text) => { mime = text; };
     ctx.doPost(req({ action: 'subscribe', email: 'New@x.io' }));
-    assert.match(mime, new RegExp(`^X-Nidhi-Ref: ${ref('new@x.io')}\r?$`, 'm'));
+    const written = /^X-Nidhi-Ref: (\S+)\r?$/m.exec(mime)[1];
+    assert.equal(written, ref('new@x.io', { sentDaysAgo: 0 }));
+    assert.match(written, /^[0-9]{10}\.[0-9a-f]{40}$/);
     assert.notEqual(ref('new@x.io'), ref('other@x.io'));
-    assert.notEqual(ref('new@x.io'), ref('new@x.io', 'b'.repeat(64)), 'it depends on the secret');
+    assert.notEqual(ref('new@x.io'), ref('new@x.io', { sentDaysAgo: 3 }), 'each mail has its own');
+    assert.notEqual(ref('new@x.io'), ref('new@x.io', { secret: 'b'.repeat(64) }), 'it depends on the secret');
   });
 
   it('marks the address a permanent failure report names, confirmed or still pending', () => {
     const ctx = load(subscribers());
-    inbox(ctx, failed('gone@x.io'), failed('Waiting@x.io', { returned: 'waiting@x.io', returnedRef: ref('waiting@x.io') }));
+    inbox(ctx, failed('gone@x.io'), failed('Waiting@x.io', { returned: 'waiting@x.io', returnedRef: ref('waiting@x.io', { sentDaysAgo: 1.9 }) }));
     assert.equal(scan(ctx).marked_bounced, 2);
     assert.equal(find(ctx, 'gone@x.io')[1], 'bounced');
     assert.equal(find(ctx, 'waiting@x.io')[1], 'bounced');
@@ -481,14 +491,25 @@ describe('newsletter.gs: bounce scan', () => {
     ['a message that is not a delivery report by its type', { outerType: 'multipart/mixed; boundary="b1"' }],
     ['a report of another kind', { outerType: 'multipart/report; boundary="b1"; report-type=disposition-notification' }],
     ['a status part of another type', { statusType: 'text/plain' }],
-    ['a report older than the reader’s sign-up', { ageDays: 13.9, returned: 'gone@x.io' }],
     ['a returned mail with no reference', { returnedRef: '' }],
-    ['a returned mail with a reference made without the secret', { returnedRef: ref('gone@x.io', 'b'.repeat(64)) }],
+    ['a returned mail with a reference made without the secret', { returnedRef: ref('gone@x.io', { secret: 'b'.repeat(64) }) }],
     ['a returned mail whose reference is for someone else (the attacker’s own mail)', { returned: 'attacker@evil.example', returnedRef: ref('attacker@evil.example') }],
     ['a reference that only appears in the returned mail’s text', { returnedRef: '', returnedBody: `X-Nidhi-Ref: ${ref('gone@x.io')}` }],
+    ['a reference from a mail sent before the reader’s current sign-up', { returnedRef: ref('gone@x.io', { sentDaysAgo: 13.8 }) }],
+    ['a reference older than 14 days', { returnedRef: ref('gone@x.io', { sentDaysAgo: 20 }) }],
+    ['a reference dated after the report that returns it', { returnedRef: ref('gone@x.io', { sentDaysAgo: 0.5 }) }],
+    ['a report with a second returned mail', { extraParts: ['--b1', 'Content-Type: message/rfc822', '', `X-Nidhi-Ref: ${ref('gone@x.io')}`, '', 'x', ''] }],
+    ['a report with a second status part', { extraParts: ['--b1', 'Content-Type: message/delivery-status', '', 'Final-Recipient: rfc822; gone@x.io', 'Action: failed', 'Status: 5.1.1', ''] }],
+    // The leaked reference: a forwarded newsletter shows a real, fresh
+    // reference for gone@x.io, and someone builds a report around it.
+    ['a report built around a real reference, which Gmail did not find signed by googlemail.com', { auth: ['Authentication-Results: mx.google.com; dkim=pass header.i=@evil.example; spf=pass smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com'] }],
+    ['the same with no authentication result at all', { auth: [] }],
+    ['the same with the forger’s own result below Gmail’s', { auth: ['Authentication-Results: mx.google.com; dkim=none; spf=fail smtp.mailfrom=evil.example; dmarc=fail header.from=googlemail.com', GOOGLE] }],
+    ['the same with a result under another server’s name', { auth: [GOOGLE.replace('mx.google.com', 'mx.evil.example')] }],
+    ['the same with a look-alike signing domain', { auth: ['Authentication-Results: mx.google.com; dkim=pass header.i=@googlemail.com.evil.example; dmarc=pass header.from=googlemail.com.evil.example'] }],
   ]) {
     it(`ignores ${what}`, () => {
-      // A sign-up 14 days old, so that only the "older than the sign-up" case is older than it.
+      // A sign-up 13.5 days old: the mail that failed (2 days ago) is after it.
       const rows = subscribers();
       rows[1] = row('gone@x.io', 'confirmed', 13.5, { unsub: tok('2') });
       const ctx = load(rows);
@@ -497,6 +518,23 @@ describe('newsletter.gs: bounce scan', () => {
       untouched(ctx);
     });
   }
+
+  it('a reference does not outlive a re-subscription', () => {
+    // The reader left and signed up again yesterday; a reference from a mail
+    // of the earlier subscription (sent 2 days ago) is no longer honoured.
+    const ctx = load([row('gone@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    inbox(ctx, failed('gone@x.io', { ageDays: 0.5 }));
+    assert.equal(scan(ctx).marked_bounced, 0);
+    // One from the confirmation mail of the new sign-up is.
+    inbox(ctx, failed('gone@x.io', { ageDays: 0.5, returnedRef: ref('gone@x.io', { sentDaysAgo: 1 }) }));
+    assert.equal(scan(ctx).marked_bounced, 1);
+  });
+
+  it('accepts Gmail’s result when it reports alignment rather than the signature', () => {
+    const ctx = load(subscribers());
+    inbox(ctx, failed('gone@x.io', { auth: ['Authentication-Results: mx.google.com;\r\n       dkim=pass header.d=googlemail.com;\r\n       dmarc=pass (p=QUARANTINE) header.from=googlemail.com'] }));
+    assert.equal(scan(ctx).marked_bounced, 1);
+  });
 
   it('ignores a delay notice and a temporary failure', () => {
     const ctx = load(subscribers());
