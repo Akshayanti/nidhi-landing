@@ -24,7 +24,7 @@
  *
  * Why Node (not Python or shell): consistent with the existing
  *   scripts/lint.mjs and scripts/render-figures.mjs, and means the
- *   testable bits live in the same Node 22 test runner the rest of the
+ *   testable bits live in the same Node test runner the rest of the
  *   project uses (see scripts/indexnow.test.mjs).
  *
  * Why ESM (.mjs) and not the .ts test convention: this is a build-tool
