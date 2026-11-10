@@ -110,12 +110,13 @@ declare global {
  */
 function pauseHeatmaps(paused: boolean) {
   window.nidhiHeatmapsPaused = paused;
-  const ph = window.posthog;
-  if (!ph || !ph.__loaded || typeof ph.set_config !== 'function') return;
+  // PostHog is called where it stands, never kept in a variable
+  // (src/utils/privacySurface.test.ts).
+  if (!window.posthog?.__loaded || typeof window.posthog.set_config !== 'function') return;
   if (paused) {
-    ph.set_config({ enable_heatmaps: false });
+    window.posthog.set_config?.({ enable_heatmaps: false });
   } else {
-    if (window.nidhiConsent?.accepted()) ph.set_config({ enable_heatmaps: true });
+    if (window.nidhiConsent?.accepted()) window.posthog.set_config?.({ enable_heatmaps: true });
   }
 }
 

@@ -292,13 +292,13 @@ const EXPECTED_MENTIONS = [
   'components/InvestOrPayOff.tsx: fetch x1',
   'components/InvestOrPayOff.tsx: location x6',
   'components/InvestOrPayOff.tsx: navigator x1',
-  'components/InvestOrPayOff.tsx: posthog x2',
+  'components/InvestOrPayOff.tsx: posthog x4',
   'components/InvestOrPayOff.tsx: track x8',
   'components/LearnHome.tsx: capture x3',
   'components/LearnHome.tsx: getItem x1',
   'components/LearnHome.tsx: localStorage x1',
   'components/LearnHome.tsx: location x2',
-  'components/LearnHome.tsx: posthog x3',
+  'components/LearnHome.tsx: posthog x6',
   'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',
@@ -417,34 +417,22 @@ const EXPECTED_MENTIONS = [
 ];
 
 // What is done with storage or PostHog once a variable holds it spells none
-// of the names above (`ls.amount = v`, `ph.capture(...)`). Two files do more
-// with these objects than call them (the consent runtime keeps storage in
-// variables and returns it; Analytics.astro replaces PostHog with a stand-in
-// when analytics are off; the type file declares its shape). They are pinned
-// by their whole content: any edit to them is a reason to look. When one
-// changes, check it against the rule at the top, then update its line.
+// of the names above (`ls.amount = v`, `people.set(...)`), and following an
+// object through variables in text does not work. So nothing holds them:
+// outside the files below, storage and PostHog are only called directly,
+// tested in a condition, asked about with `typeof`, or named in a string
+// (see scanHolders). Three files do more (the consent runtime keeps storage
+// in variables and returns it; Analytics.astro replaces PostHog with a
+// stand-in when analytics are off; the type file declares its shape). They
+// are pinned by their whole content: any edit to them is a reason to look.
+// When one changes, check it against the rule at the top, then update its
+// line. A file that starts to need this is added here on purpose, never to
+// quiet the test.
 const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
 const EXPECTED_WHOLE_FILES = [
   'components/Analytics.astro: sha256 b257474919ba014c',
   'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
   'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
-];
-
-// Everywhere else, every line that names a variable holding PostHog or
-// storage is pinned. A new line through such a variable changes this list.
-const EXPECTED_HELD_LINES = [
-  'components/InvestOrPayOff.tsx: // (council, Oct 30, 2026). So the form is marked ph-no-capture, its choices',
-  "components/InvestOrPayOff.tsx: // ignore ph-no-capture, are paused on this page, as the learning path's",
-  'components/InvestOrPayOff.tsx: const ph = window.posthog;',
-  "components/InvestOrPayOff.tsx: if (ph && ph.__loaded && typeof ph.set_config === 'function') ph.set_config({ enable_heatmaps: false });",
-  'components/InvestOrPayOff.tsx: <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>',
-  'components/LearnHome.tsx: *   ph-no-capture and heatmaps are paused while it is open, so no click',
-  'components/LearnHome.tsx: * Heatmaps record where every click lands and ignore ph-no-capture, so the',
-  'components/LearnHome.tsx: const ph = window.posthog;',
-  "components/LearnHome.tsx: if (!ph || !ph.__loaded || typeof ph.set_config !== 'function') return;",
-  'components/LearnHome.tsx: ph.set_config({ enable_heatmaps: false });',
-  'components/LearnHome.tsx: if (window.nidhiConsent?.accepted()) ph.set_config({ enable_heatmaps: true });',
-  'components/LearnHome.tsx: <div id="learn-helper" className="learn-card learn-helper ph-no-capture" ref={helperRef}>',
 ];
 
 describe('privacy surface: click labels', () => {
@@ -547,13 +535,14 @@ describe('privacy surface: outside hosts and requests', () => {
 
   const held = scanHolders(FILES.filter((f) => !NOTICE_PAGE.test(f.path)), WHOLE_FILES);
 
-  it('the files that hold storage or PostHog as a value are the pinned ones, unchanged', () => {
-    assert.deepEqual(held.unresolved, [], `These files use storage or PostHog as a value. Follow it by hand, then add the file to WHOLE_FILES.${RULE}`);
-    assert.deepEqual(held.pinned, EXPECTED_WHOLE_FILES, diff('Pinned files', held.pinned, EXPECTED_WHOLE_FILES));
+  it('storage and PostHog are only called, tested or named: nothing holds them', () => {
+    assert.deepEqual(held.unresolved, [],
+      'Call it directly (window.posthog?.capture?.(...), localStorage.getItem(...)) or test it in an if. ' +
+      `Keeping it, or a part of it, in a variable hides what is done with it from this file.${RULE}`);
   });
 
-  it('every line that goes through a variable holding storage or PostHog is a pinned one', () => {
-    assert.deepEqual(held.lines, EXPECTED_HELD_LINES, diff('Lines', held.lines, EXPECTED_HELD_LINES));
+  it('the three files that do more are the pinned ones, unchanged', () => {
+    assert.deepEqual(held.pinned, EXPECTED_WHOLE_FILES, diff('Pinned files', held.pinned, EXPECTED_WHOLE_FILES));
   });
 
   it('the privacy notice page, left out of that count, runs no script of its own', () => {
@@ -855,62 +844,52 @@ describe('privacy surface reader: hosts and requests', () => {
     assert.deepEqual(scanRequests([{ path: 'x.ts', text, raw: text }]), ['x.ts: fetch(a)']);
   });
 
-  it('pins what is done through a variable that holds storage or PostHog', () => {
-    const base = "const store = localStorage;\nstore.getItem('nidhi-a');";
-    const before = scanHolders(file(base), []);
-    assert.deepEqual(before.lines, ['components/X.tsx: const store = localStorage;', "components/X.tsx: store.getItem('nidhi-a');"]);
-    assert.deepEqual(before.unresolved, []);
-    for (const added of ['store.amount = typedAmount;', "store['amount'] = typedAmount;", 'store?.setItem(k, v);']) {
-      assert.notDeepEqual(scanHolders(file(`${base}\n${added}`), []).lines, before.lines, added);
-    }
-    const ph = scanHolders(file("const ph = window.posthog;\nif (ph) ph.capture('e');\nph['capture']('free_x', { amount });"), []);
-    assert.equal(ph.lines.length, 3);
-    assert.deepEqual(ph.unresolved, []);
-  });
-
-  it('follows a variable that copies one, however many times', () => {
-    const base = 'const store = localStorage;\nconst other = store;\nlet third = other;';
-    const before = scanHolders(file(base), []);
-    assert.deepEqual(before.unresolved, []);
-    for (const added of ['other.amount = typedAmount;', "third['amount'] = typedAmount;", 'third.setItem(k, v);']) {
-      const after = scanHolders(file(`${base}\n${added}`), []);
-      assert.notDeepEqual(after.lines, before.lines, added);
-    }
-  });
-
-  it('a held object handed on to where it cannot be followed needs the whole file pinned', () => {
-    for (const added of ['send(store);', 'const all = [store];', 'box.s = store;', 'return store;', 'other = store;', 'Object.assign(store, { amount });', 'const { setItem } = store;']) {
-      const source = `const store = localStorage;\nstore.getItem('nidhi-a');\n${added}`;
-      assert.deepEqual(scanHolders(file(source), []).unresolved, ['components/X.tsx'], added);
-    }
-  });
-
-  it('a file that uses storage or PostHog as a value in any other way must be pinned whole', () => {
+  it('accepts storage and PostHog used in plain sight', () => {
     for (const source of [
+      "localStorage.setItem('nidhi-a', v); window.localStorage.getItem('nidhi-a'); sessionStorage.removeItem(k);",
+      "window.posthog?.capture?.('e', { count });\nwindow.posthog.identify(id);",
+      "if (window.posthog) window.posthog.capture('e');",
+      "if (!window.posthog?.__loaded || typeof window.posthog.set_config !== 'function') return;",
+      "if (typeof localStorage !== 'undefined') localStorage.getItem('nidhi-a');",
+      "while (window.posthog && tries < 3) tries += 1;",
+      "posthog.init(key, { persistence: on ? 'localStorage' : 'memory' });",
+    ]) {
+      assert.deepEqual(scanHolders(file(source), []), { pinned: [], unresolved: [] }, source);
+    }
+  });
+
+  it('refuses every way of holding storage or PostHog, or a part of one', () => {
+    for (const source of [
+      'const store = localStorage;',
+      'const store = localStorage;\nconst other = store;\nother.amount = typedAmount;',
+      'const ph = window.posthog;',
+      'const people = window.posthog.people;\npeople.set({ amount: typedAmount });',
+      "const store = (typeof window !== 'undefined' && window.localStorage) || null;\nstore.amount = typedAmount;",
+      "const store = window['localStorage'];",
+      'localStorage.amount = typedAmount;',
+      "localStorage['amount'] = typedAmount;",
       'function storage() { return window.localStorage; }',
       'stores.push(root.sessionStorage);',
       'send(localStorage);',
       'const all = [localStorage, sessionStorage];',
       'window.posthog = { capture: noop };',
+      'const { capture } = window.posthog;',
+      'if ((store = localStorage)) store.amount = v;',
+      'if (ready) { keep(window.posthog); }',
+      'const send = window.posthog.capture;',
+      'const send = window.posthog?.capture?.bind(window.posthog);',
       'export const store = { s: localStorage };',
     ]) {
-      assert.deepEqual(scanHolders(file(source), []).unresolved, ['components/X.tsx'], source);
-      const whole = scanHolders(file(source), ['components/X.tsx']);
-      assert.deepEqual(whole.unresolved, []);
-      assert.match(whole.pinned[0], /^components\/X\.tsx: sha256 [0-9a-f]{16}$/);
-      assert.notDeepEqual(scanHolders(file(`${source}\n// one more line`), ['components/X.tsx']).pinned, whole.pinned);
+      assert.notDeepEqual(scanHolders(file(source), []).unresolved, [], source);
     }
   });
 
-  it('asking whether PostHog is there, or naming storage in a string, is not holding it', () => {
-    for (const source of [
-      "if (window.posthog) window.posthog.capture('e');",
-      "if (typeof localStorage !== 'undefined') localStorage.getItem('nidhi-a');",
-      "posthog.init(key, { persistence: on ? 'localStorage' : 'memory' });",
-      "window.posthog?.capture?.('e');",
-    ]) {
-      assert.deepEqual(scanHolders(file(source), []), { pinned: [], lines: [], unresolved: [] }, source);
-    }
+  it('a file that needs to hold one is pinned by its whole content', () => {
+    const source = 'function storage() { return window.localStorage; }';
+    const whole = scanHolders(file(source), ['components/X.tsx']);
+    assert.deepEqual(whole.unresolved, []);
+    assert.match(whole.pinned[0], /^components\/X\.tsx: sha256 [0-9a-f]{16}$/);
+    assert.notDeepEqual(scanHolders(file(`${source}\n// one more line`), ['components/X.tsx']).pinned, whole.pinned);
   });
 
   it('lists the build-time settings read', () => {

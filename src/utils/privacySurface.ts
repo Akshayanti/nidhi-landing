@@ -377,7 +377,7 @@ const SENSITIVE_FORMS: [string, RegExp][] = [
  * in a variable (`const ls = localStorage`) or an optional call
  * (`fetch?.(...)`) each add a mention, whatever the readers above make of
  * them. What is then done through such a variable spells none of these words
- * (`ls.amount = v`); `scanHolders` covers that.
+ * (`ls.amount = v`), which is why `scanHolders` does not allow one.
  *
  * It counts the file exactly as written, comments and strings included. The
  * readers blank comments first, and anything that decides what is a comment
@@ -405,84 +405,73 @@ export function scanMentions(files: SourceFile[], skip: RegExp | null = null): s
   return out.sort();
 }
 
-const escapeName = (name: string): string => name.replace(/\$/g, '\\$');
-
-const HELD = '(?:localStorage|sessionStorage|posthog)';
-// `const ph = window.posthog;`: the object under another name.
-const ALIAS = new RegExp(`(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*(?:[\\w$]+\\s*\\.\\s*)?${HELD}\\s*(?:;|\\n)`, 'g');
-// The object used as a value in any other way: returned, passed on, put in a
-// list, assigned to something, or replaced.
-const VALUE_USE = new RegExp(`(?<![\\w$])${HELD}(?![\\w$])(?!\\s*\\??\\.\\s*[A-Za-z_$])`, 'g');
-// Not a use as a value: asking whether it exists.
-const EXISTENCE = new RegExp(`(?:typeof\\s+|\\b(?:if|while)\\s*\\(\\s*!?\\s*|[!&|]\\s*)(?:[\\w$]+\\s*\\.\\s*)?${HELD}\\s*(?:\\)|&&|\\|\\||[!=]==)`, 'g');
-// A string that only names it: `persistence: 'localStorage'`.
-const QUOTED = new RegExp(`(['"\`])${HELD}\\1`, 'g');
+const HELD = /(?<![\w$])(?:localStorage|sessionStorage|posthog)(?![\w$])/g;
 
 export interface HolderScan {
   /** `file: sha256 <first 16 hex>` for each file named in `wholeFiles`. */
   pinned: string[];
-  /** `file: <line>` for every line that names a variable holding storage or PostHog. */
-  lines: string[];
-  /** Files that use such an object as a value in a way this reader does not follow, and are not pinned whole. */
+  /** `file: <line>` for each use of storage or PostHog that is not one of the plain forms. */
   unresolved: string[];
 }
 
 /**
- * What is done with storage or PostHog once it is held in a variable.
+ * Storage and PostHog are only ever used in plain sight.
  *
- * `const ph = window.posthog` adds a mention, but `ph.anything(...)` and
- * `ls.amount = v` after it spell no sensitive word. So for each such
- * variable, and each variable that copies one (`const other = ph`), every
- * line of the file that names it is listed, to be pinned: a new line through
- * the variable is a changed snapshot. A file that does more than use a
- * member of the object or copy it into another variable (returns it, passes
- * it to a function, puts it in a list or on a property, replaces it) cannot
- * be followed line by line; it has to be one of `wholeFiles`, which are
- * pinned by their whole content, so any edit to them at all is looked at.
+ * Following an object through variables in text does not work: every rule
+ * for it has had a next case (a copy of a copy, a member kept in a variable,
+ * a guard expression that hands the object on). So there is nothing to
+ * follow. Outside the files named in `wholeFiles`, each appearance of
+ * `localStorage`, `sessionStorage` or `posthog` must be one of:
+ *
+ *   - a method called on it, there and then: `localStorage.getItem(...)`,
+ *     `window.posthog?.capture?.(...)`;
+ *   - inside the condition of an `if` or a `while` that assigns nothing:
+ *     `if (window.posthog)`, `if (!window.posthog?.__loaded || ...)`;
+ *   - right after `typeof`;
+ *   - its name in a string that is not an index: `persistence: 'localStorage'`.
+ *
+ * Anything else, keeping it or a part of it in a variable, returning it,
+ * passing it on, indexing it, setting a property on it, is listed as
+ * unresolved, and the test fails. A file that needs to do such a thing is
+ * named in `wholeFiles` and pinned by its whole content, so any edit to it
+ * at all is looked at.
  */
 export function scanHolders(files: SourceFile[], wholeFiles: string[]): HolderScan {
   const pinned: string[] = [];
-  const lines: string[] = [];
   const unresolved: string[] = [];
   for (const { path, text, raw } of files) {
     if (wholeFiles.includes(path)) {
       pinned.push(`${path}: sha256 ${createHash('sha256').update(raw).digest('hex').slice(0, 16)}`);
       continue;
     }
-    const direct = [...text.matchAll(ALIAS)];
-    const followed = direct.length + [...text.matchAll(EXISTENCE)].length + [...text.matchAll(QUOTED)].length;
-    let lost = [...text.matchAll(VALUE_USE)].length > followed;
-
-    // A variable that copies such a variable holds the object too.
-    const names = new Set(direct.map((m) => m[1]));
-    for (let grew = true; grew;) {
-      grew = false;
-      for (const name of [...names]) {
-        const copy = new RegExp(`(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*${escapeName(name)}\\s*(?:;|\\n)`, 'g');
-        for (const m of text.matchAll(copy)) if (!names.has(m[1])) { names.add(m[1]); grew = true; }
-      }
+    // The conditions of every `if` and `while`, as [start, end) ranges, left
+    // out when they assign anything.
+    const conditions: [number, number][] = [];
+    for (const m of text.matchAll(/(?<![\w$.])(?:if|while)\s*\(/g)) {
+      const open = m.index + m[0].length - 1;
+      const inner = balanced(text, open);
+      if (inner === null || /(?<![=!<>])=(?![=>])|=>|\+\+|--/.test(inner)) continue;
+      conditions.push([open, open + inner.length + 1]);
     }
-    for (const name of names) {
-      const n = escapeName(name);
-      const word = `(?<![\\w$.])${n}(?![\\w$])`;
-      // For this accounting a hyphen-joined token is not the variable: a
-      // short name such as `ph` is also the start of the class `ph-no-capture`.
-      const bare = `(?<![\\w$.-])${n}(?![\\w$-])`;
-      const count = (pattern: string): number => [...text.matchAll(new RegExp(pattern, 'g'))].length;
-      // Each appearance of the variable is its declaration, a member of it
-      // being used (`ph.x`, `ph?.x`, `ph[x]`), a copy into another followed
-      // variable, or a test of whether it is there. Anything else hands the
-      // object on to where it cannot be followed.
-      const known =
-        count(`(?:const|let|var)\\s+${n}\\s*=`) +
-        count(`${bare}\\s*(?:\\?\\.|\\.|\\[)`) +
-        count(`(?:const|let|var)\\s+[A-Za-z_$][\\w$]*\\s*=\\s*${n}\\s*(?:;|\\n)`) +
-        count(`(?:\\b(?:if|while)\\s*\\(\\s*!?\\s*|[!&|]\\s*)${n}(?![\\w$])\\s*(?:\\)|&&|\\|\\||[!=]==)`);
-      if (count(bare) > known) lost = true;
-      const mention = new RegExp(word);
-      for (const line of raw.split('\n')) if (mention.test(line)) lines.push(`${path}: ${line.trim()}`);
+    for (const m of text.matchAll(HELD)) {
+      const at = m.index;
+      const before = text.slice(Math.max(0, at - 40), at);
+      const after = text.slice(at + m[0].length, at + m[0].length + 80);
+      const quote = text[at - 1];
+      const plain =
+        // Its name in a string, unless the string is an index (`window['localStorage']`).
+        ((quote === "'" || quote === '"' || quote === '`') && after[0] === quote && !/\[\s*$/.test(text.slice(Math.max(0, at - 12), at - 1))) ||
+        // A method called on it, there and then.
+        /^\s*\??\.\s*[A-Za-z_$][\w$]*\s*(?:\?\.)?\s*\(/.test(after) ||
+        // Right after `typeof`.
+        /typeof\s+(?:[A-Za-z_$][\w$]*\s*\.\s*)?$/.test(before) ||
+        // Inside a condition that assigns nothing.
+        conditions.some(([from, to]) => at > from && at < to);
+      if (plain) continue;
+      const lineStart = text.lastIndexOf('\n', at) + 1;
+      const lineEnd = text.indexOf('\n', at);
+      unresolved.push(`${path}: ${raw.slice(lineStart, lineEnd === -1 ? raw.length : lineEnd).trim()}`);
     }
-    if (lost) unresolved.push(path);
   }
-  return { pinned: pinned.sort(), lines, unresolved: unresolved.sort() };
+  return { pinned: pinned.sort(), unresolved };
 }

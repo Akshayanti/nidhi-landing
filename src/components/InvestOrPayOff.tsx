@@ -225,8 +225,11 @@ export default function InvestOrPayOff({
   // helper does. Analytics.astro reads the same flag if PostHog loads later.
   useEffect(() => {
     window.nidhiHeatmapsPaused = true;
-    const ph = window.posthog;
-    if (ph && ph.__loaded && typeof ph.set_config === 'function') ph.set_config({ enable_heatmaps: false });
+    // PostHog is called where it stands, never kept in a variable
+    // (src/utils/privacySurface.test.ts).
+    if (window.posthog?.__loaded && typeof window.posthog.set_config === 'function') {
+      window.posthog.set_config?.({ enable_heatmaps: false });
+    }
   }, []);
 
   // Shared links carry the state after the #. ToolStateGuard, in the page
