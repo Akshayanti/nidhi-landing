@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'header-menus-keyboard',
+        text: {
+          en: 'The menus at the top of the page are easier to use from a keyboard: a bar now shows which link you are on, in light and dark, Tab moves on past the last link without getting lost, and screen readers are told what the menus and the theme buttons are, with no keys promised that do nothing.',
+          hi: 'पेज के ऊपर वाले मेन्यू अब कीबोर्ड से इस्तेमाल करना आसान है: एक पट्टी दिखाती है कि आप किस लिंक पर हैं, लाइट और डार्क दोनों में, आखिरी लिंक के बाद Tab बिना भटके आगे बढ़ता है, और स्क्रीन रीडर को बताया जाता है कि मेन्यू और थीम के बटन क्या हैं, बिना ऐसी कुंजियों का वादा किए जो कुछ नहीं करतीं।',
+          es: 'Los menús de la parte superior de la página son más fáciles de usar con el teclado: una barra muestra ahora en qué enlace estás, en modo claro y oscuro, Tab sigue adelante después del último enlace sin perderse, y los lectores de pantalla reciben lo que son los menús y los botones del tema, sin prometer teclas que no hacen nada.',
+          cs: 'Nabídky v\u00a0horní části stránky se teď lépe ovládají z\u00a0klávesnice: proužek ukazuje, na kterém odkazu jste, ve světlém i\u00a0tmavém režimu, Tab za posledním odkazem pokračuje dál a\u00a0neztratí se, a\u00a0čtečky obrazovky se dozvědí, co nabídky a\u00a0tlačítka motivu jsou, bez slibovaných kláves, které nic nedělají.',
+          mr: 'पानाच्या वरच्या भागातील मेनू आता कीबोर्डने वापरणे सोपे आहे: तुम्ही कोणत्या लिंकवर आहात हे एक पट्टी दाखवते, लाइट आणि डार्क दोन्हींमध्ये, शेवटच्या लिंकनंतर Tab न भरकटता पुढे जाते, आणि मेनू व थीमची बटणे काय आहेत हे स्क्रीन रीडरला सांगितले जाते, काहीही न करणाऱ्या कळांचे आश्वासन न देता.',
+        },
+      },
+      {
         id: 'loan-ends-on-its-term',
         text: {
           en: 'The loan comparison now ends a loan on the term you type. A 30-year loan used to show as 30 years and 1 month, with a 361st payment of a few cents, in about half of all cases; those cents are now part of the last payment, as a lender would do it.',
