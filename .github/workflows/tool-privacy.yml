@@ -81,7 +81,7 @@ jobs:
       # The check checking itself: with a typed amount planted in an event,
       # every run must fail. A check that cannot fail proves nothing.
       - name: The check catches a planted leak
-        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --locale en --viewport laptop --jobs 2
+        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --locale en --viewport laptop --jobs 2 --dump tool-privacy-payloads
 
       - name: Every tool, language, window size and consent state
         run: xvfb-run -a node scripts/verify-tool-privacy.mjs --jobs 3 --dump tool-privacy-payloads

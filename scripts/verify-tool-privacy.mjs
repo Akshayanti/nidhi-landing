@@ -696,6 +696,15 @@ async function useTool(page, tool, note, downloads, sent) {
   if (!dead) failed.push('no plain text could be clicked for a dead click');
   // PostHog decides a click was dead a few seconds after it.
   await sleep(4200);
+  // What the page looked like to PostHog at that moment, printed with a
+  // failed run: a window that is hidden or has no dead-click reader explains
+  // a run in which no such click was seen.
+  note.page = await page.evaluate(() => ({
+    visibility: document.visibilityState,
+    focused: document.hasFocus(),
+    deadClickReader: Boolean(window.posthog?.deadClicksAutocapture?.lazyLoadedDeadClicksAutocapture),
+    window: `${window.innerWidth}x${window.innerHeight}`,
+  })).catch(() => null);
 
   // Buttons that only appeared after the choices were made, then reset.
   let resets = await pressButtons(page, note, pressed);
@@ -1022,6 +1031,7 @@ async function worker() {
     if (!ok) failed++;
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
+    if (!ok && result.note.page) console.log(`       the page during the click steps: ${JSON.stringify(result.note.page)} (charts ${result.note.charts ?? '?'}, results ${result.note.cards ?? '?'}, text ${result.note.plain ?? '?'})`);
     if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
