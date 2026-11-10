@@ -15,7 +15,7 @@ Short guides at `/how-to/` that each answer one money question a reader recognis
 
 ## What a guide is
 
-- One recognisable problem, one useful outcome. Normally 350 to 650 words, shorter when that is enough. If the answer needs more, the question is narrowed.
+- One recognisable problem, one useful outcome. Normally 350 to 650 words, shorter when that is enough, and never more than a 4-minute read (owner, Nov 10, 2026; `GUIDE_MAX_MINUTES`, enforced by the build at 200 words a minute). If the answer needs more, the question is narrowed.
 - Written fresh for the task; the lesson stays the deep study. A guide names its lessons, main one first.
 - The council rejected the earlier idea of relabelling existing lessons by method ("work out a number, run a check, follow the steps"): readers think in problems, not methods.
 

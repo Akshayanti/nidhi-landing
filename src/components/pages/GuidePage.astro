@@ -181,7 +181,7 @@ const breadcrumbSchema = {
           <ul class="guide-lessons">
             {lessons.map((l, i) => (
               <li>
-                <a class="guide-lesson link-card" href={`/blog/${l.slug}/`}>
+                <a class="guide-lesson" href={`/blog/${l.slug}/`}>
                   <span class="guide-lesson-k">{i === 0 ? 'The full lesson' : 'Also'}</span>
                   <span class="guide-lesson-t">{l.title}</span>
                   <span class="guide-lesson-d">{l.description}</span>
@@ -225,17 +225,19 @@ const breadcrumbSchema = {
   .guide-crumbs a { color: var(--color-deep-blue); }
   .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.875rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
   .guide-correction { font-size: 0.9rem; padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
-  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
+  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-text-primary); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
   .guide-outcome { color: var(--color-text-secondary); margin: 0 0 var(--space-5); }
+  /* Calm by design (council, Nov 10 2026): headings and labels in text colour,
+     blue only for links, two surfaces only (the short answer and the stop). */
   .guide-label {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-deep-blue);
-    margin: 0 0 var(--space-2);
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1);
   }
+  .guide-wrap a:not(.guide-lesson) { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  .guide-wrap a:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; border-radius: 2px; }
   .guide-answer {
     background: var(--color-border-light);
     border-radius: var(--radius-md);
@@ -252,13 +254,13 @@ const breadcrumbSchema = {
 
   .guide-protect {
     border: 1px solid var(--color-border);
-    border-inline-start: 4px solid var(--color-deep-blue);
+    border-inline-start: 4px solid var(--color-warning);
     border-radius: var(--radius-md);
     padding: var(--space-4) var(--space-5);
     margin-bottom: var(--space-5);
     background: var(--color-bg-white);
   }
-  .guide-protect h2 { font-size: 1.1rem; color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
+  .guide-protect h2 { font-size: 1.1rem; color: var(--color-text-primary); margin: 0 0 var(--space-3); }
   .guide-protect h3 { font-size: 0.95rem; margin: 0 0 var(--space-2); }
   .guide-protect-cols { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-4); }
   @media (max-width: 34rem) { .guide-protect-cols { grid-template-columns: 1fr; } }
@@ -270,49 +272,53 @@ const breadcrumbSchema = {
   .guide-needs p { margin: 0; }
   .guide-time { margin-top: var(--space-2) !important; font-size: 0.9rem; color: var(--color-text-secondary); }
 
-  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
+  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-text-primary); margin: var(--space-8) 0 var(--space-3); }
   .guide-step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
   .guide-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: var(--space-3); }
   .guide-step-n {
     width: 2rem; height: 2rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;
-    background: var(--color-teal); color: var(--color-bg-white); font-weight: 700;
+    border: 1.5px solid var(--color-text-secondary); color: var(--color-text-primary); font-weight: 700;
   }
   .guide-step-action { font-size: 1.05rem; margin: 0.2rem 0 var(--space-1); }
   .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
   .guide-step-example, .guide-step-caution { font-size: 0.93rem; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
-  .guide-step-example { background: var(--color-bg); border: 1px solid var(--color-border-light); }
-  .guide-step-caution { border-inline-start: 3px solid var(--color-warning); background: var(--color-bg-white); }
+  .guide-step-example { border-inline-start: 3px solid var(--color-border); border-radius: 0; }
+  .guide-step-caution { border-inline-start: 3px solid var(--color-warning); border-radius: 0; }
   .guide-step-example span, .guide-step-caution span { font-weight: 700; }
 
   .guide-stop {
     margin-top: var(--space-8);
     padding: var(--space-4) var(--space-5);
     border-radius: var(--radius-md);
-    border: 2px solid var(--color-teal);
+    background: var(--color-border-light);
   }
   .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: 1.1rem !important; }
   .guide-stop p { margin: 0; }
 
   .guide-template-note { font-size: 0.9rem; color: var(--color-text-secondary); }
-  .guide-print { margin-inline-start: var(--space-2); font: inherit; font-size: 0.875rem; padding: 2px 10px; border-radius: var(--radius-sm); border: 1px solid var(--color-control-edge); background: var(--color-bg-white); color: var(--color-deep-blue); cursor: pointer; }
+  .guide-print { margin-inline-start: var(--space-2); font: inherit; font-size: 0.875rem; min-height: 36px; padding: 2px 12px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); background: var(--color-bg-white); color: var(--color-text-primary); cursor: pointer; }
   .guide-template-wrap { overflow-x: auto; }
   .guide-template-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   .guide-template-table th { text-align: start; padding: var(--space-2); border: 1px solid var(--color-border); background: var(--color-border-light); }
   .guide-template-table td { height: 2.2rem; border: 1px solid var(--color-border); }
 
   .guide-depends ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
-  .guide-lessons { list-style: none; padding: 0; margin: 0 0 var(--space-4); display: grid; gap: var(--space-3); }
-  .guide-lesson { display: grid; gap: 2px; padding: var(--space-3) 40px var(--space-3) var(--space-4); border: 1px solid var(--color-control-edge); border-radius: var(--radius-md); text-decoration: none; color: inherit; }
-  .guide-lesson-k { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); }
-  .guide-lesson-t { font-weight: 700; color: var(--color-deep-blue); }
+  /* After the stop: all still here, in order, but smaller and without boxes. */
+  .guide-deeper, .guide-others { font-size: 0.95rem; }
+  .guide-deeper h2 { font-size: 1.1rem !important; }
+  .guide-lessons { list-style: none; padding: 0; margin: 0 0 var(--space-4); }
+  .guide-lessons li + li { border-top: 1px solid var(--color-border-light); }
+  .guide-lesson { display: grid; gap: 2px; padding: var(--space-3) 0; text-decoration: none; color: inherit; min-height: 44px; }
+  .guide-lesson-k { font-size: 0.8rem; color: var(--color-text-muted); }
+  .guide-lesson-t { font-weight: 600; color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
   .guide-lesson-d { font-size: 0.9rem; color: var(--color-text-secondary); }
   .guide-tool { font-size: 0.95rem; }
   .guide-refs { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
   .guide-ref-pub { font-size: 0.85rem; color: var(--color-text-muted); }
   .guide-sources { margin-top: var(--space-3); font-size: 0.9rem; }
   .guide-note { margin-top: var(--space-8); font-size: 0.85rem; color: var(--color-text-muted); }
-  .guide-others { margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-border-light); }
+  .guide-others { margin-top: var(--space-6); }
   .guide-others ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-1); }
   .guide-print-foot { display: none; }
   .guide-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

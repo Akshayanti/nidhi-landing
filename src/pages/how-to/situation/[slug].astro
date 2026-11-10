@@ -82,11 +82,12 @@ const itemListSchema = {
   .hts-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
   .hts-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
   .hts-crumbs a { color: var(--color-deep-blue); }
-  .hts-h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); color: var(--color-deep-blue); margin: 0 0 var(--space-3); line-height: 1.2; }
+  .hts-h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); color: var(--color-text-primary); margin: 0 0 var(--space-3); line-height: 1.2; }
   .hts-intro { font-size: 1.075rem; line-height: 1.6; }
   .hts-list { margin: var(--space-6) 0 0; padding-inline-start: 1.5rem; display: grid; gap: var(--space-3); }
-  .hts-card { display: grid; gap: var(--space-1); padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-control-edge); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; }
-  .hts-q { font-family: var(--font-heading); font-weight: 700; color: var(--color-deep-blue); }
+  .hts-card { display: grid; gap: var(--space-1); padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; }
+  .hts-card::after { color: var(--color-text-muted) !important; }
+  .hts-q { font-family: var(--font-heading); font-weight: 600; color: var(--color-text-primary); }
   .hts-o { font-size: 0.92rem; color: var(--color-text-secondary); }
   .hts-m { font-size: 0.8rem; color: var(--color-text-muted); }
   .hts-note { font-size: 0.9rem; color: var(--color-text-secondary); margin-top: var(--space-4); }

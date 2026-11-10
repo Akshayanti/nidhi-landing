@@ -577,7 +577,7 @@ strong {
   content: '\203A';
   content: '\203A' / '';
   position: absolute;
-  right: 14px;
+  inset-inline-end: 14px;
   top: 50%;
   transform: translateY(-50%);
   font-family: var(--font-heading);
@@ -5669,20 +5669,17 @@ body[data-page="landing"] .site-footer {
 .learn-starts { display: flex; flex-direction: column; gap: var(--space-3); }
 .learn-startsHeading { margin: 0; font-size: 1.15rem; color: var(--color-text-primary); }
 .learn-startsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: stretch; }
-.learn-howtoCard { border-inline-start: 4px solid var(--color-teal); }
-.learn-howtoList { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.learn-howtoList { list-style: none; margin: 0; padding: 0; display: grid; }
 .learn-howtoList a {
-  display: block;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border-light);
-  border-radius: 10px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--color-deep-blue);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
-.learn-howtoList a:hover { border-color: var(--color-teal); text-decoration: underline; }
 .learn-howtoAll { margin: auto 0 0; }
-.learn-howtoAll a { font-weight: 700; color: var(--color-deep-blue); }
+.learn-howtoAll a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
 .learn-starts .learn-helper { padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
 @media (max-width: 760px) {
   .learn-startsGrid { grid-template-columns: 1fr; }
@@ -5703,6 +5700,14 @@ body[data-page="landing"] .site-footer {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-muted);
+}
+/* In the "Where would you like to start?" band, labels in sentence case
+   (council, Nov 10 2026). */
+.learn-starts .learn-eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-text-secondary);
 }
 
 .learn-sub {
@@ -7272,4 +7277,20 @@ button.mcnw-legendItem:focus-visible {
   .iop-paths {
     grid-template-columns: 1fr;
   }
+}
+
+/* A visible focus ring wherever a component has not drawn its own (council and
+   UX review, Nov 10 2026). */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+/* Spaced capitals break how Devanagari letters join: small labels in Hindi and
+   Marathi keep normal spacing and case. */
+html:is([lang="hi"], [lang="mr"]) :is(.learn-eyebrow, .guide-label) {
+  letter-spacing: normal;
+  text-transform: none;
 }

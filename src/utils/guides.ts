@@ -16,17 +16,14 @@ export const GUIDE_HUB = '/how-to/';
 export const GUIDE_GROUPS = ['month', 'owe', 'stock', 'borders', 'safe'] as const;
 
 /**
- * The "Common questions" under the hub's search box: 4 to 6 guides for a
+ * The "Common questions" under the hub's search box: three guides for a
  * reader who doesn't know the word for their problem. Chosen by the council;
  * a guide that is not live yet is skipped.
  */
 export const COMMON_GUIDES = [
   'will-my-money-last-until-payday',
   'how-do-i-list-what-i-owe',
-  'what-does-the-minimum-payment-on-my-credit-card-mean',
   'how-can-i-check-a-suspicious-money-message',
-  'how-do-i-compare-two-loan-offers',
-  'how-do-i-work-out-my-net-worth',
 ] as const;
 /**
  * The three guides named on /blog/'s "One money question?" side, one per
@@ -59,6 +56,9 @@ export function guideText(g: Guide['data']): string {
 function countWords(text: string): number {
   return text.split(/\s+/).filter(Boolean).length;
 }
+
+/** The longest a guide may take to read (owner, Nov 10 2026). The build fails above it: narrow the question instead. */
+export const GUIDE_MAX_MINUTES = 4;
 
 /** Whole minutes at 200 words a minute, never under one: guides are read slowly, often by someone worried. */
 export function guideReadingMinutes(g: Guide['data']): number {
@@ -102,6 +102,10 @@ export function assertGuides(guides: Guide[], lessons: CollectionEntry<'blog'>[]
     for (const r of d.related) {
       if (r === d.slug) throw new Error(`Guide ${d.slug}: lists itself as a related question`);
       if (!guides.some((o) => o.data.slug === r)) throw new Error(`Guide ${d.slug}: related guide "${r}" does not exist`);
+    }
+    const minutes = guideReadingMinutes(d);
+    if (minutes > GUIDE_MAX_MINUTES) {
+      throw new Error(`Guide ${d.slug}: reads in ${minutes} minutes; the limit is ${GUIDE_MAX_MINUTES}. Narrow the question or cut.`);
     }
     if (d.form === 'example' && !d.stepsHeading) throw new Error(`Guide ${d.slug}: a worked example needs a stepsHeading`);
     for (const c of d.corrections ?? []) {
