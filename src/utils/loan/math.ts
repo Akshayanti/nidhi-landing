@@ -763,7 +763,8 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   };
 }
 
-function emptyResult(feeMinor: number, error: string): LoanResult {
+/** A result that carries only an error: nothing was computed. */
+export function emptyResult(feeMinor: number, error: string): LoanResult {
   return {
     monthlyPaymentMinor: 0,
     effectiveMonthlyMinor: 0,
