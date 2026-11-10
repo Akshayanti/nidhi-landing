@@ -29,6 +29,7 @@ import {
   getCurrency,
   pickSplitSamples,
   pointsBreakEven,
+  pointsVerdict,
   rateForMonth,
   refinanceComparison,
   roundMinor,
@@ -1589,5 +1590,54 @@ describe('a loan with a term ends on its term (issue 337)', () => {
     // that is still an error, not a balloon payment in the last month.
     const never = computeLoan({ principalMinor: toMinor(200_000, 'EUR'), annualRate: 0.065 }, { kind: 'payment', monthlyMinor: toMinor(1_084, 'EUR') });
     assert.ok(never.error || never.schedule[never.schedule.length - 1].payment <= toMinor(1_084, 'EUR'));
+  });
+});
+
+describe('the points row tells a saving from a loss (issues 526 and 528)', () => {
+  // An offer with points and the same offer without them: the points cost
+  // `cost` in fees and take `off` percentage points from the rate.
+  const pair = (principal: number, rate: number, mode: { kind: 'term'; months: number } | { kind: 'payment'; monthlyMinor: number }, cost: number, off: number, extra = 0) => {
+    const withPoints = computeLoan({ principalMinor: toMinor(principal, 'EUR'), annualRate: rate - off, feeMinor: toMinor(cost, 'EUR'), extraMonthlyMinor: toMinor(extra, 'EUR') }, mode);
+    const without = computeLoan({ principalMinor: toMinor(principal, 'EUR'), annualRate: rate, feeMinor: 0, extraMonthlyMinor: toMinor(extra, 'EUR') }, mode);
+    return pointsBreakEven(withPoints, without);
+  };
+
+  it('a loan that ends before the break-even month loses money on its points, and says so', () => {
+    for (const be of [
+      pair(250_000, 0.065, { kind: 'term', months: 24 }, 2_500, 0.0025),
+      pair(20_000, 0.065, { kind: 'term', months: 60 }, 400, 0.0025),
+      pair(250_000, 0.065, { kind: 'term', months: 360 }, 5_000, 0.0025, 3_000),
+    ]) {
+      assert.ok(Number.isFinite(be.months));
+      assert.ok(be.lifetimeSavingsMinor < 0, `lifetime ${be.lifetimeSavingsMinor}`);
+      assert.equal(pointsVerdict(be), 'costs');
+    }
+  });
+
+  it('points that pay for themselves within the loan save money', () => {
+    const be = pair(250_000, 0.065, { kind: 'term', months: 360 }, 2_500, 0.0025);
+    assert.ok(be.months > 0 && be.months < 360);
+    assert.ok(be.lifetimeSavingsMinor > 0);
+    assert.equal(pointsVerdict(be), 'saves');
+  });
+
+  it('with the same payment, break-even is read from the balances, not called "never"', () => {
+    // 250,000 at 6.5%, paying 1,600 a month; 2,500 of points for 0.25 off.
+    const be = pair(250_000, 0.065, { kind: 'payment', monthlyMinor: toMinor(1_600, 'EUR') }, 2_500, 0.0025);
+    assert.equal(be.monthlySavingsMinor, 0);
+    assert.equal(be.months, 44, 'the month the balance gap passes the cost');
+    // The loan is paid off years sooner: tens of thousands saved, where the row said "never".
+    assert.ok(be.lifetimeSavingsMinor > toMinor(30_000, 'EUR'), `lifetime ${be.lifetimeSavingsMinor}`);
+    assert.equal(pointsVerdict(be), 'saves');
+  });
+
+  it('points that change nothing never pay for themselves', () => {
+    const be = pair(250_000, 0.065, { kind: 'payment', monthlyMinor: toMinor(1_600, 'EUR') }, 2_500, 0);
+    assert.equal(be.months, Infinity);
+    assert.equal(pointsVerdict(be), 'never');
+  });
+
+  it('points that cost nothing break even at once', () => {
+    assert.equal(pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0.0025).months, 0);
   });
 });

@@ -416,6 +416,8 @@ export const loanComparisonEn = {
       /** Where a break-even does not exist, in the tool's own voice. */
       never: 'never',
       breakEvenSaves: 'Saves {amount} over the term',
+      /** The points lose money over this loan. `{amount}` is how much. */
+      breakEvenCosts: 'Costs {amount} more over the term: the loan ends before the points pay for themselves',
       breakEvenNever: 'Points do not lower the monthly enough to recoup',
     },
     /**
@@ -1031,6 +1033,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       breakEven: 'पॉइंट्स की बराबरी',
       never: 'कभी नहीं',
       breakEvenSaves: 'पूरी अवधि में {amount} की बचत',
+      breakEvenCosts: 'पूरी अवधि में {amount} ज़्यादा लगते हैं: पॉइंट्स की लागत निकलने से पहले ही लोन खत्म हो जाता है',
       breakEvenNever: 'पॉइंट्स मासिक किस्त इतनी नहीं घटाते कि लागत निकल जाए',
     },
     delta: {
@@ -1599,6 +1602,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       breakEven: 'Punto de equilibrio de los puntos',
       never: 'nunca',
       breakEvenSaves: 'Ahorra {amount} durante el plazo',
+      breakEvenCosts: 'Cuesta {amount} más durante el plazo: el préstamo termina antes de recuperar el costo de los puntos',
       breakEvenNever: 'Los puntos no bajan la cuota mensual lo suficiente para recuperar su costo',
     },
     delta: {
@@ -2166,6 +2170,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       breakEven: 'Doba návratnosti bodů',
       never: 'nikdy',
       breakEvenSaves: 'Za celou dobu ušetří {amount}',
+      breakEvenCosts: 'Za celou dobu stojí o {amount} víc: úvěr skončí dřív, než se body vrátí',
       breakEvenNever: 'Body nesníží měsíční splátku natolik, aby se vrátily',
     },
     delta: {
@@ -2712,6 +2717,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       breakEven: 'पॉइंट्सचा खर्च वसूल होण्याचा टप्पा',
       never: 'कधीच नाही',
       breakEvenSaves: 'मुदतीत {amount} वाचतात',
+      breakEvenCosts: 'मुदतीत {amount} जास्त लागतात: पॉइंट्सचा खर्च वसूल होण्याआधीच कर्ज संपते',
       breakEvenNever: 'खर्च भरून निघण्याइतका पॉइंट्समुळे मासिक हप्ता कमी होत नाही',
     },
     delta: {

@@ -9,6 +9,7 @@ import {
   getCurrency,
   pickSplitSamples,
   pointsBreakEven,
+  pointsVerdict,
   refinanceComparison,
   toMinor,
   type AmortizationRow,
@@ -1814,11 +1815,13 @@ function VendorCard({
                           : strings.results.never
                       }
                       hint={
-                        Number.isFinite(be.months)
-                          ? format(strings.results.breakEvenSaves, {
+                        // The lifetime figure is signed: a loan that ends
+                        // before the break-even month loses money on its points.
+                        pointsVerdict(be) === 'never'
+                          ? strings.results.breakEvenNever
+                          : format(pointsVerdict(be) === 'costs' ? strings.results.breakEvenCosts : strings.results.breakEvenSaves, {
                               amount: formatMoney(Math.abs(be.lifetimeSavingsMinor), currency),
                             })
-                          : strings.results.breakEvenNever
                       }
                     />
                   );

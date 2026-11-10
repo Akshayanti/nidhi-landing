@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-11',
+    items: [
+      {
+        id: 'loan-points-row',
+        text: {
+          en: 'In the loan comparison, the line about discount points now tells a saving from a loss. When a loan ends before the points have paid for themselves it says how much more they cost, where it used to print that amount as a saving. And for a loan entered by its monthly payment, where points shorten the loan and do not lower the payment, it now gives the month they pay for themselves, not “never”.',
+          hi: 'लोन की तुलना में डिस्काउंट पॉइंट्स वाली पंक्ति अब बचत और नुकसान में फ़र्क बताती है। जब लोन पॉइंट्स की लागत निकलने से पहले खत्म हो जाता है, तो वह बताती है कि वे कितने ज़्यादा महँगे पड़े; पहले वही रकम बचत के रूप में दिखती थी। और मासिक किस्त से भरे गए लोन में, जहाँ पॉइंट्स किस्त नहीं घटाते बल्कि लोन छोटा करते हैं, अब वह महीना दिखता है जब उनकी लागत निकल जाती है, “कभी नहीं” की जगह।',
+          es: 'En el comparador de préstamos, la línea sobre los puntos de descuento distingue ahora un ahorro de una pérdida. Cuando el préstamo termina antes de que los puntos se recuperen, dice cuánto más cuestan; antes mostraba esa cantidad como un ahorro. Y en un préstamo introducido por su cuota mensual, donde los puntos acortan el préstamo y no bajan la cuota, ahora da el mes en que se recuperan, no «nunca».',
+          cs: 'Ve srovnání úvěrů teď řádek o\u00a0slevových bodech rozliší úsporu od ztráty. Když úvěr skončí dřív, než se body vrátí, řekne, o\u00a0kolik víc stojí; dříve tu částku ukazoval jako úsporu. A\u00a0u\u00a0úvěru zadaného měsíční splátkou, kde body úvěr zkracují a\u00a0splátku nesnižují, teď uvede měsíc, kdy se vrátí, ne „nikdy“.',
+          mr: 'कर्जांच्या तुलनेत डिस्काउंट पॉइंट्सची ओळ आता बचत आणि तोटा यांत फरक करते. पॉइंट्सचा खर्च वसूल होण्याआधीच कर्ज संपले, तर ते किती जास्त महाग पडले हे ती सांगते; आधी तीच रक्कम बचत म्हणून दिसायची. आणि मासिक हप्त्याने भरलेल्या कर्जात, जिथे पॉइंट्स हप्ता कमी न करता कर्जाची मुदत कमी करतात, तिथे आता खर्च वसूल होण्याचा महिना दिसतो, “कधीच नाही” नाही.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-10',
     items: [
       {
