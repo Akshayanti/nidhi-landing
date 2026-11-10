@@ -928,11 +928,25 @@ let next = 0;
 const started = Date.now();
 console.log(`Checking ${matrix.length} runs against ${base} (${HEADLESS ? 'headless' : 'with a window'}, ${Math.min(JOBS, matrix.length)} at a time)${PLANT ? ', each with a planted leak that must be caught' : ''}.`);
 
+// Told to stop (Ctrl-C, or a kill): close every browser and leave at once.
+// Without this the workers below would take each closed browser for one that
+// died and start another, and the run could not be stopped.
+const browsers = new Set();
+let stopping = false;
+for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
+  process.on(signal, () => {
+    stopping = true;
+    for (const b of browsers) { try { b.process()?.kill('SIGKILL'); } catch { /* already gone */ } }
+    process.exit(130);
+  });
+}
+
 // Each worker has a browser of its own: a page in a background tab is slowed
 // down by Chrome and would not behave as a reader's page does.
 async function worker() {
   let browser = await launch();
-  while (next < matrix.length) {
+  browsers.add(browser);
+  while (next < matrix.length && !stopping) {
     const job = matrix[next++];
     const name = `${job.slug} ${job.locale} ${job.viewport} consent:${job.consent}`;
     let result;
@@ -949,8 +963,11 @@ async function worker() {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {} };
         if (attempt === 1) break;
       }
+      if (stopping) return;
+      browsers.delete(browser);
       await browser.close().catch(() => {});
       browser = await launch();
+      browsers.add(browser);
     }
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
     // Both planted leaks are found, the event sent to PostHog and the image
