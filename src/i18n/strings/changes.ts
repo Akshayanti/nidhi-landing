@@ -50,6 +50,9 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'En el comparador de préstamos, una casilla opcional que no se puede leer es ahora un error. Una comisión escrita como «€2,500», un pago extra escrito con palabras o un pago único con un formato incorrecto contaban antes como cero sin aviso, y una oferta podía parecer libre de comisiones; ahora la casilla se marca y la oferta no muestra resultado hasta que se corrige o se vacía.',
           cs: 'Ve srovnání úvěrů je teď nepovinné pole, které nejde přečíst, chybou. Poplatek zapsaný jako „€2,500“, mimořádná splátka zapsaná slovy nebo jednorázová splátka ve špatném tvaru se dříve bez upozornění počítaly jako nula, takže nabídka mohla vypadat jako bez poplatků; teď se pole označí a\u00a0nabídka neukáže výsledek, dokud pole neopravíte nebo nevymažete.',
           mr: 'कर्जांच्या तुलनेत आता वाचता न येणारी पर्यायी चौकट ही चूक मानली जाते. “€2,500” असे लिहिलेले शुल्क, शब्दांसह लिहिलेला अतिरिक्त हप्ता किंवा चुकीच्या स्वरूपात लिहिलेली एकरकमी रक्कम आधी काहीही न सांगता शून्य धरली जायची, त्यामुळे एखादी ऑफर शुल्काशिवाय असल्यासारखी दिसू शकायची; आता त्या चौकटीवर खूण येते आणि ती दुरुस्त किंवा रिकामी करेपर्यंत ऑफरचा निकाल दिसत नाही.',
+        },
+      },
+      {
         id: 'header-menus-keyboard',
         text: {
           en: 'The menus at the top of the page are easier to use from a keyboard: a bar now shows which link you are on, in light and dark, Tab moves on past the last link without getting lost, and screen readers are told what the menus and the theme buttons are, with no keys promised that do nothing.',
