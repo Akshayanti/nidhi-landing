@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-11-10
 
-This is the reference for anyone writing for nidhi: the owner, volunteers, Claude, Codex and DeepSeek. Read it before writing copy, a lesson, a translation or a glossary entry. Colours, logo and tagline are in [`color-palette.md`](color-palette.md); Instagram has its own audience and rules ([`plans/PLAYBOOK.md`](plans/PLAYBOOK.md) §1, [`instagram-kit/BRAND-RULES.md`](instagram-kit/BRAND-RULES.md)).
+This is the reference for anyone writing for nidhi: the owner, volunteers, Claude, Codex and DeepSeek. Read it before writing copy, a lesson, a translation or a glossary entry. Volunteers get the short version, [`i18n/volunteer-brief.md`](i18n/volunteer-brief.md); a change here updates it in the same pull request. Colours, logo and tagline are in [`color-palette.md`](color-palette.md); Instagram has its own audience and rules ([`plans/PLAYBOOK.md`](plans/PLAYBOOK.md) §1, [`instagram-kit/BRAND-RULES.md`](instagram-kit/BRAND-RULES.md)).
 
 ## Who the site is for
 
@@ -67,6 +67,6 @@ How it sounds:
 | Spanish | *tú* | `es-glossary.md` |
 | Czech | *vy* (lowercase) | `cs-glossary.md` |
 | Marathi | तुम्ही | Owner, 2026-10-20 (`mr-glossary.md`) |
-| Indonesian (material only) | open: the volunteer advises *kamu* (2026-11-10); owner's decision pending | `id-glossary.md` |
+| Indonesian (glossary only, no edition yet) | *kamu* | Owner, 2026-11-10, on the volunteer's advice (`id-glossary.md`) |
 
 Each language's choice is made for that language, by its volunteer's advice and the owner's decision, with this page as the brief: the form has to work for a 22-year-old and a 70-year-old reading the same page.
