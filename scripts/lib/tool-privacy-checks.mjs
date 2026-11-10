@@ -166,16 +166,17 @@ export function addressProblems(event, origin) {
   return out;
 }
 
-const PHASES = { use: 'while the tool was used', share: 'on the # share link', switch: 'on the language switch', old: 'on the old ? link' };
+const PHASES = { use: 'while the tool was used', share: 'on the # share link', switch: 'on the page the language was switched from', arrived: 'on the page the language switch arrived at', old: 'on the old ? link' };
 
 /**
  * Judges one run. `decoded` is every PostHog request body with the part of
  * the run it was sent in (`phase`); `events` are the events inside them, each
- * with its `phase`. `mustSend` are the tool's events that using it has to
- * produce (`name` or `name:format`), `sharedView` the one a # link has to.
+ * with its `phase`. `parts` are the parts of the run that were opened.
+ * `mustSend` are the tool's events that using it has to produce (`name` or
+ * `name:format`), `sharedView` the one a # link has to.
  * Returns the problems found and a count of each event.
  */
-export function checkRun({ decoded, events, consent, headless, ownEvents, mustSend = [], sharedView = null, planted = false, origin }) {
+export function checkRun({ decoded, events, consent, headless, ownEvents, mustSend = [], sharedView = null, planted = false, origin, parts = null }) {
   const problems = [];
   const counts = {};
   for (const e of events) counts[e.event] = (counts[e.event] || 0) + 1;
@@ -209,7 +210,10 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
   const inPhase = (phase) => events.filter((e) => e.phase === phase);
   const has = (phase, name) => inPhase(phase).some((e) => e.event === name);
   if (decoded.length === 0) problems.push('no PostHog request was seen at all: analytics never started, so nothing was checked');
-  const phases = [...new Set(['use', ...decoded.map((d) => d.phase).filter(Boolean)])];
+  // The parts that were really opened, as the run reports them: a part that
+  // sent nothing at all is still held to account. (Without that report, the
+  // parts are those that sent something.)
+  const phases = [...new Set(['use', ...(parts || decoded.map((d) => d.phase).filter(Boolean))])];
   for (const phase of phases) {
     const when = PHASES[phase] || phase;
     if (!has(phase, '$pageview')) problems.push(`no $pageview was seen ${when}: analytics did not start there, so nothing was checked`);

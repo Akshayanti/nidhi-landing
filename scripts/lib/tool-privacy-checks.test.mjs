@@ -258,6 +258,21 @@ describe('tool privacy checks: the events have to be there', () => {
     says(judge(without('free_loan_comparison_vendor_removed'), { share: [...shareEvents(), ev('free_loan_comparison_vendor_removed')] }).problems, 'never sent free_loan_comparison_vendor_removed');
   });
 
+  it('a part of the run that was opened and sent nothing at all still fails', () => {
+    const only = (parts) => {
+      const decoded = [{ url: 'https://eu.i.posthog.com/i/v0/e/', phase: 'use', ...decodeBody('u', gzipSync(JSON.stringify(cleanEvents())), gunzipSync) }];
+      const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: 'use' })));
+      return checkRun({ decoded, events, consent: 'accepted', headless: false, ownEvents: OWN, mustSend: MUST, sharedView: 'shared_view_opened', origin: ORIGIN, parts }).problems;
+    };
+    assert.deepEqual(only(['use']), []);
+    const silent = only(['use', 'share', 'switch', 'arrived', 'old']);
+    for (const where of ['on the # share link', 'on the page the language was switched from', 'on the page the language switch arrived at', 'on the old ? link']) {
+      says(silent, `no $pageview was seen ${where}`);
+      says(silent, `no $pageleave was seen ${where}`);
+    }
+    says(silent, 'never sent free_loan_comparison_shared_view_opened');
+  });
+
   it('fails when the # share link was not read as a shared link', () => {
     says(judge(cleanEvents(), { share: shareEvents().filter((e) => e.event !== 'free_loan_comparison_shared_view_opened') }).problems, 'never sent free_loan_comparison_shared_view_opened');
   });

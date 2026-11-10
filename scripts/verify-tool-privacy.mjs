@@ -44,11 +44,19 @@
 // What a clean run shows is that nothing typed was sent during these steps,
 // in the forms findLeaks reads. It is evidence about the steps taken, on the
 // build tested, not a proof about every possible click. Its known limits:
-// the distinctive values go into the amount and name fields (a rate or a
-// number of years cannot be told apart from any other small number); up to
-// eight charts and six result cards are clicked; nothing inside a link is
-// clicked, since that would leave the page; and a value that was changed
-// before it was sent (rounded, split, hashed) would not be recognised.
+// - The distinctive values go into the amount and name fields listed in
+//   TOOLS. Rates, terms, years and the other fields are clicked but hold no
+//   distinctive value, so a leak of one of those would not be recognised.
+// - A link, the language switch and the old link are judged to have brought
+//   the state back when the first typed amount is on the page again; the
+//   other values are not compared.
+// - Up to eight charts and six result cards are clicked. Nothing inside a
+//   link is clicked, since that would leave the page.
+// - A button the pointer cannot land on (the output names each) is
+//   activated directly. That checks what the button sends, not that a
+//   reader can use it.
+// - A value that was changed before it was sent (rounded, split, hashed)
+//   would not be recognised.
 //
 // Nothing reaches PostHog. The build must be a test build (a dummy key
 // PostHog rejects); only the SDK's static scripts load from PostHog; the
@@ -195,13 +203,13 @@ const consents = pick('--consent', ['declined', 'accepted']);
 // The build under test
 // ---------------------------------------------------------------------------
 
-/** Every index.html under `dir`. */
-function pagesUnder(dir) {
+/** Every file under `dir` whose name matches. */
+function filesUnder(dir, match) {
   const out = [];
   for (const name of readdirSync(dir, { withFileTypes: true })) {
     const path = join(dir, name.name);
-    if (name.isDirectory()) out.push(...pagesUnder(path));
-    else if (name.name === 'index.html') out.push(path);
+    if (name.isDirectory()) out.push(...filesUnder(path, match));
+    else if (match.test(name.name)) out.push(path);
   }
   return out;
 }
@@ -229,11 +237,16 @@ function requireTestBuild() {
     if (!existsSync(page)) stop(`dist/ has no page for ${slug} in ${locale}.`);
     if (!readFileSync(page, 'utf8').includes(TEST_KEY)) stop(`dist/ is not a test build: ${page.slice(DIST.length)} does not carry the dummy key.`);
   }
-  for (const page of pagesUnder(DIST)) {
-    const html = readFileSync(page, 'utf8');
-    const keys = new Set(html.match(/phc_[A-Za-z0-9_]{10,}/g) || []);
+  // The language switch lands on the English or the Hindi page of the tool.
+  for (const slug of tools) for (const locale of ['en', 'hi']) {
+    const page = join(DIST, locale === 'en' ? '' : locale, 'free', slug, 'index.html');
+    if (!existsSync(page) || !readFileSync(page, 'utf8').includes(TEST_KEY)) stop(`dist/ is not a test build: /${locale === 'en' ? '' : `${locale}/`}free/${slug}/ is missing or does not carry the dummy key.`);
+  }
+  // No page and no script anywhere in the build carries any other PostHog key.
+  for (const file of filesUnder(DIST, /\.(html|js|mjs)$/)) {
+    const keys = new Set(readFileSync(file, 'utf8').match(/phc_[A-Za-z0-9_]{10,}/g) || []);
     keys.delete(TEST_KEY);
-    if (keys.size) stop(`dist/ is not a test build: ${page.slice(DIST.length)} carries a PostHog key other than the dummy one. This check never runs against a build with a real key.`);
+    if (keys.size) stop(`dist/ is not a test build: ${file.slice(DIST.length)} carries a PostHog key other than the dummy one. This check never runs against a build with a real key.`);
   }
   if (!argv.includes('--stale-ok')) {
     const built = statSync(join(DIST, 'index.html')).mtimeMs;
@@ -456,6 +469,8 @@ async function press(page, el, times = 1, gap = 60) {
       still = !again.covered && Math.abs(again.x - point.x) < 1 && Math.abs(again.y - point.y) < 1 ? still + 1 : 0;
       point = again;
     }
+    // Never settled: no click is made on a page that is still moving.
+    if (point && !point.covered && still < 3) point = { covered: 'nothing: the page did not stop moving' };
   } catch { return false; }
   if (!point || point.covered) {
     if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
@@ -482,7 +497,8 @@ async function press(page, el, times = 1, gap = 60) {
     point = await measure(null).catch(() => ({ covered: 'gone' }));
     if (point.covered) return point.covered === 'gone';
   }
-  return true;
+  // It moved away every time: that click was not made.
+  return false;
 }
 
 async function choose(page, selector, { last = false, nth = 0 } = {}) {
@@ -565,8 +581,10 @@ async function pressButtons(page, note, pressed) {
     }
     for (const [, d, name] of inner.sort((x, y) => x[0] - y[0])) {
       // A control the pointer cannot reach (cut off by its container, say) is
-      // still used, the way a keyboard or a screen reader would use it, and
-      // the run's notes say so.
+      // still activated, by calling its click directly, so that what it
+      // sends is checked. That is not a reader's click: it skips focus and
+      // hit testing, so it says nothing about whether the control can be
+      // used. The run's output names every control reached this way.
       if (!(await press(page, d))) {
         const done = await d.evaluate((node) => { if (!node.isConnected) return false; node.click(); return true; }).catch(() => false);
         if (done) note.unreachable.add(name);
@@ -700,7 +718,9 @@ async function useTool(page, tool, note, downloads, sent) {
     if (todo.some((need) => /removed/.test(need)) && tool.removeNamedRow) await tool.removeNamedRow(page);
     resets = await pressButtons(page, note, new Set());
     // From the second go, a button the pointer keeps missing (the page moves
-    // under it) is used the way a keyboard uses it, and the notes say so.
+    // under it) is activated by calling its click directly, so that what it
+    // sends is still checked. The output names it: such a run checks the
+    // payload of that step, not that a reader's pointer can make it.
     if (again >= 2) {
       const DIRECT = { 'exported:xlsx': '[data-attr$="export-xlsx"]', 'exported:pdf': '[data-attr$="export-pdf"]', share_copied: '[data-attr*="share-copy"], [data-attr$="-share"]' };
       await sleep(3600);
@@ -715,6 +735,8 @@ async function useTool(page, tool, note, downloads, sent) {
     // A section that was left open is closed and opened once more.
     for (const el of await visible(page, `${island} summary`)) { await press(page, el); await sleep(150); }
   }
+  // The link as last copied, now that every step has been taken.
+  note.shared = (await page.evaluate(() => window.__copied || '').catch(() => '')) || note.shared;
 
   // The exports really happened: a spreadsheet was saved and the print dialog was asked for.
   const saved = existsSync(downloads) ? readdirSync(downloads) : [];
@@ -739,13 +761,14 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   // `phase` names the part of the run a request belongs to: using the tool,
   // the # share link, the language switch, the old ? link. `opening` holds
   // the addresses the check itself is loading.
-  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), opening: new Set() };
+  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), opening: new Set(), parts: new Set() };
   const context = await browser.createBrowserContext();
   const downloads = mkdtempSync(join(tmpdir(), 'nidhi-privacy-'));
   let page;
 
   const open = async (address, phase) => {
     note.phase = phase;
+    note.parts.add(phase);
     note.leaving = false;
     page = await context.newPage();
     page.nidhiNote = note;
@@ -825,28 +848,30 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     for (const el of resets) { await press(page, el); await sleep(300); }
     await leave();
 
-    // The link the tool itself copied, when it is one of ours with state after the #.
-    const utm = '?utm_source=share&utm_medium=referral';
-    let shareLink = `${path}${utm}#${state}`;
+    // The link the tool itself copied is the one opened next, exactly. The
+    // tool was changed before it was shared, so the link must carry state
+    // after its #, and nothing but campaign tags before it.
+    let shareLink = '';
     try {
       const copied = new URL(note.shared);
-      // Whatever the tool copied, nothing but campaign tags may sit before its #.
       if ([...copied.searchParams.keys()].some((k) => !k.startsWith('utm_'))) problems.push(`the copied share link carries more than utm parameters before the #: ${copied.pathname}${copied.search}`);
       if (copied.pathname !== path) problems.push(`the copied share link is not a link to this tool: ${copied.pathname}`);
-      // It is the link opened next when it holds state (a tool with nothing changed yet copies a plain address).
-      else if (copied.hash.length > 1) shareLink = copied.pathname + copied.search + copied.hash;
+      else if (copied.hash.length <= 1) problems.push('the copied share link carries no state after its #, although the tool had been changed');
+      else shareLink = copied.pathname + copied.search + copied.hash;
     } catch {
       problems.push('the tool copied no share link');
     }
+    const utm = '?utm_source=share&utm_medium=referral';
     const cleanShare = shareLink.split('#')[0];
 
-    if (state) {
-      // 2. A # share link: the state is moved out of the address, and applied.
+    if (shareLink) {
+      // 2. The copied # share link: the state is moved out of the address, and applied.
       await open(shareLink, 'share');
       if ((await address()) !== cleanShare) problems.push(`a # share link left state in the address: ${await address()}`);
       if (!(await restored())) problems.push('a # share link did not bring the typed amount back, so the link carried no state to protect');
       await leave();
-
+    }
+    if (state) {
       // 3. Switch language from the tool's own state after the #: it crosses, and is applied.
       await open(`${path}${utm}#${state}`, 'switch');
       const other = locale === 'en' ? 'hi' : 'en';
@@ -864,6 +889,9 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
         const [, pressedLink] = await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => null), press(page, link)]);
         note.leaving = false;
         if (!pressedLink) problems.push('the language switch link could not be clicked');
+        // The page arrived at is a part of its own: it needs its own evidence.
+        note.phase = 'arrived';
+        note.parts.add('arrived');
         await waitForTool(page);
         if ((await address()) !== `${otherPath}${utm}`) problems.push(`after a language switch the address is ${await address()}`);
         if (!(await restored())) problems.push('the language switch did not carry the typed amount across');
@@ -887,12 +915,12 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
   const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: d.phase })));
   const result = checkRun({
-    decoded, events, consent, headless: HEADLESS, origin: base,
+    decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
     ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
   });
   result.problems.unshift(...problems);
   result.problems = [...new Set(result.problems)];
-  const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], opening: undefined };
+  const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
   if (DUMP) {
     mkdirSync(DUMP, { recursive: true });
     writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
@@ -960,7 +988,7 @@ async function worker() {
         if (attempt === 1 || (browser.connected && !lostPage)) break;
         if (browser.connected) continue;
       } catch (err) {
-        result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {} };
+        result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
         if (attempt === 1) break;
       }
       if (stopping) return;
@@ -979,7 +1007,7 @@ async function worker() {
     if (!ok) failed++;
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
-    if (result.note.unreachable.length) console.log(`       note: reached without the pointer (cut off or covered on this layout): ${result.note.unreachable.join(', ')}`);
+    if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
   }
