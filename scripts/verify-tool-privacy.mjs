@@ -315,6 +315,11 @@ const isPosthog = (host) => /(^|\.)posthog\.com$/.test(host);
 async function watch(page, requests, problems, note) {
   const client = typeof page._client === 'function' ? page._client() : null;
   if (!client) throw new Error('This Puppeteer version does not expose the page session; verify-tool-privacy.mjs needs updating.');
+  // Every page is treated as the one in front. Under a virtual display (CI)
+  // no window has the focus, and with several runs side by side only one
+  // does; PostHog then sees no dead clicks at all, and a run would pass or
+  // fail by which window happened to be in front.
+  await client.send('Emulation.setFocusEmulationEnabled', { enabled: true }).catch(() => {});
   client.on('Fetch.requestPaused', ({ request }) => {
     let host = '';
     try { host = new URL(request.url).hostname; } catch { return; }
