@@ -469,7 +469,13 @@ function startsTest(before: string): boolean {
   return /(?:\(|&&|\|\|)$/.test(before.replace(/[\s!]+$/, ''));
 }
 
-function isTest(text: string, from: number, at: number, end: number): boolean {
+function isTest(whole: string, from: number, at: number, end: number): boolean {
+  // Strings are emptied first, keeping their length: a bracket written
+  // inside one (`keep(")" && x)`) is text, not a bracket.
+  const hollow = (m: string): string => m[0] + ' '.repeat(m.length - 2) + m[0];
+  const text = whole.slice(0, from) + whole.slice(from, at).replace(/'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/g, hollow) + whole.slice(at);
+  // A quote left over is a string this could not pair up: refuse.
+  if (/['"`]/.test(text.slice(from, at).replace(/'\s*'|"\s*"|`\s*`/g, ''))) return false;
   // What stands right before the name (and the `window.` it may hang from)
   // must itself start a test: the bracket, `!`, `&&`, `||`, or one of those
   // then `typeof`. Any other word there (`yield`, `await`, `return`, `void`,
