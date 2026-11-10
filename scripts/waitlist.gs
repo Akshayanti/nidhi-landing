@@ -139,8 +139,23 @@ function sheet_() {
 
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
+// An address is written into a spreadsheet cell, where a value that starts
+// with = + - or @ is read as a formula. So it must start with something else,
+// and it may not hold the characters a formula or a display name is built
+// from. Letters of any script are fine. (Same rule as scripts/newsletter.gs.)
 function isValidEmail_(s) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  return s.length <= 254 && /^[^\s@=+\-'"()<>,;:\\\[\]][^\s@'"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s);
+}
+
+/**
+ * The page a sign-up came from, as the site sends it: a path on the site.
+ * Anything else is dropped, since the request can say anything and the value
+ * goes into a spreadsheet cell, an analytics event and the list the planner
+ * reads.
+ */
+function cleanSource_(raw) {
+  var s = String(raw || '');
+  return /^\/[A-Za-z0-9/_.-]{0,199}$/.test(s) ? s : '';
 }
 
 // ============================================================================
@@ -449,9 +464,14 @@ function sameString_(a, b) {
 // Waitlist (single opt-in)
 // ============================================================================
 
+// New rows this script will add in one UTC day. A script posting made-up
+// addresses could otherwise fill the sheet and push up the number the site
+// shows. Past it, the reply is the same and nothing is written.
+var MAX_SIGNUPS_PER_DAY_ = 500;
+
 function handleWaitlist_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
-  var source = String((e.parameter && e.parameter.source) || '').slice(0, 200);
+  var source = cleanSource_(e.parameter && e.parameter.source);
   if (!isValidEmail_(email)) return jsonResponse_({ ok: false, error: 'invalid_email' });
 
   // The lock makes check-then-append atomic, so two submits arriving
@@ -463,8 +483,12 @@ function handleWaitlist_(e) {
     var sh = sheet_();
     dedupeOnce_(sh);
     if (!hasEmail_(sh, email)) {
-      sh.appendRow([email, source, new Date()]);
-      added = true;
+      if (takeSignupSlot_(new Date())) {
+        sh.appendRow([email, source, new Date()]);
+        added = true;
+      } else {
+        console.error('[waitlist] daily sign-up limit reached (' + MAX_SIGNUPS_PER_DAY_ + '): row not written');
+      }
     }
   } finally {
     lock.releaseLock();
@@ -472,6 +496,9 @@ function handleWaitlist_(e) {
 
   // A repeat changes nothing and sends nothing, and gets the same reply as a
   // new signup: the response must not say whether an address is on the list.
+  // (How long the reply takes can still differ a little: a new address costs
+  // one write and one analytics call more. Apps Script's own timing varies by
+  // more than that, and telling the two apart this way adds the address.)
   if (added) {
     trackPosthog_('waitlist_signup', distinctIdForEmail_(email), {
       source: source,
@@ -480,6 +507,20 @@ function handleWaitlist_(e) {
   }
 
   return jsonResponse_({ ok: true });
+}
+
+/** Counts one new row against today's limit; false once the limit is reached. Call inside the lock. */
+function takeSignupSlot_(now) {
+  var store = PropertiesService.getScriptProperties();
+  var key = 'signups:' + Utilities.formatDate(now, 'UTC', 'yyyy-MM-dd');
+  var used = Number(store.getProperty(key)) || 0;
+  if (used >= MAX_SIGNUPS_PER_DAY_) return false;
+  store.setProperty(key, String(used + 1));
+  if (used === 0) {
+    var all = store.getProperties();
+    for (var k in all) if (k.indexOf('signups:') === 0 && k !== key) store.deleteProperty(k);
+  }
+  return true;
 }
 
 /** Whether the (normalised) address already has a row. */

