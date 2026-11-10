@@ -71,7 +71,7 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   typescript: '7.0.2',
 };
 
-const EXPECTED_NODE_ENGINE = '>=22.23.4';
+const EXPECTED_NODE_ENGINE = '>=24.22.2';
 const EXPECTED_LOCKFILE_VERSION = 3;
 
 // -----------------------------------------------------------------------------
