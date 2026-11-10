@@ -184,6 +184,7 @@ const writtenChangelog: ChangelogEntry[] = [
       'Net worth calculator, changed event: free_multi_currency_net_worth_rates_error used to carry the first 80 characters of the browser\'s own error message as its reason. The reason is now one of seven fixed words: network, http_4xx, http_5xx, http_other, parse, unknown_currency or other. The spending currency it also carries can now only be one of the currencies the tools offer.',
       'Shared links: a link to the loan comparison or the net worth calculator is written by whoever shares it, so what it can put into the page is now limited. A currency must be one the tools offer, otherwise the page uses its own; this is also the only thing the exchange-rate request to Frankfurter carries, so a made-up link can no longer add anything to that request. A number must read as a typed number, and a name is cut at 80 characters.',
       'Analytics backstops: heatmap data lists click positions under the address of the page; those addresses are now cleaned by the same rule as every other address of a free tool (only utm_* parameters kept, nothing after the #). On the invest or pay off calculator, heatmaps are now switched off from the first moment the page loads, not from the moment the calculator becomes interactive. The confirm and unsubscribe pages take the token out of their address before analytics load, not after, and any address of those pages loses its token before an event is sent.',
+      'This notice, completed: the list of what the free tools send named only some of the loan comparison\'s events and none of the net worth calculator\'s. The loan comparison item now lists them all (adding or removing a vendor, the results tabs, the time horizon and refinance settings, invalid fields, the share dialog and shared views), and a new item lists the net worth calculator\'s (rows, CSV files, exchange-rate failures, sharing, reset). It also said the loan comparison records opening a "More options" panel; what is recorded is opening a vendor\'s details in the results. None of these events is new, and none carries a value you type.',
       'No new analytics event, click label, browser storage key, third-party request or processor.',
     ],
   },
@@ -814,6 +815,9 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         {/* The home page's tools section links here ("How the tools handle your numbers"). */}
         <li id="free-tools">
           {collect.freeTools.before}<strong>{collect.freeTools.strong}</strong>{collect.freeTools.after}
+        </li>
+        <li>
+          {collect.netWorth.before}<strong>{collect.netWorth.strong}</strong>
         </li>
         <li>{collect.toolAddresses}</li>
         <li>{collect.toolExports}</li>
