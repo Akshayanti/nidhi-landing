@@ -18,7 +18,7 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { scanLabels } from './analyticsLabels.ts';
 import {
-  codeFiles, eventProperties, scanEvents, scanHosts, scanMentions, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, withoutComments,
+  codeFiles, eventProperties, scanEvents, scanHosts, scanMentions, scanPosthogCalls, scanPublicEnv, scanRequests, scanStorage, sourceFile, withoutComments,
   type SourceFile,
 } from './privacySurface.ts';
 
@@ -249,58 +249,96 @@ const EXPECTED_DYNAMIC_STORAGE = [
 // and so changes a count here. When a count changes, read the change: if it
 // is a new way of sending or storing, the rule at the top of this file
 // applies; if it is not (a moved line, a new check for `window.posthog`),
-// update the count. The privacy notice's own page is left out: it is words.
+// update the count. The count is of the file exactly as written, comments
+// included, so that nothing which decides what a comment is can hide code
+// from it. The privacy notice's own page is left out: it is words.
 const NOTICE_PAGE = /^components\/pages\/PrivacyPage\.astro$/;
 const EXPECTED_MENTIONS = [
-  'components/Analytics.astro: capture x3',
-  'components/Analytics.astro: localStorage x4',
+  'components/Analytics.astro: capture x5',
+  'components/Analytics.astro: cookie x1',
+  'components/Analytics.astro: getItem x1',
+  'components/Analytics.astro: localStorage x5',
   'components/Analytics.astro: posthog x11',
+  'components/Analytics.astro: removeItem x1',
+  'components/Analytics.astro: setItem x1',
+  'components/BaseHead.astro: getItem x1',
   'components/BaseHead.astro: localStorage x1',
   'components/CookieConsent.astro: cookie x8',
   'components/InflationCalculator.tsx: capture x1',
   'components/InflationCalculator.tsx: fetch x1',
   'components/InflationCalculator.tsx: posthog x1',
+  'components/InflationCalculator.tsx: track x10',
   'components/InvestOrPayOff.tsx: capture x1',
+  'components/InvestOrPayOff.tsx: cookie x1',
   'components/InvestOrPayOff.tsx: fetch x1',
   'components/InvestOrPayOff.tsx: posthog x2',
+  'components/InvestOrPayOff.tsx: track x7',
+  'components/LearnHome.tsx: getItem x1',
   'components/LearnHome.tsx: localStorage x1',
-  'components/LearnHome.tsx: posthog x1',
+  'components/LearnHome.tsx: posthog x3',
+  'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
-  'components/LoanCompare.tsx: capture x1',
-  'components/LoanCompare.tsx: posthog x1',
+  'components/LearningPath.tsx: setItem x3',
+  'components/LoanCompare.tsx: capture x4',
+  'components/LoanCompare.tsx: posthog x4',
+  'components/LoanCompare.tsx: track x25',
   'components/MonteCarloSimulator.tsx: Worker x2',
   'components/MonteCarloSimulator.tsx: capture x1',
   'components/MonteCarloSimulator.tsx: posthog x1',
+  'components/MonteCarloSimulator.tsx: track x11',
   'components/MultiCurrencyNetWorth.tsx: capture x1',
-  'components/MultiCurrencyNetWorth.tsx: fetch x1',
-  'components/MultiCurrencyNetWorth.tsx: posthog x1',
-  'components/SubscribeSection.astro: capture x6',
+  'components/MultiCurrencyNetWorth.tsx: fetch x2',
+  'components/MultiCurrencyNetWorth.tsx: posthog x3',
+  'components/MultiCurrencyNetWorth.tsx: track x18',
+  'components/SubscribeSection.astro: capture x7',
+  'components/SubscribeSection.astro: cookie x1',
   'components/SubscribeSection.astro: fetch x1',
-  'components/SubscribeSection.astro: localStorage x7',
-  'components/SubscribeSection.astro: posthog x13',
+  'components/SubscribeSection.astro: getItem x2',
+  'components/SubscribeSection.astro: localStorage x11',
+  'components/SubscribeSection.astro: posthog x14',
+  'components/SubscribeSection.astro: removeItem x3',
+  'components/SubscribeSection.astro: setItem x2',
+  'components/ThemeToggle.astro: getItem x2',
   'components/ThemeToggle.astro: localStorage x3',
+  'components/ThemeToggle.astro: setItem x1',
   'components/WaitlistSection.astro: capture x2',
   'components/WaitlistSection.astro: fetch x1',
-  'components/WaitlistSection.astro: localStorage x2',
+  'components/WaitlistSection.astro: getItem x1',
+  'components/WaitlistSection.astro: localStorage x3',
   'components/WaitlistSection.astro: posthog x4',
+  'components/WaitlistSection.astro: setItem x1',
+  'components/pages/HomePage.astro: getItem x1',
   'components/pages/HomePage.astro: localStorage x1',
+  'components/pages/MultiCurrencyNetWorthPage.astro: fetch x1',
+  'i18n/config.ts: localStorage x1',
+  'layouts/BlogPost.astro: cookie x1',
+  'layouts/BlogPost.astro: getItem x1',
   'layouts/BlogPost.astro: localStorage x2',
-  'pages/confirm.astro: capture x1',
+  'layouts/BlogPost.astro: setItem x1',
+  'pages/404.astro: cookie x1',
+  'pages/confirm.astro: capture x2',
   'pages/confirm.astro: fetch x1',
   'pages/confirm.astro: localStorage x1',
   'pages/confirm.astro: posthog x2',
+  'pages/confirm.astro: setItem x1',
   'pages/studio/qr.astro: Image x1',
-  'pages/unsubscribe.astro: capture x1',
+  'pages/unsubscribe.astro: capture x2',
   'pages/unsubscribe.astro: fetch x1',
   'pages/unsubscribe.astro: localStorage x1',
   'pages/unsubscribe.astro: posthog x2',
+  'pages/unsubscribe.astro: removeItem x1',
+  'styles/global.css: track x1',
   'types/posthog.d.ts: capture x1',
-  'types/posthog.d.ts: posthog x1',
+  'types/posthog.d.ts: posthog x2',
   'utils/listCount.ts: fetch x1',
-  'utils/shared/consentRuntime.js: cookie x2',
-  'utils/shared/consentRuntime.js: localStorage x3',
-  'utils/shared/consentRuntime.js: posthog x1',
+  'utils/multi-currency-net-worth/math.ts: fetch x1',
+  'utils/shared/consentRuntime.js: cookie x5',
+  'utils/shared/consentRuntime.js: getItem x1',
+  'utils/shared/consentRuntime.js: localStorage x7',
+  'utils/shared/consentRuntime.js: posthog x2',
+  'utils/shared/consentRuntime.js: removeItem x3',
   'utils/shared/consentRuntime.js: sessionStorage x1',
+  'utils/shared/consentRuntime.js: setItem x1',
 ];
 
 describe('privacy surface: click labels', () => {
@@ -451,7 +489,7 @@ describe('privacy surface: what click capture is told to ignore', () => {
 // sent is checked in a browser by scripts/verify-tool-privacy.mjs.
 // -----------------------------------------------------------------------------
 
-const file = (text: string, path = 'components/X.tsx'): SourceFile[] => [{ path, text: withoutComments(text) }];
+const file = (text: string, path = 'components/X.tsx'): SourceFile[] => [sourceFile(path, text)];
 
 describe('privacy surface reader: events', () => {
   it('reads the wrapper, PostHog called directly, and spacing or optional calls', () => {
@@ -557,11 +595,27 @@ describe('privacy surface reader: storage', () => {
       "let key = 'nidhi-a';\nkey++;\nlocalStorage.setItem(key, v);",
       "let key = 'nidhi-a';\n({ key } = other);\nlocalStorage.setItem(key, v);",
       "const key = 'nidhi-a';\nfunction f(a, key: string, b) { localStorage.setItem(key, v); }",
+      "const key = 'nidhi-theme-mode';\nfunction save(key, value = getDefault()) { localStorage.setItem(key, value); }",
+      "const key = 'nidhi-a';\nconst g = ([key]) => localStorage.setItem(key, v);",
+      "const key = 'nidhi-a';\nlocalStorage.setItem(key, v);\nkey = other;",
+      "const key = 'nidhi-a';\nlocalStorage.setItem(key, v);\nsend(key);",
+      "const key = 'nidhi-a';\n// the key is renamed below\nlocalStorage.setItem(key, v);",
     ]) {
       const scan = scanStorage(file(source));
       assert.deepEqual(scan.keys, [], source);
       assert.notDeepEqual(scan.unresolved, [], source);
     }
+  });
+
+  it('a name whose every appearance is accounted for stands for its key', () => {
+    const scan = scanStorage(file(`
+      var KEY = 'nidhi-a';
+      if (e.key === KEY || other !== KEY) ls.removeItem(KEY);
+      document.title = KEY + '=' + v;
+      const old = ls ? ls.getItem(KEY) : null;
+      ls.setItem(KEY, v);
+    `));
+    assert.deepEqual(scan, { keys: ['nidhi-a'], unresolved: [] });
   });
 
   it('counts storage reached through another name', () => {
@@ -609,6 +663,18 @@ describe('privacy surface reader: hosts and requests', () => {
     ]);
   });
 
+  it('nothing that looks like a comment hides a mention from the count', () => {
+    for (const source of [
+      "const r = /'/; const a = '/*'; fetch(leak); const b = '*/';",
+      "const a = '/*';\nls.setItem('new-key', typedAmount);\nconst b = '*/';",
+      "/* fetch(x) */",
+      "// track('e', { amount })",
+      "const opening = '/*';\nwindow.posthog.capture('free_x', { amount });\nconst closing = '*/';",
+    ]) {
+      assert.notDeepEqual(scanMentions(file(source)), [], source);
+    }
+  });
+
   it('keeps code that sits between two strings that look like comment marks', () => {
     for (const source of [
       "const opening = '/*';\nwindow.posthog.capture('free_x', { amount: typedAmount });\nconst closing = '*/';",
@@ -640,7 +706,7 @@ describe('privacy surface reader: hosts and requests', () => {
     const text = withoutComments("const a = 'https://x.example.org // not a comment'; fetch(a); // a comment fetch(b)");
     assert.match(text, /fetch\(a\)/);
     assert.doesNotMatch(text, /fetch\(b\)/);
-    assert.deepEqual(scanRequests([{ path: 'x.ts', text }]), ['x.ts: fetch(a)']);
+    assert.deepEqual(scanRequests([{ path: 'x.ts', text, raw: text }]), ['x.ts: fetch(a)']);
   });
 
   it('lists the build-time settings read', () => {

@@ -29,7 +29,15 @@ const WORDS = /^(content|i18n\/strings)\//;
 export interface SourceFile {
   /** Path from `src/`, with forward slashes. */
   path: string;
+  /** The file with its comments blanked: what the readers read. */
   text: string;
+  /** The file exactly as written: what the closed checks count, so that nothing can be hidden from them. */
+  raw: string;
+}
+
+/** A source file from its text, as `codeFiles` builds them. */
+export function sourceFile(path: string, raw: string): SourceFile {
+  return { path, text: withoutComments(raw), raw };
 }
 
 /**
@@ -85,7 +93,7 @@ export function codeFiles(srcDir: string): SourceFile[] {
       if (statSync(full).isDirectory()) { walk(full); continue; }
       const path = relative(srcDir, full).split('\\').join('/');
       if (!CODE.test(name) || /\.test\./.test(name) || WORDS.test(path) || SELF.test(path)) continue;
-      out.push({ path, text: withoutComments(readFileSync(full, 'utf8')) });
+      out.push(sourceFile(path, readFileSync(full, 'utf8')));
     }
   };
   walk(srcDir);
@@ -242,51 +250,45 @@ const NAME = /^[A-Za-z_$][\w$]*$/;
 const STORAGE_OTHER = /(?:(?<![\w$.])|(?<=\b(?:window|self|globalThis|root)\.))(?:localStorage|sessionStorage)\s*(?:\[|\.\s*(?!setItem\b|getItem\b|removeItem\b|length\b|key\b)[A-Za-z_$])/g;
 
 /**
- * The string `name` stands for, or null. It stands for one only when the file
- * declares it once, with one whole string literal, and nothing else in the
- * file could bind the same name to something else: no other assignment, no
- * `++` or `--`, no loop variable, no destructuring, and no parameter of any
- * function, arrow, method or `catch`. A parameter is read broadly: the bare
- * name inside any `(...)` that is followed by `{` or `=>`. That also takes
- * `while (name) {` for one, which only makes this say "unresolved" too often.
+ * The string `name` stands for, or null. A closed rule, on the file exactly
+ * as written: the name stands for a key only when every one of its
+ * appearances in the file is accounted for. One is its declaration with one
+ * whole string literal. Each of the others must be the first argument of a
+ * storage call, a comparison (`=== NAME`, `!== NAME`) or the start of a
+ * concatenation (`NAME + '...'`). Anything that could give the name another
+ * value, a parameter of any kind, a second declaration, an assignment, a loop
+ * variable, has to write the name once more, and that appearance is none of
+ * these. So does a mention in a comment: the answer is then "unresolved",
+ * which is the safe one.
  */
-function boundLiteral(text: string, name: string): string | null {
+function boundLiteral(raw: string, name: string): string | null {
   const n = name.replace(/\$/g, '\\$');
   const word = `(?<![\\w$.])${n}(?![\\w$])`;
-  const declared = [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${n}(?![\\w$])`, 'g'))];
-  const literal = new RegExp(`(?:const|let|var)\\s+${n}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`).exec(text);
-  if (declared.length !== 1 || !literal) return null;
-  const assigned = [...text.matchAll(new RegExp(`${word}\\s*(?:[-+*/%|&^?<>]{0,3}=)(?!=)`, 'g'))].length;
-  if (assigned !== 1) return null;
-  const rebound = [
-    new RegExp(`${word}\\s*(?:\\+\\+|--)|(?:\\+\\+|--)\\s*${word}`),
-    new RegExp(`${word}\\s+(?:of|in)\\s`),
-    new RegExp(`${word}\\s*=>`),
-    new RegExp(`[{\\[,]\\s*(?:[\\w$]+\\s*:\\s*)?${word}\\s*[,}\\]][^;\\n]*=(?!=)`),
-  ];
-  if (rebound.some((r) => r.test(text))) return null;
-  for (const m of text.matchAll(/\(([^()]*)\)\s*(?::\s*[\w$<>[\]., |]+\s*)?(?:\{|=>)/g)) {
-    const names = m[1].split(',').map((part) => part.trim().replace(/^\.\.\./, '').split(/[\s:=?]/)[0]);
-    if (names.includes(name)) return null;
-  }
-  return literal[2];
+  const count = (pattern: string): number => [...raw.matchAll(new RegExp(pattern, 'g'))].length;
+  const literal = new RegExp(`(?:const|let|var)\\s+${n}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`).exec(raw);
+  if (!literal) return null;
+  const accounted =
+    1 +
+    count(`\\.\\s*(?:setItem|getItem|removeItem)\\s*\\(\\s*${word}\\s*[,)]`) +
+    count(`[!=]==\\s*${word}(?!\\s*[=(.\\[])`) +
+    count(`${word}\\s*\\+\\s*['"]`);
+  return count(word) === accounted ? literal[2] : null;
 }
 
 /** Every localStorage and sessionStorage key, plus the consent cookie's name. */
 export function scanStorage(files: SourceFile[]): StorageScan {
   const keys = new Set<string>();
   const unresolved: string[] = [];
-  for (const { path, text } of files) {
+  for (const { path, text, raw } of files) {
     for (const m of text.matchAll(STORAGE_OTHER)) unresolved.push(`${path}: ${m[0]}`);
     for (const m of text.matchAll(STORAGE_CALL)) {
       const args = balanced(text, m.index + m[0].length - 1);
       const arg = args === null ? '' : (topLevelParts(args)[0] ?? '');
       const literal = KEY_LITERAL.exec(arg);
       if (literal) { keys.add(literal[1]); continue; }
-      // A name stands for a key only when the file binds it once, to one whole
-      // string literal, and never again: not redeclared, not reassigned, not a
-      // parameter of any function. Anything else could be any key.
-      const key = NAME.test(arg) ? boundLiteral(text, arg) : null;
+      // A name stands for a key only when every appearance of it in the file
+      // is accounted for (see boundLiteral). Anything else could be any key.
+      const key = NAME.test(arg) ? boundLiteral(raw, arg) : null;
       if (key !== null) keys.add(key);
       else unresolved.push(`${path}: ${m[1]}(${arg.replace(/\s+/g, ' ').slice(0, 60)})`);
     }
@@ -345,7 +347,7 @@ export function scanPublicEnv(files: SourceFile[]): string[] {
 // network. The readers above understand the usual ways of writing a call; a
 // way they do not understand still has to spell one of these words.
 const SENSITIVE = [
-  'posthog', 'capture', 'localStorage', 'sessionStorage', 'cookie', 'indexedDB', 'caches',
+  'posthog', 'capture', 'track', 'localStorage', 'sessionStorage', 'setItem', 'getItem', 'removeItem', 'cookie', 'indexedDB', 'caches',
   'fetch', 'sendBeacon', 'XMLHttpRequest', 'WebSocket', 'EventSource', 'importScripts', 'Worker', 'Image',
   'eval', 'Function',
 ];
@@ -356,15 +358,21 @@ const SENSITIVE = [
  * (`const ph = window.posthog`), an index (`window['posthog']`), a property
  * write (`ls.amount = v`, after `const ls = localStorage`) or an optional call
  * (`fetch?.(...)`) each add a mention, whatever the readers above make of
- * them. `skip` names files that are words only (the privacy notice).
+ * them.
+ *
+ * It counts the file exactly as written, comments and strings included. The
+ * readers blank comments first, and anything that decides what is a comment
+ * can be fooled into hiding code; a plain count of the raw text cannot. The
+ * price is that a comment naming one of these words counts too. `skip` names
+ * files that are words only (the privacy notice).
  */
 export function scanMentions(files: SourceFile[], skip: RegExp | null = null): string[] {
   const out: string[] = [];
-  for (const { path, text } of files) {
+  for (const { path, raw } of files) {
     if (skip && skip.test(path)) continue;
     for (const word of SENSITIVE) {
       // Not part of a longer name, nor of a hyphenated class or id (`cookie-btn`).
-      const n = [...text.matchAll(new RegExp(`(?<![\\w$-])${word}(?![\\w$-])`, 'g'))].length;
+      const n = [...raw.matchAll(new RegExp(`(?<![\\w$-])${word}(?![\\w$-])`, 'g'))].length;
       if (n > 0) out.push(`${path}: ${word} x${n}`);
     }
   }
