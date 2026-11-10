@@ -19,6 +19,7 @@
 import { LOCALES, localePrefix } from '../i18n';
 import { scanLabels } from '../utils/analyticsLabels.ts';
 import cleanElementsScript from '../utils/shared/cleanElements.js?raw';
+import cleanUrlsScript from '../utils/shared/cleanUrls.js?raw';
 import consentRuntimeScript from '../utils/shared/consentRuntime.js?raw';
 
 // The known locale prefixes (`['/hi']`), built from the locale registry rather
@@ -39,6 +40,7 @@ const clickLabels = { exact, prefixes };
 ---
 
 <script is:inline set:html={cleanElementsScript}></script>
+<script is:inline set:html={cleanUrlsScript}></script>
 <script is:inline set:html={consentRuntimeScript}></script>
 <script is:inline define:vars={{ posthogKey, localePrefixes, analyticsTest, clickLabels }}>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -52,54 +54,16 @@ const clickLabels = { exact, prefixes };
   });
 
   // Backstop for the free tools (CLAUDE.md, "Free tools keep inputs out of
-  // URLs"). The tools never write inputs into the address and ToolStateGuard
-  // moves shared-link state out of it before this script runs, but should a
-  // tool URL ever carry state, no event may send it: every URL property that
-  // points at a /free/ page (current URL, referrer, session entry, person
-  // properties) keeps only its utm_* parameters and loses its # part.
-  //
-  // No page writes what is typed into the address: /blog/ only reads ?q=
-  // when a search engine sends someone there, then removes it. Should a
-  // /blog/ URL still carry ?q= (an old bookmark, a hand-typed link), that
-  // parameter is removed from any URL property pointing at it.
-  // A locale prefix sits in front of the page path once the Hindi edition
-  // exists, so the /free/ and /blog tests below read the path with a known
-  // prefix removed. Only prefixes from the locale registry are stripped: a
-  // pattern like /^\/[a-z]{2}\// would swallow a real two-letter page segment
-  // such as /history-of-money/ and start rewriting a URL that is not a tool.
-  function withoutLocale(pathname) {
-    for (var i = 0; i < localePrefixes.length; i++) {
-      var prefix = localePrefixes[i];
-      if (pathname === prefix || pathname.indexOf(prefix + '/') === 0) {
-        return pathname.slice(prefix.length) || '/';
-      }
-    }
-    return pathname;
-  }
-  function cleanUrl(value) {
-    if (typeof value !== 'string') return value;
-    var isTool = value.indexOf('/free/') !== -1;
-    var isBlog = value.indexOf('/blog') !== -1 && value.indexOf('q=') !== -1;
-    if (!isTool && !isBlog) return value;
-    var u;
-    try { u = new URL(value, window.location.origin); } catch (e) { return value; }
-    if (u.host !== window.location.host) return value;
-    var path = withoutLocale(u.pathname);
-    if (path.indexOf('/free/') === 0) {
-      var keep = new URLSearchParams();
-      u.searchParams.forEach(function (v, k) { if (k.indexOf('utm_') === 0) keep.append(k, v); });
-      u.search = keep.toString();
-      u.hash = '';
-    } else if (path.indexOf('/blog') === 0 && u.searchParams.has('q')) {
-      u.searchParams.delete('q');
-    } else {
-      return value;
-    }
-    return /^https?:/i.test(value) ? u.toString() : u.pathname + u.search;
-  }
-  function cleanProps(obj) {
-    if (!obj) return;
-    for (var key in obj) if (Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = cleanUrl(obj[key]);
+  // URLs"): every URL property that points at a /free/ page keeps only its
+  // utm_* parameters and loses its # part, and a /blog/ address loses ?q=.
+  // The rules live in cleanUrls.js (inlined above), where they are tested.
+  // Should that script be missing, no event is sent at all.
+  function cleanAddresses(event) {
+    if (typeof window.nidhiCleanUrlProps !== 'function') return null;
+    window.nidhiCleanUrlProps(event.properties, localePrefixes);
+    window.nidhiCleanUrlProps(event.$set, localePrefixes);
+    window.nidhiCleanUrlProps(event.$set_once, localePrefixes);
+    return event;
   }
 
   // Click data (autocapture, rage clicks, dead clicks) records every attribute
@@ -183,8 +147,8 @@ const clickLabels = { exact, prefixes };
     persistence: hasFullConsent ? 'localStorage' : 'memory',
     disable_session_recording: true,
     before_send: function (event) {
-      if (event) { cleanProps(event.properties); cleanProps(event.$set); cleanProps(event.$set_once); }
-      return cleanClicks(event);
+      if (!event) return event;
+      return cleanAddresses(event) && cleanClicks(event);
     },
     // An answer given, or withdrawn, before the SDK finished loading could
     // not be applied by the banner (the pre-load stub has no set_config), so

@@ -54,7 +54,7 @@ type Strings = Dict['tools']['multiCurrencyNetWorth']['island'];
 // PostHog telemetry
 // ---------------------------------------------------------------------------
 
-// `window.posthog` is declared once, in src/types/posthog.d.ts.
+// The PostHog object on `window` is declared once, in the types file under src/types/.
 
 function track(event: string, properties?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;

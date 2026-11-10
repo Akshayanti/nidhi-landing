@@ -6,7 +6,7 @@
  * its own single-segment prefix: Hindi at /hi/, Spanish at /es/, Czech at /cs/.
  *
  * The path is the only place a locale is recorded. Nothing is written to
- * localStorage for it, and there is no automatic redirect from Accept-Language
+ * browser storage for it, and there is no automatic redirect from Accept-Language
  * or navigator.language, so a shared link always opens in the language it
  * names. That also means the same browser storage keys serve every locale
  * (see the privacy changelog), which is why none of the helpers here touch
