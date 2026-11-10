@@ -371,6 +371,9 @@ function buildMimeMessage_(opts) {
     'List-ID: ' + opts.listId,
     'Precedence: bulk',
     'Auto-Submitted: auto-generated',
+    // Ties a delivery failure report back to this mail and this recipient
+    // (see mailRef_ and the bounce scanner).
+    'X-Nidhi-Ref: ' + mailRef_(opts.to),
   ];
   if (opts.messageId) headers.push('Message-ID: <' + opts.messageId + '>');
 
@@ -1469,17 +1472,19 @@ function emailDomain_(email) {
 // matching Sheet rows to `bounced`, so they get no more mail.
 //
 // A report counts only if all of this holds, because anyone can send this
-// inbox a message that merely looks like one:
-//   - it is from Google's own delivery subsystem, mailer-daemon@googlemail.com
-//     (a forgery of that address fails Google's sender checks and does not
-//     reach the inbox);
-//   - it is about mail this script sent: it quotes our List-ID;
-//   - it reports a permanent failure: `Action: failed` with a 5.x.x status.
-//     A delay notice or a full mailbox (4.x.x) is not one;
-//   - the address is named as the failed recipient (`Final-Recipient` or
-//     `X-Failed-Recipients`), not merely mentioned somewhere in the text;
-//   - the report is newer than the row: an old failure does not undo a
-//     later sign-up.
+// inbox a message that merely looks like one (see failedRecipients_):
+//   - it is from Google's own delivery subsystem, mailer-daemon@googlemail.com,
+//     and is a delivery report by its structure, not by its subject;
+//   - for that recipient, in that recipient's own block of the report, it
+//     says `Action: failed` with a 5.x.x status. A delay notice or a full
+//     mailbox reported as 4.x.x is not one;
+//   - the mail it returns carries this script's reference for that same
+//     recipient (X-Nidhi-Ref), which only this script can write. So the
+//     report is about a mail this script sent to that reader. Mail sent
+//     before this header existed has no reference: a failure of one of
+//     those is not acted on, and the next mail to that address will be;
+//   - the report is later than the row's sign-up: an old failure does not
+//     undo a later sign-up.
 //
 // `bounced` is outside the enum in listConfirmedSubscribers_() — which
 // filters on status==='confirmed' — so marked rows are dropped from all
@@ -1487,37 +1492,94 @@ function emailDomain_(email) {
 // Re-subscribing via the public form puts the row back to `pending` and
 // goes through the normal double opt-in.
 
-// The only sender whose reports are read.
-var BOUNCE_SENDER_ = /(?:^|<)mailer-daemon@googlemail\.com>?$/i;
+/**
+ * A reference carried by every mail this script sends, in the X-Nidhi-Ref
+ * header: an HMAC of the recipient's address under the script's secret.
+ * A delivery failure report quotes the headers of the mail that failed, so
+ * a genuine report about a mail to someone carries the reference for that
+ * someone. Nobody without the secret can write the reference for an address
+ * other than their own, which is what stops a made-up report from removing
+ * another reader. It says nothing about the reader to anyone: it is in
+ * their own mail.
+ */
+function mailRef_(email) {
+  return hmacHex_(config_().hmacSecret, 'mail-ref:' + String(email || '').trim().toLowerCase()).slice(0, 40);
+}
 
-// Reports looked at in one scan, at most.
-var BOUNCE_MAX_THREADS_ = 500;
+// The only sender whose reports are read: the address alone, or a display
+// name followed by the address in angle brackets.
+var BOUNCE_SENDER_ = /^(?:[^<>]*<mailer-daemon@googlemail\.com>|mailer-daemon@googlemail\.com)$/i;
+
+// Reports looked at in one scan, at most. Reaching it is logged.
+var BOUNCE_MAX_THREADS_ = 1000;
+
+/** Headers as single lines: a folded header continues on lines that start with white space. */
+function unfold_(text) {
+  return String(text).replace(/\r?\n[ \t]+/g, ' ');
+}
 
 /**
  * The addresses one message reports as permanently failed, lower-cased; none
- * if the message is not such a report about this script's mail.
+ * unless the message is a delivery report, read by its structure:
+ *
+ *   - the message itself is a multipart/report of type delivery-status;
+ *   - in its message/delivery-status part, each recipient has a block of its
+ *     own, and that block says `Action: failed` with a 5.x.x status for that
+ *     recipient. A recipient whose block says delayed, or 4.x.x, is not
+ *     taken because another recipient in the same report failed;
+ *   - the part that returns the original mail carries this script's
+ *     reference for that same recipient (X-Nidhi-Ref).
+ *
+ * Text that only looks like these fields, in a quoted message or in the
+ * human-readable part, is not read as them.
  */
-function failedRecipients_(msg, listHost) {
+function failedRecipients_(msg) {
   var from = '';
   try { from = String(msg.getFrom() || '').trim(); } catch (_) { return []; }
   if (!BOUNCE_SENDER_.test(from)) return [];
   var raw = '';
   try { raw = String(msg.getRawContent() || ''); } catch (_) { return []; }
-  if (raw.indexOf('newsletter.' + listHost) === -1) return [];
-  if (!/^Action:[ \t]*failed[ \t]*\r?$/im.test(raw)) return [];
-  if (!/^Status:[ \t]*5\.[0-9]+\.[0-9]+/im.test(raw)) return [];
-  var found = {};
-  var m;
-  var finalRecipient = /^Final-Recipient:[ \t]*rfc822;[ \t]*<?([^\s<>;,]+@[^\s<>;,]+)>?[ \t]*\r?$/gim;
-  while ((m = finalRecipient.exec(raw)) !== null) found[m[1].toLowerCase()] = true;
-  var failedHeader = /^X-Failed-Recipients:[ \t]*(.+?)[ \t]*\r?$/gim;
-  while ((m = failedHeader.exec(raw)) !== null) {
-    m[1].split(',').forEach(function (a) {
-      var addr = a.trim().toLowerCase();
-      if (/^[^\s<>;,]+@[^\s<>;,]+$/.test(addr)) found[addr] = true;
-    });
+
+  var split = /\r?\n\r?\n/.exec(raw);
+  if (!split) return [];
+  var outer = unfold_(raw.slice(0, split.index));
+  var body = raw.slice(split.index + split[0].length);
+  var type = /^Content-Type:[ \t]*multipart\/report\b([^\r\n]*)$/im.exec(outer);
+  if (!type || !/report-type[ \t]*=[ \t]*"?delivery-status"?/i.test(type[1])) return [];
+  var boundary = /boundary[ \t]*=[ \t]*(?:"([^"]+)"|([^\s;]+))/i.exec(type[1]);
+  if (!boundary) return [];
+  var parts = body.split('--' + (boundary[1] || boundary[2]));
+
+  var status = null;
+  var original = '';
+  for (var p = 0; p < parts.length; p++) {
+    var cut = /\r?\n\r?\n/.exec(parts[p]);
+    if (!cut) continue;
+    var head = unfold_(parts[p].slice(0, cut.index));
+    var content = parts[p].slice(cut.index + cut[0].length);
+    if (/^Content-Type:[ \t]*message\/delivery-status\b/im.test(head)) {
+      if (status === null) status = content;
+    } else if (status !== null && /^Content-Type:[ \t]*(?:message\/rfc822|text\/rfc822-headers)\b/im.test(head)) {
+      // The returned mail: its own headers come first.
+      var end = /\r?\n\r?\n/.exec(content);
+      original = unfold_(end ? content.slice(0, end.index) : content);
+    }
   }
-  return Object.keys(found);
+  if (status === null || !original) return [];
+
+  var out = [];
+  unfold_(status).split(/\r?\n\r?\n/).forEach(function (block) {
+    var who = /^Final-Recipient:[ \t]*rfc822[ \t]*;[ \t]*<?([^\s<>;,]+@[^\s<>;,]+)>?[ \t]*$/im.exec(block);
+    var action = /^Action:[ \t]*([A-Za-z]+)[ \t]*$/im.exec(block);
+    var code = /^Status:[ \t]*([0-9])\.[0-9]+\.[0-9]+/im.exec(block);
+    if (!who || !action || !code) return;
+    if (action[1].toLowerCase() !== 'failed' || code[1] !== '5') return;
+    var addr = who[1].toLowerCase();
+    // The returned mail was one of ours, sent to this very address.
+    var ref = new RegExp('^X-Nidhi-Ref:[ \\t]*' + mailRef_(addr) + '[ \\t]*$', 'im');
+    if (ref.test(original) && out.indexOf(addr) === -1) out.push(addr);
+  });
+  return out;
 }
 
 function handleScanBounces_(e) {
@@ -1527,30 +1589,33 @@ function handleScanBounces_(e) {
     return jsonResponse_({ ok: false, error: 'bad_signature' });
   }
 
-  var cfg = config_();
-  var listHost = host_(cfg.siteUrl);
-
-  // Every report in the inbox from the last 14 days, a page at a time.
+  // Every report in the inbox from the last 14 days, a page at a time. The
+  // search finds threads; a thread can hold older messages, so each message's
+  // own date is checked as well.
   var query = 'in:inbox from:mailer-daemon@googlemail.com newer_than:14d';
+  var oldest = Date.now() - 14 * 24 * 60 * 60 * 1000;
   var scanned = 0;
   // address -> the time of its newest failure report
   var failedAt = {};
   try {
-    for (var start = 0; start < BOUNCE_MAX_THREADS_; start += 100) {
+    var start = 0;
+    for (; start < BOUNCE_MAX_THREADS_; start += 100) {
       var threads = GmailApp.search(query, start, 100);
       scanned += threads.length;
       for (var t = 0; t < threads.length; t++) {
         var msgs = threads[t].getMessages();
         for (var i = 0; i < msgs.length; i++) {
-          var when = 0;
-          try { when = msgs[i].getDate().getTime(); } catch (_) { continue; }
-          failedRecipients_(msgs[i], listHost).forEach(function (addr) {
+          var when = NaN;
+          try { when = msgs[i].getDate().getTime(); } catch (_) { /* no date: not read */ }
+          if (!(when >= oldest)) continue;
+          failedRecipients_(msgs[i]).forEach(function (addr) {
             if (!failedAt[addr] || failedAt[addr] < when) failedAt[addr] = when;
           });
         }
       }
       if (threads.length < 100) break;
     }
+    if (start >= BOUNCE_MAX_THREADS_) console.error('[newsletter] bounce scan: more than ' + BOUNCE_MAX_THREADS_ + ' report threads in 14 days; the oldest were not read');
   } catch (err) {
     console.error('[newsletter] bounce scan: reading the inbox failed: ' + err);
     return jsonResponse_({ ok: false, error: 'gmail_search_failed' });
@@ -1570,9 +1635,10 @@ function handleScanBounces_(e) {
       if (rowStatus !== 'confirmed' && rowStatus !== 'pending') continue;
       var reported = failedAt[rowEmail];
       if (!reported) continue;
-      // A report from before this sign-up is about an earlier one.
-      var since = rows[r][COL.createdAt - 1];
-      if (since && new Date(since).getTime() > reported) continue;
+      // The report must be later than this sign-up: one from before it, or
+      // a row whose date cannot be read, is left alone.
+      var since = new Date(rows[r][COL.createdAt - 1]).getTime();
+      if (!(since < reported)) continue;
       sh.getRange(r + 2, COL.status).setValue('bounced');
       sh.getRange(r + 2, COL.unsubscribedAt).setValue(new Date());
       out.push(rowEmail);
