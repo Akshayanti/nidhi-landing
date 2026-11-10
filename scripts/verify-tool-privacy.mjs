@@ -659,8 +659,6 @@ async function useTool(page, tool, note, downloads, sent) {
   await pressButtons(page, note, pressed);
   await sleep(500);
 
-  // The link the tool itself made, if it copied one.
-  note.shared = await page.evaluate(() => window.__copied || '').catch(() => '');
 
   const inputs = await makeChoices(page, note);
 
@@ -735,8 +733,9 @@ async function useTool(page, tool, note, downloads, sent) {
     // A section that was left open is closed and opened once more.
     for (const el of await visible(page, `${island} summary`)) { await press(page, el); await sleep(150); }
   }
-  // The link as last copied, now that every step has been taken.
-  note.shared = (await page.evaluate(() => window.__copied || '').catch(() => '')) || note.shared;
+  // The link as last copied, now that every step has been taken: that one
+  // and no earlier one. If the last copy was empty, the run fails on it.
+  note.shared = await page.evaluate(() => (typeof window.__copied === 'string' ? window.__copied : '')).catch(() => '');
 
   // The exports really happened: a spreadsheet was saved and the print dialog was asked for.
   const saved = existsSync(downloads) ? readdirSync(downloads) : [];
@@ -855,7 +854,11 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     try {
       const copied = new URL(note.shared);
       if ([...copied.searchParams.keys()].some((k) => !k.startsWith('utm_'))) problems.push(`the copied share link carries more than utm parameters before the #: ${copied.pathname}${copied.search}`);
-      if (copied.pathname !== path) problems.push(`the copied share link is not a link to this tool: ${copied.pathname}`);
+      // The tool builds its link from the page's own address, so here it must
+      // point at this test server; on the live site the same code gives the
+      // site's address.
+      if (copied.origin !== base) problems.push(`the copied share link points at another site: ${copied.origin}`);
+      else if (copied.pathname !== path) problems.push(`the copied share link is not a link to this tool: ${copied.pathname}`);
       else if (copied.hash.length <= 1) problems.push('the copied share link carries no state after its #, although the tool had been changed');
       else shareLink = copied.pathname + copied.search + copied.hash;
     } catch {
@@ -913,7 +916,19 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   }
 
   const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
-  const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: d.phase })));
+  // An event belongs to the page it is about, not to the moment it was sent:
+  // around a language switch the page left and the page arrived at both send,
+  // and their requests can cross. Each event names its own page.
+  const arrivedAt = `${locale === 'en' ? '/hi' : ''}/free/${slug}/`;
+  const partOf = (e, sentIn) => {
+    if (sentIn !== 'switch' && sentIn !== 'arrived') return sentIn;
+    const props = e.properties || {};
+    let pathname = typeof props.$pathname === 'string' ? props.$pathname : '';
+    if (!pathname && typeof props.$current_url === 'string') { try { pathname = new URL(props.$current_url).pathname; } catch { /* not an address */ } }
+    if (!pathname) return sentIn;
+    return pathname === arrivedAt ? 'arrived' : 'switch';
+  };
+  const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: partOf(e, d.phase) })));
   const result = checkRun({
     decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
     ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
@@ -1017,7 +1032,11 @@ await Promise.all(Array.from({ length: Math.min(JOBS, matrix.length) }, worker))
 
 server.close();
 // Both kinds of click event were seen for every tool, in some run.
-const across = PLANT ? [] : checkMatrix(finished);
+// (Only when both window sizes were run: which kind a click becomes depends
+// on the layout, so one size alone does not show both.)
+const wholeLayouts = viewports.length === Object.keys(VIEWPORTS).length;
+if (!PLANT && !wholeLayouts) console.log('note: one window size only, so the rule that every tool shows both a rage click and a dead click was not applied.');
+const across = PLANT || !wholeLayouts ? [] : checkMatrix(finished);
 for (const p of across) console.log(`FAIL  ${p}`);
 if (across.length) failed += 1;
 console.log(`\n${matrix.length - failed + (across.length ? 1 : 0)} of ${matrix.length} runs ${PLANT ? 'caught the planted leak' : 'clean'} in ${Math.round((Date.now() - started) / 1000)} s.`);
