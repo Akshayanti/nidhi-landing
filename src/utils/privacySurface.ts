@@ -34,28 +34,46 @@ export interface SourceFile {
 
 /**
  * `text` with its comments blanked out, so a mention in a comment is never
- * read as code. Line breaks are kept. A `//` counts as a comment only at the
- * start of a line or after white space or one of `;{}(),`: the `//` of an
- * address always follows a colon or a quote.
+ * read as code. Line breaks are kept.
+ *
+ * It walks the text once, knowing when it is inside a string, so that `/*`
+ * or `//` written inside a string never starts a comment (code between two
+ * such strings must stay visible). Quoted strings end with their line;
+ * template strings run until their closing backtick. Whenever it is unsure,
+ * it keeps the text: an apostrophe in a page's prose is taken for an open
+ * string until the line ends, which can only leave a comment in, never take
+ * code out. A `//` starts a comment only at the start of a line or after
+ * white space or one of `;{}(),`: the `//` of an address follows a colon.
  */
 export function withoutComments(text: string): string {
-  const blank = (m: string): string => m.replace(/[^\n]/g, ' ');
-  // Inside a quoted string on the same line, `//` is text, not a comment.
-  const inString = (before: string): boolean => {
-    const plain = before.replace(/\\./g, '');
-    return ['"', "'", '`'].some((q) => plain.split(q).length % 2 === 0);
-  };
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, blank)
-    .split('\n')
-    .map((line) => {
-      for (const m of line.matchAll(/(^|[\s;{}(),])\/\//g)) {
-        const at = m.index + m[1].length;
-        if (!inString(line.slice(0, at))) return line.slice(0, at) + blank(line.slice(at));
-      }
-      return line;
-    })
-    .join('\n');
+  let out = '';
+  let quote = '';
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quote) {
+      out += c;
+      if (c === '\\' && i + 1 < text.length) out += text[++i];
+      else if (c === quote || (c === '\n' && quote !== '`')) quote = '';
+      continue;
+    }
+    if (c === '"' || c === "'" || c === '`') { quote = c; out += c; continue; }
+    if (c === '/' && text[i + 1] === '*') {
+      const end = text.indexOf('*/', i + 2);
+      const stop = end === -1 ? text.length : end + 2;
+      out += text.slice(i, stop).replace(/[^\n]/g, ' ');
+      i = stop - 1;
+      continue;
+    }
+    if (c === '/' && text[i + 1] === '/' && (i === 0 || /[\s;{}(),]/.test(text[i - 1]))) {
+      const end = text.indexOf('\n', i);
+      const stop = end === -1 ? text.length : end;
+      out += ' '.repeat(stop - i);
+      i = stop - 1;
+      continue;
+    }
+    out += c;
+  }
+  return out;
 }
 
 /** Every code file under `srcDir`, tests left out, comments blanked. */
@@ -223,16 +241,35 @@ const NAME = /^[A-Za-z_$][\w$]*$/;
 // Storage reached without a method this reader follows: a property or an index.
 const STORAGE_OTHER = /(?:(?<![\w$.])|(?<=\b(?:window|self|globalThis|root)\.))(?:localStorage|sessionStorage)\s*(?:\[|\.\s*(?!setItem\b|getItem\b|removeItem\b|length\b|key\b)[A-Za-z_$])/g;
 
-/** The string `name` is bound to, when the file binds it exactly once, to a literal; else null. */
+/**
+ * The string `name` stands for, or null. It stands for one only when the file
+ * declares it once, with one whole string literal, and nothing else in the
+ * file could bind the same name to something else: no other assignment, no
+ * `++` or `--`, no loop variable, no destructuring, and no parameter of any
+ * function, arrow, method or `catch`. A parameter is read broadly: the bare
+ * name inside any `(...)` that is followed by `{` or `=>`. That also takes
+ * `while (name) {` for one, which only makes this say "unresolved" too often.
+ */
 function boundLiteral(text: string, name: string): string | null {
   const n = name.replace(/\$/g, '\\$');
-  const declared = [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${n}\\b`, 'g'))];
+  const word = `(?<![\\w$.])${n}(?![\\w$])`;
+  const declared = [...text.matchAll(new RegExp(`(?:const|let|var)\\s+${n}(?![\\w$])`, 'g'))];
   const literal = new RegExp(`(?:const|let|var)\\s+${n}\\s*=\\s*(['"])([^'"\\\\]+)\\1\\s*(?:;|\\n)`).exec(text);
   if (declared.length !== 1 || !literal) return null;
-  // Reassigned, or also the name of a parameter or a destructured value.
-  const assigned = [...text.matchAll(new RegExp(`(?<![\\w$.])${n}\\s*(?:[-+*/|&?]{0,2}=)(?!=)`, 'g'))].length;
-  const param = new RegExp(`function[^(]*\\([^)]*(?<![\\w$.])${n}(?![\\w$])[^)]*\\)|\\(([^()]*(?<![\\w$.])${n}(?![\\w$])[^()]*)\\)\\s*=>|(?<![\\w$.])${n}\\s*=>|[{,]\\s*${n}\\s*[,}][^;\\n]*=`).test(text);
-  return assigned === 1 && !param ? literal[2] : null;
+  const assigned = [...text.matchAll(new RegExp(`${word}\\s*(?:[-+*/%|&^?<>]{0,3}=)(?!=)`, 'g'))].length;
+  if (assigned !== 1) return null;
+  const rebound = [
+    new RegExp(`${word}\\s*(?:\\+\\+|--)|(?:\\+\\+|--)\\s*${word}`),
+    new RegExp(`${word}\\s+(?:of|in)\\s`),
+    new RegExp(`${word}\\s*=>`),
+    new RegExp(`[{\\[,]\\s*(?:[\\w$]+\\s*:\\s*)?${word}\\s*[,}\\]][^;\\n]*=(?!=)`),
+  ];
+  if (rebound.some((r) => r.test(text))) return null;
+  for (const m of text.matchAll(/\(([^()]*)\)\s*(?::\s*[\w$<>[\]., |]+\s*)?(?:\{|=>)/g)) {
+    const names = m[1].split(',').map((part) => part.trim().replace(/^\.\.\./, '').split(/[\s:=?]/)[0]);
+    if (names.includes(name)) return null;
+  }
+  return literal[2];
 }
 
 /** Every localStorage and sessionStorage key, plus the consent cookie's name. */

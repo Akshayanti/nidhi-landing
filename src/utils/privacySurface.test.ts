@@ -402,7 +402,8 @@ describe('privacy surface: outside hosts and requests', () => {
   });
 
   it('the privacy notice page, left out of that count, runs no script of its own', () => {
-    assert.doesNotMatch(NOTICE, /<script\b/);
+    // Tag names are not case-sensitive in HTML.
+    assert.doesNotMatch(NOTICE, /<script\b/i);
   });
 
   it('PostHog is started on the pinned host and nowhere else', () => {
@@ -549,6 +550,13 @@ describe('privacy surface reader: storage', () => {
       "const save = (key) => localStorage.setItem(key, '1');\nconst key = 'nidhi-theme-mode';",
       "let key = 'nidhi-a';\nkey = other;\nlocalStorage.setItem(key, v);",
       "const key = 'nidhi-a';\n{ const key = 'nidhi-b'; localStorage.setItem(key, v); }",
+      "const key = 'nidhi-theme-mode';\nconst save = { run(key, value) { localStorage.setItem(key, value); } };",
+      "const key = 'nidhi-theme-mode';\nclass S { save(key) { localStorage.setItem(key, value); } }",
+      "const key = 'nidhi-a';\ntry { f(); } catch (key) { localStorage.setItem(key, v); }",
+      "const key = 'nidhi-a';\nfor (key of list) localStorage.setItem(key, v);",
+      "let key = 'nidhi-a';\nkey++;\nlocalStorage.setItem(key, v);",
+      "let key = 'nidhi-a';\n({ key } = other);\nlocalStorage.setItem(key, v);",
+      "const key = 'nidhi-a';\nfunction f(a, key: string, b) { localStorage.setItem(key, v); }",
     ]) {
       const scan = scanStorage(file(source));
       assert.deepEqual(scan.keys, [], source);
@@ -599,6 +607,33 @@ describe('privacy surface reader: hosts and requests', () => {
       'components/X.tsx: new XMLHttpRequest',
       'components/X.tsx: sendBeacon(target)',
     ]);
+  });
+
+  it('keeps code that sits between two strings that look like comment marks', () => {
+    for (const source of [
+      "const opening = '/*';\nwindow.posthog.capture('free_x', { amount: typedAmount });\nconst closing = '*/';",
+      'const a = "/*"; fetch(leak); const b = "*/";',
+      "const t = `/*`;\nlocalStorage.setItem('nidhi-new', v);\nconst u = `*/`;",
+      "const f = '/*fetch*/'.slice(2, -2);",
+    ]) {
+      const files = file(source);
+      const seen = scanEvents(files).calls.length + scanRequests(files).length + scanStorage(files).keys.length + scanMentions(files).length;
+      assert.ok(seen > 0, source);
+      assert.ok(/capture|fetch|localStorage/.test(withoutComments(source)), source);
+    }
+  });
+
+  it('blanks real comments of both kinds and keeps the line count', () => {
+    const source = "a(); /* fetch(x)\n posthog */ b(); // localStorage\nc('it\\'s // fine'); d();";
+    const text = withoutComments(source);
+    assert.equal(text.split('\n').length, source.split('\n').length);
+    assert.doesNotMatch(text, /fetch|posthog|localStorage/);
+    assert.match(text, /a\(\);[\s\S]*b\(\);[\s\S]*c\('it\\'s \/\/ fine'\); d\(\);/);
+  });
+
+  it('when unsure, keeps the text: prose with an apostrophe hides nothing', () => {
+    const text = withoutComments("<p>Don't worry</p> <script>fetch(a); /* note */ fetch(b);</script>\nfetch(c);");
+    for (const call of ['fetch(a)', 'fetch(b)', 'fetch(c)']) assert.ok(text.includes(call), call);
   });
 
   it('keeps code that follows a // inside a string on the same line', () => {
