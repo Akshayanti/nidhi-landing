@@ -547,10 +547,10 @@ export default function InvestOrPayOff({
           )}
         </fieldset>
 
-        <details className="iop-more" open={moreOpen} onToggle={(e) => setMoreOpen(e.currentTarget.open)}>
+        <details className="iop-more" open={moreOpen || moreError} onToggle={(e) => { if (moreError && !e.currentTarget.open) e.currentTarget.open = true; else setMoreOpen(e.currentTarget.open); }}>
           <summary className="iop-moreSummary disclosure">
             <span className="iop-moreTitle">{strings.more.title}</span>
-            <span className="iop-moreStatus">{moreStatus}</span>
+            {!moreError && <span className="iop-moreStatus">{moreStatus}</span>}
           </summary>
           <div className="iop-moreBody">
   <Field id={id('relief')} label={strings.fields.relief} value={form.relief} onChange={update('relief')} hint={strings.fields.reliefHint} error={errors.relief ? t(strings.fields.percentError, { min: 0, max: 100 }) : null} inputMode="decimal" unit="%" />

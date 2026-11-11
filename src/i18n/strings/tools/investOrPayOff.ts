@@ -139,7 +139,7 @@ export const investOrPayOffEn = {
     example: 'Example scenario. Replace the figures with your own.',
     more: {
       title: 'Taxes and fees',
-      none: 'None entered',
+      none: 'None entered: results are before fund fees and taxes',
       inUse: 'In use: {list}',
       relief: 'tax relief',
       feePct: 'fund fee',
@@ -392,7 +392,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
     example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     more: {
       title: 'टैक्स और शुल्क',
-      none: 'कुछ नहीं भरा गया',
+      none: 'कुछ नहीं भरा गया: नतीजे फ़ंड शुल्क और कर से पहले के हैं',
       inUse: 'लागू: {list}',
       relief: 'टैक्स छूट',
       feePct: 'फंड शुल्क',
@@ -641,7 +641,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     example: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
     more: {
       title: 'कर आणि शुल्क',
-      none: 'काहीही भरलेले नाही',
+      none: 'काहीही भरलेले नाही: निकाल फंड शुल्क आणि करांपूर्वीचे आहेत',
       inUse: 'लागू: {list}',
       relief: 'कर सवलत',
       feePct: 'फंड शुल्क',
@@ -890,7 +890,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
     example: 'Escenario de ejemplo. Cambia las cifras por las tuyas.',
     more: {
       title: 'Impuestos y comisiones',
-      none: 'Nada indicado',
+      none: 'Nada indicado: los resultados son antes de comisiones del fondo e impuestos',
       inUse: 'En uso: {list}',
       relief: 'desgravación fiscal',
       feePct: 'comisión del fondo',
@@ -1139,7 +1139,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
     example: 'Ukázkový scénář. Nahraďte čísla svými.',
     more: {
       title: 'Daně a\u00a0poplatky',
-      none: 'Nic nezadáno',
+      none: 'Nic nezadáno: výsledky jsou před poplatky fondu a daněmi',
       inUse: 'Použito: {list}',
       relief: 'daňová úleva',
       feePct: 'poplatek fondu',

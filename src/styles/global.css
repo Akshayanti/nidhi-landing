@@ -7323,9 +7323,6 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-reset {
   margin-left: auto;
-  min-height: 36px;
-  padding: 6px 14px;
-  font-size: 0.875rem;
 }
 /* Taxes and fees: three optional percentages behind one row that says in
    words which of them are in use. The chevron comes from .disclosure. */
