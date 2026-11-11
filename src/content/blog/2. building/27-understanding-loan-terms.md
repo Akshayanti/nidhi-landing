@@ -92,6 +92,8 @@ Specific definitions of APR vary by jurisdiction. Some countries require more co
 
 The loan with the lowest rate (D) is actually the most expensive once you include its fees and bundled products. The lowest *APR* is the lowest actual cost.
 
+*The APR column annualises the monthly rate by multiplying it by 12, as US and Canadian documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.35%, 3.56% and 3.65%), in the same order.*
+
 *The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product priced into APR; they're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
 
 > **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. What an APR must include is set by consumer-credit law, which differs by country. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.

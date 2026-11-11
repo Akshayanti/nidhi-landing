@@ -421,6 +421,30 @@ describe('encode/decode round-trip', () => {
 // Lump-sum parsing helpers
 // ---------------------------------------------------------------------------
 
+describe('the APR convention in a link', () => {
+  it('is left out while it follows the currency', () => {
+    assert.equal(new URLSearchParams(encodeToQueryString(DEFAULT_VENDORS, DEFAULT_GLOBAL_STATE)).has('ac'), false);
+    assert.equal(decodeFromQueryString('c=USD').global.aprConvention, null);
+  });
+
+  it('carries a hand choice as one letter, both ways', () => {
+    for (const [kind, letter] of [['nominal', 'n'], ['effective', 'e']] as const) {
+      const qs = encodeToQueryString(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: kind });
+      assert.equal(new URLSearchParams(qs).get('ac'), letter);
+      assert.equal(decodeFromQueryString(qs).global.aprConvention, kind);
+    }
+  });
+
+  it('reads anything else as no choice', () => {
+    assert.equal(decodeFromQueryString('ac=x').global.aprConvention, null);
+    assert.equal(decodeFromQueryString('ac=').global.aprConvention, null);
+  });
+
+  it('counts a hand choice as a change from the starting state', () => {
+    assert.equal(isPristineState(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: 'nominal' }, 'EUR'), false);
+  });
+});
+
 describe('parseLumpSums', () => {
   it('returns an empty list for the empty string', () => {
     assert.deepEqual(parseLumpSums(''), []);
@@ -641,6 +665,7 @@ describe('full-state round-trip', () => {
     ];
     const global: GlobalState = {
       currency: 'EUR',
+      aprConvention: 'nominal',
       activeTab: 'horizon',
       horizonMonths: '120',
       refiVendorIndex: '2',

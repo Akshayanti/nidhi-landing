@@ -70,8 +70,14 @@ describe('loan comparison spreadsheet', () => {
     it(`holds each offer's totals and full schedule to the cent (${locale})`, () => {
       const t = DICTS[locale].tools;
       const names = DEFAULT_VENDORS.map((_, i) => `Offer ${i + 1}`);
-      const sheets = loanSheets({ island: t.loanComparison.island, common: t.export, currency, vendors: DEFAULT_VENDORS, results, names, date: DATE, page: PAGE });
+      const sheets = loanSheets({ island: t.loanComparison.island, common: t.export, currency, aprConvention: 'effective', vendors: DEFAULT_VENDORS, results, names, date: DATE, page: PAGE });
       builds(sheets);
+      // The APR column says which convention it holds, and holds that one.
+      const nominalSheets = loanSheets({ island: t.loanComparison.island, common: t.export, currency, aprConvention: 'nominal', vendors: DEFAULT_VENDORS, results, names, date: DATE, page: PAGE });
+      const aprOf = (all: typeof sheets) => sheet(all, t.loanComparison.island.export.sheets.summary).rows;
+      assert.ok(String((aprOf(sheets)[0][7] as { t: string }).t).includes(t.loanComparison.island.toolbar.aprEffective));
+      assert.ok(String((aprOf(nominalSheets)[0][7] as { t: string }).t).includes(t.loanComparison.island.toolbar.aprNominal));
+      assert.ok(num(aprOf(sheets)[1][7]) > num(aprOf(nominalSheets)[1][7]));
       const summary = sheet(sheets, t.loanComparison.island.export.sheets.summary);
       results.forEach((r, i) => {
         const row = summary.rows[i + 1];
@@ -160,7 +166,7 @@ describe('printed reports', () => {
       // Every fifth year and the last, never every year.
       assert.ok(mc.tables[0].rows.length <= Math.ceil(mcState.saveYears / 5) + 2);
       const results = DEFAULT_VENDORS.map((v) => computeFromInput(v, 'EUR'));
-      const loan = loanReport({ island: t.loanComparison.island, common: t.export, currency: 'EUR', vendors: DEFAULT_VENDORS, results, names: ['A', 'B'], answer: ['a'] });
+      const loan = loanReport({ island: t.loanComparison.island, common: t.export, currency: 'EUR', aprConvention: 'effective', vendors: DEFAULT_VENDORS, results, names: ['A', 'B'], answer: ['a'] });
       // No month-by-month schedule: the comparison table is the only table.
       assert.equal(loan.tables.length, 1);
       // Optional fields left at zero are left out of what was entered.

@@ -15,6 +15,8 @@ import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from '../../i18n
 import {
   CURRENCIES,
   DEFAULT_CURRENCY,
+  aprInConvention,
+  defaultAprConvention,
   buildSchedule,
   buildScheduleAdvanced,
   computeApr,
@@ -482,6 +484,32 @@ describe('computeLoan', () => {
 // ---------------------------------------------------------------------------
 // APR
 // ---------------------------------------------------------------------------
+
+describe('the two APR conventions', () => {
+  it('follows the currency: times 12 for USD and CAD, compounded for every other', () => {
+    assert.equal(defaultAprConvention('USD'), 'nominal');
+    assert.equal(defaultAprConvention('CAD'), 'nominal');
+    for (const code of ['EUR', 'GBP', 'INR', 'CZK', 'JPY']) assert.equal(defaultAprConvention(code), 'effective');
+  });
+
+  it('leaves the times-12 figure as it is', () => {
+    assert.equal(aprInConvention(0.079, 'nominal'), 0.079);
+  });
+
+  it('compounds the monthly rate over a year: 7.9% with no fee reads 8.19%', () => {
+    assert.equal((aprInConvention(0.079, 'effective') * 100).toFixed(2), '8.19');
+    // The how-to guide's second offer: 9.02% times 12 is about 9.4% compounded.
+    assert.equal((aprInConvention(0.0902, 'effective') * 100).toFixed(1), '9.4');
+    // 20% nominal against 21.94% compounded, as issue #368 records.
+    assert.equal((aprInConvention(0.2, 'effective') * 100).toFixed(2), '21.94');
+  });
+
+  it('keeps zero at zero, an undefined APR undefined, and the order of two offers', () => {
+    assert.equal(aprInConvention(0, 'effective'), 0);
+    assert.ok(Number.isNaN(aprInConvention(NaN, 'effective')));
+    assert.ok(aprInConvention(0.06094, 'effective') < aprInConvention(0.065, 'effective'));
+  });
+});
 
 describe('computeApr', () => {
   // Helper: build a clean contract schedule for a fixed-rate fully-amortizing

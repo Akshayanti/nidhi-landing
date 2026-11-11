@@ -802,11 +802,10 @@ export function emptyResult(feeMinor: number, error: string): LoanResult {
  *     in `contractSchedule`.
  *   - APR is the rate at which the present value of the payment stream,
  *     discounted monthly, equals the net amount disbursed.
- *   - We report the nominal annualization (`monthly_rate × 12`) rather
- *     than the effective annualization (`(1+i)^12 − 1`). Nominal is the
- *     convention almost every regulator uses on consumer-loan
- *     disclosures, and matches the way users compare APR figures from
- *     real lenders.
+ *   - This function returns the nominal annualization (`monthly_rate × 12`),
+ *     the convention of US and Canadian disclosures. EU and UK documents
+ *     compound the same monthly rate over a year (`(1+i)^12 − 1`); the page
+ *     shows whichever the reader chose, through `aprInConvention`.
  *
  * Solver: bisection on the present-value function. PV is strictly
  * decreasing in `i`, so bisection always converges; we cap at 200
@@ -874,9 +873,9 @@ export function computeApr(
   }
 
   let lo = 0;
-  // 1 per month corresponds to ~1200% APR; comfortably above any
-  // conceivable real loan, and well above payday-loan APRs in any
-  // jurisdiction. We expand if a degenerate input slips through.
+  // A monthly rate of 1 (100% a month, 1200% a year on the times-12
+  // convention) is comfortably above any conceivable real loan. We expand
+  // if a degenerate input slips through.
   let hi = 1;
   let pvHi = pv(hi);
   let expansions = 0;
@@ -901,7 +900,29 @@ export function computeApr(
 }
 
 /**
- * Format a nominal APR (decimal) as a localized percentage string.
+ * The two ways a monthly rate is turned into a yearly APR.
+ * - `nominal`: monthly rate × 12 (US, Canada).
+ * - `effective`: monthly rate compounded over twelve months (EU, UK).
+ */
+export type AprConvention = 'nominal' | 'effective';
+
+/** The convention a page starts with for a currency, until the reader chooses one. */
+export function defaultAprConvention(currency: string): AprConvention {
+  return currency === 'USD' || currency === 'CAD' ? 'nominal' : 'effective';
+}
+
+/**
+ * A nominal APR (monthly rate × 12, as `computeApr` returns it) in the
+ * convention asked for. The compounded figure comes from the solved monthly
+ * rate itself, never from a rounded figure. `NaN` stays `NaN`.
+ */
+export function aprInConvention(aprNominal: number, convention: AprConvention): number {
+  if (!Number.isFinite(aprNominal) || convention === 'nominal') return aprNominal;
+  return Math.pow(1 + aprNominal / 12, 12) - 1;
+}
+
+/**
+ * Format an APR (decimal) as a localized percentage string.
  *
  * - Always shows two decimals so adjacent vendors are visibly comparable
  *   even when their APRs differ by only a few basis points.
