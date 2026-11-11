@@ -218,6 +218,12 @@ class WhatIsRecordedAsSent(unittest.TestCase):
         self.assertNotIn(guid("fourth"), run.recorded)
         self.assertNotIn("m@x.io", "".join(sorted(run.recorded)))
 
+    def test_a_lesson_the_script_found_nobody_to_send_to_is_not_recorded(self):
+        run = self.run_with([{"ok": True, "sent": 0, "failed": 0, "no_recipients": True}])
+        self.assertEqual(run.code, 2, "a list that reads as empty fails the run")
+        self.assertNotIn(guid("fourth"), run.recorded)
+        self.assertIn("NO RECIPIENTS", run.stderr)
+
     def test_a_lesson_that_cannot_be_rendered_is_not_sent_or_recorded(self):
         err = io.StringIO()
         marker = self.tmp / "marker.txt"
