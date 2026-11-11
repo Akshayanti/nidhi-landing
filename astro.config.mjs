@@ -5,6 +5,7 @@ import { execSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from './src/i18n/config.ts';
+import { lastChanged } from './src/utils/lessonDates.ts';
 
 /**
  * Read frontmatter dates and tags from every markdown file under a locale's
@@ -71,7 +72,7 @@ const CONTENT_DIR = join('src/content', 'blog');
 
 /**
  * The lookup maps, built once per build:
- *  - blogLastmod: slug → ISO date (updatedDate ?? pubDate)
+ *  - blogLastmod: slug → ISO date (the later of updatedDate and pubDate)
  *  - tagLastmod : tag  → ISO date (newest among posts carrying the tag)
  * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
  * none is live), which decides whether the hub is in the sitemap at all,
@@ -99,9 +100,10 @@ function readContentMaps() {
       const pub = new Date(fm.pubDate);
       if (Number.isNaN(pub.getTime())) continue;
       if (pub > now) continue;
-      const dateStr = fm.updatedDate ?? fm.pubDate;
-      const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) continue;
+      // The last edit, but never earlier than the day the page first
+      // existed (src/utils/lessonDates.ts).
+      const edited = fm.updatedDate ? new Date(fm.updatedDate) : null;
+      const d = lastChanged(pub, edited && !Number.isNaN(edited.getTime()) ? edited : null);
       const iso = d.toISOString();
       blog.set(fm.slug, iso);
       if (fm.level === 'inclusive-finances' && (!inclusive || iso > inclusive)) inclusive = iso;
