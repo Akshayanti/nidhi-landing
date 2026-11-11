@@ -113,6 +113,11 @@ const DEFAULT_NAMES = new Map<string, string>(
  * stay put ("Vendor C" can sit in slot B). The stored name, and so the share
  * link, does not change. An empty name falls back to the slot's own letter.
  */
+/** Whether the reader typed this name: not empty, and not an untouched default. */
+function isTypedName(name: string): boolean {
+  return name.trim() !== '' && !DEFAULT_NAMES.has(name);
+}
+
 function shownName(name: string, index: number, s: Strings): string {
   const label = name ? DEFAULT_NAMES.get(name) : VENDOR_LABELS[index] ?? VENDOR_LABELS[0];
   return label ? format(s.card.badge, { label }) : name;
@@ -1112,7 +1117,7 @@ export default function LoanCompare({
           same action as the dashed card on wider screens, with the same
           label and event. */}
       <div className="lc-vendorTabs" role="group" aria-label={strings.phoneTabs.groupAria}>
-        {vendors.map((_, i) => (
+        {vendors.map((v, i) => (
           <button
             key={i}
             type="button"
@@ -1123,7 +1128,7 @@ export default function LoanCompare({
             onClick={() => setActiveVendor(i)}
           >
             <span className="lc-vendorTabLetter" aria-hidden="true">{VENDOR_LABELS[i]}</span>
-            <span className="lc-vendorTabName">{format(strings.phoneTabs.tabName, { label: VENDOR_LABELS[i] })}</span>
+            <span className="lc-vendorTabName">{isTypedName(v.name) ? v.name : format(strings.phoneTabs.tabName, { label: VENDOR_LABELS[i] })}</span>
           </button>
         ))}
         {vendors.length < MAX_VENDORS && (
@@ -1365,10 +1370,10 @@ function VendorCard({
   // this offer's starting example, and always shows a box that cannot be
   // read. Which rows are open is view state: never shared, stored or tracked.
   const isSet = (s: string) => Number(s) > 0;
-  // An offer made by the Add button starts with its optional boxes empty, so
-  // that is what "unchanged" means for it: its empty fee row stays folded.
+  // Every offer starts with its optional boxes empty (the example and an
+  // added one alike), so that is what "unchanged" means: an empty row stays folded.
   const slot = Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label));
-  const start = slot >= MIN_VENDORS ? makeAddedVendor(slot) : makeDefaultVendor(slot);
+  const start = makeAddedVendor(slot);
   const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
   const unreadable = (...keys: OptionalField[]) => keys.some((k) => badOptional.has(k));
   const [toggled, setToggled] = useState<Partial<Record<FoldName, boolean>>>({});
@@ -1413,7 +1418,18 @@ function VendorCard({
         */}
         <h3 id={headingId} className="lc-cardBadge">
           <SeriesMarker index={index} color={color} />
-          {format(strings.card.badge, { label })}
+          {/* A typed name is the heading, after the letter the phone tabs and
+              the phone table use. An untouched or empty name reads "Vendor A",
+              which already holds its letter. Typed text is shown as text only,
+              never put in an attribute. */}
+          {isTypedName(vendor.name) ? (
+            <>
+              <span className="lc-cardLetter">{label}</span>
+              <span className="lc-cardName">{vendor.name}</span>
+            </>
+          ) : (
+            format(strings.card.badge, { label })
+          )}
         </h3>
         {onRemove && (
           <button
@@ -2013,6 +2029,7 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
       r,
       i,
       name: shownName(vendors[i].name, i, strings),
+      typed: isTypedName(vendors[i].name),
     }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
 
@@ -2072,6 +2089,18 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
       {/* On phones the table restacks into one block per metric, each value
           marked with its vendor letter (data-slot) and colour, so nothing
           scrolls sideways. */}
+      {/* Phones only: the table's header row is hidden there, so this key says
+          which offer each letter is. The label is a fixed word; the names are
+          text, never attributes. */}
+      <ul className="lc-deltaKey" aria-label={strings.delta.keyAria}>
+        {valid.map((v) => (
+          <li key={v.i} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>
+            <SeriesMarker index={v.i} color={VENDOR_COLORS[v.i]} />
+            {v.typed && <span className="lc-deltaKeyLetter">{VENDOR_LABELS[v.i]}</span>}
+            <span className="lc-deltaKeyName">{v.name}</span>
+          </li>
+        ))}
+      </ul>
       <div className="lc-deltaTableWrap">
         <table className="lc-deltaTable">
           <thead>

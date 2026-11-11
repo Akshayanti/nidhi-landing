@@ -486,10 +486,9 @@ describe('computeLoan', () => {
 // ---------------------------------------------------------------------------
 
 describe('the two APR conventions', () => {
-  it('follows the currency: times 12 for USD and CAD, compounded for every other', () => {
-    assert.equal(defaultAprConvention('USD'), 'nominal');
-    assert.equal(defaultAprConvention('CAD'), 'nominal');
-    for (const code of ['EUR', 'GBP', 'INR', 'CZK', 'JPY']) assert.equal(defaultAprConvention(code), 'effective');
+  it('follows the currency: times 12 for USD, CAD and INR, compounded for every other', () => {
+    for (const code of ['USD', 'CAD', 'INR']) assert.equal(defaultAprConvention(code), 'nominal');
+    for (const code of ['EUR', 'GBP', 'CZK', 'JPY']) assert.equal(defaultAprConvention(code), 'effective');
   });
 
   it('leaves the times-12 figure as it is', () => {
@@ -1076,7 +1075,7 @@ describe('computeLoan: hybrid rate', () => {
       { kind: 'payment', monthlyMinor: 200_000 },
     );
     assert.ok(result.error);
-    assert.match(result.error!, /hybrid/i);
+    assert.match(result.error!, /term mode/i);
   });
 
   it('rejects an invalid initial period', () => {

@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'loan-offer-names',
+        text: {
+          en: 'The loan comparison calls an offer by the name you give it. Type a name and it now shows on the offer\'s card, on the phone tabs and in a short key above the phone table, beside the letter the table uses. The option for a rate that changes is now called "Fixed, then variable" instead of the US term "Hybrid (ARM)". Loans in rupees start with APR as the monthly rate times 12, the way India\'s loan fact sheets state it. The example offers also start with their optional boxes empty.',
+          hi: 'लोन तुलना अब ऑफ़र को उसी नाम से बुलाती है जो आप उसे देते हैं। नाम लिखते ही वह ऑफ़र के कार्ड पर, फ़ोन के टैब पर और फ़ोन की तालिका के ऊपर एक छोटी सूची में दिखता है, उसी अक्षर के साथ जो तालिका में आता है। बदलने वाली दर का विकल्प अब "पहले तय, फिर बदलती" कहलाता है, अमेरिकी शब्द "हाइब्रिड (ARM)" की जगह। रुपये वाले लोन में APR अब शुरू में मासिक दर गुणा 12 से दिखता है, जैसा भारत के लोन के मुख्य तथ्य विवरण में लिखा जाता है। उदाहरण के ऑफ़र भी अब ख़ाली वैकल्पिक खानों के साथ शुरू होते हैं।',
+          es: 'La comparación de préstamos llama ahora a cada oferta por el nombre que le pones. Escribe un nombre y aparece en la tarjeta de la oferta, en las pestañas del teléfono y en una pequeña leyenda encima de la tabla del teléfono, junto a la letra que usa la tabla. La opción para una tasa que cambia se llama ahora «Fija y luego variable», en lugar del término estadounidense «Híbrida (ARM)». Los préstamos en rupias empiezan con el APR como la tasa mensual por 12, como lo indican las hojas informativas de préstamos en la India. Las ofertas de ejemplo también empiezan con las casillas opcionales vacías.',
+          cs: 'Srovnání úvěrů teď nabídku nazývá jménem, které jí dáte. Napište název a\u00a0ukáže se na kartě nabídky, na záložkách v\u00a0telefonu a\u00a0v\u00a0krátké legendě nad tabulkou v\u00a0telefonu, vedle písmene, které tabulka používá. Volba pro sazbu, která se mění, se teď jmenuje „Pevná, pak pohyblivá“ místo amerického výrazu „Hybridní (ARM)“. Úvěry v\u00a0rupiích začínají s\u00a0APR jako měsíční sazbou krát 12, jak ji uvádějí indické přehledy klíčových údajů o\u00a0úvěru. Ukázkové nabídky také začínají s\u00a0prázdnými volitelnými poli.',
+          mr: 'कर्जांची तुलना आता ऑफरला तुम्ही दिलेल्या नावाने ओळखते. नाव लिहिले की ते ऑफरच्या कार्डावर, फोनवरील टॅबवर आणि फोनवरील तक्त्याच्या वरच्या छोट्या सूचीत दिसते, तक्त्यात वापरल्या जाणाऱ्या अक्षराशेजारी. बदलणाऱ्या दराच्या पर्यायाला आता “आधी ठरावीक, मग बदलता” म्हटले आहे, अमेरिकी शब्द “हायब्रिड (ARM)” ऐवजी. रुपयांतील कर्जांसाठी APR आता सुरुवातीला मासिक दर गुणिले 12\u00a0असा दिसतो, जसा भारतातील कर्जाच्या मुख्य तथ्य विवरणात दिला जातो. उदाहरणाच्या ऑफरही आता रिकाम्या ऐच्छिक रकान्यांसह सुरू होतात.',
+        },
+      },
+      {
         id: 'invest-payoff-interest-monthly',
         text: {
           en: 'The invest or pay off tool now works out the interest avoided, in today\'s money, month by month. Each month\'s saving is counted at that month\'s prices. Before, the whole sum was treated as if it arrived on the comparison date, which made it look smaller than it is, by about a tenth in a typical case. The figure before inflation is unchanged. A row under that line lets you pick the earlier way of counting if you prefer it.',
