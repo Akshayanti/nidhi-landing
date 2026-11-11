@@ -16,6 +16,9 @@ name: PR Checks (free tools)
 #   npm audit (high+), Build (static), Remotion (required from Nov 2026,
 #   council round 20). Renaming or removing a job means changing that list
 #   in the same breath, or every PR waits for a check that never reports.
+# One more required check lives in tool-privacy.yml: No typed value reaches
+# analytics (required from Nov 2026), skipped the same way when a PR touches
+# no tool or analytics file.
 #
 # The Hindi edition is built as a stack of PRs: each one targets the branch
 # below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
