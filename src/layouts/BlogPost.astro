@@ -1,4 +1,5 @@
 ---
+import { lastChanged, modifiedAfterPublication } from '../utils/lessonDates.ts';
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
@@ -88,6 +89,8 @@ const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'l
 // freshness signals show through to readers and to SERP CTR.
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const showUpdated = !!updatedDate && updatedDate.getTime() - pubDate.getTime() > SEVEN_DAYS_MS;
+// An edit made before the lesson was published is not an update of it.
+const changedSince = modifiedAfterPublication(pubDate, updatedDate);
 const updatedStr = showUpdated && updatedDate
   ? updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   : '';
@@ -100,7 +103,8 @@ const blogPostingSchema = {
   headline: title,
   description: description,
   datePublished: pubDate.toISOString(),
-  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+  // Never earlier than the publication date (src/utils/lessonDates.ts).
+  ...(updatedDate ? { dateModified: lastChanged(pubDate, updatedDate).toISOString() } : {}),
   author: {
     '@type': 'Organization',
     name: 'nidhi',
@@ -182,7 +186,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
   description={description}
   article={{
     publishedTime: pubDate,
-    modifiedTime: updatedDate,
+    modifiedTime: updatedDate ? lastChanged(pubDate, updatedDate) : undefined,
     tags: tags,
   }}
   prevUrl={prevSlug ? `/blog/${prevSlug}/` : null}
@@ -450,7 +454,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
         {/* Only on paper, so a saved copy says where it came from and that it can go out of date. */}
         <p class="lesson-print-foot">
-          {title}. From nidhi.today/blog/{slug}/. Published {dateStr}.{updatedDate && ` Updated ${updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}.`} <span data-print-saved></span> Lessons can change: the latest version and any corrections are at this address.
+          {title}. From nidhi.today/blog/{slug}/. Published {dateStr}.{changedSince && ` Updated ${changedSince.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}.`} <span data-print-saved></span> Lessons can change: the latest version and any corrections are at this address.
         </p>
 
         {seriesPosition && levelLabel && (

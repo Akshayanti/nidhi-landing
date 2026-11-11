@@ -70,8 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix,
-} from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -993,6 +992,8 @@ console.log(`Checking ${matrix.length} runs against ${base} (${HEADLESS ? 'headl
 // Without this the workers below would take each closed browser for one that
 // died and start another, and the run could not be stopped.
 const browsers = new Set();
+// Runs that were done a second time because a step was missed the first time.
+const repeated = new Set();
 let stopping = false;
 for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   process.on(signal, () => {
@@ -1018,8 +1019,15 @@ async function worker() {
         // A page or a window that went away under the run (closed by hand,
         // or by the machine) says nothing about the site: run it once more.
         const lostPage = result.problems.some((p) => /the run stopped while .*(Session closed|Target closed|detached Frame|Connection closed|page has been closed)/.test(p));
-        if (attempt === 1 || (browser.connected && !lostPage)) break;
-        if (browser.connected) continue;
+        // A run whose only fault is a step that was not done (a click that
+        // missed while the page moved: about one run in a hundred) found
+        // nothing wrong with what was sent and checked less than it should
+        // have. It is run once more, whole, and judged on that second run;
+        // the output says it was repeated. A leak is never retried away:
+        // any other problem ends the run as failed.
+        const missedStep = isMissedStepOnly(result.problems);
+        if (attempt === 1 || (browser.connected && !lostPage && !missedStep)) break;
+        if (browser.connected) { if (missedStep) repeated.add(name); continue; }
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
         if (attempt === 1) break;
@@ -1030,6 +1038,7 @@ async function worker() {
       browser = await launch();
       browsers.add(browser);
     }
+    if (repeated.has(name)) result.note.repeated = true;
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
     // Both planted leaks are found, the event sent to PostHog and the image
     // asked of the site's own server, and nothing else is wrong with the run.
@@ -1041,6 +1050,7 @@ async function worker() {
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
     if (!ok && result.note.page) console.log(`       the page during the click steps: ${JSON.stringify(result.note.page)} (charts ${result.note.charts ?? '?'}, results ${result.note.cards ?? '?'}, text ${result.note.plain ?? '?'})`);
+    if (result.note.repeated) console.log('       note: done a second time, because a step was missed the first time; judged on the second run.');
     if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
