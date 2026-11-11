@@ -244,6 +244,17 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
 }
 
 /**
+ * Whether a run's only fault is that a step was not done: nothing wrong was
+ * found in what it sent, but a click missed, so less was checked than
+ * should have been. Such a run may be done once more. Any other problem (a
+ * typed value, a file name, an attribute, a missing kind of event) is not
+ * this: a run with one of those is a failed run, and is never repeated.
+ */
+export function isMissedStepOnly(problems) {
+  return problems.length > 0 && problems.every((p) => /^the tool never sent \S+: that step was not done, so what it sends was not checked$/.test(p));
+}
+
+/**
  * Judges the runs together. `runs` are `{ slug, consent, counts }`. For every
  * tool that had a run with consent, some run must have shown a $rageclick and
  * some run a $dead_click: both kinds of payload were then seen and checked
