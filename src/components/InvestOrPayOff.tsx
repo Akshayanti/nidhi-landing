@@ -433,7 +433,7 @@ export default function InvestOrPayOff({
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="iop-formHead">
           <p className="iop-example">{pristine ? strings.example : ''}</p>
-          <button type="button" className="ifc-btn ifc-btn--ghost iop-reset" onClick={reset}>
+          <button type="button" className="btn btn--quiet iop-reset" onClick={reset}>
             {strings.actions.reset}
           </button>
         </div>
@@ -604,7 +604,7 @@ export default function InvestOrPayOff({
         strings={exportStrings}
         share={
           <span className="iop-share">
-            <button type="button" className="ifc-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-invest-or-pay-off-share">
+            <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-invest-or-pay-off-share">
               {copied ? strings.actions.copied : strings.actions.copy}
             </button>
             <span className="ifc-hint">{strings.actions.shareNote}</span>
