@@ -49,6 +49,9 @@ export type ReturnChoice = ReturnSetting | 'own';
 export const RETURN_CHOICES: readonly ReturnChoice[] = ['cautious', 'historical', 'optimistic', 'own'];
 
 export type Horizon = 'payoff' | 'plus5' | 'plus10';
+/** How interest avoided is put into today's money: month by month, or all at the comparison date. */
+export type TodayBasis = 'month' | 'end';
+
 export const HORIZONS: readonly Horizon[] = ['payoff', 'plus5', 'plus10'];
 const HORIZON_EXTRA_MONTHS: Record<Horizon, number> = { payoff: 0, plus5: 60, plus10: 120 };
 
@@ -165,6 +168,11 @@ export interface Result {
    */
   interestAvoided: number;
   interestAvoidedToday: number;
+  /**
+   * The other way of counting, offered as the reader's choice: the whole sum
+   * at the prices of the comparison date.
+   */
+  interestAvoidedTodayAtEnd: number;
   /** Debt still owed in B on the comparison date, nominal. */
   remainingB: number;
   paths: number;
@@ -413,6 +421,7 @@ export function compare(raw: Inputs, options: { paths?: number; seed?: number; f
     interestB,
     interestAvoided: interestB - interestA,
     interestAvoidedToday,
+    interestAvoidedTodayAtEnd: (interestB - interestA) / deflate,
     remainingB,
     paths,
   };

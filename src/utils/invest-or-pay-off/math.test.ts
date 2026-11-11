@@ -293,5 +293,8 @@ describe("interest avoided in today's money is worked out month by month", () =>
     const atEnd = r.interestAvoided / Math.pow(1.06, r.months / 12);
     assert.ok(r.interestAvoidedToday < r.interestAvoided);
     assert.ok(r.interestAvoidedToday > atEnd);
+    // The other way of counting, offered as the reader's choice, is exactly that end-date figure.
+    close(r.interestAvoidedTodayAtEnd, atEnd, 1e-9);
+    close(flat.interestAvoidedTodayAtEnd, flat.interestAvoided, 1e-6);
   });
 });

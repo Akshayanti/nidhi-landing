@@ -232,6 +232,13 @@ export const investOrPayOffEn = {
       stillOwed: 'Still owed on the date: {amount}',
       interest: 'Interest charged up to the date: {amount}',
       avoided: 'Paying off early avoids {amount} of interest up to the date ({today} in today\'s money).',
+      basis: {
+        title: 'How today\'s money is counted',
+        month: 'Month by month',
+        monthHint: 'Each month\'s saving at the prices of its own month.',
+        end: 'All at the comparison date',
+        endHint: 'The whole sum at the prices of the comparison date. When prices rise, this gives a smaller figure.',
+      },
       rates: 'The debt costs {debt} a year after relief and inflation; the investment\'s compound return in this setting is {invest} a year after inflation, before fees.',
       side: {
         heading: 'Your figure beside the historical range',
@@ -485,6 +492,13 @@ export const investOrPayOffHi: InvestOrPayOff = {
       stillOwed: 'उस तारीख़ पर बाक़ी: {amount}',
       interest: 'उस तारीख़ तक लगा ब्याज: {amount}',
       avoided: 'जल्दी चुकाने से उस तारीख़ तक {amount} का ब्याज बचता है (आज के पैसे में {today})।',
+      basis: {
+        title: 'आज का पैसा कैसे गिना जाता है',
+        month: 'महीने-दर-महीने',
+        monthHint: 'हर महीने की बचत, उसी महीने की क़ीमतों पर।',
+        end: 'पूरी रकम तुलना की तारीख़ पर',
+        endHint: 'पूरी रकम, तुलना की तारीख़ की क़ीमतों पर। क़ीमतें बढ़ती हों तो यह आँकड़ा छोटा आता है।',
+      },
       rates: 'छूट और महँगाई के बाद कर्ज़ की लागत सालाना {debt} है; इस सेटिंग में निवेश का चक्रवृद्धि रिटर्न महँगाई के बाद और शुल्क से पहले सालाना {invest} है।',
       side: {
         heading: 'आपका आँकड़ा, ऐतिहासिक सीमा के बगल में',
@@ -734,6 +748,13 @@ export const investOrPayOffMr: InvestOrPayOff = {
       stillOwed: 'त्या तारखेला शिल्लक: {amount}',
       interest: 'त्या तारखेपर्यंत लागलेले व्याज: {amount}',
       avoided: 'लवकर फेडल्याने त्या तारखेपर्यंत {amount} व्याज वाचते (आजच्या पैशात {today}).',
+      basis: {
+        title: 'आजचा पैसा कसा मोजला जातो',
+        month: 'महिन्यागणिक',
+        monthHint: 'प्रत्येक महिन्याची बचत, त्याच महिन्याच्या किमतींनुसार.',
+        end: 'पूर्ण रक्कम तुलनेच्या तारखेला',
+        endHint: 'पूर्ण रक्कम, तुलनेच्या तारखेच्या किमतींनुसार. किमती वाढत असतील तर हा आकडा लहान येतो.',
+      },
       rates: 'सवलत आणि महागाईनंतर कर्जाचा खर्च दरवर्षी {debt} आहे; या सेटिंगमध्ये गुंतवणुकीचा चक्रवाढ परतावा महागाईनंतर आणि शुल्कापूर्वी दरवर्षी {invest} आहे.',
       side: {
         heading: 'तुमचा आकडा, ऐतिहासिक पल्ल्याशेजारी',
@@ -983,6 +1004,13 @@ export const investOrPayOffEs: InvestOrPayOff = {
       stillOwed: 'Pendiente en esa fecha: {amount}',
       interest: 'Intereses cobrados hasta esa fecha: {amount}',
       avoided: 'Pagar antes evita {amount} de intereses hasta esa fecha ({today} en dinero de hoy).',
+      basis: {
+        title: 'Cómo se cuenta el dinero de hoy',
+        month: 'Mes a mes',
+        monthHint: 'El ahorro de cada mes, a los precios de ese mes.',
+        end: 'Todo en la fecha de comparación',
+        endHint: 'La suma entera, a los precios de la fecha de comparación. Cuando los precios suben, da una cifra menor.',
+      },
       rates: 'La deuda cuesta un {debt} anual tras la desgravación y la inflación; la rentabilidad compuesta de la inversión con esta opción es un {invest} anual descontada la inflación, antes de comisiones.',
       side: {
         heading: 'Tu cifra junto al rango histórico',
@@ -1232,6 +1260,13 @@ export const investOrPayOffCs: InvestOrPayOff = {
       stillOwed: 'K tomu datu zbývá: {amount}',
       interest: 'Úroky do toho data: {amount}',
       avoided: 'Předčasné splacení ušetří do toho data {amount} na úrocích ({today} v dnešních penězích).',
+      basis: {
+        title: 'Jak se počítají dnešní peníze',
+        month: 'Měsíc po měsíci',
+        monthHint: 'Úspora každého měsíce v cenách toho měsíce.',
+        end: 'Vše k datu srovnání',
+        endHint: 'Celá částka v cenách k datu srovnání. Když ceny rostou, vyjde nižší číslo.',
+      },
       rates: 'Dluh stojí {debt} ročně po úlevě a očištění o inflaci; složený výnos investice v tomto nastavení je {invest} ročně po očištění o inflaci, před poplatky.',
       side: {
         heading: 'Vaše číslo vedle historického rozpětí',

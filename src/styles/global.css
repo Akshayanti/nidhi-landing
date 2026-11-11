@@ -7370,6 +7370,14 @@ button.mcnw-legendItem:focus-visible {
   gap: var(--space-2);
   padding: var(--space-2) 0 var(--space-4);
 }
+/* In the results: how the figure in today's money is counted. A quieter
+   title than the form's fold, since it sits under a sentence. */
+.iop-basis {
+  margin-block: var(--space-2);
+}
+.iop-basisTitle {
+  font-size: 0.95rem;
+}
 .iop-fix:empty {
   display: none;
 }

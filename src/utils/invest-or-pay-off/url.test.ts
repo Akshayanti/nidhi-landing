@@ -40,8 +40,14 @@ describe('decodeState', () => {
       feePct: 0.5,
       gainsTax: 12.5,
       horizon: 'plus5',
+      todayAt: 'end',
     };
     assert.deepEqual(decodeState(encodeState(state)), state);
+    // The way today's money is counted travels as a choice, and only when it is not the default.
+    assert.match(encodeState(state), /(^|&)a=e(&|$)/);
+    assert.doesNotMatch(encodeState({ ...state, todayAt: 'month' }), /(^|&)a=/);
+    assert.equal(decodeState(encodeState({ ...state, todayAt: 'month' }))?.todayAt, 'month');
+    assert.equal(decodeState('b=100&a=zzz')?.todayAt, 'month');
     for (const returns of ['cautious', 'historical', 'optimistic', 'own'] as const) {
       assert.equal(decodeState(encodeState({ ...state, returns }))?.returns, returns);
     }
