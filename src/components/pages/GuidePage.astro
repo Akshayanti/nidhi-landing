@@ -8,8 +8,8 @@
  * then the steps (or, for "See it, try it", the worked example first), a clear
  * place to stop, what depends on you, and deeper study at the end.
  *
- * No analytics labels here: the section launched without any, so it needed no
- * privacy changelog entry. Links carry no data-attr on purpose.
+ * No analytics labels here: the section launched without any, and the privacy
+ * changelog records it under Nov 10, 2026. Links carry no data-attr on purpose.
  */
 import { existsSync } from 'node:fs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -68,6 +68,8 @@ const breadcrumbSchema = {
   article={{ publishedTime: g.pubDate, modifiedTime: g.lastChecked, tags: [] }}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
+  {/* The guides' own feed, beside the lesson feed every page links (src/pages/how-to/rss.xml.ts). */}
+  <link slot="head" rel="alternate" type="application/rss+xml" title={dict(DEFAULT_LOCALE).rss.guidesLinkTitle} href="/how-to/rss.xml" />
   <article class="guide">
     <div class="guide-wrap">
       <nav class="guide-crumbs" aria-label="Breadcrumb">

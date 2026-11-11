@@ -31,6 +31,9 @@ scripts/__pycache__/
 # are deleted after a successful render and only ever exist mid-pipeline.
 remotion/outputs/
 remotion/public/audio/
+# Lesson figures rendered for reels: made by the pipeline, kept on the
+# machine. (The illustrations already tracked in this folder stay tracked.)
+remotion/public/figures/
 
 # Working notes and local output that are not part of the site. Listed so
 # that one `git add -A` cannot publish them.
