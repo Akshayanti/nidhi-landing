@@ -43,6 +43,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'monte-carlo-two-corrections',
+        text: {
+          en: 'Two corrections in the Monte Carlo simulator. A plan with nothing invested and withdrawals switched on used to say the money lasted on every path; it now says it ran out. And a share that is nearly, but not quite, every path now shows one decimal, 99.5% and not 100%.',
+          hi: 'मोंटे कार्लो सिम्युलेटर में दो सुधार। बिना किसी निवेश के निकासी चालू करने पर टूल पहले कहता था कि पैसा हर रास्ते में टिका रहा; अब वह बताता है कि पैसा ख़त्म हो गया। और जो हिस्सा लगभग सभी रास्तों का है, पर पूरा नहीं, वह अब एक दशमलव के साथ दिखता है: 99.5%, 100% नहीं।',
+          es: 'Dos correcciones en el simulador Monte Carlo. Un plan sin nada invertido y con retiros activados decía antes que el dinero alcanzaba en todas las trayectorias; ahora dice que se agotó. Y una proporción que es casi, pero no del todo, todas las trayectorias se muestra ahora con un decimal: 99,5% y no 100%.',
+          cs: 'Dvě opravy v\u00a0simulátoru Monte Carlo. Plán bez jakékoli investice a\u00a0se zapnutými výběry dříve tvrdil, že peníze vydržely ve všech trajektoriích; teď říká, že došly. A\u00a0podíl, který je skoro, ale ne úplně všemi trajektoriemi, se teď ukazuje s\u00a0jedním desetinným místem: 99,5\u00a0%, ne 100\u00a0%.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटरमध्ये दोन दुरुस्त्या. काहीही गुंतवलेले नसताना पैसे काढणे सुरू केले, तर साधन आधी सांगत असे की पैसा प्रत्येक मार्गात पुरला; आता ते सांगते की पैसा संपला. आणि जो वाटा जवळजवळ सर्व मार्गांचा आहे, पण पूर्ण नाही, तो आता एका दशांश स्थानासह दिसतो: 99.5%, 100% नाही.',
+        },
+      },
+      {
+        id: 'header-large-text',
+        text: {
+          en: 'The site header now fits when your phone\'s text size is set large. At double size the menu button used to sit past the edge of the screen; the controls now move to a second row. A few links on the home page wrap the same way.',
+          hi: 'फ़ोन में अक्षरों का आकार बड़ा रखने पर भी साइट का ऊपरी हिस्सा अब स्क्रीन में समा जाता है। दोगुने आकार पर मेन्यू का बटन पहले स्क्रीन के किनारे से बाहर चला जाता था; अब ये बटन दूसरी पंक्ति में आ जाते हैं। होम पेज के कुछ लिंक भी इसी तरह अगली पंक्ति में आते हैं।',
+          es: 'La cabecera del sitio cabe ahora cuando el tamaño del texto de tu teléfono es grande. Al doble de tamaño, el botón del menú quedaba fuera del borde de la pantalla; ahora los controles pasan a una segunda fila. Algunos enlaces de la página de inicio se ajustan de la misma manera.',
+          cs: 'Záhlaví webu se teď vejde na obrazovku i\u00a0při velkém písmu v\u00a0telefonu. Při dvojnásobné velikosti bývalo tlačítko nabídky až za okrajem obrazovky; ovládací prvky se teď přesunou na druhý řádek. Stejně se zalomí i\u00a0několik odkazů na úvodní stránce.',
+          mr: 'फोनमधील अक्षरांचा आकार मोठा ठेवला तरी साइटचा वरचा भाग आता स्क्रीनमध्ये मावतो. दुप्पट आकारात मेनूचे बटण आधी स्क्रीनच्या कडेबाहेर जात असे; आता ही बटणे दुसऱ्या ओळीत येतात. मुख्य पानावरील काही लिंकही अशाच पुढच्या ओळीत येतात.',
+        },
+      },
+      {
         id: 'loan-both-payments',
         text: {
           en: 'The loan comparison now shows both payments when an offer\'s rate changes. A loan that starts at one rate and moves to another has two monthly payments, and the tool used to show only the first, so two offers that part ways after five years could look the same. Each such offer now shows its payment for the first months and the one that follows, on its card, in the side-by-side table, in the spreadsheet and in the PDF report. An offer you add also starts with its optional boxes empty: an example fee used to sit in a folded row.',
