@@ -288,7 +288,7 @@ export const monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% bonds',
       mixHint: 'Rebalanced back to this mix once a year.',
-      mixExample: '{pct}% stocks is an example to start from, not a suggested mix.',
+      mixExample: '{pct}% stocks is an example value, not a suggested mix.',
       /** Split around the link to the other tool. */
       crossLink: {
         before: 'Money in several currencies? Add it up first with the ',
@@ -631,7 +631,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% बॉन्ड',
       mixHint: 'हर साल इसी मिश्रण पर रीबैलेंस होता है।',
-      mixExample: '{pct}% शेयर सिर्फ़ शुरुआत के लिए एक उदाहरण है, सुझाया हुआ मिश्रण नहीं।',
+      mixExample: '{pct}% शेयर सिर्फ़ एक उदाहरण है, सुझाया हुआ मिश्रण नहीं।',
       crossLink: {
         before: 'पैसा कई मुद्राओं में है? पहले ',
         link: 'शुद्ध संपत्ति कैलकुलेटर',
@@ -947,7 +947,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % bonos',
       mixHint: 'Se reequilibra a esta combinación una vez al año.',
-      mixExample: '{pct} % en acciones es un ejemplo para empezar, no una combinación sugerida.',
+      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
       crossLink: {
         before: '¿Tienes dinero en varias monedas? Súmalo primero con la ',
         link: 'calculadora de patrimonio neto',
@@ -1265,7 +1265,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % dluhopisů',
       mixHint: 'Jednou ročně se rebalancuje zpět na tento poměr.',
-      mixExample: '{pct} % akcií je ukázka pro začátek, ne doporučený poměr.',
+      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
       crossLink: {
         before: 'Peníze ve více měnách? Nejdřív je sečtěte v ',
         link: 'kalkulačce čistého jmění',
@@ -1569,7 +1569,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% रोखे',
       mixHint: 'वर्षातून एकदा पुन्हा या मिश्रणावर आणले जाते.',
-      mixExample: '{pct}% शेअर्स हे सुरुवातीसाठी एक उदाहरण आहे, सुचवलेले मिश्रण नाही.',
+      mixExample: '{pct}% शेअर्स हे फक्त एक उदाहरण आहे, सुचवलेले मिश्रण नाही.',
       crossLink: {
         before: 'अनेक चलनांमध्ये पैसा आहे? आधी ',
         link: 'निव्वळ संपत्ती कॅल्क्युलेटर',
