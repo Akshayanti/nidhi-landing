@@ -9,8 +9,10 @@ import {
   isUnreadableAmount,
   ownedAndOwed,
   parseCSV,
+  ratesForBase,
   unreadableCount,
   type AssetRow,
+  type HeldRates,
   type ParseError,
 } from '../utils/multi-currency-net-worth/math.ts';
 import {
@@ -77,6 +79,8 @@ function track(event: string, properties?: Record<string, unknown>) {
 // ECB's set). The request names the spending currency and nothing else.
 const FRANKFURTER_RATES = 'https://api.frankfurter.dev/v2/rates';
 const SUPPORTED_CODES = new Set(CURRENCIES.map((c) => c.code));
+/** How long the exchange-rate request may take before it counts as failed. */
+const RATES_TIMEOUT_MS = 15_000;
 
 // Chart series and risk colors come from src/styles/palette.ts (single
 // source of truth shared with global.css).
@@ -111,7 +115,12 @@ export default function MultiCurrencyNetWorth({
 }) {
   const [rows, setRows] = useState<AssetRow[]>(() => makeDefaultRows(defaultCurrency));
   const [functionalCurrency, setFunctionalCurrency] = useState<string>(defaultCurrency);
-  const [rates, setRates] = useState<Record<string, number> | null>(null);
+  // The rates are "units per one of the base currency", so they are kept
+  // with the base they were asked for and used only while that is still the
+  // spending currency (ratesForBase): after a change of currency there is
+  // no total until the new rates arrive, never one worked out with the old.
+  const [heldRates, setRates] = useState<HeldRates | null>(null);
+  const rates = ratesForBase(heldRates, functionalCurrency);
   const [ratesLoading, setRatesLoading] = useState(true);
   const [ratesError, setRatesError] = useState(false);
   const [ratesRetryKey, setRatesRetryKey] = useState(0);
@@ -183,7 +192,11 @@ export default function MultiCurrencyNetWorth({
     setRatesLoading(true);
     setRatesError(false);
 
-    fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`)
+    // A request that never answers ends in the error banner, not in a
+    // "loading" notice that stays up for good.
+    const stalled = new AbortController();
+    const timer = setTimeout(() => stalled.abort(), RATES_TIMEOUT_MS);
+    fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`, { signal: stalled.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -199,7 +212,7 @@ export default function MultiCurrencyNetWorth({
             fetched[row.quote] = row.rate;
           }
         }
-        setRates(fetched);
+        setRates({ base: functionalCurrency, rates: fetched });
         setRatesLoading(false);
       })
       .catch((err: unknown) => {
@@ -221,7 +234,7 @@ export default function MultiCurrencyNetWorth({
         });
       });
 
-    return () => { cancelled = true; };
+    return () => { cancelled = true; clearTimeout(timer); stalled.abort(); };
   }, [functionalCurrency, hydrated, ratesRetryKey]);
 
   // The inputs are never written into the address while you type: a URL can
