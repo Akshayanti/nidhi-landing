@@ -65,7 +65,7 @@ export const loanComparisonEn = {
       'Multi-currency support across 38 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
       'Model origination fees and extra monthly principal',
-      'Advanced mode: hybrid (ARM) loans with payment recast at the transition, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
+      'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
       'Horizon analysis ("if I sell at month N") showing principal repaid, interest paid, balance remaining, and total cash out per vendor',
       'Refinance scenario builder comparing "keep" vs. "refinance" with closing costs and break-even horizon',
       'Cent-precise integer amortization schedule',
@@ -106,7 +106,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What kinds of loans can I compare?',
-              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and hybrid (ARM-style) loans where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modeled.',
+              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and fixed-then-variable loans, where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modeled.',
             },
             {
               q: 'How many loans can I compare at once?',
@@ -118,7 +118,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Which fields are required?',
-              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty, hybrid rate spec) is optional and you can leave it at its default.',
+              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty, a later rate) is optional and you can leave it at its default.',
             },
             {
               q: 'Is my data sent anywhere?',
@@ -173,15 +173,15 @@ export const loanComparisonEn = {
           ],
         },
         {
-          title: 'Hybrid (ARM) loans',
+          title: 'Fixed-then-variable loans',
           items: [
             {
-              q: 'How does the calculator handle hybrid (5/1, 7/1, 10/1 ARM) loans?',
-              a: 'Switch the rate type to Hybrid in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a 5/1 ARM) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
+              q: 'How does the calculator handle a loan whose rate is fixed at first and then changes (a hybrid or ARM loan in the US)?',
+              a: 'Switch the rate type to "Fixed, then variable" in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a rate fixed for five years) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
             },
             {
-              q: 'Why is the hybrid option disabled when I picked "Payoff months"?',
-              a: 'Hybrid loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for "Payoff months" you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch "Solve for" to "Monthly payment" to enable the hybrid radio.',
+              q: 'Why is the "Fixed, then variable" option disabled when I picked "Payoff months"?',
+              a: 'Fixed-then-variable loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for "Payoff months" you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch "Solve for" to "Monthly payment" to enable the option.',
             },
           ],
         },
@@ -207,7 +207,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'Are share links self-contained?',
-              a: 'Yes. The share link encodes every input the recipient needs: every per-vendor field (rate type, hybrid schedule, points, lump sums, prepayment penalty), the currency, the active analysis tab, and the horizon and refinance scenario inputs. The recipient lands on the same view you were looking at with all of your inputs reproduced. The URL only contains values that differ from defaults, so a fresh comparison still produces a compact link.',
+              a: 'Yes. The share link encodes every input the recipient needs: every per-vendor field (rate type, later rate, points, lump sums, prepayment penalty), the currency, the active analysis tab, and the horizon and refinance scenario inputs. The recipient lands on the same view you were looking at with all of your inputs reproduced. The URL only contains values that differ from defaults, so a fresh comparison still produces a compact link.',
             },
             {
               q: 'How accurate are the calculations?',
@@ -342,25 +342,25 @@ export const loanComparisonEn = {
       requiredTitle: 'Required',
       foldSet: 'Filled in',
       foldNone: 'None',
-      statusHybrid: 'Hybrid (ARM)',
+      statusHybrid: 'Fixed, then variable',
       statusFixed: 'Fixed rate',
       rateStructure: {
         title: 'Rate structure',
-        hint: 'Fixed or fixed-then-variable (ARM)',
+        hint: 'Fixed, or fixed at first and variable later',
       },
       rateTypeAria: 'Rate type',
       fixed: 'Fixed',
-      hybrid: 'Hybrid (ARM)',
+      hybrid: 'Fixed, then variable',
       /** Split around the two `<em>`s, which repeat two labels above. */
       hybridHint: {
-        before: 'Hybrid (ARM) loans need a fixed term. Switch ',
+        before: 'Fixed-then-variable loans need a fixed term. Switch ',
         solveFor: 'Solve for',
         mid: ' above to ',
         modeTerm: 'Monthly payment',
-        after: ' to enable the ARM fields.',
+        after: ' to enable these fields.',
       },
       initialFixed: 'Initial fixed period (months)',
-      initialFixedHelp: 'Common: 60 (5/1 ARM), 84 (7/1), 120 (10/1).',
+      initialFixedHelp: 'Common: 60, 84 or 120 months (5, 7 or 10 years).',
       subsequentRate: 'Subsequent rate (%)',
       subsequentRateHelp:
         'Rate after the fixed period ends. Real adjustable loans follow a reference rate; this is your own assumption, not a forecast.',
@@ -451,6 +451,8 @@ export const loanComparisonEn = {
       rangeAfter: '.',
       /** The table's own column heading, for screen readers only. */
       metricAria: 'Metric',
+      /** Accessible name of the phone table's key of letters and offer names. */
+      keyAria: 'Offers',
       monthlyPayment: 'Monthly payment',
       monthsToPayoff: 'Months to payoff',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
@@ -567,7 +569,7 @@ export const loanComparisonEn = {
         rest: ' folds the origination/closing fee into the rate by treating the fee as an upfront deduction from what you actually receive, then solving for the monthly rate at which the present value of the contractual payments equals that net amount. That monthly rate is shown as a yearly figure in the convention chosen above the offers: times 12 (US, Canada) or compounded over a year (EU, UK).',
       },
       hybrid: {
-        strong: 'Hybrid (ARM) loans',
+        strong: 'Fixed-then-variable loans',
         rest: ' use the initial rate for the fixed window, then recast the payment at the transition month so the loan still amortizes within the original term at the subsequent rate.',
       },
       lumps: {
@@ -594,7 +596,7 @@ export const loanComparisonEn = {
     },
     refi: {
       heading: 'Refinance scenario',
-      lead: "Compare keeping a loan to refinancing it at a future month. Useful when rates drop or you're considering buying out an ARM before it resets.",
+      lead: "Compare keeping a loan to refinancing it at a future month. Useful when rates drop or you're considering paying off a loan before its rate changes.",
       whichLoan: 'Refinance which loan?',
       atMonth: 'Refinance at month',
       newRate: 'New rate (%)',
@@ -655,7 +657,7 @@ export const loanComparisonEn = {
         termMin: 'Enter a term of at least one month.',
         termMax: 'Term cannot exceed {months} months.',
         paymentEnter: 'Enter a monthly payment greater than zero.',
-        hybridMode: 'Hybrid-rate loans must be entered in term mode (monthly payment is computed).',
+        hybridMode: 'Fixed-then-variable loans must be entered in term mode (monthly payment is computed).',
         refiOriginal: 'Original loan is invalid; cannot compute refinance.',
         /** An optional box of the offer holds something that is not a number. Never quotes what was typed. */
         optionalUnreadable: 'One of the optional boxes cannot be read. Use digits only, or clear the box.',
@@ -724,7 +726,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       '38 मुद्राओं का सपोर्ट, जिनमें USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD शामिल हैं',
       'तय अवधि देकर मासिक किस्त निकालें, या तय किस्त देकर चुकाने का समय निकालें',
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
-      'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले हाइब्रिड (ARM) लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
+      'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले, पहले तय फिर बदलती दर वाले लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
       'हॉराइज़न विश्लेषण ("अगर मैं महीने N पर बेच दूँ") हर लोन ऑफ़र के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
       'रीफ़ाइनेंस परिदृश्य, जो "पुराना लोन चलाते रहें" और "रीफ़ाइनेंस" की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
       'मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) तक सटीक, पूर्णांकों में बना किस्तों का शेड्यूल',
@@ -761,7 +763,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'किस तरह के लोन की तुलना की जा सकती है?',
-              a: 'मॉर्गेज, कार लोन, पर्सनल लोन, और आम चुकौती योजनाओं वाले एजुकेशन लोन। कैलकुलेटर तय ब्याज वाले लोन और हाइब्रिड (ARM जैसे) लोन दोनों संभालता है, जिनमें शुरुआत में एक तय दर रहती है और उसके बाद दूसरी दर लागू होती है। केवल ब्याज वाली अवधि और बैलून भुगतान इसमें शामिल नहीं हैं।',
+              a: 'मॉर्गेज, कार लोन, पर्सनल लोन, और आम चुकौती योजनाओं वाले एजुकेशन लोन। कैलकुलेटर तय ब्याज वाले लोन और पहले तय, फिर बदलती दर वाले लोन दोनों संभालता है, जिनमें शुरुआत में एक तय दर रहती है और उसके बाद दूसरी दर लागू होती है। केवल ब्याज वाली अवधि और बैलून भुगतान इसमें शामिल नहीं हैं।',
             },
             {
               q: 'एक बार में कितने लोन की तुलना हो सकती है?',
@@ -773,7 +775,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'कौन-से फ़ील्ड ज़रूरी हैं?',
-              a: 'लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त (इस पर निर्भर कि क्या निकालना है)। इनके आगे लाल तारा लगा है। कार्ड के बाकी सारे फ़ील्ड (लोन शुल्क, अतिरिक्त मूलधन, डिस्काउंट पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना, हाइब्रिड दर) वैकल्पिक हैं और उन्हें जैसा है वैसा छोड़ा जा सकता है।',
+              a: 'लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त (इस पर निर्भर कि क्या निकालना है)। इनके आगे लाल तारा लगा है। कार्ड के बाकी सारे फ़ील्ड (लोन शुल्क, अतिरिक्त मूलधन, डिस्काउंट पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना, बाद की दर) वैकल्पिक हैं और उन्हें जैसा है वैसा छोड़ा जा सकता है।',
             },
             {
               q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
@@ -828,15 +830,15 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           ],
         },
         {
-          title: 'हाइब्रिड (ARM) लोन',
+          title: 'पहले तय, फिर बदलती दर वाले लोन',
           items: [
             {
-              q: 'कैलकुलेटर हाइब्रिड (5/1, 7/1, 10/1 ARM) लोन कैसे संभालता है?',
-              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार हाइब्रिड पर बदल दें, फिर शुरुआत की तय अवधि (जैसे 5/1 ARM के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
+              q: 'कैलकुलेटर ऐसे लोन को कैसे संभालता है जिसकी दर पहले तय रहती है और फिर बदलती है (अमेरिका में हाइब्रिड या ARM लोन)?',
+              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार "पहले तय, फिर बदलती" पर बदल दें, फिर शुरुआत की तय अवधि (जैसे पाँच साल की तय दर के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
             },
             {
-              q: '"चुकाने के महीने" चुनने पर हाइब्रिड विकल्प बंद क्यों हो जाता है?',
-              a: 'हाइब्रिड लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। "चुकाने के महीने" चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। हाइब्रिड वाला विकल्प चालू करने के लिए "क्या निकालना है" को "मासिक किस्त" पर बदल दें।',
+              q: '"चुकाने के महीने" चुनने पर "पहले तय, फिर बदलती" विकल्प बंद क्यों हो जाता है?',
+              a: 'पहले तय, फिर बदलती दर वाले लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। "चुकाने के महीने" चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। यह विकल्प चालू करने के लिए "क्या निकालना है" को "मासिक किस्त" पर बदल दें।',
             },
           ],
         },
@@ -862,7 +864,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'क्या शेयर लिंक अपने आप में पूरे होते हैं?',
-              a: 'हाँ। शेयर लिंक में वह सब कुछ भरा होता है जो दूसरे इंसान को चाहिए: हर लोन ऑफ़र का हर फ़ील्ड (दर का प्रकार, हाइब्रिड शेड्यूल, पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना), मुद्रा, खुला हुआ विश्लेषण टैब, और हॉराइज़न तथा रीफ़ाइनेंस के आँकड़े। लिंक खोलने वाला उसी नज़रिये पर पहुँचता है जो आप देख रहे थे, आपके सारे आँकड़ों के साथ। लिंक में केवल वही मान जाते हैं जो शुरुआती मानों से अलग हैं, इसलिए नई तुलना का लिंक छोटा ही रहता है।',
+              a: 'हाँ। शेयर लिंक में वह सब कुछ भरा होता है जो दूसरे इंसान को चाहिए: हर लोन ऑफ़र का हर फ़ील्ड (दर का प्रकार, बाद की दर, पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना), मुद्रा, खुला हुआ विश्लेषण टैब, और हॉराइज़न तथा रीफ़ाइनेंस के आँकड़े। लिंक खोलने वाला उसी नज़रिये पर पहुँचता है जो आप देख रहे थे, आपके सारे आँकड़ों के साथ। लिंक में केवल वही मान जाते हैं जो शुरुआती मानों से अलग हैं, इसलिए नई तुलना का लिंक छोटा ही रहता है।',
             },
             {
               q: 'गणना कितनी सटीक है?',
@@ -984,24 +986,24 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       requiredTitle: 'ज़रूरी',
       foldSet: 'भरा हुआ',
       foldNone: 'कुछ नहीं',
-      statusHybrid: 'हाइब्रिड (ARM)',
+      statusHybrid: 'पहले तय, फिर बदलती',
       statusFixed: 'तय दर',
       rateStructure: {
         title: 'दर का ढाँचा',
-        hint: 'तय, या पहले तय फिर बदलती (ARM)',
+        hint: 'तय, या पहले तय और बाद में बदलती',
       },
       rateTypeAria: 'दर का प्रकार',
       fixed: 'तय',
-      hybrid: 'हाइब्रिड (ARM)',
+      hybrid: 'पहले तय, फिर बदलती',
       hybridHint: {
-        before: 'हाइब्रिड (ARM) लोन के लिए तय अवधि ज़रूरी है। ARM वाले फ़ील्ड चालू करने के लिए ऊपर ',
+        before: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि ज़रूरी है। ये फ़ील्ड चालू करने के लिए ऊपर ',
         solveFor: 'क्या निकालना है',
         mid: ' को ',
         modeTerm: 'मासिक किस्त',
         after: ' पर बदल दें।',
       },
       initialFixed: 'शुरुआत की तय अवधि (महीने)',
-      initialFixedHelp: 'आम: 60 (5/1 ARM), 84 (7/1), 120 (10/1)।',
+      initialFixedHelp: 'आम: 60, 84 या 120 महीने (5, 7 या 10 साल)।',
       subsequentRate: 'बाद की दर (%)',
       subsequentRateHelp:
         'तय अवधि ख़त्म होने के बाद की दर। असली बदलती दर वाले लोन किसी संदर्भ दर के साथ चलते हैं; यह आपका अपना अनुमान है, कोई पूर्वानुमान नहीं।',
@@ -1078,6 +1080,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       rangeAcross: ' तक है: यानी ',
       rangeAfter: ' का फ़र्क़।',
       metricAria: 'मापदंड',
+      /** Accessible name of the phone table's key of letters and offer names. */
+      keyAria: 'ऑफ़र',
       monthlyPayment: 'मासिक किस्त',
       monthsToPayoff: 'चुकाने के महीने',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
@@ -1182,7 +1186,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         rest: ' लोन शुल्क और कागज़ी खर्च को दर में इस तरह जोड़ता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो आपको असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। यह मासिक दर सालाना आँकड़े के रूप में उसी तरीक़े से दिखती है जो ऑफ़रों के ऊपर चुना गया है: × 12 (अमेरिका, कनाडा) या साल भर की चक्रवृद्धि (यूरोपीय संघ, ब्रिटेन)।',
       },
       hybrid: {
-        strong: 'हाइब्रिड (ARM) लोन',
+        strong: 'पहले तय, फिर बदलती दर वाले लोन',
         rest: ' तय अवधि तक शुरुआती दर इस्तेमाल करते हैं, और फिर दर बदलने वाले महीने पर किस्त नए सिरे से निकालते हैं, ताकि लोन बाद की दर पर भी मूल अवधि के भीतर ही चुक जाए।',
       },
       lumps: {
@@ -1208,7 +1212,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     refi: {
       heading: 'रीफ़ाइनेंस परिदृश्य',
-      lead: 'किसी लोन को चलाते रहने और आगे किसी महीने उसका रीफ़ाइनेंस कराने की तुलना करें। यह तब काम आता है जब दरें गिर जाएँ, या आप ARM के दर बदलने से पहले उसे चुका देने की सोच रहे हों।',
+      lead: 'किसी लोन को चलाते रहने और आगे किसी महीने उसका रीफ़ाइनेंस कराने की तुलना करें। यह तब काम आता है जब दरें गिर जाएँ, या आप किसी लोन की दर बदलने से पहले उसे चुका देने की सोच रहे हों।',
       whichLoan: 'किस लोन का रीफ़ाइनेंस?',
       atMonth: 'किस महीने में रीफ़ाइनेंस',
       newRate: 'नई दर (%)',
@@ -1251,7 +1255,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
-        hybridMode: 'हाइब्रिड (ARM) लोन के लिए तय अवधि चाहिए: "क्या निकालना है" में "मासिक किस्त" चुनें, किस्त अपने आप निकलेगी।',
+        hybridMode: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि चाहिए: "क्या निकालना है" में "मासिक किस्त" चुनें, किस्त अपने आप निकलेगी।',
         refiOriginal: 'पुराना लोन सही नहीं है; रीफ़ाइनेंस की गणना नहीं हो सकती।',
         optionalUnreadable: 'वैकल्पिक बॉक्सों में से एक पढ़ा नहीं जा सका। सिर्फ़ अंक लिखें, या बॉक्स खाली कर दें।',
         refiMonth: 'रीफ़ाइनेंस का महीना कम से कम 1 होना चाहिए।',
@@ -1312,7 +1316,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       'Compatible con 38 monedas, entre ellas USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Calcula la cuota mensual a partir de un plazo fijo, o el tiempo hasta liquidar el préstamo a partir de una cuota fija',
       'Incluye la comisión de apertura y los pagos extra al capital cada mes',
-      'Modo avanzado: préstamos híbridos (ARM) con la cuota recalculada en la transición, punto de equilibrio de los puntos de descuento, pagos extraordinarios y penalización por pago anticipado',
+      'Modo avanzado: préstamos de tasa fija y luego variable, con la cuota recalculada cuando cambia la tasa, punto de equilibrio de los puntos de descuento, pagos extraordinarios y penalización por pago anticipado',
       'Análisis por horizonte («si vendo en el mes N») con el capital devuelto, los intereses pagados, el saldo pendiente y el desembolso total de cada entidad',
       'Escenario de refinanciación que compara «mantener» y «refinanciar» con gastos iniciales y punto de equilibrio',
       'Tabla de amortización exacta hasta la unidad monetaria más pequeña (como el céntimo o el centavo), calculada con números enteros',
@@ -1349,7 +1353,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Qué tipos de préstamos puedo comparar?',
-              a: 'Hipotecas, préstamos para vehículos, préstamos personales y préstamos de estudios con planes de pago estándar. La calculadora admite préstamos a tasa fija y préstamos híbridos (del tipo ARM), en los que una tasa fija inicial va seguida de otra tasa distinta. No modela periodos en los que solo se pagan intereses ni pagos finales abultados (cuota balón).',
+              a: 'Hipotecas, préstamos para vehículos, préstamos personales y préstamos de estudios con planes de pago estándar. La calculadora admite préstamos a tasa fija y préstamos de tasa fija y luego variable, en los que una tasa fija inicial va seguida de otra tasa distinta. No modela periodos en los que solo se pagan intereses ni pagos finales abultados (cuota balón).',
             },
             {
               q: '¿Cuántos préstamos puedo comparar a la vez?',
@@ -1361,7 +1365,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Qué campos son obligatorios?',
-              a: 'La cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual (según lo que quieras calcular). Están marcados con un asterisco rojo. Todos los demás campos de la tarjeta (comisión de apertura, capital extra, puntos, pagos extraordinarios, penalización por pago anticipado, tasa híbrida) son opcionales y puedes dejarlos con su valor predeterminado.',
+              a: 'La cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual (según lo que quieras calcular). Están marcados con un asterisco rojo. Todos los demás campos de la tarjeta (comisión de apertura, capital extra, puntos, pagos extraordinarios, penalización por pago anticipado, tasa posterior) son opcionales y puedes dejarlos con su valor predeterminado.',
             },
             {
               q: '¿Se envían mis datos a algún sitio?',
@@ -1416,15 +1420,15 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           ],
         },
         {
-          title: 'Préstamos híbridos (ARM)',
+          title: 'Préstamos de tasa fija y luego variable',
           items: [
             {
-              q: '¿Cómo trata la calculadora los préstamos híbridos (ARM 5/1, 7/1, 10/1)?',
-              a: 'Cambia el tipo de tasa a Híbrida en el grupo «Estructura de la tasa» y escribe el periodo fijo inicial (por ejemplo, 60 meses para un ARM 5/1) y la tasa que se aplica cuando termina ese periodo fijo. La tabla de amortización se construye con la tasa inicial hasta el mes de transición y después se recalcula la cuota: el saldo pendiente se vuelve a amortizar durante los meses contractuales que quedan a la tasa posterior, de modo que el préstamo se sigue liquidando en el plazo original. El APR usa esta tabla, con la tasa que escribiste. Cuando la tasa cambia, esta calculadora recalcula la cuota para que el préstamo siga terminando en su plazo original. Algunas entidades, a menudo en préstamos hipotecarios de tasa variable en la India, mantienen la cuota y cambian el número de meses, lo que cambia el total de intereses. Una tasa variable real también puede cambiar muchas veces; aquí se muestra un solo cambio.',
+              q: '¿Cómo trata la calculadora un préstamo con una tasa fija al principio que después cambia (en EE. UU., híbrido o ARM)?',
+              a: 'Cambia el tipo de tasa a «Fija y luego variable» en el grupo «Estructura de la tasa» y escribe el periodo fijo inicial (por ejemplo, 60 meses para una tasa fija durante cinco años) y la tasa que se aplica cuando termina ese periodo fijo. La tabla de amortización se construye con la tasa inicial hasta el mes de transición y después se recalcula la cuota: el saldo pendiente se vuelve a amortizar durante los meses contractuales que quedan a la tasa posterior, de modo que el préstamo se sigue liquidando en el plazo original. El APR usa esta tabla, con la tasa que escribiste. Cuando la tasa cambia, esta calculadora recalcula la cuota para que el préstamo siga terminando en su plazo original. Algunas entidades, a menudo en préstamos hipotecarios de tasa variable en la India, mantienen la cuota y cambian el número de meses, lo que cambia el total de intereses. Una tasa variable real también puede cambiar muchas veces; aquí se muestra un solo cambio.',
             },
             {
-              q: '¿Por qué la opción híbrida está desactivada cuando elijo «Meses hasta liquidar»?',
-              a: 'Los préstamos híbridos necesitan un plazo contractual fijo para que la calculadora pueda recalcular la cuota en el cambio de tasa. Cuando calculas «Meses hasta liquidar» no indicas un plazo contractual (indicas una cuota mensual fija), así que el recálculo no está definido. Cambia «Calcular» a «Cuota mensual» para activar la opción híbrida.',
+              q: '¿Por qué la opción «Fija y luego variable» está desactivada cuando elijo «Meses hasta liquidar»?',
+              a: 'Los préstamos de tasa fija y luego variable necesitan un plazo contractual fijo para que la calculadora pueda recalcular la cuota en el cambio de tasa. Cuando calculas «Meses hasta liquidar» no indicas un plazo contractual (indicas una cuota mensual fija), así que el recálculo no está definido. Cambia «Calcular» a «Cuota mensual» para activar la opción.',
             },
           ],
         },
@@ -1450,7 +1454,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Los enlaces para compartir están completos por sí solos?',
-              a: 'Sí. El enlace para compartir codifica todo lo que necesita quien lo recibe: todos los campos de cada entidad (tipo de tasa, calendario híbrido, puntos, pagos extraordinarios, penalización por pago anticipado), la moneda, la pestaña de análisis activa y los datos del horizonte y del escenario de refinanciación. Quien lo abre llega a la misma vista que estabas viendo, con todos tus datos. La dirección solo contiene los valores que difieren de los predeterminados, así que una comparación nueva sigue produciendo un enlace corto.',
+              a: 'Sí. El enlace para compartir codifica todo lo que necesita quien lo recibe: todos los campos de cada entidad (tipo de tasa, tasa posterior, puntos, pagos extraordinarios, penalización por pago anticipado), la moneda, la pestaña de análisis activa y los datos del horizonte y del escenario de refinanciación. Quien lo abre llega a la misma vista que estabas viendo, con todos tus datos. La dirección solo contiene los valores que difieren de los predeterminados, así que una comparación nueva sigue produciendo un enlace corto.',
             },
             {
               q: '¿Qué precisión tienen los cálculos?',
@@ -1572,24 +1576,24 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       requiredTitle: 'Obligatorio',
       foldSet: 'Con datos',
       foldNone: 'Nada',
-      statusHybrid: 'Tasa híbrida (ARM)',
+      statusHybrid: 'Fija y luego variable',
       statusFixed: 'Tasa fija',
       rateStructure: {
         title: 'Estructura de la tasa',
-        hint: 'Fija, o fija y luego variable (ARM)',
+        hint: 'Fija, o fija al principio y variable después',
       },
       rateTypeAria: 'Tipo de tasa',
       fixed: 'Fija',
-      hybrid: 'Híbrida (ARM)',
+      hybrid: 'Fija y luego variable',
       hybridHint: {
-        before: 'Los préstamos híbridos (ARM) necesitan un plazo fijo. Cambia ',
+        before: 'Los préstamos de tasa fija y luego variable necesitan un plazo fijo. Cambia ',
         solveFor: 'Calcular',
         mid: ' arriba a ',
         modeTerm: 'Cuota mensual',
-        after: ' para activar los campos ARM.',
+        after: ' para activar estos campos.',
       },
       initialFixed: 'Periodo fijo inicial (meses)',
-      initialFixedHelp: 'Habituales: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
+      initialFixedHelp: 'Habituales: 60, 84 o 120 meses (5, 7 o 10 años).',
       subsequentRate: 'Tasa posterior (%)',
       subsequentRateHelp:
         'Tasa cuando termina el periodo fijo. Los préstamos de tasa variable reales siguen una tasa de referencia; esta es tu propia suposición, no un pronóstico.',
@@ -1666,6 +1670,8 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       rangeAcross: ' entre las entidades de abajo: una diferencia de ',
       rangeAfter: '.',
       metricAria: 'Métrica',
+      /** Accessible name of the phone table's key of letters and offer names. */
+      keyAria: 'Ofertas',
       monthlyPayment: 'Cuota mensual',
       monthsToPayoff: 'Meses hasta liquidar',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
@@ -1770,7 +1776,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         rest: ' incorpora la comisión de apertura y los gastos iniciales a la tasa: trata la comisión como una deducción inicial de lo que realmente recibes y busca la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se muestra como cifra anual con la convención elegida encima de las ofertas: × 12 (EE. UU., Canadá) o capitalizada durante un año (UE, Reino Unido).',
       },
       hybrid: {
-        strong: 'Los préstamos híbridos (ARM)',
+        strong: 'Los préstamos de tasa fija y luego variable',
         rest: ' usan la tasa inicial durante el periodo fijo y después recalculan la cuota en el mes de transición, para que el préstamo se siga amortizando dentro del plazo original a la tasa posterior.',
       },
       lumps: {
@@ -1796,7 +1802,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     refi: {
       heading: 'Escenario de refinanciación',
-      lead: 'Compara mantener un préstamo con refinanciarlo en un mes futuro. Es útil cuando bajan las tasas o cuando te planteas liquidar un ARM antes de que cambie su tasa.',
+      lead: 'Compara mantener un préstamo con refinanciarlo en un mes futuro. Es útil cuando bajan las tasas o cuando te planteas liquidar un préstamo antes de que cambie su tasa.',
       whichLoan: '¿Qué préstamo refinanciar?',
       atMonth: 'Refinanciar en el mes',
       newRate: 'Nueva tasa (%)',
@@ -1839,7 +1845,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
         hybridMode:
-          'Los préstamos de tasa híbrida deben introducirse en modo de plazo (la cuota mensual se calcula).',
+          'Los préstamos de tasa fija y luego variable deben introducirse en modo de plazo (la cuota mensual se calcula).',
         refiOriginal: 'El préstamo original no es válido; no se puede calcular la refinanciación.',
         optionalUnreadable: 'No se pudo leer una de las casillas opcionales. Usa solo cifras o deja la casilla vacía.',
         refiMonth: 'El mes de refinanciación debe ser al menos 1.',
@@ -1899,7 +1905,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       'Podpora 38 měn, včetně USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Výpočet měsíční splátky při pevné době splatnosti, nebo doby splácení při pevné splátce',
       'Modelování poplatku za sjednání a mimořádné měsíční splátky jistiny',
-      'Pokročilý režim: hybridní úvěry (ARM) s přepočtem splátky při změně sazby, doba návratnosti bodů na snížení sazby, jednorázové mimořádné splátky, modelování poplatku za předčasné splacení',
+      'Pokročilý režim: úvěry s pevnou a pak pohyblivou sazbou s přepočtem splátky při změně sazby, doba návratnosti bodů na snížení sazby, jednorázové mimořádné splátky, modelování poplatku za předčasné splacení',
       'Analýza horizontu („pokud prodám v měsíci N“): splacená jistina, zaplacené úroky, zbývající jistina a celkem vydané peníze u každého poskytovatele',
       'Scénář refinancování, který porovná „ponechat“ a „refinancovat“ včetně nákladů na uzavření a doby návratnosti',
       'Splátkový kalendář přesný na haléře, počítaný v celých číslech',
@@ -1936,7 +1942,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Jaké úvěry můžu porovnat?',
-              a: 'Hypotéky, úvěry na auto, spotřebitelské úvěry a studentské půjčky se standardním splácením. Kalkulačka zvládá úvěry s pevnou sazbou i hybridní úvěry (typu ARM), kde po počáteční pevné sazbě následuje jiná sazba. Období, kdy se splácí jen úrok, a velká závěrečná splátka (balónová) se nemodelují.',
+              a: 'Hypotéky, úvěry na auto, spotřebitelské úvěry a studentské půjčky se standardním splácením. Kalkulačka zvládá úvěry s pevnou sazbou i úvěry s pevnou a pak pohyblivou sazbou, kde po počáteční pevné sazbě následuje jiná sazba. Období, kdy se splácí jen úrok, a velká závěrečná splátka (balónová) se nemodelují.',
             },
             {
               q: 'Kolik úvěrů můžu porovnat najednou?',
@@ -1948,7 +1954,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Která pole jsou povinná?',
-              a: 'Výše úvěru, roční úroková sazba a buď doba splatnosti v měsících, nebo měsíční splátka (podle toho, co chcete spočítat). Jsou označené červenou hvězdičkou. Všechna ostatní pole na kartě (poplatek za sjednání, mimořádná splátka jistiny, body, jednorázové splátky, poplatek za předčasné splacení, nastavení hybridní sazby) jsou volitelná a mohou zůstat na výchozí hodnotě.',
+              a: 'Výše úvěru, roční úroková sazba a buď doba splatnosti v měsících, nebo měsíční splátka (podle toho, co chcete spočítat). Jsou označené červenou hvězdičkou. Všechna ostatní pole na kartě (poplatek za sjednání, mimořádná splátka jistiny, body, jednorázové splátky, poplatek za předčasné splacení, následná sazba) jsou volitelná a mohou zůstat na výchozí hodnotě.',
             },
             {
               q: 'Posílají se moje data někam?',
@@ -2003,15 +2009,15 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           ],
         },
         {
-          title: 'Hybridní úvěry (ARM)',
+          title: 'Úvěry s pevnou a pak pohyblivou sazbou',
           items: [
             {
-              q: 'Jak kalkulačka zvládá hybridní úvěry (ARM 5/1, 7/1, 10/1)?',
-              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Hybridní (ARM)“ a zadejte počáteční období fixace (například 60 měsíců u ARM 5/1) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se sazbou, kterou jste zadali. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
+              q: 'Jak kalkulačka zvládá úvěr, jehož sazba je nejdřív pevná a potom se změní (v USA hybridní úvěr nebo ARM)?',
+              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Pevná, pak pohyblivá“ a zadejte počáteční období fixace (například 60 měsíců u pětileté fixace) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se sazbou, kterou jste zadali. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
             },
             {
-              q: 'Proč je hybridní možnost nedostupná, když je zvoleno „Měsíce do splacení“?',
-              a: 'Hybridní úvěry potřebují pevnou smluvní dobu, aby kalkulačka mohla při změně sazby splátku přepočítat. Při výpočtu „Měsíce do splacení“ smluvní dobu nezadáváte (zadáváte místo ní pevnou měsíční splátku), takže přepočet není definovaný. Přepněte „Počítat“ na „Měsíční splátka“ a hybridní volba bude dostupná.',
+              q: 'Proč je možnost „Pevná, pak pohyblivá“ nedostupná, když je zvoleno „Měsíce do splacení“?',
+              a: 'Úvěry s pevnou a pak pohyblivou sazbou potřebují pevnou smluvní dobu, aby kalkulačka mohla při změně sazby splátku přepočítat. Při výpočtu „Měsíce do splacení“ smluvní dobu nezadáváte (zadáváte místo ní pevnou měsíční splátku), takže přepočet není definovaný. Přepněte „Počítat“ na „Měsíční splátka“ a volba bude dostupná.',
             },
           ],
         },
@@ -2037,7 +2043,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Obsahují odkazy ke sdílení vše potřebné?',
-              a: 'Ano. Odkaz ke sdílení obsahuje každý údaj, který příjemce potřebuje: každé pole u každého poskytovatele (typ sazby, hybridní kalendář, body, jednorázové splátky, poplatek za předčasné splacení), měnu, aktivní záložku analýzy a údaje pro horizont a scénář refinancování. Příjemce uvidí stejný pohled jako vy, se všemi vašimi údaji. Adresa obsahuje jen hodnoty, které se liší od výchozích, takže nové srovnání dá krátký odkaz.',
+              a: 'Ano. Odkaz ke sdílení obsahuje každý údaj, který příjemce potřebuje: každé pole u každého poskytovatele (typ sazby, následná sazba, body, jednorázové splátky, poplatek za předčasné splacení), měnu, aktivní záložku analýzy a údaje pro horizont a scénář refinancování. Příjemce uvidí stejný pohled jako vy, se všemi vašimi údaji. Adresa obsahuje jen hodnoty, které se liší od výchozích, takže nové srovnání dá krátký odkaz.',
             },
             {
               q: 'Jak přesné jsou výpočty?',
@@ -2159,24 +2165,24 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       requiredTitle: 'Povinné',
       foldSet: 'Vyplněno',
       foldNone: 'Nic',
-      statusHybrid: 'Hybridní (ARM)',
+      statusHybrid: 'Pevná, pak pohyblivá',
       statusFixed: 'Pevná sazba',
       rateStructure: {
         title: 'Struktura sazby',
-        hint: 'Pevná, nebo nejdřív pevná a pak pohyblivá (ARM)',
+        hint: 'Pevná, nebo nejdřív pevná a později pohyblivá',
       },
       rateTypeAria: 'Typ sazby',
       fixed: 'Pevná',
-      hybrid: 'Hybridní (ARM)',
+      hybrid: 'Pevná, pak pohyblivá',
       hybridHint: {
-        before: 'Hybridní úvěry (ARM) potřebují pevnou dobu splatnosti. Přepněte výše volbu ',
+        before: 'Úvěry s pevnou a pak pohyblivou sazbou potřebují pevnou dobu splatnosti. Přepněte výše volbu ',
         solveFor: 'Počítat',
         mid: ' na hodnotu ',
         modeTerm: 'Měsíční splátka',
-        after: ' a pole ARM budou dostupná.',
+        after: ' a tato pole budou dostupná.',
       },
       initialFixed: 'Počáteční období fixace (měsíce)',
-      initialFixedHelp: 'Obvykle: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
+      initialFixedHelp: 'Obvykle: 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
         'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
@@ -2253,6 +2259,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       rangeAcross: ': rozpětí ',
       rangeAfter: '.',
       metricAria: 'Ukazatel',
+      /** Accessible name of the phone table's key of letters and offer names. */
+      keyAria: 'Nabídky',
       monthlyPayment: 'Měsíční splátka',
       monthsToPayoff: 'Měsíce do splacení',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
@@ -2357,7 +2365,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         rest: ' zahrnuje poplatek za sjednání a uzavření do sazby tak, že ho bere jako srážku předem z toho, co skutečně dostanete, a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se zobrazuje jako roční číslo způsobem zvoleným nad nabídkami: × 12 (USA, Kanada) nebo se složeným úročením za rok (EU, Spojené království).',
       },
       hybrid: {
-        strong: 'Hybridní úvěry (ARM)',
+        strong: 'Úvěry s pevnou a pak pohyblivou sazbou',
         rest: ' používají po dobu fixace počáteční sazbu a v měsíci změny splátku přepočítají, aby se úvěr při následné sazbě i tak splatil v původní době.',
       },
       lumps: {
@@ -2383,7 +2391,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     refi: {
       heading: 'Scénář refinancování',
-      lead: 'Porovnejte ponechání úvěru s jeho refinancováním v budoucím měsíci. Hodí se, když sazby klesnou nebo zvažujete splacení úvěru ARM před změnou sazby.',
+      lead: 'Porovnejte ponechání úvěru s jeho refinancováním v budoucím měsíci. Hodí se, když sazby klesnou nebo zvažujete splacení úvěru před změnou jeho sazby.',
       whichLoan: 'Který úvěr refinancovat?',
       atMonth: 'Refinancovat v měsíci',
       newRate: 'Nová sazba (%)',
@@ -2425,7 +2433,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
         termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
         paymentEnter: 'Zadejte měsíční splátku větší než nula.',
-        hybridMode: 'Úvěry s hybridní sazbou se musí zadávat v režimu doby splatnosti (měsíční splátka se dopočítá).',
+        hybridMode: 'Úvěry s pevnou a pak pohyblivou sazbou se musí zadávat v režimu doby splatnosti (měsíční splátka se dopočítá).',
         refiOriginal: 'Původní úvěr je neplatný; refinancování nelze spočítat.',
         optionalUnreadable: 'Jedno z nepovinných polí se nepodařilo přečíst. Použijte jen číslice, nebo pole vymažte.',
         refiMonth: 'Měsíc refinancování musí být alespoň 1.',
@@ -2469,7 +2477,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       '38 चलनांची सोय, ज्यात INR, USD, EUR, GBP, CHF, JPY, CNY, CAD, AUD, SGD',
       'ठरावीक मुदतीसाठी मासिक हप्ता काढा, किंवा ठरावीक हप्त्यासाठी परतफेडीचा काळ काढा',
       'कर्जप्रक्रिया शुल्क आणि दरमहा अतिरिक्त मुद्दल यांचे गणित',
-      'प्रगत पर्याय: बदलाच्या वेळी हप्त्यांची पुनर्गणना असलेली हायब्रिड (ARM) कर्जे, डिस्काउंट पॉइंट्सचा खर्च वसूल होण्याचा टप्पा, एकरकमी मुदतपूर्व परतफेड, मुदतपूर्व परतफेडीवरील दंड',
+      'प्रगत पर्याय: बदलाच्या वेळी हप्त्यांची पुनर्गणना असलेली, आधी ठरावीक मग बदलत्या दराची कर्जे, डिस्काउंट पॉइंट्सचा खर्च वसूल होण्याचा टप्पा, एकरकमी मुदतपूर्व परतफेड, मुदतपूर्व परतफेडीवरील दंड',
       'कालावधीचे विश्लेषण (“N व्या महिन्यात विक्री केली तर”): प्रत्येक कर्जदात्यासाठी फेडलेले मुद्दल, भरलेले व्याज, बाकी कर्ज आणि खर्च झालेली एकूण रक्कम',
       'पुनर्वित्त परिदृश्य: “तसेच ठेवा” विरुद्ध “पुनर्वित्त करा”, व्यवहार खर्च आणि खर्च वसूल होण्याच्या टप्प्यासह',
       'पैशापर्यंत अचूक, पूर्णांकांवर आधारित कर्जफेडीचे वेळापत्रक',
@@ -2505,7 +2513,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'कोणत्या प्रकारच्या कर्जांची तुलना करता येते?',
-              a: 'नेहमीच्या परतफेड योजनांवरील गहाण कर्जे, वाहन कर्जे, वैयक्तिक कर्जे आणि शैक्षणिक कर्जे. कॅल्क्युलेटर ठरावीक दराची कर्जे आणि हायब्रिड (ARM प्रकारची) कर्जे हाताळतो, ज्यात सुरुवातीच्या ठरावीक दरानंतर वेगळा दर लागू होतो. फक्त व्याज भरण्याचे कालावधी आणि शेवटी एकरकमी मोठा हप्ता (balloon payment) यांचे गणित यात नाही.',
+              a: 'नेहमीच्या परतफेड योजनांवरील गहाण कर्जे, वाहन कर्जे, वैयक्तिक कर्जे आणि शैक्षणिक कर्जे. कॅल्क्युलेटर ठरावीक दराची कर्जे आणि आधी ठरावीक, मग बदलत्या दराची कर्जे हाताळतो, ज्यात सुरुवातीच्या ठरावीक दरानंतर वेगळा दर लागू होतो. फक्त व्याज भरण्याचे कालावधी आणि शेवटी एकरकमी मोठा हप्ता (balloon payment) यांचे गणित यात नाही.',
             },
             {
               q: 'एका वेळी किती कर्जांची तुलना करता येते?',
@@ -2517,7 +2525,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'कोणते रकाने आवश्यक आहेत?',
-              a: 'कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता (तुम्हाला काय काढायचे आहे त्यानुसार). यांच्यावर लाल तारका असते. कार्डवरील इतर प्रत्येक रकाना (कर्जप्रक्रिया शुल्क, अतिरिक्त मुद्दल, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड, हायब्रिड दराचा तपशील) ऐच्छिक आहे आणि तो पूर्वनिश्चित मूल्यावर ठेवता येतो.',
+              a: 'कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता (तुम्हाला काय काढायचे आहे त्यानुसार). यांच्यावर लाल तारका असते. कार्डवरील इतर प्रत्येक रकाना (कर्जप्रक्रिया शुल्क, अतिरिक्त मुद्दल, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड, नंतरचा दर) ऐच्छिक आहे आणि तो पूर्वनिश्चित मूल्यावर ठेवता येतो.',
             },
             {
               q: 'माझा डेटा कुठे पाठवला जातो का?',
@@ -2572,15 +2580,15 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           ],
         },
         {
-          title: 'हायब्रिड (ARM) कर्जे',
+          title: 'आधी ठरावीक, मग बदलत्या दराची कर्जे',
           items: [
             {
-              q: 'कॅल्क्युलेटर हायब्रिड (5/1, 7/1, 10/1 ARM) कर्जे कशी हाताळतो?',
-              a: '“व्याजदराची रचना” या गटात दराचा प्रकार हायब्रिड करा, मग सुरुवातीचा ठरावीक कालावधी (उदा. 5/1 ARM साठी 60 महिने) आणि ठरावीक कालावधीनंतर लागू होणारा दर भरा. कर्जफेडीचे वेळापत्रक बदलाच्या महिन्यापर्यंत सुरुवातीच्या दराने तयार होते आणि मग हप्त्यांची पुनर्गणना (recast) होते: बाकी कर्ज कराराच्या उरलेल्या महिन्यांवर पुढच्या दराने पुन्हा विभागले जाते, त्यामुळे कर्ज मूळ मुदतीतच फिटते. APR याच वेळापत्रकावरून काढला जातो, तुम्ही भरलेल्या दरासह. दर बदलल्यावर हा कॅल्क्युलेटर हप्ता पुन्हा काढतो, जेणेकरून कर्ज मूळ मुदतीतच संपेल. काही कर्जदाते, बहुतेकदा भारतातील बदलत्या दराच्या गृहकर्जांत, हप्ता तोच ठेवतात आणि त्याऐवजी महिन्यांची संख्या बदलतात, त्यामुळे एकूण व्याज बदलते. प्रत्यक्ष बदलता दर अनेक वेळा बदलू शकतो; इथे एकच बदल दिसतो.',
+              q: 'ज्या कर्जाचा दर आधी ठरावीक असतो आणि मग बदलतो (अमेरिकेत हायब्रिड किंवा ARM कर्ज), ते कॅल्क्युलेटर कसे हाताळतो?',
+              a: '“व्याजदराची रचना” या गटात दराचा प्रकार “आधी ठरावीक, मग बदलता” करा, मग सुरुवातीचा ठरावीक कालावधी (उदा. पाच वर्षे ठरावीक दरासाठी 60 महिने) आणि ठरावीक कालावधीनंतर लागू होणारा दर भरा. कर्जफेडीचे वेळापत्रक बदलाच्या महिन्यापर्यंत सुरुवातीच्या दराने तयार होते आणि मग हप्त्यांची पुनर्गणना (recast) होते: बाकी कर्ज कराराच्या उरलेल्या महिन्यांवर पुढच्या दराने पुन्हा विभागले जाते, त्यामुळे कर्ज मूळ मुदतीतच फिटते. APR याच वेळापत्रकावरून काढला जातो, तुम्ही भरलेल्या दरासह. दर बदलल्यावर हा कॅल्क्युलेटर हप्ता पुन्हा काढतो, जेणेकरून कर्ज मूळ मुदतीतच संपेल. काही कर्जदाते, बहुतेकदा भारतातील बदलत्या दराच्या गृहकर्जांत, हप्ता तोच ठेवतात आणि त्याऐवजी महिन्यांची संख्या बदलतात, त्यामुळे एकूण व्याज बदलते. प्रत्यक्ष बदलता दर अनेक वेळा बदलू शकतो; इथे एकच बदल दिसतो.',
             },
             {
-              q: 'मी “परतफेडीचे महिने” निवडल्यावर हायब्रिड पर्याय बंद का होतो?',
-              a: 'हायब्रिड कर्जांसाठी कराराची ठरावीक मुदत लागते, म्हणजे दर बदलताना कॅल्क्युलेटर हप्त्यांची पुनर्गणना करू शकतो. तुम्ही “परतफेडीचे महिने” काढता तेव्हा तुम्ही कराराची मुदत देत नाही (त्याऐवजी ठरावीक मासिक हप्ता देता), त्यामुळे पुनर्गणना ठरत नाही. हायब्रिडचा पर्याय सुरू करण्यासाठी “काय काढायचे” हा पर्याय “मासिक हप्ता” वर बदला.',
+              q: 'मी “परतफेडीचे महिने” निवडल्यावर “आधी ठरावीक, मग बदलता” हा पर्याय बंद का होतो?',
+              a: 'आधी ठरावीक, मग बदलत्या दराच्या कर्जांसाठी कराराची ठरावीक मुदत लागते, म्हणजे दर बदलताना कॅल्क्युलेटर हप्त्यांची पुनर्गणना करू शकतो. तुम्ही “परतफेडीचे महिने” काढता तेव्हा तुम्ही कराराची मुदत देत नाही (त्याऐवजी ठरावीक मासिक हप्ता देता), त्यामुळे पुनर्गणना ठरत नाही. तो सुरू करण्यासाठी “काय काढायचे” हा पर्याय “मासिक हप्ता” वर बदला.',
             },
           ],
         },
@@ -2606,7 +2614,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'शेअर लिंक स्वयंपूर्ण असतात का?',
-              a: 'हो. शेअर लिंकमध्ये पाहणाऱ्याला लागणारी प्रत्येक माहिती असते: प्रत्येक कर्जदात्याचा प्रत्येक रकाना (दराचा प्रकार, हायब्रिडचे वेळापत्रक, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड), चलन, उघडा असलेला विश्लेषणाचा टॅब, आणि कालावधी व पुनर्वित्त परिदृश्याची माहिती. तुम्ही पाहत असलेल्या त्याच दृश्यावर पाहणारी व्यक्ती तुमच्या सर्व माहितीसह पोहोचते. URL मध्ये फक्त पूर्वनिश्चित मूल्यांपेक्षा वेगळी मूल्ये असतात, त्यामुळे नवीन तुलनेची लिंकही छोटी राहते.',
+              a: 'हो. शेअर लिंकमध्ये पाहणाऱ्याला लागणारी प्रत्येक माहिती असते: प्रत्येक कर्जदात्याचा प्रत्येक रकाना (दराचा प्रकार, नंतरचा दर, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड), चलन, उघडा असलेला विश्लेषणाचा टॅब, आणि कालावधी व पुनर्वित्त परिदृश्याची माहिती. तुम्ही पाहत असलेल्या त्याच दृश्यावर पाहणारी व्यक्ती तुमच्या सर्व माहितीसह पोहोचते. URL मध्ये फक्त पूर्वनिश्चित मूल्यांपेक्षा वेगळी मूल्ये असतात, त्यामुळे नवीन तुलनेची लिंकही छोटी राहते.',
             },
             {
               q: 'हिशेब किती अचूक असतात?',
@@ -2728,24 +2736,24 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       requiredTitle: 'आवश्यक',
       foldSet: 'भरलेले',
       foldNone: 'काही नाही',
-      statusHybrid: 'हायब्रिड (ARM)',
+      statusHybrid: 'आधी ठरावीक, मग बदलता',
       statusFixed: 'ठरावीक दर',
       rateStructure: {
         title: 'व्याजदराची रचना',
-        hint: 'ठरावीक, किंवा आधी ठरावीक मग बदलता (ARM)',
+        hint: 'ठरावीक, किंवा आधी ठरावीक आणि नंतर बदलता',
       },
       rateTypeAria: 'दराचा प्रकार',
       fixed: 'ठरावीक',
-      hybrid: 'हायब्रिड (ARM)',
+      hybrid: 'आधी ठरावीक, मग बदलता',
       hybridHint: {
-        before: 'हायब्रिड (ARM) कर्जांसाठी ठरावीक मुदत लागते. वरील ',
+        before: 'आधी ठरावीक, मग बदलत्या दराच्या कर्जांसाठी ठरावीक मुदत लागते. वरील ',
         solveFor: 'काय काढायचे',
         mid: ' हा पर्याय ',
         modeTerm: 'मासिक हप्ता',
-        after: ' वर बदला, म्हणजे ARM चे रकाने वापरता येतील.',
+        after: ' वर बदला, म्हणजे हे रकाने वापरता येतील.',
       },
       initialFixed: 'सुरुवातीचा ठरावीक कालावधी (महिने)',
-      initialFixedHelp: 'नेहमीचे: 60 (5/1 ARM), 84 (7/1), 120 (10/1).',
+      initialFixedHelp: 'नेहमीचे: 60, 84 किंवा 120 महिने (5, 7 किंवा 10 वर्षे).',
       subsequentRate: 'नंतरचा दर (%)',
       subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या संदर्भ दरानुसार बदलतात; हा तुमचा स्वतःचा अंदाज आहे, भाकीत नाही.',
       costs: {
@@ -2819,6 +2827,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       rangeAcross: ' पर्यंत आहे: फरक ',
       rangeAfter: '.',
       metricAria: 'निकष',
+      /** Accessible name of the phone table's key of letters and offer names. */
+      keyAria: 'ऑफर',
       monthlyPayment: 'मासिक हप्ता',
       monthsToPayoff: 'परतफेडीपर्यंतचे महिने',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
@@ -2917,7 +2927,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         rest: ' कर्जप्रक्रिया/व्यवहार शुल्क व्याजदरात सामावून घेतो: शुल्क हे तुम्हाला प्रत्यक्ष मिळणाऱ्या रकमेतून सुरुवातीलाच झालेली वजावट मानले जाते, आणि मग असा मासिक दर काढला जातो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. हा मासिक दर ऑफरच्या वर निवडलेल्या पद्धतीने वार्षिक आकडा म्हणून दाखवला जातो: × 12 (अमेरिका, कॅनडा) किंवा वर्षभराची चक्रवाढ (युरोपियन युनियन, UK).',
       },
       hybrid: {
-        strong: 'हायब्रिड (ARM) कर्जे',
+        strong: 'आधी ठरावीक, मग बदलत्या दराची कर्जे',
         rest: ' ठरावीक कालावधीसाठी सुरुवातीचा दर वापरतात, आणि मग बदलाच्या महिन्यात हप्त्यांची पुनर्गणना (recast) करतात, म्हणजे पुढच्या दराने कर्ज मूळ मुदतीतच फिटते.',
       },
       lumps: {
@@ -2943,7 +2953,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     refi: {
       heading: 'पुनर्वित्त परिदृश्य',
-      lead: 'कर्ज तसेच ठेवणे आणि भविष्यातील एखाद्या महिन्यात त्याचे पुनर्वित्त करणे यांची तुलना करा. दर कमी झाल्यावर, किंवा ARM चा दर बदलण्यापूर्वीच ते फेडण्याचा विचार करत असाल तेव्हा उपयोगी.',
+      lead: 'कर्ज तसेच ठेवणे आणि भविष्यातील एखाद्या महिन्यात त्याचे पुनर्वित्त करणे यांची तुलना करा. दर कमी झाल्यावर, किंवा कर्जाचा दर बदलण्यापूर्वीच ते फेडण्याचा विचार करत असाल तेव्हा उपयोगी.',
       whichLoan: 'कोणत्या कर्जाचे पुनर्वित्त?',
       atMonth: 'पुनर्वित्ताचा महिना',
       newRate: 'नवीन दर (%)',
@@ -2984,7 +2994,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         termMin: 'किमान एक महिन्याची मुदत भरा.',
         termMax: 'मुदत {months} महिन्यांपेक्षा जास्त असू शकत नाही.',
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
-        hybridMode: 'हायब्रिड दराची कर्जे मुदतीच्या पर्यायात भरायला हवीत (मासिक हप्ता काढला जातो).',
+        hybridMode: 'आधी ठरावीक, मग बदलत्या दराची कर्जे मुदतीच्या पर्यायात भरायला हवीत (मासिक हप्ता काढला जातो).',
         refiOriginal: 'मूळ कर्ज अवैध आहे; पुनर्वित्ताचा हिशेब करता येत नाही.',
         optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक लिहा, किंवा चौकट रिकामी करा.',
         refiMonth: 'पुनर्वित्ताचा महिना किमान 1 असायला हवा.',

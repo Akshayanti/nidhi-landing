@@ -674,7 +674,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       // UI gates this; we double-belt here.
       return emptyResult(
         feeMinor,
-        'Hybrid-rate loans must be entered in term mode (monthly payment is computed).',
+        'Fixed-then-variable loans must be entered in term mode (monthly payment is computed).',
       );
     }
     scheduledPayment = mode.monthlyMinor;
@@ -930,14 +930,14 @@ export function computeApr(
 
 /**
  * The two ways a monthly rate is turned into a yearly APR.
- * - `nominal`: monthly rate × 12 (US, Canada).
+ * - `nominal`: monthly rate × 12 (US, Canada; India's loan fact sheets too).
  * - `effective`: monthly rate compounded over twelve months (EU, UK).
  */
 export type AprConvention = 'nominal' | 'effective';
 
 /** The convention a page starts with for a currency, until the reader chooses one. */
 export function defaultAprConvention(currency: string): AprConvention {
-  return currency === 'USD' || currency === 'CAD' ? 'nominal' : 'effective';
+  return currency === 'USD' || currency === 'CAD' || currency === 'INR' ? 'nominal' : 'effective';
 }
 
 /**
