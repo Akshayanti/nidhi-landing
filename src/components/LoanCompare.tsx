@@ -14,6 +14,9 @@ import {
   toMinor,
   type AmortizationRow,
   type LoanResult,
+  aprInConvention,
+  defaultAprConvention,
+  type AprConvention,
 } from '../utils/loan/math.ts';
 import {
   DEFAULT_VENDORS,
@@ -25,6 +28,8 @@ import {
   displayLumpSums,
   defaultGlobalState,
   encodeToQueryString,
+  isPristineState,
+  makeAddedVendor,
   makeDefaultVendor,
   publishableState,
   SHARED_STATE_GLOBAL,
@@ -541,6 +546,8 @@ interface SplitChartProps {
 
 function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, strings }: SplitChartProps) {
   const { formatAmount, formatMoney } = useMoney();
+  const titleId = useId();
+  const descId = useId();
   // Phones get a narrower drawing, so the labels stay readable once it is
   // scaled down to the screen instead of shrinking to a few pixels.
   const phone = usePhone();
@@ -602,12 +609,14 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
         className={`lc-splitChart ${phone ? 'lc-splitChart--phone' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label={ariaSummary}
+        // The name and the amounts are text inside the drawing, never an
+        // attribute: a click on the chart describes its attributes to analytics.
+        aria-labelledby={`${titleId} ${descId}`}
         preserveAspectRatio="xMidYMid meet"
         focusable="false"
       >
-        <title>{strings.split.title}</title>
-        <desc>{ariaSummary}</desc>
+        <title id={titleId}>{strings.split.title}</title>
+        <desc id={descId}>{ariaSummary}</desc>
 
         {/* Eyebrow legend, mirroring the blog figure */}
         <text x={padL} y={padT - 16} className="lc-splitEyebrowInterest">
@@ -746,7 +755,7 @@ function formatYearLabel(month: number, strings: Strings): string {
 // ---- Phone layout ------------------------------------------------------------
 //
 // Phones (640px and narrower, the site's phone breakpoint) show one vendor
-// card at a time and fold the optional fields. Which layout is showing is
+// card at a time. Which layout is showing is
 // view state only: it never enters the share link, the address, storage or
 // analytics.
 
@@ -764,20 +773,6 @@ function usePhone(): boolean {
     return () => mq.removeEventListener?.('change', sync);
   }, []);
   return phone;
-}
-
-/** Keeps a <details> open on wider screens and closed on phones, following
- *  the screen as it rotates or resizes. A phone visitor can still open it. */
-function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
-  useEffect(() => {
-    const mq = window.matchMedia(PHONE_QUERY);
-    const sync = () => {
-      if (ref.current) ref.current.open = !mq.matches;
-    };
-    sync();
-    mq.addEventListener?.('change', sync);
-    return () => mq.removeEventListener?.('change', sync);
-  }, [ref]);
 }
 
 // ---- Main component --------------------------------------------------------
@@ -815,14 +810,17 @@ export default function LoanCompare({
   const [splitVendorIdx, setSplitVendorIdx] = useState<number | null>(null);
   // Phones: the vendor whose card is showing. View state only (see above).
   const [activeVendor, setActiveVendor] = useState(0);
-  const disclaimerRef = useRef<HTMLDetailsElement>(null);
-  useFoldOnPhone(disclaimerRef);
   const currencySelectId = useId();
 
   // Convenience accessor: the currency lives on globalState but most
   // call sites read it directly. Updates always go through setGlobalState
   // so there is one source of truth.
   const currency = globalState.currency;
+  // Follows the currency until the reader picks one by hand; a hand choice
+  // stays when the currency changes, and Reset goes back to following.
+  const aprConvention: AprConvention = globalState.aprConvention ?? defaultAprConvention(currency);
+  const setAprConvention = (next: AprConvention) => setGlobalState((g) => ({ ...g, aprConvention: next }));
+  const aprName = useId();
   const setCurrency = useCallback(
     (next: string) => setGlobalState((g) => ({ ...g, currency: next })),
     [],
@@ -892,7 +890,7 @@ export default function LoanCompare({
   // callback is *not* double-invoked.
   const addVendor = useCallback(() => {
     if (vendors.length >= MAX_VENDORS) return;
-    setVendors((prev) => [...prev, makeDefaultVendor(prev.length)]);
+    setVendors((prev) => [...prev, makeAddedVendor(prev.length)]);
     // On phones, show the card just added.
     setActiveVendor(vendors.length);
     track('free_loan_comparison_vendor_added', { count: vendors.length + 1 });
@@ -1003,6 +1001,7 @@ export default function LoanCompare({
       island: strings,
       common: exportStrings,
       currency,
+      aprConvention,
       vendors,
       results,
       names: vendors.map((v, i) => shownName(v.name, i, strings)),
@@ -1068,7 +1067,7 @@ export default function LoanCompare({
         <div className="lc-toolbarActions">
           <button
             type="button"
-            className="lc-resetBtn"
+            className="btn btn--quiet lc-resetBtn"
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
               setGlobalState(defaultGlobalState(defaultCurrency));
@@ -1081,6 +1080,29 @@ export default function LoanCompare({
             {strings.toolbar.reset}
           </button>
         </div>
+
+        {/* A choice, not a value: it travels in a share link and is not tracked. */}
+        <fieldset className="lc-aprField">
+          <legend className="lc-fieldLabel">{strings.toolbar.aprLabel}</legend>
+          <div className="lc-modeRow">
+            {(['nominal', 'effective'] as const).map((kind) => (
+              <label key={kind} className={`lc-modeOption ${aprConvention === kind ? 'lc-modeOptionActive' : ''}`}>
+                <input
+                  type="radio"
+                  name={aprName}
+                  value={kind}
+                  checked={aprConvention === kind}
+                  onChange={() => setAprConvention(kind)}
+                />
+                <span>{kind === 'nominal' ? strings.toolbar.aprNominal : strings.toolbar.aprEffective}</span>
+              </label>
+            ))}
+          </div>
+          <details className="lc-aprHelp">
+            <summary className="disclosure">{strings.toolbar.aprHelpToggle}</summary>
+            <p className="lc-fieldHelp">{strings.toolbar.aprHelp}</p>
+          </details>
+        </fieldset>
       </div>
 
       {/* Phones only (hidden from 641px): pick the vendor card to show.
@@ -1107,7 +1129,7 @@ export default function LoanCompare({
         {vendors.length < MAX_VENDORS && (
           <button
             type="button"
-            className="lc-vendorTabAdd"
+            className="btn btn--outline lc-vendorTabAdd"
             onClick={addVendor}
             aria-label={format(strings.phoneTabs.addAria, { n: vendors.length + 1, max: MAX_VENDORS })}
             data-attr="lc-vendor-add"
@@ -1116,6 +1138,23 @@ export default function LoanCompare({
           </button>
         )}
       </div>
+
+      {/* Phones only. A button, not a link: nothing is written to the address. */}
+      <p className="lc-jump">
+        <button
+          type="button"
+          onClick={() => {
+            const heading = document.getElementById('lc-delta-h');
+            heading?.scrollIntoView({ block: 'start' });
+            heading?.focus({ preventScroll: true });
+          }}
+        >
+          {strings.delta.heading}
+        </button>
+      </p>
+
+      {/* The starting offers are an example until one of them is changed. */}
+      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
 
       <h2 className="lc-srOnly">{strings.cardsHeading}</h2>
       <div className="lc-grid">
@@ -1131,6 +1170,7 @@ export default function LoanCompare({
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
             currency={currency}
+            aprConvention={aprConvention}
             strings={strings}
             onChange={(patch) => updateVendor(i, patch)}
             // The remove button is only renderable when we're above the
@@ -1160,6 +1200,7 @@ export default function LoanCompare({
         results={results}
         vendors={vendors}
         currency={currency}
+        aprConvention={aprConvention}
         strings={strings}
       />
 
@@ -1169,7 +1210,7 @@ export default function LoanCompare({
           <>
             <button
               type="button"
-              className="lc-shareBtn"
+              className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
               aria-describedby="lc-share-status"
               title={strings.toolbar.shareTitle}
@@ -1218,15 +1259,14 @@ export default function LoanCompare({
         strings={strings}
       />
 
-      {/* Open on wider screens, folded on phones (useFoldOnPhone). */}
-      <details className="lc-disclaimerWrap" open ref={disclaimerRef}>
+      <details className="lc-disclaimerWrap">
         <summary className="lc-disclaimerSummary disclosure">{strings.disclaimer.summary}</summary>
         <p className="lc-disclaimer">
           {strings.disclaimer.body}
         </p>
       </details>
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
+      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} aprConvention={aprConvention} vendors={vendors} results={results} />
     </div>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
@@ -1238,7 +1278,8 @@ export default function LoanCompare({
  * sentence as the answer. Like the page, it names no offer as the one to
  * take. Hidden on screen (see ToolReport).
  */
-function PrintedReport({ strings, exportStrings, currency, vendors, results }: {
+function PrintedReport({ strings, exportStrings, currency, aprConvention, vendors, results }: {
+  aprConvention: AprConvention;
   strings: Strings;
   exportStrings: Dict['tools']['export'];
   currency: string;
@@ -1255,7 +1296,7 @@ function PrintedReport({ strings, exportStrings, currency, vendors, results }: {
       : totals[0] === totals[totals.length - 1]
         ? `${d.sameBefore}${formatMoney(totals[0], currency)}${d.sameAfter}`
         : `${d.rangeBefore}${formatMoney(totals[0], currency)}${d.rangeTo}${formatMoney(totals[totals.length - 1], currency)}${d.rangeAcross}${formatMoney(totals[totals.length - 1] - totals[0], currency)}${d.rangeAfter}`;
-  const report = loanReport({ island: strings, common: exportStrings, currency, vendors, results, names, answer: [answer] });
+  const report = loanReport({ island: strings, common: exportStrings, currency, aprConvention, vendors, results, names, answer: [answer] });
   return <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? 'en-US'} />;
 }
 
@@ -1276,6 +1317,7 @@ interface VendorCardProps {
    *  using points. */
   noPointsBaseline: LoanResult | null;
   currency: string;
+  aprConvention: AprConvention;
   strings: Strings;
   onChange: (patch: Partial<VendorInput>) => void;
   /** Omitted when removing would drop below the minimum vendor count. */
@@ -1300,6 +1342,7 @@ function VendorCard({
   result,
   noPointsBaseline,
   currency,
+  aprConvention,
   strings,
   onChange,
   onRemove,
@@ -1317,31 +1360,41 @@ function VendorCard({
   const requiredError = hasError && badOptional.size === 0;
   const headingId = id('heading');
 
-  const optionalRef = useRef<HTMLDetailsElement>(null);
-  useFoldOnPhone(optionalRef);
-
-  // What the folded optional fields hold, in words rather than amounts, so
-  // a phone visitor sees whether anything is set without opening them.
+  // The four optional groups fold, each behind a row that says in words
+  // (never amounts) what it holds. A group starts open when it differs from
+  // this offer's starting example, and always shows a box that cannot be
+  // read. Which rows are open is view state: never shared, stored or tracked.
   const isSet = (s: string) => Number(s) > 0;
-  const optionalStatus = [
-    vendor.rateKind === 'hybrid' && vendor.modeKind === 'term'
-      ? strings.card.statusHybrid
-      : strings.card.statusFixed,
-    isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? strings.card.statusFees : null,
-    isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== ''
-      ? strings.card.statusPrepayments
-      : null,
-    isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth)
-      ? strings.card.statusPenalty
-      : null,
-  ].filter((status): status is string => status !== null);
-  const optionalSummary =
-    optionalStatus.length === 1
-      ? format(strings.card.optionalSingle, { status: optionalStatus[0] })
-      : format(strings.card.optionalMulti, {
-          status: optionalStatus[0],
-          rest: optionalStatus.slice(1).join(', '),
-        });
+  // An offer made by the Add button starts with its optional boxes empty, so
+  // that is what "unchanged" means for it: its empty fee row stays folded.
+  const slot = Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label));
+  const start = slot >= MIN_VENDORS ? makeAddedVendor(slot) : makeDefaultVendor(slot);
+  const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
+  const unreadable = (...keys: OptionalField[]) => keys.some((k) => badOptional.has(k));
+  const [toggled, setToggled] = useState<Partial<Record<FoldName, boolean>>>({});
+  const fold = (name: FoldName, changed: boolean, bad: boolean) => ({
+    open: bad || (toggled[name] ?? changed),
+    onToggle: (open: boolean) => setToggled((t) => (t[name] === open ? t : { ...t, [name]: open })),
+  });
+  const hybrid = vendor.rateKind === 'hybrid' && vendor.modeKind === 'term';
+  const folds = {
+    rate: {
+      ...fold('rate', differs('rateKind'), unreadable('initialFixedMonths', 'subsequentRatePct')),
+      state: hybrid ? strings.card.statusHybrid : strings.card.statusFixed,
+    },
+    costs: {
+      ...fold('costs', differs('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct'), unreadable('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct')),
+      state: isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? strings.card.foldSet : strings.card.foldNone,
+    },
+    prepay: {
+      ...fold('prepay', differs('extraMonthly', 'lumpSumsEncoded'), unreadable('extraMonthly', 'lumpSumsEncoded')),
+      state: isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== '' ? strings.card.foldSet : strings.card.foldNone,
+    },
+    penalty: {
+      ...fold('penalty', differs('prepayPenaltyPct', 'prepayPenaltyUntilMonth'), unreadable('prepayPenaltyPct', 'prepayPenaltyUntilMonth')),
+      state: isSet(vendor.prepayPenaltyPct) || isSet(vendor.prepayPenaltyUntilMonth) ? strings.card.foldSet : strings.card.foldNone,
+    },
+  };
 
   return (
     <article
@@ -1500,23 +1553,145 @@ function VendorCard({
         </div>
       )}
 
-      {/* ------------------------------------------------------------ */}
-      {/*  Optional groups. On wider screens all visible, so the user   */}
-      {/*  can see the available knobs at a glance, but visually        */}
-      {/*  de-emphasised vs. the required block above; the summary row  */}
-      {/*  is hidden there and CSS shows the content before the fold    */}
-      {/*  hook opens it. On phones they fold behind one row that says  */}
-      {/*  in words what is set, so the result follows the required     */}
-      {/*  fields.                                                      */}
-      {/* ------------------------------------------------------------ */}
+      <div
+        className="lc-results"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {hasError ? (
+          <p className="lc-error" id={errorId} role="alert">
+            {engineError(result.error ?? '', strings)}
+          </p>
+        ) : (
+          <>
+            {/* Top three at-a-glance numbers. APR is the cross-vendor
+                comparator the blog post calls "the number that matters",
+                Total paid is the headline cost, and Monthly payment is
+                what most users look at first. Everything else moves into
+                the "Show details" expander to keep the card compact. */}
+            <dl className="lc-resultList lc-resultListPrimary">
+              {result.rateChange && result.rateChange.paymentMinor !== null ? (
+                // The payment changes with the rate: both amounts at the same
+                // weight, each under its own months, so no figure stands alone.
+                <div className="lc-resultRow lc-resultRowSteps">
+                  <dt className="lc-resultLabel">{strings.results.monthly}</dt>
+                  <dd className="lc-resultValue">
+                    <PaymentSteps
+                      first={formatMoney(result.effectiveMonthlyMinor, currency)}
+                      later={formatMoney(result.rateChange.paymentMinor, currency)}
+                      month={result.rateChange.month}
+                      last={result.rateChange.last === true}
+                      strings={strings}
+                    />
+                    <span className="lc-resultHint">{strings.results.monthlyLaterNote}</span>
+                    {result.effectiveMonthlyMinor > result.monthlyPaymentMinor && (
+                      <span className="lc-resultHint">
+                        {format(strings.results.monthlyIncludesExtra, {
+                          extra: formatMoney(result.effectiveMonthlyMinor - result.monthlyPaymentMinor, currency),
+                        })}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              ) : (
+                <ResultRow
+                  label={strings.results.monthly}
+                  value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                  hint={
+                    Number(vendor.extraMonthly) > 0
+                      ? format(strings.results.monthlyExtra, {
+                          base: formatMoney(result.monthlyPaymentMinor, currency),
+                          extra: formatMoney(
+                            result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
+                            currency,
+                          ),
+                        })
+                      : undefined
+                  }
+                  note={result.rateChange ? format(strings.results.paidOffBeforeChange, { payoffMonth: result.months }) : undefined}
+                />
+              )}
+              <ResultRow
+                label={strings.results.apr}
+                value={aprText(aprInConvention(result.aprNominal, aprConvention), currency, strings, amountLocale)}
+                hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
+                note={aprConvention === 'nominal' ? strings.results.aprNominalLine : strings.results.aprEffectiveLine}
+              />
+              <ResultRow
+                label={strings.results.totalPaid}
+                value={formatMoney(result.totalPaidMinor, currency)}
+                emphasized
+              />
+            </dl>
 
-      <details className="lc-optional" ref={optionalRef}>
-      <summary className="lc-optionalSummary disclosure">
-        <span className="lc-optionalTitle">{strings.card.optionalTitle}</span>
-        <span className="lc-optionalStatus">{optionalSummary}</span>
-      </summary>
+            <details
+              className="lc-resultDetails"
+              onToggle={(e) => {
+                if ((e.currentTarget as HTMLDetailsElement).open) {
+                  track('free_loan_comparison_details_toggled', { vendor: label });
+                }
+              }}
+            >
+              <summary className="lc-resultDetailsSummary disclosure">{strings.results.showDetails}</summary>
+              <dl className="lc-resultList">
+                <ResultRow
+                  label={strings.results.timeToPayoff}
+                  value={months(result.months, strings.months)}
+                  hint={format(
+                    plural(numberLocale, result.months, strings.results.paymentsOne, strings.results.paymentsFew, strings.results.paymentsMany),
+                    { n: result.months },
+                  )}
+                />
+                <ResultRow
+                  label={strings.results.totalInterest}
+                  value={formatMoney(result.totalInterestMinor, currency)}
+                />
+                {result.feeMinor > 0 && (
+                  <ResultRow
+                    label={strings.results.fees}
+                    value={formatMoney(result.feeMinor, currency)}
+                  />
+                )}
+                {result.prepaymentPenaltyMinor > 0 && (
+                  <ResultRow
+                    label={strings.results.penalty}
+                    value={formatMoney(result.prepaymentPenaltyMinor, currency)}
+                    hint={strings.results.penaltyHint}
+                  />
+                )}
+                {noPointsBaseline && !noPointsBaseline.error && (() => {
+                  const be = pointsBreakEven(result, noPointsBaseline);
+                  return (
+                    <ResultRow
+                      label={strings.results.breakEven}
+                      value={
+                        Number.isFinite(be.months)
+                          ? months(be.months, strings.months)
+                          : strings.results.never
+                      }
+                      hint={
+                        // The lifetime figure is signed: a loan that ends
+                        // before the break-even month loses money on its points.
+                        pointsVerdict(be) === 'never'
+                          ? strings.results.breakEvenNever
+                          : format(pointsVerdict(be) === 'costs' ? strings.results.breakEvenCosts : strings.results.breakEvenSaves, {
+                              amount: formatMoney(Math.abs(be.lifetimeSavingsMinor), currency),
+                            })
+                      }
+                    />
+                  );
+                })()}
+              </dl>
+            </details>
+          </>
+        )}
+        {result.warnings.map((w, i) => (
+          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
+        ))}
+      </div>
 
-      <FieldGroup title={strings.card.rateStructure.title} hint={strings.card.rateStructure.hint}>
+      {/* Optional groups, after the result: each a row that opens. */}
+      <FieldGroup title={strings.card.rateStructure.title} hint={strings.card.rateStructure.hint} {...folds.rate}>
         <fieldset className="lc-modeFieldset">
           <legend className="lc-srOnly">{strings.card.rateTypeAria}</legend>
           <div className="lc-modeRow">
@@ -1616,7 +1791,7 @@ function VendorCard({
         )}
       </FieldGroup>
 
-      <FieldGroup title={strings.card.costs.title} hint={strings.card.costs.hint}>
+      <FieldGroup title={strings.card.costs.title} hint={strings.card.costs.hint} {...folds.costs}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('fee')}>
             {strings.card.fee} <span className="lc-fieldHint">({currency})</span>
@@ -1668,7 +1843,7 @@ function VendorCard({
         </div>
       </FieldGroup>
 
-      <FieldGroup title={strings.card.prepayments.title} hint={strings.card.prepayments.hint}>
+      <FieldGroup title={strings.card.prepayments.title} hint={strings.card.prepayments.hint} {...folds.prepay}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('extra')}>
             {strings.card.extra} <span className="lc-fieldHint">({currency})</span>
@@ -1711,7 +1886,7 @@ function VendorCard({
         </div>
       </FieldGroup>
 
-      <FieldGroup title={strings.card.penalty.title} hint={strings.card.penalty.hint}>
+      <FieldGroup title={strings.card.penalty.title} hint={strings.card.penalty.hint} {...folds.penalty}>
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
             {strings.card.penaltyPct}
@@ -1746,117 +1921,6 @@ function VendorCard({
           </p>
         </div>
       </FieldGroup>
-      </details>
-
-      <div
-        className="lc-results"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {hasError ? (
-          <p className="lc-error" id={errorId} role="alert">
-            {engineError(result.error ?? '', strings)}
-          </p>
-        ) : (
-          <>
-            {/* Top three at-a-glance numbers. APR is the cross-vendor
-                comparator the blog post calls "the number that matters",
-                Total paid is the headline cost, and Monthly payment is
-                what most users look at first. Everything else moves into
-                the "Show details" expander to keep the card compact. */}
-            <dl className="lc-resultList lc-resultListPrimary">
-              <ResultRow
-                label={strings.results.monthly}
-                value={formatMoney(result.effectiveMonthlyMinor, currency)}
-                hint={
-                  Number(vendor.extraMonthly) > 0
-                    ? format(strings.results.monthlyExtra, {
-                        base: formatMoney(result.monthlyPaymentMinor, currency),
-                        extra: formatMoney(
-                          result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
-                          currency,
-                        ),
-                      })
-                    : undefined
-                }
-              />
-              <ResultRow
-                label={strings.results.apr}
-                value={aprText(result.aprNominal, currency, strings, amountLocale)}
-                hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
-              />
-              <ResultRow
-                label={strings.results.totalPaid}
-                value={formatMoney(result.totalPaidMinor, currency)}
-                emphasized
-              />
-            </dl>
-
-            <details
-              className="lc-resultDetails"
-              onToggle={(e) => {
-                if ((e.currentTarget as HTMLDetailsElement).open) {
-                  track('free_loan_comparison_details_toggled', { vendor: label });
-                }
-              }}
-            >
-              <summary className="lc-resultDetailsSummary disclosure">{strings.results.showDetails}</summary>
-              <dl className="lc-resultList">
-                <ResultRow
-                  label={strings.results.timeToPayoff}
-                  value={months(result.months, strings.months)}
-                  hint={format(
-                    plural(numberLocale, result.months, strings.results.paymentsOne, strings.results.paymentsFew, strings.results.paymentsMany),
-                    { n: result.months },
-                  )}
-                />
-                <ResultRow
-                  label={strings.results.totalInterest}
-                  value={formatMoney(result.totalInterestMinor, currency)}
-                />
-                {result.feeMinor > 0 && (
-                  <ResultRow
-                    label={strings.results.fees}
-                    value={formatMoney(result.feeMinor, currency)}
-                  />
-                )}
-                {result.prepaymentPenaltyMinor > 0 && (
-                  <ResultRow
-                    label={strings.results.penalty}
-                    value={formatMoney(result.prepaymentPenaltyMinor, currency)}
-                    hint={strings.results.penaltyHint}
-                  />
-                )}
-                {noPointsBaseline && !noPointsBaseline.error && (() => {
-                  const be = pointsBreakEven(result, noPointsBaseline);
-                  return (
-                    <ResultRow
-                      label={strings.results.breakEven}
-                      value={
-                        Number.isFinite(be.months)
-                          ? months(be.months, strings.months)
-                          : strings.results.never
-                      }
-                      hint={
-                        // The lifetime figure is signed: a loan that ends
-                        // before the break-even month loses money on its points.
-                        pointsVerdict(be) === 'never'
-                          ? strings.results.breakEvenNever
-                          : format(pointsVerdict(be) === 'costs' ? strings.results.breakEvenCosts : strings.results.breakEvenSaves, {
-                              amount: formatMoney(Math.abs(be.lifetimeSavingsMinor), currency),
-                            })
-                      }
-                    />
-                  );
-                })()}
-              </dl>
-            </details>
-          </>
-        )}
-        {result.warnings.map((w, i) => (
-          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
-        ))}
-      </div>
     </article>
   );
 }
@@ -1875,24 +1939,34 @@ function RequiredMark({ title }: { title: string }) {
   );
 }
 
+type FoldName = 'rate' | 'costs' | 'prepay' | 'penalty';
+
 interface FieldGroupProps {
   title: string;
   hint?: string;
+  /** What the group holds, in words: shown on its row whether open or closed. */
+  state: string;
+  open: boolean;
+  onToggle: (open: boolean) => void;
   children: React.ReactNode;
 }
 
-/** A visually-grouped section of optional fields. On wider screens the
- *  title and hint are always visible so the user can see at a glance what
- *  knobs each card exposes; on phones the groups sit inside one fold. */
-function FieldGroup({ title, hint, children }: FieldGroupProps) {
+/** A group of optional fields behind a row that opens: the row names the
+ *  group and says what it holds, so the card shows every option without
+ *  showing every box. The chevron comes from .disclosure. */
+function FieldGroup({ title, hint, state, open, onToggle, children }: FieldGroupProps) {
   return (
-    <section className="lc-fieldGroup">
-      <header className="lc-fieldGroupHeader">
-        <h3 className="lc-fieldGroupTitle">{title}</h3>
+    <details className="lc-fieldGroup" open={open} onToggle={(e) => onToggle(e.currentTarget.open)}>
+      <summary className="lc-fieldGroupHeader disclosure">
+        <span className="lc-fieldGroupTitle">{title}</span>
+        <span className="lc-srOnly">: </span>
+        <span className="lc-fieldGroupState">{state}</span>
+      </summary>
+      <div className="lc-fieldGroupBody">
         {hint && <p className="lc-fieldGroupHint">{hint}</p>}
-      </header>
-      <div className="lc-fieldGroupBody">{children}</div>
-    </section>
+        {children}
+      </div>
+    </details>
   );
 }
 
@@ -1900,16 +1974,19 @@ interface ResultRowProps {
   label: string;
   value: string;
   hint?: string;
+  /** A second line under the hint, on a line of its own. */
+  note?: string;
   emphasized?: boolean;
 }
 
-function ResultRow({ label, value, hint, emphasized }: ResultRowProps) {
+function ResultRow({ label, value, hint, note, emphasized }: ResultRowProps) {
   return (
     <div className={`lc-resultRow ${emphasized ? 'lc-resultRowEmphasized' : ''}`}>
       <dt className="lc-resultLabel">{label}</dt>
       <dd className="lc-resultValue">
         {value}
         {hint && <span className="lc-resultHint">{hint}</span>}
+        {note && <span className="lc-resultHint">{note}</span>}
       </dd>
     </div>
   );
@@ -1921,6 +1998,7 @@ interface DeltaSummaryProps {
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
+  aprConvention: AprConvention;
   // Note: previously took a `bestIndex` to highlight the cheapest vendor.
   // Removed when the winner-crowning was stripped: this component now
   // derives the lowest/highest vendors from the results internally and
@@ -1928,7 +2006,7 @@ interface DeltaSummaryProps {
   strings: Strings;
 }
 
-function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
+function DeltaSummary({ results, vendors, currency, aprConvention, strings }: DeltaSummaryProps) {
   const { formatMoney, amountLocale } = useMoney();
   const valid = results
     .map((r, i) => ({
@@ -1941,7 +2019,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
   if (valid.length < 2) {
     return (
       <section className="lc-deltaSection">
-        <h2 className="lc-sectionTitle">{strings.delta.heading}</h2>
+        <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
         <p className="lc-deltaEmpty">
           {strings.delta.empty}
         </p>
@@ -1967,7 +2045,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
 
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
-      <h2 id="lc-delta-h" className="lc-sectionTitle">{strings.delta.heading}</h2>
+      <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
       {/*
         aria-live=polite so screen readers re-announce when inputs change.
         The wording is deliberately neutral: it states the range and the
@@ -2010,6 +2088,27 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
               valid={valid}
               get={(r) => r.effectiveMonthlyMinor}
               format={(n) => formatMoney(n, currency)}
+              cell={(r) => {
+                const change = r.rateChange;
+                if (!change) return null;
+                if (change.paymentMinor === null) {
+                  return (
+                    <span className="lc-deltaLines">
+                      <span>{formatMoney(r.effectiveMonthlyMinor, currency)}</span>
+                      <span className="lc-deltaNote">{format(strings.results.paidOffBeforeChange, { payoffMonth: r.months })}</span>
+                    </span>
+                  );
+                }
+                return (
+                  <PaymentSteps
+                    first={formatMoney(r.effectiveMonthlyMinor, currency)}
+                    later={formatMoney(change.paymentMinor, currency)}
+                    month={change.month}
+                    last={change.last === true}
+                    strings={strings}
+                  />
+                );
+              }}
             />
             <DeltaRow
               label={strings.delta.monthsToPayoff}
@@ -2024,7 +2123,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
               // formatting is stable even at the limits of the bisection
               // solver. Six decimals is well below anything we'd ever
               // display in the UI.
-              get={(r) => Math.round(r.aprNominal * 1_000_000)}
+              get={(r) => Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000)}
               format={(n) => aprText(n / 1_000_000, currency, strings, amountLocale)}
             />
             <DeltaRow
@@ -2065,6 +2164,9 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
           </tbody>
         </table>
       </div>
+      <p className="lc-deltaNote">
+        {format(strings.delta.aprNote, { convention: aprConvention === 'nominal' ? strings.toolbar.aprNominal : strings.toolbar.aprEffective })}
+      </p>
     </section>
   );
 }
@@ -2074,6 +2176,8 @@ interface DeltaRowProps {
   valid: { r: LoanResult; i: number; name: string }[];
   get: (r: LoanResult) => number;
   format: (n: number) => string;
+  /** A cell of several lines in place of the plain value; null keeps the value. */
+  cell?: (r: LoanResult) => React.ReactNode;
   emphasized?: boolean;
 }
 
@@ -2082,15 +2186,39 @@ interface DeltaRowProps {
 // the right answer for monthly payment / interest / APR": a series of
 // recommendations the calculator isn't qualified to make. We just print
 // the values; the user reads them.
-function DeltaRow({ label, valid, get, format, emphasized }: DeltaRowProps) {
+function DeltaRow({ label, valid, get, format, cell, emphasized }: DeltaRowProps) {
   const values = valid.map((v) => get(v.r));
+  // A cell of several lines (a payment that changes with the rate) replaces the
+  // plain value; on phones the whole row then puts one offer per line.
+  const cells = valid.map((v) => cell?.(v.r) ?? null);
+  const stacked = cells.some((c) => c !== null);
   return (
-    <tr className={emphasized ? 'lc-deltaRowEmphasized' : ''}>
+    <tr className={[emphasized ? 'lc-deltaRowEmphasized' : '', stacked ? 'lc-deltaRowStacked' : ''].filter(Boolean).join(' ')}>
       <th scope="row">{label}</th>
       {valid.map((v, idx) => (
-        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{format(values[idx])}</td>
+        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{cells[idx] ?? format(values[idx])}</td>
       ))}
     </tr>
+  );
+}
+
+/**
+ * A payment that changes once: the first amount under its months, then the
+ * later one, at the same weight. The label comes before its amount in the
+ * markup, which is the order a screen reader gives them.
+ */
+function PaymentSteps({ first, later, month, last, strings }: { first: string; later: string; month: number; last?: boolean; strings: Strings }) {
+  return (
+    <span className="lc-steps">
+      <span className="lc-step">
+        <span className="lc-stepLabel">{month === 2 ? format(strings.balance.month, { m: 1 }) : format(strings.results.monthlyFirst, { lastMonth: month - 1 })}</span>{' '}
+        <span className="lc-stepAmount">{first}</span>
+      </span>
+      <span className="lc-step">
+        <span className="lc-stepLabel">{format(last ? strings.results.monthlyLast : strings.results.monthlyFrom, { month })}</span>{' '}
+        <span className="lc-stepAmount">{later}</span>
+      </span>
+    </span>
   );
 }
 

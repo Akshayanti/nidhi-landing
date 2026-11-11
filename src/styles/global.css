@@ -1992,19 +1992,111 @@ details[open] > .disclosure::after,
 }
 
 /* Toolbar */
+/* One slim row above the offers: the currency on the left with its note
+   and sample beside it, Reset on the right. */
 .lc-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
 .lc-currencyField {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 220px;
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+  column-gap: var(--space-4);
+  row-gap: 2px;
+  align-items: center;
+  flex: 1 1 420px;
+  min-width: 0;
+}
+.lc-currencyField > .lc-fieldLabel { grid-column: 1; grid-row: 1; }
+.lc-currencyField > .lc-select { grid-column: 1; grid-row: 2 / span 2; align-self: start; }
+.lc-currencyField > .lc-fieldHelp { grid-column: 2; grid-row: 2; margin: 0; max-width: none; }
+.lc-currencyField > .lc-fieldPreview { grid-column: 2; grid-row: 3; margin: 0; }
+@media (max-width: 720px) {
+  .lc-currencyField {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    flex-basis: 220px;
+  }
+}
+
+/* Which way the monthly rate becomes a yearly APR: one switch for every
+   offer, with what the two ways are behind a row that opens. */
+.lc-aprField {
+  flex: 1 1 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3) 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+  display: grid;
+  grid-template-columns: auto minmax(0, 30rem) minmax(0, 1fr);
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+  align-items: center;
+}
+.lc-aprField > legend {
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+.lc-aprField > .lc-modeRow {
+  grid-column: 2;
+}
+.lc-aprHelp {
+  grid-column: 3;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+.lc-aprHelp > summary {
+  display: inline-block;
+  min-height: 32px;
+  padding: 6px 28px 6px 0;
+  color: var(--color-deep-blue);
+}
+.lc-aprHelp > summary::after {
+  right: 4px;
+  font-size: 1.1rem;
+}
+.lc-aprHelp[open] {
+  grid-column: 1 / -1;
+}
+.lc-aprHelp > .lc-fieldHelp {
+  margin: 0;
+  max-width: 75ch;
+}
+@media (max-width: 900px) {
+  .lc-aprField {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.lc-deltaNote {
+  margin: var(--space-3) 0 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* The starting offers are an example until one is changed. */
+.lc-example {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+/* Phones only: a way from the offer tabs to the side-by-side table. */
+.lc-jump {
+  display: none;
 }
 
 .lc-select {
@@ -2090,48 +2182,11 @@ details[open] > .disclosure::after,
   font-variant-numeric: tabular-nums;
 }
 
-.lc-shareBtn,
-.lc-resetBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-deep-blue);
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
 
-.lc-shareBtn:hover,
-.lc-shareBtn:focus-visible {
-  background: var(--color-deep-blue-dark);
-}
 
-.lc-resetBtn {
-  background: transparent;
-  color: var(--color-deep-blue);
-}
 
-.lc-resetBtn:hover,
-.lc-resetBtn:focus-visible {
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-[data-theme="dark"] .lc-shareBtn,
-[data-theme="dark"] .lc-resetBtn:hover,
-[data-theme="dark"] .lc-resetBtn:focus-visible {
-  color: var(--neutral-page-bg-dark);
-}
 
-.lc-shareBtn:focus-visible,
-.lc-resetBtn:focus-visible {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
 .lc-shareUrlBar {
   display: flex;
@@ -2260,16 +2315,20 @@ details[open] > .disclosure::after,
    the colored top border since it's not a real vendor. */
 .lc-cardAdd {
   --lc-color: var(--color-text-muted);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  align-self: start;
+  justify-items: start;
+  column-gap: var(--space-3);
+  row-gap: 0;
+  text-align: left;
   background: var(--color-bg);
-  border: 2px dashed var(--color-control-edge);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  min-height: 200px;
+  /* Solid: a dashed edge means "not available" (docs/color-palette.md, Buttons). */
+  border: 1.5px solid var(--color-deep-blue);
+  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  min-height: 64px;
   min-width: 0;
   cursor: pointer;
   color: var(--color-text-secondary);
@@ -2282,8 +2341,10 @@ details[open] > .disclosure::after,
   border-color: var(--color-deep-blue);
   color: var(--color-deep-blue);
   background: var(--color-bg-white);
-  outline: none;
-  transform: translateY(-1px);
+}
+.lc-cardAdd:focus-visible {
+  outline: 2px solid var(--btn-focus);
+  outline-offset: 3px;
 }
 
 .lc-cardAdd:focus-visible {
@@ -2292,7 +2353,8 @@ details[open] > .disclosure::after,
 }
 
 .lc-cardAddIcon {
-  font-size: 2.25rem;
+  grid-row: 1 / span 2;
+  font-size: 1.75rem;
   font-weight: 300;
   line-height: 1;
   color: var(--color-deep-blue);
@@ -2422,6 +2484,16 @@ details[open] > .disclosure::after,
   color: var(--neutral-page-bg-dark);
 }
 
+/* Forced colours drop the fill, so the chosen option keeps a system pair. */
+@media (forced-colors: active) {
+  .lc-modeOptionActive {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Card structure
    --------------------------------------------------------------------------- */
@@ -2439,28 +2511,46 @@ details[open] > .disclosure::after,
    vendor card. The title and short hint are always visible (no
    collapsibles) so the user can see at a glance which knobs the card
    exposes. */
+/* An optional group: a row that names the group and says what it holds,
+   and opens to its boxes. The chevron comes from .disclosure. */
 .lc-fieldGroup {
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
   border-top: 1px dashed var(--color-border);
+}
+.lc-results + .lc-fieldGroup {
+  margin-top: var(--space-2);
 }
 
 .lc-fieldGroupHeader {
-  margin-bottom: var(--space-2);
+  display: grid;
+  gap: 1px;
+  min-height: 44px;
+  padding: 8px 36px 8px 0;
+  align-content: center;
+}
+.lc-fieldGroupHeader::after {
+  right: 4px;
+  font-size: 1.25rem;
+}
+.lc-fieldGroupHeader:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .lc-fieldGroupTitle {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--color-deep-blue);
-  margin: 0;
+}
+
+.lc-fieldGroupState {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
 }
 
 .lc-fieldGroupHint {
-  margin: 2px 0 0;
+  margin: 0;
   font-size: 0.875rem;
   color: var(--color-text-muted);
   line-height: 1.4;
@@ -2470,6 +2560,7 @@ details[open] > .disclosure::after,
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  padding: 2px 0 var(--space-3);
 }
 
 /* Inline checkbox + label (used for "roll fee into principal"). */
@@ -2743,6 +2834,36 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
 }
 
+/* A payment that changes with the rate: two steps of the same weight, each
+   amount beside its months. When a line is too narrow for both (a long
+   translation, a 7-digit amount), the whole amount drops under its label;
+   an amount never breaks. */
+.lc-steps {
+  display: grid;
+  gap: 4px;
+}
+
+.lc-step {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0 var(--space-2);
+}
+
+.lc-stepLabel {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+.lc-stepAmount {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
 .lc-resultDetails {
   margin-top: var(--space-2);
 }
@@ -2787,7 +2908,7 @@ details[open] > .disclosure::after,
 
 /* Results */
 .lc-results {
-  margin-top: auto;
+  margin-top: var(--space-2);
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-border);
   display: flex;
@@ -2895,6 +3016,24 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
   font-size: 0.9rem;
   margin: 0;
+}
+
+/* In the side-by-side table a changing payment reads down the cell: months,
+   amount, months, amount. */
+.lc-deltaTable .lc-step {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.lc-deltaLines {
+  display: grid;
+  gap: 2px;
+}
+
+.lc-deltaNote {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  white-space: normal;
 }
 
 .lc-deltaTableWrap {
@@ -3198,15 +3337,12 @@ details[open] > .disclosure::after,
     align-items: stretch;
   }
   .lc-currencyField {
+    flex: 0 0 auto;
     min-width: 0;
     width: 100%;
   }
   .lc-toolbarActions {
     width: 100%;
-  }
-  .lc-shareBtn,
-  .lc-resetBtn {
-    flex: 1;
   }
   .lc-deltaSection,
   .lc-chartSection {
@@ -3215,32 +3351,12 @@ details[open] > .disclosure::after,
 }
 
 /* ---------------------------------------------------------------------------
-   Phones (640px and narrower): one vendor at a time, optional fields folded,
-   the side-by-side table restacked so nothing scrolls sideways. Wider
-   screens keep the grid of cards with every field showing.
+   Phones (640px and narrower): one vendor at a time, and the side-by-side
+   table restacked so nothing scrolls sideways. Wider screens keep the grid
+   of cards.
    --------------------------------------------------------------------------- */
 
 .lc-vendorTabs { display: none; }
-
-@media (min-width: 641px) {
-  /* The fold is a plain block here: no summary row, and the groups keep
-     the card's spacing between them. */
-  .lc-optional {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-  .lc-optional > .lc-optionalSummary { display: none; }
-}
-
-/* A separate rule, so a browser without ::details-content skips only this.
-   It shows the groups before the fold hook has opened the fold. */
-@media (min-width: 641px) {
-  .lc-optional::details-content {
-    display: contents;
-    content-visibility: visible;
-  }
-}
 
 @media (max-width: 640px) {
   .lc-vendorTabs {
@@ -3298,25 +3414,29 @@ details[open] > .disclosure::after,
     overflow-wrap: anywhere;
   }
 
-  .lc-vendorTabAdd {
-    border: 2px dashed var(--color-control-edge);
-    background: transparent;
-    color: var(--color-deep-blue);
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
 
   /* Alone on its row: a slimmer full-width row instead of half a tile. */
-  .lc-vendorTabAdd:nth-child(odd) {
-    grid-column: 1 / -1;
-    min-height: 40px;
-  }
 
   .lc-vendorTab:focus-visible,
   .lc-vendorTabAdd:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
+  }
+
+  .lc-jump {
+    display: block;
+    margin: calc(-1 * var(--space-2)) 0 0;
+    font-size: 0.875rem;
+  }
+  .lc-jump button {
+    min-height: 44px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   /* One card at a time; "+ Add" above replaces the dashed add card. */
@@ -3346,41 +3466,6 @@ details[open] > .disclosure::after,
   .lc-resultListPrimary .lc-resultValue {
     align-items: flex-start;
     text-align: left;
-  }
-
-  /* Optional fields folded behind one row saying what is set. */
-  .lc-optional { border-top: 1px dashed var(--color-border); }
-
-  /* The chevron comes from .disclosure. */
-  .lc-optionalSummary {
-    display: grid;
-    gap: 2px;
-    min-height: 44px;
-    padding: 10px 36px 10px 0;
-  }
-
-  .lc-optionalSummary:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-    border-radius: var(--radius-sm);
-  }
-
-  .lc-optionalTitle {
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-deep-blue);
-  }
-
-  .lc-optionalStatus {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-
-  .lc-optional > .lc-fieldGroup:first-of-type {
-    margin-top: 0;
-    padding-top: var(--space-2);
-    border-top: 0;
   }
 
   /* Side-by-side: one block per metric, values marked by vendor letter. */
@@ -3430,6 +3515,32 @@ details[open] > .disclosure::after,
     padding: 0;
     border: 0;
   }
+
+  /* A metric with a cell of several lines puts one offer per line: the letter,
+     then the lines, each amount on the right. */
+  .lc-deltaTable .lc-deltaRowStacked td {
+    flex: 1 1 100%;
+    min-width: 0;
+    white-space: normal;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-steps,
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { flex: 1 1 auto; min-width: 0; }
+
+  .lc-deltaTable .lc-deltaRowStacked .lc-step {
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { text-align: right; }
+
+  /* In the card a two-step payment takes the full width on phones, months on
+     the left and amount on the right, so a long amount at a large text size
+     never runs into the APR beside it. */
+  .lc-resultListPrimary .lc-resultRowSteps { grid-column: 1 / -1; }
+  .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
 
   .lc-deltaTable td::before {
     content: attr(data-slot);

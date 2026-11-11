@@ -194,8 +194,8 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
     const keys = keysOf(loan.encodeToQueryString(vendors, global as unknown as loan.GlobalState));
     const isKey = key(loan.STATE_KEY_PATTERN);
     for (const k of keys) assert.ok(isKey.test(k), `the pattern misses ${k}`);
-    // Ten globals, then per offer the tuple and its eight advanced fields.
-    assert.equal(keys.length, 10 + loan.MAX_VENDORS * 9, keys.join(' '));
+    // Eleven globals, then per offer the tuple and its eight advanced fields.
+    assert.equal(keys.length, 11 + loan.MAX_VENDORS * 9, keys.join(' '));
   });
 
   const rows: AssetRow[] = Array.from({ length: 60 }, (_, i) => ({

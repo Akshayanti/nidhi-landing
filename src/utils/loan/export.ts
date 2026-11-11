@@ -14,7 +14,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { fromMinor, getCurrency, type LoanResult } from './math.ts';
+import { aprInConvention, fromMinor, getCurrency, type AprConvention, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
 import type { VendorInput } from './url.ts';
 
@@ -25,6 +25,8 @@ export interface LoanExport {
   island: Island;
   common: Common;
   currency: string;
+  /** The convention the page shows APR in; the column heading names it. */
+  aprConvention: AprConvention;
   vendors: VendorInput[];
   results: LoanResult[];
   /** Each offer's name as the page shows it. */
@@ -35,7 +37,15 @@ export interface LoanExport {
 
 const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true }));
 
-export function loanSheets({ island, common, currency, vendors, results, names, date, page }: LoanExport): Sheet[] {
+/** True when at least one offer really has a payment after its rate change. */
+export function hasLaterPayment(results: LoanResult[]): boolean {
+  return results.some((r) => !r.error && r.schedule.length > 0 && r.rateChange != null && r.rateChange.paymentMinor !== null);
+}
+
+/** How many columns the summary sheet gives the monthly payment: one, or four when a payment changes. */
+export const LATER_PAYMENT_COLUMNS = 4;
+
+export function loanSheets({ island, common, currency, aprConvention, vendors, results, names, date, page }: LoanExport): Sheet[] {
   const x = island.export;
   const c = island.card;
   const decimals = Math.round(Math.log10(getCurrency(currency).factor));
@@ -100,25 +110,37 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
   );
   const inputs: Sheet = { name: common.sheets.inputs, widths: [34, ...names.map(() => 18)], rows: inputRows };
 
+  // The monthly payment. When an offer's payment changes with its rate, the one
+  // column becomes three numeric ones and a note, so no figure stands for a
+  // period it does not cover. With no such offer the summary is as it always was.
+  const later = hasLaterPayment(results);
+  const paymentHead = later ? [x.monthlyAtStart, x.monthlyAfterChange, x.fromMonth, x.paymentNote] : [island.delta.monthlyPayment];
+  const paymentCells = (r: LoanResult): Cell[] => {
+    if (!later) return [minor(r.effectiveMonthlyMinor)];
+    const change = r.rateChange;
+    if (change && change.paymentMinor !== null) return [minor(r.effectiveMonthlyMinor), minor(change.paymentMinor), { n: change.month, fmt: 'integer' }, null];
+    const note = change ? island.results.paidOffBeforeChange.replace('{payoffMonth}', String(r.months)) : x.noPaymentChange;
+    return [minor(r.effectiveMonthlyMinor), null, null, note];
+  };
   const summary: Sheet = {
     name: x.sheets.summary,
-    widths: [22, 16, 12, 16, 16, 14, 16, 16, 12],
+    widths: [22, ...(later ? [18, 22, 12, 34] : [16]), 12, 16, 16, 14, 16, 34, 12],
     rows: [
-      head(c.name, island.delta.monthlyPayment, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, x.aprPct, x.computed),
+      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, `${x.aprPct} (${aprConvention === 'nominal' ? island.toolbar.aprNominal : island.toolbar.aprEffective})`, x.computed),
       ...results.map((r, i): Cell[] =>
         ok(r)
           ? [
               names[i],
-              minor(r.effectiveMonthlyMinor),
+              ...paymentCells(r),
               { n: r.months, fmt: 'integer' },
               minor(r.totalInterestMinor),
               minor(r.feeMinor),
               minor(r.prepaymentPenaltyMinor),
               minor(r.totalPaidMinor),
-              Number.isFinite(r.aprNominal) ? { n: Math.round(r.aprNominal * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
+              Number.isFinite(r.aprNominal) ? { n: Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
               common.yes,
             ]
-          : [names[i], null, null, null, null, null, null, null, common.no],
+          : [names[i], ...paymentHead.map(() => null), null, null, null, null, null, null, common.no],
       ),
     ],
   };

@@ -33,6 +33,7 @@
  *
  * Global scalars:
  *   - `c=EUR`     currency (omit at default 'EUR')
+ *   - `ac=n|e`    APR convention picked by hand: monthly rate times 12, or compounded (omit while it follows the currency)
  *   - `n=3`       vendor count (omit at default 2)
  *   - `t=horizon` active tab (omit at default 'charts')
  *   - `h=120`     horizon months
@@ -43,7 +44,7 @@
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
-import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY, type AprConvention } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { linkCurrency, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
@@ -58,7 +59,7 @@ import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 export const SHARED_STATE_GLOBAL = '__nidhiLoanCompareShared';
 
 /** Matches one state parameter name, for ToolStateGuard. */
-export const STATE_KEY_PATTERN = 'c|n|t|h|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?';
+export const STATE_KEY_PATTERN = 'c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?';
 
 export type ModeKind = 'term' | 'payment';
 export type RateKind = 'fixed' | 'hybrid';
@@ -110,6 +111,12 @@ export type AnalysisTab = 'charts' | 'horizon' | 'refi' | 'how';
 export interface GlobalState {
   /** All vendors in a comparison share one currency so the delta table is apples-to-apples. */
   currency: string;
+  /**
+   * The APR convention the reader picked by hand; `null` while it follows the
+   * currency (`defaultAprConvention`). A choice, not a value: it travels in a
+   * share link as `ac=n` or `ac=e` and is left out while `null`.
+   */
+  aprConvention: AprConvention | null;
   /** Persisted in the URL so a share link lands the recipient on the same view the sender was looking at. */
   activeTab: AnalysisTab;
   /** Horizon (in months) for the equity-snapshot section. */
@@ -203,6 +210,17 @@ export function makeDefaultVendor(index: number): VendorInput {
   };
 }
 
+/**
+ * The vendor the "Add" button creates: the slot's starting amount, rate and
+ * term, with every optional box empty. A fee sitting in a folded row would
+ * change the result without the reader having typed it. The slot templates
+ * themselves cannot lose their fees: share links leave out a value that
+ * equals its slot's template, so older links depend on them.
+ */
+export function makeAddedVendor(index: number): VendorInput {
+  return { ...makeDefaultVendor(index), feeMajor: '0', extraMonthly: '0', ...ADVANCED_DEFAULTS };
+}
+
 export const DEFAULT_VENDORS: VendorInput[] = Array.from(
   { length: MIN_VENDORS },
   (_, i) => makeDefaultVendor(i),
@@ -210,6 +228,7 @@ export const DEFAULT_VENDORS: VendorInput[] = Array.from(
 
 export const DEFAULT_GLOBAL_STATE: GlobalState = {
   currency: DEFAULT_CURRENCY,
+  aprConvention: null,
   activeTab: 'charts',
   horizonMonths: '60',
   refiVendorIndex: '1',
@@ -389,6 +408,7 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
   // Global scalars first.
   setNonDefault(params, 'c', global.currency, DEFAULT_CURRENCY);
   setNonDefault(params, 'n', vendors.length, MIN_VENDORS);
+  if (global.aprConvention) params.set('ac', global.aprConvention === 'nominal' ? 'n' : 'e');
   setNonDefault(params, 't', global.activeTab, DEFAULT_GLOBAL_STATE.activeTab);
   setNonDefault(params, 'h', written(global.horizonMonths, DEFAULT_GLOBAL_STATE.horizonMonths), DEFAULT_GLOBAL_STATE.horizonMonths);
   setNonDefault(params, 'rv', global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
@@ -516,6 +536,8 @@ export function decodeFromQueryString(qs: string): DecodeResult {
       : DEFAULT_GLOBAL_STATE.activeTab;
   const global: GlobalState = {
     currency: currency ?? DEFAULT_GLOBAL_STATE.currency,
+    // Anything but the two known letters means "follow the currency".
+    aprConvention: params.get('ac') === 'n' ? 'nominal' : params.get('ac') === 'e' ? 'effective' : null,
     activeTab,
     horizonMonths: params.get('h') === CLEARED ? '' : linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
     // '0' is "no offer chosen"; otherwise one of the offers the link carries.

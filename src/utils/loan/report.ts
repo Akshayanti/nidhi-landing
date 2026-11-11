@@ -10,7 +10,7 @@
  * Pure: no DOM, no analytics.
  */
 import { isEmptyRow, tableOf, thin, type Report } from '../shared/report.ts';
-import { loanSheets, type LoanExport } from './export.ts';
+import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets, type LoanExport } from './export.ts';
 import { fromMinor } from './math.ts';
 
 /** Dash patterns that tell offers apart without colour, A to E (as the page's chart). */
@@ -30,6 +30,19 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
     return [{ label: names[i], points: thin(points), dash: DASHES[i % DASHES.length] }];
   });
 
+  // A page is too narrow for the four payment columns beside the rest. When a
+  // payment changes with its rate, the comparison keeps the starting payment
+  // and a second, short table carries the payments by period.
+  let tables = [tableOf(summary, { caption: island.delta.heading, note: x.schedulesNote })];
+  if (hasLaterPayment(results)) {
+    const cut = (from: number, to: number) => ({ ...summary, rows: summary.rows.map((row) => [row[0], ...row.slice(from, to)]) });
+    const rest = { ...summary, rows: summary.rows.map((row) => [row[0], row[1], ...row.slice(1 + LATER_PAYMENT_COLUMNS)]) };
+    tables = [
+      tableOf(rest, { caption: island.delta.heading, note: x.schedulesNote }),
+      tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment }),
+    ];
+  }
+
   return {
     tool: x.tool,
     currency,
@@ -37,7 +50,7 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
     meaning: x.meaning,
     entered: tableOf(inputs, { keep: (row) => !isEmptyRow(row) }),
     chart: series.length > 0 ? { kind: 'lines', title: `${island.charts.balanceHeading} (${currency})`, xLabel: island.balance.axisYears, series } : null,
-    tables: [tableOf(summary, { caption: island.delta.heading, note: x.schedulesNote })],
+    tables,
     assumptions: [island.disclaimer.body],
   };
 }

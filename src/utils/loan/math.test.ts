@@ -15,6 +15,8 @@ import { loanComparisonEn, loanComparisonEs, loanComparisonHi } from '../../i18n
 import {
   CURRENCIES,
   DEFAULT_CURRENCY,
+  aprInConvention,
+  defaultAprConvention,
   buildSchedule,
   buildScheduleAdvanced,
   computeApr,
@@ -482,6 +484,32 @@ describe('computeLoan', () => {
 // ---------------------------------------------------------------------------
 // APR
 // ---------------------------------------------------------------------------
+
+describe('the two APR conventions', () => {
+  it('follows the currency: times 12 for USD and CAD, compounded for every other', () => {
+    assert.equal(defaultAprConvention('USD'), 'nominal');
+    assert.equal(defaultAprConvention('CAD'), 'nominal');
+    for (const code of ['EUR', 'GBP', 'INR', 'CZK', 'JPY']) assert.equal(defaultAprConvention(code), 'effective');
+  });
+
+  it('leaves the times-12 figure as it is', () => {
+    assert.equal(aprInConvention(0.079, 'nominal'), 0.079);
+  });
+
+  it('compounds the monthly rate over a year: 7.9% with no fee reads 8.19%', () => {
+    assert.equal((aprInConvention(0.079, 'effective') * 100).toFixed(2), '8.19');
+    // The how-to guide's second offer: 9.02% times 12 is about 9.4% compounded.
+    assert.equal((aprInConvention(0.0902, 'effective') * 100).toFixed(1), '9.4');
+    // 20% nominal against 21.94% compounded, as issue #368 records.
+    assert.equal((aprInConvention(0.2, 'effective') * 100).toFixed(2), '21.94');
+  });
+
+  it('keeps zero at zero, an undefined APR undefined, and the order of two offers', () => {
+    assert.equal(aprInConvention(0, 'effective'), 0);
+    assert.ok(Number.isNaN(aprInConvention(NaN, 'effective')));
+    assert.ok(aprInConvention(0.06094, 'effective') < aprInConvention(0.065, 'effective'));
+  });
+});
 
 describe('computeApr', () => {
   // Helper: build a clean contract schedule for a fixed-rate fully-amortizing
@@ -1639,5 +1667,55 @@ describe('the points row tells a saving from a loss (issues 526 and 528)', () =>
 
   it('points that cost nothing break even at once', () => {
     assert.equal(pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0.0025).months, 0);
+  });
+});
+
+describe('rateChange: the payment after a fixed period', () => {
+  const hybrid = (initialAnnualRate: number, initialMonths: number, subsequentAnnualRate: number) =>
+    ({ kind: 'hybrid' as const, initialAnnualRate, initialMonths, subsequentAnnualRate });
+  const P = 100_000_000; // 1,000,000.00
+
+  it('reports the month and the recast payment (three offers worked by hand)', () => {
+    const one = computeLoan({ principalMinor: P, annualRate: 0.0845, rateSpec: hybrid(0.0845, 60, 0.10) }, { kind: 'term', months: 360 });
+    const two = computeLoan({ principalMinor: P, annualRate: 0.0875, rateSpec: hybrid(0.0875, 120, 0.09) }, { kind: 'term', months: 360 });
+    const three = computeLoan({ principalMinor: P, annualRate: 0.0845, rateSpec: hybrid(0.0845, 60, 0.06) }, { kind: 'term', months: 360 });
+    assert.equal(one.monthlyPaymentMinor, 765_373);
+    assert.deepEqual(one.rateChange, { month: 61, paymentMinor: 867_351 });
+    assert.equal(two.monthlyPaymentMinor, 786_700);
+    assert.deepEqual(two.rateChange, { month: 121, paymentMinor: 800_958 });
+    assert.equal(three.monthlyPaymentMinor, 765_373);
+    assert.deepEqual(three.rateChange, { month: 61, paymentMinor: 614_983 });
+    // It is the payment the schedule really carries.
+    assert.equal(one.schedule[60].payment, 867_351);
+    assert.equal(three.schedule[200].payment, 614_983);
+  });
+
+  it('is absent for a fixed loan and when the change falls at or after the term', () => {
+    assert.equal(computeLoan({ principalMinor: P, annualRate: 0.07 }, { kind: 'term', months: 120 }).rateChange, undefined);
+    assert.equal(computeLoan({ principalMinor: P, annualRate: 0.07, rateSpec: hybrid(0.07, 120, 0.09) }, { kind: 'term', months: 120 }).rateChange, undefined);
+    assert.equal(computeLoan({ principalMinor: P, annualRate: 0.07, rateSpec: hybrid(0.07, 200, 0.09) }, { kind: 'term', months: 120 }).rateChange, undefined);
+  });
+
+  it('includes the extra monthly amount, on the recast of the smaller balance', () => {
+    const r = computeLoan({ principalMinor: P, annualRate: 0.0845, extraMonthlyMinor: 30_000, rateSpec: hybrid(0.0845, 60, 0.10) }, { kind: 'term', months: 360 });
+    assert.equal(r.effectiveMonthlyMinor, 765_373 + 30_000);
+    assert.ok(r.rateChange && r.rateChange.paymentMinor !== null);
+    assert.equal(r.rateChange!.paymentMinor, r.schedule[60].payment);
+    // Paying extra for five years leaves less to recast, so the base is lower than without it.
+    assert.ok(r.rateChange!.paymentMinor! - 30_000 < 867_351);
+  });
+
+  it('has no later payment when the loan is paid off before the change', () => {
+    const r = computeLoan({ principalMinor: P, annualRate: 0.0845, lumpSums: [{ month: 12, amountMinor: P }], rateSpec: hybrid(0.0845, 60, 0.10) }, { kind: 'term', months: 360 });
+    assert.equal(r.months, 12);
+    assert.deepEqual(r.rateChange, { month: 61, paymentMinor: null });
+  });
+
+  it('shows the closing payment when it is the only one at the new rate', () => {
+    // The rate changes for the last month alone: that month's payment closes the loan.
+    const r = computeLoan({ principalMinor: 1_000_000, annualRate: 0.06, rateSpec: hybrid(0.06, 12, 0.08) }, { kind: 'term', months: 13 });
+    assert.equal(r.months, 13);
+    assert.deepEqual(r.rateChange, { month: 13, paymentMinor: r.schedule[12].payment, last: true });
+    assert.equal(r.schedule[12].balance, 0);
   });
 });

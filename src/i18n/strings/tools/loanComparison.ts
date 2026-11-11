@@ -131,11 +131,11 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'What is APR and how is it calculated here?',
-              a: 'APR (Annual Percentage Rate) folds the upfront fee into the cost of borrowing as a single annualized rate, so two offers with different fees can be compared on one number. This calculator computes APR by treating the fee as an upfront deduction from the principal disbursed to the borrower, then solving for the monthly rate at which the present value of the contractual payment stream equals that net amount. APR is reported as a nominal annual rate (monthly rate × 12), which matches the convention on US loan disclosures and is directionally consistent with the EU APRC. When the fee is zero, APR equals the nominal rate.',
+              a: 'APR (Annual Percentage Rate) folds the upfront fee into the cost of borrowing as a single annualized rate, so two offers with different fees can be compared on one number. This calculator computes APR by treating the fee as an upfront deduction from the principal disbursed to the borrower, then solving for the monthly rate at which the present value of the contractual payment stream equals that net amount. That monthly rate is then turned into a yearly figure in one of two ways, and the switch above the offers chooses which: the monthly rate × 12, used in the US and Canada, or the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK. With no fee, the monthly-rate-×-12 figure equals the rate you entered, and the compounded figure is slightly higher because interest is charged every month: 7.9% becomes about 8.19%.',
             },
             {
               q: 'Why is APR usually higher than the headline rate?',
-              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the effective rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. For an in-depth treatment, see the post on understanding loan terms.',
+              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. Under the compounded convention, APR is a little above the headline rate even with no fee. For an in-depth treatment, see the post on understanding loan terms.',
             },
             {
               q: 'Does APR include the extra principal I plan to pay each month?',
@@ -177,7 +177,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'How does the calculator handle hybrid (5/1, 7/1, 10/1 ARM) loans?',
-              a: 'Switch the rate type to Hybrid in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a 5/1 ARM) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The displayed APR uses this as-disclosed schedule, which matches how lenders quote APR on real ARM products.',
+              a: 'Switch the rate type to Hybrid in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a 5/1 ARM) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
             },
             {
               q: 'Why is the hybrid option disabled when I picked "Payoff months"?',
@@ -279,6 +279,11 @@ export const loanComparisonEn = {
       months: 'Months',
       aprPct: 'APR, %',
       computed: 'Calculated',
+      monthlyAtStart: 'Monthly payment at start',
+      monthlyAfterChange: 'Monthly payment after rate change',
+      fromMonth: 'From month',
+      paymentNote: 'Payment note',
+      noPaymentChange: 'No payment change',
       balance: 'Balance left',
     },
     /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
@@ -286,6 +291,12 @@ export const loanComparisonEn = {
     /** The bar above the cards: currency, share and reset. */
     toolbar: {
       aria: 'Loan comparison actions',
+      /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
+      aprLabel: 'How yearly APR is calculated',
+      aprNominal: 'Monthly rate × 12',
+      aprEffective: 'Monthly rate compounded over a year',
+      aprHelpToggle: 'What is the difference?',
+      aprHelp: 'Two conventions exist: the monthly rate times 12, used in the US and Canada, and the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK (APR, or APRC for mortgages). Other countries may use either or their own rule, so check which one a lender\'s document uses before comparing it with this figure.',
       currencyLabel: 'Display currency',
       currencyHelp: 'All loans in this comparison use this format.',
       sample: 'Sample:',
@@ -307,6 +318,7 @@ export const loanComparisonEn = {
      */
     /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
     cardsHeading: 'Loan offers',
+    example: 'Example offers. Replace the figures with your own.',
     phoneTabs: {
       groupAria: 'Vendor to show',
       tabName: 'Vendor {label}',
@@ -328,18 +340,10 @@ export const loanComparisonEn = {
       term: 'Term (months)',
       monthly: 'Monthly payment',
       requiredTitle: 'Required',
-      optionalTitle: 'Optional loan details',
-      /**
-       * What the folded optional fields hold, said in words. One status reads
-       * as a whole sentence on its own; two or more read as a list.
-       */
-      optionalSingle: '{status}, no fees or prepayments',
-      optionalMulti: '{status} with {rest}',
+      foldSet: 'Filled in',
+      foldNone: 'None',
       statusHybrid: 'Hybrid (ARM)',
       statusFixed: 'Fixed rate',
-      statusFees: 'fees',
-      statusPrepayments: 'prepayments',
-      statusPenalty: 'penalty',
       rateStructure: {
         title: 'Rate structure',
         hint: 'Fixed or fixed-then-variable (ARM)',
@@ -359,7 +363,7 @@ export const loanComparisonEn = {
       initialFixedHelp: 'Common: 60 (5/1 ARM), 84 (7/1), 120 (10/1).',
       subsequentRate: 'Subsequent rate (%)',
       subsequentRateHelp:
-        'Rate after the fixed window ends. Real ARMs track an index; this is your stress-test guess.',
+        'Rate after the fixed period ends. Real adjustable loans follow a reference rate; this is your own assumption, not a forecast.',
       costs: {
         title: 'Costs and fees',
         hint: 'Origination, closing, and discount points',
@@ -397,9 +401,18 @@ export const loanComparisonEn = {
     results: {
       monthly: 'Monthly',
       monthlyExtra: '{base} + {extra} extra',
+      monthlyFirst: 'Months 1 to {lastMonth}',
+      monthlyFrom: 'From month {month}',
+      monthlyLast: 'Month {month}, last payment',
+      monthlyLaterNote: 'The later payment uses the rate you entered, not a forecast.',
+      monthlyIncludesExtra: 'includes {extra} extra each month',
+      paidOffBeforeChange: 'Paid off in month {payoffMonth}, before the rate changes',
       apr: 'APR',
       /** An APR that cannot be computed, as when the fee swallows the loan. */
       aprNa: 'n/a',
+      /** Under a card's APR: which convention the figure uses. */
+      aprNominalLine: 'Monthly rate × 12 (US, Canada)',
+      aprEffectiveLine: 'Compounded over a year (EU, UK)',
       aprFees: 'Includes fees',
       aprNoFees: 'No fees',
       totalPaid: 'Total paid',
@@ -440,6 +453,8 @@ export const loanComparisonEn = {
       metricAria: 'Metric',
       monthlyPayment: 'Monthly payment',
       monthsToPayoff: 'Months to payoff',
+      /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
+      aprNote: 'APR in this table: {convention}.',
       aprInclFees: 'APR (incl. fees)',
       totalInterest: 'Total interest',
       totalPaid: 'Total paid',
@@ -549,7 +564,7 @@ export const loanComparisonEn = {
       /** Split around the `<strong>` lead, as the rest of these bullets are. */
       apr: {
         strong: 'APR',
-        rest: ' folds the origination/closing fee into the rate by treating the fee as an upfront deduction from what you actually receive, then solving for the monthly rate at which the present value of the contractual payments equals that net amount. Reported as the nominal annual rate (monthly rate × 12), matching US loan disclosures.',
+        rest: ' folds the origination/closing fee into the rate by treating the fee as an upfront deduction from what you actually receive, then solving for the monthly rate at which the present value of the contractual payments equals that net amount. That monthly rate is shown as a yearly figure in the convention chosen above the offers: times 12 (US, Canada) or compounded over a year (EU, UK).',
       },
       hybrid: {
         strong: 'Hybrid (ARM) loans',
@@ -597,7 +612,7 @@ export const loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Assumptions and disclaimers',
-      body: 'Calculations assume monthly compounding and on-time payments. APR is shown as a nominal annualized rate (monthly rate × 12) computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure, so add those into the fee field if you want them reflected. Canadian residential mortgages compound semi-annually by law and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your best stress-test guess. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
+      body: 'Calculations assume monthly compounding and on-time payments. APR is shown in the convention chosen above the offers (the monthly rate × 12, or the monthly rate compounded over a year) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure, so add those into the fee field if you want them reflected. Canadian residential mortgages compound semi-annually by law and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your best stress-test guess. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
     },
     /**
      * A count of months, as this tool writes it. The engine's own
@@ -771,11 +786,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'APR क्या है और यहाँ उसकी गणना कैसे होती है?',
-              a: 'APR (सालाना प्रतिशत दर) शुरू में लगने वाले शुल्क को उधार लेने की लागत में जोड़कर एक ही सालाना दर बना देता है, जिससे अलग-अलग शुल्क वाले दो ऑफ़र एक ही आँकड़े पर तुलनीय हो जाते हैं। यह कैलकुलेटर APR ऐसे निकालता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो उधार लेने वाले को असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। APR नाममात्र सालाना दर (मासिक दर × 12) के रूप में बताया जाता है, जो अमेरिकी लोन प्रकटीकरण की परंपरा से मेल खाता है और यूरोपीय संघ के APRC से भी मोटे तौर पर मेल खाता है। जब शुल्क शून्य हो, तो APR नाममात्र दर के बराबर होता है।',
+              a: 'APR (सालाना प्रतिशत दर) शुरू में लगने वाले शुल्क को उधार लेने की लागत में जोड़कर एक ही सालाना दर बना देता है, जिससे अलग-अलग शुल्क वाले दो ऑफ़र एक ही आँकड़े पर तुलनीय हो जाते हैं। यह कैलकुलेटर APR ऐसे निकालता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो उधार लेने वाले को असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। फिर इस मासिक दर से सालाना आँकड़ा दो में से एक तरीक़े से बनता है, और ऑफ़रों के ऊपर का विकल्प तय करता है कि किस तरीक़े से: मासिक दर × 12, जो अमेरिका और कनाडा में चलता है, या साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन में चलती है। शुल्क न हो, तो मासिक दर × 12 वाला आँकड़ा आपकी भरी हुई दर के बराबर होता है, और चक्रवृद्धि वाला आँकड़ा थोड़ा ऊँचा, क्योंकि ब्याज हर महीने लगता है: 7.9% लगभग 8.19% हो जाता है।',
             },
             {
               q: 'APR आम तौर पर सामने लिखी दर से ऊँचा क्यों होता है?',
-              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। विस्तार से समझने के लिए लोन की शर्तों वाला पाठ देखें।',
+              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। चक्रवृद्धि (compounding) वाले तरीक़े में APR बिना शुल्क के भी सामने लिखी दर से थोड़ा ऊँचा रहता है। विस्तार से समझने के लिए लोन की शर्तों वाला पाठ देखें।',
             },
             {
               q: 'क्या APR में हर महीने चुकाया जाने वाला मेरा अतिरिक्त मूलधन शामिल है?',
@@ -817,7 +832,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कैलकुलेटर हाइब्रिड (5/1, 7/1, 10/1 ARM) लोन कैसे संभालता है?',
-              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार हाइब्रिड पर बदल दें, फिर शुरुआत की तय अवधि (जैसे 5/1 ARM के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। दिखाया गया APR इसी शेड्यूल पर बनता है, जो उस तरीक़े से मेल खाता है जिससे लोन देने वाले असली ARM प्रोडक्ट पर APR बताते हैं।',
+              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार हाइब्रिड पर बदल दें, फिर शुरुआत की तय अवधि (जैसे 5/1 ARM के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
             },
             {
               q: '"चुकाने के महीने" चुनने पर हाइब्रिड विकल्प बंद क्यों हो जाता है?',
@@ -915,11 +930,22 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       months: 'महीने',
       aprPct: 'APR, %',
       computed: 'गणना हुई',
+      monthlyAtStart: 'शुरुआत में मासिक किस्त',
+      monthlyAfterChange: 'दर बदलने के बाद मासिक किस्त',
+      fromMonth: 'किस महीने से',
+      paymentNote: 'किस्त पर टिप्पणी',
+      noPaymentChange: 'किस्त नहीं बदलती',
       balance: 'बची हुई रकम',
     },
     currencies: currenciesHi,
     toolbar: {
       aria: 'लोन की तुलना के काम',
+      /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
+      aprLabel: 'APR निकालने का तरीक़ा',
+      aprNominal: 'मासिक दर × 12',
+      aprEffective: 'साल भर की चक्रवृद्धि वाली मासिक दर',
+      aprHelpToggle: 'फ़र्क क्या है?',
+      aprHelp: 'दो तरीक़े चलते हैं: मासिक दर गुणा 12, जो अमेरिका और कनाडा में चलता है, और साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन (APR, या मॉर्गेज के लिए APRC) में चलती है। बाकी देश इनमें से कोई एक या अपना नियम अपना सकते हैं, इसलिए इस आँकड़े से तुलना करने से पहले देख लें कि लोन देने वाले के काग़ज़ में कौन-सा तरीक़ा है।',
       currencyLabel: 'किस मुद्रा में दिखाना है',
       currencyHelp: 'इस तुलना के सारे लोन इसी तरीक़े में लिखे जाएँगे।',
       sample: 'नमूना:',
@@ -934,6 +960,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       copyPrompt: 'यह लिंक कॉपी करें:',
     },
     cardsHeading: 'लोन ऑफ़र',
+    example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -955,14 +982,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       term: 'अवधि (महीने)',
       monthly: 'मासिक किस्त',
       requiredTitle: 'ज़रूरी',
-      optionalTitle: 'लोन की बाकी जानकारी (वैकल्पिक)',
-      optionalSingle: '{status}, न कोई शुल्क न समय से पहले भुगतान',
-      optionalMulti: '{status}, साथ में {rest}',
+      foldSet: 'भरा हुआ',
+      foldNone: 'कुछ नहीं',
       statusHybrid: 'हाइब्रिड (ARM)',
       statusFixed: 'तय दर',
-      statusFees: 'शुल्क',
-      statusPrepayments: 'समय से पहले भुगतान',
-      statusPenalty: 'जुर्माना',
       rateStructure: {
         title: 'दर का ढाँचा',
         hint: 'तय, या पहले तय फिर बदलती (ARM)',
@@ -981,7 +1004,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       initialFixedHelp: 'आम: 60 (5/1 ARM), 84 (7/1), 120 (10/1)।',
       subsequentRate: 'बाद की दर (%)',
       subsequentRateHelp:
-        'तय अवधि ख़त्म होने के बाद की दर। असली ARM किसी इंडेक्स से जुड़े होते हैं; यहाँ दर बढ़ने की स्थिति का अपना अनुमान भरें।',
+        'तय अवधि ख़त्म होने के बाद की दर। असली बदलती दर वाले लोन किसी संदर्भ दर के साथ चलते हैं; यह आपका अपना अनुमान है, कोई पूर्वानुमान नहीं।',
       costs: {
         title: 'लागत और शुल्क',
         hint: 'लोन शुल्क, कागज़ी खर्च और डिस्काउंट पॉइंट्स',
@@ -1016,8 +1039,17 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     results: {
       monthly: 'मासिक',
       monthlyExtra: '{base} + {extra} अतिरिक्त',
+      monthlyFirst: 'महीना 1 से {lastMonth} तक',
+      monthlyFrom: 'महीना {month} से',
+      monthlyLast: 'महीना {month}, आख़िरी किस्त',
+      monthlyLaterNote: 'बाद की किस्त आपकी भरी हुई दर पर बनी है, यह कोई पूर्वानुमान नहीं है।',
+      monthlyIncludesExtra: 'हर महीने {extra} अतिरिक्त शामिल',
+      paidOffBeforeChange: 'दर बदलने से पहले, महीना {payoffMonth} में चुक गया',
       apr: 'APR',
       aprNa: 'लागू नहीं',
+      /** Under a card's APR: which convention the figure uses. */
+      aprNominalLine: 'मासिक दर × 12 (अमेरिका, कनाडा)',
+      aprEffectiveLine: 'साल भर की चक्रवृद्धि (यूरोपीय संघ, ब्रिटेन)',
       aprFees: 'शुल्क जुड़ा हुआ',
       aprNoFees: 'कोई शुल्क नहीं',
       totalPaid: 'कुल चुकाया',
@@ -1048,6 +1080,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       metricAria: 'मापदंड',
       monthlyPayment: 'मासिक किस्त',
       monthsToPayoff: 'चुकाने के महीने',
+      /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
+      aprNote: 'इस तालिका में APR का तरीक़ा: {convention}।',
       aprInclFees: 'APR (शुल्क समेत)',
       totalInterest: 'कुल ब्याज',
       totalPaid: 'कुल चुकाया',
@@ -1145,7 +1179,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         'हर महीने का ब्याज उस समय के बकाए पर लगता है, किस्त ब्याज और मूलधन में बँटती है, और बकाया घट जाता है। यह गणना मुद्रा की सबसे छोटी इकाई तक सटीक चलती है।',
       apr: {
         strong: 'APR',
-        rest: ' लोन शुल्क और कागज़ी खर्च को दर में इस तरह जोड़ता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो आपको असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। इसे नाममात्र सालाना दर (मासिक दर × 12) के रूप में बताया जाता है, जो अमेरिकी लोन प्रकटीकरण से मेल खाता है।',
+        rest: ' लोन शुल्क और कागज़ी खर्च को दर में इस तरह जोड़ता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो आपको असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। यह मासिक दर सालाना आँकड़े के रूप में उसी तरीक़े से दिखती है जो ऑफ़रों के ऊपर चुना गया है: × 12 (अमेरिका, कनाडा) या साल भर की चक्रवृद्धि (यूरोपीय संघ, ब्रिटेन)।',
       },
       hybrid: {
         strong: 'हाइब्रिड (ARM) लोन',
@@ -1192,7 +1226,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'मान्यताएँ और ज़रूरी बातें',
-      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR को नाममात्र सालाना दर (मासिक दर × 12) के रूप में दिखाया जाता है, जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि आधिकारिक APR/APRC प्रकटीकरण में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी, इसलिए अगर वे भी दिखानी हों तो उन्हें शुल्क वाले फ़ील्ड में जोड़ दें। कनाडा के आवासीय मॉर्गेज कानूनन छह महीने पर ब्याज जोड़ते हैं, और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा दर बढ़ने की स्थिति का आपका अपना अनुमान है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपने हाल के हिसाब से सलाह के लिए किसी लाइसेंस वाले मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
+      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR ऑफ़रों के ऊपर चुने गए तरीक़े से दिखाया जाता है (मासिक दर × 12, या साल भर की चक्रवृद्धि वाली मासिक दर), जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि आधिकारिक APR/APRC प्रकटीकरण में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी, इसलिए अगर वे भी दिखानी हों तो उन्हें शुल्क वाले फ़ील्ड में जोड़ दें। कनाडा के आवासीय मॉर्गेज कानूनन छह महीने पर ब्याज जोड़ते हैं, और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा दर बढ़ने की स्थिति का आपका अपना अनुमान है। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपनी स्थिति के हिसाब से सलाह के लिए किसी लाइसेंस वाले मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
     },
     months: {
       na: 'लागू नहीं',
@@ -1250,8 +1284,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
  * `APR` and `ARM` stay Latin, as in every language; APR is glossed once as
  * the tasa de porcentaje anual (not *tasa anual equivalente*, which is what
  * TAE stands for), and the EU APRC is called the TAE, its name in the
- * directive's Spanish text. The tool's figure is the US nominal APR, so it is
- * never labelled TAE. The months use `a.` for años so that one
+ * directive's Spanish text. The tool's figure follows the convention the reader
+ * chose; the label stays APR, and the help text names TAE for the compounded one. The months use `a.` for años so that one
  * form serves 1 and many years, as `yr` does in English.
  */
 export const loanComparisonEs: typeof loanComparisonEn = {
@@ -1340,11 +1374,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. El APR se expresa como tasa anual nominal (tasa mensual × 12), que coincide con la convención de la información obligatoria de los préstamos en EE. UU. y apunta en la misma dirección que la TAE de la UE. Cuando la comisión es cero, el APR es igual a la tasa nominal.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se convierte después en una cifra anual de una de dos maneras, y el selector que está encima de las ofertas decide cuál: la tasa mensual × 12, que se usa en EE. UU. y Canadá, o la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido. Sin comisión, la cifra de tasa mensual × 12 es igual a la tasa que escribiste, y la cifra capitalizada es algo más alta porque los intereses se cobran cada mes: un 7,9% pasa a ser alrededor de un 8,19%.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
-              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa efectiva que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
+              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Con la convención capitalizada, el APR queda algo por encima de la tasa anunciada incluso sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
             },
             {
               q: '¿El APR incluye el capital extra que pienso pagar cada mes?',
@@ -1386,7 +1420,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Cómo trata la calculadora los préstamos híbridos (ARM 5/1, 7/1, 10/1)?',
-              a: 'Cambia el tipo de tasa a Híbrida en el grupo «Estructura de la tasa» y escribe el periodo fijo inicial (por ejemplo, 60 meses para un ARM 5/1) y la tasa que se aplica cuando termina ese periodo fijo. La tabla de amortización se construye con la tasa inicial hasta el mes de transición y después se recalcula la cuota: el saldo pendiente se vuelve a amortizar durante los meses contractuales que quedan a la tasa posterior, de modo que el préstamo se sigue liquidando en el plazo original. El APR mostrado usa esta tabla tal como se informa, que es como las entidades financieras indican el APR en productos ARM reales.',
+              a: 'Cambia el tipo de tasa a Híbrida en el grupo «Estructura de la tasa» y escribe el periodo fijo inicial (por ejemplo, 60 meses para un ARM 5/1) y la tasa que se aplica cuando termina ese periodo fijo. La tabla de amortización se construye con la tasa inicial hasta el mes de transición y después se recalcula la cuota: el saldo pendiente se vuelve a amortizar durante los meses contractuales que quedan a la tasa posterior, de modo que el préstamo se sigue liquidando en el plazo original. El APR usa esta tabla, con la tasa que escribiste. Cuando la tasa cambia, esta calculadora recalcula la cuota para que el préstamo siga terminando en su plazo original. Algunas entidades, a menudo en préstamos hipotecarios de tasa variable en la India, mantienen la cuota y cambian el número de meses, lo que cambia el total de intereses. Una tasa variable real también puede cambiar muchas veces; aquí se muestra un solo cambio.',
             },
             {
               q: '¿Por qué la opción híbrida está desactivada cuando elijo «Meses hasta liquidar»?',
@@ -1484,11 +1518,22 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       months: 'Meses',
       aprPct: 'APR, %',
       computed: 'Calculado',
+      monthlyAtStart: 'Cuota mensual al inicio',
+      monthlyAfterChange: 'Cuota mensual tras el cambio de tasa',
+      fromMonth: 'Desde el mes',
+      paymentNote: 'Nota sobre la cuota',
+      noPaymentChange: 'La cuota no cambia',
       balance: 'Saldo pendiente',
     },
     currencies: currenciesEs,
     toolbar: {
       aria: 'Acciones del comparador de préstamos',
+      /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
+      aprLabel: 'Cómo se calcula el APR anual',
+      aprNominal: 'Tasa mensual × 12',
+      aprEffective: 'Tasa mensual capitalizada durante un año',
+      aprHelpToggle: '¿Cuál es la diferencia?',
+      aprHelp: 'Hay dos convenciones: la tasa mensual por 12, que se usa en EE. UU. y Canadá, y la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido (APR, o APRC en hipotecas). Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra. La cifra oficial (TAE) fija además qué costos incluye.',
       currencyLabel: 'Moneda en pantalla',
       currencyHelp: 'Todos los préstamos de esta comparación usan este formato.',
       sample: 'Ejemplo:',
@@ -1503,6 +1548,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       copyPrompt: 'Copia este enlace:',
     },
     cardsHeading: 'Ofertas de préstamo',
+    example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
     phoneTabs: {
       groupAria: 'Entidad que se muestra',
       tabName: 'Entidad {label}',
@@ -1524,14 +1570,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       term: 'Plazo (meses)',
       monthly: 'Cuota mensual',
       requiredTitle: 'Obligatorio',
-      optionalTitle: 'Datos opcionales del préstamo',
-      optionalSingle: '{status}, sin comisiones ni pagos anticipados',
-      optionalMulti: '{status} con {rest}',
+      foldSet: 'Con datos',
+      foldNone: 'Nada',
       statusHybrid: 'Tasa híbrida (ARM)',
       statusFixed: 'Tasa fija',
-      statusFees: 'comisiones',
-      statusPrepayments: 'pagos anticipados',
-      statusPenalty: 'penalización',
       rateStructure: {
         title: 'Estructura de la tasa',
         hint: 'Fija, o fija y luego variable (ARM)',
@@ -1550,7 +1592,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       initialFixedHelp: 'Habituales: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
       subsequentRate: 'Tasa posterior (%)',
       subsequentRateHelp:
-        'Tasa cuando termina el periodo fijo. Los ARM reales siguen un índice; esta es tu estimación para una prueba de estrés.',
+        'Tasa cuando termina el periodo fijo. Los préstamos de tasa variable reales siguen una tasa de referencia; esta es tu propia suposición, no un pronóstico.',
       costs: {
         title: 'Costos y comisiones',
         hint: 'Comisión de apertura, gastos iniciales y puntos de descuento',
@@ -1585,8 +1627,17 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     results: {
       monthly: 'Mensual',
       monthlyExtra: '{base} + {extra} de pago extra',
+      monthlyFirst: 'Meses 1 a {lastMonth}',
+      monthlyFrom: 'Desde el mes {month}',
+      monthlyLast: 'Mes {month}, última cuota',
+      monthlyLaterNote: 'La cuota posterior usa la tasa que escribiste, no es un pronóstico.',
+      monthlyIncludesExtra: 'incluye {extra} de pago extra al mes',
+      paidOffBeforeChange: 'Se liquida en el mes {payoffMonth}, antes de que cambie la tasa',
       apr: 'APR',
       aprNa: 'n. d.',
+      /** Under a card's APR: which convention the figure uses. */
+      aprNominalLine: 'Tasa mensual × 12 (EE. UU., Canadá)',
+      aprEffectiveLine: 'Capitalizada durante un año (UE, Reino Unido)',
       aprFees: 'Incluye comisiones',
       aprNoFees: 'Sin comisiones',
       totalPaid: 'Total pagado',
@@ -1617,6 +1668,8 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       metricAria: 'Métrica',
       monthlyPayment: 'Cuota mensual',
       monthsToPayoff: 'Meses hasta liquidar',
+      /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
+      aprNote: 'APR de esta tabla: {convention}.',
       aprInclFees: 'APR (con comisiones)',
       totalInterest: 'Intereses totales',
       totalPaid: 'Total pagado',
@@ -1714,7 +1767,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         'Los intereses de cada mes se calculan sobre el saldo pendiente, la cuota se reparte entre intereses y capital, y el saldo se reduce. El cálculo es exacto hasta la unidad monetaria más pequeña.',
       apr: {
         strong: 'APR',
-        rest: ' incorpora la comisión de apertura y los gastos iniciales a la tasa: trata la comisión como una deducción inicial de lo que realmente recibes y busca la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Se expresa como tasa anual nominal (tasa mensual × 12), como en la información obligatoria de los préstamos en EE. UU.',
+        rest: ' incorpora la comisión de apertura y los gastos iniciales a la tasa: trata la comisión como una deducción inicial de lo que realmente recibes y busca la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se muestra como cifra anual con la convención elegida encima de las ofertas: × 12 (EE. UU., Canadá) o capitalizada durante un año (UE, Reino Unido).',
       },
       hybrid: {
         strong: 'Los préstamos híbridos (ARM)',
@@ -1761,7 +1814,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Supuestos y advertencias',
-      body: 'Los cálculos suponen capitalización mensual y pagos en su fecha. El APR se muestra como tasa anual nominal (tasa mensual × 12) calculada sobre la tabla contractual (sin pagos extra voluntarios), e incorpora la comisión de apertura y los gastos iniciales al costo efectivo del préstamo; cada jurisdicción decide qué otros costos (seguros obligatorios, cuentas vinculadas, impuestos) deben incluirse en su cifra oficial de APR/TAE, así que súmalos al campo de la comisión si quieres que se reflejen. Las hipotecas residenciales canadienses capitalizan semestralmente por ley, y los productos brasileños y algunos británicos usan otras convenciones de capitalización; en esos productos, las cifras con capitalización mensual de esta calculadora se desviarán ligeramente. Los préstamos a tasa variable reales siguen un índice más un margen y pueden tener topes de tasa que esta calculadora no aplica; la tasa posterior que escribes es tu mejor estimación para una prueba de estrés. No se modelan los impuestos sobre la propiedad, las cuotas de mantenimiento del edificio o de las zonas comunes, el seguro del hogar ni el tratamiento fiscal de los intereses del préstamo en tu jurisdicción. Es una comparación solo educativa; no es asesoramiento financiero. Para una comparación vinculante o asesoramiento personalizado, consulta a un intermediario hipotecario o a un asesor financiero con licencia.',
+      body: 'Los cálculos suponen capitalización mensual y pagos en su fecha. El APR se muestra con la convención elegida encima de las ofertas (la tasa mensual × 12, o la tasa mensual capitalizada durante un año) y se calcula sobre la tabla contractual (sin pagos extra voluntarios), e incorpora la comisión de apertura y los gastos iniciales al costo efectivo del préstamo; cada jurisdicción decide qué otros costos (seguros obligatorios, cuentas vinculadas, impuestos) deben incluirse en su cifra oficial de APR/TAE, así que súmalos al campo de la comisión si quieres que se reflejen. Las hipotecas residenciales canadienses capitalizan semestralmente por ley, y los productos brasileños y algunos británicos usan otras convenciones de capitalización; en esos productos, las cifras con capitalización mensual de esta calculadora se desviarán ligeramente. Los préstamos a tasa variable reales siguen un índice más un margen y pueden tener topes de tasa que esta calculadora no aplica; la tasa posterior que escribes es tu mejor estimación para una prueba de estrés. Cuando la tasa cambia, esta calculadora recalcula la cuota para que el préstamo siga terminando en su plazo original. Algunas entidades, a menudo en préstamos hipotecarios de tasa variable en la India, mantienen la cuota y cambian el número de meses, lo que cambia el total de intereses. Una tasa variable real también puede cambiar muchas veces; aquí se muestra un solo cambio. No se modelan los impuestos sobre la propiedad, las cuotas de mantenimiento del edificio o de las zonas comunes, el seguro del hogar ni el tratamiento fiscal de los intereses del préstamo en tu jurisdicción. Es una comparación solo educativa; no es asesoramiento financiero. Para una comparación vinculante o asesoramiento personalizado, consulta a un intermediario hipotecario o a un asesor financiero con licencia.',
     },
     months: {
       na: 'n. d.',
@@ -1812,9 +1865,9 @@ export const loanComparisonEs: typeof loanComparisonEn = {
  * kalendář, poskytovatel (the tool's "vendor"), mimořádná splátka, poplatek za
  * předčasné splacení, doba návratnosti, refinancování, marže.
  *
- * APR stays APR and is never called RPSN: the tool's figure is the US nominal
- * rate with the fee folded in, which agrees with the Czech and EU RPSN in
- * direction but not in method, and the answers say so. Month counts are
+ * The label stays APR: the tool's figure follows the convention the reader
+ * chose, and the help text names RPSN for the compounded one. Which costs an
+ * official RPSN must include still differs, and the answers say so. Month counts are
  * abbreviated (*3 r. 2 měs.*), which keeps them free of plural forms. Like the
  * Spanish page, a Czech page writes every amount the Czech way, in every
  * currency (`TOOL_AMOUNT_LOCALE`), and the two currency answers describe that.
@@ -1908,11 +1961,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Co je APR a jak se tady počítá?',
-              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. APR se uvádí jako nominální roční sazba (měsíční sazba × 12), což odpovídá zvyklosti v amerických informacích o úvěrech a směrem se shoduje s RPSN v EU, není však s ní totožné. Když je poplatek nulový, rovná se APR nominální sazbě.',
+              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se pak převede na roční číslo jedním ze dvou způsobů a přepínač nad nabídkami určuje, kterým: měsíční sazba × 12, jak se používá v USA a Kanadě, nebo měsíční sazba se složeným úročením za rok, jak se používá v EU (v češtině se používá označení RPSN) a ve Spojeném království. Bez poplatku se číslo podle měsíční sazby × 12 rovná zadané sazbě a číslo se složeným úročením je o něco vyšší, protože úrok se účtuje každý měsíc: ze 7,9 % je asi 8,19 %.',
             },
             {
               q: 'Proč je APR obvykle vyšší než nabízená sazba?',
-              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže efektivní sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. Podrobněji to rozebírá článek o podmínkách úvěrů.',
+              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. Při složeném úročení je APR o něco vyšší než nabízená sazba i bez poplatku. Podrobněji to rozebírá článek o podmínkách úvěrů.',
             },
             {
               q: 'Zahrnuje APR mimořádnou splátku jistiny, kterou plánuji platit každý měsíc?',
@@ -1954,7 +2007,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Jak kalkulačka zvládá hybridní úvěry (ARM 5/1, 7/1, 10/1)?',
-              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Hybridní (ARM)“ a zadejte počáteční období fixace (například 60 měsíců u ARM 5/1) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. Zobrazené APR používá tento kalendář tak, jak by byl uveden, což odpovídá tomu, jak poskytovatelé uvádějí APR u skutečných produktů ARM.',
+              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Hybridní (ARM)“ a zadejte počáteční období fixace (například 60 měsíců u ARM 5/1) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se sazbou, kterou jste zadali. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
             },
             {
               q: 'Proč je hybridní možnost nedostupná, když je zvoleno „Měsíce do splacení“?',
@@ -2052,11 +2105,22 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       months: 'Měsíce',
       aprPct: 'APR, %',
       computed: 'Spočítáno',
+      monthlyAtStart: 'Měsíční splátka na začátku',
+      monthlyAfterChange: 'Měsíční splátka po změně sazby',
+      fromMonth: 'Od měsíce',
+      paymentNote: 'Poznámka ke splátce',
+      noPaymentChange: 'Splátka se nemění',
       balance: 'Zbývající jistina',
     },
     currencies: currenciesCs,
     toolbar: {
       aria: 'Akce srovnání úvěrů',
+      /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
+      aprLabel: 'Způsob výpočtu APR',
+      aprNominal: 'Měsíční sazba × 12',
+      aprEffective: 'Měsíční sazba se složeným úročením za rok',
+      aprHelpToggle: 'Jaký je v tom rozdíl?',
+      aprHelp: 'Používají se dva způsoby: měsíční sazba krát 12, obvyklá v USA a Kanadě, a měsíční sazba se složeným úročením za rok, obvyklá v EU (v češtině se používá označení RPSN) a ve Spojeném království (APR, u hypoték APRC). Jiné země mohou používat jeden z nich nebo vlastní pravidlo, proto si před porovnáním s tímto číslem ověřte, který způsob používá dokument poskytovatele úvěru. Oficiální RPSN navíc určuje, které náklady se do ní počítají.',
       currencyLabel: 'Měna zobrazení',
       currencyHelp: 'Všechny úvěry v tomto srovnání používají tento formát.',
       sample: 'Ukázka:',
@@ -2071,6 +2135,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       copyPrompt: 'Zkopírujte tento odkaz:',
     },
     cardsHeading: 'Nabídky úvěrů',
+    example: 'Ukázkové nabídky. Nahraďte čísla svými.',
     phoneTabs: {
       groupAria: 'Zobrazený poskytovatel',
       tabName: 'Poskytovatel {label}',
@@ -2092,14 +2157,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       term: 'Doba splatnosti (měsíce)',
       monthly: 'Měsíční splátka',
       requiredTitle: 'Povinné',
-      optionalTitle: 'Volitelné podrobnosti úvěru',
-      optionalSingle: '{status}, bez poplatků a mimořádných splátek',
-      optionalMulti: '{status}: {rest}',
+      foldSet: 'Vyplněno',
+      foldNone: 'Nic',
       statusHybrid: 'Hybridní (ARM)',
       statusFixed: 'Pevná sazba',
-      statusFees: 'poplatky',
-      statusPrepayments: 'mimořádné splátky',
-      statusPenalty: 'poplatek za předčasné splacení',
       rateStructure: {
         title: 'Struktura sazby',
         hint: 'Pevná, nebo nejdřív pevná a pak pohyblivá (ARM)',
@@ -2118,7 +2179,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       initialFixedHelp: 'Obvykle: 60 (ARM 5/1), 84 (7/1), 120 (10/1).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
-        'Sazba po skončení fixace. Skutečné úvěry ARM sledují referenční sazbu; tohle je váš odhad pro zátěžový test.',
+        'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
       costs: {
         title: 'Náklady a poplatky',
         hint: 'Sjednání, uzavření a body na snížení sazby',
@@ -2153,8 +2214,17 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     results: {
       monthly: 'Měsíčně',
       monthlyExtra: '{base} + {extra} navíc',
+      monthlyFirst: 'Měsíce 1 až {lastMonth}',
+      monthlyFrom: 'Od měsíce {month}',
+      monthlyLast: 'Měsíc {month}, poslední splátka',
+      monthlyLaterNote: 'Pozdější splátka vychází ze sazby, kterou jste zadali, není to prognóza.',
+      monthlyIncludesExtra: 'včetně {extra} navíc každý měsíc',
+      paidOffBeforeChange: 'Splaceno v měsíci {payoffMonth}, před změnou sazby',
       apr: 'APR',
       aprNa: 'není k dispozici',
+      /** Under a card's APR: which convention the figure uses. */
+      aprNominalLine: 'Měsíční sazba × 12 (USA, Kanada)',
+      aprEffectiveLine: 'Složené úročení za rok (EU, Spojené království)',
       aprFees: 'Včetně poplatků',
       aprNoFees: 'Bez poplatků',
       totalPaid: 'Zaplaceno celkem',
@@ -2185,6 +2255,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       metricAria: 'Ukazatel',
       monthlyPayment: 'Měsíční splátka',
       monthsToPayoff: 'Měsíce do splacení',
+      /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
+      aprNote: 'Způsob výpočtu APR v této tabulce: {convention}.',
       aprInclFees: 'APR (vč. poplatků)',
       totalInterest: 'Úroky celkem',
       totalPaid: 'Zaplaceno celkem',
@@ -2282,7 +2354,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         'Úrok každého měsíce se počítá ze zbývající jistiny, splátka se rozdělí mezi úrok a jistinu a jistina se sníží. Výpočet běží na haléře přesně.',
       apr: {
         strong: 'APR',
-        rest: ' zahrnuje poplatek za sjednání a uzavření do sazby tak, že ho bere jako srážku předem z toho, co skutečně dostanete, a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Uvádí se jako nominální roční sazba (měsíční sazba × 12), podle zvyklosti amerických informací o úvěrech.',
+        rest: ' zahrnuje poplatek za sjednání a uzavření do sazby tak, že ho bere jako srážku předem z toho, co skutečně dostanete, a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se zobrazuje jako roční číslo způsobem zvoleným nad nabídkami: × 12 (USA, Kanada) nebo se složeným úročením za rok (EU, Spojené království).',
       },
       hybrid: {
         strong: 'Hybridní úvěry (ARM)',
@@ -2329,7 +2401,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Předpoklady a upozornění',
-      body: 'Výpočty předpokládají měsíční úročení a včasné splátky. APR se zobrazuje jako nominální roční sazba (měsíční sazba × 12), počítaná ze smluvního kalendáře (bez dobrovolných splátek navíc), a zahrnuje poplatek za sjednání a uzavření do efektivních nákladů úvěru; země se liší v tom, které další náklady (povinné pojištění, účty, daně) se musí započítat do oficiálně uváděné sazby (v EU RPSN), takže pokud je chcete zohlednit, přičtěte je do pole poplatku. Kanadské hypotéky na bydlení se ze zákona úročí pololetně a brazilské a některé britské produkty používají jiné zvyklosti úročení; u takových produktů budou zdejší čísla s měsíčním úročením mírně odlišná. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu plus marži a mohou mít stropy sazby, které tato kalkulačka neuplatňuje; zadaná následná sazba je váš nejlepší odhad pro zátěžový test. Daň z nemovitostí, poplatky za správu domu, pojištění nemovitosti a daňové zacházení s úroky z úvěru ve vaší zemi se nemodelují. Jen vzdělávací srovnání; nejde o finanční poradenství. Pro závazné srovnání úvěrů nebo osobní radu se obraťte na hypotečního zprostředkovatele s příslušným oprávněním nebo finančního poradce s příslušným oprávněním.',
+      body: 'Výpočty předpokládají měsíční úročení a včasné splátky. APR se zobrazuje způsobem zvoleným nad nabídkami (měsíční sazba × 12, nebo měsíční sazba se složeným úročením za rok) a počítá se ze smluvního kalendáře (bez dobrovolných splátek navíc) a zahrnuje poplatek za sjednání a uzavření do efektivních nákladů úvěru; země se liší v tom, které další náklady (povinné pojištění, účty, daně) se musí započítat do oficiálně uváděné sazby (v EU RPSN), takže pokud je chcete zohlednit, přičtěte je do pole poplatku. Kanadské hypotéky na bydlení se ze zákona úročí pololetně a brazilské a některé britské produkty používají jiné zvyklosti úročení; u takových produktů budou zdejší čísla s měsíčním úročením mírně odlišná. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu plus marži a mohou mít stropy sazby, které tato kalkulačka neuplatňuje; zadaná následná sazba je váš nejlepší odhad pro zátěžový test. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna. Daň z nemovitostí, poplatky za správu domu, pojištění nemovitosti a daňové zacházení s úroky z úvěru ve vaší zemi se nemodelují. Jen vzdělávací srovnání; nejde o finanční poradenství. Pro závazné srovnání úvěrů nebo osobní radu se obraťte na hypotečního zprostředkovatele s příslušným oprávněním nebo finančního poradce s příslušným oprávněním.',
     },
     months: {
       na: 'není k dispozici',
@@ -2458,11 +2530,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'APR म्हणजे काय आणि इथे तो कसा काढला जातो?',
-              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. APR नाममात्र वार्षिक दर म्हणून (मासिक दर × 12) दाखवला जातो, जो अमेरिकेतील कर्जाच्या माहितीपत्रकांच्या पद्धतीशी जुळतो आणि युरोपियन युनियनच्या APRC शी साधारण सुसंगत आहे. शुल्क शून्य असेल तर APR नाममात्र दराइतकाच असतो.',
+              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. मग या मासिक दरावरून वार्षिक आकडा दोनपैकी एका पद्धतीने काढला जातो, आणि ऑफरच्या वरचा पर्याय ती पद्धत ठरवतो: मासिक दर × 12, ही पद्धत अमेरिकेत आणि कॅनडात वापरली जाते, किंवा मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये वापरला जातो. शुल्क नसेल तर मासिक दर × 12 चा आकडा तुम्ही भरलेल्या दराइतकाच असतो, आणि चक्रवाढीचा आकडा थोडा जास्त, कारण व्याजाची गणना दर महिन्याला होते: 7.9% दराचा वार्षिक आकडा सुमारे 8.19% होतो.',
             },
             {
               q: 'APR सहसा जाहिरातीतील दरापेक्षा जास्त का असतो?',
-              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला परिणामकारक दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा लेख पाहा.',
+              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. चक्रवाढीच्या पद्धतीत APR शुल्क नसतानाही जाहिरातीतील दरापेक्षा थोडा जास्त असतो. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा लेख पाहा.',
             },
             {
               q: 'मी दरमहा भरणार असलेले अतिरिक्त मुद्दल APR मध्ये धरले जाते का?',
@@ -2504,7 +2576,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'कॅल्क्युलेटर हायब्रिड (5/1, 7/1, 10/1 ARM) कर्जे कशी हाताळतो?',
-              a: '“व्याजदराची रचना” या गटात दराचा प्रकार हायब्रिड करा, मग सुरुवातीचा ठरावीक कालावधी (उदा. 5/1 ARM साठी 60 महिने) आणि ठरावीक कालावधीनंतर लागू होणारा दर भरा. कर्जफेडीचे वेळापत्रक बदलाच्या महिन्यापर्यंत सुरुवातीच्या दराने तयार होते आणि मग हप्त्यांची पुनर्गणना (recast) होते: बाकी कर्ज कराराच्या उरलेल्या महिन्यांवर पुढच्या दराने पुन्हा विभागले जाते, त्यामुळे कर्ज मूळ मुदतीतच फिटते. दाखवलेला APR हे जाहीर वेळापत्रक वापरून काढला जातो, जे कर्जदाते प्रत्यक्ष ARM उत्पादनांवर APR जसा सांगतात त्याच्याशी जुळते.',
+              a: '“व्याजदराची रचना” या गटात दराचा प्रकार हायब्रिड करा, मग सुरुवातीचा ठरावीक कालावधी (उदा. 5/1 ARM साठी 60 महिने) आणि ठरावीक कालावधीनंतर लागू होणारा दर भरा. कर्जफेडीचे वेळापत्रक बदलाच्या महिन्यापर्यंत सुरुवातीच्या दराने तयार होते आणि मग हप्त्यांची पुनर्गणना (recast) होते: बाकी कर्ज कराराच्या उरलेल्या महिन्यांवर पुढच्या दराने पुन्हा विभागले जाते, त्यामुळे कर्ज मूळ मुदतीतच फिटते. APR याच वेळापत्रकावरून काढला जातो, तुम्ही भरलेल्या दरासह. दर बदलल्यावर हा कॅल्क्युलेटर हप्ता पुन्हा काढतो, जेणेकरून कर्ज मूळ मुदतीतच संपेल. काही कर्जदाते, बहुतेकदा भारतातील बदलत्या दराच्या गृहकर्जांत, हप्ता तोच ठेवतात आणि त्याऐवजी महिन्यांची संख्या बदलतात, त्यामुळे एकूण व्याज बदलते. प्रत्यक्ष बदलता दर अनेकदा बदलू शकतो; इथे एकच बदल दिसतो.',
             },
             {
               q: 'मी “परतफेडीचे महिने” निवडल्यावर हायब्रिड पर्याय बंद का होतो?',
@@ -2602,11 +2674,22 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       months: 'महिने',
       aprPct: 'APR, %',
       computed: 'गणना झाली',
+      monthlyAtStart: 'सुरुवातीचा मासिक हप्ता',
+      monthlyAfterChange: 'दर बदलल्यानंतरचा मासिक हप्ता',
+      fromMonth: 'कोणत्या महिन्यापासून',
+      paymentNote: 'हप्त्याबद्दल टीप',
+      noPaymentChange: 'हप्ता बदलत नाही',
       balance: 'बाकी कर्ज',
     },
     currencies: currenciesMr,
     toolbar: {
       aria: 'कर्जांच्या तुलनेच्या क्रिया',
+      /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
+      aprLabel: 'APR काढण्याची पद्धत',
+      aprNominal: 'मासिक दर × 12',
+      aprEffective: 'वर्षभर चक्रवाढ केलेला मासिक दर',
+      aprHelpToggle: 'फरक काय आहे?',
+      aprHelp: 'दोन पद्धती वापरात आहेत: मासिक दराला 12 ने गुणण्याची पद्धत, जी अमेरिकेत आणि कॅनडात वापरली जाते, आणि मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये (APR, किंवा गहाण कर्जांसाठी APRC) वापरला जातो. इतर देश यांपैकी एक किंवा स्वतःचा नियम वापरू शकतात, त्यामुळे या आकड्याशी तुलना करण्यापूर्वी कर्जदात्याच्या कागदपत्रात कोणती पद्धत आहे ते तपासा.',
       currencyLabel: 'दाखवायचे चलन',
       currencyHelp: 'या तुलनेतील सर्व कर्जे हे स्वरूप वापरतात.',
       sample: 'नमुना:',
@@ -2621,6 +2704,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       copyPrompt: 'ही लिंक कॉपी करा:',
     },
     cardsHeading: 'कर्जाच्या ऑफर',
+    example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
     phoneTabs: {
       groupAria: 'दाखवायचा कर्जदाता',
       tabName: 'कर्जदाता {label}',
@@ -2642,14 +2726,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       term: 'मुदत (महिने)',
       monthly: 'मासिक हप्ता',
       requiredTitle: 'आवश्यक',
-      optionalTitle: 'कर्जाचा ऐच्छिक तपशील',
-      optionalSingle: '{status}, शुल्क किंवा मुदतपूर्व परतफेड नाही',
-      optionalMulti: '{status}. इतर तपशील: {rest}',
+      foldSet: 'भरलेले',
+      foldNone: 'काही नाही',
       statusHybrid: 'हायब्रिड (ARM)',
       statusFixed: 'ठरावीक दर',
-      statusFees: 'शुल्क',
-      statusPrepayments: 'मुदतपूर्व परतफेड',
-      statusPenalty: 'दंड',
       rateStructure: {
         title: 'व्याजदराची रचना',
         hint: 'ठरावीक, किंवा आधी ठरावीक मग बदलता (ARM)',
@@ -2667,7 +2747,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       initialFixed: 'सुरुवातीचा ठरावीक कालावधी (महिने)',
       initialFixedHelp: 'नेहमीचे: 60 (5/1 ARM), 84 (7/1), 120 (10/1).',
       subsequentRate: 'नंतरचा दर (%)',
-      subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष ARM एखाद्या निर्देशांकानुसार बदलतात; हा तुमचा ताण-चाचणीसाठीचा अंदाज आहे.',
+      subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या संदर्भ दरानुसार बदलतात; हा तुमचा स्वतःचा अंदाज आहे, भाकीत नाही.',
       costs: {
         title: 'खर्च आणि शुल्क',
         hint: 'कर्जप्रक्रिया, व्यवहार खर्च आणि डिस्काउंट पॉइंट्स',
@@ -2700,8 +2780,17 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     results: {
       monthly: 'मासिक',
       monthlyExtra: '{base} + {extra} अतिरिक्त',
+      monthlyFirst: 'महिना 1 ते {lastMonth}',
+      monthlyFrom: 'महिना {month} पासून',
+      monthlyLast: 'महिना {month}, शेवटचा हप्ता',
+      monthlyLaterNote: 'नंतरचा हप्ता तुम्ही भरलेल्या दरावर आधारित आहे, हे भाकीत नाही.',
+      monthlyIncludesExtra: 'दरमहा {extra} अतिरिक्त समाविष्ट',
+      paidOffBeforeChange: 'दर बदलण्यापूर्वी, महिना {payoffMonth} मध्ये फिटले',
       apr: 'APR',
       aprNa: 'लागू नाही',
+      /** Under a card's APR: which convention the figure uses. */
+      aprNominalLine: 'मासिक दर × 12 (अमेरिका, कॅनडा)',
+      aprEffectiveLine: 'वर्षभराची चक्रवाढ (युरोपियन युनियन, UK)',
       aprFees: 'शुल्कासह',
       aprNoFees: 'शुल्क नाही',
       totalPaid: 'एकूण भरलेले',
@@ -2732,6 +2821,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       metricAria: 'निकष',
       monthlyPayment: 'मासिक हप्ता',
       monthsToPayoff: 'परतफेडीपर्यंतचे महिने',
+      /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
+      aprNote: 'या तक्त्यातील APR ची पद्धत: {convention}.',
       aprInclFees: 'APR (शुल्कासह)',
       totalInterest: 'एकूण व्याज',
       totalPaid: 'एकूण भरलेले',
@@ -2823,7 +2914,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       monthly: 'प्रत्येक महिन्याचे व्याज बाकी कर्जावर मोजले जाते, हप्ता व्याज आणि मुद्दल यांच्यात विभागला जातो, आणि बाकी कर्ज कमी होते. हे चक्र पैशापर्यंत अचूक चालते.',
       apr: {
         strong: 'APR',
-        rest: ' कर्जप्रक्रिया/व्यवहार शुल्क व्याजदरात सामावून घेतो: शुल्क हे तुम्हाला प्रत्यक्ष मिळणाऱ्या रकमेतून सुरुवातीलाच झालेली वजावट मानले जाते, आणि मग असा मासिक दर काढला जातो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. नाममात्र वार्षिक दर म्हणून (मासिक दर × 12) दाखवला जातो, अमेरिकेतील कर्जाच्या माहितीपत्रकांप्रमाणे.',
+        rest: ' कर्जप्रक्रिया/व्यवहार शुल्क व्याजदरात सामावून घेतो: शुल्क हे तुम्हाला प्रत्यक्ष मिळणाऱ्या रकमेतून सुरुवातीलाच झालेली वजावट मानले जाते, आणि मग असा मासिक दर काढला जातो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. हा मासिक दर ऑफरच्या वर निवडलेल्या पद्धतीने वार्षिक आकडा म्हणून दाखवला जातो: × 12 (अमेरिका, कॅनडा) किंवा वर्षभराची चक्रवाढ (युरोपियन युनियन, UK).',
       },
       hybrid: {
         strong: 'हायब्रिड (ARM) कर्जे',
@@ -2870,7 +2961,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'गृहीतके आणि अस्वीकरण',
-      body: 'हिशेब मासिक चक्रवाढ आणि वेळेवर हप्ते गृहीत धरतात. APR नाममात्र वार्षिक दर म्हणून (मासिक दर × 12) कराराच्या वेळापत्रकावर (स्वेच्छेने केलेल्या अतिरिक्त भरण्यांशिवाय) काढला जातो, आणि त्यात कर्जप्रक्रिया/व्यवहार शुल्क कर्जाच्या परिणामकारक खर्चात सामावलेले असते; अधिकृत APR/APRC मध्ये इतर कोणते खर्च (सक्तीचा विमा, खात्याशी जोडलेली उत्पादने, कर) धरावेत याचे नियम देशानुसार वेगळे आहेत, त्यामुळे ते दिसावेत असे वाटत असेल तर ते शुल्काच्या रकान्यात जोडा. कॅनडातील निवासी गहाण कर्जांवर कायद्याने सहामाही चक्रवाढ होते, आणि ब्राझीलमधील व काही UK मधील उत्पादने चक्रवाढीच्या इतर पद्धती वापरतात; अशा उत्पादनांवर इथले मासिक चक्रवाढीचे आकडे थोडे वेगळे येतील. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या निर्देशांकाचा दर अधिक वाढीव दर (margin) यानुसार चालतात आणि त्यांच्या दरावर मर्यादा असू शकतात, ज्या हा कॅल्क्युलेटर लागू करत नाही; तुम्ही भरलेला नंतरचा दर हा तुमचा ताण-चाचणीसाठीचा सर्वोत्तम अंदाज आहे. मालमत्ता कर, इमारत किंवा सोसायटीचे शुल्क, घराचा विमा, आणि तुमच्या देशात कर्जावरील व्याजाची कर आकारणी यांचे गणित यात नाही. केवळ शैक्षणिक तुलना; आर्थिक सल्ला नाही. बंधनकारक तुलना किंवा वैयक्तिक सल्ल्यासाठी परवानाधारक गहाण कर्ज ब्रोकर किंवा आर्थिक सल्लागाराशी बोला.',
+      body: 'हिशेब मासिक चक्रवाढ आणि वेळेवर हप्ते गृहीत धरतात. APR ऑफरच्या वर निवडलेल्या पद्धतीने (मासिक दर × 12, किंवा वर्षभर चक्रवाढ केलेला मासिक दर) कराराच्या वेळापत्रकावर (स्वेच्छेने केलेल्या अतिरिक्त भरण्यांशिवाय) काढला जातो, आणि त्यात कर्जप्रक्रिया/व्यवहार शुल्क कर्जाच्या परिणामकारक खर्चात सामावलेले असते; अधिकृत APR/APRC मध्ये इतर कोणते खर्च (सक्तीचा विमा, खात्याशी जोडलेली उत्पादने, कर) धरावेत याचे नियम देशानुसार वेगळे आहेत, त्यामुळे ते दिसावेत असे वाटत असेल तर ते शुल्काच्या रकान्यात जोडा. कॅनडातील निवासी गहाण कर्जांवर कायद्याने सहामाही चक्रवाढ होते, आणि ब्राझीलमधील व काही UK मधील उत्पादने चक्रवाढीच्या इतर पद्धती वापरतात; अशा उत्पादनांवर इथले मासिक चक्रवाढीचे आकडे थोडे वेगळे येतील. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या निर्देशांकाचा दर अधिक वाढीव दर (margin) यानुसार चालतात आणि त्यांच्या दरावर मर्यादा असू शकतात, ज्या हा कॅल्क्युलेटर लागू करत नाही; तुम्ही भरलेला नंतरचा दर हा तुमचा ताण-चाचणीसाठीचा सर्वोत्तम अंदाज आहे. दर बदलल्यावर हा कॅल्क्युलेटर हप्ता पुन्हा काढतो, जेणेकरून कर्ज मूळ मुदतीतच संपेल. काही कर्जदाते, बहुतेकदा भारतातील बदलत्या दराच्या गृहकर्जांत, हप्ता तोच ठेवतात आणि त्याऐवजी महिन्यांची संख्या बदलतात, त्यामुळे एकूण व्याज बदलते. प्रत्यक्ष बदलता दर अनेकदा बदलू शकतो; इथे एकच बदल दिसतो. मालमत्ता कर, इमारत किंवा सोसायटीचे शुल्क, घराचा विमा, आणि तुमच्या देशात कर्जावरील व्याजाची कर आकारणी यांचे गणित यात नाही. केवळ शैक्षणिक तुलना; आर्थिक सल्ला नाही. बंधनकारक तुलना किंवा वैयक्तिक सल्ल्यासाठी परवानाधारक गहाण कर्ज ब्रोकर किंवा आर्थिक सल्लागाराशी बोला.',
     },
     months: {
       na: 'लागू नाही',

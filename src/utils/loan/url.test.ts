@@ -25,6 +25,7 @@ import {
   encodeLumpSums,
   encodeToQueryString,
   isPristineState,
+  makeAddedVendor,
   makeDefaultVendor,
   parseLumpSums,
   publishableState,
@@ -65,6 +66,29 @@ describe('vendor count bounds', () => {
 
   it('DEFAULT_VENDORS has exactly MIN_VENDORS entries', () => {
     assert.equal(DEFAULT_VENDORS.length, MIN_VENDORS);
+  });
+});
+
+describe('makeAddedVendor', () => {
+  it('leaves every optional box empty, in every slot', () => {
+    for (let i = 0; i < MAX_VENDORS; i++) {
+      const v = makeAddedVendor(i);
+      assert.equal(v.feeMajor, '0', `slot ${i} fee`);
+      assert.equal(v.extraMonthly, '0', `slot ${i} extra`);
+      assert.equal(v.rateKind, 'fixed');
+      for (const key of ['initialFixedMonths', 'subsequentRatePct', 'lumpSumsEncoded'] as const) assert.equal(v[key], makeDefaultVendor(0)[key], `slot ${i} ${key}`);
+      for (const key of ['pointsCostMajor', 'pointsRateReductionPct', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'] as const) assert.ok(v[key] === '' || Number(v[key]) === 0, `slot ${i} ${key}`);
+      // The boxes a reader sees stay as the slot's starting example.
+      assert.equal(v.principal, makeDefaultVendor(i).principal);
+      assert.equal(v.annualRatePct, makeDefaultVendor(i).annualRatePct);
+      assert.equal(v.name, makeDefaultVendor(i).name);
+    }
+  });
+
+  it('survives a share link, although its fee differs from the slot template', () => {
+    const vendors = [makeDefaultVendor(0), makeDefaultVendor(1), makeAddedVendor(2), makeAddedVendor(3)];
+    const back = decodeFromQueryString(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE));
+    assert.deepEqual(back.vendors, vendors);
   });
 });
 
@@ -421,6 +445,30 @@ describe('encode/decode round-trip', () => {
 // Lump-sum parsing helpers
 // ---------------------------------------------------------------------------
 
+describe('the APR convention in a link', () => {
+  it('is left out while it follows the currency', () => {
+    assert.equal(new URLSearchParams(encodeToQueryString(DEFAULT_VENDORS, DEFAULT_GLOBAL_STATE)).has('ac'), false);
+    assert.equal(decodeFromQueryString('c=USD').global.aprConvention, null);
+  });
+
+  it('carries a hand choice as one letter, both ways', () => {
+    for (const [kind, letter] of [['nominal', 'n'], ['effective', 'e']] as const) {
+      const qs = encodeToQueryString(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: kind });
+      assert.equal(new URLSearchParams(qs).get('ac'), letter);
+      assert.equal(decodeFromQueryString(qs).global.aprConvention, kind);
+    }
+  });
+
+  it('reads anything else as no choice', () => {
+    assert.equal(decodeFromQueryString('ac=x').global.aprConvention, null);
+    assert.equal(decodeFromQueryString('ac=').global.aprConvention, null);
+  });
+
+  it('counts a hand choice as a change from the starting state', () => {
+    assert.equal(isPristineState(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: 'nominal' }, 'EUR'), false);
+  });
+});
+
 describe('parseLumpSums', () => {
   it('returns an empty list for the empty string', () => {
     assert.deepEqual(parseLumpSums(''), []);
@@ -641,6 +689,7 @@ describe('full-state round-trip', () => {
     ];
     const global: GlobalState = {
       currency: 'EUR',
+      aprConvention: 'nominal',
       activeTab: 'horizon',
       horizonMonths: '120',
       refiVendorIndex: '2',

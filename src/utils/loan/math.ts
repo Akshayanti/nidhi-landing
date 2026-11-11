@@ -316,6 +316,16 @@ export interface LoanResult {
    * `totalPaidMinor`. Zero when no penalty applies, either because no
    * clause was supplied or because the loan was not paid off early. */
   prepaymentPenaltyMinor: number;
+  /**
+   * Set for a fixed-then-variable loan whose rate changes before the term
+   * ends. `month` is the first month at the new rate. `paymentMinor` is what
+   * is paid each month from then on, extra monthly principal included, as the
+   * effective schedule has it; `null` when the loan is paid off before that
+   * month, so no later payment exists. `last` marks the case where that
+   * payment is the closing one and never repeats. The page shows both payments: the
+   * first one alone makes two offers that part ways later look the same.
+   */
+  rateChange?: { month: number; paymentMinor: number | null; last?: boolean };
   warnings: string[];
   error?: string;
 }
@@ -451,7 +461,7 @@ export function buildScheduleAdvanced(spec: {
    * Not set for a loan entered by its payment, which has no term to end on.
    */
   endsAtTerm?: boolean;
-}): { schedule: AmortizationRow[]; warnings: string[]; error?: string } {
+}): { schedule: AmortizationRow[]; warnings: string[]; error?: string; recastPaymentMinor?: number } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
   const totalMonths = Math.max(0, Math.floor(spec.totalMonths));
@@ -501,6 +511,7 @@ export function buildScheduleAdvanced(spec: {
   let balance = principalMinor;
   let currentPayment = spec.basePaymentMinor;
   let recastApplied = false;
+  let recastPaymentMinor: number | undefined;
 
   for (let month = 1; month <= MAX_TERM_MONTHS && balance > 0; month++) {
     // Recast the scheduled payment at the start of the post-fix leg of
@@ -523,6 +534,7 @@ export function buildScheduleAdvanced(spec: {
         remainingMonths,
       );
       recastApplied = true;
+      recastPaymentMinor = currentPayment;
       if (spec.rateSpec.subsequentAnnualRate > 0) {
         const monthsInterest = roundMinor(balance * (spec.rateSpec.subsequentAnnualRate / 12));
         if (currentPayment + extraMonthlyMinor <= monthsInterest) {
@@ -592,7 +604,7 @@ export function buildScheduleAdvanced(spec: {
     );
   }
 
-  return { schedule, warnings };
+  return { schedule, warnings, recastPaymentMinor };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -674,7 +686,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor } = buildScheduleAdvanced({
     principalMinor,
     rateSpec,
     totalMonths,
@@ -748,6 +760,22 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
 
   const aprNominal = computeApr(principalMinor, feeMinor, contractSchedule);
 
+  // The payment after the rate change, read from the schedule the reader's own
+  // plan produces. When the only payment at the new rate is the closing one,
+  // that payment is the figure: no full recast payment is ever made.
+  let rateChange: LoanResult['rateChange'];
+  if (rateSpec.kind === 'hybrid' && rateSpec.initialMonths < totalMonths) {
+    const month = rateSpec.initialMonths + 1;
+    const row = schedule[month - 1];
+    let paymentMinor: number | null = null;
+    if (row) {
+      paymentMinor = schedule.length === month || recastPaymentMinor === undefined
+        ? row.payment
+        : recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
+    }
+    rateChange = { month, paymentMinor, ...(row && schedule.length === month ? { last: true } : {}) };
+  }
+
   return {
     monthlyPaymentMinor: scheduledPayment,
     effectiveMonthlyMinor: scheduledPayment + extraMonthlyMinor,
@@ -759,6 +787,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     contractSchedule,
     aprNominal,
     prepaymentPenaltyMinor,
+    ...(rateChange ? { rateChange } : {}),
     warnings,
   };
 }
@@ -802,11 +831,10 @@ export function emptyResult(feeMinor: number, error: string): LoanResult {
  *     in `contractSchedule`.
  *   - APR is the rate at which the present value of the payment stream,
  *     discounted monthly, equals the net amount disbursed.
- *   - We report the nominal annualization (`monthly_rate × 12`) rather
- *     than the effective annualization (`(1+i)^12 − 1`). Nominal is the
- *     convention almost every regulator uses on consumer-loan
- *     disclosures, and matches the way users compare APR figures from
- *     real lenders.
+ *   - This function returns the nominal annualization (`monthly_rate × 12`),
+ *     the convention of US and Canadian disclosures. EU and UK documents
+ *     compound the same monthly rate over a year (`(1+i)^12 − 1`); the page
+ *     shows whichever the reader chose, through `aprInConvention`.
  *
  * Solver: bisection on the present-value function. PV is strictly
  * decreasing in `i`, so bisection always converges; we cap at 200
@@ -874,9 +902,9 @@ export function computeApr(
   }
 
   let lo = 0;
-  // 1 per month corresponds to ~1200% APR; comfortably above any
-  // conceivable real loan, and well above payday-loan APRs in any
-  // jurisdiction. We expand if a degenerate input slips through.
+  // A monthly rate of 1 (100% a month, 1200% a year on the times-12
+  // convention) is comfortably above any conceivable real loan. We expand
+  // if a degenerate input slips through.
   let hi = 1;
   let pvHi = pv(hi);
   let expansions = 0;
@@ -901,7 +929,29 @@ export function computeApr(
 }
 
 /**
- * Format a nominal APR (decimal) as a localized percentage string.
+ * The two ways a monthly rate is turned into a yearly APR.
+ * - `nominal`: monthly rate × 12 (US, Canada).
+ * - `effective`: monthly rate compounded over twelve months (EU, UK).
+ */
+export type AprConvention = 'nominal' | 'effective';
+
+/** The convention a page starts with for a currency, until the reader chooses one. */
+export function defaultAprConvention(currency: string): AprConvention {
+  return currency === 'USD' || currency === 'CAD' ? 'nominal' : 'effective';
+}
+
+/**
+ * A nominal APR (monthly rate × 12, as `computeApr` returns it) in the
+ * convention asked for. The compounded figure comes from the solved monthly
+ * rate itself, never from a rounded figure. `NaN` stays `NaN`.
+ */
+export function aprInConvention(aprNominal: number, convention: AprConvention): number {
+  if (!Number.isFinite(aprNominal) || convention === 'nominal') return aprNominal;
+  return Math.pow(1 + aprNominal / 12, 12) - 1;
+}
+
+/**
+ * Format an APR (decimal) as a localized percentage string.
  *
  * - Always shows two decimals so adjacent vendors are visibly comparable
  *   even when their APRs differ by only a few basis points.
