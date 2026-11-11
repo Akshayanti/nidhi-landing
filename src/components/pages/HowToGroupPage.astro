@@ -50,6 +50,8 @@ const itemListSchema = {
   description={howTo.groupIntros[group]}
   jsonLd={[breadcrumbSchema, itemListSchema]}
 >
+  {/* The guides' own feed, beside the lesson feed every page links (src/pages/how-to/rss.xml.ts). */}
+  <link slot="head" rel="alternate" type="application/rss+xml" title={strings.rss.guidesLinkTitle} href="/how-to/rss.xml" />
   <section class="htg">
     <div class="htg-wrap">
       <nav class="htg-crumbs" aria-label={strings.a11y.breadcrumb}>

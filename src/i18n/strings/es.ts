@@ -140,6 +140,10 @@ export const es: Dict = {
     feedTitle: 'nidhi: blog de finanzas personales',
     feedDescription:
       'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Mejora tu educación financiera paso a paso.',
+    guidesLinkTitle: 'nidhi | Guías Cómo hacerlo',
+    guidesFeedTitle: 'nidhi: guías Cómo hacerlo',
+    guidesFeedDescription:
+      'Guías breves que responden cada una a una pregunta de dinero de todos los días: la respuesta primero, luego qué comprobar y un enlace a la lección completa.',
   },
 
   // Page copy, one namespace per page, with the same split-around-the-link

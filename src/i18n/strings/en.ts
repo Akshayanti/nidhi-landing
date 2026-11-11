@@ -194,6 +194,11 @@ export const en = {
     feedTitle: 'nidhi: Personal Finance Blog',
     feedDescription:
       'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
+    /** The how-to guides' own feed, at /how-to/rss.xml: the lesson feed is what the newsletter mails from, so guides are kept out of it. */
+    guidesLinkTitle: 'nidhi | How-to guides',
+    guidesFeedTitle: 'nidhi: How-to guides',
+    guidesFeedDescription:
+      'Short guides that each answer one everyday money question: the answer first, then what to check, and a link to the full lesson.',
   },
 
   // ---------------------------------------------------------------------
