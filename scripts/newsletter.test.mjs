@@ -505,6 +505,69 @@ describe('newsletter.gs: the mail itself (issue 439)', () => {
   });
 });
 
+describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)', () => {
+  const lesson = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
+  const people = () => [
+    row('reader@x.io', 'confirmed', 30, { unsub: tok('1') }),
+    row('waiting@x.io', 'pending', 4, { confirm: tok('2'), unsub: tok('3') }),
+  ];
+  /** The sheet with a "notes" column put in after the first, as a hand edit would. */
+  const moved = (ctx) => { for (const r of ctx.rec.rows) r.splice(1, 0, r === ctx.rec.rows[0] ? 'notes' : ''); };
+
+  it('nothing is read, written or mailed, whatever is asked', () => {
+    const ctx = load(people());
+    moved(ctx);
+    const before = JSON.stringify(ctx.rec.rows);
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }))), { ok: false, error: 'error' });
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: false, error: 'error' });
+    assert.match(ctx.doGet(req({ action: 'confirm', t: tok('2') })).html, /Something went wrong/);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson))), { ok: false, error: 'error' });
+    assert.throws(() => ctx.handleRemindPending(), /header row mismatch/);
+    assert.equal(JSON.stringify(ctx.rec.rows), before);
+    assert.deepEqual(ctx.rec.mails, []);
+    // The reason is in the log, for the owner; the caller is told nothing.
+    assert.ok(logged.some((line) => /header row mismatch.*Missing or out of place: status/.test(line)), logged.join(' | '));
+    // The lesson is not marked as sent: once the sheet is repaired it goes out.
+    assert.equal(Object.keys(ctx.rec.props).filter((k) => k.startsWith('sent_guid:')).length, 0);
+  });
+
+  it('a column added after the last one changes nothing', () => {
+    const ctx = load(people());
+    for (const r of ctx.rec.rows) r.push(r === ctx.rec.rows[0] ? 'notes' : 'called');
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+    assert.equal(find(ctx, 'reader@x.io')[1], 'unsubscribed');
+  });
+
+  it('headers are compared without regard to case or stray spaces', () => {
+    const ctx = load(people());
+    ctx.rec.rows[0] = ctx.rec.rows[0].map((h) => ` ${h.toUpperCase()} `);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+  });
+
+  it('the repair function still opens a sheet with a wrong header, since mending it is its job', () => {
+    const ctx = load(people());
+    ctx.rec.rows[0][8] = '';
+    assert.throws(() => ctx.sheet_(), /header row mismatch/);
+    assert.doesNotThrow(() => ctx.sheetUnchecked_());
+    assert.match(SOURCE, /function migrateAddTokens\(\) \{\s*var sh = sheetUnchecked_\(\);/);
+  });
+
+  it('a lesson sent to nobody is not marked as sent, and says so', () => {
+    const ctx = load([row('waiting@x.io', 'pending', 1, { confirm: tok('2'), unsub: tok('3') })]);
+    const first = json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson)));
+    assert.deepEqual(first, { ok: true, sent: 0, failed: 0, no_recipients: true });
+    assert.equal(Object.keys(ctx.rec.props).filter((k) => k.startsWith('sent_guid:')).length, 0);
+    // The reader confirms; the same lesson, asked for again, now goes out.
+    ctx.doGet(req({ action: 'confirm', t: tok('2') }));
+    ctx.rec.mails.length = 0;
+    const second = json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson)));
+    assert.equal(second.sent, 1);
+    assert.deepEqual(ctx.rec.mails, ['waiting@x.io']);
+  });
+});
+
 describe('newsletter.gs: one fan-out per lesson', () => {
   const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
   const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));

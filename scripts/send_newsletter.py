@@ -1116,6 +1116,18 @@ def main() -> int:
             any_failed = True
             continue
 
+        # The Apps Script found nobody to send to and did not mark the lesson
+        # as sent. A list that reads as empty is far more often a Sheet that
+        # could not be read than a newsletter with no readers, so this is a
+        # failure: the guid is not recorded, and the next run tries again.
+        if resp.get("no_recipients"):
+            print("[send_newsletter]   NO RECIPIENTS: the Apps Script found no "
+                  "confirmed subscriber. The lesson was not sent and is not "
+                  "marked as sent. Check the subscriber sheet (run ?action=health).",
+                  file=sys.stderr)
+            any_failed = True
+            continue
+
         sent_count = int(resp.get("sent", 0) or 0)
         failed_count = int(resp.get("failed", 0) or 0)
         total_sent += sent_count
