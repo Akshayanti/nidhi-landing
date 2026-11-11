@@ -19,6 +19,8 @@
 
 export const exportEn = {
   heading: 'Save or share these results',
+  /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
+  noScript: 'This tool needs JavaScript, which is off or blocked in this browser. The figures below are an example and will not change when you type.',
   spreadsheet: 'Download as a spreadsheet (Excel, Google Sheets)',
   print: 'Make a PDF report',
   note: 'Made on your device. Nothing is uploaded.',
@@ -71,6 +73,8 @@ export const exportEn = {
  */
 export const exportHi: typeof exportEn = {
   heading: 'इन नतीजों को सेव या शेयर करें',
+  /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
+  noScript: 'इस टूल के लिए JavaScript ज़रूरी है, जो इस ब्राउज़र में बंद या ब्लॉक है। नीचे के आँकड़े एक उदाहरण हैं और आपके कुछ भरने पर नहीं बदलेंगे।',
   spreadsheet: 'स्प्रेडशीट के रूप में डाउनलोड करें (Excel, Google Sheets)',
   print: 'PDF रिपोर्ट बनाएँ',
   note: 'आपके डिवाइस पर बनता है। कुछ भी अपलोड नहीं होता।',
@@ -116,6 +120,8 @@ export const exportHi: typeof exportEn = {
 /** Spanish: tú, as the tools address the reader. */
 export const exportEs: typeof exportEn = {
   heading: 'Guarda o comparte estos resultados',
+  /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
+  noScript: 'Esta herramienta necesita JavaScript, que en este navegador está desactivado o bloqueado. Las cifras de abajo son un ejemplo y no cambiarán cuando escribas.',
   spreadsheet: 'Descargar como hoja de cálculo (Excel, Google Sheets)',
   print: 'Crear un informe en PDF',
   note: 'Se crea en tu dispositivo. No se sube nada.',
@@ -161,6 +167,8 @@ export const exportEs: typeof exportEn = {
 /** Czech: vy, as the tools address the reader; imperatives in the plural. */
 export const exportCs: typeof exportEn = {
   heading: 'Uložte nebo sdílejte tyto výsledky',
+  /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
+  noScript: 'Tento nástroj potřebuje JavaScript, který je v\u00a0tomto prohlížeči vypnutý nebo blokovaný. Čísla níže jsou ukázka a\u00a0při psaní se nezmění.',
   spreadsheet: 'Stáhnout jako tabulku (Excel, Google Sheets)',
   print: 'Vytvořit zprávu v PDF',
   note: 'Vzniká ve vašem zařízení. Nic se nenahrává.',
@@ -206,6 +214,8 @@ export const exportCs: typeof exportEn = {
 /** Marathi: तुम्ही, as the tools address the reader. */
 export const exportMr: typeof exportEn = {
   heading: 'हे निकाल सेव्ह किंवा शेअर करा',
+  /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
+  noScript: 'या साधनासाठी JavaScript आवश्यक आहे, जे या ब्राउझरमध्ये बंद किंवा ब्लॉक केलेले आहे. खालील आकडे उदाहरण आहेत आणि तुम्ही काही भरल्यावर बदलणार नाहीत.',
   spreadsheet: 'स्प्रेडशीट म्हणून डाउनलोड करा (Excel, Google Sheets)',
   print: 'PDF अहवाल तयार करा',
   note: 'तुमच्या डिव्हाइसवर तयार होते. काहीही अपलोड होत नाही.',
