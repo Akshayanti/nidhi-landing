@@ -88,12 +88,12 @@ It splits after-tax income into three buckets:
     <rect x="120" y="120" width="320" height="80" class="fig-fill-warn-soft fig-stroke-warn" stroke-width="1.5"/>
     <rect x="440" y="120" width="192" height="80" class="fig-fill-blue-soft fig-stroke-blue" stroke-width="1.5"/>
     <rect x="632" y="120" width="128" height="80" class="fig-fill-teal"/>
-    <text x="280" y="155" text-anchor="middle" class="fig-num-blue" style="fill: var(--color-warning);">50%</text>
+    <text x="280" y="155" text-anchor="middle" class="fig-num-blue fig-text-warn">50%</text>
     <text x="280" y="180" text-anchor="middle" class="fig-label">Needs</text>
     <text x="536" y="155" text-anchor="middle" class="fig-num-blue">30%</text>
     <text x="536" y="180" text-anchor="middle" class="fig-label">Wants</text>
     <text x="696" y="155" text-anchor="middle" class="fig-num-md">20%</text>
-    <text x="696" y="180" text-anchor="middle" class="fig-label" style="fill: var(--neutral-white);">Save</text>
+    <text x="696" y="180" text-anchor="middle" class="fig-label fig-on-fill">Save</text>
     <text x="280" y="232" text-anchor="middle" class="fig-tick">rent, food, bills: €1,250</text>
     <text x="536" y="232" text-anchor="middle" class="fig-tick">choices: €750</text>
     <text x="696" y="232" text-anchor="middle" class="fig-tick">future you: €500</text>

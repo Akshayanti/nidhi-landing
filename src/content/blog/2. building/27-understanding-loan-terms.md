@@ -144,33 +144,33 @@ Illustrative (a separate example from the APR table above; we round the rate to 
     <text x="418" y="86" text-anchor="start" class="fig-eyebrow">Principal</text>
     <rect x="115" y="110" width="70" height="158.2" class="fig-fill-warn"/>
     <rect x="115" y="268.2" width="70" height="141.8" class="fig-fill-blue"/>
-    <text x="150" y="195" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€625</text>
-    <text x="150" y="345" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€561</text>
+    <text x="150" y="195" text-anchor="middle" class="fig-tick fig-on-warn" style="font-weight: 600;">€625</text>
+    <text x="150" y="345" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€561</text>
     <text x="150" y="430" text-anchor="middle" class="fig-tick">Month 1</text>
     <rect x="217" y="110" width="70" height="135.6" class="fig-fill-warn"/>
     <rect x="217" y="245.6" width="70" height="164.4" class="fig-fill-blue"/>
-    <text x="252" y="184" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€536</text>
-    <text x="252" y="334" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€650</text>
+    <text x="252" y="184" text-anchor="middle" class="fig-tick fig-on-warn" style="font-weight: 600;">€536</text>
+    <text x="252" y="334" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€650</text>
     <text x="252" y="430" text-anchor="middle" class="fig-tick">Month 60</text>
     <rect x="319" y="110" width="70" height="109.1" class="fig-fill-warn"/>
     <rect x="319" y="219.1" width="70" height="190.9" class="fig-fill-blue"/>
-    <text x="354" y="170" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€431</text>
-    <text x="354" y="320" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€754</text>
+    <text x="354" y="170" text-anchor="middle" class="fig-tick fig-on-warn" style="font-weight: 600;">€431</text>
+    <text x="354" y="320" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€754</text>
     <text x="354" y="430" text-anchor="middle" class="fig-tick">Month 120</text>
     <rect x="421" y="110" width="70" height="78.2" class="fig-fill-warn"/>
     <rect x="421" y="188.2" width="70" height="221.8" class="fig-fill-blue"/>
-    <text x="456" y="155" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€309</text>
-    <text x="456" y="305" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€876</text>
+    <text x="456" y="155" text-anchor="middle" class="fig-tick fig-on-warn" style="font-weight: 600;">€309</text>
+    <text x="456" y="305" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€876</text>
     <text x="456" y="430" text-anchor="middle" class="fig-tick">Month 180</text>
     <rect x="523" y="110" width="70" height="42.4" class="fig-fill-warn"/>
     <rect x="523" y="152.4" width="70" height="257.6" class="fig-fill-blue"/>
-    <text x="558" y="136" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€167</text>
-    <text x="558" y="285" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,018</text>
+    <text x="558" y="136" text-anchor="middle" class="fig-tick fig-on-warn" style="font-weight: 600;">€167</text>
+    <text x="558" y="285" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€1,018</text>
     <text x="558" y="430" text-anchor="middle" class="fig-tick">Month 240</text>
     <rect x="625" y="110" width="70" height="2" class="fig-fill-warn"/>
     <rect x="625" y="112" width="70" height="298" class="fig-fill-blue"/>
     <text x="660" y="104" text-anchor="middle" class="fig-tick" style="fill: var(--color-text-primary); font-weight: 600;">~€3</text>
-    <text x="660" y="265" text-anchor="middle" class="fig-tick" style="fill: #ffffff; font-weight: 600;">€1,183</text>
+    <text x="660" y="265" text-anchor="middle" class="fig-tick fig-on-fill" style="font-weight: 600;">€1,183</text>
     <text x="660" y="430" text-anchor="middle" class="fig-tick">Month 300</text>
     <text x="400" y="465" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative · constant monthly payment, the split changes every month</text>
   </svg>

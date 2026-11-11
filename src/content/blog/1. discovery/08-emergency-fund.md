@@ -81,7 +81,7 @@ Think of it as your financial shock absorber. It doesn't prevent the bump. It st
     <path d="M 120,300 Q 400,170 780,150" class="fig-stroke-warn" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     <circle cx="120" cy="300" r="5" class="fig-fill-warn"/>
     <circle cx="780" cy="150" r="5" class="fig-fill-warn"/>
-    <text x="660" y="140" text-anchor="end" class="fig-label" style="fill: var(--color-warning);">€3,636 total</text>
+    <text x="660" y="140" text-anchor="end" class="fig-label fig-text-warn">€3,636 total</text>
     <text x="660" y="158" text-anchor="end" class="fig-tick">no fund: 25 months on a card</text>
     <text x="440" y="438" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative. €3,000 on revolving credit at 19% APR, €150 a month. APRs vary by country and lender.</text>
   </svg>
