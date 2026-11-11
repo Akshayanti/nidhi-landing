@@ -159,7 +159,10 @@ export interface Result {
   /** Interest charged, less relief, up to the comparison date. */
   interestA: number;
   interestB: number;
-  /** Interest avoided in A, nominal and in today's money. */
+  /**
+   * Interest avoided in A, nominal and in today's money. Today's money is
+   * worked out month by month: each month's saving at that month's prices.
+   */
   interestAvoided: number;
   interestAvoidedToday: number;
   /** Debt still owed in B on the comparison date, nominal. */
@@ -338,6 +341,15 @@ export function compare(raw: Inputs, options: { paths?: number; seed?: number; f
   const putInB = sum(B.invest);
 
   const deflate = Math.pow(1 + i.inflation / 100, months / 12);
+  // Interest avoided, in today's money: each month's saving is brought back
+  // from the month it falls in, not from the comparison date. Dividing the
+  // whole sum by the inflation to the comparison date would shrink early
+  // savings as if they had all arrived at the end.
+  const monthlyInflation = Math.pow(1 + i.inflation / 100, 1 / 12);
+  let interestAvoidedToday = 0;
+  for (let m = 0, price = monthlyInflation; m < months; m++, price *= monthlyInflation) {
+    interestAvoidedToday += ((B.interest[m] - A.interest[m]) * keepRelief) / price;
+  }
   // `flat` removes the ups and downs (every year at the compound return), for exact checks.
   const model = realReturnModel(i.returns, i.ownReturn, i.inflation);
   const mu = model.mu;
@@ -400,7 +412,7 @@ export function compare(raw: Inputs, options: { paths?: number; seed?: number; f
     interestA,
     interestB,
     interestAvoided: interestB - interestA,
-    interestAvoidedToday: (interestB - interestA) / deflate,
+    interestAvoidedToday,
     remainingB,
     paths,
   };

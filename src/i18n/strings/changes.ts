@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'invest-payoff-interest-monthly',
+        text: {
+          en: 'The invest or pay off tool now works out the interest avoided, in today\'s money, month by month. Each month\'s saving is counted at that month\'s prices. Before, the whole sum was treated as if it arrived on the comparison date, which made it look smaller than it is, by about a tenth in a typical case. The figure before inflation is unchanged.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल अब आज के पैसे में बचा हुआ ब्याज महीने-दर-महीने निकालता है। हर महीने की बचत उसी महीने की क़ीमतों पर गिनी जाती है। पहले पूरी रकम ऐसे गिनी जाती थी मानो वह तुलना की तारीख़ पर ही मिली हो, जिससे वह असल से छोटी दिखती थी, आम तौर पर क़रीब दसवाँ हिस्सा कम। महँगाई से पहले का आँकड़ा नहीं बदला है।',
+          es: 'La herramienta Invertir o pagar deuda calcula ahora mes a mes los intereses evitados en dinero de hoy. El ahorro de cada mes se cuenta a los precios de ese mes. Antes, toda la suma se trataba como si llegara en la fecha de comparación, lo que la hacía parecer más pequeña de lo que es, alrededor de una décima parte en un caso típico. La cifra antes de la inflación no cambia.',
+          cs: 'Nástroj Investovat, nebo splatit dluh teď počítá ušetřené úroky v\u00a0dnešních penězích měsíc po měsíci. Úspora každého měsíce se počítá v\u00a0cenách toho měsíce. Dříve se s\u00a0celou částkou počítalo, jako by přišla až k\u00a0datu srovnání, takže vypadala menší, než je, v\u00a0běžném případě asi o\u00a0desetinu. Částka před inflací se nemění.',
+          mr: 'गुंतवणूक की कर्जफेड हे टूल आता आजच्या पैशात वाचलेले व्याज महिन्यागणिक काढते. प्रत्येक महिन्याची बचत त्या महिन्याच्या किमतींनुसार मोजली जाते. आधी संपूर्ण रक्कम तुलनेच्या तारखेलाच मिळाल्यासारखी धरली जात असे, त्यामुळे ती प्रत्यक्षापेक्षा लहान दिसत असे, साधारण दहावा भाग कमी. महागाईपूर्वीचा आकडा बदललेला नाही.',
+        },
+      },
+      {
         id: 'loan-both-payments',
         text: {
           en: 'The loan comparison now shows both payments when an offer\'s rate changes. A loan that starts at one rate and moves to another has two monthly payments, and the tool used to show only the first, so two offers that part ways after five years could look the same. Each such offer now shows its payment for the first months and the one that follows, on its card, in the side-by-side table, in the spreadsheet and in the PDF report. An offer you add also starts with its optional boxes empty: an example fee used to sit in a folded row.',
