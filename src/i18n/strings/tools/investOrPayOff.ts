@@ -95,7 +95,7 @@ export const investOrPayOffEn = {
       inflationAfter: ', yearly figures for {countries} countries and the euro area, last updated {updated}. They are a year or more behind, and past inflation does not predict future inflation.',
       returns: 'Stock returns: Dimson, Marsh and Staunton world equities, 1900 to 2025, as reprinted in Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026); the same model as the Monte Carlo simulator.',
     },
-    plannerLine: 'The planner will run this for every debt you have, together.',
+    plannerLine: 'The planner is being built to show every debt you have alongside the rest of your picture.',
     faq: {
       heading: 'Questions',
       items: [
@@ -339,7 +339,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       inflationAfter: ', {countries} देशों और यूरो क्षेत्र के सालाना आँकड़े, आख़िरी बार {updated} को अपडेट हुए। ये एक साल या उससे ज़्यादा पीछे रहते हैं, और पिछली महँगाई आगे की महँगाई नहीं बताती।',
       returns: 'शेयरों के रिटर्न: Dimson, Marsh और Staunton के दुनिया के शेयर, 1900 से 2025, जैसा Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026) में दोबारा छपा; वही मॉडल जो मोंटे कार्लो सिम्युलेटर में है।',
     },
-    plannerLine: 'प्लानर यह हिसाब आपके सभी कर्ज़ों के लिए एक साथ करेगा।',
+    plannerLine: 'प्लानर इसलिए बनाया जा रहा है कि आपका हर कर्ज़ आपकी बाकी तस्वीर के साथ दिखे।',
     faq: {
       heading: 'सवाल',
       items: [
@@ -579,7 +579,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       inflationAfter: ', {countries} देश आणि युरो क्षेत्राचे वार्षिक आकडे, शेवटचे {updated} रोजी अद्ययावत. ते एक वर्ष किंवा अधिक मागे असतात, आणि मागची महागाई पुढची महागाई सांगत नाही.',
       returns: 'शेअरचे परतावे: Dimson, Marsh आणि Staunton यांचे जागतिक शेअर, 1900 ते 2025, Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026) मध्ये पुनर्मुद्रित; मॉन्टे कार्लो सिम्युलेटरमधलेच मॉडेल.',
     },
-    plannerLine: 'प्लॅनर हा हिशोब तुमच्या सगळ्या कर्जांसाठी एकत्र करेल.',
+    plannerLine: 'प्लॅनर तुमचे प्रत्येक कर्ज तुमच्या बाकीच्या चित्रासोबत दाखवण्यासाठी बनवला जात आहे.',
     faq: {
       heading: 'प्रश्न',
       items: [
@@ -819,7 +819,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       inflationAfter: ', cifras anuales de {countries} países y de la zona del euro, actualizadas por última vez el {updated}. Van un año o más por detrás, y la inflación pasada no predice la futura.',
       returns: 'Rentabilidad de las acciones: acciones mundiales de Dimson, Marsh y Staunton, de 1900 a 2025, reproducidas en Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026); el mismo modelo que el simulador de Montecarlo.',
     },
-    plannerLine: 'El planificador hará este cálculo con todas tus deudas a la vez.',
+    plannerLine: 'El planificador se está construyendo para mostrar todas tus deudas junto al resto de tu situación.',
     faq: {
       heading: 'Preguntas',
       items: [
@@ -1059,7 +1059,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       inflationAfter: ', roční údaje pro {countries} zemí a eurozónu, naposledy aktualizované {updated}. Jsou rok či více pozadu a minulá inflace nepředpovídá budoucí.',
       returns: 'Výnosy akcií: světové akcie podle Dimsona, Marshe a Stauntona, 1900 až 2025, přetištěno v Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026); stejný model jako v simulátoru Monte Carlo.',
     },
-    plannerLine: 'Plánovač tento výpočet udělá pro všechny vaše dluhy najednou.',
+    plannerLine: 'Plánovač vzniká proto, aby ukázal každý váš dluh vedle zbytku vaší finanční situace.',
     faq: {
       heading: 'Otázky',
       items: [
