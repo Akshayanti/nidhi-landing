@@ -30,11 +30,11 @@ const { slug, title, labelled = false } = Astro.props;
 >
   {labelled && <p class="lesson-share-label" aria-hidden="true">Share or save this lesson</p>}
   <div class="lesson-share-row">
-    <button type="button" class="tool-exportBtn" data-attr="lesson-share-native" data-share-native hidden>Share</button>
-    <a class="tool-exportBtn lesson-share-link" href={whatsAppHref(slug, title)} target="_blank" rel="noopener noreferrer" data-attr="lesson-share-whatsapp" data-share-fallback>Send on WhatsApp</a>
-    <a class="tool-exportBtn lesson-share-link" href={emailHref(slug, title)} rel="noopener noreferrer" data-attr="lesson-share-email" data-share-fallback>Send by email</a>
-    <button type="button" class="tool-exportBtn" data-attr="lesson-copy-link" data-share-copy hidden>Copy link</button>
-    <button type="button" class="tool-exportBtn lesson-share-save" data-attr="lesson-save-pdf" data-share-save hidden>Save as PDF</button>
+    <button type="button" class="btn btn--outline tool-exportBtn" data-attr="lesson-share-native" data-share-native hidden>Share</button>
+    <a class="btn btn--outline tool-exportBtn lesson-share-link" href={whatsAppHref(slug, title)} target="_blank" rel="noopener noreferrer" data-attr="lesson-share-whatsapp" data-share-fallback>Send on WhatsApp</a>
+    <a class="btn btn--outline tool-exportBtn lesson-share-link" href={emailHref(slug, title)} rel="noopener noreferrer" data-attr="lesson-share-email" data-share-fallback>Send by email</a>
+    <button type="button" class="btn btn--outline tool-exportBtn" data-attr="lesson-copy-link" data-share-copy hidden>Copy link</button>
+    <button type="button" class="btn btn--outline tool-exportBtn lesson-share-save" data-attr="lesson-save-pdf" data-share-save hidden>Save as PDF</button>
   </div>
   <p class="lesson-share-status" role="status" data-share-status></p>
   <input class="lesson-share-address" type="text" readonly aria-label="Link to this lesson" value={lessonShareUrl(slug, 'copy')} data-share-address hidden />

@@ -199,6 +199,8 @@ const faqSchema = {
       </p>
     </header>
 
+    <noscript><p class="tool-noscript">{dict(locale).tools.export.noScript}</p></noscript>
+
     <LoanCompare client:load strings={tool.island} exportStrings={exportStrings} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
