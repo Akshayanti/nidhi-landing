@@ -11,6 +11,8 @@ import {
   computeFromInput,
   computeNoPointsBaseline,
   parseNumber,
+  unreadableOptionalFields,
+  OPTIONAL_UNREADABLE,
 } from './inputs.ts';
 import { makeDefaultVendor, type VendorInput } from './url.ts';
 
@@ -573,5 +575,55 @@ describe('computeNoPointsBaseline', () => {
     if (baseline) {
       assert.equal(baseline.feeMinor, 0);
     }
+  });
+});
+
+describe('an optional box that cannot be read (issue 513)', () => {
+  const base = { principal: '250000', annualRatePct: '6.5', modeKind: 'term' as const, termMonths: '360' };
+
+  it('is an error on the offer, not a zero', () => {
+    for (const patch of [
+      { feeMajor: 'NaN' }, { feeMajor: '€2,500' }, { feeMajor: '-300' },
+      { extraMonthly: '200 a month' }, { pointsCostMajor: 'abc' }, { pointsRateReductionPct: 'x' },
+      { prepayPenaltyPct: '2%' }, { prepayPenaltyUntilMonth: 'never' },
+      { lumpSumsEncoded: '12-5000' }, { lumpSumsEncoded: '5000 in month 12' }, { lumpSumsEncoded: '12:5000;oops' },
+    ]) {
+      const r = computeFromInput(vendor({ ...base, ...patch }), 'EUR');
+      assert.equal(r.error, OPTIONAL_UNREADABLE, JSON.stringify(patch));
+      assert.equal(r.schedule.length, 0);
+      assert.equal(unreadableOptionalFields(vendor({ ...base, ...patch })).length, 1, JSON.stringify(patch));
+    }
+  });
+
+  it('names the box, so the page can mark it', () => {
+    assert.deepEqual(unreadableOptionalFields(vendor({ ...base, feeMajor: '€2,500', lumpSumsEncoded: '12-5000' })), ['feeMajor', 'lumpSumsEncoded']);
+  });
+
+  it('an empty box, a zero and a number as people type it are all fine', () => {
+    for (const patch of [
+      {}, { feeMajor: '' }, { feeMajor: '0' }, { feeMajor: '2,500' }, { feeMajor: '2 500.50' }, { extraMonthly: '200' },
+      { lumpSumsEncoded: '' }, { lumpSumsEncoded: '12:5000' }, { lumpSumsEncoded: '12:5000;36:3000;' }, { lumpSumsEncoded: ' 12:5000 ; 36:3000 ' },
+      { prepayPenaltyPct: '2', prepayPenaltyUntilMonth: '36' },
+    ]) {
+      assert.deepEqual(unreadableOptionalFields(vendor({ ...base, ...patch })), [], JSON.stringify(patch));
+      assert.equal(computeFromInput(vendor({ ...base, ...patch }), 'EUR').error, undefined, JSON.stringify(patch));
+    }
+  });
+
+  it('the boxes of a changing rate count only for a loan that has one', () => {
+    assert.deepEqual(unreadableOptionalFields(vendor({ ...base, rateKind: 'fixed', subsequentRatePct: 'abc' })), []);
+    assert.deepEqual(unreadableOptionalFields(vendor({ ...base, rateKind: 'hybrid', initialFixedMonths: 'five', subsequentRatePct: 'abc' })), ['initialFixedMonths', 'subsequentRatePct']);
+  });
+
+  it('a fee typed with a currency sign no longer makes the offer look free of fees', () => {
+    const typed = computeFromInput(vendor({ ...base, feeMajor: '€2,500' }), 'EUR');
+    const plain = computeFromInput(vendor({ ...base, feeMajor: '2500' }), 'EUR');
+    assert.ok(typed.error);
+    assert.equal(plain.feeMinor, 250_000);
+  });
+
+  it('the message sorts under "other" in the tool’s analytics: none of its words is a reason of its own', () => {
+    const lower = OPTIONAL_UNREADABLE.toLowerCase();
+    for (const word of ['principal', 'payment', 'interest', 'rate', 'term', 'range']) assert.ok(!lower.includes(word), word);
   });
 });

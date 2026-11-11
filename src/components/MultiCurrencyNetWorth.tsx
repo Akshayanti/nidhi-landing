@@ -2,11 +2,14 @@ import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } 
 import { CURRENCIES } from '../utils/loan/math.ts';
 import {
   aggregate,
+  decodeCsv,
   getCurrencyLabel,
   isSingleCurrency,
   isSupportedCurrency,
+  isUnreadableAmount,
   ownedAndOwed,
   parseCSV,
+  unreadableCount,
   type AssetRow,
   type ParseError,
 } from '../utils/multi-currency-net-worth/math.ts';
@@ -277,8 +280,10 @@ export default function MultiCurrencyNetWorth({
     (file: File) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const text = reader.result as string;
-        const { rows: parsed, errors: parseErrors } = parseCSV(text);
+        // Read as bytes, so a file saved in an older code page still shows
+        // its letters; the type column may use this page's own two words.
+        const text = decodeCsv(new Uint8Array(reader.result as ArrayBuffer));
+        const { rows: parsed, errors: parseErrors } = parseCSV(text, { asset: [strings.row.asset], liability: [strings.row.liability] });
         setCsvErrors(parseErrors);
         // Surface parse errors as their own event so we can measure CSV
         // friction. Properties carry counts and a coarse classification
@@ -306,9 +311,9 @@ export default function MultiCurrencyNetWorth({
           }
         }
       };
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     },
-    [rows],
+    [rows, strings.row.asset, strings.row.liability],
   );
 
   const applyCsvRows = useCallback((newRows: AssetRow[]) => {
@@ -318,7 +323,8 @@ export default function MultiCurrencyNetWorth({
       : newRows;
     setRows(padded);
     setCsvConfirmPending(null);
-    setCsvErrors([]);
+    // The lines that could not be read stay listed beside the rows that
+    // were loaded: a file that was only partly read must not look whole.
     track('free_multi_currency_net_worth_csv_uploaded', { count: newRows.length });
   }, [defaultCurrency]);
 
@@ -378,7 +384,10 @@ export default function MultiCurrencyNetWorth({
     track('free_multi_currency_net_worth_reset');
   }, [defaultCurrency]);
 
-  const filledCount = rows.filter((r) => r.value.trim() !== '').length;
+  // A row whose amount cannot be read is in no total, so it is not counted
+  // as an item either, and the page says how many there are.
+  const filledCount = rows.filter((r) => r.value.trim() !== '' && !isUnreadableAmount(r.value)).length;
+  const notCounted = unreadableCount(rows);
 
   // A copy holds what the results show and no more: a shared view that hides
   // amounts gives currencies and shares only. The event says only which kind.
@@ -502,6 +511,11 @@ export default function MultiCurrencyNetWorth({
           </span>
         </div>
 
+        {/* Always in the page, so that a screen reader hears it when it fills. */}
+        <p className="mcnw-notCounted" role="status">
+          {notCounted > 0 && format(plural(numberLocale, notCounted, strings.table.notCountedOne, strings.table.notCountedFew, strings.table.notCountedMany), { count: notCounted })}
+        </p>
+
         <div className="mcnw-table" role="table" aria-label={strings.table.aria}>
           <div className="mcnw-tableHead" role="rowgroup">
             <div className="mcnw-tableRow mcnw-tableRowHead" role="row">
@@ -600,7 +614,7 @@ export default function MultiCurrencyNetWorth({
                 <li key={e.line}>
                   {format(strings.table.errorLine, {
                     line: e.line,
-                    message: format(strings.table.csvErrors[e.reason], e.values ?? {}),
+                    message: format(strings.table.csvErrors[e.reason], { ...(e.values ?? {}), asset: strings.row.asset, liability: strings.row.liability }),
                   })}
                 </li>
               ))}
@@ -719,6 +733,18 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
   const valueId = `${rowId}-value`;
   const currencyId = `${rowId}-currency`;
   const typeId = `${rowId}-type`;
+  const valueErrorId = `${rowId}-value-error`;
+  // An amount the tool cannot read is marked once the reader pauses or
+  // leaves the box, not on the first keystroke of something still being
+  // typed. The message is a fixed sentence: it never repeats what was typed.
+  const unreadable = isUnreadableAmount(row.value);
+  const [settled, setSettled] = useState(unreadable);
+  useEffect(() => {
+    if (!unreadable) { setSettled(false); return undefined; }
+    const timer = setTimeout(() => setSettled(true), 600);
+    return () => clearTimeout(timer);
+  }, [unreadable, row.value]);
+  const showValueError = unreadable && settled;
   // The aria names and the remove button report a position in the table, so
   // they count from one the way a reader counts rows.
   const at = format(strings.row.nameAria, { index: index + 1, total });
@@ -750,9 +776,13 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           className="mcnw-input"
           value={row.value}
           onValueChange={(v) => onChange({ value: v })}
+          onBlur={() => { if (unreadable) setSettled(true); }}
           placeholder="50000"
           autoComplete="off"
+          aria-invalid={showValueError ? true : undefined}
+          aria-describedby={showValueError ? valueErrorId : undefined}
         />
+        {showValueError && <span className="mcnw-rowError" id={valueErrorId}>{strings.row.valueError}</span>}
       </div>
       <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
         <label htmlFor={currencyId} className="mcnw-srOnly">

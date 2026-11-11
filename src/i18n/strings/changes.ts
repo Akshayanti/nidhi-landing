@@ -58,6 +58,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-10',
     items: [
       {
+        id: 'net-worth-unreadable-amounts',
+        text: {
+          en: 'The net worth calculator now tells you when it cannot read an amount. An amount typed with a currency sign, a minus or words used to be left out of the total without a word; now the box is marked, a line says how many rows are not counted, and a CSV file that was only partly read keeps its list of the lines that failed. CSV files with semicolons or tabs, as spreadsheets save them in Spanish or Czech, now load, and a type the tool does not know is an error, not an asset.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर अब बताता है कि कौन सी रकम वह पढ़ नहीं सका। मुद्रा के चिह्न, ऋण चिह्न या शब्दों के साथ लिखी रकम पहले बिना कुछ कहे कुल जोड़ से बाहर रह जाती थी; अब उस बॉक्स पर निशान लगता है, एक पंक्ति बताती है कि कितनी पंक्तियाँ नहीं गिनी गईं, और जो CSV फ़ाइल पूरी नहीं पढ़ी जा सकी, उसकी न पढ़ी गई लाइनों की सूची बनी रहती है। सेमीकोलन या टैब वाली CSV फ़ाइलें अब लोड होती हैं, और जिस किस्म को टूल नहीं जानता वह अब गलती मानी जाती है, संपत्ति नहीं।',
+          es: 'La calculadora de patrimonio neto avisa ahora cuando no puede leer una cantidad. Una cantidad escrita con un símbolo de moneda, un signo menos o palabras quedaba antes fuera del total sin aviso; ahora la casilla se marca, una línea dice cuántas filas no se cuentan, y un archivo CSV que solo se leyó en parte conserva la lista de las líneas que fallaron. Los archivos CSV con punto y coma o tabuladores, como los guarda una hoja de cálculo en español o en checo, ya se cargan, y un tipo que la herramienta no conoce es un error, no un activo.',
+          cs: 'Kalkulačka čistého jmění teď řekne, když částku nedokáže přečíst. Částka napsaná se znakem měny, s\u00a0minusem nebo se slovy dříve bez upozornění vypadla ze součtu; teď se pole označí, řádek nad tabulkou říká, kolik řádků se nezapočítává, a\u00a0u\u00a0souboru CSV, který se přečetl jen zčásti, zůstane seznam řádků, které se nepovedly. Soubory CSV se středníky nebo tabulátory, jak je ukládá tabulkový procesor ve španělštině nebo češtině, se teď načtou a\u00a0typ, který nástroj nezná, je chyba, ne aktivum.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर आता एखादी रक्कम वाचता आली नाही तर तसे सांगतो. चलनाचे चिन्ह, वजा चिन्ह किंवा शब्दांसह लिहिलेली रक्कम आधी काहीही न सांगता एकूण बेरजेतून वगळली जायची; आता त्या चौकटीवर खूण येते, किती ओळी मोजलेल्या नाहीत हे एक ओळ सांगते, आणि जी CSV\u00a0फाइल अर्धवट वाचली गेली तिच्या न वाचलेल्या ओळींची यादी तशीच राहते. अर्धविराम किंवा टॅब असलेल्या CSV\u00a0फाइल्स आता लोड होतात, आणि साधनाला माहीत नसलेला प्रकार आता चूक मानला जातो, मालमत्ता नाही.',
+        },
+      },
+      {
+        id: 'loan-optional-boxes-errors',
+        text: {
+          en: 'In the loan comparison, an optional box that cannot be read is now an error. A fee typed as “€2,500”, an extra payment typed with words or a lump sum in the wrong form used to count as zero without a word, which could make an offer look free of fees; now the box is marked and the offer shows no result until it is fixed or cleared.',
+          hi: 'लोन की तुलना में अब वह वैकल्पिक बॉक्स गलती माना जाता है जिसे पढ़ा नहीं जा सकता। “€2,500” की तरह लिखा शुल्क, शब्दों के साथ लिखी अतिरिक्त किस्त या गलत रूप में लिखी एकमुश्त रकम पहले बिना कुछ कहे शून्य गिनी जाती थी, जिससे कोई ऑफ़र बिना शुल्क का दिख सकता था; अब उस बॉक्स पर निशान लगता है और उसे ठीक या खाली करने तक ऑफ़र का नतीजा नहीं दिखता।',
+          es: 'En el comparador de préstamos, una casilla opcional que no se puede leer es ahora un error. Una comisión escrita como «€2,500», un pago extra escrito con palabras o un pago único con un formato incorrecto contaban antes como cero sin aviso, y una oferta podía parecer libre de comisiones; ahora la casilla se marca y la oferta no muestra resultado hasta que se corrige o se vacía.',
+          cs: 'Ve srovnání úvěrů je teď nepovinné pole, které nejde přečíst, chybou. Poplatek zapsaný jako „€2,500“, mimořádná splátka zapsaná slovy nebo jednorázová splátka ve špatném tvaru se dříve bez upozornění počítaly jako nula, takže nabídka mohla vypadat jako bez poplatků; teď se pole označí a\u00a0nabídka neukáže výsledek, dokud pole neopravíte nebo nevymažete.',
+          mr: 'कर्जांच्या तुलनेत आता वाचता न येणारी पर्यायी चौकट ही चूक मानली जाते. “€2,500” असे लिहिलेले शुल्क, शब्दांसह लिहिलेला अतिरिक्त हप्ता किंवा चुकीच्या स्वरूपात लिहिलेली एकरकमी रक्कम आधी काहीही न सांगता शून्य धरली जायची, त्यामुळे एखादी ऑफर शुल्काशिवाय असल्यासारखी दिसू शकायची; आता त्या चौकटीवर खूण येते आणि ती दुरुस्त किंवा रिकामी करेपर्यंत ऑफरचा निकाल दिसत नाही.',
+        },
+      },
+      {
         id: 'header-menus-keyboard',
         text: {
           en: 'The menus at the top of the page are easier to use from a keyboard: a bar now shows which link you are on, in light and dark, Tab moves on past the last link without getting lost, and screen readers are told what the menus and the theme buttons are, with no keys promised that do nothing.',
