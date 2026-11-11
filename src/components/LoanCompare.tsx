@@ -1365,7 +1365,10 @@ function VendorCard({
   // this offer's starting example, and always shows a box that cannot be
   // read. Which rows are open is view state: never shared, stored or tracked.
   const isSet = (s: string) => Number(s) > 0;
-  const start = makeDefaultVendor(Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label)));
+  // An offer made by the Add button starts with its optional boxes empty, so
+  // that is what "unchanged" means for it: its empty fee row stays folded.
+  const slot = Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label));
+  const start = slot >= MIN_VENDORS ? makeAddedVendor(slot) : makeDefaultVendor(slot);
   const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
   const unreadable = (...keys: OptionalField[]) => keys.some((k) => badOptional.has(k));
   const [toggled, setToggled] = useState<Partial<Record<FoldName, boolean>>>({});
@@ -1577,8 +1580,10 @@ function VendorCard({
                       first={formatMoney(result.effectiveMonthlyMinor, currency)}
                       later={formatMoney(result.rateChange.paymentMinor, currency)}
                       month={result.rateChange.month}
+                      last={result.rateChange.last === true}
                       strings={strings}
                     />
+                    <span className="lc-resultHint">{strings.results.monthlyLaterNote}</span>
                     {result.effectiveMonthlyMinor > result.monthlyPaymentMinor && (
                       <span className="lc-resultHint">
                         {format(strings.results.monthlyIncludesExtra, {
@@ -2099,6 +2104,7 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
                     first={formatMoney(r.effectiveMonthlyMinor, currency)}
                     later={formatMoney(change.paymentMinor, currency)}
                     month={change.month}
+                    last={change.last === true}
                     strings={strings}
                   />
                 );
@@ -2201,15 +2207,15 @@ function DeltaRow({ label, valid, get, format, cell, emphasized }: DeltaRowProps
  * later one, at the same weight. The label comes before its amount in the
  * markup, which is the order a screen reader gives them.
  */
-function PaymentSteps({ first, later, month, strings }: { first: string; later: string; month: number; strings: Strings }) {
+function PaymentSteps({ first, later, month, last, strings }: { first: string; later: string; month: number; last?: boolean; strings: Strings }) {
   return (
     <span className="lc-steps">
       <span className="lc-step">
-        <span className="lc-stepLabel">{format(strings.results.monthlyFirst, { lastMonth: month - 1 })}</span>{' '}
+        <span className="lc-stepLabel">{month === 2 ? format(strings.balance.month, { m: 1 }) : format(strings.results.monthlyFirst, { lastMonth: month - 1 })}</span>{' '}
         <span className="lc-stepAmount">{first}</span>
       </span>
       <span className="lc-step">
-        <span className="lc-stepLabel">{format(strings.results.monthlyFrom, { month })}</span>{' '}
+        <span className="lc-stepLabel">{format(last ? strings.results.monthlyLast : strings.results.monthlyFrom, { month })}</span>{' '}
         <span className="lc-stepAmount">{later}</span>
       </span>
     </span>

@@ -3025,8 +3025,6 @@ details[open] > .disclosure::after,
   align-items: flex-end;
 }
 
-.lc-deltaTable .lc-stepAmount { font-weight: 600; }
-
 .lc-deltaLines {
   display: grid;
   gap: 2px;
@@ -3524,7 +3522,7 @@ details[open] > .disclosure::after,
     flex: 1 1 100%;
     min-width: 0;
     white-space: normal;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 12px;
   }
 
@@ -3538,8 +3536,11 @@ details[open] > .disclosure::after,
 
   .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { text-align: right; }
 
-  /* In the card the primary figures are left-aligned on phones. */
-  .lc-resultListPrimary .lc-stepAmount { margin-left: 0; }
+  /* In the card a two-step payment takes the full width on phones, months on
+     the left and amount on the right, so a long amount at a large text size
+     never runs into the APR beside it. */
+  .lc-resultListPrimary .lc-resultRowSteps { grid-column: 1 / -1; }
+  .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
 
   .lc-deltaTable td::before {
     content: attr(data-slot);

@@ -321,10 +321,11 @@ export interface LoanResult {
    * ends. `month` is the first month at the new rate. `paymentMinor` is what
    * is paid each month from then on, extra monthly principal included, as the
    * effective schedule has it; `null` when the loan is paid off before that
-   * month, so no later payment exists. The page shows both payments: the
+   * month, so no later payment exists. `last` marks the case where that
+   * payment is the closing one and never repeats. The page shows both payments: the
    * first one alone makes two offers that part ways later look the same.
    */
-  rateChange?: { month: number; paymentMinor: number | null };
+  rateChange?: { month: number; paymentMinor: number | null; last?: boolean };
   warnings: string[];
   error?: string;
 }
@@ -772,7 +773,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
         ? row.payment
         : recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
     }
-    rateChange = { month, paymentMinor };
+    rateChange = { month, paymentMinor, ...(row && schedule.length === month ? { last: true } : {}) };
   }
 
   return {

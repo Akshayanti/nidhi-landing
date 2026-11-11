@@ -1715,7 +1715,7 @@ describe('rateChange: the payment after a fixed period', () => {
     // The rate changes for the last month alone: that month's payment closes the loan.
     const r = computeLoan({ principalMinor: 1_000_000, annualRate: 0.06, rateSpec: hybrid(0.06, 12, 0.08) }, { kind: 'term', months: 13 });
     assert.equal(r.months, 13);
-    assert.deepEqual(r.rateChange, { month: 13, paymentMinor: r.schedule[12].payment });
+    assert.deepEqual(r.rateChange, { month: 13, paymentMinor: r.schedule[12].payment, last: true });
     assert.equal(r.schedule[12].balance, 0);
   });
 });
