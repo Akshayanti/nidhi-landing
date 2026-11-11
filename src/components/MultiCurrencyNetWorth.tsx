@@ -24,7 +24,8 @@ import {
   type ShareMode,
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
-import { CHART_SERIES, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
+import { CHART_SERIES, CHART_SERIES_ON, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
+import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { downloadBlob, downloadWorkbook, guardText, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { netWorthSheets } from '../utils/multi-currency-net-worth/export.ts';
@@ -1416,7 +1417,12 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           })();
     const dx = r2(pop * Math.cos(mid));
     const dy = r2(pop * Math.sin(mid));
-    return { pos, d, color: CHART_COLORS[i % CHART_COLORS.length], amount, dx, dy };
+    // The series' marker, drawn on the slice when the slice is wide enough
+    // to hold it, so a slice can be matched to its legend entry by shape.
+    const slot = i % CHART_COLORS.length;
+    const markR = (outerR + innerR) / 2;
+    const mark = fraction >= 0.05 ? { x: cx + markR * Math.cos(mid), y: cy + markR * Math.sin(mid) } : null;
+    return { pos, d, color: CHART_COLORS[slot], ink: CHART_SERIES_ON[slot], slot, mark, amount, dx, dy };
   });
 
   const activeArc = arcs.find((a) => a.pos.code === active) ?? null;
@@ -1455,6 +1461,16 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
               />
             );
           })}
+          {arcs.map((arc) => arc.mark && (
+            <g
+              key={`mark-${arc.pos.code}`}
+              className="mcnw-sliceMark"
+              opacity={active && arc.pos.code !== active ? 0.35 : undefined}
+              transform={arc.pos.code === active ? `translate(${arc.dx} ${arc.dy})` : undefined}
+            >
+              <MarkerGlyph index={arc.slot} cx={arc.mark.x} cy={arc.mark.y} r={7} color={arc.ink} />
+            </g>
+          ))}
           {activeArc ? (
             <>
               <text x={cx} y={cy - 16} textAnchor="middle" className="mcnw-chartCenterCode">{activeArc.pos.code}</text>
@@ -1486,7 +1502,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
                 onBlur={() => setActive(null)}
                 onClick={() => setActive(arc.pos.code)}
               >
-                <span className="mcnw-legendSwatch" style={{ background: arc.color }} />
+                <SeriesMarker index={arc.slot} color={arc.color} className="mcnw-legendSwatch" />
                 <span className="mcnw-legendCode">{arc.pos.code}</span>
                 <span className="mcnw-legendPct">{pct(arc.amount)}</span>
                 {showAmounts && <span className="mcnw-legendAmount">{amountOf(arc.pos)}</span>}

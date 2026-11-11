@@ -134,42 +134,63 @@ export const SEMANTIC = {
 // ---------------------------------------------------------------------------
 
 /**
- * Distinguishable color series for charts (currency tags, loan series,
- * persona badges, multi-series graphs). The first two slots reuse the
- * brand-blue + brand-teal CSS variables so they theme-flip to dark-mode
- * variants when [data-theme="dark"] is set. The remaining 9 are Material
- * Design picks chosen for distinguishability against each other and the
- * brand pair, returned as static hex (they don't theme-flip).
+ * Colour series for charts (loan offers, currencies). Every slot is a CSS
+ * variable with a light and a dark value, defined in global.css
+ * (--chart-1 to --chart-11), so a chart follows the theme. Each value is 3:1
+ * or more against the card it is drawn on in its theme; the values and that
+ * check live in CHART_SERIES_VALUES below and chartColors.test.ts.
  *
- * On dark surfaces the saturated mid-tone hex values still read at AA
- * against #1E1E1E (verified per-color in the chart audit).
+ * For lines, swatches and markers only, never for text: orange and cyan in
+ * light are under 4.5:1. A series' name stands in neutral ink beside its
+ * marker (src/components/chart/SeriesMarker.tsx).
  */
 export const CHART_SERIES = [
-  'var(--color-deep-blue)', // 1: brand blue (theme-reactive)
-  'var(--color-teal)',      // 2: brand teal (theme-reactive)
-  '#E65100',                // 3: orange
-  '#6A1B9A',                // 4: purple
-  SEMANTIC.successLight,    // 5: green (#2E7D32)
-  SEMANTIC.dangerLight,     // 6: red   (#C62828)
-  '#1565C0',                // 7: blue (lighter hue than brand)
-  '#6D4C41',                // 8: brown
-  '#00838F',                // 9: cyan
-  '#F9A825',                // 10: amber
-  '#4A148C',                // 11: deep purple
+  'var(--chart-1)',  // brand blue
+  'var(--chart-2)',  // brand teal
+  'var(--chart-3)',  // orange
+  'var(--chart-4)',  // purple
+  'var(--chart-5)',  // green
+  'var(--chart-6)',  // red
+  'var(--chart-7)',  // blue (lighter hue than brand)
+  'var(--chart-8)',  // brown
+  'var(--chart-9)',  // cyan
+  'var(--chart-10)', // amber
+  'var(--chart-11)', // deep purple
 ] as const;
 
+/** The ink for a label or marker drawn on a shape filled with the same slot. */
+export const CHART_SERIES_ON = CHART_SERIES.map((_, i) => `var(--chart-${i + 1}-on)`);
+
 /**
- * Risk-level colors for the multi-currency net worth tool. Maps risk
- * categories to their visual signal. Functional uses the brand-teal CSS
- * variable so "your functional currency" theme-flips with the rest of
- * the brand; the rest are static semantic colors.
+ * What each slot resolves to, as [light, dark]. global.css holds the same
+ * values (it cannot import this file); chartColors.test.ts fails if the two
+ * drift apart or a value falls under 3:1 against its card.
+ */
+export const CHART_SERIES_VALUES: ReadonlyArray<readonly [string, string]> = [
+  ['#0A3D8F', '#90CAF9'],
+  ['#005B4F', '#26A69A'],
+  ['#E65100', '#FFAB91'],
+  ['#6A1B9A', '#E1BEE7'],
+  ['#2E7D32', '#81C784'],
+  ['#C62828', '#FF9E80'],
+  ['#1565C0', '#D1C4E9'],
+  ['#6D4C41', '#FFCC80'],
+  ['#00838F', '#80DEEA'],
+  ['#8A6100', '#E6EE5C'],
+  ['#4A148C', '#CE93D8'],
+];
+
+/**
+ * Risk levels in the net worth calculator: the guide's light and dark pairs,
+ * as CSS variables (--risk-* in global.css). Each is the fill of a badge that
+ * holds the word for the level, so the colour never stands alone.
  */
 export const RISK_COLORS = {
-  functional: 'var(--color-teal)',
-  low:        SEMANTIC.successLight,
-  moderate:   '#F9A825',
-  elevated:   SEMANTIC.dangerLight,
-  'net-debt': SEMANTIC.dangerLight,
+  functional: 'var(--risk-functional)',
+  low:        'var(--risk-low)',
+  moderate:   'var(--risk-moderate)',
+  elevated:   'var(--risk-elevated)',
+  'net-debt': 'var(--risk-net-debt)',
 } as const;
 
 /**

@@ -43,7 +43,8 @@ import {
   unreadableOptionalFields,
   type OptionalField,
 } from '../utils/loan/inputs.ts';
-import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
+import { CHART_SERIES, CHART_SERIES_ON } from '../styles/palette.ts';
+import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -220,6 +221,8 @@ function track(event: string, properties?: Record<string, unknown>) {
 // values come from CHART_SERIES (single source of truth in palette.ts);
 // we slice the first 5 because the loan grid maxes out at 5 vendors.
 const VENDOR_COLORS = CHART_SERIES.slice(0, 5);
+// The ink for a label painted on an offer's colour (the principal bars).
+const VENDOR_INKS = CHART_SERIES_ON.slice(0, 5);
 
 // ---- Chart -----------------------------------------------------------------
 
@@ -382,7 +385,8 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
         {series.map((s) => (
           <span key={s.i} className="lc-legendItem">
             <svg className="lc-legendLine" viewBox="0 0 28 10" aria-hidden="true">
-              <line x1="1" y1="5" x2="27" y2="5" stroke={s.color} strokeWidth="3" strokeDasharray={s.dash} strokeLinecap="round" />
+              <line x1="1" y1="7" x2="39" y2="7" stroke={s.color} strokeWidth="3" strokeDasharray={s.dash} strokeLinecap="round" />
+              <MarkerGlyph index={s.i} cx={20} cy={7} r={5} color={s.color} halo="var(--color-bg-white)" />
             </svg>
             {s.name}
             <span className="lc-legendNote">
@@ -442,13 +446,22 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               />
             ))}
             {series.map((s) => (
-              <circle key={`end-${s.i}`} className="lc-payoffDot" cx={x(s.payoff)} cy={y(0)} r="5" style={{ fill: s.color }} />
+              // One marker part of the way along each line, at a different
+              // place for each offer, so lines that run close together can
+              // still be told apart; and one where the loan is paid off.
+              <g key={`marks-${s.i}`}>
+                {(() => {
+                  const m = Math.round((s.payoff * (s.i + 1)) / (series.length + 1));
+                  return <MarkerGlyph index={s.i} cx={x(m)} cy={y(at(s, m).balance)} r={6} color={s.color} halo="var(--color-bg-white)" />;
+                })()}
+                <MarkerGlyph index={s.i} cx={x(s.payoff)} cy={y(0)} r={6} color={s.color} halo="var(--color-bg-white)" />
+              </g>
             ))}
             {hover !== null && (
               <g pointerEvents="none">
                 <line className="chart-crosshair" x1={x(hover)} x2={x(hover)} y1={BPAD.top} y2={BH - BPAD.bottom} />
                 {series.map((s) => (
-                  <circle key={`h-${s.i}`} className="chart-pointDot" cx={x(hover)} cy={y(at(s, hover).balance)} r="5.5" style={{ fill: s.color }} />
+                  <MarkerGlyph key={`h-${s.i}`} index={s.i} cx={x(hover)} cy={y(at(s, hover).balance)} r={6.5} color={s.color} halo="var(--color-bg-white)" />
                 ))}
               </g>
             )}
@@ -521,10 +534,12 @@ interface SplitChartProps {
   currency: string;
   vendorName: string;
   vendorColor: string;
+  /** The ink for a label painted on vendorColor. */
+  vendorInk: string;
   strings: Strings;
 }
 
-function SplitChart({ schedule, currency, vendorName, vendorColor, strings }: SplitChartProps) {
+function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, strings }: SplitChartProps) {
   const { formatAmount, formatMoney } = useMoney();
   // Phones get a narrower drawing, so the labels stay readable once it is
   // scaled down to the screen instead of shrinking to a few pixels.
@@ -639,10 +654,11 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, strings }: Sp
                 className="lc-splitValueInterest"
                 textAnchor="middle"
                 style={{
-                  // When the segment is too thin, render the label above
-                  // the bar in interest's accent colour for contrast on
-                  // the page background.
-                  fill: interestLabelInside ? NEUTRAL.white : 'var(--color-warning)',
+                  // Inside the bar the label is dark in both themes: orange
+                  // never holds white (2.7:1). When the segment is too thin
+                  // the label goes above the bar, in an orange that reads
+                  // as text on the card.
+                  fill: interestLabelInside ? 'var(--chart-on-warn)' : 'var(--chart-text-warn)',
                   fontWeight: 600,
                 }}
               >
@@ -655,7 +671,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, strings }: Sp
                 className="lc-splitValuePrincipal"
                 textAnchor="middle"
                 style={{
-                  fill: principalLabelInside ? NEUTRAL.white : 'var(--color-text-primary)',
+                  fill: principalLabelInside ? vendorInk : 'var(--color-text-primary)',
                   fontWeight: 600,
                 }}
               >
@@ -1110,6 +1126,7 @@ export default function LoanCompare({
             active={i === activeVendor}
             label={VENDOR_LABELS[i]}
             color={VENDOR_COLORS[i]}
+            index={i}
             vendor={v}
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
@@ -1251,6 +1268,8 @@ interface VendorCardProps {
   active: boolean;
   label: string;
   color: string;
+  /** Which offer this is, 0-based: it picks the marker that goes with the colour. */
+  index: number;
   vendor: VendorInput;
   result: LoanResult;
   /** Hypothetical "no points paid" baseline; null when vendor isn't
@@ -1276,6 +1295,7 @@ function VendorCard({
   active,
   label,
   color,
+  index,
   vendor,
   result,
   noPointsBaseline,
@@ -1338,7 +1358,10 @@ function VendorCard({
           noisy nav. h3 keeps the card semantically labelled while letting
           the surrounding section heading own the h2 slot.
         */}
-        <h3 id={headingId} className="lc-cardBadge">{format(strings.card.badge, { label })}</h3>
+        <h3 id={headingId} className="lc-cardBadge">
+          <SeriesMarker index={index} color={color} />
+          {format(strings.card.badge, { label })}
+        </h3>
         {onRemove && (
           <button
             type="button"
@@ -2370,6 +2393,7 @@ function ChartsPanel({
             currency={currency}
             vendorName={vendorName}
             vendorColor={VENDOR_COLORS[activeIdx]}
+            vendorInk={VENDOR_INKS[activeIdx]}
             strings={strings}
           />
         ) : (

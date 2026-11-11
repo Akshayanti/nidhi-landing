@@ -161,7 +161,7 @@ The codebase contains a small set of off-palette literals, defined as named cons
 | Semantic UI states | `--semantic-success-light` `#2E7D32`, `--semantic-warning-light` `#F57C00`, `--semantic-danger-light` `#C62828`, `--semantic-info-light` `#0288D1` | Material Design conventions. Users expect specific hues for success / warning / danger / info; mapping these to palette colors loses widely-recognised UI signals. |
 | CTA + callout backgrounds | `--semantic-cta-bg-*` `#00796B` etc., `--semantic-callout-bg` `#0D47A1` | Solid surfaces tuned to hold white text at AA. Currently mid-tone Material colors; could be palette teal/blue but at a noticeable visual shift. |
 | Pastel notice / status tints | `--notice-caution-bg-light` `#FFF8E1`, `--warning-light-bg` `#fff3cd`, `--status-success-on-dark` `#b2f2ea`, etc. | The palette has no pastel colors by design (pastels can't reach AAA contrast on white). Pastel alert backgrounds and light-on-dark status text need values outside the palette. |
-| Extended chart series | `CHART_SERIES[3..10]` (orange, brown, lighter blue, deep purple) | The palette has 10 distinguishable identities; charts often need more, especially when the brand pair (blue + teal) occupies the first two slots. The remaining slots use Material Design picks chosen for distinguishability against each other and against the brand pair. |
+| Chart series | `--chart-1` to `--chart-11` (`CHART_SERIES`) | Eleven slots, each a light and dark pair. The light values are mid-tones (several are Material Design picks, so that eleven lines stay apart on white); the dark values are the palette's pastel partners. See "Chart series, risk scale and figure inks" below. |
 | Persona identity colors | `PERSONA_COLORS.eva` `#7B1FA2`, `PERSONA_COLORS.petra` `#00897B`, etc. | Distinct identity hues for in-content persona badges. Could be palette but the personas predate the palette and are tuned for inline visibility. |
 
 **Policy:** off-palette colors are acceptable only when they live as named constants in `global.css` or `palette.ts`, not as inline literals in components. Any new off-palette value must be:
@@ -207,11 +207,49 @@ border-left: 4px solid var(--palette-blue);   /* always #0A3D8F */
 import { PALETTE, CHART_SERIES, RISK_COLORS } from '../styles/palette.ts';
 
 const swatch = PALETTE.teal;            // '#005B4F' (light-mode value)
-const series = CHART_SERIES;            // 11-color array; first two are CSS vars
-const risk   = RISK_COLORS.functional;  // 'var(--color-teal)' (theme-reactive)
+const series = CHART_SERIES;            // 11 entries, each 'var(--chart-N)' (theme-reactive)
+const risk   = RISK_COLORS.functional;  // 'var(--risk-functional)' (theme-reactive)
 ```
 
 For chart and risk colors, use the exported arrays / objects rather than picking individual `PALETTE.*` slots, so a future palette reshuffle is a one-file change.
+
+#### Chart series, risk scale and figure inks
+
+Agreed by the three-model council on 2026-11-10 and by the owner on 2026-11-11. Three rules hold for every chart and figure on the site:
+
+1. **Every colour is a light and dark pair.** Nothing keeps its light value on a dark card.
+2. **Series colours are for lines, slices, swatches and markers, never for text.** They are held to 3:1 against the card and the page (WCAG 1.4.11), not to 4.5:1; orange and cyan in light are under 4.5:1. A name or a number is written in neutral ink. A label drawn on a filled shape uses that fill's ink token.
+3. **Colour is never the only difference** (WCAG 1.4.1). Each series has a marker shape and, on a line chart, a line style; a risk colour always holds the word for its level.
+
+**Chart series** (`--chart-N` in `global.css`, `CHART_SERIES` in `palette.ts`; `src/styles/chartColors.test.ts` checks the ratios and that the two files agree):
+
+| Slot | Light | Dark | Marker | Line |
+|------|-------|------|--------|------|
+| 1 brand blue | `#0A3D8F` | `#90CAF9` | circle | solid |
+| 2 brand teal | `#005B4F` | `#26A69A` | square | solid |
+| 3 orange | `#E65100` | `#FFAB91` | triangle | solid |
+| 4 purple | `#6A1B9A` | `#E1BEE7` | diamond | solid |
+| 5 green | `#2E7D32` | `#81C784` | cross | solid |
+| 6 red | `#C62828` | `#FF9E80` | circle, outlined | dashed |
+| 7 blue | `#1565C0` | `#D1C4E9` | square, outlined | dashed |
+| 8 brown | `#6D4C41` | `#FFCC80` | triangle, outlined | dashed |
+| 9 cyan | `#00838F` | `#80DEEA` | diamond, outlined | dashed |
+| 10 amber | `#8A6100` | `#E6EE5C` | cross in a ring | dashed |
+| 11 deep purple | `#4A148C` | `#CE93D8` | plus | dotted |
+
+The markers are drawn by `src/components/chart/SeriesMarker.tsx` and appear on the chart, in its legend and beside the series' name wherever that name stands (a card heading, a tab). The loan comparison, which shows at most five offers, keeps a line style of its own for each of the five as well. `--chart-N-on` is the ink for a label or marker drawn on slot N: white in light (dark on orange, where white is 3.8:1), `#121212` in dark.
+
+**Risk scale** (`--risk-*`, `RISK_COLORS`): palette pairs, each the fill of a badge that holds the word, in `--risk-on` (white in light, `#121212` in dark; 7:1 or more on every fill).
+
+| Level | Light | Dark |
+|-------|-------|------|
+| functional | `#005B4F` teal | `#80CBC4` |
+| low | `#004D1A` green | `#81C784` |
+| moderate | `#6B4800` amber | `#FFCC80` |
+| elevated | `#8B2E00` deep orange | `#FFAB91` |
+| net debt | `#991100` red | `#FF9E80` |
+
+**Figure and chart inks.** In lesson figures: `--fig-on-fill` (white in light, `#121212` in dark) for a label on a filled shape; `--fig-on-warn` (`#121212` in both) for a label on orange, which never holds white (2.7:1); `--fig-text-warn` (`#8B2E00` in light) for orange text on the page; `--fig-outline` (`#595959` / `#BDBDBD`) round a fill that is under 3:1 against the page. `scripts/lint-figures.mjs` enforces them. The tools' charts use the same values as `--chart-on-warn`, `--chart-text-warn` and `--chart-outline-warn`.
 
 #### Adding a new level
 
@@ -480,5 +518,6 @@ Recorded so neither codebase is "corrected" to the other by accident. Bringing t
 | Dark-mode teal for text and accents | `#26A69A` palette teal-mid-dark (AA, see "Dark mode: lightness, not just hue") | `#80CBC4` palette teal-dark |
 | Dark-mode Discovery level | `#26A69A` | `#80DEEA` (the planner shows no level badges today) |
 | Dark-mode amber (slot 3; the planner's warning colour) | `#FFCC80` | `#FFCA28` |
+| Chart series | 11 slots with markers and line styles (`--chart-N`, see "Chart series, risk scale and figure inks") | 20-pair extended palette in tiered cycles |
 | Number of palette pairs | 10 | 20 (slots 11 to 20 are planner additions, documented above) |
 | Semantic UI colours | Material Design states, off-palette (`--semantic-*`) | Mapped onto palette pairs (red, amber, green, cyan) |
