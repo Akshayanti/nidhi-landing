@@ -79,13 +79,13 @@ const inputId = `subscribe-email-${variant}`;
               autocomplete="email"
               class="subscribe-input"
             />
-            <button type="submit" class="subscribe-button">{t.button}</button>
+            <button type="submit" class="btn btn--onCallout subscribe-button">{t.button}</button>
           </div>
           {/* Shown before anything is sent, so a typo can be caught. */}
           <div class="subscribe-confirm" data-confirm hidden>
             <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
             <div class="subscribe-confirm-actions">
-              <button type="button" class="subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+              <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
               <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
             </div>
           </div>
@@ -154,7 +154,7 @@ const inputId = `subscribe-email-${variant}`;
               autocomplete="email"
               class="subscribe-input"
             />
-            <button type="submit" class="subscribe-button">{t.button}</button>
+            <button type="submit" class="btn btn--primary subscribe-button">{t.button}</button>
           </form>
         </div>
         <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
@@ -162,7 +162,7 @@ const inputId = `subscribe-email-${variant}`;
         <div class="subscribe-confirm" data-confirm hidden>
           <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
           <div class="subscribe-confirm-actions">
-            <button type="button" class="subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+            <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
             <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
           </div>
         </div>
@@ -620,33 +620,13 @@ const inputId = `subscribe-email-${variant}`;
   .subscribe-input::placeholder { color: var(--color-text-muted); }
   .subscribe-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
 
-  .subscribe-button {
-    padding: var(--space-3) var(--space-5);
-    background: var(--color-cta-bg);
-    color: var(--color-cta-fg);
-    border: 1px solid var(--color-cta-bg);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
-    white-space: nowrap;
-  }
-  .subscribe-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
-  /* On the navy box at the end of a lesson a teal button nearly vanished
-     (1.6:1, and 1.3:1 in dark); white with the box's navy as text stands apart
-     in both themes, as on the waitlist card. */
-  .subscribe--full .subscribe-button { background: #fff; color: var(--color-callout-bg); border-color: #fff; }
-  .subscribe--full .subscribe-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); border-color: #fff; }
-  .subscribe-button:active:not(:disabled) { transform: translateY(1px); }
-  .subscribe-button:disabled { opacity: 0.6; cursor: wait; }
-  .subscribe-button:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
+  /* Colour, size and states come from the shared .btn roles
+     (docs/color-palette.md, "Buttons"): the main action, white on the navy
+     box at the end of a lesson and filled blue on a plain page. */
+  .subscribe-button:disabled { cursor: wait; }
 
   .subscribe-confirm { margin-top: var(--space-3); text-align: left; }
-  .subscribe-confirm[hidden], .subscribe-button[hidden] { display: none; }
+  .subscribe-confirm[hidden] { display: none; }
   .subscribe-confirm-text {
     margin: 0 0 var(--space-3);
     font-size: 0.95rem;

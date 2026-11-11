@@ -86,13 +86,13 @@ const inputId = `${idPrefix}-email`;
             autocomplete="email"
             class="waitlist-input"
           />
-          <button type="submit" class="waitlist-button" data-cta={ctaLabel}>{ctaLabel}</button>
+          <button type="submit" class="btn btn--onCallout waitlist-button" data-cta={ctaLabel}>{ctaLabel}</button>
         </div>
         <!-- Shown before anything is sent, so a typo can be caught. -->
         <div class="waitlist-confirm" data-confirm hidden>
           <p class="waitlist-confirm-text">{waitlist.confirmPrompt} <strong data-confirm-email></strong></p>
           <div class="waitlist-confirm-actions">
-            <button type="button" class="waitlist-button" data-confirm-yes data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
+            <button type="button" class="btn btn--onCallout waitlist-button" data-confirm-yes data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
             <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr="waitlist-confirm-change">{waitlist.confirmChange}</button>
           </div>
         </div>
@@ -407,32 +407,9 @@ const inputId = `${idPrefix}-email`;
   .waitlist-input::placeholder { color: var(--color-text-muted); }
   .waitlist-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
 
-  .waitlist-button {
-    padding: var(--space-3) var(--space-5);
-    background: var(--color-cta-bg);
-    color: var(--color-cta-fg);
-    border: 1px solid var(--color-cta-bg);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
-    white-space: nowrap;
-  }
-
-  .waitlist-button:hover:not(:disabled) { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
-  .waitlist-button:active:not(:disabled) { transform: translateY(1px); }
-  .waitlist-button:disabled { opacity: 0.6; cursor: wait; }
-  /* On the blue card a teal button nearly vanishes on a dim screen; white
-     with the card's navy as text stands apart in both themes. */
-  .waitlist .waitlist-button { background: #fff; color: var(--color-callout-bg); border-color: #fff; }
-  .waitlist .waitlist-button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.88); }
-  .waitlist .waitlist-button:focus-visible { outline-color: #fff; }
-
-  .waitlist-button:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
+  /* Colour, size and states come from the shared .btn roles
+     (docs/color-palette.md, "Buttons"): the main action on the blue card. */
+  .waitlist-button:disabled { cursor: wait; }
 
   .waitlist-confirm { margin-top: var(--space-3); }
   .waitlist-confirm[hidden] { display: none; }
@@ -455,7 +432,6 @@ const inputId = `${idPrefix}-email`;
   }
   .waitlist-confirm-change:hover:not(:disabled) { color: white; }
   .waitlist-confirm-change:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-  .waitlist-button[hidden] { display: none; }
   .waitlist .waitlist-confirm-actions { justify-content: center; }
 
   .waitlist-status {

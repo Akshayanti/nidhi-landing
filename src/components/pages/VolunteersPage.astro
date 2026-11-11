@@ -94,7 +94,7 @@ const webPageSchema = {
       </ul>
 
       <p class="vol-cta">
-        <a href={FORM_URL} class="vol-btn" data-attr="volunteers-form">{v.cta}</a>
+        <a href={FORM_URL} class="btn btn--primary" data-attr="volunteers-form">{v.cta}</a>
       </p>
       <p class="vol-small">
         {v.note.before}<a href={localizedPath(locale, '/privacy/')} data-attr="volunteers-privacy">{v.note.link}</a>{v.note.after}
@@ -176,31 +176,6 @@ const webPageSchema = {
   }
 
   /* The home page's primary button, which is scoped to that page. */
-  .vol-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.98rem;
-    text-decoration: none;
-    background: var(--color-cta-bg);
-    color: var(--color-cta-fg);
-    border: 1px solid var(--color-cta-bg);
-    transition: background 0.15s ease, border-color 0.15s ease;
-  }
-
-  .vol-btn:hover,
-  .vol-btn:active { background: var(--color-cta-bg-hover); border-color: var(--color-teal); }
-
-  .vol-btn:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-
   .vol-list {
     padding-left: 1.2rem;
     line-height: 1.7;
