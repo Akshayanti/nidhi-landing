@@ -6649,9 +6649,6 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-reset {
   margin-left: auto;
-  min-height: 36px;
-  padding: 6px 14px;
-  font-size: 0.875rem;
 }
 .ifc-fix {
   margin: 0;
