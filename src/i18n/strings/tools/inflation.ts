@@ -194,6 +194,7 @@ export const inflationEn = {
     /** The 38 currency names, shared by every tool: see `./currencies.ts`. */
     currencies: currenciesEn,
     formLabel: 'Inflation calculator',
+    example: 'Example figures. Replace them with your own.',
     /** The spreadsheet's own sheets and rows; the rest reuses the labels below. */
     export: {
       /** The printed report's "What this means": interprets the answer, never advises. */
@@ -478,6 +479,7 @@ export const inflationHi: typeof inflationEn = {
   island: {
     currencies: currenciesHi,
     formLabel: 'महँगाई कैलकुलेटर',
+    example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     export: {
       meaning: 'महँगाई का मतलब है समय के साथ क़ीमतों का बढ़ना। जब तक किसी देश की असल महँगाई इस्तेमाल न हुई हो, ये आँकड़े हर साल एक ही दर मानते हैं; असल महँगाई साल-दर-साल बदलती है, और आप जो क़ीमतें चुकाते हैं वे औसत से तेज़ या धीमी बढ़ सकती हैं।',
       moneyLabel: 'रकम',
@@ -751,6 +753,7 @@ export const inflationEs: typeof inflationEn = {
   island: {
     currencies: currenciesEs,
     formLabel: 'Calculadora de inflación',
+    example: 'Cifras de ejemplo. Cámbialas por las tuyas.',
     export: {
       meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
       moneyLabel: 'Importes',
@@ -1027,6 +1030,7 @@ export const inflationCs: typeof inflationEn = {
   island: {
     currencies: currenciesCs,
     formLabel: 'Inflační kalkulačka',
+    example: 'Ukázková čísla. Nahraďte je svými.',
     export: {
       meaning: 'Inflace je růst cen v průběhu času. Pokud nebyla použita skutečná inflace dané země, výpočet vychází ze stejné sazby v každém roce; skutečná inflace se rok od roku mění a ceny, které platíte, mohou růst rychleji i pomaleji než průměr.',
       moneyLabel: 'Částky',
@@ -1294,6 +1298,7 @@ export const inflationMr: typeof inflationEn = {
   island: {
     currencies: currenciesMr,
     formLabel: 'महागाई कॅल्क्युलेटर',
+    example: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
     export: {
       meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
       moneyLabel: 'रक्कम',
