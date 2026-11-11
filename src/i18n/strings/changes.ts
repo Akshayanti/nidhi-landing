@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'planner-lines-and-log-dates',
+        text: {
+          en: 'Two corrections to what the site says about itself. The Monte Carlo and invest or pay off pages said the planner already runs these calculations on your whole picture; the planner is still being built, and the lines now say what it is being built to do. And the privacy changelog had three entries dated a day off and no entry for the How-to section; the dates are corrected and the section is recorded.',
+          hi: 'साइट अपने बारे में जो कहती है, उसमें दो सुधार हुए हैं। मोंटे कार्लो और निवेश या कर्ज़ चुकाना वाले पेज कहते थे कि प्लानर आपकी पूरी तस्वीर पर ये हिसाब पहले से करता है; प्लानर अभी बन रहा है, और अब वे पंक्तियाँ बताती हैं कि वह किस काम के लिए बनाया जा रहा है। और प्राइवेसी चेंजलॉग की तीन एंट्री की तारीख एक दिन आगे-पीछे थी और कैसे करें सेक्शन की कोई एंट्री नहीं थी; तारीखें ठीक कर दी गई हैं और सेक्शन दर्ज हो गया है।',
+          es: 'Dos correcciones en lo que el sitio dice de sí mismo. Las páginas del simulador Monte Carlo y de Invertir o pagar deuda decían que el planificador ya hace estos cálculos con tu situación completa; el planificador todavía se está construyendo, y ahora esas líneas dicen para qué se está construyendo. Y el registro de cambios de privacidad tenía tres entradas con un día de diferencia y ninguna para la sección Cómo hacerlo; las fechas están corregidas y la sección queda registrada.',
+          cs: 'Dvě opravy toho, co web říká sám o\u00a0sobě. Stránky simulátoru Monte Carlo a\u00a0nástroje Investovat, nebo splatit dluh tvrdily, že plánovač tyto výpočty už dělá pro celou vaši finanční situaci; plánovač teprve vzniká a\u00a0ty řádky teď říkají, k\u00a0čemu vzniká. A\u00a0přehled změn v\u00a0zásadách ochrany soukromí měl tři záznamy s\u00a0datem posunutým o\u00a0den a\u00a0žádný záznam pro sekci Jak na to; data jsou opravená a\u00a0sekce je zaznamenaná.',
+          mr: 'साइट स्वतःबद्दल जे सांगते त्यात दोन दुरुस्त्या झाल्या आहेत. मॉन्टे कार्लो आणि गुंतवणूक की कर्जफेड या पानांवर लिहिले होते की प्लॅनर तुमच्या संपूर्ण चित्रावर हे हिशेब आधीच करतो; प्लॅनर अजून बनवला जात आहे, आणि आता त्या ओळी तो कशासाठी बनवला जात आहे ते सांगतात. आणि गोपनीयता बदलांच्या नोंदीत तीन नोंदींची तारीख एका दिवसाने चुकली होती आणि ‘कसे करायचे’ विभागाची नोंदच नव्हती; तारखा दुरुस्त केल्या आहेत आणि विभाग नोंदवला आहे.',
+        },
+      },
+      {
         id: 'loan-link-cleared-boxes',
         text: {
           en: 'A loan comparison you share now arrives as you left it. If you emptied a box, such as an offer’s fee, the link used to put the starting figure back, so the person opening it saw a different comparison; the same happened to your own screen when you switched language. An emptied box now stays empty.',
@@ -455,7 +465,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
     ],
   },
   {
-    date: '2026-10-23',
+    date: '2026-10-24',
     items: [
       {
         id: 'volunteer-translators',
