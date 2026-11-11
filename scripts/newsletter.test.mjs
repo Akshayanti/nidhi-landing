@@ -422,6 +422,89 @@ describe('newsletter.gs: what the server-side events carry', () => {
   });
 });
 
+describe('newsletter.gs: the mail itself (issue 439)', () => {
+  /** A mail as sent: its headers as a map of name to the list of values, and its two parts decoded. */
+  const read = (mime) => {
+    const [head, ...rest] = mime.split('\r\n\r\n');
+    const headers = {};
+    for (const line of head.split('\r\n')) {
+      const at = line.indexOf(':');
+      (headers[line.slice(0, at)] ??= []).push(line.slice(at + 1).trim());
+    }
+    const boundary = /boundary="([^"]+)"/.exec(head)[1];
+    const parts = rest.join('\r\n\r\n').split(`--${boundary}`).slice(1, -1).map((part) => {
+      const [partHead, body] = part.replace(/^\r\n/, '').split('\r\n\r\n');
+      return { head: partHead, lines: body.trim().split('\r\n'), text: Buffer.from(body.replace(/\s+/g, ''), 'base64').toString('utf8') };
+    });
+    return { headers, parts, raw: mime };
+  };
+  const lesson = { guid: 'https://nidhi.today/blog/x/', subject: 'A lesson', html: `<p>Everyone’s money: ${'word '.repeat(700)}</p><a href="{{UNSUBSCRIBE_URL}}">leave</a>`, text: 'Everyone’s money. Leave: {{UNSUBSCRIBE_URL}}', url: 'https://nidhi.today/blog/x/' };
+  const sendLesson = (ctx) => {
+    const body = JSON.stringify(lesson);
+    const mails = [];
+    ctx.rec.onSend = (to, mime) => mails.push([to, read(mime)]);
+    json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
+    return mails;
+  };
+  const readers = () => [row('a@x.io', 'confirmed', 30, { unsub: tok('1') }), row('b@x.io', 'confirmed', 30, { unsub: tok('2') })];
+
+  it('the reminder carries no unsubscribe header at all, never one that says "null"', () => {
+    const ctx = load([row('due@x.io', 'pending', 4, { confirm: tok('3') })]);
+    let mail;
+    ctx.rec.onSend = (_to, mime) => { mail = read(mime); };
+    ctx.handleRemindPending();
+    assert.ok(mail, 'a reminder was sent');
+    assert.equal(mail.headers['List-Unsubscribe'], undefined);
+    assert.equal(mail.headers['List-Unsubscribe-Post'], undefined);
+    assert.doesNotMatch(mail.raw, /null|undefined/);
+  });
+
+  it('a lesson carries the one-click headers, with the reader’s own address to post to', () => {
+    const mails = sendLesson(load(readers()));
+    assert.equal(mails.length, 2);
+    for (const [to, mail] of mails) {
+      const token = to === 'a@x.io' ? tok('1') : tok('2');
+      assert.equal(mail.headers['List-Unsubscribe'].length, 1);
+      assert.match(mail.headers['List-Unsubscribe'][0], new RegExp(`^<https?://[^<>\\s]+\\?action=unsubscribe&t=${token}>$`));
+      assert.deepEqual(mail.headers['List-Unsubscribe-Post'], ['List-Unsubscribe=One-Click']);
+    }
+  });
+
+  it('every copy of a lesson has its own Message-ID', () => {
+    const ids = sendLesson(load(readers())).map(([, mail]) => mail.headers['Message-ID'][0]);
+    assert.equal(new Set(ids).size, 2);
+    for (const id of ids) assert.match(id, /^<[A-Za-z0-9._-]+@nidhi\.today>$/);
+  });
+
+  it('both parts are base64 in short lines, and decode to exactly what was written', () => {
+    const [[, mail]] = sendLesson(load(readers()));
+    assert.equal(mail.parts.length, 2);
+    for (const part of mail.parts) {
+      assert.match(part.head, /Content-Transfer-Encoding: base64/);
+      for (const line of part.lines) assert.ok(line.length <= 76, `a line of ${line.length} characters`);
+    }
+    assert.match(mail.parts[0].head, /text\/plain; charset="UTF-8"/);
+    assert.equal(mail.parts[0].text, `Everyone’s money. Leave: https://nidhi.today/unsubscribe?t=${tok('1')}`);
+    assert.match(mail.parts[1].head, /text\/html; charset="UTF-8"/);
+    assert.ok(mail.parts[1].text.startsWith('<p>Everyone’s money: word word'));
+    assert.ok(mail.parts[1].text.includes(`href="https://nidhi.today/unsubscribe?t=${tok('1')}"`));
+    // No line of the whole message is over the 998 characters a mail line may have.
+    for (const line of mail.raw.split('\r\n')) assert.ok(line.length <= 998, `a line of ${line.length} characters`);
+  });
+
+  it('a GET on the unsubscribe address changes nothing and sends the reader to the page with the button', () => {
+    const ctx = load(readers());
+    const out = ctx.doGet(req({ action: 'unsubscribe', t: tok('1') }));
+    assert.equal(find(ctx, 'a@x.io')[1], 'confirmed', 'a scanner following the link unsubscribes nobody');
+    assert.ok(out.html.includes(`https://nidhi.today/unsubscribe?t=${tok('1')}`));
+    // A token that is not one goes nowhere useful.
+    assert.match(ctx.doGet(req({ action: 'unsubscribe', t: '"><script>' })).html, /subscription-invalid/);
+    // The POST still unsubscribes.
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+    assert.equal(find(ctx, 'a@x.io')[1], 'unsubscribed');
+  });
+});
+
 describe('newsletter.gs: one fan-out per lesson', () => {
   const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
   const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
