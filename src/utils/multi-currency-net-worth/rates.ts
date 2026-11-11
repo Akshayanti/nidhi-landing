@@ -50,5 +50,7 @@ export function ratesErrorReason(err: unknown): RatesErrorReason {
   if (err instanceof RatesError) return err.reason;
   if (err instanceof SyntaxError) return 'parse';
   if (err instanceof TypeError) return 'network';
+  // The request was given up on after its time limit: no answer came.
+  if (typeof err === 'object' && err !== null && (err as { name?: unknown }).name === 'AbortError') return 'network';
   return 'other';
 }

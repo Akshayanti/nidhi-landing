@@ -4,6 +4,7 @@
  */
 import {
   computeLoan,
+  emptyResult,
   toMinor,
   type LoanResult,
   type LumpSum,
@@ -21,6 +22,55 @@ export function parseNumber(s: string): number {
   if (cleaned === '') return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : NaN;
+}
+
+/** The optional boxes of an offer: left empty they are simply not in use. */
+export type OptionalField =
+  | 'feeMajor'
+  | 'pointsCostMajor'
+  | 'pointsRateReductionPct'
+  | 'extraMonthly'
+  | 'lumpSumsEncoded'
+  | 'prepayPenaltyPct'
+  | 'prepayPenaltyUntilMonth'
+  | 'initialFixedMonths'
+  | 'subsequentRatePct';
+
+/**
+ * The message for an offer with an optional box that cannot be read. It is
+ * written so that the tool's analytics, which sorts messages by the words
+ * in them, files it under "other".
+ */
+export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
+
+/**
+ * The optional boxes that hold something which is not what the box is for:
+ * "€2,500" or "-300" as a fee, "200 a month" as an extra payment, "12-5000"
+ * as a lump sum. Each of these used to be read as zero, or skipped, without
+ * a word: a fee typed with a currency sign made an offer look free of fees
+ * and lowered its APR. An empty box is not listed.
+ */
+export function unreadableOptionalFields(v: VendorInput): OptionalField[] {
+  const out: OptionalField[] = [];
+  const bad = (text: string): boolean => {
+    if (text.trim() === '') return false;
+    const n = parseNumber(text);
+    return !Number.isFinite(n) || n < 0;
+  };
+  const numeric: OptionalField[] = ['feeMajor', 'pointsCostMajor', 'pointsRateReductionPct', 'extraMonthly', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'];
+  for (const field of numeric) if (bad(v[field])) out.push(field);
+
+  // The two boxes of a rate that changes are on the page only for such a loan.
+  if (v.rateKind === 'hybrid' && v.modeKind === 'term') {
+    if (bad(v.initialFixedMonths)) out.push('initialFixedMonths');
+    if (bad(v.subsequentRatePct)) out.push('subsequentRatePct');
+  }
+
+  // Lump sums: every pair that is written must read as "month:amount".
+  const pairs = v.lumpSumsEncoded.split(';').filter((pair) => pair.trim() !== '');
+  if (pairs.length !== parseLumpSums(v.lumpSumsEncoded).length) out.push('lumpSumsEncoded');
+
+  return out;
 }
 
 /**
@@ -81,6 +131,9 @@ export function buildAdvancedFields(
  * so the caller can show it verbatim without a second validation layer.
  */
 export function computeFromInput(v: VendorInput, currency: string): LoanResult {
+  // An optional box that cannot be read is an error, like a required one:
+  // a result that quietly left it out would look complete and be wrong.
+  if (unreadableOptionalFields(v).length > 0) return emptyResult(0, OPTIONAL_UNREADABLE);
   const principalMinor = toMinor(parseNumber(v.principal), currency);
   const annualRate = parseNumber(v.annualRatePct) / 100;
   const feeMinor = toMinor(parseNumber(v.feeMajor) || 0, currency);

@@ -13,6 +13,7 @@ import {
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
+import { isValidNumber } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
 import { ToolExport, ToolReport } from './ToolExport.tsx';
@@ -154,11 +155,6 @@ function toState(f: FormState): ToolState {
   };
 }
 
-function isValid(v: string, min: number, max: number): boolean {
-  if (v.trim() === '') return false;
-  const n = Number(v);
-  return Number.isFinite(n) && n >= min && n <= max;
-}
 
 // ---------------------------------------------------------------------------
 // Simulation runner: small runs on the main thread, large ones in a worker,
@@ -312,13 +308,13 @@ export default function MonteCarloSimulator({
   }, [hydrated, settled, defaultCurrency]);
 
   const errors = {
-    start: !isValid(form.start, 0, 1e12),
-    monthly: !isValid(form.monthly, 0, 1e10),
-    saveYears: !isValid(form.saveYears, 0, 60),
-    stockPct: !isValid(form.stockPct, 0, 100),
-    withdrawal: form.withdrawOn && !isValid(form.withdrawal, 1, 1e11),
-    withdrawYears: form.withdrawOn && !isValid(form.withdrawYears, 1, 60),
-    feePct: !isValid(form.feePct, 0, MAX_FEE_PCT),
+    start: !isValidNumber(form.start, 0, 1e12),
+    monthly: !isValidNumber(form.monthly, 0, 1e10),
+    saveYears: !isValidNumber(form.saveYears, 0, 60, true),
+    stockPct: !isValidNumber(form.stockPct, 0, 100),
+    withdrawal: form.withdrawOn && !isValidNumber(form.withdrawal, 1, 1e11),
+    withdrawYears: form.withdrawOn && !isValidNumber(form.withdrawYears, 1, 60, true),
+    feePct: !isValidNumber(form.feePct, 0, MAX_FEE_PCT),
   };
   const hasErrors = Object.values(errors).some(Boolean);
 
@@ -408,7 +404,7 @@ export default function MonteCarloSimulator({
           </div>
           <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={update('start')} invalid={errors.start} hint={strings.fields.startHint} />
           <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} />
-          <NumberField id={ids.saveYears} label={strings.fields.saveYears} value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint={strings.fields.saveYearsHint} />
+          <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint={strings.fields.saveYearsHint} />
         </div>
         <p className="mcs-hint mcs-crossLink">
           {strings.fields.crossLink.before}
@@ -550,7 +546,7 @@ export default function MonteCarloSimulator({
           {form.withdrawOn && (
             <div className="mcs-grid mcs-grid--two">
               <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} hint={strings.withdraw.amountHint} />
-              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} max={60} hint={strings.withdraw.yearsHint} />
+              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} max={60} hint={strings.withdraw.yearsHint} />
             </div>
           )}
         </fieldset>
@@ -606,6 +602,8 @@ function NumberField(props: {
   invalid: boolean;
   hint?: string;
   max?: number;
+  /** "1" for a box that takes whole numbers only. */
+  step?: string;
 }) {
   const hintId = `${props.id}-hint`;
   return (
@@ -618,7 +616,7 @@ function NumberField(props: {
         inputMode="decimal"
         min={0}
         max={props.max}
-        step="any"
+        step={props.step ?? 'any'}
         value={props.value}
         onChange={props.onChange}
         aria-invalid={props.invalid || undefined}

@@ -5,6 +5,7 @@
 
 import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
 import { unguardText } from '../shared/exportFile.ts';
+import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -76,7 +77,8 @@ export type ParseErrorReason =
   | 'columns'
   | 'invalidValue'
   | 'emptyCurrency'
-  | 'unsupportedCurrency';
+  | 'unsupportedCurrency'
+  | 'unknownType';
 
 export interface ParseError {
   line: number;
@@ -98,6 +100,21 @@ export function parseAmount(s: string): number {
   return Number.isFinite(n) && n >= 0 ? n : NaN;
 }
 
+/**
+ * Whether a row's amount box holds something that is not an amount: text
+ * the parser cannot read ("€150,000", "150 000 EUR", "-150000", "1.5e5").
+ * Such a row is left out of every total, so the tool has to say so; an
+ * empty box is just a row not filled in yet.
+ */
+export function isUnreadableAmount(value: string): boolean {
+  return value.trim() !== '' && !Number.isFinite(parseAmount(value));
+}
+
+/** How many rows are left out of the totals because their amount cannot be read. */
+export function unreadableCount(rows: AssetRow[]): number {
+  return rows.filter((row) => isUnreadableAmount(row.value)).length;
+}
+
 function getCurrencyInfo(code: string): CurrencyInfo | undefined {
   return CURRENCIES.find((c) => c.code === code.toUpperCase());
 }
@@ -105,6 +122,23 @@ function getCurrencyInfo(code: string): CurrencyInfo | undefined {
 /** Guards against typos and unsupported codes before they reach the aggregation engine. */
 export function isSupportedCurrency(code: string): boolean {
   return CURRENCIES.some((c) => c.code === code.toUpperCase());
+}
+
+/** Exchange rates as they were fetched: units of each currency per one of `base`. */
+export interface HeldRates {
+  base: string;
+  rates: Record<string, number>;
+}
+
+/**
+ * The rates to work with for `functionalCurrency`, or null when the ones
+ * held were fetched for another currency. Rates say how many units of each
+ * currency one unit of their base buys, so used with another base they give
+ * a total that is simply wrong (1,000 euros counted as 1,000 rupees), and
+ * the tool would show it while the right rates are loading or have failed.
+ */
+export function ratesForBase(held: HeldRates | null, functionalCurrency: string): Record<string, number> | null {
+  return held !== null && held.base.toUpperCase() === functionalCurrency.toUpperCase() ? held.rates : null;
 }
 
 /**
@@ -303,26 +337,49 @@ export function ownedAndOwed(rows: AssetRow[], currency: string): { owned: numbe
  * Valid rows from a partially-broken CSV are still returned so the user can fix individual
  * lines in the UI instead of redoing the whole file.
  */
-export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[] } {
+export interface CsvWords {
+  /** Other words for "asset" in the type column: the page's own, in its language. */
+  asset?: string[];
+  /** Other words for "liability" in the type column. */
+  liability?: string[];
+}
+
+/** The separator a file uses, by its first line: a comma, or the semicolon or tab a spreadsheet writes where the comma is the decimal mark. */
+function detectSeparator(line: string): ',' | ';' | '\t' {
+  const count = (sep: string) => splitCSVLine(line, sep).length;
+  const [commas, semicolons, tabs] = [count(','), count(';'), count('\t')];
+  if (semicolons > commas && semicolons >= tabs) return ';';
+  if (tabs > commas && tabs > semicolons) return '\t';
+  return ',';
+}
+
+export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]; errors: ParseError[] } {
   const rows: AssetRow[] = [];
   const errors: ParseError[] = [];
+  const same = (list: string[] | undefined, word: string) => (list ?? []).some((w) => w.trim().toLowerCase() === word);
 
-  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
+  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() !== '');
   if (lines.length === 0) {
     return { rows, errors: [{ line: 0, reason: 'empty', message: 'CSV is empty.' }] };
   }
 
-  // Detect header row: if the first line contains "value" and "currency"
-  // (case-insensitive), skip it as a header.
+  const separator = detectSeparator(lines[0]);
+
+  // Detect header row: the first line is a header if it names "value" and
+  // "currency", or, in any language ("Nombre;Importe;Moneda;Tipo"), if it
+  // holds no digit anywhere and no currency code where the currency would be.
   let startIdx = 0;
   const first = lines[0].toLowerCase();
-  if (first.includes('value') && first.includes('currency')) {
+  const firstCols = splitCSVLine(lines[0], separator);
+  const currencyCell = firstCols.length === 2 ? firstCols[1] : (firstCols[2] ?? '');
+  const wordsOnly = firstCols.length >= 2 && !/\p{Nd}/u.test(lines[0]) && !isSupportedCurrency(currencyCell.trim());
+  if ((first.includes('value') && first.includes('currency')) || wordsOnly) {
     startIdx = 1;
   }
 
   for (let i = startIdx; i < lines.length; i++) {
     const lineNum = i + 1; // 1-based for user display
-    const cols = splitCSVLine(lines[i]);
+    const cols = splitCSVLine(lines[i], separator);
 
     if (cols.length < 2) {
       errors.push({
@@ -348,7 +405,7 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
     if (cols.length === 2) {
       name = '';
       valueStr = rawName; // cols[0] is actually value
-      currencyStr = rawValue; // cols[1] is actually currency
+      currencyStr = rawValue.toUpperCase(); // cols[1] is actually currency
       typeStr = '';
     } else {
       // The tool's own download leads a formula-like name with an apostrophe
@@ -359,8 +416,16 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
       typeStr = rawType;
     }
 
-    // Validate value.
-    const value = parseAmount(valueStr);
+    // Validate value. The amount is read the way the file writes numbers
+    // and kept as the plain number the tool works with. A file that
+    // separates its columns with a semicolon or a tab comes from a
+    // spreadsheet where the comma is the decimal mark; in a comma file a
+    // quoted "250,000" is grouped and a quoted "2500,50" can only be a
+    // decimal. Anything that is not digits and marks ("0x10", "1e3",
+    // "€100") is refused, never guessed at.
+    const read = parseLocaleNumber(valueStr, separator === ',' ? 'en' : 'es');
+    const value = read === null ? NaN : read;
+    if (read !== null) valueStr = String(read);
     if (!Number.isFinite(value) || value <= 0) {
       errors.push({
         line: lineNum,
@@ -387,9 +452,21 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
       continue;
     }
 
-    // Validate type.
-    const type: AssetType =
-      typeStr === 'liability' ? 'liability' : 'asset';
+    // Validate type. An empty cell is an asset, as the format always had it.
+    // Anything else must be a word for one of the two kinds: a liability
+    // read as an asset moves the net worth by twice its amount.
+    let type: AssetType;
+    if (typeStr === '' || typeStr === 'asset' || same(words.asset, typeStr)) type = 'asset';
+    else if (typeStr === 'liability' || same(words.liability, typeStr)) type = 'liability';
+    else {
+      errors.push({
+        line: lineNum,
+        reason: 'unknownType',
+        values: { value: typeStr },
+        message: `"${typeStr}" is not a type the tool knows. Use asset or liability.`,
+      });
+      continue;
+    }
 
     rows.push({ name, value: valueStr, currency: currencyStr, type });
   }
@@ -397,8 +474,24 @@ export function parseCSV(text: string): { rows: AssetRow[]; errors: ParseError[]
   return { rows, errors };
 }
 
+/**
+ * A CSV file's bytes as text. Files are read as UTF-8; one saved by an older
+ * spreadsheet in a Windows code page would come out with broken letters
+ * ("Caf" and a replacement mark), so if UTF-8 does not fit, Windows-1252 is
+ * used, which covers the western European files that turn up.
+ */
+export function decodeCsv(bytes: Uint8Array): string {
+  const utf8 = new TextDecoder('utf-8').decode(bytes);
+  if (!utf8.includes('\uFFFD')) return utf8;
+  try {
+    return new TextDecoder('windows-1252').decode(bytes);
+  } catch {
+    return utf8;
+  }
+}
+
 /** Handles double-quote escaping within quoted fields ("" → "). */
-function splitCSVLine(line: string): string[] {
+function splitCSVLine(line: string, separator: string = ','): string[] {
   const cols: string[] = [];
   let current = '';
   let inQuotes = false;
@@ -420,7 +513,7 @@ function splitCSVLine(line: string): string[] {
     } else {
       if (ch === '"') {
         inQuotes = true;
-      } else if (ch === ',') {
+      } else if (ch === separator) {
         cols.push(current.trim());
         current = '';
       } else {
