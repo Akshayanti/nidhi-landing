@@ -992,6 +992,8 @@ export interface PointsBreakEven {
 /**
  * Both loans must be from `computeLoan` with the same principal and term (one with points, one without).
  * Returns `Infinity` when points don't produce savings; the UI treats that as "never recoups".
+ * With a lower monthly payment, break-even is the cost divided by the monthly saving; with the
+ * same payment (a loan entered by its payment), it is read from the two balances.
  */
 export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResult): PointsBreakEven {
   const upfrontDelta = withPoints.feeMinor - withoutPoints.feeMinor;
@@ -1001,10 +1003,20 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
   let months: number;
   if (upfrontDelta <= 0) {
     months = 0;
-  } else if (monthlySavings <= 0) {
-    months = Infinity;
-  } else {
+  } else if (monthlySavings > 0) {
     months = Math.ceil(upfrontDelta / monthlySavings);
+  } else {
+    // The payment is the same with and without points: a loan entered by its
+    // payment. The lower rate then shows as a balance that falls faster, and
+    // a shorter loan. The points have paid for themselves in the first month
+    // in which the loan with points owes less by at least what they cost.
+    months = Infinity;
+    const last = Math.max(withPoints.schedule.length, withoutPoints.schedule.length);
+    for (let m = 1; m <= last; m++) {
+      const owedWith = withPoints.schedule[m - 1]?.balance ?? 0;
+      const owedWithout = withoutPoints.schedule[m - 1]?.balance ?? 0;
+      if (owedWithout - owedWith >= upfrontDelta) { months = m; break; }
+    }
   }
 
   return {
@@ -1017,6 +1029,18 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
 // -----------------------------------------------------------------------------
 // Refinance break-even
 // -----------------------------------------------------------------------------
+
+/**
+ * What the points row says under its break-even: that the points save money
+ * over the life of the loan, that they cost money (the loan ends, by its
+ * term or by extra payments, before they have paid for themselves), or
+ * that they never pay for themselves at all. The lifetime figure is signed;
+ * printing its size alone turned a loss into "Saves".
+ */
+export function pointsVerdict(be: PointsBreakEven): 'saves' | 'costs' | 'never' {
+  if (!Number.isFinite(be.months)) return 'never';
+  return be.lifetimeSavingsMinor < 0 ? 'costs' : 'saves';
+}
 
 export interface RefinanceComparison {
   refinanceTotalMinor: number;
