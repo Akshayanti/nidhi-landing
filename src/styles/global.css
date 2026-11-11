@@ -6593,6 +6593,69 @@ button.mcnw-legendItem:focus-visible {
   background: var(--color-bg);
   min-width: 0;
 }
+/* In the three forward questions the history is optional, so it folds
+   behind one row that names the chosen country. The chevron comes from
+   .disclosure. */
+.ifc-history.ifc-history--fold {
+  display: block;
+  padding: 0;
+}
+.ifc-historySummary {
+  display: grid;
+  gap: 2px;
+  min-height: 44px;
+  padding: 12px 44px 12px var(--space-4);
+  border-radius: var(--radius-md);
+}
+.ifc-historySummary::after {
+  right: var(--space-4);
+}
+.ifc-historySummary:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+.ifc-historyTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+.ifc-historyStatus {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.ifc-historyFold {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4) var(--space-4);
+  min-width: 0;
+}
+/* The top of the form: the example label and Reset. */
+.ifc-formHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+.ifc-example {
+  margin: 0;
+  flex: 1 1 14rem;
+  min-width: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+.ifc-reset {
+  margin-left: auto;
+}
+.ifc-fix {
+  margin: 0;
+}
+.ifc-fix:empty {
+  display: none;
+}
 .ifc-history .ifc-input {
   background: var(--color-bg-white);
 }
@@ -6928,6 +6991,12 @@ button.mcnw-legendItem:focus-visible {
   }
   .ifc-history {
     padding: var(--space-3);
+  }
+  .ifc-historySummary {
+    padding-left: var(--space-3);
+  }
+  .ifc-historyFold {
+    padding: var(--space-2) var(--space-3) var(--space-3);
   }
   .ifc-countryField {
     max-width: none;

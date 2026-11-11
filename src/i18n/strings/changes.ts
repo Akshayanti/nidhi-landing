@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'inflation-history-folded',
+        text: {
+          en: 'The inflation calculator puts the answer closer to the figures you type. A country\'s inflation history is optional in three of the four questions, so there it now sits behind one row that names the country you picked; in Past to today, which needs it, it stays in view. The starting figures are marked as an example, Reset is at the top, and the chart is shorter on a phone.',
+          hi: 'महँगाई कैलकुलेटर में जवाब अब आपके भरे आँकड़ों के ज़्यादा पास दिखता है। चार में से तीन सवालों में किसी देश की महँगाई का इतिहास वैकल्पिक है, इसलिए वहाँ वह अब एक पंक्ति के पीछे है, जिस पर चुने हुए देश का नाम रहता है; बीते साल से आज तक वाले सवाल में, जहाँ उसकी ज़रूरत है, वह सामने ही रहता है। शुरुआती आँकड़ों पर लिखा है कि वे उदाहरण हैं, रीसेट करें अब सबसे ऊपर है, और फ़ोन पर चार्ट छोटा है।',
+          es: 'La calculadora de inflación acerca la respuesta a las cifras que escribes. El historial de inflación de un país es opcional en tres de las cuatro preguntas, así que ahí queda tras una sola fila que nombra el país elegido; en Del pasado a hoy, que lo necesita, sigue a la vista. Las cifras iniciales llevan la indicación de que son un ejemplo, Restablecer está arriba y el gráfico es más bajo en el móvil.',
+          cs: 'Inflační kalkulačka teď ukazuje odpověď blíž k\u00a0číslům, která zadáváte. Historie inflace v\u00a0dané zemi je u\u00a0tří ze čtyř otázek volitelná, takže je tam nově schovaná za jedním řádkem se jménem vybrané země; u\u00a0otázky Z\u00a0minulosti do dneška, která ji potřebuje, zůstává na očích. Výchozí čísla jsou označená jako ukázka, tlačítko Obnovit výchozí je nahoře a\u00a0graf je na telefonu nižší.',
+          mr: 'महागाई कॅल्क्युलेटरमध्ये उत्तर आता तुम्ही भरलेल्या आकड्यांच्या अधिक जवळ दिसते. चारपैकी तीन प्रश्नांमध्ये देशाचा महागाईचा इतिहास ऐच्छिक आहे, म्हणून तिथे तो आता एका ओळीमागे आहे आणि त्या ओळीवर निवडलेल्या देशाचे नाव असते; भूतकाळापासून आजपर्यंत या प्रश्नात, जिथे त्याची गरज असते, तो समोरच राहतो. सुरुवातीच्या आकड्यांवर ते उदाहरण असल्याचे लिहिले आहे, पूर्वनिश्चित मूल्ये परत आणा हे बटण आता सर्वात वर आहे, आणि फोनवर आलेख लहान आहे.',
+        },
+      },
+      {
         id: 'net-worth-example-and-labels',
         text: {
           en: 'The net worth calculator starts with one row instead of two, and on a phone every box in a row has its name above it. Before you type anything, it says what the result will show, and "See an example" fills in sample rows you can clear in one tap. The save and share buttons appear once there is a result, and the two CSV buttons sit together under "Import or save rows".',

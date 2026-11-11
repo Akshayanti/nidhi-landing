@@ -36,7 +36,7 @@ import {
   type Series,
 } from '../utils/inflation/math.ts';
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
-import { SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/inflation/url.ts';
+import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/inflation/url.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -266,6 +266,9 @@ export default function InflationCalculator({
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
   const [historyFailed, setHistoryFailed] = useState(false);
+  // Whether the optional country history is unfolded. View state only: it is
+  // never shared, stored or tracked.
+  const [historyOpen, setHistoryOpen] = useState(false);
   const loadedAll = useRef(false);
   const narrow = usePhone();
   const uid = useId();
@@ -296,6 +299,8 @@ export default function InflationCalculator({
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
     setForm(toForm(shared, numberLocale));
     setSettled(shared);
+    // A shared link that names a country shows its history without a click.
+    if (shared.country && shared.country !== defaultCountry) setHistoryOpen(true);
     // A language switch carries the state too, but that view was counted on
     // the page it came from.
     if (arrivedByLanguageSwitch()) return;
@@ -480,6 +485,7 @@ export default function InflationCalculator({
   function reset() {
     setForm(toForm(start, numberLocale));
     setSettled(start);
+    setHistoryOpen(false);
     track('free_inflation_reset');
   }
 
@@ -490,10 +496,19 @@ export default function InflationCalculator({
       ? t(strings.questions.pastCountry, { country: country.name })
       : strings.questions[form.mode];
 
+  // The starting figures are an example until one of them is changed.
+  const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
+
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <div className="ifc-root">
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
+        <div className="ifc-formHead">
+          <p className="ifc-example">{pristine ? strings.example : ''}</p>
+          <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-inflation-reset">
+            {strings.actions.reset}
+          </button>
+        </div>
         <div className="ifc-tabs" role="tablist" aria-label={strings.tabsLabel} onKeyDown={onTabKey}>
           {MODES.map((m) => (
             <button
@@ -616,6 +631,9 @@ export default function InflationCalculator({
             series={formSeries}
             state={formState}
             showUse={!pastByHistory}
+            fold={form.mode !== 'past'}
+            open={historyOpen || formState === 'error'}
+            onToggle={setHistoryOpen}
             narrow={narrow}
             numberLocale={numberLocale}
             onCountry={chooseCountry}
@@ -626,14 +644,9 @@ export default function InflationCalculator({
           />
         </div>
 
-        <div className="ifc-actions">
-          <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset} data-attr="free-inflation-reset">
-            {strings.actions.reset}
-          </button>
-          {/* Visible next to the buttons; the live announcement is the one over
-              the stale answer, so it is not said twice. */}
-          <span className="ifc-hint">{hasErrors ? strings.results.fix : ''}</span>
-        </div>
+        {/* Visible under the form; the live announcement is the one over the
+            stale answer, so it is not said twice. */}
+        <p className="ifc-hint ifc-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
       <Results
@@ -650,7 +663,7 @@ export default function InflationCalculator({
       <ToolExport
         strings={exportStrings}
         share={
-          <button type="button" className="ifc-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
+          <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
             {copied ? strings.actions.copied : strings.actions.copy}
           </button>
         }
@@ -722,6 +735,9 @@ function HistoryPanel({
   series,
   state,
   showUse,
+  fold,
+  open,
+  onToggle,
   narrow,
   numberLocale,
   onCountry,
@@ -735,6 +751,10 @@ function HistoryPanel({
   series: Series | null;
   state: 'none' | 'loading' | 'ready' | 'error';
   showUse: boolean;
+  /** Folded behind one row that names the country: every question but "Past to today", which needs it. */
+  fold: boolean;
+  open: boolean;
+  onToggle: (open: boolean) => void;
   narrow: boolean;
   numberLocale: string;
   onCountry: (code: string) => void;
@@ -752,8 +772,8 @@ function HistoryPanel({
     .map(([a, b]) => (a === b ? String(a) : t(h.range, { first: a, last: b })))
     .join(h.rangeJoin);
 
-  return (
-    <div className="ifc-history">
+  const content = (
+    <>
       <div className="ifc-field ifc-countryField">
         <label className="ifc-label" htmlFor={ids.country}>{h.label}</label>
         <select
@@ -846,11 +866,20 @@ function HistoryPanel({
           </details>
         </div>
       )}
-    </div>
+    </>
+  );
+  if (!fold) return <div className="ifc-history">{content}</div>;
+  return (
+    <details className="ifc-history ifc-history--fold" open={open} onToggle={(e) => onToggle(e.currentTarget.open)}>
+      <summary className="ifc-historySummary disclosure">
+        <span className="ifc-historyTitle">{h.label}</span>
+        <span className="ifc-historyStatus">{country ? country.name : h.none}</span>
+      </summary>
+      <div className="ifc-historyFold">{content}</div>
+    </details>
   );
 }
 
-/** Every calendar year from the first to the last, gaps included. */
 function allYears(series: Series): number[] {
   const ys = seriesYears(series);
   if (ys.length === 0) return [];
@@ -1155,7 +1184,7 @@ function LineChart({
     );
   }
   const W = narrow ? 360 : 760;
-  const H = narrow ? 250 : 300;
+  const H = narrow ? 210 : 300;
   const PAD = narrow ? { top: 14, right: 18, bottom: 54, left: 70 } : { top: 18, right: 28, bottom: 58, left: 100 };
   const plotW = W - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
