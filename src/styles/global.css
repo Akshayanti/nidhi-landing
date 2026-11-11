@@ -3496,7 +3496,7 @@ details[open] > .disclosure::after,
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   padding-bottom: var(--space-4);
   margin-bottom: var(--space-4);
   border-bottom: 1px solid var(--color-border-light);
@@ -3564,34 +3564,9 @@ details[open] > .disclosure::after,
   align-items: center;
 }
 
-.mcnw-shareBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  cursor: pointer;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-shareBtn:hover:not(:disabled),
-.mcnw-shareBtn:focus-visible:not(:disabled) {
-  background: var(--color-deep-blue-dark);
-}
 
-.mcnw-shareBtn:focus-visible:not(:disabled) {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
-.mcnw-shareBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 .mcnw-shareUrlBar {
   grid-column: 1 / -1;
@@ -3626,34 +3601,9 @@ details[open] > .disclosure::after,
   cursor: text;
 }
 
-.mcnw-resetBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-deep-blue);
-  background: transparent;
-  color: var(--color-deep-blue);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-resetBtn:hover,
-.mcnw-resetBtn:focus-visible {
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-[data-theme="dark"] .mcnw-shareBtn {
-  color: var(--neutral-page-bg-dark);
-}
 
-[data-theme="dark"] .mcnw-resetBtn:hover,
-[data-theme="dark"] .mcnw-resetBtn:focus-visible {
-  color: var(--neutral-page-bg-dark);
-}
 
 /* ---- Share modal ---- */
 
@@ -3872,49 +3822,10 @@ details[open] > .disclosure::after,
   margin-bottom: 0;
 }
 
-.mcnw-modalCancelBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 18px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-secondary);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-modalCancelBtn:hover,
-.mcnw-modalCancelBtn:focus-visible {
-  background: var(--color-bg);
-  color: var(--color-text-primary);
-}
 
-.mcnw-modalCopyBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 18px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: none;
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease;
-}
 
-.mcnw-modalCopyBtn:hover:not(:disabled),
-.mcnw-modalCopyBtn:focus-visible:not(:disabled) {
-  background: var(--color-deep-blue-dark);
-}
 
-.mcnw-modalCopyBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 /* Dark mode */
 [data-theme="dark"] .mcnw-modalDialog {
@@ -3929,14 +3840,7 @@ details[open] > .disclosure::after,
   background: var(--color-bg-dark);
 }
 
-[data-theme="dark"] .mcnw-modalCancelBtn:hover,
-[data-theme="dark"] .mcnw-modalCancelBtn:focus-visible {
-  background: var(--color-bg-dark);
-}
 
-[data-theme="dark"] .mcnw-modalCopyBtn {
-  color: var(--neutral-page-bg-dark);
-}
 
 @media (max-width: 750px) {
   .mcnw-modalBody {
@@ -3982,23 +3886,7 @@ details[open] > .disclosure::after,
   color: var(--warning-light-text-amber);
 }
 
-.mcnw-retryBtn {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 600;
-  color: inherit;
-  background: none;
-  border: none;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-}
 
-.mcnw-retryBtn:focus-visible {
-  outline: 2px solid var(--color-deep-blue);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
 
 /* Input */
 .mcnw-input {
@@ -4104,78 +3992,12 @@ details[open] > .disclosure::after,
   margin-top: var(--space-3);
 }
 
-.mcnw-addBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 2px dashed var(--color-control-edge);
-  background: transparent;
-  color: var(--color-deep-blue);
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
 
-.mcnw-addBtn:hover,
-.mcnw-addBtn:focus-visible {
-  border-color: var(--color-deep-blue);
-  background: var(--color-bg);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-csvBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-control-edge);
-  background: var(--color-bg);
-  color: var(--color-text-secondary);
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-csvBtn:hover,
-.mcnw-csvBtn:focus-visible {
-  border-color: var(--color-deep-blue);
-  color: var(--color-deep-blue);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-downloadBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-control-edge);
-  background: var(--color-bg);
-  color: var(--color-text-secondary);
-  transition: border-color 0.15s ease, color 0.15s ease;
-  margin-left: auto;
-  /* Wraps at 320px with a larger text size instead of widening the page. */
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
 
-.mcnw-downloadBtn:hover:not(:disabled),
-.mcnw-downloadBtn:focus-visible:not(:disabled) {
-  border-color: var(--color-deep-blue);
-  color: var(--color-deep-blue);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-downloadBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 .mcnw-removeBtn {
   display: inline-flex;
@@ -4222,39 +4044,9 @@ details[open] > .disclosure::after,
   gap: var(--space-2);
 }
 
-.mcnw-csvConfirmYes {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-.mcnw-csvConfirmYes:focus-visible {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
-.mcnw-csvConfirmNo {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 8px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-text-secondary);
-}
 
-.mcnw-csvConfirmNo:focus-visible {
-  outline: 2px solid var(--color-deep-blue);
-  outline-offset: 2px;
-}
 
 /* CSV errors */
 .mcnw-csvErrors {
@@ -4310,22 +4102,6 @@ details[open] > .disclosure::after,
   font-weight: 600;
   font-size: 1rem;
   color: var(--color-deep-blue);
-}
-.mcnw-exampleBtn {
-  margin-top: var(--space-2);
-  min-height: 44px;
-  padding: 8px 18px;
-  font: inherit;
-  font-weight: 600;
-  color: var(--color-deep-blue);
-  background: var(--color-bg-white);
-  border: 1.5px solid var(--color-deep-blue);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-}
-.mcnw-exampleBtn:hover,
-.mcnw-exampleBtn:focus-visible {
-  background: var(--color-bg);
 }
 
 /* Says the rows are an example, with the way to take them out. */
@@ -4664,10 +4440,6 @@ details[open] > .disclosure::after,
   }
   .mcnw-toolbarActions {
     justify-content: flex-end;
-  }
-  .mcnw-shareBtn {
-    font-size: 0.8125rem;
-    padding: 10px 8px;
   }
   .mcnw-chartWrap {
     flex-direction: column;

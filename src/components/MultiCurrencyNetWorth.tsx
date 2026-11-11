@@ -472,7 +472,7 @@ export default function MultiCurrencyNetWorth({
             {strings.rates.errorBefore}{' '}
             <button
               type="button"
-              className="mcnw-retryBtn"
+              className="btn btn--outline mcnw-retryBtn"
               data-attr="mcnw-rates-retry"
               onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
             >
@@ -541,7 +541,7 @@ export default function MultiCurrencyNetWorth({
           <div className="mcnw-toolbarActions">
             <button
               type="button"
-              className="mcnw-resetBtn"
+              className="btn btn--quiet mcnw-resetBtn"
               onClick={reset}
               title={strings.toolbar.resetTitle}
               data-attr="mcnw-reset"
@@ -600,7 +600,7 @@ export default function MultiCurrencyNetWorth({
         <div className="mcnw-tableFooter">
           <button
             type="button"
-            className="mcnw-addBtn"
+            className="btn btn--outline mcnw-addBtn"
             onClick={addRow}
             data-attr="mcnw-asset-add"
           >
@@ -617,7 +617,7 @@ export default function MultiCurrencyNetWorth({
           <div className="mcnw-csvFoldBody">
               <button
                 type="button"
-                className="mcnw-csvBtn"
+                className="btn btn--outline mcnw-csvBtn"
                 onClick={() => fileInputRef.current?.click()}
                 data-attr="mcnw-csv-upload"
               >
@@ -625,7 +625,7 @@ export default function MultiCurrencyNetWorth({
               </button>
               <button
                 type="button"
-                className="mcnw-downloadBtn"
+                className="btn btn--outline mcnw-downloadBtn"
                 onClick={() => {
                   const filled = rows.filter((r) => r.value.trim() !== '');
                   if (filled.length > 0) {
@@ -704,7 +704,7 @@ export default function MultiCurrencyNetWorth({
               <>
             <button
               type="button"
-              className="mcnw-shareBtn"
+              className="btn btn--outline mcnw-shareBtn"
               onClick={openShareModal}
               disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
               title={strings.toolbar.shareTitle}
@@ -936,7 +936,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
           <p className="mcnw-emptyLead">{strings.results.empty}</p>
           <p>{strings.results.emptyShows}</p>
           {onExample && (
-            <button type="button" className="mcnw-exampleBtn" onClick={onExample}>{strings.example.show}</button>
+            <button type="button" className="btn btn--outline mcnw-exampleBtn" onClick={onExample}>{strings.example.show}</button>
           )}
         </div>
       </section>
@@ -1312,10 +1312,10 @@ function ShareModal({
             </fieldset>
 
             <div className="mcnw-modalFooter">
-              <button type="button" className="mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
+              <button type="button" className="btn btn--quiet mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
                 {strings.shareModal.cancel}
               </button>
-              <button type="button" className="mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
+              <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
                 {copied ? strings.shareModal.copied : strings.shareModal.copy}
               </button>
             </div>
@@ -1681,10 +1681,10 @@ function CSVConfirmDialog({ currentCount, pendingCount, strings, onConfirm, onCa
         })}
       </p>
       <div className="mcnw-csvConfirmActions">
-        <button type="button" className="mcnw-csvConfirmYes" onClick={onConfirm} data-attr="mcnw-csv-overwrite-confirm">
+        <button type="button" className="btn btn--danger mcnw-csvConfirmYes" onClick={onConfirm} data-attr="mcnw-csv-overwrite-confirm">
           {strings.csv.replace}
         </button>
-        <button type="button" className="mcnw-csvConfirmNo" onClick={onCancel} data-attr="mcnw-csv-overwrite-cancel">
+        <button type="button" className="btn btn--quiet mcnw-csvConfirmNo" onClick={onCancel} data-attr="mcnw-csv-overwrite-cancel">
           {strings.csv.cancel}
         </button>
       </div>
