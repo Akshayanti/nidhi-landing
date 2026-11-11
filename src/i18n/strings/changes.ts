@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'tool-buttons-one-style',
+        text: {
+          en: 'The buttons in the five free tools now look and behave the same: one size, one shape, labels that wrap instead of being cut, and a clear ring when you reach them with the keyboard. Sharing, exporting, adding a row and uploading are all outlined in blue, and resetting is a quiet text button. Before, the same action was blue in one tool and teal in the next.',
+          hi: 'पाँचों मुफ़्त टूल के बटन अब एक जैसे दिखते और चलते हैं: एक आकार, एक बनावट, लंबे लेबल कटने की जगह अगली पंक्ति में आते हैं, और कीबोर्ड से पहुँचने पर साफ़ घेरा दिखता है। शेयर करना, एक्सपोर्ट करना, पंक्ति जोड़ना और अपलोड करना, सब नीली रेखा वाले बटन हैं, और रीसेट एक सादा टेक्स्ट बटन है। पहले वही काम एक टूल में नीला था और दूसरे में टील।',
+          es: 'Los botones de las cinco herramientas gratuitas ahora se ven y se comportan igual: un tamaño, una forma, etiquetas que pasan a otra línea en vez de cortarse y un anillo claro cuando llegas a ellos con el teclado. Compartir, exportar, añadir una fila y subir un archivo van con contorno azul, y restablecer es un botón de texto discreto. Antes, la misma acción era azul en una herramienta y verde azulada en la siguiente.',
+          cs: 'Tlačítka v\u00a0pěti bezplatných nástrojích teď vypadají a\u00a0chovají se stejně: jedna velikost, jeden tvar, popisky, které se zalomí, místo aby se uřízly, a\u00a0zřetelný rámeček, když se na ně dostanete klávesnicí. Sdílení, export, přidání řádku a\u00a0nahrání souboru mají modrý obrys a\u00a0obnovení je nenápadné textové tlačítko. Dříve byla stejná akce v\u00a0jednom nástroji modrá a\u00a0v\u00a0dalším tyrkysová.',
+          mr: 'पाचही मोफत साधनांमधील बटणे आता सारखी दिसतात आणि सारखी चालतात: एकच आकार, एकच घडण, लांब लेबल कापले न जाता पुढच्या ओळीत येते, आणि कीबोर्डने पोहोचल्यावर स्पष्ट कडे दिसते. शेअर करणे, एक्सपोर्ट करणे, ओळ जोडणे आणि अपलोड करणे ही सगळी निळ्या रेषेची बटणे आहेत, आणि रीसेट हे साधे मजकूर बटण आहे. आधी तीच कृती एका साधनात निळी होती आणि दुसऱ्यात टील.',
+        },
+      },
+      {
         id: 'charts-readable-in-dark',
         text: {
           en: 'Charts and figures can now be read in dark mode. In the loan comparison and the net worth calculator, the fourth offer or currency onward used to keep a dark colour on the dark card and nearly vanish; every colour now has a light partner. Each offer and currency also has a shape of its own (a circle, a square, a triangle and so on) on the chart, in the legend and beside its name, so nobody has to tell them apart by colour alone. In lessons, the numbers inside coloured bars, which were white on pale bars in dark mode, are now dark and clear.',

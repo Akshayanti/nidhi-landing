@@ -139,6 +139,7 @@ html:is([lang="hi"], [lang="mr"]) {
   --neutral-600:              #5A5A5A;  /* light-mode muted text */
   --neutral-700:              #616161;  /* light-mode secondary text */
   --neutral-800:              #B0B0B0;  /* dark-mode secondary text (lighter for contrast) */
+  --neutral-850:              #3D3D3D;  /* light-mode quiet button text */
   --neutral-900:              #212121;  /* light-mode primary text */
   --neutral-near-black:       #0D0D0D;  /* dark mode bg-dark */
   --neutral-page-bg-dark:     #121212;  /* dark mode page bg + dark-text on light buttons */
@@ -255,6 +256,10 @@ html:is([lang="hi"], [lang="mr"]) {
   --fig-outline:            #595959;
   --fig-outline-warn:       var(--fig-outline);
   --color-danger:           var(--semantic-danger-light);
+  /* Buttons (docs/color-palette.md, "Buttons") */
+  --btn-quiet-ink:          var(--neutral-850);
+  --color-danger-ink:       var(--palette-red);
+  --btn-focus:              var(--palette-teal);
   --color-info:             var(--semantic-info-light);
 
   /* Neutrals */
@@ -370,6 +375,9 @@ html:is([lang="hi"], [lang="mr"]) {
   --fig-outline:            #BDBDBD;
   --fig-outline-warn:       none; /* the dark orange fill stands clear of the dark card (9.6:1) */
   --color-danger:           var(--semantic-danger-dark);
+  --btn-quiet-ink:          var(--neutral-200);
+  --color-danger-ink:       var(--palette-red-dark);
+  --btn-focus:              var(--palette-teal-mid-dark);
   --color-info:             var(--semantic-info-dark);
 
   --color-text-primary:     var(--neutral-white);
@@ -608,6 +616,116 @@ strong {
 
 .link-card:active {
   background: var(--color-bg-subtle);
+}
+
+/* Buttons: one system for every page and tool (docs/color-palette.md,
+ * "Buttons"). A role is a modifier on .btn; a component adds layout only
+ * (width, margin, order), never colour, size, radius or border.
+ *   .btn--primary  the one filled main action of a page or section
+ *   .btn--outline  every other action, and every action a tool has
+ *   .btn--quiet    reset, cancel, not now
+ *   .btn--danger   removes or deletes; the label says what
+ *   .btn--onCallout  the main action on the blue callout
+ * Works on <button> and on <a>; a link stays a link. */
+.btn {
+  --btn-ink: var(--color-deep-blue);
+  --btn-fill: transparent;
+  --btn-edge: var(--btn-ink);
+  --btn-hover-line: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  min-height: 44px;
+  height: auto;
+  padding: 0.625rem 1rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  color: var(--btn-ink);
+  background: var(--btn-fill);
+  border: 1.5px solid var(--btn-edge);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn--primary {
+  --btn-ink: var(--color-bg-white);
+  --btn-fill: var(--color-deep-blue);
+  --btn-edge: var(--color-deep-blue);
+  --btn-hover-line: 2px;
+  font-weight: 700;
+}
+
+.btn--outline {
+  --btn-ink: var(--color-deep-blue);
+}
+
+.btn--quiet {
+  --btn-ink: var(--btn-quiet-ink);
+  --btn-edge: transparent;
+  --btn-hover-line: 0px;
+}
+
+.btn--danger {
+  --btn-ink: var(--color-danger-ink);
+}
+
+.btn--onCallout {
+  --btn-ink: var(--palette-blue);
+  --btn-fill: var(--neutral-white);
+  --btn-edge: var(--neutral-white);
+  --btn-hover-line: 2px;
+  font-weight: 700;
+}
+
+.btn[hidden] {
+  display: none;
+}
+
+/* Hover: the colours stay; the label underlines and a line appears inside
+   the edge. */
+.btn:hover {
+  color: var(--btn-ink);
+  background: var(--btn-fill);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  box-shadow: inset 0 0 0 var(--btn-hover-line) var(--btn-ink);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--btn-focus);
+  outline-offset: 3px;
+}
+
+.btn--onCallout:focus-visible {
+  outline-color: var(--palette-teal-dark);
+}
+
+/* Not available: the role's colours stay, the edge is dashed, nothing
+   answers a hover. Never faded. */
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  border-style: dashed;
+  border-color: var(--btn-ink);
+  cursor: not-allowed;
+}
+.btn--primary:disabled,
+.btn--primary[aria-disabled='true'],
+.btn--onCallout[aria-disabled='true'],
+.btn--onCallout:disabled {
+  border-color: var(--btn-ink);
+}
+.btn:disabled:hover,
+.btn[aria-disabled='true']:hover {
+  text-decoration: none;
+  box-shadow: none;
 }
 
 /* A disclosure (a summary, or a button that shows and hides a block) carries
@@ -6985,34 +7103,6 @@ button.mcnw-legendItem:focus-visible {
 /* A share link's copied-address bar takes its own line under the buttons. */
 .tool-exportButtons > [role='status'] {
   flex-basis: 100%;
-}
-.tool-exportBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: var(--color-bg-white);
-  color: var(--color-deep-blue);
-  border: 1px solid var(--color-deep-blue);
-}
-.tool-exportBtn:hover {
-  background: var(--color-bg-subtle);
-}
-.tool-exportBtn:focus-visible {
-  outline: 2px solid var(--color-deep-blue);
-  outline-offset: 2px;
-}
-/* Not ready yet: still focusable (aria-disabled), told apart by its dashed
-   edge and muted text rather than by fading it to unreadable. */
-.tool-exportBtn[aria-disabled='true'] {
-  cursor: not-allowed;
-  border-style: dashed;
-  color: var(--color-text-secondary);
-  border-color: var(--color-text-secondary);
 }
 .tool-exportNote,
 .tool-exportStatus {

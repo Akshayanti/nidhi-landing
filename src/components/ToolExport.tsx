@@ -70,7 +70,7 @@ export function ToolExport({
         {share}
         <button
           type="button"
-          className="tool-exportBtn"
+          className="btn btn--outline tool-exportBtn"
           onClick={guarded(() => { onSpreadsheet(); setMade(true); })}
           aria-disabled={!ready || undefined}
           aria-describedby={ready ? undefined : reasonId}
@@ -80,7 +80,7 @@ export function ToolExport({
         </button>
         <button
           type="button"
-          className="tool-exportBtn"
+          className="btn btn--outline tool-exportBtn"
           onClick={guarded(onPrint)}
           aria-disabled={!ready || undefined}
           aria-describedby={ready ? undefined : reasonId}

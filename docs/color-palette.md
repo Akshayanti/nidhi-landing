@@ -43,6 +43,26 @@ The logo files under `public/brand/` and the social images under `public/brand/s
 
 ---
 
+## Buttons
+
+One system, on the site and in the planner. Decided by the council and the owner on 2026-11-11 (issue #408). On the site the classes are `.btn` plus one role in `src/styles/global.css`; a component adds layout only.
+
+| Role | Class | Light | Dark | Used for |
+|------|-------|-------|------|----------|
+| Primary | `.btn--primary` | fill `#0A3D8F`, white label | fill `#90CAF9`, dark surface label | The one filled main action of a page or section |
+| Outline | `.btn--outline` | `#0A3D8F` label and edge | `#90CAF9` label and edge | Every other action. All of a tool's own actions (share, export, add a row, upload): a tool page has no filled button of its own |
+| Quiet | `.btn--quiet` | `#3D3D3D` label, no visible edge | `#E0E0E0` label, no visible edge | Reset, cancel, not now |
+| Danger | `.btn--danger` | `#991100` label and edge | `#FF9E80` label and edge | Removing or deleting, with a verb that says what |
+| On the blue callout | `.btn--onCallout` | white fill and edge, `#0A3D8F` label | the same | The main action on the `#0D47A1` callout |
+
+- **Every role:** 1rem, line-height 1.5, radius 8px, a 1.5px border (transparent on quiet), at least 44px tall with automatic height, padding 0.625rem 1rem. Labels wrap and are never cut. A link styled as a button stays a link.
+- **Weight:** 700 on the main action, 600 on the others. No arrow.
+- **Hover:** colours stay. The label underlines and a line appears inside the edge (2px on primary, 1px on outline and danger).
+- **Disabled:** the role's colours stay, the border is dashed, nothing answers a hover, nothing fades. Native `disabled`, or `aria-disabled` on a link without `href` and on a button that must stay in the tab order.
+- **Focus:** a 2px ring at 3px offset in teal, `#005B4F` in light and `#26A69A` in dark; `#80CBC4` on the blue callout.
+- **Teal is not a button fill.** The filled teal buttons of before 2026-11 become blue.
+- Icons on tool actions are a later change.
+
 ## Logo Design
 
 The logo mark is a rounded square with three semantic regions:
