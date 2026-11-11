@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'charts-readable-in-dark',
+        text: {
+          en: 'Charts and figures can now be read in dark mode. In the loan comparison and the net worth calculator, the fourth offer or currency onward used to keep a dark colour on the dark card and nearly vanish; every colour now has a light partner. Each offer and currency also has a shape of its own (a circle, a square, a triangle and so on) on the chart, in the legend and beside its name, so nobody has to tell them apart by colour alone. In lessons, the numbers inside coloured bars, which were white on pale bars in dark mode, are now dark and clear.',
+          hi: 'चार्ट और चित्र अब डार्क मोड में पढ़े जा सकते हैं। लोन तुलना और शुद्ध संपत्ति कैलकुलेटर में चौथे ऑफ़र या मुद्रा से आगे के रंग गहरे कार्ड पर गहरे ही रहते थे और लगभग दिखते नहीं थे; अब हर रंग का एक हल्का जोड़ीदार है। हर ऑफ़र और मुद्रा का अब अपना एक आकार भी है (गोला, चौकोर, त्रिकोण वगैरह), चार्ट पर, उसकी सूची में और नाम के साथ, ताकि किसी को सिर्फ़ रंग से पहचानना न पड़े। पाठों में रंगीन पट्टियों के अंदर की संख्याएँ, जो डार्क मोड में हल्की पट्टियों पर सफ़ेद थीं, अब गहरी और साफ़ हैं।',
+          es: 'Los gráficos y las figuras ya se leen en modo oscuro. En el comparador de préstamos y en la calculadora de patrimonio neto, a partir de la cuarta oferta o moneda el color seguía siendo oscuro sobre la tarjeta oscura y casi desaparecía; ahora cada color tiene su pareja clara. Cada oferta y cada moneda tiene además una forma propia (un círculo, un cuadrado, un triángulo y así) en el gráfico, en la leyenda y junto a su nombre, para que nadie tenga que distinguirlas solo por el color. En las lecciones, los números dentro de las barras de color, que en modo oscuro eran blancos sobre barras pálidas, ahora son oscuros y claros de leer.',
+          cs: 'Grafy a\u00a0obrázky se teď dají číst i\u00a0v\u00a0tmavém režimu. Ve srovnání úvěrů a\u00a0v\u00a0kalkulačce čistého jmění zůstávala od čtvrté nabídky nebo měny dál tmavá barva na tmavé kartě a\u00a0téměř mizela; každá barva má teď světlý protějšek. Každá nabídka a\u00a0měna má navíc vlastní tvar (kruh, čtverec, trojúhelník a\u00a0tak dále) v\u00a0grafu, v\u00a0legendě i\u00a0u\u00a0svého názvu, takže je nikdo nemusí rozlišovat jen podle barvy. V\u00a0lekcích jsou čísla uvnitř barevných sloupců, která byla v\u00a0tmavém režimu bílá na světlých sloupcích, teď tmavá a\u00a0čitelná.',
+          mr: 'आलेख आणि आकृत्या आता गडद मोडमध्ये वाचता येतात. कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटरमध्ये चौथ्या ऑफर किंवा चलनापासून पुढचे रंग गडद कार्डावर गडदच राहत आणि जवळजवळ दिसत नसत; आता प्रत्येक रंगाला एक फिकट जोडीदार आहे. प्रत्येक ऑफर आणि चलनाला आता स्वतःचा एक आकारही आहे (वर्तुळ, चौरस, त्रिकोण वगैरे), आलेखावर, सूचीत आणि नावाशेजारी, म्हणजे कोणालाही फक्त रंगावरून ओळखावे लागत नाही. धड्यांमध्ये रंगीत पट्ट्यांमधील आकडे, जे गडद मोडमध्ये फिकट पट्ट्यांवर पांढरे होते, आता गडद आणि स्पष्ट आहेत.',
+        },
+      },
+      {
         id: 'forms-without-javascript',
         text: {
           en: 'If JavaScript is off or blocked in your browser, the waitlist and newsletter forms now say that signing up needs it and give an address to write to. Pressing the button used to reload the page with your email in the address and sign nobody up; the email is no longer put there.',

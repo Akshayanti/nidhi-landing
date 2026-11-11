@@ -2093,8 +2093,12 @@ details[open] > .disclosure::after,
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1rem;
-  color: var(--lc-color);
+  /* Neutral ink: the offer's colour is for its line and marker, not for text. */
+  color: var(--color-text-primary);
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Remove-vendor button (small × in card header).
@@ -2289,9 +2293,11 @@ details[open] > .disclosure::after,
 }
 
 .lc-modeOptionActive {
-  background: var(--lc-color);
-  border-color: var(--lc-color);
-  color: var(--neutral-white);
+  /* The brand pair, not the offer's colour: its ink flips with the theme, so
+     the chosen option reads at 9:1 or more in both. */
+  background: var(--color-deep-blue);
+  border-color: var(--color-deep-blue);
+  color: var(--color-bg-white);
 }
 
 [data-theme="dark"] .lc-modeOptionActive {
@@ -2709,7 +2715,7 @@ details[open] > .disclosure::after,
 }
 
 .lc-resultRowEmphasized .lc-resultValue {
-  color: var(--lc-color);
+  color: var(--color-text-primary);
   font-size: 1.1rem;
 }
 
@@ -2940,6 +2946,9 @@ details[open] > .disclosure::after,
 
 .lc-splitBarInterest {
   fill: var(--color-warning);
+  /* The light orange is 2.7:1 against the card, so the bar gets an edge. */
+  stroke: var(--chart-outline-warn);
+  stroke-width: 1;
 }
 
 .lc-splitBarPrincipal {
@@ -2959,11 +2968,12 @@ details[open] > .disclosure::after,
 }
 
 .lc-splitEyebrowInterest {
-  fill: var(--color-warning);
+  fill: var(--chart-text-warn);
 }
 
 .lc-splitEyebrowPrincipal {
-  fill: var(--color-deep-blue);
+  /* Neutral: the bars below take the offer's colour, which is not for text. */
+  fill: var(--color-text-primary);
 }
 
 .lc-splitTickX {
@@ -3156,7 +3166,7 @@ details[open] > .disclosure::after,
     height: 28px;
     border: 2px solid var(--lc-color);
     border-radius: 50%;
-    color: var(--lc-color);
+    color: var(--color-text-primary);
     font-family: var(--font-heading);
     font-size: 0.8125rem;
     font-weight: 700;
@@ -3308,7 +3318,7 @@ details[open] > .disclosure::after,
     font-family: var(--font-heading);
     font-size: 0.8125rem;
     font-weight: 700;
-    color: var(--lc-color, var(--color-text-muted));
+    color: var(--color-text-primary);
   }
 
   /* Analysis tabs: four on one row where they fit; on the narrowest phones,
@@ -4316,8 +4326,12 @@ details[open] > .disclosure::after,
 .mcnw-legendSwatch {
   width: 14px;
   height: 14px;
-  border-radius: 3px;
   flex-shrink: 0;
+}
+/* The marker drawn on a slice, in the ink that reads on that slice. */
+.mcnw-sliceMark {
+  pointer-events: none;
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 .mcnw-legendCode {
@@ -4353,22 +4367,11 @@ details[open] > .disclosure::after,
   background: var(--color-bg);
 }
 
-.mcnw-riskCard--functional {
-  border-left: 4px solid var(--color-teal);
-}
-
-.mcnw-riskCard--low {
-  border-left: 4px solid var(--semantic-success-light);
-}
-
-.mcnw-riskCard--moderate {
-  border-left: 4px solid var(--chart-amber);
-}
-
-.mcnw-riskCard--elevated,
-.mcnw-riskCard--net-debt {
-  border-left: 4px solid var(--semantic-danger-light);
-}
+.mcnw-riskCard--functional { border-left: 4px solid var(--risk-functional); }
+.mcnw-riskCard--low { border-left: 4px solid var(--risk-low); }
+.mcnw-riskCard--moderate { border-left: 4px solid var(--risk-moderate); }
+.mcnw-riskCard--elevated { border-left: 4px solid var(--risk-elevated); }
+.mcnw-riskCard--net-debt { border-left: 4px solid var(--risk-net-debt); }
 
 .mcnw-riskCardHead {
   display: flex;
@@ -4385,17 +4388,10 @@ details[open] > .disclosure::after,
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--neutral-white);
+  /* Every risk fill is 7:1 or more against this ink, in both themes. */
+  color: var(--risk-on);
   padding: 3px 8px;
   border-radius: var(--radius-sm);
-}
-
-.mcnw-riskCard--moderate .mcnw-riskBadge {
-  color: var(--neutral-900);
-}
-
-[data-theme="dark"] .mcnw-riskCard--functional .mcnw-riskBadge {
-  color: var(--neutral-900);
 }
 
 .mcnw-riskCurrency {
@@ -4494,6 +4490,84 @@ details[open] > .disclosure::after,
   --chart-eur: var(--palette-blue-dark);
   --chart-usd: var(--palette-teal-mid-dark);
   --chart-inr: var(--semantic-warning-dark);
+}
+
+/* Chart series (CHART_SERIES in src/styles/palette.ts): the colours a chart
+   gives its lines, slices and markers, in order. Every slot is a light and
+   dark pair, at 3:1 or more against the card it is drawn on in both themes
+   (src/styles/chartColors.test.ts checks it). They are for lines, swatches
+   and markers only, never for text: orange and cyan in light are under
+   4.5:1. A name stands in neutral ink beside its marker
+   (src/components/chart/SeriesMarker.tsx), so colour is never the only
+   difference between two series.
+   --chart-N-on is the ink for a label or marker drawn on a shape filled
+   with slot N. */
+:root {
+  --chart-1: #0A3D8F;  /* brand blue */
+  --chart-2: #005B4F;  /* brand teal */
+  --chart-3: #E65100;  /* orange */
+  --chart-4: #6A1B9A;  /* purple */
+  --chart-5: #2E7D32;  /* green */
+  --chart-6: #C62828;  /* red */
+  --chart-7: #1565C0;  /* blue */
+  --chart-8: #6D4C41;  /* brown */
+  --chart-9: #00838F;  /* cyan */
+  --chart-10: #8A6100; /* amber */
+  --chart-11: #4A148C; /* deep purple */
+  --chart-on:   var(--neutral-white);
+  --chart-1-on: var(--chart-on);
+  --chart-2-on: var(--chart-on);
+  --chart-3-on: var(--neutral-page-bg-dark); /* white on orange is 3.8:1 */
+  --chart-4-on: var(--chart-on);
+  --chart-5-on: var(--chart-on);
+  --chart-6-on: var(--chart-on);
+  --chart-7-on: var(--chart-on);
+  --chart-8-on: var(--chart-on);
+  --chart-9-on: var(--chart-on);
+  --chart-10-on: var(--chart-on);
+  --chart-11-on: var(--chart-on);
+  /* Risk scale (RISK_COLORS): the guide's pairs. Each is the fill of a badge
+     that holds the word for the level, in --risk-on. */
+  --risk-functional: var(--palette-teal);
+  --risk-low:        var(--palette-green);
+  --risk-moderate:   var(--palette-amber);
+  --risk-elevated:   var(--palette-deep-orange);
+  --risk-net-debt:   var(--palette-red);
+  --risk-on:         var(--neutral-white);
+  /* Orange as text on the page, and the ink on an orange fill. */
+  --chart-text-warn: var(--palette-deep-orange);
+  --chart-on-warn:   var(--neutral-page-bg-dark);
+  --chart-outline-warn: #595959;
+}
+[data-theme="dark"] {
+  --chart-1: #90CAF9;
+  --chart-2: #26A69A;
+  --chart-3: #FFAB91;
+  --chart-4: #E1BEE7;
+  --chart-5: #81C784;
+  --chart-6: #FF9E80;
+  --chart-7: #D1C4E9;
+  --chart-8: #FFCC80;
+  --chart-9: #80DEEA;
+  --chart-10: #E6EE5C;
+  --chart-11: #CE93D8;
+  --chart-on:   var(--neutral-page-bg-dark);
+  --chart-3-on: var(--neutral-page-bg-dark);
+  --risk-functional: var(--palette-teal-dark);
+  --risk-low:        var(--palette-green-dark);
+  --risk-moderate:   var(--palette-amber-dark);
+  --risk-elevated:   var(--palette-deep-orange-dark);
+  --risk-net-debt:   var(--palette-red-dark);
+  --risk-on:         var(--neutral-page-bg-dark);
+  --chart-text-warn: var(--semantic-warning-dark);
+  --chart-outline-warn: none; /* the dark orange stands clear of the dark card */
+}
+
+/* A series marker standing beside a name. */
+.chart-marker {
+  flex: 0 0 auto;
+  display: inline-block;
+  vertical-align: -0.125em;
 }
 
 /* In-page links land below the sticky header. */
@@ -5522,8 +5596,9 @@ body[data-page="landing"] .site-footer {
   font-weight: 600;
 }
 .lc-legendLine {
-  width: 28px;
-  height: 10px;
+  width: 40px;
+  height: 14px;
+  flex: 0 0 auto;
 }
 .lc-legendNote {
   font-weight: 400;
