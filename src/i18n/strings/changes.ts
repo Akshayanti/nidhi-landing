@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'invest-pay-off-shorter-form',
+        text: {
+          en: 'The invest or pay off tool has a shorter form. The three optional percentages (tax relief, fund fee and tax on gains) now sit behind one row called Taxes and fees, which says which of them are in use and opens by itself when a shared link sets one. The starting figures are marked as an example, and Start again is at the top.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल का फ़ॉर्म अब छोटा है। तीन वैकल्पिक प्रतिशत (टैक्स छूट, फंड शुल्क और मुनाफ़े पर टैक्स) अब टैक्स और शुल्क नाम की एक पंक्ति के पीछे हैं, जो बताती है कि इनमें से कौन-से लागू हैं और शेयर किए गए लिंक में कोई भरा हो तो अपने आप खुल जाती है। शुरुआती आँकड़ों पर लिखा है कि वे उदाहरण हैं, और फिर से शुरू करें अब सबसे ऊपर है।',
+          es: 'La herramienta Invertir o pagar deuda tiene ahora un formulario más corto. Los tres porcentajes opcionales (desgravación fiscal, comisión del fondo e impuesto sobre la ganancia) quedan tras una sola fila, Impuestos y comisiones, que dice cuáles están en uso y se abre sola cuando un enlace compartido trae alguno. Las cifras iniciales llevan la indicación de que son un ejemplo, y Empezar de nuevo está arriba.',
+          cs: 'Nástroj Investovat, nebo splatit dluh má teď kratší formulář. Tři volitelná procenta (daňová úleva, poplatek fondu a\u00a0daň ze zisku) jsou nově schovaná za jedním řádkem Daně a\u00a0poplatky, který říká, která z\u00a0nich se používají, a\u00a0sám se otevře, když některé nastaví sdílený odkaz. Výchozí čísla jsou označená jako ukázka a\u00a0tlačítko Začít znovu je nahoře.',
+          mr: 'गुंतवणूक की कर्जफेड या टूलचा फॉर्म आता लहान आहे. तीन ऐच्छिक टक्केवाऱ्या (कर सवलत, फंड शुल्क आणि नफ्यावरील कर) आता कर आणि शुल्क या एका ओळीमागे आहेत; त्यांपैकी कोणत्या लागू आहेत ते ती ओळ सांगते आणि शेअर केलेल्या लिंकमध्ये एखादी भरलेली असेल तर आपोआप उघडते. सुरुवातीच्या आकड्यांवर ते उदाहरण असल्याचे लिहिले आहे, आणि पुन्हा सुरू करा आता सर्वात वर आहे.',
+        },
+      },
+      {
         id: 'monte-carlo-chart-first',
         text: {
           en: 'The Monte Carlo simulator now shows the chart right under the three figures, with the save and share buttons after it. Yearly fees and the number of simulated paths sit behind one row that says what they are set to, on every screen size. The starting figures are marked as an example, and the 80% stock mix says it is not a suggestion.',
