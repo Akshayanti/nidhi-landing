@@ -12,7 +12,7 @@ import {
   type ReturnSetting,
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
-import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
+import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
 import { isValidNumber } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
@@ -249,8 +249,8 @@ export default function MonteCarloSimulator({
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
   const [copied, setCopied] = useState(false);
   const [tipsDismissed, setTipsDismissed] = useState(false);
-  // Phones only: returns, fees and paths start folded (CSS ignores this
-  // on wider screens, where they always show).
+  // Fees and paths start folded behind one row that says what they are set
+  // to. View state only: never shared, stored or tracked.
   const [settingsOpen, setSettingsOpen] = useState(false);
   const ids = {
     settings: useId(),
@@ -287,6 +287,8 @@ export default function MonteCarloSimulator({
     if (!shared) return;
     setForm(toForm(shared));
     setSettled(shared);
+    // A shared plan that sets a fee or a path count shows it without a click.
+    if (shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
     // A language switch carries the plan too, but that view was already
     // counted on the page it came from.
     if (arrivedByLanguageSwitch()) return;
@@ -378,13 +380,18 @@ export default function MonteCarloSimulator({
     const start = defaultState(defaultCurrency);
     setForm(toForm(start));
     setSettled(start);
+    setSettingsOpen(false);
     track('free_monte_carlo_reset');
   }
+
+  // The starting figures are an example until one of them is changed.
+  const pristine = !hasErrors && isPristineState(toState(form), defaultCurrency);
 
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <div className="mcs-root">
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
+        {pristine && <p className="mcs-example">{strings.example}</p>}
         <div className="mcs-grid">
           <div className="mcs-field">
             <label className="mcs-label" htmlFor={ids.currency}>{strings.fields.currency}</label>
@@ -429,12 +436,61 @@ export default function MonteCarloSimulator({
             value={errors.stockPct ? DEFAULTS.stockPct : form.stockPct}
             onChange={update('stockPct')}
           />
-          <span className="mcs-hint">{strings.fields.mixHint}</span>
+          <span className="mcs-hint">
+            {strings.fields.mixHint}
+            {!errors.stockPct && Number(form.stockPct) === DEFAULTS.stockPct && <> {t(strings.fields.mixExample, { pct: DEFAULTS.stockPct })}</>}
+          </span>
         </div>
 
-        <QuickResult result={result} state={shownState} busy={pending} strings={strings} />
+        <fieldset
+          className={`mcs-switch${tipsDismissed ? ' mcs-switch--tipsOff' : ''}`}
+          onMouseLeave={() => setTipsDismissed(false)}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setTipsDismissed(false);
+          }}
+        >
+          <legend className="mcs-label">{strings.settings.legend}</legend>
+          <div className="mcs-switchRow">
+            {RETURN_SETTINGS.map((s) => (
+              <label key={s} className={`mcs-switchOpt${form.returns === s ? ' mcs-switchOpt--on' : ''}`}>
+                <input
+                  type="radio"
+                  name={ids.returns}
+                  value={s}
+                  checked={form.returns === s}
+                  aria-describedby={`${ids.returns}-${s}`}
+                  onChange={() => {
+                    setForm((f) => ({ ...f, returns: s }));
+                    track('free_monte_carlo_returns_changed', { setting: s });
+                  }}
+                />
+                <span>{strings.returns[s]}</span>
+                <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{returnTip(strings, s, amountLocale)}</span>
+              </label>
+            ))}
+          </div>
+          {/* The chosen setting's description, visible for touch screens
+              where there is no hover. Screen readers get it from the
+              tooltip through aria-describedby, so it is hidden from them. */}
+          <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
+        </fieldset>
 
-        {/* Phones only: the toggle for the folded settings, showing what they
+        <QuickResult result={result} state={shownState} busy={pending} strings={strings} />
+        {/* Phones only. A button, not a link: nothing is written to the address. */}
+        <p className="mcs-jump">
+          <button
+            type="button"
+            onClick={() => {
+              const heading = document.getElementById('mcs-results-h');
+              heading?.scrollIntoView({ block: 'start' });
+              heading?.focus({ preventScroll: true });
+            }}
+          >
+            {strings.quick.jump}
+          </button>
+        </p>
+
+        {/* The toggle for the folded fees and paths, showing what they
             are set to. An invalid fee keeps them open so the error shows.
             The current values sit outside the button, drawn over it with
             pointer-events off: with consent, analytics records a clicked
@@ -452,7 +508,6 @@ export default function MonteCarloSimulator({
           </button>
           <p className="mcs-settingsValue">
             {t(strings.settings.summary, {
-              returns: strings.returns[form.returns],
               fees: errors.feePct ? '?' : form.feePct,
               paths: grouped(form.paths, amountLocale),
             })}
@@ -463,38 +518,6 @@ export default function MonteCarloSimulator({
           id={ids.settings}
           className={`mcs-grid mcs-grid--assumptions${settingsOpen || errors.feePct ? ' mcs-settings--open' : ''}`}
         >
-          <fieldset
-            className={`mcs-switch${tipsDismissed ? ' mcs-switch--tipsOff' : ''}`}
-            onMouseLeave={() => setTipsDismissed(false)}
-            onBlur={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setTipsDismissed(false);
-            }}
-          >
-            <legend className="mcs-label">{strings.settings.legend}</legend>
-            <div className="mcs-switchRow">
-              {RETURN_SETTINGS.map((s) => (
-                <label key={s} className={`mcs-switchOpt${form.returns === s ? ' mcs-switchOpt--on' : ''}`}>
-                  <input
-                    type="radio"
-                    name={ids.returns}
-                    value={s}
-                    checked={form.returns === s}
-                    aria-describedby={`${ids.returns}-${s}`}
-                    onChange={() => {
-                      setForm((f) => ({ ...f, returns: s }));
-                      track('free_monte_carlo_returns_changed', { setting: s });
-                    }}
-                  />
-                  <span>{strings.returns[s]}</span>
-                  <span className="mcs-tip" role="tooltip" id={`${ids.returns}-${s}`}>{returnTip(strings, s, amountLocale)}</span>
-                </label>
-              ))}
-            </div>
-            {/* The chosen setting's description, visible for touch screens
-                where there is no hover. Screen readers get it from the
-                tooltip through aria-describedby, so it is hidden from them. */}
-            <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
-          </fieldset>
           <NumberField
             id={ids.feePct}
             label={strings.settings.feeLabel}
@@ -676,7 +699,7 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
 
   return (
     <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
-      <h2 id="mcs-results-h" className="mcs-resultsTitle">
+      <h2 id="mcs-results-h" className="mcs-resultsTitle" tabIndex={-1}>
         {saving
           ? state.saveYears === 1
             ? strings.results.headingOne
@@ -705,12 +728,17 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
           <p className="mcs-cardsKey">
             {strings.results.cardsKey}
           </p>
-          <p className="mcs-note">
-            {strings.results.noteBefore}{' '}
-            <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>
-            {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine, amountLocale) })}
-          </p>
         </>
+      )}
+
+      {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
+
+      {saving && (
+        <p className="mcs-note">
+          {strings.results.noteBefore}{' '}
+          <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>
+          {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine, amountLocale) })}
+        </p>
       )}
 
       {!saving && !withdrawing && (
@@ -740,9 +768,6 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
         {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, amountLocale) })}
       </p>
 
-      {actions}
-
-      {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
 
       {result.years > 0 && <details className="mcs-tableWrap" onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) track('free_monte_carlo_table_opened'); }}>
         <summary className="mcs-tableSummary disclosure">{strings.results.tableSummary}</summary>
@@ -772,6 +797,8 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
           </table>
         </div>
       </details>}
+
+      {actions}
     </section>
   );
 }
