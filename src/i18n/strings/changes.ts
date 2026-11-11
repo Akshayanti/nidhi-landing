@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'loan-link-cleared-boxes',
+        text: {
+          en: 'A loan comparison you share now arrives as you left it. If you emptied a box, such as an offer’s fee, the link used to put the starting figure back, so the person opening it saw a different comparison; the same happened to your own screen when you switched language. An emptied box now stays empty.',
+          hi: 'आपकी शेयर की हुई लोन तुलना अब वैसी ही पहुँचती है जैसी आपने छोड़ी थी। अगर आपने कोई बॉक्स खाली किया था, जैसे किसी ऑफ़र का शुल्क, तो लिंक पहले शुरुआती आँकड़ा वापस रख देता था, और लिंक खोलने वाले को अलग तुलना दिखती थी; भाषा बदलने पर आपकी अपनी स्क्रीन पर भी यही होता था। खाली किया हुआ बॉक्स अब खाली ही रहता है।',
+          es: 'Una comparación de préstamos que compartes llega ahora tal como la dejaste. Si habías vaciado una casilla, como la comisión de una oferta, el enlace volvía a poner la cifra inicial, y quien lo abría veía otra comparación; lo mismo pasaba en tu propia pantalla al cambiar de idioma. Una casilla vaciada ahora se queda vacía.',
+          cs: 'Srovnání úvěrů, které sdílíte, teď dorazí tak, jak jste ho nechali. Když jste nějaké pole vymazali, například poplatek u\u00a0nabídky, odkaz do něj dříve vrátil výchozí hodnotu, takže ten, kdo ho otevřel, viděl jiné srovnání; totéž se stalo na vaší obrazovce při přepnutí jazyka. Vymazané pole teď zůstane prázdné.',
+          mr: 'तुम्ही शेअर केलेली कर्जांची तुलना आता तुम्ही ठेवली होती तशीच पोहोचते. तुम्ही एखादी चौकट रिकामी केली असेल, उदा. एखाद्या ऑफरचे शुल्क, तर लिंक आधी सुरुवातीचा आकडा परत भरायची, आणि लिंक उघडणाऱ्याला वेगळी तुलना दिसायची; भाषा बदलल्यावर तुमच्या स्वतःच्या स्क्रीनवरही तेच व्हायचे. रिकामी केलेली चौकट आता रिकामीच राहते.',
+        },
+      },
+      {
         id: 'tools-send-less',
         text: {
           en: 'The free tools now send a little less. The loan comparison no longer reports how many months you chose for the time horizon, only that you changed it, and when exchange rates fail to load, the net worth calculator reports one of a few fixed reasons instead of the browser’s own error text. A link someone shares with you can now only set a currency the tools offer, a number, or a name of ordinary length. The privacy notice now lists every event the loan comparison and the net worth calculator send.',

@@ -367,18 +367,53 @@ describe('encode/decode round-trip', () => {
     assert.deepEqual(decoded, vendors);
   });
 
-  it('an empty user-typed extraMonthly falls back to the slot template default', () => {
-    // If a user's "extraMonthly" field is empty, the encoded tuple has
-    // an empty position there; decode falls back to the slot template
-    // default ("0" for slot 0). The user-typed "" was never persisted,
-    // so the round-trip differs by design.
+  it('a box the reader emptied comes back empty, not with its default put back (issue 344)', () => {
+    // On the default screen, offer B has a fee of 2,500. Cleared, the page
+    // computes B with no fee; the person who opens the link must see the same.
     const vendors: VendorInput[] = [
       { ...makeDefaultVendor(0), extraMonthly: '' },
-      makeDefaultVendor(1),
+      { ...makeDefaultVendor(1), feeMajor: '' },
     ];
     const qs = encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE);
     const { vendors: decoded } = decodeFromQueryString(qs);
-    assert.equal(decoded[0].extraMonthly, '0'); // template default, not ''
+    assert.equal(decoded[0].extraMonthly, '');
+    assert.equal(decoded[1].feeMajor, '', 'the 2,500 default is not put back');
+    assert.deepEqual(decoded, vendors);
+  });
+
+  it('every cleared box survives the link and the language switch, in every slot', () => {
+    const cleared = ['principal', 'annualRatePct', 'termMonths', 'feeMajor', 'extraMonthly', 'initialFixedMonths', 'pointsCostMajor', 'pointsRateReductionPct', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'] as const;
+    for (let slot = 0; slot < MAX_VENDORS; slot++) {
+      for (const field of cleared) {
+        const vendors = Array.from({ length: MAX_VENDORS }, (_, i) => makeDefaultVendor(i));
+        vendors[slot] = { ...vendors[slot], [field]: '' };
+        const viaLink = decodeFromQueryString(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE)).vendors;
+        assert.deepEqual(viaLink, vendors, `${field} of offer ${slot + 1} by link`);
+        const viaSwitch = decodeFromQueryString(publishableState(vendors, DEFAULT_GLOBAL_STATE, DEFAULT_GLOBAL_STATE.currency)).vendors;
+        assert.deepEqual(viaSwitch, vendors, `${field} of offer ${slot + 1} by the language switch`);
+      }
+    }
+  });
+
+  it('cleared boxes of the horizon and refinance views survive too', () => {
+    for (const field of ['horizonMonths', 'refiAtMonth', 'refiNewRatePct', 'refiNewTermMonths', 'refiNewFeeMajor'] as const) {
+      const global = { ...DEFAULT_GLOBAL_STATE, [field]: '' };
+      const back = decodeFromQueryString(encodeToQueryString(DEFAULT_VENDORS.map((v) => ({ ...v })), global)).global;
+      assert.deepEqual(back, global, field);
+    }
+  });
+
+  it('a link that leaves a position out still means "the default", as short and old links rely on', () => {
+    const { vendors } = decodeFromQueryString('v2=Vendor+B~250000~6.0~~360');
+    assert.equal(vendors[1].feeMajor, makeDefaultVendor(1).feeMajor);
+    assert.equal(vendors[1].extraMonthly, makeDefaultVendor(1).extraMonthly);
+    // And an untouched comparison is still written as nothing at all.
+    assert.equal(publishableState(DEFAULT_VENDORS.map((v) => ({ ...v })), DEFAULT_GLOBAL_STATE, DEFAULT_GLOBAL_STATE.currency), '');
+  });
+
+  it('a box that is empty by default is not marked', () => {
+    const qs = encodeToQueryString([makeDefaultVendor(0), makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+    assert.doesNotMatch(decodeURIComponent(qs), /(^|[~=])-($|[~&])/);
   });
 });
 
