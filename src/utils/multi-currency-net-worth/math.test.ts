@@ -13,6 +13,7 @@ import {
   ownedAndOwed,
   parseAmount,
   parseCSV,
+  ratesForBase,
   decodeCsv,
   isUnreadableAmount,
   unreadableCount,
@@ -408,7 +409,7 @@ Test4,10000,GBP,debt`;
     const csv = 'Nombre;Importe;Moneda;Tipo\nCuenta;1000,50;EUR;Activo\nPiso;250.000,00;EUR;Activo\nHipoteca;150 000;EUR;Pasivo';
     const { rows, errors } = parseCSV(csv, { asset: ['activo'], liability: ['pasivo'] });
     assert.deepEqual(errors, []);
-    assert.deepEqual(rows.map((r) => [r.name, r.value, r.type]), [['Cuenta', '1000.5', 'asset'], ['Piso', '250000', 'asset'], ['Hipoteca', '150 000', 'liability']]);
+    assert.deepEqual(rows.map((r) => [r.name, r.value, r.type]), [['Cuenta', '1000.5', 'asset'], ['Piso', '250000', 'asset'], ['Hipoteca', '150000', 'liability']]);
     assert.equal(parseAmount(rows[2].value), 150000);
   });
 
@@ -497,8 +498,8 @@ AlsoGood,30000,GBP`;
     const csv = `Test,"1,000,000",USD`;
     const { rows, errors } = parseCSV(csv);
     assert.equal(errors.length, 0);
-    // The value string keeps the commas; parseAmount strips them during aggregation.
-    assert.equal(rows[0].value, '1,000,000');
+    // The amount is kept as the plain number the tool works with.
+    assert.equal(rows[0].value, '1000000');
   });
 
   it('handles header auto-detection when value/currency keywords present', () => {
@@ -642,5 +643,50 @@ describe('an amount that cannot be read', () => {
     assert.equal(unreadableCount(rows), 1);
     const result = aggregate(rows, 'EUR', { EUR: 1 });
     assert.equal(result.totalNetWorthFunctional, 200000, 'the row is left out, which is why the tool must say so');
+  });
+});
+
+describe('CSV amounts are read strictly (issue 340)', () => {
+  it('a quoted decimal comma in a comma file is a decimal, not grouping', () => {
+    const { rows, errors } = parseCSV('Flat,"2500,50",EUR\nBond,"1.234,56",EUR\nCash,"250,000",EUR\nGold,"1,00,000",INR');
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => r.value), ['2500.5', '1234.56', '250000', '100000']);
+  });
+
+  it('refuses what is not a plain amount instead of guessing', () => {
+    const { rows, errors } = parseCSV('A,0x10,EUR\nB,1e3,EUR\nC,€100,EUR\nD,-5,EUR\nE,"1,23,4",EUR\nF,12,EUR');
+    assert.deepEqual(rows.map((r) => r.name), ['F']);
+    assert.deepEqual(errors.map((e) => [e.line, e.reason]), [[1, 'invalidValue'], [2, 'invalidValue'], [3, 'invalidValue'], [4, 'invalidValue'], [5, 'invalidValue']]);
+  });
+
+  it('a lower-case code in the two-column form is the currency it names', () => {
+    const { rows, errors } = parseCSV('1000,eur\n500,Usd');
+    assert.deepEqual(errors, []);
+    assert.deepEqual(rows.map((r) => [r.value, r.currency]), [['1000', 'EUR'], ['500', 'USD']]);
+  });
+});
+
+describe('rates belong to the currency they were fetched for (issue 339)', () => {
+  const eur = { base: 'EUR', rates: { EUR: 1, USD: 1.08, INR: 90 } };
+  const rows: AssetRow[] = [
+    { name: 'Cash', value: '1000', currency: 'EUR', type: 'asset' },
+    { name: 'Savings', value: '90000', currency: 'INR', type: 'asset' },
+  ];
+
+  it('are used while that is the spending currency', () => {
+    assert.equal(ratesForBase(eur, 'EUR'), eur.rates);
+    assert.equal(ratesForBase(eur, 'eur'), eur.rates);
+    assert.equal(aggregate(rows, 'EUR', ratesForBase(eur, 'EUR')).totalNetWorthFunctional, 2000);
+  });
+
+  it('are not used for another spending currency: no total, never a wrong one', () => {
+    assert.equal(ratesForBase(eur, 'INR'), null);
+    assert.equal(ratesForBase(null, 'EUR'), null);
+    // What the tool showed before: euro rates read as rupee rates.
+    assert.equal(aggregate(rows, 'INR', eur.rates).totalNetWorthFunctional, 91000);
+    // What it shows now, until rupee rates arrive.
+    const waiting = aggregate(rows, 'INR', ratesForBase(eur, 'INR'));
+    assert.equal(waiting.hasRates, 'none');
+    assert.equal(waiting.totalNetWorthFunctional, 0);
   });
 });

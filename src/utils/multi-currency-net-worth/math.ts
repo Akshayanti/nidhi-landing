@@ -124,6 +124,23 @@ export function isSupportedCurrency(code: string): boolean {
   return CURRENCIES.some((c) => c.code === code.toUpperCase());
 }
 
+/** Exchange rates as they were fetched: units of each currency per one of `base`. */
+export interface HeldRates {
+  base: string;
+  rates: Record<string, number>;
+}
+
+/**
+ * The rates to work with for `functionalCurrency`, or null when the ones
+ * held were fetched for another currency. Rates say how many units of each
+ * currency one unit of their base buys, so used with another base they give
+ * a total that is simply wrong (1,000 euros counted as 1,000 rupees), and
+ * the tool would show it while the right rates are loading or have failed.
+ */
+export function ratesForBase(held: HeldRates | null, functionalCurrency: string): Record<string, number> | null {
+  return held !== null && held.base.toUpperCase() === functionalCurrency.toUpperCase() ? held.rates : null;
+}
+
 /**
  * If `rates` is null, positions are returned in their original currencies without conversion,
  * so the UI can still show raw amounts with a "rates unavailable" warning.
@@ -388,7 +405,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
     if (cols.length === 2) {
       name = '';
       valueStr = rawName; // cols[0] is actually value
-      currencyStr = rawValue; // cols[1] is actually currency
+      currencyStr = rawValue.toUpperCase(); // cols[1] is actually currency
       typeStr = '';
     } else {
       // The tool's own download leads a formula-like name with an apostrophe
@@ -399,16 +416,16 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
       typeStr = rawType;
     }
 
-    // Validate value. A file that separates its columns with a semicolon or
-    // a tab comes from a spreadsheet where the comma is the decimal mark, so
-    // "1000,50" there is one thousand and a half, and it is kept as the
-    // plain number the tool works with.
-    let value = parseAmount(valueStr);
-    if (separator !== ',' && valueStr.includes(',')) {
-      const read = parseLocaleNumber(valueStr, 'es');
-      value = read === null ? NaN : read;
-      if (read !== null) valueStr = String(read);
-    }
+    // Validate value. The amount is read the way the file writes numbers
+    // and kept as the plain number the tool works with. A file that
+    // separates its columns with a semicolon or a tab comes from a
+    // spreadsheet where the comma is the decimal mark; in a comma file a
+    // quoted "250,000" is grouped and a quoted "2500,50" can only be a
+    // decimal. Anything that is not digits and marks ("0x10", "1e3",
+    // "€100") is refused, never guessed at.
+    const read = parseLocaleNumber(valueStr, separator === ',' ? 'en' : 'es');
+    const value = read === null ? NaN : read;
+    if (read !== null) valueStr = String(read);
     if (!Number.isFinite(value) || value <= 0) {
       errors.push({
         line: lineNum,
