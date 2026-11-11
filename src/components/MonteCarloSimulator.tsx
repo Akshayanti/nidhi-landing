@@ -575,7 +575,7 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          <button type="button" className="mcs-btn mcs-btn--ghost" onClick={reset} data-attr="free-monte-carlo-reset">
+          <button type="button" className="btn btn--quiet" onClick={reset} data-attr="free-monte-carlo-reset">
             {strings.actions.reset}
           </button>
           <span className="mcs-hint" role="status" aria-live="polite">
@@ -598,7 +598,7 @@ export default function MonteCarloSimulator({
           <ToolExport
             strings={exportStrings}
             share={
-              <button type="button" className="mcs-btn" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
+              <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
                 {copied ? strings.actions.copied : strings.actions.copy}
               </button>
             }

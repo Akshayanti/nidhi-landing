@@ -4776,32 +4776,6 @@ body[data-page="landing"] .site-footer {
   align-items: center;
   gap: var(--space-3);
 }
-.mcs-btn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-cta-bg);
-  background: var(--color-cta-bg);
-  color: var(--color-cta-fg);
-}
-.mcs-btn:hover,
-.mcs-btn:focus-visible {
-  background: var(--color-cta-bg-hover);
-  border-color: var(--color-teal);
-}
-.mcs-btn--ghost {
-  background: transparent;
-  color: var(--color-deep-blue);
-  border-color: var(--color-deep-blue);
-}
-.mcs-btn--ghost:hover,
-.mcs-btn--ghost:focus-visible {
-  background: var(--color-bg-subtle);
-}
 .mcs-resultsTitle {
   font-family: var(--font-heading);
   font-weight: 700;
@@ -5315,10 +5289,6 @@ body[data-page="landing"] .site-footer {
 .mcs-results--busy .mcs-lasted {
   opacity: 0.55;
   transition: opacity 0.15s ease;
-}
-.mcs-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 @media (max-width: 800px) {
   .mcs-grid--assumptions {
