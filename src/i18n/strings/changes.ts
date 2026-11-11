@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'how-to-feed',
+        text: {
+          en: 'The how-to guides now have a feed of their own, at nidhi.today/how-to/rss.xml, for anyone who follows the site in a feed reader. The lesson feed also lists the newest lesson first now; it used to start with the oldest.',
+          hi: 'कैसे करें गाइडों की अब अपनी फ़ीड है, nidhi.today/how-to/rss.xml पर, उन लोगों के लिए जो साइट को फ़ीड रीडर में पढ़ते हैं। पाठों की फ़ीड में भी अब सबसे नया पाठ सबसे ऊपर रहता है; पहले वह सबसे पुराने पाठ से शुरू होती थी।',
+          es: 'Las guías Cómo hacerlo tienen ahora su propio canal, en nidhi.today/how-to/rss.xml, para quien sigue el sitio con un lector de feeds. El canal de las lecciones también muestra ahora primero la lección más reciente; antes empezaba por la más antigua.',
+          cs: 'Návody Jak na to teď mají vlastní kanál na adrese nidhi.today/how-to/rss.xml, pro ty, kdo web sledují ve čtečce. I\u00a0kanál lekcí teď uvádí nejnovější lekci jako první; dříve začínal tou nejstarší.',
+          mr: '‘कसे करायचे’ मार्गदर्शिकांची आता स्वतंत्र फीड आहे, nidhi.today/how-to/rss.xml येथे, जे लोक साइट फीड रीडरमध्ये वाचतात त्यांच्यासाठी. धड्यांच्या फीडमध्येही आता सर्वात नवा धडा सर्वात आधी येतो; आधी ती सर्वात जुन्या धड्याने सुरू व्हायची.',
+        },
+      },
+      {
         id: 'planner-lines-and-log-dates',
         text: {
           en: 'Two corrections to what the site says about itself. The Monte Carlo and invest or pay off pages said the planner already runs these calculations on your whole picture; the planner is still being built, and the lines now say what it is being built to do. And the privacy changelog had three entries dated a day off and no entry for the How-to section; the dates are corrected and the section is recorded.',
