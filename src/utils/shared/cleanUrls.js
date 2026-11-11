@@ -14,6 +14,15 @@
  * address still carry ?q= (an old bookmark, a hand-typed link), that parameter
  * is removed from any property pointing at it.
  *
+ * The newsletter's confirm and unsubscribe pages are opened with a token in
+ * ?t=. Each page takes it out of the address in its head, before analytics
+ * load (tokenGuard.js). Should an address of either page still carry one,
+ * that parameter is removed from any property pointing at it: an
+ * unsubscribe token never expires.
+ *
+ * Heatmap events carry addresses as the keys of an object ($heatmap_data),
+ * not as values. Those keys are cleaned by the same rules.
+ *
  * A locale prefix sits in front of the page path in every edition but the
  * English one, so the /free/ and /blog tests read the path with a known prefix
  * removed. Only prefixes from the locale registry are stripped: a pattern like
@@ -41,7 +50,8 @@
     if (typeof value !== 'string') return value;
     var isTool = value.indexOf('/free/') !== -1;
     var isBlog = value.indexOf('/blog') !== -1 && value.indexOf('q=') !== -1;
-    if (!isTool && !isBlog) return value;
+    var isToken = (value.indexOf('/confirm') !== -1 || value.indexOf('/unsubscribe') !== -1) && value.indexOf('t=') !== -1;
+    if (!isTool && !isBlog && !isToken) return value;
     var u;
     try { u = new URL(value, root.location.origin); } catch (e) { return value; }
     if (u.host !== root.location.host) return value;
@@ -53,17 +63,40 @@
       u.hash = '';
     } else if (path.indexOf('/blog') === 0 && u.searchParams.has('q')) {
       u.searchParams.delete('q');
+    } else if (/^\/(?:confirm|unsubscribe)\/?$/.test(path) && u.searchParams.has('t')) {
+      u.searchParams.delete('t');
     } else {
       return value;
     }
     return /^https?:/i.test(value) ? u.toString() : u.pathname + u.search;
   }
 
+  // Heatmap data: { address: [points] }. Each address is cleaned; two that
+  // become the same address have their points put together. Anything that
+  // is not such an object is not sent.
+  function cleanKeys(data, localePrefixes) {
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    var out = {};
+    for (var address in data) {
+      if (!Object.prototype.hasOwnProperty.call(data, address)) continue;
+      var cleaned = cleanUrl(address, localePrefixes);
+      var points = data[address];
+      if (Object.prototype.hasOwnProperty.call(out, cleaned) && Array.isArray(out[cleaned]) && Array.isArray(points)) {
+        out[cleaned] = out[cleaned].concat(points);
+      } else {
+        out[cleaned] = points;
+      }
+    }
+    return out;
+  }
+
   root.nidhiCleanUrl = cleanUrl;
   root.nidhiCleanUrlProps = function (obj, localePrefixes) {
     if (!obj) return;
     for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = cleanUrl(obj[key], localePrefixes);
+      if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+      if (key === '$heatmap_data') obj[key] = cleanKeys(obj[key], localePrefixes);
+      else obj[key] = cleanUrl(obj[key], localePrefixes);
     }
   };
 })(typeof window !== 'undefined' ? window : globalThis);

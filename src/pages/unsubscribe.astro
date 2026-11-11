@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import tokenGuardScript from '../utils/shared/tokenGuard.js?raw';
 // Reached from an English email, so there is no Hindi counterpart to point
 // search engines or a language switcher at.
 import { DEFAULT_LOCALE } from '../i18n';
@@ -14,6 +15,10 @@ const isDev = import.meta.env.DEV;
   robots="noindex,nofollow"
   alternates={[DEFAULT_LOCALE]}
 >
+  <Fragment slot="head">
+    <script is:inline set:html={tokenGuardScript}></script>
+    <script is:inline>window.nidhiTakeToken();</script>
+  </Fragment>
   <section class="transactional">
     <div class="transactional-card">
       <div class="transactional-icon transactional-icon--muted" aria-hidden="true">
@@ -62,11 +67,10 @@ const isDev = import.meta.env.DEV;
     var status = document.getElementById('unsubscribe-status');
     if (!btn || !status) return;
 
-    var params = new URLSearchParams(window.location.search);
-    var token = params.get('t') || '';
-    if (token) {
-      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
-    }
+    // The token was taken out of the address in the page's head, before
+    // analytics loaded (tokenGuard.js), so it is not in the address bar,
+    // the history, a screenshot or an analytics event.
+    var token = window.nidhiToken || '';
 
     var endpoint = btn.getAttribute('data-endpoint') || '';
 

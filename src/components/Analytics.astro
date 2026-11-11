@@ -136,7 +136,9 @@ const clickLabels = { exact, prefixes };
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: hasFullConsent ? window.nidhiClickCapture : false,
-    enable_heatmaps: hasFullConsent,
+    // A page that pauses heatmaps says so in its head, before this runs
+    // (the invest or pay off tool), so they never start there.
+    enable_heatmaps: hasFullConsent && !window.nidhiHeatmapsPaused,
     capture_dead_clicks: hasFullConsent ? window.nidhiClickCapture : false,
     capture_performance: false,
     capture_exceptions: false,

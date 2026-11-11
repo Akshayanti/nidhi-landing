@@ -769,7 +769,7 @@ export const en = {
       // precedes it and `after` begins with the colon that follows it.
       freeTools: {
         before:
-          'Interaction events on the Free Tools pages: which currency you pick on the loan-comparison calculator, whether you toggle between solving for term vs monthly payment, whether you open the “More options” panel, whether you copy the shareable link, and whether you reset the form. ',
+          'Interaction events on the Free Tools pages. On the loan-comparison calculator: which currency you pick; whether you switch a vendor between solving for term and monthly payment, or between a fixed and a changing rate; that you add or remove a vendor (with how many there are and which slot, A to E, never its name); which results tab you open, and which vendor you pick there or open the details of; that you changed the time horizon or a refinance setting (which setting, never its value); that a field was left invalid (how many vendors, which slot and which kind of problem); whether you open the share dialog, copy the shareable link or open a shared view (with how many vendors it holds and its campaign source); and whether you reset the form. ',
         strong: 'The financial values you type are never sent',
         after:
           ': not the loan amount, not the interest rate, not the fees, not the vendor name. The whole point of the calculator is that the math runs in your browser.',
@@ -778,6 +778,11 @@ export const en = {
         'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
       toolExports:
         'Every free tool can download a spreadsheet of its results, or make a PDF report: a short summary of the results that your browser’s print dialog prints or saves as a PDF. Both are made in your browser and never uploaded. The file or printout holds the values you entered, and once saved it is outside our reach (your downloads folder, synced folders, backups, other apps), so we cannot see or delete it. Your browser may add the page address and the date to a printout’s header or footer; you can turn that off in the print dialog. Using either sends one event that says which of the two you used, and nothing else.',
+      netWorth: {
+        before:
+          'Interaction events on the net worth calculator: which spending currency you pick; that you add or remove a row, or upload or download a CSV file (with the number of rows; for a file that could not be read in full, how many lines failed and which kind of problem the first one had); that exchange rates failed to load (with the spending currency and one of a few fixed reasons) and whether you retry; whether you open the share dialog, which kind of link you copy (with or without amounts) and whether you open a shared view (with its kind, how many currencies it holds and its campaign source); and whether you reset the form. ',
+        strong: 'The names, amounts and totals you enter are never sent.',
+      },
       monteCarlo: {
         before:
           'Interaction events on the Monte Carlo simulator: which currency you pick, which return setting and number of simulated paths you choose, whether you switch withdrawals on or off, whether you open the results table, whether you copy the shareable link, and whether you reset the form. ',

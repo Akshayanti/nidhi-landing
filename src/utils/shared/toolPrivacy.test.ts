@@ -142,8 +142,7 @@ describe('no code outside the allowed places writes to the address', () => {
     'utils/shared/toolStateGuard.js': 'moves shared tool state out of the address',
     'components/Analytics.astro': 'removes ?internal= after reading it',
     'components/LearnHome.tsx': 'removes ?q= after applying a search-engine query',
-    'pages/confirm.astro': 'removes the confirm token',
-    'pages/unsubscribe.astro': 'removes the unsubscribe token',
+    'utils/shared/tokenGuard.js': 'removes the confirm or unsubscribe token, in the page head',
   };
 
   it('replaceState and pushState appear only where the address is being cleaned, once each', () => {
@@ -289,12 +288,10 @@ describe('tracked tool events carry choices, never values', () => {
     'firstReason', 'reason', // which kind of error
   ]);
 
-  // Sent today, and not a choice. Listed so that nothing joins them unseen;
-  // each is recorded in docs/curr_bugs.md until it is settled.
-  const KNOWN_VALUES: Record<string, string[]> = {
-    // The horizon someone typed or dragged to, in months.
-    free_loan_comparison_horizon_changed: ['months'],
-  };
+  // A property that is sent and is not a choice would be listed here, so
+  // that nothing joins it unseen. There is none: the last one, the loan
+  // comparison's horizon in months, stopped being sent in Nov 2026.
+  const KNOWN_VALUES: Record<string, string[]> = {};
 
   const EXPECTED_VALUES: string[] = [
     "free_inflation_country_changed.country = code || 'none'",
@@ -310,7 +307,6 @@ describe('tracked tool events carry choices, never values', () => {
     'free_loan_comparison_details_toggled.vendor = label',
     "free_loan_comparison_exported.format = 'pdf'",
     "free_loan_comparison_exported.format = 'xlsx'",
-    'free_loan_comparison_horizon_changed.months = m',
     "free_loan_comparison_mode_changed.mode = 'payment'",
     "free_loan_comparison_mode_changed.mode = 'term'",
     'free_loan_comparison_mode_changed.vendor = label',

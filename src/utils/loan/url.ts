@@ -43,8 +43,9 @@
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
-import { DEFAULT_CURRENCY } from './math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
+import { linkCurrency, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 
 /**
@@ -331,9 +332,13 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
   // Each field overrides the slot template only when it carries data.
   // An empty slot in the tuple = "field unset, use template default" —
   // the same semantics the previous wire format had via missing keys.
-  if (fields[V_IDX.NAME] !== '') next.name = fields[V_IDX.NAME];
-  if (fields[V_IDX.PRINCIPAL] !== '') next.principal = fields[V_IDX.PRINCIPAL];
-  if (fields[V_IDX.ANNUAL_RATE_PCT] !== '') next.annualRatePct = fields[V_IDX.ANNUAL_RATE_PCT];
+  // A link's values are whoever wrote the link's: a name is cut to an
+  // ordinary length, and a number that does not read as one is dropped
+  // (see linkInput.ts).
+  const name = linkName(fields[V_IDX.NAME]);
+  if (name !== '') next.name = name;
+  if (fields[V_IDX.PRINCIPAL] !== '') next.principal = linkNumber(fields[V_IDX.PRINCIPAL], next.principal);
+  if (fields[V_IDX.ANNUAL_RATE_PCT] !== '') next.annualRatePct = linkNumber(fields[V_IDX.ANNUAL_RATE_PCT], next.annualRatePct);
 
   // modeKind: any unknown value coerces to 'term' so a malformed share
   // link can never put the UI into an unexpected state.
@@ -341,10 +346,10 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
     next.modeKind = fields[V_IDX.MODE_KIND] === 'payment' ? 'payment' : 'term';
   }
 
-  if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = fields[V_IDX.TERM_MONTHS];
-  if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = fields[V_IDX.MONTHLY_PAYMENT];
-  if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = fields[V_IDX.FEE_MAJOR];
-  if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = fields[V_IDX.EXTRA_MONTHLY];
+  if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = linkNumber(fields[V_IDX.TERM_MONTHS], next.termMonths);
+  if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = linkNumber(fields[V_IDX.MONTHLY_PAYMENT], next.monthlyPayment);
+  if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = linkNumber(fields[V_IDX.FEE_MAJOR], next.feeMajor);
+  if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = linkNumber(fields[V_IDX.EXTRA_MONTHLY], next.extraMonthly);
 
   return next;
 }
@@ -416,6 +421,8 @@ export function publishableState(vendors: VendorInput[], global: GlobalState, pa
   return isPristineState(vendors, global, pageCurrency) ? '' : encodeToQueryString(vendors, global);
 }
 
+const KNOWN_CURRENCIES: ReadonlySet<string> = new Set(CURRENCIES.map((c) => c.code));
+
 export interface DecodeResult {
   vendors: VendorInput[];
   /** Kept as `string | null` for backwards compatibility with the legacy decoder. */
@@ -425,7 +432,9 @@ export interface DecodeResult {
 
 export function decodeFromQueryString(qs: string): DecodeResult {
   const params = new URLSearchParams(qs);
-  const currency = params.get('c');
+  // A currency the tools do not know is treated as no currency at all, so
+  // the page opens in its own starting one.
+  const currency = linkCurrency(params.get('c'), KNOWN_CURRENCIES, null);
 
   if ([...params.keys()].length === 0) {
     // No state in URL at all: hand back a fresh copy of the defaults so
@@ -469,7 +478,8 @@ export function decodeFromQueryString(qs: string): DecodeResult {
         // (see ADVANCED_DEFAULTS); the cast through `unknown` is needed only
         // because `VendorInput` itself isn't a `Record<string, string>`
         // (it carries the union-typed `modeKind` and `rateKind`).
-        (next as unknown as Record<string, string>)[field] = value;
+        const slot = next as unknown as Record<string, string>;
+        slot[field] = linkNumber(value, slot[field]);
       }
     }
     return next;
@@ -483,12 +493,13 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   const global: GlobalState = {
     currency: currency ?? DEFAULT_GLOBAL_STATE.currency,
     activeTab,
-    horizonMonths: params.get('h') ?? DEFAULT_GLOBAL_STATE.horizonMonths,
-    refiVendorIndex: params.get('rv') ?? DEFAULT_GLOBAL_STATE.refiVendorIndex,
-    refiAtMonth: params.get('ra') ?? DEFAULT_GLOBAL_STATE.refiAtMonth,
-    refiNewRatePct: params.get('rr') ?? DEFAULT_GLOBAL_STATE.refiNewRatePct,
-    refiNewTermMonths: params.get('rt') ?? DEFAULT_GLOBAL_STATE.refiNewTermMonths,
-    refiNewFeeMajor: params.get('rf') ?? DEFAULT_GLOBAL_STATE.refiNewFeeMajor,
+    horizonMonths: linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
+    // '0' is "no offer chosen"; otherwise one of the offers the link carries.
+    refiVendorIndex: linkWholeNumber(params.get('rv'), 0, count, DEFAULT_GLOBAL_STATE.refiVendorIndex),
+    refiAtMonth: linkNumber(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
+    refiNewRatePct: linkNumber(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
+    refiNewTermMonths: linkNumber(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
+    refiNewFeeMajor: linkNumber(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
     refiRollFee: params.get('rl') === '1',
   };
 

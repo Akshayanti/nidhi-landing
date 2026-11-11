@@ -222,7 +222,8 @@ export default function InvestOrPayOff({
   // (council, Oct 30, 2026). So the form is marked ph-no-capture, its choices
   // carry no click labels, and heatmaps, which record where a click lands and
   // ignore ph-no-capture, are paused on this page, as the learning path's
-  // helper does. Analytics.astro reads the same flag if PostHog loads later.
+  // helper does. The page sets the same flag in its head, so analytics
+  // never starts heatmaps here; this covers a page that was already running.
   useEffect(() => {
     window.nidhiHeatmapsPaused = true;
     // PostHog is called where it stands, never kept in a variable

@@ -29,6 +29,7 @@ import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolS
 import { downloadBlob, downloadWorkbook, guardText, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { netWorthSheets } from '../utils/multi-currency-net-worth/export.ts';
 import { netWorthReport } from '../utils/multi-currency-net-worth/report.ts';
+import { RatesError, httpErrorReason, ratesErrorReason, ratesRequestUrl } from '../utils/multi-currency-net-worth/rates.ts';
 import { ToolExport, ToolReport } from './ToolExport.tsx';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
@@ -76,8 +77,7 @@ function track(event: string, properties?: Record<string, unknown>) {
 
 // Frankfurter v2 blends the day's rates from central banks and other official
 // sources, which covers every currency the tools offer (v1 served only the
-// ECB's set). The request names the spending currency and nothing else.
-const FRANKFURTER_RATES = 'https://api.frankfurter.dev/v2/rates';
+// ECB's set). The request itself is built in rates.ts.
 const SUPPORTED_CODES = new Set(CURRENCIES.map((c) => c.code));
 /** How long the exchange-rate request may take before it counts as failed. */
 const RATES_TIMEOUT_MS = 15_000;
@@ -192,18 +192,21 @@ export default function MultiCurrencyNetWorth({
     setRatesLoading(true);
     setRatesError(false);
 
-    // A request that never answers ends in the error banner, not in a
-    // "loading" notice that stays up for good.
+    // Built only for a currency the tools know (rates.ts): the request
+    // names the spending currency and nothing else. A request that never
+    // answers ends in the error banner, not in a "loading" notice that
+    // stays up for good.
+    const ratesUrl = ratesRequestUrl(functionalCurrency);
     const stalled = new AbortController();
     const timer = setTimeout(() => stalled.abort(), RATES_TIMEOUT_MS);
-    fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`, { signal: stalled.signal })
+    (ratesUrl === null ? Promise.reject(new RatesError('unknown_currency')) : fetch(ratesUrl, { signal: stalled.signal }))
       .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) throw new RatesError(httpErrorReason(res.status));
         return res.json();
       })
       .then((data: unknown) => {
         if (cancelled) return;
-        if (!Array.isArray(data)) throw new Error('unexpected response');
+        if (!Array.isArray(data)) throw new RatesError('parse');
         // One row per quote; keep the tools' own currencies, plus the base
         // currency itself (rate = 1), which v2 does not list.
         const fetched: Record<string, number> = { [functionalCurrency]: 1 };
@@ -222,12 +225,10 @@ export default function MultiCurrencyNetWorth({
         // Surface fetch failures as their own event so we can measure how
         // often the upstream Frankfurter API actually fails for real users
         // (separate from the retry click, which only fires after we render
-        // the fallback banner). Property keeps to a coarse reason; we
-        // intentionally don't ship the full error message because it may
-        // contain PII (proxied URLs, etc.).
-        const reason = typeof err === 'object' && err && 'message' in err
-          ? String((err as { message: unknown }).message).slice(0, 80)
-          : 'unknown';
+        // the fallback banner). The reason is one of a fixed list
+        // (rates.ts), never the error's own message, which can hold an
+        // address or whatever a proxy wrote.
+        const reason = ratesErrorReason(err);
         track('free_multi_currency_net_worth_rates_error', {
           functionalCurrency,
           reason,

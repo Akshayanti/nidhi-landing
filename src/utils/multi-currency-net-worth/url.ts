@@ -44,7 +44,8 @@
  */
 
 import type { AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
-import { DEFAULT_CURRENCY } from '../loan/math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 
 export type ShareMode = 'full' | 'redacted';
@@ -103,6 +104,9 @@ export interface DecodeResult {
 // USD to EUR, every place this codec hard-coded 'USD' had to move to the
 // constant; otherwise EUR users would emit `f=EUR` and per-row currency
 // tags on every share, while USD users would silently drop their currency.
+/** The currencies a link may name: the tools' own list. This value is also what the exchange-rate request carries. */
+const KNOWN_CURRENCIES: ReadonlySet<string> = new Set(CURRENCIES.map((c) => c.code));
+
 function makeDefaultRow(currency: string = DEFAULT_CURRENCY): AssetRow {
   return { name: '', value: '', currency, type: 'asset' };
 }
@@ -138,9 +142,12 @@ function encodeRow(row: AssetRow): string {
 function decodeRow(packed: string): AssetRow {
   const fields = decodeTuple(packed, ROW_FIELD_COUNT);
   const row = makeDefaultRow();
-  if (fields[ROW_IDX.NAME] !== '') row.name = fields[ROW_IDX.NAME];
-  if (fields[ROW_IDX.VALUE] !== '') row.value = fields[ROW_IDX.VALUE];
-  if (fields[ROW_IDX.CURRENCY] !== '') row.currency = fields[ROW_IDX.CURRENCY].toUpperCase();
+  // A link's values are whoever wrote the link's: a name is cut to an
+  // ordinary length, a value that does not read as a number is dropped, and
+  // a currency the tools do not know becomes the default (see linkInput.ts).
+  row.name = linkName(fields[ROW_IDX.NAME]);
+  row.value = linkNumber(fields[ROW_IDX.VALUE], '');
+  if (fields[ROW_IDX.CURRENCY] !== '') row.currency = linkCurrency(fields[ROW_IDX.CURRENCY].toUpperCase(), KNOWN_CURRENCIES, row.currency);
   if (fields[ROW_IDX.TYPE] === 'liability') row.type = 'liability';
   return row;
 }
@@ -307,7 +314,7 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   if (mode === 'f') return decodeFull(params);
 
   // No mode flag → user's own state (full-data layout, editable form).
-  const functionalCurrency = params.get('f') ?? DEFAULT_CURRENCY;
+  const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
 
   if ([...params.keys()].length === 0) {
     return {
@@ -365,7 +372,7 @@ function decodeAssetRows(params: URLSearchParams): AssetRow[] {
 }
 
 function decodeFull(params: URLSearchParams): DecodeResult {
-  const functionalCurrency = params.get('f') ?? DEFAULT_CURRENCY;
+  const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const rows = decodeAssetRows(params);
   const sharedPositions = decodePositions(params);
 
@@ -373,7 +380,7 @@ function decodeFull(params: URLSearchParams): DecodeResult {
 }
 
 function decodeRedacted(params: URLSearchParams): DecodeResult {
-  const functionalCurrency = params.get('f') ?? DEFAULT_CURRENCY;
+  const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
 
   return {
@@ -390,6 +397,8 @@ function decodePositions(params: URLSearchParams): SharedPositionData[] {
   for (const [key, value] of params) {
     if (!key.startsWith('p_')) continue;
     const code = key.slice(2).toUpperCase();
+    // The code is shown on the page: only a currency the tools know.
+    if (!KNOWN_CURRENCIES.has(code)) continue;
     const pos = decodePosition(code, value);
     if (pos !== null) positions.push(pos);
   }
