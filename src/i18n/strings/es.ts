@@ -140,6 +140,10 @@ export const es: Dict = {
     feedTitle: 'nidhi: blog de finanzas personales',
     feedDescription:
       'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Mejora tu educación financiera paso a paso.',
+    guidesLinkTitle: 'nidhi | Guías Cómo hacerlo',
+    guidesFeedTitle: 'nidhi: guías Cómo hacerlo',
+    guidesFeedDescription:
+      'Guías breves que responden cada una a una pregunta de dinero de todos los días: la respuesta primero, luego qué comprobar y un enlace a la lección completa.',
   },
 
   // Page copy, one namespace per page, with the same split-around-the-link
@@ -620,7 +624,7 @@ export const es: Dict = {
       },
       freeTools: {
         before:
-          'Eventos de interacción en las páginas de herramientas gratuitas: qué moneda eliges en el comparador de préstamos, si cambias entre calcular el plazo y la cuota mensual, si abres el panel «Más opciones», si copias el enlace para compartir y si restableces el formulario. ',
+          'Eventos de interacción en las páginas de herramientas gratuitas. En el comparador de préstamos: qué moneda eliges; si cambias una entidad entre calcular el plazo y la cuota mensual, o entre una tasa fija y una que cambia; que añades o quitas una entidad (con cuántas hay y qué posición ocupa, de la A a la E, nunca su nombre); qué pestaña de resultados abres, y qué entidad eliges allí o de cuál abres los detalles; que cambiaste el horizonte o un ajuste de la refinanciación (qué ajuste, nunca su valor); que un campo quedó sin validar (cuántas entidades, qué posición y qué tipo de problema); si abres el cuadro para compartir, copias el enlace para compartir o abres una vista compartida (con cuántas entidades contiene y su fuente de campaña); y si restableces el formulario. ',
         strong: 'Los valores financieros que escribes nunca se envían',
         after:
           ': ni la cantidad del préstamo, ni la tasa de interés, ni las comisiones, ni el nombre de la entidad financiera. La razón de ser de la calculadora es que los cálculos se hacen en tu navegador.',
@@ -629,6 +633,11 @@ export const es: Dict = {
         'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
       toolExports:
         'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
+      netWorth: {
+        before:
+          'Eventos de interacción en la calculadora de patrimonio neto: qué moneda de gastos eliges; que añades o quitas una fila, o subes o descargas un archivo CSV (con el número de filas; si un archivo no pudo leerse entero, cuántas líneas fallaron y qué tipo de problema tenía la primera); que los tipos de cambio no se cargaron (con la moneda de gastos y uno de unos pocos motivos fijos) y si lo vuelves a intentar; si abres el cuadro para compartir, qué tipo de enlace copias (con cantidades o sin ellas) y si abres una vista compartida (con su tipo, cuántas monedas contiene y su fuente de campaña); y si restableces el formulario. ',
+        strong: 'Los nombres, las cantidades y los totales que escribes nunca se envían.',
+      },
       monteCarlo: {
         before:
           'Eventos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
@@ -959,6 +968,7 @@ export const es: Dict = {
     confirmPrompt: '¿Es correcta esta dirección?',
     confirmYes: 'Sí, suscribirme',
     confirmChange: 'Cambiarla',
+    noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     undo: 'Deshacer',
     dismissedPermanent: '¡Gracias por suscribirte! No volveremos a mostrar este aviso en este dispositivo.',
     dismissedLater: 'Volveremos a preguntar más adelante.',
@@ -987,6 +997,7 @@ export const es: Dict = {
     confirmPrompt: '¿Es correcta esta dirección?',
     confirmYes: 'Sí, avísame',
     confirmChange: 'Cambiarla',
+    noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     sending: 'Enviando…',
     notConfigured: 'Las inscripciones aún no están configuradas. Vuelve pronto.',
     error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',

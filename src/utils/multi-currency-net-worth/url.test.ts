@@ -584,3 +584,33 @@ describe('page starting currency and the language switch', () => {
     assert.ok(decodeFromQueryString(eur).rows.every((r) => r.currency === 'EUR'));
   });
 });
+
+describe('a hostile link', () => {
+  it('a spending currency the tools do not know becomes the default', () => {
+    for (const f of ['ZZZ', 'usd', '%3Cb%3Ex%3C%2Fb%3E', 'EUR%26base%3DUSD%23', 'E'.repeat(3000)]) {
+      for (const qs of [`f=${f}&a1=Cash~10`, `m=f&f=${f}&a1=Cash~10&p_USD=50~low~5`, `m=r&f=${f}&p_USD=50~low`]) {
+        assert.equal(decodeFromQueryString(qs).functionalCurrency, 'EUR', qs.slice(0, 30));
+      }
+    }
+    assert.equal(decodeFromQueryString('f=INR&a1=Cash~10').functionalCurrency, 'INR');
+  });
+
+  it('a row’s currency the tools do not know becomes the default', () => {
+    assert.equal(decodeFromQueryString('a1=Cash~10~%3Cb%3E').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('a1=Cash~10~ZZZ').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
+  });
+
+  it('a name is cut at the stated length, and a value that is not a number is dropped', () => {
+    const row = decodeFromQueryString(`a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
+    assert.equal(row.name.length, 80);
+    assert.equal(row.value, '');
+    assert.equal(row.currency, 'USD');
+    assert.equal(decodeFromQueryString('a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
+  });
+
+  it('a shared position names a currency the tools know, or is left out', () => {
+    const { sharedPositions } = decodeFromQueryString('m=r&f=EUR&p_USD=60~low&p_%3Cb%3E=30~low&p_ZZZ=10~low');
+    assert.deepEqual((sharedPositions ?? []).map((p) => p.code), ['USD']);
+  });
+});

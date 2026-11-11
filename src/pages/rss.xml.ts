@@ -13,7 +13,10 @@ export async function GET(context: APIContext) {
   const now = new Date();
   const posts = (await getCollection('blog'))
     .filter(post => post.data.pubDate <= now)
-    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+    // Newest first, as feed readers expect: several take only the first
+    // few items, or treat the first as the latest. (The reading order is
+    // the learning path's business, not the feed's.)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime() || (b.data.order ?? 99) - (a.data.order ?? 99));
   const { rss: feed } = dict(DEFAULT_LOCALE);
 
   return rss({
@@ -27,6 +30,9 @@ export async function GET(context: APIContext) {
       link: `/blog/${post.data.slug}/`,
       categories: post.data.tags,
     })),
-    customData: `<language>en</language>\n    <lastBuildDate>${now.toUTCString()}</lastBuildDate>`,
+    // The feed names its own address, as the Atom link the RSS best
+    // practices ask for.
+    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
+    customData: `<language>en</language>\n    <lastBuildDate>${now.toUTCString()}</lastBuildDate>\n    <atom:link href="${new URL('rss.xml', context.site!).href}" rel="self" type="application/rss+xml"/>`,
   });
 }

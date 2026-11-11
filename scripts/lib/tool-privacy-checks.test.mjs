@@ -8,8 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks,
-} from './tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
@@ -360,5 +359,34 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     assert.match(script, /elementsChainAsString: true/);
     assert.match(script, /autocapture_opt_out: false/);
     assert.match(script, /await page\.goto\('about:blank'\)/);
+  });
+});
+
+describe('a run that only missed a step', () => {
+  const missed = 'the tool never sent free_loan_comparison_reset: that step was not done, so what it sends was not checked';
+
+  it('is one whose every problem is a step not done', () => {
+    assert.equal(isMissedStepOnly([missed]), true);
+    assert.equal(isMissedStepOnly([missed, missed.replace('reset', 'share_copied')]), true);
+  });
+
+  it('is never a run with anything else wrong, and never a clean run', () => {
+    assert.equal(isMissedStepOnly([]), false);
+    for (const other of [
+      'a request to /i/v0/e/ carries what was typed: 7131719',
+      'an element in $autocapture carries an attribute other than data-attr and its position: aria-label',
+      'consent was given but no $rageclick or $dead_click was seen while the tool was used: those events were not checked',
+      'no .xlsx file was saved: that export did not run',
+    ]) {
+      assert.equal(isMissedStepOnly([other]), false, other);
+      assert.equal(isMissedStepOnly([missed, other]), false, 'a missed step beside a real problem is a failed run');
+    }
+  });
+
+  it('matches the sentence checkRun writes for a missing step', () => {
+    const result = checkRun({ decoded: [], events: [], consent: 'declined', headless: true, origin: 'http://127.0.0.1:1', parts: ['use'], ownEvents: /^free_x_/, mustSend: ['reset'], sharedView: null, planted: false });
+    const steps = result.problems.filter((p) => p.includes('that step was not done'));
+    assert.ok(steps.length > 0, result.problems.join(' | '));
+    assert.equal(isMissedStepOnly(steps), true);
   });
 });

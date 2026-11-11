@@ -143,7 +143,7 @@ jobs:
             echo "✓ Newsletter pipeline is fully configured."
           else
             echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "::error title=Newsletter pipeline will be skipped::One or more required secrets are missing. All subsequent steps (send, commit marker, scan bounces, notify) will be skipped. Fix by adding the secrets flagged above."
+            echo "::error title=Newsletter pipeline will be skipped::One or more required secrets are missing. The send, the marker and the bounce scan are skipped; the alert issue is opened and the run fails. Fix by adding the secrets flagged above."
           fi
 
       - name: Load newsletter marker
@@ -245,10 +245,34 @@ jobs:
           echo "Scanning bounces…"
           RESP=$(curl -sSL --max-time 120 "$URL" || true)
           echo "Response: $RESP"
-          # Best-effort parse; don't fail the run if Apps Script is flaky,
-          # just surface a warning. Next run will try again.
-          if ! echo "$RESP" | grep -q '"ok":true'; then
-            echo "::warning::bounce scan did not return ok=true"
+          # The step itself never fails, so the steps after it always run;
+          # it says how it went in `ok`, and the alert and the last step
+          # read that. The next run tries again.
+          if echo "$RESP" | grep -q '"ok":true'; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Bounce scan failed::The bounce scan did not answer ok=true."
+          fi
+        continue-on-error: true
+
+      - name: Check the script's health
+        # The script's own check of its settings, sheet and sending
+        # account, once a day with the send. The answer is public and
+        # says only ok or not; the reasons are in the script's log.
+        id: health
+        if: always() && steps.preflight.outputs.configured == 'true'
+        run: |
+          set -euo pipefail
+          SEP='?'
+          case "$NEWSLETTER_ENDPOINT" in *\?*) SEP='&' ;; esac
+          RESP=$(curl -sSL --max-time 60 "${NEWSLETTER_ENDPOINT}${SEP}action=health" || true)
+          echo "Response: $RESP"
+          if echo "$RESP" | grep -q '^{"ok":true'; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Health check failed::The newsletter script's health check did not answer ok=true."
           fi
         continue-on-error: true
 
@@ -260,12 +284,18 @@ jobs:
         # no longer reflects newsletter health — the issue is the primary
         # push-based alert.
         #
-        # Skip when the step was skipped (missing secrets in a fresh
-        # setup) — no work was attempted, nothing to alert on.
+        # A run that could not start (a missing secret), a bounce scan or
+        # a health check that did not answer ok, all alert too: each used
+        # to leave a green run and no message.
+        id: notify
         if: >-
           always() &&
-          steps.newsletter.outcome != 'skipped' &&
           (
+            steps.preflight.outputs.configured != 'true' ||
+            steps.bounce_scan.outputs.ok == 'false' ||
+            steps.bounce_scan.outcome == 'failure' ||
+            steps.health.outputs.ok == 'false' ||
+            steps.health.outcome == 'failure' ||
             steps.newsletter.outcome == 'failure' ||
             steps.marker.outcome == 'failure' ||
             steps.newsletter.outputs.any_failed == '1' ||
@@ -277,6 +307,9 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           OUTCOME: ${{ steps.newsletter.outcome }}
           MARKER_OUTCOME: ${{ steps.marker.outcome }}
+          CONFIGURED: ${{ steps.preflight.outputs.configured }}
+          SCAN_OK: ${{ steps.bounce_scan.outputs.ok }}
+          HEALTH_OK: ${{ steps.health.outputs.ok }}
           ANY_FAILED: ${{ steps.newsletter.outputs.any_failed }}
           TOTAL_SENT: ${{ steps.newsletter.outputs.total_sent }}
           TOTAL_FAILED: ${{ steps.newsletter.outputs.total_failed }}
@@ -296,7 +329,10 @@ jobs:
 
           | | |
           |---|---|
+          | Secrets configured | \`${CONFIGURED:-false}\` |
           | Step outcome | \`$OUTCOME\` |
+          | Bounce scan ok | \`${SCAN_OK:-not run}\` |
+          | Health check ok | \`${HEALTH_OK:-not run}\` |
           | Marker push | \`${MARKER_OUTCOME:-?}\` |
           | Posts attempted | \`${POSTS_ATTEMPTED:-?}\` |
           | Total sent | \`${TOTAL_SENT:-?}\` |
@@ -309,6 +345,7 @@ jobs:
           - Health check: \`curl -sL "\$PUBLIC_NEWSLETTER_ENDPOINT?action=health" | jq\`
 
           **What to check first**
+          0. If \`Secrets configured\` is not \`true\`, nothing was sent: the preflight step's log names the missing secret. If the bounce scan or the health check is \`false\`, read that step's log, then the script's executions.
           1. If \`outcome\` is anything but \`success\`, read the step log.
           2. If \`total_partial > 0\`, the next run should resume automatically — the guid was NOT written to .last-sent-guid.txt. Just re-run this workflow from the Actions tab.
           3. If \`total_failed > 0\` but \`total_sent > 0\`, inspect PostHog for \`blog_newsletter_send_failed\` events (grouped by email_domain).
@@ -330,3 +367,12 @@ jobs:
                 gh issue create --title "$TITLE" --label newsletter-alert --body "$BODY"
               }
           fi
+
+      - name: Fail the run when anything went wrong
+        # Every step above carries on after a failure so the later ones
+        # still run. This one turns the run red, so the Actions list
+        # shows the day's truth as well as the issue does.
+        if: always() && steps.notify.outcome != 'skipped'
+        run: |
+          echo "::error::The newsletter run had a problem; see the newsletter-alert issue and the steps above."
+          exit 1

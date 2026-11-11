@@ -137,6 +137,10 @@ export const cs: Dict = {
     feedTitle: 'nidhi: blog o osobních financích',
     feedDescription:
       'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem.',
+    guidesLinkTitle: 'nidhi | Návody Jak na to',
+    guidesFeedTitle: 'nidhi: návody Jak na to',
+    guidesFeedDescription:
+      'Krátké návody, z nichž každý odpovídá na jednu běžnou otázku o penězích: nejdřív odpověď, pak co si ověřit a odkaz na celou lekci.',
   },
 
   about: {
@@ -586,7 +590,7 @@ export const cs: Dict = {
       },
       freeTools: {
         before:
-          'Události interakce na stránkách nástrojů zdarma: kterou měnu zvolíte v kalkulačce pro srovnání úvěrů, zda přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky, zda otevřete panel „Další možnosti“, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u poskytovatele přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že jste přidali nebo odebrali poskytovatele (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy jeho název); kterou záložku výsledků otevřete a kterého poskytovatele tam zvolíte nebo u kterého otevřete podrobnosti; že jste změnili časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika poskytovatelů, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik poskytovatelů obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Finanční hodnoty, které zadáte, se nikdy neposílají',
         after:
           ': ani výše úvěru, ani úroková sazba, ani poplatky, ani název poskytovatele. Celý smysl kalkulačky je v tom, že se výpočet provádí ve vašem prohlížeči.',
@@ -595,6 +599,11 @@ export const cs: Dict = {
         'U žádného nástroje zdarma adresa stránky nenese to, co zadáte, takže to nemůže nést ani adresa URL, kterou zaznamenává webová analytika. Nástroje vaše údaje při používání do adresy nezapisují. Odkaz ke sdílení je nese za znakem #, v části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je z adresního řádku přesune dřív, než se spustí webová analytika. Jako pojistka skript webové analytiky před odesláním jakékoli události odstraní z adresy každého nástroje zdarma vše kromě parametrů kampaní (utm_source a podobně).',
       toolExports:
         'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, kterou z nich jste použili.',
+      netWorth: {
+        before:
+          'Události interakce v kalkulačce čistého jmění: kterou měnu výdajů zvolíte; že jste přidali nebo odebrali řádek nebo nahráli či stáhli soubor CSV (s počtem řádků; u souboru, který se nepodařilo přečíst celý, kolik řádků selhalo a jaký druh problému měl první z nich); že se nepodařilo načíst kurzy (s měnou výdajů a jedním z několika pevných důvodů) a zda to zkusíte znovu; zda otevřete dialog pro sdílení, jaký druh odkazu zkopírujete (s částkami, nebo bez nich) a zda otevřete sdílené zobrazení (s jeho druhem, počtem měn, které obsahuje, a zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+        strong: 'Názvy, částky a součty, které zadáte, se nikdy neposílají.',
+      },
       monteCarlo: {
         before:
           'Události interakce v simulátoru Monte Carlo: kterou měnu zvolíte, jaký předpoklad výnosu a počet simulovaných trajektorií vyberete, zda zapnete nebo vypnete výběry, zda otevřete tabulku výsledků, zda zkopírujete odkaz ke sdílení a zda formulář vrátíte do výchozího stavu. ',
@@ -922,6 +931,7 @@ export const cs: Dict = {
     confirmPrompt: 'Je tato adresa správná?',
     confirmYes: 'Ano, odebírat',
     confirmChange: 'Změnit',
+    noScript: 'K přihlášení je potřeba JavaScript, který je v tomto prohlížeči vypnutý nebo blokovaný. Můžete také napsat na hello@nidhi.today.',
     undo: 'Vrátit zpět',
     dismissedPermanent: 'Děkujeme za odběr! Na tomto zařízení už tento banner neukážeme.',
     dismissedLater: 'Vrátíme se k tomu později.',
@@ -949,6 +959,7 @@ export const cs: Dict = {
     confirmPrompt: 'Je tato adresa správná?',
     confirmYes: 'Ano, dejte mi vědět',
     confirmChange: 'Změnit',
+    noScript: 'K přihlášení je potřeba JavaScript, který je v tomto prohlížeči vypnutý nebo blokovaný. Můžete také napsat na hello@nidhi.today.',
     sending: 'Odesílání…',
     notConfigured: 'Zápis zatím není nastavený. Zkuste to brzy znovu.',
     error: 'Něco se pokazilo. Zkuste to prosím za chvíli znovu.',

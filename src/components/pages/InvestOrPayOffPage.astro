@@ -160,6 +160,11 @@ const faqSchema = {
   toolStateGlobal={SHARED_STATE_GLOBAL}
 >
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
+  {/* Heatmaps record where a click lands, which on this form would say what
+      was picked. They are paused here, in the head, so that analytics (at
+      the end of the body) never starts them on this page: the tool's own
+      effect runs only once the page is interactive, which can be later. */}
+  <script is:inline slot="head">window.nidhiHeatmapsPaused = true;</script>
   <section class="iopp-page">
     <nav class="iopp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>

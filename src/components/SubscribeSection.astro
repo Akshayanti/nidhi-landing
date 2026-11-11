@@ -61,8 +61,13 @@ const inputId = `subscribe-email-${variant}`;
         <form
           id={formId}
           class="subscribe-form"
+          method="post"
           data-endpoint={endpoint}
         >
+          {/* Without its script the form cannot subscribe anyone. method="post"
+              keeps the browser from writing the email into the page address (a
+              form's default is GET), and this line says what is going on. */}
+          <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
           <div class="subscribe-input-group">
             <label class="sr-only" for={inputId}>{t.emailLabel}</label>
             <input
@@ -136,6 +141,7 @@ const inputId = `subscribe-email-${variant}`;
           <form
             id={formId}
             class="subscribe-form subscribe-form--compact"
+            method="post"
             data-endpoint={endpoint}
           >
             <label class="sr-only" for={inputId}>{t.emailLabel}</label>
@@ -151,6 +157,7 @@ const inputId = `subscribe-email-${variant}`;
             <button type="submit" class="subscribe-button">{t.button}</button>
           </form>
         </div>
+        <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
         {/* Shown before anything is sent, so a typo can be caught. */}
         <div class="subscribe-confirm" data-confirm hidden>
           <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>

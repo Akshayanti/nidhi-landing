@@ -84,7 +84,7 @@ All events prefixed `free_loan_comparison_`. Uses a `track()` wrapper (top of th
 | `free_loan_comparison_details_toggled` | `vendor: string` — slot label | User expands a result details `<details>` |
 | `free_loan_comparison_tab_changed` | `tab: string` — analysis tab id<br>`via: "click" \| "keyboard"` | User switches analysis tab |
 | `free_loan_comparison_split_vendor_changed` | `vendor: string` — slot label of selected vendor | User picks a vendor in the split-comparison view |
-| `free_loan_comparison_horizon_changed` | `months: number` — selected horizon in months | User changes the time horizon slider (debounced 600ms) |
+| `free_loan_comparison_horizon_changed` | none (the chosen number of months is not sent) | User changes the time horizon slider (debounced 600ms) |
 | `free_loan_comparison_refi_changed` | `field: string` — changed input field name | User changes a refinance input (debounced 600ms) |
 
 ### Multi-Currency Net Worth tool — `src/components/MultiCurrencyNetWorth.tsx`
@@ -94,7 +94,7 @@ All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wr
 | Event | Properties | Trigger |
 |---|---|---|
 | `free_multi_currency_net_worth_shared_view_opened` | `mode: string` — share mode from URL<br>`positions: number` — shared position count<br>`utm_source: string \| null` | Page opened from a share link carrying tool state (after the #, or an older ?-style link), read via ToolStateGuard |
-| `free_multi_currency_net_worth_rates_error` | `functionalCurrency: string`<br>`reason: string` — first 80 chars of error | Exchange rate API fetch fails |
+| `free_multi_currency_net_worth_rates_error` | `functionalCurrency: string`<br>`reason`: one of `network`, `http_4xx`, `http_5xx`, `http_other`, `parse`, `unknown_currency`, `other` (never the error's own text) | Exchange rate API fetch fails |
 | `free_multi_currency_net_worth_asset_added` | `count: number` — new total after add | User clicks "Add asset" |
 | `free_multi_currency_net_worth_asset_removed` | `count: number` — new total after remove | User removes an asset row |
 | `free_multi_currency_net_worth_csv_parse_errors` | `errorCount: number`<br>`validRowCount: number`<br>`firstReason: string` | CSV upload has parse errors |
@@ -147,7 +147,7 @@ Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_` in e
 | `blog_subscribe_pending` | hashed email | `source: string` — page path from subscribe form | New subscriber, confirmation email sent |
 | `blog_subscribe_confirmed` | hashed email | — | User clicks email confirmation link; welcome email sent |
 | `blog_subscribe_duplicate` | hashed email | `source: string` | Already-confirmed email tries to re-subscribe |
-| `blog_welcome_failed` | hashed email | `email_domain: string`<br>`error: string` — first 300 chars | Welcome email send fails |
+| `blog_welcome_failed` | hashed email | `email_domain: string`<br>`reason`: one of `quota`, `rate_limited`, `invalid_recipient`, `auth`, `unavailable`, `other` (never the mail service's own text) | Welcome email send fails |
 | `blog_unsubscribe` | hashed email | `method: string` — unsubscribe trigger | User unsubscribes (email link or manual) |
 | `blog_pending_reminded` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 3 days gets a reminder email |
 | `blog_pending_expired` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 7 days is removed from the sheet |
@@ -166,7 +166,7 @@ These use `cfg.fromEmail` as the `distinct_id` (operational events, not tied to 
 | Event | distinct_id | Properties | Trigger |
 |---|---|---|---|
 | `blog_newsletter_sent` | `cfg.fromEmail` | `guid: string` — post GUID<br>`sent: number` — successful sends<br>`failed: number` — failed sends<br>`skipped_already_sent: number` — recipients skipped because an earlier, interrupted run of the same send already reached them<br>`url: string` — the lesson the newsletter links to | Newsletter batch send completes |
-| `blog_newsletter_send_failed` | `cfg.fromEmail` | `guid: string` — post GUID<br>`email_domain: string` — recipient domain<br>`error: string` — first 300 chars | Individual send fails (also for missing `unsub_token`) |
+| `blog_newsletter_send_failed` | `cfg.fromEmail` | `guid: string` — post GUID<br>`email_domain: string` — recipient domain<br>`reason`: `missing_unsub_token`, or one of `quota`, `rate_limited`, `invalid_recipient`, `auth`, `unavailable`, `other` (never the mail service's own text) | Individual send fails (also for missing `unsub_token`) |
 | `blog_newsletter_quota_warning` | `cfg.fromEmail` | `subscriber_count: number`<br>`cap: number` — daily Workspace recipient cap | Confirmed subscriber count crosses 80% of daily cap |
 
 ---

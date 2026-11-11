@@ -214,3 +214,30 @@ describe('canonicalNumber and displayNumber: the input box and plain-number stat
     }
   });
 });
+
+describe('a decimal below one is never read as a grouped whole number (issue 338)', () => {
+  it('reads "0.125" and "0,125" as one eighth on every page', () => {
+    for (const locale of ['en', 'en-IN', 'es', 'cs']) {
+      assert.equal(parseLocaleNumber('0.125', locale), 0.125, locale);
+      assert.equal(parseLocaleNumber('0,125', locale), 0.125, locale);
+      assert.equal(parseLocaleNumber('0.500', locale), 0.5, locale);
+      assert.equal(parseLocaleNumber('0,500', locale), 0.5, locale);
+      assert.equal(parseLocaleNumber('0.005', locale), 0.005, locale);
+    }
+  });
+
+  it('a group cannot start with a zero, so such text is a decimal or nothing', () => {
+    assert.equal(parseLocaleNumber('012,345', 'en'), null);
+    assert.equal(parseLocaleNumber('0,12,345', 'en-IN'), null);
+    assert.equal(parseLocaleNumber('0.125.000', 'es'), null);
+  });
+
+  it('real grouped numbers are read as before', () => {
+    assert.equal(parseLocaleNumber('1,125', 'en'), 1125);
+    assert.equal(parseLocaleNumber('1.125', 'es'), 1125);
+    assert.equal(parseLocaleNumber('10,00,000', 'en-IN'), 1000000);
+    assert.equal(parseLocaleNumber('100.000', 'es'), 100000);
+    assert.equal(parseLocaleNumber('1.125', 'en'), 1.125);
+    assert.equal(parseLocaleNumber('1,125', 'es'), 1.125);
+  });
+});

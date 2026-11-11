@@ -40,8 +40,113 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-11',
+    items: [
+      {
+        id: 'forms-without-javascript',
+        text: {
+          en: 'If JavaScript is off or blocked in your browser, the waitlist and newsletter forms now say that signing up needs it and give an address to write to. Pressing the button used to reload the page with your email in the address and sign nobody up; the email is no longer put there.',
+          hi: 'अगर आपके ब्राउज़र में JavaScript बंद या ब्लॉक है, तो वेटलिस्ट और न्यूज़लेटर के फ़ॉर्म अब बताते हैं कि साइन अप के लिए वह ज़रूरी है, और लिखने के लिए एक पता देते हैं। पहले बटन दबाने पर पेज दोबारा खुलता था, आपका ईमेल पेज के पते में आ जाता था और साइन अप नहीं होता था; अब ईमेल वहाँ नहीं जाता।',
+          es: 'Si JavaScript está desactivado o bloqueado en tu navegador, los formularios de la lista de espera y del boletín dicen ahora que hace falta para apuntarse y dan una dirección a la que escribir. Antes, al pulsar el botón la página se recargaba con tu correo en la dirección y nadie quedaba apuntado; el correo ya no se pone ahí.',
+          cs: 'Pokud je ve vašem prohlížeči JavaScript vypnutý nebo blokovaný, formuláře pro čekací listinu a\u00a0newsletter teď říkají, že je k\u00a0přihlášení potřeba, a\u00a0uvádějí adresu, na kterou lze napsat. Dříve se po stisku tlačítka stránka načetla znovu s\u00a0vaším e-mailem v\u00a0adrese a\u00a0nikdo přihlášen nebyl; e-mail se tam už nedostane.',
+          mr: 'तुमच्या ब्राउझरमध्ये JavaScript बंद किंवा ब्लॉक असेल, तर प्रतीक्षा यादी आणि न्यूजलेटरचे फॉर्म आता सांगतात की नोंदणीसाठी ते आवश्यक आहे, आणि लिहिण्यासाठी एक पत्ता देतात. आधी बटण दाबल्यावर पान पुन्हा उघडायचे, तुमचा ईमेल पानाच्या पत्त्यात यायचा आणि नोंदणी होत नसे; आता ईमेल तिथे जात नाही.',
+        },
+      },
+      {
+        id: 'how-to-feed',
+        text: {
+          en: 'The how-to guides now have a feed of their own, at nidhi.today/how-to/rss.xml, for anyone who follows the site in a feed reader. The lesson feed also lists the newest lesson first now; it used to start with the oldest.',
+          hi: 'कैसे करें गाइडों की अब अपनी फ़ीड है, nidhi.today/how-to/rss.xml पर, उन लोगों के लिए जो साइट को फ़ीड रीडर में पढ़ते हैं। पाठों की फ़ीड में भी अब सबसे नया पाठ सबसे ऊपर रहता है; पहले वह सबसे पुराने पाठ से शुरू होती थी।',
+          es: 'Las guías Cómo hacerlo tienen ahora su propio canal, en nidhi.today/how-to/rss.xml, para quien sigue el sitio con un lector de feeds. El canal de las lecciones también muestra ahora primero la lección más reciente; antes empezaba por la más antigua.',
+          cs: 'Návody Jak na to teď mají vlastní kanál na adrese nidhi.today/how-to/rss.xml, pro ty, kdo web sledují ve čtečce. I\u00a0kanál lekcí teď uvádí nejnovější lekci jako první; dříve začínal tou nejstarší.',
+          mr: '‘कसे करायचे’ मार्गदर्शिकांची आता स्वतंत्र फीड आहे, nidhi.today/how-to/rss.xml येथे, जे लोक साइट फीड रीडरमध्ये वाचतात त्यांच्यासाठी. धड्यांच्या फीडमध्येही आता सर्वात नवा धडा सर्वात आधी येतो; आधी ती सर्वात जुन्या धड्याने सुरू व्हायची.',
+        },
+      },
+      {
+        id: 'planner-lines-and-log-dates',
+        text: {
+          en: 'Two corrections to what the site says about itself. The Monte Carlo and invest or pay off pages said the planner already runs these calculations on your whole picture; the planner is still being built, and the lines now say what it is being built to do. And the privacy changelog had three entries dated a day off and no entry for the How-to section; the dates are corrected and the section is recorded.',
+          hi: 'साइट अपने बारे में जो कहती है, उसमें दो सुधार हुए हैं। मोंटे कार्लो और निवेश या कर्ज़ चुकाना वाले पेज कहते थे कि प्लानर आपकी पूरी तस्वीर पर ये हिसाब पहले से करता है; प्लानर अभी बन रहा है, और अब वे पंक्तियाँ बताती हैं कि वह किस काम के लिए बनाया जा रहा है। और प्राइवेसी चेंजलॉग की तीन एंट्री की तारीख एक दिन आगे-पीछे थी और कैसे करें सेक्शन की कोई एंट्री नहीं थी; तारीखें ठीक कर दी गई हैं और सेक्शन दर्ज हो गया है।',
+          es: 'Dos correcciones en lo que el sitio dice de sí mismo. Las páginas del simulador Monte Carlo y de Invertir o pagar deuda decían que el planificador ya hace estos cálculos con tu situación completa; el planificador todavía se está construyendo, y ahora esas líneas dicen para qué se está construyendo. Y el registro de cambios de privacidad tenía tres entradas con un día de diferencia y ninguna para la sección Cómo hacerlo; las fechas están corregidas y la sección queda registrada.',
+          cs: 'Dvě opravy toho, co web říká sám o\u00a0sobě. Stránky simulátoru Monte Carlo a\u00a0nástroje Investovat, nebo splatit dluh tvrdily, že plánovač tyto výpočty už dělá pro celou vaši finanční situaci; plánovač teprve vzniká a\u00a0ty řádky teď říkají, k\u00a0čemu vzniká. A\u00a0přehled změn v\u00a0zásadách ochrany soukromí měl tři záznamy s\u00a0datem posunutým o\u00a0den a\u00a0žádný záznam pro sekci Jak na to; data jsou opravená a\u00a0sekce je zaznamenaná.',
+          mr: 'साइट स्वतःबद्दल जे सांगते त्यात दोन दुरुस्त्या झाल्या आहेत. मॉन्टे कार्लो आणि गुंतवणूक की कर्जफेड या पानांवर लिहिले होते की प्लॅनर तुमच्या संपूर्ण चित्रावर हे हिशेब आधीच करतो; प्लॅनर अजून बनवला जात आहे, आणि आता त्या ओळी तो कशासाठी बनवला जात आहे ते सांगतात. आणि गोपनीयता बदलांच्या नोंदीत तीन नोंदींची तारीख एका दिवसाने चुकली होती आणि ‘कसे करायचे’ विभागाची नोंदच नव्हती; तारखा दुरुस्त केल्या आहेत आणि विभाग नोंदवला आहे.',
+        },
+      },
+      {
+        id: 'loan-link-cleared-boxes',
+        text: {
+          en: 'A loan comparison you share now arrives as you left it. If you emptied a box, such as an offer’s fee, the link used to put the starting figure back, so the person opening it saw a different comparison; the same happened to your own screen when you switched language. An emptied box now stays empty.',
+          hi: 'आपकी शेयर की हुई लोन तुलना अब वैसी ही पहुँचती है जैसी आपने छोड़ी थी। अगर आपने कोई बॉक्स खाली किया था, जैसे किसी ऑफ़र का शुल्क, तो लिंक पहले शुरुआती आँकड़ा वापस रख देता था, और लिंक खोलने वाले को अलग तुलना दिखती थी; भाषा बदलने पर आपकी अपनी स्क्रीन पर भी यही होता था। खाली किया हुआ बॉक्स अब खाली ही रहता है।',
+          es: 'Una comparación de préstamos que compartes llega ahora tal como la dejaste. Si habías vaciado una casilla, como la comisión de una oferta, el enlace volvía a poner la cifra inicial, y quien lo abría veía otra comparación; lo mismo pasaba en tu propia pantalla al cambiar de idioma. Una casilla vaciada ahora se queda vacía.',
+          cs: 'Srovnání úvěrů, které sdílíte, teď dorazí tak, jak jste ho nechali. Když jste nějaké pole vymazali, například poplatek u\u00a0nabídky, odkaz do něj dříve vrátil výchozí hodnotu, takže ten, kdo ho otevřel, viděl jiné srovnání; totéž se stalo na vaší obrazovce při přepnutí jazyka. Vymazané pole teď zůstane prázdné.',
+          mr: 'तुम्ही शेअर केलेली कर्जांची तुलना आता तुम्ही ठेवली होती तशीच पोहोचते. तुम्ही एखादी चौकट रिकामी केली असेल, उदा. एखाद्या ऑफरचे शुल्क, तर लिंक आधी सुरुवातीचा आकडा परत भरायची, आणि लिंक उघडणाऱ्याला वेगळी तुलना दिसायची; भाषा बदलल्यावर तुमच्या स्वतःच्या स्क्रीनवरही तेच व्हायचे. रिकामी केलेली चौकट आता रिकामीच राहते.',
+        },
+      },
+      {
+        id: 'tools-send-less',
+        text: {
+          en: 'The free tools now send a little less. The loan comparison no longer reports how many months you chose for the time horizon, only that you changed it, and when exchange rates fail to load, the net worth calculator reports one of a few fixed reasons instead of the browser’s own error text. A link someone shares with you can now only set a currency the tools offer, a number, or a name of ordinary length. The privacy notice now lists every event the loan comparison and the net worth calculator send. And when a lesson email cannot be sent, the record of that now holds one of a few fixed reasons instead of the mail service’s own message, which could quote an address.',
+          hi: 'मुफ़्त टूल अब थोड़ी कम जानकारी भेजते हैं। लोन तुलना अब यह नहीं बताती कि समय-सीमा के लिए कितने महीने चुने गए, सिर्फ़ यह कि उसे बदला गया। विनिमय दरें लोड न हो पाएँ, तो शुद्ध संपत्ति कैलकुलेटर ब्राउज़र के अपने एरर संदेश की जगह कुछ तय कारणों में से एक बताता है। किसी के भेजे लिंक से अब सिर्फ़ वही मुद्रा चुनी जा सकती है जो टूल में मौजूद है, और उसमें सिर्फ़ संख्या या सामान्य लंबाई का नाम आ सकता है। प्राइवेसी नोटिस में अब लोन तुलना और शुद्ध संपत्ति कैलकुलेटर की भेजी हर घटना की सूची है। और जब पाठ का ईमेल भेजा नहीं जा पाता, तो उसके रिकॉर्ड में अब मेल सेवा के अपने संदेश की जगह कुछ तय कारणों में से एक रहता है; उस संदेश में ईमेल पता आ सकता था।',
+          es: 'Las herramientas gratuitas envían ahora un poco menos. El comparador de préstamos ya no informa de cuántos meses elegiste como horizonte, solo de que lo cambiaste, y cuando los tipos de cambio no se cargan, la calculadora de patrimonio neto informa de uno de unos pocos motivos fijos en lugar del texto de error del navegador. Un enlace que alguien comparta contigo solo puede fijar una moneda que las herramientas ofrecen, un número o un nombre de longitud normal. El aviso de privacidad enumera ahora todos los eventos que envían el comparador de préstamos y la calculadora de patrimonio neto. Y cuando un correo con una lección no puede enviarse, el registro de ese fallo guarda ahora uno de unos pocos motivos fijos en lugar del mensaje del servicio de correo, que podía citar una dirección.',
+          cs: 'Bezplatné nástroje teď odesílají o\u00a0něco méně. Srovnání úvěrů už nehlásí, kolik měsíců jste zvolili jako časový horizont, jen to, že jste ho změnili. Když se nepodaří načíst kurzy, kalkulačka čistého jmění hlásí jeden z\u00a0několika pevných důvodů místo chybového textu prohlížeče. Odkaz, který vám někdo pošle, může nastavit jen měnu, kterou nástroje nabízejí, číslo nebo název běžné délky. Zásady ochrany soukromí teď vyjmenovávají všechny události, které srovnání úvěrů a\u00a0kalkulačka čistého jmění odesílají. A\u00a0když se e-mail s\u00a0lekcí nepodaří odeslat, záznam o\u00a0tom teď obsahuje jeden z\u00a0několika pevných důvodů místo vlastní zprávy poštovní služby, která mohla citovat adresu.',
+          mr: 'मोफत साधने आता थोडी कमी माहिती पाठवतात. कर्जांची तुलना आता कालावधीसाठी किती महिने निवडले ते कळवत नाही, फक्त तो बदलला एवढेच. विनिमय दर लोड झाले नाहीत, तर निव्वळ संपत्ती कॅल्क्युलेटर ब्राउझरच्या स्वतःच्या एरर संदेशाऐवजी काही ठरावीक कारणांपैकी एक कळवतो. कोणी पाठवलेल्या लिंकमधून आता फक्त साधनांत उपलब्ध असलेले चलन, संख्या किंवा नेहमीच्या लांबीचे नाव येऊ शकते. गोपनीयता सूचनेत आता कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर पाठवत असलेल्या प्रत्येक घटनेची यादी आहे. आणि धड्याचा ईमेल पाठवता आला नाही, तर त्याच्या नोंदीत आता मेल सेवेच्या स्वतःच्या संदेशाऐवजी काही ठरावीक कारणांपैकी एक राहते; त्या संदेशात ईमेल पत्ता येऊ शकत होता.',
+        },
+      },
+      {
+        id: 'loan-points-row',
+        text: {
+          en: 'In the loan comparison, the line about discount points now tells a saving from a loss. When a loan ends before the points have paid for themselves it says how much more they cost, where it used to print that amount as a saving. And for a loan entered by its monthly payment, where points shorten the loan and do not lower the payment, it now gives the month they pay for themselves, not “never”.',
+          hi: 'लोन की तुलना में डिस्काउंट पॉइंट्स वाली पंक्ति अब बचत और नुकसान में फ़र्क बताती है। जब लोन पॉइंट्स की लागत निकलने से पहले खत्म हो जाता है, तो वह बताती है कि वे कितने ज़्यादा महँगे पड़े; पहले वही रकम बचत के रूप में दिखती थी। और मासिक किस्त से भरे गए लोन में, जहाँ पॉइंट्स किस्त नहीं घटाते बल्कि लोन छोटा करते हैं, अब वह महीना दिखता है जब उनकी लागत निकल जाती है, “कभी नहीं” की जगह।',
+          es: 'En el comparador de préstamos, la línea sobre los puntos de descuento distingue ahora un ahorro de una pérdida. Cuando el préstamo termina antes de que los puntos se recuperen, dice cuánto más cuestan; antes mostraba esa cantidad como un ahorro. Y en un préstamo introducido por su cuota mensual, donde los puntos acortan el préstamo y no bajan la cuota, ahora da el mes en que se recuperan, no «nunca».',
+          cs: 'Ve srovnání úvěrů teď řádek o\u00a0slevových bodech rozliší úsporu od ztráty. Když úvěr skončí dřív, než se body vrátí, řekne, o\u00a0kolik víc stojí; dříve tu částku ukazoval jako úsporu. A\u00a0u\u00a0úvěru zadaného měsíční splátkou, kde body úvěr zkracují a\u00a0splátku nesnižují, teď uvede měsíc, kdy se vrátí, ne „nikdy“.',
+          mr: 'कर्जांच्या तुलनेत डिस्काउंट पॉइंट्सची ओळ आता बचत आणि तोटा यांत फरक करते. पॉइंट्सचा खर्च वसूल होण्याआधीच कर्ज संपले, तर ते किती जास्त महाग पडले हे ती सांगते; आधी तीच रक्कम बचत म्हणून दिसायची. आणि मासिक हप्त्याने भरलेल्या कर्जात, जिथे पॉइंट्स हप्ता कमी न करता कर्जाची मुदत कमी करतात, तिथे आता खर्च वसूल होण्याचा महिना दिसतो, “कधीच नाही” नाही.',
+        },
+      },
+      {
+        id: 'net-worth-rates-and-csv-amounts',
+        text: {
+          en: 'Two more fixes to the net worth calculator. After you change your spending currency it no longer shows a total worked out with the previous currency’s exchange rates: it waits for the new rates, and says so if they cannot be loaded. And amounts in an uploaded CSV file are read the way the file writes numbers, so “2500,50” is two thousand five hundred and a half, not a quarter of a million.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर में दो और सुधार हुए हैं। खर्च की मुद्रा बदलने के बाद वह अब पिछली मुद्रा की विनिमय दरों से निकला कुल जोड़ नहीं दिखाता: नई दरों का इंतज़ार करता है, और वे लोड न हो सकें तो यह बताता है। और अपलोड की गई CSV फ़ाइल की रकमें वैसे ही पढ़ी जाती हैं जैसे फ़ाइल में संख्याएँ लिखी हैं, इसलिए “2500,50” का मतलब ढाई हज़ार और पचास पैसे है, ढाई लाख नहीं।',
+          es: 'Dos correcciones más en la calculadora de patrimonio neto. Después de cambiar la moneda de tus gastos ya no muestra un total calculado con los tipos de cambio de la moneda anterior: espera a los nuevos y avisa si no se pueden cargar. Y las cantidades de un archivo CSV subido se leen como el archivo escribe los números, así que «2500,50» son dos mil quinientos con cincuenta, no un cuarto de millón.',
+          cs: 'Další dvě opravy v\u00a0kalkulačce čistého jmění. Po změně měny výdajů už neukazuje součet spočítaný s\u00a0kurzy předchozí měny: čeká na nové kurzy a\u00a0řekne, když se je nepodaří načíst. A\u00a0částky v\u00a0nahraném souboru CSV se čtou tak, jak soubor čísla zapisuje, takže „2500,50“ je dva tisíce pět set a\u00a0půl, ne čtvrt milionu.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये आणखी दोन दुरुस्त्या झाल्या आहेत. खर्चाचे चलन बदलल्यानंतर तो आता आधीच्या चलनाच्या विनिमय दरांनी काढलेली एकूण बेरीज दाखवत नाही: नव्या दरांची वाट पाहतो, आणि ते लोड झाले नाहीत तर तसे सांगतो. आणि अपलोड केलेल्या CSV\u00a0फाइलमधील रकमा फाइलमध्ये संख्या जशा लिहिल्या आहेत तशाच वाचल्या जातात, त्यामुळे “2500,50” म्हणजे अडीच हजार आणि अर्धा, अडीच लाख नाही.',
+        },
+      },
+      {
+        id: 'numbers-read-right',
+        text: {
+          en: 'Two fixes to how the tools read numbers. A decimal below one with three decimals, such as 0.125, was read as 125 on some pages; it is now read as written, in every language. And the Monte Carlo simulator now asks for whole years: half a year used to give a result line that read “NaN”.',
+          hi: 'टूल संख्याएँ कैसे पढ़ते हैं, उसमें दो सुधार हुए हैं। एक से छोटा तीन दशमलव वाला अंक, जैसे 0.125, कुछ पेजों पर 125 पढ़ा जाता था; अब वह हर भाषा में वैसा ही पढ़ा जाता है जैसा लिखा गया है। और मोंटे कार्लो सिम्युलेटर अब पूरे साल ही लेता है: आधे साल पर नतीजे की एक पंक्ति में “NaN” दिखता था।',
+          es: 'Dos correcciones en cómo las herramientas leen los números. Un decimal menor que uno con tres decimales, como 0.125, se leía como 125 en algunas páginas; ahora se lee tal como está escrito, en todos los idiomas. Y el simulador Monte Carlo pide ahora años enteros: con medio año, una línea del resultado mostraba «NaN».',
+          cs: 'Dvě opravy toho, jak nástroje čtou čísla. Desetinné číslo menší než jedna se třemi desetinnými místy, například 0.125, se na některých stránkách četlo jako 125; teď se čte tak, jak je napsané, ve všech jazycích. A\u00a0simulátor Monte Carlo teď chce celé roky: u\u00a0půl roku se v\u00a0jednom řádku výsledku objevilo „NaN“.',
+          mr: 'साधने संख्या कशा वाचतात यात दोन दुरुस्त्या झाल्या आहेत. एकापेक्षा लहान, तीन दशांश स्थाने असलेली संख्या, उदा. 0.125, काही पानांवर 125 अशी वाचली जायची; आता ती प्रत्येक भाषेत लिहिल्याप्रमाणेच वाचली जाते. आणि मॉन्टे कार्लो सिम्युलेटर आता पूर्ण वर्षेच घेतो: अर्ध्या वर्षासाठी निकालाच्या एका ओळीत “NaN” दिसायचे.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-10',
     items: [
+      {
+        id: 'net-worth-unreadable-amounts',
+        text: {
+          en: 'The net worth calculator now tells you when it cannot read an amount. An amount typed with a currency sign, a minus or words used to be left out of the total without a word; now the box is marked, a line says how many rows are not counted, and a CSV file that was only partly read keeps its list of the lines that failed. CSV files with semicolons or tabs, as spreadsheets save them in Spanish or Czech, now load, and a type the tool does not know is an error, not an asset.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर अब बताता है कि कौन सी रकम वह पढ़ नहीं सका। मुद्रा के चिह्न, ऋण चिह्न या शब्दों के साथ लिखी रकम पहले बिना कुछ कहे कुल जोड़ से बाहर रह जाती थी; अब उस बॉक्स पर निशान लगता है, एक पंक्ति बताती है कि कितनी पंक्तियाँ नहीं गिनी गईं, और जो CSV फ़ाइल पूरी नहीं पढ़ी जा सकी, उसकी न पढ़ी गई लाइनों की सूची बनी रहती है। सेमीकोलन या टैब वाली CSV फ़ाइलें अब लोड होती हैं, और जिस किस्म को टूल नहीं जानता वह अब गलती मानी जाती है, संपत्ति नहीं।',
+          es: 'La calculadora de patrimonio neto avisa ahora cuando no puede leer una cantidad. Una cantidad escrita con un símbolo de moneda, un signo menos o palabras quedaba antes fuera del total sin aviso; ahora la casilla se marca, una línea dice cuántas filas no se cuentan, y un archivo CSV que solo se leyó en parte conserva la lista de las líneas que fallaron. Los archivos CSV con punto y coma o tabuladores, como los guarda una hoja de cálculo en español o en checo, ya se cargan, y un tipo que la herramienta no conoce es un error, no un activo.',
+          cs: 'Kalkulačka čistého jmění teď řekne, když částku nedokáže přečíst. Částka napsaná se znakem měny, s\u00a0minusem nebo se slovy dříve bez upozornění vypadla ze součtu; teď se pole označí, řádek nad tabulkou říká, kolik řádků se nezapočítává, a\u00a0u\u00a0souboru CSV, který se přečetl jen zčásti, zůstane seznam řádků, které se nepovedly. Soubory CSV se středníky nebo tabulátory, jak je ukládá tabulkový procesor ve španělštině nebo češtině, se teď načtou a\u00a0typ, který nástroj nezná, je chyba, ne aktivum.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर आता एखादी रक्कम वाचता आली नाही तर तसे सांगतो. चलनाचे चिन्ह, वजा चिन्ह किंवा शब्दांसह लिहिलेली रक्कम आधी काहीही न सांगता एकूण बेरजेतून वगळली जायची; आता त्या चौकटीवर खूण येते, किती ओळी मोजलेल्या नाहीत हे एक ओळ सांगते, आणि जी CSV\u00a0फाइल अर्धवट वाचली गेली तिच्या न वाचलेल्या ओळींची यादी तशीच राहते. अर्धविराम किंवा टॅब असलेल्या CSV\u00a0फाइल्स आता लोड होतात, आणि साधनाला माहीत नसलेला प्रकार आता चूक मानला जातो, मालमत्ता नाही.',
+        },
+      },
+      {
+        id: 'loan-optional-boxes-errors',
+        text: {
+          en: 'In the loan comparison, an optional box that cannot be read is now an error. A fee typed as “€2,500”, an extra payment typed with words or a lump sum in the wrong form used to count as zero without a word, which could make an offer look free of fees; now the box is marked and the offer shows no result until it is fixed or cleared.',
+          hi: 'लोन की तुलना में अब वह वैकल्पिक बॉक्स गलती माना जाता है जिसे पढ़ा नहीं जा सकता। “€2,500” की तरह लिखा शुल्क, शब्दों के साथ लिखी अतिरिक्त किस्त या गलत रूप में लिखी एकमुश्त रकम पहले बिना कुछ कहे शून्य गिनी जाती थी, जिससे कोई ऑफ़र बिना शुल्क का दिख सकता था; अब उस बॉक्स पर निशान लगता है और उसे ठीक या खाली करने तक ऑफ़र का नतीजा नहीं दिखता।',
+          es: 'En el comparador de préstamos, una casilla opcional que no se puede leer es ahora un error. Una comisión escrita como «€2,500», un pago extra escrito con palabras o un pago único con un formato incorrecto contaban antes como cero sin aviso, y una oferta podía parecer libre de comisiones; ahora la casilla se marca y la oferta no muestra resultado hasta que se corrige o se vacía.',
+          cs: 'Ve srovnání úvěrů je teď nepovinné pole, které nejde přečíst, chybou. Poplatek zapsaný jako „€2,500“, mimořádná splátka zapsaná slovy nebo jednorázová splátka ve špatném tvaru se dříve bez upozornění počítaly jako nula, takže nabídka mohla vypadat jako bez poplatků; teď se pole označí a\u00a0nabídka neukáže výsledek, dokud pole neopravíte nebo nevymažete.',
+          mr: 'कर्जांच्या तुलनेत आता वाचता न येणारी पर्यायी चौकट ही चूक मानली जाते. “€2,500” असे लिहिलेले शुल्क, शब्दांसह लिहिलेला अतिरिक्त हप्ता किंवा चुकीच्या स्वरूपात लिहिलेली एकरकमी रक्कम आधी काहीही न सांगता शून्य धरली जायची, त्यामुळे एखादी ऑफर शुल्काशिवाय असल्यासारखी दिसू शकायची; आता त्या चौकटीवर खूण येते आणि ती दुरुस्त किंवा रिकामी करेपर्यंत ऑफरचा निकाल दिसत नाही.',
+        },
+      },
       {
         id: 'header-menus-keyboard',
         text: {
@@ -66,7 +171,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
         id: 'privacy-notice-wording-nov-10',
         text: {
           en: 'A few corrections to the privacy notice’s wording: it quoted a home page heading that has since been renamed, and some sentences in Hindi, Spanish and Czech had drifted from the English. The net worth calculator’s page now says, as the notice does, that exchange rates are fetched when the page opens and again if you change your spending currency. Nothing about what is collected changes.',
-          hi: 'प्राइवेसी नोटिस के शब्दों में कुछ सुधार हुए हैं: उसमें होम पेज के एक शीर्षक का ज़िक्र था जिसका नाम बदल चुका है, और हिंदी, स्पैनिश और चेक के कुछ वाक्य अंग्रेज़ी से थोड़े अलग हो गए थे। नेट वर्थ कैलकुलेटर का पेज अब वही कहता है जो नोटिस कहता है: विनिमय दरें पेज खुलने पर लाई जाती हैं, और खर्च की मुद्रा बदलने पर दोबारा। जो जानकारी इकट्ठा होती है, उसमें कोई बदलाव नहीं है।',
+          hi: 'प्राइवेसी नोटिस के शब्दों में कुछ सुधार हुए हैं: उसमें होम पेज के एक शीर्षक का ज़िक्र था जिसका नाम बदल चुका है, और हिंदी, स्पैनिश और चेक के कुछ वाक्य अंग्रेज़ी से थोड़े अलग हो गए थे। शुद्ध संपत्ति कैलकुलेटर का पेज अब वही कहता है जो नोटिस कहता है: विनिमय दरें पेज खुलने पर लाई जाती हैं, और खर्च की मुद्रा बदलने पर दोबारा। जो जानकारी इकट्ठा होती है, उसमें कोई बदलाव नहीं है।',
           es: 'Algunas correcciones en la redacción del aviso de privacidad: citaba un título de la página de inicio que ya tiene otro nombre, y algunas frases en hindi, español y checo se habían apartado del inglés. La página de la calculadora de patrimonio neto dice ahora, como el aviso, que los tipos de cambio se consultan al abrir la página y otra vez si cambias la moneda de tus gastos. No cambia nada de lo que se recoge.',
           cs: 'Několik oprav ve znění zásad ochrany soukromí: citovaly nadpis z\u00a0úvodní stránky, který se mezitím přejmenoval, a\u00a0některé věty v\u00a0hindštině, španělštině a\u00a0češtině se odchýlily od angličtiny. Stránka kalkulačky čistého jmění teď říká totéž co zásady: kurzy se stahují při otevření stránky a\u00a0znovu, pokud změníte měnu svých výdajů. Na tom, co se sbírá, se nic nemění.',
           mr: 'गोपनीयता सूचनेच्या शब्दांत काही दुरुस्त्या झाल्या आहेत: तिच्यात मुख्यपृष्ठावरील एका शीर्षकाचा उल्लेख होता, ज्याचे नाव आता बदलले आहे, आणि हिंदी, स्पॅनिश आणि चेकमधील काही वाक्ये इंग्रजीपासून थोडी वेगळी झाली होती. निव्वळ संपत्ती कॅल्क्युलेटरचे पान आता सूचनेप्रमाणेच सांगते: विनिमय दर पान उघडल्यावर आणले जातात, आणि खर्चाचे चलन बदलल्यावर पुन्हा. जी माहिती गोळा होते, त्यात काहीही बदल नाही.',
@@ -380,7 +485,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
     ],
   },
   {
-    date: '2026-10-23',
+    date: '2026-10-24',
     items: [
       {
         id: 'volunteer-translators',

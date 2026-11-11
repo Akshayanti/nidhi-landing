@@ -104,3 +104,62 @@ describe('.gitignore', () => {
     assert.ok(!ignored.includes('remotion/public/'));
   });
 });
+
+describe('the newsletter workflow says so when something went wrong', () => {
+  const workflow = read('.github/workflows/newsletter.yml');
+  const step = (id) => {
+    const at = workflow.indexOf(`        id: ${id}\n`);
+    assert.ok(at > 0, `no step with id ${id}`);
+    const end = workflow.indexOf('\n      - name:', at);
+    return workflow.slice(workflow.lastIndexOf('\n      - name:', at), end < 0 ? undefined : end);
+  };
+
+  it('the bounce scan and the health check report how they went', () => {
+    for (const id of ['bounce_scan', 'health']) {
+      assert.match(step(id), /echo "ok=true" >> "\$GITHUB_OUTPUT"/, id);
+      assert.match(step(id), /echo "ok=false" >> "\$GITHUB_OUTPUT"/, id);
+    }
+  });
+
+  it('the alert fires for a missing secret, a failed scan and a failed health check, not only a failed send', () => {
+    const notify = step('notify');
+    for (const condition of [
+      "steps.preflight.outputs.configured != 'true'",
+      "steps.bounce_scan.outputs.ok == 'false'",
+      "steps.health.outputs.ok == 'false'",
+      "steps.newsletter.outcome == 'failure'",
+      "steps.marker.outcome == 'failure'",
+    ]) assert.ok(notify.includes(condition), condition);
+    assert.doesNotMatch(notify, /steps\.newsletter\.outcome != 'skipped'/, 'a run that could not start must alert too');
+  });
+
+  it('a run that alerted is red: the last step fails whenever the alert ran', () => {
+    const last = workflow.slice(workflow.lastIndexOf('\n      - name:'));
+    assert.match(last, /if: always\(\) && steps\.notify\.outcome != 'skipped'/);
+    assert.match(last, /\n\s+exit 1\n/);
+  });
+});
+
+describe('a sign-up form whose script has not run does not put the email into the address', () => {
+  // A form with no method is a GET: with JavaScript off, blocked or not yet
+  // run, pressing the button reloads the page as /?email=<address>, which
+  // lands in the history and in the host's request log.
+  const components = readdirSync(join(ROOT, 'src/components'), { recursive: true })
+    .filter((name) => /\.(astro|tsx)$/.test(String(name)))
+    .map((name) => [String(name), read(join('src/components', String(name)))]);
+  const emailForms = components.flatMap(([name, source]) =>
+    [...source.matchAll(/<form\b[^>]*>[\s\S]*?<\/form>/g)].filter((m) => /type="email"/.test(m[0])).map((m) => [name, m[0], source]));
+
+  it('finds the waitlist form and both newsletter forms', () => {
+    assert.deepEqual(emailForms.map(([name]) => name).sort(), ['SubscribeSection.astro', 'SubscribeSection.astro', 'WaitlistSection.astro']);
+  });
+
+  it('each one posts, and its component says that signing up needs JavaScript', () => {
+    for (const [name, form, source] of emailForms) {
+      assert.match(/<form\b[^>]*>/.exec(form)[0], /\smethod="post"/, name);
+      assert.match(source, /<noscript><p [^>]*>\{(t|waitlist)\.noScript\}<\/p><\/noscript>/, name);
+    }
+    const subscribe = components.find(([name]) => name === 'SubscribeSection.astro')[1];
+    assert.equal(subscribe.match(/<noscript>/g).length, 2, 'one line for each variant of the newsletter form');
+  });
+});

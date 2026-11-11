@@ -53,9 +53,6 @@ function eventsIn(path) {
 const EXPECTED = {
   'scripts/newsletter.gs': [
     'blog_newsletter_quota_warning | cfg.fromEmail | cap, guid, subscriber_count, utilization',
-    // The first carries the mail service's own error text, cut at 300
-    // characters, as blog_welcome_failed does: recorded as a finding to fix.
-    'blog_newsletter_send_failed | cfg.fromEmail | email_domain, error, guid',
     'blog_newsletter_send_failed | cfg.fromEmail | email_domain, guid, reason',
     'blog_newsletter_sent | cfg.fromEmail | failed, guid, sent, skipped_already_sent, url',
     'blog_pending_expired | distinctIdForEmail_(x.email) | days_since_signup',
@@ -65,7 +62,7 @@ const EXPECTED = {
     'blog_subscribe_pending | distinctIdForEmail_(email) | source',
     'blog_subscriber_bounced | distinctIdForEmail_(addr) | email_domain, via',
     'blog_unsubscribe | distinctIdForEmail_(result.email) | method',
-    'blog_welcome_failed | distinctIdForEmail_(email) | email_domain, error',
+    'blog_welcome_failed | distinctIdForEmail_(email) | email_domain, reason',
   ],
   'scripts/waitlist.gs': [
     'waitlist_signup | distinctIdForEmail_(email) | email_domain, source',
@@ -93,6 +90,16 @@ describe('server-side analytics events', () => {
         // send reports go under the sending address, which is the site's.
         assert.match(who, /^(distinctIdForEmail_\([\w.]+\)|cfg\.fromEmail)$/, call);
         for (const key of keys.split(', ').filter(Boolean)) assert.doesNotMatch(key, /^(email|address|name|token|ip)$/i, call);
+      }
+    }
+  });
+
+  it('no event carries a property named for free text', () => {
+    // "error" and "message" held another system's words, which can quote an
+    // address. A failure is reported as `reason`, a word from a fixed list.
+    for (const [path] of Object.entries(EXPECTED)) {
+      for (const call of eventsIn(path).calls) {
+        for (const key of call.split(' | ')[2].split(', ').filter(Boolean)) assert.doesNotMatch(key, /^(error|message|detail|text)$/i, call);
       }
     }
   });

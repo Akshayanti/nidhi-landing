@@ -136,7 +136,9 @@ const clickLabels = { exact, prefixes };
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: hasFullConsent ? window.nidhiClickCapture : false,
-    enable_heatmaps: hasFullConsent,
+    // A page that pauses heatmaps says so in its head, before this runs
+    // (the invest or pay off tool), so they never start there.
+    enable_heatmaps: hasFullConsent && !window.nidhiHeatmapsPaused,
     capture_dead_clicks: hasFullConsent ? window.nidhiClickCapture : false,
     capture_performance: false,
     capture_exceptions: false,
@@ -146,6 +148,9 @@ const clickLabels = { exact, prefixes };
     mask_all_text: true,
     persistence: hasFullConsent ? 'localStorage' : 'memory',
     disable_session_recording: true,
+    // Surveys are not used. Said here, so that switching them on in the
+    // PostHog project cannot start loading them for every visitor.
+    disable_surveys: true,
     before_send: function (event) {
       if (!event) return event;
       return cleanAddresses(event) && cleanClicks(event);

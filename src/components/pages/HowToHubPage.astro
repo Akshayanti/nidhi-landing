@@ -18,6 +18,7 @@
  * the council reviews them (src/utils/guideLayers.ts), situation cards,
  * filters, and a preview per group linking to its own page.
  */
+import { jsonForScript } from '../../utils/shared/jsonForScript.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getCollection } from 'astro:content';
@@ -96,6 +97,8 @@ const english = locale !== DEFAULT_LOCALE;
   robots={guides.length === 0 ? 'noindex,follow' : undefined}
   jsonLd={[breadcrumbSchema, ...(itemListSchema ? [itemListSchema] : [])]}
 >
+  {/* The guides' own feed, beside the lesson feed every page links (src/pages/how-to/rss.xml.ts). */}
+  <link slot="head" rel="alternate" type="application/rss+xml" title={strings.rss.guidesLinkTitle} href="/how-to/rss.xml" />
   <section class="ht">
     <div class="ht-wrap">
       <nav class="ht-crumbs" aria-label={strings.a11y.breadcrumb}>
@@ -190,7 +193,7 @@ const english = locale !== DEFAULT_LOCALE;
               ))}
             </div>
           </div>
-          <script type="application/json" id="ht-data" set:html={JSON.stringify(searchData)} />
+          <script type="application/json" id="ht-data" set:html={jsonForScript(searchData)} />
           <p hidden data-ht-lesson-label>{english ? howTo.inEnglishLessons : ''}</p>
         </>
       )}

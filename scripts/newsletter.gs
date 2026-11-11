@@ -32,7 +32,7 @@
  *   3. Create the Sheet with these EXACT headers in row 1 (9 columns):
  *        email | status | source | created_at | confirmed_at |
  *        unsubscribed_at | confirm_token | unsub_token | reminder_sent_at
- *      Statuses: pending | confirmed | unsubscribed
+ *      Statuses: pending | confirmed | unsubscribed | bounced
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
  *      that says ok or not for properties, web app URL, Gmail advanced
@@ -56,9 +56,10 @@
  *                                   On bad token: redirects to
  *                                   {SITE_URL}/subscription-invalid/.
  *
- *   GET  ?action=unsubscribe&t=...  Opaque token lookup. Marks row as
- *                                   unsubscribed. Redirects to
- *                                   {SITE_URL}/unsubscribed/.
+ *   GET  ?action=unsubscribe&t=...  Never unsubscribes: a link can be
+ *                                   followed by a mail scanner. Redirects
+ *                                   to {SITE_URL}/unsubscribe?t=..., whose
+ *                                   button sends the POST below.
  *
  *   POST ?action=unsubscribe&t=...  Same behaviour but JSON response —
  *                                   used by Gmail's RFC 8058 one-click
@@ -78,17 +79,11 @@
  *                                   SHA-256 matches COUNT_TOKEN_SHA256_;
  *                                   { ok: false, error: 'forbidden' } otherwise.
  *
- *   GET  ?action=remind_pending     Sends exactly one reminder email to each
- *         or POST                    pending subscriber whose row is older
- *                                   than 3 days and hasn't received a reminder
- *                                   yet. Only operates between 06:00 and 12:59
- *                                   UTC, which keeps delivery inside civilized
- *                                   local hours for both Europe and India.
- *                                   Idempotent: safe to call repeatedly (e.g.
- *                                   hourly via a GAS time-based trigger).
- *                                   Tracks sent reminders in the
- *                                   `reminder_sent_at` column so each pending
- *                                   subscriber gets at most one reminder.
+ *   Reminders and deletions: not a web action. handleRemindPending runs
+ *   from an hourly time trigger. It sends one reminder to each pending
+ *   subscriber whose row is older than 3 days and has had none (between
+ *   9:00 and 11:59 Prague time), deletes pending rows after 7 days,
+ *   unsubscribed rows after 30 days and bounced rows after a week.
  *
  *   Reminder test: not a web action. Run testRemindFromEditor from the
  *   Apps Script editor (see its comment).
@@ -252,7 +247,37 @@ var EXPECTED_HEADERS = [
  * caused data to land in a tab the operator wasn't watching). This version
  * requires an explicit match.
  */
+/**
+ * The subscriber tab, once its header row has been checked.
+ *
+ * Every handler reads and writes cells by position (COL). The Sheet is
+ * edited by hand, and one inserted or moved column would make every one of
+ * them use the wrong cells: tokens looked up in the wrong column (every
+ * confirm and unsubscribe link "invalid"), a status written into another
+ * field, a send that finds nobody confirmed. So a tab whose first nine
+ * headers are not the expected ones is refused here, before anything is
+ * read or written, and the reason goes to the execution log. Columns added
+ * after the ninth are fine.
+ */
 function sheet_() {
+  var sh = sheetUnchecked_();
+  var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+  var wrong = EXPECTED_HEADERS.filter(function (h, i) {
+    return String(headers[i] || '').trim().toLowerCase() !== h;
+  });
+  if (wrong.length) {
+    throw new Error(
+      'Sheet header row mismatch: nothing was read or written. Expected the first ' +
+      EXPECTED_HEADERS.length + ' columns to be: ' + EXPECTED_HEADERS.join(' | ') +
+      '. Missing or out of place: ' + wrong.join(', ') +
+      '. Put the columns back in that order (a column may be added after the last one).'
+    );
+  }
+  return sh;
+}
+
+/** The subscriber tab as it is, for the one function whose job is to repair its header row. */
+function sheetUnchecked_() {
   var cfg = config_();
   var ss = SpreadsheetApp.openById(cfg.sheetId);
   var sh = ss.getSheetByName(cfg.sheetName);
@@ -352,6 +377,14 @@ function listConfirmedSubscribers_() {
 // Email sending (Gmail raw send with List-Unsubscribe)
 // ============================================================================
 
+/** Text as base64 of its UTF-8 bytes, in lines of 76 characters (RFC 2045). */
+function base64Lines_(text) {
+  var encoded = Utilities.base64Encode(String(text == null ? '' : text), Utilities.Charset.UTF_8);
+  var lines = [];
+  for (var i = 0; i < encoded.length; i += 76) lines.push(encoded.slice(i, i + 76));
+  return lines.join('\r\n');
+}
+
 function buildMimeMessage_(opts) {
   // opts: { from, fromName, to, subject, html, text, listUnsubPostUrl,
   //         listId, messageId }
@@ -366,8 +399,6 @@ function buildMimeMessage_(opts) {
     'Subject: ' + encodeSubject_(opts.subject),
     'MIME-Version: 1.0',
     'Content-Type: multipart/alternative; boundary="' + boundary + '"',
-    'List-Unsubscribe: <' + opts.listUnsubPostUrl + '>',
-    'List-Unsubscribe-Post: List-Unsubscribe=One-Click',
     'List-ID: ' + opts.listId,
     'Precedence: bulk',
     'Auto-Submitted: auto-generated',
@@ -376,25 +407,32 @@ function buildMimeMessage_(opts) {
     'X-Nidhi-Ref: ' + mailRef_(opts.to),
   ];
   if (opts.messageId) headers.push('Message-ID: <' + opts.messageId + '>');
+  // The one-click unsubscribe headers (RFC 8058) only when there is an
+  // address to give. The reminder goes to someone who has not confirmed and
+  // has nothing to unsubscribe from; it used to carry the header with
+  // "<null>" in it, which a mail provider reads as a broken bulk sender.
+  if (opts.listUnsubPostUrl) {
+    headers.push('List-Unsubscribe: <' + opts.listUnsubPostUrl + '>');
+    headers.push('List-Unsubscribe-Post: List-Unsubscribe=One-Click');
+  }
 
-  // 8bit (not 7bit): bodies contain UTF-8 bytes (e.g. U+2019 curly apostrophe
-  // in "Everyone\u2019s"). Declaring 7bit with 8-bit bytes is an RFC
-  // violation — some clients fall back to latin-1/ASCII and render the
-  // unknown 0xE2 0x80 0x99 sequence as "?" (the "Everyone?s" bug). The
-  // outer message is wrapped by Gmail.Users.Messages.send via base64, so
-  // 8bit here is fine for transport.
+  // Both parts go as base64 in lines of 76 characters. A lesson's HTML has
+  // lines of thousands of characters, over the 998 a mail line may have, and
+  // a relay that re-wraps such a line can break the markup; base64 also
+  // carries the UTF-8 bytes (curly apostrophes, Devanagari) without relying
+  // on every relay passing 8-bit text through.
   var parts = [
     '--' + boundary,
     'Content-Type: text/plain; charset="UTF-8"',
-    'Content-Transfer-Encoding: 8bit',
+    'Content-Transfer-Encoding: base64',
     '',
-    opts.text,
+    base64Lines_(opts.text),
     '',
     '--' + boundary,
     'Content-Type: text/html; charset="UTF-8"',
-    'Content-Transfer-Encoding: 8bit',
+    'Content-Transfer-Encoding: base64',
     '',
-    opts.html,
+    base64Lines_(opts.html),
     '',
     '--' + boundary + '--',
     '',
@@ -439,7 +477,6 @@ function doGet(e) {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'confirm')         return handleConfirm_(e);
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
-    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
@@ -467,7 +504,6 @@ function doPost(e) {
     if (action === 'subscribe')       return handleSubscribe_(e);
     if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
-    if (action === 'remind_pending')  return handleRemindPending();
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     if (action === 'count')           return handleCount_(e);
@@ -778,19 +814,39 @@ function handleSubscribe_(e) {
       var status = String(values[COL.status - 1] || '').toLowerCase();
       if (status === 'confirmed') return 'confirmed';
       var createdAt = values[COL.createdAt - 1];
-      if (status === 'pending' && createdAt && now.getTime() - new Date(createdAt).getTime() < RESEND_COOLDOWN_MS_) return 'recent';
+      // When this address was last sent a mail asking it to confirm: at
+      // sign-up, or later (a re-send or the reminder, both stamped in
+      // reminder_sent_at).
+      var reminded = values[COL.reminderSentAt - 1];
+      var lastAsked = Math.max(createdAt ? new Date(createdAt).getTime() : 0, reminded ? new Date(reminded).getTime() : 0) || 0;
+      if (status === 'pending' && lastAsked && now.getTime() - lastAsked < RESEND_COOLDOWN_MS_) return 'recent';
     }
     // Checked before anything is written: past the limit nothing changes.
     if (!takeDailySlot_('confirm_mails', MAX_CONFIRMATIONS_PER_DAY_)) return 'capped';
     if (row === 0) {
       sh.appendRow([email, 'pending', source, now, '', '', confirmToken, unsubToken]);
-    } else {
-      // pending, unsubscribed or bounced: reset to pending with fresh tokens.
-      // Clear reminder_sent_at so a re-subscribe resets the reminder clock.
-      sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
-        'pending', source, now, '', '', confirmToken, unsubToken, '',
-      ]]);
+      return 'pending';
     }
+    var oldConfirm = String(values[COL.confirmToken - 1] || '').trim();
+    var oldUnsub = String(values[COL.unsubToken - 1] || '').trim();
+    // An unsubscribe link stays good for the life of a row: every mail
+    // already sent to this address carries the old one.
+    if (oldUnsub) unsubToken = oldUnsub;
+    if (status === 'pending' && oldConfirm) {
+      // Asked again while still waiting: the same link is sent again, so the
+      // first mail's link keeps working, and created_at stays where it was,
+      // so asking again cannot put off the 7-day expiry. The re-send counts
+      // as this row's reminder: it is stamped where the reminder is, which
+      // also starts the wait before the next re-send.
+      confirmToken = oldConfirm;
+      sh.getRange(row, COL.reminderSentAt).setValue(now);
+      return 'pending';
+    }
+    // unsubscribed or bounced (or a pending row that lost its token): back
+    // to pending with a new confirmation link and a new clock.
+    sh.getRange(row, COL.status, 1, 9 - COL.email).setValues([[
+      'pending', source, now, '', '', confirmToken, unsubToken, '',
+    ]]);
     return 'pending';
   });
 
@@ -838,9 +894,10 @@ function takeDailySlot_(kind, limit) {
 // ============================================================================
 //
 // Called via a GAS time-based trigger (hourly) bound directly to
-// handleRemindPending. Only operates between 06:00 and 12:59 UTC, which
-// keeps delivery inside civilized local hours for both Europe and India.
-// Sends exactly one reminder to each pending subscriber whose row is
+// handleRemindPending, and by nothing else: it is not a web action, so
+// nobody outside can choose the moment it runs. Reminders go out between
+// 9:00 and 11:59 Prague time, as the privacy notice says. Sends exactly one
+// reminder to each pending subscriber whose row is
 // > 3 days old and hasn't received a reminder yet.
 //
 // Idempotent: the reminder_sent_at column ensures each pending subscriber
@@ -877,16 +934,70 @@ function testRemindFromEditor() {
   console.log('testRemindFromEditor: reminder sent.');
 }
 
+/** Reminders are sent from this hour up to, not including, the next one, Prague time. */
+var REMIND_FROM_HOUR_ = 9;
+var REMIND_UNTIL_HOUR_ = 12;
+
+/** An unsubscribed row is deleted this long after the unsubscribe (privacy notice: "up to 30 days"). */
+var UNSUBSCRIBED_KEPT_MS_ = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * A bounced row is deleted this long after it was marked (privacy notice:
+ * "removed as soon as we notice them, usually within a week"). The week is
+ * there so that a row marked by mistake can still be put back by hand.
+ */
+var BOUNCED_KEPT_MS_ = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Deletes the rows the privacy notice says are removed: an unsubscribed row
+ * 30 days after the unsubscribe, and a bounced row a week after it was
+ * marked (both dates are in unsubscribed_at). Returns how many of each
+ * went; no address is logged.
+ *
+ * A row whose date cannot be read is kept and counted, so that the owner
+ * sees it in the log instead of losing a row by a guess.
+ */
+function purgeDepartedRows_(now) {
+  var out = withSheetLock_(function () {
+    var counts = { unsubscribed: 0, bounced: 0, undated: 0 };
+    var sh = sheet_();
+    var last = sh.getLastRow();
+    if (last < 2) return counts;
+    var rows = sh.getRange(2, 1, last - 1, EXPECTED_HEADERS.length).getValues();
+    var rowsToDelete = [];
+    for (var r = 0; r < rows.length; r++) {
+      var status = String(rows[r][COL.status - 1] || '').toLowerCase();
+      if (status !== 'unsubscribed' && status !== 'bounced') continue;
+      var left = rows[r][COL.unsubscribedAt - 1];
+      var age = left ? now.getTime() - new Date(left).getTime() : NaN;
+      if (isNaN(age)) { counts.undated++; continue; }
+      if (age < (status === 'bounced' ? BOUNCED_KEPT_MS_ : UNSUBSCRIBED_KEPT_MS_)) continue;
+      rowsToDelete.push(r + 2);
+      counts[status]++;
+    }
+    // Bottom-up, so a deletion never shifts a row still to be deleted.
+    for (var d = rowsToDelete.length - 1; d >= 0; d--) sh.deleteRow(rowsToDelete[d]);
+    return counts;
+  });
+  if (out.unsubscribed || out.bounced) console.log('[newsletter] purge: deleted ' + out.unsubscribed + ' unsubscribed row(s) past 30 days and ' + out.bounced + ' bounced row(s) past a week');
+  if (out.undated) console.error('[newsletter] purge: ' + out.undated + ' unsubscribed or bounced row(s) have no readable date and were kept: set the date or delete them by hand');
+  return { unsubscribed: out.unsubscribed, bounced: out.bounced };
+}
+
 function handleRemindPending() {
-  // Only run between 06:00 and 12:59 UTC. This keeps reminder delivery inside
-  // civilized local hours for both Europe (07:00 to 14:00 CE winter, 08:00 to
-  // 15:00 CE summer) and India (11:30 to 18:30 IST), and is DST-proof.
-  var utcHour = parseInt(Utilities.formatDate(new Date(), 'Etc/UTC', 'H'), 10);
-  if (utcHour < 6 || utcHour >= 13) {
-    return jsonResponse_({ ok: true, skipped: 'outside_window', utc_hour: utcHour });
+  var now = new Date();
+
+  // Rows the privacy notice says are removed: done on every run, whatever
+  // the hour, since no mail is sent for it.
+  var purged = purgeDepartedRows_(now);
+
+  // Reminders go out between 9:00 and 11:59 in Prague, as the privacy notice
+  // says ("sent between 9 AM and 12 PM Prague time"), summer and winter.
+  var pragueHour = parseInt(Utilities.formatDate(now, 'Europe/Prague', 'H'), 10);
+  if (pragueHour < REMIND_FROM_HOUR_ || pragueHour >= REMIND_UNTIL_HOUR_) {
+    return jsonResponse_({ ok: true, skipped: 'outside_window', prague_hour: pragueHour, purged: purged });
   }
 
-  var now = new Date();
   var started = Date.now();
   var threeDaysMs = 3 * 24 * 60 * 60 * 1000;
   var sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
@@ -960,7 +1071,7 @@ function handleRemindPending() {
     trackPosthog_('blog_pending_reminded', distinctIdForEmail_(x.email), { days_since_signup: x.days });
   }
 
-  var reply = { ok: true, reminded: sent, deleted: plan.expired.length, utc_hour: utcHour };
+  var reply = { ok: true, reminded: sent, deleted: plan.expired.length, prague_hour: pragueHour, purged: purged };
   if (left) reply.left_for_next_run = left;
   return jsonResponse_(reply);
 }
@@ -1099,6 +1210,9 @@ function handleConfirm_(e) {
     var sh = sheet_();
     var row = findRowByToken_(sh, COL.confirmToken, token);
     if (row === 0) return null;
+    // Only a row that is waiting can be confirmed. (An unsubscribe clears the
+    // confirmation link as well; this covers a row left from before it did.)
+    if (String(sh.getRange(row, COL.status).getValue()).toLowerCase() !== 'pending') return null;
     var who = {
       email: String(sh.getRange(row, COL.email).getValue()).trim(),
       unsubToken: String(sh.getRange(row, COL.unsubToken).getValue()).trim(),
@@ -1132,7 +1246,7 @@ function handleConfirm_(e) {
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
     trackPosthog_('blog_welcome_failed', distinctIdForEmail_(email), {
       email_domain: emailDomain_(email),
-      error: String(err && err.message ? err.message : err).slice(0, 300),
+      reason: mailErrorKind_(err),
     });
   }
 
@@ -1147,6 +1261,18 @@ function handleConfirm_(e) {
 function handleUnsubscribe_(e, method) {
   var cfg = config_();
   var token = (e.parameter && e.parameter.t) || '';
+
+  // A GET never unsubscribes. A link can be followed by something that is
+  // not the reader (a mail scanner, a link preview), and RFC 8058 keeps the
+  // one-click action to POST for that reason. A GET goes to the site's
+  // unsubscribe page, which shows what is about to happen and sends the
+  // POST when the reader presses the button.
+  if (method === 'GET') {
+    if (!/^[A-Za-z0-9_-]{16,128}$/.test(String(token))) {
+      return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+    }
+    return redirectResponse_(cfg.siteUrl + '/unsubscribe?t=' + encodeURIComponent(token));
+  }
 
   // Idempotency: a second unsubscribe for the same token is a no-op. This
   // happens in practice when the user double-clicks the "Unsubscribe me"
@@ -1164,6 +1290,9 @@ function handleUnsubscribe_(e, method) {
     if (currentStatus === 'unsubscribed') return { email: who, changed: false };
     sh.getRange(row, COL.status).setValue('unsubscribed');
     sh.getRange(row, COL.unsubscribedAt).setValue(new Date());
+    // A confirmation link still out there (the reader used the unsubscribe
+    // header on the confirmation mail) must not bring the row back.
+    sh.getRange(row, COL.confirmToken).setValue('');
     return { email: who, changed: true };
   });
 
@@ -1303,8 +1432,13 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     return true;
   });
   if (subscribers.length === 0) {
-    props_().setProperty(seenKey, String(new Date().getTime()));
-    return jsonResponse_({ ok: true, sent: 0 });
+    // Nobody to send to. The lesson is NOT marked as sent: a list that reads
+    // as empty is far more often a Sheet that could not be read properly
+    // than a newsletter with no readers, and marking it would mean the
+    // lesson never goes out. The sender treats this answer as a failure,
+    // so the run is red and someone looks.
+    console.error('[newsletter] send_post: no confirmed subscriber was found; the lesson was not marked as sent');
+    return jsonResponse_({ ok: true, sent: 0, failed: 0, no_recipients: true });
   }
 
   // Quota warning (PostHog + console) — fires when the confirmed-subscriber
@@ -1405,7 +1539,10 @@ function sendPostFanOut_(cfg, payload, seenKey) {
         text: personalizedText,
         listUnsubPostUrl: listUnsubPostUrl,
         listId: listId,
-        messageId: payload.guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '@' + host_(cfg.siteUrl),
+        // One id per message: every copy of a lesson used to carry the same
+        // one, and a provider that drops duplicates by id can then drop one
+        // of two copies that reach the same mailbox by different addresses.
+        messageId: payload.guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '.' + String(sub.unsubToken).slice(0, 16) + '@' + host_(cfg.siteUrl),
       });
       sendRaw_(mime);
       sent++;
@@ -1420,13 +1557,13 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     } catch (err) {
       failed++;
       console.warn('send failed for ' + sub.email + ': ' + err);
-      // Per-recipient failure event — captures domain + error message so we
-      // can spot patterns (e.g. one domain blocklisting us) without leaking
-      // full subscriber addresses into PostHog.
+      // Per-recipient failure event: the domain and the kind of failure, so
+      // patterns show (one domain refusing us) without any address, or any
+      // of the mail service's own text, reaching PostHog.
       trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
         guid: payload.guid,
         email_domain: emailDomain_(sub.email),
-        error: String(err && err.message ? err.message : err).slice(0, 300),
+        reason: mailErrorKind_(err),
       });
       // Advance the marker past the failed row — next retry will skip it
       // (by design: per-recipient failures don't block the fan-out, and
@@ -2069,7 +2206,7 @@ function debugHmacSecret() {
  * the header text.
  */
 function migrateAddTokens() {
-  var sh = sheet_();
+  var sh = sheetUnchecked_();
   var maxCol = Math.max(EXPECTED_HEADERS.length, sh.getLastColumn());
 
   // Fix the header row if needed.
@@ -2208,6 +2345,27 @@ function injectUnsubscribeUrlText_(text, url) {
 // Analytics restarted in a new PostHog project at 00:00 UTC on Oct 8, 2026;
 // nothing is sent before then (matches src/components/Analytics.astro).
 var POSTHOG_START_MS_ = Date.parse('2026-10-08T00:00:00Z');
+
+/**
+ * Which kind of failure a mail error is, as one of a fixed list of words.
+ *
+ * The events that report a failed send used to carry the mail service's own
+ * message, cut at 300 characters. That text is another system's, and it can
+ * quote the address it failed for ("Invalid To header: reader@..."), so a
+ * subscriber's address could reach analytics inside it. The event now
+ * carries this word; the full message stays in the execution log, where the
+ * owner can read it.
+ */
+var MAIL_ERROR_KINDS_ = ['quota', 'rate_limited', 'invalid_recipient', 'auth', 'unavailable', 'other'];
+function mailErrorKind_(err) {
+  var text = String(err && err.message ? err.message : err).toLowerCase();
+  if (/rate limit|too many requests|user-rate|429/.test(text)) return 'rate_limited';
+  if (/quota|limit exceeded|daily limit|too many times|too many (emails|messages|recipients)/.test(text)) return 'quota';
+  if (/invalid (to|recipient|address|email)|recipient address|no such user|address rejected/.test(text)) return 'invalid_recipient';
+  if (/authoriz|permission|access denied|forbidden|login required|insufficient/.test(text)) return 'auth';
+  if (/unavailable|backend error|internal error|timed out|timeout|try again/.test(text)) return 'unavailable';
+  return 'other';
+}
 
 function trackPosthog_(event, distinctId, properties) {
   if (Date.now() < POSTHOG_START_MS_) return;
