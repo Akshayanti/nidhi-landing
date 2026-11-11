@@ -7264,15 +7264,19 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-choices {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--space-2);
+}
+/* Three long sentences: side by side only where each has room. */
+.iop-choices--date {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .iop-choice {
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
   min-height: 44px;
-  padding: var(--space-2) var(--space-3);
+  padding: 10px var(--space-3);
   border: 1px solid var(--color-control-edge);
   border-radius: var(--radius-md);
   background: var(--color-bg);
@@ -7296,6 +7300,74 @@ button.mcnw-legendItem:focus-visible {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--color-text-primary);
+}
+/* One field on its own keeps the width of a field in a row. */
+.iop-section--single > .ifc-field {
+  max-width: 24rem;
+}
+/* The top of the form: the example label and "Start again". */
+.iop-formHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+.iop-example {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+.iop-reset {
+  margin-left: auto;
+  min-height: 36px;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+}
+/* Taxes and fees: three optional percentages behind one row that says in
+   words which of them are in use. The chevron comes from .disclosure. */
+.iop-more {
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+.iop-more + .iop-section {
+  border-top: 0;
+}
+.iop-moreSummary {
+  display: grid;
+  gap: 2px;
+  min-height: 44px;
+  padding: 12px 36px 12px 0;
+}
+.iop-moreSummary:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm, 4px);
+}
+.iop-moreTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-deep-blue);
+}
+.iop-moreStatus {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.iop-moreBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) 0 var(--space-4);
+}
+.iop-fix:empty {
+  display: none;
+}
+.iop-fix {
+  margin: 0;
 }
 .iop-countryNote p,
 .iop-returnNote p {

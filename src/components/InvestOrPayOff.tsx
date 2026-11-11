@@ -28,7 +28,7 @@ import {
   type Result,
   type ReturnChoice,
 } from '../utils/invest-or-pay-off/math.ts';
-import { SHARED_STATE_GLOBAL, decodeState, defaultState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
+import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -211,6 +211,9 @@ export default function InvestOrPayOff({
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
   const [historyFailed, setHistoryFailed] = useState(false);
+  // Whether "Taxes and fees" is unfolded. View state only: it is never
+  // shared, stored or tracked.
+  const [moreOpen, setMoreOpen] = useState(false);
   const loadedAll = useRef(false);
   const calculatedSent = useRef(false);
   const uid = useId();
@@ -245,6 +248,8 @@ export default function InvestOrPayOff({
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
     setForm(toForm(shared, numberLocale));
     setSettled(shared);
+    // A shared link that sets a tax or a fee shows it without a click.
+    if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
     if (arrivedByLanguageSwitch()) return;
     track('free_invest_or_pay_off_shared_view_opened', {
       utm_source: new URLSearchParams(window.location.search).get('utm_source'),
@@ -289,6 +294,12 @@ export default function InvestOrPayOff({
 
   const errors = fieldErrors(form, numberLocale);
   const hasErrors = Object.keys(errors).length > 0;
+
+  // A field that cannot be read is never left folded away.
+  const moreError = Boolean(errors.relief || errors.feePct || errors.gainsTax);
+  useEffect(() => {
+    if (moreError) setMoreOpen(true);
+  }, [moreError]);
 
   // Recalculate a moment after typing stops, and only on valid input.
   useEffect(() => {
@@ -349,6 +360,7 @@ export default function InvestOrPayOff({
   function reset() {
     setForm(toForm(start, numberLocale));
     setSettled(start);
+    setMoreOpen(false);
     track('free_invest_or_pay_off_reset');
   }
 
@@ -409,10 +421,22 @@ export default function InvestOrPayOff({
     form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : ownReal < -1e-9 ? 'below' : null) : null;
   const num = (n: number) => n.toLocaleString(numberLocale);
 
+  // What the folded taxes and fees hold, in words and never in figures.
+  const inUse = (['relief', 'feePct', 'gainsTax'] as const).filter((k) => (parseField(k, form[k], numberLocale) ?? 0) > 0);
+  const moreStatus = inUse.length === 0 ? strings.more.none : t(strings.more.inUse, { list: inUse.map((k) => strings.more[k]).join(', ') });
+  // The starting figures are an example until one of them is changed.
+  const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
+
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <div className="ifc-root iop-root">
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
+        <div className="iop-formHead">
+          <p className="iop-example">{pristine ? strings.example : ''}</p>
+          <button type="button" className="ifc-btn ifc-btn--ghost iop-reset" onClick={reset}>
+            {strings.actions.reset}
+          </button>
+        </div>
         <fieldset className="iop-section">
           <legend className="iop-legend">{strings.sections.debt}</legend>
           <div className="ifc-grid">
@@ -437,10 +461,9 @@ export default function InvestOrPayOff({
             <Field id={id('debtRate')} label={strings.fields.debtRate} value={form.debtRate} onChange={update('debtRate')} hint={strings.fields.debtRateHint} error={errors.debtRate ? t(strings.fields.percentError, { min: 0, max: num(MAX_DEBT_RATE) }) : null} inputMode="decimal" unit="%" />
             <Field id={id('payment')} label={strings.fields.payment} value={form.payment} onChange={update('payment')} error={errors.payment ? t(strings.fields.amountError, { max: num(MAX_AMOUNT) }) : null} inputMode="decimal" />
           </div>
-          <Field id={id('relief')} label={strings.fields.relief} value={form.relief} onChange={update('relief')} hint={strings.fields.reliefHint} error={errors.relief ? t(strings.fields.percentError, { min: 0, max: 100 }) : null} inputMode="decimal" unit="%" />
         </fieldset>
 
-        <fieldset className="iop-section">
+        <fieldset className="iop-section iop-section--single">
           <legend className="iop-legend">{strings.sections.extra}</legend>
           <Field id={id('extra')} label={strings.fields.extra} value={form.extra} onChange={update('extra')} hint={strings.fields.extraHint} error={errors.extra ? t(strings.fields.amountError, { max: num(MAX_AMOUNT) }) : null} inputMode="decimal" />
         </fieldset>
@@ -522,15 +545,25 @@ export default function InvestOrPayOff({
               </div>
             </>
           )}
-          <div className="ifc-grid">
-            <Field id={id('feePct')} label={strings.fields.fee} value={form.feePct} onChange={update('feePct')} error={errors.feePct ? t(strings.fields.percentError, { min: 0, max: num(MAX_FEE_PCT) }) : null} inputMode="decimal" unit="%" />
-            <Field id={id('gainsTax')} label={strings.fields.gainsTax} value={form.gainsTax} onChange={update('gainsTax')} hint={strings.fields.gainsTaxHint} error={errors.gainsTax ? t(strings.fields.percentError, { min: 0, max: 100 }) : null} inputMode="decimal" unit="%" />
-          </div>
         </fieldset>
 
-        <fieldset className="iop-section">
+        <details className="iop-more" open={moreOpen} onToggle={(e) => setMoreOpen(e.currentTarget.open)}>
+          <summary className="iop-moreSummary disclosure">
+            <span className="iop-moreTitle">{strings.more.title}</span>
+            <span className="iop-moreStatus">{moreStatus}</span>
+          </summary>
+          <div className="iop-moreBody">
+  <Field id={id('relief')} label={strings.fields.relief} value={form.relief} onChange={update('relief')} hint={strings.fields.reliefHint} error={errors.relief ? t(strings.fields.percentError, { min: 0, max: 100 }) : null} inputMode="decimal" unit="%" />
+            <div className="ifc-grid">
+            <Field id={id('feePct')} label={strings.fields.fee} value={form.feePct} onChange={update('feePct')} error={errors.feePct ? t(strings.fields.percentError, { min: 0, max: num(MAX_FEE_PCT) }) : null} inputMode="decimal" unit="%" />
+            <Field id={id('gainsTax')} label={strings.fields.gainsTax} value={form.gainsTax} onChange={update('gainsTax')} hint={strings.fields.gainsTaxHint} error={errors.gainsTax ? t(strings.fields.percentError, { min: 0, max: 100 }) : null} inputMode="decimal" unit="%" />
+            </div>
+          </div>
+        </details>
+
+        <fieldset className="iop-section iop-section--date">
           <legend className="iop-legend">{strings.horizons.legend}</legend>
-          <div className="iop-choices" role="radiogroup" aria-label={strings.horizons.legend}>
+          <div className="iop-choices iop-choices--date" role="radiogroup" aria-label={strings.horizons.legend}>
             {HORIZONS.map((h) => (
               <label key={h} className="iop-choice">
                 <input
@@ -546,12 +579,7 @@ export default function InvestOrPayOff({
           </div>
         </fieldset>
 
-        <div className="ifc-actions">
-          <button type="button" className="ifc-btn ifc-btn--ghost" onClick={reset}>
-            {strings.actions.reset}
-          </button>
-          <span className="ifc-hint">{hasErrors ? strings.results.fix : ''}</span>
-        </div>
+        <p className="ifc-hint iop-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
       <section className={`ifc-results iop-results${hasErrors ? ' ifc-results--stale' : ''}`} aria-labelledby={id('results')} aria-live="polite">

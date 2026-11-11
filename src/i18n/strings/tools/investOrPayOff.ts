@@ -136,6 +136,15 @@ export const investOrPayOffEn = {
   },
   island: {
     formLabel: 'Invest or pay off debt calculator',
+    example: 'Example scenario. Replace the figures with your own.',
+    more: {
+      title: 'Taxes and fees',
+      none: 'None entered',
+      inUse: 'In use: {list}',
+      relief: 'tax relief',
+      feePct: 'fund fee',
+      gainsTax: 'tax on gains',
+    },
     sections: {
       debt: 'Your debt',
       extra: 'The extra money',
@@ -380,6 +389,15 @@ export const investOrPayOffHi: InvestOrPayOff = {
   },
   island: {
     formLabel: 'निवेश या कर्ज़ चुकाना कैलकुलेटर',
+    example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
+    more: {
+      title: 'टैक्स और शुल्क',
+      none: 'कुछ नहीं भरा गया',
+      inUse: 'लागू: {list}',
+      relief: 'टैक्स छूट',
+      feePct: 'फंड शुल्क',
+      gainsTax: 'मुनाफ़े पर टैक्स',
+    },
     sections: {
       debt: 'आपका कर्ज़',
       extra: 'अतिरिक्त पैसा',
@@ -620,6 +638,15 @@ export const investOrPayOffMr: InvestOrPayOff = {
   },
   island: {
     formLabel: 'गुंतवणूक की कर्जफेड कॅल्क्युलेटर',
+    example: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
+    more: {
+      title: 'कर आणि शुल्क',
+      none: 'काहीही भरलेले नाही',
+      inUse: 'लागू: {list}',
+      relief: 'कर सवलत',
+      feePct: 'फंड शुल्क',
+      gainsTax: 'नफ्यावरील कर',
+    },
     sections: {
       debt: 'तुमचे कर्ज',
       extra: 'जादा पैसे',
@@ -860,6 +887,15 @@ export const investOrPayOffEs: InvestOrPayOff = {
   },
   island: {
     formLabel: 'Calculadora: invertir o pagar deuda',
+    example: 'Escenario de ejemplo. Cambia las cifras por las tuyas.',
+    more: {
+      title: 'Impuestos y comisiones',
+      none: 'Nada indicado',
+      inUse: 'En uso: {list}',
+      relief: 'desgravación fiscal',
+      feePct: 'comisión del fondo',
+      gainsTax: 'impuesto sobre la ganancia',
+    },
     sections: {
       debt: 'Tu deuda',
       extra: 'El dinero extra',
@@ -1100,6 +1136,15 @@ export const investOrPayOffCs: InvestOrPayOff = {
   },
   island: {
     formLabel: 'Kalkulačka: investovat, nebo splatit dluh',
+    example: 'Ukázkový scénář. Nahraďte čísla svými.',
+    more: {
+      title: 'Daně a\u00a0poplatky',
+      none: 'Nic nezadáno',
+      inUse: 'Použito: {list}',
+      relief: 'daňová úleva',
+      feePct: 'poplatek fondu',
+      gainsTax: 'daň ze zisku',
+    },
     sections: {
       debt: 'Váš dluh',
       extra: 'Peníze navíc',
