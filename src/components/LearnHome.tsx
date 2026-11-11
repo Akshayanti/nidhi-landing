@@ -194,8 +194,8 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
         </p>
       )}
       <div className="learn-actions">
-        <a className="learn-btn learn-btnPrimary" href={levelById.get(suggestion.level)?.href}>{format(strings.seeAll, { level: name })}</a>
-        <button type="button" className="learn-btn learn-btnText learn-btnQuiet" onClick={onRestart}>{strings.startOver}</button>
+        <a className="btn btn--primary" href={levelById.get(suggestion.level)?.href}>{format(strings.seeAll, { level: name })}</a>
+        <button type="button" className="btn btn--quiet" onClick={onRestart}>{strings.startOver}</button>
       </div>
     </div>
   );
@@ -359,7 +359,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           <div className="learn-actions">
             {!finished && nextInfo && (
               <a
-                className="learn-btn learn-btnPrimary"
+                className="btn btn--primary"
                 href={nextInfo.lesson.href}
                 data-attr={returning ? 'blog-start-continue' : 'blog-start-first-lesson'}
               >
@@ -367,11 +367,11 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
               </a>
             )}
             {finished ? (
-              <a className="learn-btn learn-btnPrimary" href={inclusiveHref} data-attr="blog-start-inclusive">{strings.exploreInclusive}</a>
+              <a className="btn btn--primary" href={inclusiveHref} data-attr="blog-start-inclusive">{strings.exploreInclusive}</a>
             ) : (
               <button
                 type="button"
-                className="learn-btn learn-btnSecondary"
+                className="btn btn--outline"
                 aria-expanded={helperOpen}
                 aria-controls="learn-helper"
                 onClick={toggleHelper}
@@ -418,7 +418,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
                   ))}
                 </div>
                 <div className="learn-actions learn-helperNav">
-                  <button type="button" className="learn-btn learn-btnPrimary" onClick={() => setStep(1)}>{strings.next}</button>
+                  <button type="button" className="btn btn--primary" onClick={() => setStep(1)}>{strings.next}</button>
                 </div>
               </fieldset>
             )}
@@ -436,7 +436,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
                   ))}
                 </div>
                 <div className="learn-actions learn-helperNav">
-                  <button type="button" className="learn-btn learn-btnText learn-btnQuiet" onClick={() => setStep(0)}>{strings.back}</button>
+                  <button type="button" className="btn btn--quiet" onClick={() => setStep(0)}>{strings.back}</button>
                 </div>
               </fieldset>
             )}
@@ -580,7 +580,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
             );
           })}
           {matches.length > shown.length && (
-            <button type="button" className="learn-btn learn-btnText" onClick={() => setShowAll(true)} data-attr="blog-search-show-all">
+            <button type="button" className="btn btn--outline learn-showAll" onClick={() => setShowAll(true)} data-attr="blog-search-show-all">
               {format(strings.showAll, { count: matches.length })}
             </button>
           )}

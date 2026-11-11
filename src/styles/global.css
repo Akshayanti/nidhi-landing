@@ -1843,60 +1843,7 @@ details[open] > .disclosure::after,
   font-weight: 600;
 }
 
-.transactional-cta {
-  display: inline-block;
-  padding: var(--space-3) var(--space-6);
-  background: var(--color-cta-bg);
-  color: var(--color-cta-fg);
-  border: none;
-  border-radius: var(--radius-md);
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.98rem;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
-}
-
-.transactional-cta:hover:not(:disabled) {
-  background: var(--color-cta-bg-hover);
-  color: var(--color-cta-fg);
-}
-
-.transactional-cta:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.transactional-cta:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.transactional-cta--destructive {
-  background: var(--semantic-destructive-bg);
-}
-
-/* The destructive fill sits close to the dark page; the danger edge keeps it 3:1 or more. */
-[data-theme="dark"] .transactional-cta--destructive {
-  border: 1.5px solid var(--color-danger);
-}
-
-.transactional-cta--destructive:hover:not(:disabled) {
-  background: var(--semantic-destructive-bg-hover);
-}
-
-.transactional-cta--subtle {
-  background: transparent;
-  color: var(--color-deep-blue);
-  border: 1px solid var(--color-deep-blue);
-  padding: calc(var(--space-3) - 1px) calc(var(--space-6) - 1px);
-}
-
-.transactional-cta--subtle:hover:not(:disabled) {
-  background: var(--color-callout-bg);
-  color: var(--color-callout-fg);
-  border-color: var(--color-callout-bg);
-}
+/* The buttons on these pages are the shared .btn roles. */
 
 .transactional-actions {
   display: flex;
@@ -3319,12 +3266,6 @@ details[open] > .disclosure::after,
   .lp-nodeCard:hover { transform: none; }
 }
 
-/* Reduced motion — transactional */
-@media (prefers-reduced-motion: reduce) {
-  .transactional-cta {
-    transition: none;
-  }
-}
 
 /* Tighten on small screens */
 @media (max-width: 480px) {
@@ -5974,58 +5915,8 @@ body[data-page="landing"] .site-footer {
   gap: var(--space-3);
 }
 
-.learn-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 var(--space-5);
-  border-radius: 10px;
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
+/* The learning path's buttons are the shared .btn roles. */
 
-.learn-btnPrimary {
-  border: 1px solid var(--color-cta-bg);
-  background: var(--color-cta-bg);
-  color: var(--color-cta-fg);
-}
-
-.learn-btnPrimary:hover,
-.learn-btnPrimary:active {
-  background: var(--color-cta-bg-hover);
-  border-color: var(--color-teal);
-  color: var(--color-cta-fg);
-}
-
-/* An outline, as every secondary button on the site (see "What you can tap"). */
-.learn-btnSecondary {
-  border: 1.5px solid var(--color-deep-blue);
-  background: transparent;
-  color: var(--color-deep-blue);
-}
-
-.learn-btnSecondary:hover,
-.learn-btnSecondary:active {
-  background: var(--color-bg-subtle);
-}
-
-.learn-btnText {
-  padding: 0 var(--space-1);
-  border: 0;
-  background: none;
-  color: var(--color-deep-blue);
-}
-
-.learn-btnQuiet {
-  color: var(--color-text-secondary);
-  text-decoration: underline;
-}
-
-.learn-btn:focus-visible,
 .learn-option:focus-visible,
 .learn-level:focus-visible,
 .learn-result:focus-visible,
@@ -6409,7 +6300,7 @@ a.learn-level:hover {
   font-weight: 600;
 }
 
-.learn-results > .learn-btnText {
+.learn-results > .learn-showAll {
   align-self: flex-start;
 }
 
@@ -6430,8 +6321,8 @@ a.learn-level:hover {
 
   .learn-startText h2 { font-size: 1.2rem; }
 
-  .learn-actions .learn-btnPrimary,
-  .learn-actions .learn-btnSecondary { width: 100%; }
+  .learn-actions .btn--primary,
+  .learn-actions .btn--outline { width: 100%; }
 
   .learn-level { gap: var(--space-3); padding: 10px var(--space-3); }
 
@@ -6924,40 +6815,6 @@ button.mcnw-legendItem:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
-}
-.ifc-btn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-cta-bg);
-  background: var(--color-cta-bg);
-  color: var(--color-cta-fg);
-}
-.ifc-btn:hover,
-.ifc-btn:focus-visible {
-  background: var(--color-cta-bg-hover);
-  border-color: var(--color-teal);
-}
-.ifc-btn:focus-visible {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
-.ifc-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.ifc-btn--ghost {
-  background: transparent;
-  color: var(--color-deep-blue);
-  border-color: var(--color-deep-blue);
-}
-.ifc-btn--ghost:hover,
-.ifc-btn--ghost:focus-visible {
-  background: var(--color-bg-subtle);
 }
 .ifc-resultsTitle {
   font-family: var(--font-heading);
