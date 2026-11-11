@@ -235,11 +235,17 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     border-bottom: 1px solid var(--color-border-light);
   }
 
+  /* One 60px row whenever everything fits, which is every width at the
+     default text size. With the text size raised (a phone's large-text
+     setting can double it) the controls no longer fit beside the logo; they
+     then move to a second row and never run past the edge, where the menu
+     button used to end up out of reach. */
   .site-nav {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    min-height: 60px;
   }
 
   .logo {
@@ -310,8 +316,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 
   .nav-right {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
     gap: var(--space-4);
+    margin-left: auto;
+    max-width: 100%;
   }
 
   /* Dropdown */
