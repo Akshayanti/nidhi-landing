@@ -353,6 +353,75 @@ describe('newsletter.gs: reminder run', () => {
   });
 });
 
+describe('newsletter.gs: what the server-side events carry', () => {
+  // Everything the script posts to PostHog while a reader signs up, confirms,
+  // is reminded and leaves. The names of the events and their properties are
+  // pinned from the source in scripts/server-events.test.mjs; this runs the
+  // code and looks at the bytes.
+  const journey = () => {
+    const ctx = load([
+      row('due@x.io', 'pending', 4, { confirm: tok('7'), unsub: tok('8') }),
+      row('old@x.io', 'pending', 9, { confirm: tok('5'), unsub: tok('6') }),
+    ]);
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (url, options) => { sent.push({ url, body: JSON.parse(options.payload) }); return {}; };
+    ctx.doPost(req({ action: 'subscribe', email: 'Reader@Example.org', source: '/blog/' }));
+    const confirm = find(ctx, 'reader@example.org')[6];
+    const unsub = find(ctx, 'reader@example.org')[7];
+    ctx.doGet(req({ action: 'confirm', t: confirm }));
+    ctx.doPost(req({ action: 'subscribe', email: 'reader@example.org', source: '/blog/' }));
+    ctx.handleRemindPending();
+    ctx.doPost(req({ action: 'unsubscribe', t: unsub }));
+    return { ctx, sent, tokens: [confirm, unsub, tok('5'), tok('6'), tok('7'), tok('8')] };
+  };
+  const hash = (email) => crypto.createHash('sha256').update(email).digest('hex');
+
+  it('sends each step of a reader’s journey, to the configured host only', () => {
+    const { sent } = journey();
+    assert.deepEqual(sent.map((s) => s.body.event), [
+      'blog_subscribe_pending', 'blog_subscribe_confirmed', 'blog_subscribe_duplicate',
+      'blog_pending_expired', 'blog_pending_reminded', 'blog_unsubscribe',
+    ]);
+    for (const s of sent) assert.equal(s.url, 'https://eu.i.posthog.com/capture/');
+  });
+
+  it('files a reader’s events under a hash of the address, never the address', () => {
+    const { sent } = journey();
+    const ids = sent.map((s) => s.body.distinct_id);
+    assert.deepEqual(ids, [hash('reader@example.org'), hash('reader@example.org'), hash('reader@example.org'), hash('old@x.io'), hash('due@x.io'), hash('reader@example.org')]);
+    for (const id of ids) assert.match(id, /^[0-9a-f]{64}$/);
+  });
+
+  it('no event holds an address, a part of one, or a token', () => {
+    const { sent, tokens } = journey();
+    const bytes = JSON.stringify(sent.map((s) => s.body));
+    assert.doesNotMatch(bytes, /@|example\.org|x\.io|reader/i);
+    for (const token of tokens) assert.ok(!bytes.includes(token), 'a token was sent');
+  });
+
+  it('each event has exactly the properties the table pins', () => {
+    const { sent } = journey();
+    assert.deepEqual(sent.map((s) => [s.body.event, Object.keys(s.body.properties).sort()]), [
+      ['blog_subscribe_pending', ['source']],
+      ['blog_subscribe_confirmed', []],
+      ['blog_subscribe_duplicate', ['source']],
+      ['blog_pending_expired', ['days_since_signup']],
+      ['blog_pending_reminded', ['days_since_signup']],
+      ['blog_unsubscribe', ['method']],
+    ]);
+    assert.deepEqual(Object.keys(sent[0].body).sort(), ['api_key', 'distinct_id', 'event', 'properties', 'timestamp']);
+  });
+
+  it('sends nothing when no key is configured', () => {
+    const ctx = load();
+    let calls = 0;
+    ctx.UrlFetchApp.fetch = () => { calls++; return {}; };
+    ctx.doPost(req({ action: 'subscribe', email: 'reader@example.org' }));
+    assert.equal(calls, 0);
+  });
+});
+
 describe('newsletter.gs: one fan-out per lesson', () => {
   const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
   const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
@@ -404,6 +473,23 @@ describe('newsletter.gs: one fan-out per lesson', () => {
     const ctx = load(list());
     assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: 'f'.repeat(64) }, body))), { ok: false, error: 'bad_signature' });
     assert.deepEqual(ctx.rec.mails, []);
+  });
+
+  it('accepts a request exactly as the sender signs it', () => {
+    // The same body, secret and signature that scripts/test_newsletter_sender.py
+    // checks against the Python sender: if either side changes how it signs,
+    // one of the two tests fails before a lesson goes unsent.
+    const fixture = JSON.parse(fs.readFileSync('scripts/fixtures/send-post-signature.json', 'utf8'));
+    assert.equal(fixture.secret, SECRET);
+    assert.equal(sign(fixture.body), fixture.hex);
+    assert.match(fixture.body, /\\u00e9/, 'the body is ASCII: other characters travel as escapes');
+    const ctx = load(list());
+    const out = json(ctx.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body)));
+    assert.notEqual(out.error, 'bad_signature');
+    assert.equal(out.ok, true);
+    // One character of the body changed: refused.
+    const other = load(list());
+    assert.deepEqual(json(other.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body.replace('A lesson', 'A lesson!')))), { ok: false, error: 'bad_signature' });
   });
 });
 

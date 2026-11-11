@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-10',
+    date: '2026-11-11',
     items: [
       {
         id: 'tools-send-less',
@@ -50,6 +50,81 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'Las herramientas gratuitas envían ahora un poco menos. El comparador de préstamos ya no informa de cuántos meses elegiste como horizonte, solo de que lo cambiaste, y cuando los tipos de cambio no se cargan, la calculadora de patrimonio neto informa de uno de unos pocos motivos fijos en lugar del texto de error del navegador. Un enlace que alguien comparta contigo solo puede fijar una moneda que las herramientas ofrecen, un número o un nombre de longitud normal. El aviso de privacidad enumera ahora todos los eventos que envían el comparador de préstamos y la calculadora de patrimonio neto.',
           cs: 'Bezplatné nástroje teď odesílají o\u00a0něco méně. Srovnání úvěrů už nehlásí, kolik měsíců jste zvolili jako časový horizont, jen to, že jste ho změnili. Když se nepodaří načíst kurzy, kalkulačka čistého jmění hlásí jeden z\u00a0několika pevných důvodů místo chybového textu prohlížeče. Odkaz, který vám někdo pošle, může nastavit jen měnu, kterou nástroje nabízejí, číslo nebo název běžné délky. Zásady ochrany soukromí teď vyjmenovávají všechny události, které srovnání úvěrů a\u00a0kalkulačka čistého jmění odesílají.',
           mr: 'मोफत साधने आता थोडी कमी माहिती पाठवतात. कर्जांची तुलना आता कालावधीसाठी किती महिने निवडले ते कळवत नाही, फक्त तो बदलला एवढेच. विनिमय दर लोड झाले नाहीत, तर निव्वळ संपत्ती कॅल्क्युलेटर ब्राउझरच्या स्वतःच्या एरर संदेशाऐवजी काही ठरावीक कारणांपैकी एक कळवतो. कोणी पाठवलेल्या लिंकमधून आता फक्त साधनांत उपलब्ध असलेले चलन, संख्या किंवा नेहमीच्या लांबीचे नाव येऊ शकते. गोपनीयता सूचनेत आता कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर पाठवत असलेल्या प्रत्येक घटनेची यादी आहे.',
+        },
+      },
+      {
+        id: 'loan-points-row',
+        text: {
+          en: 'In the loan comparison, the line about discount points now tells a saving from a loss. When a loan ends before the points have paid for themselves it says how much more they cost, where it used to print that amount as a saving. And for a loan entered by its monthly payment, where points shorten the loan and do not lower the payment, it now gives the month they pay for themselves, not “never”.',
+          hi: 'लोन की तुलना में डिस्काउंट पॉइंट्स वाली पंक्ति अब बचत और नुकसान में फ़र्क बताती है। जब लोन पॉइंट्स की लागत निकलने से पहले खत्म हो जाता है, तो वह बताती है कि वे कितने ज़्यादा महँगे पड़े; पहले वही रकम बचत के रूप में दिखती थी। और मासिक किस्त से भरे गए लोन में, जहाँ पॉइंट्स किस्त नहीं घटाते बल्कि लोन छोटा करते हैं, अब वह महीना दिखता है जब उनकी लागत निकल जाती है, “कभी नहीं” की जगह।',
+          es: 'En el comparador de préstamos, la línea sobre los puntos de descuento distingue ahora un ahorro de una pérdida. Cuando el préstamo termina antes de que los puntos se recuperen, dice cuánto más cuestan; antes mostraba esa cantidad como un ahorro. Y en un préstamo introducido por su cuota mensual, donde los puntos acortan el préstamo y no bajan la cuota, ahora da el mes en que se recuperan, no «nunca».',
+          cs: 'Ve srovnání úvěrů teď řádek o\u00a0slevových bodech rozliší úsporu od ztráty. Když úvěr skončí dřív, než se body vrátí, řekne, o\u00a0kolik víc stojí; dříve tu částku ukazoval jako úsporu. A\u00a0u\u00a0úvěru zadaného měsíční splátkou, kde body úvěr zkracují a\u00a0splátku nesnižují, teď uvede měsíc, kdy se vrátí, ne „nikdy“.',
+          mr: 'कर्जांच्या तुलनेत डिस्काउंट पॉइंट्सची ओळ आता बचत आणि तोटा यांत फरक करते. पॉइंट्सचा खर्च वसूल होण्याआधीच कर्ज संपले, तर ते किती जास्त महाग पडले हे ती सांगते; आधी तीच रक्कम बचत म्हणून दिसायची. आणि मासिक हप्त्याने भरलेल्या कर्जात, जिथे पॉइंट्स हप्ता कमी न करता कर्जाची मुदत कमी करतात, तिथे आता खर्च वसूल होण्याचा महिना दिसतो, “कधीच नाही” नाही.',
+        },
+      },
+      {
+        id: 'net-worth-rates-and-csv-amounts',
+        text: {
+          en: 'Two more fixes to the net worth calculator. After you change your spending currency it no longer shows a total worked out with the previous currency’s exchange rates: it waits for the new rates, and says so if they cannot be loaded. And amounts in an uploaded CSV file are read the way the file writes numbers, so “2500,50” is two thousand five hundred and a half, not a quarter of a million.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर में दो और सुधार हुए हैं। खर्च की मुद्रा बदलने के बाद वह अब पिछली मुद्रा की विनिमय दरों से निकला कुल जोड़ नहीं दिखाता: नई दरों का इंतज़ार करता है, और वे लोड न हो सकें तो यह बताता है। और अपलोड की गई CSV फ़ाइल की रकमें वैसे ही पढ़ी जाती हैं जैसे फ़ाइल में संख्याएँ लिखी हैं, इसलिए “2500,50” का मतलब ढाई हज़ार और पचास पैसे है, ढाई लाख नहीं।',
+          es: 'Dos correcciones más en la calculadora de patrimonio neto. Después de cambiar la moneda de tus gastos ya no muestra un total calculado con los tipos de cambio de la moneda anterior: espera a los nuevos y avisa si no se pueden cargar. Y las cantidades de un archivo CSV subido se leen como el archivo escribe los números, así que «2500,50» son dos mil quinientos con cincuenta, no un cuarto de millón.',
+          cs: 'Další dvě opravy v\u00a0kalkulačce čistého jmění. Po změně měny výdajů už neukazuje součet spočítaný s\u00a0kurzy předchozí měny: čeká na nové kurzy a\u00a0řekne, když se je nepodaří načíst. A\u00a0částky v\u00a0nahraném souboru CSV se čtou tak, jak soubor čísla zapisuje, takže „2500,50“ je dva tisíce pět set a\u00a0půl, ne čtvrt milionu.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये आणखी दोन दुरुस्त्या झाल्या आहेत. खर्चाचे चलन बदलल्यानंतर तो आता आधीच्या चलनाच्या विनिमय दरांनी काढलेली एकूण बेरीज दाखवत नाही: नव्या दरांची वाट पाहतो, आणि ते लोड झाले नाहीत तर तसे सांगतो. आणि अपलोड केलेल्या CSV\u00a0फाइलमधील रकमा फाइलमध्ये संख्या जशा लिहिल्या आहेत तशाच वाचल्या जातात, त्यामुळे “2500,50” म्हणजे अडीच हजार आणि अर्धा, अडीच लाख नाही.',
+        },
+      },
+      {
+        id: 'numbers-read-right',
+        text: {
+          en: 'Two fixes to how the tools read numbers. A decimal below one with three decimals, such as 0.125, was read as 125 on some pages; it is now read as written, in every language. And the Monte Carlo simulator now asks for whole years: half a year used to give a result line that read “NaN”.',
+          hi: 'टूल संख्याएँ कैसे पढ़ते हैं, उसमें दो सुधार हुए हैं। एक से छोटा तीन दशमलव वाला अंक, जैसे 0.125, कुछ पेजों पर 125 पढ़ा जाता था; अब वह हर भाषा में वैसा ही पढ़ा जाता है जैसा लिखा गया है। और मोंटे कार्लो सिम्युलेटर अब पूरे साल ही लेता है: आधे साल पर नतीजे की एक पंक्ति में “NaN” दिखता था।',
+          es: 'Dos correcciones en cómo las herramientas leen los números. Un decimal menor que uno con tres decimales, como 0.125, se leía como 125 en algunas páginas; ahora se lee tal como está escrito, en todos los idiomas. Y el simulador Monte Carlo pide ahora años enteros: con medio año, una línea del resultado mostraba «NaN».',
+          cs: 'Dvě opravy toho, jak nástroje čtou čísla. Desetinné číslo menší než jedna se třemi desetinnými místy, například 0.125, se na některých stránkách četlo jako 125; teď se čte tak, jak je napsané, ve všech jazycích. A\u00a0simulátor Monte Carlo teď chce celé roky: u\u00a0půl roku se v\u00a0jednom řádku výsledku objevilo „NaN“.',
+          mr: 'साधने संख्या कशा वाचतात यात दोन दुरुस्त्या झाल्या आहेत. एकापेक्षा लहान, तीन दशांश स्थाने असलेली संख्या, उदा. 0.125, काही पानांवर 125 अशी वाचली जायची; आता ती प्रत्येक भाषेत लिहिल्याप्रमाणेच वाचली जाते. आणि मॉन्टे कार्लो सिम्युलेटर आता पूर्ण वर्षेच घेतो: अर्ध्या वर्षासाठी निकालाच्या एका ओळीत “NaN” दिसायचे.',
+        },
+      },
+    ],
+  },
+  {
+    date: '2026-11-10',
+    items: [
+      {
+        id: 'net-worth-unreadable-amounts',
+        text: {
+          en: 'The net worth calculator now tells you when it cannot read an amount. An amount typed with a currency sign, a minus or words used to be left out of the total without a word; now the box is marked, a line says how many rows are not counted, and a CSV file that was only partly read keeps its list of the lines that failed. CSV files with semicolons or tabs, as spreadsheets save them in Spanish or Czech, now load, and a type the tool does not know is an error, not an asset.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर अब बताता है कि कौन सी रकम वह पढ़ नहीं सका। मुद्रा के चिह्न, ऋण चिह्न या शब्दों के साथ लिखी रकम पहले बिना कुछ कहे कुल जोड़ से बाहर रह जाती थी; अब उस बॉक्स पर निशान लगता है, एक पंक्ति बताती है कि कितनी पंक्तियाँ नहीं गिनी गईं, और जो CSV फ़ाइल पूरी नहीं पढ़ी जा सकी, उसकी न पढ़ी गई लाइनों की सूची बनी रहती है। सेमीकोलन या टैब वाली CSV फ़ाइलें अब लोड होती हैं, और जिस किस्म को टूल नहीं जानता वह अब गलती मानी जाती है, संपत्ति नहीं।',
+          es: 'La calculadora de patrimonio neto avisa ahora cuando no puede leer una cantidad. Una cantidad escrita con un símbolo de moneda, un signo menos o palabras quedaba antes fuera del total sin aviso; ahora la casilla se marca, una línea dice cuántas filas no se cuentan, y un archivo CSV que solo se leyó en parte conserva la lista de las líneas que fallaron. Los archivos CSV con punto y coma o tabuladores, como los guarda una hoja de cálculo en español o en checo, ya se cargan, y un tipo que la herramienta no conoce es un error, no un activo.',
+          cs: 'Kalkulačka čistého jmění teď řekne, když částku nedokáže přečíst. Částka napsaná se znakem měny, s\u00a0minusem nebo se slovy dříve bez upozornění vypadla ze součtu; teď se pole označí, řádek nad tabulkou říká, kolik řádků se nezapočítává, a\u00a0u\u00a0souboru CSV, který se přečetl jen zčásti, zůstane seznam řádků, které se nepovedly. Soubory CSV se středníky nebo tabulátory, jak je ukládá tabulkový procesor ve španělštině nebo češtině, se teď načtou a\u00a0typ, který nástroj nezná, je chyba, ne aktivum.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर आता एखादी रक्कम वाचता आली नाही तर तसे सांगतो. चलनाचे चिन्ह, वजा चिन्ह किंवा शब्दांसह लिहिलेली रक्कम आधी काहीही न सांगता एकूण बेरजेतून वगळली जायची; आता त्या चौकटीवर खूण येते, किती ओळी मोजलेल्या नाहीत हे एक ओळ सांगते, आणि जी CSV\u00a0फाइल अर्धवट वाचली गेली तिच्या न वाचलेल्या ओळींची यादी तशीच राहते. अर्धविराम किंवा टॅब असलेल्या CSV\u00a0फाइल्स आता लोड होतात, आणि साधनाला माहीत नसलेला प्रकार आता चूक मानला जातो, मालमत्ता नाही.',
+        },
+      },
+      {
+        id: 'loan-optional-boxes-errors',
+        text: {
+          en: 'In the loan comparison, an optional box that cannot be read is now an error. A fee typed as “€2,500”, an extra payment typed with words or a lump sum in the wrong form used to count as zero without a word, which could make an offer look free of fees; now the box is marked and the offer shows no result until it is fixed or cleared.',
+          hi: 'लोन की तुलना में अब वह वैकल्पिक बॉक्स गलती माना जाता है जिसे पढ़ा नहीं जा सकता। “€2,500” की तरह लिखा शुल्क, शब्दों के साथ लिखी अतिरिक्त किस्त या गलत रूप में लिखी एकमुश्त रकम पहले बिना कुछ कहे शून्य गिनी जाती थी, जिससे कोई ऑफ़र बिना शुल्क का दिख सकता था; अब उस बॉक्स पर निशान लगता है और उसे ठीक या खाली करने तक ऑफ़र का नतीजा नहीं दिखता।',
+          es: 'En el comparador de préstamos, una casilla opcional que no se puede leer es ahora un error. Una comisión escrita como «€2,500», un pago extra escrito con palabras o un pago único con un formato incorrecto contaban antes como cero sin aviso, y una oferta podía parecer libre de comisiones; ahora la casilla se marca y la oferta no muestra resultado hasta que se corrige o se vacía.',
+          cs: 'Ve srovnání úvěrů je teď nepovinné pole, které nejde přečíst, chybou. Poplatek zapsaný jako „€2,500“, mimořádná splátka zapsaná slovy nebo jednorázová splátka ve špatném tvaru se dříve bez upozornění počítaly jako nula, takže nabídka mohla vypadat jako bez poplatků; teď se pole označí a\u00a0nabídka neukáže výsledek, dokud pole neopravíte nebo nevymažete.',
+          mr: 'कर्जांच्या तुलनेत आता वाचता न येणारी पर्यायी चौकट ही चूक मानली जाते. “€2,500” असे लिहिलेले शुल्क, शब्दांसह लिहिलेला अतिरिक्त हप्ता किंवा चुकीच्या स्वरूपात लिहिलेली एकरकमी रक्कम आधी काहीही न सांगता शून्य धरली जायची, त्यामुळे एखादी ऑफर शुल्काशिवाय असल्यासारखी दिसू शकायची; आता त्या चौकटीवर खूण येते आणि ती दुरुस्त किंवा रिकामी करेपर्यंत ऑफरचा निकाल दिसत नाही.',
+        },
+      },
+      {
+        id: 'header-menus-keyboard',
+        text: {
+          en: 'The menus at the top of the page are easier to use from a keyboard: a bar now shows which link you are on, in light and dark, Tab moves on past the last link without getting lost, and screen readers are told what the menus and the theme buttons are, with no keys promised that do nothing.',
+          hi: 'पेज के ऊपर वाले मेन्यू अब कीबोर्ड से इस्तेमाल करना आसान है: एक पट्टी दिखाती है कि आप किस लिंक पर हैं, लाइट और डार्क दोनों में, आखिरी लिंक के बाद Tab बिना भटके आगे बढ़ता है, और स्क्रीन रीडर को बताया जाता है कि मेन्यू और थीम के बटन क्या हैं, बिना ऐसी कुंजियों का वादा किए जो कुछ नहीं करतीं।',
+          es: 'Los menús de la parte superior de la página son más fáciles de usar con el teclado: una barra muestra ahora en qué enlace estás, en modo claro y oscuro, Tab sigue adelante después del último enlace sin perderse, y los lectores de pantalla reciben lo que son los menús y los botones del tema, sin prometer teclas que no hacen nada.',
+          cs: 'Nabídky v\u00a0horní části stránky se teď lépe ovládají z\u00a0klávesnice: proužek ukazuje, na kterém odkazu jste, ve světlém i\u00a0tmavém režimu, Tab za posledním odkazem pokračuje dál a\u00a0neztratí se, a\u00a0čtečky obrazovky se dozvědí, co nabídky a\u00a0tlačítka motivu jsou, bez slibovaných kláves, které nic nedělají.',
+          mr: 'पानाच्या वरच्या भागातील मेनू आता कीबोर्डने वापरणे सोपे आहे: तुम्ही कोणत्या लिंकवर आहात हे एक पट्टी दाखवते, लाइट आणि डार्क दोन्हींमध्ये, शेवटच्या लिंकनंतर Tab न भरकटता पुढे जाते, आणि मेनू व थीमची बटणे काय आहेत हे स्क्रीन रीडरला सांगितले जाते, काहीही न करणाऱ्या कळांचे आश्वासन न देता.',
+        },
+      },
+      {
+        id: 'loan-ends-on-its-term',
+        text: {
+          en: 'The loan comparison now ends a loan on the term you type. A 30-year loan used to show as 30 years and 1 month, with a 361st payment of a few cents, in about half of all cases; those cents are now part of the last payment, as a lender would do it.',
+          hi: 'लोन की तुलना में अब लोन उसी अवधि पर खत्म होता है जो आप लिखते हैं। पहले लगभग आधे मामलों में 30 साल का लोन 30 साल 1 महीने का दिखता था, कुछ पैसों की 361वीं किस्त के साथ; अब वे पैसे आखिरी किस्त में जुड़ते हैं, जैसा लोन देने वाले करते हैं।',
+          es: 'El comparador de préstamos termina ahora el préstamo en el plazo que escribes. Antes, en cerca de la mitad de los casos, un préstamo a 30 años aparecía como de 30 años y 1 mes, con una cuota número 361 de unos céntimos; ahora esos céntimos forman parte de la última cuota, como haría una entidad financiera.',
+          cs: 'Srovnání úvěrů teď úvěr ukončí přesně po době, kterou zadáte. Dříve se zhruba v\u00a0polovině případů třicetiletý úvěr zobrazil jako 30 let a\u00a01 měsíc, s\u00a0361. splátkou ve výši několika haléřů; ty jsou teď součástí poslední splátky, jak to dělají poskytovatelé.',
+          mr: 'कर्जांची तुलना आता तुम्ही लिहिलेल्या मुदतीवरच कर्ज संपवते. आधी साधारण निम्म्या वेळा 30 वर्षांचे कर्ज 30 वर्षे 1 महिना असे दिसायचे, काही पैशांच्या 361 व्या हप्त्यासह; आता ते पैसे शेवटच्या हप्त्यात धरले जातात, जसे कर्जदाते करतात.',
         },
       },
       {

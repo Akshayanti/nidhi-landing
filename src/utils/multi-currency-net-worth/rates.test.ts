@@ -52,6 +52,7 @@ describe('ratesErrorReason', () => {
 
   it('tells the kinds apart', () => {
     assert.equal(ratesErrorReason(new TypeError('Failed to fetch')), 'network');
+    assert.equal(ratesErrorReason(new DOMException('The operation was aborted.', 'AbortError')), 'network', 'a request that ran out of time');
     assert.equal(ratesErrorReason(new SyntaxError('Unexpected token <')), 'parse');
     assert.equal(ratesErrorReason(new RatesError('unknown_currency')), 'unknown_currency');
     assert.equal(ratesErrorReason(new Error('anything')), 'other');

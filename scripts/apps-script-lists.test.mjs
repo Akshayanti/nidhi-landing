@@ -362,6 +362,24 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
     assert.equal(rows[1][0], 'first.last+tag@example.co.uk');
   });
 
+  it('the sign-up event is filed under a hash of the address and carries no address', () => {
+    const { c, store, state } = loadWritable([header.slice()]);
+    store.POSTHOG_API_KEY = 'phc_test_key';
+    vm.runInContext('CONFIG_CACHE = null;', c);
+    assert.deepEqual(signup(c, { email: 'Jane.Reader@Example.org', source: '/free/loan-comparison/' }), { ok: true });
+    // A second request for the same address adds nothing and sends nothing.
+    assert.deepEqual(signup(c, { email: 'jane.reader@example.org', source: '/free/loan-comparison/' }), { ok: true });
+    assert.equal(state.tracked.length, 1);
+    const event = state.tracked[0];
+    assert.equal(event.event, 'waitlist_signup');
+    assert.equal(event.distinct_id, crypto.createHash('sha256').update('jane.reader@example.org').digest('hex'));
+    assert.deepEqual(Object.keys(event.properties).sort(), ['email_domain', 'source']);
+    assert.deepEqual(Object.keys(event).sort(), ['api_key', 'distinct_id', 'event', 'properties', 'timestamp']);
+    // The domain is sent (the privacy finding on it is the owner's to settle);
+    // the part before the @ never is.
+    assert.doesNotMatch(JSON.stringify(event), /@|jane|reader/i);
+  });
+
   it('stops adding rows at the day’s limit and says the same', () => {
     const { c, rows, store } = loadWritable([header.slice()]);
     vm.runInContext('MAX_SIGNUPS_PER_DAY_ = 2;', c);

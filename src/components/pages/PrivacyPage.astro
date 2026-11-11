@@ -172,14 +172,11 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
-    date: 'Nov 10, 2026',
-    iso: '2026-11-10',
+    date: 'Nov 11, 2026',
+    iso: '2026-11-11',
     material: true,
-    summary: 'The free tools send less, and a link someone hands you can put less into them: the loan comparison no longer sends the number of months you chose for the time horizon, a failed exchange-rate request is reported as one of seven fixed reasons instead of the start of the browser\'s error message, and a shared link can only set a currency the tools offer. Addresses inside heatmap data and the newsletter\'s confirm and unsubscribe links get the same clean-up as other addresses. Also, corrections to this notice\'s wording: it quoted a homepage heading that was renamed, and a few sentences in the Hindi, Spanish and Czech editions had drifted from the English.',
+    summary: 'The free tools send less, and a link someone hands you can put less into them: the loan comparison no longer sends the number of months you chose for the time horizon, a failed exchange-rate request is reported as one of seven fixed reasons instead of the start of the browser\'s error message, and a shared link can only set a currency the tools offer. Addresses inside heatmap data and the newsletter\'s confirm and unsubscribe links get the same clean-up as other addresses. This notice now lists every event the loan comparison and the net worth calculator send.',
     details: [
-      'What changed: under "Stored only in your browser, never sent to us", the reading-progress item said your next step is suggested on each "Start wherever you are" route. That homepage section has been called "Which sounds like you?" since the redesign of Nov 4, 2026, and the item now uses that name, in every language.',
-      'Translations brought back in line with the English, which is unchanged: the Czech edition said the random ID lasts only for the page "if you disagree on the cookie banner", which could be read as leaving out someone who has not answered; it now says "until you give your consent", in both places it appears. The Czech waitlist purpose said "no promotion" and now says "no cross-promotion". Under "Your rights", the Hindi, Spanish and Czech editions said we remove you by hand "if you ask"; they now say, as the English does, that we do it by hand in each of these cases.',
-      'On the net worth calculator\'s page, the description of the exchange-rate request said it happens once. It now says what this notice already said: once when the page opens, and again if you change your spending currency.',
       'Loan comparison, changed event: free_loan_comparison_horizon_changed used to carry the horizon you typed or dragged to, in months. It now carries nothing: it says only that the horizon was changed. Events from the tools carry choices, never values, and that number was a value.',
       'Net worth calculator, changed event: free_multi_currency_net_worth_rates_error used to carry the first 80 characters of the browser\'s own error message as its reason. The reason is now one of seven fixed words: network, http_4xx, http_5xx, http_other, parse, unknown_currency or other. The spending currency it also carries can now only be one of the currencies the tools offer.',
       'Shared links: a link to the loan comparison or the net worth calculator is written by whoever shares it, so what it can put into the page is now limited. A currency must be one the tools offer, otherwise the page uses its own; this is also the only thing the exchange-rate request to Frankfurter carries, so a made-up link can no longer add anything to that request. A number must read as a typed number, and a name is cut at 80 characters.',
@@ -187,6 +184,17 @@ const writtenChangelog: ChangelogEntry[] = [
       'This notice, completed: the list of what the free tools send named only some of the loan comparison\'s events and none of the net worth calculator\'s. The loan comparison item now lists them all (adding or removing a vendor, the results tabs, the time horizon and refinance settings, invalid fields, the share dialog and shared views), and a new item lists the net worth calculator\'s (rows, CSV files, exchange-rate failures, sharing, reset). It also said the loan comparison records opening a "More options" panel; what is recorded is opening a vendor\'s details in the results. None of these events is new, and none carries a value you type.',
       'Analytics setting: PostHog\'s surveys feature is now switched off in the site\'s own settings (disable_surveys). The site has never used it; saying so here means a change in the PostHog project cannot start loading it for visitors.',
       'No new analytics event, click label, browser storage key, third-party request or processor.',
+    ],
+  },
+  {
+    date: 'Nov 10, 2026',
+    iso: '2026-11-10',
+    material: false,
+    summary: 'Corrections to this notice\'s wording: it quoted a homepage heading that was renamed, and a few sentences in the Hindi, Spanish and Czech editions had drifted from the English. Nothing collected, stored or sent changes.',
+    details: [
+      'What changed: under "Stored only in your browser, never sent to us", the reading-progress item said your next step is suggested on each "Start wherever you are" route. That homepage section has been called "Which sounds like you?" since the redesign of Nov 4, 2026, and the item now uses that name, in every language.',
+      'Translations brought back in line with the English, which is unchanged: the Czech edition said the random ID lasts only for the page "if you disagree on the cookie banner", which could be read as leaving out someone who has not answered; it now says "until you give your consent", in both places it appears. The Czech waitlist purpose said "no promotion" and now says "no cross-promotion". Under "Your rights", the Hindi, Spanish and Czech editions said we remove you by hand "if you ask"; they now say, as the English does, that we do it by hand in each of these cases.',
+      'On the net worth calculator\'s page, the description of the exchange-rate request said it happens once. It now says what this notice already said: once when the page opens, and again if you change your spending currency.',
     ],
   },
   {
