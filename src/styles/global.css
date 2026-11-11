@@ -2124,48 +2124,11 @@ details[open] > .disclosure::after,
   font-variant-numeric: tabular-nums;
 }
 
-.lc-shareBtn,
-.lc-resetBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-deep-blue);
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
 
-.lc-shareBtn:hover,
-.lc-shareBtn:focus-visible {
-  background: var(--color-deep-blue-dark);
-}
 
-.lc-resetBtn {
-  background: transparent;
-  color: var(--color-deep-blue);
-}
 
-.lc-resetBtn:hover,
-.lc-resetBtn:focus-visible {
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-[data-theme="dark"] .lc-shareBtn,
-[data-theme="dark"] .lc-resetBtn:hover,
-[data-theme="dark"] .lc-resetBtn:focus-visible {
-  color: var(--neutral-page-bg-dark);
-}
 
-.lc-shareBtn:focus-visible,
-.lc-resetBtn:focus-visible {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
 .lc-shareUrlBar {
   display: flex;
@@ -2303,8 +2266,9 @@ details[open] > .disclosure::after,
   row-gap: 0;
   text-align: left;
   background: var(--color-bg);
-  border: 2px dashed var(--color-control-edge);
-  border-radius: var(--radius-lg);
+  /* Solid: a dashed edge means "not available" (docs/color-palette.md, Buttons). */
+  border: 1.5px solid var(--color-deep-blue);
+  border-radius: 8px;
   padding: var(--space-3) var(--space-4);
   min-height: 64px;
   min-width: 0;
@@ -2319,8 +2283,10 @@ details[open] > .disclosure::after,
   border-color: var(--color-deep-blue);
   color: var(--color-deep-blue);
   background: var(--color-bg-white);
-  outline: none;
-  transform: translateY(-1px);
+}
+.lc-cardAdd:focus-visible {
+  outline: 2px solid var(--btn-focus);
+  outline-offset: 3px;
 }
 
 .lc-cardAdd:focus-visible {
@@ -3262,10 +3228,6 @@ details[open] > .disclosure::after,
   .lc-toolbarActions {
     width: 100%;
   }
-  .lc-shareBtn,
-  .lc-resetBtn {
-    flex: 1;
-  }
   .lc-deltaSection,
   .lc-chartSection {
     padding: var(--space-4) var(--space-3);
@@ -3336,20 +3298,8 @@ details[open] > .disclosure::after,
     overflow-wrap: anywhere;
   }
 
-  .lc-vendorTabAdd {
-    border: 2px dashed var(--color-control-edge);
-    background: transparent;
-    color: var(--color-deep-blue);
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
 
   /* Alone on its row: a slimmer full-width row instead of half a tile. */
-  .lc-vendorTabAdd:nth-child(odd) {
-    grid-column: 1 / -1;
-    min-height: 40px;
-  }
 
   .lc-vendorTab:focus-visible,
   .lc-vendorTabAdd:focus-visible {

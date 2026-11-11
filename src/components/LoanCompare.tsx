@@ -1053,7 +1053,7 @@ export default function LoanCompare({
         <div className="lc-toolbarActions">
           <button
             type="button"
-            className="lc-resetBtn"
+            className="btn btn--quiet lc-resetBtn"
             onClick={() => {
               setVendors(DEFAULT_VENDORS);
               setGlobalState(defaultGlobalState(defaultCurrency));
@@ -1092,7 +1092,7 @@ export default function LoanCompare({
         {vendors.length < MAX_VENDORS && (
           <button
             type="button"
-            className="lc-vendorTabAdd"
+            className="btn btn--outline lc-vendorTabAdd"
             onClick={addVendor}
             aria-label={format(strings.phoneTabs.addAria, { n: vendors.length + 1, max: MAX_VENDORS })}
             data-attr="lc-vendor-add"
@@ -1171,7 +1171,7 @@ export default function LoanCompare({
           <>
             <button
               type="button"
-              className="lc-shareBtn"
+              className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
               aria-describedby="lc-share-status"
               title={strings.toolbar.shareTitle}
