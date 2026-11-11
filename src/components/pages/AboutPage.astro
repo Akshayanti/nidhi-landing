@@ -144,14 +144,14 @@ const breadcrumbSchema = {
       <div class="about-cta">
         <p class="about-cta-text">{about.cta.text}</p>
         <div class="about-cta-links">
-          <a href="mailto:hello@nidhi.today" class="about-cta-link" data-attr="about-cta-email">
+          <a href="mailto:hello@nidhi.today" class="btn btn--outline" data-attr="about-cta-email">
             {about.cta.email}
           </a>{' '}
           <a
             href="https://www.instagram.com/nidhi.today"
             target="_blank"
             rel="noopener noreferrer"
-            class="about-cta-link"
+            class="btn btn--outline"
             data-attr="about-cta-instagram"
           >
             {about.cta.instagram}
@@ -260,23 +260,6 @@ const breadcrumbSchema = {
     gap: var(--space-4);
     justify-content: center;
     flex-wrap: wrap;
-  }
-
-  .about-cta-link {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-md);
-    color: var(--color-deep-blue);
-    border: 1px solid var(--color-deep-blue);
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .about-cta-link:hover {
-    background: var(--color-deep-blue);
-    color: white;
   }
 
   @media (max-width: 480px) {
