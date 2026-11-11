@@ -18,6 +18,7 @@
  * the council reviews them (src/utils/guideLayers.ts), situation cards,
  * filters, and a preview per group linking to its own page.
  */
+import { jsonForScript } from '../../utils/shared/jsonForScript.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getCollection } from 'astro:content';
@@ -190,7 +191,7 @@ const english = locale !== DEFAULT_LOCALE;
               ))}
             </div>
           </div>
-          <script type="application/json" id="ht-data" set:html={JSON.stringify(searchData)} />
+          <script type="application/json" id="ht-data" set:html={jsonForScript(searchData)} />
           <p hidden data-ht-lesson-label>{english ? howTo.inEnglishLessons : ''}</p>
         </>
       )}

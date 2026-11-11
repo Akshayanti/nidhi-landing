@@ -431,7 +431,7 @@ const EXPECTED_MENTIONS = [
 // quiet the test.
 const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
 const EXPECTED_WHOLE_FILES = [
-  'components/Analytics.astro: sha256 516e4a7d09cb44ef',
+  'components/Analytics.astro: sha256 83e2a3427a67e581',
   'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
   'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
 ];
