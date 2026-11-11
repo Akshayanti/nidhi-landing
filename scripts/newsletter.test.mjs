@@ -464,7 +464,9 @@ describe('newsletter.gs: subscriber states', () => {
     ctx.rec.onSend = (_to, text) => { mime = text; };
     sub(ctx, 'p@x.io');
     assert.deepEqual(ctx.rec.mails, ['p@x.io']);
-    assert.ok(mime.includes(tok('1')), 'the mail carries the link the first one did');
+    // The mail's two parts are base64: read them back before looking for the link.
+    const written = mime.split('\r\n\r\n').slice(1).map((part) => Buffer.from(part.split('\r\n--')[0].replace(/\s+/g, ''), 'base64').toString('utf8')).join('\n');
+    assert.ok(written.includes(tok('1')), 'the mail carries the link the first one did');
     const after = find(ctx, 'p@x.io');
     assert.equal(after[3].getTime(), created, 'asking again does not put off the 7-day expiry');
     assert.deepEqual([after[6], after[7]], [tok('1'), tok('2')]);
