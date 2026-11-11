@@ -345,7 +345,7 @@ export const multiCurrencyNetWorthEn = {
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
     example: {
       show: 'See an example',
-      note: 'Example figures. Replace them with your own.',
+      note: 'Example figures, not a typical or recommended household. Replace them with your own.',
       clear: 'Clear example',
       savings: 'Savings account',
       investments: 'Investments',
@@ -756,7 +756,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
     example: {
       show: 'एक उदाहरण देखें',
-      note: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
+      note: 'उदाहरण के आँकड़े, किसी आम या सुझाए गए घर के नहीं। इनकी जगह अपने आँकड़े भरें।',
       clear: 'उदाहरण हटाएँ',
       savings: 'बचत खाता',
       investments: 'निवेश',
@@ -779,7 +779,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     results: {
       empty: 'अपनी शुद्ध संपत्ति देखने के लिए कम से कम एक संपत्ति जोड़िए।',
       /** Under `empty`: what the results will hold. */
-      emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह दिखेगा।',
+      emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह सब दिखेगा।',
       totalLabel: 'कुल शुद्ध संपत्ति',
       hidden: 'छिपा हुआ',
       whatYouOwn: 'जो आपके पास है',
@@ -1146,7 +1146,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
     example: {
       show: 'Ver un ejemplo',
-      note: 'Cifras de ejemplo. Cámbialas por las tuyas.',
+      note: 'Cifras de ejemplo, no las de un hogar típico ni recomendado. Cámbialas por las tuyas.',
       clear: 'Quitar el ejemplo',
       savings: 'Cuenta de ahorro',
       investments: 'Inversiones',
@@ -1169,7 +1169,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     results: {
       empty: 'Añade al menos un activo para ver tu patrimonio neto.',
       /** Under `empty`: what the results will hold. */
-      emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y cuánta concentración hay.',
+      emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y hasta qué punto se concentra en una sola moneda.',
       totalLabel: 'Patrimonio neto total',
       hidden: 'Oculto',
       whatYouOwn: 'Lo que tienes',
@@ -1544,7 +1544,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
     example: {
       show: 'Zobrazit ukázku',
-      note: 'Ukázková čísla. Nahraďte je svými.',
+      note: 'Ukázková čísla, ne typická ani doporučená domácnost. Nahraďte je svými.',
       clear: 'Smazat ukázku',
       savings: 'Spořicí účet',
       investments: 'Investice',
@@ -1567,7 +1567,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     results: {
       empty: 'Přidejte alespoň jedno aktivum a uvidíte své čisté jmění.',
       /** Under `empty`: what the results will hold. */
-      emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, jak velká je koncentrace.',
+      emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, nakolik je jmění soustředěné v\u00a0jedné měně.',
       totalLabel: 'Celkové čisté jmění',
       hidden: 'Skryto',
       whatYouOwn: 'Co vlastníte',
@@ -1880,7 +1880,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       colActions: 'क्रिया',
       addAsset: '+ मालमत्ता जोडा',
       /** The row that unfolds the two CSV buttons. */
-      csvFold: 'ओळी इंपोर्ट किंवा सेव करा',
+      csvFold: 'ओळी इंपोर्ट किंवा सेव्ह करा',
       uploadCsv: 'CSV अपलोड करा',
       uploadCsvAria: 'CSV फाइल अपलोड करा',
       downloadCsv: 'ओळी CSV म्हणून सेव्ह करा (नंतर अपलोड करण्यासाठी)',
@@ -1901,7 +1901,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
     example: {
       show: 'एक उदाहरण पाहा',
-      note: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
+      note: 'उदाहरणाचे आकडे, एखाद्या सर्वसाधारण किंवा सुचवलेल्या कुटुंबाचे नाहीत. त्यांच्या जागी तुमचे आकडे भरा.',
       clear: 'उदाहरण काढा',
       savings: 'बचत खाते',
       investments: 'गुंतवणूक',

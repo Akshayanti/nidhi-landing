@@ -443,6 +443,12 @@ export default function MultiCurrencyNetWorth({
   const sameRow = (a: AssetRow, b: AssetRow) => a.name === b.name && a.value === b.value && a.currency === b.currency && a.type === b.type;
   const untouched = !isReadOnlyView && rows.every((r) => r.name.trim() === '' && r.value.trim() === '');
   const exampleLeft = rows.filter((r) => exampleRows.some((e) => sameRow(e, r))).length;
+  // Both example buttons remove themselves when pressed, which would drop
+  // focus to the top of the page: it goes to the first row's name instead.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const focusFirstRow = () => {
+    requestAnimationFrame(() => rootRef.current?.querySelector<HTMLInputElement>('.mcnw-cellName input')?.focus());
+  };
   const showExample = () => {
     const scale = EXAMPLE_SCALE[functionalCurrency] ?? 1;
     const other = functionalCurrency === 'USD' ? 'EUR' : 'USD';
@@ -454,17 +460,19 @@ export default function MultiCurrencyNetWorth({
     ];
     setExampleRows(filled);
     setRows(filled);
+    focusFirstRow();
   };
   const clearExample = () => {
     const kept = rows.filter((r) => !exampleRows.some((e) => sameRow(e, r)));
     setRows(kept.length > 0 ? kept : makeDefaultRows(defaultCurrency));
     setExampleRows([]);
+    focusFirstRow();
   };
 
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="mcnw-root">
+    <div className="mcnw-root" ref={rootRef}>
       {/* ---- Rate status ---- */}
       {ratesError && !singleCurrency && (
         <div className="mcnw-banner mcnw-bannerWarn" role="alert">
