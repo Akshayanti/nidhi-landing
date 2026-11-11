@@ -315,6 +315,8 @@ export const multiCurrencyNetWorthEn = {
       colType: 'Type',
       colActions: 'Actions',
       addAsset: '+ Add asset',
+      /** The row that unfolds the two CSV buttons. */
+      csvFold: 'Import or save rows',
       uploadCsv: 'Upload CSV',
       uploadCsvAria: 'Upload CSV file',
       downloadCsv: 'Save rows as CSV (to upload later)',
@@ -340,6 +342,16 @@ export const multiCurrencyNetWorthEn = {
         unknownType: '"{value}" is not a type the tool knows. Use {asset} or {liability}.',
       },
     },
+    /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
+    example: {
+      show: 'See an example',
+      note: 'Example figures. Replace them with your own.',
+      clear: 'Clear example',
+      savings: 'Savings account',
+      investments: 'Investments',
+      abroad: 'Account abroad',
+      loan: 'Loan',
+    },
     row: {
       /** `{index}` and `{total}` are positions in the table, both counting from one. */
       nameAria: 'Asset name (row {index} of {total})',
@@ -348,6 +360,7 @@ export const multiCurrencyNetWorthEn = {
       typeAria: 'Type (row {index})',
       /** Under a row whose amount the tool cannot read. A fixed sentence: it never quotes what was typed. */
       valueError: 'This amount could not be read. Use digits only, such as 50000.',
+      valuePlaceholder: 'e.g. 50000',
       namePlaceholder: 'Asset/Liability Name',
       asset: 'Asset',
       liability: 'Liability',
@@ -356,6 +369,8 @@ export const multiCurrencyNetWorthEn = {
     },
     results: {
       empty: 'Add at least one asset to see your net worth.',
+      /** Under `empty`: what the results will hold. */
+      emptyShows: 'You will see your net worth in one currency, the share held in each currency, and how concentrated it is.',
       totalLabel: 'Total net worth',
       hidden: 'Hidden',
       whatYouOwn: 'What you own',
@@ -719,6 +734,8 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       colType: 'किस्म',
       colActions: 'क्रियाएँ',
       addAsset: '+ संपत्ति जोड़ें',
+      /** The row that unfolds the two CSV buttons. */
+      csvFold: 'पंक्तियाँ इंपोर्ट या सेव करें',
       uploadCsv: 'CSV अपलोड करें',
       uploadCsvAria: 'CSV फ़ाइल अपलोड करें',
       downloadCsv: 'पंक्तियाँ CSV में सेव करें (बाद में अपलोड के लिए)',
@@ -736,12 +753,23 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         unknownType: '"{value}" ऐसी किस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
       },
     },
+    /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
+    example: {
+      show: 'एक उदाहरण देखें',
+      note: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
+      clear: 'उदाहरण हटाएँ',
+      savings: 'बचत खाता',
+      investments: 'निवेश',
+      abroad: 'विदेश में खाता',
+      loan: 'लोन',
+    },
     row: {
       nameAria: 'संपत्ति का नाम (कुल {total} में से पंक्ति {index})',
       valueAria: 'रकम (पंक्ति {index})',
       currencyAria: 'मुद्रा (पंक्ति {index})',
       typeAria: 'किस्म (पंक्ति {index})',
       valueError: 'यह रकम पढ़ी नहीं जा सकी। सिर्फ़ अंक लिखें, जैसे 50000।',
+      valuePlaceholder: 'जैसे 50000',
       namePlaceholder: 'संपत्ति/देनदारी का नाम',
       asset: 'संपत्ति',
       liability: 'देनदारी',
@@ -750,6 +778,8 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     },
     results: {
       empty: 'अपनी शुद्ध संपत्ति देखने के लिए कम से कम एक संपत्ति जोड़िए।',
+      /** Under `empty`: what the results will hold. */
+      emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह दिखेगा।',
       totalLabel: 'कुल शुद्ध संपत्ति',
       hidden: 'छिपा हुआ',
       whatYouOwn: 'जो आपके पास है',
@@ -1093,6 +1123,8 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       colType: 'Tipo',
       colActions: 'Acciones',
       addAsset: '+ Añadir activo',
+      /** The row that unfolds the two CSV buttons. */
+      csvFold: 'Importar o guardar filas',
       uploadCsv: 'Subir CSV',
       uploadCsvAria: 'Subir archivo CSV',
       downloadCsv: 'Guardar filas como CSV (para subirlas después)',
@@ -1111,12 +1143,23 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         unknownType: '«{value}» no es un tipo que la herramienta conozca. Usa {asset} o {liability}.',
       },
     },
+    /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
+    example: {
+      show: 'Ver un ejemplo',
+      note: 'Cifras de ejemplo. Cámbialas por las tuyas.',
+      clear: 'Quitar el ejemplo',
+      savings: 'Cuenta de ahorro',
+      investments: 'Inversiones',
+      abroad: 'Cuenta en el extranjero',
+      loan: 'Préstamo',
+    },
     row: {
       nameAria: 'Nombre del activo (fila {index} de {total})',
       valueAria: 'Valor (fila {index})',
       currencyAria: 'Moneda (fila {index})',
       typeAria: 'Tipo (fila {index})',
       valueError: 'No se pudo leer esta cantidad. Usa solo cifras, por ejemplo 50000.',
+      valuePlaceholder: 'p. ej. 50000',
       namePlaceholder: 'Nombre del activo o pasivo',
       asset: 'Activo',
       liability: 'Pasivo',
@@ -1125,6 +1168,8 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     },
     results: {
       empty: 'Añade al menos un activo para ver tu patrimonio neto.',
+      /** Under `empty`: what the results will hold. */
+      emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y cuánta concentración hay.',
       totalLabel: 'Patrimonio neto total',
       hidden: 'Oculto',
       whatYouOwn: 'Lo que tienes',
@@ -1477,6 +1522,8 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       colType: 'Typ',
       colActions: 'Akce',
       addAsset: '+ Přidat aktivum',
+      /** The row that unfolds the two CSV buttons. */
+      csvFold: 'Nahrát nebo uložit řádky',
       uploadCsv: 'Nahrát CSV',
       uploadCsvAria: 'Nahrát soubor CSV',
       downloadCsv: 'Uložit řádky jako CSV (k pozdějšímu nahrání)',
@@ -1494,12 +1541,23 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         unknownType: '„{value}“ není typ, který nástroj zná. Použijte {asset} nebo {liability}.',
       },
     },
+    /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
+    example: {
+      show: 'Zobrazit ukázku',
+      note: 'Ukázková čísla. Nahraďte je svými.',
+      clear: 'Smazat ukázku',
+      savings: 'Spořicí účet',
+      investments: 'Investice',
+      abroad: 'Účet v\u00a0zahraničí',
+      loan: 'Úvěr',
+    },
     row: {
       nameAria: 'Název aktiva (řádek {index} z {total})',
       valueAria: 'Hodnota (řádek {index})',
       currencyAria: 'Měna (řádek {index})',
       typeAria: 'Typ (řádek {index})',
       valueError: 'Tuto částku se nepodařilo přečíst. Použijte jen číslice, například 50000.',
+      valuePlaceholder: 'např. 50000',
       namePlaceholder: 'Název aktiva nebo závazku',
       asset: 'Aktivum',
       liability: 'Závazek',
@@ -1508,6 +1566,8 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     },
     results: {
       empty: 'Přidejte alespoň jedno aktivum a uvidíte své čisté jmění.',
+      /** Under `empty`: what the results will hold. */
+      emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, jak velká je koncentrace.',
       totalLabel: 'Celkové čisté jmění',
       hidden: 'Skryto',
       whatYouOwn: 'Co vlastníte',
@@ -1819,6 +1879,8 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       colType: 'प्रकार',
       colActions: 'क्रिया',
       addAsset: '+ मालमत्ता जोडा',
+      /** The row that unfolds the two CSV buttons. */
+      csvFold: 'ओळी इंपोर्ट किंवा सेव करा',
       uploadCsv: 'CSV अपलोड करा',
       uploadCsvAria: 'CSV फाइल अपलोड करा',
       downloadCsv: 'ओळी CSV म्हणून सेव्ह करा (नंतर अपलोड करण्यासाठी)',
@@ -1836,12 +1898,23 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         unknownType: '“{value}” हा साधनाला माहीत असलेला प्रकार नाही. {asset} किंवा {liability} लिहा.',
       },
     },
+    /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
+    example: {
+      show: 'एक उदाहरण पाहा',
+      note: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
+      clear: 'उदाहरण काढा',
+      savings: 'बचत खाते',
+      investments: 'गुंतवणूक',
+      abroad: 'परदेशातील खाते',
+      loan: 'कर्ज',
+    },
     row: {
       nameAria: 'मालमत्तेचे नाव (ओळ {index}, एकूण {total} पैकी)',
       valueAria: 'मूल्य (ओळ {index})',
       currencyAria: 'चलन (ओळ {index})',
       typeAria: 'प्रकार (ओळ {index})',
       valueError: 'ही रक्कम वाचता आली नाही. फक्त अंक लिहा, उदा. 50000.',
+      valuePlaceholder: 'उदा. 50000',
       namePlaceholder: 'मालमत्तेचे/देण्याचे नाव',
       asset: 'मालमत्ता',
       liability: 'देणे',
@@ -1850,6 +1923,8 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     },
     results: {
       empty: 'तुमची निव्वळ संपत्ती पाहण्यासाठी किमान एक मालमत्ता जोडा.',
+      /** Under `empty`: what the results will hold. */
+      emptyShows: 'इथे तुम्हाला एकाच चलनात तुमची निव्वळ संपत्ती, प्रत्येक चलनाचा हिस्सा आणि ती एका चलनात किती एकवटलेली आहे हे दिसेल.',
       totalLabel: 'एकूण निव्वळ संपत्ती',
       hidden: 'लपवलेले',
       whatYouOwn: 'तुमच्याकडे काय आहे',

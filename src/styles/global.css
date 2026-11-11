@@ -3489,12 +3489,17 @@ details[open] > .disclosure::after,
 }
 
 /* Toolbar */
+/* Inside the ledger card, above its rows: the currency everything is
+   shown in, and Reset. */
 .mcnw-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-content: space-between;
   align-items: flex-end;
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .mcnw-funcCurrencyField {
@@ -4287,10 +4292,91 @@ details[open] > .disclosure::after,
 }
 
 .mcnw-emptyState {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
   text-align: center;
-  padding: var(--space-8) var(--space-4);
-  color: var(--color-text-muted);
+  padding: var(--space-5) var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.mcnw-emptyState p {
+  margin: 0;
+  max-width: 52ch;
+}
+.mcnw-emptyLead {
+  font-family: var(--font-heading);
+  font-weight: 600;
   font-size: 1rem;
+  color: var(--color-deep-blue);
+}
+.mcnw-exampleBtn {
+  margin-top: var(--space-2);
+  min-height: 44px;
+  padding: 8px 18px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+  background: var(--color-bg-white);
+  border: 1.5px solid var(--color-deep-blue);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+.mcnw-exampleBtn:hover,
+.mcnw-exampleBtn:focus-visible {
+  background: var(--color-bg);
+}
+
+/* Says the rows are an example, with the way to take them out. */
+.mcnw-exampleNote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-3);
+  align-items: baseline;
+  margin: 0 0 var(--space-2);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.mcnw-linkBtn {
+  min-height: 32px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* A box's name above it: phones only, where the header row is gone. */
+.mcnw-cellLabel {
+  display: none;
+}
+
+/* The two CSV buttons behind one row. The chevron comes from .disclosure. */
+.mcnw-csvFold {
+  margin-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+}
+.mcnw-csvFoldSummary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 36px 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+.mcnw-csvFoldSummary::after {
+  right: 4px;
+  font-size: 1.25rem;
+}
+.mcnw-csvFoldBody {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
 }
 
 .mcnw-total {
@@ -4542,14 +4628,25 @@ details[open] > .disclosure::after,
 }
 
 @media (max-width: 700px) {
+  /* Each row is a small card with its boxes named. */
   .mcnw-tableRow {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-1);
-    padding: var(--space-3) 0;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    margin-top: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
   .mcnw-tableRowHead {
     display: none;
   }
+  .mcnw-cellLabel {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+  .mcnw-cellActions { align-self: end; }
   .mcnw-cellName { grid-column: 1 / -1; }
   .mcnw-cellValue { grid-column: 1; }
   .mcnw-cellCurrency { grid-column: 2; }
