@@ -1388,7 +1388,7 @@ function VendorCard({
     },
     penalty: {
       ...fold('penalty', differs('prepayPenaltyPct', 'prepayPenaltyUntilMonth'), unreadable('prepayPenaltyPct', 'prepayPenaltyUntilMonth')),
-      state: isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth) ? strings.card.foldSet : strings.card.foldNone,
+      state: isSet(vendor.prepayPenaltyPct) || isSet(vendor.prepayPenaltyUntilMonth) ? strings.card.foldSet : strings.card.foldNone,
     },
   };
 
@@ -1929,6 +1929,7 @@ function FieldGroup({ title, hint, state, open, onToggle, children }: FieldGroup
     <details className="lc-fieldGroup" open={open} onToggle={(e) => onToggle(e.currentTarget.open)}>
       <summary className="lc-fieldGroupHeader disclosure">
         <span className="lc-fieldGroupTitle">{title}</span>
+        <span className="lc-srOnly">: </span>
         <span className="lc-fieldGroupState">{state}</span>
       </summary>
       <div className="lc-fieldGroupBody">

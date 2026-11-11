@@ -135,7 +135,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Why is APR usually higher than the headline rate?',
-              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the effective rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. Under the compounded convention, APR is a little above the headline rate even with no fee. For an in-depth treatment, see the post on understanding loan terms.',
+              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. Under the compounded convention, APR is a little above the headline rate even with no fee. For an in-depth treatment, see the post on understanding loan terms.',
             },
             {
               q: 'Does APR include the extra principal I plan to pay each month?',
@@ -287,7 +287,7 @@ export const loanComparisonEn = {
     toolbar: {
       aria: 'Loan comparison actions',
       /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
-      aprLabel: 'APR convention',
+      aprLabel: 'How yearly APR is calculated',
       aprNominal: 'Monthly rate × 12',
       aprEffective: 'Monthly rate compounded over a year',
       aprHelpToggle: 'What is the difference?',
@@ -443,7 +443,7 @@ export const loanComparisonEn = {
       monthlyPayment: 'Monthly payment',
       monthsToPayoff: 'Months to payoff',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
-      aprNote: 'APR convention in this table: {convention}.',
+      aprNote: 'APR in this table: {convention}.',
       aprInclFees: 'APR (incl. fees)',
       totalInterest: 'Total interest',
       totalPaid: 'Total paid',
@@ -779,7 +779,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'APR आम तौर पर सामने लिखी दर से ऊँचा क्यों होता है?',
-              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। चक्रवृद्धि वाले तरीक़े में APR बिना शुल्क के भी सामने लिखी दर से थोड़ा ऊँचा रहता है। विस्तार से समझने के लिए लोन की शर्तों वाला पाठ देखें।',
+              a: 'सामने लिखी दर केवल मूलधन की लागत बताती है। APR शुल्क को भी जोड़ता है, जो उधार लेने वाला चुकाता तो है पर इस्तेमाल नहीं कर पाता, इसलिए जो पैसा उसे असल में मिलता है, उस पर उसकी असली दर ऊँची हो जाती है। एक जैसी सामने लिखी दर वाले दो लोन के APR बहुत अलग हो सकते हैं, और कम सामने लिखी दर वाले लोन का APR उस लोन से ऊँचा हो सकता है जिसकी दर ज़्यादा है पर कोई शुल्क नहीं। चक्रवृद्धि (compounding) वाले तरीक़े में APR बिना शुल्क के भी सामने लिखी दर से थोड़ा ऊँचा रहता है। विस्तार से समझने के लिए लोन की शर्तों वाला पाठ देखें।',
             },
             {
               q: 'क्या APR में हर महीने चुकाया जाने वाला मेरा अतिरिक्त मूलधन शामिल है?',
@@ -1356,7 +1356,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
-              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa efectiva que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Con la convención capitalizada, el APR queda algo por encima de la tasa anunciada incluso sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
+              a: 'La tasa anunciada solo pone precio al capital en sí. El APR también incluye la comisión, que quien pide el préstamo paga pero no llega a usar, así que la tasa que paga sobre el dinero que realmente recibe es más alta. Dos préstamos con la misma tasa anunciada pueden tener APR muy distintos, y un préstamo con una tasa anunciada más baja puede tener un APR más alto que otro con una tasa anunciada más alta pero sin comisión. Con la convención capitalizada, el APR queda algo por encima de la tasa anunciada incluso sin comisión. Para verlo a fondo, consulta la lección sobre las condiciones de los préstamos.',
             },
             {
               q: '¿El APR incluye el capital extra que pienso pagar cada mes?',
@@ -1502,11 +1502,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     toolbar: {
       aria: 'Acciones del comparador de préstamos',
       /** The switch above the offers that picks how the monthly rate becomes a yearly APR. */
-      aprLabel: 'Convención del APR',
+      aprLabel: 'Cómo se calcula el APR anual',
       aprNominal: 'Tasa mensual × 12',
       aprEffective: 'Tasa mensual capitalizada durante un año',
       aprHelpToggle: '¿Cuál es la diferencia?',
-      aprHelp: 'Hay dos convenciones: la tasa mensual por 12, que se usa en EE. UU. y Canadá, y la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido (APR, o APRC en hipotecas). Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
+      aprHelp: 'Hay dos convenciones: la tasa mensual por 12, que se usa en EE. UU. y Canadá, y la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido (APR, o APRC en hipotecas). Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra. La cifra oficial (TAE) fija además qué costos incluye.',
       currencyLabel: 'Moneda en pantalla',
       currencyHelp: 'Todos los préstamos de esta comparación usan este formato.',
       sample: 'Ejemplo:',
@@ -1636,7 +1636,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       monthlyPayment: 'Cuota mensual',
       monthsToPayoff: 'Meses hasta liquidar',
       /** Under the side-by-side table. `{convention}` is `toolbar.aprNominal` or `toolbar.aprEffective`. */
-      aprNote: 'Convención del APR en esta tabla: {convention}.',
+      aprNote: 'APR de esta tabla: {convention}.',
       aprInclFees: 'APR (con comisiones)',
       totalInterest: 'Intereses totales',
       totalPaid: 'Total pagado',
@@ -1928,11 +1928,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Co je APR a jak se tady počítá?',
-              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se pak převede na roční číslo jedním ze dvou způsobů a přepínač nad nabídkami určuje kterým: měsíční sazba × 12, jak se používá v USA a Kanadě, nebo měsíční sazba se složeným úročením za rok, jak se používá v EU (kde se jí říká RPSN) a ve Spojeném království. Bez poplatku se číslo podle měsíční sazby × 12 rovná zadané sazbě a číslo se složeným úročením je o něco vyšší, protože úrok se účtuje každý měsíc: ze 7,9 % je asi 8,19 %.',
+              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se pak převede na roční číslo jedním ze dvou způsobů a přepínač nad nabídkami určuje, kterým: měsíční sazba × 12, jak se používá v USA a Kanadě, nebo měsíční sazba se složeným úročením za rok, jak se používá v EU (v češtině se používá označení RPSN) a ve Spojeném království. Bez poplatku se číslo podle měsíční sazby × 12 rovná zadané sazbě a číslo se složeným úročením je o něco vyšší, protože úrok se účtuje každý měsíc: ze 7,9 % je asi 8,19 %.',
             },
             {
               q: 'Proč je APR obvykle vyšší než nabízená sazba?',
-              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže efektivní sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. Při složeném úročení je APR o něco vyšší než nabízená sazba i bez poplatku. Podrobněji to rozebírá článek o podmínkách úvěrů.',
+              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. Při složeném úročení je APR o něco vyšší než nabízená sazba i bez poplatku. Podrobněji to rozebírá článek o podmínkách úvěrů.',
             },
             {
               q: 'Zahrnuje APR mimořádnou splátku jistiny, kterou plánuji platit každý měsíc?',
@@ -2082,7 +2082,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       aprNominal: 'Měsíční sazba × 12',
       aprEffective: 'Měsíční sazba se složeným úročením za rok',
       aprHelpToggle: 'Jaký je v tom rozdíl?',
-      aprHelp: 'Používají se dva způsoby: měsíční sazba krát 12, obvyklá v USA a Kanadě, a měsíční sazba se složeným úročením za rok, obvyklá v EU (kde se jí říká RPSN) a ve Spojeném království (APR, u hypoték APRC). Jiné země mohou používat jeden z nich nebo vlastní pravidlo, proto si před porovnáním s tímto číslem ověřte, který způsob používá dokument poskytovatele úvěru.',
+      aprHelp: 'Používají se dva způsoby: měsíční sazba krát 12, obvyklá v USA a Kanadě, a měsíční sazba se složeným úročením za rok, obvyklá v EU (v češtině se používá označení RPSN) a ve Spojeném království (APR, u hypoték APRC). Jiné země mohou používat jeden z nich nebo vlastní pravidlo, proto si před porovnáním s tímto číslem ověřte, který způsob používá dokument poskytovatele úvěru. Oficiální RPSN navíc určuje, které náklady se do ní počítají.',
       currencyLabel: 'Měna zobrazení',
       currencyHelp: 'Všechny úvěry v tomto srovnání používají tento formát.',
       sample: 'Ukázka:',
@@ -2357,7 +2357,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Předpoklady a upozornění',
-      body: 'Výpočty předpokládají měsíční úročení a včasné splátky. APR se zobrazuje způsobem zvoleným nad nabídkami (měsíční sazba × 12, nebo měsíční sazba se složeným úročením za rok) a počítá se ze smluvního kalendáře (bez dobrovolných splátek navíc), a zahrnuje poplatek za sjednání a uzavření do efektivních nákladů úvěru; země se liší v tom, které další náklady (povinné pojištění, účty, daně) se musí započítat do oficiálně uváděné sazby (v EU RPSN), takže pokud je chcete zohlednit, přičtěte je do pole poplatku. Kanadské hypotéky na bydlení se ze zákona úročí pololetně a brazilské a některé britské produkty používají jiné zvyklosti úročení; u takových produktů budou zdejší čísla s měsíčním úročením mírně odlišná. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu plus marži a mohou mít stropy sazby, které tato kalkulačka neuplatňuje; zadaná následná sazba je váš nejlepší odhad pro zátěžový test. Daň z nemovitostí, poplatky za správu domu, pojištění nemovitosti a daňové zacházení s úroky z úvěru ve vaší zemi se nemodelují. Jen vzdělávací srovnání; nejde o finanční poradenství. Pro závazné srovnání úvěrů nebo osobní radu se obraťte na hypotečního zprostředkovatele s příslušným oprávněním nebo finančního poradce s příslušným oprávněním.',
+      body: 'Výpočty předpokládají měsíční úročení a včasné splátky. APR se zobrazuje způsobem zvoleným nad nabídkami (měsíční sazba × 12, nebo měsíční sazba se složeným úročením za rok) a počítá se ze smluvního kalendáře (bez dobrovolných splátek navíc) a zahrnuje poplatek za sjednání a uzavření do efektivních nákladů úvěru; země se liší v tom, které další náklady (povinné pojištění, účty, daně) se musí započítat do oficiálně uváděné sazby (v EU RPSN), takže pokud je chcete zohlednit, přičtěte je do pole poplatku. Kanadské hypotéky na bydlení se ze zákona úročí pololetně a brazilské a některé britské produkty používají jiné zvyklosti úročení; u takových produktů budou zdejší čísla s měsíčním úročením mírně odlišná. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu plus marži a mohou mít stropy sazby, které tato kalkulačka neuplatňuje; zadaná následná sazba je váš nejlepší odhad pro zátěžový test. Daň z nemovitostí, poplatky za správu domu, pojištění nemovitosti a daňové zacházení s úroky z úvěru ve vaší zemi se nemodelují. Jen vzdělávací srovnání; nejde o finanční poradenství. Pro závazné srovnání úvěrů nebo osobní radu se obraťte na hypotečního zprostředkovatele s příslušným oprávněním nebo finančního poradce s příslušným oprávněním.',
     },
     months: {
       na: 'není k dispozici',
@@ -2486,11 +2486,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'APR म्हणजे काय आणि इथे तो कसा काढला जातो?',
-              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. मग या मासिक दरावरून वार्षिक आकडा दोनपैकी एका पद्धतीने काढला जातो, आणि ऑफरच्या वरचा पर्याय ती पद्धत ठरवतो: मासिक दर × 12, जी अमेरिका आणि कॅनडात वापरली जाते, किंवा वर्षभर चक्रवाढ केलेला मासिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये वापरला जातो. शुल्क नसेल तर मासिक दर × 12 चा आकडा तुम्ही भरलेल्या दराइतकाच असतो, आणि चक्रवाढीचा आकडा थोडा जास्त, कारण व्याज दर महिन्याला लागते: 7.9% चा साधारण 8.19% होतो.',
+              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. मग या मासिक दरावरून वार्षिक आकडा दोनपैकी एका पद्धतीने काढला जातो, आणि ऑफरच्या वरचा पर्याय ती पद्धत ठरवतो: मासिक दर × 12, ही पद्धत अमेरिकेत आणि कॅनडात वापरली जाते, किंवा वर्षभर चक्रवाढ केलेला मासिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये वापरला जातो. शुल्क नसेल तर मासिक दर × 12 चा आकडा तुम्ही भरलेल्या दराइतकाच असतो, आणि चक्रवाढीचा आकडा थोडा जास्त, कारण व्याज दर महिन्याला लागते: 7.9% दराचा वार्षिक आकडा साधारण 8.19% होतो.',
             },
             {
               q: 'APR सहसा जाहिरातीतील दरापेक्षा जास्त का असतो?',
-              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला परिणामकारक दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. चक्रवाढीच्या पद्धतीत APR शुल्क नसतानाही जाहिरातीतील दरापेक्षा थोडा जास्त असतो. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा लेख पाहा.',
+              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. चक्रवाढीच्या पद्धतीत APR शुल्क नसतानाही जाहिरातीतील दरापेक्षा थोडा जास्त असतो. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा लेख पाहा.',
             },
             {
               q: 'मी दरमहा भरणार असलेले अतिरिक्त मुद्दल APR मध्ये धरले जाते का?',
@@ -2640,7 +2640,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       aprNominal: 'मासिक दर × 12',
       aprEffective: 'वर्षभर चक्रवाढ केलेला मासिक दर',
       aprHelpToggle: 'फरक काय आहे?',
-      aprHelp: 'दोन पद्धती वापरात आहेत: मासिक दर गुणिले 12, जी अमेरिका आणि कॅनडात वापरली जाते, आणि वर्षभर चक्रवाढ केलेला मासिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये (APR, किंवा गहाण कर्जांसाठी APRC) वापरला जातो. इतर देश यांपैकी एक किंवा स्वतःचा नियम वापरू शकतात, त्यामुळे या आकड्याशी तुलना करण्यापूर्वी कर्जदात्याच्या कागदपत्रात कोणती पद्धत आहे ते तपासा.',
+      aprHelp: 'दोन पद्धती वापरात आहेत: मासिक दराला 12 ने गुणण्याची पद्धत, जी अमेरिकेत आणि कॅनडात वापरली जाते, आणि वर्षभर चक्रवाढ केलेला मासिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये (APR, किंवा गहाण कर्जांसाठी APRC) वापरला जातो. इतर देश यांपैकी एक किंवा स्वतःचा नियम वापरू शकतात, त्यामुळे या आकड्याशी तुलना करण्यापूर्वी कर्जदात्याच्या कागदपत्रात कोणती पद्धत आहे ते तपासा.',
       currencyLabel: 'दाखवायचे चलन',
       currencyHelp: 'या तुलनेतील सर्व कर्जे हे स्वरूप वापरतात.',
       sample: 'नमुना:',
