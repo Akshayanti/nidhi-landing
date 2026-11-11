@@ -305,21 +305,43 @@ export function encodeLumpSums(entries: LumpSumEntry[]): string {
 // Per-vendor encode / decode
 // ---------------------------------------------------------------------------
 
-function encodeVendorTuple(v: VendorInput): string {
+/**
+ * What a link writes for a box the reader emptied, where the box has a
+ * default that is not empty. An empty position in a link means "not given:
+ * use the default", which is how short links and old links work; so a box
+ * emptied on purpose (offer B's 2,500 fee, cleared) needs a mark of its
+ * own, or the person who opens the link gets the default back and sees a
+ * different comparison from the one that was shared. A lone hyphen is not
+ * a number anyone means, and it is within what a link may carry.
+ */
+const CLEARED = '-';
+
+/** `value` as the link writes it: the mark when it was emptied and its default is not empty. */
+function written(value: string, dflt: string): string {
+  return value === '' && dflt !== '' ? CLEARED : value;
+}
+
+/** What a link's value says about a box: emptied on purpose, or the value itself. */
+function read(value: string, fallback: string): string {
+  return value === CLEARED ? '' : linkNumber(value, fallback);
+}
+
+function encodeVendorTuple(v: VendorInput, slotIndex: number): string {
+  const dflt = makeDefaultVendor(slotIndex);
   // Build the simple-mode tuple. Each position is the field's string value,
   // with the omit-when-default behaviour (substitute '' for fields that
   // match a stable single-valued default — currently just modeKind).
   const fields = new Array<string>(SIMPLE_FIELD_COUNT).fill('');
   fields[V_IDX.NAME] = v.name;
-  fields[V_IDX.PRINCIPAL] = v.principal;
-  fields[V_IDX.ANNUAL_RATE_PCT] = v.annualRatePct;
+  fields[V_IDX.PRINCIPAL] = written(v.principal, dflt.principal);
+  fields[V_IDX.ANNUAL_RATE_PCT] = written(v.annualRatePct, dflt.annualRatePct);
   // modeKind: 'term' is the default. Substituting '' here lets the
   // tuple's trailing-trim drop it for the most common case.
   fields[V_IDX.MODE_KIND] = v.modeKind === 'term' ? '' : v.modeKind;
-  fields[V_IDX.TERM_MONTHS] = v.termMonths;
-  fields[V_IDX.MONTHLY_PAYMENT] = v.monthlyPayment;
-  fields[V_IDX.FEE_MAJOR] = v.feeMajor;
-  fields[V_IDX.EXTRA_MONTHLY] = v.extraMonthly;
+  fields[V_IDX.TERM_MONTHS] = written(v.termMonths, dflt.termMonths);
+  fields[V_IDX.MONTHLY_PAYMENT] = written(v.monthlyPayment, dflt.monthlyPayment);
+  fields[V_IDX.FEE_MAJOR] = written(v.feeMajor, dflt.feeMajor);
+  fields[V_IDX.EXTRA_MONTHLY] = written(v.extraMonthly, dflt.extraMonthly);
   return encodeTuple(fields);
 }
 
@@ -337,8 +359,8 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
   // (see linkInput.ts).
   const name = linkName(fields[V_IDX.NAME]);
   if (name !== '') next.name = name;
-  if (fields[V_IDX.PRINCIPAL] !== '') next.principal = linkNumber(fields[V_IDX.PRINCIPAL], next.principal);
-  if (fields[V_IDX.ANNUAL_RATE_PCT] !== '') next.annualRatePct = linkNumber(fields[V_IDX.ANNUAL_RATE_PCT], next.annualRatePct);
+  if (fields[V_IDX.PRINCIPAL] !== '') next.principal = read(fields[V_IDX.PRINCIPAL], next.principal);
+  if (fields[V_IDX.ANNUAL_RATE_PCT] !== '') next.annualRatePct = read(fields[V_IDX.ANNUAL_RATE_PCT], next.annualRatePct);
 
   // modeKind: any unknown value coerces to 'term' so a malformed share
   // link can never put the UI into an unexpected state.
@@ -346,10 +368,10 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
     next.modeKind = fields[V_IDX.MODE_KIND] === 'payment' ? 'payment' : 'term';
   }
 
-  if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = linkNumber(fields[V_IDX.TERM_MONTHS], next.termMonths);
-  if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = linkNumber(fields[V_IDX.MONTHLY_PAYMENT], next.monthlyPayment);
-  if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = linkNumber(fields[V_IDX.FEE_MAJOR], next.feeMajor);
-  if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = linkNumber(fields[V_IDX.EXTRA_MONTHLY], next.extraMonthly);
+  if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = read(fields[V_IDX.TERM_MONTHS], next.termMonths);
+  if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = read(fields[V_IDX.MONTHLY_PAYMENT], next.monthlyPayment);
+  if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = read(fields[V_IDX.FEE_MAJOR], next.feeMajor);
+  if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = read(fields[V_IDX.EXTRA_MONTHLY], next.extraMonthly);
 
   return next;
 }
@@ -368,18 +390,18 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
   setNonDefault(params, 'c', global.currency, DEFAULT_CURRENCY);
   setNonDefault(params, 'n', vendors.length, MIN_VENDORS);
   setNonDefault(params, 't', global.activeTab, DEFAULT_GLOBAL_STATE.activeTab);
-  setNonDefault(params, 'h', global.horizonMonths, DEFAULT_GLOBAL_STATE.horizonMonths);
+  setNonDefault(params, 'h', written(global.horizonMonths, DEFAULT_GLOBAL_STATE.horizonMonths), DEFAULT_GLOBAL_STATE.horizonMonths);
   setNonDefault(params, 'rv', global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
-  setNonDefault(params, 'ra', global.refiAtMonth, DEFAULT_GLOBAL_STATE.refiAtMonth);
-  setNonDefault(params, 'rr', global.refiNewRatePct, DEFAULT_GLOBAL_STATE.refiNewRatePct);
-  setNonDefault(params, 'rt', global.refiNewTermMonths, DEFAULT_GLOBAL_STATE.refiNewTermMonths);
-  setNonDefault(params, 'rf', global.refiNewFeeMajor, DEFAULT_GLOBAL_STATE.refiNewFeeMajor);
+  setNonDefault(params, 'ra', written(global.refiAtMonth, DEFAULT_GLOBAL_STATE.refiAtMonth), DEFAULT_GLOBAL_STATE.refiAtMonth);
+  setNonDefault(params, 'rr', written(global.refiNewRatePct, DEFAULT_GLOBAL_STATE.refiNewRatePct), DEFAULT_GLOBAL_STATE.refiNewRatePct);
+  setNonDefault(params, 'rt', written(global.refiNewTermMonths, DEFAULT_GLOBAL_STATE.refiNewTermMonths), DEFAULT_GLOBAL_STATE.refiNewTermMonths);
+  setNonDefault(params, 'rf', written(global.refiNewFeeMajor, DEFAULT_GLOBAL_STATE.refiNewFeeMajor), DEFAULT_GLOBAL_STATE.refiNewFeeMajor);
   if (global.refiRollFee) params.set('rl', '1');
 
   // Per-vendor tuples + advanced overrides.
   vendors.forEach((v, i) => {
     const idx = i + 1;
-    const packed = encodeVendorTuple(v);
+    const packed = encodeVendorTuple(v, i);
     if (packed !== '') params.set(`v${idx}`, packed);
     for (const { field, key } of ADVANCED_KEY_MAP) {
       const value = v[field];
@@ -387,8 +409,10 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       // Two skip conditions:
       //   - empty string (field not in use)
       //   - matches the inactive default (no semantic difference)
-      if (value === '' || value === dflt) continue;
-      params.set(`v${idx}_${key}`, String(value));
+      if (value === dflt) continue;
+      // An emptied box whose default is not empty is written as the mark.
+      if (value === '' && (field === 'rateKind' || dflt === '')) continue;
+      params.set(`v${idx}_${key}`, written(String(value), String(dflt)));
     }
   });
 
@@ -479,7 +503,7 @@ export function decodeFromQueryString(qs: string): DecodeResult {
         // because `VendorInput` itself isn't a `Record<string, string>`
         // (it carries the union-typed `modeKind` and `rateKind`).
         const slot = next as unknown as Record<string, string>;
-        slot[field] = linkNumber(value, slot[field]);
+        slot[field] = read(value, slot[field]);
       }
     }
     return next;
@@ -493,13 +517,13 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   const global: GlobalState = {
     currency: currency ?? DEFAULT_GLOBAL_STATE.currency,
     activeTab,
-    horizonMonths: linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
+    horizonMonths: params.get('h') === CLEARED ? '' : linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
     // '0' is "no offer chosen"; otherwise one of the offers the link carries.
     refiVendorIndex: linkWholeNumber(params.get('rv'), 0, count, DEFAULT_GLOBAL_STATE.refiVendorIndex),
-    refiAtMonth: linkNumber(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
-    refiNewRatePct: linkNumber(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
-    refiNewTermMonths: linkNumber(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
-    refiNewFeeMajor: linkNumber(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
+    refiAtMonth: params.get('ra') === CLEARED ? '' : linkNumber(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
+    refiNewRatePct: params.get('rr') === CLEARED ? '' : linkNumber(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
+    refiNewTermMonths: params.get('rt') === CLEARED ? '' : linkNumber(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
+    refiNewFeeMajor: params.get('rf') === CLEARED ? '' : linkNumber(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
     refiRollFee: params.get('rl') === '1',
   };
 
