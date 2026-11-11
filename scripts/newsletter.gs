@@ -1246,7 +1246,7 @@ function handleConfirm_(e) {
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
     trackPosthog_('blog_welcome_failed', distinctIdForEmail_(email), {
       email_domain: emailDomain_(email),
-      error: String(err && err.message ? err.message : err).slice(0, 300),
+      reason: mailErrorKind_(err),
     });
   }
 
@@ -1557,13 +1557,13 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     } catch (err) {
       failed++;
       console.warn('send failed for ' + sub.email + ': ' + err);
-      // Per-recipient failure event — captures domain + error message so we
-      // can spot patterns (e.g. one domain blocklisting us) without leaking
-      // full subscriber addresses into PostHog.
+      // Per-recipient failure event: the domain and the kind of failure, so
+      // patterns show (one domain refusing us) without any address, or any
+      // of the mail service's own text, reaching PostHog.
       trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
         guid: payload.guid,
         email_domain: emailDomain_(sub.email),
-        error: String(err && err.message ? err.message : err).slice(0, 300),
+        reason: mailErrorKind_(err),
       });
       // Advance the marker past the failed row — next retry will skip it
       // (by design: per-recipient failures don't block the fan-out, and
@@ -2345,6 +2345,27 @@ function injectUnsubscribeUrlText_(text, url) {
 // Analytics restarted in a new PostHog project at 00:00 UTC on Oct 8, 2026;
 // nothing is sent before then (matches src/components/Analytics.astro).
 var POSTHOG_START_MS_ = Date.parse('2026-10-08T00:00:00Z');
+
+/**
+ * Which kind of failure a mail error is, as one of a fixed list of words.
+ *
+ * The events that report a failed send used to carry the mail service's own
+ * message, cut at 300 characters. That text is another system's, and it can
+ * quote the address it failed for ("Invalid To header: reader@..."), so a
+ * subscriber's address could reach analytics inside it. The event now
+ * carries this word; the full message stays in the execution log, where the
+ * owner can read it.
+ */
+var MAIL_ERROR_KINDS_ = ['quota', 'rate_limited', 'invalid_recipient', 'auth', 'unavailable', 'other'];
+function mailErrorKind_(err) {
+  var text = String(err && err.message ? err.message : err).toLowerCase();
+  if (/rate limit|too many requests|user-rate|429/.test(text)) return 'rate_limited';
+  if (/quota|limit exceeded|daily limit|too many times|too many (emails|messages|recipients)/.test(text)) return 'quota';
+  if (/invalid (to|recipient|address|email)|recipient address|no such user|address rejected/.test(text)) return 'invalid_recipient';
+  if (/authoriz|permission|access denied|forbidden|login required|insufficient/.test(text)) return 'auth';
+  if (/unavailable|backend error|internal error|timed out|timeout|try again/.test(text)) return 'unavailable';
+  return 'other';
+}
 
 function trackPosthog_(event, distinctId, properties) {
   if (Date.now() < POSTHOG_START_MS_) return;

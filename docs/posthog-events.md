@@ -147,7 +147,7 @@ Sent via `POST https://eu.i.posthog.com/capture/` (function `trackPosthog_` in e
 | `blog_subscribe_pending` | hashed email | `source: string` — page path from subscribe form | New subscriber, confirmation email sent |
 | `blog_subscribe_confirmed` | hashed email | — | User clicks email confirmation link; welcome email sent |
 | `blog_subscribe_duplicate` | hashed email | `source: string` | Already-confirmed email tries to re-subscribe |
-| `blog_welcome_failed` | hashed email | `email_domain: string`<br>`error: string` — first 300 chars | Welcome email send fails |
+| `blog_welcome_failed` | hashed email | `email_domain: string`<br>`reason`: one of `quota`, `rate_limited`, `invalid_recipient`, `auth`, `unavailable`, `other` (never the mail service's own text) | Welcome email send fails |
 | `blog_unsubscribe` | hashed email | `method: string` — unsubscribe trigger | User unsubscribes (email link or manual) |
 | `blog_pending_reminded` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 3 days gets a reminder email |
 | `blog_pending_expired` | hashed email | `days_since_signup: number` — days since original signup | Pending subscriber older than 7 days is removed from the sheet |
@@ -166,7 +166,7 @@ These use `cfg.fromEmail` as the `distinct_id` (operational events, not tied to 
 | Event | distinct_id | Properties | Trigger |
 |---|---|---|---|
 | `blog_newsletter_sent` | `cfg.fromEmail` | `guid: string` — post GUID<br>`sent: number` — successful sends<br>`failed: number` — failed sends<br>`skipped_already_sent: number` — recipients skipped because an earlier, interrupted run of the same send already reached them<br>`url: string` — the lesson the newsletter links to | Newsletter batch send completes |
-| `blog_newsletter_send_failed` | `cfg.fromEmail` | `guid: string` — post GUID<br>`email_domain: string` — recipient domain<br>`error: string` — first 300 chars | Individual send fails (also for missing `unsub_token`) |
+| `blog_newsletter_send_failed` | `cfg.fromEmail` | `guid: string` — post GUID<br>`email_domain: string` — recipient domain<br>`reason`: `missing_unsub_token`, or one of `quota`, `rate_limited`, `invalid_recipient`, `auth`, `unavailable`, `other` (never the mail service's own text) | Individual send fails (also for missing `unsub_token`) |
 | `blog_newsletter_quota_warning` | `cfg.fromEmail` | `subscriber_count: number`<br>`cap: number` — daily Workspace recipient cap | Confirmed subscriber count crosses 80% of daily cap |
 
 ---
