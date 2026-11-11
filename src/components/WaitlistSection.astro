@@ -68,8 +68,13 @@ const inputId = `${idPrefix}-email`;
       <form
         id={formId}
         class="waitlist-form"
+        method="post"
         data-endpoint={endpoint}
       >
+        {/* Without its script the form cannot sign anyone up. method="post"
+            keeps the browser from writing the email into the page address (a
+            form's default is GET), and this line says what is going on. */}
+        <noscript><p class="waitlist-status waitlist-noscript">{waitlist.noScript}</p></noscript>
         <div class="waitlist-input-group">
           <label class="sr-only" for={inputId}>{waitlist.emailLabel}</label>
           <input

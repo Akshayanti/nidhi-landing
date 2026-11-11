@@ -139,3 +139,27 @@ describe('the newsletter workflow says so when something went wrong', () => {
     assert.match(last, /\n\s+exit 1\n/);
   });
 });
+
+describe('a sign-up form whose script has not run does not put the email into the address', () => {
+  // A form with no method is a GET: with JavaScript off, blocked or not yet
+  // run, pressing the button reloads the page as /?email=<address>, which
+  // lands in the history and in the host's request log.
+  const components = readdirSync(join(ROOT, 'src/components'), { recursive: true })
+    .filter((name) => /\.(astro|tsx)$/.test(String(name)))
+    .map((name) => [String(name), read(join('src/components', String(name)))]);
+  const emailForms = components.flatMap(([name, source]) =>
+    [...source.matchAll(/<form\b[^>]*>[\s\S]*?<\/form>/g)].filter((m) => /type="email"/.test(m[0])).map((m) => [name, m[0], source]));
+
+  it('finds the waitlist form and both newsletter forms', () => {
+    assert.deepEqual(emailForms.map(([name]) => name).sort(), ['SubscribeSection.astro', 'SubscribeSection.astro', 'WaitlistSection.astro']);
+  });
+
+  it('each one posts, and its component says that signing up needs JavaScript', () => {
+    for (const [name, form, source] of emailForms) {
+      assert.match(/<form\b[^>]*>/.exec(form)[0], /\smethod="post"/, name);
+      assert.match(source, /<noscript><p [^>]*>\{(t|waitlist)\.noScript\}<\/p><\/noscript>/, name);
+    }
+    const subscribe = components.find(([name]) => name === 'SubscribeSection.astro')[1];
+    assert.equal(subscribe.match(/<noscript>/g).length, 2, 'one line for each variant of the newsletter form');
+  });
+});
