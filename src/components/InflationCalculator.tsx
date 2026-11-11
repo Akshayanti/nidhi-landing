@@ -505,7 +505,7 @@ export default function InflationCalculator({
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="ifc-formHead">
           <p className="ifc-example">{pristine ? strings.example : ''}</p>
-          <button type="button" className="ifc-btn ifc-btn--ghost ifc-reset" onClick={reset} data-attr="free-inflation-reset">
+          <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-inflation-reset">
             {strings.actions.reset}
           </button>
         </div>
@@ -663,7 +663,7 @@ export default function InflationCalculator({
       <ToolExport
         strings={exportStrings}
         share={
-          <button type="button" className="ifc-btn" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
+          <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
             {copied ? strings.actions.copied : strings.actions.copy}
           </button>
         }
