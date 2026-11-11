@@ -245,3 +245,53 @@ describe('the inflation default', () => {
     assert.ok(inflationDefault({ ...series(2015, 2024, 50), 2023: -1 }, 2025)!.average > 40);
   });
 });
+
+describe("interest avoided in today's money is worked out month by month", () => {
+  // An independent replay of both debt schedules: every month's interest at
+  // that month's prices.
+  const replay = (i: Inputs, months: number) => {
+    const rate = i.debtRate / 100 / 12;
+    const run = (outgo: number) => {
+      const out: number[] = [];
+      let debt = i.balance;
+      for (let m = 0; m < months; m++) {
+        const charged = debt > 0 ? debt * rate : 0;
+        out.push(charged);
+        debt = Math.max(0, debt + charged - Math.min(debt + charged, outgo));
+        if (debt < 1e-6) debt = 0;
+      }
+      return out;
+    };
+    const a = run(i.payment + i.extra);
+    const b = run(i.payment);
+    let nominal = 0;
+    let today = 0;
+    for (let m = 0; m < months; m++) {
+      const saved = (b[m] - a[m]) * (1 - i.relief / 100);
+      nominal += saved;
+      today += saved / Math.pow(1 + i.inflation / 100, (m + 1) / 12);
+    }
+    return { nominal, today };
+  };
+
+  for (const inflation of [0, 2, 6, 25]) {
+    for (const relief of [0, 30]) {
+      it(`matches a month-by-month replay at ${inflation}% inflation, ${relief}% relief`, () => {
+        const i = { ...BASE, inflation, relief };
+        const r = compare(i, { paths: 50, flat: true });
+        const want = replay(i, r.months);
+        close(r.interestAvoided, want.nominal, 0.01);
+        close(r.interestAvoidedToday, want.today, 0.01);
+      });
+    }
+  }
+
+  it('equals the nominal figure with no inflation, and sits between it and the end-date figure otherwise', () => {
+    const flat = compare({ ...BASE, inflation: 0 }, { paths: 50, flat: true });
+    close(flat.interestAvoidedToday, flat.interestAvoided, 1e-6);
+    const r = compare({ ...BASE, inflation: 6 }, { paths: 50, flat: true });
+    const atEnd = r.interestAvoided / Math.pow(1.06, r.months / 12);
+    assert.ok(r.interestAvoidedToday < r.interestAvoided);
+    assert.ok(r.interestAvoidedToday > atEnd);
+  });
+});
