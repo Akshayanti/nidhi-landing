@@ -1164,6 +1164,7 @@ export const en = {
     confirmPrompt: 'Is this the right address?',
     confirmYes: 'Yes, subscribe',
     confirmChange: 'Change it',
+    noScript: 'Signing up needs JavaScript, which is off or blocked in this browser. You can also write to hello@nidhi.today.',
     undo: 'Undo',
     dismissedPermanent: 'Thanks for subscribing! We won’t show this banner on this device again.',
     dismissedLater: 'We’ll check back later.',
@@ -1204,6 +1205,7 @@ export const en = {
     confirmPrompt: 'Is this the right address?',
     confirmYes: 'Yes, notify me',
     confirmChange: 'Change it',
+    noScript: 'Signing up needs JavaScript, which is off or blocked in this browser. You can also write to hello@nidhi.today.',
     /** Shown on the button while the request is in flight. */
     sending: 'Sending…',
     /** Shown when the build has no endpoint configured, so a signup cannot land. */

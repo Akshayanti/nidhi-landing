@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'forms-without-javascript',
+        text: {
+          en: 'If JavaScript is off or blocked in your browser, the waitlist and newsletter forms now say that signing up needs it and give an address to write to. Pressing the button used to reload the page with your email in the address and sign nobody up; the email is no longer put there.',
+          hi: 'अगर आपके ब्राउज़र में JavaScript बंद या ब्लॉक है, तो वेटलिस्ट और न्यूज़लेटर के फ़ॉर्म अब बताते हैं कि साइन अप के लिए वह ज़रूरी है, और लिखने के लिए एक पता देते हैं। पहले बटन दबाने पर पेज दोबारा खुलता था, आपका ईमेल पेज के पते में आ जाता था और साइन अप नहीं होता था; अब ईमेल वहाँ नहीं जाता।',
+          es: 'Si JavaScript está desactivado o bloqueado en tu navegador, los formularios de la lista de espera y del boletín dicen ahora que hace falta para apuntarse y dan una dirección a la que escribir. Antes, al pulsar el botón la página se recargaba con tu correo en la dirección y nadie quedaba apuntado; el correo ya no se pone ahí.',
+          cs: 'Pokud je ve vašem prohlížeči JavaScript vypnutý nebo blokovaný, formuláře pro čekací listinu a\u00a0newsletter teď říkají, že je k\u00a0přihlášení potřeba, a\u00a0uvádějí adresu, na kterou lze napsat. Dříve se po stisku tlačítka stránka načetla znovu s\u00a0vaším e-mailem v\u00a0adrese a\u00a0nikdo přihlášen nebyl; e-mail se tam už nedostane.',
+          mr: 'तुमच्या ब्राउझरमध्ये JavaScript बंद किंवा ब्लॉक असेल, तर प्रतीक्षा यादी आणि न्यूजलेटरचे फॉर्म आता सांगतात की नोंदणीसाठी ते आवश्यक आहे, आणि लिहिण्यासाठी एक पत्ता देतात. आधी बटण दाबल्यावर पान पुन्हा उघडायचे, तुमचा ईमेल पानाच्या पत्त्यात यायचा आणि नोंदणी होत नसे; आता ईमेल तिथे जात नाही.',
+        },
+      },
+      {
         id: 'how-to-feed',
         text: {
           en: 'The how-to guides now have a feed of their own, at nidhi.today/how-to/rss.xml, for anyone who follows the site in a feed reader. The lesson feed also lists the newest lesson first now; it used to start with the oldest.',
