@@ -518,6 +518,221 @@ describe('newsletter.gs: subscriber states', () => {
   });
 });
 
+describe('newsletter.gs: what the server-side events carry', () => {
+  // Everything the script posts to PostHog while a reader signs up, confirms,
+  // is reminded and leaves. The names of the events and their properties are
+  // pinned from the source in scripts/server-events.test.mjs; this runs the
+  // code and looks at the bytes.
+  const journey = () => {
+    const ctx = load([
+      row('due@x.io', 'pending', 4, { confirm: tok('7'), unsub: tok('8') }),
+      row('old@x.io', 'pending', 9, { confirm: tok('5'), unsub: tok('6') }),
+    ]);
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (url, options) => { sent.push({ url, body: JSON.parse(options.payload) }); return {}; };
+    ctx.doPost(req({ action: 'subscribe', email: 'Reader@Example.org', source: '/blog/' }));
+    const confirm = find(ctx, 'reader@example.org')[6];
+    const unsub = find(ctx, 'reader@example.org')[7];
+    ctx.doGet(req({ action: 'confirm', t: confirm }));
+    ctx.doPost(req({ action: 'subscribe', email: 'reader@example.org', source: '/blog/' }));
+    ctx.handleRemindPending();
+    ctx.doPost(req({ action: 'unsubscribe', t: unsub }));
+    return { ctx, sent, tokens: [confirm, unsub, tok('5'), tok('6'), tok('7'), tok('8')] };
+  };
+  const hash = (email) => crypto.createHash('sha256').update(email).digest('hex');
+
+  it('sends each step of a reader’s journey, to the configured host only', () => {
+    const { sent } = journey();
+    assert.deepEqual(sent.map((s) => s.body.event), [
+      'blog_subscribe_pending', 'blog_subscribe_confirmed', 'blog_subscribe_duplicate',
+      'blog_pending_expired', 'blog_pending_reminded', 'blog_unsubscribe',
+    ]);
+    for (const s of sent) assert.equal(s.url, 'https://eu.i.posthog.com/capture/');
+  });
+
+  it('files a reader’s events under a hash of the address, never the address', () => {
+    const { sent } = journey();
+    const ids = sent.map((s) => s.body.distinct_id);
+    assert.deepEqual(ids, [hash('reader@example.org'), hash('reader@example.org'), hash('reader@example.org'), hash('old@x.io'), hash('due@x.io'), hash('reader@example.org')]);
+    for (const id of ids) assert.match(id, /^[0-9a-f]{64}$/);
+  });
+
+  it('no event holds an address, a part of one, or a token', () => {
+    const { sent, tokens } = journey();
+    const bytes = JSON.stringify(sent.map((s) => s.body));
+    assert.doesNotMatch(bytes, /@|example\.org|x\.io|reader/i);
+    for (const token of tokens) assert.ok(!bytes.includes(token), 'a token was sent');
+  });
+
+  it('each event has exactly the properties the table pins', () => {
+    const { sent } = journey();
+    assert.deepEqual(sent.map((s) => [s.body.event, Object.keys(s.body.properties).sort()]), [
+      ['blog_subscribe_pending', ['source']],
+      ['blog_subscribe_confirmed', []],
+      ['blog_subscribe_duplicate', ['source']],
+      ['blog_pending_expired', ['days_since_signup']],
+      ['blog_pending_reminded', ['days_since_signup']],
+      ['blog_unsubscribe', ['method']],
+    ]);
+    assert.deepEqual(Object.keys(sent[0].body).sort(), ['api_key', 'distinct_id', 'event', 'properties', 'timestamp']);
+  });
+
+  it('sends nothing when no key is configured', () => {
+    const ctx = load();
+    let calls = 0;
+    ctx.UrlFetchApp.fetch = () => { calls++; return {}; };
+    ctx.doPost(req({ action: 'subscribe', email: 'reader@example.org' }));
+    assert.equal(calls, 0);
+  });
+});
+
+describe('newsletter.gs: the mail itself (issue 439)', () => {
+  /** A mail as sent: its headers as a map of name to the list of values, and its two parts decoded. */
+  const read = (mime) => {
+    const [head, ...rest] = mime.split('\r\n\r\n');
+    const headers = {};
+    for (const line of head.split('\r\n')) {
+      const at = line.indexOf(':');
+      (headers[line.slice(0, at)] ??= []).push(line.slice(at + 1).trim());
+    }
+    const boundary = /boundary="([^"]+)"/.exec(head)[1];
+    const parts = rest.join('\r\n\r\n').split(`--${boundary}`).slice(1, -1).map((part) => {
+      const [partHead, body] = part.replace(/^\r\n/, '').split('\r\n\r\n');
+      return { head: partHead, lines: body.trim().split('\r\n'), text: Buffer.from(body.replace(/\s+/g, ''), 'base64').toString('utf8') };
+    });
+    return { headers, parts, raw: mime };
+  };
+  const lesson = { guid: 'https://nidhi.today/blog/x/', subject: 'A lesson', html: `<p>Everyone’s money: ${'word '.repeat(700)}</p><a href="{{UNSUBSCRIBE_URL}}">leave</a>`, text: 'Everyone’s money. Leave: {{UNSUBSCRIBE_URL}}', url: 'https://nidhi.today/blog/x/' };
+  const sendLesson = (ctx) => {
+    const body = JSON.stringify(lesson);
+    const mails = [];
+    ctx.rec.onSend = (to, mime) => mails.push([to, read(mime)]);
+    json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
+    return mails;
+  };
+  const readers = () => [row('a@x.io', 'confirmed', 30, { unsub: tok('1') }), row('b@x.io', 'confirmed', 30, { unsub: tok('2') })];
+
+  it('the reminder carries no unsubscribe header at all, never one that says "null"', () => {
+    const ctx = load([row('due@x.io', 'pending', 4, { confirm: tok('3') })]);
+    let mail;
+    ctx.rec.onSend = (_to, mime) => { mail = read(mime); };
+    ctx.handleRemindPending();
+    assert.ok(mail, 'a reminder was sent');
+    assert.equal(mail.headers['List-Unsubscribe'], undefined);
+    assert.equal(mail.headers['List-Unsubscribe-Post'], undefined);
+    assert.doesNotMatch(mail.raw, /null|undefined/);
+  });
+
+  it('a lesson carries the one-click headers, with the reader’s own address to post to', () => {
+    const mails = sendLesson(load(readers()));
+    assert.equal(mails.length, 2);
+    for (const [to, mail] of mails) {
+      const token = to === 'a@x.io' ? tok('1') : tok('2');
+      assert.equal(mail.headers['List-Unsubscribe'].length, 1);
+      assert.match(mail.headers['List-Unsubscribe'][0], new RegExp(`^<https?://[^<>\\s]+\\?action=unsubscribe&t=${token}>$`));
+      assert.deepEqual(mail.headers['List-Unsubscribe-Post'], ['List-Unsubscribe=One-Click']);
+    }
+  });
+
+  it('every copy of a lesson has its own Message-ID', () => {
+    const ids = sendLesson(load(readers())).map(([, mail]) => mail.headers['Message-ID'][0]);
+    assert.equal(new Set(ids).size, 2);
+    for (const id of ids) assert.match(id, /^<[A-Za-z0-9._-]+@nidhi\.today>$/);
+  });
+
+  it('both parts are base64 in short lines, and decode to exactly what was written', () => {
+    const [[, mail]] = sendLesson(load(readers()));
+    assert.equal(mail.parts.length, 2);
+    for (const part of mail.parts) {
+      assert.match(part.head, /Content-Transfer-Encoding: base64/);
+      for (const line of part.lines) assert.ok(line.length <= 76, `a line of ${line.length} characters`);
+    }
+    assert.match(mail.parts[0].head, /text\/plain; charset="UTF-8"/);
+    assert.equal(mail.parts[0].text, `Everyone’s money. Leave: https://nidhi.today/unsubscribe?t=${tok('1')}`);
+    assert.match(mail.parts[1].head, /text\/html; charset="UTF-8"/);
+    assert.ok(mail.parts[1].text.startsWith('<p>Everyone’s money: word word'));
+    assert.ok(mail.parts[1].text.includes(`href="https://nidhi.today/unsubscribe?t=${tok('1')}"`));
+    // No line of the whole message is over the 998 characters a mail line may have.
+    for (const line of mail.raw.split('\r\n')) assert.ok(line.length <= 998, `a line of ${line.length} characters`);
+  });
+
+  it('a GET on the unsubscribe address changes nothing and sends the reader to the page with the button', () => {
+    const ctx = load(readers());
+    const out = ctx.doGet(req({ action: 'unsubscribe', t: tok('1') }));
+    assert.equal(find(ctx, 'a@x.io')[1], 'confirmed', 'a scanner following the link unsubscribes nobody');
+    assert.ok(out.html.includes(`https://nidhi.today/unsubscribe?t=${tok('1')}`));
+    // A token that is not one goes nowhere useful.
+    assert.match(ctx.doGet(req({ action: 'unsubscribe', t: '"><script>' })).html, /subscription-invalid/);
+    // The POST still unsubscribes.
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+    assert.equal(find(ctx, 'a@x.io')[1], 'unsubscribed');
+  });
+});
+
+describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)', () => {
+  const lesson = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
+  const people = () => [
+    row('reader@x.io', 'confirmed', 30, { unsub: tok('1') }),
+    row('waiting@x.io', 'pending', 4, { confirm: tok('2'), unsub: tok('3') }),
+  ];
+  /** The sheet with a "notes" column put in after the first, as a hand edit would. */
+  const moved = (ctx) => { for (const r of ctx.rec.rows) r.splice(1, 0, r === ctx.rec.rows[0] ? 'notes' : ''); };
+
+  it('nothing is read, written or mailed, whatever is asked', () => {
+    const ctx = load(people());
+    moved(ctx);
+    const before = JSON.stringify(ctx.rec.rows);
+    const logged = [];
+    ctx.console.error = (m) => logged.push(String(m));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }))), { ok: false, error: 'error' });
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: false, error: 'error' });
+    assert.match(ctx.doGet(req({ action: 'confirm', t: tok('2') })).html, /Something went wrong/);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson))), { ok: false, error: 'error' });
+    assert.throws(() => ctx.handleRemindPending(), /header row mismatch/);
+    assert.equal(JSON.stringify(ctx.rec.rows), before);
+    assert.deepEqual(ctx.rec.mails, []);
+    // The reason is in the log, for the owner; the caller is told nothing.
+    assert.ok(logged.some((line) => /header row mismatch.*Missing or out of place: status/.test(line)), logged.join(' | '));
+    // The lesson is not marked as sent: once the sheet is repaired it goes out.
+    assert.equal(Object.keys(ctx.rec.props).filter((k) => k.startsWith('sent_guid:')).length, 0);
+  });
+
+  it('a column added after the last one changes nothing', () => {
+    const ctx = load(people());
+    for (const r of ctx.rec.rows) r.push(r === ctx.rec.rows[0] ? 'notes' : 'called');
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+    assert.equal(find(ctx, 'reader@x.io')[1], 'unsubscribed');
+  });
+
+  it('headers are compared without regard to case or stray spaces', () => {
+    const ctx = load(people());
+    ctx.rec.rows[0] = ctx.rec.rows[0].map((h) => ` ${h.toUpperCase()} `);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
+  });
+
+  it('the repair function still opens a sheet with a wrong header, since mending it is its job', () => {
+    const ctx = load(people());
+    ctx.rec.rows[0][8] = '';
+    assert.throws(() => ctx.sheet_(), /header row mismatch/);
+    assert.doesNotThrow(() => ctx.sheetUnchecked_());
+    assert.match(SOURCE, /function migrateAddTokens\(\) \{\s*var sh = sheetUnchecked_\(\);/);
+  });
+
+  it('a lesson sent to nobody is not marked as sent, and says so', () => {
+    const ctx = load([row('waiting@x.io', 'pending', 1, { confirm: tok('2'), unsub: tok('3') })]);
+    const first = json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson)));
+    assert.deepEqual(first, { ok: true, sent: 0, failed: 0, no_recipients: true });
+    assert.equal(Object.keys(ctx.rec.props).filter((k) => k.startsWith('sent_guid:')).length, 0);
+    // The reader confirms; the same lesson, asked for again, now goes out.
+    ctx.doGet(req({ action: 'confirm', t: tok('2') }));
+    ctx.rec.mails.length = 0;
+    const second = json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson)));
+    assert.equal(second.sent, 1);
+    assert.deepEqual(ctx.rec.mails, ['waiting@x.io']);
+  });
+});
+
 describe('newsletter.gs: one fan-out per lesson', () => {
   const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
   const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
@@ -569,6 +784,23 @@ describe('newsletter.gs: one fan-out per lesson', () => {
     const ctx = load(list());
     assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: 'f'.repeat(64) }, body))), { ok: false, error: 'bad_signature' });
     assert.deepEqual(ctx.rec.mails, []);
+  });
+
+  it('accepts a request exactly as the sender signs it', () => {
+    // The same body, secret and signature that scripts/test_newsletter_sender.py
+    // checks against the Python sender: if either side changes how it signs,
+    // one of the two tests fails before a lesson goes unsent.
+    const fixture = JSON.parse(fs.readFileSync('scripts/fixtures/send-post-signature.json', 'utf8'));
+    assert.equal(fixture.secret, SECRET);
+    assert.equal(sign(fixture.body), fixture.hex);
+    assert.match(fixture.body, /\\u00e9/, 'the body is ASCII: other characters travel as escapes');
+    const ctx = load(list());
+    const out = json(ctx.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body)));
+    assert.notEqual(out.error, 'bad_signature');
+    assert.equal(out.ok, true);
+    // One character of the body changed: refused.
+    const other = load(list());
+    assert.deepEqual(json(other.doPost(req({ action: 'send_post', sig: fixture.hex }, fixture.body.replace('A lesson', 'A lesson!')))), { ok: false, error: 'bad_signature' });
   });
 });
 

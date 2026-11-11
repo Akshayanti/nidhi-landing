@@ -122,7 +122,7 @@ const EXPECTED_EVENTS: Record<string, string[]> = {
   free_loan_comparison_currency_changed: ['currency'],
   free_loan_comparison_details_toggled: ['vendor'],
   free_loan_comparison_exported: ['format'],
-  free_loan_comparison_horizon_changed: ['months'],
+  free_loan_comparison_horizon_changed: [],
   free_loan_comparison_mode_changed: ['mode', 'vendor'],
   free_loan_comparison_rate_kind_changed: ['rateKind', 'vendor'],
   free_loan_comparison_refi_changed: ['field'],
@@ -206,7 +206,7 @@ const EXPECTED_REQUESTS = [
   'components/InvestOrPayOff.tsx: fetch(url)',
   // The simulation runs in a worker built from the site's own code.
   'components/MonteCarloSimulator.tsx: new Worker',
-  'components/MultiCurrencyNetWorth.tsx: fetch(`${FRANKFURTER_RATES}?base=${functionalCurrency}`)',
+  'components/MultiCurrencyNetWorth.tsx: fetch(ratesUrl)',
   // The newsletter and waitlist Apps Script endpoints.
   'components/SubscribeSection.astro: fetch(endpoint)',
   'components/WaitlistSection.astro: fetch(endpoint)',
@@ -372,7 +372,7 @@ const EXPECTED_MENTIONS = [
   'pages/confirm.astro: capture x2',
   'pages/confirm.astro: fetch x1',
   'pages/confirm.astro: localStorage x1',
-  'pages/confirm.astro: location x3',
+  'pages/confirm.astro: location x1',
   'pages/confirm.astro: posthog x2',
   'pages/confirm.astro: setItem x1',
   'pages/confirm.astro: submit x1',
@@ -387,7 +387,7 @@ const EXPECTED_MENTIONS = [
   'pages/unsubscribe.astro: capture x2',
   'pages/unsubscribe.astro: fetch x1',
   'pages/unsubscribe.astro: localStorage x1',
-  'pages/unsubscribe.astro: location x3',
+  'pages/unsubscribe.astro: location x1',
   'pages/unsubscribe.astro: posthog x2',
   'pages/unsubscribe.astro: removeItem x1',
   'styles/global.css: cookie x1',
@@ -411,6 +411,7 @@ const EXPECTED_MENTIONS = [
   'utils/shared/langSwitch.js: .open( x1',
   'utils/shared/langSwitch.js: location x6',
   'utils/shared/langSwitch.js: setAttribute x1',
+  'utils/shared/tokenGuard.js: location x2',
   'utils/shared/toolState.ts: location x2',
   'utils/shared/toolStateGuard.js: location x7',
 ];
@@ -430,7 +431,7 @@ const EXPECTED_MENTIONS = [
 // quiet the test.
 const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
 const EXPECTED_WHOLE_FILES = [
-  'components/Analytics.astro: sha256 b257474919ba014c',
+  'components/Analytics.astro: sha256 83e2a3427a67e581',
   'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
   'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
 ];

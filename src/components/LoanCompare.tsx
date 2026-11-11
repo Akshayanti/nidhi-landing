@@ -9,6 +9,7 @@ import {
   getCurrency,
   pickSplitSamples,
   pointsBreakEven,
+  pointsVerdict,
   refinanceComparison,
   toMinor,
   type AmortizationRow,
@@ -39,6 +40,8 @@ import {
   computeFromInput,
   computeNoPointsBaseline,
   parseNumber,
+  unreadableOptionalFields,
+  type OptionalField,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, NEUTRAL } from '../styles/palette.ts';
 import { format } from '../i18n/format.ts';
@@ -144,6 +147,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['no remaining balance at the refinance', 'refiBalance'],
   ['new loan is not valid', 'newLoan'],
   ['original loan is invalid', 'refiOriginal'],
+  // `computeFromInput` (src/utils/loan/inputs.ts).
+  ['optional boxes cannot be read', 'optionalUnreadable'],
 ];
 
 /** The two messages that carry a count of months, which goes back in as `{months}`. */
@@ -1285,6 +1290,11 @@ function VendorCard({
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
   const hasError = Boolean(result.error);
+  // The optional boxes that cannot be read: each is marked and pointed at
+  // the card's message, as the required boxes are.
+  const badOptional = new Set<OptionalField>(unreadableOptionalFields(vendor));
+  // When that is what is wrong, the required boxes are not marked as well.
+  const requiredError = hasError && badOptional.size === 0;
   const headingId = id('heading');
 
   const optionalRef = useRef<HTMLDetailsElement>(null);
@@ -1375,9 +1385,9 @@ function VendorCard({
           className="lc-input"
           value={vendor.principal}
           onValueChange={(v) => onChange({ principal: v })}
-          aria-invalid={hasError || undefined}
+          aria-invalid={requiredError || undefined}
           aria-required="true"
-          aria-describedby={hasError ? errorId : undefined}
+          aria-describedby={requiredError ? errorId : undefined}
           autoComplete="off"
         />
       </div>
@@ -1392,9 +1402,9 @@ function VendorCard({
           className="lc-input"
           value={vendor.annualRatePct}
           onValueChange={(v) => onChange({ annualRatePct: v })}
-          aria-invalid={hasError || undefined}
+          aria-invalid={requiredError || undefined}
           aria-required="true"
-          aria-describedby={hasError ? errorId : undefined}
+          aria-describedby={requiredError ? errorId : undefined}
           autoComplete="off"
         />
       </div>
@@ -1442,9 +1452,9 @@ function VendorCard({
             className="lc-input"
             value={vendor.termMonths}
             onValueChange={(v) => onChange({ termMonths: v })}
-            aria-invalid={hasError || undefined}
+            aria-invalid={requiredError || undefined}
             aria-required="true"
-            aria-describedby={hasError ? errorId : undefined}
+            aria-describedby={requiredError ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1459,9 +1469,9 @@ function VendorCard({
             className="lc-input"
             value={vendor.monthlyPayment}
             onValueChange={(v) => onChange({ monthlyPayment: v })}
-            aria-invalid={hasError || undefined}
+            aria-invalid={requiredError || undefined}
             aria-required="true"
-            aria-describedby={hasError ? errorId : undefined}
+            aria-describedby={requiredError ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1555,6 +1565,8 @@ function VendorCard({
                 className="lc-input"
                 value={vendor.initialFixedMonths}
                 onValueChange={(v) => onChange({ initialFixedMonths: v })}
+                aria-invalid={badOptional.has('initialFixedMonths') || undefined}
+                aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
                 autoComplete="off"
               />
               <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
@@ -1569,6 +1581,8 @@ function VendorCard({
                 className="lc-input"
                 value={vendor.subsequentRatePct}
                 onValueChange={(v) => onChange({ subsequentRatePct: v })}
+                aria-invalid={badOptional.has('subsequentRatePct') || undefined}
+                aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
                 autoComplete="off"
               />
               <p className="lc-fieldHelp">
@@ -1590,6 +1604,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.feeMajor}
             onValueChange={(v) => onChange({ feeMajor: v })}
+            aria-invalid={badOptional.has('feeMajor') || undefined}
+            aria-describedby={badOptional.has('feeMajor') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1603,6 +1619,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.pointsCostMajor}
             onValueChange={(v) => onChange({ pointsCostMajor: v })}
+            aria-invalid={badOptional.has('pointsCostMajor') || undefined}
+            aria-describedby={badOptional.has('pointsCostMajor') ? errorId : undefined}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
@@ -1619,6 +1637,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.pointsRateReductionPct}
             onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
+            aria-invalid={badOptional.has('pointsRateReductionPct') || undefined}
+            aria-describedby={badOptional.has('pointsRateReductionPct') ? errorId : undefined}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
@@ -1636,6 +1656,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.extraMonthly}
             onValueChange={(v) => onChange({ extraMonthly: v })}
+            aria-invalid={badOptional.has('extraMonthly') || undefined}
+            aria-describedby={badOptional.has('extraMonthly') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1650,6 +1672,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.lumpSumsEncoded}
             onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
+            aria-invalid={badOptional.has('lumpSumsEncoded') || undefined}
+            aria-describedby={badOptional.has('lumpSumsEncoded') ? errorId : undefined}
             autoComplete="off"
             spellCheck={false}
             placeholder="12:5000;36:3000"
@@ -1675,6 +1699,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.prepayPenaltyPct}
             onValueChange={(v) => onChange({ prepayPenaltyPct: v })}
+            aria-invalid={badOptional.has('prepayPenaltyPct') || undefined}
+            aria-describedby={badOptional.has('prepayPenaltyPct') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1688,6 +1714,8 @@ function VendorCard({
             className="lc-input"
             value={vendor.prepayPenaltyUntilMonth}
             onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
+            aria-invalid={badOptional.has('prepayPenaltyUntilMonth') || undefined}
+            aria-describedby={badOptional.has('prepayPenaltyUntilMonth') ? errorId : undefined}
             autoComplete="off"
           />
           <p className="lc-fieldHelp">
@@ -1787,11 +1815,13 @@ function VendorCard({
                           : strings.results.never
                       }
                       hint={
-                        Number.isFinite(be.months)
-                          ? format(strings.results.breakEvenSaves, {
+                        // The lifetime figure is signed: a loan that ends
+                        // before the break-even month loses money on its points.
+                        pointsVerdict(be) === 'never'
+                          ? strings.results.breakEvenNever
+                          : format(pointsVerdict(be) === 'costs' ? strings.results.breakEvenCosts : strings.results.breakEvenSaves, {
                               amount: formatMoney(Math.abs(be.lifetimeSavingsMinor), currency),
                             })
-                          : strings.results.breakEvenNever
                       }
                     />
                   );
@@ -2445,8 +2475,9 @@ function HorizonSection({
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
   // renders; the useEffect cleanup cancels in-flight timers when the
-  // component unmounts. Property is bucketed (months) to avoid leaking
-  // any computed loan figures.
+  // component unmounts. The event says only that the horizon was changed:
+  // the number itself is something a reader typed or dragged to, and events
+  // carry choices, never values.
   const horizonTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleHorizonChange = useCallback(
     (next: string) => {
@@ -2457,7 +2488,7 @@ function HorizonSection({
       horizonTrackTimer.current = setTimeout(() => {
         const m = Math.round(parseNumber(next));
         if (!Number.isFinite(m) || m <= 0) return;
-        track('free_loan_comparison_horizon_changed', { months: m });
+        track('free_loan_comparison_horizon_changed');
       }, 600);
     },
     [onHorizonChange],

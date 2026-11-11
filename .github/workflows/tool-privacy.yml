@@ -1,0 +1,98 @@
+name: Tool privacy check
+
+# The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6:
+# nothing a reader types into a free tool may reach PostHog. It uses every
+# free tool in a real browser, in every language, on a phone-sized and a
+# laptop-sized window, with cookie consent declined and accepted, and reads
+# every request the page tries to send to PostHog (scripts/verify-tool-privacy.mjs).
+#
+# Runs on a pull request that touches a tool, the analytics, the header's
+# language switch, the consent code or the check itself; every night, since a
+# PostHog SDK update can change what is sent with no change here; and by hand.
+#
+# Nothing reaches PostHog. The build carries a dummy key that PostHog rejects
+# (PUBLIC_ANALYTICS_TEST=1), the script answers PostHog's settings request
+# itself, aborts every other request to PostHog, and starts Chrome unable to
+# resolve the ingestion host. Only the SDK's static scripts are downloaded.
+#
+# The run needs a window: PostHog does not send $pageleave from a headless
+# browser, so Chrome runs under xvfb.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/components/**'
+      - 'src/layouts/**'
+      - 'src/pages/free/**'
+      - 'src/pages/\[locale\]/free/**'
+      - 'src/utils/**'
+      - 'src/i18n/config.ts'
+      - 'scripts/verify-tool-privacy.mjs'
+      - 'scripts/lib/tool-privacy-checks.mjs'
+      - '.github/workflows/tool-privacy.yml'
+      - 'package.json'
+      - 'package-lock.json'
+  schedule:
+    # 03:41 UTC every day, away from the deploy and newsletter crons.
+    - cron: '41 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tool-privacy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Install scripts: every `npm ci` here fails if a dependency has an install
+# script that the project's package.json `allowScripts` does not cover (for
+# example a puppeteer bump whose pinned approval has not been updated). Only
+# CI is strict: in .npmrc it would stop Dependabot from opening those PRs at
+# all. See README "Install scripts".
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
+
+jobs:
+  verify:
+    name: No typed value reaches analytics
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # A test build: analytics run on localhost with a key PostHog rejects.
+      # No real key is ever given to this workflow.
+      - name: Build (test build)
+        run: npm run build
+        env:
+          PUBLIC_ANALYTICS_TEST: '1'
+
+      # The check checking itself: with a typed amount planted in an event,
+      # every run must fail. A check that cannot fail proves nothing.
+      - name: The check catches a planted leak
+        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --locale en --viewport laptop --jobs 2 --dump tool-privacy-payloads
+
+      - name: Every tool, language, window size and consent state
+        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --jobs 3 --dump tool-privacy-payloads
+
+      # The decoded payloads of a failed run, to see what was sent. They hold
+      # only the test's own made-up values.
+      - name: Keep the payloads of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tool-privacy-payloads
+          path: tool-privacy-payloads
+          retention-days: 7
+          if-no-files-found: ignore

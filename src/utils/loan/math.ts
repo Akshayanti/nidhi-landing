@@ -440,6 +440,17 @@ export function buildScheduleAdvanced(spec: {
   basePaymentMinor: number;
   extraMonthlyMinor?: number;
   lumpSums?: LumpSum[];
+  /**
+   * The loan has a contractual term of `totalMonths`, and its last payment
+   * clears whatever is left. The scheduled payment is rounded to the minor
+   * unit, so after the last contractual month a few cents can remain (or the
+   * last payment can be a few cents too much); a lender puts that difference
+   * into the final payment, and so does this. Without it a 360-month loan
+   * runs to a 361st payment of a few cents in about half of all cases.
+   * It applies while the difference is smaller than one scheduled payment.
+   * Not set for a loan entered by its payment, which has no term to end on.
+   */
+  endsAtTerm?: boolean;
 }): { schedule: AmortizationRow[]; warnings: string[]; error?: string } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
@@ -530,8 +541,16 @@ export function buildScheduleAdvanced(spec: {
     let payment = currentPayment + extraMonthlyMinor;
     let principal = payment - interest;
 
-    if (principal >= balance) {
-      // Last regular row: shrink payment to clear exactly.
+    // What would be left after this month's scheduled payment is less than
+    // one more such payment: it belongs in this, the last contractual one.
+    // (At a very high rate over a very long term the half-unit of rounding
+    // compounds into more than a payment; that is left to run on instead of
+    // doubling the last payment.)
+    const endsHere = spec.endsAtTerm === true && month === totalMonths && balance - principal < currentPayment;
+    if (principal >= balance || endsHere) {
+      // Last regular row: the payment is whatever clears the balance
+      // exactly. Usually that is a little less than the scheduled payment;
+      // on the last month of a loan with a term it can be a little more.
       principal = balance;
       payment = principal + interest;
       balance = 0;
@@ -662,6 +681,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     basePaymentMinor: scheduledPayment,
     extraMonthlyMinor,
     lumpSums,
+    endsAtTerm: mode.kind === 'term',
   });
 
   if (error || schedule.length === 0) {
@@ -695,6 +715,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
         basePaymentMinor: scheduledPayment,
         extraMonthlyMinor: 0,
         lumpSums: [],
+        endsAtTerm: mode.kind === 'term',
       }).schedule
     : schedule;
 
@@ -742,7 +763,8 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   };
 }
 
-function emptyResult(feeMinor: number, error: string): LoanResult {
+/** A result that carries only an error: nothing was computed. */
+export function emptyResult(feeMinor: number, error: string): LoanResult {
   return {
     monthlyPaymentMinor: 0,
     effectiveMonthlyMinor: 0,
@@ -970,6 +992,8 @@ export interface PointsBreakEven {
 /**
  * Both loans must be from `computeLoan` with the same principal and term (one with points, one without).
  * Returns `Infinity` when points don't produce savings; the UI treats that as "never recoups".
+ * With a lower monthly payment, break-even is the cost divided by the monthly saving; with the
+ * same payment (a loan entered by its payment), it is read from the two balances.
  */
 export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResult): PointsBreakEven {
   const upfrontDelta = withPoints.feeMinor - withoutPoints.feeMinor;
@@ -979,10 +1003,20 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
   let months: number;
   if (upfrontDelta <= 0) {
     months = 0;
-  } else if (monthlySavings <= 0) {
-    months = Infinity;
-  } else {
+  } else if (monthlySavings > 0) {
     months = Math.ceil(upfrontDelta / monthlySavings);
+  } else {
+    // The payment is the same with and without points: a loan entered by its
+    // payment. The lower rate then shows as a balance that falls faster, and
+    // a shorter loan. The points have paid for themselves in the first month
+    // in which the loan with points owes less by at least what they cost.
+    months = Infinity;
+    const last = Math.max(withPoints.schedule.length, withoutPoints.schedule.length);
+    for (let m = 1; m <= last; m++) {
+      const owedWith = withPoints.schedule[m - 1]?.balance ?? 0;
+      const owedWithout = withoutPoints.schedule[m - 1]?.balance ?? 0;
+      if (owedWithout - owedWith >= upfrontDelta) { months = m; break; }
+    }
   }
 
   return {
@@ -995,6 +1029,18 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
 // -----------------------------------------------------------------------------
 // Refinance break-even
 // -----------------------------------------------------------------------------
+
+/**
+ * What the points row says under its break-even: that the points save money
+ * over the life of the loan, that they cost money (the loan ends, by its
+ * term or by extra payments, before they have paid for themselves), or
+ * that they never pay for themselves at all. The lifetime figure is signed;
+ * printing its size alone turned a loss into "Saves".
+ */
+export function pointsVerdict(be: PointsBreakEven): 'saves' | 'costs' | 'never' {
+  if (!Number.isFinite(be.months)) return 'never';
+  return be.lifetimeSavingsMinor < 0 ? 'costs' : 'saves';
+}
 
 export interface RefinanceComparison {
   refinanceTotalMinor: number;

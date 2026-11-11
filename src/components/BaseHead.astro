@@ -1,4 +1,5 @@
 ---
+import { jsonForScript } from '../utils/shared/jsonForScript.ts';
 import { NEUTRAL, SEMANTIC } from '../styles/palette.ts';
 import {
   DEFAULT_LOCALE,
@@ -180,7 +181,7 @@ const noindex = !!robots && /noindex/i.test(robots);
 
 <!-- JSON-LD Structured Data -->
 {jsonLd.map((schema) => (
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <script type="application/ld+json" set:html={jsonForScript(schema)} />
 ))}
 
 <!-- PostHog analytics is intentionally NOT here. It loads at the end of

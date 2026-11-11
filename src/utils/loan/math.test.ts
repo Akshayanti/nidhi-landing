@@ -29,6 +29,7 @@ import {
   getCurrency,
   pickSplitSamples,
   pointsBreakEven,
+  pointsVerdict,
   rateForMonth,
   refinanceComparison,
   roundMinor,
@@ -440,7 +441,11 @@ describe('computeLoan', () => {
       { principalMinor, annualRate: 0.055 },
       { kind: 'payment', monthlyMinor: term.monthlyPaymentMinor },
     );
-    assert.equal(payment.months, term.months);
+    // A loan with a term ends on it: the cents the rounded payment leaves
+    // go into the 240th payment. Entered by that same payment, the loan has
+    // no term to end on, so those cents are a last, tiny payment of their own.
+    assert.equal(term.months, 240);
+    assert.ok(payment.months === 240 || payment.months === 241, `got ${payment.months}`);
     // Total paid should match within 1 cent (final-row reconciliation)
     assert.ok(Math.abs(payment.totalPaidMinor - term.totalPaidMinor) <= 1);
   });
@@ -1023,9 +1028,8 @@ describe('computeLoan: hybrid rate', () => {
       { kind: 'term', months: 360 },
     );
     assert.equal(result.error, undefined);
-    // Integer-cent rounding can leave a sub-cent stub for one extra
-    // month; the engine accepts this (closed-form payment rounded down).
-    assert.ok(result.schedule.length === 360 || result.schedule.length === 361);
+    // The loan ends on its term: what rounding leaves is in the last payment.
+    assert.equal(result.schedule.length, 360);
     assert.equal(result.schedule[result.schedule.length - 1].balance, 0);
   });
 
@@ -1506,4 +1510,134 @@ describe('engineError covers every engine message', () => {
       }
     });
   }
+});
+
+describe('a loan with a term ends on its term (issue 337)', () => {
+  const term = (principal: number, annualRate: number, months: number) =>
+    computeLoan({ principalMinor: toMinor(principal, 'EUR'), annualRate }, { kind: 'term', months });
+
+  it('the cases that used to run one payment long', () => {
+    for (const [principal, rate, months] of [[250_000, 0.065, 360], [20_000, 0.065, 60], [15_000, 0.079, 48], [300_000, 0.05, 360], [200_000, 0.05, 360]] as const) {
+      const r = term(principal, rate, months);
+      assert.equal(r.error, undefined);
+      assert.equal(r.months, months, `${principal} at ${rate} over ${months}`);
+      assert.equal(r.schedule.length, months);
+    }
+  });
+
+  it('1,000 at 0% over 3 months is 333.33, 333.33, 333.34', () => {
+    const r = term(1_000, 0, 3);
+    assert.deepEqual(r.schedule.map((row) => row.payment), [33_333, 33_333, 33_334]);
+    assert.equal(r.totalInterestMinor, 0);
+  });
+
+  it('holds across a sweep of 640 loans, with a last payment that differs by less than one payment', () => {
+    // The exceptions are all small loans (12,345 or less) over 20 years or
+    // more at 6.5% or more, where the payment is so small that half a minor
+    // unit of rounding, compounded, grows past a whole payment: rounded up,
+    // the loan ends early; rounded down, it runs a payment or more over; and
+    // one cannot be paid at all (its rounded payment equals the interest).
+    // Before this fix 313 of the 640 ran over.
+    const off: string[] = [];
+    let checked = 0;
+    for (const principal of [1_000, 5_000, 12_345, 20_000, 75_000, 150_000, 250_000, 1_000_000]) {
+      for (const rate of [0, 0.0099, 0.025, 0.04, 0.065, 0.079, 0.12, 0.24]) {
+        for (const months of [1, 3, 12, 24, 48, 60, 120, 240, 360, 480]) {
+          const r = term(principal, rate, months);
+          checked++;
+          if (r.schedule.length !== months) { off.push(`${principal} at ${rate} over ${months}: ${r.schedule.length}`); continue; }
+          const last = r.schedule[months - 1];
+          assert.equal(last.balance, 0);
+          assert.ok(Math.abs(last.payment - r.monthlyPaymentMinor) < r.monthlyPaymentMinor, `${principal} at ${rate} over ${months}: last payment ${last.payment} against ${r.monthlyPaymentMinor}`);
+          assert.equal(r.schedule.reduce((sum, row) => sum + row.principal, 0), toMinor(principal, 'EUR'));
+        }
+      }
+    }
+    assert.equal(checked, 640);
+    assert.deepEqual(off, [
+      '1000 at 0.065 over 480: 482',
+      '1000 at 0.12 over 360: 359',
+      '1000 at 0.12 over 480: 487',
+      '1000 at 0.24 over 240: 242',
+      '1000 at 0.24 over 360: 350',
+      '1000 at 0.24 over 480: 0',
+      '5000 at 0.12 over 480: 482',
+      '5000 at 0.24 over 480: 470',
+      '12345 at 0.24 over 480: 477',
+    ]);
+  });
+
+  it('for ordinary loans the last payment is within a few units of the others', () => {
+    for (const [principal, rate, months, most] of [[250_000, 0.065, 360, 100], [300_000, 0.05, 360, 500], [20_000, 0.065, 60, 100], [15_000, 0.079, 48, 100]] as const) {
+      const r = term(principal, rate, months);
+      assert.ok(Math.abs(r.schedule[months - 1].payment - r.monthlyPaymentMinor) <= most, `${principal}: ${r.schedule[months - 1].payment} against ${r.monthlyPaymentMinor}`);
+    }
+  });
+
+  it('a loan that changes rate ends on its term too', () => {
+    const r = computeLoan(
+      { principalMinor: toMinor(300_000, 'EUR'), annualRate: 0.04, rateSpec: { kind: 'hybrid', initialAnnualRate: 0.04, initialMonths: 60, subsequentAnnualRate: 0.07 } },
+      { kind: 'term', months: 360 },
+    );
+    assert.equal(r.error, undefined);
+    assert.equal(r.schedule.length, 360);
+  });
+
+  it('extra payments still end the loan early, and a loan entered by its payment has no term to end on', () => {
+    const early = computeLoan({ principalMinor: toMinor(200_000, 'EUR'), annualRate: 0.05, extraMonthlyMinor: toMinor(200, 'EUR') }, { kind: 'term', months: 360 });
+    assert.equal(early.schedule.length, 256);
+    // 1,000 a month never clears 200,000 at 6.5% within the engine's limit:
+    // that is still an error, not a balloon payment in the last month.
+    const never = computeLoan({ principalMinor: toMinor(200_000, 'EUR'), annualRate: 0.065 }, { kind: 'payment', monthlyMinor: toMinor(1_084, 'EUR') });
+    assert.ok(never.error || never.schedule[never.schedule.length - 1].payment <= toMinor(1_084, 'EUR'));
+  });
+});
+
+describe('the points row tells a saving from a loss (issues 526 and 528)', () => {
+  // An offer with points and the same offer without them: the points cost
+  // `cost` in fees and take `off` percentage points from the rate.
+  const pair = (principal: number, rate: number, mode: { kind: 'term'; months: number } | { kind: 'payment'; monthlyMinor: number }, cost: number, off: number, extra = 0) => {
+    const withPoints = computeLoan({ principalMinor: toMinor(principal, 'EUR'), annualRate: rate - off, feeMinor: toMinor(cost, 'EUR'), extraMonthlyMinor: toMinor(extra, 'EUR') }, mode);
+    const without = computeLoan({ principalMinor: toMinor(principal, 'EUR'), annualRate: rate, feeMinor: 0, extraMonthlyMinor: toMinor(extra, 'EUR') }, mode);
+    return pointsBreakEven(withPoints, without);
+  };
+
+  it('a loan that ends before the break-even month loses money on its points, and says so', () => {
+    for (const be of [
+      pair(250_000, 0.065, { kind: 'term', months: 24 }, 2_500, 0.0025),
+      pair(20_000, 0.065, { kind: 'term', months: 60 }, 400, 0.0025),
+      pair(250_000, 0.065, { kind: 'term', months: 360 }, 5_000, 0.0025, 3_000),
+    ]) {
+      assert.ok(Number.isFinite(be.months));
+      assert.ok(be.lifetimeSavingsMinor < 0, `lifetime ${be.lifetimeSavingsMinor}`);
+      assert.equal(pointsVerdict(be), 'costs');
+    }
+  });
+
+  it('points that pay for themselves within the loan save money', () => {
+    const be = pair(250_000, 0.065, { kind: 'term', months: 360 }, 2_500, 0.0025);
+    assert.ok(be.months > 0 && be.months < 360);
+    assert.ok(be.lifetimeSavingsMinor > 0);
+    assert.equal(pointsVerdict(be), 'saves');
+  });
+
+  it('with the same payment, break-even is read from the balances, not called "never"', () => {
+    // 250,000 at 6.5%, paying 1,600 a month; 2,500 of points for 0.25 off.
+    const be = pair(250_000, 0.065, { kind: 'payment', monthlyMinor: toMinor(1_600, 'EUR') }, 2_500, 0.0025);
+    assert.equal(be.monthlySavingsMinor, 0);
+    assert.equal(be.months, 44, 'the month the balance gap passes the cost');
+    // The loan is paid off years sooner: tens of thousands saved, where the row said "never".
+    assert.ok(be.lifetimeSavingsMinor > toMinor(30_000, 'EUR'), `lifetime ${be.lifetimeSavingsMinor}`);
+    assert.equal(pointsVerdict(be), 'saves');
+  });
+
+  it('points that change nothing never pay for themselves', () => {
+    const be = pair(250_000, 0.065, { kind: 'payment', monthlyMinor: toMinor(1_600, 'EUR') }, 2_500, 0);
+    assert.equal(be.months, Infinity);
+    assert.equal(pointsVerdict(be), 'never');
+  });
+
+  it('points that cost nothing break even at once', () => {
+    assert.equal(pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0.0025).months, 0);
+  });
 });

@@ -32,7 +32,7 @@
  *   3. Create the Sheet with these EXACT headers in row 1 (9 columns):
  *        email | status | source | created_at | confirmed_at |
  *        unsubscribed_at | confirm_token | unsub_token | reminder_sent_at
- *      Statuses: pending | confirmed | unsubscribed
+ *      Statuses: pending | confirmed | unsubscribed | bounced
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
  *      that says ok or not for properties, web app URL, Gmail advanced
@@ -56,9 +56,10 @@
  *                                   On bad token: redirects to
  *                                   {SITE_URL}/subscription-invalid/.
  *
- *   GET  ?action=unsubscribe&t=...  Opaque token lookup. Marks row as
- *                                   unsubscribed. Redirects to
- *                                   {SITE_URL}/unsubscribed/.
+ *   GET  ?action=unsubscribe&t=...  Never unsubscribes: a link can be
+ *                                   followed by a mail scanner. Redirects
+ *                                   to {SITE_URL}/unsubscribe?t=..., whose
+ *                                   button sends the POST below.
  *
  *   POST ?action=unsubscribe&t=...  Same behaviour but JSON response —
  *                                   used by Gmail's RFC 8058 one-click
@@ -246,7 +247,37 @@ var EXPECTED_HEADERS = [
  * caused data to land in a tab the operator wasn't watching). This version
  * requires an explicit match.
  */
+/**
+ * The subscriber tab, once its header row has been checked.
+ *
+ * Every handler reads and writes cells by position (COL). The Sheet is
+ * edited by hand, and one inserted or moved column would make every one of
+ * them use the wrong cells: tokens looked up in the wrong column (every
+ * confirm and unsubscribe link "invalid"), a status written into another
+ * field, a send that finds nobody confirmed. So a tab whose first nine
+ * headers are not the expected ones is refused here, before anything is
+ * read or written, and the reason goes to the execution log. Columns added
+ * after the ninth are fine.
+ */
 function sheet_() {
+  var sh = sheetUnchecked_();
+  var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+  var wrong = EXPECTED_HEADERS.filter(function (h, i) {
+    return String(headers[i] || '').trim().toLowerCase() !== h;
+  });
+  if (wrong.length) {
+    throw new Error(
+      'Sheet header row mismatch: nothing was read or written. Expected the first ' +
+      EXPECTED_HEADERS.length + ' columns to be: ' + EXPECTED_HEADERS.join(' | ') +
+      '. Missing or out of place: ' + wrong.join(', ') +
+      '. Put the columns back in that order (a column may be added after the last one).'
+    );
+  }
+  return sh;
+}
+
+/** The subscriber tab as it is, for the one function whose job is to repair its header row. */
+function sheetUnchecked_() {
   var cfg = config_();
   var ss = SpreadsheetApp.openById(cfg.sheetId);
   var sh = ss.getSheetByName(cfg.sheetName);
@@ -346,6 +377,14 @@ function listConfirmedSubscribers_() {
 // Email sending (Gmail raw send with List-Unsubscribe)
 // ============================================================================
 
+/** Text as base64 of its UTF-8 bytes, in lines of 76 characters (RFC 2045). */
+function base64Lines_(text) {
+  var encoded = Utilities.base64Encode(String(text == null ? '' : text), Utilities.Charset.UTF_8);
+  var lines = [];
+  for (var i = 0; i < encoded.length; i += 76) lines.push(encoded.slice(i, i + 76));
+  return lines.join('\r\n');
+}
+
 function buildMimeMessage_(opts) {
   // opts: { from, fromName, to, subject, html, text, listUnsubPostUrl,
   //         listId, messageId }
@@ -360,8 +399,6 @@ function buildMimeMessage_(opts) {
     'Subject: ' + encodeSubject_(opts.subject),
     'MIME-Version: 1.0',
     'Content-Type: multipart/alternative; boundary="' + boundary + '"',
-    'List-Unsubscribe: <' + opts.listUnsubPostUrl + '>',
-    'List-Unsubscribe-Post: List-Unsubscribe=One-Click',
     'List-ID: ' + opts.listId,
     'Precedence: bulk',
     'Auto-Submitted: auto-generated',
@@ -370,25 +407,32 @@ function buildMimeMessage_(opts) {
     'X-Nidhi-Ref: ' + mailRef_(opts.to),
   ];
   if (opts.messageId) headers.push('Message-ID: <' + opts.messageId + '>');
+  // The one-click unsubscribe headers (RFC 8058) only when there is an
+  // address to give. The reminder goes to someone who has not confirmed and
+  // has nothing to unsubscribe from; it used to carry the header with
+  // "<null>" in it, which a mail provider reads as a broken bulk sender.
+  if (opts.listUnsubPostUrl) {
+    headers.push('List-Unsubscribe: <' + opts.listUnsubPostUrl + '>');
+    headers.push('List-Unsubscribe-Post: List-Unsubscribe=One-Click');
+  }
 
-  // 8bit (not 7bit): bodies contain UTF-8 bytes (e.g. U+2019 curly apostrophe
-  // in "Everyone\u2019s"). Declaring 7bit with 8-bit bytes is an RFC
-  // violation — some clients fall back to latin-1/ASCII and render the
-  // unknown 0xE2 0x80 0x99 sequence as "?" (the "Everyone?s" bug). The
-  // outer message is wrapped by Gmail.Users.Messages.send via base64, so
-  // 8bit here is fine for transport.
+  // Both parts go as base64 in lines of 76 characters. A lesson's HTML has
+  // lines of thousands of characters, over the 998 a mail line may have, and
+  // a relay that re-wraps such a line can break the markup; base64 also
+  // carries the UTF-8 bytes (curly apostrophes, Devanagari) without relying
+  // on every relay passing 8-bit text through.
   var parts = [
     '--' + boundary,
     'Content-Type: text/plain; charset="UTF-8"',
-    'Content-Transfer-Encoding: 8bit',
+    'Content-Transfer-Encoding: base64',
     '',
-    opts.text,
+    base64Lines_(opts.text),
     '',
     '--' + boundary,
     'Content-Type: text/html; charset="UTF-8"',
-    'Content-Transfer-Encoding: 8bit',
+    'Content-Transfer-Encoding: base64',
     '',
-    opts.html,
+    base64Lines_(opts.html),
     '',
     '--' + boundary + '--',
     '',
@@ -1218,6 +1262,18 @@ function handleUnsubscribe_(e, method) {
   var cfg = config_();
   var token = (e.parameter && e.parameter.t) || '';
 
+  // A GET never unsubscribes. A link can be followed by something that is
+  // not the reader (a mail scanner, a link preview), and RFC 8058 keeps the
+  // one-click action to POST for that reason. A GET goes to the site's
+  // unsubscribe page, which shows what is about to happen and sends the
+  // POST when the reader presses the button.
+  if (method === 'GET') {
+    if (!/^[A-Za-z0-9_-]{16,128}$/.test(String(token))) {
+      return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+    }
+    return redirectResponse_(cfg.siteUrl + '/unsubscribe?t=' + encodeURIComponent(token));
+  }
+
   // Idempotency: a second unsubscribe for the same token is a no-op. This
   // happens in practice when the user double-clicks the "Unsubscribe me"
   // button, when Gmail's RFC 8058 one-click POST fires AND the user also
@@ -1376,8 +1432,13 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     return true;
   });
   if (subscribers.length === 0) {
-    props_().setProperty(seenKey, String(new Date().getTime()));
-    return jsonResponse_({ ok: true, sent: 0 });
+    // Nobody to send to. The lesson is NOT marked as sent: a list that reads
+    // as empty is far more often a Sheet that could not be read properly
+    // than a newsletter with no readers, and marking it would mean the
+    // lesson never goes out. The sender treats this answer as a failure,
+    // so the run is red and someone looks.
+    console.error('[newsletter] send_post: no confirmed subscriber was found; the lesson was not marked as sent');
+    return jsonResponse_({ ok: true, sent: 0, failed: 0, no_recipients: true });
   }
 
   // Quota warning (PostHog + console) — fires when the confirmed-subscriber
@@ -1478,7 +1539,10 @@ function sendPostFanOut_(cfg, payload, seenKey) {
         text: personalizedText,
         listUnsubPostUrl: listUnsubPostUrl,
         listId: listId,
-        messageId: payload.guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '@' + host_(cfg.siteUrl),
+        // One id per message: every copy of a lesson used to carry the same
+        // one, and a provider that drops duplicates by id can then drop one
+        // of two copies that reach the same mailbox by different addresses.
+        messageId: payload.guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '.' + String(sub.unsubToken).slice(0, 16) + '@' + host_(cfg.siteUrl),
       });
       sendRaw_(mime);
       sent++;
@@ -2142,7 +2206,7 @@ function debugHmacSecret() {
  * the header text.
  */
 function migrateAddTokens() {
-  var sh = sheet_();
+  var sh = sheetUnchecked_();
   var maxCol = Math.max(EXPECTED_HEADERS.length, sh.getLastColumn());
 
   // Fix the header row if needed.

@@ -367,18 +367,53 @@ describe('encode/decode round-trip', () => {
     assert.deepEqual(decoded, vendors);
   });
 
-  it('an empty user-typed extraMonthly falls back to the slot template default', () => {
-    // If a user's "extraMonthly" field is empty, the encoded tuple has
-    // an empty position there; decode falls back to the slot template
-    // default ("0" for slot 0). The user-typed "" was never persisted,
-    // so the round-trip differs by design.
+  it('a box the reader emptied comes back empty, not with its default put back (issue 344)', () => {
+    // On the default screen, offer B has a fee of 2,500. Cleared, the page
+    // computes B with no fee; the person who opens the link must see the same.
     const vendors: VendorInput[] = [
       { ...makeDefaultVendor(0), extraMonthly: '' },
-      makeDefaultVendor(1),
+      { ...makeDefaultVendor(1), feeMajor: '' },
     ];
     const qs = encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE);
     const { vendors: decoded } = decodeFromQueryString(qs);
-    assert.equal(decoded[0].extraMonthly, '0'); // template default, not ''
+    assert.equal(decoded[0].extraMonthly, '');
+    assert.equal(decoded[1].feeMajor, '', 'the 2,500 default is not put back');
+    assert.deepEqual(decoded, vendors);
+  });
+
+  it('every cleared box survives the link and the language switch, in every slot', () => {
+    const cleared = ['principal', 'annualRatePct', 'termMonths', 'feeMajor', 'extraMonthly', 'initialFixedMonths', 'pointsCostMajor', 'pointsRateReductionPct', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'] as const;
+    for (let slot = 0; slot < MAX_VENDORS; slot++) {
+      for (const field of cleared) {
+        const vendors = Array.from({ length: MAX_VENDORS }, (_, i) => makeDefaultVendor(i));
+        vendors[slot] = { ...vendors[slot], [field]: '' };
+        const viaLink = decodeFromQueryString(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE)).vendors;
+        assert.deepEqual(viaLink, vendors, `${field} of offer ${slot + 1} by link`);
+        const viaSwitch = decodeFromQueryString(publishableState(vendors, DEFAULT_GLOBAL_STATE, DEFAULT_GLOBAL_STATE.currency)).vendors;
+        assert.deepEqual(viaSwitch, vendors, `${field} of offer ${slot + 1} by the language switch`);
+      }
+    }
+  });
+
+  it('cleared boxes of the horizon and refinance views survive too', () => {
+    for (const field of ['horizonMonths', 'refiAtMonth', 'refiNewRatePct', 'refiNewTermMonths', 'refiNewFeeMajor'] as const) {
+      const global = { ...DEFAULT_GLOBAL_STATE, [field]: '' };
+      const back = decodeFromQueryString(encodeToQueryString(DEFAULT_VENDORS.map((v) => ({ ...v })), global)).global;
+      assert.deepEqual(back, global, field);
+    }
+  });
+
+  it('a link that leaves a position out still means "the default", as short and old links rely on', () => {
+    const { vendors } = decodeFromQueryString('v2=Vendor+B~250000~6.0~~360');
+    assert.equal(vendors[1].feeMajor, makeDefaultVendor(1).feeMajor);
+    assert.equal(vendors[1].extraMonthly, makeDefaultVendor(1).extraMonthly);
+    // And an untouched comparison is still written as nothing at all.
+    assert.equal(publishableState(DEFAULT_VENDORS.map((v) => ({ ...v })), DEFAULT_GLOBAL_STATE, DEFAULT_GLOBAL_STATE.currency), '');
+  });
+
+  it('a box that is empty by default is not marked', () => {
+    const qs = encodeToQueryString([makeDefaultVendor(0), makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+    assert.doesNotMatch(decodeURIComponent(qs), /(^|[~=])-($|[~&])/);
   });
 });
 
@@ -727,5 +762,77 @@ describe('lump-sum box: read as the page writes numbers', () => {
     assert.equal(displayLumpSums('12:5000;36:2500.5', 'es'), '12:5000;36:2500,5');
     assert.equal(displayLumpSums('12:5000;36:2500.5', 'en'), '12:5000;36:2500.5');
     assert.equal(displayLumpSums('', 'es'), '');
+  });
+});
+
+describe('a hostile link', () => {
+  const decode = (qs: string) => decodeFromQueryString(qs);
+
+  it('a currency the tools do not know is treated as none', () => {
+    for (const c of ['ZZZ', 'eur', '%3Cscript%3E', 'EUR%26x%3D1', 'E'.repeat(3000)]) {
+      const { currency, global } = decode(`c=${c}&v1=Bank~100000~5`);
+      assert.equal(currency, null, c.slice(0, 20));
+      assert.equal(global.currency, DEFAULT_GLOBAL_STATE.currency);
+    }
+    assert.equal(decode('c=INR&v1=Bank~100000~5').currency, 'INR');
+  });
+
+  it('globals that do not read as numbers fall back to the defaults', () => {
+    const { global } = decode('h=abc&ra=%3Cb%3E&rr=5%25&rt=ten&rf=1e9&v1=Bank~100000~5');
+    assert.equal(global.horizonMonths, DEFAULT_GLOBAL_STATE.horizonMonths);
+    assert.equal(global.refiAtMonth, DEFAULT_GLOBAL_STATE.refiAtMonth);
+    assert.equal(global.refiNewRatePct, DEFAULT_GLOBAL_STATE.refiNewRatePct);
+    assert.equal(global.refiNewTermMonths, DEFAULT_GLOBAL_STATE.refiNewTermMonths);
+    assert.equal(global.refiNewFeeMajor, DEFAULT_GLOBAL_STATE.refiNewFeeMajor);
+  });
+
+  it('the refinance offer is one the link carries, or none', () => {
+    assert.equal(decode('rv=99&v1=A~1~1&v2=B~1~1').global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
+    assert.equal(decode('rv=3&v1=A~1~1&v2=B~1~1').global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
+    assert.equal(decode('rv=-1&v1=A~1~1').global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
+    assert.equal(decode('rv=x&v1=A~1~1').global.refiVendorIndex, DEFAULT_GLOBAL_STATE.refiVendorIndex);
+    assert.equal(decode('rv=0&v1=A~1~1').global.refiVendorIndex, '0');
+    assert.equal(decode('n=3&rv=3&v1=A~1~1&v2=B~1~1&v3=C~1~1').global.refiVendorIndex, '3');
+  });
+
+  it('a name is cut at the stated length and loses its control characters', () => {
+    const long = decode(`v1=${'x'.repeat(5000)}~100000~5`).vendors[0];
+    assert.equal(long.name.length, 80);
+    assert.equal(long.principal, '100000', 'the fields after it are still read');
+    assert.equal(decode('v1=A%00B%0AC~1~1').vendors[0].name, 'ABC');
+  });
+
+  it('a name holding the codec’s own marker reads as a name with a tilde', () => {
+    // U+0001 stands for "~" inside a field (compactUrl.ts).
+    assert.equal(decode('v1=A%01B~100000~5').vendors[0].name, 'A~B');
+  });
+
+  it('an offer’s numbers that do not read as numbers fall back to the slot’s own', () => {
+    const base = makeDefaultVendor(0);
+    const v = decode('v1=Bank~%3Cb%3E~five~term~ten~x~y~z&v1_fm=abc&v1_ls=%3Cscript%3E').vendors[0];
+    assert.equal(v.name, 'Bank');
+    assert.equal(v.principal, base.principal);
+    assert.equal(v.annualRatePct, base.annualRatePct);
+    assert.equal(v.termMonths, base.termMonths);
+    assert.equal(v.monthlyPayment, base.monthlyPayment);
+    assert.equal(v.feeMajor, base.feeMajor);
+    assert.equal(v.extraMonthly, base.extraMonthly);
+    assert.equal(v.initialFixedMonths, base.initialFixedMonths);
+    assert.equal(v.lumpSumsEncoded, base.lumpSumsEncoded);
+  });
+
+  it('numbers typed the way people type them still arrive', () => {
+    const v = decode('v1=Bank~1%20234%2C56~4%2C5&v1_ls=12%3A5000%3B36%3A3000').vendors[0];
+    assert.equal(v.principal, '1 234,56');
+    assert.equal(v.annualRatePct, '4,5');
+    assert.equal(v.lumpSumsEncoded, '12:5000;36:3000');
+  });
+
+  it('an offer with its name cleared comes back with the slot’s name', () => {
+    // An empty name is not written into the link, so it reads as unset.
+    const vendors = [{ ...makeDefaultVendor(0), name: '', principal: '123456' }, makeDefaultVendor(1)];
+    const back = decode(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE)).vendors[0];
+    assert.equal(back.name, makeDefaultVendor(0).name);
+    assert.equal(back.principal, '123456');
   });
 });
