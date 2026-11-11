@@ -4776,32 +4776,6 @@ body[data-page="landing"] .site-footer {
   align-items: center;
   gap: var(--space-3);
 }
-.mcs-btn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-cta-bg);
-  background: var(--color-cta-bg);
-  color: var(--color-cta-fg);
-}
-.mcs-btn:hover,
-.mcs-btn:focus-visible {
-  background: var(--color-cta-bg-hover);
-  border-color: var(--color-teal);
-}
-.mcs-btn--ghost {
-  background: transparent;
-  color: var(--color-deep-blue);
-  border-color: var(--color-deep-blue);
-}
-.mcs-btn--ghost:hover,
-.mcs-btn--ghost:focus-visible {
-  background: var(--color-bg-subtle);
-}
 .mcs-resultsTitle {
   font-family: var(--font-heading);
   font-weight: 700;
@@ -4996,10 +4970,90 @@ body[data-page="landing"] .site-footer {
    phone's width (MonteCarloSimulator.tsx picks the geometry). Wider screens
    are unchanged: these three elements only exist on phones. */
 .mcs-quick,
-.mcs-settingsRow,
+.mcs-jump,
 .mcs-cardsKey {
   display: none;
 }
+/* The starting figures are an example until one is changed. */
+.mcs-example {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+/* Yearly fees and simulated paths fold behind one row, at every width, that
+   says what they are set to. Returns and the mix stay in view: they decide
+   the answer. */
+.mcs-settingsToggle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-3) 44px var(--space-3) var(--space-3);
+  border: 1px solid var(--color-control-edge);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* The chevron comes from .disclosure, set in from the box's edge. */
+.mcs-settingsToggle::after {
+  right: var(--space-4);
+}
+.mcs-settingsToggle:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcs-settingsName {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+/* The row is the box and the values line sits in the flow under the name,
+   so a name or values line that wraps (Spanish, Czech, a larger text size)
+   makes the box taller instead of drawing one line over the other. The
+   button's ::before stretches over the whole row, so all of it is tappable. */
+.mcs-settingsRow {
+  display: block;
+  position: relative;
+  border: 1px solid var(--color-control-edge);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+.mcs-settingsRow:has(.mcs-settingsToggle:focus-visible) {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+.mcs-settingsRow .mcs-settingsToggle {
+  position: static;
+  padding-bottom: 2px;
+  border: 0;
+  background: transparent;
+}
+.mcs-settingsRow .mcs-settingsToggle:focus-visible { outline: none; }
+.mcs-settingsRow .mcs-settingsToggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.mcs-settingsValue {
+  position: static;
+  margin: 0 44px 0 0;
+  padding: 0 0 var(--space-3) var(--space-3);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+.mcs-grid--assumptions:not(.mcs-settings--open) {
+  display: none;
+}
+
 @media (max-width: 640px) {
   .mcs-root {
     gap: var(--space-4);
@@ -5025,6 +5079,23 @@ body[data-page="landing"] .site-footer {
   .mcs-quick--busy {
     opacity: 0.55;
   }
+  /* Phones: a way past the rest of the form to the full result. */
+  .mcs-jump {
+    display: block;
+    margin: calc(-1 * var(--space-1, 4px)) 0 0;
+    font-size: 0.875rem;
+  }
+  .mcs-jump button {
+    display: inline-block;
+    min-height: 44px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+    color: var(--color-deep-blue);
+    text-decoration: underline;
+  }
   .mcs-quickTitle {
     font-size: 0.8125rem;
     color: var(--color-text-secondary);
@@ -5041,75 +5112,6 @@ body[data-page="landing"] .site-footer {
     font-size: 0.875rem;
     line-height: 1.45;
     color: var(--color-text-secondary);
-  }
-  .mcs-settingsToggle {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    width: 100%;
-    min-height: 44px;
-    padding: var(--space-3) 44px var(--space-3) var(--space-3);
-    border: 1px solid var(--color-control-edge);
-    border-radius: var(--radius-md);
-    background: var(--color-bg);
-    color: inherit;
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-  }
-  /* The chevron comes from .disclosure, set in from the box's edge. */
-  .mcs-settingsToggle::after {
-    right: var(--space-4);
-  }
-  .mcs-settingsToggle:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-  .mcs-settingsName {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--color-text-primary);
-  }
-  /* The row is the box and the values line sits in the flow under the name,
-     so a name or values line that wraps (Spanish, Czech, a larger text size)
-     makes the box taller instead of drawing one line over the other. The
-     button's ::before stretches over the whole row, so all of it is tappable. */
-  .mcs-settingsRow {
-    display: block;
-    position: relative;
-    border: 1px solid var(--color-control-edge);
-    border-radius: var(--radius-md);
-    background: var(--color-bg);
-  }
-  .mcs-settingsRow:has(.mcs-settingsToggle:focus-visible) {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-  .mcs-settingsRow .mcs-settingsToggle {
-    position: static;
-    padding-bottom: 2px;
-    border: 0;
-    background: transparent;
-  }
-  .mcs-settingsRow .mcs-settingsToggle:focus-visible { outline: none; }
-  .mcs-settingsRow .mcs-settingsToggle::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-  .mcs-settingsValue {
-    position: static;
-    margin: 0 44px 0 0;
-    padding: 0 0 var(--space-3) var(--space-3);
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-    pointer-events: none;
-  }
-  .mcs-grid--assumptions:not(.mcs-settings--open) {
-    display: none;
   }
   .mcs-cards {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5175,7 +5177,7 @@ body[data-page="landing"] .site-footer {
   text-decoration: underline;
 }
 .mcs-grid--assumptions {
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
 }
 .mcs-switch {
@@ -5287,10 +5289,6 @@ body[data-page="landing"] .site-footer {
 .mcs-results--busy .mcs-lasted {
   opacity: 0.55;
   transition: opacity 0.15s ease;
-}
-.mcs-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 @media (max-width: 800px) {
   .mcs-grid--assumptions {

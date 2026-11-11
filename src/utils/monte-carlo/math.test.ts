@@ -189,6 +189,21 @@ describe('simulate', () => {
     assert.ok(high <= low);
   });
 
+  it('withdrawals from nothing are never counted as paid', () => {
+    const empty = simulate({ ...DRAWDOWN, start: 0, monthly: 0, saveYears: 0, withdrawal: 12_000, withdrawYears: 30, paths: 200 });
+    assert.equal(empty.lasted, 0);
+    assert.equal(empty.medianRunOutYear, 1);
+    const afterSaving = simulate({ ...DRAWDOWN, start: 0, monthly: 0, saveYears: 10, withdrawal: 12_000, withdrawYears: 30, paths: 200 });
+    assert.equal(afterSaving.lasted, 0);
+    assert.equal(afterSaving.medianRunOutYear, 1);
+  });
+
+  it('a pot that pays its last withdrawal exactly still counts as lasting', () => {
+    // One year of small withdrawals from a large pot: every path pays them all.
+    const r = simulate({ ...DRAWDOWN, start: 1_000_000, monthly: 0, saveYears: 0, withdrawal: 1_000, withdrawYears: 1, paths: 200 });
+    assert.equal(r.lasted, 1);
+  });
+
   it('a zero start with no contributions stays at zero without counting as running out', () => {
     const r = simulate({ ...SAVE_ONLY, start: 0, monthly: 0, saveYears: 5, paths: 50 });
     assert.equal(r.atRetirement.p90, 0);

@@ -252,6 +252,7 @@ export const monteCarloEn = {
     /** The 38 currency names, shared by the three tools: see `./currencies.ts`. */
     currencies: currenciesEn,
     formLabel: 'Your plan',
+    example: 'Example scenario. Replace the figures with your own.',
     /** The spreadsheet's own sheets and rows; the rest reuses the labels above. */
     export: {
       tool: 'Monte Carlo simulator',
@@ -287,6 +288,7 @@ export const monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% bonds',
       mixHint: 'Rebalanced back to this mix once a year.',
+      mixExample: '{pct}% stocks is an example value, not a suggested mix.',
       /** Split around the link to the other tool. */
       crossLink: {
         before: 'Money in several currencies? Add it up first with the ',
@@ -314,9 +316,9 @@ export const monteCarloEn = {
         'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: the high end of the long-run range. The ups and downs are as large as in history.',
     },
     settings: {
-      /** The button that opens the folded settings on a phone. */
-      toggle: 'Returns, fees and paths',
-      summary: '{returns} · {fees}% fees · {paths} paths',
+      /** The button that opens the folded fees and paths. */
+      toggle: 'Fees and simulated paths',
+      summary: '{fees}% fees · {paths} paths',
       legend: 'Returns',
       feeLabel: 'Yearly fees, %',
       feeHint: "Fund and platform fees, taken off every year's return. 0 to {maxFeePct}.",
@@ -349,6 +351,7 @@ export const monteCarloEn = {
       medianOne: 'Median after 1 year',
       medianOther: 'Median after {years} years',
       range: '8 in 10 paths between {low} and {high}',
+      jump: 'Go to the full result',
       lasted: 'The money lasted all {years} years in {inTen} paths.',
     },
     /** "9 in 10" style phrasing, filled with a count of tenths. */
@@ -595,6 +598,7 @@ export const monteCarloHi: typeof monteCarloEn = {
   island: {
     currencies: currenciesHi,
     formLabel: 'आपकी योजना',
+    example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     export: {
       tool: 'मोंटे कार्लो सिम्युलेटर',
       meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई धारणाओं पर चले सिमुलेशन के नतीजे हैं, भविष्यवाणी या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
@@ -627,6 +631,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% बॉन्ड',
       mixHint: 'हर साल इसी मिश्रण पर रीबैलेंस होता है।',
+      mixExample: '{pct}% शेयर सिर्फ़ एक उदाहरण है, सुझाया हुआ मिश्रण नहीं।',
       crossLink: {
         before: 'पैसा कई मुद्राओं में है? पहले ',
         link: 'शुद्ध संपत्ति कैलकुलेटर',
@@ -647,8 +652,8 @@ export const monteCarloHi: typeof monteCarloEn = {
         'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: लंबी अवधि की सीमा का ऊपरी सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
     },
     settings: {
-      toggle: 'रिटर्न, शुल्क और रास्ते',
-      summary: '{returns} · {fees}% शुल्क · {paths} रास्ते',
+      toggle: 'शुल्क और सिम्युलेटेड रास्ते',
+      summary: '{fees}% शुल्क · {paths} रास्ते',
       legend: 'रिटर्न',
       feeLabel: 'सालाना शुल्क, %',
       feeHint: 'फ़ंड और प्लेटफ़ॉर्म का शुल्क, जो हर साल के रिटर्न में से कटता है। 0 से {maxFeePct}।',
@@ -676,6 +681,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       medianOne: '1 साल बाद, बीच का नतीजा',
       medianOther: '{years} साल बाद, बीच का नतीजा',
       range: '10 में से 8 रास्ते {low} और {high} के बीच',
+      jump: 'पूरा नतीजा देखें',
       lasted: 'पैसा पूरे {years} साल तक {inTen} रास्तों में टिका।',
     },
     inTen: '10 में से {n}',
@@ -908,6 +914,7 @@ export const monteCarloEs: typeof monteCarloEn = {
   island: {
     currencies: currenciesEs,
     formLabel: 'Tu plan',
+    example: 'Escenario de ejemplo. Cambia las cifras por las tuyas.',
     export: {
       tool: 'Simulador Monte Carlo',
       meaning: 'La mediana es el resultado del medio: la mitad de las trayectorias simuladas terminó por encima y la otra mitad por debajo. El rango deja fuera la décima parte más baja y la más alta de las trayectorias. Son resultados de una simulación con los supuestos de abajo, no una previsión ni una promesa: las rentabilidades reales pueden ser mejores o peores que cualquier trayectoria de aquí.',
@@ -940,6 +947,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % bonos',
       mixHint: 'Se reequilibra a esta combinación una vez al año.',
+      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
       crossLink: {
         before: '¿Tienes dinero en varias monedas? Súmalo primero con la ',
         link: 'calculadora de patrimonio neto',
@@ -960,8 +968,8 @@ export const monteCarloEs: typeof monteCarloEn = {
         'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: el extremo alto del rango a largo plazo. Los altibajos son tan grandes como en la historia.',
     },
     settings: {
-      toggle: 'Rentabilidad, comisiones y trayectorias',
-      summary: '{returns} · {fees} % de comisiones · {paths} trayectorias',
+      toggle: 'Comisiones y trayectorias simuladas',
+      summary: '{fees} % de comisiones · {paths} trayectorias',
       legend: 'Rentabilidad',
       feeLabel: 'Comisiones anuales, %',
       feeHint: 'Comisiones del fondo y de la plataforma, descontadas de la rentabilidad de cada año. De 0 a {maxFeePct}.',
@@ -989,6 +997,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       medianOne: 'Mediana tras 1 año',
       medianOther: 'Mediana tras {years} años',
       range: '8 de cada 10 trayectorias entre {low} y {high}',
+      jump: 'Ir al resultado completo',
       lasted: 'El dinero alcanzó para los {years} años en {inTen} trayectorias.',
     },
     inTen: '{n} de cada 10',
@@ -1223,6 +1232,7 @@ export const monteCarloCs: typeof monteCarloEn = {
   island: {
     currencies: currenciesCs,
     formLabel: 'Váš plán',
+    example: 'Ukázkový scénář. Nahraďte čísla svými.',
     export: {
       tool: 'Simulátor Monte Carlo',
       meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o předpověď ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
@@ -1255,6 +1265,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % dluhopisů',
       mixHint: 'Jednou ročně se rebalancuje zpět na tento poměr.',
+      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
       crossLink: {
         before: 'Peníze ve více měnách? Nejdřív je sečtěte v ',
         link: 'kalkulačce čistého jmění',
@@ -1275,8 +1286,8 @@ export const monteCarloCs: typeof monteCarloEn = {
         'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
     },
     settings: {
-      toggle: 'Výnosy, poplatky a trajektorie',
-      summary: '{returns} · poplatky {fees} % · trajektorie: {paths}',
+      toggle: 'Poplatky a\u00a0simulované trajektorie',
+      summary: 'poplatky {fees} % · trajektorie: {paths}',
       legend: 'Odhad výnosu',
       feeLabel: 'Roční poplatky, %',
       feeHint: 'Poplatky fondu a platformy, odečtené od výnosu každého roku. 0 až {maxFeePct}.',
@@ -1304,6 +1315,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       medianOne: 'Medián po 1 roce',
       medianOther: 'Medián po {years} letech',
       range: '8 z 10 trajektorií mezi {low} a {high}',
+      jump: 'Přejít na celý výsledek',
       lasted: 'Peníze vydržely po celou dobu (počet let: {years}) v {inTen} trajektorií.',
     },
     inTen: '{n} z 10',
@@ -1524,6 +1536,7 @@ export const monteCarloMr: typeof monteCarloEn = {
   island: {
     currencies: currenciesMr,
     formLabel: 'तुमची योजना',
+    example: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
     export: {
       tool: 'मॉन्टे कार्लो सिम्युलेटर',
       meaning: 'मध्यक हा मधला निकाल आहे: सिम्युलेट केलेल्या मार्गांपैकी निम्मे त्याच्या वर संपले आणि निम्मे खाली. पल्ल्यात सगळ्यात खालचा आणि सगळ्यात वरचा दहावा हिस्सा धरलेला नाही. हे खाली दिलेल्या गृहीतकांवर चाललेल्या सिमुलेशनचे निकाल आहेत, भाकीत किंवा वचन नाही: प्रत्यक्ष परतावा इथल्या कोणत्याही मार्गापेक्षा चांगला किंवा वाईट असू शकतो.',
@@ -1556,6 +1569,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct}% रोखे',
       mixHint: 'वर्षातून एकदा पुन्हा या मिश्रणावर आणले जाते.',
+      mixExample: '{pct}% शेअर्स हे फक्त एक उदाहरण आहे, सुचवलेले मिश्रण नाही.',
       crossLink: {
         before: 'अनेक चलनांमध्ये पैसा आहे? आधी ',
         link: 'निव्वळ संपत्ती कॅल्क्युलेटर',
@@ -1573,8 +1587,8 @@ export const monteCarloMr: typeof monteCarloEn = {
       optimistic: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे वरचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
     },
     settings: {
-      toggle: 'परतावा, शुल्क आणि मार्ग',
-      summary: '{returns} · {fees}% शुल्क · {paths} मार्ग',
+      toggle: 'शुल्क आणि संभाव्य मार्ग',
+      summary: '{fees}% शुल्क · {paths} मार्ग',
       legend: 'परतावा',
       feeLabel: 'वार्षिक शुल्क, %',
       feeHint: 'फंड आणि प्लॅटफॉर्मचे शुल्क, प्रत्येक वर्षीच्या परताव्यातून वजा. 0 ते {maxFeePct}.',
@@ -1601,6 +1615,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       medianOne: '1 वर्षानंतरचे मध्यक',
       medianOther: '{years} वर्षांनंतरचे मध्यक',
       range: '10 पैकी 8 मार्ग {low} आणि {high} दरम्यान',
+      jump: 'पूर्ण निकाल पाहा',
       lasted: '{inTen} मार्गांमध्ये पैसा सर्व {years} वर्षे पुरला.',
     },
     inTen: '10 पैकी {n}',

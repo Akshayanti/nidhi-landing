@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'monte-carlo-chart-first',
+        text: {
+          en: 'The Monte Carlo simulator now shows the chart right under the three figures, with the save and share buttons after it. Yearly fees and the number of simulated paths sit behind one row that says what they are set to, on every screen size. The starting figures are marked as an example, and the 80% stock mix says it is not a suggestion.',
+          hi: 'मोंटे कार्लो सिम्युलेटर में चार्ट अब तीनों आँकड़ों के ठीक नीचे दिखता है, और सेव और शेयर के बटन उसके बाद आते हैं। सालाना शुल्क और सिम्युलेटेड रास्तों की गिनती अब हर स्क्रीन पर एक पंक्ति के पीछे हैं, जो बताती है कि वे किस पर सेट हैं। शुरुआती आँकड़ों पर लिखा है कि वे उदाहरण हैं, और 80% शेयर वाले मिश्रण पर लिखा है कि वह सुझाव नहीं है।',
+          es: 'El simulador Monte Carlo muestra ahora el gráfico justo debajo de las tres cifras, y los botones de guardar y compartir van después. Las comisiones anuales y el número de trayectorias simuladas quedan tras una sola fila que dice cómo están ajustadas, en cualquier tamaño de pantalla. Las cifras iniciales llevan la indicación de que son un ejemplo, y la combinación con un 80 % en acciones dice que no es una sugerencia.',
+          cs: 'Simulátor Monte Carlo teď ukazuje graf hned pod třemi čísly a\u00a0tlačítka pro uložení a\u00a0sdílení následují až za ním. Roční poplatky a\u00a0počet simulovaných trajektorií jsou na každé velikosti obrazovky schované za jedním řádkem, který říká, jak jsou nastavené. Výchozí čísla jsou označená jako ukázka a\u00a0u\u00a0poměru s\u00a080 % akcií je napsáno, že nejde o\u00a0doporučení.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटरमध्ये आलेख आता तीन आकड्यांच्या लगेच खाली दिसतो, आणि सेव्ह व शेअरची बटणे त्यानंतर येतात. वार्षिक शुल्क आणि संभाव्य मार्गांची संख्या आता प्रत्येक स्क्रीनवर एका ओळीमागे आहेत; ते कशावर सेट आहेत ते ती ओळ सांगते. सुरुवातीच्या आकड्यांवर ते उदाहरण असल्याचे लिहिले आहे, आणि 80% शेअर्सच्या मिश्रणावर ते सुचवलेले मिश्रण नसल्याचे लिहिले आहे.',
+        },
+      },
+      {
         id: 'inflation-history-folded',
         text: {
           en: 'The inflation calculator puts the answer closer to the figures you type. A country\'s inflation history is optional in three of the four questions, so there it now sits behind one row that names the country you picked; in Past to today, which needs it, it stays in view. The starting figures are marked as an example, Reset is at the top, and the chart is shorter on a phone.',

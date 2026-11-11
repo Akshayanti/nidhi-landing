@@ -308,7 +308,13 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
       const r = Math.sqrt(-2 * Math.log(u));
       const z1 = r * Math.cos(2 * Math.PI * v);
       const z2 = r * Math.sin(2 * Math.PI * v);
-      if (balance[p] <= 0 && !saving) continue;
+      if (balance[p] <= 0 && !saving) {
+        // Nothing left at the start of a year that owes withdrawals: the path
+        // has run out, even when it never held anything (a plan with nothing
+        // invested), so it is not counted as having paid them all.
+        if (runOutYear[p] < 0) runOutYear[p] = y - inputs.saveYears;
+        continue;
+      }
       const stock = Math.exp(s.mu + s.sigma * z1);
       const bond = Math.exp(b.mu + b.sigma * (rho * z1 + rhoC * z2));
       const growth = (w * stock + (1 - w) * bond) * keep;
