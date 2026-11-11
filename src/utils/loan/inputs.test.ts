@@ -446,7 +446,7 @@ describe('computeFromInput', () => {
       'USD',
     );
     assert.ok(r.error);
-    assert.match(r.error!, /hybrid/i);
+    assert.match(r.error!, /term mode/i);
   });
 
   it('surfaces the engine error when principal is empty', () => {

@@ -215,15 +215,22 @@ export function makeDefaultVendor(index: number): VendorInput {
  * term, with every optional box empty. A fee sitting in a folded row would
  * change the result without the reader having typed it. The slot templates
  * themselves cannot lose their fees: share links leave out a value that
- * equals its slot's template, so older links depend on them.
+ * equals its slot's template, so older links depend on them. The page's
+ * starting example is made the same way.
  */
 export function makeAddedVendor(index: number): VendorInput {
   return { ...makeDefaultVendor(index), feeMajor: '0', extraMonthly: '0', ...ADVANCED_DEFAULTS };
 }
 
+/**
+ * The example a fresh page opens with. Its optional boxes are empty, like an
+ * added vendor's: the second offer used to open with a fee in a folded row.
+ * A share link is still read against `makeDefaultVendor`, so links made
+ * before this keep the fee they were made with.
+ */
 export const DEFAULT_VENDORS: VendorInput[] = Array.from(
   { length: MIN_VENDORS },
-  (_, i) => makeDefaultVendor(i),
+  (_, i) => makeAddedVendor(i),
 );
 
 export const DEFAULT_GLOBAL_STATE: GlobalState = {
