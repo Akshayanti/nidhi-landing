@@ -54,7 +54,11 @@ export async function askListCount(endpoint: string | undefined, tokenName: stri
       body: new URLSearchParams({ action: 'count', token: secret }),
       signal: AbortSignal.timeout(8000),
     });
-    return res.ok ? parseCountAnswer(await res.json()) : null;
+    const count = res.ok ? parseCountAnswer(await res.json()) : null;
+    // An answer that is not a count (a refused token, a sheet whose columns
+    // moved, a script error page) used to make the line vanish without a word.
+    if (count === null) console.warn(`[${label} count] the script did not answer with a count (status ${res.status}); the line is left out.`);
+    return count;
   } catch {
     // Whatever failed (reading the token, the request, the answer), the build
     // goes on without the line. Nothing about the request is logged: the token

@@ -735,6 +735,58 @@ describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)
   });
 });
 
+describe('newsletter.gs: a failed send is reported as a kind, never in the mail service’s words', () => {
+  it('sorts the messages a mail service gives into a fixed list', () => {
+    const ctx = load();
+    const kinds = [...vm.runInContext('MAIL_ERROR_KINDS_', ctx)];
+    assert.deepEqual(kinds, ['quota', 'rate_limited', 'invalid_recipient', 'auth', 'unavailable', 'other']);
+    for (const [message, kind] of [
+      ['Service invoked too many times for one day: email.', 'quota'],
+      ['Daily limit exceeded for sending mail', 'quota'],
+      ['Quota exceeded: Email recipients per day', 'quota'],
+      ['User-rate limit exceeded. Retry after 2026-11-11T10:00:00Z', 'rate_limited'],
+      ['Invalid To header: reader@example.org', 'invalid_recipient'],
+      ['Recipient address rejected: reader@example.org', 'invalid_recipient'],
+      ['Authorization is required to perform that action.', 'auth'],
+      ['Service unavailable: Gmail', 'unavailable'],
+      ['Something nobody has seen before, about reader@example.org', 'other'],
+    ]) {
+      assert.equal(ctx.mailErrorKind_(new Error(message)), kind, message);
+      assert.ok(kinds.includes(ctx.mailErrorKind_(message)));
+    }
+    assert.equal(ctx.mailErrorKind_(undefined), 'other');
+  });
+
+  it('the event for a lesson that could not be sent to one reader holds no word of the message', () => {
+    const ctx = load([row('reader@example.org', 'confirmed', 30, { unsub: tok('1') }), row('b@x.io', 'confirmed', 30, { unsub: tok('2') })]);
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (_url, options) => { sent.push(JSON.parse(options.payload)); return {}; };
+    ctx.rec.onSend = (to) => { if (to === 'reader@example.org') throw new Error('Invalid To header: reader@example.org is not a valid address'); };
+    const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
+    const out = json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
+    assert.equal(out.failed, 1);
+    const failed = sent.filter((e) => e.event === 'blog_newsletter_send_failed');
+    assert.equal(failed.length, 1);
+    assert.deepEqual(failed[0].properties, { guid: 'https://nidhi.today/blog/x/', email_domain: 'example.org', reason: 'invalid_recipient' });
+    assert.doesNotMatch(JSON.stringify(sent), /reader@|Invalid To|not a valid/);
+  });
+
+  it('the event for a welcome mail that failed holds no word of the message either', () => {
+    const ctx = load([row('reader@example.org', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (_url, options) => { sent.push(JSON.parse(options.payload)); return {}; };
+    ctx.rec.onSend = () => { throw new Error('Quota exceeded for reader@example.org: Email recipients per day'); };
+    ctx.doGet(req({ action: 'confirm', t: tok('1') }));
+    assert.equal(find(ctx, 'reader@example.org')[1], 'confirmed', 'the reader is confirmed all the same');
+    const failed = sent.filter((e) => e.event === 'blog_welcome_failed');
+    assert.equal(failed.length, 1);
+    assert.deepEqual(failed[0].properties, { email_domain: 'example.org', reason: 'quota' });
+    assert.doesNotMatch(JSON.stringify(sent), /reader@|Quota exceeded|per day/);
+  });
+});
+
 describe('newsletter.gs: one fan-out per lesson', () => {
   const body = JSON.stringify({ guid: 'https://nidhi.today/blog/x/', subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
   const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
