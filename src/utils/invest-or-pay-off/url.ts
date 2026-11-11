@@ -32,7 +32,7 @@
  */
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
-import { MAX_AMOUNT, MAX_DEBT_RATE, MAX_FEE_PCT, MAX_INFLATION, type Horizon, type ReturnChoice } from './math.ts';
+import { MAX_AMOUNT, MAX_DEBT_RATE, MAX_FEE_PCT, MAX_INFLATION, type Horizon, type ReturnChoice, type TodayBasis } from './math.ts';
 
 export interface ToolState {
   currency: string;
@@ -50,6 +50,8 @@ export interface ToolState {
   feePct: number;
   gainsTax: number;
   horizon: Horizon;
+  /** How interest avoided is put into today's money; a choice, never a value. */
+  todayAt: TodayBasis;
 }
 
 export const DEFAULTS: ToolState = {
@@ -66,6 +68,7 @@ export const DEFAULTS: ToolState = {
   feePct: 0,
   gainsTax: 0,
   horizon: 'plus5',
+  todayAt: 'month',
 };
 
 const RETURN_CODES: Record<ReturnChoice, string> = { cautious: 'c', historical: 'h', optimistic: 'o', own: 'w' };
@@ -73,7 +76,7 @@ const RETURN_BY_CODE: Record<string, ReturnChoice> = { c: 'cautious', h: 'histor
 const HORIZON_CODES: Record<Horizon, string> = { payoff: 'p', plus5: '5', plus10: '0' };
 const HORIZON_BY_CODE: Record<string, Horizon> = { p: 'payoff', '5': 'plus5', '0': 'plus10' };
 
-export const STATE_KEYS = ['c', 'b', 'r', 'p', 'x', 'l', 'n', 'i', 's', 'o', 'f', 't', 'h'] as const;
+export const STATE_KEYS = ['c', 'b', 'r', 'p', 'x', 'l', 'n', 'i', 's', 'o', 'f', 't', 'h', 'a'] as const;
 
 /** Window property the page head script stores a shared fragment in. */
 export const SHARED_STATE_GLOBAL = '__nidhiInvestOrPayOffShared';
@@ -99,6 +102,7 @@ export function encodeState(state: ToolState): string {
   setNonDefault(p, 'f', state.feePct, DEFAULTS.feePct);
   setNonDefault(p, 't', state.gainsTax, DEFAULTS.gainsTax);
   setNonDefault(p, 'h', HORIZON_CODES[state.horizon], HORIZON_CODES[DEFAULTS.horizon]);
+  if (state.todayAt === 'end') p.set('a', 'e');
   return serializeParams(p);
 }
 
@@ -164,5 +168,6 @@ export function decodeState(search: string): ToolState | null {
     feePct: round2(clamp(num('f', DEFAULTS.feePct), 0, MAX_FEE_PCT)),
     gainsTax: round2(clamp(num('t', DEFAULTS.gainsTax), 0, 100)),
     horizon: HORIZON_BY_CODE[p.get('h') ?? ''] ?? DEFAULTS.horizon,
+    todayAt: p.get('a') === 'e' ? 'end' : DEFAULTS.todayAt,
   };
 }

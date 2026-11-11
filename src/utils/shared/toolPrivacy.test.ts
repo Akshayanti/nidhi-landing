@@ -244,7 +244,7 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
   it('invest or pay off: every field changed emits every key', () => {
     const state: investOrPayOff.ToolState = {
       currency: 'INR', balance: 1, debtRate: 2, payment: 3, extra: 4, relief: 5, country: 'IND', inflation: 6,
-      returns: 'own', ownReturn: 8, feePct: 0.5, gainsTax: 9, horizon: 'plus10',
+      returns: 'own', ownReturn: 8, feePct: 0.5, gainsTax: 9, horizon: 'plus10', todayAt: 'end',
     };
     for (const field of Object.keys(investOrPayOff.DEFAULTS) as (keyof investOrPayOff.ToolState)[]) {
       assert.notEqual(state[field], investOrPayOff.DEFAULTS[field], `${field} is new: change it in this test`);

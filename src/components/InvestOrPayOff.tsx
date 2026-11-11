@@ -27,6 +27,7 @@ import {
   type Inputs,
   type Result,
   type ReturnChoice,
+  type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import { format } from '../i18n/format.ts';
@@ -105,6 +106,7 @@ interface FormState extends Record<TextKey, string> {
   country: string;
   returns: ReturnChoice;
   horizon: Horizon;
+  todayAt: TodayBasis;
 }
 
 function toForm(s: ToolState, locale: string): FormState {
@@ -114,6 +116,7 @@ function toForm(s: ToolState, locale: string): FormState {
     country: s.country,
     returns: s.returns,
     horizon: s.horizon,
+    todayAt: s.todayAt,
     balance: f(s.balance),
     debtRate: f(s.debtRate),
     payment: f(s.payment),
@@ -158,6 +161,7 @@ function toState(f: FormState, prev: ToolState, locale: string): ToolState {
     country: f.country,
     returns: f.returns,
     horizon: f.horizon,
+    todayAt: f.todayAt,
     balance: n('balance', prev.balance),
     debtRate: n('debtRate', prev.debtRate),
     payment: n('payment', prev.payment),
@@ -377,7 +381,7 @@ export default function InvestOrPayOff({
       inflationSource: settled.inflation === null && settledDefault && settledCountry
         ? t(strings.country.average, { country: settledCountry.name, first: settledDefault.first, last: settledDefault.last, avg: pct(settledDefault.average, numberLocale, 2) })
         : null,
-      lines: resultLines(computed.result, strings, numberLocale, money),
+      lines: resultLines(computed.result, strings, numberLocale, money, settled.todayAt),
     };
   }
   const shownNow = shown();
@@ -596,6 +600,9 @@ export default function InvestOrPayOff({
             investReal={computed.rates.investReal}
             numberLocale={numberLocale}
             money={money}
+            todayAt={form.todayAt}
+            onTodayAt={(todayAt) => setForm((f) => ({ ...f, todayAt }))}
+            basisName={id('basis')}
           />
         )}
       </section>
@@ -624,7 +631,7 @@ export default function InvestOrPayOff({
 }
 
 /** The result in sentences, as the page says it and the files repeat it. */
-export function resultLines(r: Result, strings: Strings, locale: string, money: (v: number) => string): string[] {
+export function resultLines(r: Result, strings: Strings, locale: string, money: (v: number) => string, todayAt: TodayBasis = 'month'): string[] {
   const s = strings.results;
   const when = whenText(r.months, strings, locale);
   const investAhead = Math.round(r.bAhead * 100);
@@ -633,7 +640,7 @@ export function resultLines(r: Result, strings: Strings, locale: string, money: 
     t(s.on, { when }),
     even ? s.shareEven : t(s.share, { invest: investAhead, payoff: 100 - investAhead }),
     t(s.gap, { p10: money(r.diff.p10), p50: money(r.diff.p50), p90: money(r.diff.p90) }),
-    t(s.avoided, { amount: money(r.interestAvoided), today: money(r.interestAvoidedToday) }),
+    t(s.avoided, { amount: money(r.interestAvoided), today: money(todayAt === 'end' ? r.interestAvoidedTodayAtEnd : r.interestAvoidedToday) }),
   ];
 }
 
@@ -646,6 +653,9 @@ function Results({
   investReal,
   numberLocale,
   money,
+  todayAt,
+  onTodayAt,
+  basisName,
 }: {
   strings: Strings;
   result: Result;
@@ -655,9 +665,12 @@ function Results({
   investReal: number;
   numberLocale: string;
   money: (v: number) => string;
+  todayAt: TodayBasis;
+  onTodayAt: (basis: TodayBasis) => void;
+  basisName: string;
 }) {
   const s = strings.results;
-  const lines = resultLines(r, strings, numberLocale, money);
+  const lines = resultLines(r, strings, numberLocale, money, todayAt);
   const paths = [
     { key: 'a', name: s.payoffPath, p: r.a, paid: r.payoffMonthA, owed: 0, interest: r.interestA },
     { key: 'b', name: s.investPath, p: r.b, paid: r.payoffMonthB, owed: r.remainingB, interest: r.interestB },
@@ -687,6 +700,27 @@ function Results({
       <RangeChart strings={strings} paths={paths.map((p) => ({ name: p.name, p: p.p }))} money={money} />
 
       <p>{lines[3]}</p>
+      {/* The reader's choice of how that figure in today's money is counted;
+          folded, with the choice in use named on the row. */}
+      <details className="iop-more iop-basis">
+        <summary className="iop-moreSummary disclosure">
+          <span className="iop-moreTitle iop-basisTitle">{s.basis.title}</span>
+          <span className="iop-moreStatus">{s.basis[todayAt]}</span>
+        </summary>
+        <div className="iop-moreBody">
+          <div className="iop-choices iop-choices--date" role="radiogroup" aria-label={s.basis.title}>
+            {(['month', 'end'] as const).map((b) => (
+              <label key={b} className="iop-choice">
+                <input type="radio" name={basisName} value={b} checked={todayAt === b} onChange={() => onTodayAt(b)} />
+                <span className="iop-choiceText">
+                  <span className="iop-choiceLabel">{s.basis[b]}</span>
+                  <span className="ifc-hint">{s.basis[b === 'month' ? 'monthHint' : 'endHint']}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </details>
       <p className="ifc-hint">{t(s.rates, { debt: pct(debtReal, numberLocale), invest: pct(investReal, numberLocale) })}</p>
 
       {range && ownReal !== null && (
