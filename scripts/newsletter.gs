@@ -32,7 +32,7 @@
  *   3. Create the Sheet with these EXACT headers in row 1 (9 columns):
  *        email | status | source | created_at | confirmed_at |
  *        unsubscribed_at | confirm_token | unsub_token | reminder_sent_at
- *      Statuses: pending | confirmed | unsubscribed
+ *      Statuses: pending | confirmed | unsubscribed | bounced
  *
  *   4. Run `?action=health` once to verify the config. The response is JSON
  *      that says ok or not for properties, web app URL, Gmail advanced
@@ -253,7 +253,37 @@ var EXPECTED_HEADERS = [
  * caused data to land in a tab the operator wasn't watching). This version
  * requires an explicit match.
  */
+/**
+ * The subscriber tab, once its header row has been checked.
+ *
+ * Every handler reads and writes cells by position (COL). The Sheet is
+ * edited by hand, and one inserted or moved column would make every one of
+ * them use the wrong cells: tokens looked up in the wrong column (every
+ * confirm and unsubscribe link "invalid"), a status written into another
+ * field, a send that finds nobody confirmed. So a tab whose first nine
+ * headers are not the expected ones is refused here, before anything is
+ * read or written, and the reason goes to the execution log. Columns added
+ * after the ninth are fine.
+ */
 function sheet_() {
+  var sh = sheetUnchecked_();
+  var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
+  var wrong = EXPECTED_HEADERS.filter(function (h, i) {
+    return String(headers[i] || '').trim().toLowerCase() !== h;
+  });
+  if (wrong.length) {
+    throw new Error(
+      'Sheet header row mismatch: nothing was read or written. Expected the first ' +
+      EXPECTED_HEADERS.length + ' columns to be: ' + EXPECTED_HEADERS.join(' | ') +
+      '. Missing or out of place: ' + wrong.join(', ') +
+      '. Put the columns back in that order (a column may be added after the last one).'
+    );
+  }
+  return sh;
+}
+
+/** The subscriber tab as it is, for the one function whose job is to repair its header row. */
+function sheetUnchecked_() {
   var cfg = config_();
   var ss = SpreadsheetApp.openById(cfg.sheetId);
   var sh = ss.getSheetByName(cfg.sheetName);
@@ -1329,8 +1359,13 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     return true;
   });
   if (subscribers.length === 0) {
-    props_().setProperty(seenKey, String(new Date().getTime()));
-    return jsonResponse_({ ok: true, sent: 0 });
+    // Nobody to send to. The lesson is NOT marked as sent: a list that reads
+    // as empty is far more often a Sheet that could not be read properly
+    // than a newsletter with no readers, and marking it would mean the
+    // lesson never goes out. The sender treats this answer as a failure,
+    // so the run is red and someone looks.
+    console.error('[newsletter] send_post: no confirmed subscriber was found; the lesson was not marked as sent');
+    return jsonResponse_({ ok: true, sent: 0, failed: 0, no_recipients: true });
   }
 
   // Quota warning (PostHog + console) — fires when the confirmed-subscriber
@@ -2098,7 +2133,7 @@ function debugHmacSecret() {
  * the header text.
  */
 function migrateAddTokens() {
-  var sh = sheet_();
+  var sh = sheetUnchecked_();
   var maxCol = Math.max(EXPECTED_HEADERS.length, sh.getLastColumn());
 
   // Fix the header row if needed.
