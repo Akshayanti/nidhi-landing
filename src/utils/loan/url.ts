@@ -210,6 +210,17 @@ export function makeDefaultVendor(index: number): VendorInput {
   };
 }
 
+/**
+ * The vendor the "Add" button creates: the slot's starting amount, rate and
+ * term, with every optional box empty. A fee sitting in a folded row would
+ * change the result without the reader having typed it. The slot templates
+ * themselves cannot lose their fees: share links leave out a value that
+ * equals its slot's template, so older links depend on them.
+ */
+export function makeAddedVendor(index: number): VendorInput {
+  return { ...makeDefaultVendor(index), feeMajor: '0', extraMonthly: '0', ...ADVANCED_DEFAULTS };
+}
+
 export const DEFAULT_VENDORS: VendorInput[] = Array.from(
   { length: MIN_VENDORS },
   (_, i) => makeDefaultVendor(i),

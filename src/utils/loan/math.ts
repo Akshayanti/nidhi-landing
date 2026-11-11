@@ -316,6 +316,15 @@ export interface LoanResult {
    * `totalPaidMinor`. Zero when no penalty applies, either because no
    * clause was supplied or because the loan was not paid off early. */
   prepaymentPenaltyMinor: number;
+  /**
+   * Set for a fixed-then-variable loan whose rate changes before the term
+   * ends. `month` is the first month at the new rate. `paymentMinor` is what
+   * is paid each month from then on, extra monthly principal included, as the
+   * effective schedule has it; `null` when the loan is paid off before that
+   * month, so no later payment exists. The page shows both payments: the
+   * first one alone makes two offers that part ways later look the same.
+   */
+  rateChange?: { month: number; paymentMinor: number | null };
   warnings: string[];
   error?: string;
 }
@@ -451,7 +460,7 @@ export function buildScheduleAdvanced(spec: {
    * Not set for a loan entered by its payment, which has no term to end on.
    */
   endsAtTerm?: boolean;
-}): { schedule: AmortizationRow[]; warnings: string[]; error?: string } {
+}): { schedule: AmortizationRow[]; warnings: string[]; error?: string; recastPaymentMinor?: number } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
   const totalMonths = Math.max(0, Math.floor(spec.totalMonths));
@@ -501,6 +510,7 @@ export function buildScheduleAdvanced(spec: {
   let balance = principalMinor;
   let currentPayment = spec.basePaymentMinor;
   let recastApplied = false;
+  let recastPaymentMinor: number | undefined;
 
   for (let month = 1; month <= MAX_TERM_MONTHS && balance > 0; month++) {
     // Recast the scheduled payment at the start of the post-fix leg of
@@ -523,6 +533,7 @@ export function buildScheduleAdvanced(spec: {
         remainingMonths,
       );
       recastApplied = true;
+      recastPaymentMinor = currentPayment;
       if (spec.rateSpec.subsequentAnnualRate > 0) {
         const monthsInterest = roundMinor(balance * (spec.rateSpec.subsequentAnnualRate / 12));
         if (currentPayment + extraMonthlyMinor <= monthsInterest) {
@@ -592,7 +603,7 @@ export function buildScheduleAdvanced(spec: {
     );
   }
 
-  return { schedule, warnings };
+  return { schedule, warnings, recastPaymentMinor };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -674,7 +685,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor } = buildScheduleAdvanced({
     principalMinor,
     rateSpec,
     totalMonths,
@@ -748,6 +759,22 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
 
   const aprNominal = computeApr(principalMinor, feeMinor, contractSchedule);
 
+  // The payment after the rate change, read from the schedule the reader's own
+  // plan produces. When the only payment at the new rate is the closing one,
+  // that payment is the figure: no full recast payment is ever made.
+  let rateChange: LoanResult['rateChange'];
+  if (rateSpec.kind === 'hybrid' && rateSpec.initialMonths < totalMonths) {
+    const month = rateSpec.initialMonths + 1;
+    const row = schedule[month - 1];
+    let paymentMinor: number | null = null;
+    if (row) {
+      paymentMinor = schedule.length === month || recastPaymentMinor === undefined
+        ? row.payment
+        : recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
+    }
+    rateChange = { month, paymentMinor };
+  }
+
   return {
     monthlyPaymentMinor: scheduledPayment,
     effectiveMonthlyMinor: scheduledPayment + extraMonthlyMinor,
@@ -759,6 +786,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     contractSchedule,
     aprNominal,
     prepaymentPenaltyMinor,
+    ...(rateChange ? { rateChange } : {}),
     warnings,
   };
 }

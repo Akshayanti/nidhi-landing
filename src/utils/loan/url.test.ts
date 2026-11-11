@@ -25,6 +25,7 @@ import {
   encodeLumpSums,
   encodeToQueryString,
   isPristineState,
+  makeAddedVendor,
   makeDefaultVendor,
   parseLumpSums,
   publishableState,
@@ -65,6 +66,29 @@ describe('vendor count bounds', () => {
 
   it('DEFAULT_VENDORS has exactly MIN_VENDORS entries', () => {
     assert.equal(DEFAULT_VENDORS.length, MIN_VENDORS);
+  });
+});
+
+describe('makeAddedVendor', () => {
+  it('leaves every optional box empty, in every slot', () => {
+    for (let i = 0; i < MAX_VENDORS; i++) {
+      const v = makeAddedVendor(i);
+      assert.equal(v.feeMajor, '0', `slot ${i} fee`);
+      assert.equal(v.extraMonthly, '0', `slot ${i} extra`);
+      assert.equal(v.rateKind, 'fixed');
+      for (const key of ['initialFixedMonths', 'subsequentRatePct', 'lumpSumsEncoded'] as const) assert.equal(v[key], makeDefaultVendor(0)[key], `slot ${i} ${key}`);
+      for (const key of ['pointsCostMajor', 'pointsRateReductionPct', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'] as const) assert.ok(v[key] === '' || Number(v[key]) === 0, `slot ${i} ${key}`);
+      // The boxes a reader sees stay as the slot's starting example.
+      assert.equal(v.principal, makeDefaultVendor(i).principal);
+      assert.equal(v.annualRatePct, makeDefaultVendor(i).annualRatePct);
+      assert.equal(v.name, makeDefaultVendor(i).name);
+    }
+  });
+
+  it('survives a share link, although its fee differs from the slot template', () => {
+    const vendors = [makeDefaultVendor(0), makeDefaultVendor(1), makeAddedVendor(2), makeAddedVendor(3)];
+    const back = decodeFromQueryString(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE));
+    assert.deepEqual(back.vendors, vendors);
   });
 });
 

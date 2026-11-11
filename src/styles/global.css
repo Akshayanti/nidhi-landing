@@ -2834,6 +2834,36 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
 }
 
+/* A payment that changes with the rate: two steps of the same weight, each
+   amount beside its months. When a line is too narrow for both (a long
+   translation, a 7-digit amount), the whole amount drops under its label;
+   an amount never breaks. */
+.lc-steps {
+  display: grid;
+  gap: 4px;
+}
+
+.lc-step {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0 var(--space-2);
+}
+
+.lc-stepLabel {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+.lc-stepAmount {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
 .lc-resultDetails {
   margin-top: var(--space-2);
 }
@@ -2986,6 +3016,26 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
   font-size: 0.9rem;
   margin: 0;
+}
+
+/* In the side-by-side table a changing payment reads down the cell: months,
+   amount, months, amount. */
+.lc-deltaTable .lc-step {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.lc-deltaTable .lc-stepAmount { font-weight: 600; }
+
+.lc-deltaLines {
+  display: grid;
+  gap: 2px;
+}
+
+.lc-deltaNote {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  white-space: normal;
 }
 
 .lc-deltaTableWrap {
@@ -3467,6 +3517,29 @@ details[open] > .disclosure::after,
     padding: 0;
     border: 0;
   }
+
+  /* A metric with a cell of several lines puts one offer per line: the letter,
+     then the lines, each amount on the right. */
+  .lc-deltaTable .lc-deltaRowStacked td {
+    flex: 1 1 100%;
+    min-width: 0;
+    white-space: normal;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-steps,
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { flex: 1 1 auto; min-width: 0; }
+
+  .lc-deltaTable .lc-deltaRowStacked .lc-step {
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { text-align: right; }
+
+  /* In the card the primary figures are left-aligned on phones. */
+  .lc-resultListPrimary .lc-stepAmount { margin-left: 0; }
 
   .lc-deltaTable td::before {
     content: attr(data-slot);

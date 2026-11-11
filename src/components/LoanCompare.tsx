@@ -29,6 +29,7 @@ import {
   defaultGlobalState,
   encodeToQueryString,
   isPristineState,
+  makeAddedVendor,
   makeDefaultVendor,
   publishableState,
   SHARED_STATE_GLOBAL,
@@ -889,7 +890,7 @@ export default function LoanCompare({
   // callback is *not* double-invoked.
   const addVendor = useCallback(() => {
     if (vendors.length >= MAX_VENDORS) return;
-    setVendors((prev) => [...prev, makeDefaultVendor(prev.length)]);
+    setVendors((prev) => [...prev, makeAddedVendor(prev.length)]);
     // On phones, show the card just added.
     setActiveVendor(vendors.length);
     track('free_loan_comparison_vendor_added', { count: vendors.length + 1 });
@@ -1566,21 +1567,45 @@ function VendorCard({
                 what most users look at first. Everything else moves into
                 the "Show details" expander to keep the card compact. */}
             <dl className="lc-resultList lc-resultListPrimary">
-              <ResultRow
-                label={strings.results.monthly}
-                value={formatMoney(result.effectiveMonthlyMinor, currency)}
-                hint={
-                  Number(vendor.extraMonthly) > 0
-                    ? format(strings.results.monthlyExtra, {
-                        base: formatMoney(result.monthlyPaymentMinor, currency),
-                        extra: formatMoney(
-                          result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
-                          currency,
-                        ),
-                      })
-                    : undefined
-                }
-              />
+              {result.rateChange && result.rateChange.paymentMinor !== null ? (
+                // The payment changes with the rate: both amounts at the same
+                // weight, each under its own months, so no figure stands alone.
+                <div className="lc-resultRow lc-resultRowSteps">
+                  <dt className="lc-resultLabel">{strings.results.monthly}</dt>
+                  <dd className="lc-resultValue">
+                    <PaymentSteps
+                      first={formatMoney(result.effectiveMonthlyMinor, currency)}
+                      later={formatMoney(result.rateChange.paymentMinor, currency)}
+                      month={result.rateChange.month}
+                      strings={strings}
+                    />
+                    {result.effectiveMonthlyMinor > result.monthlyPaymentMinor && (
+                      <span className="lc-resultHint">
+                        {format(strings.results.monthlyIncludesExtra, {
+                          extra: formatMoney(result.effectiveMonthlyMinor - result.monthlyPaymentMinor, currency),
+                        })}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              ) : (
+                <ResultRow
+                  label={strings.results.monthly}
+                  value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                  hint={
+                    Number(vendor.extraMonthly) > 0
+                      ? format(strings.results.monthlyExtra, {
+                          base: formatMoney(result.monthlyPaymentMinor, currency),
+                          extra: formatMoney(
+                            result.effectiveMonthlyMinor - result.monthlyPaymentMinor,
+                            currency,
+                          ),
+                        })
+                      : undefined
+                  }
+                  note={result.rateChange ? format(strings.results.paidOffBeforeChange, { payoffMonth: result.months }) : undefined}
+                />
+              )}
               <ResultRow
                 label={strings.results.apr}
                 value={aprText(aprInConvention(result.aprNominal, aprConvention), currency, strings, amountLocale)}
@@ -2058,6 +2083,26 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               valid={valid}
               get={(r) => r.effectiveMonthlyMinor}
               format={(n) => formatMoney(n, currency)}
+              cell={(r) => {
+                const change = r.rateChange;
+                if (!change) return null;
+                if (change.paymentMinor === null) {
+                  return (
+                    <span className="lc-deltaLines">
+                      <span>{formatMoney(r.effectiveMonthlyMinor, currency)}</span>
+                      <span className="lc-deltaNote">{format(strings.results.paidOffBeforeChange, { payoffMonth: r.months })}</span>
+                    </span>
+                  );
+                }
+                return (
+                  <PaymentSteps
+                    first={formatMoney(r.effectiveMonthlyMinor, currency)}
+                    later={formatMoney(change.paymentMinor, currency)}
+                    month={change.month}
+                    strings={strings}
+                  />
+                );
+              }}
             />
             <DeltaRow
               label={strings.delta.monthsToPayoff}
@@ -2125,6 +2170,8 @@ interface DeltaRowProps {
   valid: { r: LoanResult; i: number; name: string }[];
   get: (r: LoanResult) => number;
   format: (n: number) => string;
+  /** A cell of several lines in place of the plain value; null keeps the value. */
+  cell?: (r: LoanResult) => React.ReactNode;
   emphasized?: boolean;
 }
 
@@ -2133,15 +2180,39 @@ interface DeltaRowProps {
 // the right answer for monthly payment / interest / APR": a series of
 // recommendations the calculator isn't qualified to make. We just print
 // the values; the user reads them.
-function DeltaRow({ label, valid, get, format, emphasized }: DeltaRowProps) {
+function DeltaRow({ label, valid, get, format, cell, emphasized }: DeltaRowProps) {
   const values = valid.map((v) => get(v.r));
+  // A cell of several lines (a payment that changes with the rate) replaces the
+  // plain value; on phones the whole row then puts one offer per line.
+  const cells = valid.map((v) => cell?.(v.r) ?? null);
+  const stacked = cells.some((c) => c !== null);
   return (
-    <tr className={emphasized ? 'lc-deltaRowEmphasized' : ''}>
+    <tr className={[emphasized ? 'lc-deltaRowEmphasized' : '', stacked ? 'lc-deltaRowStacked' : ''].filter(Boolean).join(' ')}>
       <th scope="row">{label}</th>
       {valid.map((v, idx) => (
-        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{format(values[idx])}</td>
+        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{cells[idx] ?? format(values[idx])}</td>
       ))}
     </tr>
+  );
+}
+
+/**
+ * A payment that changes once: the first amount under its months, then the
+ * later one, at the same weight. The label comes before its amount in the
+ * markup, which is the order a screen reader gives them.
+ */
+function PaymentSteps({ first, later, month, strings }: { first: string; later: string; month: number; strings: Strings }) {
+  return (
+    <span className="lc-steps">
+      <span className="lc-step">
+        <span className="lc-stepLabel">{format(strings.results.monthlyFirst, { lastMonth: month - 1 })}</span>{' '}
+        <span className="lc-stepAmount">{first}</span>
+      </span>
+      <span className="lc-step">
+        <span className="lc-stepLabel">{format(strings.results.monthlyFrom, { month })}</span>{' '}
+        <span className="lc-stepAmount">{later}</span>
+      </span>
+    </span>
   );
 }
 
