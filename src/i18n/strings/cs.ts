@@ -137,6 +137,10 @@ export const cs: Dict = {
     feedTitle: 'nidhi: blog o osobních financích',
     feedDescription:
       'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem.',
+    guidesLinkTitle: 'nidhi | Návody Jak na to',
+    guidesFeedTitle: 'nidhi: návody Jak na to',
+    guidesFeedDescription:
+      'Krátké návody, z nichž každý odpovídá na jednu běžnou otázku o penězích: nejdřív odpověď, pak co si ověřit a odkaz na celou lekci.',
   },
 
   about: {

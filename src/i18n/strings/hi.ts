@@ -154,6 +154,10 @@ export const hi: Dict = {
     feedTitle: 'nidhi: पर्सनल फाइनेंस ब्लॉग',
     feedDescription:
       'मुफ़्त पर्सनल फाइनेंस शिक्षा: शुद्ध संपत्ति, बजट, बचत, निवेश और कर्ज़ का प्रबंधन। कदम दर कदम अपनी वित्तीय साक्षरता बढ़ाएँ।',
+    guidesLinkTitle: 'nidhi | कैसे करें गाइडें',
+    guidesFeedTitle: 'nidhi: कैसे करें गाइडें',
+    guidesFeedDescription:
+      'छोटी गाइडें, जिनमें से हर एक पैसों से जुड़े रोज़ के एक सवाल का जवाब देती है: पहले जवाब, फिर यह कि क्या जाँचना है, और पूरे पाठ का लिंक।',
   },
 
   // Page copy, one namespace per page. The same split-before-the-link,
