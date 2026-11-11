@@ -2269,10 +2269,38 @@ details[open] > .disclosure::after,
   /* Neutral ink: the offer's colour is for its line and marker, not for text. */
   color: var(--color-text-primary);
   margin: 0;
-  display: inline-flex;
+  /* Takes the room beside the remove button and wraps inside it, so a long
+     typed name never pushes the button onto a line of its own. */
+  display: flex;
+  flex: 1 1 0;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
+
+/* The letter of a named offer: the ring the phone tabs use, so one mark means
+   one offer on the card, the tabs and the phone table. */
+.lc-cardLetter,
+.lc-deltaKeyLetter {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--lc-color, currentColor);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* A typed name wraps in full, never clipped. */
+.lc-cardName,
+.lc-deltaKeyName { min-width: 0; overflow-wrap: anywhere; }
+
+/* The key of letters and names belongs to the phone layout of the table. */
+.lc-deltaKey { display: none; }
 
 /* Remove-vendor button (small × in card header).
    Pushed to the far right with margin-left:auto so it sits opposite the
@@ -3541,6 +3569,17 @@ details[open] > .disclosure::after,
      never runs into the APR beside it. */
   .lc-resultListPrimary .lc-resultRowSteps { grid-column: 1 / -1; }
   .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
+
+  .lc-deltaKey {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+  }
+  .lc-deltaKey li { display: flex; align-items: center; gap: 8px; }
 
   .lc-deltaTable td::before {
     content: attr(data-slot);
