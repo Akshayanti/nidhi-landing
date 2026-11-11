@@ -61,9 +61,18 @@ function track(event: string, properties?: Record<string, unknown>) {
 // Formatting
 // ---------------------------------------------------------------------------
 
+/**
+ * A share of the paths as a percentage. Whole percents, except at the two
+ * ends: 100% and 0% are kept for every path and no path, so 9,954 paths in
+ * 10,000 read 99.5%, not 100%.
+ */
 function formatShare(share: number, amountLocale: string | null): string {
-  if (!amountLocale) return `${Math.round(share * 100)}%`;
-  return new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: 0 }).format(share);
+  const whole = Math.round(share * 100);
+  const edge = share > 0 && share < 1 && (whole === 0 || whole === 100);
+  const shown = edge ? Math.min(0.999, Math.max(0.001, share)) : share;
+  const digits = edge ? 1 : 0;
+  if (!amountLocale) return `${(shown * 100).toFixed(digits)}%`;
+  return new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: digits }).format(shown);
 }
 
 const grouped = (n: number, amountLocale: string | null) => n.toLocaleString(amountLocale ?? 'en-US');
