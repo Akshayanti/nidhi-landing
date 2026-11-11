@@ -239,6 +239,7 @@ describe('Analytics.astro: how PostHog is started', () => {
       'capture_performance: false',
       'capture_exceptions: false',
       'disable_session_recording: true',
+      'disable_surveys: true',
       "autocapture: hasFullConsent ? window.nidhiClickCapture : false",
       'enable_heatmaps: hasFullConsent && !window.nidhiHeatmapsPaused',
       "capture_dead_clicks: hasFullConsent ? window.nidhiClickCapture : false",
