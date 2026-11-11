@@ -290,7 +290,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | row (of the net worth table) | elemento | *{count} elementos*; *fila* where the sentence is about the table itself (*fila {index}*). |
 | donut chart | gráfico de anillo | |
 | fan chart | gráfico de abanico | |
-| Full / Redacted (share options) | Versión completa / Versión anónima | |
+| Full / Redacted (share options) | Versión completa / Versión con datos ocultos | Never *anónima*: the link still carries the currencies and each one's share. |
 | Cautious / Historical / Optimistic | Prudente / Histórico / Optimista | The return settings. |
 | lump sums | pagos extraordinarios | |
 | prepayment penalty | penalización por pago anticipado | |

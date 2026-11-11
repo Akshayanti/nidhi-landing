@@ -96,7 +96,8 @@ const [N1, N2] = NAMES;
 /**
  * Each tool: where its sentinel values go, and what to do that is its own.
  * `fields` are filled in order; `{ all: true }` fills every match (each offer,
- * each row), otherwise the first. Everything else is found on the page.
+ * each row), otherwise the first. `addRow` is a button pressed before a
+ * field is filled, for a value that needs a row the form does not open with. Everything else is found on the page.
  *
  * `removeNamedRow` adds a row, names it with the second name and removes it
  * with its own remove button: the click that sent a typed name in Oct 2026.
@@ -127,7 +128,8 @@ const TOOLS = {
     fields: [
       { selector: 'input[id$="-name"]', value: N1 },
       { selector: 'input[id$="-value"]', value: A1 },
-      { selector: 'input[id$="-value"]', value: A2, last: true },
+      // The form opens with one row, so the second amount gets a row of its own.
+      { selector: 'input[id$="-value"]', value: A2, last: true, addRow: '[data-attr="mcnw-asset-add"]' },
     ],
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="mcnw-asset-add"]', '[data-attr="mcnw-asset-remove"]', [['input[id$="-value"]', A3]]),
     ownEvents: /^free_multi_currency_net_worth_/,
@@ -649,6 +651,7 @@ async function useTool(page, tool, note, downloads, sent) {
       const n = (await visible(page, f.selector)).length;
       for (let i = 0; i < n; i++) await fill(page, f.selector, f.value, { nth: i });
     } else {
+      if (f.addRow && !(await click(page, f.addRow))) failed.push(`the row for a second amount could not be added (${f.addRow})`);
       await fill(page, f.selector, f.value, f);
     }
   }

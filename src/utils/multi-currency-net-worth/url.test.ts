@@ -549,7 +549,7 @@ describe('page starting currency and the language switch', () => {
 
   it('builds the blank starter rows in the page currency', () => {
     const rows = makeDefaultRows('INR');
-    assert.equal(rows.length, 2);
+    assert.equal(rows.length, 1);
     assert.ok(rows.every((r) => r.currency === 'INR' && r.name === '' && r.value === '' && r.type === 'asset'));
     assert.ok(makeDefaultRows().every((r) => r.currency === 'EUR'));
   });

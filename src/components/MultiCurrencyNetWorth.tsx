@@ -136,6 +136,11 @@ export default function MultiCurrencyNetWorth({
   const [shareUrl, setShareUrl] = useState('');
   const [csvErrors, setCsvErrors] = useState<ParseError[]>([]);
   const [csvConfirmPending, setCsvConfirmPending] = useState<AssetRow[] | null>(null);
+  // The rows "See an example" filled in, so the note and "Clear example" know
+  // which rows are the example. View state only: never shared, stored or tracked.
+  const [exampleRows, setExampleRows] = useState<AssetRow[]>([]);
+  // Whether the CSV actions are unfolded. View state only.
+  const [csvOpen, setCsvOpen] = useState(false);
 
   const functionalCurrencySelectId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -332,9 +337,9 @@ export default function MultiCurrencyNetWorth({
   );
 
   const applyCsvRows = useCallback((newRows: AssetRow[]) => {
-    // Ensure at least 2 rows for the form.
-    const padded = newRows.length < 2
-      ? [...newRows, ...Array.from({ length: 2 - newRows.length }, () => ({ name: '', value: '', currency: defaultCurrency, type: 'asset' as const }))]
+    // The form always has a row.
+    const padded = newRows.length < 1
+      ? [{ name: '', value: '', currency: defaultCurrency, type: 'asset' as const }]
       : newRows;
     setRows(padded);
     setCsvConfirmPending(null);
@@ -396,6 +401,8 @@ export default function MultiCurrencyNetWorth({
     setSharedRedacted(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
+    setExampleRows([]);
+    setCsvOpen(false);
     track('free_multi_currency_net_worth_reset');
   }, [defaultCurrency]);
 
@@ -429,50 +436,43 @@ export default function MultiCurrencyNetWorth({
     printResults();
   };
 
+  // ---- The example ----
+  // Offered only while nothing has been typed in any row, so it can never
+  // replace an entry. The names are the page's own words and the amounts are
+  // fixed figures: nothing here is a typed value.
+  const sameRow = (a: AssetRow, b: AssetRow) => a.name === b.name && a.value === b.value && a.currency === b.currency && a.type === b.type;
+  const untouched = !isReadOnlyView && rows.every((r) => r.name.trim() === '' && r.value.trim() === '');
+  const exampleLeft = rows.filter((r) => exampleRows.some((e) => sameRow(e, r))).length;
+  // Both example buttons remove themselves when pressed, which would drop
+  // focus to the top of the page: it goes to the first row's name instead.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const focusFirstRow = () => {
+    requestAnimationFrame(() => rootRef.current?.querySelector<HTMLInputElement>('.mcnw-cellName input')?.focus());
+  };
+  const showExample = () => {
+    const scale = EXAMPLE_SCALE[functionalCurrency] ?? 1;
+    const other = functionalCurrency === 'USD' ? 'EUR' : 'USD';
+    const filled: AssetRow[] = [
+      { name: strings.example.savings, value: String(12000 * scale), currency: functionalCurrency, type: 'asset' },
+      { name: strings.example.investments, value: String(30000 * scale), currency: functionalCurrency, type: 'asset' },
+      { name: strings.example.abroad, value: String(8000 * (EXAMPLE_SCALE[other] ?? 1)), currency: other, type: 'asset' },
+      { name: strings.example.loan, value: String(9000 * scale), currency: functionalCurrency, type: 'liability' },
+    ];
+    setExampleRows(filled);
+    setRows(filled);
+    focusFirstRow();
+  };
+  const clearExample = () => {
+    const kept = rows.filter((r) => !exampleRows.some((e) => sameRow(e, r)));
+    setRows(kept.length > 0 ? kept : makeDefaultRows(defaultCurrency));
+    setExampleRows([]);
+    focusFirstRow();
+  };
+
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="mcnw-root">
-      {/* ---- Toolbar ---- */}
-      <div className="mcnw-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
-        <div className="mcnw-funcCurrencyField">
-          <label className="mcnw-fieldLabel" htmlFor={functionalCurrencySelectId}>
-            {strings.toolbar.currencyLabel}
-          </label>
-          <select
-            id={functionalCurrencySelectId}
-            className="mcnw-select"
-            value={functionalCurrency}
-            onChange={(e) => {
-              const next = e.target.value;
-              setFunctionalCurrency(next);
-              track('free_multi_currency_net_worth_func_currency_changed', { currency: next });
-            }}
-          >
-            {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {strings.currencies[c.code] ?? c.label}
-              </option>
-            ))}
-          </select>
-          <p className="mcnw-fieldHelp">
-            {strings.toolbar.currencyHelp}
-          </p>
-        </div>
-
-        <div className="mcnw-toolbarActions">
-          <button
-            type="button"
-            className="mcnw-resetBtn"
-            onClick={reset}
-            title={strings.toolbar.resetTitle}
-            data-attr="mcnw-reset"
-          >
-            {strings.toolbar.reset}
-          </button>
-        </div>
-      </div>
-
+    <div className="mcnw-root" ref={rootRef}>
       {/* ---- Rate status ---- */}
       {ratesError && !singleCurrency && (
         <div className="mcnw-banner mcnw-bannerWarn" role="alert">
@@ -480,7 +480,7 @@ export default function MultiCurrencyNetWorth({
             {strings.rates.errorBefore}{' '}
             <button
               type="button"
-              className="mcnw-retryBtn"
+              className="btn btn--outline mcnw-retryBtn"
               data-attr="mcnw-rates-retry"
               onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
             >
@@ -519,6 +519,46 @@ export default function MultiCurrencyNetWorth({
 
       {/* ---- Asset table ---- */}
       <div className="mcnw-tableSection">
+        {/* ---- Toolbar ---- */}
+        <div className="mcnw-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
+          <div className="mcnw-funcCurrencyField">
+            <label className="mcnw-fieldLabel" htmlFor={functionalCurrencySelectId}>
+              {strings.toolbar.currencyLabel}
+            </label>
+            <select
+              id={functionalCurrencySelectId}
+              className="mcnw-select"
+              value={functionalCurrency}
+              onChange={(e) => {
+                const next = e.target.value;
+                setFunctionalCurrency(next);
+                track('free_multi_currency_net_worth_func_currency_changed', { currency: next });
+              }}
+            >
+              {CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {strings.currencies[c.code] ?? c.label}
+                </option>
+              ))}
+            </select>
+            <p className="mcnw-fieldHelp">
+              {strings.toolbar.currencyHelp}
+            </p>
+          </div>
+
+          <div className="mcnw-toolbarActions">
+            <button
+              type="button"
+              className="btn btn--quiet mcnw-resetBtn"
+              onClick={reset}
+              title={strings.toolbar.resetTitle}
+              data-attr="mcnw-reset"
+            >
+              {strings.toolbar.reset}
+            </button>
+          </div>
+        </div>
+
         <div className="mcnw-tableHeader">
           <h2 className="mcnw-sectionTitle">{strings.table.heading}</h2>
           <span className="mcnw-rowCount">
@@ -530,6 +570,13 @@ export default function MultiCurrencyNetWorth({
         <p className="mcnw-notCounted" role="status">
           {notCounted > 0 && format(plural(numberLocale, notCounted, strings.table.notCountedOne, strings.table.notCountedFew, strings.table.notCountedMany), { count: notCounted })}
         </p>
+
+        {exampleLeft > 0 && (
+          <p className="mcnw-exampleNote">
+            <span>{strings.example.note}</span>
+            <button type="button" className="mcnw-linkBtn" onClick={clearExample}>{strings.example.clear}</button>
+          </p>
+        )}
 
         <div className="mcnw-table" role="table" aria-label={strings.table.aria}>
           <div className="mcnw-tableHead" role="rowgroup">
@@ -561,51 +608,61 @@ export default function MultiCurrencyNetWorth({
         <div className="mcnw-tableFooter">
           <button
             type="button"
-            className="mcnw-addBtn"
+            className="btn btn--outline mcnw-addBtn"
             onClick={addRow}
             data-attr="mcnw-asset-add"
           >
             {strings.table.addAsset}
           </button>
-          <button
-            type="button"
-            className="mcnw-csvBtn"
-            onClick={() => fileInputRef.current?.click()}
-            data-attr="mcnw-csv-upload"
-          >
-            {strings.table.uploadCsv}
-          </button>
-          <button
-            type="button"
-            className="mcnw-downloadBtn"
-            onClick={() => {
-              const filled = rows.filter((r) => r.value.trim() !== '');
-              if (filled.length > 0) {
-                downloadCSV(filled, 'full');
-                track('free_multi_currency_net_worth_csv_downloaded', { count: filled.length });
-              }
-            }}
-            disabled={!hasData || isReadOnlyView}
-            title={strings.table.downloadTitle}
-            data-attr="mcnw-csv-download"
-          >
-            {strings.table.downloadCsv}
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".csv"
-            className="mcnw-srOnly"
-            aria-label={strings.table.uploadCsvAria}
-            tabIndex={-1}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleCsvFile(file);
-              // Reset so the same file can be re-uploaded.
-              e.target.value = '';
-            }}
-          />
         </div>
+
+        <details
+          className="mcnw-csvFold"
+          open={csvOpen || csvErrors.length > 0 || csvConfirmPending !== null}
+          onToggle={(e) => setCsvOpen(e.currentTarget.open)}
+        >
+          <summary className="mcnw-csvFoldSummary disclosure">{strings.table.csvFold}</summary>
+          <div className="mcnw-csvFoldBody">
+              <button
+                type="button"
+                className="btn btn--outline mcnw-csvBtn"
+                onClick={() => fileInputRef.current?.click()}
+                data-attr="mcnw-csv-upload"
+              >
+                {strings.table.uploadCsv}
+              </button>
+              <button
+                type="button"
+                className="btn btn--outline mcnw-downloadBtn"
+                onClick={() => {
+                  const filled = rows.filter((r) => r.value.trim() !== '');
+                  if (filled.length > 0) {
+                    downloadCSV(filled, 'full');
+                    track('free_multi_currency_net_worth_csv_downloaded', { count: filled.length });
+                  }
+                }}
+                disabled={!hasData || isReadOnlyView}
+                title={strings.table.downloadTitle}
+                data-attr="mcnw-csv-download"
+              >
+                {strings.table.downloadCsv}
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                className="mcnw-srOnly"
+                aria-label={strings.table.uploadCsvAria}
+                tabIndex={-1}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleCsvFile(file);
+                  // Reset so the same file can be re-uploaded.
+                  e.target.value = '';
+                }}
+              />
+          </div>
+        </details>
 
         {/* CSV confirm dialog */}
         {csvConfirmPending && (
@@ -647,6 +704,7 @@ export default function MultiCurrencyNetWorth({
         rows={isReadOnlyView ? undefined : rows}
         hideAmounts={isReadOnlyView && sharedRedacted}
         strings={strings}
+        onExample={untouched ? showExample : undefined}
         actions={
           <ToolExport
             strings={exportStrings}
@@ -654,7 +712,7 @@ export default function MultiCurrencyNetWorth({
               <>
             <button
               type="button"
-              className="mcnw-shareBtn"
+              className="btn btn--outline mcnw-shareBtn"
               onClick={openShareModal}
               disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
               title={strings.toolbar.shareTitle}
@@ -729,6 +787,10 @@ export default function MultiCurrencyNetWorth({
   );
 }
 
+/** Example amounts are round figures in the page's currency; these keep them
+ *  plausible where one unit buys less. Fixed figures, not typed values. */
+const EXAMPLE_SCALE: Record<string, number> = { INR: 50, CZK: 20, JPY: 100, KRW: 1000, IDR: 10000, VND: 10000, HUF: 200 };
+
 // ---------------------------------------------------------------------------
 // Asset row input
 // ---------------------------------------------------------------------------
@@ -767,6 +829,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
   return (
     <div className="mcnw-tableRow" role="row">
       <div className="mcnw-tableCell mcnw-cellName" role="cell">
+        <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colName}</span>
         <label htmlFor={nameId} className="mcnw-srOnly">
           {at}
         </label>
@@ -782,6 +845,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         />
       </div>
       <div className="mcnw-tableCell mcnw-cellValue" role="cell">
+        <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colValue}</span>
         <label htmlFor={valueId} className="mcnw-srOnly">
           {format(strings.row.valueAria, { index: index + 1 })}
         </label>
@@ -792,7 +856,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           value={row.value}
           onValueChange={(v) => onChange({ value: v })}
           onBlur={() => { if (unreadable) setSettled(true); }}
-          placeholder="50000"
+          placeholder={strings.row.valuePlaceholder}
           autoComplete="off"
           aria-invalid={showValueError ? true : undefined}
           aria-describedby={showValueError ? valueErrorId : undefined}
@@ -800,6 +864,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         {showValueError && <span className="mcnw-rowError" id={valueErrorId}>{strings.row.valueError}</span>}
       </div>
       <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
+        <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colCurrency}</span>
         <label htmlFor={currencyId} className="mcnw-srOnly">
           {format(strings.row.currencyAria, { index: index + 1 })}
         </label>
@@ -817,6 +882,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         </select>
       </div>
       <div className="mcnw-tableCell mcnw-cellType" role="cell">
+        <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colType}</span>
         <label htmlFor={typeId} className="mcnw-srOnly">
           {format(strings.row.typeAria, { index: index + 1 })}
         </label>
@@ -864,17 +930,23 @@ interface ResultsPanelProps {
   rows?: AssetRow[];
   /** "Save or share these results", right after the total; absent in the share preview. */
   actions?: React.ReactNode;
+  /** Fills in an example. Present only while no row has anything typed in it. */
+  onExample?: () => void;
 }
 
-function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions }: ResultsPanelProps) {
+function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
+        {/* No export box here: there is nothing to save yet. */}
         <div className="mcnw-emptyState">
-          <p>{strings.results.empty}</p>
+          <p className="mcnw-emptyLead">{strings.results.empty}</p>
+          <p>{strings.results.emptyShows}</p>
+          {onExample && (
+            <button type="button" className="btn btn--outline mcnw-exampleBtn" onClick={onExample}>{strings.example.show}</button>
+          )}
         </div>
-        {actions}
       </section>
     );
   }
@@ -1248,10 +1320,10 @@ function ShareModal({
             </fieldset>
 
             <div className="mcnw-modalFooter">
-              <button type="button" className="mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
+              <button type="button" className="btn btn--quiet mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
                 {strings.shareModal.cancel}
               </button>
-              <button type="button" className="mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
+              <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
                 {copied ? strings.shareModal.copied : strings.shareModal.copy}
               </button>
             </div>
@@ -1617,10 +1689,10 @@ function CSVConfirmDialog({ currentCount, pendingCount, strings, onConfirm, onCa
         })}
       </p>
       <div className="mcnw-csvConfirmActions">
-        <button type="button" className="mcnw-csvConfirmYes" onClick={onConfirm} data-attr="mcnw-csv-overwrite-confirm">
+        <button type="button" className="btn btn--danger mcnw-csvConfirmYes" onClick={onConfirm} data-attr="mcnw-csv-overwrite-confirm">
           {strings.csv.replace}
         </button>
-        <button type="button" className="mcnw-csvConfirmNo" onClick={onCancel} data-attr="mcnw-csv-overwrite-cancel">
+        <button type="button" className="btn btn--quiet mcnw-csvConfirmNo" onClick={onCancel} data-attr="mcnw-csv-overwrite-cancel">
           {strings.csv.cancel}
         </button>
       </div>

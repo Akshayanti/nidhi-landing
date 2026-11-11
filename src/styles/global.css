@@ -3489,12 +3489,17 @@ details[open] > .disclosure::after,
 }
 
 /* Toolbar */
+/* Inside the ledger card, above its rows: the currency everything is
+   shown in, and Reset. */
 .mcnw-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .mcnw-funcCurrencyField {
@@ -3559,34 +3564,9 @@ details[open] > .disclosure::after,
   align-items: center;
 }
 
-.mcnw-shareBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  cursor: pointer;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-shareBtn:hover:not(:disabled),
-.mcnw-shareBtn:focus-visible:not(:disabled) {
-  background: var(--color-deep-blue-dark);
-}
 
-.mcnw-shareBtn:focus-visible:not(:disabled) {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
-.mcnw-shareBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 .mcnw-shareUrlBar {
   grid-column: 1 / -1;
@@ -3621,34 +3601,9 @@ details[open] > .disclosure::after,
   cursor: text;
 }
 
-.mcnw-resetBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-deep-blue);
-  background: transparent;
-  color: var(--color-deep-blue);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-resetBtn:hover,
-.mcnw-resetBtn:focus-visible {
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-[data-theme="dark"] .mcnw-shareBtn {
-  color: var(--neutral-page-bg-dark);
-}
 
-[data-theme="dark"] .mcnw-resetBtn:hover,
-[data-theme="dark"] .mcnw-resetBtn:focus-visible {
-  color: var(--neutral-page-bg-dark);
-}
 
 /* ---- Share modal ---- */
 
@@ -3867,49 +3822,10 @@ details[open] > .disclosure::after,
   margin-bottom: 0;
 }
 
-.mcnw-modalCancelBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 18px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-secondary);
-  transition: background 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-modalCancelBtn:hover,
-.mcnw-modalCancelBtn:focus-visible {
-  background: var(--color-bg);
-  color: var(--color-text-primary);
-}
 
-.mcnw-modalCopyBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 18px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: none;
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-  transition: background 0.15s ease;
-}
 
-.mcnw-modalCopyBtn:hover:not(:disabled),
-.mcnw-modalCopyBtn:focus-visible:not(:disabled) {
-  background: var(--color-deep-blue-dark);
-}
 
-.mcnw-modalCopyBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 /* Dark mode */
 [data-theme="dark"] .mcnw-modalDialog {
@@ -3924,14 +3840,7 @@ details[open] > .disclosure::after,
   background: var(--color-bg-dark);
 }
 
-[data-theme="dark"] .mcnw-modalCancelBtn:hover,
-[data-theme="dark"] .mcnw-modalCancelBtn:focus-visible {
-  background: var(--color-bg-dark);
-}
 
-[data-theme="dark"] .mcnw-modalCopyBtn {
-  color: var(--neutral-page-bg-dark);
-}
 
 @media (max-width: 750px) {
   .mcnw-modalBody {
@@ -3977,23 +3886,7 @@ details[open] > .disclosure::after,
   color: var(--warning-light-text-amber);
 }
 
-.mcnw-retryBtn {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 600;
-  color: inherit;
-  background: none;
-  border: none;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-}
 
-.mcnw-retryBtn:focus-visible {
-  outline: 2px solid var(--color-deep-blue);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
 
 /* Input */
 .mcnw-input {
@@ -4099,78 +3992,12 @@ details[open] > .disclosure::after,
   margin-top: var(--space-3);
 }
 
-.mcnw-addBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 2px dashed var(--color-control-edge);
-  background: transparent;
-  color: var(--color-deep-blue);
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
 
-.mcnw-addBtn:hover,
-.mcnw-addBtn:focus-visible {
-  border-color: var(--color-deep-blue);
-  background: var(--color-bg);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-csvBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-control-edge);
-  background: var(--color-bg);
-  color: var(--color-text-secondary);
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
 
-.mcnw-csvBtn:hover,
-.mcnw-csvBtn:focus-visible {
-  border-color: var(--color-deep-blue);
-  color: var(--color-deep-blue);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-downloadBtn {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 10px 16px;
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  border: 1px solid var(--color-control-edge);
-  background: var(--color-bg);
-  color: var(--color-text-secondary);
-  transition: border-color 0.15s ease, color 0.15s ease;
-  margin-left: auto;
-  /* Wraps at 320px with a larger text size instead of widening the page. */
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
 
-.mcnw-downloadBtn:hover:not(:disabled),
-.mcnw-downloadBtn:focus-visible:not(:disabled) {
-  border-color: var(--color-deep-blue);
-  color: var(--color-deep-blue);
-  outline: 2px solid var(--color-deep-blue);
-}
 
-.mcnw-downloadBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
 .mcnw-removeBtn {
   display: inline-flex;
@@ -4217,39 +4044,9 @@ details[open] > .disclosure::after,
   gap: var(--space-2);
 }
 
-.mcnw-csvConfirmYes {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: var(--color-deep-blue);
-  color: var(--neutral-white);
-}
 
-.mcnw-csvConfirmYes:focus-visible {
-  outline: 2px solid var(--color-teal);
-  outline-offset: 2px;
-}
 
-.mcnw-csvConfirmNo {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 8px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-text-secondary);
-}
 
-.mcnw-csvConfirmNo:focus-visible {
-  outline: 2px solid var(--color-deep-blue);
-  outline-offset: 2px;
-}
 
 /* CSV errors */
 .mcnw-csvErrors {
@@ -4287,10 +4084,75 @@ details[open] > .disclosure::after,
 }
 
 .mcnw-emptyState {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
   text-align: center;
-  padding: var(--space-8) var(--space-4);
-  color: var(--color-text-muted);
+  padding: var(--space-5) var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.mcnw-emptyState p {
+  margin: 0;
+  max-width: 52ch;
+}
+.mcnw-emptyLead {
+  font-family: var(--font-heading);
+  font-weight: 600;
   font-size: 1rem;
+  color: var(--color-deep-blue);
+}
+
+/* Says the rows are an example, with the way to take them out. */
+.mcnw-exampleNote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-3);
+  align-items: baseline;
+  margin: 0 0 var(--space-2);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.mcnw-linkBtn {
+  min-height: 32px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* A box's name above it: phones only, where the header row is gone. */
+.mcnw-cellLabel {
+  display: none;
+}
+
+/* The two CSV buttons behind one row. The chevron comes from .disclosure. */
+.mcnw-csvFold {
+  margin-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+}
+.mcnw-csvFoldSummary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 36px 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+.mcnw-csvFoldSummary::after {
+  right: 4px;
+  font-size: 1.25rem;
+}
+.mcnw-csvFoldBody {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
 }
 
 .mcnw-total {
@@ -4542,14 +4404,25 @@ details[open] > .disclosure::after,
 }
 
 @media (max-width: 700px) {
+  /* Each row is a small card with its boxes named. */
   .mcnw-tableRow {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-1);
-    padding: var(--space-3) 0;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    margin-top: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
   .mcnw-tableRowHead {
     display: none;
   }
+  .mcnw-cellLabel {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+  .mcnw-cellActions { align-self: end; }
   .mcnw-cellName { grid-column: 1 / -1; }
   .mcnw-cellValue { grid-column: 1; }
   .mcnw-cellCurrency { grid-column: 2; }
@@ -4567,10 +4440,6 @@ details[open] > .disclosure::after,
   }
   .mcnw-toolbarActions {
     justify-content: flex-end;
-  }
-  .mcnw-shareBtn {
-    font-size: 0.8125rem;
-    padding: 10px 8px;
   }
   .mcnw-chartWrap {
     flex-direction: column;

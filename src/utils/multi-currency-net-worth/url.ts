@@ -66,7 +66,10 @@ export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
 // Constants
 // ---------------------------------------------------------------------------
 
+/** Part of the link format (the count a link leaves out): never changed. */
 const DEFAULT_ROW_COUNT = 2;
+/** How many blank rows the form opens with. Not part of the link format. */
+const START_ROW_COUNT = 1;
 const MAX_ROWS_FOR_URL = 50;
 
 const DEFAULT_TYPE: AssetRow['type'] = 'asset';
@@ -218,7 +221,7 @@ export function encodeFullData(
 
 /** The blank starter rows for a page whose tools start in `currency`. */
 export function makeDefaultRows(currency: string = DEFAULT_CURRENCY): AssetRow[] {
-  return Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow(currency));
+  return Array.from({ length: START_ROW_COUNT }, () => makeDefaultRow(currency));
 }
 
 /**

@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'net-worth-example-and-labels',
+        text: {
+          en: 'The net worth calculator starts with one row instead of two, and on a phone every box in a row has its name above it. Before you type anything, it says what the result will show, and "See an example" fills in sample rows you can clear in one tap. The save and share buttons appear once there is a result, and the two CSV buttons sit together under "Import or save rows".',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर अब दो की जगह एक पंक्ति से शुरू होता है, और फ़ोन पर पंक्ति के हर खाने के ऊपर उसका नाम लिखा है। कुछ भी भरने से पहले यह बताता है कि नतीजे में क्या दिखेगा, और "एक उदाहरण देखें" से नमूने की पंक्तियाँ भर जाती हैं, जो एक टैप में हट जाती हैं। सेव और शेयर के बटन नतीजा आने पर दिखते हैं, और CSV के दोनों बटन "पंक्तियाँ इंपोर्ट या सेव करें" के नीचे साथ रखे हैं।',
+          es: 'La calculadora de patrimonio neto empieza con una fila en lugar de dos, y en el móvil cada casilla de una fila lleva su nombre encima. Antes de que escribas nada, dice qué mostrará el resultado, y «Ver un ejemplo» rellena filas de muestra que se quitan con un toque. Los botones para guardar y compartir aparecen cuando hay un resultado, y los dos botones de CSV están juntos en «Importar o guardar filas».',
+          cs: 'Kalkulačka čistého jmění začíná jedním řádkem místo dvou a\u00a0na telefonu má každé pole v\u00a0řádku nad sebou svůj název. Než cokoli zadáte, říká, co výsledek ukáže, a\u00a0„Zobrazit ukázku“ vyplní ukázkové řádky, které jedním klepnutím smažete. Tlačítka pro uložení a\u00a0sdílení se objeví, až se zobrazí výsledek, a\u00a0obě tlačítka CSV jsou spolu pod „Nahrát nebo uložit řádky“.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर आता दोनऐवजी एका ओळीने सुरू होतो, आणि फोनवर ओळीतील प्रत्येक रकान्याच्या वर त्याचे नाव दिसते. काहीही भरण्यापूर्वी निकालात काय दिसेल ते तो सांगतो, आणि ‘एक उदाहरण पाहा’ दाबल्यावर नमुन्याच्या ओळी भरल्या जातात, ज्या एका टॅपमध्ये काढता येतात. सेव्ह आणि शेअरची बटणे निकाल आल्यावर दिसतात, आणि CSV\u00a0ची दोन्ही बटणे ‘ओळी इंपोर्ट किंवा सेव्ह करा’ खाली एकत्र आहेत.',
+        },
+      },
+      {
         id: 'tool-buttons-one-style',
         text: {
           en: 'The buttons in the five free tools now look and behave the same: one size, one shape, labels that wrap instead of being cut, and a clear ring when you reach them with the keyboard. Sharing, exporting, adding a row and uploading are all outlined in blue, and resetting is a quiet text button. Before, the same action was blue in one tool and teal in the next.',
