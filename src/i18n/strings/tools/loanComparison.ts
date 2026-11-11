@@ -307,6 +307,7 @@ export const loanComparisonEn = {
      */
     /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
     cardsHeading: 'Loan offers',
+    example: 'Example offers. Replace the figures with your own.',
     phoneTabs: {
       groupAria: 'Vendor to show',
       tabName: 'Vendor {label}',
@@ -328,18 +329,10 @@ export const loanComparisonEn = {
       term: 'Term (months)',
       monthly: 'Monthly payment',
       requiredTitle: 'Required',
-      optionalTitle: 'Optional loan details',
-      /**
-       * What the folded optional fields hold, said in words. One status reads
-       * as a whole sentence on its own; two or more read as a list.
-       */
-      optionalSingle: '{status}, no fees or prepayments',
-      optionalMulti: '{status} with {rest}',
+      foldSet: 'Filled in',
+      foldNone: 'None',
       statusHybrid: 'Hybrid (ARM)',
       statusFixed: 'Fixed rate',
-      statusFees: 'fees',
-      statusPrepayments: 'prepayments',
-      statusPenalty: 'penalty',
       rateStructure: {
         title: 'Rate structure',
         hint: 'Fixed or fixed-then-variable (ARM)',
@@ -934,6 +927,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       copyPrompt: 'यह लिंक कॉपी करें:',
     },
     cardsHeading: 'लोन ऑफ़र',
+    example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -955,14 +949,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       term: 'अवधि (महीने)',
       monthly: 'मासिक किस्त',
       requiredTitle: 'ज़रूरी',
-      optionalTitle: 'लोन की बाकी जानकारी (वैकल्पिक)',
-      optionalSingle: '{status}, न कोई शुल्क न समय से पहले भुगतान',
-      optionalMulti: '{status}, साथ में {rest}',
+      foldSet: 'भरा हुआ',
+      foldNone: 'कुछ नहीं',
       statusHybrid: 'हाइब्रिड (ARM)',
       statusFixed: 'तय दर',
-      statusFees: 'शुल्क',
-      statusPrepayments: 'समय से पहले भुगतान',
-      statusPenalty: 'जुर्माना',
       rateStructure: {
         title: 'दर का ढाँचा',
         hint: 'तय, या पहले तय फिर बदलती (ARM)',
@@ -1503,6 +1493,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       copyPrompt: 'Copia este enlace:',
     },
     cardsHeading: 'Ofertas de préstamo',
+    example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
     phoneTabs: {
       groupAria: 'Entidad que se muestra',
       tabName: 'Entidad {label}',
@@ -1524,14 +1515,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       term: 'Plazo (meses)',
       monthly: 'Cuota mensual',
       requiredTitle: 'Obligatorio',
-      optionalTitle: 'Datos opcionales del préstamo',
-      optionalSingle: '{status}, sin comisiones ni pagos anticipados',
-      optionalMulti: '{status} con {rest}',
+      foldSet: 'Con datos',
+      foldNone: 'Nada',
       statusHybrid: 'Tasa híbrida (ARM)',
       statusFixed: 'Tasa fija',
-      statusFees: 'comisiones',
-      statusPrepayments: 'pagos anticipados',
-      statusPenalty: 'penalización',
       rateStructure: {
         title: 'Estructura de la tasa',
         hint: 'Fija, o fija y luego variable (ARM)',
@@ -2071,6 +2058,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       copyPrompt: 'Zkopírujte tento odkaz:',
     },
     cardsHeading: 'Nabídky úvěrů',
+    example: 'Ukázkové nabídky. Nahraďte čísla svými.',
     phoneTabs: {
       groupAria: 'Zobrazený poskytovatel',
       tabName: 'Poskytovatel {label}',
@@ -2092,14 +2080,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       term: 'Doba splatnosti (měsíce)',
       monthly: 'Měsíční splátka',
       requiredTitle: 'Povinné',
-      optionalTitle: 'Volitelné podrobnosti úvěru',
-      optionalSingle: '{status}, bez poplatků a mimořádných splátek',
-      optionalMulti: '{status}: {rest}',
+      foldSet: 'Vyplněno',
+      foldNone: 'Nic',
       statusHybrid: 'Hybridní (ARM)',
       statusFixed: 'Pevná sazba',
-      statusFees: 'poplatky',
-      statusPrepayments: 'mimořádné splátky',
-      statusPenalty: 'poplatek za předčasné splacení',
       rateStructure: {
         title: 'Struktura sazby',
         hint: 'Pevná, nebo nejdřív pevná a pak pohyblivá (ARM)',
@@ -2621,6 +2605,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       copyPrompt: 'ही लिंक कॉपी करा:',
     },
     cardsHeading: 'कर्जाच्या ऑफर',
+    example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
     phoneTabs: {
       groupAria: 'दाखवायचा कर्जदाता',
       tabName: 'कर्जदाता {label}',
@@ -2642,14 +2627,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       term: 'मुदत (महिने)',
       monthly: 'मासिक हप्ता',
       requiredTitle: 'आवश्यक',
-      optionalTitle: 'कर्जाचा ऐच्छिक तपशील',
-      optionalSingle: '{status}, शुल्क किंवा मुदतपूर्व परतफेड नाही',
-      optionalMulti: '{status}. इतर तपशील: {rest}',
+      foldSet: 'भरलेले',
+      foldNone: 'काही नाही',
       statusHybrid: 'हायब्रिड (ARM)',
       statusFixed: 'ठरावीक दर',
-      statusFees: 'शुल्क',
-      statusPrepayments: 'मुदतपूर्व परतफेड',
-      statusPenalty: 'दंड',
       rateStructure: {
         title: 'व्याजदराची रचना',
         hint: 'ठरावीक, किंवा आधी ठरावीक मग बदलता (ARM)',

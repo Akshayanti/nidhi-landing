@@ -25,6 +25,7 @@ import {
   displayLumpSums,
   defaultGlobalState,
   encodeToQueryString,
+  isPristineState,
   makeDefaultVendor,
   publishableState,
   SHARED_STATE_GLOBAL,
@@ -746,7 +747,7 @@ function formatYearLabel(month: number, strings: Strings): string {
 // ---- Phone layout ------------------------------------------------------------
 //
 // Phones (640px and narrower, the site's phone breakpoint) show one vendor
-// card at a time and fold the optional fields. Which layout is showing is
+// card at a time. Which layout is showing is
 // view state only: it never enters the share link, the address, storage or
 // analytics.
 
@@ -764,20 +765,6 @@ function usePhone(): boolean {
     return () => mq.removeEventListener?.('change', sync);
   }, []);
   return phone;
-}
-
-/** Keeps a <details> open on wider screens and closed on phones, following
- *  the screen as it rotates or resizes. A phone visitor can still open it. */
-function useFoldOnPhone(ref: React.RefObject<HTMLDetailsElement | null>) {
-  useEffect(() => {
-    const mq = window.matchMedia(PHONE_QUERY);
-    const sync = () => {
-      if (ref.current) ref.current.open = !mq.matches;
-    };
-    sync();
-    mq.addEventListener?.('change', sync);
-    return () => mq.removeEventListener?.('change', sync);
-  }, [ref]);
 }
 
 // ---- Main component --------------------------------------------------------
@@ -815,8 +802,6 @@ export default function LoanCompare({
   const [splitVendorIdx, setSplitVendorIdx] = useState<number | null>(null);
   // Phones: the vendor whose card is showing. View state only (see above).
   const [activeVendor, setActiveVendor] = useState(0);
-  const disclaimerRef = useRef<HTMLDetailsElement>(null);
-  useFoldOnPhone(disclaimerRef);
   const currencySelectId = useId();
 
   // Convenience accessor: the currency lives on globalState but most
@@ -1117,6 +1102,23 @@ export default function LoanCompare({
         )}
       </div>
 
+      {/* Phones only. A button, not a link: nothing is written to the address. */}
+      <p className="lc-jump">
+        <button
+          type="button"
+          onClick={() => {
+            const heading = document.getElementById('lc-delta-h');
+            heading?.scrollIntoView({ block: 'start' });
+            heading?.focus({ preventScroll: true });
+          }}
+        >
+          {strings.delta.heading}
+        </button>
+      </p>
+
+      {/* The starting offers are an example until one of them is changed. */}
+      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
+
       <h2 className="lc-srOnly">{strings.cardsHeading}</h2>
       <div className="lc-grid">
         {vendors.map((v, i) => (
@@ -1218,8 +1220,7 @@ export default function LoanCompare({
         strings={strings}
       />
 
-      {/* Open on wider screens, folded on phones (useFoldOnPhone). */}
-      <details className="lc-disclaimerWrap" open ref={disclaimerRef}>
+      <details className="lc-disclaimerWrap">
         <summary className="lc-disclaimerSummary disclosure">{strings.disclaimer.summary}</summary>
         <p className="lc-disclaimer">
           {strings.disclaimer.body}
@@ -1317,31 +1318,38 @@ function VendorCard({
   const requiredError = hasError && badOptional.size === 0;
   const headingId = id('heading');
 
-  const optionalRef = useRef<HTMLDetailsElement>(null);
-  useFoldOnPhone(optionalRef);
-
-  // What the folded optional fields hold, in words rather than amounts, so
-  // a phone visitor sees whether anything is set without opening them.
+  // The four optional groups fold, each behind a row that says in words
+  // (never amounts) what it holds. A group starts open when it differs from
+  // this offer's starting example, and always shows a box that cannot be
+  // read. Which rows are open is view state: never shared, stored or tracked.
   const isSet = (s: string) => Number(s) > 0;
-  const optionalStatus = [
-    vendor.rateKind === 'hybrid' && vendor.modeKind === 'term'
-      ? strings.card.statusHybrid
-      : strings.card.statusFixed,
-    isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? strings.card.statusFees : null,
-    isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== ''
-      ? strings.card.statusPrepayments
-      : null,
-    isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth)
-      ? strings.card.statusPenalty
-      : null,
-  ].filter((status): status is string => status !== null);
-  const optionalSummary =
-    optionalStatus.length === 1
-      ? format(strings.card.optionalSingle, { status: optionalStatus[0] })
-      : format(strings.card.optionalMulti, {
-          status: optionalStatus[0],
-          rest: optionalStatus.slice(1).join(', '),
-        });
+  const start = makeDefaultVendor(Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label)));
+  const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
+  const unreadable = (...keys: OptionalField[]) => keys.some((k) => badOptional.has(k));
+  const [toggled, setToggled] = useState<Partial<Record<FoldName, boolean>>>({});
+  const fold = (name: FoldName, changed: boolean, bad: boolean) => ({
+    open: bad || (toggled[name] ?? changed),
+    onToggle: (open: boolean) => setToggled((t) => (t[name] === open ? t : { ...t, [name]: open })),
+  });
+  const hybrid = vendor.rateKind === 'hybrid' && vendor.modeKind === 'term';
+  const folds = {
+    rate: {
+      ...fold('rate', differs('rateKind'), unreadable('initialFixedMonths', 'subsequentRatePct')),
+      state: hybrid ? strings.card.statusHybrid : strings.card.statusFixed,
+    },
+    costs: {
+      ...fold('costs', differs('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct'), unreadable('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct')),
+      state: isSet(vendor.feeMajor) || isSet(vendor.pointsCostMajor) ? strings.card.foldSet : strings.card.foldNone,
+    },
+    prepay: {
+      ...fold('prepay', differs('extraMonthly', 'lumpSumsEncoded'), unreadable('extraMonthly', 'lumpSumsEncoded')),
+      state: isSet(vendor.extraMonthly) || vendor.lumpSumsEncoded.trim() !== '' ? strings.card.foldSet : strings.card.foldNone,
+    },
+    penalty: {
+      ...fold('penalty', differs('prepayPenaltyPct', 'prepayPenaltyUntilMonth'), unreadable('prepayPenaltyPct', 'prepayPenaltyUntilMonth')),
+      state: isSet(vendor.prepayPenaltyPct) && isSet(vendor.prepayPenaltyUntilMonth) ? strings.card.foldSet : strings.card.foldNone,
+    },
+  };
 
   return (
     <article
@@ -1500,254 +1508,6 @@ function VendorCard({
         </div>
       )}
 
-      {/* ------------------------------------------------------------ */}
-      {/*  Optional groups. On wider screens all visible, so the user   */}
-      {/*  can see the available knobs at a glance, but visually        */}
-      {/*  de-emphasised vs. the required block above; the summary row  */}
-      {/*  is hidden there and CSS shows the content before the fold    */}
-      {/*  hook opens it. On phones they fold behind one row that says  */}
-      {/*  in words what is set, so the result follows the required     */}
-      {/*  fields.                                                      */}
-      {/* ------------------------------------------------------------ */}
-
-      <details className="lc-optional" ref={optionalRef}>
-      <summary className="lc-optionalSummary disclosure">
-        <span className="lc-optionalTitle">{strings.card.optionalTitle}</span>
-        <span className="lc-optionalStatus">{optionalSummary}</span>
-      </summary>
-
-      <FieldGroup title={strings.card.rateStructure.title} hint={strings.card.rateStructure.hint}>
-        <fieldset className="lc-modeFieldset">
-          <legend className="lc-srOnly">{strings.card.rateTypeAria}</legend>
-          <div className="lc-modeRow">
-            <label className={`lc-modeOption ${vendor.rateKind === 'fixed' ? 'lc-modeOptionActive' : ''}`}>
-              <input
-                type="radio"
-                name={`rateKind-${baseId}`}
-                value="fixed"
-                checked={vendor.rateKind === 'fixed'}
-                onChange={() => {
-                  onChange({ rateKind: 'fixed' });
-                  track('free_loan_comparison_rate_kind_changed', {
-                    vendor: label,
-                    rateKind: 'fixed',
-                  });
-                }}
-              />
-              <span>{strings.card.fixed}</span>
-            </label>
-            <label className={`lc-modeOption ${vendor.rateKind === 'hybrid' ? 'lc-modeOptionActive' : ''}`}>
-              <input
-                type="radio"
-                name={`rateKind-${baseId}`}
-                value="hybrid"
-                // Hybrid is only meaningful in term mode; we disable the
-                // radio when the vendor is in payment mode rather than
-                // auto-flipping their selection. The disabled-state hint
-                // below is wired via aria-describedby so screen-reader
-                // users hear the reason without sighted-only context.
-                disabled={vendor.modeKind !== 'term'}
-                aria-describedby={
-                  vendor.modeKind !== 'term' ? id('hybrid-hint') : undefined
-                }
-                checked={vendor.rateKind === 'hybrid'}
-                onChange={() => {
-                  onChange({ rateKind: 'hybrid' });
-                  track('free_loan_comparison_rate_kind_changed', {
-                    vendor: label,
-                    rateKind: 'hybrid',
-                  });
-                }}
-              />
-              <span>{strings.card.hybrid}</span>
-            </label>
-          </div>
-        </fieldset>
-        {vendor.modeKind !== 'term' && (
-          // Always render this hint when hybrid is disabled, even if the
-          // user has not picked hybrid yet, so the disabled state is
-          // explained on first encounter (and aria-describedby has a
-          // target to point at).
-          <p id={id('hybrid-hint')} className="lc-fieldHelp">
-            {strings.card.hybridHint.before}
-            <em>{strings.card.hybridHint.solveFor}</em>
-            {strings.card.hybridHint.mid}
-            <em>{strings.card.hybridHint.modeTerm}</em>
-            {strings.card.hybridHint.after}
-          </p>
-        )}
-        {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
-          <>
-            <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed}
-              </label>
-              <LocaleNumberInput
-                id={id('initialFixedMonths')}
-                inputMode="numeric"
-                className="lc-input"
-                value={vendor.initialFixedMonths}
-                onValueChange={(v) => onChange({ initialFixedMonths: v })}
-                aria-invalid={badOptional.has('initialFixedMonths') || undefined}
-                aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
-                autoComplete="off"
-              />
-              <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
-            </div>
-            <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate}
-              </label>
-              <LocaleNumberInput
-                id={id('subsequentRatePct')}
-                inputMode="decimal"
-                className="lc-input"
-                value={vendor.subsequentRatePct}
-                onValueChange={(v) => onChange({ subsequentRatePct: v })}
-                aria-invalid={badOptional.has('subsequentRatePct') || undefined}
-                aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
-                autoComplete="off"
-              />
-              <p className="lc-fieldHelp">
-                {strings.card.subsequentRateHelp}
-              </p>
-            </div>
-          </>
-        )}
-      </FieldGroup>
-
-      <FieldGroup title={strings.card.costs.title} hint={strings.card.costs.hint}>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('fee')}>
-            {strings.card.fee} <span className="lc-fieldHint">({currency})</span>
-          </label>
-          <LocaleNumberInput
-            id={id('fee')}
-            inputMode="decimal"
-            className="lc-input"
-            value={vendor.feeMajor}
-            onValueChange={(v) => onChange({ feeMajor: v })}
-            aria-invalid={badOptional.has('feeMajor') || undefined}
-            aria-describedby={badOptional.has('feeMajor') ? errorId : undefined}
-            autoComplete="off"
-          />
-        </div>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('pointsCost')}>
-            {strings.card.pointsCost} <span className="lc-fieldHint">({currency})</span>
-          </label>
-          <LocaleNumberInput
-            id={id('pointsCost')}
-            inputMode="decimal"
-            className="lc-input"
-            value={vendor.pointsCostMajor}
-            onValueChange={(v) => onChange({ pointsCostMajor: v })}
-            aria-invalid={badOptional.has('pointsCostMajor') || undefined}
-            aria-describedby={badOptional.has('pointsCostMajor') ? errorId : undefined}
-            autoComplete="off"
-          />
-          <p className="lc-fieldHelp">
-            {strings.card.pointsCostHelp}
-          </p>
-        </div>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('pointsReduction')}>
-            {strings.card.pointsReduction}
-          </label>
-          <LocaleNumberInput
-            id={id('pointsReduction')}
-            inputMode="decimal"
-            className="lc-input"
-            value={vendor.pointsRateReductionPct}
-            onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
-            aria-invalid={badOptional.has('pointsRateReductionPct') || undefined}
-            aria-describedby={badOptional.has('pointsRateReductionPct') ? errorId : undefined}
-            autoComplete="off"
-          />
-          <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
-        </div>
-      </FieldGroup>
-
-      <FieldGroup title={strings.card.prepayments.title} hint={strings.card.prepayments.hint}>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('extra')}>
-            {strings.card.extra} <span className="lc-fieldHint">({currency})</span>
-          </label>
-          <LocaleNumberInput
-            id={id('extra')}
-            inputMode="decimal"
-            className="lc-input"
-            value={vendor.extraMonthly}
-            onValueChange={(v) => onChange({ extraMonthly: v })}
-            aria-invalid={badOptional.has('extraMonthly') || undefined}
-            aria-describedby={badOptional.has('extraMonthly') ? errorId : undefined}
-            autoComplete="off"
-          />
-        </div>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('lumpSums')}>
-            {strings.card.lumps}
-          </label>
-          <LocaleNumberInput
-            toCanonical={canonicalLumpSums}
-            toDisplay={displayLumpSums}
-            id={id('lumpSums')}
-            className="lc-input"
-            value={vendor.lumpSumsEncoded}
-            onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
-            aria-invalid={badOptional.has('lumpSumsEncoded') || undefined}
-            aria-describedby={badOptional.has('lumpSumsEncoded') ? errorId : undefined}
-            autoComplete="off"
-            spellCheck={false}
-            placeholder="12:5000;36:3000"
-          />
-          <p className="lc-fieldHelp">
-            {strings.card.lumpsHelp.before}
-            <code>{strings.card.lumpsHelp.format}</code>
-            {strings.card.lumpsHelp.mid}
-            <code>12:5000;36:3000</code>
-            {strings.card.lumpsHelp.after}
-          </p>
-        </div>
-      </FieldGroup>
-
-      <FieldGroup title={strings.card.penalty.title} hint={strings.card.penalty.hint}>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
-            {strings.card.penaltyPct}
-          </label>
-          <LocaleNumberInput
-            id={id('prepayPct')}
-            inputMode="decimal"
-            className="lc-input"
-            value={vendor.prepayPenaltyPct}
-            onValueChange={(v) => onChange({ prepayPenaltyPct: v })}
-            aria-invalid={badOptional.has('prepayPenaltyPct') || undefined}
-            aria-describedby={badOptional.has('prepayPenaltyPct') ? errorId : undefined}
-            autoComplete="off"
-          />
-        </div>
-        <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('prepayUntil')}>
-            {strings.card.penaltyUntil}
-          </label>
-          <LocaleNumberInput
-            id={id('prepayUntil')}
-            inputMode="numeric"
-            className="lc-input"
-            value={vendor.prepayPenaltyUntilMonth}
-            onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
-            aria-invalid={badOptional.has('prepayPenaltyUntilMonth') || undefined}
-            aria-describedby={badOptional.has('prepayPenaltyUntilMonth') ? errorId : undefined}
-            autoComplete="off"
-          />
-          <p className="lc-fieldHelp">
-            {strings.card.penaltyUntilHelp}
-          </p>
-        </div>
-      </FieldGroup>
-      </details>
-
       <div
         className="lc-results"
         aria-live="polite"
@@ -1857,6 +1617,238 @@ function VendorCard({
           <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
         ))}
       </div>
+
+      {/* Optional groups, after the result: each a row that opens. */}
+      <FieldGroup title={strings.card.rateStructure.title} hint={strings.card.rateStructure.hint} {...folds.rate}>
+        <fieldset className="lc-modeFieldset">
+          <legend className="lc-srOnly">{strings.card.rateTypeAria}</legend>
+          <div className="lc-modeRow">
+            <label className={`lc-modeOption ${vendor.rateKind === 'fixed' ? 'lc-modeOptionActive' : ''}`}>
+              <input
+                type="radio"
+                name={`rateKind-${baseId}`}
+                value="fixed"
+                checked={vendor.rateKind === 'fixed'}
+                onChange={() => {
+                  onChange({ rateKind: 'fixed' });
+                  track('free_loan_comparison_rate_kind_changed', {
+                    vendor: label,
+                    rateKind: 'fixed',
+                  });
+                }}
+              />
+              <span>{strings.card.fixed}</span>
+            </label>
+            <label className={`lc-modeOption ${vendor.rateKind === 'hybrid' ? 'lc-modeOptionActive' : ''}`}>
+              <input
+                type="radio"
+                name={`rateKind-${baseId}`}
+                value="hybrid"
+                // Hybrid is only meaningful in term mode; we disable the
+                // radio when the vendor is in payment mode rather than
+                // auto-flipping their selection. The disabled-state hint
+                // below is wired via aria-describedby so screen-reader
+                // users hear the reason without sighted-only context.
+                disabled={vendor.modeKind !== 'term'}
+                aria-describedby={
+                  vendor.modeKind !== 'term' ? id('hybrid-hint') : undefined
+                }
+                checked={vendor.rateKind === 'hybrid'}
+                onChange={() => {
+                  onChange({ rateKind: 'hybrid' });
+                  track('free_loan_comparison_rate_kind_changed', {
+                    vendor: label,
+                    rateKind: 'hybrid',
+                  });
+                }}
+              />
+              <span>{strings.card.hybrid}</span>
+            </label>
+          </div>
+        </fieldset>
+        {vendor.modeKind !== 'term' && (
+          // Always render this hint when hybrid is disabled, even if the
+          // user has not picked hybrid yet, so the disabled state is
+          // explained on first encounter (and aria-describedby has a
+          // target to point at).
+          <p id={id('hybrid-hint')} className="lc-fieldHelp">
+            {strings.card.hybridHint.before}
+            <em>{strings.card.hybridHint.solveFor}</em>
+            {strings.card.hybridHint.mid}
+            <em>{strings.card.hybridHint.modeTerm}</em>
+            {strings.card.hybridHint.after}
+          </p>
+        )}
+        {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
+          <>
+            <div className="lc-field">
+              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
+                {strings.card.initialFixed}
+              </label>
+              <LocaleNumberInput
+                id={id('initialFixedMonths')}
+                inputMode="numeric"
+                className="lc-input"
+                value={vendor.initialFixedMonths}
+                onValueChange={(v) => onChange({ initialFixedMonths: v })}
+                aria-invalid={badOptional.has('initialFixedMonths') || undefined}
+                aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
+                autoComplete="off"
+              />
+              <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
+            </div>
+            <div className="lc-field">
+              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
+                {strings.card.subsequentRate}
+              </label>
+              <LocaleNumberInput
+                id={id('subsequentRatePct')}
+                inputMode="decimal"
+                className="lc-input"
+                value={vendor.subsequentRatePct}
+                onValueChange={(v) => onChange({ subsequentRatePct: v })}
+                aria-invalid={badOptional.has('subsequentRatePct') || undefined}
+                aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
+                autoComplete="off"
+              />
+              <p className="lc-fieldHelp">
+                {strings.card.subsequentRateHelp}
+              </p>
+            </div>
+          </>
+        )}
+      </FieldGroup>
+
+      <FieldGroup title={strings.card.costs.title} hint={strings.card.costs.hint} {...folds.costs}>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('fee')}>
+            {strings.card.fee} <span className="lc-fieldHint">({currency})</span>
+          </label>
+          <LocaleNumberInput
+            id={id('fee')}
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.feeMajor}
+            onValueChange={(v) => onChange({ feeMajor: v })}
+            aria-invalid={badOptional.has('feeMajor') || undefined}
+            aria-describedby={badOptional.has('feeMajor') ? errorId : undefined}
+            autoComplete="off"
+          />
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('pointsCost')}>
+            {strings.card.pointsCost} <span className="lc-fieldHint">({currency})</span>
+          </label>
+          <LocaleNumberInput
+            id={id('pointsCost')}
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.pointsCostMajor}
+            onValueChange={(v) => onChange({ pointsCostMajor: v })}
+            aria-invalid={badOptional.has('pointsCostMajor') || undefined}
+            aria-describedby={badOptional.has('pointsCostMajor') ? errorId : undefined}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">
+            {strings.card.pointsCostHelp}
+          </p>
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('pointsReduction')}>
+            {strings.card.pointsReduction}
+          </label>
+          <LocaleNumberInput
+            id={id('pointsReduction')}
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.pointsRateReductionPct}
+            onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
+            aria-invalid={badOptional.has('pointsRateReductionPct') || undefined}
+            aria-describedby={badOptional.has('pointsRateReductionPct') ? errorId : undefined}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
+        </div>
+      </FieldGroup>
+
+      <FieldGroup title={strings.card.prepayments.title} hint={strings.card.prepayments.hint} {...folds.prepay}>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('extra')}>
+            {strings.card.extra} <span className="lc-fieldHint">({currency})</span>
+          </label>
+          <LocaleNumberInput
+            id={id('extra')}
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.extraMonthly}
+            onValueChange={(v) => onChange({ extraMonthly: v })}
+            aria-invalid={badOptional.has('extraMonthly') || undefined}
+            aria-describedby={badOptional.has('extraMonthly') ? errorId : undefined}
+            autoComplete="off"
+          />
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('lumpSums')}>
+            {strings.card.lumps}
+          </label>
+          <LocaleNumberInput
+            toCanonical={canonicalLumpSums}
+            toDisplay={displayLumpSums}
+            id={id('lumpSums')}
+            className="lc-input"
+            value={vendor.lumpSumsEncoded}
+            onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
+            aria-invalid={badOptional.has('lumpSumsEncoded') || undefined}
+            aria-describedby={badOptional.has('lumpSumsEncoded') ? errorId : undefined}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="12:5000;36:3000"
+          />
+          <p className="lc-fieldHelp">
+            {strings.card.lumpsHelp.before}
+            <code>{strings.card.lumpsHelp.format}</code>
+            {strings.card.lumpsHelp.mid}
+            <code>12:5000;36:3000</code>
+            {strings.card.lumpsHelp.after}
+          </p>
+        </div>
+      </FieldGroup>
+
+      <FieldGroup title={strings.card.penalty.title} hint={strings.card.penalty.hint} {...folds.penalty}>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('prepayPct')}>
+            {strings.card.penaltyPct}
+          </label>
+          <LocaleNumberInput
+            id={id('prepayPct')}
+            inputMode="decimal"
+            className="lc-input"
+            value={vendor.prepayPenaltyPct}
+            onValueChange={(v) => onChange({ prepayPenaltyPct: v })}
+            aria-invalid={badOptional.has('prepayPenaltyPct') || undefined}
+            aria-describedby={badOptional.has('prepayPenaltyPct') ? errorId : undefined}
+            autoComplete="off"
+          />
+        </div>
+        <div className="lc-field">
+          <label className="lc-fieldLabel" htmlFor={id('prepayUntil')}>
+            {strings.card.penaltyUntil}
+          </label>
+          <LocaleNumberInput
+            id={id('prepayUntil')}
+            inputMode="numeric"
+            className="lc-input"
+            value={vendor.prepayPenaltyUntilMonth}
+            onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
+            aria-invalid={badOptional.has('prepayPenaltyUntilMonth') || undefined}
+            aria-describedby={badOptional.has('prepayPenaltyUntilMonth') ? errorId : undefined}
+            autoComplete="off"
+          />
+          <p className="lc-fieldHelp">
+            {strings.card.penaltyUntilHelp}
+          </p>
+        </div>
+      </FieldGroup>
     </article>
   );
 }
@@ -1875,24 +1867,33 @@ function RequiredMark({ title }: { title: string }) {
   );
 }
 
+type FoldName = 'rate' | 'costs' | 'prepay' | 'penalty';
+
 interface FieldGroupProps {
   title: string;
   hint?: string;
+  /** What the group holds, in words: shown on its row whether open or closed. */
+  state: string;
+  open: boolean;
+  onToggle: (open: boolean) => void;
   children: React.ReactNode;
 }
 
-/** A visually-grouped section of optional fields. On wider screens the
- *  title and hint are always visible so the user can see at a glance what
- *  knobs each card exposes; on phones the groups sit inside one fold. */
-function FieldGroup({ title, hint, children }: FieldGroupProps) {
+/** A group of optional fields behind a row that opens: the row names the
+ *  group and says what it holds, so the card shows every option without
+ *  showing every box. The chevron comes from .disclosure. */
+function FieldGroup({ title, hint, state, open, onToggle, children }: FieldGroupProps) {
   return (
-    <section className="lc-fieldGroup">
-      <header className="lc-fieldGroupHeader">
-        <h3 className="lc-fieldGroupTitle">{title}</h3>
+    <details className="lc-fieldGroup" open={open} onToggle={(e) => onToggle(e.currentTarget.open)}>
+      <summary className="lc-fieldGroupHeader disclosure">
+        <span className="lc-fieldGroupTitle">{title}</span>
+        <span className="lc-fieldGroupState">{state}</span>
+      </summary>
+      <div className="lc-fieldGroupBody">
         {hint && <p className="lc-fieldGroupHint">{hint}</p>}
-      </header>
-      <div className="lc-fieldGroupBody">{children}</div>
-    </section>
+        {children}
+      </div>
+    </details>
   );
 }
 
@@ -1941,7 +1942,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
   if (valid.length < 2) {
     return (
       <section className="lc-deltaSection">
-        <h2 className="lc-sectionTitle">{strings.delta.heading}</h2>
+        <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
         <p className="lc-deltaEmpty">
           {strings.delta.empty}
         </p>
@@ -1967,7 +1968,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
 
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
-      <h2 id="lc-delta-h" className="lc-sectionTitle">{strings.delta.heading}</h2>
+      <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
       {/*
         aria-live=polite so screen readers re-announce when inputs change.
         The wording is deliberately neutral: it states the range and the

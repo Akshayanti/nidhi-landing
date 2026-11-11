@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-11',
     items: [
       {
+        id: 'loan-comparison-short-cards',
+        text: {
+          en: 'The loan comparison shows each offer\'s result right under its five main boxes, on every screen size. The optional details (rate structure, costs and fees, prepayments, prepayment penalty) are now four rows that say what they hold and open when you want them, so the side-by-side table is no longer two screens down. The starting offers are marked as an example, and the assumptions start folded.',
+          hi: 'लोन तुलना में हर ऑफ़र का नतीजा अब उसके पाँच मुख्य खानों के ठीक नीचे दिखता है, हर स्क्रीन पर। वैकल्पिक जानकारी (दर का ढाँचा, लागत और शुल्क, समय से पहले भुगतान, समय से पहले भुगतान पर जुर्माना) अब चार पंक्तियाँ हैं, जो बताती हैं कि उनमें क्या भरा है और ज़रूरत पड़ने पर खुलती हैं, इसलिए आमने-सामने वाली तालिका अब दो स्क्रीन नीचे नहीं है। शुरुआती ऑफ़रों पर लिखा है कि वे उदाहरण हैं, और मान्यताएँ शुरू में बंद रहती हैं।',
+          es: 'La comparación de préstamos muestra el resultado de cada oferta justo debajo de sus cinco casillas principales, en cualquier tamaño de pantalla. Los datos opcionales (estructura de la tasa, costos y comisiones, pagos anticipados, penalización por pago anticipado) son ahora cuatro filas que dicen lo que contienen y se abren cuando las necesitas, así que la tabla comparativa ya no queda dos pantallas más abajo. Las ofertas iniciales llevan la indicación de que son un ejemplo, y los supuestos empiezan plegados.',
+          cs: 'Srovnání úvěrů ukazuje výsledek každé nabídky hned pod jejími pěti hlavními poli, na každé velikosti obrazovky. Volitelné podrobnosti (struktura sazby, náklady a\u00a0poplatky, mimořádné splátky, poplatek za předčasné splacení) jsou teď čtyři řádky, které říkají, co obsahují, a\u00a0otevřou se, až je budete potřebovat, takže srovnávací tabulka už není o\u00a0dvě obrazovky níž. Výchozí nabídky jsou označené jako ukázka a\u00a0předpoklady jsou na začátku sbalené.',
+          mr: 'कर्ज तुलनेत प्रत्येक ऑफरचा निकाल आता तिच्या पाच मुख्य रकान्यांच्या लगेच खाली दिसतो, प्रत्येक स्क्रीनवर. ऐच्छिक तपशील (व्याजदराची रचना, खर्च आणि शुल्क, मुदतपूर्व परतफेड, मुदतपूर्व परतफेडीवरील दंड) आता चार ओळी आहेत; त्यांत काय भरले आहे ते त्या सांगतात आणि हवे तेव्हा उघडतात, त्यामुळे शेजारी-शेजारी तुलनेचा तक्ता आता दोन स्क्रीन खाली नाही. सुरुवातीच्या ऑफरवर त्या उदाहरण असल्याचे लिहिले आहे, आणि गृहीतके सुरुवातीला मिटलेली असतात.',
+        },
+      },
+      {
         id: 'invest-pay-off-shorter-form',
         text: {
           en: 'The invest or pay off tool has a shorter form. The three optional percentages (tax relief, fund fee and tax on gains) now sit behind one row called Taxes and fees, which says which of them are in use and opens by itself when a shared link sets one. The starting figures are marked as an example, and Start again is at the top.',
