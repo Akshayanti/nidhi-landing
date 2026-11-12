@@ -703,6 +703,9 @@ const faqSchema = {
      line, not the colour, is what says "link" (council round 11). Only the
      words are underlined, not the space and arrow after them. Devanagari gets a
      deeper offset, so the line clears the vowel signs below the letters. */
+  /* The arrow stays with the last word, so a long title must be allowed to
+     break inside a word at large text sizes rather than widen the page. */
+  .chain-t { overflow-wrap: anywhere; }
   .chain-go .chain-u {
     text-decoration: underline;
     text-decoration-thickness: 1px;

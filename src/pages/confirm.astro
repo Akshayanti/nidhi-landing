@@ -81,13 +81,17 @@ const isDev = import.meta.env.DEV;
       status.className = 'transactional-status transactional-status--' + kind;
     }
 
+    // With nothing it could do, the button is taken away: a button that looks
+    // ready and answers nothing is worse than the sentence that says why.
     if (!token) {
       btn.disabled = true;
+      btn.hidden = true;
       setStatus('This link is missing its confirmation token. Try the link from your email again, or subscribe once more from the learning path.', 'error');
       return;
     }
     if (!endpoint) {
       btn.disabled = true;
+      btn.hidden = true;
       setStatus('Subscriptions are not configured on this environment.', 'error');
       return;
     }

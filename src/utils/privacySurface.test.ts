@@ -278,7 +278,7 @@ const EXPECTED_MENTIONS = [
   'components/BaseHead.astro: getItem x1',
   'components/BaseHead.astro: localStorage x1',
   'components/BaseHead.astro: setAttribute x1',
-  'components/CookieConsent.astro: cookie x41',
+  'components/CookieConsent.astro: cookie x42',
   'components/Footer.astro: cookie x2',
   'components/Header.astro: setAttribute x4',
   'components/InflationCalculator.tsx: capture x1',
