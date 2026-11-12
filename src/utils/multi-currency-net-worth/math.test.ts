@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   aggregate,
+  concentrationShares,
   isSingleCurrency,
   isSupportedCurrency,
   ownedAndOwed,
@@ -688,5 +689,44 @@ describe('rates belong to the currency they were fetched for (issue 339)', () =>
     const waiting = aggregate(rows, 'INR', ratesForBase(eur, 'INR'));
     assert.equal(waiting.hasRates, 'none');
     assert.equal(waiting.totalNetWorthFunctional, 0);
+  });
+});
+
+describe('concentration and exposure are two measures', () => {
+  // Issue #515: an asset in one currency and a debt in another.
+  const positions = [
+    { code: 'CZK', netAmountFunctional: 8124, pctOfTotal: (8124 / 3458) * 100 },
+    { code: 'EUR', netAmountFunctional: -4666, pctOfTotal: (-4666 / 3458) * 100 },
+  ];
+
+  it('concentration is each size over the sum of sizes, and adds to 100', () => {
+    const c = concentrationShares(positions);
+    assert.ok(Math.abs(c.get('CZK')! - 63.52) < 0.01);
+    assert.ok(Math.abs(c.get('EUR')! - 36.48) < 0.01);
+    assert.ok(Math.abs([...c.values()].reduce((a, b) => a + b, 0) - 100) < 1e-9);
+    // Exposure, the share of net worth, is the other pair and is left as it was.
+    assert.ok(Math.abs(positions[0].pctOfTotal - 234.93) < 0.01);
+    assert.ok(Math.abs(positions[1].pctOfTotal + 134.93) < 0.01);
+  });
+
+  it('equals exposure when no currency is a net debt', () => {
+    const held = [
+      { code: 'EUR', netAmountFunctional: 600, pctOfTotal: 60 },
+      { code: 'USD', netAmountFunctional: 400, pctOfTotal: 40 },
+    ];
+    const c = concentrationShares(held);
+    for (const p of held) assert.ok(Math.abs(c.get(p.code)! - p.pctOfTotal) < 1e-9);
+  });
+
+  it('reads a shared view that carries percentages only, and leaves out a currency with no rate', () => {
+    const shared = [
+      { code: 'CZK', netAmountFunctional: 0, pctOfTotal: 234.9 },
+      { code: 'EUR', netAmountFunctional: 0, pctOfTotal: -134.9 },
+      { code: 'XAF', netAmountFunctional: 0, pctOfTotal: 0, rateUnavailable: true },
+    ];
+    const c = concentrationShares(shared);
+    assert.ok(Math.abs(c.get('CZK')! - 63.52) < 0.01);
+    assert.equal(c.has('XAF'), false);
+    assert.equal(concentrationShares([{ code: 'EUR', netAmountFunctional: 0, pctOfTotal: 0 }]).get('EUR'), 0);
   });
 });

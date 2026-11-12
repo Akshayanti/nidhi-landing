@@ -1040,7 +1040,8 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                 ) : hidePct ? (
                   <> - <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
-                  pos.pctOfTotal !== 0 && <> - {formatPercent(pos.pctOfTotal, functionalCurrency)}</>
+                  // Exposure, named as what it is: with a debt in another currency it can pass 100%.
+                  pos.pctOfTotal !== 0 && <> - {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
                 {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> - {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
               </span>
@@ -1125,6 +1126,19 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: {
   if (pos.riskLevel === 'functional') {
     if (hidePct) {
       return <p className="mcnw-riskRec">{strings.rec.functionalHidden}</p>;
+    }
+    // Owing in another currency puts more than the whole of net worth in the
+    // spending currency, and owing in the spending currency puts less than
+    // none of it there: neither is clamped into a sentence about a share.
+    if (pos.pctOfTotal < 0) {
+      return <p className="mcnw-riskRec">{format(strings.rec.functionalDebt, { currency: functionalCurrency })}</p>;
+    }
+    if (pos.pctOfTotal >= 100.5) {
+      return (
+        <p className="mcnw-riskRec">
+          {format(strings.rec.functionalOver, { pct: pos.pctOfTotal.toFixed(0), currency: functionalCurrency })}
+        </p>
+      );
     }
     const pct = Math.max(0, Math.min(100, pos.pctOfTotal));
     const rest = Math.max(0, 100 - pct);
