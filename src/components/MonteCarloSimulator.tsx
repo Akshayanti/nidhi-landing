@@ -22,6 +22,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
+import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -413,9 +414,11 @@ export default function MonteCarloSimulator({
   // The starting figures are an example until one of them is changed.
   const pristine = !hasErrors && isPristineState(toState(form), defaultCurrency);
 
+  const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="mcs-root">
+    <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <div className="mcs-root" {...heldUntilReady(toolReady)}>
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         {/* The example line and Reset share the first row, as in the other tools. */}
         <div className="ifc-formHead">
@@ -441,9 +444,9 @@ export default function MonteCarloSimulator({
               ))}
             </select>
           </div>
-          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={update('start')} invalid={errors.start} hint={strings.fields.startHint} />
-          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} />
-          <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} max={60} hint={strings.fields.saveYearsHint} />
+          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={update('start')} invalid={errors.start} error={t(strings.fields.amountError, { min: grouped(0, amountLocale), max: grouped(1e12, amountLocale) })} hint={strings.fields.startHint} />
+          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} error={t(strings.fields.amountError, { min: grouped(0, amountLocale), max: grouped(1e10, amountLocale) })} />
+          <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} error={t(strings.fields.yearsError, { min: grouped(0, amountLocale), max: grouped(60, amountLocale) })} max={60} hint={strings.fields.saveYearsHint} />
         </div>
         <p className="mcs-hint mcs-crossLink">
           {strings.fields.crossLink.before}
@@ -556,6 +559,7 @@ export default function MonteCarloSimulator({
             value={form.feePct}
             onChange={update('feePct')}
             invalid={errors.feePct}
+            error={t(strings.fields.percentError, { min: grouped(0, amountLocale), max: grouped(MAX_FEE_PCT, amountLocale) })}
             max={MAX_FEE_PCT}
             hint={t(strings.settings.feeHint, { maxFeePct: MAX_FEE_PCT })}
           />
@@ -600,8 +604,8 @@ export default function MonteCarloSimulator({
           )}
           {form.withdrawOn && (
             <div className="mcs-grid mcs-grid--two">
-              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} hint={strings.withdraw.amountHint} />
-              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} max={60} hint={strings.withdraw.yearsHint} />
+              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} error={t(strings.fields.amountError, { min: grouped(1, amountLocale), max: grouped(1e11, amountLocale) })} hint={strings.withdraw.amountHint} />
+              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} error={t(strings.fields.yearsError, { min: grouped(1, amountLocale), max: grouped(60, amountLocale) })} max={60} hint={strings.withdraw.yearsHint} />
             </div>
           )}
         </fieldset>
@@ -642,6 +646,7 @@ export default function MonteCarloSimulator({
 
       <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={result} />
     </div>
+    </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -652,12 +657,17 @@ function NumberField(props: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   invalid: boolean;
+  /** What to type instead, shown under the box while it is invalid. */
+  error?: string;
   hint?: string;
   max?: number;
   /** "1" for a box that takes whole numbers only. */
   step?: string;
 }) {
   const hintId = `${props.id}-hint`;
+  const errorId = `${props.id}-error`;
+  const showError = props.invalid && Boolean(props.error);
+  const described = [showError ? errorId : '', props.hint ? hintId : ''].filter(Boolean).join(' ');
   return (
     <div className="mcs-field">
       <label className="mcs-label" htmlFor={props.id}>{props.label}</label>
@@ -672,8 +682,9 @@ function NumberField(props: {
         value={props.value}
         onChange={props.onChange}
         aria-invalid={props.invalid || undefined}
-        aria-describedby={props.hint ? hintId : undefined}
+        aria-describedby={described || undefined}
       />
+      {showError && <span className="ifc-error" id={errorId}><ErrorText>{props.error ?? ''}</ErrorText></span>}
       {props.hint && <span className="mcs-hint" id={hintId}>{props.hint}</span>}
     </div>
   );

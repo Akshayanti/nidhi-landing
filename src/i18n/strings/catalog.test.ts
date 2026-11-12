@@ -168,6 +168,8 @@ describe('the Hindi catalog is translated, not copied', () => {
  * with a reason, on top of the shared `IDENTICAL_OK`.
  */
 const IDENTICAL_OK_ES = new Set<string>([
+  // "Error" is the Spanish word too.
+  'tools.export.fieldError',
   // "Euro" is the currency's name in Spanish too, and the code is the same.
   'tools.loanComparison.island.currencies.EUR',
   'tools.multiCurrencyNetWorth.island.currencies.EUR',

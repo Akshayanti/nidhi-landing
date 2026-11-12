@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'tools-wait-until-ready',
+        text: {
+          en: 'On a slow phone, a free tool\'s boxes appeared a few seconds before the tool was working, and anything typed in that gap was thrown away. The boxes now wait until the tool is ready. The Monte Carlo simulator also says what to type when a number is out of range, and an error under a box now starts with the word “Error” in every tool, so it is told apart by more than its colour.',
+          hi: 'धीमे फ़ोन पर मुफ़्त टूल के बॉक्स टूल के चालू होने से कुछ सेकंड पहले दिख जाते थे, और उस बीच जो भी लिखा जाता, वह मिट जाता था। अब बॉक्स तब तक रुके रहते हैं जब तक टूल तैयार न हो जाए। मोंटे कार्लो सिम्युलेटर अब यह भी बताता है कि कोई संख्या सीमा से बाहर हो तो क्या लिखना है, और हर टूल में बॉक्स के नीचे की गड़बड़ी अब “त्रुटि” शब्द से शुरू होती है, ताकि वह सिर्फ़ रंग से न पहचाननी पड़े।',
+          es: 'En un teléfono lento, las casillas de una herramienta gratuita aparecían unos segundos antes de que la herramienta funcionara, y lo que se escribía en ese intervalo se perdía. Ahora las casillas esperan hasta que la herramienta está lista. El simulador Monte Carlo dice además qué escribir cuando un número está fuera de rango, y un error bajo una casilla empieza ahora con la palabra «Error» en todas las herramientas, para que se distinga por algo más que el color.',
+          cs: 'Na pomalém telefonu se pole bezplatného nástroje objevila pár sekund předtím, než nástroj začal fungovat, a\u00a0co se do nich mezitím napsalo, se ztratilo. Pole teď počkají, až je nástroj připravený. Simulátor Monte Carlo navíc říká, co zadat, když je číslo mimo rozsah, a\u00a0chyba pod polem teď ve všech nástrojích začíná slovem „Chyba“, aby se nepoznala jen podle barvy.',
+          mr: 'संथ फोनवर मोफत साधनाचे रकाने साधन सुरू होण्याच्या काही सेकंद आधीच दिसत, आणि त्या वेळेत लिहिलेले सगळे पुसले जाई. आता साधन तयार होईपर्यंत रकाने थांबतात. मॉन्टे कार्लो सिम्युलेटर आता संख्या मर्यादेबाहेर असेल तर काय भरायचे तेही सांगतो, आणि प्रत्येक साधनात रकान्याखालची चूक आता “त्रुटी” या शब्दाने सुरू होते, म्हणजे ती फक्त रंगावरून ओळखावी लागत नाही.',
+        },
+      },
+      {
         id: 'tools-one-look',
         text: {
           en: 'The five free tools now look like one family. Dropdowns match the boxes beside them, section titles and questions are the same size everywhere, the views in the loan comparison and the inflation calculator are plain tabs with a line under the one you are on, and the Monte Carlo simulator\'s Reset sits at the top of its form like the others. Nothing about the sums has changed.',

@@ -7672,3 +7672,17 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
   letter-spacing: 0;
   line-height: 1.6;
 }
+
+/* Net worth, risk cards: the currency comes first in the markup, for a screen
+   reader; the band is still shown first. */
+.mcnw-riskCardHead > .mcnw-riskBadge {
+  order: -1;
+}
+/* Net worth, chart legend: a long amount wraps instead of pushing the row
+   wider than a narrow screen at large text. */
+.mcnw-legendAmount {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: right;
+}

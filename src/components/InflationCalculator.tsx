@@ -44,6 +44,7 @@ import { ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
+import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -499,9 +500,11 @@ export default function InflationCalculator({
   // The starting figures are an example until one of them is changed.
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
+  const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="ifc-root">
+    <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="ifc-formHead">
           <p className="ifc-example">{pristine ? strings.example : ''}</p>
@@ -676,6 +679,7 @@ export default function InflationCalculator({
 
       {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -714,7 +718,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}>{props.error}</span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>

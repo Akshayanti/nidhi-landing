@@ -18,6 +18,8 @@
  */
 
 export const exportEn = {
+  /** In front of a field's error message, so it is told apart from help text by more than colour. */
+  fieldError: 'Error: {message}',
   heading: 'Save or share these results',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'This tool needs JavaScript, which is off or blocked in this browser. The figures below are an example and will not change when you type.',
@@ -72,6 +74,7 @@ export const exportEn = {
  * ब्राउज़र. "Spreadsheet" stays स्प्रेडशीट, as Indian office software calls it.
  */
 export const exportHi: typeof exportEn = {
+  fieldError: 'त्रुटि: {message}',
   heading: 'इन नतीजों को सेव या शेयर करें',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'इस टूल के लिए JavaScript ज़रूरी है, जो इस ब्राउज़र में बंद या ब्लॉक है। नीचे के आँकड़े एक उदाहरण हैं और आपके कुछ भरने पर नहीं बदलेंगे।',
@@ -119,6 +122,7 @@ export const exportHi: typeof exportEn = {
 
 /** Spanish: tú, as the tools address the reader. */
 export const exportEs: typeof exportEn = {
+  fieldError: 'Error: {message}',
   heading: 'Guarda o comparte estos resultados',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'Esta herramienta necesita JavaScript, que en este navegador está desactivado o bloqueado. Las cifras de abajo son un ejemplo y no cambiarán cuando escribas.',
@@ -166,6 +170,7 @@ export const exportEs: typeof exportEn = {
 
 /** Czech: vy, as the tools address the reader; imperatives in the plural. */
 export const exportCs: typeof exportEn = {
+  fieldError: 'Chyba: {message}',
   heading: 'Uložte nebo sdílejte tyto výsledky',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'Tento nástroj potřebuje JavaScript, který je v\u00a0tomto prohlížeči vypnutý nebo blokovaný. Čísla níže jsou ukázka a\u00a0při psaní se nezmění.',
@@ -213,6 +218,7 @@ export const exportCs: typeof exportEn = {
 
 /** Marathi: तुम्ही, as the tools address the reader. */
 export const exportMr: typeof exportEn = {
+  fieldError: 'त्रुटी: {message}',
   heading: 'हे निकाल सेव्ह किंवा शेअर करा',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'या साधनासाठी JavaScript आवश्यक आहे, जे या ब्राउझरमध्ये बंद किंवा ब्लॉक केलेले आहे. खालील आकडे उदाहरण आहेत आणि तुम्ही काही भरल्यावर बदलणार नाहीत.',
