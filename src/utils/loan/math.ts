@@ -952,9 +952,10 @@ export function emptyResult(feeMinor: number, error: string): LoanResult {
  *   - APR is the rate at which the present value of the payment stream,
  *     discounted monthly, equals the net amount disbursed.
  *   - This function returns the nominal annualization (`monthly_rate × 12`),
- *     the convention of US and Canadian disclosures. EU and UK documents
- *     compound the same monthly rate over a year (`(1+i)^12 − 1`); the page
- *     shows whichever the reader chose, through `aprInConvention`.
+ *     on the same basis as the rate the reader types, and the one figure
+ *     the page shows. EU, UK and some other documents compound the same
+ *     monthly rate over a year (`(1+i)^12 − 1`), so theirs reads higher; the
+ *     page says so above the offers.
  *
  * Solver: bisection on the present-value function. PV is strictly
  * decreasing in `i`, so bisection always converges; we cap at 200
@@ -1046,39 +1047,6 @@ export function computeApr(
   }
   const monthlyRate = (lo + hi) / 2;
   return monthlyRate * 12;
-}
-
-/**
- * The two ways a monthly rate is turned into a yearly APR.
- * - `nominal`: monthly rate × 12 (US Reg Z, Canada, India's key facts statement,
- *   Australia's comparison rate, Japan's disclosed annual rate).
- * - `effective`: monthly rate compounded over twelve months (EU, UK).
- */
-export type AprConvention = 'nominal' | 'effective';
-
-/**
- * Currencies whose home rules quote the yearly rate as the monthly rate × 12.
- * Each was checked against the rule itself (Nov 2026): US Reg Z Appendix J,
- * Canada's SOR/2021-181, India's RBI key facts statement, Australia's NCCP
- * Regulations reg 71, Japan's Money Lending Business Act enforcement rules.
- * Every other currency starts compounded, as the EU and UK require; those
- * outside the EU and UK have not been checked one by one.
- */
-const NOMINAL_APR_CURRENCIES = new Set(['USD', 'CAD', 'INR', 'AUD', 'JPY']);
-
-/** The convention a page starts with for a currency, until the reader chooses one. */
-export function defaultAprConvention(currency: string): AprConvention {
-  return NOMINAL_APR_CURRENCIES.has(currency) ? 'nominal' : 'effective';
-}
-
-/**
- * A nominal APR (monthly rate × 12, as `computeApr` returns it) in the
- * convention asked for. The compounded figure comes from the solved monthly
- * rate itself, never from a rounded figure. `NaN` stays `NaN`.
- */
-export function aprInConvention(aprNominal: number, convention: AprConvention): number {
-  if (!Number.isFinite(aprNominal) || convention === 'nominal') return aprNominal;
-  return Math.pow(1 + aprNominal / 12, 12) - 1;
 }
 
 /**

@@ -14,7 +14,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { aprInConvention, fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type AprConvention, type LoanResult } from './math.ts';
+import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
 import type { VendorInput } from './url.ts';
 
@@ -25,8 +25,6 @@ export interface LoanExport {
   island: Island;
   common: Common;
   currency: string;
-  /** The convention the page shows APR in; the column heading names it. */
-  aprConvention: AprConvention;
   vendors: VendorInput[];
   results: LoanResult[];
   /** Each offer's name as the page shows it. */
@@ -51,7 +49,7 @@ export function hasLaterPayment(results: LoanResult[]): boolean {
 /** How many columns the summary sheet gives the monthly payment: one, or four when a payment changes. */
 export const LATER_PAYMENT_COLUMNS = 4;
 
-export function loanSheets({ island, common, currency, aprConvention, vendors, results, names, date, page, worded }: LoanExport): Sheet[] {
+export function loanSheets({ island, common, currency, vendors, results, names, date, page, worded }: LoanExport): Sheet[] {
   const x = island.export;
   const c = island.card;
   const decimals = Math.round(Math.log10(getCurrency(currency).factor));
@@ -91,6 +89,7 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
       [common.about.currency, currency],
       [common.about.page, page],
       [x.scheduleLabel, x.scheduleText],
+      [island.results.apr, island.results.aprDocs],
       [common.about.privacy, common.about.privacyText],
       [common.about.note, common.about.noteText],
       [common.about.beta, common.about.betaText],
@@ -149,7 +148,7 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
     name: x.sheets.summary,
     widths: [22, ...(later ? [18, 22, 12, 34] : [16]), 12, 16, 16, 14, 16, 34, 12],
     rows: [
-      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, `${x.aprPct} (${aprConvention === 'nominal' ? island.toolbar.aprNominal : island.toolbar.aprEffective})`, x.computed),
+      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, `${x.aprPct} (${island.results.aprBasis})`, x.computed),
       ...results.map((r, i): Cell[] =>
         ok(r)
           ? [
@@ -162,7 +161,7 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
               isNotPaidOff(r) ? missing(r, 'total') : minor(r.totalPaidMinor),
               isNotPaidOff(r)
                 ? missing(r, 'apr')
-                : Number.isFinite(r.aprNominal) ? { n: Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
+                : Number.isFinite(r.aprNominal) ? { n: Math.round(r.aprNominal * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
               common.yes,
             ]
           : [names[i], ...paymentHead.map(() => null), null, null, null, null, null, null, common.no],

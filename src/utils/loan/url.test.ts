@@ -33,6 +33,7 @@ import {
   type VendorInput,
   canonicalLumpSums,
   displayLumpSums,
+  STATE_KEY_PATTERN,
 } from './url.ts';
 
 /** Test helper: build a GlobalState that differs from default only in
@@ -446,27 +447,15 @@ describe('encode/decode round-trip', () => {
 // Lump-sum parsing helpers
 // ---------------------------------------------------------------------------
 
-describe('the APR convention in a link', () => {
-  it('is left out while it follows the currency', () => {
+describe('the APR convention older links carried', () => {
+  it('is never written, and is ignored when read', () => {
     assert.equal(new URLSearchParams(encodeToQueryString(DEFAULT_VENDORS, DEFAULT_GLOBAL_STATE)).has('ac'), false);
-    assert.equal(decodeFromQueryString('c=USD').global.aprConvention, null);
+    assert.deepEqual(decodeFromQueryString('c=USD&ac=e').global, decodeFromQueryString('c=USD').global);
+    assert.deepEqual(decodeFromQueryString('ac=x').global, decodeFromQueryString('').global);
   });
 
-  it('carries a hand choice as one letter, both ways', () => {
-    for (const [kind, letter] of [['nominal', 'n'], ['effective', 'e']] as const) {
-      const qs = encodeToQueryString(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: kind });
-      assert.equal(new URLSearchParams(qs).get('ac'), letter);
-      assert.equal(decodeFromQueryString(qs).global.aprConvention, kind);
-    }
-  });
-
-  it('reads anything else as no choice', () => {
-    assert.equal(decodeFromQueryString('ac=x').global.aprConvention, null);
-    assert.equal(decodeFromQueryString('ac=').global.aprConvention, null);
-  });
-
-  it('counts a hand choice as a change from the starting state', () => {
-    assert.equal(isPristineState(DEFAULT_VENDORS, { ...DEFAULT_GLOBAL_STATE, aprConvention: 'nominal' }, 'EUR'), false);
+  it('stays a key the guard takes out of the address', () => {
+    assert.ok(new RegExp(`^(?:${STATE_KEY_PATTERN})$`).test('ac'));
   });
 });
 
@@ -690,7 +679,6 @@ describe('full-state round-trip', () => {
     ];
     const global: GlobalState = {
       currency: 'EUR',
-      aprConvention: 'nominal',
       activeTab: 'horizon',
       horizonMonths: '120',
       refiVendorIndex: '2',

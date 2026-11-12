@@ -30,7 +30,7 @@ steps:
     caution: "If the rate can change, the total is only an estimate. Asking what the payment would be if the rate rose by 2 points shows how much it could move."
 visual:
   kind: table
-  caption: "A made-up example: each offer gives €10,000 to use, repaid over 48 months at a fixed rate, with payments at the end of each month. Offer B's €400 fee is paid separately at the start; there are no other charges. Payments are to the cent, totals to the nearest euro. APR is the effective yearly rate including the fee and the timing of payments, as EU rules calculate it; other countries calculate it differently. The loan comparison tool gives the same figures for these two offers (8.19% and 9.40%, to two decimal places) when it is set to the monthly rate compounded over a year, which is where it starts for euros."
+  caption: "A made-up example: each offer gives €10,000 to use, repaid over 48 months at a fixed rate, with payments at the end of each month. Offer B's €400 fee is paid separately at the start; there are no other charges. Payments are to the cent, totals to the nearest euro. APR is the effective yearly rate including the fee and the timing of payments, as EU rules calculate it; other countries calculate it differently. The loan comparison tool shows APR on the same basis as the rate you type, without compounding the monthly charges, so for these two offers it shows 7.90% and 9.02%; compounded over a year, as EU rules do, those are 8.19% and 9.40%."
   columns: ["What", "Offer A", "Offer B"]
   rows:
     - ["Interest rate", "7.9% a year", "6.9% a year"]
