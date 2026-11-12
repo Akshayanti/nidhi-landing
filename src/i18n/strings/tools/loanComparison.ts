@@ -78,6 +78,7 @@ export const loanComparisonEn = {
       'The nidhi planner puts a loan like this next to everything else you own, owe, earn and spend, so you can compare the decision against your whole picture.',
     breadcrumb: {
       home: 'Home',
+      freeTools: 'Free tools',
       this: 'Loan comparison calculator',
     },
     eyebrow: 'Free tools',
@@ -738,6 +739,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'nidhi प्लानर ऐसे लोन को आपकी बाकी संपत्ति, कर्ज़, कमाई और खर्च के साथ रखकर दिखाता है, ताकि आप फ़ैसले की तुलना अपनी पूरी तस्वीर से कर सकें।',
     breadcrumb: {
       home: 'होम',
+      freeTools: 'मुफ़्त टूल',
       this: 'लोन तुलना कैलकुलेटर',
     },
     eyebrow: 'मुफ़्त टूल',
@@ -1328,6 +1330,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       'El planificador de nidhi pone un préstamo así junto a todo lo demás que tienes, debes, ganas y gastas, para que puedas comparar la decisión con tu situación completa.',
     breadcrumb: {
       home: 'Inicio',
+      freeTools: 'Herramientas gratuitas',
       this: 'Comparador de préstamos',
     },
     eyebrow: 'Herramientas gratuitas',
@@ -1917,6 +1920,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       'Plánovač nidhi postaví takový úvěr vedle všeho ostatního, co vlastníte, dlužíte, vyděláváte a utrácíte, aby šlo rozhodnutí porovnat s celým obrazem vašich financí.',
     breadcrumb: {
       home: 'Domů',
+      freeTools: 'Nástroje zdarma',
       this: 'Srovnání úvěrů',
     },
     eyebrow: 'Nástroje zdarma',
@@ -2489,6 +2493,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       'nidhi प्लॅनर असे कर्ज तुमची इतर मालमत्ता, देणी, उत्पन्न आणि खर्च यांच्या शेजारी ठेवून दाखवतो, म्हणजे तुम्ही तो निर्णय तुमच्या संपूर्ण चित्राशी तुलना करून पाहू शकाल.',
     breadcrumb: {
       home: 'मुख्यपृष्ठ',
+      freeTools: 'मोफत साधने',
       this: 'कर्जांची तुलना करणारा कॅल्क्युलेटर',
     },
     eyebrow: 'मोफत साधने',

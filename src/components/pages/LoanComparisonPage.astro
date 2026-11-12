@@ -139,15 +139,13 @@ const webAppSchema = {
   },
 };
 
-// Two-level breadcrumb: there is no /free/ hub page for this tool to sit
-// under, so we don't claim one in structured data. A phantom "Free tools"
-// middle item pointing back to this same URL would be misleading to crawlers.
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: tool.page.breadcrumb.home, item: homeUrl },
-    { '@type': 'ListItem', position: 2, name: tool.page.breadcrumb.this, item: canonicalUrl },
+    { '@type': 'ListItem', position: 2, name: tool.page.breadcrumb.freeTools, item: new URL(localizedPath(locale, '/free/'), siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: tool.page.breadcrumb.this, item: canonicalUrl },
   ],
 };
 
@@ -179,6 +177,7 @@ const faqSchema = {
     <nav class="lc-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
+        <li><a href={localizedPath(locale, '/free/')}>{tool.page.breadcrumb.freeTools}</a></li>
         <li aria-current="page">{tool.page.breadcrumb.this}</li>
       </ol>
     </nav>
