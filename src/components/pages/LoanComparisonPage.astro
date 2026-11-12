@@ -139,15 +139,13 @@ const webAppSchema = {
   },
 };
 
-// Two-level breadcrumb: there is no /free/ hub page for this tool to sit
-// under, so we don't claim one in structured data. A phantom "Free tools"
-// middle item pointing back to this same URL would be misleading to crawlers.
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: tool.page.breadcrumb.home, item: homeUrl },
-    { '@type': 'ListItem', position: 2, name: tool.page.breadcrumb.this, item: canonicalUrl },
+    { '@type': 'ListItem', position: 2, name: tool.page.breadcrumb.freeTools, item: new URL(localizedPath(locale, '/free/'), siteUrl).href },
+    { '@type': 'ListItem', position: 3, name: tool.page.breadcrumb.this, item: canonicalUrl },
   ],
 };
 
@@ -179,6 +177,7 @@ const faqSchema = {
     <nav class="lc-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
+        <li><a href={localizedPath(locale, '/free/')}>{tool.page.breadcrumb.freeTools}</a></li>
         <li aria-current="page">{tool.page.breadcrumb.this}</li>
       </ol>
     </nav>
@@ -357,56 +356,6 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
-  /* Smaller, italicised note used immediately after the APR formula
-     block to qualify it without competing visually with the rest of the
-     explainer copy. */
-  .lc-explainerNote {
-    margin-top: var(--space-2);
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
-    font-style: italic;
-    line-height: 1.55;
-    text-wrap: pretty;
-  }
-
-  .lc-formula {
-    font-family: var(--font-body);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm);
-    text-align: center;
-    overflow-x: auto;
-  }
-
-  .lc-formula code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.95rem;
-    color: var(--color-text-primary);
-  }
-
-  .lc-explainerList {
-    margin: var(--space-3) 0 0;
-    padding-left: var(--space-5);
-  }
-
-  .lc-explainerList li {
-    margin-bottom: var(--space-2);
-  }
-
-  .lc-explainerList li strong {
-    color: var(--color-text-primary);
-    font-weight: 600;
-  }
-
-  .lc-explainerList code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.9em;
-    background: var(--color-bg);
-    padding: 1px 4px;
-    border-radius: 3px;
-  }
-
   /* The whole FAQ section is collapsible. The summary doubles as the
      section heading; we keep the visual weight of an h2 (.lc-sectionTitle)
      and add a tiny count badge so the user knows how many questions
@@ -533,7 +482,8 @@ const faqSchema = {
 
   @media (max-width: 800px) {
     .lc-relatedGrid {
-      grid-template-columns: 1fr;
+      /* minmax(0, …): a long word in a title wraps instead of widening the page. */
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
@@ -549,6 +499,7 @@ const faqSchema = {
     color: inherit;
     transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     min-height: 100%;
+    overflow-wrap: anywhere;
   }
 
   .lc-relatedCard:hover,

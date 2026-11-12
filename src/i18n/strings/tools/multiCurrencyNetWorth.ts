@@ -88,6 +88,7 @@ export const multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Home',
+      freeTools: 'Free tools',
       this: 'Net worth calculator',
     },
     eyebrow: 'Free tools',
@@ -271,6 +272,7 @@ export const multiCurrencyNetWorthEn = {
       /** `{currency}` is the spending currency's code. */
       netSpending: 'Net, in {currency}',
       sharePct: 'Concentration, %',
+      exposurePct: 'Exposure, % of net worth',
       ratesText: 'Official reference rates from Frankfurter, as loaded on this page. Your bank or broker may use different rates.',
       /** `{currency}` is the spending currency's code. */
       ratePer: 'Units per 1 {currency}',
@@ -373,6 +375,9 @@ export const multiCurrencyNetWorthEn = {
       emptyShows: 'You will see your net worth in one currency, the share held in each currency, and how concentrated it is.',
       totalLabel: 'Total net worth',
       hidden: 'Hidden',
+      /** The percentage on a currency card: the net position as a share of net worth. */
+      ofNetWorth: '{pct} of net worth',
+      overOfNetWorth: 'over 999% of net worth',
       whatYouOwn: 'What you own',
       whatYouOwe: 'What you owe',
       /** The note under a total that is already entirely in the spending currency. */
@@ -425,6 +430,10 @@ export const multiCurrencyNetWorthEn = {
         '{pct}% of your net worth is in your spending currency ({currency}). The remaining {rest}% is held in other currencies, so a meaningful share of your day-to-day purchasing power moves with their exchange rates.',
       functionalLittle:
         'Only {pct}% of your net worth is in your spending currency ({currency}). The remaining {rest}% is held in other currencies, so most of your purchasing power moves with their exchange rates.',
+      functionalOver:
+        'What you hold in your spending currency ({currency}) comes to {pct}% of your net worth, more than the whole of it. The difference is what you owe, net, in other currencies.',
+      functionalDebt:
+        'You owe more than you hold in your spending currency ({currency}), so your net worth sits in other currencies and moves with their exchange rates.',
       netDebt:
         'You owe more than you hold in {code} (a "net debt" position). When you have more liabilities than assets in a currency, it works the other way round: if {code} strengthens against {currency}, what you owe grows and your net worth falls; if {code} weakens, your net worth rises.',
       elevatedHidden:
@@ -527,6 +536,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'होम',
+      freeTools: 'मुफ़्त टूल',
       this: 'शुद्ध संपत्ति कैलकुलेटर',
     },
     eyebrow: 'मुफ़्त टूल',
@@ -693,6 +703,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       netOwn: 'शुद्ध, उसी मुद्रा में',
       netSpending: 'शुद्ध, {currency} में',
       sharePct: 'जमाव, %',
+      exposurePct: 'एक्सपोज़र, शुद्ध संपत्ति का %',
       ratesText: 'Frankfurter से आधिकारिक संदर्भ दरें, जैसी इस पेज पर लोड हुईं। आपका बैंक या ब्रोकर अलग दरें इस्तेमाल कर सकता है।',
       ratePer: '1 {currency} पर इकाइयाँ',
     },
@@ -782,6 +793,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह सब दिखेगा।',
       totalLabel: 'कुल शुद्ध संपत्ति',
       hidden: 'छिपा हुआ',
+      /** The percentage on a currency card: the net position as a share of net worth. */
+      ofNetWorth: 'शुद्ध संपत्ति का {pct}',
+      overOfNetWorth: 'शुद्ध संपत्ति के 999% से ज़्यादा',
       whatYouOwn: 'जो आपके पास है',
       whatYouOwe: 'जो आप पर बकाया है',
       singleNote:
@@ -814,6 +828,10 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         'आपकी शुद्ध संपत्ति का {pct}% आपकी खर्च की मुद्रा ({currency}) में है। बाकी {rest}% दूसरी मुद्राओं में है, यानी आपकी रोज़मर्रा की क्रय शक्ति का एक अच्छा-ख़ासा हिस्सा उनकी विनिमय दरों के साथ घटता-बढ़ता है।',
       functionalLittle:
         'आपकी शुद्ध संपत्ति का सिर्फ़ {pct}% आपकी खर्च की मुद्रा ({currency}) में है। बाकी {rest}% दूसरी मुद्राओं में है, यानी आपकी ज़्यादातर क्रय शक्ति उनकी विनिमय दरों के साथ घटती-बढ़ती है।',
+      functionalOver:
+        'आपकी खर्च की मुद्रा ({currency}) में जो है, वह आपकी शुद्ध संपत्ति का {pct}% है, यानी पूरी शुद्ध संपत्ति से ज़्यादा। यह अंतर दूसरी मुद्राओं में आपकी शुद्ध देनदारी है।',
+      functionalDebt:
+        'आपकी खर्च की मुद्रा ({currency}) में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है, इसलिए आपकी शुद्ध संपत्ति दूसरी मुद्राओं में है और उनकी विनिमय दरों के साथ घटती-बढ़ती है।',
       netDebt:
         '{code} में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है (यानी "शुद्ध देनदारी" (net\u00A0debt) की स्थिति)। जब किसी मुद्रा में देनदारियाँ संपत्तियों से ज़्यादा हों, तो असर उलटा होता है: अगर {currency} के मुक़ाबले {code} मज़बूत हो, तो आप पर जो बकाया है वह बढ़ता है और आपकी शुद्ध संपत्ति घटती है; अगर {code} कमज़ोर हो, तो आपकी शुद्ध संपत्ति बढ़ती है।',
       elevatedHidden:
@@ -914,6 +932,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Inicio',
+      freeTools: 'Herramientas gratuitas',
       this: 'Calculadora de patrimonio neto',
     },
     eyebrow: 'Herramientas gratuitas',
@@ -1082,6 +1101,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       netOwn: 'Neto, en su propia moneda',
       netSpending: 'Neto, en {currency}',
       sharePct: 'Concentración, %',
+      exposurePct: 'Exposición, % del patrimonio neto',
       ratesText: 'Tipos de referencia oficiales de Frankfurter, tal como se cargaron en esta página. Tu banco o bróker puede usar otros.',
       ratePer: 'Unidades por 1 {currency}',
     },
@@ -1172,6 +1192,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y hasta qué punto se concentra en una sola moneda.',
       totalLabel: 'Patrimonio neto total',
       hidden: 'Oculto',
+      /** The percentage on a currency card: the net position as a share of net worth. */
+      ofNetWorth: '{pct} del patrimonio neto',
+      overOfNetWorth: 'más del 999 % del patrimonio neto',
       whatYouOwn: 'Lo que tienes',
       whatYouOwe: 'Lo que debes',
       singleNote:
@@ -1206,6 +1229,10 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         'El {pct} % de tu patrimonio neto está en la moneda en la que gastas ({currency}). El {rest} % restante está en otras monedas, así que una parte considerable de tu poder adquisitivo diario varía con sus tipos de cambio.',
       functionalLittle:
         'Solo el {pct} % de tu patrimonio neto está en la moneda en la que gastas ({currency}). El {rest} % restante está en otras monedas, así que la mayor parte de tu poder adquisitivo varía con sus tipos de cambio.',
+      functionalOver:
+        'Lo que tienes en la moneda en la que gastas ({currency}) equivale al {pct} % de tu patrimonio neto, más que su totalidad. La diferencia es lo que debes, en neto, en otras monedas.',
+      functionalDebt:
+        'En la moneda en la que gastas ({currency}) debes más de lo que tienes, así que tu patrimonio neto está en otras monedas y varía con sus tipos de cambio.',
       netDebt:
         'En {code} debes más de lo que tienes (una posición de «deuda neta»). Cuando en una moneda tienes más pasivos que activos, el efecto es el contrario: si el {code} se fortalece frente al {currency}, lo que debes aumenta y tu patrimonio neto baja; si el {code} se debilita, tu patrimonio neto sube.',
       elevatedHidden:
@@ -1314,6 +1341,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Domů',
+      freeTools: 'Nástroje zdarma',
       this: 'Kalkulačka čistého jmění',
     },
     eyebrow: 'Nástroje zdarma',
@@ -1481,6 +1509,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       netOwn: 'Čistá pozice, ve vlastní měně',
       netSpending: 'Čistá pozice, v {currency}',
       sharePct: 'Koncentrace, %',
+      exposurePct: 'Expozice, % čistého jmění',
       ratesText: 'Oficiální referenční kurzy z Frankfurter, jak se načetly na této stránce. Vaše banka nebo broker může používat jiné kurzy.',
       ratePer: 'Jednotek za 1 {currency}',
     },
@@ -1570,6 +1599,9 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, nakolik je jmění soustředěné v\u00a0jedné měně.',
       totalLabel: 'Celkové čisté jmění',
       hidden: 'Skryto',
+      /** The percentage on a currency card: the net position as a share of net worth. */
+      ofNetWorth: '{pct} čistého jmění',
+      overOfNetWorth: 'přes 999 % čistého jmění',
       whatYouOwn: 'Co vlastníte',
       whatYouOwe: 'Co dlužíte',
       singleNote:
@@ -1604,6 +1636,10 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
       functionalLittle:
         'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
+      functionalOver:
+        'To, co máte v měně vašich výdajů ({currency}), odpovídá {pct} % vašeho čistého jmění, tedy víc než celému. Rozdíl je to, co v jiných měnách po odečtení aktiv dlužíte.',
+      functionalDebt:
+        'V měně vašich výdajů ({currency}) dlužíte víc, než máte, takže vaše čisté jmění je v jiných měnách a pohybuje se s jejich kurzy.',
       netDebt:
         'V {code} dlužíte víc, než máte (pozice „čistý dluh“). Když máte v nějaké měně víc závazků než aktiv, funguje to obráceně: pokud {code} posílí vůči {currency}, váš dluh roste a čisté jmění klesá; pokud {code} oslabí, čisté jmění roste.',
       elevatedHidden:
@@ -1700,6 +1736,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'मुख्यपृष्ठ',
+      freeTools: 'मोफत साधने',
       this: 'निव्वळ संपत्ती कॅल्क्युलेटर',
     },
     eyebrow: 'मोफत साधने',
@@ -1841,6 +1878,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       netOwn: 'निव्वळ, त्याच चलनात',
       netSpending: 'निव्वळ, {currency} मध्ये',
       sharePct: 'हिस्सा, %',
+      exposurePct: 'निव्वळ संपत्तीच्या तुलनेत, %',
       ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पेजवर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
       ratePer: '1 {currency} मागे एकके',
     },
@@ -1927,6 +1965,9 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'इथे तुम्हाला एकाच चलनात तुमची निव्वळ संपत्ती, प्रत्येक चलनाचा हिस्सा आणि ती एका चलनात किती एकवटलेली आहे हे दिसेल.',
       totalLabel: 'एकूण निव्वळ संपत्ती',
       hidden: 'लपवलेले',
+      /** The percentage on a currency card: the net position as a share of net worth. */
+      ofNetWorth: 'निव्वळ संपत्तीच्या {pct}',
+      overOfNetWorth: 'निव्वळ संपत्तीच्या 999% पेक्षा जास्त',
       whatYouOwn: 'तुमच्याकडे काय आहे',
       whatYouOwe: 'तुमची देणी',
       singleNote: 'इथे सगळे {currency} मध्ये आहे, त्यामुळे विनिमय दरांचा त्यावर परिणाम होत नाही. तुम्ही दुसऱ्या चलनातील काही जोडले, तर तुमच्या निव्वळ संपत्तीचा किती भाग विनिमय दरांवर अवलंबून आहे हेही इथे दिसेल.',
@@ -1952,6 +1993,10 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       functionalMost: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% तुमच्या खर्चाच्या चलनात ({currency}) आहे. उरलेले {rest}% इतर चलनांमध्ये आहे आणि त्यांच्या विनिमय दरांनुसार हलते.',
       functionalMuch: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% तुमच्या खर्चाच्या चलनात ({currency}) आहे. उरलेले {rest}% इतर चलनांमध्ये आहे, त्यामुळे तुमच्या रोजच्या क्रयशक्तीचा लक्षणीय भाग त्यांच्या विनिमय दरांनुसार हलतो.',
       functionalLittle: 'तुमच्या निव्वळ संपत्तीपैकी फक्त {pct}% तुमच्या खर्चाच्या चलनात ({currency}) आहे. उरलेले {rest}% इतर चलनांमध्ये आहे, त्यामुळे तुमच्या क्रयशक्तीचा बहुतेक भाग त्यांच्या विनिमय दरांनुसार हलतो.',
+      functionalOver:
+        'तुमच्या खर्चाच्या चलनात ({currency}) जे आहे ते तुमच्या निव्वळ संपत्तीच्या {pct}% आहे, म्हणजे संपूर्ण निव्वळ संपत्तीपेक्षा जास्त. हा फरक म्हणजे इतर चलनांमधील तुमचे निव्वळ देणे.',
+      functionalDebt:
+        'तुमच्या खर्चाच्या चलनात ({currency}) तुमच्याकडे जितके आहे त्यापेक्षा तुमची देणी जास्त आहेत, त्यामुळे तुमची निव्वळ संपत्ती इतर चलनांमध्ये आहे आणि त्यांच्या विनिमय दरांनुसार हलते.',
       netDebt: '{code} मध्ये तुमच्याकडे जितके आहे त्यापेक्षा तुमची देणी जास्त आहेत (“निव्वळ कर्ज” (net debt) स्थिती). एखाद्या चलनात मालमत्तेपेक्षा देणी जास्त असतात तेव्हा परिणाम उलटा होतो: {currency} च्या तुलनेत {code} मजबूत झाले, तर तुमची देणी वाढतात आणि निव्वळ संपत्ती घटते; {code} कमकुवत झाले, तर निव्वळ संपत्ती वाढते.',
       elevatedHidden: 'या शेअरमध्ये तुमची {code} स्थिती निव्वळ संपत्तीचा मोठा हिस्सा आहे. {currency} च्या तुलनेत {code} 10% वाढले किंवा घटले, तर तुमची निव्वळ संपत्तीही लक्षणीय प्रमाणात वाढते किंवा घटते.',
       elevatedShown: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% {code} मध्ये आहे. {currency} च्या तुलनेत {code} 10% वाढले किंवा घटले, तर तुमची निव्वळ संपत्ती साधारण {sensitivity}% ने वाढते किंवा घटते.',

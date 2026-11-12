@@ -14,7 +14,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { aprInConvention, fromMinor, getCurrency, type AprConvention, type LoanResult } from './math.ts';
+import { aprInConvention, fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type AprConvention, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
 import type { VendorInput } from './url.ts';
 
@@ -33,6 +33,12 @@ export interface LoanExport {
   names: string[];
   date: string;
   page: string;
+  /**
+   * The printed report words a figure that does not exist ("Not paid off",
+   * "No finite total"); the spreadsheet leaves the cell empty, so a column of
+   * numbers stays one, and says why in the payment note.
+   */
+  worded?: boolean;
 }
 
 const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true }));
@@ -45,7 +51,7 @@ export function hasLaterPayment(results: LoanResult[]): boolean {
 /** How many columns the summary sheet gives the monthly payment: one, or four when a payment changes. */
 export const LATER_PAYMENT_COLUMNS = 4;
 
-export function loanSheets({ island, common, currency, aprConvention, vendors, results, names, date, page }: LoanExport): Sheet[] {
+export function loanSheets({ island, common, currency, aprConvention, vendors, results, names, date, page, worded }: LoanExport): Sheet[] {
   const x = island.export;
   const c = island.card;
   const decimals = Math.round(Math.log10(getCurrency(currency).factor));
@@ -64,6 +70,14 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
     return Number.isFinite(n) ? { n: Math.round(n), fmt: 'integer' } : null;
   };
   const ok = (r: LoanResult) => !r.error && r.schedule.length > 0;
+  // A figure a loan that is not paid off does not have: empty, or in words.
+  const missing = (r: LoanResult, what: 'months' | 'total' | 'apr'): Cell => {
+    if (!worded) return null;
+    const never = r.keptPayment?.outcome === 'never';
+    if (what === 'months') return never ? island.results.notPaidOff : island.results.beyondLimit;
+    if (what === 'total') return never ? island.results.noFiniteTotal : island.results.notAvailable;
+    return island.results.notAvailable;
+  };
 
   const about: Sheet = {
     name: common.sheets.about,
@@ -97,6 +111,7 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
     inputRows.push(
       field(c.initialFixed, (v) => (v.rateKind === 'hybrid' ? whole(v.initialFixedMonths) : null)),
       field(c.subsequentRate, (v) => (v.rateKind === 'hybrid' ? rate(v.subsequentRatePct) : null)),
+      field(c.atChange.label, (v) => (v.rateKind === 'hybrid' ? c.atChange[v.rateChangeKeeps] : null)),
     );
   }
   inputRows.push(
@@ -118,6 +133,12 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
   const paymentCells = (r: LoanResult): Cell[] => {
     if (!later) return [minor(r.effectiveMonthlyMinor)];
     const change = r.rateChange;
+    if (change && change.paymentMinor !== null && r.keptPayment) {
+      // The payment is kept: the note says so, and when the loan ends or that it does not.
+      const fill = (t: string) => t.replace('{month}', String(change.month)).replace('{payoffMonth}', String(r.months)).replace('{limit}', String(MAX_TERM_MONTHS));
+      const note = fill(r.keptPayment.outcome === 'paid' ? x.keptPaid : r.keptPayment.outcome === 'never' ? x.keptNever : x.keptLimit);
+      return [minor(r.effectiveMonthlyMinor), minor(change.paymentMinor), { n: change.month, fmt: 'integer' }, note];
+    }
     if (change && change.paymentMinor !== null) return [minor(r.effectiveMonthlyMinor), minor(change.paymentMinor), { n: change.month, fmt: 'integer' }, null];
     const note = change ? island.results.paidOffBeforeChange.replace('{payoffMonth}', String(r.months)) : x.noPaymentChange;
     return [minor(r.effectiveMonthlyMinor), null, null, note];
@@ -132,12 +153,14 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
           ? [
               names[i],
               ...paymentCells(r),
-              { n: r.months, fmt: 'integer' },
-              minor(r.totalInterestMinor),
+              isNotPaidOff(r) ? missing(r, 'months') : { n: r.months, fmt: 'integer' },
+              isNotPaidOff(r) ? missing(r, 'total') : minor(r.totalInterestMinor),
               minor(r.feeMinor),
               minor(r.prepaymentPenaltyMinor),
-              minor(r.totalPaidMinor),
-              Number.isFinite(r.aprNominal) ? { n: Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
+              isNotPaidOff(r) ? missing(r, 'total') : minor(r.totalPaidMinor),
+              isNotPaidOff(r)
+                ? missing(r, 'apr')
+                : Number.isFinite(r.aprNominal) ? { n: Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
               common.yes,
             ]
           : [names[i], ...paymentHead.map(() => null), null, null, null, null, null, null, common.no],

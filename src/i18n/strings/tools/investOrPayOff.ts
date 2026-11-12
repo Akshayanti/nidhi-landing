@@ -48,7 +48,7 @@ export const investOrPayOffEn = {
   },
   page: {
     breadcrumb: { home: 'Home', freeTools: 'Free tools', this: 'Invest or pay off' },
-    eyebrow: 'Free tool',
+    eyebrow: 'Free tools',
     title: 'Invest or pay off debt?',
     lead: {
       before: 'Compare paying a debt off early with investing the same money, on the same date and after inflation.',
@@ -564,7 +564,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
   },
   page: {
     breadcrumb: { home: 'मुख्यपृष्ठ', freeTools: 'मोफत साधने', this: 'गुंतवणूक की कर्जफेड' },
-    eyebrow: 'मोफत साधन',
+    eyebrow: 'मोफत साधने',
     title: 'गुंतवणूक करावी की कर्ज फेडावे?',
     lead: {
       before: 'कर्ज लवकर फेडणे आणि तेवढीच रक्कम गुंतवणे यांची तुलना, एकाच तारखेला आणि महागाईनंतर.',
@@ -820,7 +820,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
   },
   page: {
     breadcrumb: { home: 'Inicio', freeTools: 'Herramientas gratuitas', this: 'Invertir o pagar deuda' },
-    eyebrow: 'Herramienta gratuita',
+    eyebrow: 'Herramientas gratuitas',
     title: '¿Invertir o pagar la deuda?',
     lead: {
       before: 'Compara pagar antes una deuda con invertir el mismo dinero, en la misma fecha y descontada la inflación.',
@@ -1076,7 +1076,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
   },
   page: {
     breadcrumb: { home: 'Domů', freeTools: 'Nástroje zdarma', this: 'Investovat, nebo splatit dluh' },
-    eyebrow: 'Nástroj zdarma',
+    eyebrow: 'Nástroje zdarma',
     title: 'Investovat, nebo splatit dluh?',
     lead: {
       before: 'Porovnejte předčasné splacení dluhu s investováním stejných peněz, ke stejnému datu a očištěně o inflaci.',
