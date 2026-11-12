@@ -38,6 +38,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -431,9 +432,11 @@ export default function InvestOrPayOff({
   // The starting figures are an example until one of them is changed.
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
+  const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="ifc-root iop-root">
+    <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <div className="ifc-root iop-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="iop-formHead">
           <p className="iop-example">{pristine ? strings.example : ''}</p>
@@ -626,6 +629,7 @@ export default function InvestOrPayOff({
 
       {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -827,7 +831,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}>{props.error}</span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>

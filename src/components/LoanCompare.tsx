@@ -57,6 +57,7 @@ import { ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
+import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -1065,10 +1066,12 @@ export default function LoanCompare({
     printResults();
   };
 
+  const toolReady = useToolReady();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="lc-root">
+    <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <div className="lc-root" {...heldUntilReady(toolReady)}>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
@@ -1295,6 +1298,7 @@ export default function LoanCompare({
 
       <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
     </div>
+    </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );
@@ -1598,7 +1602,7 @@ function VendorCard({
       >
         {hasError ? (
           <p className="lc-error" id={errorId} role="alert">
-            {engineError(result.error ?? '', strings)}
+            <ErrorText>{engineError(result.error ?? '', strings)}</ErrorText>
           </p>
         ) : (
           <>
@@ -3075,7 +3079,7 @@ function RefinanceSection({
           {strings.refi.empty}
         </p>
       ) : 'error' in cmp ? (
-        <p className="lc-error" role="alert">{engineError(cmp.error, strings)}</p>
+        <p className="lc-error" role="alert"><ErrorText>{engineError(cmp.error, strings)}</ErrorText></p>
       ) : (
         <div className="lc-refiResults">
           <dl className="lc-resultList">

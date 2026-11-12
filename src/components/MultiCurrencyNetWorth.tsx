@@ -38,6 +38,7 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
+import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -472,10 +473,12 @@ export default function MultiCurrencyNetWorth({
     focusFirstRow();
   };
 
+  const toolReady = useToolReady();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
-    <div className="mcnw-root" ref={rootRef}>
+    <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
       {/* ---- Rate status ---- */}
       {ratesError && !singleCurrency && (
         <div className="mcnw-banner mcnw-bannerWarn" role="alert">
@@ -786,6 +789,7 @@ export default function MultiCurrencyNetWorth({
         />
       )}
     </div>
+    </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );
@@ -865,7 +869,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           aria-invalid={showValueError ? true : undefined}
           aria-describedby={showValueError ? valueErrorId : undefined}
         />
-        {showValueError && <span className="mcnw-rowError" id={valueErrorId}>{strings.row.valueError}</span>}
+        {showValueError && <span className="mcnw-rowError" id={valueErrorId}><ErrorText>{strings.row.valueError}</ErrorText></span>}
       </div>
       <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
         <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colCurrency}</span>
@@ -1034,23 +1038,24 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         {result.positions.map((pos) => (
           <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.riskLevel}`}>
             <div className="mcnw-riskCardHead">
+              {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
+              <span className="mcnw-riskCurrency">
+                {getCurrencyLabel(pos.code, strings.currencies)}
+                {pos.rateUnavailable ? (
+                  <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                ) : hidePct ? (
+                  <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
+                ) : (
+                  // Exposure, named as what it is: with a debt in another currency it can pass 100%.
+                  pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
+                )}
+                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
+              </span>
               <span
                 className="mcnw-riskBadge"
                 style={{ background: RISK_COLORS[pos.riskLevel] ?? 'var(--color-text-muted)' }}
               >
                 {riskBadge(strings, pos.riskLevel)}
-              </span>
-              <span className="mcnw-riskCurrency">
-                {getCurrencyLabel(pos.code, strings.currencies)}
-                {pos.rateUnavailable ? (
-                  <> - <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
-                ) : hidePct ? (
-                  <> - <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
-                ) : (
-                  // Exposure, named as what it is: with a debt in another currency it can pass 100%.
-                  pos.pctOfTotal !== 0 && !noShares && <> - {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
-                )}
-                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> - {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
               </span>
             </div>
             <p className="mcnw-riskLabel">
