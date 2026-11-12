@@ -355,6 +355,10 @@ export const monteCarloEn = {
       lasted: 'The money lasted all {years} years in {inTen} paths.',
       lastedAll: 'The money lasted all {years} years in every path.',
       lastedNone: 'The money ran out before the {years} years were over in every path.',
+      /** The same three for a withdrawal of one year, where "all 1 years" would be wrong. */
+      lastedOne: 'The money lasted the full year in {inTen} paths.',
+      lastedAllOne: 'The money lasted the full year in every path.',
+      lastedNoneOne: 'The money ran out before the year was over in every path.',
     },
     /** "9 in 10" style phrasing, filled with a count of tenths. */
     inTen: '{n} in 10',
@@ -381,6 +385,9 @@ export const monteCarloEn = {
       lastedHeadAfter: ' simulated paths ({share}).',
       lastedAll: 'Taking {amount} a year, the money lasted all {years} years in every simulated path.',
       lastedNone: 'Taking {amount} a year, the money ran out before the {years} years were over in every simulated path.',
+      lastedHeadBeforeOne: 'Taking {amount} for one year, the money lasted the full year in',
+      lastedAllOne: 'Taking {amount} for one year, the money lasted the full year in every simulated path.',
+      lastedNoneOne: 'Taking {amount} for one year, the money ran out before the year was over in every simulated path.',
       runOut:
         'Among the paths where it ran out, the median year it did so was year {year} of {years}.',
       caveat:
@@ -691,6 +698,10 @@ export const monteCarloHi: typeof monteCarloEn = {
       lasted: 'पैसा पूरे {years} साल तक {inTen} रास्तों में टिका।',
       lastedAll: 'पैसा पूरे {years} साल तक हर रास्ते में टिका।',
       lastedNone: 'पैसा हर रास्ते में {years} साल पूरे होने से पहले ख़त्म हो गया।',
+      /** The same three for a withdrawal of one year, where "all 1 years" would be wrong. */
+      lastedOne: 'पैसा पूरे {years} साल तक {inTen} रास्तों में टिका।',
+      lastedAllOne: 'पैसा पूरे {years} साल तक हर रास्ते में टिका।',
+      lastedNoneOne: 'पैसा हर रास्ते में {years} साल पूरा होने से पहले ख़त्म हो गया।',
     },
     inTen: '10 में से {n}',
     inTenMore: '10 में से 9 से ज़्यादा',
@@ -714,6 +725,9 @@ export const monteCarloHi: typeof monteCarloEn = {
       lastedHeadAfter: ' सिम्युलेटेड रास्तों में ({share})।',
       lastedAll: 'सालाना {amount} निकालने पर पैसा पूरे {years} साल तक हर सिम्युलेटेड रास्ते में टिका।',
       lastedNone: 'सालाना {amount} निकालने पर पैसा हर सिम्युलेटेड रास्ते में {years} साल पूरे होने से पहले ख़त्म हो गया।',
+      lastedHeadBeforeOne: '{years} साल में {amount} निकालने पर पैसा पूरे साल तक टिका:',
+      lastedAllOne: '{years} साल में {amount} निकालने पर पैसा पूरे साल तक हर सिम्युलेटेड रास्ते में टिका।',
+      lastedNoneOne: '{years} साल में {amount} निकालने पर पैसा हर सिम्युलेटेड रास्ते में साल पूरा होने से पहले ख़त्म हो गया।',
       runOut:
         'जिन रास्तों में पैसा ख़त्म हुआ, उनमें ख़त्म होने का बीच का साल था: {years} में से साल {year}।',
       caveat:
@@ -1013,6 +1027,10 @@ export const monteCarloEs: typeof monteCarloEn = {
       lasted: 'El dinero alcanzó para los {years} años en {inTen} trayectorias.',
       lastedAll: 'El dinero alcanzó para los {years} años en todas las trayectorias.',
       lastedNone: 'El dinero se agotó antes de completar los {years} años en todas las trayectorias.',
+      /** The same three for a withdrawal of one year, where "all 1 years" would be wrong. */
+      lastedOne: 'El dinero alcanzó para todo el año en {inTen} trayectorias.',
+      lastedAllOne: 'El dinero alcanzó para todo el año en todas las trayectorias.',
+      lastedNoneOne: 'El dinero se agotó antes de completar el año en todas las trayectorias.',
     },
     inTen: '{n} de cada 10',
     inTenMore: 'más de 9 de cada 10',
@@ -1036,6 +1054,9 @@ export const monteCarloEs: typeof monteCarloEn = {
       lastedHeadAfter: ' trayectorias simuladas ({share}).',
       lastedAll: 'Retirando {amount} al año, el dinero alcanzó para los {years} años en todas las trayectorias simuladas.',
       lastedNone: 'Retirando {amount} al año, el dinero se agotó antes de completar los {years} años en todas las trayectorias simuladas.',
+      lastedHeadBeforeOne: 'Retirando {amount} durante un año, el dinero alcanzó para todo el año en',
+      lastedAllOne: 'Retirando {amount} durante un año, el dinero alcanzó para todo el año en todas las trayectorias simuladas.',
+      lastedNoneOne: 'Retirando {amount} durante un año, el dinero se agotó antes de completar el año en todas las trayectorias simuladas.',
       runOut:
         'En las trayectorias en las que se agotó, la mediana del año en que ocurrió fue el año {year} de {years}.',
       caveat:
@@ -1337,6 +1358,10 @@ export const monteCarloCs: typeof monteCarloEn = {
       lasted: 'Peníze vydržely po celou dobu (počet let: {years}) {inTen} trajektorií.',
       lastedAll: 'Peníze vydržely po celou dobu (počet let: {years}) ve všech trajektoriích.',
       lastedNone: 'Peníze došly před koncem doby (počet let: {years}) ve všech trajektoriích.',
+      /** The same three for a withdrawal of one year, where "all 1 years" would be wrong. */
+      lastedOne: 'Peníze vydržely celý rok {inTen} trajektorií.',
+      lastedAllOne: 'Peníze vydržely celý rok ve všech trajektoriích.',
+      lastedNoneOne: 'Peníze došly před koncem roku ve všech trajektoriích.',
     },
     inTen: 'v {n} z 10',
     inTenMore: 've více než 9 z 10',
@@ -1360,6 +1385,9 @@ export const monteCarloCs: typeof monteCarloEn = {
       lastedHeadAfter: ' simulovaných trajektorií ({share}).',
       lastedAll: 'Při výběru {amount} ročně vydržely peníze po celou dobu (počet let: {years}) ve všech simulovaných trajektoriích.',
       lastedNone: 'Při výběru {amount} ročně došly peníze před koncem doby (počet let: {years}) ve všech simulovaných trajektoriích.',
+      lastedHeadBeforeOne: 'Při výběru {amount} během jednoho roku vydržely peníze celý rok',
+      lastedAllOne: 'Při výběru {amount} během jednoho roku vydržely peníze celý rok ve všech simulovaných trajektoriích.',
+      lastedNoneOne: 'Při výběru {amount} během jednoho roku došly peníze před koncem roku ve všech simulovaných trajektoriích.',
       runOut:
         'U trajektorií, kde peníze došly, to v mediánu nastalo v roce {year} z {years}.',
       caveat:
@@ -1643,6 +1671,10 @@ export const monteCarloMr: typeof monteCarloEn = {
       lasted: '{inTen} मार्गांमध्ये पैसा सर्व {years} वर्षे पुरला.',
       lastedAll: 'प्रत्येक मार्गात पैसा सर्व {years} वर्षे पुरला.',
       lastedNone: 'प्रत्येक मार्गात पैसा {years} वर्षे पूर्ण होण्याआधीच संपला.',
+      /** The same three for a withdrawal of one year, where "all 1 years" would be wrong. */
+      lastedOne: '{inTen} मार्गांमध्ये पैसा पूर्ण एक वर्ष पुरला.',
+      lastedAllOne: 'प्रत्येक मार्गात पैसा पूर्ण एक वर्ष पुरला.',
+      lastedNoneOne: 'प्रत्येक मार्गात पैसा एक वर्ष पूर्ण होण्याआधीच संपला.',
     },
     inTen: '10 पैकी {n}',
     inTenMore: '10 पैकी 9 पेक्षा जास्त',
@@ -1665,6 +1697,9 @@ export const monteCarloMr: typeof monteCarloEn = {
       lastedHeadAfter: ' संभाव्य मार्ग होते ({share}).',
       lastedAll: 'दरवर्षी {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा सर्व {years} वर्षे पुरला.',
       lastedNone: 'दरवर्षी {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा {years} वर्षे पूर्ण होण्याआधीच संपला.',
+      lastedHeadBeforeOne: 'एका वर्षात {amount} काढताना, पूर्ण वर्ष पैसा पुरलेले',
+      lastedAllOne: 'एका वर्षात {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा पूर्ण वर्ष पुरला.',
+      lastedNoneOne: 'एका वर्षात {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा वर्ष पूर्ण होण्याआधीच संपला.',
       runOut: 'ज्या मार्गांवर पैसा संपला, त्यांच्यात तो संपण्याचे मध्यक वर्ष {years} पैकी {year} वे होते.',
       caveat: 'हे {paths} संभाव्य मार्गांमधील हिस्से आहेत; तुमच्या बाबतीत काही घडण्याची शक्यता ते दर्शवत नाहीत. मॉडेल हे सोपे केलेले रूप आहे; त्यात काय धरलेले नाही ते खाली पाहा.',
       caveatFew: ' फक्त {paths} मार्गांवर, आकडे हजारो मार्गांच्या आकड्यांपासून अनेक टक्के दूर असू शकतात.',

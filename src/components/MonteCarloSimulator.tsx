@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore }
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
+import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   MAX_FEE_PCT,
@@ -99,10 +100,12 @@ function inTen(share: number, strings: Strings): string {
 }
 
 /** The one-line answer about withdrawals, as the quick answer and the files say it. */
-function lastedLine(share: number, years: number, strings: Strings): string {
-  if (share >= 1) return t(strings.quick.lastedAll, { years });
-  if (share <= 0) return t(strings.quick.lastedNone, { years });
-  return t(strings.quick.lasted, { years, inTen: inTen(share, strings) });
+function lastedLine(share: number, years: number, strings: Strings, amountLocale: string | null): string {
+  // One year has sentences of its own: "all 1 years" is wrong in most languages.
+  const pick = (one: string, other: string) => plural(amountLocale ?? 'en', years, one, other, other);
+  if (share >= 1) return t(pick(strings.quick.lastedAllOne, strings.quick.lastedAll), { years });
+  if (share <= 0) return t(pick(strings.quick.lastedNoneOne, strings.quick.lastedNone), { years });
+  return t(pick(strings.quick.lastedOne, strings.quick.lasted), { years, inTen: inTen(share, strings) });
 }
 
 // Above this many paths the simulation runs in a worker, off the main thread.
@@ -683,7 +686,7 @@ function NumberField(props: {
  * results below say the same, so screen readers skip this copy.
  */
 function QuickResult({ result, state, busy, strings }: { result: SimulationResult; state: ToolState; busy: boolean; strings: Strings }) {
-  const { formatAmount } = useMoney();
+  const { formatAmount, amountLocale } = useMoney();
   const code = state.currency;
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
@@ -706,7 +709,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
       )}
       {lasted !== null && (
         <span className="mcs-quickRange">
-          {lastedLine(lasted, state.withdrawYears, strings)}
+          {lastedLine(lasted, state.withdrawYears, strings, amountLocale)}
         </span>
       )}
     </div>
@@ -772,13 +775,15 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
         <div className="mcs-lasted">
           <p className="mcs-lastedHead">
             {result.lasted >= 1 || result.lasted <= 0 ? (
-              t(result.lasted >= 1 ? strings.results.lastedAll : strings.results.lastedNone, {
+              t(result.lasted >= 1
+                ? plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedAllOne, strings.results.lastedAll, strings.results.lastedAll)
+                : plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedNoneOne, strings.results.lastedNone, strings.results.lastedNone), {
                 amount: formatAmount(state.withdrawal, code),
                 years: state.withdrawYears,
               })
             ) : (
               <>
-                {t(strings.results.lastedHeadBefore, {
+                {t(plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedHeadBeforeOne, strings.results.lastedHeadBefore, strings.results.lastedHeadBefore), {
                   amount: formatAmount(state.withdrawal, code),
                   years: state.withdrawYears,
                 })}{' '}
@@ -848,7 +853,7 @@ function PrintedReport({ strings, exportStrings, state, result }: { strings: Str
     const median = state.saveYears === 1 ? strings.quick.medianOne : t(strings.quick.medianOther, { years: state.saveYears });
     answer.push(`${median}: ${formatAmount(r.p50, code)}`, t(strings.quick.range, { low: formatAmount(r.p10, code), high: formatAmount(r.p90, code) }));
   }
-  if (state.withdrawal > 0 && result.lasted !== null) answer.push(lastedLine(result.lasted, state.withdrawYears, strings));
+  if (state.withdrawal > 0 && result.lasted !== null) answer.push(lastedLine(result.lasted, state.withdrawYears, strings, amountLocale));
   if (answer.length === 0) answer.push(strings.results.empty);
   const locale = amountLocale ?? 'en-US';
   return <ToolReport report={monteCarloReport({ island: strings, common: exportStrings, state, result, answer })} strings={exportStrings} locale={locale} />;

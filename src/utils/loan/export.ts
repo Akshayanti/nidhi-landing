@@ -63,7 +63,9 @@ export function loanSheets({ island, common, currency, aprConvention, vendors, r
   };
   const rate = (raw: string): Cell => {
     const n = parseNumber(raw);
-    return Number.isFinite(n) ? { n, fmt: 'decimal2' } : null;
+    if (!Number.isFinite(n)) return null;
+    // A record of what was typed: a rate quoted in eighths (4.875) is not rounded to 4.88.
+    return { n, fmt: Math.abs(n * 100 - Math.round(n * 100)) > 1e-9 ? 'general' : 'decimal2' };
   };
   const whole = (raw: string): Cell => {
     const n = parseNumber(raw);

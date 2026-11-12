@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'loan-report-typed-rate',
+        text: {
+          en: 'The loan comparison\'s printed report and spreadsheet now show an interest rate with three decimals, such as 4.875%, as it was typed, where they used to round it to 4.88. The Monte Carlo simulator also words a one-year withdrawal properly.',
+          hi: 'लोन तुलना की छपी रिपोर्ट और स्प्रेडशीट अब तीन दशमलव वाली ब्याज दर, जैसे 4.875%, वैसी ही दिखाती हैं जैसी लिखी गई थी; पहले वे उसे 4.88 कर देती थीं। मोंटे कार्लो सिम्युलेटर में एक साल की निकासी का वाक्य भी अब ठीक पढ़ा जाता है।',
+          es: 'El informe impreso y la hoja de cálculo del comparador de préstamos muestran ahora una tasa de interés con tres decimales, como 4,875 %, tal como se escribió; antes la redondeaban a 4,88. El simulador Monte Carlo también redacta bien un retiro de un solo año.',
+          cs: 'Tištěná zpráva a\u00a0tabulka ze srovnání úvěrů teď ukazují úrokovou sazbu se třemi desetinnými místy, například 4,875 %, tak, jak byla zadaná; dřív ji zaokrouhlovaly na 4,88. Simulátor Monte Carlo také správně formuluje výběr na jediný rok.',
+          mr: 'कर्जांच्या तुलनेचा छापील अहवाल आणि स्प्रेडशीट आता तीन दशांश स्थळांचा व्याजदर, उदा. 4.875%, जसा लिहिला तसाच दाखवतात; आधी ते तो 4.88 असा करत होते. माँटे कार्लो सिम्युलेटरमध्ये एका वर्षाच्या रक्कम काढण्याचे वाक्यही आता बरोबर वाचले जाते.',
+        },
+      },
+      {
         id: 'tools-small-fixes-nov12',
         text: {
           en: 'Five small fixes in the free tools. The line under the loan comparison\'s payment chart no longer quotes a 25-year loan\'s figures for every loan. An error about a loan whose rate changes now names the control to use. When a browser will not copy a share link, the loan and net worth tools show the link to copy by hand and no longer say it was copied. Currency lists read the same way in all five tools. The net worth calculator calls its exchange rates the latest official ones, not live.',

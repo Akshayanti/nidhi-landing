@@ -66,6 +66,16 @@ describe('loan comparison spreadsheet', () => {
   const currency = 'EUR';
   const results = DEFAULT_VENDORS.map((v) => computeFromInput(v, currency));
 
+  it('keeps a typed rate with three decimals as typed, and a round one with two', () => {
+    const t = DICTS.en.tools;
+    const vendors = [{ ...DEFAULT_VENDORS[0], annualRatePct: '4.875' }, { ...DEFAULT_VENDORS[1], annualRatePct: '6.5' }];
+    const typed = vendors.map((v) => computeFromInput(v, currency));
+    const sheets = loanSheets({ island: t.loanComparison.island, common: t.export, currency, aprConvention: 'nominal', vendors, results: typed, names: ['A', 'B'], date: DATE, page: PAGE });
+    const cells = sheets.flatMap((sh) => sh.rows.flat()).flatMap((c) => (typeof c === 'object' && c !== null && 'n' in c ? [c] : []));
+    assert.ok(cells.some((c) => c.n === 4.875 && c.fmt === 'general'), 'the 4.875 cell is written as typed');
+    assert.ok(cells.some((c) => c.n === 6.5 && c.fmt === 'decimal2'), 'a round rate keeps two decimals');
+  });
+
   for (const locale of LOCALES) {
     it(`holds each offer's totals and full schedule to the cent (${locale})`, () => {
       const t = DICTS[locale].tools;
