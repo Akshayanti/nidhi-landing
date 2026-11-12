@@ -752,7 +752,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       // UI gates this; we double-belt here.
       return emptyResult(
         feeMinor,
-        'Fixed-then-variable loans must be entered in term mode (monthly payment is computed).',
+        'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.',
       );
     }
     scheduledPayment = mode.monthlyMinor;

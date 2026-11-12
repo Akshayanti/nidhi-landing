@@ -225,7 +225,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What does "multi-currency" mean here?',
-              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a live FX rate) would be misleading.',
+              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
         },
@@ -535,11 +535,8 @@ export const loanComparisonEn = {
         before: 'Showing ',
         afterName: "'s contract schedule",
         noExtras: ' (without optional extra principal; APR-equivalent view)',
-        extraBefore: '. An extra payment in ',
-        yearEarly: 'year 1',
-        extraMid: ' cancels 25 years of interest on that amount; the same payment in ',
-        yearLate: 'year 24',
-        extraAfter: ' saves almost nothing.',
+        /** Term-free: true of a five-year loan and of a thirty-year one. */
+        extra: '. An extra payment early in the loan stops interest on that amount for all the years left; the same payment near the end has few months left to save on.',
       },
     },
     /** Every word the balance chart can put on screen or read out. */
@@ -648,7 +645,7 @@ export const loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Assumptions and disclaimers',
-      body: 'Calculations assume monthly compounding and on-time payments. APR is shown in the convention chosen above the offers (the monthly rate × 12, or the monthly rate compounded over a year) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure, so add those into the fee field if you want them reflected. Canadian residential mortgages compound semi-annually by law and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your best stress-test guess. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
+      body: 'Calculations assume monthly compounding and on-time payments. APR is shown in the convention chosen above the offers (the monthly rate × 12, or the monthly rate compounded over a year) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure, so add those into the fee field if you want them reflected. Canadian residential mortgages compound semi-annually by law and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your own what-if rate. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
     },
     /**
      * A count of months, as this tool writes it. The engine's own
@@ -691,7 +688,7 @@ export const loanComparisonEn = {
         termMin: 'Enter a term of at least one month.',
         termMax: 'Term cannot exceed {months} months.',
         paymentEnter: 'Enter a monthly payment greater than zero.',
-        hybridMode: 'Fixed-then-variable loans must be entered in term mode (monthly payment is computed).',
+        hybridMode: 'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.',
         refiOriginal: 'Original loan is invalid; cannot compute refinance.',
         /** An optional box of the offer holds something that is not a number. Never quotes what was typed. */
         optionalUnreadable: 'One of the optional boxes cannot be read. Use digits only, or clear the box.',
@@ -1192,11 +1189,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         before: 'दिखाया गया है: ',
         afterName: ' का अनुबंध के हिसाब से किस्तों का शेड्यूल',
         noExtras: ' (वैकल्पिक अतिरिक्त मूलधन के बिना; APR जैसा नज़रिया)',
-        extraBefore: '। ',
-        yearEarly: 'साल 1',
-        extraMid: ' में किया गया एक अतिरिक्त भुगतान उस रकम पर 25 साल का ब्याज बचा देता है; ',
-        yearLate: 'साल 24',
-        extraAfter: ' में वही भुगतान लगभग कुछ नहीं बचाता।',
+        /** Term-free: true of a five-year loan and of a thirty-year one. */
+        extra: '। लोन की शुरुआत में किया गया अतिरिक्त भुगतान उस रकम पर बाक़ी सभी सालों का ब्याज रोक देता है; आख़िर के क़रीब वही भुगतान कुछ ही महीनों का ब्याज बचाता है।',
       },
     },
     balance: {
@@ -1816,11 +1810,8 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         before: 'Se muestra la tabla de amortización de ',
         afterName: ' según el contrato',
         noExtras: ' (sin el capital extra opcional; la misma vista que el APR)',
-        extraBefore: '. Un pago extra en el ',
-        yearEarly: 'año 1',
-        extraMid: ' evita 25 años de intereses sobre esa cantidad; el mismo pago en el ',
-        yearLate: 'año 24',
-        extraAfter: ' casi no ahorra nada.',
+        /** Term-free: true of a five-year loan and of a thirty-year one. */
+        extra: '. Un pago extra al principio del préstamo evita los intereses sobre esa cantidad durante todos los años que quedan; el mismo pago cerca del final solo ahorra los de unos pocos meses.',
       },
     },
     balance: {
@@ -1947,7 +1938,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
         hybridMode:
-          'Los préstamos de tasa fija y luego variable deben introducirse en modo de plazo (la cuota mensual se calcula).',
+          'Los préstamos de tasa fija y luego variable necesitan un plazo fijo: en «Calcular», elige «Cuota mensual».',
         refiOriginal: 'El préstamo original no es válido; no se puede calcular la refinanciación.',
         optionalUnreadable: 'No se pudo leer una de las casillas opcionales. Usa solo cifras o deja la casilla vacía.',
         refiMonth: 'El mes de refinanciación debe ser al menos 1.',
@@ -2439,11 +2430,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         before: 'Zobrazeno: ',
         afterName: ', smluvní splátkový kalendář',
         noExtras: ' (bez volitelných mimořádných splátek jistiny; pohled odpovídající APR)',
-        extraBefore: '. Mimořádná splátka v ',
-        yearEarly: '1. roce',
-        extraMid: ' ušetří úroky z této částky na 25 let; stejná splátka ve ',
-        yearLate: '24. roce',
-        extraAfter: ' neušetří skoro nic.',
+        /** Term-free: true of a five-year loan and of a thirty-year one. */
+        extra: '. Mimořádná splátka na začátku úvěru ušetří úroky z této částky za všechna zbývající léta; stejná splátka těsně před koncem ušetří úroky už jen za pár měsíců.',
       },
     },
     balance: {
@@ -2569,7 +2557,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
         termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
         paymentEnter: 'Zadejte měsíční splátku větší než nula.',
-        hybridMode: 'Úvěry s pevnou a pak pohyblivou sazbou se musí zadávat v režimu doby splatnosti (měsíční splátka se dopočítá).',
+        hybridMode: 'Úvěry s pevnou a pak pohyblivou sazbou potřebují pevnou dobu splatnosti: u volby „Počítat“ vyberte „Měsíční splátka“.',
         refiOriginal: 'Původní úvěr je neplatný; refinancování nelze spočítat.',
         optionalUnreadable: 'Jedno z nepovinných polí se nepodařilo přečíst. Použijte jen číslice, nebo pole vymažte.',
         refiMonth: 'Měsíc refinancování musí být alespoň 1.',
@@ -3038,11 +3026,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         before: 'दाखवत आहे: ',
         afterName: ' यांचे करारानुसार वेळापत्रक',
         noExtras: ' (ऐच्छिक अतिरिक्त मुद्दलाशिवाय; APR च्या समतुल्य दृश्य)',
-        extraBefore: '. ',
-        yearEarly: 'वर्ष 1',
-        extraMid: ' मधील अतिरिक्त भरणा त्या रकमेवरचे 25 वर्षांचे व्याज रद्द करतो; तोच भरणा ',
-        yearLate: 'वर्ष 24',
-        extraAfter: ' मध्ये केल्यास जवळपास काहीच वाचत नाही.',
+        /** Term-free: true of a five-year loan and of a thirty-year one. */
+        extra: '. कर्जाच्या सुरुवातीला केलेला अतिरिक्त भरणा त्या रकमेवरचे उरलेल्या सर्व वर्षांचे व्याज थांबवतो; शेवटाजवळ केलेला तोच भरणा फक्त काही महिन्यांचे व्याज वाचवतो.',
       },
     },
     balance: {
@@ -3164,7 +3149,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         termMin: 'किमान एक महिन्याची मुदत भरा.',
         termMax: 'मुदत {months} महिन्यांपेक्षा जास्त असू शकत नाही.',
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
-        hybridMode: 'आधी ठरावीक, मग बदलत्या दराची कर्जे मुदतीच्या पर्यायात भरायला हवीत (मासिक हप्ता काढला जातो).',
+        hybridMode: 'आधी ठरावीक, मग बदलत्या दराच्या कर्जाला ठरावीक मुदत लागते: “काय काढायचे” मध्ये “मासिक हप्ता” निवडा.',
         refiOriginal: 'मूळ कर्ज अवैध आहे; पुनर्वित्ताचा हिशेब करता येत नाही.',
         optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक लिहा, किंवा चौकट रिकामी करा.',
         refiMonth: 'पुनर्वित्ताचा महिना किमान 1 असायला हवा.',
