@@ -1050,14 +1050,25 @@ export function computeApr(
 
 /**
  * The two ways a monthly rate is turned into a yearly APR.
- * - `nominal`: monthly rate × 12 (US, Canada; India's loan fact sheets too).
+ * - `nominal`: monthly rate × 12 (US Reg Z, Canada, India's key facts statement,
+ *   Australia's comparison rate, Japan's disclosed annual rate).
  * - `effective`: monthly rate compounded over twelve months (EU, UK).
  */
 export type AprConvention = 'nominal' | 'effective';
 
+/**
+ * Currencies whose home rules quote the yearly rate as the monthly rate × 12.
+ * Each was checked against the rule itself (Nov 2026): US Reg Z Appendix J,
+ * Canada's SOR/2021-181, India's RBI key facts statement, Australia's NCCP
+ * Regulations reg 71, Japan's Money Lending Business Act enforcement rules.
+ * Every other currency starts compounded, as the EU and UK require; those
+ * outside the EU and UK have not been checked one by one.
+ */
+const NOMINAL_APR_CURRENCIES = new Set(['USD', 'CAD', 'INR', 'AUD', 'JPY']);
+
 /** The convention a page starts with for a currency, until the reader chooses one. */
 export function defaultAprConvention(currency: string): AprConvention {
-  return currency === 'USD' || currency === 'CAD' || currency === 'INR' ? 'nominal' : 'effective';
+  return NOMINAL_APR_CURRENCIES.has(currency) ? 'nominal' : 'effective';
 }
 
 /**
