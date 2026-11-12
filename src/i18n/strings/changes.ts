@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'loan-keep-payment-at-rate-change',
+        text: {
+          en: 'The loan comparison can now keep the payment the same when a rate changes. Many lenders do that: the payment stays and the loan ends earlier or later. Under Rate structure you can choose which happens for each offer, and the offer then shows the month it is paid off, or says plainly that at that payment it never is.',
+          hi: 'लोन तुलना में अब दर बदलने पर किस्त वही रखी जा सकती है। कई बैंक ऐसा ही करते हैं: किस्त वही रहती है और लोन पहले या बाद में ख़त्म होता है। दर का ढाँचा के नीचे हर ऑफ़र के लिए चुना जा सकता है कि क्या होगा, और फिर ऑफ़र वह महीना दिखाता है जब लोन चुकेगा, या साफ़ बताता है कि उस किस्त पर वह कभी नहीं चुकता।',
+          es: 'El comparador de préstamos puede ahora mantener la cuota cuando cambia la tasa. Muchas entidades lo hacen así: la cuota se mantiene y el préstamo termina antes o después. En Estructura de la tasa se puede elegir qué ocurre en cada oferta, y la oferta muestra entonces el mes en que se liquida, o dice con claridad que con esa cuota no se liquida nunca.',
+          cs: 'Srovnání úvěrů teď umí při změně sazby ponechat splátku stejnou. Mnoho bank to tak dělá: splátka zůstane a\u00a0úvěr skončí dříve nebo později. V\u00a0části Struktura sazby lze u\u00a0každé nabídky zvolit, co se stane, a\u00a0nabídka pak ukáže měsíc splacení, nebo jasně řekne, že při této splátce splacena nebude nikdy.',
+          mr: 'कर्जांच्या तुलनेत आता दर बदलल्यावर हप्ता तोच ठेवता येतो. अनेक बँका असेच करतात: हप्ता तोच राहतो आणि कर्ज लवकर किंवा उशिरा संपते. व्याजदराची रचना या भागात प्रत्येक ऑफरसाठी काय घडेल ते निवडता येते, आणि मग ऑफर कर्ज फिटण्याचा महिना दाखवते, किंवा त्या हप्त्यात ते कधीच फिटत नाही हे स्पष्ट सांगते.',
+        },
+      },
+      {
         id: 'loan-apr-captions-plain',
         text: {
           en: 'In the loan comparison, the line under each APR now says only how it is worked out, “Monthly rate × 12” or “Compounded over a year”, without a list of countries; the explanation beside the choice still says where each is used, and now names India. On a phone, a long name on one offer\'s tab no longer stretches the tab next to it.',

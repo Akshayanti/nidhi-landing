@@ -2430,6 +2430,25 @@ details[open] > .disclosure::after,
   text-align: center;
 }
 
+/* Two long options, one per line: each says what changes and what stays. */
+.lc-modeRowStacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lc-modeRowStacked .lc-modeOption {
+  justify-content: flex-start;
+  text-align: start;
+  white-space: normal;
+}
+.lc-atChange {
+  margin-top: var(--space-3);
+}
+.lc-atChange > legend {
+  padding: 0;
+  margin-bottom: var(--space-2);
+}
+.lc-atChange > .lc-fieldHelp {
+  margin-top: var(--space-2);
+}
 .lc-modeOption:hover {
   border-color: var(--lc-color);
 }

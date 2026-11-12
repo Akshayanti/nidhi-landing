@@ -96,6 +96,7 @@ export function buildAdvancedFields(
         initialAnnualRate: parseNumber(v.annualRatePct) / 100,
         initialMonths,
         subsequentAnnualRate: subsequent,
+        ...(v.rateChangeKeeps === 'payment' ? { keeps: 'payment' as const } : {}),
       };
     }
   }

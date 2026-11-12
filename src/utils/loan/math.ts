@@ -215,6 +215,14 @@ export type RateSpec =
       initialAnnualRate: number;
       initialMonths: number;
       subsequentAnnualRate: number;
+      /**
+       * What the lender does when the rate changes. `'term'` (the default)
+       * works out a new payment so the loan still ends on its term.
+       * `'payment'` leaves the scheduled payment as it was, so the loan ends
+       * earlier or later than its term, or never: a payment that no longer
+       * covers a month's interest lets the balance grow.
+       */
+      keeps?: 'term' | 'payment';
     };
 
 /** A one-off principal prepayment at a specific month. The amount is
@@ -326,11 +334,34 @@ export interface LoanResult {
    * first one alone makes two offers that part ways later look the same.
    */
   rateChange?: { month: number; paymentMinor: number | null; last?: boolean };
+  /**
+   * Set when the scheduled payment is kept at the rate change and at least
+   * one payment is made at the later rate. `termMonths` is the term the
+   * reader entered.
+   *   - `'paid'`: the loan is paid off in `months`, which may be earlier or
+   *     later than `termMonths`.
+   *   - `'never'`: after the rate change and the last lump sum, a month's
+   *     payment (extras included) no longer exceeds that month's interest,
+   *     so the balance cannot fall again. `covers` says whether the payment
+   *     equals the interest (the balance stands still) or is less (it grows).
+   *   - `'limit'`: the balance is still falling at `MAX_TERM_MONTHS`; the
+   *     payoff exists but was not computed.
+   * When the outcome is not `'paid'`, `months`, the totals and the APR are
+   * not figures of a finished loan: `totalPaidMinor`, `totalInterestMinor`
+   * and `aprNominal` are `NaN`, and `schedule` runs to the limit.
+   */
+  keptPayment?: {
+    outcome: 'paid' | 'never' | 'limit';
+    termMonths: number;
+    covers?: 'equal' | 'less';
+    /** First month whose payment did not exceed its interest (`'never'` only). */
+    fromMonth?: number;
+  };
   warnings: string[];
   error?: string;
 }
 
-const MAX_TERM_MONTHS = 1200;
+export const MAX_TERM_MONTHS = 1200;
 
 export function computeScheduledPaymentMinor(
   principalMinor: number,
@@ -461,7 +492,14 @@ export function buildScheduleAdvanced(spec: {
    * Not set for a loan entered by its payment, which has no term to end on.
    */
   endsAtTerm?: boolean;
-}): { schedule: AmortizationRow[]; warnings: string[]; error?: string; recastPaymentMinor?: number } {
+}): {
+  schedule: AmortizationRow[];
+  warnings: string[];
+  error?: string;
+  recastPaymentMinor?: number;
+  /** Only when the payment is kept at the rate change and the loan is not paid off within the limit. */
+  unpaid?: { outcome: 'never' | 'limit'; covers?: 'equal' | 'less'; fromMonth?: number };
+} {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
   const totalMonths = Math.max(0, Math.floor(spec.totalMonths));
@@ -512,6 +550,12 @@ export function buildScheduleAdvanced(spec: {
   let currentPayment = spec.basePaymentMinor;
   let recastApplied = false;
   let recastPaymentMinor: number | undefined;
+  const keepsPayment = spec.rateSpec.kind === 'hybrid' && spec.rateSpec.keeps === 'payment';
+  const lastLumpMonth = Math.max(0, ...lumpByMonth.keys());
+  // The first month, after the rate change and the last lump sum, whose
+  // payment did not exceed its interest. Rate and payment are constant from
+  // there on, so the balance can never fall again.
+  let stalled: { covers: 'equal' | 'less'; fromMonth: number } | undefined;
 
   for (let month = 1; month <= MAX_TERM_MONTHS && balance > 0; month++) {
     // Recast the scheduled payment at the start of the post-fix leg of
@@ -524,6 +568,7 @@ export function buildScheduleAdvanced(spec: {
     // would bend the schedule away from the contract's actual shape.
     if (
       spec.rateSpec.kind === 'hybrid' &&
+      !keepsPayment &&
       !recastApplied &&
       month === spec.rateSpec.initialMonths + 1
     ) {
@@ -552,6 +597,17 @@ export function buildScheduleAdvanced(spec: {
     const interest = r === 0 ? 0 : roundMinor(balance * r);
     let payment = currentPayment + extraMonthlyMinor;
     let principal = payment - interest;
+
+    if (
+      keepsPayment &&
+      !stalled &&
+      spec.rateSpec.kind === 'hybrid' &&
+      month > spec.rateSpec.initialMonths &&
+      month > lastLumpMonth &&
+      principal <= 0
+    ) {
+      stalled = { covers: principal === 0 ? 'equal' : 'less', fromMonth: month };
+    }
 
     // What would be left after this month's scheduled payment is less than
     // one more such payment: it belongs in this, the last contractual one.
@@ -586,6 +642,15 @@ export function buildScheduleAdvanced(spec: {
     if (balance <= 0) break;
   }
 
+  if (balance > 0 && keepsPayment) {
+    // Not an error: this is what keeping the payment does at this rate. The
+    // schedule to the limit is returned so the page can draw the balance.
+    return {
+      schedule,
+      warnings,
+      unpaid: stalled ? { outcome: 'never', ...stalled } : { outcome: 'limit' },
+    };
+  }
   if (balance > 0) {
     return {
       schedule,
@@ -619,7 +684,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   const extraMonthlyMinor = inputs.extraMonthlyMinor ?? 0;
   const lumpSums = inputs.lumpSums ?? [];
   const penalty = inputs.prepaymentPenalty;
-  const rateSpec = resolveRateSpec(inputs);
+  let rateSpec = resolveRateSpec(inputs);
 
   if (!Number.isFinite(principalMinor) || principalMinor <= 0) {
     return emptyResult(feeMinor, 'Enter a loan amount greater than zero.');
@@ -646,6 +711,19 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       return emptyResult(feeMinor, 'Initial fixed period must be a positive number of months.');
     }
   }
+
+  // Keeping the payment only means something when a payment is made at a
+  // different rate. With the two rates equal, or the change at or after the
+  // end of the term, the schedule is the ordinary one.
+  if (
+    rateSpec.kind === 'hybrid' &&
+    rateSpec.keeps === 'payment' &&
+    (rateSpec.subsequentAnnualRate === rateSpec.initialAnnualRate ||
+      (mode.kind === 'term' && rateSpec.initialMonths >= Math.floor(mode.months)))
+  ) {
+    rateSpec = { ...rateSpec, keeps: 'term' };
+  }
+  const keepsPayment = rateSpec.kind === 'hybrid' && rateSpec.keeps === 'payment';
 
   let totalMonths: number;
   let scheduledPayment: number;
@@ -686,7 +764,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error, recastPaymentMinor } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor, unpaid } = buildScheduleAdvanced({
     principalMinor,
     rateSpec,
     totalMonths,
@@ -719,7 +797,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // the contract schedule is identical to the effective schedule and
   // we reuse it to avoid duplicate work.
   const hasVoluntaryActions = extraMonthlyMinor > 0 || lumpSums.length > 0;
-  const contractSchedule = hasVoluntaryActions
+  const contract = hasVoluntaryActions
     ? buildScheduleAdvanced({
         principalMinor,
         rateSpec,
@@ -728,8 +806,20 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
         extraMonthlyMinor: 0,
         lumpSums: [],
         endsAtTerm: mode.kind === 'term',
-      }).schedule
-    : schedule;
+      })
+    : { schedule, unpaid };
+  // With the payment kept, the scheduled payments alone may never pay the
+  // loan off although the reader's extras do. There is then no contractual
+  // payment stream to solve an APR on, so the reader's own schedule is used.
+  const contractSchedule = contract.unpaid ? schedule : contract.schedule;
+
+  // Whether a payment is made at the later rate at all: an extra payment or
+  // a lump sum can clear the loan before the rate changes.
+  const reachesChange =
+    keepsPayment && rateSpec.kind === 'hybrid' && schedule.length > rateSpec.initialMonths;
+  const keptPayment: LoanResult['keptPayment'] = reachesChange
+    ? { outcome: unpaid ? unpaid.outcome : 'paid', termMonths: totalMonths, ...(unpaid?.covers ? { covers: unpaid.covers, fromMonth: unpaid.fromMonth } : {}) }
+    : undefined;
 
   // Prepayment penalty: applies when the effective schedule pays the
   // loan off strictly earlier than the contract would, AND the early
@@ -737,7 +827,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // the moment of the early payoff (the row right before the loan
   // clears).
   let prepaymentPenaltyMinor = 0;
-  if (penalty && schedule.length < contractSchedule.length) {
+  if (penalty && schedule.length < contract.schedule.length) {
     const lastRow = schedule[schedule.length - 1];
     if (lastRow && lastRow.month <= penalty.untilMonth) {
       // The balance at the moment of payoff is the balance the row
@@ -758,7 +848,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   const totalInterest = schedule.reduce((s, row) => s + row.interest, 0);
   const totalPaid = totalPayments + feeMinor + prepaymentPenaltyMinor;
 
-  const aprNominal = computeApr(principalMinor, feeMinor, contractSchedule);
+  const aprNominal = unpaid ? NaN : computeApr(principalMinor, feeMinor, contractSchedule);
 
   // The payment after the rate change, read from the schedule the reader's own
   // plan produces. When the only payment at the new rate is the closing one,
@@ -769,9 +859,10 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     const row = schedule[month - 1];
     let paymentMinor: number | null = null;
     if (row) {
-      paymentMinor = schedule.length === month || recastPaymentMinor === undefined
-        ? row.payment
-        : recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
+      if (schedule.length === month) paymentMinor = row.payment;
+      else if (keepsPayment) paymentMinor = scheduledPayment + Math.max(0, Math.floor(extraMonthlyMinor));
+      else if (recastPaymentMinor === undefined) paymentMinor = row.payment;
+      else paymentMinor = recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
     }
     rateChange = { month, paymentMinor, ...(row && schedule.length === month ? { last: true } : {}) };
   }
@@ -780,16 +871,45 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     monthlyPaymentMinor: scheduledPayment,
     effectiveMonthlyMinor: scheduledPayment + extraMonthlyMinor,
     months: schedule.length,
-    totalPaidMinor: totalPaid,
-    totalInterestMinor: totalInterest,
+    // A loan that is not paid off has no total: a sum to the limit would
+    // look like one.
+    totalPaidMinor: unpaid ? NaN : totalPaid,
+    totalInterestMinor: unpaid ? NaN : totalInterest,
     feeMinor,
     schedule,
     contractSchedule,
     aprNominal,
     prepaymentPenaltyMinor,
     ...(rateChange ? { rateChange } : {}),
+    ...(keptPayment ? { keptPayment } : {}),
     warnings,
   };
+}
+
+/**
+ * True when the payment is kept at the rate change and the loan is not paid
+ * off: it never is, or not within the calculation limit. Such a result has a
+ * schedule but no totals, no APR and no payoff month.
+ */
+export function isNotPaidOff(r: LoanResult): boolean {
+  return r.keptPayment !== undefined && r.keptPayment.outcome !== 'paid';
+}
+
+/**
+ * How many months of an offer's schedule a balance chart draws. A loan that
+ * is never paid off has a schedule to the calculation limit, where its balance
+ * is hundreds of times the loan: drawn whole, it would flatten every other
+ * line. It is drawn over the range the chart has without it, the longest of
+ * the other schedules, or its own entered term if that is longer. Every other
+ * offer is drawn whole.
+ */
+export function shownMonths(results: LoanResult[], index: number): number {
+  const r = results[index];
+  if (r.keptPayment?.outcome !== 'never') return r.schedule.length;
+  const others = results
+    .filter((o, i) => i !== index && !o.error && o.keptPayment?.outcome !== 'never')
+    .map((o) => o.schedule.length);
+  return Math.min(r.schedule.length, Math.max(r.keptPayment.termMonths, ...others));
 }
 
 /** A result that carries only an error: nothing was computed. */
