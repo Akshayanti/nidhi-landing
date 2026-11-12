@@ -210,7 +210,6 @@ const faqSchema = {
     <details class="lc-faq" aria-labelledby="lc-faq-h">
       <summary id="lc-faq-h" class="lc-faqHeading disclosure">
         <span class="lc-sectionTitle">{tool.page.faq.heading}</span>
-        <span class="lc-faqHeadingCount" aria-hidden="true">{faqs.length}</span>
       </summary>
       {faqSections.map((section) => (
         <div class="lc-faqGroup" aria-labelledby={`lc-faq-${section.id}-h`}>
@@ -378,18 +377,6 @@ const faqSchema = {
     outline: 2px solid var(--color-teal);
     outline-offset: 4px;
     border-radius: var(--radius-sm);
-  }
-
-  .lc-faqHeadingCount {
-    margin-left: auto;
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    background: var(--color-surface);
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--color-border);
   }
 
   .lc-faqGroup {

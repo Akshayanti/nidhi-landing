@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'tools-one-look',
+        text: {
+          en: 'The five free tools now look like one family. Dropdowns match the boxes beside them, section titles and questions are the same size everywhere, the views in the loan comparison and the inflation calculator are plain tabs with a line under the one you are on, and the Monte Carlo simulator\'s Reset sits at the top of its form like the others. Nothing about the sums has changed.',
+          hi: 'पाँचों मुफ़्त टूल अब एक ही परिवार जैसे दिखते हैं। ड्रॉपडाउन अब बगल के बॉक्स जैसे हैं, हिस्सों के शीर्षक और सवाल हर टूल में एक ही आकार के हैं, लोन की तुलना और महँगाई कैलकुलेटर के व्यू अब सादे टैब हैं जिनमें चुने हुए टैब के नीचे एक रेखा रहती है, और मोंटे कार्लो सिम्युलेटर का रीसेट बटन बाकी टूल की तरह फ़ॉर्म के ऊपर है। हिसाब में कुछ नहीं बदला है।',
+          es: 'Las cinco herramientas gratuitas se ven ahora como una sola familia. Los desplegables son iguales a las casillas de al lado, los títulos de sección y las preguntas tienen el mismo tamaño en todas, las vistas del comparador de préstamos y de la calculadora de inflación son pestañas sencillas con una línea bajo la que tienes abierta, y el botón de restablecer del simulador Monte Carlo está arriba en su formulario, como en las demás. Los cálculos no han cambiado.',
+          cs: 'Pět bezplatných nástrojů teď vypadá jako jedna rodina. Rozbalovací seznamy vypadají stejně jako pole vedle nich, nadpisy částí a\u00a0otázky mají všude stejnou velikost, pohledy ve srovnání úvěrů a\u00a0v\u00a0inflační kalkulačce jsou obyčejné záložky s\u00a0linkou pod tou, na které jste, a\u00a0tlačítko pro obnovení v\u00a0simulátoru Monte Carlo je nahoře ve formuláři jako u\u00a0ostatních. Výpočty se nezměnily.',
+          mr: 'पाचही मोफत साधने आता एकाच कुटुंबातली दिसतात. ड्रॉपडाउन आता शेजारच्या रकान्यांसारखेच दिसतात, विभागांची शीर्षके आणि प्रश्न सगळीकडे एकाच आकाराचे आहेत, कर्जांची तुलना आणि महागाई कॅल्क्युलेटरमधील दृश्ये आता साधे टॅब आहेत ज्यांत निवडलेल्या टॅबखाली एक रेघ असते, आणि मॉन्टे कार्लो सिम्युलेटरचे रीसेट बटण इतर साधनांप्रमाणे फॉर्मच्या वर आहे. हिशेबात काहीही बदललेले नाही.',
+        },
+      },
+      {
         id: 'loan-report-typed-rate',
         text: {
           en: 'The loan comparison\'s printed report and spreadsheet now show an interest rate with three decimals, such as 4.875%, as it was typed, where they used to round it to 4.88. The Monte Carlo simulator also words a one-year withdrawal properly.',
