@@ -86,9 +86,23 @@ function returnTip(strings: Strings, s: ReturnSetting, amountLocale: string | nu
   return format(strings.returnTips[s], { stocks: pct(QUOTED_RATES[s].stocks), bonds: pct(QUOTED_RATES[s].bonds) });
 }
 
-/** "9 in 10" style phrasing, rounded to the nearest tenth. */
+/**
+ * "9 in 10" style phrasing, rounded to the nearest tenth, for a share that is
+ * neither every path nor none. Rounding never claims more than happened: 95%
+ * to just under 100% reads "more than 9 in 10", and above 0% to under 5%
+ * "fewer than 1 in 10". Every path and no path have sentences of their own.
+ */
 function inTen(share: number, strings: Strings): string {
+  if (share >= 0.95) return strings.inTenMore;
+  if (share < 0.05) return strings.inTenFewer;
   return t(strings.inTen, { n: Math.round(share * 10) });
+}
+
+/** The one-line answer about withdrawals, as the quick answer and the files say it. */
+function lastedLine(share: number, years: number, strings: Strings): string {
+  if (share >= 1) return t(strings.quick.lastedAll, { years });
+  if (share <= 0) return t(strings.quick.lastedNone, { years });
+  return t(strings.quick.lasted, { years, inTen: inTen(share, strings) });
 }
 
 // Above this many paths the simulation runs in a worker, off the main thread.
@@ -692,7 +706,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
       )}
       {lasted !== null && (
         <span className="mcs-quickRange">
-          {t(strings.quick.lasted, { years: state.withdrawYears, inTen: inTen(lasted, strings) })}
+          {lastedLine(lasted, state.withdrawYears, strings)}
         </span>
       )}
     </div>
@@ -757,12 +771,21 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
       {withdrawing && result.lasted !== null && (
         <div className="mcs-lasted">
           <p className="mcs-lastedHead">
-            {t(strings.results.lastedHeadBefore, {
-              amount: formatAmount(state.withdrawal, code),
-              years: state.withdrawYears,
-            })}{' '}
-            <strong>{inTen(result.lasted, strings)}</strong>
-            {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted, amountLocale) })}
+            {result.lasted >= 1 || result.lasted <= 0 ? (
+              t(result.lasted >= 1 ? strings.results.lastedAll : strings.results.lastedNone, {
+                amount: formatAmount(state.withdrawal, code),
+                years: state.withdrawYears,
+              })
+            ) : (
+              <>
+                {t(strings.results.lastedHeadBefore, {
+                  amount: formatAmount(state.withdrawal, code),
+                  years: state.withdrawYears,
+                })}{' '}
+                <strong>{inTen(result.lasted, strings)}</strong>
+                {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted, amountLocale) })}
+              </>
+            )}
           </p>
           {result.medianRunOutYear !== null && (
             <p className="mcs-note">
@@ -825,7 +848,7 @@ function PrintedReport({ strings, exportStrings, state, result }: { strings: Str
     const median = state.saveYears === 1 ? strings.quick.medianOne : t(strings.quick.medianOther, { years: state.saveYears });
     answer.push(`${median}: ${formatAmount(r.p50, code)}`, t(strings.quick.range, { low: formatAmount(r.p10, code), high: formatAmount(r.p90, code) }));
   }
-  if (state.withdrawal > 0 && result.lasted !== null) answer.push(t(strings.quick.lasted, { years: state.withdrawYears, inTen: inTen(result.lasted, strings) }));
+  if (state.withdrawal > 0 && result.lasted !== null) answer.push(lastedLine(result.lasted, state.withdrawYears, strings));
   if (answer.length === 0) answer.push(strings.results.empty);
   const locale = amountLocale ?? 'en-US';
   return <ToolReport report={monteCarloReport({ island: strings, common: exportStrings, state, result, answer })} strings={exportStrings} locale={locale} />;
