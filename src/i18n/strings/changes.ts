@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'loan-apr-default-aud-jpy',
+        text: {
+          en: 'In the loan comparison, offers in Australian dollars and Japanese yen now start with the APR as the monthly rate × 12, which is how Australia\'s comparison rate and Japan\'s disclosed annual rate are worked out. Until now they started compounded. The choice above the offers still switches between the two.',
+          hi: 'लोन तुलना में ऑस्ट्रेलियाई डॉलर और जापानी येन के ऑफ़र अब APR को मासिक दर × 12 के रूप में दिखाकर शुरू होते हैं, क्योंकि ऑस्ट्रेलिया की तुलना दर और जापान की बताई जाने वाली सालाना दर इसी तरह निकाली जाती है। अब तक ये चक्रवृद्धि वाले तरीक़े से शुरू होते थे। ऑफ़र के ऊपर का विकल्प अब भी दोनों के बीच बदलता है।',
+          es: 'En el comparador de préstamos, las ofertas en dólares australianos y en yenes japoneses empiezan ahora con el APR como la tasa mensual × 12, que es como se calculan la tasa de comparación de Australia y la tasa anual que se informa en Japón. Hasta ahora empezaban con la tasa capitalizada. La opción situada sobre las ofertas sigue cambiando entre las dos.',
+          cs: 'Ve srovnání úvěrů teď nabídky v\u00a0australských dolarech a\u00a0japonských jenech začínají s\u00a0APR jako měsíční sazbou × 12, protože tak se počítá australská srovnávací sazba i\u00a0roční sazba uváděná v\u00a0Japonsku. Dosud začínaly se složeným úročením. Volba nad nabídkami mezi oběma způsoby přepíná dál.',
+          mr: 'कर्जांच्या तुलनेत ऑस्ट्रेलियन डॉलर आणि जपानी येनमधील ऑफर आता APR मासिक दर × 12 या पद्धतीने दाखवून सुरू होतात, कारण ऑस्ट्रेलियाचा तुलना दर आणि जपानमध्ये सांगितला जाणारा वार्षिक दर याच पद्धतीने काढला जातो. आतापर्यंत त्या चक्रवाढ पद्धतीने सुरू होत होत्या. ऑफरच्या वरचा पर्याय अजूनही दोन्ही पद्धतींमध्ये बदल करतो.',
+        },
+      },
+      {
         id: 'review-fixes-large-text-jumps',
         text: {
           en: 'A few small fixes after a review. With large text on a phone, a link that jumps within a page now lands below the header and not under it, and the cookie question opens at its first line. In the invest or pay off tool, the two lines that explain how today\'s money is counted now say what each one does. And a confirm or unsubscribe link that has lost its code no longer shows a button that could do nothing. The cookie question now gives its two answers the same look, so neither is pushed. And on a phone held sideways the header scrolls away with the page and leaves the screen to what you are reading.',

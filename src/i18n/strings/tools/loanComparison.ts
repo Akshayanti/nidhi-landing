@@ -132,7 +132,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'What is APR and how is it calculated here?',
-              a: 'APR (Annual Percentage Rate) folds the upfront fee into the cost of borrowing as a single annualized rate, so two offers with different fees can be compared on one number. This calculator computes APR by treating the fee as an upfront deduction from the principal disbursed to the borrower, then solving for the monthly rate at which the present value of the contractual payment stream equals that net amount. That monthly rate is then turned into a yearly figure in one of two ways, and the switch above the offers chooses which: the monthly rate × 12, used in the US, Canada and India, or the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK. With no fee, the monthly-rate-×-12 figure equals the rate you entered, and the compounded figure is slightly higher because interest is charged every month: 7.9% becomes about 8.19%.',
+              a: 'APR (Annual Percentage Rate) folds the upfront fee into the cost of borrowing as a single annualized rate, so two offers with different fees can be compared on one number. This calculator computes APR by treating the fee as an upfront deduction from the principal disbursed to the borrower, then solving for the monthly rate at which the present value of the contractual payment stream equals that net amount. That monthly rate is then turned into a yearly figure in one of two ways, and the switch above the offers chooses which: the monthly rate × 12, used in the US, Canada, India, Australia and Japan, or the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK. With no fee, the monthly-rate-×-12 figure equals the rate you entered, and the compounded figure is slightly higher because interest is charged every month: 7.9% becomes about 8.19%.',
             },
             {
               q: 'Why is APR usually higher than the headline rate?',
@@ -300,7 +300,7 @@ export const loanComparisonEn = {
       aprNominal: 'Monthly rate × 12',
       aprEffective: 'Monthly rate compounded over a year',
       aprHelpToggle: 'What is the difference?',
-      aprHelp: 'Two conventions exist: the monthly rate times 12, used in the US, Canada and India, and the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK (APR, or APRC for mortgages). Other countries may use either or their own rule, so check which one a lender\'s document uses before comparing it with this figure.',
+      aprHelp: 'Two conventions exist: the monthly rate times 12, used in the US, Canada, India, Australia and Japan, and the monthly rate compounded over a year, used in the EU (where it is called APRC) and the UK (APR, or APRC for mortgages). Other countries may use either or their own rule, so check which one a lender\'s document uses before comparing it with this figure.',
       currencyLabel: 'Display currency',
       currencyHelp: 'All loans in this comparison use this format.',
       sample: 'Sample:',
@@ -823,7 +823,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'APR क्या है और यहाँ उसकी गणना कैसे होती है?',
-              a: 'APR (सालाना प्रतिशत दर) शुरू में लगने वाले शुल्क को उधार लेने की लागत में जोड़कर एक ही सालाना दर बना देता है, जिससे अलग-अलग शुल्क वाले दो ऑफ़र एक ही आँकड़े पर तुलनीय हो जाते हैं। यह कैलकुलेटर APR ऐसे निकालता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो उधार लेने वाले को असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। फिर इस मासिक दर से सालाना आँकड़ा दो में से एक तरीक़े से बनता है, और ऑफ़रों के ऊपर का विकल्प तय करता है कि किस तरीक़े से: मासिक दर × 12, जो अमेरिका, कनाडा और भारत में चलता है, या साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन में चलती है। शुल्क न हो, तो मासिक दर × 12 वाला आँकड़ा आपकी भरी हुई दर के बराबर होता है, और चक्रवृद्धि वाला आँकड़ा थोड़ा ऊँचा, क्योंकि ब्याज हर महीने लगता है: 7.9% लगभग 8.19% हो जाता है।',
+              a: 'APR (सालाना प्रतिशत दर) शुरू में लगने वाले शुल्क को उधार लेने की लागत में जोड़कर एक ही सालाना दर बना देता है, जिससे अलग-अलग शुल्क वाले दो ऑफ़र एक ही आँकड़े पर तुलनीय हो जाते हैं। यह कैलकुलेटर APR ऐसे निकालता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो उधार लेने वाले को असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। फिर इस मासिक दर से सालाना आँकड़ा दो में से एक तरीक़े से बनता है, और ऑफ़रों के ऊपर का विकल्प तय करता है कि किस तरीक़े से: मासिक दर × 12, जो अमेरिका, कनाडा, भारत, ऑस्ट्रेलिया और जापान में चलता है, या साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन में चलती है। शुल्क न हो, तो मासिक दर × 12 वाला आँकड़ा आपकी भरी हुई दर के बराबर होता है, और चक्रवृद्धि वाला आँकड़ा थोड़ा ऊँचा, क्योंकि ब्याज हर महीने लगता है: 7.9% लगभग 8.19% हो जाता है।',
             },
             {
               q: 'APR आम तौर पर सामने लिखी दर से ऊँचा क्यों होता है?',
@@ -985,7 +985,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       aprNominal: 'मासिक दर × 12',
       aprEffective: 'साल भर की चक्रवृद्धि वाली मासिक दर',
       aprHelpToggle: 'फ़र्क क्या है?',
-      aprHelp: 'दो तरीक़े चलते हैं: मासिक दर गुणा 12, जो अमेरिका, कनाडा और भारत में चलता है, और साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन (APR, या मॉर्गेज के लिए APRC) में चलती है। बाकी देश इनमें से कोई एक या अपना नियम अपना सकते हैं, इसलिए इस आँकड़े से तुलना करने से पहले देख लें कि लोन देने वाले के काग़ज़ में कौन-सा तरीक़ा है।',
+      aprHelp: 'दो तरीक़े चलते हैं: मासिक दर गुणा 12, जो अमेरिका, कनाडा, भारत, ऑस्ट्रेलिया और जापान में चलता है, और साल भर की चक्रवृद्धि (compounding) वाली मासिक दर, जो यूरोपीय संघ (जहाँ इसे APRC कहते हैं) और ब्रिटेन (APR, या मॉर्गेज के लिए APRC) में चलती है। बाकी देश इनमें से कोई एक या अपना नियम अपना सकते हैं, इसलिए इस आँकड़े से तुलना करने से पहले देख लें कि लोन देने वाले के काग़ज़ में कौन-सा तरीक़ा है।',
       currencyLabel: 'किस मुद्रा में दिखाना है',
       currencyHelp: 'इस तुलना के सारे लोन इसी तरीक़े में लिखे जाएँगे।',
       sample: 'नमूना:',
@@ -1447,7 +1447,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se convierte después en una cifra anual de una de dos maneras, y el selector que está encima de las ofertas decide cuál: la tasa mensual × 12, que se usa en EE. UU., Canadá y la India, o la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido. Sin comisión, la cifra de tasa mensual × 12 es igual a la tasa que escribiste, y la cifra capitalizada es algo más alta porque los intereses se cobran cada mes: un 7,9% pasa a ser alrededor de un 8,19%.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se convierte después en una cifra anual de una de dos maneras, y el selector que está encima de las ofertas decide cuál: la tasa mensual × 12, que se usa en EE. UU., Canadá, la India, Australia y Japón, o la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido. Sin comisión, la cifra de tasa mensual × 12 es igual a la tasa que escribiste, y la cifra capitalizada es algo más alta porque los intereses se cobran cada mes: un 7,9% pasa a ser alrededor de un 8,19%.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
@@ -1609,7 +1609,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       aprNominal: 'Tasa mensual × 12',
       aprEffective: 'Tasa mensual capitalizada durante un año',
       aprHelpToggle: '¿Cuál es la diferencia?',
-      aprHelp: 'Hay dos convenciones: la tasa mensual por 12, que se usa en EE. UU., Canadá y la India, y la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido (APR, o APRC en hipotecas). Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra. La cifra oficial (TAE) fija además qué costos incluye.',
+      aprHelp: 'Hay dos convenciones: la tasa mensual por 12, que se usa en EE. UU., Canadá, la India, Australia y Japón, y la tasa mensual capitalizada durante un año, que se usa en la UE (donde se llama TAE) y en el Reino Unido (APR, o APRC en hipotecas). Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra. La cifra oficial (TAE) fija además qué costos incluye.',
       currencyLabel: 'Moneda en pantalla',
       currencyHelp: 'Todos los préstamos de esta comparación usan este formato.',
       sample: 'Ejemplo:',
@@ -2070,7 +2070,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Co je APR a jak se tady počítá?',
-              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se pak převede na roční číslo jedním ze dvou způsobů a přepínač nad nabídkami určuje, kterým: měsíční sazba × 12, jak se používá v USA, Kanadě a Indii, nebo měsíční sazba se složeným úročením za rok, jak se používá v EU (v češtině se používá označení RPSN) a ve Spojeném království. Bez poplatku se číslo podle měsíční sazby × 12 rovná zadané sazbě a číslo se složeným úročením je o něco vyšší, protože úrok se účtuje každý měsíc: ze 7,9 % je asi 8,19 %.',
+              a: 'APR (roční procentní sazba) zahrnuje počáteční poplatek do nákladů úvěru jako jednu roční sazbu, takže dvě nabídky s různými poplatky lze porovnat jedním číslem. Tato kalkulačka počítá APR tak, že poplatek bere jako srážku z jistiny vyplacené dlužníkovi předem a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba se pak převede na roční číslo jedním ze dvou způsobů a přepínač nad nabídkami určuje, kterým: měsíční sazba × 12, jak se používá v USA, Kanadě, Indii, Austrálii a Japonsku, nebo měsíční sazba se složeným úročením za rok, jak se používá v EU (v češtině se používá označení RPSN) a ve Spojeném království. Bez poplatku se číslo podle měsíční sazby × 12 rovná zadané sazbě a číslo se složeným úročením je o něco vyšší, protože úrok se účtuje každý měsíc: ze 7,9 % je asi 8,19 %.',
             },
             {
               q: 'Proč je APR obvykle vyšší než nabízená sazba?',
@@ -2232,7 +2232,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       aprNominal: 'Měsíční sazba × 12',
       aprEffective: 'Měsíční sazba se složeným úročením za rok',
       aprHelpToggle: 'Jaký je v tom rozdíl?',
-      aprHelp: 'Používají se dva způsoby: měsíční sazba krát 12, obvyklá v USA, Kanadě a Indii, a měsíční sazba se složeným úročením za rok, obvyklá v EU (v češtině se používá označení RPSN) a ve Spojeném království (APR, u hypoték APRC). Jiné země mohou používat jeden z nich nebo vlastní pravidlo, proto si před porovnáním s tímto číslem ověřte, který způsob používá dokument poskytovatele úvěru. Oficiální RPSN navíc určuje, které náklady se do ní počítají.',
+      aprHelp: 'Používají se dva způsoby: měsíční sazba krát 12, obvyklá v USA, Kanadě, Indii, Austrálii a Japonsku, a měsíční sazba se složeným úročením za rok, obvyklá v EU (v češtině se používá označení RPSN) a ve Spojeném království (APR, u hypoték APRC). Jiné země mohou používat jeden z nich nebo vlastní pravidlo, proto si před porovnáním s tímto číslem ověřte, který způsob používá dokument poskytovatele úvěru. Oficiální RPSN navíc určuje, které náklady se do ní počítají.',
       currencyLabel: 'Měna zobrazení',
       currencyHelp: 'Všechny úvěry v tomto srovnání používají tento formát.',
       sample: 'Ukázka:',
@@ -2675,7 +2675,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'APR म्हणजे काय आणि इथे तो कसा काढला जातो?',
-              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. मग या मासिक दरावरून वार्षिक आकडा दोनपैकी एका पद्धतीने काढला जातो, आणि ऑफरच्या वरचा पर्याय ती पद्धत ठरवतो: मासिक दर × 12, ही पद्धत अमेरिकेत, कॅनडात आणि भारतात वापरली जाते, किंवा मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये वापरला जातो. शुल्क नसेल तर मासिक दर × 12 चा आकडा तुम्ही भरलेल्या दराइतकाच असतो, आणि चक्रवाढीचा आकडा थोडा जास्त, कारण व्याजाची गणना दर महिन्याला होते: 7.9% दराचा वार्षिक आकडा सुमारे 8.19% होतो.',
+              a: 'APR (वार्षिक टक्केवारी दर) सुरुवातीचे शुल्क कर्जाच्या खर्चात एकाच वार्षिक दराच्या रूपात सामावून घेतो, म्हणजे वेगवेगळ्या शुल्कांच्या दोन ऑफरची एकाच आकड्यावर तुलना करता येते. हा कॅल्क्युलेटर शुल्क हे कर्जदाराला दिलेल्या मुद्दलातून सुरुवातीलाच झालेली वजावट मानतो, आणि मग असा मासिक दर काढतो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. मग या मासिक दरावरून वार्षिक आकडा दोनपैकी एका पद्धतीने काढला जातो, आणि ऑफरच्या वरचा पर्याय ती पद्धत ठरवतो: मासिक दर × 12, ही पद्धत अमेरिकेत, कॅनडात, भारतात, ऑस्ट्रेलियात आणि जपानमध्ये वापरली जाते, किंवा मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये वापरला जातो. शुल्क नसेल तर मासिक दर × 12 चा आकडा तुम्ही भरलेल्या दराइतकाच असतो, आणि चक्रवाढीचा आकडा थोडा जास्त, कारण व्याजाची गणना दर महिन्याला होते: 7.9% दराचा वार्षिक आकडा सुमारे 8.19% होतो.',
             },
             {
               q: 'APR सहसा जाहिरातीतील दरापेक्षा जास्त का असतो?',
@@ -2837,7 +2837,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       aprNominal: 'मासिक दर × 12',
       aprEffective: 'वर्षभर चक्रवाढ केलेला मासिक दर',
       aprHelpToggle: 'फरक काय आहे?',
-      aprHelp: 'दोन पद्धती वापरात आहेत: मासिक दराला 12 ने गुणण्याची पद्धत, जी अमेरिकेत, कॅनडात आणि भारतात वापरली जाते, आणि मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये (APR, किंवा गहाण कर्जांसाठी APRC) वापरला जातो. इतर देश यांपैकी एक किंवा स्वतःचा नियम वापरू शकतात, त्यामुळे या आकड्याशी तुलना करण्यापूर्वी कर्जदात्याच्या कागदपत्रात कोणती पद्धत आहे ते तपासा.',
+      aprHelp: 'दोन पद्धती वापरात आहेत: मासिक दराला 12 ने गुणण्याची पद्धत, जी अमेरिकेत, कॅनडात, भारतात, ऑस्ट्रेलियात आणि जपानमध्ये वापरली जाते, आणि मासिक दरावर वर्षभर चक्रवाढ करून काढलेला वार्षिक दर, जो युरोपियन युनियनमध्ये (तिथे त्याला APRC म्हणतात) आणि UK मध्ये (APR, किंवा गहाण कर्जांसाठी APRC) वापरला जातो. इतर देश यांपैकी एक किंवा स्वतःचा नियम वापरू शकतात, त्यामुळे या आकड्याशी तुलना करण्यापूर्वी कर्जदात्याच्या कागदपत्रात कोणती पद्धत आहे ते तपासा.',
       currencyLabel: 'दाखवायचे चलन',
       currencyHelp: 'या तुलनेतील सर्व कर्जे हे स्वरूप वापरतात.',
       sample: 'नमुना:',

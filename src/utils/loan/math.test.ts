@@ -490,8 +490,8 @@ describe('computeLoan', () => {
 
 describe('the two APR conventions', () => {
   it('follows the currency: times 12 for USD, CAD and INR, compounded for every other', () => {
-    for (const code of ['USD', 'CAD', 'INR']) assert.equal(defaultAprConvention(code), 'nominal');
-    for (const code of ['EUR', 'GBP', 'CZK', 'JPY']) assert.equal(defaultAprConvention(code), 'effective');
+    for (const code of ['USD', 'CAD', 'INR', 'AUD', 'JPY']) assert.equal(defaultAprConvention(code), 'nominal');
+    for (const code of ['EUR', 'GBP', 'CZK', 'SEK', 'PLN']) assert.equal(defaultAprConvention(code), 'effective');
   });
 
   it('leaves the times-12 figure as it is', () => {
