@@ -1097,7 +1097,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       apr: 'APR',
       aprNa: 'लागू नहीं',
       /** Under a card's APR: the basis the figure is on. */
-      aprBasis: 'आपकी दर के ही आधार पर',
+      aprBasis: 'आपकी दर वाले हिसाब से ही',
       /** Above the offers: why a lender's document can show a higher figure. */
       aprDocs: 'यूरोपीय संघ, ब्रिटेन और कुछ दूसरे देशों के लोन के काग़ज़ों में हर महीने के ब्याज पर चक्रवृद्धि (compounding) जोड़ी जाती है, इसलिए उसी लोन के लिए उन पर लिखा सालाना आँकड़ा (APRC, RPSN, TAE) यहाँ के APR से ऊँचा होता है। दर जितनी ऊँची, फ़र्क उतना बड़ा: यहाँ का 6.50% वहाँ 6.70% होता है, और 20% वहाँ 21.94%।',
       aprFees: 'शुल्क जुड़ा हुआ',
@@ -1133,7 +1133,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       monthlyPayment: 'मासिक किस्त',
       monthsToPayoff: 'चुकाने के महीने',
       /** Under the side-by-side table. */
-      aprNote: 'इस तालिका का APR आपकी दर के ही आधार पर है।',
+      aprNote: 'इस तालिका का APR आपकी दर वाले हिसाब से ही है।',
       aprInclFees: 'APR (शुल्क समेत)',
       totalInterest: 'कुल ब्याज',
       totalPaid: 'कुल चुकाया',
