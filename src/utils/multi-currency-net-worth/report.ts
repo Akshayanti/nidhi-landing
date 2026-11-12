@@ -10,7 +10,7 @@
  */
 import { cellLabel, tableOf, type Report, type ReportTable } from '../shared/report.ts';
 import { netWorthSheets, type NetWorthExport } from './export.ts';
-import { getCurrencyLabel, isSingleCurrency } from './math.ts';
+import { concentrationShares, getCurrencyLabel, isSingleCurrency } from './math.ts';
 
 export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answer: string[] }): Report {
   const { island, functionalCurrency, result, rows, answer } = e;
@@ -24,9 +24,11 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
   const rates: ReportTable | null = ratesSheet
     ? { caption: x.sheets.rates, head: ratesSheet.rows[1].map(cellLabel), rows: ratesSheet.rows.slice(2) }
     : null;
+  // The bars are the page's chart: concentration, which adds to 100.
+  const concentration = concentrationShares(result.positions);
   const bars = result.positions
     .filter((p) => !p.rateUnavailable)
-    .map((p) => ({ label: getCurrencyLabel(p.code, island.currencies), share: p.pctOfTotal }));
+    .map((p) => ({ label: getCurrencyLabel(p.code, island.currencies), share: concentration.get(p.code) ?? 0 }));
 
   // Nothing entered yet: the answer says so, and there is nothing to tabulate.
   if (result.positions.length === 0) {

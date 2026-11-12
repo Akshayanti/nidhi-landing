@@ -36,6 +36,9 @@ import {
   refinanceComparison,
   roundMinor,
   toMinor,
+  isNotPaidOff,
+  MAX_TERM_MONTHS,
+  shownMonths,
 } from './math.ts';
 
 // ---------------------------------------------------------------------------
@@ -1716,5 +1719,121 @@ describe('rateChange: the payment after a fixed period', () => {
     assert.equal(r.months, 13);
     assert.deepEqual(r.rateChange, { month: 13, paymentMinor: r.schedule[12].payment, last: true });
     assert.equal(r.schedule[12].balance, 0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The payment kept at a rate change
+// ---------------------------------------------------------------------------
+
+describe('a changing rate with the payment kept', () => {
+  // 1,000,000.00 over 360 months, 8.45% for 60 months, then the later rate.
+  const run = (
+    later: number,
+    keeps: 'term' | 'payment',
+    extra: { extraMonthlyMinor?: number; lumpSums?: { month: number; amountMinor: number }[]; months?: number; initialMonths?: number } = {},
+  ) =>
+    computeLoan(
+      {
+        principalMinor: 100_000_000,
+        annualRate: 0.0845,
+        extraMonthlyMinor: extra.extraMonthlyMinor,
+        lumpSums: extra.lumpSums,
+        rateSpec: { kind: 'hybrid', initialAnnualRate: 0.0845, initialMonths: extra.initialMonths ?? 60, subsequentAnnualRate: later, keeps },
+      },
+      { kind: 'term', months: extra.months ?? 360 },
+    );
+
+  it('leaves the default exactly as it was: the payment is recast and the loan ends on its term', () => {
+    const r = run(0.09, 'term');
+    assert.equal(r.months, 360);
+    assert.equal(r.monthlyPaymentMinor, 765_373);
+    assert.deepEqual(r.rateChange, { month: 61, paymentMinor: 801_010 });
+    assert.equal(r.keptPayment, undefined);
+    assert.equal(r.totalPaidMinor, 286_224_964);
+  });
+
+  it('runs past the term at a higher rate: 9% ends in month 427, checked by hand', () => {
+    const r = run(0.09, 'payment');
+    // The balance after 60 payments, and the closed form for how many
+    // payments of 7,653.73 clear it at 0.75% a month: 366.5, so 367.
+    assert.equal(r.schedule[59].balance, 95_449_608);
+    const n = -Math.log(1 - (954_496.08 * 0.0075) / 7_653.73) / Math.log(1.0075);
+    assert.equal(Math.ceil(n), 367);
+    assert.equal(r.months, 60 + 367);
+    assert.deepEqual(r.keptPayment, { outcome: 'paid', termMonths: 360 });
+    assert.deepEqual(r.rateChange, { month: 61, paymentMinor: 765_373 });
+    // Every payment but the last is the kept one.
+    assert.ok(r.schedule.slice(0, -1).every((row) => row.payment === 765_373));
+    assert.ok(r.schedule[r.schedule.length - 1].payment < 765_373);
+    assert.equal(r.schedule.reduce((sum, row) => sum + row.principal, 0), 100_000_000);
+    assert.ok(Number.isFinite(r.aprNominal) && r.aprNominal > 0.0845 && r.aprNominal < 0.09);
+  });
+
+  it('ends early at a lower rate', () => {
+    const r = run(0.06, 'payment');
+    assert.equal(r.months, 256);
+    assert.deepEqual(r.keptPayment, { outcome: 'paid', termMonths: 360 });
+  });
+
+  it('is never paid off when the payment is less than the interest, and has no totals', () => {
+    const r = run(0.10, 'payment');
+    // Month 61: 954,496.08 at 10% a year is 7,954.13 of interest against 7,653.73.
+    assert.equal(r.schedule[60].interest, 795_413);
+    assert.deepEqual(r.keptPayment, { outcome: 'never', termMonths: 360, covers: 'less', fromMonth: 61 });
+    assert.equal(r.error, undefined);
+    assert.ok(Number.isNaN(r.totalPaidMinor));
+    assert.ok(Number.isNaN(r.totalInterestMinor));
+    assert.ok(Number.isNaN(r.aprNominal));
+    assert.ok(isNotPaidOff(r));
+    assert.equal(r.schedule.length, MAX_TERM_MONTHS);
+    assert.ok(r.schedule[61].balance > r.schedule[60].balance);
+  });
+
+  it('decides from the whole schedule: an extra each month or a later lump sum can still pay it off', () => {
+    const extra = run(0.10, 'payment', { extraMonthlyMinor: 50_000 });
+    assert.equal(extra.keptPayment?.outcome, 'paid');
+    assert.equal(extra.months, 395);
+    assert.equal(extra.rateChange?.paymentMinor, 765_373 + 50_000);
+    const lump = run(0.10, 'payment', { lumpSums: [{ month: 100, amountMinor: 30_000_000 }] });
+    assert.equal(lump.keptPayment?.outcome, 'paid');
+    assert.equal(lump.months, 257);
+    assert.ok(!isNotPaidOff(lump));
+  });
+
+  it('says the calculation stopped, not that the loan is never paid off, when the balance is still falling at the limit', () => {
+    // 9.62% leaves a payment a little above the interest: 1,103 months. 9.622% needs more than 1,200.
+    assert.equal(run(0.0962, 'payment').months, 1103);
+    const r = run(0.09622, 'payment');
+    assert.equal(r.keptPayment?.outcome, 'limit');
+    assert.ok(r.schedule[1199].balance < r.schedule[1198].balance);
+    assert.ok(Number.isNaN(r.totalPaidMinor));
+  });
+
+  it('is an ordinary schedule when no payment would use a different rate', () => {
+    const fixed = computeLoan({ principalMinor: 100_000_000, annualRate: 0.0845 }, { kind: 'term', months: 360 });
+    for (const r of [run(0.0845, 'payment'), run(0.10, 'payment', { initialMonths: 360 }), run(0.10, 'payment', { initialMonths: 400 })]) {
+      assert.equal(r.keptPayment, undefined);
+      assert.equal(r.months, 360);
+      assert.equal(r.totalPaidMinor, fixed.totalPaidMinor);
+    }
+  });
+
+  it('says nothing about a kept payment when the loan is paid off before the rate changes', () => {
+    const r = run(0.10, 'payment', { lumpSums: [{ month: 24, amountMinor: 100_000_000 }] });
+    assert.equal(r.keptPayment, undefined);
+    assert.equal(r.months, 24);
+    assert.deepEqual(r.rateChange, { month: 61, paymentMinor: null });
+  });
+
+  it('draws a loan that is never paid off over the range of the others, or its own term', () => {
+    const fixed = computeLoan({ principalMinor: 100_000_000, annualRate: 0.0845 }, { kind: 'term', months: 360 });
+    const never = run(0.10, 'payment');
+    const long = run(0.09, 'payment');
+    assert.equal(shownMonths([never, fixed], 0), 360);
+    assert.equal(shownMonths([never, fixed], 1), 360);
+    assert.equal(shownMonths([never, long], 0), 427);
+    assert.equal(shownMonths([never], 0), 360);
+    assert.equal(shownMonths([run(0.10, 'payment', { months: 480 }), fixed], 0), 480);
   });
 });
