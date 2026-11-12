@@ -53,6 +53,9 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        },
+      },
+      {
         id: 'net-worth-concentration-exposure',
         text: {
           en: 'The net worth calculator used one word, concentration, for two different numbers. With a debt in another currency, the chart could say 63.5% while the cards and the spreadsheet said 234.9% for the same currency. Now concentration is each currency\'s share of everything you hold and owe, and always adds to 100%. The other number is called what it is, the share of your net worth, on the cards and as its own column in the spreadsheet and the PDF.',
