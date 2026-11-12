@@ -188,7 +188,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Why does the single line sit above most paths?',
-          a: 'Volatility costs compounding: a 20% loss needs a 25% gain to get back to where you were. So a plan that averages a given return with ups and downs usually ends below the same plan with that return every year. The single line uses the compound rate, which is already lower than the simple average, and still close to half the paths end below it.',
+          a: 'Volatility costs compounding: a 20% loss needs a 25% gain to get back to where you were. So a plan that averages a given return with ups and downs usually ends below the same plan with that return every year. The single line is that second plan: the average return every year, with no ups and downs. More than half the paths usually end below it.',
         },
         {
           q: 'Is my data sent anywhere?',
@@ -353,9 +353,13 @@ export const monteCarloEn = {
       range: '8 in 10 paths between {low} and {high}',
       jump: 'Go to the full result',
       lasted: 'The money lasted all {years} years in {inTen} paths.',
+      lastedAll: 'The money lasted all {years} years in every path.',
+      lastedNone: 'The money ran out before the {years} years were over in every path.',
     },
     /** "9 in 10" style phrasing, filled with a count of tenths. */
     inTen: '{n} in 10',
+    inTenMore: 'more than 9 in 10',
+    inTenFewer: 'fewer than 1 in 10',
     results: {
       headingOne: 'After 1 year of saving',
       headingOther: 'After {years} years of saving',
@@ -369,12 +373,14 @@ export const monteCarloEn = {
       cardsKey:
         'Low and high: 1 in 10 paths ended below or above (the 10th and 90th percentiles). Median: half ended above, half below.',
       /** Split around the `<strong>`, which holds the single line's end value. */
-      noteBefore: 'A calculator with one fixed return would draw a single line to',
+      noteBefore: 'A calculator that used the average return every year would draw a single line to',
       noteAfter: '. {share} of the simulated paths ended below it.',
       empty: 'Add some years of saving, or switch on withdrawals, to see a spread of outcomes.',
       /** Split around the `<strong>`, which holds the 8-in-10 phrasing. */
       lastedHeadBefore: 'Taking {amount} a year, the money lasted all {years} years in',
       lastedHeadAfter: ' simulated paths ({share}).',
+      lastedAll: 'Taking {amount} a year, the money lasted all {years} years in every simulated path.',
+      lastedNone: 'Taking {amount} a year, the money ran out before the {years} years were over in every simulated path.',
       runOut:
         'Among the paths where it ran out, the median year it did so was year {year} of {years}.',
       caveat:
@@ -552,7 +558,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'एक सीधी लकीर ज़्यादातर रास्तों के ऊपर क्यों रहती है?',
-          a: 'उतार-चढ़ाव चक्रवृद्धि पर महँगा पड़ता है: 20% का नुक़सान भरपाई के लिए 25% का फ़ायदा माँगता है। इसलिए जो योजना औसतन एक तय रिटर्न देती है, उतार-चढ़ाव के साथ, वह आमतौर पर हर साल वही रिटर्न देने वाली योजना से नीचे ख़त्म होती है। सीधी लकीर चक्रवृद्धि दर लेती है, जो साधारण औसत से पहले ही कम है, और फिर भी लगभग आधे रास्ते उसके नीचे ख़त्म होते हैं।',
+          a: 'उतार-चढ़ाव चक्रवृद्धि पर महँगा पड़ता है: 20% का नुक़सान भरपाई के लिए 25% का फ़ायदा माँगता है। इसलिए जो योजना औसतन एक तय रिटर्न देती है, उतार-चढ़ाव के साथ, वह आमतौर पर हर साल वही रिटर्न देने वाली योजना से नीचे ख़त्म होती है। सीधी लकीर वही दूसरी योजना है: हर साल औसत रिटर्न, बिना उतार-चढ़ाव के। आमतौर पर आधे से ज़्यादा रास्ते उसके नीचे ख़त्म होते हैं।',
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
@@ -683,8 +689,12 @@ export const monteCarloHi: typeof monteCarloEn = {
       range: '10 में से 8 रास्ते {low} और {high} के बीच',
       jump: 'पूरा नतीजा देखें',
       lasted: 'पैसा पूरे {years} साल तक {inTen} रास्तों में टिका।',
+      lastedAll: 'पैसा पूरे {years} साल तक हर रास्ते में टिका।',
+      lastedNone: 'पैसा हर रास्ते में {years} साल पूरे होने से पहले ख़त्म हो गया।',
     },
     inTen: '10 में से {n}',
+    inTenMore: '10 में से 9 से ज़्यादा',
+    inTenFewer: '10 में से 1 से कम',
     results: {
       headingOne: '1 साल की बचत के बाद',
       headingOther: '{years} साल की बचत के बाद',
@@ -697,11 +707,13 @@ export const monteCarloHi: typeof monteCarloEn = {
       highMore: ' (90वाँ पर्सेंटाइल): 10 में से 1 रास्ता इसके ऊपर ख़त्म हुआ',
       cardsKey:
         'कम और ज़्यादा: 10 में से 1 रास्ता क्रमशः इनसे नीचे या ऊपर ख़त्म हुआ (10वाँ और 90वाँ पर्सेंटाइल)। बीच का: आधे ऊपर ख़त्म हुए, आधे नीचे।',
-      noteBefore: 'एक ही तय रिटर्न मानने वाला कैलकुलेटर एक सीधी लकीर खींचता, जो यहाँ ख़त्म होती:',
+      noteBefore: 'हर साल औसत रिटर्न मानने वाला कैलकुलेटर एक सीधी लकीर खींचता, जो यहाँ ख़त्म होती:',
       noteAfter: '। सिम्युलेटेड रास्तों में से {share} इसके नीचे ख़त्म हुए।',
       empty: 'नतीजों का फैलाव देखने के लिए कुछ साल की बचत जोड़ें, या निकासी चालू कीजिए।',
       lastedHeadBefore: 'सालाना {amount} निकालने पर पैसा पूरे {years} साल तक टिका:',
       lastedHeadAfter: ' सिम्युलेटेड रास्तों में ({share})।',
+      lastedAll: 'सालाना {amount} निकालने पर पैसा पूरे {years} साल तक हर सिम्युलेटेड रास्ते में टिका।',
+      lastedNone: 'सालाना {amount} निकालने पर पैसा हर सिम्युलेटेड रास्ते में {years} साल पूरे होने से पहले ख़त्म हो गया।',
       runOut:
         'जिन रास्तों में पैसा ख़त्म हुआ, उनमें ख़त्म होने का बीच का साल था: {years} में से साल {year}।',
       caveat:
@@ -868,7 +880,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿Por qué la línea única queda por encima de la mayoría de las trayectorias?',
-          a: 'La volatilidad le resta al efecto del interés compuesto: una pérdida del 20 % necesita una ganancia del 25 % para volver al punto de partida. Por eso, un plan que obtiene de media cierta rentabilidad con altibajos suele terminar por debajo del mismo plan con esa rentabilidad todos los años. La línea única usa la tasa compuesta, que ya es más baja que la media simple, y aun así cerca de la mitad de las trayectorias terminan por debajo de ella.',
+          a: 'La volatilidad le resta al efecto del interés compuesto: una pérdida del 20 % necesita una ganancia del 25 % para volver al punto de partida. Por eso, un plan que obtiene de media cierta rentabilidad con altibajos suele terminar por debajo del mismo plan con esa rentabilidad todos los años. La línea única es ese segundo plan: la rentabilidad media todos los años, sin altibajos. Por lo general, más de la mitad de las trayectorias terminan por debajo de ella.',
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
@@ -999,8 +1011,12 @@ export const monteCarloEs: typeof monteCarloEn = {
       range: '8 de cada 10 trayectorias entre {low} y {high}',
       jump: 'Ir al resultado completo',
       lasted: 'El dinero alcanzó para los {years} años en {inTen} trayectorias.',
+      lastedAll: 'El dinero alcanzó para los {years} años en todas las trayectorias.',
+      lastedNone: 'El dinero se agotó antes de completar los {years} años en todas las trayectorias.',
     },
     inTen: '{n} de cada 10',
+    inTenMore: 'más de 9 de cada 10',
+    inTenFewer: 'menos de 1 de cada 10',
     results: {
       headingOne: 'Tras 1 año de ahorro',
       headingOther: 'Tras {years} años de ahorro',
@@ -1013,11 +1029,13 @@ export const monteCarloEs: typeof monteCarloEn = {
       highMore: ' (percentil 90): 1 de cada 10 trayectorias terminó por encima',
       cardsKey:
         'Bajo y alto: 1 de cada 10 trayectorias terminó por debajo o por encima (los percentiles 10 y 90). Mediana: la mitad terminó por encima y la mitad por debajo.',
-      noteBefore: 'Una calculadora con una única rentabilidad fija trazaría una sola línea hasta',
+      noteBefore: 'Una calculadora que aplicara la rentabilidad media todos los años trazaría una sola línea hasta',
       noteAfter: '. El {share} de las trayectorias simuladas terminó por debajo.',
       empty: 'Añade algunos años de ahorro, o activa los retiros, para ver un abanico de resultados.',
       lastedHeadBefore: 'Retirando {amount} al año, el dinero alcanzó para los {years} años en',
       lastedHeadAfter: ' trayectorias simuladas ({share}).',
+      lastedAll: 'Retirando {amount} al año, el dinero alcanzó para los {years} años en todas las trayectorias simuladas.',
+      lastedNone: 'Retirando {amount} al año, el dinero se agotó antes de completar los {years} años en todas las trayectorias simuladas.',
       runOut:
         'En las trayectorias en las que se agotó, la mediana del año en que ocurrió fue el año {year} de {years}.',
       caveat:
@@ -1186,7 +1204,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Proč jedna čára leží nad většinou trajektorií?',
-          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára používá složenou sazbu, která je už nižší než prostý průměr, a přesto pod ní skončí téměř polovina trajektorií.',
+          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára je ten druhý plán: průměrný výnos každý rok, bez vzestupů a poklesů. Obvykle pod ní skončí více než polovina trajektorií.',
         },
         {
           q: 'Posílají se moje data někam?',
@@ -1316,9 +1334,13 @@ export const monteCarloCs: typeof monteCarloEn = {
       medianOther: 'Medián po {years} letech',
       range: '8 z 10 trajektorií mezi {low} a {high}',
       jump: 'Přejít na celý výsledek',
-      lasted: 'Peníze vydržely po celou dobu (počet let: {years}) v {inTen} trajektorií.',
+      lasted: 'Peníze vydržely po celou dobu (počet let: {years}) {inTen} trajektorií.',
+      lastedAll: 'Peníze vydržely po celou dobu (počet let: {years}) ve všech trajektoriích.',
+      lastedNone: 'Peníze došly před koncem doby (počet let: {years}) ve všech trajektoriích.',
     },
-    inTen: '{n} z 10',
+    inTen: 'v {n} z 10',
+    inTenMore: 've více než 9 z 10',
+    inTenFewer: 'v méně než 1 z 10',
     results: {
       headingOne: 'Po 1 roce spoření',
       headingOther: 'Po {years} letech spoření',
@@ -1331,11 +1353,13 @@ export const monteCarloCs: typeof monteCarloEn = {
       highMore: ' (90. percentil): 1 z 10 trajektorií skončila výš',
       cardsKey:
         'Nízký a vysoký: 1 z 10 trajektorií skončila níž, nebo výš (10. a 90. percentil). Medián: polovina skončila výš, polovina níž.',
-      noteBefore: 'Kalkulačka s jedním pevným výnosem by nakreslila jedinou čáru až k',
+      noteBefore: 'Kalkulačka, která by každý rok počítala s průměrným výnosem, by nakreslila jedinou čáru až k',
       noteAfter: '. {share} simulovaných trajektorií skončilo pod ní.',
       empty: 'Přidejte nějaké roky spoření nebo zapněte výběry a uvidíte rozpětí výsledků.',
-      lastedHeadBefore: 'Při výběru {amount} ročně vydržely peníze po celou dobu (počet let: {years}) v',
+      lastedHeadBefore: 'Při výběru {amount} ročně vydržely peníze po celou dobu (počet let: {years})',
       lastedHeadAfter: ' simulovaných trajektorií ({share}).',
+      lastedAll: 'Při výběru {amount} ročně vydržely peníze po celou dobu (počet let: {years}) ve všech simulovaných trajektoriích.',
+      lastedNone: 'Při výběru {amount} ročně došly peníze před koncem doby (počet let: {years}) ve všech simulovaných trajektoriích.',
       runOut:
         'U trajektorií, kde peníze došly, to v mediánu nastalo v roce {year} z {years}.',
       caveat:
@@ -1490,7 +1514,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'एकच रेषा बहुतेक मार्गांच्या वर का असते?',
-          a: 'चढ-उतारांमुळे चक्रवाढीला फटका बसतो: 20% तोटा भरून काढायला 25% वाढ लागते. त्यामुळे चढ-उतारांसह ठरावीक सरासरी परतावा मिळवणारी योजना सहसा दरवर्षी तोच परतावा मिळवणाऱ्या योजनेपेक्षा खाली संपते. एकच रेषा चक्रवाढ दर वापरते, जो साध्या सरासरीपेक्षा आधीच कमी असतो, आणि तरीही जवळपास अर्धे मार्ग तिच्या खाली संपतात.',
+          a: 'चढ-उतारांमुळे चक्रवाढीला फटका बसतो: 20% तोटा भरून काढायला 25% वाढ लागते. त्यामुळे चढ-उतारांसह ठरावीक सरासरी परतावा मिळवणारी योजना सहसा दरवर्षी तोच परतावा मिळवणाऱ्या योजनेपेक्षा खाली संपते. एकच रेषा म्हणजे ती दुसरी योजना: दरवर्षी सरासरी परतावा, चढ-उतारांशिवाय. सहसा अर्ध्याहून अधिक मार्ग तिच्या खाली संपतात.',
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
@@ -1617,8 +1641,12 @@ export const monteCarloMr: typeof monteCarloEn = {
       range: '10 पैकी 8 मार्ग {low} आणि {high} दरम्यान',
       jump: 'पूर्ण निकाल पाहा',
       lasted: '{inTen} मार्गांमध्ये पैसा सर्व {years} वर्षे पुरला.',
+      lastedAll: 'प्रत्येक मार्गात पैसा सर्व {years} वर्षे पुरला.',
+      lastedNone: 'प्रत्येक मार्गात पैसा {years} वर्षे पूर्ण होण्याआधीच संपला.',
     },
     inTen: '10 पैकी {n}',
+    inTenMore: '10 पैकी 9 पेक्षा जास्त',
+    inTenFewer: '10 पैकी 1 पेक्षा कमी',
     results: {
       headingOne: '1 वर्षाच्या बचतीनंतर',
       headingOther: '{years} वर्षांच्या बचतीनंतर',
@@ -1630,11 +1658,13 @@ export const monteCarloMr: typeof monteCarloEn = {
       highLabel: 'जास्त',
       highMore: ' (90 वे शतमक): 10 पैकी 1 मार्ग याच्या वर संपला',
       cardsKey: 'कमी आणि जास्त: 10 पैकी 1 मार्ग खाली किंवा वर संपला (10 वे आणि 90 वे शतमक). मध्यक: अर्धे वर संपले, अर्धे खाली.',
-      noteBefore: 'एकच ठरावीक परतावा धरणारा कॅल्क्युलेटर एकच रेषा काढेल, जी इथे संपेल:',
+      noteBefore: 'दरवर्षी सरासरी परतावा धरणारा कॅल्क्युलेटर एकच रेषा काढेल, जी इथे संपेल:',
       noteAfter: '. संभाव्य मार्गांपैकी {share} मार्ग तिच्या खाली संपले.',
       empty: 'निकालांचा पल्ला पाहण्यासाठी बचतीची काही वर्षे जोडा, किंवा पैसे काढणे चालू करा.',
       lastedHeadBefore: 'दरवर्षी {amount} काढताना, सर्व {years} वर्षे पैसा पुरलेले',
       lastedHeadAfter: ' संभाव्य मार्ग होते ({share}).',
+      lastedAll: 'दरवर्षी {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा सर्व {years} वर्षे पुरला.',
+      lastedNone: 'दरवर्षी {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा {years} वर्षे पूर्ण होण्याआधीच संपला.',
       runOut: 'ज्या मार्गांवर पैसा संपला, त्यांच्यात तो संपण्याचे मध्यक वर्ष {years} पैकी {year} वे होते.',
       caveat: 'हे {paths} संभाव्य मार्गांमधील हिस्से आहेत; तुमच्या बाबतीत काही घडण्याची शक्यता ते दर्शवत नाहीत. मॉडेल हे सोपे केलेले रूप आहे; त्यात काय धरलेले नाही ते खाली पाहा.',
       caveatFew: ' फक्त {paths} मार्गांवर, आकडे हजारो मार्गांच्या आकड्यांपासून अनेक टक्के दूर असू शकतात.',
