@@ -14,9 +14,6 @@ import {
   toMinor,
   type AmortizationRow,
   type LoanResult,
-  aprInConvention,
-  defaultAprConvention,
-  type AprConvention,
   isNotPaidOff,
   shownMonths,
   MAX_TERM_MONTHS,
@@ -871,11 +868,7 @@ export default function LoanCompare({
   // call sites read it directly. Updates always go through setGlobalState
   // so there is one source of truth.
   const currency = globalState.currency;
-  // Follows the currency until the reader picks one by hand; a hand choice
-  // stays when the currency changes, and Reset goes back to following.
-  const aprConvention: AprConvention = globalState.aprConvention ?? defaultAprConvention(currency);
-  const setAprConvention = (next: AprConvention) => setGlobalState((g) => ({ ...g, aprConvention: next }));
-  const aprName = useId();
+  const aprDocsId = useId();
   const setCurrency = useCallback(
     (next: string) => setGlobalState((g) => ({ ...g, currency: next })),
     [],
@@ -1058,7 +1051,6 @@ export default function LoanCompare({
       island: strings,
       common: exportStrings,
       currency,
-      aprConvention,
       vendors,
       results,
       names: vendors.map((v, i) => shownName(v.name, i, strings)),
@@ -1138,28 +1130,6 @@ export default function LoanCompare({
           </button>
         </div>
 
-        {/* A choice, not a value: it travels in a share link and is not tracked. */}
-        <fieldset className="lc-aprField">
-          <legend className="lc-fieldLabel">{strings.toolbar.aprLabel}</legend>
-          <div className="lc-modeRow">
-            {(['nominal', 'effective'] as const).map((kind) => (
-              <label key={kind} className={`lc-modeOption ${aprConvention === kind ? 'lc-modeOptionActive' : ''}`}>
-                <input
-                  type="radio"
-                  name={aprName}
-                  value={kind}
-                  checked={aprConvention === kind}
-                  onChange={() => setAprConvention(kind)}
-                />
-                <span>{kind === 'nominal' ? strings.toolbar.aprNominal : strings.toolbar.aprEffective}</span>
-              </label>
-            ))}
-          </div>
-          <details className="lc-aprHelp">
-            <summary className="disclosure">{strings.toolbar.aprHelpToggle}</summary>
-            <p className="lc-fieldHelp">{strings.toolbar.aprHelp}</p>
-          </details>
-        </fieldset>
       </div>
 
       {/* Phones only (hidden from 641px): pick the vendor card to show.
@@ -1214,7 +1184,9 @@ export default function LoanCompare({
       {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
 
       <h2 className="lc-srOnly">{strings.cardsHeading}</h2>
-      <div className="lc-grid">
+      {/* Why the APR here can read lower than the one on a lender's document. */}
+      <p className="lc-aprDocs" id={aprDocsId}>{strings.results.aprDocs}</p>
+      <div className="lc-grid" aria-describedby={aprDocsId}>
         {vendors.map((v, i) => (
           <VendorCard
             key={i}
@@ -1227,7 +1199,6 @@ export default function LoanCompare({
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
             currency={currency}
-            aprConvention={aprConvention}
             strings={strings}
             onChange={(patch) => updateVendor(i, patch)}
             // The remove button is only renderable when we're above the
@@ -1257,7 +1228,6 @@ export default function LoanCompare({
         results={results}
         vendors={vendors}
         currency={currency}
-        aprConvention={aprConvention}
         strings={strings}
       />
 
@@ -1323,7 +1293,7 @@ export default function LoanCompare({
         </p>
       </details>
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} aprConvention={aprConvention} vendors={vendors} results={results} />
+      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
     </div>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
@@ -1335,8 +1305,7 @@ export default function LoanCompare({
  * sentence as the answer. Like the page, it names no offer as the one to
  * take. Hidden on screen (see ToolReport).
  */
-function PrintedReport({ strings, exportStrings, currency, aprConvention, vendors, results }: {
-  aprConvention: AprConvention;
+function PrintedReport({ strings, exportStrings, currency, vendors, results }: {
   strings: Strings;
   exportStrings: Dict['tools']['export'];
   currency: string;
@@ -1353,7 +1322,7 @@ function PrintedReport({ strings, exportStrings, currency, aprConvention, vendor
       : totals[0] === totals[totals.length - 1]
         ? `${d.sameBefore}${formatMoney(totals[0], currency)}${d.sameAfter}`
         : `${d.rangeBefore}${formatMoney(totals[0], currency)}${d.rangeTo}${formatMoney(totals[totals.length - 1], currency)}${d.rangeAcross}${formatMoney(totals[totals.length - 1] - totals[0], currency)}${d.rangeAfter}`;
-  const report = loanReport({ island: strings, common: exportStrings, currency, aprConvention, vendors, results, names, answer: [answer] });
+  const report = loanReport({ island: strings, common: exportStrings, currency, vendors, results, names, answer: [answer] });
   return <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? 'en-US'} />;
 }
 
@@ -1374,7 +1343,6 @@ interface VendorCardProps {
    *  using points. */
   noPointsBaseline: LoanResult | null;
   currency: string;
-  aprConvention: AprConvention;
   strings: Strings;
   onChange: (patch: Partial<VendorInput>) => void;
   /** Omitted when removing would drop below the minimum vendor count. */
@@ -1399,7 +1367,6 @@ function VendorCard({
   result,
   noPointsBaseline,
   currency,
-  aprConvention,
   strings,
   onChange,
   onRemove,
@@ -1702,9 +1669,9 @@ function VendorCard({
               )}
               <ResultRow
                 label={strings.results.apr}
-                value={notPaid ? strings.results.notAvailable : aprText(aprInConvention(result.aprNominal, aprConvention), currency, strings, amountLocale)}
+                value={notPaid ? strings.results.notAvailable : aprText(result.aprNominal, currency, strings, amountLocale)}
                 hint={notPaid ? undefined : result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
-                note={notPaid ? undefined : aprConvention === 'nominal' ? strings.results.aprNominalLine : strings.results.aprEffectiveLine}
+                note={notPaid ? undefined : strings.results.aprBasis}
               />
               <ResultRow
                 label={strings.results.totalPaid}
@@ -2114,7 +2081,6 @@ interface DeltaSummaryProps {
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
-  aprConvention: AprConvention;
   // Note: previously took a `bestIndex` to highlight the cheapest vendor.
   // Removed when the winner-crowning was stripped: this component now
   // derives the lowest/highest vendors from the results internally and
@@ -2122,7 +2088,7 @@ interface DeltaSummaryProps {
   strings: Strings;
 }
 
-function DeltaSummary({ results, vendors, currency, aprConvention, strings }: DeltaSummaryProps) {
+function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
   const { formatMoney, amountLocale } = useMoney();
   const valid = results
     .map((r, i) => ({
@@ -2275,7 +2241,7 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               // formatting is stable even at the limits of the bisection
               // solver. Six decimals is well below anything we'd ever
               // display in the UI.
-              get={(r) => Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000)}
+              get={(r) => Math.round(r.aprNominal * 1_000_000)}
               format={(n) => aprText(n / 1_000_000, currency, strings, amountLocale)}
               cell={(r) => (isNotPaidOff(r) ? <span>{strings.results.notAvailable}</span> : null)}
             />
@@ -2322,7 +2288,7 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
         </table>
       </div>
       <p className="lc-deltaNote">
-        {format(strings.delta.aprNote, { convention: aprConvention === 'nominal' ? strings.toolbar.aprNominal : strings.toolbar.aprEffective })}
+        {strings.delta.aprNote}
       </p>
     </section>
   );
