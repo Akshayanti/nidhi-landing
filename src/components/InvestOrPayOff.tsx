@@ -702,9 +702,12 @@ function Results({
       <p>{lines[3]}</p>
       {/* The reader's choice of how that figure in today's money is counted;
           folded, with the choice in use named on the row. */}
-      <details className="iop-more iop-basis">
+      {/* aria-live="off": the results section announces changes, and opening this
+          fold is not one; the sentence above still is, when the choice changes. */}
+      <details className="iop-more iop-basis" aria-live="off">
         <summary className="iop-moreSummary disclosure">
           <span className="iop-moreTitle iop-basisTitle">{s.basis.title}</span>
+          <span className="ifc-srOnly">, </span>
           <span className="iop-moreStatus">{s.basis[todayAt]}</span>
         </summary>
         <div className="iop-moreBody">

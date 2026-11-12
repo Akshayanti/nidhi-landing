@@ -52,8 +52,11 @@ const strings = dict(locale);
       overlay.style.display = 'flex';
       requestAnimationFrame(function() { overlay.classList.add('cookie-overlay--visible'); });
       document.addEventListener('keydown', trapFocus);
-      // Focus the less-destructive button first
-      declineBtn.focus();
+      // Focus the less-destructive button first, without scrolling: at large
+      // text sizes the prompt scrolls inside, and it must open at its first line.
+      declineBtn.focus({ preventScroll: true });
+      var modal = overlay.querySelector('.cookie-modal');
+      if (modal) modal.scrollTop = 0;
     }
 
     function closeConsent(choice) {

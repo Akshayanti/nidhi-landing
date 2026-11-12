@@ -235,9 +235,9 @@ export const investOrPayOffEn = {
       basis: {
         title: 'How today\'s money is counted',
         month: 'Month by month',
-        monthHint: 'Each month\'s saving at the prices of its own month.',
+        monthHint: 'Each month\'s saving is brought back to today\'s prices from the month it is paid.',
         end: 'All at the comparison date',
-        endHint: 'The whole sum at the prices of the comparison date. When prices rise, this gives a smaller figure.',
+        endHint: 'The whole sum is treated as paid on the comparison date, then brought back to today\'s prices. When prices rise, this gives a smaller figure.',
       },
       rates: 'The debt costs {debt} a year after relief and inflation; the investment\'s compound return in this setting is {invest} a year after inflation, before fees.',
       side: {
@@ -495,9 +495,9 @@ export const investOrPayOffHi: InvestOrPayOff = {
       basis: {
         title: 'आज का पैसा कैसे गिना जाता है',
         month: 'महीने-दर-महीने',
-        monthHint: 'हर महीने की बचत, उसी महीने की क़ीमतों पर।',
+        monthHint: 'हर महीने की बचत को उसी महीने से आज की क़ीमतों पर लाया जाता है।',
         end: 'पूरी रकम तुलना की तारीख़ पर',
-        endHint: 'पूरी रकम, तुलना की तारीख़ की क़ीमतों पर। क़ीमतें बढ़ती हों तो यह आँकड़ा छोटा आता है।',
+        endHint: 'पूरी रकम को तुलना की तारीख़ पर चुकाई गई माना जाता है, फिर आज की क़ीमतों पर लाया जाता है। क़ीमतें बढ़ती हों तो यह आँकड़ा छोटा आता है।',
       },
       rates: 'छूट और महँगाई के बाद कर्ज़ की लागत सालाना {debt} है; इस सेटिंग में निवेश का चक्रवृद्धि रिटर्न महँगाई के बाद और शुल्क से पहले सालाना {invest} है।',
       side: {
@@ -751,9 +751,9 @@ export const investOrPayOffMr: InvestOrPayOff = {
       basis: {
         title: 'आजचा पैसा कसा मोजला जातो',
         month: 'महिन्यागणिक',
-        monthHint: 'प्रत्येक महिन्याची बचत, त्याच महिन्याच्या किमतींनुसार.',
+        monthHint: 'प्रत्येक महिन्याची बचत त्या महिन्यापासून आजच्या किमतींवर आणली जाते.',
         end: 'पूर्ण रक्कम तुलनेच्या तारखेला',
-        endHint: 'पूर्ण रक्कम, तुलनेच्या तारखेच्या किमतींनुसार. किमती वाढत असतील तर हा आकडा लहान येतो.',
+        endHint: 'पूर्ण रक्कम तुलनेच्या तारखेला दिली असे धरून आजच्या किमतींवर आणली जाते. किमती वाढत असतील तर हा आकडा लहान येतो.',
       },
       rates: 'सवलत आणि महागाईनंतर कर्जाचा खर्च दरवर्षी {debt} आहे; या सेटिंगमध्ये गुंतवणुकीचा चक्रवाढ परतावा महागाईनंतर आणि शुल्कापूर्वी दरवर्षी {invest} आहे.',
       side: {
@@ -1007,9 +1007,9 @@ export const investOrPayOffEs: InvestOrPayOff = {
       basis: {
         title: 'Cómo se cuenta el dinero de hoy',
         month: 'Mes a mes',
-        monthHint: 'El ahorro de cada mes, a los precios de ese mes.',
+        monthHint: 'El ahorro de cada mes se lleva a precios de hoy desde el mes en que se produce.',
         end: 'Todo en la fecha de comparación',
-        endHint: 'La suma entera, a los precios de la fecha de comparación. Cuando los precios suben, da una cifra menor.',
+        endHint: 'La suma entera se trata como si se pagara en la fecha de comparación y luego se lleva a precios de hoy. Cuando los precios suben, da una cifra menor.',
       },
       rates: 'La deuda cuesta un {debt} anual tras la desgravación y la inflación; la rentabilidad compuesta de la inversión con esta opción es un {invest} anual descontada la inflación, antes de comisiones.',
       side: {
@@ -1263,9 +1263,9 @@ export const investOrPayOffCs: InvestOrPayOff = {
       basis: {
         title: 'Jak se počítají dnešní peníze',
         month: 'Měsíc po měsíci',
-        monthHint: 'Úspora každého měsíce v cenách toho měsíce.',
+        monthHint: 'Úspora každého měsíce se převádí na dnešní ceny od měsíce, kdy vznikla.',
         end: 'Vše k datu srovnání',
-        endHint: 'Celá částka v cenách k datu srovnání. Když ceny rostou, vyjde nižší číslo.',
+        endHint: 'S celou částkou se počítá, jako by byla zaplacena k datu srovnání, a pak se převede na dnešní ceny. Když ceny rostou, vyjde nižší číslo.',
       },
       rates: 'Dluh stojí {debt} ročně po úlevě a očištění o inflaci; složený výnos investice v tomto nastavení je {invest} ročně po očištění o inflaci, před poplatky.',
       side: {
