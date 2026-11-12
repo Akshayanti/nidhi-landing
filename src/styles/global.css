@@ -2408,7 +2408,8 @@ details[open] > .disclosure::after,
 
 .lc-modeRow {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, …): a long label wraps inside its half and never widens the page. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
 }
 
@@ -2429,6 +2430,25 @@ details[open] > .disclosure::after,
   text-align: center;
 }
 
+/* Two long options, one per line: each says what changes and what stays. */
+.lc-modeRowStacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lc-modeRowStacked .lc-modeOption {
+  justify-content: flex-start;
+  text-align: start;
+  white-space: normal;
+}
+.lc-atChange {
+  margin-top: var(--space-3);
+}
+.lc-atChange > legend {
+  padding: 0;
+  margin-bottom: var(--space-2);
+}
+.lc-atChange > .lc-fieldHelp {
+  margin-top: var(--space-2);
+}
 .lc-modeOption:hover {
   border-color: var(--lc-color);
 }
@@ -3085,8 +3105,10 @@ details[open] > .disclosure::after,
 
 .lc-legendItem {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
+  max-width: 100%;
 }
 
 
@@ -3310,7 +3332,10 @@ details[open] > .disclosure::after,
 @media (max-width: 640px) {
   .lc-vendorTabs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Two abreast while each has 9rem; one per row at large text or with long
+       names. A long name makes only its own tab taller. */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    align-items: start;
     gap: 8px;
     margin-bottom: var(--space-3);
   }
@@ -3345,8 +3370,10 @@ details[open] > .disclosure::after,
   .lc-vendorTabLetter {
     display: grid;
     place-items: center;
-    width: 28px;
-    height: 28px;
+    /* In rem, so the letter stays inside its ring at large text sizes. */
+    width: 1.75rem;
+    height: 1.75rem;
+    flex: none;
     border: 2px solid var(--lc-color);
     border-radius: 50%;
     color: var(--color-text-primary);
@@ -3359,8 +3386,11 @@ details[open] > .disclosure::after,
     font-family: var(--font-heading);
     font-size: 0.9rem;
     font-weight: 600;
-    /* Wraps rather than clips: Czech "Poskytovatel A" is wider than the tab at 320px. */
+    /* Wraps rather than clips. `anywhere`, not `break-word`: only it lets a
+       long word shrink the tab's smallest width, so the page never scrolls
+       sideways. The tabs are wide enough that short names stay whole. */
     overflow-wrap: anywhere;
+    min-width: 0;
   }
 
 

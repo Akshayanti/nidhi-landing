@@ -181,7 +181,7 @@ describe('no code outside the allowed places writes to the address', () => {
 describe('the guard’s key pattern covers every key the encoder can emit', () => {
   it('loan comparison: five offers with every field changed', () => {
     // Built from the default shapes, so a field added later is changed here too.
-    const special: Record<string, string> = { name: 'Home Bank ~ & Co', modeKind: 'payment', rateKind: 'hybrid', lumpSumsEncoded: '12:5000;24:2500' };
+    const special: Record<string, string> = { name: 'Home Bank ~ & Co', modeKind: 'payment', rateKind: 'hybrid', rateChangeKeeps: 'payment', lumpSumsEncoded: '12:5000;24:2500' };
     const vendors = Array.from({ length: loan.MAX_VENDORS }, (_, i) => {
       const v = loan.makeDefaultVendor(i) as unknown as Record<string, string>;
       for (const field of Object.keys(v)) v[field] = special[field] ?? (v[field] === '7' ? '8' : '7');
@@ -194,8 +194,8 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
     const keys = keysOf(loan.encodeToQueryString(vendors, global as unknown as loan.GlobalState));
     const isKey = key(loan.STATE_KEY_PATTERN);
     for (const k of keys) assert.ok(isKey.test(k), `the pattern misses ${k}`);
-    // Eleven globals, then per offer the tuple and its eight advanced fields.
-    assert.equal(keys.length, 11 + loan.MAX_VENDORS * 9, keys.join(' '));
+    // Eleven globals, then per offer the tuple and its nine advanced fields.
+    assert.equal(keys.length, 11 + loan.MAX_VENDORS * 10, keys.join(' '));
   });
 
   const rows: AssetRow[] = Array.from({ length: 60 }, (_, i) => ({

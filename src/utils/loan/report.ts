@@ -11,7 +11,7 @@
  */
 import { isEmptyRow, tableOf, thin, type Report } from '../shared/report.ts';
 import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets, type LoanExport } from './export.ts';
-import { fromMinor } from './math.ts';
+import { fromMinor, shownMonths } from './math.ts';
 
 /** Dash patterns that tell offers apart without colour, A to E (as the page's chart). */
 const DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
@@ -19,13 +19,14 @@ const DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
 export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: string[] }): Report {
   const { island, currency, results, names, answer } = e;
   const x = island.export;
-  const [, summary, inputs] = loanSheets({ ...e, date: '', page: '' });
+  const [, summary, inputs] = loanSheets({ ...e, date: '', page: '', worded: true });
   const series = results.flatMap((r, i) => {
     if (r.error || r.schedule.length === 0) return [];
     const first = r.schedule[0];
     const points = [
       { x: 0, y: fromMinor(first.balance + first.principal, currency) },
-      ...r.schedule.map((row) => ({ x: row.month / 12, y: fromMinor(row.balance, currency) })),
+      // A loan that is never paid off is drawn over the chart's own range, as on the page.
+      ...r.schedule.slice(0, shownMonths(results, i)).map((row) => ({ x: row.month / 12, y: fromMinor(row.balance, currency) })),
     ];
     return [{ label: names[i], points: thin(points), dash: DASHES[i % DASHES.length] }];
   });

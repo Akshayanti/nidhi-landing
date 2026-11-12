@@ -483,7 +483,8 @@ const faqSchema = {
 
   @media (max-width: 800px) {
     .lc-relatedGrid {
-      grid-template-columns: 1fr;
+      /* minmax(0, …): a long word in a title wraps instead of widening the page. */
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
@@ -499,6 +500,7 @@ const faqSchema = {
     color: inherit;
     transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     min-height: 100%;
+    overflow-wrap: anywhere;
   }
 
   .lc-relatedCard:hover,

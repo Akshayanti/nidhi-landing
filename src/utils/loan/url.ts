@@ -25,6 +25,7 @@
  *   - `v{i}_rk` rateKind             (default 'fixed')
  *   - `v{i}_if` initialFixedMonths   (default '60')
  *   - `v{i}_sr` subsequentRatePct    (default '')
+ *   - `v{i}_rc` rateChangeKeeps      (default 'term'; written as `p` for 'payment')
  *   - `v{i}_pc` pointsCostMajor      (default '0')
  *   - `v{i}_pr` pointsRateReductionPct (default '0')
  *   - `v{i}_ls` lumpSumsEncoded      (default '')
@@ -63,6 +64,8 @@ export const STATE_KEY_PATTERN = 'c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2}
 
 export type ModeKind = 'term' | 'payment';
 export type RateKind = 'fixed' | 'hybrid';
+/** What stays the same when a changing rate changes: the term (a new payment is worked out) or the payment (the term moves). */
+export type RateChangeKeeps = 'term' | 'payment';
 
 export interface VendorInput {
   name: string;
@@ -82,6 +85,8 @@ export interface VendorInput {
   initialFixedMonths: string;
   /** Rate that takes over after the fixed window, as a percent string. Defaults empty. */
   subsequentRatePct: string;
+  /** What the lender keeps when the rate changes. A choice, never a typed value. */
+  rateChangeKeeps: RateChangeKeeps;
   /** Cost of discount points, in major units. Expected to be folded into `feeMajor`;
    *  kept separately so we can reconstruct the no-points baseline for break-even analysis. */
   pointsCostMajor: string;
@@ -148,6 +153,7 @@ const ADVANCED_DEFAULTS = {
   rateKind: 'fixed' as RateKind,
   initialFixedMonths: '60',
   subsequentRatePct: '',
+  rateChangeKeeps: 'term' as RateChangeKeeps,
   pointsCostMajor: '0',
   pointsRateReductionPct: '0',
   lumpSumsEncoded: '',
@@ -163,6 +169,7 @@ const ADVANCED_KEY_MAP: Array<{ field: keyof typeof ADVANCED_DEFAULTS; key: stri
   { field: 'rateKind', key: 'rk' },
   { field: 'initialFixedMonths', key: 'if' },
   { field: 'subsequentRatePct', key: 'sr' },
+  { field: 'rateChangeKeeps', key: 'rc' },
   { field: 'pointsCostMajor', key: 'pc' },
   { field: 'pointsRateReductionPct', key: 'pr' },
   { field: 'lumpSumsEncoded', key: 'ls' },
@@ -179,6 +186,7 @@ type SimpleVendor = Omit<
   | 'rateKind'
   | 'initialFixedMonths'
   | 'subsequentRatePct'
+  | 'rateChangeKeeps'
   | 'pointsCostMajor'
   | 'pointsRateReductionPct'
   | 'lumpSumsEncoded'
@@ -439,6 +447,10 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       if (value === dflt) continue;
       // An emptied box whose default is not empty is written as the mark.
       if (value === '' && (field === 'rateKind' || dflt === '')) continue;
+      if (field === 'rateChangeKeeps') {
+        params.set(`v${idx}_${key}`, 'p');
+        continue;
+      }
       params.set(`v${idx}_${key}`, written(String(value), String(dflt)));
     }
   });
@@ -524,6 +536,9 @@ export function decodeFromQueryString(qs: string): DecodeResult {
       if (value === null) continue;
       if (field === 'rateKind') {
         next.rateKind = value === 'hybrid' ? 'hybrid' : 'fixed';
+      } else if (field === 'rateChangeKeeps') {
+        // Anything but the one known code is today's behaviour.
+        next.rateChangeKeeps = value === 'p' ? 'payment' : 'term';
       } else {
         // All non-rateKind advanced fields are typed `string` on VendorInput
         // (see ADVANCED_DEFAULTS); the cast through `unknown` is needed only

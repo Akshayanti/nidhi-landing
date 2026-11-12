@@ -29,7 +29,12 @@ export interface CurrencyPosition {
   netAmountOriginal: number;
   /** Position after conversion; drives the concentration chart and risk percentages. */
   netAmountFunctional: number;
-  /** Percentage of total net worth (0-100). */
+  /**
+   * Exposure: the net position as a percentage of total net worth. It drives
+   * the bands and the sentences on the cards. With a debt in another
+   * currency it can pass 100 or go below 0, so it is never called
+   * concentration: that is `concentrationShares`, which adds to 100.
+   */
   pctOfTotal: number;
   /** Functional currency is exempt from risk flagging since the user spends in it. */
   isFunctional: boolean;
@@ -260,6 +265,23 @@ export function aggregate(
     totalNetWorthFunctional,
     hasRates: missingRateCount > 0 ? 'partial' : 'full',
   };
+}
+
+/**
+ * Concentration: each currency's share of everything held or owed, the size
+ * of its net position over the sum of the sizes of all net positions, in
+ * percent. The shares add to 100 whatever the signs, which is what the chart
+ * draws. Equal to the exposure (`pctOfTotal`) when no currency is a net debt.
+ * A currency with no exchange rate is left out. A shared view that carries
+ * percentages but no amounts gives the same shares from the percentages.
+ */
+export function concentrationShares(
+  positions: readonly Pick<CurrencyPosition, 'code' | 'netAmountFunctional' | 'pctOfTotal' | 'rateUnavailable'>[],
+): Map<string, number> {
+  const rated = positions.filter((p) => !p.rateUnavailable);
+  const size = (p: (typeof rated)[number]) => (p.netAmountFunctional !== 0 ? Math.abs(p.netAmountFunctional) : Math.abs(p.pctOfTotal));
+  const total = rated.reduce((sum, p) => sum + size(p), 0);
+  return new Map(rated.map((p) => [p.code, total > 0 ? (size(p) / total) * 100 : 0]));
 }
 
 // ---------------------------------------------------------------------------
