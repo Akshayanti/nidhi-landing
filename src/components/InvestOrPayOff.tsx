@@ -456,7 +456,7 @@ export default function InvestOrPayOff({
                 }}
               >
                 {CURRENCIES.map((c) => (
-                  <option key={c.code} value={c.code}>{c.code}: {strings.currencies[c.code] ?? c.label}</option>
+                  <option key={c.code} value={c.code}>{strings.currencies[c.code] ?? c.label}</option>
                 ))}
               </select>
               <div className="ifc-fieldNote" />

@@ -1078,7 +1078,7 @@ describe('computeLoan: hybrid rate', () => {
       { kind: 'payment', monthlyMinor: 200_000 },
     );
     assert.ok(result.error);
-    assert.match(result.error!, /term mode/i);
+    assert.match(result.error!, /need a fixed term/i);
   });
 
   it('rejects an invalid initial period', () => {

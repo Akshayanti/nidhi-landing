@@ -186,7 +186,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['enter a term of at least one month', 'termMin'],
   ['term cannot exceed', 'termMax'],
   ['enter a monthly payment greater than zero', 'paymentEnter'],
-  ['must be entered in term mode', 'hybridMode'],
+  ['loans need a fixed term', 'hybridMode'],
   // `refinanceComparison`.
   ['refinance month must be at least', 'refiMonth'],
   ['refinance month must be before', 'refiMonthEnd'],
@@ -1044,9 +1044,9 @@ export default function LoanCompare({
       setTimeout(() => setCopied(false), 2500);
       track('free_loan_comparison_share_copied');
     } catch {
+      // Not copied (an in-app browser, a refused permission): no "copied",
+      // the address is offered to copy by hand, as the other tools do.
       setShareUrl(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
       window.prompt(strings.toolbar.copyPrompt, url);
     }
   }, [vendors, globalState, strings.toolbar.copyPrompt]);
@@ -2700,11 +2700,7 @@ function ChartsPanel({
           <strong>{vendorName}</strong>
           {strings.charts.caption.afterName}
           {Number(activeVendor?.extraMonthly) > 0 && strings.charts.caption.noExtras}
-          {strings.charts.caption.extraBefore}
-          <em>{strings.charts.caption.yearEarly}</em>
-          {strings.charts.caption.extraMid}
-          <em>{strings.charts.caption.yearLate}</em>
-          {strings.charts.caption.extraAfter}
+          {strings.charts.caption.extra}
         </p>
       </section>
     </div>

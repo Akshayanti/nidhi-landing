@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'tools-small-fixes-nov12',
+        text: {
+          en: 'Five small fixes in the free tools. The line under the loan comparison\'s payment chart no longer quotes a 25-year loan\'s figures for every loan. An error about a loan whose rate changes now names the control to use. When a browser will not copy a share link, the loan and net worth tools show the link to copy by hand and no longer say it was copied. Currency lists read the same way in all five tools. The net worth calculator calls its exchange rates the latest official ones, not live.',
+          hi: 'मुफ़्त टूल में पाँच छोटे सुधार। लोन तुलना के किस्त वाले चार्ट के नीचे की पंक्ति अब हर लोन के लिए 25 साल के लोन के आँकड़े नहीं बताती। बदलती दर वाले लोन की एक गड़बड़ी का संदेश अब बताता है कि कौन सा विकल्प चुनना है। जब ब्राउज़र शेयर लिंक कॉपी नहीं करता, तब लोन और शुद्ध संपत्ति वाले टूल लिंक दिखाते हैं ताकि उसे हाथ से कॉपी किया जा सके, और यह नहीं कहते कि वह कॉपी हो गया। मुद्राओं की सूची पाँचों टूल में एक ही तरह से दिखती है। शुद्ध संपत्ति कैलकुलेटर अपनी विनिमय दरों को ताज़ा आधिकारिक दरें कहता है, लाइव नहीं।',
+          es: 'Cinco pequeñas correcciones en las herramientas gratuitas. La línea bajo el gráfico de cuotas del comparador de préstamos ya no cita las cifras de un préstamo a 25 años para cualquier préstamo. Un mensaje de error sobre un préstamo cuya tasa cambia indica ahora qué opción usar. Cuando el navegador no copia un enlace para compartir, las herramientas de préstamos y de patrimonio neto muestran el enlace para copiarlo a mano y ya no dicen que se copió. Las listas de monedas se leen igual en las cinco herramientas. La calculadora de patrimonio neto llama a sus tipos de cambio los oficiales más recientes, no en vivo.',
+          cs: 'Pět drobných oprav v\u00a0bezplatných nástrojích. Řádek pod grafem splátek ve srovnání úvěrů už neuvádí čísla 25letého úvěru u\u00a0každého úvěru. Chybová hláška u\u00a0úvěru, jehož sazba se mění, teď říká, kterou volbu použít. Když prohlížeč odkaz ke sdílení nezkopíruje, nástroje pro úvěry a\u00a0čisté jmění odkaz ukážou k\u00a0ručnímu zkopírování a\u00a0už netvrdí, že je zkopírovaný. Seznamy měn vypadají ve všech pěti nástrojích stejně. Kalkulačka čistého jmění označuje své kurzy jako nejnovější oficiální, ne jako živé.',
+          mr: 'मोफत साधनांमध्ये पाच लहान दुरुस्त्या. कर्जांच्या तुलनेतील हप्त्यांच्या आलेखाखालची ओळ आता प्रत्येक कर्जासाठी 25 वर्षांच्या कर्जाचे आकडे सांगत नाही. दर बदलणाऱ्या कर्जाबद्दलचा एक त्रुटी संदेश आता कोणता पर्याय निवडायचा ते सांगतो. ब्राउझर शेअर लिंक कॉपी करत नाही, तेव्हा कर्ज आणि निव्वळ संपत्तीची साधने लिंक हाताने कॉपी करण्यासाठी दाखवतात आणि ती कॉपी झाली असे म्हणत नाहीत. चलनांच्या याद्या पाचही साधनांमध्ये एकसारख्या दिसतात. निव्वळ संपत्ती कॅल्क्युलेटर आपल्या विनिमय दरांना ताजे अधिकृत दर म्हणतो, लाइव्ह नाही.',
+        },
+      },
+      {
         id: 'net-worth-no-band-when-negative',
         text: {
           en: 'In the net worth calculator, when debts leave your total at zero or below, a holding in another currency used to be labelled low exposure at 0%. It now carries no band, says why, and shows what a 10% move in that currency would change.',

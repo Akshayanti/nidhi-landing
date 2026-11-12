@@ -106,7 +106,7 @@ export const multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'How the calculation works',
       intro:
-        'For each currency, we net your assets and liabilities, then convert the result to your functional currency using live exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
+        'For each currency, we net your assets and liabilities, then convert the result to your functional currency using the latest official exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
       formula:
         'Concentration % = (Net in currency X × Rate to functional) / Total net worth × 100',
       items: [
@@ -287,6 +287,8 @@ export const multiCurrencyNetWorthEn = {
       reset: 'Reset',
       resetTitle: 'Clear all data and start fresh',
       copiedLabel: 'Link copied to clipboard',
+      /** Above the address when the browser would not copy it: the reader copies it by hand. */
+      copyPrompt: 'Copy this link:',
       shareUrlAria: 'Shareable link URL',
     },
     rates: {
@@ -294,7 +296,7 @@ export const multiCurrencyNetWorthEn = {
       retry: 'Retry',
       loading: 'Loading exchange rates…',
       partial:
-        'One or more currencies are missing a live rate, so they are excluded from the total below. Their original-currency amounts are shown on the per-currency cards.',
+        'One or more currencies are missing a current rate, so they are excluded from the total below. Their original-currency amounts are shown on the per-currency cards.',
     },
     shared: {
       readOnly:
@@ -384,12 +386,12 @@ export const multiCurrencyNetWorthEn = {
       singleNote:
         'Everything here is in {currency}, so exchange rates don’t affect it. If you add something held in another currency, this will also show how much of your net worth depends on exchange rates.',
       partialHint:
-        'At least one currency was missing a live rate and is excluded from this total.',
+        'At least one currency was missing a current rate and is excluded from this total.',
       /** The two-word flag beside a currency whose rate the feed did not return. */
       rateUnavailable: 'Rate unavailable',
       /** The explanatory line under that currency. `{code}` and `{currency}` are codes. */
       noRateAvailable:
-        'No live rate available for {code} against {currency}; shown without conversion',
+        'No current rate available for {code} against {currency}; shown without conversion',
       badgeFunctional: 'Functional',
       badgeNetDebt: 'Net debt',
       badgeElevated: 'Elevated',
@@ -726,6 +728,8 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       reset: 'रीसेट करें',
       resetTitle: 'सारे आँकड़े हटाकर नए सिरे से शुरू करें',
       copiedLabel: 'लिंक क्लिपबोर्ड पर कॉपी हो गया',
+      /** Above the address when the browser would not copy it: the reader copies it by hand. */
+      copyPrompt: 'यह लिंक कॉपी करें:',
       shareUrlAria: 'शेयर करने योग्य लिंक',
     },
     rates: {
@@ -1133,6 +1137,8 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       reset: 'Restablecer',
       resetTitle: 'Borra todos los datos y empieza de cero',
       copiedLabel: 'Enlace copiado en el portapapeles',
+      /** Above the address when the browser would not copy it: the reader copies it by hand. */
+      copyPrompt: 'Copia este enlace:',
       shareUrlAria: 'URL del enlace para compartir',
     },
     rates: {
@@ -1550,6 +1556,8 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       reset: 'Začít znovu',
       resetTitle: 'Smazat všechna data a začít znovu',
       copiedLabel: 'Odkaz zkopírován do schránky',
+      /** Above the address when the browser would not copy it: the reader copies it by hand. */
+      copyPrompt: 'Zkopírujte tento odkaz:',
       shareUrlAria: 'Adresa odkazu ke sdílení',
     },
     rates: {
@@ -1927,6 +1935,8 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       reset: 'पुन्हा सुरुवात करा',
       resetTitle: 'सगळा डेटा पुसून नव्याने सुरुवात करा',
       copiedLabel: 'लिंक क्लिपबोर्डवर कॉपी झाली',
+      /** Above the address when the browser would not copy it: the reader copies it by hand. */
+      copyPrompt: 'ही लिंक कॉपी करा:',
       shareUrlAria: 'शेअर करता येणाऱ्या लिंकचा URL',
     },
     rates: {
