@@ -936,6 +936,9 @@ interface ResultsPanelProps {
 
 function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
+  // Net worth of zero or less: no position is a share of it, so no card states one.
+  // A shared view without amounts has no total to judge by and shows what it was given.
+  const noShares = result.hasRates !== 'none' && result.totalNetWorthFunctional <= 0;
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
@@ -1041,7 +1044,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                   <> - <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
-                  pos.pctOfTotal !== 0 && <> - {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
+                  pos.pctOfTotal !== 0 && !noShares && <> - {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
                 {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> - {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
               </span>
@@ -1051,7 +1054,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                 ? format(strings.results.noRateAvailable, { code: pos.code, currency: functionalCurrency })
                 : riskLabel(strings, pos.riskLevel)}
             </p>
-            <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} strings={strings} />
+            <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />
           </div>
         ))}
       </div>
@@ -1113,8 +1116,8 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
  * the same kind of bug as a math error. The same goes for a translation of
  * these lines: a band says how big a share is, never what to do about it.
  */
-function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: { pos: ReturnType<typeof aggregate>['positions'][0]; functionalCurrency: string; hidePct?: boolean; strings: Strings }) {
-  const { amountLocale } = useMoney();
+function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = false, strings }: { pos: ReturnType<typeof aggregate>['positions'][0]; functionalCurrency: string; hidePct?: boolean; noShares?: boolean; strings: Strings }) {
+  const { amountLocale, formatMoney } = useMoney();
   if (pos.rateUnavailable) {
     return (
       <p className="mcnw-riskRec">
@@ -1130,8 +1133,14 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: {
     // Owing in another currency puts more than the whole of net worth in the
     // spending currency, and owing in the spending currency puts less than
     // none of it there: neither is clamped into a sentence about a share.
-    if (pos.pctOfTotal < 0) {
+    // The same holds when the total itself is negative: a net debt in the
+    // spending currency is then a positive share of a negative total, which
+    // is not "157% of your net worth held".
+    if (pos.pctOfTotal < 0 || pos.netAmountOriginal < 0) {
       return <p className="mcnw-riskRec">{format(strings.rec.functionalDebt, { currency: functionalCurrency })}</p>;
+    }
+    if (noShares) {
+      return <p className="mcnw-riskRec">{strings.rec.unbandedHidden}</p>;
     }
     if (pos.pctOfTotal >= 100.5) {
       return (
@@ -1167,6 +1176,19 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, strings }: {
     return (
       <p className="mcnw-riskRec">
         {format(strings.rec.netDebt, { code, currency: functionalCurrency })}
+      </p>
+    );
+  }
+  if (pos.riskLevel === 'unbanded') {
+    // No share to state. What a 10% move does is still known when the amounts
+    // are: a tenth of the holding. A shared view without amounts says only why
+    // there is no share.
+    const tenth = Math.round((Math.abs(pos.netAmountFunctional) / 10) * getFactor(functionalCurrency));
+    return (
+      <p className="mcnw-riskRec">
+        {hidePct || tenth === 0
+          ? strings.rec.unbandedHidden
+          : format(strings.rec.unbandedShown, { code, currency: functionalCurrency, amount: formatMoney(tenth, functionalCurrency) })}
       </p>
     );
   }
@@ -1733,6 +1755,7 @@ function riskLabel(strings: Strings, level: string): string {
     case 'net-debt': return strings.results.labelNetDebt;
     case 'elevated': return strings.results.labelElevated;
     case 'moderate': return strings.results.labelModerate;
+    case 'unbanded': return strings.results.labelUnbanded;
     default: return strings.results.labelLow;
   }
 }
@@ -1744,6 +1767,7 @@ function riskBadge(strings: Strings, level: string): string {
     case 'net-debt': return strings.results.badgeNetDebt;
     case 'elevated': return strings.results.badgeElevated;
     case 'moderate': return strings.results.badgeModerate;
+    case 'unbanded': return strings.results.badgeUnbanded;
     default: return strings.results.badgeLow;
   }
 }

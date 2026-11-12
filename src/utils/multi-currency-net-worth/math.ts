@@ -20,7 +20,12 @@ export interface AssetRow {
   type: AssetType;
 }
 
-export type RiskLevel = 'functional' | 'low' | 'moderate' | 'elevated' | 'net-debt';
+/**
+ * `'unbanded'`: something is held in another currency while total net worth
+ * is zero or negative. A share of a total that is not positive cannot be
+ * worked out, so the position gets no band rather than "low".
+ */
+export type RiskLevel = 'functional' | 'low' | 'moderate' | 'elevated' | 'net-debt' | 'unbanded';
 
 export interface CurrencyPosition {
   /** Uniquely identifies the currency for rate lookups and display formatting. */
@@ -251,6 +256,13 @@ export function aggregate(
     const [riskLevel, riskLabel] = assessRisk(pos.pctOfTotal, pos.isFunctional, pos.netAmountOriginal);
     pos.riskLevel = riskLevel;
     pos.riskLabel = riskLabel;
+    // With nothing left after debts there is no share to band: a holding in
+    // another currency would otherwise read "low exposure" at 0%, while a move
+    // in that currency still changes net worth by a tenth of the holding.
+    if (totalNetWorthFunctional <= 0 && !pos.isFunctional && !pos.rateUnavailable && pos.netAmountOriginal > 0) {
+      pos.riskLevel = 'unbanded';
+      pos.riskLabel = 'No share to work out';
+    }
   }
 
   // Sort: functional currency first, then by absolute percentage descending.

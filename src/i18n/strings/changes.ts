@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'net-worth-no-band-when-negative',
+        text: {
+          en: 'In the net worth calculator, when debts leave your total at zero or below, a holding in another currency used to be labelled low exposure at 0%. It now carries no band, says why, and shows what a 10% move in that currency would change.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर में, जब कर्ज़ों के बाद कुल शून्य या उससे नीचे रह जाता था, तब दूसरी मुद्रा की रकम पर 0% के साथ कम एक्सपोज़र लिखा आता था। अब उस पर कोई श्रेणी नहीं लगती, कारण बताया जाता है, और दिखाया जाता है कि उस मुद्रा में 10% के बदलाव से कितना फ़र्क़ पड़ेगा।',
+          es: 'En la calculadora de patrimonio neto, cuando las deudas dejan el total en cero o por debajo, un saldo en otra moneda aparecía como exposición baja al 0 %. Ahora no lleva ninguna franja, explica por qué y muestra cuánto cambiaría con un movimiento del 10 % de esa moneda.',
+          cs: 'Když v\u00a0kalkulačce čistého jmění dluhy stáhly součet na nulu nebo pod ni, částka v\u00a0jiné měně se označila jako nízká expozice s\u00a00 %. Teď žádné pásmo nedostane, kalkulačka řekne proč a\u00a0ukáže, co by změnil pohyb té měny o\u00a010 %.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये, कर्जांमुळे एकूण रक्कम शून्य किंवा त्याखाली जात असे, तेव्हा दुसऱ्या चलनातील रकमेवर 0% सह कमी हिस्सा असे लिहिले जात होते. आता तिला कोणतीही श्रेणी दिली जात नाही, कारण सांगितले जाते, आणि त्या चलनात 10% बदल झाल्यास किती फरक पडेल ते दाखवले जाते.',
+        },
+      },
+      {
         id: 'loan-apr-default-aud-jpy',
         text: {
           en: 'In the loan comparison, offers in Australian dollars and Japanese yen now start with the APR as the monthly rate × 12, which is how Australia\'s comparison rate and Japan\'s disclosed annual rate are worked out. Until now they started compounded. The choice above the offers still switches between the two.',
