@@ -409,5 +409,5 @@ function decodePositions(params: URLSearchParams): SharedPositionData[] {
 }
 
 function isValidRiskLevel(s: string): s is RiskLevel {
-  return ['functional', 'low', 'moderate', 'elevated', 'net-debt'].includes(s);
+  return ['functional', 'low', 'moderate', 'elevated', 'net-debt', 'unbanded'].includes(s);
 }

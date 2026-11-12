@@ -89,9 +89,11 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
     : [island.chart.tableColCurrency, x.code, x.sharePct, x.exposurePct, island.chart.tableColRisk];
   // Two measures, never under one name: concentration adds to 100, exposure is the share of net worth.
   const concentration = concentrationShares(result.positions);
+  // Net worth of zero or less: no position is a share of it, so the exposure cells stay empty, as the cards do.
+  const noShares = result.hasRates !== 'none' && result.totalNetWorthFunctional <= 0;
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
     const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
-    const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : share(p.pctOfTotal);
+    const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : noShares ? '' : share(p.pctOfTotal);
     if (!showAmounts) return [name(p.code), p.code, pctCell, exposureCell, e.riskLabel(p.riskLevel)];
     return [
       name(p.code),

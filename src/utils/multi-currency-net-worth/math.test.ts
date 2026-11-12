@@ -730,3 +730,31 @@ describe('concentration and exposure are two measures', () => {
     assert.equal(concentrationShares([{ code: 'EUR', netAmountFunctional: 0, pctOfTotal: 0 }]).get('EUR'), 0);
   });
 });
+
+describe('a holding in another currency when net worth is zero or negative', () => {
+  const rates = { USD: 1.1, EUR: 1 };
+  // Jan's case: a 250,000 EUR home, a 300,000 EUR mortgage and 20,000 USD.
+  const underwater: AssetRow[] = [
+    { name: 'Home', value: '250000', currency: 'EUR', type: 'asset' },
+    { name: 'Mortgage', value: '300000', currency: 'EUR', type: 'liability' },
+    { name: 'Savings', value: '20000', currency: 'USD', type: 'asset' },
+  ];
+
+  it('gets no band, where it used to read low exposure at 0%', () => {
+    const r = aggregate(underwater, 'EUR', rates);
+    assert.ok(r.totalNetWorthFunctional < 0);
+    const usd = r.positions.find((p) => p.code === 'USD')!;
+    assert.equal(usd.riskLevel, 'unbanded');
+    assert.equal(usd.pctOfTotal, 0);
+    // A 10% move in the dollar still changes net worth by a tenth of the holding: about 1,818 EUR.
+    assert.equal(Math.round(usd.netAmountFunctional / 10), 1818);
+    assert.equal(r.positions.find((p) => p.code === 'EUR')!.riskLevel, 'functional');
+  });
+
+  it('keeps its band as soon as the total is positive, and a debt stays a debt', () => {
+    const positive = aggregate([...underwater, { name: 'Cash', value: '100000', currency: 'EUR', type: 'asset' }], 'EUR', rates);
+    assert.notEqual(positive.positions.find((p) => p.code === 'USD')!.riskLevel, 'unbanded');
+    const owing = aggregate([{ name: 'Loan', value: '5000', currency: 'USD', type: 'liability' }, { name: 'Cash', value: '1000', currency: 'EUR', type: 'asset' }], 'EUR', rates);
+    assert.equal(owing.positions.find((p) => p.code === 'USD')!.riskLevel, 'net-debt');
+  });
+});
