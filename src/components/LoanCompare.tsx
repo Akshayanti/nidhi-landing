@@ -17,6 +17,9 @@ import {
   aprInConvention,
   defaultAprConvention,
   type AprConvention,
+  isNotPaidOff,
+  shownMonths,
+  MAX_TERM_MONTHS,
 } from '../utils/loan/math.ts';
 import {
   DEFAULT_VENDORS,
@@ -84,6 +87,40 @@ function months(count: number, s: Strings['months']): string {
   if (m === 0) return format(s.years, { y });
   if (m === 1) return format(s.yearsOne, { y });
   return format(s.yearsSome, { y, m });
+}
+
+/**
+ * The payoff of an offer whose payment is kept at the rate change: the month
+ * and how it compares with the entered term, or that the loan is not paid off
+ * and why. Every sentence is whole in the catalog; the counts of months are
+ * written as the tool writes them everywhere else.
+ */
+function payoffText(r: LoanResult, s: Strings): { value: string; hint?: string } {
+  const kept = r.keptPayment;
+  if (!kept) return { value: months(r.months, s.months) };
+  if (kept.outcome === 'never') {
+    return {
+      value: s.results.notPaidOff,
+      hint: format(kept.covers === 'equal' ? s.results.notPaidEqual : s.results.notPaidLess, { month: kept.fromMonth ?? r.rateChange?.month ?? 0 }),
+    };
+  }
+  if (kept.outcome === 'limit') {
+    return { value: s.results.beyondLimit, hint: format(s.results.beyondLimitNote, { limit: months(MAX_TERM_MONTHS, s.months) }) };
+  }
+  const term = months(kept.termMonths, s.months);
+  const gap = r.months - kept.termMonths;
+  return {
+    value: format(s.results.payoffMonth, { month: r.months }),
+    hint:
+      gap === 0
+        ? format(s.results.payoffOnTerm, { term })
+        : format(gap > 0 ? s.results.payoffLater : s.results.payoffEarlier, { n: months(Math.abs(gap), s.months), term }),
+  };
+}
+
+/** What stands where a total would: no finite total when the loan is never paid off, not available when the calculation stopped at its limit. */
+function noTotalText(r: LoanResult, s: Strings): string {
+  return r.keptPayment?.outcome === 'never' ? s.results.noFiniteTotal : s.results.notAvailable;
 }
 
 /**
@@ -275,12 +312,16 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   const close = useCallback(() => setHover(null), []);
   useEscapeToClose(hover !== null, close);
 
+  // `rows` is the part of the schedule the chart draws: all of it, except for
+  // a loan that is never paid off (see `shownMonths`). `open` marks a line
+  // with no payoff to mark.
   const valid = results
     .map((r, i) => ({ r, i, name: vendorNames[i] }))
-    .filter((x) => !x.r.error && x.r.schedule.length > 0);
+    .filter((x) => !x.r.error && x.r.schedule.length > 0)
+    .map((x) => ({ ...x, rows: x.r.schedule.slice(0, shownMonths(results, x.i)), open: isNotPaidOff(x.r) ? x.r.keptPayment!.outcome : null }));
 
   const factor = getCurrency(currency).factor;
-  const maxMonths = valid.length ? Math.max(...valid.map(({ r }) => r.schedule.length)) : 1;
+  const maxMonths = valid.length ? Math.max(...valid.map(({ rows }) => rows.length)) : 1;
   const x = (m: number) => BPAD.left + (m / Math.max(maxMonths, 1)) * BPLOT_W;
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
 
@@ -289,24 +330,26 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   }
 
   // Balance (in major units) and interest paid so far, for month m (0 = start).
-  const series = valid.map(({ r, i, name }) => {
-    const start = (r.schedule[0].balance + r.schedule[0].principal) / factor;
+  const series = valid.map(({ rows: shown, i, name, open }) => {
+    const start = (shown[0].balance + shown[0].principal) / factor;
     const balance = [start];
     const interest = [0];
     let paid = 0;
-    for (const row of r.schedule) {
+    for (const row of shown) {
       balance.push(row.balance / factor);
       paid += row.interest;
       interest.push(paid / factor);
     }
-    return { i, name, balance, interest, payoff: r.schedule.length, color: colors[i], dash: VENDOR_DASHES[i] ?? '' };
+    return { i, name, balance, interest, payoff: shown.length, open, color: colors[i], dash: VENDOR_DASHES[i] ?? '' };
   });
   const at = (s: (typeof series)[number], m: number) => ({
-    balance: m < s.balance.length ? s.balance[m] : 0,
+    // Past the end of a paid-off loan the balance is nothing; a line with no
+    // payoff keeps its last balance.
+    balance: m < s.balance.length ? s.balance[m] : s.open ? s.balance[s.balance.length - 1] : 0,
     interest: s.interest[Math.min(m, s.interest.length - 1)],
   });
 
-  const { top, step: yStep, count: yCount } = niceScale(Math.max(...series.map((s) => s.balance[0])));
+  const { top, step: yStep, count: yCount } = niceScale(Math.max(...series.map((s) => (s.open ? Math.max(...s.balance) : s.balance[0]))));
   const y = (v: number) => BPAD.top + (1 - v / top) * BPLOT_H;
   const path = (vals: number[]) => vals.map((v, m) => `${m === 0 ? 'M' : 'L'}${x(m).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
 
@@ -323,7 +366,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
     strings.balance.ariaPrefix +
     series
       .map((s) =>
-        format(strings.balance.seriesLine, {
+        format(s.open === 'never' ? strings.balance.seriesLineNotPaid : s.open === 'limit' ? strings.balance.seriesLineBeyond : strings.balance.seriesLine, {
           name: s.name,
           amount: formatAmount(s.balance[0], currency),
           months: months(s.payoff, strings.months),
@@ -400,7 +443,11 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
             </svg>
             {s.name}
             <span className="lc-legendNote">
-              {format(strings.balance.legendNote, { months: months(s.payoff, strings.months) })}
+              {s.open === 'never'
+                ? strings.balance.legendNotPaid
+                : s.open === 'limit'
+                  ? strings.balance.legendBeyond
+                  : format(strings.balance.legendNote, { months: months(s.payoff, strings.months) })}
             </span>
           </span>
         ))}
@@ -464,7 +511,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
                   const m = Math.round((s.payoff * (s.i + 1)) / (series.length + 1));
                   return <MarkerGlyph index={s.i} cx={x(m)} cy={y(at(s, m).balance)} r={6} color={s.color} halo="var(--color-bg-white)" />;
                 })()}
-                <MarkerGlyph index={s.i} cx={x(s.payoff)} cy={y(0)} r={6} color={s.color} halo="var(--color-bg-white)" />
+                {!s.open && <MarkerGlyph index={s.i} cx={x(s.payoff)} cy={y(0)} r={6} color={s.color} halo="var(--color-bg-white)" />}
               </g>
             ))}
             {hover !== null && (
@@ -481,6 +528,9 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
       </div>
       {hover !== null && <ChartReadout title={when(hover)} rows={rows} cardRef={cardRef} position={cardLeft} />}
       <p className="lc-chartHint">{strings.balance.hint}</p>
+      {series.some((s) => s.open) && (
+        <p className="lc-chartHint">{format(strings.balance.shownThrough, { month: maxMonths })}</p>
+      )}
       {/* A table ignores width and overflow, so the visually hidden box wraps it. */}
       <div className="lc-srOnly">
         <table>
@@ -494,7 +544,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
             </tr>
           </thead>
           <tbody>
-            {sampleSchedule(valid.map(({ r }) => r.schedule), 12).map((row) => (
+            {sampleSchedule(valid.map(({ rows: shown }) => shown), 12).map((row) => (
               <tr key={row.month}>
                 <th scope="row">{row.month}</th>
                 {row.values.map((v, idx) => (
@@ -974,9 +1024,11 @@ export default function LoanCompare({
   const validResults = results
     .map((r, i) => ({ r, i }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
+  // Only an offer that is paid off has a total to be lowest.
+  const withTotal = validResults.filter((x) => !isNotPaidOff(x.r));
   const cheapestByTotal =
-    validResults.length > 0
-      ? validResults.reduce((best, cur) =>
+    withTotal.length > 0
+      ? withTotal.reduce((best, cur) =>
           cur.r.totalPaidMinor < best.r.totalPaidMinor ? cur : best,
         ).i
       : -1;
@@ -1293,11 +1345,11 @@ function PrintedReport({ strings, exportStrings, currency, aprConvention, vendor
 }) {
   const { formatMoney, amountLocale } = useMoney();
   const names = vendors.map((v, i) => shownName(v.name, i, strings));
-  const totals = results.filter((r) => !r.error && r.schedule.length > 0).map((r) => r.totalPaidMinor).sort((a, b) => a - b);
+  const totals = results.filter((r) => !r.error && r.schedule.length > 0 && !isNotPaidOff(r)).map((r) => r.totalPaidMinor).sort((a, b) => a - b);
   const d = strings.delta;
   const answer =
     totals.length < 2
-      ? d.empty
+      ? results.filter((r) => !r.error && r.schedule.length > 0).length < 2 ? d.empty : d.noRange
       : totals[0] === totals[totals.length - 1]
         ? `${d.sameBefore}${formatMoney(totals[0], currency)}${d.sameAfter}`
         : `${d.rangeBefore}${formatMoney(totals[0], currency)}${d.rangeTo}${formatMoney(totals[totals.length - 1], currency)}${d.rangeAcross}${formatMoney(totals[totals.length - 1] - totals[0], currency)}${d.rangeAfter}`;
@@ -1364,6 +1416,7 @@ function VendorCard({
   // When that is what is wrong, the required boxes are not marked as well.
   const requiredError = hasError && badOptional.size === 0;
   const headingId = id('heading');
+  const notPaid = isNotPaidOff(result);
 
   // The four optional groups fold, each behind a row that says in words
   // (never amounts) what it holds. A group starts open when it differs from
@@ -1384,8 +1437,10 @@ function VendorCard({
   const hybrid = vendor.rateKind === 'hybrid' && vendor.modeKind === 'term';
   const folds = {
     rate: {
-      ...fold('rate', differs('rateKind'), unreadable('initialFixedMonths', 'subsequentRatePct')),
-      state: hybrid ? strings.card.statusHybrid : strings.card.statusFixed,
+      ...fold('rate', differs('rateKind', 'rateChangeKeeps'), unreadable('initialFixedMonths', 'subsequentRatePct')),
+      state: hybrid
+        ? vendor.rateChangeKeeps === 'payment' ? strings.card.statusHybridKept : strings.card.statusHybrid
+        : strings.card.statusFixed,
     },
     costs: {
       ...fold('costs', differs('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct'), unreadable('feeMajor', 'pointsCostMajor', 'pointsRateReductionPct')),
@@ -1586,7 +1641,25 @@ function VendorCard({
                 what most users look at first. Everything else moves into
                 the "Show details" expander to keep the card compact. */}
             <dl className="lc-resultList lc-resultListPrimary">
-              {result.rateChange && result.rateChange.paymentMinor !== null ? (
+              {result.keptPayment ? (
+                // The payment is kept at the rate change: one amount, and the
+                // row below says when the loan ends, or that it does not.
+                <>
+                  <ResultRow
+                    label={strings.results.monthly}
+                    value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                    hint={strings.results.keptNote}
+                    note={
+                      result.effectiveMonthlyMinor > result.monthlyPaymentMinor
+                        ? format(strings.results.monthlyIncludesExtra, {
+                            extra: formatMoney(result.effectiveMonthlyMinor - result.monthlyPaymentMinor, currency),
+                          })
+                        : undefined
+                    }
+                  />
+                  <ResultRow label={strings.results.payoff} {...payoffText(result, strings)} />
+                </>
+              ) : result.rateChange && result.rateChange.paymentMinor !== null ? (
                 // The payment changes with the rate: both amounts at the same
                 // weight, each under its own months, so no figure stands alone.
                 <div className="lc-resultRow lc-resultRowSteps">
@@ -1629,13 +1702,13 @@ function VendorCard({
               )}
               <ResultRow
                 label={strings.results.apr}
-                value={aprText(aprInConvention(result.aprNominal, aprConvention), currency, strings, amountLocale)}
-                hint={result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
-                note={aprConvention === 'nominal' ? strings.results.aprNominalLine : strings.results.aprEffectiveLine}
+                value={notPaid ? strings.results.notAvailable : aprText(aprInConvention(result.aprNominal, aprConvention), currency, strings, amountLocale)}
+                hint={notPaid ? undefined : result.feeMinor > 0 ? strings.results.aprFees : strings.results.aprNoFees}
+                note={notPaid ? undefined : aprConvention === 'nominal' ? strings.results.aprNominalLine : strings.results.aprEffectiveLine}
               />
               <ResultRow
                 label={strings.results.totalPaid}
-                value={formatMoney(result.totalPaidMinor, currency)}
+                value={notPaid ? noTotalText(result, strings) : formatMoney(result.totalPaidMinor, currency)}
                 emphasized
               />
             </dl>
@@ -1650,17 +1723,21 @@ function VendorCard({
             >
               <summary className="lc-resultDetailsSummary disclosure">{strings.results.showDetails}</summary>
               <dl className="lc-resultList">
-                <ResultRow
-                  label={strings.results.timeToPayoff}
-                  value={months(result.months, strings.months)}
-                  hint={format(
-                    plural(numberLocale, result.months, strings.results.paymentsOne, strings.results.paymentsFew, strings.results.paymentsMany),
-                    { n: result.months },
-                  )}
-                />
+                {notPaid ? (
+                  <ResultRow label={strings.results.timeToPayoff} value={payoffText(result, strings).value} />
+                ) : (
+                  <ResultRow
+                    label={strings.results.timeToPayoff}
+                    value={months(result.months, strings.months)}
+                    hint={format(
+                      plural(numberLocale, result.months, strings.results.paymentsOne, strings.results.paymentsFew, strings.results.paymentsMany),
+                      { n: result.months },
+                    )}
+                  />
+                )}
                 <ResultRow
                   label={strings.results.totalInterest}
-                  value={formatMoney(result.totalInterestMinor, currency)}
+                  value={notPaid ? noTotalText(result, strings) : formatMoney(result.totalInterestMinor, currency)}
                 />
                 {result.feeMinor > 0 && (
                   <ResultRow
@@ -1803,6 +1880,29 @@ function VendorCard({
                 {strings.card.subsequentRateHelp}
               </p>
             </div>
+            {/* What the lender does at the rate change. A choice, not a typed
+                value: the share link carries it as one letter, and no event
+                is sent for it. It stays in place when no payment would use
+                the later rate, so a setting never vanishes while typing. */}
+            <fieldset className="lc-modeFieldset lc-atChange">
+              <legend className="lc-fieldLabel">{strings.card.atChange.label}</legend>
+              <div className="lc-modeRow lc-modeRowStacked">
+                {(['term', 'payment'] as const).map((keeps) => (
+                  <label key={keeps} className={`lc-modeOption ${vendor.rateChangeKeeps === keeps ? 'lc-modeOptionActive' : ''}`}>
+                    <input
+                      type="radio"
+                      name={`rateChangeKeeps-${baseId}`}
+                      value={keeps}
+                      checked={vendor.rateChangeKeeps === keeps}
+                      aria-describedby={id('atChange-hint')}
+                      onChange={() => onChange({ rateChangeKeeps: keeps })}
+                    />
+                    <span>{strings.card.atChange[keeps]}</span>
+                  </label>
+                ))}
+              </div>
+              <p id={id('atChange-hint')} className="lc-fieldHelp">{strings.card.atChange.hint}</p>
+            </fieldset>
           </>
         )}
       </FieldGroup>
@@ -2052,12 +2152,15 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
   // which is a textbook recommendation under the Consumer Credit
   // Directive and the platform's regulatory-advisory policy. The math
   // is the same; the framing now describes the spread instead.
-  const sortedByTotal = [...valid].sort(
+  // Only offers that are paid off have a total. With the payment kept at a
+  // rate change a loan may never be, and it is then left out of the range and
+  // of the differences, never counted as the lowest because its total is blank.
+  const sortedByTotal = valid.filter((v) => !isNotPaidOff(v.r)).sort(
     (a, b) => a.r.totalPaidMinor - b.r.totalPaidMinor,
   );
-  const lowest = sortedByTotal[0];
-  const highest = sortedByTotal[sortedByTotal.length - 1];
-  const spreadMinor = highest.r.totalPaidMinor - lowest.r.totalPaidMinor;
+  const lowest: (typeof valid)[number] | undefined = sortedByTotal[0];
+  const highest: (typeof valid)[number] | undefined = sortedByTotal[sortedByTotal.length - 1];
+  const spreadMinor = lowest && highest ? highest.r.totalPaidMinor - lowest.r.totalPaidMinor : 0;
   const allSame = spreadMinor === 0;
 
   return (
@@ -2072,7 +2175,9 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
         Credit Directive 2008/48/EC (and CCD2 from 2026 onward).
       */}
       <p className="lc-deltaHero" aria-live="polite" aria-atomic="true">
-        {allSame ? (
+        {!lowest || !highest || sortedByTotal.length < 2 ? (
+          strings.delta.noRange
+        ) : allSame ? (
           <>{strings.delta.sameBefore}
             <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
             {strings.delta.sameAfter}</>
@@ -2119,6 +2224,14 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               format={(n) => formatMoney(n, currency)}
               cell={(r) => {
                 const change = r.rateChange;
+                if (r.keptPayment) {
+                  return (
+                    <span className="lc-deltaLines">
+                      <span>{formatMoney(r.effectiveMonthlyMinor, currency)}</span>
+                      <span className="lc-deltaNote">{strings.results.keptNote}</span>
+                    </span>
+                  );
+                }
                 if (!change) return null;
                 if (change.paymentMinor === null) {
                   return (
@@ -2144,6 +2257,16 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               valid={valid}
               get={(r) => r.months}
               format={(n) => months(n, strings.months)}
+              cell={(r) => {
+                if (!r.keptPayment) return null;
+                if (isNotPaidOff(r)) return <span>{payoffText(r, strings).value}</span>;
+                return (
+                  <span className="lc-deltaLines">
+                    <span>{months(r.months, strings.months)}</span>
+                    <span className="lc-deltaNote">{payoffText(r, strings).hint}</span>
+                  </span>
+                );
+              }}
             />
             <DeltaRow
               label={strings.delta.aprInclFees}
@@ -2154,18 +2277,21 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               // display in the UI.
               get={(r) => Math.round(aprInConvention(r.aprNominal, aprConvention) * 1_000_000)}
               format={(n) => aprText(n / 1_000_000, currency, strings, amountLocale)}
+              cell={(r) => (isNotPaidOff(r) ? <span>{strings.results.notAvailable}</span> : null)}
             />
             <DeltaRow
               label={strings.delta.totalInterest}
               valid={valid}
               get={(r) => r.totalInterestMinor}
               format={(n) => formatMoney(n, currency)}
+              cell={(r) => (isNotPaidOff(r) ? <span>{noTotalText(r, strings)}</span> : null)}
             />
             <DeltaRow
               label={strings.delta.totalPaid}
               valid={valid}
               get={(r) => r.totalPaidMinor}
               format={(n) => formatMoney(n, currency)}
+              cell={(r) => (isNotPaidOff(r) ? <span>{noTotalText(r, strings)}</span> : null)}
               emphasized
             />
             <tr className="lc-deltaSavingsRow">
@@ -2178,10 +2304,12 @@ function DeltaSummary({ results, vendors, currency, aprConvention, strings }: De
               */}
               <th scope="row">{strings.delta.diffRow}</th>
               {valid.map((v) => {
-                const diff = v.r.totalPaidMinor - lowest.r.totalPaidMinor;
+                const diff = lowest && !isNotPaidOff(v.r) && sortedByTotal.length > 1 ? v.r.totalPaidMinor - lowest.r.totalPaidMinor : NaN;
                 return (
                   <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>
-                    {diff === 0 ? (
+                    {Number.isNaN(diff) ? (
+                      <span>{strings.delta.notComparable}</span>
+                    ) : diff === 0 ? (
                       <span className="lc-deltaBaseline" aria-label={strings.delta.baselineAria}>{strings.delta.baseline}</span>
                     ) : (
                       <span className="lc-deltaCost">+{formatMoney(diff, currency)}</span>
@@ -2546,7 +2674,15 @@ function ChartsPanel({
 
         {activeResult && !activeResult.error && activeResult.contractSchedule.length > 0 ? (
           <SplitChart
-            schedule={activeResult.contractSchedule}
+            // A loan that is never paid off: the months the balance chart
+            // shows, and a payment smaller than its interest is all interest.
+            schedule={
+              isNotPaidOff(activeResult)
+                ? activeResult.contractSchedule
+                    .slice(0, shownMonths(results, activeIdx))
+                    .map((row) => (row.principal < 0 ? { ...row, interest: row.payment, principal: 0 } : row))
+                : activeResult.contractSchedule
+            }
             currency={currency}
             vendorName={vendorName}
             vendorColor={VENDOR_COLORS[activeIdx]}
@@ -2682,7 +2818,7 @@ function HorizonSection({
   // 1 month so the slider always renders.
   const maxMonths = Math.max(
     1,
-    ...results.filter((r) => !r.error).map((r) => r.schedule.length),
+    ...results.map((r, i) => (r.error ? 0 : shownMonths(results, i))),
   );
   const parsed = Math.round(parseNumber(horizonMonths));
   const horizon = Number.isFinite(parsed)
@@ -2852,7 +2988,8 @@ function RefinanceSection({
   const requestedIdx = Math.round(parseNumber(state.refiVendorIndex)) - 1;
   const validIndices = vendors
     .map((_, i) => i)
-    .filter((i) => !results[i].error && results[i].schedule.length > 0);
+    // A loan that is never paid off has no remaining cost to set a new loan against.
+    .filter((i) => !results[i].error && results[i].schedule.length > 0 && !isNotPaidOff(results[i]));
   const activeIdx =
     validIndices.includes(requestedIdx) ? requestedIdx : (validIndices[0] ?? -1);
 

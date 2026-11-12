@@ -343,6 +343,7 @@ describe('encode/decode round-trip', () => {
         rateKind: 'fixed',
         initialFixedMonths: '60',
         subsequentRatePct: '',
+        rateChangeKeeps: 'term',
         pointsCostMajor: '0',
         pointsRateReductionPct: '0',
         lumpSumsEncoded: '',
@@ -883,5 +884,34 @@ describe('a hostile link', () => {
     const back = decode(encodeToQueryString(vendors, DEFAULT_GLOBAL_STATE)).vendors[0];
     assert.equal(back.name, makeDefaultVendor(0).name);
     assert.equal(back.principal, '123456');
+  });
+});
+
+describe('what is kept at a rate change travels as one letter', () => {
+  const offer = (keeps: 'term' | 'payment'): VendorInput => ({
+    ...makeDefaultVendor(0),
+    rateKind: 'hybrid',
+    initialFixedMonths: '60',
+    subsequentRatePct: '9',
+    rateChangeKeeps: keeps,
+  });
+
+  it('writes nothing for the default, so every existing link reads as before', () => {
+    const qs = encodeToQueryString([offer('term'), makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+    assert.ok(!/_rc=/.test(qs), qs);
+  });
+
+  it('writes the kept payment as v1_rc=p and reads it back', () => {
+    const qs = encodeToQueryString([offer('payment'), makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+    assert.ok(/(^|&)v1_rc=p(&|$)/.test(qs), qs);
+    const back = decodeFromQueryString(qs);
+    assert.equal(back.vendors[0].rateChangeKeeps, 'payment');
+    assert.equal(back.vendors[1].rateChangeKeeps, 'term');
+  });
+
+  it('reads a missing or unknown code as the default', () => {
+    for (const qs of ['v1_rk=hybrid&v1_sr=9', 'v1_rk=hybrid&v1_sr=9&v1_rc=x', 'v1_rk=hybrid&v1_sr=9&v1_rc=payment', 'v1_rk=hybrid&v1_sr=9&v1_rc=']) {
+      assert.equal(decodeFromQueryString(qs).vendors[0].rateChangeKeeps, 'term', qs);
+    }
   });
 });
