@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'loan-apr-captions-plain',
+        text: {
+          en: 'In the loan comparison, the line under each APR now says only how it is worked out, “Monthly rate × 12” or “Compounded over a year”, without a list of countries; the explanation beside the choice still says where each is used, and now names India. On a phone, a long name on one offer\'s tab no longer stretches the tab next to it.',
+          hi: 'लोन तुलना में हर APR के नीचे की पंक्ति अब सिर्फ़ यह बताती है कि वह कैसे निकाला गया, “मासिक दर × 12” या “साल भर की चक्रवृद्धि”, देशों की सूची के बिना; चुनाव के पास की व्याख्या अब भी बताती है कि कौन-सा तरीक़ा कहाँ चलता है, और अब भारत का नाम भी लेती है। फ़ोन पर किसी ऑफ़र के टैब का लंबा नाम अब बगल वाले टैब को नहीं खींचता।',
+          es: 'En la comparación de préstamos, la línea bajo cada APR dice ahora solo cómo se calcula, «Tasa mensual × 12» o «Capitalizada durante un año», sin una lista de países; la explicación junto a la opción sigue diciendo dónde se usa cada una, y ahora menciona la India. En el teléfono, un nombre largo en la pestaña de una oferta ya no estira la pestaña de al lado.',
+          cs: 'Ve srovnání úvěrů teď řádek pod každou hodnotou APR říká jen to, jak se počítá, „Měsíční sazba × 12“ nebo „Složené úročení za rok“, bez seznamu zemí; vysvětlení u\u00a0volby dál uvádí, kde se který způsob používá, a\u00a0nově jmenuje i\u00a0Indii. Na telefonu už dlouhý název na záložce jedné nabídky nenatahuje záložku vedle.',
+          mr: 'कर्जांच्या तुलनेत प्रत्येक APR\u00a0खालची ओळ आता फक्त तो कसा काढला हे सांगते, “मासिक दर × 12” किंवा “वर्षभराची चक्रवाढ”, देशांच्या यादीशिवाय; निवडीजवळचे स्पष्टीकरण अजूनही कोणती पद्धत कुठे वापरली जाते ते सांगते, आणि आता भारताचेही नाव घेते. फोनवर एका ऑफरच्या टॅबवरील लांब नाव आता शेजारच्या टॅबला ताणत नाही.',
+        },
+      },
+      {
         id: 'net-worth-concentration-exposure',
         text: {
           en: 'The net worth calculator used one word, concentration, for two different numbers. With a debt in another currency, the chart could say 63.5% while the cards and the spreadsheet said 234.9% for the same currency. Now concentration is each currency\'s share of everything you hold and owe, and always adds to 100%. The other number is called what it is, the share of your net worth, on the cards and as its own column in the spreadsheet and the PDF.',
