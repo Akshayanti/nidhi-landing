@@ -404,7 +404,7 @@ export const multiCurrencyNetWorthEn = {
       labelElevated: 'Elevated exposure',
       labelModerate: 'Moderate exposure',
       labelLow: 'Low exposure',
-      labelUnbanded: 'No share to work out',
+      labelUnbanded: 'No share of net worth',
       disclaimer:
         'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial advisor.',
     },
@@ -451,9 +451,12 @@ export const multiCurrencyNetWorthEn = {
         'A small share of your net worth is in {code}. The {code}/{currency} rate has only a limited effect on your overall net worth.',
       lowShown:
         '{pct}% of your net worth is in {code}. If {code} rises or falls 10% against {currency}, your net worth rises or falls with it by roughly {sensitivity}%.',
-      unbandedHidden: 'Your total is zero or negative, so shares of net worth cannot be worked out.',
+      unbandedHidden: 'Your net worth is zero or negative, so a share of it cannot be calculated.',
       unbandedShown:
-        'Your total is zero or negative, so shares of net worth cannot be worked out. A 10% move in {code} against {currency} changes your net worth by about {amount}.',
+        'Your net worth is zero or negative, so a share of it cannot be calculated. If {code} rises or falls 10% against {currency}, your net worth rises or falls with it by about {amount}.',
+      /** The spending currency is itself a net debt and net worth is zero or less: no claim about where net worth sits. */
+      functionalDebtNoShares:
+        'You owe more than you hold in your spending currency ({currency}). Your net worth is zero or negative, so a share of it cannot be calculated.',
     },
     chart: {
       heading: 'Currency concentration',
@@ -815,14 +818,14 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       badgeModerate: 'मध्यम',
       badgeLow: 'कम',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
-      badgeUnbanded: 'कोई श्रेणी नहीं',
+      badgeUnbanded: 'कोई स्तर नहीं',
       riskHeading: 'हर मुद्रा के जोखिम का आकलन',
       labelFunctional: 'यह आपकी खर्च की मुद्रा है',
       labelNetDebt: 'इस मुद्रा में शुद्ध देनदारी',
       labelElevated: 'ज़्यादा एक्सपोज़र',
       labelModerate: 'मध्यम एक्सपोज़र',
       labelLow: 'कम एक्सपोज़र',
-      labelUnbanded: 'हिस्सा नहीं निकलता',
+      labelUnbanded: 'शुद्ध संपत्ति का हिस्सा नहीं',
       disclaimer:
         'यह कैलकुलेटर आधिकारिक संदर्भ दरों पर, आपकी हर मुद्रा में शुद्ध स्थिति का गणितीय जमाव दिखाता है; ये दरें आपके बैंक या ब्रोकर पर मिलने वाली दरों से अलग हो सकती हैं। इसमें आपकी आगे की खर्च योजना, कर निवास (tax\u00A0residency), हेजिंग की रणनीति या जोखिम लेने की क्षमता शामिल नहीं है, और यह वित्तीय सलाह नहीं है। अपने हालात के लिए सलाह चाहिए तो किसी लाइसेंस प्राप्त वित्तीय सलाहकार से बात कीजिए।',
     },
@@ -855,9 +858,12 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         'आपकी शुद्ध संपत्ति का एक छोटा हिस्सा {code} में है। {code}/{currency} की दर का असर आपकी कुल शुद्ध संपत्ति पर सीमित ही रहता है।',
       lowShown:
         'आपकी शुद्ध संपत्ति का {pct}% {code} में है। अगर {currency} के मुक़ाबले {code} 10% मज़बूत या कमज़ोर हो, तो आपकी शुद्ध संपत्ति भी उसके साथ क़रीब {sensitivity}% बढ़ेगी या घटेगी।',
-      unbandedHidden: 'आपका कुल शून्य या ऋणात्मक है, इसलिए शुद्ध संपत्ति के हिस्से नहीं निकाले जा सकते।',
+      unbandedHidden: 'आपकी शुद्ध संपत्ति शून्य या माइनस में है, इसलिए उसका हिस्सा नहीं निकाला जा सकता।',
       unbandedShown:
-        'आपका कुल शून्य या ऋणात्मक है, इसलिए शुद्ध संपत्ति के हिस्से नहीं निकाले जा सकते। {currency} के मुक़ाबले {code} में 10% का बदलाव आपकी शुद्ध संपत्ति को क़रीब {amount} से बदल देता है।',
+        'आपकी शुद्ध संपत्ति शून्य या माइनस में है, इसलिए उसका हिस्सा नहीं निकाला जा सकता। अगर {currency} के मुक़ाबले {code} 10% मज़बूत या कमज़ोर हो, तो आपकी शुद्ध संपत्ति भी उसके साथ क़रीब {amount} बढ़ेगी या घटेगी।',
+      /** The spending currency is itself a net debt and net worth is zero or less: no claim about where net worth sits. */
+      functionalDebtNoShares:
+        'आपकी खर्च की मुद्रा ({currency}) में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है। आपकी शुद्ध संपत्ति शून्य या माइनस में है, इसलिए उसका हिस्सा नहीं निकाला जा सकता।',
     },
     chart: {
       heading: 'मुद्रा मिश्रण',
@@ -1222,14 +1228,14 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       badgeModerate: 'Moderado',
       badgeLow: 'Bajo',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
-      badgeUnbanded: 'Sin franja',
+      badgeUnbanded: 'Sin nivel',
       riskHeading: 'Evaluación del riesgo por moneda',
       labelFunctional: 'La moneda en la que gastas',
       labelNetDebt: 'Deuda neta en esta moneda',
       labelElevated: 'Exposición elevada',
       labelModerate: 'Exposición moderada',
       labelLow: 'Exposición baja',
-      labelUnbanded: 'Sin participación calculable',
+      labelUnbanded: 'Sin parte del patrimonio neto',
       disclaimer:
         'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
     },
@@ -1262,9 +1268,12 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         'Una parte pequeña de tu patrimonio neto está en {code}. El tipo de cambio {code}/{currency} tiene un efecto limitado en tu patrimonio neto total.',
       lowShown:
         'El {pct} % de tu patrimonio neto está en {code}. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente un {sensitivity} %.',
-      unbandedHidden: 'Tu total es cero o negativo, así que no se pueden calcular las participaciones en el patrimonio neto.',
+      unbandedHidden: 'Tu patrimonio neto es cero o negativo, así que no se puede calcular qué parte de él hay en cada moneda.',
       unbandedShown:
-        'Tu total es cero o negativo, así que no se pueden calcular las participaciones en el patrimonio neto. Un movimiento del 10 % del {code} frente al {currency} cambia tu patrimonio neto en unos {amount}.',
+        'Tu patrimonio neto es cero o negativo, así que no se puede calcular qué parte de él hay en cada moneda. Si el {code} sube o baja un 10 % frente al {currency}, tu patrimonio neto sube o baja con él aproximadamente {amount}.',
+      /** The spending currency is itself a net debt and net worth is zero or less: no claim about where net worth sits. */
+      functionalDebtNoShares:
+        'En la moneda en la que gastas ({currency}) debes más de lo que tienes. Tu patrimonio neto es cero o negativo, así que no se puede calcular qué parte de él hay en cada moneda.',
     },
     chart: {
       heading: 'Concentración por moneda',
@@ -1642,7 +1651,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       labelElevated: 'Zvýšená expozice',
       labelModerate: 'Střední expozice',
       labelLow: 'Nízká expozice',
-      labelUnbanded: 'Podíl nelze určit',
+      labelUnbanded: 'Bez podílu na čistém jmění',
       disclaimer:
         'Tato kalkulačka ukazuje matematickou koncentraci vašich čistých pozic napříč měnami podle oficiálních referenčních kurzů, které se mohou lišit od kurzů vaší banky nebo brokera. Nezohledňuje vaše budoucí výdaje, daňovou rezidenci, zajištění ani toleranci k riziku a není finančním poradenstvím. Pro osobní radu se obraťte na finančního poradce s příslušným oprávněním.',
     },
@@ -1675,9 +1684,12 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         'Malý podíl vašeho čistého jmění je v {code}. Kurz {code}/{currency} má na celkové čisté jmění jen omezený vliv.',
       lowShown:
         '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
-      unbandedHidden: 'Váš součet je nulový nebo záporný, takže podíly na čistém jmění nelze určit.',
+      unbandedHidden: 'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat.',
       unbandedShown:
-        'Váš součet je nulový nebo záporný, takže podíly na čistém jmění nelze určit. Pohyb {code} o 10 % vůči {currency} změní vaše čisté jmění zhruba o {amount}.',
+        'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {amount}.',
+      /** The spending currency is itself a net debt and net worth is zero or less: no claim about where net worth sits. */
+      functionalDebtNoShares:
+        'V měně vašich výdajů ({currency}) dlužíte víc, než máte. Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat.',
     },
     chart: {
       heading: 'Měnová koncentrace',
@@ -2004,14 +2016,14 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       badgeModerate: 'मध्यम',
       badgeLow: 'कमी',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
-      badgeUnbanded: 'श्रेणी नाही',
+      badgeUnbanded: 'पट्टा नाही',
       riskHeading: 'प्रत्येक चलनाच्या जोखमीचे मूल्यमापन',
       labelFunctional: 'तुमचे खर्चाचे चलन',
       labelNetDebt: 'या चलनात निव्वळ कर्ज',
       labelElevated: 'जास्त हिस्सा',
       labelModerate: 'मध्यम हिस्सा',
       labelLow: 'कमी हिस्सा',
-      labelUnbanded: 'हिस्सा काढता येत नाही',
+      labelUnbanded: 'निव्वळ संपत्तीचा हिस्सा नाही',
       disclaimer: 'हा कॅल्क्युलेटर चलनानुसार तुमच्या निव्वळ स्थितीचे गणिती हिस्से दाखवतो, अधिकृत संदर्भ दर वापरून, जे तुमच्या बँकेत किंवा ब्रोकरकडे मिळणाऱ्या दरांपेक्षा वेगळे असू शकतात. तो तुमच्या भविष्यातील खर्चाच्या योजना, कर-निवासाचा दर्जा (tax residency), जोखीम-बचावाच्या (hedging) रणनीती किंवा जोखीम सहनशीलता विचारात घेत नाही, आणि तो आर्थिक सल्ला नाही. वैयक्तिक सल्ल्यासाठी परवानाधारक आर्थिक सल्लागाराशी बोला.',
     },
     rec: {
@@ -2031,9 +2043,12 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       moderateShown: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% {code} मध्ये आहे. {currency} च्या तुलनेत {code} 10% वाढले किंवा घटले, तर तुमची निव्वळ संपत्ती साधारण {sensitivity}% ने वाढते किंवा घटते.',
       lowHidden: 'तुमच्या निव्वळ संपत्तीचा लहान हिस्सा {code} मध्ये आहे. {code}/{currency} दराचा तुमच्या एकूण निव्वळ संपत्तीवर मर्यादितच परिणाम होतो.',
       lowShown: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% {code} मध्ये आहे. {currency} च्या तुलनेत {code} 10% वाढले किंवा घटले, तर तुमची निव्वळ संपत्ती साधारण {sensitivity}% ने वाढते किंवा घटते.',
-      unbandedHidden: 'तुमची एकूण रक्कम शून्य किंवा उणे आहे, त्यामुळे निव्वळ संपत्तीतील हिस्से काढता येत नाहीत.',
+      unbandedHidden: 'तुमची निव्वळ संपत्ती शून्य किंवा उणे आहे, त्यामुळे तिचा हिस्सा काढता येत नाही.',
       unbandedShown:
-        'तुमची एकूण रक्कम शून्य किंवा उणे आहे, त्यामुळे निव्वळ संपत्तीतील हिस्से काढता येत नाहीत. {currency} च्या तुलनेत {code} मध्ये 10% बदल झाल्यास तुमची निव्वळ संपत्ती साधारण {amount} ने बदलते.',
+        'तुमची निव्वळ संपत्ती शून्य किंवा उणे आहे, त्यामुळे तिचा हिस्सा काढता येत नाही. {currency} च्या तुलनेत {code} 10% वाढले किंवा घटले, तर तुमची निव्वळ संपत्ती साधारण {amount} ने वाढते किंवा घटते.',
+      /** The spending currency is itself a net debt and net worth is zero or less: no claim about where net worth sits. */
+      functionalDebtNoShares:
+        'तुमच्या खर्चाच्या चलनात ({currency}) तुमच्याकडे जितके आहे त्यापेक्षा तुमची देणी जास्त आहेत. तुमची निव्वळ संपत्ती शून्य किंवा उणे आहे, त्यामुळे तिचा हिस्सा काढता येत नाही.',
     },
     chart: {
       heading: 'चलननिहाय हिस्सा',

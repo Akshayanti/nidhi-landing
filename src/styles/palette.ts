@@ -191,6 +191,8 @@ export const RISK_COLORS = {
   moderate:   'var(--risk-moderate)',
   elevated:   'var(--risk-elevated)',
   'net-debt': 'var(--risk-net-debt)',
+  /** No band can be given (net worth is zero or less): a neutral, not a step on the scale. */
+  unbanded:   'var(--risk-unbanded)',
 } as const;
 
 /**

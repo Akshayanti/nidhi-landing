@@ -268,6 +268,9 @@ The markers are drawn by `src/components/chart/SeriesMarker.tsx` and appear on t
 | moderate | `#6B4800` amber | `#FFCC80` |
 | elevated | `#8B2E00` deep orange | `#FFAB91` |
 | net debt | `#991100` red | `#FF9E80` |
+| no band | `#3D3D3D` neutral 850 | `#B0B0B0` neutral 800 |
+
+"No band" is not a step on the scale: it is the neutral for a position that cannot be given a level (net worth of zero or less), so it carries no hue.
 
 **Figure and chart inks.** In lesson figures: `--fig-on-fill` (white in light, `#121212` in dark) for a label on a filled shape; `--fig-on-warn` (`#121212` in both) for a label on orange, which never holds white (2.7:1); `--fig-text-warn` (`#8B2E00` in light) for orange text on the page; `--fig-outline` (`#595959` / `#BDBDBD`) round a fill that is under 3:1 against the page. `scripts/lint-figures.mjs` enforces them. The tools' charts use the same values as `--chart-on-warn`, `--chart-text-warn` and `--chart-outline-warn`.
 

@@ -75,6 +75,12 @@ export interface AggregationResult {
   positions: CurrencyPosition[];
   totalNetWorthFunctional: number;
   hasRates: RatesAvailability;
+  /**
+   * Net worth is zero or less, so no position is a share of it: the cards and
+   * the exports state none. Set by `aggregate`, and carried by a shared view,
+   * which may have no amounts to work it out from.
+   */
+  noShares?: boolean;
 }
 
 /**
@@ -276,6 +282,7 @@ export function aggregate(
     positions,
     totalNetWorthFunctional,
     hasRates: missingRateCount > 0 ? 'partial' : 'full',
+    noShares: positions.length > 0 && totalNetWorthFunctional <= 0,
   };
 }
 

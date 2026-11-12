@@ -4440,6 +4440,7 @@ details[open] > .disclosure::after,
 .mcnw-riskCard--functional { border-left: 4px solid var(--risk-functional); }
 .mcnw-riskCard--low { border-left: 4px solid var(--risk-low); }
 .mcnw-riskCard--moderate { border-left: 4px solid var(--risk-moderate); }
+.mcnw-riskCard--unbanded { border-left: 4px solid var(--risk-unbanded); }
 .mcnw-riskCard--elevated { border-left: 4px solid var(--risk-elevated); }
 .mcnw-riskCard--net-debt { border-left: 4px solid var(--risk-net-debt); }
 
@@ -4610,6 +4611,7 @@ details[open] > .disclosure::after,
   --risk-moderate:   var(--palette-amber);
   --risk-elevated:   var(--palette-deep-orange);
   --risk-net-debt:   var(--palette-red);
+  --risk-unbanded:   var(--neutral-850);
   --risk-on:         var(--neutral-white);
   /* Orange as text on the page, and the ink on an orange fill. */
   --chart-text-warn: var(--palette-deep-orange);
@@ -4635,6 +4637,7 @@ details[open] > .disclosure::after,
   --risk-moderate:   var(--palette-amber-dark);
   --risk-elevated:   var(--palette-deep-orange-dark);
   --risk-net-debt:   var(--palette-red-dark);
+  --risk-unbanded:   var(--neutral-800);
   --risk-on:         var(--neutral-page-bg-dark);
   --chart-text-warn: var(--semantic-warning-dark);
   --chart-outline-warn: none; /* the dark orange stands clear of the dark card */

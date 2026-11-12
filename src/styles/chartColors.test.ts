@@ -128,8 +128,8 @@ describe('series markers', () => {
 describe('risk colours', () => {
   const INK = 'var(--risk-on)';
 
-  it('are the five levels, each a variable with a light and a dark value', () => {
-    assert.deepEqual(Object.keys(RISK_COLORS), ['functional', 'low', 'moderate', 'elevated', 'net-debt']);
+  it('are the five levels and the neutral for no band, each a variable with a light and a dark value', () => {
+    assert.deepEqual(Object.keys(RISK_COLORS), ['functional', 'low', 'moderate', 'elevated', 'net-debt', 'unbanded']);
     for (const token of Object.values(RISK_COLORS)) {
       assert.match(token, /^var\(--risk-[\w-]+\)$/);
       assert.notEqual(resolve(token, light), resolve(token, dark), token);
