@@ -357,56 +357,6 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
-  /* Smaller, italicised note used immediately after the APR formula
-     block to qualify it without competing visually with the rest of the
-     explainer copy. */
-  .lc-explainerNote {
-    margin-top: var(--space-2);
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
-    font-style: italic;
-    line-height: 1.55;
-    text-wrap: pretty;
-  }
-
-  .lc-formula {
-    font-family: var(--font-body);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm);
-    text-align: center;
-    overflow-x: auto;
-  }
-
-  .lc-formula code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.95rem;
-    color: var(--color-text-primary);
-  }
-
-  .lc-explainerList {
-    margin: var(--space-3) 0 0;
-    padding-left: var(--space-5);
-  }
-
-  .lc-explainerList li {
-    margin-bottom: var(--space-2);
-  }
-
-  .lc-explainerList li strong {
-    color: var(--color-text-primary);
-    font-weight: 600;
-  }
-
-  .lc-explainerList code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.9em;
-    background: var(--color-bg);
-    padding: 1px 4px;
-    border-radius: 3px;
-  }
-
   /* The whole FAQ section is collapsible. The summary doubles as the
      section heading; we keep the visual weight of an h2 (.lc-sectionTitle)
      and add a tiny count badge so the user knows how many questions
