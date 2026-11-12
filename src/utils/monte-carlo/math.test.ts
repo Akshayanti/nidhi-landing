@@ -10,6 +10,7 @@ import {
   BONDS,
   QUOTED_RATES,
   STOCKS,
+  averageRates,
   compoundRates,
   impliedGeometricMean,
   lognormalParams,
@@ -122,7 +123,7 @@ describe('simulate', () => {
 
   it('with no volatility the straight line matches monthly compounding by hand', () => {
     const r = simulate({ ...SAVE_ONLY, saveYears: 1, paths: 10 });
-    const g = impliedGeometricMean(STOCKS.mean, STOCKS.sd);
+    const g = STOCKS.mean;
     const monthly = Math.pow(1 + g, 1 / 12);
     let b = 50_000;
     for (let m = 0; m < 12; m++) b = (b + 1_000) * monthly;
@@ -131,7 +132,7 @@ describe('simulate', () => {
 
   it('takes the yearly fee off the growth factor', () => {
     const r = simulate({ ...SAVE_ONLY, monthly: 0, saveYears: 1, feePct: 1, paths: 10 });
-    const g = impliedGeometricMean(STOCKS.mean, STOCKS.sd);
+    const g = STOCKS.mean;
     assert.ok(Math.abs(r.straightLine[1] - 50_000 * (1 + g) * 0.99) < 1e-6);
   });
 
@@ -149,12 +150,18 @@ describe('simulate', () => {
     assert.ok(c < h && h < o);
   });
 
-  it('puts the median near the straight line for an all-stock plan', () => {
+  it('draws the straight line at the average return, above the median of an all-stock plan', () => {
     // A volatile path compounds at the geometric mean in the median case,
-    // so the median should sit within a few percent of the straight line.
+    // which is below the average return the line uses: the median ends
+    // under the line, and more than half the paths with it.
     const r = simulate({ ...SAVE_ONLY, paths: 10_000 });
     const ratio = r.atRetirement.p50 / r.straightLine[30];
-    assert.ok(ratio > 0.95 && ratio < 1.1, `median/line ratio ${ratio}`);
+    assert.ok(ratio > 0.6 && ratio < 0.9, `median/line ratio ${ratio}`);
+    assert.ok(r.belowStraightLine > 0.55 && r.belowStraightLine < 0.75, `share below ${r.belowStraightLine}`);
+    // The line is above the one a compound-rate calculator would draw.
+    const g = impliedGeometricMean(STOCKS.mean, STOCKS.sd);
+    assert.ok(STOCKS.mean > g);
+    assert.ok(Math.abs(averageRates('historical').stocks - STOCKS.mean) < 1e-9);
   });
 
   it('a 100% bond plan has a much narrower spread than a 100% stock plan', () => {

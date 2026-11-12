@@ -52,6 +52,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'निव्वळ संपत्ती कॅल्क्युलेटर दोन वेगळ्या आकड्यांसाठी एकच शब्द वापरत असे. दुसऱ्या चलनात कर्ज असेल, तर त्याच चलनासाठी आलेख 63.5% दाखवू शकत असे आणि कार्डे व स्प्रेडशीट 234.9%. आता आलेखातील हिस्सा म्हणजे तुमच्याकडे जे आहे आणि जे देणे आहे त्या सगळ्यातील प्रत्येक चलनाचा वाटा, आणि त्याची बेरीज नेहमी 100% होते. दुसरा आकडा त्याच्या खऱ्या नावाने दिसतो, म्हणजे तुमच्या निव्वळ संपत्तीचा हिस्सा: कार्डांवर, आणि स्प्रेडशीट व PDF\u00a0मध्ये स्वतंत्र स्तंभात.',
         },
       },
+      {
+        id: 'monte-carlo-average-line',
+        text: {
+          en: 'Two changes in the Monte Carlo simulator. The single line on the chart now uses the average return every year, the line a simple calculator draws and the one the lesson describes, so it sits higher and more than half the simulated paths end below it. And the sentence about how often the money lasted no longer rounds up to every path: between 95% and 100% it says “more than 9 in 10”, and it says every path only when that is so.',
+          hi: 'मोंटे कार्लो सिम्युलेटर में दो बदलाव। चार्ट की सीधी लकीर अब हर साल औसत रिटर्न लेती है, यानी वही लकीर जो कोई साधारण कैलकुलेटर खींचता है और जिसकी बात पाठ में है; इसलिए वह ऊपर रहती है और आधे से ज़्यादा सिम्युलेटेड रास्ते उसके नीचे ख़त्म होते हैं। और पैसा कितनी बार टिका, यह बताने वाला वाक्य अब ऊपर की ओर गोल होकर “हर रास्ता” नहीं कहता: 95% और 100% के बीच वह “10 में से 9 से ज़्यादा” कहता है, और हर रास्ता तभी कहता है जब सचमुच ऐसा हो।',
+          es: 'Dos cambios en el simulador Monte Carlo. La línea única del gráfico usa ahora la rentabilidad media todos los años, la línea que traza una calculadora sencilla y la que describe la lección, así que queda más alta y más de la mitad de las trayectorias simuladas terminan por debajo. Y la frase que dice con qué frecuencia alcanzó el dinero ya no redondea hacia arriba hasta todas las trayectorias: entre el 95\u00a0% y el 100\u00a0% dice «más de 9 de cada 10», y dice todas solo cuando es así.',
+          cs: 'Dvě změny v\u00a0simulátoru Monte Carlo. Jedna čára v\u00a0grafu teď počítá každý rok s\u00a0průměrným výnosem, tedy čára, kterou kreslí jednoduchá kalkulačka a\u00a0kterou popisuje lekce; leží proto výš a\u00a0více než polovina simulovaných trajektorií končí pod ní. A\u00a0věta o\u00a0tom, jak často peníze vydržely, už se nezaokrouhluje nahoru na všechny trajektorie: mezi 95\u00a0% a\u00a0100\u00a0% říká „ve více než 9 z\u00a010“ a\u00a0všechny uvádí jen tehdy, když to tak opravdu je.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटरमध्ये दोन बदल. आलेखातील एकच रेषा आता दरवर्षी सरासरी परतावा धरते, म्हणजे साधा कॅल्क्युलेटर काढतो तीच रेषा आणि धड्यात वर्णन केलेली रेषा; त्यामुळे ती वर राहते आणि अर्ध्याहून अधिक संभाव्य मार्ग तिच्या खाली संपतात. आणि पैसा किती वेळा पुरला हे सांगणारे वाक्य आता वर गोल करून “प्रत्येक मार्ग” म्हणत नाही: 95% ते 100% दरम्यान ते “10\u00a0पैकी 9\u00a0पेक्षा जास्त” म्हणते, आणि प्रत्येक मार्ग तेव्हाच म्हणते जेव्हा खरोखर तसे असते.',
+        },
+      },
     ],
   },
   {

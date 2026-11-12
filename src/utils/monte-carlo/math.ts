@@ -119,8 +119,10 @@ export interface SimulationResult {
   /** Percentiles of the balance at the end of each year; index 0 is today. */
   bands: Percentiles[];
   /**
-   * Single line at the blended compound rate, after fees, with no ups and
-   * downs: the kind of projection a simple calculator draws.
+   * Single line at the blended average yearly return, after fees, with no
+   * ups and downs: the kind of projection a simple calculator draws, and the
+   * line the lesson on this tool describes. It sits above the compound rate,
+   * so more than half the paths usually end below it.
    */
   straightLine: number[];
   /** Percentiles of the balance at the end of the saving phase. */
@@ -181,6 +183,16 @@ export function returnModel(setting: ReturnSetting): { stocks: { mu: number; sig
 export function compoundRates(setting: ReturnSetting): { stocks: number; bonds: number } {
   const m = returnModel(setting);
   return { stocks: Math.exp(m.stocks.mu) - 1, bonds: Math.exp(m.bonds.mu) - 1 };
+}
+
+/**
+ * Average (arithmetic) yearly returns before fees: the mean of the lognormal
+ * each year is drawn from. Above the compound rate by about half the variance.
+ */
+export function averageRates(setting: ReturnSetting): { stocks: number; bonds: number } {
+  const m = returnModel(setting);
+  const mean = (x: { mu: number; sigma: number }) => Math.exp(x.mu + (x.sigma * x.sigma) / 2) - 1;
+  return { stocks: mean(m.stocks), bonds: mean(m.bonds) };
 }
 
 // ---------------------------------------------------------------------------
@@ -277,8 +289,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 
-  // Straight line: the blended compound rate after fees, with no volatility.
-  const g = compoundRates(inputs.returns);
+  // Straight line: the blended average yearly return after fees, with no volatility.
+  const g = averageRates(inputs.returns);
   const lineGrowth = (1 + w * g.stocks + (1 - w) * g.bonds) * keep;
   const straightLine = [inputs.start];
   let line = inputs.start;
