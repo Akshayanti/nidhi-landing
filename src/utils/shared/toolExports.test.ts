@@ -148,8 +148,8 @@ describe('net worth spreadsheet', () => {
     assert.deepEqual(sheets.map((s) => s.name), [t.export.sheets.about, t.multiCurrencyNetWorth.island.export.sheets.byCurrency]);
     const byCurrency = sheets[1];
     for (const row of byCurrency.rows.slice(1)) {
-      // Currency name, code, share, risk: the share is the only number.
-      assert.equal(row.length, 4);
+      // Currency name, code, concentration, exposure, risk: the two percentages are the only numbers.
+      assert.equal(row.length, 5);
       assert.ok(row.filter((c) => c && typeof c === 'object' && 'n' in c).every((c) => (c as { fmt?: string }).fmt === 'decimal2'));
     }
   });
