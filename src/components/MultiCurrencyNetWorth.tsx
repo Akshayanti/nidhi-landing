@@ -5,6 +5,7 @@ import {
   decodeCsv,
   getCurrencyLabel,
   isSingleCurrency,
+  concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
   ownedAndOwed,
@@ -938,7 +939,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
   const { formatMoney, formatPercent } = useMoney();
   // Net worth of zero or less: no position is a share of it, so no card states one.
   // A shared view without amounts has no total to judge by and shows what it was given.
-  const noShares = result.hasRates !== 'none' && result.totalNetWorthFunctional <= 0;
+  const noShares = result.noShares === true;
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
@@ -1117,7 +1118,7 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
  * these lines: a band says how big a share is, never what to do about it.
  */
 function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = false, strings }: { pos: ReturnType<typeof aggregate>['positions'][0]; functionalCurrency: string; hidePct?: boolean; noShares?: boolean; strings: Strings }) {
-  const { amountLocale, formatMoney } = useMoney();
+  const { amountLocale, formatAmount } = useMoney();
   if (pos.rateUnavailable) {
     return (
       <p className="mcnw-riskRec">
@@ -1133,14 +1134,17 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = f
     // Owing in another currency puts more than the whole of net worth in the
     // spending currency, and owing in the spending currency puts less than
     // none of it there: neither is clamped into a sentence about a share.
-    // The same holds when the total itself is negative: a net debt in the
-    // spending currency is then a positive share of a negative total, which
-    // is not "157% of your net worth held".
-    if (pos.pctOfTotal < 0 || pos.netAmountOriginal < 0) {
-      return <p className="mcnw-riskRec">{format(strings.rec.functionalDebt, { currency: functionalCurrency })}</p>;
-    }
     if (noShares) {
-      return <p className="mcnw-riskRec">{strings.rec.unbandedHidden}</p>;
+      // With nothing left after debts, net worth does not "sit in other
+      // currencies": the shortfall may be in this one, which no rate moves.
+      return (
+        <p className="mcnw-riskRec">
+          {pos.netAmountOriginal < 0 ? format(strings.rec.functionalDebtNoShares, { currency: functionalCurrency }) : strings.rec.unbandedHidden}
+        </p>
+      );
+    }
+    if (pos.pctOfTotal < 0) {
+      return <p className="mcnw-riskRec">{format(strings.rec.functionalDebt, { currency: functionalCurrency })}</p>;
     }
     if (pos.pctOfTotal >= 100.5) {
       return (
@@ -1183,12 +1187,13 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = f
     // No share to state. What a 10% move does is still known when the amounts
     // are: a tenth of the holding. A shared view without amounts says only why
     // there is no share.
-    const tenth = Math.round((Math.abs(pos.netAmountFunctional) / 10) * getFactor(functionalCurrency));
+    // An approximation, so a whole amount, as the chart's legend prints.
+    const tenth = Math.round(Math.abs(pos.netAmountFunctional) / 10);
     return (
       <p className="mcnw-riskRec">
         {hidePct || tenth === 0
           ? strings.rec.unbandedHidden
-          : format(strings.rec.unbandedShown, { code, currency: functionalCurrency, amount: formatMoney(tenth, functionalCurrency) })}
+          : format(strings.rec.unbandedShown, { code, currency: functionalCurrency, amount: formatAmount(tenth, functionalCurrency) })}
       </p>
     );
   }
@@ -1808,6 +1813,8 @@ function buildSharedResult(
     positions,
     totalNetWorthFunctional,
     hasRates: anyAmount ? 'full' : 'none',
+    // With amounts the total says it; without, the link does.
+    noShares: anyAmount ? totalNetWorthFunctional <= 0 : sharedPositions.some((p) => p.noShares === true),
   };
 }
 
@@ -1815,8 +1822,12 @@ function buildPreviewResult(
   realResult: ReturnType<typeof aggregate>,
   isFull: boolean,
 ): ReturnType<typeof aggregate> {
+  // As the link is written: without amounts, a net worth of zero or less
+  // carries the concentration in place of a share (see encodePositionRedacted).
+  const concentration = !isFull && realResult.noShares ? concentrationShares(realResult.positions) : null;
   const positions = realResult.positions.map((p) => ({
     ...p,
+    pctOfTotal: concentration ? concentration.get(p.code) ?? 0 : p.pctOfTotal,
     netAmountFunctional: isFull ? p.netAmountFunctional : 0,
     netAmountOriginal: isFull ? p.netAmountOriginal : 0,
   }));
@@ -1833,6 +1844,7 @@ function buildPreviewResult(
     // had ('full' | 'partial' | 'none'); the share modal will not let
     // the user copy a link if the underlying result is 'none' anyway.
     hasRates: isFull ? realResult.hasRates : 'none',
+    noShares: realResult.noShares,
   };
 }
 

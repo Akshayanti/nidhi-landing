@@ -614,3 +614,32 @@ describe('a hostile link', () => {
     assert.deepEqual((sharedPositions ?? []).map((p) => p.code), ['USD']);
   });
 });
+
+describe('a link without amounts when net worth is zero or less', () => {
+  // 250,000 EUR home, 300,000 EUR mortgage, 20,000 USD at 1.1: EUR -50,000, USD +18,181.82, total -31,818.18.
+  const underwater: CurrencyPosition[] = [
+    { code: 'EUR', netAmountOriginal: -50000, netAmountFunctional: -50000, pctOfTotal: 157.1, isFunctional: true, riskLevel: 'functional', riskLabel: '' },
+    { code: 'USD', netAmountOriginal: 20000, netAmountFunctional: 18181.82, pctOfTotal: 0, isFunctional: false, riskLevel: 'unbanded', riskLabel: '' },
+  ];
+
+  it('carries the concentration, which adds to 100, and says no share is stated', () => {
+    const decoded = decodeFromQueryString(encodeShared([], underwater, 'EUR', 'redacted'));
+    const byCode = new Map(decoded.sharedPositions!.map((p) => [p.code, p]));
+    assert.equal(byCode.get('EUR')!.pct, 73.3);
+    assert.equal(byCode.get('USD')!.pct, 26.7);
+    assert.equal(byCode.get('USD')!.riskLevel, 'unbanded');
+    assert.ok(decoded.sharedPositions!.every((p) => p.noShares === true));
+    // No amount travels in a link that hides them.
+    assert.ok(decoded.sharedPositions!.every((p) => p.netAmountFunctional === 0));
+  });
+
+  it('leaves a link for a positive net worth as it was', () => {
+    const afloat: CurrencyPosition[] = [
+      { code: 'EUR', netAmountOriginal: 6000, netAmountFunctional: 6000, pctOfTotal: 60, isFunctional: true, riskLevel: 'functional', riskLabel: '' },
+      { code: 'USD', netAmountOriginal: 4400, netAmountFunctional: 4000, pctOfTotal: 40, isFunctional: false, riskLevel: 'elevated', riskLabel: '' },
+    ];
+    const qs = encodeShared([], afloat, 'EUR', 'redacted');
+    assert.ok(!/~z(&|$)/.test(qs));
+    assert.ok(decodeFromQueryString(qs).sharedPositions!.every((p) => p.noShares === undefined));
+  });
+});

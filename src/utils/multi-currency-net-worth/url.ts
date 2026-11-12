@@ -44,6 +44,7 @@
  */
 
 import type { AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
+import { concentrationShares } from './math.ts';
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
@@ -88,6 +89,8 @@ export interface SharedPositionData {
   pct: number;
   netAmountFunctional: number;
   riskLevel: RiskLevel;
+  /** The sender's net worth was zero or less: `pct` is then the concentration, and no share of net worth is stated. */
+  noShares?: boolean;
 }
 
 export interface DecodeResult {
@@ -167,12 +170,22 @@ function encodePositionFull(pos: CurrencyPosition): string {
   ]);
 }
 
-function encodePositionRedacted(pos: CurrencyPosition): string {
-  return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel]);
+/** Fourth field of a position: net worth was zero or less, and the first field is the concentration. */
+const NO_SHARES_FLAG = 'z';
+
+/**
+ * Without amounts the recipient cannot tell that net worth was zero or less,
+ * and the exposure figures of that state (a debt as a share of a negative
+ * total) would be read as shares. The link then carries the concentration,
+ * which the chart draws, and says so.
+ */
+function encodePositionRedacted(pos: CurrencyPosition, concentration: number | null): string {
+  if (concentration === null) return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel]);
+  return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG]);
 }
 
 function decodePosition(code: string, packed: string): SharedPositionData | null {
-  const [pctRaw, riskRaw = 'low', amtRaw = ''] = decodeTuple(packed);
+  const [pctRaw, riskRaw = 'low', amtRaw = '', flagRaw = ''] = decodeTuple(packed);
   const pct = parseFloat(pctRaw);
   if (!Number.isFinite(pct)) return null;
 
@@ -184,6 +197,7 @@ function decodePosition(code: string, packed: string): SharedPositionData | null
     pct,
     netAmountFunctional: Number.isFinite(amt) ? amt : 0,
     riskLevel,
+    ...(flagRaw === NO_SHARES_FLAG ? { noShares: true } : {}),
   };
 }
 
@@ -298,8 +312,11 @@ function encodeRedacted(
   params.set('m', 'r');
   params.set('f', functionalCurrency);
 
+  const total = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
+  const noShares = positions.some((p) => p.netAmountFunctional !== 0) && total <= 0;
+  const concentration = noShares ? concentrationShares(positions) : null;
   for (const pos of positions) {
-    params.set(`p_${pos.code}`, encodePositionRedacted(pos));
+    params.set(`p_${pos.code}`, encodePositionRedacted(pos, concentration ? concentration.get(pos.code) ?? 0 : null));
   }
 
   return serializeParams(params);
