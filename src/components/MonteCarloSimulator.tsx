@@ -417,7 +417,13 @@ export default function MonteCarloSimulator({
     <AmountLocaleContext.Provider value={amountLocale}>
     <div className="mcs-root">
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
-        {pristine && <p className="mcs-example">{strings.example}</p>}
+        {/* The example line and Reset share the first row, as in the other tools. */}
+        <div className="ifc-formHead">
+          <p className="ifc-example">{pristine ? strings.example : ''}</p>
+          <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-monte-carlo-reset">
+            {strings.actions.reset}
+          </button>
+        </div>
         <div className="mcs-grid">
           <div className="mcs-field">
             <label className="mcs-label" htmlFor={ids.currency}>{strings.fields.currency}</label>
@@ -601,9 +607,6 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          <button type="button" className="btn btn--quiet" onClick={reset} data-attr="free-monte-carlo-reset">
-            {strings.actions.reset}
-          </button>
           <span className="mcs-hint" role="status" aria-live="polite">
             {hasErrors
               ? strings.actions.fix

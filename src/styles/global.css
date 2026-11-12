@@ -3497,24 +3497,6 @@ details[open] > .disclosure::after,
     color: var(--color-text-primary);
   }
 
-  /* Analysis tabs: four on one row where they fit; on the narrowest phones,
-     two rows of two, so a long word (Czech "Refinancování") or a Hindi label
-     is never cut or run into its neighbour. */
-  .lc-tabList { flex-wrap: nowrap; }
-  @media (max-width: 420px) {
-    .lc-tabList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  .lc-tab {
-    flex: 1 1 0;
-    min-width: 0;
-    justify-content: center;
-    padding: 6px 4px;
-    font-size: 0.875rem;
-    line-height: 1.2;
-    text-align: center;
-  }
-
   /* The phone drawing of the payment split is narrower; its labels get a
      little more size to stay readable once scaled. */
   .lc-splitChart--phone .lc-splitValueInterest,
@@ -7504,4 +7486,211 @@ summary:focus-visible {
 html:is([lang="hi"], [lang="mr"]) :is(.learn-eyebrow, .guide-label) {
   letter-spacing: normal;
   text-transform: none;
+}
+
+/* ==========================================================================
+   One look for the five free tools.
+   Each tool grew its own class set (lc-, mcnw-, mcs-, ifc-, iop-). This block
+   comes last and gives the parts a reader meets in every tool one shape:
+   selects, titles, questions, view tabs, the returns switch, errors and help
+   text. Sizes are in rem and nothing has a fixed height, so text can grow
+   and a reader's own text-spacing settings still apply.
+   ========================================================================== */
+
+/* Selects look like the text boxes beside them. */
+.lc-select,
+.mcnw-select,
+.mcnw-selectSm {
+  background-color: var(--color-bg);
+  font-size: 1rem;
+  padding: 10px 12px;
+  min-height: 44px;
+}
+
+/* Section, results and FAQ titles. `body … [class]` outranks the page
+   components' scoped rules, phone sizes included. */
+body :is(.lc-sectionTitle, .mcnw-sectionTitle, .mcsp-sectionTitle, .ifcp-sectionTitle, .iopp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle)[class] {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--color-deep-blue);
+}
+
+/* A question in the FAQ: body type, and the whole row is the target. */
+body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* View tabs: a row of words with a rule under the chosen one. Labels wrap
+   onto more lines and the row wraps too, so nothing scrolls sideways. */
+.lc-tabList,
+.ifc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+}
+.lc-tab,
+.ifc-tab {
+  min-height: 44px;
+  padding: 12px 14px;
+  margin-bottom: -1px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  /* Not the chosen one: primary text, so it stays at 8:1 or more; the rule
+     and its weight mark the chosen tab. */
+  color: var(--color-text-primary);
+  text-align: left;
+  flex: 0 1 auto;
+  min-width: 0;
+  justify-content: flex-start;
+  overflow-wrap: break-word;
+}
+/* Stacked on a narrow screen, every tab keeps a faint rule so the set still
+   reads as tabs. */
+@media (max-width: 420px) {
+  .lc-tab,
+  .ifc-tab {
+    flex: 1 1 100%;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 14px;
+  }
+  .lc-tabActive,
+  .ifc-tab[aria-selected="true"] {
+    border-bottom: 3px solid var(--color-deep-blue);
+    padding-bottom: 12px;
+  }
+}
+.lc-tab:hover,
+.ifc-tab:hover {
+  background: transparent;
+  color: var(--color-deep-blue);
+}
+.lc-tabActive,
+.lc-tabActive:hover,
+.ifc-tab[aria-selected="true"] {
+  background: transparent;
+  color: var(--color-deep-blue);
+  border-bottom-color: var(--color-deep-blue);
+  font-weight: 700;
+}
+
+/* The Monte Carlo "Returns" switch: three radios in one bordered row. The
+   chosen one takes the input fill, the brand blue and a rule along its foot,
+   so it shows by more than colour. */
+/* The form is the size container: a fieldset cannot be one. */
+.mcs-form {
+  container: mcs-form / inline-size;
+}
+.mcs-switchRow {
+  /* Three across. The 1px gap over the edge colour draws the lines between
+     the options. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--color-control-edge);
+  background: var(--color-control-edge);
+  padding: 0;
+  gap: 1px;
+  overflow-wrap: break-word;
+}
+.mcs-switchOpt {
+  min-height: 44px;
+  padding: 8px 10px;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+}
+.mcs-switchOpt:first-child {
+  border-radius: calc(var(--radius-md) - 1px) 0 0 calc(var(--radius-md) - 1px);
+}
+.mcs-switchOpt:last-child {
+  border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0;
+}
+/* Large text on a narrow screen: one option per row, never two and one. */
+@container mcs-form (max-width: 16.5em) {
+  .mcs-switchRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mcs-switchOpt:first-child {
+    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+  }
+  .mcs-switchOpt:last-child {
+    border-radius: 0 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px);
+  }
+}
+.mcs-switchOpt--on {
+  background: var(--color-bg);
+  color: var(--color-deep-blue);
+  font-weight: 700;
+  box-shadow: inset 0 -3px 0 var(--color-deep-blue);
+}
+
+/* An error under a field: plain text in the error colour, no box. */
+.lc-error,
+.ifc-error,
+.mcnw-rowError {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-danger);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Something went wrong for the whole tool (an import, the rates): a tinted
+   box with a rule down its left side. */
+.mcnw-csvErrors,
+[data-theme="dark"] .mcnw-csvErrors {
+  background: color-mix(in srgb, var(--color-danger) 8%, transparent);
+  border: 0;
+  border-left: 3px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+/* Help text under a field, and the "example figures" line. */
+.lc-fieldHelp,
+.mcnw-fieldHelp,
+.mcs-hint,
+.ifc-hint,
+.lc-example,
+.mcs-example,
+.ifc-example {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+.lc-fieldHelp,
+.mcnw-fieldHelp {
+  margin-top: 6px;
+}
+
+/* Devanagari needs its own room: no tracking, taller lines. */
+:is(:lang(hi), :lang(mr)) :is(.lc-tab, .ifc-tab, .mcs-switchOpt, .lc-sectionTitle, .mcnw-sectionTitle, .mcsp-sectionTitle, .ifcp-sectionTitle, .iopp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle) {
+  letter-spacing: 0;
+  line-height: 1.6;
 }

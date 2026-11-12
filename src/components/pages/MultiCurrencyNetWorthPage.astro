@@ -210,7 +210,6 @@ const faqSchema = {
     <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
       <summary id="mcnw-faq-h" class="mcnw-faqHeading disclosure">
         <span class="mcnw-sectionTitle">{tool.page.faq.heading}</span>
-        <span class="mcnw-faqHeadingCount" aria-hidden="true">{tool.page.faq.items.length}</span>
       </summary>
       <div class="mcnw-faqList">
         {tool.page.faq.items.map((f) => (
@@ -404,18 +403,6 @@ const faqSchema = {
     outline: 2px solid var(--color-teal);
     outline-offset: 4px;
     border-radius: var(--radius-sm);
-  }
-
-  .mcnw-faqHeadingCount {
-    margin-left: auto;
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    background: var(--color-surface);
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--color-border);
   }
 
   .mcnw-faqList {
