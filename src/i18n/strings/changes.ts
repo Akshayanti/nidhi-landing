@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'tool-breadcrumbs-free-tools',
+        text: {
+          en: 'The loan comparison and the net worth calculator now show Free tools in the trail at the top of the page, as the other three tools do, so the full list of tools is one tap away.',
+          hi: 'लोन तुलना और शुद्ध संपत्ति कैलकुलेटर के ऊपर की राह में अब बाक़ी तीन टूल की तरह मुफ़्त टूल भी दिखता है, ताकि सभी टूल की सूची एक टैप दूर रहे।',
+          es: 'El comparador de préstamos y la calculadora de patrimonio neto muestran ahora Herramientas gratuitas en la ruta de la parte superior de la página, como las otras tres herramientas, para que la lista completa quede a un toque.',
+          cs: 'Srovnání úvěrů a\u00a0kalkulačka čistého jmění teď v\u00a0cestě nahoře na stránce ukazují Nástroje zdarma, stejně jako ostatní tři nástroje, takže celý seznam nástrojů je na jedno klepnutí.',
+          mr: 'कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर यांच्या वरच्या वाटेत आता इतर तीन साधनांप्रमाणे मोफत साधने हेही दिसते, त्यामुळे सर्व साधनांची यादी एका टॅपवर आहे.',
+        },
+      },
+      {
         id: 'loan-keep-payment-at-rate-change',
         text: {
           en: 'The loan comparison can now keep the payment the same when a rate changes. Many lenders do that: the payment stays and the loan ends earlier or later. Under Rate structure you can choose which happens for each offer, and the offer then shows the month it is paid off, or says plainly that at that payment it never is.',

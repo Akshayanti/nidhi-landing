@@ -88,6 +88,7 @@ export const multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Home',
+      freeTools: 'Free tools',
       this: 'Net worth calculator',
     },
     eyebrow: 'Free tools',
@@ -535,6 +536,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'होम',
+      freeTools: 'मुफ़्त टूल',
       this: 'शुद्ध संपत्ति कैलकुलेटर',
     },
     eyebrow: 'मुफ़्त टूल',
@@ -930,6 +932,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Inicio',
+      freeTools: 'Herramientas gratuitas',
       this: 'Calculadora de patrimonio neto',
     },
     eyebrow: 'Herramientas gratuitas',
@@ -1338,6 +1341,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'Domů',
+      freeTools: 'Nástroje zdarma',
       this: 'Kalkulačka čistého jmění',
     },
     eyebrow: 'Nástroje zdarma',
@@ -1732,6 +1736,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   page: {
     breadcrumb: {
       home: 'मुख्यपृष्ठ',
+      freeTools: 'मोफत साधने',
       this: 'निव्वळ संपत्ती कॅल्क्युलेटर',
     },
     eyebrow: 'मोफत साधने',
