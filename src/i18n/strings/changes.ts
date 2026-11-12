@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-12',
     items: [
       {
+        id: 'net-worth-concentration-exposure',
+        text: {
+          en: 'The net worth calculator used one word, concentration, for two different numbers. With a debt in another currency, the chart could say 63.5% while the cards and the spreadsheet said 234.9% for the same currency. Now concentration is each currency\'s share of everything you hold and owe, and always adds to 100%. The other number is called what it is, the share of your net worth, on the cards and as its own column in the spreadsheet and the PDF.',
+          hi: 'नेट वर्थ कैलकुलेटर दो अलग आँकड़ों के लिए एक ही शब्द, जमाव, इस्तेमाल करता था। किसी दूसरी मुद्रा में कर्ज़ हो, तो चार्ट एक ही मुद्रा के लिए 63.5% दिखा सकता था और कार्ड व स्प्रेडशीट 234.9%। अब जमाव का मतलब है आपके पास जो है और जो बकाया है, उस सब में हर मुद्रा का हिस्सा, और इसका जोड़ हमेशा 100% होता है। दूसरे आँकड़े को उसके असली नाम से बताया जाता है, यानी आपकी शुद्ध संपत्ति का हिस्सा: कार्ड पर, और स्प्रेडशीट व PDF में अलग कॉलम में।',
+          es: 'La calculadora de patrimonio neto usaba una sola palabra, concentración, para dos cifras distintas. Con una deuda en otra moneda, el gráfico podía decir 63,5\u00a0% mientras las tarjetas y la hoja de cálculo decían 234,9\u00a0% para la misma moneda. Ahora la concentración es la parte que cada moneda representa de todo lo que tienes y debes, y siempre suma 100\u00a0%. La otra cifra se llama por lo que es, la parte de tu patrimonio neto, en las tarjetas y en una columna propia de la hoja de cálculo y del PDF.',
+          cs: 'Kalkulačka čistého jmění používala jedno slovo, koncentrace, pro dvě různá čísla. S\u00a0dluhem v\u00a0jiné měně mohl graf u\u00a0stejné měny ukazovat 63,5\u00a0%, zatímco karty a\u00a0tabulka uváděly 234,9\u00a0%. Teď je koncentrace podíl každé měny na všem, co máte a\u00a0dlužíte, a\u00a0vždy dává dohromady 100\u00a0%. Druhé číslo se jmenuje tak, jak mu odpovídá, tedy podíl na vašem čistém jmění: na kartách a\u00a0ve vlastním sloupci v\u00a0tabulce i\u00a0v\u00a0PDF.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर दोन वेगळ्या आकड्यांसाठी एकच शब्द वापरत असे. दुसऱ्या चलनात कर्ज असेल, तर त्याच चलनासाठी आलेख 63.5% दाखवू शकत असे आणि कार्डे व स्प्रेडशीट 234.9%. आता आलेखातील हिस्सा म्हणजे तुमच्याकडे जे आहे आणि जे देणे आहे त्या सगळ्यातील प्रत्येक चलनाचा वाटा, आणि त्याची बेरीज नेहमी 100% होते. दुसरा आकडा त्याच्या खऱ्या नावाने दिसतो, म्हणजे तुमच्या निव्वळ संपत्तीचा हिस्सा: कार्डांवर, आणि स्प्रेडशीट व PDF\u00a0मध्ये स्वतंत्र स्तंभात.',
+        },
+      },
+      {
         id: 'monte-carlo-average-line',
         text: {
           en: 'Two changes in the Monte Carlo simulator. The single line on the chart now uses the average return every year, the line a simple calculator draws and the one the lesson describes, so it sits higher and more than half the simulated paths end below it. And the sentence about how often the money lasted no longer rounds up to every path: between 95% and 100% it says “more than 9 in 10”, and it says every path only when that is so.',

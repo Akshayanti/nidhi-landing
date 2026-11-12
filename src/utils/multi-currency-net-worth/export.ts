@@ -16,7 +16,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { getCurrency } from '../loan/math.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { getCurrencyLabel, isSingleCurrency, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
+import { concentrationShares, getCurrencyLabel, isSingleCurrency, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
 
 type Island = Dict['tools']['multiCurrencyNetWorth']['island'];
 type Common = Dict['tools']['export'];
@@ -85,17 +85,21 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   const single = isSingleCurrency(result, fc);
   const converted = single || result.hasRates !== 'none';
   const header = showAmounts
-    ? [island.chart.tableColCurrency, x.code, x.netOwn, ...(converted ? [format(x.netSpending, { currency: fc })] : []), x.sharePct, island.chart.tableColRisk]
-    : [island.chart.tableColCurrency, x.code, x.sharePct, island.chart.tableColRisk];
+    ? [island.chart.tableColCurrency, x.code, x.netOwn, ...(converted ? [format(x.netSpending, { currency: fc })] : []), x.sharePct, x.exposurePct, island.chart.tableColRisk]
+    : [island.chart.tableColCurrency, x.code, x.sharePct, x.exposurePct, island.chart.tableColRisk];
+  // Two measures, never under one name: concentration adds to 100, exposure is the share of net worth.
+  const concentration = concentrationShares(result.positions);
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
-    const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(p.pctOfTotal);
-    if (!showAmounts) return [name(p.code), p.code, pctCell, e.riskLabel(p.riskLevel)];
+    const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
+    const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : share(p.pctOfTotal);
+    if (!showAmounts) return [name(p.code), p.code, pctCell, exposureCell, e.riskLabel(p.riskLevel)];
     return [
       name(p.code),
       p.code,
       money(p.netAmountOriginal, p.code),
       ...(converted ? [p.rateUnavailable ? island.results.rateUnavailable : money(single ? p.netAmountOriginal : p.netAmountFunctional, fc)] : []),
       pctCell,
+      exposureCell,
       e.riskLabel(p.riskLevel),
     ];
   });
