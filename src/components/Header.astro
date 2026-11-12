@@ -235,6 +235,14 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     border-bottom: 1px solid var(--color-border-light);
   }
 
+  /* A screen under 480px tall (a phone held sideways) has no room to give a
+     header that stays: it scrolls away with the page there. */
+  @media (max-height: 480px) {
+    .site-header {
+      position: static;
+    }
+  }
+
   /* One 60px row whenever everything fits, which is every width at the
      default text size. With the text size raised (a phone's large-text
      setting can double it) the controls no longer fit beside the logo; they
@@ -804,7 +812,6 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   })();
 </script>
 
-{otherLocales.length > 0 && (
 <script is:inline>
   // The header wraps to a second row when the text size is raised on a phone.
   // In-page jumps and focus scrolls clear it by --site-header-block-size, so
@@ -812,13 +819,24 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   (function () {
     var header = document.querySelector('.site-header');
     if (!header || typeof ResizeObserver === 'undefined') return;
-    var last = 0;
-    new ResizeObserver(function () {
-      var h = Math.ceil(header.getBoundingClientRect().height);
-      if (h && h !== last) { last = h; document.documentElement.style.setProperty('--site-header-block-size', h + 'px'); }
-    }).observe(header);
+    var last = -1;
+    // A header that scrolls away (short screens) covers nothing: no clearance.
+    var measure = function () {
+      var stays = getComputedStyle(header).position === 'sticky';
+      var h = stays ? Math.ceil(header.getBoundingClientRect().height) : 0;
+      if ((h || !stays) && h !== last) { last = h; document.documentElement.style.setProperty('--site-header-block-size', h + 'px'); }
+    };
+    new ResizeObserver(measure).observe(header);
+    // Styles can arrive after this script; measure again once the page has loaded.
+    window.addEventListener('load', measure);
+    if (window.matchMedia) {
+      var short = window.matchMedia('(max-height: 480px)');
+      if (short.addEventListener) short.addEventListener('change', measure);
+    }
   })();
 </script>
+
+{otherLocales.length > 0 && (
 <Fragment>
 <script is:inline set:html={langSwitchScript}></script>
 <script is:inline define:vars={{ prefixes, toolStateGlobal }}>
