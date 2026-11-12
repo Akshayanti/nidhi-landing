@@ -3497,24 +3497,6 @@ details[open] > .disclosure::after,
     color: var(--color-text-primary);
   }
 
-  /* Analysis tabs: four on one row where they fit; on the narrowest phones,
-     two rows of two, so a long word (Czech "Refinancování") or a Hindi label
-     is never cut or run into its neighbour. */
-  .lc-tabList { flex-wrap: nowrap; }
-  @media (max-width: 420px) {
-    .lc-tabList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  .lc-tab {
-    flex: 1 1 0;
-    min-width: 0;
-    justify-content: center;
-    padding: 6px 4px;
-    font-size: 0.875rem;
-    line-height: 1.2;
-    text-align: center;
-  }
-
   /* The phone drawing of the payment split is narrower; its labels get a
      little more size to stay readable once scaled. */
   .lc-splitChart--phone .lc-splitValueInterest,
@@ -7572,9 +7554,29 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--color-text-secondary);
+  /* Not the chosen one: primary text, so it stays at 8:1 or more; the rule
+     and its weight mark the chosen tab. */
+  color: var(--color-text-primary);
   text-align: left;
-  overflow-wrap: anywhere;
+  flex: 0 1 auto;
+  min-width: 0;
+  justify-content: flex-start;
+  overflow-wrap: break-word;
+}
+/* Stacked on a narrow screen, every tab keeps a faint rule so the set still
+   reads as tabs. */
+@media (max-width: 420px) {
+  .lc-tab,
+  .ifc-tab {
+    flex: 1 1 100%;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 14px;
+  }
+  .lc-tabActive,
+  .ifc-tab[aria-selected="true"] {
+    border-bottom: 3px solid var(--color-deep-blue);
+    padding-bottom: 12px;
+  }
 }
 .lc-tab:hover,
 .ifc-tab:hover {
@@ -7587,17 +7589,25 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
   background: transparent;
   color: var(--color-deep-blue);
   border-bottom-color: var(--color-deep-blue);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* The Monte Carlo "Returns" switch: three radios in one bordered row. The
    chosen one takes the input fill, the brand blue and a rule along its foot,
    so it shows by more than colour. */
+/* The form is the size container: a fieldset cannot be one. */
+.mcs-form {
+  container: mcs-form / inline-size;
+}
 .mcs-switchRow {
+  /* Three across. The 1px gap over the edge colour draws the lines between
+     the options. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 1px solid var(--color-control-edge);
-  background: transparent;
+  background: var(--color-control-edge);
   padding: 0;
-  gap: 0;
+  gap: 1px;
+  overflow-wrap: break-word;
 }
 .mcs-switchOpt {
   min-height: 44px;
@@ -7607,9 +7617,8 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
-}
-.mcs-switchOpt + .mcs-switchOpt {
-  border-left: 1px solid var(--color-control-edge);
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
 }
 .mcs-switchOpt:first-child {
   border-radius: calc(var(--radius-md) - 1px) 0 0 calc(var(--radius-md) - 1px);
@@ -7617,10 +7626,23 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
 .mcs-switchOpt:last-child {
   border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0;
 }
+/* Large text on a narrow screen: one option per row, never two and one. */
+@container mcs-form (max-width: 16.5em) {
+  .mcs-switchRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mcs-switchOpt:first-child {
+    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+  }
+  .mcs-switchOpt:last-child {
+    border-radius: 0 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px);
+  }
+}
 .mcs-switchOpt--on {
   background: var(--color-bg);
   color: var(--color-deep-blue);
-  box-shadow: inset 0 -2px 0 var(--color-deep-blue);
+  font-weight: 700;
+  box-shadow: inset 0 -3px 0 var(--color-deep-blue);
 }
 
 /* An error under a field: plain text in the error colour, no box. */

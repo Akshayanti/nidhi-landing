@@ -1186,10 +1186,10 @@ export default function LoanCompare({
       {/* The starting offers are an example until one of them is changed. */}
       {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
 
-      <h2 className="lc-srOnly">{strings.cardsHeading}</h2>
+      <h2 className="lc-srOnly" id={`${aprDocsId}-h`}>{strings.cardsHeading}</h2>
       {/* Why the APR here can read lower than the one on a lender's document. */}
       <p className="lc-aprDocs" id={aprDocsId}>{strings.results.aprDocs}</p>
-      <div className="lc-grid" aria-describedby={aprDocsId}>
+      <div className="lc-grid" role="group" aria-labelledby={`${aprDocsId}-h`} aria-describedby={aprDocsId}>
         {vendors.map((v, i) => (
           <VendorCard
             key={i}
