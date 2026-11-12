@@ -366,11 +366,11 @@ export const en = {
     inPractice: {
       label: 'In practice:',
       noPlanner: {
-        text: 'Finance terms in a lesson open a short explanation, and every lesson is marked with a level, so you can start where you are.',
+        text: 'Every lesson is marked with a level, so you can start where you are, and the glossary explains the terms the lessons use.',
         link: 'Look up a term in the glossary',
       },
       accessibility: {
-        text: 'I build for keyboard use, your device’s text size, reduced motion and both themes. Barriers I know about remain.',
+        text: 'I build for keyboard use, your browser’s text size, reduced motion and both themes. Barriers I know about remain.',
         link: 'See what works and what is still open',
       },
       freeForever: {
@@ -424,7 +424,7 @@ export const en = {
       report: 'Tell me about a barrier',
     },
     works: {
-      textSize: 'Text follows the size you set in your browser or on your phone.',
+      textSize: 'Text grows with your browser’s text size and with zoom.',
       keyboard: 'Links, buttons and form fields can be reached with a keyboard, the one you are on is outlined, and every page starts with a link that skips to the main content.',
       motion: 'If your device asks for reduced motion, animations and smooth scrolling are switched off.',
       theme: 'There is a light and a dark theme, chosen with the switch at the top of the page or taken from your device.',
@@ -444,11 +444,15 @@ export const en = {
         forms: 'On the waitlist and newsletter forms, keyboard focus is lost while the form is sending and after a failure, and nothing announces that it is sending.',
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
         overlays: 'While the phone menu or the cookie prompt is open, the page behind it can still scroll.',
-        figures: 'Lesson figures and tables that scroll sideways cannot be scrolled with a keyboard.',
+        figures: 'Lesson figures that scroll sideways cannot be scrolled with a keyboard.',
         touch: 'On a phone, the Monte Carlo chart cannot be zoomed with two fingers, and opening the explanation of a term in a lesson can make the page slide sideways.',
-        largeText: 'With a much larger text size, the top bar becomes wider than a phone screen.',
+        largeText: 'With a much larger text size, one link on the Spanish learning path makes the page wider than a phone screen.',
         print: 'How-to guides print with the site’s menus around them, and in grey text when the dark theme is on.',
         emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
+        shareWindow: 'In the net worth calculator, the button that copies the link in the share window is cut off and cannot be reached on a very narrow screen, at high zoom, or with a phone held sideways.',
+        logo: 'The logo link at the top is announced without the word nidhi, so asking a voice control tool for nidhi does not find it.',
+        addressCheck: 'When the waitlist or newsletter form asks whether an email address looks right, a screen reader is not told that the question has appeared.',
+        volunteerForm: 'The volunteer form is in English only, and the volunteers page does not say so before the button that opens it.',
       },
     },
     report: {

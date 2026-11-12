@@ -275,11 +275,11 @@ export const cs: Dict = {
     inPractice: {
       label: 'V praxi:',
       noPlanner: {
-        text: 'Finanční pojmy v lekci otevírají krátké vysvětlení a každá lekce má označenou úroveň, takže můžete začít tam, kde právě jste.',
+        text: 'Každá lekce má označenou úroveň, takže můžete začít tam, kde právě jste, a slovníček vysvětluje pojmy, které lekce používají.',
         link: 'Vyhledejte pojem ve slovníčku',
       },
       accessibility: {
-        text: 'Při stavbě webu počítám s ovládáním klávesnicí, velikostí textu ve vašem zařízení, omezeným pohybem a oběma motivy. Překážky, o kterých vím, ale zůstávají.',
+        text: 'Při stavbě webu počítám s ovládáním klávesnicí, velikostí textu ve vašem prohlížeči, omezeným pohybem a oběma motivy. Překážky, o kterých vím, ale zůstávají.',
         link: 'Podívejte se, co funguje a co je ještě otevřené',
       },
       freeForever: {
@@ -333,7 +333,7 @@ export const cs: Dict = {
       report: 'Dejte mi vědět o překážce',
     },
     works: {
-      textSize: 'Text se řídí velikostí, kterou máte nastavenou v prohlížeči nebo v telefonu.',
+      textSize: 'Text se zvětšuje s velikostí textu nastavenou v prohlížeči a se zvětšením stránky.',
       keyboard: 'K odkazům, tlačítkům a polím formulářů se dostanete klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah.',
       motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
       theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
@@ -353,11 +353,15 @@ export const cs: Dict = {
         forms: 'Ve formulářích čekací listiny a newsletteru se při odesílání a po chybě ztrácí fokus klávesnice a nic neoznámí, že se formulář odesílá.',
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
         overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
-        figures: 'Obrázky a tabulky v lekcích, které se posouvají do strany, nejde posouvat klávesnicí.',
+        figures: 'Obrázky v lekcích, které se posouvají do strany, nejde posouvat klávesnicí.',
         touch: 'V telefonu nejde graf Monte Carlo zvětšit dvěma prsty a otevření vysvětlení pojmu v lekci může stránku posunout do strany.',
-        largeText: 'Při výrazně větším textu je horní lišta širší než obrazovka telefonu.',
+        largeText: 'Při výrazně větším textu jeden odkaz na španělské vzdělávací cestě roztáhne stránku víc, než je šířka obrazovky telefonu.',
         print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
         emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
+        shareWindow: 'V kalkulačce čistého jmění je tlačítko pro zkopírování odkazu v okně sdílení oříznuté a nedá se na něj dostat na velmi úzké obrazovce, při velkém zvětšení nebo s telefonem na šířku.',
+        logo: 'Odkaz s logem nahoře se ohlašuje bez slova nidhi, takže ho hlasové ovládání pod názvem nidhi nenajde.',
+        addressCheck: 'Když se formulář čekací listiny nebo newsletteru zeptá, zda je e-mailová adresa správně, čtečka obrazovky se nedozví, že se otázka objevila.',
+        volunteerForm: 'Formulář pro dobrovolníky je jen v angličtině a stránka o dobrovolné pomoci to neříká před tlačítkem, které ho otevírá.',
       },
     },
     report: {

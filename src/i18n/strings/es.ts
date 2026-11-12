@@ -291,11 +291,11 @@ export const es: Dict = {
     inPractice: {
       label: 'En la práctica:',
       noPlanner: {
-        text: 'Los términos financieros de una lección abren una explicación breve, y cada lección indica su nivel, para que empieces donde estás.',
+        text: 'Cada lección indica su nivel, para que empieces donde estás, y el glosario explica los términos que usan las lecciones.',
         link: 'Busca un término en el glosario',
       },
       accessibility: {
-        text: 'Construyo pensando en el uso con teclado, el tamaño de texto de tu dispositivo, el movimiento reducido y los dos temas. Quedan barreras que conozco.',
+        text: 'Construyo pensando en el uso con teclado, el tamaño de texto de tu navegador, el movimiento reducido y los dos temas. Quedan barreras que conozco.',
         link: 'Mira qué funciona y qué sigue pendiente',
       },
       freeForever: {
@@ -349,7 +349,7 @@ export const es: Dict = {
       report: 'Cuéntame una barrera',
     },
     works: {
-      textSize: 'El texto sigue el tamaño que has elegido en tu navegador o en tu teléfono.',
+      textSize: 'El texto crece con el tamaño de texto de tu navegador y con el zoom.',
       keyboard: 'Se puede llegar con el teclado a los enlaces, los botones y los campos de los formularios, el elemento en el que estás aparece resaltado y cada página empieza con un enlace que salta al contenido principal.',
       motion: 'Si tu dispositivo pide movimiento reducido, las animaciones y el desplazamiento suave se desactivan.',
       theme: 'Hay un tema claro y uno oscuro, que se elige con el selector de la parte superior de la página o se toma de tu dispositivo.',
@@ -369,11 +369,15 @@ export const es: Dict = {
         forms: 'En los formularios de la lista de espera y del boletín, el foco del teclado se pierde mientras el formulario se envía y después de un fallo, y nada anuncia que se está enviando.',
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
         overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
-        figures: 'Las figuras y tablas de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
+        figures: 'Las figuras de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
         touch: 'En un teléfono, el gráfico de Monte Carlo no se puede ampliar con dos dedos, y abrir la explicación de un término en una lección puede hacer que la página se deslice hacia un lado.',
-        largeText: 'Con un tamaño de texto mucho mayor, la barra superior queda más ancha que la pantalla de un teléfono.',
+        largeText: 'Con un tamaño de texto mucho mayor, un enlace de la ruta de aprendizaje en español hace que la página quede más ancha que la pantalla de un teléfono.',
         print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
+        shareWindow: 'En la calculadora de patrimonio neto, el botón que copia el enlace en la ventana de compartir queda cortado y no se puede alcanzar en una pantalla muy estrecha, con mucho zoom o con el teléfono en horizontal.',
+        logo: 'El enlace del logotipo, arriba, se anuncia sin la palabra nidhi, así que pedirle nidhi a una herramienta de control por voz no lo encuentra.',
+        addressCheck: 'Cuando el formulario de la lista de espera o del boletín pregunta si una dirección de correo es correcta, al lector de pantalla no se le avisa de que la pregunta ha aparecido.',
+        volunteerForm: 'El formulario de voluntariado está solo en inglés, y la página de voluntariado no lo dice antes del botón que lo abre.',
       },
     },
     report: {
