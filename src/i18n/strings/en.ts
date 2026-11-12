@@ -138,6 +138,7 @@ export const en = {
       beta: "Planner beta",
       editorialPolicy: 'How lessons are written',
       changes: "What's changed",
+      accessibility: 'Accessibility',
       privacy: 'Privacy',
       cookieSettings: 'Cookie settings',
       thirdParty: 'Third-party licences',
@@ -356,11 +357,105 @@ export const en = {
         body: "No VC money. No growth team. No billboard on the highway. If you think nidhi is useful, tell someone. That's my main marketing strategy.",
       },
     },
+    /**
+     * "In practice" notes under the beliefs that make a promise a reader can
+     * check: one fixed label, at most two short sentences, then one link to the
+     * page that holds the record. They state what is done and its limits, never a
+     * guarantee, and carry no date.
+     */
+    inPractice: {
+      label: 'In practice:',
+      noPlanner: {
+        text: 'Finance terms in a lesson open a short explanation, and every lesson is marked with a level, so you can start where you are.',
+        link: 'Look up a term in the glossary',
+      },
+      accessibility: {
+        text: 'I build for keyboard use, your device’s text size, reduced motion and both themes. Barriers I know about remain.',
+        link: 'See what works and what is still open',
+      },
+      freeForever: {
+        text: 'Today every lesson opens without an account or a payment. Keeping it that way is the promise.',
+        link: 'Open the learning path',
+      },
+      rulesOfThumb: {
+        text: 'I ask each lesson to say why a rule exists, what evidence it rests on, where it breaks and what depends on you.',
+        link: 'Read how lessons are written and corrected',
+      },
+      noAds: {
+        text: 'Analytics that could link your visits wait for your yes, and what you type into a tool stays in your browser.',
+        link: 'Read the privacy notice and its dated changes',
+      },
+    },
     cta: {
       text: "Convinced? Or think I'm full of it?",
       sub: "Either way, I'd love to hear from you",
       email: 'Drop me a love letter',
       instagram: 'Slide into my DMs',
+    },
+  },
+
+  /**
+   * The accessibility page: what works, how it was reviewed, the barriers that
+   * are still open, and how to report one. The barrier list is a record, so an
+   * item is deleted from every catalog when it is fixed and added when one is
+   * found. The address in the report sentence is the same in every language and
+   * lives in the component, between `before` and `after`.
+   */
+  accessibility: {
+    meta: {
+      title: 'Accessibility: What Works and What Does Not Yet | nidhi',
+      description:
+        'What nidhi supports for keyboard, screen reader and low-vision readers, how the site was reviewed, the barriers still open, and how to report one.',
+    },
+    schema: {
+      name: 'Accessibility',
+      description:
+        'What nidhi supports for keyboard, screen reader and low-vision readers, how the site was reviewed, the barriers still open, and how to report one.',
+      breadcrumbHome: 'Home',
+      breadcrumbThis: 'Accessibility',
+    },
+    title: 'Accessibility',
+    intro:
+      'I want nidhi to work for you however you read, see, hear or move through a page. It does not fully do that yet. This page says what works today, what I know is broken, and how to tell me about anything that gets in your way.',
+    sections: {
+      works: 'What works today',
+      reviewed: 'How it was reviewed',
+      barriers: 'Barriers I know about',
+      report: 'Tell me about a barrier',
+    },
+    works: {
+      textSize: 'Text follows the size you set in your browser or on your phone.',
+      keyboard: 'Links, buttons and form fields can be reached with a keyboard, the one you are on is outlined, and every page starts with a link that skips to the main content.',
+      motion: 'If your device asks for reduced motion, animations and smooth scrolling are switched off.',
+      theme: 'There is a light and a dark theme, chosen with the switch at the top of the page or taken from your device.',
+      charts: 'In the free tools, the lines of a chart differ by pattern as well as colour, and the charts can be read with a keyboard.',
+      languages: 'The site’s own pages are in five languages. The lessons are in English only.',
+    },
+    reviewed: {
+      scope: 'The last full review was on 10 November 2026. It covered 62 pages at five screen widths, in the light and the dark theme and in all five languages, with an automated checker and checks by hand. A second pass looked at touch, slow connections, printing, high-contrast mode and the emails.',
+      limits: 'That is a review, not a guarantee. It was not a test with disabled readers, and it did not try every screen reader on every page, so it cannot show that the site works for everyone.',
+    },
+    barriers: {
+      intro: 'These are open as of 12 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
+      items: {
+        links: 'Some links inside a sentence are told apart from the words around them by colour alone.',
+        contrast: 'Some small text is too faint: the hints inside empty form fields, and two small links on the newsletter box.',
+        announcements: 'The free tools do not tell a screen reader about their results in the same way: the loan comparison says too much, and the net worth calculator says nothing when a result changes.',
+        forms: 'On the waitlist and newsletter forms, keyboard focus is lost while the form is sending and after a failure, and nothing announces that it is sending.',
+        highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
+        overlays: 'While the phone menu or the cookie prompt is open, the page behind it can still scroll.',
+        figures: 'Lesson figures and tables that scroll sideways cannot be scrolled with a keyboard.',
+        touch: 'On a phone, the Monte Carlo chart cannot be zoomed with two fingers, and opening the explanation of a term in a lesson can make the page slide sideways.',
+        largeText: 'With a much larger text size, the top bar becomes wider than a phone screen.',
+        print: 'How-to guides print with the site’s menus around them, and in grey text when the dark theme is on.',
+        emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
+      },
+    },
+    report: {
+      before: 'Write to ',
+      after: ' with the page and what you were trying to do.',
+      diagnosis: 'You do not need to share a diagnosis.',
+      setting: 'If a setting on the page would help you, tell me which.',
     },
   },
 

@@ -40,7 +40,7 @@ function slugs(dir) {
 // Every page that exists in more than one language. Lessons have one address,
 // in English, so they are listed once below.
 const chrome = [
-  '/', '/about/', '/beliefs/', '/privacy/', '/editorial-policy/', '/free/',
+  '/', '/about/', '/beliefs/', '/accessibility/', '/privacy/', '/editorial-policy/', '/free/',
   '/free/loan-comparison/', '/free/multi-currency-net-worth/',
   // Built only in dev until it launches with post 43 (src/utils/monte-carlo/release.ts).
   '/free/monte-carlo-simulator/', '/blog/',

@@ -7,6 +7,7 @@ nidhi is designed for people starting their financial journey as well as people 
 ## Key Pages
 - [Home](https://nidhi.today/): What nidhi is, where to start for your situation, which lesson goes with which free tool, and the planner (opening in stages).
 - [Our Beliefs](https://nidhi.today/beliefs/): Editorial principles - honest, ad-free, privacy-first personal finance education.
+- [Accessibility](https://nidhi.today/accessibility/): What works for keyboard, screen reader and other readers, how the site was last reviewed, the barriers still open, and how to report one.
 - [Learning Path](https://nidhi.today/blog/): All lessons in reading order, in three series so far: Discovery (fundamentals), Building (applying concepts) and Psychology (how your mind shapes money decisions).
 - [How-to](https://nidhi.today/how-to/): Short guides that each answer one everyday money question in plain words, answer first, with what to check and a link to the full lesson. In English; the hub's own text is also in Hindi, Spanish, Czech and Marathi.
 - [Planner Beta](https://nidhi.today/beta/): The free beta of the nidhi planner, invite-only through the waitlist: what beta testers get, who counts as one, and what is not decided yet.
