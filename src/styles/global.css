@@ -3089,12 +3089,6 @@ details[open] > .disclosure::after,
   gap: 6px;
 }
 
-.lc-legendSwatch {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-}
 
 .lc-chart {
   width: 100%;
@@ -3120,12 +3114,6 @@ details[open] > .disclosure::after,
   fill: var(--color-text-muted);
 }
 
-.lc-chartAxisLabel {
-  font-family: var(--font-heading);
-  font-size: 11px;
-  fill: var(--color-text-secondary);
-  font-weight: 600;
-}
 
 .lc-chartEmpty {
   color: var(--color-text-muted);
@@ -3140,18 +3128,7 @@ details[open] > .disclosure::after,
   margin-top: var(--space-4);
 }
 
-.lc-splitHeader {
-  margin-bottom: var(--space-3);
-}
 
-.lc-splitLead {
-  color: var(--color-text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.55;
-  margin: var(--space-2) 0 0;
-  max-width: 60ch;
-  text-wrap: balance;
-}
 
 .lc-splitControls {
   display: flex;
@@ -3783,10 +3760,6 @@ details[open] > .disclosure::after,
   background: var(--color-bg);
 }
 
-.mcnw-modalCheck--disabled {
-  opacity: 0.35;
-  pointer-events: none;
-}
 
 .mcnw-modalCheck input[type="radio"] {
   width: 18px;
@@ -3899,13 +3872,6 @@ details[open] > .disclosure::after,
   color: var(--color-text-muted);
 }
 
-.mcnw-modalPreviewEmpty {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  text-align: center;
-  padding: 16px;
-  margin: 0;
-}
 
 /* ---- Footer ---- */
 
