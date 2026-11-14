@@ -373,8 +373,15 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
           // A chart wider than its column scrolls sideways inside its figure
           // (global.css). While it does, the figure takes keyboard focus so the
           // arrow keys can scroll it; a figure that fits stays out of the tab
-          // order. Its caption already names it.
+          // order. A browser does not name a figure from its caption, so it
+          // takes the chart's own short title: a focused figure is announced
+          // by what it shows, not as a bare "figure".
           var figures = document.querySelectorAll('#post-content figure');
+          for (var g = 0; g < figures.length; g++) {
+            var svg = figures[g].querySelector('svg[aria-labelledby]');
+            var tid = svg && svg.getAttribute('aria-labelledby').split(/\s+/)[0];
+            if (tid && !figures[g].hasAttribute('aria-labelledby')) figures[g].setAttribute('aria-labelledby', tid);
+          }
           function markScrollers() {
             for (var f = 0; f < figures.length; f++) {
               var fig = figures[f];

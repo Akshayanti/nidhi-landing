@@ -1100,6 +1100,7 @@ details[open] > .disclosure::after,
   .site-footer,
   .skip-link,
   .cookie-overlay,
+  .vol-bar,
   .blog-post .waitlist,
   .blog-post .subscribe,
   .blog-post .lesson-share {
@@ -1199,7 +1200,8 @@ details[open] > .disclosure::after,
 
 /* A figure that scrolls sideways takes keyboard focus (BlogPost.astro), so
    the arrow keys can scroll it. */
-.prose figure:focus-visible {
+.prose figure:focus-visible,
+[data-scroll-box]:focus-visible {
   outline: 2px solid var(--color-deep-blue);
   outline-offset: 2px;
 }

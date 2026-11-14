@@ -154,7 +154,7 @@ const breadcrumbSchema = {
         <section class="guide-template" aria-labelledby="guide-template-h">
           <h2 id="guide-template-h">{g.template.title}</h2>
           <p class="guide-template-note no-print">A blank copy to fill in on paper. Nothing you write here is sent anywhere. <button type="button" class="guide-print" data-guide-print>Print this page</button></p>
-          <div class="guide-template-wrap">
+          <div class="guide-template-wrap" role="group" aria-labelledby="guide-template-h" data-scroll-box>
             <table class="guide-template-table">
               <thead><tr>{g.template.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
               <tbody>{Array.from({ length: g.template.rows }, () => <tr>{g.template!.columns.map(() => <td></td>)}</tr>)}</tbody>
@@ -218,6 +218,21 @@ const breadcrumbSchema = {
   document.querySelectorAll('[data-guide-print]').forEach(function (b) {
     b.addEventListener('click', function () { window.print(); });
   });
+  // A table wider than the screen scrolls inside its box. While it does, the
+  // box takes keyboard focus so the arrow keys can scroll it (#633); a box
+  // that fits stays out of the tab order.
+  (function () {
+    var boxes = document.querySelectorAll('[data-scroll-box]');
+    function mark() {
+      for (var i = 0; i < boxes.length; i++) {
+        if (boxes[i].scrollWidth > boxes[i].clientWidth + 1) boxes[i].tabIndex = 0;
+        else boxes[i].removeAttribute('tabindex');
+      }
+    }
+    mark();
+    window.addEventListener('load', mark);
+    window.addEventListener('resize', mark);
+  })();
 </script>
 
 <style>
@@ -278,7 +293,7 @@ const breadcrumbSchema = {
 
   .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
   .guide-step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
-  .guide-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: var(--space-3); }
+  .guide-step { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: var(--space-3); overflow-wrap: anywhere; }
   .guide-step-n {
     width: 2rem; height: 2rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;

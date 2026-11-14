@@ -366,7 +366,7 @@ const EXPECTED_MENTIONS = [
   'layouts/BlogPost.astro: localStorage x2',
   'layouts/BlogPost.astro: location x4',
   'layouts/BlogPost.astro: navigator x5',
-  'layouts/BlogPost.astro: setAttribute x17',
+  'layouts/BlogPost.astro: setAttribute x18',
   'layouts/BlogPost.astro: setItem x1',
   'pages/404.astro: cookie x1',
   'pages/404.astro: location x1',
