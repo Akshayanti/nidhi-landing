@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'share-window-keeps-focus',
+        text: {
+          en: 'In the net worth calculator\'s share window, pressing Copy link with the keyboard no longer throws you back to the first option: focus stays on the button. If copying fails and the address is shown instead, the Tab key now reaches it.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर की शेयर विंडो में कीबोर्ड से "लिंक कॉपी करें" दबाने पर अब आप पहले विकल्प पर वापस नहीं पहुँचते: फ़ोकस बटन पर ही रहता है। अगर कॉपी न हो पाए और उसकी जगह पता दिखे, तो Tab कुंजी अब उस तक पहुँचती है।',
+          es: 'En la ventana para compartir de la calculadora de patrimonio neto, pulsar «Copiar enlace» con el teclado ya no te devuelve a la primera opción: el foco se queda en el botón. Si la copia falla y en su lugar se muestra la dirección, la tecla Tab ahora llega hasta ella.',
+          cs: 'V\u00a0okně pro sdílení v\u00a0kalkulačce čistého jmění vás stisk tlačítka pro kopírování odkazu na klávesnici už nevrací na první volbu: fokus zůstává na tlačítku. Když se kopírování nepodaří a\u00a0místo toho se zobrazí adresa, klávesa Tab se k\u00a0ní teď dostane.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरच्या शेअर विंडोमध्ये कीबोर्डने “लिंक कॉपी करा” दाबल्यावर आता तुम्ही पहिल्या पर्यायावर परत फेकले जात नाही: फोकस बटणावरच राहतो. कॉपी झाली नाही आणि त्याऐवजी पत्ता दिसला, तर Tab कळ आता त्याच्यापर्यंत पोहोचते.',
+        },
+      },
+      {
         id: 'share-link-fits-phone',
         text: {
           en: 'Copying a share link on a phone no longer makes the page wider than the screen in the loan comparison and the net worth calculator: the copied address now fits inside its box. The net worth share window also fits small screens, so its options and buttons are no longer cut off. In all five tools the buttons under the copy button stay where they are when it changes to say the link was copied.',
