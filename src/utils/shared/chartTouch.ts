@@ -9,7 +9,8 @@
  * - moved up or down first: a scroll, which the page handles and the chart
  *   ignores;
  * - moved sideways first: a scrub along the chart, where the chart does not
- *   scroll sideways itself (`scrub`), otherwise a scroll of the chart.
+ *   scroll sideways itself (`scrub`), otherwise a scroll of the chart;
+ * - joined by a second finger: a pinch, which the browser's zoom handles.
  */
 
 /** A finger may wander this far, in CSS pixels, and still count as a tap. */
@@ -24,6 +25,16 @@ export interface Touch {
 
 export function touchStart(id: number, x: number, y: number): Touch {
   return { id, x, y, mode: 'pending' };
+}
+
+/**
+ * A finger going down. A second finger while the first is still on the chart
+ * is a pinch, which belongs to the browser's zoom: the first touch is kept
+ * and ignored from then on, so neither finger can open or move the read-out.
+ */
+export function touchDown(t: Touch | null, id: number, x: number, y: number): Touch {
+  if (t && t.id !== id) return { ...t, mode: 'ignore' };
+  return touchStart(id, x, y);
 }
 
 /** The touch after a move, and whether the chart should follow the finger. */

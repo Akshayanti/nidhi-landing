@@ -5900,10 +5900,15 @@ body[data-page="landing"] .site-footer {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-deep-blue);
+  /* A target of its own: 24px tall for a pointer, 44px for a thumb (#405). */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 @media (max-width: 640px) {
   .lp-topicGroup + .lp-topicGroup { margin-top: var(--space-8); }
   .lp-topicGroupHead h2 { font-size: 1.2rem; }
+  .lp-topicGroupHead a { min-height: 44px; }
 }
 /* Step number on each learning-path card: the reading order within a level. */
 .lp-cardStep {
