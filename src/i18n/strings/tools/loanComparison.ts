@@ -416,6 +416,8 @@ export const loanComparisonEn = {
       paidOffBeforeChange: 'Paid off in month {payoffMonth}, before the rate changes',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
       keptNote: 'The payment stays the same after the rate change.',
+      /** Said to a screen reader, once typing has settled, while only one offer has a result. */
+      announceOne: 'Monthly payment {monthly}. Total paid {total}.',
       payoff: 'Payoff',
       payoffMonth: 'Month {month}',
       payoffLater: '{n} later than the entered term of {term}.',
@@ -1082,6 +1084,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       paidOffBeforeChange: 'दर बदलने से पहले, महीना {payoffMonth} में चुक गया',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
       keptNote: 'दर बदलने के बाद भी किस्त वही रहती है।',
+      announceOne: 'मासिक किस्त {monthly}। कुल चुकाया {total}।',
       payoff: 'कब चुकेगा',
       payoffMonth: 'महीना {month}',
       payoffLater: 'भरी हुई {term} की अवधि से {n} बाद।',
@@ -1698,6 +1701,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       paidOffBeforeChange: 'Se liquida en el mes {payoffMonth}, antes de que cambie la tasa',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
       keptNote: 'La cuota se mantiene después del cambio de tasa.',
+      announceOne: 'Cuota mensual {monthly}. Total pagado {total}.',
       payoff: 'Liquidación',
       payoffMonth: 'Mes {month}',
       payoffLater: '{n} después del plazo indicado de {term}',
@@ -2313,6 +2317,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       paidOffBeforeChange: 'Splaceno v měsíci {payoffMonth}, před změnou sazby',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
       keptNote: 'Splátka zůstává po změně sazby stejná.',
+      announceOne: 'Měsíční splátka {monthly}. Zaplaceno celkem {total}.',
       payoff: 'Splacení',
       payoffMonth: 'Měsíc {month}',
       payoffLater: 'O {n} později než zadaná doba splatnosti {term}',
@@ -2907,6 +2912,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       paidOffBeforeChange: 'दर बदलण्यापूर्वी, महिना {payoffMonth} मध्ये फिटले',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
       keptNote: 'दर बदलल्यानंतरही हप्ता तोच राहतो.',
+      announceOne: 'मासिक हप्ता {monthly}. एकूण भरलेले {total}.',
       payoff: 'कधी फिटेल',
       payoffMonth: 'महिना {month}',
       payoffLater: 'भरलेल्या {term} मुदतीपेक्षा {n} उशिरा.',

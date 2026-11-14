@@ -57,7 +57,7 @@ import { ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -1227,6 +1227,8 @@ export default function LoanCompare({
         )}
       </div>
 
+      <LoanAnnouncement paidOff={withTotal.map((x) => x.r)} validCount={validResults.length} currency={currency} strings={strings} />
+
       <DeltaSummary
         results={results}
         vendors={vendors}
@@ -1595,11 +1597,8 @@ function VendorCard({
         </div>
       )}
 
-      <div
-        className="lc-results"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      {/* Not a live region: the tool's one announcement says the settled result. */}
+      <div className="lc-results">
         {hasError ? (
           <p className="lc-error" id={errorId} role="alert">
             <ErrorText>{engineError(result.error ?? '', strings)}</ErrorText>
@@ -2079,6 +2078,45 @@ function ResultRow({ label, value, hint, note, emphasized }: ResultRowProps) {
   );
 }
 
+/**
+ * What a screen reader is told once typing has settled: one offer's payment
+ * and total, or the range of totals across the offers (the side-by-side
+ * section's own sentence). `paidOff` holds the offers that have a total.
+ * Empty while no offer has a result: a card's error is an alert of its own.
+ */
+function announcedResult(
+  paidOff: LoanResult[],
+  validCount: number,
+  currency: string,
+  strings: Strings,
+  formatMoney: (minor: number, currency: string) => string,
+): string {
+  if (validCount === 0) return '';
+  if (validCount === 1) {
+    const only = paidOff[0];
+    return only
+      ? format(strings.results.announceOne, {
+          monthly: formatMoney(only.effectiveMonthlyMinor, currency),
+          total: formatMoney(only.totalPaidMinor, currency),
+        })
+      : '';
+  }
+  if (paidOff.length < 2) return strings.delta.noRange;
+  const totals = paidOff.map((r) => r.totalPaidMinor);
+  const low = Math.min(...totals);
+  const high = Math.max(...totals);
+  const d = strings.delta;
+  return low === high
+    ? `${d.sameBefore}${formatMoney(low, currency)}${d.sameAfter}`
+    : `${d.rangeBefore}${formatMoney(low, currency)}${d.rangeTo}${formatMoney(high, currency)}${d.rangeAcross}${formatMoney(high - low, currency)}${d.rangeAfter}`;
+}
+
+/** The loan tool's one announcement, inside the money context it formats with. */
+function LoanAnnouncement({ paidOff, validCount, currency, strings }: { paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings }) {
+  const { formatMoney } = useMoney();
+  return <ResultAnnouncement text={announcedResult(paidOff, validCount, currency, strings, formatMoney)} />;
+}
+
 // ---- Delta summary ---------------------------------------------------------
 
 interface DeltaSummaryProps {
@@ -2137,14 +2175,14 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
       <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
       {/*
-        aria-live=polite so screen readers re-announce when inputs change.
-        The wording is deliberately neutral: it states the range and the
+        Not a live region: the tool's one announcement says this sentence once
+        typing has settled. The wording is deliberately neutral: it states the range and the
         spread, without pointing the user at a specific vendor as "the
         cheapest". Naming a winner among real commercial offers risks
         being read as credit intermediation under the EU Consumer
         Credit Directive 2008/48/EC (and CCD2 from 2026 onward).
       */}
-      <p className="lc-deltaHero" aria-live="polite" aria-atomic="true">
+      <p className="lc-deltaHero">
         {!lowest || !highest || sortedByTotal.length < 2 ? (
           strings.delta.noRange
         ) : allSame ? (

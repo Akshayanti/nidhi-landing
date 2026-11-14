@@ -310,6 +310,18 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
   const matches = useMemo(() => (trimmed ? search(index, trimmed) : []), [index, trimmed]);
   const lessonMatches = matches.filter((m) => m.kind === 'lesson').length;
   const shown = showAll ? matches : matches.slice(0, RESULT_LIMIT);
+  // The line that counts the results, shown above them and said to a screen
+  // reader once typing has paused for a moment.
+  const countLine = !trimmed || (matches.length > 0 && lessonMatches === 0)
+    ? ''
+    : matches.length === 0
+      ? strings.noMatches
+      : `${lessonMatches} ${plural(lang, lessonMatches, strings.lessonOne, strings.lessonFew, strings.lessonMany)}`;
+  const [saidCount, setSaidCount] = useState('');
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSaidCount(countLine), 600);
+    return () => window.clearTimeout(timer);
+  }, [countLine]);
 
   useEffect(() => { setShowAll(false); }, [trimmed]);
 
@@ -546,14 +558,11 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <div className="learn-results" aria-live="polite">
-          {trimmed && (matches.length === 0 || lessonMatches > 0) && (
-            <p className="learn-note">
-              {matches.length === 0
-                ? strings.noMatches
-                : `${lessonMatches} ${plural(lang, lessonMatches, strings.lessonOne, strings.lessonFew, strings.lessonMany)}`}
-            </p>
-          )}
+        {/* Only the count is announced, once typing has paused: the result
+            links below are found by moving on, not read out on every key. */}
+        <span className="lp-srOnly" aria-live="polite" aria-atomic="true">{saidCount}</span>
+        <div className="learn-results">
+          {countLine && <p className="learn-note">{countLine}</p>}
           {trimmed && matches.length === 0 && guides.length > 0 && (
             <p className="learn-note">{howTo.empty} <a href={howTo.href}>{howTo.link}</a></p>
           )}
