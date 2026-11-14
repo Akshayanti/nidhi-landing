@@ -787,8 +787,11 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       button.setAttribute('aria-expanded', open ? 'true' : 'false');
       button.setAttribute('aria-label', open ? menuCloseLabel : menuLabel);
       sheet.hidden = !open;
-      // The page behind does not scroll while the menu is open (#481).
-      document.documentElement.classList.toggle('scroll-locked', open);
+      // The page behind does not scroll while the menu is open (#481). The
+      // class is the menu's own, so closing the menu never releases a page
+      // that another overlay is still holding.
+      document.documentElement.classList.toggle('menu-open', open);
+      fitSheet();
       if (open) {
         document.addEventListener('click', onOutside);
         document.addEventListener('keydown', onKey);
@@ -798,9 +801,26 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       }
     }
 
+    // The menu ends at the bottom of the screen, measured from where it
+    // really starts: with large text the header is taller than any fixed
+    // figure, and the last link would sit below the screen.
+    function fitSheet() {
+      if (sheet.hidden) { sheet.style.maxHeight = ''; return; }
+      var room = window.innerHeight - sheet.getBoundingClientRect().top;
+      sheet.style.maxHeight = Math.max(room, 120) + 'px';
+    }
+    window.addEventListener('resize', fitSheet);
+
     function onOutside(e) {
       if (!header.contains(e.target)) setOpen(false);
     }
+
+    // Focus that moves on to the page closes the menu, so it never walks
+    // behind a panel that covers the screen. A click on something that takes
+    // no focus has no target here and is left to onOutside.
+    header.addEventListener('focusout', function(e) {
+      if (!sheet.hidden && e.relatedTarget && !header.contains(e.relatedTarget)) setOpen(false);
+    });
 
     function onKey(e) {
       if (e.key === 'Escape') { setOpen(false); button.focus(); }

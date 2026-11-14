@@ -556,8 +556,11 @@ a {
 }
 
 /* Set while the phone menu or the consent prompt is open: the page behind
-   them does not scroll. */
-html.scroll-locked { overflow: hidden; }
+   them does not scroll. Each has its own class, so closing one never
+   releases the other, and the room a scrollbar takes is kept, so the page
+   does not jump sideways. */
+html.menu-open,
+html.consent-open { overflow: hidden; scrollbar-gutter: stable; }
 
 a:hover {
   color: var(--color-teal);
