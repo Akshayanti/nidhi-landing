@@ -553,11 +553,17 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           id="learn-search"
           className="learn-search"
           type="search"
-          placeholder={strings.searchPlaceholder}
+          placeholder={lang === 'en' ? strings.searchPlaceholder : undefined}
+          aria-describedby={lang === 'en' ? undefined : 'learn-search-hint'}
           autoComplete="off"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
+        {/* The lessons are in English, so the search reads English words. In
+            English the placeholder is only an example; in every other
+            language it is the one instruction that matters, so it is a line
+            under the box that does not vanish at the first key (#397). */}
+        {lang !== 'en' && <p id="learn-search-hint" className="learn-searchHint">{strings.searchPlaceholder}</p>}
         {/* Only the count is announced, once typing has paused: the result
             links below are found by moving on, not read out on every key. */}
         <span className="lp-srOnly" aria-live="polite" aria-atomic="true">{saidCount}</span>
