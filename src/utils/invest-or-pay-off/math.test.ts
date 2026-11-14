@@ -482,3 +482,29 @@ describe('inputs the page would reject still give numbers', () => {
     finiteResult(compare({ ...BASE, balance: NaN, debtRate: Infinity, inflation: NaN }, { paths: 20 }));
   });
 });
+
+describe('the result as the page words it (#530)', () => {
+  it('rounds both paths and the gap, each by its own spread, and nothing that is worked out exactly', async () => {
+    const m = await import('./math.ts');
+    const { noiseStep } = await import('../shared/noiseRounding.ts');
+    const exact = m.compare(BASE);
+    const w = m.wordedResult(exact);
+    for (const k of ['a', 'b', 'diff'] as const) {
+      const step = noiseStep(exact[k].p10, exact[k].p90, exact.paths);
+      for (const q of ['p10', 'p50', 'p90'] as const) {
+        assert.ok(Math.abs(w[k][q] - exact[k][q]) <= step / 2 + 1e-9, `${k}.${q}`);
+      }
+    }
+    // The pinned gap, 106.09 in the middle of -1,007.67 to 1,530.18, reads 110 from -1,010 to 1,530.
+    assert.deepEqual(w.diff, { p10: -1010, p50: 110, p90: 1530 });
+    for (const k of ['months', 'payoffMonthA', 'payoffMonthB', 'bAhead', 'interestA', 'interestB', 'interestAvoided', 'interestAvoidedToday', 'remainingB', 'paths'] as const) {
+      assert.equal(w[k], exact[k], k);
+    }
+  });
+
+  it('a result with no spread is left as it is', async () => {
+    const m = await import('./math.ts');
+    const flat = m.compare({ ...BASE, returns: 'own', ownReturn: 5 }, { paths: 1, flat: true });
+    assert.deepEqual(m.wordedResult(flat).b, flat.b);
+  });
+});

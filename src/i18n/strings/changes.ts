@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'simulated-amounts-rounded',
+        text: {
+          en: 'The Monte Carlo simulator and the invest or pay off tool no longer show simulated amounts to the last unit. A median of 1,058,721 read as exact, but a different set of random draws would move it by about 1%. The page now shows 1,060,000: as fine as the runs can tell apart. The spreadsheet keeps every digit.',
+          hi: 'मोंटे कार्लो सिम्युलेटर और निवेश या कर्ज़ चुकाना टूल अब सिम्युलेशन की रकमें आख़िरी इकाई तक नहीं दिखाते। 10,58,721 का बीच का नतीजा एकदम सटीक लगता था, जबकि दूसरे रैंडम आँकड़ों के साथ वह लगभग 1% इधर-उधर हो जाता। पेज अब 10,60,000 दिखाता है: उतना ही बारीक जितना फ़र्क़ सिम्युलेशन भरोसे के साथ बता सकता है। स्प्रेडशीट में पूरे अंक रहते हैं।',
+          es: 'El simulador Monte Carlo y la herramienta Invertir o pagar deuda ya no muestran las cantidades simuladas hasta la última unidad. Una mediana de 1.058.721 parecía exacta, pero con otros sorteos aleatorios se movería en torno a un 1\u00a0%. La página muestra ahora 1.060.000: tan fino como la simulación permite distinguir. La hoja de cálculo conserva todas las cifras.',
+          cs: 'Simulátor Monte Carlo a\u00a0nástroj Investovat, nebo splatit dluh už neukazují simulované částky na poslední jednotku. Medián 1\u00a0058\u00a0721 vypadal přesně, ale s\u00a0jinými náhodnými čísly by se posunul zhruba o\u00a01\u00a0%. Stránka teď ukazuje 1\u00a0060\u00a0000: tak jemně, jak to simulace dokáže rozlišit. V\u00a0tabulce zůstávají všechny číslice.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटर आणि गुंतवणूक की कर्जफेड हे टूल आता सिम्युलेशनच्या रकमा शेवटच्या एककापर्यंत दाखवत नाहीत. 10,58,721 हा मध्यक अगदी नेमका वाटायचा, पण वेगळ्या आकड्यांसह तो सुमारे 1% इकडेतिकडे झाला असता. पेज आता 10,60,000 दाखवते: सिम्युलेशनला जितका फरक खात्रीने सांगता येतो तितकेच बारीक. स्प्रेडशीटमध्ये सर्व अंक राहतात.',
+        },
+      },
+      {
         id: 'sign-up-sends-less',
         text: {
           en: 'The waitlist and newsletter forms now send less to my analytics. Signing up used to send the part of your email address after the @, and on a personal or small company domain that part can point to one person. It is no longer sent, and a waitlist sign-up is now counted under a random code, not one made from your address.',
