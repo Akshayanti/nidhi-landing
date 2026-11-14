@@ -565,7 +565,8 @@ a:hover {
    purpose: a new paragraph cannot forget it. A link with a class of its own
    (a button, a card) is styled by that class and is not touched, and so is a
    list of links inside a `nav` (breadcrumbs, menus), where position is the
-   cue. `:where` keeps the rule weak enough for any component to override. */
+   cue. The rule outranks a component's scoped `a` rule, so a link that must not
+   be underlined gets a class. */
 :where(p, li, dd, figcaption, td):not(nav *) > a:not([class]),
 :where(p, li, dd, figcaption, td):not(nav *) > :where(strong, em, b, i, span:not([class])) > a:not([class]) {
   text-decoration: underline;
