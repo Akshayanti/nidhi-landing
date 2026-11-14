@@ -1245,7 +1245,6 @@ function handleConfirm_(e) {
     // log is the minimum useful alert surface.
     console.warn('sendWelcomeEmail_ failed for ' + email + ': ' + err);
     trackPosthog_('blog_welcome_failed', distinctIdForEmail_(email), {
-      email_domain: emailDomain_(email),
       reason: mailErrorKind_(err),
     });
   }
@@ -1510,7 +1509,6 @@ function sendPostFanOut_(cfg, payload, seenKey) {
       console.warn('skipping ' + sub.email + ': missing unsub_token. Run migrateAddTokens().');
       trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
         guid: payload.guid,
-        email_domain: emailDomain_(sub.email),
         reason: 'missing_unsub_token',
       });
       // Advance the marker past this row so we don't re-hit it on resume.
@@ -1557,12 +1555,11 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     } catch (err) {
       failed++;
       console.warn('send failed for ' + sub.email + ': ' + err);
-      // Per-recipient failure event: the domain and the kind of failure, so
-      // patterns show (one domain refusing us) without any address, or any
-      // of the mail service's own text, reaching PostHog.
+      // Per-recipient failure event: the kind of failure only. No address,
+      // no part of one, and none of the mail service's own text reaches
+      // PostHog.
       trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
         guid: payload.guid,
-        email_domain: emailDomain_(sub.email),
         reason: mailErrorKind_(err),
       });
       // Advance the marker past the failed row — next retry will skip it
@@ -1590,12 +1587,6 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     failed: failed,
     skipped_already_sent: skipped_already_sent,
   });
-}
-
-function emailDomain_(email) {
-  var s = String(email || '').trim().toLowerCase();
-  var at = s.indexOf('@');
-  return at >= 0 ? s.slice(at + 1) : '';
 }
 
 // ============================================================================
@@ -1893,7 +1884,6 @@ function handleScanBounces_(e) {
 
   markedAddrs.forEach(function (addr) {
     trackPosthog_('blog_subscriber_bounced', distinctIdForEmail_(addr), {
-      email_domain: emailDomain_(addr),
       via: 'mailer_daemon_scan',
     });
   });

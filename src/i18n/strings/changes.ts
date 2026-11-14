@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'sign-up-sends-less',
+        text: {
+          en: 'The waitlist and newsletter forms now send less to my analytics. Signing up used to send the part of your email address after the @, and on a personal or small company domain that part can point to one person. It is no longer sent, and a waitlist sign-up is now counted under a random code, not one made from your address.',
+          hi: 'वेटलिस्ट और न्यूज़लेटर के फ़ॉर्म अब एनालिटिक्स को कम भेजते हैं। पहले साइन अप करने पर आपके ईमेल पते का @ के बाद वाला हिस्सा भी भेजा जाता था, और निजी या छोटी कंपनी के डोमेन में वह हिस्सा किसी एक व्यक्ति की ओर इशारा कर सकता है। अब वह नहीं भेजा जाता, और वेटलिस्ट का साइन अप अब एक रैंडम कोड के तहत गिना जाता है, आपके पते से बने कोड के तहत नहीं।',
+          es: 'Los formularios de la lista de espera y del boletín envían ahora menos a la analítica. Antes, al apuntarte, se enviaba la parte de tu correo que va después de la @, y en un dominio personal o de una empresa pequeña esa parte puede señalar a una sola persona. Ya no se envía, y cada alta en la lista de espera se cuenta ahora con un código aleatorio, no con uno creado a partir de tu dirección.',
+          cs: 'Formuláře pro čekací listinu a\u00a0newsletter teď posílají webové analytice méně. Při přihlášení se dříve odesílala část vaší e-mailové adresy za znakem @ a\u00a0u\u00a0osobní domény nebo domény malé firmy může tato část ukazovat na jednoho člověka. Už se neodesílá a\u00a0přihlášení na čekací listinu se teď počítá pod náhodným kódem, ne pod kódem vytvořeným z\u00a0vaší adresy.',
+          mr: 'प्रतीक्षा यादी आणि न्यूजलेटरचे फॉर्म आता वापराच्या विश्लेषणासाठी (analytics) कमी माहिती पाठवतात. आधी नोंदणी करताना तुमच्या ईमेल पत्त्यातील @ चिन्हानंतरचा भागही पाठवला जायचा, आणि वैयक्तिक किंवा लहान कंपनीच्या डोमेनमध्ये तो भाग एकाच व्यक्तीकडे निर्देश करू शकतो. आता तो पाठवला जात नाही, आणि प्रतीक्षा यादीतील नोंदणी आता तुमच्या पत्त्यापासून बनवलेल्या कोडऐवजी प्रत्येक वेळी नव्याने तयार होणाऱ्या कोडखाली मोजली जाते.',
+        },
+      },
+      {
         id: 'invest-or-pay-off-says-what-it-assumes',
         text: {
           en: 'The invest or pay off tool is plainer about three things. The debt\'s rate is now shown as what it costs over a year when interest is charged monthly (6.5% comes to 6.70%), so it sits fairly beside the investment\'s yearly return. If you type your own return, the tool says its ups and downs stay those of world stocks, far wider than a savings account\'s. And this tool and the Monte Carlo simulator both say their return history is measured in US dollars.',
