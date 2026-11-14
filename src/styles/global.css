@@ -4641,8 +4641,8 @@ body[data-page="landing"] .site-footer {
    place that sets the phone floor. */
 @media (max-width: 640px) {
   .nav-dropdownCaret, .changelog-tag, .ft-kicker,
-  .lc-relatedKicker, .mcnw-shareBtn,
-  .mcnw-relatedKicker, .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
+  .toolp-relatedKicker, .mcnw-shareBtn,
+  .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
   .lp-newLabel, .level-badge, .ref-type, .post-nav-direction, .post-tool-stepLabel {
     font-size: 0.8125rem !important;
   }
@@ -4651,13 +4651,12 @@ body[data-page="landing"] .site-footer {
   .post-tldr, .post-tldr li, .post-faq-a, .post-faq-a p,
   .about-intro, .about-body, .about-body p,
   .belief-body p, .beliefs-intro, .disclaimer, .lc-disclaimer, .mcnw-disclaimer,
-  .lc-faqQ, .lc-faqA, .toolp-faqQ, .toolp-faqA,
-  .mcnw-faqQ, .mcnw-faqA, .faq-item p, .faq-item summary,
+  .toolp-faqQ, .toolp-faqA, .faq-item p, .faq-item summary,
   .privacy-container p, .privacy-container li, .privacy-intro,
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
   .toolp-notes li, .toolp-source, .mcnw-explainer p, .mcnw-explainerList li,
-  .tool-waitlist__line, .lc-pageLead, .mcnw-pageLead,
+  .tool-waitlist__line, .toolp-lead, .toolp-relatedLead,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;
@@ -4668,15 +4667,13 @@ body[data-page="landing"] .site-footer {
     font-size: inherit !important;
   }
   .lp-cardDesc, .an-desc, .ft-desc, .post-related-card-desc, .tagHub-cardDesc,
-  .learn-levelSummary, .route-meta, .lc-relatedDesc, .mcnw-relatedDesc,
-  .toolp-relatedDesc {
+  .learn-levelSummary, .route-meta, .toolp-relatedDesc {
     font-size: 0.9375rem !important;
   }
 
   .nav-link, .footer-col a, .footer-cookieSettings, .footer-social, .subscribe-rss,
   .subscribe-dismiss-link, .lp-cardTag, .lp-cardTitle,
-  .suggested-reading-list a, .lc-relatedAll, .lc-relatedAllSecondary,
-  .mcnw-relatedAll, .mcnw-relatedAllSecondary {
+  .suggested-reading-list a, .toolp-relatedAll, .toolp-relatedAllSecondary {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }
@@ -4689,13 +4686,13 @@ body[data-page="landing"] .site-footer {
      level pages were 15 to 17px tall: below the 24px minimum. A one-word crumb
      can also be narrower than 24px: Hindi's "होम" is 18px wide where "Home" is
      not, so every crumb gets a minimum width too. */
-  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .toolp-breadcrumbs a,
+  .toolp-breadcrumbs a,
   .ft-breadcrumbs a, .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a {
     display: inline-block !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
   }
-  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .toolp-breadcrumbs a, .ft-breadcrumbs a,
+  .toolp-breadcrumbs a, .ft-breadcrumbs a,
   .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a, .if-breadcrumb a {
     min-width: 24px;
     text-align: center;
@@ -7498,7 +7495,7 @@ body :is(.lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-results
 }
 
 /* A question in the FAQ: body type, and the whole row is the target. */
-body :is(.lc-faqQ, .mcnw-faqQ, .toolp-faqQ)[class] {
+body .toolp-faqQ[class] {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 500;
