@@ -449,7 +449,7 @@ export const en = {
         largeText: 'With a much larger text size on a narrow screen, one link on the Spanish learning path and parts of some free tools make the page wider than the screen.',
         print: 'How-to guides print with the site’s menus around them, and in grey text when the dark theme is on.',
         emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
-        shareWindow: 'On a phone, copying a share link in the loan comparison or the net worth calculator makes the page wider than the screen, and in the net worth share window the copy button is cut off on a very narrow screen, at high zoom or with the phone held sideways.',
+        shareWindow: 'In the net worth calculator, the buttons at the bottom of the share window are cut off when a phone is held sideways or at very high zoom, and the window cannot be scrolled to reach them.',
         logo: 'The logo link at the top is named differently from the words it shows, so a voice control tool may not find it when you say those words.',
         addressCheck: 'When the waitlist or newsletter form asks whether an email address looks right, a screen reader is not told that the question has appeared.',
         volunteerForm: 'The volunteer form is in English only, and the volunteers page does not say so before the button that opens it.',

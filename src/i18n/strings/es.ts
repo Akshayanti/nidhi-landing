@@ -374,7 +374,7 @@ export const es: Dict = {
         largeText: 'Con un tamaño de texto mucho mayor en una pantalla estrecha, un enlace de la ruta de aprendizaje en español y partes de algunas herramientas gratuitas hacen que la página quede más ancha que la pantalla.',
         print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
-        shareWindow: 'En un teléfono, copiar un enlace para compartir en el comparador de préstamos o en la calculadora de patrimonio neto hace que la página quede más ancha que la pantalla, y en la ventana de compartir del patrimonio neto el botón de copiar queda cortado en una pantalla muy estrecha, con mucho zoom o con el teléfono en horizontal.',
+        shareWindow: 'En la calculadora de patrimonio neto, los botones del final de la ventana de compartir quedan cortados con el teléfono en horizontal o con mucho zoom, y la ventana no se puede desplazar para llegar a ellos.',
         logo: 'El enlace del logotipo, arriba, tiene un nombre distinto de las palabras que muestra, así que una herramienta de control por voz puede no encontrarlo cuando dices esas palabras.',
         addressCheck: 'Cuando el formulario de la lista de espera o del boletín pregunta si una dirección de correo es correcta, al lector de pantalla no se le avisa de que la pregunta ha aparecido.',
         volunteerForm: 'El formulario de voluntariado está solo en inglés, y la página de voluntariado no lo dice antes del botón que lo abre.',

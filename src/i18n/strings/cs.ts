@@ -358,7 +358,7 @@ export const cs: Dict = {
         largeText: 'Při výrazně větším textu na úzké obrazovce roztáhne stránku víc, než je šířka obrazovky, jeden odkaz na španělské vzdělávací cestě a části některých nástrojů zdarma.',
         print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
         emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
-        shareWindow: 'Když v telefonu zkopírujete odkaz ke sdílení ve Srovnání úvěrů nebo v kalkulačce čistého jmění, stránka se roztáhne víc, než je šířka obrazovky, a v okně sdílení kalkulačky čistého jmění je tlačítko pro kopírování oříznuté na velmi úzké obrazovce, při velkém zvětšení nebo s telefonem na šířku.',
+        shareWindow: 'V kalkulačce čistého jmění jsou tlačítka dole v okně sdílení oříznutá, když držíte telefon na šířku nebo při velkém zvětšení, a okno se nedá posunout, abyste se k nim dostali.',
         logo: 'Odkaz s logem nahoře má jiný název, než jaká slova ukazuje, takže ho hlasové ovládání nemusí najít, když tato slova vyslovíte.',
         addressCheck: 'Když se formulář čekací listiny nebo newsletteru zeptá, zda je e-mailová adresa správně, čtečka obrazovky se nedozví, že se otázka objevila.',
         volunteerForm: 'Formulář pro dobrovolníky je jen v angličtině a stránka o dobrovolné pomoci to neříká před tlačítkem, které ho otevírá.',
