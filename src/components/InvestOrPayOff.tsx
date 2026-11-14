@@ -38,7 +38,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -589,7 +589,19 @@ export default function InvestOrPayOff({
         <p className="ifc-hint iop-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
-      <section className={`ifc-results iop-results${hasErrors ? ' ifc-results--stale' : ''}`} aria-labelledby={id('results')} aria-live="polite">
+      {/* The one announcement: the settled answer, or why the answer on screen
+          is an old one. The results below are not a live region. */}
+      <ResultAnnouncement
+        text={hasErrors
+          ? strings.results.fix
+          : inflation === null
+            ? strings.country.needed
+            : problem
+              ? t(strings.problems[problem], { years: MAX_MONTHS / 12 })
+              : shownNow ? `${shownNow.lines[1]} ${shownNow.lines[0]} ${shownNow.lines[2]}` : ''}
+      />
+
+      <section className={`ifc-results iop-results${hasErrors ? ' ifc-results--stale' : ''}`} aria-labelledby={id('results')}>
         <h2 id={id('results')} className="ifc-resultsTitle">{strings.results.heading}</h2>
         {inflation === null && <p className="iop-note">{strings.country.needed}</p>}
         {problem && <p className="iop-note">{t(strings.problems[problem], { years: MAX_MONTHS / 12 })}</p>}
@@ -706,9 +718,7 @@ function Results({
       <p>{lines[3]}</p>
       {/* The reader's choice of how that figure in today's money is counted;
           folded, with the choice in use named on the row. */}
-      {/* aria-live="off": the results section announces changes, and opening this
-          fold is not one; the sentence above still is, when the choice changes. */}
-      <details className="iop-more iop-basis" aria-live="off">
+      <details className="iop-more iop-basis">
         <summary className="iop-moreSummary disclosure">
           <span className="iop-moreTitle iop-basisTitle">{s.basis.title}</span>
           <span className="ifc-srOnly">, </span>

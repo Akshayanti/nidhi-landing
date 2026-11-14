@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-14',
+    items: [
+      {
+        id: 'tools-one-announcement',
+        text: {
+          en: 'With a screen reader, the free tools now tell you a result in the same way: one short sentence, once you stop typing. Before, the loan comparison read out every half-typed figure, the net worth calculator said nothing when the total changed, and the invest or pay off debt calculator did not say when an entry was not accepted. The lesson search now reads out only how many lessons it found.',
+          hi: 'स्क्रीन रीडर के साथ मुफ़्त टूल अब नतीजा एक ही तरह से बताते हैं: लिखना रुकने पर एक छोटा वाक्य। पहले लोन तुलना हर अधूरी लिखी संख्या पढ़ देती थी, शुद्ध संपत्ति कैलकुलेटर कुल रकम बदलने पर कुछ नहीं कहता था, और निवेश या कर्ज़ चुकाना कैलकुलेटर यह नहीं बताता था कि भरी गई कोई संख्या मानी नहीं गई। पाठों की खोज अब सिर्फ़ यह पढ़ती है कि कितने पाठ मिले।',
+          es: 'Con un lector de pantalla, las herramientas gratuitas dicen ahora el resultado de la misma manera: una frase corta cuando dejas de escribir. Antes, el comparador de préstamos leía cada cifra a medio escribir, la calculadora de patrimonio neto no decía nada cuando cambiaba el total, y la calculadora de invertir o pagar deuda no avisaba cuando no aceptaba un dato. El buscador de lecciones lee ahora solo cuántas lecciones encontró.',
+          cs: 'Se čtečkou obrazovky teď bezplatné nástroje oznamují výsledek stejným způsobem: jednou krátkou větou, jakmile přestanete psát. Dřív srovnání úvěrů četlo každé nedopsané číslo, kalkulačka čistého jmění při změně součtu neřekla nic a\u00a0kalkulačka Investovat, nebo splatit dluh neoznámila, že některý údaj nepřijala. Hledání v\u00a0lekcích teď čte jen to, kolik lekcí našlo.',
+          mr: 'स्क्रीन रीडर वापरताना मोफत साधने आता निकाल एकाच पद्धतीने सांगतात: लिहिणे थांबल्यावर एक छोटे वाक्य. आधी कर्जांची तुलना प्रत्येक अर्धवट लिहिलेला आकडा वाचत असे, निव्वळ संपत्ती कॅल्क्युलेटर एकूण रक्कम बदलल्यावर काहीच सांगत नसे, आणि गुंतवणूक की कर्जफेड कॅल्क्युलेटर भरलेली एखादी संख्या स्वीकारली नाही हे सांगत नसे. धड्यांचा शोध आता फक्त किती धडे सापडले तेवढेच वाचतो.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-12',
     items: [
       {
