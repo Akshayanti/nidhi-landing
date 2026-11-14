@@ -394,6 +394,11 @@ describe('printed report styles', () => {
     const { readFileSync } = await import('node:fs');
     const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
     assert.match(css, /@media \(max-width: 600px\) \{\s*\.tool-reportTable--stack,/);
-    assert.match(css, /\.tool-reportTable--stack td::before\s*\{\s*content:\s*attr\(data-label\);/);
+    // The heading is text in the cell, never an attribute: it can be a typed name.
+    assert.match(css, /\.tool-reportTable--stack \.tool-reportLabel\s*\{\s*display:\s*block;/);
+    const tsx = readFileSync(new URL('../../components/ToolExport.tsx', import.meta.url), 'utf8');
+    assert.doesNotMatch(tsx, /data-label/);
+    // The report is not hidden from assistive technology on paper (#650).
+    assert.doesNotMatch(tsx, /className="tool-report" aria-hidden/);
   });
 });

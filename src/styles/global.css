@@ -5900,6 +5900,10 @@ body[data-page="landing"] .site-footer {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-deep-blue);
+  /* Beside a heading in the same colour family, so underlined: not told
+     apart by colour and weight alone (#649). */
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
   /* A target of its own: 24px tall for a pointer, 44px for a thumb (#405). */
   display: inline-flex;
   align-items: center;
@@ -7325,6 +7329,10 @@ button.mcnw-legendItem:focus-visible {
   .tool-reportTable--names thead th {
     overflow-wrap: anywhere;
   }
+  /* A column's heading repeated in each cell, for the stacked layout below. */
+  .tool-reportLabel {
+    display: none;
+  }
   .tool-reportNote {
     font-size: 9pt;
     color: #444;
@@ -7346,6 +7354,14 @@ button.mcnw-legendItem:focus-visible {
     }
     .tool-reportTable--stack thead {
       display: none;
+    }
+    /* A stacked table is long: it may run over a page end between rows,
+       instead of leaving the rest of a page blank before it. */
+    .tool-reportBlock:has(.tool-reportTable--stack) {
+      break-inside: auto;
+    }
+    .tool-reportTable--stack caption {
+      break-after: avoid;
     }
     .tool-reportTable--stack tr {
       padding: 4pt 0;
@@ -7374,13 +7390,15 @@ button.mcnw-legendItem:focus-visible {
     .tool-reportTable--stack td:last-child {
       border-bottom: 0;
     }
-    .tool-reportTable--stack td::before {
-      content: attr(data-label);
+    .tool-reportTable--stack .tool-reportLabel {
+      display: block;
       flex: 0 1 auto;
       text-align: left;
       white-space: normal;
+      overflow-wrap: anywhere;
     }
-    .tool-reportTable--stack td:empty {
+    /* A cell with nothing but its label has nothing to say. */
+    .tool-reportTable--stack td.tool-reportEmpty {
       display: none;
     }
   }

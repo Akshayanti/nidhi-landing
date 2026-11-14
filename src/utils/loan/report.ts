@@ -54,7 +54,9 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
     currency,
     answer,
     meaning: x.meaning,
-    entered: tableOf(inputs, { keep: (row) => !isEmptyRow(row) }),
+    // One column per offer: on narrow paper five of them are wider than the
+    // page, so this table stacks there too (#651).
+    entered: tableOf(inputs, { keep: (row) => !isEmptyRow(row), stack: true }),
     chart: series.length > 0 ? { kind: 'lines', title: `${island.charts.balanceHeading} (${currency})`, xLabel: island.balance.axisYears, series } : null,
     tables,
     assumptions: [island.disclaimer.body],
