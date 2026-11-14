@@ -53,6 +53,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'emails-fit-a-phone',
+        text: {
+          en: 'The emails now fit a phone screen: a lesson no longer needs sideways panning or zooming, and a wide table scrolls inside its own box. The small grey text, the links and the buttons are darker and easier to read, the unsubscribe link sits on a line of its own, and the plain-text version keeps sentences and table rows together.',
+          hi: 'ईमेल अब फ़ोन की स्क्रीन में पूरे आते हैं: पाठ पढ़ने के लिए अब आड़ा खिसकाना या ज़ूम करना नहीं पड़ता, और चौड़ी तालिका अपने ही खाने के भीतर स्क्रॉल होती है। छोटा धूसर टेक्स्ट, लिंक और बटन अब गहरे रंग के हैं और आसानी से पढ़े जाते हैं, अनसब्सक्राइब का लिंक अपनी अलग पंक्ति में है, और सादे टेक्स्ट वाले रूप में वाक्य और तालिका की पंक्तियाँ साथ बनी रहती हैं।',
+          es: 'Los correos ya caben en la pantalla de un teléfono: una lección ya no obliga a desplazarse hacia los lados ni a ampliar, y una tabla ancha se desplaza dentro de su propio recuadro. El texto gris pequeño, los enlaces y los botones son más oscuros y se leen mejor, el enlace para cancelar la suscripción va en una línea aparte, y la versión de texto sin formato mantiene juntas las frases y las filas de las tablas.',
+          cs: 'E-maily se teď vejdou na obrazovku telefonu: lekci už není potřeba posouvat do strany ani zvětšovat a\u00a0široká tabulka se posouvá ve vlastním rámečku. Drobný šedý text, odkazy a\u00a0tlačítka jsou tmavší a\u00a0lépe čitelné, odkaz pro odhlášení odběru má vlastní řádek a\u00a0čistě textová verze drží věty i\u00a0řádky tabulek pohromadě.',
+          mr: 'ईमेल आता फोनच्या स्क्रीनमध्ये बसतात: धडा वाचताना आता आडवे सरकवावे किंवा झूम करावे लागत नाही, आणि रुंद तक्ता स्वतःच्या चौकटीतच स्क्रोल होतो. लहान राखाडी मजकूर, लिंक आणि बटणे आता गडद आहेत आणि सहज वाचता येतात, सदस्यत्व रद्द करण्याची लिंक स्वतंत्र ओळीत आहे, आणि साध्या मजकुराच्या आवृत्तीत वाक्ये आणि तक्त्याच्या ओळी एकत्र राहतात.',
+        },
+      },
+      {
         id: 'page-stays-put-behind-menu',
         text: {
           en: 'The phone menu and the cookie prompt now hold the page still. While either is open, the page behind it no longer scrolls, so closing the menu leaves you where you were. With a screen reader, the cookie prompt is now the only thing in reach until you answer it.',
