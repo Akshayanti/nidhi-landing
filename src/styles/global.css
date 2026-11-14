@@ -2953,7 +2953,10 @@ details[open] > .disclosure::after,
   text-align: right;
   margin: 0;
   font-variant-numeric: tabular-nums;
-  word-break: break-word;
+  /* Not word-break: break-word, which lets a flex row squeeze this box
+     until an amount breaks between two digits (#612). The label wraps
+     instead; a sentence here still wraps at its spaces. */
+  overflow-wrap: break-word;
 }
 
 .lc-resultRowEmphasized {
@@ -4778,7 +4781,7 @@ body[data-page="landing"] .site-footer {
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
   .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p,
-  .tool-waitlist__line, .toolp-lead, .mcnw-limit,
+  .tool-waitlist__line, .toolp-lead, .mcnw-limit, .waitlist-input, .subscribe-input,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;
@@ -7915,6 +7918,11 @@ button.mcnw-legendItem > .mcnw-legendAmount {
   .iop-track {
     forced-color-adjust: none;
   }
+  /* The site's theme and the system's can differ, and a dark key on a dark
+     system surface would vanish: an edge in the system's text colour. */
+  .mcs-key,
+  .ifc-key,
+  .mcnw-legendSwatch,
   .iop-track {
     outline: 1px solid CanvasText;
   }
@@ -7951,5 +7959,18 @@ button.mcnw-legendItem > .mcnw-legendAmount {
   }
   :focus-visible {
     outline-width: 3px !important;
+  }
+  /* The muted colour above is now the text colour, and an example in an
+     empty field must not read as something typed: placeholders keep a
+     shade of their own (10.9:1 light, 8.7:1 dark) and are set in italics,
+     so the difference does not rest on colour. */
+  /* !important: the sign-up forms set theirs in scoped styles, which outrank
+     a plain selector. */
+  ::placeholder {
+    color: var(--neutral-850) !important;
+    font-style: italic;
+  }
+  [data-theme="dark"] ::placeholder {
+    color: var(--neutral-800) !important;
   }
 }

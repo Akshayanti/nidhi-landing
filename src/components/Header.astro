@@ -459,7 +459,8 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   /* Scripts off (#404): a button that can open nothing is not offered. Every
      page these menus list is in the footer's columns, which stay in view. */
   :global(html:not(.js)) .nav-menuToggle,
-  :global(html:not(.js)) .nav-dropdown { display: none; }
+  :global(html:not(.js)) .nav-dropdown,
+  :global(html:not(.js) .theme-toggle) { display: none; }
 
   /* The beta link stays in the row while it fits beside the language pill,
      the theme toggle and the menu button in every language: Spanish, the
