@@ -172,6 +172,8 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   line-height: 1.55;
   max-width: 62ch;
   margin: 0 auto;
+  /* Keeps a lone last word off its own line; ignored where unsupported. */
+  text-wrap: pretty;
 }
 .toolp-panel {
   margin-top: var(--space-8);

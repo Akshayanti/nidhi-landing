@@ -175,17 +175,19 @@ const faqSchema = {
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
-    <ToolWaitlist locale={locale} line={tool.page.plannerLine} />
-
     {/* What a reader needs in order to judge the result stays visible; the
         rest of the method folds. Net against gross exposure limits how a
         concentration figure can be read, and nothing else on the page says
-        it, so it sits above the fold in the catalog's own words. */}
+        it, so it sits straight after the tool, ahead of the waitlist, in
+        the catalog's own words. A plain div: an unnamed aside would be a
+        second, nameless landmark. */}
     {visibleLimit && (
-      <aside class="toolp-panel toolp-notes">
+      <div class="toolp-panel toolp-notes">
         <p class="mcnw-limit"><strong>{visibleLimit.strong}</strong>{visibleLimit.rest}</p>
-      </aside>
+      </div>
     )}
+
+    <ToolWaitlist locale={locale} line={tool.page.plannerLine} />
 
     {/* Collapsed by default, like the FAQ below: the method is there for
         anyone who wants it, without pushing the FAQ and lessons down. */}
