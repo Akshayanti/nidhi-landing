@@ -1026,10 +1026,14 @@ function computeAnswer(
     const changes = country!.currency === code ? (() => { const c = currencyChangesBetween(country!.code, from, to); return [...c.crossed, ...c.later]; })() : [];
     const unit = changes.reduce((r, c) => r * c.ratio, 1);
     const value = (A * factor) / unit;
-    const sentences = [t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to })];
+    const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
+    // Across a change the typed amount was not today's money, so it carries no symbol.
+    const shownAmount = changes.length > 0 ? plain(A) : amount;
+    const sentences = [
+      t(changes.length > 0 ? r.pastCountryOld : r.pastCountry, { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to }),
+    ];
     let announceMore: string | undefined;
     if (changes.length > 0) {
-      const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
       const unconverted = aboutText(A * factor, code, strings, amountLocale);
       announceMore =
         changes.length === 1
@@ -1047,7 +1051,7 @@ function computeAnswer(
       method: r.methodHistory,
       points: historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value / unit })),
       calendar: true,
-      chartTitle: t(strings.chart.title.past, { amount }),
+      chartTitle: t(strings.chart.title.past, { amount: shownAmount }),
       axis: strings.chart.axis.pastCountry,
     };
   }
