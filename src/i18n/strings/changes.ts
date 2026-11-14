@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'sideways-phone-large-text',
+        text: {
+          en: 'Three fixes for small screens and large text. In the net worth calculator, the share window now fits a phone held sideways: the whole window scrolls, so Cancel and Copy link can be reached. The Monte Carlo chart can now be zoomed with two fingers. And with a much larger text size, the lesson lists, the how-to guides, the free tools and the privacy page no longer grow wider than a phone screen: long words and addresses wrap instead.',
+          hi: 'छोटी स्क्रीन और बड़े अक्षरों के लिए तीन सुधार। शुद्ध संपत्ति कैलकुलेटर में शेयर विंडो अब आड़े पकड़े फ़ोन में भी काम करती है: पूरी विंडो स्क्रॉल होती है, इसलिए "रद्द करें" और "लिंक कॉपी करें" तक पहुँचा जा सकता है। मोंटे कार्लो चार्ट को अब दो उँगलियों से बड़ा किया जा सकता है। और अक्षर बहुत बड़े करने पर पाठों की सूचियाँ, कैसे करें गाइड, मुफ़्त टूल और प्राइवेसी वाला पन्ना अब फ़ोन की स्क्रीन से चौड़े नहीं होते: लंबे शब्द और पते अब अगली पंक्ति में मुड़ जाते हैं।',
+          es: 'Tres arreglos para pantallas pequeñas y texto grande. En la calculadora de patrimonio neto, la ventana para compartir cabe ahora en un teléfono en horizontal: toda la ventana se desplaza, así que se puede llegar a «Cancelar» y «Copiar enlace». El gráfico de Monte Carlo ya se puede ampliar con dos dedos. Y con un tamaño de texto mucho mayor, las listas de lecciones, las guías Cómo hacerlo, las herramientas gratuitas y la página de privacidad ya no se hacen más anchas que la pantalla de un teléfono: las palabras y direcciones largas pasan a la línea siguiente.',
+          cs: 'Tři opravy pro malé obrazovky a\u00a0velké písmo. V\u00a0kalkulačce čistého jmění se okno pro sdílení teď vejde i\u00a0na telefon držený naležato: posouvá se celé okno, takže se dá dojít k\u00a0tlačítkům „Zrušit“ a\u00a0„Kopírovat odkaz“. Graf Monte Carlo teď jde zvětšit dvěma prsty. A\u00a0při hodně zvětšeném písmu už seznamy lekcí, návody Jak na to, nástroje zdarma ani stránka o\u00a0soukromí nejsou širší než obrazovka telefonu: dlouhá slova a\u00a0adresy se zalomí na další řádek.',
+          mr: 'लहान स्क्रीन आणि मोठ्या अक्षरांसाठी तीन दुरुस्त्या. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये शेअर विंडो आता आडव्या धरलेल्या फोनवरही मावते: संपूर्ण विंडो स्क्रोल होते, त्यामुळे “रद्द करा” आणि “लिंक कॉपी करा” पर्यंत पोहोचता येते. मॉन्टे कार्लो आलेख आता दोन बोटांनी मोठा करता येतो. आणि अक्षरे खूप मोठी केल्यावर धड्यांच्या याद्या, ‘कसे करायचे’ मार्गदर्शिका, मोफत साधने आणि गोपनीयतेचे पान आता फोनच्या स्क्रीनपेक्षा रुंद होत नाहीत: लांब शब्द आणि पत्ते पुढच्या ओळीत जातात.',
+        },
+      },
+      {
         id: 'lessons-keyboard-tips-print',
         text: {
           en: 'Three fixes. A chart or table that scrolls sideways on a narrow screen, in a lesson or a how-to guide, can now be reached with the Tab key and scrolled with the arrow keys. In lessons on a phone, opening the explanation of a term no longer makes the page slide sideways. And any page printed from the dark theme now comes out in dark text on white, without the site’s menus around it; before, only lessons did.',

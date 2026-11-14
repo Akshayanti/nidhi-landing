@@ -454,6 +454,9 @@ body {
   color: var(--color-text-primary);
   background: var(--color-bg);
   line-height: 1.6;
+  /* A word longer than its line (an address, a long compound at a large text
+     size) breaks instead of widening the page (#486). */
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.2s ease, color 0.2s ease;
@@ -3962,6 +3965,35 @@ details[open] > .disclosure::after,
   }
 }
 
+/* A short window: a phone held sideways, or a laptop at high zoom. The two
+   panes each had their own scroll and a fixed share of a height that was not
+   there, so Cancel and Copy link were cut off (#477). Here the whole dialog
+   scrolls as one, so both buttons can be reached. They are not pinned: a
+   pinned footer covered the focused option at a large text size. */
+@media (max-height: 31.25em) {
+  .mcnw-modalOverlay {
+    padding: var(--space-2);
+  }
+  .mcnw-modalDialog {
+    max-height: calc(100dvh - 2 * var(--space-2));
+    padding: 14px 18px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .mcnw-modalTitle {
+    margin-bottom: 10px;
+  }
+  .mcnw-modalBody {
+    flex: none;
+    overflow: visible;
+    padding-bottom: 14px;
+  }
+  .mcnw-modalOptions {
+    overflow-y: visible;
+    min-height: auto;
+  }
+}
+
 /* Banners */
 .mcnw-banner {
   padding: 12px 16px;
@@ -4293,9 +4325,16 @@ details[open] > .disclosure::after,
   display: block;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  /* At a much larger text size the total is capped by the width of its card,
+     so a common amount stays on one line instead of breaking between two
+     digits (#486). 12cqi is above the ordinary size on every screen, so
+     nothing changes until the text is enlarged. */
+  font-size: min(clamp(1.8rem, 3vw, 2.4rem), 12cqi);
   color: var(--color-deep-blue);
   letter-spacing: -0.02em;
+}
+.mcnw-total {
+  container-type: inline-size;
 }
 
 .mcnw-totalHint {
@@ -4811,6 +4850,7 @@ body[data-page="landing"] .site-footer {
   flex-direction: column;
   gap: 4px;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 .mcs-label {
   font-family: var(--font-heading);
@@ -5423,7 +5463,9 @@ body[data-page="landing"] .site-footer {
 .mcs-chartBox {
   position: relative;
   border-radius: var(--radius-md);
-  touch-action: pan-x pan-y;
+  /* Two fingers zoom the page from the chart too: in landscape the chart
+     fills the screen and there is nowhere else to start a pinch (#479). */
+  touch-action: pan-x pan-y pinch-zoom;
 }
 .mcs-chartBox:focus-visible {
   outline: 2px solid var(--color-teal);
@@ -5871,6 +5913,9 @@ body[data-page="landing"] .site-footer {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  min-width: 0;
+  /* Long words at a much larger text size wrap inside the card (#486). */
+  overflow-wrap: anywhere;
   padding: var(--space-6);
   background: var(--color-bg-white);
   border: 1px solid var(--color-border);
@@ -5895,7 +5940,7 @@ body[data-page="landing"] .site-footer {
 .learn-howtoAll a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
 .learn-starts .learn-helper { padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
 @media (max-width: 760px) {
-  .learn-startsGrid { grid-template-columns: 1fr; }
+  .learn-startsGrid { grid-template-columns: minmax(0, 1fr); }
 }
 
 .learn-startText h2 {
@@ -7782,11 +7827,29 @@ body .toolp-faqQ[class] {
 .mcnw-riskCardHead > .mcnw-riskBadge {
   order: -1;
 }
-/* Net worth, chart legend: a long amount wraps instead of pushing the row
-   wider than a narrow screen at large text. */
-.mcnw-legendAmount {
+/* Net worth, chart legend: when a row is too narrow for its amount (a large
+   text size, mostly), the amount moves whole to a line of its own instead of
+   breaking between two digits (#486). The code and the share keep their fixed
+   widths, so rows still line up. */
+button.mcnw-legendItem {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0;
+  row-gap: 2px;
+}
+button.mcnw-legendItem > .mcnw-legendSwatch {
+  margin-right: 8px;
+}
+button.mcnw-legendItem > .mcnw-legendCode {
+  flex: none;
+  width: 3.2em;
   min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  text-align: right;
+}
+button.mcnw-legendItem > .mcnw-legendPct {
+  flex: none;
+  width: 4.5em;
+}
+button.mcnw-legendItem > .mcnw-legendAmount {
+  margin-left: auto;
+  padding-left: 0;
 }

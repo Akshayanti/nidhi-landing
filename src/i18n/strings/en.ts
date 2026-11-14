@@ -444,9 +444,6 @@ export const en = {
       intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
-        touch: 'On a phone, the Monte Carlo chart cannot be zoomed with two fingers.',
-        largeText: 'With a much larger text size on a narrow screen, one link on the Spanish learning path and parts of some free tools make the page wider than the screen.',
-        shareWindow: 'In the net worth calculator, the buttons at the bottom of the share window are cut off when a phone is held sideways or at very high zoom, and the window cannot be scrolled to reach them.',
       },
     },
     report: {

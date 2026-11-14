@@ -159,18 +159,29 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
     font-size: 0.92rem;
   }
   .gv-notes li { display: flex; gap: var(--space-1); align-items: baseline; }
+  /* A long address wraps inside its note at a large text size (#486). */
+  .gv-notes li > * { min-width: 0; overflow-wrap: anywhere; }
 
   /* Timeline */
-  .gv-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .gv-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); container-type: inline-size; }
   .gv-tl-row {
     display: grid;
-    grid-template-columns: 4.5rem 1fr auto;
+    grid-template-columns: minmax(0, 4.5rem) minmax(0, 1fr) auto;
     grid-template-areas: "day what amt" "day bal bal" "bar bar bar";
     column-gap: var(--space-3);
     row-gap: 2px;
     padding-bottom: var(--space-2);
     border-bottom: 1px solid var(--color-border-light);
     font-size: 0.95rem;
+  }
+  /* Counted in the text's own size, so it applies when the text is large and
+     not only when the screen is narrow: the day and the amount share a line
+     and what happened gets the full width below (#486). */
+  @container (max-width: 15em) {
+    .gv-tl-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "day amt" "what what" "bal bal" "bar bar";
+    }
   }
   .gv-tl-day { grid-area: day; font-weight: 700; color: var(--color-text-primary); }
   .gv-tl-what { grid-area: what; }

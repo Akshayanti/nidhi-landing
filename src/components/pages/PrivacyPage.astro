@@ -1219,6 +1219,8 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     font-size: 0.85em;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     color: var(--color-deep-blue);
+    /* An address or a storage key wraps at a large text size (#486). */
+    overflow-wrap: anywhere;
   }
 
   .contact-list {

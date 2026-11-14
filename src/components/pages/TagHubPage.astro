@@ -248,6 +248,8 @@ const collectionPageSchema = {
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-2);
+    /* At a large text size the count drops under the name (#486). */
+    flex-wrap: wrap;
   }
 
   .tagHub-cardName {
