@@ -93,11 +93,14 @@ const webPageSchema = {
         <li><strong>{v.get.brag.lead}</strong>{v.get.brag.rest}</li>
       </ul>
 
-      <p class="vol-cta">
-        <a href={FORM_URL} class="btn btn--primary" data-attr="volunteers-form">{v.cta}</a>
-      </p>
-      <p class="vol-small">
+      {/* The note comes before the button and describes it, so a reader
+          knows the form is in English and on another site before opening it,
+          by eye and by screen reader alike (#487). */}
+      <p class="vol-small" id="vol-form-note">
         {v.note.before}<a href={localizedPath(locale, '/privacy/')} data-attr="volunteers-privacy">{v.note.link}</a>{v.note.after}
+      </p>
+      <p class="vol-cta">
+        <a href={FORM_URL} class="btn btn--primary" data-attr="volunteers-form" hreflang="en" aria-describedby="vol-form-note">{v.cta}</a>
       </p>
     </div>
   </section>
@@ -171,8 +174,14 @@ const webPageSchema = {
     font-size: 0.9rem;
   }
 
-  .vol-cta {
+  /* The form note sits above the button it describes: the wider gap is
+     above the note, and the button follows it closely. */
+  #vol-form-note {
     margin-top: var(--space-6);
+  }
+
+  .vol-cta {
+    margin-top: var(--space-3);
   }
 
   /* The home page's primary button, which is scoped to that page. */

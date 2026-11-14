@@ -573,8 +573,22 @@ a:hover {
   text-underline-offset: 0.15em;
 }
 
+/* Hover thickens the line, as lesson prose does: the colour shift alone is slight. */
+:where(p, li, dd, figcaption, td):not(nav *) > a:not([class]):hover,
+:where(p, li, dd, figcaption, td):not(nav *) > :where(strong, em, b, i, span:not([class])) > a:not([class]):hover {
+  text-decoration-thickness: 2px;
+}
+
 p {
   margin-bottom: var(--space-4);
+}
+
+/* A hint inside an empty field is still text someone has to read. The browser
+   default is a grey near 4.4:1 in light and 3.6:1 in dark; the muted text
+   token is above 4.5:1 on every field background in both themes. */
+::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
 }
 
 strong {
@@ -6270,6 +6284,14 @@ a.learn-level:hover {
   color: var(--color-text-primary);
   font: inherit;
   font-size: 1rem;
+}
+
+/* On a page that is not in English, the line that says the search reads
+   English words. It sits under the box, so it stays after the first key. */
+.learn-searchHint {
+  margin: var(--space-2) 0 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
 }
 
 .learn-results {

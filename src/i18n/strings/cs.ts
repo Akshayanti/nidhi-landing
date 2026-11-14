@@ -38,7 +38,7 @@ export const cs: Dict = {
     primaryLabel: 'Hlavní',
     menuLabel: 'Nabídka',
     menuCloseLabel: 'Zavřít nabídku',
-    homeLabel: 'nidhi, úvodní stránka',
+    homeLabel: 'úvodní stránka',
     tagline: 'Peníze srozumitelně',
     newTabHint: ' (otevře se na nové kartě)',
     groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O nás', language: 'Jazyk' },
@@ -348,7 +348,6 @@ export const cs: Dict = {
     barriers: {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
-        contrast: 'Část drobného textu je příliš bledá: nápovědy v prázdných polích formulářů a dva malé odkazy v rámečku newsletteru.',
         forms: 'Ve formulářích čekací listiny a newsletteru se při odesílání a po chybě ztrácí fokus klávesnice a nic neoznámí, že se formulář odesílá.',
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
         overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
@@ -358,9 +357,7 @@ export const cs: Dict = {
         print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
         emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
         shareWindow: 'V kalkulačce čistého jmění jsou tlačítka dole v okně sdílení oříznutá, když držíte telefon na šířku nebo při velkém zvětšení, a okno se nedá posunout, abyste se k nim dostali.',
-        logo: 'Odkaz s logem nahoře má jiný název, než jaká slova ukazuje, takže ho hlasové ovládání nemusí najít, když tato slova vyslovíte.',
         addressCheck: 'Když se formulář čekací listiny nebo newsletteru zeptá, zda je e-mailová adresa správně, čtečka obrazovky se nedozví, že se otázka objevila.',
-        volunteerForm: 'Formulář pro dobrovolníky je jen v angličtině a stránka o dobrovolné pomoci to neříká před tlačítkem, které ho otevírá.',
       },
     },
     report: {
@@ -473,7 +470,7 @@ export const cs: Dict = {
     nowHeading: 'Pomoc potřebuji teď',
     nowNote: 'Pro hindštinu pomoc už mám.',
     cta: 'Otevřít formulář',
-    note: { before: 'Formulář se otevře v Google Forms. Co sbírá a jak dlouho se to uchovává: ', link: 'zásady ochrany soukromí', after: '.' },
+    note: { before: 'Formulář je v angličtině a otevře se v Google Forms. Co sbírá a jak dlouho se to uchovává: ', link: 'zásady ochrany soukromí', after: '.' },
     nextHeading: 'Připravované jazyky',
     nextNote:
       'Ovládáte některý z nich? Nechte na stejném formuláři kontakt a ozvu se, až práce na vašem jazyce začne.',

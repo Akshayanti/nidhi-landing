@@ -618,6 +618,11 @@ const inputId = `subscribe-email-${variant}`;
   }
   .subscribe-input::placeholder { color: var(--color-text-muted); }
   .subscribe-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
+  /* On the blue box the teal ring cannot be seen (1.07:1), so every control
+     there shows focus in white (8.6:1). */
+  .subscribe--full .subscribe-box :focus-visible { outline-color: var(--neutral-white); }
+  /* The field is white in the light theme: the ring stands off it by 2px. */
+  .subscribe--full .subscribe-input:focus-visible { outline-offset: 2px; }
 
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action, white on the navy
@@ -871,11 +876,15 @@ const inputId = `subscribe-email-${variant}`;
   }
 
   /* Full variant: light text on dark background. */
+  /* White, as the yes path is: saying no is as easy to read as saying yes
+     (8.6:1 on the callout blue; the 55% white before it was 3.7:1). Hover
+     thickens the underline, since the colour has nowhere brighter to go. */
   .subscribe--full .subscribe-dismiss {
-    color: rgba(255, 255, 255, 0.55);
+    color: var(--neutral-white);
   }
   .subscribe--full .subscribe-dismiss-link:hover {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--neutral-white);
+    text-decoration-thickness: 2px;
   }
 
   /* Compact variant: one row of small links that wraps only between links,

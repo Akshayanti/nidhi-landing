@@ -61,13 +61,17 @@ export const en = {
     menuLabel: 'Menu',
     /** The button's label while the sheet is open. */
     menuCloseLabel: 'Close menu',
-    /** `aria-label` on the logo link. The wordmark beside it says "nidhi". */
-    homeLabel: 'nidhi home',
+    /**
+     * The end of the logo link's `aria-label`, which says where the link
+     * goes. The label starts with the words the link shows ("nidhi" and the
+     * tagline), so a voice control tool finds it by those words (#403).
+     */
+    homeLabel: 'home page',
     /**
      * The brand tagline, shown under the wordmark in the header. It is the
      * same line as `home.schema.slogan` (a test holds the two together) and
      * the one recorded for each language in docs/color-palette.md. The logo
-     * link's aria-label adds it after `homeLabel` for screen readers.
+     * link's aria-label says it right after "nidhi", as the link shows it.
      */
     tagline: 'Money, understood',
     /** Read out after a link that opens a new tab. */
@@ -439,7 +443,6 @@ export const en = {
     barriers: {
       intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
-        contrast: 'Some small text is too faint: the hints inside empty form fields, and two small links on the newsletter box.',
         forms: 'On the waitlist and newsletter forms, keyboard focus is lost while the form is sending and after a failure, and nothing announces that it is sending.',
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
         overlays: 'While the phone menu or the cookie prompt is open, the page behind it can still scroll.',
@@ -449,9 +452,7 @@ export const en = {
         print: 'How-to guides print with the site’s menus around them, and in grey text when the dark theme is on.',
         emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
         shareWindow: 'In the net worth calculator, the buttons at the bottom of the share window are cut off when a phone is held sideways or at very high zoom, and the window cannot be scrolled to reach them.',
-        logo: 'The logo link at the top is named differently from the words it shows, so a voice control tool may not find it when you say those words.',
         addressCheck: 'When the waitlist or newsletter form asks whether an email address looks right, a screen reader is not told that the question has appeared.',
-        volunteerForm: 'The volunteer form is in English only, and the volunteers page does not say so before the button that opens it.',
       },
     },
     report: {
@@ -596,7 +597,7 @@ export const en = {
     nowHeading: 'Help needed now',
     nowNote: 'Hindi is already covered.',
     cta: 'Open the volunteer form',
-    note: { before: 'The form opens in Google Forms. What it collects and how long it is kept: ', link: 'privacy notice', after: '.' },
+    note: { before: 'The form is in English and opens in Google Forms. What it collects and how long it is kept: ', link: 'privacy notice', after: '.' },
     nextHeading: 'Coming next',
     nextNote:
       'Speak one of these? Leave your contact on the same form, and I’ll get in touch when work on your language begins.',

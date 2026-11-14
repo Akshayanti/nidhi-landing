@@ -1,2 +1,14 @@
 - [Contrast audit pitfalls](contrast-audit-pitfalls.md) — color-mix parses as color(srgb), 1.5px borders render 1px, sr-only false overlaps, dark level-5 number
 - [Dark-mode deep-blue flip](dark-mode-deep-blue-flip.md) — deep-blue token turns light in dark mode; white-on-deep-blue fills fail (~1.7:1)
+- [Full audit Nov 2026](full-audit-2026-11.md) — recurring causes found (white on flipped fills, colour-only links, placeholders, live regions) and what was sound
+- [Tool redesign review Nov 2026](tool-redesign-review-2026-11.md) — self-removing buttons drop focus, folds hiding errors, half-filled state words, .btn size overrides
+- [Loan steps review Nov 2026](loan-steps-review-2026-11.md) — mixed plain/multi-line cells, weight mismatch, large-text grid overlap, fold-open vs template
+- [UI review 12 Nov 2026](ui-review-2026-11-12.md) — fixed 60px scroll-padding vs wrapped header, dialog focus scroll, disabled primary, phone tabs at 200%
+- [Negative net worth review 12 Nov](negative-networth-review-2026-11-12.md) — redacted links skip noShares, chart vs card %, badge 6.9:1, band words vs FAQ
+- [One look review 12 Nov](one-look-review-2026-11-12.md) — late CSS block keeps old flex:1 1 0 on tabs (mid-word breaks), Returns overlap at 200%, fill 1.05:1
+- [A11y statement review 12 Nov](a11y-statement-review-2026-11-12.md) — barrier list drifts (#486, #403 wrong evidence, #491 missing); re-run repros; Devanagari line-height; no-switch decision
+- [Tool page shell 14 Nov](tool-page-shell-review-2026-11-14.md) — #594/#595 shell: fixes verified, one focus style, unnamed notes aside, servers rebuilt mid-review
+- [Share link review 14 Nov](share-link-review-2026-11-14.md) — #601: swap label top-aligned, CSS order vs tab order, nw dialog steals focus on copy
+- [Links underlined 14 Nov](links-underlined-review-2026-11-14.md) — #628: rule is (0,1,2) despite :where; navs are link-only; colour-only link scan recipe
+- [Contrast PR 14 Nov](contrast-pr-review-2026-11-14.md) — #629: placeholders fixed; newsletter box focus rings 1.07:1 light on callout blue; en search hint cut at 375
+- [Phone pass Nov 2026](phone-pass-2026-11.md) — touch, hydration, print, forced-colour and email causes; emulation pitfalls (smooth scroll, font flags, widened viewport)

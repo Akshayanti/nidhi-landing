@@ -37,7 +37,7 @@ export const es: Dict = {
     primaryLabel: 'Principal',
     menuLabel: 'Menú',
     menuCloseLabel: 'Cerrar menú',
-    homeLabel: 'Inicio de nidhi',
+    homeLabel: 'página de inicio',
     tagline: 'El dinero, entendido',
     newTabHint: ' (se abre en una pestaña nueva)',
     groups: { learn: 'Aprende', tools: 'Herramientas gratuitas', about: 'Acerca de', language: 'Idioma' },
@@ -364,7 +364,6 @@ export const es: Dict = {
     barriers: {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
-        contrast: 'Parte del texto pequeño es demasiado tenue: las indicaciones dentro de los campos vacíos de los formularios y dos enlaces pequeños del recuadro del boletín.',
         forms: 'En los formularios de la lista de espera y del boletín, el foco del teclado se pierde mientras el formulario se envía y después de un fallo, y nada anuncia que se está enviando.',
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
         overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
@@ -374,9 +373,7 @@ export const es: Dict = {
         print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
         shareWindow: 'En la calculadora de patrimonio neto, los botones del final de la ventana de compartir quedan cortados con el teléfono en horizontal o con mucho zoom, y la ventana no se puede desplazar para llegar a ellos.',
-        logo: 'El enlace del logotipo, arriba, tiene un nombre distinto de las palabras que muestra, así que una herramienta de control por voz puede no encontrarlo cuando dices esas palabras.',
         addressCheck: 'Cuando el formulario de la lista de espera o del boletín pregunta si una dirección de correo es correcta, al lector de pantalla no se le avisa de que la pregunta ha aparecido.',
-        volunteerForm: 'El formulario de voluntariado está solo en inglés, y la página de voluntariado no lo dice antes del botón que lo abre.',
       },
     },
     report: {
@@ -498,7 +495,7 @@ export const es: Dict = {
     nowHeading: 'Se necesita ayuda ya',
     nowNote: 'El hindi ya está cubierto.',
     cta: 'Abrir el formulario de voluntariado',
-    note: { before: 'El formulario se abre en Google Forms. Qué recoge y cuánto tiempo se guarda: ', link: 'aviso de privacidad', after: '.' },
+    note: { before: 'El formulario está en inglés y se abre en Google Forms. Qué recoge y cuánto tiempo se guarda: ', link: 'aviso de privacidad', after: '.' },
     nextHeading: 'Próximos idiomas',
     nextNote:
       '¿Hablas alguno de estos? Deja tu contacto en el mismo formulario y te escribiré cuando empiece el trabajo en tu idioma.',
