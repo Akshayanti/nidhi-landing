@@ -42,6 +42,7 @@ import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
+import { currencyChangesBetween } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
 import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
@@ -1016,13 +1017,38 @@ function computeAnswer(
     const span = to - from;
     const value = A * factor;
     const average = (Math.pow(factor, 1 / span) - 1) * 100;
+    const sentences = [
+      t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
+      t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }),
+    ];
+    // The amounts are the country's own money only when the calculator is in
+    // its currency. Then a change of unit inside the years chosen matters: the
+    // index is right, and the answer in today's unit is the index divided by
+    // the ratio (currencyChanges.ts).
+    if (country!.currency === code) {
+      const { crossed, ratio, later } = currencyChangesBetween(country!.code, from, to);
+      const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
+      if (crossed.length > 0) {
+        const converted = aboutText(value / ratio, code, strings, amountLocale);
+        sentences.push(
+          crossed.length === 1
+            ? t(r.currencyChanged, { country: country!.name, year: crossed[0].year, ratio: plain(ratio), from, to, converted })
+            : t(r.currencyChangedMore, {
+                country: country!.name,
+                years: crossed.map((c) => c.year).join(', '),
+                ratio: plain(ratio),
+                from,
+                to,
+                converted,
+              }),
+        );
+      }
+      for (const change of later) sentences.push(t(r.currencyChangedLater, { country: country!.name, year: change.year, ratio: plain(change.ratio) }));
+    }
     return {
       headline: aboutText(value, code, strings, amountLocale),
       value,
-      sentences: [
-        t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
-        t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }),
-      ],
+      sentences,
       band: [],
       method: r.methodHistory,
       points: historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value })),

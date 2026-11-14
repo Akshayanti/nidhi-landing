@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'inflation-currency-changes',
+        text: {
+          en: 'The inflation calculator now says when a country changed its currency inside the years you pick. Türkiye struck six zeros off the lira in 2005, so 10,000 lira of 1990 used to come out as about 249 million: right as a measure of prices, and a million times too large as today\'s lira. The answer now adds what that is in today\'s money, for 38 countries, from Brazil\'s reforms to the euro changeovers.',
+          hi: 'महँगाई कैलकुलेटर अब बताता है कि आपके चुने हुए सालों के बीच किसी देश ने अपनी मुद्रा कब बदली। तुर्किये ने 2005 में लीरा से छह शून्य हटाए थे, इसलिए 1990 के 10,000 लीरा का जवाब लगभग 24.9 करोड़ आता था: कीमतों के पैमाने के तौर पर सही, पर आज के लीरा में दस लाख गुना ज़्यादा। अब जवाब के साथ यह भी लिखा आता है कि आज की मुद्रा में वह कितना है। यह 38 देशों के लिए है, ब्राज़ील के मुद्रा सुधारों से लेकर यूरो अपनाने तक।',
+          es: 'La calculadora de inflación indica ahora cuándo un país cambió de moneda dentro de los años que eliges. Turquía le quitó seis ceros a la lira en 2005, así que 10.000 liras de 1990 daban unos 249\u00a0millones: correcto como medida de los precios, y un millón de veces de más como liras de hoy. La respuesta añade ahora cuánto es eso en la moneda actual, para 38\u00a0países, desde las reformas de Brasil hasta los cambios al euro.',
+          cs: 'Inflační kalkulačka teď upozorní, když země ve zvolených letech změnila měnu. Turecko v\u00a0roce 2005 škrtlo z\u00a0liry šest nul, takže 10\u00a0000 lir z\u00a0roku 1990 vycházelo zhruba na 249\u00a0milionů: jako měřítko cen správně, ale v\u00a0dnešních lirách milionkrát víc. Odpověď teď doplní, kolik to je v\u00a0dnešní měně, a\u00a0to pro 38\u00a0zemí, od brazilských reforem po přechody na euro.',
+          mr: 'महागाई कॅल्क्युलेटर आता सांगतो की तुम्ही निवडलेल्या वर्षांदरम्यान एखाद्या देशाने आपले चलन कधी बदलले. तुर्कियेने 2005 साली लिरामधून सहा शून्ये काढली, त्यामुळे 1990\u00a0च्या 10,000 लिरांचे उत्तर सुमारे 24.9 कोटी येत होते: किमतींचे माप म्हणून बरोबर, पण आजच्या लिरांत दहा लाख पट जास्त. आता उत्तरासोबत आजच्या चलनात ती रक्कम किती होते तेही दिसते. हे 38 देशांसाठी आहे, ब्राझीलच्या चलन सुधारणांपासून युरो स्वीकारण्यापर्यंत.',
+        },
+      },
+      {
         id: 'loan-monthly-premium-not-a-fee',
         text: {
           en: 'The loan comparison used to suggest adding the lifetime cost of bundled insurance to the fee box. That treats years of monthly premiums as paid on the first day, which makes the APR look higher than it is. Its questions and small print now say so: a cost paid once goes in the fee box, a cost paid every month is not modelled, and the totals are the check.',
