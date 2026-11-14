@@ -376,6 +376,8 @@ export const multiCurrencyNetWorthEn = {
       /** Under `empty`: what the results will hold. */
       emptyShows: 'You will see your net worth in one currency, the share held in each currency, and how concentrated it is.',
       totalLabel: 'Total net worth',
+      /** Said to a screen reader, once typing has settled, when the total changes. */
+      announce: 'Total net worth: {total}.',
       hidden: 'Hidden',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} of net worth',
@@ -805,6 +807,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       /** Under `empty`: what the results will hold. */
       emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह सब दिखेगा।',
       totalLabel: 'कुल शुद्ध संपत्ति',
+      announce: 'कुल शुद्ध संपत्ति: {total}।',
       hidden: 'छिपा हुआ',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: 'शुद्ध संपत्ति का {pct}',
@@ -1215,6 +1218,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       /** Under `empty`: what the results will hold. */
       emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y hasta qué punto se concentra en una sola moneda.',
       totalLabel: 'Patrimonio neto total',
+      announce: 'Patrimonio neto total: {total}.',
       hidden: 'Oculto',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} del patrimonio neto',
@@ -1633,6 +1637,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       /** Under `empty`: what the results will hold. */
       emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, nakolik je jmění soustředěné v\u00a0jedné měně.',
       totalLabel: 'Celkové čisté jmění',
+      announce: 'Celkové čisté jmění: {total}.',
       hidden: 'Skryto',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} čistého jmění',
@@ -2010,6 +2015,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       /** Under `empty`: what the results will hold. */
       emptyShows: 'इथे तुम्हाला एकाच चलनात तुमची निव्वळ संपत्ती, प्रत्येक चलनाचा हिस्सा आणि ती एका चलनात किती एकवटलेली आहे हे दिसेल.',
       totalLabel: 'एकूण निव्वळ संपत्ती',
+      announce: 'एकूण निव्वळ संपत्ती: {total}.',
       hidden: 'लपवलेले',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: 'निव्वळ संपत्तीच्या {pct}',

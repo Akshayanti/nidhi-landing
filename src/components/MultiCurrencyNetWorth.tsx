@@ -38,7 +38,7 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -702,6 +702,7 @@ export default function MultiCurrencyNetWorth({
       </div>
 
       {/* ---- Results panel ---- */}
+      <TotalAnnouncement result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />
       <ResultsPanel
         result={result}
         functionalCurrency={functionalCurrency}
@@ -940,6 +941,23 @@ interface ResultsPanelProps {
   actions?: React.ReactNode;
   /** Fills in an example. Present only while no row has anything typed in it. */
   onExample?: () => void;
+}
+
+/**
+ * The tool's one announcement: the total, said once typing has settled. Silent
+ * when there is no total to say (nothing entered, amounts hidden, no rates).
+ */
+function TotalAnnouncement({ result, functionalCurrency, hidden, strings }: { result: ResultsPanelProps['result']; functionalCurrency: string; hidden: boolean; strings: Strings }) {
+  const { formatMoney } = useMoney();
+  let total: string | null = null;
+  if (!hidden && result.positions.length > 0) {
+    if (isSingleCurrency(result, functionalCurrency)) {
+      total = formatMoney(Math.round(result.positions[0].netAmountOriginal * getFactor(functionalCurrency)), functionalCurrency);
+    } else if (result.hasRates !== 'none') {
+      total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency);
+    }
+  }
+  return <ResultAnnouncement text={total ? format(strings.results.announce, { total }) : ''} />;
 }
 
 function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
