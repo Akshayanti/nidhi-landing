@@ -1293,7 +1293,6 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-stroke-warn { stroke: var(--color-warning); fill: none; }
 .prose figure svg .fig-stroke-muted { stroke: var(--color-text-muted); fill: none; }
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
-.prose figure svg .fig-stroke-card { stroke: var(--color-border); fill: none; }
 
 /* Mobile: charts keep their desktop layout at a readable size and scroll
    sideways. Each figure is the scroller; its chart gets a minimum width that
@@ -3086,12 +3085,6 @@ details[open] > .disclosure::after,
   stroke-width: 1;
 }
 
-.lc-chartTickX,
-.lc-chartTickY {
-  font-family: var(--font-body);
-  font-size: 11px;
-  fill: var(--color-text-muted);
-}
 
 
 .lc-chartEmpty {
@@ -4298,6 +4291,7 @@ details[open] > .disclosure::after,
   flex-shrink: 0;
   max-width: 240px;
   height: auto;
+  overflow: visible;
 }
 
 .mcnw-chartCenterLabel {
@@ -4321,7 +4315,11 @@ details[open] > .disclosure::after,
 .mcnw-legend {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
 }
 
 .mcnw-legendItem {
@@ -4642,7 +4640,7 @@ body[data-page="landing"] .site-footer {
    outrank a plain global selector; !important keeps this block the single
    place that sets the phone floor. */
 @media (max-width: 640px) {
-  .nav-dropdownCaret, .trust-strip-title, .changelog-tag, .ft-kicker,
+  .nav-dropdownCaret, .changelog-tag, .ft-kicker,
   .lc-relatedKicker, .mcnw-shareBtn,
   .mcnw-relatedKicker, .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
   .lp-newLabel, .level-badge, .ref-type, .post-nav-direction, .post-tool-stepLabel {
@@ -4682,8 +4680,7 @@ body[data-page="landing"] .site-footer {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }
-  .post-tool-link, .if-breadcrumb a, .post-byline a, .tag-breadcrumb a,
-  .tag-allTopicsLink {
+  .post-tool-link, .if-breadcrumb a, .post-byline a {
     display: inline-block;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -4873,6 +4870,7 @@ body[data-page="landing"] .site-footer {
   color: var(--color-text-muted);
 }
 .mcs-figure {
+  position: relative;
   margin: 0;
 }
 .mcs-swipe,
@@ -4890,18 +4888,17 @@ body[data-page="landing"] .site-footer {
   display: block;
   width: 100%;
   height: auto;
+  cursor: crosshair;
 }
 .mcs-chart .mcs-axis {
   fill: var(--color-text-muted);
   font-family: var(--font-body);
   font-size: 16px;
 }
-.mcs-band--outer,
 .mcs-key--outer {
   fill: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
   background: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
 }
-.mcs-band--inner,
 .mcs-key--inner {
   fill: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
   background: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
@@ -5355,9 +5352,6 @@ body[data-page="landing"] .site-footer {
   outline: 2px solid var(--color-teal);
   outline-offset: 4px;
 }
-.mcs-chart {
-  cursor: crosshair;
-}
 .mcs-chart text {
   font-family: var(--font-body);
   font-size: 16px;
@@ -5503,6 +5497,7 @@ body[data-page="landing"] .site-footer {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 .chart-readout dd {
   margin: 0;
@@ -5531,12 +5526,6 @@ body[data-page="landing"] .site-footer {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-.mcs-figure {
-  position: relative;
-}
-.chart-readout dt {
-  white-space: nowrap;
 }
 /* Phones: the chart scrolls sideways, so the readout sits under it at full
    width instead of floating beside the crosshair, where it could be cut off. */
@@ -6317,9 +6306,6 @@ a.learn-level:hover {
 }
 
 /* Multi-currency net worth: interactive donut */
-.mcnw-chart {
-  overflow: visible;
-}
 .mcnw-chartWrap .mcnw-legend {
   flex: 0 1 340px;
   min-width: 0;
@@ -6341,13 +6327,6 @@ a.learn-level:hover {
 }
 .mcnw-chart .mcnw-chartCenterSub {
   font-size: 0.875rem;
-}
-.mcnw-legend {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 4px;
-  min-width: 0;
 }
 button.mcnw-legendItem {
   /* Swatch, code, share and amount in fixed columns so rows line up. */
