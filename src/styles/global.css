@@ -2617,6 +2617,9 @@ details[open] > .disclosure::after,
 .lc-horizonInput {
   flex: 0 0 96px;
   width: 96px;
+  /* A text field's own width comes from its size attribute and grows with the
+     text size; without this it pushed the page wider at large text (#599). */
+  min-width: 0;
   text-align: right;
 }
 
@@ -2932,13 +2935,18 @@ details[open] > .disclosure::after,
 
 .lc-resultRow {
   display: flex;
+  /* The amount never breaks inside itself (see .lc-resultValue), so when it
+     does not fit beside its label, at a large text size on a phone, it moves
+     whole to a line of its own, still at the right edge. */
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: var(--space-3);
+  gap: 2px var(--space-3);
   font-size: 0.9rem;
 }
 
 .lc-resultLabel {
+  flex: 1 1 9rem;
   color: var(--color-text-secondary);
   margin: 0;
 }
@@ -2950,8 +2958,17 @@ details[open] > .disclosure::after,
   text-align: right;
   margin: 0;
   font-variant-numeric: tabular-nums;
-  word-break: break-word;
+  /* Not word-break: break-word, which lets a flex row squeeze this box
+     until an amount breaks between two digits (#612). The label wraps
+     instead; a sentence here still wraps at its spaces. */
+  overflow-wrap: break-word;
+  margin-left: auto;
 }
+
+/* The primary cards stack label over amount; nothing there wraps as a row. */
+.lc-resultListPrimary .lc-resultRow { flex-wrap: nowrap; }
+.lc-resultListPrimary .lc-resultLabel { flex: none; }
+.lc-resultListPrimary .lc-resultValue { margin-left: 0; }
 
 .lc-resultRowEmphasized {
   margin-top: 4px;
@@ -4775,7 +4792,7 @@ body[data-page="landing"] .site-footer {
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
   .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p,
-  .tool-waitlist__line, .toolp-lead, .mcnw-limit,
+  .tool-waitlist__line, .toolp-lead, .mcnw-limit, .waitlist-input, .subscribe-input,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;
@@ -7852,4 +7869,119 @@ button.mcnw-legendItem > .mcnw-legendPct {
 button.mcnw-legendItem > .mcnw-legendAmount {
   margin-left: auto;
   padding-left: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   High contrast (#484, #591)
+   --------------------------------------------------------------------------- */
+
+/* Forced colours (a Windows contrast theme) replace every background and text
+   colour, so a choice marked by its fill alone looked like the ones beside
+   it. The chosen one takes the system's own selection pair. :root lifts these
+   above the theme rules they replace. */
+@media (forced-colors: active) {
+  :root .lc-tabActive,
+  :root .lc-tabActive:hover,
+  :root .ifc-tab[aria-selected="true"],
+  :root .lc-vendorTab[aria-pressed="true"],
+  :root .lc-modeOptionActive,
+  :root .lp-readToggleActive,
+  :root .lp-readToggleActive:hover,
+  :root .mcs-switchOpt--on,
+  :root button.mcnw-legendItem[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    box-shadow: none;
+    color: HighlightText;
+  }
+  :root button.mcnw-legendItem[aria-pressed="true"] :is(.mcnw-legendCode, .mcnw-legendAmount, .mcnw-legendPct) {
+    color: HighlightText;
+  }
+
+  /* A chart is drawn in the site theme's colours, which forced colours leave
+     alone inside a drawing while they replace the page behind it: with the
+     dark theme stored and a light contrast theme on, axis labels were grey on
+     white and the lines pale. The drawing keeps the theme's own surface, so
+     everything in it has the contrast it was drawn with, and an edge in the
+     system's text colour shows where it ends. */
+  .lc-chart,
+  .lc-splitChart,
+  .ifc-chart,
+  .ifc-barsSvg,
+  .mcs-chart,
+  .mcnw-chart,
+  .prose figure svg {
+    forced-color-adjust: none;
+    background: var(--color-bg-white);
+    outline: 1px solid CanvasText;
+  }
+
+  /* The keys beside a chart are filled boxes, and the invest-or-pay-off chart
+     is drawn with them: without their fills the key names nothing and the
+     chart is empty. They keep the colours of the drawing they explain. */
+  .mcs-key,
+  .ifc-key,
+  .lc-legendLine,
+  .mcnw-legendSwatch,
+  .lc-vendorTabLetter,
+  .lc-deltaKeyLetter,
+  .iop-track {
+    forced-color-adjust: none;
+  }
+  /* The site's theme and the system's can differ, and a dark key on a dark
+     system surface would vanish: an edge in the system's text colour. */
+  .mcs-key,
+  .ifc-key,
+  .mcnw-legendSwatch,
+  .iop-track {
+    outline: 1px solid CanvasText;
+  }
+}
+
+/* More contrast (Increase Contrast on macOS and iOS, and the like): quiet text
+   takes the main text colour, static edges take a control's edge and a
+   control's edge takes the text colour, and the focus ring is thicker. */
+@media (prefers-contrast: more) {
+  /* Spelled :root[lang] and html[data-theme="dark"][lang] (the dark one must
+     outrank the light one) so that
+     scripts/lint-figures.mjs, which reads the two ordinary themes from the
+     plain :root and [data-theme="dark"] blocks, does not read these. */
+  :root[lang] {
+    --color-text-secondary: var(--neutral-900);
+    --color-text-muted: var(--neutral-900);
+    --color-border: var(--neutral-control-edge);
+    --color-control-edge: var(--neutral-900);
+  }
+  html[data-theme="dark"][lang] {
+    --color-text-secondary: var(--neutral-white);
+    --color-text-muted: var(--neutral-white);
+    --color-border: var(--neutral-control-edge-dark);
+    --color-control-edge: var(--neutral-white);
+    /* The lighter teal: 9:1 or more on the dark surfaces, where the usual
+       one is 5.6:1. Dark ink on a teal fill gains contrast too. */
+    --color-teal: var(--palette-teal-dark);
+    --color-teal-light: var(--palette-teal-dark);
+    --color-teal-dark: var(--palette-teal-dark);
+  }
+  /* The one place the edge colour sits behind text. */
+  [data-theme="dark"] .prose tr:hover td {
+    background: var(--color-bg-subtle);
+  }
+  :focus-visible {
+    outline-width: 3px !important;
+  }
+  /* The muted colour above is now the text colour, and an example in an
+     empty field must not read as something typed: placeholders keep a
+     shade of their own (10.9:1 light, 7.7:1 or more dark) and are set in italics,
+     so the difference does not rest on colour. */
+  /* !important: the sign-up forms set theirs in scoped styles, which outrank
+     a plain selector. */
+  ::placeholder {
+    color: var(--neutral-850) !important;
+    font-style: italic;
+  }
+  [data-theme="dark"] ::placeholder {
+    color: var(--neutral-800) !important;
+  }
 }

@@ -570,4 +570,16 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     .waitlist-text { font-size: 0.875rem; }
     .waitlist-success-title { font-size: 1.15rem; }
   }
+  /* More contrast asked for (#591): the softer lines on the blue band are
+     plain white, like the heading. Error and success keep their colours. */
+  @media (prefers-contrast: more) {
+    .waitlist-text,
+    .waitlist-confirm-change,
+    .waitlist-status:not(.waitlist-status--error):not(.waitlist-status--success),
+    .waitlist-privacy,
+    .waitlist-privacy a,
+    .waitlist-success-body {
+      color: var(--neutral-white);
+    }
+  }
 </style>

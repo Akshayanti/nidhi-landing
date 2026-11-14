@@ -256,6 +256,11 @@ details.toolp-panel > summary {
   font-weight: 600;
   color: var(--color-text-primary);
   font-size: 0.95rem;
+  /* A flex box sizes its text by the longest unbreakable piece; a bracketed
+     term held together by a no-break space was wider than a narrow phone at
+     large text in Hindi and Marathi (#599). It breaks only when it cannot fit
+     a line of its own. */
+  overflow-wrap: anywhere;
 }
 .toolp-faqA {
   margin: var(--space-2) 0 0;

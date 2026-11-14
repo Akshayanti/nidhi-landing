@@ -24,43 +24,56 @@ const href = (path: string) => navHref(locale, path);
         copyright line, so they stay at the bottom of every page at every
         width, phones included, where the columns are hidden (the privacy
         notice promises Cookie settings there). */}
-    <div class="footer-cols">
+    <nav class="footer-cols" aria-label={strings.footer.navLabel}>
       <div class="footer-col">
         <strong class="footer-col-heading">{strings.footer.columns.learn}</strong>
-        <a href={href('/blog/')} data-attr="footer-blog">{strings.footer.links.blog}</a>
-        <a href={href('/blog/tag/')} data-attr="footer-blog-topics">{strings.footer.links.blogTopics}</a>
-        <a href={href('/blog/glossary/')} data-attr="footer-blog-glossary">{strings.footer.links.glossary}</a>
-        <a href={href('/editorial-policy/')} data-attr="footer-editorial-policy">{strings.footer.links.editorialPolicy}</a>
+        <ul role="list">
+          <li><a href={href('/blog/')} data-attr="footer-blog">{strings.footer.links.blog}</a></li>
+          <li><a href={href('/blog/tag/')} data-attr="footer-blog-topics">{strings.footer.links.blogTopics}</a></li>
+          <li><a href={href('/blog/glossary/')} data-attr="footer-blog-glossary">{strings.footer.links.glossary}</a></li>
+          <li><a href={href('/editorial-policy/')} data-attr="footer-editorial-policy">{strings.footer.links.editorialPolicy}</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <strong class="footer-col-heading">{strings.footer.columns.tools}</strong>
-        <a href={href('/free/multi-currency-net-worth/')} data-attr="footer-multi-currency-net-worth">{strings.footer.links.multiCurrencyNetWorth}</a>
-        <a href={href('/free/loan-comparison/')} data-attr="footer-loan-comparison">{strings.footer.links.loanComparison}</a>
-        {showMonteCarlo && <a href={href('/free/monte-carlo-simulator/')} data-attr="footer-monte-carlo-simulator">{strings.footer.links.monteCarloSimulator}</a>}
-        <a href={href('/free/inflation-calculator/')} data-attr="footer-inflation-calculator">{strings.footer.links.inflationCalculator}</a>
-        {showInvestOrPayOff && <a href={href('/free/invest-or-pay-off/')} data-attr="footer-invest-or-pay-off">{strings.footer.links.investOrPayOff}</a>}
-        <a href={href('/free/')} data-attr="footer-all-tools">{strings.footer.links.allTools}</a>
+        <ul role="list">
+          <li><a href={href('/free/multi-currency-net-worth/')} data-attr="footer-multi-currency-net-worth">{strings.footer.links.multiCurrencyNetWorth}</a></li>
+          <li><a href={href('/free/loan-comparison/')} data-attr="footer-loan-comparison">{strings.footer.links.loanComparison}</a></li>
+          {showMonteCarlo && <li><a href={href('/free/monte-carlo-simulator/')} data-attr="footer-monte-carlo-simulator">{strings.footer.links.monteCarloSimulator}</a></li>}
+          <li><a href={href('/free/inflation-calculator/')} data-attr="footer-inflation-calculator">{strings.footer.links.inflationCalculator}</a></li>
+          {showInvestOrPayOff && <li><a href={href('/free/invest-or-pay-off/')} data-attr="footer-invest-or-pay-off">{strings.footer.links.investOrPayOff}</a></li>}
+          <li><a href={href('/free/')} data-attr="footer-all-tools">{strings.footer.links.allTools}</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <strong class="footer-col-heading">{strings.footer.columns.about}</strong>
-        <a href={href('/about/')} data-attr="footer-about">{strings.footer.links.about}</a>
-        <a href={href('/beliefs/')} data-attr="footer-beliefs">{strings.footer.links.beliefs}</a>
-        <a href={href('/beta/')} data-attr="footer-beta">{strings.footer.links.beta}</a>
-        <a href={href('/changes/')} data-attr="footer-changes">{strings.footer.links.changes}</a>
+        <ul role="list">
+          <li><a href={href('/about/')} data-attr="footer-about">{strings.footer.links.about}</a></li>
+          <li><a href={href('/beliefs/')} data-attr="footer-beliefs">{strings.footer.links.beliefs}</a></li>
+          <li><a href={href('/beta/')} data-attr="footer-beta">{strings.footer.links.beta}</a></li>
+          <li><a href={href('/changes/')} data-attr="footer-changes">{strings.footer.links.changes}</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <strong class="footer-col-heading">{strings.footer.columns.connect}</strong>
-        <a href="mailto:hello@nidhi.today" class="footer-social" data-attr="footer-email">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          hello@nidhi.today
-        </a>
-        <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer" class="footer-social" data-attr="footer-instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          @nidhi.today
-        </a>
-        <a href={href('/volunteers/')} data-attr="footer-volunteers">{strings.footer.links.volunteers}</a>
+        <ul role="list">
+          <li>
+            <a href="mailto:hello@nidhi.today" class="footer-social" data-attr="footer-email">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              hello@nidhi.today
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/nidhi.today" target="_blank" rel="noopener noreferrer" class="footer-social" data-attr="footer-instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              @nidhi.today
+              <span class="footer-srOnly">{strings.nav.newTabHint}</span>
+            </a>
+          </li>
+          <li><a href={href('/volunteers/')} data-attr="footer-volunteers">{strings.footer.links.volunteers}</a></li>
+        </ul>
       </div>
-    </div>
+    </nav>
     <div class="footer-bottom">
       <p class="disclaimer">
         {strings.footer.disclaimerShort}{' '}<span class="footer-wideOnly">{strings.footer.disclaimerLong}</span>
@@ -110,6 +123,26 @@ const href = (path: string) => navHref(locale, path);
     letter-spacing: 0.12em;
     color: var(--color-deep-blue);
     margin-bottom: var(--space-1);
+  }
+
+  /* Said by a screen reader, not shown: the Instagram link opens a new tab. */
+  .footer-srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* The links are a list, so a screen reader says how many there are. */
+  .footer-col ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .footer-col a {
@@ -187,7 +220,9 @@ const href = (path: string) => navHref(locale, path);
       padding: var(--space-5) 0;
     }
 
-    .footer-cols,
+    /* Only while the header menu can open: it is opened by a script, which
+       marks the page with .js (#404). Without it the columns stay. */
+    :global(html.js) .footer-cols,
     .footer-wideOnly { display: none; }
 
     .footer-bottom {

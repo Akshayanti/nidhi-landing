@@ -1324,15 +1324,28 @@ function ShareModal({
       const stops = focusable();
       const first = stops[0];
       const last = stops[stops.length - 1];
+      const at = document.activeElement;
+      // A radio group is one stop, entered at its checked option: Shift+Tab
+      // from any option of the first group is Shift+Tab from the first stop.
+      // Without this, focus left the window from the second option and
+      // Escape stopped working (#642).
+      const sameGroup = (a: Element | null, b: Element | undefined) =>
+        a instanceof HTMLInputElement && b instanceof HTMLInputElement &&
+        a.type === 'radio' && b.type === 'radio' && a.name !== '' && a.name === b.name;
+      // Entering a radio group lands on its checked option, as Tab does.
+      const enter = (el: HTMLElement | undefined) =>
+        el instanceof HTMLInputElement && el.type === 'radio' && el.name !== ''
+          ? dialog!.querySelector<HTMLElement>(`input[type="radio"][name="${el.name}"]:checked`) ?? el
+          : el;
       if (e.shiftKey) {
-        if (document.activeElement === first) {
+        if (at === first || sameGroup(at, first) || !dialog!.contains(at)) {
           e.preventDefault();
-          last?.focus();
+          enter(last)?.focus();
         }
       } else {
-        if (document.activeElement === last) {
+        if (at === last || sameGroup(at, last) || !dialog!.contains(at)) {
           e.preventDefault();
-          first?.focus();
+          enter(first)?.focus();
         }
       }
     }
