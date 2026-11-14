@@ -169,13 +169,13 @@ function sha256Hex_(s) {
   return bytes.map(function (b) { var h = (b & 0xFF).toString(16); return h.length === 1 ? '0' + h : h; }).join('');
 }
 
-function distinctIdForEmail_(email) {
-  return sha256Hex_(normalizeEmail_(email));
-}
-
-function emailDomain_(email) {
-  var parts = normalizeEmail_(email).split('@');
-  return parts.length === 2 ? parts[1] : '';
+/**
+ * The id a sign-up event is filed under: a fresh random one each time, made
+ * from nothing in the request. The event counts a sign-up; it cannot be traced
+ * back to the address, and two sign-ups cannot be linked to each other.
+ */
+function signupEventId_() {
+  return 'waitlist-' + Utilities.getUuid();
 }
 
 // Analytics restarted in a new PostHog project at 00:00 UTC on Oct 8, 2026;
@@ -506,9 +506,8 @@ function handleWaitlist_(e) {
   // one write and one analytics call more. Apps Script's own timing varies by
   // more than that, and telling the two apart this way adds the address.)
   if (added) {
-    trackPosthog_('waitlist_signup', distinctIdForEmail_(email), {
+    trackPosthog_('waitlist_signup', signupEventId_(), {
       source: source,
-      email_domain: emailDomain_(email),
     });
   }
 

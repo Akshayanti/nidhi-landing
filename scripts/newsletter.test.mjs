@@ -768,8 +768,8 @@ describe('newsletter.gs: a failed send is reported as a kind, never in the mail 
     assert.equal(out.failed, 1);
     const failed = sent.filter((e) => e.event === 'blog_newsletter_send_failed');
     assert.equal(failed.length, 1);
-    assert.deepEqual(failed[0].properties, { guid: 'https://nidhi.today/blog/x/', email_domain: 'example.org', reason: 'invalid_recipient' });
-    assert.doesNotMatch(JSON.stringify(sent), /reader@|Invalid To|not a valid/);
+    assert.deepEqual(failed[0].properties, { guid: 'https://nidhi.today/blog/x/', reason: 'invalid_recipient' });
+    assert.doesNotMatch(JSON.stringify(sent), /reader@|example\.org|Invalid To|not a valid/);
   });
 
   it('the event for a welcome mail that failed holds no word of the message either', () => {
@@ -782,8 +782,8 @@ describe('newsletter.gs: a failed send is reported as a kind, never in the mail 
     assert.equal(find(ctx, 'reader@example.org')[1], 'confirmed', 'the reader is confirmed all the same');
     const failed = sent.filter((e) => e.event === 'blog_welcome_failed');
     assert.equal(failed.length, 1);
-    assert.deepEqual(failed[0].properties, { email_domain: 'example.org', reason: 'quota' });
-    assert.doesNotMatch(JSON.stringify(sent), /reader@|Quota exceeded|per day/);
+    assert.deepEqual(failed[0].properties, { reason: 'quota' });
+    assert.doesNotMatch(JSON.stringify(sent), /reader@|example\.org|Quota exceeded|per day/);
   });
 });
 

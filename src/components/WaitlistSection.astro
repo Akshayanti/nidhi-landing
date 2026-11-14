@@ -277,9 +277,8 @@ const inputId = `${idPrefix}-email`;
       setStatus('', 'idle');
 
       if (window.posthog) {
-        var domain = email.split('@')[1] || '';
+        // Nothing of the address is sent, not even its domain.
         window.posthog.capture('waitlist_submit', {
-          email_domain: domain,
           source: window.location.pathname,
         });
       }

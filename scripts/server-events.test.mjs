@@ -53,19 +53,19 @@ function eventsIn(path) {
 const EXPECTED = {
   'scripts/newsletter.gs': [
     'blog_newsletter_quota_warning | cfg.fromEmail | cap, guid, subscriber_count, utilization',
-    'blog_newsletter_send_failed | cfg.fromEmail | email_domain, guid, reason',
+    'blog_newsletter_send_failed | cfg.fromEmail | guid, reason',
     'blog_newsletter_sent | cfg.fromEmail | failed, guid, sent, skipped_already_sent, url',
     'blog_pending_expired | distinctIdForEmail_(x.email) | days_since_signup',
     'blog_pending_reminded | distinctIdForEmail_(x.email) | days_since_signup',
     'blog_subscribe_confirmed | distinctIdForEmail_(email) | ',
     'blog_subscribe_duplicate | distinctIdForEmail_(email) | source',
     'blog_subscribe_pending | distinctIdForEmail_(email) | source',
-    'blog_subscriber_bounced | distinctIdForEmail_(addr) | email_domain, via',
+    'blog_subscriber_bounced | distinctIdForEmail_(addr) | via',
     'blog_unsubscribe | distinctIdForEmail_(result.email) | method',
-    'blog_welcome_failed | distinctIdForEmail_(email) | email_domain, reason',
+    'blog_welcome_failed | distinctIdForEmail_(email) | reason',
   ],
   'scripts/waitlist.gs': [
-    'waitlist_signup | distinctIdForEmail_(email) | email_domain, source',
+    'waitlist_signup | signupEventId_() | source',
   ],
 };
 
@@ -86,9 +86,11 @@ describe('server-side analytics events', () => {
     for (const [path] of Object.entries(EXPECTED)) {
       for (const call of eventsIn(path).calls) {
         const [, who, keys] = call.split(' | ');
-        // A reader's events go under a hash of the address; the sender's own
-        // send reports go under the sending address, which is the site's.
-        assert.match(who, /^(distinctIdForEmail_\([\w.]+\)|cfg\.fromEmail)$/, call);
+        // A subscriber's events go under a hash of the address; the sender's own
+        // send reports go under the sending address, which is the site's; a
+        // waitlist sign-up goes under a random id made from nothing.
+        assert.match(who, /^(distinctIdForEmail_\([\w.]+\)|cfg\.fromEmail|signupEventId_\(\))$/, call);
+        for (const key of keys.split(', ').filter(Boolean)) assert.doesNotMatch(key, /domain/i, call);
         for (const key of keys.split(', ').filter(Boolean)) assert.doesNotMatch(key, /^(email|address|name|token|ip)$/i, call);
       }
     }
@@ -104,10 +106,18 @@ describe('server-side analytics events', () => {
     }
   });
 
-  it('the identifier is a hash of the address, in both scripts', () => {
-    for (const path of Object.keys(EXPECTED)) {
-      const source = fs.readFileSync(path, 'utf8');
-      assert.match(source, /function distinctIdForEmail_\(email\) \{\s*return sha256Hex_\((?:String\(email\)\.toLowerCase\(\)\.trim\(\)|normalizeEmail_\(email\))\);\s*\}/, path);
-    }
+  it('the newsletter identifier is a hash of the address', () => {
+    const source = fs.readFileSync('scripts/newsletter.gs', 'utf8');
+    assert.match(source, /function distinctIdForEmail_\(email\) \{\s*return sha256Hex_\(String\(email\)\.toLowerCase\(\)\.trim\(\)\);\s*\}/);
+  });
+
+  it('the waitlist identifier is random: nothing of the request goes into it', () => {
+    const source = fs.readFileSync('scripts/waitlist.gs', 'utf8');
+    assert.match(source, /function signupEventId_\(\) \{\s*return 'waitlist-' \+ Utilities\.getUuid\(\);\s*\}/);
+    assert.doesNotMatch(source, /distinctIdForEmail_|emailDomain_/);
+  });
+
+  it('neither script works out the domain of an address', () => {
+    for (const path of Object.keys(EXPECTED)) assert.doesNotMatch(fs.readFileSync(path, 'utf8'), /emailDomain_|email_domain/, path);
   });
 });

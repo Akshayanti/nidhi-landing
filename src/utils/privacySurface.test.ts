@@ -104,7 +104,7 @@ const EXPECTED_EVENTS: Record<string, string[]> = {
   blog_subscribe_dismissed: ['action', 'variant'],
   blog_subscribe_retry_clicked: ['variant'],
   blog_subscribe_sent: ['variant'],
-  blog_subscribe_submit: ['email_domain', 'source', 'variant'],
+  blog_subscribe_submit: ['source', 'variant'],
   blog_unsubscribe_clicked: [],
   free_inflation_average_used: [],
   free_inflation_country_changed: ['country'],
@@ -160,7 +160,7 @@ const EXPECTED_EVENTS: Record<string, string[]> = {
   free_multi_currency_net_worth_share_modal_opened: [],
   free_multi_currency_net_worth_shared_view_opened: ['mode', 'positions', 'utm_source'],
   waitlist_sent: [],
-  waitlist_submit: ['email_domain', 'source'],
+  waitlist_submit: ['source'],
 };
 
 // -----------------------------------------------------------------------------
@@ -431,7 +431,7 @@ const EXPECTED_MENTIONS = [
 // quiet the test.
 const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
 const EXPECTED_WHOLE_FILES = [
-  'components/Analytics.astro: sha256 83e2a3427a67e581',
+  'components/Analytics.astro: sha256 28842d904f219fa9',
   'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
   'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
 ];
