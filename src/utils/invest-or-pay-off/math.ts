@@ -221,6 +221,11 @@ export function toNominal(realPct: number, inflationPct: number): number {
   return ((1 + realPct / 100) * (1 + inflationPct / 100) - 1) * 100;
 }
 
+/** What a rate charged monthly (a twelfth each month) comes to over a year, in percent. */
+export function effectiveAnnual(ratePct: number): number {
+  return (Math.pow(1 + ratePct / 1200, 12) - 1) * 100;
+}
+
 /** Log-space parameters of the yearly real stock return for a choice. */
 export function realReturnModel(returns: ReturnChoice, ownReturn: number, inflation: number): { mu: number; sigma: number } {
   if (returns !== 'own') return returnModel(returns).stocks;
@@ -236,7 +241,10 @@ export function rates(raw: Inputs): Rates {
   const investReal = (Math.exp(realReturnModel(i.returns, i.ownReturn, i.inflation).mu) - 1) * 100;
   return {
     debtAfterRelief,
-    debtReal: toReal(debtAfterRelief, i.inflation),
+    // The debt charges a twelfth of its rate each month, so over a year it costs
+    // (1 + r/12)^12 - 1: 6.5% is 6.70%, 24% is 26.8%. The investment's figure
+    // is a yearly compound return, and the two sit side by side in one sentence.
+    debtReal: toReal(effectiveAnnual(debtAfterRelief), i.inflation),
     investReal,
     investNominal: toNominal(investReal, i.inflation),
   };
@@ -344,7 +352,8 @@ export function compare(raw: Inputs, options: { paths?: number; seed?: number; f
   const keepRelief = 1 - i.relief / 100;
   const interestA = sum(A.interest) * keepRelief;
   const interestB = sum(B.interest) * keepRelief;
-  const remainingB = B.owed[months - 1];
+  // With nothing owed there are no months at all: nothing is left, not NaN.
+  const remainingB = months > 0 ? B.owed[months - 1] : 0;
   const putInA = sum(A.invest);
   const putInB = sum(B.invest);
 
