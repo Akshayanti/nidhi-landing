@@ -2283,7 +2283,7 @@ function redirectResponse_(url) {
     '<meta name="referrer" content="no-referrer">' +
     '<meta http-equiv="refresh" content="0; url=' + escapeHtml_(safe) + '">' +
     '<title>Redirecting\u2026</title>' +
-    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:#444;text-align:center;line-height:1.5;}a{color:#009688;}</style>' +
+    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:#444;text-align:center;line-height:1.5;}a{color:#00796B;}</style>' +
     '</head><body>' +
     '<p>Redirecting to nidhi.today\u2026</p>' +
     '<p><a href="' + escapeHtml_(safe) + '">Continue</a></p>' +
@@ -2299,7 +2299,7 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
     '<meta name="referrer" content="no-referrer">' +
     '<title>' + escapeHtml_(title) + '</title>' +
     '<style>body{font-family:system-ui,sans-serif;max-width:520px;margin:48px auto;padding:0 24px;color:#222;line-height:1.5;}' +
-    'h1{color:#0D47A1;font-size:1.6rem;}a.cta{display:inline-block;margin-top:16px;padding:10px 20px;background:#009688;color:#fff;text-decoration:none;border-radius:6px;}</style>' +
+    'h1{color:#0D47A1;font-size:1.6rem;}a.cta{display:inline-block;margin-top:16px;padding:10px 20px;background:#00796B;color:#fff;text-decoration:none;border-radius:6px;}</style>' +
     '</head><body><h1>' + escapeHtml_(title) + '</h1><p>' + escapeHtml_(message) + '</p>' +
     '<a class="cta" href="' + escapeHtml_(ctaHref) + '">' + escapeHtml_(ctaText) + '</a></body></html>';
 }

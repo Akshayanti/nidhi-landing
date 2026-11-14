@@ -760,7 +760,8 @@ def wrap_tables(node, soup) -> None:
     Put each lesson table in a box that scrolls sideways. The mail's outer
     table has a fixed layout, so a wide table can no longer widen the whole
     mail on a phone (#478); it scrolls inside its own box instead. Layout
-    tables (a figure and its caption) are left alone.
+    tables (a figure and its caption) are left alone. Runs after
+    style_inline, so the note it adds keeps its own style.
     """
     for table in node.find_all("table"):
         if table.get("role") == "presentation" or table.find_parent("table") is not None:
@@ -769,6 +770,16 @@ def wrap_tables(node, soup) -> None:
         box["style"] = "overflow-x:auto;margin:0 0 14px;"
         table.replace_with(box)
         box.append(table)
+        # A mail app shows no scrollbar and gives the box no keyboard focus,
+        # so a table wide enough to be cut off says so, and where the whole
+        # of it can be read.
+        first_row = table.find("tr")
+        if first_row is not None and len(first_row.find_all(["th", "td"])) >= 5:
+            note = soup.new_tag("p")
+            note["style"] = "font-size:14px;color:#5A5A5A;margin:0 0 6px;"
+            note["data-html-only"] = ""  # the text part writes whole rows
+            note.string = "Wide table: scroll it sideways, or read it on nidhi.today."
+            box.insert_before(note)
 
 
 # Elements that start and end a paragraph in the plain-text part. Everything
@@ -806,7 +817,7 @@ def html_to_text(node) -> str:
                     continue  # the gap between two list items is not text
                 out.append(str(child) if in_pre else squash(str(child)))
                 continue
-            if name in ("script", "style"):
+            if name in ("script", "style") or child.has_attr("data-html-only"):
                 continue
             if name == "br":
                 out.append("\n")
