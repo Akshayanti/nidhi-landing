@@ -364,7 +364,6 @@ export const es: Dict = {
     barriers: {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
-        forms: 'En los formularios de la lista de espera y del boletín, el foco del teclado se pierde mientras el formulario se envía y después de un fallo, y nada anuncia que se está enviando.',
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
         overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
         figures: 'Las figuras de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
@@ -373,7 +372,6 @@ export const es: Dict = {
         print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
         shareWindow: 'En la calculadora de patrimonio neto, los botones del final de la ventana de compartir quedan cortados con el teléfono en horizontal o con mucho zoom, y la ventana no se puede desplazar para llegar a ellos.',
-        addressCheck: 'Cuando el formulario de la lista de espera o del boletín pregunta si una dirección de correo es correcta, al lector de pantalla no se le avisa de que la pregunta ha aparecido.',
       },
     },
     report: {

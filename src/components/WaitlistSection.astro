@@ -43,6 +43,7 @@ const idPrefix = 'waitlist';
 const formId = `${idPrefix}-form`;
 const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
+const confirmTextId = `${idPrefix}-confirm-text`;
 ---
 
 <section class="waitlist" aria-label={waitlist.region} data-remembered-note={rememberedNote ? '' : undefined}>
@@ -89,10 +90,10 @@ const inputId = `${idPrefix}-email`;
           <button type="submit" class="btn btn--onCallout waitlist-button" data-cta={ctaLabel}>{ctaLabel}</button>
         </div>
         <!-- Shown before anything is sent, so a typo can be caught. -->
-        <div class="waitlist-confirm" data-confirm hidden>
-          <p class="waitlist-confirm-text">{waitlist.confirmPrompt} <strong data-confirm-email></strong></p>
+        <div class="waitlist-confirm" data-confirm role="group" aria-labelledby={confirmTextId} hidden>
+          <p class="waitlist-confirm-text" id={confirmTextId}>{waitlist.confirmPrompt} <strong data-confirm-email></strong></p>
           <div class="waitlist-confirm-actions">
-            <button type="button" class="btn btn--onCallout waitlist-button" data-confirm-yes data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
+            <button type="button" class="btn btn--onCallout waitlist-button" data-confirm-yes aria-describedby={confirmTextId} data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
             <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr="waitlist-confirm-change">{waitlist.confirmChange}</button>
           </div>
         </div>
@@ -216,13 +217,13 @@ const inputId = `${idPrefix}-email`;
       if (input) input.readOnly = true;
       if (button) button.hidden = true;
       confirmEl.hidden = false;
-      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; try { yesBtn.focus(); } catch (_) {} }
+      if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = confirmYesLabel; try { yesBtn.focus(); } catch (_) {} }
       return true;
     }
     function closeConfirm() {
       pendingEmail = '';
-      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; }
-      if (changeBtn) changeBtn.disabled = false;
+      if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = confirmYesLabel; }
+      if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       if (confirmEl) confirmEl.hidden = true;
       if (input) input.readOnly = false;
       if (button) button.hidden = false;
@@ -272,9 +273,12 @@ const inputId = `${idPrefix}-email`;
     function send(email) {
       if (submitting || !email) return;
       submitting = true;
-      if (yesBtn) { yesBtn.disabled = true; yesBtn.textContent = sending; }
-      if (changeBtn) changeBtn.disabled = true;
-      setStatus('', 'idle');
+      if (yesBtn) { yesBtn.setAttribute('aria-disabled', 'true'); yesBtn.textContent = sending; }
+      if (changeBtn) changeBtn.setAttribute('aria-disabled', 'true');
+      // The buttons stay focusable (aria-disabled, not disabled), so focus is
+      // not dropped to the top of the page, and the status line says it is
+      // sending for a reader who cannot see the button change.
+      setStatus(sending, 'sending');
 
       if (window.posthog) {
         // Nothing of the address is sent, not even its domain.
@@ -288,25 +292,32 @@ const inputId = `${idPrefix}-email`;
       body.set('email', email);
       body.set('source', window.location.pathname);
 
+      // A request that hangs is given up after 20 seconds, so the form
+      // answers instead of saying "Sending" for ever.
+      var abort = typeof AbortController === 'function' ? new AbortController() : null;
+      var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
       fetch(endpoint, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
+        signal: abort ? abort.signal : undefined,
       }).then(function () {
+        if (giveUp) clearTimeout(giveUp);
         form.reset();
         closeConfirm();
-        if (changeBtn) changeBtn.disabled = false;
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
         submitting = false;
         showSuccess();
         if (window.posthog) {
           window.posthog.capture('waitlist_sent', {});
         }
       }).catch(function () {
+        if (giveUp) clearTimeout(giveUp);
         submitting = false;
         setStatus(errorMessage, 'error');
-        if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = confirmYesLabel; }
-        if (changeBtn) changeBtn.disabled = false;
+        if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = confirmYesLabel; }
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       });
     }
 
@@ -408,7 +419,14 @@ const inputId = `${idPrefix}-email`;
 
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action on the blue card. */
-  .waitlist-button:disabled { cursor: wait; }
+  .waitlist-button:disabled,
+  .waitlist-button[aria-disabled="true"] { cursor: wait; }
+  .waitlist-confirm-change[aria-disabled="true"] { cursor: wait; opacity: 0.6; }
+  /* Spoken, not shown: the button already reads "Sending". */
+  .waitlist-status--sending {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 
   .waitlist-confirm { margin-top: var(--space-3); }
   .waitlist-confirm[hidden] { display: none; }
@@ -429,7 +447,7 @@ const inputId = `${idPrefix}-email`;
     text-decoration: underline;
     cursor: pointer;
   }
-  .waitlist-confirm-change:hover:not(:disabled) { color: white; }
+  .waitlist-confirm-change:hover:not([aria-disabled="true"]) { color: white; }
   .waitlist-confirm-change:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .waitlist .waitlist-confirm-actions { justify-content: center; }
 
