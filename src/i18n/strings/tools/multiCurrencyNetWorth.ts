@@ -1300,7 +1300,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       tableCaption: 'Concentración por moneda según la posición neta',
       tableColCurrency: 'Moneda',
       tableColConcentration: 'Concentración',
-      tableColRisk: 'Nivel de la parte',
+      tableColRisk: 'Nivel',
     },
     csv: {
       confirmOne:
@@ -1404,7 +1404,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Pásma koncentrace',
           rest:
-            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Tato pásma jsou vlastním členěním tohoto nástroje: nejsou standardem ani hodnocením. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
+            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Tato pásma jsou vlastním členěním tohoto nástroje: nejsou standardem ani hodnocením. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
         },
         {
           strong: 'Čistá a hrubá expozice.',
