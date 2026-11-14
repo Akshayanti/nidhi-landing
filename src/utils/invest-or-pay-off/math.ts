@@ -44,6 +44,7 @@
 
 import { STOCKS, lognormalParams, returnModel, type ReturnSetting } from '../monte-carlo/math.ts';
 import { geometricAverage, type Series } from '../inflation/math.ts';
+import { roundRow } from '../shared/noiseRounding.ts';
 
 export type ReturnChoice = ReturnSetting | 'own';
 export const RETURN_CHOICES: readonly ReturnChoice[] = ['cautious', 'historical', 'optimistic', 'own'];
@@ -434,6 +435,17 @@ export function compare(raw: Inputs, options: { paths?: number; seed?: number; f
     remainingB,
     paths,
   };
+}
+
+/**
+ * The result as the page words it: the simulated amounts (both paths and the
+ * gap) rounded to what the scenarios can tell apart, each row with its own
+ * step (see noiseRounding.ts). The debt figures are worked out exactly and
+ * stay as they are. The spreadsheet keeps the unrounded result.
+ */
+export function wordedResult(r: Result): Result {
+  const row = (p: Percentiles): Percentiles => roundRow({ p10: p.p10, p50: p.p50, p90: p.p90 }, p.p10, p.p90, r.paths);
+  return { ...r, a: row(r.a), b: row(r.b), diff: row(r.diff) };
 }
 
 /**

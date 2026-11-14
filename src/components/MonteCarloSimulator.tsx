@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
@@ -10,6 +10,7 @@ import {
   MAX_MONTHLY,
   MAX_START,
   MAX_WITHDRAWAL,
+  roundedResult,
   QUOTED_RATES,
   RETURN_SETTINGS,
   RUN_OPTIONS,
@@ -364,6 +365,9 @@ export default function MonteCarloSimulator({
   }, [form, hasErrors]);
 
   const { result, state: shownState, busy: running } = useSimulation(settled);
+  // What the page says in words: amounts rounded to what the runs can tell
+  // apart. The chart's shapes and the spreadsheets use `result` itself.
+  const worded = useMemo(() => roundedResult(result), [result]);
   // Pending from the moment a new plan settles until its result is on screen,
   // so Copy can never share a plan the results do not show yet.
   const pending = running || settled !== shownState;
@@ -522,7 +526,7 @@ export default function MonteCarloSimulator({
           <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
         </fieldset>
 
-        <QuickResult result={result} state={shownState} busy={pending} strings={strings} />
+        <QuickResult result={worded} state={shownState} busy={pending} strings={strings} />
         {/* Phones only. A button, not a link: nothing is written to the address. */}
         <p className="mcs-jump">
           <button
@@ -634,7 +638,8 @@ export default function MonteCarloSimulator({
       </form>
 
       <Results
-        result={result}
+        result={worded}
+        exact={result}
         state={shownState}
         code={shownState.currency}
         busy={running}
@@ -656,7 +661,7 @@ export default function MonteCarloSimulator({
         }
       />
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={result} />
+      <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />
     </div>
     </ErrorLeadContext.Provider>
     </NumberLocaleContext.Provider>
@@ -743,7 +748,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   );
 }
 
-function Results({ result, state, code, busy, strings, actions }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
+function Results({ result, exact, state, code, busy, strings, actions }: { result: SimulationResult; exact: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
   const { formatAmount, amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   const r = result.atRetirement;
@@ -785,7 +790,7 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
         </>
       )}
 
-      {result.years > 0 && <Chart result={result} state={state} code={code} strings={strings} />}
+      {result.years > 0 && <Chart result={exact} worded={result} state={state} code={code} strings={strings} />}
 
       {saving && (
         <p className="mcs-note">
@@ -830,7 +835,8 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
 
       <p className="mcs-caveat">
         {t(strings.results.caveat, { paths: grouped(result.paths, numberLocale) })}
-        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, numberLocale) })}
+        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, numberLocale) })}{' '}
+        {t(strings.results.rounded, { paths: grouped(result.paths, numberLocale) })}
       </p>
 
 
@@ -941,7 +947,7 @@ function spreadLabels(ys: number[], gap: number, min: number, max: number): numb
   return out.map((y) => y - overflow);
 }
 
-function Chart({ result, state, code, strings }: { result: SimulationResult; state: ToolState; code: string; strings: Strings }) {
+function Chart({ result, worded, state, code, strings }: { result: SimulationResult; worded: SimulationResult; state: ToolState; code: string; strings: Strings }) {
   const { formatAmount, amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   const titleId = useId();
@@ -1003,18 +1009,18 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
   const endRaw = [end.p90, end.p50, end.p10].map((v) => r1(yPx(v)));
   const endY = spreadLabels(endRaw, 22, PAD.top + 8, H - PAD.bottom).map(r1);
   const endLabels = [
-    { key: 'p90', label: strings.chart.endHigh, value: end.p90, cls: 'mcs-endLabel--outer' },
-    { key: 'p50', label: strings.chart.endMedian, value: end.p50, cls: 'mcs-endLabel--median' },
-    { key: 'p10', label: strings.chart.endLow, value: end.p10, cls: 'mcs-endLabel--outer' },
+    { key: 'p90', label: strings.chart.endHigh, value: end.p90, said: worded.bands[years].p90, cls: 'mcs-endLabel--outer' },
+    { key: 'p50', label: strings.chart.endMedian, value: end.p50, said: worded.bands[years].p50, cls: 'mcs-endLabel--median' },
+    { key: 'p10', label: strings.chart.endLow, value: end.p10, said: worded.bands[years].p10, cls: 'mcs-endLabel--outer' },
   ];
 
   const desc = t(strings.chart.desc, {
     paths: grouped(result.paths, numberLocale),
     years,
-    low: formatAmount(end.p10, code),
-    median: formatAmount(end.p50, code),
-    high: formatAmount(end.p90, code),
-    straight: formatAmount(straightLine[years], code),
+    low: formatAmount(worded.bands[years].p10, code),
+    median: formatAmount(worded.bands[years].p50, code),
+    high: formatAmount(worded.bands[years].p90, code),
+    straight: formatAmount(worded.straightLine[years], code),
   });
 
   // Pointer and keyboard reading of a year's values.
@@ -1044,6 +1050,8 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
   }
 
   const h = hover !== null ? bands[hover] : null;
+  // The same year in words: rounded (the dots stay where the exact figures are).
+  const hw = hover !== null ? worded.bands[hover] : null;
   const phase =
     hover === null || !withdrawing
       ? null
@@ -1056,12 +1064,12 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
     ? t(strings.chart.announce, {
         year: hover,
         phase: phase ? `, ${phase.toLowerCase()}` : '',
-        high: formatAmount(h.p90, code),
-        middleLow: formatAmount(h.p25, code),
-        middleHigh: formatAmount(h.p75, code),
-        median: formatAmount(h.p50, code),
-        low: formatAmount(h.p10, code),
-        straight: formatAmount(straightLine[hover], code),
+        high: formatAmount((hw ?? h).p90, code),
+        middleLow: formatAmount((hw ?? h).p25, code),
+        middleHigh: formatAmount((hw ?? h).p75, code),
+        median: formatAmount((hw ?? h).p50, code),
+        low: formatAmount((hw ?? h).p10, code),
+        straight: formatAmount(worded.straightLine[hover], code),
       })
     : '';
 
@@ -1168,7 +1176,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
                 {showEndLabels && (
                   <text x={W - PAD.right + 12} y={endY[i] - 2}>
                     <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
-                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.value, code, true)}</tspan>
+                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.said, code, true)}</tspan>
                   </text>
                 )}
               </g>
@@ -1202,11 +1210,11 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
           rows={[
             // Swatches match the dots on the chart: band-edge dots for high
             // and low, the median dot, the single-line dot, and the inner band.
-            { label: strings.chart.readoutHigh, value: formatAmount(h.p90, code), swatch: 'dot', color: OUTER_DOT },
-            { label: strings.chart.readoutMiddle, value: t(strings.chart.readoutMiddleRange, { low: formatAmount(h.p25, code), high: formatAmount(h.p75, code) }), swatch: 'band', color: INNER_BAND },
-            { label: strings.chart.readoutMedian, value: formatAmount(h.p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
-            { label: strings.chart.readoutLow, value: formatAmount(h.p10, code), swatch: 'dot', color: OUTER_DOT },
-            { label: strings.chart.readoutStraight, value: formatAmount(straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },
+            { label: strings.chart.readoutHigh, value: formatAmount((hw ?? h).p90, code), swatch: 'dot', color: OUTER_DOT },
+            { label: strings.chart.readoutMiddle, value: t(strings.chart.readoutMiddleRange, { low: formatAmount((hw ?? h).p25, code), high: formatAmount((hw ?? h).p75, code) }), swatch: 'band', color: INNER_BAND },
+            { label: strings.chart.readoutMedian, value: formatAmount((hw ?? h).p50, code), swatch: 'dot', color: 'var(--color-deep-blue)', strong: true },
+            { label: strings.chart.readoutLow, value: formatAmount((hw ?? h).p10, code), swatch: 'dot', color: OUTER_DOT },
+            { label: strings.chart.readoutStraight, value: formatAmount(worded.straightLine[hover], code), swatch: 'dot', color: 'var(--color-teal)' },
           ]}
         />
       )}

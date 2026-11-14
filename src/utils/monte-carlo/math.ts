@@ -42,6 +42,8 @@
  * That keeps share links reproducible and lets the tests pin exact numbers.
  */
 
+import { roundRow } from '../shared/noiseRounding.ts';
+
 export const STOCKS = { mean: 0.068, sd: 0.173 } as const;
 export const BONDS = { mean: 0.023, sd: 0.112 } as const;
 export const STOCK_BOND_CORRELATION = 0.2;
@@ -145,6 +147,22 @@ export interface SimulationResult {
   lasted: number | null;
   medianRunOutYear: number | null;
   paths: number;
+}
+
+/**
+ * The result as the page words it: every amount rounded to what the runs can
+ * tell apart (see noiseRounding.ts), year by year, the single line with its
+ * year's step. Shares, years and counts are untouched. The chart's shapes and
+ * the spreadsheets keep the unrounded result.
+ */
+export function roundedResult(r: SimulationResult): SimulationResult {
+  const rows = r.bands.map((b, y) => roundRow({ ...b, straight: r.straightLine[y] }, b.p10, b.p90, r.paths));
+  return {
+    ...r,
+    bands: rows.map((row) => ({ p10: row.p10, p25: row.p25, p50: row.p50, p75: row.p75, p90: row.p90 })),
+    straightLine: rows.map((row) => row.straight),
+    atRetirement: roundRow({ ...r.atRetirement }, r.atRetirement.p10, r.atRetirement.p90, r.paths),
+  };
 }
 
 // ---------------------------------------------------------------------------

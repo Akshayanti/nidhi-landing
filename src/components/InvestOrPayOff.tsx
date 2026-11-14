@@ -17,6 +17,7 @@ import {
   REAL_RETURN_TOP,
   RETURN_CHOICES,
   compare,
+  wordedResult,
   compareRange,
   inflationDefault,
   inputProblem,
@@ -409,7 +410,14 @@ export default function InvestOrPayOff({
   }
 
   const report = shownNow
-    ? investOrPayOffReport({ island: strings, common: exportStrings, currency: settled.currency, shown: shownNow, decimals })
+    ? investOrPayOffReport({
+        island: strings,
+        common: exportStrings,
+        currency: settled.currency,
+        // The printed report says what the page says: rounded. The spreadsheet has every digit.
+        shown: { ...shownNow, result: wordedResult(shownNow.result), range: shownNow.range && { cautious: wordedResult(shownNow.range.cautious), optimistic: wordedResult(shownNow.range.optimistic) } },
+        decimals,
+      })
     : null;
 
   // What the inflation panel says about the country being picked.
@@ -648,11 +656,13 @@ export default function InvestOrPayOff({
 }
 
 /** The result in sentences, as the page says it and the files repeat it. */
-export function resultLines(r: Result, strings: Strings, locale: string, money: (v: number) => string, todayAt: TodayBasis = 'month'): string[] {
+export function resultLines(exact: Result, strings: Strings, locale: string, money: (v: number) => string, todayAt: TodayBasis = 'month'): string[] {
+  // Simulated amounts are worded to what the scenarios can tell apart.
+  const r = wordedResult(exact);
   const s = strings.results;
   const when = whenText(r.months, strings, locale);
   const investAhead = Math.round(r.bAhead * 100);
-  const even = r.diff.p10 === 0 && r.diff.p90 === 0;
+  const even = exact.diff.p10 === 0 && exact.diff.p90 === 0;
   return [
     t(s.on, { when }),
     even ? s.shareEven : t(s.share, { invest: investAhead, payoff: 100 - investAhead }),
@@ -689,14 +699,15 @@ function Results({
   const s = strings.results;
   const lines = resultLines(r, strings, numberLocale, money, todayAt);
   const paths = [
-    { key: 'a', name: s.payoffPath, p: r.a, paid: r.payoffMonthA, owed: 0, interest: r.interestA },
-    { key: 'b', name: s.investPath, p: r.b, paid: r.payoffMonthB, owed: r.remainingB, interest: r.interestB },
+    { key: 'a', name: s.payoffPath, p: wordedResult(r).a, paid: r.payoffMonthA, owed: 0, interest: r.interestA },
+    { key: 'b', name: s.investPath, p: wordedResult(r).b, paid: r.payoffMonthB, owed: r.remainingB, interest: r.interestB },
   ];
   return (
     <div className="iop-answer">
       <p className="ifc-headline iop-headline">{lines[1]}</p>
       <p>{lines[0]} {lines[2]}</p>
       <p className="ifc-hint">{s.gapNote}</p>
+      <p className="ifc-hint">{t(s.rounded, { paths: r.paths.toLocaleString(numberLocale) })}</p>
 
       <div className="iop-paths">
         {paths.map((p) => (
@@ -762,7 +773,7 @@ function Results({
                 <tr key={row.label}>
                   <th scope="row">{row.label}</th>
                   <td>{Math.round(row.res.bAhead * 100)}</td>
-                  <td>{money(row.res.diff.p50)}</td>
+                  <td>{money(wordedResult(row.res).diff.p50)}</td>
                 </tr>
               ))}
             </tbody>

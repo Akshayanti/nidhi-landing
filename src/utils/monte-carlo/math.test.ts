@@ -275,3 +275,45 @@ describe('amounts a link can ask for are capped (#354)', () => {
     }
   });
 });
+
+describe('the result as the page words it (#530)', () => {
+  it('rounds every amount with its own year, and leaves shares and counts alone', async () => {
+    const m = await import('./math.ts');
+    const { noiseStep } = await import('../shared/noiseRounding.ts');
+    const exact = m.simulate({ start: 50_000, monthly: 1_000, saveYears: 30, stockPct: 60, withdrawal: 0, withdrawYears: 0, feePct: 0, returns: 'historical', paths: 10_000 });
+    const worded = m.roundedResult(exact);
+    // Year 0 has no spread: the starting amount is shown as typed.
+    assert.deepEqual(worded.bands[0], exact.bands[0]);
+    assert.equal(worded.straightLine[0], 50_000);
+    for (const y of [1, 10, 30]) {
+      const step = noiseStep(exact.bands[y].p10, exact.bands[y].p90, exact.paths);
+      assert.ok(step >= 1, `year ${y}`);
+      for (const k of ['p10', 'p25', 'p50', 'p75', 'p90'] as const) {
+        assert.ok(Math.abs(worded.bands[y][k] - exact.bands[y][k]) <= step / 2 + 1e-6);
+        assert.ok(Math.abs(worded.bands[y][k] / step - Math.round(worded.bands[y][k] / step)) < 1e-6, `${k} is a whole number of steps`);
+      }
+      // The single line is rounded with the same step as the year it sits in.
+      assert.ok(Math.abs(worded.straightLine[y] / step - Math.round(worded.straightLine[y] / step)) < 1e-6);
+      assert.ok(worded.bands[y].p10 <= worded.bands[y].p25 && worded.bands[y].p25 <= worded.bands[y].p50 && worded.bands[y].p50 <= worded.bands[y].p75 && worded.bands[y].p75 <= worded.bands[y].p90);
+    }
+    assert.deepEqual(worded.atRetirement, worded.bands[30]);
+    assert.equal(worded.belowStraightLine, exact.belowStraightLine);
+    assert.equal(worded.paths, exact.paths);
+    assert.equal(worded.years, exact.years);
+    // The page's own default: 10,000 runs resolve the result to the nearest 10,000.
+    assert.equal(noiseStep(exact.atRetirement.p10, exact.atRetirement.p90, 10_000), 10_000);
+    assert.equal(worded.atRetirement.p50 % 10_000, 0);
+    // The exact result is not touched.
+    assert.notEqual(exact.atRetirement.p50 % 10_000, 0);
+  });
+
+  it('fewer runs round more coarsely, more runs more finely', async () => {
+    const m = await import('./math.ts');
+    const plan = { start: 50_000, monthly: 1_000, saveYears: 30, stockPct: 60, withdrawal: 0, withdrawYears: 0, feePct: 0, returns: 'historical' as const };
+    const few = m.roundedResult(m.simulate({ ...plan, paths: 100 })).atRetirement.p50;
+    const many = m.roundedResult(m.simulate({ ...plan, paths: 100_000 })).atRetirement.p50;
+    assert.equal(few % 100_000, 0);
+    assert.equal(many % 1_000, 0);
+    assert.notEqual(many % 100_000, 0);
+  });
+});
