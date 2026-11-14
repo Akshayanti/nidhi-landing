@@ -2935,13 +2935,18 @@ details[open] > .disclosure::after,
 
 .lc-resultRow {
   display: flex;
+  /* The amount never breaks inside itself (see .lc-resultValue), so when it
+     does not fit beside its label, at a large text size on a phone, it moves
+     whole to a line of its own, still at the right edge. */
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: var(--space-3);
+  gap: 2px var(--space-3);
   font-size: 0.9rem;
 }
 
 .lc-resultLabel {
+  flex: 1 1 9rem;
   color: var(--color-text-secondary);
   margin: 0;
 }
@@ -2957,7 +2962,13 @@ details[open] > .disclosure::after,
      until an amount breaks between two digits (#612). The label wraps
      instead; a sentence here still wraps at its spaces. */
   overflow-wrap: break-word;
+  margin-left: auto;
 }
+
+/* The primary cards stack label over amount; nothing there wraps as a row. */
+.lc-resultListPrimary .lc-resultRow { flex-wrap: nowrap; }
+.lc-resultListPrimary .lc-resultLabel { flex: none; }
+.lc-resultListPrimary .lc-resultValue { margin-left: 0; }
 
 .lc-resultRowEmphasized {
   margin-top: 4px;
@@ -7962,7 +7973,7 @@ button.mcnw-legendItem > .mcnw-legendAmount {
   }
   /* The muted colour above is now the text colour, and an example in an
      empty field must not read as something typed: placeholders keep a
-     shade of their own (10.9:1 light, 8.7:1 dark) and are set in italics,
+     shade of their own (10.9:1 light, 7.7:1 or more dark) and are set in italics,
      so the difference does not rest on colour. */
   /* !important: the sign-up forms set theirs in scoped styles, which outrank
      a plain selector. */
