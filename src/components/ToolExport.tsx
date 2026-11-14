@@ -141,13 +141,29 @@ function cellText(c: Cell, locale: string): string {
 
 const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);
 
+/**
+ * Which columns hold numbers only. Such a column is set flush right, header
+ * included, so digits line up; a column that mixes words and numbers (an
+ * offer's column in "What you entered") is set flush left throughout, so it
+ * has one edge and its header sits over its cells (#615).
+ */
+export function numericColumns(table: ReportTable): boolean[] {
+  return table.head.map((_, i) => {
+    if (i === 0) return false;
+    const cells = table.rows.map((row) => row[i]).filter((c) => c !== null && c !== undefined && c !== '');
+    return cells.length > 0 && cells.every(isNumber);
+  });
+}
+
 function Table({ table, locale }: { table: ReportTable; locale: string }) {
+  const numeric = numericColumns(table);
+  const cls = (i: number, c?: Cell) => (numeric[i] ? 'tool-reportNum' : c !== undefined && isNumber(c) ? 'tool-reportWhole' : undefined);
   return (
     <div className="tool-reportBlock">
       <table className="tool-reportTable">
         {table.caption && <caption>{table.caption}</caption>}
         <thead>
-          <tr>{table.head.map((h, i) => <th key={i} scope="col">{h}</th>)}</tr>
+          <tr>{table.head.map((h, i) => <th key={i} scope="col" className={cls(i)}>{h}</th>)}</tr>
         </thead>
         <tbody>
           {table.rows.map((row, r) => (
@@ -156,7 +172,7 @@ function Table({ table, locale }: { table: ReportTable; locale: string }) {
                 i === 0 ? (
                   <th key={i} scope="row">{cellText(c, locale)}</th>
                 ) : (
-                  <td key={i} className={isNumber(c) ? 'tool-reportNum' : undefined}>{cellText(c, locale)}</td>
+                  <td key={i} className={cls(i, c)}>{cellText(c, locale)}</td>
                 ),
               )}
             </tr>
@@ -289,7 +305,12 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
   const [date, setDate] = useState('');
   // The tool's address with no state: never the # part a share link carries.
   const [address, setAddress] = useState('');
+  // Not in the page as it is built (#457): the built page would carry a
+  // second top heading and a report with nothing in it yet. It joins the page
+  // when the tool starts, which is before anything can be printed from it.
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
     setAddress(`${window.location.origin}${window.location.pathname}`);
     const today = () => setDate(isoDate());
     today();
@@ -297,6 +318,7 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
     return () => window.removeEventListener('beforeprint', today);
   }, []);
 
+  if (!mounted) return null;
   return (
     <article className="tool-report" aria-hidden="true">
       <header className="tool-reportHeader">

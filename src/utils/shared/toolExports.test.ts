@@ -1,5 +1,5 @@
 /**
- * The four tools' spreadsheets and printed reports: each holds what the tool
+ * The five tools' spreadsheets and printed reports: each holds what the tool
  * computed, in every language, and the net worth copies never hold more than
  * their view shows.
  *
@@ -26,7 +26,12 @@ import { netWorthSheets } from '../multi-currency-net-worth/export.ts';
 import { monteCarloReport } from '../monte-carlo/report.ts';
 import { loanReport } from '../loan/report.ts';
 import { netWorthReport } from '../multi-currency-net-worth/report.ts';
-import { isEmptyRow, type Report } from './report.ts';
+import { byYearTable, cellLabel, isEmptyRow, tableOf, type Report } from './report.ts';
+import { inflationReport } from '../inflation/report.ts';
+import { compare, compareRange, type Inputs } from '../invest-or-pay-off/math.ts';
+import { DEFAULTS as investDefaults } from '../invest-or-pay-off/url.ts';
+import { investOrPayOffSheets } from '../invest-or-pay-off/export.ts';
+import { investOrPayOffReport } from '../invest-or-pay-off/report.ts';
 
 const DATE = '2026-10-28';
 const PAGE = 'https://nidhi.today/free/tool/';
@@ -210,6 +215,102 @@ describe('net worth spreadsheet', () => {
   });
 });
 
+/** The invest or pay off tool's defaults as the maths takes them, with a typed inflation figure. */
+const investInputs = (over: Partial<Inputs> = {}): Inputs => ({
+  balance: investDefaults.balance,
+  debtRate: investDefaults.debtRate,
+  payment: investDefaults.payment,
+  extra: investDefaults.extra,
+  relief: investDefaults.relief,
+  inflation: 2.5,
+  returns: investDefaults.returns,
+  ownReturn: investDefaults.ownReturn,
+  feePct: investDefaults.feePct,
+  gainsTax: investDefaults.gainsTax,
+  horizon: investDefaults.horizon,
+  ...over,
+});
+
+describe('invest or pay off spreadsheet', () => {
+  const inputs = investInputs();
+  const result = compare(inputs, { paths: 500 });
+  const two = (v: number) => Number(v.toFixed(2));
+
+  for (const locale of LOCALES) {
+    it(`holds both paths, the gap and what was entered (${locale})`, () => {
+      const t = DICTS[locale].tools;
+      const island = t.investOrPayOff.island;
+      const sheets = investOrPayOffSheets({ island, common: t.export, currency: 'EUR', shown: { inputs, result, range: null, inflationSource: null, lines: ['line'] }, decimals: 2, date: DATE, page: PAGE });
+      builds(sheets);
+      // No range sheet unless the page shows the range.
+      assert.deepEqual(sheets.map((s) => s.name), [t.export.sheets.about, t.export.sheets.inputs, island.export.sheets.result]);
+      const res = sheet(sheets, island.export.sheets.result);
+      assert.deepEqual(res.rows[1].slice(1).map(num), [two(result.a.p10), two(result.a.p50), two(result.a.p90)]);
+      assert.deepEqual(res.rows[2].slice(1).map(num), [two(result.b.p10), two(result.b.p50), two(result.b.p90)]);
+      assert.deepEqual(res.rows[3].slice(1).map(num), [two(result.diff.p10), two(result.diff.p50), two(result.diff.p90)]);
+      assert.equal(res.rows[1][0], island.results.payoffPath);
+      assert.equal(res.rows[2][0], island.results.investPath);
+      assert.equal(num(res.rows[5][1]), Math.round(result.bAhead * 100));
+      assert.equal(num(res.rows[6][1]), result.months);
+      assert.equal(num(res.rows[7][1]), result.paths);
+      const entered = sheet(sheets, t.export.sheets.inputs);
+      assert.equal(num(entered.rows[1][1]), inputs.balance);
+      assert.equal(num(entered.rows[2][1]), inputs.debtRate);
+      // The reader's own return has a row only when it is the one in use.
+      assert.ok(!entered.rows.some((row) => row[0] === island.fields.ownReturn));
+    });
+  }
+
+  it('adds the range beside the reader\'s own return, and the row for that return', () => {
+    const t = DICTS.en.tools;
+    const island = t.investOrPayOff.island;
+    const own = investInputs({ returns: 'own', ownReturn: 12 });
+    const ownResult = compare(own, { paths: 500 });
+    const range = compareRange(own, { paths: 500 });
+    const sheets = investOrPayOffSheets({ island, common: t.export, currency: 'EUR', shown: { inputs: own, result: ownResult, range, inflationSource: 'World Bank', lines: ['line'] }, decimals: 2, date: DATE, page: PAGE });
+    builds(sheets);
+    const r = sheet(sheets, island.export.sheets.range);
+    assert.equal(r.rows.length, 4);
+    assert.equal(num(r.rows[2][1]), Math.round(range.cautious.bAhead * 100));
+    assert.equal(num(r.rows[3][2]), two(range.optimistic.diff.p50));
+    const entered = sheet(sheets, t.export.sheets.inputs);
+    assert.ok(entered.rows.some((row) => row[0] === island.fields.ownReturn && num(row[1]) === 12));
+    assert.ok(entered.rows.some((row) => row[1] === 'World Bank'));
+  });
+
+  it('keeps a sentence that starts with "=" as text', () => {
+    const t = DICTS.en.tools;
+    const sheets = investOrPayOffSheets({ island: t.investOrPayOff.island, common: t.export, currency: 'EUR', shown: { inputs, result, range: null, inflationSource: '=1+1', lines: ['=SUM(A1)'] }, decimals: 2, date: DATE, page: PAGE });
+    builds(sheets);
+    const cells = sheets.flatMap((sh) => sh.rows.flat());
+    // Text goes into the file as text: the writer has no formula cell at all.
+    assert.ok(cells.includes('=SUM(A1)') && cells.includes('=1+1'));
+    assert.ok(cells.every((c) => c === null || typeof c !== 'object' || 't' in c || 'n' in c));
+  });
+});
+
+describe('report helpers', () => {
+  const head: Cell[] = [{ t: 'Year', bold: true }, 'Value', null];
+  it('reads a header cell of either kind', () => {
+    assert.deepEqual(head.map(cellLabel), ['Year', 'Value', '']);
+  });
+  it('turns a sheet into a table, dropping empty rows and the ones it is told to', () => {
+    const table = tableOf({ name: 's', rows: [head, ['a', 1], [], ['b', 2], ['c', 3]] }, { caption: 'cap', keep: (row) => row[0] !== 'c' });
+    assert.deepEqual(table.head, ['Year', 'Value', '']);
+    assert.deepEqual(table.rows, [['a', 1], ['b', 2]]);
+    assert.equal(table.caption, 'cap');
+  });
+  it('prints a short by-year table whole and a long one every fifth year and the last', () => {
+    const rows = (n: number): Cell[][] => Array.from({ length: n }, (_, i) => [i, i * 2]);
+    const short = byYearTable(head, rows(31), 'cap', 'note');
+    assert.equal(short.rows.length, 31);
+    assert.equal(short.note, undefined);
+    const long = byYearTable(head, rows(42), 'cap', 'note');
+    assert.deepEqual(long.rows.map((r) => r[0]), [0, 5, 10, 15, 20, 25, 30, 35, 40, 41]);
+    assert.equal(long.note, 'note');
+  });
+});
+
 describe('printed reports', () => {
   const allCells = (r: Report) => [...(r.entered ? [r.entered] : []), ...r.tables, ...(r.assumptionTable ? [r.assumptionTable] : [])].flatMap((t) => t.rows.flat());
 
@@ -226,7 +327,36 @@ describe('printed reports', () => {
       assert.equal(loan.tables.length, 1);
       // Optional fields left at zero are left out of what was entered.
       assert.ok(loan.entered!.rows.every((row) => !isEmptyRow(row)));
-      for (const r of [mc, loan]) assert.ok(r.meaning && r.tool && r.chart);
+
+      const infState = { ...inflationDefaults('EUR', ''), mode: 'buy' as const, years: 40 };
+      const points = answerPath('buy', infState.amount, infState.rate, infState.years).map((value, x) => ({ x, value }));
+      const inflation = inflationReport({
+        island: t.inflation.island,
+        common: t.export,
+        state: infState,
+        answer: { question: 'q', sentences: ['s'], value: whatItBuys(infState.amount, infState.rate, infState.years), points, axis: 'x', chartTitle: 'title', history: null },
+        decimals: 2,
+        lines: ['a'],
+        method: 'm',
+      });
+      // Forty-one years: every fifth and the last, with the line that says so.
+      assert.equal(inflation.tables[0].rows.length, 9);
+      assert.equal(inflation.tables[0].note, t.export.report.sampled);
+      assert.equal(inflation.tables[0].head.length, 2);
+      assert.deepEqual(inflation.assumptions, ['m']);
+
+      const invInputs = investInputs();
+      const invResult = compare(invInputs, { paths: 500 });
+      const invest = investOrPayOffReport({ island: t.investOrPayOff.island, common: t.export, currency: 'EUR', shown: { inputs: invInputs, result: invResult, range: null, inflationSource: null, lines: ['a'] }, decimals: 2 });
+      // Both paths and the gap, nothing of the rows under them.
+      assert.equal(invest.tables.length, 1);
+      assert.equal(invest.tables[0].rows.length, 3);
+      assert.ok(invest.chart?.kind === 'bars');
+      assert.equal(invest.chart.bars[0].share + invest.chart.bars[1].share, 100);
+      assert.equal(invest.chart.bars[0].share, Math.round(invResult.bAhead * 100));
+      assert.deepEqual(invest.answer, ['a']);
+
+      for (const r of [mc, loan, inflation, invest]) assert.ok(r.meaning && r.tool && r.chart && r.entered && r.entered.rows.length > 0);
     });
   }
 

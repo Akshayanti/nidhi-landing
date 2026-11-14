@@ -7229,7 +7229,10 @@ button.mcnw-legendItem:focus-visible {
     margin-bottom: 8pt;
   }
   .tool-reportTable {
-    width: 100%;
+    /* As wide as its content, not the page: on a wide page a label and its
+       number sat far apart (#615). */
+    width: auto;
+    max-width: 100%;
     border-collapse: collapse;
     font-size: 9.5pt;
     margin: 4pt 0;
@@ -7263,6 +7266,11 @@ button.mcnw-legendItem:focus-visible {
   }
   .tool-reportNum {
     text-align: right !important;
+    white-space: nowrap;
+  }
+  /* A number in a column that also holds words: kept whole, set like its
+     neighbours. */
+  .tool-reportWhole {
     white-space: nowrap;
   }
   .tool-reportNote {
