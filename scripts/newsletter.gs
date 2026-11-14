@@ -2069,10 +2069,10 @@ function sendWelcomeEmail_(email, unsubToken) {
             banner +
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up , nothing else. No digests, no surprises, no "special offers".</p>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
               '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong , a real person reads it.</p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong, a real person reads it.</p>' +
               '<p style="margin:24px 0 0;color:' + EMAIL.text2 + ';font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in

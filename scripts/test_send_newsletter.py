@@ -82,10 +82,10 @@ class FlattenDetailsTest(unittest.TestCase):
         self.assertIn("Inner text that also has to stay visible.", self.html)
 
     def test_wrappers_keep_their_class_and_get_inline_styles(self) -> None:
-        self.assertRegex(self.html, r'<div class="quick-check email-expander" style="background-color:#e6f2f0;')
-        self.assertRegex(self.html, r'<div class="lesson-depth email-expander" style="border-left:2px solid #cbd5e1;')
+        self.assertRegex(self.html, r'<div class="quick-check email-expander" style="background-color:#E6F2F0;')
+        self.assertRegex(self.html, r'<div class="lesson-depth email-expander" style="border-left:2px solid #E0E0E0;')
         # An expander with no known class gets the quiet lesson-depth look.
-        self.assertRegex(self.html, r'<div class="email-expander" style="border-left:2px solid #cbd5e1;')
+        self.assertRegex(self.html, r'<div class="email-expander" style="border-left:2px solid #E0E0E0;')
 
     def test_lead_line_gets_brand_paragraph_style(self) -> None:
         self.assertRegex(self.html, r'<p style="margin:0 0 14px;[^"]*;margin:0 0 6px;"><strong style="font-weight:600;')
@@ -203,6 +203,26 @@ class EmailColoursTest(unittest.TestCase):
         for key, value in nl._EMAIL.items():
             if key in gs_block:
                 self.assertEqual(value, gs_block[key], f"send_newsletter.py: {key}")
+
+    def _code(self, text: str) -> str:
+        """The file without its comment lines and trailing comments."""
+        import re
+        return "\n".join(re.sub(r"\s#\s.*$", "", l) for l in text.split("\n") if not l.lstrip().startswith("#"))
+
+    def test_the_python_side_writes_no_colour_outside_its_block(self):
+        sender = (self.ROOT / "scripts" / "send_newsletter.py").read_text(encoding="utf-8")
+        start = sender.index("_EMAIL: dict[str, str] = {")
+        rest = sender[:start] + sender[sender.index("}\n", start):]
+        # A colour written into a style (an issue number in a docstring is not one).
+        import re
+        css = re.compile(r"(?:color:|background:|solid )\s*(#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b)")
+        self.assertEqual(css.findall(self._code(rest)), [])
+        # The offline preview of the script's mails writes its values out; each
+        # must be one the script itself uses.
+        gs = (self.ROOT / "scripts" / "newsletter.gs").read_text(encoding="utf-8")
+        allowed = {v.upper() for v in self._block(gs, "var EMAIL = {", "};").values()}
+        preview = (self.ROOT / "scripts" / "preview_transactional_emails.py").read_text(encoding="utf-8")
+        self.assertEqual({h.upper() for h in self.HEX.findall(self._code(preview))} - allowed, set())
 
 
 if __name__ == "__main__":

@@ -511,7 +511,8 @@ _EMAIL: dict[str, str] = {
     "muted":  "#5A5A5A",  # --neutral-600: small print
     "bg":     "#F5F5F5",  # --neutral-25: quote, code and table-heading fills
     "line":   "#F0F0F0",  # --neutral-50: hairlines
-    "border": "#E0E0E0",  # --neutral-200: table borders
+    "border": "#E0E0E0",  # --neutral-200: table borders, the rule beside an opened expander
+    "tint":   "#E6F2F0",  # the quick check's fill: the site's teal tint (rgba(0, 150, 136, 0.1)) laid on white
 }
 
 _BRAND_STYLES: dict[str, str] = {
@@ -563,30 +564,6 @@ _BRAND_STYLES: dict[str, str] = {
 # Desktop on Windows uses Word's renderer, which is reliable on table-cell
 # layout but flaky on margins/padding around block-level images. Same
 # rationale as the surrounding email shell template.
-
-# Light-theme colour palette (the email template advertises
-# `color-scheme: light` so dark-theme overrides are intentionally NOT mirrored
-# here — emails always render against the light palette). Source of truth:
-# :root in src/styles/global.css. Kept available for any future inline-style
-# helper that needs to resolve `var(--…)` references on the way to email.
-_BRAND_COLORS: dict[str, str] = {
-    "--color-deep-blue":         "#0D47A1",
-    "--color-deep-blue-light":   "#5472D3",
-    "--color-deep-blue-dark":    "#002171",
-    "--color-teal":              "#00897B",
-    "--color-teal-light":        "#4EBAAA",
-    "--color-teal-dark":         "#005B4F",
-    "--color-success":           "#2E7D32",
-    "--color-warning":           "#F57C00",
-    "--color-text-primary":      "#212121",
-    "--color-text-secondary":    "#616161",
-    "--color-text-muted":        "#757575",
-    "--color-bg":                "#F8F9FA",
-    "--color-bg-white":          "#FFFFFF",
-    "--color-border":            "#E0E0E0",
-    "--color-border-light":      "#F0F0F0",
-}
-
 
 def _figure_slug(relative: str) -> str | None:
     """
@@ -689,9 +666,9 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
 # for a quick check, a quiet left rule for the deep layer. Bottom padding
 # is 0 because the last paragraph inside already carries a 14px margin.
 _FLATTENED_DETAILS_STYLES: dict[str, str] = {
-    "quick-check": "background-color:#e6f2f0;border-radius:6px;padding:12px 16px 0;margin:0 0 14px;",
+    "quick-check": f"background-color:{_EMAIL['tint']};border-radius:6px;padding:12px 16px 0;margin:0 0 14px;",
 }
-_FLATTENED_DETAILS_DEFAULT_STYLE = "border-left:2px solid #cbd5e1;padding:2px 0 0 14px;margin:0 0 14px;"
+_FLATTENED_DETAILS_DEFAULT_STYLE = f"border-left:2px solid {_EMAIL['border']};padding:2px 0 0 14px;margin:0 0 14px;"
 # Appended after the brand <p> style by style_inline, so it wins: keeps the
 # lead line close to the text it introduces.
 _FLATTENED_LEAD_STYLE = "margin:0 0 6px;"
