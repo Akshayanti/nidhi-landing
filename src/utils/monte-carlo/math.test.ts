@@ -273,6 +273,8 @@ describe('amounts a link can ask for are capped (#354)', () => {
       walk(r, returns);
       assert.deepEqual(bad.slice(0, 5), []);
     }
+  });
+});
 
 describe('the result as the page words it (#530)', () => {
   it('rounds every amount with its own year, and leaves shares and counts alone', async () => {
