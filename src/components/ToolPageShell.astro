@@ -123,6 +123,9 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  /* Baseline: on phones the links are padded to a tap height, and the
+     current page, which is plain text, must stay on their line. */
+  align-items: baseline;
   gap: 4px;
 }
 .toolp-breadcrumbs li + li::before {
@@ -336,6 +339,7 @@ details.toolp-panel > summary {
   border-color: var(--color-deep-blue);
 }
 .toolp-relatedKicker {
+  overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 0.8125rem;
@@ -347,6 +351,8 @@ details.toolp-panel > summary {
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--color-deep-blue);
+  /* A long word wraps instead of widening the page at large text sizes. */
+  overflow-wrap: anywhere;
 }
 .toolp-relatedDesc {
   font-size: 0.88rem;
@@ -355,7 +361,8 @@ details.toolp-panel > summary {
 }
 @media (max-width: 800px) {
   .toolp-relatedGrid {
-    grid-template-columns: 1fr;
+    /* minmax(0, ...): a long word wraps instead of widening the page. */
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 @media (max-width: 640px) {
@@ -365,6 +372,10 @@ details.toolp-panel > summary {
   .toolp-header {
     text-align: left;
     margin-bottom: var(--space-5);
+  }
+  /* Left with the title: centred, the box sat indented once the screen was wider than its 62ch. */
+  .toolp-lead {
+    margin-left: 0;
   }
   .toolp-page {
     padding: var(--space-4) var(--space-3) var(--space-8);
