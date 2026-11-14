@@ -195,7 +195,6 @@ export const multiCurrencyNetWorthEn = {
     },
     related: {
       heading: 'Understand your net worth',
-      lead: 'From what net worth is to managing money across currencies.',
       /**
        * One entry per candidate in the page's `RELATED_CANDIDATES`, in the same
        * order. The component holds the slug and the `data-attr` label, because
@@ -649,7 +648,6 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     },
     related: {
       heading: 'अपनी शुद्ध संपत्ति को समझें',
-      lead: 'शुद्ध संपत्ति क्या है, इससे लेकर कई मुद्राओं में पैसा संभालने तक।',
       items: [
         {
           kicker: 'बुनियाद',
@@ -1058,7 +1056,6 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     },
     related: {
       heading: 'Entiende tu patrimonio neto',
-      lead: 'Desde qué es el patrimonio neto hasta cómo gestionar dinero en varias monedas.',
       items: [
         {
           kicker: 'Fundamentos',
@@ -1479,7 +1476,6 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     },
     related: {
       heading: 'Porozumějte svému čistému jmění',
-      lead: 'Od toho, co čisté jmění je, po správu peněz ve více měnách.',
       items: [
         {
           kicker: 'Základy',
@@ -1868,7 +1864,6 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     },
     related: {
       heading: 'तुमची निव्वळ संपत्ती समजून घ्या',
-      lead: 'निव्वळ संपत्ती म्हणजे काय इथपासून अनेक चलनांमधील पैशांच्या व्यवस्थापनापर्यंत.',
       items: [
         {
           kicker: 'मूलतत्त्वे',

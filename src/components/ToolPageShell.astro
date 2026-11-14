@@ -24,12 +24,17 @@ interface Props {
   locale: Locale;
   breadcrumb: { home: string; freeTools: string; this: string };
   eyebrow: string;
-  title: string;
-  /** Three parts: phones show the first and the last. */
-  lead: { before: string; wide: string; after: string };
-  faq: { heading: string; items: { q: string; a: string }[] };
+  /** One string, or two parts where phones show only the first. */
+  title: string | { lead: string; wide: string };
+  /** One string, or three parts where phones show the first and the last. */
+  lead: string | { before: string; wide: string; after: string };
+  /** A flat list of questions, or the same in named groups (each group's id is its anchor). */
+  faq: { heading: string; items?: Question[]; sections?: { id: string; title: string; items: Question[] }[] };
+  /** The cards. Links to more go in the `related-footer` slot, only where a real destination fits. */
   related: { heading: string; cards: { url: string; dataAttr: string; kicker: string; title: string; desc: string }[] };
 }
+
+interface Question { q: string; a: string }
 
 const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 ---
@@ -45,9 +50,15 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 
   <header class="toolp-header">
     <p class="toolp-eyebrow">{eyebrow}</p>
-    <h1 class="toolp-title"><LangRuns text={title} locale={locale} /></h1>
+    <h1 class="toolp-title">
+      {typeof title === 'string'
+        ? <LangRuns text={title} locale={locale} />
+        : <><LangRuns text={title.lead} locale={locale} /><span class="toolp-wideOnly"><LangRuns text={title.wide} locale={locale} /></span></>}
+    </h1>
     <p class="toolp-lead">
-      {lead.before}<span class="toolp-wideOnly">{lead.wide}</span>{lead.after}
+      {typeof lead === 'string'
+        ? lead
+        : <>{lead.before}<span class="toolp-wideOnly">{lead.wide}</span>{lead.after}</>}
     </p>
   </header>
 
@@ -57,11 +68,22 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 
   <details class="toolp-panel toolp-faq">
     <summary class="toolp-sectionTitle disclosure">{faq.heading}</summary>
-    {faq.items.map((f) => (
+    {(faq.items ?? []).map((f) => (
       <details class="toolp-faqItem">
         <summary class="toolp-faqQ disclosure">{f.q}</summary>
         <p class="toolp-faqA">{f.a}</p>
       </details>
+    ))}
+    {(faq.sections ?? []).map((section) => (
+      <div class="toolp-faqGroup" role="group" aria-labelledby={`toolp-faq-${section.id}-h`}>
+        <h3 id={`toolp-faq-${section.id}-h`} class="toolp-faqGroupTitle">{section.title}</h3>
+        {section.items.map((f) => (
+          <details class="toolp-faqItem">
+            <summary class="toolp-faqQ disclosure">{f.q}</summary>
+            <p class="toolp-faqA">{f.a}</p>
+          </details>
+        ))}
+      </div>
     ))}
   </details>
 
@@ -78,6 +100,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
           </a>
         ))}
       </div>
+      <slot name="related-footer" />
     </aside>
   )}
 </section>
@@ -149,7 +172,8 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   line-height: 1.55;
   max-width: 62ch;
   margin: 0 auto;
-  text-wrap: balance;
+  /* Keeps a lone last word off its own line; ignored where unsupported. */
+  text-wrap: pretty;
 }
 .toolp-panel {
   margin-top: var(--space-8);
@@ -206,7 +230,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   text-decoration: underline;
 }
 /* The chevrons come from .disclosure. */
-.toolp-faq > summary {
+details.toolp-panel > summary {
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -238,6 +262,54 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   color: var(--color-text-secondary);
   font-size: 0.95rem;
   line-height: 1.6;
+}
+/* The questions of one topic, under a small heading (the loan comparison). */
+.toolp-faqGroup {
+  margin-top: var(--space-4);
+}
+.toolp-faqGroupTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--space-2);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+/* Links to more lessons, under the cards. text-decoration (not a bottom
+   border) so the underline follows a link that wraps. */
+.toolp-relatedFooter {
+  margin: var(--space-4) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  justify-content: flex-end;
+  align-items: center;
+}
+.toolp-relatedAll {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-deep-blue);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.toolp-relatedAllSecondary {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.toolp-relatedAll:hover,
+.toolp-relatedAll:focus-visible,
+.toolp-relatedAllSecondary:hover,
+.toolp-relatedAllSecondary:focus-visible {
+  color: var(--color-deep-blue);
+  text-decoration-style: solid;
 }
 .toolp-relatedGrid {
   display: grid;
@@ -271,6 +343,8 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 .toolp-relatedTitle {
   font-family: var(--font-heading);
   font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
   color: var(--color-deep-blue);
   /* A long word wraps instead of widening the page at large text sizes. */
   overflow-wrap: anywhere;
@@ -313,6 +387,11 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   }
   .toolp-relatedCard {
     padding: var(--space-3) 40px var(--space-3) var(--space-3);
+  }
+  /* Stacked: side by side, the two links wrap into ragged lines here. */
+  .toolp-relatedFooter {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>
