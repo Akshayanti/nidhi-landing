@@ -610,27 +610,4 @@ const faqSchema = {
       padding: var(--space-4) var(--space-3);
     }
   }
-
-  /* :global() escapes Astro's component scoping so the rule actually
-     matches when [data-theme="dark"] is set on <html>. */
-  :global([data-theme="dark"]) .mcnw-shareBtn {
-    color: var(--neutral-page-bg-dark);
-  }
-
-  :global([data-theme="dark"]) .mcnw-resetBtn:hover,
-  :global([data-theme="dark"]) .mcnw-resetBtn:focus-visible {
-    color: var(--neutral-page-bg-dark);
-  }
-
-  :global([data-theme="dark"]) .mcnw-bannerWarn {
-    background: var(--warning-dark-bg);
-    border-color: var(--warning-dark-border);
-    color: var(--warning-light-text-amber);
-  }
-
-  :global([data-theme="dark"]) .mcnw-csvErrors {
-    background: var(--warning-dark-bg);
-    border-color: var(--warning-dark-border);
-    color: var(--warning-light-text-amber);
-  }
 </style>
