@@ -46,6 +46,8 @@ const countLine = isDev
 const formId = `subscribe-form-${variant}`;
 const statusId = `subscribe-status-${variant}`;
 const inputId = `subscribe-email-${variant}`;
+const confirmSpelledId = `subscribe-confirm-spelled-${variant}`;
+const confirmTextId = `subscribe-confirm-text-${variant}`;
 ---
 
 <section class={`subscribe subscribe--${variant}`} aria-label={t.region} data-variant={variant}>
@@ -83,9 +85,12 @@ const inputId = `subscribe-email-${variant}`;
           </div>
           {/* Shown before anything is sent, so a typo can be caught. */}
           <div class="subscribe-confirm" data-confirm hidden>
-            <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
+            <p class="subscribe-confirm-text"><span id={confirmTextId}>{t.confirmPrompt}</span> <strong data-confirm-email></strong></p>
+          {/* For the yes button's description only: the address one character at
+              a time. The plain address above stays readable for braille and copy. */}
+          <span id={confirmSpelledId} data-confirm-spelled hidden></span>
             <div class="subscribe-confirm-actions">
-              <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+              <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes aria-describedby={`${confirmTextId} ${confirmSpelledId}`} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
               <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
             </div>
           </div>
@@ -160,9 +165,12 @@ const inputId = `subscribe-email-${variant}`;
         <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
         {/* Shown before anything is sent, so a typo can be caught. */}
         <div class="subscribe-confirm" data-confirm hidden>
-          <p class="subscribe-confirm-text">{t.confirmPrompt} <strong data-confirm-email></strong></p>
+          <p class="subscribe-confirm-text"><span id={confirmTextId}>{t.confirmPrompt}</span> <strong data-confirm-email></strong></p>
+          {/* For the yes button's description only: the address one character at
+              a time. The plain address above stays readable for braille and copy. */}
+          <span id={confirmSpelledId} data-confirm-spelled hidden></span>
           <div class="subscribe-confirm-actions">
-            <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+            <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes aria-describedby={`${confirmTextId} ${confirmSpelledId}`} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
             <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
           </div>
         </div>
@@ -385,16 +393,21 @@ const inputId = `subscribe-email-${variant}`;
       if (!confirmEl) return false;
       pendingEmail = email;
       if (confirmEmail) confirmEmail.textContent = email;
+      // A screen reader gets the address one character at a time (spaces
+      // between them), so a typo is heard, not swallowed in a word. It is text,
+      // never an attribute.
+      var spelled = confirmEl.querySelector('[data-confirm-spelled]');
+      if (spelled) spelled.textContent = email.split('').join(' ');
       if (input) input.readOnly = true;
       if (button) button.hidden = true;
       confirmEl.hidden = false;
-      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; try { yesBtn.focus(); } catch (_) {} }
+      if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = msg.confirmYes; try { yesBtn.focus(); } catch (_) {} }
       return true;
     }
     function closeConfirm() {
       pendingEmail = '';
-      if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; }
-      if (changeBtn) changeBtn.disabled = false;
+      if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = msg.confirmYes; }
+      if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       if (confirmEl) confirmEl.hidden = true;
       if (input) input.readOnly = false;
       if (button) button.hidden = false;
@@ -493,9 +506,12 @@ const inputId = `subscribe-email-${variant}`;
     async function send(email) {
       if (submitting || !email) return;
       submitting = true;
-      if (yesBtn) { yesBtn.disabled = true; yesBtn.textContent = msg.sending; }
-      if (changeBtn) changeBtn.disabled = true;
-      setStatus('', 'idle');
+      if (yesBtn) { yesBtn.setAttribute('aria-disabled', 'true'); yesBtn.textContent = msg.sending; }
+      if (changeBtn) changeBtn.setAttribute('aria-disabled', 'true');
+      // The buttons stay focusable (aria-disabled, not disabled), so focus is
+      // not dropped to the top of the page, and the status line says it is
+      // sending for a reader who cannot see the button change.
+      setStatus(msg.sending, 'sending');
 
       // Identify the browser's anon PostHog distinct_id to the server-side
       // subscriber ID *before* the first capture so this event and all
@@ -526,12 +542,19 @@ const inputId = `subscribe-email-${variant}`;
       // need to — the Apps Script always replies with a confirmation
       // email on any valid submission, so the UX message is the same
       // either way: "check your inbox to confirm".
+      // A request that hangs is given up after 20 seconds, so the form
+      // answers instead of saying "Sending" for ever.
+      var abort = typeof AbortController === 'function' ? new AbortController() : null;
+      var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
       fetch(endpoint, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
+        signal: abort ? abort.signal : undefined,
       }).then(function () {
+        if (giveUp) clearTimeout(giveUp);
+        setStatus('', 'idle');
         // Clear any prior dismiss — an actual subscribe beats "not now."
         // We do NOT write subscription state here. The CTA stays visible
         // until the user clicks the confirmation link in their email
@@ -540,17 +563,18 @@ const inputId = `subscribe-email-${variant}`;
         clearDismissState();
         form.reset();
         closeConfirm();
-        if (changeBtn) changeBtn.disabled = false;
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
         submitting = false;
         showSuccessInSession(email);
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_sent', { variant: variant });
         }
       }).catch(function () {
+        if (giveUp) clearTimeout(giveUp);
         submitting = false;
         setStatus(msg.error, 'error');
-        if (yesBtn) { yesBtn.disabled = false; yesBtn.textContent = msg.confirmYes; }
-        if (changeBtn) changeBtn.disabled = false;
+        if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = msg.confirmYes; }
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       });
     }
 
@@ -627,7 +651,15 @@ const inputId = `subscribe-email-${variant}`;
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action, white on the navy
      box at the end of a lesson and filled blue on a plain page. */
-  .subscribe-button:disabled { cursor: wait; }
+  .subscribe-button:disabled,
+  .subscribe-button[aria-disabled="true"] { cursor: wait; }
+  /* Unavailable, not faded (docs/color-palette.md): the underline goes dashed. */
+  .subscribe-confirm-change[aria-disabled="true"] { cursor: wait; text-decoration-style: dashed; }
+  /* Spoken, not shown: the button already reads "Sending". */
+  .subscribe-status--sending {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 
   .subscribe-confirm { margin-top: var(--space-3); text-align: left; }
   .subscribe-confirm[hidden] { display: none; }
@@ -650,7 +682,7 @@ const inputId = `subscribe-email-${variant}`;
     cursor: pointer;
   }
   .subscribe--full .subscribe-confirm-change { color: rgba(255, 255, 255, 0.85); }
-  .subscribe--full .subscribe-confirm-change:hover:not(:disabled) { color: white; }
+  .subscribe--full .subscribe-confirm-change:hover:not([aria-disabled="true"]) { color: white; }
   .subscribe-confirm-change:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
 
   .subscribe-status {
