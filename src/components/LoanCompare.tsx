@@ -46,6 +46,7 @@ import {
   loanFromInput,
   computeNoPointsBaseline,
   parseNumber,
+  pointsCostAboveFee,
   unreadableOptionalFields,
   type OptionalField,
 } from '../utils/loan/inputs.ts';
@@ -198,6 +199,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['original loan is invalid', 'refiOriginal'],
   // `computeFromInput` (src/utils/loan/inputs.ts).
   ['optional boxes cannot be read', 'optionalUnreadable'],
+  ['points cost is more than the fee', 'pointsAboveFee'],
 ];
 
 /** The two messages that carry a count of months, which goes back in as `{months}`. */
@@ -1390,7 +1392,11 @@ function VendorCard({
   const hasError = Boolean(result.error);
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
-  const badOptional = new Set<OptionalField>(unreadableOptionalFields(vendor));
+  const badOptional = new Set<OptionalField>([
+    ...unreadableOptionalFields(vendor),
+    // A points cost above the fee it is part of is marked the same way.
+    ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
+  ]);
   // When that is what is wrong, the required boxes are not marked as well.
   const requiredError = hasError && badOptional.size === 0;
   const headingId = id('heading');
@@ -3150,17 +3156,24 @@ function RefinanceSection({
               value={formatMoney(Math.abs(cmp.savingsMinor), currency)}
               emphasized
             />
+            {/* Three kinds of break-even, each with its own words: a cost paid
+                in cash, closing costs that went into the new loan, and
+                nothing to pay back at all (which used to read "n/a"). */}
             <ResultRow
               label={strings.refi.breakEven}
               value={
-                Number.isFinite(cmp.breakEvenMonths)
-                  ? months(cmp.breakEvenMonths, strings.months)
-                  : strings.results.never
+                cmp.breakEvenKind === 'none'
+                  ? cmp.paymentLower ? strings.refi.fromFirstMonth : strings.refi.nothingToRecoup
+                  : Number.isFinite(cmp.breakEvenMonths)
+                    ? months(cmp.breakEvenMonths, strings.months)
+                    : strings.results.never
               }
               hint={
-                Number.isFinite(cmp.breakEvenMonths)
-                  ? strings.refi.breakEvenHint
-                  : strings.refi.breakEvenNever
+                cmp.breakEvenKind === 'none'
+                  ? cmp.paymentLower ? strings.refi.fromFirstMonthHint : strings.refi.nothingToRecoupHint
+                  : cmp.breakEvenKind === 'balance'
+                    ? Number.isFinite(cmp.breakEvenMonths) ? strings.refi.breakEvenBalanceHint : strings.refi.breakEvenBalanceNever
+                    : Number.isFinite(cmp.breakEvenMonths) ? strings.refi.breakEvenHint : strings.refi.breakEvenNever
               }
             />
           </dl>

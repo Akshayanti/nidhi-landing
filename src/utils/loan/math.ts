@@ -1281,6 +1281,19 @@ export interface RefinanceComparison {
    */
   breakEvenMonths: number;
   /**
+   * What the break-even measures.
+   *   - `'cash'`: something was paid in cash at the refinance (closing costs,
+   *     a penalty); the months until the lower payments due have covered it.
+   *   - `'balance'`: the closing costs went into the new loan. The months
+   *     until the payments saved, less any cash cost, outweigh the extra
+   *     still owed on the new loan.
+   *   - `'none'`: nothing to pay back; `breakEvenMonths` is 0 and
+   *     `paymentLower` says whether there is a saving from the first month.
+   */
+  breakEvenKind: 'cash' | 'balance' | 'none';
+  /** Whether the first payment due on the new loan is lower than the one it replaces. */
+  paymentLower: boolean;
+  /**
    * What the original loan charges for being cleared early, in minor units:
    * zero when it has no such clause or the refinance falls after its last
    * month. Already inside `refinanceTotalMinor`.
@@ -1299,6 +1312,65 @@ export interface RefinanceComparison {
 export interface RefinanceOriginalLoan {
   inputs: LoanInputs;
   mode: LoanMode;
+}
+
+/**
+ * Months after a refinance until it has paid for itself, from the payments
+ * due on the two loans: `oldRows` are the original loan's rows after the
+ * refinance month, `newRows` the new loan's from its first month.
+ * `Infinity` if it never does. A loan that has ended pays nothing and owes
+ * nothing.
+ *
+ * Without `countBalances` (a cost paid in cash): the first month by which
+ * the payments saved so far have covered the cash cost.
+ *
+ * With `countBalances` (closing costs added to the new loan): the new loan
+ * starts behind by those costs, so what is still owed is counted too. The
+ * position each month is the payments saved so far, less the cash cost,
+ * plus what the original loan would owe less what the new one owes; the
+ * first month it is not negative is the break-even.
+ *
+ * One thing would flatter the refinance here. A new loan with a higher
+ * payment (a shorter term) brings its balance down faster, and the interest
+ * that saves would be counted as the refinance's doing, although paying the
+ * same amount into the original loan saves interest too. So in this mode the
+ * original loan is given the same money: each month it pays the larger of
+ * its own payment due and the new loan's, the excess coming off what it
+ * owes. At the same rate the position then never recovers the costs,
+ * whatever the term, which is the right answer. Where the new payment is
+ * lower, nothing changes.
+ */
+export function refinanceBreakEven(
+  oldRows: AmortizationRow[],
+  newRows: AmortizationRow[],
+  cashCostMinor: number,
+  countBalances: boolean = false,
+): number {
+  const last = Math.max(oldRows.length, newRows.length);
+  let saved = 0;
+  if (!countBalances) {
+    for (let k = 1; k <= last; k++) {
+      saved += (oldRows[k - 1]?.payment ?? 0) - (newRows[k - 1]?.payment ?? 0);
+      if (saved >= cashCostMinor) return k;
+    }
+    return Infinity;
+  }
+  // What the original loan owes when the comparison starts.
+  let owed = oldRows.length > 0 ? oldRows[0].balance + oldRows[0].principal : 0;
+  for (let k = 1; k <= last; k++) {
+    const row = oldRows[k - 1];
+    const newRow = newRows[k - 1];
+    // The month's interest at the rate the original loan's own row shows.
+    // While nothing extra has been paid, `owed` is that row's opening
+    // balance and this is its interest to the cent.
+    const opening = row ? row.balance + row.principal : 0;
+    const interest = row && opening > 0 ? roundMinor((owed * row.interest) / opening) : 0;
+    const paid = Math.min(owed + interest, Math.max(row?.payment ?? 0, newRow?.payment ?? 0));
+    owed = owed + interest - paid;
+    saved += paid - (newRow?.payment ?? 0);
+    if (saved + owed - (newRow?.balance ?? 0) >= cashCostMinor) return k;
+  }
+  return Infinity;
 }
 
 /**
@@ -1434,24 +1506,22 @@ export function refinanceComparison(
     if (!stopped.error && stopped.schedule.length > refiMonth) oldDue = stopped.schedule;
   }
   const newDue = newLoan.contractSchedule;
-  let breakEvenMonths: number;
-  if (cashCost <= 0) {
-    breakEvenMonths = 0;
-  } else {
-    breakEvenMonths = Infinity;
-    let saved = 0;
-    const last = Math.max(oldDue.length - refiMonth, newDue.length);
-    for (let k = 1; k <= last; k++) {
-      saved += (oldDue[refiMonth + k - 1]?.payment ?? 0) - (newDue[k - 1]?.payment ?? 0);
-      if (saved >= cashCost) { breakEvenMonths = k; break; }
-    }
-  }
+  // Closing costs that went into the new loan are not cash, but they are
+  // not free either: they are owed, with interest. Dividing a cash cost of
+  // nothing by the monthly saving said "0", which the page printed as "n/a"
+  // (#531). The balances are then counted too.
+  const rolledIn = rollFeeIntoPrincipal && newOriginationFeeMinor > 0;
+  const breakEvenKind: RefinanceComparison['breakEvenKind'] = rolledIn ? 'balance' : cashCost > 0 ? 'cash' : 'none';
+  const breakEvenMonths =
+    breakEvenKind === 'none' ? 0 : refinanceBreakEven(oldDue.slice(refiMonth), newDue, cashCost, rolledIn);
 
   return {
     refinanceTotalMinor: refiTotal,
     keepTotalMinor: keepTotal,
     savingsMinor: savings,
     breakEvenMonths,
+    breakEvenKind,
+    paymentLower: (oldDue[refiMonth]?.payment ?? 0) > (newDue[0]?.payment ?? 0),
     penaltyMinor,
     extrasCarried: carriedExtra > 0 || carriedLumps.length > 0,
     snapshotAtRefi: snapshot,

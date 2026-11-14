@@ -46,6 +46,26 @@ export type OptionalField =
 export { OPTIONAL_UNREADABLE };
 
 /**
+ * The message for a points cost larger than the fee it is part of. Written,
+ * like the one above, so that the tool's analytics files it under "other".
+ */
+export const POINTS_ABOVE_FEE = 'The points cost is more than the fee above. The fee includes the points, so it cannot be smaller. Enter a larger fee or a smaller points cost.';
+
+/**
+ * Whether the points cost is more than the fee. The points are part of the
+ * fee, so the offer without points is "fee minus points cost". With a fee
+ * of 1,000 and points of 2,500 that used to be clamped to zero: break-even
+ * was then worked out on a cost of 1,000, a wrong figure that looked right,
+ * and with no fee at all the cost vanished and the row said "n/a" (#531).
+ * The two boxes contradict each other, so the offer says so.
+ */
+export function pointsCostAboveFee(v: VendorInput): boolean {
+  const cost = parseNumber(v.pointsCostMajor);
+  if (!Number.isFinite(cost) || cost <= 0) return false;
+  return cost > (parseNumber(v.feeMajor) || 0);
+}
+
+/**
  * The optional boxes that hold something which is not what the box is for:
  * "€2,500" or "-300" as a fee, "200 a month" as an extra payment, "12-5000"
  * as a lump sum. Each of these used to be read as zero, or skipped, without
@@ -137,6 +157,7 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   // An optional box that cannot be read is an error, like a required one:
   // a result that quietly left it out would look complete and be wrong.
   if (unreadableOptionalFields(v).length > 0) return emptyResult(0, OPTIONAL_UNREADABLE);
+  if (pointsCostAboveFee(v)) return emptyResult(0, POINTS_ABOVE_FEE);
   const { inputs, mode } = loanFromInput(v, currency);
   return computeLoan(inputs, mode);
 }
@@ -171,12 +192,18 @@ export function computeNoPointsBaseline(v: VendorInput, currency: string): LoanR
   const reduction = parseNumber(v.pointsRateReductionPct);
   if (!Number.isFinite(cost) || cost <= 0) return null;
   if (!Number.isFinite(reduction) || reduction <= 0) return null;
+  // The two boxes contradict each other; the offer itself carries the error.
+  if (pointsCostAboveFee(v)) return null;
 
   const baseline: VendorInput = {
     ...v,
-    // Subtract the points cost from the entered fee. Clamp at zero
-    // because a baseline "fee minus points" can never be negative.
-    feeMajor: String(Math.max(0, (parseNumber(v.feeMajor) || 0) - cost)),
+    // The points are part of the fee, so the offer without them has a fee
+    // smaller by exactly their cost.
+    feeMajor: String((parseNumber(v.feeMajor) || 0) - cost),
+    // This offer has no points: without this, a fee made smaller by their
+    // cost would itself be "less than the points cost".
+    pointsCostMajor: '',
+    pointsRateReductionPct: '',
     // Add the rate reduction back to recover the no-points rate.
     annualRatePct: String((parseNumber(v.annualRatePct) || 0) + reduction),
   };
