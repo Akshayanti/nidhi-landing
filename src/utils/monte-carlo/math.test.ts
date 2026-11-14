@@ -248,3 +248,30 @@ describe('sanitizeInputs', () => {
     assert.equal(sanitizeInputs({ ...SAVE_ONLY, withdrawYears: 25 }).withdrawYears, 0);
   });
 });
+
+describe('amounts a link can ask for are capped (#354)', () => {
+  const base = { start: 10_000, monthly: 500, saveYears: 30, stockPct: 60, withdrawal: 0, withdrawYears: 0, feePct: 0, returns: 'historical' as const, paths: 100 };
+
+  it('caps the starting amount, the monthly amount and the withdrawal', async () => {
+    const m = await import('./math.ts');
+    const clean = m.sanitizeInputs({ ...base, start: 1e308, monthly: 1e308, withdrawal: 1e308, withdrawYears: 30 });
+    assert.equal(clean.start, m.MAX_START);
+    assert.equal(clean.monthly, m.MAX_MONTHLY);
+    assert.equal(clean.withdrawal, m.MAX_WITHDRAWAL);
+    // Just under the caps is left alone.
+    assert.equal(m.sanitizeInputs({ ...base, start: 999_999_999_999 }).start, 999_999_999_999);
+  });
+
+  it('the largest plan there can be still gives finite numbers, on every setting', async () => {
+    const m = await import('./math.ts');
+    for (const returns of m.RETURN_SETTINGS) {
+      const r = m.simulate({ ...base, start: 1e308, monthly: 1e308, saveYears: 60, stockPct: 100, withdrawal: 1e308, withdrawYears: 60, returns, paths: 100 });
+      const bad: string[] = [];
+      const walk = (v: unknown, path: string) => {
+        if (typeof v === 'number') { if (!Number.isFinite(v)) bad.push(path); } else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`);
+      };
+      walk(r, returns);
+      assert.deepEqual(bad.slice(0, 5), []);
+    }
+  });
+});

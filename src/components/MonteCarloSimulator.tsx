@@ -7,6 +7,9 @@ import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   MAX_FEE_PCT,
+  MAX_MONTHLY,
+  MAX_START,
+  MAX_WITHDRAWAL,
   QUOTED_RATES,
   RETURN_SETTINGS,
   RUN_OPTIONS,
@@ -342,11 +345,11 @@ export default function MonteCarloSimulator({
   }, [hydrated, settled, defaultCurrency]);
 
   const errors = {
-    start: !isValidNumber(form.start, 0, 1e12),
-    monthly: !isValidNumber(form.monthly, 0, 1e10),
+    start: !isValidNumber(form.start, 0, MAX_START),
+    monthly: !isValidNumber(form.monthly, 0, MAX_MONTHLY),
     saveYears: !isValidNumber(form.saveYears, 0, 60, true),
     stockPct: !isValidNumber(form.stockPct, 0, 100),
-    withdrawal: form.withdrawOn && !isValidNumber(form.withdrawal, 1, 1e11),
+    withdrawal: form.withdrawOn && !isValidNumber(form.withdrawal, 1, MAX_WITHDRAWAL),
     withdrawYears: form.withdrawOn && !isValidNumber(form.withdrawYears, 1, 60, true),
     feePct: !isValidNumber(form.feePct, 0, MAX_FEE_PCT),
   };
@@ -453,8 +456,8 @@ export default function MonteCarloSimulator({
               ))}
             </select>
           </div>
-          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={setField('start')} invalid={errors.start} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(1e12, numberLocale) })} hint={strings.fields.startHint} />
-          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={setField('monthly')} invalid={errors.monthly} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(1e10, numberLocale) })} />
+          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={setField('start')} invalid={errors.start} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(MAX_START, numberLocale) })} hint={strings.fields.startHint} />
+          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={setField('monthly')} invalid={errors.monthly} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(MAX_MONTHLY, numberLocale) })} />
           <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={setField('saveYears')} invalid={errors.saveYears} error={t(strings.fields.yearsError, { min: grouped(0, numberLocale), max: grouped(60, numberLocale) })} max={60} hint={strings.fields.saveYearsHint} />
         </div>
         <p className="mcs-hint mcs-crossLink">
@@ -613,7 +616,7 @@ export default function MonteCarloSimulator({
           )}
           {form.withdrawOn && (
             <div className="mcs-grid mcs-grid--two">
-              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={setField('withdrawal')} invalid={errors.withdrawal} error={t(strings.fields.amountError, { min: grouped(1, numberLocale), max: grouped(1e11, numberLocale) })} hint={strings.withdraw.amountHint} />
+              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={setField('withdrawal')} invalid={errors.withdrawal} error={t(strings.fields.amountError, { min: grouped(1, numberLocale), max: grouped(MAX_WITHDRAWAL, numberLocale) })} hint={strings.withdraw.amountHint} />
               <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={setField('withdrawYears')} invalid={errors.withdrawYears} error={t(strings.fields.yearsError, { min: grouped(1, numberLocale), max: grouped(60, numberLocale) })} max={60} hint={strings.withdraw.yearsHint} />
             </div>
           )}

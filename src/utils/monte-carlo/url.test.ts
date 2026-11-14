@@ -114,3 +114,34 @@ describe('page starting currency and the language switch', () => {
     assert.equal(decodeState('c=EUR')?.currency, 'EUR');
   });
 });
+
+describe('numbers in a link are plain decimals only (#354)', () => {
+  it('reads a number only as the page writes one', async () => {
+    const { decodeState, DEFAULTS } = await import('./url.ts');
+    // Number() would read these as 16, 1000 and 12.
+    for (const raw of ['0x10', '1e3', '%2012%20', '+5', '-0x10', 'Infinity', '-Infinity', 'NaN', '1,000', '१२']) {
+      assert.equal(decodeState(`s=${raw}&y=25`)?.start, DEFAULTS.start, raw);
+    }
+    assert.equal(decodeState('s=16&y=25')?.start, 16);
+    assert.equal(decodeState('s=-5&y=25')?.start, 0);
+    assert.equal(decodeState('f=0.25')?.feePct, 0.25);
+    assert.equal(decodeState('n=1e3')?.paths, DEFAULTS.paths);
+  });
+
+  it('caps what a link can ask for', async () => {
+    const { decodeState } = await import('./url.ts');
+    const { MAX_START, MAX_MONTHLY, MAX_WITHDRAWAL } = await import('./math.ts');
+    const s = decodeState('s=999999999999999&m=999999999999999&w=999999999999999&r=30');
+    assert.deepEqual([s?.start, s?.monthly, s?.withdrawal], [MAX_START, MAX_MONTHLY, MAX_WITHDRAWAL]);
+    // More digits than any amount has is not a number here at all.
+    assert.equal(decodeState('s=' + '9'.repeat(400))?.start, (await import('./url.ts')).DEFAULTS.start);
+  });
+
+  it('a return setting is looked up among its own three codes', async () => {
+    const { decodeState, DEFAULTS } = await import('./url.ts');
+    for (const e of ['constructor', 'toString', '__proto__', 'hasOwnProperty', 'x', '']) {
+      assert.equal(decodeState(`s=5&e=${e}`)?.returns, DEFAULTS.returns, e);
+    }
+    assert.equal(decodeState('e=c')?.returns, 'cautious');
+  });
+});

@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'tools-read-other-digits',
+        text: {
+          en: 'The free tools now read numbers typed with Devanagari, Eastern Arabic or Persian digits. If your keyboard writes १२३, the tools take it as 123 and no longer ask you for a number.',
+          hi: 'मुफ़्त टूल अब देवनागरी, पूर्वी अरबी या फ़ारसी अंकों में लिखी संख्याएँ भी पढ़ लेते हैं। अगर आपका कीबोर्ड १२३ लिखता है, तो टूल उसे 123 मानते हैं और अब संख्या भरने को नहीं कहते।',
+          es: 'Las herramientas gratuitas ya leen los números escritos con cifras devanagari, árabes orientales o persas. Si tu teclado escribe १२३, las herramientas lo toman como 123 y ya no te piden un número.',
+          cs: 'Bezplatné nástroje teď přečtou i\u00a0čísla napsaná dévanágarskými, východoarabskými nebo perskými číslicemi. Když vaše klávesnice píše १२३, nástroje to berou jako 123 a\u00a0už po vás nechtějí číslo.',
+          mr: 'मोफत साधने आता देवनागरी, पूर्व अरबी किंवा फारसी अंकांत लिहिलेल्या संख्याही वाचतात. तुमचा कीबोर्ड १२३ लिहीत असेल, तर साधने ते 123 असे वाचतात आणि आता संख्या भरायला सांगत नाहीत.',
+        },
+      },
+      {
         id: 'invest-or-pay-off-says-what-it-assumes',
         text: {
           en: 'The invest or pay off tool is plainer about three things. The debt\'s rate is now shown as what it costs over a year when interest is charged monthly (6.5% comes to 6.70%), so it sits fairly beside the investment\'s yearly return. If you type your own return, the tool says its ups and downs stay those of world stocks, far wider than a savings account\'s. And this tool and the Monte Carlo simulator both say their return history is measured in US dollars.',
