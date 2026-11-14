@@ -10,4 +10,5 @@
 - [Tool page shell 14 Nov](tool-page-shell-review-2026-11-14.md) — #594/#595 shell: fixes verified, one focus style, unnamed notes aside, servers rebuilt mid-review
 - [Share link review 14 Nov](share-link-review-2026-11-14.md) — #601: swap label top-aligned, CSS order vs tab order, nw dialog steals focus on copy
 - [Links underlined 14 Nov](links-underlined-review-2026-11-14.md) — #628: rule is (0,1,2) despite :where; navs are link-only; colour-only link scan recipe
+- [Contrast PR 14 Nov](contrast-pr-review-2026-11-14.md) — #629: placeholders fixed; newsletter box focus rings 1.07:1 light on callout blue; en search hint cut at 375
 - [Phone pass Nov 2026](phone-pass-2026-11.md) — touch, hydration, print, forced-colour and email causes; emulation pitfalls (smooth scroll, font flags, widened viewport)

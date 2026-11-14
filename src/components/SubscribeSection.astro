@@ -621,6 +621,8 @@ const inputId = `subscribe-email-${variant}`;
   /* On the blue box the teal ring cannot be seen (1.07:1), so every control
      there shows focus in white (8.6:1). */
   .subscribe--full .subscribe-box :focus-visible { outline-color: var(--neutral-white); }
+  /* The field is white in the light theme: the ring stands off it by 2px. */
+  .subscribe--full .subscribe-input:focus-visible { outline-offset: 2px; }
 
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action, white on the navy

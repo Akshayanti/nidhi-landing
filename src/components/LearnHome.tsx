@@ -558,10 +558,10 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        {/* The lessons are in English, so the search reads English words. In
-            English the placeholder is only an example; in every other
-            language it is the one instruction that matters, so it is a line
-            under the box that does not vanish at the first key (#397). */}
+        {/* The hint is a line under the box in every language, not a
+            placeholder: it does not vanish at the first key, and outside
+            English it is the one instruction that matters, since the search
+            reads English words (#397). */}
         <p id="learn-search-hint" className="learn-searchHint">{strings.searchPlaceholder}</p>
         {/* Only the count is announced, once typing has paused: the result
             links below are found by moving on, not read out on every key. */}
