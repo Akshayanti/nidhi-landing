@@ -1159,23 +1159,29 @@ function sendReminderEmail_(email, confirmToken) {
     '<!doctype html><html lang="en"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta name="color-scheme" content="light">' +
+    '<meta name="supported-color-schemes" content="light">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
+    '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
     '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
-        '<tr><td align="center" style="padding:24px 12px;">' +
-          '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+        '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
+          '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
             brandBannerHtml_(cfg, campaign) +
-            '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
               '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:#666;font-size:14px;">Or copy and paste this link:</p>' +
-              '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0 0 20px;color:#666;font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#00796B;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
               '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
           '</table>' +
+          '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
       '</table>' +
     '</body></html>';
@@ -1945,23 +1951,29 @@ function sendConfirmationEmail_(email, confirmToken) {
     '<!doctype html><html lang="en"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta name="color-scheme" content="light">' +
+    '<meta name="supported-color-schemes" content="light">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
+    '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
     '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
-        '<tr><td align="center" style="padding:24px 12px;">' +
-          '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+        '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
+          '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
             banner +
-            '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
               '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
               '<p style="margin:0 0 12px;color:#666;font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
-              '<p style="margin:0 0 20px;color:#666;font-size:13px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#009688;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0 0 20px;color:#666;font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#00796B;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
               '<p style="margin:0;color:#666;font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign) +
           '</table>' +
+          '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
       '</table>' +
     '</body></html>';
@@ -2026,18 +2038,22 @@ function sendWelcomeEmail_(email, unsubToken) {
     '<!doctype html><html lang="en"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta name="color-scheme" content="light">' +
+    '<meta name="supported-color-schemes" content="light">' +
     '<title>' + escapeHtml_(subject) + '</title>' +
+    '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
     '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
-        '<tr><td align="center" style="padding:24px 12px;">' +
-          '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+        '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
+          '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
             banner +
-            '<tr><td style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
               '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up , nothing else. No digests, no surprises, no "special offers".</p>' +
               '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#009688;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
               '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if anything ever lands wrong , a real person reads it.</p>' +
               '<p style="margin:24px 0 0;color:#555;font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
@@ -2046,6 +2062,7 @@ function sendWelcomeEmail_(email, unsubToken) {
             // double-stamp the UTM params on the final href.
             footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ true, campaign).replace('{{UNSUBSCRIBE_URL}}', escapeHtml_(unsubPageUrlBare)) +
           '</table>' +
+          '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
       '</table>' +
     '</body></html>';
@@ -2080,7 +2097,7 @@ function brandBannerHtml_(cfg, campaign) {
   return (
     '<tr><td style="padding:0;">' +
       '<div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
-      '<div style="padding:24px 28px 20px;border-bottom:1px solid #eee;">' +
+      '<div class="nm-px" style="padding:24px 28px 20px;border-bottom:1px solid #eee;">' +
         '<a href="' + escapeHtml_(bannerHref) + '" style="text-decoration:none;color:inherit;display:inline-block;">' +
           '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ' - Money, understood." width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
         '</a>' +
@@ -2103,21 +2120,21 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
   var rssHref     = withUtm_(cfg.siteUrl + '/rss.xml', campaign);
 
   return (
-    '<tr><td style="padding:20px 28px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.5;">' +
+    '<tr><td class="nm-px" style="padding:20px 28px;background:#fafafa;border-top:1px solid #eee;font-size:14px;color:#5A5A5A;line-height:1.5;">' +
       (isNewsletter ?
         '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:#0D47A1;text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(unsubLink) + '" style="color:#777;text-decoration:underline;">Unsubscribe</a> &middot; ' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">Privacy</a> &middot; ' +
-          '<a href="' + escapeHtml_(rssHref) + '" style="color:#777;text-decoration:underline;">RSS</a>' +
+          '<a href="' + escapeHtml_(unsubLink) + '" style="color:#5A5A5A;text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a></p><p style="margin:0 0 8px;">' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#5A5A5A;text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(rssHref) + '" style="color:#5A5A5A;text-decoration:underline;">RSS</a>' +
         '</p>'
       :
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#777;text-decoration:underline;">Privacy</a> &middot; ' +
-          '<a href="' + escapeHtml_(rssHref) + '" style="color:#777;text-decoration:underline;">RSS</a>' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#5A5A5A;text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(rssHref) + '" style="color:#5A5A5A;text-decoration:underline;">RSS</a>' +
         '</p>'
       ) +
-      '<p style="margin:0;color:#999;">Educational, not financial advice. Everyone\u2019s situation is different.</p>' +
+      '<p style="margin:0;color:#5A5A5A;">Educational, not financial advice. Everyone\u2019s situation is different.</p>' +
     '</td></tr>'
   );
 }
