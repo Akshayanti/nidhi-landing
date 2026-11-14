@@ -350,7 +350,7 @@ export const es: Dict = {
     },
     works: {
       textSize: 'El texto crece con el tamaño de texto de tu navegador y con el zoom.',
-      keyboard: 'Se puede llegar con el teclado a los enlaces, los botones y los campos de los formularios, el elemento en el que estás aparece resaltado y cada página empieza con un enlace que salta al contenido principal.',
+      keyboard: 'Los enlaces, los botones y los campos de los formularios están diseñados para llegar a ellos con el teclado, el elemento en el que estás aparece resaltado y cada página empieza con un enlace que salta al contenido principal. Las barreras de abajo recogen las excepciones.',
       motion: 'Si tu dispositivo pide movimiento reducido, las animaciones y el desplazamiento suave se desactivan.',
       theme: 'Hay un tema claro y uno oscuro, que se elige con el selector de la parte superior de la página o se toma de tu dispositivo.',
       charts: 'En las herramientas gratuitas, las líneas de un gráfico se distinguen por su trazo además de por el color, y los gráficos se pueden leer con el teclado.',
@@ -358,8 +358,8 @@ export const es: Dict = {
       languages: 'Las páginas propias del sitio están en cinco idiomas. Las lecciones están solo en inglés.',
     },
     reviewed: {
-      scope: 'La última revisión completa fue el 10 de noviembre de 2026. Abarcó 62 páginas en cinco anchos de pantalla, en el tema claro y en el oscuro y en los cinco idiomas, con un comprobador automático y comprobaciones a mano. Una segunda pasada miró el uso táctil, las conexiones lentas, la impresión, el modo de alto contraste y los correos.',
-      limits: 'Es una revisión, no una garantía. No fue una prueba con lectores con discapacidad ni probó todos los lectores de pantalla en todas las páginas, así que no puede demostrar que el sitio funcione para todo el mundo.',
+      scope: 'La última revisión completa fue el 10 de noviembre de 2026. Abarcó 62 páginas en cinco anchos de pantalla, en el tema claro y en el oscuro y en los cinco idiomas, con un comprobador automático y comprobaciones a mano, en un navegador de escritorio. Una segunda pasada miró el uso táctil, las conexiones lentas, la impresión, el modo de alto contraste y los correos, imitando cada uno en ese navegador.',
+      limits: 'Es una revisión, no una garantía. No incluyó pruebas con lectores con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
     },
     barriers: {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
@@ -371,11 +371,11 @@ export const es: Dict = {
         overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
         figures: 'Las figuras de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
         touch: 'En un teléfono, el gráfico de Monte Carlo no se puede ampliar con dos dedos, y abrir la explicación de un término en una lección puede hacer que la página se deslice hacia un lado.',
-        largeText: 'Con un tamaño de texto mucho mayor, un enlace de la ruta de aprendizaje en español hace que la página quede más ancha que la pantalla de un teléfono.',
+        largeText: 'Con un tamaño de texto mucho mayor en una pantalla estrecha, un enlace de la ruta de aprendizaje en español y partes de algunas herramientas gratuitas hacen que la página quede más ancha que la pantalla.',
         print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
-        shareWindow: 'En la calculadora de patrimonio neto, el botón que copia el enlace en la ventana de compartir queda cortado y no se puede alcanzar en una pantalla muy estrecha, con mucho zoom o con el teléfono en horizontal.',
-        logo: 'El enlace del logotipo, arriba, se anuncia sin la palabra nidhi, así que pedirle nidhi a una herramienta de control por voz no lo encuentra.',
+        shareWindow: 'En un teléfono, copiar un enlace para compartir en el comparador de préstamos o en la calculadora de patrimonio neto hace que la página quede más ancha que la pantalla, y en la ventana de compartir del patrimonio neto el botón de copiar queda cortado en una pantalla muy estrecha, con mucho zoom o con el teléfono en horizontal.',
+        logo: 'El enlace del logotipo, arriba, tiene un nombre distinto de las palabras que muestra, así que una herramienta de control por voz puede no encontrarlo cuando dices esas palabras.',
         addressCheck: 'Cuando el formulario de la lista de espera o del boletín pregunta si una dirección de correo es correcta, al lector de pantalla no se le avisa de que la pregunta ha aparecido.',
         volunteerForm: 'El formulario de voluntariado está solo en inglés, y la página de voluntariado no lo dice antes del botón que lo abre.',
       },
@@ -385,7 +385,7 @@ export const es: Dict = {
       between: ' o envía un mensaje a ',
       after: ' en Instagram, con la página y lo que intentabas hacer.',
       diagnosis: 'No hace falta que compartas ningún diagnóstico.',
-      setting: 'Si un ajuste en la página te ayudaría, dime cuál.',
+      setting: 'Si algún ajuste en la página pudiera ayudarte, dime cuál.',
     },
   },
 

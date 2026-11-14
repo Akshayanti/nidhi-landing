@@ -161,6 +161,12 @@ const breadcrumbSchema = {
     color: var(--color-teal-dark);
   }
 
+  /* Dark theme: the paler teal of the pair, as on the belief callouts. */
+  :global([data-theme="dark"]) .a11y-body a,
+  :global([data-theme="dark"]) .a11y-body a:hover {
+    color: var(--palette-teal-dark);
+  }
+
   @media (max-width: 480px) {
     .a11y-title { font-size: 1.6rem; }
   }

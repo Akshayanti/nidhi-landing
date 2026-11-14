@@ -334,7 +334,7 @@ export const cs: Dict = {
     },
     works: {
       textSize: 'Text se zvětšuje s velikostí textu nastavenou v prohlížeči a se zvětšením stránky.',
-      keyboard: 'K odkazům, tlačítkům a polím formulářů se dostanete klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah.',
+      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, abyste se k nim dostali klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
       motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
       theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
       charts: 'V nástrojích zdarma se čáry grafu liší vzorem i barvou a grafy se dají číst klávesnicí.',
@@ -342,8 +342,8 @@ export const cs: Dict = {
       languages: 'Vlastní stránky webu jsou v pěti jazycích. Lekce jsou jen v angličtině.',
     },
     reviewed: {
-      scope: 'Poslední úplná kontrola proběhla 10. listopadu 2026. Pokryla 62 stránek v pěti šířkách obrazovky, ve světlém i tmavém motivu a ve všech pěti jazycích, automatickým nástrojem i ručně. Druhé kolo se zaměřilo na dotykové ovládání, pomalé připojení, tisk, režim vysokého kontrastu a e-maily.',
-      limits: 'Je to kontrola, ne záruka. Nebyl to test s lidmi s postižením a nezkoušela každou čtečku obrazovky na každé stránce, takže nemůže doložit, že web funguje všem.',
+      scope: 'Poslední úplná kontrola proběhla 10. listopadu 2026. Pokryla 62 stránek v pěti šířkách obrazovky, ve světlém i tmavém motivu a ve všech pěti jazycích, automatickým nástrojem i ručně, v prohlížeči na počítači. Druhé kolo se zaměřilo na dotykové ovládání, pomalé připojení, tisk, režim vysokého kontrastu a e-maily, vždy napodobené v tomto prohlížeči.',
+      limits: 'Je to kontrola, ne záruka. Nezahrnovala testování s lidmi s postižením, se čtečkou obrazovky, na skutečném telefonu ani v režimu Windows High Contrast, takže nemůže doložit, že web funguje všem.',
     },
     barriers: {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
@@ -355,11 +355,11 @@ export const cs: Dict = {
         overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
         figures: 'Obrázky v lekcích, které se posouvají do strany, nejde posouvat klávesnicí.',
         touch: 'V telefonu nejde graf Monte Carlo zvětšit dvěma prsty a otevření vysvětlení pojmu v lekci může stránku posunout do strany.',
-        largeText: 'Při výrazně větším textu jeden odkaz na španělské vzdělávací cestě roztáhne stránku víc, než je šířka obrazovky telefonu.',
+        largeText: 'Při výrazně větším textu na úzké obrazovce roztáhne stránku víc, než je šířka obrazovky, jeden odkaz na španělské vzdělávací cestě a části některých nástrojů zdarma.',
         print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
         emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
-        shareWindow: 'V kalkulačce čistého jmění je tlačítko pro zkopírování odkazu v okně sdílení oříznuté a nedá se na něj dostat na velmi úzké obrazovce, při velkém zvětšení nebo s telefonem na šířku.',
-        logo: 'Odkaz s logem nahoře se ohlašuje bez slova nidhi, takže ho hlasové ovládání pod názvem nidhi nenajde.',
+        shareWindow: 'Když v telefonu zkopírujete odkaz ke sdílení ve Srovnání úvěrů nebo v kalkulačce čistého jmění, stránka se roztáhne víc, než je šířka obrazovky, a v okně sdílení kalkulačky čistého jmění je tlačítko pro kopírování oříznuté na velmi úzké obrazovce, při velkém zvětšení nebo s telefonem na šířku.',
+        logo: 'Odkaz s logem nahoře má jiný název, než jaká slova ukazuje, takže ho hlasové ovládání nemusí najít, když tato slova vyslovíte.',
         addressCheck: 'Když se formulář čekací listiny nebo newsletteru zeptá, zda je e-mailová adresa správně, čtečka obrazovky se nedozví, že se otázka objevila.',
         volunteerForm: 'Formulář pro dobrovolníky je jen v angličtině a stránka o dobrovolné pomoci to neříká před tlačítkem, které ho otevírá.',
       },
@@ -367,7 +367,7 @@ export const cs: Dict = {
     report: {
       before: 'Napište na ',
       between: ' nebo pošlete zprávu účtu ',
-      after: ' na Instagramu, o kterou stránku jde a o co jste se pokoušeli.',
+      after: ' na Instagramu a napište, o kterou stránku jde a o co jste se pokoušeli.',
       diagnosis: 'Diagnózu sdílet nemusíte.',
       setting: 'Pokud by vám pomohlo nějaké nastavení na stránce, napište mi které.',
     },

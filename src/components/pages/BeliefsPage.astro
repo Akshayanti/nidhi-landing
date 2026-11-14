@@ -328,6 +328,12 @@ const breadcrumbSchema = {
     margin: 0;
   }
 
+  /* Devanagari needs the taller line the site gives Hindi and Marathi body
+     text; the scoped rule above would otherwise win. */
+  :global(html:is([lang="hi"], [lang="mr"])) .belief p {
+    line-height: 1.75;
+  }
+
   /* "In practice": what is done about the belief, and one link to the record.
      Set off by a hairline and the label, not by smaller or fainter text, so it
      stays as readable as the belief above it. */
