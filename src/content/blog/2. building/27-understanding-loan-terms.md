@@ -14,7 +14,10 @@ takeaways:
   - "How prepayment and break-even maths change the total cost"
 order: 27
 pubDate: 2026-06-17
-updatedDate: 2026-11-08
+updatedDate: 2026-11-14
+corrections:
+  - date: 2026-11-14
+    note: "The APR table counted bundled insurance as if it were all paid on the first day, so two APRs were too high: loan B is 3.27%, not 3.30%, and loan D is 3.42%, not 3.59%. Loan D is not the most expensive of the four, as the lesson said, but it still costs more than loan A."
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -86,15 +89,15 @@ Specific definitions of APR vary by jurisdiction. Some countries require more co
 | Loan | Rate | Costs included in APR | Term | APR |
 |---|---|---|---|---|
 | A | 3.2% | €0 | 25 years | 3.20% |
-| B | 3.1% | €3,000 fee + ~€2,500 bundled insurance | 25 years | 3.30% |
+| B | 3.1% | €3,000 fee + ~€2,500 bundled insurance | 25 years | 3.27% |
 | C | 3.5% | €0 | 25 years | 3.50% |
-| D | 2.9% | €5,000 fee + ~€13,000 bundled insurance | 25 years | 3.59% |
+| D | 2.9% | €5,000 fee + ~€13,000 bundled insurance | 25 years | 3.42% |
 
-The loan with the lowest rate (D) is actually the most expensive once you include its fees and bundled products. The lowest *APR* is the lowest actual cost.
+The loan with the lowest rate (D) is not the cheapest once its fee and bundled insurance are counted: A costs less on both measures, its APR and its total (about €363,500 for A against about €369,800 for D). For loans of the same amount and term, a lower APR usually means a lower cost; the total in euros is the check.
 
-*The APR column annualises the monthly rate by multiplying it by 12, as US and Canadian documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.35%, 3.56% and 3.65%), in the same order.*
+*The APR column annualises the monthly rate by multiplying it by 12, as US and Canadian documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.32%, 3.56% and 3.47%), in the same order.*
 
-*The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product priced into APR; they're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
+*The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product. The APR counts each cost when it is paid: the fee at the start, and the insurance spread evenly over the 300 monthly payments (about €8 a month for B, about €43 for D). They're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
 
 > **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. What an APR must include is set by consumer-credit law, which differs by country. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.
 
@@ -233,7 +236,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 
 1. **Normalise the amount and term.** Quote every lender on the same loan amount and the same term. Otherwise the numbers aren't comparable
 2. **Get the full APR.** Include all mandatory fees and bundled products
-3. **Compute the total cost of borrowing.** Monthly payment × number of payments + any upfront fees. This is the total money you'll hand over for the loan
+3. **Compute the total cost of borrowing.** Monthly payment × number of payments, plus upfront fees and any bundled costs such as insurance. This is the total money you'll hand over for the loan
 4. **Check all restrictions.** Prepayment penalties, rate reset dates, insurance bundles, account fees, early-termination clauses
 5. **Stress-test variable elements.** If the rate can change, what's the worst realistic scenario? Can you afford it?
 6. **Only then compare headline rates.** They're the last thing to look at, not the first
@@ -241,7 +244,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 | Offer | Amount | Term | Rate | Fees + bundled | APR | Fixed/Variable | Prepayment | Total cost |
 |---|---|---|---|---|---|---|---|---|
 | A | €250,000 | 25y | 3.2% | €0 | 3.20% | Fixed 25y | Free | €363,510 |
-| B | €250,000 | 25y | 3.1% | €3,000 + €2,500 insurance | 3.30% | Fixed 5y, then variable | Penalty first 5y | Depends on rate path |
+| B | €250,000 | 25y | 3.1% | €3,000 + €2,500 insurance | 3.27% | Fixed 5y, then variable | Penalty first 5y | Depends on rate path |
 | C | €250,000 | 25y | 3.5% | €0 | 3.50% | Fixed 25y | Free | €375,470 |
 
 *Illustrative.*

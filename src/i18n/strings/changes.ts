@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'loan-monthly-premium-not-a-fee',
+        text: {
+          en: 'The loan comparison used to suggest adding the lifetime cost of bundled insurance to the fee box. That treats years of monthly premiums as paid on the first day, which makes the APR look higher than it is. Its questions and small print now say so: a cost paid once goes in the fee box, a cost paid every month is not modelled, and the totals are the check.',
+          hi: 'लोन तुलना पहले यह सुझाती थी कि लोन के साथ जुड़े बीमे की पूरी अवधि की लागत शुल्क वाले फ़ील्ड में जोड़ दी जाए। इससे बरसों के मासिक प्रीमियम पहले ही दिन चुकाए हुए मान लिए जाते हैं, और APR असल से ज़्यादा दिखता है। अब इसके सवाल-जवाब और नीचे की टिप्पणी यही बताते हैं: एक बार चुकाई जाने वाली लागत शुल्क वाले फ़ील्ड में जाती है, हर महीने चुकाई जाने वाली लागत इसमें शामिल नहीं है, और कुल रकमों से इसकी जाँच होती है।',
+          es: 'El comparador de préstamos sugería sumar al campo de la comisión el costo de un seguro vinculado durante toda la vida del préstamo. Eso trata años de primas mensuales como si se pagaran el primer día, y el APR parece más alto de lo que es. Sus preguntas y su letra pequeña ahora lo dicen: un costo que se paga una sola vez va en el campo de la comisión, un costo que se paga cada mes no se incluye en el cálculo, y los totales sirven de comprobación.',
+          cs: 'Srovnání úvěrů dřív radilo přičíst celkové náklady na povinné pojištění do pole poplatku. Tím se roky měsíčního pojistného počítají, jako by byly zaplaceny první den, a\u00a0APR pak vypadá vyšší, než je. Otázky a\u00a0poznámka pod čarou to teď říkají: jednorázový náklad patří do pole poplatku, náklad placený každý měsíc výpočet nezahrnuje a\u00a0kontrolou jsou celkové částky.',
+          mr: 'कर्जांची तुलना आधी असे सुचवत होती की कर्जासोबत जोडलेल्या विम्याचा संपूर्ण काळातील खर्च शुल्काच्या रकान्यात जोडावा. त्यामुळे विम्याचे वर्षानुवर्षांचे मासिक हप्ते पहिल्याच दिवशी भरल्यासारखे धरले जातात, आणि APR प्रत्यक्षापेक्षा जास्त दिसतो. आता त्यातील प्रश्नोत्तरे आणि खालील टीप हेच सांगतात: एकदाच भरला जाणारा खर्च शुल्काच्या रकान्यात जातो, दर महिन्याला भरला जाणारा खर्च यात धरलेला नाही, आणि एकूण रकमा हा त्याचा पडताळा आहे.',
+        },
+      },
+      {
         id: 'refinance-counts-penalty',
         text: {
           en: 'The refinance scenario in the loan comparison now counts an early repayment penalty on the loan being refinanced: it has its own line, and it is part of the total and of the break-even. Extra payments you entered now continue on the new loan, so both sides are paid down the same way, and the break-even compares only the payments due. Before, a refinance could look better or worse than it was.',
