@@ -304,6 +304,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
         signal: abort ? abort.signal : undefined,
       }).then(function () {
         if (giveUp) clearTimeout(giveUp);
+        setStatus('', 'idle');
         form.reset();
         closeConfirm();
         if (changeBtn) changeBtn.removeAttribute('aria-disabled');
@@ -416,6 +417,9 @@ const confirmTextId = `${idPrefix}-confirm-text`;
 
   .waitlist-input::placeholder { color: var(--color-text-muted); }
   .waitlist-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
+  /* On the blue card the teal ring cannot be seen, so every control there
+     shows focus in white. */
+  .waitlist-box :focus-visible { outline-color: var(--neutral-white); }
 
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action on the blue card. */

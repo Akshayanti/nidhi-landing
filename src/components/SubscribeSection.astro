@@ -542,6 +542,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         signal: abort ? abort.signal : undefined,
       }).then(function () {
         if (giveUp) clearTimeout(giveUp);
+        setStatus('', 'idle');
         // Clear any prior dismiss — an actual subscribe beats "not now."
         // We do NOT write subscription state here. The CTA stays visible
         // until the user clicks the confirmation link in their email
