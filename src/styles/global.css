@@ -3896,8 +3896,13 @@ details[open] > .disclosure::after,
     min-width: 0;
     overflow-wrap: anywhere;
   }
+  /* Wrapped, each button fills its row: two short right-aligned rows read
+     as an accident. */
   .mcnw-modalFooter {
     flex-wrap: wrap;
+  }
+  .mcnw-modalFooter > .btn {
+    flex: 1 1 auto;
   }
   /* Stacked in one column, the options row must grow to its content:
      with min-height: 0 the row shrank and the Cancel and Copy link buttons
@@ -6991,19 +6996,20 @@ button.mcnw-legendItem:focus-visible {
   flex-wrap: wrap;
   gap: var(--space-2);
 }
-/* A share link's copied-address bar takes its own line under the buttons:
-   after them in the layout, whatever its place in the markup, so the buttons
-   do not move under a finger when it appears and goes (#491). */
+/* A share link's copied-address bar takes its own line under the buttons.
+   It comes after them in the markup too (ToolExport's shareResult), so the
+   buttons do not move under a finger when it appears and goes (#491). */
 .tool-exportButtons > [role='status'] {
   flex-basis: 100%;
-  order: 1;
 }
-/* See SwapLabel in ToolExport.tsx: the two labels share one cell. */
+/* See SwapLabel in ToolExport.tsx: the two labels share one cell, and the
+   shorter one sits in the middle of the room the longer one needs. */
 .tool-swapLabel {
   display: inline-grid;
 }
 .tool-swapLabel > * {
   grid-area: 1 / 1;
+  align-self: center;
 }
 .tool-swapLabel__ghost {
   visibility: hidden;

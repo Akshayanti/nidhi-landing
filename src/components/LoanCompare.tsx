@@ -1250,18 +1250,6 @@ export default function LoanCompare({
             >
               <SwapLabel label={strings.toolbar.share} alternate={strings.toolbar.shareCopied} swapped={copied} />
             </button>
-            {copied && shareUrl && (
-              <div className="lc-shareUrlBar" role="status" aria-live="polite">
-                <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
-                <input
-                  className="lc-shareUrlInput"
-                  value={shareUrl}
-                  readOnly
-                  onFocus={(e) => e.target.select()}
-                  aria-label={strings.toolbar.shareUrlAria}
-                />
-              </div>
-            )}
             <span
               id="lc-share-status"
               className="lc-srOnly"
@@ -1271,6 +1259,20 @@ export default function LoanCompare({
               {copied ? strings.toolbar.shareStatus : ''}
             </span>
           </>
+        }
+        shareResult={
+          copied && shareUrl && (
+            <div className="lc-shareUrlBar" role="status" aria-live="polite">
+              <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
+              <input
+                className="lc-shareUrlInput"
+                value={shareUrl}
+                readOnly
+                onFocus={(e) => e.target.select()}
+                aria-label={strings.toolbar.shareUrlAria}
+              />
+            </div>
+          )
         }
         xlsxAttr="lc-export-xlsx"
         pdfAttr="lc-export-pdf"

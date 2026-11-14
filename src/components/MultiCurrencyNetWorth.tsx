@@ -727,19 +727,21 @@ export default function MultiCurrencyNetWorth({
             >
               {strings.toolbar.share}
             </button>
-            {(copied || copyFailed) && shareUrl && (
-              <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
-                <span className="mcnw-shareUrlLabel">{copied ? strings.toolbar.copiedLabel : strings.toolbar.copyPrompt}</span>
-                <input
-                  className="mcnw-shareUrlInput"
-                  value={shareUrl}
-                  readOnly
-                  onFocus={(e) => e.target.select()}
-                  aria-label={strings.toolbar.shareUrlAria}
-                />
-              </div>
-            )}
               </>
+            }
+            shareResult={
+              (copied || copyFailed) && shareUrl && (
+                <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
+                  <span className="mcnw-shareUrlLabel">{copied ? strings.toolbar.copiedLabel : strings.toolbar.copyPrompt}</span>
+                  <input
+                    className="mcnw-shareUrlInput"
+                    value={shareUrl}
+                    readOnly
+                    onFocus={(e) => e.target.select()}
+                    aria-label={strings.toolbar.shareUrlAria}
+                  />
+                </div>
+              )
             }
             xlsxAttr="mcnw-export-xlsx"
             pdfAttr="mcnw-export-pdf"
