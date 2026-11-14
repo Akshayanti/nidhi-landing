@@ -209,6 +209,12 @@ async function main() {
     cwd: repoRoot,
   });
 
+  // 3. Scoped style rules that can never match (see lint-scoped-styles.mjs).
+  const scopedResult = spawnSync(process.execPath, [join(here, 'lint-scoped-styles.mjs')], {
+    stdio: 'inherit',
+    cwd: repoRoot,
+  });
+
   if (diagnostics.length > 0) {
     console.error('\nLint failures:');
     for (const d of diagnostics) {
@@ -221,6 +227,9 @@ async function main() {
 
   if (figResult.status !== 0) {
     process.exit(figResult.status ?? 1);
+  }
+  if (scopedResult.status !== 0) {
+    process.exit(scopedResult.status ?? 1);
   }
 
   console.log(`\u2713 lint: ${scanned} file(s) checked, no issues.`);

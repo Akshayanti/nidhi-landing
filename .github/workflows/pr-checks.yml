@@ -121,6 +121,7 @@ jobs:
             # The lint script and this workflow itself.
             'scripts/lint.mjs'
             'scripts/lint-figures.mjs'
+            'scripts/lint-scoped-styles.mjs'
             '.github/workflows/pr-checks.yml'
             # Site-wide base components and public assets that affect every page.
             'src/components/BaseHead.astro'
