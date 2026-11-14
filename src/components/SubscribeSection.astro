@@ -83,8 +83,8 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
             <button type="submit" class="btn btn--onCallout subscribe-button">{t.button}</button>
           </div>
           {/* Shown before anything is sent, so a typo can be caught. */}
-          <div class="subscribe-confirm" data-confirm role="group" aria-labelledby={confirmTextId} hidden>
-            <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email></strong></p>
+          <div class="subscribe-confirm" data-confirm hidden>
+            <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email aria-hidden="true"></strong><span class="sr-only" data-confirm-spelled></span></p>
             <div class="subscribe-confirm-actions">
               <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes aria-describedby={confirmTextId} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
               <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
@@ -160,8 +160,8 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         </div>
         <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
         {/* Shown before anything is sent, so a typo can be caught. */}
-        <div class="subscribe-confirm" data-confirm role="group" aria-labelledby={confirmTextId} hidden>
-          <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email></strong></p>
+        <div class="subscribe-confirm" data-confirm hidden>
+          <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email aria-hidden="true"></strong><span class="sr-only" data-confirm-spelled></span></p>
           <div class="subscribe-confirm-actions">
             <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes aria-describedby={confirmTextId} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
             <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
@@ -386,6 +386,11 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
       if (!confirmEl) return false;
       pendingEmail = email;
       if (confirmEmail) confirmEmail.textContent = email;
+      // A screen reader gets the address one character at a time (spaces
+      // between them), so a typo is heard, not swallowed in a word. It is text,
+      // never an attribute.
+      var spelled = confirmEl.querySelector('[data-confirm-spelled]');
+      if (spelled) spelled.textContent = email.split('').join(' ');
       if (input) input.readOnly = true;
       if (button) button.hidden = true;
       confirmEl.hidden = false;
@@ -641,7 +646,8 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
      box at the end of a lesson and filled blue on a plain page. */
   .subscribe-button:disabled,
   .subscribe-button[aria-disabled="true"] { cursor: wait; }
-  .subscribe-confirm-change[aria-disabled="true"] { cursor: wait; opacity: 0.6; }
+  /* Unavailable, not faded (docs/color-palette.md): the underline goes dashed. */
+  .subscribe-confirm-change[aria-disabled="true"] { cursor: wait; text-decoration-style: dashed; }
   /* Spoken, not shown: the button already reads "Sending". */
   .subscribe-status--sending {
     position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
