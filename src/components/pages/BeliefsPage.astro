@@ -26,6 +26,15 @@ interface Props {
 const { locale } = Astro.props;
 const strings = dict(locale);
 const { beliefs } = strings;
+const { inPractice } = beliefs;
+// Where each "In practice" note sends the reader: the page that holds the record.
+const practiceHref = {
+  noPlanner: localizedPath(locale, '/blog/glossary/'),
+  accessibility: localizedPath(locale, '/accessibility/'),
+  freeForever: localizedPath(locale, '/blog/'),
+  rulesOfThumb: localizedPath(locale, '/editorial-policy/'),
+  noAds: localizedPath(locale, '/privacy/'),
+};
 
 const siteUrl = 'https://nidhi.today';
 // Built from the path rather than hardcoded with a locale prefix, so the
@@ -118,6 +127,7 @@ const breadcrumbSchema = {
           <div class="belief-body">
             <strong>{beliefs.items.noPlanner.heading}</strong>
             <p>{beliefs.items.noPlanner.body}</p>
+            <p class="belief-practice"><span class="belief-practice-label">{inPractice.label}</span>{' '}{inPractice.noPlanner.text}{' '}<a href={practiceHref.noPlanner}>{inPractice.noPlanner.link}</a></p>
           </div>
         </div>
 
@@ -128,6 +138,7 @@ const breadcrumbSchema = {
           <div class="belief-body">
             <strong>{beliefs.items.accessibility.heading}</strong>
             <p>{beliefs.items.accessibility.body}</p>
+            <p class="belief-practice"><span class="belief-practice-label">{inPractice.label}</span>{' '}{inPractice.accessibility.text}{' '}<a href={practiceHref.accessibility}>{inPractice.accessibility.link}</a></p>
           </div>
         </div>
 
@@ -138,6 +149,7 @@ const breadcrumbSchema = {
           <div class="belief-body">
             <strong>{beliefs.items.freeForever.heading}</strong>
             <p>{beliefs.items.freeForever.body}</p>
+            <p class="belief-practice"><span class="belief-practice-label">{inPractice.label}</span>{' '}{inPractice.freeForever.text}{' '}<a href={practiceHref.freeForever}>{inPractice.freeForever.link}</a></p>
           </div>
         </div>
 
@@ -148,6 +160,7 @@ const breadcrumbSchema = {
           <div class="belief-body">
             <strong>{beliefs.items.rulesOfThumb.heading}</strong>
             <p>{beliefs.items.rulesOfThumb.body}</p>
+            <p class="belief-practice"><span class="belief-practice-label">{inPractice.label}</span>{' '}{inPractice.rulesOfThumb.text}{' '}<a href={practiceHref.rulesOfThumb}>{inPractice.rulesOfThumb.link}</a></p>
           </div>
         </div>
 
@@ -158,6 +171,7 @@ const breadcrumbSchema = {
           <div class="belief-body">
             <strong>{beliefs.items.noAds.heading}</strong>
             <p>{beliefs.items.noAds.body}</p>
+            <p class="belief-practice"><span class="belief-practice-label">{inPractice.label}</span>{' '}{inPractice.noAds.text}{' '}<a href={practiceHref.noAds}>{inPractice.noAds.link}</a></p>
           </div>
         </div>
 
@@ -258,7 +272,7 @@ const breadcrumbSchema = {
   }
 
   .beliefs-intro {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
     font-style: italic;
@@ -301,16 +315,38 @@ const breadcrumbSchema = {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.0625rem;
     color: var(--color-deep-blue);
     margin-bottom: var(--space-1);
   }
 
+  /* Body size, not smaller: the page is all reading. */
   .belief p {
-    font-size: 0.88rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
-    line-height: 1.7;
+    line-height: 1.6;
     margin: 0;
+  }
+
+  /* Devanagari needs the taller line the site gives Hindi and Marathi body
+     text; the scoped rule above would otherwise win. */
+  :global(html:is([lang="hi"], [lang="mr"])) .belief p {
+    line-height: 1.75;
+  }
+
+  /* "In practice": what is done about the belief, and one link to the record.
+     Set off by a hairline and the label, not by smaller or fainter text, so it
+     stays as readable as the belief above it. */
+  .belief .belief-practice {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .belief-practice-label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-deep-blue);
   }
 
   .belief a {
@@ -321,6 +357,14 @@ const breadcrumbSchema = {
 
   .belief a:hover {
     color: var(--color-teal-dark);
+  }
+
+  /* Dark theme: the usual dark teal is 4.8:1 on the callout's raised surface.
+     The paler teal of the same pair is 7.8:1 there, and the underline, not
+     the colour, is what marks the link. */
+  :global([data-theme="dark"]) .belief a,
+  :global([data-theme="dark"]) .belief a:hover {
+    color: var(--palette-teal-dark);
   }
 
   .cta-block {

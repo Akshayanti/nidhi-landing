@@ -97,6 +97,7 @@ export const cs: Dict = {
       beta: "Beta plánovače",
       editorialPolicy: 'Jak se lekce píšou',
       changes: 'Co se změnilo',
+      accessibility: 'Přístupnost',
       privacy: 'Soukromí',
       cookieSettings: 'Nastavení cookies',
       thirdParty: 'Licence třetích stran',
@@ -265,11 +266,110 @@ export const cs: Dict = {
         body: 'Žádné peníze od investorů. Žádný růstový tým. Žádný billboard u dálnice. Pokud je pro vás nidhi užitečné, řekněte o něm někomu. To je moje hlavní marketingová strategie.',
       },
     },
+    /**
+     * "In practice" notes under the beliefs that make a promise a reader can
+     * check: one fixed label, at most two short sentences, then one link to the
+     * page that holds the record. They state what is done and its limits, never a
+     * guarantee, and carry no date.
+     */
+    inPractice: {
+      label: 'V praxi:',
+      noPlanner: {
+        text: 'Každá lekce má označenou úroveň, takže můžete začít tam, kde právě jste, a slovníček vysvětluje pojmy, které lekce používají.',
+        link: 'Vyhledejte pojem ve slovníčku',
+      },
+      accessibility: {
+        text: 'Při stavbě webu počítám s ovládáním klávesnicí, velikostí textu ve vašem prohlížeči, omezeným pohybem a oběma motivy. Překážky, o kterých vím, ale zůstávají.',
+        link: 'Podívejte se, co funguje a co je ještě otevřené',
+      },
+      freeForever: {
+        text: 'Dnes se každá lekce otevře bez účtu a bez platby. Slib je, že to tak zůstane.',
+        link: 'Otevřete vzdělávací cestu',
+      },
+      rulesOfThumb: {
+        text: 'Od každé lekce chci, aby řekla, proč pravidlo existuje, o jaké doklady se opírá, kde přestává platit a co závisí na vás.',
+        link: 'Přečtěte si, jak se lekce píšou a opravují',
+      },
+      noAds: {
+        text: 'Analytika, která by mohla propojit vaše návštěvy, čeká na váš souhlas, a co napíšete do nástroje, zůstává ve vašem prohlížeči.',
+        link: 'Přečtěte si zásady ochrany soukromí a jejich datované změny',
+      },
+    },
     cta: {
       text: 'Přesvědčilo vás to? Nebo si myslíte, že plácám nesmysly?',
       sub: 'Tak či tak se mi ozvěte, potěší mě to',
       email: 'Napište mi milostný dopis',
       instagram: 'Napište mi do zpráv',
+    },
+  },
+
+  /**
+   * The accessibility page: what works, how it was reviewed, the barriers that
+   * are still open, and how to report one. The barrier list is a record, so an
+   * item is deleted from every catalog when it is fixed and added when one is
+   * found. The address in the report sentence is the same in every language and
+   * lives in the component, between `before` and `after`.
+   */
+  accessibility: {
+    meta: {
+      title: 'Přístupnost: co funguje a co zatím ne | nidhi',
+      description:
+        'Co nidhi nabízí lidem s klávesnicí, čtečkou obrazovky nebo slabším zrakem, jak se web kontroloval, které překážky zůstávají a jak na další upozornit.',
+    },
+    schema: {
+      name: 'Přístupnost',
+      description:
+        'Co nidhi nabízí lidem s klávesnicí, čtečkou obrazovky nebo slabším zrakem, jak se web kontroloval, které překážky zůstávají a jak na další upozornit.',
+      breadcrumbHome: 'Domů',
+      breadcrumbThis: 'Přístupnost',
+    },
+    title: 'Přístupnost',
+    intro:
+      'Chci, aby vám nidhi fungovalo, ať stránku čtete, vidíte, slyšíte nebo ovládáte jakkoli. Zatím to tak úplně není. Tahle stránka říká, co dnes funguje, o čem vím, že je rozbité, a jak mi dát vědět o čemkoli, co vám stojí v cestě.',
+    sections: {
+      works: 'Co dnes funguje',
+      reviewed: 'Jak se web kontroloval',
+      barriers: 'Překážky, o kterých vím',
+      report: 'Dejte mi vědět o překážce',
+    },
+    works: {
+      textSize: 'Text se zvětšuje s velikostí textu nastavenou v prohlížeči a se zvětšením stránky.',
+      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, abyste se k nim dostali klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
+      motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
+      theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
+      charts: 'V nástrojích zdarma se čáry grafu liší vzorem i barvou a grafy se dají číst klávesnicí.',
+      lessons: 'Každá lekce začíná krátkým shrnutím, říká, jak dlouho trvá ji přečíst, a má označenou úroveň, takže se ještě před čtením můžete rozhodnout, co číst.',
+      languages: 'Vlastní stránky webu jsou v pěti jazycích. Lekce jsou jen v angličtině.',
+    },
+    reviewed: {
+      scope: 'Poslední úplná kontrola proběhla 10. listopadu 2026. Pokryla 62 stránek v pěti šířkách obrazovky, ve světlém i tmavém motivu a ve všech pěti jazycích, automatickým nástrojem i ručně, v prohlížeči na počítači. Druhé kolo se zaměřilo na dotykové ovládání, pomalé připojení, tisk, režim vysokého kontrastu a e-maily, vždy napodobené v tomto prohlížeči.',
+      limits: 'Je to kontrola, ne záruka. Nezahrnovala testování s lidmi s postižením, se čtečkou obrazovky, na skutečném telefonu ani v režimu Windows High Contrast, takže nemůže doložit, že web funguje všem.',
+    },
+    barriers: {
+      intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
+      items: {
+        links: 'Některé odkazy uvnitř věty se od okolních slov liší jen barvou.',
+        contrast: 'Část drobného textu je příliš bledá: nápovědy v prázdných polích formulářů a dva malé odkazy v rámečku newsletteru.',
+        forms: 'Ve formulářích čekací listiny a newsletteru se při odesílání a po chybě ztrácí fokus klávesnice a nic neoznámí, že se formulář odesílá.',
+        highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
+        overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
+        figures: 'Obrázky v lekcích, které se posouvají do strany, nejde posouvat klávesnicí.',
+        touch: 'V telefonu nejde graf Monte Carlo zvětšit dvěma prsty a otevření vysvětlení pojmu v lekci může stránku posunout do strany.',
+        largeText: 'Při výrazně větším textu na úzké obrazovce roztáhne stránku víc, než je šířka obrazovky, jeden odkaz na španělské vzdělávací cestě a části některých nástrojů zdarma.',
+        print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
+        emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
+        shareWindow: 'V kalkulačce čistého jmění jsou tlačítka dole v okně sdílení oříznutá, když držíte telefon na šířku nebo při velkém zvětšení, a okno se nedá posunout, abyste se k nim dostali.',
+        logo: 'Odkaz s logem nahoře má jiný název, než jaká slova ukazuje, takže ho hlasové ovládání nemusí najít, když tato slova vyslovíte.',
+        addressCheck: 'Když se formulář čekací listiny nebo newsletteru zeptá, zda je e-mailová adresa správně, čtečka obrazovky se nedozví, že se otázka objevila.',
+        volunteerForm: 'Formulář pro dobrovolníky je jen v angličtině a stránka o dobrovolné pomoci to neříká před tlačítkem, které ho otevírá.',
+      },
+    },
+    report: {
+      before: 'Napište na ',
+      between: ' nebo pošlete zprávu účtu ',
+      after: ' na Instagramu a napište, o kterou stránku jde a o co jste se pokoušeli.',
+      diagnosis: 'Diagnózu sdílet nemusíte.',
+      setting: 'Pokud by vám pomohlo nějaké nastavení na stránce, napište mi které.',
     },
   },
 
