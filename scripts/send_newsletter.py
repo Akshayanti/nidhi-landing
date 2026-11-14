@@ -499,25 +499,41 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
 # brand defaults so authored overrides still win. Classes are kept but
 # inert (they have no effect since <style> blocks are stripped).
 
+# The mail's colours, each named for the site token it copies (:root in
+# src/styles/global.css). The site's stylesheet cannot reach a mail, so the
+# values are repeated here, once (#416). emails/*.html.j2 and
+# scripts/newsletter.gs hold the same set.
+_EMAIL: dict[str, str] = {
+    "blue":   "#0A3D8F",  # --palette-blue: headings, rules
+    "button": "#00796B",  # --semantic-cta-bg-light: links in the lesson (5.3:1 on white)
+    "text":   "#212121",  # --neutral-900: body text
+    "text2":  "#616161",  # --neutral-700: secondary text
+    "muted":  "#5A5A5A",  # --neutral-600: small print
+    "bg":     "#F5F5F5",  # --neutral-25: quote, code and table-heading fills
+    "line":   "#F0F0F0",  # --neutral-50: hairlines
+    "border": "#E0E0E0",  # --neutral-200: table borders, the rule beside an opened expander
+    "tint":   "#E6F2F0",  # the quick check's fill: a teal tint close to the site's quick-check box
+}
+
 _BRAND_STYLES: dict[str, str] = {
     # 5.3:1 on white; the brand teal #009688 is 3.7:1, too faint for text (#485).
-    "a":          "color:#00796B;text-decoration:underline;",
-    "h1":         "color:#0D47A1;font-weight:700;font-size:22px;line-height:1.3;margin:28px 0 12px;letter-spacing:-0.01em;",
-    "h2":         "color:#0D47A1;font-weight:700;font-size:19px;line-height:1.3;margin:28px 0 10px;letter-spacing:-0.01em;",
-    "h3":         "color:#0D47A1;font-weight:600;font-size:16px;line-height:1.35;margin:22px 0 8px;",
-    "h4":         "color:#0D47A1;font-weight:600;font-size:15px;line-height:1.4;margin:18px 0 6px;",
-    "p":          "margin:0 0 14px;line-height:1.7;color:#222;",
-    "ul":         "margin:0 0 14px;padding-left:22px;line-height:1.7;color:#222;",
-    "ol":         "margin:0 0 14px;padding-left:22px;line-height:1.7;color:#222;",
+    "a":          f"color:{_EMAIL['button']};text-decoration:underline;",
+    "h1":         f"color:{_EMAIL['blue']};font-weight:700;font-size:22px;line-height:1.3;margin:28px 0 12px;letter-spacing:-0.01em;",
+    "h2":         f"color:{_EMAIL['blue']};font-weight:700;font-size:19px;line-height:1.3;margin:28px 0 10px;letter-spacing:-0.01em;",
+    "h3":         f"color:{_EMAIL['blue']};font-weight:600;font-size:16px;line-height:1.35;margin:22px 0 8px;",
+    "h4":         f"color:{_EMAIL['blue']};font-weight:600;font-size:15px;line-height:1.4;margin:18px 0 6px;",
+    "p":          f"margin:0 0 14px;line-height:1.7;color:{_EMAIL['text']};",
+    "ul":         f"margin:0 0 14px;padding-left:22px;line-height:1.7;color:{_EMAIL['text']};",
+    "ol":         f"margin:0 0 14px;padding-left:22px;line-height:1.7;color:{_EMAIL['text']};",
     "li":         "margin-bottom:6px;",
-    "blockquote": "margin:16px 0;padding:8px 16px;border-left:3px solid #0D47A1;background:#f0f4f8;color:#445;font-style:italic;",
-    "code":       "background:#f1f5f9;padding:1px 5px;border-radius:3px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:0.9em;color:#0D47A1;",
-    "pre":        "background:#f1f5f9;padding:14px 16px;border-radius:6px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;line-height:1.5;margin:0 0 14px;",
-    "hr":         "border:0;border-top:1px solid #eee;margin:24px 0;",
+    "blockquote": f"margin:16px 0;padding:8px 16px;border-left:3px solid {_EMAIL['blue']};background:{_EMAIL['bg']};color:{_EMAIL['text2']};font-style:italic;",
+    "code":       f"background:{_EMAIL['bg']};padding:1px 5px;border-radius:3px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:0.9em;color:{_EMAIL['blue']};",
+    "pre":        f"background:{_EMAIL['bg']};padding:14px 16px;border-radius:6px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;line-height:1.5;margin:0 0 14px;",
+    "hr":         f"border:0;border-top:1px solid {_EMAIL['line']};margin:24px 0;",
     "table":      "border-collapse:collapse;width:100%;margin:0 0 14px;font-size:14px;",
-    "th":         "border:1px solid #e5e7eb;padding:8px 10px;text-align:left;background:#f8fafc;color:#0D47A1;font-weight:600;",
-    "td":         "border:1px solid #e5e7eb;padding:8px 10px;vertical-align:top;",
-    "strong":     "font-weight:600;color:#0f172a;",
+    "th":         f"border:1px solid {_EMAIL['border']};padding:8px 10px;text-align:left;background:{_EMAIL['bg']};color:{_EMAIL['blue']};font-weight:600;",
+    "td":         f"border:1px solid {_EMAIL['border']};padding:8px 10px;vertical-align:top;",
+    "strong":     f"font-weight:600;color:{_EMAIL['text']};",
     "em":         "font-style:italic;",
     "img":        "max-width:100%;height:auto;border:0;outline:none;display:block;margin:12px 0;border-radius:4px;",
 }
@@ -548,30 +564,6 @@ _BRAND_STYLES: dict[str, str] = {
 # Desktop on Windows uses Word's renderer, which is reliable on table-cell
 # layout but flaky on margins/padding around block-level images. Same
 # rationale as the surrounding email shell template.
-
-# Light-theme colour palette (the email template advertises
-# `color-scheme: light` so dark-theme overrides are intentionally NOT mirrored
-# here — emails always render against the light palette). Source of truth:
-# :root in src/styles/global.css. Kept available for any future inline-style
-# helper that needs to resolve `var(--…)` references on the way to email.
-_BRAND_COLORS: dict[str, str] = {
-    "--color-deep-blue":         "#0D47A1",
-    "--color-deep-blue-light":   "#5472D3",
-    "--color-deep-blue-dark":    "#002171",
-    "--color-teal":              "#00897B",
-    "--color-teal-light":        "#4EBAAA",
-    "--color-teal-dark":         "#005B4F",
-    "--color-success":           "#2E7D32",
-    "--color-warning":           "#F57C00",
-    "--color-text-primary":      "#212121",
-    "--color-text-secondary":    "#616161",
-    "--color-text-muted":        "#757575",
-    "--color-bg":                "#F8F9FA",
-    "--color-bg-white":          "#FFFFFF",
-    "--color-border":            "#E0E0E0",
-    "--color-border-light":      "#F0F0F0",
-}
-
 
 def _figure_slug(relative: str) -> str | None:
     """
@@ -650,7 +642,7 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
         if cap_html.strip():
             replacement_html += (
                 f'<tr><td align="center" '
-                f'style="padding:10px 16px 0;font-size:14px;color:#5A5A5A;'
+                f'style="padding:10px 16px 0;font-size:14px;color:{_EMAIL["muted"]};'
                 f'line-height:1.55;font-style:italic;text-align:center;">'
                 f'{cap_html}</td></tr>'
             )
@@ -674,9 +666,9 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
 # for a quick check, a quiet left rule for the deep layer. Bottom padding
 # is 0 because the last paragraph inside already carries a 14px margin.
 _FLATTENED_DETAILS_STYLES: dict[str, str] = {
-    "quick-check": "background-color:#e6f2f0;border-radius:6px;padding:12px 16px 0;margin:0 0 14px;",
+    "quick-check": f"background-color:{_EMAIL['tint']};border-radius:6px;padding:12px 16px 0;margin:0 0 14px;",
 }
-_FLATTENED_DETAILS_DEFAULT_STYLE = "border-left:2px solid #cbd5e1;padding:2px 0 0 14px;margin:0 0 14px;"
+_FLATTENED_DETAILS_DEFAULT_STYLE = f"border-left:2px solid {_EMAIL['border']};padding:2px 0 0 14px;margin:0 0 14px;"
 # Appended after the brand <p> style by style_inline, so it wins: keeps the
 # lead line close to the text it introduces.
 _FLATTENED_LEAD_STYLE = "margin:0 0 6px;"
@@ -776,7 +768,7 @@ def wrap_tables(node, soup) -> None:
         first_row = table.find("tr")
         if first_row is not None and len(first_row.find_all(["th", "td"])) >= 5:
             note = soup.new_tag("p")
-            note["style"] = "font-size:14px;color:#5A5A5A;margin:0 0 6px;"
+            note["style"] = f"font-size:14px;color:{_EMAIL['muted']};margin:0 0 6px;"
             note["data-html-only"] = ""  # the text part writes whole rows
             note.string = "Wide table: scroll it sideways, or read it on nidhi.today."
             box.insert_before(note)

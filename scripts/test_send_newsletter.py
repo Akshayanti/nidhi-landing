@@ -82,10 +82,10 @@ class FlattenDetailsTest(unittest.TestCase):
         self.assertIn("Inner text that also has to stay visible.", self.html)
 
     def test_wrappers_keep_their_class_and_get_inline_styles(self) -> None:
-        self.assertRegex(self.html, r'<div class="quick-check email-expander" style="background-color:#e6f2f0;')
-        self.assertRegex(self.html, r'<div class="lesson-depth email-expander" style="border-left:2px solid #cbd5e1;')
+        self.assertRegex(self.html, r'<div class="quick-check email-expander" style="background-color:#E6F2F0;')
+        self.assertRegex(self.html, r'<div class="lesson-depth email-expander" style="border-left:2px solid #E0E0E0;')
         # An expander with no known class gets the quiet lesson-depth look.
-        self.assertRegex(self.html, r'<div class="email-expander" style="border-left:2px solid #cbd5e1;')
+        self.assertRegex(self.html, r'<div class="email-expander" style="border-left:2px solid #E0E0E0;')
 
     def test_lead_line_gets_brand_paragraph_style(self) -> None:
         self.assertRegex(self.html, r'<p style="margin:0 0 14px;[^"]*;margin:0 0 6px;"><strong style="font-weight:600;')
@@ -169,6 +169,60 @@ class InPageLinkTest(unittest.TestCase):
         soup = nl.BeautifulSoup('<div><a href="#term-x">x</a></div>', "html.parser")
         nl.absolutize_urls(soup.div, SITE_URL, utm_query="utm_source=newsletter", page_path="/blog/a-lesson/")
         self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson?utm_source=newsletter#term-x")
+
+
+class EmailColoursTest(unittest.TestCase):
+    """The mails keep one set of colours, the site's, in one block per file (#416)."""
+
+    ROOT = Path(__file__).resolve().parent.parent
+    HEX = __import__("re").compile(r"#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b")
+
+    def _block(self, text: str, start: str, end: str) -> dict[str, str]:
+        import re
+        body = text[text.index(start):]
+        body = body[: body.index(end)]
+        return dict(re.findall(r"""['"]?(\w+)['"]?\s*:\s*['"](#[0-9A-Fa-f]{6}|\d+px)['"]""", body))
+
+    def test_templates_use_the_block_and_agree_with_the_scripts(self):
+        gs = (self.ROOT / "scripts" / "newsletter.gs").read_text(encoding="utf-8")
+        gs_block = self._block(gs, "var EMAIL = {", "};")
+        self.assertEqual(gs_block["blue"], "#0A3D8F")
+        self.assertEqual(gs_block["button"], "#00796B")
+        self.assertEqual(gs_block["buttonRadius"], "8px")
+        # Outside its block, the script names a colour, never writes one.
+        rest = gs.replace(gs[gs.index("var EMAIL = {"): gs.index("};", gs.index("var EMAIL = {"))], "")
+        code = "\n".join(l for l in rest.split("\n") if not l.lstrip().startswith(("//", "*", "/*")))
+        self.assertEqual(self.HEX.findall(code), [])
+        for name in ("post.html.j2", "post_teaser.html.j2"):
+            text = (self.ROOT / "emails" / name).read_text(encoding="utf-8")
+            block = self._block(text, "{%- set c = {", "} -%}")
+            for key, value in block.items():
+                self.assertEqual(value, gs_block["buttonRadius" if key == "button_radius" else key], f"{name}: {key}")
+            self.assertEqual(self.HEX.findall(text.split("<!doctype html>", 1)[1]), [], name)
+            self.assertIn('alt="nidhi: Money, understood"', text)
+        for key, value in nl._EMAIL.items():
+            if key in gs_block:
+                self.assertEqual(value, gs_block[key], f"send_newsletter.py: {key}")
+
+    def _code(self, text: str) -> str:
+        """The file without its comment lines and trailing comments."""
+        import re
+        return "\n".join(re.sub(r"\s#\s.*$", "", l) for l in text.split("\n") if not l.lstrip().startswith("#"))
+
+    def test_the_python_side_writes_no_colour_outside_its_block(self):
+        sender = (self.ROOT / "scripts" / "send_newsletter.py").read_text(encoding="utf-8")
+        start = sender.index("_EMAIL: dict[str, str] = {")
+        rest = sender[:start] + sender[sender.index("}\n", start):]
+        # A colour written into a style (an issue number in a docstring is not one).
+        import re
+        css = re.compile(r"(?:color:|background:|solid )\s*(#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b)")
+        self.assertEqual(css.findall(self._code(rest)), [])
+        # The offline preview of the script's mails writes its values out; each
+        # must be one the script itself uses.
+        gs = (self.ROOT / "scripts" / "newsletter.gs").read_text(encoding="utf-8")
+        allowed = {v.upper() for v in self._block(gs, "var EMAIL = {", "};").values()}
+        preview = (self.ROOT / "scripts" / "preview_transactional_emails.py").read_text(encoding="utf-8")
+        self.assertEqual({h.upper() for h in self.HEX.findall(self._code(preview))} - allowed, set())
 
 
 if __name__ == "__main__":
