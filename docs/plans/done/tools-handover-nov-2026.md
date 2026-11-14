@@ -1,5 +1,13 @@
 # Free tools: handover, Nov 11, 2026
 
+> Archived 2026-11-14: the redesign of the five tool pages is finished (#558 to #562, merged Nov 11, 2026), and the owner lifted the restriction below on Nov 14, 2026. No session owns `/free/` any more: a tool change is made like any other change, under the rules in `CLAUDE.md`. The rest of this file is kept as written, as the record of what was decided and handed over.
+>
+> Where it stood on Nov 14, 2026:
+>
+> - **Section 2, decisions:** #368 (APR), #408 (buttons) and #515 ("concentration") are closed as completed (Nov 12, 2026). The two local findings in 2.4 are no longer in the local list, and every tool page carries a `<noscript>` line (`ToolPageShell.astro`).
+> - **Section 3, audit issues:** 28 of the 51 listed are closed. These 23 were still open and are ordinary items in the tracker now, not checked again against the redesigned pages: #362, #374, #384, #385, #388, #421, #424, #451, #457, #467, #477, #479, #484, #497, #498, #502, #503, #504, #505, #506, #517, #521, #522.
+> - **Section 5** is unchanged: #399 and #400 still wait for the owner.
+
 Written by the session that worked through the Nov 2026 audit, for the session that is redesigning the five tool pages (pull requests #558 to #562). From here on, that session owns everything under `/free/`: the tool components, their strings, their maths and their styles. The audit session makes no further changes to the tools.
 
 Everything below marked **Owner** was decided by the owner on Nov 11, 2026. Everything marked **Council** was agreed unanimously by the three-model council on Nov 10 and 11, 2026.
