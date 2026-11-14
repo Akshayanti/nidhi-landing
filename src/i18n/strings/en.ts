@@ -448,7 +448,6 @@ export const en = {
         touch: 'On a phone, the Monte Carlo chart cannot be zoomed with two fingers, and opening the explanation of a term in a lesson can make the page slide sideways.',
         largeText: 'With a much larger text size on a narrow screen, one link on the Spanish learning path and parts of some free tools make the page wider than the screen.',
         print: 'How-to guides print with the site’s menus around them, and in grey text when the dark theme is on.',
-        emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
         shareWindow: 'In the net worth calculator, the buttons at the bottom of the share window are cut off when a phone is held sideways or at very high zoom, and the window cannot be scrolled to reach them.',
       },
     },

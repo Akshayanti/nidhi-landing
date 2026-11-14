@@ -64,7 +64,7 @@ from pathlib import Path
 from typing import Iterable
 
 try:
-    from bs4 import BeautifulSoup, NavigableString  # type: ignore
+    from bs4 import BeautifulSoup, Comment, NavigableString  # type: ignore
     from jinja2 import Environment, FileSystemLoader, select_autoescape
 except ImportError as err:
     print(f"[send_newsletter] Missing dependency: {err}. "
@@ -353,6 +353,7 @@ def extract_post(
     absolutize_urls(content_node, site_url, utm_query=utm_query, page_path=relative)
     flatten_details(content_node, soup)
     style_inline(content_node)
+    wrap_tables(content_node, soup)
     # Run figure replacement AFTER style_inline so the replacement table /
     # img markup we emit isn't mutated by the brand-style passes (e.g. the
     # _BRAND_STYLES["td"] data-table cell border doesn't accidentally land
@@ -499,7 +500,8 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
 # inert (they have no effect since <style> blocks are stripped).
 
 _BRAND_STYLES: dict[str, str] = {
-    "a":          "color:#009688;text-decoration:underline;",
+    # 5.3:1 on white; the brand teal #009688 is 3.7:1, too faint for text (#485).
+    "a":          "color:#00796B;text-decoration:underline;",
     "h1":         "color:#0D47A1;font-weight:700;font-size:22px;line-height:1.3;margin:28px 0 12px;letter-spacing:-0.01em;",
     "h2":         "color:#0D47A1;font-weight:700;font-size:19px;line-height:1.3;margin:28px 0 10px;letter-spacing:-0.01em;",
     "h3":         "color:#0D47A1;font-weight:600;font-size:16px;line-height:1.35;margin:22px 0 8px;",
@@ -603,16 +605,19 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
 
     figures = node.find_all("figure")
     for idx, fig in enumerate(figures, start=1):
-        # Alt text: SVG's <title> wins, then <desc>, then figcaption text,
+        # Alt text: SVG's <desc> if it fits, else its <title>, then figcaption text,
         # then a generic fallback. Truncated to keep alt sane (some clients
         # render the alt as visible body text when images are blocked).
         alt = ""
         svg = fig.find("svg")
         if svg is not None:
-            for sel in ("title", "desc"):
+            # The <desc> carries the figure's point and the <title> only its
+            # name, so the description wins when it fits the alt limit.
+            for sel in ("desc", "title"):
                 el = svg.find(sel)
-                if el and el.get_text(strip=True):
-                    alt = el.get_text(strip=True)
+                text = el.get_text(" ", strip=True) if el else ""
+                if text and (sel == "title" or len(text) <= 240):
+                    alt = text
                     break
 
         cap = fig.find("figcaption")
@@ -645,7 +650,7 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
         if cap_html.strip():
             replacement_html += (
                 f'<tr><td align="center" '
-                f'style="padding:10px 16px 0;font-size:13px;color:#757575;'
+                f'style="padding:10px 16px 0;font-size:14px;color:#5A5A5A;'
                 f'line-height:1.55;font-style:italic;text-align:center;">'
                 f'{cap_html}</td></tr>'
             )
@@ -750,17 +755,115 @@ def style_inline(node) -> None:
         tag["style"] = base + (existing if not existing or existing.endswith(";") else existing + ";")
 
 
+def wrap_tables(node, soup) -> None:
+    """
+    Put each lesson table in a box that scrolls sideways. The mail's outer
+    table has a fixed layout, so a wide table can no longer widen the whole
+    mail on a phone (#478); it scrolls inside its own box instead. Layout
+    tables (a figure and its caption) are left alone. Runs after
+    style_inline, so the note it adds keeps its own style.
+    """
+    for table in node.find_all("table"):
+        if table.get("role") == "presentation" or table.find_parent("table") is not None:
+            continue
+        box = soup.new_tag("div")
+        box["style"] = "overflow-x:auto;margin:0 0 14px;"
+        table.replace_with(box)
+        box.append(table)
+        # A mail app shows no scrollbar and gives the box no keyboard focus,
+        # so a table wide enough to be cut off says so, and where the whole
+        # of it can be read.
+        first_row = table.find("tr")
+        if first_row is not None and len(first_row.find_all(["th", "td"])) >= 5:
+            note = soup.new_tag("p")
+            note["style"] = "font-size:14px;color:#5A5A5A;margin:0 0 6px;"
+            note["data-html-only"] = ""  # the text part writes whole rows
+            note.string = "Wide table: scroll it sideways, or read it on nidhi.today."
+            box.insert_before(note)
+
+
+# Elements that start and end a paragraph in the plain-text part. Everything
+# else is inline and stays on its line: taking every tag boundary as a line
+# break made "A <em>projection</em> takes" read as three lines (#485).
+_TEXT_BLOCKS = {
+    "p", "div", "section", "article", "aside", "blockquote", "pre", "figure",
+    "figcaption", "ul", "ol", "dl", "dt", "dd", "hr", "details",
+    "summary", "h1", "h2", "h3", "h4", "h5", "h6",
+    # Reached only inside a layout table (a figure and its caption): a data
+    # table is written row by row instead.
+    "table", "tr", "td", "th",
+}
+
+
 def html_to_text(node) -> str:
-    """Minimal HTML→text conversion. Adequate for readable plaintext fallback."""
-    text = node.get_text("\n", strip=False)
-    text = html.unescape(text)
+    """HTML to plain text for the text part of the mail.
+
+    Inline elements stay inside their sentence, block elements become
+    paragraphs, a list item starts with "- ", and a table is written one row
+    to a line with " | " between its cells, so a row still reads as a row.
+    """
+    out: list[str] = []
+
+    def squash(text: str) -> str:
+        return re.sub(r"\s+", " ", text)
+
+    def walk(el, in_pre: bool = False) -> None:
+        for child in el.children:
+            name = (getattr(child, "name", None) or "").lower()
+            if not name:
+                if isinstance(child, Comment):
+                    continue
+                if not in_pre and not str(child).strip() and (el.name or "").lower() in ("ul", "ol", "table", "tr"):
+                    continue  # the gap between two list items is not text
+                out.append(str(child) if in_pre else squash(str(child)))
+                continue
+            if name in ("script", "style") or child.has_attr("data-html-only"):
+                continue
+            if name == "br":
+                out.append("\n")
+                continue
+            if name == "img":
+                alt = squash(child.get("alt", "")).strip()
+                if alt:
+                    out.append(f"[Figure: {alt}]")
+                continue
+            if name == "table" and child.get("role") != "presentation":
+                out.append("\n\n")
+                for row in child.find_all("tr"):
+                    cells = [squash(c.get_text(" ", strip=True)) for c in row.find_all(["th", "td"])]
+                    if any(cells):
+                        out.append(" | ".join(cells) + "\n")
+                out.append("\n")
+                continue
+            if name == "li":
+                # One item to a line; the list around it makes the paragraph.
+                if not (out and out[-1].endswith("\n")):
+                    out.append("\n")
+                out.append("- ")
+                walk(child, in_pre)
+                out.append("\n")
+                continue
+            block = name in _TEXT_BLOCKS
+            if block:
+                out.append("\n\n")
+            walk(child, in_pre or name == "pre")
+            if block:
+                out.append("\n\n")
+
+    walk(node)
+    text = html.unescape("".join(out))
+    text = "\n".join(re.sub(r"[ \t]+", " ", line).strip() for line in text.split("\n"))
     # Collapse excessive blank lines (preserve paragraph breaks).
     text = re.sub(r"\n{3,}", "\n\n", text)
-    # Wrap for readability in text email clients.
+    # Wrap for readability in text email clients. A table row is left whole:
+    # folding it would break the row apart again.
     wrapped_lines: list[str] = []
     for line in text.splitlines():
         if not line.strip():
             wrapped_lines.append("")
+            continue
+        if " | " in line:
+            wrapped_lines.append(line)
             continue
         wrapped_lines.extend(textwrap.wrap(line, width=78) or [""])
     return "\n".join(wrapped_lines).strip() + "\n"

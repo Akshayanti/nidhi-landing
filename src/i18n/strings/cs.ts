@@ -353,7 +353,6 @@ export const cs: Dict = {
         touch: 'V telefonu nejde graf Monte Carlo zvětšit dvěma prsty a otevření vysvětlení pojmu v lekci může stránku posunout do strany.',
         largeText: 'Při výrazně větším textu na úzké obrazovce roztáhne stránku víc, než je šířka obrazovky, jeden odkaz na španělské vzdělávací cestě a části některých nástrojů zdarma.',
         print: 'Návody se tisknou i s nabídkami webu kolem a při zapnutém tmavém motivu šedým textem.',
-        emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
         shareWindow: 'V kalkulačce čistého jmění jsou tlačítka dole v okně sdílení oříznutá, když držíte telefon na šířku nebo při velkém zvětšení, a okno se nedá posunout, abyste se k nim dostali.',
       },
     },
