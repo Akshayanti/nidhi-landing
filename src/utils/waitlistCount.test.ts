@@ -67,3 +67,19 @@ describe('the exact-count wording', () => {
     for (const n of [5, 12, 19]) assert.match(pick(n), /lidí/, String(n));
   });
 });
+
+describe('the number a list may show (#354)', () => {
+  it('shows nothing below the threshold and rounds down to the step above it', async () => {
+    const { shownListCount, LIST_COUNT_THRESHOLD, LIST_COUNT_STEP } = await import('./listCount.ts');
+    assert.equal(shownListCount(null), null);
+    assert.equal(shownListCount(0), null);
+    assert.equal(shownListCount(LIST_COUNT_THRESHOLD - 1), null);
+    assert.equal(shownListCount(LIST_COUNT_THRESHOLD), LIST_COUNT_THRESHOLD);
+    assert.equal(shownListCount(LIST_COUNT_THRESHOLD + LIST_COUNT_STEP - 1), LIST_COUNT_THRESHOLD);
+    assert.equal(shownListCount(39), 20);
+    assert.equal(shownListCount(40), 40);
+    assert.equal(shownListCount(1_019), 1_000);
+    // Never more people than there are.
+    for (const n of [20, 21, 59, 60, 137, 5_001]) assert.ok((shownListCount(n) ?? 0) <= n, String(n));
+  });
+});

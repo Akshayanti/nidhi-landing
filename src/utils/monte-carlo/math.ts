@@ -79,6 +79,14 @@ export const DEFAULT_PATHS = 10_000;
 export const DEFAULT_SEED = 43;
 /** Highest yearly fee the page accepts, in percent. */
 export const MAX_FEE_PCT = 5;
+/**
+ * The largest amounts the model takes. Far beyond any plan in any currency,
+ * and small enough that sixty years of growth stays a finite number: a link
+ * can say anything, and `1e308` would otherwise come out as Infinity.
+ */
+export const MAX_START = 1e12;
+export const MAX_MONTHLY = 1e10;
+export const MAX_WITHDRAWAL = 1e11;
 
 export interface SimulationInputs {
   /** Amount invested today, in major units of the chosen currency. */
@@ -221,10 +229,10 @@ function percentilesOf(values: Float64Array): Percentiles {
 /** Clamp inputs to the ranges the page allows, so a hand-edited link cannot hang the browser. */
 export function sanitizeInputs(i: SimulationInputs): SimulationInputs {
   const finite = (n: number, d: number) => (Number.isFinite(n) ? n : d);
-  const withdrawal = Math.max(0, finite(i.withdrawal, 0));
+  const withdrawal = Math.min(MAX_WITHDRAWAL, Math.max(0, finite(i.withdrawal, 0)));
   return {
-    start: Math.max(0, finite(i.start, 0)),
-    monthly: Math.max(0, finite(i.monthly, 0)),
+    start: Math.min(MAX_START, Math.max(0, finite(i.start, 0))),
+    monthly: Math.min(MAX_MONTHLY, Math.max(0, finite(i.monthly, 0))),
     saveYears: Math.round(Math.min(60, Math.max(0, finite(i.saveYears, 0)))),
     stockPct: Math.round(Math.min(100, Math.max(0, finite(i.stockPct, 0)))),
     withdrawal,

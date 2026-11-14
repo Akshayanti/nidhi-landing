@@ -100,6 +100,11 @@ export function decodeState(search: string): ToolState | null {
   const num = (key: string, dflt: number) => {
     const raw = p.get(key);
     if (raw === null || raw.trim() === '') return dflt;
+    // Only a plain decimal number, the way the page writes one. `Number()`
+    // would also read "0x10" as 16, "1e3" as 1000 and " 12 " as 12, none of
+    // which a link made here ever holds. A minus sign is read, and the range
+    // check then brings the number back to zero.
+    if (!/^-?\d{1,15}(\.\d{1,10})?$/.test(raw)) return dflt;
     const n = Number(raw);
     return Number.isFinite(n) ? n : dflt;
   };
@@ -114,7 +119,8 @@ export function decodeState(search: string): ToolState | null {
     withdrawal,
     withdrawYears: num('r', DEFAULTS.withdrawYears),
     feePct: num('f', DEFAULTS.feePct),
-    returns: RETURN_BY_CODE[p.get('e') ?? ''] ?? DEFAULTS.returns,
+    // An own key only: `e=constructor` must not find Object's.
+    returns: Object.hasOwn(RETURN_BY_CODE, p.get('e') ?? '') ? RETURN_BY_CODE[p.get('e') ?? ''] : DEFAULTS.returns,
     paths: num('n', DEFAULTS.paths),
   });
   // Keep the default withdrawal horizon in the form even when withdrawals are
