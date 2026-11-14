@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'share-link-fits-phone',
+        text: {
+          en: 'Copying a share link on a phone no longer makes the page wider than the screen in the loan comparison and the net worth calculator: the copied address now fits inside its box. The net worth share window also fits small screens, so its options and buttons are no longer cut off. In all five tools the buttons under the copy button stay where they are when it changes to say the link was copied.',
+          hi: 'फ़ोन पर शेयर लिंक कॉपी करने से लोन तुलना और शुद्ध संपत्ति कैलकुलेटर में पन्ना अब स्क्रीन से चौड़ा नहीं होता: कॉपी किया गया पता अब अपने खाने के अंदर ही रहता है। शुद्ध संपत्ति की शेयर विंडो भी अब छोटी स्क्रीन में पूरी आती है, इसलिए उसके विकल्प और बटन कटते नहीं। पाँचों टूल में, कॉपी बटन पर लिंक कॉपी होने की सूचना आने पर उसके नीचे के बटन अपनी जगह से नहीं हिलते।',
+          es: 'Copiar un enlace para compartir desde el teléfono ya no hace que la página sea más ancha que la pantalla en el comparador de préstamos ni en la calculadora de patrimonio neto: la dirección copiada cabe ahora dentro de su recuadro. La ventana para compartir de la calculadora de patrimonio neto también cabe en pantallas pequeñas, así que sus opciones y botones ya no quedan cortados. En las cinco herramientas, los botones que están debajo del botón de copiar se quedan en su sitio cuando este cambia para indicar que el enlace se copió.',
+          cs: 'Zkopírování odkazu ke sdílení na telefonu už nerozšíří stránku přes okraj obrazovky ve srovnání úvěrů ani v\u00a0kalkulačce čistého jmění: zkopírovaná adresa se teď vejde do svého rámečku. Okno pro sdílení v\u00a0kalkulačce čistého jmění se vejde i\u00a0na malé obrazovky, takže jeho volby a\u00a0tlačítka už nejsou oříznuté. Ve všech pěti nástrojích zůstávají tlačítka pod tlačítkem pro kopírování na svém místě, když se na něm objeví, že je odkaz zkopírovaný.',
+          mr: 'फोनवर शेअर लिंक कॉपी केल्यावर कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर या साधनांत पान आता स्क्रीनपेक्षा रुंद होत नाही: कॉपी केलेला पत्ता आता त्याच्या चौकटीतच मावतो. निव्वळ संपत्तीची शेअर विंडोही आता लहान स्क्रीनवर पूर्ण मावते, त्यामुळे तिचे पर्याय आणि बटणे कापली जात नाहीत. पाचही साधनांत, कॉपी बटणावर लिंक कॉपी झाल्याचे दिसते तेव्हा त्याखालची बटणे जागची हलत नाहीत.',
+        },
+      },
+      {
         id: 'tools-one-frame',
         text: {
           en: 'The five free tools now share one page frame: the same header, questions and related lessons on every tool, so a new tool cannot drift from the others. On the net worth calculator, the note on net against gross exposure (a large debt in a currency can hide how much you hold in it) is now always visible, where before it sat inside the folded “How the calculation works”. The one-line introductions above the related lessons on the loan and net worth pages are gone, since they added nothing the cards do not say.',

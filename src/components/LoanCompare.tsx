@@ -53,7 +53,7 @@ import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
@@ -1248,20 +1248,8 @@ export default function LoanCompare({
               title={strings.toolbar.shareTitle}
               data-attr="lc-share-copy"
             >
-              {copied ? strings.toolbar.shareCopied : strings.toolbar.share}
+              <SwapLabel label={strings.toolbar.share} alternate={strings.toolbar.shareCopied} swapped={copied} />
             </button>
-            {copied && shareUrl && (
-              <div className="lc-shareUrlBar" role="status" aria-live="polite">
-                <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
-                <input
-                  className="lc-shareUrlInput"
-                  value={shareUrl}
-                  readOnly
-                  onFocus={(e) => e.target.select()}
-                  aria-label={strings.toolbar.shareUrlAria}
-                />
-              </div>
-            )}
             <span
               id="lc-share-status"
               className="lc-srOnly"
@@ -1271,6 +1259,20 @@ export default function LoanCompare({
               {copied ? strings.toolbar.shareStatus : ''}
             </span>
           </>
+        }
+        shareResult={
+          copied && shareUrl && (
+            <div className="lc-shareUrlBar" role="status" aria-live="polite">
+              <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
+              <input
+                className="lc-shareUrlInput"
+                value={shareUrl}
+                readOnly
+                onFocus={(e) => e.target.select()}
+                aria-label={strings.toolbar.shareUrlAria}
+              />
+            </div>
+          )
         }
         xlsxAttr="lc-export-xlsx"
         pdfAttr="lc-export-pdf"

@@ -17,7 +17,7 @@ import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineSta
 import { isValidNumber } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
-import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
@@ -632,7 +632,7 @@ export default function MonteCarloSimulator({
             strings={exportStrings}
             share={
               <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
-                {copied ? strings.actions.copied : strings.actions.copy}
+                <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
               </button>
             }
             xlsxAttr="free-monte-carlo-export-xlsx"
