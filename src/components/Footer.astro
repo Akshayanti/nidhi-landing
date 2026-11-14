@@ -20,8 +20,9 @@ const href = (path: string) => navHref(locale, path);
 <footer class="site-footer">
   <div class="container container--wide">
     {/* Four equal columns and no logo block: the header carries the logo on
-        every page. Privacy and Cookie settings sit on the copyright line, so
-        they stay at the bottom of every page at every width (the privacy
+        every page. Privacy, Cookie settings and Accessibility sit on the
+        copyright line, so they stay at the bottom of every page at every
+        width, phones included, where the columns are hidden (the privacy
         notice promises Cookie settings there). */}
     <div class="footer-cols">
       <div class="footer-col">
@@ -68,6 +69,7 @@ const href = (path: string) => navHref(locale, path);
         <span class="footer-copyText">{format(strings.footer.copyright, { year })}</span>
         <a href={href('/privacy/')} data-attr="footer-privacy">{strings.footer.links.privacy}</a>
         <button type="button" class="footer-cookieSettings" data-cookie-settings data-attr="footer-cookie-settings">{strings.footer.links.cookieSettings}</button>
+        <a href={href('/accessibility/')} data-attr="footer-accessibility">{strings.footer.links.accessibility}</a>
         <a href="/third-party-notices.txt">{strings.footer.links.thirdParty}</a>
       </p>
     </div>

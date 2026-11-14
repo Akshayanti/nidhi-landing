@@ -53,6 +53,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'share-window-keeps-focus',
+        text: {
+          en: 'In the net worth calculator\'s share window, pressing Copy link with the keyboard no longer throws you back to the first option: focus stays on the button. If copying fails and the address is shown instead, the Tab key now reaches it.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर की शेयर विंडो में कीबोर्ड से "लिंक कॉपी करें" दबाने पर अब आप पहले विकल्प पर वापस नहीं पहुँचते: फ़ोकस बटन पर ही रहता है। अगर कॉपी न हो पाए और उसकी जगह पता दिखे, तो Tab कुंजी अब उस तक पहुँचती है।',
+          es: 'En la ventana para compartir de la calculadora de patrimonio neto, pulsar «Copiar enlace» con el teclado ya no te devuelve a la primera opción: el foco se queda en el botón. Si la copia falla y en su lugar se muestra la dirección, la tecla Tab ahora llega hasta ella.',
+          cs: 'V\u00a0okně pro sdílení v\u00a0kalkulačce čistého jmění vás stisk tlačítka pro kopírování odkazu na klávesnici už nevrací na první volbu: fokus zůstává na tlačítku. Když se kopírování nepodaří a\u00a0místo toho se zobrazí adresa, klávesa Tab se k\u00a0ní teď dostane.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरच्या शेअर विंडोमध्ये कीबोर्डने “लिंक कॉपी करा” दाबल्यावर आता तुम्ही पहिल्या पर्यायावर परत फेकले जात नाही: फोकस बटणावरच राहतो. कॉपी झाली नाही आणि त्याऐवजी पत्ता दिसला, तर Tab कळ आता त्याच्यापर्यंत पोहोचते.',
+        },
+      },
+      {
         id: 'loan-interest-exact-cent',
         text: {
           en: 'The loan comparison now rounds each month\'s interest exactly. When a month\'s interest landed precisely on half a cent, the tool could round it down by mistake, one cent short in that row. It was rare, and it is fixed. A number written as 1e5 or 0x10 is also no longer read as an amount: the tool asks for plain digits.',
@@ -70,6 +80,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'Copiar un enlace para compartir desde el teléfono ya no hace que la página sea más ancha que la pantalla en el comparador de préstamos ni en la calculadora de patrimonio neto: la dirección copiada cabe ahora dentro de su recuadro. La ventana para compartir de la calculadora de patrimonio neto también cabe en pantallas pequeñas, así que sus opciones y botones ya no quedan cortados. En las cinco herramientas, los botones que están debajo del botón de copiar se quedan en su sitio cuando este cambia para indicar que el enlace se copió.',
           cs: 'Zkopírování odkazu ke sdílení na telefonu už nerozšíří stránku přes okraj obrazovky ve srovnání úvěrů ani v\u00a0kalkulačce čistého jmění: zkopírovaná adresa se teď vejde do svého rámečku. Okno pro sdílení v\u00a0kalkulačce čistého jmění se vejde i\u00a0na malé obrazovky, takže jeho volby a\u00a0tlačítka už nejsou oříznuté. Ve všech pěti nástrojích zůstávají tlačítka pod tlačítkem pro kopírování na svém místě, když se na něm objeví, že je odkaz zkopírovaný.',
           mr: 'फोनवर शेअर लिंक कॉपी केल्यावर कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर या साधनांत पान आता स्क्रीनपेक्षा रुंद होत नाही: कॉपी केलेला पत्ता आता त्याच्या चौकटीतच मावतो. निव्वळ संपत्तीची शेअर विंडोही आता लहान स्क्रीनवर पूर्ण मावते, त्यामुळे तिचे पर्याय आणि बटणे कापली जात नाहीत. पाचही साधनांत, कॉपी बटणावर लिंक कॉपी झाल्याचे दिसते तेव्हा त्याखालची बटणे जागची हलत नाहीत.',
+        },
+      },
+      {
+        id: 'beliefs-in-practice',
+        text: {
+          en: 'The beliefs page now says, under five of the beliefs, what I do about each one in practice, with a link to where you can check. There is also a new Accessibility page: what works today, the barriers I know are still open, and how to tell me about one. You do not need to share a diagnosis. It is linked at the bottom of every page.',
+          hi: 'सिद्धांतों वाले पन्ने पर अब पाँच सिद्धांतों के नीचे लिखा है कि व्यवहार में उनके लिए क्या किया जाता है, साथ में वह लिंक जहाँ आप इसे जाँच सकते हैं। एक नया सुगम्यता (accessibility) पन्ना भी है: आज क्या काम करता है, कौन-सी रुकावटें अब भी खुली हैं और मुझे पता हैं, और रुकावट के बारे में मुझे कैसे बताएँ। आपको अपना कोई निदान बताने की ज़रूरत नहीं है। इसका लिंक हर पन्ने के सबसे नीचे है।',
+          es: 'La página de creencias dice ahora, debajo de cinco de ellas, qué hago en la práctica con cada una, con un enlace a donde puedes comprobarlo. También hay una página nueva de Accesibilidad: qué funciona hoy, qué barreras sé que siguen abiertas y cómo contarme una. No hace falta que compartas ningún diagnóstico. Está enlazada al final de todas las páginas.',
+          cs: 'Stránka Čemu věřím teď pod pěti zásadami říká, co pro každou z\u00a0nich v\u00a0praxi dělám, s\u00a0odkazem na místo, kde si to můžete ověřit. Přibyla také stránka Přístupnost: co dnes funguje, o\u00a0kterých otevřených překážkách vím a\u00a0jak mi dát vědět o\u00a0další. Diagnózu sdílet nemusíte. Odkaz na ni je dole na každé stránce.',
+          mr: 'तत्त्वांच्या पानावर आता पाच तत्त्वांखाली, प्रत्यक्षात त्यासाठी काय केले जाते ते लिहिले आहे, आणि ते कुठे तपासता येईल त्याची लिंक आहे. सुलभता (accessibility) हे नवे पानही आहे: आज काय चालते, कोणते अडथळे अजून खुले आहेत हे मला माहीत आहे, आणि अडथळ्याबद्दल मला कसे कळवायचे. तुम्हाला कोणतेही निदान सांगण्याची गरज नाही. त्याची लिंक प्रत्येक पानाच्या तळाशी आहे.',
         },
       },
       {

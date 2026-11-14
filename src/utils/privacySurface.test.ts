@@ -56,7 +56,7 @@ const EXPECTED_LABELS: string[] = [
   'blog-index-inclusive-hub', 'blog-level-helper', 'blog-search-result', 'blog-search-show-all',
   'blog-start-continue', 'blog-start-first-lesson', 'blog-start-inclusive', 'blog-topics', 'changes-rss', 'contact',
   'cookie-accept', 'cookie-decline', 'cookie-privacy-link', 'editorial-policy', 'email', 'footer-about',
-  'footer-all-tools', 'footer-beliefs', 'footer-beta', 'footer-blog', 'footer-blog-glossary', 'footer-blog-topics',
+  'footer-accessibility', 'footer-all-tools', 'footer-beliefs', 'footer-beta', 'footer-blog', 'footer-blog-glossary', 'footer-blog-topics',
   'footer-changes', 'footer-cookie-settings', 'footer-editorial-policy', 'footer-email',
   'footer-inflation-calculator', 'footer-instagram', 'footer-invest-or-pay-off', 'footer-loan-comparison',
   'footer-monte-carlo-simulator', 'footer-multi-currency-net-worth', 'footer-privacy', 'footer-volunteers',

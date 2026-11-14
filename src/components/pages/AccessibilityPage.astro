@@ -1,0 +1,173 @@
+---
+/**
+ * The accessibility page, in whichever language it was asked for.
+ *
+ * English is served from `src/pages/accessibility.astro` and the other
+ * languages through `src/pages/[locale]/accessibility.astro`; both render this
+ * one component, as the editorial policy does.
+ *
+ * It is a record, not a claim of conformance: what works, how the site was last
+ * reviewed, the barriers still open, and how to report one. The two lists are
+ * mapped over the catalog, so fixing a barrier is deleting its key from every
+ * catalog and a new one is a new key; nothing here needs to change. The
+ * belief "Built for everyone tech keeps forgetting" links here for its proof.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALE_META, LOCALES, dict, localizedPath, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { accessibility: page } = dict(locale);
+
+const siteUrl = 'https://nidhi.today';
+const pageUrl = new URL(localizedPath(locale, '/accessibility/'), siteUrl).href;
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  inLanguage: LOCALE_META[locale].htmlLang,
+  name: page.schema.name,
+  url: pageUrl,
+  description: page.schema.description,
+  publisher: { '@type': 'Organization', name: 'nidhi', url: homeUrl },
+  breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${pageUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: page.schema.breadcrumbHome, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: page.schema.breadcrumbThis, item: pageUrl },
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={page.meta.title}
+  description={page.meta.description}
+  jsonLd={[webPageSchema, breadcrumbSchema]}
+>
+  <section class="a11y-page">
+    <div class="a11y-container">
+      <header class="a11y-header">
+        <h1 class="a11y-title">{page.title}</h1>
+        <p class="a11y-intro">{page.intro}</p>
+      </header>
+
+      <div class="a11y-body">
+        <h2 id="works">{page.sections.works}</h2>
+        <ul>
+          {Object.values(page.works).map((line) => <li>{line}</li>)}
+        </ul>
+
+        <h2 id="reviewed">{page.sections.reviewed}</h2>
+        <p>{page.reviewed.scope}</p>
+        <p>{page.reviewed.limits}</p>
+
+        <h2 id="barriers">{page.sections.barriers}</h2>
+        <p>{page.barriers.intro}</p>
+        <ul>
+          {Object.values(page.barriers.items).map((line) => <li>{line}</li>)}
+        </ul>
+
+        <h2 id="report">{page.sections.report}</h2>
+        <p>
+          {page.report.before}<a href="mailto:hello@nidhi.today">hello@nidhi.today</a>{page.report.between}<a href="https://www.instagram.com/nidhi.today" rel="noopener noreferrer">@nidhi.today</a>{page.report.after}
+        </p>
+        <p class="a11y-plain">{page.report.diagnosis}</p>
+        <p class="a11y-plain">{page.report.setting}</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .a11y-page {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .a11y-container {
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .a11y-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .a11y-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--color-deep-blue);
+    margin-bottom: var(--space-3);
+  }
+
+  .a11y-intro {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .a11y-body h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-2);
+    /* Clears the sticky header when a link lands on a section (#barriers). */
+    scroll-margin-top: 80px;
+  }
+
+  .a11y-body p,
+  .a11y-body ul {
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+  }
+
+  .a11y-body ul {
+    padding-left: 1.4em;
+  }
+
+  .a11y-body li {
+    margin-bottom: var(--space-2);
+  }
+
+  /* The two sentences a reader in doubt most needs: a little heavier, so they
+     are not read as small print under the address. */
+  .a11y-body .a11y-plain {
+    font-weight: 500;
+  }
+
+  .a11y-body a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .a11y-body a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  /* Dark theme: the paler teal of the pair, as on the belief callouts. */
+  :global([data-theme="dark"]) .a11y-body a,
+  :global([data-theme="dark"]) .a11y-body a:hover {
+    color: var(--palette-teal-dark);
+  }
+
+  @media (max-width: 480px) {
+    .a11y-title { font-size: 1.6rem; }
+  }
+</style>

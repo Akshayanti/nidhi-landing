@@ -1294,24 +1294,35 @@ function ShareModal({
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const modalTitleId = useId();
 
+  // The parent passes a new `onClose` on every render. Kept in a ref, it
+  // leaves the effect below to run once, when the dialog opens: run again
+  // on each render, its cleanup and its first step moved keyboard focus to
+  // the first option whenever the dialog's button changed its label (#602).
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
     previousFocusRef.current = document.activeElement as HTMLElement;
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    const focusable = dialog.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    first?.focus();
+    // Read when Tab is pressed, not once: the copied address is a field
+    // that appears later, and it is then the dialog's last stop.
+    const focusable = () =>
+      [...dialog.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      )].filter((el) => !el.hasAttribute('disabled') && el.getClientRects().length > 0);
+    focusable()[0]?.focus();
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab') return;
+      const stops = focusable();
+      const first = stops[0];
+      const last = stops[stops.length - 1];
       if (e.shiftKey) {
         if (document.activeElement === first) {
           e.preventDefault();
@@ -1330,7 +1341,7 @@ function ShareModal({
       dialog.removeEventListener('keydown', handleKeyDown);
       previousFocusRef.current?.focus();
     };
-  }, [onClose]);
+  }, []);
 
   function handleOverlayClick(e: React.MouseEvent) {
     if (e.target === e.currentTarget) onClose();
