@@ -40,7 +40,7 @@ import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publis
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
@@ -667,7 +667,7 @@ export default function InflationCalculator({
         strings={exportStrings}
         share={
           <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
-            {copied ? strings.actions.copied : strings.actions.copy}
+            <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
         xlsxAttr="free-inflation-export-xlsx"

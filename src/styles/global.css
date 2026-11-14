@@ -2093,7 +2093,10 @@ details[open] > .disclosure::after,
 
 .lc-shareUrlBar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
   gap: var(--space-2);
   padding: 10px 14px;
   background: var(--color-bg);
@@ -2107,21 +2110,26 @@ details[open] > .disclosure::after,
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-deep-blue);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .lc-shareUrlInput {
-  flex: 1;
+  /* Beside the label where there is room, under it where there is not; a
+     long address is cut with an ellipsis and never widens the page. */
+  flex: 1 1 12rem;
+  width: 0;
   min-width: 0;
+  text-overflow: ellipsis;
   border: none;
   background: transparent;
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   padding: 2px 4px;
-  outline: none;
   cursor: text;
+}
+.lc-shareUrlInput:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
 }
 
 /* Card grid */
@@ -3604,7 +3612,10 @@ details[open] > .disclosure::after,
 .mcnw-shareUrlBar {
   grid-column: 1 / -1;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
   gap: var(--space-2);
   padding: 10px 14px;
   background: var(--color-bg);
@@ -3617,21 +3628,26 @@ details[open] > .disclosure::after,
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-deep-blue);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .mcnw-shareUrlInput {
-  flex: 1;
+  /* Beside the label where there is room, under it where there is not; a
+     long address is cut with an ellipsis and never widens the page. */
+  flex: 1 1 12rem;
+  width: 0;
   min-width: 0;
+  text-overflow: ellipsis;
   border: none;
   background: transparent;
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   padding: 2px 4px;
-  outline: none;
   cursor: text;
+}
+.mcnw-shareUrlInput:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
 }
 
 
@@ -3865,9 +3881,23 @@ details[open] > .disclosure::after,
 
 
 @media (max-width: 750px) {
+  /* minmax(0, 1fr), not 1fr: a 1fr column grows to its widest content, and
+     the dialog hides what overflows, so on a phone the options, the buttons
+     and the copied address were cut off at the right (#491, #477). */
   .mcnw-modalBody {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     overflow-y: auto;
+  }
+  /* A fieldset is as wide as its content unless told otherwise. */
+  .mcnw-modalFieldset {
+    min-width: 0;
+  }
+  .mcnw-modalCheck span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .mcnw-modalFooter {
+    flex-wrap: wrap;
   }
   /* Stacked in one column, the options row must grow to its content:
      with min-height: 0 the row shrank and the Cancel and Copy link buttons
@@ -6961,9 +6991,22 @@ button.mcnw-legendItem:focus-visible {
   flex-wrap: wrap;
   gap: var(--space-2);
 }
-/* A share link's copied-address bar takes its own line under the buttons. */
+/* A share link's copied-address bar takes its own line under the buttons:
+   after them in the layout, whatever its place in the markup, so the buttons
+   do not move under a finger when it appears and goes (#491). */
 .tool-exportButtons > [role='status'] {
   flex-basis: 100%;
+  order: 1;
+}
+/* See SwapLabel in ToolExport.tsx: the two labels share one cell. */
+.tool-swapLabel {
+  display: inline-grid;
+}
+.tool-swapLabel > * {
+  grid-area: 1 / 1;
+}
+.tool-swapLabel__ghost {
+  visibility: hidden;
 }
 /* Above a tool when the browser runs no JavaScript. */
 .tool-noscript {

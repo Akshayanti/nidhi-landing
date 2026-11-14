@@ -32,7 +32,7 @@ import { downloadBlob, downloadWorkbook, guardText, isoDate, printResults } from
 import { netWorthSheets } from '../utils/multi-currency-net-worth/export.ts';
 import { netWorthReport } from '../utils/multi-currency-net-worth/report.ts';
 import { RatesError, httpErrorReason, ratesErrorReason, ratesRequestUrl } from '../utils/multi-currency-net-worth/rates.ts';
-import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { format } from '../i18n/format.ts';
@@ -1393,7 +1393,7 @@ function ShareModal({
                 {strings.shareModal.cancel}
               </button>
               <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
-                {copied ? strings.shareModal.copied : strings.shareModal.copy}
+                <SwapLabel label={strings.shareModal.copy} alternate={strings.shareModal.copied} swapped={copied} />
               </button>
             </div>
             {(copied || copyFailed) && shareUrl && (

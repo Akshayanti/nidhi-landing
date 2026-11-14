@@ -33,7 +33,7 @@ import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publis
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ToolExport, ToolReport } from './ToolExport.tsx';
+import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
@@ -627,7 +627,7 @@ export default function InvestOrPayOff({
         share={
           <span className="iop-share">
             <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-invest-or-pay-off-share">
-              {copied ? strings.actions.copied : strings.actions.copy}
+              <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
             </button>
             <span className="ifc-hint">{strings.actions.shareNote}</span>
           </span>
