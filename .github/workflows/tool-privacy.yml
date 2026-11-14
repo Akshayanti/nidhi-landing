@@ -101,12 +101,30 @@ jobs:
           done < <(git diff --name-only HEAD^1 HEAD)
           echo "run=$run" >> "$GITHUB_OUTPUT"
 
-  verify:
-    name: No typed value reaches analytics
+  # One job per tool, side by side: the same hundred runs as one long job
+  # (every tool, language, window size and consent state), in about a third
+  # of the time. Each job is whole in itself: its own test build, the planted
+  # leak for its tool, then that tool's twenty runs, both window sizes among
+  # them, so the script's rule that a tool shows both a rage click and a dead
+  # click across its runs still applies. The list is every tool under
+  # src/pages/free; a unit test (scripts/lib/tool-privacy-checks.test.mjs)
+  # fails when a tool is missing here.
+  verify-tool:
+    name: 'Privacy check: ${{ matrix.tool }}'
     needs: changes
     if: needs.changes.outputs.run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
+    strategy:
+      # A leak in one tool does not stop the others from reporting.
+      fail-fast: false
+      matrix:
+        tool:
+          - loan-comparison
+          - multi-currency-net-worth
+          - monte-carlo-simulator
+          - inflation-calculator
+          - invest-or-pay-off
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -130,10 +148,10 @@ jobs:
       # The check checking itself: with a typed amount planted in an event,
       # every run must fail. A check that cannot fail proves nothing.
       - name: The check catches a planted leak
-        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --locale en --viewport laptop --jobs 2 --dump tool-privacy-payloads
+        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --tool ${{ matrix.tool }} --locale en --viewport laptop --jobs 2 --dump tool-privacy-payloads
 
-      - name: Every tool, language, window size and consent state
-        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --jobs 3 --dump tool-privacy-payloads
+      - name: Every language, window size and consent state
+        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --tool ${{ matrix.tool }} --jobs 3 --dump tool-privacy-payloads
 
       # The decoded payloads of a failed run, to see what was sent. They hold
       # only the test's own made-up values.
@@ -141,7 +159,32 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: tool-privacy-payloads
+          name: tool-privacy-payloads-${{ matrix.tool }}
           path: tool-privacy-payloads
           retention-days: 7
           if-no-files-found: ignore
+
+  # The required check. It passes only when every tool's job passed.
+  #
+  # `!cancelled()` matters: without a status function GitHub skips this job
+  # when a job it needs has failed, and a skipped job satisfies a required
+  # check, so a leak would read as a pass. It is skipped only when the
+  # changed-files job succeeded and said there is nothing to check. (A run
+  # that a newer push cancelled reports cancelled, which satisfies nothing.)
+  verify:
+    name: No typed value reaches analytics
+    needs: [changes, verify-tool]
+    if: ${{ !cancelled() && !(needs.changes.result == 'success' && needs.changes.outputs.run != 'true') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every tool's check passed
+        env:
+          CHANGES: ${{ needs.changes.result }}
+          TOOLS: ${{ needs.verify-tool.result }}
+        run: |
+          echo "changed files: $CHANGES, tools: $TOOLS"
+          if [ "$CHANGES" != "success" ] || [ "$TOOLS" != "success" ]; then
+            echo "::error::A tool's privacy check did not pass (or did not run). See the 'Privacy check: <tool>' jobs."
+            exit 1
+          fi
