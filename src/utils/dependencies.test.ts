@@ -54,10 +54,10 @@ const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 // -----------------------------------------------------------------------------
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^1.3.0',
-  '@astrojs/react': '^7.1.4',
+  '@astrojs/react': '^7.1.7',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.4',
-  astro: '^7.4.7',
+  astro: '^7.4.10',
   react: '^19.3.1',
   'react-dom': '^19.3.1',
 };
@@ -65,7 +65,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
-  puppeteer: '^25.16.0',
+  puppeteer: '^25.17.0',
   // Pinned exactly: it runs the test suite in CI, so a new version should
   // arrive as a reviewed bump, not be downloaded fresh on every run.
   tsx: '4.23.15',
