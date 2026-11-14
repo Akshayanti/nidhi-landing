@@ -1992,3 +1992,121 @@ describe('formatters never print a number that is not one (issue 352)', () => {
     assert.equal(formatApr(Infinity), 'n/a');
   });
 });
+
+describe('a refinance clears the original loan: penalty, extras and break-even (issue 370)', () => {
+  const clause = { pctOfBalance: 0.02, untilMonth: 60 };
+  const original = computeLoan({ principalMinor: 250000_00, annualRate: 0.06, prepaymentPenalty: clause }, { kind: 'term', months: 360 });
+  const ok = (c: ReturnType<typeof refinanceComparison>) => {
+    if ('error' in c) throw new Error(c.error);
+    return c;
+  };
+
+  it('charges the penalty on the balance owed at the refinance: 2% of 240,210.05 is 4,804.20', () => {
+    const without = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, false));
+    const withClause = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, false, { prepaymentPenalty: clause }));
+    assert.equal(withClause.snapshotAtRefi.balanceMinor, 24021005);
+    assert.equal(withClause.penaltyMinor, roundMinor(24021005 * 0.02));
+    assert.equal(withClause.penaltyMinor, 480420);
+    assert.equal(without.penaltyMinor, 0);
+    // The saving falls by exactly the penalty, and "keep" does not move.
+    assert.equal(without.savingsMinor - withClause.savingsMinor, 480420);
+    assert.equal(withClause.keepTotalMinor, without.keepTotalMinor);
+  });
+
+  it('counts the penalty in the break-even: 54 months, where closing costs alone gave 21', () => {
+    const newPayment = computeLoan({ principalMinor: 24021005, annualRate: 0.05 }, { kind: 'term', months: 324 }).monthlyPaymentMinor;
+    const saving = original.monthlyPaymentMinor - newPayment;
+    const without = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, false));
+    const withClause = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, false, { prepaymentPenalty: clause }));
+    assert.equal(without.breakEvenMonths, Math.ceil(3000_00 / saving));
+    assert.equal(without.breakEvenMonths, 21);
+    assert.equal(withClause.breakEvenMonths, Math.ceil((3000_00 + 480420) / saving));
+    assert.equal(withClause.breakEvenMonths, 54);
+  });
+
+  it('applies through the last month of the clause and not after it', () => {
+    assert.equal(ok(refinanceComparison(original, 60, 0.05, 300, 3000_00, false, { prepaymentPenalty: clause })).penaltyMinor, 465271);
+    assert.equal(ok(refinanceComparison(original, 61, 0.05, 299, 3000_00, false, { prepaymentPenalty: clause })).penaltyMinor, 0);
+  });
+
+  it('adds a flat penalty, and a clause of zero charges nothing', () => {
+    assert.equal(ok(refinanceComparison(original, 36, 0.05, 324, 0, false, { prepaymentPenalty: { pctOfBalance: 0.02, untilMonth: 60, flatMinor: 500_00 } })).penaltyMinor, 480420 + 500_00);
+    assert.equal(ok(refinanceComparison(original, 36, 0.05, 324, 0, false, { prepaymentPenalty: { pctOfBalance: 0, untilMonth: 60 } })).penaltyMinor, 0);
+  });
+
+  it('is cash at the refinance even when the closing costs go into the new loan', () => {
+    const rolled = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, true, { prepaymentPenalty: clause }));
+    assert.equal(rolled.penaltyMinor, 480420);
+    // Only the penalty is cash, so only it is in the break-even.
+    const newPayment = computeLoan({ principalMinor: 24021005 + 3000_00, annualRate: 0.05 }, { kind: 'term', months: 324 }).monthlyPaymentMinor;
+    assert.equal(rolled.breakEvenMonths, Math.ceil(480420 / (original.monthlyPaymentMinor - newPayment)));
+  });
+
+  describe('extra payments', () => {
+    const extras = { extraMonthlyMinor: 200_00, lumpSums: [{ month: 12, amountMinor: 5000_00 }, { month: 48, amountMinor: 10000_00 }] };
+    const paidFaster = computeLoan({ principalMinor: 250000_00, annualRate: 0.06, ...extras }, { kind: 'term', months: 360 });
+
+    it('continue on the new loan, so a lower rate is not made to look like a loss', () => {
+      const dropped = ok(refinanceComparison(paidFaster, 36, 0.05, 324, 3000_00, false));
+      const carried = ok(refinanceComparison(paidFaster, 36, 0.05, 324, 3000_00, false, extras));
+      assert.equal(dropped.extrasCarried, false);
+      assert.equal(carried.extrasCarried, true);
+      // Left off the new loan, the extras made "keep" look cheaper by 59,037.93.
+      assert.equal(dropped.savingsMinor, -5903793);
+      assert.equal(carried.savingsMinor, 749293);
+      // The new loan: the same 200 a month, and the month-48 lump sum in its month 12.
+      const balance = carried.snapshotAtRefi.balanceMinor;
+      const newLoan = computeLoan(
+        { principalMinor: balance, annualRate: 0.05, feeMinor: 3000_00, extraMonthlyMinor: 200_00, lumpSums: [{ month: 12, amountMinor: 10000_00 }] },
+        { kind: 'term', months: 324 },
+      );
+      const paidBefore = paidFaster.schedule.slice(0, 36).reduce((sum, row) => sum + row.payment, 0);
+      assert.equal(carried.refinanceTotalMinor, paidBefore + newLoan.totalPaidMinor);
+    });
+
+    it('are left out of the break-even, which compares the payments due', () => {
+      const carried = ok(refinanceComparison(paidFaster, 36, 0.05, 324, 3000_00, false, extras));
+      const newDue = computeLoan({ principalMinor: carried.snapshotAtRefi.balanceMinor, annualRate: 0.05 }, { kind: 'term', months: 324 }).monthlyPaymentMinor;
+      assert.equal(carried.breakEvenMonths, Math.ceil(3000_00 / (paidFaster.monthlyPaymentMinor - newDue)));
+      assert.equal(carried.breakEvenMonths, 14);
+      // Counting the 200 a month as a saving, as before, would have said 8.
+      assert.equal(Math.ceil(3000_00 / (paidFaster.effectiveMonthlyMinor - newDue)), 8);
+    });
+
+    it('a lump sum already paid before the refinance is not paid again', () => {
+      const early = { lumpSums: [{ month: 12, amountMinor: 5000_00 }] };
+      const loan = computeLoan({ principalMinor: 250000_00, annualRate: 0.06, ...early }, { kind: 'term', months: 360 });
+      assert.equal(ok(refinanceComparison(loan, 36, 0.05, 324, 0, false, early)).extrasCarried, false);
+    });
+  });
+
+  it('follows a payment that changes with the rate', () => {
+    const hybrid = computeLoan(
+      { principalMinor: 250000_00, annualRate: 0.05, rateSpec: { kind: 'hybrid', initialAnnualRate: 0.05, initialMonths: 60, subsequentAnnualRate: 0.08 } },
+      { kind: 'term', months: 360 },
+    );
+    assert.equal(hybrid.monthlyPaymentMinor, 134205);
+    assert.equal(hybrid.rateChange?.paymentMinor, 177187);
+    // After the change, the payment replaced is the later one: 9 months.
+    const after = ok(refinanceComparison(hybrid, 72, 0.055, 288, 3000_00, false));
+    const newAfter = computeLoan({ principalMinor: after.snapshotAtRefi.balanceMinor, annualRate: 0.055 }, { kind: 'term', months: 288 }).monthlyPaymentMinor;
+    assert.equal(after.breakEvenMonths, Math.ceil(3000_00 / (177187 - newAfter)));
+    assert.equal(after.breakEvenMonths, 9);
+    // Before it, the new payment is higher for twelve months and lower from then on.
+    const before = ok(refinanceComparison(hybrid, 48, 0.055, 312, 3000_00, false));
+    const newBefore = computeLoan({ principalMinor: before.snapshotAtRefi.balanceMinor, annualRate: 0.055 }, { kind: 'term', months: 312 }).monthlyPaymentMinor;
+    assert.ok(newBefore > 134205 && newBefore < 177187);
+    assert.equal(before.breakEvenMonths, 12 + Math.ceil((3000_00 + 12 * (newBefore - 134205)) / (177187 - newBefore)));
+    assert.equal(before.breakEvenMonths, 23);
+  });
+
+  it('never breaks even when the original loan ends before the costs are covered', () => {
+    // Ten payments left; a saving of about 13,700 in all cannot cover 20,000.
+    const c = ok(refinanceComparison(original, 350, 0.01, 120, 20000_00, false));
+    assert.equal(c.breakEvenMonths, Infinity);
+  });
+
+  it('with nothing to pay back, break-even is zero', () => {
+    assert.equal(ok(refinanceComparison(original, 61, 0.05, 299, 0, false, { prepaymentPenalty: clause })).breakEvenMonths, 0);
+  });
+});

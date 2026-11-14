@@ -42,6 +42,7 @@ import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolS
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import {
+  buildAdvancedFields,
   computeFromInput,
   computeNoPointsBaseline,
   parseNumber,
@@ -3007,7 +3008,13 @@ function RefinanceSection({
 
   const cmp =
     original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
-      ? refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee)
+      ? refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee, {
+          // What the reader entered for this offer that the result does not
+          // keep: the refinance clears the loan, so its penalty may be due,
+          // and the extra payments continue on the new loan.
+          ...buildAdvancedFields(vendors[activeIdx], currency),
+          extraMonthlyMinor: toMinor(parseNumber(vendors[activeIdx].extraMonthly) || 0, currency),
+        })
       : null;
 
   return (
@@ -3127,9 +3134,17 @@ function RefinanceSection({
               label={strings.refi.keepTotal}
               value={formatMoney(cmp.keepTotalMinor, currency)}
             />
+            {cmp.penaltyMinor > 0 && (
+              <ResultRow
+                label={strings.refi.penalty}
+                value={formatMoney(cmp.penaltyMinor, currency)}
+                hint={strings.refi.penaltyHint}
+              />
+            )}
             <ResultRow
               label={strings.refi.refiTotal}
               value={formatMoney(cmp.refinanceTotalMinor, currency)}
+              hint={cmp.extrasCarried ? strings.refi.extrasCarried : undefined}
             />
             <ResultRow
               label={cmp.savingsMinor >= 0 ? strings.refi.saves : strings.refi.costsMore}
