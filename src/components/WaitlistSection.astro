@@ -420,6 +420,8 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   /* On the blue card the teal ring cannot be seen, so every control there
      shows focus in white. */
   .waitlist-box :focus-visible { outline-color: var(--neutral-white); }
+  /* The field is white in the light theme: the ring stands off it by 2px. */
+  .waitlist-box .waitlist-input:focus-visible { outline-offset: 2px; }
 
   /* Colour, size and states come from the shared .btn roles
      (docs/color-palette.md, "Buttons"): the main action on the blue card. */
