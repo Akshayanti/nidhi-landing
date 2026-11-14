@@ -151,6 +151,12 @@ const clickLabels = { exact, prefixes };
     // Surveys are not used. Said here, so that switching them on in the
     // PostHog project cannot start loading them for every visitor.
     disable_surveys: true,
+    // The same for PostHog's other add-ons that a project setting can start
+    // and that load more of its code: the support chat, product tours and
+    // site apps. None is used here.
+    disable_conversations: true,
+    disable_product_tours: true,
+    opt_in_site_apps: false,
     before_send: function (event) {
       if (!event) return event;
       return cleanAddresses(event) && cleanClicks(event);

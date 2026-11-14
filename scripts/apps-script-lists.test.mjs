@@ -38,7 +38,7 @@ function load(file, rows, { sheetCount = 1, volunteerRows = undefined, volunteer
     Utilities: {
       DigestAlgorithm: { SHA_256: 1 },
       Charset: { UTF_8: 1 },
-      computeDigest: (_a, s) => [...crypto.createHash('sha256').update(s).digest()].map((b) => (b > 127 ? b - 256 : b)),
+      computeDigest: (_a, s) => [...crypto.createHash('sha256').update(s).digest()].map((b) => (b > 127 ? b - 256 : b)),      getUuid: () => crypto.randomUUID(),
     },
     ContentService: { MimeType: { JSON: 1 }, createTextOutput: (s) => ({ s, setMimeType() { return this; } }) },
     SpreadsheetApp: {
@@ -362,22 +362,27 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
     assert.equal(rows[1][0], 'first.last+tag@example.co.uk');
   });
 
-  it('the sign-up event is filed under a hash of the address and carries no address', () => {
+  it('the sign-up event is filed under a random id and carries nothing of the address', () => {
     const { c, store, state } = loadWritable([header.slice()]);
     store.POSTHOG_API_KEY = 'phc_test_key';
     vm.runInContext('CONFIG_CACHE = null;', c);
     assert.deepEqual(signup(c, { email: 'Jane.Reader@Example.org', source: '/free/loan-comparison/' }), { ok: true });
     // A second request for the same address adds nothing and sends nothing.
     assert.deepEqual(signup(c, { email: 'jane.reader@example.org', source: '/free/loan-comparison/' }), { ok: true });
-    assert.equal(state.tracked.length, 1);
+    assert.deepEqual(signup(c, { email: 'other@example.org', source: '/' }), { ok: true });
+    assert.equal(state.tracked.length, 2);
     const event = state.tracked[0];
     assert.equal(event.event, 'waitlist_signup');
-    assert.equal(event.distinct_id, crypto.createHash('sha256').update('jane.reader@example.org').digest('hex'));
-    assert.deepEqual(Object.keys(event.properties).sort(), ['email_domain', 'source']);
+    // Not the address, not a hash of it: a new random id for each sign-up.
+    assert.match(event.distinct_id, /^waitlist-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    assert.notEqual(event.distinct_id, state.tracked[1].distinct_id);
+    for (const form of ['jane.reader@example.org', 'Jane.Reader@Example.org']) {
+      assert.ok(!event.distinct_id.includes(crypto.createHash('sha256').update(form).digest('hex')));
+    }
+    assert.deepEqual(Object.keys(event.properties), ['source']);
     assert.deepEqual(Object.keys(event).sort(), ['api_key', 'distinct_id', 'event', 'properties', 'timestamp']);
-    // The domain is sent (the privacy finding on it is the owner's to settle);
-    // the part before the @ never is.
-    assert.doesNotMatch(JSON.stringify(event), /@|jane|reader/i);
+    // No part of the address is sent, the domain included.
+    assert.doesNotMatch(JSON.stringify(state.tracked), /@|jane|reader|example\.org/i);
   });
 
   it('stops adding rows at the day’s limit and says the same', () => {

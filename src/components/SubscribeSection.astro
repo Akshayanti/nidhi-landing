@@ -509,9 +509,8 @@ const inputId = `subscribe-email-${variant}`;
         if (hashedId && window.nidhiConsent && window.nidhiConsent.accepted()) {
           try { window.posthog.identify(hashedId); } catch (_) {}
         }
-        var domain = email.split('@')[1] || '';
+        // Nothing of the address is sent, not even its domain.
         window.posthog.capture('blog_subscribe_submit', {
-          email_domain: domain,
           source: window.location.pathname,
           variant: variant,
         });
