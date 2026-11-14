@@ -352,6 +352,24 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     assert.deepEqual(inScript.map((m) => m[2]).sort(), globals);
   });
 
+  it('has a job for every tool in the workflow, and a required check that cannot be skipped past a failure', () => {
+    const workflow = fs.readFileSync('.github/workflows/tool-privacy.yml', 'utf8');
+    const routes = fs.readdirSync('src/pages/free').filter((f) => f !== 'index.astro').map((f) => f.replace(/\.astro$/, '')).sort();
+    const list = /\n        tool:\n((?:          - [a-z-]+\n)+)/.exec(workflow);
+    assert.ok(list, 'the workflow lists its tools');
+    assert.deepEqual(list[1].trim().split('\n').map((l) => l.replace(/^\s*- /, '')).sort(), routes);
+    // Each tool's job runs that tool alone, in every language, window size and consent state.
+    assert.ok(workflow.includes('verify-tool-privacy.mjs --tool ${{ matrix.tool }} --jobs 3'));
+    assert.ok(workflow.includes('--plant-leak --tool ${{ matrix.tool }}'));
+    assert.ok(!/verify-tool-privacy\.mjs --tool \$\{\{ matrix\.tool \}\} [^\n]*--(locale|viewport|consent)/.test(workflow.replace(/--plant-leak[^\n]*/g, '')), 'the full run narrows nothing but the tool');
+    // The required check keeps its name, waits for every tool, and runs after a failure.
+    const required = workflow.slice(workflow.indexOf('\n  verify:\n'));
+    assert.ok(required.includes('name: No typed value reaches analytics'));
+    assert.ok(required.includes('needs: [changes, verify-tool]'));
+    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) && /);
+    assert.ok(required.includes('[ "$TOOLS" != "success" ]'));
+  });
+
   it('lets nothing through to PostHog but its static scripts', () => {
     assert.ok(script.includes('MAP eu.i.posthog.com ~NOTFOUND'));
     assert.ok(script.includes("'--disable-blink-features=AutomationControlled'"));
