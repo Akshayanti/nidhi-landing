@@ -185,7 +185,7 @@ At these illustrative rates, the "safe" choice gives up over €62,000 over 30 y
     <circle cx="720" cy="95.5" r="5" class="fig-fill-teal"/>
     <text x="110" y="368" text-anchor="end" class="fig-sublabel">€10,000</text>
     <text x="730" y="92" class="fig-label" style="fill: var(--color-teal);">€76,123</text>
-    <text x="730" y="106" class="fig-tick">invested at 7%</text>
+    <text x="730" y="110" class="fig-tick">invested at 7%</text>
     <text x="730" y="343" class="fig-sublabel" style="fill: var(--color-text-muted);">€13,478</text>
     <text x="730" y="357" class="fig-tick">saved at 1%</text>
     <text x="500" y="310" text-anchor="middle" class="fig-eyebrow" style="fill: var(--color-teal);">€62,644 OPPORTUNITY COST</text>

@@ -85,7 +85,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
             aria-expanded="false"
             data-attr={group.button.attr}
           >
-            {strings.nav.buttons[group.button.key]}
+            <span class="nav-linkLabel">{strings.nav.buttons[group.button.key]}</span>
             <span class="nav-dropdownCaret" aria-hidden="true">&#9662;</span>
           </button>
           {/* A list of links to pages, opened by a button: navigation, not an
@@ -431,6 +431,18 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     border-radius: 2px;
   }
 
+  /* Where you are: the current page's link, and the button of the section it
+     is in, are underlined as well as coloured, so the marker does not rest on
+     colour alone and a contrast theme keeps it (#643). Only the label is
+     underlined, not the button's arrow, and hover never adds the line. */
+  a.nav-link.active,
+  .nav-dropdownToggle.active .nav-linkLabel,
+  .nav-dropdownMenu a.active {
+    text-decoration: underline currentColor 2px;
+    text-underline-offset: 0.3em;
+    text-decoration-skip-ink: auto;
+  }
+
   @media (max-width: 480px) {
     .nav-right { gap: var(--space-3); }
     .nav-link { font-size: 0.8125rem; }
@@ -543,7 +555,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       text-decoration: none;
     }
 
-    .nav-sheetGroup a.active { color: var(--color-deep-blue); }
+    .nav-sheetGroup a.active {
+      color: var(--color-deep-blue);
+      text-decoration: underline currentColor 2px;
+      text-underline-offset: 0.3em;
+      text-decoration-skip-ink: auto;
+    }
 
     /* "Contact us": a row like the links around it that opens to show
        its own links, indented beneath it. */

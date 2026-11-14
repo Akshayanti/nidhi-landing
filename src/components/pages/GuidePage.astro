@@ -240,6 +240,12 @@ const breadcrumbSchema = {
   .guide-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
   .guide-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
   .guide-crumbs a { color: var(--color-deep-blue); }
+  /* A breadcrumb link is a target of its own, not a link in a sentence: 24px
+     tall for a pointer, 44px for a thumb (#405). */
+  .guide-crumbs a { display: inline-flex; align-items: center; min-height: 24px; vertical-align: middle; }
+  @media (max-width: 640px) {
+    .guide-crumbs a { min-height: 44px; }
+  }
   .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.875rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
   .guide-correction { font-size: 0.9rem; padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
   .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }

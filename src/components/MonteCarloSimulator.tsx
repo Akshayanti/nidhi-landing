@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
-import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
+import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { plural } from '../i18n/plural.ts';
@@ -1077,6 +1077,10 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   // Beside the crosshair, kept inside the plotted area so it never covers the
   // end labels (phones stack it below the chart).
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / W, (W - PAD.right) / W);
+  // The phone chart fits the screen and does not scroll sideways, so a
+  // sideways drag can move the read-out along it.
+  const pointer = useChartPointer(yearAt, setHover, narrow);
+  const slot = useReadoutSlot(cardRef, hover !== null);
 
   return (
     <figure
@@ -1087,7 +1091,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
       {!narrow && <p className="mcs-swipe" aria-hidden="true">{strings.chart.swipe}</p>}
       <div className="mcs-chartScroll">
         <div
-          className="mcs-chartBox"
+          className={narrow ? 'mcs-chartBox mcs-chartBox--scrub' : 'mcs-chartBox'}
           tabIndex={0}
           role="group"
           aria-label={strings.chart.groupLabel}
@@ -1100,8 +1104,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
             className={narrow ? 'mcs-chart mcs-chart--narrow' : 'mcs-chart'}
-            onPointerMove={(e) => setHover(yearAt(e.clientX))}
-            onPointerDown={(e) => setHover(yearAt(e.clientX))}
+            {...pointer}
           >
             <title id={titleId}>{strings.chart.title}</title>
             <desc id={descId}>{desc}</desc>
@@ -1218,6 +1221,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
           ]}
         />
       )}
+      {hover === null && <ReadoutSlot height={slot} />}
       <figcaption className="mcs-legend">
         <span><i className="mcs-key mcs-key--outer" aria-hidden="true" />{strings.chart.legendPaths}</span>
         <span><i className="mcs-key mcs-key--inner" aria-hidden="true" />{strings.chart.legendMiddle}</span>

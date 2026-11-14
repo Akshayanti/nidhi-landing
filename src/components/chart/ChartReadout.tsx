@@ -9,7 +9,8 @@
  * width. It is aria-hidden: each chart announces the same values through its
  * own live region.
  */
-import { useEffect, useLayoutEffect, useState, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type RefObject } from 'react';
+import { touchEndIsTap, touchMove, touchStart, type Touch } from '../../utils/shared/chartTouch.ts';
 
 export interface ReadoutRow {
   label: string;
@@ -110,4 +111,61 @@ export function useEscapeToClose(active: boolean, close: () => void): void {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [active, close]);
+}
+
+/**
+ * Pointer handlers for a chart's plot. A mouse or pen shows the read-out
+ * where it points. A finger opens it on a tap, never on contact, so a scroll
+ * that starts on the chart opens nothing; where the chart does not scroll
+ * sideways (`scrub`), a sideways drag moves the read-out along it (#479).
+ * `at` turns a pointer's x into the chart's point, null outside the plot.
+ */
+export function useChartPointer(at: (clientX: number) => number | null, setHover: (v: number | null) => void, scrub: boolean) {
+  const touch = useRef<Touch | null>(null);
+  return {
+    onPointerDown(e: PointerEvent) {
+      if (e.pointerType !== 'touch') setHover(at(e.clientX));
+      else touch.current = touchStart(e.pointerId, e.clientX, e.clientY);
+    },
+    onPointerMove(e: PointerEvent) {
+      if (e.pointerType !== 'touch') {
+        setHover(at(e.clientX));
+        return;
+      }
+      const next = touchMove(touch.current, e.pointerId, e.clientX, e.clientY, scrub);
+      touch.current = next.touch;
+      // A scrub keeps the last point when the finger runs past the plot's end.
+      if (next.follow) {
+        const v = at(e.clientX);
+        if (v !== null) setHover(v);
+      }
+    },
+    onPointerUp(e: PointerEvent) {
+      if (e.pointerType !== 'touch') return;
+      if (touchEndIsTap(touch.current, e.pointerId)) setHover(at(e.clientX));
+      touch.current = null;
+    },
+    onPointerCancel() {
+      touch.current = null;
+    },
+  };
+}
+
+/**
+ * The height the read-out last had, kept as an empty slot while it is closed.
+ * On phones the read-out sits under the chart, so opening it pushes the page
+ * down; with the slot that happens once, not on every open and close (#479).
+ * global.css shows the slot on phones only.
+ */
+export function useReadoutSlot(cardRef: RefObject<HTMLDivElement | null>, open: boolean): number {
+  const [height, setHeight] = useState(0);
+  useLayoutEffect(() => {
+    const h = open ? cardRef.current?.offsetHeight ?? 0 : 0;
+    if (h > 0) setHeight((was) => (was === h ? was : h));
+  });
+  return height;
+}
+
+export function ReadoutSlot({ height }: { height: number }) {
+  return height > 0 ? <div className="chart-readoutSlot" style={{ height }} aria-hidden="true" /> : null;
 }

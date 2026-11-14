@@ -40,7 +40,7 @@ import {
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
-import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
+import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
 import {
   computeFromInput,
   loanFromInput,
@@ -327,6 +327,10 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   const maxMonths = valid.length ? Math.max(...valid.map(({ rows }) => rows.length)) : 1;
   const x = (m: number) => BPAD.left + (m / Math.max(maxMonths, 1)) * BPLOT_W;
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
+  const slot = useReadoutSlot(cardRef, hover !== null);
+  // This chart scrolls sideways on a phone, so a sideways drag is a scroll: a
+  // finger picks a point with a tap.
+  const pointer = useChartPointer(monthAt, setHover, false);
 
   if (valid.length === 0) {
     return <p className="lc-chartEmpty">{strings.balance.empty}</p>;
@@ -471,8 +475,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
             viewBox={`0 0 ${BW} ${BH}`}
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
-            onPointerMove={(e) => setHover(monthAt(e.clientX))}
-            onPointerDown={(e) => setHover(monthAt(e.clientX))}
+            {...pointer}
           >
             <title id={titleId}>{strings.balance.title}</title>
             <desc id={descId}>{ariaSummary}</desc>
@@ -530,6 +533,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
         </div>
       </div>
       {hover !== null && <ChartReadout title={when(hover)} rows={rows} cardRef={cardRef} position={cardLeft} />}
+      {hover === null && <ReadoutSlot height={slot} />}
       <p className="lc-chartHint">{strings.balance.hint}</p>
       {series.some((s) => s.open) && (
         <p className="lc-chartHint">{format(strings.balance.shownThrough, { month: maxMonths })}</p>
