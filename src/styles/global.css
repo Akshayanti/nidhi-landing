@@ -3968,14 +3968,15 @@ details[open] > .disclosure::after,
 /* A short window: a phone held sideways, or a laptop at high zoom. The two
    panes each had their own scroll and a fixed share of a height that was not
    there, so Cancel and Copy link were cut off (#477). Here the whole dialog
-   scrolls as one, and the two buttons stay in view at its bottom edge. */
-@media (max-height: 500px) {
+   scrolls as one, so both buttons can be reached. They are not pinned: a
+   pinned footer covered the focused option at a large text size. */
+@media (max-height: 31.25em) {
   .mcnw-modalOverlay {
     padding: var(--space-2);
   }
   .mcnw-modalDialog {
     max-height: calc(100dvh - 2 * var(--space-2));
-    padding: 14px 18px 0;
+    padding: 14px 18px;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
@@ -3990,16 +3991,6 @@ details[open] > .disclosure::after,
   .mcnw-modalOptions {
     overflow-y: visible;
     min-height: auto;
-  }
-  .mcnw-modalFooter {
-    position: sticky;
-    bottom: 0;
-    z-index: 1;
-    padding-block: 8px;
-    background: var(--color-bg-white);
-  }
-  [data-theme="dark"] .mcnw-modalFooter {
-    background: var(--color-card-bg);
   }
 }
 
@@ -4334,11 +4325,16 @@ details[open] > .disclosure::after,
   display: block;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  /* At a much larger text size the total is capped by the width of its card,
+     so a common amount stays on one line instead of breaking between two
+     digits (#486). 12cqi is above the ordinary size on every screen, so
+     nothing changes until the text is enlarged. */
+  font-size: min(clamp(1.8rem, 3vw, 2.4rem), 12cqi);
   color: var(--color-deep-blue);
   letter-spacing: -0.02em;
-  /* A long total at a much larger text size wraps instead of widening the page (#486). */
-  overflow-wrap: anywhere;
+}
+.mcnw-total {
+  container-type: inline-size;
 }
 
 .mcnw-totalHint {
@@ -7831,13 +7827,31 @@ body .toolp-faqQ[class] {
 .mcnw-riskCardHead > .mcnw-riskBadge {
   order: -1;
 }
-/* Net worth, chart legend: a long amount wraps instead of pushing the row
-   wider than a narrow screen at large text. */
-.mcnw-legendAmount {
+/* Net worth, chart legend: when a row is too narrow for its amount (a large
+   text size, mostly), the amount moves whole to a line of its own instead of
+   breaking between two digits (#486). The code and the share keep their fixed
+   widths, so rows still line up. */
+button.mcnw-legendItem {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0;
+  row-gap: 2px;
+}
+button.mcnw-legendItem > .mcnw-legendSwatch {
+  margin-right: 8px;
+}
+button.mcnw-legendItem > .mcnw-legendCode {
+  flex: none;
+  width: 3.2em;
   min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  text-align: right;
+}
+button.mcnw-legendItem > .mcnw-legendPct {
+  flex: none;
+  width: 4.5em;
+}
+button.mcnw-legendItem > .mcnw-legendAmount {
+  margin-left: auto;
+  padding-left: 0;
 }
 
 /* ---------------------------------------------------------------------------
