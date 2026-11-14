@@ -17,12 +17,29 @@ import type { Cell } from '../utils/shared/xlsx.ts';
 
 type Strings = Dict['tools']['export'];
 
+/**
+ * A button label that changes for a moment ("Copy link" to "Copied") without
+ * changing the button's size. Both labels sit in one grid cell and only one
+ * is visible, so the button is always as wide and as tall as the larger of
+ * the two: on a phone a label that wraps onto a second line no longer moves
+ * the buttons under it when it changes (#491).
+ */
+export function SwapLabel({ label, alternate, swapped }: { label: string; alternate: string; swapped: boolean }) {
+  return (
+    <span className="tool-swapLabel">
+      <span>{swapped ? alternate : label}</span>
+      <span className="tool-swapLabel__ghost" aria-hidden="true">{swapped ? label : alternate}</span>
+    </span>
+  );
+}
+
 /** Instagram's and Facebook's in-app browsers, which may not save files or print. Read here only, never sent. */
 const IN_APP = /Instagram|FBAN|FBAV|FB_IAB|FBIOS/;
 
 export function ToolExport({
   strings,
   share,
+  shareResult,
   xlsxAttr,
   pdfAttr,
   ready,
@@ -32,6 +49,12 @@ export function ToolExport({
   strings: Strings;
   /** The tool's own share button (and its status), shown first. */
   share?: ReactNode;
+  /**
+   * What a copy leaves behind (the bar showing the copied address), placed
+   * after the buttons, in the markup as on the page: the buttons do not move
+   * when it appears and goes, and Tab reaches it after them (#491).
+   */
+  shareResult?: ReactNode;
   /**
    * The two buttons' analytics labels, written out in full where the tool
    * uses this component, so the label registry (src/utils/analyticsLabels.ts)
@@ -88,6 +111,7 @@ export function ToolExport({
         >
           {strings.print}
         </button>
+        {shareResult}
       </div>
       <p className="tool-exportNote">{strings.note}</p>
       {inApp && <p className="tool-exportNote tool-exportNote--app">{strings.inApp}</p>}
