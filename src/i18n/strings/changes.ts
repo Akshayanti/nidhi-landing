@@ -45,11 +45,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'tools-read-other-digits',
         text: {
-          en: 'The free tools now read numbers typed with Devanagari, Eastern Arabic or Persian digits. If your keyboard writes १२३, the tools take it as 123 and no longer ask you for a number.',
-          hi: 'मुफ़्त टूल अब देवनागरी, पूर्वी अरबी या फ़ारसी अंकों में लिखी संख्याएँ भी पढ़ लेते हैं। अगर आपका कीबोर्ड १२३ लिखता है, तो टूल उसे 123 मानते हैं और अब संख्या भरने को नहीं कहते।',
-          es: 'Las herramientas gratuitas ya leen los números escritos con cifras devanagari, árabes orientales o persas. Si tu teclado escribe १२३, las herramientas lo toman como 123 y ya no te piden un número.',
-          cs: 'Bezplatné nástroje teď přečtou i\u00a0čísla napsaná dévanágarskými, východoarabskými nebo perskými číslicemi. Když vaše klávesnice píše १२३, nástroje to berou jako 123 a\u00a0už po vás nechtějí číslo.',
-          mr: 'मोफत साधने आता देवनागरी, पूर्व अरबी किंवा फारसी अंकांत लिहिलेल्या संख्याही वाचतात. तुमचा कीबोर्ड १२३ लिहीत असेल, तर साधने ते 123 असे वाचतात आणि आता संख्या भरायला सांगत नाहीत.',
+          en: 'The free tools now read numbers typed with Devanagari (१२३), Eastern Arabic (١٢٣) or Persian (۱۲۳) digits. If your keyboard writes १२३, the tools take it as 123 and no longer ask you for a number.',
+          hi: 'मुफ़्त टूल अब देवनागरी (१२३), पूर्वी अरबी (١٢٣) या फ़ारसी (۱۲۳) अंकों में लिखी संख्याएँ भी पढ़ लेते हैं। अगर आपका कीबोर्ड १२३ लिखता है, तो टूल उसे 123 मानते हैं और अब संख्या भरने को नहीं कहते।',
+          es: 'Las herramientas gratuitas ya leen los números escritos con cifras devanagari (१२३), árabes orientales (١٢٣) o persas (۱۲۳). Si tu teclado escribe १२३, las herramientas lo toman como 123 y ya no te piden un número.',
+          cs: 'Bezplatné nástroje teď přečtou i\u00a0čísla napsaná dévanágarskými (१२३), východoarabskými (١٢٣) nebo perskými (۱۲۳) číslicemi. Když vaše klávesnice píše १२३, nástroje to berou jako 123 a\u00a0už po vás nechtějí číslo.',
+          mr: 'मोफत साधने आता देवनागरी (१२३), पूर्व अरबी (١٢٣) किंवा फारसी (۱۲۳) अंकांत लिहिलेल्या संख्याही वाचतात. तुमचा कीबोर्ड १२३ लिहीत असेल, तर साधने ते 123 असे वाचतात आणि आता संख्या भरायला सांगत नाहीत.',
         },
       },
       {
