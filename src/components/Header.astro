@@ -497,6 +497,8 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       right: 0;
       max-height: calc(100dvh - 60px);
       overflow-y: auto;
+      /* A swipe past the end of the menu does not carry on into the page. */
+      overscroll-behavior: contain;
       background: var(--color-bg-white);
       border-bottom: 1px solid var(--color-border);
       box-shadow: var(--shadow-md);
@@ -785,6 +787,8 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       button.setAttribute('aria-expanded', open ? 'true' : 'false');
       button.setAttribute('aria-label', open ? menuCloseLabel : menuLabel);
       sheet.hidden = !open;
+      // The page behind does not scroll while the menu is open (#481).
+      document.documentElement.classList.toggle('scroll-locked', open);
       if (open) {
         document.addEventListener('click', onOutside);
         document.addEventListener('keydown', onKey);

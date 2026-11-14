@@ -365,7 +365,6 @@ export const es: Dict = {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
-        overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
         figures: 'Las figuras de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
         touch: 'En un teléfono, el gráfico de Monte Carlo no se puede ampliar con dos dedos, y abrir la explicación de un término en una lección puede hacer que la página se deslice hacia un lado.',
         largeText: 'Con un tamaño de texto mucho mayor en una pantalla estrecha, un enlace de la ruta de aprendizaje en español y partes de algunas herramientas gratuitas hacen que la página quede más ancha que la pantalla.',

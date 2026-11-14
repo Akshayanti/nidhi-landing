@@ -555,6 +555,10 @@ a {
   a { transition: none; }
 }
 
+/* Set while the phone menu or the consent prompt is open: the page behind
+   them does not scroll. */
+html.scroll-locked { overflow: hidden; }
+
 a:hover {
   color: var(--color-teal);
   text-decoration: underline;

@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'page-stays-put-behind-menu',
+        text: {
+          en: 'The phone menu and the cookie prompt now hold the page still. While either is open, the page behind it no longer scrolls, so closing the menu leaves you where you were. With a screen reader, the cookie prompt is now the only thing in reach until you answer it.',
+          hi: 'फ़ोन का मेन्यू और कुकी वाला संदेश अब पन्ने को अपनी जगह रोके रखते हैं। दोनों में से कोई खुला हो, तो पीछे का पन्ना अब स्क्रॉल नहीं होता, इसलिए मेन्यू बंद करने पर आप वहीं रहते हैं जहाँ थे। स्क्रीन रीडर के साथ, जवाब देने तक अब सिर्फ़ कुकी वाला संदेश ही पहुँच में रहता है।',
+          es: 'El menú del teléfono y el aviso de cookies ahora dejan quieta la página. Mientras uno de los dos está abierto, la página de detrás ya no se desplaza, así que al cerrar el menú sigues donde estabas. Con un lector de pantalla, el aviso de cookies es ahora lo único al alcance hasta que lo respondes.',
+          cs: 'Nabídka v\u00a0telefonu a\u00a0výzva k\u00a0cookies teď drží stránku na místě. Dokud je jedna z\u00a0nich otevřená, stránka za ní se už neposouvá, takže po zavření nabídky zůstanete tam, kde jste byli. Se čtečkou obrazovky je teď výzva k\u00a0cookies jediné, co je v\u00a0dosahu, dokud na ni neodpovíte.',
+          mr: 'फोनचा मेनू आणि कुकीची सूचना आता पान जागेवर धरून ठेवतात. दोन्हींपैकी एक उघडे असताना मागचे पान आता स्क्रोल होत नाही, त्यामुळे मेनू बंद केल्यावर तुम्ही जिथे होता तिथेच राहता. स्क्रीन रीडर वापरताना, उत्तर देईपर्यंत आता फक्त कुकीची सूचनाच आवाक्यात असते.',
+        },
+      },
+      {
         id: 'forms-keep-your-place',
         text: {
           en: 'The waitlist and newsletter forms now keep your place. With a keyboard, focus used to jump to the top of the page while the form was sending and after a failure; it now stays on the button. A screen reader now reads out the question "Is this the right address?" with the address you typed, one character at a time, and says when the form is sending. A request that gets no answer in 20 seconds now stops and tells you, so you can try again. On the waitlist card, the ring that shows where the keyboard is can now be seen.',

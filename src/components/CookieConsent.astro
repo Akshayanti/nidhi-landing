@@ -47,9 +47,38 @@ const strings = dict(locale);
       }
     }
 
+    // While the prompt is open the page behind it is out of reach: it does
+    // not scroll, and everything outside the prompt is inert, so a screen
+    // reader or a swipe cannot wander into a page the prompt still covers
+    // (#481). Nothing about the choice or what is stored changes.
+    var madeInert = [];
+    function setBehind(blocked) {
+      var root = document.documentElement;
+      if (blocked) {
+        // Keep the page from jumping sideways where the scrollbar takes room.
+        var gap = window.innerWidth - root.clientWidth;
+        if (gap > 0) root.style.paddingRight = gap + 'px';
+        root.classList.add('scroll-locked');
+        for (var node = overlay; node && node !== document.body; node = node.parentElement) {
+          var siblings = node.parentElement ? node.parentElement.children : [];
+          for (var i = 0; i < siblings.length; i++) {
+            var el = siblings[i];
+            if (el === node || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) continue;
+            el.inert = true;
+            madeInert.push(el);
+          }
+        }
+      } else {
+        root.classList.remove('scroll-locked');
+        root.style.paddingRight = '';
+        while (madeInert.length) madeInert.pop().inert = false;
+      }
+    }
+
     function openConsent() {
       previousFocus = document.activeElement;
       overlay.style.display = 'flex';
+      setBehind(true);
       requestAnimationFrame(function() { overlay.classList.add('cookie-overlay--visible'); });
       document.addEventListener('keydown', trapFocus);
       // Focus the less-destructive button first, without scrolling: at large
@@ -64,6 +93,7 @@ const strings = dict(locale);
       // Close first, so the prompt can never get stuck open.
       overlay.style.display = 'none';
       overlay.classList.remove('cookie-overlay--visible');
+      setBehind(false);
       // Apply the choice to the running SDK straight away, both ways
       // (Analytics.astro): a "No thanks" after an earlier "Sure" switches click
       // recording off and stops storing the visitor ID for the rest of this
@@ -109,6 +139,7 @@ const strings = dict(locale);
     justify-content: center;
     padding: 1rem;
     overflow-y: auto;
+    overscroll-behavior: contain;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -125,6 +156,7 @@ const strings = dict(locale);
     width: 100%;
     max-height: calc(100dvh - 2rem);
     overflow-y: auto;
+    overscroll-behavior: contain;
     margin: auto;
     text-align: center;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
