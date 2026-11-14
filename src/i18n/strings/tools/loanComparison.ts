@@ -169,7 +169,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'How does the prepayment penalty work?',
-              a: 'Some loans charge a penalty if you pay them off early. Enter the penalty as a percent of the remaining balance and the last month at which it applies. The penalty is charged only when the loan is fully paid off (via lumps, extra principal, or a refinance) on or before that month. Penalties are added to the total amount paid, so the side-by-side comparison reflects the true cost of an early payoff under penalty. Some contracts also charge for paying off part of a loan early, often above a yearly allowance; that is not modelled.',
+              a: 'Some loans charge a penalty if you pay them off early. Enter the penalty as a percent of the remaining balance and the last month at which it applies. The penalty is charged only when the loan is fully paid off (via lumps, extra principal, or a refinance) on or before that month. Penalties are added to the total amount paid, so the side-by-side comparison reflects the cost of an early payoff under this penalty. Some contracts also charge for paying off part of a loan early, often above a yearly allowance; that is not modelled.',
             },
           ],
         },
@@ -199,7 +199,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'How does the refinance scenario builder work?',
-              a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under "keep the original loan to its end" against "make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end". If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs of the refinance, and any such penalty, are recouped. The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is "never".',
+              a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under "keep the original loan to its end" against "make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end". If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs paid at the refinance, and any such penalty, are recouped (closing costs added to the new loan are already in its payments). The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is "never".',
             },
           ],
         },
@@ -589,7 +589,7 @@ export const loanComparisonEn = {
         n: ' is the number of monthly payments.',
       },
       monthly:
-        "Each month's interest is computed on the outstanding balance, the payment is split between interest and principal, and the balance is reduced. The loop runs to the cent.",
+        "Each month's interest is computed on the outstanding balance, the payment is split between interest and principal, and the balance is reduced. The loop runs to the cent. Many lenders work out interest by the day, so the interest on a statement changes a little with the length of each month; this calculator charges a twelfth of the yearly rate every month, so its figures can differ from a lender's by small amounts.",
       /** Split around the `<strong>` lead, as the rest of these bullets are. */
       apr: {
         strong: 'APR',
@@ -605,7 +605,7 @@ export const loanComparisonEn = {
       },
       penalties: {
         strong: 'Prepayment penalties',
-        rest: " fire only when the loan is fully paid off on or before the penalty's expiration month: by extra payments, by lump sums, or by refinancing it in the refinance scenario.",
+        rest: " apply only when the loan is fully paid off on or before the penalty's last month: by extra payments, by lump sums, or by refinancing it in the refinance scenario.",
       },
       note: 'Everything runs in your browser. Nothing is sent to a server. Use the "Copy shareable link" button to encode every input into a URL you can hand to someone else.',
     },
@@ -636,11 +636,11 @@ export const loanComparisonEn = {
       saves: 'Refi saves',
       costsMore: 'Refi costs more',
       breakEven: 'Break-even (months after refi)',
-      breakEvenHint: 'How long the lower payments take to pay back the closing costs and any early repayment penalty. Extra payments are left out.',
+      breakEvenHint: 'How long the lower payments due take to pay back what the refinance costs in cash: closing costs paid at the refinance and any early repayment penalty. Extra payments are left out.',
       breakEvenNever: 'The payments due never make up what refinancing costs',
       penalty: 'Early repayment penalty on the current loan',
       penaltyHint: 'Refinancing pays the current loan off early. Included in the refinance total.',
-      extrasCarried: 'Your extra payments continue on the new loan in this comparison, as they do on the current one.',
+      extrasCarried: 'The extra principal and lump sums you entered continue on the new loan in this comparison, as they do on the current one.',
     },
     disclaimer: {
       summary: 'Assumptions and disclaimers',
@@ -858,7 +858,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'समय से पहले भुगतान पर जुर्माना कैसे काम करता है?',
-              a: 'कुछ लोन जल्दी चुका देने पर जुर्माना लगाते हैं। जुर्माना बची हुई रकम का प्रतिशत बताकर भरें, और यह भी कि वह किस महीने तक लागू है। जुर्माना तभी लगता है जब लोन उस महीने या उससे पहले पूरी तरह चुक जाए (एकमुश्त राशि, अतिरिक्त मूलधन या रीफ़ाइनेंस से)। जुर्माना कुल चुकाई जाने वाली राशि में जुड़ जाता है, इसलिए साथ-साथ वाली तुलना जुर्माने के साथ जल्दी चुकाने की असली लागत दिखाती है। कुछ अनुबंध लोन का एक हिस्सा जल्दी चुकाने पर भी शुल्क लेते हैं, अक्सर सालाना छूट की सीमा के ऊपर; वह यहाँ शामिल नहीं है।',
+              a: 'कुछ लोन जल्दी चुका देने पर जुर्माना लगाते हैं। जुर्माना बची हुई रकम का प्रतिशत बताकर भरें, और यह भी कि वह किस महीने तक लागू है। जुर्माना तभी लगता है जब लोन उस महीने या उससे पहले पूरी तरह चुक जाए (एकमुश्त राशि, अतिरिक्त मूलधन या रीफ़ाइनेंस से)। जुर्माना कुल चुकाई जाने वाली राशि में जुड़ जाता है, इसलिए साथ-साथ वाली तुलना इस जुर्माने के साथ जल्दी चुकाने की लागत दिखाती है। कुछ अनुबंध लोन का एक हिस्सा जल्दी चुकाने पर भी शुल्क लेते हैं, अक्सर सालाना छूट की सीमा के ऊपर; वह यहाँ शामिल नहीं है।',
             },
           ],
         },
@@ -888,7 +888,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'रीफ़ाइनेंस परिदृश्य बनाने वाला हिस्सा कैसे काम करता है?',
-              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर "पुराना लोन आखिर तक चलाते रहने" में कुल खर्च की तुलना "रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने" से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
+              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर "पुराना लोन आखिर तक चलाते रहने" में कुल खर्च की तुलना "रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने" से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के समय चुकाए गए कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी (नए लोन में जोड़ा गया कागज़ी खर्च पहले से उसकी किस्तों में शामिल है)। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
             },
           ],
         },
@@ -1238,7 +1238,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         n: ' मासिक किस्तों की संख्या है।',
       },
       monthly:
-        'हर महीने का ब्याज उस समय के बकाए पर लगता है, किस्त ब्याज और मूलधन में बँटती है, और बकाया घट जाता है। यह गणना मुद्रा की सबसे छोटी इकाई तक सटीक चलती है।',
+        'हर महीने का ब्याज उस समय के बकाए पर लगता है, किस्त ब्याज और मूलधन में बँटती है, और बकाया घट जाता है। यह गणना मुद्रा की सबसे छोटी इकाई तक सटीक चलती है। कई लोन देने वाले ब्याज दिन के हिसाब से निकालते हैं, इसलिए स्टेटमेंट पर ब्याज हर महीने की लंबाई के साथ थोड़ा बदलता है; यह कैलकुलेटर हर महीने सालाना दर का बारहवाँ हिस्सा लगाता है, इसलिए इसके आँकड़े लोन देने वाले के आँकड़ों से थोड़े अलग हो सकते हैं।',
       apr: {
         strong: 'APR',
         rest: ' लोन शुल्क और कागज़ी खर्च को दर में इस तरह जोड़ता है: शुल्क को उस राशि से पहले ही काटा हुआ मानता है जो आपको असल में मिलती है, और फिर वह मासिक दर निकालता है जिस पर अनुबंध की किस्तों का वर्तमान मूल्य उस शुद्ध राशि के बराबर हो जाए। यहाँ का सालाना आँकड़ा यही मासिक दर × 12 है, आपकी भरी हुई दर के ही आधार पर; यूरोपीय संघ, ब्रिटेन और कुछ दूसरे देशों के काग़ज़ों में इस पर साल भर की चक्रवृद्धि जोड़ी जाती है, इसलिए उनका आँकड़ा ऊँचा होता है।',
@@ -1283,11 +1283,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       saves: 'रीफ़ाइनेंस से बचत',
       costsMore: 'रीफ़ाइनेंस में ज़्यादा खर्च',
       breakEven: 'बराबरी का समय (रीफ़ाइनेंस के कितने महीने बाद)',
-      breakEvenHint: 'कम किस्तों से कागज़ी खर्च और जल्दी चुकाने का जुर्माना (अगर हो) निकलने में कितना समय लगता है। अतिरिक्त भुगतान इसमें नहीं गिने जाते।',
+      breakEvenHint: 'कम देय किस्तों से रीफ़ाइनेंस का नकद खर्च निकलने में कितना समय लगता है: रीफ़ाइनेंस के समय चुकाया गया कागज़ी खर्च और जल्दी चुकाने का जुर्माना, अगर हो। अतिरिक्त भुगतान इसमें नहीं गिने जाते।',
       breakEvenNever: 'देय किस्तों से रीफ़ाइनेंस का खर्च कभी नहीं निकलता',
       penalty: 'पुराने लोन पर जल्दी चुकाने का जुर्माना',
       penaltyHint: 'रीफ़ाइनेंस से पुराना लोन समय से पहले चुक जाता है। यह रीफ़ाइनेंस के कुल में शामिल है।',
-      extrasCarried: 'इस तुलना में आपकी अतिरिक्त किस्तें नए लोन पर भी जारी रहती हैं, जैसे पुराने लोन पर।',
+      extrasCarried: 'इस तुलना में भरा गया अतिरिक्त मूलधन और एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, जैसे पुराने लोन पर।',
     },
     disclaimer: {
       summary: 'मान्यताएँ और ज़रूरी बातें',
@@ -1479,7 +1479,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Cómo funciona la penalización por pago anticipado?',
-              a: 'Algunos préstamos cobran una penalización si los liquidas antes de tiempo. Escribe la penalización como porcentaje del saldo pendiente y el último mes en que se aplica. La penalización solo se cobra cuando el préstamo se liquida por completo (con pagos extraordinarios, capital extra o una refinanciación) en ese mes o antes. Las penalizaciones se suman al total pagado, así que la comparación lado a lado refleja el costo real de liquidar antes de tiempo con penalización. Algunos contratos también cobran por pagar antes de tiempo solo una parte del préstamo, a menudo por encima de un margen anual; eso no se incluye en el cálculo.',
+              a: 'Algunos préstamos cobran una penalización si los liquidas antes de tiempo. Escribe la penalización como porcentaje del saldo pendiente y el último mes en que se aplica. La penalización solo se cobra cuando el préstamo se liquida por completo (con pagos extraordinarios, capital extra o una refinanciación) en ese mes o antes. Las penalizaciones se suman al total pagado, así que la comparación lado a lado refleja el costo de liquidar antes de tiempo con esta penalización. Algunos contratos también cobran por pagar antes de tiempo solo una parte del préstamo, a menudo por encima de un margen anual; eso no se incluye en el cálculo.',
             },
           ],
         },
@@ -1509,7 +1509,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Cómo funciona el escenario de refinanciación?',
-              a: 'Elige qué entidad refinanciar, el mes en que se refinancia, la nueva tasa, el nuevo plazo y los gastos iniciales. La calculadora compara el dinero total desembolsado si «mantienes el préstamo original hasta el final» con el de «pagar las cuotas originales hasta el mes de la refinanciación y luego liquidar el saldo pendiente con un préstamo nuevo que dura hasta su propio final contractual». Si el préstamo original tiene una penalización por pago anticipado que sigue vigente en el mes de la refinanciación, se suma al lado de la refinanciación. Los pagos extra y los pagos extraordinarios posteriores que escribiste para el préstamo original continúan en el nuevo, de modo que ambos lados se amortizan igual. También indica un punto de equilibrio: cuántos meses de cuotas más bajas hacen falta para recuperar los gastos iniciales de la refinanciación y esa penalización, si la hay. El punto de equilibrio compara las cuotas exigidas en cada préstamo, sin pagos extra. Si esas cuotas nunca compensan el costo, el punto de equilibrio es «nunca».',
+              a: 'Elige qué entidad refinanciar, el mes en que se refinancia, la nueva tasa, el nuevo plazo y los gastos iniciales. La calculadora compara el dinero total desembolsado si «mantienes el préstamo original hasta el final» con el de «pagar las cuotas originales hasta el mes de la refinanciación y luego liquidar el saldo pendiente con un préstamo nuevo que dura hasta su propio final contractual». Si el préstamo original tiene una penalización por pago anticipado que sigue vigente en el mes de la refinanciación, se suma al lado de la refinanciación. Los pagos extra y los pagos extraordinarios posteriores que escribiste para el préstamo original continúan en el nuevo, de modo que ambos lados se amortizan igual. También indica un punto de equilibrio: cuántos meses de cuotas más bajas hacen falta para recuperar los gastos iniciales pagados al refinanciar y esa penalización, si la hay (los gastos iniciales sumados al préstamo nuevo ya están en sus cuotas). El punto de equilibrio compara las cuotas exigidas en cada préstamo, sin pagos extra. Si esas cuotas nunca compensan el costo, el punto de equilibrio es «nunca».',
             },
           ],
         },
@@ -1859,7 +1859,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         n: ' es el número de cuotas mensuales.',
       },
       monthly:
-        'Los intereses de cada mes se calculan sobre el saldo pendiente, la cuota se reparte entre intereses y capital, y el saldo se reduce. El cálculo es exacto hasta la unidad monetaria más pequeña.',
+        'Los intereses de cada mes se calculan sobre el saldo pendiente, la cuota se reparte entre intereses y capital, y el saldo se reduce. El cálculo es exacto hasta la unidad monetaria más pequeña. Muchas entidades financieras calculan los intereses por días, así que los intereses de un extracto cambian un poco según la duración de cada mes; esta calculadora cobra cada mes una doceava parte de la tasa anual, por lo que sus cifras pueden diferir en pequeñas cantidades de las de una entidad.',
       apr: {
         strong: 'APR',
         rest: ' incorpora la comisión de apertura y los gastos iniciales a la tasa: trata la comisión como una deducción inicial de lo que realmente recibes y busca la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual × 12 es la cifra anual que se muestra, con la misma base que la tasa que escribes; los documentos de la UE, el Reino Unido y algunos otros países la capitalizan durante el año, así que su cifra es más alta.',
@@ -1904,11 +1904,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       saves: 'La refinanciación ahorra',
       costsMore: 'La refinanciación cuesta más',
       breakEven: 'Punto de equilibrio (meses tras refinanciar)',
-      breakEvenHint: 'Cuánto tardan las cuotas más bajas en recuperar los gastos iniciales y la penalización por pago anticipado, si la hay. Los pagos extra no se cuentan.',
+      breakEvenHint: 'Cuánto tardan las cuotas exigidas más bajas en recuperar lo que la refinanciación cuesta en efectivo: los gastos iniciales pagados al refinanciar y la penalización por pago anticipado, si la hay. Los pagos extra no se cuentan.',
       breakEvenNever: 'Las cuotas exigidas nunca compensan lo que cuesta refinanciar',
       penalty: 'Penalización por pago anticipado del préstamo actual',
       penaltyHint: 'Refinanciar liquida el préstamo actual antes de tiempo. Incluida en el total de refinanciar.',
-      extrasCarried: 'En esta comparación, tus pagos extra continúan en el préstamo nuevo, igual que en el actual.',
+      extrasCarried: 'En esta comparación, el capital extra y los pagos extraordinarios que escribiste continúan en el préstamo nuevo, igual que en el actual.',
     },
     disclaimer: {
       summary: 'Supuestos y advertencias',
@@ -2099,7 +2099,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Jak funguje poplatek za předčasné splacení?',
-              a: 'Některé úvěry účtují poplatek, pokud je splatíte předčasně. Zadejte poplatek jako procento ze zbývající jistiny a poslední měsíc, kdy platí. Poplatek se účtuje jen tehdy, když je úvěr celý splacen (jednorázovými splátkami, mimořádnými splátkami jistiny nebo refinancováním) v daném měsíci nebo dřív. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží skutečné náklady předčasného splacení s poplatkem. Některé smlouvy účtují poplatek i za předčasné splacení části úvěru, často nad roční limit; to výpočet nezahrnuje.',
+              a: 'Některé úvěry účtují poplatek, pokud je splatíte předčasně. Zadejte poplatek jako procento ze zbývající jistiny a poslední měsíc, kdy platí. Poplatek se účtuje jen tehdy, když je úvěr celý splacen (jednorázovými splátkami, mimořádnými splátkami jistiny nebo refinancováním) v daném měsíci nebo dřív. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží náklady předčasného splacení s tímto poplatkem. Některé smlouvy účtují poplatek i za předčasné splacení části úvěru, často nad roční limit; to výpočet nezahrnuje.',
             },
           ],
         },
@@ -2129,7 +2129,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Jak funguje scénář refinancování?',
-              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, které jste zadali u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření refinancování a případný poplatek. Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
+              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, které jste zadali u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření zaplacené při refinancování a případný poplatek (náklady na uzavření přičtené k novému úvěru jsou už v jeho splátkách). Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
             },
           ],
         },
@@ -2479,7 +2479,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         n: ' je počet měsíčních splátek.',
       },
       monthly:
-        'Úrok každého měsíce se počítá ze zbývající jistiny, splátka se rozdělí mezi úrok a jistinu a jistina se sníží. Výpočet běží na haléře přesně.',
+        'Úrok každého měsíce se počítá ze zbývající jistiny, splátka se rozdělí mezi úrok a jistinu a jistina se sníží. Výpočet běží na haléře přesně. Mnoho poskytovatelů úvěrů počítá úrok po dnech, takže úrok na výpisu se trochu mění podle délky měsíce; tato kalkulačka účtuje každý měsíc dvanáctinu roční sazby, a její čísla se proto mohou od čísel poskytovatele o malé částky lišit.',
       apr: {
         strong: 'APR',
         rest: ' zahrnuje poplatek za sjednání a uzavření do sazby tak, že ho bere jako srážku předem z toho, co skutečně dostanete, a pak hledá měsíční sazbu, při které se současná hodnota smluvních splátek rovná této čisté částce. Tato měsíční sazba × 12 je zobrazené roční číslo, na stejném základě jako sazba, kterou zadáváte; dokumenty v EU, ve Spojeném království a v některých dalších zemích počítají se složeným úročením za rok, takže jejich číslo je vyšší.',
@@ -2524,11 +2524,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       saves: 'Refinancování ušetří',
       costsMore: 'Refinancování stojí víc',
       breakEven: 'Doba návratnosti (měsíce po refinancování)',
-      breakEvenHint: 'Za jak dlouho nižší splátky vrátí náklady na uzavření a případný poplatek za předčasné splacení. Mimořádné splátky se nepočítají.',
+      breakEvenHint: 'Za jak dlouho nižší předepsané splátky vrátí to, co refinancování stojí v hotovosti: náklady na uzavření zaplacené při refinancování a případný poplatek za předčasné splacení. Mimořádné splátky se nepočítají.',
       breakEvenNever: 'Předepsané splátky náklady na refinancování nikdy nevyrovnají',
       penalty: 'Poplatek za předčasné splacení současného úvěru',
       penaltyHint: 'Refinancováním se současný úvěr splatí předčasně. Je započten v celkové částce refinancování.',
-      extrasCarried: 'V tomto srovnání pokračují vaše mimořádné splátky i u nového úvěru, stejně jako u současného.',
+      extrasCarried: 'V tomto srovnání pokračují zadané mimořádné splátky jistiny i jednorázové splátky i u nového úvěru, stejně jako u současného.',
     },
     disclaimer: {
       summary: 'Předpoklady a upozornění',
@@ -2701,7 +2701,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'मुदतपूर्व परतफेडीवरील दंड कसा काम करतो?',
-              a: 'काही कर्जांवर लवकर फेड केल्यास दंड आकारला जातो. दंड बाकी कर्जाची टक्केवारी म्हणून आणि तो लागू असलेला शेवटचा महिना भरा. कर्ज (एकरकमी रकमा, अतिरिक्त मुद्दल किंवा पुनर्वित्तामुळे) त्या महिन्यात किंवा त्याआधी पूर्ण फिटले तरच दंड आकारला जातो. दंड भरलेल्या एकूण रकमेत जोडला जातो, त्यामुळे शेजारी शेजारी तुलना दंडासह लवकर फेडीचा खरा खर्च दाखवते. काही करारांत कर्जाचा काही भाग लवकर फेडल्यावरही शुल्क लागते, बहुधा वार्षिक सवलतीच्या मर्यादेपलीकडे; ते इथे धरलेले नाही.',
+              a: 'काही कर्जांवर लवकर फेड केल्यास दंड आकारला जातो. दंड बाकी कर्जाची टक्केवारी म्हणून आणि तो लागू असलेला शेवटचा महिना भरा. कर्ज (एकरकमी रकमा, अतिरिक्त मुद्दल किंवा पुनर्वित्तामुळे) त्या महिन्यात किंवा त्याआधी पूर्ण फिटले तरच दंड आकारला जातो. दंड भरलेल्या एकूण रकमेत जोडला जातो, त्यामुळे शेजारी शेजारी तुलना या दंडासह लवकर फेडीचा खर्च दाखवते. काही करारांत कर्जाचा काही भाग लवकर फेडल्यावरही शुल्क लागते, बहुधा वार्षिक सवलतीच्या मर्यादेपलीकडे; ते इथे धरलेले नाही.',
             },
           ],
         },
@@ -2731,7 +2731,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'पुनर्वित्त परिदृश्य कसे काम करते?',
-              a: 'कोणत्या कर्जदात्याचे कर्ज पुनर्वित्त करायचे, पुनर्वित्त कोणत्या महिन्यात होते, नवीन दर, नवीन मुदत आणि व्यवहार खर्च असल्यास ते निवडा. कॅल्क्युलेटर “मूळ कर्ज शेवटपर्यंत तसेच ठेवा” आणि “पुनर्वित्ताच्या महिन्यापर्यंत मूळ हप्ते भरा, मग बाकी कर्ज स्वतःच्या कराराच्या शेवटापर्यंत चालणाऱ्या नवीन कर्जाने फेडा” या दोन्हींमध्ये खर्च झालेल्या एकूण पैशांची तुलना करतो. मूळ कर्जावर मुदतपूर्व परतफेडीचा दंड असेल आणि तो पुनर्वित्ताच्या महिन्यात अजून लागू असेल, तर तो पुनर्वित्ताच्या बाजूला जोडला जातो. मूळ कर्जासाठी भरलेले अतिरिक्त हप्ते आणि नंतरच्या एकरकमी रकमा नवीन कर्जावरही चालू राहतात, त्यामुळे दोन्ही बाजू एकाच पद्धतीने फेडल्या जातात. तो खर्च वसूल होण्याचा टप्पाही सांगतो: पुनर्वित्ताचा व्यवहार खर्च आणि असा दंड भरून निघण्यासाठी कमी हप्त्यांचे किती महिने लागतात. हा टप्पा दोन्ही कर्जांच्या देय हप्त्यांची तुलना करतो, अतिरिक्त भरणा वगळून. त्या हप्त्यांतून हा खर्च कधीच भरून निघत नसेल, तर हा टप्पा “कधीच नाही” असतो.',
+              a: 'कोणत्या कर्जदात्याचे कर्ज पुनर्वित्त करायचे, पुनर्वित्त कोणत्या महिन्यात होते, नवीन दर, नवीन मुदत आणि व्यवहार खर्च असल्यास ते निवडा. कॅल्क्युलेटर “मूळ कर्ज शेवटपर्यंत तसेच ठेवा” आणि “पुनर्वित्ताच्या महिन्यापर्यंत मूळ हप्ते भरा, मग बाकी कर्ज स्वतःच्या कराराच्या शेवटापर्यंत चालणाऱ्या नवीन कर्जाने फेडा” या दोन्हींमध्ये खर्च झालेल्या एकूण पैशांची तुलना करतो. मूळ कर्जावर मुदतपूर्व परतफेडीचा दंड असेल आणि तो पुनर्वित्ताच्या महिन्यात अजून लागू असेल, तर तो पुनर्वित्ताच्या बाजूला जोडला जातो. मूळ कर्जासाठी भरलेले अतिरिक्त हप्ते आणि नंतरच्या एकरकमी रकमा नवीन कर्जावरही चालू राहतात, त्यामुळे दोन्ही बाजू एकाच पद्धतीने फेडल्या जातात. तो खर्च वसूल होण्याचा टप्पाही सांगतो: पुनर्वित्ताच्या वेळी भरलेला व्यवहार खर्च आणि असा दंड भरून निघण्यासाठी कमी हप्त्यांचे किती महिने लागतात (नवीन कर्जात जोडलेला व्यवहार खर्च आधीच त्याच्या हप्त्यांत असतो). हा टप्पा दोन्ही कर्जांच्या देय हप्त्यांची तुलना करतो, अतिरिक्त भरणा वगळून. त्या हप्त्यांतून हा खर्च कधीच भरून निघत नसेल, तर हा टप्पा “कधीच नाही” असतो.',
             },
           ],
         },
@@ -3072,7 +3072,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         r: ' म्हणजे मासिक व्याजदर (वार्षिक दर ÷ 12), आणि ',
         n: ' म्हणजे मासिक हप्त्यांची संख्या.',
       },
-      monthly: 'प्रत्येक महिन्याचे व्याज बाकी कर्जावर मोजले जाते, हप्ता व्याज आणि मुद्दल यांच्यात विभागला जातो, आणि बाकी कर्ज कमी होते. हे चक्र पैशापर्यंत अचूक चालते.',
+      monthly: 'प्रत्येक महिन्याचे व्याज बाकी कर्जावर मोजले जाते, हप्ता व्याज आणि मुद्दल यांच्यात विभागला जातो, आणि बाकी कर्ज कमी होते. हे चक्र पैशापर्यंत अचूक चालते. अनेक कर्जदाते व्याज दिवसागणिक मोजतात, त्यामुळे स्टेटमेंटवरील व्याज प्रत्येक महिन्याच्या लांबीनुसार थोडे बदलते; हा कॅल्क्युलेटर दर महिन्याला वार्षिक दराचा बारावा भाग आकारतो, त्यामुळे त्याचे आकडे कर्जदात्याच्या आकड्यांपेक्षा थोड्या रकमेने वेगळे असू शकतात.',
       apr: {
         strong: 'APR',
         rest: ' कर्जप्रक्रिया/व्यवहार शुल्क व्याजदरात सामावून घेतो: शुल्क हे तुम्हाला प्रत्यक्ष मिळणाऱ्या रकमेतून सुरुवातीलाच झालेली वजावट मानले जाते, आणि मग असा मासिक दर काढला जातो ज्यावर कराराप्रमाणेच्या हप्त्यांचे वर्तमान मूल्य त्या निव्वळ रकमेइतके होते. इथे दाखवलेला वार्षिक आकडा म्हणजे हाच मासिक दर × 12, तुम्ही भरलेल्या दराच्याच आधारावर; युरोपियन युनियन, UK आणि इतर काही देशांतील कागदपत्रांत त्यावर वर्षभर चक्रवाढ धरली जाते, त्यामुळे त्यांचा आकडा जास्त असतो.',
@@ -3117,11 +3117,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       saves: 'पुनर्वित्ताने बचत',
       costsMore: 'पुनर्वित्ताचा खर्च जास्त',
       breakEven: 'खर्च वसूल होण्याचा टप्पा (पुनर्वित्तानंतरचे महिने)',
-      breakEvenHint: 'कमी हप्त्यांतून व्यवहार खर्च आणि मुदतपूर्व परतफेडीचा दंड (असल्यास) भरून निघायला किती काळ लागतो. अतिरिक्त भरणा यात धरलेला नाही.',
+      breakEvenHint: 'कमी देय हप्त्यांतून पुनर्वित्ताचा रोख खर्च भरून निघायला किती काळ लागतो: पुनर्वित्ताच्या वेळी भरलेला व्यवहार खर्च आणि मुदतपूर्व परतफेडीचा दंड, असल्यास. अतिरिक्त भरणा यात धरलेला नाही.',
       breakEvenNever: 'देय हप्त्यांतून पुनर्वित्ताचा खर्च कधीच भरून निघत नाही',
       penalty: 'सध्याच्या कर्जावरील मुदतपूर्व परतफेडीचा दंड',
       penaltyHint: 'पुनर्वित्तामुळे सध्याचे कर्ज मुदतीआधी फिटते. पुनर्वित्ताच्या एकूण रकमेत हा धरलेला आहे.',
-      extrasCarried: 'या तुलनेत तुमचे अतिरिक्त हप्ते नवीन कर्जावरही चालू राहतात, सध्याच्या कर्जाप्रमाणेच.',
+      extrasCarried: 'या तुलनेत भरलेले अतिरिक्त मुद्दल आणि एकरकमी परतफेड नवीन कर्जावरही चालू राहतात, सध्याच्या कर्जाप्रमाणेच.',
     },
     disclaimer: {
       summary: 'गृहीतके आणि अस्वीकरण',

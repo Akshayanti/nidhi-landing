@@ -8,6 +8,8 @@ import {
   emptyResult,
   toMinor,
   type LoanResult,
+  type LoanInputs,
+  type LoanMode,
   type LumpSum,
   type PrepaymentPenalty,
   type RateSpec,
@@ -135,24 +137,28 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   // An optional box that cannot be read is an error, like a required one:
   // a result that quietly left it out would look complete and be wrong.
   if (unreadableOptionalFields(v).length > 0) return emptyResult(0, OPTIONAL_UNREADABLE);
-  const principalMinor = toMinor(parseNumber(v.principal), currency);
-  const annualRate = parseNumber(v.annualRatePct) / 100;
-  const feeMinor = toMinor(parseNumber(v.feeMajor) || 0, currency);
-  const extraMonthlyMinor = toMinor(parseNumber(v.extraMonthly) || 0, currency);
-  const adv = buildAdvancedFields(v, currency);
+  const { inputs, mode } = loanFromInput(v, currency);
+  return computeLoan(inputs, mode);
+}
 
-  if (v.modeKind === 'term') {
-    const months = Math.round(parseNumber(v.termMonths));
-    return computeLoan(
-      { principalMinor, annualRate, feeMinor, extraMonthlyMinor, ...adv },
-      { kind: 'term', months },
-    );
-  }
-  const monthlyMinor = toMinor(parseNumber(v.monthlyPayment), currency);
-  return computeLoan(
-    { principalMinor, annualRate, feeMinor, extraMonthlyMinor, ...adv },
-    { kind: 'payment', monthlyMinor },
-  );
+/**
+ * What the engine is given for an offer: the typed boxes as amounts, rates
+ * and a mode. The refinance scenario needs these beside the result, which
+ * keeps neither the penalty clause nor the extra payments.
+ */
+export function loanFromInput(v: VendorInput, currency: string): { inputs: LoanInputs; mode: LoanMode } {
+  const inputs: LoanInputs = {
+    principalMinor: toMinor(parseNumber(v.principal), currency),
+    annualRate: parseNumber(v.annualRatePct) / 100,
+    feeMinor: toMinor(parseNumber(v.feeMajor) || 0, currency),
+    extraMonthlyMinor: toMinor(parseNumber(v.extraMonthly) || 0, currency),
+    ...buildAdvancedFields(v, currency),
+  };
+  const mode: LoanMode =
+    v.modeKind === 'term'
+      ? { kind: 'term', months: Math.round(parseNumber(v.termMonths)) }
+      : { kind: 'payment', monthlyMinor: toMinor(parseNumber(v.monthlyPayment), currency) };
+  return { inputs, mode };
 }
 
 /**
