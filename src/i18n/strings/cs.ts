@@ -349,7 +349,13 @@ export const cs: Dict = {
     barriers: {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
-        highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
+        refinanceResults: 'Ve srovnání úvěrů se při změně údajů o\u00a0refinancování změní celkové částky, úspora a\u00a0doba návratnosti, ale čtečka obrazovky tyto změny neoznámí. Hlavní výsledky oznamuje.',
+        toolQuestions: 'Na stránkách nástrojů mají otázky na konci viditelný nadpis, ale čtečka obrazovky ho při procházení po nadpisech přeskočí.',
+        copiedLink: 'Po zkopírování odkazu ke sdílení může čtečka obrazovky potvrzení oznámit dvakrát, nebo vůbec ne. Ve srovnání úvěrů zkopírovaná adresa po několika sekundách zmizí a\u00a0v\u00a0kalkulačce čistého jmění se na obrazovce s\u00a0malou výškou může objevit pod viditelnou částí okna.',
+        chartsTouch: 'Na telefonu se při zahájení posouvání stránky dotykem na grafu ve srovnání úvěrů nebo v\u00a0simulátoru Monte Carlo otevře rámeček s\u00a0údaji pro daný bod a\u00a0stránka poskočí. Tažením prstu do stran se údaje pro jiné body nezobrazí: na každý bod je třeba zvlášť klepnout.',
+        largeAmounts: 'Při hodně zvětšeném písmu na úzkém telefonu se krátký výsledek nahoře v\u00a0simulátoru Monte Carlo a\u00a0velmi dlouhý součet v\u00a0kalkulačce čistého jmění mohou zalomit mezi dvěma číslicemi.',
+        smallText: 'Na telefonu jsou některé texty menší než nejmenší velikost, kterou web určuje pro čtení: poznámka na přeložených stránkách, že lekce jsou v\u00a0angličtině, zkopírovaná adresa ke sdílení a\u00a0nápovědy pod poli ve srovnání úvěrů.',
+        legendButton: 'V\u00a0grafu kalkulačky čistého jmění tlačítko v\u00a0legendě hlásí, že je stisknuté, ale dalším stiskem se nevypne.',
       },
     },
     report: {

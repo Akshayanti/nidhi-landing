@@ -63,6 +63,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'share-window-keyboard',
+        text: {
+          en: 'In the net worth calculator’s share window, pressing Shift and Tab from the second option moved keyboard focus out of the window to the page behind, and Escape then stopped closing it. Keyboard focus now stays inside the window until you close it.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर की शेयर विंडो में दूसरे विकल्प से Shift और Tab दबाने पर कीबोर्ड फ़ोकस विंडो से बाहर पीछे के पन्ने पर चला जाता था, और फिर Escape से विंडो बंद नहीं होती थी। अब विंडो बंद करने तक कीबोर्ड फ़ोकस उसके अंदर ही रहता है।',
+          es: 'En la ventana para compartir de la calculadora de patrimonio neto, pulsar Mayús y Tab desde la segunda opción sacaba el foco del teclado de la ventana a la página que hay detrás, y después Escape ya no la cerraba. Ahora el foco del teclado se queda dentro de la ventana hasta que la cierras.',
+          cs: 'V\u00a0okně pro sdílení v\u00a0kalkulačce čistého jmění se po stisku Shift a\u00a0Tab na druhé možnosti přesunul fokus klávesnice mimo okno na stránku za ním a\u00a0Escape ho pak už nezavíral. Teď fokus klávesnice zůstává v\u00a0okně, dokud ho nezavřete.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरच्या शेअर विंडोमध्ये दुसऱ्या पर्यायावरून Shift आणि Tab दाबल्यावर कीबोर्ड फोकस विंडोच्या बाहेर मागील पानावर जात असे, आणि मग Escape दाबून विंडो बंद होत नसे. आता विंडो बंद करेपर्यंत कीबोर्ड फोकस तिच्या आतच राहतो.',
+        },
+      },
+      {
         id: 'sideways-phone-large-text',
         text: {
           en: 'Three fixes for small screens and large text. In the net worth calculator, the share window now fits a phone held sideways: the whole window scrolls, so Cancel and Copy link can be reached. The Monte Carlo chart can now be zoomed with two fingers. And with a much larger text size, the lesson lists, the how-to guides, the free tools and the privacy page no longer grow wider than a phone screen: long words and addresses wrap instead.',

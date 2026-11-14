@@ -365,7 +365,13 @@ export const es: Dict = {
     barriers: {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
-        highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
+        refinanceResults: 'En el comparador de préstamos, cambiar los datos de la refinanciación cambia los totales, el ahorro y el punto de equilibrio sin que el lector de pantalla anuncie esos cambios. Los resultados principales sí se anuncian.',
+        toolQuestions: 'En las páginas de las herramientas, las preguntas del final tienen un título visible, pero el lector de pantalla lo omite al ir de encabezado en encabezado.',
+        copiedLink: 'Después de copiar un enlace para compartir, un lector de pantalla puede anunciar la confirmación dos veces, o ninguna. En el comparador de préstamos, la dirección copiada desaparece a los pocos segundos, y en la calculadora de patrimonio neto, en una pantalla de poca altura, puede quedar por debajo de la parte visible de la ventana.',
+        chartsTouch: 'En un teléfono, si empiezas a desplazarte con el dedo sobre un gráfico del comparador de préstamos o del simulador Monte Carlo, se abre el recuadro con las cifras de ese punto y la página da un salto. Arrastrar el dedo hacia los lados no muestra las cifras de otros puntos: hay que tocar cada punto por separado.',
+        largeAmounts: 'Con un tamaño de texto mucho mayor en un teléfono estrecho, el resultado breve de la parte superior del simulador Monte Carlo y un total muy largo en la calculadora de patrimonio neto pueden partirse entre dos cifras.',
+        smallText: 'En un teléfono, algunos textos tienen un tamaño inferior al mínimo que el sitio fija para la lectura: el aviso, en las páginas traducidas, de que las lecciones están en inglés, la dirección copiada para compartir y las indicaciones bajo los campos del comparador de préstamos.',
+        legendButton: 'En el gráfico de la calculadora de patrimonio neto, un botón de la leyenda indica que está pulsado, pero volver a pulsarlo no lo desactiva.',
       },
     },
     report: {

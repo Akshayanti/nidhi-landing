@@ -2617,6 +2617,9 @@ details[open] > .disclosure::after,
 .lc-horizonInput {
   flex: 0 0 96px;
   width: 96px;
+  /* A text field's own width comes from its size attribute and grows with the
+     text size; without this it pushed the page wider at large text (#599). */
+  min-width: 0;
   text-align: right;
 }
 
