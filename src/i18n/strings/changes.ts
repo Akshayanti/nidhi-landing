@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'loan-interest-exact-cent',
+        text: {
+          en: 'The loan comparison now rounds each month\'s interest exactly. When a month\'s interest landed precisely on half a cent, the tool could round it down by mistake, one cent short in that row. It was rare, and it is fixed. A number written as 1e5 or 0x10 is also no longer read as an amount: the tool asks for plain digits.',
+          hi: 'लोन तुलना में अब हर महीने का ब्याज बिल्कुल सही पूर्णांकित होता है। जब किसी महीने का ब्याज ठीक आधे पैसे पर आता था, तो टूल ग़लती से उसे नीचे की ओर पूर्णांकित कर सकता था, यानी उस पंक्ति में एक पैसा कम। ऐसा कम ही होता था, और अब ठीक कर दिया गया है। 1e5 या 0x10 की तरह लिखी संख्या भी अब राशि नहीं मानी जाती: टूल सादे अंक माँगता है।',
+          es: 'El comparador de préstamos redondea ahora con exactitud los intereses de cada mes. Cuando los intereses de un mes caían justo en medio céntimo, la herramienta podía redondearlos hacia abajo por error, un céntimo menos en esa fila. Ocurría pocas veces, y ya está corregido. Además, un número escrito como 1e5 o 0x10 ya no se lee como una cantidad: la herramienta pide cifras simples.',
+          cs: 'Srovnání úvěrů teď zaokrouhluje úrok za každý měsíc přesně. Když úrok za měsíc vyšel přesně na půl haléře, mohl ho nástroj omylem zaokrouhlit dolů, tedy o\u00a0haléř méně v\u00a0daném řádku. Stávalo se to zřídka a\u00a0je to opraveno. Číslo zapsané jako 1e5 nebo 0x10 se už také nečte jako částka: nástroj žádá obyčejné číslice.',
+          mr: 'कर्जांची तुलना आता प्रत्येक महिन्याचे व्याज अचूक पूर्णांकित करते. एखाद्या महिन्याचे व्याज नेमके अर्ध्या पैशावर आले, तर साधन चुकून ते खालच्या बाजूला पूर्णांकित करू शकत होते, म्हणजे त्या ओळीत एक पैसा कमी. असे क्वचितच घडत होते, आणि आता ते दुरुस्त झाले आहे. 1e5 किंवा 0x10 असे लिहिलेला आकडाही आता रक्कम म्हणून वाचला जात नाही: साधन साधे अंक मागते.',
+        },
+      },
+      {
         id: 'tools-one-frame',
         text: {
           en: 'The five free tools now share one page frame: the same header, questions and related lessons on every tool, so a new tool cannot drift from the others. On the net worth calculator, the note on net against gross exposure (a large debt in a currency can hide how much you hold in it) is now always visible, where before it sat inside the folded “How the calculation works”. The one-line introductions above the related lessons on the loan and net worth pages are gone, since they added nothing the cards do not say.',

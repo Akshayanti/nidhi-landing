@@ -179,6 +179,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['term must be at least one month', 'term'],
   // `computeLoan`'s input checks.
   ['enter a loan amount greater than zero', 'amount'],
+  ['loan amount is too large', 'amountMax'],
+  ['loan is too small for this term', 'tooSmall'],
   ['enter a non-negative interest rate', 'rate'],
   ['initial fixed period must be a positive number', 'initialFixed'],
   ['enter a term of at least one month', 'termMin'],

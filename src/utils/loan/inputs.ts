@@ -3,6 +3,7 @@
  * Extracted from the component so it's testable without React or a DOM.
  */
 import {
+  OPTIONAL_UNREADABLE,
   computeLoan,
   emptyResult,
   toMinor,
@@ -19,7 +20,10 @@ import { parseLumpSums, type VendorInput } from './url.ts';
  */
 export function parseNumber(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
-  if (cleaned === '') return NaN;
+  // Plain decimal digits only. `Number()` alone also reads "0x10" as 16 and
+  // "1e5" as 100,000: spellings no reader means, which a share link or a
+  // slip of the hand could otherwise turn into a different loan (#352).
+  if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(cleaned)) return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : NaN;
 }
@@ -36,12 +40,8 @@ export type OptionalField =
   | 'initialFixedMonths'
   | 'subsequentRatePct';
 
-/**
- * The message for an offer with an optional box that cannot be read. It is
- * written so that the tool's analytics, which sorts messages by the words
- * in them, files it under "other".
- */
-export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
+/** The message for an offer with an optional box that cannot be read; the engine uses it too. */
+export { OPTIONAL_UNREADABLE };
 
 /**
  * The optional boxes that hold something which is not what the box is for:
