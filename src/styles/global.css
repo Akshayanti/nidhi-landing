@@ -1293,7 +1293,6 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-stroke-warn { stroke: var(--color-warning); fill: none; }
 .prose figure svg .fig-stroke-muted { stroke: var(--color-text-muted); fill: none; }
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
-.prose figure svg .fig-stroke-card { stroke: var(--color-border); fill: none; }
 
 /* Mobile: charts keep their desktop layout at a readable size and scroll
    sideways. Each figure is the scroller; its chart gets a minimum width that
@@ -3086,12 +3085,6 @@ details[open] > .disclosure::after,
   stroke-width: 1;
 }
 
-.lc-chartTickX,
-.lc-chartTickY {
-  font-family: var(--font-body);
-  font-size: 11px;
-  fill: var(--color-text-muted);
-}
 
 
 .lc-chartEmpty {
@@ -4298,6 +4291,7 @@ details[open] > .disclosure::after,
   flex-shrink: 0;
   max-width: 240px;
   height: auto;
+  overflow: visible;
 }
 
 .mcnw-chartCenterLabel {
@@ -4321,7 +4315,11 @@ details[open] > .disclosure::after,
 .mcnw-legend {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
 }
 
 .mcnw-legendItem {
@@ -4642,9 +4640,9 @@ body[data-page="landing"] .site-footer {
    outrank a plain global selector; !important keeps this block the single
    place that sets the phone floor. */
 @media (max-width: 640px) {
-  .nav-dropdownCaret, .trust-strip-title, .changelog-tag, .ft-kicker,
-  .lc-relatedKicker, .mcnw-shareBtn,
-  .mcnw-relatedKicker, .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
+  .nav-dropdownCaret, .changelog-tag, .ft-kicker,
+  .toolp-relatedKicker, .mcnw-shareBtn,
+  .lp-startHereLabel, .lp-cardReadingTime, .lp-cardTag,
   .lp-newLabel, .level-badge, .ref-type, .post-nav-direction, .post-tool-stepLabel {
     font-size: 0.8125rem !important;
   }
@@ -4653,13 +4651,12 @@ body[data-page="landing"] .site-footer {
   .post-tldr, .post-tldr li, .post-faq-a, .post-faq-a p,
   .about-intro, .about-body, .about-body p,
   .belief-body p, .beliefs-intro, .disclaimer, .lc-disclaimer, .mcnw-disclaimer,
-  .lc-faqQ, .lc-faqA, .ifcp-faqQ, .ifcp-faqA, .mcsp-faqQ, .mcsp-faqA,
-  .mcnw-faqQ, .mcnw-faqA, .faq-item p, .faq-item summary,
+  .toolp-faqQ, .toolp-faqA, .faq-item p, .faq-item summary,
   .privacy-container p, .privacy-container li, .privacy-intro,
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
-  .ifcp-notes li, .ifcp-source, .mcnw-explainer p, .mcnw-explainerList li,
-  .tool-waitlist__line, .lc-pageLead, .mcnw-pageLead,
+  .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p,
+  .tool-waitlist__line, .toolp-lead, .mcnw-limit,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;
@@ -4670,20 +4667,17 @@ body[data-page="landing"] .site-footer {
     font-size: inherit !important;
   }
   .lp-cardDesc, .an-desc, .ft-desc, .post-related-card-desc, .tagHub-cardDesc,
-  .learn-levelSummary, .route-meta, .lc-relatedDesc, .mcnw-relatedDesc,
-  .ifcp-relatedDesc, .mcsp-relatedDesc {
+  .learn-levelSummary, .route-meta, .toolp-relatedDesc {
     font-size: 0.9375rem !important;
   }
 
   .nav-link, .footer-col a, .footer-cookieSettings, .footer-social, .subscribe-rss,
   .subscribe-dismiss-link, .lp-cardTag, .lp-cardTitle,
-  .suggested-reading-list a, .lc-relatedAll, .lc-relatedAllSecondary,
-  .mcnw-relatedAll, .mcnw-relatedAllSecondary {
+  .suggested-reading-list a, .toolp-relatedAll, .toolp-relatedAllSecondary {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }
-  .post-tool-link, .if-breadcrumb a, .post-byline a, .tag-breadcrumb a,
-  .tag-allTopicsLink {
+  .post-tool-link, .if-breadcrumb a, .post-byline a {
     display: inline-block;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -4692,13 +4686,13 @@ body[data-page="landing"] .site-footer {
      level pages were 15 to 17px tall: below the 24px minimum. A one-word crumb
      can also be narrower than 24px: Hindi's "होम" is 18px wide where "Home" is
      not, so every crumb gets a minimum width too. */
-  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a,
+  .toolp-breadcrumbs a,
   .ft-breadcrumbs a, .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a {
     display: inline-block !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
   }
-  .lc-breadcrumbs a, .mcnw-breadcrumbs a, .mcsp-breadcrumbs a, .ft-breadcrumbs a,
+  .toolp-breadcrumbs a, .ft-breadcrumbs a,
   .tagHub-breadcrumb a, .level-page-crumb a, .topic-page-crumb a, .if-breadcrumb a {
     min-width: 24px;
     text-align: center;
@@ -4873,6 +4867,7 @@ body[data-page="landing"] .site-footer {
   color: var(--color-text-muted);
 }
 .mcs-figure {
+  position: relative;
   margin: 0;
 }
 .mcs-swipe,
@@ -4890,18 +4885,17 @@ body[data-page="landing"] .site-footer {
   display: block;
   width: 100%;
   height: auto;
+  cursor: crosshair;
 }
 .mcs-chart .mcs-axis {
   fill: var(--color-text-muted);
   font-family: var(--font-body);
   font-size: 16px;
 }
-.mcs-band--outer,
 .mcs-key--outer {
   fill: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
   background: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
 }
-.mcs-band--inner,
 .mcs-key--inner {
   fill: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
   background: color-mix(in srgb, var(--color-deep-blue) 34%, transparent);
@@ -5355,9 +5349,6 @@ body[data-page="landing"] .site-footer {
   outline: 2px solid var(--color-teal);
   outline-offset: 4px;
 }
-.mcs-chart {
-  cursor: crosshair;
-}
 .mcs-chart text {
   font-family: var(--font-body);
   font-size: 16px;
@@ -5503,6 +5494,7 @@ body[data-page="landing"] .site-footer {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 .chart-readout dd {
   margin: 0;
@@ -5531,12 +5523,6 @@ body[data-page="landing"] .site-footer {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-.mcs-figure {
-  position: relative;
-}
-.chart-readout dt {
-  white-space: nowrap;
 }
 /* Phones: the chart scrolls sideways, so the readout sits under it at full
    width instead of floating beside the crosshair, where it could be cut off. */
@@ -6317,9 +6303,6 @@ a.learn-level:hover {
 }
 
 /* Multi-currency net worth: interactive donut */
-.mcnw-chart {
-  overflow: visible;
-}
 .mcnw-chartWrap .mcnw-legend {
   flex: 0 1 340px;
   min-width: 0;
@@ -6341,13 +6324,6 @@ a.learn-level:hover {
 }
 .mcnw-chart .mcnw-chartCenterSub {
   font-size: 0.875rem;
-}
-.mcnw-legend {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 4px;
-  min-width: 0;
 }
 button.mcnw-legendItem {
   /* Swatch, code, share and amount in fixed columns so rows line up. */
@@ -7509,7 +7485,7 @@ html:is([lang="hi"], [lang="mr"]) :is(.learn-eyebrow, .guide-label) {
 
 /* Section, results and FAQ titles. `body … [class]` outranks the page
    components' scoped rules, phone sizes included. */
-body :is(.lc-sectionTitle, .mcnw-sectionTitle, .mcsp-sectionTitle, .ifcp-sectionTitle, .iopp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle)[class] {
+body :is(.lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle)[class] {
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
@@ -7519,7 +7495,7 @@ body :is(.lc-sectionTitle, .mcnw-sectionTitle, .mcsp-sectionTitle, .ifcp-section
 }
 
 /* A question in the FAQ: body type, and the whole row is the target. */
-body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
+body .toolp-faqQ[class] {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 500;
@@ -7690,9 +7666,13 @@ body :is(.lc-faqQ, .mcnw-faqQ, .mcsp-faqQ, .ifcp-faqQ, .iopp-faqQ)[class] {
 }
 
 /* Devanagari needs its own room: no tracking, taller lines. */
-:is(:lang(hi), :lang(mr)) :is(.lc-tab, .ifc-tab, .mcs-switchOpt, .lc-sectionTitle, .mcnw-sectionTitle, .mcsp-sectionTitle, .ifcp-sectionTitle, .iopp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle) {
+:is(:lang(hi), :lang(mr)) :is(.lc-tab, .ifc-tab, .mcs-switchOpt, .lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle) {
   letter-spacing: 0;
   line-height: 1.6;
+}
+/* Tracking is for Latin capitals; it pulls Devanagari letters apart. */
+:is(:lang(hi), :lang(mr)) :is(.toolp-eyebrow, .toolp-relatedKicker) {
+  letter-spacing: 0;
 }
 
 /* Net worth, risk cards: the currency comes first in the markup, for a screen

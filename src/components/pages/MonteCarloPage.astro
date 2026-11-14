@@ -29,12 +29,11 @@
  * value byte-identical to its English one fails `catalog.test.ts` unless it is
  * on that file's `IDENTICAL_OK` list, and a title has no translation to offer.)
  */
+import ToolPageShell from '../ToolPageShell.astro';
 import ToolWaitlist from '../ToolWaitlist.astro';
-import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
-import LessonsInEnglish from '../LessonsInEnglish.astro';
 import { getCollection } from 'astro:content';
 import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
 import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
@@ -150,26 +149,15 @@ const faqSchema = {
   toolStateGlobal={SHARED_STATE_GLOBAL}
 >
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
-  <section class="mcsp-page">
-    <nav class="mcsp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
-      <ol>
-        <li><a href={localizedPath(locale, '/')}>{strings.breadcrumb.home}</a></li>
-        <li><a href={localizedPath(locale, '/free/')}>{strings.breadcrumb.freeTools}</a></li>
-        <li aria-current="page">{strings.breadcrumb.this}</li>
-      </ol>
-    </nav>
-
-    <header class="mcsp-header">
-      <p class="mcsp-eyebrow">{strings.eyebrow}</p>
-      <h1 class="mcsp-title"><LangRuns text={strings.title} locale={locale} /></h1>
-      {/* Phones keep the first and last sentences: what it does, and that
-          nothing leaves the browser. */}
-      <p class="mcsp-lead">
-        {strings.lead.before}<span class="mcsp-wideOnly">{strings.lead.wide}</span>{strings.lead.after}
-      </p>
-    </header>
-
-    <noscript><p class="tool-noscript">{dict(locale).tools.export.noScript}</p></noscript>
+  <ToolPageShell
+    locale={locale}
+    breadcrumb={strings.breadcrumb}
+    eyebrow={strings.eyebrow}
+    title={strings.title}
+    lead={strings.lead}
+    faq={{ heading: strings.faq.heading, items: faqs }}
+    related={{ heading: strings.related.heading, cards: related }}
+  >
 
     <MonteCarloSimulator
       client:load
@@ -182,8 +170,8 @@ const faqSchema = {
 
     {/* Phones show the four limits by name; their explanations open with
         one button (data-phone-more below). Wider screens show everything. */}
-    <aside class="mcsp-panel mcsp-limits" aria-labelledby="mcsp-limits-h" data-phone-more>
-      <h2 id="mcsp-limits-h" class="mcsp-sectionTitle">{strings.limits.heading}</h2>
+    <aside class="toolp-panel toolp-notes" aria-labelledby="mcsp-limits-h" data-phone-more>
+      <h2 id="mcsp-limits-h" class="toolp-sectionTitle">{strings.limits.heading}</h2>
       <ul id="mcsp-limits-list">
         {Object.values(strings.limits.items).map((item) => (
           <li><strong>{item.lead}</strong><span class="mcsp-phoneHide">{item.rest}</span></li>
@@ -196,8 +184,8 @@ const faqSchema = {
 
     <ToolWaitlist locale={locale} line={strings.plannerLine} />
 
-    <section class="mcsp-panel" aria-labelledby="mcsp-how-h" data-phone-more>
-      <h2 id="mcsp-how-h" class="mcsp-sectionTitle">{strings.how.heading}</h2>
+    <section class="toolp-panel" aria-labelledby="mcsp-how-h" data-phone-more>
+      <h2 id="mcsp-how-h" class="toolp-sectionTitle">{strings.how.heading}</h2>
       <button type="button" class="mcsp-more disclosure" aria-expanded="false" aria-controls="mcsp-how-body">
         {strings.how.more}
       </button>
@@ -215,33 +203,7 @@ const faqSchema = {
       </p>
       </div>
     </section>
-
-    <details class="mcsp-panel mcsp-faq">
-      <summary class="mcsp-sectionTitle disclosure">{strings.faq.heading}</summary>
-      {faqs.map((f) => (
-        <details class="mcsp-faqItem">
-          <summary class="mcsp-faqQ disclosure">{f.q}</summary>
-          <p class="mcsp-faqA">{f.a}</p>
-        </details>
-      ))}
-    </details>
-
-    {related.length > 0 && (
-      <aside class="mcsp-panel" aria-labelledby="mcsp-related-h">
-        <h2 id="mcsp-related-h" class="mcsp-sectionTitle">{strings.related.heading}</h2>
-        <LessonsInEnglish locale={locale} />
-        <div class="mcsp-relatedGrid">
-          {related.map((post) => (
-            <a href={post.url} hreflang="en" class="mcsp-relatedCard link-card" data-attr={post.dataAttr}>
-              <span class="mcsp-relatedKicker">{post.kicker}</span>
-              <span class="mcsp-relatedTitle">{post.title}</span>
-              <span class="mcsp-relatedDesc">{post.desc}</span>
-            </a>
-          ))}
-        </div>
-      </aside>
-    )}
-  </section>
+  </ToolPageShell>
 </BaseLayout>
 
 <script>
@@ -261,102 +223,14 @@ const faqSchema = {
 </script>
 
 <style>
-  .mcsp-page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: var(--space-6) var(--space-4) var(--space-12);
-  }
-  .mcsp-breadcrumbs {
-    margin-bottom: var(--space-3);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .mcsp-breadcrumbs ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .mcsp-breadcrumbs li + li::before {
-    content: '/';
-    margin-right: 4px;
-  }
-  .mcsp-breadcrumbs a {
-    color: var(--color-text-secondary);
-    text-decoration: none;
-  }
-  .mcsp-breadcrumbs a:hover,
-  .mcsp-breadcrumbs a:focus-visible {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-  }
-  .mcsp-breadcrumbs [aria-current="page"] {
-    color: var(--color-text-primary);
-  }
-  .mcsp-header {
-    text-align: center;
-    margin-bottom: var(--space-8);
-  }
-  .mcsp-eyebrow {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-teal);
-    margin: 0 0 var(--space-2);
-  }
-  .mcsp-title {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
-    color: var(--color-deep-blue);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin: 0 0 var(--space-3);
-    text-wrap: balance;
-  }
-  .mcsp-lead {
-    color: var(--color-text-secondary);
-    font-size: 1rem;
-    line-height: 1.55;
-    max-width: 60ch;
-    margin: 0 auto;
-    text-wrap: balance;
-  }
-  .mcsp-panel {
-    margin-top: var(--space-8);
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    box-shadow: var(--shadow-sm);
-  }
-  .mcsp-sectionTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--color-deep-blue);
-    margin: 0 0 var(--space-3);
-  }
-  .mcsp-panel ul,
+  /* The page's frame and panels are styled by ToolPageShell.astro; these are
+     this page's own. */
   .mcsp-steps {
     margin: 0;
     padding-left: var(--space-5);
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
-  }
-  .mcsp-panel li {
-    margin-bottom: var(--space-2);
-  }
-  .mcsp-panel li strong {
-    color: var(--color-text-primary);
-  }
-  .mcsp-limits {
-    border-left: 4px solid var(--color-teal);
   }
   .mcsp-source {
     margin: var(--space-4) 0 0;
@@ -369,113 +243,12 @@ const faqSchema = {
     /* A link inside a line of text is underlined, so it is not told apart by colour alone. */
     text-decoration: underline;
   }
-  /* The chevrons come from .disclosure. */
-  .mcsp-faq > summary {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    margin: 0;
-  }
-  /* A box that opens, so its edge is a control's edge. */
-  .mcsp-faqItem {
-    border: 1px solid var(--color-control-edge);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    background: var(--color-bg);
-    margin-top: var(--space-2);
-  }
-  /* The question fills the box's padding, so the whole closed box is the
-     target, and the box keeps the size it had. */
-  .mcsp-faqQ {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    margin: calc(-1 * var(--space-3));
-    padding: var(--space-3) 40px var(--space-3) var(--space-3);
-    font-family: var(--font-heading);
-    font-weight: 600;
-    color: var(--color-text-primary);
-    font-size: 0.95rem;
-  }
-  .mcsp-faqA {
-    margin: var(--space-2) 0 0;
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .mcsp-relatedGrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-  .mcsp-relatedCard {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: var(--space-4) 40px var(--space-4) var(--space-4);
-    background: var(--color-bg);
-    border: 1px solid var(--color-link-edge);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: inherit;
-  }
-  .mcsp-relatedCard:hover,
-  .mcsp-relatedCard:focus-visible {
-    border-color: var(--color-deep-blue);
-  }
-  .mcsp-relatedKicker {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-teal);
-  }
-  .mcsp-relatedTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--color-deep-blue);
-  }
-  .mcsp-relatedDesc {
-    font-size: 0.88rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-  }
-  @media (max-width: 800px) {
-    .mcsp-relatedGrid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 480px) {
-    .mcsp-page {
-      padding: var(--space-4) var(--space-3) var(--space-8);
-    }
-    .mcsp-header {
-      text-align: left;
-      margin-bottom: var(--space-6);
-    }
-    .mcsp-panel {
-      padding: var(--space-4) var(--space-3);
-    }
-  }
 
   /* Phone toggles for the limits and the method (script above). */
   .mcsp-more {
     display: none;
   }
   @media (max-width: 640px) {
-    .mcsp-wideOnly {
-      display: none;
-    }
-    .mcsp-header {
-      margin-bottom: var(--space-5);
-    }
-    .mcsp-panel {
-      margin-top: var(--space-5);
-    }
-    .mcsp-sectionTitle {
-      font-size: 1.15rem;
-    }
     [data-phone-more][data-ready]:not(.is-open) .mcsp-phoneHide {
       display: none;
     }
@@ -508,13 +281,6 @@ const faqSchema = {
     /* "How it works": the button sits under the heading; the method opens below it. */
     [data-phone-more].is-open #mcsp-how-body {
       margin-top: var(--space-2);
-    }
-    /* Read more: title and kicker are enough to choose on a phone. */
-    .mcsp-relatedDesc {
-      display: none;
-    }
-    .mcsp-relatedCard {
-      padding: var(--space-3) 40px var(--space-3) var(--space-3);
     }
   }
 </style>

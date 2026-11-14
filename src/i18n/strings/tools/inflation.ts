@@ -74,7 +74,7 @@ export const inflationEn = {
     eyebrow: 'Free tools',
     title: 'Inflation calculator: what money buys over time',
     /**
-     * Three parts: phones show the first and the last (`ifcp-wideOnly` hides
+     * Three parts: phones show the first and the last (`toolp-wideOnly` hides
      * the middle). The spaces at the ends of the outer two are the markup's.
      */
     lead: {

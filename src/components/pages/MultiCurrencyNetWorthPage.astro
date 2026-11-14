@@ -19,13 +19,12 @@
  * the hydration payload carries one language's strings and not the whole
  * catalog. See the `strings` prop in `MultiCurrencyNetWorth.tsx`.
  */
-import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MultiCurrencyNetWorth from '../../components/MultiCurrencyNetWorth.tsx';
 import ToolStateGuard from '../../components/ToolStateGuard.astro';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
-import LessonsInEnglish from '../../components/LessonsInEnglish.astro';
+import ToolPageShell from '../../components/ToolPageShell.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/multi-currency-net-worth/url.ts';
 import ToolWaitlist from '../../components/ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
@@ -81,6 +80,12 @@ const RELATED = RELATED_CANDIDATES.map((candidate, index) => ({
 }))
   .filter((c) => publishedSlugs.has(c.slug))
   .slice(0, 3);
+
+// The method's fourth item, net against gross exposure, is shown outside the
+// fold (see the template); the others stay inside it.
+const VISIBLE_LIMIT_INDEX = 3;
+const visibleLimit = tool.page.explainer.items[VISIBLE_LIMIT_INDEX];
+const foldedItems = tool.page.explainer.items.filter((_, index) => index !== VISIBLE_LIMIT_INDEX);
 
 const canonicalUrl = new URL(localizedPath(locale, '/free/multi-currency-net-worth/'), siteUrl).href;
 const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
@@ -152,39 +157,43 @@ const faqSchema = {
   */}
   <link slot="head" rel="preconnect" href="https://api.frankfurter.dev" crossorigin />
   <ToolStateGuard slot="head" globalName={SHARED_STATE_GLOBAL} keyPattern={STATE_KEY_PATTERN} />
-  <section class="mcnw-page">
-    <nav class="mcnw-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
-      <ol>
-        <li><a href={localizedPath(locale, '/')}>{tool.page.breadcrumb.home}</a></li>
-        <li><a href={localizedPath(locale, '/free/')}>{tool.page.breadcrumb.freeTools}</a></li>
-        <li aria-current="page">{tool.page.breadcrumb.this}</li>
-      </ol>
-    </nav>
-
-    <header class="mcnw-pageHeader">
-      <p class="mcnw-eyebrow">{tool.page.eyebrow}</p>
-      <h1 class="mcnw-pageTitle">
-        <LangRuns text={tool.page.title} locale={locale} />
-      </h1>
-      <p class="mcnw-pageLead">
-        {tool.page.lead}
-      </p>
-    </header>
-
-    <noscript><p class="tool-noscript">{dict(locale).tools.export.noScript}</p></noscript>
+  <ToolPageShell
+    locale={locale}
+    breadcrumb={tool.page.breadcrumb}
+    eyebrow={tool.page.eyebrow}
+    title={tool.page.title}
+    lead={tool.page.lead}
+    faq={{ heading: tool.page.faq.heading, items: tool.page.faq.items }}
+    related={{
+      heading: tool.page.related.heading,
+      cards: RELATED.map((post) => ({ ...post, url: lessonPath(post.slug) })),
+    }}
+  >
 
     <MultiCurrencyNetWorth client:load strings={tool.island} exportStrings={exportStrings} defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
+    {/* What a reader needs in order to judge the result stays visible; the
+        rest of the method folds. Net against gross exposure limits how a
+        concentration figure can be read, and nothing else on the page says
+        it, so it sits straight after the tool, ahead of the waitlist, in
+        the catalog's own words. A plain div: an unnamed aside would be a
+        second, nameless landmark. */}
+    {visibleLimit && (
+      <div class="toolp-panel toolp-notes">
+        <p class="mcnw-limit"><strong>{visibleLimit.strong}</strong>{visibleLimit.rest}</p>
+      </div>
+    )}
+
     <ToolWaitlist locale={locale} line={tool.page.plannerLine} />
 
     {/* Collapsed by default, like the FAQ below: the method is there for
         anyone who wants it, without pushing the FAQ and lessons down. */}
-    <details class="mcnw-explainer">
-      <summary class="mcnw-faqHeading disclosure">
-        <h2 id="mcnw-explainer-h" class="mcnw-sectionTitle">{tool.page.explainer.heading}</h2>
+    <details class="toolp-panel mcnw-explainer">
+      <summary class="disclosure">
+        <h2 id="mcnw-explainer-h" class="toolp-sectionTitle">{tool.page.explainer.heading}</h2>
       </summary>
       <p>
         {tool.page.explainer.intro}
@@ -195,7 +204,7 @@ const faqSchema = {
         </code>
       </p>
       <ul class="mcnw-explainerList">
-        {tool.page.explainer.items.map((item) => (
+        {foldedItems.map((item) => (
           <li>
             <strong>{item.strong}</strong>{item.rest}{item.after !== undefined && (
               <>
@@ -207,155 +216,40 @@ const faqSchema = {
       </ul>
     </details>
 
-    <details class="mcnw-faq" aria-labelledby="mcnw-faq-h">
-      <summary id="mcnw-faq-h" class="mcnw-faqHeading disclosure">
-        <span class="mcnw-sectionTitle">{tool.page.faq.heading}</span>
-      </summary>
-      <div class="mcnw-faqList">
-        {tool.page.faq.items.map((f) => (
-          <details class="mcnw-faqItem">
-            <summary class="mcnw-faqQ disclosure">{f.q}</summary>
-            <p class="mcnw-faqA">{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </details>
-
-    <aside class="mcnw-related" aria-labelledby="mcnw-related-h">
-      <header class="mcnw-relatedHeader">
-        <h2 id="mcnw-related-h" class="mcnw-sectionTitle">{tool.page.related.heading}</h2>
-        <p class="mcnw-relatedLead">
-          {tool.page.related.lead}
-        </p>
-      </header>
-
-      <LessonsInEnglish locale={locale} />
-
-      <div class="mcnw-relatedGrid">
-        {RELATED.map((post) => (
-          <a href={lessonPath(post.slug)} hreflang="en" class="mcnw-relatedCard link-card" data-attr={post.dataAttr}>
-            <span class="mcnw-relatedKicker">{post.kicker}</span>
-            <span class="mcnw-relatedTitle">{post.title}</span>
-            <span class="mcnw-relatedDesc">{post.desc}</span>
-          </a>
-        ))}
-      </div>
-
-      <p class="mcnw-relatedFooter">
-        <a href={localizedPath(locale, '/blog/tag/currency/')} class="mcnw-relatedAll" data-attr="related-tag-currency">
-          {tool.page.related.footerTag}
-          <span aria-hidden="true">&nbsp;&rsaquo;</span>
-        </a>
-        <a href={localizedPath(locale, '/blog/')} class="mcnw-relatedAllSecondary" data-attr="related-all">
-          {tool.page.related.footerAll}
-        </a>
-      </p>
-    </aside>
-  </section>
+    <p slot="related-footer" class="toolp-relatedFooter">
+      <a href={localizedPath(locale, '/blog/tag/currency/')} class="toolp-relatedAll" data-attr="related-tag-currency">
+        {tool.page.related.footerTag}
+        <span aria-hidden="true">&nbsp;&rsaquo;</span>
+      </a>
+      <a href={localizedPath(locale, '/blog/')} class="toolp-relatedAllSecondary" data-attr="related-all">
+        {tool.page.related.footerAll}
+      </a>
+    </p>
+  </ToolPageShell>
 </BaseLayout>
 
 <style>
-  .mcnw-page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: var(--space-6) var(--space-4) var(--space-12);
-  }
-
-  .mcnw-breadcrumbs {
-    margin-bottom: var(--space-3);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .mcnw-breadcrumbs ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .mcnw-breadcrumbs li + li::before {
-    content: '/';
-    margin-right: 4px;
-    color: var(--color-text-muted);
-  }
-  .mcnw-breadcrumbs a {
-    color: var(--color-text-secondary);
-    text-decoration: none;
-  }
-  .mcnw-breadcrumbs a:hover,
-  .mcnw-breadcrumbs a:focus-visible {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-  }
-  .mcnw-breadcrumbs [aria-current="page"] {
-    color: var(--color-text-primary);
-  }
-
-  .mcnw-pageHeader {
-    text-align: center;
-    margin-bottom: var(--space-8);
-  }
-
-  .mcnw-eyebrow {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-teal);
-    margin: 0 0 var(--space-2);
-  }
-
-  .mcnw-pageTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
-    color: var(--color-deep-blue);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin: 0 0 var(--space-3);
-    text-wrap: balance;
-  }
-
-  .mcnw-pageLead {
-    color: var(--color-text-secondary);
-    font-size: 1rem;
-    line-height: 1.55;
-    max-width: 56ch;
-    margin: 0 auto;
-    text-wrap: balance;
-  }
-
-  .mcnw-sectionTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--color-deep-blue);
+  /* The page's frame and panels are styled by ToolPageShell.astro; the
+     method fold is this page's own. */
+  .mcnw-explainer h2 {
     margin: 0;
   }
-
-  /* Explainer & FAQ */
-  .mcnw-explainer,
-  .mcnw-faq,
-  .mcnw-related {
-    margin-top: var(--space-8);
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .mcnw-explainer p,
-  .mcnw-explainerList li,
-  .mcnw-faqA {
+  .mcnw-limit {
+    margin: 0;
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
-    text-wrap: pretty;
   }
-
+  .mcnw-limit strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .mcnw-explainer p,
+  .mcnw-explainerList li {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
   .mcnw-formula {
     font-family: var(--font-body);
     background: var(--color-bg);
@@ -365,272 +259,20 @@ const faqSchema = {
     text-align: center;
     overflow-x: auto;
   }
-
   .mcnw-formula code {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.95rem;
     color: var(--color-text-primary);
   }
-
   .mcnw-explainerList {
     margin: var(--space-3) 0 0;
     padding-left: var(--space-5);
   }
-
   .mcnw-explainerList li {
     margin-bottom: var(--space-2);
   }
-
   .mcnw-explainerList li strong {
     color: var(--color-text-primary);
     font-weight: 600;
-  }
-
-  /* FAQ: entire section is collapsible. The summary doubles as the
-     section heading; we keep the visual weight of an h2 and add a tiny
-     count badge so the user knows how many questions are hidden. */
-  /* The chevron comes from .disclosure. */
-  .mcnw-faqHeading {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: 44px;
-    padding: var(--space-3) 36px var(--space-3) 0;
-    user-select: none;
-  }
-
-  .mcnw-faqHeading:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 4px;
-    border-radius: var(--radius-sm);
-  }
-
-  .mcnw-faqList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  /* A box that opens, so its edge is a control's edge, open or closed. */
-  .mcnw-faqItem {
-    border: 1px solid var(--color-control-edge);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    background: var(--color-bg);
-  }
-
-  .mcnw-faqItem[open] {
-    background: var(--color-bg-white);
-  }
-
-  /* The question fills the box's padding, so the whole closed box is the
-     target, and the box keeps the size it had. The chevron comes from
-     .disclosure. */
-  .mcnw-faqQ {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    color: var(--color-text-primary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    margin: calc(-1 * var(--space-3));
-    padding: var(--space-3) 40px var(--space-3) var(--space-3);
-    font-size: 0.95rem;
-  }
-
-  .mcnw-faqQ:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 3px;
-    border-radius: var(--radius-sm);
-  }
-
-  .mcnw-faqA {
-    margin: var(--space-2) 0 0;
-  }
-
-  /* Related reading */
-  .mcnw-relatedHeader {
-    margin-bottom: var(--space-4);
-  }
-
-  .mcnw-relatedLead {
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.55;
-    margin: var(--space-2) 0 0;
-    max-width: 60ch;
-    text-wrap: balance;
-  }
-
-  .mcnw-relatedGrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-
-  @media (max-width: 800px) {
-    .mcnw-relatedGrid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .mcnw-relatedCard {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: var(--space-4) 40px var(--space-4) var(--space-4);
-    background: var(--color-bg);
-    border: 1px solid var(--color-link-edge);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    min-height: 100%;
-  }
-
-  .mcnw-relatedCard:hover,
-  .mcnw-relatedCard:focus-visible {
-    border-color: var(--color-deep-blue);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-    outline: none;
-  }
-
-  .mcnw-relatedCard:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-
-  .mcnw-relatedKicker {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-teal);
-  }
-
-  .mcnw-relatedTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--color-deep-blue);
-    line-height: 1.3;
-  }
-
-  .mcnw-relatedDesc {
-    font-size: 0.88rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    text-wrap: pretty;
-  }
-
-  .mcnw-relatedFooter {
-    margin: var(--space-4) 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  /* text-decoration (not border-bottom) so the underline follows
-     line wraps correctly on narrow viewports: border-bottom only
-     renders under the last visual line of a wrapped link. */
-  .mcnw-relatedAll {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--color-deep-blue);
-    text-decoration: underline dotted;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: text-decoration-style 0.15s ease;
-  }
-
-  .mcnw-relatedAll:hover,
-  .mcnw-relatedAll:focus-visible {
-    text-decoration-style: solid;
-  }
-
-  .mcnw-relatedAllSecondary {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    text-decoration: underline dotted;
-    text-decoration-color: var(--color-text-muted);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: color 0.15s ease, text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
-  }
-
-  .mcnw-relatedAllSecondary:hover,
-  .mcnw-relatedAllSecondary:focus-visible {
-    color: var(--color-deep-blue);
-    text-decoration-color: var(--color-deep-blue);
-    text-decoration-style: solid;
-  }
-
-  /* Switch to stacked layout earlier (640px): at widths between
-     480 and 640px the right-aligned wrap makes the two links sit on
-     ragged staggered lines. Stacking them reads cleaner. */
-  @media (max-width: 640px) {
-    .mcnw-relatedFooter {
-      justify-content: flex-start;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-2);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mcnw-relatedCard {
-      transition: none;
-    }
-    .mcnw-relatedCard:hover,
-    .mcnw-relatedCard:focus-visible {
-      transform: none;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .mcnw-page {
-      padding: var(--space-4) var(--space-3) var(--space-8);
-    }
-    .mcnw-pageHeader {
-      margin-bottom: var(--space-6);
-      text-align: left;
-    }
-    .mcnw-pageLead {
-      font-size: 0.95rem;
-    }
-    .mcnw-explainer,
-    .mcnw-faq,
-    .mcnw-related {
-      padding: var(--space-4) var(--space-3);
-    }
-  }
-
-  /* :global() escapes Astro's component scoping so the rule actually
-     matches when [data-theme="dark"] is set on <html>. */
-  :global([data-theme="dark"]) .mcnw-shareBtn {
-    color: var(--neutral-page-bg-dark);
-  }
-
-  :global([data-theme="dark"]) .mcnw-resetBtn:hover,
-  :global([data-theme="dark"]) .mcnw-resetBtn:focus-visible {
-    color: var(--neutral-page-bg-dark);
-  }
-
-  :global([data-theme="dark"]) .mcnw-bannerWarn {
-    background: var(--warning-dark-bg);
-    border-color: var(--warning-dark-border);
-    color: var(--warning-light-text-amber);
-  }
-
-  :global([data-theme="dark"]) .mcnw-csvErrors {
-    background: var(--warning-dark-bg);
-    border-color: var(--warning-dark-border);
-    color: var(--warning-light-text-amber);
   }
 </style>

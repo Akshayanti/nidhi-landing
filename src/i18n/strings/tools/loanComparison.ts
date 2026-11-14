@@ -233,7 +233,6 @@ export const loanComparisonEn = {
     },
     related: {
       heading: 'Before you sign anything',
-      lead: 'Make a choice that still feels right in five years.',
       /** Three cards, in the order `RELATED_CANDIDATES` lists the slugs. */
       items: [
         {
@@ -918,7 +917,6 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     related: {
       heading: 'कुछ भी साइन करने से पहले',
-      lead: 'ऐसा चुनाव करें जो पाँच साल बाद भी सही लगे।',
       items: [
         {
           kicker: 'तुलना कैसे करें',
@@ -1535,7 +1533,6 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     related: {
       heading: 'Antes de firmar nada',
-      lead: 'Una decisión que te siga pareciendo acertada dentro de cinco años.',
       items: [
         {
           kicker: 'Cómo comparar',
@@ -2151,7 +2148,6 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     related: {
       heading: 'Než cokoli podepíšete',
-      lead: 'Volba, která bude dávat smysl i za pět let.',
       items: [
         {
           kicker: 'Jak porovnávat',
@@ -2749,7 +2745,6 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     related: {
       heading: 'कशावरही सही करण्यापूर्वी',
-      lead: 'पाच वर्षांनंतरही योग्य वाटणारा निर्णय हा एक उपयोगी निकष ठरू शकतो.',
       items: [
         {
           kicker: 'तुलना कशी करायची',

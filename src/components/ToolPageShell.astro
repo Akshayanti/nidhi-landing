@@ -1,0 +1,397 @@
+---
+/**
+ * The frame every free tool page shares: breadcrumbs, the eyebrow, title and
+ * lead, the line for a browser without scripts, then the tool and its own
+ * panels (the default slot), then the questions and the related lessons.
+ *
+ * It exists so the tools cannot drift apart again. Each tool page used to
+ * carry its own copy of these elements under its own prefix (`ifcp-`, `iopp-`,
+ * `mcsp-`) with about 220 lines of scoped CSS, and the copies had started to
+ * differ. The classes here are `toolp-*`, and the styles are global on
+ * purpose: a tool page writes its own panels into the slot with the same
+ * classes (`toolp-panel`, `toolp-sectionTitle`, `toolp-notes`, ...), and a
+ * scoped rule would not reach them. What only one page has keeps that page's
+ * own prefix (`mcsp-steps`, `iopp-intro`) and a scoped rule in its file.
+ *
+ * `data-attr` labels are passed in by the page, written out in its source,
+ * so the label registry can still read them.
+ */
+import LangRuns from './LangRuns.astro';
+import LessonsInEnglish from './LessonsInEnglish.astro';
+import { dict, localizedPath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  breadcrumb: { home: string; freeTools: string; this: string };
+  eyebrow: string;
+  /** One string, or two parts where phones show only the first. */
+  title: string | { lead: string; wide: string };
+  /** One string, or three parts where phones show the first and the last. */
+  lead: string | { before: string; wide: string; after: string };
+  /** A flat list of questions, or the same in named groups (each group's id is its anchor). */
+  faq: { heading: string; items?: Question[]; sections?: { id: string; title: string; items: Question[] }[] };
+  /** The cards. Links to more go in the `related-footer` slot, only where a real destination fits. */
+  related: { heading: string; cards: { url: string; dataAttr: string; kicker: string; title: string; desc: string }[] };
+}
+
+interface Question { q: string; a: string }
+
+const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
+---
+
+<section class="toolp-page">
+  <nav class="toolp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
+    <ol>
+      <li><a href={localizedPath(locale, '/')}>{breadcrumb.home}</a></li>
+      <li><a href={localizedPath(locale, '/free/')}>{breadcrumb.freeTools}</a></li>
+      <li aria-current="page">{breadcrumb.this}</li>
+    </ol>
+  </nav>
+
+  <header class="toolp-header">
+    <p class="toolp-eyebrow">{eyebrow}</p>
+    <h1 class="toolp-title">
+      {typeof title === 'string'
+        ? <LangRuns text={title} locale={locale} />
+        : <><LangRuns text={title.lead} locale={locale} /><span class="toolp-wideOnly"><LangRuns text={title.wide} locale={locale} /></span></>}
+    </h1>
+    <p class="toolp-lead">
+      {typeof lead === 'string'
+        ? lead
+        : <>{lead.before}<span class="toolp-wideOnly">{lead.wide}</span>{lead.after}</>}
+    </p>
+  </header>
+
+  <noscript><p class="tool-noscript">{dict(locale).tools.export.noScript}</p></noscript>
+
+  <slot />
+
+  <details class="toolp-panel toolp-faq">
+    <summary class="toolp-sectionTitle disclosure">{faq.heading}</summary>
+    {(faq.items ?? []).map((f) => (
+      <details class="toolp-faqItem">
+        <summary class="toolp-faqQ disclosure">{f.q}</summary>
+        <p class="toolp-faqA">{f.a}</p>
+      </details>
+    ))}
+    {(faq.sections ?? []).map((section) => (
+      <div class="toolp-faqGroup" role="group" aria-labelledby={`toolp-faq-${section.id}-h`}>
+        <h3 id={`toolp-faq-${section.id}-h`} class="toolp-faqGroupTitle">{section.title}</h3>
+        {section.items.map((f) => (
+          <details class="toolp-faqItem">
+            <summary class="toolp-faqQ disclosure">{f.q}</summary>
+            <p class="toolp-faqA">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    ))}
+  </details>
+
+  {related.cards.length > 0 && (
+    <aside class="toolp-panel" aria-labelledby="toolp-related-h">
+      <h2 id="toolp-related-h" class="toolp-sectionTitle">{related.heading}</h2>
+      <LessonsInEnglish locale={locale} />
+      <div class="toolp-relatedGrid">
+        {related.cards.map((post) => (
+          <a href={post.url} hreflang="en" class="toolp-relatedCard link-card" data-attr={post.dataAttr}>
+            <span class="toolp-relatedKicker">{post.kicker}</span>
+            <span class="toolp-relatedTitle">{post.title}</span>
+            <span class="toolp-relatedDesc">{post.desc}</span>
+          </a>
+        ))}
+      </div>
+      <slot name="related-footer" />
+    </aside>
+  )}
+</section>
+
+<style is:global>
+.toolp-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+}
+.toolp-breadcrumbs {
+  margin-bottom: var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+.toolp-breadcrumbs ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  /* Baseline: on phones the links are padded to a tap height, and the
+     current page, which is plain text, must stay on their line. */
+  align-items: baseline;
+  gap: 4px;
+}
+.toolp-breadcrumbs li + li::before {
+  content: '/';
+  margin-right: 4px;
+}
+.toolp-breadcrumbs a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+.toolp-breadcrumbs a:hover,
+.toolp-breadcrumbs a:focus-visible {
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+}
+.toolp-breadcrumbs [aria-current="page"] {
+  color: var(--color-text-primary);
+}
+.toolp-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+.toolp-eyebrow {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-teal);
+  margin: 0 0 var(--space-2);
+}
+.toolp-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+  color: var(--color-deep-blue);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+  text-wrap: balance;
+}
+.toolp-lead {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 62ch;
+  margin: 0 auto;
+  /* Keeps a lone last word off its own line; ignored where unsupported. */
+  text-wrap: pretty;
+}
+.toolp-panel {
+  margin-top: var(--space-8);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+.toolp-sectionTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-deep-blue);
+  margin: 0 0 var(--space-3);
+}
+.toolp-panel ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.toolp-panel li {
+  margin-bottom: var(--space-2);
+}
+.toolp-panel li strong {
+  color: var(--color-text-primary);
+}
+.toolp-notes {
+  border-left: 4px solid var(--color-teal);
+}
+.toolp-lesson {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.toolp-lesson a {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+.toolp-source {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.toolp-source a {
+  color: var(--color-deep-blue);
+  /* A link inside a sentence is underlined, so it is not told apart by colour alone. */
+  text-decoration: underline;
+}
+/* The chevrons come from .disclosure. */
+details.toolp-panel > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0;
+}
+/* A box that opens, so its edge is a control's edge. */
+.toolp-faqItem {
+  border: 1px solid var(--color-control-edge);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--color-bg);
+  margin-top: var(--space-2);
+}
+/* The question fills the box's padding, so the whole closed box is the
+   target, and the box keeps the size it had. */
+.toolp-faqItem > .toolp-faqQ {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: calc(-1 * var(--space-3));
+  padding: var(--space-3) 40px var(--space-3) var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+.toolp-faqA {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+/* The questions of one topic, under a small heading (the loan comparison). */
+.toolp-faqGroup {
+  margin-top: var(--space-4);
+}
+.toolp-faqGroupTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--space-2);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+/* Links to more lessons, under the cards. text-decoration (not a bottom
+   border) so the underline follows a link that wraps. */
+.toolp-relatedFooter {
+  margin: var(--space-4) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  justify-content: flex-end;
+  align-items: center;
+}
+.toolp-relatedAll {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-deep-blue);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.toolp-relatedAllSecondary {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.toolp-relatedAll:hover,
+.toolp-relatedAll:focus-visible,
+.toolp-relatedAllSecondary:hover,
+.toolp-relatedAllSecondary:focus-visible {
+  color: var(--color-deep-blue);
+  text-decoration-style: solid;
+}
+.toolp-relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.toolp-relatedCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-4) 40px var(--space-4) var(--space-4);
+  background: var(--color-bg);
+  border: 1px solid var(--color-link-edge);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+}
+.toolp-relatedCard:hover,
+.toolp-relatedCard:focus-visible {
+  border-color: var(--color-deep-blue);
+}
+.toolp-relatedKicker {
+  overflow-wrap: anywhere;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-teal);
+}
+.toolp-relatedTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: var(--color-deep-blue);
+  /* A long word wraps instead of widening the page at large text sizes. */
+  overflow-wrap: anywhere;
+}
+.toolp-relatedDesc {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+@media (max-width: 800px) {
+  .toolp-relatedGrid {
+    /* minmax(0, ...): a long word wraps instead of widening the page. */
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .toolp-wideOnly {
+    display: none;
+  }
+  .toolp-header {
+    text-align: left;
+    margin-bottom: var(--space-5);
+  }
+  /* Left with the title: centred, the box sat indented once the screen was wider than its 62ch. */
+  .toolp-lead {
+    margin-left: 0;
+  }
+  .toolp-page {
+    padding: var(--space-4) var(--space-3) var(--space-8);
+  }
+  .toolp-panel {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-3);
+  }
+  .toolp-sectionTitle {
+    font-size: 1.15rem;
+  }
+  .toolp-relatedDesc {
+    display: none;
+  }
+  .toolp-relatedCard {
+    padding: var(--space-3) 40px var(--space-3) var(--space-3);
+  }
+  /* Stacked: side by side, the two links wrap into ragged lines here. */
+  .toolp-relatedFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

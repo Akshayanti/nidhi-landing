@@ -23,12 +23,11 @@
  * What stays here rather than in the catalog: the `data-attr` labels, the
  * addresses, the lesson slugs and the English lesson title.
  */
-import LangRuns from '../LangRuns.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import InvestOrPayOff from '../InvestOrPayOff.tsx';
 import type { CountryOption } from '../InflationCalculator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
-import LessonsInEnglish from '../LessonsInEnglish.astro';
+import ToolPageShell from '../ToolPageShell.astro';
 import ToolWaitlist from '../ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
 import data from '../../data/inflation/worldbank.json';
@@ -165,24 +164,15 @@ const faqSchema = {
       the end of the body) never starts them on this page: the tool's own
       effect runs only once the page is interactive, which can be later. */}
   <script is:inline slot="head">window.nidhiHeatmapsPaused = true;</script>
-  <section class="iopp-page">
-    <nav class="iopp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
-      <ol>
-        <li><a href={localizedPath(locale, '/')}>{strings.breadcrumb.home}</a></li>
-        <li><a href={localizedPath(locale, '/free/')}>{strings.breadcrumb.freeTools}</a></li>
-        <li aria-current="page">{strings.breadcrumb.this}</li>
-      </ol>
-    </nav>
-
-    <header class="iopp-header">
-      <p class="iopp-eyebrow">{strings.eyebrow}</p>
-      <h1 class="iopp-title"><LangRuns text={strings.title} locale={locale} /></h1>
-      <p class="iopp-lead">
-        {strings.lead.before}<span class="iopp-wideOnly">{strings.lead.wide}</span>{strings.lead.after}
-      </p>
-    </header>
-
-    <noscript><p class="tool-noscript">{dict(locale).tools.export.noScript}</p></noscript>
+  <ToolPageShell
+    locale={locale}
+    breadcrumb={strings.breadcrumb}
+    eyebrow={strings.eyebrow}
+    title={strings.title}
+    lead={strings.lead}
+    faq={{ heading: strings.faq.heading, items: faqs }}
+    related={{ heading: strings.related.heading, cards: related }}
+  >
 
     <InvestOrPayOff
       client:load
@@ -198,8 +188,8 @@ const faqSchema = {
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
     />
 
-    <aside class="iopp-panel iopp-notes" aria-labelledby="iopp-leaves-h">
-      <h2 id="iopp-leaves-h" class="iopp-sectionTitle">{strings.leavesOut.heading}</h2>
+    <aside class="toolp-panel toolp-notes" aria-labelledby="toolp-leaves-h">
+      <h2 id="toolp-leaves-h" class="toolp-sectionTitle">{strings.leavesOut.heading}</h2>
       <p class="iopp-intro">{strings.leavesOut.intro}</p>
       <ul>
         {Object.values(strings.leavesOut.items).map((item) => (
@@ -208,7 +198,7 @@ const faqSchema = {
       </ul>
       <p class="iopp-intro">{strings.leavesOut.notAdvice}</p>
       {lessonPublished && (
-        <p class="iopp-lesson">
+        <p class="toolp-lesson">
           {strings.lesson.before}<a href={lessonPath(LESSON.slug)} hreflang="en" lang="en" data-attr="free-invest-or-pay-off-lesson-link">{LESSON.title}</a>{strings.lesson.after}
         </p>
       )}
@@ -216,8 +206,8 @@ const faqSchema = {
 
     <ToolWaitlist locale={locale} line={strings.plannerLine} />
 
-    <section class="iopp-panel" aria-labelledby="iopp-method-h">
-      <h2 id="iopp-method-h" class="iopp-sectionTitle">{strings.method.heading}</h2>
+    <section class="toolp-panel" aria-labelledby="toolp-method-h">
+      <h2 id="toolp-method-h" class="toolp-sectionTitle">{strings.method.heading}</h2>
       <ul>
         {Object.values(strings.method.items).map((item) => (
           <li><strong>{item.lead}</strong>{t(item.rest, figures)}</li>
@@ -226,263 +216,29 @@ const faqSchema = {
       <p class="iopp-intro">{strings.method.limits}</p>
     </section>
 
-    <section class="iopp-panel" aria-labelledby="iopp-source-h">
-      <h2 id="iopp-source-h" class="iopp-sectionTitle">{strings.source.heading}</h2>
-      <p class="iopp-source">
+    <section class="toolp-panel" aria-labelledby="toolp-source-h">
+      <h2 id="toolp-source-h" class="toolp-sectionTitle">{strings.source.heading}</h2>
+      <p class="toolp-source">
         {strings.source.inflationBefore}<a href="https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG" target="_blank" rel="noopener noreferrer">{strings.source.inflationLink}</a>{t(strings.source.inflationAfter, figures)}
       </p>
-      <p class="iopp-source">{strings.source.returns}</p>
+      <p class="toolp-source">{strings.source.returns}</p>
     </section>
-
-    <details class="iopp-panel iopp-faq">
-      <summary class="iopp-sectionTitle disclosure">{strings.faq.heading}</summary>
-      {faqs.map((f) => (
-        <details class="iopp-faqItem">
-          <summary class="iopp-faqQ disclosure">{f.q}</summary>
-          <p class="iopp-faqA">{f.a}</p>
-        </details>
-      ))}
-    </details>
-
-    {related.length > 0 && (
-      <aside class="iopp-panel" aria-labelledby="iopp-related-h">
-        <h2 id="iopp-related-h" class="iopp-sectionTitle">{strings.related.heading}</h2>
-        <LessonsInEnglish locale={locale} />
-        <div class="iopp-relatedGrid">
-          {related.map((post) => (
-            <a href={post.url} hreflang="en" class="iopp-relatedCard link-card" data-attr={post.dataAttr}>
-              <span class="iopp-relatedKicker">{post.kicker}</span>
-              <span class="iopp-relatedTitle">{post.title}</span>
-              <span class="iopp-relatedDesc">{post.desc}</span>
-            </a>
-          ))}
-        </div>
-      </aside>
-    )}
-  </section>
+  </ToolPageShell>
 </BaseLayout>
 
 <style>
-  .iopp-page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: var(--space-6) var(--space-4) var(--space-12);
-  }
-  .iopp-breadcrumbs {
-    margin-bottom: var(--space-3);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .iopp-breadcrumbs ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .iopp-breadcrumbs li + li::before {
-    content: '/';
-    margin-right: 4px;
-  }
-  .iopp-breadcrumbs a {
-    color: var(--color-text-secondary);
-    text-decoration: none;
-  }
-  .iopp-breadcrumbs a:hover,
-  .iopp-breadcrumbs a:focus-visible {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-  }
-  .iopp-breadcrumbs [aria-current="page"] {
-    color: var(--color-text-primary);
-  }
-  .iopp-header {
-    text-align: center;
-    margin-bottom: var(--space-8);
-  }
-  .iopp-eyebrow {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-teal);
-    margin: 0 0 var(--space-2);
-  }
-  .iopp-title {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
-    color: var(--color-deep-blue);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin: 0 0 var(--space-3);
-    text-wrap: balance;
-  }
-  .iopp-lead {
-    color: var(--color-text-secondary);
-    font-size: 1rem;
-    line-height: 1.55;
-    max-width: 62ch;
-    margin: 0 auto;
-    text-wrap: balance;
-  }
-  .iopp-panel {
-    margin-top: var(--space-8);
-    background: var(--color-bg-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    box-shadow: var(--shadow-sm);
-  }
-  .iopp-sectionTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--color-deep-blue);
-    margin: 0 0 var(--space-3);
-  }
+  /* The page's frame and panels are styled by ToolPageShell.astro; these are
+     this page's own. */
   .iopp-intro {
     margin: 0 0 var(--space-3);
     color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
   }
-  .iopp-panel ul {
+  .toolp-panel ul {
     margin: 0 0 var(--space-3);
-    padding-left: var(--space-5);
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
   }
-  .iopp-panel li {
-    margin-bottom: var(--space-2);
-  }
-  .iopp-panel li strong {
-    color: var(--color-text-primary);
-  }
-  .iopp-notes {
-    border-left: 4px solid var(--color-teal);
-  }
-  .iopp-lesson {
-    margin: var(--space-4) 0 0;
-    color: var(--color-text-primary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .iopp-lesson a {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    color: var(--color-deep-blue);
-  }
-  .iopp-source {
+  .toolp-source {
     margin: 0 0 var(--space-2);
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-  }
-  .iopp-source a {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-  }
-  .iopp-faq > summary {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    margin: 0;
-  }
-  .iopp-faqItem {
-    border: 1px solid var(--color-control-edge);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    background: var(--color-bg);
-    margin-top: var(--space-2);
-  }
-  .iopp-faqQ {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    margin: calc(-1 * var(--space-3));
-    padding: var(--space-3) 40px var(--space-3) var(--space-3);
-    font-family: var(--font-heading);
-    font-weight: 600;
-    color: var(--color-text-primary);
-    font-size: 0.95rem;
-  }
-  .iopp-faqA {
-    margin: var(--space-2) 0 0;
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .iopp-relatedGrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-  .iopp-relatedCard {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: var(--space-4) 40px var(--space-4) var(--space-4);
-    background: var(--color-bg);
-    border: 1px solid var(--color-link-edge);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: inherit;
-  }
-  .iopp-relatedCard:hover,
-  .iopp-relatedCard:focus-visible {
-    border-color: var(--color-deep-blue);
-  }
-  .iopp-relatedKicker {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-teal);
-  }
-  .iopp-relatedTitle {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--color-deep-blue);
-  }
-  .iopp-relatedDesc {
-    font-size: 0.88rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-  }
-  @media (max-width: 800px) {
-    .iopp-relatedGrid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 640px) {
-    .iopp-wideOnly {
-      display: none;
-    }
-    .iopp-header {
-      text-align: left;
-      margin-bottom: var(--space-5);
-    }
-    .iopp-page {
-      padding: var(--space-4) var(--space-3) var(--space-8);
-    }
-    .iopp-panel {
-      margin-top: var(--space-5);
-      padding: var(--space-4) var(--space-3);
-    }
-    .iopp-sectionTitle {
-      font-size: 1.15rem;
-    }
-    .iopp-relatedDesc {
-      display: none;
-    }
-    .iopp-relatedCard {
-      padding: var(--space-3) 40px var(--space-3) var(--space-3);
-    }
   }
 </style>
