@@ -172,7 +172,13 @@ function Table({ table, locale, names }: { table: ReportTable; locale: string; n
                 i === 0 ? (
                   <th key={i} scope="row">{cellText(c, locale)}</th>
                 ) : (
-                  <td key={i} className={cls(i, c)} data-label={table.stack ? table.head[i] : undefined}>{cellText(c, locale)}</td>
+                  <td key={i} className={[cls(i, c), cellText(c, locale) === '' ? 'tool-reportEmpty' : ''].filter(Boolean).join(' ') || undefined}>
+                    {/* The column's heading again, shown only when the table
+                        stacks on narrow paper. Text, not an attribute: a
+                        heading can be a name the reader typed. */}
+                    {table.stack && <span className="tool-reportLabel">{table.head[i]}</span>}
+                    {cellText(c, locale)}
+                  </td>
                 ),
               )}
             </tr>
@@ -319,8 +325,11 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
   }, []);
 
   if (!mounted) return null;
+  // Not aria-hidden: off paper the report is display: none, which already
+  // keeps it from assistive technology, and on paper the attribute stripped
+  // every heading and table tag from a saved PDF (#650).
   return (
-    <article className="tool-report" aria-hidden="true">
+    <article className="tool-report">
       <header className="tool-reportHeader">
         <p className="tool-reportKicker">{r.heading}</p>
         <h1 className="tool-reportTitle">{report.tool}</h1>
