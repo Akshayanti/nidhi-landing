@@ -365,10 +365,8 @@ export const es: Dict = {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
-        figures: 'Las figuras de las lecciones que se desplazan hacia los lados no se pueden desplazar con el teclado.',
-        touch: 'En un teléfono, el gráfico de Monte Carlo no se puede ampliar con dos dedos, y abrir la explicación de un término en una lección puede hacer que la página se deslice hacia un lado.',
+        touch: 'En un teléfono, el gráfico de Monte Carlo no se puede ampliar con dos dedos.',
         largeText: 'Con un tamaño de texto mucho mayor en una pantalla estrecha, un enlace de la ruta de aprendizaje en español y partes de algunas herramientas gratuitas hacen que la página quede más ancha que la pantalla.',
-        print: 'Las guías prácticas se imprimen con los menús del sitio alrededor, y con el texto en gris cuando el tema oscuro está activo.',
         emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
         shareWindow: 'En la calculadora de patrimonio neto, los botones del final de la ventana de compartir quedan cortados con el teléfono en horizontal o con mucho zoom, y la ventana no se puede desplazar para llegar a ellos.',
       },

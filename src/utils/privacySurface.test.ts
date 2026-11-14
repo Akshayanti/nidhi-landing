@@ -358,6 +358,7 @@ const EXPECTED_MENTIONS = [
   'components/pages/MonteCarloPage.astro: setAttribute x1',
   'components/pages/MultiCurrencyNetWorthPage.astro: fetch x1',
   'i18n/config.ts: navigator x1',
+  'layouts/BaseLayout.astro: setAttribute x2',
   'layouts/BlogIndex.astro: location x2',
   'layouts/BlogPost.astro: cookie x1',
   'layouts/BlogPost.astro: createElement x6',
