@@ -364,7 +364,6 @@ export const es: Dict = {
     barriers: {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
-        links: 'Algunos enlaces dentro de una frase se distinguen de las palabras que los rodean solo por el color.',
         contrast: 'Parte del texto pequeño es demasiado tenue: las indicaciones dentro de los campos vacíos de los formularios y dos enlaces pequeños del recuadro del boletín.',
         forms: 'En los formularios de la lista de espera y del boletín, el foco del teclado se pierde mientras el formulario se envía y después de un fallo, y nada anuncia que se está enviando.',
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',

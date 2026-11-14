@@ -348,7 +348,6 @@ export const cs: Dict = {
     barriers: {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
-        links: 'Některé odkazy uvnitř věty se od okolních slov liší jen barvou.',
         contrast: 'Část drobného textu je příliš bledá: nápovědy v prázdných polích formulářů a dva malé odkazy v rámečku newsletteru.',
         forms: 'Ve formulářích čekací listiny a newsletteru se při odesílání a po chybě ztrácí fokus klávesnice a nic neoznámí, že se formulář odesílá.',
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',

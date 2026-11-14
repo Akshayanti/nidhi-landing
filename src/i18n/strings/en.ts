@@ -439,7 +439,6 @@ export const en = {
     barriers: {
       intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
-        links: 'Some links inside a sentence are told apart from the words around them by colour alone.',
         contrast: 'Some small text is too faint: the hints inside empty form fields, and two small links on the newsletter box.',
         forms: 'On the waitlist and newsletter forms, keyboard focus is lost while the form is sending and after a failure, and nothing announces that it is sending.',
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',

@@ -53,6 +53,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'links-underlined',
+        text: {
+          en: 'Links inside a sentence are now underlined everywhere on the site. On the volunteers page, at the foot of each lesson and on two of the free tools, some links differed from the words around them by colour alone, which is easy to miss if you do not see colours well or are reading a phone in sunlight.',
+          hi: 'वाक्य के अंदर के लिंक अब पूरी साइट पर रेखांकित दिखते हैं। स्वयंसेवक पेज पर, हर पाठ के अंत में और दो मुफ़्त टूल पर कुछ लिंक आसपास के शब्दों से सिर्फ़ रंग से अलग दिखते थे। जिन्हें रंगों का फ़र्क ठीक से नहीं दिखता, या जो धूप में फ़ोन पर पढ़ रहे हों, उनसे ऐसे लिंक आसानी से छूट जाते हैं।',
+          es: 'Los enlaces dentro de una frase aparecen ahora subrayados en todo el sitio. En la página de voluntariado, al final de cada lección y en dos de las herramientas gratuitas, algunos enlaces se distinguían de las palabras que los rodean solo por el color, algo fácil de pasar por alto si no distingues bien los colores o lees en el teléfono a pleno sol.',
+          cs: 'Odkazy uvnitř věty jsou teď podtržené na celém webu. Na stránce pro dobrovolníky, na konci každé lekce a\u00a0u\u00a0dvou nástrojů zdarma se některé odkazy lišily od okolních slov jen barvou, což se snadno přehlédne, když špatně rozlišujete barvy nebo čtete na telefonu na slunci.',
+          mr: 'वाक्यातील लिंक आता संपूर्ण साइटवर अधोरेखित दिसतात. स्वयंसेवकांच्या पानावर, प्रत्येक धड्याच्या शेवटी आणि दोन मोफत साधनांवर काही लिंक आजूबाजूच्या शब्दांपासून फक्त रंगाने वेगळ्या दिसत होत्या. रंगांमधला फरक नीट दिसत नसेल, किंवा उन्हात फोनवर वाचत असाल, तर अशा लिंक सहज नजरेतून सुटतात.',
+        },
+      },
+      {
         id: 'tools-read-other-digits',
         text: {
           en: 'The free tools now read numbers typed with Devanagari (१२३), Eastern Arabic (١٢٣) or Persian (۱۲۳) digits. If your keyboard writes १२३, the tools take it as 123 and no longer ask you for a number.',
