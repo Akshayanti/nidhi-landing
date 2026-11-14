@@ -42,7 +42,7 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
     meaning: x.meaning,
     entered: inputs ? tableOf(inputs) : null,
     chart: !isSingleCurrency(result, functionalCurrency) && bars.length > 0 ? { kind: 'bars', title: island.chart.heading, bars } : null,
-    tables: [tableOf(byCurrency, { caption: x.sheets.byCurrency }), ...(rates ? [rates] : [])],
+    tables: [tableOf(byCurrency, { caption: x.sheets.byCurrency, stack: true }), ...(rates ? [rates] : [])],
     assumptions: [...(rates ? [x.ratesText] : []), island.results.disclaimer],
   };
 }

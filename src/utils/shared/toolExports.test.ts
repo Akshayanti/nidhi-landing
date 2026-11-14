@@ -325,6 +325,12 @@ describe('printed reports', () => {
       const loan = loanReport({ island: t.loanComparison.island, common: t.export, currency: 'EUR', vendors: DEFAULT_VENDORS, results, names: ['A', 'B'], answer: ['a'] });
       // No month-by-month schedule: the comparison table is the only table.
       assert.equal(loan.tables.length, 1);
+      // The APR heading is short on paper; its basis is a line under the
+      // table, and the table stacks on narrow paper (#646).
+      assert.ok(loan.tables[0].head.includes(t.loanComparison.island.export.aprPct));
+      assert.ok(loan.tables[0].head.every((h) => !h.includes(t.loanComparison.island.results.aprBasis)));
+      assert.deepEqual(loan.tables[0].note, [t.loanComparison.island.delta.aprNote, t.loanComparison.island.export.schedulesNote]);
+      assert.equal(loan.tables[0].stack, true);
       // Optional fields left at zero are left out of what was entered.
       assert.ok(loan.entered!.rows.every((row) => !isEmptyRow(row)));
 
@@ -383,5 +389,11 @@ describe('printed report styles', () => {
     const { readFileSync } = await import('node:fs');
     const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
     assert.match(css, /th\.tool-reportNum\s*\{\s*white-space:\s*normal;/);
+  });
+  it('stacks a wide table on narrow paper, with each heading beside its value', async () => {
+    const { readFileSync } = await import('node:fs');
+    const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
+    assert.match(css, /@media \(max-width: 600px\) \{\s*\.tool-reportTable--stack,/);
+    assert.match(css, /\.tool-reportTable--stack td::before\s*\{\s*content:\s*attr\(data-label\);/);
   });
 });

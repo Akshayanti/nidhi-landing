@@ -111,6 +111,24 @@
  *                       tokens for every row that doesn't have them yet.
  */
 
+/**
+ * The mails' colours, each named for the site token it copies (:root in
+ * src/styles/global.css). The site's stylesheet cannot reach a mail, so the
+ * values are repeated here, once (#416). emails/*.html.j2 and
+ * scripts/send_newsletter.py hold the same set.
+ */
+var EMAIL = {
+  blue: '#0A3D8F', // --palette-blue: titles, links, the top rule
+  button: '#00796B', // --semantic-cta-bg-light: the button
+  text: '#212121', // --neutral-900: body text
+  text2: '#616161', // --neutral-700: secondary text
+  muted: '#5A5A5A', // --neutral-600: small print
+  bg: '#F5F5F5', // --neutral-25: the page behind the card, the summary box, the footer
+  line: '#F0F0F0', // --neutral-50: hairlines
+  white: '#FFFFFF', // --neutral-white: the card, button text
+  buttonRadius: '8px', // --radius-md
+};
+
 // ============================================================================
 // Config helpers
 // ============================================================================
@@ -1164,20 +1182,20 @@ function sendReminderEmail_(email, confirmToken) {
     '<title>' + escapeHtml_(subject) + '</title>' +
     '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
-    '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
-      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
+    '<body style="margin:0;padding:0;background:' + EMAIL.bg + ';font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:' + EMAIL.text + ';line-height:1.6;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + EMAIL.bg + ';">' +
         '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
           '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
-          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:' + EMAIL.white + ';border-radius:8px;overflow:hidden;">' +
             brandBannerHtml_(cfg, campaign) +
-            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
-              '<p style="margin:0 0 12px;color:#666;font-size:14px;">Or copy and paste this link:</p>' +
-              '<p style="margin:0 0 20px;color:#666;font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#00796B;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:#666;font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
+              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Or copy and paste this link:</p>' +
+              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.button + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
           '</table>' +
@@ -1956,20 +1974,20 @@ function sendConfirmationEmail_(email, confirmToken) {
     '<title>' + escapeHtml_(subject) + '</title>' +
     '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
-    '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
-      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
+    '<body style="margin:0;padding:0;background:' + EMAIL.bg + ';font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:' + EMAIL.text + ';line-height:1.6;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + EMAIL.bg + ';">' +
         '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
           '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
-          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:' + EMAIL.white + ';border-radius:8px;overflow:hidden;">' +
             banner +
-            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
-              '<p style="margin:0 0 12px;color:#666;font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
-              '<p style="margin:0 0 20px;color:#666;font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:#00796B;text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:#666;font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
+              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
+              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.button + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign) +
           '</table>' +
@@ -2043,19 +2061,19 @@ function sendWelcomeEmail_(email, unsubToken) {
     '<title>' + escapeHtml_(subject) + '</title>' +
     '<style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}}</style>' +
     '</head>' +
-    '<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">' +
-      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">' +
+    '<body style="margin:0;padding:0;background:' + EMAIL.bg + ';font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen,Ubuntu,sans-serif;color:' + EMAIL.text + ';line-height:1.6;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + EMAIL.bg + ';">' +
         '<tr><td align="center" class="nm-out" style="padding:24px 12px;">' +
           '<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->' +
-          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">' +
+          '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:' + EMAIL.white + ';border-radius:8px;overflow:hidden;">' +
             banner +
-            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#222;">' +
-              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:#0D47A1;">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up , nothing else. No digests, no surprises, no "special offers".</p>' +
+            '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
               '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:#555;font-size:14px;">Reply to this email if anything ever lands wrong , a real person reads it.</p>' +
-              '<p style="margin:24px 0 0;color:#555;font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong, a real person reads it.</p>' +
+              '<p style="margin:24px 0 0;color:' + EMAIL.text2 + ';font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in
             // the BARE unsub URL. Using the tracked variant here would
@@ -2096,10 +2114,10 @@ function brandBannerHtml_(cfg, campaign) {
   var bannerHref = withUtm_(cfg.siteUrl + '/blog', campaign);
   return (
     '<tr><td style="padding:0;">' +
-      '<div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
-      '<div class="nm-px" style="padding:24px 28px 20px;border-bottom:1px solid #eee;">' +
+      '<div style="background:' + EMAIL.blue + ';height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
+      '<div class="nm-px" style="padding:24px 28px 20px;border-bottom:1px solid ' + EMAIL.line + ';">' +
         '<a href="' + escapeHtml_(bannerHref) + '" style="text-decoration:none;color:inherit;display:inline-block;">' +
-          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ' - Money, understood." width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
+          '<img src="' + escapeHtml_(logoUrl) + '" alt="' + escapeHtml_(cfg.fromName) + ': Money, understood" width="200" height="auto" style="display:block;max-width:200px;height:auto;border:0;outline:none;">' +
         '</a>' +
       '</div>' +
     '</td></tr>'
@@ -2120,21 +2138,21 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
   var rssHref     = withUtm_(cfg.siteUrl + '/rss.xml', campaign);
 
   return (
-    '<tr><td class="nm-px" style="padding:20px 28px;background:#fafafa;border-top:1px solid #eee;font-size:14px;color:#5A5A5A;line-height:1.5;">' +
+    '<tr><td class="nm-px" style="padding:20px 28px;background:' + EMAIL.bg + ';border-top:1px solid ' + EMAIL.line + ';font-size:14px;color:' + EMAIL.muted + ';line-height:1.5;">' +
       (isNewsletter ?
-        '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:#0D47A1;text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
+        '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:' + EMAIL.blue + ';text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(unsubLink) + '" style="color:#5A5A5A;text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a></p><p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#5A5A5A;text-decoration:underline;">Privacy</a> &middot; ' +
-          '<a href="' + escapeHtml_(rssHref) + '" style="color:#5A5A5A;text-decoration:underline;">RSS</a>' +
+          '<a href="' + escapeHtml_(unsubLink) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a></p><p style="margin:0 0 8px;">' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(rssHref) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;">RSS</a>' +
         '</p>'
       :
         '<p style="margin:0 0 8px;">' +
-          '<a href="' + escapeHtml_(privacyHref) + '" style="color:#5A5A5A;text-decoration:underline;">Privacy</a> &middot; ' +
-          '<a href="' + escapeHtml_(rssHref) + '" style="color:#5A5A5A;text-decoration:underline;">RSS</a>' +
+          '<a href="' + escapeHtml_(privacyHref) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;">Privacy</a> &middot; ' +
+          '<a href="' + escapeHtml_(rssHref) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;">RSS</a>' +
         '</p>'
       ) +
-      '<p style="margin:0;color:#5A5A5A;">Educational, not financial advice. Everyone\u2019s situation is different.</p>' +
+      '<p style="margin:0;color:' + EMAIL.muted + ';">Educational, not financial advice. Everyone\u2019s situation is different.</p>' +
     '</td></tr>'
   );
 }
@@ -2283,7 +2301,7 @@ function redirectResponse_(url) {
     '<meta name="referrer" content="no-referrer">' +
     '<meta http-equiv="refresh" content="0; url=' + escapeHtml_(safe) + '">' +
     '<title>Redirecting\u2026</title>' +
-    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:#444;text-align:center;line-height:1.5;}a{color:#00796B;}</style>' +
+    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:' + EMAIL.text2 + ';text-align:center;line-height:1.5;}a{color:' + EMAIL.button + ';}</style>' +
     '</head><body>' +
     '<p>Redirecting to nidhi.today\u2026</p>' +
     '<p><a href="' + escapeHtml_(safe) + '">Continue</a></p>' +
@@ -2298,8 +2316,8 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<meta name="referrer" content="no-referrer">' +
     '<title>' + escapeHtml_(title) + '</title>' +
-    '<style>body{font-family:system-ui,sans-serif;max-width:520px;margin:48px auto;padding:0 24px;color:#222;line-height:1.5;}' +
-    'h1{color:#0D47A1;font-size:1.6rem;}a.cta{display:inline-block;margin-top:16px;padding:10px 20px;background:#00796B;color:#fff;text-decoration:none;border-radius:6px;}</style>' +
+    '<style>body{font-family:system-ui,sans-serif;max-width:520px;margin:48px auto;padding:0 24px;color:' + EMAIL.text + ';line-height:1.5;}' +
+    'h1{color:' + EMAIL.blue + ';font-size:1.6rem;}a.cta{display:inline-block;margin-top:16px;padding:10px 20px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';}</style>' +
     '</head><body><h1>' + escapeHtml_(title) + '</h1><p>' + escapeHtml_(message) + '</p>' +
     '<a class="cta" href="' + escapeHtml_(ctaHref) + '">' + escapeHtml_(ctaText) + '</a></body></html>';
 }
