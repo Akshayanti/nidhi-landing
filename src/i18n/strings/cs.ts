@@ -75,6 +75,7 @@ export const cs: Dict = {
   },
 
   footer: {
+    navLabel: 'Zápatí',
     columns: {
       learn: 'Lekce',
       tools: 'Nástroje zdarma',

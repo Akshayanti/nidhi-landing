@@ -120,6 +120,7 @@ export const en = {
   },
 
   footer: {
+    navLabel: 'Footer',
     columns: {
       learn: 'Learn',
       tools: 'Free Tools',

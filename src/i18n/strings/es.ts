@@ -74,6 +74,7 @@ export const es: Dict = {
   },
 
   footer: {
+    navLabel: 'Pie de página',
     columns: {
       learn: 'Aprende',
       tools: 'Herramientas gratuitas',

@@ -7839,3 +7839,100 @@ body .toolp-faqQ[class] {
   overflow-wrap: anywhere;
   text-align: right;
 }
+
+/* ---------------------------------------------------------------------------
+   High contrast (#484, #591)
+   --------------------------------------------------------------------------- */
+
+/* Forced colours (a Windows contrast theme) replace every background and text
+   colour, so a choice marked by its fill alone looked like the ones beside
+   it. The chosen one takes the system's own selection pair. :root lifts these
+   above the theme rules they replace. */
+@media (forced-colors: active) {
+  :root .lc-tabActive,
+  :root .lc-tabActive:hover,
+  :root .ifc-tab[aria-selected="true"],
+  :root .lc-vendorTab[aria-pressed="true"],
+  :root .lc-modeOptionActive,
+  :root .lp-readToggleActive,
+  :root .lp-readToggleActive:hover,
+  :root .mcs-switchOpt--on,
+  :root button.mcnw-legendItem[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    box-shadow: none;
+    color: HighlightText;
+  }
+  :root button.mcnw-legendItem[aria-pressed="true"] :is(.mcnw-legendCode, .mcnw-legendAmount, .mcnw-legendPct) {
+    color: HighlightText;
+  }
+
+  /* A chart is drawn in the site theme's colours, which forced colours leave
+     alone inside a drawing while they replace the page behind it: with the
+     dark theme stored and a light contrast theme on, axis labels were grey on
+     white and the lines pale. The drawing keeps the theme's own surface, so
+     everything in it has the contrast it was drawn with, and an edge in the
+     system's text colour shows where it ends. */
+  .lc-chart,
+  .lc-splitChart,
+  .ifc-chart,
+  .ifc-barsSvg,
+  .mcs-chart,
+  .mcnw-chart,
+  .prose figure svg {
+    forced-color-adjust: none;
+    background: var(--color-bg-white);
+    outline: 1px solid CanvasText;
+  }
+
+  /* The keys beside a chart are filled boxes, and the invest-or-pay-off chart
+     is drawn with them: without their fills the key names nothing and the
+     chart is empty. They keep the colours of the drawing they explain. */
+  .mcs-key,
+  .ifc-key,
+  .lc-legendLine,
+  .mcnw-legendSwatch,
+  .lc-vendorTabLetter,
+  .lc-deltaKeyLetter,
+  .iop-track {
+    forced-color-adjust: none;
+  }
+  .iop-track {
+    outline: 1px solid CanvasText;
+  }
+}
+
+/* More contrast (Increase Contrast on macOS and iOS, and the like): quiet text
+   takes the main text colour, static edges take a control's edge and a
+   control's edge takes the text colour, and the focus ring is thicker. */
+@media (prefers-contrast: more) {
+  /* Spelled :root[lang] and html[data-theme="dark"][lang] (the dark one must
+     outrank the light one) so that
+     scripts/lint-figures.mjs, which reads the two ordinary themes from the
+     plain :root and [data-theme="dark"] blocks, does not read these. */
+  :root[lang] {
+    --color-text-secondary: var(--neutral-900);
+    --color-text-muted: var(--neutral-900);
+    --color-border: var(--neutral-control-edge);
+    --color-control-edge: var(--neutral-900);
+  }
+  html[data-theme="dark"][lang] {
+    --color-text-secondary: var(--neutral-white);
+    --color-text-muted: var(--neutral-white);
+    --color-border: var(--neutral-control-edge-dark);
+    --color-control-edge: var(--neutral-white);
+    /* The lighter teal: 9:1 or more on the dark surfaces, where the usual
+       one is 5.6:1. Dark ink on a teal fill gains contrast too. */
+    --color-teal: var(--palette-teal-dark);
+    --color-teal-light: var(--palette-teal-dark);
+    --color-teal-dark: var(--palette-teal-dark);
+  }
+  /* The one place the edge colour sits behind text. */
+  [data-theme="dark"] .prose tr:hover td {
+    background: var(--color-bg-subtle);
+  }
+  :focus-visible {
+    outline-width: 3px !important;
+  }
+}

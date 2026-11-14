@@ -83,6 +83,7 @@ export const hi: Dict = {
   },
 
   footer: {
+    navLabel: 'फ़ुटर',
     columns: {
       learn: 'सीखें',
       tools: 'मुफ़्त टूल',

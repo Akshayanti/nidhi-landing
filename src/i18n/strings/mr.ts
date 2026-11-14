@@ -71,6 +71,7 @@ export const mr: Dict = {
     },
   },
   footer: {
+    navLabel: 'फूटर',
     columns: {
       learn: 'शिका',
       tools: 'मोफत साधने',
