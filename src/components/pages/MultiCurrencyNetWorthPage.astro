@@ -81,6 +81,12 @@ const RELATED = RELATED_CANDIDATES.map((candidate, index) => ({
   .filter((c) => publishedSlugs.has(c.slug))
   .slice(0, 3);
 
+// The method's fourth item, net against gross exposure, is shown outside the
+// fold (see the template); the others stay inside it.
+const VISIBLE_LIMIT_INDEX = 3;
+const visibleLimit = tool.page.explainer.items[VISIBLE_LIMIT_INDEX];
+const foldedItems = tool.page.explainer.items.filter((_, index) => index !== VISIBLE_LIMIT_INDEX);
+
 const canonicalUrl = new URL(localizedPath(locale, '/free/multi-currency-net-worth/'), siteUrl).href;
 const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
 
@@ -160,7 +166,6 @@ const faqSchema = {
     faq={{ heading: tool.page.faq.heading, items: tool.page.faq.items }}
     related={{
       heading: tool.page.related.heading,
-      lead: tool.page.related.lead,
       cards: RELATED.map((post) => ({ ...post, url: lessonPath(post.slug) })),
     }}
   >
@@ -171,6 +176,16 @@ const faqSchema = {
     />
 
     <ToolWaitlist locale={locale} line={tool.page.plannerLine} />
+
+    {/* What a reader needs in order to judge the result stays visible; the
+        rest of the method folds. Net against gross exposure limits how a
+        concentration figure can be read, and nothing else on the page says
+        it, so it sits above the fold in the catalog's own words. */}
+    {visibleLimit && (
+      <aside class="toolp-panel toolp-notes">
+        <p class="mcnw-limit"><strong>{visibleLimit.strong}</strong>{visibleLimit.rest}</p>
+      </aside>
+    )}
 
     {/* Collapsed by default, like the FAQ below: the method is there for
         anyone who wants it, without pushing the FAQ and lessons down. */}
@@ -187,7 +202,7 @@ const faqSchema = {
         </code>
       </p>
       <ul class="mcnw-explainerList">
-        {tool.page.explainer.items.map((item) => (
+        {foldedItems.map((item) => (
           <li>
             <strong>{item.strong}</strong>{item.rest}{item.after !== undefined && (
               <>
@@ -216,6 +231,16 @@ const faqSchema = {
      method fold is this page's own. */
   .mcnw-explainer h2 {
     margin: 0;
+  }
+  .mcnw-limit {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .mcnw-limit strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
   }
   .mcnw-explainer p,
   .mcnw-explainerList li {

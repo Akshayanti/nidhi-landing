@@ -4656,7 +4656,7 @@ body[data-page="landing"] .site-footer {
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
   .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p,
-  .tool-waitlist__line, .toolp-lead, .toolp-relatedLead,
+  .tool-waitlist__line, .toolp-lead, .mcnw-limit,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
     font-size: 1rem !important;

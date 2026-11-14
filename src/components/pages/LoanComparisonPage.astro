@@ -185,7 +185,6 @@ const faqSchema = {
     faq={{ heading: tool.page.faq.heading, sections: faqSections }}
     related={{
       heading: tool.page.related.heading,
-      lead: tool.page.related.lead,
       cards: RELATED.map((post) => ({ ...post, url: lessonPath(post.slug) })),
     }}
   >
