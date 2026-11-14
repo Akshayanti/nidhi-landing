@@ -357,11 +357,41 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
             box.className = 'table-scroll';
             box.setAttribute('role', 'region');
             box.tabIndex = 0;
+            // Named by its caption, or else by the heading it sits under, so
+            // several tables in a lesson are not all called "Table". With
+            // neither it is a plain group, not one more landmark.
             var cap = t.querySelector('caption');
-            box.setAttribute('aria-label', cap && cap.textContent.trim() ? cap.textContent.trim() + ' (table)' : 'Table');
+            var name = cap && cap.textContent.trim();
+            for (var n = t; !name && n && n.id !== 'post-content'; n = n.previousElementSibling || n.parentElement) {
+              if (n !== t && /^H[2-4]$/.test(n.tagName)) name = n.textContent.trim();
+            }
+            if (name) box.setAttribute('aria-label', name + ' (table)');
+            else { box.setAttribute('role', 'group'); box.setAttribute('aria-label', 'Table'); }
             t.parentNode.insertBefore(box, t);
             box.appendChild(t);
           }
+          // A chart wider than its column scrolls sideways inside its figure
+          // (global.css). While it does, the figure takes keyboard focus so the
+          // arrow keys can scroll it; a figure that fits stays out of the tab
+          // order. A browser does not name a figure from its caption, so it
+          // takes the chart's own short title: a focused figure is announced
+          // by what it shows, not as a bare "figure".
+          var figures = document.querySelectorAll('#post-content figure');
+          for (var g = 0; g < figures.length; g++) {
+            var svg = figures[g].querySelector('svg[aria-labelledby]');
+            var tid = svg && svg.getAttribute('aria-labelledby').split(/\s+/)[0];
+            if (tid && !figures[g].hasAttribute('aria-labelledby')) figures[g].setAttribute('aria-labelledby', tid);
+          }
+          function markScrollers() {
+            for (var f = 0; f < figures.length; f++) {
+              var fig = figures[f];
+              if (fig.scrollWidth > fig.clientWidth + 1) fig.tabIndex = 0;
+              else fig.removeAttribute('tabindex');
+            }
+          }
+          markScrollers();
+          window.addEventListener('load', markScrollers);
+          window.addEventListener('resize', markScrollers);
         })();
       </script>
     </div>
@@ -651,15 +681,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 </script>
 
 <script is:inline>
-  // A printed lesson shows every expander, the glossary and FAQ answer open and
-  // light colours; after printing, the page goes back to how the reader left it.
+  // A printed lesson shows every expander, the glossary and FAQ answer open;
+  // after printing, the page goes back to how the reader left it. The light
+  // colours on paper come from BaseLayout.astro, for every page.
   (function() {
     var closed = [];
-    var theme = null;
     var saved = document.querySelector('[data-print-saved]');
     window.addEventListener('beforeprint', function() {
-      theme = document.documentElement.getAttribute('data-theme');
-      document.documentElement.setAttribute('data-theme', 'light');
       if (saved) saved.textContent = 'Saved on ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + '.';
       closed = Array.prototype.filter.call(
         document.querySelectorAll('#post-content details:not([open]), .post-faq details:not([open]), .post-glossary details:not([open])'),
@@ -669,7 +697,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
     window.addEventListener('afterprint', function() {
       closed.forEach(function(d) { d.open = false; });
       closed = [];
-      if (theme) document.documentElement.setAttribute('data-theme', theme);
     });
   })();
 

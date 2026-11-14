@@ -908,7 +908,9 @@ details[open] > .disclosure::after,
   display: none;
   position: absolute;
   z-index: 30;
-  left: 0;
+  /* Moved with `left`, not a transform: a transformed box still counts as
+     overflow where it stood, and made the page pan sideways on a phone. */
+  left: var(--tip-shift, 0px);
   top: calc(100% + 0.45rem);
   width: max-content;
   max-width: min(20rem, calc(100vw - 2rem));
@@ -924,7 +926,6 @@ details[open] > .disclosure::after,
   line-height: 1.45;
   text-align: left;
   white-space: normal;
-  transform: translateX(var(--tip-shift, 0px));
 }
 /* Bridges the gap under the term, so moving the pointer onto the definition
  * keeps it open. */
@@ -1094,18 +1095,20 @@ details[open] > .disclosure::after,
 /* A printed or saved lesson is the lesson, not the site around it. The print
  * foot in BlogPost.astro says where it came from. */
 @media print {
-  body:has(.blog-post) .site-header,
-  body:has(.blog-post) .site-footer,
-  body:has(.blog-post) .skip-link,
-  body:has(.blog-post) .cookie-overlay,
+  /* Every printed page is the page, not the site around it. */
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .cookie-overlay,
+  .vol-bar,
   .blog-post .waitlist,
   .blog-post .subscribe,
   .blog-post .lesson-share {
     display: none !important;
   }
 
-  html:has(.blog-post),
-  body:has(.blog-post) {
+  html,
+  body {
     background: #fff !important;
   }
 
@@ -1191,6 +1194,14 @@ details[open] > .disclosure::after,
 }
 
 .prose .table-scroll:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+/* A figure that scrolls sideways takes keyboard focus (BlogPost.astro), so
+   the arrow keys can scroll it. */
+.prose figure:focus-visible,
+[data-scroll-box]:focus-visible {
   outline: 2px solid var(--color-deep-blue);
   outline-offset: 2px;
 }

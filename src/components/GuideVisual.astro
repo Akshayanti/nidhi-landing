@@ -64,7 +64,7 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
   )}
 
   {visual.kind === 'table' && (
-    <div class="gv-table-wrap">
+    <div class="gv-table-wrap" role="group" aria-label={visual.caption} data-scroll-box>
       <table class="gv-table">
         <thead><tr>{visual.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
         <tbody>
@@ -194,10 +194,11 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
 
   /* Annotated document */
   .gv-doc-title { font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-3); font-family: var(--font-heading); }
-  .gv-doc-lines { margin: 0; display: grid; gap: 0; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-bg); }
+  .gv-doc-lines { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-bg); }
   .gv-doc-line { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-light); }
   .gv-doc-line:last-child { border-bottom: none; }
-  .gv-doc-line dt { display: flex; align-items: baseline; }
+  /* A long address wraps inside the line instead of widening the page (#633). */
+  .gv-doc-line dt { display: flex; align-items: baseline; min-width: 0; overflow-wrap: anywhere; }
   .gv-doc-line dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; }
 
   /* Message */

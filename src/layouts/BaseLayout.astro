@@ -88,5 +88,25 @@ const strings = dict(locale);
     <Footer locale={locale} />
     <CookieConsent locale={locale} />
     <Analytics />
+    <script is:inline>
+      // Paper is light: a page printed from the dark theme would come out as
+      // pale grey text on white. The theme is switched for the print only and
+      // put back afterwards; nothing is stored. A tool's printed report has
+      // its own print styles and is left alone.
+      (function () {
+        var theme = null;
+        window.addEventListener('beforeprint', function () {
+          // A second beforeprint before the first print ends must not
+          // overwrite the theme to go back to.
+          if (theme !== null || document.querySelector('.tool-report')) return;
+          theme = document.documentElement.getAttribute('data-theme');
+          document.documentElement.setAttribute('data-theme', 'light');
+        });
+        window.addEventListener('afterprint', function () {
+          if (theme) document.documentElement.setAttribute('data-theme', theme);
+          theme = null;
+        });
+      })();
+    </script>
   </body>
 </html>

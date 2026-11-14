@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'lessons-keyboard-tips-print',
+        text: {
+          en: 'Three fixes. A chart or table that scrolls sideways on a narrow screen, in a lesson or a how-to guide, can now be reached with the Tab key and scrolled with the arrow keys. In lessons on a phone, opening the explanation of a term no longer makes the page slide sideways. And any page printed from the dark theme now comes out in dark text on white, without the site’s menus around it; before, only lessons did.',
+          hi: 'तीन सुधार। किसी पाठ या कैसे करें गाइड में छोटी स्क्रीन पर जो चार्ट या तालिका आड़ी स्क्रॉल होती है, उस तक अब Tab कुंजी से पहुँचा जा सकता है और तीर वाली कुंजियों से उसे स्क्रॉल किया जा सकता है। पाठों में, फ़ोन पर किसी शब्द की व्याख्या खोलने से पन्ना अब आड़ा नहीं सरकता। और डार्क थीम से छापा गया कोई भी पन्ना अब सफ़ेद पर गहरे टेक्स्ट में छपता है, साइट के मेन्यू के बिना; पहले ऐसा सिर्फ़ पाठों में होता था।',
+          es: 'Tres arreglos. Un gráfico o una tabla que se desplaza hacia los lados en una pantalla estrecha, en una lección o en una guía Cómo hacerlo, ya se puede alcanzar con la tecla Tab y desplazar con las flechas. En las lecciones, en un teléfono, abrir la explicación de un término ya no hace que la página se deslice hacia un lado. Y cualquier página impresa desde el tema oscuro sale ahora con texto oscuro sobre blanco, sin los menús del sitio alrededor; antes solo pasaba con las lecciones.',
+          cs: 'Tři opravy. Ke grafu nebo tabulce, které se na úzké obrazovce posouvají do strany, ať už v\u00a0lekci, nebo v\u00a0návodu Jak na to, se teď dá dostat klávesou Tab a\u00a0posouvat je šipkami. V\u00a0lekcích na telefonu už otevření vysvětlení pojmu neposune stránku do strany. A\u00a0jakákoli stránka vytištěná z\u00a0tmavého motivu teď vyjde tmavým textem na bílé, bez nabídek webu kolem; dřív to platilo jen pro lekce.',
+          mr: 'तीन दुरुस्त्या. धड्यात किंवा ‘कसे करायचे’ मार्गदर्शिकेत अरुंद स्क्रीनवर आडवा स्क्रोल होणारा आलेख किंवा तक्ता आता Tab कळीने गाठता येतो आणि बाणांच्या कळांनी स्क्रोल करता येतो. धड्यांमध्ये, फोनवर एखाद्या शब्दाचे स्पष्टीकरण उघडल्यावर पान आता आडवे सरकत नाही. आणि गडद थीममधून छापलेले कोणतेही पान आता पांढऱ्यावर गडद मजकुरात छापले जाते, साइटच्या मेनूशिवाय; आधी असे फक्त धड्यांमध्ये होत असे.',
+        },
+      },
+      {
         id: 'emails-fit-a-phone',
         text: {
           en: 'The emails now fit a phone screen: a lesson no longer needs sideways panning or zooming, and a wide table scrolls inside its own box. The small grey text, the links and the buttons are darker and easier to read, the unsubscribe link sits on a line of its own, and the plain-text version keeps sentences and table rows together.',
