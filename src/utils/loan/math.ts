@@ -129,6 +129,42 @@ export function roundMinor(units: number): number {
   return units >= 0 ? Math.floor(units + 0.5) : -Math.floor(-units + 0.5);
 }
 
+/** A yearly rate as a whole number of hundred-millionths: 2.9% is 2,900,000. */
+const RATE_SCALE = 1e8;
+/** One month of a yearly rate held at that scale. */
+const MONTH_DIVISOR = 12 * RATE_SCALE;
+
+/**
+ * One month's interest on a balance, in minor units: a twelfth of the yearly
+ * rate, rounded half away from zero, worked out in whole numbers.
+ *
+ * `roundMinor(balance * (annualRate / 12))` is not the same thing. A rate
+ * such as 2.9% has no exact binary form, so a product that is exactly a half
+ * (60.00 at 2.9% is 14.5 cents) can come out a hair under it and round down:
+ * one cent short in that row (#532). Here the rate becomes a whole number
+ * once and the half is compared exactly. Where the product is too large for
+ * exact floating-point whole numbers, BigInt carries it.
+ *
+ * A balance that is not a whole number of minor units, or a rate that is not
+ * a usable number, falls back to the floating-point form: the callers check
+ * their inputs and never pass one.
+ */
+export function monthlyInterestMinor(balanceMinor: number, annualRate: number): number {
+  if (annualRate === 0 || balanceMinor === 0) return 0;
+  const scaled = Math.round(annualRate * RATE_SCALE);
+  if (!Number.isInteger(balanceMinor) || balanceMinor < 0 || !Number.isFinite(annualRate) || annualRate < 0 || !Number.isSafeInteger(scaled)) {
+    return roundMinor(balanceMinor * (annualRate / 12));
+  }
+  const product = balanceMinor * scaled;
+  if (Number.isSafeInteger(product)) {
+    const whole = Math.floor(product / MONTH_DIVISOR);
+    const rest = product - whole * MONTH_DIVISOR;
+    return rest * 2 >= MONTH_DIVISOR ? whole + 1 : whole;
+  }
+  const divisor = BigInt(MONTH_DIVISOR);
+  return Number((2n * BigInt(balanceMinor) * BigInt(scaled) + divisor) / (2n * divisor));
+}
+
 /** All math runs in integer minor units so principal sums match the original loan exactly. */
 export function toMinor(amount: number, currencyCode: string): number {
   if (!Number.isFinite(amount)) return 0;
@@ -160,9 +196,12 @@ const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);
  * (`TOOL_AMOUNT_LOCALE`); see `amountStyle` above.
  */
 export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {
+  // Never "€NaN" or "-€0.00": an amount that is not a number has no figure,
+  // and less than half a minor unit either side of zero is zero.
+  if (!Number.isFinite(units)) return 'n/a';
   const { code } = getCurrency(currencyCode);
   const { locale, display } = amountStyle(code, amountLocale);
-  const value = fromMinor(units, code);
+  const value = fromMinor(Math.abs(units) < 0.5 ? 0 : units, code);
   const formatted = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: code,
@@ -363,6 +402,20 @@ export interface LoanResult {
 
 export const MAX_TERM_MONTHS = 1200;
 
+/**
+ * The largest loan the engine takes, in minor units: a million million euros
+ * in cents. Far beyond any loan, and well inside the whole numbers a
+ * JavaScript number holds exactly, so every sum in a schedule stays exact.
+ */
+export const MAX_PRINCIPAL_MINOR = 1e14;
+
+/**
+ * The message for an optional amount that cannot be used. It is written so
+ * that the tool's analytics, which sorts messages by the words in them,
+ * files it under "other".
+ */
+export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
+
 export function computeScheduledPaymentMinor(
   principalMinor: number,
   annualRate: number,
@@ -414,12 +467,11 @@ export function buildSchedule(
     return { schedule: [], warnings, error: 'Monthly payment must be greater than zero.' };
   }
 
-  const r = annualRate / 12;
   let balance = principalMinor;
   const schedule: AmortizationRow[] = [];
 
   if (annualRate > 0) {
-    const interestFirstMonth = roundMinor(balance * r);
+    const interestFirstMonth = monthlyInterestMinor(balance, annualRate);
     if (paymentMinor + extraMinor <= interestFirstMonth) {
       return {
         schedule: [],
@@ -430,7 +482,7 @@ export function buildSchedule(
   }
 
   while (balance > 0 && schedule.length < MAX_TERM_MONTHS) {
-    const interest = annualRate === 0 ? 0 : roundMinor(balance * r);
+    const interest = monthlyInterestMinor(balance, annualRate);
     let payment = paymentMinor + extraMinor;
     let principal = payment - interest;
 
@@ -534,7 +586,7 @@ export function buildScheduleAdvanced(spec: {
   // pay down principal).
   const initialRate = rateForMonth(spec.rateSpec, 1);
   if (initialRate > 0) {
-    const initialInterest = roundMinor(principalMinor * (initialRate / 12));
+    const initialInterest = monthlyInterestMinor(principalMinor, initialRate);
     if (spec.basePaymentMinor + extraMonthlyMinor <= initialInterest) {
       return {
         schedule: [],
@@ -581,7 +633,7 @@ export function buildScheduleAdvanced(spec: {
       recastApplied = true;
       recastPaymentMinor = currentPayment;
       if (spec.rateSpec.subsequentAnnualRate > 0) {
-        const monthsInterest = roundMinor(balance * (spec.rateSpec.subsequentAnnualRate / 12));
+        const monthsInterest = monthlyInterestMinor(balance, spec.rateSpec.subsequentAnnualRate);
         if (currentPayment + extraMonthlyMinor <= monthsInterest) {
           // Subsequent rate is so high that even the recast payment
           // can't beat interest. Surface as warning rather than error
@@ -593,8 +645,7 @@ export function buildScheduleAdvanced(spec: {
       }
     }
 
-    const r = rateForMonth(spec.rateSpec, month) / 12;
-    const interest = r === 0 ? 0 : roundMinor(balance * r);
+    const interest = monthlyInterestMinor(balance, rateForMonth(spec.rateSpec, month));
     let payment = currentPayment + extraMonthlyMinor;
     let principal = payment - interest;
 
@@ -679,15 +730,34 @@ function resolveRateSpec(inputs: LoanInputs): RateSpec {
 }
 
 export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
-  const { principalMinor } = inputs;
-  const feeMinor = inputs.feeMinor ?? 0;
-  const extraMonthlyMinor = inputs.extraMonthlyMinor ?? 0;
-  const lumpSums = inputs.lumpSums ?? [];
   const penalty = inputs.prepaymentPenalty;
   let rateSpec = resolveRateSpec(inputs);
 
-  if (!Number.isFinite(principalMinor) || principalMinor <= 0) {
+  // The optional amounts. One that is not a number, or is negative, is an
+  // error and never a quiet zero: a NaN fee used to give a NaN total, and a
+  // negative fee lowered the total paid without a word (#352). The page's own
+  // checks (inputs.ts) normally stop these first; the engine does not rely
+  // on that.
+  const optional = [
+    inputs.feeMinor ?? 0,
+    inputs.extraMonthlyMinor ?? 0,
+    ...(inputs.lumpSums ?? []).flatMap((l) => [l.month, l.amountMinor]),
+    ...(penalty ? [penalty.pctOfBalance, penalty.untilMonth, penalty.flatMinor ?? 0] : []),
+  ];
+  if (optional.some((v) => !Number.isFinite(v) || v < 0)) return emptyResult(0, OPTIONAL_UNREADABLE);
+
+  // Every amount is a whole number of minor units from here on, so the
+  // schedule's sums are exact. A fraction of a cent is rounded away once.
+  const principalMinor = roundMinor(inputs.principalMinor);
+  const feeMinor = roundMinor(inputs.feeMinor ?? 0);
+  const extraMonthlyMinor = roundMinor(inputs.extraMonthlyMinor ?? 0);
+  const lumpSums = (inputs.lumpSums ?? []).map((l) => ({ ...l, amountMinor: roundMinor(l.amountMinor) }));
+
+  if (!Number.isFinite(inputs.principalMinor) || principalMinor <= 0) {
     return emptyResult(feeMinor, 'Enter a loan amount greater than zero.');
+  }
+  if (principalMinor > MAX_PRINCIPAL_MINOR) {
+    return emptyResult(feeMinor, 'This loan amount is too large for the tool. Enter a smaller amount.');
   }
 
   // Validate every rate the spec exposes. A negative subsequent rate is
@@ -728,7 +798,8 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   let totalMonths: number;
   let scheduledPayment: number;
   if (mode.kind === 'term') {
-    if (!Number.isFinite(mode.months) || mode.months <= 0) {
+    // Whole months, counted before the check: half a month is no term.
+    if (!Number.isFinite(mode.months) || Math.floor(mode.months) < 1) {
       return emptyResult(feeMinor, 'Enter a term of at least one month.');
     }
     if (mode.months > MAX_TERM_MONTHS) {
@@ -742,8 +813,13 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       rateForMonth(rateSpec, 1),
       totalMonths,
     );
+    // A cent over thirty years has a payment that rounds to nothing. Say
+    // that, not "enter a monthly payment": this reader typed a term.
+    if (scheduledPayment <= 0) {
+      return emptyResult(feeMinor, 'The loan is too small for this term. Enter a larger amount or a shorter term.');
+    }
   } else {
-    if (!Number.isFinite(mode.monthlyMinor) || mode.monthlyMinor <= 0) {
+    if (!Number.isFinite(mode.monthlyMinor) || roundMinor(mode.monthlyMinor) <= 0) {
       return emptyResult(feeMinor, 'Enter a monthly payment greater than zero.');
     }
     if (rateSpec.kind === 'hybrid') {
@@ -755,7 +831,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
         'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.',
       );
     }
-    scheduledPayment = mode.monthlyMinor;
+    scheduledPayment = roundMinor(mode.monthlyMinor);
     // For payment-mode fixed loans we don't have a contractual term;
     // simulate up to MAX_TERM_MONTHS and use the actual payoff length.
     totalMonths = MAX_TERM_MONTHS;
@@ -1065,6 +1141,8 @@ export function computeApr(
  */
 export function formatApr(apr: number, locale: string = 'en-US'): string {
   if (!Number.isFinite(apr)) return 'n/a';
+  // Less than half of the last digit shown, either side of zero, is 0.00%, never "-0.00%".
+  if (Math.abs(apr) < 0.00005) apr = 0;
   try {
     return new Intl.NumberFormat(locale, {
       style: 'percent',
