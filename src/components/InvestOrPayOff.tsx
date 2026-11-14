@@ -550,6 +550,7 @@ export default function InvestOrPayOff({
                 {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
                 {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>
+              <p className="ifc-hint">{strings.returns.ownSwings}</p>
             </>
           )}
         </fieldset>

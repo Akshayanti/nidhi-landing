@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'invest-or-pay-off-says-what-it-assumes',
+        text: {
+          en: 'The invest or pay off tool is plainer about three things. The debt\'s rate is now shown as what it costs over a year when interest is charged monthly (6.5% comes to 6.70%), so it sits fairly beside the investment\'s yearly return. If you type your own return, the tool says its ups and downs stay those of world stocks, far wider than a savings account\'s. And this tool and the Monte Carlo simulator both say their return history is measured in US dollars.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल अब तीन बातें ज़्यादा साफ़ कहता है। कर्ज़ की दर अब वह दिखती है जो ब्याज हर महीने लगने पर साल भर में बनती है (6.5% का मतलब 6.70%), ताकि वह निवेश के सालाना रिटर्न के सामने बराबरी से रखी जाए। अगर आप अपना रिटर्न भरते हैं, तो टूल बताता है कि उतार-चढ़ाव दुनिया भर के शेयरों वाला ही रहता है, जो बचत खाते से कहीं ज़्यादा है। और यह टूल और मोंटे कार्लो सिम्युलेटर, दोनों बताते हैं कि उनके रिटर्न का इतिहास अमेरिकी डॉलर में नापा गया है।',
+          es: 'La herramienta Invertir o pagar deuda es más clara en tres cosas. El tipo de la deuda se muestra ahora como lo que cuesta en un año cuando los intereses se cobran cada mes (un 6,5\u00a0% equivale a un 6,70\u00a0%), para compararlo en igualdad con la rentabilidad anual de la inversión. Si escribes tu propia rentabilidad, la herramienta avisa de que los altibajos siguen siendo los de la bolsa mundial, mucho mayores que los de una cuenta de ahorro. Y tanto esta herramienta como el simulador Monte Carlo dicen que su historia de rentabilidades está medida en dólares estadounidenses.',
+          cs: 'Nástroj Investovat, nebo splatit dluh je ve třech věcech srozumitelnější. Úrok dluhu se teď ukazuje jako to, co dluh stojí za rok, když se úrok připisuje měsíčně (6,5\u00a0% odpovídá 6,70\u00a0%), aby šel poctivě srovnat s\u00a0ročním výnosem investice. Když zadáte vlastní výnos, nástroj řekne, že výkyvy zůstávají stejné jako u\u00a0světových akcií, tedy mnohem větší než u\u00a0spořicího účtu. A\u00a0tento nástroj i\u00a0simulátor Monte Carlo uvádějí, že jejich historie výnosů je měřená v\u00a0amerických dolarech.',
+          mr: 'गुंतवणूक की कर्जफेड हे टूल आता तीन गोष्टी अधिक स्पष्ट सांगते. कर्जाचा दर आता व्याज दर महिन्याला लागल्यावर वर्षभरात जेवढा होतो तेवढा दाखवला जातो (6.5% म्हणजे 6.70%), म्हणजे तो गुंतवणुकीच्या वार्षिक परताव्याशी नीट तुलना करता येतो. तुम्ही स्वतःचा परतावा भरला, तर टूल सांगते की चढ-उतार जागतिक शेअर्सचेच राहतात, जे बचत खात्यापेक्षा खूप जास्त असतात. आणि हे टूल आणि मॉन्टे कार्लो सिम्युलेटर, दोघेही सांगतात की त्यांच्या परताव्यांचा इतिहास अमेरिकी डॉलरमध्ये मोजलेला आहे.',
+        },
+      },
+      {
         id: 'net-worth-share-bands',
         text: {
           en: 'The net worth calculator no longer speaks of a "risk level". The cards are now headed "Share of net worth by currency", and the page says plainly that its low, moderate and elevated bands are the tool\'s own way of grouping shares: not a standard, and not a judgement of you.',

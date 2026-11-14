@@ -82,7 +82,7 @@ export const investOrPayOffEn = {
         money: { lead: "Today's money. ", rest: 'The debt is charged at its own rate; the investment returns are turned into returns before inflation with your inflation figure; every result is then shown in today\'s money.' },
         timing: { lead: 'Timing. ', rest: 'Interest is charged and payments made at the end of each month. Relief on the interest is counted as money back each month and invested in the same path.' },
       },
-      limits: 'Limits of the model: yearly returns are drawn independently, so long runs of bad years are no more likely than chance, and the extremes are milder than history\'s worst years. The return history comes mostly from developed markets.',
+      limits: 'Limits of the model: yearly returns are drawn independently, so long runs of bad years are no more likely than chance, and the extremes are milder than history\'s worst years. The return history comes mostly from developed markets. The return history is measured in US dollars. Using it in another currency assumes exchange rates follow inflation over the period, which they often have over decades and often have not over a few years.',
     },
     lesson: {
       before: 'The lesson behind this tool, with the employer match, tax relief and a common order for several debts: ',
@@ -194,6 +194,8 @@ export const investOrPayOffEn = {
       above: 'This is {real} a year after inflation, above the top of the long-run range used in this model and in our lessons ({low}% to {top}% a year after inflation for world stocks since 1900, Dimson, Marsh and Staunton; mostly developed markets). The results below use your figure and also show the historical range beside it.',
       below: 'This is {real} a year after inflation: the investment would lose buying power.',
       realIs: 'After inflation: {real} a year.',
+      /** Under the reader's own figure: the swings stay those of world stocks. */
+      ownSwings: 'The model keeps the year-to-year swings of world stocks whatever figure you enter. For a savings account or a bond fund the real range would be much narrower than shown.',
     },
     horizons: {
       legend: 'Compare on',
@@ -342,7 +344,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
         money: { lead: 'आज का पैसा। ', rest: 'कर्ज़ पर उसकी अपनी दर से ब्याज लगता है; निवेश के रिटर्न को आपके महँगाई के आँकड़े से महँगाई से पहले के रिटर्न में बदला जाता है; फिर हर नतीजा आज के पैसे में दिखाया जाता है।' },
         timing: { lead: 'समय। ', rest: 'ब्याज और किस्त हर महीने के आख़िर में लगते हैं। ब्याज पर छूट को हर महीने वापस मिलने वाला पैसा माना गया है, जो उसी रास्ते में निवेश होता है।' },
       },
-      limits: 'मॉडल की सीमाएँ: हर साल का रिटर्न अलग से निकाला जाता है, इसलिए बुरे सालों के लंबे दौर संयोग से ज़्यादा संभावित नहीं होते, और चरम हालात इतिहास के सबसे बुरे सालों से हल्के रहते हैं। रिटर्न का इतिहास ज़्यादातर विकसित बाज़ारों से है।',
+      limits: 'मॉडल की सीमाएँ: हर साल का रिटर्न अलग से निकाला जाता है, इसलिए बुरे सालों के लंबे दौर संयोग से ज़्यादा संभावित नहीं होते, और चरम हालात इतिहास के सबसे बुरे सालों से हल्के रहते हैं। रिटर्न का इतिहास ज़्यादातर विकसित बाज़ारों से है। रिटर्न का इतिहास अमेरिकी डॉलर में नापा गया है। उसे किसी और मुद्रा में इस्तेमाल करने का मतलब यह मान लेना है कि उस अवधि में विनिमय दरें महँगाई के फ़र्क़ के साथ चलती हैं; दशकों में अक्सर ऐसा हुआ है, कुछ सालों में अक्सर नहीं।',
     },
     lesson: {
       before: 'इस टूल के पीछे का लेख, नियोक्ता के योगदान, टैक्स छूट और कई कर्ज़ों के एक आम क्रम के साथ: ',
@@ -454,6 +456,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       above: 'यह महँगाई के बाद सालाना {real} है, जो इस मॉडल और हमारे लेखों में इस्तेमाल लंबी अवधि की सीमा के ऊपरी सिरे से ज़्यादा है (1900 से दुनिया के शेयरों के लिए महँगाई के बाद सालाना {low}% से {top}%, Dimson, Marsh और Staunton; ज़्यादातर विकसित बाज़ार)। नीचे के नतीजे आपका आँकड़ा इस्तेमाल करते हैं और बगल में ऐतिहासिक सीमा भी दिखाते हैं।',
       below: 'यह महँगाई के बाद सालाना {real} है: निवेश की क्रय शक्ति घटेगी।',
       realIs: 'महँगाई के बाद: सालाना {real}।',
+      ownSwings: 'आप जो भी आँकड़ा भरें, मॉडल दुनिया भर के शेयरों का साल-दर-साल उतार-चढ़ाव वैसा ही रखता है। बचत खाते या बॉन्ड फंड के लिए असल दायरा यहाँ दिखाए गए दायरे से काफ़ी संकरा होगा।',
     },
     horizons: {
       legend: 'तुलना की तारीख़',
@@ -598,7 +601,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
         money: { lead: 'आजचा पैसा. ', rest: 'कर्जावर त्याच्या स्वतःच्या दराने व्याज लागते; गुंतवणुकीचे परतावे तुमच्या महागाईच्या आकड्याने महागाईपूर्वीच्या परताव्यांत बदलले जातात; मग प्रत्येक निकाल आजच्या पैशात दाखवला जातो.' },
         timing: { lead: 'वेळ. ', rest: 'व्याज आणि हप्ता प्रत्येक महिन्याच्या शेवटी लागतात. व्याजावरील सवलत दर महिन्याला परत मिळणारे पैसे म्हणून धरली आहे आणि त्याच मार्गात गुंतवली जाते.' },
       },
-      limits: 'मॉडेलच्या मर्यादा: प्रत्येक वर्षाचा परतावा स्वतंत्रपणे काढला जातो, त्यामुळे वाईट वर्षांचे लांब पट्टे योगायोगापेक्षा जास्त संभवत नाहीत, आणि टोकाच्या घटना इतिहासातील सर्वात वाईट वर्षांपेक्षा सौम्य राहतात. परताव्यांचा इतिहास बहुतांश विकसित बाजारांतून आहे.',
+      limits: 'मॉडेलच्या मर्यादा: प्रत्येक वर्षाचा परतावा स्वतंत्रपणे काढला जातो, त्यामुळे वाईट वर्षांचे लांब पट्टे योगायोगापेक्षा जास्त संभवत नाहीत, आणि टोकाच्या घटना इतिहासातील सर्वात वाईट वर्षांपेक्षा सौम्य राहतात. परताव्यांचा इतिहास बहुतांश विकसित बाजारांतून आहे. परताव्यांचा इतिहास अमेरिकी डॉलरमध्ये मोजलेला आहे. तो दुसऱ्या चलनात वापरणे म्हणजे त्या कालावधीत विनिमय दर महागाईतील फरकानुसार बदलतात असे गृहीत धरणे; दशकांच्या काळात असे अनेकदा घडले आहे, काही वर्षांच्या काळात अनेकदा नाही.',
     },
     lesson: {
       before: 'या साधनामागचा धडा, नियोक्त्याचे योगदान, कर सवलत आणि अनेक कर्जांचा एक नेहमीचा क्रम यांसह: ',
@@ -710,6 +713,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे या मॉडेलमध्ये आणि आमच्या धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या वरच्या टोकापेक्षा जास्त (1900 पासूनच्या जागतिक शेअरसाठी महागाईनंतर दरवर्षी {low}% ते {top}%, Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार). खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी ऐतिहासिक पल्लाही दाखवतात.',
       below: 'हे महागाईनंतर दरवर्षी {real} आहे: गुंतवणुकीची क्रयशक्ती कमी होईल.',
       realIs: 'महागाईनंतर: दरवर्षी {real}.',
+      ownSwings: 'तुम्ही कोणताही आकडा भरला तरी मॉडेल जागतिक शेअर्सचे वर्षागणिक चढ-उतार तसेच ठेवते. बचत खाते किंवा बाँड फंडासाठी प्रत्यक्ष कक्षा इथे दाखवलेल्यापेक्षा बरीच अरुंद असेल.',
     },
     horizons: {
       legend: 'तुलनेची तारीख',
@@ -854,7 +858,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
         money: { lead: 'Dinero de hoy. ', rest: 'La deuda se cobra a su propia tasa de interés; las rentabilidades de la inversión se convierten en rentabilidades antes de inflación con tu cifra de inflación; después, cada resultado se muestra en dinero de hoy.' },
         timing: { lead: 'Momentos. ', rest: 'Los intereses se cobran y las cuotas se pagan al final de cada mes. La desgravación de los intereses cuenta como dinero devuelto cada mes y se invierte en el mismo camino.' },
       },
-      limits: 'Límites del modelo: la rentabilidad de cada año se sortea por separado, así que las rachas largas de años malos no son más probables que por azar, y los extremos son más suaves que los peores años de la historia. La historia de rentabilidades viene sobre todo de mercados desarrollados.',
+      limits: 'Límites del modelo: la rentabilidad de cada año se sortea por separado, así que las rachas largas de años malos no son más probables que por azar, y los extremos son más suaves que los peores años de la historia. La historia de rentabilidades viene sobre todo de mercados desarrollados. La historia de rentabilidades está medida en dólares estadounidenses. Usarla en otra moneda supone que los tipos de cambio siguen las diferencias de inflación durante el periodo, algo que ha ocurrido a menudo a lo largo de décadas y a menudo no en pocos años.',
     },
     lesson: {
       before: 'La lección detrás de esta herramienta, con la aportación de la empresa, la desgravación y un orden habitual para varias deudas: ',
@@ -966,6 +970,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       above: 'Esto es un {real} anual descontada la inflación, por encima del extremo alto del rango a largo plazo que usan este modelo y nuestras lecciones (del {low}% al {top}% anual descontada la inflación para las acciones mundiales desde 1900, Dimson, Marsh y Staunton; sobre todo mercados desarrollados). Los resultados de abajo usan tu cifra y muestran también el rango histórico al lado.',
       below: 'Esto es un {real} anual descontada la inflación: la inversión perdería poder adquisitivo.',
       realIs: 'Descontada la inflación: {real} anual.',
+      ownSwings: 'El modelo mantiene los altibajos anuales de la bolsa mundial sea cual sea la cifra que escribas. Para una cuenta de ahorro o un fondo de bonos, el rango real sería mucho más estrecho que el mostrado.',
     },
     horizons: {
       legend: 'Comparar en',
@@ -1110,7 +1115,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
         money: { lead: 'Dnešní peníze. ', rest: 'Dluh se úročí svou vlastní úrokovou sazbou; výnosy investice se vaší inflací převedou na výnosy před inflací; každý výsledek se pak ukáže v dnešních penězích.' },
         timing: { lead: 'Načasování. ', rest: 'Úroky se účtují a splátky se platí na konci každého měsíce. Úleva na úrocích se počítá jako peníze vrácené každý měsíc a investuje se ve stejné cestě.' },
       },
-      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů.',
+      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů. Historie výnosů je měřená v amerických dolarech. Použít ji v jiné měně znamená předpokládat, že směnné kurzy za dané období sledují rozdíly v inflaci, což se v průběhu desetiletí často stávalo a v průběhu několika let často ne.',
     },
     lesson: {
       before: 'Lekce, ze které tento nástroj vychází, s příspěvkem zaměstnavatele, daňovou úlevou a obvyklým pořadím pro více dluhů: ',
@@ -1222,6 +1227,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i naše lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
       below: 'To je {real} ročně po očištění o inflaci: investice by ztrácela kupní sílu.',
       realIs: 'Po očištění o inflaci: {real} ročně.',
+      ownSwings: 'Model zachovává meziroční výkyvy světových akcií, ať zadáte jakékoli číslo. U spořicího účtu nebo dluhopisového fondu by skutečné rozpětí bylo mnohem užší, než jaké se zde zobrazuje.',
     },
     horizons: {
       legend: 'Porovnat k datu',
