@@ -53,6 +53,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'exports-keep-what-you-typed',
+        text: {
+          en: 'The spreadsheets and printed reports from the free tools now show a rate exactly as you typed it: 4.875% stays 4.875, where some of them rounded it to 4.88. In the loan comparison\'s report, lump-sum prepayments are written out for reading ("Month 12: 5,000.00"), with amounts in the same number format as the rest of the page.',
+          hi: 'मुफ़्त टूल्स की स्प्रेडशीट और छपी रिपोर्ट अब दर को ठीक वैसे ही दिखाती हैं जैसे आपने भरी थी: 4.875% अब 4.875 ही रहता है, जबकि पहले कुछ जगह यह 4.88 हो जाता था। लोन तुलना की रिपोर्ट में एकमुश्त राशियाँ अब पढ़ने लायक़ ढंग से लिखी जाती हैं ("महीना 12: 5,000.00"), और रकमें उसी अंक-शैली में होती हैं जो बाक़ी पेज पर है।',
+          es: 'Las hojas de cálculo y los informes impresos de las herramientas gratuitas muestran ahora cada tasa tal como la escribiste: 4,875 % sigue siendo 4,875, cuando algunas la redondeaban a 4,88. En el informe del comparador de préstamos, los pagos extraordinarios aparecen escritos para leerse («Mes 12: 5000,00»), con los importes en el mismo formato numérico que el resto de la página.',
+          cs: 'Tabulky a\u00a0tištěné přehledy z\u00a0bezplatných nástrojů teď ukazují sazbu přesně tak, jak byla zadána: 4,875 % zůstává 4,875, zatímco dřív ji některé zaokrouhlovaly na 4,88. V\u00a0přehledu ze srovnání úvěrů jsou jednorázové mimořádné splátky vypsané čitelně („Měsíc 12: 5 000,00“), s\u00a0částkami ve stejném číselném formátu jako zbytek stránky.',
+          mr: 'मोफत साधनांच्या स्प्रेडशीट आणि छापील अहवालांत आता दर तुम्ही भरला तसाच दिसतो: 4.875% हा 4.875 च राहतो, आधी काही ठिकाणी तो 4.88 होत होता. कर्जांच्या तुलनेच्या अहवालात एकरकमी भरणे आता वाचता येतील असे लिहिले जातात (“महिना 12: 5,000.00”), आणि रकमा पानावरील इतर आकड्यांच्याच स्वरूपात असतात.',
+        },
+      },
+      {
         id: 'break-even-says-what-it-means',
         text: {
           en: 'The loan comparison\'s refinance scenario no longer answers "n/a" for break-even. When nothing is paid to refinance, it says so, and says "from the first month" if the payment is lower. When closing costs are added to the new loan, break-even now counts the larger balance you owe. And an offer whose points cost is more than its fee now says the two boxes disagree, where it used to show a break-even worked out on the wrong cost.',

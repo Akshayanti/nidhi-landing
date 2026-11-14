@@ -11,7 +11,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
-import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
+import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import type { ToolState } from './url.ts';
 
 type Island = Dict['tools']['inflation']['island'];
@@ -51,7 +51,8 @@ const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true
 export function inflationSheets({ island, common, state, answer, decimals, date, page }: InflationExport): Sheet[] {
   const x = island.export;
   const money = (v: number): Cell => ({ n: Number(v.toFixed(decimals)), fmt: amountFormat(decimals) });
-  const rate = (v: number): Cell => ({ n: v, fmt: 'decimal2' });
+  // Typed rates keep the decimals they were given.
+  const rate = (v: number): Cell => typedRate(v);
   const whole = (v: number): Cell => ({ n: v, fmt: 'integer' });
   const mode = state.mode;
 
@@ -85,7 +86,7 @@ export function inflationSheets({ island, common, state, answer, decimals, date,
 
   const answerRows: Cell[][] = [
     [x.question, answer.question],
-    [mode === 'keep' ? x.realRate : x.result, mode === 'keep' ? rate(answer.value) : money(answer.value)],
+    [mode === 'keep' ? x.realRate : x.result, mode === 'keep' ? { n: answer.value, fmt: 'decimal2' } : money(answer.value)],
     ...answer.sentences.map((s): Cell[] => [x.inWords, s]),
   ];
   if (answer.history) {

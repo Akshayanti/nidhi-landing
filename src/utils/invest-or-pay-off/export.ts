@@ -9,7 +9,7 @@
  * Pure: no DOM, no analytics. The island hands the sheets to `downloadWorkbook`.
  */
 import type { Dict } from '../../i18n/strings/types.ts';
-import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
+import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import type { Inputs, Result } from './math.ts';
 
 type Island = Dict['tools']['investOrPayOff']['island'];
@@ -44,7 +44,8 @@ export function investOrPayOffSheets({ island, common, currency, shown, decimals
   const x = island.export;
   const f = island.fields;
   const money = (v: number): Cell => ({ n: Number(v.toFixed(decimals)), fmt: amountFormat(decimals) });
-  const rate = (v: number): Cell => ({ n: v, fmt: 'decimal2' });
+  // Typed rates keep the decimals they were given.
+  const rate = (v: number): Cell => typedRate(v);
   const whole = (v: number): Cell => ({ n: v, fmt: 'integer' });
   const { inputs: i, result: r } = shown;
 
@@ -70,7 +71,8 @@ export function investOrPayOffSheets({ island, common, currency, shown, decimals
     [f.payment, money(i.payment)],
     [f.relief, rate(i.relief)],
     [f.extra, money(i.extra)],
-    [x.inflation, rate(i.inflation)],
+    // A figure taken from the data is shown as the page shows it; a typed one as typed.
+    [x.inflation, shown.inflationSource ? { n: i.inflation, fmt: 'decimal2' } : rate(i.inflation)],
     [x.inflationSource, shown.inflationSource ?? x.inflationTyped],
     [x.returns, island.returns[i.returns].label],
   ];
