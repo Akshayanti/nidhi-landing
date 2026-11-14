@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'simulator-reads-numbers-your-way',
+        text: {
+          en: 'The Monte Carlo simulator now reads the numbers you type the way your page\'s language writes them, as the other tools already do: on the Spanish page "50.000" is fifty thousand and "0,5" is a half, and on the Hindi page you can type "10,00,000". The number of simulated paths follows the same style, so the Hindi and Marathi pages show 1,00,000 paths.',
+          hi: 'मोंटे कार्लो सिम्युलेटर अब आपके लिखे अंक उसी तरह पढ़ता है जैसे आपके पेज की भाषा उन्हें लिखती है, जैसा बाकी टूल पहले से करते हैं: स्पैनिश पेज पर "50.000" पचास हज़ार है और "0,5" आधा, और हिंदी पेज पर आप "10,00,000" लिख सकते हैं। सिम्युलेटेड रास्तों की गिनती भी इसी ढंग से दिखती है, इसलिए हिंदी और मराठी पेज 1,00,000 रास्ते दिखाते हैं।',
+          es: 'El simulador Monte Carlo lee ahora los números que escribes como los escribe el idioma de tu página, igual que las demás herramientas: en la página en español «50.000» es cincuenta mil y «0,5» es un medio, y en la página en hindi se puede escribir «10,00,000». El número de trayectorias simuladas sigue el mismo estilo, así que las páginas en hindi y maratí muestran 1,00,000 trayectorias.',
+          cs: 'Simulátor Monte Carlo teď čte zadaná čísla tak, jak je píše jazyk vaší stránky, stejně jako ostatní nástroje: na české stránce je „50\u00a0000“ padesát tisíc a\u00a0„0,5“ polovina, na hindské stránce lze napsat „10,00,000“. Počty simulovaných trajektorií se píšou stejně, takže hindská a\u00a0maráthská stránka ukazují 1,00,000 trajektorií.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटर आता तुम्ही भरलेले आकडे तुमच्या पेजच्या भाषेत ते जसे लिहिले जातात तसेच वाचतो, इतर साधनांप्रमाणेच: स्पॅनिश पेजवर “50.000” म्हणजे पन्नास हजार आणि “0,5” म्हणजे अर्धा, आणि मराठी पेजवर तुम्ही “10,00,000” लिहू शकता. संभाव्य मार्गांची संख्याही त्याच पद्धतीने दिसते, त्यामुळे हिंदी आणि मराठी पेजवर 1,00,000 मार्ग दिसतात.',
+        },
+      },
+      {
         id: 'net-worth-share-bands',
         text: {
           en: 'The net worth calculator no longer speaks of a "risk level". The cards are now headed "Share of net worth by currency", and the page says plainly that its low, moderate and elevated bands are the tool\'s own way of grouping shares: not a standard, and not a judgement of you.',
