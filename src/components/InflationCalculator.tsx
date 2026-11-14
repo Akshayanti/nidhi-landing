@@ -988,6 +988,8 @@ interface Answer {
   band: string[];
   method: string;
   points: { x: number; value: number }[];
+  /** A sentence the announcement must not leave out: the answer allowed for a change of currency. */
+  announceMore?: string;
   calendar: boolean;
   chartTitle: string;
   axis: string;
@@ -1015,43 +1017,35 @@ function computeAnswer(
     const { factor, toYear } = cumulativeFactor(series, from);
     const to = toYear!;
     const span = to - from;
-    const value = A * factor;
     const average = (Math.pow(factor, 1 / span) - 1) * 100;
-    const sentences = [
-      t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to }),
-      t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }),
-    ];
     // The amounts are the country's own money only when the calculator is in
-    // its currency. Then a change of unit inside the years chosen matters: the
-    // index is right, and the answer in today's unit is the index divided by
-    // the ratio (currencyChanges.ts).
-    if (country!.currency === code) {
-      const { crossed, ratio, later } = currencyChangesBetween(country!.code, from, to);
+    // its currency. Then every change of unit after the first year matters
+    // (currencyChanges.ts): the typed amount is read as money of that year,
+    // and the answer and the chart are given in today's unit, the one the
+    // symbol stands for. The note says so, and gives the other reading.
+    const changes = country!.currency === code ? (() => { const c = currencyChangesBetween(country!.code, from, to); return [...c.crossed, ...c.later]; })() : [];
+    const unit = changes.reduce((r, c) => r * c.ratio, 1);
+    const value = (A * factor) / unit;
+    const sentences = [t(r.pastCountry, { country: country!.name, amount, from, result: aboutText(value, code, strings, amountLocale), to })];
+    let announceMore: string | undefined;
+    if (changes.length > 0) {
       const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
-      if (crossed.length > 0) {
-        const converted = aboutText(value / ratio, code, strings, amountLocale);
-        sentences.push(
-          crossed.length === 1
-            ? t(r.currencyChanged, { country: country!.name, year: crossed[0].year, ratio: plain(ratio), from, to, converted })
-            : t(r.currencyChangedMore, {
-                country: country!.name,
-                years: crossed.map((c) => c.year).join(', '),
-                ratio: plain(ratio),
-                from,
-                to,
-                converted,
-              }),
-        );
-      }
-      for (const change of later) sentences.push(t(r.currencyChangedLater, { country: country!.name, year: change.year, ratio: plain(change.ratio) }));
+      const unconverted = aboutText(A * factor, code, strings, amountLocale);
+      announceMore =
+        changes.length === 1
+          ? t(r.currencyChanged, { country: country!.name, year: changes[0].year, ratio: plain(unit), from, unconverted })
+          : t(r.currencyChangedMore, { country: country!.name, years: changes.map((c) => c.year).join(', '), ratio: plain(unit), from, unconverted });
+      sentences.push(announceMore);
     }
+    sentences.push(t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }));
     return {
       headline: aboutText(value, code, strings, amountLocale),
       value,
       sentences,
+      announceMore,
       band: [],
       method: r.methodHistory,
-      points: historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value })),
+      points: historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value / unit })),
       calendar: true,
       chartTitle: t(strings.chart.title.past, { amount }),
       axis: strings.chart.axis.pastCountry,
@@ -1131,7 +1125,7 @@ function Results({
   // on the first render, which is the page loading, and not while loading.
   const [announcement, setAnnouncement] = useState('');
   const firstState = useRef(state);
-  const announceText = result === 'loading' ? '' : t(strings.results.announce, { headline: result.headline, sentence: result.sentences[0] });
+  const announceText = result === 'loading' ? '' : t(strings.results.announce, { headline: result.headline, sentence: result.announceMore ? `${result.sentences[0]} ${result.announceMore}` : result.sentences[0] });
   useEffect(() => {
     if (state === firstState.current || !announceText) return;
     setAnnouncement(announceText);
