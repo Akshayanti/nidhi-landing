@@ -141,8 +141,8 @@ const TOOLS = {
   'monte-carlo-simulator': {
     global: '__nidhiMonteCarloShared',
     fields: [
-      { selector: 'input.mcs-input[type="number"]', value: A1 },
-      { selector: 'input.mcs-input[type="number"]', value: A2, nth: 1 },
+      { selector: 'input.mcs-input', value: A1 },
+      { selector: 'input.mcs-input', value: A2, nth: 1 },
     ],
     ownEvents: /^free_monte_carlo_/,
     mustSend: ['currency_changed', 'withdrawal_toggled', 'table_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
