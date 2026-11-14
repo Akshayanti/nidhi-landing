@@ -338,6 +338,7 @@ export const cs: Dict = {
       motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
       theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
       charts: 'V nástrojích zdarma se čáry grafu liší vzorem i barvou a grafy se dají číst klávesnicí.',
+      lessons: 'Každá lekce začíná krátkým shrnutím, říká, jak dlouho trvá ji přečíst, a má označenou úroveň, takže se ještě před čtením můžete rozhodnout, co číst.',
       languages: 'Vlastní stránky webu jsou v pěti jazycích. Lekce jsou jen v angličtině.',
     },
     reviewed: {
@@ -345,11 +346,10 @@ export const cs: Dict = {
       limits: 'Je to kontrola, ne záruka. Nebyl to test s lidmi s postižením a nezkoušela každou čtečku obrazovky na každé stránce, takže nemůže doložit, že web funguje všem.',
     },
     barriers: {
-      intro: 'Tyto jsou otevřené k 12. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
+      intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
         links: 'Některé odkazy uvnitř věty se od okolních slov liší jen barvou.',
         contrast: 'Část drobného textu je příliš bledá: nápovědy v prázdných polích formulářů a dva malé odkazy v rámečku newsletteru.',
-        announcements: 'Nástroje zdarma neoznamují výsledky čtečce obrazovky stejným způsobem: srovnání úvěrů říká příliš mnoho a kalkulačka čistého jmění při změně výsledku neřekne nic.',
         forms: 'Ve formulářích čekací listiny a newsletteru se při odesílání a po chybě ztrácí fokus klávesnice a nic neoznámí, že se formulář odesílá.',
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
         overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
@@ -366,7 +366,8 @@ export const cs: Dict = {
     },
     report: {
       before: 'Napište na ',
-      after: ', o kterou stránku jde a o co jste se pokoušeli.',
+      between: ' nebo pošlete zprávu účtu ',
+      after: ' na Instagramu, o kterou stránku jde a o co jste se pokoušeli.',
       diagnosis: 'Diagnózu sdílet nemusíte.',
       setting: 'Pokud by vám pomohlo nějaké nastavení na stránce, napište mi které.',
     },

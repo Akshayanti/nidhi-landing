@@ -272,7 +272,7 @@ const breadcrumbSchema = {
   }
 
   .beliefs-intro {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
     font-style: italic;
@@ -315,15 +315,16 @@ const breadcrumbSchema = {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.0625rem;
     color: var(--color-deep-blue);
     margin-bottom: var(--space-1);
   }
 
+  /* Body size, not smaller: the page is all reading. */
   .belief p {
-    font-size: 0.88rem;
+    font-size: 1rem;
     color: var(--color-text-secondary);
-    line-height: 1.7;
+    line-height: 1.6;
     margin: 0;
   }
 
@@ -350,6 +351,14 @@ const breadcrumbSchema = {
 
   .belief a:hover {
     color: var(--color-teal-dark);
+  }
+
+  /* Dark theme: the usual dark teal is 4.8:1 on the callout's raised surface.
+     The paler teal of the same pair is 7.8:1 there, and the underline, not
+     the colour, is what marks the link. */
+  :global([data-theme="dark"]) .belief a,
+  :global([data-theme="dark"]) .belief a:hover {
+    color: var(--palette-teal-dark);
   }
 
   .cta-block {

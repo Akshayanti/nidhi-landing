@@ -429,6 +429,7 @@ export const en = {
       motion: 'If your device asks for reduced motion, animations and smooth scrolling are switched off.',
       theme: 'There is a light and a dark theme, chosen with the switch at the top of the page or taken from your device.',
       charts: 'In the free tools, the lines of a chart differ by pattern as well as colour, and the charts can be read with a keyboard.',
+      lessons: 'Every lesson opens with a short summary, says how long it takes to read, and is marked with a level, so you can decide what to read before you start.',
       languages: 'The site’s own pages are in five languages. The lessons are in English only.',
     },
     reviewed: {
@@ -436,11 +437,10 @@ export const en = {
       limits: 'That is a review, not a guarantee. It was not a test with disabled readers, and it did not try every screen reader on every page, so it cannot show that the site works for everyone.',
     },
     barriers: {
-      intro: 'These are open as of 12 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
+      intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
         links: 'Some links inside a sentence are told apart from the words around them by colour alone.',
         contrast: 'Some small text is too faint: the hints inside empty form fields, and two small links on the newsletter box.',
-        announcements: 'The free tools do not tell a screen reader about their results in the same way: the loan comparison says too much, and the net worth calculator says nothing when a result changes.',
         forms: 'On the waitlist and newsletter forms, keyboard focus is lost while the form is sending and after a failure, and nothing announces that it is sending.',
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
         overlays: 'While the phone menu or the cookie prompt is open, the page behind it can still scroll.',
@@ -457,7 +457,8 @@ export const en = {
     },
     report: {
       before: 'Write to ',
-      after: ' with the page and what you were trying to do.',
+      between: ' or message ',
+      after: ' on Instagram, with the page and what you were trying to do.',
       diagnosis: 'You do not need to share a diagnosis.',
       setting: 'If a setting on the page would help you, tell me which.',
     },

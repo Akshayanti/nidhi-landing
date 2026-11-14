@@ -354,6 +354,7 @@ export const es: Dict = {
       motion: 'Si tu dispositivo pide movimiento reducido, las animaciones y el desplazamiento suave se desactivan.',
       theme: 'Hay un tema claro y uno oscuro, que se elige con el selector de la parte superior de la página o se toma de tu dispositivo.',
       charts: 'En las herramientas gratuitas, las líneas de un gráfico se distinguen por su trazo además de por el color, y los gráficos se pueden leer con el teclado.',
+      lessons: 'Cada lección empieza con un resumen breve, dice cuánto se tarda en leerla e indica su nivel, para que puedas decidir qué leer antes de empezar.',
       languages: 'Las páginas propias del sitio están en cinco idiomas. Las lecciones están solo en inglés.',
     },
     reviewed: {
@@ -361,11 +362,10 @@ export const es: Dict = {
       limits: 'Es una revisión, no una garantía. No fue una prueba con lectores con discapacidad ni probó todos los lectores de pantalla en todas las páginas, así que no puede demostrar que el sitio funcione para todo el mundo.',
     },
     barriers: {
-      intro: 'Estas siguen abiertas a 12 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
+      intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
         links: 'Algunos enlaces dentro de una frase se distinguen de las palabras que los rodean solo por el color.',
         contrast: 'Parte del texto pequeño es demasiado tenue: las indicaciones dentro de los campos vacíos de los formularios y dos enlaces pequeños del recuadro del boletín.',
-        announcements: 'Las herramientas gratuitas no comunican sus resultados a un lector de pantalla de la misma manera: el comparador de préstamos dice demasiado y la calculadora de patrimonio neto no dice nada cuando cambia un resultado.',
         forms: 'En los formularios de la lista de espera y del boletín, el foco del teclado se pierde mientras el formulario se envía y después de un fallo, y nada anuncia que se está enviando.',
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
         overlays: 'Mientras el menú del teléfono o el aviso de cookies está abierto, la página de detrás se puede seguir desplazando.',
@@ -382,7 +382,8 @@ export const es: Dict = {
     },
     report: {
       before: 'Escribe a ',
-      after: ' con la página y lo que intentabas hacer.',
+      between: ' o envía un mensaje a ',
+      after: ' en Instagram, con la página y lo que intentabas hacer.',
       diagnosis: 'No hace falta que compartas ningún diagnóstico.',
       setting: 'Si un ajuste en la página te ayudaría, dime cuál.',
     },
