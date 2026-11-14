@@ -34,13 +34,16 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
   // A page is too narrow for the four payment columns beside the rest. When a
   // payment changes with its rate, the comparison keeps the starting payment
   // and a second, short table carries the payments by period.
-  let tables = [tableOf(summary, { caption: island.delta.heading, note: x.schedulesNote })];
+  // The basis of the APR is a line under the table, as on the page: in the
+  // column heading it stacked six lines deep on narrow paper (#646).
+  const note = [island.delta.aprNote, x.schedulesNote];
+  let tables = [tableOf(summary, { caption: island.delta.heading, note, stack: true })];
   if (hasLaterPayment(results)) {
     const cut = (from: number, to: number) => ({ ...summary, rows: summary.rows.map((row) => [row[0], ...row.slice(from, to)]) });
     const rest = { ...summary, rows: summary.rows.map((row) => [row[0], row[1], ...row.slice(1 + LATER_PAYMENT_COLUMNS)]) };
     tables = [
-      tableOf(rest, { caption: island.delta.heading, note: x.schedulesNote }),
-      tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment }),
+      tableOf(rest, { caption: island.delta.heading, note, stack: true }),
+      tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment, stack: true }),
     ];
   }
 

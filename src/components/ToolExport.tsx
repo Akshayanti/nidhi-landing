@@ -160,7 +160,7 @@ function Table({ table, locale }: { table: ReportTable; locale: string }) {
   const cls = (i: number, c?: Cell) => (numeric[i] ? 'tool-reportNum' : c !== undefined && isNumber(c) ? 'tool-reportWhole' : undefined);
   return (
     <div className="tool-reportBlock">
-      <table className="tool-reportTable">
+      <table className={table.stack ? 'tool-reportTable tool-reportTable--stack' : 'tool-reportTable'}>
         {table.caption && <caption>{table.caption}</caption>}
         <thead>
           <tr>{table.head.map((h, i) => <th key={i} scope="col" className={cls(i)}>{h}</th>)}</tr>
@@ -172,14 +172,14 @@ function Table({ table, locale }: { table: ReportTable; locale: string }) {
                 i === 0 ? (
                   <th key={i} scope="row">{cellText(c, locale)}</th>
                 ) : (
-                  <td key={i} className={cls(i, c)}>{cellText(c, locale)}</td>
+                  <td key={i} className={cls(i, c)} data-label={table.stack ? table.head[i] : undefined}>{cellText(c, locale)}</td>
                 ),
               )}
             </tr>
           ))}
         </tbody>
       </table>
-      {table.note && <p className="tool-reportNote">{table.note}</p>}
+      {[table.note ?? []].flat().map((n, i) => <p key={i} className="tool-reportNote">{n}</p>)}
     </div>
   );
 }

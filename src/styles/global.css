@@ -7318,6 +7318,56 @@ button.mcnw-legendItem:focus-visible {
     font-size: 9pt;
     color: #444;
   }
+  /*
+   * Narrow paper (A5 and smaller; the width here is the page inside its
+   * margins). A table marked as wide prints each row as a block: the row's
+   * name, then one line per column with its heading on the left. Without
+   * this the table is wider than the page and the browser shrinks the whole
+   * report (#646).
+   */
+  @media (max-width: 600px) {
+    .tool-reportTable--stack,
+    .tool-reportTable--stack tbody,
+    .tool-reportTable--stack tr,
+    .tool-reportTable--stack caption {
+      display: block;
+      width: auto;
+    }
+    .tool-reportTable--stack thead {
+      display: none;
+    }
+    .tool-reportTable--stack tr {
+      padding: 4pt 0;
+      border-bottom: 1.25pt solid #111;
+    }
+    .tool-reportTable--stack tbody th {
+      display: block;
+      border-bottom: 0;
+      padding: 0 0 2pt;
+      font-weight: 700;
+    }
+    .tool-reportTable--stack td {
+      display: flex;
+      justify-content: space-between;
+      gap: 10pt;
+      padding: 1.5pt 0;
+      border-bottom: 0.5pt solid #ccc;
+      text-align: right !important;
+      white-space: normal;
+    }
+    .tool-reportTable--stack td:last-child {
+      border-bottom: 0;
+    }
+    .tool-reportTable--stack td::before {
+      content: attr(data-label);
+      flex: 0 1 auto;
+      text-align: left;
+      white-space: normal;
+    }
+    .tool-reportTable--stack td:empty {
+      display: none;
+    }
+  }
   .tool-reportFigure {
     margin: 8pt 0;
   }

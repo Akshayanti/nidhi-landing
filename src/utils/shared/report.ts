@@ -16,8 +16,14 @@ export interface ReportTable {
   caption?: string;
   head: string[];
   rows: Cell[][];
-  /** A line under the table, e.g. that only every fifth year is shown. */
-  note?: string;
+  /** A line under the table, e.g. that only every fifth year is shown; or several. */
+  note?: string | string[];
+  /**
+   * A table too wide for narrow paper (A5 and smaller): there each row prints
+   * as a block of heading and value pairs instead of the browser shrinking the
+   * whole report to fit (#646).
+   */
+  stack?: boolean;
 }
 
 export interface ReportPoint {
@@ -69,7 +75,7 @@ export const cellLabel = (c: Cell): string => (c && typeof c === 'object' && 't'
  * A sheet whose first row is its header, as a table. `keep` drops rows (a
  * spacer, a row the report shows elsewhere).
  */
-export function tableOf(sheet: Sheet, opts: { caption?: string; note?: string; keep?: (row: Cell[], index: number) => boolean } = {}): ReportTable {
+export function tableOf(sheet: Sheet, opts: { caption?: string; note?: string | string[]; stack?: boolean; keep?: (row: Cell[], index: number) => boolean } = {}): ReportTable {
   const [header, ...rows] = sheet.rows;
   const keep = opts.keep ?? (() => true);
   return {
@@ -77,6 +83,7 @@ export function tableOf(sheet: Sheet, opts: { caption?: string; note?: string; k
     head: header.map(cellLabel),
     rows: rows.filter((row, i) => row.length > 0 && keep(row, i)),
     note: opts.note,
+    ...(opts.stack ? { stack: true } : {}),
   };
 }
 

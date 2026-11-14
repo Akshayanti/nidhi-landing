@@ -161,7 +161,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     name: x.sheets.summary,
     widths: [22, ...(later ? [18, 22, 12, 34] : [16]), 12, 16, 16, 14, 16, 34, 12],
     rows: [
-      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, `${x.aprPct} (${island.results.aprBasis})`, x.computed),
+      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, worded ? x.aprPct : `${x.aprPct} (${island.results.aprBasis})`, x.computed),
       ...results.map((r, i): Cell[] =>
         ok(r)
           ? [
