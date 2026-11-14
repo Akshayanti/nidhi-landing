@@ -36,6 +36,9 @@ import {
   toMinor,
   isNotPaidOff,
   MAX_TERM_MONTHS,
+  MAX_PRINCIPAL_MINOR,
+  OPTIONAL_UNREADABLE,
+  monthlyInterestMinor,
   shownMonths,
 } from './math.ts';
 
@@ -1818,5 +1821,174 @@ describe('a changing rate with the payment kept', () => {
     assert.equal(shownMonths([never, long], 0), 427);
     assert.equal(shownMonths([never], 0), 360);
     assert.equal(shownMonths([run(0.10, 'payment', { months: 480 }), fixed], 0), 480);
+  });
+});
+
+describe('one month of interest is exact (issue 532)', () => {
+  // What exact arithmetic gives: balance × rate ÷ 12, half away from zero.
+  // The rate is in thousandths of a percent, as a reader types it.
+  const exact = (balanceMinor: number, milliPct: number): number =>
+    Number((2n * BigInt(balanceMinor) * BigInt(milliPct) + 1_200_000n) / 2_400_000n);
+
+  it('rounds an exact half cent up: 60.00 at 2.9% is 14.5 cents', () => {
+    assert.equal(monthlyInterestMinor(6000, 0.029), 15);
+  });
+
+  it('400.00 at 1.005% is 33.5 cents: 34, where the floating-point product fell a hair short and gave 33', () => {
+    // The rate as the page reads it: the typed percentage, divided by 100.
+    const rate = 1.005 / 100;
+    assert.ok(40000 * (rate / 12) < 33.5);
+    assert.equal(roundMinor(40000 * (rate / 12)), 33);
+    assert.equal(monthlyInterestMinor(40000, rate), 34);
+    assert.equal(monthlyInterestMinor(40000, 0.01005), 34);
+    assert.equal(monthlyInterestMinor(24000, 1.075 / 100), 22);
+  });
+
+  it('12,060.00 at 2.9% is 29.145, shown as 29.15', () => {
+    assert.equal(monthlyInterestMinor(1206000, 0.029), 2915);
+  });
+
+  it('the schedule charges that cent', () => {
+    const { schedule } = buildSchedule(6000, 0.029, 600);
+    assert.equal(schedule[0].interest, 15);
+    assert.equal(schedule[0].principal, 585);
+  });
+
+  it('agrees with exact arithmetic on every half-cent tie, for every rate to three decimals up to 30%', () => {
+    const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+    let checked = 0;
+    for (let milli = 1; milli <= 30000; milli++) {
+      const annualRate = Number((milli / 1000).toString()) / 100; // as the page reads a typed rate
+      // balance × milli is an odd multiple of 600,000 exactly on a half.
+      const unit = 600000 / gcd(600000, milli);
+      for (let k = 1; k <= 5; k += 2) {
+        const balance = unit * k;
+        if ((balance * milli) % 1200000 !== 600000) continue;
+        checked++;
+        assert.equal(monthlyInterestMinor(balance, annualRate), exact(balance, milli), `${milli / 1000}% on ${balance}`);
+      }
+    }
+    assert.ok(checked > 10000, `only ${checked} ties checked`);
+  });
+
+  it('agrees with exact arithmetic away from ties, and on balances too large for floating-point whole numbers', () => {
+    let seed = 20261114;
+    const next = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    for (let i = 0; i < 20000; i++) {
+      const milli = 1 + Math.floor(next() * 30000);
+      const balance = 1 + Math.floor(next() * 99_999_999);
+      assert.equal(monthlyInterestMinor(balance, milli / 100000), exact(balance, milli));
+    }
+    // 10^14 minor units at 29.999%: the product is beyond 2^53.
+    assert.equal(monthlyInterestMinor(MAX_PRINCIPAL_MINOR, 0.29999), exact(MAX_PRINCIPAL_MINOR, 29999));
+    assert.equal(monthlyInterestMinor(MAX_PRINCIPAL_MINOR - 1, 0.07125), exact(MAX_PRINCIPAL_MINOR - 1, 7125));
+  });
+
+  it('is zero at a zero rate or a zero balance', () => {
+    assert.equal(monthlyInterestMinor(250000_00, 0), 0);
+    assert.equal(monthlyInterestMinor(0, 0.05), 0);
+  });
+
+  it('leaves an ordinary schedule as it was: 250,000 at 6% over 360 months', () => {
+    const r = computeLoan({ principalMinor: 250000_00, annualRate: 0.06 }, { kind: 'term', months: 360 });
+    assert.equal(r.monthlyPaymentMinor, 149888);
+    assert.equal(r.schedule[0].interest, 125000);
+    assert.equal(r.schedule.reduce((sum, row) => sum + row.principal, 0), 250000_00);
+  });
+});
+
+describe('the engine refuses what it cannot use (issue 352)', () => {
+  const base = { principalMinor: 250000_00, annualRate: 0.06 };
+  const term = { kind: 'term', months: 360 } as const;
+
+  for (const bad of [NaN, Infinity, -1, -5000]) {
+    it(`a fee, extra payment or lump sum of ${bad} is an error, never a figure`, () => {
+      for (const inputs of [
+        { ...base, feeMinor: bad },
+        { ...base, extraMonthlyMinor: bad },
+        { ...base, lumpSums: [{ month: 12, amountMinor: bad }] },
+        { ...base, lumpSums: [{ month: bad, amountMinor: 5000_00 }] },
+        { ...base, prepaymentPenalty: { pctOfBalance: bad, untilMonth: 60 } },
+        { ...base, prepaymentPenalty: { pctOfBalance: 0.02, untilMonth: 60, flatMinor: bad } },
+      ]) {
+        const r = computeLoan(inputs, term);
+        assert.equal(r.error, OPTIONAL_UNREADABLE, JSON.stringify(inputs));
+        assert.equal(r.schedule.length, 0);
+        assert.equal(r.totalPaidMinor, 0);
+        assert.equal(r.feeMinor, 0);
+      }
+    });
+  }
+
+  it('amounts that are not whole minor units are rounded once, and the sums stay whole', () => {
+    const r = computeLoan({ principalMinor: 1000000.4, annualRate: 0.05, feeMinor: 1999.6, extraMonthlyMinor: 100.4 }, { kind: 'term', months: 12 });
+    assert.equal(r.error, undefined);
+    assert.equal(r.feeMinor, 2000);
+    assert.ok(Number.isInteger(r.totalPaidMinor), String(r.totalPaidMinor));
+    assert.equal(r.schedule.reduce((sum, row) => sum + row.principal, 0), 1000000);
+    for (const row of r.schedule) assert.ok(Number.isInteger(row.interest) && Number.isInteger(row.balance));
+  });
+
+  it('a principal that rounds to nothing asks for an amount', () => {
+    assert.match(computeLoan({ principalMinor: 0.4, annualRate: 0.05 }, term).error ?? '', /loan amount greater than zero/);
+  });
+
+  it('a principal beyond the limit is refused; the limit itself is exact', () => {
+    assert.match(computeLoan({ principalMinor: 1e18, annualRate: 0.05 }, term).error ?? '', /too large for the tool/);
+    assert.match(computeLoan({ principalMinor: MAX_PRINCIPAL_MINOR + 1, annualRate: 0.05 }, term).error ?? '', /too large for the tool/);
+    const r = computeLoan({ principalMinor: MAX_PRINCIPAL_MINOR, annualRate: 0.05 }, term);
+    assert.equal(r.error, undefined);
+    assert.equal(r.warnings.length, 0, r.warnings.join(' | '));
+    assert.equal(r.schedule.reduce((sum, row) => sum + row.principal, 0), MAX_PRINCIPAL_MINOR);
+    assert.ok(Number.isSafeInteger(r.totalPaidMinor));
+  });
+
+  it('half a month is no term', () => {
+    assert.match(computeLoan(base, { kind: 'term', months: 0.5 }).error ?? '', /term of at least one month/);
+    assert.match(computeLoan(base, { kind: 'term', months: 0.99 }).error ?? '', /term of at least one month/);
+    assert.equal(computeLoan(base, { kind: 'term', months: 1.5 }).months, 1);
+  });
+
+  it('a loan whose payment rounds to nothing says the loan is too small, not that a payment is missing', () => {
+    for (const principalMinor of [1, 54]) {
+      const r = computeLoan({ principalMinor, annualRate: 0.05 }, term);
+      assert.match(r.error ?? '', /too small for this term/, String(principalMinor));
+      assert.equal(r.schedule.length, 0);
+    }
+    // Large enough for a payment of one cent: computed, and paid off a cent a month.
+    const cent = computeLoan({ principalMinor: 100, annualRate: 0.05 }, term);
+    assert.equal(cent.error, undefined);
+    assert.equal(cent.monthlyPaymentMinor, 1);
+    assert.equal(cent.months, 100);
+  });
+
+  it('a payment that is not a whole minor unit is rounded, and one that rounds to nothing is refused', () => {
+    assert.equal(computeLoan(base, { kind: 'payment', monthlyMinor: 200000.4 }).monthlyPaymentMinor, 200000);
+    assert.match(computeLoan(base, { kind: 'payment', monthlyMinor: 0.4 }).error ?? '', /monthly payment greater than zero/);
+  });
+});
+
+describe('formatters never print a number that is not one (issue 352)', () => {
+  it('formatMoney: n/a for NaN and infinity', () => {
+    for (const bad of [NaN, Infinity, -Infinity]) assert.equal(formatMoney(bad, 'EUR'), 'n/a');
+  });
+
+  it('formatMoney: no negative zero', () => {
+    const zero = formatMoney(0, 'EUR');
+    assert.equal(formatMoney(-0, 'EUR'), zero);
+    assert.equal(formatMoney(-0.4, 'EUR'), zero);
+    assert.equal(formatMoney(0.4, 'EUR'), zero);
+    assert.ok(!zero.includes('-'), zero);
+    // A real negative amount keeps its sign.
+    assert.ok(/[-−]/.test(formatMoney(-1, 'EUR')));
+  });
+
+  it('formatApr: no negative zero, n/a for what is not a number', () => {
+    assert.equal(formatApr(-0.0000001), '0.00%');
+    assert.equal(formatApr(-0), '0.00%');
+    assert.equal(formatApr(0.00004), '0.00%');
+    assert.equal(formatApr(-0.0001), '-0.01%');
+    assert.equal(formatApr(NaN), 'n/a');
+    assert.equal(formatApr(Infinity), 'n/a');
   });
 });

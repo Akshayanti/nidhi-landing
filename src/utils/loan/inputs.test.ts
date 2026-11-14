@@ -67,6 +67,22 @@ describe('parseNumber', () => {
     assert.ok(Number.isNaN(parseNumber('Infinity')));
     assert.ok(Number.isNaN(parseNumber('-Infinity')));
   });
+
+  it('reads plain decimal digits only: no hex, exponent, binary or octal spellings (issue 352)', () => {
+    for (const text of ['0x10', '0X1F', '1e5', '1E5', '2.5e3', '1e-3', '0b101', '0o17', '+-5', '5-', '.', '-', '+']) {
+      assert.ok(Number.isNaN(parseNumber(text)), text);
+    }
+    assert.equal(parseNumber('.5'), 0.5);
+    assert.equal(parseNumber('5.'), 5);
+    assert.equal(parseNumber('+5'), 5);
+    assert.equal(parseNumber('007'), 7);
+  });
+
+  it('a fee typed as 1e5 or 0x10 is an unreadable box, not a fee of 100,000 or 16', () => {
+    for (const feeMajor of ['1e5', '0x10']) {
+      assert.deepEqual(unreadableOptionalFields(vendor({ principal: '250000', annualRatePct: '6.5', feeMajor })), ['feeMajor'], feeMajor);
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------
