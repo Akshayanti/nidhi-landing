@@ -544,12 +544,13 @@ export default function InvestOrPayOff({
           </div>
           {form.returns === 'own' && (
             <>
-              <Field id={id('ownReturn')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
+              <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
                 {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), low: REAL_RETURN_BOTTOM, top: REAL_RETURN_TOP })}</p>}
                 {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
                 {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>
+              <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>
             </>
           )}
         </fieldset>
@@ -817,10 +818,12 @@ function Field(props: {
   inputMode: 'decimal' | 'numeric' | 'text';
   unit?: string;
   placeholder?: string;
+  /** The id of fixed text elsewhere on the page that also describes this box. */
+  alsoDescribedBy?: string;
 }) {
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
-  const describedBy = [props.error ? errorId : null, props.hint ? hintId : null].filter(Boolean).join(' ') || undefined;
+  const describedBy = [props.error ? errorId : null, props.hint ? hintId : null, props.alsoDescribedBy ?? null].filter(Boolean).join(' ') || undefined;
   return (
     <div className="ifc-field">
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
