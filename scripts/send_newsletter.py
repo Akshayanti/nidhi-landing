@@ -512,7 +512,7 @@ _EMAIL: dict[str, str] = {
     "bg":     "#F5F5F5",  # --neutral-25: quote, code and table-heading fills
     "line":   "#F0F0F0",  # --neutral-50: hairlines
     "border": "#E0E0E0",  # --neutral-200: table borders, the rule beside an opened expander
-    "tint":   "#E6F2F0",  # the quick check's fill: the site's teal tint (rgba(0, 150, 136, 0.1)) laid on white
+    "tint":   "#E6F2F0",  # the quick check's fill: a teal tint close to the site's quick-check box
 }
 
 _BRAND_STYLES: dict[str, str] = {
