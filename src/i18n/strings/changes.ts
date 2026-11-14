@@ -63,6 +63,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'beliefs-in-practice',
+        text: {
+          en: 'The beliefs page now says, under five of the beliefs, what I do about each one in practice, with a link to where you can check. There is also a new Accessibility page: what works today, the barriers I know are still open, and how to tell me about one. You do not need to share a diagnosis. It is linked at the bottom of every page.',
+          hi: 'सिद्धांतों वाले पन्ने पर अब पाँच सिद्धांतों के नीचे लिखा है कि व्यवहार में उनके लिए क्या किया जाता है, साथ में वह लिंक जहाँ आप इसे जाँच सकते हैं। एक नया सुगम्यता (accessibility) पन्ना भी है: आज क्या काम करता है, कौन-सी रुकावटें अब भी खुली हैं और मुझे पता हैं, और रुकावट के बारे में मुझे कैसे बताएँ। आपको अपना कोई निदान बताने की ज़रूरत नहीं है। इसका लिंक हर पन्ने के सबसे नीचे है।',
+          es: 'La página de creencias dice ahora, debajo de cinco de ellas, qué hago en la práctica con cada una, con un enlace a donde puedes comprobarlo. También hay una página nueva de Accesibilidad: qué funciona hoy, qué barreras sé que siguen abiertas y cómo contarme una. No hace falta que compartas ningún diagnóstico. Está enlazada al final de todas las páginas.',
+          cs: 'Stránka Čemu věřím teď pod pěti zásadami říká, co pro každou z\u00a0nich v\u00a0praxi dělám, s\u00a0odkazem na místo, kde si to můžete ověřit. Přibyla také stránka Přístupnost: co dnes funguje, o\u00a0kterých otevřených překážkách vím a\u00a0jak mi dát vědět o\u00a0další. Diagnózu sdílet nemusíte. Odkaz na ni je dole na každé stránce.',
+          mr: 'तत्त्वांच्या पानावर आता पाच तत्त्वांखाली, प्रत्यक्षात त्यासाठी काय केले जाते ते लिहिले आहे, आणि ते कुठे तपासता येईल त्याची लिंक आहे. सुलभता (accessibility) हे नवे पानही आहे: आज काय चालते, कोणते अडथळे अजून खुले आहेत हे मला माहीत आहे, आणि अडथळ्याबद्दल मला कसे कळवायचे. तुम्हाला कोणतेही निदान सांगण्याची गरज नाही. त्याची लिंक प्रत्येक पानाच्या तळाशी आहे.',
+        },
+      },
+      {
         id: 'tools-one-frame',
         text: {
           en: 'The five free tools now share one page frame: the same header, questions and related lessons on every tool, so a new tool cannot drift from the others. On the net worth calculator, the note on net against gross exposure (a large debt in a currency can hide how much you hold in it) is now always visible, where before it sat inside the folded “How the calculation works”. The one-line introductions above the related lessons on the loan and net worth pages are gone, since they added nothing the cards do not say.',
