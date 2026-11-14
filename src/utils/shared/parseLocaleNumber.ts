@@ -65,10 +65,22 @@ function isGrouping(s: string, sep: string): boolean {
   return s.includes(sep) && ungroup(s, sep) !== null;
 }
 
+/**
+ * Digits typed from a Devanagari, Arabic-Indic or Persian keyboard, as the
+ * Latin digits the tools work in: "१२३" is 123 on every page. The site writes
+ * Latin digits everywhere, but a reader's keyboard may not.
+ */
+export function latinDigits(text: string): string {
+  return text.replace(/[\u0966-\u096f\u0660-\u0669\u06f0-\u06f9]/g, (d) => {
+    const c = d.charCodeAt(0);
+    return String(c - (c >= 0x0966 ? 0x0966 : c >= 0x06f0 ? 0x06f0 : 0x0660));
+  });
+}
+
 /** Parses `raw` by `locale`'s conventions, or returns null when it is not a number. */
 export function parseLocaleNumber(raw: string, locale: string, options: ParseOptions = {}): number | null {
   const { maxDecimals = Infinity, allowNegative = false } = options;
-  let s = raw.trim().replace(/[   ]/g, ' ');
+  let s = latinDigits(raw).trim().replace(/[   ]/g, ' ');
   let negative = false;
   if (/^[-−]/.test(s)) {
     if (!allowNegative) return null;

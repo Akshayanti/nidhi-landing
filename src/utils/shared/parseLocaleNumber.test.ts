@@ -241,3 +241,37 @@ describe('a decimal below one is never read as a grouped whole number (issue 338
     assert.equal(parseLocaleNumber('1,125', 'es'), 1.125);
   });
 });
+
+describe('digits from other keyboards, and very large and very small numbers (#354)', () => {
+  it('reads Devanagari, Arabic-Indic and Persian digits as the same number on every page', async () => {
+    const m = await import('./parseLocaleNumber.ts');
+    for (const locale of ['en', 'hi', 'mr', 'es', 'cs']) {
+      assert.equal(m.parseLocaleNumber('१२३', locale), 123, locale);
+      assert.equal(m.parseLocaleNumber('١٢٣', locale), 123, locale);
+      assert.equal(m.parseLocaleNumber('۱۲۳', locale), 123, locale);
+    }
+    assert.equal(m.parseLocaleNumber('१०,००,०००', 'hi'), 1_000_000);
+    assert.equal(m.parseLocaleNumber('२.५', 'mr'), 2.5);
+    assert.equal(m.parseLocaleNumber('१2३', 'en'), 123);
+    assert.equal(m.canonicalNumber('७.२५', 'hi'), '7.25');
+    assert.equal(m.latinDigits('१२३ ٤٥٦ ۷۸۹ abc'), '123 456 789 abc');
+    // Other scripts' digits are not guessed at.
+    assert.equal(m.parseLocaleNumber('１２３', 'en'), null);
+    assert.equal(m.parseLocaleNumber('௧௨௩', 'en'), null);
+  });
+
+  it('a very large number is shown in full, never in exponent form', async () => {
+    const m = await import('./parseLocaleNumber.ts');
+    assert.equal(m.displayNumber('1e21', 'en'), '1' + '0'.repeat(21));
+    assert.equal(m.displayNumber('1e21', 'es'), '1' + '0'.repeat(21));
+  });
+
+  it('a number smaller than the box shows rounds to 0, and keeps its digits when asked', async () => {
+    const m = await import('./parseLocaleNumber.ts');
+    assert.equal(m.formatForInput(0.000001, 'en'), '0');
+    assert.equal(m.formatForInput(0.000001, 'en', 6), '0.000001');
+    assert.equal(m.formatForInput(0.000001, 'es', 6), '0,000001');
+    assert.equal(m.formatForInput(0.004, 'en'), '0');
+    assert.equal(m.formatForInput(0.005, 'en'), '0.01');
+  });
+});
