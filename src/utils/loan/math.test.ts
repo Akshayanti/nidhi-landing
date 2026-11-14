@@ -31,6 +31,7 @@ import {
   pointsBreakEven,
   pointsVerdict,
   rateForMonth,
+  refinanceBreakEven,
   refinanceComparison,
   roundMinor,
   toMinor,
@@ -1476,9 +1477,11 @@ describe('refinanceComparison', () => {
       // hence slightly higher monthly and slightly different totals.
       // Both totals must still produce a self-consistent answer.
       assert.notEqual(outOfPocket.refinanceTotalMinor, rolled.refinanceTotalMinor);
-      // Rolled-in: break-even is 0 because there is no out-of-pocket
-      // fee to recoup at the moment of refi.
-      assert.equal(rolled.breakEvenMonths, 0);
+      // Rolled in, the fee is owed on the new loan: break-even counts the
+      // larger balance (issue 531), where it used to say 0.
+      assert.equal(rolled.breakEvenKind, 'balance');
+      assert.equal(outOfPocket.breakEvenKind, 'cash');
+      assert.ok(rolled.breakEvenMonths >= 1 && Number.isFinite(rolled.breakEvenMonths));
     }
   });
 
@@ -2043,9 +2046,13 @@ describe('a refinance clears the original loan: penalty, extras and break-even (
   it('is cash at the refinance even when the closing costs go into the new loan', () => {
     const rolled = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, true, from({ prepaymentPenalty: clause })));
     assert.equal(rolled.penaltyMinor, 480420);
-    // Only the penalty is cash, so only it is in the break-even.
-    const newPayment = computeLoan({ principalMinor: 24021005 + 3000_00, annualRate: 0.05 }, { kind: 'term', months: 324 }).monthlyPaymentMinor;
-    assert.equal(rolled.breakEvenMonths, Math.ceil(480420 / (original.monthlyPaymentMinor - newPayment)));
+    // The penalty is the cash cost; the closing costs are owed on the new
+    // loan, so the balances are counted too.
+    assert.equal(rolled.breakEvenKind, 'balance');
+    const newLoan = computeLoan({ principalMinor: 24021005 + 3000_00, annualRate: 0.05 }, { kind: 'term', months: 324 });
+    assert.equal(rolled.breakEvenMonths, refinanceBreakEven(original.schedule.slice(36), newLoan.schedule, 480420, true));
+    // Later than the payments alone would say: the new loan owes 3,000 more at the start.
+    assert.ok(rolled.breakEvenMonths > Math.ceil(480420 / (original.monthlyPaymentMinor - newLoan.monthlyPaymentMinor)));
   });
 
   describe('extra payments', () => {
@@ -2177,5 +2184,86 @@ describe('refinance break-even: what is due on the original loan is due on what 
     assert.equal(c.breakEvenMonths, Infinity);
     // Counted to the end of the contract, as before, the same saving would have "broken even".
     assert.ok(Math.ceil(cost / saving) < 264);
+  });
+});
+
+describe('refinance break-even has three states, never "n/a" (issue 531)', () => {
+  const original = computeLoan({ principalMinor: 250000_00, annualRate: 0.06 }, { kind: 'term', months: 360 });
+  const ok = (c: ReturnType<typeof refinanceComparison>) => {
+    if ('error' in c) throw new Error(c.error);
+    return c;
+  };
+
+  it('nothing paid and a lower payment: from the first month', () => {
+    const c = ok(refinanceComparison(original, 36, 0.05, 324, 0, false));
+    assert.equal(c.breakEvenKind, 'none');
+    assert.equal(c.paymentLower, true);
+    assert.equal(c.breakEvenMonths, 0);
+  });
+
+  it('nothing paid and a payment that is not lower: no costs to recoup', () => {
+    // The same rate over a much shorter term: a higher payment.
+    const c = ok(refinanceComparison(original, 36, 0.06, 120, 0, false));
+    assert.equal(c.breakEvenKind, 'none');
+    assert.equal(c.paymentLower, false);
+  });
+
+  it('a fee rolled in at no charge is still nothing to recoup', () => {
+    assert.equal(ok(refinanceComparison(original, 36, 0.05, 324, 0, true)).breakEvenKind, 'none');
+  });
+
+  it('closing costs in the new loan: 12,000 at 12% with a year left, into 0% with 240 added, breaks even in month 3', () => {
+    // The old loan: 1,066.19 a month; owes 11,053.81, 10,098.16, 9,132.95 after one, two, three payments.
+    const old = buildSchedule(12000_00, 0.12, 106619).schedule;
+    assert.deepEqual(old.slice(0, 3).map((row) => row.balance), [1105381, 1009816, 913295]);
+    // The new loan: 12,240 at 0% over twelve months, 1,020 a month.
+    const fresh = buildSchedule(12240_00, 0, 102000).schedule;
+    assert.deepEqual(fresh.slice(0, 3).map((row) => row.balance), [1122000, 1020000, 918000]);
+    // Position after each month: payments saved so far, plus what is owed less.
+    const position = (k: number) => (106619 - 102000) * k + old[k - 1].balance - fresh[k - 1].balance;
+    assert.deepEqual([1, 2, 3].map(position), [-12000, -946, 9152]);
+    assert.equal(refinanceBreakEven(old, fresh, 0, true), 3);
+    // On the payments alone it would have read "from the first month".
+    assert.equal(refinanceBreakEven(old, fresh, 0, false), 1);
+  });
+
+  it('closing costs in the new loan at a rate that is no lower: never', () => {
+    const c = ok(refinanceComparison(original, 36, 0.06, 324, 3000_00, true));
+    assert.equal(c.breakEvenKind, 'balance');
+    assert.equal(c.breakEvenMonths, Infinity);
+  });
+
+  it('a shorter term at the same rate is not a saving: closing costs in the new loan never pay back', () => {
+    // 6% into 6% over 180 months, 3,000 added to the loan. The new payment is
+    // about 553 higher, and its balance falls faster: money the reader could
+    // pay into the original loan just as well. Counting that as the
+    // refinance's doing gave a break-even after about four years.
+    const c = ok(refinanceComparison(original, 36, 0.06, 180, 3000_00, true));
+    assert.equal(c.breakEvenKind, 'balance');
+    assert.equal(c.paymentLower, false);
+    assert.equal(c.breakEvenMonths, Infinity);
+    // At a lower rate the same shape does pay back.
+    const lower = ok(refinanceComparison(original, 36, 0.05, 180, 3000_00, true));
+    assert.ok(Number.isFinite(lower.breakEvenMonths) && lower.breakEvenMonths > 1, String(lower.breakEvenMonths));
+  });
+
+  it('with the original loan given the same money, the same rate leaves the position at minus the costs, growing', () => {
+    const old = original.schedule.slice(36);
+    const fresh = computeLoan({ principalMinor: 24021005 + 3000_00, annualRate: 0.06 }, { kind: 'term', months: 180 }).schedule;
+    // Not within any horizon, and not for a cost of nothing either: the new loan stays behind.
+    assert.equal(refinanceBreakEven(old, fresh, 0, true), Infinity);
+    // A new payment that is lower is untouched by the rule: the 12,000 example still reads month 3 (above).
+  });
+
+  it('a cash fee is still the fee divided by the monthly saving', () => {
+    const c = ok(refinanceComparison(original, 36, 0.05, 324, 3000_00, false));
+    assert.equal(c.breakEvenKind, 'cash');
+    assert.equal(c.breakEvenMonths, 21);
+  });
+
+  it('refinancing with one payment left still works, and the old loan then owes nothing', () => {
+    const c = ok(refinanceComparison(original, 359, 0.05, 12, 0, false));
+    assert.equal(c.breakEvenKind, 'none');
+    assert.ok('error' in refinanceComparison(original, 360, 0.05, 12, 0, false));
   });
 });

@@ -13,8 +13,11 @@ import {
   parseNumber,
   unreadableOptionalFields,
   OPTIONAL_UNREADABLE,
+  POINTS_ABOVE_FEE,
+  pointsCostAboveFee,
 } from './inputs.ts';
 import { makeDefaultVendor, type VendorInput } from './url.ts';
+import { pointsBreakEven } from './math.ts';
 
 /** Compose a fully-populated VendorInput by spreading the slot-0 default
  *  and overriding the fields we care about. Keeps each test focused. */
@@ -574,23 +577,49 @@ describe('computeNoPointsBaseline', () => {
     }
   });
 
-  it('clamps the baseline fee at zero when points exceed the fee', () => {
-    const baseline = computeNoPointsBaseline(
-      vendor({
-        principal: '300000',
-        annualRatePct: '5',
-        modeKind: 'term',
-        termMonths: '360',
-        feeMajor: '1000',
-        pointsCostMajor: '5000',
-        pointsRateReductionPct: '0.25',
-      }),
-      'USD',
-    );
-    assert.ok(baseline);
-    if (baseline) {
-      assert.equal(baseline.feeMinor, 0);
+  it('has no baseline when the points cost is more than the fee it is part of (issue 531)', () => {
+    const offer = vendor({ principal: '300000', annualRatePct: '5', modeKind: 'term', termMonths: '360', feeMajor: '1000', pointsCostMajor: '5000', pointsRateReductionPct: '0.25' });
+    assert.equal(computeNoPointsBaseline(offer, 'USD'), null);
+    assert.equal(pointsCostAboveFee(offer), true);
+    // The offer says what is wrong, where it used to work out a break-even on a cost of 1,000.
+    const r = computeFromInput(offer, 'USD');
+    assert.equal(r.error, POINTS_ABOVE_FEE);
+    assert.equal(r.schedule.length, 0);
+    // With no fee at all the cost used to vanish and the row said "n/a".
+    assert.equal(computeFromInput({ ...offer, feeMajor: '0' }, 'USD').error, POINTS_ABOVE_FEE);
+    assert.equal(computeFromInput({ ...offer, feeMajor: '' }, 'USD').error, POINTS_ABOVE_FEE);
+  });
+
+  it('a points cost equal to the fee, or below it, is fine', () => {
+    for (const feeMajor of ['5000', '5000.01', '7500']) {
+      const offer = vendor({ principal: '300000', annualRatePct: '5', modeKind: 'term', termMonths: '360', feeMajor, pointsCostMajor: '5000', pointsRateReductionPct: '0.25' });
+      assert.equal(pointsCostAboveFee(offer), false, feeMajor);
+      assert.equal(computeFromInput(offer, 'USD').error, undefined, feeMajor);
     }
+    // No points cost: nothing to compare.
+    assert.equal(pointsCostAboveFee(vendor({ feeMajor: '0', pointsCostMajor: '0' })), false);
+    assert.equal(pointsCostAboveFee(vendor({ feeMajor: '', pointsCostMajor: '' })), false);
+  });
+
+  it('250,000 over 360 months at 6.00% with points of 2,500 for a quarter point: break-even in 62 months', () => {
+    const offer = vendor({ principal: '250000', annualRatePct: '6', modeKind: 'term', termMonths: '360', feeMajor: '2500', pointsCostMajor: '2500', pointsRateReductionPct: '0.25' });
+    const withPoints = computeFromInput(offer, 'EUR');
+    const without = computeNoPointsBaseline(offer, 'EUR');
+    assert.ok(without && !without.error);
+    if (!without) return;
+    assert.equal(without.feeMinor, 0);
+    assert.equal(withPoints.monthlyPaymentMinor, 149888);
+    assert.equal(without.monthlyPaymentMinor, 153929);
+    const be = pointsBreakEven(withPoints, without);
+    assert.equal(be.months, Math.ceil(2500_00 / (153929 - 149888)));
+    assert.equal(be.months, 62);
+    assert.equal(be.lifetimeSavingsMinor, without.totalPaidMinor - withPoints.totalPaidMinor);
+    assert.ok(be.lifetimeSavingsMinor > 12000_00 && be.lifetimeSavingsMinor < 12100_00, String(be.lifetimeSavingsMinor));
+  });
+
+  it('the message is filed under "other" by the analytics classifier, as the unreadable-box one is', () => {
+    const lower = POINTS_ABOVE_FEE.toLowerCase();
+    for (const word of ['principal', 'payment', 'rate', 'term']) assert.ok(!lower.includes(word), word);
   });
 });
 

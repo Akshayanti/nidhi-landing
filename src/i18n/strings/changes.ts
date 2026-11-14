@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'break-even-says-what-it-means',
+        text: {
+          en: 'The loan comparison\'s refinance scenario no longer answers "n/a" for break-even. When nothing is paid to refinance, it says so, and says "from the first month" if the payment is lower. When closing costs are added to the new loan, break-even now counts the larger balance you owe. And an offer whose points cost is more than its fee now says the two boxes disagree, where it used to show a break-even worked out on the wrong cost.',
+          hi: 'लोन तुलना का रीफ़ाइनेंस वाला हिस्सा अब बराबरी के समय के लिए "लागू नहीं" नहीं कहता। जब रीफ़ाइनेंस के लिए कुछ नहीं चुकाना पड़ता, तो यह वही बताता है, और किस्त कम हो तो "पहले महीने से" कहता है। जब कागज़ी खर्च नए लोन में जोड़ा जाता है, तो बराबरी का समय अब बढ़े हुए बकाए को भी गिनता है। और जिस लोन ऑफ़र में पॉइंट्स की लागत उसके शुल्क से ज़्यादा है, वहाँ अब बताया जाता है कि दोनों खाने आपस में मेल नहीं खाते; पहले वहाँ ग़लत लागत पर निकला बराबरी का समय दिखता था।',
+          es: 'El escenario de refinanciación del comparador de préstamos ya no responde «n. d.» en el punto de equilibrio. Cuando no se paga nada por refinanciar, lo dice, y dice «desde el primer mes» si la cuota es más baja. Cuando los gastos iniciales se suman al préstamo nuevo, el punto de equilibrio cuenta ahora el saldo mayor que se debe. Y una oferta cuyo costo de puntos es mayor que su comisión indica ahora que las dos casillas no concuerdan; antes mostraba un punto de equilibrio calculado sobre un costo equivocado.',
+          cs: 'Scénář refinancování ve srovnání úvěrů už u\u00a0doby návratnosti neodpovídá „není k\u00a0dispozici“. Když se za refinancování nic neplatí, řekne to, a\u00a0je-li splátka nižší, uvede „od prvního měsíce“. Když se náklady na uzavření přičtou k\u00a0novému úvěru, počítá teď doba návratnosti i\u00a0s\u00a0vyšší dlužnou jistinou. A\u00a0nabídka, u\u00a0které je cena bodů vyšší než poplatek, teď upozorní, že si obě pole odporují; dřív ukazovala dobu návratnosti spočítanou ze špatné částky.',
+          mr: 'कर्जांच्या तुलनेतील पुनर्वित्त परिदृश्य आता खर्च वसूल होण्याच्या टप्प्यासाठी “लागू नाही” असे उत्तर देत नाही. पुनर्वित्तासाठी काहीही भरावे लागत नसेल, तर ते तसे सांगते, आणि हप्ता कमी असेल तर “पहिल्या महिन्यापासून” असे सांगते. व्यवहार खर्च नवीन कर्जात जोडला असेल, तर हा टप्पा आता वाढलेली बाकीही धरतो. आणि ज्या कर्जाच्या प्रस्तावात पॉइंट्सचा खर्च शुल्कापेक्षा जास्त आहे, तिथे आता दोन्ही रकाने एकमेकांशी जुळत नाहीत असे सांगितले जाते; आधी तिथे चुकीच्या खर्चावर काढलेला टप्पा दिसत होता.',
+        },
+      },
+      {
         id: 'loan-monthly-premium-not-a-fee',
         text: {
           en: 'The loan comparison used to suggest adding the lifetime cost of bundled insurance to the fee box. That treats years of monthly premiums as paid on the first day, which makes the APR look higher than it is. Its questions and small print now say so: a cost paid once goes in the fee box, a cost paid every month is not modelled, and the totals are the check.',
