@@ -113,6 +113,12 @@ const jsonLd = [{
   }
 
   .glossary-crumb { margin-bottom: var(--space-3); font-size: 0.9375rem; }
+  /* The one link above the heading is a target of its own: 24px tall for a
+     pointer, 44px for a thumb (#405). */
+  .glossary-crumb a { display: inline-flex; align-items: center; min-height: 24px; }
+  @media (max-width: 640px) {
+    .glossary-crumb a { min-height: 44px; }
+  }
 
   .glossary-note {
     color: var(--color-text-secondary);

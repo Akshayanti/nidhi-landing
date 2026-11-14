@@ -1310,13 +1310,15 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-subtitle { font: 400 15px var(--font-heading); fill: var(--color-text-secondary); }
 .prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
-.prose figure svg .fig-tick { font: 400 12px var(--font-heading); fill: var(--color-text-muted); }
+/* The two smallest labels are 13 units: a figure drawn 880 wide shows at about
+   0.78 of its size in the lesson column, and 13 keeps them at 10px or more. */
+.prose figure svg .fig-tick { font: 400 13px var(--font-heading); fill: var(--color-text-muted); }
 .prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--fig-on-fill); }
 .prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--fig-on-fill); }
 .prose figure svg .fig-num-blue { font: 700 28px var(--font-heading); fill: var(--color-deep-blue); }
 .prose figure svg .fig-quote-large { font: 600 20px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-quote-small { font: 400 14px var(--font-heading); fill: var(--color-text-muted); font-style: italic; }
-.prose figure svg .fig-eyebrow { font: 700 11px var(--font-heading); fill: var(--color-text-muted); letter-spacing: 0.12em; text-transform: uppercase; }
+.prose figure svg .fig-eyebrow { font: 700 13px var(--font-heading); fill: var(--color-text-muted); letter-spacing: 0.12em; text-transform: uppercase; }
 
 .prose figure svg .fig-fill-blue { fill: var(--color-deep-blue); }
 .prose figure svg .fig-fill-blue-soft { fill: var(--color-deep-blue); fill-opacity: 0.12; }
@@ -2085,7 +2087,8 @@ details[open] > .disclosure::after,
 .lc-fieldHint {
   color: var(--color-text-muted);
   font-weight: 400;
-  font-size: 0.95em;
+  /* Never under 13px, whatever the label's own size (#405). */
+  font-size: max(0.95em, 0.8125rem);
 }
 
 /* Small help text below a control; used under the Display currency
@@ -5484,6 +5487,12 @@ body[data-page="landing"] .site-footer {
      fills the screen and there is nowhere else to start a pinch (#479). */
   touch-action: pan-x pan-y pinch-zoom;
 }
+/* The phone chart does not scroll sideways, so a sideways drag is left to
+   the chart, which moves the read-out along it. Up and down still scroll the
+   page, and two fingers still zoom. */
+.mcs-chartBox--scrub {
+  touch-action: pan-y pinch-zoom;
+}
 .mcs-chartBox:focus-visible {
   outline: 2px solid var(--color-teal);
   outline-offset: 4px;
@@ -5665,6 +5674,11 @@ body[data-page="landing"] .site-footer {
 }
 /* Phones: the chart scrolls sideways, so the readout sits under it at full
    width instead of floating beside the crosshair, where it could be cut off. */
+/* The room the read-out took, kept while it is closed (phones only), so the
+   page moves once and not at every open and close. */
+.chart-readoutSlot {
+  display: none;
+}
 @media (max-width: 640px) {
   .chart-readout {
     position: static;
@@ -5672,6 +5686,10 @@ body[data-page="landing"] .site-footer {
     min-width: 0;
     margin-top: var(--space-3);
     box-shadow: none;
+  }
+  .chart-readoutSlot {
+    display: block;
+    margin-top: var(--space-3);
   }
 }
 .mcs-edge {
@@ -5882,10 +5900,15 @@ body[data-page="landing"] .site-footer {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-deep-blue);
+  /* A target of its own: 24px tall for a pointer, 44px for a thumb (#405). */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 @media (max-width: 640px) {
   .lp-topicGroup + .lp-topicGroup { margin-top: var(--space-8); }
   .lp-topicGroupHead h2 { font-size: 1.2rem; }
+  .lp-topicGroupHead a { min-height: 44px; }
 }
 /* Step number on each learning-path card: the reading order within a level. */
 .lp-cardStep {

@@ -424,6 +424,15 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     color: var(--color-text-primary);
   }
 
+
+  /* Dark theme: the field is nearly as dark as the blue band (1.93:1), so it
+     gets an edge of its own (4.0:1 on the band, #644). The padding gives up
+     the extra pixel, so the field keeps its size. */
+  :global([data-theme="dark"]) .waitlist-box .waitlist-input {
+    border: 2px solid var(--neutral-800);
+    padding: calc(var(--space-3) - 1px) calc(var(--space-4) - 1px);
+  }
+
   .waitlist-input::placeholder { color: var(--color-text-muted); }
   .waitlist-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
   /* On the blue card the teal ring cannot be seen, so every control there
