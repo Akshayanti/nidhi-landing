@@ -4656,7 +4656,7 @@ body[data-page="landing"] .site-footer {
   .privacy-container p, .privacy-container li, .privacy-intro,
   .changelog-intro, .changelog-summary, .changelog-details li,
   .policy-body p, .policy-intro, .local-rules p, .ft-howList li, .ft-pageFooter p,
-  .toolp-notes li, .toolp-source, .mcnw-explainer p, .mcnw-explainerList li,
+  .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p, .mcnw-explainerList li,
   .tool-waitlist__line, .lc-pageLead, .mcnw-pageLead,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
   .level-page-scope, .post-tool-stepBody, .prose figcaption {
@@ -7672,6 +7672,10 @@ body :is(.lc-faqQ, .mcnw-faqQ, .toolp-faqQ)[class] {
 :is(:lang(hi), :lang(mr)) :is(.lc-tab, .ifc-tab, .mcs-switchOpt, .lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle) {
   letter-spacing: 0;
   line-height: 1.6;
+}
+/* Tracking is for Latin capitals; it pulls Devanagari letters apart. */
+:is(:lang(hi), :lang(mr)) :is(.toolp-eyebrow, .toolp-relatedKicker) {
+  letter-spacing: 0;
 }
 
 /* Net worth, risk cards: the currency comes first in the markup, for a screen
