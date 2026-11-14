@@ -171,5 +171,39 @@ class InPageLinkTest(unittest.TestCase):
         self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson?utm_source=newsletter#term-x")
 
 
+class EmailColoursTest(unittest.TestCase):
+    """The mails keep one set of colours, the site's, in one block per file (#416)."""
+
+    ROOT = Path(__file__).resolve().parent.parent
+    HEX = __import__("re").compile(r"#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b")
+
+    def _block(self, text: str, start: str, end: str) -> dict[str, str]:
+        import re
+        body = text[text.index(start):]
+        body = body[: body.index(end)]
+        return dict(re.findall(r"""['"]?(\w+)['"]?\s*:\s*['"](#[0-9A-Fa-f]{6}|\d+px)['"]""", body))
+
+    def test_templates_use_the_block_and_agree_with_the_scripts(self):
+        gs = (self.ROOT / "scripts" / "newsletter.gs").read_text(encoding="utf-8")
+        gs_block = self._block(gs, "var EMAIL = {", "};")
+        self.assertEqual(gs_block["blue"], "#0A3D8F")
+        self.assertEqual(gs_block["button"], "#00796B")
+        self.assertEqual(gs_block["buttonRadius"], "8px")
+        # Outside its block, the script names a colour, never writes one.
+        rest = gs.replace(gs[gs.index("var EMAIL = {"): gs.index("};", gs.index("var EMAIL = {"))], "")
+        code = "\n".join(l for l in rest.split("\n") if not l.lstrip().startswith(("//", "*", "/*")))
+        self.assertEqual(self.HEX.findall(code), [])
+        for name in ("post.html.j2", "post_teaser.html.j2"):
+            text = (self.ROOT / "emails" / name).read_text(encoding="utf-8")
+            block = self._block(text, "{%- set c = {", "} -%}")
+            for key, value in block.items():
+                self.assertEqual(value, gs_block["buttonRadius" if key == "button_radius" else key], f"{name}: {key}")
+            self.assertEqual(self.HEX.findall(text.split("<!doctype html>", 1)[1]), [], name)
+            self.assertIn('alt="nidhi: Money, understood"', text)
+        for key, value in nl._EMAIL.items():
+            if key in gs_block:
+                self.assertEqual(value, gs_block[key], f"send_newsletter.py: {key}")
+
+
 if __name__ == "__main__":
     unittest.main()

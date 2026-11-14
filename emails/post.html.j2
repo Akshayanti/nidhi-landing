@@ -15,6 +15,33 @@
   Inline styles are mandatory — Gmail and most major clients strip <style>
   blocks. Keep the total HTML well under 102KB to avoid Gmail clipping.
 #}
+{#
+  The mail's colours, each named for the site token it copies (:root in
+  src/styles/global.css). The site's stylesheet cannot reach a mail, so the
+  values are repeated here, once (#416). scripts/newsletter.gs and
+  scripts/send_newsletter.py hold the same set.
+
+    blue           --palette-blue: titles, links, the top rule
+    button         --semantic-cta-bg-light: the button
+    text           --neutral-900: body text
+    text2          --neutral-700: secondary text
+    muted          --neutral-600: small print
+    bg             --neutral-25: the page behind the card, the summary box, the footer
+    line           --neutral-50: hairlines
+    white          --neutral-white: the card, button text
+    button_radius  --radius-md
+#}
+{%- set c = {
+  'blue': '#0A3D8F',
+  'button': '#00796B',
+  'text': '#212121',
+  'text2': '#616161',
+  'muted': '#5A5A5A',
+  'bg': '#F5F5F5',
+  'line': '#F0F0F0',
+  'white': '#FFFFFF',
+  'button_radius': '8px',
+} -%}
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,28 +54,28 @@
   <style>@media (max-width:480px){.nm-px{padding-left:16px!important;padding-right:16px!important}.nm-out{padding-left:0!important;padding-right:0!important}.nm-px th,.nm-px td{padding-left:6px!important;padding-right:6px!important}}</style>
   <title>{{ title | e }}</title>
 </head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:#222;line-height:1.6;">
+<body style="margin:0;padding:0;background:{{ c.bg }};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:{{ c.text }};line-height:1.6;">
   {# Preheader — the little preview snippet shown in inbox lists. Hidden
      visually but readable by clients that surface preview text. #}
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ description | e }}</div>
 
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:{{ c.bg }};">
     <tr><td align="center" class="nm-out" style="padding:24px 12px;">
       {# Fluid up to 600px. Outlook on Windows ignores max-width, so it gets
          a fixed 600px table of its own. #}
       <!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:#ffffff;border-radius:8px;overflow:hidden;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:{{ c.white }};border-radius:8px;overflow:hidden;">
 
         {# ───────────────────────── Brand banner ─────────────────────── #}
         {# The PNG already contains the wordmark AND the tagline
            "Money, understood." — don't repeat the tagline as text.
            Image is 400px wide, displayed at 200px for a crisp 2x on retina. #}
         <tr><td style="padding:0;">
-          <div style="background:#0D47A1;height:4px;line-height:4px;font-size:0;">&nbsp;</div>
-          <div class="nm-px" style="padding:24px 28px 20px;border-bottom:1px solid #eee;">
+          <div style="background:{{ c.blue }};height:4px;line-height:4px;font-size:0;">&nbsp;</div>
+          <div class="nm-px" style="padding:24px 28px 20px;border-bottom:1px solid {{ c.line }};">
             <a href="{{ blog_url }}" style="text-decoration:none;color:inherit;display:inline-block;">
               <img src="{{ site_url }}/brand/logo/full/logo-full-400-light.png"
-                   alt="nidhi - Money, understood."
+                   alt="nidhi: Money, understood"
                    width="200"
                    height="auto"
                    style="display:block;max-width:200px;height:auto;border:0;outline:none;">
@@ -59,38 +86,38 @@
         {# ───────────────────────── Post header ──────────────────────── #}
         <tr><td class="nm-px" style="padding:28px 28px 0;">
           {% if level or reading_time %}
-          <div style="font-size:13px;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
+          <div style="font-size:13px;color:{{ c.muted }};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
             {% if level %}{{ level | e }}{% if reading_time %} &middot; {% endif %}{% endif %}
             {% if reading_time %}{{ reading_time }} min read{% endif %}
           </div>
           {% endif %}
-          <h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;color:#0D47A1;font-weight:700;letter-spacing:-0.01em;">{{ title | e }}</h1>
+          <h1 style="margin:0 0 14px;font-size:26px;line-height:1.25;color:{{ c.blue }};font-weight:700;letter-spacing:-0.01em;">{{ title | e }}</h1>
           {% if tldr %}
-          <div style="background:#f0f4f8;border-left:3px solid #0D47A1;border-radius:4px;padding:14px 18px;margin:18px 0 24px;font-size:14px;color:#334155;line-height:1.6;">
-            <div style="color:#0D47A1;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">TL;DR</div>
+          <div style="background:{{ c.bg }};border-left:3px solid {{ c.blue }};border-radius:4px;padding:14px 18px;margin:18px 0 24px;font-size:14px;color:{{ c.text2 }};line-height:1.6;">
+            <div style="color:{{ c.blue }};font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">TL;DR</div>
             {{ tldr | e }}
           </div>
           {% endif %}
         </td></tr>
 
         {# ───────────────── Post body (from dist/*/index.html) ───────── #}
-        <tr><td class="nm-px" style="padding:0 28px 24px;font-size:16px;line-height:1.7;color:#222;">
+        <tr><td class="nm-px" style="padding:0 28px 24px;font-size:16px;line-height:1.7;color:{{ c.text }};">
           {{ content_html | safe }}
         </td></tr>
 
         {# ───────────── Divider + read-on-site CTA ──────────────────── #}
         <tr><td class="nm-px" style="padding:0 28px 28px;">
-          <div style="border-top:1px solid #eee;padding-top:20px;">
-            <a href="{{ post_url_tracked }}" style="display:inline-block;padding:12px 24px;background:#00796B;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:15px;">Read on nidhi.today &rarr;</a>
-            <div style="margin-top:14px;font-size:14px;color:#5A5A5A;">Reply to this email if anything landed wrong, a real person reads it.</div>
+          <div style="border-top:1px solid {{ c.line }};padding-top:20px;">
+            <a href="{{ post_url_tracked }}" style="display:inline-block;padding:12px 24px;background:{{ c.button }};color:{{ c.white }};text-decoration:none;border-radius:{{ c.button_radius }};font-weight:600;font-size:15px;">Read on nidhi.today &rarr;</a>
+            <div style="margin-top:14px;font-size:14px;color:{{ c.muted }};">Reply to this email if anything landed wrong, a real person reads it.</div>
           </div>
         </td></tr>
 
         {# ───────────────────────── Footer ────────────────────────── #}
-        <tr><td class="nm-px" style="padding:22px 28px;background:#fafafa;border-top:1px solid #eee;font-size:14px;color:#5A5A5A;line-height:1.5;">
+        <tr><td class="nm-px" style="padding:22px 28px;background:{{ c.bg }};border-top:1px solid {{ c.line }};font-size:14px;color:{{ c.muted }};line-height:1.5;">
           <p style="margin:0 0 8px;">
             You&rsquo;re getting this because you subscribed to
-            <a href="{{ blog_url }}" style="color:#0D47A1;text-decoration:underline;">nidhi.today/blog</a>.
+            <a href="{{ blog_url }}" style="color:{{ c.blue }};text-decoration:underline;">nidhi.today/blog</a>.
           </p>
           <p style="margin:0 0 8px;">
             {# UNSUBSCRIBE_URL is swapped per-recipient by Apps Script at
@@ -99,14 +126,14 @@
             {# UNSUBSCRIBE_URL is injected per-recipient by Apps Script. It
                already has `?t=TOKEN`, so UTMs join with `&`. Privacy and RSS
                are bare paths, so they start the query with `?`. #}
-            <a href="{{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}" style="color:#5A5A5A;text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a>
+            <a href="{{ '{{UNSUBSCRIBE_URL}}' }}&{{ utm_query }}" style="color:{{ c.muted }};text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a>
           </p>
           <p style="margin:0 0 8px;">
-            <a href="{{ site_url }}/privacy?{{ utm_query }}" style="color:#5A5A5A;text-decoration:underline;">Privacy</a>
+            <a href="{{ site_url }}/privacy?{{ utm_query }}" style="color:{{ c.muted }};text-decoration:underline;">Privacy</a>
             &middot;
-            <a href="{{ site_url }}/rss.xml?{{ utm_query }}" style="color:#5A5A5A;text-decoration:underline;">RSS</a>
+            <a href="{{ site_url }}/rss.xml?{{ utm_query }}" style="color:{{ c.muted }};text-decoration:underline;">RSS</a>
           </p>
-          <p style="margin:0;color:#5A5A5A;">
+          <p style="margin:0;color:{{ c.muted }};">
             Educational, not financial advice. Everyone&rsquo;s situation is different.
           </p>
         </td></tr>
