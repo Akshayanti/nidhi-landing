@@ -7268,6 +7268,12 @@ button.mcnw-legendItem:focus-visible {
     text-align: right !important;
     white-space: nowrap;
   }
+  /* A heading over numbers is set right like them but may wrap: a long
+     heading kept on one line makes the table wider than the paper, and the
+     browser then shrinks the whole report to fit. */
+  th.tool-reportNum {
+    white-space: normal;
+  }
   /* A number in a column that also holds words: kept whole, set like its
      neighbours. */
   .tool-reportWhole {

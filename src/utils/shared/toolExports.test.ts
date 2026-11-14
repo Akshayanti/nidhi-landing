@@ -377,3 +377,11 @@ describe('printed reports', () => {
     assert.equal(report.chart?.kind, 'bars');
   });
 });
+
+describe('printed report styles', () => {
+  it('lets a heading over a number column wrap', async () => {
+    const { readFileSync } = await import('node:fs');
+    const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
+    assert.match(css, /th\.tool-reportNum\s*\{\s*white-space:\s*normal;/);
+  });
+});
