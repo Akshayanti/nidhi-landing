@@ -560,6 +560,19 @@ a:hover {
   text-decoration: underline;
 }
 
+/* A plain link in running text is underlined, so it is not set apart from the
+   words around it by colour alone (WCAG 1.4.1). This is the default on
+   purpose: a new paragraph cannot forget it. A link with a class of its own
+   (a button, a card) is styled by that class and is not touched, and so is a
+   list of links inside a `nav` (breadcrumbs, menus), where position is the
+   cue. The rule outranks a component's scoped `a` rule, so a link that must not
+   be underlined gets a class. */
+:where(p, li, dd, figcaption, td):not(nav *) > a:not([class]),
+:where(p, li, dd, figcaption, td):not(nav *) > :where(strong, em, b, i, span:not([class])) > a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 p {
   margin-bottom: var(--space-4);
 }
