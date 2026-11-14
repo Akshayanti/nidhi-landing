@@ -365,7 +365,6 @@ export const es: Dict = {
       intro: 'Estas siguen abiertas a 14 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
         highContrast: 'En un modo de alto contraste, algunos botones y pestañas seleccionados pierden su marca, y el texto de gráficos y figuras puede desaparecer. El sitio tampoco responde todavía al ajuste del dispositivo que pide más contraste.',
-        emails: 'Los correos no se encogen para caber en la pantalla de un teléfono, y parte de su texto es demasiado tenue.',
       },
     },
     report: {

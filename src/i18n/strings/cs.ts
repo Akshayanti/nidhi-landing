@@ -349,7 +349,6 @@ export const cs: Dict = {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
-        emails: 'E-maily se nezmenší na šířku obrazovky telefonu a část jejich textu je příliš bledá.',
       },
     },
     report: {

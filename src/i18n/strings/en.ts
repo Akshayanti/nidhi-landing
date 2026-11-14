@@ -444,7 +444,6 @@ export const en = {
       intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
-        emails: 'The emails do not shrink to fit a phone screen, and some of their text is too faint.',
       },
     },
     report: {
