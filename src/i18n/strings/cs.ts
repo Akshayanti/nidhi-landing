@@ -349,7 +349,6 @@ export const cs: Dict = {
       intro: 'Tyto jsou otevřené k 14. listopadu 2026. Položka ze seznamu zmizí, když je opravená, a nová přibude, když se o ní dozvím.',
       items: {
         highContrast: 'V režimu vysokého kontrastu některá vybraná tlačítka a záložky ztratí označení a text v grafech a obrázcích může zmizet. Web také zatím nereaguje na nastavení zařízení, které žádá vyšší kontrast.',
-        overlays: 'Když je otevřená nabídka v telefonu nebo výzva k cookies, stránka za ní se dá dál posouvat.',
         figures: 'Obrázky v lekcích, které se posouvají do strany, nejde posouvat klávesnicí.',
         touch: 'V telefonu nejde graf Monte Carlo zvětšit dvěma prsty a otevření vysvětlení pojmu v lekci může stránku posunout do strany.',
         largeText: 'Při výrazně větším textu na úzké obrazovce roztáhne stránku víc, než je šířka obrazovky, jeden odkaz na španělské vzdělávací cestě a části některých nástrojů zdarma.',

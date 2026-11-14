@@ -444,7 +444,6 @@ export const en = {
       intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
         highContrast: 'In a high-contrast mode, some selected buttons and tabs lose their marking, and text in charts and figures can disappear. The site also does not yet respond to a device setting that asks for more contrast.',
-        overlays: 'While the phone menu or the cookie prompt is open, the page behind it can still scroll.',
         figures: 'Lesson figures that scroll sideways cannot be scrolled with a keyboard.',
         touch: 'On a phone, the Monte Carlo chart cannot be zoomed with two fingers, and opening the explanation of a term in a lesson can make the page slide sideways.',
         largeText: 'With a much larger text size on a narrow screen, one link on the Spanish learning path and parts of some free tools make the page wider than the screen.',
