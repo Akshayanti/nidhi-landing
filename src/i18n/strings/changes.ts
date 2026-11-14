@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'refinance-counts-penalty',
+        text: {
+          en: 'The refinance scenario in the loan comparison now counts an early repayment penalty on the loan being refinanced: it has its own line, and it is part of the total and of the break-even. Extra payments you entered now continue on the new loan, so both sides are paid down the same way, and the break-even compares only the payments due. Before, a refinance could look better or worse than it was.',
+          hi: 'लोन तुलना का रीफ़ाइनेंस वाला हिस्सा अब उस लोन पर जल्दी चुकाने का जुर्माना भी गिनता है जिसे रीफ़ाइनेंस किया जा रहा है: उसकी अपनी पंक्ति है, और वह कुल में तथा बराबरी के समय में शामिल है। आपकी भरी हुई अतिरिक्त किस्तें अब नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ, और बराबरी का समय केवल देय किस्तों की तुलना करता है। पहले रीफ़ाइनेंस असल से बेहतर या बदतर दिख सकता था।',
+          es: 'El escenario de refinanciación del comparador de préstamos cuenta ahora la penalización por pago anticipado del préstamo que se refinancia: tiene su propia línea y forma parte del total y del punto de equilibrio. Los pagos extra que escribiste continúan ahora en el préstamo nuevo, de modo que ambos lados se amortizan igual, y el punto de equilibrio compara solo las cuotas exigidas. Antes, una refinanciación podía parecer mejor o peor de lo que era.',
+          cs: 'Scénář refinancování ve srovnání úvěrů teď počítá i\u00a0s\u00a0poplatkem za předčasné splacení refinancovaného úvěru: má vlastní řádek a\u00a0je součástí celkové částky i\u00a0doby návratnosti. Zadané mimořádné splátky teď pokračují i\u00a0u\u00a0nového úvěru, takže se obě varianty splácejí stejně, a\u00a0doba návratnosti porovnává jen předepsané splátky. Dřív mohlo refinancování vypadat lépe nebo hůř, než jaké bylo.',
+          mr: 'कर्जांच्या तुलनेतील पुनर्वित्त परिदृश्य आता पुनर्वित्त होणाऱ्या कर्जावरील मुदतपूर्व परतफेडीचा दंडही धरते: त्याची स्वतंत्र ओळ आहे, आणि तो एकूण रकमेत तसेच खर्च वसूल होण्याच्या टप्प्यात धरलेला आहे. तुम्ही भरलेले अतिरिक्त हप्ते आता नवीन कर्जावरही चालू राहतात, त्यामुळे दोन्ही बाजू एकाच पद्धतीने फेडल्या जातात, आणि खर्च वसूल होण्याचा टप्पा फक्त देय हप्त्यांची तुलना करतो. आधी पुनर्वित्त प्रत्यक्षापेक्षा चांगले किंवा वाईट दिसू शकत होते.',
+        },
+      },
+      {
         id: 'share-window-keeps-focus',
         text: {
           en: 'In the net worth calculator\'s share window, pressing Copy link with the keyboard no longer throws you back to the first option: focus stays on the button. If copying fails and the address is shown instead, the Tab key now reaches it.',

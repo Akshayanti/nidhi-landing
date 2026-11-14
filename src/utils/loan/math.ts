@@ -1274,14 +1274,55 @@ export interface RefinanceComparison {
   keepTotalMinor: number;
   /** Positive means refinancing saves money over the combined horizon; negative means it costs more. */
   savingsMinor: number;
-  /** `Infinity` if monthly payments don't drop; `0` if the new-loan fee is zero. */
+  /**
+   * Months after the refinance until the lower payments due have covered
+   * what the refinance costs in cash. `Infinity` if they never do; `0` if
+   * there is no such cost.
+   */
   breakEvenMonths: number;
+  /**
+   * What the original loan charges for being cleared early, in minor units:
+   * zero when it has no such clause or the refinance falls after its last
+   * month. Already inside `refinanceTotalMinor`.
+   */
+  penaltyMinor: number;
+  /** Whether the reader's extra payments or lump sums were continued on the new loan. */
+  extrasCarried: boolean;
   snapshotAtRefi: EquitySnapshot;
+}
+
+/**
+ * The original loan as the reader entered it: what `original` was computed
+ * from. A `LoanResult` does not keep its penalty clause, its extra payments
+ * or its lump sums, and a refinance changes the cost of all three.
+ */
+export interface RefinanceOriginalLoan {
+  inputs: LoanInputs;
+  mode: LoanMode;
 }
 
 /**
  * Compares at the cash-out-of-pocket level: every euro handed over in each scenario
  * (original through refi + new loan costs vs. original to contractual end).
+ *
+ * Three things keep the two sides like for like (#370):
+ *   - A refinance clears the original loan, so its early repayment penalty
+ *     is charged when the refinance falls on or before the penalty's last
+ *     month: on the balance then owed, as `computeLoan` charges any early
+ *     payoff. It is cash at the refinance, whatever happens to the new
+ *     loan's closing costs.
+ *   - The reader's extra monthly payment, and lump sums planned for later
+ *     months, continue on the new loan. "Keep" already includes them;
+ *     leaving them off the new loan set a loan paid down faster against one
+ *     that is not.
+ *   - Break-even compares the payments due on each loan, month by month,
+ *     without those extras. They are the reader's choice on either loan and
+ *     are not what the refinance saves. On the original loan, "due" means
+ *     due on what is really owed at the refinance: its terms applied to the
+ *     balance the extras have already brought down, with no extras after.
+ *
+ * Without `source`, the original loan is taken to have no penalty clause and
+ * no extras.
  */
 export function refinanceComparison(
   original: LoanResult,
@@ -1294,6 +1335,7 @@ export function refinanceComparison(
    *  out-of-pocket since that's the cleaner mental model and matches
    *  most retail refinance products. */
   rollFeeIntoPrincipal: boolean = false,
+  source?: RefinanceOriginalLoan,
 ): RefinanceComparison | { error: string } {
   if (original.error || original.schedule.length === 0) {
     return { error: 'Original loan is invalid; cannot compute refinance.' };
@@ -1321,11 +1363,22 @@ export function refinanceComparison(
     ? remainingBalance + Math.max(0, newOriginationFeeMinor)
     : remainingBalance;
 
+  const refiMonth = Math.floor(refiAtMonth);
+  const carriedExtra = Math.max(0, roundMinor(source?.inputs.extraMonthlyMinor ?? 0));
+  // A lump sum planned for month 48 of the original loan is month 12 of a
+  // loan that starts after month 36. One already paid stays where it was.
+  const originalLumps = source?.inputs.lumpSums ?? [];
+  const carriedLumps = originalLumps
+    .filter((l) => l.month > refiMonth && l.amountMinor > 0)
+    .map((l) => ({ month: l.month - refiMonth, amountMinor: l.amountMinor }));
+
   const newLoan = computeLoan(
     {
       principalMinor: newPrincipal,
       annualRate: newAnnualRate,
       feeMinor: rollFeeIntoPrincipal ? 0 : Math.max(0, newOriginationFeeMinor),
+      extraMonthlyMinor: carriedExtra,
+      lumpSums: carriedLumps,
     },
     { kind: 'term', months: Math.floor(newTermMonths) },
   );
@@ -1333,35 +1386,65 @@ export function refinanceComparison(
     return { error: newLoan.error ?? 'New loan is not valid.' };
   }
 
+  // The original loan's charge for being cleared early.
+  const clause = source?.inputs.prepaymentPenalty;
+  const penaltyMinor =
+    clause && refiMonth <= clause.untilMonth
+      ? roundMinor(remainingBalance * Math.max(0, clause.pctOfBalance)) + Math.max(0, Math.floor(clause.flatMinor ?? 0))
+      : 0;
+
   // Original cash out of pocket through refi: each row's payment, plus
   // the original fee (already paid at origination, so it's a sunk cost
   // in either scenario; we include it in BOTH totals for consistency).
   let paidThroughRefi = original.feeMinor;
-  for (let i = 0; i < Math.floor(refiAtMonth); i++) {
+  for (let i = 0; i < refiMonth; i++) {
     paidThroughRefi += original.schedule[i].payment;
   }
 
-  const refiTotal = paidThroughRefi + newLoan.totalPaidMinor;
+  const refiTotal = paidThroughRefi + penaltyMinor + newLoan.totalPaidMinor;
   const keepTotal = original.totalPaidMinor;
   const savings = keepTotal - refiTotal;
 
-  // Break-even relative to refi date: how many months of the new loan's
-  // monthly-payment savings recoup the new-loan fee (and any difference
-  // between the refi'd-up balance and what would otherwise have been
-  // paid). For the simple consumer framing, compare new-loan effective
-  // monthly to original effective monthly and divide the new-loan fee
-  // by the savings.
-  const newMonthly = newLoan.effectiveMonthlyMinor;
-  const oldMonthly = original.effectiveMonthlyMinor;
-  const monthlySavings = oldMonthly - newMonthly;
-  const newFee = rollFeeIntoPrincipal ? 0 : Math.max(0, newOriginationFeeMinor);
+  // Break-even, counted from the refinance: the first month by which the
+  // lower payments due have covered what the refinance costs in cash, the
+  // closing costs (unless they went into the new loan) and the penalty.
+  // The payments due leave out the reader's extras: for two level payments
+  // this is the cost divided by the monthly saving, and it also follows a
+  // payment that changes with the rate and stops counting a saving once the
+  // original loan would have ended anyway.
+  //
+  // What is due on the original loan depends on what is owed. Extras paid
+  // before the refinance have lowered the balance, so the loan ends sooner
+  // than its contract schedule, and a payment recast at a rate change is
+  // recast on the lower balance. So the original loan is run again with its
+  // extras stopped at the refinance: each month's extra becomes a lump sum
+  // in that month (both come off the balance after the payment), and later
+  // lump sums are left out.
+  const cashCost = (rollFeeIntoPrincipal ? 0 : Math.max(0, newOriginationFeeMinor)) + penaltyMinor;
+  let oldDue = original.contractSchedule;
+  if (source && (carriedExtra > 0 || originalLumps.some((l) => l.amountMinor > 0))) {
+    const paidSoFar = [
+      ...originalLumps.filter((l) => l.month <= refiMonth),
+      ...(carriedExtra > 0 ? Array.from({ length: refiMonth }, (_, i) => ({ month: i + 1, amountMinor: carriedExtra })) : []),
+    ];
+    const stopped = computeLoan(
+      { ...source.inputs, extraMonthlyMinor: 0, lumpSums: paidSoFar, prepaymentPenalty: undefined },
+      source.mode,
+    );
+    if (!stopped.error && stopped.schedule.length > refiMonth) oldDue = stopped.schedule;
+  }
+  const newDue = newLoan.contractSchedule;
   let breakEvenMonths: number;
-  if (newFee <= 0) {
+  if (cashCost <= 0) {
     breakEvenMonths = 0;
-  } else if (monthlySavings <= 0) {
-    breakEvenMonths = Infinity;
   } else {
-    breakEvenMonths = Math.ceil(newFee / monthlySavings);
+    breakEvenMonths = Infinity;
+    let saved = 0;
+    const last = Math.max(oldDue.length - refiMonth, newDue.length);
+    for (let k = 1; k <= last; k++) {
+      saved += (oldDue[refiMonth + k - 1]?.payment ?? 0) - (newDue[k - 1]?.payment ?? 0);
+      if (saved >= cashCost) { breakEvenMonths = k; break; }
+    }
   }
 
   return {
@@ -1369,6 +1452,8 @@ export function refinanceComparison(
     keepTotalMinor: keepTotal,
     savingsMinor: savings,
     breakEvenMonths,
+    penaltyMinor,
+    extrasCarried: carriedExtra > 0 || carriedLumps.length > 0,
     snapshotAtRefi: snapshot,
   };
 }

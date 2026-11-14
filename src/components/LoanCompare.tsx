@@ -43,6 +43,7 @@ import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx'
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import {
   computeFromInput,
+  loanFromInput,
   computeNoPointsBaseline,
   parseNumber,
   unreadableOptionalFields,
@@ -3009,7 +3010,10 @@ function RefinanceSection({
 
   const cmp =
     original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
-      ? refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee)
+      ? // The offer as entered goes with its result: the refinance clears the
+        // loan, so its penalty may be due, and its extra payments continue
+        // on the new loan.
+        refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee, loanFromInput(vendors[activeIdx], currency))
       : null;
 
   return (
@@ -3132,7 +3136,15 @@ function RefinanceSection({
             <ResultRow
               label={strings.refi.refiTotal}
               value={formatMoney(cmp.refinanceTotalMinor, currency)}
+              hint={cmp.extrasCarried ? strings.refi.extrasCarried : undefined}
             />
+            {cmp.penaltyMinor > 0 && (
+              <ResultRow
+                label={strings.refi.penalty}
+                value={formatMoney(cmp.penaltyMinor, currency)}
+                hint={strings.refi.penaltyHint}
+              />
+            )}
             <ResultRow
               label={cmp.savingsMinor >= 0 ? strings.refi.saves : strings.refi.costsMore}
               value={formatMoney(Math.abs(cmp.savingsMinor), currency)}
