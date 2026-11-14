@@ -259,7 +259,7 @@ export const monteCarloEn = {
       /** The printed report's "What this means": interprets the answer, never advises. */
       meaning: 'The median is the middle result: half of the simulated paths ended above it and half below. The range leaves out the lowest and the highest tenth of the paths. These are results of a simulation under the assumptions below, not a forecast or a promise: real returns can be better or worse than any path here.',
       moneyLabel: 'Amounts',
-      moneyText: "In today's money, to whole units. The page rounds further, to what the runs can tell apart; the finer digits here would change with other random draws.",
+      moneyText: 'In today\'s money, to whole units. The page rounds further: another set of random runs would give different last digits.',
       sheets: { assumptions: 'Assumptions', byYear: 'By year', outcome: 'Outcome' },
       stocks: 'Stocks, %',
       bonds: 'Bonds, %',
@@ -394,7 +394,7 @@ export const monteCarloEn = {
       lastedNoneOne: 'Taking {amount} for one year, the money ran out before the year was over in every simulated path.',
       runOut:
         'Among the paths where it ran out, the median year it did so was year {year} of {years}.',
-      rounded: 'Amounts are rounded to what {paths} runs can tell apart: with other random draws the finer digits would change. The spreadsheet has them unrounded.',
+      rounded: 'Amounts are rounded: another {paths} random runs would give different last digits. The spreadsheet has every digit.',
       caveat:
         'These are shares of {paths} simulated paths, not the chance of anything happening to you. The model is a simplification; see what it leaves out below.',
       /** Appended to the sentence above only when few paths were run. */
@@ -621,7 +621,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       tool: 'मोंटे कार्लो सिम्युलेटर',
       meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई धारणाओं पर चले सिमुलेशन के नतीजे हैं, भविष्यवाणी या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
       moneyLabel: 'रकम',
-      moneyText: 'आज के पैसे में, पूरी इकाइयों तक। पेज इन्हें और गोल करके दिखाता है, उतना ही जितना फ़र्क़ रास्तों से भरोसे के साथ पता चलता है; यहाँ के बारीक अंक दूसरे रैंडम आँकड़ों के साथ बदल जाते।',
+      moneyText: 'आज के पैसे में, पूरी इकाइयों तक। पेज इन्हें और गोल करके दिखाता है: नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते।',
       sheets: { assumptions: 'मान्यताएँ', byYear: 'हर साल', outcome: 'नतीजा' },
       stocks: 'शेयर, %',
       bonds: 'बॉन्ड, %',
@@ -738,7 +738,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       lastedNoneOne: '{years} साल में {amount} निकालने पर पैसा हर सिम्युलेटेड रास्ते में साल पूरा होने से पहले ख़त्म हो गया।',
       runOut:
         'जिन रास्तों में पैसा ख़त्म हुआ, उनमें ख़त्म होने का बीच का साल था: {years} में से साल {year}।',
-      rounded: 'रकमें उतनी ही बारीकी से दिखाई गई हैं जितना फ़र्क़ {paths} रास्तों से भरोसे के साथ पता चलता है: दूसरे रैंडम आँकड़ों के साथ इससे बारीक अंक बदल जाते। स्प्रेडशीट में पूरे आँकड़े हैं।',
+      rounded: 'रकमें गोल करके दिखाई गई हैं: {paths} नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते। स्प्रेडशीट में पूरे अंक हैं।',
       caveat:
         'ये {paths} सिम्युलेटेड रास्तों में से गिने गए अनुपात हैं, आपके साथ कुछ होने की संभावना नहीं। मॉडल एक सरलीकरण है; नीचे देखें कि इसमें क्या शामिल नहीं है।',
       caveatFew:
@@ -954,7 +954,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       tool: 'Simulador Monte Carlo',
       meaning: 'La mediana es el resultado del medio: la mitad de las trayectorias simuladas terminó por encima y la otra mitad por debajo. El rango deja fuera la décima parte más baja y la más alta de las trayectorias. Son resultados de una simulación con los supuestos de abajo, no una previsión ni una promesa: las rentabilidades reales pueden ser mejores o peores que cualquier trayectoria de aquí.',
       moneyLabel: 'Importes',
-      moneyText: 'En dinero de hoy, en unidades enteras. La página redondea más, hasta donde las trayectorias permiten distinguir; las cifras más finas de aquí cambiarían con otros sorteos aleatorios.',
+      moneyText: 'En dinero de hoy, en unidades enteras. La página redondea más: con otras trayectorias aleatorias, las últimas cifras saldrían distintas.',
       sheets: { assumptions: 'Supuestos', byYear: 'Por año', outcome: 'Resultado' },
       stocks: 'Acciones, %',
       bonds: 'Bonos, %',
@@ -1071,7 +1071,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       lastedNoneOne: 'Retirando {amount} durante un año, el dinero se agotó antes de completar el año en todas las trayectorias simuladas.',
       runOut:
         'En las trayectorias en las que se agotó, la mediana del año en que ocurrió fue el año {year} de {years}.',
-      rounded: 'Las cantidades se redondean hasta donde {paths} trayectorias permiten distinguir: con otros sorteos aleatorios, las cifras más finas cambiarían. La hoja de cálculo las tiene sin redondear.',
+      rounded: 'Las cantidades están redondeadas: con otras {paths} trayectorias aleatorias, las últimas cifras saldrían distintas. La hoja de cálculo tiene todas las cifras.',
       caveat:
         'Son proporciones de {paths} trayectorias simuladas, no la probabilidad de que te ocurra nada. El modelo es una simplificación; más abajo se explica lo que deja fuera.',
       caveatFew:
@@ -1289,7 +1289,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       tool: 'Simulátor Monte Carlo',
       meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o předpověď ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
       moneyLabel: 'Částky',
-      moneyText: 'V dnešních penězích, na celé jednotky. Stránka zaokrouhluje víc, na to, co lze z trajektorií rozlišit; jemnější číslice by se tu s jinými náhodnými čísly změnily.',
+      moneyText: 'V dnešních penězích, na celé jednotky. Stránka zaokrouhluje víc: s jinými náhodnými trajektoriemi by poslední číslice vyšly jinak.',
       sheets: { assumptions: 'Předpoklady', byYear: 'Po letech', outcome: 'Výsledek' },
       stocks: 'Akcie, %',
       bonds: 'Dluhopisy, %',
@@ -1406,7 +1406,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       lastedNoneOne: 'Při výběru {amount} během jednoho roku došly peníze před koncem roku ve všech simulovaných trajektoriích.',
       runOut:
         'U trajektorií, kde peníze došly, to v mediánu nastalo v roce {year} z {years}.',
-      rounded: 'Částky jsou zaokrouhlené na to, co lze při tomto počtu trajektorií ({paths}) rozlišit: s jinými náhodnými čísly by se jemnější číslice změnily. V tabulce jsou nezaokrouhlené.',
+      rounded: 'Částky jsou zaokrouhlené: s jinými náhodnými trajektoriemi (celkem {paths}) by poslední číslice vyšly jinak. V tabulce jsou všechny číslice.',
       caveat:
         'Jde o podíly v simulaci s tímto počtem trajektorií: {paths}. Nejde o pravděpodobnost, že se vám něco stane. Model je zjednodušení; co vynechává, najdete níže.',
       caveatFew:
@@ -1610,7 +1610,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       tool: 'मॉन्टे कार्लो सिम्युलेटर',
       meaning: 'मध्यक हा मधला निकाल आहे: सिम्युलेट केलेल्या मार्गांपैकी निम्मे त्याच्या वर संपले आणि निम्मे खाली. पल्ल्यात सगळ्यात खालचा आणि सगळ्यात वरचा दहावा हिस्सा धरलेला नाही. हे खाली दिलेल्या गृहीतकांवर चाललेल्या सिमुलेशनचे निकाल आहेत, भाकीत किंवा वचन नाही: प्रत्यक्ष परतावा इथल्या कोणत्याही मार्गापेक्षा चांगला किंवा वाईट असू शकतो.',
       moneyLabel: 'रक्कम',
-      moneyText: 'आजच्या पैशांच्या हिशेबात, पूर्ण एककांपर्यंत. पेज याहून ढोबळ आकडे दाखवते, मार्गांतून जितका फरक खात्रीने कळतो तितकेच; इथले बारीक अंक वेगळ्या आकड्यांसह बदलले असते.',
+      moneyText: 'आजच्या पैशांच्या हिशेबात, पूर्ण एककांपर्यंत. पेज याहून ढोबळ आकडे दाखवते: मार्गांच्या दुसऱ्या फेरीत शेवटचे अंक वेगळे आले असते.',
       sheets: { assumptions: 'गृहीतके', byYear: 'दरवर्षी', outcome: 'निकाल' },
       stocks: 'शेअर, %',
       bonds: 'रोखे, %',
@@ -1721,7 +1721,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       lastedAllOne: 'एका वर्षात {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा पूर्ण वर्ष पुरला.',
       lastedNoneOne: 'एका वर्षात {amount} काढताना, प्रत्येक संभाव्य मार्गात पैसा वर्ष पूर्ण होण्याआधीच संपला.',
       runOut: 'ज्या मार्गांवर पैसा संपला, त्यांच्यात तो संपण्याचे मध्यक वर्ष {years} पैकी {year} वे होते.',
-      rounded: '{paths} मार्गांतून जितका फरक खात्रीने कळतो तितक्याच बारकाईने रकमा दाखवल्या आहेत: वेगळ्या आकड्यांसह त्याहून बारीक अंक बदलले असते. स्प्रेडशीटमध्ये पूर्ण आकडे आहेत.',
+      rounded: 'रकमा ढोबळ करून दाखवल्या आहेत: दुसऱ्या {paths} मार्गांच्या फेरीत शेवटचे अंक वेगळे आले असते. स्प्रेडशीटमध्ये सर्व अंक आहेत.',
       caveat: 'हे {paths} संभाव्य मार्गांमधील हिस्से आहेत; तुमच्या बाबतीत काही घडण्याची शक्यता ते दर्शवत नाहीत. मॉडेल हे सोपे केलेले रूप आहे; त्यात काय धरलेले नाही ते खाली पाहा.',
       caveatFew: ' फक्त {paths} मार्गांवर, आकडे हजारो मार्गांच्या आकड्यांपासून अनेक टक्के दूर असू शकतात.',
       tableSummary: 'आकडे टेबलमध्ये दाखवा',

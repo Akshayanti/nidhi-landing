@@ -29,6 +29,8 @@ describe('rounding simulated amounts to what the runs can tell apart (#530)', ()
     assert.equal(roundToStep(106.09, 10), 110);
     assert.equal(roundToStep(-1_007.67, 10), -1_010);
     assert.equal(roundToStep(-3, 10), 0);
+    assert.equal(roundToStep(5, 10), 10);
+    assert.equal(roundToStep(-5, 10), -10);
     assert.ok(Object.is(roundToStep(-3, 10), 0), 'never minus zero');
     assert.equal(roundToStep(0.34, 0.1), 0.3);
     assert.equal(roundToStep(97.98, 0.1), 98);

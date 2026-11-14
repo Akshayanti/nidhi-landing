@@ -25,7 +25,8 @@ export function noiseStep(p10: number, p90: number, runs: number): number {
 /** `value` to the nearest `step`; unchanged when the step is 0. */
 export function roundToStep(value: number, step: number): number {
   if (!(step > 0) || !Number.isFinite(value)) return value;
-  const rounded = Math.round(value / step) * step;
+  // Halves go away from zero on both sides: -5 to -10 as 5 to 10.
+  const rounded = Math.sign(value) * Math.round(Math.abs(value) / step) * step;
   // A step below 1 leaves binary dust (0.30000000000000004): cut it at the step's own decimals.
   const decimals = step < 1 ? Math.min(12, Math.ceil(-Math.log10(step))) : 0;
   const clean = decimals > 0 ? Number(rounded.toFixed(decimals)) : rounded;
