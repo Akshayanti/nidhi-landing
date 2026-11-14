@@ -739,6 +739,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
   }
   .subscribe-form--compact .subscribe-input {
     flex: 1 1 200px;
+    min-width: 0;
   }
   .subscribe-form--compact .subscribe-button {
     flex: 0 0 auto;
@@ -759,7 +760,9 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     font-weight: 600;
     color: var(--color-deep-blue);
     font-size: 0.95rem;
-    flex-shrink: 0;
+    /* Holds its line at ordinary sizes, wraps when the text is much larger (#486). */
+    flex: 0 1 auto;
+    min-width: 0;
   }
   .subscribe-form--compact .subscribe-input-group { margin-bottom: 0; }
   /* Outside English only: the lessons and emails the box leads to are English. */
@@ -776,7 +779,9 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
   }
   .subscribe-rss:hover { color: var(--color-deep-blue); }
   @media (max-width: 640px) {
-    .subscribe-compact-row { flex-direction: column; align-items: stretch; }
+    /* nowrap: a wrapping column is as wide as its longest line of text, which
+       at a large text size is wider than the phone (#486). */
+    .subscribe-compact-row { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
     .subscribe-compact-label { text-align: center; }
   }
 

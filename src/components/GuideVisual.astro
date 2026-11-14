@@ -159,12 +159,15 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
     font-size: 0.92rem;
   }
   .gv-notes li { display: flex; gap: var(--space-1); align-items: baseline; }
+  /* A long address wraps inside its note at a large text size (#486). */
+  .gv-notes li > * { min-width: 0; overflow-wrap: anywhere; }
 
   /* Timeline */
   .gv-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
   .gv-tl-row {
     display: grid;
-    grid-template-columns: 4.5rem 1fr auto;
+    grid-template-columns: minmax(0, 4.5rem) minmax(0, 1fr) auto;
+    overflow-wrap: anywhere;
     grid-template-areas: "day what amt" "day bal bal" "bar bar bar";
     column-gap: var(--space-3);
     row-gap: 2px;

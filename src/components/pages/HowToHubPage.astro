@@ -316,7 +316,7 @@ const english = locale !== DEFAULT_LOCALE;
   .ht-empty { margin-top: var(--space-6); }
   .ht-groups { display: grid; gap: var(--space-10, 2.5rem); margin-top: var(--space-8); }
   .ht-group-h { font-size: 1.2rem; color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
-  .ht-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-3); }
+  .ht-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--space-3); }
   .ht-card {
     display: grid;
     gap: var(--space-2);
