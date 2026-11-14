@@ -552,7 +552,7 @@ export default function MonteCarloSimulator({
           </button>
           <p className="mcs-settingsValue">
             {t(strings.settings.summary, {
-              fees: errors.feePct ? '?' : form.feePct,
+              fees: errors.feePct ? '?' : Number(form.feePct).toLocaleString(numberLocale, { maximumFractionDigits: 2 }),
               paths: grouped(form.paths, numberLocale),
             })}
           </p>
