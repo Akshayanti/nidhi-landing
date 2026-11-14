@@ -88,7 +88,7 @@ export const monteCarloEn = {
     title: 'Monte Carlo simulator: the spread, not the single line',
     /**
      * Three parts, because phones show the first and the last and hide the
-     * middle (`mcsp-wideOnly`): what the tool does, and that nothing leaves the
+     * middle (`toolp-wideOnly`): what the tool does, and that nothing leaves the
      * browser. The spaces at the ends of the outer two are the markup's.
      */
     lead: {
