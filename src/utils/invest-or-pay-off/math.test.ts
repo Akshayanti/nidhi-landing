@@ -316,6 +316,12 @@ describe('the debt rate in the rates sentence is what the debt costs over a year
     // Not the quoted rate less inflation, which would read 4.41% and 21.57%.
     assert.ok(rates(BASE).debtReal > toReal(6.5, 2));
   });
+
+  it('applies relief to the quoted rate first: 6.5% with 30% relief at 2% is 2.59%', () => {
+    // Each month costs 6.5% x 0.7 / 12, so a year costs (1 + 0.0455/12)^12 - 1 = 4.6461%.
+    close(effectiveAnnual(6.5 * 0.7), 4.6461, 1e-4);
+    close(rates({ ...BASE, relief: 30 }).debtReal, 2.5942, 1e-4);
+  });
 });
 
 describe("the page's own run is pinned", () => {
@@ -408,6 +414,43 @@ describe('a flat path matches hand arithmetic', () => {
     assert.equal(r.remainingB, 3000);
     const g = Math.pow(1.1, 1 / 12);
     close(r.b.p50, (saved(50, 60, g) - 3000) / Math.pow(1.05, 5), 1e-8);
+  });
+
+  it('30% relief: interest avoided is the difference x 0.7, and each month\'s relief is invested', () => {
+    // 1,200 at 12% a year (1% a month), 100 + 100 a month, investments at 0%
+    // so the pot is simply what went in. Worked here month by month.
+    const walk = (pay: number, months: number) => {
+      let debt = 1200;
+      let interest = 0;
+      let spare = 0;
+      let n = 0;
+      for (let m = 0; m < months; m++) {
+        if (debt <= 0) { spare += pay; continue; }
+        const charged = debt * 0.01;
+        interest += charged;
+        debt += charged;
+        const paid = Math.min(debt, pay);
+        debt -= paid;
+        spare += pay - paid;
+        if (debt < 1e-6) { debt = 0; n = m + 1; }
+      }
+      return { debt, interest, spare, n };
+    };
+    const r = compare(flatCase({ debtRate: 12, relief: 30, ownReturn: 0 }, 1200, 100), { paths: 1, flat: true });
+    const a = walk(200, r.months);
+    const b = walk(100, r.months);
+    assert.equal(r.months, a.n);
+    assert.equal(r.months, 7);
+    close(r.interestA, a.interest * 0.7, 1e-9);
+    close(r.interestB, b.interest * 0.7, 1e-9);
+    close(r.interestAvoided, (b.interest - a.interest) * 0.7, 1e-9);
+    close(r.remainingB, b.debt, 1e-9);
+    // Path A: what is left of the last payment, plus the relief on its interest.
+    close(r.a.p50, a.spare + a.interest * 0.3, 1e-9);
+    // Path B: 100 a month invested, plus the relief, less the debt still owed.
+    close(r.b.p50, 100 * r.months + b.interest * 0.3 - b.debt, 1e-9);
+    // Without relief counted as cash, B would be lower by exactly that cash.
+    assert.ok(b.interest * 0.3 > 15);
   });
 
   it('fee, tax and inflation together: 7.90 on the six-month case', () => {

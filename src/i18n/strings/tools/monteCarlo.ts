@@ -106,7 +106,7 @@ export const monteCarloEn = {
       items: {
         onePot: {
           lead: 'One pot, one currency.',
-          rest: ' If your savings sit in more than one currency, or you will retire somewhere that spends a different one, exchange rates add a risk this model does not include. The return history is measured in US dollars. Using it in another currency assumes exchange rates follow inflation over the period, which they often have over decades and often have not over a few years.',
+          rest: ' If your savings sit in more than one currency, or you will retire somewhere that spends a different one, exchange rates add a risk this model does not include. The return history is measured in US dollars, after US inflation. Using it in another currency assumes exchange rates move with the difference in inflation between the two currencies: over decades they often have, over a few years often not.',
         },
         steady: {
           lead: 'Steady saving and spending.',
@@ -500,7 +500,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'एक ही पोर्टफ़ोलियो, एक ही मुद्रा।',
-          rest: ' अगर आपकी बचत एक से ज़्यादा मुद्राओं में है, या आप ऐसी जगह रिटायर होंगे जहाँ दूसरी मुद्रा चलती है, तो विनिमय दरें (exchange\u00A0rates) एक ऐसा जोखिम जोड़ती हैं जो इस मॉडल में शामिल नहीं है। रिटर्न का इतिहास अमेरिकी डॉलर में नापा गया है। उसे किसी और मुद्रा में इस्तेमाल करने का मतलब यह मान लेना है कि उस अवधि में विनिमय दरें महँगाई के फ़र्क़ के साथ चलती हैं; दशकों में अक्सर ऐसा हुआ है, कुछ सालों में अक्सर नहीं।',
+          rest: ' अगर आपकी बचत एक से ज़्यादा मुद्राओं में है, या आप ऐसी जगह रिटायर होंगे जहाँ दूसरी मुद्रा चलती है, तो विनिमय दरें (exchange\u00A0rates) एक ऐसा जोखिम जोड़ती हैं जो इस मॉडल में शामिल नहीं है। रिटर्न का इतिहास अमेरिकी डॉलर में, अमेरिकी महँगाई घटाकर, नापा गया है। उसे किसी और मुद्रा में इस्तेमाल करने का मतलब यह मान लेना है कि विनिमय दरें दोनों मुद्राओं की महँगाई के फ़र्क़ के साथ चलती हैं: दशकों में अक्सर ऐसा हुआ है, कुछ सालों में अक्सर नहीं।',
         },
         steady: {
           lead: 'बचत और खर्च, हर साल एक बराबर।',
@@ -832,7 +832,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'Una sola cartera, una sola moneda.',
-          rest: ' Si tus ahorros están en más de una moneda, o te vas a jubilar en un lugar que usa otra, el tipo de cambio añade un riesgo que este modelo no incluye. La historia de rentabilidades está medida en dólares estadounidenses. Usarla en otra moneda supone que los tipos de cambio siguen las diferencias de inflación durante el periodo, algo que ha ocurrido a menudo a lo largo de décadas y a menudo no en pocos años.',
+          rest: ' Si tus ahorros están en más de una moneda, o te vas a jubilar en un lugar que usa otra, el tipo de cambio añade un riesgo que este modelo no incluye. La historia de rentabilidades está medida en dólares estadounidenses, descontada la inflación de Estados Unidos. Usarla en otra moneda supone que los tipos de cambio se mueven con la diferencia de inflación entre las dos monedas: a lo largo de décadas ha ocurrido a menudo, en pocos años a menudo no.',
         },
         steady: {
           lead: 'Ahorro y gasto constantes.',
@@ -1166,7 +1166,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'Jedno portfolio, jedna měna.',
-          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech. Použít ji v jiné měně znamená předpokládat, že směnné kurzy za dané období sledují rozdíly v inflaci, což se v průběhu desetiletí často stávalo a v průběhu několika let často ne.',
+          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech po odečtení americké inflace. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
         },
         steady: {
           lead: 'Stálé spoření a utrácení.',
@@ -1492,7 +1492,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'एकच बचत, एकच चलन.',
-          rest: ' तुमची बचत एकापेक्षा जास्त चलनांमध्ये असेल, किंवा तुम्ही वेगळे चलन वापरणाऱ्या ठिकाणी निवृत्त होणार असाल, तर विनिमय दरांमुळे (exchange rates) अशी जोखीम येते जी हे मॉडेल धरत नाही. परताव्यांचा इतिहास अमेरिकी डॉलरमध्ये मोजलेला आहे. तो दुसऱ्या चलनात वापरणे म्हणजे त्या कालावधीत विनिमय दर महागाईतील फरकानुसार बदलतात असे गृहीत धरणे; दशकांच्या काळात असे अनेकदा घडले आहे, काही वर्षांच्या काळात अनेकदा नाही.',
+          rest: ' तुमची बचत एकापेक्षा जास्त चलनांमध्ये असेल, किंवा तुम्ही वेगळे चलन वापरणाऱ्या ठिकाणी निवृत्त होणार असाल, तर विनिमय दरांमुळे (exchange rates) अशी जोखीम येते जी हे मॉडेल धरत नाही. परताव्यांचा इतिहास अमेरिकी डॉलरमध्ये, अमेरिकेतील महागाई वजा करून, मोजलेला आहे. तो दुसऱ्या चलनात वापरणे म्हणजे विनिमय दर दोन्ही चलनांच्या महागाईतील फरकानुसार बदलतात असे गृहीत धरणे: दशकांच्या काळात असे अनेकदा घडले आहे, काही वर्षांच्या काळात अनेकदा नाही.',
         },
         steady: {
           lead: 'स्थिर बचत आणि खर्च.',
