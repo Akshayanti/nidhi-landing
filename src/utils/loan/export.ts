@@ -13,10 +13,10 @@
  * Pure: no DOM, no analytics. The island hands the sheets to `downloadWorkbook`.
  */
 import type { Dict } from '../../i18n/strings/types.ts';
-import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
+import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
-import type { VendorInput } from './url.ts';
+import { parseLumpSums, type VendorInput } from './url.ts';
 
 type Island = Dict['tools']['loanComparison']['island'];
 type Common = Dict['tools']['export'];
@@ -37,6 +37,8 @@ export interface LoanExport {
    * numbers stays one, and says why in the payment note.
    */
   worded?: boolean;
+  /** The locale the page writes amounts in, for the lump sums' text. */
+  locale?: string | null;
 }
 
 const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true }));
@@ -49,7 +51,7 @@ export function hasLaterPayment(results: LoanResult[]): boolean {
 /** How many columns the summary sheet gives the monthly payment: one, or four when a payment changes. */
 export const LATER_PAYMENT_COLUMNS = 4;
 
-export function loanSheets({ island, common, currency, vendors, results, names, date, page, worded }: LoanExport): Sheet[] {
+export function loanSheets({ island, common, currency, vendors, results, names, date, page, worded, locale }: LoanExport): Sheet[] {
   const x = island.export;
   const c = island.card;
   const decimals = Math.round(Math.log10(getCurrency(currency).factor));
@@ -63,7 +65,18 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     const n = parseNumber(raw);
     if (!Number.isFinite(n)) return null;
     // A record of what was typed: a rate quoted in eighths (4.875) is not rounded to 4.88.
-    return { n, fmt: Math.abs(n * 100 - Math.round(n * 100)) > 1e-9 ? 'general' : 'decimal2' };
+    return typedRate(n);
+  };
+  // Lump sums for reading: "Month 12: 5,000.00; Month 36: 3,000.50", each
+  // amount written as the page writes amounts, not the "12:5000;36:3000.5"
+  // the box holds. Text that does not read as lump sums is left as typed.
+  // A no-break space keeps "Month 12" on one line in a narrow column.
+  const amountText = new Intl.NumberFormat(locale ?? 'en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const lumps = (encoded: string): Cell => {
+    if (!encoded.trim()) return null;
+    const entries = parseLumpSums(encoded);
+    if (entries.length === 0) return encoded;
+    return entries.map((l) => `${island.balance.month.replace('{m}', String(l.month)).replace(/ /g, '\u00a0')}: ${amountText.format(l.amountMajor)}`).join('; ');
   };
   const whole = (raw: string): Cell => {
     const n = parseNumber(raw);
@@ -120,7 +133,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     field(c.pointsCost, (v) => major(v.pointsCostMajor || '0')),
     field(c.pointsReduction, (v) => rate(v.pointsRateReductionPct || '0')),
     field(c.extra, (v) => major(v.extraMonthly || '0')),
-    field(c.lumps, (v) => v.lumpSumsEncoded || null),
+    field(c.lumps, (v) => lumps(v.lumpSumsEncoded)),
     field(c.penaltyPct, (v) => rate(v.prepayPenaltyPct || '0')),
     field(c.penaltyUntil, (v) => whole(v.prepayPenaltyUntilMonth || '0')),
   );

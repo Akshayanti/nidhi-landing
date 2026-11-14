@@ -11,7 +11,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
-import type { Cell, Sheet } from '../shared/xlsx.ts';
+import { typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import { QUOTED_RATES, type SimulationResult } from './math.ts';
 import type { ToolState } from './url.ts';
 
@@ -60,7 +60,7 @@ export function monteCarloSheets({ island, common, state, result, date, page }: 
     [island.fields.saveYears, whole(state.saveYears)],
     [x.stocks, whole(state.stockPct)],
     [x.bonds, whole(100 - state.stockPct)],
-    [island.settings.feeLabel, { n: state.feePct, fmt: 'decimal2' }],
+    [island.settings.feeLabel, typedRate(state.feePct)],
     [x.withdrawals, withdrawing ? common.yes : common.no],
   ];
   if (withdrawing) {
