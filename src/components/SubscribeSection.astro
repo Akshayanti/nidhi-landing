@@ -1012,4 +1012,19 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     background: var(--warning-light-bg);
     color: var(--warning-light-text);
   }
+  /* More contrast asked for (#591): the softer lines on the blue band are
+     plain white, like the heading. Error and success keep their colours. */
+  @media (prefers-contrast: more) {
+    .subscribe--full .subscribe-confirm-change,
+    .subscribe--full .subscribe-text,
+    .subscribe--full .subscribe-privacy,
+    .subscribe--full .subscribe-privacy a:hover,
+    .subscribe--full .subscribe-status:not(.subscribe-status--error):not(.subscribe-status--success),
+    .subscribe--full .subscribe-success-body,
+    .subscribe--full .subscribe-success-hint,
+    .subscribe--full .subscribe-dismissed-text,
+    .subscribe--full .subscribe-dismissed-undo {
+      color: var(--neutral-white);
+    }
+  }
 </style>

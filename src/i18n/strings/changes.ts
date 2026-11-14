@@ -53,6 +53,36 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'high-contrast-settings',
+        text: {
+          en: 'The site now follows high-contrast settings. In a high-contrast mode, such as a Windows contrast theme, the chosen theme, tab and option are marked again, and charts keep colours that can be read. And when a device asks for more contrast, grey text takes the main text colour, edges are stronger and the focus ring is thicker.',
+          hi: 'साइट अब हाई-कंट्रास्ट सेटिंग के हिसाब से चलती है। हाई-कंट्रास्ट मोड में, जैसे Windows की कंट्रास्ट थीम में, चुनी हुई थीम, टैब और विकल्प की पहचान फिर से दिखती है, और चार्ट ऐसे रंगों में रहते हैं जो पढ़े जा सकें। और जब डिवाइस ज़्यादा कंट्रास्ट माँगता है, तो धूसर टेक्स्ट मुख्य टेक्स्ट के रंग में आ जाता है, किनारे गहरे हो जाते हैं और फ़ोकस का घेरा मोटा हो जाता है।',
+          es: 'El sitio ahora sigue los ajustes de alto contraste. En un modo de alto contraste, como un tema de contraste de Windows, el tema, la pestaña y la opción elegidos vuelven a estar marcados, y los gráficos conservan colores que se pueden leer. Y cuando el dispositivo pide más contraste, el texto gris toma el color del texto principal, los bordes se marcan más y el anillo de foco es más grueso.',
+          cs: 'Web se teď řídí nastavením vysokého kontrastu. V\u00a0režimu vysokého kontrastu, třeba v\u00a0kontrastním motivu Windows, je vybraný motiv, záložka i\u00a0volba zase označená a\u00a0grafy si drží barvy, které jdou přečíst. A\u00a0když zařízení žádá vyšší kontrast, šedý text dostane barvu hlavního textu, okraje jsou výraznější a\u00a0rámeček fokusu je silnější.',
+          mr: 'साइट आता हाय-कॉन्ट्रास्ट सेटिंगनुसार चालते. हाय-कॉन्ट्रास्ट मोडमध्ये, उदाहरणार्थ Windows\u00a0च्या कॉन्ट्रास्ट थीममध्ये, निवडलेली थीम, टॅब आणि पर्याय यांची खूण पुन्हा दिसते, आणि आलेख वाचता येतील अशा रंगांत राहतात. आणि डिव्हाइस जास्त कॉन्ट्रास्ट मागते तेव्हा राखाडी मजकूर मुख्य मजकुराच्या रंगात येतो, कडा ठळक होतात आणि फोकसची कड जाड होते.',
+        },
+      },
+      {
+        id: 'phone-links-without-scripts',
+        text: {
+          en: 'On a phone where scripts do not run, the menu button used to open nothing. Now the button is gone there and the site’s links are listed at the foot of every page. The footer’s links are also a proper list for screen readers, which now say how many there are.',
+          hi: 'जिस फ़ोन में स्क्रिप्ट नहीं चलतीं, वहाँ मेन्यू का बटन दबाने पर कुछ नहीं खुलता था। अब वहाँ बटन नहीं दिखता और साइट के लिंक हर पन्ने के नीचे सूची में मिलते हैं। फ़ुटर के लिंक अब स्क्रीन रीडर के लिए भी बाक़ायदा सूची हैं, जो बताता है कि कितने लिंक हैं।',
+          es: 'En un teléfono donde no se ejecutan scripts, el botón del menú no abría nada. Ahora ese botón no aparece allí y los enlaces del sitio están al pie de cada página. Los enlaces del pie son además una lista de verdad para los lectores de pantalla, que ahora dicen cuántos hay.',
+          cs: 'Na telefonu, kde neběží skripty, tlačítko nabídky nic neotevíralo. Teď tam tlačítko není a\u00a0odkazy webu jsou v\u00a0zápatí každé stránky. Odkazy v\u00a0zápatí jsou navíc pro čtečky obrazovky opravdový seznam, takže čtečka řekne, kolik jich je.',
+          mr: 'ज्या फोनवर स्क्रिप्ट चालत नाहीत, तिथे मेनूचे बटण दाबल्यावर काहीच उघडत नव्हते. आता तिथे ते बटण दिसत नाही आणि साइटच्या लिंक प्रत्येक पानाच्या तळाशी यादीत मिळतात. फूटरमधील लिंक आता स्क्रीन रीडरसाठीही नीट यादी आहेत, त्यामुळे किती लिंक आहेत ते तो सांगतो.',
+        },
+      },
+      {
+        id: 'share-window-keyboard',
+        text: {
+          en: 'In the net worth calculator’s share window, pressing Shift and Tab from the second option moved keyboard focus out of the window to the page behind, and Escape then stopped closing it. Keyboard focus now stays inside the window until you close it.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर की शेयर विंडो में दूसरे विकल्प से Shift और Tab दबाने पर कीबोर्ड फ़ोकस विंडो से बाहर पीछे के पन्ने पर चला जाता था, और फिर Escape से विंडो बंद नहीं होती थी। अब विंडो बंद करने तक कीबोर्ड फ़ोकस उसके अंदर ही रहता है।',
+          es: 'En la ventana para compartir de la calculadora de patrimonio neto, pulsar Mayús y Tab desde la segunda opción sacaba el foco del teclado de la ventana a la página que hay detrás, y después Escape ya no la cerraba. Ahora el foco del teclado se queda dentro de la ventana hasta que la cierras.',
+          cs: 'V\u00a0okně pro sdílení v\u00a0kalkulačce čistého jmění se po stisku Shift a\u00a0Tab na druhé možnosti přesunul fokus klávesnice mimo okno na stránku za ním a\u00a0Escape ho pak už nezavíral. Teď fokus klávesnice zůstává v\u00a0okně, dokud ho nezavřete.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरच्या शेअर विंडोमध्ये दुसऱ्या पर्यायावरून Shift आणि Tab दाबल्यावर कीबोर्ड फोकस विंडोच्या बाहेर मागील पानावर जात असे, आणि मग Escape दाबून विंडो बंद होत नसे. आता विंडो बंद करेपर्यंत कीबोर्ड फोकस तिच्या आतच राहतो.',
+        },
+      },
+      {
         id: 'sideways-phone-large-text',
         text: {
           en: 'Three fixes for small screens and large text. In the net worth calculator, the share window now fits a phone held sideways: the whole window scrolls, so Cancel and Copy link can be reached. The Monte Carlo chart can now be zoomed with two fingers. And with a much larger text size, the lesson lists, the how-to guides, the free tools and the privacy page no longer grow wider than a phone screen: long words and addresses wrap instead.',

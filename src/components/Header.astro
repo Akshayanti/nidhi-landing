@@ -456,6 +456,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .nav-menuToggle,
   .nav-sheet { display: none; }
 
+  /* Scripts off (#404): a button that can open nothing is not offered. Every
+     page these menus list is in the footer's columns, which stay in view. */
+  :global(html:not(.js)) .nav-menuToggle,
+  :global(html:not(.js)) .nav-dropdown,
+  :global(html:not(.js) .theme-toggle) { display: none; }
+
   /* The beta link stays in the row while it fits beside the language pill,
      the theme toggle and the menu button in every language: Spanish, the
      longest, needs about 680px. */
@@ -694,6 +700,11 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 </style>
 
 <script is:inline define:vars={{ menuLabel: strings.nav.menuLabel, menuCloseLabel: strings.nav.menuCloseLabel }}>
+  // The menus below open only by this script. The page says so, and until it
+  // does, their buttons are not shown and the footer keeps its link columns
+  // at every width (#404). Nothing is stored.
+  document.documentElement.classList.add('js');
+
   // Each dropdown (Free Tools, Learn) opens and closes on its own.
   document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
     var toggle = dropdown.querySelector('.nav-dropdownToggle');

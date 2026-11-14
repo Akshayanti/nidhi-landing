@@ -392,7 +392,7 @@ const EXPECTED_MENTIONS = [
   'pages/unsubscribe.astro: posthog x2',
   'pages/unsubscribe.astro: removeItem x1',
   'styles/global.css: cookie x1',
-  'styles/global.css: track x2',
+  'styles/global.css: track x4',
   'types/posthog.d.ts: capture x1',
   'types/posthog.d.ts: cookie x1',
   'types/posthog.d.ts: posthog x2',
