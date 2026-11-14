@@ -1062,6 +1062,7 @@ export default function LoanCompare({
       names: vendors.map((v, i) => shownName(v.name, i, strings)),
       date: isoDate(),
       page: `${window.location.origin}${window.location.pathname}`,
+      locale: amountLocale,
     });
     downloadWorkbook(sheets, 'loan-comparison');
     track('free_loan_comparison_exported', { format: 'xlsx' });
@@ -1335,7 +1336,7 @@ function PrintedReport({ strings, exportStrings, currency, vendors, results }: {
       : totals[0] === totals[totals.length - 1]
         ? `${d.sameBefore}${formatMoney(totals[0], currency)}${d.sameAfter}`
         : `${d.rangeBefore}${formatMoney(totals[0], currency)}${d.rangeTo}${formatMoney(totals[totals.length - 1], currency)}${d.rangeAcross}${formatMoney(totals[totals.length - 1] - totals[0], currency)}${d.rangeAfter}`;
-  const report = loanReport({ island: strings, common: exportStrings, currency, vendors, results, names, answer: [answer] });
+  const report = loanReport({ island: strings, common: exportStrings, currency, vendors, results, names, answer: [answer], locale: amountLocale });
   return <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? 'en-US'} />;
 }
 

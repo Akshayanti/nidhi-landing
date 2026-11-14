@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 
 import { LOCALES } from '../../i18n/config.ts';
 import { DICTS } from '../../i18n/index.ts';
-import { buildXlsx, type Cell, type Sheet } from './xlsx.ts';
+import { buildXlsx, typedRate, type Cell, type Sheet } from './xlsx.ts';
 import { simulate } from '../monte-carlo/math.ts';
 import { defaultState as monteCarloDefaults } from '../monte-carlo/url.ts';
 import { monteCarloSheets } from '../monte-carlo/export.ts';
@@ -47,6 +47,18 @@ describe('Monte Carlo spreadsheet', () => {
   const state = { ...monteCarloDefaults('EUR'), withdrawal: 30_000, withdrawYears: 25, paths: 1_000 };
   const result = simulate(state);
 
+  it('keeps a typed fee with three decimals as typed', () => {
+    const t = DICTS.en.tools;
+    const typed = { ...state, feePct: 0.125 };
+    const sheets = monteCarloSheets({ island: t.monteCarlo.island, common: t.export, state: typed, result, date: DATE, page: PAGE });
+    const cells = sheets.flatMap((sh) => sh.rows.flat()).flatMap((c) => (typeof c === 'object' && c !== null && 'n' in c ? [c] : []));
+    assert.ok(cells.some((c) => c.n === 0.125 && c.fmt === 'general'));
+    assert.deepEqual(typedRate(0.5), { n: 0.5, fmt: 'decimal2' });
+    assert.deepEqual(typedRate(7), { n: 7, fmt: 'decimal2' });
+    assert.deepEqual(typedRate(0.07), { n: 0.07, fmt: 'decimal2' });
+    assert.deepEqual(typedRate(1234.5), { n: 1234.5, fmt: 'decimal2' });
+  });
+
   for (const locale of LOCALES) {
     it(`holds every year's spread as the simulation computed it (${locale})`, () => {
       const t = DICTS[locale].tools;
@@ -76,6 +88,25 @@ describe('loan comparison spreadsheet', () => {
     assert.ok(cells.some((c) => c.n === 6.5 && c.fmt === 'decimal2'), 'a round rate keeps two decimals');
   });
 
+  it('writes lump sums for reading, each amount as the page writes amounts', () => {
+    const flat = (sheets: Sheet[]) => sheets.flatMap((sh) => sh.rows.flat()).filter((c): c is string => typeof c === 'string');
+    const vendors = [{ ...DEFAULT_VENDORS[0], lumpSumsEncoded: '12:5000;36:3000.5' }, DEFAULT_VENDORS[1]];
+    const typed = vendors.map((v) => computeFromInput(v, currency));
+    const base = { common: DICTS.en.tools.export, currency, vendors, results: typed, names: ['A', 'B'], date: DATE, page: PAGE };
+    const en = flat(loanSheets({ ...base, island: DICTS.en.tools.loanComparison.island, locale: 'en-US' }));
+    assert.ok(en.includes('Month\u00a012: 5,000.00; Month\u00a036: 3,000.50'), en.filter((c) => c.includes('12')).join(' | '));
+    assert.ok(!en.includes('12:5000;36:3000.5'), 'the box\'s own text is not what is printed');
+    // The Czech page writes a decimal comma; so does its report.
+    const cs = flat(loanSheets({ ...base, common: DICTS.cs.tools.export, island: DICTS.cs.tools.loanComparison.island, locale: 'cs-CZ' }));
+    assert.ok(cs.some((c) => /12: 5\s000,00; .*36: 3\s000,50/.test(c)), cs.filter((c) => c.includes('000,')).join(' | '));
+    // The printed report carries the same text.
+    const report = loanReport({ ...base, island: DICTS.en.tools.loanComparison.island, answer: ['a'], locale: 'en-US' });
+    assert.ok(JSON.stringify(report).includes('Month\u00a012: 5,000.00; Month\u00a036: 3,000.50'));
+    // An offer with no lump sums has an empty cell, and text that does not read is left as typed.
+    const odd = flat(loanSheets({ ...base, island: DICTS.en.tools.loanComparison.island, vendors: [{ ...vendors[0], lumpSumsEncoded: 'soon' }, vendors[1]] }));
+    assert.ok(odd.includes('soon'));
+  });
+
   for (const locale of LOCALES) {
     it(`holds each offer's totals and full schedule to the cent (${locale})`, () => {
       const t = DICTS[locale].tools;
@@ -100,6 +131,24 @@ describe('loan comparison spreadsheet', () => {
 
 describe('inflation spreadsheet', () => {
   const state = inflationDefaults('EUR', '');
+
+  it('keeps a typed rate with three decimals as typed, and the worked-out rate at two', () => {
+    const t = DICTS.en.tools;
+    const typed = { ...state, mode: 'keep' as const, rate: 2.375, growth: 4.125 };
+    const sheets = inflationSheets({
+      island: t.inflation.island,
+      common: t.export,
+      state: typed,
+      answer: { question: 'q', sentences: ['s'], value: 1.709401709, points: [{ x: 0, value: 1 }], axis: 'x', chartTitle: 'title', history: null },
+      decimals: 2,
+      date: DATE,
+      page: PAGE,
+    });
+    const cells = sheets.flatMap((sh) => sh.rows.flat()).flatMap((c) => (typeof c === 'object' && c !== null && 'n' in c ? [c] : []));
+    assert.ok(cells.some((c) => c.n === 2.375 && c.fmt === 'general'), 'the typed inflation rate');
+    assert.ok(cells.some((c) => c.n === 4.125 && c.fmt === 'general'), 'the typed growth rate');
+    assert.ok(cells.some((c) => c.n === 1.709401709 && c.fmt === 'decimal2'), 'a computed rate is shown at two decimals');
+  });
 
   for (const locale of LOCALES) {
     it(`holds the answer and the chart's path (${locale})`, () => {

@@ -61,6 +61,15 @@ const STYLE: Record<NumFmt | 'bold', number> = {
   integer: 6,
 };
 
+/**
+ * A rate or percentage the reader typed, as a record of what was typed: two
+ * decimals as a rate is usually written (5.00), and every decimal it was
+ * given when there are more (4.875 is not 4.88).
+ */
+export function typedRate(n: number): NumCell {
+  return { n, fmt: Math.abs(n * 100 - Math.round(n * 100)) > 1e-9 ? 'general' : 'decimal2' };
+}
+
 /** The amount format for a currency with this many minor-unit digits. */
 export function amountFormat(decimals: number): NumFmt {
   return decimals === 0 ? 'amount0' : decimals === 3 ? 'amount3' : 'amount2';
