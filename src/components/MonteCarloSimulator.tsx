@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useContext, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
+import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, useEscapeToClose, useReadoutPlacement } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
@@ -77,7 +78,8 @@ function formatShare(share: number, amountLocale: string | null): string {
   return new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: digits }).format(shown);
 }
 
-const grouped = (n: number, amountLocale: string | null) => n.toLocaleString(amountLocale ?? 'en-US');
+/** A count or a limit in the page's own number style ("1,00,000" on a Hindi page), as the other tools write theirs. */
+const grouped = (n: number, numberLocale: string) => n.toLocaleString(numberLocale);
 
 /** A return setting's description, with the rates it quotes filled in from the model. */
 function returnTip(strings: Strings, s: ReturnSetting, amountLocale: string | null): string {
@@ -264,6 +266,7 @@ export default function MonteCarloSimulator({
   netWorthHref,
   defaultCurrency,
   amountLocale,
+  numberLocale,
 }: {
   strings: Strings;
   exportStrings: ExportStrings;
@@ -271,6 +274,8 @@ export default function MonteCarloSimulator({
   defaultCurrency: string;
   /** How the page writes amounts (`TOOL_AMOUNT_LOCALE`), or null for each currency's own style. */
   amountLocale: string | null;
+  /** The page's number style for typed numbers and counts (PROSE_NUMBER_LOCALE). */
+  numberLocale: string;
 }) {
   const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
@@ -360,6 +365,9 @@ export default function MonteCarloSimulator({
   // so Copy can never share a plan the results do not show yet.
   const pending = running || settled !== shownState;
 
+  // A number box hands over a plain number string, whatever the page's language wrote.
+  const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
+
   const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = e.target.value;
     setForm((f) => ({ ...f, [key]: value }));
@@ -417,6 +425,7 @@ export default function MonteCarloSimulator({
   const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
+    <NumberLocaleContext.Provider value={numberLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <div className="mcs-root" {...heldUntilReady(toolReady)}>
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
@@ -444,9 +453,9 @@ export default function MonteCarloSimulator({
               ))}
             </select>
           </div>
-          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={update('start')} invalid={errors.start} error={t(strings.fields.amountError, { min: grouped(0, amountLocale), max: grouped(1e12, amountLocale) })} hint={strings.fields.startHint} />
-          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={update('monthly')} invalid={errors.monthly} error={t(strings.fields.amountError, { min: grouped(0, amountLocale), max: grouped(1e10, amountLocale) })} />
-          <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={update('saveYears')} invalid={errors.saveYears} error={t(strings.fields.yearsError, { min: grouped(0, amountLocale), max: grouped(60, amountLocale) })} max={60} hint={strings.fields.saveYearsHint} />
+          <NumberField id={ids.start} label={strings.fields.start} value={form.start} onChange={setField('start')} invalid={errors.start} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(1e12, numberLocale) })} hint={strings.fields.startHint} />
+          <NumberField id={ids.monthly} label={strings.fields.monthly} value={form.monthly} onChange={setField('monthly')} invalid={errors.monthly} error={t(strings.fields.amountError, { min: grouped(0, numberLocale), max: grouped(1e10, numberLocale) })} />
+          <NumberField id={ids.saveYears} label={strings.fields.saveYears} step="1" value={form.saveYears} onChange={setField('saveYears')} invalid={errors.saveYears} error={t(strings.fields.yearsError, { min: grouped(0, numberLocale), max: grouped(60, numberLocale) })} max={60} hint={strings.fields.saveYearsHint} />
         </div>
         <p className="mcs-hint mcs-crossLink">
           {strings.fields.crossLink.before}
@@ -543,8 +552,8 @@ export default function MonteCarloSimulator({
           </button>
           <p className="mcs-settingsValue">
             {t(strings.settings.summary, {
-              fees: errors.feePct ? '?' : form.feePct,
-              paths: grouped(form.paths, amountLocale),
+              fees: errors.feePct ? '?' : Number(form.feePct).toLocaleString(numberLocale, { maximumFractionDigits: 2 }),
+              paths: grouped(form.paths, numberLocale),
             })}
           </p>
         </div>
@@ -557,9 +566,9 @@ export default function MonteCarloSimulator({
             id={ids.feePct}
             label={strings.settings.feeLabel}
             value={form.feePct}
-            onChange={update('feePct')}
+            onChange={setField('feePct')}
             invalid={errors.feePct}
-            error={t(strings.fields.percentError, { min: grouped(0, amountLocale), max: grouped(MAX_FEE_PCT, amountLocale) })}
+            error={t(strings.fields.percentError, { min: grouped(0, numberLocale), max: grouped(MAX_FEE_PCT, numberLocale) })}
             max={MAX_FEE_PCT}
             hint={t(strings.settings.feeHint, { maxFeePct: MAX_FEE_PCT })}
           />
@@ -577,7 +586,7 @@ export default function MonteCarloSimulator({
               }}
             >
               {RUN_OPTIONS.map((n) => (
-                <option key={n} value={n}>{grouped(n, amountLocale)}</option>
+                <option key={n} value={n}>{grouped(n, numberLocale)}</option>
               ))}
             </select>
             <span className="mcs-hint" id={`${ids.paths}-hint`}>{strings.settings.pathsHint}</span>
@@ -604,8 +613,8 @@ export default function MonteCarloSimulator({
           )}
           {form.withdrawOn && (
             <div className="mcs-grid mcs-grid--two">
-              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={update('withdrawal')} invalid={errors.withdrawal} error={t(strings.fields.amountError, { min: grouped(1, amountLocale), max: grouped(1e11, amountLocale) })} hint={strings.withdraw.amountHint} />
-              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={update('withdrawYears')} invalid={errors.withdrawYears} error={t(strings.fields.yearsError, { min: grouped(1, amountLocale), max: grouped(60, amountLocale) })} max={60} hint={strings.withdraw.yearsHint} />
+              <NumberField id={ids.withdrawal} label={strings.withdraw.amountLabel} value={form.withdrawal} onChange={setField('withdrawal')} invalid={errors.withdrawal} error={t(strings.fields.amountError, { min: grouped(1, numberLocale), max: grouped(1e11, numberLocale) })} hint={strings.withdraw.amountHint} />
+              <NumberField id={ids.withdrawYears} label={strings.withdraw.yearsLabel} step="1" value={form.withdrawYears} onChange={setField('withdrawYears')} invalid={errors.withdrawYears} error={t(strings.fields.yearsError, { min: grouped(1, numberLocale), max: grouped(60, numberLocale) })} max={60} hint={strings.withdraw.yearsHint} />
             </div>
           )}
         </fieldset>
@@ -615,7 +624,7 @@ export default function MonteCarloSimulator({
             {hasErrors
               ? strings.actions.fix
               : running
-                ? t(strings.actions.running, { paths: grouped(settled.paths, amountLocale) })
+                ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) })
                 : ''}
           </span>
         </div>
@@ -647,6 +656,7 @@ export default function MonteCarloSimulator({
       <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={result} />
     </div>
     </ErrorLeadContext.Provider>
+    </NumberLocaleContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -655,7 +665,8 @@ function NumberField(props: {
   id: string;
   label: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Receives a plain number string ("2.5"), '' or 'NaN'. */
+  onChange: (value: string) => void;
   invalid: boolean;
   /** What to type instead, shown under the box while it is invalid. */
   error?: string;
@@ -671,16 +682,15 @@ function NumberField(props: {
   return (
     <div className="mcs-field">
       <label className="mcs-label" htmlFor={props.id}>{props.label}</label>
-      <input
+      {/* A text box read by the page's language, as in the other tools: a number
+          box reads by the browser's own rules, where "50.000" is fifty. */}
+      <LocaleNumberInput
         id={props.id}
         className="mcs-input"
-        type="number"
-        inputMode="decimal"
-        min={0}
-        max={props.max}
-        step={props.step ?? 'any'}
+        inputMode={props.step === '1' ? 'numeric' : 'decimal'}
+        autoComplete="off"
         value={props.value}
-        onChange={props.onChange}
+        onValueChange={props.onChange}
         aria-invalid={props.invalid || undefined}
         aria-describedby={described || undefined}
       />
@@ -732,6 +742,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
 
 function Results({ result, state, code, busy, strings, actions }: { result: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
   const { formatAmount, amountLocale } = useMoney();
+  const numberLocale = useContext(NumberLocaleContext);
   const r = result.atRetirement;
   const saving = state.saveYears > 0;
   const withdrawing = state.withdrawal > 0;
@@ -815,8 +826,8 @@ function Results({ result, state, code, busy, strings, actions }: { result: Simu
       )}
 
       <p className="mcs-caveat">
-        {t(strings.results.caveat, { paths: grouped(result.paths, amountLocale) })}
-        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, amountLocale) })}
+        {t(strings.results.caveat, { paths: grouped(result.paths, numberLocale) })}
+        {result.paths < 10_000 && t(strings.results.caveatFew, { paths: grouped(result.paths, numberLocale) })}
       </p>
 
 
@@ -929,6 +940,7 @@ function spreadLabels(ys: number[], gap: number, min: number, max: number): numb
 
 function Chart({ result, state, code, strings }: { result: SimulationResult; state: ToolState; code: string; strings: Strings }) {
   const { formatAmount, amountLocale } = useMoney();
+  const numberLocale = useContext(NumberLocaleContext);
   const titleId = useId();
   const descId = useId();
   const gradId = useId();
@@ -994,7 +1006,7 @@ function Chart({ result, state, code, strings }: { result: SimulationResult; sta
   ];
 
   const desc = t(strings.chart.desc, {
-    paths: grouped(result.paths, amountLocale),
+    paths: grouped(result.paths, numberLocale),
     years,
     low: formatAmount(end.p10, code),
     median: formatAmount(end.p50, code),
