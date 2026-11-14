@@ -1056,7 +1056,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
       <div className="mcnw-riskCards">
         <h3 className="mcnw-riskCardsTitle">{strings.results.riskHeading}</h3>
         {result.positions.map((pos) => (
-          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.riskLevel}`}>
+          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
             <div className="mcnw-riskCardHead">
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
@@ -1073,9 +1073,10 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
               </span>
               <span
                 className="mcnw-riskBadge"
-                style={{ background: RISK_COLORS[pos.riskLevel] ?? 'var(--color-text-muted)' }}
+                style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
               >
-                {riskBadge(strings, pos.riskLevel)}
+                {/* Without a rate there is no share to band: never "low". */}
+                {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
               </span>
             </div>
             <p className="mcnw-riskLabel">

@@ -76,7 +76,7 @@ export const multiCurrencyNetWorthEn = {
       'Add unlimited assets and liabilities in any supported currency',
       'Latest official exchange rates via the Frankfurter API',
       'Currency concentration donut chart',
-      'Per-currency risk assessment (low, moderate, elevated)',
+      'Per-currency share of net worth (low, moderate, elevated)',
       'Asset/liability toggle for net position calculation',
       'CSV bulk upload',
       'Two ways to share: everything, or with amounts and names hidden',
@@ -123,7 +123,7 @@ export const multiCurrencyNetWorthEn = {
         {
           strong: 'Concentration bands',
           rest:
-            ' apply only to non-functional currencies (currencies you don\'t spend in). Under 20% is low, 20-40% is moderate, and over 40% is elevated. They describe how big a share of net worth sits in that currency, not what to do about it. Your functional currency is never flagged.',
+            ' apply only to non-functional currencies (currencies you don\'t spend in). Under 20% is low, 20-40% is moderate, and over 40% is elevated. These bands are this tool\'s own way of grouping shares: they are not a standard and not a judgement. They describe how big a share of net worth sits in that currency, not what to do about it. Your functional currency is never flagged.',
         },
         {
           strong: 'Net vs. gross exposure.',
@@ -174,7 +174,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'What does "functional currency" mean?',
           a:
-            'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We leave it out of the risk flags because exchange-rate moves do not change what money in your spending currency buys you.',
+            'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We leave it out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
         },
         {
           q: 'What do "low", "moderate", and "elevated" mean?',
@@ -400,7 +400,7 @@ export const multiCurrencyNetWorthEn = {
       badgeLow: 'Low',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
       badgeUnbanded: 'No band',
-      riskHeading: 'Per-currency risk assessment',
+      riskHeading: 'Share of net worth by currency',
       /** The longer label a risk card shows under the currency. */
       labelFunctional: 'Your spending currency',
       labelNetDebt: 'Net debt in this currency',
@@ -484,7 +484,7 @@ export const multiCurrencyNetWorthEn = {
       tableCaption: 'Currency concentration by net position',
       tableColCurrency: 'Currency',
       tableColConcentration: 'Concentration',
-      tableColRisk: 'Risk level',
+      tableColRisk: 'Share band',
     },
     csv: {
       /** `{current}` and `{pending}` are row counts, in two plural forms. */
@@ -503,7 +503,7 @@ export const multiCurrencyNetWorthEn = {
       fullName: 'Full version',
       fullDesc: 'All asset details, values, and net worth',
       redactedName: 'Redacted version',
-      redactedDesc: 'Only currency split % and risk levels. No amounts or names.',
+      redactedDesc: 'Only currency split % and share bands. No amounts or names.',
       cancel: 'Cancel',
       copy: 'Copy link',
       copied: 'Copied!',
@@ -536,7 +536,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       'किसी भी समर्थित मुद्रा में जितनी चाहें संपत्तियाँ और देनदारियाँ जोड़ें',
       'Frankfurter API से ताज़ा आधिकारिक विनिमय दरें',
       'मुद्रा मिश्रण का डोनट चार्ट',
-      'हर मुद्रा के लिए जोखिम का आकलन (कम, मध्यम, ज़्यादा)',
+      'हर मुद्रा में शुद्ध संपत्ति का हिस्सा (कम, मध्यम, ज़्यादा)',
       'शुद्ध स्थिति निकालने के लिए संपत्ति/देनदारी का टॉगल',
       'CSV से एक साथ कई पंक्तियाँ अपलोड करें',
       'शेयर करने के दो तरीक़े: पूरा हिसाब, या रकम और नाम छिपाकर',
@@ -576,7 +576,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'जमाव के स्तर',
           rest:
-            ' सिर्फ़ उन मुद्राओं पर लागू होते हैं जो आपकी खर्च की मुद्रा नहीं हैं। 20% से नीचे को कम, 20-40% को मध्यम, और 40% से ऊपर को ज़्यादा माना जाता है। ये बताते हैं कि शुद्ध संपत्ति का कितना बड़ा हिस्सा उस मुद्रा में पड़ा है, यह नहीं कि उसके बारे में क्या करना चाहिए। आपकी खर्च की मुद्रा पर कभी यह निशान नहीं लगता।',
+            ' सिर्फ़ उन मुद्राओं पर लागू होते हैं जो आपकी खर्च की मुद्रा नहीं हैं। 20% से नीचे को कम, 20-40% को मध्यम, और 40% से ऊपर को ज़्यादा माना जाता है। ये स्तर इस टूल का अपना बाँटने का तरीक़ा हैं: ये न कोई मानक हैं, न कोई फ़ैसला। ये बताते हैं कि शुद्ध संपत्ति का कितना बड़ा हिस्सा उस मुद्रा में पड़ा है, यह नहीं कि उसके बारे में क्या करना चाहिए। आपकी खर्च की मुद्रा पर कभी यह निशान नहीं लगता।',
         },
         {
           strong: 'शुद्ध और सकल एक्सपोज़र।',
@@ -617,7 +617,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'शेयर करने के "पूरा हिसाब" और "रकम और नाम छिपाकर" वाले तरीक़ों में क्या फ़र्क़ है?',
           a:
-            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और किस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और जोखिम के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
+            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और किस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
         },
         {
           q: 'विनिमय दरें कहाँ से आती हैं?',
@@ -627,7 +627,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: '"खर्च की मुद्रा" (functional\u00A0currency) का क्या मतलब है?',
           a:
-            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर "मुख्य मुद्रा" का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। जोखिम के निशान से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से खर्च की मुद्रा में रखे पैसे से खरीदी जा सकने वाली चीज़ें नहीं बदलतीं।',
+            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर "मुख्य मुद्रा" का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
         },
         {
           q: '"कम", "मध्यम" और "ज़्यादा" का क्या मतलब है?',
@@ -824,7 +824,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       badgeLow: 'कम',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
       badgeUnbanded: 'कोई स्तर नहीं',
-      riskHeading: 'हर मुद्रा के जोखिम का आकलन',
+      riskHeading: 'मुद्रा के हिसाब से शुद्ध संपत्ति का हिस्सा',
       labelFunctional: 'यह आपकी खर्च की मुद्रा है',
       labelNetDebt: 'इस मुद्रा में शुद्ध देनदारी',
       labelElevated: 'ज़्यादा एक्सपोज़र',
@@ -888,7 +888,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       tableCaption: 'शुद्ध स्थिति के हिसाब से मुद्रा जमाव',
       tableColCurrency: 'मुद्रा',
       tableColConcentration: 'जमाव',
-      tableColRisk: 'जोखिम का स्तर',
+      tableColRisk: 'हिस्से का स्तर',
     },
     csv: {
       confirmOne:
@@ -906,7 +906,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       fullName: 'पूरा हिसाब',
       fullDesc: 'संपत्तियों का पूरा ब्यौरा, रकमें और शुद्ध संपत्ति',
       redactedName: 'रकम और नाम छिपाकर',
-      redactedDesc: 'सिर्फ़ हर मुद्रा का हिस्सा % और जोखिम के स्तर। न रकम, न नाम।',
+      redactedDesc: 'सिर्फ़ हर मुद्रा का हिस्सा % और हिस्से के स्तर। न रकम, न नाम।',
       cancel: 'रद्द करें',
       copy: 'लिंक कॉपी करें',
       copied: 'कॉपी हो गया!',
@@ -943,7 +943,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       'Añade todos los activos y pasivos que quieras, en cualquier moneda disponible',
       'Tipos de cambio oficiales actualizados, a través de la API de Frankfurter',
       'Gráfico de anillo de la concentración por moneda',
-      'Evaluación del riesgo por moneda (bajo, moderado, elevado)',
+      'Parte del patrimonio neto en cada moneda (nivel bajo, moderado o elevado)',
       'Selector de activo o pasivo para calcular la posición neta',
       'Carga masiva desde CSV',
       'Dos formas de compartir: datos completos o con cantidades y nombres ocultos',
@@ -984,7 +984,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Niveles de concentración',
           rest:
-            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia nunca se señala.',
+            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Estos niveles son la forma en que esta herramienta agrupa las partes: no son un estándar ni una valoración. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia nunca se señala.',
         },
         {
           strong: 'Exposición neta frente a bruta.',
@@ -1035,7 +1035,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Qué significa «moneda de referencia»?',
           a:
-            'Tu moneda de referencia es la moneda en la que gastas y vives principalmente: aquella en la que están tus facturas, tu alquiler y la compra del día a día. La dejamos fuera de los avisos de riesgo porque los movimientos del tipo de cambio no cambian lo que compras con el dinero que tienes en la moneda en la que gastas.',
+            'Tu moneda de referencia es la moneda en la que gastas y vives principalmente: aquella en la que están tus facturas, tu alquiler y la compra del día a día. La dejamos fuera de los niveles porque los movimientos del tipo de cambio no cambian directamente lo que compra, a precios locales, el dinero que tienes en la moneda en la que gastas.',
         },
         {
           q: '¿Qué significan «bajo», «moderado» y «elevado»?',
@@ -1236,7 +1236,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       badgeLow: 'Bajo',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
       badgeUnbanded: 'Sin nivel',
-      riskHeading: 'Evaluación del riesgo por moneda',
+      riskHeading: 'Parte del patrimonio neto por moneda',
       labelFunctional: 'La moneda en la que gastas',
       labelNetDebt: 'Deuda neta en esta moneda',
       labelElevated: 'Exposición elevada',
@@ -1300,7 +1300,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       tableCaption: 'Concentración por moneda según la posición neta',
       tableColCurrency: 'Moneda',
       tableColConcentration: 'Concentración',
-      tableColRisk: 'Nivel de riesgo',
+      tableColRisk: 'Nivel de la parte',
     },
     csv: {
       confirmOne:
@@ -1318,7 +1318,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       fullName: 'Versión completa',
       fullDesc: 'Todos los detalles de los activos, sus valores y el patrimonio neto',
       redactedName: 'Versión con datos ocultos',
-      redactedDesc: 'Solo el reparto por moneda en % y los niveles de riesgo. Sin cantidades ni nombres.',
+      redactedDesc: 'Solo el reparto por moneda en % y los niveles. Sin cantidades ni nombres.',
       cancel: 'Cancelar',
       copy: 'Copiar enlace',
       copied: '¡Copiado!',
@@ -1363,7 +1363,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       'Neomezený počet aktiv a závazků v jakékoli podporované měně',
       'Nejnovější oficiální směnné kurzy přes API Frankfurter',
       'Prstencový graf měnové koncentrace',
-      'Posouzení rizika pro každou měnu (nízká, střední, zvýšená expozice)',
+      'Podíl na čistém jmění pro každou měnu (nízká, střední, zvýšená expozice)',
       'Přepínač aktivum/závazek pro výpočet čisté pozice',
       'Hromadné nahrání CSV',
       'Dva režimy sdílení: úplná data a verze se skrytými údaji',
@@ -1404,7 +1404,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Pásma koncentrace',
           rest:
-            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
+            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Tato pásma jsou vlastním členěním tohoto nástroje: nejsou standardem ani hodnocením. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
         },
         {
           strong: 'Čistá a hrubá expozice.',
@@ -1455,7 +1455,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           q: 'Co znamená „měna vašich výdajů“?',
           a:
-            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Z označení rizika ji vynecháváme, protože pohyby kurzů nemění, co si za peníze v měně svých výdajů koupíte.',
+            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Z pásem ji vynecháváme, protože pohyby kurzů přímo nemění, co si za peníze v měně svých výdajů koupíte za místní ceny.',
         },
         {
           q: 'Co znamenají „Nízká“, „Střední“ a „Zvýšená“?',
@@ -1654,7 +1654,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       badgeLow: 'Nízká',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
       badgeUnbanded: 'Bez pásma',
-      riskHeading: 'Posouzení rizika podle měn',
+      riskHeading: 'Podíl na čistém jmění podle měn',
       labelFunctional: 'Měna vašich výdajů',
       labelNetDebt: 'Čistý dluh v této měně',
       labelElevated: 'Zvýšená expozice',
@@ -1718,7 +1718,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       tableCaption: 'Měnová koncentrace podle čisté pozice',
       tableColCurrency: 'Měna',
       tableColConcentration: 'Koncentrace',
-      tableColRisk: 'Úroveň rizika',
+      tableColRisk: 'Pásmo podílu',
     },
     csv: {
       confirmOne:
@@ -1736,7 +1736,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       fullName: 'Úplná verze',
       fullDesc: 'Všechny podrobnosti o aktivech, hodnoty a čisté jmění',
       redactedName: 'Verze se skrytými údaji',
-      redactedDesc: 'Jen rozdělení podle měn v % a úrovně rizika. Žádné částky ani názvy.',
+      redactedDesc: 'Jen rozdělení podle měn v % a pásma podílu. Žádné částky ani názvy.',
       cancel: 'Zrušit',
       copy: 'Kopírovat odkaz',
       copied: 'Zkopírováno!',
@@ -1769,7 +1769,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       'समर्थित कोणत्याही चलनात हवी तितकी मालमत्ता आणि देणी जोडा',
       'Frankfurter API मार्फत नवीनतम अधिकृत विनिमय दर',
       'चलननिहाय हिश्श्याचा डोनट आलेख',
-      'प्रत्येक चलनाच्या जोखमीचे मूल्यमापन (कमी, मध्यम, जास्त)',
+      'प्रत्येक चलनातील निव्वळ संपत्तीचा हिस्सा (कमी, मध्यम, जास्त)',
       'निव्वळ स्थिती मोजण्यासाठी मालमत्ता/देणी निवड',
       'CSV द्वारे एकाच वेळी अनेक नोंदी अपलोड',
       'शेअर करण्याचे दोन प्रकार: संपूर्ण डेटा, किंवा रकमा आणि नावे लपवून',
@@ -1804,7 +1804,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
         {
           strong: 'हिश्श्याचे पट्टे',
-          rest: ' फक्त खर्चाचे चलन नसलेल्या चलनांना लागू होतात (ज्या चलनांमध्ये तुम्ही खर्च करत नाही). 20% पेक्षा कमी म्हणजे कमी, 20 ते 40% म्हणजे मध्यम, आणि 40% पेक्षा जास्त म्हणजे जास्त. ते निव्वळ संपत्तीचा किती मोठा हिस्सा त्या चलनात आहे याचे वर्णन करतात, त्याबद्दल काय करावे याचे नाही. तुमच्या खर्चाच्या चलनावर कधीच खूण केली जात नाही.',
+          rest: ' फक्त खर्चाचे चलन नसलेल्या चलनांना लागू होतात (ज्या चलनांमध्ये तुम्ही खर्च करत नाही). 20% पेक्षा कमी म्हणजे कमी, 20 ते 40% म्हणजे मध्यम, आणि 40% पेक्षा जास्त म्हणजे जास्त. हे पट्टे म्हणजे या साधनाची हिस्से गटांत मांडण्याची स्वतःची पद्धत आहे: ते कोणतेही मानक नाहीत आणि कोणताही निवाडा नाहीत. ते निव्वळ संपत्तीचा किती मोठा हिस्सा त्या चलनात आहे याचे वर्णन करतात, त्याबद्दल काय करावे याचे नाही. तुमच्या खर्चाच्या चलनावर कधीच खूण केली जात नाही.',
         },
         {
           strong: 'निव्वळ विरुद्ध एकूण हिस्सा.',
@@ -1846,7 +1846,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
         {
           q: '“खर्चाचे चलन (functional currency)” म्हणजे काय?',
-          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. आम्ही ते जोखमीच्या खुणांमधून वगळतो, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात तुम्हाला काय मिळते ते बदलत नाही.',
+          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. आम्ही ते पट्ट्यांमधून वगळतो, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात स्थानिक किमतींना तुम्हाला काय मिळते ते थेट बदलत नाही.',
         },
         {
           q: '“कमी”, “मध्यम” आणि “जास्त” यांचा अर्थ काय?',
@@ -2028,7 +2028,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       badgeLow: 'कमी',
       /** Net worth is zero or negative: a share of it cannot be worked out, so the card names no band. */
       badgeUnbanded: 'पट्टा नाही',
-      riskHeading: 'प्रत्येक चलनाच्या जोखमीचे मूल्यमापन',
+      riskHeading: 'चलनानुसार निव्वळ संपत्तीचा हिस्सा',
       labelFunctional: 'तुमचे खर्चाचे चलन',
       labelNetDebt: 'या चलनात निव्वळ कर्ज',
       labelElevated: 'जास्त हिस्सा',
@@ -2077,7 +2077,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       tableCaption: 'निव्वळ स्थितीनुसार चलननिहाय हिस्सा',
       tableColCurrency: 'चलन',
       tableColConcentration: 'हिस्सा',
-      tableColRisk: 'जोखमीची पातळी',
+      tableColRisk: 'हिश्श्याचा पट्टा',
     },
     csv: {
       confirmOne: 'CSV अपलोड केल्यावर तुमच्या सध्याच्या {current} नोंदीऐवजी फाइलमधील नोंदी (एकूण {pending}) येतील. पुढे जायचे?',
@@ -2092,7 +2092,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       fullName: 'पूर्ण आवृत्ती',
       fullDesc: 'मालमत्तेचा सर्व तपशील, मूल्ये आणि निव्वळ संपत्ती',
       redactedName: 'रकमा लपवलेली आवृत्ती',
-      redactedDesc: 'फक्त चलननिहाय टक्केवारी आणि जोखमीच्या पातळ्या. रकमा किंवा नावे नाहीत.',
+      redactedDesc: 'फक्त चलननिहाय टक्केवारी आणि हिश्श्यांचे पट्टे. रकमा किंवा नावे नाहीत.',
       cancel: 'रद्द करा',
       copy: 'लिंक कॉपी करा',
       copied: 'कॉपी झाली!',

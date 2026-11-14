@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-14',
     items: [
       {
+        id: 'net-worth-share-bands',
+        text: {
+          en: 'The net worth calculator no longer speaks of a "risk level". The cards are now headed "Share of net worth by currency", and the page says plainly that its low, moderate and elevated bands are the tool\'s own way of grouping shares: not a standard, and not a judgement of you.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर अब "जोखिम का स्तर" नहीं कहता। कार्डों का शीर्षक अब "मुद्रा के हिसाब से शुद्ध संपत्ति का हिस्सा" है, और पेज साफ़ कहता है कि कम, मध्यम और ज़्यादा वाले स्तर इस टूल का अपना बाँटने का तरीक़ा हैं: न कोई मानक, न आप पर कोई फ़ैसला।',
+          es: 'La calculadora de patrimonio neto ya no habla de un «nivel de riesgo». Las tarjetas se titulan ahora «Parte del patrimonio neto por moneda», y la página dice con claridad que sus niveles bajo, moderado y elevado son la forma en que la herramienta agrupa las partes: no son un estándar ni una valoración sobre ti.',
+          cs: 'Kalkulačka čistého jmění už nemluví o\u00a0„úrovni rizika“. Karty teď mají nadpis „Podíl na čistém jmění podle měn“ a\u00a0stránka říká jasně, že nízké, střední a\u00a0zvýšené pásmo je vlastní členění tohoto nástroje: není to standard ani hodnocení vaší situace.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटर आता “जोखमीची पातळी” असे म्हणत नाही. कार्डांचे शीर्षक आता “चलनानुसार निव्वळ संपत्तीचा हिस्सा” आहे, आणि पेज स्पष्ट सांगते की कमी, मध्यम आणि जास्त हे पट्टे म्हणजे या साधनाची हिस्से गटांत मांडण्याची स्वतःची पद्धत आहे: ते मानक नाही, आणि तुमच्याबद्दलचा निवाडाही नाही.',
+        },
+      },
+      {
         id: 'exports-keep-what-you-typed',
         text: {
           en: 'The spreadsheets and printed reports from the free tools now show a rate exactly as you typed it: 4.875% stays 4.875, where some of them rounded it to 4.88. In the loan comparison\'s report, lump-sum prepayments are written out for reading ("Month 12: 5,000.00"), with amounts in the same number format as the rest of the page.',
