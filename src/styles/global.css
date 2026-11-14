@@ -7314,6 +7314,12 @@ button.mcnw-legendItem:focus-visible {
   .tool-reportWhole {
     white-space: nowrap;
   }
+  /* What was entered is headed by the reader's own names for things. A long
+     one with no space in it breaks rather than widening the table past the
+     page. */
+  .tool-reportTable--names thead th {
+    overflow-wrap: anywhere;
+  }
   .tool-reportNote {
     font-size: 9pt;
     color: #444;
@@ -7345,6 +7351,7 @@ button.mcnw-legendItem:focus-visible {
       border-bottom: 0;
       padding: 0 0 2pt;
       font-weight: 700;
+      overflow-wrap: anywhere;
     }
     .tool-reportTable--stack td {
       display: flex;
@@ -7354,6 +7361,10 @@ button.mcnw-legendItem:focus-visible {
       border-bottom: 0.5pt solid #ccc;
       text-align: right !important;
       white-space: normal;
+    }
+    /* Words, not a figure: a long one wraps from the left, like a sentence. */
+    .tool-reportTable--stack td:not(.tool-reportNum, .tool-reportWhole) {
+      text-align: left !important;
     }
     .tool-reportTable--stack td:last-child {
       border-bottom: 0;

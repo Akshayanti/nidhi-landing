@@ -155,12 +155,12 @@ export function numericColumns(table: ReportTable): boolean[] {
   });
 }
 
-function Table({ table, locale }: { table: ReportTable; locale: string }) {
+function Table({ table, locale, names }: { table: ReportTable; locale: string; names?: boolean }) {
   const numeric = numericColumns(table);
   const cls = (i: number, c?: Cell) => (numeric[i] ? 'tool-reportNum' : c !== undefined && isNumber(c) ? 'tool-reportWhole' : undefined);
   return (
     <div className="tool-reportBlock">
-      <table className={table.stack ? 'tool-reportTable tool-reportTable--stack' : 'tool-reportTable'}>
+      <table className={`tool-reportTable${table.stack ? ' tool-reportTable--stack' : ''}${names ? ' tool-reportTable--names' : ''}`}>
         {table.caption && <caption>{table.caption}</caption>}
         <thead>
           <tr>{table.head.map((h, i) => <th key={i} scope="col" className={cls(i)}>{h}</th>)}</tr>
@@ -342,7 +342,7 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
       {report.entered && (
         <section className="tool-reportBlock">
           <h2>{r.entered}</h2>
-          <Table table={report.entered} locale={locale} />
+          <Table table={report.entered} locale={locale} names />
         </section>
       )}
 

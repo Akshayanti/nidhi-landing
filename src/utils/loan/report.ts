@@ -43,7 +43,9 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
     const rest = { ...summary, rows: summary.rows.map((row) => [row[0], row[1], ...row.slice(1 + LATER_PAYMENT_COLUMNS)]) };
     tables = [
       tableOf(rest, { caption: island.delta.heading, note, stack: true }),
-      tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment, stack: true }),
+      // An offer that could not be worked out has no payment to list here; the
+      // comparison above says so.
+      tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment, stack: true, keep: (row) => !row.slice(1).every((c) => c === null || c === undefined || c === '') }),
     ];
   }
 
