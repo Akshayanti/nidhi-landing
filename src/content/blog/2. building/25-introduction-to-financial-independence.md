@@ -134,7 +134,7 @@ Vicki Robin's *Your Money or Your Life* popularized a related idea that's worth 
   <line x1="445" y1="252" x2="445" y2="320" class="fig-stroke-rule" stroke-dasharray="2 4" />
   <circle cx="445" cy="240" r="14" class="fig-fill-blue" fill-opacity="0.15" />
   <circle cx="445" cy="240" r="7" class="fig-fill-blue" />
-  <text class="fig-eyebrow" x="445" y="216" text-anchor="middle" style="fill: var(--color-deep-blue)">CROSSOVER</text>
+  <text class="fig-eyebrow" x="445" y="204" text-anchor="middle" style="fill: var(--color-deep-blue)">CROSSOVER</text>
   <text class="fig-tick" x="120" y="345" text-anchor="middle">today</text>
   <text class="fig-tick" x="370" y="345" text-anchor="middle">→ time →</text>
   <text class="fig-tick" x="620" y="345" text-anchor="middle">later</text>

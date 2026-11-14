@@ -10,7 +10,7 @@
  * own live region.
  */
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type RefObject } from 'react';
-import { touchEndIsTap, touchMove, touchStart, type Touch } from '../../utils/shared/chartTouch.ts';
+import { touchEndIsTap, touchMove, touchDown, type Touch } from '../../utils/shared/chartTouch.ts';
 
 export interface ReadoutRow {
   label: string;
@@ -125,7 +125,7 @@ export function useChartPointer(at: (clientX: number) => number | null, setHover
   return {
     onPointerDown(e: PointerEvent) {
       if (e.pointerType !== 'touch') setHover(at(e.clientX));
-      else touch.current = touchStart(e.pointerId, e.clientX, e.clientY);
+      else touch.current = touchDown(touch.current, e.pointerId, e.clientX, e.clientY);
     },
     onPointerMove(e: PointerEvent) {
       if (e.pointerType !== 'touch') {
@@ -143,7 +143,9 @@ export function useChartPointer(at: (clientX: number) => number | null, setHover
     onPointerUp(e: PointerEvent) {
       if (e.pointerType !== 'touch') return;
       if (touchEndIsTap(touch.current, e.pointerId)) setHover(at(e.clientX));
-      touch.current = null;
+      // The tracked finger lifting ends the gesture; another finger of a pinch
+      // lifting leaves it ignored until the first one lifts too.
+      if (touch.current?.id === e.pointerId) touch.current = null;
     },
     onPointerCancel() {
       touch.current = null;

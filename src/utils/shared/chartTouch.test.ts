@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { TAP_SLOP, touchEndIsTap, touchMove, touchStart } from './chartTouch.ts';
+import { TAP_SLOP, touchEndIsTap, touchMove, touchStart, touchDown } from './chartTouch.ts';
 
 describe('a finger on a chart', () => {
   it('is a tap when it lifts without moving', () => {
@@ -36,5 +36,18 @@ describe('a finger on a chart', () => {
     assert.equal(touchMove(t, 2, 200, 100, true).follow, false);
     assert.equal(touchEndIsTap(t, 2), false);
     assert.equal(touchEndIsTap(null, 1), false);
+  });
+
+  it('reads a second finger as a pinch: nothing opens or scrubs, whichever finger moves', () => {
+    const first = touchStart(1, 100, 100);
+    const pinch = touchDown(first, 2, 160, 100);
+    assert.equal(pinch.id, 1);
+    assert.equal(pinch.mode, 'ignore');
+    assert.equal(touchMove(pinch, 2, 220, 100, true).follow, false);
+    assert.equal(touchMove(pinch, 1, 40, 100, true).follow, false);
+    assert.equal(touchEndIsTap(pinch, 2), false);
+    assert.equal(touchEndIsTap(pinch, 1), false);
+    // A lone finger, or the same one again, starts fresh.
+    assert.equal(touchDown(null, 3, 5, 5).mode, 'pending');
   });
 });
