@@ -371,7 +371,8 @@ note records why this one won.
 | raise (in pay) | पगारवाढ | |
 | real rate | वास्तविक दर | |
 | geometric average | भूमितीय सरासरी | |
-| scenario, forecast | परिदृश्य, अंदाज | Contested. A modelled case, not a situation (परिस्थिती). |
+| scenario | परिदृश्य | A modelled case, not a situation (परिस्थिती). |
+| forecast | भाकीत | A claim about what will happen. अंदाज is kept for an estimate or a guess ("your own estimate"), so "a scenario, not a forecast" is परिदृश्य, भाकीत नाही. |
 | basket (CPI) | वस्तू व सेवांची टोपली | Contested. |
 | hyperinflation | अतिमहागाई | |
 | about (an approximate amount) | सुमारे | |
