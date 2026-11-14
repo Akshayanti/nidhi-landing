@@ -43,6 +43,7 @@ const idPrefix = 'waitlist';
 const formId = `${idPrefix}-form`;
 const statusId = `${idPrefix}-status`;
 const inputId = `${idPrefix}-email`;
+const confirmSpelledId = `${idPrefix}-confirm-spelled`;
 const confirmTextId = `${idPrefix}-confirm-text`;
 ---
 
@@ -91,9 +92,12 @@ const confirmTextId = `${idPrefix}-confirm-text`;
         </div>
         <!-- Shown before anything is sent, so a typo can be caught. -->
         <div class="waitlist-confirm" data-confirm hidden>
-          <p class="waitlist-confirm-text" id={confirmTextId}>{waitlist.confirmPrompt} <strong data-confirm-email aria-hidden="true"></strong><span class="sr-only" data-confirm-spelled></span></p>
+          <p class="waitlist-confirm-text"><span id={confirmTextId}>{waitlist.confirmPrompt}</span> <strong data-confirm-email></strong></p>
+          {/* For the yes button's description only: the address one character at
+              a time. The plain address above stays readable for braille and copy. */}
+          <span id={confirmSpelledId} data-confirm-spelled hidden></span>
           <div class="waitlist-confirm-actions">
-            <button type="button" class="btn btn--onCallout waitlist-button" data-confirm-yes aria-describedby={confirmTextId} data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
+            <button type="button" class="btn btn--onCallout waitlist-button" data-confirm-yes aria-describedby={`${confirmTextId} ${confirmSpelledId}`} data-attr="waitlist-confirm-yes">{waitlist.confirmYes}</button>
             <button type="button" class="waitlist-confirm-change" data-confirm-change data-attr="waitlist-confirm-change">{waitlist.confirmChange}</button>
           </div>
         </div>

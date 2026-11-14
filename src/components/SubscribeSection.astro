@@ -46,6 +46,7 @@ const countLine = isDev
 const formId = `subscribe-form-${variant}`;
 const statusId = `subscribe-status-${variant}`;
 const inputId = `subscribe-email-${variant}`;
+const confirmSpelledId = `subscribe-confirm-spelled-${variant}`;
 const confirmTextId = `subscribe-confirm-text-${variant}`;
 ---
 
@@ -84,9 +85,12 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
           </div>
           {/* Shown before anything is sent, so a typo can be caught. */}
           <div class="subscribe-confirm" data-confirm hidden>
-            <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email aria-hidden="true"></strong><span class="sr-only" data-confirm-spelled></span></p>
+            <p class="subscribe-confirm-text"><span id={confirmTextId}>{t.confirmPrompt}</span> <strong data-confirm-email></strong></p>
+          {/* For the yes button's description only: the address one character at
+              a time. The plain address above stays readable for braille and copy. */}
+          <span id={confirmSpelledId} data-confirm-spelled hidden></span>
             <div class="subscribe-confirm-actions">
-              <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes aria-describedby={confirmTextId} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+              <button type="button" class="btn btn--onCallout subscribe-button" data-confirm-yes aria-describedby={`${confirmTextId} ${confirmSpelledId}`} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
               <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
             </div>
           </div>
@@ -161,9 +165,12 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         <noscript><p class="subscribe-status subscribe-noscript">{t.noScript}</p></noscript>
         {/* Shown before anything is sent, so a typo can be caught. */}
         <div class="subscribe-confirm" data-confirm hidden>
-          <p class="subscribe-confirm-text" id={confirmTextId}>{t.confirmPrompt} <strong data-confirm-email aria-hidden="true"></strong><span class="sr-only" data-confirm-spelled></span></p>
+          <p class="subscribe-confirm-text"><span id={confirmTextId}>{t.confirmPrompt}</span> <strong data-confirm-email></strong></p>
+          {/* For the yes button's description only: the address one character at
+              a time. The plain address above stays readable for braille and copy. */}
+          <span id={confirmSpelledId} data-confirm-spelled hidden></span>
           <div class="subscribe-confirm-actions">
-            <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes aria-describedby={confirmTextId} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
+            <button type="button" class="btn btn--primary subscribe-button" data-confirm-yes aria-describedby={`${confirmTextId} ${confirmSpelledId}`} data-attr={`subscribe-${variant}-confirm-yes`}>{t.confirmYes}</button>
             <button type="button" class="subscribe-confirm-change" data-confirm-change data-attr={`subscribe-${variant}-confirm-change`}>{t.confirmChange}</button>
           </div>
         </div>
