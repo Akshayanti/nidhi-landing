@@ -42,7 +42,7 @@
     "node": ">=24.0.0"
   },
   "allowScripts": {
-    "puppeteer@25.16.0": true,
+    "puppeteer@25.17.0": true,
     "esbuild": false,
     "fsevents": false
   },
