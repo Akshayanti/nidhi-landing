@@ -188,6 +188,10 @@ class EmailColoursTest(unittest.TestCase):
         gs_block = self._block(gs, "var EMAIL = {", "};")
         self.assertEqual(gs_block["blue"], "#0A3D8F")
         self.assertEqual(gs_block["button"], "#00796B")
+        # Text links are the site's link teal, not the button's or the headings' colour.
+        self.assertEqual(gs_block["link"], "#005B4F")
+        self.assertNotIn("EMAIL.button + ';text-decoration:underline", gs)
+        self.assertNotIn("EMAIL.blue + ';text-decoration:underline", gs)
         self.assertEqual(gs_block["buttonRadius"], "8px")
         # Outside its block, the script names a colour, never writes one.
         rest = gs.replace(gs[gs.index("var EMAIL = {"): gs.index("};", gs.index("var EMAIL = {"))], "")
