@@ -7433,12 +7433,26 @@ button.mcnw-legendItem:focus-visible {
     align-items: center;
     gap: 5pt;
   }
+  /* The closing lines stay in one piece: a page never ends mid-sentence in
+     them (#655). Asking them to stay with the block above as well makes
+     Chrome split them instead, so that is not asked. */
   .tool-reportFooter {
     margin-top: 12pt;
     padding-top: 6pt;
     border-top: 0.75pt solid #999;
     font-size: 9pt;
     color: #444;
+    break-inside: avoid;
+  }
+  /* The last block may break between lines, so its text fills the page before
+     the footer's instead of moving over whole and leaving a gap. Rows and
+     headings keep their own rules; three lines stay on each side. */
+  .tool-reportBlock:has(+ .tool-reportFooter) {
+    break-inside: auto;
+  }
+  .tool-reportBlock:has(+ .tool-reportFooter) :is(p, li) {
+    orphans: 3;
+    widows: 3;
   }
 }
 
