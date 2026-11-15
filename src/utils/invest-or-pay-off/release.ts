@@ -12,6 +12,7 @@
  * same way (src/utils/monte-carlo/release.ts).
  */
 import { getCollection } from 'astro:content';
+import { isReleased, releaseDate } from '../releaseGate.ts';
 
 export const INVEST_OR_PAY_OFF_URL = '/free/invest-or-pay-off/';
 export const INVEST_OR_PAY_OFF_HOST_SLUG = 'invest-or-pay-off-debt';
@@ -21,18 +22,15 @@ async function hostPubDate(): Promise<Date | null> {
   return host ? host.data.pubDate : null;
 }
 
-export async function isInvestOrPayOffReleased(): Promise<boolean> {
-  if (import.meta.env.DEV) return true;
-  const date = await hostPubDate();
-  return !!date && date <= new Date();
+/** `now` is for tests; every caller leaves it out. */
+export async function isInvestOrPayOffReleased(now: Date = new Date()): Promise<boolean> {
+  return isReleased(await hostPubDate(), now, import.meta.env.DEV);
 }
 
 /**
  * The launch date: the host lesson's pubDate once it has passed. In dev, where
  * the tool shows before launch, today's date stands in.
  */
-export async function investOrPayOffReleaseDate(): Promise<Date | null> {
-  const date = await hostPubDate();
-  if (date && date <= new Date()) return date;
-  return import.meta.env.DEV ? new Date() : null;
+export async function investOrPayOffReleaseDate(now: Date = new Date()): Promise<Date | null> {
+  return releaseDate(await hostPubDate(), now, import.meta.env.DEV);
 }
