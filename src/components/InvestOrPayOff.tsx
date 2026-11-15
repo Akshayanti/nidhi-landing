@@ -589,7 +589,9 @@ export default function InvestOrPayOff({
                   checked={form.horizon === h}
                   onChange={() => setForm((f) => ({ ...f, horizon: h }))}
                 />
-                <span className="iop-choiceLabel">{strings.horizons[h]}</span>
+                <span className="iop-choiceText">
+                  <span className="iop-choiceLabel">{strings.horizons[h]}</span>
+                </span>
               </label>
             ))}
           </div>

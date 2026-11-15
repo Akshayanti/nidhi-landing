@@ -6637,7 +6637,9 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  /* The least width is in rem, so it grows with the reader's text size and the
+     fields stack before a label or box runs past the screen (#665). */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11.25rem), 1fr));
   column-gap: var(--space-4);
   row-gap: 0;
   align-items: start;
@@ -7088,8 +7090,11 @@ button.mcnw-legendItem:focus-visible {
     font-size: 0.88rem;
     padding: 8px 6px;
   }
+  /* Two to a row, never more: each column is at least just under half the
+     width. At a large text size 7.5rem is the greater, and the fields stack
+     (#665). */
   .ifc-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, max(7.5rem, calc(50% - var(--space-3)))), 1fr));
     column-gap: var(--space-3);
   }
   /* A currency's full name needs the whole row on a phone. */
@@ -7516,12 +7521,13 @@ button.mcnw-legendItem:focus-visible {
   box-shadow: inset 0 0 0 1px var(--color-deep-blue);
 }
 /* A browser's own radio is 13px; this one matches the size of the site's other
-   drawn choices and stays on the first line of its label. */
+   drawn choices (20px at the normal text size) and grows with the reader's
+   text, staying centred on the first line of its label (#663). */
 .iop-choice input {
   flex: none;
-  width: 20px;
-  height: 20px;
-  margin: 2px 0 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.125rem 0 0;
 }
 .iop-choiceText {
   display: flex;
