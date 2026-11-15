@@ -118,8 +118,9 @@
  * scripts/send_newsletter.py hold the same set.
  */
 var EMAIL = {
-  blue: '#0A3D8F', // --palette-blue: titles, links, the top rule
+  blue: '#0A3D8F', // --palette-blue: titles, the top rule
   button: '#00796B', // --semantic-cta-bg-light: the button
+  link: '#005B4F', // --color-teal-dark: text links, as on the site (8.0:1 on white)
   text: '#212121', // --neutral-900: body text
   text2: '#616161', // --neutral-700: secondary text
   muted: '#5A5A5A', // --neutral-600: small print
@@ -1194,7 +1195,7 @@ function sendReminderEmail_(email, confirmToken) {
               '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Or copy and paste this link:</p>' +
-              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.button + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
               '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
@@ -1986,7 +1987,7 @@ function sendConfirmationEmail_(email, confirmToken) {
               '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
-              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.button + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
+              '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
               '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign) +
@@ -2140,7 +2141,7 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
   return (
     '<tr><td class="nm-px" style="padding:20px 28px;background:' + EMAIL.bg + ';border-top:1px solid ' + EMAIL.line + ';font-size:14px;color:' + EMAIL.muted + ';line-height:1.5;">' +
       (isNewsletter ?
-        '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:' + EMAIL.blue + ';text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
+        '<p style="margin:0 0 8px;">You\u2019re getting this because you subscribed to <a href="' + escapeHtml_(blogHref) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(host_(cfg.siteUrl)) + '/blog</a>.</p>' +
         '<p style="margin:0 0 8px;">' +
           '<a href="' + escapeHtml_(unsubLink) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a></p><p style="margin:0 0 8px;">' +
           '<a href="' + escapeHtml_(privacyHref) + '" style="color:' + EMAIL.muted + ';text-decoration:underline;">Privacy</a> &middot; ' +
@@ -2301,7 +2302,7 @@ function redirectResponse_(url) {
     '<meta name="referrer" content="no-referrer">' +
     '<meta http-equiv="refresh" content="0; url=' + escapeHtml_(safe) + '">' +
     '<title>Redirecting\u2026</title>' +
-    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:' + EMAIL.text2 + ';text-align:center;line-height:1.5;}a{color:' + EMAIL.button + ';}</style>' +
+    '<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:' + EMAIL.text2 + ';text-align:center;line-height:1.5;}a{color:' + EMAIL.link + ';}</style>' +
     '</head><body>' +
     '<p>Redirecting to nidhi.today\u2026</p>' +
     '<p><a href="' + escapeHtml_(safe) + '">Continue</a></p>' +

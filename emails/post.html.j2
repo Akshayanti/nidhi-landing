@@ -30,10 +30,12 @@
     line           --neutral-50: hairlines
     white          --neutral-white: the card, button text
     button_radius  --radius-md
+    link           --color-teal-dark: text links, as on the site
 #}
 {%- set c = {
   'blue': '#0A3D8F',
   'button': '#00796B',
+  'link': '#005B4F',
   'text': '#212121',
   'text2': '#616161',
   'muted': '#5A5A5A',
@@ -117,7 +119,7 @@
         <tr><td class="nm-px" style="padding:22px 28px;background:{{ c.bg }};border-top:1px solid {{ c.line }};font-size:14px;color:{{ c.muted }};line-height:1.5;">
           <p style="margin:0 0 8px;">
             You&rsquo;re getting this because you subscribed to
-            <a href="{{ blog_url }}" style="color:{{ c.blue }};text-decoration:underline;">nidhi.today/blog</a>.
+            <a href="{{ blog_url }}" style="color:{{ c.link }};text-decoration:underline;">nidhi.today/blog</a>.
           </p>
           <p style="margin:0 0 8px;">
             {# UNSUBSCRIBE_URL is swapped per-recipient by Apps Script at
