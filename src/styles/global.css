@@ -343,7 +343,7 @@ html:is([lang="hi"], [lang="mr"]) {
 }
 
 /* The parts of a page the browser draws itself (the unchecked ring of a radio
-   or checkbox, a slider's track, a select's menu, scrollbars) follow the
+   or checkbox, a slider's rail, a select's menu, scrollbars) follow the
    site's theme, not the device's, and take the brand blue when checked (#421).
    `accent-color` inherits, so it is set once here. */
 :root {
