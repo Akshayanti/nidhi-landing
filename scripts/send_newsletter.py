@@ -505,7 +505,8 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
 # scripts/newsletter.gs hold the same set.
 _EMAIL: dict[str, str] = {
     "blue":   "#0A3D8F",  # --palette-blue: headings, rules
-    "button": "#00796B",  # --semantic-cta-bg-light: links in the lesson (5.3:1 on white)
+    "button": "#00796B",  # --semantic-cta-bg-light: the button (templates)
+    "link":   "#005B4F",  # --color-teal-dark: links in the lesson, as on the site (8.0:1 on white)
     "text":   "#212121",  # --neutral-900: body text
     "text2":  "#616161",  # --neutral-700: secondary text
     "muted":  "#5A5A5A",  # --neutral-600: small print
@@ -516,8 +517,8 @@ _EMAIL: dict[str, str] = {
 }
 
 _BRAND_STYLES: dict[str, str] = {
-    # 5.3:1 on white; the brand teal #009688 is 3.7:1, too faint for text (#485).
-    "a":          f"color:{_EMAIL['button']};text-decoration:underline;",
+    # The site's link teal; the brand teal #009688 is 3.7:1, too faint for text (#485).
+    "a":          f"color:{_EMAIL['link']};text-decoration:underline;",
     "h1":         f"color:{_EMAIL['blue']};font-weight:700;font-size:22px;line-height:1.3;margin:28px 0 12px;letter-spacing:-0.01em;",
     "h2":         f"color:{_EMAIL['blue']};font-weight:700;font-size:19px;line-height:1.3;margin:28px 0 10px;letter-spacing:-0.01em;",
     "h3":         f"color:{_EMAIL['blue']};font-weight:600;font-size:16px;line-height:1.35;margin:22px 0 8px;",

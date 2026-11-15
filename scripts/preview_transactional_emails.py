@@ -80,7 +80,7 @@ def _footer_html(
     if is_newsletter:
         body = (
             '<p style="margin:0 0 8px;">You’re getting this because you subscribed to '
-            f'<a href="{_escape(blog_href)}" style="color:#0A3D8F;text-decoration:underline;">'
+            f'<a href="{_escape(blog_href)}" style="color:#005B4F;text-decoration:underline;">'
             f'{_escape(host)}/blog</a>.</p>'
             '<p style="margin:0 0 8px;">'
             f'<a href="{_escape(unsub_page_url)}" style="color:#5A5A5A;text-decoration:underline;display:inline-block;padding:6px 0;">Unsubscribe</a></p><p style="margin:0 0 8px;">'
@@ -132,7 +132,7 @@ def render_confirmation_email(
         '<p style="margin:0 0 12px;color:#616161;font-size:14px;">If the button doesn’t work, '
         'copy and paste this link into your browser:</p>'
         f'<p style="margin:0 0 20px;color:#616161;font-size:14px;word-break:break-all;">'
-        f'<a href="{_escape(confirm_page_url)}" style="color:#00796B;text-decoration:underline;">'
+        f'<a href="{_escape(confirm_page_url)}" style="color:#005B4F;text-decoration:underline;">'
         f'{_escape(confirm_page_url)}</a></p>'
         '<p style="margin:0;color:#616161;font-size:14px;">If you didn’t sign up, ignore this '
         'email and you won’t hear from us again.</p>'
