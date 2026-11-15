@@ -48,15 +48,19 @@ export async function getHelperLevels(): Promise<string[]> {
   });
 }
 
+/** A level page at /blog/<level>/ would hide a post with the same slug. */
+export function assertNoLevelSlug(slugs: string[]): void {
+  const clash = slugs.find((slug) => (LADDER_LEVELS as readonly string[]).includes(slug));
+  if (clash) throw new Error(`Post slug "${clash}" is taken by the level page /blog/${clash}/. Rename the post's slug.`);
+}
+
 /** Every visible post; `pathLevel` is set on those placed on the path. */
 export async function getPathPosts(): Promise<PathPost[]> {
   const isDev = import.meta.env.DEV;
   const now = new Date();
   const allPosts = await getCollection('blog');
   assertCompanionHosts(allPosts, now);
-  // A level page at /blog/<level>/ would hide a post with the same slug.
-  const clash = allPosts.find((p) => (LADDER_LEVELS as readonly string[]).includes(p.data.slug));
-  if (clash) throw new Error(`Post slug "${clash.data.slug}" is taken by the level page /blog/${clash.data.slug}/. Rename the post's slug.`);
+  assertNoLevelSlug(allPosts.map((p) => p.data.slug));
 
   const visible = allPosts
     .filter((post) => isDev || post.data.pubDate <= now)

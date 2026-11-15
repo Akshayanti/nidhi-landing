@@ -9,6 +9,7 @@
  * change to remember.
  */
 import { getCollection } from 'astro:content';
+import { isReleased, releaseDate } from '../releaseGate.ts';
 
 export const MONTE_CARLO_URL = '/free/monte-carlo-simulator/';
 export const MONTE_CARLO_HOST_SLUG = 'financial-projections';
@@ -18,18 +19,15 @@ async function hostPubDate(): Promise<Date | null> {
   return host ? host.data.pubDate : null;
 }
 
-export async function isMonteCarloReleased(): Promise<boolean> {
-  if (import.meta.env.DEV) return true;
-  const date = await hostPubDate();
-  return !!date && date <= new Date();
+/** `now` is for tests; every caller leaves it out. */
+export async function isMonteCarloReleased(now: Date = new Date()): Promise<boolean> {
+  return isReleased(await hostPubDate(), now, import.meta.env.DEV);
 }
 
 /**
- * The launch date: the host post's pubDate once it has passed. In dev, where
+ * The launch date: the host lesson's pubDate once it has passed. In dev, where
  * the tool shows before launch, today's date stands in.
  */
-export async function monteCarloReleaseDate(): Promise<Date | null> {
-  const date = await hostPubDate();
-  if (date && date <= new Date()) return date;
-  return import.meta.env.DEV ? new Date() : null;
+export async function monteCarloReleaseDate(now: Date = new Date()): Promise<Date | null> {
+  return releaseDate(await hostPubDate(), now, import.meta.env.DEV);
 }

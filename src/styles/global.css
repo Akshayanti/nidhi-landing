@@ -7490,12 +7490,15 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-choices {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* The least width is in rem, so it grows with the reader's text size: at a
+     large size on a phone the cards drop to one column instead of holding
+     text they have no room for (#661). */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.375rem), 1fr));
   gap: var(--space-2);
 }
 /* Three long sentences: side by side only where each has room. */
 .iop-choices--date {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.75rem), 1fr));
 }
 .iop-choice {
   display: flex;
@@ -7524,6 +7527,8 @@ button.mcnw-legendItem:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .iop-choiceLabel {
   font-family: var(--font-heading);
