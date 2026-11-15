@@ -200,6 +200,7 @@ note records why this one won.
 | concentration | एकवटलेली गुंतवणूक; a percentage: हिस्सा | Contested (केंद्रीकरण, एकाग्रता). एकवटलेली गुंतवणूक for the idea and its risk (चलनात एकवटलेल्या गुंतवणुकीची जोखीम). Where the net worth calculator means a currency's percentage of net worth (concentration %, concentration bands, the concentration chart), हिस्सा: the tool's own explainer defines concentration as that share, and चलननिहाय हिस्सा reads at once where a percentage follows. |
 | hedging | जोखीम-बचाव | Contested (हेजिंग). (hedging) on first use. |
 | broker | ब्रोकर | Not दलाल, which can read as a middleman taking a cut. |
+| range (of outcomes, of returns) | पल्ला | One word everywhere: निकालांचा पल्ला, दीर्घकालीन पल्ला. Not मर्यादा, which is a limit (गणनेची मर्यादा) and stays for that sense only, and not श्रेणी. |
 | spread (FX) | खरेदी-विक्री दरातील फरक | Contested. (spread) on first use. |
 | margin (over an index rate) | वाढीव दर | Contested. (margin) on first use. |
 | asset location | खात्यांमधील मालमत्तांची मांडणी | Contested. (asset location) on first use. |
