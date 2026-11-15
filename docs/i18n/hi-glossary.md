@@ -338,6 +338,7 @@ and do translate.
 | simulated path | सिम्युलेटेड रास्ता | The unit the simulator counts: one run of the plan through the years. |
 | withdrawal | निकासी | Glossary: withdrawal rate is निकासी दर. |
 | after inflation | महँगाई के बाद | The simulator's returns are real returns, so the phrase recurs on every result. |
+| range (of outcomes, of returns) | दायरा | One word everywhere: नतीजों का दायरा, लंबी अवधि का दायरा. Not सीमा, which is a limit or a cap (ऊपरी सीमा, गणना की सीमा) and stays for that sense only, and not रेंज. Masculine: दायरा दिखाता है, दायरे का सिरा. |
 | median | बीच का | Never औसत: the tool is careful that the middle of a spread is not an average, and the Hindi has to keep that. |
 | portfolio mix | पोर्टफ़ोलियो का मिश्रण | The stock and bond split. |
 | rebalanced yearly | हर साल रीबैलेंस होता है | Glossary: rebalancing is रीबैलेंसिंग. |

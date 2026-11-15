@@ -15,7 +15,7 @@
  * The country history is the World Bank's (src/data/inflation/worldbank.json,
  * refreshed monthly by .github/workflows/inflation-data.yml). Only what the
  * select needs is passed to the island: each country's code, its name written
- * here with `Intl.DisplayNames` in the page's language, and its currency when
+ * here in the page's language (`countryNamer`), and its currency when
  * the tools have it. The yearly figures stay out of the page, except the one
  * country it starts with (India on the Hindi page), so a page that shows no
  * history loads none. The rest is fetched from this site's own origin
@@ -36,6 +36,7 @@ import ToolWaitlist from '../ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
 import data from '../../data/inflation/worldbank.json';
 import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
+import { countryNamer } from '../../utils/inflation/countryNames.ts';
 import { HISTORY_URL, INFLATION_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
 import { MAX_RATE, MIN_RATE } from '../../utils/inflation/math.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/inflation/url.ts';
@@ -66,14 +67,14 @@ const file = data as WorldBankFile;
 // The select's countries, named in the page's language from their ISO codes.
 // The euro area has no ISO code, so its name is the catalog's.
 const toolCurrencies = new Set(CURRENCIES.map((c) => c.code));
-const regionNames = new Intl.DisplayNames([htmlLang], { type: 'region' });
+const nameOf = countryNamer(htmlLang);
 const countries: CountryOption[] = Object.entries(file.countries)
   .map(([code, entry]) => {
-    const named = code === 'EMU' ? island.history.euroArea : regionNames.of(entry.iso2);
+    const named = code === 'EMU' ? island.history.euroArea : nameOf(entry.iso2);
     const currency = COUNTRY_CURRENCY[code];
     return {
       code,
-      name: named && named !== entry.iso2 ? named : code,
+      name: named ?? code,
       currency: currency && toolCurrencies.has(currency) ? currency : null,
     };
   })
