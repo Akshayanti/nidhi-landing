@@ -342,6 +342,18 @@ html:is([lang="hi"], [lang="mr"]) {
   --color-callout-fg:       var(--neutral-white);
 }
 
+/* The parts of a page the browser draws itself (the unchecked ring of a radio
+   or checkbox, a slider's track, a select's menu, scrollbars) follow the
+   site's theme, not the device's, and take the brand blue when checked (#421).
+   `accent-color` inherits, so it is set once here. */
+:root {
+  color-scheme: light;
+  accent-color: var(--color-deep-blue);
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 /* ============================================================================
  * Theme-reactive tokens (dark mode).
  *
@@ -2614,7 +2626,6 @@ details[open] > .disclosure::after,
 
 .lc-horizonSlider {
   flex: 1 1 280px;
-  accent-color: var(--color-deep-blue);
 }
 
 .lc-horizonInput {
@@ -3812,7 +3823,6 @@ details[open] > .disclosure::after,
   height: 18px;
   margin-top: 1px;
   flex-shrink: 0;
-  accent-color: var(--color-deep-blue);
 }
 
 .mcnw-modalCheck span {
@@ -4909,7 +4919,6 @@ body[data-page="landing"] .site-footer {
 .mcs-range {
   width: 100%;
   min-height: 44px;
-  accent-color: var(--color-deep-blue);
 }
 .mcs-withdraw {
   border: 1px solid var(--color-border-light);
@@ -4935,7 +4944,6 @@ body[data-page="landing"] .site-footer {
   width: 24px;
   height: 24px;
   margin: 0;
-  accent-color: var(--color-deep-blue);
 }
 .mcs-actions {
   display: flex;
@@ -6148,7 +6156,6 @@ body[data-page="landing"] .site-footer {
   width: 20px;
   height: 20px;
   margin: 0;
-  accent-color: var(--color-deep-blue);
 }
 
 .learn-check:has(input:focus-visible) {
@@ -7505,9 +7512,13 @@ button.mcnw-legendItem:focus-visible {
   border-color: var(--color-deep-blue);
   box-shadow: inset 0 0 0 1px var(--color-deep-blue);
 }
+/* A browser's own radio is 13px; this one matches the size of the site's other
+   drawn choices and stays on the first line of its label. */
 .iop-choice input {
-  margin-top: 4px;
-  accent-color: var(--color-deep-blue);
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
 }
 .iop-choiceText {
   display: flex;
