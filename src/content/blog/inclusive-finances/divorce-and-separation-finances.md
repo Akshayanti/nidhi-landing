@@ -29,7 +29,7 @@ glossary:
     definition: "Each borrower owes the whole of a joint debt, so the lender can pursue any one of them for all of it."
 companionOf: "windfall-management"
 order: 51.5
-pubDate: 2099-01-14
+pubDate: 2026-11-19
 updatedDate: 2026-10-28
 localRules: [family-law, pensions, tax, credit]
 level: "inclusive-finances"

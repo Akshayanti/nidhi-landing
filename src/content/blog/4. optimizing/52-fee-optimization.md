@@ -31,7 +31,7 @@ glossary:
   - term: "Load"
     definition: "A sales charge some funds take from the money you invest or withdraw, often 3 to 5.75%."
 order: 52
-pubDate: 2099-01-15
+pubDate: 2026-11-21
 updatedDate: "2026-10-28"
 localRules: [investments, tax]
 level: "optimizing"

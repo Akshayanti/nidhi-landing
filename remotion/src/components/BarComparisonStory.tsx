@@ -214,15 +214,18 @@ function BarHook({ input }: { input: ReelInput }) {
   // The two-item form below stays more dramatic by placing a claim above
   // each bar, which is the right treatment for a direct A versus B contrast.
   if (bars.length > 2) {
+    const big = input.plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 225 : 285;
     return (
       <div style={{ position: "absolute", inset: 0 }}>
         <div style={{ position: "absolute", top: 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
-        <div style={{ position: "absolute", left: 76, right: 100, top: 188, fontFamily: TYPE.ui, fontSize: 54, lineHeight: 1.04, fontWeight: 830, letterSpacing: "-0.04em", color: BRAND.ink }}>
-          {hook.onscreenLines.map((line) => <div key={line}>{line}</div>)}
+        <div style={{ position: "absolute", left: 76, right: 100, top: 188, fontFamily: TYPE.ui, fontSize: big ? 74 : 54, lineHeight: 1.04, fontWeight: big ? 850 : 830, letterSpacing: "-0.04em", color: BRAND.ink }}>
+          {big
+            ? <><div>{hook.onscreenLines[0]}</div><div style={{ marginTop: 14, fontSize: 62, color: BRAND.amber }}>{hook.onscreenLines[1]}</div></>
+            : hook.onscreenLines.map((line) => <div key={line}>{line}</div>)}
         </div>
         {bars.map((bar, index) => {
-          const y = 520 + index * stride;
+          const y = (big ? 640 : 520) + index * (big ? Math.min(stride, 262) : stride);
           const width = Math.max(96, (bar.value / max) * 690);
           return (
             <div key={bar.id} style={{ position: "absolute", left: 76, right: 90, top: y }}>
@@ -642,15 +645,16 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
   // later, so the question does not leak the final answer.
   const hidden = story.bars[1] ?? story.bars[2];
   const max = Math.max(receipts?.value ?? 0, hidden?.value ?? 0, 1);
+  const big = plan.hookStyle === "questionOverPicture";
   const baseline = cover ? 1360 : 1370;
-  const chartHeight = cover ? 610 : 650;
+  const chartHeight = big ? (cover ? 520 : 600) : cover ? 610 : 650;
   const barWidth = cover ? 300 : 320;
   const firstHeight = ((receipts?.value ?? 0) / max) * chartHeight;
   const secondHeight = ((hidden?.value ?? 0) / max) * chartHeight;
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <div style={{ position: "absolute", top: cover ? 278 : 104, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 820, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
-      <div style={{ position: "absolute", left: 76, right: 92, top: cover ? 360 : 184, fontFamily: TYPE.ui, fontSize: cover ? 57 : 68, lineHeight: 1.03, fontWeight: 840, letterSpacing: "-0.04em", color: BRAND.ink }}>
+      <div style={{ position: "absolute", left: 76, right: 92, top: cover ? 360 : 184, fontFamily: TYPE.ui, fontSize: big ? (cover ? 66 : 76) : cover ? 57 : 68, lineHeight: 1.03, fontWeight: 840, letterSpacing: "-0.04em", color: BRAND.ink }}>
         <div>{hook.onscreenLines[0]}</div>
         <div style={{ color: BRAND.amber }}>{hook.onscreenLines[1]}</div>
       </div>
@@ -819,21 +823,23 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
   if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
-  if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (story.mode === "segmented") return <SegmentedHook plan={plan} cover />;
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
 
   if (bars.length > 2) {
+    const big = plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 218 : 276;
     return (
       <div style={{ position: "absolute", inset: 0 }}>
         <div style={{ position: "absolute", top: 278, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
-        <div style={{ position: "absolute", left: 76, right: 100, top: 350, fontFamily: TYPE.ui, fontSize: 50, lineHeight: 1.03, fontWeight: 830, letterSpacing: "-0.04em", color: BRAND.ink }}>
-          {hook.onscreenLines.map((line) => <div key={line}>{line}</div>)}
+        <div style={{ position: "absolute", left: 76, right: 100, top: big ? 340 : 350, fontFamily: TYPE.ui, fontSize: big ? 70 : 50, lineHeight: 1.03, fontWeight: big ? 850 : 830, letterSpacing: "-0.04em", color: BRAND.ink }}>
+          {big
+            ? <><div>{hook.onscreenLines[0]}</div><div style={{ marginTop: 14, fontSize: 58, color: BRAND.amber }}>{hook.onscreenLines[1]}</div></>
+            : hook.onscreenLines.map((line) => <div key={line}>{line}</div>)}
         </div>
         {bars.map((bar, index) => {
-          const y = 610 + index * stride;
+          const y = (big ? 760 : 610) + index * (big ? Math.min(stride, 232) : stride);
           const width = Math.max(96, (bar.value / max) * 690);
           return (
             <div key={bar.id} style={{ position: "absolute", left: 76, right: 90, top: y }}>

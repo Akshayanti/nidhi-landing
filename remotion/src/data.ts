@@ -588,7 +588,12 @@ export interface ReelPlan {
   /** Selected hook index, default 0. CLI --variant overrides. */
   useHookVariant: number;
   /** "question": the hook frame shows only the topic chip and the hook lines, no chart or bands. */
-  hookStyle?: "question";
+  /**
+   * "question": the hook and cover are the viewer's question alone.
+   * "questionOverPicture": the same two lines, large, as the headline over the
+   * chart (line 1 the situation, line 2 the question in amber).
+   */
+  hookStyle?: "question" | "questionOverPicture";
   beats: Beat[];
   cta: CTABlock;
   caption: PlatformCaption;
