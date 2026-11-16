@@ -115,14 +115,14 @@ function RaceHeading({ input, now }: { input: ReelInput; now: number }) {
   );
 }
 
-function HookLines({ lines, top }: { lines: string[]; top: number }) {
+function HookLines({ lines, top, big = false }: { lines: string[]; top: number; big?: boolean }) {
   return (
     <div style={{ position: "absolute", left: 72, right: 90, top }}>
-      <div style={{ fontFamily: TYPE.ui, fontSize: 74, fontWeight: 800, lineHeight: 1.0, letterSpacing: "-0.045em", color: BRAND.ink }}>
+      <div style={{ fontFamily: TYPE.ui, fontSize: big ? 78 : 74, fontWeight: big ? 850 : 800, lineHeight: 1.0, letterSpacing: "-0.045em", color: BRAND.ink }}>
         {lines[0]}
       </div>
       {lines[1] && (
-        <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 44, fontWeight: 760, lineHeight: 1.08, letterSpacing: "-0.025em", color: BRAND.teal }}>
+        <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: big ? 58 : 44, fontWeight: big ? 850 : 760, lineHeight: 1.08, letterSpacing: big ? "-0.04em" : "-0.025em", color: big ? BRAND.amber : BRAND.teal }}>
           {lines[1]}
         </div>
       )}
@@ -298,7 +298,7 @@ export function LineRaceStory({ input }: { input: ReelInput }) {
       {hookMode && (
         <>
           <div style={{ position: "absolute", top: 150, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
-          <HookLines lines={hook.onscreenLines.filter(Boolean)} top={230} />
+          <HookLines lines={hook.onscreenLines.filter(Boolean)} top={230} big={input.plan.hookStyle === "questionOverPicture"} />
         </>
       )}
       {!hookMode && <RaceHeading input={input} now={now} />}
@@ -359,7 +359,7 @@ export function LineRaceCover({ plan }: { plan: ReelPlan }) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <div style={{ position: "absolute", top: 150, left: 76, fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: BRAND.teal }}>ILLUSTRATIVE</div>
-      <HookLines lines={hook.onscreenLines.filter(Boolean)} top={230} />
+      <HookLines lines={hook.onscreenLines.filter(Boolean)} top={230} big={plan.hookStyle === "questionOverPicture"} />
       <RaceChart story={story} pos={count - 1} finish={1} />
       <GapCounter story={story} pos={count - 1} finish={1} />
       <ScopeLine story={story} />
