@@ -11,7 +11,7 @@ takeaways:
     href: "#the-rate-sets-a-debts-cost-not-its-size"
   - text: "Why many people take an employer match early, even with debt"
     href: "#an-employer-match-can-be-a-100-return-on-the-matched-euros"
-  - text: "How tax relief lowers a debt's effective rate"
+  - text: "How tax relief lowers a debt's after-tax rate"
     href: "#how-tax-relief-changes-a-debts-rate"
   - text: "How a common default order sequences debts, saving and investing"
     href: "#a-common-order-for-several-debts"
@@ -24,15 +24,18 @@ glossary:
     definition: "Money an employer adds to your workplace pension in proportion to what you put in, up to a cap."
   - term: "Vesting"
     definition: "Shares, options or employer pension contributions becoming yours over time; leaving before a vesting date can forfeit them."
-  - term: "Effective interest rate"
-    definition: "What a debt really costs after any tax relief on its interest: a 4% rate with 30% relief is about 2.8%."
+  - term: "After-tax interest rate"
+    definition: "What a debt really costs after any tax relief on its interest: a 4% rate with 30% relief is about 2.8%. Not the same as the effective annual rate on a loan document, which counts compounding and often fees."
   - term: "Marginal tax rate"
     definition: "The tax rate on your next euro of income, which is the rate that deductions and lost pay are worth."
   - term: "Avalanche method"
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
 pubDate: 2026-11-04
-updatedDate: "2026-10-25"
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The glossary called a debt's rate after tax relief its effective interest rate. On loan documents, the effective rate usually means the yearly rate once compounding, and often fees, are counted, so the term is now the after-tax interest rate. Kenya's Fuliza daily fees were out of date: under the tariff in force from October 2022, the lowest band costs about Sh3 a day including excise after three free days, not Sh5, so a month on Sh500 costs about Sh80 in daily fees, not Sh150."
 localRules: [tax, pensions, borrowing]
 level: "optimizing"
 primaryPersona: "eva"
@@ -44,7 +47,7 @@ faq:
   - question: "Why does employer match change the picture so much?"
     answer: "Because an employer may add 50 cents or €1 for every euro you contribute, up to the scheme's cap. That creates an immediate 50% or 100% uplift before market movement. The comparison with a card's annual rate is not perfectly like for like, because the pension money may be locked up or subject to vesting, but the uplift is large enough that many people capture the available match while also reducing expensive debt. This is why many people take the match early, often alongside paying down high-interest debt, even though the common default order lists high-interest debt first. The caveats: matched money is usually locked until retirement age, some matches vest only after a period of service, and someone struggling to meet minimum payments may need the cash now. A match that goes unclaimed in a given year is usually gone for good, which is the main reason it rarely waits long."
   - question: "What about tax deductions on debt interest?"
-    answer: "In some jurisdictions, certain debts (most commonly mortgages) carry tax deductibility on the interest paid. This lowers the effective debt rate for calculation purposes. A mortgage at 4% with a 30% marginal-tax deduction on interest has an effective rate closer to 2.8%. The like-for-like comparison is the after-tax effective debt rate against the after-tax investment return. Details vary by jurisdiction (the US mortgage-interest deduction has been capped, the UK restricted relief for buy-to-let, India has specific rules, etc.); the concept travels, the numbers are local. Deductibility is worth checking rather than assuming; when it applies, it can swing a marginal decision by a percentage point or two."
+    answer: "In some jurisdictions, certain debts (most commonly mortgages) carry tax deductibility on the interest paid. This lowers the after-tax debt rate for calculation purposes. A mortgage at 4% with a 30% marginal-tax deduction on interest has an after-tax rate closer to 2.8%. The like-for-like comparison is the after-tax debt rate against the after-tax investment return. Details vary by jurisdiction (the US mortgage-interest deduction has been capped, the UK restricted relief for buy-to-let, India has specific rules, etc.); the concept travels, the numbers are local. Deductibility is worth checking rather than assuming; when it applies, it can swing a marginal decision by a percentage point or two."
   - question: "How should I handle multiple debts at different rates?"
     answer: "A common default order, after minimum payments on everything: a starter emergency fund of about one month of expenses; then high-interest debt (in low-inflation economies, roughly anything above 8 to 10% after tax), with any employer match often taken alongside because of its instant return; then a full emergency fund of three to six months; then tax-advantaged investing; then remaining debt in order of rate, highest first (the avalanche approach from the [get out of debt post](/blog/how-to-get-out-of-debt/)); then taxable investing. It is a default, not a rule. Income-driven student loan repayment, a planned near-term purchase, unstable income, high local inflation or a strong preference for being debt-free can all justify a different order. Its value is having a deliberate priority rather than sending cash to whichever balance feels most urgent."
   - question: "Isn't there a psychological benefit to paying off debt regardless of the math?"
@@ -53,7 +56,7 @@ relatedTool:
   url: "/free/invest-or-pay-off"
   label: "Invest or pay off calculator"
   cta: "Compare both paths with your own debt, on the same date and after your country’s inflation"
-  idea: "Paying off a debt usually produces a certain saving close to its effective interest rate, after fees, tax relief and repayment charges; investing offers an uncertain return. The calculator shows how the two compared across thousands of simulated market histories."
+  idea: "Paying off a debt usually produces a certain saving close to its interest rate, after fees, tax relief and repayment charges; investing offers an uncertain return. The calculator shows how the two compared across thousands of simulated market histories."
 reelPromise: "Why many people take an employer match early, a seven step default order for several debts, and the mental accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
@@ -135,7 +138,7 @@ Is there a match; are you contributing enough to capture all of it; when does it
 
 ## How tax relief changes a debt's rate
 
-Where interest on a debt is tax-deductible, most often a mortgage, the [effective rate](#term-effective-interest-rate) is the rate times (1 minus your [marginal tax rate](#term-marginal-tax-rate)). A 4% mortgage with interest deductible at 30% costs about 2.8% after tax. The like-for-like comparison is the after-tax debt rate against the after-tax investment return: investments in a taxable account are taxed too, while those in a tax-advantaged account mostly are not. Deduction rules change and have been capped or removed in many countries, so many people check that one applies before counting on it; it usually shifts a decision by a point or two, not more.
+Where interest on a debt is tax-deductible, most often a mortgage, the [after-tax rate](#term-after-tax-interest-rate) is the rate times (1 minus your [marginal tax rate](#term-marginal-tax-rate)). A 4% mortgage with interest deductible at 30% costs about 2.8% after tax. The like-for-like comparison is the after-tax debt rate against the after-tax investment return: investments in a taxable account are taxed too, while those in a tax-advantaged account mostly are not. Deduction rules change and have been capped or removed in many countries, so many people check that one applies before counting on it; it usually shifts a decision by a point or two, not more.
 
 ## A common order for several debts
 
@@ -169,7 +172,7 @@ Some steps run in parallel; the order sets where the main flow of cash goes.
 
 ## In the 4 to 8% band, either choice is defensible
 
-Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. Diversified shares have averaged about 7% a year, with bad years inside that average. That is close enough for either choice to be reasonable. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
+Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. Diversified shares have averaged about 7% a year before inflation in this lesson's example (the 4 to 6% after-inflation range plus about 2% inflation), with bad years inside that average. That is close enough for either choice to be reasonable. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
 
 <details class="lesson-depth">
 <summary class="disclosure">When peace of mind outweighs the arithmetic</summary>
@@ -180,7 +183,7 @@ Sometimes the arithmetic says invest and a household prepays debt anyway, and th
 
 ## The traps that cost the most
 
-The [mental accounting post](/blog/mental-accounting/) covered how people sort money into mental boxes. Two mirror-image traps follow. **Paying the biggest debt first:** sending spare cash to a 3.4% mortgage because it feels heavier, while a 22% card keeps compounding. **Investing while a card revolves:** 22% a year is certain; 7% is a long-run average with large swings, so investing while carrying a 22% card is very likely to lose money against clearing it.
+The [mental accounting post](/blog/mental-accounting/) covered how people sort money into mental boxes. Two mirror-image traps follow. **Paying the biggest debt first:** sending spare cash to a 3.4% mortgage because it feels heavier, while a 22% card keeps compounding. **Investing while a card revolves:** 22% a year is certain; 7% before inflation is a long-run average with large swings, so investing while carrying a 22% card is very likely to lose money against clearing it.
 
 <details class="lesson-depth">
 <summary class="disclosure">The debt-free-first school, and the "safe" mortgage overpayment</summary>
@@ -204,7 +207,7 @@ The [mental accounting post](/blog/mental-accounting/) covered how people sort m
 - **Canada.** Interest is not deductible on a primary home, but is on investment property. Structures such as the Smith Manoeuvre turn non-deductible mortgage interest into deductible investment-loan interest for those who use them.
 - **Japan.** For new energy-efficient or certified homes moved into from 2022, a mortgage tax credit of 0.7% of the year-end balance can run for up to 13 years, within a balance limit and the income tax you owe. On a low-rate loan it lowers the effective cost a long way, which weakens the case for early repayment; repaying early also shrinks the credit.
 - **Brazil.** Revolving card interest is often several hundred percent a year in Banco Central data. Since January 2024 the interest and charges on revolving card debt cannot exceed the original amount, so the total repaid can still reach twice what was borrowed, which is why many treat clearing it as an early priority.
-- **Kenya.** Mobile overdrafts such as M-Pesa's Fuliza charge a 1% access fee plus a fee for every day the balance is open: Sh5 a day on Sh101 to Sh500, rising to Sh30 a day on Sh2,501 to Sh70,000. On Sh500, a month open costs about Sh150 in daily fees, almost a third of the amount.
+- **Kenya.** Mobile overdrafts such as M-Pesa's Fuliza charge a 1% access fee plus a fee for every day the balance is open. Under the tariff in force from October 2022 (later changes could not be checked), that is about Sh3 a day including excise on Sh101 to Sh500 after three free days, rising to Sh30 a day on Sh2,501 to Sh70,000. On Sh500, a month open costs about Sh80 in daily fees, about a sixth of the amount.
 
 </details>
 

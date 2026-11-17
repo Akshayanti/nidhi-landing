@@ -14,8 +14,10 @@ takeaways:
   - "How prepayment and break-even maths change the total cost"
 order: 27
 pubDate: 2026-06-17
-updatedDate: 2026-11-14
+updatedDate: 2026-11-17
 corrections:
+  - date: 2026-11-17
+    note: "The lesson said variable rates have been cheaper on average historically in many markets, with no source. The evidence is for some markets and periods, such as Canadian mortgages from 1950 to 2000 in one well-known study, and the saving came with payments that could rise; the lesson now says so."
   - date: 2026-11-14
     note: "The APR table counted bundled insurance as if it were all paid on the first day, so two APRs were too high: loan B is 3.27%, not 3.30%, and loan D is 3.42%, not 3.59%. Loan D is not the most expensive of the four, as the lesson said, but it still costs more than loan A."
 localRules: [borrowing]
@@ -30,7 +32,7 @@ faq:
   - question: "Why are early loan payments mostly interest?"
     answer: "This is how amortisation works. Each monthly payment is split between interest, charged on the balance you still owe, and principal, which reduces that balance. Early on the balance is large, so most of the payment goes to interest and the principal barely moves. As the balance falls, the interest portion shrinks and the principal portion grows. On a €250,000 mortgage at 3% over 25 years, month one is about €625 interest and €561 principal, while by year 20 it has flipped to about €167 interest and €1,018 principal. This skew is why selling early builds little equity and why prepayments in the first years are so powerful."
   - question: "Should I choose a fixed or variable rate loan?"
-    answer: "Fixed rates lock your interest for a set period, giving predictable payments and no exposure to rate rises, usually at a higher starting rate. Variable rates track a reference rate plus a margin, so payments rise and fall with the market: often cheaper on average historically, but exposed to future payment shock. Hybrids fix an initial period then float, which reintroduces variable-rate risk while the balance is still large. The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for a payment jump. 'Cheaper on paper right now' is not the same as cheaper over the life of the loan."
+    answer: "Fixed rates lock your interest for a set period, giving predictable payments and no exposure to rate rises, usually at a higher starting rate. Variable rates track a reference rate plus a margin, so payments rise and fall with the market: in some markets and periods they have cost less on average, but that is not a rule, and they are exposed to future payment shock. Hybrids fix an initial period then float, which reintroduces variable-rate risk while the balance is still large. The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for a payment jump. 'Cheaper on paper right now' is not the same as cheaper over the life of the loan."
   - question: "How powerful is prepaying a loan?"
     answer: "If your loan allows it without penalty, prepaying principal is one of the most effective ways to cut total interest. On a €250,000 mortgage at 3% over 25 years with roughly €105,000 of lifetime interest, adding just €100 a month of principal trims about 2.75 years off the term and saves around €13,000. Doubling that to €200 a month cuts roughly 5 years and saves about €23,000. A prepayment is effectively a guaranteed return equal to the loan rate: a 3% mortgage prepayment earns a guaranteed 3%, a 7% consumer loan a guaranteed 7%. Timing matters too, since early prepayments cancel decades of future interest while late ones save almost nothing."
   - question: "When does refinancing a loan actually save money?"
@@ -107,7 +109,7 @@ Most loans come in two structural flavors:
 
 **Fixed rate.** The interest rate is locked for a set period, sometimes the full loan term, sometimes an initial period. Monthly payments are predictable. You know what you owe over time.
 
-**Variable rate.** The interest rate tracks a reference rate (like a central bank rate or an interbank benchmark) plus a margin. When the reference rises, your payment rises; when it falls, your payment falls. Cheaper on average historically in many markets, but exposed to future rate shocks.
+**Variable rate.** The interest rate tracks a reference rate (like a central bank rate or an interbank benchmark) plus a margin. When the reference rises, your payment rises; when it falls, your payment falls. In some markets and periods, variable rates have cost less on average: one well-known study of Canadian mortgages from 1950 to 2000 found floating usually beat fixed (Milevsky, 2001). A common explanation is that fixed rates carry a premium for the certainty they give. That is not a rule, and a past result does not establish what future borrowers will save. Variable borrowers lose out when rates rise faster than expected, and the saving came with payments that could rise.
 
 | Aspect | Fixed rate | Variable rate |
 |---|---|---|
@@ -115,7 +117,7 @@ Most loans come in two structural flavors:
 | Exposure to rate rises | None (during fixed period) | Full |
 | Typical initial rate | Higher | Lower |
 | Flexibility | Less (sometimes with prepayment penalties) | Often more |
-| Best suited for | Long horizons, stable cash flow, aversion to shocks | Short expected holding periods, higher risk tolerance |
+| Often chosen by | People with long horizons, tight budgets or a strong dislike of payment shocks | People with short expected holding periods or room in the budget for a payment rise |
 
 A hybrid common in many markets: fixed for an initial period (e.g. 5 or 10 years), then variable for the remainder. These trade off some payment predictability for a lower initial rate, but they bring back variable-rate risk exactly when the remaining balance is still large.
 
@@ -199,7 +201,7 @@ Whether this is worth it depends on break-even analysis:
 2. Divide the upfront fee by the monthly savings → number of months to recoup the fee
 3. Compare to how long you actually expect to hold the loan
 
-If you'll keep the loan for 20 years and recoup the fee in 5 years, points are probably worth it. If you'll sell the property or refinance in 3 years and recoup only at year 6, paying for points loses money.
+If the loan is kept for 20 years and the fee is recouped in 5, the points pay for themselves well inside the time the loan is kept. If the property is sold or the loan refinanced in 3 years and the fee is recouped only at year 6, paying for points loses money.
 
 Same logic applies in reverse when lenders offer "no-fee" loans at a slightly higher rate: you're effectively paying for the lender's costs over time.
 

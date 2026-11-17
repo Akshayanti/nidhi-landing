@@ -71,13 +71,9 @@ relatedTool:
 reelPromise: "How the same salary gets mortgage answers from about €120,000 to €430,000, where the 28/36 and 20-30-40 rules come from, and the stress test many people run before signing"
 relatedSlugs: ["understanding-loan-terms", "invest-or-pay-off-debt", "refinancing-timing", "liabilities", "emergency-fund"]
 referentialReading:
-  - title: "Minimum qualifying rate for uninsured mortgages"
-    author: "Office of the Superintendent of Financial Institutions (Canada)"
-    url: "https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages"
-    type: "paper"
-  - title: "PS19/26: High loan to income lending"
-    author: "Bank of England, Prudential Regulation Authority and Financial Conduct Authority"
-    url: "https://www.bankofengland.co.uk/prudential-regulation/publication/2026/october/high-loan-to-income-lending-policy-statement"
+  - title: "Digging Deeper: Evidence on the Effects of Macroprudential Policies from a New Database (IMF Working Paper 19/66, on loan-to-value and other borrowing limits in 134 countries)"
+    author: "Zohair Alam, Adrian Alter, Jesse Eiseman, Heedon Kang, Machiko Narita, Erlend Nier and Naixi Wang"
+    url: "https://www.imf.org/en/Publications/WP/Issues/2019/03/22/Digging-Deeper-Evidence-on-the-Effects-of-Macroprudential-Policies-from-a-New-Database-46658"
     type: "paper"
 ---
 

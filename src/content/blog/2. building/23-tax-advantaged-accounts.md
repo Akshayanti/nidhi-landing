@@ -13,7 +13,10 @@ takeaways:
   - "That the account is a wrapper, not the investment itself"
 order: 23
 pubDate: 2026-06-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said tax-deferred accounts win even when your tax rate stays the same. Against a tax-free account they come out the same at equal rates; deferral only beats a fully taxable account. Singapore's SRS was listed as equity-linked savings; it is a tax-deferred account, with deductible contributions and half of a withdrawal taxed if it is taken on or after the statutory retirement age that applied at the first contribution. The priority order now puts any employer match before the full emergency fund, as the other lessons do, and the 11% figure for paying off 8% debt is shown to assume returns taxed in full every year."
 localRules: [tax, pensions]
 level: "building"
 primaryPersona: "eva"
@@ -25,7 +28,7 @@ faq:
   - question: "What are the five categories of tax-advantaged accounts?"
     answer: "Almost every account fits one of five functions. One: employer-contributed retirement accounts, where your employer pays in alongside you, either matching what you put in or because the law requires it. Two: personal retirement accounts with tax-deferred contributions, where you contribute pre-tax and pay income tax on withdrawal. Three: personal retirement accounts with tax-free growth, where you contribute post-tax and withdraw tax-free. Four: purpose-specific accounts for health, education, or a first home, with favourable treatment if used for that purpose. Five: equity-linked savings with lockups, where you get a tax break in exchange for locking money into equities for a fixed period. The names change by country, for example 401(k), ISA, SIPP, NPS, TFSA, EPF, but the decision logic does not."
   - question: "In what order should I fill tax-advantaged accounts?"
-    answer: "Most personal-finance literature converges on a similar ordering. First comes a starter emergency fund of one month of essential expenses. Then high-interest debt, anything over roughly 8 to 10% in a low-inflation economy, since at a 30% marginal rate paying off 8% debt equals about an 11% pre-tax return; in higher-inflation countries, judge the rate against inflation. Then the full emergency fund of three to six months, and any employer match, a 50 to 100% immediate uplift; many people take it as soon as the starter fund is in place rather than waiting for the full fund. Then tax-advantaged retirement accounts, often up to their limits, purpose-specific accounts where a goal matches, equity-linked savings after that, and finally a taxable brokerage for everything that does not fit. Legitimate reasons to deviate exist, which is why it is a common default rather than a rule."
+    answer: "Most personal-finance literature converges on a similar ordering. First comes a starter emergency fund of one month of essential expenses. Then high-interest debt, by a common rule of thumb anything over roughly 8 to 10% in a low-inflation economy; in higher-inflation countries, the rate is judged against inflation, and there is no universal cutoff. Then any employer match, a 50 to 100% immediate uplift, often taken alongside the debt step or before it. Then the full emergency fund of three to six months. Then tax-advantaged retirement accounts, often up to their limits, purpose-specific accounts where a goal matches, equity-linked savings after that, and finally a taxable brokerage for everything that does not fit. Legitimate reasons to deviate exist, which is why it is a common default rather than a rule."
   - question: "What is the difference between tax-deferred and tax-free-growth accounts?"
     answer: "A tax-deferred account lets you deduct contributions from taxable income now; investments grow untaxed, and withdrawals in retirement are taxed as income. It suits people in a medium-to-high bracket now who expect a lower one in retirement, since paying tax later at a lower rate beats paying now. A tax-free-growth account takes money you have already paid tax on; it grows untaxed and withdrawals in retirement are completely tax-free, including the growth. It suits younger or early-career earners in lower brackets now, people with long horizons, or those expecting higher future taxes. Many long-term savers use both to keep optionality on future tax brackets."
   - question: "Why is skipping an employer match such a costly mistake?"
@@ -67,9 +70,9 @@ Most countries have something in categories 1 and 2; category 3 and beyond vary 
 Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing/) and extends it to the investing stage. It is a description of a common default, not a prescription:
 
 1. **A starter emergency fund.** About one month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
-2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** In a low-inflation economy, anything over roughly 8-10% (credit cards, some personal loans); in higher-inflation countries, judge the rate against inflation instead. This is a certain saving equal to the interest rate. Because debt is paid down with after-tax money, the equivalent pre-tax investment return needed to beat it is even higher: at a 30% marginal tax rate, paying off 8% debt is equivalent to roughly an 11% pre-tax investment return. Hard to beat with diversified investments.
-3. **A fuller emergency fund.** Often three to six months of essential expenses.
-4. **Any employer match (Category 1).** A 50 to 100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place. Many people take the match as soon as the starter fund exists rather than waiting for the full fund; either order is defensible if the money can stay invested. Where employer contributions are compulsory rather than matched, this step happens without a decision; the only choice is about voluntary top-ups.
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** By a common rule of thumb in a low-inflation economy, anything over roughly 8-10% (credit cards, some personal loans); in higher-inflation countries, the rate is judged against inflation instead. There is no universal cutoff: the comparison depends on the debt's after-tax cost, uncertain investment returns, liquidity and risk. This is a certain saving equal to the interest rate. If investment returns were taxed in full each year at a 30% rate, an 8% debt would need a return of about 11% before tax to match; with deferred or sheltered gains the gap is smaller. Either way, it is hard to beat with diversified investments.
+3. **Any employer match (Category 1).** A 50 to 100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place. It is often taken alongside step 2 or before it, as soon as the starter fund exists. Where employer contributions are compulsory rather than matched, this step happens without a decision; the only choice is about voluntary top-ups.
+4. **A fuller emergency fund.** Often three to six months of essential expenses.
 5. **Tax-advantaged retirement accounts**, often filled up to their annual contribution limits by those who can afford to lock the money away. Tax-deferred (Category 2) often suits people in a high bracket now expecting a lower one in retirement; tax-free-growth (Category 3) often suits people in a low bracket now or expecting higher future taxes. Many long-term savers use both to keep optionality on future tax brackets.
 6. **Purpose-specific accounts (Category 4) where a goal matches.** Education accounts for people with children, HSA-type accounts for people with healthcare exposure.
 7. **Equity-linked savings (Category 5)**, usually after the above, and only where the lockup matches the horizon.
@@ -91,11 +94,11 @@ The rest of this post explains what each category looks like in practice, with a
 
 **The function:** You contribute money and deduct that contribution from your taxable income for the year. Investments grow untaxed inside the account. When you withdraw in retirement, the withdrawals count as taxable income at that year's rates.
 
-**Why it helps:** Many people are in a lower tax bracket in retirement than during peak earning years, though large pensions, required withdrawals or future tax changes can flip that. Paying tax later, at a lower rate, beats paying tax now, at a higher rate. Even if your bracket stays the same, you get decades of compounding on the pre-tax amount rather than the post-tax amount.
+**Why it helps:** Many people are in a lower tax bracket in retirement than during peak earning years, though large pensions, required withdrawals or future tax changes can flip that. Paying tax later, at a lower rate, beats paying tax now, at a higher rate. Against a taxable account, deferral also means decades of growth on the pre-tax amount with no yearly tax on it. Against a tax-free account (Category 3), the two come out the same when the tax rate is the same at both ends: 30% taken at the start or 30% taken at the end leaves the same amount after the same growth. The difference comes from whether your rate is expected to be lower or higher at withdrawal, from limits set before or after tax, and from the withdrawal rules.
 
 **Who this suits:** People currently in a medium-to-high tax bracket, expecting to be in a lower one in retirement. People with high current earnings who want immediate tax relief.
 
-**Common examples:** Traditional IRA and Traditional 401(k) in the US; SIPP in the UK; NPS in India; RRSP in Canada; Rürup-Rente in Germany; concessional super in Australia. The mechanics are similar everywhere: deduct now, pay income tax on withdrawal.
+**Common examples:** Traditional IRA and Traditional 401(k) in the US; SIPP in the UK; NPS in India; RRSP in Canada; Rürup-Rente in Germany; concessional super in Australia; SRS in Singapore (only half of a withdrawal is taxed if taken on or after the statutory retirement age that applied when the first SRS contribution was made). The mechanics are similar everywhere: deduct now, pay income tax on withdrawal.
 
 ## Category 3: Tax-free-growth personal retirement accounts
 
@@ -123,7 +126,7 @@ The rest of this post explains what each category looks like in practice, with a
 
 **The trade-off:** You sacrifice liquidity and (in some cases) fund flexibility for the tax break. These accounts often force you into specific fund structures you might not otherwise choose.
 
-**Common examples:** ELSS in India (3-year lockup; the Section 80C deduction applies only to those on the old tax regime, which has been the non-default regime since FY 2023-24); VCT and EIS in the UK (income tax relief in exchange for small-company equity risk); SRS in Singapore (deductible contributions, invested in approved funds); PEA-PME in France (small-cap European equity).
+**Common examples:** ELSS in India (3-year lockup; the Section 80C deduction applies only to those on the old tax regime, which has been the non-default regime since FY 2023-24); VCT and EIS in the UK (income tax relief in exchange for small-company equity risk); PEA-PME in France (small-cap European equity).
 
 **When these make sense:** Usually, only after simpler tax-advantaged space is filled, and only if the lockup and structural constraints genuinely match your goals. A three-year lockup inside a diversified equity fund is fine for long-term money anyway; a five-year lockup into small-company venture investments is a much more specific bet.
 
@@ -142,7 +145,7 @@ The same five categories appear in most developed economies under different name
 | Japan | Corporate DC (kigyōgata DC) | iDeCo | NISA (see notes) | - | - |
 | Netherlands | Pillar 2 (occupational) | Lijfrente (Pillar 3) | - | - | - |
 | New Zealand | KiwiSaver | - | - | - | - |
-| Singapore | CPF | - | - | - | SRS |
+| Singapore | CPF | SRS | - | - | - |
 | South Africa | Pension and provident funds | Retirement annuity (see notes) | TFSA | - | - |
 | United Kingdom | Workplace pension | SIPP | ISA, Lifetime ISA | Junior ISA, Lifetime ISA | VCT, EIS |
 | United States | 401(k), 403(b), TSP | Traditional IRA, Traditional 401(k) | Roth IRA, Roth 401(k) | HSA, 529, Coverdell ESA | - |
