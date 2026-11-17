@@ -224,7 +224,7 @@ export const en = {
       description:
         'Who writes nidhi, why the writing can be trusted, and how each post is researched and sourced.',
       organization:
-        'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the posts describe and sources every article against cited references.',
+        'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the posts describe and cites its sources in each article.',
       /**
        * Read in this order into the JSON-LD `knowsAbout` array, so reordering
        * here reorders the structured data. Named keys rather than an array so
@@ -254,7 +254,7 @@ export const en = {
       whoIsWriting:
         "Every post on this site goes out under one name: nidhi. I started it because I couldn't find a finance tool for an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The lessons come from the same place: real questions I have had to answer, explained the way I wish someone had explained them to me.",
       whyYouCanTrustIt1:
-        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post makes a claim, it points to the source: the books, reference pages, and primary material listed on each article under "referential reading."',
+        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post rests on a study or a dataset, it names it, and the books, reference pages and primary material behind it are listed on each article under "referential reading."',
       /** Counted at build (src/utils/sourceCounts.ts); says what it does not count. */
       sourcesCount:
         "Across {lessons} published lessons, the further-reading lists point to {sources} distinct books, papers and reference pages. Sources cited only inside a lesson's text are not counted here.",
@@ -535,7 +535,7 @@ export const en = {
       anyCountry:
         'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a "Where to check locally" note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
       sourcesAndFigures:
-        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "referential reading," so you can follow the trail rather than take our word for it. Every figure comes with where it is from and what it covers, and the same figure agrees across lessons. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
+        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "referential reading," so you can follow the trail rather than take our word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
       aiUsed1:
         "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
       aiUsed2: {
@@ -740,7 +740,7 @@ export const en = {
       inflation: {
         kicker: 'Prices over time',
         title: 'Inflation Calculator',
-        desc: 'Prices usually rise a little every year, and it adds up. See what your money will buy later, what things may cost, what an old amount is worth today, and whether your raise keeps up. For past amounts it can use your country\'s actual yearly inflation, from the World Bank, for most countries.',
+        desc: 'Prices usually rise a little every year, and it adds up. See what your money could buy later at a rate you choose, what things may cost, what an old amount is worth today, and whether your raise keeps up. For past amounts it can use your country\'s actual yearly inflation, from the World Bank, for most countries.',
         itemName: 'Inflation Calculator',
       },
       investOrPayOff: {

@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-17',
+    items: [
+      {
+        id: 'policy-says-what-is-sourced',
+        text: {
+          en: 'The editorial policy now says which figures carry a source and which are rules of thumb, and a few explanations in the free tools describe rather than advise.',
+          hi: 'संपादकीय नीति अब बताती है कि किन आँकड़ों के साथ स्रोत दिया जाता है और कौन से मोटे-मोटे नियम (rules\u00a0of\u00a0thumb) हैं, और मुफ़्त टूल की कुछ व्याख्याएँ अब सलाह देने के बजाय बताती हैं कि चीज़ें कैसे काम करती हैं।',
+          es: 'La política editorial ahora dice qué cifras llevan fuente y cuáles son reglas generales, y algunas explicaciones de las herramientas gratuitas describen en lugar de aconsejar.',
+          cs: 'Redakční zásady teď říkají, u\u00a0kterých čísel je uveden zdroj a\u00a0která jsou orientační pravidla, a\u00a0několik vysvětlení v\u00a0nástrojích zdarma popisuje, místo aby radilo.',
+          mr: 'संपादकीय धोरण आता सांगते की कोणत्या आकड्यांसोबत स्रोत दिलेला असतो आणि कोणते ढोबळ नियम आहेत, आणि मोफत साधनांमधील काही स्पष्टीकरणे आता सल्ला देण्याऐवजी वर्णन करतात.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-14',
     items: [
       {
