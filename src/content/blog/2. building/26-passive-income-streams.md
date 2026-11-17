@@ -6,7 +6,7 @@ description: "Passive income is not free money. It's the return on assets you've
 tldr:
   - "Passive income is money earned without directly trading time for it, such as dividends, interest, rent and royalties."
   - "Most real passive income needs a large sum invested first, typically tens or hundreds of thousands of euros, to replace even part of a salary."
-  - "Work becomes a choice once that income exceeds expenses, and most internet versions are really active businesses."
+  - "Work becomes a choice once income the portfolio can keep paying exceeds expenses, and most internet versions are really active businesses."
 takeaways:
   - "Which income sources are genuinely passive and which are not"
   - "Why meaningful passive income takes substantial capital"
@@ -14,7 +14,10 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson called the crossover point, when passive income first covers spending, full financial independence without saying how that income is measured. It now says the crossover means independence only when the income counted is one the portfolio can keep paying, such as the portfolio times a cautious withdrawal rate; a crossing reached on one good year is a milestone. It also now says that reinvested dividends and interest are part of total return, not an extra on top of it."
 localRules: [tax, investments]
 level: "building"
 primaryPersona: "eva"
@@ -31,7 +34,7 @@ faq:
   - question: "Is rental property really passive income?"
     answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
   - question: "How does the crossover point relate to passive income?"
-    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income does, even if you keep working. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. Many people find these concrete thresholds more motivating than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
+    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income can, even if you keep working. That holds only if the income counted is one the portfolio can keep paying: dividends and interest actually received, or the portfolio times a cautious withdrawal rate, not one good year's total return. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. Many people find these concrete thresholds more motivating than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
@@ -112,13 +115,13 @@ A few observations:
 - Higher yields usually come with higher risk or higher management load. "8% passive" is rarely as passive or as safe as "2% passive"
 - Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Total return is the fuller measure, not yield alone
 
-This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; readers in higher-inflation or lower-return markets typically use 3 to 3.5%, which moves the target to roughly 28-33× annual expenses.
+This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; a study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, though that study does not establish them as suitable for any particular reader, which moves the target to roughly 28-33× annual expenses.
 
 ## The crossover point
 
 The idea, popularized in *Your Money or Your Life*, is beautifully concrete: the crossover point is the month your passive income first exceeds your expenses.
 
-Before it: work income is what keeps your life going. After it: investment income is what keeps your life going, even if you keep working.
+Before it: work income is what keeps your life going. After it: investment income can keep your life going, even if you keep working, as long as the income counted is one the portfolio can keep paying. Summaries of the book describe its measure as the capital multiplied by a long-term interest rate, which differs from a portfolio withdrawal rule; the [financial independence post](/blog/introduction-to-financial-independence/) uses the portfolio times a withdrawal rate. Counted the second way, the crossover comes when the portfolio reaches the FIRE number. Counted as one year's total return, the lines can cross in a good year and cross back in a bad one.
 
 Tracking it changes behavior. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
 
@@ -128,7 +131,7 @@ Small versions of this milestone are worth celebrating:
 - **Cover utilities.** Next tier
 - **Cover rent / mortgage.** The big psychological threshold for many
 - **Cover everything but discretionary.** Financial resilience milestone
-- **Cover everything.** Crossover point. Full FI.
+- **Cover everything.** Crossover point: full FI, if the income is one the portfolio can keep paying.
 
 Many people find each of these more motivating than an abstract "€X by age Y" target.
 
@@ -136,7 +139,7 @@ Many people find each of these more motivating than an abstract "€X by age Y" 
 
 In the standard savings-rate-driven path to financial independence, the main engine is (income - expenses) compounding inside a portfolio. Passive income adds two things to that story:
 
-**Direct acceleration.** Dividends and interest, when reinvested, buy more income-producing assets, which produce more income. Compounding applies to the *income stream*, not just the principal.
+**Direct acceleration.** Dividends and interest, when reinvested, buy more income-producing assets, which produce more income. Compounding applies to the *income stream*, not just the principal. That reinvested income is already part of an investment's total return, not an addition to it: a fund returning 7% in total does not add its dividends on top, so the acceleration comes from reinvesting, which total-return figures already assume.
 
 **Psychological durability.** It's much easier to stay the course during a downturn when your portfolio is clearly producing real income each month. Market volatility feels different when you're watching dividends arrive than when you're watching a price chart.
 

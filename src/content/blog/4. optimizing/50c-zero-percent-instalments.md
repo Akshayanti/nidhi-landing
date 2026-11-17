@@ -99,7 +99,7 @@ Even when the price is the same, several costs can turn a free plan into an expe
 The arithmetic is only half of it. Several studies find that the option to pay later raises how much people buy:
 
 - A US study of consumers' transaction data found that access to buy now pay later raised people's total spending, not only the timing of it (Di Maggio, Williams and Katz, NBER).
-- A study of merchants found that offering it raised sales by about 20%, driven by customers with weaker credit (Keil, Berg, Burg and Puri, Journal of Financial Economics, 2025).
+- A study of merchants found that offering it raised sales by about 20%, driven by customers with weaker credit (Berg, Burg, Keil and Puri, Journal of Financial Economics, 2025).
 - In an experiment by the Central Bank of Ireland, participants spent on average 4.39% more when they could pay later than when they paid by debit card (2025).
 
 The evidence has limits: the studies come from a few countries and a few years, and they do not show that every user spends more or that the effect is the same in every market. The mechanism is the one the [mental accounting post](/blog/mental-accounting/) described: €100 a month feels smaller than €1,200, even when it adds up to more.

@@ -13,7 +13,10 @@ takeaways:
   - "How reading the metrics together reveals the real story"
 order: 31
 pubDate: 2026-06-26
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The sixth metric was called the income replacement ratio, a name that usually means the share of pre-retirement income needed in retirement, and it counted any investment income against spending. It is now the expense coverage ratio, counting only income the portfolio can keep paying, so that 100% matches the financial independence target. The snapshot's \"Healthy zone\" column is now \"Commonly quoted range\", with a note that these ranges are rules of thumb without a single source, and 3 to 3.5% is described as a more cautious illustration rather than a more defensible rate."
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -23,13 +26,13 @@ faq:
   - question: "Why do financial ratios beat looking at net worth alone?"
     answer: "Net worth is a snapshot; ratios are the diagnosis. A single number in isolation tells you little. A 25-year-old with 150,000 euros and 5,000 euros of liabilities is in a radically different place than a 55-year-old with the same net worth and 400,000 euros of mortgage left. Ratios set one number against another, producing a comparable, transferable signal that means roughly the same thing whether your scale is thousands or millions. 30,000 euros in savings is great if expenses are 1,500 a month and thin if they are 6,000. A handful of ratios together tells you whether your finances are healthy, where they are drifting, and what to adjust while the fix is still small."
   - question: "Which financial health metrics should I actually track?"
-    answer: "Six cover most of what matters for individuals. Debt-to-asset ratio, total liabilities divided by total assets, shows how leveraged you are. Liquid asset percentage shows how flexible you are, how much you could access within days. Emergency fund coverage shows how many months of essential expenses your cash would cover. Savings rate, income minus expenses divided by income, is one of the biggest levers you control over long-term outcomes. Debt-to-income ratio shows how much income is committed to debt service. Income replacement ratio, passive income divided by expenses, shows how close you are to financial independence. None is a target to optimize to a single number; each has a healthy zone."
+    answer: "Six cover most of what matters for individuals. Debt-to-asset ratio, total liabilities divided by total assets, shows how leveraged you are. Liquid asset percentage shows how flexible you are, how much you could access within days. Emergency fund coverage shows how many months of essential expenses your cash would cover. Savings rate, income minus expenses divided by income, is one of the biggest levers you control over long-term outcomes. Debt-to-income ratio shows how much income is committed to debt service. Expense coverage ratio, the income your investments can keep paying divided by expenses, shows how close you are to financial independence. None is a target to optimize to a single number; each has a healthy zone."
   - question: "What is a healthy savings rate?"
     answer: "Savings rate is income minus expenses, divided by income, and it is one of the main drivers of how quickly wealth builds. Rough zones, which are rules of thumb rather than standards: under 10% is minimal, with very slow accumulation; 10 to 20% is a common baseline, which may be enough over a long career if public or workplace pensions do much of the work; 20 to 35% is strong and accelerates retirement; 35 to 50% is high and puts financial independence within a couple of decades; 50% and above is very high, with FI in roughly 17 years or less under the classic assumptions in the financial independence post. Because the metric is volatile month to month, track it as a rolling three- or six-month average rather than reacting to single months. A sustained drop is usually the earliest visible sign of lifestyle creep."
   - question: "How do I interpret the debt-to-asset ratio?"
     answer: "Divide total liabilities by total assets. Under 20% is very low leverage with lots of flexibility; 20 to 40% is moderate and common for homeowners with a mortgage; 40 to 60% is high but manageable with stable income and fixed rates; 60 to 80% is concerning, especially with variable rates or unstable income; 80% and above is highly stressed, where a modest asset drop can push you underwater. A young person with a 90% loan-to-value mortgage naturally starts near 0.9, which is the expected shape, not automatically bad. It falls over time as the mortgage is paid down and other assets accumulate. For young homeowners, the direction matters more than the absolute level."
   - question: "Should I aim to hit the ideal zone on every metric?"
-    answer: "No. The goal is not to be in the ideal zone on all six simultaneously, which is rare for real people at any stage of life. It is to know where you are, which direction each metric is trending, and to catch drift early while the fix is still small. Read the metrics together, not in isolation: a healthy savings rate with low liquid percentage suggests money locked into illiquid assets; strong metrics across the board with low income replacement means you are set up well but early in the journey. The metrics tell you where to look; the combination tells the real story. Chasing a perfect ratio often creates distortion elsewhere."
+    answer: "No. The goal is not to be in the ideal zone on all six simultaneously, which is rare for real people at any stage of life. It is to know where you are, which direction each metric is trending, and to catch drift early while the fix is still small. Read the metrics together, not in isolation: a healthy savings rate with low liquid percentage suggests money locked into illiquid assets; strong metrics across the board with low expense coverage means you are set up well but early in the journey. The metrics tell you where to look; the combination tells the real story. Chasing a perfect ratio often creates distortion elsewhere."
 relatedSlugs: ["setting-financial-goals", "introduction-to-financial-independence", "passive-income-streams", "emergency-fund", "cash-flow-101"]
 referentialReading:
   - title: "G20 Policy Note on Financial Well-Being"
@@ -154,15 +157,17 @@ This metric becomes especially important before considering large new borrowing,
 
 **Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortisation and prepayment power).
 
-## Metric 6: Income replacement ratio
+## Metric 6: Expense coverage ratio
 
-**Formula:** Current passive / portfolio income ÷ current expenses
+**Formula:** Yearly income your investments can keep paying ÷ yearly expenses
 
-**What it measures:** How close your existing asset base is to funding your current lifestyle without work. Equivalent to the "crossover point" from the [passive income post](/blog/passive-income-streams/) expressed as a ratio.
+The income counted is a cautious one, usually the portfolio times the withdrawal rate you plan around (4% of €250,000 is €10,000 a year). One good year's total return overstates it. It is not the same as the income replacement ratio, a retirement-planning term for the share of pre-retirement income needed in retirement.
+
+**What it measures:** How close your existing asset base is to funding your current lifestyle without work. It is the "crossover point" from the [passive income post](/blog/passive-income-streams/) expressed as a ratio, and at 100% it matches the FIRE number from the [financial independence post](/blog/introduction-to-financial-independence/).
 
 **Rough zones:**
 
-| Income replacement | Interpretation |
+| Expense coverage | Interpretation |
 |---|---|
 | Under 10% | Early accumulation phase; work covers almost all expenses |
 | 10-30% | Progress visible; passive income starts noticeably contributing |
@@ -172,20 +177,22 @@ This metric becomes especially important before considering large new borrowing,
 
 This metric grows slowly and is easy to miss without deliberate tracking. It's also enormously motivating over long periods. A chart that rises from 3% to 30% over a decade tells a more concrete story than any single-point net worth number.
 
-> The 100% threshold assumes you can sustain that level of passive income indefinitely. That in turn depends on a safe withdrawal rate. 4% is the US-derived anchor from the Trinity Study; in higher-inflation or lower-return markets (parts of Europe, India, Japan, most emerging economies), 3 to 3.5% is more defensible. At a 3.5% SWR, "financial independence" means passive income covers expenses with a portfolio size closer to 28-33× annual expenses rather than 25×.
+> The 100% threshold is only as sound as the withdrawal rate behind it. 4% is the US-derived anchor from the Trinity Study, tested over 30 years. A study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, which that study does not establish as suitable for any particular reader (the [financial independence post](/blog/introduction-to-financial-independence/) gives the evidence); that study's own figure is lower still. At 3 to 3.5%, 100% coverage needs a portfolio of roughly 28-33× annual expenses rather than 25×.
 
 ## A simple health snapshot
 
 Put them all together and you have a one-page health check:
 
-| Metric | Healthy zone | Your value | Status |
+| Metric | Commonly quoted range | Your value | Status |
 |---|---|---|---|
 | Debt-to-asset ratio | <40% (lower is usually better, context matters) | | |
 | Liquid asset % | 25-50% | | |
 | Emergency fund coverage | 3-6 months | | |
 | Savings rate | 20%+ (a common benchmark; depends on pensions and goals) | | |
 | Debt-to-income ratio | <35% | | |
-| Income replacement ratio | Growing over time | | |
+| Expense coverage ratio | Growing over time | | |
+
+*These ranges are this site's summary of rules of thumb used by planners. They have no single source and do not fit every stage of life: a household with a mortgage will usually hold less than 25% of its assets in liquid form, and a young homeowner will usually sit above 40% debt to assets for years.*
 
 Many people run this once a year, and some quarterly once the habit sticks. The goal isn't to be in the ideal zone on all six simultaneously. That's rare for real people at any stage of life. It's to know where you are, which direction each metric is trending, and to catch drift early.
 
@@ -196,8 +203,8 @@ Any single metric can be misleading in isolation. The honest read comes from rea
 - **Healthy savings rate but low liquid %** → Probably locked into illiquid assets. Flexibility could bite you in a crisis
 - **Low debt-to-income but also low savings rate** → You're paying for your lifestyle from income, not debt, but you're not building wealth
 - **High emergency fund coverage but high debt-to-asset** → The cash is effectively canceling out the leverage; some people weigh using part of the fund against high-interest debt, keeping enough for genuine emergencies
-- **Strong metrics across the board but low income replacement** → You're set up well but early in the accumulation journey. Time will do the work
-- **High income replacement but weakening savings rate** → You may be close to crossover and naturally scaling back; or you may be experiencing lifestyle creep. Which story matches?
+- **Strong metrics across the board but low expense coverage** → You're set up well but early in the accumulation journey. Time will do the work
+- **High expense coverage but weakening savings rate** → You may be close to crossover and naturally scaling back; or you may be experiencing lifestyle creep. Which story matches?
 
 The metrics tell you where to look. They don't tell you what to do. The combination does.
 

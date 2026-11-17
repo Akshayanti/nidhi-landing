@@ -13,7 +13,10 @@ takeaways:
   - "Why the fair comparison is buying vs renting and investing"
 order: 28
 pubDate: 2026-06-19
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said well-managed housing has returned roughly 3 to 6% a year after inflation and costs, below shares and above bonds, as if that were settled. Long-run estimates differ widely: one 16-country study puts housing, rent included, near 7% a year after inflation, about level with shares, while a study of what actual owners earned in Paris and Amsterdam, after costs and taxes, found about 4 to 5%."
 localRules: [property, tax]
 level: "building"
 primaryPersona: "eva"
@@ -22,7 +25,7 @@ tags: ["building", "real-estate", "investing"]
 relatedSlugs: ["understanding-loan-terms", "investing-101-asset-classes", "diversification", "liquidity", "assets"]
 faq:
   - question: "How does real estate actually generate returns?"
-    answer: "Real estate produces returns in two forms. Rental income is the cash tenants pay you, or the rent you avoid paying by living in a property you own. Capital appreciation is the rise in property value over time, which often loosely tracks inflation plus or minus a local adjustment for supply, demand, and growth. Historically, well-managed residential real estate has delivered total real returns in roughly the 3 to 6% range after costs: below long-run stock returns and above long-run bond returns. The crucial caveat is that headline appreciation is almost never your actual return, because maintenance, taxes, insurance, vacancy, and transaction costs all come out of it first."
+    answer: "Real estate produces returns in two forms. Rental income is the cash tenants pay you, or the rent you avoid paying by living in a property you own. Capital appreciation is the rise in property value over time, which often loosely tracks inflation plus or minus a local adjustment for supply, demand, and growth. Estimates of long-run total returns on housing, rent included, differ widely. One study of 16 countries from 1870 to 2015 puts them near 7% a year after inflation, about level with shares, for national housing stocks as a whole; a study of what actual owners earned in Paris and Amsterdam, after costs and taxes, found about 4 to 5% over periods ending in 1943 and 1979. The honest summary is a wide range that depends on country, period and costs. The crucial caveat is that headline appreciation is almost never your actual return, because maintenance, taxes, insurance, vacancy, and transaction costs all come out of it first."
   - question: "What ongoing costs eat into real estate returns?"
     answer: "The biggest gap between perceived and actual returns is friction. As an annual percentage of property value, maintenance and repairs typically run 1 to 3%, property taxes 0.5 to 2%, and insurance 0.2 to 0.5%. For rentals, vacancy costs the equivalent of 4 to 10% of rent and professional management 8 to 12% of rent. Transaction costs are one-time but heavy: a round trip of buying and eventually selling commonly consumes 5 to 10% of value, and far more in some markets. Total ongoing costs frequently take 2 to 4% of property value every year, so a property that 'appreciated 30% over 10 years' may have delivered much less once these are netted out."
   - question: "How does leverage change real estate risk?"
@@ -36,6 +39,10 @@ referentialReading:
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Real_estate_investing"
     type: "blog"
+  - title: "The Rate of Return on Everything, 1870 to 2015 (Quarterly Journal of Economics, 2019)"
+    author: "Òscar Jordà, Katharina Knoll, Dmitry Kuvshinov, Moritz Schularick and Alan M. Taylor"
+    url: "https://doi.org/10.1093/qje/qjz012"
+    type: "paper"
 ---
 
 "Real estate always goes up." "Rent is throwing money away." "Buying is an investment, renting isn't." These are the stories most people carry into the biggest financial decision of their lives, and most of them are wrong or incomplete.
@@ -57,7 +64,7 @@ Historical data varies enormously by country, city, and decade, but broadly:
 - Long-run residential real estate appreciation has averaged in the low single digits in real (inflation-adjusted) terms in many developed markets
 - Nominal appreciation is higher but much of that is just inflation keeping pace
 - Rental yields typically run 3-6% gross of the property value per year, varying widely by market
-- Total real returns for well-managed residential real estate are often illustrated in a rough 3-6% range after costs, an indicative figure that varies widely by market and period: below long-run stock returns, above long-run bond returns
+- Estimates of total real returns, rent included, differ widely. "The Rate of Return on Everything" (Jordà, Knoll, Kuvshinov, Schularick and Taylor, 2019), covers 16 advanced economies from 1870 to 2015. In co-author Alan Taylor's 2018 NBER Reporter summary of the project's findings, housing returned near 7% a year after inflation, about level with shares and with smaller swings. That is for national housing stocks as a whole, not one owner's property after buying and selling costs and tax. Studies built from actual owners' records find less: 4.0% a year after inflation, costs and taxes for Paris rentals from 1809 to 1943, and 4.8% for Amsterdam from 1900 to 1979 (Eichholtz and co-authors, 2021), periods that end well before recent decades. The honest summary is a wide range that depends on country, period and costs
 
 Past performance is not predictive, and local conditions swamp general averages. But it's helpful to anchor on the rough order of magnitude, because the popular perception of real estate returns is usually higher than the honest numbers.
 

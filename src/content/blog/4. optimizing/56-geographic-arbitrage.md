@@ -80,7 +80,7 @@ Lower costs move both at once. €80,000 of income with €48,000 of spending is
 | Savings rate | Years to financial independence |
 |---|---|
 | 40% | about 22 |
-| 55% | about 15 |
+| 55% | about 14.5 |
 | 70% | about 9 |
 
 <figure>
