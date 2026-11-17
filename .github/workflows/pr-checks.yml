@@ -326,7 +326,13 @@ jobs:
         # Only fail on `high` and `critical`. `npm audit` is noisy in the
         # JS ecosystem and lower-severity findings often have no available
         # fix; gating on every advisory leads to dismissal fatigue.
-        run: npm audit --omit=dev --audit-level=high
+        #
+        # The script runs `npm audit --omit=dev` and fails on those two
+        # levels, as the plain command did, except for an advisory with a
+        # dated exception in scripts/lib/audit-exceptions.mjs: one published
+        # before its fix, which would otherwise hold every pull request. An
+        # exception names one advisory and ends on its date.
+        run: node scripts/npm-audit.mjs
 
   # ---------------------------------------------------------------------------
   # Final build. Catches any regressions that only surface during the static
