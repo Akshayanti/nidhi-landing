@@ -156,7 +156,7 @@ export const cs: Dict = {
       description:
         'Kdo píše nidhi, proč lze textům věřit a jak se každý článek zkoumá a dokládá zdroji.',
       organization:
-        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých články píší, a každý článek opírá o citované zdroje.',
+        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých články píší, a\u00a0v\u00a0každém článku uvádí zdroje.',
       knowsAbout: {
         personalFinance: 'Osobní finance',
         financialLiteracy: 'Finanční gramotnost',
@@ -181,7 +181,7 @@ export const cs: Dict = {
       whoIsWriting:
         'Každý článek na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
       whyYouCanTrustIt1:
-        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Kde článek něco tvrdí, odkazuje na zdroj: knihy, referenční stránky a primární materiály uvedené u každého článku v části „referential reading“.',
+        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Pokud článek vychází ze studie nebo datového souboru, uvádí jejich název. Knihy, referenční stránky a\u00a0primární materiály, ze kterých čerpá, jsou u\u00a0každého článku uvedeny v\u00a0části „referential reading“.',
       sourcesCount:
         'Seznamy doporučené četby u zveřejněných lekcí (počet lekcí: {lessons}) odkazují na různé knihy, studie a referenční stránky. Počet různých zdrojů: {sources}. Zdroje citované jen v textu lekce tu započítané nejsou.',
       correctionsCount: {
@@ -422,7 +422,7 @@ export const cs: Dict = {
       anyCountry:
         'Lekce jsou psané pro čtenáře kdekoli, ne pro jednu zemi. Myšlenky, které učí, například čisté jmění, diverzifikace nebo to, jak inflace ukrajuje z úspor, fungují všude stejně. Pravidla kolem nich ne: daně, důchodové a daňově zvýhodněné účty, státní důchody a dávky, úvěrové skóre, pojištění vkladů a spotřebitelské právo se liší země od země a někdy i uvnitř jedné země. Lekce vysvětlují obecnou myšlenku záměrně. Kde něco na takových pravidlech závisí, řeknou to, a poznámka „Kde si to ověřit u vás“ na konci lekce jmenuje obvyklá místa, kde si je ověřit tam, kde žijete, například finanční úřad, regulátora finančního trhu nebo kvalifikovaného místního poradce. Příklady bývají v eurech; je to volba měny, ne znamení, že jde o evropské pravidlo. Kde doklady pocházejí z dat jedné země, například z historie amerického akciového trhu, lekce to také řekne, spolu s tím, co vám tato data nemusejí říct o jiných trzích.',
       sourcesAndFigures:
-        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „referential reading“, aby šlo stopu sledovat, místo věřit nám na slovo. U každého čísla je uvedeno, odkud pochází a co zahrnuje, a stejné číslo se shoduje napříč lekcemi. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
+        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „referential reading“, aby šlo stopu sledovat, místo věřit nám na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
       aiUsed1:
         'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Výstupy různých agentů AI necháváme záměrně vzájemně kontrolovat, aby zachytili to, co některý z nich přehlédne.',
       aiUsed2: {
@@ -593,7 +593,7 @@ export const cs: Dict = {
       inflation: {
         kicker: 'Ceny v čase',
         title: 'Inflační kalkulačka',
-        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co si za své peníze koupíte později, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
+        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co byste si za své peníze mohli koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
         itemName: 'Inflační kalkulačka',
       },
       investOrPayOff: {
