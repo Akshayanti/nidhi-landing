@@ -14,7 +14,10 @@ takeaways:
   - "Why diversification cannot protect against a market-wide fall"
 order: 20
 pubDate: 2026-06-01
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said the free net worth calculator breaks down future obligations by currency. It shows what you own and owe in each currency and each currency's share of your net worth; it does not know your future spending. The lesson also listed investing a lump sum at once as the concentrated choice without saying that, historically, it has more often come out ahead of spreading the same money over a year."
 localRules: [tax]
 level: "building"
 primaryPersona: "eva"
@@ -87,7 +90,7 @@ You diversify along several dimensions at once. Most people think only about the
 
 **4. Company size.** Large established companies behave differently from small growing ones. Broad "total market" index funds include both; narrower indexes may only include large caps.
 
-**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) breaks down assets and future obligations by currency and shows the concentration in each.
+**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows what you own and owe by currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend is yours to make.
 
 **6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis. We come back to this in the next post.
 
@@ -99,6 +102,8 @@ You diversify along several dimensions at once. Most people think only about the
 | Company size | Only large caps | Large + mid + small |
 | Currency | Only home currency | Multiple currencies |
 | Time | One lump sum at one moment | Regular contributions over years |
+
+Time is the odd one out. Regular contributions from pay spread the entry date naturally. For money already in hand, spreading it out narrows the range of outcomes but has usually cost something on average: in Vanguard's study of US, UK and Australian data, investing a lump sum at once beat spreading it over 12 months about two times in three. The [next post](/blog/getting-started-investing/) covers this.
 
 Diversifying along more dimensions is usually better, up to a point. Past that point, adding complexity doesn't add meaningful protection. It just makes the portfolio harder to manage.
 
@@ -129,7 +134,7 @@ Imagine two companies. One makes sunscreen, one makes umbrellas. Both are decent
 <figure>
 <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-divers-title fig-divers-desc">
   <title id="fig-divers-title">Year-by-year returns: Sunscreen, Umbrella, and a 50/50 portfolio</title>
-  <desc id="fig-divers-desc">Two stylized companies have wildly volatile returns that swing in opposite directions across four years. The 50/50 portfolio combining them returns a steady 5 percent each year. Same average return as either component would have produced over time, almost none of the year-to-year volatility.</desc>
+  <desc id="fig-divers-desc">Two stylized companies have wildly volatile returns that swing in opposite directions across four years. The 50/50 portfolio combining them returns a steady 5 percent each year: the average of the two companies' average returns, with almost none of the year-to-year volatility.</desc>
   <text class="fig-title" x="360" y="48" text-anchor="middle">Two volatile companies, one steady portfolio</text>
   <text class="fig-subtitle" x="360" y="76" text-anchor="middle">The same numbers from the table above, plotted year by year</text>
   <line x1="80" y1="273" x2="640" y2="273" class="fig-stroke-rule" stroke-dasharray="3 4" />

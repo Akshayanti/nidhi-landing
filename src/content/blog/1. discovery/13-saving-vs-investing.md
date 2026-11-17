@@ -12,7 +12,10 @@ takeaways:
   - "A common default order, and when people change it"
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The comparison table set savings at 0 to 3% before inflation beside investing at 4 to 6% after inflation; both are now shown after inflation, with savings at about 0 to 1% over the long run. The 8 to 10% debt line is now described as applying in low-inflation economies, as in the other lessons."
 localRules: [tax, pensions]
 level: "discovery"
 primaryPersona: "eva"
@@ -31,13 +34,13 @@ referentialReading:
 relatedSlugs: ["emergency-fund", "purchasing-power", "how-to-get-out-of-debt", "liquidity", "appreciation-vs-depreciation"]
 faq:
   - question: "What is the difference between saving and investing?"
-    answer: "Saving means setting money aside in safe, accessible accounts where the goal is preservation and availability, not growth. Think current accounts, savings accounts, and high-yield savings: low risk, low return of roughly 0 to 3 percent, and immediate access. Investing means putting money into assets like stocks, bonds, and index funds that can grow over time but carry risk and are less liquid, historically returning around 4 to 6 percent per year after inflation for broad stocks in developed markets, with long stretches well below that. Saving suits money you need within 1 to 3 years; investing suits money you will not touch for 5 or more years. They are complementary tools with different jobs, not competing strategies."
+    answer: "Saving means setting money aside in safe, accessible accounts where the goal is preservation and availability, not growth. Think current accounts, savings accounts, and high-yield savings: low risk, low return (often 0 to 3 percent a year before inflation, and about 0 to 1 percent after it over the long run for Treasury bills in the US and world index), and immediate access. Investing means putting money into assets like stocks, bonds, and index funds that can grow over time but carry risk and are less liquid, historically returning around 4 to 6 percent per year after inflation for broad stocks in developed markets, with long stretches well below that. As a rule of thumb, not a guarantee against loss, saving suits money you need within 1 to 3 years and investing suits money you will not touch for 5 or more years. They are complementary tools with different jobs, not competing strategies."
   - question: "When should I save instead of invest?"
     answer: "Saving fits money needed soon or unpredictably. Emergency funds are usually kept in a savings account reachable within a day or so, not in the market. Short-term goals under 3 years, such as a holiday, a deposit, or a car, are commonly kept in savings too, because markets can drop 20 percent in a month and take years to recover. Known upcoming expenses like a tax bill or insurance renewal follow the same logic. A useful test: could you afford to lose 30 percent of this money right when you need it? If not, saving is the usual home for it."
   - question: "When should I invest instead of save?"
     answer: "Investing fits money with time and stability behind it. Money not needed for decades, such as retirement, is the strongest case, because market dips have usually recovered over long horizons, though not in every market, and compounding rewards patience. Once an emergency fund is in place and high-interest debt is handled, surplus cash in a savings account tends to lose purchasing power, which is why many people invest it. Goals more than 5 years away, like a house deposit in 7 years or education in 15, also lean toward investing, since higher average returns have historically outweighed short-term volatility. The longer the horizon, and the more flexible the goal date, the stronger the case."
   - question: "What is the right order: emergency fund, debt, or investing?"
-    answer: "There is no single right order, but a common default looks like this. First, a starter emergency fund of about one month of expenses in a savings account. Where an employer matches retirement contributions, many people capture that match early. Second, high-interest debt, starting with credit cards: above roughly 8 to 10 percent after tax is usually cleared first, while 4 to 8 percent is a judgement call that depends on tax, inflation and risk tolerance. Third, a fuller emergency fund of 3 to 6 months of expenses. Fourth, investing long-term surplus in diversified assets. The logic is avoiding fragility: investing before a safety net exists means one surprise can push you into debt, while over-paying cheap debt and ignoring retirement gives up years of compounding. Your country's rules, income stability and debts can all change the order."
+    answer: "There is no single right order, but a common default looks like this. First, a starter emergency fund of about one month of expenses in a savings account. Where an employer matches retirement contributions, many people capture that match early. Second, high-interest debt, starting with credit cards: by a common rule of thumb in low-inflation economies, above roughly 8 to 10 percent after tax is usually cleared first (where inflation is higher, the line sits higher too, and there is no universal cutoff), while 4 to 8 percent is a judgement call that depends on tax, inflation and risk tolerance. Third, a fuller emergency fund of 3 to 6 months of expenses. Fourth, investing long-term surplus in diversified assets. The logic is avoiding fragility: investing before a safety net exists means one surprise can push you into debt, while over-paying cheap debt and ignoring retirement gives up years of compounding. Your country's rules, income stability and debts can all change the order."
   - question: "What is opportunity cost in saving versus investing?"
     answer: "Opportunity cost is the return you give up by keeping money somewhere it cannot grow. Every euro left in a low-yield savings account is a euro not invested and not compounding. At a 1 percent savings rate versus a 7 percent investment return, 10,000 euros becomes about 11,046 in savings but 19,672 invested after 10 years, and the gap widens to over 62,000 euros after 30 years. This is separate from inflation, which also erodes idle cash. Keeping an emergency fund safe is a deliberate trade-off, but for money that truly is long-term, leaving it in savings is a cost that rarely feels like one."
 ---
@@ -60,7 +63,7 @@ Typical savings vehicles:
 The defining features of saving:
 
 - **Low risk**: your money doesn't lose value (in nominal terms)
-- **Low return**: typically 0-3%, often below inflation
+- **Low return**: typically 0-3% a year before inflation, often below inflation; about 0-1% a year after inflation over the long run for Treasury bills in the US and the world index (lower in some countries, and not a forecast)
 - **High liquidity**: you can access it quickly, usually within a day
 - **Short time horizon**: best for money you need within 1-3 years
 
@@ -83,7 +86,7 @@ The defining features of investing:
 - **Higher risk**: values fluctuate, sometimes sharply
 - **Higher return**: historically around 4-6% per year after inflation (broad stocks, across major developed markets)
 - **Lower liquidity**: selling takes days; some accounts lock money for years
-- **Long time horizon**: best for money you won't need for 5+ years
+- **Long time horizon**: by a common rule of thumb, money you won't need for 5+ years; even 5-year periods have sometimes ended lower
 
 Investing is about making money grow over time, accepting that the path won't be smooth.
 
@@ -93,7 +96,7 @@ Investing is about making money grow over time, accepting that the path won't be
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |
-| **Return** | 0-3% | 4-6% historically after inflation (broad stocks) |
+| **Return** (after inflation, long run) | About 0-1% (Treasury bills, US and world) | 4-6% (broad stocks, developed markets) |
 | **Liquidity** | Immediate | Days to months |
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |
@@ -207,7 +210,7 @@ Investing money you might need soon is closer to speculation than planning.
 There is no single right order, but a common default, which people adapt to their situation, looks like this:
 
 1. **A starter emergency fund** (about 1 month of expenses in a savings account). Where an employer matches retirement contributions, many people take the match early too
-2. **[High-interest debt](/blog/how-to-get-out-of-debt/)** (credit cards first; above roughly 8-10% after tax is usually cleared first, while 4-8% is a judgement call that depends on tax, inflation and risk tolerance)
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/)** (credit cards first; by a common rule of thumb in low-inflation economies, above roughly 8-10% after tax is usually cleared first and the line sits higher where inflation is higher, with no universal cutoff, while 4-8% is a judgement call that depends on tax, inflation and risk tolerance)
 3. **A fuller emergency fund** (often 3-6 months of expenses)
 4. **Investing** long-term surplus in diversified investments
 

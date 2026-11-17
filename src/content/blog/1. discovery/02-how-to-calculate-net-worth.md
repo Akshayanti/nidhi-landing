@@ -12,7 +12,10 @@ takeaways:
   - "Why updating your number monthly reveals the trend"
 order: 2
 pubDate: 2026-04-21
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said the free net worth calculator uses live mid-market exchange rates. It uses daily reference rates from central banks and other official sources, which can differ from the rate a bank or broker gives you."
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -105,7 +108,7 @@ Add up all assets. Add up all liabilities. Subtract.
 
 That's your number.
 
-If your assets and liabilities sit in more than one currency, the [free multi-currency net-worth calculator](/free/multi-currency-net-worth/) handles the FX work and gives you a single clean total. It uses live mid-market rates and shows you how each currency contributes to the bottom line, so a strong dollar or weak rupiah does not quietly distort what you actually own.
+If your assets and liabilities sit in more than one currency, the [free multi-currency net-worth calculator](/free/multi-currency-net-worth/) handles the FX work and gives you a single clean total. It uses daily reference rates from central banks and other official sources, which can differ from the rate a bank or broker gives you, and shows you how each currency contributes to the bottom line, so a strong dollar or weak rupiah does not quietly distort what you actually own.
 
 ## Common surprises
 

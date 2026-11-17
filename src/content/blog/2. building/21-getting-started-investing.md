@@ -14,7 +14,10 @@ takeaways:
   - "Why starting small and early beats starting big and late"
 order: 21
 pubDate: 2026-06-03
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The dollar-cost averaging example gave the average price paid as €95.38; it is €95.36. The lesson also presented that price, below the simple average of €97.50, as an advantage; it is a property of buying a fixed amount each time, and it does not show that spreading purchases beats investing a lump sum at once."
 localRules: [tax, pensions]
 level: "building"
 primaryPersona: "eva"
@@ -100,9 +103,9 @@ A simplified example:
 | March | €120 | €300 | 2.50 |
 | April | €90 | €300 | 3.33 |
 | **Total** | | **€1,200** | **12.58** |
-| **Average price paid** | | | **€95.38** |
+| **Average price paid** | | | **€95.36** |
 
-The average market price across those four months was €97.50. DCA got you in at €95.38 without any forecasting.
+The simple average of the four prices was €97.50. Because a fixed amount buys more shares when the price is low, the average price paid, €95.36, sits below it. That is arithmetic, not an advantage over every alternative: whether it beat investing all €1,200 in January depends on how prices moved, and with a lump sum in hand, investing at once has more often come out ahead (see below).
 
 DCA isn't mathematically optimal in every scenario. If markets only ever went up, investing a lump sum immediately would always win. But it solves a bigger problem. It removes timing decisions from your hands, which removes the temptation to wait, hesitate, or panic. Over a long career, "I actually invested" tends to matter far more than "I timed it perfectly."
 
