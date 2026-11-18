@@ -442,13 +442,12 @@ export const en = {
       limits: 'That is a review, not a guarantee. It did not include testing with disabled readers, with a screen reader, on a real phone or in Windows High Contrast, so it cannot show that the site works for everyone.',
     },
     barriers: {
-      intro: 'These are open as of 14 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
+      intro: 'These are open as of 18 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
         refinanceResults: 'In the loan comparison, changing the refinance figures changes the totals, the saving and the break-even point without a screen reader being told. The main results are announced.',
         toolQuestions: 'On the tool pages, the questions at the end have a visible title, but a screen reader skips that title when moving from heading to heading.',
         copiedLink: 'After a share link is copied, a screen reader may announce the confirmation twice, or not at all. In the loan comparison, the copied address disappears after a few seconds, and in the net worth calculator on a short screen it can appear below the part of the window you can see.',
         chartsTouch: 'On a phone, starting a scroll with your finger on a chart in the loan comparison or the Monte Carlo simulator opens the box showing the figures for that point and makes the page jump. Dragging sideways does not show the figures for other points: each point needs a new tap.',
-        largeAmounts: 'With a much larger text size on a narrow phone, the short result at the top of the Monte Carlo simulator and a very long total in the net worth calculator can break between two digits.',
         smallText: 'On a phone, some text is smaller than the site’s minimum reading size: the note on translated pages that lessons are in English, the copied share address, and the hints under the loan comparison’s fields.',
         legendButton: 'In the net worth calculator’s chart, a legend button reports that it is pressed, but pressing it again does not turn it off.',
       },

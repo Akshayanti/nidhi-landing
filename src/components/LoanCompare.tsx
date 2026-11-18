@@ -38,6 +38,8 @@ import {
   type VendorInput,
 } from '../utils/loan/url.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
+import { longestAmount } from '../utils/shared/amountUnits.ts';
+import { Amount, Amounts, SharedAmounts } from './Amounts.tsx';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
@@ -555,7 +557,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               <tr key={row.month}>
                 <th scope="row">{row.month}</th>
                 {row.values.map((v, idx) => (
-                  <td key={idx}>{v == null ? strings.months.na : formatMoney(v, currency)}</td>
+                  <td key={idx}>{v == null ? strings.months.na : <Amount>{formatMoney(v, currency)}</Amount>}</td>
                 ))}
               </tr>
             ))}
@@ -788,9 +790,9 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
             {rows.map((r) => (
               <tr key={r.month}>
                 <th scope="row">{formatYearLabel(r.month, strings)}</th>
-                <td>{formatMoney(r.payment, currency)}</td>
-                <td>{formatMoney(r.interest, currency)}</td>
-                <td>{formatMoney(r.principal, currency)}</td>
+                <td><Amount>{formatMoney(r.payment, currency)}</Amount></td>
+                <td><Amount>{formatMoney(r.interest, currency)}</Amount></td>
+                <td><Amount>{formatMoney(r.principal, currency)}</Amount></td>
               </tr>
             ))}
           </tbody>
@@ -975,6 +977,18 @@ export default function LoanCompare({
     [vendors, currency],
   );
 
+  // The offers are compared row by row, so each headline row's amount has one
+  // size in every card: the longest among the offers that have a result.
+  const sharedLengths = useMemo(() => {
+    const ok = results.filter((r) => !r.error);
+    const longest = (get: (r: LoanResult) => number) => longestAmount(...ok.map((r) => formatMoney(get(r), currency, amountLocale)));
+    return {
+      monthly: longest((r) => r.effectiveMonthlyMinor),
+      totalPaid: longest((r) => r.totalPaidMinor),
+      totalInterest: longest((r) => r.totalInterestMinor),
+    };
+  }, [results, currency, amountLocale]);
+
   // Debounced validation-error signal. Without this, we are blind to how
   // often real users land on a state where one or more vendors fail to
   // compute (missing principal, rate too high to amortize, etc.). The
@@ -1122,7 +1136,7 @@ export default function LoanCompare({
           <p className="lc-fieldPreview" aria-live="polite">
             <span className="lc-fieldPreviewLabel">{strings.toolbar.sample}</span>{' '}
             <span className="lc-fieldPreviewValue">
-              {formatMoney(toMinor(12345678.9, currency), currency, amountLocale)}
+              <Amount>{formatMoney(toMinor(12345678.9, currency), currency, amountLocale)}</Amount>
             </span>
           </p>
         </div>
@@ -1211,6 +1225,7 @@ export default function LoanCompare({
             vendor={v}
             result={results[i]}
             noPointsBaseline={noPointsBaselines[i]}
+            shared={sharedLengths}
             currency={currency}
             strings={strings}
             onChange={(patch) => updateVendor(i, patch)}
@@ -1360,6 +1375,8 @@ interface VendorCardProps {
   /** Hypothetical "no points paid" baseline; null when vendor isn't
    *  using points. */
   noPointsBaseline: LoanResult | null;
+  /** The longest amount in each headline row across the offers: a row has one size in every card. */
+  shared: { monthly: number; totalPaid: number; totalInterest: number };
   currency: string;
   strings: Strings;
   onChange: (patch: Partial<VendorInput>) => void;
@@ -1384,6 +1401,7 @@ function VendorCard({
   vendor,
   result,
   noPointsBaseline,
+  shared,
   currency,
   strings,
   onChange,
@@ -1634,6 +1652,7 @@ function VendorCard({
                   <ResultRow
                     label={strings.results.monthly}
                     value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                  shared={shared.monthly}
                     hint={strings.results.keptNote}
                     note={
                       result.effectiveMonthlyMinor > result.monthlyPaymentMinor
@@ -1661,9 +1680,9 @@ function VendorCard({
                     <span className="lc-resultHint">{strings.results.monthlyLaterNote}</span>
                     {result.effectiveMonthlyMinor > result.monthlyPaymentMinor && (
                       <span className="lc-resultHint">
-                        {format(strings.results.monthlyIncludesExtra, {
+                        <Amounts>{format(strings.results.monthlyIncludesExtra, {
                           extra: formatMoney(result.effectiveMonthlyMinor - result.monthlyPaymentMinor, currency),
-                        })}
+                        })}</Amounts>
                       </span>
                     )}
                   </dd>
@@ -1672,6 +1691,7 @@ function VendorCard({
                 <ResultRow
                   label={strings.results.monthly}
                   value={formatMoney(result.effectiveMonthlyMinor, currency)}
+                  shared={shared.monthly}
                   hint={
                     Number(vendor.extraMonthly) > 0
                       ? format(strings.results.monthlyExtra, {
@@ -1695,6 +1715,7 @@ function VendorCard({
               <ResultRow
                 label={strings.results.totalPaid}
                 value={notPaid ? noTotalText(result, strings) : formatMoney(result.totalPaidMinor, currency)}
+                shared={shared.totalPaid}
                 emphasized
               />
             </dl>
@@ -1724,6 +1745,7 @@ function VendorCard({
                 <ResultRow
                   label={strings.results.totalInterest}
                   value={notPaid ? noTotalText(result, strings) : formatMoney(result.totalInterestMinor, currency)}
+                  shared={shared.totalInterest}
                 />
                 {result.feeMinor > 0 && (
                   <ResultRow
@@ -2079,16 +2101,18 @@ interface ResultRowProps {
   /** A second line under the hint, on a line of its own. */
   note?: string;
   emphasized?: boolean;
+  /** The longest amount in this row across the offers, so the row has one size in every card. */
+  shared?: number;
 }
 
-function ResultRow({ label, value, hint, note, emphasized }: ResultRowProps) {
+function ResultRow({ label, value, hint, note, emphasized, shared }: ResultRowProps) {
   return (
     <div className={`lc-resultRow ${emphasized ? 'lc-resultRowEmphasized' : ''}`}>
       <dt className="lc-resultLabel">{label}</dt>
       <dd className="lc-resultValue">
-        {value}
-        {hint && <span className="lc-resultHint">{hint}</span>}
-        {note && <span className="lc-resultHint">{note}</span>}
+        <Amounts shared={shared}>{value}</Amounts>
+        {hint && <span className="lc-resultHint"><Amounts>{hint}</Amounts></span>}
+        {note && <span className="lc-resultHint"><Amounts>{note}</Amounts></span>}
       </dd>
     </div>
   );
@@ -2186,6 +2210,10 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
   const highest: (typeof valid)[number] | undefined = sortedByTotal[sortedByTotal.length - 1];
   const spreadMinor = lowest && highest ? highest.r.totalPaidMinor - lowest.r.totalPaidMinor : 0;
   const allSame = spreadMinor === 0;
+  // Both ends of the range are compared, so they share one size.
+  const rangeLength = lowest && highest
+    ? longestAmount(formatMoney(lowest.r.totalPaidMinor, currency), formatMoney(highest.r.totalPaidMinor, currency))
+    : 0;
 
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
@@ -2203,15 +2231,15 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
           strings.delta.noRange
         ) : allSame ? (
           <>{strings.delta.sameBefore}
-            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
+            <strong><Amount>{formatMoney(lowest.r.totalPaidMinor, currency)}</Amount></strong>
             {strings.delta.sameAfter}</>
         ) : (
           <>{strings.delta.rangeBefore}
-            <strong>{formatMoney(lowest.r.totalPaidMinor, currency)}</strong>
+            <strong><Amount shared={rangeLength}>{formatMoney(lowest.r.totalPaidMinor, currency)}</Amount></strong>
             {strings.delta.rangeTo}
-            <strong>{formatMoney(highest.r.totalPaidMinor, currency)}</strong>
+            <strong><Amount shared={rangeLength}>{formatMoney(highest.r.totalPaidMinor, currency)}</Amount></strong>
             {strings.delta.rangeAcross}
-            <strong>{formatMoney(spreadMinor, currency)}</strong>
+            <strong><Amount>{formatMoney(spreadMinor, currency)}</Amount></strong>
             {strings.delta.rangeAfter}</>
         )}
       </p>
@@ -2251,7 +2279,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
                 if (r.keptPayment) {
                   return (
                     <span className="lc-deltaLines">
-                      <span>{formatMoney(r.effectiveMonthlyMinor, currency)}</span>
+                      <span><Amount>{formatMoney(r.effectiveMonthlyMinor, currency)}</Amount></span>
                       <span className="lc-deltaNote">{strings.results.keptNote}</span>
                     </span>
                   );
@@ -2260,7 +2288,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
                 if (change.paymentMinor === null) {
                   return (
                     <span className="lc-deltaLines">
-                      <span>{formatMoney(r.effectiveMonthlyMinor, currency)}</span>
+                      <span><Amount>{formatMoney(r.effectiveMonthlyMinor, currency)}</Amount></span>
                       <span className="lc-deltaNote">{format(strings.results.paidOffBeforeChange, { payoffMonth: r.months })}</span>
                     </span>
                   );
@@ -2336,7 +2364,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
                     ) : diff === 0 ? (
                       <span className="lc-deltaBaseline" aria-label={strings.delta.baselineAria}>{strings.delta.baseline}</span>
                     ) : (
-                      <span className="lc-deltaCost">+{formatMoney(diff, currency)}</span>
+                      <span className="lc-deltaCost"><Amount shared={longestAmount(`+${formatMoney(spreadMinor, currency)}`)}>{`+${formatMoney(diff, currency)}`}</Amount></span>
                     )}
                   </td>
                 );
@@ -2373,12 +2401,16 @@ function DeltaRow({ label, valid, get, format, cell, emphasized }: DeltaRowProps
   // plain value; on phones the whole row then puts one offer per line.
   const cells = valid.map((v) => cell?.(v.r) ?? null);
   const stacked = cells.some((c) => c !== null);
+  // The offers are compared along this row, so its amounts share one size.
+  const shared = longestAmount(...values.map((v) => format(v)));
   return (
     <tr className={[emphasized ? 'lc-deltaRowEmphasized' : '', stacked ? 'lc-deltaRowStacked' : ''].filter(Boolean).join(' ')}>
       <th scope="row">{label}</th>
+      <SharedAmounts length={shared}>
       {valid.map((v, idx) => (
-        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{cells[idx] ?? format(values[idx])}</td>
+        <td key={v.i} data-slot={VENDOR_LABELS[v.i]} style={{ '--lc-color': VENDOR_COLORS[v.i] } as React.CSSProperties}>{cells[idx] ?? <span><Amounts>{format(values[idx])}</Amounts></span>}</td>
       ))}
+      </SharedAmounts>
     </tr>
   );
 }
@@ -2393,11 +2425,11 @@ function PaymentSteps({ first, later, month, last, strings }: { first: string; l
     <span className="lc-steps">
       <span className="lc-step">
         <span className="lc-stepLabel">{month === 2 ? format(strings.balance.month, { m: 1 }) : format(strings.results.monthlyFirst, { lastMonth: month - 1 })}</span>{' '}
-        <span className="lc-stepAmount">{first}</span>
+        <span className="lc-stepAmount"><Amount>{first}</Amount></span>
       </span>
       <span className="lc-step">
         <span className="lc-stepLabel">{format(last ? strings.results.monthlyLast : strings.results.monthlyFrom, { month })}</span>{' '}
-        <span className="lc-stepAmount">{later}</span>
+        <span className="lc-stepAmount"><Amount>{later}</Amount></span>
       </span>
     </span>
   );
@@ -2906,7 +2938,7 @@ function HorizonSection({
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
                     <td key={row.i}>
-                      {formatMoney(snap.principalPaidMinor, currency)}
+                      <Amount>{formatMoney(snap.principalPaidMinor, currency)}</Amount>
                     </td>
                   );
                 })}
@@ -2917,7 +2949,7 @@ function HorizonSection({
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
                     <td key={row.i}>
-                      {formatMoney(snap.interestPaidMinor, currency)}
+                      <Amount>{formatMoney(snap.interestPaidMinor, currency)}</Amount>
                     </td>
                   );
                 })}
@@ -2928,7 +2960,7 @@ function HorizonSection({
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
                     <td key={row.i}>
-                      {formatMoney(snap.balanceMinor, currency)}
+                      <Amount>{formatMoney(snap.balanceMinor, currency)}</Amount>
                     </td>
                   );
                 })}
@@ -2939,7 +2971,7 @@ function HorizonSection({
                   const snap = equityAtMonth(row.r.schedule, horizon, row.r.feeMinor);
                   return (
                     <td key={row.i}>
-                      {formatMoney(snap.totalOutOfPocketMinor, currency)}
+                      <Amount>{formatMoney(snap.totalOutOfPocketMinor, currency)}</Amount>
                     </td>
                   );
                 })}
@@ -3140,13 +3172,16 @@ function RefinanceSection({
       ) : (
         <div className="lc-refiResults">
           <dl className="lc-resultList">
+            {/* Keeping and refinancing are compared, so the two totals share one size. */}
             <ResultRow
               label={strings.refi.keepTotal}
               value={formatMoney(cmp.keepTotalMinor, currency)}
+              shared={longestAmount(formatMoney(cmp.keepTotalMinor, currency), formatMoney(cmp.refinanceTotalMinor, currency))}
             />
             <ResultRow
               label={strings.refi.refiTotal}
               value={formatMoney(cmp.refinanceTotalMinor, currency)}
+              shared={longestAmount(formatMoney(cmp.keepTotalMinor, currency), formatMoney(cmp.refinanceTotalMinor, currency))}
               hint={cmp.extrasCarried ? strings.refi.extrasCarried : undefined}
             />
             {cmp.penaltyMinor > 0 && (

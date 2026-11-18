@@ -35,6 +35,8 @@ import { RatesError, httpErrorReason, ratesErrorReason, ratesRequestUrl } from '
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
+import { longestAmount } from '../utils/shared/amountUnits.ts';
+import { Amount, Amounts } from './Amounts.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -986,8 +988,10 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
   // show what is owned and owed instead of a donut that is 100% one colour
   // and a risk card that has nothing to assess. Needs no rates at all.
   if (isSingleCurrency(result, functionalCurrency)) {
-    const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency);
+    // A true minus sign, like the shares below; the amount is drawn as one unit (Amounts.tsx).
+    const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency).replace(/^-/, '\u2212');
     const split = rows ? ownedAndOwed(rows, functionalCurrency) : null;
+    const splitLength = split ? longestAmount(money(split.owned), money(split.owed > 0 ? -split.owed : 0)) : 0;
     // A redacted shared link carries no amounts; its view passes hideAmounts,
     // so the total reads "Hidden" rather than a zero it never had.
     return (
@@ -1000,13 +1004,14 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         ) : (
           <div className="mcnw-total">
             <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
-            <span className="mcnw-totalValue">{money(result.positions[0].netAmountOriginal)}</span>
+            <span className="mcnw-totalValue"><Amount>{money(result.positions[0].netAmountOriginal)}</Amount></span>
           </div>
         )}
         {split && !hideAmounts && (
+          // What is owned and what is owed are compared, so they share one size.
           <dl className="mcnw-split">
-            <div><dt>{strings.results.whatYouOwn}</dt><dd>{money(split.owned)}</dd></div>
-            <div><dt>{strings.results.whatYouOwe}</dt><dd>{money(split.owed > 0 ? -split.owed : 0)}</dd></div>
+            <div><dt>{strings.results.whatYouOwn}</dt><dd><Amount shared={splitLength}>{money(split.owned)}</Amount></dd></div>
+            <div><dt>{strings.results.whatYouOwe}</dt><dd><Amount shared={splitLength}>{money(split.owed > 0 ? -split.owed : 0)}</Amount></dd></div>
           </dl>
         )}
         <p className="mcnw-singleNote">
@@ -1024,7 +1029,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
   const ratesUsable = result.hasRates !== 'none';
   const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
   const totalLabel = !hideAmounts && ratesUsable
-    ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency)
+    ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace(/^-/, '\u2212')
     : null;
 
   return (
@@ -1038,7 +1043,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
       ) : ratesUsable && totalLabel ? (
         <div className="mcnw-total">
           <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
-          <span className="mcnw-totalValue">{totalLabel}</span>
+          <span className="mcnw-totalValue"><Amounts>{totalLabel}</Amounts></span>
           {result.hasRates === 'partial' && (
             <span className="mcnw-totalHint">
               {strings.results.partialHint}
@@ -1069,7 +1074,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
                   pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
-                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · {formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</>}
+                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</Amount></>}
               </span>
               <span
                 className="mcnw-riskBadge"
@@ -1671,7 +1676,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
                 <SeriesMarker index={arc.slot} color={arc.color} className="mcnw-legendSwatch" />
                 <span className="mcnw-legendCode">{arc.pos.code}</span>
                 <span className="mcnw-legendPct">{pct(arc.amount)}</span>
-                {showAmounts && <span className="mcnw-legendAmount">{amountOf(arc.pos)}</span>}
+                {showAmounts && <span className="mcnw-legendAmount"><Amount>{amountOf(arc.pos)}</Amount></span>}
               </button>
             </li>
           ))}

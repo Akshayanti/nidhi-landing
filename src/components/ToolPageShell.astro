@@ -16,6 +16,7 @@
  * `data-attr` labels are passed in by the page, written out in its source,
  * so the label registry can still read them.
  */
+import AmountsText from './AmountsText.astro';
 import LangRuns from './LangRuns.astro';
 import LessonsInEnglish from './LessonsInEnglish.astro';
 import { dict, localizedPath, type Locale } from '../i18n';
@@ -70,8 +71,8 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
     <summary class="toolp-sectionTitle disclosure">{faq.heading}</summary>
     {(faq.items ?? []).map((f) => (
       <details class="toolp-faqItem">
-        <summary class="toolp-faqQ disclosure">{f.q}</summary>
-        <p class="toolp-faqA">{f.a}</p>
+        <summary class="toolp-faqQ disclosure"><span><AmountsText text={f.q} /></span></summary>
+        <p class="toolp-faqA"><AmountsText text={f.a} /></p>
       </details>
     ))}
     {(faq.sections ?? []).map((section) => (
@@ -79,8 +80,8 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
         <h3 id={`toolp-faq-${section.id}-h`} class="toolp-faqGroupTitle">{section.title}</h3>
         {section.items.map((f) => (
           <details class="toolp-faqItem">
-            <summary class="toolp-faqQ disclosure">{f.q}</summary>
-            <p class="toolp-faqA">{f.a}</p>
+            <summary class="toolp-faqQ disclosure"><span><AmountsText text={f.q} /></span></summary>
+            <p class="toolp-faqA"><AmountsText text={f.a} /></p>
           </details>
         ))}
       </div>
@@ -262,7 +263,21 @@ details.toolp-panel > summary {
      a line of its own. */
   overflow-wrap: anywhere;
 }
+/* A question and its answer are each the box an amount in them is fitted to
+   (.amt): "10,000%" stays whole at any text size. */
+.toolp-faqQ > span,
 .toolp-faqA {
+  container-type: inline-size;
+}
+.toolp-faqQ > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* Both are drawn in the body font (the questions take it from the shared
+   rule for a fold's heading). */
+.toolp-faqQ > span,
+.toolp-faqA {
+  --amt-k: 0.57;
   margin: var(--space-2) 0 0;
   color: var(--color-text-secondary);
   font-size: 0.95rem;

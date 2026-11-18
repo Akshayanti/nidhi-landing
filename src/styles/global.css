@@ -468,7 +468,7 @@ body {
   line-height: 1.6;
   /* A word longer than its line (an address, a long compound at a large text
      size) breaks instead of widening the page (#486). */
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.2s ease, color 0.2s ease;
@@ -479,7 +479,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.25;
   /* A word longer than the line breaks instead of widening the page. */
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   color: var(--color-text-primary);
 }
 
@@ -489,6 +489,14 @@ h1, h2, h3, h4, h5, h6 {
    no heading that would fit gets a hyphen. */
 @media (max-width: 17em) {
   :is(h1, h2, h3, h4, h5, h6):lang(cs) { hyphens: auto; }
+}
+/* At more than about twice the normal text size on a phone, ordinary words
+   are wider than the line in running text too. English, Spanish and Czech
+   then hyphenate ("Invest-ing") rather than break bare ("Investi", "ng").
+   Not at smaller sizes: hyphenated text is harder for dyslexic readers and
+   nothing there needs it. Not Hindi or Marathi, which do not hyphenate. */
+@media (max-width: 9em) {
+  :is(:lang(en), :lang(es), :lang(cs)) { hyphens: auto; }
 }
 
 h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
@@ -688,7 +696,10 @@ strong {
   box-sizing: border-box;
   min-height: 44px;
   height: auto;
-  padding: 0.625rem 1rem;
+  /* The side padding stops at 16px. Growing with the text, it left a button
+     on a phone at 400% about two letters of room, and "Reset" broke letter
+     by letter. */
+  padding: 0.625rem min(1rem, 16px);
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
@@ -799,7 +810,11 @@ strong {
   top: 50%;
   transform: translateY(-50%) rotate(90deg);
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  /* Grows with the reader's text up to one and a half times its size, then
+     stops. The 36px kept clear on the right holds it up to there; beyond
+     that it ran under the words beside it, and, turned on its side, its box
+     reached past the right edge of the row and widened the page (#667). */
+  font-size: min(1.5rem, 36px);
   font-weight: 600;
   line-height: 1;
   color: var(--color-deep-blue);
@@ -2120,6 +2135,8 @@ details[open] > .disclosure::after,
    exactly what they'll get (Western vs lakh/crore grouping, decimal
    separator, decimal count) before the comparison cards reflect it. */
 .lc-fieldPreview {
+  /* The box the sample amount is fitted to (.amt). */
+  container-type: inline-size;
   margin: 6px 0 0;
   font-size: 0.8125rem;
   line-height: 1.4;
@@ -2227,6 +2244,23 @@ details[open] > .disclosure::after,
   gap: var(--space-3);
   box-shadow: var(--shadow-sm);
   min-width: 0; /* allow grid items to shrink properly */
+  /* Its own width decides how its headline figures are laid out (below). */
+  container: lc-card / inline-size;
+}
+/* The card's headline figures sit side by side while each has about 8em.
+   In a narrower card (a phone at a larger text size, a wide screen at a much
+   larger one) they stack, so an amount gets the card's width before it is
+   ever drawn smaller. In em, so it follows the reader's text size. */
+@container lc-card (max-width: 17em) {
+  .lc-card .lc-resultListPrimary .lc-resultRow {
+    flex-basis: 100%;
+  }
+  /* The same for a pair of choices side by side ("Monthly payment" and
+     "Payoff months"): one per line, so neither breaks in the middle of a
+     word. */
+  .lc-card .lc-modeRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .lc-cardHeader {
@@ -2551,7 +2585,8 @@ details[open] > .disclosure::after,
 }
 .lc-fieldGroupHeader::after {
   right: 4px;
-  font-size: 1.25rem;
+  /* Capped like the shared chevron (.disclosure). */
+  font-size: min(1.25rem, 30px);
 }
 .lc-fieldGroupHeader:focus-visible {
   outline: 2px solid var(--color-teal);
@@ -2817,14 +2852,24 @@ details[open] > .disclosure::after,
 
 /* Primary 3-row results: visually emphasised; secondary rows hidden in a
    "Show details" expander beneath. */
-.lc-resultListPrimary {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+.lc-resultList.lc-resultListPrimary {
+  /* Side by side while the figures fit. A box is never narrower than its own
+     amount, so when they no longer fit on one line (a very long amount, a
+     narrow card, a larger text size) the boxes stack, and each amount has the
+     card's width before it is ever drawn smaller. */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--space-2);
   margin: 0;
+  /* The box the amounts are fitted to (.amt); each sits inside a padded box. */
+  container-type: inline-size;
+  --amt-beside: 20px;
 }
 
 .lc-resultListPrimary .lc-resultRow {
+  flex: 1 1 0;
+  container-type: normal;
   flex-direction: column;
   align-items: stretch;
   gap: 2px;
@@ -2856,6 +2901,8 @@ details[open] > .disclosure::after,
   font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-text-muted);
+  /* Regular weight: its digits are narrower than the bold figure above it. */
+  --amt-k: 0.6;
 }
 
 /* A payment that changes with the rate: two steps of the same weight, each
@@ -2912,11 +2959,8 @@ details[open] > .disclosure::after,
 }
 
 @media (max-width: 720px) {
-  .lc-resultListPrimary {
-    grid-template-columns: 1fr 1fr;
-  }
   .lc-resultListPrimary .lc-resultRowEmphasized {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
   }
   .lc-horizonInput {
     flex: 1 1 100%;
@@ -2972,11 +3016,23 @@ details[open] > .disclosure::after,
   text-align: right;
   margin: 0;
   font-variant-numeric: tabular-nums;
-  /* Not word-break: break-word, which lets a flex row squeeze this box
-     until an amount breaks between two digits (#612). The label wraps
-     instead; a sentence here still wraps at its spaces. */
-  overflow-wrap: break-word;
+  /* The amount itself is one unit that cannot break (.amt), so this box may
+     shrink to the row: a long word in the note under the amount breaks
+     instead of pushing the row past the card's edge. */
+  overflow-wrap: anywhere;
+  min-width: 0;
   margin-left: auto;
+}
+
+/* The row is the box its amount is fitted to (.amt): beside the label where
+   it fits, on a line of its own where it does not, and drawn smaller only
+   when it is wider than the row. */
+.lc-resultRow,
+.lc-deltaHero {
+  container-type: inline-size;
+}
+.lc-deltaHero {
+  --amt-k: 0.57;
 }
 
 /* The primary cards stack label over amount; nothing there wraps as a row. */
@@ -3388,7 +3444,9 @@ details[open] > .disclosure::after,
   .lc-vendorTab {
     --lc-color: var(--color-deep-blue);
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr);
+    /* In rem, like the ring it holds, so the name starts after the ring at
+       every text size. */
+    grid-template-columns: 1.75rem minmax(0, 1fr);
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
@@ -3466,8 +3524,6 @@ details[open] > .disclosure::after,
      side by side, total paid below. (.lc-resultList, later in this file,
      otherwise turns the grid back into a column.) */
   .lc-resultList.lc-resultListPrimary {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
   }
 
@@ -3477,14 +3533,31 @@ details[open] > .disclosure::after,
     align-items: flex-start;
   }
 
-  .lc-resultListPrimary .lc-resultRowEmphasized { grid-column: 1 / -1; }
+  .lc-resultListPrimary .lc-resultRowEmphasized { flex-basis: 100%; }
 
   .lc-resultListPrimary .lc-resultValue {
     align-items: flex-start;
     text-align: left;
   }
 
-  /* Side-by-side: one block per metric, values marked by vendor letter. */
+  /* In the card a two-step payment takes the full width on phones, months on
+     the left and amount on the right, so a long amount at a large text size
+     never runs into the APR beside it. */
+  .lc-resultListPrimary .lc-resultRowSteps { flex-basis: 100%; }
+  .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
+
+  /* The phone drawing of the payment split is narrower; its labels get a
+     little more size to stay readable once scaled. */
+  .lc-splitChart--phone .lc-splitValueInterest,
+  .lc-splitChart--phone .lc-splitValuePrincipal,
+  .lc-splitChart--phone .lc-splitTickX { font-size: 11.5px; }
+
+/* The side-by-side table as one block per metric, each value marked by its
+   offer's letter. This is the phone layout, but its width is in em (40em is
+   640px at the normal text size): at a larger text size a wider screen gets
+   it too, where the table's columns would otherwise scroll sideways inside
+   their box with digits out of sight (#667). */
+@media (max-width: 40em) {
   .lc-deltaTableWrap { overflow: visible; }
 
   .lc-deltaTable,
@@ -3509,6 +3582,12 @@ details[open] > .disclosure::after,
     gap: 4px 16px;
     padding: 10px 0;
     border-bottom: 1px solid var(--color-border-light);
+    /* The row is the box an amount is fitted to; the offer's letter and the
+       gap after it sit beside the amount on its line. */
+    container-type: inline-size;
+    --amt-beside: calc(0.8125rem + 10px);
+    /* These amounts are in the body font. */
+    --amt-k: 0.57;
   }
 
   .lc-deltaTable tbody tr:last-child { border-bottom: 0; }
@@ -3526,8 +3605,11 @@ details[open] > .disclosure::after,
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
-    min-width: max-content;
-    white-space: nowrap;
+    /* As wide as its own content, so two values share a line only when both
+       fit, but never wider than the row: a word wider than the row at a very
+       large text size ("referencia") wraps instead of running past the edge.
+       An amount cannot break either way (.amt). */
+    min-width: fit-content;
     padding: 0;
     border: 0;
   }
@@ -3552,12 +3634,6 @@ details[open] > .disclosure::after,
 
   .lc-deltaTable .lc-deltaRowStacked td > .lc-deltaLines { text-align: right; }
 
-  /* In the card a two-step payment takes the full width on phones, months on
-     the left and amount on the right, so a long amount at a large text size
-     never runs into the APR beside it. */
-  .lc-resultListPrimary .lc-resultRowSteps { grid-column: 1 / -1; }
-  .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
-
   .lc-deltaKey {
     display: grid;
     gap: 6px;
@@ -3576,12 +3652,7 @@ details[open] > .disclosure::after,
     font-weight: 700;
     color: var(--color-text-primary);
   }
-
-  /* The phone drawing of the payment split is narrower; its labels get a
-     little more size to stay readable once scaled. */
-  .lc-splitChart--phone .lc-splitValueInterest,
-  .lc-splitChart--phone .lc-splitValuePrincipal,
-  .lc-splitChart--phone .lc-splitTickX { font-size: 11.5px; }
+}
 }
 
 /* =============================================================
@@ -4088,14 +4159,20 @@ details[open] > .disclosure::after,
 
 .mcnw-tableHeader {
   display: flex;
+  /* The count drops under the heading when the two do not fit on one line. */
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
+  gap: 0 var(--space-3);
   margin-bottom: var(--space-3);
 }
 
 .mcnw-rowCount {
   font-size: 0.8125rem;
   color: var(--color-text-muted);
+  /* Keeps its words whole beside the heading; it wraps to its own line
+     before a word breaks. */
+  overflow-wrap: break-word;
 }
 
 /* A row whose amount cannot be read: the box, the sentence under it, and
@@ -4310,7 +4387,8 @@ details[open] > .disclosure::after,
 }
 .mcnw-csvFoldSummary::after {
   right: 4px;
-  font-size: 1.25rem;
+  /* Capped like the shared chevron (.disclosure). */
+  font-size: min(1.25rem, 30px);
 }
 .mcnw-csvFoldBody {
   display: flex;
@@ -4376,14 +4454,23 @@ details[open] > .disclosure::after,
 
 /* Single-currency results: what is owned and owed, then a short note. */
 .mcnw-split {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
+  /* The box the amounts are fitted to (.amt); each sits inside a padded,
+     bordered box of its own. */
+  container-type: inline-size;
+  --amt-beside: calc(2 * var(--space-4) + 2px);
   max-width: 420px;
   margin: 0 auto var(--space-5);
 }
 
 .mcnw-split > div {
+  /* Half the row each while both amounts fit. Neither box goes narrower than
+     its own contents, so when the two no longer fit side by side they stack,
+     and each amount has the full width before it is ever drawn smaller. */
+  flex: 1 1 0;
+  min-width: fit-content;
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
@@ -4605,6 +4692,16 @@ details[open] > .disclosure::after,
   .mcnw-cellCurrency { grid-column: 2; }
   .mcnw-cellType { grid-column: 1; }
   .mcnw-cellActions { grid-column: 2; justify-self: end; }
+}
+/* A phone at a larger text size: two boxes side by side leave no room for
+   their own names ("Currency"), so each box takes a line. In em, so it
+   follows the reader's text size. */
+@media (max-width: 640px) and (max-width: 19em) {
+  .mcnw-tableRow { grid-template-columns: minmax(0, 1fr); }
+  .mcnw-cellValue,
+  .mcnw-cellCurrency,
+  .mcnw-cellType,
+  .mcnw-cellActions { grid-column: 1; }
 }
 
 @media (max-width: 480px) {
@@ -4959,11 +5056,20 @@ body[data-page="landing"] .site-footer {
   margin: 0;
 }
 .mcs-cards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Three across while the three amounts fit. A card is never narrower than
+     its own amount, so when they no longer fit side by side (a very long
+     amount, a narrow screen, a larger text size) the cards stack, and each
+     amount has the full width before it is ever drawn smaller. */
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
+  /* The box the amounts are fitted to (.amt); each sits inside a padded,
+     bordered card. */
+  container-type: inline-size;
+  --amt-beside: calc(2 * var(--space-4) + 2px);
 }
 .mcs-card {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -4971,7 +5077,6 @@ body[data-page="landing"] .site-footer {
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
   background: var(--color-bg);
-  min-width: 0;
 }
 .mcs-card--mid {
   border-color: var(--color-deep-blue);
@@ -4985,9 +5090,27 @@ body[data-page="landing"] .site-footer {
   font-weight: 700;
   font-size: 1.35rem;
   color: var(--color-text-primary);
-  /* An amount is read whole: it never splits across lines. Where three
-     cards side by side cannot hold it, they stack (see the phone rules). */
-  white-space: nowrap;
+  /* An amount is read whole: it never splits across lines (.amt). Where
+     three cards side by side cannot hold it, they stack (below, and the phone
+     rules); where a card alone cannot, the three are drawn smaller together. */
+}
+/* Each sentence that quotes an amount is the box that amount is fitted to. */
+.mcs-note,
+.mcs-lastedHead,
+.mcs-quickValue,
+.mcs-quickRange {
+  container-type: inline-size;
+}
+.mcs-note,
+.mcs-lastedHead,
+.mcs-quickRange {
+  --amt-k: 0.57;
+}
+/* Three cards side by side need about 40em of screen for their labels. On a
+   wider screen at a large text size they stack, as they do on a phone. In
+   em, so it follows the reader's text size. */
+@media (min-width: 641px) and (max-width: 40em) {
+  .mcs-card { flex-basis: 100%; }
 }
 .mcs-note,
 .mcs-lastedHead,
@@ -5114,8 +5237,8 @@ body[data-page="landing"] .site-footer {
   .mcs-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .mcs-cards {
-    grid-template-columns: 1fr;
+  .mcs-card {
+    flex-basis: 100%;
   }
 }
 @media (max-width: 640px) {
@@ -5289,10 +5412,12 @@ body[data-page="landing"] .site-footer {
     color: var(--color-text-secondary);
   }
   .mcs-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-2);
+    --amt-beside: calc(2 * var(--space-2) + 2px);
   }
+  /* Three across again, with the short names only. */
   .mcs-card {
+    flex-basis: 0;
     gap: 2px;
     padding: var(--space-2);
   }
@@ -5314,8 +5439,8 @@ body[data-page="landing"] .site-footer {
      row each, label on the left and amount on the right. In em so it follows
      the reader's text size. */
   @media (max-width: 30em) {
-    .mcs-cards { grid-template-columns: minmax(0, 1fr); }
     .mcs-card {
+      flex-basis: 100%;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -6571,6 +6696,146 @@ button.mcnw-legendItem:focus-visible {
   gap: var(--space-6);
   color: var(--color-text-primary);
 }
+/* An amount in a tool's results: one unit that never breaks across lines
+   (Amounts.tsx). Where it is wider than the box it sits in, that one amount
+   is drawn smaller, by just enough to fit; the words around it keep the
+   reader's text size. The fit is `box width / (length x factor)`: the length
+   is the amount's width counted in digits, set inline, and the factor is the
+   width of a digit in the font, in em: with fixed-width digits, 0.646em in
+   the heading font and 0.568em in the body font. The factor is the heading
+   font's unless the block says the body font's (`--amt-k: 0.57`).
+   `.amt-box`, or a block that declares `container-type` itself, is the box an
+   amount is fitted to; without one it is fitted to the screen. Where
+   something always sits beside the amount on its line (an offer's letter),
+   `--amt-beside` is the room that takes. */
+/* Accepted trade-off (owner, Nov 17, 2026): at 400% text on a 320 px phone a
+   very long amount comes out smaller than the label beside it. That is the
+   cost of never breaking, shortening or scrolling an amount (CLAUDE.md). */
+.amt {
+  display: inline-block;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: min(1em, calc((100cqi - var(--amt-beside, 0px)) / (var(--amt-len, 1) * var(--amt-k, 0.65))));
+}
+.amt-box { container-type: inline-size; }
+/* A table of figures behind a fold (the yearly table in the Monte Carlo
+   simulator and in the inflation calculator). Where its columns do not fit,
+   each row is drawn as a short record: the row's name, then every figure on
+   a line with its column's name before it, and the amount fitted to that line
+   like any other (.amt). Nothing scrolls sideways, so no digit sits out of
+   sight (#667; council, Nov 17, 2026). The widths are in em, so a larger text
+   size brings the records in on a wider screen too. The markup carries table
+   roles, so a screen reader still reads a table. */
+/* Five columns need about 40em: narrower than that (any phone, or a wider
+   screen at a larger text size) the Monte Carlo table is drawn as records. */
+@media (max-width: 40em) {
+  .mcs-tableScroll { overflow-x: visible; }
+  .mcs-table.tool-recordTable,
+  .mcs-table.tool-recordTable caption,
+  .mcs-table.tool-recordTable tbody,
+  .mcs-table.tool-recordTable tr,
+  .mcs-table.tool-recordTable th[scope="row"],
+  .mcs-table.tool-recordTable td {
+    display: block;
+    max-width: none;
+  }
+  /* The column names are on every line; the heading row is kept for screen readers only. */
+  .mcs-table.tool-recordTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .mcs-table.tool-recordTable tbody tr {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border-light);
+    /* The record is the box its amounts are fitted to. */
+    container-type: inline-size;
+    --amt-k: 0.57;
+  }
+  .mcs-table.tool-recordTable tbody th[scope="row"],
+  .mcs-table.tool-recordTable tbody td {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0 var(--space-3);
+    padding: 2px 0;
+    border: 0;
+    text-align: right;
+    white-space: normal;
+  }
+  .mcs-table.tool-recordTable tbody th[scope="row"]::before,
+  .mcs-table.tool-recordTable tbody td::before {
+    /* Shown, but not read out a second time: the column heading is already
+       the cell's header for a screen reader. One declaration on purpose: a
+       browser that does not know the "/" form shows no label at all, which is
+       better than one read twice. */
+    content: attr(data-label) / "";
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-align: left;
+  }
+}
+@media (min-width: 40.01em) {
+  .mcs-tableScroll .amt { font-size: 1em; }
+}
+/* Two columns fit an ordinary phone; the inflation table becomes records
+   only where they do not (a phone at about twice the normal text size). */
+@media (max-width: 20em) {
+  .ifc-tableScroll { overflow-x: visible; }
+  .ifc-table.tool-recordTable,
+  .ifc-table.tool-recordTable caption,
+  .ifc-table.tool-recordTable tbody,
+  .ifc-table.tool-recordTable tr,
+  .ifc-table.tool-recordTable th[scope="row"],
+  .ifc-table.tool-recordTable td {
+    display: block;
+    max-width: none;
+  }
+  /* The column names are on every line; the heading row is kept for screen readers only. */
+  .ifc-table.tool-recordTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .ifc-table.tool-recordTable tbody tr {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border-light);
+    /* The record is the box its amounts are fitted to. */
+    container-type: inline-size;
+    --amt-k: 0.57;
+  }
+  .ifc-table.tool-recordTable tbody th[scope="row"],
+  .ifc-table.tool-recordTable tbody td {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0 var(--space-3);
+    padding: 2px 0;
+    border: 0;
+    text-align: right;
+    white-space: normal;
+  }
+  .ifc-table.tool-recordTable tbody th[scope="row"]::before,
+  .ifc-table.tool-recordTable tbody td::before {
+    /* Shown, but not read out a second time: the column heading is already
+       the cell's header for a screen reader. One declaration on purpose: a
+       browser that does not know the "/" form shows no label at all, which is
+       better than one read twice. */
+    content: attr(data-label) / "";
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-align: left;
+  }
+}
+
 .ifc-form,
 .ifc-results {
   background: var(--color-bg-white);
@@ -6945,6 +7210,9 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-table th,
 .ifc-table td {
+  /* A year or a rate stays whole; a table too wide for its box scrolls
+     sideways inside that box. */
+  white-space: nowrap;
   padding: 4px 10px;
   border-bottom: 1px solid var(--color-border-light);
   text-align: right;
@@ -7037,8 +7305,16 @@ button.mcnw-legendItem:focus-visible {
 .ifc-bandLabel {
   color: var(--color-text-muted);
 }
-.ifc-bandItem {
-  white-space: nowrap;
+/* Each line of the answer is the box its amounts are fitted to (.amt). The
+   range's items wrap between their words; each amount in them stays whole. */
+.ifc-answer > p,
+.ifc-chartTitle {
+  container-type: inline-size;
+  --amt-k: 0.57;
+}
+.ifc-answer > .ifc-headline,
+.ifc-chartTitle {
+  --amt-k: 0.65;
 }
 .ifc-method {
   margin: 0;
@@ -7651,6 +7927,17 @@ button.mcnw-legendItem:focus-visible {
   margin: 0;
   line-height: 1.55;
 }
+/* Each line of the answer is the box its amounts are fitted to. */
+.iop-answer p,
+.iop-pathFacts li,
+.iop-chartLabel {
+  container-type: inline-size;
+  --amt-k: 0.57;
+}
+.iop-answer .iop-headline,
+.iop-answer .iop-pathRange {
+  --amt-k: 0.65;
+}
 .iop-answer .iop-headline {
   font-size: 1.2rem;
   line-height: 1.4;
@@ -7856,7 +8143,10 @@ body .toolp-faqQ[class] {
   flex: 0 1 auto;
   min-width: 0;
   justify-content: flex-start;
-  overflow-wrap: break-word;
+  /* A tab wider than the whole row (one long word at a large text size)
+     breaks its word instead of running past its own edge. Tabs still wrap
+     as wholes first: a row breaks before a word does. */
+  overflow-wrap: anywhere;
 }
 /* Stacked on a narrow screen, every tab keeps a faint rule so the set still
    reads as tabs. */
@@ -7925,6 +8215,9 @@ body .toolp-faqQ[class] {
 @container mcs-form (max-width: 16.5em) {
   .mcs-switchRow {
     grid-template-columns: minmax(0, 1fr);
+    /* With a row to itself, a word still wider than the row breaks instead
+       of running past the edge ("Optimistický" at 400% text). */
+    overflow-wrap: anywhere;
   }
   .mcs-switchOpt:first-child {
     border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;

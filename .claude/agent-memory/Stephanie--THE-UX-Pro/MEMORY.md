@@ -13,3 +13,4 @@
 - [Contrast PR 14 Nov](contrast-pr-review-2026-11-14.md) — #629: placeholders fixed; newsletter box focus rings 1.07:1 light on callout blue; en search hint cut at 375
 - [Forms PR 14 Nov](forms-pr-review-2026-11-14.md) — #630: aria-disabled sending verified; group name = description; faded Change it vs "nothing fades"; safe form-test recipe
 - [Phone pass Nov 2026](phone-pass-2026-11.md) — touch, hydration, print, forced-colour and email causes; emulation pitfalls (smooth scroll, font flags, widened viewport)
+- [Large text review 17 Nov](large-text-review-2026-11-17.md) — #667: .btn em padding causes letter breaks at 400%; fitted amounts smaller than labels; old-vs-new via addStyleTag

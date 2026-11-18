@@ -1,2 +1,2 @@
 - [Editorial voice and canonical figures](project_editorial_voice_and_canonical_figures.md) — voice rule, canonical figures, Nov 2026 audit open items, and the conventions settled on 2026-11-17 (cash 0-1% real, crossover, priority order, housing)
-- [Tool model positions](project_tool_model_positions.md) — APR convention, final loan payment, simulator single line, net worth bands, APR per currency, redenominations, simulated-amount rounding, refinance penalty and break-even (Nov 14)
+- [Tool model positions](project_tool_model_positions.md) — amount display when space is short (#667, Nov 17); the Nov 14 positions were lost, re-derive from code
