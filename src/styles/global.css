@@ -6770,8 +6770,9 @@ button.mcnw-legendItem:focus-visible {
   .mcs-table.tool-recordTable tbody th[scope="row"]::before,
   .mcs-table.tool-recordTable tbody td::before {
     /* Shown, but not read out a second time: the column heading is already
-       the cell's header for a screen reader. */
-    content: attr(data-label);
+       the cell's header for a screen reader. One declaration on purpose: a
+       browser that does not know the "/" form shows no label at all, which is
+       better than one read twice. */
     content: attr(data-label) / "";
     font-weight: 400;
     color: var(--color-text-secondary);
@@ -6825,8 +6826,9 @@ button.mcnw-legendItem:focus-visible {
   .ifc-table.tool-recordTable tbody th[scope="row"]::before,
   .ifc-table.tool-recordTable tbody td::before {
     /* Shown, but not read out a second time: the column heading is already
-       the cell's header for a screen reader. */
-    content: attr(data-label);
+       the cell's header for a screen reader. One declaration on purpose: a
+       browser that does not know the "/" form shows no label at all, which is
+       better than one read twice. */
     content: attr(data-label) / "";
     font-weight: 400;
     color: var(--color-text-secondary);

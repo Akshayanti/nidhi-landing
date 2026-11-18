@@ -67,7 +67,7 @@ const paths = opt('--path') ? opt('--path').split(',') : tools.map((t) => `/free
 const locales = pick('--locale', LOCALES);
 const widths = pick('--width', WIDTHS).map(Number);
 const sizes = pick('--size', SIZES).map(Number);
-const only = opt('--state');
+const only = opt('--state') ? opt('--state').split(';') : null;
 const jsonOut = opt('--json');
 const noFonts = args.includes('--no-fonts');
 const shots = opt('--shots');
@@ -346,6 +346,8 @@ async function typeAmounts([first, ...lower]) {
   await new Promise((r) => setTimeout(r, 900));
 }
 
+const LONGEST = ['1000000000000', '1000000000000', '100000000000', '10000000000', '1000000000', '100000000', '10000000'];
+
 /** The states of a tool page, each a function that changes the page in the browser. */
 const STATES = [
   ['loaded', null],
@@ -358,14 +360,18 @@ const STATES = [
   // lower limits (1e11 for the simulator's withdrawal, 1e10 for its monthly
   // amount). Each field is offered the figures in turn, largest first, and
   // keeps the first one the tool accepts: its own maximum.
-  ['longest amounts', typeAmounts, ['1000000000000', '1000000000000', '100000000000', '10000000000', '1000000000', '100000000', '10000000']],
+  ['longest amounts', typeAmounts, LONGEST],
   ['last choices', async () => {
     // The last radio of each group is the one that reveals a field ("My own figure").
     const groups = new Map();
     for (const r of document.querySelectorAll('.toolp-page input[type="radio"]')) groups.set(r.name, r);
     for (const r of groups.values()) r.click();
+    // A switch that is off hides its fields too ("Take money out later").
+    for (const c of document.querySelectorAll('.toolp-page input[type="checkbox"]')) if (!c.checked && !c.closest('[hidden]')) c.click();
     await new Promise((r) => setTimeout(r, 400));
   }],
+  // The fields those choices revealed, at their own maxima as well.
+  ['longest amounts, every choice', typeAmounts, LONGEST],
 ];
 
 const results = [];
@@ -393,6 +399,10 @@ const run = async (size) => {
           await page.setViewport({ width, height: 900, deviceScaleFactor: 1, isMobile: width < 800, hasTouch: width < 800 });
           await page.goto(base + path, { waitUntil: 'networkidle2', timeout: 90000 });
           await page.evaluate(() => document.fonts.ready);
+          // A tool that never started would be measured as a still picture of
+          // itself: typed amounts and choices would change nothing.
+          await page.waitForFunction(() => !document.querySelector('astro-island[ssr]'), { timeout: 30000 })
+            .catch(() => { throw new Error(`A tool on ${path} did not start (its island never hydrated)`); });
           const root = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
           if (Math.abs(root - px) > 0.5) throw new Error(`Text size not applied: root is ${root}px, expected ${px}px`);
           const tabs = await page.$$eval('.toolp-page [role="tab"]', (els) => els.length);
@@ -402,8 +412,8 @@ const run = async (size) => {
             await new Promise((r) => setTimeout(r, 500));
           }, i])];
           for (const [state, change, arg] of states) {
-            // --state measures one state only (as loaded, then that state).
-            if (only && state !== only) continue;
+            // --state measures the named states only, in order ("a;b").
+            if (only && !only.includes(state)) continue;
             if (change) await page.evaluate(change, arg);
             const m = await page.evaluate(measure, !noFonts);
             taken.push({ tool, locale, width, size, state, ...m });
