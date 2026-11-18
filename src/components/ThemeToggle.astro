@@ -132,9 +132,21 @@ const strings = dict(locale);
       }
     });
 
+    // A page brought back by the back or forward button is shown as it was
+    // left, so it takes the theme chosen since then (#520).
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) applyTheme(showChosen());
+    });
+
+    /** Marks the chosen theme's button and returns the choice. */
+    function showChosen() {
+      var chosen = localStorage.getItem(STORAGE_KEY) || 'system';
+      if (toggle) updateButtons(chosen);
+      return chosen;
+    }
+
     if (toggle) {
-      var currentMode = localStorage.getItem(STORAGE_KEY) || 'system';
-      updateButtons(currentMode);
+      showChosen();
 
       toggle.querySelectorAll('.theme-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {

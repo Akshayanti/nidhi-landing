@@ -137,8 +137,20 @@ describe('typed values, by the page locale', () => {
     assert.equal(parsePercent('2.5', 0, MAX_RATE, 'en-IN'), 2.5);
   });
 
+  it('reads a half-typed number as the other tools do (#520)', () => {
+    assert.equal(parsePercent('3.', 0, MAX_RATE), 3);
+    assert.equal(parsePercent('.5', 0, MAX_RATE), 0.5);
+    assert.equal(parsePercent(',5', 0, MAX_RATE, 'es'), 0.5);
+    assert.equal(parsePercent('3,', 0, MAX_RATE, 'cs'), 3);
+    assert.equal(parsePercent('-.5', -99.99, MAX_RATE), -0.5);
+    assert.equal(parseAmount('.5'), 0.5);
+    assert.equal(parseAmount('1,000.', 'en'), 1000);
+    // The page's own decimal mark only: a point is grouping on a Spanish page.
+    assert.equal(parsePercent('.5', 0, MAX_RATE, 'es'), null);
+  });
+
   it('rejects more decimals, words, negatives where not allowed, and out-of-range rates', () => {
-    for (const bad of ['', 'abc', '3.255', '10000.01', '10001', '-1', '1e3', '3.', '.5', '1,000.5.5']) {
+    for (const bad of ['', 'abc', '3.255', '10000.01', '10001', '-1', '1e3', '.', '1,000.5.5']) {
       assert.equal(parsePercent(bad, 0, MAX_RATE), null, bad);
     }
     assert.equal(parsePercent('10.000,01', 0, MAX_RATE, 'es'), null);

@@ -16,7 +16,7 @@
  * result from claiming a precision that a guessed rate cannot carry.
  */
 
-import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+import { completeNumber, parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
 
 export type Mode = 'buy' | 'cost' | 'past' | 'keep';
 export const MODES: readonly Mode[] = ['buy', 'cost', 'past', 'keep'];
@@ -117,7 +117,7 @@ export function roundAbout(v: number): number {
 
 /** Parses a typed percentage within [min, max], or returns null when it is not one. */
 export function parsePercent(raw: string, min: number, max: number, locale = 'en'): number | null {
-  const n = parseLocaleNumber(raw, locale, { maxDecimals: 2, allowNegative: min < 0 });
+  const n = parseLocaleNumber(completeNumber(raw, locale), locale, { maxDecimals: 2, allowNegative: min < 0 });
   return n !== null && n >= min && n <= max ? n : null;
 }
 
@@ -131,7 +131,7 @@ export function parseYears(raw: string): number | null {
 
 /** Parses a typed amount from 0 to MAX_AMOUNT, to the cent at most, or null. */
 export function parseAmount(raw: string, locale = 'en'): number | null {
-  const n = parseLocaleNumber(raw, locale, { maxDecimals: 2 });
+  const n = parseLocaleNumber(completeNumber(raw, locale), locale, { maxDecimals: 2 });
   return n !== null && n <= MAX_AMOUNT ? n : null;
 }
 

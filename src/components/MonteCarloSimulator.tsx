@@ -5,6 +5,7 @@ import { CURRENCIES } from '../utils/loan/math.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
+import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
 import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
@@ -434,6 +435,7 @@ export default function MonteCarloSimulator({
   const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
+    <ChartWordsContext.Provider value={exportStrings.chart}>
     <NumberLocaleContext.Provider value={numberLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <div className="mcs-root" {...heldUntilReady(toolReady)}>
@@ -667,6 +669,7 @@ export default function MonteCarloSimulator({
     </div>
     </ErrorLeadContext.Provider>
     </NumberLocaleContext.Provider>
+    </ChartWordsContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -737,7 +740,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
           </span>
           <span className="mcs-quickValue"><Amount>{formatAmount(r.p50, code)}</Amount></span>
           <span className="mcs-quickRange">
-            <Amounts>{t(strings.quick.range, { low: formatAmount(r.p10, code, true), high: formatAmount(r.p90, code, true) })}</Amounts>
+            <Amounts>{t(strings.quick.range, { low: formatAmount(r.p10, code), high: formatAmount(r.p90, code) })}</Amounts>
           </span>
         </>
       )}
@@ -969,9 +972,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const [hover, setHover] = useState<number | null>(null);
   const { bands, straightLine, years } = result;
   const narrow = usePhone();
-  const { W, H, PAD, endLabels: showEndLabels } = narrow ? NARROW : WIDE;
-  const PLOT_W = W - PAD.left - PAD.right;
-  const PLOT_H = H - PAD.top - PAD.bottom;
+  const { W, H, PAD: BASE, endLabels: showEndLabels } = narrow ? NARROW : WIDE;
 
   // Scale to the middle half of every year, plus the full 8-in-10 band while
   // saving. During withdrawals the luckiest paths keep compounding and would
@@ -982,6 +983,20 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
     Math.max(...bands.map((b) => b.p75), ...bands.slice(0, saveEnd + 1).map((b) => b.p90), ...straightLine),
   );
   const clipped = bands.some((b) => b.p90 > top);
+
+  // The axis names its unit once, above the chart, and its gridlines carry
+  // bare numbers; the left margin is as wide as those numbers are drawn (#521).
+  const amounts = useChartAmounts();
+  const axis = amounts.axis(top, code);
+  const tickText = Array.from({ length: yCount + 1 }, (_, i) => axis.tick(i * yStep));
+  const margin = useAxisMargin(
+    svgRef,
+    '.mcs-axisAmount',
+    { estimate: Math.max(...tickText.map((s) => s.length)) * 9.5, gap: 16, least: narrow ? 22 : 32, width: W, right: BASE.right },
+  );
+  const PAD = { ...BASE, left: margin.left };
+  const PLOT_W = W - PAD.left - PAD.right;
+  const PLOT_H = H - PAD.top - PAD.bottom;
 
   const x = (y: number) => PAD.left + (years === 0 ? 0 : (y / years) * PLOT_W);
   const yPx = (v: number) => PAD.top + (1 - Math.min(v, top) / top) * PLOT_H;
@@ -1098,6 +1113,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
       onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHover(null); }}
     >
       {!narrow && <p className="mcs-swipe" aria-hidden="true">{strings.chart.swipe}</p>}
+      <ChartUnit>{axis.heading}</ChartUnit>
       <div className="mcs-chartScroll">
         <div
           className={narrow ? 'mcs-chartBox mcs-chartBox--scrub' : 'mcs-chartBox'}
@@ -1154,7 +1170,9 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
             {yTicks.map((v) => (
               <g key={`y${v}`}>
                 <line className={v === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(v)} y2={yPx(v)} />
-                <text className="mcs-axis" x={PAD.left - 12} y={yPx(v) + 5} textAnchor="end">{formatAmount(v, code, true)}</text>
+                {margin.inside
+                  ? v > 0 && <text className="mcs-axis mcs-axisAmount mcs-axisAmount--inside" x={PAD.left + 6} y={yPx(v) - 5} textAnchor="start">{axis.tick(v)}</text>
+                  : <text className="mcs-axis mcs-axisAmount" x={PAD.left - 12} y={yPx(v) + 5} textAnchor="end">{axis.tick(v)}</text>}
               </g>
             ))}
             {xTicks.map((v) => (
@@ -1188,7 +1206,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
                 {showEndLabels && (
                   <text x={W - PAD.right + 12} y={endY[i] - 2}>
                     <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
-                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{formatAmount(l.said, code, true)}</tspan>
+                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{amounts.label(l.said, code)}</tspan>
                   </text>
                 )}
               </g>

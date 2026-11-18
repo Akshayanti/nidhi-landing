@@ -3,6 +3,7 @@ import { CURRENCIES, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
+import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
@@ -506,6 +507,7 @@ export default function InflationCalculator({
   const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
+    <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
@@ -683,6 +685,7 @@ export default function InflationCalculator({
       {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </ErrorLeadContext.Provider>
+    </ChartWordsContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }
@@ -1203,13 +1206,28 @@ function LineChart({
   strings: Strings;
   narrow: boolean;
 }) {
-  const { formatAmount, amountLocale } = useMoney();
+  const { amountLocale } = useMoney();
+  const amounts = useChartAmounts();
   const titleId = useId();
   const descId = useId();
-  if (points.length < 2) return null;
+  const svgRef = useRef<SVGSVGElement>(null);
+  const W = narrow ? 360 : 760;
   const values = points.map((p) => p.value);
-  const maxV = Math.max(...values);
-  if (!Number.isFinite(maxV) || maxV >= DISPLAY_CEILING) {
+  const maxV = Math.max(0, ...values);
+  const drawn = points.length >= 2 && Number.isFinite(maxV) && maxV < DISPLAY_CEILING;
+  const { top, step, count } = niceScale(drawn ? maxV : 1, narrow ? 4 : 5);
+  // The axis names its unit once, above the chart, and its gridlines carry
+  // bare numbers; the left margin is as wide as those numbers are drawn (#521).
+  const unit = amounts.axis(top, code);
+  const yTicks = Array.from({ length: count + 1 }, (_, i) => i * step);
+  const tickText = yTicks.map((v) => unit.tick(v));
+  const margin = useAxisMargin(
+    svgRef,
+    '.ifc-axisAmount',
+    { estimate: Math.max(...tickText.map((s) => s.length)) * 9.5, gap: 14, least: narrow ? 18 : 28, width: W, right: narrow ? 18 : 28 },
+  );
+  if (points.length < 2) return null;
+  if (!drawn) {
     return (
       <figure className="ifc-figure">
         <figcaption className="ifc-chartTitle"><Amounts>{title}</Amounts></figcaption>
@@ -1217,12 +1235,10 @@ function LineChart({
       </figure>
     );
   }
-  const W = narrow ? 360 : 760;
   const H = narrow ? 210 : 300;
-  const PAD = narrow ? { top: 14, right: 18, bottom: 54, left: 70 } : { top: 18, right: 28, bottom: 58, left: 100 };
+  const PAD = { ...(narrow ? { top: 14, right: 18, bottom: 54 } : { top: 18, right: 28, bottom: 58 }), left: margin.left };
   const plotW = W - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
-  const { top, step, count } = niceScale(maxV, narrow ? 4 : 5);
   const x0 = points[0].x;
   const x1 = points[points.length - 1].x;
   const span = Math.max(1, x1 - x0);
@@ -1231,7 +1247,6 @@ function LineChart({
   const r1 = (n: number) => Math.round(n * 10) / 10;
   const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${r1(px(p.x))},${r1(py(p.value))}`).join(' ');
   const area = `${line} L${r1(px(x1))},${r1(py(0))} L${r1(px(x0))},${r1(py(0))} Z`;
-  const yTicks = Array.from({ length: count + 1 }, (_, i) => i * step);
   const maxTicks = narrow ? 4 : 8;
   const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks) ?? 100;
   const xTicks: number[] = [];
@@ -1248,12 +1263,15 @@ function LineChart({
   return (
     <figure className="ifc-figure">
       <figcaption className="ifc-chartTitle" id={titleId}><Amounts>{title}</Amounts></figcaption>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} aria-describedby={descId} className="ifc-chart">
+      <ChartUnit>{unit.heading}</ChartUnit>
+      <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} aria-describedby={descId} className="ifc-chart">
         <desc id={descId}>{desc}</desc>
         {yTicks.map((v) => (
           <g key={`y${v}`}>
             <line className={v === 0 ? 'ifc-axisLine' : 'ifc-gridLine'} x1={PAD.left} x2={W - PAD.right} y1={r1(py(v))} y2={r1(py(v))} />
-            <text className="ifc-axis" x={PAD.left - 10} y={r1(py(v)) + 5} textAnchor="end">{formatAmount(v, code, true)}</text>
+            {margin.inside
+              ? v > 0 && <text className="ifc-axis ifc-axisAmount" x={PAD.left + 6} y={r1(py(v)) - 5} textAnchor="start">{unit.tick(v)}</text>
+              : <text className="ifc-axis ifc-axisAmount" x={PAD.left - 10} y={r1(py(v)) + 5} textAnchor="end">{unit.tick(v)}</text>}
           </g>
         ))}
         {xTicks.map((x) => (

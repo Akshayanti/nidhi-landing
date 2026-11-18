@@ -224,7 +224,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
       const url = new URL(window.location.href);
       const q = url.searchParams.get('q');
       if (q) {
-        setQuery(q);
+        setQuery(q.slice(0, 200));
         url.searchParams.delete('q');
         window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
       }
@@ -322,8 +322,6 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
     const timer = window.setTimeout(() => setSaidCount(countLine), 600);
     return () => window.clearTimeout(timer);
   }, [countLine]);
-
-  useEffect(() => { setShowAll(false); }, [trimmed]);
 
   const band = guides.length > 0 && howTo.featured.length > 0;
   const StartH = band ? 'h3' : 'h2';
@@ -556,7 +554,10 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           aria-describedby="learn-search-hint"
           autoComplete="off"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          // A new search starts from the short list again. Reset here, not in an
+          // effect: an effect on every keystroke can loop under very fast input (#520).
+          onChange={(e) => { setQuery(e.target.value); setShowAll(false); }}
+          maxLength={200}
         />
         {/* The hint is a line under the box in every language, not a
             placeholder: it does not vanish at the first key, and outside

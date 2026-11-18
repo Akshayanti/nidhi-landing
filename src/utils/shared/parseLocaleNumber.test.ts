@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   canonicalNumber,
+  completeNumber,
   displayNumber,
   formatForInput,
   numberSeparators,
@@ -185,6 +186,18 @@ describe('canonicalNumber and displayNumber: the input box and plain-number stat
     assert.equal(canonicalNumber(',5', ES), '0.5');
   });
 
+  it('completes a half-typed number the same way for every tool (#520)', () => {
+    assert.equal(completeNumber('2.', EN), '2');
+    assert.equal(completeNumber('.5', EN), '0.5');
+    assert.equal(completeNumber(',5', ES), '0,5');
+    assert.equal(completeNumber('2,', ES), '2');
+    assert.equal(completeNumber('-.5', EN), '-0.5');
+    assert.equal(completeNumber('.', EN), '.', 'a mark alone is not a number');
+    assert.equal(completeNumber('2.5', EN), '2.5');
+    // Not the page's decimal mark: left for the parser to judge.
+    assert.equal(completeNumber('.5', ES), '.5');
+  });
+
   it('marks text that is not a number as NaN rather than reading it another way', () => {
     assert.equal(canonicalNumber('1,23,4', EN), 'NaN');
     assert.equal(canonicalNumber('abc', ES), 'NaN');
@@ -273,5 +286,21 @@ describe('digits from other keyboards, and very large and very small numbers (#3
     assert.equal(m.formatForInput(0.000001, 'es', 6), '0,000001');
     assert.equal(m.formatForInput(0.004, 'en'), '0');
     assert.equal(m.formatForInput(0.005, 'en'), '0.01');
+  });
+});
+
+describe('a number too long to print in digits by default (#520)', () => {
+  it('is still handed on in plain digits, never as an exponent', () => {
+    assert.equal(canonicalNumber('999999999999999999999', 'en'), '1000000000000000000000');
+    assert.match(canonicalNumber('2500099999999999999999999', 'en'), /^\d{25}$/);
+    assert.equal(canonicalNumber('99999999999999999999', 'en'), '100000000000000000000');
+  });
+
+  it('reads a number past what a number can hold as the largest there is, not as no number', () => {
+    const huge = '9'.repeat(400);
+    assert.equal(parseLocaleNumber(huge, 'en'), Number.MAX_VALUE);
+    assert.equal(parseLocaleNumber(`-${huge}`, 'en', { allowNegative: true }), -Number.MAX_VALUE);
+    assert.match(canonicalNumber(huge, 'en'), /^\d{309}$/);
+    assert.equal(parseLocaleNumber(`${huge}x`, 'en'), null, 'still not a number when it is not one');
   });
 });
