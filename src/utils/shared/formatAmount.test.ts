@@ -12,15 +12,26 @@ import { formatAmount, formatPercent, formatProseAmount, formatProsePercent } fr
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
 
-function decimalSeparator(locale: string): string {
-  return new Intl.NumberFormat(locale).formatToParts(1.5).find((p) => p.type === 'decimal')!.value;
-}
-
 describe('formatAmount', () => {
-  it('formats full amounts in the currency\'s own conventions', () => {
+  it('formats full amounts with the currency\'s symbol and grouping', () => {
     assert.equal(formatAmount(1_058_721, 'EUR'), '€1,058,721');
     assert.equal(formatAmount(1_058_721, 'USD'), '$1,058,721');
     assert.equal(formatAmount(1_058_721, 'INR'), '₹10,58,721');
+  });
+
+  // #619: "₺10.000" beside "2,490,320%" reads as ten on an English page.
+  it('writes every currency with a comma between groups and a point for decimals', () => {
+    assert.equal(formatAmount(10_000, 'TRY'), '₺10,000');
+    assert.equal(formatAmount(10_000, 'BRL').replace(/\s/g, ' '), 'R$ 10,000');
+    assert.equal(formatAmount(10_000, 'CZK').replace(/\s/g, ' '), '10,000 Kč');
+    assert.equal(formatAmount(10_000, 'CHF').replace(/\s/g, ' '), 'CHF 10,000');
+    assert.equal(formatAmount(10_000, 'ZAR').replace(/\s/g, ' '), 'R 10,000');
+    // Four digits are grouped too, where the currency's own style leaves them bare.
+    assert.equal(formatAmount(1_234, 'PLN').replace(/\s/g, ' '), '1,234 zł');
+    for (const c of CURRENCIES) {
+      const full = formatAmount(1_058_721, c.code);
+      assert.match(full, c.code === 'INR' || c.code === 'BDT' ? /10,58,721/ : /1,058,721/, `${c.code}: ${full}`);
+    }
   });
 
   it('abbreviates in English for every supported currency', () => {
@@ -30,11 +41,11 @@ describe('formatAmount', () => {
     }
   });
 
-  it('keeps the currency\'s decimal separator in short forms', () => {
+  it('writes short forms with a decimal point, whatever the currency', () => {
     for (const c of CURRENCIES) {
       if (c.code === 'INR' || c.code === 'BDT') continue; // lakh and crore, checked below
       const short = formatAmount(2_163_515, c.code, true);
-      assert.ok(short.includes(`2${decimalSeparator(c.locale)}16`), `${c.code}: ${short}`);
+      assert.ok(short.includes('2.16'), `${c.code}: ${short}`);
     }
   });
 
@@ -166,8 +177,9 @@ describe('formatProsePercent', () => {
 });
 
 describe('formatPercent', () => {
-  it('uses the currency\'s decimal separator and spacing', () => {
-    assert.equal(formatPercent(44.13, 'CZK').replace(/\s/g, ' '), '44,1 %');
+  it('uses the same marks as the amount beside it', () => {
+    assert.equal(formatPercent(44.13, 'CZK'), '44.1%');
+    assert.equal(formatPercent(44.13, 'CZK', 1, 'cs').replace(/\s/g, ' '), '44,1 %');
     assert.equal(formatPercent(44.13, 'USD'), '44.1%');
     assert.equal(formatPercent(44.13, 'CHF'), '44.1%');
   });

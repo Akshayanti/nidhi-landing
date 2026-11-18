@@ -135,6 +135,16 @@ describe('formatMoney on a page with its own amount style', () => {
   it('keeps the currency\'s own style without one', () => {
     assert.equal(formatMoney(toMinor(1234567.89, 'EUR'), 'EUR', null), formatMoney(toMinor(1234567.89, 'EUR'), 'EUR'));
   });
+
+  // #619: the currency's symbol, place and decimals, with the page's marks.
+  it('writes a comma between groups and a point for decimals without one, in any currency', () => {
+    const plain = (v: string) => v.replace(/\s/g, ' ');
+    assert.equal(plain(formatMoney(toMinor(1234567.89, 'TRY'), 'TRY')), '₺1,234,567.89');
+    assert.equal(plain(formatMoney(toMinor(1234567.89, 'BRL'), 'BRL')), 'R$ 1,234,567.89');
+    assert.equal(plain(formatMoney(toMinor(1234567.89, 'CZK'), 'CZK')), '1,234,567.89 Kč');
+    assert.equal(plain(formatMoney(toMinor(1234567.89, 'INR'), 'INR')), '₹12,34,567.89');
+    assert.equal(plain(formatMoney(toMinor(1234567, 'JPY'), 'JPY')), '￥1,234,567');
+  });
 });
 
 describe('formatMoney', () => {

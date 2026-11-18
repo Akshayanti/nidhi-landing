@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, amountStyle } from '../utils/loan/math.ts';
+import { CURRENCIES, amountFormat, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
@@ -45,7 +45,7 @@ import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
-import { currencyChangesBetween } from '../utils/inflation/currencyChanges.ts';
+import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
 import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
@@ -142,8 +142,8 @@ function pct(v: number, locale: string, digits = 2, signed = false): string {
 
 /** What the reader typed, to the cent where they typed cents. */
 function typedAmount(v: number, code: string, amountLocale: string | null): string {
-  const { locale, display } = amountStyle(code, amountLocale);
-  return new Intl.NumberFormat(locale, {
+  const { display } = amountStyle(code, amountLocale);
+  return amountFormat(code, amountLocale, {
     style: 'currency',
     currency: code,
     currencyDisplay: display,
@@ -1003,6 +1003,18 @@ interface Answer {
   axis: string;
 }
 
+/** When a change took effect, as far as its source says: "on 5 March 1993", "in July 1995", "during 1999". */
+function changeDate(on: NonNullable<CurrencyChange['on']>, r: Strings['results']): string {
+  if (on.month === undefined) return t(r.changedDuring, { year: on.year });
+  if (on.day === undefined) return t(r.changedIn, { month: r.monthsAlone[on.month - 1], year: on.year });
+  return t(r.changedOn, { day: on.day, month: r.monthsWithDay[on.month - 1], year: on.year });
+}
+
+/** The euro area's figures run back to 1960; euro notes and coins came in 2002. */
+const EURO_AREA = 'EMU';
+const EURO_BEGAN = 1999;
+const EURO_CASH = 2002;
+
 function computeAnswer(
   s: ToolState,
   strings: Strings,
@@ -1035,8 +1047,15 @@ function computeAnswer(
     const unit = changes.reduce((r, c) => r * c.ratio, 1);
     const value = (A * factor) / unit;
     const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
+    // The first year can be the very year a change took effect, when both
+    // monies were in use (#619). The amount is read by the year the table
+    // files the change under, and the note gives what the figures can say.
+    const mixed = country!.currency === code ? mixedYearChange(country!.code, from) : null;
+    // The euro area as a whole, before euro notes and coins: the typed number
+    // was nobody's euros, so it is shown as a plain amount.
+    const beforeEuroCash = country!.code === EURO_AREA && country!.currency === code && from < EURO_CASH;
     // Across a change the typed amount was not today's money, so it carries no symbol.
-    const shownAmount = changes.length > 0 ? plain(A) : amount;
+    const shownAmount = changes.length > 0 || beforeEuroCash ? plain(A) : amount;
     const sentences = [
       t(changes.length > 0 ? r.pastCountryOld : r.pastCountry, { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to }),
     ];
@@ -1048,6 +1067,21 @@ function computeAnswer(
           ? t(r.currencyChanged, { country: country!.name, year: changes[0].year, ratio: plain(unit), from, unconverted })
           : t(r.currencyChangedMore, { country: country!.name, years: changes.map((c) => c.year).join(', '), ratio: plain(unit), from, unconverted });
       sentences.push(announceMore);
+    }
+    if (mixed?.on) {
+      const note =
+        mixed.year === from
+          ? // Read as the new money: the other reading is one more division.
+            t(r.mixedYear, { country: country!.name, changeDate: changeDate(mixed.on, r), ratio: plain(mixed.ratio), oldResult: aboutText(value / mixed.ratio, code, strings, amountLocale), year: from })
+          : // Filed under the next year, so read as the old money by the note above.
+            t(r.mixedYearBefore, { changeDate: changeDate(mixed.on, r), year: from });
+      sentences.push(note);
+      announceMore = announceMore ? `${announceMore} ${note}` : note;
+    }
+    if (beforeEuroCash) {
+      const note = t(from < EURO_BEGAN ? r.euroBefore1999 : r.euro1999to2001, { from });
+      sentences.push(note);
+      announceMore = announceMore ? `${announceMore} ${note}` : note;
     }
     sentences.push(t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }));
     return {

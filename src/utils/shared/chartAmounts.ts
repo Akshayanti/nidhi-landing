@@ -19,7 +19,7 @@
  * millions and thousand millions; the others count rupees in thousands, lakhs
  * and crores, and every other currency the western way.
  */
-import { amountStyle } from '../loan/math.ts';
+import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
 
 export type AmountScale = 'none' | 'thousand' | 'lakh' | 'crore' | 'million' | 'billion';
 
@@ -70,7 +70,7 @@ export function axisHeading(words: ChartWords, scale: AmountScale, code: string,
 
 /** A gridline's figure on an axis whose heading names `scale`: a bare number. */
 export function axisTick(value: number, scale: AmountScale, code: string, amountLocale?: string | null): string {
-  const { locale } = amountStyle(code, amountLocale);
+  const locale = amountNumberLocale(code, amountLocale);
   const v = value / SCALE_DIVISOR[scale];
   // Up to two decimals, so neighbouring gridlines never round to one figure
   // ("0.25", "0.5", "0.75"), and none that are not needed.
@@ -99,7 +99,7 @@ export function chartLabel(value: number, code: string, words: ChartWords, amoun
   const v = Math.abs(value) >= 999.5 ? Number(value.toPrecision(3)) : Math.round(value);
   let scale = amountScale(v, code, amountLocale);
   const currency = { style: 'currency', currency: code, currencyDisplay: display } as const;
-  if (scale === 'none') return new Intl.NumberFormat(locale, { ...currency, maximumFractionDigits: 0 }).format(v);
+  if (scale === 'none') return amountFormat(code, amountLocale, { ...currency, maximumFractionDigits: 0 }).format(v);
   let digits: Intl.NumberFormatOptions = { maximumSignificantDigits: 3 };
   // A Spanish reader takes "B" for billón, a million millions, so a thousand
   // million is written in millions: "2.500 M €".
@@ -109,7 +109,7 @@ export function chartLabel(value: number, code: string, words: ChartWords, amoun
     digits = { maximumFractionDigits: 0, useGrouping: 'always' };
   }
   const suffix = words.short[scale].replace('{n}', '');
-  const parts = new Intl.NumberFormat(locale, { ...currency, ...digits }).formatToParts(v / SCALE_DIVISOR[scale]);
+  const parts = amountFormat(code, amountLocale, { ...currency, ...digits }).formatToParts(v / SCALE_DIVISOR[scale]);
   let lastNumeric = -1;
   parts.forEach((p, i) => {
     if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;

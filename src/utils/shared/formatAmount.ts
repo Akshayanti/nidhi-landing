@@ -3,13 +3,13 @@
  * illustrative figures the site quotes in its own writing. The two are not the
  * same rule; see `formatProseAmount` for the second.
  */
-import { amountStyle } from '../loan/math.ts';
+import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
 import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**
- * Amounts use the chosen currency's own conventions (separators, symbol
- * placement), like the other free tools. Short forms for chart labels keep
- * those conventions but always abbreviate in English: the browser's compact
+ * Amounts keep the chosen currency's symbol, its place and its grouping, with
+ * the page's marks (`amountFormat`), like the other free tools. Short forms
+ * for chart labels keep that but always abbreviate in English: the browser's compact
  * notation would write "Mio.", "mln" or "万" on an English page. English
  * locales already abbreviate in English (and en-IN in lakh and crore), so
  * they use it as is.
@@ -23,19 +23,19 @@ export function formatAmount(value: number, code: string, compact = false, amoun
   const { locale, display } = amountStyle(code, amountLocale);
   const v = Math.round(value);
   if (!compact) {
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, maximumFractionDigits: 0 }).format(v);
+    return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumFractionDigits: 0 }).format(v);
   }
   // English locales abbreviate in English (and en-IN in lakh and crore), and
   // Czech in Czech: "150 tis. Kč", "1,5 mil. Kč", "2,3 mld. Kč", never "B",
   // since Czech *bilion* is a million millions.
   if (locale.startsWith('en-') || locale === 'cs') {
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
+    return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
   }
   const abs = Math.abs(v);
   // A Spanish reader takes "B" for billón, a million millions: "2,5 mil M €".
   const billion = amountLocale?.startsWith('es') ? ' mil M' : 'B';
   const [div, suffix] = abs >= 1e9 ? [1e9, billion] : abs >= 1e6 ? [1e6, 'M'] : abs >= 1e3 ? [1e3, 'K'] : [1, ''];
-  const parts = new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 3 }).formatToParts(v / div);
+  const parts = amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 3 }).formatToParts(v / div);
   let lastNumeric = -1;
   parts.forEach((p, i) => {
     if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;
@@ -44,12 +44,12 @@ export function formatAmount(value: number, code: string, compact = false, amoun
 }
 
 /**
- * A percentage in the same number conventions as the amounts beside it: the
- * chosen currency's ("44,1 %" next to "1 000 Kč", "44.1%" next to "$50,000.00"),
- * or the page's own where it has one (`amountLocale`).
+ * A percentage in the same marks as the amounts beside it (`amountFormat`):
+ * the page's own style where it has one ("44,1 %" on a Czech page), otherwise
+ * "44.1%", whatever the currency.
  */
 export function formatPercent(pct: number, code: string, digits = 1, amountLocale?: string | null): string {
-  const { locale } = amountStyle(code, amountLocale);
+  const locale = amountNumberLocale(code, amountLocale);
   const v = Number.isFinite(pct) ? pct / 100 : 0;
   return new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
 }
