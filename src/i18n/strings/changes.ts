@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-17',
+    items: [
+      {
+        id: 'amounts-stay-whole',
+        text: {
+          en: 'For readers who enlarge their text, and one fix for everyone. In the free tools, an amount of money now stays in one piece: its sign, its currency and its digits never split across two lines. Before, in the invest or pay off tool, a minus sign could be left at the end of a line with the figure on the next, even at the normal text size. With a very large text size on a narrow screen, the result boxes now stack to give amounts more room, and only when an amount still does not fit is that one amount drawn smaller, just enough to fit, so the tools no longer have to be scrolled sideways. All five tools were checked in Chrome, in all five languages, on screens from a small phone to a laptop, from the normal text size up to four times that.',
+          hi: 'बड़े अक्षरों में पढ़ने वालों के लिए सुधार, और एक सुधार सबके लिए। मुफ़्त टूल में कोई भी रकम अब एक साथ रहती है: उसका चिह्न, उसकी मुद्रा और उसके अंक कभी दो पंक्तियों में नहीं बँटते। पहले, निवेश या कर्ज़ चुकाना टूल में ऋण चिह्न पंक्ति के अंत में छूट सकता था और रकम अगली पंक्ति में चली जाती थी, सामान्य आकार के अक्षरों में भी। संकरी स्क्रीन पर अक्षर बहुत बड़े करने पर नतीजों वाले खाने अब एक के नीचे एक आ जाते हैं ताकि रकम को ज़्यादा जगह मिले, और जब कोई रकम तब भी न समाए, तभी सिर्फ़ वही रकम उतनी छोटी दिखाई जाती है जितने में वह समा जाए; टूल को अब दाएँ-बाएँ स्क्रॉल नहीं करना पड़ता। पाँचों टूल Chrome में, पाँचों भाषाओं में जाँचे गए हैं: छोटे फ़ोन से लैपटॉप तक की स्क्रीन पर, सामान्य आकार से लेकर उससे चार गुना बड़े अक्षरों तक।',
+          es: 'Para quienes amplían el texto, y un arreglo para todo el mundo. En las herramientas gratuitas, un importe se mantiene ahora entero: su signo, su moneda y sus cifras nunca se reparten en dos líneas. Antes, en la herramienta Invertir o pagar deuda, el signo menos podía quedarse al final de una línea y la cifra pasar a la siguiente, incluso con el tamaño de texto normal. Con un texto muy grande en una pantalla estrecha, los recuadros de resultados se apilan ahora para dar más sitio a los importes, y solo si un importe aun así no cabe se muestra ese importe más pequeño, lo justo para que quepa; las herramientas ya no obligan a desplazarse hacia los lados. Las cinco herramientas se han comprobado en Chrome, en los cinco idiomas, en pantallas desde un teléfono pequeño hasta un portátil, y desde el tamaño de texto normal hasta cuatro veces ese tamaño.',
+          cs: 'Pro čtenáře, kteří si zvětšují písmo, a\u00a0jedna oprava pro všechny. V\u00a0nástrojích zdarma teď částka drží pohromadě: znaménko, měna a\u00a0číslice se nikdy nerozdělí na dva řádky. Dřív mohlo v\u00a0nástroji Investovat, nebo splatit dluh zůstat znaménko minus na konci řádku a\u00a0číslo přejít na další, a\u00a0to i\u00a0při běžné velikosti písma. Při hodně zvětšeném písmu na úzké obrazovce se teď rámečky s\u00a0výsledky řadí pod sebe, aby částky měly víc místa, a\u00a0teprve když se některá ani tak nevejde, zobrazí se tato jedna částka menší, jen tak, aby se vešla; nástroje už není potřeba posouvat do strany. Všech pět nástrojů prošlo kontrolou v\u00a0Chromu, ve všech pěti jazycích, na obrazovkách od malého telefonu po notebook a\u00a0od běžné velikosti písma až po čtyřnásobnou.',
+          mr: 'मोठ्या अक्षरांत वाचणाऱ्यांसाठी सुधारणा, आणि एक दुरुस्ती सर्वांसाठी. मोफत साधनांमध्ये कोणतीही रक्कम आता एकसंध राहते: तिचे चिन्ह, तिचे चलन आणि तिचे अंक कधीही दोन ओळींत विभागले जात नाहीत. आधी, गुंतवणूक की कर्जफेड या साधनात वजा चिन्ह ओळीच्या शेवटी राहून आकडा पुढच्या ओळीत जाऊ शकत होता, नेहमीच्या आकाराच्या अक्षरांतही. अरुंद स्क्रीनवर अक्षरे खूप मोठी केल्यावर निकालांच्या चौकटी आता एकाखाली एक येतात, जेणेकरून रकमांना जास्त जागा मिळेल, आणि तरीही एखादी रक्कम मावली नाही तरच फक्त तीच रक्कम मावेल इतकीच लहान दाखवली जाते; आता साधने वापरताना डावीकडे किंवा उजवीकडे स्क्रोल करावे लागत नाही. पाचही साधने Chrome\u00a0मध्ये, पाचही भाषांत तपासली आहेत: लहान फोनपासून लॅपटॉपपर्यंतच्या स्क्रीनवर, नेहमीच्या आकारापासून त्याच्या चौपट मोठ्या अक्षरांपर्यंत.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-14',
     items: [
       {

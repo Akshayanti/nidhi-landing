@@ -1,6 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { CURRENCIES, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { longestAmount } from '../utils/shared/amountUnits.ts';
+import { Amounts } from './Amounts.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
@@ -848,21 +850,24 @@ function HistoryPanel({
           <details className="ifc-tableWrap">
             <summary className="ifc-tableSummary disclosure">{h.tableSummary}</summary>
             <div className="ifc-tableScroll">
-              <table className="ifc-table">
+              {/* Drawn as one short line per year where two columns do not fit
+                  (tool-recordTable in global.css); the roles keep it a table
+                  for a screen reader. */}
+              <table className="ifc-table tool-recordTable" role="table">
                 <caption>{t(h.tableCaption, { country: country.name })}</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">{h.tableYear}</th>
-                    <th scope="col">{h.tableRate}</th>
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th scope="col" role="columnheader">{h.tableYear}</th>
+                    <th scope="col" role="columnheader">{h.tableRate}</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody role="rowgroup">
                   {allYears(series)
                     .reverse()
                     .map((y) => (
-                      <tr key={y}>
-                        <th scope="row">{y}</th>
-                        <td>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
+                      <tr key={y} role="row">
+                        <th scope="row" role="rowheader" data-label={h.tableYear}>{y}</th>
+                        <td role="cell" data-label={h.tableRate}>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -1148,9 +1153,9 @@ function Results({
       ) : (
         <div className="ifc-resultBody" aria-hidden={stale || undefined}>
           <div className="ifc-answer">
-            <p className="ifc-headline">{result.headline}</p>
+            <p className="ifc-headline"><Amounts>{result.headline}</Amounts></p>
             {result.sentences.map((s, i) => (
-              <p key={i} className={i === 0 ? 'ifc-sentence' : 'ifc-note'}>{s}</p>
+              <p key={i} className={i === 0 ? 'ifc-sentence' : 'ifc-note'}><Amounts>{s}</Amounts></p>
             ))}
             {result.band.length > 0 && (
               <p className="ifc-band">
@@ -1158,12 +1163,13 @@ function Results({
                 {result.band.map((b, i) => (
                   <span key={i} className="ifc-bandItem">
                     {i > 0 && <span aria-hidden="true"> · </span>}
-                    {b}
+                    {/* The ends of the range are compared, so they share one size. */}
+                    <Amounts shared={longestAmount(...result.band)}>{b}</Amounts>
                   </span>
                 ))}
               </p>
             )}
-            <p className="ifc-method">{result.method}</p>
+            <p className="ifc-method"><Amounts>{result.method}</Amounts></p>
           </div>
           <LineChart
             points={result.points}
@@ -1206,7 +1212,7 @@ function LineChart({
   if (!Number.isFinite(maxV) || maxV >= DISPLAY_CEILING) {
     return (
       <figure className="ifc-figure">
-        <figcaption className="ifc-chartTitle">{title}</figcaption>
+        <figcaption className="ifc-chartTitle"><Amounts>{title}</Amounts></figcaption>
         <p className="ifc-note">{strings.chart.tooLarge}</p>
       </figure>
     );
@@ -1241,7 +1247,7 @@ function LineChart({
   });
   return (
     <figure className="ifc-figure">
-      <figcaption className="ifc-chartTitle" id={titleId}>{title}</figcaption>
+      <figcaption className="ifc-chartTitle" id={titleId}><Amounts>{title}</Amounts></figcaption>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} aria-describedby={descId} className="ifc-chart">
         <desc id={descId}>{desc}</desc>
         {yTicks.map((v) => (

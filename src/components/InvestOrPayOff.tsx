@@ -1,6 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { longestAmount } from '../utils/shared/amountUnits.ts';
+import { Amount, Amounts } from './Amounts.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
@@ -370,7 +372,8 @@ export default function InvestOrPayOff({
     track('free_invest_or_pay_off_reset');
   }
 
-  // A true minus sign, which never breaks from its amount at the end of a line.
+  // A true minus sign. On the page each amount is drawn as one unit that never
+  // breaks (Amounts.tsx): the sign alone does not hold "−" to "€1,520".
   const money = (v: number) => formatAmount(v, settled.currency, false, amountLocale).replace(/^-/, '\u2212');
   const settledCountry = settled.country ? countryByCode.get(settled.country) ?? null : null;
 
@@ -704,10 +707,13 @@ function Results({
     { key: 'a', name: s.payoffPath, p: wordedResult(r).a, paid: r.payoffMonthA, owed: 0, interest: r.interestA },
     { key: 'b', name: s.investPath, p: wordedResult(r).b, paid: r.payoffMonthB, owed: r.remainingB, interest: r.interestB },
   ];
+  // The two paths are compared line for line, so each line's amounts share one size.
+  const rangeLength = longestAmount(...paths.flatMap((p) => [money(p.p.p10), money(p.p.p90)]));
+  const middleLength = longestAmount(...paths.map((p) => money(p.p.p50)));
   return (
     <div className="iop-answer">
-      <p className="ifc-headline iop-headline">{lines[1]}</p>
-      <p>{lines[0]} {lines[2]}</p>
+      <p className="ifc-headline iop-headline"><Amounts>{lines[1]}</Amounts></p>
+      <p><Amounts>{`${lines[0]} ${lines[2]}`}</Amounts></p>
       <p className="ifc-hint">{s.gapNote}</p>
       <p className="ifc-hint">{t(s.rounded, { paths: r.paths.toLocaleString(numberLocale) })}</p>
 
@@ -716,12 +722,12 @@ function Results({
           <div key={p.key} className="iop-path">
             <h3 className="iop-pathName">{p.name}</h3>
             <p className="ifc-hint">{s.netWealth}</p>
-            <p className="iop-pathRange">{t(s.range, { p10: money(p.p.p10), p90: money(p.p.p90) })}</p>
-            <p className="iop-pathMiddle">{t(s.middle, { p50: money(p.p.p50) })}</p>
+            <p className="iop-pathRange"><Amounts shared={rangeLength}>{t(s.range, { p10: money(p.p.p10), p90: money(p.p.p90) })}</Amounts></p>
+            <p className="iop-pathMiddle"><Amounts shared={middleLength}>{t(s.middle, { p50: money(p.p.p50) })}</Amounts></p>
             <ul className="iop-pathFacts">
               <li>{t(p.paid <= r.months ? s.paidIn : s.paidAfter, { when: whenText(p.paid, strings, numberLocale) })}</li>
-              {p.owed > 0 && <li>{t(s.stillOwed, { amount: money(p.owed) })}</li>}
-              <li>{t(s.interest, { amount: money(p.interest) })}</li>
+              {p.owed > 0 && <li><Amounts>{t(s.stillOwed, { amount: money(p.owed) })}</Amounts></li>}
+              <li><Amounts>{t(s.interest, { amount: money(p.interest) })}</Amounts></li>
             </ul>
           </div>
         ))}
@@ -729,7 +735,7 @@ function Results({
 
       <RangeChart strings={strings} paths={paths.map((p) => ({ name: p.name, p: p.p }))} money={money} />
 
-      <p>{lines[3]}</p>
+      <p><Amounts>{lines[3]}</Amounts></p>
       {/* The reader's choice of how that figure in today's money is counted;
           folded, with the choice in use named on the row. */}
       <details className="iop-more iop-basis">
@@ -775,7 +781,7 @@ function Results({
                 <tr key={row.label}>
                   <th scope="row">{row.label}</th>
                   <td>{Math.round(row.res.bAhead * 100)}</td>
-                  <td>{money(wordedResult(row.res).diff.p50)}</td>
+                  <td><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
                 </tr>
               ))}
             </tbody>
@@ -802,13 +808,15 @@ function RangeChart({ strings, paths, money }: { strings: Strings; paths: { name
   const lo = low < 0 && high > 0 ? low - span * 0.05 : low - span * 0.15;
   const hi = high + span * 0.05;
   const at = (v: number) => `${(((v - lo) / (hi - lo)) * 100).toFixed(2)}%`;
+  // Both paths' figures are compared, so they share one size.
+  const shared = longestAmount(...paths.flatMap((p) => [money(p.p.p10), money(p.p.p50), money(p.p.p90)]));
   return (
     <figure className="iop-chart" data-attr="free-invest-or-pay-off-chart">
       <figcaption className="ifc-hint">{s.chartTitle}</figcaption>
       <ul className="iop-chartRows">
         {paths.map((p) => (
           <li key={p.name} className="iop-chartRow">
-            <span className="iop-chartLabel">{t(s.chartLabel, { path: p.name, p10: money(p.p.p10), p50: money(p.p.p50), p90: money(p.p.p90) })}</span>
+            <span className="iop-chartLabel"><Amounts shared={shared}>{t(s.chartLabel, { path: p.name, p10: money(p.p.p10), p50: money(p.p.p50), p90: money(p.p.p90) })}</Amounts></span>
             <span className="iop-track" aria-hidden="true">
               {lo < 0 && hi > 0 && <span className="iop-zero" style={{ left: at(0) }} />}
               <span className="iop-bar" style={{ left: at(p.p.p10), width: `calc(${at(p.p.p90)} - ${at(p.p.p10)})` }} />

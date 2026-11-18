@@ -1,0 +1,18 @@
+---
+/**
+ * A line of the page's own writing with each amount in it kept whole: the
+ * server-rendered twin of `Amounts.tsx`, for text that is not inside a tool's
+ * island (the questions under a tool). "10,000%" in a question never breaks
+ * between its digits or loses its percent sign; where it is wider than its
+ * line it is drawn smaller, by just enough to fit (`.amt` in global.css).
+ * See src/utils/shared/amountUnits.ts.
+ */
+import { splitAmounts } from '../utils/shared/amountUnits.ts';
+
+interface Props {
+  text: string;
+}
+
+const parts = splitAmounts(Astro.props.text);
+---
+{parts.map((part) => (typeof part === 'string' ? part : <span class="amt" style={`--amt-len:${part.length}`}>{part.amount}</span>))}

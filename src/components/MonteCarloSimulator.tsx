@@ -3,6 +3,8 @@ import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx'
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
+import { longestAmount } from '../utils/shared/amountUnits.ts';
+import { Amount, Amounts } from './Amounts.tsx';
 import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
@@ -733,9 +735,9 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
               ? strings.quick.medianOne
               : t(strings.quick.medianOther, { years: state.saveYears })}
           </span>
-          <span className="mcs-quickValue">{formatAmount(r.p50, code)}</span>
+          <span className="mcs-quickValue"><Amount>{formatAmount(r.p50, code)}</Amount></span>
           <span className="mcs-quickRange">
-            {t(strings.quick.range, { low: formatAmount(r.p10, code, true), high: formatAmount(r.p90, code, true) })}
+            <Amounts>{t(strings.quick.range, { low: formatAmount(r.p10, code, true), high: formatAmount(r.p90, code, true) })}</Amounts>
           </span>
         </>
       )}
@@ -755,6 +757,7 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
   const saving = state.saveYears > 0;
   const withdrawing = state.withdrawal > 0;
   const tableId = useId();
+  const cardLength = longestAmount(formatAmount(r.p10, code), formatAmount(r.p50, code), formatAmount(r.p90, code));
 
   return (
     <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
@@ -768,20 +771,21 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
 
       {saving && (
         <>
+          {/* The three amounts are compared, so they share one size. */}
           <div className="mcs-cards">
             {/* Phones show the short name only, in three columns, and the
                 explanations once below the cards (mcs-cardsKey). */}
             <div className="mcs-card">
               <span className="mcs-cardLabel">{strings.results.lowLabel}<span className="mcs-cardMore">{strings.results.lowMore}</span></span>
-              <span className="mcs-cardValue">{formatAmount(r.p10, code)}</span>
+              <span className="mcs-cardValue"><Amount shared={cardLength}>{formatAmount(r.p10, code)}</Amount></span>
             </div>
             <div className="mcs-card mcs-card--mid">
               <span className="mcs-cardLabel">{strings.results.medianLabel}<span className="mcs-cardMore">{strings.results.medianMore}</span></span>
-              <span className="mcs-cardValue">{formatAmount(r.p50, code)}</span>
+              <span className="mcs-cardValue"><Amount shared={cardLength}>{formatAmount(r.p50, code)}</Amount></span>
             </div>
             <div className="mcs-card">
               <span className="mcs-cardLabel">{strings.results.highLabel}<span className="mcs-cardMore">{strings.results.highMore}</span></span>
-              <span className="mcs-cardValue">{formatAmount(r.p90, code)}</span>
+              <span className="mcs-cardValue"><Amount shared={cardLength}>{formatAmount(r.p90, code)}</Amount></span>
             </div>
           </div>
           <p className="mcs-cardsKey">
@@ -795,7 +799,7 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
       {saving && (
         <p className="mcs-note">
           {strings.results.noteBefore}{' '}
-          <strong>{formatAmount(result.straightLine[state.saveYears], code)}</strong>
+          <strong><Amount>{formatAmount(result.straightLine[state.saveYears], code)}</Amount></strong>
           {t(strings.results.noteAfter, { share: formatShare(result.belowStraightLine, amountLocale) })}
         </p>
       )}
@@ -808,18 +812,18 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
         <div className="mcs-lasted">
           <p className="mcs-lastedHead">
             {result.lasted >= 1 || result.lasted <= 0 ? (
-              t(result.lasted >= 1
+              <Amounts>{t(result.lasted >= 1
                 ? plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedAllOne, strings.results.lastedAll, strings.results.lastedAll)
                 : plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedNoneOne, strings.results.lastedNone, strings.results.lastedNone), {
                 amount: formatAmount(state.withdrawal, code),
                 years: state.withdrawYears,
-              })
+              })}</Amounts>
             ) : (
               <>
-                {t(plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedHeadBeforeOne, strings.results.lastedHeadBefore, strings.results.lastedHeadBefore), {
+                <Amounts>{t(plural(amountLocale ?? 'en', state.withdrawYears, strings.results.lastedHeadBeforeOne, strings.results.lastedHeadBefore, strings.results.lastedHeadBefore), {
                   amount: formatAmount(state.withdrawal, code),
                   years: state.withdrawYears,
-                })}{' '}
+                })}</Amounts>{' '}
                 <strong>{inTen(result.lasted, strings)}</strong>
                 {t(strings.results.lastedHeadAfter, { share: formatShare(result.lasted, amountLocale) })}
               </>
@@ -843,25 +847,30 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
       {result.years > 0 && <details className="mcs-tableWrap" onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) track('free_monte_carlo_table_opened'); }}>
         <summary className="mcs-tableSummary disclosure">{strings.results.tableSummary}</summary>
         <div className="mcs-tableScroll">
-          <table className="mcs-table" aria-describedby={tableId}>
+          {/* Where the columns do not fit (a phone, a larger text size) each
+              year becomes a short list, every amount named by its column
+              (tool-recordTable in global.css). The roles keep it a table for a
+              screen reader when it is drawn that way; the names are the fixed
+              column headings, never a value. */}
+          <table className="mcs-table tool-recordTable" role="table" aria-describedby={tableId}>
             <caption id={tableId}>{strings.results.tableCaption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{strings.results.tableYear}</th>
-                <th scope="col">{strings.results.tableLow}</th>
-                <th scope="col">{strings.results.tableMedian}</th>
-                <th scope="col">{strings.results.tableHigh}</th>
-                <th scope="col">{strings.results.tableStraight}</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">{strings.results.tableYear}</th>
+                <th scope="col" role="columnheader">{strings.results.tableLow}</th>
+                <th scope="col" role="columnheader">{strings.results.tableMedian}</th>
+                <th scope="col" role="columnheader">{strings.results.tableHigh}</th>
+                <th scope="col" role="columnheader">{strings.results.tableStraight}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {tableYears(result.years).map((y) => (
-                <tr key={y}>
-                  <th scope="row">{y}</th>
-                  <td>{formatAmount(result.bands[y].p10, code)}</td>
-                  <td>{formatAmount(result.bands[y].p50, code)}</td>
-                  <td>{formatAmount(result.bands[y].p90, code)}</td>
-                  <td>{formatAmount(result.straightLine[y], code)}</td>
+                <tr key={y} role="row">
+                  <th scope="row" role="rowheader" data-label={strings.results.tableYear}>{y}</th>
+                  <td role="cell" data-label={strings.results.tableLow}><Amount>{formatAmount(result.bands[y].p10, code)}</Amount></td>
+                  <td role="cell" data-label={strings.results.tableMedian}><Amount>{formatAmount(result.bands[y].p50, code)}</Amount></td>
+                  <td role="cell" data-label={strings.results.tableHigh}><Amount>{formatAmount(result.bands[y].p90, code)}</Amount></td>
+                  <td role="cell" data-label={strings.results.tableStraight}><Amount>{formatAmount(result.straightLine[y], code)}</Amount></td>
                 </tr>
               ))}
             </tbody>

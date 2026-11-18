@@ -112,6 +112,28 @@ Once a pull request is merged, its branch is deleted from the local checkout, so
 3. **Switch off the branch first** if it is the one checked out, and run `git fetch --prune` so stale remote branches disappear. GitHub deletes the remote branch on merge.
 4. **Unmerged work is never deleted** without asking: a branch whose commits are not in a merged pull request stays until the owner decides.
 
+## Issues Are Worked by Label, and What Is Found Is Filed
+
+Work on issues is thorough the first time, so one problem does not come back as a row of issues, one per size or per screen (owner, Nov 17, 2026).
+
+1. **A label is worked whole.** Picking up a label (`tool: invest-or-pay-off`, say) means working every open issue under it, including any opened while the work is under way.
+2. **What is found is filed, in the right place.**
+   - **Security and privacy weaknesses** go in `docs/curr_bugs.md`, which git ignores, and never in the public tracker (see "Private stays private" above). The file is local: if it is missing on a machine, create it.
+   - **Everything else** becomes a GitHub issue, labelled like the others: its area (`area: ...`), its tool (`tool: ...`), its severity where one applies.
+   - A finding that falls under the label being worked is worked in the same change, not left filed.
+3. **Related issues share one pull request.** Issues with one cause or one label are combined, and the pull request carries the same labels as the issues it closes and names each one (`Closes #...`).
+4. **The checks cover the whole range at once.** A fix for one text size, one screen or one language is checked at all of them before the issue is closed (next section).
+
+## Layout Is Checked at Every Size at Once
+
+A layout fix checked at one size leaves the next size broken: the same tools were fixed at 100%, then 200%, then 300% text, an issue at a time (#661 to #667). A change to a page's layout, or to anything a tool shows, is checked across the whole range in one run, by default and without being asked.
+
+1. **The range**: screen widths from 320 to 1280 px, the reader's text size from 100% to 400% (the browser's default font size, not zoom), every language the page is published in, and every state of the page (as loaded, every fold open, every tab, the choices that reveal a field, long amounts typed in).
+2. **The check is a script.** `npm run audit:text-size` (`scripts/audit-text-size.mjs`, against a dev or preview server) runs the free tools through that range and fails on a page that scrolls sideways, text that runs past or is cut by its box, text on top of other text, a word or number broken where it would have fitted, and an amount that is not whole on one line. `--path` runs it on other pages, `--no-fonts` on the fallback fonts (what a reader sees while the fonts load), and `--show` opens a Chrome window to watch. A new tool is added to `TOOLS` in the script.
+3. **What it does not reach is said**: Safari, Firefox, a phone's own text-size setting, dialogs, printed reports and the insides of charts. Name them under "Not checked" rather than leaving them out.
+4. **An amount is one unit** (council, Nov 17, 2026). A tool's results draw every amount through `Amounts.tsx`: sign, currency, digits and percent sign never break apart. Where an amount is wider than its line, the layout gives it room first (its own line, stacked cards), and only then is that one amount drawn smaller, by just enough to fit; nothing is shortened or scrolled. The audit fails on an amount in a tool's results that is not drawn this way.
+   - **Accepted trade-off** (owner, Nov 17, 2026): at the far end of the range (400% text on a 320 px phone) a very long amount is drawn smaller than the label beside it, so the label can look like the main thing. The amount is still whole and well above the normal reading size. This is the cost of never breaking, shortening or scrolling an amount, and it is not filed as an issue or reported as a finding again. It is reopened only if an amount is drawn below 16 px, which the audit fails on.
+
 ## Style Rules
 
 - Never use em dashes (`&mdash;` or `—`) or double dashes (`--`) anywhere in the site. Use colons, commas, or reword instead.
