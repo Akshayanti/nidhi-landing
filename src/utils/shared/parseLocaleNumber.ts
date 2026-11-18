@@ -150,7 +150,11 @@ export function canonicalNumber(raw: string, locale: string): string {
   const t = raw.trim();
   if (t === '') return '';
   const n = parseLocaleNumber(completeNumber(t, locale), locale);
-  return n === null ? 'NaN' : String(n);
+  if (n === null) return 'NaN';
+  // From 1e21 up a number prints as "1e+21", which no engine here reads: a
+  // 22-digit loan amount was answered with "greater than zero" (#520). Plain
+  // digits, so the engine can say it is too large.
+  return Math.abs(n) >= 1e21 ? n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 }) : String(n);
 }
 
 /**

@@ -288,3 +288,11 @@ describe('digits from other keyboards, and very large and very small numbers (#3
     assert.equal(m.formatForInput(0.005, 'en'), '0.01');
   });
 });
+
+describe('a number too long to print in digits by default (#520)', () => {
+  it('is still handed on in plain digits, never as an exponent', () => {
+    assert.equal(canonicalNumber('999999999999999999999', 'en'), '1000000000000000000000');
+    assert.match(canonicalNumber('2500099999999999999999999', 'en'), /^\d{25}$/);
+    assert.equal(canonicalNumber('99999999999999999999', 'en'), '100000000000000000000');
+  });
+});
