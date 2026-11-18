@@ -10,9 +10,39 @@ name: Inflation data refresh
 # of opening a pull request with a thinner dataset. When the World Bank has
 # nothing new, the script leaves the file untouched and no pull request opens.
 #
-# Note: a pull request opened with GITHUB_TOKEN does not trigger other
-# workflows, so PR Checks do not start on their own. Run them from the pull
-# request (close and reopen it, or push an empty commit) before merging.
+# A changed dataset is compared with the file on main before anything is
+# pushed: countries removed, years removed, past values changed. The summary
+# goes into the run's summary and the pull request's description. A change
+# over the limits (CHANGE_LIMITS in scripts/lib/inflation-data.mjs) fails the
+# run instead of opening a pull request, and its summary ends with a short
+# name for that exact comparison. If the change is real, run the workflow by
+# hand with that name in "accept": it lets that same comparison through, and a
+# fetch that brings anything else is refused again.
+#
+# The comparison and the pull request are both made against main, whatever
+# branch the workflow is started from: the baseline is main's file, and the
+# refresh branch is main plus the one data file.
+#
+# One branch, data/inflation-refresh, is used every month, so a pull request
+# left open from one month is updated by the next instead of gaining a twin.
+# The branch is this workflow's own. It is replaced on every run, so nobody
+# commits to it by hand: a run that finds someone else's commit at its tip
+# stops rather than overwrite it, and the push carries a lease on the tip it
+# read.
+#
+# A pull request opened with GITHUB_TOKEN does not trigger other workflows
+# (workflow_dispatch and repository_dispatch are the exceptions GitHub
+# makes), so this workflow starts PR Checks and the tool privacy check on the
+# branch by workflow_dispatch. Both run every job on that event, under the
+# same names main requires, on the commit the pull request shows. The pull
+# request's description links those runs once they exist.
+#
+# "dry_run" exercises all of this without the World Bank, from made-up data
+# built the same way every time (dryRunDataset): first a refresh that must be
+# refused, with its summary and no data written, then a small one that goes
+# through to a draft pull request on data/inflation-refresh-dry-run. That
+# pull request stays open so its checks can be read; a person closes it. It
+# is never merged.
 
 on:
   schedule:
@@ -20,10 +50,21 @@ on:
     # newsletter crons.
     - cron: '17 5 3 * *'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: made-up data, a refused refresh and then a draft pull request (close it, never merge it)'
+        type: boolean
+        default: false
+      accept:
+        description: 'A person has read a refused comparison: its name, from that run''s summary'
+        type: string
+        default: ''
 
 permissions:
   contents: write
   pull-requests: write
+  # To start PR Checks and the tool privacy check on the refresh branch.
+  actions: write
 
 concurrency:
   group: inflation-data
@@ -36,6 +77,7 @@ concurrency:
 # all. See README "Install scripts".
 env:
   NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
+  FILE: src/data/inflation/worldbank.json
 
 jobs:
   refresh:
@@ -49,36 +91,151 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Fetch World Bank inflation data
-        run: node scripts/fetch-inflation.mjs
-
-      - name: Open a pull request if the data changed
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Take the committed data from main
         run: |
           set -euo pipefail
-          FILE=src/data/inflation/worldbank.json
-          if git diff --quiet -- "$FILE"; then
+          git fetch --no-tags --depth=1 origin main
+          git show "origin/main:$FILE" > "$RUNNER_TEMP/baseline.json"
+          # The new data is written over main's file, so the diff is main's.
+          cp "$RUNNER_TEMP/baseline.json" "$FILE"
+
+      - name: 'Dry run: a refresh over the limits is refused'
+        if: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          SUMMARY="$RUNNER_TEMP/refused-summary.md"
+          node scripts/fetch-inflation.mjs --baseline "$RUNNER_TEMP/baseline.json" --dry-run refused --summary "$SUMMARY"
+          CODE=$?
+          {
+            echo "## Dry run: the refresh that must be refused"
+            echo
+            if [ -f "$SUMMARY" ]; then cat "$SUMMARY"; else echo "No summary was written."; fi
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$CODE" -eq 0 ]; then echo "::error::The refused dry run was accepted."; exit 1; fi
+          if [ ! -s "$SUMMARY" ]; then echo "::error::The refused dry run wrote no summary."; exit 1; fi
+          if ! cmp -s "$RUNNER_TEMP/baseline.json" "$FILE"; then echo "::error::The refused dry run wrote data."; exit 1; fi
+          echo "Refused as it should be, with its summary and no data written."
+
+      - name: Fetch World Bank inflation data and compare it with main's
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          ACCEPT: ${{ inputs.accept }}
+        run: |
+          set -uo pipefail
+          SUMMARY="$RUNNER_TEMP/inflation-summary.md"
+          ARGS=(--baseline "$RUNNER_TEMP/baseline.json" --summary "$SUMMARY")
+          if [ "$DRY_RUN" = "true" ]; then ARGS+=(--dry-run accepted); fi
+          if [ -n "$ACCEPT" ]; then ARGS+=(--accept "$ACCEPT"); fi
+          node scripts/fetch-inflation.mjs "${ARGS[@]}"
+          CODE=$?
+          # Written whether the refresh was accepted or refused: a refused one
+          # is when it is needed most.
+          if [ -f "$SUMMARY" ]; then
+            {
+              echo "## Compared with the file on main"
+              echo
+              cat "$SUMMARY"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit "$CODE"
+
+      - name: Open or update the pull request if the data changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          if cmp -s "$RUNNER_TEMP/baseline.json" "$FILE"; then
             echo "No change in $FILE."
             exit 0
           fi
+          BOT_NAME="github-actions[bot]"
+          BOT_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
           DATE=$(date -u +%Y-%m-%d)
-          BRANCH="data/inflation-$DATE"
-          UPDATED=$(node -e "console.log(require('./$FILE').lastUpdated)")
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
+          BRANCH="data/inflation-refresh"
+          TITLE="Inflation calculator: World Bank data, $DATE"
+          DRAFT=()
+          if [ "$DRY_RUN" = "true" ]; then
+            BRANCH="data/inflation-refresh-dry-run"
+            TITLE="[Dry run, do not merge] $TITLE"
+            DRAFT=(--draft)
+          fi
+
+          # The branch is this workflow's own. If it exists, its tip must be a
+          # commit this workflow made; the push then carries a lease on that
+          # tip, so a commit that lands in between is not overwritten either.
+          TIP=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
+          if [ -n "$TIP" ]; then
+            git fetch --no-tags --depth=1 origin "$TIP"
+            if [ "$(git log -1 --format=%ae "$TIP")" != "$BOT_EMAIL" ]; then
+              echo "::error::$BRANCH has a commit this workflow did not make ($TIP). The branch is replaced on every run: move that commit elsewhere, delete the branch, and run again."
+              exit 1
+            fi
+          fi
+
+          cp "$FILE" "$RUNNER_TEMP/new.json"
+          git config user.name  "$BOT_NAME"
+          git config user.email "$BOT_EMAIL"
+          # Main plus the one data file, whatever branch this run started from.
+          git checkout --force -B "$BRANCH" origin/main
+          cp "$RUNNER_TEMP/new.json" "$FILE"
           git add "$FILE"
           git commit -m "chore(data): refresh World Bank inflation history ($DATE)"
-          git push --force origin "$BRANCH"
-          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
-            echo "A pull request for $BRANCH is already open; it now has the new commit."
-            exit 0
-          fi
-          gh pr create \
-            --base main \
-            --head "$BRANCH" \
-            --title "Inflation calculator: World Bank data, $DATE" \
-            --body "Monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0). The World Bank's own update date is $UPDATED.
+          HEAD_SHA=$(git rev-parse HEAD)
+          git push --force-with-lease="refs/heads/$BRANCH:$TIP" origin "HEAD:refs/heads/$BRANCH"
 
-          Opened by .github/workflows/inflation-data.yml. Review the diff for implausible values before merging; PR Checks need to be started by hand (see the note at the top of the workflow)."
+          UPDATED=$(node -e "console.log(require('./$FILE').lastUpdated)")
+          BODY="$RUNNER_TEMP/inflation-pr-body.md"
+          write_body() {
+            {
+              echo "Monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0). The World Bank's own update date is $UPDATED."
+              echo
+              echo "## Compared with the file on main"
+              echo
+              cat "$RUNNER_TEMP/inflation-summary.md"
+              echo
+              if grep -q "let through by hand" "$RUNNER_TEMP/inflation-summary.md"; then
+                echo "This pull request was opened past the limits by hand. Read the comparison above before merging."
+                echo
+              fi
+              echo "## Checks"
+              echo
+              echo "$1"
+              echo
+              echo "Opened by .github/workflows/inflation-data.yml. The branch is replaced on every run, so it takes no commits by hand."
+              if [ "$DRY_RUN" = "true" ]; then
+                echo
+                echo "**This is a dry run of the workflow, with made-up data. Close it; do not merge it.**"
+              fi
+            } > "$BODY"
+          }
+
+          write_body "Not started yet."
+          NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$NUMBER" ]; then
+            gh pr edit "$NUMBER" --title "$TITLE" --body-file "$BODY"
+            echo "Pull request #$NUMBER for $BRANCH was open; it now has the new commit and description."
+          else
+            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body-file "$BODY" "${DRAFT[@]}"
+            NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          fi
+
+          # Checks do not start by themselves on a pull request opened with
+          # GITHUB_TOKEN, so they are started on the branch, and the
+          # description names them only once they exist.
+          gh workflow run pr-checks.yml --ref "$BRANCH"
+          gh workflow run tool-privacy.yml --ref "$BRANCH"
+          run_url() {
+            for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
+              URL=$(gh run list --workflow "$1" --branch "$BRANCH" --event workflow_dispatch --limit 5 --json url,headSha --jq "[.[] | select(.headSha == \"$HEAD_SHA\")][0].url // empty")
+              if [ -n "$URL" ]; then echo "$URL"; return 0; fi
+              sleep 5
+            done
+            return 1
+          }
+          CHECKS=$(run_url pr-checks.yml) || { echo "::error::PR Checks did not start on $HEAD_SHA."; exit 1; }
+          PRIVACY=$(run_url tool-privacy.yml) || { echo "::error::The tool privacy check did not start on $HEAD_SHA."; exit 1; }
+          write_body "Started by this workflow on commit $HEAD_SHA: [PR Checks]($CHECKS) and the [tool privacy check]($PRIVACY)."
+          gh pr edit "$NUMBER" --body-file "$BODY"
+          echo "Pull request #$NUMBER: checks started and linked."
