@@ -75,8 +75,6 @@ const countries: CountryOption[] = Object.entries(file.countries)
     return {
       code,
       name: named ?? code,
-      // The euro area takes an article inside an English or Spanish sentence.
-      ...(code === 'EMU' ? { inText: island.history.euroAreaInText } : {}),
       currency: currency && toolCurrencies.has(currency) ? currency : null,
     };
   })

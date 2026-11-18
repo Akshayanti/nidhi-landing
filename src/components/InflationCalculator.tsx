@@ -82,13 +82,9 @@ function track(event: string, properties?: Record<string, unknown>) {
 export interface CountryOption {
   code: string;
   name: string;
-  /** The name as it reads inside a sentence, where that differs ("the euro area"). */
-  inText?: string;
   currency: string | null;
 }
 
-/** The country's name inside a sentence: "In the euro area, …". */
-const inText = (country: CountryOption) => country.inText ?? country.name;
 
 // ===========================================================================
 // Phones (the site's 640px breakpoint). The server and the first browser
@@ -819,8 +815,8 @@ function HistoryPanel({
             recentFirst={recent.first}
             label={
               ext
-                ? t(h.chartLabel, {
-                    country: inText(country),
+                ? t(country.code === EURO_AREA ? h.chartLabelEuroArea : h.chartLabel, {
+                    country: country.name,
                     first: years[0],
                     last: years[years.length - 1],
                     high: pct(ext.high.rate, numberLocale, 1),
@@ -862,7 +858,7 @@ function HistoryPanel({
                   (tool-recordTable in global.css); the roles keep it a table
                   for a screen reader. */}
               <table className="ifc-table tool-recordTable" role="table">
-                <caption>{t(h.tableCaption, { country: inText(country) })}</caption>
+                <caption>{country.code === EURO_AREA ? h.tableCaptionEuroArea : t(h.tableCaption, { country: country.name })}</caption>
                 <thead role="rowgroup">
                   <tr role="row">
                     <th scope="col" role="columnheader">{h.tableYear}</th>
