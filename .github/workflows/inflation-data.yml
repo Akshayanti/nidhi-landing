@@ -26,9 +26,10 @@ name: Inflation data refresh
 # One branch, data/inflation-refresh, is used every month, so a pull request
 # left open from one month is updated by the next instead of gaining a twin.
 # The branch is this workflow's own. It is replaced on every run, so nobody
-# commits to it by hand: a run that finds someone else's commit at its tip
-# stops rather than overwrite it, and the push carries a lease on the tip it
-# read.
+# commits to it by hand. Each run records the commit it pushed in the pull
+# request's description; the next run stops, rather than overwrite, if the
+# branch's tip is any other commit, and its push carries a lease on the tip
+# it read.
 #
 # A pull request opened with GITHUB_TOKEN does not trigger other workflows
 # (workflow_dispatch and repository_dispatch are the exceptions GitHub
@@ -166,14 +167,17 @@ jobs:
             DRAFT=(--draft)
           fi
 
-          # The branch is this workflow's own. If it exists, its tip must be a
-          # commit this workflow made; the push then carries a lease on that
-          # tip, so a commit that lands in between is not overwritten either.
+          # The branch is this workflow's own. If it exists, its tip must be
+          # the very commit this workflow last pushed, which it records in its
+          # pull request's description (an author's name proves nothing: an
+          # amended or cherry-picked commit keeps it). The push then carries a
+          # lease on that tip, so a commit that lands in between is not
+          # overwritten either.
           TIP=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
           if [ -n "$TIP" ]; then
-            git fetch --no-tags --depth=1 origin "$TIP"
-            if [ "$(git log -1 --format=%ae "$TIP")" != "$BOT_EMAIL" ]; then
-              echo "::error::$BRANCH has a commit this workflow did not make ($TIP). The branch is replaced on every run: move that commit elsewhere, delete the branch, and run again."
+            RECORDED=$(gh pr list --head "$BRANCH" --state all --limit 1 --json body --jq '.[0].body // ""' | sed -n 's/.*<!-- refresh-commit: \([0-9a-f]\{40\}\) -->.*/\1/p' | head -n 1)
+            if [ "$RECORDED" != "$TIP" ]; then
+              echo "::error::$BRANCH is at $TIP, which is not the commit this workflow last pushed (${RECORDED:-none recorded}). The branch is replaced on every run: move that commit elsewhere, delete the branch, and run again."
               exit 1
             fi
           fi
@@ -208,6 +212,8 @@ jobs:
               echo "$1"
               echo
               echo "Opened by .github/workflows/inflation-data.yml. The branch is replaced on every run, so it takes no commits by hand."
+              # What the next run checks the branch's tip against.
+              echo "<!-- refresh-commit: $HEAD_SHA -->"
               if [ "$DRY_RUN" = "true" ]; then
                 echo
                 echo "**This is a dry run of the workflow, with made-up data. Close it; do not merge it.**"

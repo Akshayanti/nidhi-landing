@@ -82,8 +82,13 @@ function track(event: string, properties?: Record<string, unknown>) {
 export interface CountryOption {
   code: string;
   name: string;
+  /** The name as it reads inside a sentence, where that differs ("the euro area"). */
+  inText?: string;
   currency: string | null;
 }
+
+/** The country's name inside a sentence: "In the euro area, …". */
+const inText = (country: CountryOption) => country.inText ?? country.name;
 
 // ===========================================================================
 // Phones (the site's 640px breakpoint). The server and the first browser
@@ -498,7 +503,7 @@ export default function InflationCalculator({
   const country = form.country ? countryByCode.get(form.country) ?? null : null;
   const question =
     form.mode === 'past' && pastByHistory && country
-      ? t(strings.questions.pastCountry, { country: country.name })
+      ? country.code === EURO_AREA ? strings.questions.pastEuroArea : t(strings.questions.pastCountry, { country: country.name })
       : strings.questions[form.mode];
 
   // The starting figures are an example until one of them is changed.
@@ -815,7 +820,7 @@ function HistoryPanel({
             label={
               ext
                 ? t(h.chartLabel, {
-                    country: country.name,
+                    country: inText(country),
                     first: years[0],
                     last: years[years.length - 1],
                     high: pct(ext.high.rate, numberLocale, 1),
@@ -857,7 +862,7 @@ function HistoryPanel({
                   (tool-recordTable in global.css); the roles keep it a table
                   for a screen reader. */}
               <table className="ifc-table tool-recordTable" role="table">
-                <caption>{t(h.tableCaption, { country: country.name })}</caption>
+                <caption>{t(h.tableCaption, { country: inText(country) })}</caption>
                 <thead role="rowgroup">
                   <tr role="row">
                     <th scope="col" role="columnheader">{h.tableYear}</th>
@@ -1057,31 +1062,40 @@ function computeAnswer(
     // Across a change the typed amount was not today's money, so it carries no symbol.
     const shownAmount = changes.length > 0 || beforeEuroCash ? plain(A) : amount;
     const sentences = [
-      t(changes.length > 0 ? r.pastCountryOld : r.pastCountry, { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to }),
+      t(country!.code === EURO_AREA ? r.pastEuroArea : changes.length > 0 ? r.pastCountryOld : r.pastCountry, { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to }),
     ];
     let announceMore: string | undefined;
+    const say = (note: string) => {
+      sentences.push(note);
+      announceMore = announceMore ? `${announceMore} ${note}` : note;
+    };
+    // In the order the money changed: the first year's own change, then any later one.
+    if (mixed?.on && mixed.year === from) {
+      // Read as the money that change brought in: the other reading is one more division.
+      const up = mixed.ratio < 1;
+      say(t(up ? r.mixedYearUp : r.mixedYear, {
+        country: country!.name,
+        changeDate: changeDate(mixed.on, r),
+        ratio: plain(up ? 1 / mixed.ratio : mixed.ratio),
+        oldResult: aboutText(value / mixed.ratio, code, strings, amountLocale),
+        year: from,
+      }));
+    }
     if (changes.length > 0) {
       const unconverted = aboutText(A * factor, code, strings, amountLocale);
-      announceMore =
+      say(
         changes.length === 1
-          ? t(r.currencyChanged, { country: country!.name, year: changes[0].year, ratio: plain(unit), from, unconverted })
-          : t(r.currencyChangedMore, { country: country!.name, years: changes.map((c) => c.year).join(', '), ratio: plain(unit), from, unconverted });
-      sentences.push(announceMore);
+          ? unit < 1
+            ? // One pound became two dollars: said that way round, not "0.5 units became 1".
+              t(r.currencyChangedUp, { country: country!.name, year: changes[0].year, ratio: plain(1 / unit), from, unconverted })
+            : t(r.currencyChanged, { country: country!.name, year: changes[0].year, ratio: plain(unit), from, unconverted })
+          : t(r.currencyChangedMore, { country: country!.name, years: changes.map((c) => c.year).join(', '), ratio: plain(unit), from, unconverted }),
+      );
     }
-    if (mixed?.on) {
-      const note =
-        mixed.year === from
-          ? // Read as the new money: the other reading is one more division.
-            t(r.mixedYear, { country: country!.name, changeDate: changeDate(mixed.on, r), ratio: plain(mixed.ratio), oldResult: aboutText(value / mixed.ratio, code, strings, amountLocale), year: from })
-          : // Filed under the next year, so read as the old money by the note above.
-            t(r.mixedYearBefore, { changeDate: changeDate(mixed.on, r), year: from });
-      sentences.push(note);
-      announceMore = announceMore ? `${announceMore} ${note}` : note;
-    }
+    // Filed under the next year, so the note above reads the amount as the old money.
+    if (mixed?.on && mixed.year !== from) say(t(r.mixedYearBefore, { changeDate: changeDate(mixed.on, r), year: from }));
     if (beforeEuroCash) {
-      const note = t(from < EURO_BEGAN ? r.euroBefore1999 : r.euro1999to2001, { from });
-      sentences.push(note);
-      announceMore = announceMore ? `${announceMore} ${note}` : note;
+      say(t(from < EURO_BEGAN ? r.euroBefore1999 : r.euro1999to2001, { from }));
     }
     sentences.push(t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }));
     return {

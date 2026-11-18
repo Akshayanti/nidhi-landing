@@ -224,6 +224,8 @@ export const inflationEn = {
       cost: 'What could something that costs this today cost later, if prices keep rising?',
       past: 'What is an amount from the past worth today, at a rate you choose?',
       pastCountry: "What is an amount from the past worth today in {country}, using its actual yearly inflation?",
+      // The euro area is not a country, and takes its own sentence.
+      pastEuroArea: "What is an amount from the past worth today in the euro area, using its actual yearly inflation?",
       keep: 'Does a raise or a savings return keep up with inflation?',
     },
     fields: {
@@ -257,6 +259,8 @@ export const inflationEn = {
       hint: "Optional. Shows a country's past inflation; the answer uses it only in \"Past to today\", or if you use its average.",
       none: 'No country',
       euroArea: 'Euro area',
+      // Inside a sentence ("Yearly inflation in the euro area").
+      euroAreaInText: 'the euro area',
       loading: 'Loading the history…',
       error: 'The history could not be loaded. The calculator still works with the rate you type.',
       chartLabel: 'Yearly inflation in {country}, {first} to {last}. Highest {high} in {highYear}, lowest {low} in {lowYear}.',
@@ -291,11 +295,13 @@ export const inflationEn = {
       cost: 'If prices rise {rate} a year on average, something that costs {amount} today costs {result} in {years}.',
       past: 'If inflation averaged {rate} a year, {amount} from {years} ago buys what {result} buys today.',
       pastCountry: 'In {country}, {amount} in {from} bought what {result} bought in {to}.',
+      pastEuroArea: 'In the euro area, {amount} in {from} bought what {result} bought in {to}.',
       /** The first sentence when a change of currency was allowed for: `{amount}` is a plain number, in the money of its year. */
       pastCountryOld: 'In {country}, {amount} in the money of {from} bought what {result} bought in {to}.',
       pastCountryRise: 'Prices rose about {total} in total over those {years}, an average of {average} a year.',
       /** When the years chosen cross a change of currency unit (`currencyChanges.ts`): one or several after the first year. The answer is then in today's money. */
       currencyChanged: '{country} changed its currency in {year}: {ratio} units of the old money became 1 unit of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
+      currencyChangedUp: '{country} changed its currency in {year}: 1 unit of the old money became {ratio} units of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
       currencyChangedMore: '{country} changed its currency more than once after {from} ({years}): in all, {ratio} units of the {from} money became 1 unit of today\'s. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
       // When a change took effect, as far as its source says ({changeDate} below).
       changedOn: 'on {day} {month} {year}',
@@ -304,7 +310,9 @@ export const inflationEn = {
       monthsWithDay: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       monthsAlone: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       // The first year is the year the change took effect: both monies were in use.
-      mixedYear: '{country} changed its currency {changeDate}: {ratio} old units became 1 new unit. This answer treats your amount as new money. If your amount was in old money, the answer is {oldResult}. The price figure for {year} is an average for the whole year, so for an amount from one month the answer is approximate.',
+      mixedYear: '{country} changed its currency {changeDate}: {ratio} old units became 1 new unit. This answer treats your amount as the money introduced by that {year} change. If your amount was in the money used before that change, the answer is {oldResult}. The price figure for {year} is an average for the whole year, so for an amount from one month the answer is approximate.',
+      // The same, for a change that made more units, not fewer (one pound became two dollars).
+      mixedYearUp: '{country} changed its currency {changeDate}: 1 old unit became {ratio} new units. This answer treats your amount as the money introduced by that {year} change. If your amount was in the money used before that change, the answer is {oldResult}. The price figure for {year} is an average for the whole year, so for an amount from one month the answer is approximate.',
       mixedYearBefore: 'The change came {changeDate}, and the price figure for {year} is an average for the whole year, so for an amount from one month the answer is approximate.',
       // The euro area as a whole, for a first year before euro notes and coins.
       euroBefore1999: 'The euro did not yet exist in {from}. For this comparison, the calculator treats the number you typed as a plain amount and uses the World Bank\'s inflation figures for the euro area. It does not convert an amount in a country\'s old money. For that conversion, choose the member country.',
@@ -523,6 +531,8 @@ export const inflationHi: typeof inflationEn = {
       cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है, अगर कीमतें बढ़ती रहें?',
       past: 'बीते समय की कोई रकम आज कितने के बराबर है, आपकी चुनी दर पर?',
       pastCountry: 'बीते समय की कोई रकम {country} में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
+      // The euro area is not a country, and takes its own sentence.
+      pastEuroArea: 'बीते समय की कोई रकम यूरो क्षेत्र में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
       keep: 'क्या वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चल रहा है?',
     },
     fields: {
@@ -556,6 +566,8 @@ export const inflationHi: typeof inflationEn = {
       hint: 'वैकल्पिक। किसी देश की पिछली महँगाई दिखाता है; जवाब इसे सिर्फ़ "बीते साल से आज तक" में इस्तेमाल करता है, या तब जब आप इसका औसत अपनाएँ।',
       none: 'कोई देश नहीं',
       euroArea: 'यूरो क्षेत्र',
+      // Inside a sentence ("Yearly inflation in the euro area").
+      euroAreaInText: 'यूरो क्षेत्र',
       loading: 'इतिहास लोड हो रहा है…',
       error: 'इतिहास लोड नहीं हो सका। कैलकुलेटर आपकी टाइप की गई दर के साथ अब भी काम करता है।',
       chartLabel: '{country} में सालाना महँगाई, {first} से {last}। सबसे ज़्यादा {high}, {highYear} में; सबसे कम {low}, {lowYear} में।',
@@ -588,16 +600,20 @@ export const inflationHi: typeof inflationEn = {
       cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
       past: 'अगर महँगाई औसतन {rate} सालाना रही, तो {years} पहले के {amount} से उतना ख़रीदा जा सकता था जितना आज {result} से।',
       pastCountry: '{country} में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
+      pastEuroArea: 'यूरो क्षेत्र में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
       pastCountryOld: '{country} में {from} की मुद्रा के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
       pastCountryRise: 'इन {years} में कीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
       currencyChanged: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
+      currencyChangedUp: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनी। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedMore: '{country} ने {from} के बाद एक से ज़्यादा बार अपनी मुद्रा बदली ({years}): कुल मिलाकर {from} की मुद्रा की {ratio} इकाइयाँ आज की मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       changedOn: '{day} {month} {year} को',
       changedIn: '{month} {year} में',
       changedDuring: '{year} के दौरान',
       monthsWithDay: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
       monthsAlone: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
-      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को नई मुद्रा में मानता है। अगर आपकी रकम पुरानी मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      // The same, for a change that made more units, not fewer (one pound became two dollars).
+      mixedYearUp: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनी। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       mixedYearBefore: 'यह बदलाव {changeDate} हुआ, और {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       euroBefore1999: '{from} में यूरो अभी शुरू नहीं हुआ था। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
       euro1999to2001: '{from} में यूरो हिसाब-किताब और इलेक्ट्रॉनिक भुगतानों के लिए मौजूद था; यूरो के नोट और सिक्के 2002 में चलन में आए। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
@@ -809,6 +825,8 @@ export const inflationEs: typeof inflationEn = {
       cost: '¿Cuánto podría costar más adelante algo que hoy cuesta esto, si los precios siguen subiendo?',
       past: '¿Cuánto vale hoy una cantidad del pasado, a la tasa que elijas?',
       pastCountry: '¿Cuánto vale hoy en {country} una cantidad del pasado, con su inflación anual real?',
+      // The euro area is not a country, and takes its own sentence.
+      pastEuroArea: '¿Cuánto vale hoy en la zona del euro una cantidad del pasado, con su inflación anual real?',
       keep: '¿Sigue el ritmo de la inflación una subida salarial o la rentabilidad de tus ahorros?',
     },
     fields: {
@@ -842,6 +860,8 @@ export const inflationEs: typeof inflationEn = {
       hint: 'Opcional. Muestra la inflación pasada de un país; la respuesta solo la usa en «Del pasado a hoy» o si usas su media.',
       none: 'Ningún país',
       euroArea: 'Zona del euro',
+      // Inside a sentence ("Yearly inflation in the euro area").
+      euroAreaInText: 'la zona del euro',
       loading: 'Cargando la historia…',
       error: 'No se pudo cargar la historia. La calculadora sigue funcionando con la tasa que escribas.',
       chartLabel: 'Inflación anual en {country}, de {first} a {last}. La más alta, {high} en {highYear}; la más baja, {low} en {lowYear}.',
@@ -874,16 +894,20 @@ export const inflationEs: typeof inflationEn = {
       cost: 'Si los precios subieran de media un {rate} anual, algo que hoy cuesta {amount} costaría {result} dentro de {years}.',
       past: 'Si la inflación media fue del {rate} anual, {amount} de hace {years} compran lo que hoy compran {result}.',
       pastCountry: 'En {country}, {amount} en {from} compraban lo que en {to} compraban {result}.',
+      pastEuroArea: 'En la zona del euro, {amount} en {from} compraban lo que en {to} compraban {result}.',
       pastCountryOld: 'En {country}, {amount} en la moneda de {from} compraban lo que en {to} compraban {result}.',
       pastCountryRise: 'Los precios subieron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
       currencyChanged: '{country} cambió de moneda en {year}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
+      currencyChangedUp: '{country} cambió de moneda en {year}: 1 unidad de la moneda anterior pasó a ser {ratio} unidades de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       currencyChangedMore: '{country} cambió de moneda más de una vez después de {from} ({years}): en total, {ratio} unidades de la moneda de {from} pasaron a ser 1 unidad de la de hoy. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       changedOn: 'el {day} de {month} de {year}',
       changedIn: 'en {month} de {year}',
       changedDuring: 'durante {year}',
       monthsWithDay: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
       monthsAlone: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-      mixedYear: '{country} cambió de moneda {changeDate}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste como moneda nueva. Si la cantidad estaba en la moneda anterior, la respuesta es {oldResult}. La cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
+      mixedYear: '{country} cambió de moneda {changeDate}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste en la moneda que introdujo ese cambio de {year}. Si la cantidad estaba en la moneda que se usaba antes de ese cambio, la respuesta es {oldResult}. La cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
+      // The same, for a change that made more units, not fewer (one pound became two dollars).
+      mixedYearUp: '{country} cambió de moneda {changeDate}: 1 unidad de la moneda anterior pasó a ser {ratio} unidades de la nueva. Esta respuesta toma la cantidad que escribiste en la moneda que introdujo ese cambio de {year}. Si la cantidad estaba en la moneda que se usaba antes de ese cambio, la respuesta es {oldResult}. La cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
       mixedYearBefore: 'El cambio fue {changeDate}, y la cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
       euroBefore1999: 'En {from} el euro aún no existía. Para esta comparación, la calculadora toma el número que escribiste como una cifra sin moneda y usa las cifras de inflación del Banco Mundial para la zona del euro. No convierte una cantidad en la moneda anterior de un país. Para esa conversión, elige el país miembro.',
       euro1999to2001: 'En {from} el euro existía para la contabilidad y los pagos electrónicos; los billetes y las monedas de euro empezaron a circular en 2002. Para esta comparación, la calculadora toma el número que escribiste como una cifra sin moneda y usa las cifras de inflación del Banco Mundial para la zona del euro. No convierte una cantidad en la moneda anterior de un país. Para esa conversión, elige el país miembro.',
@@ -1098,6 +1122,8 @@ export const inflationCs: typeof inflationEn = {
       cost: 'Kolik by mohlo později stát něco, co dnes stojí tolik, pokud ceny porostou dál?',
       past: 'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě?',
       pastCountry: 'Jakou hodnotu má dnes částka z minulosti v zemi {country} podle její skutečné roční inflace?',
+      // The euro area is not a country, and takes its own sentence.
+      pastEuroArea: 'Jakou hodnotu má dnes částka z minulosti v eurozóně podle její skutečné roční inflace?',
       keep: 'Drží zvýšení platu nebo výnos z úspor krok s inflací?',
     },
     fields: {
@@ -1131,6 +1157,8 @@ export const inflationCs: typeof inflationEn = {
       hint: 'Volitelné. Ukazuje minulou inflaci dané země; odpověď ji používá jen v záložce „Z minulosti do dneška“, nebo pokud použijete její průměr.',
       none: 'Žádná země',
       euroArea: 'Eurozóna',
+      // Inside a sentence ("Yearly inflation in the euro area").
+      euroAreaInText: 'eurozóna',
       loading: 'Načítání historie…',
       error: 'Historii se nepodařilo načíst. Kalkulačka dál funguje se zadanou sazbou.',
       chartLabel: 'Roční inflace, {country}, {first} až {last}. Nejvyšší {high} v roce {highYear}, nejnižší {low} v roce {lowYear}.',
@@ -1163,16 +1191,20 @@ export const inflationCs: typeof inflationEn = {
       cost: 'Pokud budou ceny růst v průměru o {rate} ročně, bude něco, co dnes stojí {amount}, za {years} stát {result}.',
       past: 'Pokud byla inflace v průměru {rate} ročně, odpovídá {amount} z doby o {years} dříve dnešní částce {result}.',
       pastCountry: 'V zemi {country} měla částka {amount} v roce {from} stejnou kupní sílu jako {result} v roce {to}.',
+      pastEuroArea: 'V eurozóně měla částka {amount} v roce {from} stejnou kupní sílu jako {result} v roce {to}.',
       pastCountryOld: 'V zemi {country} měla částka {amount} v měně roku {from} stejnou kupní sílu jako {result} v roce {to}.',
       pastCountryRise: 'Za {years} vzrostly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
       currencyChanged: 'V zemi {country} se v roce {year} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
+      currencyChangedUp: 'V zemi {country} se v roce {year} změnila měna v poměru 1 : {ratio} (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       currencyChangedMore: 'V zemi {country} se po roce {from} měna změnila víckrát ({years}), celkem v poměru {ratio} : 1 (měna roku {from} k dnešní měně). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       changedOn: '{day}. {month} {year}',
       changedIn: 'v {month} {year}',
       changedDuring: 'v průběhu roku {year}',
       monthsWithDay: ['ledna', 'února', 'března', 'dubna', 'května', 'června', 'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'],
       monthsAlone: ['lednu', 'únoru', 'březnu', 'dubnu', 'květnu', 'červnu', 'červenci', 'srpnu', 'září', 'říjnu', 'listopadu', 'prosinci'],
-      mixedYear: 'V zemi {country} se {changeDate} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v nové měně. Pokud byla zadaná částka ve staré měně, odpověď je {oldResult}. Cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
+      mixedYear: 'V zemi {country} se {changeDate} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně, kterou zavedla tato změna v roce {year}. Pokud byla zadaná částka v měně platné před touto změnou, odpověď je {oldResult}. Cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
+      // The same, for a change that made more units, not fewer (one pound became two dollars).
+      mixedYearUp: 'V zemi {country} se {changeDate} změnila měna v poměru 1 : {ratio} (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně, kterou zavedla tato změna v roce {year}. Pokud byla zadaná částka v měně platné před touto změnou, odpověď je {oldResult}. Cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
       mixedYearBefore: 'Ke změně došlo {changeDate} a cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
       euroBefore1999: 'V roce {from} euro ještě neexistovalo. Pro toto srovnání bere kalkulačka zadané číslo jako částku bez měny a používá údaje Světové banky o inflaci v eurozóně. Nepřevádí částku ve staré měně některé země. Pro takový převod zvolte členskou zemi.',
       euro1999to2001: 'V roce {from} euro existovalo pro účetnictví a elektronické platby; eurobankovky a euromince se dostaly do oběhu v roce 2002. Pro toto srovnání bere kalkulačka zadané číslo jako částku bez měny a používá údaje Světové banky o inflaci v eurozóně. Nepřevádí částku ve staré měně některé země. Pro takový převod zvolte členskou zemi.',
@@ -1378,6 +1410,8 @@ export const inflationMr: typeof inflationEn = {
       cost: 'किमती वाढत राहिल्या, तर आज इतकी किंमत असलेली वस्तू पुढे किती महाग होऊ शकेल?',
       past: 'तुम्ही निवडलेल्या दराने, भूतकाळातील एखाद्या रकमेचे आज मूल्य किती?',
       pastCountry: '{country} च्या प्रत्यक्ष वार्षिक महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आज मूल्य किती?',
+      // The euro area is not a country, and takes its own sentence.
+      pastEuroArea: 'युरो क्षेत्राच्या प्रत्यक्ष वार्षिक महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आज मूल्य किती?',
       keep: 'पगारवाढ किंवा बचतीवरील परतावा महागाईच्या बरोबरीने जातो का?',
     },
     fields: {
@@ -1411,6 +1445,8 @@ export const inflationMr: typeof inflationEn = {
       hint: 'ऐच्छिक. एखाद्या देशाची मागची महागाई दाखवते; उत्तर ती फक्त “भूतकाळापासून आजपर्यंत” मध्ये, किंवा तुम्ही तिची सरासरी वापरली तरच वापरते.',
       none: 'कोणताही देश नाही',
       euroArea: 'युरो क्षेत्र',
+      // Inside a sentence ("Yearly inflation in the euro area").
+      euroAreaInText: 'युरो क्षेत्र',
       loading: 'इतिहास लोड होत आहे…',
       error: 'इतिहास लोड होऊ शकला नाही. तुम्ही लिहिलेल्या दराने कॅल्क्युलेटर तरीही चालतो.',
       chartLabel: '{country} मधील वार्षिक महागाई, {first} ते {last}. सर्वाधिक {high}, {highYear} मध्ये; सर्वात कमी {low}, {lowYear} मध्ये.',
@@ -1445,16 +1481,20 @@ export const inflationMr: typeof inflationEn = {
       cost: 'किमती सरासरी दरवर्षी {rate} वाढल्या, तर आज {amount} किंमत असलेली वस्तू {years} उलटल्यावर {result} ला मिळेल.',
       past: 'महागाईची सरासरी दरवर्षी {rate} राहिली असेल, तर {years} आधीच्या {amount} मध्ये तेवढे मिळत असे जेवढे आज {result} मध्ये मिळते.',
       pastCountry: '{country} मध्ये, {from} साली {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
+      pastEuroArea: 'युरो क्षेत्रात, {from} साली {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
       pastCountryOld: '{country} मध्ये, {from} सालच्या चलनातील {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
       pastCountryRise: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} वाढल्या, म्हणजे सरासरी दरवर्षी {average}.',
       currencyChanged: '{country} ने {year} साली आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
+      currencyChangedUp: '{country}\u00a0ने {year} साली आपले चलन बदलले: जुन्या चलनाचे 1 एकक नव्या चलनाच्या {ratio} एककांएवढे झाले. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       currencyChangedMore: '{country} ने {from} नंतर एकापेक्षा जास्त वेळा चलन बदलले ({years}): एकूण, {from} सालच्या चलनाची {ratio} एकके आजच्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       changedOn: '{day} {month} {year} रोजी',
       changedIn: '{month} {year}\u00a0मध्ये',
       changedDuring: '{year} या वर्षादरम्यान',
       monthsWithDay: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
       monthsAlone: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
-      mixedYear: '{country}\u00a0ने {changeDate} आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम नव्या चलनात आहे असे धरते. तुमची रक्कम जुन्या चलनात असेल, तर उत्तर {oldResult} आहे. {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
+      mixedYear: '{country} ने {changeDate} आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {year} सालच्या त्या बदलाने आलेल्या चलनात आहे असे धरते. तुमची रक्कम त्या बदलापूर्वी वापरात असलेल्या चलनात असेल, तर उत्तर {oldResult} आहे. {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
+      // The same, for a change that made more units, not fewer (one pound became two dollars).
+      mixedYearUp: '{country} ने {changeDate} आपले चलन बदलले: जुन्या चलनाचे 1 एकक नव्या चलनाच्या {ratio} एककांएवढे झाले. हे उत्तर तुम्ही भरलेली रक्कम {year} सालच्या त्या बदलाने आलेल्या चलनात आहे असे धरते. तुमची रक्कम त्या बदलापूर्वी वापरात असलेल्या चलनात असेल, तर उत्तर {oldResult} आहे. {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
       mixedYearBefore: 'हा बदल {changeDate} झाला, आणि {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
       euroBefore1999: '{from} साली युरो अजून अस्तित्वात नव्हता. या तुलनेसाठी कॅल्क्युलेटर तुम्ही भरलेली संख्या साधी रक्कम म्हणून धरतो आणि युरो क्षेत्रासाठी World Bank चे महागाईचे आकडे वापरतो. तो एखाद्या देशाच्या जुन्या चलनातील रक्कम युरोमध्ये बदलत नाही. त्यासाठी सदस्य देश निवडा.',
       euro1999to2001: '{from} साली युरो हिशेबासाठी आणि इलेक्ट्रॉनिक व्यवहारांसाठी अस्तित्वात होता; युरोच्या नोटा आणि नाणी 2002\u00a0मध्ये चलनात आली. या तुलनेसाठी कॅल्क्युलेटर तुम्ही भरलेली संख्या साधी रक्कम म्हणून धरतो आणि युरो क्षेत्रासाठी World Bank चे महागाईचे आकडे वापरतो. तो एखाद्या देशाच्या जुन्या चलनातील रक्कम युरोमध्ये बदलत नाही. त्यासाठी सदस्य देश निवडा.',
