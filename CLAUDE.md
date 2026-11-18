@@ -103,6 +103,17 @@ The project's agents are files in `.claude/agents/`, and what they have learnt i
 
 Whenever the live site is opened automatically (a headless browser, the Chrome extension, a script or any other tool), start from this address: **https://nidhi.today/?internal=1**. It marks that browser as internal (the `nidhi-internal` key the privacy notice describes), so it runs no analytics and never counts as a reader. A fresh browser profile starts unmarked, so open this address first in every new browser or session before visiting any other page. Local test builds follow the rules above for analytics testing instead.
 
+## What Waits for the Owner Is an Issue
+
+A choice left to the owner is easy to lose in a chat message or at the bottom of a merged pull request (owner, Nov 18, 2026). Anything that needs the owner's attention, input or a later decision is filed where it can be found again.
+
+1. **One issue per item, when it comes up.** A decision the council or a review leaves to the owner, copy nobody else can judge (a read of Hindi or Marathi, say), or a date that will come due each becomes its own GitHub issue, in the same turn it arises. The title says what is asked ("Owner decision: ...") and the body gives the choices.
+2. **Labelled `needs owner decision`**, with its area and tool labels like any other issue. The open issues under that label are the list of what waits for the owner: there is no separate document and no collecting issue.
+3. **Read an issue before labelling it.** An existing issue gets the label only after its comments are read: the owner may have answered already, in another session.
+4. **An answer removes the label.** When the owner answers, the answer is recorded on the issue and the label comes off. The issue stays open while work remains, and is worked under its own labels.
+5. **The pull request names them.** A pull request that leaves something to the owner lists those issues by number instead of describing the choices only in its text.
+6. **Security and privacy weaknesses are the exception**: they go in `docs/curr_bugs.md`, never in the public tracker (see "Private stays private" above).
+
 ## Merged Branches Are Deleted Locally
 
 Once a pull request is merged, its branch is deleted from the local checkout, so only `main` and branches with an open pull request stay local.
