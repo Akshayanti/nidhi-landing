@@ -102,7 +102,9 @@ jobs:
       - name: 'Dry run: a refresh over the limits is refused'
         if: ${{ inputs.dry_run }}
         run: |
-          set -uo pipefail
+          # No -e here (the runner's shell sets it): the script's failure is
+          # read below, after its summary has been written out.
+          set +e -uo pipefail
           SUMMARY="$RUNNER_TEMP/refused-summary.md"
           node scripts/fetch-inflation.mjs --baseline "$RUNNER_TEMP/baseline.json" --dry-run refused --summary "$SUMMARY"
           CODE=$?
@@ -122,7 +124,9 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run }}
           ACCEPT: ${{ inputs.accept }}
         run: |
-          set -uo pipefail
+          # No -e here (the runner's shell sets it): the script's failure is
+          # read below, after its summary has been written out.
+          set +e -uo pipefail
           SUMMARY="$RUNNER_TEMP/inflation-summary.md"
           ARGS=(--baseline "$RUNNER_TEMP/baseline.json" --summary "$SUMMARY")
           if [ "$DRY_RUN" = "true" ]; then ARGS+=(--dry-run accepted); fi
