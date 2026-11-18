@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { buildDataset, parseCountries, parseIndicator, round2, sameData, serializeDataset, splitPage } from './inflation-data.mjs';
+import { CHANGE_LIMITS, buildDataset, compareDatasets, comparisonDigest, dryRunDataset, isLargeChange, parseCountries, parseIndicator, round2, sameData, serializeDataset, splitPage, summarizeComparison } from './inflation-data.mjs';
 
 const meta = (total, extra = {}) => ({ page: 1, pages: 1, per_page: 20000, total, sourceid: '2', lastupdated: '2026-10-08', ...extra });
 const row = (iso3, date, value) => ({
@@ -146,5 +146,128 @@ describe('serializeDataset and sameData', () => {
     assert.equal(sameData(a, later), true);
     assert.equal(sameData(a, { ...later, lastUpdated: '2026-11-01' }), false);
     assert.equal(sameData(a, null), false);
+  });
+});
+
+describe('a refresh is compared with the committed data (#446)', () => {
+  const data = (countries, lastUpdated = '2026-10-08') => ({ lastUpdated, countries });
+  const c = (years) => ({ iso2: 'XX', years });
+  const many = (n, years) => Object.fromEntries(Array.from({ length: n }, (_, i) => [`C${String(i).padStart(3, '0')}`, c(years(i))]));
+  const span = (from, to, value) => Object.fromEntries(Array.from({ length: to - from + 1 }, (_, i) => [from + i, value(from + i)]));
+
+  it('calls a revision large only when it is big in points and in proportion', () => {
+    assert.equal(isLargeChange(3.1, 3.4), false);
+    assert.equal(isLargeChange(4, 11), true);
+    assert.equal(isLargeChange(2000, 2004), false, 'four points on two thousand is a revision');
+    assert.equal(isLargeChange(2, 6.9), false, 'under five points');
+    assert.equal(isLargeChange(-2, 9), true);
+    assert.equal(isLargeChange(100, 10), true);
+  });
+
+  it('lists what was added, removed and changed', () => {
+    const before = data({ AAA: c({ 2024: 3, 2025: 4 }), BBB: c({ 2024: 1, 2025: 2 }), CCC: c({ 2024: 5, 2025: 6 }) });
+    const after = data({ AAA: c({ 2024: 3.2, 2025: 4, 2026: 3 }), CCC: c({ 2025: 60 }), DDD: c({ 2025: 1 }) }, '2026-11-11');
+    const cmp = compareDatasets(before, after);
+    assert.deepEqual(cmp.countriesRemoved, ['BBB']);
+    assert.deepEqual(cmp.countriesAdded, ['DDD']);
+    assert.equal(cmp.observationsLostWithCountries, 2);
+    assert.equal(cmp.observationsGainedWithCountries, 1);
+    assert.deepEqual(cmp.yearsRemoved, [{ code: 'CCC', year: '2024' }]);
+    assert.deepEqual(cmp.yearsAdded, [{ code: 'AAA', year: '2026' }]);
+    assert.deepEqual(cmp.changed.map((x) => `${x.code} ${x.year} ${x.large}`), ['AAA 2024 false', 'CCC 2025 true']);
+    assert.deepEqual(cmp.updated, { before: '2026-10-08', after: '2026-11-11' });
+  });
+
+  it('lets an ordinary refresh through: a new year, a few recent values revised', () => {
+    const before = data(many(60, () => span(2000, 2025, () => 5)));
+    const after = data(many(60, (i) => ({ ...span(2000, 2025, (y) => (y >= 2024 && i < 30 ? 5.1 : 5)), 2026: 4 })), '2026-11-11');
+    const cmp = compareDatasets(before, after);
+    assert.equal(cmp.changed.length, 60);
+    assert.deepEqual(cmp.over, []);
+  });
+
+  it('refuses any country removed and any year removed from a country that remains', () => {
+    const base = data(many(60, () => span(2000, 2025, () => 5)));
+    assert.match(compareDatasets(base, data(many(59, () => span(2000, 2025, () => 5)))).over.join(), /1 countries removed \(limit 0\)/);
+    assert.match(compareDatasets(base, data(many(60, (i) => span(i === 0 ? 2001 : 2000, 2025, () => 5)))).over.join(), /1 years removed from countries that remain \(limit 0\)/);
+  });
+
+  it('refuses more large changes than the limit, and passes exactly the limit', () => {
+    const base = data(many(60, () => span(2001, 2025, () => 5)));
+    const moved = (n) => compareDatasets(base, data(many(60, (i) => span(2001, 2025, (y) => (y === 2025 && i < n ? 500 : 5)))));
+    assert.deepEqual(moved(CHANGE_LIMITS.largeChanges).over, []);
+    assert.match(moved(CHANGE_LIMITS.largeChanges + 1).over.join(), /26 past values changed by a large amount/);
+  });
+
+  it('refuses a history that moved: more than 200 changed values from over five years back', () => {
+    // 60 countries, 2000 to 2025: 2019 and earlier are settled.
+    const base = data(many(60, () => span(2000, 2025, () => 5)));
+    const moved = (n) => compareDatasets(base, data(many(60, (i) => span(2000, 2025, (y) => (y >= 2010 && y <= 2019 && (i * 10 + (y - 2010)) < n ? 5.5 : 5)))), { ...CHANGE_LIMITS, allChanges: 1e9, allChangesShare: 1 });
+    assert.equal(moved(200).settledChanges.length, 200);
+    assert.deepEqual(moved(200).over, []);
+    assert.match(moved(201).over.join(), /201 values from more than 5 years before 2025 changed \(limit 200\)/);
+    // A recent year is not a settled one.
+    const recent = compareDatasets(base, data(many(60, () => span(2000, 2025, (y) => (y >= 2020 ? 5.5 : 5)))), { ...CHANGE_LIMITS, allChanges: 1e9, allChangesShare: 1 });
+    assert.equal(recent.settledChanges.length, 0);
+    assert.deepEqual(recent.over, []);
+  });
+
+  it('refuses a release that revised too many values of any year: 500, or 5% of the file, whichever is lower', () => {
+    // 9,217 values, as the file had on Nov 18, 2026: 5% is 460.85, so 460 pass and 461 do not.
+    const years = (i) => span(1979, 2025, () => 5);
+    const countries = many(196, years); // 196 x 47 = 9,212
+    countries.EXTRA = c(span(2021, 2025, () => 5)); // 9,217
+    const base = data(countries);
+    const revised = (n) => {
+      const next = JSON.parse(JSON.stringify(base));
+      let left = n;
+      for (const code of Object.keys(next.countries)) for (const y of [2025, 2024, 2023]) if (left > 0 && code !== 'EXTRA') { next.countries[code].years[y] = 5.1; left -= 1; }
+      return compareDatasets(base, next);
+    };
+    assert.deepEqual(revised(460).over, []);
+    assert.match(revised(461).over.join(), /461 past values changed \(limit 460: 500, or 5% of the 9217 values/);
+    // A large file is held to 500.
+    const big = data(many(500, () => span(1990, 2025, () => 5))); // 18,000 values, 5% is 900
+    const bigNext = JSON.parse(JSON.stringify(big));
+    Object.keys(bigNext.countries).forEach((code, i) => { bigNext.countries[code].years[2025] = 5.1; if (i === 0) bigNext.countries[code].years[2024] = 5.1; });
+    assert.match(compareDatasets(big, bigNext).over.join(), /501 past values changed \(limit 500:/);
+  });
+
+  it('summarises for the pull request, naming what is over a limit', () => {
+    const before = data({ AAA: c({ 2024: 4 }), BBB: c({ 2024: 1, 2025: 2 }) });
+    const text = summarizeComparison(compareDatasets(before, data({ AAA: c({ 2024: 40, 2025: 3 }) }, '2026-11-11')));
+    assert.match(text, /^World Bank update date changed from 2026-10-08 to 2026-11-11\.$/m);
+    assert.match(text, /Countries removed: 1 \(BBB\), taking 2 yearly figures with them/);
+    assert.match(text, /Years added to countries already there: 1 \(AAA 2025\)/);
+    assert.match(text, /\| AAA \| 2024 \| 4 \| 40 \|/);
+    assert.match(text, /\*\*Over the limits:\*\* 1 countries removed \(limit 0\)/);
+  });
+
+  it('says in one line when only the update date moved', () => {
+    const before = data({ AAA: c({ 2024: 4 }) });
+    assert.equal(summarizeComparison(compareDatasets(before, data({ AAA: c({ 2024: 4 }) }, '2026-11-11'))), 'World Bank update date changed from 2026-10-08 to 2026-11-11; no value changed.');
+  });
+
+  it('names a comparison by its data, not by when it was fetched', () => {
+    const a = { ...data({ AAA: c({ 2024: 4 }) }), fetchedAt: '2026-11-01' };
+    const b = { ...data({ AAA: c({ 2024: 5 }) }), fetchedAt: '2026-11-02' };
+    const name = comparisonDigest(a, b);
+    assert.match(name, /^[0-9a-f]{16}$/);
+    assert.equal(comparisonDigest({ ...a, fetchedAt: '2026-12-01' }, { ...b, fetchedAt: '2026-12-02' }), name);
+    assert.notEqual(comparisonDigest(a, { ...b, countries: { AAA: c({ 2024: 6 }) } }), name, 'different new data');
+    assert.notEqual(comparisonDigest({ ...a, countries: { AAA: c({ 2024: 3 }) } }, b), name, 'a different committed file');
+  });
+
+  it('makes the same dry-run data every time: one accepted, one refused', () => {
+    const base = data({ USA: c({ 2024: 2.9, 2025: 2.7 }), IND: c({ 2025: 2.1 }), EMU: c({ 2025: 2.1 }), AAA: c(span(2000, 2025, () => 1)), BBB: c({ 2025: 1 }) });
+    const accepted = compareDatasets(base, dryRunDataset(base, 'accepted'));
+    assert.deepEqual(accepted.over, []);
+    assert.deepEqual(accepted.changed.map((x) => `${x.code} ${x.year} ${x.after}`), ['USA 2025 2.71']);
+    const refused = compareDatasets(base, dryRunDataset(base, 'refused'));
+    assert.deepEqual(refused.countriesRemoved, ['AAA']);
+    assert.equal(refused.over.length, 1);
+    assert.deepEqual(dryRunDataset(base, 'accepted'), dryRunDataset(base, 'accepted'));
+    assert.equal(base.countries.USA.years[2025], 2.7, 'the committed data is not touched');
+    assert.throws(() => dryRunDataset(base, 'other'), /unknown dry run/);
   });
 });

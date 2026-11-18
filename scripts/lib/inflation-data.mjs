@@ -16,6 +16,7 @@
  *
  * No network, no filesystem: the tests feed these functions fixtures.
  */
+import { createHash } from 'node:crypto';
 
 export const INDICATOR = 'FP.CPI.TOTL.ZG';
 export const SOURCE = 'World Bank, World Development Indicators: Inflation, consumer prices (annual %)';
@@ -167,4 +168,171 @@ export function sameData(a, b) {
   if (!a || !b) return false;
   const strip = ({ fetchedAt: _ignored, ...rest }) => rest;
   return serializeDataset(strip(a)) === serializeDataset(strip(b));
+}
+
+/**
+ * What a refresh may change before a person has to say so (#446). The World
+ * Bank revises recent years a little every release and adds a year once a
+ * year. A country or a year that disappears takes answers and shared links
+ * with it, so neither may happen without a person saying so; the other two
+ * limits catch a release that moved past values wholesale. A change at a limit
+ * passes; one over it is refused. These are gates for a person to look, not a
+ * judgement that the World Bank is wrong.
+ */
+export const CHANGE_LIMITS = {
+  /** Countries in the old file and not in the new one. */
+  countriesRemoved: 0,
+  /** Years lost from countries that are still there. */
+  yearsRemoved: 0,
+  /** Past values that moved by a large amount (see `isLargeChange`). */
+  largeChanges: 25,
+  /** Changed values from more than `SETTLED_AFTER_YEARS` before the latest year. */
+  settledChanges: 200,
+  /**
+   * Changed values of any year: this many, or this share of all the values in
+   * the committed file, whichever is lower. Provisional (council, Nov 18,
+   * 2026): the file had one release behind it when this was set, so nobody
+   * knew how many values a normal release revises. If a normal release trips
+   * only this limit, that is the evidence to set it by.
+   */
+  allChanges: 500,
+  allChangesShare: 0.05,
+};
+
+/** Recent years are revised as a matter of course; values older than this rarely move. */
+export const SETTLED_AFTER_YEARS = 5;
+
+/**
+ * A revision large enough to be read by a person: more than five percentage
+ * points, and more than half of the larger of the two figures. So 3.1 to 3.4
+ * is not one, 4 to 11 is, and 2,000 to 2,004 is not.
+ */
+export function isLargeChange(before, after) {
+  const diff = Math.abs(after - before);
+  return diff > 5 && diff > 0.5 * Math.max(Math.abs(before), Math.abs(after));
+}
+
+const yearCount = (country) => Object.keys(country.years).length;
+
+/**
+ * The difference between the committed dataset and a new one: what was added,
+ * what was removed, which past values changed, and whether any of it is over
+ * `CHANGE_LIMITS`.
+ */
+export function compareDatasets(previous, next, limits = CHANGE_LIMITS) {
+  const before = previous.countries;
+  const after = next.countries;
+  const countriesRemoved = Object.keys(before).filter((c) => !after[c]).sort();
+  const countriesAdded = Object.keys(after).filter((c) => !before[c]).sort();
+  const yearsRemoved = [];
+  const yearsAdded = [];
+  const changed = [];
+  let latest = 0;
+  let values = 0;
+  for (const c of Object.values(before)) {
+    for (const y of Object.keys(c.years)) {
+      latest = Math.max(latest, Number(y));
+      values += 1;
+    }
+  }
+  // Never rounded up: 5% of 9,217 is 460.85, so the 461st changed value is over.
+  const allLimit = Math.min(limits.allChanges, Math.floor(values * limits.allChangesShare));
+  for (const code of Object.keys(after).sort()) {
+    if (!before[code]) continue;
+    const was = before[code].years;
+    const now = after[code].years;
+    for (const year of Object.keys(was)) if (!(year in now)) yearsRemoved.push({ code, year });
+    for (const year of Object.keys(now)) {
+      if (!(year in was)) yearsAdded.push({ code, year });
+      else if (was[year] !== now[year]) {
+        changed.push({ code, year, before: was[year], after: now[year], large: isLargeChange(was[year], now[year]), settled: Number(year) < latest - SETTLED_AFTER_YEARS });
+      }
+    }
+  }
+  const largeChanges = changed.filter((c) => c.large);
+  const settledChanges = changed.filter((c) => c.settled);
+  const over = [];
+  if (countriesRemoved.length > limits.countriesRemoved) over.push(`${countriesRemoved.length} countries removed (limit ${limits.countriesRemoved})`);
+  if (yearsRemoved.length > limits.yearsRemoved) over.push(`${yearsRemoved.length} years removed from countries that remain (limit ${limits.yearsRemoved})`);
+  if (largeChanges.length > limits.largeChanges) over.push(`${largeChanges.length} past values changed by a large amount (limit ${limits.largeChanges})`);
+  if (settledChanges.length > limits.settledChanges) over.push(`${settledChanges.length} values from more than ${SETTLED_AFTER_YEARS} years before ${latest} changed (limit ${limits.settledChanges})`);
+  if (changed.length > allLimit) over.push(`${changed.length} past values changed (limit ${allLimit}: ${limits.allChanges}, or ${limits.allChangesShare * 100}% of the ${values} values in the committed file, whichever is lower)`);
+  return {
+    countriesRemoved,
+    countriesAdded,
+    /** Observations that went with the removed countries, and came with the new ones: not in the year counts. */
+    observationsLostWithCountries: countriesRemoved.reduce((n, c) => n + yearCount(before[c]), 0),
+    observationsGainedWithCountries: countriesAdded.reduce((n, c) => n + yearCount(after[c]), 0),
+    yearsRemoved,
+    yearsAdded,
+    changed,
+    largeChanges,
+    settledChanges,
+    updated: { before: previous.lastUpdated, after: next.lastUpdated },
+    over,
+  };
+}
+
+/** Whether the comparison found any difference in the data itself (the update date aside). */
+export function dataChanged(cmp) {
+  return cmp.countriesRemoved.length + cmp.countriesAdded.length + cmp.yearsRemoved.length + cmp.yearsAdded.length + cmp.changed.length > 0;
+}
+
+/** The comparison as Markdown, for the pull request's description and the run's summary. */
+export function summarizeComparison(cmp, { listed = 40 } = {}) {
+  const dateLine = cmp.updated.before === cmp.updated.after
+    ? `World Bank update date: ${cmp.updated.after}.`
+    : `World Bank update date changed from ${cmp.updated.before} to ${cmp.updated.after}`;
+  if (!dataChanged(cmp)) return cmp.updated.before === cmp.updated.after ? `${dateLine} No value changed.` : `${dateLine}; no value changed.`;
+  const lines = [cmp.updated.before === cmp.updated.after ? dateLine : `${dateLine}.`, ''];
+  const list = (items, show) => {
+    const head = items.slice(0, listed).map(show).join(', ');
+    return items.length > listed ? `${head}, and ${items.length - listed} more` : head;
+  };
+  const withList = (items, show) => (items.length ? ` (${list(items, show)})` : '');
+  lines.push(`- Countries added: ${cmp.countriesAdded.length}${withList(cmp.countriesAdded, (c) => c)}${cmp.countriesAdded.length ? `, with ${cmp.observationsGainedWithCountries} yearly figures` : ''}`);
+  lines.push(`- Countries removed: ${cmp.countriesRemoved.length}${withList(cmp.countriesRemoved, (c) => c)}${cmp.countriesRemoved.length ? `, taking ${cmp.observationsLostWithCountries} yearly figures with them` : ''}`);
+  lines.push(`- Years added to countries already there: ${cmp.yearsAdded.length}${withList(cmp.yearsAdded, (y) => `${y.code} ${y.year}`)}`);
+  lines.push(`- Years removed from countries that remain: ${cmp.yearsRemoved.length}${withList(cmp.yearsRemoved, (y) => `${y.code} ${y.year}`)}`);
+  lines.push(`- Past values changed: ${cmp.changed.length}. Of these, ${cmp.settledChanges.length} are from more than ${SETTLED_AFTER_YEARS} years before the latest year, and ${cmp.largeChanges.length} changed by a large amount (more than 5 points and more than half the figure)`);
+  if (cmp.largeChanges.length) {
+    lines.push('', '| Country | Year | Before | After |', '|---|---|---|---|');
+    for (const c of cmp.largeChanges.slice(0, listed)) lines.push(`| ${c.code} | ${c.year} | ${c.before} | ${c.after} |`);
+    if (cmp.largeChanges.length > listed) lines.push(`| and ${cmp.largeChanges.length - listed} more | | | |`);
+  }
+  if (cmp.over.length) lines.push('', `**Over the limits:** ${cmp.over.join('; ')}.`);
+  return lines.join('\n');
+}
+
+/**
+ * A short name for one comparison: the committed data and the new data, their
+ * fetch dates aside. A refused run prints it, and only a run told that same
+ * name goes past the limits (#446): the data a person read is the data that is
+ * accepted, and a fetch that brought anything else needs reading again.
+ */
+export function comparisonDigest(previous, next) {
+  const strip = ({ fetchedAt: _ignored, ...rest }) => rest;
+  return createHash('sha256').update(serializeDataset(strip(previous))).update('\n').update(serializeDataset(strip(next))).digest('hex').slice(0, 16);
+}
+
+/**
+ * A made-up dataset for the workflow's dry run, built from the committed one
+ * so the run needs no World Bank and gives the same result every time.
+ * "accepted" is a small refresh (a new update date, one recent value revised a
+ * little); "refused" also loses a country, which no refresh may do unasked.
+ * Neither is real data: a dry run's pull request is closed, never merged.
+ */
+export function dryRunDataset(previous, kind) {
+  const next = JSON.parse(JSON.stringify(previous));
+  next.lastUpdated = '2099-01-01';
+  const years = next.countries.USA.years;
+  const last = Object.keys(years).sort().at(-1);
+  years[last] = round2(years[last] + 0.01);
+  if (kind === 'refused') {
+    const gone = Object.keys(next.countries).filter((c) => !REQUIRED.includes(c)).sort()[0];
+    delete next.countries[gone];
+  } else if (kind !== 'accepted') {
+    throw new Error(`unknown dry run "${kind}": use "accepted" or "refused"`);
+  }
+  return next;
 }

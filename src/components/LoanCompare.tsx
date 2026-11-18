@@ -3,7 +3,7 @@ import {
   CURRENCIES,
   DEFAULT_CURRENCY,
   equityAtMonth,
-  amountStyle,
+  amountNumberLocale,
   formatApr,
   formatMoney,
   getCurrency,
@@ -133,7 +133,7 @@ function noTotalText(r: LoanResult, s: Strings): string {
  * reader's language instead.
  */
 function aprText(apr: number, currency: string, s: Strings, amountLocale: string | null): string {
-  return Number.isFinite(apr) ? formatApr(apr, amountStyle(currency, amountLocale).locale) : s.results.aprNa;
+  return Number.isFinite(apr) ? formatApr(apr, amountNumberLocale(currency, amountLocale)) : s.results.aprNa;
 }
 
 /**

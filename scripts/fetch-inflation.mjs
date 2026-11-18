@@ -14,11 +14,40 @@
  *
  * When the data is unchanged the file is left exactly as it was (its
  * fetchedAt included), so a quiet month produces no diff.
+ *
+ * A changed dataset is compared with the committed one (#446): countries and
+ * years removed, past values changed. The summary is printed, and written as
+ * Markdown to the file named by `--summary <path>`. A change over the limits
+ * (`CHANGE_LIMITS`) fails the run and writes no data. Its summary ends with a
+ * short name for that exact comparison; `--accept <name>` lets that same
+ * comparison through once a person has read it, and nothing else.
+ *
+ * `--baseline <path>` names the committed file to compare with when it is not
+ * the one being written (the workflow compares with the file on main). A
+ * baseline that is missing or cannot be read fails the run: only
+ * `--first-import` may start without one.
+ *
+ * `--dry-run accepted` and `--dry-run refused` exercise everything after the
+ * fetch without the World Bank: the new data is made up from the baseline
+ * (`dryRunDataset`), the same way every time. A dry run's data is never
+ * merged.
  */
 import { readFileSync, renameSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { INDICATOR, buildDataset, parseCountries, parseIndicator, sameData, serializeDataset, splitPage } from './lib/inflation-data.mjs';
+import {
+  INDICATOR,
+  buildDataset,
+  compareDatasets,
+  comparisonDigest,
+  dryRunDataset,
+  parseCountries,
+  parseIndicator,
+  sameData,
+  serializeDataset,
+  splitPage,
+  summarizeComparison,
+} from './lib/inflation-data.mjs';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(repoRoot, 'src/data/inflation/worldbank.json');
@@ -72,19 +101,58 @@ async function fetchParsed() {
   throw lastError;
 }
 
+function option(args, name) {
+  const at = args.indexOf(name);
+  return at >= 0 ? args[at + 1] : null;
+}
+
 async function main() {
-  const parsed = await fetchParsed();
-  const dataset = buildDataset(parsed, new Date().toISOString().slice(0, 10));
+  const args = process.argv.slice(2);
+  const dryRun = option(args, '--dry-run');
+  const summaryPath = option(args, '--summary');
+  const accepted = option(args, '--accept');
+  const baselinePath = option(args, '--baseline') ?? OUT;
+  const today = new Date().toISOString().slice(0, 10);
 
   let previous = null;
   try {
-    previous = JSON.parse(readFileSync(OUT, 'utf8'));
-  } catch {
+    previous = JSON.parse(readFileSync(baselinePath, 'utf8'));
+    if (!previous || typeof previous.countries !== 'object' || previous.countries === null) throw new Error('it has no countries');
+  } catch (err) {
+    if (!args.includes('--first-import')) {
+      throw new Error(`the committed data at ${baselinePath} cannot be read (${err.message}), so there is nothing to compare the new data with. Restore the file, or run with --first-import if there has never been one`);
+    }
     previous = null;
   }
+
+  let dataset;
+  if (dryRun) {
+    if (!previous) throw new Error('a dry run needs the committed data to build from');
+    dataset = { ...dryRunDataset(previous, dryRun), fetchedAt: today };
+  } else {
+    dataset = buildDataset(await fetchParsed(), today);
+  }
+
   if (sameData(previous, dataset)) {
     console.log(`Unchanged: ${Object.keys(dataset.countries).length} countries, World Bank update ${dataset.lastUpdated}.`);
     return;
+  }
+
+  if (previous) {
+    const comparison = compareDatasets(previous, dataset);
+    const digest = comparisonDigest(previous, dataset);
+    const refused = comparison.over.length > 0 && accepted !== digest;
+    let summary = summarizeComparison(comparison);
+    if (comparison.over.length) {
+      summary += refused
+        ? `\n\nRefused: no data was written. If this change is real, run again with this name to accept exactly this comparison: \`${digest}\``
+        : `\n\nThis change is over the limits and was let through by hand, as comparison \`${digest}\`.`;
+    }
+    console.log(summary);
+    if (summaryPath) writeFileSync(summaryPath, `${summary}\n`);
+    if (refused) {
+      throw new Error(`the new data differs from the committed file by more than a refresh may (${comparison.over.join('; ')})${accepted ? `, and the name given (${accepted}) is not this comparison's (${digest})` : ''}`);
+    }
   }
 
   mkdirSync(dirname(OUT), { recursive: true });

@@ -188,6 +188,61 @@ export function amountStyle(code: string, amountLocale?: string | null): { local
   return amountLocale ? { locale: amountLocale, display: 'narrowSymbol' } : { locale: getCurrency(code).locale, display: 'symbol' };
 }
 
+/**
+ * The locale for a number that stands beside an amount (a percentage, a bare
+ * figure on a chart): the page's own style where it has one, otherwise the
+ * marks every page without one uses, a comma between groups and a point for
+ * decimals, in lakhs and crores for a currency counted that way.
+ */
+export function amountNumberLocale(code: string, amountLocale?: string | null): string {
+  return amountLocale ?? (getCurrency(code).locale === 'en-IN' ? 'en-IN' : 'en-US');
+}
+
+/**
+ * The page's marks on an amount written the currency's way: the symbol, its
+ * place and the currency's decimals stay; the digits are grouped in threes
+ * with a comma, and the decimal mark is a point.
+ */
+function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {
+  const out: Intl.NumberFormatPart[] = [];
+  let digits = '';
+  let at = -1;
+  for (const part of parts) {
+    if (part.type === 'integer' || part.type === 'group') {
+      if (at < 0) {
+        at = out.length;
+        out.push({ type: 'integer', value: '' });
+      }
+      if (part.type === 'integer') digits += part.value;
+    } else if (part.type === 'decimal') {
+      out.push({ type: 'decimal', value: '.' });
+    } else {
+      out.push(part);
+    }
+  }
+  if (at >= 0) out[at] = { type: 'integer', value: digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',') };
+  return out;
+}
+
+/**
+ * A formatter for an amount in a tool (council, Nov 18, 2026, #619).
+ *
+ * On a page with its own amount style (Spanish, Czech) every currency is
+ * written that way. On the others (English, Hindi, Marathi) an amount keeps
+ * its currency's symbol, the symbol's place and its decimals, and is written
+ * with the page's marks: "₺10,000", "R$ 10,000", "10,000 Kč". The currency's
+ * own marks would put "₺10.000" beside "2,490,320%" in one answer, and an
+ * English reader takes that for ten. Grouping is not the hazard and stays the
+ * currency's: rupees in lakhs and crores ("₹10,58,721"), the rest in threes.
+ */
+export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {
+  const { locale } = amountStyle(code, amountLocale);
+  const own = new Intl.NumberFormat(locale, options);
+  if (amountLocale || locale === 'en-IN') return { format: (v) => own.format(v), formatToParts: (v) => own.formatToParts(v) };
+  const formatToParts = (v: number) => withPageMarks(own.formatToParts(v));
+  return { format: (v) => formatToParts(v).map((p) => p.value).join(''), formatToParts };
+}
+
 /** Currencies that share the "$" symbol and need disambiguation. */
 const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);
 
@@ -200,9 +255,9 @@ export function formatMoney(units: number, currencyCode: string, amountLocale?: 
   // and less than half a minor unit either side of zero is zero.
   if (!Number.isFinite(units)) return 'n/a';
   const { code } = getCurrency(currencyCode);
-  const { locale, display } = amountStyle(code, amountLocale);
+  const { display } = amountStyle(code, amountLocale);
   const value = fromMinor(Math.abs(units) < 0.5 ? 0 : units, code);
-  const formatted = new Intl.NumberFormat(locale, {
+  const formatted = amountFormat(code, amountLocale, {
     style: 'currency',
     currency: code,
     currencyDisplay: display,

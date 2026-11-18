@@ -23,15 +23,40 @@
  * price from 2000 remembers it in francs or lire.
  *
  * Every ratio and date was read from the source named beside it (a central
- * bank, the law itself, the ECB or the IMF), on 14 November 2026.
+ * bank, the law itself, the ECB or the IMF), on 14 November 2026; Latvia's and
+ * Ecuador's dates on 18 November 2026. Two dates are not confirmed from such a
+ * source and carry no month or no day: Angola's 1999 change (the IMF notes
+ * say 12 November, other accounts 1 December) and the day of its July 1995
+ * change.
  *
  * Pure: no DOM, no analytics.
  */
 export interface CurrencyChange {
-  /** The first year whose everyday amounts are in the new unit. */
+  /**
+   * The year the arithmetic uses: an amount of this year or later is read as
+   * the new unit. For a change on 1 January this is simply that year.
+   */
   year: number;
   /** Units of the old money that became one unit of the new. */
   ratio: number;
+  /**
+   * The day the change took effect, when it was not 1 January of `year`: a
+   * fact of its own, kept apart from `year` (council, Nov 18, 2026). Both
+   * monies were in use during `on.year`, so an amount "from that year" could
+   * be in either, and the calculator says so (#619). `month` and `day` are
+   * there only when the source beside the entry gives them; without a month
+   * the note says "during {year}". No entry's `year` is moved to match its
+   * date without checking the country's figures first.
+   */
+  on?: { year: number; month?: number; day?: number };
+}
+
+/**
+ * The change whose own year is `year`, if both monies were in use during it:
+ * the year an amount could be in either unit.
+ */
+export function mixedYearChange(country: string, year: number): CurrencyChange | null {
+  return (CURRENCY_CHANGES[country] ?? []).find((c) => c.on?.year === year) ?? null;
 }
 
 // ECB, "Use of the euro": fixed euro conversion rates.
@@ -70,54 +95,60 @@ export const CURRENCY_CHANGES: Record<string, CurrencyChange[]> = {
   MLT: [{ year: 2008, ratio: 0.4293 }],
   SVK: [{ year: 2009, ratio: 30.126 }],
   EST: [{ year: 2011, ratio: 15.6466 }],
-  // Latvijas Banka, "Transition from Latvian ruble to lats": 1 lats for 200
-  // Latvian rubles, 1993. https://www.bank.lv
+  // Latvijas Banka, "Transition from Latvian ruble to lats": "The first 5 lats
+  // notes were put into circulation on March 5, 1993", "according to the rate
+  // 1 LVL = 200 LVR"; the "Latvian ruble ceased to be legal tender starting
+  // October 18". https://www.bank.lv
   LVA: [
-    { year: 1993, ratio: 200 },
+    { year: 1993, ratio: 200, on: { year: 1993, month: 3, day: 5 } },
     { year: 2014, ratio: 0.702804 },
   ],
   // Lietuvos bankas: the litas from 25 June 1993, one litas for 100 talonas.
   // https://www.lb.lt/lt/naujienos/litui-30-nacionalines-valiutos-ivedimo-istorija-ir-paslaptys
   LTU: [
-    { year: 1993, ratio: 100 },
+    { year: 1993, ratio: 100, on: { year: 1993, month: 6, day: 25 } },
     { year: 2015, ratio: 3.4528 },
   ],
   // Narodne novine 37/1994: 1 kuna for 1,000 Croatian dinars, 30 May 1994.
   // https://narodne-novine.nn.hr/clanci/sluzbeni/1994_05_37_682.html
-  HRV: [YUGOSLAV_DINAR_1990, { year: 1994, ratio: 1000 }, { year: 2023, ratio: 7.5345 }],
+  HRV: [YUGOSLAV_DINAR_1990, { year: 1994, ratio: 1000, on: { year: 1994, month: 5, day: 30 } }, { year: 2023, ratio: 7.5345 }],
   // Bulgarian National Bank, Annual Report 1999: "A thousand old levs were
   // exchanged for one new lev", 5 July 1999. The euro from 1 January 2026
   // (ECB), which is after the figures end.
   BGR: [
-    { year: 1999, ratio: 1000 },
+    { year: 1999, ratio: 1000, on: { year: 1999, month: 7, day: 5 } },
     { year: 2026, ratio: 1.95583 },
   ],
   // Ley para la Transformación Económica del Ecuador (2000): sucres exchanged
-  // "a una relación fija e inalterable de veinticinco mil sucres por cada dólar".
-  ECU: [{ year: 2000, ratio: 25_000 }],
+  // "a una relación fija e inalterable de veinticinco mil sucres por cada dólar",
+  // "a partir de la vigencia de esta Ley", which was its publication in the
+  // Registro Oficial on 13 March 2000. Sucres could be exchanged for 180 days
+  // after that.
+  ECU: [{ year: 2000, ratio: 25_000, on: { year: 2000, month: 3, day: 13 } }],
   // Ley de Integración Monetaria, art. 1: 8.75 colones to the dollar, from
   // 1 January 2001. https://www.asamblea.gob.sv
   SLV: [{ year: 2001, ratio: 8.75 }],
   // Reserve Bank of Australia: decimal currency on 14 February 1966, the
   // dollar equal to ten shillings, so one pound became two dollars.
   // https://museum.rba.gov.au/exhibitions/the-decimal-revolution/
-  AUS: [{ year: 1966, ratio: 0.5 }],
+  AUS: [{ year: 1966, ratio: 0.5, on: { year: 1966, month: 2, day: 14 } }],
   // New Zealand history (Ministry for Culture and Heritage): decimal currency
   // on 10 July 1967, one pound for two dollars.
   // https://nzhistory.govt.nz/nz-adopts-decimal-currency
-  NZL: [{ year: 1967, ratio: 0.5 }],
+  NZL: [{ year: 1967, ratio: 0.5, on: { year: 1967, month: 7, day: 10 } }],
   // South African Reserve Bank: the rand from 14 February 1961, one pound
   // for two rand. https://www.resbank.co.za/en/home/about-us/history
-  ZAF: [{ year: 1961, ratio: 0.5 }],
+  ZAF: [{ year: 1961, ratio: 0.5, on: { year: 1961, month: 2, day: 14 } }],
   // IMF press notice 98/20 and Country Report 05/94: the CFA franc from
   // 2 May 1997, "65 pesos per CFA franc".
-  GNB: [{ year: 1997, ratio: 65 }],
+  GNB: [{ year: 1997, ratio: 65, on: { year: 1997, month: 5, day: 2 } }],
   // IMF exchange rate country notes: the readjusted kwanza, "equal to 1,000
   // new kwanzas", July 1995; the kwanza, "equal to 1,000,000 readjusted
   // kwanzas", 12 November 1999.
   AGO: [
-    { year: 1995, ratio: 1000 },
-    { year: 1999, ratio: 1_000_000 },
+    { year: 1995, ratio: 1000, on: { year: 1995, month: 7 } },
+    // No month: 12 November in the IMF notes, 1 December in other accounts.
+    { year: 1999, ratio: 1_000_000, on: { year: 1999 } },
   ],
   // Banco Central do Brasil, "Brazilian Monetary System Reforms": cruzado
   // (28 Feb 1986, 1,000 cruzeiros), cruzado novo (16 Jan 1989, 1,000
@@ -125,19 +156,19 @@ export const CURRENCY_CHANGES: Record<string, CurrencyChange[]> = {
   // 2,750 cruzeiros reais).
   // https://www.bcb.gov.br/ingles/museu-espacos/refmone-i.asp?frame=1
   BRA: [
-    { year: 1986, ratio: 1000 },
-    { year: 1989, ratio: 1000 },
-    { year: 1993, ratio: 1000 },
-    { year: 1994, ratio: 2750 },
+    { year: 1986, ratio: 1000, on: { year: 1986, month: 2, day: 28 } },
+    { year: 1989, ratio: 1000, on: { year: 1989, month: 1, day: 16 } },
+    { year: 1993, ratio: 1000, on: { year: 1993, month: 8, day: 1 } },
+    { year: 1994, ratio: 2750, on: { year: 1994, month: 7, day: 1 } },
   ],
   // IMF, Finance & Development 4(3), 1967: "1 zaire = CF 1,000", 23 June 1967.
   // IMF exchange rate country notes: the new zaïre, "equal to three million
   // old zaïres", 22 October 1993; the Congo franc, "equal to 100,000 new
   // zaïres", 1 July 1998.
   COD: [
-    { year: 1967, ratio: 1000 },
-    { year: 1993, ratio: 3_000_000 },
-    { year: 1998, ratio: 100_000 },
+    { year: 1967, ratio: 1000, on: { year: 1967, month: 6, day: 23 } },
+    { year: 1993, ratio: 3_000_000, on: { year: 1993, month: 10, day: 22 } },
+    { year: 1998, ratio: 100_000, on: { year: 1998, month: 7, day: 1 } },
   ],
   // The currency law of 1979 (Althingi): from 1 January 1981 one new króna equals one
   // hundred old krónur. https://www.althingi.is/lagasafn/pdf/122b/1979035.pdf
@@ -145,23 +176,23 @@ export const CURRENCY_CHANGES: Record<string, CurrencyChange[]> = {
   // Bank Indonesia: under Penetapan Presiden 27/1965 of 13 December 1965 the
   // money's value was cut "from Rp 1,000 to Rp 1". Prices were in the new
   // rupiah from 1966. https://www.bi.go.id
-  IDN: [{ year: 1966, ratio: 1000 }],
+  IDN: [{ year: 1966, ratio: 1000, on: { year: 1965, month: 12, day: 13 } }],
   // Bank of Korea: the reform of 10 June 1962 issued won "ten times" the
   // value of the hwan. https://www.bok.or.kr/eng/main/contents.do?menuNo=400118
-  KOR: [{ year: 1962, ratio: 10 }],
+  KOR: [{ year: 1962, ratio: 10, on: { year: 1962, month: 6, day: 10 } }],
   // Banco de México: a "new peso" equal to 1,000 pesos of the earlier unit,
   // from 1 January 1993. https://www.banxico.org.mx
   MEX: [{ year: 1993, ratio: 1000 }],
   // Banco de Moçambique, Aviso 14/GGBM/2005: the metical divided by 1,000
   // from 1 July 2006. https://www.bancomoc.mz
-  MOZ: [{ year: 2006, ratio: 1000 }],
+  MOZ: [{ year: 2006, ratio: 1000, on: { year: 2006, month: 7, day: 1 } }],
   // Law of 7 July 1994 on the redenomination of the złoty: the new unit
   // equals 10,000 old złotys, from 1 January 1995.
   // https://eli.gov.pl/eli/DU/1994/386/ogl/pol/pdf
   POL: [{ year: 1995, ratio: 10_000 }],
   // Banca Națională a României: 10,000 old lei for 1 new leu, 1 July 2005.
   // https://bnro.ro/apage.aspx?pid=2785
-  ROU: [{ year: 2005, ratio: 10_000 }],
+  ROU: [{ year: 2005, ratio: 10_000, on: { year: 2005, month: 7, day: 1 } }],
   // Central Bank of the Republic of Türkiye, Law on the Currency Unit of the
   // Republic of Turkey: 1 new lira for 1,000,000 lira, from 1 January 2005.
   // https://www3.tcmb.gov.tr/ytlkampanya/ytlsitedokuman/tcmb/5228ING.htm
