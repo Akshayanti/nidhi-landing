@@ -667,12 +667,11 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   }
 
   const factor = getCurrency(currency).factor;
-  // Whole units in the currency's own conventions, like the rest of the page;
-  // the short English form only when a full amount would not fit the bar.
-  const barLabel = (minor: number) => {
-    const full = formatAmount(minor / factor, currency);
-    return full.length <= (phone ? 7 : 9) ? full : amounts.label(minor / factor, currency);
-  };
+  // The chart names its unit once, in the heading above it, and the bars
+  // carry bare numbers, like every other chart. Whole units while every
+  // number fits its bar; otherwise one scale for the whole chart, chosen from
+  // the largest payment ("Amounts in thousands of €": 1.25, 0.25).
+  const widthOf = (text: string) => drawnWidth[text] ?? text.length * (phone ? 8.2 : 7.4);
   const samples = pickSplitSamples(schedule.length, 6);
   const rows = samples.map((m) => schedule[m - 1]);
 
@@ -696,6 +695,13 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const barWidth = Math.min(70, (plotW - 20) / rows.length - (phone ? 6 : 14));
   const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
 
+  const whole = amounts.axis(0, currency);
+  const scaled = amounts.axis(maxPayment / factor, currency);
+  const labelForms = (minor: number) => [whole.tick(Math.round(minor / factor)), scaled.tick(minor / factor)];
+  const wholeFits = rows.every((r) => [r.interest, r.principal].every((m) => widthOf(labelForms(m)[0]) <= barWidth - 4));
+  const unit = wholeFits ? whole : scaled;
+  const barLabel = (minor: number) => labelForms(minor)[wholeFits ? 0 : 1];
+
   // Where each bar's two labels go. A label that would run into one already
   // placed moves to a second row inside its own segment when the segment is
   // tall enough, and is otherwise left off: the table below the chart, and the
@@ -703,7 +709,10 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const ROW = 15;
   const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
   const place = (text: string, cx: number, base: number, room: number, inside: boolean): number | null => {
-    const w = (drawnWidth[text] ?? text.length * (phone ? 8.2 : 7.4)) + 4;
+    // Inside a bar, a label wider than the bar would run onto the next one.
+    // Outside it, a label wider than the bar's own column would reach the next bar's.
+    if (widthOf(text) > (inside ? barWidth - 4 : barWidth + gap - 2)) return null;
+    const w = widthOf(text) + 4;
     for (const row of [0, 1]) {
       if (row === 1 && !(inside && room >= 22 + ROW)) break;
       const yy = base + row * ROW;
@@ -746,6 +755,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
 
   return (
     <>
+      <ChartUnit>{unit.heading}</ChartUnit>
       <svg
         ref={svgRef}
         className={`lc-splitChart ${phone ? 'lc-splitChart--phone' : ''}`}
@@ -763,7 +773,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
         {/* Every label the bars could carry, drawn unseen so each is measured
             as it would be drawn, including one that was left off. */}
         <g className="lc-splitMeasure" aria-hidden="true" visibility="hidden">
-          {[...new Set(rows.flatMap((r) => [barLabel(r.interest), barLabel(r.principal)]))].map((text) => (
+          {[...new Set(rows.flatMap((r) => [...labelForms(r.interest), ...labelForms(r.principal)]))].map((text) => (
             <text key={text} className="lc-splitValueInterest" x={0} y={0} style={{ fontWeight: 600 }}>{text}</text>
           ))}
         </g>
