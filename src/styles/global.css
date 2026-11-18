@@ -5141,6 +5141,15 @@ body[data-page="landing"] .site-footer {
   position: relative;
   margin: 0;
 }
+/* What a chart's amounts are counted in ("Amounts in thousands of €"), said
+   once above it so the gridlines can carry bare numbers. Page text, not chart
+   text: it grows with the reader's text size and wraps. */
+.tool-chartUnit {
+  margin: 0 0 var(--space-1);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
 .mcs-swipe,
 .chart-swipe {
   display: none;

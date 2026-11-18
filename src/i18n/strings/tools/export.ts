@@ -65,6 +65,18 @@ export const exportEn = {
     beta: "Planner beta",
     betaText: "The nidhi planner is in development. Its free beta is planned to open in January 2027: nidhi.today/beta/",
   },
+  /**
+   * How a chart writes amounts (`chartAmounts.ts`). The heading above a chart
+   * names the currency and the scale once, and the gridlines carry bare
+   * numbers. `short` is what follows the number on a label that stands alone
+   * and so carries its own unit: "€547K", "₹18.7L".
+   */
+  chart: {
+    amountsIn: 'Amounts in {currency}',
+    amountsInScale: 'Amounts in {scale} of {currency}',
+    scales: { thousand: 'thousands', lakh: 'lakhs', crore: 'crores', million: 'millions', billion: 'billions' },
+    short: { thousand: '{n}K', lakh: '{n}L', crore: '{n}Cr', million: '{n}M', billion: '{n}B' },
+  },
   yes: 'Yes',
   no: 'No',
 };
@@ -116,6 +128,17 @@ export const exportHi: typeof exportEn = {
     beta: "प्लानर बीटा",
     betaText: "nidhi का प्लानर बन रहा है। इसके मुफ़्त बीटा को जनवरी 2027 में खोलने की योजना है: nidhi.today/hi/beta/",
   },
+  /**
+   * Rupees are counted in हज़ार, लाख and करोड़. Another currency is counted
+   * the western way, and its million and thousand million are said through
+   * लाख and करोड़ in the heading; on a label they keep M and B for now.
+   */
+  chart: {
+    amountsIn: 'राशियाँ ({currency}\u00a0में)',
+    amountsInScale: 'राशियाँ ({scale} {currency}\u00a0में)',
+    scales: { thousand: 'हज़ार', lakh: 'लाख', crore: 'करोड़', million: 'दस लाख', billion: 'सौ करोड़' },
+    short: { thousand: '{n}\u00a0हज़ार', lakh: '{n}\u00a0लाख', crore: '{n}\u00a0करोड़', million: '{n}M', billion: '{n}B' },
+  },
   yes: 'हाँ',
   no: 'नहीं',
 };
@@ -163,6 +186,17 @@ export const exportEs: typeof exportEn = {
       'Una estimación educativa de una herramienta gratuita, no asesoramiento financiero. La página explica cómo se calcula y qué deja fuera.',
     beta: "Beta del planificador",
     betaText: "El planificador de nidhi está en desarrollo. Está previsto que su beta gratuita se abra en enero de 2027: nidhi.today/es/beta/",
+  },
+  /**
+   * A Spanish page counts every currency in miles and millones, so the lakh
+   * and crore words are not reached today. A thousand million on a label is
+   * written in millions by the formatter ("2.500 M €"), never with a B.
+   */
+  chart: {
+    amountsIn: 'Importes en {currency}',
+    amountsInScale: 'Importes en {scale} de {currency}',
+    scales: { thousand: 'miles', lakh: 'cientos de miles', crore: 'decenas de millones', million: 'millones', billion: 'miles de millones' },
+    short: { thousand: '{n}\u00a0mil', lakh: '{n}\u00a0lakh', crore: '{n}\u00a0crore', million: '{n}\u00a0M', billion: '{n}\u00a0mil\u00a0M' },
   },
   yes: 'Sí',
   no: 'No',
@@ -212,6 +246,16 @@ export const exportCs: typeof exportEn = {
     beta: "Beta plánovače",
     betaText: "Plánovač nidhi se připravuje. Jeho beta zdarma se má otevřít v lednu 2027: nidhi.today/cs/beta/",
   },
+  /**
+   * A Czech page counts every currency in tisíce, miliony and miliardy, so the
+   * lakh and crore words are not reached today. Never K, M or B.
+   */
+  chart: {
+    amountsIn: 'Částky v\u00a0{currency}',
+    amountsInScale: 'Částky v\u00a0{scale} {currency}',
+    scales: { thousand: 'tisících', lakh: 'statisících', crore: 'desítkách milionů', million: 'milionech', billion: 'miliardách' },
+    short: { thousand: '{n}\u00a0tis.', lakh: '{n}\u00a0lakh', crore: '{n}\u00a0crore', million: '{n}\u00a0mil.', billion: '{n}\u00a0mld.' },
+  },
   yes: 'Ano',
   no: 'Ne',
 };
@@ -259,6 +303,13 @@ export const exportMr: typeof exportEn = {
       'हा एका मोफत साधनाचा शैक्षणिक अंदाज आहे, आर्थिक सल्ला नाही. पेजवर याची गणना कशी होते आणि यात कोणत्या गोष्टी धरलेल्या नाहीत हे सांगितले आहे.',
     beta: "प्लॅनर बीटा",
     betaText: "nidhi चा प्लॅनर तयार होत आहे. त्याचा मोफत बीटा जानेवारी 2027 मध्ये सुरू करण्याची योजना आहे: nidhi.today/mr/beta/",
+  },
+  /** As in Hindi: rupees in हजार, लाख and कोटी; another currency the western way. */
+  chart: {
+    amountsIn: 'रकमा ({currency}\u00a0मध्ये)',
+    amountsInScale: 'रकमा ({scale} {currency}\u00a0मध्ये)',
+    scales: { thousand: 'हजार', lakh: 'लाख', crore: 'कोटी', million: 'दहा लाख', billion: 'शंभर कोटी' },
+    short: { thousand: '{n}\u00a0हजार', lakh: '{n}\u00a0लाख', crore: '{n}\u00a0कोटी', million: '{n}M', billion: '{n}B' },
   },
   yes: 'हो',
   no: 'नाही',

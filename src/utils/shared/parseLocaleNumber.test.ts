@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   canonicalNumber,
+  completeNumber,
   displayNumber,
   formatForInput,
   numberSeparators,
@@ -183,6 +184,18 @@ describe('canonicalNumber and displayNumber: the input box and plain-number stat
     assert.equal(canonicalNumber('2.', EN), '2');
     assert.equal(canonicalNumber('.5', EN), '0.5', 'a leading decimal mark, as the tools always read it');
     assert.equal(canonicalNumber(',5', ES), '0.5');
+  });
+
+  it('completes a half-typed number the same way for every tool (#520)', () => {
+    assert.equal(completeNumber('2.', EN), '2');
+    assert.equal(completeNumber('.5', EN), '0.5');
+    assert.equal(completeNumber(',5', ES), '0,5');
+    assert.equal(completeNumber('2,', ES), '2');
+    assert.equal(completeNumber('-.5', EN), '-0.5');
+    assert.equal(completeNumber('.', EN), '.', 'a mark alone is not a number');
+    assert.equal(completeNumber('2.5', EN), '2.5');
+    // Not the page's decimal mark: left for the parser to judge.
+    assert.equal(completeNumber('.5', ES), '.5');
   });
 
   it('marks text that is not a number as NaN rather than reading it another way', () => {

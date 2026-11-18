@@ -149,13 +149,25 @@ export function formatForInput(n: number, locale: string, maxDecimals = 2): stri
 export function canonicalNumber(raw: string, locale: string): string {
   const t = raw.trim();
   if (t === '') return '';
-  // "2," is a number still being typed and ",5" a short way to write 0,5, as
-  // the tools always read "2." and ".5" on an English page.
-  const { decimal } = numberSeparators(locale);
-  let body = t.endsWith(decimal) ? t.slice(0, -1) : t;
-  if (body.startsWith(decimal)) body = `0${body}`;
-  const n = parseLocaleNumber(body, locale);
+  const n = parseLocaleNumber(completeNumber(t, locale), locale);
   return n === null ? 'NaN' : String(n);
+}
+
+/**
+ * A number as readers leave it in a box, made whole: "2," is a number still
+ * being typed and ",5" a short way to write 0,5, with the page's own decimal
+ * mark (".5" and "5." on an English page). Every tool reads these the same way
+ * (#520): a tool that parses its own boxes passes the text through here first.
+ * A leading minus sign is kept where it is.
+ */
+export function completeNumber(raw: string, locale: string): string {
+  const t = raw.trim();
+  const sign = /^[-−]/.test(t) ? t[0] : '';
+  let body = t.slice(sign.length).trimStart();
+  const { decimal } = numberSeparators(locale);
+  if (body.length > 1 && body.endsWith(decimal)) body = body.slice(0, -1);
+  if (body.length > 1 && body.startsWith(decimal)) body = `0${body}`;
+  return sign + body;
 }
 
 /**

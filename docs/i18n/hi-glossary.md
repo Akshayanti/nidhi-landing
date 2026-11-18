@@ -90,6 +90,13 @@ breach as a defect.
    (`₹1.25 lakh`), so the `₹10,58,721` lakh-grouped form of rule 4 is the
    tools' alone.
 
+9. **Short forms on charts.** Rupees are counted in हज़ार, लाख and करोड़,
+   written as words after a no-break space: `₹54.7 हज़ार`, `₹18.7 लाख`,
+   `₹1.09 करोड़`. Never the English `K`, `L` or `Cr`. A chart's heading says
+   the unit once (*राशियाँ (लाख ₹ में)*). Another currency is counted the
+   western way: its thousands are हज़ार, and a heading says million as दस लाख
+   and thousand million as सौ करोड़.
+
 ## Vocabulary
 
 Terms marked "decided" had more than one plausible candidate; the note records

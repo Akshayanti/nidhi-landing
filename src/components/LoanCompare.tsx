@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   CURRENCIES,
   DEFAULT_CURRENCY,
@@ -40,6 +40,7 @@ import {
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts, SharedAmounts } from './Amounts.tsx';
+import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
@@ -185,6 +186,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['enter a loan amount greater than zero', 'amount'],
   ['loan amount is too large', 'amountMax'],
   ['loan is too small for this term', 'tooSmall'],
+  ['monthly payment only covers the interest', 'interestOnly'],
   ['enter a non-negative interest rate', 'rate'],
   ['initial fixed period must be a positive number', 'initialFixed'],
   ['enter a term of at least one month', 'termMin'],
@@ -292,9 +294,9 @@ const VENDOR_DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
 
 const BW = 760;
 const BH = 400;
-const BPAD = { top: 24, right: 28, bottom: 56, left: 104 };
-const BPLOT_W = BW - BPAD.left - BPAD.right;
-const BPLOT_H = BH - BPAD.top - BPAD.bottom;
+// The left margin is measured from the gridline numbers as drawn (`useAxisMargin`).
+const BPAD_FIXED = { top: 24, right: 28, bottom: 56 };
+const BPLOT_H = BH - BPAD_FIXED.top - BPAD_FIXED.bottom;
 
 /** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
 function niceScale(v: number): { top: number; step: number; count: number } {
@@ -308,6 +310,7 @@ function niceScale(v: number): { top: number; step: number; count: number } {
 
 function BalanceChart({ results, colors, vendorNames, currency, strings }: ChartProps) {
   const { formatAmount, formatMoney } = useMoney();
+  const chartAmounts = useChartAmounts();
   const titleId = useId();
   const descId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -327,6 +330,9 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
 
   const factor = getCurrency(currency).factor;
   const maxMonths = valid.length ? Math.max(...valid.map(({ rows }) => rows.length)) : 1;
+  const margin = useAxisMargin(svgRef, '.lc-balanceAmount', { estimate: 92, gap: 16, least: 32, width: BW, right: BPAD_FIXED.right });
+  const BPAD = { ...BPAD_FIXED, left: margin.left };
+  const BPLOT_W = BW - BPAD.left - BPAD.right;
   const x = (m: number) => BPAD.left + (m / Math.max(maxMonths, 1)) * BPLOT_W;
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
   const slot = useReadoutSlot(cardRef, hover !== null);
@@ -370,6 +376,8 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   if (yearStep > 1) for (let yr = 1; yr * 12 < maxMonths; yr++) if (yr % yearStep !== 0) xMinor.push(yr);
   const yTicks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
   const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
+  // The axis names its unit once, above the chart; its gridlines carry bare numbers.
+  const unit = chartAmounts.axis(top, currency);
 
   const ariaSummary =
     strings.balance.ariaPrefix +
@@ -461,6 +469,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
           </span>
         ))}
       </figcaption>
+      <ChartUnit>{unit.heading}</ChartUnit>
       <p className="chart-swipe" aria-hidden="true">{strings.balance.swipe}</p>
       <div className="lc-chartScroll">
         <div
@@ -491,7 +500,9 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
             {yTicks.map((t) => (
               <g key={`y${t}`}>
                 <line className={t === 0 ? 'lc-axisLine' : 'lc-chartGrid'} x1={BPAD.left} x2={BW - BPAD.right} y1={y(t)} y2={y(t)} />
-                <text className="lc-chartTick" x={BPAD.left - 12} y={y(t) + 5} textAnchor="end">{formatAmount(t, currency, true)}</text>
+                {margin.inside
+                  ? t > 0 && <text className="lc-chartTick lc-balanceAmount" x={BPAD.left + 6} y={y(t) - 5} textAnchor="start">{unit.tick(t)}</text>
+                  : <text className="lc-chartTick lc-balanceAmount" x={BPAD.left - 12} y={y(t) + 5} textAnchor="end">{unit.tick(t)}</text>}
               </g>
             ))}
             {xTicks.map((yr) => (
@@ -615,6 +626,38 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // Phones get a narrower drawing, so the labels stay readable once it is
   // scaled down to the screen instead of shrinking to a few pixels.
   const phone = usePhone();
+  const amounts = useChartAmounts();
+  const svgRef = useRef<SVGSVGElement>(null);
+  // How wide each label is drawn, by its text, so labels that would run into
+  // each other can be moved or left off (#521). Unmeasured labels count by length.
+  const [drawnWidth, setDrawnWidth] = useState<Record<string, number>>({});
+  useLayoutEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const measure = () => {
+      const next: Record<string, number> = {};
+      for (const t of el.querySelectorAll<SVGTextElement>('.lc-splitMeasure text')) {
+        try {
+          const w = t.getComputedTextLength();
+          if (w > 0) next[t.textContent ?? ''] = w;
+        } catch { /* not rendered */ }
+      }
+      const keys = Object.keys(next);
+      // A hidden chart measures as nothing: what was measured before stays.
+      if (keys.length === 0) return;
+      setDrawnWidth((prev) => {
+        return keys.length === Object.keys(prev).length && keys.every((k) => Math.abs((prev[k] ?? -9) - next[k]) < 0.5) ? prev : next;
+      });
+    };
+    // After every drawing: any payment, lump sum or currency can change a
+    // label. Unchanged widths keep the same state, so this settles at once.
+    measure();
+    let live = true;
+    document.fonts?.ready.then(() => { if (live) measure(); });
+    const seen = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    seen?.observe(el);
+    return () => { live = false; seen?.disconnect(); };
+  });
   if (schedule.length === 0) {
     return (
       <p className="lc-chartEmpty">
@@ -628,7 +671,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // the short English form only when a full amount would not fit the bar.
   const barLabel = (minor: number) => {
     const full = formatAmount(minor / factor, currency);
-    return full.length <= (phone ? 7 : 9) ? full : formatAmount(minor / factor, currency, true);
+    return full.length <= (phone ? 7 : 9) ? full : amounts.label(minor / factor, currency);
   };
   const samples = pickSplitSamples(schedule.length, 6);
   const rows = samples.map((m) => schedule[m - 1]);
@@ -653,6 +696,40 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const barWidth = Math.min(70, (plotW - 20) / rows.length - (phone ? 6 : 14));
   const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
 
+  // Where each bar's two labels go. A label that would run into one already
+  // placed moves to a second row inside its own segment when the segment is
+  // tall enough, and is otherwise left off: the table below the chart, and the
+  // schedule, still hold the figure.
+  const ROW = 15;
+  const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
+  const place = (text: string, cx: number, base: number, room: number, inside: boolean): number | null => {
+    const w = (drawnWidth[text] ?? text.length * (phone ? 8.2 : 7.4)) + 4;
+    for (const row of [0, 1]) {
+      if (row === 1 && !(inside && room >= 22 + ROW)) break;
+      const yy = base + row * ROW;
+      const box = { x0: cx - w / 2, x1: cx + w / 2, y0: yy - 12, y1: yy + 3 };
+      if (!placed.some((b) => box.x0 < b.x1 && b.x0 < box.x1 && box.y0 < b.y1 && b.y0 < box.y1)) {
+        placed.push(box);
+        return yy;
+      }
+    }
+    return null;
+  };
+  const labelAt = rows.map((row, idx) => {
+    const cx = padL + gap + idx * (barWidth + gap) + barWidth / 2;
+    const totalH = plotH * (row.payment / maxPayment);
+    const interestH = totalH * (row.interest / row.payment);
+    const principalH = totalH - interestH;
+    const yTop = padT + (plotH - totalH);
+    const yPrincipal = yTop + interestH;
+    const interestInside = interestH >= 22;
+    const principalInside = principalH >= 22;
+    return {
+      interest: place(barLabel(row.interest), cx, interestInside ? yTop + 14 : yTop - 4, interestH, interestInside),
+      principal: place(barLabel(row.principal), cx, principalInside ? yPrincipal + 16 : yPrincipal + principalH + 14, principalH, principalInside),
+    };
+  });
+
   const ariaSummary =
     format(strings.split.ariaPrefix, { vendor: vendorName }) +
     rows
@@ -670,6 +747,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   return (
     <>
       <svg
+        ref={svgRef}
         className={`lc-splitChart ${phone ? 'lc-splitChart--phone' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
@@ -681,6 +759,14 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
       >
         <title id={titleId}>{strings.split.title}</title>
         <desc id={descId}>{ariaSummary}</desc>
+
+        {/* Every label the bars could carry, drawn unseen so each is measured
+            as it would be drawn, including one that was left off. */}
+        <g className="lc-splitMeasure" aria-hidden="true" visibility="hidden">
+          {[...new Set(rows.flatMap((r) => [barLabel(r.interest), barLabel(r.principal)]))].map((text) => (
+            <text key={text} className="lc-splitValueInterest" x={0} y={0} style={{ fontWeight: 600 }}>{text}</text>
+          ))}
+        </g>
 
         {/* Eyebrow legend, mirroring the blog figure */}
         <text x={padL} y={padT - 16} className="lc-splitEyebrowInterest">
@@ -721,9 +807,9 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
                 style={{ fill: vendorColor }}
               />
               {/* Interest value */}
-              <text
+              {labelAt[idx].interest !== null && <text
                 x={x + barWidth / 2}
-                y={interestLabelInside ? yTop + 14 : yTop - 4}
+                y={labelAt[idx].interest ?? 0}
                 className="lc-splitValueInterest"
                 textAnchor="middle"
                 style={{
@@ -736,11 +822,11 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
                 }}
               >
                 {barLabel(row.interest)}
-              </text>
+              </text>}
               {/* Principal value */}
-              <text
+              {labelAt[idx].principal !== null && <text
                 x={x + barWidth / 2}
-                y={principalLabelInside ? yPrincipal + 16 : yPrincipal + principalH + 14}
+                y={labelAt[idx].principal ?? 0}
                 className="lc-splitValuePrincipal"
                 textAnchor="middle"
                 style={{
@@ -749,7 +835,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
                 }}
               >
                 {barLabel(row.principal)}
-              </text>
+              </text>}
               {/* X-axis label: "Year N" or "Month N" for very short loans */}
               <text
                 x={x + barWidth / 2}
@@ -1094,6 +1180,7 @@ export default function LoanCompare({
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
+    <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
@@ -1328,6 +1415,7 @@ export default function LoanCompare({
       <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
     </div>
     </ErrorLeadContext.Provider>
+    </ChartWordsContext.Provider>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
   );

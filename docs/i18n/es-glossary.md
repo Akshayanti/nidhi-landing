@@ -72,6 +72,11 @@ listed is not re-decided per page.
     curly marks: `«... “...” ...»`. Straight `"..."` and curly `“...”` are
     never used as quotation marks in a Spanish value; quotes that belong to
     code or an HTML attribute inside a string are left alone.
+13. **Short forms on charts**: `mil` (thousand) and `M` (million), each after
+    a no-break space: `547 mil €`, `2,16 M €`. A thousand million is written
+    in millions, `2.500 M €`. Never `K`, and never `B`: a Spanish *billón* is
+    a million millions. A chart's heading counts in *miles*, *millones* and
+    *miles de millones* (*Importes en miles de €*).
 
 ## Vocabulary
 

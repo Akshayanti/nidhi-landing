@@ -887,7 +887,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿Cuántas trayectorias conviene simular?',
-          a: 'Con {defaultPaths} hay de sobra: subir a {maxPaths} suele mover las cifras baja, mediana y alta unos pocos puntos porcentuales como mucho, y tarda bastante más, sobre todo en un teléfono. Con menos trayectorias se ve cuánto puede desviarse una muestra pequeña: con {minPaths}, las cifras pueden alejarse varios puntos porcentuales de lo que dan miles de trayectorias.',
+          a: 'Con {defaultPaths} hay de sobra: subir a {maxPaths} suele cambiar las cifras baja, mediana y alta en un pequeño porcentaje como máximo, y tarda bastante más, sobre todo en un teléfono. Con menos trayectorias se ve cuánto puede desviarse una muestra pequeña: con {minPaths}, las cifras pueden variar varios por ciento respecto a las obtenidas con miles de trayectorias.',
         },
         {
           q: '¿Cómo se tienen en cuenta las comisiones?',
@@ -1013,7 +1013,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       feeHint: 'Comisiones del fondo y de la plataforma, descontadas de la rentabilidad de cada año. De 0 a {maxFeePct}.',
       pathsLabel: 'Trayectorias simuladas',
       pathsHint:
-        'Más trayectorias dan cifras más estables; por encima de 10.000 cambian unos pocos puntos porcentuales como mucho.',
+        'Más trayectorias dan cifras más estables; por encima de 10.000 cambian en un pequeño porcentaje como máximo.',
     },
     withdraw: {
       toggle: 'Después, vivir de ese dinero',
@@ -1075,7 +1075,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       caveat:
         'Son proporciones de {paths} trayectorias simuladas, no la probabilidad de que te ocurra nada. El modelo es una simplificación; más abajo se explica lo que deja fuera.',
       caveatFew:
-        ' Con solo {paths} trayectorias, las cifras pueden alejarse varios puntos porcentuales de lo que dan miles de trayectorias.',
+        ' Con solo {paths} trayectorias, las cifras pueden variar varios por ciento respecto a las obtenidas con miles de trayectorias.',
       tableSummary: 'Ver las cifras en una tabla',
       tableCaption: 'Valor de la cartera al final de cada año, en dinero de hoy',
       tableYear: 'Año',

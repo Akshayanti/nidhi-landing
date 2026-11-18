@@ -851,6 +851,12 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   });
 
   if (error || schedule.length === 0) {
+    // "Monthly payment is too low" is for a reader who typed a payment. With a
+    // term typed, the payment is the tool's own: at a very high rate, or on a
+    // very small loan, it rounds to the month's interest and no more (#520).
+    const said = mode.kind === 'term' && error && /does not even cover the first month/.test(error)
+      ? 'With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.'
+      : error;
     return {
       monthlyPaymentMinor: scheduledPayment,
       effectiveMonthlyMinor: scheduledPayment + extraMonthlyMinor,
@@ -863,7 +869,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       aprNominal: NaN,
       prepaymentPenaltyMinor: 0,
       warnings,
-      error,
+      error: said,
     };
   }
 
