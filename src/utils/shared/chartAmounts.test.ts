@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { amountScale, axisHeading, axisTick, chartLabel, currencyMark } from './chartAmounts.ts';
+import { amountScale, axisHeading, axisTick, chartLabel, currencyMark, readsAsZero } from './chartAmounts.ts';
 import { exportCs, exportEn, exportEs, exportHi, exportMr } from '../../i18n/strings/tools/export.ts';
 
 const NBSP = '\u00a0';
@@ -103,5 +103,29 @@ describe('a label that stands alone carries its own unit', () => {
     assert.equal(chartLabel(150_000, 'CZK', exportCs.chart, 'cs'), `150${NBSP}tis.${NBSP}Kč`);
     assert.equal(chartLabel(1_500_000, 'CZK', exportCs.chart, 'cs'), `1,5${NBSP}mil.${NBSP}Kč`);
     assert.equal(chartLabel(2_300_000_000, 'CZK', exportCs.chart, 'cs'), `2,3${NBSP}mld.${NBSP}Kč`);
+  });
+});
+
+describe('a bar label never says zero for an amount that is not', () => {
+  // A loan's last month: about 4 Kč of interest on a payment of 1,250 Kč.
+  const inThousands = (v: number) => axisTick(v, 'thousand', 'CZK', 'cs');
+  const wholeUnits = (v: number) => axisTick(Math.round(v), 'none', 'CZK', 'cs');
+
+  it('on a chart counted in thousands', () => {
+    assert.equal(inThousands(4), '0');
+    assert.equal(readsAsZero(4, inThousands), true);
+    assert.equal(readsAsZero(1250, inThousands), false);
+    assert.equal(readsAsZero(12, inThousands), false, 'written 0,01');
+  });
+
+  it('on a chart counted in whole units', () => {
+    assert.equal(readsAsZero(0.4, wholeUnits), true);
+    assert.equal(readsAsZero(0.6, wholeUnits), false);
+    assert.equal(readsAsZero(4, wholeUnits), false);
+  });
+
+  it('lets a true zero be written', () => {
+    assert.equal(readsAsZero(0, inThousands), false);
+    assert.equal(readsAsZero(0, wholeUnits), false);
   });
 });

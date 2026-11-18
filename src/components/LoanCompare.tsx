@@ -41,6 +41,7 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts, SharedAmounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
+import { readsAsZero } from '../utils/shared/chartAmounts.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
@@ -701,6 +702,10 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const wholeFits = rows.every((r) => [r.interest, r.principal].every((m) => widthOf(labelForms(m)[0]) <= barWidth - 4));
   const unit = wholeFits ? whole : scaled;
   const barLabel = (minor: number) => labelForms(minor)[wholeFits ? 0 : 1];
+  // A last month's few units of interest would read "0" on a chart counted in
+  // thousands, or in whole units when it is under half of one. That label is
+  // left off: a month that charges interest never says it charged none.
+  const saysNothing = (minor: number) => readsAsZero(minor, barLabel);
 
   // Where each bar's two labels go. A label that would run into one already
   // placed moves to a second row inside its own segment when the segment is
@@ -734,8 +739,8 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
     const interestInside = interestH >= 22;
     const principalInside = principalH >= 22;
     return {
-      interest: place(barLabel(row.interest), cx, interestInside ? yTop + 14 : yTop - 4, interestH, interestInside),
-      principal: place(barLabel(row.principal), cx, principalInside ? yPrincipal + 16 : yPrincipal + principalH + 14, principalH, principalInside),
+      interest: saysNothing(row.interest) ? null : place(barLabel(row.interest), cx, interestInside ? yTop + 14 : yTop - 4, interestH, interestInside),
+      principal: saysNothing(row.principal) ? null : place(barLabel(row.principal), cx, principalInside ? yPrincipal + 16 : yPrincipal + principalH + 14, principalH, principalInside),
     };
   });
 

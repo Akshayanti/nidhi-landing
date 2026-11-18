@@ -295,4 +295,12 @@ describe('a number too long to print in digits by default (#520)', () => {
     assert.match(canonicalNumber('2500099999999999999999999', 'en'), /^\d{25}$/);
     assert.equal(canonicalNumber('99999999999999999999', 'en'), '100000000000000000000');
   });
+
+  it('reads a number past what a number can hold as the largest there is, not as no number', () => {
+    const huge = '9'.repeat(400);
+    assert.equal(parseLocaleNumber(huge, 'en'), Number.MAX_VALUE);
+    assert.equal(parseLocaleNumber(`-${huge}`, 'en', { allowNegative: true }), -Number.MAX_VALUE);
+    assert.match(canonicalNumber(huge, 'en'), /^\d{309}$/);
+    assert.equal(parseLocaleNumber(`${huge}x`, 'en'), null, 'still not a number when it is not one');
+  });
 });

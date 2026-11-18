@@ -129,8 +129,11 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   const int = sep ? ungroup(intRaw, sep) : /^\d+$/.test(intRaw) ? intRaw : null;
   if (int === null) return null;
 
-  const n = Number(frac !== undefined ? `${int}.${frac}` : int);
-  if (!Number.isFinite(n)) return null;
+  const parsed = Number(frac !== undefined ? `${int}.${frac}` : int);
+  // More than 308 digits is past what a number can hold. It is still a number
+  // the reader typed, and a very large one, so it is read as the largest there
+  // is: the tool then says "too large", not "enter a number" (#520).
+  const n = Number.isFinite(parsed) ? parsed : Number.MAX_VALUE;
   const signed = negative ? -n : n;
   return Object.is(signed, -0) ? 0 : signed;
 }

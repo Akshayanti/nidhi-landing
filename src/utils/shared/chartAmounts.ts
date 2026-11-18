@@ -78,6 +78,15 @@ export function axisTick(value: number, scale: AmountScale, code: string, amount
 }
 
 /**
+ * Whether an amount that is not zero would be written as zero by `write`
+ * ("0" for 4 Kč on a chart counted in thousands). A chart leaves such a label
+ * off rather than say nothing was paid: the table beside it has the figure.
+ */
+export function readsAsZero(value: number, write: (v: number) => string): boolean {
+  return value !== 0 && write(value) === write(0);
+}
+
+/**
  * An amount on a label that carries its own unit, to three significant
  * digits: "€547K", "₹18.7 लाख", "547 mil €", "1,5 mil. Kč". The number and
  * the currency keep the page's own order and separators; only the word after
