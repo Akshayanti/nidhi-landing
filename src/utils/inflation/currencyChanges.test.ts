@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 import { COUNTRY_CURRENCY } from './countries.ts';
-import { CURRENCY_CHANGES, currencyChangesBetween } from './currencyChanges.ts';
+import { CURRENCY_CHANGES, currencyChangesBetween, mixedYearChange } from './currencyChanges.ts';
 
 const data = JSON.parse(readFileSync(new URL('../../data/inflation/worldbank.json', import.meta.url), 'utf8')) as {
   countries: Record<string, { years: Record<string, number | null> }>;
@@ -79,7 +79,7 @@ describe('currency changes: what a span of years crosses', () => {
     const { last } = span('BGR');
     assert.equal(last, 2025);
     const c = currencyChangesBetween('BGR', 1990, last);
-    assert.deepEqual(c.crossed, [{ year: 1999, ratio: 1000 }]);
+    assert.deepEqual(c.crossed, [{ year: 1999, ratio: 1000, on: { year: 1999, month: 7, day: 5 } }]);
     assert.deepEqual(c.later, [{ year: 2026, ratio: 1.95583 }]);
     const recent = currencyChangesBetween('BGR', 2010, last);
     assert.equal(recent.ratio, 1);
@@ -111,3 +111,47 @@ describe('currency changes: what a span of years crosses', () => {
     }
   });
 });
+
+describe('currency changes: the day a change took effect (#619)', () => {
+  const dated = Object.entries(CURRENCY_CHANGES).flatMap(([code, list]) => list.filter((c) => c.on).map((c) => ({ code, ...c, on: c.on! })));
+
+  it('is the year the arithmetic uses or the year before it, never anything else', () => {
+    for (const c of dated) {
+      assert.ok(c.on.year === c.year || c.on.year === c.year - 1, `${c.code} ${c.year}: dated ${c.on.year}`);
+    }
+    // Only Indonesia's December 1965 change is filed under the next year.
+    assert.deepEqual(dated.filter((c) => c.on.year !== c.year).map((c) => c.code), ['IDN']);
+  });
+
+  it('is a real date, with a day only where there is a month, and never 1 January of its own year', () => {
+    for (const c of dated) {
+      const { year, month, day } = c.on;
+      if (month !== undefined) assert.ok(Number.isInteger(month) && month >= 1 && month <= 12, `${c.code} ${year}: month ${month}`);
+      if (day !== undefined) {
+        assert.ok(month !== undefined, `${c.code} ${year}: a day without a month`);
+        assert.equal(new Date(Date.UTC(year, month! - 1, day)).getUTCDate(), day, `${c.code} ${year}: no such day`);
+      }
+      assert.ok(!(year === c.year && month === 1 && day === 1), `${c.code} ${year}: 1 January needs no date`);
+    }
+  });
+
+  it('leaves out the month where no primary source gives it', () => {
+    assert.deepEqual(mixedYearChange('AGO', 1999)?.on, { year: 1999 });
+    assert.deepEqual(mixedYearChange('AGO', 1995)?.on, { year: 1995, month: 7 });
+  });
+
+  it('finds the year in which both monies were in use', () => {
+    assert.equal(mixedYearChange('BRA', 1994)?.ratio, 2750);
+    assert.deepEqual(mixedYearChange('BRA', 1989)?.on, { year: 1989, month: 1, day: 16 }, 'a change on 16 January counts');
+    assert.deepEqual(mixedYearChange('LVA', 1993)?.on, { year: 1993, month: 3, day: 5 });
+    assert.deepEqual(mixedYearChange('ECU', 2000)?.on, { year: 2000, month: 3, day: 13 });
+    // Indonesia: the mixed year is 1965, the year before the one the arithmetic uses.
+    assert.equal(mixedYearChange('IDN', 1965)?.year, 1966);
+    assert.equal(mixedYearChange('IDN', 1966), null);
+    // A change on 1 January leaves no mixed year.
+    assert.equal(mixedYearChange('TUR', 2005), null);
+    assert.equal(mixedYearChange('ITA', 2002), null);
+    assert.equal(mixedYearChange('USA', 2000), null);
+  });
+});
+
