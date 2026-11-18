@@ -9746,7 +9746,7 @@
         "2021": 4.7,
         "2022": 8,
         "2023": 4.12,
-        "2024": 2.95
+        "2024": 2.96
       }
     },
     "UZB": {
@@ -10188,9 +10188,9 @@
       }
     }
   },
-  "fetchedAt": "2026-10-12",
+  "fetchedAt": "2026-11-18",
   "indicator": "FP.CPI.TOTL.ZG",
-  "lastUpdated": "2026-10-08",
+  "lastUpdated": "2099-01-01",
   "license": "CC BY 4.0",
   "source": "World Bank, World Development Indicators: Inflation, consumer prices (annual %)"
 }
