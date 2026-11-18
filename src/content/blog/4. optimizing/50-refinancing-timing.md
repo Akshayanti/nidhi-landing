@@ -96,7 +96,7 @@ The quick sum is costs ÷ monthly saving. For Eva, €4,000 ÷ €200 = 20 month
 <figcaption>Illustrative net-savings trajectory. Below the horizontal axis means you have not yet recouped closing costs; above means you are in net savings. Break-even is the crossing point.</figcaption>
 </figure>
 
-So what decides it is how long she keeps the new loan: her [hold period](#term-hold-period), from the switch until she sells, pays it off or refinances again. People often keep a loan for less time than they expect, so a common rule of thumb is a hold period of at least twice the break-even month. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> sets a current loan against a refinanced one and shows the break-even month.
+So what decides it is how long she keeps the new loan: her [hold period](#term-hold-period), from the switch until she sells, pays it off or refinances again. People often keep a loan for less time than they expect, so a common rule of thumb is a hold period of at least twice the break-even month: a margin of safety that practitioners use, not a figure from research. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> sets a current loan against a refinanced one and shows the break-even month.
 
 The estimate is only as good as what goes into it:
 

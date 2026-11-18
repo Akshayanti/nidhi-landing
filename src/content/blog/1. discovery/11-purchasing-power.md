@@ -12,7 +12,10 @@ takeaways:
   - "Why cash in a low-interest account loses value over time"
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson gave real return as nominal return minus inflation. That is a shortcut that works when both are low; the exact figure is (1 + nominal return) ÷ (1 + inflation) − 1, and at high inflation the two differ a lot: a 40% return with 35% inflation is about 3.7% after inflation, not 5%."
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -43,11 +46,11 @@ faq:
   - question: "How does inflation reduce the value of money?"
     answer: "Inflation is the general increase in prices over time, and it is the force that erodes purchasing power. When inflation runs at 3 percent, something costing 100 euros today costs 103 next year, so the same money buys slightly less. Central banks target a low, steady rate, around 2 percent in the eurozone, because mild inflation is considered normal and even healthy. The danger is the long-term effect: at a steady 2.5 percent, 10,000 euros under a mattress buys only about 6,100 euros worth of goods after twenty years. Inflation is easy to ignore because your balance never visibly shrinks, but what it buys does."
   - question: "What is the real return on savings?"
-    answer: "Real return is your nominal return minus inflation: real return equals nominal return minus inflation. If a savings account pays 1 percent while prices rise 2.5 percent, you did not gain 1 percent, you lost 1.5 percent in real terms. Cash under a mattress earning 0 percent against 2.5 percent inflation has a real return of negative 2.5 percent. A high-yield account at 3 percent against the same inflation gives a modest positive 0.5 percent. A negative real return means you are getting poorer on paper even as the balance grows. Always subtract inflation from any rate or raise to see the number that actually matters."
+    answer: "Real return is what your return is worth after inflation. When both rates are low, a close shortcut is the nominal return minus inflation. If a savings account pays 1 percent while prices rise 2.5 percent, you did not gain 1 percent, you lost 1.5 percent in real terms. Cash under a mattress earning 0 percent against 2.5 percent inflation has a real return of negative 2.5 percent. A high-yield account at 3 percent against the same inflation gives a modest positive 0.5 percent. A negative real return means you are getting poorer on paper even as the balance grows. A quick estimate is to subtract inflation from any rate or raise; at high inflation the exact sum, (1 + return) ÷ (1 + inflation) − 1, gives a noticeably different answer, and the inflation calculator does it for you."
   - question: "Does inflation help or hurt people with debt?"
     answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favor. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
   - question: "How can I protect my savings from inflation?"
-    answer: "The first step is thinking in real terms: subtract inflation from every interest rate, return, and raise to see the true number. Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
+    answer: "The first step is thinking in real terms: take inflation off every interest rate, return, and raise to see the true number (subtracting is close enough when rates are low). Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
 ---
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it.
@@ -129,7 +132,7 @@ The number went up. The value went down. You gained over €1,600 in interest bu
 
 When you put money in a savings account earning 1%, and prices rise 2.5%, you didn't gain 1%. You lost 1.5%.
 
-> Real Return = Nominal Return - Inflation
+> Real return ≈ nominal return − inflation (a shortcut that works when both are low). Exactly: (1 + nominal return) ÷ (1 + inflation) − 1.
 
 | Where your money is | Nominal return | Inflation | Real return |
 |---|---|---|---|
@@ -142,7 +145,7 @@ A negative real return means you're getting poorer on paper, even as your accoun
 
 ## Inflation is not 2% everywhere
 
-The examples here use an illustrative 2.5%. Elsewhere the same idea plays out at a very different speed. World Bank figures for consumer price inflation put Turkey at about 35% and Nigeria at about 23% in 2025, and Argentina at about 220% in 2024. At 35%, prices roughly double in a little over two years, and cash earning nothing loses about a quarter of its buying power in a single year, a loss that takes about twelve years at 2.5%. (At rates this high, the simple subtraction above overstates the loss; it is a close approximation only when rates are low.)
+The examples here use an illustrative 2.5%. Elsewhere the same idea plays out at a very different speed. World Bank figures for consumer price inflation put Turkey at about 35% and Nigeria at about 23% in 2025, and Argentina at about 220% in 2024. At 35%, prices roughly double in a little over two years, and cash earning nothing loses about a quarter of its buying power in a single year, a loss that takes about twelve years at 2.5%. (At rates this high, the simple subtraction above is far off: for cash earning nothing it gives a 35% loss rather than about 26%, and a 40% return with 35% inflation is about 3.7% after inflation, not 5%. The exact formula above avoids this.)
 
 High inflation usually comes with high interest rates, so the comparison that matters is still the rate earned against local inflation, not the headline number. Some governments also sell bonds whose value rises with inflation: index-linked gilts in the UK, OAT€i bonds in France (linked to eurozone prices) and Tesouro IPCA+ in Brazil, for example. Their prices can still move before they mature. The [free inflation calculator](/free/inflation-calculator/) uses the same World Bank figures for each country.
 
@@ -158,7 +161,7 @@ High inflation usually comes with high interest rates, so the comparison that ma
 
 ## What this means in practice
 
-1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, subtract inflation. That's the number that actually matters
+1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, take inflation off it (subtracting is close enough when rates are low). That's the number that actually matters
 2. **Idle cash has a cost.** Beyond an emergency fund, money that earns less than inflation loses value in real terms. How much cash is "idle" depends on your upcoming needs
 3. **Many people turn to growth assets, with trade-offs.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
 4. **Plans need revisiting.** Prices change. An emergency fund, a salary and a savings rate all drift, so it helps to check them periodically.

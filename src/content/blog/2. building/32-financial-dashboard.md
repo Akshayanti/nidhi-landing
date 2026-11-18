@@ -13,7 +13,10 @@ takeaways:
   - "Which numbers are not worth tracking at all"
 order: 32
 pubDate: 2026-06-29
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said the free net worth calculator could stand in for a currency panel that checks what you own against what you will spend. The calculator shows what you own and owe in each currency and each currency's share of your net worth; it does not know your future spending, so that comparison stays with you."
 localRules: [inheritance, pensions]
 level: "building"
 primaryPersona: "eva"
@@ -85,7 +88,7 @@ Every three months, zoom out. This takes 30-60 minutes.
 
 **Asset allocation.** The mix of [stocks, bonds, cash, and other asset classes](/blog/investing-101-asset-classes/). Drift happens naturally. If stocks rise and bonds don't, your stock allocation grows relative to your target. Quarterly is usually enough to notice meaningful drift without over-trading. Full rebalancing doesn't have to be quarterly; noticing whether you need to is.
 
-**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies/), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend. The [multi-currency net worth analyzer](/free/multi-currency-net-worth/) can stand in for this panel if you don't want to maintain it inside your own spreadsheet: enter assets and obligations by currency once and it returns the breakdown and the concentration, ready to revisit each quarter.
+**Currency allocation.** For people with [cross-border finances](/blog/managing-money-across-currencies/), the currency breakdown of assets and obligations. Check for drift between what you own and what you'll eventually spend. The [multi-currency net worth analyzer](/free/multi-currency-net-worth/) can cover half of this panel if you don't want to maintain it inside your own spreadsheet: enter what you own and owe in each currency and it shows each currency's share of your net worth, ready to revisit each quarter. It does not know what you will spend, so the comparison with your future spending stays with you.
 
 **Progress against goals.** For each written [financial goal](/blog/setting-financial-goals/), compare actual position vs. planned position. On track? Ahead? Behind? If behind, is the gap small enough to absorb or large enough to require adjustment?
 
@@ -107,7 +110,7 @@ Quarterly issues rarely require urgent action. They require deliberate action, s
 
 Once a year, do the full review. This takes 2-4 hours, ideally with a partner if you share finances. This is where the biggest decisions belong.
 
-**Full [financial health check](/blog/financial-health-metrics/).** The six ratios from the previous post: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and income replacement. Annual is the right cadence for the full set.
+**Full [financial health check](/blog/financial-health-metrics/).** The six ratios from the previous post: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and expense coverage. Annual is the right cadence for the full set.
 
 **Goal calibration.** For each goal, revisit target amount, date, and monthly contribution. Life changes; goals should too. New goals can be added; stale ones retired.
 

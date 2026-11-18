@@ -1084,11 +1084,9 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
                 {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
               </span>
             </div>
-            <p className="mcnw-riskLabel">
-              {pos.rateUnavailable
-                ? format(strings.results.noRateAvailable, { code: pos.code, currency: functionalCurrency })
-                : riskLabel(strings, pos.riskLevel)}
-            </p>
+            {/* With no rate, the paragraph below says so once (#618); the head
+                already reads "Rate unavailable". */}
+            {!pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
             <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />
           </div>
         ))}

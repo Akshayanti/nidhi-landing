@@ -1,2 +1,2 @@
-- [Editorial voice and canonical figures](project_editorial_voice_and_canonical_figures.md) — lesson voice rule plus the return figures, debt threshold, priority order the corpus must agree on; open items and verified outside facts from both passes of the Nov 2026 audit
+- [Editorial voice and canonical figures](project_editorial_voice_and_canonical_figures.md) — voice rule, canonical figures, Nov 2026 audit open items, and the conventions settled on 2026-11-17 (cash 0-1% real, crossover, priority order, housing)
 - [Tool model positions](project_tool_model_positions.md) — amount display when space is short (#667, Nov 17); the Nov 14 positions were lost, re-derive from code

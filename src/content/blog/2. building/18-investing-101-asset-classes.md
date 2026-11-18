@@ -4,7 +4,7 @@ title: "Investing 101: Asset Classes and How They Work"
 description: "Stocks, bonds, real estate, cash. Four words everyone has heard, but few can explain what they actually do or why they belong in a portfolio."
 tldr:
   - "The four core types are stocks, bonds, real estate and cash equivalents."
-  - "Historically, stocks had the highest returns and swings; bonds were steadier but barely beat inflation; property sold slowly; cash could lose buying power."
+  - "Historically, stocks had among the highest returns and largest swings; bonds were steadier but barely beat inflation; property sold slowly; cash could lose buying power."
   - "None is best on its own, and they behave differently in different conditions, which is why portfolios combine them."
 takeaways:
   - "How stocks, bonds, real estate and cash each generate returns"
@@ -13,7 +13,10 @@ takeaways:
   - "What a fund is, and what funds are called where you live"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said emerging markets have had similar returns to developed markets with more volatility; summaries of the long-run yearbook it cites report that they returned less over the full period since 1900, though they led in some later decades. Cash is now about 0 to 1% a year after inflation over the long run, not 0 to 2%, matching the yearbook's figure of about 0.5% for Treasury bills in the US and world index, and stocks are described as among the highest-returning assets, since some long-run housing studies put housing level with them."
 localRules: [deposit-protection, tax, investments]
 level: "building"
 primaryPersona: "eva"
@@ -38,7 +41,7 @@ referentialReading:
 relatedSlugs: ["understanding-risk", "saving-vs-investing", "appreciation-vs-depreciation", "assets", "liquidity"]
 faq:
   - question: "What are the four main asset classes?"
-    answer: "The four core asset classes are stocks, bonds, real estate, and cash equivalents. Stocks make you part owner of a company, returning money through price appreciation and dividends, with the highest historical returns but the most volatility. Bonds are loans to a government or company that pay interest, more stable but barely beating inflation. Real estate is physical property generating rent and appreciation, offering both income and growth but very low liquidity. Cash equivalents, such as savings accounts and money market funds, are the safest but lose purchasing power over time. Each behaves differently under different economic conditions, which is precisely why diversified portfolios combine all four rather than relying on any single one."
+    answer: "The four core asset classes are stocks, bonds, real estate, and cash equivalents. Stocks make you part owner of a company, returning money through price appreciation and dividends, with among the highest historical returns but the most volatility. Bonds are loans to a government or company that pay interest, more stable but barely beating inflation. Real estate is physical property generating rent and appreciation, offering both income and growth but very low liquidity. Cash equivalents, such as savings accounts and money market funds, are the safest but lose purchasing power over time. Each behaves differently under different economic conditions, which is precisely why diversified portfolios combine all four rather than relying on any single one."
   - question: "How do stocks generate returns?"
     answer: "Stocks generate returns in two ways. The first is capital appreciation: the share price rises over time as the underlying company grows and becomes more valuable. The second is dividends, which are regular cash payments distributed from company profits, though not every company pays them. Broad stock markets have historically returned roughly 4% to 6% per year after inflation across developed markets, more than bonds or cash over most long periods, though not every decade. The catch is volatility. In any given year a diversified stock portfolio might gain 25% or lose 30%, and broad indices have had negative years roughly one year in four. That is why stocks are usually associated with money not needed for at least 5 years, and often 10 or more."
   - question: "Why do bonds belong in a portfolio if stocks return more?"
@@ -75,7 +78,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 - **Capital appreciation**: The stock price rises over time as the company grows
 - **Dividends**: Regular cash payments from company profits (not all companies pay dividends)
 
-**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets are more volatile with similar real returns on average). That has been higher than the other major asset classes over the long run, though not in every decade.
+**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets have been more volatile and, as press summaries of the 2026 Dimson, Marsh and Staunton yearbook report, returned less than developed markets over the full period since 1900, though they led from around 1960). That has been higher than bonds and cash over the long run, though not in every decade; estimates for housing differ widely, as the [real estate post](/blog/real-estate-as-investment/) explains.
 
 **Volatility**: High. In any given year, a diversified stock portfolio might gain 25% or lose 30%. Individual stocks can swing far more. Broad stock indices (the S&P 500 in the US, the FTSE All-Share in the UK, the STOXX Europe 600 across Europe, the Nifty 50 in India, the MSCI World for a global developed-market view) have historically had negative years roughly one out of every four.
 
@@ -156,7 +159,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 - **Interest**: Small, predictable payments from the bank or government
 
-**Historical returns**: around 0-2% a year after inflation over the long run in many countries, and negative in periods when inflation outpaces interest rates.
+**Historical returns**: about 0-1% a year after inflation over the long run (Treasury bills returned about 0.5% a year after inflation from 1900 to 2024, both in the US and across the world index, in Dimson, Marsh and Staunton's data), and negative in periods when inflation outpaces interest rates. That is a long-run average for bills, not a figure for every country or every cash account, and not a forecast.
 
 **Volatility**: Near zero. Your €10,000 will still be €10,000 tomorrow (in nominal terms).
 
@@ -165,7 +168,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 | Feature | Detail |
 |---------|--------|
 | Return type | Interest |
-| Historical real return | 0-2% long run (negative in high-inflation periods) |
+| Historical real return | About 0-1% long run for Treasury bills, US and world index (lower in some countries, negative in high-inflation periods) |
 | Volatility | Near zero |
 | Liquidity | Very high (instant access) |
 | Time horizon | Immediate to 1 year |
@@ -178,7 +181,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 | Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
-| **Historical real return** | 4-6% (developed markets) | ~1-2% | Low single digits + rental yield | 0-2% |
+| **Historical real return** | 4-6% (developed markets) | ~1-2% | Low single digits + rental yield | About 0-1% (Treasury bills, US and world) |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |

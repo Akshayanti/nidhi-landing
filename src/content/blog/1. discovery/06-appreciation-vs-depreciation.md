@@ -13,7 +13,10 @@ takeaways:
   - "Why time is often the most powerful lever in compounding"
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The early-start example used a 7% return without saying it is before inflation, beside a 4 to 6% figure after inflation; it now says so. The credit card example now states the minimum-payment rule it assumes, since a card with a higher minimum costs much less."
 localRules: [tax]
 level: "discovery"
 primaryPersona: "eva"
@@ -35,7 +38,7 @@ faq:
   - question: "How does compound interest work?"
     answer: "Compound interest means you earn a return on your original amount plus all the interest already accumulated, so your interest earns interest. It differs from simple interest, which pays only on the starting amount. The gap is large over time: €1,000 at 7% for 30 years grows to about €3,100 with simple interest but roughly €7,612 with compounding, more than double. The same mechanism works in reverse on debt: a credit card balance compounds against you. Three levers drive it: the rate, the amount invested, and time, with time often the most powerful over long horizons."
   - question: "Why does starting to invest early matter so much?"
-    answer: "Because time is often the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at 7%. Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €281,000 and Person B about €244,000 (7% a year, compounded monthly). The earlier starter invested one-third as much and finished ahead, because that money had thirty to forty years to compound. Different returns, and when the good and bad years fall, can narrow or even reverse the outcome, but the start date does much of the work."
+    answer: "Because time is often the most powerful lever in compounding, and it is the one you cannot get back. Consider two people investing €200 a month at an illustrative 7% a year before inflation (about 4 to 5% after it, if prices rise 2 to 3% a year). Person A invests from age 25 to 35, then stops, putting in €24,000 total. Person B invests from 35 to 65, putting in €72,000 total. At 65, Person A has about €281,000 and Person B about €244,000 (7% a year, compounded monthly), in future euros that will buy less than they do today. The earlier starter invested one-third as much and finished ahead, because that money had thirty to forty years to compound. Different returns, and when the good and bad years fall, can narrow or even reverse the outcome, but the start date does much of the work."
   - question: "Is a car an asset or a depreciating expense?"
     answer: "A car is an asset on your net worth statement, but it is a depreciating one, so in practice it behaves more like an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years, a common estimate in European and US used-car markets that varies by model and country. You count it at current market value, but it does not build wealth. Ways people limit the hit include buying a reliable used car rather than new, since much of the depreciation has already happened, and not financing it at a high rate, which stacks interest on top of falling value. Reliability, warranty and budget shape which trade-off makes sense."
   - question: "What kinds of assets typically appreciate?"
@@ -95,18 +98,18 @@ When these levers work **for** you, when you're saving and investing, the result
 
 The same force that grows your savings also grows your [debt](/blog/liabilities/). When you carry a credit card balance at 22%, the interest is added to what you owe. Next month, you're paying interest on the interest. The debt snowballs.
 
-€3,000 at 22% with minimum payments can cost you over €6,000 in total. You paid for the original purchases twice: once at the register, and once to the bank.
+€3,000 at 22% with minimum payments can cost you over €6,000 in total, if the minimum is 1% of the balance plus that month's interest (€25 at the least): about €4,400 of interest over roughly 15 years. Minimum rules differ by card and country, and a higher minimum costs much less. You paid for the original purchases twice: once at the register, and once to the bank.
 
 This is why high-interest debt is so dangerous. It's compound interest working against you with a vengeance.
 
 ## Why starting early matters so much
 
-Two savers. Both invest €200 per month at a 7% average return.
+Two savers. Both invest €200 per month at an illustrative 7% a year before inflation (about 4 to 5% after it, if prices rise 2 to 3% a year).
 
 **Person A** starts at age 25 and stops at 35. Total invested: €24,000.
 **Person B** starts at age 35 and keeps going until 65. Total invested: €72,000.
 
-At age 65, Person A has roughly €281,000. Person B has roughly €244,000 (7% a year, compounded monthly).
+At age 65, Person A has roughly €281,000. Person B has roughly €244,000 (7% a year, compounded monthly). Both are in future euros; at 2 to 3% inflation, each would buy roughly a third to a half of what the same sum buys today.
 
 Person A invested one-third as much money and ended up with more, because every euro had thirty to forty years to compound. Different returns, and when the good and bad years fall, can narrow or even reverse the outcome, but time is still the lever you can't get back.
 

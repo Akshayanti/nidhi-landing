@@ -12,7 +12,10 @@ takeaways:
   - "How to compare salaries across countries in real terms"
 order: 12
 pubDate: 2026-05-13
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The Big Mac example compared an implied rate in euros per dollar (0.96) with a market rate in dollars per euro (1.08). Like for like, the implied rate is about 1.04 dollars per euro, so the euro looks about 4% overvalued. The claim that €2,000 in Lisbon buys what €4,000 does in Copenhagen had no source; Eurostat's 2024 national price levels put the ratio nearer €2,000 to €3,300."
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -38,11 +41,11 @@ faq:
   - question: "What is purchasing power parity (PPP)?"
     answer: "Purchasing power parity is the idea that, over time, exchange rates should adjust so the same basket of goods costs the same in every country. In practice they rarely do, and that gap is what makes living costs differ across borders. A cappuccino might cost 4.50 euros in Helsinki, 3.20 in Berlin, 1.60 in Lisbon, and 1.20 in Bangkok, not because coffee beans differ, but because wages, rents, taxes, and overall price levels differ. PPP does not mean exchange rates should be 1 to 1; it means rates should reflect what money can actually buy. Real rates can stay far from PPP for years due to trade barriers, productivity gaps, and capital flows."
   - question: "What is the Big Mac index?"
-    answer: "The Big Mac index is a light-hearted measure created by The Economist to illustrate purchasing power parity. A Big Mac is made to roughly the same recipe everywhere, so its local price is a rough proxy for overall price levels. If a Big Mac costs 5.50 euros in the eurozone and 5.70 dollars in the US, the implied PPP exchange rate is 5.50 divided by 5.70, or about 0.96. Comparing that to the actual market rate suggests whether a currency is over- or undervalued. It is not precise, but it makes the core point clear: exchange rates do not perfectly reflect what money can buy in each country."
+    answer: "The Big Mac index is a light-hearted measure created by The Economist to illustrate purchasing power parity. A Big Mac is made to roughly the same recipe everywhere, so its local price is a rough proxy for overall price levels. If a Big Mac costs 5.50 euros in the eurozone and 5.70 dollars in the US, the implied PPP exchange rate is 5.70 divided by 5.50, or about 1.04 dollars per euro. Against a market rate of 1.08 dollars per euro, the euro looks about 4% overvalued by this measure. It is not precise, but it makes the core point clear: exchange rates do not perfectly reflect what money can buy in each country."
   - question: "Should I worry about exchange rates if I earn and spend in the same currency?"
     answer: "If all your income and expenses are in one currency, exchange rates affect you mostly when you travel, since your money stretches further in countries with lower price levels. The picture changes if you earn in one currency and spend in another, for example earning euros while paying a mortgage in British pounds or supporting family abroad. Then a 10 percent swing in EUR/GBP can add or subtract hundreds from your monthly budget, an ongoing and unpredictable living-cost risk. There is also transaction risk, where the rate moves between agreeing a price and paying it. Know exactly which currencies you are exposed to before deciding how much it matters."
   - question: "How do I compare salaries or living costs across countries?"
-    answer: "Compare in real terms, not nominal ones. A salary number means nothing without knowing what it buys locally, so adjust each offer for local price levels using purchasing power parity. Earning 2,000 euros in Lisbon might give you the same lifestyle as 4,000 euros in Copenhagen, because rent, groceries, and everyday costs differ sharply. A salary cut after a move does not automatically mean a lower standard of living. For everyday conversions, chasing the best rate usually costs more in fees, spreads and timing risk than it saves, which is why many people simply convert when they need to and save careful PPP analysis for major decisions like relocating."
+    answer: "Compare in real terms, not nominal ones. A salary number means nothing without knowing what it buys locally, so adjust each offer for local price levels using purchasing power parity. On Eurostat's 2024 national price levels, 2,000 euros in Portugal bought roughly what 3,300 euros did in Denmark, because rent, groceries, and everyday costs differ sharply; city rents can widen or narrow that gap. A salary cut after a move does not automatically mean a lower standard of living. For everyday conversions, chasing the best rate usually costs more in fees, spreads and timing risk than it saves, which is why many people simply convert when they need to and save careful PPP analysis for major decisions like relocating."
 ---
 
 You earn €3,000 a month. Move from Helsinki to Lisbon and your salary might drop to €1,800. But your rent, groceries, and coffee all cost roughly half as much. Are you worse off? Maybe not.
@@ -105,7 +108,7 @@ This is purchasing power parity (PPP) in action. PPP is the idea that, over time
 
 ## The Big Mac index: a rough guide
 
-The Economist magazine has tracked this for decades using the Big Mac index. A Big Mac is roughly identical everywhere: same ingredients, same process. So if a Big Mac costs €5.50 in the eurozone and $5.70 in the US, and the exchange rate is 1.08, the implied PPP rate is 5.50/5.70 = 0.96. If the actual rate is different, one currency might be over- or undervalued.
+The Economist magazine has tracked this for decades using the Big Mac index. A Big Mac is roughly identical everywhere: same ingredients, same process. So if a Big Mac costs €5.50 in the eurozone and $5.70 in the US, the implied PPP rate is 5.70/5.50 ≈ 1.04 dollars per euro. The market rate is 1.08 dollars per euro, so by this measure the euro is about 4% overvalued: a euro buys more burger in the US than at home.
 
 It's not precise. But it illustrates the principle: exchange rates don't perfectly reflect what money can actually buy.
 
@@ -121,7 +124,7 @@ This is where exchange rates become personal. If you earn in euros but have expe
 
 ### If you're considering moving countries
 
-A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income: salary adjusted for local prices, the same gap between [what you earn and what it actually does for you](/blog/income-vs-wealth/) that drives wealth at home. €2,000 in Lisbon might give you the same lifestyle as €4,000 in Copenhagen.
+A salary cut doesn't necessarily mean a lower standard of living. What matters is your real income: salary adjusted for local prices, the same gap between [what you earn and what it actually does for you](/blog/income-vs-wealth/) that drives wealth at home. On Eurostat's 2024 price levels for household spending, Denmark stood at about 143% of the EU average and Portugal at about 87%, so €2,000 in Portugal bought roughly what €3,300 did in Denmark. Those are national averages; rents in Lisbon or Copenhagen can widen or narrow the gap.
 
 ## Two types of currency risk
 

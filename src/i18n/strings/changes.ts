@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-17',
+    date: '2026-11-18',
     items: [
       {
         id: 'amounts-stay-whole',
@@ -50,6 +50,21 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'Para quienes amplían el texto, y un arreglo para todo el mundo. En las herramientas gratuitas, un importe se mantiene ahora entero: su signo, su moneda y sus cifras nunca se reparten en dos líneas. Antes, en la herramienta Invertir o pagar deuda, el signo menos podía quedarse al final de una línea y la cifra pasar a la siguiente, incluso con el tamaño de texto normal. Con un texto muy grande en una pantalla estrecha, los recuadros de resultados se apilan ahora para dar más sitio a los importes, y solo si un importe aun así no cabe se muestra ese importe más pequeño, lo justo para que quepa; las herramientas ya no obligan a desplazarse hacia los lados. Las cinco herramientas se han comprobado en Chrome, en los cinco idiomas, en pantallas desde un teléfono pequeño hasta un portátil, y desde el tamaño de texto normal hasta cuatro veces ese tamaño.',
           cs: 'Pro čtenáře, kteří si zvětšují písmo, a\u00a0jedna oprava pro všechny. V\u00a0nástrojích zdarma teď částka drží pohromadě: znaménko, měna a\u00a0číslice se nikdy nerozdělí na dva řádky. Dřív mohlo v\u00a0nástroji Investovat, nebo splatit dluh zůstat znaménko minus na konci řádku a\u00a0číslo přejít na další, a\u00a0to i\u00a0při běžné velikosti písma. Při hodně zvětšeném písmu na úzké obrazovce se teď rámečky s\u00a0výsledky řadí pod sebe, aby částky měly víc místa, a\u00a0teprve když se některá ani tak nevejde, zobrazí se tato jedna částka menší, jen tak, aby se vešla; nástroje už není potřeba posouvat do strany. Všech pět nástrojů prošlo kontrolou v\u00a0Chromu, ve všech pěti jazycích, na obrazovkách od malého telefonu po notebook a\u00a0od běžné velikosti písma až po čtyřnásobnou.',
           mr: 'मोठ्या अक्षरांत वाचणाऱ्यांसाठी सुधारणा, आणि एक दुरुस्ती सर्वांसाठी. मोफत साधनांमध्ये कोणतीही रक्कम आता एकसंध राहते: तिचे चिन्ह, तिचे चलन आणि तिचे अंक कधीही दोन ओळींत विभागले जात नाहीत. आधी, गुंतवणूक की कर्जफेड या साधनात वजा चिन्ह ओळीच्या शेवटी राहून आकडा पुढच्या ओळीत जाऊ शकत होता, नेहमीच्या आकाराच्या अक्षरांतही. अरुंद स्क्रीनवर अक्षरे खूप मोठी केल्यावर निकालांच्या चौकटी आता एकाखाली एक येतात, जेणेकरून रकमांना जास्त जागा मिळेल, आणि तरीही एखादी रक्कम मावली नाही तरच फक्त तीच रक्कम मावेल इतकीच लहान दाखवली जाते; आता साधने वापरताना डावीकडे किंवा उजवीकडे स्क्रोल करावे लागत नाही. पाचही साधने Chrome\u00a0मध्ये, पाचही भाषांत तपासली आहेत: लहान फोनपासून लॅपटॉपपर्यंतच्या स्क्रीनवर, नेहमीच्या आकारापासून त्याच्या चौपट मोठ्या अक्षरांपर्यंत.',
+        },
+      },
+    ],
+  },
+  {
+    date: '2026-11-17',
+    items: [
+      {
+        id: 'policy-says-what-is-sourced',
+        text: {
+          en: 'The editorial policy now says which figures carry a source and which are rules of thumb, and a few explanations in the free tools describe rather than advise.',
+          hi: 'संपादकीय नीति अब बताती है कि किन आँकड़ों के साथ स्रोत दिया जाता है और कौन से मोटे-मोटे नियम (rules\u00a0of\u00a0thumb) हैं, और मुफ़्त टूल की कुछ व्याख्याएँ अब सलाह देने के बजाय बताती हैं कि चीज़ें कैसे काम करती हैं।',
+          es: 'La política editorial ahora dice qué cifras llevan fuente y cuáles son reglas generales, y algunas explicaciones de las herramientas gratuitas describen en lugar de aconsejar.',
+          cs: 'Redakční zásady teď říkají, u\u00a0kterých čísel je uveden zdroj a\u00a0která jsou orientační pravidla, a\u00a0několik vysvětlení v\u00a0nástrojích zdarma popisuje, místo aby radilo.',
+          mr: 'संपादकीय धोरण आता सांगते की कोणत्या आकड्यांसोबत स्रोत दिलेला असतो आणि कोणते ढोबळ नियम आहेत, आणि मोफत साधनांमधील काही स्पष्टीकरणे आता सल्ला देण्याऐवजी वर्णन करतात.',
         },
       },
     ],

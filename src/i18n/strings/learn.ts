@@ -156,8 +156,8 @@ export const learnEn = {
       'debt': {
         name: 'Debt',
         title: 'Understanding and Managing Debt: Finance Literacy | nidhi',
-        description: 'How debt works, why interest rates matter, and proven strategies to get out of debt. Practical personal finance literacy from nidhi.',
-        card: 'How debt works, why interest rates matter, and proven strategies to get out of debt. Practical personal finance literacy from nidhi.',
+        description: 'How debt works, why interest rates matter, and the common ways people get out of debt. Practical personal finance literacy from nidhi.',
+        card: 'How debt works, why interest rates matter, and the common ways people get out of debt. Practical personal finance literacy from nidhi.',
       },
       'saving': {
         name: 'Saving',
@@ -174,8 +174,8 @@ export const learnEn = {
       'risk': {
         name: 'Risk',
         title: 'Understanding Financial Risk: Investing Literacy | nidhi',
-        description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk. Financial literacy from nidhi.',
-        card: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and how time transforms risk.',
+        description: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and what a longer horizon changes about risk, and what it does not. Financial literacy from nidhi.',
+        card: 'Risk isn\'t danger, it\'s uncertainty. Learn the difference between volatility and permanent loss, and what a longer horizon changes about risk, and what it does not.',
       },
       'planning': {
         name: 'Planning',
@@ -569,8 +569,8 @@ export const learnHi: typeof learnEn = {
       'debt': {
         name: 'कर्ज़',
         title: 'कर्ज़ को समझना और संभालना: वित्तीय साक्षरता | nidhi',
-        description: 'कर्ज़ कैसे काम करता है, ब्याज दरें क्यों मायने रखती हैं, और कर्ज़ से निकलने के आज़माए हुए तरीक़े। nidhi से व्यावहारिक वित्तीय साक्षरता।',
-        card: 'कर्ज़ कैसे काम करता है, ब्याज दरें क्यों मायने रखती हैं, और कर्ज़ से निकलने के आज़माए हुए तरीक़े। nidhi से व्यावहारिक वित्तीय साक्षरता।',
+        description: 'कर्ज़ कैसे काम करता है, ब्याज दरें क्यों मायने रखती हैं, और कर्ज़ से निकलने के आम तरीक़े। nidhi से व्यावहारिक वित्तीय साक्षरता।',
+        card: 'कर्ज़ कैसे काम करता है, ब्याज दरें क्यों मायने रखती हैं, और कर्ज़ से निकलने के आम तरीक़े। nidhi से व्यावहारिक वित्तीय साक्षरता।',
       },
       'saving': {
         name: 'बचत',
@@ -587,8 +587,8 @@ export const learnHi: typeof learnEn = {
       'risk': {
         name: 'जोखिम',
         title: 'वित्तीय जोखिम को समझना: निवेश साक्षरता | nidhi',
-        description: 'जोखिम ख़तरा नहीं, अनिश्चितता है। उतार-चढ़ाव और स्थायी नुकसान में फ़र्क़ समझें, और यह भी कि समय जोखिम को कैसे बदलता है। nidhi से वित्तीय साक्षरता।',
-        card: 'जोखिम ख़तरा नहीं, अनिश्चितता है। उतार-चढ़ाव और स्थायी नुकसान में फ़र्क़ समझें, और यह भी कि समय जोखिम को कैसे बदलता है।',
+        description: 'जोखिम ख़तरा नहीं, अनिश्चितता है। उतार-चढ़ाव और स्थायी नुकसान में फ़र्क़ समझें, और यह भी कि लंबी अवधि जोखिम में क्या बदलती है और क्या नहीं। nidhi से वित्तीय साक्षरता।',
+        card: 'जोखिम ख़तरा नहीं, अनिश्चितता है। उतार-चढ़ाव और स्थायी नुकसान में फ़र्क़ समझें, और यह भी कि लंबी अवधि जोखिम में क्या बदलती है और क्या नहीं।',
       },
       'planning': {
         name: 'योजना',
@@ -953,8 +953,8 @@ export const learnEs: typeof learnEn = {
       'debt': {
         name: 'Deuda',
         title: 'Entender y gestionar la deuda: educación financiera | nidhi',
-        description: 'Cómo funciona la deuda, por qué importan las tasas de interés y estrategias probadas para salir de deudas. Educación financiera práctica de nidhi.',
-        card: 'Cómo funciona la deuda, por qué importan las tasas de interés y estrategias probadas para salir de deudas. Educación financiera práctica de nidhi.',
+        description: 'Cómo funciona la deuda, por qué importan las tasas de interés y las formas habituales de salir de deudas. Educación financiera práctica de nidhi.',
+        card: 'Cómo funciona la deuda, por qué importan las tasas de interés y las formas habituales de salir de deudas. Educación financiera práctica de nidhi.',
       },
       'saving': {
         name: 'Ahorro',
@@ -971,8 +971,8 @@ export const learnEs: typeof learnEn = {
       'risk': {
         name: 'Riesgo',
         title: 'Entender el riesgo financiero al invertir | nidhi',
-        description: 'El riesgo no es peligro, es incertidumbre: la diferencia entre volatilidad y pérdida permanente, y cómo el tiempo cambia el riesgo. Educación financiera.',
-        card: 'El riesgo no es peligro, es incertidumbre. Aprende la diferencia entre volatilidad y pérdida permanente, y cómo el tiempo transforma el riesgo.',
+        description: 'El riesgo no es peligro, es incertidumbre: la diferencia entre volatilidad y pérdida permanente, y qué cambia un horizonte más largo en el riesgo, y qué no. Educación financiera.',
+        card: 'El riesgo no es peligro, es incertidumbre. Aprende la diferencia entre volatilidad y pérdida permanente, y qué cambia un horizonte más largo en el riesgo, y qué no.',
       },
       'planning': {
         name: 'Planificación',
@@ -1343,8 +1343,8 @@ export const learnCs: typeof learnEn = {
       'debt': {
         name: 'Dluh',
         title: 'Jak funguje dluh a jak ho zvládat: finanční gramotnost | nidhi',
-        description: 'Jak dluh funguje, proč záleží na úrokových sazbách a jaké osvědčené postupy lidé při splácení dluhů používají. Praktická finanční gramotnost na webu nidhi.',
-        card: 'Jak dluh funguje, proč záleží na úrokových sazbách a jaké osvědčené postupy lidé při splácení dluhů používají. Praktická finanční gramotnost na webu nidhi.',
+        description: 'Jak dluh funguje, proč záleží na úrokových sazbách a\u00a0jaké postupy lidé při splácení dluhů běžně používají. Praktická finanční gramotnost na webu nidhi.',
+        card: 'Jak dluh funguje, proč záleží na úrokových sazbách a\u00a0jaké postupy lidé při splácení dluhů běžně používají. Praktická finanční gramotnost na webu nidhi.',
       },
       'saving': {
         name: 'Spoření',
@@ -1361,8 +1361,8 @@ export const learnCs: typeof learnEn = {
       'risk': {
         name: 'Riziko',
         title: 'Finanční riziko srozumitelně: investiční gramotnost | nidhi',
-        description: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a jak čas mění riziko. Finanční gramotnost na webu nidhi.',
-        card: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a jak čas mění riziko.',
+        description: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a\u00a0co delší horizont na riziku mění a\u00a0co ne. Finanční gramotnost na webu nidhi.',
+        card: 'Riziko není nebezpečí, je to nejistota. Poznejte rozdíl mezi kolísáním a trvalou ztrátou a\u00a0co delší horizont na riziku mění a\u00a0co ne.',
       },
       'planning': {
         name: 'Plánování',
@@ -1745,8 +1745,8 @@ export const learnMr: typeof learnEn = {
       risk: {
         name: 'जोखीम',
         title: 'आर्थिक जोखीम समजून घेणे: गुंतवणूक साक्षरता | nidhi',
-        description: 'जोखीम म्हणजे धोका नव्हे, तर अनिश्चितता. चढ-उतार आणि कायमचा तोटा यांतील फरक, आणि काळ जोखीम कशी बदलतो, हे शिका. nidhi कडून आर्थिक साक्षरता.',
-        card: 'जोखीम म्हणजे धोका नव्हे, तर अनिश्चितता. चढ-उतार आणि कायमचा तोटा यांतील फरक, आणि काळ जोखीम कशी बदलतो, हे शिका.',
+        description: 'जोखीम म्हणजे धोका नव्हे, अनिश्चितता: चढ-उतार आणि कायमचा तोटा यांतील फरक, आणि दीर्घ कालावधीमुळे जोखमीत काय बदलते आणि काय बदलत नाही. nidhi कडून आर्थिक साक्षरता.',
+        card: 'जोखीम म्हणजे धोका नव्हे, तर अनिश्चितता. चढ-उतार आणि कायमचा तोटा यांतील फरक, आणि दीर्घ कालावधीमुळे जोखमीत काय बदलते आणि काय बदलत नाही, हे शिका.',
       },
       planning: {
         name: 'नियोजन',

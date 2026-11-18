@@ -12,7 +12,10 @@ takeaways:
   - "How checking less and automating stop panic-selling"
 order: 34
 pubDate: 2026-07-03
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The example of a person who sells in a fall said the market then recovers, as if that were certain. Broad markets have usually recovered, sometimes over many years, but not every market has; the lesson now says so."
 level: "psychology"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
@@ -65,7 +68,7 @@ The trouble starts the moment that survival instinct meets a long-term investmen
 
 Picture two people, each with 10,000 euros invested. The market falls 20%. On paper, both are down 2,000 euros.
 
-The first person feels the 2,000 as something close to physical pain, doubled by loss aversion, and the urge to make it stop is overwhelming. So they sell. The pain stops, briefly. Then the market recovers, sometimes within months and sometimes over several years, and they are sitting in cash watching it climb back without them. They have converted a temporary paper loss into a permanent real one.
+The first person feels the 2,000 as something close to physical pain, doubled by loss aversion, and the urge to make it stop is overwhelming. So they sell. The pain stops, briefly. Broad markets have usually recovered, sometimes within months and sometimes over many years, though not every market has (Japan's took decades). When it does, they are sitting in cash watching it climb back without them. They have converted a temporary paper loss into a permanent real one.
 
 The second person feels the same pain but has arranged their life so the feeling cannot reach the sell button. We will come to how.
 

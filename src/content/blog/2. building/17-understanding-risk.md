@@ -13,7 +13,10 @@ takeaways:
   - "Why keeping everything in cash carries its own risk"
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The opening set a loss after inflation against a 7% gain before inflation; the colleague's money doubled on paper but, with inflation near 2.5%, grew by roughly half in what it could buy. The time-horizon section now says its table is US data before inflation, and gives one long US stretch that gained only about 1.4% a year after inflation. Cash is now about 0 to 1% a year after inflation over the long run for Treasury bills in the US and world index, not 0 to 2%, and the lesson no longer says the net worth calculator maps your future spending."
 level: "building"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -38,7 +41,7 @@ faq:
   - question: "What is the difference between risk tolerance and risk capacity?"
     answer: "Risk tolerance is psychological: how much fluctuation you can handle emotionally without panicking and selling. If a 10% drop costs you sleep, your tolerance is low regardless of your finances. Risk capacity is financial: how much loss you can actually absorb without it affecting your life, based on your time horizon, income stability, emergency fund, and when you need the money. The two often diverge. Someone with a 20-year horizon and a full emergency fund has high capacity, but may still have low tolerance. A common principle is to let the lower of the two set the limit, because the higher one cannot rescue you from the lower one."
   - question: "How does time change investment risk?"
-    answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 to 30 years, broadly diversified stock portfolios have historically been positive across almost every rolling window, though this is an average, not a guarantee, and individual markets have had losing 20-year stretches. A common rule of thumb follows: money needed within about 3 years is usually kept in low-volatility savings, while money not needed for 5 years or more is where people accept short-term swings in exchange for long-term growth."
+    answer: "Time narrows the range of outcomes. Over a single year, a broad stock market can lose 30% to 40% of its value, so money you need soon is genuinely at risk in stocks. Over 10 years, good years offset bad ones and the range tightens sharply. Over 20 years, US stocks ended ahead in every rolling period since 1928 before inflation; after inflation returns were lower, and one roughly 22-year stretch ending in 1982 gained only about 1.4% a year. It is one country's record, not a guarantee. A common rule of thumb follows: money needed within about 3 years is usually kept in low-volatility savings, while money not needed for 5 years or more is where people accept short-term swings in exchange for long-term growth."
   - question: "Is keeping money in a savings account actually risk-free?"
     answer: "No. Cash carries inflation risk, which is the slow erosion of purchasing power. A savings account earning 1% while inflation runs at 2.5% loses 1.5% of its real value every year. Over 20 years, that compounds to roughly a 26% loss in what your money can actually buy, and when rates stay below inflation that loss is close to certain. Keeping everything safe protects you from short-term volatility while making a long-term decline in real terms likely. A risk many people overlook is not market movement but inaction: accepting a likely slow loss to avoid a probable gain with some turbulence along the way."
   - question: "What are the main types of investment risk?"
@@ -47,7 +50,7 @@ faq:
 
 You've been told stocks are "risky" and savings accounts are "safe." So you keep your money in savings. Each year, inflation takes 2-3% of its purchasing power. After a decade, your "safe" money has quietly lost 20% of its value.
 
-Meanwhile, your colleague invested in a diversified portfolio (a mix of investments chosen so no single one can sink her). It dropped 15% one year, gained 22% the next, and over the decade averaged 7% annually. Her money doubled. Your "safe" approach was the riskier one.
+Meanwhile, your colleague invested in a diversified portfolio (a mix of investments chosen so no single one can sink her). It dropped 15% one year, gained 22% the next, and over the decade averaged 7% a year before inflation. Her money roughly doubled on paper and, if inflation averaged about 2.5%, grew by about half in what it could buy. Your "safe" approach was the riskier one.
 
 This is a common problem with how people think about risk. They confuse volatility with danger. They see any fluctuation as a threat. And they make decisions that protect them from the wrong thing.
 
@@ -86,9 +89,9 @@ Time changes the picture, and this is a central idea in understanding risk.
 
 Over any single year, the stock market can lose 30-40% of its value. That's happened multiple times in history. If you need your money in one year, investing is genuinely risky.
 
-Over 10 years, the range of outcomes narrows. Bad years are offset by good ones. In US data, broad stock portfolios have been positive over most rolling 10-year periods, though not all, and some other markets have had much longer losing stretches.
+Over 10 years, the range of outcomes narrows. Bad years are offset by good ones. In US data, broad stock portfolios have been positive over most rolling 10-year periods, though not all.
 
-Over 20-30 years, the probability of a positive outcome has been extremely high in historical data.
+Over 20 to 30 years, US stocks have ended ahead in every period in this table before inflation. After inflation the picture is thinner: Ben Carlson (2024) reports one roughly 22-year US stretch, ending in 1982, that gained only about 1.4% a year after inflation. That is one long period, not a measure of the worst 20-year outcome, and the table says nothing about other countries.
 
 | Time Horizon | Worst Historical Return (stocks, annualized) | Best Historical Return | Range |
 |---|---|---|---|
@@ -97,7 +100,7 @@ Over 20-30 years, the probability of a positive outcome has been extremely high 
 | 10 years | -2% | +20% | 22 percentage points |
 | 20 years | +2% | +18% | 16 percentage points |
 
-*S&P 500 total returns with dividends reinvested, before inflation, for every rolling period from 1928 to 2025 (annual data compiled by Aswath Damodaran, NYU Stern). Past performance does not indicate future results, and individual non-US markets have had 20-year cohorts with negative real returns (Japan after 1989 is the most cited example). The "time narrows risk" effect is robust on average but is not a guarantee for any single market over any single window.*
+*S&P 500 total returns with dividends reinvested, before inflation, for every rolling period from 1928 to 2025 (annual data compiled by Aswath Damodaran, NYU Stern). After inflation, each figure is lower by roughly the inflation of its period, which averaged about 3% a year in the US. Past performance does not indicate future results, and this table says nothing about other countries. The "time narrows risk" pattern is not a guarantee for any single market over any single window.*
 
 <figure>
 <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-time-title fig-time-desc">
@@ -157,7 +160,7 @@ Not all risks are equal or come from the same place.
 
 **Credit risk**: The entity you lent money to (through bonds, which are loans you make to governments or companies paying a fixed interest rate back to you, or through other loan contracts) can't pay you back.
 
-**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries/) affect your returns. The full picture also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) lets you map both sides at once and see where the concentration actually sits.
+**Currency risk**: If your investments are in a different currency, [exchange rate changes](/blog/why-your-euro-buys-more-in-some-countries/) affect your returns. The full picture also includes the currency mix of your future expenses; the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows each currency's share of what you own and owe, and the comparison with where you will spend is yours to make.
 
 ## Risk as the price of return
 
@@ -165,7 +168,7 @@ Here's the fundamental relationship: risk and return are linked. Higher potentia
 
 | Asset Type | Historical annual return after inflation (long run) | Volatility (typical annual range) |
 |---|---|---|
-| Cash / savings | 0-2% | Near zero |
+| Cash / savings | About 0-1% (Treasury bills, US and world index; lower in some countries, negative in high-inflation periods) | Near zero |
 | Government bonds | ~1-2% | Low (5-10%) |
 | Corporate bonds | A little above government bonds | Moderate (5-15%) |
 | Diversified stocks | 4-6% (developed markets) | High (15-25%) |

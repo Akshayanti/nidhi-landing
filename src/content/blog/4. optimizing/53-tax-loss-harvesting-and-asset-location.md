@@ -109,7 +109,7 @@ The deduction is disallowed because she bought a substantially identical securit
 
 **Often worth it:** a high marginal tax rate with gains to offset; real paper losses after volatility; a taxable portfolio large enough for deferral to matter (often €50,000 or more); a replacement available at similar cost and exposure; no risk of breaking the wash-sale rule.
 
-**Often not:** small losses (a €200 loss defers perhaps €50 to €100 of tax, not worth the friction); harvesting that also realises large gains elsewhere; replacements whose trading or currency costs exceed the benefit; late in life where gains held until death are never taxed thanks to a step-up in basis; or when the eventual sale will face a higher rate than the one being offset, such as a young worker in a low bracket expecting a much higher one later.
+**Often not:** small losses (a €200 loss defers perhaps €50 to €100 of tax, not worth the friction); harvesting that also realises large gains elsewhere; replacements whose trading or currency costs exceed the benefit; late in life in countries where gains held until death are not taxed, such as the US with its step-up in basis (many countries tax them at death or pass the original cost on to heirs); or when the eventual sale will face a higher rate than the one being offset, such as a young worker in a low bracket expecting a much higher one later.
 
 **Which lot to sell.** Some countries treat short- and long-term losses differently; in the US, short-term losses first offset short-term gains, taxed as ordinary income. Choosing specific tax lots at sale, rather than the default first-in, first-out, allows harvesting the most useful lots.
 

@@ -191,11 +191,11 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'What does the "Where each payment goes" chart show?',
-              a: 'It splits a representative monthly payment from each year of the loan into its interest and principal portions, stacked on a single bar. Every bar has the same total height (the same monthly payment), but the split shifts dramatically: in the early years almost all of the payment is interest, while in the final years almost all of it is principal. This is why prepayments in the first few years of a long loan are disproportionately powerful; every euro you knock off the principal early avoids interest for the entire remaining term.',
+              a: 'It splits a representative monthly payment from each year of the loan into its interest and principal portions, stacked on a single bar. Every bar has the same total height (the same monthly payment), but the split shifts dramatically: in the early years almost all of the payment is interest, while in the final years almost all of it is principal. In this model, an extra payment early in a long loan saves more interest than the same payment late: each euro taken off the principal early is not charged interest for the rest of the term.',
             },
             {
               q: 'What is the horizon analysis ("if I sell or refinance at...")?',
-              a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This is the right view if you expect to sell, move, or refinance well before the contractual end of the loan, because the vendor with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
+              a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This view is useful if you expect to sell, move, or refinance well before the contractual end of the loan, because the vendor with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
             },
             {
               q: 'How does the refinance scenario builder work?',
@@ -242,8 +242,8 @@ export const loanComparisonEn = {
         },
         {
           kicker: 'Before you borrow',
-          title: 'Emergency fund first',
-          desc: 'If one bad month would force you to skip a payment, the loan is too big. Build a buffer before you take it on.',
+          title: 'An emergency fund',
+          desc: 'Many people build a buffer before taking on a loan, so that one bad month does not mean a missed payment.',
         },
         {
           kicker: 'Mental model',
@@ -888,11 +888,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: '"हर किस्त कहाँ जाती है" चार्ट क्या दिखाता है?',
-              a: 'यह लोन के हर साल की एक प्रतिनिधि मासिक किस्त को ब्याज और मूलधन के हिस्सों में बाँटकर एक ही स्तंभ पर ऊपर-नीचे दिखाता है। हर स्तंभ की कुल ऊँचाई एक जैसी है (क्योंकि मासिक किस्त एक जैसी है), पर बँटवारा बहुत बदलता है: शुरुआती सालों में किस्त का लगभग पूरा हिस्सा ब्याज होता है, और आखिरी सालों में लगभग पूरा मूलधन। इसी वजह से लंबे लोन के पहले कुछ सालों में किया गया भुगतान बहुत ज़्यादा असर करता है; शुरू में मूलधन से हटाया गया हर यूरो बाकी पूरी अवधि का ब्याज बचा देता है।',
+              a: 'यह लोन के हर साल की एक प्रतिनिधि मासिक किस्त को ब्याज और मूलधन के हिस्सों में बाँटकर एक ही स्तंभ पर ऊपर-नीचे दिखाता है। हर स्तंभ की कुल ऊँचाई एक जैसी है (क्योंकि मासिक किस्त एक जैसी है), पर बँटवारा बहुत बदलता है: शुरुआती सालों में किस्त का लगभग पूरा हिस्सा ब्याज होता है, और आखिरी सालों में लगभग पूरा मूलधन। इस हिसाब में लंबे लोन की शुरुआत में किया गया अतिरिक्त भुगतान, बाद में किए गए उतने ही भुगतान से ज़्यादा ब्याज बचाता है: शुरू में घटाए गए मूलधन के हर यूरो पर बाकी पूरी अवधि का ब्याज नहीं लगता।',
             },
             {
               q: 'हॉराइज़न (किस महीने तक का हिसाब) विश्लेषण ("अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...") क्या है?',
-              a: 'महीने 36 और महीने 360 पर लोन बहुत अलग दिखते हैं। हॉराइज़न टैब पूछता है: जो महीना आप चुनें, उस तक आपने असल में कितना मूलधन चुकाया, कितना ब्याज दिया, कितना बकाया बचा, और अब तक कुल कितनी नकदी खर्च हुई (किस्तें और लोन शुल्क मिलाकर)? यह नज़रिया तब सही है जब आप लोन की अनुबंध अवधि ख़त्म होने से काफ़ी पहले बेचने, शहर बदलने या रीफ़ाइनेंस करने की सोच रहे हों, क्योंकि जो लोन ऑफ़र 360 महीनों में सबसे कम कुल लागत पर आता है, ज़रूरी नहीं कि वही महीने 60 पर निकलने पर भी सबसे सस्ता हो।',
+              a: 'महीने 36 और महीने 360 पर लोन बहुत अलग दिखते हैं। हॉराइज़न टैब पूछता है: जो महीना आप चुनें, उस तक आपने असल में कितना मूलधन चुकाया, कितना ब्याज दिया, कितना बकाया बचा, और अब तक कुल कितनी नकदी खर्च हुई (किस्तें और लोन शुल्क मिलाकर)? यह नज़रिया तब काम का है जब आप लोन की अनुबंध अवधि ख़त्म होने से काफ़ी पहले बेचने, शहर बदलने या रीफ़ाइनेंस करने की सोच रहे हों, क्योंकि जो लोन ऑफ़र 360 महीनों में सबसे कम कुल लागत पर आता है, ज़रूरी नहीं कि वही महीने 60 पर निकलने पर भी सबसे सस्ता हो।',
             },
             {
               q: 'रीफ़ाइनेंस परिदृश्य बनाने वाला हिस्सा कैसे काम करता है?',
@@ -938,8 +938,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         },
         {
           kicker: 'उधार लेने से पहले',
-          title: 'पहले आपातकालीन कोष',
-          desc: 'अगर एक खराब महीना आपको किस्त चुकाने से चूकने पर मजबूर कर दे, तो लोन बहुत बड़ा है। उठाने से पहले थोड़ा बचा हुआ पैसा जोड़ लें।',
+          title: 'आपातकालीन कोष',
+          desc: 'कई लोग लोन लेने से पहले कुछ पैसे अलग रख लेते हैं, ताकि एक खराब महीने की वजह से किस्त न छूटे।',
         },
         {
           kicker: 'सोचने का तरीक़ा',
@@ -1517,11 +1517,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué muestra el gráfico «Adónde va cada cuota»?',
-              a: 'Divide una cuota mensual representativa de cada año del préstamo en su parte de intereses y su parte de capital, apiladas en una sola barra. Todas las barras tienen la misma altura total (la misma cuota mensual), pero el reparto cambia mucho: en los primeros años casi toda la cuota son intereses, y en los últimos casi toda es capital. Por eso los pagos anticipados en los primeros años de un préstamo largo tienen un efecto desproporcionado: cada euro que se resta pronto al capital evita intereses durante todo el plazo restante.',
+              a: 'Divide una cuota mensual representativa de cada año del préstamo en su parte de intereses y su parte de capital, apiladas en una sola barra. Todas las barras tienen la misma altura total (la misma cuota mensual), pero el reparto cambia mucho: en los primeros años casi toda la cuota son intereses, y en los últimos casi toda es capital. En este modelo, un pago extra al principio de un préstamo largo ahorra más intereses que el mismo pago más tarde: cada euro que se descuenta del capital al principio deja de generar intereses durante el resto del plazo.',
             },
             {
               q: '¿Qué es el análisis por horizonte («si vendo o refinancio en...»)?',
-              a: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. La pestaña Horizonte pregunta: en el mes que elijas, ¿cuánto capital has devuelto realmente, cuántos intereses has pagado, cuál es el saldo pendiente y cuánto dinero has desembolsado en total hasta ese momento (cuotas más comisión de apertura)? Es la vista adecuada si prevés vender, mudarte o refinanciar bastante antes del final contractual del préstamo, porque la entidad con el menor costo total a 360 meses puede no ser la de menor costo si sales en el mes 60.',
+              a: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. La pestaña Horizonte pregunta: en el mes que elijas, ¿cuánto capital has devuelto realmente, cuántos intereses has pagado, cuál es el saldo pendiente y cuánto dinero has desembolsado en total hasta ese momento (cuotas más comisión de apertura)? Esta vista es útil si prevés vender, mudarte o refinanciar bastante antes del final contractual del préstamo, porque la entidad con el menor costo total a 360 meses puede no ser la de menor costo si sales en el mes 60.',
             },
             {
               q: '¿Cómo funciona el escenario de refinanciación?',
@@ -1567,8 +1567,8 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         },
         {
           kicker: 'Antes de pedir prestado',
-          title: 'Primero, el fondo de emergencia',
-          desc: 'Si un mal mes te obligaría a saltarte una cuota, el préstamo es demasiado grande. Crea un colchón antes de asumirlo.',
+          title: 'Un fondo de emergencia',
+          desc: 'Muchas personas reúnen un colchón antes de pedir un préstamo, para que un mal mes no signifique dejar de pagar una cuota.',
         },
         {
           kicker: 'Modelo mental',
@@ -2145,11 +2145,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Co ukazuje graf „Kam jde každá splátka“?',
-              a: 'Rozdělí typickou měsíční splátku z každého roku úvěru na úrokovou část a část jistiny, naskládané do jednoho sloupce. Každý sloupec má stejnou celkovou výšku (stejnou měsíční splátku), ale poměr se výrazně posouvá: v prvních letech tvoří skoro celou splátku úrok, v posledních letech skoro celou jistina. Proto mají mimořádné splátky v prvních letech dlouhého úvěru nepoměrně velký účinek; každé euro, o které jistinu snížíte brzy, nenese úrok po celou zbývající dobu.',
+              a: 'Rozdělí typickou měsíční splátku z každého roku úvěru na úrokovou část a část jistiny, naskládané do jednoho sloupce. Každý sloupec má stejnou celkovou výšku (stejnou měsíční splátku), ale poměr se výrazně posouvá: v prvních letech tvoří skoro celou splátku úrok, v posledních letech skoro celou jistina. V\u00a0tomto modelu mimořádná splátka na začátku dlouhodobého úvěru ušetří víc úroků než stejná splátka později: částka, o\u00a0kterou se jistina sníží, se už po zbývající dobu splácení neúročí.',
             },
             {
               q: 'Co je analýza horizontu („pokud prodám nebo refinancuji v...“)?',
-              a: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Záložka „Horizont“ se ptá: ve zvoleném měsíci, kolik jistiny je skutečně splaceno, kolik úroků zaplaceno, jaká je zbývající jistina a kolik peněz celkem už odešlo (splátky plus poplatky za sjednání)? To je správný pohled, pokud čekáte, že prodáte, přestěhujete se nebo budete refinancovat dlouho před smluvním koncem úvěru, protože poskytovatel s nejnižšími celkovými náklady za 360 měsíců nemusí být nejlevnější, pokud úvěr ukončíte v 60. měsíci.',
+              a: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Záložka „Horizont“ se ptá: ve zvoleném měsíci, kolik jistiny je skutečně splaceno, kolik úroků zaplaceno, jaká je zbývající jistina a kolik peněz celkem už odešlo (splátky plus poplatky za sjednání)? Tento pohled se hodí, pokud čekáte, že prodáte, přestěhujete se nebo budete refinancovat dlouho před smluvním koncem úvěru, protože poskytovatel s nejnižšími celkovými náklady za 360 měsíců nemusí být nejlevnější, pokud úvěr ukončíte v 60. měsíci.',
             },
             {
               q: 'Jak funguje scénář refinancování?',
@@ -2195,8 +2195,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         },
         {
           kicker: 'Než si půjčíte',
-          title: 'Nejdřív finanční rezerva',
-          desc: 'Pokud by vás jeden špatný měsíc donutil vynechat splátku, je úvěr příliš velký. Mnoho lidí si proto před půjčkou vytváří rezervu.',
+          title: 'Finanční rezerva',
+          desc: 'Mnoho lidí si před sjednáním úvěru vytváří rezervu, aby jeden špatný měsíc neznamenal vynechanou splátku.',
         },
         {
           kicker: 'Myšlenkový model',
@@ -2755,11 +2755,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: '“प्रत्येक हप्ता कुठे जातो” हा आलेख काय दाखवतो?',
-              a: 'तो कर्जाच्या प्रत्येक वर्षातील एक प्रातिनिधिक मासिक हप्ता त्याच्या व्याज आणि मुद्दल या भागांमध्ये विभागून एकाच स्तंभावर रचून दाखवतो. प्रत्येक स्तंभाची एकूण उंची सारखीच असते (तोच मासिक हप्ता), पण विभागणी नाट्यमयरीत्या बदलते: सुरुवातीच्या वर्षांत जवळपास संपूर्ण हप्ता व्याज असतो, तर शेवटच्या वर्षांत जवळपास संपूर्ण हप्ता मुद्दल असतो. म्हणूनच दीर्घ कर्जाच्या पहिल्या काही वर्षांतील मुदतपूर्व परतफेडीचा परिणाम प्रमाणाबाहेर मोठा असतो; मुद्दलातून लवकर कमी केलेला प्रत्येक युरो उरलेल्या संपूर्ण मुदतीचे व्याज वाचवतो.',
+              a: 'तो कर्जाच्या प्रत्येक वर्षातील एक प्रातिनिधिक मासिक हप्ता त्याच्या व्याज आणि मुद्दल या भागांमध्ये विभागून एकाच स्तंभावर रचून दाखवतो. प्रत्येक स्तंभाची एकूण उंची सारखीच असते (तोच मासिक हप्ता), पण विभागणी नाट्यमयरीत्या बदलते: सुरुवातीच्या वर्षांत जवळपास संपूर्ण हप्ता व्याज असतो, तर शेवटच्या वर्षांत जवळपास संपूर्ण हप्ता मुद्दल असतो. या हिशेबात दीर्घ कर्जाच्या सुरुवातीला केलेली मुदतपूर्व परतफेड, नंतर केलेल्या तेवढ्याच परतफेडीपेक्षा जास्त व्याज वाचवते: मुद्दलातून सुरुवातीलाच कमी केलेल्या प्रत्येक युरोवर उरलेल्या मुदतीचे व्याज लागत नाही.',
             },
             {
               q: 'कालावधीचे विश्लेषण (“तुम्ही … महिन्याला विकले किंवा पुनर्वित्त केले तर”) म्हणजे काय?',
-              a: 'कर्जे 36 व्या महिन्यात आणि 360 व्या महिन्यात खूप वेगळी दिसतात. कालावधीचा टॅब विचारतो: तुम्ही निवडलेल्या महिन्यात तुम्ही प्रत्यक्षात किती मुद्दल फेडले आहे, किती व्याज भरले आहे, बाकी कर्ज किती आहे, आणि आत्तापर्यंत एकूण किती पैसे खर्च झाले आहेत (हप्ते आणि कर्जप्रक्रिया शुल्क)? कराराची मुदत संपण्याच्या खूप आधी तुम्ही विक्री करण्याची, स्थलांतराची किंवा पुनर्वित्ताची शक्यता असेल, तर हाच योग्य दृष्टिकोन आहे, कारण 360 महिन्यांत सर्वात कमी एकूण खर्च असलेला कर्जदाता 60 व्या महिन्यात बाहेर पडल्यास सर्वात कमी खर्चाचा असेलच असे नाही.',
+              a: 'कर्जे 36 व्या महिन्यात आणि 360 व्या महिन्यात खूप वेगळी दिसतात. कालावधीचा टॅब विचारतो: तुम्ही निवडलेल्या महिन्यात तुम्ही प्रत्यक्षात किती मुद्दल फेडले आहे, किती व्याज भरले आहे, बाकी कर्ज किती आहे, आणि आत्तापर्यंत एकूण किती पैसे खर्च झाले आहेत (हप्ते आणि कर्जप्रक्रिया शुल्क)? कराराची मुदत संपण्याच्या खूप आधी तुम्ही विक्री करण्याची, स्थलांतराची किंवा पुनर्वित्ताची शक्यता असेल, तर हा दृष्टिकोन उपयोगी पडतो, कारण 360 महिन्यांत सर्वात कमी एकूण खर्च असलेला कर्जदाता 60 व्या महिन्यात बाहेर पडल्यास सर्वात कमी खर्चाचा असेलच असे नाही.',
             },
             {
               q: 'पुनर्वित्त परिदृश्य कसे काम करते?',
@@ -2805,8 +2805,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         },
         {
           kicker: 'कर्ज घेण्यापूर्वी',
-          title: 'आधी आपत्कालीन निधी',
-          desc: 'एखाद्या वाईट महिन्यामुळे हप्ता चुकवावा लागणार असेल, तर कर्ज खूप मोठे आहे. ते घेण्यापूर्वी एक राखीव रक्कम उभी करण्याची अनेकांची पद्धत आहे.',
+          title: 'आपत्कालीन निधी',
+          desc: 'एखाद्या वाईट महिन्यात हप्ता चुकू नये म्हणून कर्ज घेण्यापूर्वी एक राखीव रक्कम उभी करण्याची अनेकांची पद्धत आहे.',
         },
         {
           kicker: 'विचाराचा आराखडा',

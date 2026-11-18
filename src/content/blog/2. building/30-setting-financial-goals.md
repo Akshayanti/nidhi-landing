@@ -15,7 +15,10 @@ takeaways:
   - "How to prioritise goals by math and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The €500,000 retirement example used a 7% return without saying it is before inflation; the €500,000 is in future euros, and keeping today's buying power at about 5% after inflation needs about €330 a month from age 25, not €190. The priority order now puts any employer match before the full emergency fund, often alongside high-interest debt, as the other lessons do, and the 8 to 10% debt line is described for low-inflation economies, not as a line that almost always beats investing."
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -31,9 +34,9 @@ faq:
   - question: "What are the three time-horizon buckets for goals?"
     answer: "Short-term, zero to three years: the money must be there on a specific date, so market swings are unacceptable. It is usually kept in cash or savings-equivalent vehicles; returns are low, which is the price of certainty. Examples include a wedding or next year's holiday. Medium-term, three to seven years: long enough that pure cash loses ground to inflation, short enough that a market drop could hurt, so a blend of cash and conservative investments is common, biased toward cash as the date nears. Long-term, seven-plus years: volatility averages out in historical data and inflation is the bigger enemy, so diversified, stock-heavy investments are common here. Examples include retirement and a child's university."
   - question: "Why is delaying a long-term goal so expensive?"
-    answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming a 7% return, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
+    answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming an illustrative 7% a year before inflation, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Those 500,000 euros are future euros; to have 500,000 in today's buying power, at about 5% a year after inflation, starting at 25 needs about 330 euros a month. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
-    answer: "Most frameworks set priority by math and timelines rather than by whichever goal feels loudest. A commonly used order: a starter emergency fund of about one month of expenses first. Then high-interest debt: above roughly 8 to 10% almost always beats realistic investment returns, while 4 to 8% depends on tax, inflation and how much certainty you want. Then a full emergency fund of three to six months. Then any employer retirement match, an immediate uplift on your contribution; many people take it as soon as the starter fund exists. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+    answer: "Most frameworks set priority by math and timelines rather than by whichever goal feels loudest. A commonly used order: a starter emergency fund of about one month of expenses first. Then high-interest debt: a rule of thumb for low-inflation economies says debt above roughly 8 to 10% has usually cost more than diversified investments have earned, while 4 to 8% is a judgement call; where inflation is higher, the line sits higher too, and there is no universal cutoff. Then any employer retirement match, an immediate uplift on your contribution, often taken alongside the debt step or before it. Then a full emergency fund of three to six months. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
@@ -121,6 +124,8 @@ Examples: house deposit, starting a business, career break, child's near-term ed
 
 **Long-term (7+ years).** The timeline is long enough that market volatility has tended to average out in historical data, and inflation becomes the bigger enemy. This is where investing is most common, often in broadly diversified, stock-heavy portfolios, with the exact mix depending on risk capacity.
 
+These buckets draw the long-term line at seven years, later than the five years used in the [saving vs. investing post](/blog/saving-vs-investing/). Both are rules of thumb, not guarantees against loss. A goal with a fixed date has less room to wait out a fall than money with a flexible date, which is why goal planning often uses the longer line: in US data since 1928, even some 5-year periods lost money, as the [risk post](/blog/understanding-risk/) shows.
+
 Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), child's university, generational wealth.
 
 | Bucket | Typical container | Risk tolerance | Return expectation |
@@ -135,7 +140,7 @@ Mismatching bucket and container is a common goal-setting error. Long-term money
 
 Short-term goals are roughly linear in delay. Delay by 20%, save 20% more per month. Long-term goals are not. The cost of delaying a long-term goal is brutal, because compounding does most of its work in the final decade.
 
-Classic example: retirement goal of €500,000 at age 65, assuming 7% annual return.
+Classic example: retirement goal of €500,000 at age 65, assuming an illustrative 7% a year before inflation. The €500,000 is in future euros, which will buy less than €500,000 does today; at about 5% a year after inflation, which keeps the goal in today's money, the age-25 figure is about €330 a month rather than €190.
 
 | Start age | Years contributing | Monthly contribution required |
 |---|---|---|
@@ -184,14 +189,14 @@ Almost no one has one goal. They have a house deposit, a retirement target, an e
 A priority framework commonly used in personal finance literature:
 
 1. **[Starter emergency fund](/blog/emergency-fund/).** About one month of expenses, as the usual first step
-2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** Debt above roughly 8-10% almost always beats realistic investment returns; between about 4% and 8% it depends on tax, inflation and how much certainty you want
-3. **Full emergency fund.** Often three to six months of expenses
-4. **Employer match on retirement (if any).** An immediate uplift on your own contribution; many people take it as soon as the starter fund is in place rather than waiting for the full fund
+2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** A rule of thumb for low-inflation economies puts the line at roughly 8-10%: above it, debt has usually cost more than diversified investments have earned, and where inflation is higher, the line sits higher too. There is no universal cutoff; the comparison depends on the debt's after-tax cost, uncertain investment returns, liquidity and risk, and between about 4% and 8% it is a judgement call
+3. **Employer match on retirement (if any).** An immediate uplift on your own contribution, often taken alongside step 2 or before it
+4. **Full emergency fund.** Often three to six months of expenses
 5. **Long-term retirement / FI contributions.** The compounding engine, where starting late is expensive
 6. **Medium-term goals.** House deposit, specific life events
 7. **Short-term discretionary goals.** Travel, lifestyle, hobbies
 
-The exact ordering depends on your situation. High-interest debt usually wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from math and timelines, not from whichever goal currently feels most exciting.
+This is an illustrative framework: the exact ordering depends on your situation, including liquidity, taxes, any match terms and what each debt costs. The [invest or pay off debt post](/blog/invest-or-pay-off-debt/) sets out the same order for debts in more detail. High-interest debt usually wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from math and timelines, not from whichever goal currently feels most exciting.
 
 ## The "number and a date" check
 
@@ -252,4 +257,4 @@ An annual review is enough for most goals. Life changes; assumptions change; mar
 
 A goal with a number and a date becomes something your monthly system can actually serve. Without that translation, every financial decision is made in the dark, comparing abstract priorities. With it, you have a map: here's where I am, here's where I want to be, here's what that costs in monthly terms.
 
-Once goals exist, the next question is whether you're actually on track for them. Net worth alone doesn't answer that. A handful of ratios (debt-to-asset, liquid percentage, savings rate, emergency-fund coverage, debt-to-income, income replacement) does. Those are the financial health metrics, and they're where we go next.
+Once goals exist, the next question is whether you're actually on track for them. Net worth alone doesn't answer that. A handful of ratios (debt-to-asset, liquid percentage, savings rate, emergency-fund coverage, debt-to-income, expense coverage) does. Those are the financial health metrics, and they're where we go next.

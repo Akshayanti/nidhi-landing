@@ -15,7 +15,10 @@ takeaways:
   - "Why matching assets to obligations beats trading currencies"
 order: 29
 pubDate: 2026-06-22
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson said the free net worth calculator shows the gap between what you hold and what you will eventually spend in each currency. It shows what you own and owe by currency and each currency's share of your net worth; it does not know your future spending, which is step 1 of the method in this lesson."
 localRules: [tax]
 level: "building"
 primaryPersona: "eva"
@@ -214,7 +217,7 @@ Think of it as a two-step audit, not an ongoing trading exercise.
 
 A perfect match isn't the goal. The point is noticing the mismatches and judging whether they're fine, tolerable, or worth reducing.
 
-If you'd rather not assemble the table by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) does exactly this audit: enter your assets and obligations across currencies and it shows the breakdown by currency, the concentration in each, and where the structural gap between what you hold and what you'll eventually spend actually sits.
+If you'd rather not assemble the holdings side by hand, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) does that part: enter what you own and owe across currencies and it shows what you hold in each currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend, step 1 above, is yours to make.
 
 ## Common mistakes
 

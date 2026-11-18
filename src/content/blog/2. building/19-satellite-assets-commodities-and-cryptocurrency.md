@@ -14,7 +14,10 @@ takeaways:
   - "Why satellites are usually kept small and added after the core"
 order: 19
 pubDate: 2026-05-29
-updatedDate: 2026-11-08
+updatedDate: 2026-11-17
+corrections:
+  - date: 2026-11-17
+    note: "The lesson gave a 0 to 15% cap for commodities and cryptocurrency together as a commonly cited range. It is a rule of thumb with no single source, and the lesson now says so."
 localRules: [tax, investments]
 level: "building"
 primaryPersona: "eva"
@@ -32,7 +35,7 @@ referentialReading:
 relatedSlugs: ["investing-101-asset-classes", "understanding-risk", "purchasing-power", "emergency-fund", "how-to-get-out-of-debt"]
 faq:
   - question: "What is a satellite asset?"
-    answer: "A satellite asset is a holding that sits around the core of a portfolio rather than forming its foundation. The four core asset classes (stocks, bonds, real estate, and cash) each generate returns from underlying economic activity: company profits, interest payments, rent, or short-term lending. Satellites such as commodities and cryptocurrency do not have that structure. Their returns come purely from price movement, meaning they depend on a future buyer paying more than the current owner did. They can play a legitimate role as a small hedge or speculative position, commonly capped at 0% to 15% of a portfolio across all satellites combined, but treating them as core holdings is a common mistake in this space."
+    answer: "A satellite asset is a holding that sits around the core of a portfolio rather than forming its foundation. The four core asset classes (stocks, bonds, real estate, and cash) each generate returns from underlying economic activity: company profits, interest payments, rent, or short-term lending. Satellites such as commodities and cryptocurrency do not have that structure. Their returns come purely from price movement, meaning they depend on a future buyer paying more than the current owner did. They can play a legitimate role as a small hedge or speculative position, often capped at 0% to 15% of a portfolio across all satellites combined (a rule of thumb with no single source), but treating them as core holdings is a common mistake in this space."
   - question: "Are commodities a good long-term investment?"
     answer: "Commodities are better understood as a hedge than a wealth engine. Gold, oil, agricultural products, and industrial metals have no cash flow: gold pays no dividend, a barrel of oil pays no interest, so the only way to profit is to sell for more than you paid. Over very long periods most commodities have produced near-zero real returns, with gold around 1% real. Their value lies elsewhere. Commodity prices tend to rise during inflationary periods, partially offsetting lost purchasing power, and gold has historically held value during crises and currency dislocations. A 5% to 10% allocation is a common ceiling in diversified portfolios, and many investors hold none and are perfectly fine."
   - question: "How much cryptocurrency should I hold?"
@@ -40,7 +43,7 @@ faq:
   - question: "Why are commodities and crypto treated separately from stocks and bonds?"
     answer: "Because they are structurally different. Each core asset class generates returns from an underlying economic activity that grows over time, which is why their long-run real returns are positive on average by structure. Commodities and cryptocurrency lack that engine: their returns come only from price change, so their long-run real return is near zero or unproven. This is not a moral judgement but a structural one. A simple portfolio can leave out commodities and cryptocurrency entirely and lose little; leaving out the core asset classes changes its whole character. The honest framing is that satellites can play a limited hedging or speculative role, but are not built to be the load-bearing foundation of a plan."
   - question: "Where do satellite assets fit in the order of things?"
-    answer: "In most frameworks, satellites come after the core. The usual foundation is an emergency fund, high-interest debt handled, and broad exposure across stocks and bonds; adding speculative or hedge positions before that leaves the plan fragile. People who add satellites typically set a cap in advance, commonly 0% to 15% of the total portfolio across all satellites combined, so that price swings don't decide the size. Commodity exposure is usually held through low-cost diversified ETFs, since futures and single-commodity bets add complexity and cost. Satellites are then rebalanced like the rest of the portfolio. Whether any satellite belongs in your plan at all depends on your goals and how much uncertainty you can carry."
+    answer: "In most frameworks, satellites come after the core. The usual foundation is an emergency fund, high-interest debt handled, and broad exposure across stocks and bonds; adding speculative or hedge positions before that leaves the plan fragile. People who add satellites typically set a cap in advance, often quoted as 0% to 15% of the total portfolio across all satellites combined (a rule of thumb with no single source), so that price swings don't decide the size. Commodity exposure is usually held through low-cost diversified ETFs, since futures and single-commodity bets add complexity and cost. Satellites are then rebalanced like the rest of the portfolio. Whether any satellite belongs in your plan at all depends on your goals and how much uncertainty you can carry."
 ---
 
 The [previous post](/blog/investing-101-asset-classes/) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
@@ -120,7 +123,7 @@ This isn't a moral judgement. It's a structural one. A simple portfolio can leav
 
 ## What this means in practice
 
-1. **Caps are usually set in advance.** A commonly cited range is 0-15% of the total portfolio across all satellites combined. Deciding the number before buying keeps price swings from deciding it for you
+1. **Caps are usually set in advance.** A range often quoted is 0-15% of the total portfolio across all satellites combined; it is a rule of thumb with no single source. Deciding the number before buying keeps price swings from deciding it for you
 2. **Commodity exposure is usually held through diversified ETFs.** Single-commodity bets depend on understanding one supply-demand picture well, which few people do
 3. **Crypto is usually accounted for as speculation.** That means money that could be lost entirely without affecting the plan, sized small, with custody thought through
 4. **Satellites typically come after the core.** An [emergency fund](/blog/emergency-fund/), [high-interest debt](/blog/how-to-get-out-of-debt/) handled, and broad exposure across stocks and bonds usually come first; satellites without that foundation leave a plan fragile

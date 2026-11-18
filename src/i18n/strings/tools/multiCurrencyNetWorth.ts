@@ -123,7 +123,7 @@ export const multiCurrencyNetWorthEn = {
         {
           strong: 'Concentration bands',
           rest:
-            ' apply only to non-functional currencies (currencies you don\'t spend in). Under 20% is low, 20-40% is moderate, and over 40% is elevated. These bands are this tool\'s own way of grouping shares: they are not a standard and not a judgement. They describe how big a share of net worth sits in that currency, not what to do about it. Your functional currency is never flagged.',
+            ' apply only to non-functional currencies (currencies you don\'t spend in). Under 20% is low, 20-40% is moderate, and over 40% is elevated. These bands are this tool\'s own way of grouping shares: they are not a standard and not a judgement. They describe how big a share of net worth sits in that currency, not what to do about it. Your functional currency gets no band.',
         },
         {
           strong: 'Net vs. gross exposure.',
@@ -224,7 +224,7 @@ export const multiCurrencyNetWorthEn = {
           kicker: 'Debt',
           title: 'Liabilities: what you owe and why the interest rate matters',
           desc:
-            'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator nets both.',
+            'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator shows the loan\'s balance in your net worth at the latest reference rate; it does not model the interest.',
         },
         {
           kicker: 'Purchasing power',
@@ -390,9 +390,6 @@ export const multiCurrencyNetWorthEn = {
         'At least one currency was missing a current rate and is excluded from this total.',
       /** The two-word flag beside a currency whose rate the feed did not return. */
       rateUnavailable: 'Rate unavailable',
-      /** The explanatory line under that currency. `{code}` and `{currency}` are codes. */
-      noRateAvailable:
-        'No current rate available for {code} against {currency}; shown without conversion',
       badgeFunctional: 'Functional',
       badgeNetDebt: 'Net debt',
       badgeElevated: 'Elevated',
@@ -425,7 +422,7 @@ export const multiCurrencyNetWorthEn = {
     rec: {
       /** Shown when the rate feed did not return this currency at all. */
       noRate:
-        'Live rate for {code} against {currency} was not returned by the exchange-rate service, so this position is excluded from the concentration math. The original-currency net amount is still shown above.',
+        'There is no reference rate for {code} against {currency} on this page, so this currency is left out of the total and the shares.',
       /** The spending currency, when the share carries no percentage. */
       functionalHidden:
         'This is your spending currency. The concentration percentage is not included in this share.',
@@ -576,7 +573,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'जमाव के स्तर',
           rest:
-            ' सिर्फ़ उन मुद्राओं पर लागू होते हैं जो आपकी खर्च की मुद्रा नहीं हैं। 20% से नीचे को कम, 20-40% को मध्यम, और 40% से ऊपर को ज़्यादा माना जाता है। ये स्तर इस टूल का अपना बाँटने का तरीक़ा हैं: ये न कोई मानक हैं, न कोई फ़ैसला। ये बताते हैं कि शुद्ध संपत्ति का कितना बड़ा हिस्सा उस मुद्रा में पड़ा है, यह नहीं कि उसके बारे में क्या करना चाहिए। आपकी खर्च की मुद्रा पर कभी यह निशान नहीं लगता।',
+            ' सिर्फ़ उन मुद्राओं पर लागू होते हैं जो आपकी खर्च की मुद्रा नहीं हैं। 20% से नीचे को कम, 20-40% को मध्यम, और 40% से ऊपर को ज़्यादा माना जाता है। ये स्तर इस टूल का अपना बाँटने का तरीक़ा हैं: ये न कोई मानक हैं, न कोई फ़ैसला। ये बताते हैं कि शुद्ध संपत्ति का कितना बड़ा हिस्सा उस मुद्रा में पड़ा है, यह नहीं कि उसके बारे में क्या करना चाहिए। आपकी खर्च की मुद्रा को कोई स्तर नहीं दिया जाता।',
         },
         {
           strong: 'शुद्ध और सकल एक्सपोज़र।',
@@ -671,7 +668,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
           kicker: 'कर्ज़',
           title: 'देनदारियाँ: आप पर क्या बकाया है, और ब्याज दर क्यों मायने रखती है',
           desc:
-            'विदेशी मुद्रा का लोन एक साथ दो जोखिम लाता है: ब्याज की लागत और विनिमय दर का घटना-बढ़ना। कैलकुलेटर दोनों को जोड़कर देखता है।',
+            'विदेशी मुद्रा का लोन एक साथ दो जोखिम लाता है: ब्याज की लागत और विनिमय दर का घटना-बढ़ना। कैलकुलेटर लोन की बकाया रकम को ताज़ा संदर्भ दर पर आपकी शुद्ध संपत्ति में दिखाता है; ब्याज का हिसाब यह नहीं लगाता।',
         },
         {
           kicker: 'क्रय शक्ति',
@@ -816,7 +813,6 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         'यहाँ सब कुछ एक ही मुद्रा में है: {currency}। इसलिए विनिमय दरों का इस पर असर नहीं पड़ता। अगर आप किसी और मुद्रा में रखी कोई चीज़ जोड़ेंगे, तो यह भी दिखेगा कि आपकी शुद्ध संपत्ति का कितना हिस्सा विनिमय दरों पर निर्भर है।',
       partialHint: 'कम से कम एक मुद्रा की ताज़ा दर नहीं मिली, इसलिए वह इस जोड़ में शामिल नहीं है।',
       rateUnavailable: 'दर नहीं मिली',
-      noRateAvailable: '{code} की {currency} के मुक़ाबले ताज़ा दर नहीं मिली; रकम मूल मुद्रा में, बिना बदले दिखाई गई है',
       badgeFunctional: 'मुख्य मुद्रा',
       badgeNetDebt: 'शुद्ध देनदारी',
       badgeElevated: 'ज़्यादा',
@@ -836,7 +832,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     },
     rec: {
       noRate:
-        '{code} की {currency} के मुक़ाबले ताज़ा दर विनिमय दर सेवा से नहीं मिली, इसलिए यह स्थिति जमाव के हिसाब से बाहर रखी गई है। मूल मुद्रा वाली शुद्ध रकम ऊपर अब भी दिखाई गई है।',
+        'इस पेज पर {code} की {currency} के मुक़ाबले कोई संदर्भ दर नहीं है, इसलिए यह मुद्रा कुल जोड़ और हिस्सों में शामिल नहीं है।',
       functionalHidden:
         'यह आपकी खर्च की मुद्रा है। इस शेयर किए गए हिसाब में जमाव का प्रतिशत शामिल नहीं है।',
       functionalMost:
@@ -984,7 +980,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Niveles de concentración',
           rest:
-            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Estos niveles son la forma en que esta herramienta agrupa las partes: no son un estándar ni una valoración. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia nunca se señala.',
+            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Estos niveles son la forma en que esta herramienta agrupa las partes: no son un estándar ni una valoración. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia no se clasifica en ningún nivel.',
         },
         {
           strong: 'Exposición neta frente a bruta.',
@@ -1079,7 +1075,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
           kicker: 'Deuda',
           title: 'Pasivos: lo que debes y por qué importa la tasa de interés',
           desc:
-            'Un préstamo en moneda extranjera tiene dos riesgos a la vez: el costo de los intereses y la evolución del tipo de cambio. La calculadora tiene en cuenta los dos en la posición neta.',
+            'Un préstamo en moneda extranjera tiene dos riesgos a la vez: el costo de los intereses y la evolución del tipo de cambio. La calculadora muestra el saldo del préstamo en tu patrimonio neto según el tipo de referencia más reciente; no calcula los intereses.',
         },
         {
           kicker: 'Poder adquisitivo',
@@ -1227,8 +1223,6 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       partialHint:
         'Faltaba el tipo de cambio actual de al menos una moneda, que queda fuera de este total.',
       rateUnavailable: 'Tipo no disponible',
-      noRateAvailable:
-        'No hay tipo de cambio actual de {code} frente a {currency}; se muestra sin convertir',
       badgeFunctional: 'Referencia',
       badgeNetDebt: 'Deuda neta',
       badgeElevated: 'Elevado',
@@ -1248,7 +1242,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     },
     rec: {
       noRate:
-        'El servicio de tipos de cambio no devolvió el tipo actual de {code} frente a {currency}, así que esta posición queda fuera del cálculo de concentración. La cantidad neta en la moneda original se sigue mostrando arriba.',
+        'En esta página no hay un tipo de referencia de {code} frente a {currency}, así que esta moneda queda fuera del total y del cálculo de concentración.',
       functionalHidden:
         'Esta es la moneda en la que gastas. El porcentaje de concentración no se incluye en lo que se ha compartido.',
       functionalMost:
@@ -1404,7 +1398,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Pásma koncentrace',
           rest:
-            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Tato pásma jsou vlastním členěním tohoto nástroje: nejsou standardem ani hodnocením. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů se nikdy neoznačuje.',
+            ' platí jen pro měny jiné než měna výdajů (měny, ve kterých neutrácíte). Pod 20 % je expozice nízká, 20 až 40 % střední a nad 40 % zvýšená. Tato pásma jsou vlastním členěním tohoto nástroje: nejsou standardem ani hodnocením. Popisují, jak velká část čistého jmění připadá na danou měnu, ne co s tím dělat. Měna vašich výdajů nemá žádné pásmo.',
         },
         {
           strong: 'Čistá a hrubá expozice.',
@@ -1499,7 +1493,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
           kicker: 'Dluh',
           title: 'Závazky: co dlužíte a proč záleží na úrokové sazbě',
           desc:
-            'Úvěr v cizí měně nese dvě rizika najednou: náklady na úrok a pohyb kurzu. Kalkulačka započítá obojí.',
+            'Úvěr v cizí měně nese dvě rizika najednou: náklady na úrok a pohyb kurzu. Kalkulačka ukazuje zůstatek úvěru ve vašem čistém jmění podle posledního referenčního kurzu; úrok nepočítá.',
         },
         {
           kicker: 'Kupní síla',
@@ -1645,8 +1639,6 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       partialHint:
         'U alespoň jedné měny chyběl aktuální kurz, a proto není zahrnutá do tohoto součtu.',
       rateUnavailable: 'Kurz chybí',
-      noRateAvailable:
-        'Pro měnový pár {code}/{currency} není aktuální kurz k dispozici; zobrazeno bez převodu',
       badgeFunctional: 'Měna výdajů',
       badgeNetDebt: 'Čistý dluh',
       badgeElevated: 'Zvýšená',
@@ -1666,7 +1658,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     },
     rec: {
       noRate:
-        'Služba směnných kurzů nevrátila aktuální kurz {code} vůči {currency}, proto tato pozice není zahrnutá do výpočtu koncentrace. Čistá částka v původní měně je dál zobrazená výše.',
+        'Na této stránce není referenční kurz {code} vůči {currency}, proto tato měna není zahrnuta do součtu ani do podílů.',
       functionalHidden:
         'Toto je měna vašich výdajů. V této sdílené verzi není procento koncentrace uvedeno.',
       functionalMost:
@@ -1804,7 +1796,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
         {
           strong: 'हिश्श्याचे पट्टे',
-          rest: ' फक्त खर्चाचे चलन नसलेल्या चलनांना लागू होतात (ज्या चलनांमध्ये तुम्ही खर्च करत नाही). 20% पेक्षा कमी म्हणजे कमी, 20 ते 40% म्हणजे मध्यम, आणि 40% पेक्षा जास्त म्हणजे जास्त. हे पट्टे म्हणजे या साधनाची हिस्से गटांत मांडण्याची स्वतःची पद्धत आहे: ते कोणतेही मानक नाहीत आणि कोणताही निवाडा नाहीत. ते निव्वळ संपत्तीचा किती मोठा हिस्सा त्या चलनात आहे याचे वर्णन करतात, त्याबद्दल काय करावे याचे नाही. तुमच्या खर्चाच्या चलनावर कधीच खूण केली जात नाही.',
+          rest: ' फक्त खर्चाचे चलन नसलेल्या चलनांना लागू होतात (ज्या चलनांमध्ये तुम्ही खर्च करत नाही). 20% पेक्षा कमी म्हणजे कमी, 20 ते 40% म्हणजे मध्यम, आणि 40% पेक्षा जास्त म्हणजे जास्त. हे पट्टे म्हणजे या साधनाची हिस्से गटांत मांडण्याची स्वतःची पद्धत आहे: ते कोणतेही मानक नाहीत आणि कोणताही निवाडा नाहीत. ते निव्वळ संपत्तीचा किती मोठा हिस्सा त्या चलनात आहे याचे वर्णन करतात, त्याबद्दल काय करावे याचे नाही. तुमच्या खर्चाच्या चलनाला कोणताही पट्टा दिला जात नाही.',
         },
         {
           strong: 'निव्वळ विरुद्ध एकूण हिस्सा.',
@@ -1883,7 +1875,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         {
           kicker: 'कर्ज',
           title: 'देणी: तुमची देणी काय आहेत आणि व्याजदर का महत्त्वाचा असतो',
-          desc: 'परकीय चलनातील कर्जात एकाच वेळी दोन जोखमी असतात: व्याजाचा खर्च आणि विनिमय दरातील बदल. कॅल्क्युलेटर दोन्हींची निव्वळ रक्कम काढतो.',
+          desc: 'परकीय चलनातील कर्जात एकाच वेळी दोन जोखमी असतात: व्याजाचा खर्च आणि विनिमय दरातील बदल. कॅल्क्युलेटर कर्जाची शिल्लक ताज्या संदर्भ दराने तुमच्या निव्वळ संपत्तीत दाखवतो; व्याजाचा हिशेब तो करत नाही.',
         },
         {
           kicker: 'क्रयशक्ती',
@@ -2020,7 +2012,6 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       singleNote: 'इथे सगळे {currency} मध्ये आहे, त्यामुळे विनिमय दरांचा त्यावर परिणाम होत नाही. तुम्ही दुसऱ्या चलनातील काही जोडले, तर तुमच्या निव्वळ संपत्तीचा किती भाग विनिमय दरांवर अवलंबून आहे हेही इथे दिसेल.',
       partialHint: 'किमान एका चलनाचा चालू दर मिळाला नाही, त्यामुळे ते या एकूण रकमेतून वगळले आहे.',
       rateUnavailable: 'दर उपलब्ध नाही',
-      noRateAvailable: '{currency} च्या तुलनेत {code} चा चालू दर उपलब्ध नाही; रक्कम न बदलता दाखवली आहे',
       badgeFunctional: 'खर्चाचे चलन',
       badgeNetDebt: 'निव्वळ कर्ज',
       badgeElevated: 'जास्त',
@@ -2038,7 +2029,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       disclaimer: 'हा कॅल्क्युलेटर चलनानुसार तुमच्या निव्वळ स्थितीचे गणिती हिस्से दाखवतो, अधिकृत संदर्भ दर वापरून, जे तुमच्या बँकेत किंवा ब्रोकरकडे मिळणाऱ्या दरांपेक्षा वेगळे असू शकतात. तो तुमच्या भविष्यातील खर्चाच्या योजना, कर-निवासाचा दर्जा (tax residency), जोखीम-बचावाच्या (hedging) रणनीती किंवा जोखीम सहनशीलता विचारात घेत नाही, आणि तो आर्थिक सल्ला नाही. वैयक्तिक सल्ल्यासाठी परवानाधारक आर्थिक सल्लागाराशी बोला.',
     },
     rec: {
-      noRate: 'विनिमय दराच्या सेवेकडून {currency} च्या तुलनेत {code} चा चालू दर मिळाला नाही, त्यामुळे ही स्थिती हिश्श्याच्या गणितातून वगळली आहे. मूळ चलनातील निव्वळ रक्कम वर दाखवलेली आहेच.',
+      noRate: 'या पानावर {currency} च्या तुलनेत {code} चा संदर्भ दर नाही, त्यामुळे हे चलन एकूण रकमेत आणि हिश्श्यांमध्ये धरलेले नाही.',
       functionalHidden: 'हे तुमचे खर्चाचे चलन आहे. त्याच्या हिश्श्याची टक्केवारी या शेअरमध्ये समाविष्ट नाही.',
       functionalMost: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% तुमच्या खर्चाच्या चलनात ({currency}) आहे. उरलेले {rest}% इतर चलनांमध्ये आहे आणि त्यांच्या विनिमय दरांनुसार हलते.',
       functionalMuch: 'तुमच्या निव्वळ संपत्तीपैकी {pct}% तुमच्या खर्चाच्या चलनात ({currency}) आहे. उरलेले {rest}% इतर चलनांमध्ये आहे, त्यामुळे तुमच्या रोजच्या क्रयशक्तीचा लक्षणीय भाग त्यांच्या विनिमय दरांनुसार हलतो.',
