@@ -90,12 +90,16 @@ breach as a defect.
    (`₹1.25 lakh`), so the `₹10,58,721` lakh-grouped form of rule 4 is the
    tools' alone.
 
-9. **Short forms on charts.** Rupees are counted in हज़ार, लाख and करोड़,
-   written as words after a no-break space: `₹54.7 हज़ार`, `₹18.7 लाख`,
-   `₹1.09 करोड़`. Never the English `K`, `L` or `Cr`. A chart's heading says
-   the unit once (*राशियाँ (लाख ₹ में)*). Another currency is counted the
-   western way: its thousands are हज़ार, and a heading says million as दस लाख
-   and thousand million as सौ करोड़.
+9. **Short forms on charts.** Every currency is counted in हज़ार, लाख and
+   करोड़, written as words after a no-break space: `₹54.7 हज़ार`,
+   `₹18.7 लाख`, `₹1.09 करोड़`, and `€18.7 लाख`, `$216 करोड़` just the same
+   (owner, 2026-11-19, #678). Never the English `K`, `L`, `Cr`, `M` or `B`. A
+   chart's heading says the unit once (*राशियाँ (लाख ₹ में)*,
+   *राशियाँ (लाख € में)*). This is for charts: an amount in a sentence or a
+   table is written in full, grouped the way its currency is.
+10. **The decimals limit** in a tool's message is said as
+   *दशमलव के बाद अधिकतम 2 अंक* (owner, 2026-11-19, #679), not *दो दशमलव*,
+   which can be read as two decimal points.
 
 ## Vocabulary
 

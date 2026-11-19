@@ -1,5 +1,6 @@
 import { createContext, useContext, useLayoutEffect, useRef, useState, type RefObject } from 'react';
 import { useMoney } from './useMoney.ts';
+import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import {
   amountScale,
   axisHeading,
@@ -23,9 +24,12 @@ export const ChartWordsContext = createContext<ChartWords | null>(null);
 export function useChartAmounts() {
   const words = useContext(ChartWordsContext);
   const { amountLocale, formatAmount } = useMoney();
+  // The page's own number style: a page that groups in lakhs counts every
+  // currency in lakhs and crores on its charts (#678).
+  const numberLocale = useContext(NumberLocaleContext);
   return {
     axis(max: number, code: string): { scale: AmountScale; heading: string; tick: (v: number) => string } {
-      const scale = amountScale(max, code, amountLocale);
+      const scale = amountScale(max, code, amountLocale, numberLocale);
       return {
         scale,
         // Without the words (a chart drawn outside a tool) the gridlines keep full amounts.
@@ -33,7 +37,7 @@ export function useChartAmounts() {
         tick: (v) => (words ? axisTick(v, scale, code, amountLocale) : formatAmount(v, code)),
       };
     },
-    label: (value: number, code: string) => (words ? chartLabel(value, code, words, amountLocale) : formatAmount(value, code, true)),
+    label: (value: number, code: string) => (words ? chartLabel(value, code, words, amountLocale, numberLocale) : formatAmount(value, code, true)),
   };
 }
 

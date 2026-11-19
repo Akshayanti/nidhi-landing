@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-19',
+    items: [
+      {
+        id: 'charts-lakh-crore-every-currency',
+        text: {
+          en: 'On Hindi and Marathi pages, chart labels and headings in the free tools now show every currency in lakhs and crores, not only rupees: a label that read “€1.87M” now reads “€18.7\u00a0लाख”. English, Spanish and Czech pages are unchanged.',
+          hi: 'हिंदी और मराठी पेजों पर मुफ़्त टूल के चार्ट लेबल और शीर्षक अब हर मुद्रा की राशि लाख और करोड़ में दिखाते हैं, सिर्फ़ रुपये की नहीं: जहाँ पहले “€1.87M” लिखा आता था, वहाँ अब “€18.7\u00a0लाख” आता है। अंग्रेज़ी, स्पैनिश और चेक पेज वैसे ही हैं।',
+          es: 'En las páginas en hindi y en maratí, las etiquetas y los títulos de los gráficos de las herramientas gratuitas ahora muestran todas las monedas en lakhs y crores, no solo las rupias: donde antes se leía «€1.87M», ahora se lee «€18.7\u00a0लाख». Las páginas en inglés, español y checo no cambian.',
+          cs: 'Na stránkách v\u00a0hindštině a\u00a0maráthštině teď popisky a\u00a0nadpisy grafů v\u00a0nástrojích zdarma zobrazují každou měnu v\u00a0jednotkách lakh a\u00a0crore, nejen rupie: místo „€1.87M“ je teď v\u00a0popisku „€18.7\u00a0लाख“. Anglické, španělské a\u00a0české stránky zůstávají stejné.',
+          mr: 'हिंदी आणि मराठी पानांवर मोफत साधनांमधील आलेखांची लेबले आणि शीर्षके आता प्रत्येक चलनाच्या रकमा लाख आणि कोटींमध्ये दाखवतात, फक्त रुपयांच्या नाही: जिथे आधी “€1.87M” दिसत होते, तिथे आता “€18.7\u00a0लाख” दिसते. इंग्रजी, स्पॅनिश आणि चेक पाने तशीच आहेत.',
+        },
+      },
+      {
+        id: 'glossary-effective-annual-rate',
+        text: {
+          en: 'The glossary and lesson 27 now explain “Effective annual rate”, with an example of monthly compounding. The explanation also distinguishes compounding from whether a disclosed loan rate includes fees.',
+          hi: 'शब्दावली और पाठ 27 में अब “Effective annual rate” की व्याख्या मासिक चक्रवृद्धि के उदाहरण के साथ दी गई है। इसमें यह भी स्पष्ट किया गया है कि चक्रवृद्धि की गणना और दर बताने के नियमों के अनुसार ऋण शुल्क शामिल करना अलग बातें हैं।',
+          es: 'El glosario y la lección 27 explican ahora «Effective annual rate», con un ejemplo de capitalización mensual. La explicación también distingue la capitalización de la inclusión de comisiones del préstamo según las normas de información aplicables.',
+          cs: 'Slovníček pojmů a\u00a0lekce 27 nyní vysvětlují pojem „Effective annual rate“ na příkladu měsíčního složeného úročení. Vysvětlení také rozlišuje složené úročení od zahrnutí úvěrových poplatků podle pravidel pro uvádění sazby.',
+          mr: 'शब्दसूची आणि धडा 27\u00a0मध्ये आता मासिक चक्रवाढीच्या उदाहरणासह “Effective annual rate” या संज्ञेचे स्पष्टीकरण दिले आहे. चक्रवाढ मोजणे आणि दर जाहीर करण्याच्या नियमांनुसार कर्जाचे शुल्क समाविष्ट करणे या वेगळ्या गोष्टी आहेत, हेही स्पष्ट केले आहे.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-18',
     items: [
       {

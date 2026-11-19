@@ -17,7 +17,10 @@
  * (`amountStyle`), so it never contradicts the figures beside it: a page with
  * its own amount style (Spanish, Czech) counts every currency in thousands,
  * millions and thousand millions; the others count rupees in thousands, lakhs
- * and crores, and every other currency the western way.
+ * and crores. Every other currency is counted the western way in English, and
+ * in lakhs and crores too on a page whose own numbers are grouped the Indian
+ * way (Hindi and Marathi, `PROSE_NUMBER_LOCALE`; the owner's choice, #678):
+ * "€18.7 लाख", never "€1.87M".
  */
 import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
 
@@ -41,16 +44,24 @@ export interface ChartWords {
   short: Record<Exclude<AmountScale, 'none'>, string>;
 }
 
-/** Whether amounts in this currency are grouped in lakhs and crores on this page. */
-function countsInLakhs(code: string, amountLocale?: string | null): boolean {
-  return amountStyle(code, amountLocale).locale === 'en-IN';
+/**
+ * Whether a chart counts this currency in lakhs and crores on this page: the
+ * amount is grouped the Indian way, or the page's own numbers are
+ * (`numberLocale`, the page's `PROSE_NUMBER_LOCALE`) and it has no amount
+ * style of its own.
+ */
+function countsInLakhs(code: string, amountLocale?: string | null, numberLocale?: string | null): boolean {
+  return amountStyle(code, amountLocale).locale === 'en-IN' || (!amountLocale && numberLocale === 'en-IN');
 }
 
-/** The scale for an amount of this size: the largest whose unit it reaches. */
-export function amountScale(value: number, code: string, amountLocale?: string | null): AmountScale {
+/**
+ * The scale for an amount of this size: the largest whose unit it reaches.
+ * `numberLocale` is the page's own number style, which says how it counts.
+ */
+export function amountScale(value: number, code: string, amountLocale?: string | null, numberLocale?: string | null): AmountScale {
   const abs = Math.abs(value);
   if (!Number.isFinite(abs) || abs < 1e3) return 'none';
-  if (countsInLakhs(code, amountLocale)) return abs >= 1e7 ? 'crore' : abs >= 1e5 ? 'lakh' : 'thousand';
+  if (countsInLakhs(code, amountLocale, numberLocale)) return abs >= 1e7 ? 'crore' : abs >= 1e5 ? 'lakh' : 'thousand';
   return abs >= 1e9 ? 'billion' : abs >= 1e6 ? 'million' : 'thousand';
 }
 
@@ -92,12 +103,12 @@ export function readsAsZero(value: number, write: (v: number) => string): boolea
  * the currency keep the page's own order and separators; only the word after
  * the number comes from the catalog.
  */
-export function chartLabel(value: number, code: string, words: ChartWords, amountLocale?: string | null): string {
+export function chartLabel(value: number, code: string, words: ChartWords, amountLocale?: string | null, numberLocale?: string | null): string {
   const { locale, display } = amountStyle(code, amountLocale);
   // Rounded to the three digits it is written with before its unit is chosen,
   // so 999,600 reads "1M" and never "1,000K".
   const v = Math.abs(value) >= 999.5 ? Number(value.toPrecision(3)) : Math.round(value);
-  let scale = amountScale(v, code, amountLocale);
+  let scale = amountScale(v, code, amountLocale, numberLocale);
   const currency = { style: 'currency', currency: code, currencyDisplay: display } as const;
   if (scale === 'none') return amountFormat(code, amountLocale, { ...currency, maximumFractionDigits: 0 }).format(v);
   let digits: Intl.NumberFormatOptions = { maximumSignificantDigits: 3 };
