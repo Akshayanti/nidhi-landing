@@ -135,9 +135,9 @@ describe('currency changes: the day a change took effect (#619)', () => {
     }
   });
 
-  it('leaves out the month where no primary source gives it', () => {
-    assert.deepEqual(mixedYearChange('AGO', 1999)?.on, { year: 1999 });
-    assert.deepEqual(mixedYearChange('AGO', 1995)?.on, { year: 1995, month: 7 });
+  it("dates Angola's two changes by the days Wikipedia gives (#693)", () => {
+    assert.deepEqual(mixedYearChange('AGO', 1999)?.on, { year: 1999, month: 12, day: 1 });
+    assert.deepEqual(mixedYearChange('AGO', 1995)?.on, { year: 1995, month: 7, day: 1 });
   });
 
   it('finds the year in which both monies were in use', () => {

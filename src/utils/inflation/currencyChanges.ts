@@ -25,9 +25,9 @@
  * Every ratio and date was read from the source named beside it (a central
  * bank, the law itself, the ECB or the IMF), on 14 November 2026; Latvia's and
  * Ecuador's dates on 18 November 2026. Two dates are not confirmed from such a
- * source and carry no month or no day: Angola's 1999 change (the IMF notes
- * say 12 November, other accounts 1 December) and the day of its July 1995
- * change.
+ * source: the days of Angola's 1995 and 1999 changes (1 July and 1 December)
+ * are the ones Wikipedia gives, without a citation, read on 19 November 2026.
+ * For 1999 the IMF notes say 12 November; the owner chose 1 December (#693).
  *
  * Pure: no DOM, no analytics.
  */
@@ -145,10 +145,14 @@ export const CURRENCY_CHANGES: Record<string, CurrencyChange[]> = {
   // IMF exchange rate country notes: the readjusted kwanza, "equal to 1,000
   // new kwanzas", July 1995; the kwanza, "equal to 1,000,000 readjusted
   // kwanzas", 12 November 1999.
+  // The days are not from the IMF or the Banco Nacional de Angola. Wikipedia
+  // ("Angolan kwanza" and the Portuguese "Kwanza", read 19 November 2026)
+  // gives 1 July 1995 and 1 December 1999 in its tables, citing nothing for
+  // either. https://en.wikipedia.org/wiki/Angolan_kwanza
   AGO: [
-    { year: 1995, ratio: 1000, on: { year: 1995, month: 7 } },
-    // No month: 12 November in the IMF notes, 1 December in other accounts.
-    { year: 1999, ratio: 1_000_000, on: { year: 1999 } },
+    { year: 1995, ratio: 1000, on: { year: 1995, month: 7, day: 1 } },
+    // 1 December, not the IMF notes' 12 November: the owner's choice (#693).
+    { year: 1999, ratio: 1_000_000, on: { year: 1999, month: 12, day: 1 } },
   ],
   // Banco Central do Brasil, "Brazilian Monetary System Reforms": cruzado
   // (28 Feb 1986, 1,000 cruzeiros), cruzado novo (16 Jan 1989, 1,000
