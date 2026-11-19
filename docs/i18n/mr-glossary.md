@@ -120,12 +120,13 @@ as a defect.
     U+00A0 in the catalog; `catalog.test.ts` fails on an ordinary space there.
     This is the Marathi counterpart of the Czech rule for one-letter
     prepositions.
-16. **Short forms on charts.** Rupees are counted in हजार, लाख and कोटी,
-    written as words after a no-break space: `₹54.7 हजार`, `₹18.7 लाख`,
-    `₹1.09 कोटी`. Never the English `K`, `L` or `Cr`. A chart's heading says
-    the unit once (*रकमा (लाख ₹ मध्ये)*). Another currency is counted the
-    western way: its thousands are हजार, and a heading says million as दहा
-    लाख and thousand million as शंभर कोटी.
+16. **Short forms on charts.** Every currency is counted in हजार, लाख and
+    कोटी, written as words after a no-break space: `₹54.7 हजार`, `₹18.7 लाख`,
+    `₹1.09 कोटी`, and `€18.7 लाख`, `€1.09 कोटी` just the same (owner,
+    2026-11-19, #678). Never the English `K`, `L`, `Cr`, `M` or `B`. A chart's
+    heading says the unit once (*रकमा (लाख ₹ मध्ये)*, *रकमा (लाख € मध्ये)*).
+    This is for charts: an amount in a sentence or a table is written in
+    full, grouped the way its currency is.
 
 ### English that is allowed on a Marathi page
 

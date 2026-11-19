@@ -435,8 +435,8 @@ export const investOrPayOffHi: InvestOrPayOff = {
       fee: 'सालाना फंड शुल्क (वैकल्पिक)',
       gainsTax: 'मुनाफ़े पर टैक्स (वैकल्पिक)',
       gainsTaxHint: 'तुलना की तारीख़ पर मुनाफ़े पर एक बार लिया जाता है। यह खाते और देश पर निर्भर करता है।',
-      amountError: '0 से {max} तक कोई रकम लिखें, ज़्यादा से ज़्यादा दो दशमलव के साथ।',
-      percentError: '{min} से {max} तक कोई प्रतिशत लिखें, ज़्यादा से ज़्यादा दो दशमलव के साथ।',
+      amountError: '0 से {max} तक कोई रकम लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
+      percentError: '{min} से {max} तक कोई प्रतिशत लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
     },
     country: {
       average: '{country}, {first} से {last}: औसतन सालाना {avg} (World Bank)।',

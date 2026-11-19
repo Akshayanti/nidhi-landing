@@ -25,6 +25,15 @@ describe('the scale follows the number style the page uses for the amount', () =
     assert.equal(amountScale(1_870_000, 'INR', 'cs'), 'million');
   });
 
+  it('counts every currency in lakhs and crores on a page that groups its own numbers that way (#678)', () => {
+    assert.equal(amountScale(547_000, 'EUR', null, 'en-IN'), 'lakh');
+    assert.equal(amountScale(2_160_000, 'EUR', null, 'en-IN'), 'lakh');
+    assert.equal(amountScale(3e9, 'USD', null, 'en-IN'), 'crore');
+    assert.equal(amountScale(54_700, 'GBP', null, 'en-IN'), 'thousand');
+    assert.equal(amountScale(2_160_000, 'EUR', null, 'en'), 'million', 'English keeps millions');
+    assert.equal(amountScale(1_870_000, 'INR', 'es', 'es'), 'million', 'a page with its own amount style keeps its own');
+  });
+
   it('has no scale for what is not a number', () => {
     assert.equal(amountScale(NaN, 'EUR'), 'none');
     assert.equal(amountScale(Infinity, 'EUR'), 'none');
@@ -91,6 +100,15 @@ describe('a label that stands alone carries its own unit', () => {
     assert.equal(chartLabel(10_900_000, 'INR', exportHi.chart), `₹1.09${NBSP}करोड़`);
     assert.equal(chartLabel(10_900_000, 'INR', exportMr.chart), `₹1.09${NBSP}कोटी`);
     assert.equal(chartLabel(54_700, 'INR', exportMr.chart), `₹54.7${NBSP}हजार`);
+  });
+
+  it('writes every other currency in lakh and crore too in Hindi and Marathi (#678)', () => {
+    assert.equal(chartLabel(1_870_000, 'EUR', exportHi.chart, null, 'en-IN'), `€18.7${NBSP}लाख`);
+    assert.equal(chartLabel(2_160_000_000, 'USD', exportHi.chart, null, 'en-IN'), `$216${NBSP}करोड़`);
+    assert.equal(chartLabel(10_900_000, 'EUR', exportMr.chart, null, 'en-IN'), `€1.09${NBSP}कोटी`);
+    assert.equal(chartLabel(54_700, 'GBP', exportMr.chart, null, 'en-IN'), `£54.7${NBSP}हजार`);
+    assert.equal(chartLabel(999_600, 'EUR', exportHi.chart, null, 'en-IN'), `€10${NBSP}लाख`, 'rounded before its unit is chosen');
+    assert.equal(chartLabel(1_870_000, 'EUR', exportEn.chart, null, 'en'), '€1.87M', 'English keeps M');
   });
 
   it('writes mil and M in Spanish, and a thousand million in millions', () => {

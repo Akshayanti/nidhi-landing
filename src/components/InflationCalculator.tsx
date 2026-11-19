@@ -4,6 +4,7 @@ import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
+import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
@@ -508,6 +509,7 @@ export default function InflationCalculator({
   const toolReady = useToolReady();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
+    <NumberLocaleContext.Provider value={numberLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
@@ -687,6 +689,7 @@ export default function InflationCalculator({
     </div>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
+    </NumberLocaleContext.Provider>
     </AmountLocaleContext.Provider>
   );
 }

@@ -129,9 +129,9 @@ export const exportHi: typeof exportEn = {
     betaText: "nidhi का प्लानर बन रहा है। इसके मुफ़्त बीटा को जनवरी 2027 में खोलने की योजना है: nidhi.today/hi/beta/",
   },
   /**
-   * Rupees are counted in हज़ार, लाख and करोड़. Another currency is counted
-   * the western way, and its million and thousand million are said through
-   * लाख and करोड़ in the heading; on a label they keep M and B for now.
+   * Every currency is counted in हज़ार, लाख and करोड़, in a heading and on a
+   * label alike: "€18.7 लाख" (owner, 19 November 2026, #678). The million and
+   * thousand million words are not reached.
    */
   chart: {
     amountsIn: 'राशियाँ ({currency}\u00a0में)',
@@ -304,7 +304,7 @@ export const exportMr: typeof exportEn = {
     beta: "प्लॅनर बीटा",
     betaText: "nidhi चा प्लॅनर तयार होत आहे. त्याचा मोफत बीटा जानेवारी 2027 मध्ये सुरू करण्याची योजना आहे: nidhi.today/mr/beta/",
   },
-  /** As in Hindi: rupees in हजार, लाख and कोटी; another currency the western way. */
+  /** As in Hindi: every currency in हजार, लाख and कोटी (#678). */
   chart: {
     amountsIn: 'रकमा ({currency}\u00a0मध्ये)',
     amountsInScale: 'रकमा ({scale} {currency}\u00a0मध्ये)',

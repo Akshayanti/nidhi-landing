@@ -14,8 +14,10 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-11-17
+updatedDate: 2026-11-19
 corrections:
+  - date: 2026-11-19
+    note: "The lesson claimed that passive income speeds up financial independence by itself. It now says dividends, interest and rent are part of total return, and that income changes cash flow, costs, taxes and behavior rather than adding a separate return."
   - date: 2026-11-17
     note: "The lesson called the crossover point, when passive income first covers spending, full financial independence without saying how that income is measured. It now says the crossover means independence only when the income counted is one the portfolio can keep paying, such as the portfolio times a cautious withdrawal rate; a crossing reached on one good year is a milestone. It also now says that reinvested dividends and interest are part of total return, not an extra on top of it."
 localRules: [tax, investments]
@@ -30,7 +32,7 @@ faq:
   - question: "How much capital do I need for €1,000 a month of passive income?"
     answer: "It depends on yield, and the numbers are larger than most marketing suggests. To generate €12,000 a year you need roughly €600,000 at a 2% broad equity dividend yield, €400,000 at 3%, €300,000 at a 4% mix, €240,000 at 5%, above typical net rental yields of 2 to 4%, and €150,000 at a riskier 8%. Higher yields usually carry higher risk or higher management load, so '8% passive' is rarely as passive or as safe as '2% passive'. Replacing even a modest salary therefore takes a portfolio measured in hundreds of thousands of euros, built over years rather than months."
   - question: "What is the difference between yield and total return?"
-    answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. During accumulation, total return is usually the more useful measure. Yield matters more later, in the drawdown phase, when you are actually living off the portfolio."
+    answer: "Yield is the income an asset pays as a percentage of its value, such as a 2% dividend. Total return is yield plus capital appreciation. A fund yielding 2% that also appreciates 5% per year delivers a 7% total return, while a fund yielding 6% that stagnates delivers only 6%. Chasing yield in isolation is a common trap: an asset with an unusually high yield often has something wrong, like distressed credit, return of capital dressed as income, or high costs. Total return matters both while building a portfolio and while drawing from it. During drawdown, spending can be funded by income payments and asset sales; yield alone does not show how much spending the portfolio can sustain."
   - question: "Is rental property really passive income?"
     answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
   - question: "How does the crossover point relate to passive income?"
@@ -115,7 +117,7 @@ A few observations:
 - Higher yields usually come with higher risk or higher management load. "8% passive" is rarely as passive or as safe as "2% passive"
 - Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Total return is the fuller measure, not yield alone
 
-This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate is essentially the same concept reframed: it's the capital required to fund your life from investment income. The 4% figure is a US-historical anchor; a study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, though that study does not establish them as suitable for any particular reader, which moves the target to roughly 28-33× annual expenses.
+This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate expresses a capital target for portfolio withdrawals, which can include income payments and sales of assets; it is not a requirement for a 4% income yield. The 4% figure is a US-historical anchor; a study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, though that study does not establish them as suitable for any particular reader, which moves the target to roughly 28-33× annual expenses.
 
 ## The crossover point
 
@@ -135,15 +137,17 @@ Small versions of this milestone are worth celebrating:
 
 Many people find each of these more motivating than an abstract "€X by age Y" target.
 
-## Why passive income accelerates FIRE
+## How passive income fits into FIRE
 
-In the standard savings-rate-driven path to financial independence, the main engine is (income - expenses) compounding inside a portfolio. Passive income adds two things to that story:
+**Income is part of total return.** While building a portfolio, progress toward financial independence depends on contributions and total return after costs and taxes, alongside the spending the portfolio will eventually need to cover. Dividends, interest and rent are part of that return. A fund that pays a 2% dividend and rises 5% in price has returned 7%, not 9%.
 
-**Direct acceleration.** Dividends and interest, when reinvested, buy more income-producing assets, which produce more income. Compounding applies to the *income stream*, not just the principal. That reinvested income is already part of an investment's total return, not an addition to it: a fund returning 7% in total does not add its dividends on top, so the acceleration comes from reinvesting, which total-return figures already assume.
+**What reinvestment changes.** Reinvesting payments keeps that money invested, where it can participate in future gains and losses. Spending those payments leaves less invested. Receiving income and reinvesting it does not add a separate return on top of total return.
 
-**Psychological durability.** It's much easier to stay the course during a downturn when your portfolio is clearly producing real income each month. Market volatility feels different when you're watching dividends arrive than when you're watching a price chart.
+**Why people track income.** An income stream covering a bill can make progress feel concrete. Some investors find that motivating, including during downturns. Others may be tempted to spend the payments or chase high yields, one of the [common traps](#common-traps). The effect depends on the person.
 
-For many people pursuing FI, the shift in perspective from "asset value" to "income produced by assets" is a meaningful stabilizer, especially in years where markets are flat or down.
+**Where the income picture breaks.** Dividends can be cut, tenants can leave, and interest income can change. Assets can lose value while still paying income. The [crossover point](#the-crossover-point) depends on what the portfolio can sustain, not simply its latest payments.
+
+**What depends on your situation.** During drawdown, income payments and asset sales can both fund spending; total return still matters. Their usefulness depends on taxes, account rules, costs, spending needs and investment risk. Tracking income can complement a view of the whole portfolio, but payments alone do not establish that spending is sustainable.
 
 ## Common traps
 
@@ -179,7 +183,7 @@ The path many people follow looks like this, though the order and mix vary with 
 ## What this means in practice
 
 1. **Real passive income and active business income are different.** A blog is a business. An index fund is passive. Knowing which is which keeps a plan honest
-2. **Total return matters more than yield while accumulating.** Two investments with the same total return and different yields are similar for accumulation purposes; yield matters more in drawdown
+2. **Total return matters during accumulation and drawdown.** Different yields can accompany the same total return, but taxes, costs and risk can still differ. Spending can come from income payments and asset sales
 3. **Tracking it is motivating.** A simple monthly chart of expenses vs. passive income is one of the clearest progress markers on the FI journey
 4. **Reinvested income compounds.** Dividends spent are one-off pay days; dividends reinvested become the income engine for an older self
 5. **Unusually high yields are a warning sign.** A yield far above its category usually signals higher risk, not a bargain

@@ -1,0 +1,3 @@
+# Claude, round 4 (written before reading the others' round 4 answers)
+SIGN OFF, with one observation for the others to weigh, not an objection: the correction note D says the lesson "now says ... that income changes cash flow, costs, taxes and behavior". The adopted section says the usefulness of income payments "depends on taxes, account rules, costs, spending needs and investment risk" and that the effect on motivation "depends on the person". I read the note as a fair one-sentence summary of that.
+The compile matches my round 3 ballot: A2-Codex and A3-Codex signed, B-Codex-r2 signed (my preference was B-DeepSeek-r2), CX-1, CX-2 and CX-5 item 2 accepted, C1-DeepSeek-r2, C2-Codex-r2, D-DeepSeek-r2.
