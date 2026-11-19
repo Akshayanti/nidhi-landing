@@ -2,7 +2,7 @@
 slug: "passive-income-streams"
 title: "Passive Income Streams: Making Your Money Work Without You"
 seoTitle: "Passive Income: Making Your Money Work Without You"
-description: "Passive income is not free money. It's the return on assets you've already built, and the point at which your life stops depending on your next pay cheque."
+description: "Passive income is not free money. It's income from assets you've already built, and the point at which your life stops depending on your next pay cheque."
 tldr:
   - "Passive income is money earned without directly trading time for it, such as dividends, interest, rent and royalties."
   - "Most real passive income needs a large sum invested first, typically tens or hundreds of thousands of euros, to replace even part of a salary."
@@ -17,7 +17,7 @@ pubDate: 2026-06-15
 updatedDate: 2026-11-19
 corrections:
   - date: 2026-11-19
-    note: "The lesson claimed that passive income speeds up financial independence by itself. It now says dividends, interest and rent are part of total return, and that income changes cash flow, costs, taxes and behavior rather than adding a separate return."
+    note: "The lesson said passive income speeds up financial independence, that watching income arrive makes downturns easier to sit through, and that yield matters more than total return once you live off a portfolio. It now says dividends, interest and rent are part of total return, so receiving or reinvesting them adds no separate return; that how tracking income affects behavior depends on the person; and that total return still matters in drawdown, when spending can come from income payments and from selling assets."
   - date: 2026-11-17
     note: "The lesson called the crossover point, when passive income first covers spending, full financial independence without saying how that income is measured. It now says the crossover means independence only when the income counted is one the portfolio can keep paying, such as the portfolio times a cautious withdrawal rate; a crossing reached on one good year is a milestone. It also now says that reinvested dividends and interest are part of total return, not an extra on top of it."
 localRules: [tax, investments]
@@ -36,7 +36,7 @@ faq:
   - question: "Is rental property really passive income?"
     answer: "Not in its direct form. Owning property you manage yourself involves real and recurring work: finding tenants, handling maintenance, covering vacancies, resolving disputes, and filing taxes. Gross rental yields often sit in the 3 to 6% range, but net yields after maintenance, vacancy, taxes, and management are meaningfully lower, frequently 2 to 4%. Professional management reduces the workload and pushes the income closer to passive, but it also costs 8 to 12% of rent and lowers your net yield. Treating rental property as effortless income leads to disappointment. Treating it as a small business with a capital-heavy entry point is more honest."
   - question: "How does the crossover point relate to passive income?"
-    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income can, even if you keep working. That holds only if the income counted is one the portfolio can keep paying: dividends and interest actually received, or the portfolio times a cautious withdrawal rate, not one good year's total return. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. Many people find these concrete thresholds more motivating than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
+    answer: "The crossover point is the month your passive income first exceeds your total expenses. Before it, work income keeps your life going; after it, investment income can, even if you keep working. That holds only if the income counted is one the portfolio can keep paying, such as the portfolio times a cautious withdrawal rate, not one good year's total return or payments the portfolio cannot sustain. Tracking a monthly chart of two numbers, total expenses and total passive income, turns financial independence into a tangible progress bar. Smaller milestones are worth celebrating along the way: the first time dividends cover your phone bill, then utilities, then rent or mortgage, then everything but discretionary spending. Many people find these concrete thresholds more motivating than an abstract 'a certain amount by a certain age' target, because you can see the gap closing every month."
 referentialReading:
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
@@ -72,7 +72,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 ## The main honest sources
 
-**Dividends.** Many companies pay a portion of profits to shareholders as a dividend. This is the income side of holding [stocks as assets](/blog/investing-101-asset-classes/). Broad global stock index funds yield modestly (often 1.5-3% of value per year, varying by period and region); dividend-tilted funds yield more but grow less. Dividends are reasonably stable over long horizons and rise with company earnings over time.
+**Dividends.** Many companies pay a portion of profits to shareholders as a dividend. This is the income side of holding [stocks as assets](/blog/investing-101-asset-classes/). Broad global stock index funds yield modestly (often 1.5-3% of value per year, varying by period and region); dividend-tilted funds yield more but grow less. Dividends are reasonably stable over long horizons and rise with company earnings over time, though they can be cut sharply in a recession.
 
 **Interest.** Bonds pay interest on their face value. Savings and money market accounts pay interest on the balance. Interest rates vary with prevailing market rates and with credit risk. Lower-risk government bonds pay less; higher-risk corporate bonds pay more.
 
@@ -125,7 +125,7 @@ The idea, popularized in *Your Money or Your Life*, is beautifully concrete: the
 
 Before it: work income is what keeps your life going. After it: investment income can keep your life going, even if you keep working, as long as the income counted is one the portfolio can keep paying. Summaries of the book describe its measure as the capital multiplied by a long-term interest rate, which differs from a portfolio withdrawal rule; the [financial independence post](/blog/introduction-to-financial-independence/) uses the portfolio times a withdrawal rate. Counted the second way, the crossover comes when the portfolio reaches the FIRE number. Counted as one year's total return, the lines can cross in a good year and cross back in a bad one.
 
-Tracking it changes behavior. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
+For many people, tracking it changes behavior. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
 
 Small versions of this milestone are worth celebrating:
 
@@ -139,7 +139,7 @@ Many people find each of these more motivating than an abstract "€X by age Y" 
 
 ## How passive income fits into FIRE
 
-**Income is part of total return.** While building a portfolio, progress toward financial independence depends on contributions and total return after costs and taxes, alongside the spending the portfolio will eventually need to cover. Dividends, interest and rent are part of that return. A fund that pays a 2% dividend and rises 5% in price has returned 7%, not 9%.
+**Income is part of total return.** While building a portfolio, progress toward financial independence depends on contributions and total return after costs and taxes, alongside the spending the portfolio will eventually need to cover. Dividends, interest and rent are part of that return. A fund that pays a 2% dividend and rises 5% in price has returned 7% in total; the dividend is already inside that 7%, not an extra on top of it.
 
 **What reinvestment changes.** Reinvesting payments keeps that money invested, where it can participate in future gains and losses. Spending those payments leaves less invested. Receiving income and reinvesting it does not add a separate return on top of total return.
 
@@ -147,7 +147,7 @@ Many people find each of these more motivating than an abstract "€X by age Y" 
 
 **Where the income picture breaks.** Dividends can be cut, tenants can leave, and interest income can change. Assets can lose value while still paying income. The [crossover point](#the-crossover-point) depends on what the portfolio can sustain, not simply its latest payments.
 
-**What depends on your situation.** During drawdown, income payments and asset sales can both fund spending; total return still matters. Their usefulness depends on taxes, account rules, costs, spending needs and investment risk. Tracking income can complement a view of the whole portfolio, but payments alone do not establish that spending is sustainable.
+**What depends on your situation.** During drawdown, income payments and asset sales can both fund spending; total return still matters. Their usefulness depends on taxes, account rules, costs, spending needs and investment risk. Tracking income can complement a view of the whole portfolio, but payments alone do not establish that spending is sustainable. In some countries, payments are taxed when received even if reinvested, while unsold gains are not, so the same total return can grow less after tax when more of it is paid out; the rules differ by country and account.
 
 ## Common traps
 
@@ -157,7 +157,7 @@ Many people find each of these more motivating than an abstract "€X by age Y" 
 - **Treating business income as passive.** A small business requires a principal who cares. When the principal checks out, most small businesses wobble
 - **Ignoring taxes.** Passive income is often taxed differently from earned income, and sometimes at higher rates. Dividends from abroad can also lose tax at source before they arrive: the US withholds 30% for non-residents, often cut to 15% under a tax treaty. The after-tax yield is what matters
 - **Chasing "streams" for their own sake.** Ten small streams of €30/month each is €3,600/year, and ten things to maintain. One broad index fund position that yields the same is simpler and usually more durable
-- **Underestimating reinvestment.** Dividends spent are just dividends. Dividends reinvested during accumulation are the engine. The compounding difference over decades is dramatic
+- **Underestimating reinvestment.** Dividends spent leave the portfolio; dividends reinvested during accumulation stay invested and share in its future returns. The difference over decades can be dramatic
 
 ## What about "online passive income"?
 
@@ -175,7 +175,7 @@ None of that is bad. Building a business is a legitimate path to wealth. It's ju
 The path many people follow looks like this, though the order and mix vary with capital, skills and country:
 
 1. **A broad investment portfolio as the base.** Dividends and interest from diversified index funds are the backbone for many, because they need little upkeep
-2. **Reinvestment during accumulation.** Reinvesting dividends and interest for years is what turns a starter portfolio into a meaningful income source
+2. **Reinvestment during accumulation.** Reinvested dividends and interest remain part of the portfolio, whose growth depends on new contributions and total return
 3. **Rental property for some, with open eyes.** Direct real estate brings real costs and operational load. We cover the math in a later post in this series
 4. **Other streams as supplements.** Royalties, business distributions, and lending platforms can add income, but carry more risk to be a foundation
 5. **Tracking the crossover.** Monthly expenses vs. monthly passive income, watching the gap close
@@ -184,12 +184,12 @@ The path many people follow looks like this, though the order and mix vary with 
 
 1. **Real passive income and active business income are different.** A blog is a business. An index fund is passive. Knowing which is which keeps a plan honest
 2. **Total return matters during accumulation and drawdown.** Different yields can accompany the same total return, but taxes, costs and risk can still differ. Spending can come from income payments and asset sales
-3. **Tracking it is motivating.** A simple monthly chart of expenses vs. passive income is one of the clearest progress markers on the FI journey
-4. **Reinvested income compounds.** Dividends spent are one-off pay days; dividends reinvested become the income engine for an older self
+3. **Many people find tracking it motivating.** A simple monthly chart of expenses vs. passive income is one of the clearest progress markers on the FI journey
+4. **Reinvested income stays invested.** Dividends spent are one-off pay days; dividends reinvested keep compounding as part of the portfolio's total return
 5. **Unusually high yields are a warning sign.** A yield far above its category usually signals higher risk, not a bargain
 6. **The capital requirement is large.** Meaningful passive income takes meaningful capital, built over years rather than months
 7. **Taxes shape the real number.** After-tax passive income is what funds a life, and dividends, interest, rental income, and capital gains are taxed differently from country to country
 
-Passive income isn't magic. It's the steady drip from assets you already built. The interesting thing is not any single source. It's the compound effect of reinvested income, the way small streams turn into real coverage over a decade or two, and the psychological shift that happens when your life starts being funded by things you own rather than hours you sell.
+Passive income isn't magic. It's the steady drip from assets you already built. The interesting thing is not any single source. It's the compounding of a portfolio's total return with its income reinvested, the way contributions and growth turn small streams into real coverage over a decade or two, and the shift many people describe when their life starts being funded by things they own rather than hours they sell.
 
 Passive income is the income side of the equation. The other side, where money flows out of your pocket every month for years, is debt: mortgages, car loans, student loans, consumer credit. Most people sign loan contracts without understanding how they're priced, how interest is paid, or how prepayment changes the math. The next post fixes that.
