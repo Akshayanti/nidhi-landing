@@ -127,7 +127,7 @@ The usual heuristic puts assets that create a lot of yearly tax inside tax-advan
 
 In other countries the best placement differs; in the UK, for example, the question becomes mostly what to hold inside or outside an ISA. The principle travels: the more yearly tax an asset creates, the more sheltering it is worth.
 
-For a €400,000 household with a 70/25/5 mix of shares, bonds and REITs, moving the bonds and REITs out of the taxable account cuts current yearly tax by about €550 in the example below, about 0.14% of the portfolio. Kept invested at 5% real, that is roughly €18,000 after 20 years, though not a full lifetime comparison, since tax-deferred withdrawals may be taxed later.
+For a €400,000 household with a 70/25/5 mix of shares, bonds and REITs, moving the bonds and REITs out of the taxable account cuts current yearly tax by about €540 in the example below, about 0.14% of the portfolio. Kept invested at 5% real, that is roughly €18,000 after 20 years, though not a full lifetime comparison, since tax-deferred withdrawals may be taxed later.
 
 <details class="lesson-depth">
 <summary class="disclosure">A worked asset-location example</summary>
@@ -136,7 +136,7 @@ For a €400,000 household with a 70/25/5 mix of shares, bonds and REITs, moving
 
 **The same mix in every account:** the taxable account holds €140,000 shares, €50,000 bonds and €10,000 REITs. At a 30% marginal rate, €2,000 of bond interest and €400 of REIT distributions (4% each) cost €720 a year in tax.
 
-**Placed by tax efficiency:** tax-deferred holds €100,000 bonds, €20,000 REITs and €30,000 shares; tax-free holds €50,000 shares, the highest expected return in the most valuable shelter; taxable holds €200,000 of tax-efficient share index funds. The overall mix is still 70/25/5. The €720 goes; the extra €60,000 of shares in the taxable account adds back about €180 of dividend tax (2% yield at 15%), so yearly tax falls by about €550. Reinvested at 5% real for 20 years, that is about €18,000.
+**Placed by tax efficiency:** tax-deferred holds €100,000 bonds, €20,000 REITs and €30,000 shares; tax-free holds €50,000 shares, the highest expected return in the most valuable shelter; taxable holds €200,000 of tax-efficient share index funds. The overall mix is still 70/25/5. The €720 goes; the extra €60,000 of shares in the taxable account adds back about €180 of dividend tax (2% yield at 15%), so yearly tax falls by about €540. Reinvested at 5% real for 20 years, that is about €18,000.
 
 **The catches.** The tax-free account now holds only shares; if shares have a bad decade while the bonds do well, some of its advantage is lost, so location pays over long horizons and can go either way over short ones. Rebalancing also has to happen across accounts, selling shares in one and buying bonds in another or redirecting new money, which takes more attention.
 
