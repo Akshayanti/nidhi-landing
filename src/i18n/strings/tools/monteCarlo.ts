@@ -219,7 +219,7 @@ export const monteCarloEn = {
         'what-if-scenarios': {
           kicker: 'Next step',
           title: 'What-if scenarios',
-          desc: 'Test one decision at a time against your baseline before you make it.',
+          desc: 'Change one decision at a time and compare it with your baseline.',
         },
         'income-replacement-ratio': {
           kicker: 'How much to take out',
@@ -593,7 +593,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         'what-if-scenarios': {
           kicker: 'अगला क़दम',
           title: 'क्या-अगर के परिदृश्य',
-          desc: 'कोई फ़ैसला लेने से पहले, एक बार में एक फ़ैसले को अपनी मौजूदा स्थिति से मिलाकर परखें।',
+          desc: 'एक बार में एक फ़ैसला बदलें और उसे अपनी मौजूदा स्थिति से मिलाकर देखें।',
         },
         'income-replacement-ratio': {
           kicker: 'कितना निकालें',
@@ -926,7 +926,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         'what-if-scenarios': {
           kicker: 'Siguiente paso',
           title: 'Escenarios hipotéticos',
-          desc: 'Pon a prueba una decisión cada vez frente a tu situación de partida antes de tomarla.',
+          desc: 'Cambia una decisión cada vez y compárala con tu situación de partida.',
         },
         'income-replacement-ratio': {
           kicker: 'Cuánto retirar',
@@ -1261,7 +1261,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         'what-if-scenarios': {
           kicker: 'Další krok',
           title: 'Scénáře „co kdyby“',
-          desc: 'Jak předem otestovat vždy jedno rozhodnutí v porovnání s výchozím stavem.',
+          desc: 'Změňte vždy jedno rozhodnutí a porovnejte ho s výchozím stavem.',
         },
         'income-replacement-ratio': {
           kicker: 'Kolik vybírat',
@@ -1582,7 +1582,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         'what-if-scenarios': {
           kicker: 'पुढची पायरी',
           title: '‘जर असे झाले तर’ परिदृश्ये',
-          desc: 'एखादा निर्णय घेण्यापूर्वी, एका वेळी एक निर्णय तुमच्या मूळ स्थितीशी ताडून पाहा.',
+          desc: 'एका वेळी एक निर्णय बदला आणि तो तुमच्या मूळ स्थितीशी ताडून पाहा.',
         },
         'income-replacement-ratio': {
           kicker: 'किती काढायचे',

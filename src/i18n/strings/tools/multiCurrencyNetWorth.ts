@@ -224,7 +224,7 @@ export const multiCurrencyNetWorthEn = {
           kicker: 'Debt',
           title: 'Liabilities: what you owe and why the interest rate matters',
           desc:
-            'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator shows the loan\'s balance in your net worth at the latest reference rate; it does not model the interest.',
+            'A foreign-currency loan carries two risks at once: interest cost and exchange-rate movement. The calculator shows your exposure to the second: the loan set against what you hold in that currency, converted at the latest reference rate. It does not model the interest or future rate moves.',
         },
         {
           kicker: 'Purchasing power',
@@ -668,7 +668,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
           kicker: 'कर्ज़',
           title: 'देनदारियाँ: आप पर क्या बकाया है, और ब्याज दर क्यों मायने रखती है',
           desc:
-            'विदेशी मुद्रा का लोन एक साथ दो जोखिम लाता है: ब्याज की लागत और विनिमय दर का घटना-बढ़ना। कैलकुलेटर लोन की बकाया रकम को ताज़ा संदर्भ दर पर आपकी शुद्ध संपत्ति में दिखाता है; ब्याज का हिसाब यह नहीं लगाता।',
+            'विदेशी मुद्रा का लोन एक साथ दो जोखिम लाता है: ब्याज की लागत और विनिमय दर का घटना-बढ़ना। कैलकुलेटर दिखाता है कि दूसरे जोखिम का आप पर कितना असर है: उस मुद्रा में आपके पास जो है, उसके सामने रखा गया लोन, ताज़ा संदर्भ दर पर बदलकर। ब्याज का या आगे दरों के बदलने का हिसाब यह नहीं लगाता।',
         },
         {
           kicker: 'क्रय शक्ति',
@@ -1075,7 +1075,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
           kicker: 'Deuda',
           title: 'Pasivos: lo que debes y por qué importa la tasa de interés',
           desc:
-            'Un préstamo en moneda extranjera tiene dos riesgos a la vez: el costo de los intereses y la evolución del tipo de cambio. La calculadora muestra el saldo del préstamo en tu patrimonio neto según el tipo de referencia más reciente; no calcula los intereses.',
+            'Un préstamo en moneda extranjera tiene dos riesgos a la vez: el costo de los intereses y la evolución del tipo de cambio. La calculadora muestra tu exposición al segundo: el préstamo frente a lo que tienes en esa moneda, convertido al tipo de referencia más reciente. No calcula los intereses ni los movimientos futuros del tipo de cambio.',
         },
         {
           kicker: 'Poder adquisitivo',
@@ -1493,7 +1493,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
           kicker: 'Dluh',
           title: 'Závazky: co dlužíte a proč záleží na úrokové sazbě',
           desc:
-            'Úvěr v cizí měně nese dvě rizika najednou: náklady na úrok a pohyb kurzu. Kalkulačka ukazuje zůstatek úvěru ve vašem čistém jmění podle posledního referenčního kurzu; úrok nepočítá.',
+            'Úvěr v cizí měně nese dvě rizika najednou: náklady na úrok a pohyb kurzu. Kalkulačka ukazuje vaši expozici vůči tomu druhému: úvěr proti tomu, co v té měně máte, přepočtený posledním referenčním kurzem. Úrok ani budoucí pohyby kurzu nepočítá.',
         },
         {
           kicker: 'Kupní síla',
@@ -1875,7 +1875,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         {
           kicker: 'कर्ज',
           title: 'देणी: तुमची देणी काय आहेत आणि व्याजदर का महत्त्वाचा असतो',
-          desc: 'परकीय चलनातील कर्जात एकाच वेळी दोन जोखमी असतात: व्याजाचा खर्च आणि विनिमय दरातील बदल. कॅल्क्युलेटर कर्जाची शिल्लक ताज्या संदर्भ दराने तुमच्या निव्वळ संपत्तीत दाखवतो; व्याजाचा हिशेब तो करत नाही.',
+          desc: 'परकीय चलनातील कर्जात एकाच वेळी दोन जोखमी असतात: व्याजाचा खर्च आणि विनिमय दरातील बदल. कॅल्क्युलेटर दुसऱ्या जोखमीतील तुमचा हिस्सा दाखवतो: त्या चलनात तुमच्याकडे जे आहे त्यासमोर ठेवलेले कर्ज, ताज्या संदर्भ दराने रूपांतरित. व्याजाचा किंवा दरांतील पुढच्या बदलांचा हिशेब तो करत नाही.',
         },
         {
           kicker: 'क्रयशक्ती',

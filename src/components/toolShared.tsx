@@ -41,19 +41,71 @@ export function ErrorText({ children }: { children: string }) {
   return <>{useErrorText(children)}</>;
 }
 
+/** A short notice said at once ("Link copied"). `n` counts them, so the same words are said again. */
+export interface Notice { text: string; n: number }
+
+/** Says a notice through `say`: the region is emptied first, so a repeat is a change. */
+function useNotice(notice: Notice | undefined, say: (text: string) => void) {
+  const n = notice?.n ?? 0;
+  const text = notice?.text ?? '';
+  useEffect(() => {
+    // A notice taken back (a dialog reopened, another kind of link chosen) empties the region.
+    say('');
+    if (n === 0) return undefined;
+    const timer = window.setTimeout(() => say(text), 60);
+    return () => window.clearTimeout(timer);
+    // Only a new notice says anything: `say` is a state setter, and the words
+    // of a notice do not change under its count.
+  }, [n]);
+}
+
 /**
  * The tool's one announcement: `text` is said politely once it has stayed the
  * same for `delay` ms. Nothing is said for the text the page loads with. Give
  * it the result sentence, or the "fix the marked fields" line while the result
- * on screen is an old one. It must stay mounted, at one place in the tree.
+ * on screen is an old one. It must stay mounted, at one place in the tree, and
+ * it is the tool's one live region for results and notices: it is in the page
+ * before it has anything to say, and only its text changes (#603).
+ *
+ * `also` is a second result, from a part of the tool that is not always open
+ * (the loan tool's refinance scenario): `undefined` while that part is closed.
+ * It is said when it changes while the part is open, not when the part opens,
+ * and together with `text` when one keystroke changed both (#608).
+ *
+ * `notice` is said at once, each time its count rises (a link was copied).
  */
-export function ResultAnnouncement({ text, delay = 600 }: { text: string; delay?: number }) {
+export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: string; also?: string; notice?: Notice; delay?: number }) {
   const [said, setSaid] = useState('');
-  const loaded = useRef(false);
+  const heard = useRef<{ text: string; also: string | undefined } | null>(null);
   useEffect(() => {
-    if (!loaded.current) { loaded.current = true; return undefined; }
-    const timer = window.setTimeout(() => setSaid(text), delay);
+    if (!heard.current) { heard.current = { text, also }; return undefined; }
+    // The part opening or closing is not a result to say, and it is the baseline
+    // at once: an edit made before the delay has passed is then heard as a change.
+    if ((also === undefined) !== (heard.current.also === undefined)) {
+      heard.current = { text: heard.current.text, also };
+    }
+    const timer = window.setTimeout(() => {
+      const before = heard.current!;
+      const textChanged = text !== before.text;
+      const alsoChanged = also !== before.also && also !== undefined && before.also !== undefined;
+      heard.current = { text, also };
+      if (textChanged || alsoChanged) {
+        setSaid([textChanged ? text : '', alsoChanged ? also : ''].filter(Boolean).join(' '));
+      }
+    }, delay);
     return () => window.clearTimeout(timer);
-  }, [text, delay]);
+  }, [text, also, delay]);
+  useNotice(notice, setSaid);
   return <span className="chart-srOnly" aria-live="polite" aria-atomic="true">{said}</span>;
+}
+
+/**
+ * A notice with a region of its own, for a dialog: what is outside an open
+ * modal dialog is hidden from a screen reader, so the tool's own announcement
+ * cannot speak for it. Mounted empty with the dialog; only its text changes.
+ */
+export function NoticeRegion({ notice }: { notice: Notice }) {
+  const [said, setSaid] = useState('');
+  useNotice(notice, setSaid);
+  return <span className="chart-srOnly" role="status" aria-atomic="true">{said}</span>;
 }

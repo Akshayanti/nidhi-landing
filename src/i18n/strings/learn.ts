@@ -150,8 +150,8 @@ export const learnEn = {
       'fundamentals': {
         name: 'Fundamentals',
         title: 'Financial Fundamentals: Personal Finance Literacy | nidhi',
-        description: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
-        card: 'Core personal finance concepts every adult should know: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
+        description: 'The core ideas of personal finance: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
+        card: 'The core ideas of personal finance: assets, liabilities, cash flow, compound interest, and more. Free financial literacy from nidhi.',
       },
       'debt': {
         name: 'Debt',
@@ -563,8 +563,8 @@ export const learnHi: typeof learnEn = {
       'fundamentals': {
         name: 'बुनियाद',
         title: 'वित्त की बुनियाद: वित्तीय साक्षरता | nidhi',
-        description: 'हर वयस्क के लिए ज़रूरी पर्सनल फाइनेंस की बुनियादी अवधारणाएँ: संपत्तियाँ, देनदारियाँ, कैश फ़्लो, चक्रवृद्धि ब्याज, और बहुत कुछ। nidhi से मुफ़्त वित्तीय साक्षरता।',
-        card: 'हर वयस्क के लिए ज़रूरी पर्सनल फाइनेंस की बुनियादी अवधारणाएँ: संपत्तियाँ, देनदारियाँ, कैश फ़्लो, चक्रवृद्धि ब्याज, और बहुत कुछ। nidhi से मुफ़्त वित्तीय साक्षरता।',
+        description: 'पर्सनल फाइनेंस की बुनियादी अवधारणाएँ: संपत्तियाँ, देनदारियाँ, कैश फ़्लो, चक्रवृद्धि ब्याज, और बहुत कुछ। nidhi से मुफ़्त वित्तीय साक्षरता।',
+        card: 'पर्सनल फाइनेंस की बुनियादी अवधारणाएँ: संपत्तियाँ, देनदारियाँ, कैश फ़्लो, चक्रवृद्धि ब्याज, और बहुत कुछ। nidhi से मुफ़्त वित्तीय साक्षरता।',
       },
       'debt': {
         name: 'कर्ज़',
@@ -947,8 +947,8 @@ export const learnEs: typeof learnEn = {
       'fundamentals': {
         name: 'Fundamentos',
         title: 'Fundamentos financieros: finanzas personales | nidhi',
-        description: 'Lo esencial de las finanzas personales para toda persona adulta: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratis.',
-        card: 'Conceptos básicos de finanzas personales que toda persona adulta debería conocer: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratuita de nidhi.',
+        description: 'Lo esencial de las finanzas personales: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratis.',
+        card: 'Los conceptos básicos de las finanzas personales: activos, pasivos, flujo de efectivo, interés compuesto y más. Educación financiera gratuita de nidhi.',
       },
       'debt': {
         name: 'Deuda',
@@ -1337,8 +1337,8 @@ export const learnCs: typeof learnEn = {
       'fundamentals': {
         name: 'Základy',
         title: 'Finanční základy: gramotnost v osobních financích | nidhi',
-        description: 'Základní pojmy osobních financí, které se hodí znát každému dospělému: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
-        card: 'Základní pojmy osobních financí, které se hodí znát každému dospělému: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
+        description: 'Základní pojmy osobních financí: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
+        card: 'Základní pojmy osobních financí: aktiva, závazky, peněžní tok, složené úročení a další. Finanční gramotnost zdarma na webu nidhi.',
       },
       'debt': {
         name: 'Dluh',
@@ -1721,8 +1721,8 @@ export const learnMr: typeof learnEn = {
       fundamentals: {
         name: 'मूलतत्त्वे',
         title: 'आर्थिक मूलतत्त्वे: वैयक्तिक वित्ताची साक्षरता | nidhi',
-        description: 'प्रत्येक प्रौढाला माहीत असाव्यात अशा मूलभूत आर्थिक संकल्पना: मालमत्ता, देणी, रोख प्रवाह, चक्रवाढ व्याज आणि बरेच काही. nidhi कडून मोफत आर्थिक साक्षरता.',
-        card: 'प्रत्येक प्रौढाला माहीत असाव्यात अशा मूलभूत आर्थिक संकल्पना: मालमत्ता, देणी, रोख प्रवाह, चक्रवाढ व्याज आणि बरेच काही. nidhi कडून मोफत आर्थिक साक्षरता.',
+        description: 'वैयक्तिक वित्ताच्या मूलभूत संकल्पना: मालमत्ता, देणी, रोख प्रवाह, चक्रवाढ व्याज आणि बरेच काही. nidhi कडून मोफत आर्थिक साक्षरता.',
+        card: 'वैयक्तिक वित्ताच्या मूलभूत संकल्पना: मालमत्ता, देणी, रोख प्रवाह, चक्रवाढ व्याज आणि बरेच काही. nidhi कडून मोफत आर्थिक साक्षरता.',
       },
       debt: {
         name: 'कर्ज',
