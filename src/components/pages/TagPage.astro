@@ -124,6 +124,7 @@ const tagItemListSchema = {
 
 <BaseLayout
   locale={locale}
+  sheets={['learn']}
   alternates={LOCALES}
   title={title}
   description={description}
@@ -149,7 +150,7 @@ const tagItemListSchema = {
       <LessonsInEnglish locale={locale} />
 
       <TopicLessons
-        client:load
+        client:idle
         groups={islandGroups}
         strings={learn.island}
         tagHrefs={tagHrefs}

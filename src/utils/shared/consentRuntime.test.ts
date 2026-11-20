@@ -1,6 +1,6 @@
 /**
  * Unit tests for src/utils/shared/consentRuntime.js, the cookie-banner answer
- * that CookieConsent.astro and Analytics.astro inline.
+ * that CookieConsent.astro inlines and Analytics.astro uses.
  *
  * The file is a classic script, so it runs here as the page runs it, in a
  * context of its own, with a cookie jar, two storages and a PostHog stand-in.

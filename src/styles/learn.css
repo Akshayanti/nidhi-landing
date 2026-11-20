@@ -1,0 +1,1128 @@
+/*
+ * Styles of the learning path: the Learn page (LearnHome.tsx) and the lesson cards (LearningPath.tsx).
+ *
+ * Split from global.css (#451) so that pages without these parts do not
+ * download their styles. Imported by the pages that render them: BlogIndex, LevelPage, TagPage and InclusiveFinancesPage.
+ * It loads after global.css and keeps the order its rules had there.
+ */
+
+/* Learning Path: blog index */
+.lp-pathContainer {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+  padding-left: 56px;
+}
+
+.lp-pathLine {
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-border-light);
+  border-radius: 2px;
+}
+
+.lp-levelActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: calc(-1 * var(--space-2)) 0 var(--space-4);
+}
+
+.lp-levelAction {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-deep-blue);
+  background: transparent;
+  color: var(--color-deep-blue);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.lp-levelAction:hover {
+  border-color: var(--level-color, var(--color-border));
+  color: var(--level-color, var(--color-text-primary));
+}
+
+.lp-levelAction:focus-visible {
+  outline: 2px solid var(--level-color, var(--color-deep-blue));
+  outline-offset: 2px;
+}
+
+/* Inclusive Finances companions sit inside the ladder, right after the post
+   they follow up on. A diamond marker and a "Follows up on" line set them
+   apart without making them a step of their own. */
+.lp-nodeDot.lp-nodeDotCompanion {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.9);
+}
+
+.lp-cardCompanion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.lp-cardCompanion svg {
+  flex-shrink: 0;
+}
+
+.lp-postNode {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.lp-postNode:last-child {
+  margin-bottom: 0;
+}
+
+.lp-nodeDotWrapper {
+  position: absolute;
+  left: -56px;
+  top: 16px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.lp-nodeDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: var(--color-bg-white);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.lp-nodeConnector {
+  position: absolute;
+  left: -16px;
+  top: 22px;
+  width: 16px;
+  height: 2px;
+  background: var(--color-border-light);
+}
+
+.lp-nodeCard {
+  flex: 1;
+  background: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--color-border-light);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+
+.lp-nodeCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.lp-nodeCardRead {
+  border-left-color: var(--color-success) !important;
+  background: var(--color-bg);
+}
+
+.lp-nodeCardStartHere {
+  border-left-color: var(--color-deep-blue) !important;
+  box-shadow: 0 0 0 2px var(--color-deep-blue), var(--shadow-sm);
+  animation: lp-startHerePulse 2s ease-in-out 1;
+}
+
+.lp-nodeCardStartHere:hover {
+  box-shadow: 0 0 0 2px var(--color-deep-blue), var(--shadow-md);
+}
+
+.lp-cardBadges {
+  position: absolute;
+  top: -10px;
+  left: var(--space-3);
+  display: flex;
+  gap: 6px;
+}
+
+/* Room under the badge, in em so it grows with the badge's text when a reader
+   raises their text size, instead of the badge landing on the step number. */
+.lp-nodeCard:has(.lp-cardBadges) {
+  padding-top: calc(0.25rem + 1.5em);
+}
+
+.lp-startHereLabel {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-callout-fg);
+  background: var(--color-callout-bg);
+  padding: 1px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.lp-newLabel {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-callout-fg);
+  background: var(--color-cta-bg);
+  padding: 1px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.lp-cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-1);
+}
+
+.lp-cardMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lp-cardReadingTime {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+.lp-cardDate {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.lp-cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  display: block;
+}
+
+.lp-cardTitle:hover {
+  color: var(--color-deep-blue);
+}
+
+.lp-cardTitleRead {
+  color: var(--color-text-secondary);
+}
+
+.lp-cardDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--space-2) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lp-cardTags {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.lp-cardTag {
+  /* `<a>` rendering of what used to be a `<button>`: same visual,
+     plus the anchor-specific resets (no underline, inherited
+     display) so crawlers see a real link without UI regressions. */
+  display: inline-block;
+  font-size: 0.8125rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-border-light);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  font-family: var(--font-body);
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.lp-cardTag:hover {
+  background: var(--color-deep-blue-light);
+  color: white;
+  border-color: var(--color-deep-blue);
+}
+
+.lp-readToggle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--color-control-edge);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.lp-readToggle:hover {
+  border-color: var(--color-success);
+  background: var(--color-border-light);
+}
+
+/* The tick takes the surface colour, which flips with the theme: white on
+   the light theme's green, dark on the dark theme's lighter green, where a
+   white tick was 2:1. */
+.lp-readToggleActive {
+  border-color: var(--color-success);
+  background: var(--color-success);
+  color: var(--color-bg-white);
+}
+
+.lp-readToggleActive:hover {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.lp-checkIcon {
+  width: 14px;
+  height: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-nodeCardStartHere { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .lp-pathContainer { padding-left: 40px; }
+  .lp-pathLine { left: 12px; }
+  .lp-nodeDotWrapper { left: -40px; width: 28px; }
+  .lp-nodeDot { width: 10px; height: 10px; }
+  .lp-nodeConnector { left: -12px; width: 12px; }
+}
+
+/* Screen-reader-only text, for counts and labels shown visually by other means. */
+.lp-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Level pages on phones (LevelLessons): lessons as compact rows: step,
+   title and read time, read toggle. The date, summary and topic tags show
+   on wider screens. */
+@media (max-width: 640px) {
+  .lp-levelPage .lp-levelPosts { padding-bottom: var(--space-4); }
+
+  .lp-levelPage .lp-postNode { margin-bottom: var(--space-2); }
+
+  .lp-levelPage .lp-nodeCard {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'step companion toggle'
+      'step title toggle'
+      'step time toggle';
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 12px;
+  }
+
+  .lp-levelPage .lp-nodeCard:not(.lp-nodeCardStartHere) { box-shadow: none; }
+
+  .lp-levelPage .lp-nodeCard:hover { transform: none; }
+
+  /* Room for the badge in em, so it grows with the badge's text when a reader
+     raises their text size, instead of landing on the step number. */
+  .lp-levelPage .lp-nodeCardStartHere,
+  .lp-levelPage .lp-nodeCard:has(.lp-cardBadges) { padding-top: calc(0.5rem + 1em); }
+
+  .lp-levelPage .lp-cardTop,
+  .lp-levelPage .lp-cardMeta { display: contents; }
+
+  .lp-levelPage .lp-cardStep { grid-area: step; }
+
+  .lp-levelPage .lp-cardCompanion {
+    grid-area: companion;
+    margin: 0;
+  }
+
+  .lp-levelPage .lp-cardTitle {
+    grid-area: title;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  .lp-levelPage .lp-cardReadingTime { grid-area: time; }
+
+  /* 32px to see, 44px to tap. */
+  .lp-levelPage .lp-readToggle {
+    grid-area: toggle;
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+
+  .lp-levelPage .lp-readToggle::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+  }
+
+  .lp-levelPage .lp-cardDate,
+  .lp-levelPage .lp-cardDesc,
+  .lp-levelPage .lp-cardTags { display: none; }
+}
+
+/* Reduced motion: learning path */
+@media (prefers-reduced-motion: reduce) {
+  .lp-nodeCard,
+  .lp-nodeDot,
+  .lp-cardTag,
+  .lp-cardTitle,
+  .lp-readToggle {
+    transition: none;
+  }
+  .lp-nodeCard:hover { transform: none; }
+}
+
+@media (max-width: 640px) {
+  .lp-startHereLabel,
+  .lp-cardReadingTime,
+  .lp-cardTag,
+  .lp-newLabel {
+    font-size: 0.8125rem !important;
+  }
+  .if-scope,
+  .level-page-covered p,
+  .level-page-scope {
+    font-size: 1rem !important;
+  }
+  .lp-cardDesc,
+  .learn-levelSummary {
+    font-size: 0.9375rem !important;
+  }
+
+  .lp-cardTag,
+  .lp-cardTitle {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .if-breadcrumb a {
+    display: inline-block;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  /* Breadcrumbs on the free tools, the tools index, the topics pages and the
+     level pages were 15 to 17px tall: below the 24px minimum. A one-word crumb
+     can also be narrower than 24px: Hindi's "होम" is 18px wide where "Home" is
+     not, so every crumb gets a minimum width too. */
+  .topic-page-crumb a {
+    display: inline-block !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+  .topic-page-crumb a,
+  .if-breadcrumb a {
+    min-width: 24px;
+    text-align: center;
+  }
+}
+
+/* Level pages (/blog/<level>/, LevelLessons): the lesson cards without the
+   path rail, which belongs to the tag pages' timeline. Two columns on wide
+   screens, reading order left to right, then down; compact rows on phones
+   ("Level pages on phones" above). */
+.lp-pathContainer.lp-levelPage {
+  max-width: none;
+  padding-left: 0;
+}
+.lp-levelPage .lp-nodeDotWrapper,
+.lp-levelPage .lp-nodeConnector {
+  display: none;
+}
+.lp-levelPage .lp-levelActions {
+  margin: 0 0 var(--space-4);
+}
+.lp-levelPageProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 420px;
+  margin-bottom: var(--space-3);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+.lp-levelPageBar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+.lp-levelPageBar > div {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+@media (min-width: 1024px) {
+  .lp-levelPage .lp-levelPosts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  .lp-levelPage .lp-levelPosts .lp-postNode {
+    margin-bottom: 0;
+    align-items: stretch;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-levelPageBar > div { transition: none; }
+}
+
+/* Topic pages (/blog/tag/<tag>/, TopicLessons): the same cards, one group
+   per level, each headed by the level and a link to all of its lessons. */
+.lp-topicGroup + .lp-topicGroup {
+  margin-top: var(--space-10);
+}
+.lp-topicGroupHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--level-color);
+}
+.lp-topicGroupHead h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.lp-topicGroupHead a {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+  /* Beside a heading in the same colour family, so underlined: not told
+     apart by colour and weight alone (#649). */
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  /* A target of its own: 24px tall for a pointer, 44px for a thumb (#405). */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+@media (max-width: 640px) {
+  .lp-topicGroup + .lp-topicGroup { margin-top: var(--space-8); }
+  .lp-topicGroupHead h2 { font-size: 1.2rem; }
+  .lp-topicGroupHead a { min-height: 44px; }
+}
+/* Step number on each learning-path card: the reading order within a level. */
+.lp-cardStep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  border: 1.5px solid;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--color-bg-white);
+}
+/* Only needed where posts sit in two columns. */
+.lp-orderHint {
+  display: none;
+  margin: 0 0 var(--space-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+@media (min-width: 1024px) {
+  .lp-levelPage .lp-orderHint {
+    display: block;
+  }
+}
+
+/* ============================================================================
+ * Learn page (/blog/, LearnHome): where to start or continue, the level
+ * helper, the levels with Inclusive Finances alongside, and lesson search.
+ * ============================================================================ */
+.learn-home {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.learn-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  /* Long words at a much larger text size wrap inside the card (#486). */
+  overflow-wrap: anywhere;
+  padding: var(--space-6);
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+}
+
+/* /blog/'s two ways in: the path from the start, or one question answered by
+   a short How-to guide. Equal weight, side by side; stacked on phones. */
+.learn-starts { display: flex; flex-direction: column; gap: var(--space-3); }
+.learn-startsHeading { margin: 0; font-size: 1.15rem; color: var(--color-deep-blue); }
+.learn-startsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: stretch; }
+.learn-howtoList { list-style: none; margin: 0; padding: 0; display: grid; }
+.learn-howtoList a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.learn-howtoAll { margin: auto 0 0; }
+.learn-howtoAll a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+.learn-starts .learn-helper { padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
+@media (max-width: 760px) {
+  .learn-startsGrid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.learn-startText h2 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.35rem;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.learn-eyebrow {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+/* In the "Where would you like to start?" band, labels in sentence case
+   (council, Nov 10 2026). */
+.learn-starts .learn-eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-teal);
+}
+[data-theme="dark"] .learn-starts .learn-eyebrow { color: var(--palette-teal-dark); }
+
+.learn-sub {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.learn-muted {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.learn-note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.learn-bar {
+  max-width: 420px;
+  height: 6px;
+  margin: var(--space-3) 0 6px;
+  border-radius: 3px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+
+.learn-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.learn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The learning path's buttons are the shared .btn roles. */
+
+.learn-option:focus-visible,
+.learn-level:focus-visible,
+.learn-result:focus-visible,
+.learn-search:focus-visible {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+.learn-helper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.learn-helperQuestion {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.learn-helperQuestion legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin-bottom: var(--space-3);
+}
+
+.learn-helperQuestion legend:focus,
+.learn-helperResult h3:focus {
+  outline: none;
+}
+
+.learn-helperText {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.learn-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.learn-option {
+  min-height: 48px;
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.learn-option:hover {
+  border-color: var(--color-text-secondary);
+}
+
+.learn-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-2);
+}
+
+.learn-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 8px var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.learn-check:has(input:checked) {
+  border-color: var(--color-deep-blue);
+}
+
+.learn-check input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.learn-check:has(input:focus-visible) {
+  outline: 2px solid var(--color-deep-blue);
+  outline-offset: 2px;
+}
+
+.learn-helperNav {
+  margin-top: var(--space-4);
+}
+
+.learn-helperLessons ul {
+  margin: var(--space-1) 0 0;
+  padding-left: 1.2em;
+}
+
+.learn-helperLessons li {
+  margin: 4px 0;
+}
+
+.learn-helperLessons a {
+  color: var(--color-deep-blue);
+  font-weight: 500;
+}
+
+.learn-helperResult {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.learn-helperResult h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.learn-helperResult .learn-actions {
+  margin-top: var(--space-3);
+}
+
+.learn-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.learn-headLinks {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-4);
+}
+
+.learn-head h2 {
+  margin: 0;
+  /* "Search every lesson" on topic pages jumps here; clears the sticky header. */
+  scroll-margin-top: 80px;
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+}
+
+.learn-levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.learn-level {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-link-edge);
+  border-radius: 12px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+a.learn-level:hover {
+  border-color: var(--lc);
+  color: var(--color-text-primary);
+}
+
+.learn-levelHere {
+  border: 2px solid var(--lc);
+  padding: 9px calc(var(--space-4) - 1px);
+}
+
+.learn-num {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* In rem, so the circle grows with the reader's text size and a two-digit
+     number never runs past it (#707). 32 px at the default size. */
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--lc);
+  color: var(--color-bg-white);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.learn-numRoute {
+  background: none;
+  border: 2px solid var(--lc);
+  color: var(--lc);
+}
+
+.learn-levelText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.learn-levelName {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--lc);
+  /* Spanish "Descubrimiento" is wider than the column at 320px with a larger
+     text size: hyphenate, and break bare only as a last resort. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.learn-levelName em {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.learn-levelSummary {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.learn-levelCount {
+  flex: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+/* The level list draws its chevron in the row (it predates .link-card); it
+   takes the same deep blue as the link cards' one. */
+.learn-chevron {
+  flex: none;
+  color: var(--color-deep-blue);
+}
+
+/* On a narrow screen, or at a larger text size, the count beside the name
+   squeezed the name and summary into a column a word wide. Below 30em the
+   count moves under the summary, so the text gets the row's full width. In
+   em so it follows the reader's text size. */
+@media (max-width: 30em) {
+  .learn-level {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    row-gap: 2px;
+  }
+  .learn-level > .learn-num { grid-column: 1; grid-row: 1 / span 2; }
+  .learn-level > .learn-levelText { grid-column: 2; grid-row: 1; }
+  .learn-level > .learn-levelCount { grid-column: 2; grid-row: 2; }
+  .learn-level > .learn-chevron { grid-column: 3; grid-row: 1 / span 2; }
+}
+
+.learn-levelSoon {
+  /* A level still being written is not a link: no edge, no chevron, muted.
+     Not dashed either, since a dashed edge means "add" on the tools. */
+  border-color: transparent;
+  background: none;
+  color: var(--color-text-muted);
+}
+
+.learn-levelSoon .learn-num {
+  width: 1.75rem;
+  height: 1.75rem;
+  background: none;
+  /* Muted like its text, so the circle reads in both themes; solid, not
+     dashed, since dashed means "add". */
+  border: 2px solid var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+.learn-levelSoon .learn-levelName {
+  color: var(--color-text-muted);
+}
+
+.learn-alongside {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.learn-alongside::before,
+.learn-alongside::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.learn-topics {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+
+.learn-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-control-edge);
+  border-radius: 10px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 1rem;
+}
+
+/* On a page that is not in English, the line that says the search reads
+   English words. It sits under the box, so it stays after the first key. */
+.learn-searchHint {
+  margin: var(--space-2) 0 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+.learn-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-3);
+}
+
+.learn-results:empty {
+  display: none;
+}
+
+.learn-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.learn-result:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.learn-pill {
+  flex: none;
+  padding: 3px 9px;
+  border: 1px solid var(--lc);
+  border-radius: 999px;
+  color: var(--lc);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.learn-results > .learn-showAll {
+  align-self: flex-start;
+}
+
+[data-theme="dark"] .learn-num:not(.learn-numRoute) {
+  color: var(--color-bg);
+}
+
+/* A level still being written has no fill, so its number takes the muted
+   text colour in dark too (the rule above would make it page-coloured). */
+[data-theme="dark"] .learn-levelSoon .learn-num {
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 640px) {
+  .learn-home { gap: var(--space-6); }
+
+  .learn-card { padding: var(--space-5) var(--space-4); }
+
+  .learn-startText h2 { font-size: 1.2rem; }
+
+  .learn-actions .btn--primary,
+  .learn-actions .btn--outline { width: 100%; }
+
+  .learn-level { gap: var(--space-3); padding: 10px var(--space-3); }
+
+  .learn-levelHere { padding: 9px calc(var(--space-3) - 1px); }
+
+  .learn-result { align-items: flex-start; flex-direction: column; gap: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-level { transition: none; }
+}
+
+/* Spaced capitals break how Devanagari letters join: small labels in Hindi and
+   Marathi keep normal spacing and case. */
+html:is([lang="hi"], [lang="mr"]) .learn-eyebrow {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+@media (forced-colors: active) {
+  :root .lp-readToggleActive,
+  :root .lp-readToggleActive:hover {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    box-shadow: none;
+    color: HighlightText;
+  }
+}
