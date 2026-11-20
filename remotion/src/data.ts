@@ -167,6 +167,8 @@ export interface LineRaceStory {
   gap?: { upper: string; lower: string; label: string; finalLabel: string
     /** Read the gap between the lines at this point, not the sum so far. */
     atPoint?: boolean;
+    /** Words in place of the euro amount ("About a quarter smaller"): nothing counts up, and the words arrive at the finish. */
+    text?: string;
   };
   /** Short scope line shown under the chart for the whole story. */
   scope: string;
@@ -570,6 +572,8 @@ export interface ReelPlan {
     revealInHook?: boolean;
     /** Direct two-bar hook: draw both bars at one neutral length with "?" so the result waits for its beat. */
     hideValuesInHook?: boolean;
+    /** Segmented: keep the second bar's total back until the callout beat says it. */
+    totalOnCallout?: boolean;
     disclosure: string;
   };
   /** Optional persistent month visual for calendar bars or runway depletion. */

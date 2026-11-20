@@ -8,7 +8,7 @@ hashtags_day2: "#hiddenfees #platformfees #financialadviser #investsmart #nidhi"
 keywords_day2: "hidden costs, platform fee, adviser fee, advisory fee, fund turnover, trading costs, tax drag, total cost of investing, fee audit, account statement, wrap fee, ongoing charge, personal finance, global expats, Depotgebühren, Beratungshonorar, frais de plateforme, frais cachés, comisión de custodia, costes ocultos"
 ---
 
-> **Needs attention (Oct 25, 2026).** Runs two days: day 3 dropped and its files deleted (council, Oct 25). Still to do in step 8: the lesson's global pass, including the gloss on "fund". Remove this note once scheduled.
+> **Reels rebuilt Nov 20, 2026** from the council's Nov 16 design: two linked days, reels only. The carousel sections below predate it and are not rendered or posted.
 
 ## Brief
 
@@ -18,11 +18,12 @@ withheld: Why active funds mostly lose to passive after fees, the hidden fees th
 
 ## Day 1 (angle)
 
-angle: A 1% fee takes about a quarter of a 40 year pot
-number: €10,000 start, €500 a month, 40 years, 7% before fees, monthly: at 0.05% about €1.45M; at 1% about €1.11M, about €349,000 or 24% less
-takeaway: A fee is a percentage every year, so over decades it becomes a large share of the final pot.
+angle: A yearly fee of €1 on every €100 invested: what could it take over 40 years? About a quarter, in this example
+breadth: narrow | Needs a viewer who invests, or is about to
+number: €10,000 start, €500 a month, 40 years, 7% before fees, monthly: at 0.05% about €1.45M; at 1% about €1.11M, about €349,000 or 24% less. The reel says €1, €100, 40 and a quarter; the rest is in the caption
+takeaway: Money taken as a fee is gone, and so is everything it would have grown into, so a small yearly fee becomes a large share over decades.
 tool: The fee check. Keep the contribution, return and years the same; change only the fee; read the gap in euros.
-send_to: A friend paying about 1% a year in a savings plan or managed account who has never seen it in euros.
+send_to: Someone choosing where to invest.
 send_why: number
 
 ## Day 1 (reel)
@@ -75,12 +76,12 @@ rule: Fees in euros.
 
 ### Slide 3 (tool)
 
-alt: Tool card, the fee check, before comparing funds: keep the contribution, return and years the same; change only the fee; read the gap in euros at the end.
+alt: Tool card, the fee check, before choosing where to invest: keep the saving and years the same; change only the fee; read the gap in euros at the end.
 
 band: The fee check
-lead: Before comparing funds
-row: Keep | Same inputs | ink | contribution, return, years
-row: Change | Only the fee | warn | one variable at a time
+lead: Before choosing where to invest
+row: Keep | Same inputs | ink | saving, years
+row: Change | Only the fee | warn | nothing else
 row: Read | The euro gap | teal | at the end
 note: Illustrative.
 
@@ -104,11 +105,12 @@ read: The hidden fees that never appear on a statement
 
 ## Day 2 (angle)
 
-angle: One statement fee can sit on top of several layers of cost
-number: Illustrative layers: fund 1.0% + platform 0.3% + adviser 1.0% + trading and tax drag 0.3% = 2.6% a year, against about 0.1% for a low cost passive setup
-takeaway: Total cost is the sum of the layers; the statement often shows only one of them.
-tool: The fee audit. The fund's expense ratio, the platform's annual charge, then adviser and trading costs.
-send_to: A friend whose statement shows one fund fee but who also pays a platform and an adviser.
+angle: Your statement shows one yearly fee: is that everything you pay?
+breadth: narrow | Needs a viewer with an investment statement
+number: Illustrative, on €100,000 invested: the fee you see €1,000 (1.0%) + the company holding the account €300 (0.3%) + an adviser €1,000 (1.0%) + buying, selling and tax €300 (0.3%) = €2,600 a year. The reel says €100,000, €1,000 and €2,600; the rest is in the caption
+takeaway: What investing costs is the sum of several parts; the statement often shows only one of them.
+tool: The fee audit. The fee on the statement, the account company's yearly charge, then adviser and trading costs.
+send_to: Someone reading their own statement.
 send_why: checklist
 
 ## Day 2 (reel)
@@ -162,12 +164,12 @@ The statement may show only the **first**.
 
 ### Slide 3 (tool)
 
-alt: Tool card, the fee audit, with your latest statement: the fund's expense ratio; the platform's annual charge; then adviser and trading costs.
+alt: Tool card, the fee audit, with your latest statement: the yearly fee it shows; the yearly charge of the company holding the account; then adviser and trading costs.
 
 band: The fee audit
 lead: With your latest statement
-row: Fund | Ratio | ink | expense ratio, from the fund document
-row: Platform | Charge | warn | annual admin or custody fee
+row: Statement | The fee | ink | the yearly fee shown
+row: Account | Its charge | warn | the company holding it
 row: The rest | In writing | teal | adviser and trading costs
 note: Illustrative.
 
@@ -184,8 +186,8 @@ more: Why active funds mostly trail after fees
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: What could 1% take?
-d1_f1_caption: A 1% fee over 40 years
+d1_f1_overlay: €1 a year on every €100?
+d1_f1_caption: A small yearly fee over 40 years
 
 d1_f2_kind: poll
 d1_f2_alt: Plain story background with the series label, for the poll sticker asking whether people know their total investment fees.
@@ -201,8 +203,8 @@ d1_f3_caption: The fee check
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: One fee, or several?
-d2_f1_caption: The layers under one statement fee
+d2_f1_overlay: Is that everything you pay?
+d2_f1_caption: The costs around one statement fee
 
 d2_f2_kind: result
 d2_f2_alt: Yesterday's poll question, do you know your total fees, with an empty box for the result.
@@ -213,7 +215,7 @@ d2_f2_operator: Type the winning answer and its share as overlay text in the emp
 d2_f2_caption: Who knows their total fees
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the fee audit: the fund's expense ratio, the platform's annual charge, then adviser and trading costs.
+d2_f3_alt: Story version of the fee audit: the fee on the statement, the account company's yearly charge, then adviser and trading costs.
 d2_f3_time: evening, with the day 2 carousel
 d2_f3_caption: The fee audit
 

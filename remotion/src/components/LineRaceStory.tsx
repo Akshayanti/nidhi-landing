@@ -248,6 +248,16 @@ function GapCounter({ story, pos, finish }: { story: LineRaceData; pos: number; 
   const total = story.gap.atPoint
     ? valueAt(upper.values, Math.round(pos)) - valueAt(lower.values, Math.round(pos))
     : runningGap(upper.values, lower.values, (pos / Math.max(1, count - 1)) * count);
+  if (story.gap.text) {
+    // Words, not euros: nothing counts up, and the answer arrives with the finish.
+    if (finish <= 0) return null;
+    return (
+      <div style={{ position: "absolute", left: 72, right: 90, top: 1352, opacity: finish }}>
+        <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>{story.gap.finalLabel.toUpperCase()}</div>
+        <div style={{ marginTop: 8, fontFamily: TYPE.ui, fontSize: 80, fontWeight: 850, lineHeight: 1, letterSpacing: "-0.045em", color: BRAND.ink }}>{story.gap.text}</div>
+      </div>
+    );
+  }
   return (
     <div style={{ position: "absolute", left: 72, right: 90, top: 1352 }}>
       <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>

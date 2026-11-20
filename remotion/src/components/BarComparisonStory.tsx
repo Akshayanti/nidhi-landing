@@ -580,7 +580,8 @@ function SegmentedRow({
   segmentProgress?: number;
   compact?: boolean;
 }) {
-  const segments = bar.segments ?? [{ label: bar.label, value: bar.value, display: bar.display, tone: bar.tone }];
+  // A bar with no parts shows its amount once, beside the bar, not inside it as well.
+  const segments = bar.segments ?? [{ label: bar.label, value: bar.value, display: "", tone: bar.tone }];
   const limit = segmentLimit === undefined ? segments.length : Math.max(0, Math.min(segmentLimit, segments.length));
   const complete = segments.slice(0, Math.max(0, limit - 1));
   const active = limit > 0 ? segments[limit - 1] : undefined;
@@ -640,10 +641,13 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
   const story = plan.barStory;
   if (!story) return null;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
-  const receipts = story.bars[0];
+  // One bar only: its first part stands as the known column, the whole bar as the question.
+  const single = story.bars.length === 1 ? story.bars[0] : undefined;
+  const firstPart = single?.segments?.[0];
+  const receipts = single && firstPart ? { ...single, id: `${single.id}-seen`, label: firstPart.label, value: firstPart.value, display: firstPart.display } : story.bars[0];
   // The hook compares receipts with the pay line itself. Pension is revealed
   // later, so the question does not leak the final answer.
-  const hidden = story.bars[1] ?? story.bars[2];
+  const hidden = single ?? story.bars[1] ?? story.bars[2];
   const max = Math.max(receipts?.value ?? 0, hidden?.value ?? 0, 1);
   const big = plan.hookStyle === "questionOverPicture";
   const baseline = cover ? 1360 : 1370;
@@ -658,7 +662,18 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
         <div>{hook.onscreenLines[0]}</div>
         <div style={{ color: BRAND.amber }}>{hook.onscreenLines[1]}</div>
       </div>
-      {[{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
+      {single && firstPart && (
+        // One column: the known part filled, the rest of its height an open question.
+        <div style={{ position: "absolute", left: 540 - barWidth / 2 - 20, top: baseline - secondHeight, width: barWidth + 40, height: secondHeight }}>
+          <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", border: `5px dashed ${BRAND.amber}`, boxSizing: "border-box" }} />
+          <div style={{ position: "absolute", left: 0, right: 0, top: (secondHeight - firstHeight) / 2 - 50, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 84 : 96, fontWeight: 850, color: BRAND.amber }}>?</div>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: firstHeight, borderRadius: "0 0 10px 10px", background: BRAND.ink }} />
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 4, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 47 : 55, fontWeight: 850, color: BRAND.paper }}>{firstPart.display}</div>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 44, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 25 : 29, fontWeight: 720, color: BRAND.paper }}>{firstPart.label}</div>
+          <div style={{ position: "absolute", left: -120, right: -120, top: secondHeight + 20, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 29 : 33, lineHeight: 1.12, fontWeight: 770, color: BRAND.amber }}>{single.label}</div>
+        </div>
+      )}
+      {!single && [{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
         <div key={bar.id} style={{ position: "absolute", left: x, top: baseline - height, width: barWidth, height }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", background: color }} />
           {/* A bar too short to hold its value carries it just above, in the bar's colour. */}
@@ -682,8 +697,10 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const segment = active?.beat.anchor?.type === "bars" ? active.beat.anchor.segment : undefined;
   const local = active ? progress(now, active.span.startMs + 100, active.span.startMs + 800) : 1;
-  const receipts = story.bars[0];
-  const pay = story.bars[1];
+  // A story with one bar builds that bar alone, part by part.
+  const single = story.bars.length === 1;
+  const receipts = single ? undefined : story.bars[0];
+  const pay = single ? story.bars[0] : story.bars[1];
   const pension = story.bars[2];
   const max = Math.max(1, ...story.bars.map((bar) => bar.value));
   const beat = toolCardBeat(input);
@@ -707,18 +724,18 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
       {stage === "second" && (
         <>
           {receipts && <SegmentedRow bar={receipts} top={560} max={max} />}
-          {pay && <SegmentedRow bar={pay} top={930} max={max} segmentLimit={segment ?? 0} segmentProgress={local} />}
+          {pay && <SegmentedRow bar={story.totalOnCallout ? { ...pay, display: "" } : pay} top={single ? 760 : 930} max={max} segmentLimit={segment ?? 0} segmentProgress={local} />}
         </>
       )}
       {stage === "callout" && (
         <>
           {receipts && <SegmentedRow bar={receipts} top={540} max={max} />}
-          {pay && <SegmentedRow bar={pay} top={900} max={max} segmentLimit={pay.segments?.length} />}
-          <div style={{ position: "absolute", left: 250, top: 1280, width: 580, padding: "22px 30px", border: `3px solid ${BRAND.amber}`, borderRadius: 22, background: BRAND.paper, textAlign: "center", boxShadow: "9px 10px 0 rgba(201,121,26,0.10)" }}>
+          {pay && <SegmentedRow bar={pay} top={single ? 760 : 900} max={max} segmentLimit={pay.segments?.length} />}
+          {!single && <div style={{ position: "absolute", left: 250, top: 1280, width: 580, padding: "22px 30px", border: `3px solid ${BRAND.amber}`, borderRadius: 22, background: BRAND.paper, textAlign: "center", boxShadow: "9px 10px 0 rgba(201,121,26,0.10)" }}>
             <span style={{ fontFamily: TYPE.ui, fontSize: 49, fontWeight: 850, color: BRAND.amber }}>{pay?.display}</span>
             <span style={{ margin: "0 18px", fontFamily: TYPE.ui, fontSize: 42, fontWeight: 760, color: BRAND.inkSoft }}>&gt;</span>
             <span style={{ fontFamily: TYPE.ui, fontSize: 49, fontWeight: 850, color: BRAND.inkSoft }}>{receipts?.display}</span>
-          </div>
+          </div>}
         </>
       )}
       {stage === "third" && (
@@ -742,7 +759,25 @@ function SegmentedBarCTA({ input }: { input: ReelInput }) {
   const beat = toolCardBeat(input);
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.barStory;
-  if (!card || !story) return null;
+  if (!story) return null;
+  if (!card) {
+    // No tool card: the end card is the ask alone.
+    return (
+      <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
+        <div style={{ position: "absolute", left: 130, right: 150, top: 300, textAlign: "center", fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.basis} · {story.disclosure}</div>
+        <div style={{ position: "absolute", left: 70, right: 100, top: 420, textAlign: "center", opacity: enter }}>
+          <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
+          <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
+        </div>
+        <div style={{ position: "absolute", left: 120, right: 160, top: 1235, paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+          <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
+          <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
+          <div style={{ marginTop: 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+          <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
+        </div>
+      </div>
+    );
+  }
   const hasFiveRows = card.rows.length > 4;
   return (
     <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
