@@ -392,7 +392,7 @@ const EXPECTED_MENTIONS = [
   'pages/unsubscribe.astro: posthog x2',
   'pages/unsubscribe.astro: removeItem x1',
   'styles/global.css: cookie x1',
-  'styles/global.css: track x4',
+  'styles/tools.css: track x4',
   'types/posthog.d.ts: capture x1',
   'types/posthog.d.ts: cookie x1',
   'types/posthog.d.ts: posthog x2',
@@ -432,9 +432,9 @@ const EXPECTED_MENTIONS = [
 // quiet the test.
 const WHOLE_FILES = ['components/Analytics.astro', 'types/posthog.d.ts', 'utils/shared/consentRuntime.js'];
 const EXPECTED_WHOLE_FILES = [
-  'components/Analytics.astro: sha256 28842d904f219fa9',
+  'components/Analytics.astro: sha256 32ec5ad9ed1cfcd5',
   'types/posthog.d.ts: sha256 417cc4ae99ea46fe',
-  'utils/shared/consentRuntime.js: sha256 11019ad836971bbf',
+  'utils/shared/consentRuntime.js: sha256 5108ae8eca7ad0ff',
 ];
 
 describe('privacy surface: click labels', () => {

@@ -16,9 +16,10 @@
  * decliner's visits together. Withdrawing a yes also gives PostHog a new
  * identity, so later events can't be joined to earlier ones.
  *
- * A classic script, not a module: CookieConsent.astro and Analytics.astro
- * inline this file, and consentRuntime.test.ts runs the same file. It defines
- * one global, `nidhiConsent`; a second copy on the same page keeps the first.
+ * A classic script, not a module: CookieConsent.astro inlines this file, once
+ * per page, ahead of Analytics.astro, which uses it; consentRuntime.test.ts
+ * runs the same file. It defines one global, `nidhiConsent`; a second copy on
+ * the same page would keep the first.
  */
 (function (root) {
   if (root.nidhiConsent) return;

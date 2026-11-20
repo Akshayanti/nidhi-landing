@@ -5,7 +5,17 @@ import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Analytics from '../components/Analytics.astro';
 import { DEFAULT_LOCALE, LOCALE_META, dict, type Locale } from '../i18n';
-import '../styles/global.css';
+// The stylesheets are linked by hand, in the order written below, and not
+// imported for Astro to place: Astro orders a page's sheets by where they sit
+// in the module graph, which put the same two sheets in a different order on
+// different pages. The parts' rules follow the global ones they were split
+// from (#451), so their order is part of what they mean.
+import globalCss from '../styles/global.css?url';
+import toolsCss from '../styles/tools.css?url';
+import learnCss from '../styles/learn.css?url';
+
+/** The sheets a page can ask for on top of the global one. */
+const PART_SHEETS = { tools: toolsCss, learn: learnCss } as const;
 
 interface Props {
   /**
@@ -63,9 +73,16 @@ interface Props {
    * has no tool state must not look for any.
    */
   toolStateGlobal?: string;
+  /**
+   * The parts of the stylesheet this page needs beyond the global sheet:
+   * `tools` on a free tool's page (src/styles/tools.css), `learn` on a page
+   * that shows the learning path's cards or the Learn page (learn.css). A
+   * page that names none downloads neither.
+   */
+  sheets?: readonly (keyof typeof PART_SHEETS)[];
 }
 
-const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, noCanonical, mainClass, bodyData, toolStateGlobal = '' } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, noCanonical, mainClass, bodyData, toolStateGlobal = '', sheets = [] } = Astro.props;
 const strings = dict(locale);
 ---
 
@@ -79,6 +96,8 @@ const strings = dict(locale);
       multi-currency-net-worth page uses it to preconnect to the
       Frankfurter FX API so the first rates request lands faster.
     */}
+    <link rel="stylesheet" href={globalCss} />
+    {sheets.map((sheet) => <link rel="stylesheet" href={PART_SHEETS[sheet]} />)}
     <slot name="head" />
   </head>
   <body {...(bodyData || {})}>
