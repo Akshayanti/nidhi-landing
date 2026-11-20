@@ -14,7 +14,7 @@ import { getCollection } from 'astro:content';
 import { getLayeredReadingTime } from './readingTime';
 import { assertCompanionHosts, assertCompanionOrder, placeOnPath } from './companions';
 import { LADDER_LEVELS } from './home/startingPoints';
-import { assertConceptSlugs } from './levelHelper';
+import { assertConceptSlugs } from './levelConcepts';
 import { lessonPath } from '../i18n/config.ts';
 
 export interface PathPost {
@@ -30,7 +30,16 @@ export interface PathPost {
   /** Level section that shows the post; absent when its host is not live. */
   pathLevel?: string;
   companionTitle?: string;
+  /**
+   * Published within the last week, as of this build. The cards' first render
+   * takes this answer, so it matches the built HTML; the reader's own clock
+   * decides once the page is running (src/components/LearningPath.tsx).
+   */
+  isNew: boolean;
 }
+
+/** The same week as in src/components/LearningPath.tsx, which cannot import this module. */
+const NEW_FOR_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * Levels the level helper may suggest: every one of their lessons is
@@ -78,6 +87,7 @@ export async function getPathPosts(): Promise<PathPost[]> {
       readingTime: getLayeredReadingTime(post.body || '').main,
       tags: post.data.tags,
       ...placements.get(post.data.slug),
+      isNew: now.getTime() - post.data.pubDate.getTime() < NEW_FOR_MS,
       // Last, so the key order of the object a page hydrates an island with is
       // the order it had before this field existed.
       href: lessonPath(post.data.slug),

@@ -20,6 +20,7 @@ import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
 import { getHelperLevels, getPathPosts } from '../utils/learnPosts';
+import { conceptsFor } from '../utils/levelConcepts';
 import { getCollection } from 'astro:content';
 import { FEATURED_GUIDES, GUIDE_HUB, getGuides, guidePath } from '../utils/guides';
 import { inclusiveHostLevels, inclusiveLine } from '../utils/inclusiveGuides';
@@ -65,10 +66,15 @@ const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, 
 }));
 
 // Search also reads each lesson's FAQ questions and "In this lesson" phrases,
-// which are worded the way readers ask, and the live How-to guides.
+// which are worded the way readers ask, and the live How-to guides. Only the
+// lessons listed above get an entry: `getPathPosts` has already applied the
+// publication rule, so a lesson held back for later ships none of its text in
+// this page's source (#341).
+const liveIds = new Set(lessons.map((l) => l.id));
 const lessonText: Record<string, string> = {};
 for (const entry of await getCollection('blog')) {
   const d = entry.data;
+  if (!liveIds.has(d.slug)) continue;
   lessonText[d.slug] = [
     ...(d.faq ?? []).map((f) => f.question),
     ...(d.takeaways ?? []).map((t) => (typeof t === 'string' ? t : t.text)),
@@ -165,6 +171,7 @@ const blogItemListSchema = {
         inclusiveCount={inclusive.length}
         collections={collections}
         helperLevels={helperLevels}
+        concepts={conceptsFor(helperLevels)}
         strings={blogIndex.island}
         inclusiveHref={localizedPath(locale, '/blog/inclusive-finances/')}
         topicsHref={localizedPath(locale, '/blog/tag/')}

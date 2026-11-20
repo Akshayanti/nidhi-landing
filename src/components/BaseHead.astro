@@ -49,6 +49,12 @@ interface Props {
   nextUrl?: string | null;
   jsonLd?: object[];
   robots?: string;
+  /**
+   * For a page with no address of its own: the 404, which the host serves at
+   * every missing address. Its build path (/404/) is not a page anyone can
+   * visit, so it states no canonical and no `og:url` rather than that one.
+   */
+  noCanonical?: boolean;
 }
 
 const defaultImage = '/brand/social/og-image.png';
@@ -65,6 +71,7 @@ const {
   nextUrl,
   jsonLd = [],
   robots,
+  noCanonical = false,
 } = Astro.props;
 
 // The same page in another language is the same path under a different locale
@@ -87,15 +94,27 @@ const feedTitle = dict(DEFAULT_LOCALE).rss.linkTitle;
 // tagline, so it is read from the catalog rather than written into this file.
 const imageAlt = Astro.props.imageAlt ?? strings.meta.defaultImageAlt;
 
-// A Hindi or Marathi page's first paint is set in Devanagari: the nav, the
-// headings and the body are Devanagari before Inter sees a Latin word, so that
-// face is worth preloading beside it (the file carries Marathi's own letters
-// and letter forms too). Inter stays preloaded on every page, because the Latin
-// words and every amount are set in it. Only those two editions get the second
-// preload. A Czech page's headings and body carry diacritics (č, ř, ě) from
-// the first word, so it preloads Inter's extended-Latin file instead. Both are
-// the same origin, so neither adds a third-party request.
+// Which font files a page asks for before its stylesheet is read. The
+// stylesheet sets headings and the nav in Inter (`--font-heading`) and body
+// text in Roboto (`--font-body`), with Noto Sans Devanagari behind both, and
+// every face swaps in when it arrives, so a file the browser learns about late
+// is a visible reflow of whatever it sets. The list is kept to the files a
+// page's first screen is certain to use:
+//
+// - Inter's Latin file on every page: headings and the nav on a Latin-script
+//   page, the Latin words in the header on a Devanagari one.
+// - Roboto's Latin file on the Latin-script editions (English, Spanish,
+//   Czech): the body face, and the largest block of text on a lesson or a
+//   guide (#456). A Hindi or Marathi page's body is Devanagari, so it gets
+//   the Devanagari file instead (it carries Marathi's own letters and letter
+//   forms too).
+// - On a Czech page, the extended-Latin files of both faces: its headings and
+//   its body carry diacritics (č, ř, ě) from the first word. English and
+//   Spanish leave them out, as their accents are in the Latin files.
+//
+// All are the same origin, so none adds a third-party request.
 const preloadDevanagari = locale === 'hi' || locale === 'mr';
+const preloadBodyLatin = !preloadDevanagari;
 const preloadLatinExt = locale === 'cs';
 const noindex = !!robots && /noindex/i.test(robots);
 ---
@@ -103,7 +122,10 @@ const noindex = !!robots && /noindex/i.test(robots);
 <!-- Flash prevention: apply theme before render -->
 <script is:inline>
   (function() {
-    var mode = localStorage.getItem('nidhi-theme-mode') || 'system';
+    // Reading storage throws where site data is blocked: the system's
+    // scheme then decides, as it does for a reader who never chose.
+    var mode = 'system';
+    try { mode = localStorage.getItem('nidhi-theme-mode') || 'system'; } catch (e) { /* storage blocked */ }
     if (mode === 'system') {
       mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -118,12 +140,13 @@ const noindex = !!robots && /noindex/i.test(robots);
 <link rel="shortcut icon" href="/brand/favicons/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/site.webmanifest" />
-<!-- Preload primary Inter latin variant: it's the first font requested by
-     global.css for the body face. Latin-ext is excluded on purpose: it's
-     rarely needed on first paint and would slow LCP for the common case. -->
+{/* Font preloads: the heading face, then the body face of this edition's
+    script. Which files and why is set out where the flags are defined above. */}
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+{preloadBodyLatin && <link rel="preload" href="/fonts/roboto-latin.woff2" as="font" type="font/woff2" crossorigin />}
 {preloadDevanagari && <link rel="preload" href="/fonts/noto-devanagari.woff2" as="font" type="font/woff2" crossorigin />}
 {preloadLatinExt && <link rel="preload" href="/fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin />}
+{preloadLatinExt && <link rel="preload" href="/fonts/roboto-latin-ext.woff2" as="font" type="font/woff2" crossorigin />}
 <meta name="theme-color" content={NEUTRAL.offWhite} />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content={NEUTRAL.pageBgDark} />
 <meta name="msapplication-TileColor" content={SEMANTIC.calloutBg} />
@@ -133,7 +156,7 @@ const noindex = !!robots && /noindex/i.test(robots);
 {robots && <meta name="robots" content={robots} />}
 
 <!-- Canonical -->
-<link rel="canonical" href={canonicalURL} />
+{!noCanonical && <link rel="canonical" href={canonicalURL} />}
 {/* A noindex page (the 404, the transactional pages) has nothing for search
     engines to pair, and the 404's own path is not a real address. */}
 {!noindex && alternates.map((alternate) => (
@@ -146,7 +169,7 @@ const noindex = !!robots && /noindex/i.test(robots);
 
 <!-- Open Graph -->
 <meta property="og:type" content={article ? 'article' : 'website'} />
-<meta property="og:url" content={canonicalURL} />
+{!noCanonical && <meta property="og:url" content={canonicalURL} />}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.site)} />

@@ -16,6 +16,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import GuideVisual from '../../components/GuideVisual.astro';
 import { GUIDE_HUB, guidePath, guideReadingMinutes, type Guide } from '../../utils/guides';
 import { DEFAULT_LOCALE, dict } from '../../i18n';
+import { formatEnglishDate } from '../../utils/longDate.ts';
 
 interface Props {
   guide: Guide;
@@ -30,7 +31,6 @@ const { howTo } = dict(DEFAULT_LOCALE);
 const minutes = guideReadingMinutes(g);
 const siteUrl = 'https://nidhi.today';
 const url = `${siteUrl}${guidePath(g.slug)}`;
-const dateFmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const groupName = howTo.groups[g.group];
 const shareImage = `/brand/social/how-to/${g.slug}.png`;
 const hasShareImage = existsSync(`public${shareImage}`);
@@ -79,10 +79,10 @@ const breadcrumbSchema = {
       <p class="guide-meta">
         <span>{minutes} min read</span>
         <span aria-hidden="true">·</span>
-        <span>Last checked <time datetime={g.lastChecked.toISOString()}>{dateFmt(g.lastChecked)}</time></span>
+        <span>Last checked <time datetime={g.lastChecked.toISOString()}>{formatEnglishDate(g.lastChecked)}</time></span>
       </p>
       {(g.corrections ?? []).map((c) => (
-        <p class="guide-correction"><strong>Corrected on <time datetime={c.date.toISOString()}>{dateFmt(c.date)}</time>:</strong> {c.note}</p>
+        <p class="guide-correction"><strong>Corrected on <time datetime={c.date.toISOString()}>{formatEnglishDate(c.date)}</time>:</strong> {c.note}</p>
       ))}
 
       <h1 class="guide-title">{g.title}</h1>
@@ -209,7 +209,7 @@ const breadcrumbSchema = {
 
       <p class="guide-note">This guide explains how to work something out or check it. It is not personal advice: rules, costs and protections differ by country and by provider.</p>
 
-      <p class="guide-print-foot">{g.title} From nidhi.today{guidePath(g.slug)}. Last checked {dateFmt(g.lastChecked)}. Guides can change: the latest version is at this address.</p>
+      <p class="guide-print-foot">{g.title} From nidhi.today{guidePath(g.slug)}. Last checked {formatEnglishDate(g.lastChecked)}. Guides can change: the latest version is at this address.</p>
     </div>
   </article>
 </BaseLayout>

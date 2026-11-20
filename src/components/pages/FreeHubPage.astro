@@ -120,7 +120,8 @@ const itemListSchema = {
     '@type': 'ListItem',
     position: i + 1,
     url: new URL(tool.url, siteUrl).href,
-    name: tool.itemName,
+    // The name on the card, so the list and the page say the same thing (#462).
+    name: tool.title,
   })),
 };
 

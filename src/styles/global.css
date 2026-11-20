@@ -6108,6 +6108,12 @@ body[data-page="landing"] .site-footer {
   border-radius: 14px;
 }
 
+/* The home page's "answer two questions" link lands here (/blog/#level-helper):
+   clear of the sticky header, with a little space above the card. */
+#level-helper {
+  scroll-margin-top: calc(var(--site-header-block-size) + 1rem);
+}
+
 /* /blog/'s two ways in: the path from the start, or one question answered by
    a short How-to guide. Equal weight, side by side; stacked on phones. */
 .learn-starts { display: flex; flex-direction: column; gap: var(--space-3); }

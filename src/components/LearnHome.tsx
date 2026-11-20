@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { conceptsFor, goalsFor, suggestLevel, type Suggestion } from '../utils/levelHelper';
+import { goalsFor, suggestLevel, type Concept, type Suggestion } from '../utils/levelHelper';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -82,6 +82,12 @@ interface LearnHomeProps {
   collections: { heading: string; inclusiveName: string; inclusiveLine: string };
   /** Levels the helper may suggest: fully published (src/utils/levelHelper.ts). */
   helperLevels: string[];
+  /**
+   * The helper's ideas for those levels, picked by the page at build time. They
+   * come as a prop because the full list names lessons that are not out yet,
+   * and anything this file imports is shipped in its script.
+   */
+  concepts: Concept[];
   strings: Strings;
   /** The Inclusive Finances hub, locale-aware. */
   inclusiveHref: string;
@@ -201,7 +207,7 @@ function HelperResult({ suggestion, strings, goalTopic, levelById, lessonById, f
   );
 }
 
-export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiveCount, collections, helperLevels, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
+export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiveCount, collections, helperLevels, concepts, strings, inclusiveHref, topicsHref, glossaryHref, lang }: LearnHomeProps) {
   const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -267,11 +273,10 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
 
   // Level helper: step 0 asks which ideas the reader could explain, step 1
   // what would help most, step 2 shows the suggestion.
-  const concepts = useMemo(() => conceptsFor(helperLevels), [helperLevels]);
   const goals = useMemo(() => goalsFor(helperLevels), [helperLevels]);
   const suggestion = useMemo(
-    () => (step === 2 ? suggestLevel(ticked, goal, helperLevels) : null),
-    [step, ticked, goal, helperLevels],
+    () => (step === 2 ? suggestLevel(ticked, goal, helperLevels, concepts) : null),
+    [step, ticked, goal, helperLevels, concepts],
   );
 
   // Moves focus to the new question or the suggestion after each step, so
@@ -337,7 +342,11 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           {/* Without a lesson to start, this card has no heading of its own: the
               label is left off rather than pointing at an id that is not there.
               A language whose lessons are still being written is the case. */}
-          <section className="learn-card" aria-labelledby={nextInfo ? 'learn-start-h' : undefined}>
+          {/* `level-helper` is where the home page's "answer two questions" link
+              lands (/blog/#level-helper): the card that holds the helper's
+              button, which is in the built page whether or not the helper is
+              open, so the address has a target before any script runs. */}
+          <section id="level-helper" className="learn-card" aria-labelledby={nextInfo ? 'learn-start-h' : undefined}>
           {finished ? (
             <div className="learn-startText">
               <p className="learn-eyebrow">{strings.finishedEyebrow}</p>
