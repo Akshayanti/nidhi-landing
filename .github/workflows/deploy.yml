@@ -368,7 +368,10 @@ jobs:
   # further failure adds a comment to it instead of opening another.
   alert:
     needs: [build, deploy, trigger-newsletter]
-    if: failure()
+    # failure() covers a job that failed. A job stopped by its time limit can
+    # be reported as cancelled instead, so that is covered too; a run a
+    # person cancelled (cancelled() is true) stays quiet.
+    if: failure() || (!cancelled() && contains(needs.*.result, 'cancelled'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

@@ -117,6 +117,12 @@ jobs:
             # Anything that affects the build or dep graph.
             'package.json'
             'package-lock.json'
+            # The root tests hold the Remotion project's pins too
+            # (src/utils/dependencies.test.ts), so a change to its manifests
+            # runs them, not only the Remotion job.
+            'remotion/package.json'
+            'remotion/package-lock.json'
+            'remotion/.npmrc'
             'astro.config.mjs'
             'tsconfig.json'
             # What decides the Node and npm every job and the deploy run on:

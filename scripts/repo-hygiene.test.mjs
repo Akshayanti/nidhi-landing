@@ -87,7 +87,10 @@ describe('deploy workflow permissions', () => {
 
   it('a failed deploy opens an issue, and only one at a time (#328)', () => {
     const alert = job('alert');
-    assert.match(alert, /\n {4}needs: \[build, deploy, trigger-newsletter\]\n {4}if: failure\(\)\n/);
+    assert.match(alert, /\n {4}needs: \[build, deploy, trigger-newsletter\]\n/);
+    // A failed job, or one its time limit stopped (reported as cancelled),
+    // but not a run a person cancelled.
+    assert.match(alert, /\n {4}if: failure\(\) \|\| \(!cancelled\(\) && contains\(needs\.\*\.result, 'cancelled'\)\)\n/);
     // It has no checkout, so gh must be told the repository.
     assert.match(alert, /GH_REPO: \$\{\{ github\.repository \}\}/);
     assert.doesNotMatch(alert, /uses: actions\/checkout/);
