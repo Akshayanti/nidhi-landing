@@ -17,8 +17,10 @@ glossary:
     definition: "The yearly interest rate after compounding within the year is counted. A stated (nominal) annual interest rate of 12%, compounded monthly with no fees, gives an effective annual rate of about 12.7%. Whether a disclosed loan rate also includes fees depends on the disclosure rules."
 order: 27
 pubDate: 2026-06-17
-updatedDate: 2026-11-19
+updatedDate: 2026-11-20
 corrections:
+  - date: 2026-11-20
+    note: "The lesson said Canadian loan documents state the APR as the monthly rate times 12. Canada uses its own formula, the total cost of borrowing divided by the term and the average balance owed; the lesson now says so."
   - date: 2026-11-17
     note: "The lesson said variable rates have been cheaper on average historically in many markets, with no source. The evidence is for some markets and periods, such as Canadian mortgages from 1950 to 2000 in one well-known study, and the saving came with payments that could rise; the lesson now says so."
   - date: 2026-11-14
@@ -54,6 +56,10 @@ referentialReading:
   - title: "Developing a Key Facts Statement for Consumer Credit (APR and total cost of credit)"
     author: "World Bank"
     url: "https://documents1.worldbank.org/curated/en/284281527836970187/pdf/Developing-a-key-facts-statement-for-consumer-credit-technical-note.pdf"
+    type: "paper"
+  - title: "Financial Consumer Protection Framework Regulations, SOR/2021-181, s. 47 (how Canada calculates the APR)"
+    author: "Government of Canada"
+    url: "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2021-181/FullText.html"
     type: "paper"
   - title: "Your Money or Your Life"
     author: "Vicki Robin and Joe Dominguez"
@@ -100,7 +106,7 @@ Specific definitions of APR vary by jurisdiction. Some countries require more co
 
 The loan with the lowest rate (D) is not the cheapest once its fee and bundled insurance are counted: A costs less on both measures, its APR and its total (about €363,500 for A against about €369,800 for D). For loans of the same amount and term, a lower APR usually means a lower cost; the total in euros is the check.
 
-*The APR column annualises the monthly rate by multiplying it by 12, as US and Canadian documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.32%, 3.56% and 3.47%), in the same order.*
+*The APR column annualises the monthly rate by multiplying it by 12, as US documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.32%, 3.56% and 3.47%), in the same order. Other countries have their own methods: Canadian documents, for example, divide the total cost of borrowing by the term and the average balance owed.*
 
 *Those compounded EU and UK figures are [effective annual rates](#term-effective-annual-rate), which count compounding within the year. For example, a stated (nominal) annual interest rate of 12%, compounded monthly with no fees, gives an effective annual rate of about 12.7%. Whether a disclosed loan rate also includes fees depends on the disclosure rules.*
 
