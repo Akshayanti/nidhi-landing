@@ -10,7 +10,7 @@
  *
  * Per-row tuple `a{i}=name~value~currency~type`:
  *   - position 0: name (default '', omitted when empty)
- *   - position 1: value (REQUIRED — a row with no value has no reason to exist)
+ *   - position 1: value (REQUIRED: a row with no value has no reason to exist)
  *   - position 2: currency (default 'EUR', omitted when default)
  *   - position 3: type (default 'asset', omitted when default)
  *   Trailing default fields are dropped, so a EUR asset is just `a1=Name~50000`.
@@ -21,18 +21,18 @@
  *   - position 2: net amount in functional currency (full mode only; redacted mode drops it)
  *
  * Scalars:
- *   - `m=f` or `m=r` — share mode (full / redacted). Absent for the user's own URL sync.
- *   - `f=USD`        — functional currency, omitted when EUR (default)
- *   - `n=3`          — row count, omitted when 2 (default)
+ *   - `m=f` or `m=r`: share mode (full / redacted). Absent for the user's own URL sync.
+ *   - `f=USD`: functional currency, omitted when EUR (default)
+ *   - `n=3`: row count, omitted when 2 (default)
  *
  * Two sharing modes:
  *
- * 1. Full mode (`m=f`) — encodes all asset rows plus per-currency
+ * 1. Full mode (`m=f`): encodes all asset rows plus per-currency
  *    concentrations and amounts. Recipient sees the sender's complete view.
  *
  *      ?m=f&f=EUR&a1=US%20Stocks~50000~USD&p_USD=22.0~moderate~46000.00
  *
- * 2. Redacted mode (`m=r`) — encodes only functional currency and per-currency
+ * 2. Redacted mode (`m=r`): encodes only functional currency and per-currency
  *    concentration % + risk levels. No asset rows, no amounts.
  *
  *      ?m=r&f=EUR&p_USD=28.5~moderate&p_EUR=71.5~functional

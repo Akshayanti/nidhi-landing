@@ -13,8 +13,12 @@
  * Psychology sits beside the ladder: it has no ideas to tick, and is
  * suggested when the goal is about following through.
  *
- * Only structure lives here: the ideas' ticks, their level and the lesson that
- * teaches each one. Every word the reader sees (an idea's label, a goal's
+ * Only structure lives here, and only the part the island may carry: the goals
+ * and the rule that turns ticks into a suggestion. The ideas themselves (which
+ * lesson teaches each one) are in `levelConcepts.ts`, which the page reads at
+ * build time; the island is handed the ideas of the published levels as a prop
+ * and passes them to `suggestLevel`, so its script never names a lesson that is
+ * not out yet (#464). Every word the reader sees (an idea's label, a goal's
  * question and the phrase its reason completes) is in the catalog under
  * `blogIndex.island.concepts` and `blogIndex.island.goals`, so a language's
  * helper speaks that language without this module knowing any.
@@ -31,21 +35,6 @@ export interface Concept {
   /** The lesson that teaches it. */
   slug: string;
 }
-
-export const CONCEPTS: Concept[] = [
-  { id: 'net-worth', level: 'discovery', slug: 'what-is-net-worth' },
-  { id: 'interest', level: 'discovery', slug: 'liabilities' },
-  { id: 'emergency-fund', level: 'discovery', slug: 'emergency-fund' },
-  { id: 'inflation', level: 'discovery', slug: 'purchasing-power' },
-  { id: 'asset-classes', level: 'building', slug: 'investing-101-asset-classes' },
-  { id: 'diversification', level: 'building', slug: 'diversification' },
-  { id: 'tax-accounts', level: 'building', slug: 'tax-advantaged-accounts' },
-  { id: 'rebalancing', level: 'building', slug: 'rebalancing-your-portfolio' },
-  { id: 'fees', level: 'optimizing', slug: 'fee-optimization' },
-  { id: 'real-returns', level: 'optimizing', slug: 'real-returns-and-benchmarking' },
-  { id: 'tax-loss', level: 'optimizing', slug: 'tax-loss-harvesting-and-asset-location' },
-  { id: 'glide-path', level: 'optimizing', slug: 'advanced-rebalancing' },
-];
 
 export interface Goal {
   id: string;
@@ -87,18 +76,18 @@ export interface Suggestion {
   also: string | null;
 }
 
-export function conceptsFor(eligible: readonly string[]): Concept[] {
-  return CONCEPTS.filter((c) => eligible.includes(c.level));
-}
-
 export function goalsFor(eligible: readonly string[]): Goal[] {
   return GOALS.filter((g) => g.level === null || eligible.includes(g.level));
 }
 
-export function suggestLevel(ticked: ReadonlySet<string>, goalId: string | null, eligible: readonly string[]): Suggestion {
+/**
+ * `ideas` is the list the reader was shown: the ideas of the eligible levels
+ * (`conceptsFor` in levelConcepts.ts), passed in by the page.
+ */
+export function suggestLevel(ticked: ReadonlySet<string>, goalId: string | null, eligible: readonly string[], ideas: readonly Concept[]): Suggestion {
   const ladder = LADDER.filter((l) => eligible.includes(l));
   const stats = (level: string) => {
-    const concepts = CONCEPTS.filter((c) => c.level === level);
+    const concepts = ideas.filter((c) => c.level === level);
     const known = concepts.filter((c) => ticked.has(c.id));
     return {
       ticked: known.length,
@@ -133,12 +122,4 @@ export function suggestLevel(ticked: ReadonlySet<string>, goalId: string | null,
   if (firstGap) return make(firstGap, 'foundation', null);
   const last = ladder[ladder.length - 1] ?? 'discovery';
   return make(psychology ?? last, 'all-known', psychology ? last : null);
-}
-
-/** Fails the build when a concept names a lesson that does not exist. */
-export function assertConceptSlugs(slugs: ReadonlySet<string>): void {
-  const missing = CONCEPTS.filter((c) => !slugs.has(c.slug)).map((c) => `${c.id} -> ${c.slug}`);
-  if (missing.length > 0) {
-    throw new Error(`Level helper ideas name lessons that do not exist: ${missing.join(', ')}. Fix CONCEPTS in src/utils/levelHelper.ts.`);
-  }
 }

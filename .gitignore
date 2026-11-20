@@ -31,9 +31,17 @@ scripts/__pycache__/
 # are deleted after a successful render and only ever exist mid-pipeline.
 remotion/outputs/
 remotion/public/audio/
-# Lesson figures rendered for reels: made by the pipeline, kept on the
-# machine. (The illustrations already tracked in this folder stay tracked.)
-remotion/public/figures/
+# Lesson figures rendered for reels: scripts/lib/prepare-figures.mjs copies
+# them here for each render, and they stay on the machine. Four are tracked
+# on purpose and named below, so git does not hold a file it also ignores:
+# renders of the site's own figures, kept as examples of what the reel
+# renderer is given (remotion/src/data.ts names one). A new figure is not
+# offered by `git add` unless it is added to this list.
+remotion/public/figures/*
+!remotion/public/figures/how-to-get-out-of-debt.png
+!remotion/public/figures/purchasing-power.png
+!remotion/public/figures/saving-vs-investing.png
+!remotion/public/figures/saving-vs-investing-reel.png
 
 # Working notes and local output that are not part of the site. Listed so
 # that one `git add -A` cannot publish them.

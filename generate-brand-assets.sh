@@ -387,6 +387,10 @@ build_profile_picture "$PRIMARY_BLUE_LIGHT" "$TEMP_DIR/icon-inner-1024-dark.png"
 # ============================================================================
 # Lives at $BRAND_DIR/site.webmanifest. Referenced from HTML as
 # <link rel="manifest" href="/brand/site.webmanifest"> when public/ is the web root.
+# theme_color is the light page background, the same value every page states in
+# <meta name="theme-color">, so an installed site's toolbar matches the browser's.
+# The icons are "any", not "maskable": the tile has rounded, transparent corners
+# and the arrow reaches past the central safe zone a mask would keep.
 cat > "$BRAND_DIR/site.webmanifest" <<EOF
 {
   "name": "$BRAND_NAME",
@@ -397,16 +401,16 @@ cat > "$BRAND_DIR/site.webmanifest" <<EOF
       "src": "/brand/favicons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/brand/favicons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
-  "theme_color": "$PRIMARY_BLUE",
+  "theme_color": "$LIGHT_BG",
   "background_color": "$LIGHT_BG",
   "display": "standalone",
   "start_url": "/"

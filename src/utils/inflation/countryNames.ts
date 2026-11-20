@@ -11,7 +11,7 @@
  */
 
 /** A dash standing between two parts of a name, with a space on each side. */
-const SPACED_DASH = /\s+[‒–—―-]\s+/;
+const SPACED_DASH = /\s+[\u2012\u2013\u2014\u2015-]\s+/;
 
 /** "Kongo – Kinshasa" becomes "Kongo (Kinshasa)"; any other name is unchanged. */
 export function tidyCountryName(name: string): string {

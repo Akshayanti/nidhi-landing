@@ -55,8 +55,6 @@ generate_png() {
 }
 
 # Generate PNG files
-generate_png 16 "favicon-16.png"
-generate_png 32 "favicon-32.png"
 generate_png 150 "mstile-150x150.png"
 generate_png 180 "apple-touch-icon.png"
 generate_png 192 "android-chrome-192x192.png"

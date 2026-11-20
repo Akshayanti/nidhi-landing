@@ -4,7 +4,7 @@
 // fully self-hosted (Apps Script + Workspace Gmail + GitHub Actions).
 //
 // Configure PUBLIC_NEWSLETTER_ENDPOINT to the Apps Script Web App exec URL.
-// See docs/blog-subscription-setup.md for full setup instructions.
+// See the header of scripts/newsletter.gs for full setup instructions.
 
 import { DEFAULT_LOCALE, dict, format, localizedPath, type Locale } from '../i18n';
 import { newsletterCount, shownNewsletterCount } from '../utils/newsletterCount';
@@ -13,9 +13,9 @@ export interface Props {
   /** The language of the page the box sits on. Defaults to English. */
   locale?: Locale;
   /**
-   * `full`    — large centered box with heading + copy. Use at the end of a
+   * `full`: large centered box with heading + copy. Use at the end of a
    *             blog post (high-intent moment after reading).
-   * `compact` — single inline row with input + button. Use near the top of
+   * `compact`: single inline row with input + button. Use near the top of
    *             the blog index as a slim visible CTA.
    */
   variant?: 'full' | 'compact';
@@ -107,8 +107,8 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         </div>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
-            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set — the form is visible
-            but submissions will no-op. See <code>docs/blog-subscription-setup.md</code>.
+            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set: the form is visible
+            but submissions will no-op. See the header of <code>scripts/newsletter.gs</code>.
           </p>
         )}
       </div>
@@ -179,7 +179,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         <p id={statusId} class="subscribe-status" role="status" aria-live="polite"></p>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
-            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set — the form is visible
+            ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set: the form is visible
             but submissions will no-op.
           </p>
         )}
@@ -225,7 +225,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     //   - (absent)                     → not confirmed on this device
     //
     // Only written when the user clicks the confirmation link in their email.
-    // Form submit alone does NOT set this — we don't hide the CTA until the
+    // Form submit alone does NOT set this: we don't hide the CTA until the
     // double-opt-in loop is complete.
     var STORAGE_KEY = 'nidhi-newsletter-subscription';
 
@@ -264,7 +264,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         if (parsed.type === 'permanent') return parsed;
         if (parsed.type === 'timed' && typeof parsed.until === 'number') {
           if (Date.now() < parsed.until) return parsed;
-          // Cooldown expired — clean up the stale entry so the form
+          // Cooldown expired: clean up the stale entry so the form
           // reappears on next paint.
           try { localStorage.removeItem(DISMISS_KEY); } catch (_) {}
           return null;
@@ -312,7 +312,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     var submitting = false;
 
     // SHA-256(lowercase-trimmed email), hex. Must match newsletter.gs's
-    // distinctIdForEmail_() exactly — both normalise then hash so the
+    // distinctIdForEmail_() exactly: both normalise then hash so the
     // browser's PostHog identify(hash) call aliases its anon distinct_id to the
     // same ID the Apps Script uses for server-side subscriber events. That
     // alias is what makes the blog_subscribe_submit → _pending →
@@ -350,7 +350,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     function applyState() {
       var state = readState();
       if (state) {
-        // Confirmed subscriber — hide the CTA everywhere.
+        // Confirmed subscriber: hide the CTA everywhere.
         if (section) section.hidden = true;
         return;
       }
@@ -374,7 +374,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         return;
       }
 
-      // No subscription and no dismiss — show the form.
+      // No subscription and no dismiss: show the form.
       if (section) section.hidden = false;
       if (postEl) postEl.hidden = true;
       if (dismissedEl) dismissedEl.hidden = true;
@@ -415,7 +415,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
 
     // In-session success view. We still show the "Check your inbox" panel
     // on the page the user just submitted from, even though applyState()
-    // would hide the whole section on any subsequent load — the immediate
+    // would hide the whole section on any subsequent load: the immediate
     // feedback is important, the persistent "shut up about subscribing"
     // behavior kicks in on next navigation.
     function showSuccessInSession(email) {
@@ -433,7 +433,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     if (retryBtn) {
       retryBtn.addEventListener('click', function () {
         // "Try a different email" means the user didn't actually want the
-        // address they just typed. Clear the persisted flag too — otherwise
+        // address they just typed. Clear the persisted flag too: otherwise
         // the form stays hidden on every other page and they can't recover.
         clearState();
         applyState();
@@ -479,6 +479,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
       // dev-visible warning but never silently "succeed" so we don't
       // mislead the user into thinking they're subscribed.
       if (!endpoint) {
+        // lint-allow no-console: tells a developer the form is not wired up.
         console.warn('[SubscribeSection] PUBLIC_NEWSLETTER_ENDPOINT is not set. Submissions are no-ops.');
         setStatus(msg.notConfigured, 'error');
         return;
@@ -539,7 +540,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
 
       // Apps Script web apps don't set CORS headers, so we POST with
       // mode: 'no-cors'. We can't read the response, but we also don't
-      // need to — the Apps Script always replies with a confirmation
+      // need to: the Apps Script always replies with a confirmation
       // email on any valid submission, so the UX message is the same
       // either way: "check your inbox to confirm".
       // A request that hangs is given up after 20 seconds, so the form
@@ -555,7 +556,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
       }).then(function () {
         if (giveUp) clearTimeout(giveUp);
         setStatus('', 'idle');
-        // Clear any prior dismiss — an actual subscribe beats "not now."
+        // Clear any prior dismiss: an actual subscribe beats "not now."
         // We do NOT write subscription state here. The CTA stays visible
         // until the user clicks the confirmation link in their email
         // (handled by confirm.astro), which is the only place that sets

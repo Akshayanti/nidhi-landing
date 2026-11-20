@@ -22,7 +22,7 @@
  *
  * Wall-clock: ~5-8s per still on the typical dev machine (bundle once,
  * then renderStill is fast). The bundling step dominates; we run each
- * thumbnail through `npx tsx src/render-thumbnail.ts` which re-bundles
+ * thumbnail through `npx --no-install tsx src/render-thumbnail.ts` which re-bundles
  * per call. For 16 reels that's ~2-3 min total, acceptable for a backfill
  * that runs occasionally. If this becomes a bottleneck, hoist the bundle
  * into this orchestrator and call `renderStill` directly in a loop.
@@ -110,7 +110,7 @@ async function renderOne({ planPath, level, variantOverride }) {
 
   console.log(`┌─ ${base}`);
   execSync(
-    `cd "${REMOTION_DIR}" && npx tsx src/render-thumbnail.ts "${planPath}" "${outPath}" ${variantArg}`,
+    `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-thumbnail.ts "${planPath}" "${outPath}" ${variantArg}`,
     { stdio: "inherit" },
   );
   console.log(`└─ ✓ ${outPath.replace(import.meta.dirname + "/..", ".")}\n`);

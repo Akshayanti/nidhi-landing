@@ -20,28 +20,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        exclude-patterns:
-          # Pre-1.0 packages: by semver convention a "minor" bump on a
-          # 0.x version (e.g. 0.32.x -> 0.128.x) can be a breaking change,
-          # but Dependabot's update-type classifier doesn't know that and
-          # will happily fold it into this "safe" group alongside genuine
-          # patch bumps. Confirmed the hard way: a grouped PR bundled
-          # @anthropic-ai/sdk 0.32.1 -> 0.128.0 (96 minor versions, used
-          # in scripts/lib/llm-script-writer.mjs) with two actually-safe
-          # patches, and src/utils/dependencies.test.ts's version-snapshot
-          # guard correctly failed the PR. Excluding it here means it
-          # still gets proposed (see the ignore rule below), just on its
-          # own, not silently bundled with things that are safe to merge
-          # on sight.
-          - "@anthropic-ai/sdk"
-    ignore:
-      # Same 0.x reasoning as above: only propose patch bumps
-      # automatically. A minor-version bump on this SDK needs a human to
-      # read the changelog and check scripts/lib/llm-script-writer.mjs
-      # still calls a valid API before it ships, so don't auto-open a PR
-      # implying it's routine.
-      - dependency-name: "@anthropic-ai/sdk"
-        update-types: ["version-update:semver-minor"]
 
   # The remotion/ subdirectory has its own package.json and lockfile
   # (video/reel rendering pipeline), separate from the root project.
@@ -59,7 +37,27 @@ updates:
           - "minor"
           - "patch"
 
-  # GitHub Actions versions pinned in .github/workflows/*.yml. Grouped
+  # The Python packages the newsletter send and its tests install
+  # (scripts/requirements.txt, exact versions). They were lower bounds
+  # written by hand in two workflows, so a new jinja2 or beautifulsoup4
+  # reached the newsletter send the day it was released, with no pull
+  # request (#317). Majors come one at a time, as for npm.
+  - package-ecosystem: "pip"
+    directory: "/scripts"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions in .github/workflows/*.yml. Each `uses:` is pinned to a
+  # full commit SHA with the release in a trailing comment (#316);
+  # Dependabot moves the SHA and the comment together. Grouped
   # (including majors, unlike the npm groups above): Actions releases are
   # simple version-tag bumps almost all the time, breaking runtime changes
   # are rare and loud (they show up as an immediate workflow failure on

@@ -2,7 +2,7 @@
 # Turn a kit's rendered carousel slides into 9:16 story frames (one per slide) and a silent
 # slideshow reel with slide-left transitions. First used for the Nov 1, 2026 volunteer call.
 # Usage: scripts/slides-to-reel.sh <carousel dir> <out dir> ["<seconds per slide, space separated>"]
-# Without the seconds it writes the stories only (as for Nov 1, whose reel is a text reel from render-text-reel.mjs).
+# Without the seconds it writes the stories only (as for Nov 1, 2026, which had no slideshow reel).
 # Writes <out>/stories/story-NN.png, <out>/reel/frames/frame-NN.png, <out>/reel/reel.mp4, <out>/reel/cover.png.
 # Stories: card 1000 wide at y=290 (clear of the top bar and reply bar). Reel: card 900 wide, shifted
 # left, so text stays clear of the action buttons on the right and the caption area at the bottom.

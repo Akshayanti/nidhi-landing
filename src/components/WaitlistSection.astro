@@ -255,6 +255,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
       if (!email) return;
 
       if (!endpoint) {
+        // lint-allow no-console: tells a developer the form is not wired up.
         console.warn('[WaitlistSection] PUBLIC_WAITLIST_ENDPOINT is not set. Submissions are no-ops.');
         setStatus(notConfigured, 'error');
         return;

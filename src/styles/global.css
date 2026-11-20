@@ -74,7 +74,7 @@ html:is([lang="hi"], [lang="mr"]) {
 }
 
 /* ============================================================================
- * Color constants — single source of truth.
+ * Color constants: single source of truth.
  *
  * All literal hex values for brand, neutral, and semantic colors live here.
  * Nothing else in this stylesheet (or any component) should declare a color
@@ -88,7 +88,7 @@ html:is([lang="hi"], [lang="mr"]) {
  *
  *   --neutral-*  (grayscale + surfaces)
  *                Whites, off-whites, grays, and dark surfaces. Not in the
- *                palette doc — these are surface neutrals that don't carry
+ *                palette doc: these are surface neutrals that don't carry
  *                hue identity.
  *
  *   --semantic-* (success, warning, danger, info)
@@ -1291,7 +1291,7 @@ details[open] > .disclosure::after,
 /* Inline figures: SVG diagrams + image embeds inside .prose blocks. */
 /* These rules live in the global stylesheet (not BlogPost.astro)    */
 /* because Astro's scoped CSS does NOT cascade into markdown-rendered */
-/* slot content — the SVG elements never receive the data-astro-cid  */
+/* slot content: the SVG elements never receive the data-astro-cid  */
 /* attribute the scoped selectors require, so scoped rules silently   */
 /* don't apply. Global rules sidestep that entirely.                  */
 /* ----------------------------------------------------------------- */
@@ -1445,7 +1445,7 @@ details[open] > .disclosure::after,
   .prose { font-size: 1rem; }
 }
 
-/* Learning Path — blog index */
+/* Learning Path: blog index */
 .lp-pathContainer {
   position: relative;
   max-width: 680px;
@@ -1851,7 +1851,7 @@ details[open] > .disclosure::after,
  *
  * Shared visual system: single centered card, one primary action, muted
  * secondary copy. Consistent with the "short and honest" pattern of the
- * privacy page and Dither's UX — these are functional pages, not marketing.
+ * privacy page and Dither's UX: these are functional pages, not marketing.
  * ========================================================================= */
 .transactional {
   display: flex;
@@ -3351,7 +3351,7 @@ details[open] > .disclosure::after,
   text-wrap: pretty;
 }
 
-/* Reduced motion — loan compare */
+/* Reduced motion: loan compare */
 @media (prefers-reduced-motion: reduce) {
   .lc-shareBtn,
   .lc-resetBtn,
@@ -3364,7 +3364,7 @@ details[open] > .disclosure::after,
   }
 }
 
-/* Reduced motion — multi-currency net worth */
+/* Reduced motion: multi-currency net worth */
 @media (prefers-reduced-motion: reduce) {
   .mcnw-shareBtn,
   .mcnw-resetBtn,
@@ -3383,7 +3383,7 @@ details[open] > .disclosure::after,
   }
 }
 
-/* Reduced motion — learning path */
+/* Reduced motion: learning path */
 @media (prefers-reduced-motion: reduce) {
   .lp-nodeCard,
   .lp-nodeDot,
@@ -6115,6 +6115,12 @@ body[data-page="landing"] .site-footer {
   background: var(--color-bg-white);
   border: 1px solid var(--color-border);
   border-radius: 14px;
+}
+
+/* The home page's "answer two questions" link lands here (/blog/#level-helper):
+   clear of the sticky header, with a little space above the card. */
+#level-helper {
+  scroll-margin-top: calc(var(--site-header-block-size) + 1rem);
 }
 
 /* /blog/'s two ways in: the path from the start, or one question answered by

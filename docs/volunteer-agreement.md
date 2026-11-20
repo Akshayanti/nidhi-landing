@@ -68,7 +68,7 @@ The parts that touch this sheet:
 
 The menu lives in the sheet's own Apps Script project (Extensions → Apps Script; script ID `1LlekrQY50tzBswG07Z0br2RBElD2EQYEcA2evVNAcznRfq51wVuu6scM`). The ID alone gives no access: opening or changing the project needs the nidhi Google account. The project holds four files: `Code.js` (`scripts/volunteer-list.gs`), `review-sheet.js` and `review-text.js` (from `scripts/review/`), and `Data.js` (generated, never committed). After a glossary or `scripts/review/glossary-context.json` changes:
 
-1. Export every language: `npx tsx scripts/review/glossary-export.ts --langs id,es,cs,mr,fr,pt,de,ja,vi,tr,ko,ar --out <dir>`.
+1. Export every language: `npx --no-install tsx scripts/review/glossary-export.ts --langs id,es,cs,mr,fr,pt,de,ja,vi,tr,ko,ar --out <dir>`.
 2. Clone the project into an empty folder with clasp, copy in the new `Data.js` (and the review files if they changed), and `clasp push --force`.
 3. Clone it again into another empty folder and compare, to confirm what is live.
 

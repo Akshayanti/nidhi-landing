@@ -28,19 +28,6 @@ referentialReading:
     author: "Morgan Housel"
     url: "https://www.goodreads.com/book/show/41881472-the-psychology-of-money"
     type: "book"
-howTo:
-  name: "How to Get Out of Debt"
-  steps:
-    - name: "List every debt"
-      text: "Write down every debt you have: the balance, interest rate, and minimum payment. Include credit cards, student loans, personal loans, and any other outstanding balances."
-    - name: "Keep minimum payments on everything"
-      text: "Both methods assume every minimum payment is made. Missed payments add late fees and credit damage that can undo progress."
-    - name: "Work out your extra money"
-      text: "After minimum payments and essential expenses, see how much is left each month. Even 50 euros a month shortens the timeline."
-    - name: "Compare snowball and avalanche"
-      text: "Snowball targets the smallest balance first for quick wins and motivation. Avalanche targets the highest interest rate first to minimise total interest paid. Both work; the better fit is usually the one a person can stick with."
-    - name: "Direct extra money at one target debt"
-      text: "Both methods put every extra euro toward one target debt while minimums are paid on everything else. When that debt is cleared, its payment rolls into the next one."
 relatedSlugs: ["liabilities", "what-is-net-worth", "assets"]
 faq:
   - question: "What is the debt snowball method?"

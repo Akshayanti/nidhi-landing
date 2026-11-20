@@ -1,0 +1,12 @@
+# Python packages for scripts/send_newsletter.py and its tests. Exact versions,
+# the packages they pull in included, so the newsletter send installs what the
+# pull request checks tested. newsletter.yml and pr-checks.yml both install
+# this file; Dependabot (pip, /scripts) proposes updates.
+#
+# The two the script imports:
+beautifulsoup4==4.15.0
+Jinja2==3.1.6
+# What those two need:
+MarkupSafe==3.0.4
+soupsieve==4.1.2
+typing_extensions==4.16.0

@@ -15,7 +15,7 @@ describe('the compact inflation history', () => {
       countries: {
         IND: { iso2: 'IN', years: { '1960': 1.78, '1961': 1.7 } },
         CZE: { iso2: 'CZ', years: { '1992': 11.1 } },
-        XXX: { iso2: 'XX', years: {} },
+        ZZZ: { iso2: 'ZZ', years: {} },
       },
     };
     const compact = toCompact(file);

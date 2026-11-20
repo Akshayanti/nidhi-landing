@@ -350,7 +350,7 @@ describe('computeFromInput', () => {
     // The cent the recast payment leaves is part of the last payment.
     assert.equal(hybrid.schedule.length, 360);
     // Total interest under hybrid is 361,272.75 (361,272 cents in this
-    // case — Python yields 36,127,275; let the engine speak for itself).
+    // case: Python yields 36,127,275; let the engine speak for itself).
     assert.equal(hybrid.totalInterestMinor, 36_127_275);
   });
 

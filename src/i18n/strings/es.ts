@@ -605,32 +605,27 @@ export const es: Dict = {
         kicker: 'Una moneda o varias',
         title: 'Calculadora de patrimonio neto',
         desc: 'Añade lo que tienes y lo que debes para ver tu patrimonio neto. Funciona en una moneda o en 38, con tipos de cambio oficiales actualizados, y si tienes varias, muestra qué parte de tu patrimonio está en monedas en las que no gastas.',
-        itemName: 'Calculadora de patrimonio neto y analizador de riesgo cambiario',
       },
       loanComparison: {
         kicker: 'Decisiones de endeudamiento',
         title: 'Comparador de préstamos',
         desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
-        itemName: 'Calculadora para comparar préstamos',
       },
       monteCarlo: {
         kicker: 'Proyecciones y jubilación',
         title: 'Simulador Monte Carlo',
         desc: 'Proyecta tus ahorros miles de veces con rentabilidades tomadas del historial a largo plazo de los mercados mundiales. Mira un resultado bajo, uno mediano y uno alto, y con qué frecuencia el dinero dura una vez que vives de él.',
-        itemName: 'Simulador Monte Carlo para la jubilación',
       },
       inflation: {
         kicker: 'Los precios con el tiempo',
         title: 'Calculadora de inflación',
         desc: 'Los precios suelen subir un poco cada año, y eso se acumula. Mira qué podría comprar tu dinero más adelante, con la tasa que elijas, cuánto podrían costar las cosas, cuánto vale hoy una cantidad de antes y si tu subida salarial sigue el ritmo. Para cantidades del pasado, puede usar la inflación anual real de tu país, del Banco Mundial, en la mayoría de los países.',
-        itemName: 'Calculadora de inflación',
       },
       investOrPayOff: {
         kicker: 'Deuda o inversión',
         title: 'Calculadora: invertir o pagar deuda',
         desc:
           'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un abanico de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
-        itemName: 'Calculadora: invertir o pagar deuda',
       },
     },
     how: {
