@@ -8,7 +8,10 @@ import { DEFAULT_LOCALE, LOCALES, LOCALE_META, inSearch } from './src/i18n/confi
 import { lastChanged } from './src/utils/lessonDates.ts';
 import { CHANGE_DAYS } from './src/i18n/strings/changes.ts';
 import { LAUNCH_HOST_SLUGS } from './src/utils/launchHosts.ts';
+import { minifySync } from 'vite';
+import { fileURLToPath } from 'node:url';
 import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/short-link-stub.mjs';
+import { minifyInlineScripts } from './scripts/lib/minify-inline-scripts.mjs';
 
 /**
  * Read frontmatter dates and tags from every markdown file under a locale's
@@ -427,6 +430,45 @@ function socialShortLinks() {
   };
 }
 
+/**
+ * Minifies the inline scripts in every page the build wrote (#450,
+ * scripts/lib/minify-inline-scripts.mjs). It runs last, so the short-link
+ * pages rewritten above are covered too. The minifier is the one Vite uses for
+ * the bundled scripts; a script it cannot read fails the build.
+ */
+function minifiedInlineScripts() {
+  return {
+    name: 'minified-inline-scripts',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const minify = (code) => {
+          const { code: small, errors } = minifySync('inline.js', code, { module: false });
+          if (errors.length > 0) throw new Error(`An inline script does not parse: ${errors[0].message}`);
+          return small;
+        };
+        const cache = new Map();
+        let before = 0;
+        let after = 0;
+        const walk = (folder) => {
+          for (const entry of readdirSync(folder)) {
+            const full = join(folder, entry);
+            if (statSync(full).isDirectory()) walk(full);
+            else if (entry.endsWith('.html')) {
+              const html = readFileSync(full, 'utf8');
+              const small = minifyInlineScripts(html, minify, cache);
+              before += Buffer.byteLength(html);
+              after += Buffer.byteLength(small);
+              if (small !== html) writeFileSync(full, small);
+            }
+          }
+        };
+        walk(fileURLToPath(dir));
+        logger.info(`Inline scripts minified: ${before} bytes of HTML became ${after}.`);
+      },
+    },
+  };
+}
+
 export default defineConfig({
   site: 'https://nidhi.today',
   integrations: [react(), sitemap({
@@ -538,7 +580,7 @@ export default defineConfig({
       }
       return item;
     },
-  }), socialShortLinks()],
+  }), socialShortLinks(), minifiedInlineScripts()],
   redirects: REDIRECTS,
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and

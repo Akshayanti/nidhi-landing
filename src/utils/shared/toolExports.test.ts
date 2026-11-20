@@ -387,12 +387,12 @@ describe('printed reports', () => {
 describe('printed report styles', () => {
   it('lets a heading over a number column wrap', async () => {
     const { readFileSync } = await import('node:fs');
-    const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
+    const css = readFileSync(new URL('../../styles/tools.css', import.meta.url), 'utf8');
     assert.match(css, /th\.tool-reportNum\s*\{\s*white-space:\s*normal;/);
   });
   it('stacks a wide table on narrow paper, with each heading beside its value', async () => {
     const { readFileSync } = await import('node:fs');
-    const css = readFileSync(new URL('../../styles/global.css', import.meta.url), 'utf8');
+    const css = readFileSync(new URL('../../styles/tools.css', import.meta.url), 'utf8');
     assert.match(css, /@media \(max-width: 600px\) \{\s*\.tool-reportTable--stack,/);
     // The heading is text in the cell, never an attribute: it can be a typed name.
     assert.match(css, /\.tool-reportTable--stack \.tool-reportLabel\s*\{\s*display:\s*block;/);

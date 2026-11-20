@@ -71,6 +71,7 @@ const breadcrumbSchema = {
 
 <BaseLayout
   locale={locale}
+  sheets={['learn']}
   alternates={LOCALES}
   title={hubMeta.title}
   description={hubMeta.description}
@@ -112,7 +113,7 @@ const breadcrumbSchema = {
 
       {islandPosts.length > 0 ? (
         <CollectionList
-          client:load
+          client:idle
           posts={islandPosts}
           strings={learn.island}
           tagHrefs={tagHrefs}
