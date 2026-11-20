@@ -4,8 +4,11 @@ The website for [nidhi.today](https://nidhi.today/?utm_source=github).
 
 ## What's here
 
-- **Blog** — personal finance articles organized by level: discovery, building, psychology, optimizing, and mastery.
-- **Tools** — free financial calculators and tools.
+- **Lessons**: personal finance lessons in four levels (discovery, building, psychology, optimizing), plus the Inclusive Finances series. Written in English (`src/content/blog/`).
+- **How-to guides**: short step-by-step guides for one money task each (`src/content/guides/`).
+- **Free tools**: calculators that run in the browser (`src/pages/free/`).
+- **Five languages**: the site's own pages and tools are published in English, Hindi, Spanish, Czech and Marathi (`src/i18n/`); lessons and guides stay in English.
+- **The newsletter and the reel pipeline**: `scripts/` and `remotion/`. [scripts/README.md](scripts/README.md) lists the tools that are run by hand.
 
 ## Local development
 
@@ -15,9 +18,21 @@ npm run dev          # start the dev server
 npm run build        # production build
 npm test             # run the test suite
 npm run lint         # lint the project
+npm run typecheck    # type-check every .ts and .tsx file
+```
+
+The newsletter script is Python and has its own tests, which `npm test` does not run:
+
+```bash
+pip install -r scripts/requirements.txt
+python -m unittest scripts/test_send_newsletter.py scripts/test_newsletter_sender.py scripts/test_qr_svg.py
 ```
 
 Requires **Node.js 24 or later**; CI and deploys run the exact version in `.nvmrc` (`nvm use` picks it up).
+
+### Version pins
+
+`package-lock.json` decides what is installed: CI and deploys run `npm ci`, which installs exactly what the lockfile names and fails if `package.json` disagrees with it. So most ranges in `package.json` are carets, and a new version arrives only in a pull request that changes the lockfile. Three things are exact on top of that, because for them even the range is the control: `tsx` (it runs the tests) and `typescript` (a compiler minor can add errors), in the root and in `remotion/`, and the one approved install script below. `src/utils/dependencies.test.ts` holds a snapshot of all of it, so a dependency change, Dependabot's included, fails `npm test` until the snapshot is edited in the same pull request. GitHub Actions are pinned to commit SHAs and the Python packages to exact versions in `scripts/requirements.txt`.
 
 ### Install scripts
 

@@ -160,6 +160,28 @@ describe('the IndexNow job keeps its word when the key file is not reachable (#4
   });
 });
 
+describe('files that only work in one place are in it', () => {
+  it('the Bing verification file is served from the site root (#324)', () => {
+    // Bing reads it at https://nidhi.today/BingSiteAuth.xml. For six months it
+    // sat at the repository root, which the site never serves.
+    assert.match(read('public/BingSiteAuth.xml'), /<user>[0-9A-F]{32}<\/user>/);
+    assert.ok(!readdirSync(ROOT).includes('BingSiteAuth.xml'), 'a second copy at the repository root does nothing');
+  });
+
+  it('the reel script writer names its model once (#333, #472)', () => {
+    // A model id stops working on its retirement date. Written in one place,
+    // there is one line to change; a dated id (…-20250929) is an old snapshot.
+    const id = /claude-(?:opus|sonnet|haiku|fable)-[0-9][\w.-]*/g;
+    const found = readdirSync(join(ROOT, 'scripts'), { recursive: true })
+      .map(String)
+      .filter((name) => /\.(mjs|js|ts|py|sh|md)$/.test(name) && name !== 'repo-hygiene.test.mjs')
+      .flatMap((name) => (read(join('scripts', name)).match(id) ?? []).map((model) => `${name}: ${model}`));
+    assert.equal(found.length, 1, found.join('\n'));
+    assert.match(found[0], /^lib\/llm-script-writer\.mjs: claude-[a-z]+-\d+(-\d+)?$/);
+    assert.match(read('scripts/lib/llm-script-writer.mjs'), /process\.env\.NIDHI_REEL_MODEL \|\| DEFAULT_REEL_MODEL/);
+  });
+});
+
 describe('.gitignore', () => {
   const ignored = read('.gitignore').split('\n');
 
