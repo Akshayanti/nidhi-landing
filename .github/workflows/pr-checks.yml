@@ -344,6 +344,13 @@ jobs:
         # JS ecosystem and lower-severity findings often have no available
         # fix; gating on every advisory leads to dismissal fatigue.
         #
+        # Scope: `--omit=dev` audits `dependencies` only, the packages
+        # whose code is built into the site (astro, react and what they pull
+        # in). It does not audit devDependencies, and some of those run in
+        # every build and deploy without reaching a reader: puppeteer (the
+        # figure renders), tsx and typescript. Dependabot's alerts cover
+        # both lists.
+        #
         # The script runs `npm audit --omit=dev` and fails on those two
         # levels, as the plain command did, except for an advisory with a
         # dated exception in scripts/lib/audit-exceptions.mjs: one published
@@ -382,7 +389,8 @@ jobs:
   # installs strictly and type-checks; it renders nothing, since that needs a
   # browser download and a real reel plan (the layout guard rejects the
   # composition's placeholder props). No npm audit: Remotion never reaches
-  # readers, which is also why the site's audit uses --omit=dev.
+  # readers. The site's audit leaves out its devDependencies on the same
+  # ground; its step says what that does and does not cover.
   # ---------------------------------------------------------------------------
   remotion:
     name: Remotion
