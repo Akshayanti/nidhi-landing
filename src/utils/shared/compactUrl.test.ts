@@ -2,7 +2,7 @@
  * Unit tests for src/utils/shared/compactUrl.ts.
  *
  * These tests pin the wire-format contract every free tool relies on. If
- * one of these breaks, every tool's share URLs break with it — so the
+ * one of these breaks, every tool's share URLs break with it, so the
  * suite is intentionally narrow and assertion-heavy.
  *
  * Run with:  npm test
@@ -61,7 +61,7 @@ describe('encodeTuple', () => {
   });
 
   it('preserves empty middle fields (positional)', () => {
-    // `~50000~USD` — empty name, then value, then currency. The leading
+    // `~50000~USD`: empty name, then value, then currency. The leading
     // empty must remain so position 1 is still `value`.
     assert.equal(encodeTuple(['', '50000', 'USD']), '~50000~USD');
   });
@@ -74,7 +74,7 @@ describe('encodeTuple', () => {
   it('escapes literal tilde in field values via the SOH marker', () => {
     // The user's asset is named "Mortgage ~ House"; the tilde must be
     // replaced or the tuple parser splits it into two phantom fields.
-    // The space stays raw — URLSearchParams will encode it on toString().
+    // The space stays raw: URLSearchParams will encode it on toString().
     assert.equal(encodeTuple(['Mortgage ~ House', '300000']), 'Mortgage \u0001 House~300000');
   });
 });
@@ -105,7 +105,7 @@ describe('decodeTuple', () => {
   });
 
   it('pads to expectedLength when shorter', () => {
-    // Caller wants 4 fields but tuple only has 2 — fill the rest with ''.
+    // Caller wants 4 fields but tuple only has 2: fill the rest with ''.
     assert.deepEqual(decodeTuple('a~b', 4), ['a', 'b', '', '']);
   });
 

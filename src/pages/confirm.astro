@@ -108,7 +108,7 @@ const isDev = import.meta.env.DEV;
       body.set('t', token);
 
       // Apps Script doesn't emit CORS headers, so we can't read the
-      // response — fire and redirect. Apps Script is authoritative: if
+      // response: fire and redirect. Apps Script is authoritative: if
       // the token was valid, the row is now confirmed; if not, nothing
       // changed and the user will see /subscription-invalid/ on retry
       // if they click the original email link a second time.
@@ -119,7 +119,7 @@ const isDev = import.meta.env.DEV;
         body: body.toString(),
       }).then(function () {
         // Set the subscription flag to confirmed. This is the ONLY place
-        // that writes this key — form submit doesn't set it, so the CTA
+        // that writes this key: form submit doesn't set it, so the CTA
         // stays visible until the double-opt-in loop is complete. Works
         // regardless of which browser/device the confirm link is opened on.
         // See /privacy for what this stores.
@@ -134,7 +134,7 @@ const isDev = import.meta.env.DEV;
           // 300 ms later, well inside PostHog's batching window.
           window.posthog.capture('blog_subscribe_confirm_clicked', {}, { send_instantly: true });
         }
-        // Delay redirect to let PostHog's async flush complete — without
+        // Delay redirect to let PostHog's async flush complete: without
         // this the navigation cancels the in-flight capture request.
         setTimeout(function () {
           window.location.replace('/subscription-confirmed');

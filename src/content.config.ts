@@ -94,7 +94,7 @@ const blog = defineCollection({
      * If this post has a paired free tool on /free/*, declare it here. The
      * blog template renders a callout block; the reel caption writer auto-
      * appends the URL line; the LLM script writer is told the tool exists
-     * (so it CAN — not must — reference it in onscreenText if natural).
+     * (so it CAN, not must, reference it in onscreenText if natural).
      *
      * `idea` is the one-line takeaway the tool puts into practice. When set,
      * the callout shows it as the "Understand" step between the lesson and
@@ -108,7 +108,7 @@ const blog = defineCollection({
     }).optional(),
     /**
      * One-line concrete promise of what the blog adds beyond the 60-second
-     * reel — worked example, country-specific table, depth chart, etc.
+     * reel: worked example, country-specific table, depth chart, etc.
      * Surfaces in the reel caption as the "why click through" line. MUST
      * reflect content that actually exists in the post body; do not write
      * promises the reader cannot find on the page.
@@ -116,7 +116,7 @@ const blog = defineCollection({
     reelPromise: z.string().optional(),
     /**
      * Ordered list of post slugs to feature as "Keep reading" suggestions.
-     * Slugs that aren't published yet are silently skipped — they auto-promote
+     * Slugs that aren't published yet are silently skipped: they auto-promote
      * once their pubDate passes. If fewer than 3 published candidates match,
      * the remaining slots are filled by tag-based matching against all posts.
      */

@@ -2,25 +2,25 @@ name: Newsletter pipeline
 
 # Sends newsletter emails for newly-published posts and scans the
 # FROM_EMAIL inbox for bounces. Completely decoupled from the deploy
-# workflow — a failure here never delays or blocks a site deploy.
+# workflow: a failure here never delays or blocks a site deploy.
 #
 # How this workflow gets triggered:
 #   1. Automatically, ~45s after every successful `Deploy to GitHub Pages`
 #      run, via the `trigger-newsletter` job in deploy.yml. The delay is
-#      intentional — it gives the GitHub Pages CDN time to make the new
+#      intentional: it gives the GitHub Pages CDN time to make the new
 #      /rss.xml globally visible before we fetch it. See deploy.yml for
 #      the reasoning.
 #   2. Manually, from the Actions tab → "Newsletter pipeline" → Run
 #      workflow. Useful for retrying a failed send or triggering a
 #      bounce scan on demand.
-#   3. On a daily cron, as a safety net — if deploy happens to be broken
+#   3. On a daily cron, as a safety net: if deploy happens to be broken
 #      on a given day, the bounce scan still runs and any unsent posts
 #      from previous runs are retried.
 #
 # The newsletter content itself comes from the DEPLOYED site (not a local
 # build): we fetch https://nidhi.today/rss.xml and the HTML of each new
 # post directly. This guarantees subscribers receive exactly what's live
-# on the web at send time — no "the email mentions content that the site
+# on the web at send time: no "the email mentions content that the site
 # doesn't have yet" skew. See NEWSLETTER_FETCH_LIVE in send_newsletter.py.
 
 on:
@@ -37,7 +37,7 @@ on:
   schedule:
     # Daily safety-net run at 07:30 UTC. Independent from (and after) the
     # deploy cron at 06:03 UTC + its 45s hand-off, so this won't collide
-    # under normal operation — but if a deploy fails for the day, this
+    # under normal operation: but if a deploy fails for the day, this
     # still gives us a daily bounce scan and a chance to pick up any
     # partial-send resumes.
     - cron: '03 7 * * *'
@@ -48,7 +48,7 @@ permissions:
 
 concurrency:
   group: newsletter
-  # Never cancel an in-flight send mid-fan-out — we'd lose recipients
+  # Never cancel an in-flight send mid-fan-out: we'd lose recipients
   # between the Apps Script's progress marker and the Python marker file.
   # Queue instead: back-to-back triggers run sequentially.
   cancel-in-progress: false
@@ -59,17 +59,17 @@ jobs:
     # Newsletter secrets + shared config live at JOB level (not workflow
     # level) so they're reliably available to step-level `if:` expressions
     # via the `env` context. GitHub Actions does not allow `secrets.X` in
-    # `if:` directly — going through `env` is the documented workaround.
+    # `if:` directly: going through `env` is the documented workaround.
     #
-    # NEWSLETTER_ENDPOINT is read from `secrets.PUBLIC_NEWSLETTER_ENDPOINT`
-    # — the same URL the browser uses. We use one secret for both the
+    # NEWSLETTER_ENDPOINT is read from `secrets.PUBLIC_NEWSLETTER_ENDPOINT`,
+    # the same URL the browser uses. We use one secret for both the
     # build-time baked-into-JS endpoint and the server-side workflow
     # endpoint, because it's literally the same Apps Script `/exec` URL
     # and is already public by design (every page's JS references it).
     # The `PUBLIC_` prefix is just Astro/Vite convention for
     # "exposed at build time"; it has no bearing on Actions secret scoping.
     #
-    # NEWSLETTER_HMAC_SECRET is a genuinely separate secret — a shared
+    # NEWSLETTER_HMAC_SECRET is a genuinely separate secret: a shared
     # signing key proving to Apps Script that send_post / scan_bounces
     # requests came from our CI and not from someone who saw the public
     # endpoint URL.
@@ -97,7 +97,7 @@ jobs:
         # four skipped steps and zero signal about what's wrong.
         # Sets `configured=true|false` as a step output that every
         # subsequent gated step depends on. Never touches secret values
-        # directly in echo — only presence checks, so nothing leaks.
+        # directly in echo: only presence checks, so nothing leaks.
         id: preflight
         run: |
           set -e
@@ -122,7 +122,7 @@ jobs:
             # Pair with the Apps Script debugHmacSecret() function: if
             # both sides report 64 but bad_signature still happens,
             # compare the HMAC of the literal string "secret-check"
-            # from both sides — they'll match iff the secrets match.
+            # from both sides: they'll match iff the secrets match.
             # That string signs nothing: no action accepts it, so the
             # value can sit in a public log. Never print a signature
             # that an action accepts.
@@ -166,7 +166,7 @@ jobs:
         env:
           # Live-fetch mode: read /rss.xml and per-post HTML over HTTPS
           # directly from the deployed site. No `npm run build` in this
-          # workflow — the Astro project's source tree isn't even needed
+          # workflow: the Astro project's source tree isn't even needed
           # for rendering, only the emails/ templates and the script.
           NEWSLETTER_FETCH_LIVE: '1'
           MARKER_FILE: ${{ github.workspace }}/.last-sent-guid.txt
@@ -222,7 +222,7 @@ jobs:
       - name: Scan for newsletter bounces
         # Asks Apps Script to read Google's delivery failure reports in the
         # FROM_EMAIL inbox from the last 14 days and flip the rows they
-        # name to status=bounced. Idempotent — safe to run multiple times.
+        # name to status=bounced. Idempotent: safe to run multiple times.
         # Signed with HMAC-SHA256(HMAC_SECRET, "scan_bounces:<unix time>");
         # the time goes along as `ts` and the signature is good for five
         # minutes, so one read from a log later opens nothing (see
@@ -281,7 +281,7 @@ jobs:
         # `newsletter-alert` when the newsletter pipeline did anything
         # other than cleanly succeed. Because this workflow is decoupled
         # from deploy, the Actions UI's "workflow status" for deploys
-        # no longer reflects newsletter health — the issue is the primary
+        # no longer reflects newsletter health: the issue is the primary
         # push-based alert.
         #
         # A run that could not start (a missing secret), a bounce scan or
@@ -347,7 +347,7 @@ jobs:
           **What to check first**
           0. If \`Secrets configured\` is not \`true\`, nothing was sent: the preflight step's log names the missing secret. If the bounce scan or the health check is \`false\`, read that step's log, then the script's executions.
           1. If \`outcome\` is anything but \`success\`, read the step log.
-          2. If \`total_partial > 0\`, the next run should resume automatically — the guid was NOT written to .last-sent-guid.txt. Just re-run this workflow from the Actions tab.
+          2. If \`total_partial > 0\`, the next run should resume automatically: the guid was NOT written to .last-sent-guid.txt. Just re-run this workflow from the Actions tab.
           3. If \`total_failed > 0\` but \`total_sent > 0\`, inspect PostHog for \`blog_newsletter_send_failed\` events (grouped by email_domain).
           4. If the health check's \`from_email_sendable.ok\` is false, the "Send mail as" alias in Gmail was removed. Re-add it.
           EOF

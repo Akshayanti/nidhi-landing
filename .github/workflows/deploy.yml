@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     # Pushes that only update the newsletter marker file shouldn't trigger
-    # a rebuild/redeploy — prevents a self-triggering loop after the
+    # a rebuild/redeploy: prevents a self-triggering loop after the
     # newsletter workflow commits .last-sent-guid.txt back to main.
     paths-ignore:
       - '.last-sent-guid.txt'
@@ -15,7 +15,7 @@ on:
     # This schedule is the backstop for that trigger.
     # The newsletter workflow is triggered downstream of this (via the
     # trigger-newsletter job below), so scheduled deploys also end up
-    # firing a newsletter pass — which, if nothing is pending, is a no-op
+    # firing a newsletter pass, which, if nothing is pending, is a no-op
     # plus a bounce scan.
     - cron: '3,18,33,48 4,5,6 * * *'
   workflow_dispatch:
@@ -80,7 +80,7 @@ jobs:
             if [ -z "$ADDED" ]; then
               echo "::warning file=$FILE::PrivacyPage.astro was modified but no new changelog entry was added. If the change is material (new processor, data category, retention), please add an entry to the \`changelog\` array."
             else
-              echo "PrivacyPage.astro changed and changelog entry was updated — ok."
+              echo "PrivacyPage.astro changed and changelog entry was updated: ok."
             fi
           fi
 
@@ -187,7 +187,7 @@ jobs:
     env:
       # The key MUST match public/<key>.txt. Rotating it requires
       # renaming the file in public/ and updating this single constant
-      # in lockstep — keep them as close to literally adjacent as the
+      # in lockstep: keep them as close to literally adjacent as the
       # tooling allows.
       INDEXNOW_KEY: f5c9f51a26d65196884f3dc7a7687284
     steps:
@@ -272,7 +272,7 @@ jobs:
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
 
   # Hand off to the newsletter workflow (see .github/workflows/newsletter.yml)
-  # AFTER a propagation delay — GitHub Pages reports deploy success when the
+  # AFTER a propagation delay: GitHub Pages reports deploy success when the
   # deployment API call succeeds, but the CDN can take up to ~60s to make
   # the new /rss.xml globally visible. Newsletter's live-fetch mode reads
   # /rss.xml to discover unsent posts, so firing it too early would see
@@ -286,7 +286,7 @@ jobs:
   #  - a slow or broken newsletter send never delays or blocks the deploy.
   #
   # The trigger is via `gh workflow run`, which fires a workflow_dispatch
-  # event — the same trigger the Actions UI's "Run workflow" button uses,
+  # event: the same trigger the Actions UI's "Run workflow" button uses,
   # so manual and automatic invocations share one code path in
   # newsletter.yml.
   trigger-newsletter:
@@ -315,7 +315,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # --ref is the branch to run against (newsletter.yml must exist on
         # that ref). We always run the version of newsletter.yml that's on
-        # main, regardless of which commit triggered this deploy — the two
+        # main, regardless of which commit triggered this deploy: the two
         # workflows are independently versioned by design, and we avoid
         # dispatching an old newsletter.yml by accident.
         run: |

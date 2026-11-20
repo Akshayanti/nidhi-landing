@@ -1,5 +1,5 @@
 /**
- * Compact URL codec helpers — shared across all free tools.
+ * Compact URL codec helpers: shared across all free tools.
  *
  * Why this module exists
  * ----------------------
@@ -9,11 +9,11 @@
  * embarrass the brand. This module provides the two primitives every tool
  * uses to keep URLs short:
  *
- *   1. `encodeTuple` / `decodeTuple` — pack a record's fields into a single
+ *   1. `encodeTuple` / `decodeTuple`: pack a record's fields into a single
  *      tilde-separated value (`a1=US%20Stocks~50000~USD`). Trailing default
  *      fields are dropped on encode and restored on decode.
  *
- *   2. `setNonDefault` — emit a query-string key only when its value differs
+ *   2. `setNonDefault`: emit a query-string key only when its value differs
  *      from the documented default. Combined with short key names (`m`, `n`,
  *      `f`, `c` rather than `mode`, `count`, `func`, `currency`) this is the
  *      bulk of the URL-shrinking win.
@@ -29,12 +29,12 @@
  *   - Every scalar field is omitted when at its default. Default values are
  *     declared in the consuming tool's url.ts, NOT here, so each tool owns
  *     its own contract.
- *   - Wire format is fixed and not versioned. Hard cutovers only — see the
+ *   - Wire format is fixed and not versioned. Hard cutovers only: see the
  *     v5.2 plan note for why we don't carry legacy decode paths.
  *
  * The separator
  * -------------
- * `~` (tilde) is unreserved per RFC 3986 — neither `URLSearchParams` nor
+ * `~` (tilde) is unreserved per RFC 3986: neither `URLSearchParams` nor
  * `encodeURIComponent` percent-escape it, which is what we want for a
  * delimiter (the URL stays readable: `a1=US+Stocks~50000~USD`).
  *
@@ -59,7 +59,7 @@ const TILDE_MARKER = '\u0001';
 
 /**
  * Replace literal tildes in a field value with the internal marker so the
- * delimiter can never collide with field content. The output is raw —
+ * delimiter can never collide with field content. The output is raw:
  * callers should hand it directly to `URLSearchParams.set` and let the
  * URL-encoding happen there (NOT pre-encode it).
  */
@@ -134,7 +134,7 @@ export function setNonDefault(
  * application/x-www-form-urlencoded encoding set, which percent-escapes
  * tilde as `%7E`. RFC 3986 marks tilde as an unreserved character, and
  * every URL parser (including `new URLSearchParams(qs)`) accepts a raw
- * tilde without complaint. Keeping it raw saves 2 bytes per separator —
+ * tilde without complaint. Keeping it raw saves 2 bytes per separator:
  * with ~25 separators in a typical 8-row share URL, that's ~50 bytes of
  * pointless overhead.
  *

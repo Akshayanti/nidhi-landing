@@ -135,6 +135,7 @@ function noticeLayers(live: Guide[]): void {
   const perGroup = new Map<string, number>();
   for (const g of live) perGroup.set(g.data.group, (perGroup.get(g.data.group) ?? 0) + 1);
   for (const line of reviewNotices({ guides: live.length, largestGroup: Math.max(0, ...perGroup.values()) })) {
+    // lint-allow no-console: a notice in the build log, once per build.
     console.warn(line);
   }
 }

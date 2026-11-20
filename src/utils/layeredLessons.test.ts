@@ -30,7 +30,7 @@ describe('layered-lesson rule', () => {
           { text: 'linked', href: '#linked' },
           { text: 'missing href' },
         ],
-      } as any, []),
+      } as unknown as Parameters<typeof layeredLessonProblems>[0], []),
       ['"In this lesson" needs at least two takeaways, each with an href to its section'],
     );
   });
