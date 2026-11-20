@@ -187,10 +187,10 @@ export const es: Dict = {
       // No gendered subject for the one person behind the site, as in the English.
       whoIsWriting:
         'Cada artículo de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
-      // "referential reading" is the lessons' own English heading, so it is
+      // "Suggested Reading" is the lessons' own English heading, so it is
       // quoted as it appears there and glossed in Spanish.
       whyYouCanTrustIt1:
-        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada artículo bajo «referential reading» (lecturas de referencia).',
+        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada artículo bajo «Suggested Reading» (lecturas sugeridas).',
       sourcesCount:
         'En las {lessons} lecciones publicadas, las listas de lecturas recomendadas remiten a {sources} libros, artículos y páginas de referencia distintos. Las fuentes citadas solo dentro del texto de una lección no se cuentan aquí.',
       correctionsCount: {
@@ -386,7 +386,7 @@ export const es: Dict = {
    * The editorial policy. The five step names match the lessons' own order:
    * the idea, why people use it, the evidence, where it breaks, what depends
    * on you. Headings quoted from English lessons ("Where to check locally",
-   * "referential reading", "last updated") stay in English with a gloss,
+   * "Suggested Reading", "Updated") stay in English with a gloss,
    * because that is what the reader will see on the lesson.
    */
   editorialPolicy: {
@@ -444,7 +444,7 @@ export const es: Dict = {
       anyCountry:
         'Las lecciones están escritas para quien lea desde cualquier lugar, no para un solo país. Las ideas que enseñan, como el patrimonio neto, la diversificación o cómo la inflación reduce el valor de los ahorros, funcionan igual en todas partes. Las reglas en torno a esas ideas no: los impuestos, la jubilación y las cuentas con ventajas fiscales, las pensiones y ayudas públicas, la puntuación de crédito, la protección de los depósitos y la legislación de protección al consumidor cambian de un país a otro, y a veces dentro de un mismo país. Las lecciones explican la idea general a propósito. Cuando una lección depende de reglas como estas, lo dice, y una nota «Where to check locally» (dónde consultarlo en tu país) al final de la lección indica los lugares habituales para comprobarlas allí donde vives, como tu autoridad fiscal, tu regulador financiero o un asesor local acreditado. Los ejemplos suelen estar en euros; es una elección de moneda, no una señal de que una regla sea europea. Cuando la evidencia viene de los datos de un solo país, como el historial de la bolsa de EE. UU., la lección también lo dice, junto con lo que quizá no te diga sobre otros mercados.',
       sourcesAndFigures:
-        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «referential reading» (lecturas de referencia), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
+        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «Suggested Reading» (lecturas sugeridas), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
       aiUsed1:
         'nidhi usa herramientas de IA en su trabajo, entre ellas Claude, de Anthropic, y otros agentes de IA. Ayudan a investigar, redactar y editar las lecciones; a revisar las lecciones frente a esta página; a cuestionar el razonamiento financiero de una lección o de una herramienta desde el punto de vista de un asesor con experiencia; y a construir el sitio y sus herramientas gratuitas. Distintos agentes de IA se enfrentan a propósito al trabajo de los demás, para detectar lo que a uno se le escapa.',
       aiUsed2: {
@@ -461,7 +461,7 @@ export const es: Dict = {
         before:
           'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
         after:
-          '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «last updated» (última actualización), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
+          '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «Updated» (actualizado), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
       },
       correctionsList:
         'Cuando corrijo algo que podría cambiar lo que entiendes o lo que decides, lo anoto en la lección y lo recojo aquí. Las erratas se corrigen sin aviso.',

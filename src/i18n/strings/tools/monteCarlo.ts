@@ -229,7 +229,7 @@ export const monteCarloEn = {
         'understanding-risk': {
           kicker: 'Fundamentals',
           title: 'Understanding risk',
-          desc: 'What volatility means for your money, and why the order of returns matters.',
+          desc: 'What volatility means for your money, and how the time you have changes the risk.',
         },
         diversification: {
           kicker: 'Fundamentals',
@@ -603,7 +603,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         'understanding-risk': {
           kicker: 'बुनियाद',
           title: 'जोखिम को समझना',
-          desc: 'उतार-चढ़ाव आपके पैसे के लिए क्या मतलब रखता है, और रिटर्न का क्रम क्यों मायने रखता है।',
+          desc: 'उतार-चढ़ाव आपके पैसे के लिए क्या मतलब रखता है, और आपके पास जितना समय है उससे जोखिम कैसे बदलता है।',
         },
         diversification: {
           kicker: 'बुनियाद',
@@ -936,7 +936,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         'understanding-risk': {
           kicker: 'Fundamentos',
           title: 'Entender el riesgo',
-          desc: 'Qué significa la volatilidad para tu dinero, y por qué importa el orden de las rentabilidades.',
+          desc: 'Qué significa la volatilidad para tu dinero, y cómo cambia el riesgo según el tiempo que tienes.',
         },
         diversification: {
           kicker: 'Fundamentos',
@@ -1271,7 +1271,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         'understanding-risk': {
           kicker: 'Základy',
           title: 'Riziko srozumitelně',
-          desc: 'Co kolísání znamená pro vaše peníze a proč záleží na pořadí výnosů.',
+          desc: 'Co kolísání znamená pro vaše peníze a jak riziko mění čas, který máte.',
         },
         diversification: {
           kicker: 'Základy',
@@ -1592,7 +1592,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         'understanding-risk': {
           kicker: 'मूलतत्त्वे',
           title: 'जोखीम समजून घेणे',
-          desc: 'चढ-उतारांचा तुमच्या पैशांसाठी काय अर्थ असतो, आणि परताव्यांचा क्रम का महत्त्वाचा असतो.',
+          desc: 'चढ-उतारांचा तुमच्या पैशांसाठी काय अर्थ असतो, आणि तुमच्याकडे असलेल्या वेळेनुसार जोखीम कशी बदलते.',
         },
         diversification: {
           kicker: 'मूलतत्त्वे',
