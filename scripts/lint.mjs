@@ -8,6 +8,8 @@
  *   careful to keep its dep surface small; ESLint + plugins would multiply
  *   transitive packages and lengthen build/CI time. A targeted custom
  *   linter is sufficient at the current size of this codebase.
+ * - Covers all of src/ and the workflows (TARGETS below), less the
+ *   commented EXCLUDES.
  * - Catch the highest-frequency, highest-impact issues:
  *     • forgotten `console.log` / `console.debug` / `debugger` statements
  *     • `TODO`/`FIXME` without a tracking reference
@@ -31,27 +33,35 @@ import { spawnSync } from 'node:child_process';
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..');
 
-// Files inside this list are linted by the rules below. The lint script
-// itself is intentionally excluded: it documents the rules in prose
-// (mentioning "console.log", "debugger", "TODO", em-dashes) and would
-// self-flag every rule, drowning real findings.
-const TARGET_GLOBS = [
-  'src/pages/free',
-  'src/pages/privacy.astro',
-  // A locale's mirrored routes, and the page bodies both languages render.
-  // The Hindi edition's pages are hand-written the same way the English ones
-  // are, so they get the same hygiene rules. Without these two entries the
-  // translated pages would be the only pages in the repo the lint never
-  // reads, because `src/pages/free` above matches the English prefix only.
-  'src/pages/[locale]',
-  'src/components/pages',
-  'src/components/LoanCompare.tsx',
-  'src/utils/loanMath.ts',
-  'src/utils/loanMath.test.ts',
-  'src/utils/dependencies.test.ts',
-  'docs/free-tools-pr-checks.md',
-  '.github/workflows/pr-checks.yml',
+// What is linted: every file under these paths. A path that does not exist
+// is an error, not a silent skip: the list once named three files that had
+// moved, and the loan engine went unlinted with nobody told (#319).
+//
+// scripts/ is not here. The lint script itself documents the rules in prose
+// (it names console.log, debugger and the dash) and would flag itself, and
+// the render and pipeline scripts log to the console by design.
+const TARGETS = [
+  'src',
+  '.github/workflows',
 ];
+
+// What is left out of those paths, each with its reason. A path ending in
+// `/` is a whole directory. Every entry must match a file, or the lint
+// fails: an exclude that outlives its file hides nothing and misleads the
+// next reader.
+const EXCLUDES = [
+  // Lessons, guides and situations are prose with their own linter
+  // (lint-figures.mjs, run below) and their own tests (tldrRules,
+  // lessonLinks, layeredLessons). Markdown also ends a line with two spaces
+  // on purpose, which the trailing-whitespace rule would flag.
+  'src/content/',
+  // Data files written by a script (the World Bank history, country names),
+  // not by hand.
+  'src/data/',
+];
+
+// Only text files a person writes are read; images and fonts are skipped.
+const LINTED_EXTENSIONS = /\.(ts|tsx|astro|mjs|js|css|md|json|yml|yaml)$/;
 
 /**
  * @typedef {{file: string, line: number, message: string}} Diagnostic
@@ -59,6 +69,17 @@ const TARGET_GLOBS = [
 
 /** @type {Diagnostic[]} */
 const diagnostics = [];
+
+/** Targets that name nothing on disk. @type {string[]} */
+const missing = [];
+
+/** Excludes that matched at least one file. @type {Set<string>} */
+const usedExcludes = new Set();
+
+function excludedBy(rel) {
+  const posix = rel.split('\\').join('/');
+  return EXCLUDES.find((entry) => (entry.endsWith('/') ? posix.startsWith(entry) : posix === entry));
+}
 
 // ---------------------------------------------------------------------------
 // File discovery
@@ -70,6 +91,7 @@ async function* walk(rootRel) {
   try {
     stat = statSync(root);
   } catch {
+    missing.push(rootRel);
     return;
   }
   if (stat.isFile()) {
@@ -141,14 +163,27 @@ const LINE_RULES = [
     // Project policy: no em-dashes in source files. Use a colon, semicolon,
     // or restructure the sentence. We catch both the literal U+2014
     // character and the HTML entity forms (&mdash;, &#8212;, &#x2014;) so
-    // they can't slip through as encoded markup. The rule is scoped to
-    // TARGET_GLOBS and does not police pre-existing em-dashes elsewhere.
+    // they can't slip through as encoded markup. Comments count too: Astro
+    // ships the comments of an inline script to the reader's browser (#320).
+    // A test that needs the character as data writes it as an escape.
     name: 'no-em-dash',
     test: (line) => /\u2014|&mdash;|&#8212;|&#x2014;/i.test(line),
     message: 'em-dash (U+2014 or &mdash; / &#8212; / &#x2014;) is not allowed; use a colon, semicolon, or restructure',
-    appliesTo: (file) => /\.(ts|tsx|astro|mjs|js|md|yml|yaml)$/.test(file),
+    appliesTo: (file) => /\.(ts|tsx|astro|css|mjs|js|md|yml|yaml)$/.test(file),
   },
 ];
+
+// A line that breaks a rule on purpose says so, with its reason, in a comment
+// on the same line or the line above: `lint-allow no-console: a build-time
+// warning`. The rule is named, so one allowance never covers another rule,
+// and the dash rule takes no allowance at all.
+const ALLOWABLE = new Set(['no-console', 'no-as-any', 'todo-needs-ref']);
+
+function allowed(ruleName, line, previousLine) {
+  if (!ALLOWABLE.has(ruleName)) return false;
+  const marker = new RegExp(`lint-allow ${ruleName}: \\S`);
+  return marker.test(line) || marker.test(previousLine ?? '');
+}
 
 // ---------------------------------------------------------------------------
 // Whole-file rules
@@ -182,6 +217,7 @@ async function lintFile(absPath) {
     for (const rule of LINE_RULES) {
       if (!rule.appliesTo(rel)) continue;
       if (rule.test(line)) {
+        if (allowed(rule.name, line, lines[idx - 1])) continue;
         diagnostics.push({
           file: rel,
           line: idx + 1,
@@ -193,12 +229,27 @@ async function lintFile(absPath) {
 }
 
 async function main() {
-  // 1. Custom rules over the loan-comparison surface.
+  // 1. Custom rules over everything in TARGETS that EXCLUDES does not name.
   let scanned = 0;
-  for (const target of TARGET_GLOBS) {
+  for (const target of TARGETS) {
     for await (const file of walk(target)) {
+      const rel = relative(repoRoot, file);
+      const exclude = excludedBy(rel);
+      if (exclude) {
+        usedExcludes.add(exclude);
+        continue;
+      }
+      if (!LINTED_EXTENSIONS.test(rel)) continue;
       await lintFile(file);
       scanned++;
+    }
+  }
+  for (const target of missing) {
+    diagnostics.push({ file: target, line: 0, message: '[lint-target] this lint target does not exist; update TARGETS in scripts/lint.mjs' });
+  }
+  for (const entry of EXCLUDES) {
+    if (!usedExcludes.has(entry)) {
+      diagnostics.push({ file: entry, line: 0, message: '[lint-exclude] this exclude matches no file; remove it from EXCLUDES in scripts/lint.mjs' });
     }
   }
 

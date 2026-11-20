@@ -324,8 +324,7 @@ export function ReelComposition({ input }: Props) {
   // on the cream paper canvas. This was the original editorial cadence
   // (dark headline → paper magazine spread → dark closer). A unified
   // single-canvas reel was tried and rejected — it lost the visual arc and
-  // also clashed with the existing paper-baked figure assets (chart, the
-  // Rackham Aesop illustration). Warning beats keep their amber-tinted
+  // also clashed with the existing paper-baked figure assets (the charts). Warning beats keep their amber-tinted
   // paper variant for the heads-up signal.
   return (
     <>

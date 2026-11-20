@@ -6,9 +6,9 @@
  * there is one source of truth across CSS and JS.
  *
  * Three families:
- *   PALETTE   — 10 brand identities × 2 (light/dark), from docs/color-palette.md
- *   NEUTRAL   — grayscale + surface neutrals
- *   SEMANTIC  — success/warning/danger/info, plus CTA + callout fills, plus
+ *   PALETTE: 10 brand identities × 2 (light/dark), from docs/color-palette.md
+ *   NEUTRAL: grayscale + surface neutrals
+ *   SEMANTIC: success/warning/danger/info, plus CTA + callout fills, plus
  *               status text variants and chart colors
  *
  * Whenever you add or change a value here, update the matching CSS constant
@@ -98,7 +98,7 @@ export const SEMANTIC = {
   ctaBgDark:         '#00695C',
   ctaBgHoverDark:    '#00897B',
 
-  // Destructive CTA — palette-derived.
+  // Destructive CTA: palette-derived.
   destructiveBg:        PALETTE.red,
   destructiveBgHover:   PALETTE.deepOrange,
   destructiveTextLight: '#c2410c',

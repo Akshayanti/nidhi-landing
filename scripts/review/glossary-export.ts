@@ -10,7 +10,7 @@
  * Nothing is sent anywhere: the file is pushed to that project with clasp.
  *
  * Usage:
- *   npx tsx scripts/review/glossary-export.ts --langs id,fr --out <dir>
+ *   npx --no-install tsx scripts/review/glossary-export.ts --langs id,fr --out <dir>
  *
  * Every listed language needs `docs/i18n/<lang>-glossary.md` with the
  * vocabulary tables. A language the volunteer sheet offers but this file

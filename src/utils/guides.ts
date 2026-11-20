@@ -11,6 +11,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { HOW_TO_ALIASES } from '../i18n/strings/howToAliases';
 import { GUIDE_LAYERS, SITUATION_MIN_GUIDES, reviewNotices, situationBuilt } from './guideLayers';
+import { hasSituationFiles } from './situationFiles';
 
 export const GUIDE_HUB = '/how-to/';
 export const GUIDE_GROUPS = ['month', 'owe', 'stock', 'borders', 'safe'] as const;
@@ -135,6 +136,7 @@ function noticeLayers(live: Guide[]): void {
   const perGroup = new Map<string, number>();
   for (const g of live) perGroup.set(g.data.group, (perGroup.get(g.data.group) ?? 0) + 1);
   for (const line of reviewNotices({ guides: live.length, largestGroup: Math.max(0, ...perGroup.values()) })) {
+    // lint-allow no-console: a notice in the build log, once per build.
     console.warn(line);
   }
 }
@@ -149,7 +151,12 @@ export type Situation = CollectionEntry<'situations'>;
 export async function getSituations(): Promise<{ situation: Situation; guides: Guide[] }[]> {
   const isDev = import.meta.env.DEV;
   const now = new Date();
-  const [situations, guides] = await Promise.all([getCollection('situations'), getGuides()]);
+  // Asking for an empty collection makes Astro warn on every page that asks
+  // (see situationFiles.ts), so it is asked for only once a page exists.
+  const [situations, guides] = await Promise.all([
+    hasSituationFiles() ? getCollection('situations') : Promise.resolve<Situation[]>([]),
+    getGuides(),
+  ]);
   const bySlug = new Map(guides.map((g) => [g.data.slug, g]));
   const all = await getCollection('guides');
   for (const s of situations) {

@@ -1,4 +1,4 @@
-name: PR Checks (free tools)
+name: PR Checks
 
 # Runs the install, lint, type check, test, audit, and build gates whenever a
 # PR touches files that power the site's tools, pages, lessons or build.
@@ -20,16 +20,16 @@ name: PR Checks (free tools)
 # analytics (required from Nov 2026), skipped the same way when a PR touches
 # no tool or analytics file.
 #
-# The Hindi edition is built as a stack of PRs: each one targets the branch
-# below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
-# `feat/hindi-locale`, the integration branch, which merges to `main` once the
-# whole edition is ready. A stacked PR's base is another feature branch, not
-# `main`, so without these entries every PR in the stack would merge with no CI
-# at all. `hindi/*` covers the stack as it grows; `feat/hindi-locale` and `main`
-# cover the two branches that end it.
+# No branch filter: the checks run on a pull request into any branch. A stacked
+# pull request targets the branch below it, not `main`, and with a filter that
+# named `main` (and, once, the Hindi edition's branches) it merged into its
+# stack with no CI at all. The path filter in "Detect changes" still decides
+# whether the jobs have anything to do.
+#
+# Every job has a time limit, a few times its usual run, so a hung step fails
+# in minutes instead of holding a runner for GitHub's six hours (#328).
 on:
   pull_request:
-    branches: [main, feat/hindi-locale, 'hindi/*']
   # Allow manual runs for debugging.
   workflow_dispatch:
 
@@ -59,12 +59,13 @@ jobs:
   changes:
     name: Detect changes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       run: ${{ steps.filter.outputs.run }}
       remotion: ${{ steps.filter.outputs.remotion }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # The PR's merge commit and its first parent, the base it merges
           # into, so `HEAD^1 HEAD` is exactly what the PR changes.
@@ -116,13 +117,30 @@ jobs:
             # Anything that affects the build or dep graph.
             'package.json'
             'package-lock.json'
+            # The root tests hold the Remotion project's pins too
+            # (src/utils/dependencies.test.ts), so a change to its manifests
+            # runs them, not only the Remotion job.
+            'remotion/package.json'
+            'remotion/package-lock.json'
+            'remotion/.npmrc'
             'astro.config.mjs'
             'tsconfig.json'
-            # The lint script and this workflow itself.
+            # What decides the Node and npm every job and the deploy run on:
+            # a pull request that only moved Node to a new version used to
+            # skip every check and merge green (#318).
+            '.nvmrc'
+            '.npmrc'
+            # The newsletter's templates. scripts/test_send_newsletter.py,
+            # in the Tests job, is the only check on them before the send.
+            'emails/*'
+            # The lint script, and every workflow: this one, the deploy, the
+            # newsletter send, the data refresh and the privacy check. The
+            # lint reads them, and repo-hygiene.test.mjs checks their pins,
+            # permissions and alerts.
             'scripts/lint.mjs'
             'scripts/lint-figures.mjs'
             'scripts/lint-scoped-styles.mjs'
-            '.github/workflows/pr-checks.yml'
+            '.github/workflows/*'
             # Site-wide base components and public assets that affect every page.
             'src/components/BaseHead.astro'
             'src/layouts/*'
@@ -164,7 +182,13 @@ jobs:
             if [[ "$file" == remotion/* ]]; then
               echo "remotion: $file"
               remotion=true
-              continue
+              # Its manifests are the exception: the root tests hold the
+              # Remotion pins as well (see the patterns above), so those
+              # three files go on to be matched; everything else stops here.
+              case "$file" in
+                remotion/package.json|remotion/package-lock.json|remotion/.npmrc) ;;
+                *) continue ;;
+              esac
             fi
             if [ "$run" = true ]; then continue; fi
             for pattern in "${patterns[@]}"; do
@@ -187,16 +211,17 @@ jobs:
   install:
     name: Install (lockfile integrity)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # Every other job needs this one, so when it is skipped they are skipped
     # too, and all of them report "skipped" to branch protection.
     needs: changes
     if: needs.changes.outputs.run == 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -213,13 +238,14 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -241,13 +267,14 @@ jobs:
   typecheck:
     name: Type check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -267,13 +294,14 @@ jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: install
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -284,16 +312,16 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # The newsletter script is Python, so npm test does not reach it. Same
-      # dependency pins as the newsletter.yml send step.
+      # The newsletter script is Python, so npm test does not reach it. The same
+      # pinned packages as the newsletter.yml send step (scripts/requirements.txt).
       - name: Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
 
       - name: Run newsletter tests
         run: |
-          pip install --upgrade 'beautifulsoup4>=4.12' 'jinja2>=3.1'
+          pip install -r scripts/requirements.txt
           python -m unittest scripts/test_send_newsletter.py
           python -m unittest scripts/test_newsletter_sender.py
 
@@ -308,13 +336,14 @@ jobs:
   audit:
     name: npm audit (high+)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -326,6 +355,13 @@ jobs:
         # Only fail on `high` and `critical`. `npm audit` is noisy in the
         # JS ecosystem and lower-severity findings often have no available
         # fix; gating on every advisory leads to dismissal fatigue.
+        #
+        # Scope: `--omit=dev` audits `dependencies` only, the packages
+        # whose code is built into the site (astro, react and what they pull
+        # in). It does not audit devDependencies, and some of those run in
+        # every build and deploy without reaching a reader: puppeteer (the
+        # figure renders), tsx and typescript. Dependabot's alerts cover
+        # both lists.
         #
         # The script runs `npm audit --omit=dev` and fails on those two
         # levels, as the plain command did, except for an advisory with a
@@ -341,13 +377,14 @@ jobs:
   build:
     name: Build (static)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [lint, typecheck, test, audit]
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -364,11 +401,13 @@ jobs:
   # installs strictly and type-checks; it renders nothing, since that needs a
   # browser download and a real reel plan (the layout guard rejects the
   # composition's placeholder props). No npm audit: Remotion never reaches
-  # readers, which is also why the site's audit uses --omit=dev.
+  # readers. The site's audit leaves out its devDependencies on the same
+  # ground; its step says what that does and does not cover.
   # ---------------------------------------------------------------------------
   remotion:
     name: Remotion
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: changes
     if: needs.changes.outputs.remotion == 'true'
     defaults:
@@ -376,10 +415,10 @@ jobs:
         working-directory: remotion
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -389,4 +428,4 @@ jobs:
         run: npm ci
 
       - name: Type check
-        run: npx tsc --noEmit -p .
+        run: npx --no-install tsc --noEmit -p .

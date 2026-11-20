@@ -8,7 +8,7 @@ SOURCE_SVG ?= public/favicon.svg
 OUTPUT_DIR = $(dir $(SOURCE_SVG))
 BRAND_DIR = $(OUTPUT_DIR)brand
 
-.PHONY: all brand favicons clean help
+.PHONY: all brand favicons clean verify help
 
 # Default target: generate everything
 all: brand
@@ -22,6 +22,7 @@ help:
 	@echo "  make brand            - Generate all brand assets"
 	@echo "  make favicons         - Generate only favicon assets"
 	@echo "  make clean            - Remove generated brand assets"
+	@echo "  make verify           - Check the tools the generators need"
 	@echo "  make help             - Show this help"
 	@echo ""
 	@echo "Custom source SVG:"
@@ -53,9 +54,16 @@ clean:
 	fi
 	@echo "Clean complete!"
 
-# Verify dependencies
+# Verify dependencies. The same checks the two scripts make:
+# generate-brand-assets.sh needs ImageMagick (`magick`, or the older `convert`)
+# and one SVG renderer (rsvg-convert or inkscape); generate-favicons.sh runs
+# with any one of convert, rsvg-convert or inkscape.
 verify:
 	@echo "Checking dependencies..."
-	@which convert > /dev/null 2>&1 || (echo "Error: ImageMagick not found. Install with: brew install imagemagick" && exit 1)
-	@echo "✓ ImageMagick (convert) found"
+	@if command -v magick > /dev/null 2>&1; then echo "✓ ImageMagick (magick) found"; \
+	elif command -v convert > /dev/null 2>&1; then echo "✓ ImageMagick (convert) found"; \
+	else echo "Error: ImageMagick not found (magick or convert). Install with: brew install imagemagick"; exit 1; fi
+	@if command -v rsvg-convert > /dev/null 2>&1; then echo "✓ rsvg-convert found"; \
+	elif command -v inkscape > /dev/null 2>&1; then echo "✓ inkscape found"; \
+	else echo "Error: no SVG renderer found (rsvg-convert or inkscape). Install with: brew install librsvg"; exit 1; fi
 	@echo "✓ All dependencies satisfied"

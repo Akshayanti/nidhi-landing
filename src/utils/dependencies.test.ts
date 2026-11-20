@@ -38,6 +38,7 @@ interface PackageJson {
   devDependencies?: Record<string, string>;
   engines?: Record<string, string>;
   scripts?: Record<string, string>;
+  allowScripts?: Record<string, boolean>;
 }
 
 interface Lockfile {
@@ -46,14 +47,19 @@ interface Lockfile {
 }
 
 const pkg: PackageJson = JSON.parse(readFileSync(pkgPath, 'utf8'));
+// The reel renderer: its own package.json and lockfile.
+const remotionPkg: PackageJson = JSON.parse(readFileSync(resolve(here, '..', '..', 'remotion', 'package.json'), 'utf8'));
 const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 
 // -----------------------------------------------------------------------------
 // EXPECTED dependency snapshot.
 // Update these maps in the same PR as any package.json change.
 // -----------------------------------------------------------------------------
+// `dependencies` is what the build puts on the site; everything a script, a
+// test or the build's own tooling needs is a devDependency. The pull request
+// audit (`npm audit --omit=dev`) reads this split: it covers these packages
+// and not the ones below.
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
-  '@anthropic-ai/sdk': '^1.3.0',
   '@astrojs/react': '^7.1.9',
   '@astrojs/rss': '^4.0.18',
   '@astrojs/sitemap': '^3.7.5',
@@ -63,9 +69,15 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 };
 
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
+  // Used by one offline script, the reel script writer
+  // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
+  '@anthropic-ai/sdk': '^1.3.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   puppeteer: '^25.17.0',
+  // Imported by scripts/render-logo-with-url.mjs. It was there only because
+  // astro lists it as optional, so an astro update could have removed it.
+  sharp: '^0.35.5',
   // Pinned exactly: it runs the test suite in CI, so a new version should
   // arrive as a reviewed bump, not be downloaded fresh on every run.
   tsx: '4.23.15',
@@ -75,6 +87,19 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
 };
 
 const EXPECTED_NODE_ENGINE = '>=24.0.0';
+
+// The install scripts npm may run (README, "Install scripts"). This list is
+// the control: flipping a `false` to `true`, or approving a package without
+// pinning the version whose script was read, has to be changed here too.
+const EXPECTED_ALLOW_SCRIPTS: Record<string, boolean> = {
+  'puppeteer@25.17.0': true,
+  esbuild: false,
+  fsevents: false,
+};
+const EXPECTED_REMOTION_ALLOW_SCRIPTS: Record<string, boolean> = {
+  esbuild: false,
+  fsevents: false,
+};
 const EXPECTED_LOCKFILE_VERSION = 3;
 
 // -----------------------------------------------------------------------------
@@ -133,6 +158,58 @@ describe('package.json: dependencies snapshot', () => {
       undefined,
       'bundledDependencies are not allowed; extend the snapshot test if needed.',
     );
+  });
+});
+
+describe('package.json: install scripts', () => {
+  it('approves and denies exactly the expected install scripts', () => {
+    assert.deepEqual(
+      pkg.allowScripts ?? {},
+      EXPECTED_ALLOW_SCRIPTS,
+      'package.json "allowScripts" changed. Read what the script does first (README, "Install scripts"), then update EXPECTED_ALLOW_SCRIPTS in src/utils/dependencies.test.ts.',
+    );
+    assert.deepEqual(
+      remotionPkg.allowScripts ?? {},
+      EXPECTED_REMOTION_ALLOW_SCRIPTS,
+      'remotion/package.json "allowScripts" changed; update EXPECTED_REMOTION_ALLOW_SCRIPTS in src/utils/dependencies.test.ts.',
+    );
+  });
+
+  it('every approval names one exact version, the same one the lockfile installs', () => {
+    const packages = (lock as unknown as { packages: Record<string, { version: string }> }).packages;
+    for (const [entry, allowed] of Object.entries(pkg.allowScripts ?? {})) {
+      if (!allowed) continue;
+      const pinned = /^(.+)@(\d+\.\d+\.\d+)$/.exec(entry);
+      assert.ok(pinned, `allowScripts approves "${entry}" without an exact version`);
+      assert.equal(
+        packages[`node_modules/${pinned[1]}`]?.version,
+        pinned[2],
+        `allowScripts approves ${entry}, but the lockfile installs another version`,
+      );
+    }
+  });
+});
+
+describe('remotion/package.json: the same pins as the site', () => {
+  const dev = remotionPkg.devDependencies ?? {};
+  const all = { ...remotionPkg.dependencies, ...dev };
+
+  it('runs the same exact tsx and typescript', () => {
+    // The Remotion job type-checks with them, so the reasons above apply.
+    assert.equal(dev.tsx, EXPECTED_DEV_DEPENDENCIES.tsx);
+    assert.equal(dev.typescript, EXPECTED_DEV_DEPENDENCIES.typescript);
+  });
+
+  it('keeps every Remotion package on one version range', () => {
+    // Remotion requires all its packages on the same version; one lower
+    // range allows a mismatch when the lockfile is rebuilt.
+    const ranges = Object.entries(all).filter(([name]) => name === 'remotion' || name.startsWith('@remotion/'));
+    assert.ok(ranges.length >= 5, 'the Remotion packages were not found');
+    assert.deepEqual([...new Set(ranges.map(([, range]) => range))], [all.remotion], JSON.stringify(ranges));
+  });
+
+  it('asks for the same Node', () => {
+    assert.equal(remotionPkg.engines?.node, EXPECTED_NODE_ENGINE);
   });
 });
 

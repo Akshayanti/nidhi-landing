@@ -420,7 +420,7 @@ describe('the tools name every currency they offer', () => {
 
 describe('style rules from CLAUDE.md hold in every catalog', () => {  it('uses no em dash, in either its character or entity form', () => {
     const offenders = [...EN, ...HI, ...ES, ...CS, ...MR].filter(({ value }) =>
-      /—|&mdash;|&#8212;|&#x2014;/i.test(value),
+      /\u2014|&(?:mdash|#8212|#x2014);/i.test(value),
     );
     assert.deepEqual(offenders.map((leaf) => leaf.path), []);
   });

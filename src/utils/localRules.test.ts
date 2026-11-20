@@ -24,7 +24,7 @@ describe('"Where to check locally"', () => {
   it('follows the style rules: no em dashes or double dashes, and no instruction to the reader', () => {
     for (const area of LOCAL_RULE_AREAS) {
       const text = `${LOCAL_RULE_SOURCES[area].label} ${LOCAL_RULE_SOURCES[area].where}`;
-      assert.doesNotMatch(text, /—|--/, area);
+      assert.doesNotMatch(text, /\u2014|--/, area);
       assert.doesNotMatch(text, /\b(you should|you must|always|never)\b/i, area);
     }
   });

@@ -39,7 +39,7 @@
  *   - `n=3`       vendor count (omit at default 2)
  *   - `t=horizon` active tab (omit at default 'charts')
  *   - `h=120`     horizon months
- *   - `rv` `ra` `rr` `rt` `rf` `rl` — refinance scenario fields
+ *   - `rv` `ra` `rr` `rt` `rf` `rl`: refinance scenario fields
  *
  * Hard cutover: the previous `cur=`, `v{i}_principal=`-style keys are NOT
  * decoded. The tool is new (no shared URLs in the wild) and v5.2 of the
@@ -358,7 +358,7 @@ function encodeVendorTuple(v: VendorInput, slotIndex: number): string {
   const dflt = makeDefaultVendor(slotIndex);
   // Build the simple-mode tuple. Each position is the field's string value,
   // with the omit-when-default behaviour (substitute '' for fields that
-  // match a stable single-valued default — currently just modeKind).
+  // match a stable single-valued default: currently just modeKind).
   const fields = new Array<string>(SIMPLE_FIELD_COUNT).fill('');
   fields[V_IDX.NAME] = v.name;
   fields[V_IDX.PRINCIPAL] = written(v.principal, dflt.principal);
@@ -380,7 +380,7 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
   const fields = decodeTuple(packed, SIMPLE_FIELD_COUNT);
 
   // Each field overrides the slot template only when it carries data.
-  // An empty slot in the tuple = "field unset, use template default" —
+  // An empty slot in the tuple = "field unset, use template default":
   // the same semantics the previous wire format had via missing keys.
   // A link's values are whoever wrote the link's: a name is cut to an
   // ordinary length, and a number that does not read as one is dropped
@@ -504,7 +504,7 @@ export function decodeFromQueryString(qs: string): DecodeResult {
 
   // Resolve count: explicit `n` wins; otherwise infer from the highest
   // populated v{i} tuple. Advanced-only slots without a tuple are
-  // ignored — same rule the old wire format used (principal-as-marker).
+  // ignored: same rule the old wire format used (principal-as-marker).
   let count = Number(params.get('n'));
   if (!Number.isFinite(count) || count < MIN_VENDORS) {
     count = MIN_VENDORS;

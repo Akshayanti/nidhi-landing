@@ -68,7 +68,7 @@ try:
     from jinja2 import Environment, FileSystemLoader, select_autoescape
 except ImportError as err:
     print(f"[send_newsletter] Missing dependency: {err}. "
-          f"Install with: pip install beautifulsoup4 jinja2",
+          f"Install with: pip install -r scripts/requirements.txt",
           file=sys.stderr)
     sys.exit(1)
 
