@@ -575,32 +575,27 @@ export const cs: Dict = {
         kicker: 'Jedna měna i více',
         title: 'Kalkulačka čistého jmění',
         desc: 'Zadejte, co vlastníte a co dlužíte, a uvidíte své čisté jmění. Funguje v jedné měně i napříč 38 měnami, s nejnovějšími oficiálními kurzy, a pokud jich držíte víc, ukáže, kolik máte v měnách, ve kterých neutrácíte.',
-        itemName: 'Kalkulačka čistého jmění a analýza měnového rizika',
       },
       loanComparison: {
         kicker: 'Rozhodování o půjčkách',
         title: 'Srovnání úvěrů',
         desc: 'Porovnejte dvě nebo tři nabídky úvěru vedle sebe. APR (roční procentní sazba), celkové náklady úvěru, scénáře refinancování a splátkový kalendář pro každého poskytovatele, bez tabulky.',
-        itemName: 'Kalkulačka pro srovnání úvěrů',
       },
       monteCarlo: {
         kicker: 'Projekce a důchod',
         title: 'Simulátor Monte Carlo',
         desc: 'Promítněte své úspory do budoucnosti v tisících simulací s výnosy z dlouhodobé historie světových trhů. Uvidíte nízký, mediánový a vysoký výsledek a jak často peníze vydrží, až z nich budete žít.',
-        itemName: 'Důchodový simulátor Monte Carlo',
       },
       inflation: {
         kicker: 'Ceny v čase',
         title: 'Inflační kalkulačka',
         desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co byste si za své peníze mohli koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
-        itemName: 'Inflační kalkulačka',
       },
       investOrPayOff: {
         kicker: 'Dluh, nebo investice',
         title: 'Kalkulačka: investovat, nebo splatit dluh',
         desc:
           'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
-        itemName: 'Kalkulačka: investovat, nebo splatit dluh',
       },
     },
     how: {

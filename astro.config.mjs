@@ -2,10 +2,12 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from './src/i18n/config.ts';
 import { lastChanged } from './src/utils/lessonDates.ts';
+import { CHANGE_DAYS } from './src/i18n/strings/changes.ts';
+import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/short-link-stub.mjs';
 
 /**
  * Read frontmatter dates and tags from every markdown file under a locale's
@@ -46,6 +48,9 @@ function readFrontmatter(path) {
       .map((t) => t.trim().replace(/^['"]|['"]$/g, ''))
       .filter(Boolean);
   }
+  // A block list of terms the lesson defines; the glossary page is built from
+  // them, so it is enough to know the lesson has some.
+  data.hasGlossary = /^glossary:/m.test(block);
   return data;
 }
 
@@ -77,7 +82,8 @@ const CONTENT_DIR = join('src/content', 'blog');
  * and inclusiveLastmod, the newest live Inclusive Finances guide (null while
  * none is live), which decides whether the hub is in the sitemap at all,
  * and levelLastmod: level → ISO date (newest live lesson in that level), which
- * does the same for the level pages (/blog/<level>/).
+ * does the same for the level pages (/blog/<level>/), and glossaryLastmod, the
+ * newest live lesson that defines glossary terms (the glossary page lists them).
  *
  * Tag lastmod intentionally tracks newest content under the tag, not the
  * git mtime of [tag].astro: a reader visiting /blog/tag/saving/ cares
@@ -88,6 +94,7 @@ function readContentMaps() {
   const tag = new Map();
   const level = new Map();
   let inclusive = null;
+  let glossary = null;
   // Filter by pubDate <= now so future-dated posts (drafts scheduled for
   // a later publish window) don't poison tag-page lastmod values. The
   // sitemap should reflect what's actually visible to a crawler today,
@@ -107,6 +114,7 @@ function readContentMaps() {
       const iso = d.toISOString();
       blog.set(fm.slug, iso);
       if (fm.level === 'inclusive-finances' && (!inclusive || iso > inclusive)) inclusive = iso;
+      if (fm.hasGlossary && (!glossary || iso > glossary)) glossary = iso;
       if (fm.level && fm.level !== 'inclusive-finances' && (!level.has(fm.level) || iso > level.get(fm.level))) level.set(fm.level, iso);
       if (Array.isArray(fm.tags)) {
         for (const t of fm.tags) {
@@ -120,7 +128,7 @@ function readContentMaps() {
     // maps empty. The sitemap will omit <lastmod> for blog/tag URLs and keep
     // the level pages out until the level has a lesson.
   }
-  return { blog, tag, level, inclusive };
+  return { blog, tag, level, inclusive, glossary };
 }
 
 const contentMaps = readContentMaps();
@@ -154,6 +162,26 @@ function readGuideMaps() {
 }
 
 const guideMaps = readGuideMaps();
+
+/**
+ * The newest day on the "What's changed" page, as an ISO date: the page gains
+ * an item with every visible change, so its newest day is when it last
+ * changed. A day dated after today is not on the page yet and is passed over.
+ * A launch item (src/utils/liveChanges.ts) is dated by its lesson, which this
+ * file cannot read as a collection; the days around it are in the list.
+ */
+function newestChangeDay() {
+  const today = new Date().toISOString().slice(0, 10);
+  const newest = CHANGE_DAYS.map((d) => d.date).filter((d) => d <= today).sort().pop();
+  return newest ? new Date(`${newest}T00:00:00Z`).toISOString() : null;
+}
+
+/** The later of two ISO dates, either of which may be missing. */
+function laterOf(a, b) {
+  if (!a) return b ?? undefined;
+  if (!b) return a;
+  return new Date(a) > new Date(b) ? a : b;
+}
 
 /**
  * Split an absolute pathname into its locale and the path inside that locale.
@@ -208,10 +236,14 @@ const STATIC_PAGE_SOURCE = {
   'about': ['src/components/pages/AboutPage.astro'],
   'accessibility': ['src/components/pages/AccessibilityPage.astro'],
   'beliefs': ['src/components/pages/BeliefsPage.astro'],
+  'beta': ['src/components/pages/BetaPage.astro'],
+  'changes': ['src/components/pages/ChangesPage.astro'],
+  'volunteers': ['src/components/pages/VolunteersPage.astro'],
   'editorial-policy': ['src/components/pages/EditorialPolicyPage.astro'],
   'privacy': ['src/components/pages/PrivacyPage.astro'],
   'blog': ['src/layouts/BlogIndex.astro'],
   'blog/tag': ['src/components/pages/TagHubPage.astro'],
+  'blog/glossary': ['src/components/pages/GlossaryPage.astro'],
   'free': ['src/components/pages/FreeHubPage.astro'],
   'free/multi-currency-net-worth': [
     'src/components/pages/MultiCurrencyNetWorthPage.astro',
@@ -264,6 +296,127 @@ function staticPageSources(locale, path) {
   const catalogs = [`src/i18n/strings/${locale}.ts`];
   if (path === 'blog' || path.startsWith('blog/')) catalogs.push('src/i18n/strings/learn.ts');
   return [...components, ...catalogs];
+}
+
+/**
+ * Permanent redirects for renamed and retired pages, and the short links.
+ * Static output emits an HTML file with <meta http-equiv="refresh"> and a
+ * canonical link, which is the strongest signal available without server-side
+ * 301s. The social short links are then given a fuller page by
+ * `socialShortLinks` below; this map stays the one list of where each leads,
+ * and scripts/lib/short-link-stub.test.mjs pins it.
+ */
+const REDIRECTS = {
+  '/free/currency-risk/': '/free/multi-currency-net-worth/',
+  // Short links for social bios (nidhi.today/ig and so on). The redirect
+  // page loads no analytics; the pageview on the destination carries the
+  // campaign parameters, which the privacy notice already covers. One
+  // campaign name across platforms, so utm_source tells them apart.
+  '/ig/': '/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/tg/': '/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/wa/': '/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/dsc/': '/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  // The same, landing on the learning path; utm_content tells the two apart.
+  '/blog/ig/': '/blog/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+  '/blog/tg/': '/blog/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+  '/blog/wa/': '/blog/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+  '/blog/dsc/': '/blog/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
+  // The same, landing on the How-to guides; utm_content howto_link tells them apart.
+  '/how-to/ig/': '/how-to/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=howto_link',
+  // The same, landing on the planner beta page, in each language; utm_content
+  // beta_link tells them from the home and blog links.
+  '/beta/ig/': '/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/beta/tg/': '/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/beta/wa/': '/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/beta/dsc/': '/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/hi/beta/ig/': '/hi/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/hi/beta/tg/': '/hi/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/hi/beta/wa/': '/hi/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/hi/beta/dsc/': '/hi/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/es/beta/ig/': '/es/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/es/beta/tg/': '/es/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/es/beta/wa/': '/es/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/es/beta/dsc/': '/es/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/cs/beta/ig/': '/cs/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/cs/beta/tg/': '/cs/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/cs/beta/wa/': '/cs/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/cs/beta/dsc/': '/cs/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/mr/beta/ig/': '/mr/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/mr/beta/tg/': '/mr/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/mr/beta/wa/': '/mr/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  '/mr/beta/dsc/': '/mr/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
+  // The Hindi edition's own short links, for a biography written in Hindi.
+  // They land on the Hindi home page, so the address a visitor ends up at
+  // (and the pageview it sends) says which language and which platform.
+  '/hi/ig/': '/hi/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/hi/tg/': '/hi/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/hi/wa/': '/hi/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/hi/dsc/': '/hi/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  // The Spanish edition's, likewise.
+  '/es/ig/': '/es/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/es/tg/': '/es/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/es/wa/': '/es/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/es/dsc/': '/es/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  // The Czech edition's, likewise.
+  '/cs/ig/': '/cs/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/cs/tg/': '/cs/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/cs/wa/': '/cs/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/cs/dsc/': '/cs/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  // The Marathi edition's, likewise.
+  '/mr/ig/': '/mr/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/mr/tg/': '/mr/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/mr/wa/': '/mr/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  '/mr/dsc/': '/mr/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
+  // Short codes printed on posters, for people who type the
+  // address instead of scanning. Each leads to its poster's page (the QR
+  // codes carry the full tagged address and need no redirect), with the
+  // improv typed code going to the home page top and its QR code to #signup,
+  // and utm_content=typed against the QR codes' utm_content=qr. The codes and
+  // campaign names stay neutral: no venue or shop is named in an address.
+  '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
+  '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
+  '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
+  '/yoga/': '/free/?utm_source=poster&utm_medium=print&utm_campaign=yoga&utm_content=typed',
+};
+
+/**
+ * Rewrites the page behind each social short link once the build has written
+ * everything, so a link pasted into a chat previews as the site's card and not
+ * as "Redirecting to: /?utm_source=..." (scripts/lib/short-link-stub.mjs).
+ *
+ * It reads the destination page this build wrote and keeps the refresh as it
+ * is in REDIRECTS. Then it reads back every redirect page, social or not, and
+ * fails the build if one is missing or leads anywhere but where REDIRECTS
+ * says: these addresses are printed in bios and on posters.
+ */
+function socialShortLinks() {
+  let site;
+  return {
+    name: 'social-short-links',
+    hooks: {
+      'astro:config:done': ({ config }) => {
+        site = config.site;
+      },
+      'astro:build:done': ({ dir, logger }) => {
+        const fileFor = (path) => new URL(`.${path}index.html`, dir);
+        let rewritten = 0;
+        for (const [from, destination] of Object.entries(REDIRECTS)) {
+          if (!isSocialShortLink(destination)) continue;
+          if (!existsSync(fileFor(from))) throw new Error(`Short link ${from}: the build wrote no page for it.`);
+          const head = readHead(readFileSync(fileFor(cleanPath(destination)), 'utf8'));
+          writeFileSync(fileFor(from), shortLinkStub({ destination, head, site }));
+          rewritten += 1;
+        }
+        for (const [from, destination] of Object.entries(REDIRECTS)) {
+          const found = existsSync(fileFor(from)) ? refreshTarget(readFileSync(fileFor(from), 'utf8')) : null;
+          if (found !== destination) {
+            throw new Error(`Short link ${from} leads to ${found ?? 'nothing'}, not to ${destination}.`);
+          }
+        }
+        logger.info(`${rewritten} social short links carry their destination's card; ${Object.keys(REDIRECTS).length} redirects checked.`);
+      },
+    },
+  };
 }
 
 export default defineConfig({
@@ -322,7 +475,8 @@ export default defineConfig({
     },
     serialize(item) {
       // Per-URL lastmod resolution. Blog posts use frontmatter dates;
-      // the tag hub uses the newest pubDate across all tags; other
+      // the tag hub uses the newest pubDate across all tags; "What's
+      // changed" uses its newest day; other
       // static pages use the git author-date of their source files. URLs
       // without a resolvable lastmod simply omit the field, which is
       // valid sitemap protocol and lets the integration's defaults
@@ -335,6 +489,13 @@ export default defineConfig({
         // author-date if the tag map is empty.
         const newestAcrossTags = [...contentMaps.tag.values()].sort().pop();
         lastmod = newestAcrossTags ?? gitLastmod(staticPageSources(locale, 'blog/tag')) ?? undefined;
+      } else if (path === 'changes') {
+        // The page's own newest day, which is also its JSON-LD `dateModified`.
+        lastmod = newestChangeDay() ?? gitLastmod(staticPageSources(locale, 'changes')) ?? undefined;
+      } else if (path === 'blog/glossary') {
+        // The terms come from the lessons and the words around them from the
+        // page and its catalog: whichever changed last.
+        lastmod = laterOf(gitLastmod(staticPageSources(locale, 'blog/glossary')), contentMaps.glossary);
       } else if (path === 'how-to') {
         // The hub changes when a guide is added or checked again.
         lastmod = guideMaps.newest ?? undefined;
@@ -363,83 +524,8 @@ export default defineConfig({
       }
       return item;
     },
-  })],
-  // Permanent redirects for renamed/retired pages.
-  // Static output emits an HTML file with <meta http-equiv="refresh">
-  // and a canonical link, which is the strongest signal available
-  // without server-side 301s.
-  redirects: {
-    '/free/currency-risk/': '/free/multi-currency-net-worth/',
-    // Short links for social bios (nidhi.today/ig and so on). The redirect
-    // page loads no analytics; the pageview on the destination carries the
-    // campaign parameters, which the privacy notice already covers. One
-    // campaign name across platforms, so utm_source tells them apart.
-    '/ig/': '/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/tg/': '/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/wa/': '/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/dsc/': '/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    // The same, landing on the learning path; utm_content tells the two apart.
-    '/blog/ig/': '/blog/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
-    '/blog/tg/': '/blog/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
-    '/blog/wa/': '/blog/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
-    '/blog/dsc/': '/blog/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=blog_link',
-    // The same, landing on the How-to guides; utm_content howto_link tells them apart.
-    '/how-to/ig/': '/how-to/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=howto_link',
-    // The same, landing on the planner beta page, in each language; utm_content
-    // beta_link tells them from the home and blog links.
-    '/beta/ig/': '/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/beta/tg/': '/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/beta/wa/': '/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/beta/dsc/': '/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/hi/beta/ig/': '/hi/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/hi/beta/tg/': '/hi/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/hi/beta/wa/': '/hi/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/hi/beta/dsc/': '/hi/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/es/beta/ig/': '/es/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/es/beta/tg/': '/es/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/es/beta/wa/': '/es/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/es/beta/dsc/': '/es/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/cs/beta/ig/': '/cs/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/cs/beta/tg/': '/cs/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/cs/beta/wa/': '/cs/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/cs/beta/dsc/': '/cs/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/mr/beta/ig/': '/mr/beta/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/mr/beta/tg/': '/mr/beta/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/mr/beta/wa/': '/mr/beta/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    '/mr/beta/dsc/': '/mr/beta/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=beta_link',
-    // The Hindi edition's own short links, for a biography written in Hindi.
-    // They land on the Hindi home page, so the address a visitor ends up at
-    // (and the pageview it sends) says which language and which platform.
-    '/hi/ig/': '/hi/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/hi/tg/': '/hi/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/hi/wa/': '/hi/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/hi/dsc/': '/hi/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    // The Spanish edition's, likewise.
-    '/es/ig/': '/es/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/es/tg/': '/es/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/es/wa/': '/es/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/es/dsc/': '/es/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    // The Czech edition's, likewise.
-    '/cs/ig/': '/cs/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/cs/tg/': '/cs/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/cs/wa/': '/cs/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/cs/dsc/': '/cs/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    // The Marathi edition's, likewise.
-    '/mr/ig/': '/mr/?utm_source=instagram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/mr/tg/': '/mr/?utm_source=telegram&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/mr/wa/': '/mr/?utm_source=whatsapp&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    '/mr/dsc/': '/mr/?utm_source=discord&utm_medium=social&utm_campaign=bio&utm_content=home_link',
-    // Short codes printed on posters, for people who type the
-    // address instead of scanning. Each leads to its poster's page (the QR
-    // codes carry the full tagged address and need no redirect), with the
-    // improv typed code going to the home page top and its QR code to #signup,
-    // and utm_content=typed against the QR codes' utm_content=qr. The codes and
-    // campaign names stay neutral: no venue or shop is named in an address.
-    '/improv/': '/?utm_source=poster&utm_medium=print&utm_campaign=improv_shows&utm_content=typed',
-    '/cs/plakat/': '/cs/free/?utm_source=poster&utm_medium=print&utm_campaign=plakat&utm_content=typed',
-    '/hi/parivar/': '/hi/free/?utm_source=poster&utm_medium=print&utm_campaign=family&utm_content=typed',
-    '/yoga/': '/free/?utm_source=poster&utm_medium=print&utm_campaign=yoga&utm_content=typed',
-  },
+  }), socialShortLinks()],
+  redirects: REDIRECTS,
   output: 'static',
   // GitHub Pages serves directory URLs with a trailing slash and
   // 301-redirects no-slash variants. Match that here so canonicals,

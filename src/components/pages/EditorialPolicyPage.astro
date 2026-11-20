@@ -19,9 +19,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { relative } from 'node:path';
-import { DATE_LOCALE, LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
 import { getCollection } from 'astro:content';
 import { publishedCorrections } from '../../utils/corrections';
+import { formatLongDate } from '../../utils/longDate.ts';
 // Both the English page and the `[locale]` mirror render this component, so
 // this page exists in every locale and the header may offer the others.
 
@@ -63,7 +64,7 @@ const modified = lastModified();
 // Every published correction, newest first. The list stays off the page until
 // there is one: an empty ledger would be a promise with nothing behind it yet.
 const corrections = publishedCorrections(await getCollection('blog'), import.meta.env.DEV ? new Date('2999-01-01') : new Date());
-const correctionDate = (d: Date) => d.toLocaleDateString(DATE_LOCALE[locale], { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const correctionDate = (d: Date) => formatLongDate(d, locale);
 
 // Built from the path rather than hardcoded with a locale prefix, so the
 // addresses here agree with the canonical link BaseHead emits for the same

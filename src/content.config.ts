@@ -83,14 +83,6 @@ const blog = defineCollection({
       question: z.string(),
       answer: z.string(),
     })).optional(),
-    howTo: z.object({
-      name: z.string(),
-      totalTime: z.string().optional(),
-      steps: z.array(z.object({
-        name: z.string(),
-        text: z.string(),
-      })),
-    }).optional(),
     /**
      * If this post has a paired free tool on /free/*, declare it here. The
      * blog template renders a callout block; the reel caption writer auto-

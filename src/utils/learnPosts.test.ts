@@ -7,7 +7,7 @@ const { assertNoLevelSlug, topicGroups } = await import('./learnPosts.ts');
 
 const post = (id: string, level: PathPost['level'], tags: string[], onPath = true): PathPost => ({
   id, title: id, description: '', pubDate: '2026-01-01T00:00:00.000Z', level, readingTime: 5, tags,
-  href: `/blog/${id}/`, ...(onPath ? { pathLevel: level } : {}),
+  isNew: false, href: `/blog/${id}/`, ...(onPath ? { pathLevel: level } : {}),
 });
 
 const posts = [
