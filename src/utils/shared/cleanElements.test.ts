@@ -132,7 +132,8 @@ describe('nidhiCleanElements', () => {
 });
 
 describe('the label registry', () => {
-  const scan = scanLabels(join(process.cwd(), 'src'));
+  // From this file's own place, not the directory the runner starts in (#366).
+  const scan = scanLabels(join(import.meta.dirname, '..', '..'));
 
   it('resolves every data-attr in the source', () => {
     assert.deepEqual(scan.unresolved, []);
