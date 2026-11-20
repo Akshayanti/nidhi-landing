@@ -30,7 +30,7 @@ describe('security.txt', () => {
   it('is published: the deploy does not leave out folders that start with a dot', () => {
     // actions/upload-pages-artifact skips hidden files unless told otherwise;
     // without this the file is in the repository and a 404 on the site.
-    const upload = /uses: actions\/upload-pages-artifact@v\d+\n\s+with:\n((?:\s{10}.*\n)+)/.exec(read('.github/workflows/deploy.yml'));
+    const upload = /uses: actions\/upload-pages-artifact@[0-9a-f]{40} # v[\d.]+\n\s+with:\n((?:\s{10}.*\n)+)/.exec(read('.github/workflows/deploy.yml'));
     assert.ok(upload, 'no Pages upload step');
     assert.match(upload[1], /^\s+include-hidden-files: true$/m);
   });
@@ -87,6 +87,37 @@ describe('deploy workflow permissions', () => {
     const secrets = [...job('build').matchAll(/secrets\.([A-Z_]+)/g)].map((m) => m[1]);
     for (const name of new Set(secrets)) {
       assert.match(name, /^PUBLIC_|^NEWSLETTER_|^WAITLIST_/, `the build job is given ${name}`);
+    }
+  });
+});
+
+describe('every workflow', () => {
+  const workflows = readdirSync(join(ROOT, '.github/workflows'))
+    .filter((name) => /\.ya?ml$/.test(name))
+    .map((name) => [name, read(join('.github/workflows', name))]);
+
+  it('runs each action at one commit, with its release named beside it (#316)', () => {
+    // A tag such as v7 can be moved to other code; a commit cannot. The
+    // comment is what a person and Dependabot read.
+    let seen = 0;
+    for (const [name, text] of workflows) {
+      for (const [line] of text.matchAll(/^\s*(?:- )?uses:.*$/gm)) {
+        seen++;
+        assert.match(line, /uses: [\w.-]+\/[\w./-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$/, `${name}: ${line.trim()}`);
+      }
+    }
+    assert.ok(seen > 0, 'no action found in any workflow');
+  });
+
+  it('installs the Python packages from the pinned file, never by name (#317)', () => {
+    for (const [name, text] of workflows) {
+      for (const [line] of text.matchAll(/^.*\bpip3? install\b.*$/gm)) {
+        assert.match(line, /pip install -r scripts\/requirements\.txt$/, `${name}: ${line.trim()}`);
+      }
+    }
+    for (const line of read('scripts/requirements.txt').split('\n')) {
+      if (line === '' || line.startsWith('#')) continue;
+      assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+$/, `scripts/requirements.txt: ${line}`);
     }
   });
 });
