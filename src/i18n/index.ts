@@ -20,6 +20,8 @@ export {
   localizedPath,
   lessonPath,
   blogTagPath,
+  ENGLISH_ONLY_IN_SEARCH,
+  inSearch,
 } from './config.ts';
 export type { Locale } from './config.ts';
 export { stripLocale, swapLocale } from './url.ts';

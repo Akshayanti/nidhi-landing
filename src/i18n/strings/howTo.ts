@@ -15,7 +15,7 @@ export const howToEn = {
     /** The section's name: breadcrumbs, search result labels. */
     name: 'How-to',
     meta: {
-      title: 'How-to: short answers to everyday money questions',
+      title: 'How-to: short answers to everyday money questions | nidhi',
       description: 'Short guides that answer one money question each, in plain words: what the answer is, what to check, and where to read more. Free, no sign-up.',
     },
     crumbHome: 'Home',
@@ -85,7 +85,7 @@ export const howToHi: typeof howToEn = {
   howTo: {
     name: 'कैसे करें',
     meta: {
-      title: 'कैसे करें: पैसों के रोज़ के सवालों के छोटे जवाब',
+      title: 'कैसे करें: पैसों के रोज़ के सवालों के छोटे जवाब | nidhi',
       description: 'छोटी गाइडें, जिनमें से हर एक पैसों से जुड़े एक सवाल का जवाब आसान शब्दों में देती है: जवाब क्या है, क्या जाँचना है, और आगे कहाँ पढ़ें। मुफ़्त, बिना साइन-अप।',
     },
     crumbHome: 'होम',
@@ -145,7 +145,7 @@ export const howToEs: typeof howToEn = {
   howTo: {
     name: 'Cómo hacerlo',
     meta: {
-      title: 'Cómo hacerlo: respuestas breves a preguntas de dinero de cada día',
+      title: 'Cómo hacerlo: respuestas breves a preguntas de dinero de cada día | nidhi',
       description: 'Guías breves que responden a una pregunta de dinero cada una, con palabras sencillas: cuál es la respuesta, qué comprobar y dónde leer más. Gratis y sin registro.',
     },
     crumbHome: 'Inicio',
@@ -205,7 +205,7 @@ export const howToCs: typeof howToEn = {
   howTo: {
     name: 'Jak na to',
     meta: {
-      title: 'Jak na to: krátké odpovědi na běžné otázky o penězích',
+      title: 'Jak na to: krátké odpovědi na běžné otázky o penězích | nidhi',
       description: 'Krátké návody, z nichž každý odpovídá na jednu otázku o penězích jednoduchými slovy: jaká je odpověď, co si ověřit a kde číst dál. Zdarma a bez registrace.',
     },
     crumbHome: 'Úvod',
@@ -265,7 +265,7 @@ export const howToMr: typeof howToEn = {
   howTo: {
     name: 'कसे करायचे',
     meta: {
-      title: 'कसे करायचे: पैशांच्या रोजच्या प्रश्नांची छोटी उत्तरे',
+      title: 'कसे करायचे: पैशांच्या रोजच्या प्रश्नांची छोटी उत्तरे | nidhi',
       description: 'छोट्या मार्गदर्शिका: प्रत्येक मार्गदर्शिका पैशांच्या एका प्रश्नाचे उत्तर सोप्या शब्दांत देते आणि काय तपासायचे, पुढे कुठे वाचायचे तेही सांगते. मोफत, नोंदणीशिवाय.',
     },
     crumbHome: 'मुख्यपृष्ठ',

@@ -4,9 +4,10 @@ import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { DEFAULT_LOCALE, LOCALES, LOCALE_META } from './src/i18n/config.ts';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_META, inSearch } from './src/i18n/config.ts';
 import { lastChanged } from './src/utils/lessonDates.ts';
 import { CHANGE_DAYS } from './src/i18n/strings/changes.ts';
+import { LAUNCH_HOST_SLUGS } from './src/utils/launchHosts.ts';
 import { minifySync } from 'vite';
 import { fileURLToPath } from 'node:url';
 import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/short-link-stub.mjs';
@@ -94,6 +95,7 @@ const CONTENT_DIR = join('src/content', 'blog');
  */
 function readContentMaps() {
   const blog = new Map();
+  const published = new Map();
   const tag = new Map();
   const level = new Map();
   let inclusive = null;
@@ -116,6 +118,7 @@ function readContentMaps() {
       const d = lastChanged(pub, edited && !Number.isNaN(edited.getTime()) ? edited : null);
       const iso = d.toISOString();
       blog.set(fm.slug, iso);
+      published.set(fm.slug, pub.toISOString());
       if (fm.level === 'inclusive-finances' && (!inclusive || iso > inclusive)) inclusive = iso;
       if (fm.hasGlossary && (!glossary || iso > glossary)) glossary = iso;
       if (fm.level && fm.level !== 'inclusive-finances' && (!level.has(fm.level) || iso > level.get(fm.level))) level.set(fm.level, iso);
@@ -131,7 +134,7 @@ function readContentMaps() {
     // maps empty. The sitemap will omit <lastmod> for blog/tag URLs and keep
     // the level pages out until the level has a lesson.
   }
-  return { blog, tag, level, inclusive, glossary };
+  return { blog, published, tag, level, inclusive, glossary };
 }
 
 const contentMaps = readContentMaps();
@@ -170,12 +173,17 @@ const guideMaps = readGuideMaps();
  * The newest day on the "What's changed" page, as an ISO date: the page gains
  * an item with every visible change, so its newest day is when it last
  * changed. A day dated after today is not on the page yet and is passed over.
- * A launch item (src/utils/liveChanges.ts) is dated by its lesson, which this
- * file cannot read as a collection; the days around it are in the list.
+ * A launch item (src/utils/liveChanges.ts) is dated by its lesson and is on
+ * the page once that lesson is published, so the publication day of each
+ * launch lesson that is live counts as a day too, whether or not anything
+ * else was written up that day (#708).
  */
 function newestChangeDay() {
   const today = new Date().toISOString().slice(0, 10);
-  const newest = CHANGE_DAYS.map((d) => d.date).filter((d) => d <= today).sort().pop();
+  const launches = Object.values(LAUNCH_HOST_SLUGS)
+    .map((slug) => contentMaps.published.get(slug)?.slice(0, 10))
+    .filter(Boolean);
+  const newest = [...CHANGE_DAYS.map((d) => d.date), ...launches].filter((d) => d <= today).sort().pop();
   return newest ? new Date(`${newest}T00:00:00Z`).toISOString() : null;
 }
 
@@ -483,6 +491,12 @@ export default defineConfig({
       // pages are ever made indexable, drop this line and restore a
       // per-tag lastmod from `tagLastmod` in serialize() below.
       if (/^blog\/tag\/[^/]+$/.test(path)) return false;
+      // A page search engines are given in English only (the glossary, whose
+      // body is English in every edition) is noindex in its other editions
+      // (`ENGLISH_ONLY_IN_SEARCH` in src/i18n/config.ts, #449), so those stay
+      // out, and with them out the English page is listed with no language
+      // pairs, as its head says.
+      if (!inSearch(locale, path)) return false;
       // The Inclusive Finances hub is noindex while it has no live posts
       // (src/pages/blog/inclusive-finances.astro), so it stays out of the
       // sitemap until then. It joins on its own once the first guide's

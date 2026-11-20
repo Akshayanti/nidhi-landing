@@ -1257,7 +1257,7 @@ export const inflationCs: typeof inflationEn = {
 /** Marathi. Vocabulary from docs/i18n/mr-glossary.md. */
 export const inflationMr: typeof inflationEn = {
   meta: {
-    title: 'महागाई कॅल्क्युलेटर (Inflation Calculator): पुढे तुमच्या पैशात काय मिळेल | nidhi',
+    title: 'महागाई कॅल्क्युलेटर (Inflation Calculator) | nidhi',
     description: 'मोफत महागाई कॅल्क्युलेटर: अनेक वर्षांच्या महागाईनंतर पैशात काय मिळते, एखादी किंमत पुढे किती होऊ शकते, आणि देशनिहाय इतिहास. तुमच्या ब्राउझरमध्ये चालतो.',
   },
   schema: {

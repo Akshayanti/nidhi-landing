@@ -18,7 +18,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { termId } from '../../utils/glossary.mjs';
-import { DEFAULT_LOCALE, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { DEFAULT_LOCALE, LOCALES, dict, inSearch, lessonPath, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
   locale?: Locale;
@@ -53,7 +53,8 @@ const terms = [...byTerm.values()].sort((a, b) => a.term.localeCompare(b.term, '
 const letters = [...new Set(terms.map((x) => x.term[0].toUpperCase()))];
 
 const siteUrl = 'https://nidhi.today';
-const pageUrl = new URL(localizedPath(locale, '/blog/glossary/'), siteUrl).href;
+const GLOSSARY_PATH = '/blog/glossary/';
+const pageUrl = new URL(localizedPath(locale, GLOSSARY_PATH), siteUrl).href;
 const jsonLd = [{
   '@context': 'https://schema.org',
   '@type': 'DefinedTermSet',
@@ -69,7 +70,21 @@ const jsonLd = [{
 ---
 
 
-<BaseLayout locale={locale} alternates={LOCALES} title={`${t.title} | nidhi`} description={t.description} jsonLd={jsonLd}>
+{/*
+  Every term and definition here is English in every edition, so search
+  engines are given the English page only (`ENGLISH_ONLY_IN_SEARCH`, #449).
+  The other editions stay for readers, and the language picker still offers
+  them: `alternates` is unchanged, `pairedLocales` is what hreflang lists.
+*/}
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  pairedLocales={LOCALES.filter((other) => inSearch(other, GLOSSARY_PATH))}
+  title={`${t.title} | nidhi`}
+  description={t.description}
+  jsonLd={jsonLd}
+  robots={inSearch(locale, GLOSSARY_PATH) ? undefined : 'noindex,follow'}
+>
   <div class="container glossary-page">
     <nav class="glossary-crumb" aria-label={strings.a11y.breadcrumb}><a href={localizedPath(locale, '/blog/')}>{strings.nav.items.blog}</a></nav>
     <h1>{t.h1}</h1>
