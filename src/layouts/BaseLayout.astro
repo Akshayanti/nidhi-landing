@@ -43,6 +43,8 @@ interface Props {
   nextUrl?: string | null;
   jsonLd?: object[];
   robots?: string;
+  /** For the 404, which has no address of its own: see BaseHead. */
+  noCanonical?: boolean;
   /** Optional class on the <main> element. Used by the home page to opt
    *  into the scroll-snap shell without affecting any other page. */
   mainClass?: string;
@@ -63,14 +65,14 @@ interface Props {
   toolStateGlobal?: string;
 }
 
-const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, mainClass, bodyData, toolStateGlobal = '' } = Astro.props;
+const { locale = DEFAULT_LOCALE, alternates = [locale], title, description, image, imageWidth, imageHeight, imageAlt, article, prevUrl, nextUrl, jsonLd, robots, noCanonical, mainClass, bodyData, toolStateGlobal = '' } = Astro.props;
 const strings = dict(locale);
 ---
 
 <!doctype html>
 <html lang={LOCALE_META[locale].htmlLang}>
   <head>
-    <BaseHead locale={locale} alternates={alternates} title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} />
+    <BaseHead locale={locale} alternates={alternates} title={title} description={description} image={image} imageWidth={imageWidth} imageHeight={imageHeight} imageAlt={imageAlt} article={article} prevUrl={prevUrl} nextUrl={nextUrl} jsonLd={jsonLd} robots={robots} noCanonical={noCanonical} />
     {/*
       Per-page head additions (preconnects, page-specific link tags). The
       slot is empty by default so existing pages are unaffected; the

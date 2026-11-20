@@ -103,6 +103,11 @@ const strings = dict(locale);
   (function() {
     var STORAGE_KEY = 'nidhi-theme-mode';
     var toggle = document.getElementById('theme-toggle');
+    // Where site data is blocked, reading or writing the saved choice throws
+    // (#346). Each read and the write below is guarded, and the last button
+    // pressed is also kept here, for this page only, so the three buttons
+    // still work when nothing can be saved.
+    var unsaved = null;
 
     function getSystemPreference() {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -126,7 +131,8 @@ const strings = dict(locale);
     }
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-      var current = localStorage.getItem(STORAGE_KEY) || 'system';
+      var current = unsaved || 'system';
+      try { current = localStorage.getItem(STORAGE_KEY) || current; } catch (e) { /* blocked: keep the fallback */ }
       if (current === 'system') {
         applyTheme('system');
       }
@@ -140,7 +146,8 @@ const strings = dict(locale);
 
     /** Marks the chosen theme's button and returns the choice. */
     function showChosen() {
-      var chosen = localStorage.getItem(STORAGE_KEY) || 'system';
+      var chosen = unsaved || 'system';
+      try { chosen = localStorage.getItem(STORAGE_KEY) || chosen; } catch (e) { /* blocked: keep the fallback */ }
       if (toggle) updateButtons(chosen);
       return chosen;
     }
@@ -151,7 +158,8 @@ const strings = dict(locale);
       toggle.querySelectorAll('.theme-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
           var mode = btn.getAttribute('data-mode');
-          localStorage.setItem(STORAGE_KEY, mode);
+          unsaved = mode;
+          try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) { /* blocked: the choice lasts for this page */ }
           applyTheme(mode);
           updateButtons(mode);
         });
