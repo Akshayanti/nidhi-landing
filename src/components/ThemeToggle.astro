@@ -109,6 +109,16 @@ const strings = dict(locale);
     // still work when nothing can be saved.
     var unsaved = null;
 
+    /**
+     * The reader's choice. A choice that could not be saved comes first: where
+     * writing fails but reading still works, storage holds an older answer
+     * than the button just pressed.
+     */
+    function chosenMode() {
+      if (unsaved) return unsaved;
+      try { return localStorage.getItem(STORAGE_KEY) || 'system'; } catch (e) { return 'system'; }
+    }
+
     function getSystemPreference() {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -131,8 +141,7 @@ const strings = dict(locale);
     }
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-      var current = unsaved || 'system';
-      try { current = localStorage.getItem(STORAGE_KEY) || current; } catch (e) { /* blocked: keep the fallback */ }
+      var current = chosenMode();
       if (current === 'system') {
         applyTheme('system');
       }
@@ -146,8 +155,7 @@ const strings = dict(locale);
 
     /** Marks the chosen theme's button and returns the choice. */
     function showChosen() {
-      var chosen = unsaved || 'system';
-      try { chosen = localStorage.getItem(STORAGE_KEY) || chosen; } catch (e) { /* blocked: keep the fallback */ }
+      var chosen = chosenMode();
       if (toggle) updateButtons(chosen);
       return chosen;
     }
@@ -158,8 +166,13 @@ const strings = dict(locale);
       toggle.querySelectorAll('.theme-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
           var mode = btn.getAttribute('data-mode');
-          unsaved = mode;
-          try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) { /* blocked: the choice lasts for this page */ }
+          try {
+            localStorage.setItem(STORAGE_KEY, mode);
+            unsaved = null;
+          } catch (e) {
+            // Blocked: the choice lasts for this page.
+            unsaved = mode;
+          }
           applyTheme(mode);
           updateButtons(mode);
         });

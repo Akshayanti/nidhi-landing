@@ -38,11 +38,6 @@ interface Props {
   nextSlug?: string | null;
   nextTitle?: string | null;
   faq?: Array<{ question: string; answer: string }>;
-  howTo?: {
-    name: string;
-    totalTime?: string;
-    steps: Array<{ name: string; text: string }>;
-  };
   /**
    * Up to 3 "Keep reading" cards. Resolved upstream in
    * `src/pages/blog/[slug].astro` from the post's `relatedSlugs` plus
@@ -66,7 +61,7 @@ interface Props {
   guides?: { slug: string; title: string; minutes: number }[];
 }
 
-const { title, seoTitle, description, tldr, pubDate, updatedDate, corrections = [], level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, howTo, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [], guides = [] } = Astro.props;
+const { title, seoTitle, description, tldr, pubDate, updatedDate, corrections = [], level, tags, readingTime, regulatoryNote, referentialReading, prevSlug, prevTitle, nextSlug, nextTitle, faq, relatedPosts = [], relatedTool, seriesPosition, takeaways = [], glossary = [], localRules = [], guides = [] } = Astro.props;
 // A lesson is English in every edition, so its chrome reads the English names.
 // Ladder levels only: an Inclusive Finances guide is not a step in a series.
 const levelLabel = (LADDER_LEVELS as readonly string[]).includes(level) ? dict(DEFAULT_LOCALE).learn.levels[level] : undefined;
@@ -169,20 +164,7 @@ const faqSchema = faq && faq.length > 0 ? {
   })),
 } : null;
 
-const howToSchema = howTo ? {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: howTo.name,
-  ...(howTo.totalTime ? { totalTime: howTo.totalTime } : {}),
-  step: howTo.steps.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.name,
-    text: s.text,
-  })),
-} : null;
-
-const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema].filter(Boolean);
+const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boolean);
 ---
 
 <BaseLayout

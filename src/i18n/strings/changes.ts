@@ -45,11 +45,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'theme-when-site-data-blocked',
         text: {
-          en: 'If your browser blocks site data, the site now follows your device’s light or dark setting, and the theme buttons work for that visit. Before, such a browser always got the light theme and the buttons did nothing.',
-          hi: 'अगर आपका ब्राउज़र साइट का डेटा रोकता है, तो साइट अब आपके डिवाइस की लाइट या डार्क सेटिंग के हिसाब से दिखती है, और थीम के बटन उस विज़िट के दौरान काम करते हैं। पहले ऐसे ब्राउज़र में हमेशा लाइट थीम आती थी और बटन दबाने पर कुछ नहीं होता था।',
-          es: 'Si tu navegador bloquea los datos del sitio, el sitio sigue ahora el ajuste claro u oscuro de tu dispositivo, y los botones de tema funcionan durante esa visita. Antes, en un navegador así siempre salía el tema claro y los botones no hacían nada.',
-          cs: 'Pokud váš prohlížeč blokuje data webu, web se teď řídí světlým nebo tmavým nastavením vašeho zařízení a tlačítka motivu po dobu návštěvy fungují. Dřív se v takovém prohlížeči vždy zobrazil světlý motiv a tlačítka nedělala nic.',
-          mr: 'तुमचा ब्राउझर साइटचा डेटा अडवत असेल, तर साइट आता तुमच्या डिव्हाइसच्या फिकट किंवा गडद सेटिंगनुसार दिसते, आणि थीमची बटणे त्या भेटीपुरती चालतात. आधी अशा ब्राउझरमध्ये नेहमी फिकट थीमच दिसायची आणि बटणे दाबून काहीच होत नव्हते.',
+          en: 'If your browser blocks site data, the site now follows your device’s light or dark setting, and the theme buttons work, though your choice lasts only on the page you are on. Before, such a browser always got the light theme and the buttons did nothing.',
+          hi: 'अगर आपका ब्राउज़र साइट का डेटा रोकता है, तो साइट अब आपके डिवाइस की लाइट या डार्क सेटिंग के हिसाब से दिखती है, और थीम के बटन भी काम करते हैं, हालाँकि चुनी गई थीम सिर्फ़ उसी पेज पर रहती है जिस पर आप हैं। पहले ऐसे ब्राउज़र में हमेशा लाइट थीम आती थी और बटन दबाने पर कुछ नहीं होता था।',
+          es: 'Si tu navegador bloquea los datos del sitio, el sitio sigue ahora el ajuste claro u oscuro de tu dispositivo, y los botones de tema funcionan, aunque lo que elijas solo se mantiene en la página en la que estás. Antes, en un navegador así siempre salía el tema claro y los botones no hacían nada.',
+          cs: 'Pokud váš prohlížeč blokuje data webu, web se teď řídí světlým nebo tmavým nastavením vašeho zařízení a tlačítka motivu fungují, i když volba platí jen pro stránku, na které právě jste. Dřív se v takovém prohlížeči vždy zobrazoval světlý motiv a tlačítka nedělala nic.',
+          mr: 'तुमचा ब्राउझर साइटचा डेटा अडवत असेल, तर साइट आता तुमच्या डिव्हाइसच्या फिकट किंवा गडद सेटिंगनुसार दिसते, आणि थीमची बटणे चालतात, मात्र निवडलेली थीम तुम्ही ज्या पानावर आहात त्या पानापुरतीच राहते. आधी अशा ब्राउझरमध्ये नेहमी फिकट थीमच दिसायची आणि बटणे दाबून काहीच होत नव्हते.',
         },
       },
       {
@@ -58,7 +58,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
           en: 'The RSS feeds of this page now give each change a short title with the full text below it, and each feed links back to this page in its own language. Before, a feed reader showed the whole text as a cut-off headline with nothing under it.',
           hi: 'इस पेज की RSS फ़ीड में अब हर बदलाव का एक छोटा शीर्षक होता है और पूरा पाठ उसके नीचे आता है, और हर फ़ीड अपनी भाषा में इसी पेज से जुड़ती है। पहले फ़ीड रीडर पूरा पाठ एक कटे हुए शीर्षक की तरह दिखाता था और उसके नीचे कुछ नहीं होता था।',
           es: 'Los feeds RSS de esta página dan ahora a cada cambio un título corto con el texto completo debajo, y cada feed enlaza a esta página en su idioma. Antes, un lector de feeds mostraba todo el texto como un titular cortado, sin nada debajo.',
-          cs: 'Kanály RSS této stránky teď dávají každé změně krátký titulek a celý text pod ním a každý kanál odkazuje na tuto stránku ve svém jazyce. Dřív čtečka zobrazila celý text jako useknutý titulek a pod ním nic.',
+          cs: 'Kanály RSS této stránky teď dávají každé změně krátký titulek a celý text pod ním a každý kanál odkazuje na tuto stránku ve svém jazyce. Dřív čtečka RSS zobrazovala celý text jako useknutý titulek a pod ním nic.',
           mr: 'या पानाच्या RSS फीडमध्ये आता प्रत्येक बदलाला एक छोटे शीर्षक असते आणि पूर्ण मजकूर त्याखाली येतो, आणि प्रत्येक फीड तिच्या भाषेतील याच पानाशी जोडलेली असते. आधी फीड रीडर पूर्ण मजकूर एका तुटक शीर्षकासारखा दाखवायचा आणि त्याखाली काहीच नसायचे.',
         },
       },
