@@ -31,7 +31,7 @@ glossary:
   - term: "REIT"
     definition: "Real estate investment trust: a company owning property that pays out most of its income, often taxed at ordinary rates."
 order: 53
-pubDate: 2099-01-16
+pubDate: 2026-11-25
 updatedDate: "2026-10-28"
 localRules: [tax]
 level: "optimizing"

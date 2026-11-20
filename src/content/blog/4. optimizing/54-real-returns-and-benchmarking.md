@@ -28,7 +28,7 @@ glossary:
   - term: "Time-weighted return"
     definition: "A return that strips out the timing of contributions and withdrawals, so it shows how the investments themselves did; the standard for comparing funds."
 order: 54
-pubDate: 2099-01-17
+pubDate: 2026-11-27
 updatedDate: "2026-10-28"
 level: "optimizing"
 primaryPersona: "eva"
