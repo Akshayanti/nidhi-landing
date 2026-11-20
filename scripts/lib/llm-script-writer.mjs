@@ -40,8 +40,18 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 
-const MODEL = process.env.NIDHI_REEL_MODEL || "claude-sonnet-4-5-20250929";
-const MAX_TOKENS = 8000;
+// The model that writes reel scripts. This is the one place the id is
+// written: other files and docs point here, and NIDHI_REEL_MODEL overrides it
+// for a run. An id is served only until its retirement date (the previous
+// default, Claude Sonnet 4.5, retires on 2026-11-30), so when a run fails
+// with "model not found", this is the line to move to the current Sonnet.
+export const DEFAULT_REEL_MODEL = "claude-sonnet-5-5";
+const MODEL = process.env.NIDHI_REEL_MODEL || DEFAULT_REEL_MODEL;
+// Room for the plan and for the model's thinking, which is on by default on
+// current models and counts toward this limit even though its text is not
+// returned. A plan is a few thousand tokens; 8000 was sized for a model that
+// did not think first.
+const MAX_TOKENS = 16000;
 
 // Credential resolution. Supports both the standard Anthropic SDK env var
 // (ANTHROPIC_API_KEY → api.anthropic.com) and the corporate-gateway
@@ -525,7 +535,7 @@ export async function generateReelPlan({
 
   const userMessage = buildUserMessage({ meta, body, mode, availableFigures });
 
-  /** @type {Array<{ role: "user" | "assistant"; content: string }>} */
+  /** @type {Array<import("@anthropic-ai/sdk").Anthropic.MessageParam>} */
   const messages = [{ role: "user", content: userMessage }];
 
   /** @type {any} */
@@ -539,6 +549,16 @@ export async function generateReelPlan({
       messages,
     });
 
+    // Say why a response cannot be used, instead of failing later on JSON
+    // that was cut short or was never written.
+    if (response.stop_reason === "refusal") {
+      throw new Error(`The model declined to write this script (${response.stop_details?.category ?? "no category given"}).`);
+    }
+    if (response.stop_reason === "max_tokens") {
+      throw new Error(`The script was cut off at ${MAX_TOKENS} tokens; raise MAX_TOKENS in scripts/lib/llm-script-writer.mjs.`);
+    }
+
+    // Read by type, not position: a response can start with a thinking block.
     const textBlock = response.content.find(b => b.type === "text");
     if (!textBlock) throw new Error("LLM returned no text content.");
 
@@ -553,9 +573,11 @@ export async function generateReelPlan({
     if (feedback == null) return validated;
 
     // Preserve full conversation so the LLM sees its own prior attempt and
-    // the specific violations the gate found.
+    // the specific violations the gate found. The assistant turn goes back
+    // whole and unchanged, thinking blocks included: current models expect
+    // their own turn as they wrote it, and earlier turns are never edited.
     messages.push(
-      { role: "assistant", content: textBlock.text },
+      { role: "assistant", content: response.content },
       { role: "user", content: feedback },
     );
   }

@@ -20,7 +20,7 @@
  *   node scripts/render-reels.mjs <slug> --variants-all     # render all 3 hook variants
  *
  * Required env: ANTHROPIC_API_KEY  (in .env)
- * Optional env: NIDHI_REEL_MODEL   (default: claude-sonnet-4-5-20250929)
+ * Optional env: NIDHI_REEL_MODEL   (default: DEFAULT_REEL_MODEL in lib/llm-script-writer.mjs)
  *               NIDHI_REEL_VOICE   (default: en-GB-RyanNeural)
  *               NIDHI_REEL_RATE    (default: +5%)
  *               NIDHI_REEL_PITCH   (default: -2Hz)
