@@ -23,12 +23,18 @@ type Strings = Dict['tools']['export'];
  * is visible, so the button is always as wide and as tall as the larger of
  * the two: on a phone a label that wraps onto a second line no longer moves
  * the buttons under it when it changes (#491).
+ *
+ * `steady` is for a tool that announces the change itself: the button keeps
+ * its name for a screen reader while the label on screen changes, so the copy
+ * is said once, by the tool's announcement, and not again as a new name (#603).
  */
-export function SwapLabel({ label, alternate, swapped }: { label: string; alternate: string; swapped: boolean }) {
+export function SwapLabel({ label, alternate, swapped, steady = false }: { label: string; alternate: string; swapped: boolean; steady?: boolean }) {
+  const kept = steady && swapped;
   return (
     <span className="tool-swapLabel">
-      <span>{swapped ? alternate : label}</span>
+      <span aria-hidden={kept || undefined}>{swapped ? alternate : label}</span>
       <span className="tool-swapLabel__ghost" aria-hidden="true">{swapped ? label : alternate}</span>
+      {kept && <span className="chart-srOnly">{label}</span>}
     </span>
   );
 }

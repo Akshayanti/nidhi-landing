@@ -11,6 +11,7 @@ import {
   pointsBreakEven,
   pointsVerdict,
   refinanceComparison,
+  type RefinanceComparison,
   toMinor,
   type AmortizationRow,
   type LoanResult,
@@ -63,7 +64,7 @@ import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -968,6 +969,11 @@ export default function LoanCompare({
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
+  // The browser would not copy: the bar asks the reader to copy the address by hand.
+  const [copyFailed, setCopyFailed] = useState(false);
+  const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
+  // The refinance scenario's sentence while its tab is open; undefined otherwise.
+  const [refiSaid, setRefiSaid] = useState<string | undefined>(undefined);
   // Index of the vendor whose amortisation split is currently rendered.
   // null means "auto"; track the cheapest-by-total winner. We store an
   // explicit index only when the user has manually picked one, so adding
@@ -1158,16 +1164,29 @@ export default function LoanCompare({
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
+      setCopyFailed(false);
       setCopied(true);
+      // Said once, by the tool's one announcement (#603).
+      setShareNotice((s) => ({ text: strings.toolbar.shareStatus, n: s.n + 1 }));
       setTimeout(() => setCopied(false), 2500);
       track('free_loan_comparison_share_copied');
     } catch {
       // Not copied (an in-app browser, a refused permission): no "copied",
-      // the address is offered to copy by hand, as the other tools do.
+      // the address is offered to copy by hand, as the other tools do, and
+      // stays in the bar under the buttons.
       setShareUrl(url);
+      setCopyFailed(true);
       window.prompt(strings.toolbar.copyPrompt, url);
     }
-  }, [vendors, globalState, strings.toolbar.copyPrompt]);
+  }, [vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
+
+  // The copied address stays until the next change to the comparison, which
+  // is when it stops being the address of what is on the page. It used to go
+  // after 2.5 s, from under a reader who had tabbed into it (#603).
+  useEffect(() => {
+    setShareUrl('');
+    setCopyFailed(false);
+  }, [vendors, globalState]);
 
   // Both copies are of the offers as the page shows them; the event says only
   // which kind was made.
@@ -1354,7 +1373,14 @@ export default function LoanCompare({
         )}
       </div>
 
-      <LoanAnnouncement paidOff={withTotal.map((x) => x.r)} validCount={validResults.length} currency={currency} strings={strings} />
+      <LoanAnnouncement
+        paidOff={withTotal.map((x) => x.r)}
+        validCount={validResults.length}
+        currency={currency}
+        strings={strings}
+        also={refiSaid}
+        notice={shareNotice}
+      />
 
       <DeltaSummary
         results={results}
@@ -1371,26 +1397,18 @@ export default function LoanCompare({
               type="button"
               className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
-              aria-describedby="lc-share-status"
               title={strings.toolbar.shareTitle}
               data-attr="lc-share-copy"
             >
-              <SwapLabel label={strings.toolbar.share} alternate={strings.toolbar.shareCopied} swapped={copied} />
+              <SwapLabel label={strings.toolbar.share} alternate={strings.toolbar.shareCopied} swapped={copied} steady />
             </button>
-            <span
-              id="lc-share-status"
-              className="lc-srOnly"
-              role="status"
-              aria-live="polite"
-            >
-              {copied ? strings.toolbar.shareStatus : ''}
-            </span>
           </>
         }
         shareResult={
-          copied && shareUrl && (
-            <div className="lc-shareUrlBar" role="status" aria-live="polite">
-              <span className="lc-shareUrlLabel">{strings.toolbar.copiedBar}</span>
+          // Not a live region: the copy is said by the tool's announcement.
+          shareUrl && (
+            <div className="lc-shareUrlBar">
+              <span className="lc-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedBar}</span>
               <input
                 className="lc-shareUrlInput"
                 value={shareUrl}
@@ -1417,6 +1435,7 @@ export default function LoanCompare({
         onSplitVendorChange={setSplitVendorIdx}
         globalState={globalState}
         onGlobalChange={(patch) => setGlobalState((g) => ({ ...g, ...patch }))}
+        onRefiSaid={setRefiSaid}
         strings={strings}
       />
 
@@ -2255,9 +2274,9 @@ function announcedResult(
 }
 
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ paidOff, validCount, currency, strings }: { paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings }) {
+function LoanAnnouncement({ paidOff, validCount, currency, strings, also, notice }: { paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
-  return <ResultAnnouncement text={announcedResult(paidOff, validCount, currency, strings, formatMoney)} />;
+  return <ResultAnnouncement text={announcedResult(paidOff, validCount, currency, strings, formatMoney)} also={also} notice={notice} />;
 }
 
 // ---- Delta summary ---------------------------------------------------------
@@ -2583,6 +2602,8 @@ interface AnalysisTabsProps {
   onSplitVendorChange: (idx: number | null) => void;
   globalState: GlobalState;
   onGlobalChange: (patch: Partial<GlobalState>) => void;
+  /** The refinance scenario's sentence for the tool's announcement; undefined when its tab closes. */
+  onRefiSaid: (text: string | undefined) => void;
   strings: Strings;
 }
 
@@ -2595,6 +2616,7 @@ function AnalysisTabs({
   onSplitVendorChange,
   globalState,
   onGlobalChange,
+  onRefiSaid,
   strings,
 }: AnalysisTabsProps) {
   const tabs = analysisTabs(strings);
@@ -2668,7 +2690,9 @@ function AnalysisTabs({
               role="tab"
               id={`${panelId}-${t.id}-tab`}
               aria-selected={selected}
-              aria-controls={`${panelId}-${t.id}-panel`}
+              // Only the open tab has a panel in the page, so only it names
+              // one: the others pointed at ids that did not exist (#596).
+              aria-controls={selected ? `${panelId}-${t.id}-panel` : undefined}
               // Roving tabindex: only the active tab is in the tab order.
               // Inactive tabs are reachable via arrow keys (handled above).
               tabIndex={selected ? 0 : -1}
@@ -2720,6 +2744,7 @@ function AnalysisTabs({
             currency={currency}
             state={globalState}
             onChange={onGlobalChange}
+            onSaid={onRefiSaid}
             strings={strings}
           />
         )}
@@ -3095,7 +3120,33 @@ interface RefinanceSectionProps {
   currency: string;
   state: GlobalState;
   onChange: (patch: Partial<GlobalState>) => void;
+  /** Hands the outcome sentence to the tool's one announcement; undefined when this section closes. */
+  onSaid: (text: string | undefined) => void;
   strings: Strings;
+}
+
+/** The break-even row's value: a count of months, or the words for the cases that have none. */
+function refinanceBreakEven(cmp: RefinanceComparison, strings: Strings): string {
+  if (cmp.breakEvenKind === 'none') return cmp.paymentLower ? strings.refi.fromFirstMonth : strings.refi.nothingToRecoup;
+  return Number.isFinite(cmp.breakEvenMonths) ? months(cmp.breakEvenMonths, strings.months) : strings.results.never;
+}
+
+/**
+ * What a screen reader is told once typing in the refinance scenario has
+ * settled: the saving or the extra cost, and the break-even as its row shows
+ * it. Empty while there is no comparison: an error there is an alert of its own.
+ */
+function announcedRefinance(
+  cmp: RefinanceComparison | { error: string } | null,
+  currency: string,
+  strings: Strings,
+  formatMoney: (minor: number, currency: string) => string,
+): string {
+  if (!cmp || 'error' in cmp) return '';
+  return format(cmp.savingsMinor >= 0 ? strings.refi.announceSaves : strings.refi.announceCosts, {
+    amount: formatMoney(Math.abs(cmp.savingsMinor), currency),
+    time: refinanceBreakEven(cmp, strings),
+  });
 }
 
 /**
@@ -3109,6 +3160,7 @@ function RefinanceSection({
   currency,
   state,
   onChange,
+  onSaid,
   strings,
 }: RefinanceSectionProps) {
   const { formatMoney } = useMoney();
@@ -3161,6 +3213,12 @@ function RefinanceSection({
         // on the new loan.
         refinanceComparison(original, atMonth, newRate, newTerm, newFeeMinor, state.refiRollFee, loanFromInput(vendors[activeIdx], currency))
       : null;
+
+  // The outcome goes to the tool's one announcement, which says it once
+  // typing has settled; nothing here is a live region (#608).
+  const said = announcedRefinance(cmp, currency, strings, formatMoney);
+  useEffect(() => { onSaid(said); }, [said, onSaid]);
+  useEffect(() => () => onSaid(undefined), [onSaid]);
 
   return (
     <section className="lc-advancedSection lc-refiSection" aria-labelledby="lc-refi-h">
@@ -3304,13 +3362,7 @@ function RefinanceSection({
                 nothing to pay back at all (which used to read "n/a"). */}
             <ResultRow
               label={strings.refi.breakEven}
-              value={
-                cmp.breakEvenKind === 'none'
-                  ? cmp.paymentLower ? strings.refi.fromFirstMonth : strings.refi.nothingToRecoup
-                  : Number.isFinite(cmp.breakEvenMonths)
-                    ? months(cmp.breakEvenMonths, strings.months)
-                    : strings.results.never
-              }
+              value={refinanceBreakEven(cmp, strings)}
               hint={
                 cmp.breakEvenKind === 'none'
                   ? cmp.paymentLower ? strings.refi.fromFirstMonthHint : strings.refi.nothingToRecoupHint

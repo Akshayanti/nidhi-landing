@@ -2203,8 +2203,11 @@ details[open] > .disclosure::after,
   text-overflow: ellipsis;
   border: none;
   background: transparent;
-  font-size: 0.8125rem;
-  color: var(--color-text-secondary);
+  /* A field: 16 px or more, or iOS Safari zooms the page when it is tapped.
+     Primary text, since the secondary grey is under the palette's 8:1 on this
+     surface in the light theme (#604). */
+  font-size: 1rem;
+  color: var(--color-text-primary);
   font-family: var(--font-mono);
   padding: 2px 4px;
   cursor: text;
@@ -3792,8 +3795,11 @@ details[open] > .disclosure::after,
   text-overflow: ellipsis;
   border: none;
   background: transparent;
-  font-size: 0.8125rem;
-  color: var(--color-text-secondary);
+  /* A field: 16 px or more, or iOS Safari zooms the page when it is tapped.
+     Primary text, since the secondary grey is under the palette's 8:1 on this
+     surface in the light theme (#604). */
+  font-size: 1rem;
+  color: var(--color-text-primary);
   font-family: var(--font-mono);
   padding: 2px 4px;
   cursor: text;

@@ -40,7 +40,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -140,6 +140,8 @@ export default function MultiCurrencyNetWorth({
   // The browser would not copy (an in-app browser, a refused permission): the address is shown to copy by hand.
   const [copyFailed, setCopyFailed] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
+  // What the share dialog's one status region says: copied, or copy it by hand.
+  const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
   const [csvErrors, setCsvErrors] = useState<ParseError[]>([]);
   const [csvConfirmPending, setCsvConfirmPending] = useState<AssetRow[] | null>(null);
   // The rows "See an example" filled in, so the note and "Clear example" know
@@ -378,6 +380,8 @@ export default function MultiCurrencyNetWorth({
     if (!hasData || result.hasRates === 'none' || result.positions.length === 0) return;
     setShareUrl('');
     setCopied(false);
+    setCopyFailed(false);
+    setShareNotice({ text: '', n: 0 });
     setShareModalOpen(true);
     track('free_multi_currency_net_worth_share_modal_opened');
   }, [hasData, result.hasRates, result.positions.length]);
@@ -391,13 +395,15 @@ export default function MultiCurrencyNetWorth({
       setShareUrl(url);
       setCopyFailed(false);
       setCopied(true);
+      setShareNotice((s) => ({ text: strings.toolbar.copiedLabel, n: s.n + 1 }));
       setTimeout(() => setCopied(false), 2500);
       track('free_multi_currency_net_worth_share_copied', { mode: shareMode });
     } catch {
       setShareUrl(url);
       setCopyFailed(true);
+      setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
     }
-  }, [rows, result.positions, functionalCurrency, shareMode]);
+  }, [rows, result.positions, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
 
   const reset = useCallback(() => {
     setRows(makeDefaultRows(defaultCurrency));
@@ -731,20 +737,6 @@ export default function MultiCurrencyNetWorth({
             </button>
               </>
             }
-            shareResult={
-              (copied || copyFailed) && shareUrl && (
-                <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
-                  <span className="mcnw-shareUrlLabel">{copied ? strings.toolbar.copiedLabel : strings.toolbar.copyPrompt}</span>
-                  <input
-                    className="mcnw-shareUrlInput"
-                    value={shareUrl}
-                    readOnly
-                    onFocus={(e) => e.target.select()}
-                    aria-label={strings.toolbar.shareUrlAria}
-                  />
-                </div>
-              )
-            }
             xlsxAttr="mcnw-export-xlsx"
             pdfAttr="mcnw-export-pdf"
             ready={exportReady}
@@ -784,7 +776,9 @@ export default function MultiCurrencyNetWorth({
           result={result}
           functionalCurrency={functionalCurrency}
           shareMode={shareMode}
-          onChangeMode={setShareMode}
+          // Another kind of link is another address: the copied one goes.
+          onChangeMode={(mode) => { setShareMode(mode); setShareUrl(''); setCopyFailed(false); }}
+          notice={shareNotice}
           copied={copied}
           copyFailed={copyFailed}
           shareUrl={shareUrl}
@@ -1272,6 +1266,8 @@ interface ShareModalProps {
   functionalCurrency: string;
   shareMode: ShareMode;
   onChangeMode: (mode: ShareMode) => void;
+  /** Said by the dialog's one status region. */
+  notice: Notice;
   copied: boolean;
   copyFailed: boolean;
   shareUrl: string;
@@ -1286,6 +1282,7 @@ function ShareModal({
   functionalCurrency,
   shareMode,
   onChangeMode,
+  notice,
   copied,
   copyFailed,
   shareUrl,
@@ -1423,12 +1420,17 @@ function ShareModal({
                 {strings.shareModal.cancel}
               </button>
               <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
-                <SwapLabel label={strings.shareModal.copy} alternate={strings.shareModal.copied} swapped={copied} />
+                <SwapLabel label={strings.shareModal.copy} alternate={strings.shareModal.copied} swapped={copied} steady />
               </button>
             </div>
-            {(copied || copyFailed) && shareUrl && (
-              <div className="mcnw-shareUrlBar" role="status" aria-live="polite">
-                <span className="mcnw-shareUrlLabel">{copied ? strings.toolbar.copiedLabel : strings.toolbar.copyPrompt}</span>
+            {/* The dialog's one status region: here from the moment the
+                dialog opens, empty until a copy, and only its text changes.
+                The bar under it is not a live region, and it stays until the
+                kind of link changes or the dialog closes (#603). */}
+            <NoticeRegion notice={notice} />
+            {shareUrl && (
+              <div className="mcnw-shareUrlBar">
+                <span className="mcnw-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedLabel}</span>
                 <input
                   className="mcnw-shareUrlInput"
                   value={shareUrl}
