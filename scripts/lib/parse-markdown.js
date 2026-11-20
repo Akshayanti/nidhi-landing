@@ -63,6 +63,9 @@ function parseFrontmatter(content) {
           continue;
         }
         const leadingSpaces = cur.match(/^ */)[0].length;
+        // A block's lines are indented. A line at the margin is the next key,
+        // even when the block has no lines yet (an empty `key: |`).
+        if (leadingSpaces === 0) break;
         if (indent === null) indent = leadingSpaces;
         if (leadingSpaces < indent) break; // dedent ends the block
         blockLines.push(cur.slice(indent));
@@ -82,7 +85,8 @@ function parseFrontmatter(content) {
 
     // Simple key: "value" or key: value
     const m = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
-    if (m) frontmatter[m[1]] = m[2];
+    // A quoted value may carry \" for a quote mark inside it.
+    if (m) frontmatter[m[1]] = /^\w+:\s*"/.test(line) ? m[2].replace(/\\"/g, '"') : m[2];
     i++;
   }
 
@@ -102,7 +106,9 @@ function splitPipe(s) {
  * Parse an instagram markdown file into structured data.
  * Returns: { slug, title, blogUrl, hashtags, caption, slides: [{ number, text }] }
  */
-export function parseInstagramPost(content, relPath) {
+export function parseInstagramPost(rawContent, relPath) {
+  // Windows line endings would otherwise match none of the patterns below.
+  const content = rawContent.replace(/\r\n?/g, '\n');
   const { frontmatter, body } = parseFrontmatter(content);
 
   // Extract caption section
