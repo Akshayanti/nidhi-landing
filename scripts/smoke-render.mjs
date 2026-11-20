@@ -200,7 +200,7 @@ async function main() {
 
   const fullOut = join(OUT_VIDEO_DIR, `${SLUG}.mp4`);
   execSync(
-    `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${fullInputPath}" "${fullOut}"`,
+    `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-single.ts "${fullInputPath}" "${fullOut}"`,
     { stdio: "inherit" },
   );
 
@@ -212,7 +212,7 @@ async function main() {
 
   const hookcutOut = join(OUT_VIDEO_DIR, `${SLUG}-hookcut.mp4`);
   execSync(
-    `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${hookcutInputPath}" "${hookcutOut}"`,
+    `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-single.ts "${hookcutInputPath}" "${hookcutOut}"`,
     { stdio: "inherit" },
   );
 

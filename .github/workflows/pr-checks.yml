@@ -389,4 +389,4 @@ jobs:
         run: npm ci
 
       - name: Type check
-        run: npx tsc --noEmit -p .
+        run: npx --no-install tsc --noEmit -p .

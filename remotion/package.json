@@ -8,7 +8,7 @@
   },
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "npx tsx src/render-single.ts"
+    "render": "tsx src/render-single.ts"
   },
   "dependencies": {
     "@remotion/google-fonts": "^4.0.543",
