@@ -38,6 +38,7 @@ const ENGLISH_ONLY: Record<string, string> = {
 /** Routes that exist only under [locale]/, and why. */
 const MIRROR_ONLY: Record<string, string> = {
   'how-to/[group].astro': 'the English group pages share how-to/[slug].astro with the guides',
+  'site.webmanifest.ts': 'the English manifest is the file public/brand/site.webmanifest; each other language builds its own from it',
 };
 
 function routes(dir: string, skip?: string): string[] {
