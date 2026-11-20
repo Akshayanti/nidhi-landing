@@ -465,3 +465,129 @@ describe('the brand tagline', () => {
     }
   });
 });
+
+/**
+ * A translation carries what its English source carries (#360): the same
+ * `{placeholders}`, or the sentence shows with no number, or with a literal
+ * `{months}`, in one language only; and the same HTML tags, or a link or an
+ * emphasis is lost or left open.
+ *
+ * A counted string's form for exactly one is the exception. English writes
+ * the 1 out ("1 correction"), and a language whose form for one also covers
+ * other counts must carry the count instead. Such a form may add placeholders,
+ * but only ones its own plural forms use, and it may never drop one.
+ */
+const placeholdersOf = (value: string): string[] => [...new Set(value.match(/\{\w+\}/g) ?? [])].sort();
+const tagsOf = (value: string): string[] => (value.match(/<\/?[a-zA-Z][^>]*>/g) ?? []).map((tag) => tag.replace(/\s[^>]*?(\/?>)$/, '$1')).sort();
+const isOneForm = (path: string): boolean => /(One|\.one)$/.test(path);
+
+/** The other forms of a counted string: `paymentsOne` has `payments`, `payments.one` has `payments.other`. */
+function siblingForms(path: string, byPath: Map<string, string>): string[] {
+  if (path.endsWith('.one')) {
+    const group = path.slice(0, -'one'.length);
+    return [...byPath].filter(([other]) => other.startsWith(group) && other !== path && !other.slice(group.length).includes('.')).map(([, value]) => value);
+  }
+  const base = path.slice(0, -'One'.length);
+  return [base, `${base}Many`, `${base}Few`, `${base}Other`].map((p) => byPath.get(p)).filter((v): v is string => v !== undefined);
+}
+
+describe('translations carry what their English source carries', () => {
+  it('keeps the same placeholders, with a form for one free to carry its count', () => {
+    const offenders: string[] = [];
+    for (const [name, catalog] of TRANSLATED) {
+      const byPath = new Map(catalog.map((leaf) => [leaf.path, leaf.value]));
+      for (const { path, value } of catalog) {
+        const english = placeholdersOf(EN_BY_PATH.get(path) ?? '');
+        const own = placeholdersOf(value);
+        const dropped = english.filter((p) => !own.includes(p));
+        let added = own.filter((p) => !english.includes(p));
+        if (isOneForm(path)) {
+          const allowed = new Set(siblingForms(path, byPath).flatMap(placeholdersOf));
+          added = added.filter((p) => !allowed.has(p));
+        }
+        if (dropped.length > 0 || added.length > 0) {
+          offenders.push(`${name} ${path}: dropped ${dropped.join(' ') || 'none'}, added ${added.join(' ') || 'none'}`);
+        }
+      }
+    }
+    assert.deepEqual(offenders, []);
+  });
+
+  it('keeps the same HTML tags', () => {
+    const offenders: string[] = [];
+    for (const [name, catalog] of TRANSLATED) {
+      for (const { path, value } of catalog) {
+        const english = tagsOf(EN_BY_PATH.get(path) ?? '').join(' ');
+        const own = tagsOf(value).join(' ');
+        if (english !== own) offenders.push(`${name} ${path}: English has ${english || 'no tags'}, the translation has ${own || 'no tags'}`);
+      }
+    }
+    assert.deepEqual(offenders, []);
+  });
+
+  it('reads the placeholders and tags it compares', () => {
+    assert.deepEqual(placeholdersOf('{count} of {total}, {count} left'), ['{count}', '{total}']);
+    assert.deepEqual(tagsOf('See <a href="/x/">the <strong>policy</strong></a>.'), ['</a>', '</strong>', '<a>', '<strong>']);
+    assert.equal(isOneForm('tools.x.paymentsOne'), true);
+    assert.equal(isOneForm('about.body.correctionsCount.one'), true);
+    assert.equal(isOneForm('about.body.tone'), false);
+    const forms = new Map([['a.count.one', '1 thing'], ['a.count.other', '{count} things'], ['a.count.link', 'x'], ['a.count.deep.one', '{no}']]);
+    assert.deepEqual(siblingForms('a.count.one', forms), ['{count} things', 'x']);
+  });
+});
+
+/**
+ * Every string is used (#360). Copy that is deleted from a page leaves its
+ * key behind in five catalogs unless something says so. A key counts as used
+ * when its last name appears in the source outside the catalogs, which is how
+ * a page reads it (`t.heading`, `strings.cookie.accept`). That is a loose
+ * match on purpose: it cannot prove a common name such as `title` is read
+ * from this group, but it catches the key whose name nothing mentions.
+ *
+ * A group read whole (`Object.values(page.works)`) names none of its keys, so
+ * those groups are listed here, each with the line that reads it.
+ */
+const READ_WHOLE = [
+  // AboutPage.astro and BeliefsPage.astro: Object.values(...schema.knowsAbout)
+  'about.schema.knowsAbout.',
+  'beliefs.schema.knowsAbout.',
+  // AccessibilityPage.astro: Object.values(page.works), Object.values(page.barriers.items)
+  'accessibility.works.',
+  'accessibility.barriers.items.',
+];
+
+describe('every string is used', async () => {
+  const { readFileSync, readdirSync, statSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const ROOT = join(import.meta.dirname, '..', '..', '..');
+  const CATALOGS = join(ROOT, 'src', 'i18n', 'strings');
+
+  function sourceText(dir: string): string {
+    return readdirSync(dir).map((name) => {
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) return path === CATALOGS ? '' : sourceText(path);
+      return /\.(astro|tsx|ts|js|mjs)$/.test(name) && !/\.test\./.test(name) ? readFileSync(path, 'utf8') : '';
+    }).join('\n');
+  }
+
+  it('finds the last name of every key somewhere in the source', () => {
+    const text = `${sourceText(join(ROOT, 'src'))}\n${readFileSync(join(ROOT, 'astro.config.mjs'), 'utf8')}`;
+    // An id used as a key (`net-worth`) is matched whole; an item of a list
+    // (`knowsAbout.0`) has no name of its own and is read with its list.
+    const named = (name: string) => new RegExp(`(?<![\\w-])${name.replace(/[$]/g, '\\$')}(?![\\w-])`).test(text);
+    const verdict = new Map<string, boolean>();
+    const unused = EN.map((leaf) => leaf.path).filter((path) => {
+      const last = path.split('.').pop()!;
+      if (/^\d+$/.test(last) || READ_WHOLE.some((group) => path.startsWith(group))) return false;
+      if (!verdict.has(last)) verdict.set(last, named(last));
+      return !verdict.get(last);
+    });
+    assert.deepEqual(unused, [], 'These keys are named nowhere outside the catalogs. Delete them from every catalog, or, if a page reads their whole group, add the group to READ_WHOLE.');
+  });
+
+  it('lists only groups that exist', () => {
+    for (const group of READ_WHOLE) {
+      assert.ok(EN.some((leaf) => leaf.path.startsWith(group)), `${group} is in READ_WHOLE but no key starts with it`);
+    }
+  });
+});

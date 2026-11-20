@@ -321,7 +321,7 @@ class TheSignature(unittest.TestCase):
             seen["url"], seen["body"], seen["method"] = req.full_url, req.data, req.get_method()
             return Answer()
 
-        payload = {"subject": "Café: “quoted”", "html": "<p>—</p>", "guid": "g"}
+        payload = {"subject": "Café: “quoted”", "html": "<p>\u2014</p>", "guid": "g"}
         with mock.patch.object(nl.urllib.request, "urlopen", urlopen):
             answer = nl.post_to_apps_script(cfg, payload)
         self.assertEqual(answer, {"ok": True, "sent": 1})

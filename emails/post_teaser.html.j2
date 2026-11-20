@@ -1,5 +1,5 @@
 {#
-  HTML email template — *teaser* variant.
+  HTML email template: *teaser* variant.
 
   Used by scripts/send_newsletter.py when the full-body email would exceed
   TEASER_SIZE_THRESHOLD_BYTES (default 50KB). Keeps the inbox light for
@@ -10,7 +10,7 @@
   Variables (same shape as post.html.j2 context, see render_email in
   scripts/send_newsletter.py):
     - title, description, tldr, reading_time, level
-    - first_paragraph_html  — extracted from content_node in extract_post
+    - first_paragraph_html , extracted from content_node in extract_post
     - post_url_tracked, blog_url
     - site_url, utm_query
 #}

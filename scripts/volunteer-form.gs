@@ -1,5 +1,5 @@
 /**
- * Nidhi volunteer translators — Google Form builder (Google Apps Script)
+ * Nidhi volunteer translators: Google Form builder (Google Apps Script)
  * ======================================================================
  *
  * Builds the "Help translate nidhi" Google Form that nidhi.today/volunteers/

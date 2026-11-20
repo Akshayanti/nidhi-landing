@@ -3,7 +3,7 @@
   the full-body HTML would exceed TEASER_SIZE_THRESHOLD_BYTES. Same copy
   spine as post.txt.j2 with the body trimmed to first paragraph + CTA.
 
-  The literal string `{{UNSUBSCRIBE_URL}}` is left verbatim — Apps Script
+  The literal string `{{UNSUBSCRIBE_URL}}` is left verbatim: Apps Script
   swaps it per-recipient at send time. The `&{{ utm_query }}` suffix joins
   after the `?t=TOKEN` the script injects.
 #}

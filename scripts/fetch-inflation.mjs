@@ -32,7 +32,7 @@
  * (`dryRunDataset`), the same way every time. A dry run's data is never
  * merged.
  */
-import { readFileSync, renameSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, realpathSync, renameSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -106,12 +106,12 @@ function option(args, name) {
   return at >= 0 ? args[at + 1] : null;
 }
 
-async function main() {
-  const args = process.argv.slice(2);
+/** `args` and `out` are parameters so a test can run this against a temporary file. */
+export async function main(args = process.argv.slice(2), out = OUT) {
   const dryRun = option(args, '--dry-run');
   const summaryPath = option(args, '--summary');
   const accepted = option(args, '--accept');
-  const baselinePath = option(args, '--baseline') ?? OUT;
+  const baselinePath = option(args, '--baseline') ?? out;
   const today = new Date().toISOString().slice(0, 10);
 
   let previous = null;
@@ -155,14 +155,17 @@ async function main() {
     }
   }
 
-  mkdirSync(dirname(OUT), { recursive: true });
-  const tmp = `${OUT}.tmp`;
+  mkdirSync(dirname(out), { recursive: true });
+  const tmp = `${out}.tmp`;
   writeFileSync(tmp, serializeDataset(dataset));
-  renameSync(tmp, OUT);
-  console.log(`Wrote ${Object.keys(dataset.countries).length} countries, World Bank update ${dataset.lastUpdated}, to ${OUT}.`);
+  renameSync(tmp, out);
+  console.log(`Wrote ${Object.keys(dataset.countries).length} countries, World Bank update ${dataset.lastUpdated}, to ${out}.`);
 }
 
-main().catch((err) => {
-  console.error(`fetch-inflation failed, nothing written: ${err.message}`);
-  process.exit(1);
-});
+// Runs only as the entry script, so a test can import main without a fetch.
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error(`fetch-inflation failed, nothing written: ${err.message}`);
+    process.exit(1);
+  });
+}

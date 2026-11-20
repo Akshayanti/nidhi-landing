@@ -74,6 +74,10 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^1.9.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
+  // Imported by src/utils/lessonRules.test.ts, to give headings the ids the
+  // build gives them. Astro brings it too; named here so the test does not
+  // depend on that.
+  'github-slugger': '^2.0.0',
   puppeteer: '^25.17.0',
   // Imported by scripts/render-logo-with-url.mjs. It was there only because
   // astro lists it as optional, so an astro update could have removed it.
@@ -84,6 +88,9 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Pinned exactly: `npm run typecheck` gates CI, and a compiler minor can add
   // errors on its own.
   typescript: '7.0.2',
+  // Imported by src/utils/lessonRules.test.ts, to read frontmatter the way
+  // the content collections do. Astro brings it too.
+  yaml: '^2.9.1',
 };
 
 const EXPECTED_NODE_ENGINE = '>=24.0.0';

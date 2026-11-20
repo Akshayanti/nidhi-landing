@@ -1,5 +1,5 @@
 /**
- * Nidhi volunteer beta-interest list — Google Apps Script Web App
+ * Nidhi volunteer beta-interest list: Google Apps Script Web App
  * ================================================================
  *
  * A small web app bound to the volunteer form's response spreadsheet (the one
