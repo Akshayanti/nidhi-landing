@@ -124,3 +124,31 @@ export function lessonPath(slug: string): string {
 export function blogTagPath(locale: Locale, tag: string): string {
   return localizedPath(locale, `/blog/tag/${encodeURIComponent(tag)}/`);
 }
+
+/**
+ * Pages that search engines are given in English only (#449).
+ *
+ * The glossary's body is the lessons' own terms and definitions, which are
+ * written once, in English, and not translated. A Hindi, Spanish, Czech or
+ * Marathi edition of it is a translated frame around about 3,000 English
+ * words, so a searcher in that language is better served by the English page.
+ * Those editions stay on the site and in the menus for readers; they are
+ * `noindex,follow`, out of the sitemap, and not paired with the English page
+ * through hreflang.
+ *
+ * The level pages, the Inclusive Finances hub and the How-to hub are built
+ * the same way (translated frame, English lesson cards) and stay indexed on
+ * purpose: they are lists of links, not the content itself, and that is the
+ * case search engines' guidance on localized versions describes for
+ * hreflang. Accepted as a trade-off (council, Nov 20, 2026), to be looked at
+ * again if search data shows those addresses folded into the English ones.
+ *
+ * Paths are written without a locale prefix and with both slashes.
+ */
+export const ENGLISH_ONLY_IN_SEARCH: readonly string[] = ['/blog/glossary/'];
+
+/** Whether search engines are given this edition of the page at `path`. */
+export function inSearch(locale: Locale, path: string): boolean {
+  const normalized = `/${path.replace(/^\/+|\/+$/g, '')}/`;
+  return locale === DEFAULT_LOCALE || !ENGLISH_ONLY_IN_SEARCH.includes(normalized);
+}

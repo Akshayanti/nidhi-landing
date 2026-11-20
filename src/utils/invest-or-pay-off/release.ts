@@ -13,9 +13,10 @@
  */
 import { getCollection } from 'astro:content';
 import { isReleased, releaseDate } from '../releaseGate.ts';
+import { LAUNCH_HOST_SLUGS } from '../launchHosts.ts';
 
 export const INVEST_OR_PAY_OFF_URL = '/free/invest-or-pay-off/';
-export const INVEST_OR_PAY_OFF_HOST_SLUG = 'invest-or-pay-off-debt';
+export const INVEST_OR_PAY_OFF_HOST_SLUG = LAUNCH_HOST_SLUGS.investOrPayOff;
 
 async function hostPubDate(): Promise<Date | null> {
   const host = (await getCollection('blog')).find((p) => p.data.slug === INVEST_OR_PAY_OFF_HOST_SLUG);

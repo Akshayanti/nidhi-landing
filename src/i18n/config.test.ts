@@ -134,3 +134,28 @@ describe('short codes printed on posters', () => {
     }
   });
 });
+
+describe('pages search engines are given in English only (#449)', () => {
+  it('keeps the English edition in search and the other editions out', async () => {
+    const { ENGLISH_ONLY_IN_SEARCH, inSearch } = await import('./config.ts');
+    assert.deepEqual([...ENGLISH_ONLY_IN_SEARCH], ['/blog/glossary/']);
+    for (const locale of LOCALES) {
+      assert.equal(inSearch(locale, '/blog/glossary/'), locale === DEFAULT_LOCALE, locale);
+    }
+  });
+
+  it('reads a path with or without its slashes, as the sitemap and the pages write it', async () => {
+    const { inSearch } = await import('./config.ts');
+    assert.equal(inSearch('hi', 'blog/glossary'), false);
+    assert.equal(inSearch('hi', '/blog/glossary'), false);
+  });
+
+  it('leaves every other page in search in every language', async () => {
+    const { inSearch } = await import('./config.ts');
+    for (const locale of LOCALES) {
+      for (const path of ['/', '/blog/', '/blog/discovery/', '/blog/inclusive-finances/', '/how-to/', '/blog/glossary-of-something/']) {
+        assert.equal(inSearch(locale, path), true, `${locale} ${path}`);
+      }
+    }
+  });
+});
