@@ -49,8 +49,9 @@ function useNotice(notice: Notice | undefined, say: (text: string) => void) {
   const n = notice?.n ?? 0;
   const text = notice?.text ?? '';
   useEffect(() => {
-    if (n === 0) return undefined;
+    // A notice taken back (a dialog reopened, another kind of link chosen) empties the region.
     say('');
+    if (n === 0) return undefined;
     const timer = window.setTimeout(() => say(text), 60);
     return () => window.clearTimeout(timer);
     // Only a new notice says anything: `say` is a state setter, and the words
@@ -78,6 +79,11 @@ export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: 
   const heard = useRef<{ text: string; also: string | undefined } | null>(null);
   useEffect(() => {
     if (!heard.current) { heard.current = { text, also }; return undefined; }
+    // The part opening or closing is not a result to say, and it is the baseline
+    // at once: an edit made before the delay has passed is then heard as a change.
+    if ((also === undefined) !== (heard.current.also === undefined)) {
+      heard.current = { text: heard.current.text, also };
+    }
     const timer = window.setTimeout(() => {
       const before = heard.current!;
       const textChanged = text !== before.text;

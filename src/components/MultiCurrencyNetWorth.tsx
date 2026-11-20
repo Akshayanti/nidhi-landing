@@ -142,6 +142,8 @@ export default function MultiCurrencyNetWorth({
   const [shareUrl, setShareUrl] = useState('');
   // What the share dialog's one status region says: copied, or copy it by hand.
   const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
+  // One timer for the button's "Copied": a second copy restarts it.
+  const copiedTimer = useRef<number | undefined>(undefined);
   const [csvErrors, setCsvErrors] = useState<ParseError[]>([]);
   const [csvConfirmPending, setCsvConfirmPending] = useState<AssetRow[] | null>(null);
   // The rows "See an example" filled in, so the note and "Clear example" know
@@ -396,11 +398,13 @@ export default function MultiCurrencyNetWorth({
       setCopyFailed(false);
       setCopied(true);
       setShareNotice((s) => ({ text: strings.toolbar.copiedLabel, n: s.n + 1 }));
-      setTimeout(() => setCopied(false), 2500);
+      window.clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 2500);
       track('free_multi_currency_net_worth_share_copied', { mode: shareMode });
     } catch {
       setShareUrl(url);
       setCopyFailed(true);
+      setCopied(false);
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
     }
   }, [rows, result.positions, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
@@ -777,7 +781,7 @@ export default function MultiCurrencyNetWorth({
           functionalCurrency={functionalCurrency}
           shareMode={shareMode}
           // Another kind of link is another address: the copied one goes.
-          onChangeMode={(mode) => { setShareMode(mode); setShareUrl(''); setCopyFailed(false); }}
+          onChangeMode={(mode) => { setShareMode(mode); setShareUrl(''); setCopyFailed(false); setCopied(false); setShareNotice({ text: '', n: 0 }); }}
           notice={shareNotice}
           copied={copied}
           copyFailed={copyFailed}

@@ -972,6 +972,8 @@ export default function LoanCompare({
   // The browser would not copy: the bar asks the reader to copy the address by hand.
   const [copyFailed, setCopyFailed] = useState(false);
   const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
+  // One timer for the button's "Copied": a second copy restarts it.
+  const copiedTimer = useRef<number | undefined>(undefined);
   // The refinance scenario's sentence while its tab is open; undefined otherwise.
   const [refiSaid, setRefiSaid] = useState<string | undefined>(undefined);
   // Index of the vendor whose amortisation split is currently rendered.
@@ -1168,7 +1170,8 @@ export default function LoanCompare({
       setCopied(true);
       // Said once, by the tool's one announcement (#603).
       setShareNotice((s) => ({ text: strings.toolbar.shareStatus, n: s.n + 1 }));
-      setTimeout(() => setCopied(false), 2500);
+      window.clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 2500);
       track('free_loan_comparison_share_copied');
     } catch {
       // Not copied (an in-app browser, a refused permission): no "copied",
@@ -1176,6 +1179,8 @@ export default function LoanCompare({
       // stays in the bar under the buttons.
       setShareUrl(url);
       setCopyFailed(true);
+      setCopied(false);
+      setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
   }, [vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
@@ -3132,9 +3137,25 @@ function refinanceBreakEven(cmp: RefinanceComparison, strings: Strings): string 
 }
 
 /**
+ * A count of months in words for a screen reader, in the page's language:
+ * "4 years, 6 months", where the row on screen has "4 yr 6 mo", which some
+ * screen readers spell out letter by letter. Only ever called in the browser.
+ */
+function spokenMonths(count: number): string {
+  // Western digits, as everywhere else on the site (Marathi would default to its own).
+  const lang = `${document.documentElement.lang || 'en'}-u-nu-latn`;
+  const unit = (n: number, u: 'year' | 'month') => new Intl.NumberFormat(lang, { style: 'unit', unit: u, unitDisplay: 'long' }).format(n);
+  const y = Math.floor(count / 12);
+  const m = count % 12;
+  const parts = [y > 0 ? unit(y, 'year') : '', m > 0 || y === 0 ? unit(m, 'month') : ''].filter(Boolean);
+  return new Intl.ListFormat(lang, { style: 'long', type: 'unit' }).format(parts);
+}
+
+/**
  * What a screen reader is told once typing in the refinance scenario has
- * settled: the saving or the extra cost, and the break-even as its row shows
- * it. Empty while there is no comparison: an error there is an alert of its own.
+ * settled: the saving or the extra cost, and the break-even of its row, with
+ * the time in whole words. Empty while there is no comparison: an error there
+ * is an alert of its own.
  */
 function announcedRefinance(
   cmp: RefinanceComparison | { error: string } | null,
@@ -3145,7 +3166,9 @@ function announcedRefinance(
   if (!cmp || 'error' in cmp) return '';
   return format(cmp.savingsMinor >= 0 ? strings.refi.announceSaves : strings.refi.announceCosts, {
     amount: formatMoney(Math.abs(cmp.savingsMinor), currency),
-    time: refinanceBreakEven(cmp, strings),
+    time: cmp.breakEvenKind !== 'none' && Number.isFinite(cmp.breakEvenMonths) && typeof document !== 'undefined'
+      ? spokenMonths(cmp.breakEvenMonths)
+      : refinanceBreakEven(cmp, strings),
   });
 }
 
