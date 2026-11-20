@@ -43,7 +43,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Full history so the privacy notice can derive its "Last updated"
           # from `git log -1 --format=%aI -- src/components/pages/PrivacyPage.astro`
@@ -55,7 +55,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -117,7 +117,7 @@ jobs:
           echo "Wrote $(wc -l < .indexnow/current.json) lines, $(wc -c < .indexnow/current.json) bytes"
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
           # The action leaves out files and folders whose name starts with a
@@ -129,7 +129,7 @@ jobs:
         # Separate from the Pages artifact: the manifest is internal
         # build metadata, not site content. Short retention because the
         # only consumer (`indexnow-ping`) runs in the same workflow run.
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: indexnow-hashes
           path: .indexnow/current.json
@@ -147,7 +147,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   # Notify IndexNow-participating search engines (Bing, DuckDuckGo,
   # Yandex, Seznam, Naver, Yep) that our content has changed. Google does
@@ -193,12 +193,12 @@ jobs:
     steps:
       - name: Checkout (for scripts/indexnow.mjs)
         # Shallow checkout: we only need the script file to run.
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
 
@@ -225,7 +225,7 @@ jobs:
 
       - name: Download current run's URL hash manifest
         # Produced by the build job above; lands at .indexnow/current.json.
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: indexnow-hashes
           path: .indexnow/
@@ -236,7 +236,7 @@ jobs:
         # new). The unique key per run guarantees a fresh save below;
         # the prefix-only restore-keys grabs the most recent prior
         # manifest regardless of which run created it.
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
@@ -266,7 +266,7 @@ jobs:
 
       - name: Save manifest as cache for next run
         if: always()
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .indexnow/manifest.json
           key: indexnow-hashes-${{ github.run_id }}-${{ github.run_attempt }}
