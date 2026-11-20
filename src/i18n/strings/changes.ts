@@ -45,11 +45,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'report-chart-names-its-unit',
         text: {
-          en: 'In a printed report, the chart now says once, above the chart and in the page’s language, what its amounts are counted in, and its gridlines carry plain numbers. On Hindi and Marathi pages, and for rupees on every page, it counts in lakhs and crores as the chart on the page does. Before, every report said “500K” and “2.5M”.',
-          hi: 'छपी रिपोर्ट का चार्ट अब एक बार, चार्ट के ऊपर और पेज की भाषा में, बताता है कि उसकी राशियाँ किस इकाई में गिनी गई हैं, और उसकी रेखाओं पर सिर्फ़ संख्याएँ रहती हैं। हिंदी और मराठी पेजों पर, और रुपये के लिए हर पेज पर, वह पेज के चार्ट की तरह लाख और करोड़ में गिनता है। पहले हर रिपोर्ट में “500K” और “2.5M” लिखा आता था।',
-          es: 'En un informe impreso, el gráfico indica ahora una sola vez, encima del gráfico y en el idioma de la página, en qué unidad se cuentan sus importes, y sus líneas llevan solo números. En las páginas en hindi y en maratí, y para las rupias en todas las páginas, cuenta en lakhs y crores como el gráfico de la página. Antes, todos los informes decían «500K» y «2.5M».',
-          cs: 'V\u00a0tištěné zprávě teď graf jednou, nad grafem a\u00a0v\u00a0jazyce stránky, uvádí, v\u00a0čem jsou jeho částky počítané, a\u00a0jeho linky nesou jen čísla. Na stránkách v\u00a0hindštině a\u00a0maráthštině, a\u00a0u\u00a0rupií na každé stránce, počítá v\u00a0jednotkách lakh a\u00a0crore jako graf na stránce. Dřív každá zpráva uváděla „500K“ a\u00a0„2.5M“.',
-          mr: 'छापील अहवालातील आलेख आता एकदाच, आलेखाच्या वर आणि पानाच्या भाषेत, सांगतो की त्याच्या रकमा कोणत्या एककात मोजल्या आहेत, आणि त्याच्या रेषांवर फक्त आकडे असतात. हिंदी आणि मराठी पानांवर, आणि रुपयांसाठी प्रत्येक पानावर, तो पानावरील आलेखाप्रमाणे लाख आणि कोटींमध्ये मोजतो. आधी प्रत्येक अहवालात “500K” आणि “2.5M” असे लिहिलेले असायचे.',
+          en: 'Printed report charts now name the currency and unit above the amount axis, in the page’s language, and use plain numbers on the axis. On Hindi and Marathi pages they count in lakhs and crores, as the chart on the page does.',
+          hi: 'छपी रिपोर्ट के चार्ट अब राशि वाले अक्ष के ऊपर पेज की भाषा में मुद्रा और इकाई बताते हैं, और अक्ष पर सिर्फ़ संख्याएँ दिखाते हैं। हिंदी और मराठी पेजों पर वे पेज के चार्ट की तरह लाख और करोड़ में गिनते हैं।',
+          es: 'Los gráficos de los informes impresos indican ahora la moneda y la unidad encima del eje de importes, en el idioma de la página, y muestran solo números en ese eje. En las páginas en hindi y en maratí cuentan en lakhs y crores, como el gráfico de la página.',
+          cs: 'Grafy v\u00a0tištěných zprávách teď nad osou částek uvádějí měnu a\u00a0jednotku v\u00a0jazyce stránky a\u00a0na ose zobrazují jen čísla. Na stránkách v\u00a0hindštině a\u00a0maráthštině počítají v\u00a0jednotkách lakh a\u00a0crore jako graf na stránce.',
+          mr: 'छापील अहवालातील आलेख आता रकमांच्या अक्षाच्या वर पानाच्या भाषेत चलन आणि एकक सांगतात, आणि अक्षावर फक्त आकडे दाखवतात. हिंदी आणि मराठी पानांवर ते पानावरील आलेखाप्रमाणे लाख आणि कोटींमध्ये मोजतात.',
         },
       },
       {

@@ -220,8 +220,7 @@ function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale:
   // The amounts on the axis are written as the page's charts write them
   // (`chartAmounts.ts`): the unit is named once, above the chart, in the
   // page's words, and the gridlines carry bare numbers. A page that counts in
-  // lakhs and crores does so here too, where "500K" and "2.5M" used to stand
-  // on every page (#698).
+  // lakhs and crores does so here too (#698).
   const { amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   if (chart.kind === 'bars') {
