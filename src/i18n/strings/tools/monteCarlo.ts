@@ -1271,7 +1271,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         'understanding-risk': {
           kicker: 'Základy',
           title: 'Riziko srozumitelně',
-          desc: 'Co kolísání znamená pro vaše peníze a jak riziko mění čas, který máte.',
+          desc: 'Co kolísání znamená pro vaše peníze a jak čas, který máte, mění riziko.',
         },
         diversification: {
           kicker: 'Základy',
