@@ -182,7 +182,13 @@ jobs:
             if [[ "$file" == remotion/* ]]; then
               echo "remotion: $file"
               remotion=true
-              continue
+              # Its manifests are the exception: the root tests hold the
+              # Remotion pins as well (see the patterns above), so those
+              # three files go on to be matched; everything else stops here.
+              case "$file" in
+                remotion/package.json|remotion/package-lock.json|remotion/.npmrc) ;;
+                *) continue ;;
+              esac
             fi
             if [ "$run" = true ]; then continue; fi
             for pattern in "${patterns[@]}"; do
