@@ -1,5 +1,5 @@
 /**
- * Nidhi daily deploy trigger — Google Apps Script (no Web App)
+ * Nidhi daily deploy trigger: Google Apps Script (no Web App)
  * ============================================================
  *
  * Lessons are date-gated at build time, so a lesson goes live only when a

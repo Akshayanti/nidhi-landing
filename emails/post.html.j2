@@ -12,7 +12,7 @@
   that placeholder in per-recipient at send time with a URL pointing at the
   branded /unsubscribe/ landing page on nidhi.today.
 
-  Inline styles are mandatory — Gmail and most major clients strip <style>
+  Inline styles are mandatory: Gmail and most major clients strip <style>
   blocks. Keep the total HTML well under 102KB to avoid Gmail clipping.
 #}
 {#
@@ -57,7 +57,7 @@
   <title>{{ title | e }}</title>
 </head>
 <body style="margin:0;padding:0;background:{{ c.bg }};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:{{ c.text }};line-height:1.6;">
-  {# Preheader — the little preview snippet shown in inbox lists. Hidden
+  {# Preheader: the little preview snippet shown in inbox lists. Hidden
      visually but readable by clients that surface preview text. #}
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ description | e }}</div>
 
@@ -70,7 +70,7 @@
 
         {# ───────────────────────── Brand banner ─────────────────────── #}
         {# The PNG already contains the wordmark AND the tagline
-           "Money, understood." — don't repeat the tagline as text.
+           "Money, understood.": don't repeat the tagline as text.
            Image is 400px wide, displayed at 200px for a crisp 2x on retina. #}
         <tr><td style="padding:0;">
           <div style="background:{{ c.blue }};height:4px;line-height:4px;font-size:0;">&nbsp;</div>

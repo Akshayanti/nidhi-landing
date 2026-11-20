@@ -1,5 +1,5 @@
 /**
- * Nidhi blog newsletter — Google Apps Script Web App
+ * Nidhi blog newsletter: Google Apps Script Web App
  * ===================================================
  *
  * Deploy this as a Web App (Deploy → New deployment → Web app).
@@ -13,16 +13,16 @@
  *   1. Services (left rail) → Add service → "Gmail API" (advanced service).
  *      Needed to send raw MIME with List-Unsubscribe headers.
  *   2. Project Settings → Script properties → add:
- *        SHEET_ID        <id of the Google Sheet — between /d/ and /edit in the URL>
- *        SHEET_NAME      <name of the tab in that Sheet — MUST match exactly>
+ *        SHEET_ID        <id of the Google Sheet, between /d/ and /edit in the URL>
+ *        SHEET_NAME      <name of the tab in that Sheet, MUST match exactly>
  *        FROM_NAME       nidhi
  *        FROM_EMAIL      updates@nidhi.today  (MUST be an address this
- *                        Apps Script account is allowed to send from —
+ *                        Apps Script account is allowed to send from,
  *                        either the script owner's primary address or a
  *                        verified "Send mail as" alias. Replies go to
  *                        hello@nidhi.today via Reply-To header.)
  *        SITE_URL        https://nidhi.today
- *        HMAC_SECRET     <random 64 hex chars — `openssl rand -hex 32` —
+ *        HMAC_SECRET     <random 64 hex chars, `openssl rand -hex 32`,
  *                        used ONLY for signing GH-Actions-originated
  *                        send_post requests. Per-subscriber tokens are
  *                        random opaque values, not HMAC-derived.>
@@ -61,7 +61,7 @@
  *                                   to {SITE_URL}/unsubscribe?t=..., whose
  *                                   button sends the POST below.
  *
- *   POST ?action=unsubscribe&t=...  Same behaviour but JSON response —
+ *   POST ?action=unsubscribe&t=...  Same behaviour but JSON response,
  *                                   used by Gmail's RFC 8058 one-click
  *                                   List-Unsubscribe button.
  *
@@ -105,7 +105,7 @@
  *                                   manually with a signed URL.
  *
  * One-shot maintenance:
- *   migrateAddTokens  — run from the Apps Script editor after upgrading
+ *   migrateAddTokens , run from the Apps Script editor after upgrading
  *                       to this version if the Sheet has pre-existing
  *                       rows without token columns. Backfills opaque
  *                       tokens for every row that doesn't have them yet.
@@ -169,7 +169,7 @@ function config_() {
 
 /**
  * Per-subscriber opaque random token. 64 hex chars (~256 bits). Not derived
- * from the email or any other data — just random. Stored in the Sheet.
+ * from the email or any other data, just random. Stored in the Sheet.
  * Compromise requires stealing the Sheet, not guessing the email.
  */
 function randomToken_() {
@@ -179,7 +179,7 @@ function randomToken_() {
 /**
  * HMAC-SHA256 → hex, for signing GH-Actions-originated send_post and
  * scan_bounces requests. NOT used for per-subscriber confirm/unsub tokens
- * — those are opaque random (see randomToken_).
+ * those are opaque random (see randomToken_).
  *
  * Why the explicit UTF-8 charset:
  *   The two-arg overload computeHmacSha256Signature(value, key) uses an
@@ -192,7 +192,7 @@ function randomToken_() {
  *   re-hashed the decoded String using a different charset, and the two
  *   HMACs disagreed. Passing UTF_8 explicitly makes the output
  *   deterministic. Paired with Python now using ensure_ascii=True on
- *   the send side, this is belt-and-suspenders — either half would fix
+ *   the send side, this is belt-and-suspenders, either half would fix
  *   it, both guarantee it can't come back.
  */
 function hmacHex_(secret, data) {
@@ -359,7 +359,7 @@ function findSubscriberRow_(sh, email) {
 
 /**
  * Look up a row by the value in one of the token columns. Linear scan over
- * the column — fine at the scale we operate at (Sheet <= a few thousand rows
+ * the column, fine at the scale we operate at (Sheet <= a few thousand rows
  * before we'd migrate off anyway).
  */
 function findRowByToken_(sh, colIndex, token) {
@@ -475,7 +475,7 @@ function sendRaw_(mimeMessage) {
   // Explicit UTF-8 when base64-encoding the full MIME payload. Without
   // the charset arg, Utilities.base64EncodeWebSafe(String) falls back to
   // an implementation-defined default that has historically been Latin-1
-  // in Apps Script's legacy code paths — which can't represent characters
+  // in Apps Script's legacy code paths, which can't represent characters
   // above U+00FF. The practical symptom is a correctly-rendered subject
   // line (encodeSubject_ passes UTF_8 explicitly below) but every
   // em-dash / curly quote / ellipsis / any non-Latin-1 char in the body
@@ -598,7 +598,7 @@ function safeSiteUrl_() {
 // Every link in every email carries newsletter UTMs so traffic lands in
 // PostHog / GA with consistent source/medium/campaign. Source and medium
 // are always newsletter / email; campaign varies by email purpose
-// (`confirm`, `welcome`, or the post slug for newsletter sends — the last
+// (`confirm`, `welcome`, or the post slug for newsletter sends, the last
 // is baked into the Jinja-rendered payload by Python, not Apps Script).
 
 /**
@@ -694,10 +694,10 @@ function handleHealth_() {
  *  - Uses `Session.getEffectiveUser().getEmail()` rather than
  *    `Session.getActiveUser().getEmail()`. The active-user lookup returns
  *    an empty string for anonymous web-app callers (when the caller isn't
- *    in the same Workspace domain as the script owner — Google's
+ *    in the same Workspace domain as the script owner, Google's
  *    cross-domain privacy policy). Effective-user returns the identity
  *    the script is running *as*, which, under "Execute as: Me", is the
- *    script owner — exactly the account whose mail identities we care
+ *    script owner, exactly the account whose mail identities we care
  *    about. This is the fix for the classic "primary: (), aliases: ()"
  *    health-check failure.
  *  - `GmailApp.getAliases()` can throw if the necessary Gmail scope hasn't
@@ -731,7 +731,7 @@ function fromEmailSendableReport_() {
 
   throw new Error(
     'FROM_EMAIL "' + cfg.fromEmail + '" is neither the script owner\'s primary address (' +
-    (primary || '<could not resolve — deploy "Execute as: Me">') +
+    (primary || '<could not resolve: deploy "Execute as: Me">') +
     ') nor a verified "Send mail as" alias (' +
     (aliases.length ? aliases.join(', ') : '<none configured>') +
     '). Fix: in the Gmail account that owns this Apps Script, go to ' +
@@ -744,7 +744,7 @@ function fromEmailSendableReport_() {
 /**
  * Lightweight preflight called at the top of handleSendPost_. Caches a
  * "checked today" marker in Script Properties so we don't redo the Gmail
- * metadata lookups on every send — but we DO catch silent breakages
+ * metadata lookups on every send, but we DO catch silent breakages
  * (someone removed the "Send mail as" alias in Gmail settings) within 24h
  * instead of only when the operator happens to curl /health.
  *
@@ -1259,7 +1259,7 @@ function handleConfirm_(e) {
 
   // Welcome email: land softly in the inbox right after the opt-in click
   // so the subscriber sees an immediate "you're in" beyond the landing
-  // page. Non-fatal — if Gmail hiccups, we still confirm the row.
+  // page. Non-fatal, if Gmail hiccups, we still confirm the row.
   try {
     if (found.welcome) sendWelcomeEmail_(email, unsubToken);
     else console.error('[newsletter] daily welcome limit reached (' + MAX_WELCOMES_PER_DAY_ + '): reader confirmed, welcome mail not sent');
@@ -1333,7 +1333,7 @@ function handleUnsubscribe_(e, method) {
   // Gmail's RFC 8058 one-click unsubscribe POSTs and expects a 2xx JSON
   // response (it doesn't follow redirects). Browser-initiated (clicking a
   // link from the email body, then the landing page's POST) expects a JSON
-  // too — the nidhi.today/unsubscribe page reads it and navigates the user
+  // too, the nidhi.today/unsubscribe page reads it and navigates the user
   // to /unsubscribed/. GET-initiated (direct link click from email body
   // fallback, for clients that won't do one-click) gets a redirect to the
   // branded page.
@@ -1465,7 +1465,7 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     return jsonResponse_({ ok: true, sent: 0, failed: 0, no_recipients: true });
   }
 
-  // Quota warning (PostHog + console) — fires when the confirmed-subscriber
+  // Quota warning (PostHog + console), fires when the confirmed-subscriber
   // count crosses the Workspace daily-recipient threshold. The send still
   // proceeds; this is an early-warning for the operator.
   if (subscribers.length >= QUOTA_DAILY_RECIPIENTS * QUOTA_WARN_THRESHOLD) {
@@ -1483,7 +1483,7 @@ function sendPostFanOut_(cfg, payload, seenKey) {
   // one Apps Script invocation (6-minute cap, 5-minute budget); on the
   // next invocation we use this ordering + a persisted high-water mark
   // to skip recipients already handled. Lexicographic email sort is
-  // stable even if subscribers are added/removed between invocations —
+  // stable even if subscribers are added/removed between invocations,
   // the only effect is that a new subscriber inserted before the marker
   // is missed for this post (picked up on the next post), and one
   // inserted after the marker is included.
@@ -1527,7 +1527,7 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     }
 
     if (!sub.unsubToken) {
-      // Row has no unsub token — probably an old row predating this schema.
+      // Row has no unsub token, probably an old row predating this schema.
       // Skip rather than send without the one-click unsubscribe URL, which
       // would be non-compliant with Gmail's bulk-sender rules.
       failed++;
@@ -1587,7 +1587,7 @@ function sendPostFanOut_(cfg, payload, seenKey) {
         guid: payload.guid,
         reason: mailErrorKind_(err),
       });
-      // Advance the marker past the failed row — next retry will skip it
+      // Advance the marker past the failed row, next retry will skip it
       // (by design: per-recipient failures don't block the fan-out, and
       // systematic failures surface via the aggregate blog_newsletter_sent
       // event's `failed` count).
@@ -1615,7 +1615,7 @@ function sendPostFanOut_(cfg, payload, seenKey) {
 }
 
 // ============================================================================
-// Bounce scanner — runs from GitHub Actions (HMAC-authed)
+// Bounce scanner: runs from GitHub Actions (HMAC-authed)
 // ============================================================================
 //
 // Gmail's advanced API doesn't expose bounce webhooks for consumer accounts
@@ -1639,8 +1639,8 @@ function sendPostFanOut_(cfg, payload, seenKey) {
 //   - Gmail found the report signed by googlemail.com. The reference shows
 //     which mail a report is about; this shows the report is Google's.
 //
-// `bounced` is outside the enum in listConfirmedSubscribers_() — which
-// filters on status==='confirmed' — so marked rows are dropped from all
+// `bounced` is outside the enum in listConfirmedSubscribers_(), which
+// filters on status==='confirmed', so marked rows are dropped from all
 // future fan-outs, and a pending row that bounced gets no reminder.
 // Re-subscribing via the public form puts the row back to `pending` and
 // goes through the normal double opt-in.
@@ -1934,21 +1934,21 @@ function sendConfirmationEmail_(email, confirmToken) {
   var campaign = 'confirm';
 
   // Confirmation link lands on the branded nidhi.today page which then
-  // POSTs to Apps Script on explicit user click — same pattern as
+  // POSTs to Apps Script on explicit user click, same pattern as
   // unsubscribe, so subscribers never see script.google.com and preview
   // bots don't auto-confirm.
-  // No trailing slash before `?` — astro.config.mjs sets trailingSlash:'never'
+  // No trailing slash before `?`: astro.config.mjs sets trailingSlash:'never'
   // and the previous `/confirm/?t=...` form 404s on strict static hosts.
   var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
   var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
 
   // For the List-Unsubscribe header on this email we don't have an unsub
-  // token yet in a useful way (we just generated it for the row — use it
+  // token yet in a useful way (we just generated it for the row, use it
   // too, so Gmail's one-click works even on the confirmation email).
   var sh = sheet_();
   var row = findSubscriberRow_(sh, email);
   var unsubToken = row ? String(sh.getRange(row, COL.unsubToken).getValue()).trim() : '';
-  // List-Unsubscribe *header* stays UTM-free — it's machine-parsed by
+  // List-Unsubscribe *header* stays UTM-free: it's machine-parsed by
   // Gmail/Outlook clients, not human-clicked, and spam filters flag
   // unexpected params in the header.
   var listUnsubPostUrl = cfg.webAppUrl + '?action=unsubscribe&t=' + unsubToken;
@@ -2109,7 +2109,7 @@ function sendWelcomeEmail_(email, unsubToken) {
  */
 function brandBannerHtml_(cfg, campaign) {
   // The PNG already contains the wordmark "nidhi" and the tagline
-  // "Money, understood." — don't repeat the tagline as text below.
+  // "Money, understood.": don't repeat the tagline as text below.
   // Source image is 400px wide; we display at 200px for a crisp 2x on retina.
   var logoUrl = cfg.siteUrl + '/brand/logo/full/logo-full-400-light.png';
   var bannerHref = withUtm_(cfg.siteUrl + '/blog', campaign);
@@ -2166,7 +2166,7 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
  * Diagnose a persistent `bad_signature` error without having to redeploy.
  *
  * Run from the Apps Script editor (Run → debugHmacSecret). No redeploy
- * required — editor runs use the latest SAVED code against the LIVE
+ * required, editor runs use the latest SAVED code against the LIVE
  * script properties. So as long as you've pasted this file into the
  * editor and hit Save, this function works.
  *
@@ -2174,7 +2174,7 @@ function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
  *   1. Reads HMAC_SECRET from Script Properties.
  *   2. Prints its length, first/last 4 chars, and format sanity checks
  *      (hex-only? whitespace? newline at end?). Safe to share the first/
- *      last 4 chars — they're not enough to reconstruct the secret.
+ *      last 4 chars: they're not enough to reconstruct the secret.
  *   3. Computes HMAC-SHA256 of the literal string "secret-check" with
  *      the current secret, and prints it. You can then run the same
  *      HMAC locally with your GH Actions copy of the secret:
@@ -2217,7 +2217,7 @@ function debugHmacSecret() {
   console.log('Reproduce on your terminal (with the SAME secret value you pasted into the GH Actions NEWSLETTER_HMAC_SECRET):');
   console.log('  printf \'secret-check\' | openssl dgst -sha256 -hmac \'PASTE-SECRET-HERE\' | awk \'{print $NF}\'');
   console.log('');
-  console.log('Match? secrets are byte-identical — bad_signature is NOT a secret problem.');
+  console.log('Match? secrets are byte-identical: bad_signature is NOT a secret problem.');
   console.log('Differ? the two copies are different values. Regenerate with openssl rand -hex 32 and paste to both.');
 }
 
@@ -2225,7 +2225,7 @@ function debugHmacSecret() {
  * Run this once from the Apps Script editor (Run → migrateAddTokens) after
  * upgrading to the token-based schema. For every row that's missing a
  * confirm_token or unsub_token, generates fresh random tokens and writes
- * them. Idempotent — safe to run multiple times.
+ * them. Idempotent, safe to run multiple times.
  *
  * Also verifies the header row matches EXPECTED_HEADERS and updates it
  * if the user added the two new columns to the Sheet but didn't fill in
@@ -2290,7 +2290,7 @@ function htmlResponse_(html) {
  * Return a tiny HTML page that immediately redirects the top frame to the
  * given URL. Apps Script HtmlService serves responses inside a Google-owned
  * iframe at googleusercontent.com, so window.location only moves the iframe
- * — we need window.top to move the address bar. Referrer-Policy prevents
+ * we need window.top to move the address bar. Referrer-Policy prevents
  * the destination from seeing the full Apps Script URL (with the opaque
  * token) as Referer.
  */
@@ -2416,7 +2416,7 @@ function trackPosthog_(event, distinctId, properties) {
 
 // Stable, PII-minimised subscriber identifier for PostHog. SHA-256 of the
 // normalised email (lowercase, trimmed), hex-encoded. Must match the client's
-// sha256Hex() in src/components/SubscribeSection.astro exactly — both sides
+// sha256Hex() in src/components/SubscribeSection.astro exactly, both sides
 // normalise with .toLowerCase().trim() before hashing so the browser's
 // posthog.identify(hash) call aliases to the same distinct_id the server
 // uses for blog_subscribe_pending / _confirmed / blog_unsubscribe, which is
