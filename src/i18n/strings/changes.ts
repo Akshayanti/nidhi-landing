@@ -43,6 +43,46 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-20',
     items: [
       {
+        id: 'loan-refinance-plain-labels',
+        text: {
+          en: 'In the loan comparison, the refinance results now spell out “Refinancing saves” and “Time to break even after refinancing”, where they used a short form and promised months for a value shown in years. The note under the break-even now says that a longer new term can break even and still cost more in total. Screen readers also hear the refinance result once typing stops.',
+          hi: 'लोन तुलना में रीफ़ाइनेंस के नतीजों के नाम अब ज़्यादा साफ़ हैं, जैसे “रीफ़ाइनेंस के बाद बराबरी का समय”; पहले नाम में महीनों की बात थी जबकि आँकड़ा सालों में दिखता था। बराबरी के नीचे की टिप्पणी अब यह भी बताती है कि नई अवधि लंबी हो तो रीफ़ाइनेंस का खर्च निकल आने पर भी कुल खर्च ज़्यादा हो सकता है। स्क्रीन रीडर भी अब टाइपिंग रुकने पर रीफ़ाइनेंस का नतीजा सुनाते हैं।',
+          es: 'En el comparador de préstamos, los resultados de la refinanciación tienen ahora nombres más claros, como «Tiempo hasta el punto de equilibrio tras refinanciar»; antes la etiqueta hablaba de meses y el valor se mostraba en años. La nota bajo el punto de equilibrio dice ahora que un plazo nuevo más largo puede alcanzar el punto de equilibrio y aun así costar más en total. Los lectores de pantalla también anuncian el resultado de la refinanciación cuando se deja de escribir.',
+          cs: 'Ve srovnání úvěrů mají teď výsledky refinancování jasnější názvy, například „Doba návratnosti po refinancování“; dřív popisek mluvil o\u00a0měsících, ale hodnota se zobrazovala v\u00a0letech. Poznámka pod dobou návratnosti nově říká, že se refinancování s\u00a0delší dobou splatnosti může vrátit, a\u00a0přesto vyjít celkově dráž. Čtečky obrazovky teď také ohlásí výsledek refinancování, jakmile přestanete psát.',
+          mr: 'कर्जांची तुलना या साधनात पुनर्वित्ताच्या निकालांची नावे आता अधिक स्पष्ट आहेत, उदाहरणार्थ “पुनर्वित्तानंतर खर्च वसूल होण्याचा टप्पा”; आधी नावात महिन्यांचा उल्लेख होता, पण आकडा वर्षांत दिसत होता. त्याखालील टीप आता हेही सांगते की नवीन मुदत जास्त असेल तर पुनर्वित्ताचा खर्च वसूल होऊनही एकूण खर्च जास्त असू शकतो. स्क्रीन रीडरही आता टायपिंग थांबल्यावर पुनर्वित्ताचा निकाल सांगतात.',
+        },
+      },
+      {
+        id: 'copied-share-address-stays',
+        text: {
+          en: 'In the loan comparison and the net worth calculator, the copied share address now stays on screen until you change something, in larger and darker text. Before, the loan comparison removed it after two and a half seconds. A screen reader now hears the copy once, not twice.',
+          hi: 'लोन तुलना और शुद्ध संपत्ति कैलकुलेटर में कॉपी किया गया शेयर पता अब तब तक स्क्रीन पर रहता है जब तक आप कुछ बदलते नहीं, और बड़े, गहरे अक्षरों में दिखता है। पहले लोन तुलना में वह ढाई सेकंड बाद हट जाता था। स्क्रीन रीडर अब लिंक कॉपी होने की सूचना एक बार सुनाते हैं, दो बार नहीं।',
+          es: 'En el comparador de préstamos y en la calculadora de patrimonio neto, la dirección copiada para compartir se queda ahora en pantalla hasta que cambies algo, con letra más grande y más oscura. Antes, el comparador de préstamos la quitaba a los dos segundos y medio. Un lector de pantalla anuncia ahora la copia una vez, no dos.',
+          cs: 'Ve srovnání úvěrů a\u00a0v\u00a0kalkulačce čistého jmění teď zkopírovaná adresa ke sdílení zůstává na obrazovce, dokud něco nezměníte, a\u00a0je větším a\u00a0tmavším písmem. Dřív ji srovnání úvěrů po dvou a\u00a0půl sekundách skrylo. Čtečka obrazovky teď zkopírování ohlásí jednou, ne dvakrát.',
+          mr: 'कर्जांची तुलना आणि निव्वळ संपत्ती कॅल्क्युलेटर या साधनांत कॉपी केलेला शेअर पत्ता आता तुम्ही काही बदलेपर्यंत स्क्रीनवर राहतो, आणि मोठ्या, गडद अक्षरांत दिसतो. आधी कर्जांची तुलना या साधनात तो अडीच सेकंदांनी नाहीसा व्हायचा. स्क्रीन रीडर आता लिंक कॉपी झाल्याची सूचना एकदाच सांगतात, दोनदा नाही.',
+        },
+      },
+      {
+        id: 'loan-apr-by-country',
+        text: {
+          en: 'A correction in the loan comparison: the answer about APR said that documents in Canada and Japan state it as the monthly rate times twelve. They do not compound either, but each uses its own formula, and the answer now says so; it also names Australia’s figure as its comparison rate. The note about Canadian mortgages now says half-yearly compounding is the usual way to state the rate, not a legal requirement. Lesson 27 carries the same correction in its own record.',
+          hi: 'लोन तुलना में एक सुधार: APR वाले जवाब में लिखा था कि कनाडा और जापान के काग़ज़ों में यह मासिक दर को बारह से गुणा करके बताया जाता है। ये दोनों देश भी चक्रवृद्धि नहीं जोड़ते, पर अपने-अपने सूत्र अपनाते हैं, और जवाब अब यही कहता है; ऑस्ट्रेलिया के आँकड़े को भी अब उसके सही नाम, तुलना दर (comparison rate), से बताया गया है। कनाडा के मॉर्गेज वाली टिप्पणी अब कहती है कि दर आम तौर पर छमाही चक्रवृद्धि के हिसाब से बताई जाती है, यह क़ानूनी शर्त नहीं है। पाठ 27 में यही सुधार उसके अपने रिकॉर्ड में दर्ज है।',
+          es: 'Una corrección en el comparador de préstamos: la respuesta sobre el APR decía que los documentos de Canadá y Japón lo expresan como la tasa mensual multiplicada por doce. Tampoco capitalizan, pero cada país usa su propia fórmula, y la respuesta ahora lo dice; también llama por su nombre a la cifra de Australia, la tasa de comparación. La nota sobre las hipotecas canadienses dice ahora que la capitalización semestral es la forma habitual de expresar la tasa, no una exigencia legal. La lección 27 recoge la misma corrección en su propio registro.',
+          cs: 'Oprava ve srovnání úvěrů: odpověď o\u00a0APR uváděla, že dokumenty v\u00a0Kanadě a\u00a0Japonsku ho udávají jako měsíční sazbu krát dvanáct. Ani tyto země nepočítají se složeným úročením, ale každá používá vlastní vzorec, a\u00a0odpověď to teď říká; australský údaj také nově nazývá jeho jménem, srovnávací sazba. Poznámka o\u00a0kanadských hypotékách teď říká, že pololetní úročení je obvyklý způsob uvádění sazby, ne zákonná povinnost. Lekce 27 má stejnou opravu ve svém vlastním záznamu.',
+          mr: 'कर्जांची तुलना या साधनात एक दुरुस्ती: APR\u00a0विषयीच्या उत्तरात लिहिले होते की कॅनडा आणि जपानमधील कागदपत्रांत तो मासिक दराला बाराने गुणून दिला जातो. हे दोन्ही देशही चक्रवाढ धरत नाहीत, पण प्रत्येकाचे स्वतःचे सूत्र आहे, आणि उत्तर आता तसेच सांगते; ऑस्ट्रेलियाच्या आकड्यालाही आता त्याच्या योग्य नावाने, तुलना दर (comparison rate), संबोधले आहे. कॅनडातील गहाण कर्जांविषयीची टीप आता सांगते की दर सहसा सहामाही चक्रवाढीने सांगितला जातो, ती कायदेशीर अट नाही. धडा 27\u00a0मध्ये हीच दुरुस्ती त्याच्या स्वतःच्या नोंदीत आहे.',
+        },
+      },
+      {
+        id: 'net-worth-foreign-loan-card',
+        text: {
+          en: 'In the net worth calculator, the card about foreign-currency loans now says what the calculator shows, the loan set against what you hold in that currency at the latest reference rate, and what it leaves out: the interest and future exchange-rate moves.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर में विदेशी मुद्रा के लोन वाला कार्ड अब बताता है कि कैलकुलेटर क्या दिखाता है, यानी उस मुद्रा में आपके पास जो है उसके सामने रखा गया लोन, ताज़ा संदर्भ दर पर, और क्या नहीं दिखाता: ब्याज और आगे विनिमय दर में होने वाले बदलाव।',
+          es: 'En la calculadora de patrimonio neto, la tarjeta sobre préstamos en moneda extranjera dice ahora qué muestra la calculadora, el préstamo frente a lo que tienes en esa moneda al tipo de referencia más reciente, y qué deja fuera: los intereses y los movimientos futuros del tipo de cambio.',
+          cs: 'V\u00a0kalkulačce čistého jmění teď karta o\u00a0úvěrech v\u00a0cizí měně říká, co kalkulačka ukazuje, tedy úvěr proti tomu, co v\u00a0té měně máte, přepočtený posledním referenčním kurzem, a\u00a0co vynechává: úrok a\u00a0budoucí pohyby kurzu.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये परकीय चलनातील कर्जाविषयीचे कार्ड आता सांगते की कॅल्क्युलेटर काय दाखवतो, म्हणजे त्या चलनात तुमच्याकडे जे आहे त्यासमोर ठेवलेले कर्ज, ताज्या संदर्भ दराने, आणि काय दाखवत नाही: व्याज आणि विनिमय दरातील पुढचे बदल.',
+        },
+      },
+      {
         id: 'theme-when-site-data-blocked',
         text: {
           en: 'If your browser blocks site data, the site now follows your device’s light or dark setting, and the theme buttons work, though your choice lasts only on the page you are on. Before, such a browser always got the light theme and the buttons did nothing.',
