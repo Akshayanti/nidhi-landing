@@ -27,8 +27,9 @@ name: Tool privacy check
 # Renaming the "No typed value reaches analytics" job means changing the
 # required check in the same breath.
 on:
+  # No branch filter, as in pr-checks.yml: a pull request stacked on another
+  # branch gets the privacy check before it is retargeted to main.
   pull_request:
-    branches: [main]
   schedule:
     # 03:41 UTC every day, away from the deploy and newsletter crons. GitHub
     # starts it hours later (see deploy.yml).
