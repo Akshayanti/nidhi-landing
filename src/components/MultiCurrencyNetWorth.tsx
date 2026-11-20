@@ -1301,10 +1301,11 @@ function ShareModal({
 
   // A refused copy leaves the address to copy by hand: focus goes to it (and
   // selects it), so "Copy this link:" is not pointing at a field still to find.
+  // Each refusal has its own notice, so a second one moves focus again.
   const urlField = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (copyFailed && shareUrl) urlField.current?.focus();
-  }, [copyFailed, shareUrl]);
+  }, [copyFailed, shareUrl, notice.n]);
 
   // The parent passes a new `onClose` on every render. Kept in a ref, it
   // leaves the effect below to run once, when the dialog opens: run again

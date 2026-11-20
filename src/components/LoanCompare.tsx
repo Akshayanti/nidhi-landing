@@ -3395,9 +3395,11 @@ function RefinanceSection({
                     : Number.isFinite(cmp.breakEvenMonths) ? strings.refi.breakEvenHint : strings.refi.breakEvenNever
               }
               // Said only where it is the case: the refinance breaks even and
-              // still costs more in total, which a longer new term explains.
+              // still costs more in total, and the new loan ends later than
+              // the current one would have, which is what the sentence names.
               note={
                 cmp.breakEvenKind !== 'none' && Number.isFinite(cmp.breakEvenMonths) && cmp.savingsMinor < 0
+                && original !== null && atMonth + newTerm > original.months
                   ? cmp.breakEvenKind === 'balance' ? strings.refi.breakEvenBalanceLongerTerm : strings.refi.breakEvenLongerTerm
                   : undefined
               }

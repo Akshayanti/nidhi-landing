@@ -1316,7 +1316,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       nothingToRecoup: 'निकालने के लिए कोई खर्च नहीं',
       nothingToRecoupHint: 'रीफ़ाइनेंस के लिए कुछ नहीं चुकाना पड़ता, और देय किस्त कम नहीं है।',
       breakEvenBalanceHint: 'बड़े बकाए को गिनते हुए: कागज़ी खर्च नए लोन में जुड़ा है, इसलिए यह वह समय है जब किस्तों में हुई बचत नए लोन पर बचे अतिरिक्त बकाए और जल्दी चुकाने के जुर्माने (अगर हो) से ज़्यादा हो जाती है। अतिरिक्त भुगतान इसमें नहीं गिने जाते।',
-      breakEvenBalanceLongerTerm: 'नई अवधि लंबी हो तो मौजूदा लोन के ख़त्म होने के समय के बाद भी ब्याज लगता रहता है, इसलिए यहाँ भी रीफ़ाइनेंस का खर्च निकल आने पर कुल खर्च ज़्यादा हो सकता है: ऊपर के कुल आँकड़े बताते हैं कि यहाँ क्या हुआ है।',
+      breakEvenBalanceLongerTerm: 'नई अवधि लंबी हो तो मौजूदा लोन के ख़त्म होने के समय के बाद भी ब्याज लगता रहता है, इसलिए यहाँ रीफ़ाइनेंस का खर्च निकल आने पर भी कुल खर्च ज़्यादा हो सकता है: ऊपर के कुल आँकड़े बताते हैं कि यहाँ क्या हुआ है।',
       breakEvenBalanceNever: 'किस्तों में हुई बचत नए लोन पर बचे अतिरिक्त बकाए से कभी ज़्यादा नहीं होती',
     },
     disclaimer: {
@@ -2585,7 +2585,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       nothingToRecoup: 'Žádné náklady k vrácení',
       nothingToRecoupHint: 'Za refinancování se nic neplatí a předepsaná splátka není nižší.',
       breakEvenBalanceHint: 'Se započtením vyšší jistiny: náklady na uzavření jsou součástí nového úvěru, takže jde o okamžik, kdy ušetřené splátky převáží to, co u něj dlužíte navíc, a případný poplatek za předčasné splacení. Mimořádné splátky se nepočítají.',
-      breakEvenBalanceLongerTerm: 'Při delší nové době splatnosti nabíhá úrok i po datu, kdy by současný úvěr skončil, takže se refinancování může i tady vrátit a přesto vyjít celkově dráž: co platí, ukazují celkové částky výše.',
+      breakEvenBalanceLongerTerm: 'Při delší nové době splatnosti nabíhá úrok i po datu, kdy by současný úvěr skončil, takže se tady refinancování může vrátit a přesto vyjít celkově dráž: co platí, ukazují celkové částky výše.',
       breakEvenBalanceNever: 'Ušetřené splátky nikdy nepřeváží to, co u nového úvěru dlužíte navíc',
     },
     disclaimer: {
@@ -3192,7 +3192,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       nothingToRecoup: 'वसूल करण्यासारखा खर्च नाही',
       nothingToRecoupHint: 'पुनर्वित्तासाठी काहीही भरावे लागत नाही, आणि देय हप्ता कमी नाही.',
       breakEvenBalanceHint: 'वाढलेली बाकी धरून: व्यवहार खर्च नवीन कर्जात जोडलेला आहे, त्यामुळे हप्त्यांतील बचत नवीन कर्जावरील जास्तीच्या बाकीपेक्षा आणि मुदतपूर्व परतफेडीच्या दंडापेक्षा (असल्यास) जास्त होते तो हा टप्पा. अतिरिक्त भरणा यात धरलेला नाही.',
-      breakEvenBalanceLongerTerm: 'नवीन मुदत जास्त असेल तर सध्याचे कर्ज संपले असते त्यानंतरही व्याज लागत राहते, त्यामुळे इथेही पुनर्वित्ताचा खर्च वसूल होऊनही एकूण खर्च जास्त असू शकतो: इथे काय झाले आहे ते वरील एकूण रकमा दाखवतात.',
+      breakEvenBalanceLongerTerm: 'नवीन मुदत जास्त असेल तर सध्याचे कर्ज संपले असते त्यानंतरही व्याज लागत राहते, त्यामुळे इथे पुनर्वित्ताचा खर्च वसूल होऊनही एकूण खर्च जास्त असू शकतो: इथे काय झाले आहे ते वरील एकूण रकमा दाखवतात.',
       breakEvenBalanceNever: 'हप्त्यांतील बचत नवीन कर्जावरील जास्तीच्या बाकीपेक्षा कधीच जास्त होत नाही',
     },
     disclaimer: {
