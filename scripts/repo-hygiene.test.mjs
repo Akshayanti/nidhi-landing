@@ -76,12 +76,27 @@ describe('deploy workflow permissions', () => {
     assert.deepEqual(permissions('deploy'), ['id-token: write', 'pages: write']);
     assert.deepEqual(permissions('indexnow-ping'), ['contents: read']);
     assert.deepEqual(permissions('trigger-newsletter'), ['actions: write']);
+    assert.deepEqual(permissions('alert'), ['issues: write']);
   });
 
   it('every job states its permissions', () => {
     const names = [...workflow.slice(workflow.indexOf('\njobs:\n')).matchAll(/\n {2}([a-z][\w-]*):\n/g)].map((m) => m[1]);
-    assert.deepEqual(names, ['build', 'deploy', 'indexnow-ping', 'trigger-newsletter']);
+    assert.deepEqual(names, ['build', 'deploy', 'indexnow-ping', 'trigger-newsletter', 'alert']);
     for (const name of names) permissions(name);
+  });
+
+  it('a failed deploy opens an issue, and only one at a time (#328)', () => {
+    const alert = job('alert');
+    assert.match(alert, /\n {4}needs: \[build, deploy, trigger-newsletter\]\n {4}if: failure\(\)\n/);
+    // It has no checkout, so gh must be told the repository.
+    assert.match(alert, /GH_REPO: \$\{\{ github\.repository \}\}/);
+    assert.doesNotMatch(alert, /uses: actions\/checkout/);
+    // An open alert takes a comment; a new issue is opened only when none is.
+    assert.match(alert, /gh issue list --state open --label deploy-alert/);
+    assert.match(alert, /if \[ -n "\$\{EXISTING:-\}" \]; then\n\s+echo [^\n]+\n\s+gh issue comment "\$EXISTING"/);
+    assert.match(alert, /else\n\s+echo [^\n]+\n\s+gh issue create --title "\$TITLE" --label deploy-alert/);
+    // The only secret it is given is the token that writes the issue.
+    assert.deepEqual([...new Set([...alert.matchAll(/secrets\.([A-Z_]+)/g)].map((m) => m[1]))], ['GITHUB_TOKEN']);
   });
 
   it('the build is given only the secrets the site reads', () => {

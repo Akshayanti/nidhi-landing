@@ -353,3 +353,75 @@ jobs:
           gh workflow run newsletter.yml \
             --repo "${{ github.repository }}" \
             --ref main
+
+  # Says so when a deploy fails. Until this job existed a failed deploy showed
+  # only in the Actions tab and in GitHub's own email, while scheduled lessons
+  # and the same morning's reel links wait on the daily deploy (#328). It
+  # mirrors the newsletter workflow's alert: an issue, labelled so it can be
+  # found, that a person closes once the site is deploying again.
+  #
+  # Runs when the build, the deploy or the newsletter hand-off failed or
+  # timed out; not when a run was cancelled. The IndexNow job is left out: it
+  # is allowed to fail (see its comment) and never turns the run red.
+  #
+  # One open issue at a time: while a `deploy-alert` issue is open, each
+  # further failure adds a comment to it instead of opening another.
+  alert:
+    needs: [build, deploy, trigger-newsletter]
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write   # open or comment on the deploy-alert issue
+    steps:
+      - name: Open or update the deploy-alert issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No checkout in this job, so gh is told which repository.
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ATTEMPT: ${{ github.run_attempt }}
+          EVENT: ${{ github.event_name }}
+          COMMIT: ${{ github.sha }}
+          BUILD: ${{ needs.build.result }}
+          DEPLOY: ${{ needs.deploy.result }}
+          HANDOFF: ${{ needs.trigger-newsletter.result }}
+        run: |
+          set -euo pipefail
+          TITLE="Deploy failed ($(date -u +%Y-%m-%d))"
+          BODY="$RUNNER_TEMP/deploy-alert.md"
+          {
+            echo "A deploy of the site did not finish. The site keeps serving the last deploy that succeeded."
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Started by | \`$EVENT\` |"
+            echo "| Commit | \`$COMMIT\` |"
+            echo "| Build | \`$BUILD\` |"
+            echo "| Deploy | \`$DEPLOY\` |"
+            echo "| Newsletter hand-off | \`$HANDOFF\` |"
+            echo
+            echo "- Workflow run: $RUN_URL (attempt $ATTEMPT)"
+            echo
+            echo "**What to check first**"
+            echo "1. Open the run and read the first failed job's log."
+            echo "2. A deploy job that stopped at \"Timeout reached\" or \"updating_pages\" is usually GitHub Pages being slow: re-run the failed jobs."
+            echo "3. A failed build is a real error in the site or its content (a lesson dated today is built for the first time today): fix it on main, and the push deploys."
+            echo "4. If only the newsletter hand-off failed, the site is live: start \"Newsletter pipeline\" by hand from the Actions tab."
+            echo
+            echo "Close this issue once a deploy has succeeded. While it is open, further failures are added here as comments."
+          } > "$BODY"
+
+          # De-dupe: one open alert at a time.
+          EXISTING=$(gh issue list --state open --label deploy-alert --limit 1 --json number --jq '.[0].number // empty' || echo "")
+          if [ -n "${EXISTING:-}" ]; then
+            echo "Appending to existing issue #$EXISTING"
+            gh issue comment "$EXISTING" --body-file "$BODY"
+          else
+            echo "Opening new issue"
+            gh issue create --title "$TITLE" --label deploy-alert --body-file "$BODY" || {
+              # If the label doesn't exist yet, create it and retry once.
+              gh label create deploy-alert --color D93F0B --description "A deploy of the site failed" || true
+              gh issue create --title "$TITLE" --label deploy-alert --body-file "$BODY"
+            }
+          fi
