@@ -147,3 +147,22 @@ describe('parse-markdown: a file with no frontmatter', () => {
     assert.equal(bare.slides[0].text, 'Just this.');
   });
 });
+
+describe('parse-markdown: files written a little differently (#723)', () => {
+  it('reads the keys after a block value that has no lines', () => {
+    const empty = parseInstagramPost('---\nstory_blog_extra: |\ntitle: "After the block"\ncategory: "BUDGETING"\n---\n\n## Slide 1\n\nHello\n', 'a.md');
+    assert.equal(empty.title, 'After the block');
+    assert.equal(empty.category, 'BUDGETING');
+    assert.equal(empty.story.blogExtra, '');
+  });
+
+  it('reads a file with Windows line endings the same as one without', () => {
+    const windows = parseInstagramPost(SOURCE.replace(/\n/g, '\r\n'), 'series-1/14-budget-split.md');
+    assert.deepEqual(windows, post);
+  });
+
+  it('turns \\" inside a quoted value into a quote mark', () => {
+    const quoted = parseInstagramPost('---\ntitle: "He said \\"hi\\""\n---\n\n## Slide 1\n\nHello\n', 'a.md');
+    assert.equal(quoted.title, 'He said "hi"');
+  });
+});
