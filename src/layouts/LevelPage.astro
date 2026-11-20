@@ -87,6 +87,7 @@ const itemListSchema = {
 
 <BaseLayout
   locale={locale}
+  sheets={['learn']}
   alternates={LOCALES}
   title={format(levelStrings.meta.title, { label, summary: learn.summaries[level] })}
   description={core.length > 0 ? format(levelStrings.meta.descriptionWithCount, { description: meta.description, count: core.length }) : meta.description}
@@ -118,7 +119,7 @@ const itemListSchema = {
 
       {core.length > 0 ? (
         <LevelLessons
-          client:load
+          client:idle
           level={level}
           posts={levelPosts}
           strings={learn.island}
