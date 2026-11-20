@@ -71,7 +71,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
   // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
-  '@anthropic-ai/sdk': '^1.3.0',
+  '@anthropic-ai/sdk': '^1.9.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   puppeteer: '^25.17.0',
