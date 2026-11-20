@@ -1299,6 +1299,13 @@ function ShareModal({
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const modalTitleId = useId();
 
+  // A refused copy leaves the address to copy by hand: focus goes to it (and
+  // selects it), so "Copy this link:" is not pointing at a field still to find.
+  const urlField = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (copyFailed && shareUrl) urlField.current?.focus();
+  }, [copyFailed, shareUrl]);
+
   // The parent passes a new `onClose` on every render. Kept in a ref, it
   // leaves the effect below to run once, when the dialog opens: run again
   // on each render, its cleanup and its first step moved keyboard focus to
@@ -1436,10 +1443,11 @@ function ShareModal({
               <div className="mcnw-shareUrlBar">
                 <span className="mcnw-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedLabel}</span>
                 <input
+                  ref={urlField}
                   className="mcnw-shareUrlInput"
                   value={shareUrl}
                   readOnly
-                  onFocus={(e) => e.target.select()}
+                  onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
                   aria-label={strings.toolbar.shareUrlAria}
                 />
               </div>

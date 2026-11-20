@@ -1418,7 +1418,7 @@ export default function LoanCompare({
                 className="lc-shareUrlInput"
                 value={shareUrl}
                 readOnly
-                onFocus={(e) => e.target.select()}
+                onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
                 aria-label={strings.toolbar.shareUrlAria}
               />
             </div>
@@ -3164,12 +3164,13 @@ function announcedRefinance(
   formatMoney: (minor: number, currency: string) => string,
 ): string {
   if (!cmp || 'error' in cmp) return '';
+  const penalty = cmp.penaltyMinor > 0 ? ` ${format(strings.refi.announcePenalty, { amount: formatMoney(cmp.penaltyMinor, currency) })}` : '';
   return format(cmp.savingsMinor >= 0 ? strings.refi.announceSaves : strings.refi.announceCosts, {
     amount: formatMoney(Math.abs(cmp.savingsMinor), currency),
     time: cmp.breakEvenKind !== 'none' && Number.isFinite(cmp.breakEvenMonths) && typeof document !== 'undefined'
       ? spokenMonths(cmp.breakEvenMonths)
       : refinanceBreakEven(cmp, strings),
-  });
+  }) + penalty;
 }
 
 /**
@@ -3392,6 +3393,13 @@ function RefinanceSection({
                   : cmp.breakEvenKind === 'balance'
                     ? Number.isFinite(cmp.breakEvenMonths) ? strings.refi.breakEvenBalanceHint : strings.refi.breakEvenBalanceNever
                     : Number.isFinite(cmp.breakEvenMonths) ? strings.refi.breakEvenHint : strings.refi.breakEvenNever
+              }
+              // Said only where it is the case: the refinance breaks even and
+              // still costs more in total, which a longer new term explains.
+              note={
+                cmp.breakEvenKind !== 'none' && Number.isFinite(cmp.breakEvenMonths) && cmp.savingsMinor < 0
+                  ? cmp.breakEvenKind === 'balance' ? strings.refi.breakEvenBalanceLongerTerm : strings.refi.breakEvenLongerTerm
+                  : undefined
               }
             />
           </dl>

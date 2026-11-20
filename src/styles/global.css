@@ -3060,6 +3060,9 @@ details[open] > .disclosure::after,
 
 .lc-resultHint {
   display: block;
+  /* A value sits at the end of its row; a sentence under it starts where
+     reading starts, so its lines share one edge. */
+  text-align: start;
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 0.875rem;
