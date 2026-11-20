@@ -47,7 +47,7 @@ describe("what's changed", () => {
   });
 
   it('uses no em dash and no double dash', () => {
-    const dashed = CHANGES.flatMap((c, i) => LOCALES.filter((l) => /—|&mdash;|--/.test(c.text[l])).map((l) => `${i}:${l}`));
+    const dashed = CHANGES.flatMap((c, i) => LOCALES.filter((l) => /\u2014|&(?:mdash);|--/.test(c.text[l])).map((l) => `${i}:${l}`));
     assert.deepEqual(dashed, []);
   });
 

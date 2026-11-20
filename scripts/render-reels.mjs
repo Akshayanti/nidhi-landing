@@ -20,7 +20,7 @@
  *   node scripts/render-reels.mjs <slug> --variants-all     # render all 3 hook variants
  *
  * Required env: ANTHROPIC_API_KEY  (in .env)
- * Optional env: NIDHI_REEL_MODEL   (default: claude-sonnet-4-5-20250929)
+ * Optional env: NIDHI_REEL_MODEL   (default: DEFAULT_REEL_MODEL in lib/llm-script-writer.mjs)
  *               NIDHI_REEL_VOICE   (default: en-GB-RyanNeural)
  *               NIDHI_REEL_RATE    (default: +5%)
  *               NIDHI_REEL_PITCH   (default: -2Hz)
@@ -387,7 +387,7 @@ async function renderOne({ post, opts, variantIdx }) {
 
   const fullOutPath = join(dirs.videos, `${renderSlug}.mp4`);
   execSync(
-    `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${fullInputPath}" "${fullOutPath}"`,
+    `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-single.ts "${fullInputPath}" "${fullOutPath}"`,
     { stdio: "inherit" },
   );
   await normalizeLoudness(fullOutPath);
@@ -404,7 +404,7 @@ async function renderOne({ post, opts, variantIdx }) {
     await mkdir(dirs.thumbnails, { recursive: true });
     thumbnailOutPath = join(dirs.thumbnails, `${renderSlug}.png`);
     execSync(
-      `cd "${REMOTION_DIR}" && npx tsx src/render-thumbnail.ts "${planPath}" "${thumbnailOutPath}" ${variantIdx}`,
+      `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-thumbnail.ts "${planPath}" "${thumbnailOutPath}" ${variantIdx}`,
       { stdio: "inherit" },
     );
   }
@@ -425,7 +425,7 @@ async function renderOne({ post, opts, variantIdx }) {
 
     hookcutOutPath = join(dirs.videos, `${renderSlug}-hookcut.mp4`);
     execSync(
-      `cd "${REMOTION_DIR}" && npx tsx src/render-single.ts "${hookcutInputPath}" "${hookcutOutPath}"`,
+      `cd "${REMOTION_DIR}" && npx --no-install tsx src/render-single.ts "${hookcutInputPath}" "${hookcutOutPath}"`,
       { stdio: "inherit" },
     );
     await normalizeLoudness(hookcutOutPath);

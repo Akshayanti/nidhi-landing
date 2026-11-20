@@ -7,7 +7,7 @@ import { countryNamer, tidyCountryName } from './countryNames.ts';
 test('a qualifier after a spaced dash goes in brackets', () => {
   assert.equal(tidyCountryName('Kongo – Kinshasa'), 'Kongo (Kinshasa)');
   assert.equal(tidyCountryName('Hongkong – ZAO Číny'), 'Hongkong (ZAO Číny)');
-  assert.equal(tidyCountryName('कांगो — ब्राज़ाविल'), 'कांगो (ब्राज़ाविल)');
+  assert.equal(tidyCountryName('कांगो \u2014 ब्राज़ाविल'), 'कांगो (ब्राज़ाविल)');
   assert.equal(tidyCountryName('Congo - Brazzaville'), 'Congo (Brazzaville)');
 });
 

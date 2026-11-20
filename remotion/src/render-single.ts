@@ -1,7 +1,7 @@
 /**
  * Render a single reel using Remotion.
  *
- * Usage: npx tsx src/render-single.ts <inputJsonPath> <outputPath>
+ * Usage: npx --no-install tsx src/render-single.ts <inputJsonPath> <outputPath>
  *
  * The input JSON conforms to ReelInput in `data.ts` (full plan + segment spans
  * + word timings + audio path + cut mode). The orchestrator at
@@ -16,7 +16,7 @@ import path from "node:path";
 async function render() {
   const args = process.argv.slice(2);
   if (args.length < 2) {
-    console.error("Usage: npx tsx src/render-single.ts <inputJsonPath> <outputPath>");
+    console.error("Usage: npx --no-install tsx src/render-single.ts <inputJsonPath> <outputPath>");
     process.exit(1);
   }
 

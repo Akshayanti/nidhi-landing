@@ -283,7 +283,7 @@ describe('decodeFromQueryString', () => {
 
   it('inference uses v{i} tuple specifically (advanced-only slots are ignored)', () => {
     // Only v3_pp (advanced field) is set, with no v3 tuple. This is an
-    // orphan and must NOT extend the count to 3 — the advanced field
+    // orphan and must NOT extend the count to 3: the advanced field
     // applies on top of the simple-mode tuple, not as a row marker.
     const { vendors } = decodeFromQueryString('v1=A~1&v2=B~1&v3_pp=2');
     assert.equal(vendors.length, 2);

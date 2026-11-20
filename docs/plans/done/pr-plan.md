@@ -1175,7 +1175,7 @@ The privacy policy will of course continue to receive entries for changes that d
 
 # Appendix E: Already strong, do not break
 
-> Moved 2026-11-03: several facts are wrong now (`/index2/` gone, /about/ emits ProfilePage, hreflang covers five locales, BingSiteAuth.xml is not in the repo, the currency-risk redirect is static, not a 301); a corrected list stays live.
+> Moved 2026-11-03: several facts are wrong now (`/index2/` gone, /about/ emits ProfilePage, hreflang covers five locales, BingSiteAuth.xml sat at the repository root, where the site never served it, until it moved to `public/` in Nov 2026 (#324), the currency-risk redirect is static, not a 301); a corrected list stays live.
 
 Pre-existing site posture that earlier audits validated. Each PR should preserve these.
 
@@ -1185,7 +1185,7 @@ Pre-existing site posture that earlier audits validated. Each PR should preserve
 - **Sitemap excludes** transactional pages and parked redesign (`astro.config.mjs:8-15`).
 - **301 redirect** from retired `/free/currency-risk/` to `/free/multi-currency-net-worth/`.
 - **Canonical, hreflang en/x-default, prev/next link tags.**
-- **RSS, llms.txt, BingSiteAuth.xml** present and correct.
+- **RSS, llms.txt, BingSiteAuth.xml** present and correct. (Not so for BingSiteAuth.xml when this was written: it was at the repository root and was never served. It is in `public/` since Nov 2026, #324.)
 - **Skip-link, focus-visible styles, `prefers-reduced-motion`.** Soft quality signal.
 - **Privacy changelog discipline** as described in Appendix D.
 

@@ -1,7 +1,7 @@
 /**
  * Render a single reel cover thumbnail using Remotion's `renderStill`.
  *
- * Usage: npx tsx src/render-thumbnail.ts <planJsonPath> <outputPngPath>
+ * Usage: npx --no-install tsx src/render-thumbnail.ts <planJsonPath> <outputPngPath>
  *
  * The plan JSON is the saved `ReelPlan` (output/plans/<level>/<slug>.json),
  * NOT the augmented `ReelInput` used by render-single. Thumbnails don't need
@@ -18,7 +18,7 @@ import path from "node:path";
 async function render() {
   const args = process.argv.slice(2);
   if (args.length < 2) {
-    console.error("Usage: npx tsx src/render-thumbnail.ts <planJsonPath> <outputPngPath> [hookVariantIdx]");
+    console.error("Usage: npx --no-install tsx src/render-thumbnail.ts <planJsonPath> <outputPngPath> [hookVariantIdx]");
     process.exit(1);
   }
 

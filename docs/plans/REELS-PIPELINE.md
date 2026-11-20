@@ -891,7 +891,7 @@ node scripts/smoke-render.mjs            # full + hookcut renders
 node scripts/smoke-render.mjs --no-render  # plan + scrub only
 
 # Type-check the Remotion side
-cd remotion && npx tsc --noEmit
+cd remotion && npx --no-install tsc --noEmit
 ```
 
 ---

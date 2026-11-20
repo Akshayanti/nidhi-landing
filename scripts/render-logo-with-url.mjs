@@ -3,14 +3,24 @@
  * Composes merchandise-oriented logo variants that include the website URL
  * beneath the existing wordmark and tagline. Reads the transparent full logo
  * PNGs and writes new *-url.png files without touching the originals.
+ *
+ * Usage:  node scripts/render-logo-with-url.mjs
+ *
+ * The files go to output/brand/, which git ignores. They are for print and
+ * merchandise, not for the site: written beside the originals, under public/,
+ * one `git add` would have published them (#473).
+ *
+ * The URL is set in Inter, so the result is only right on a machine that has
+ * Inter installed.
  */
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
 
 const ROOT = join(import.meta.dirname, '..');
 const LOGO_DIR = join(ROOT, 'public', 'brand', 'logo', 'full');
+const OUT_DIR = join(ROOT, 'output', 'brand');
 
 // Brand blue (--palette-blue). Matches the "nidhi" wordmark. Chosen over the
 // teal tagline color because on merchandise, higher contrast (10.1:1 vs 7.5:1
@@ -53,7 +63,7 @@ function urlSvg(canvasWidth, canvasHeight, scale) {
 
 async function renderVariant({ srcName, outName, targetWidth }) {
   const srcPath = join(LOGO_DIR, srcName);
-  const outPath = join(LOGO_DIR, outName);
+  const outPath = join(OUT_DIR, outName);
 
   const src = sharp(srcPath);
   const meta = await src.metadata();
@@ -80,10 +90,11 @@ async function renderVariant({ srcName, outName, targetWidth }) {
     .png()
     .toFile(outPath);
 
-  console.log(`wrote ${outName} (${meta.width}x${canvasHeight})`);
+  console.log(`wrote output/brand/${outName} (${meta.width}x${canvasHeight})`);
 }
 
 async function main() {
+  await mkdir(OUT_DIR, { recursive: true });
   await renderVariant({
     srcName: 'logo-full-400-transparent.png',
     outName: 'logo-full-400-transparent-url.png',

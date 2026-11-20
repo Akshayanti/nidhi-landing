@@ -164,8 +164,8 @@ describe('full-data round-trip', () => {
 
   it('strips trailing empty rows on decode', () => {
     // Simulate a URL with n=4 but only 2 rows have populated tuples.
-    // Empty `aN` entries shouldn't even round-trip — they'd be omitted
-    // by the encoder — but we still want decode to be defensive about
+    // Empty `aN` entries shouldn't even round-trip, they'd be omitted
+    // by the encoder, but we still want decode to be defensive about
     // hand-edited URLs.
     const qs = 'a1=A~10000~USD&a2=B~20000&n=4';
     const decoded = decodeFromQueryString(qs);
@@ -234,7 +234,7 @@ describe('redacted mode', () => {
   it('URL uses single-letter mode flag (m=r)', () => {
     const qs = encodeShared([], samplePositions, 'EUR', 'redacted');
     assert.ok(qs.includes('m=r'), `expected m=r flag, got: ${qs}`);
-    // Legacy long-form keys must NOT appear — the v5.2 cutover removed them.
+    // Legacy long-form keys must NOT appear: the v5.2 cutover removed them.
     assert.ok(!qs.includes('mode=redacted'));
     assert.ok(!qs.includes('anon=1'));
   });
@@ -339,7 +339,7 @@ describe('full sharing mode', () => {
     // Apartment is EUR/asset (both default), tuple should end after the
     // value field: "Apartment~200000".
     assert.equal(params.get('a1'), 'Apartment~200000');
-    // US Mortgage is liability — that segment must appear.
+    // US Mortgage is liability: that segment must appear.
     assert.equal(params.get('a3'), 'US Mortgage~20000~USD~liability');
   });
 

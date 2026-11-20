@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { LOCAL_RULE_AREAS } from './utils/localRules';
+import { SITUATIONS_BASE, hasSituationFiles } from './utils/situationFiles';
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
@@ -86,7 +87,7 @@ const blog = defineCollection({
      * If this post has a paired free tool on /free/*, declare it here. The
      * blog template renders a callout block; the reel caption writer auto-
      * appends the URL line; the LLM script writer is told the tool exists
-     * (so it CAN — not must — reference it in onscreenText if natural).
+     * (so it CAN, not must, reference it in onscreenText if natural).
      *
      * `idea` is the one-line takeaway the tool puts into practice. When set,
      * the callout shows it as the "Understand" step between the lesson and
@@ -100,7 +101,7 @@ const blog = defineCollection({
     }).optional(),
     /**
      * One-line concrete promise of what the blog adds beyond the 60-second
-     * reel — worked example, country-specific table, depth chart, etc.
+     * reel: worked example, country-specific table, depth chart, etc.
      * Surfaces in the reel caption as the "why click through" line. MUST
      * reflect content that actually exists in the post body; do not write
      * promises the reader cannot find on the page.
@@ -108,7 +109,7 @@ const blog = defineCollection({
     reelPromise: z.string().optional(),
     /**
      * Ordered list of post slugs to feature as "Keep reading" suggestions.
-     * Slugs that aren't published yet are silently skipped — they auto-promote
+     * Slugs that aren't published yet are silently skipped: they auto-promote
      * once their pubDate passes. If fewer than 3 published candidates match,
      * the remaining slots are filled by tag-based matching against all posts.
      */
@@ -282,9 +283,16 @@ const guides = defineCollection({
  * council has reviewed the layer, and a page needs at least three live guides.
  * None is written in advance: each one starts from a real cluster of guides.
  * Files starting with an underscore are notes, not pages.
+ *
+ * While the folder holds no page the file loader is not used at all: it warns
+ * on every build that it found nothing (see utils/situationFiles.ts). The
+ * stand-in loads nothing. The first page switches the real loader on; a dev
+ * server that was already running needs a restart to see it.
  */
 const situations = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/situations' }),
+  loader: hasSituationFiles()
+    ? glob({ pattern: '**/[^_]*.md', base: SITUATIONS_BASE })
+    : { name: 'no-situations-yet', load: async () => {} },
   schema: z.object({
     slug: z.string().regex(/^[a-z0-9-]+$/),
     /** In the reader's words: "Something arrived in the post". */

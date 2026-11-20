@@ -981,6 +981,7 @@ describe('privacy surface reader: hosts and requests', () => {
       'if ((window.posthog) ! .people) go();',
       'if ((window.posthog)!!.people) go();',
       'if ((window.posthog)![key]) go();',
+      // lint-allow no-as-any: source text the scanner must read, not a cast.
       'if ((window.posthog as any).people.set({ amount })) go();',
       'if (window.posthog!.people) go();',
       `if ((localStorage)${' '.repeat(400)}.clear()) go();`,
