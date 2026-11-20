@@ -396,7 +396,7 @@ const EXPECTED_MENTIONS = [
   'types/posthog.d.ts: capture x1',
   'types/posthog.d.ts: cookie x1',
   'types/posthog.d.ts: posthog x2',
-  'utils/levelHelper.ts: location x1',
+  'utils/levelConcepts.ts: location x1',
   'utils/listCount.ts: fetch x1',
   'utils/multi-currency-net-worth/math.ts: fetch x1',
   'utils/shared/cleanUrls.js: location x2',

@@ -1,12 +1,19 @@
 /**
- * Unit tests for src/utils/levelHelper.ts.
+ * Unit tests for src/utils/levelHelper.ts and src/utils/levelConcepts.ts.
  *
  * Run with:  npm test
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { assertConceptSlugs, CONCEPTS, conceptsFor, goalsFor, suggestLevel } from './levelHelper.ts';
+import { readFileSync } from 'node:fs';
+
+import { goalsFor, suggestLevel as suggestFrom } from './levelHelper.ts';
+import { assertConceptSlugs, CONCEPTS, conceptsFor } from './levelConcepts.ts';
+
+/** As the page calls it: with the ideas of the eligible levels. */
+const suggestLevel = (ticked: ReadonlySet<string>, goalId: string | null, eligible: readonly string[]) =>
+  suggestFrom(ticked, goalId, eligible, conceptsFor(eligible));
 
 const NOW_LIVE = ['discovery', 'building', 'psychology'];
 const ALL_FOUR = ['discovery', 'building', 'psychology', 'optimizing'];
@@ -92,6 +99,27 @@ describe('suggestLevel', () => {
     const s = suggestLevel(tick('discovery'), 'refine', ALL_FOUR);
     assert.equal(s.level, 'building');
     assert.equal(s.also, 'optimizing');
+  });
+});
+
+describe('what the island ships', () => {
+  // An island's imports end up in its script. The full list of ideas names
+  // lessons in levels that are not published, so the island gets its ideas as
+  // a prop and must not import the list (#464).
+  it('keeps the list of ideas out of the learning path island', () => {
+    const island = readFileSync('src/components/LearnHome.tsx', 'utf8');
+    assert.doesNotMatch(island, /levelConcepts/);
+    const helper = readFileSync('src/utils/levelHelper.ts', 'utf8');
+    assert.doesNotMatch(helper, /from '\.\/levelConcepts/);
+    for (const { slug } of CONCEPTS) {
+      assert.ok(!island.includes(`'${slug}'`) && !helper.includes(`'${slug}'`), `${slug} is named in code the island ships`);
+    }
+  });
+
+  it('hands the island only the ideas of published levels', () => {
+    const slugs = conceptsFor(NOW_LIVE).map((c) => c.slug);
+    assert.equal(slugs.length, 8);
+    assert.ok(!slugs.includes('fee-optimization'));
   });
 });
 

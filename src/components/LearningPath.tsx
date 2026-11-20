@@ -38,7 +38,12 @@ export interface PostData {
   pathLevel?: string;
   /** Host post title, for Inclusive Finances companions. */
   companionTitle?: string;
+  /** Published within the last week when the page was built (utils/learnPosts.ts). */
+  isNew?: boolean;
 }
+
+/** How long a card carries the "New" label after publication. */
+const NEW_FOR_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * The level colours. CSS custom properties, not copy: the same six names in
@@ -147,7 +152,14 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
   // ("Apr 19", "19 अप्रैल"). UTC, because a pubDate is a UTC midnight: a local
   // time zone west of UTC would show the day before.
   const dateStr = d.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', timeZone: 'UTC' });
-  const isNew = !isRead && (Date.now() - d.getTime() < 7 * 24 * 60 * 60 * 1000);
+  // "New" lasts a week from publication. The first render takes the build's
+  // answer, so it is the same HTML the server sent and hydration has nothing
+  // to repair; the reader's clock decides once the card is mounted (#347).
+  const [fresh, setFresh] = useState(post.isNew ?? false);
+  useEffect(() => {
+    setFresh(Date.now() - new Date(post.pubDate).getTime() < NEW_FOR_MS);
+  }, [post.pubDate]);
+  const isNew = !isRead && fresh;
   const isInclusive = post.level === INCLUSIVE;
   const cardClasses = [
     'lp-nodeCard',
@@ -183,7 +195,9 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
               </span>
             )}
             <span className="lp-cardReadingTime">{post.readingTime} {strings.minRead}</span>
-            <span className="lp-cardDate">{dateStr}</span>
+            {/* The label is written once at build time and once in the browser,
+                whose month abbreviations can differ: the built text stays. */}
+            <span className="lp-cardDate" suppressHydrationWarning>{dateStr}</span>
           </div>
           <ReadToggle isRead={isRead} onToggle={() => onToggleRead(post.id)} label={isRead ? strings.markUnread : strings.markRead} />
         </div>
