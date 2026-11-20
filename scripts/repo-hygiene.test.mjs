@@ -109,6 +109,20 @@ describe('every workflow', () => {
     assert.ok(seen > 0, 'no action found in any workflow');
   });
 
+  it('gives every job a time limit (#328)', () => {
+    // Without one a hung step holds its runner, and a concurrency group that
+    // does not cancel, for GitHub's six hours.
+    let seen = 0;
+    for (const [name, text] of workflows) {
+      const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
+      for (const job of jobs) {
+        seen++;
+        assert.match(job, /\n {4}timeout-minutes: \d+\n/, `${name}: job ${job.slice(2, job.indexOf(':'))}`);
+      }
+    }
+    assert.ok(seen >= 15, `only ${seen} jobs found: the test no longer reads the workflows`);
+  });
+
   it('installs the Python packages from the pinned file, never by name (#317)', () => {
     for (const [name, text] of workflows) {
       for (const [line] of text.matchAll(/^.*\bpip3? install\b.*$/gm)) {
@@ -118,6 +132,30 @@ describe('every workflow', () => {
     for (const line of read('scripts/requirements.txt').split('\n')) {
       if (line === '' || line.startsWith('#')) continue;
       assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+$/, `scripts/requirements.txt: ${line}`);
+    }
+  });
+});
+
+describe('the IndexNow job keeps its word when the key file is not reachable (#447)', () => {
+  const workflow = read('.github/workflows/deploy.yml');
+  const step = (name) => {
+    const at = workflow.indexOf(`      - name: ${name}\n`);
+    assert.ok(at > 0, `no step "${name}"`);
+    const end = workflow.indexOf('\n      - name:', at + 1);
+    return workflow.slice(at, end < 0 ? undefined : end);
+  };
+
+  it('the key check says how it went', () => {
+    const check = step('Verify IndexNow key file is reachable');
+    assert.match(check, /\n {8}id: keycheck\n/);
+    assert.match(check, /echo "ok=false" >> "\$GITHUB_OUTPUT"\n\s+exit 0\n/);
+    assert.match(check, /echo "ok=true" >> "\$GITHUB_OUTPUT"/);
+  });
+
+  it('nothing is submitted, and no new baseline is kept, unless the check passed', () => {
+    assert.match(step('Submit changed URLs to IndexNow'), /\n {8}if: steps\.keycheck\.outputs\.ok == 'true'\n/);
+    for (const name of ['Stage current manifest as next run\'s "previous"', 'Save manifest as cache for next run']) {
+      assert.match(step(name), /\n {8}if: always\(\) && steps\.keycheck\.outputs\.ok == 'true'\n/, name);
     }
   });
 });

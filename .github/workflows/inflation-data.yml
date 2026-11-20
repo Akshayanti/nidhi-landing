@@ -48,7 +48,7 @@ name: Inflation data refresh
 on:
   schedule:
     # 05:17 UTC on the 3rd of every month, away from the deploy and
-    # newsletter crons.
+    # newsletter crons. GitHub starts it hours later (see deploy.yml).
     - cron: '17 5 3 * *'
   workflow_dispatch:
     inputs:
@@ -71,18 +71,16 @@ concurrency:
   group: inflation-data
   cancel-in-progress: false
 
-# Install scripts: every `npm ci` here fails if a dependency has an install
-# script that the project's package.json `allowScripts` does not cover (for
-# example a puppeteer bump whose pinned approval has not been updated). Only
-# CI is strict: in .npmrc it would stop Dependabot from opening those PRs at
-# all. See README "Install scripts".
+# No `npm ci` here: the fetch script uses only what comes with Node, so this
+# workflow installs nothing.
 env:
-  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
   FILE: src/data/inflation/worldbank.json
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # Under a minute, plus up to two waiting for the checks it starts.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

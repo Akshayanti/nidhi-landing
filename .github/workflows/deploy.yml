@@ -9,10 +9,15 @@ on:
     paths-ignore:
       - '.last-sent-guid.txt'
   schedule:
-    # Daily rebuild to publish date-gated posts. GitHub starts this hours late
-    # (08:22 to 11:45 UTC in Oct 2026), after the 06:45 UTC reel, so
-    # scripts/deploy-trigger.gs dispatches this workflow at about 05:30 UTC.
-    # This schedule is the backstop for that trigger.
+    # Daily rebuild to publish date-gated posts. Since 27 Aug 2026 GitHub
+    # starts this repository's scheduled workflows 4.5 to 10 hours after
+    # their cron time (this one at 10:55 to 12:38 UTC in Nov 2026), and the
+    # twelve slots below come out as one run a day, because they all fall due
+    # inside that delay. The lag is GitHub's: no cron expression here changes
+    # it, and it is not stable enough to plan around (#329). That is after the
+    # 06:45 UTC reel, so scripts/deploy-trigger.gs dispatches this workflow at
+    # about 05:30 UTC. The dispatch is the only on-time path; this schedule
+    # is its backstop.
     # The newsletter workflow is triggered downstream of this (via the
     # trigger-newsletter job below), so scheduled deploys also end up
     # firing a newsletter pass, which, if nothing is pending, is a no-op
@@ -39,6 +44,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A build takes about two and a half minutes. Without a limit a hung
+    # Chrome (the figure renders) would hold the `pages` group, which never
+    # cancels, for GitHub's six hours and block every later deploy (#328).
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -141,6 +150,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    # Usually under half a minute; the action itself gives up after ten.
+    timeout-minutes: 15
     permissions:
       pages: write
       id-token: write
@@ -181,6 +192,8 @@ jobs:
     needs: deploy
     if: success()
     runs-on: ubuntu-latest
+    # About a minute, most of it the wait below.
+    timeout-minutes: 10
     permissions:
       contents: read
     continue-on-error: true
@@ -214,13 +227,23 @@ jobs:
         # because the new public/<key>.txt didn't deploy" as a workflow
         # warning instead of a silent IndexNow rejection later.
         # `exit 0` keeps the workflow green; the warning is enough.
+        #
+        # The step says how it went in `ok`. The submission and the new
+        # baseline below both wait for `ok=true`: the warning used to say
+        # "Skipping submission" while the list was posted anyway, rejected,
+        # and then saved as the baseline, so those URLs were never sent
+        # again (#447). Now a skipped run keeps the old baseline and the
+        # next deploy submits them.
+        id: keycheck
         run: |
           set -euo pipefail
           got=$(curl -fsS "https://nidhi.today/${INDEXNOW_KEY}.txt" | tr -d '[:space:]' || echo "")
           if [ "$got" != "$INDEXNOW_KEY" ]; then
-            echo "::warning::Key file at https://nidhi.today/${INDEXNOW_KEY}.txt returned '$got' (length ${#got}); expected '${INDEXNOW_KEY}'. Skipping submission."
+            echo "::warning::Key file at https://nidhi.today/${INDEXNOW_KEY}.txt returned '$got' (length ${#got}); expected '${INDEXNOW_KEY}'. Skipping submission; the next deploy submits these URLs."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
           echo "Key file OK."
 
       - name: Download current run's URL hash manifest
@@ -249,6 +272,7 @@ jobs:
         # the current run's manifest, and POSTs only the changed list.
         # If the diff is empty it logs and exits without making the
         # network call. Documented exit semantics in scripts/indexnow.mjs.
+        if: steps.keycheck.outputs.ok == 'true'
         run: |
           node scripts/indexnow.mjs submit \
             .indexnow/manifest.json \
@@ -256,16 +280,20 @@ jobs:
             "${INDEXNOW_KEY}"
 
       - name: Stage current manifest as next run's "previous"
-        # Always run this step (even if submit hit a non-2xx) so the
-        # next run's diff stays accurate. If we only saved on success, a
-        # flaky IndexNow API would cause us to re-submit the same URLs
-        # on every run until it succeeded, which is exactly the spam
-        # pattern the protocol asks submitters to avoid.
-        if: always()
+        # Run this step even if submit hit a non-2xx, so the next run's
+        # diff stays accurate. If we only saved on success, a flaky
+        # IndexNow API would cause us to re-submit the same URLs on every
+        # run until it succeeded, which is exactly the spam pattern the
+        # protocol asks submitters to avoid. The one case it does not run
+        # is a submission that was never attempted (the key check above):
+        # then the previous manifest stays the baseline.
+        if: always() && steps.keycheck.outputs.ok == 'true'
         run: cp .indexnow/current.json .indexnow/manifest.json
 
       - name: Save manifest as cache for next run
-        if: always()
+        # Nothing new to save when the submission was skipped: the next run
+        # restores the newest manifest there is, which is the old baseline.
+        if: always() && steps.keycheck.outputs.ok == 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .indexnow/manifest.json
@@ -293,6 +321,8 @@ jobs:
     needs: deploy
     if: success()
     runs-on: ubuntu-latest
+    # About a minute: the wait below, then one dispatch.
+    timeout-minutes: 10
     permissions:
       actions: write   # to start newsletter.yml with workflow_dispatch
     steps:

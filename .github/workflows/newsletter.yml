@@ -35,11 +35,13 @@ on:
         type: boolean
         default: false
   schedule:
-    # Daily safety-net run at 07:30 UTC. Independent from (and after) the
-    # deploy cron at 06:03 UTC + its 45s hand-off, so this won't collide
-    # under normal operation: but if a deploy fails for the day, this
-    # still gives us a daily bounce scan and a chance to pick up any
-    # partial-send resumes.
+    # Daily safety-net run. The cron says 07:03 UTC, but GitHub starts this
+    # repository's scheduled workflows hours late (see the schedule comment
+    # in deploy.yml, #329): since late Aug 2026 this has started between
+    # about 11:20 and 17:10 UTC. The deploy's own schedule carries the same
+    # lag on a given day, so this still comes about three hours after it.
+    # It needs no deploy: if the day's deploy failed, this still gives us a
+    # daily bounce scan and a chance to pick up any partial-send resumes.
     - cron: '03 7 * * *'
 
 permissions:
@@ -56,6 +58,10 @@ concurrency:
 jobs:
   send:
     runs-on: ubuntu-latest
+    # A run takes half a minute, about two when it sends. The limit is far
+    # above that on purpose: stopping a send part-way is worse than waiting
+    # (see `concurrency` above), so this only ends a run that has hung.
+    timeout-minutes: 30
     # Newsletter secrets + shared config live at JOB level (not workflow
     # level) so they're reliably available to step-level `if:` expressions
     # via the `env` context. GitHub Actions does not allow `secrets.X` in
@@ -103,13 +109,13 @@ jobs:
           set -e
           OK=1
           if [ -z "${NEWSLETTER_ENDPOINT:-}" ]; then
-            echo "::warning title=Missing secret::PUBLIC_NEWSLETTER_ENDPOINT is not configured. Add it under Settings → Secrets and variables → Actions → Secrets (same URL the site build uses). See docs/blog-subscription-setup.md."
+            echo "::warning title=Missing secret::PUBLIC_NEWSLETTER_ENDPOINT is not configured. Add it under Settings → Secrets and variables → Actions → Secrets (same URL the site build uses). See the header of scripts/newsletter.gs."
             OK=0
           else
             echo "PUBLIC_NEWSLETTER_ENDPOINT: configured"
           fi
           if [ -z "${NEWSLETTER_HMAC_SECRET:-}" ]; then
-            echo "::warning title=Missing secret::NEWSLETTER_HMAC_SECRET is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See docs/blog-subscription-setup.md."
+            echo "::warning title=Missing secret::NEWSLETTER_HMAC_SECRET is not configured. Add it under Settings → Secrets and variables → Actions → Secrets. See the header of scripts/newsletter.gs."
             OK=0
           else
             # Length is the cheapest and most useful mismatch signal.

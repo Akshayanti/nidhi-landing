@@ -30,7 +30,8 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # 03:41 UTC every day, away from the deploy and newsletter crons.
+    # 03:41 UTC every day, away from the deploy and newsletter crons. GitHub
+    # starts it hours later (see deploy.yml).
     - cron: '41 3 * * *'
   workflow_dispatch:
 
@@ -56,6 +57,7 @@ jobs:
   changes:
     name: 'Privacy check: changed files'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       run: ${{ steps.filter.outputs.run }}
     steps:

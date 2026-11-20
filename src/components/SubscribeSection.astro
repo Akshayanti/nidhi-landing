@@ -4,7 +4,7 @@
 // fully self-hosted (Apps Script + Workspace Gmail + GitHub Actions).
 //
 // Configure PUBLIC_NEWSLETTER_ENDPOINT to the Apps Script Web App exec URL.
-// See docs/blog-subscription-setup.md for full setup instructions.
+// See the header of scripts/newsletter.gs for full setup instructions.
 
 import { DEFAULT_LOCALE, dict, format, localizedPath, type Locale } from '../i18n';
 import { newsletterCount, shownNewsletterCount } from '../utils/newsletterCount';
@@ -108,7 +108,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
             ⚠ <code>PUBLIC_NEWSLETTER_ENDPOINT</code> is not set: the form is visible
-            but submissions will no-op. See <code>docs/blog-subscription-setup.md</code>.
+            but submissions will no-op. See the header of <code>scripts/newsletter.gs</code>.
           </p>
         )}
       </div>

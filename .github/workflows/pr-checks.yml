@@ -1,4 +1,4 @@
-name: PR Checks (free tools)
+name: PR Checks
 
 # Runs the install, lint, type check, test, audit, and build gates whenever a
 # PR touches files that power the site's tools, pages, lessons or build.
@@ -20,16 +20,16 @@ name: PR Checks (free tools)
 # analytics (required from Nov 2026), skipped the same way when a PR touches
 # no tool or analytics file.
 #
-# The Hindi edition is built as a stack of PRs: each one targets the branch
-# below it (`hindi/01-...`, `hindi/02-...`, ...) and the last targets
-# `feat/hindi-locale`, the integration branch, which merges to `main` once the
-# whole edition is ready. A stacked PR's base is another feature branch, not
-# `main`, so without these entries every PR in the stack would merge with no CI
-# at all. `hindi/*` covers the stack as it grows; `feat/hindi-locale` and `main`
-# cover the two branches that end it.
+# No branch filter: the checks run on a pull request into any branch. A stacked
+# pull request targets the branch below it, not `main`, and with a filter that
+# named `main` (and, once, the Hindi edition's branches) it merged into its
+# stack with no CI at all. The path filter in "Detect changes" still decides
+# whether the jobs have anything to do.
+#
+# Every job has a time limit, a few times its usual run, so a hung step fails
+# in minutes instead of holding a runner for GitHub's six hours (#328).
 on:
   pull_request:
-    branches: [main, feat/hindi-locale, 'hindi/*']
   # Allow manual runs for debugging.
   workflow_dispatch:
 
@@ -59,6 +59,7 @@ jobs:
   changes:
     name: Detect changes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       run: ${{ steps.filter.outputs.run }}
       remotion: ${{ steps.filter.outputs.remotion }}
@@ -118,11 +119,22 @@ jobs:
             'package-lock.json'
             'astro.config.mjs'
             'tsconfig.json'
-            # The lint script and this workflow itself.
+            # What decides the Node and npm every job and the deploy run on:
+            # a pull request that only moved Node to a new version used to
+            # skip every check and merge green (#318).
+            '.nvmrc'
+            '.npmrc'
+            # The newsletter's templates. scripts/test_send_newsletter.py,
+            # in the Tests job, is the only check on them before the send.
+            'emails/*'
+            # The lint script, and every workflow: this one, the deploy, the
+            # newsletter send, the data refresh and the privacy check. The
+            # lint reads them, and repo-hygiene.test.mjs checks their pins,
+            # permissions and alerts.
             'scripts/lint.mjs'
             'scripts/lint-figures.mjs'
             'scripts/lint-scoped-styles.mjs'
-            '.github/workflows/pr-checks.yml'
+            '.github/workflows/*'
             # Site-wide base components and public assets that affect every page.
             'src/components/BaseHead.astro'
             'src/layouts/*'
@@ -187,6 +199,7 @@ jobs:
   install:
     name: Install (lockfile integrity)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # Every other job needs this one, so when it is skipped they are skipped
     # too, and all of them report "skipped" to branch protection.
     needs: changes
@@ -213,6 +226,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
@@ -241,6 +255,7 @@ jobs:
   typecheck:
     name: Type check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
@@ -267,6 +282,7 @@ jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: install
     steps:
       - name: Checkout
@@ -308,6 +324,7 @@ jobs:
   audit:
     name: npm audit (high+)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: install
     steps:
       - name: Checkout
@@ -341,6 +358,7 @@ jobs:
   build:
     name: Build (static)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [lint, typecheck, test, audit]
     steps:
       - name: Checkout
@@ -369,6 +387,7 @@ jobs:
   remotion:
     name: Remotion
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: changes
     if: needs.changes.outputs.remotion == 'true'
     defaults:
