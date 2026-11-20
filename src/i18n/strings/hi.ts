@@ -167,7 +167,7 @@ export const hi: Dict = {
   // Hindi wants a different word order.
   about: {
     meta: {
-      title: 'nidhi के बारे में: यह कौन लिखता है और इस पर भरोसा क्यों किया जा सकता है | nidhi',
+      title: 'nidhi के बारे में: यह कौन लिखता है और इस पर भरोसा क्यों | nidhi',
       description:
         'nidhi कौन लिखता है, लेखन के पीछे कौन सी योग्यताएँ हैं, और हर पर्सनल फाइनेंस पोस्ट पर रिसर्च कैसे होती है और स्रोत कैसे दिए जाते हैं।',
     },

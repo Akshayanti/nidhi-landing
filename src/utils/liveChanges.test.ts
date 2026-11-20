@@ -65,3 +65,17 @@ describe('the What\'s changed feed', () => {
     assert.equal(hi.description, 'पहला वाक्य। दूसरा वाक्य।');
   });
 });
+
+describe('the lessons launch items wait for', () => {
+  it('names one lesson for every launch item, and nothing else', async () => {
+    const { LAUNCH_ITEMS } = await import('../i18n/strings/changes.ts');
+    const { LAUNCH_HOST_SLUGS } = await import('./launchHosts.ts');
+    assert.deepEqual(Object.keys(LAUNCH_HOST_SLUGS).sort(), Object.keys(LAUNCH_ITEMS).sort());
+  });
+
+  it('is what the sitemap dates /changes/ by, beside the written days', async () => {
+    const { readFileSync } = await import('node:fs');
+    const config = readFileSync(new URL('../../astro.config.mjs', import.meta.url), 'utf8');
+    assert.match(config, /Object\.values\(LAUNCH_HOST_SLUGS\)\s*\.map\(\(slug\) => contentMaps\.published\.get\(slug\)/);
+  });
+});
