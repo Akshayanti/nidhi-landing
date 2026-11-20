@@ -25,7 +25,7 @@ Env:
                              HMAC_SECRET script property. Required.
   SITE_URL                   Default https://nidhi.today. Used to make
                              relative hrefs/images absolute in email HTML,
-                             and — when NEWSLETTER_FETCH_LIVE=1 — as the
+                             and, when NEWSLETTER_FETCH_LIVE=1, as the
                              base URL to fetch /rss.xml and per-post HTML
                              from.
   NEWSLETTER_FETCH_LIVE      If set to "1", read the RSS feed and each
@@ -106,7 +106,7 @@ def load_config() -> Config | None:
     secret = os.environ.get("NEWSLETTER_HMAC_SECRET", "").strip()
     if not endpoint or not secret:
         print("[send_newsletter] NEWSLETTER_ENDPOINT or NEWSLETTER_HMAC_SECRET "
-              "not set — skipping newsletter send.")
+              "not set: skipping newsletter send.")
         return None
 
     site_url = os.environ.get("SITE_URL", "https://nidhi.today").rstrip("/")
@@ -229,7 +229,7 @@ def _parse_pub_date_for_sort(pub_date: str) -> datetime:
     sorting.
 
     Previous versions sorted RssItem.pub_date as a string, which ordered
-    items by the lexicographic form of the date — so "Wed, 29 Apr 2026"
+    items by the lexicographic form of the date, so "Wed, 29 Apr 2026"
     (starts "Wed, 2…") sorted after "Wed, 06 May 2026" (starts "Wed, 0…")
     even though the second date is actually later. That bug quietly
     picked the wrong "newest" post for backfill protection and
@@ -237,7 +237,7 @@ def _parse_pub_date_for_sort(pub_date: str) -> datetime:
     order too. Parsing via email.utils fixes all three.
 
     Falls back to _EPOCH on unparseable input so a single malformed
-    pubDate never breaks the whole send — that item just drifts to the
+    pubDate never breaks the whole send, that item just drifts to the
     bottom of the sort.
     """
     if not pub_date:
@@ -330,7 +330,7 @@ def extract_post(
 
     soup = BeautifulSoup(html_source, "html.parser")
 
-    # Strip chrome we don't want in email — TOC, suggested reading, post-nav,
+    # Strip chrome we don't want in email: TOC, suggested reading, post-nav,
     # subscribe section, disclaimer (we include our own in the email footer).
     for sel in [
         ".toc",
@@ -382,7 +382,7 @@ def extract_post(
     content_text = html_to_text(content_node)
 
     # First paragraph: used as the hook in the teaser-template fallback.
-    # Skip over any lingering figure/aside/hr/heading — find the first
+    # Skip over any lingering figure/aside/hr/heading, find the first
     # meaningful <p>. Strip inline styles in the teaser context since the
     # teaser template restyles from scratch. Paragraphs from an opened-up
     # expander are skipped: a quick-check answer or an evidence note makes
@@ -469,7 +469,7 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
         src = img.get("src") or ""
         if src.startswith("/") and not src.startswith("//"):
             img["src"] = site_url + src
-        # Strip srcset — Gmail and friends often don't handle it, and it
+        # Strip srcset: Gmail and friends often don't handle it, and it
         # inflates email size without much gain.
         if img.has_attr("srcset"):
             del img["srcset"]
@@ -479,7 +479,7 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
 # Inline style injection
 # ---------------------------------------------------------------------------
 #
-# Gmail strips <style> blocks — the only reliable way to style email content
+# Gmail strips <style> blocks, the only reliable way to style email content
 # is via the `style=""` attribute on every element. The extracted post body
 # comes from dist/*/index.html where styles live in scoped <style> blocks
 # that won't survive the trip into an inbox. Before the body goes into the
@@ -495,7 +495,7 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
 #   - Lists / paragraphs: restore reasonable line-height on clients (notably
 #     Outlook) that collapse it without explicit styles
 #
-# Existing `style` attributes on the element are preserved — we PREPEND
+# Existing `style` attributes on the element are preserved, we PREPEND
 # brand defaults so authored overrides still win. Classes are kept but
 # inert (they have no effect since <style> blocks are stripped).
 
@@ -547,7 +547,7 @@ _BRAND_STYLES: dict[str, str] = {
 # Blog posts include hand-authored inline <figure><svg>…</svg><figcaption/>
 # diagrams. Those render fine in browsers, but inline SVG is **stripped
 # entirely by Gmail (web/Android/iOS), most Outlook clients, and Yahoo Mail**
-# — they keep the SVG's text descendants (title/desc/<text>) and discard
+# they keep the SVG's text descendants (title/desc/<text>) and discard
 # the drawing primitives (rect/path/polyline/...), so the chart becomes a
 # wall of run-on prose in the inbox.
 #
@@ -556,8 +556,8 @@ _BRAND_STYLES: dict[str, str] = {
 # figure as a regular raster image. The build step
 # `scripts/render-email-figures.mjs` (wired in via package.json `postbuild`)
 # rasterises every <figure> to dist/blog/<slug>/_figures/figure-N.png at 2×
-# retina, in source order. Below we walk the article in DOM order — which
-# matches that source order, since Astro renders markdown sequentially —
+# retina, in source order. Below we walk the article in DOM order, which
+# matches that source order, since Astro renders markdown sequentially,
 # and rewrite each <figure> as a table+<img>+caption block referencing the
 # Nth PNG.
 #
@@ -569,7 +569,7 @@ _BRAND_STYLES: dict[str, str] = {
 def _figure_slug(relative: str) -> str | None:
     """
     Extract the blog slug from a path like `/blog/<slug>/` (or `/blog/<slug>`).
-    Returns None for any path that isn't /blog/* — figures only ever live
+    Returns None for any path that isn't /blog/*: figures only ever live
     inside blog posts, so non-blog newsletters (none today, but reserved for
     future) skip the figure-replacement pass entirely.
     """
@@ -588,8 +588,8 @@ def _replace_figures_with_images(node, relative: str, site_url: str) -> None:
     or <desc> (already there for accessibility on the live site) so screen
     readers and image-blocked clients still describe the chart.
 
-    Captions keep their inner HTML — including links that absolutize_urls()
-    has already absolutized + UTM-tagged — so a `<a href="…">` inside a
+    Captions keep their inner HTML, including links that absolutize_urls()
+    has already absolutized + UTM-tagged, so a `<a href="…">` inside a
     figcaption survives intact.
     """
     slug = _figure_slug(relative)
@@ -731,7 +731,7 @@ def style_inline(node) -> None:
     authored overrides still take effect (CSS last-wins: we prepend, so
     the author's declarations come later and override).
     """
-    # Wrap `code` inside `pre` — browsers typically give the outer <pre> its
+    # Wrap `code` inside `pre`, browsers typically give the outer <pre> its
     # styling, but our code styling assumes standalone inline code. Drop the
     # inner code's background so it doesn't double-up visually.
     for pre in node.find_all("pre"):
@@ -927,12 +927,12 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
     includes the brand banner, the "Read on nidhi.today" CTA, every in-body
     article link (handled by absolutize_urls), the unsubscribe link (which
     already carries `?t=TOKEN`, so UTM joins with `&`), privacy, and RSS.
-    The one-click unsubscribe *header* (RFC 8058) is left bare — it's
+    The one-click unsubscribe *header* (RFC 8058) is left bare: it's
     machine-parsed by Gmail/Outlook, not clicked by a human.
 
     Size-based teaser fallback: we render the full version first. If the
     HTML body is at or above TEASER_SIZE_THRESHOLD_BYTES, we re-render
-    using post_teaser.html.j2 / post_teaser.txt.j2 — title, TL;DR, first
+    using post_teaser.html.j2 / post_teaser.txt.j2, title, TL;DR, first
     paragraph, and a CTA to read on the site. Avoids Gmail's ~102KB clip
     point and keeps the inbox light for long explainers.
     """
@@ -951,7 +951,7 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
         "content_text": post["content_text"],
         "first_paragraph_html": post.get("first_paragraph_html", ""),
         "first_paragraph_text": post.get("first_paragraph_text", ""),
-        "post_url": item.link,                # raw — kept in context for
+        "post_url": item.link,                # raw, kept in context for
                                               # compatibility; templates use
                                               # post_url_tracked for clicks
         "post_url_tracked": post_url_tracked,
@@ -966,7 +966,7 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
     if html_size >= TEASER_SIZE_THRESHOLD_BYTES:
         print(
             f"[send_newsletter]   full HTML is {html_size / 1024:.1f}KB "
-            f"(>= {TEASER_SIZE_THRESHOLD_BYTES / 1024:.0f}KB threshold) — "
+            f"(>= {TEASER_SIZE_THRESHOLD_BYTES / 1024:.0f}KB threshold), "
             f"falling back to teaser template."
         )
         html_out = env.get_template("post_teaser.html.j2").render(**ctx)
@@ -1159,7 +1159,7 @@ def main() -> int:
 
         size_kb = len(json.dumps(payload)) / 1024
         if size_kb > 95:
-            print(f"[send_newsletter]   WARNING: payload is {size_kb:.1f}KB — "
+            print(f"[send_newsletter]   WARNING: payload is {size_kb:.1f}KB, "
                   f"Gmail may clip emails over ~102KB.", file=sys.stderr)
 
         if cfg.dry_run:
@@ -1168,7 +1168,7 @@ def main() -> int:
             out.write_text(html_out, encoding="utf-8")
             print(f"[send_newsletter]   DRY_RUN: wrote preview to {out}")
             # Still record as "sent" so the caller's workflow matches steady-state
-            # behaviour — but ONLY for dry runs that set DRY_RUN_RECORD=1.
+            # behaviour, but ONLY for dry runs that set DRY_RUN_RECORD=1.
             if os.environ.get("DRY_RUN_RECORD") == "1":
                 record_sent(cfg.marker_file, item.guid)
             continue
@@ -1186,7 +1186,7 @@ def main() -> int:
             # produce a well-formed !ok response. bad_signature is
             # almost always a secret-mismatch between the Actions secret
             # (NEWSLETTER_HMAC_SECRET) and the Apps Script Script
-            # Property (HMAC_SECRET) — they share one key and must be
+            # Property (HMAC_SECRET), they share one key and must be
             # byte-identical. from_email_not_sendable means someone
             # removed the "Send mail as" alias in Gmail settings.
             err = str(resp.get("error", ""))
@@ -1242,7 +1242,7 @@ def main() -> int:
             print(
                 f"[send_newsletter]   PARTIAL: sent={sent_count} failed={failed_count}"
                 + (f" resume_after={resume_after}" if resume_after else "")
-                + " — guid NOT marked; next workflow run will resume.",
+                + "; guid NOT marked, next workflow run will resume.",
                 file=sys.stderr,
             )
             any_failed = True
@@ -1270,7 +1270,7 @@ def _write_gh_output(kv: dict[str, str]) -> None:
     is how GitHub Actions reads step outputs. No-op if the env var isn't
     set (local runs, DRY_RUN, manual invocations). Uses the documented
     heredoc form so values with newlines would survive if we ever emit
-    any — though we don't today.
+    any, though we don't today.
     """
     out_path = os.environ.get("GITHUB_OUTPUT", "").strip()
     if not out_path:

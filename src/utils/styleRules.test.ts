@@ -13,8 +13,10 @@
  * `|---|` line under a table's heading. Frontmatter values are prose: a
  * title, a description and a FAQ answer are read on the page and in search.
  *
- * Emails and the Apps Script email builders are not read here. Whether the
- * rule covers them is the owner's to say (#358).
+ * The rule covers emails too (owner, Nov 20, 2026, #358): the templates in
+ * emails/ and the Apps Script and Python files that build and send them. Those
+ * are code, where two hyphens are an operator or a flag, so they are read
+ * whole, comments included, for the em dash only.
  *
  * Run with:  npm test
  */
@@ -130,5 +132,25 @@ describe('the dash rule: lessons, guides, situations and served text', () => {
   it('finds no em dash and no double dash in any of them', () => {
     const offenders = [...content, ...served].flatMap((path) => dashProblems(readFileSync(path, 'utf8')).map((problem) => `${relative(ROOT, path)}:${problem}`));
     assert.deepEqual(offenders, [], 'CLAUDE.md, "Style Rules": use a colon, a comma, or reword.');
+  });
+});
+
+describe('the dash rule: emails and the files that send them', () => {
+  const scripts = join(ROOT, 'scripts');
+  const sources = [
+    ...files(join(ROOT, 'emails'), /./),
+    ...readdirSync(scripts).filter((name) => /\.(gs|py)$/.test(name)).map((name) => join(scripts, name)),
+  ];
+
+  it('reads the templates and the senders', () => {
+    for (const name of ['post.html.j2', 'post_teaser.txt.j2', 'newsletter.gs', 'waitlist.gs', 'send_newsletter.py']) {
+      assert.ok(sources.some((path) => path.endsWith(name)), `${name} is not among the files read`);
+    }
+  });
+
+  it('finds no em dash in any of them', () => {
+    const offenders = sources.flatMap((path) =>
+      readFileSync(path, 'utf8').split(/\r?\n/).flatMap((line, index) => (EM_DASH.test(line) ? [`${relative(ROOT, path)}:${index + 1}: ${line.trim().slice(0, 100)}`] : [])));
+    assert.deepEqual(offenders, [], 'CLAUDE.md, "Style Rules": use a colon, a comma, or reword. A test that needs the character writes it as an escape.');
   });
 });

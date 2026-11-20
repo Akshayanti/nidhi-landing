@@ -1,5 +1,5 @@
 /**
- * Nidhi product-launch waitlist — Google Apps Script Web App
+ * Nidhi product-launch waitlist: Google Apps Script Web App
  * ===========================================================
  *
  * Separate from the blog newsletter backend. This is a single-opt-in waitlist
@@ -17,7 +17,7 @@
  *
  * Required setup in the Apps Script project:
  *   1. Project Settings → Script properties → add:
- *        SPREADSHEET_ID   <id of the Google Sheet — between /d/ and /edit in
+ *        SPREADSHEET_ID   <id of the Google Sheet, between /d/ and /edit in
  *                          the URL. This can be the SAME spreadsheet that
  *                          the newsletter uses; the waitlist writes to a
  *                          dedicated tab.>

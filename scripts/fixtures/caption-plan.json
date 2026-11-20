@@ -1,0 +1,19 @@
+{
+  "slug": "emergency-fund-basics",
+  "topic": "Emergency funds",
+  "mood": "calm",
+  "mode": "explainer",
+  "hashtags": ["emergencyfund", "#savings", "moneybasics", "personalfinance", "budgeting", "sixthtag", "seventhtag"],
+  "useHookVariant": 1,
+  "hookVariants": [
+    { "narration": "Most people guess their emergency fund." },
+    { "narration": "  Three months of what, exactly?  " }
+  ],
+  "caption": {
+    "instagram": "\nMost people guess their emergency fund.\nHere is what the number is made of.\nStay till the end for the worked example.\n",
+    "tiktok": "Most people guess their emergency fund.\nThe number has three parts.",
+    "instagramKeywords": ["emergency fund", "#fondo de emergencia", "आपातकालीन निधि", "nouzový fond", "  ", "how much to save", "rainy day savings", "three months of expenses", "savings buffer"],
+    "tiktokTopics": ["how big should an emergency fund be", "emergency fund explained", "where to keep emergency savings"],
+    "tiktokExtraTags": ["moneytok", "#savings", "#fintok"]
+  }
+}

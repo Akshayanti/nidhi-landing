@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Render HTML previews of the two transactional emails built by
-scripts/newsletter.gs — the confirmation email (`sendConfirmationEmail_`) and
+scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and
 the welcome email (`sendWelcomeEmail_`). Those emails live inside Apps Script
 as string-concatenated HTML, so this script re-creates them locally for
 design review / spotting inline-style mistakes without needing a redeploy.
@@ -13,7 +13,7 @@ Usage:
     python3 scripts/preview_transactional_emails.py
 
 Keep in sync with:
-    scripts/newsletter.gs — sendConfirmationEmail_ and sendWelcomeEmail_.
+    scripts/newsletter.gs, sendConfirmationEmail_ and sendWelcomeEmail_.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
 SITE_URL = "https://nidhi.today"
 FROM_NAME = "nidhi"
 FROM_EMAIL = "updates@nidhi.today"
-# A plausible token the real Apps Script would generate — 64 hex chars. Not
+# A plausible token the real Apps Script would generate: 64 hex chars. Not
 # real, never accepted by Apps Script; purely for preview optics.
 SAMPLE_TOKEN = "a" * 64
 
@@ -72,7 +72,7 @@ def _brand_banner(site_url: str, from_name: str, campaign: str) -> str:
 def _footer_html(
     site_url: str, unsub_page_url: str, is_newsletter: bool, campaign: str
 ) -> str:
-    """Mirrors footerHtml_ in scripts/newsletter.gs — with UTMs everywhere."""
+    """Mirrors footerHtml_ in scripts/newsletter.gs, with UTMs everywhere."""
     blog_href = _with_utm(f"{site_url}/blog", campaign)
     privacy_href = _with_utm(f"{site_url}/privacy", campaign)
     rss_href = _with_utm(f"{site_url}/rss.xml", campaign)

@@ -1,7 +1,7 @@
 {#
   Plain-text fallback email. Rendered alongside post.html.j2.
 
-  The literal string `{{UNSUBSCRIBE_URL}}` is left in the output verbatim —
+  The literal string `{{UNSUBSCRIBE_URL}}` is left in the output verbatim,
   Apps Script swaps it in per-recipient at send time with a URL pointing at
   the branded /unsubscribe/ landing page on nidhi.today. Note the Jinja
   escape: `{{ '{{UNSUBSCRIBE_URL}}' }}`.
