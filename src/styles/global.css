@@ -283,6 +283,8 @@ html:is([lang="hi"], [lang="mr"]) {
   /* Typography */
   --font-heading: 'Inter', sans-serif;
   --font-body: 'Roboto', sans-serif;
+  /* The one monospace stack: system faces only, so nothing is downloaded. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Spacing (8px unit) */
   --space-1: 4px;
@@ -2156,7 +2158,7 @@ details[open] > .disclosure::after,
 }
 
 .lc-fieldPreviewValue {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-weight: 600;
   color: var(--color-text-primary);
   /* Tabular figures keep digit columns aligned across the live updates
@@ -2203,7 +2205,7 @@ details[open] > .disclosure::after,
   background: transparent;
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   padding: 2px 4px;
   cursor: text;
 }
@@ -2637,7 +2639,7 @@ details[open] > .disclosure::after,
   padding: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-card-bg);
 }
 
 .lc-advancedSection > header {
@@ -2728,7 +2730,6 @@ details[open] > .disclosure::after,
 
 .lc-tab:hover {
   color: var(--color-deep-blue);
-  background: var(--color-surface);
 }
 
 .lc-tab:focus-visible {
@@ -2775,8 +2776,9 @@ details[open] > .disclosure::after,
 }
 
 .lc-howPanel .lc-formula {
-  font-family: var(--font-mono, monospace);
-  background: var(--color-surface);
+  font-family: var(--font-mono);
+  /* The panel sits on the page, so the formula takes the card surface. */
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: var(--space-2) var(--space-3);
@@ -2837,7 +2839,7 @@ details[open] > .disclosure::after,
 .lc-disclaimerWrap .lc-disclaimer {
   margin: var(--space-2) 0 0;
   padding: var(--space-3);
-  background: var(--color-surface);
+  background: var(--color-card-bg);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
@@ -2874,7 +2876,8 @@ details[open] > .disclosure::after,
   align-items: stretch;
   gap: 2px;
   font-size: 0.875rem;
-  background: var(--color-surface);
+  /* A well inside the white card: the page colour, as the share bar uses. */
+  background: var(--color-bg);
   border-radius: var(--radius-sm);
   padding: 8px 10px;
 }
@@ -3791,7 +3794,7 @@ details[open] > .disclosure::after,
   background: transparent;
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   padding: 2px 4px;
   cursor: text;
 }
@@ -7428,7 +7431,7 @@ button.mcnw-legendItem:focus-visible {
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-text-primary);
 }
 .tool-exportButtons {
   display: flex;
@@ -7472,7 +7475,7 @@ button.mcnw-legendItem:focus-visible {
   color: var(--color-text-secondary);
 }
 .tool-exportNote--app {
-  color: var(--color-text);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 .tool-exportStatus:empty {

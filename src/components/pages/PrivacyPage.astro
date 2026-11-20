@@ -1217,7 +1217,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
     padding: 1px 6px;
     border-radius: var(--radius-sm);
     font-size: 0.85em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: var(--font-mono);
     color: var(--color-deep-blue);
     /* An address or a storage key wraps at a large text size (#486). */
     overflow-wrap: anywhere;
@@ -1335,7 +1335,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
   }
 
   .changelog-date {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
     color: var(--color-deep-blue);
