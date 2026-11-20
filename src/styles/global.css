@@ -4916,7 +4916,7 @@ body[data-page="landing"] .site-footer {
   .toolp-panel li, .toolp-lesson, .iopp-intro, .toolp-source, .mcnw-explainer p,
   .tool-waitlist__line, .toolp-lead, .mcnw-limit, .waitlist-input, .subscribe-input,
   .lc-chartLead, .lc-splitCaption, .mcs-caveat, .if-scope, .level-page-covered p,
-  .level-page-scope, .post-tool-stepBody, .prose figcaption {
+  .level-page-scope, .post-tool-stepBody, .prose figcaption, .lessons-note {
     font-size: 1rem !important;
   }
   /* Emphasis inside running text keeps its weight and takes the block's size. */
@@ -6409,8 +6409,10 @@ a.learn-level:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  /* In rem, so the circle grows with the reader's text size and a two-digit
+     number never runs past it (#707). 32 px at the default size. */
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   background: var(--lc);
   color: var(--color-bg-white);
@@ -6499,8 +6501,8 @@ a.learn-level:hover {
 }
 
 .learn-levelSoon .learn-num {
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   background: none;
   /* Muted like its text, so the circle reads in both themes; solid, not
      dashed, since dashed means "add". */
@@ -7725,6 +7727,12 @@ button.mcnw-legendItem:focus-visible {
     font-weight: 700;
     font-size: 10.5pt;
     margin-bottom: 3pt;
+  }
+  /* What the chart's amounts are counted in, named once (#698). */
+  .tool-reportUnit {
+    font-size: 9pt;
+    color: #333;
+    margin: 0 0 3pt;
   }
   .tool-reportFigure svg {
     print-color-adjust: exact;

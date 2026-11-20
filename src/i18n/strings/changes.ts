@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-20',
     items: [
       {
+        id: 'report-chart-names-its-unit',
+        text: {
+          en: 'Printed report charts now name the currency and unit above the amount axis, in the page’s language, and use plain numbers on the axis. On Hindi and Marathi pages they count in lakhs and crores, as the chart on the page does.',
+          hi: 'छपी रिपोर्ट के चार्ट अब राशि वाले अक्ष के ऊपर पेज की भाषा में मुद्रा और इकाई बताते हैं, और अक्ष पर सिर्फ़ संख्याएँ दिखाते हैं। हिंदी और मराठी पेजों पर वे पेज के चार्ट की तरह लाख और करोड़ में गिनते हैं।',
+          es: 'Los gráficos de los informes impresos indican ahora la moneda y la unidad encima del eje de importes, en el idioma de la página, y muestran solo números en ese eje. En las páginas en hindi y en maratí cuentan en lakhs y crores, como el gráfico de la página.',
+          cs: 'Grafy v\u00a0tištěných zprávách teď nad osou částek uvádějí měnu a\u00a0jednotku v\u00a0jazyce stránky a\u00a0na ose zobrazují jen čísla. Na stránkách v\u00a0hindštině a\u00a0maráthštině počítají v\u00a0jednotkách lakh a\u00a0crore jako graf na stránce.',
+          mr: 'छापील अहवालातील आलेख आता रकमांच्या अक्षाच्या वर पानाच्या भाषेत चलन आणि एकक सांगतात, आणि अक्षावर फक्त आकडे दाखवतात. हिंदी आणि मराठी पानांवर ते पानावरील आलेखाप्रमाणे लाख आणि कोटींमध्ये मोजतात.',
+        },
+      },
+      {
         id: 'loan-refinance-plain-labels',
         text: {
           en: 'In the loan comparison, the refinance results now spell out “Refinancing saves” and “Time to break even after refinancing”, where they used a short form and promised months for a value shown in years and months. The note under the break-even now says that a longer new term can break even and still cost more in total. Screen readers also hear the refinance result once typing stops.',

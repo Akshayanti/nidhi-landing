@@ -1,9 +1,12 @@
-import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useId, useState, type ReactNode } from 'react';
 import { format } from '../i18n/format.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 import { isoDate } from '../utils/shared/exportFile.ts';
 import type { Report, ReportChart, ReportPoint, ReportTable } from '../utils/shared/report.ts';
 import type { Cell } from '../utils/shared/xlsx.ts';
+import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/shared/chartAmounts.ts';
+import { NumberLocaleContext } from './LocaleNumberInput.tsx';
+import { useMoney } from './useMoney.ts';
 
 /**
  * The free tools' "Save or share these results" block, placed right after a
@@ -213,8 +216,13 @@ const PAD = { top: 12, right: 16, bottom: 44, left: 76 };
  * The report's one chart, drawn for paper: black lines told apart by dashes,
  * grey bands, a key under it. No interaction, nothing focusable.
  */
-function Chart({ chart, locale }: { chart: ReportChart; locale: string }) {
-  const compact = new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 });
+function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale: string; currency: string; words: ChartWords }) {
+  // The amounts on the axis are written as the page's charts write them
+  // (`chartAmounts.ts`): the unit is named once, above the chart, in the
+  // page's words, and the gridlines carry bare numbers. A page that counts in
+  // lakhs and crores does so here too (#698).
+  const { amountLocale } = useMoney();
+  const numberLocale = useContext(NumberLocaleContext);
   if (chart.kind === 'bars') {
     const rowH = 26;
     const labelW = 200;
@@ -258,15 +266,17 @@ function Chart({ chart, locale }: { chart: ReportChart; locale: string }) {
   const xStep = Math.max(1, niceTop(xMax - xMin).step);
   const xTicks: number[] = [];
   for (let x = Math.ceil(xMin / xStep) * xStep; x <= xMax + 1e-9; x += xStep) xTicks.push(Math.round(x));
+  const scale = amountScale(Math.max(Math.abs(yMin), Math.abs(yMin + top)), currency, amountLocale, numberLocale);
 
   return (
     <figure className="tool-reportBlock tool-reportFigure">
       <figcaption>{chart.title}</figcaption>
+      <p className="tool-reportUnit">{axisHeading(words, scale, currency, amountLocale)}</p>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true" focusable="false">
         {ticks.map((v) => (
           <g key={v}>
             <line x1={PAD.left} x2={W - PAD.right} y1={sy(v)} y2={sy(v)} stroke="#ccc" strokeWidth="0.75" />
-            <text x={PAD.left - 6} y={sy(v) + 4} textAnchor="end" className="tool-reportAxis">{compact.format(v)}</text>
+            <text x={PAD.left - 6} y={sy(v) + 4} textAnchor="end" className="tool-reportAxis">{axisTick(v, scale, currency, amountLocale)}</text>
           </g>
         ))}
         {xTicks.map((x) => (
@@ -361,7 +371,7 @@ export function ToolReport({ report, strings, locale }: { report: Report; string
         </section>
       )}
 
-      {report.chart && <Chart chart={report.chart} locale={locale} />}
+      {report.chart && <Chart chart={report.chart} locale={locale} currency={report.currency} words={strings.chart} />}
 
       {report.tables.map((t, i) => <Table key={i} table={t} locale={locale} />)}
 
