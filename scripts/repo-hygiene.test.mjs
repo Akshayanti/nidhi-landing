@@ -11,6 +11,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = join(import.meta.dirname, '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
@@ -193,6 +194,14 @@ describe('.gitignore', () => {
 
   it('does not ignore a folder that holds tracked files', () => {
     assert.ok(!ignored.includes('remotion/public/'));
+  });
+
+  it('git holds no file that it also ignores (#323)', (t) => {
+    // Such a file still shows as modified, while a new file beside it is never
+    // offered by `git add`: which ones are versioned becomes an accident.
+    const listed = spawnSync('git', ['ls-files', '-ci', '--exclude-standard'], { cwd: ROOT, encoding: 'utf8' });
+    if (listed.error || listed.status !== 0) return t.skip('not a git checkout');
+    assert.deepEqual(listed.stdout.split('\n').filter(Boolean), []);
   });
 });
 
