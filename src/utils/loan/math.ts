@@ -1362,6 +1362,12 @@ export interface RefinanceComparison {
   penaltyMinor: number;
   /** Whether the reader's extra payments or lump sums were continued on the new loan. */
   extrasCarried: boolean;
+  /**
+   * Whether the new loan is paid off later than the original would have
+   * been. Both ends are the real ones, with the reader's extra payments: a
+   * new term longer on paper can still end first once the extras continue.
+   */
+  endsLater: boolean;
   snapshotAtRefi: EquitySnapshot;
 }
 
@@ -1585,6 +1591,7 @@ export function refinanceComparison(
     paymentLower: (oldDue[refiMonth]?.payment ?? 0) > (newDue[0]?.payment ?? 0),
     penaltyMinor,
     extrasCarried: carriedExtra > 0 || carriedLumps.length > 0,
+    endsLater: refiMonth + newLoan.months > original.months,
     snapshotAtRefi: snapshot,
   };
 }

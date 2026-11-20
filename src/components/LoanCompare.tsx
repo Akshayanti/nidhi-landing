@@ -3396,10 +3396,11 @@ function RefinanceSection({
               }
               // Said only where it is the case: the refinance breaks even and
               // still costs more in total, and the new loan ends later than
-              // the current one would have, which is what the sentence names.
+              // the current one would have (each with the reader's extra
+              // payments), which is what the sentence names (#715).
               note={
                 cmp.breakEvenKind !== 'none' && Number.isFinite(cmp.breakEvenMonths) && cmp.savingsMinor < 0
-                && original !== null && atMonth + newTerm > original.months
+                && cmp.endsLater
                   ? cmp.breakEvenKind === 'balance' ? strings.refi.breakEvenBalanceLongerTerm : strings.refi.breakEvenLongerTerm
                   : undefined
               }

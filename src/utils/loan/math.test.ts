@@ -2069,6 +2069,23 @@ describe('a refinance clears the original loan: penalty, extras and break-even (
     const extras = { extraMonthlyMinor: 200_00, lumpSums: [{ month: 12, amountMinor: 5000_00 }, { month: 48, amountMinor: 10000_00 }] };
     const paidFaster = computeLoan({ principalMinor: 250000_00, annualRate: 0.06, ...extras }, { kind: 'term', months: 360 });
 
+    it('say whether the new loan ends later by its real end, not its contract (#715)', () => {
+      // No extras: 36 months in, a new 360-month term ends 36 months after the original 360.
+      const plain = computeLoan({ principalMinor: 250000_00, annualRate: 0.06 }, { kind: 'term', months: 360 });
+      assert.equal(ok(refinanceComparison(plain, 36, 0.05, 360, 0, false)).endsLater, true);
+      assert.equal(ok(refinanceComparison(plain, 36, 0.05, 324, 0, false)).endsLater, false);
+      // With extras the original ends in month 241, not 360. A new 250-month term
+      // is longer on paper than what was left of it...
+      assert.equal(paidFaster.months, 241);
+      assert.ok(36 + 250 > paidFaster.months);
+      // ...and ends later when the extras stop at the refinance,
+      assert.equal(ok(refinanceComparison(paidFaster, 36, 0.05, 250, 0, false)).endsLater, true);
+      // but not when they continue on the new loan at a lower rate.
+      const carried = ok(refinanceComparison(paidFaster, 36, 0.05, 250, 0, false, from(extras)));
+      assert.equal(carried.extrasCarried, true);
+      assert.equal(carried.endsLater, false);
+    });
+
     it('continue on the new loan, so a lower rate is not made to look like a loss', () => {
       const dropped = ok(refinanceComparison(paidFaster, 36, 0.05, 324, 3000_00, false));
       const carried = ok(refinanceComparison(paidFaster, 36, 0.05, 324, 3000_00, false, from(extras)));
