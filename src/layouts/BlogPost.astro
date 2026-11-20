@@ -1,5 +1,6 @@
 ---
 import { lastChanged, modifiedAfterPublication } from '../utils/lessonDates.ts';
+import { formatEnglishDate } from '../utils/longDate.ts';
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
@@ -82,7 +83,7 @@ const indexItems = takeaways.length > 0 && takeaways.every((t) => typeof t !== '
     ]
   : [];
 
-const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr = formatEnglishDate(pubDate);
 // Surface "Updated <date>" only when the updated date is meaningfully later
 // than the publish date (more than seven days). This avoids noisy "updated"
 // labels for fixes made within the publication window, while letting genuine
@@ -92,7 +93,7 @@ const showUpdated = !!updatedDate && updatedDate.getTime() - pubDate.getTime() >
 // An edit made before the lesson was published is not an update of it.
 const changedSince = modifiedAfterPublication(pubDate, updatedDate);
 const updatedStr = showUpdated && updatedDate
-  ? updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  ? formatEnglishDate(updatedDate)
   : '';
 const siteUrl = 'https://nidhi.today';
 const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
@@ -100,6 +101,8 @@ const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
 const blogPostingSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
+  // Lessons are written once, in English, and linked from every edition.
+  inLanguage: 'en',
   headline: title,
   description: description,
   datePublished: pubDate.toISOString(),
@@ -155,6 +158,7 @@ const breadcrumbSchema = {
 const faqSchema = faq && faq.length > 0 ? {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  inLanguage: 'en',
   mainEntity: faq.map(item => ({
     '@type': 'Question',
     name: item.question,
@@ -247,7 +251,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
         {/* Shown, not swapped in quietly: what was wrong and what the lesson says now. */}
         {corrections.map((c) => (
           <p class="post-correction">
-            <strong>Corrected on <time datetime={c.date.toISOString()}>{c.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</time>:</strong> {c.note}
+            <strong>Corrected on <time datetime={c.date.toISOString()}>{formatEnglishDate(c.date)}</time>:</strong> {c.note}
           </p>
         ))}
         <h1 class="post-title">{title}</h1>
@@ -484,7 +488,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema, howToSchema]
 
         {/* Only on paper, so a saved copy says where it came from and that it can go out of date. */}
         <p class="lesson-print-foot">
-          {title}. From nidhi.today/blog/{slug}/. Published {dateStr}.{changedSince && ` Updated ${changedSince.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}.`} <span data-print-saved></span> Lessons can change: the latest version and any corrections are at this address.
+          {title}. From nidhi.today/blog/{slug}/. Published {dateStr}.{changedSince && ` Updated ${formatEnglishDate(changedSince)}.`} <span data-print-saved></span> Lessons can change: the latest version and any corrections are at this address.
         </p>
 
         {seriesPosition && levelLabel && (

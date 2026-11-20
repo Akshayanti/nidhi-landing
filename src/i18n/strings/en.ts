@@ -722,32 +722,27 @@ export const en = {
         kicker: 'One currency or several',
         title: 'Net Worth Calculator',
         desc: 'Add what you own and what you owe to see your net worth. Works in one currency or across 38, at the latest official exchange rates, and if you hold several it shows how much sits in currencies you do not spend in.',
-        itemName: 'Net Worth Calculator and Currency Risk Analyzer',
       },
       loanComparison: {
         kicker: 'Borrowing decisions',
         title: 'Loan Comparison Calculator',
         desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-vendor amortisation, without a spreadsheet.',
-        itemName: 'Loan Comparison Calculator',
       },
       monteCarlo: {
         kicker: 'Projections and retirement',
         title: 'Monte Carlo Simulator',
         desc: 'Play your savings forward thousands of times with returns from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it.',
-        itemName: 'Monte Carlo Retirement Simulator',
       },
       inflation: {
         kicker: 'Prices over time',
         title: 'Inflation Calculator',
         desc: 'Prices usually rise a little every year, and it adds up. See what your money could buy later at a rate you choose, what things may cost, what an old amount is worth today, and whether your raise keeps up. For past amounts it can use your country\'s actual yearly inflation, from the World Bank, for most countries.',
-        itemName: 'Inflation Calculator',
       },
       investOrPayOff: {
         kicker: 'Debt or investing',
         title: 'Invest or Pay Off Calculator',
         desc:
           'Compare paying a debt off early with investing the same money each month, on the same date and after your country\'s inflation. A range of outcomes from world stock history, not one assumed return.',
-        itemName: 'Invest or Pay Off Debt Calculator',
       },
     },
     how: {
