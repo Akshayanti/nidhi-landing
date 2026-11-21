@@ -71,7 +71,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
   // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
-  '@anthropic-ai/sdk': '^1.9.0',
+  '@anthropic-ai/sdk': '^1.10.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   // The accessibility pass of scripts/smoke-pages.mjs: injected into the
@@ -82,7 +82,7 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // build gives them. Astro brings it too; named here so the test does not
   // depend on that.
   'github-slugger': '^2.0.0',
-  puppeteer: '^25.17.0',
+  puppeteer: '^25.18.1',
   // Imported by scripts/render-logo-with-url.mjs. It was there only because
   // astro lists it as optional, so an astro update could have removed it.
   sharp: '^0.35.5',
@@ -103,7 +103,7 @@ const EXPECTED_NODE_ENGINE = '>=24.0.0';
 // the control: flipping a `false` to `true`, or approving a package without
 // pinning the version whose script was read, has to be changed here too.
 const EXPECTED_ALLOW_SCRIPTS: Record<string, boolean> = {
-  'puppeteer@25.17.0': true,
+  'puppeteer@25.18.1': true,
   esbuild: false,
   fsevents: false,
 };
