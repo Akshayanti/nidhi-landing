@@ -38,9 +38,11 @@ describe('where the dates are given out', () => {
     assert.ok(layout.includes('dateModified: lastChanged(pubDate, updatedDate).toISOString()'));
     assert.ok(layout.includes('modifiedTime: updatedDate ? lastChanged(pubDate, updatedDate) : undefined'));
     assert.doesNotMatch(layout, /dateModified: updatedDate\.|modifiedTime: updatedDate,/);
-    const config = read('astro.config.mjs');
-    assert.ok(config.includes("import { lastChanged } from './src/utils/lessonDates.ts';"));
-    assert.doesNotMatch(config, /fm\.updatedDate \?\? fm\.pubDate/);
+    // The sitemap's dates are worked out in src/utils/sitemap.ts, which astro.config.mjs calls.
+    const sitemap = read('src/utils/sitemap.ts');
+    assert.ok(sitemap.includes("import { lastChanged } from './lessonDates.ts';"));
+    assert.doesNotMatch(sitemap, /fm\.updatedDate \?\? fm\.pubDate|\.updatedDate \?\? .*\.pubDate/);
+    assert.ok(read('astro.config.mjs').includes("from './src/utils/sitemap.ts';"));
   });
 
   it('the feed is sorted newest first and names its own address (issue 453)', () => {

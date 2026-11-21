@@ -62,6 +62,8 @@ describe('theme switch', () => {
   });
 
   it('the script keeps the pressed state with the choice', () => {
-    assert.match(theme, /btn\.setAttribute\('aria-pressed', btn\.getAttribute\('data-mode'\) === mode \? 'true' : 'false'\);/);
+    // The script is themeToggle.js, which ThemeToggle.astro inlines (themeToggle.test.ts runs it).
+    const script = readFileSync(join(import.meta.dirname, 'themeToggle.js'), 'utf8');
+    assert.match(script, /btn\.setAttribute\('aria-pressed', btn\.getAttribute\('data-mode'\) === mode \? 'true' : 'false'\);/);
   });
 });

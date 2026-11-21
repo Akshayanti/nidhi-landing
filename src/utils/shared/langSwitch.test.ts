@@ -235,3 +235,17 @@ describe('Header.astro', () => {
     assert.doesNotMatch(HEADER, /href=\{[^}]*window\[/);
   });
 });
+
+describe('LangPicker.astro', () => {
+  const PICKER = readFileSync(join(import.meta.dirname, '../../components/LangPicker.astro'), 'utf8');
+
+  it('has no script of its own: its links are the switch links this file rewrites (#363)', () => {
+    assert.doesNotMatch(PICKER, /<script\b/);
+    assert.match(PICKER, /data-lang-switch=\{row\.to\}/);
+  });
+
+  it('renders each href from the path alone, never the query or the fragment', () => {
+    assert.match(PICKER, /href: swapLocale\(Astro\.url\.pathname, to\)/);
+    assert.doesNotMatch(PICKER, /Astro\.url\.(search|hash|href)\b|searchParams/);
+  });
+});
