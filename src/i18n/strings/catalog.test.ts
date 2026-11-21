@@ -23,6 +23,7 @@ import { hi } from './hi.ts';
 import { es } from './es.ts';
 import { cs } from './cs.ts';
 import { mr } from './mr.ts';
+import { CHANGE_DAYS } from './changes.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -159,6 +160,26 @@ describe('the Hindi catalog is translated, not copied', () => {
       devanagari.length >= prose.length / 2,
       `only ${devanagari.length} of ${prose.length} Hindi values contain Devanagari`,
     );
+  });
+
+  it('addresses the reader in one register: -ें or -एँ, never -िए or -इए', () => {
+    // docs/i18n/hi-glossary.md: verbs addressed to the reader take the plain
+    // polite form (देखें, करें, बताएँ), never the formal one (देखिए, कीजिए,
+    // बताइए). The two had been mixed inside single sentences (#425). Words that
+    // end the same way without being a request to the reader are listed here:
+    // postpositions and conjunctions (लिए, इसलिए, ज़रिए), चाहिए, and the plural
+    // participles किए and दिए.
+    const notImperative = new Set(
+      ['लिए', 'इसलिए', 'इसीलिए', 'किसलिए', 'चाहिए', 'किए', 'दिए', 'ज़रिए', 'नज़रिए'].map((w) => w.normalize('NFD')),
+    );
+    const changes = CHANGE_DAYS.flatMap((day) => day.items.map((item) => ({ path: `changes.${item.id}`, value: item.text.hi })));
+    const offenders = [...HI, ...changes].flatMap(({ path, value }) =>
+      [...value.normalize('NFD').matchAll(/[ऀ-ॣॱ-ॿ]+/gu)]
+        .map(([word]) => word)
+        .filter((word) => /(ि|इ)ए$/u.test(word) && !notImperative.has(word))
+        .map((word) => `${path}: ${word.normalize('NFC')}`),
+    );
+    assert.deepEqual(offenders, [], 'Use the -ें / -एँ form (देखें, करें, बताएँ), or list a word that is not an imperative above.');
   });
 });
 

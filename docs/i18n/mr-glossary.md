@@ -6,8 +6,8 @@ appears. The chrome's and the path's copy lives in `src/i18n/strings/mr.ts`, the
 path's shared vocabulary in `learn.ts`, and the tools' copy in
 `src/i18n/strings/tools/`.
 
-The lessons are the one part of the site that is not translated: they are
-written once, in English, and every language lists those same lessons and links
+The lessons are the one part of the site that is not translated yet: they are
+written in English, and every language lists those same lessons and links
 to them at their one address. So this glossary governs the Marathi the site
 itself writes, and a term below is listed because the chrome or a tool needs it.
 

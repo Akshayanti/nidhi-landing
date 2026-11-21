@@ -6,8 +6,8 @@ appears. The chrome's and the path's copy lives in `src/i18n/strings/hi.ts`, the
 path's shared vocabulary alongside it in `learn.ts`, and the tools' copy in
 `src/i18n/strings/tools/`.
 
-The lessons are the one part of the site that is not translated: they are
-written once, in English, and every language lists those same lessons and links
+The lessons are the one part of the site that is not translated yet: they are
+written in English, and every language lists those same lessons and links
 to them at their one address. So this glossary governs the Hindi the site
 itself writes, not a Hindi lesson corpus, and a term below is listed because
 the chrome or a tool needs it (the net worth calculator, the loan comparison),

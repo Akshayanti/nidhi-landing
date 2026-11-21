@@ -53,7 +53,7 @@ The site serves more than one language, so a copy change is not finished when En
 4. **A locale added later starts complete.** Its catalog is written before its routes are published, because the parity test will not let a partial catalog through.
 5. **If a change cannot be translated yet, pause and ask** rather than shipping English copy into a catalog that is otherwise translated. Say which string and why.
 6. **Copy in the catalogs means the site's own words**: chrome, page prose, tool labels, headings, meta descriptions, structured data that a reader can see. Two things are deliberately outside it, and neither is an exception to this rule:
-   - **Lessons are content, not copy.** They are written once, in English, and are not translated. A page in another language lists the English lessons, links to them at their one address, and says in its own language that the lessons are English (`LessonsInEnglish.astro`).
+   - **Lessons are content, not copy.** They are written in English and are not translated yet; translating them is separate work, started when the owner decides. A page in another language lists the English lessons, links to them at their one address, and says in its own language that the lessons are English (`LessonsInEnglish.astro`).
    - **Names stay in their own script**: a language's own name (`LOCALE_META`), the brand, company and product names, and a person's name. Those are the same string in every language and do not belong in a catalog at all.
 7. **The privacy changelog is the one deliberate exception**, and the reason is recorded there: it is kept in English in every edition, so Hindi, Spanish, Czech, Marathi and English readers are all reading the same record of what changed.
 

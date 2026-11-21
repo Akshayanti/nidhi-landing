@@ -17,7 +17,7 @@ work they put in is kept and not repeated.
 The structure follows `id-glossary.md`: open questions, rules that apply to
 every string, then proposed renderings for the terms the review sheets ask
 about, all drafts until their Status says Agreed. It governs the site's own
-words; lessons are written once, in English, and are not translated.
+words; lessons are written in English and are not translated yet.
 
 Volunteer identities and raw discussion are never recorded here, only the
 outcome and, where it helps, the reason.

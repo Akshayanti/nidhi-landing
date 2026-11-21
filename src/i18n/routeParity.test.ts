@@ -26,6 +26,7 @@ const ENGLISH_ONLY: Record<string, string> = {
   'how-to/situation/[slug].astro': 'situation pages list English guides',
   'rss.xml.ts': 'the lessons feed: lessons are English',
   'how-to/rss.xml.ts': 'the guides feed: guides are English',
+  'llms.txt.ts': 'the one summary for AI assistants, at the site root; it names every edition itself',
   'data/inflation-history.json.ts': 'data, with no words in it',
   'studio/qr.astro': 'an internal tool, not a page for readers',
   'confirm.astro': 'the newsletter flow: the lessons it sends, and its emails, are English',
