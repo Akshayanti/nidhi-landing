@@ -5,8 +5,9 @@
  *
  * Writes src/data/inflation/worldbank.json, which the site serves from its own
  * origin: a reader's browser never contacts the World Bank. Run monthly by
- * .github/workflows/inflation-data.yml, which opens a pull request when the
- * file changed; run it by hand with `node scripts/fetch-inflation.mjs`.
+ * .github/workflows/inflation-data.yml, which pushes a branch and opens an
+ * issue for a person to open its pull request when the file changed; run it
+ * by hand with `node scripts/fetch-inflation.mjs`.
  *
  * Fails with a non-zero exit, and leaves the existing file untouched, on any
  * network error or response shape it does not expect. The file is written

@@ -141,6 +141,53 @@ function measure(CHECK_FILL) {
     out.culprits = seen.slice(0, 6).map((el) => `${say(el)} +${Math.round(el.getBoundingClientRect().right - vw)}`);
   }
 
+  // The width of the text glued to a text node from the neighbouring one in
+  // the same line box (dir -1: the run before it, 1: the run after it): the
+  // characters up to the nearest space or other break, as drawn.
+  const gluedWidth = (n, line, dir) => {
+    const w = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+    w.currentNode = n;
+    const next = dir < 0 ? w.previousNode() : w.nextNode();
+    if (!next || !next.textContent) return 0;
+    // Text in another block (a nested <div>, a list item) starts a line of
+    // its own: only text in the same line box is glued.
+    const blockOf = (t) => {
+      let b = t.parentElement;
+      while (b && b !== line && /^(inline|contents)$/.test(getComputedStyle(b).display)) b = b.parentElement;
+      return b;
+    };
+    if (blockOf(next) !== blockOf(n)) return 0;
+    // A <wbr> or <br> between them is a place to break: nothing is glued.
+    const between = document.createRange();
+    if (dir < 0) { between.setStartAfter(next); between.setEndBefore(n); } else { between.setStartAfter(n); between.setEndBefore(next); }
+    // A <wbr> or <br> between them is a place to break, and so is any other
+    // element that is not inline, even an empty one the text walk skips.
+    const ew = document.createTreeWalker(line, NodeFilter.SHOW_ELEMENT);
+    for (let e = ew.nextNode(); e; e = ew.nextNode()) {
+      if (e.contains(n) || e.contains(next) || !between.intersectsNode(e)) continue;
+      // One that is hidden, or sits out of the flow (itself or inside a
+      // wrapper that is), breaks no line.
+      let off = false;
+      for (let q = e; q && q !== line && !off; q = q.parentElement) {
+        const qs = getComputedStyle(q);
+        off = qs.display === 'none' || /^(absolute|fixed)$/.test(qs.position) || qs.cssFloat !== 'none';
+      }
+      if (off) continue;
+      const es = getComputedStyle(e);
+      // A <wbr> draws no box of its own, so it is tested before that is.
+      if (e.matches('wbr, br')) return 0;
+      if (!e.getClientRects().length) continue;
+      if (!/^(inline|contents)$/.test(es.display)) return 0;
+    }
+    const t = next.textContent;
+    const g = (dir < 0 ? /[^ \t\n\r\u200b\u00ad-]+$/ : /^[^ \t\n\r\u200b\u00ad-]+/).exec(t);
+    if (!g) return 0;
+    const r = document.createRange();
+    r.setStart(next, g.index);
+    r.setEnd(next, g.index + g[0].length);
+    return [...r.getClientRects()].reduce((sum, x) => sum + x.width, 0);
+  };
+
   // Text, one piece per text node.
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const pieces = [];
@@ -222,8 +269,13 @@ function measure(CHECK_FILL) {
       if (/flex|grid/.test(ls.display) && !/column/.test(ls.flexDirection) && n.parentElement === line) {
         for (const c of line.children) if (getComputedStyle(c).position !== 'absolute') room -= c.getBoundingClientRect().width + (parseFloat(ls.columnGap) || 0);
       }
-      // Its width unbroken is the sum of its pieces as drawn.
-      const drawn = [...wr.getClientRects()].reduce((sum, x) => sum + x.width, 0);
+      // Its width unbroken is the sum of its pieces as drawn, with the text
+      // glued to it from the next element over: "(" and ")," around an
+      // address in <code> leave no place to break, so the reader's unit is
+      // "(api.frankfurter.dev)," and it is that which has to fit (#753).
+      const drawn = [...wr.getClientRects()].reduce((sum, x) => sum + x.width, 0)
+        + (m.index === 0 ? gluedWidth(n, line, -1) : 0)
+        + (m.index + m[0].length === text.length ? gluedWidth(n, line, 1) : 0);
       // A little slack (2% of the line): a word that fits only on paper, by a
       // pixel or two, is not a finding.
       if (drawn <= room - Math.max(2, room * 0.02)) out.split.push(`${name(el)} "${m[0]}" (${Math.round(drawn)} wide in a line of ${Math.round(room)})`);

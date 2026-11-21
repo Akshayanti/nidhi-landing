@@ -19,11 +19,15 @@
 export const EXCEPTIONS = [
   {
     id: 'GHSA-fc5q-39xc-vjpf',
-    until: '2026-12-17',
+    // Owner's standing rule (Nov 21, 2026): extended a month at a time until
+    // picomatch ships a fix. GitHub withdrew the advisory on Nov 18, 2026, so
+    // npm audit does not report it now; the exception stays in case it returns.
+    until: '2027-01-17',
     reason:
       'picomatch (through astro and vite), all versions up to the latest, 4.0.7: no fixed release exists yet. '
       + 'It is used while building, on patterns this repository writes itself; the site is static and runs no code '
-      + 'on a server. Owner, Nov 17, 2026. Remove once picomatch ships a fix and the lockfile has it.',
+      + 'on a server. Owner, Nov 17, 2026; extended a month at a time until the fix ships (owner, Nov 21, 2026). '
+      + 'Remove once picomatch ships a fix and the lockfile has it.',
   },
 ];
 
