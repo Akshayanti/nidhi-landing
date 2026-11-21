@@ -1,0 +1,82 @@
+name: Apps Script versions
+
+# Says whether the deployed Apps Script web apps run what main holds (#443).
+# Each one's health action reports a VERSION, the hash of its .gs file
+# (npm run gs:version); scripts/check-gs-versions.mjs compares that with the
+# files here. A script that differs, cannot be reached, predates the version
+# or whose health is not ok opens (or comments on) an issue labelled
+# `apps-script-drift`, and the run is red. How to deploy: docs/operations.md.
+
+on:
+  schedule:
+    # Nightly. GitHub starts this repository's schedules hours late (see
+    # deploy.yml, #329); the time does not matter here.
+    - cron: '17 2 * * *'
+  # After every deploy of the site, since a change that needs a new script
+  # version usually ships with one.
+  workflow_run:
+    workflows: ['Deploy to GitHub Pages']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: apps-script-versions
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Compare live versions with main
+        id: compare
+        # Needs no install: the checker uses Node's own modules. The /exec
+        # addresses are public (the site's pages carry two of them).
+        env:
+          NEWSLETTER_ENDPOINT: ${{ secrets.PUBLIC_NEWSLETTER_ENDPOINT }}
+          WAITLIST_ENDPOINT: ${{ secrets.PUBLIC_WAITLIST_ENDPOINT }}
+          VOLUNTEER_LIST_ENDPOINT: ${{ secrets.VOLUNTEER_LIST_ENDPOINT }}
+          REPORT: ${{ runner.temp }}/report.md
+        run: node scripts/check-gs-versions.mjs
+        continue-on-error: true
+
+      - name: Open or update the drift issue
+        if: steps.compare.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT: ${{ runner.temp }}/report.md
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          TITLE="Apps Script differs from main"
+          BODY="$(cat "$REPORT" 2>/dev/null || echo 'The check could not run: see the workflow log.')
+
+          Deploy each script marked above as a New version (docs/operations.md, \"Deploying a script\"), then run this workflow by hand. Run: $RUN_URL"
+          EXISTING=$(gh issue list --state open --label apps-script-drift --search "$TITLE in:title" --json number --jq '.[0].number' || echo "")
+          if [ -n "${EXISTING:-}" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh label create apps-script-drift --color D93F0B --description "A deployed Apps Script differs from main" 2>/dev/null || true
+            gh issue create --title "$TITLE" --label apps-script-drift --label "area: backend" --body "$BODY"
+          fi
+
+      - name: Fail the run when a script differs
+        if: steps.compare.outcome == 'failure'
+        run: |
+          echo "::error::A deployed Apps Script differs from main or is not healthy; see the apps-script-drift issue."
+          exit 1

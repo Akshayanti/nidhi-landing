@@ -56,7 +56,7 @@ export const multiCurrencyNetWorthEn = {
   meta: {
     title: 'Net Worth Calculator, in One Currency or Several | nidhi',
     description:
-      'Free net worth calculator for one currency or several: 38 currencies at the latest official exchange rates, plus a currency risk check. Runs in your browser; nothing is sent.',
+      'Free net worth calculator for one currency or several: 38 currencies at the latest official exchange rates, plus a currency risk check. Runs in your browser; what you type stays there.',
   },
   schema: {
     name: 'nidhi Net Worth Calculator',
@@ -80,7 +80,7 @@ export const multiCurrencyNetWorthEn = {
       'Asset/liability toggle for net position calculation',
       'CSV bulk upload',
       'Two ways to share: everything, or with amounts and names hidden',
-      'Everything runs in your browser; no data sent to any server',
+      'Calculations run in your browser; what you type stays there',
     ],
     breadcrumbHome: 'Home',
     breadcrumbThis: 'Net worth calculator',
@@ -100,7 +100,7 @@ export const multiCurrencyNetWorthEn = {
      * the browser would collapse them in the markup.
      */
     lead:
-      'Add what you own and what you owe, in one currency or several. See your net worth in your chosen currency at the latest official exchange rates. If you hold more than one currency, check how much of it sits in currencies you don’t actually spend in. Everything runs in your browser. Nothing is sent to a server. Supports USD, EUR, GBP, INR, JPY, and 33 more.',
+      'Add what you own and what you owe, in one currency or several. See your net worth in your chosen currency at the latest official exchange rates. If you hold more than one currency, check how much of it sits in currencies you don’t actually spend in. Calculations run in your browser, and what you type stays there. Supports USD, EUR, GBP, INR, JPY, and 33 more.',
     plannerLine:
       'The full nidhi planner turns multi-currency net worth into a long-range plan, so you can see how location, spending currency, and major decisions change the path.',
     explainer: {
@@ -513,7 +513,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में | nidhi',
     description:
-      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा के लिए या कई के लिए: ताज़ा आधिकारिक दरों पर 38 मुद्राएँ, और साथ में मुद्रा जोखिम की जाँच। सारी गणना आपके ब्राउज़र में; कुछ भी नहीं भेजा जाता।',
+      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा के लिए या कई के लिए: ताज़ा आधिकारिक दरों पर 38 मुद्राएँ, और साथ में मुद्रा जोखिम की जाँच। सारी गणना आपके ब्राउज़र में; आप जो लिखते हैं, वह वहीं रहता है।',
   },
   schema: {
     name: 'nidhi शुद्ध संपत्ति कैलकुलेटर',
@@ -537,7 +537,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       'शुद्ध स्थिति निकालने के लिए संपत्ति/देनदारी का टॉगल',
       'CSV से एक साथ कई पंक्तियाँ अपलोड करें',
       'शेयर करने के दो तरीक़े: पूरा हिसाब, या रकम और नाम छिपाकर',
-      'सारी गणना आपके ब्राउज़र में होती है; किसी सर्वर पर कोई डेटा नहीं जाता',
+      'सारी गणना आपके ब्राउज़र में होती है; आप जो लिखते हैं, वह वहीं रहता है',
     ],
     breadcrumbHome: 'होम',
     breadcrumbThis: 'शुद्ध संपत्ति कैलकुलेटर',
@@ -551,7 +551,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'मुफ़्त टूल',
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में',
     lead:
-      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है। किसी सर्वर पर कुछ नहीं भेजा जाता। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
+      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है, और आप जो लिखते हैं, वह वहीं रहता है। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
     plannerLine:
       'nidhi का पूरा प्लानर कई मुद्राओं में फैली शुद्ध संपत्ति को लंबी अवधि की योजना में बदल देता है, ताकि आप देख सकें कि जगह, खर्च की मुद्रा और बड़े फ़ैसले इस रास्ते को कैसे बदलते हैं।',
     explainer: {
@@ -919,7 +919,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Calculadora de patrimonio neto: una o varias monedas | nidhi',
     description:
-      'Calculadora gratuita de patrimonio neto en 38 monedas, con tipos de cambio oficiales y riesgo cambiario. Se calcula en tu navegador, sin que salgan tus datos.',
+      'Calculadora gratuita de patrimonio neto en 38 monedas, con tipos de cambio oficiales y riesgo cambiario. Se calcula en tu navegador; lo que escribes se queda ahí.',
   },
   schema: {
     name: 'Calculadora de patrimonio neto de nidhi',
@@ -943,7 +943,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       'Selector de activo o pasivo para calcular la posición neta',
       'Carga masiva desde CSV',
       'Dos formas de compartir: datos completos o con cantidades y nombres ocultos',
-      'Todo funciona en tu navegador; no se envía ningún dato a ningún servidor',
+      'Los cálculos se hacen en tu navegador; lo que escribes se queda ahí',
     ],
     breadcrumbHome: 'Inicio',
     breadcrumbThis: 'Calculadora de patrimonio neto',
@@ -957,7 +957,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'Herramientas gratuitas',
     title: 'Calculadora de patrimonio neto, en una moneda o en varias',
     lead:
-      'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio oficiales actualizados. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Todo funciona en tu navegador. No se envía nada a ningún servidor. Admite USD, EUR, GBP, INR, JPY y 33 más.',
+      'Añade lo que tienes y lo que debes, en una moneda o en varias. Consulta tu patrimonio neto en la moneda que elijas, con tipos de cambio oficiales actualizados. Si tienes dinero en más de una moneda, comprueba cuánto está en monedas en las que en realidad no gastas. Los cálculos se hacen en tu navegador, y lo que escribes se queda ahí. Admite USD, EUR, GBP, INR, JPY y 33 más.',
     plannerLine:
       'El planificador completo de nidhi convierte tu patrimonio neto en varias monedas en un plan a largo plazo, para que veas cómo el lugar donde vives, la moneda en la que gastas y las grandes decisiones cambian el camino.',
     explainer: {
@@ -1337,7 +1337,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Kalkulačka čistého jmění, v jedné měně i ve více | nidhi',
     description:
-      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží v prohlížeči, nic se neodesílá.',
+      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží v prohlížeči; co napíšete, zůstává tam.',
   },
   schema: {
     name: 'Kalkulačka čistého jmění nidhi',
@@ -1361,7 +1361,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       'Přepínač aktivum/závazek pro výpočet čisté pozice',
       'Hromadné nahrání CSV',
       'Dva režimy sdílení: úplná data a verze se skrytými údaji',
-      'Vše běží ve vašem prohlížeči; žádná data se neposílají na server',
+      'Výpočty běží ve vašem prohlížeči; co napíšete, zůstává tam',
     ],
     breadcrumbHome: 'Domů',
     breadcrumbThis: 'Kalkulačka čistého jmění',
@@ -1375,7 +1375,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'Nástroje zdarma',
     title: 'Kalkulačka čistého jmění, v jedné měně i ve více',
     lead:
-      'Zadejte, co vlastníte a co dlužíte, v jedné měně i ve více. Uvidíte své čisté jmění ve zvolené měně při nejnovějších oficiálních kurzech. Pokud držíte víc než jednu měnu, zjistěte, kolik z toho máte v měnách, ve kterých ve skutečnosti neutrácíte. Vše běží ve vašem prohlížeči. Nic se neposílá na server. Podporuje USD, EUR, GBP, INR, JPY a 33 dalších.',
+      'Zadejte, co vlastníte a co dlužíte, v jedné měně i ve více. Uvidíte své čisté jmění ve zvolené měně při nejnovějších oficiálních kurzech. Pokud držíte víc než jednu měnu, zjistěte, kolik z toho máte v měnách, ve kterých ve skutečnosti neutrácíte. Výpočty běží ve vašem prohlížeči a co napíšete, zůstává tam. Podporuje USD, EUR, GBP, INR, JPY a 33 dalších.',
     plannerLine:
       'Celý plánovač nidhi promění čisté jmění ve více měnách v dlouhodobý plán, takže uvidíte, jak místo pobytu, měna výdajů a velká rozhodnutí mění cestu.',
     explainer: {
@@ -1741,7 +1741,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
 export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये | nidhi',
-    description: 'एका किंवा अनेक चलनांसाठी मोफत निव्वळ संपत्ती कॅल्क्युलेटर: नवीनतम अधिकृत दरांसह 38 चलने आणि चलन जोखमीची तपासणी. ब्राउझरमध्ये चालतो, काहीही पाठवले जात नाही.',
+    description: 'एका किंवा अनेक चलनांसाठी मोफत निव्वळ संपत्ती कॅल्क्युलेटर: नवीनतम अधिकृत दरांसह 38 चलने आणि चलन जोखमीची तपासणी. ब्राउझरमध्ये चालतो; तुम्ही लिहिलेले तिथेच राहते.',
   },
   schema: {
     name: 'nidhi निव्वळ संपत्ती कॅल्क्युलेटर',
@@ -1765,7 +1765,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       'निव्वळ स्थिती मोजण्यासाठी मालमत्ता/देणी निवड',
       'CSV द्वारे एकाच वेळी अनेक नोंदी अपलोड',
       'शेअर करण्याचे दोन प्रकार: संपूर्ण डेटा, किंवा रकमा आणि नावे लपवून',
-      'सगळे तुमच्या ब्राउझरमध्ये चालते; कोणत्याही सर्व्हरकडे डेटा पाठवला जात नाही',
+      'हिशेब तुमच्या ब्राउझरमध्ये होतो; तुम्ही जे लिहिता ते तिथेच राहते',
     ],
     breadcrumbHome: 'मुख्यपृष्ठ',
     breadcrumbThis: 'निव्वळ संपत्ती कॅल्क्युलेटर',
@@ -1778,7 +1778,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     },
     eyebrow: 'मोफत साधने',
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये',
-    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते लिहा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. सगळे तुमच्या ब्राउझरमध्ये चालते. सर्व्हरकडे काहीही पाठवले जात नाही. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
+    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते लिहा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. हिशेब तुमच्या ब्राउझरमध्ये होतो, आणि तुम्ही जे लिहिता ते तिथेच राहते. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
     plannerLine:
       'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
     explainer: {

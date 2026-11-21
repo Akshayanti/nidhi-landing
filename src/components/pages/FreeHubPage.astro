@@ -89,11 +89,9 @@ const specs: ToolSpec[] = [
 
 const tools = specs.map((spec) => ({ ...spec, ...hub.tools[spec.key] }));
 
-// The hub advertises a simulator only when the page beneath it lists one, so the
-// meta description is the one that matches what a reader actually finds.
-const description = tools.some((t) => t.key === 'monteCarlo')
-  ? hub.meta.description
-  : hub.meta.descriptionWithoutSimulator;
+// Every tool the description names has launched (the simulator with lesson 43,
+// invest or pay off with lesson 49), so one description fits every build.
+const description = hub.meta.description;
 
 const hubUrl = new URL(localizedPath(locale, '/free/'), siteUrl).href;
 const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;

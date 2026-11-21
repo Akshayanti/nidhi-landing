@@ -699,11 +699,7 @@ export const en = {
     meta: {
       title: 'Free Personal Finance Tools and Calculators | nidhi',
       description:
-        'Free personal finance calculators: net worth in one currency or several, loan comparison, inflation and a Monte Carlo retirement simulator. No signup, no tracking, all calculations run in your browser.',
-      // The simulator is listed only once it is released, so the description must
-      // not promise a card the page does not show.
-      descriptionWithoutSimulator:
-        'Free personal finance calculators for net worth (in one currency or several), loan comparison and inflation. No signup, no tracking, all calculations run in your browser.',
+        'Free calculators for net worth in one currency or several, loans, inflation, retirement simulation, and investing or paying off debt. No signup. What you type stays in your browser.',
     },
     schema: {
       breadcrumbHome: 'Home',
@@ -717,7 +713,7 @@ export const en = {
     },
     eyebrow: 'Free tools',
     title: 'Free personal finance tools that run in your browser.',
-    lead: 'No signup, no account, no data sent to a server. Every calculator below runs entirely in your browser, with the latest official exchange rates where currency conversion is needed. Built for expats, cross-border savers, and anyone who has outgrown a spreadsheet.',
+    lead: 'No signup or account needed, and what you type into a calculator stays in your browser. Every calculator below runs entirely in your browser, with the latest official exchange rates where currency conversion is needed. Built for expats, cross-border savers, and anyone who has outgrown a spreadsheet.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'One currency or several',
@@ -1119,6 +1115,10 @@ export const en = {
         lead: 'Bounced or invalid emails:',
         rest: ' removed as soon as we notice them, usually within a week.',
       },
+      sendRetry: {
+        lead: 'A lesson email that could not be sent:',
+        rest: ' if the lesson email to you fails to send, the newsletter script keeps a short code made from your address (part of a SHA-256 hash, never the address itself), how many times it tried and the kind of error. Unknown errors are retried on later runs, up to three attempts in total; addresses refused by the mail service are not retried. These notes are deleted once that lesson has gone out to every subscriber it can reach.',
+      },
       visitorId: {
         lead: 'Your PostHog visitor ID (only with your yes):',
         rest: ' until you clear your browser data, or until you say no on the cookie banner, which removes it.',
@@ -1263,7 +1263,12 @@ export const en = {
     dismissedLater: 'We’ll check back later.',
     sending: 'Sending…',
     notConfigured: 'Subscriptions are not configured yet. Check back soon, or grab the RSS feed.',
-    error: 'Something went wrong. Please try again in a moment.',
+    /** Shown when the outcome is not known (no answer, an error page): the request may have worked, and a repeat changes nothing. */
+    error: 'We couldn’t tell whether that went through. Please try again; trying twice is safe.',
+    /** Shown when the day's limit is reached: nothing was written. The same for every address, so it says nothing about who is on the list. */
+    busy: 'Sign-ups are paused for today. Please try again tomorrow.',
+    /** Shown when the script refused the address. */
+    invalidEmail: 'That address doesn’t look right. Check it and try again.',
   },
 
   /**
@@ -1303,8 +1308,12 @@ export const en = {
     sending: 'Sending…',
     /** Shown when the build has no endpoint configured, so a signup cannot land. */
     notConfigured: 'Signups are not configured yet. Check back soon.',
-    /** Shown when the request fails. */
-    error: 'Something went wrong. Please try again in a moment.',
+    /** Shown when the outcome is not known (no answer, an error page): the request may have worked, and a repeat changes nothing. */
+    error: 'We couldn’t tell whether that went through. Please try again; trying twice is safe.',
+    /** Shown when the day's limit is reached: nothing was written. The same for every address, so it says nothing about who is on the list. */
+    busy: 'Sign-ups are paused for today. Please try again tomorrow.',
+    /** Shown when the script refused the address. */
+    invalidEmail: 'That address doesn’t look right. Check it and try again.',
   },
   home: {
     meta: {

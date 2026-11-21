@@ -124,6 +124,7 @@ describe('waitlist.gs list action', () => {
     const out = answer(ctx().doGet({ parameter: { action: 'health' } }));
     assert.deepEqual(out.checks.sheet, { ok: true });
     assert.equal(JSON.stringify(out).includes('tab'), false);
+    assert.match(out.version, /^[0-9a-f]{12}$/);
     assert.equal('web_app_url' in out, false);
   });
 });
@@ -278,7 +279,8 @@ describe('volunteer-list.gs', () => {
 
   it('keeps health output coarse', () => {
     const out = answer(ctx().doGet({ parameter: { action: 'health' } }));
-    assert.deepEqual(out, { ok: true, checks: { web_app_url: { ok: true }, sheet: { ok: true } } });
+    assert.deepEqual(out, { ok: true, version: out.version, checks: { web_app_url: { ok: true }, sheet: { ok: true } } });
+    assert.match(out.version, /^[0-9a-f]{12}$/);
   });
 
   it('matches the choice and the question titles the form script creates', () => {
@@ -385,12 +387,22 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
     assert.doesNotMatch(JSON.stringify(state.tracked), /@|jane|reader|example\.org/i);
   });
 
-  it('stops adding rows at the day’s limit and says the same', () => {
+  it('stops adding rows at the day’s limit and says so, the same to every address (#342)', () => {
     const { c, rows, store } = loadWritable([header.slice()]);
     vm.runInContext('MAX_SIGNUPS_PER_DAY_ = 2;', c);
     store['signups:2020-01-01'] = '9';
-    for (const email of ['a@x.io', 'b@x.io', 'c@x.io', 'a@x.io']) assert.deepEqual(signup(c, { email }), { ok: true });
+    for (const email of ['a@x.io', 'b@x.io']) assert.deepEqual(signup(c, { email }), { ok: true });
+    // Past the limit a new address and one already on the list get the same
+    // refusal, so the reply says nothing about who is on the list.
+    for (const email of ['c@x.io', 'a@x.io']) assert.deepEqual(signup(c, { email }), { ok: false, error: 'busy' });
     assert.equal(rows.slice(1).map((r) => r[0]).join(), 'a@x.io,b@x.io');
     assert.equal(Object.keys(store).filter((k) => k.startsWith('signups:')).length, 1, 'earlier days are dropped');
+  });
+
+  it('a repeat sign-up takes no slot of the day', () => {
+    const { c, rows } = loadWritable([header.slice()]);
+    vm.runInContext('MAX_SIGNUPS_PER_DAY_ = 2;', c);
+    for (const email of ['a@x.io', 'a@x.io', 'a@x.io', 'b@x.io']) assert.deepEqual(signup(c, { email }), { ok: true });
+    assert.equal(rows.slice(1).map((r) => r[0]).join(), 'a@x.io,b@x.io');
   });
 });

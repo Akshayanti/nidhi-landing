@@ -8,6 +8,13 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     slug: z.string(),
+    /**
+     * What the newsletter knows this lesson by (#438), sent in the feed as
+     * <nidhi:id>. Leave it out: the id is then the slug. Set it only when the
+     * slug changes, to the old slug, so the lesson is not emailed again. A
+     * lesson's id never changes and is never reused (newsletterIds.test.ts).
+     */
+    newsletterId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     title: z.string(),
     /**
      * Shorter title for search results and link previews (<title>, og:title,

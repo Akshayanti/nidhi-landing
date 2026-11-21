@@ -22,6 +22,7 @@ import os
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -47,14 +48,17 @@ def guid(slug: str) -> str:
     return f"{SITE_URL}/blog/{slug}/"
 
 
-def feed(posts=POSTS, link=guid) -> str:
+def feed(posts=POSTS, link=guid, ids=None) -> str:
+    """The feed as the site builds it; `ids` gives each item a <nidhi:id> (none by default: an old feed)."""
     items = "".join(
         f"<item><title>{slug.title()}</title><description>About {slug}.</description>"
         f"<link>{link(slug)}</link><guid>{link(slug)}</guid><pubDate>{date}</pubDate>"
-        f"<category>building</category></item>"
+        + (f"<nidhi:id>{ids(slug)}</nidhi:id>" if ids else "")
+        + "<category>building</category></item>"
         for slug, date in posts
     )
-    return f'<?xml version="1.0"?><rss version="2.0"><channel><title>nidhi</title>{items}</channel></rss>'
+    return (f'<?xml version="1.0"?><rss version="2.0" xmlns:nidhi="{nl.NIDHI_NS}">'
+            f'<channel><title>nidhi</title>{items}</channel></rss>')
 
 
 POST = {
@@ -73,7 +77,7 @@ class Run:
     """One run of main() over a feed and a marker file, with the network replaced."""
 
     def __init__(self, tmp: Path, *, feed_xml: str | None = None, marker: str | None = None,
-                 env: dict | None = None, answers=None):
+                 env: dict | None = None, answers=None, now: datetime | None = None):
         self.tmp = tmp
         (tmp / "dist").mkdir(exist_ok=True)
         (tmp / "dist" / "rss.xml").write_text(feed_xml if feed_xml is not None else feed(), encoding="utf-8")
@@ -92,6 +96,9 @@ class Run:
         self.answers = list(answers or [])
         self.posted: list[dict] = []
         self.code: int | None = None
+        # The day after the newest lesson in POSTS, so every one is within
+        # the age window unless a test moves the clock.
+        self.now = now or datetime(2026, 5, 13, 8, 0, tzinfo=timezone.utc)
         self.stderr = ""
 
     def _post(self, _cfg, payload):
@@ -104,6 +111,7 @@ class Run:
     def go(self) -> "Run":
         err = io.StringIO()
         with mock.patch.dict(os.environ, self.env, clear=True), \
+                mock.patch.object(nl, "_now", return_value=self.now), \
                 mock.patch.object(nl, "extract_post", return_value=dict(POST)), \
                 mock.patch.object(nl, "post_to_apps_script", side_effect=self._post), \
                 contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
@@ -117,7 +125,9 @@ class Run:
 
     @property
     def recorded(self) -> set[str]:
-        return nl.load_sent_guids(self.marker)
+        """The ids the marker holds, old address lines read as the ids they name."""
+        items = nl.parse_rss(self.tmp / "dist" / "rss.xml")
+        return nl.sent_ids(nl.load_sent_guids(self.marker), items)[0]
 
 
 class WhichLessonsGoOut(unittest.TestCase):
@@ -129,14 +139,14 @@ class WhichLessonsGoOut(unittest.TestCase):
     def test_a_first_run_sends_the_newest_lesson_only_and_records_the_rest(self):
         run = Run(self.tmp).go()
         self.assertEqual(run.code, 0)
-        self.assertEqual(run.sent, [guid("fifth")])
-        self.assertEqual(run.recorded, {guid(slug) for slug, _ in POSTS})
+        self.assertEqual(run.sent, ["fifth"])
+        self.assertEqual(run.recorded, {slug for slug, _ in POSTS})
 
     def test_an_empty_or_comment_only_marker_is_a_first_run_too(self):
         for text in ["", "\n\n", "# One GUID per line.\n"]:
             with self.subTest(marker=text), tempfile.TemporaryDirectory() as tmp:
                 run = Run(Path(tmp), marker=text).go()
-                self.assertEqual(run.sent, [guid("fifth")], "one lesson, not the whole feed")
+                self.assertEqual(run.sent, ["fifth"], "one lesson, not the whole feed")
 
     def test_a_recorded_lesson_is_never_sent_again(self):
         marker = "".join(f"{guid(slug)}\n" for slug, _ in POSTS)
@@ -147,31 +157,37 @@ class WhichLessonsGoOut(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             first = Run(Path(tmp)).go()
             again = Run(Path(tmp)).go()
-            self.assertEqual(first.sent, [guid("fifth")])
+            self.assertEqual(first.sent, ["fifth"])
             self.assertEqual(again.sent, [])
 
     def test_new_lessons_go_out_oldest_first_by_date_not_by_text(self):
         marker = f"{guid('first')}\n"
         run = Run(self.tmp, marker=marker, feed_xml=feed(POSTS[:4])).go()
-        self.assertEqual(run.sent, [guid("second"), guid("third"), guid("fourth")])
-        self.assertEqual(run.recorded, {guid(slug) for slug, _ in POSTS[:4]})
+        self.assertEqual(run.sent, ["second", "third", "fourth"])
+        self.assertEqual(run.recorded, {slug for slug, _ in POSTS[:4]})
 
     def test_only_most_recent_sends_one_and_records_the_others(self):
         marker = f"{guid('first')}\n"
         run = Run(self.tmp, marker=marker, env={"SEND_ONLY_MOST_RECENT": "1"}).go()
-        self.assertEqual(run.sent, [guid("fifth")])
-        self.assertEqual(run.recorded, {guid(slug) for slug, _ in POSTS})
+        self.assertEqual(run.sent, ["fifth"])
+        self.assertEqual(run.recorded, {slug for slug, _ in POSTS})
 
-    def test_a_feed_whose_addresses_all_changed_does_not_resend_the_back_catalogue(self):
-        # Every lesson is recorded; then the feed's addresses lose their
-        # trailing slash, so not one of them matches the marker any more.
+    def test_a_feed_whose_addresses_all_changed_sends_nothing_again(self):
+        # Every lesson is recorded under its address; then the addresses lose
+        # their trailing slash. A post is known by its id now (#438), so not
+        # one of them goes out again, and the run is clean.
         marker = "".join(f"{guid(slug)}\n" for slug, _ in POSTS)
         changed = feed(link=lambda slug: f"{SITE_URL}/blog/{slug}")
+        run = Run(self.tmp, marker=marker, feed_xml=changed).go()
+        self.assertEqual((run.sent, run.code), ([], 0))
+
+    def test_a_feed_whose_ids_all_changed_does_not_resend_the_back_catalogue(self):
+        marker = "".join(f"{slug}\n" for slug, _ in POSTS)
+        changed = feed(ids=lambda slug: f"new-{slug}")
         run = Run(self.tmp, marker=marker, feed_xml=changed).go()
         self.assertEqual(run.sent, [], "five lessons at once is not a publishing day")
         self.assertEqual(run.code, 2, "the run fails, so that someone looks")
         self.assertIn("Nothing was sent", run.stderr)
-        self.assertEqual(run.recorded, {guid(slug) for slug, _ in POSTS}, "and nothing new is recorded")
 
     def test_the_limit_is_three_lessons_a_run_unless_asked_for(self):
         marker = f"{guid('first')}\n"
@@ -180,7 +196,7 @@ class WhichLessonsGoOut(unittest.TestCase):
         self.assertEqual((four_waiting.sent, four_waiting.code), ([], 2))
         with tempfile.TemporaryDirectory() as tmp:
             asked = Run(Path(tmp), marker=marker, env={"BACKFILL_OK": "1"}).go()
-            self.assertEqual(asked.sent, [guid("second"), guid("third"), guid("fourth"), guid("fifth")])
+            self.assertEqual(asked.sent, ["second", "third", "fourth", "fifth"])
 
     def test_a_lost_marker_with_backfill_allowed_is_the_only_way_to_send_everything(self):
         run = Run(self.tmp, env={"BACKFILL_OK": "1"}).go()
@@ -200,28 +216,28 @@ class WhatIsRecordedAsSent(unittest.TestCase):
     def test_a_request_that_fails_is_not_recorded_and_fails_the_run(self):
         run = self.run_with([RuntimeError("POST to Apps Script failed: timed out")])
         self.assertEqual(run.code, 2)
-        self.assertNotIn(guid("fourth"), run.recorded)
+        self.assertNotIn("fourth", run.recorded)
         # The lesson after it is still tried, and recorded when it goes out.
-        self.assertEqual(run.sent, [guid("fourth"), guid("fifth")])
-        self.assertIn(guid("fifth"), run.recorded)
+        self.assertEqual(run.sent, ["fourth", "fifth"])
+        self.assertIn("fifth", run.recorded)
 
     def test_a_refused_request_is_not_recorded(self):
         for answer in [{"ok": False, "error": "bad_signature"}, {"ok": False, "error": "from_email_not_sendable: x"}, {"ok": False, "raw": "<html>"}]:
             with self.subTest(answer=answer), tempfile.TemporaryDirectory() as tmp:
                 run = Run(Path(tmp), marker=self.marker, answers=[answer]).go()
                 self.assertEqual(run.code, 2)
-                self.assertNotIn(guid("fourth"), run.recorded)
+                self.assertNotIn("fourth", run.recorded)
 
     def test_a_send_that_ran_out_of_time_is_not_recorded_so_the_next_run_resumes_it(self):
         run = self.run_with([{"ok": True, "partial": True, "sent": 40, "failed": 0, "resume_after": "m@x.io"}])
         self.assertEqual(run.code, 2)
-        self.assertNotIn(guid("fourth"), run.recorded)
+        self.assertNotIn("fourth", run.recorded)
         self.assertNotIn("m@x.io", "".join(sorted(run.recorded)))
 
     def test_a_lesson_the_script_found_nobody_to_send_to_is_not_recorded(self):
         run = self.run_with([{"ok": True, "sent": 0, "failed": 0, "no_recipients": True}])
         self.assertEqual(run.code, 2, "a list that reads as empty fails the run")
-        self.assertNotIn(guid("fourth"), run.recorded)
+        self.assertNotIn("fourth", run.recorded)
         self.assertIn("NO RECIPIENTS", run.stderr)
 
     def test_a_lesson_that_cannot_be_rendered_is_not_sent_or_recorded(self):
@@ -234,6 +250,7 @@ class WhatIsRecordedAsSent(unittest.TestCase):
                "DIST_DIR": str(self.tmp / "dist"), "MARKER_FILE": str(marker)}
         posted = []
         with mock.patch.dict(os.environ, env, clear=True), \
+                mock.patch.object(nl, "_now", return_value=datetime(2026, 5, 13, tzinfo=timezone.utc)), \
                 mock.patch.object(nl, "extract_post", side_effect=FileNotFoundError("no page")), \
                 mock.patch.object(nl, "post_to_apps_script", side_effect=lambda _c, p: posted.append(p)), \
                 contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
@@ -245,7 +262,7 @@ class WhatIsRecordedAsSent(unittest.TestCase):
         with mock.patch.object(nl, "REPO_ROOT", self.tmp):
             run = Run(self.tmp, marker=self.marker, env={"DRY_RUN": "1"}).go()
         self.assertEqual((run.code, run.sent), (0, []))
-        self.assertEqual(run.recorded, {guid("first"), guid("second"), guid("third")})
+        self.assertEqual(run.recorded, {"first", "second", "third"})
         self.assertTrue(list((self.tmp / "emails" / "_preview").glob("*.html")), "the previews are written")
 
     def test_without_an_endpoint_or_a_secret_nothing_runs(self):
@@ -262,6 +279,91 @@ class WhatIsRecordedAsSent(unittest.TestCase):
         path.write_text("a\nb", encoding="utf-8")  # no final line break
         nl.record_sent(path, "c")
         self.assertEqual(nl.load_sent_guids(path), {"a", "b", "c"})
+
+
+class APostIsKnownByItsId(unittest.TestCase):
+    """#438: the newsletter id, not the address, decides whether a lesson went out."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.tmp = Path(self._tmp.name)
+        self.addCleanup(self._tmp.cleanup)
+
+    def test_the_request_carries_the_id_and_the_old_address(self):
+        marker = "first\nsecond\nthird\nfourth\n"
+        run = Run(self.tmp, marker=marker, feed_xml=feed(ids=lambda slug: slug)).go()
+        self.assertEqual(run.code, 0)
+        self.assertEqual([(p["guid"], p["legacy_guid"]) for p in run.posted],
+                         [("fifth", guid("fifth"))])
+        self.assertIn("fifth", nl.load_sent_guids(run.marker), "the marker records the id")
+
+    def test_a_lesson_whose_address_changed_keeps_its_id(self):
+        marker = "".join(f"{slug}\n" for slug, _ in POSTS)
+        moved = feed(link=lambda slug: f"{SITE_URL}/learn/{slug}/", ids=lambda slug: slug)
+        run = Run(self.tmp, marker=marker, feed_xml=moved).go()
+        self.assertEqual((run.sent, run.code), ([], 0))
+
+    def test_an_old_address_line_names_the_post_with_that_slug_or_at_that_address(self):
+        items = nl.parse_rss(feed(ids=lambda slug: "renamed" if slug == "fifth" else slug).encode())
+        sent, expired = nl.sent_ids({guid("first"), f"{SITE_URL}/blog/fifth", "second"}, items)
+        self.assertEqual((sent, expired), ({"first", "renamed", "second"}, set()))
+
+    def test_a_marker_line_that_is_not_an_id_or_a_lesson_address_stops_the_run(self):
+        for line in ["https://example.com/blog/first/", "https://nidhi.today/blog/a/b/", "Not An Id", "expired:"]:
+            with self.subTest(line=line), tempfile.TemporaryDirectory() as tmp:
+                run = Run(Path(tmp), marker=f"{line}\n").go()
+                self.assertEqual((run.sent, run.code), ([], 2))
+                self.assertIn("Nothing was sent", run.stderr)
+
+    def test_an_old_address_that_could_name_two_posts_stops_the_run(self):
+        # "first" is one post's id, and another post now lives at /blog/first/.
+        xml = feed(posts=[("first", POSTS[0][1]), ("other", POSTS[1][1])],
+                   link=lambda slug: guid("first") if slug == "other" else guid("elsewhere"),
+                   ids=lambda slug: slug)
+        items = nl.parse_rss(xml.encode())
+        with self.assertRaises(nl.MarkerError):
+            nl.sent_ids({guid("first")}, items)
+
+    def test_a_lesson_older_than_two_weeks_is_recorded_as_expired_and_warned_about(self):
+        marker = "first\nsecond\nthird\nfourth\n"
+        late = datetime(2026, 5, 12, 8, tzinfo=timezone.utc) + nl.MAX_POST_AGE + nl.timedelta(hours=1)
+        run = Run(self.tmp, marker=marker, now=late).go()
+        self.assertEqual((run.sent, run.code), ([], 0))
+        self.assertIn("expired:fifth", nl.load_sent_guids(run.marker))
+        self.assertNotIn("fifth", run.recorded, "expired is not sent")
+        again = Run(self.tmp, now=late).go()
+        self.assertEqual((again.sent, again.code), ([], 0), "and it is not tried again")
+
+    def test_backfill_sends_an_old_lesson_after_all(self):
+        late = datetime(2026, 6, 30, tzinfo=timezone.utc)
+        run = Run(self.tmp, marker="first\nsecond\nthird\nfourth\n", now=late, env={"BACKFILL_OK": "1"}).go()
+        self.assertEqual(run.sent, ["fifth"])
+
+    def test_a_lesson_dated_in_the_future_is_not_sent_and_fails_the_run(self):
+        early = datetime(2026, 5, 11, 12, tzinfo=timezone.utc)
+        run = Run(self.tmp, marker="first\nsecond\nthird\n", now=early).go()
+        self.assertEqual((run.sent, run.code), (["fourth"], 2))
+        self.assertIn("in the future", run.stderr)
+        self.assertNotIn("fifth", nl.load_sent_guids(run.marker))
+
+    def test_an_item_without_an_id_is_not_sent_and_fails_the_run(self):
+        xml = feed(posts=POSTS, link=lambda slug: f"{SITE_URL}/odd/{slug}.html")
+        run = Run(self.tmp, marker="x\n", feed_xml=xml).go()
+        self.assertEqual((run.sent, run.code), ([], 2))
+        self.assertIn("no newsletter id", run.stderr)
+
+    def test_a_reader_waiting_for_a_retry_is_quiet_but_any_other_stop_alerts(self):
+        marker = "first\nsecond\nthird\nfourth\n"
+        waiting = {"ok": True, "partial": True, "sent": 9, "failed": 0, "retry_waiting": 1, "stopped": "retry_waiting"}
+        run = Run(self.tmp, marker=marker, answers=[waiting]).go()
+        self.assertEqual(run.code, 0)
+        self.assertNotIn("fifth", run.recorded, "not done yet, so the next run resumes it")
+        for stop in ["quota", "auth", "other_streak", "storage_full"]:
+            with self.subTest(stop=stop), tempfile.TemporaryDirectory() as tmp:
+                answer = {"ok": True, "partial": True, "sent": 2, "failed": 0, "stopped": stop}
+                stopped = Run(Path(tmp), marker=marker, answers=[answer]).go()
+                self.assertEqual(stopped.code, 2)
+                self.assertNotIn("fifth", stopped.recorded)
 
 
 class TheFeed(unittest.TestCase):

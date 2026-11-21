@@ -583,9 +583,7 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras gratuitas: patrimonio neto, préstamos, inflación y simulador Monte Carlo de jubilación. Sin registro ni rastreo, todo en tu navegador.',
-      descriptionWithoutSimulator:
-        'Calculadoras gratuitas de patrimonio neto, préstamos e inflación. Sin registro ni rastreo; todos los cálculos se hacen en tu navegador.',
+        'Calculadoras gratuitas de patrimonio neto en una o varias monedas, préstamos, inflación, simulación de jubilación e invertir o pagar deuda. Sin registro. Lo que escribes se queda en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
@@ -599,7 +597,7 @@ export const es: Dict = {
     },
     eyebrow: 'Herramientas gratuitas',
     title: 'Herramientas gratuitas de finanzas personales que funcionan en tu navegador.',
-    lead: 'Sin registro, sin cuenta y sin datos enviados a un servidor. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio oficiales actualizados cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
+    lead: 'No hace falta registro ni cuenta, y lo que escribes en una calculadora se queda en tu navegador. Cada calculadora de esta página funciona por completo en tu navegador, con tipos de cambio oficiales actualizados cuando hace falta convertir monedas. Pensadas para quien vive fuera de su país, ahorra entre fronteras o ya se quedó corto con una hoja de cálculo.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'Una moneda o varias',
@@ -948,6 +946,10 @@ export const es: Dict = {
         lead: 'Correos rebotados o no válidos:',
         rest: ' se eliminan en cuanto los detectamos, normalmente en una semana.',
       },
+      sendRetry: {
+        lead: 'Correos de una lección que no se pudieron enviar:',
+        rest: ' si el correo de una lección no se te puede enviar, el script del boletín guarda un código corto creado a partir de tu dirección (parte de un hash SHA-256, nunca la dirección), cuántas veces lo intentó y el tipo de error. Los errores desconocidos se reintentan en ejecuciones posteriores, hasta tres intentos en total; las direcciones rechazadas por el servicio de correo no se reintentan. Estas notas se borran en cuanto esa lección ha llegado a todos los suscriptores a los que se puede enviar.',
+      },
       visitorId: {
         lead: 'Tu ID de visitante de PostHog (solo con tu sí):',
         rest: ' hasta que borres los datos de tu navegador, o hasta que digas que no en el aviso de cookies, lo que lo elimina.',
@@ -1062,7 +1064,9 @@ export const es: Dict = {
     dismissedLater: 'Volveremos a preguntar más adelante.',
     sending: 'Enviando…',
     notConfigured: 'Las suscripciones aún no están configuradas. Vuelve pronto o suscríbete al feed RSS.',
-    error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',
+    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    busy: 'Las suscripciones están en pausa por hoy. Inténtalo de nuevo mañana.',
+    invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },
 
   /** The early-access waitlist box. See the English catalog for what it promises. */
@@ -1088,7 +1092,9 @@ export const es: Dict = {
     noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     sending: 'Enviando…',
     notConfigured: 'Las inscripciones aún no están configuradas. Vuelve pronto.',
-    error: 'Algo ha fallado. Inténtalo de nuevo en un momento.',
+    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    busy: 'Las altas están en pausa por hoy. Inténtalo de nuevo mañana.',
+    invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },
 
   home: {

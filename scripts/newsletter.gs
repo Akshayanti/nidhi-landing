@@ -80,7 +80,8 @@
  *                                   { ok: false, error: 'forbidden' } otherwise.
  *
  *   Reminders and deletions: not a web action. handleRemindPending runs
- *   from an hourly time trigger. It sends one reminder to each pending
+ *   from an hourly time trigger, which installReminderTrigger installs (run
+ *   it once from the editor after deploying; health fails without it). It sends one reminder to each pending
  *   subscriber whose row is older than 3 days and has had none (between
  *   9:00 and 11:59 Prague time), deletes pending rows after 7 days,
  *   unsubscribed rows after 30 days and bounced rows after a week.
@@ -88,7 +89,8 @@
  *   Reminder test: not a web action. Run testRemindFromEditor from the
  *   Apps Script editor (see its comment).
  *
- *   GET  ?action=health             Per-dependency ok or not, as JSON; the
+ *   GET  ?action=health             This file's VERSION, and per-dependency
+ *                                   ok or not, as JSON; the
  *                                   reasons go to the execution log. Safe
  *                                   to call; never modifies anything.
  *
@@ -110,6 +112,11 @@
  *                       rows without token columns. Backfills opaque
  *                       tokens for every row that doesn't have them yet.
  */
+
+// Which source this is: a hash of this file, written by `npm run gs:version`
+// and checked by a test. The health answer reports it, so the deployed
+// script can be compared with main (docs/operations.md, #443).
+var VERSION = '3eb874111676';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
@@ -494,7 +501,7 @@ function sendRaw_(mimeMessage) {
 function doGet(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) || '';
-    if (action === 'confirm')         return handleConfirm_(e);
+    if (action === 'confirm')         return handleConfirm_(e, 'GET');
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'GET');
     if (action === 'health')          return handleHealth_();
     if (action === 'scan_bounces')    return handleScanBounces_(e);
@@ -521,7 +528,7 @@ function doPost(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'subscribe')       return handleSubscribe_(e);
-    if (action === 'confirm')         return handleConfirm_(e);   // JS-initiated confirm
+    if (action === 'confirm')         return handleConfirm_(e, 'POST');   // JS-initiated confirm: answers JSON
     if (action === 'unsubscribe')     return handleUnsubscribe_(e, 'POST');
     if (action === 'send_post')       return handleSendPost_(e);
     if (action === 'scan_bounces')    return handleScanBounces_(e);
@@ -624,7 +631,7 @@ function withUtm_(url, campaign) {
 // ============================================================================
 
 function handleHealth_() {
-  var report = { ok: true, checks: {} };
+  var report = { ok: true, version: VERSION, checks: {} };
 
   // The result is public, so it says only ok or not. The reason, which can
   // name the spreadsheet, its size, the sending account and its aliases, is
@@ -678,6 +685,20 @@ function handleHealth_() {
 
   check('from_email_sendable', function () {
     return fromEmailSendableReport_();
+  });
+
+  // Reminders and the deletions the privacy notice promises run only from
+  // the hourly trigger. Without it nothing says they stopped, so health
+  // checks that it is installed and that it finished a run lately.
+  check('reminder_trigger', function () {
+    if (!reminderTriggers_().length) throw new Error('No trigger runs handleRemindPending: run installReminderTrigger from the editor.');
+  });
+
+  check('reminder_ran', function () {
+    var last = Number(prop_(REMIND_LAST_RUN_KEY_) || 0);
+    var age = Date.now() - last;
+    if (!last || age > REMIND_STALE_MS_) throw new Error('handleRemindPending last finished ' + (last ? new Date(last).toISOString() : 'never') + '.');
+    return { last_run: new Date(last).toISOString() };
   });
 
   return jsonResponse_(report);
@@ -826,6 +847,11 @@ function handleSubscribe_(e) {
   // cannot both append, and the row reset below cannot land on a row that a
   // deletion has just moved someone else into.
   var outcome = withSheetLock_(function () {
+    // The day's limit comes first, before the list is read: once it is
+    // reached, every request that day gets the same "busy" refusal, whether
+    // the address is new, waiting or confirmed. So the form can say nothing
+    // was sent (#342) and the reply still says nothing about the list.
+    if (dailySlotsUsed_('confirm_mails') >= MAX_CONFIRMATIONS_PER_DAY_) return 'capped';
     var sh = sheet_();
     var row = findSubscriberRow_(sh, email);
     if (row !== 0) {
@@ -869,8 +895,10 @@ function handleSubscribe_(e) {
     return 'pending';
   });
 
-  // The reply is the same in every case: it must not say whether an address
-  // is on the list, was just asked for, or hit the day's limit.
+  // The reply is the same in every case but the day's limit: it must not say
+  // whether an address is on the list or was just asked for. The limit is
+  // checked before the list is read, so "busy" says nothing about the
+  // address either.
   if (outcome === 'confirmed') {
     trackPosthog_('blog_subscribe_duplicate', distinctIdForEmail_(email), { source: source });
     return jsonResponse_({ ok: true });
@@ -878,7 +906,7 @@ function handleSubscribe_(e) {
   if (outcome === 'recent') return jsonResponse_({ ok: true });
   if (outcome === 'capped') {
     console.error('[newsletter] daily confirmation limit reached (' + MAX_CONFIRMATIONS_PER_DAY_ + '): nothing written, nothing sent');
-    return jsonResponse_({ ok: true });
+    return jsonResponse_({ ok: false, error: 'busy' });
   }
   sendConfirmationEmail_(email, confirmToken);
   trackPosthog_('blog_subscribe_pending', distinctIdForEmail_(email), { source: source });
@@ -892,6 +920,12 @@ function handleSubscribe_(e) {
  * that waited for the lock across midnight would otherwise count against
  * yesterday and, clearing "the other days", wipe today's count.
  */
+/** How many of today's (UTC) slots of this kind are used. */
+function dailySlotsUsed_(kind) {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  return Number(prop_(kind + ':' + today)) || 0;
+}
+
 function takeDailySlot_(kind, limit) {
   var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
   var prefix = kind + ':';
@@ -1003,7 +1037,37 @@ function purgeDepartedRows_(now) {
   return { unsubscribed: out.unsubscribed, bounced: out.bounced };
 }
 
+// When handleRemindPending last finished a run (ms since the epoch), for
+// health. Hourly runs make it at most an hour old; three allows for a run
+// Google skips or delays.
+var REMIND_LAST_RUN_KEY_ = 'remind_last_run';
+var REMIND_STALE_MS_ = 3 * 60 * 60 * 1000;
+
+function reminderTriggers_() {
+  return ScriptApp.getProjectTriggers().filter(function (t) {
+    return t.getHandlerFunction() === 'handleRemindPending';
+  });
+}
+
+/**
+ * Run once from the editor after deploying (and again any time: it replaces
+ * the trigger rather than adding a second). Installs the hourly trigger for
+ * handleRemindPending and runs it once, so health sees a recent run at once.
+ */
+function installReminderTrigger() {
+  reminderTriggers_().forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('handleRemindPending').timeBased().everyHours(1).create();
+  handleRemindPending();
+  console.log('[newsletter] reminder trigger installed: ' + reminderTriggers_().length + ' trigger(s) for handleRemindPending.');
+}
+
 function handleRemindPending() {
+  var reply = remindPending_();
+  PropertiesService.getScriptProperties().setProperty(REMIND_LAST_RUN_KEY_, String(Date.now()));
+  return reply;
+}
+
+function remindPending_() {
   var now = new Date();
 
   // Rows the privacy notice says are removed: done on every run, whatever
@@ -1223,21 +1287,31 @@ function sendReminderEmail_(email, confirmToken) {
 // Confirm
 // ============================================================================
 
-function handleConfirm_(e) {
+/**
+ * method 'GET' is the link itself (old mails, clients that open it directly)
+ * and answers with a redirect page; 'POST' is the /confirm/ page's button
+ * and answers JSON, which the page reads (#342).
+ */
+function handleConfirm_(e, method) {
   var cfg = config_();
   var token = (e.parameter && e.parameter.t) || '';
 
   // Lookup and write under one lock, so the row found by the token is the
   // row written to. Flip status to confirmed; clear unsubscribedAt in case
-  // this row was previously unsubscribed; invalidate the confirm token so
-  // the link is single-use. Unsub token stays intact.
+  // this row was previously unsubscribed. Unsub token stays intact.
   var found = withSheetLock_(function () {
     var sh = sheet_();
     var row = findRowByToken_(sh, COL.confirmToken, token);
     if (row === 0) return null;
+    var status = String(sh.getRange(row, COL.status).getValue()).toLowerCase();
+    // A second confirm of the same link changes nothing and answers yes: the
+    // page's first request may have worked with its reply lost, and the
+    // retry must not tell a subscribed reader the link is invalid. The link
+    // can only confirm someone already confirmed; an unsubscribe clears it.
+    if (status === 'confirmed') return { already: true };
     // Only a row that is waiting can be confirmed. (An unsubscribe clears the
     // confirmation link as well; this covers a row left from before it did.)
-    if (String(sh.getRange(row, COL.status).getValue()).toLowerCase() !== 'pending') return null;
+    if (status !== 'pending') return null;
     var who = {
       email: String(sh.getRange(row, COL.email).getValue()).trim(),
       unsubToken: String(sh.getRange(row, COL.unsubToken).getValue()).trim(),
@@ -1245,14 +1319,20 @@ function handleConfirm_(e) {
     sh.getRange(row, COL.status).setValue('confirmed');
     sh.getRange(row, COL.confirmedAt).setValue(new Date());
     sh.getRange(row, COL.unsubscribedAt).setValue('');
-    sh.getRange(row, COL.confirmToken).setValue('');
+    // The confirmation link is kept, so a repeat answers yes (above). An
+    // unsubscribe clears it, and a new sign-up after that gets a new one.
     // Counted here, under the lock, so the day's welcome mails have a limit too.
     who.welcome = takeDailySlot_('welcome_mails', MAX_WELCOMES_PER_DAY_);
     return who;
   });
 
   if (!found) {
+    if (method === 'POST') return jsonResponse_({ ok: false, error: 'invalid_token' });
     return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=confirm');
+  }
+  if (found.already) {
+    if (method === 'POST') return jsonResponse_({ ok: true });
+    return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
   }
   var email = found.email;
   var unsubToken = found.unsubToken;
@@ -1275,6 +1355,7 @@ function handleConfirm_(e) {
   }
 
   trackPosthog_('blog_subscribe_confirmed', distinctIdForEmail_(email), {});
+  if (method === 'POST') return jsonResponse_({ ok: true });
   return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
 }
 
@@ -1385,8 +1466,11 @@ function handleSendPost_(e) {
     return jsonResponse_({ ok: false, error: 'missing_fields' });
   }
 
-  var seenKey = 'sent_guid:' + payload.guid;
-  if (prop_(seenKey)) {
+  // A post is known by its newsletter id; before #438 it was known by its
+  // address, so a record under the old key (legacy_guid, the address the
+  // sender still sends alongside) counts as sent too.
+  var seenKeys = sentKeysFor_(payload);
+  if (seenKeys.some(function (k) { return prop_(k); })) {
     return jsonResponse_({ ok: true, skipped: 'already_sent', sent: 0 });
   }
 
@@ -1400,10 +1484,34 @@ function handleSendPost_(e) {
     return jsonResponse_({ ok: true, sent: 0, failed: 0, partial: true, in_progress: true });
   }
   try {
-    return sendPostFanOut_(cfg, payload, seenKey);
+    adoptLegacySendState_(payload);
+    return sendPostFanOut_(cfg, payload, seenKeys);
   } finally {
     releaseSend_(payload.guid, claim);
   }
+}
+
+/** The `sent_guid:` keys that mean this post went out: its id's, and its old address's. */
+function sentKeysFor_(payload) {
+  var keys = ['sent_guid:' + payload.guid];
+  var legacy = String(payload.legacy_guid || '');
+  if (legacy && legacy !== payload.guid) keys.push('sent_guid:' + legacy);
+  return keys;
+}
+
+/**
+ * A send that was under way under the post's old key (its address) is
+ * carried over to its new id, so the switch to ids cannot restart a half-done
+ * send from the first address.
+ */
+function adoptLegacySendState_(payload) {
+  var legacy = String(payload.legacy_guid || '');
+  if (!legacy || legacy === payload.guid) return;
+  ['send_progress:', 'send_retry:'].forEach(function (prefix) {
+    var old = prop_(prefix + legacy);
+    if (old && !prop_(prefix + payload.guid)) props_().setProperty(prefix + payload.guid, old);
+    if (old) props_().deleteProperty(prefix + legacy);
+  });
 }
 
 // A claim older than this is a run that died without cleaning up. Apps
@@ -1440,10 +1548,100 @@ function releaseSend_(guid, claim) {
   }
 }
 
-function sendPostFanOut_(cfg, payload, seenKey) {
+// ----------------------------------------------------------------------------
+// Failed sends (#437)
+// ----------------------------------------------------------------------------
+//
+// A failure is sorted by its kind (mailErrorKind_):
+//   - quota, rate_limited, unavailable, auth: the mail service, not the
+//     reader. The run stops at once, before that reader, and answers
+//     `partial`; the next run starts again from that reader. Nobody is
+//     skipped, and no reader's attempts are used up.
+//   - invalid_recipient, or a row with no unsubscribe link: this reader
+//     cannot be mailed. Recorded as given up, never tried again.
+//   - other: not known. Recorded against that reader and tried again on a
+//     later run, 3 attempts in all. Three `other` in a row look like the
+//     service, not the readers: the run stops there as above, and those
+//     three are not charged.
+// The post is marked as sent only once every reader was mailed or given up.
+//
+// What is kept about a failed reader is a short hash of the address, its
+// attempts and the kind: never the address. It lives in one script property
+// per post and is deleted when the post is marked as sent. A record is
+// written before the resume marker passes that reader, in the same write.
+
+var SEND_MAX_ATTEMPTS_ = 3;
+var SEND_OTHER_STREAK_STOP_ = 3;
+// A retry waits this long after the attempt before it, so it falls in a
+// later run rather than the same minute.
+var SEND_RETRY_GAP_MS_ = 30 * 60 * 1000;
+// Script properties hold 9 KB per value and 500 KB in all. Past these the
+// run stops rather than lose a record.
+var SEND_RETRY_MAX_BYTES_ = 8000;
+var PROPERTIES_MAX_BYTES_ = 450000;
+
+var SYSTEMIC_KINDS_ = { quota: true, rate_limited: true, unavailable: true, auth: true };
+
+function retryKey_(guid) { return 'send_retry:' + guid; }
+
+/** The short hash a failed reader is recorded under. */
+function readerHash_(email) {
+  return sha256Hex_('send-retry:' + String(email).toLowerCase().trim()).slice(0, 16);
+}
+
+/** { pass_done, r: { hash: { a: attempts, k: kind, t: 1 if given up, at: last attempt ms } }, streak: [hashes], streak_from: cursor } */
+function loadRetry_(guid) {
+  var raw = prop_(retryKey_(guid));
+  var state = null;
+  try { state = raw ? JSON.parse(raw) : null; } catch (_) { state = null; }
+  if (!state || typeof state !== 'object') state = {};
+  if (!state.r || typeof state.r !== 'object') state.r = {};
+  if (!Array.isArray(state.streak)) state.streak = [];
+  return state;
+}
+
+/** Bytes the script properties hold now, keys and values. */
+function propertiesBytes_() {
+  var all = props_().getProperties();
+  var n = 0;
+  for (var k in all) n += k.length + String(all[k]).length;
+  return n;
+}
+
+/**
+ * Writes the resume marker and the failure records in one call. Answers
+ * false, writing nothing, when the records would not fit.
+ */
+function saveSendState_(guid, cursor, retry) {
+  var value = JSON.stringify(retry);
+  var key = retryKey_(guid);
+  var before = String(prop_(key) || '').length;
+  if (value.length > SEND_RETRY_MAX_BYTES_) return false;
+  if (propertiesBytes_() - before + value.length > PROPERTIES_MAX_BYTES_) return false;
+  var update = {};
+  update['send_progress:' + guid] = cursor;
+  update[key] = value;
+  props_().setProperties(update);
+  return true;
+}
+
+function clearSendState_(guid) {
+  props_().deleteProperty('send_progress:' + guid);
+  props_().deleteProperty(retryKey_(guid));
+}
+
+/** Logged for the owner without the address, the token or the message's own words. */
+function redactedMailError_(err) {
+  return String(err && err.message ? err.message : err)
+    .replace(/[^\s<>"'(),;:]+@[^\s<>"'(),;:]+/g, '<address>')
+    .replace(/[A-Za-z0-9_-]{24,}/g, '<token>')
+    .slice(0, 200);
+}
+
+function sendPostFanOut_(cfg, payload, seenKeys) {
   // Checked again now that the claim is held: the run that held it before
   // may have finished this guid in the meantime.
-  if (prop_(seenKey)) {
+  if (seenKeys.some(function (k) { return prop_(k); })) {
     return jsonResponse_({ ok: true, skipped: 'already_sent', sent: 0 });
   }
 
@@ -1493,54 +1691,77 @@ function sendPostFanOut_(cfg, payload, seenKey) {
     return ae < be ? -1 : ae > be ? 1 : 0;
   });
 
-  var progressKey = 'send_progress:' + payload.guid;
-  var lastSentEmail = (prop_(progressKey) || '').toLowerCase();
+  var guid = payload.guid;
+  var progressKey = 'send_progress:' + guid;
+  var cursor = (prop_(progressKey) || '').toLowerCase();
+  var retry = loadRetry_(guid);
 
   var listId = 'nidhi blog newsletter <newsletter.' + host_(cfg.siteUrl) + '>';
-
   var started = Date.now();
   var timeBudgetMs = 5 * 60 * 1000;
 
-  var sent = 0, failed = 0, skipped_already_sent = 0;
-  var checkpointEmail = lastSentEmail;
+  var sent = 0, skipped_already_sent = 0;
+  // Failures this run, by kind: one event per kind at the end, not one per reader.
+  var failedKinds = {};
+  var sinceCheckpoint = 0;
 
-  for (var i = 0; i < subscribers.length; i++) {
-    var sub = subscribers[i];
-    var subEmailLower = (sub.email || '').toLowerCase();
+  function noteFailure(kind) { failedKinds[kind] = (failedKinds[kind] || 0) + 1; }
 
-    // Resume: lexicographic skip of recipients handled by a previous
-    // partial run. O(1) space for the marker regardless of list size.
-    if (lastSentEmail && subEmailLower <= lastSentEmail) {
-      skipped_already_sent++;
-      continue;
-    }
-
-    if (Date.now() - started > timeBudgetMs) {
-      // Persist progress so the next invocation picks up where we left off.
-      props_().setProperty(progressKey, checkpointEmail);
-      return jsonResponse_({
-        ok: true, sent: sent, failed: failed,
-        skipped_already_sent: skipped_already_sent,
-        partial: true,
-        resume_after: checkpointEmail,
-      });
-    }
-
-    if (!sub.unsubToken) {
-      // Row has no unsub token, probably an old row predating this schema.
-      // Skip rather than send without the one-click unsubscribe URL, which
-      // would be non-compliant with Gmail's bulk-sender rules.
-      failed++;
-      console.warn('skipping ' + sub.email + ': missing unsub_token. Run migrateAddTokens().');
+  function reportFailures() {
+    Object.keys(failedKinds).forEach(function (kind) {
       trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
-        guid: payload.guid,
-        reason: 'missing_unsub_token',
+        guid: guid,
+        reason: kind,
       });
-      // Advance the marker past this row so we don't re-hit it on resume.
-      checkpointEmail = subEmailLower;
-      continue;
-    }
+    });
+  }
 
+  function counts() {
+    var gaveUp = 0, waiting = 0;
+    for (var h in retry.r) { if (retry.r[h].t) gaveUp++; else waiting++; }
+    return { gave_up: gaveUp, waiting: waiting };
+  }
+
+  function stop(kind, at) {
+    // `at` is the cursor to resume from: before the reader that failed.
+    if (!saveSendState_(guid, at, retry)) {
+      console.error('[newsletter] send_post: the failure records do not fit in script properties; stopped');
+      kind = 'storage_full';
+    }
+    reportFailures();
+    var c = counts();
+    return jsonResponse_({
+      ok: true, sent: sent, failed: c.gave_up, retry_waiting: c.waiting,
+      skipped_already_sent: skipped_already_sent,
+      partial: true, stopped: kind,
+    });
+  }
+
+  /** Charges an `other` to a reader, or gives one up; false if it would not fit. */
+  function record(hash, kind, giveUp) {
+    var r = retry.r[hash] || { a: 0 };
+    r.a = (r.a || 0) + 1;
+    r.k = kind;
+    r.at = Date.now();
+    if (giveUp || r.a >= SEND_MAX_ATTEMPTS_) r.t = 1;
+    retry.r[hash] = r;
+  }
+
+  /** The three `other` in a row are not the readers' fault: their charges are taken back. */
+  function refundStreak() {
+    retry.streak.forEach(function (s) {
+      var r = retry.r[s.h];
+      if (!r) return;
+      r.a = Math.max(0, (r.a || 0) - 1);
+      delete r.t;
+      if (r.a === 0) delete retry.r[s.h];
+      else r.at = s.prevAt || 0;
+    });
+  }
+
+  /** Sends one lesson mail; returns null, or the error. */
+  function mailOne(sub) {
+    if (!sub.unsubToken) return { missing_unsub_token: true };
     try {
       // Per-recipient one-click POST target for Gmail/Outlook native
       // unsubscribe buttons (RFC 8058).
@@ -1549,67 +1770,152 @@ function sendPostFanOut_(cfg, payload, seenKey) {
       // branded landing page on nidhi.today (not Apps Script) so subscribers
       // never see script.google.com URLs and preview bots don't trigger it.
       var unsubPageUrl = cfg.siteUrl + '/unsubscribe?t=' + sub.unsubToken;
-
-      var personalizedHtml = injectUnsubscribeUrl_(payload.html, unsubPageUrl);
-      var personalizedText = injectUnsubscribeUrlText_(payload.text, unsubPageUrl);
-
       var mime = buildMimeMessage_({
         from: cfg.fromEmail,
         fromName: cfg.fromName,
         to: sub.email,
         subject: payload.subject,
-        html: personalizedHtml,
-        text: personalizedText,
+        html: injectUnsubscribeUrl_(payload.html, unsubPageUrl),
+        text: injectUnsubscribeUrlText_(payload.text, unsubPageUrl),
         listUnsubPostUrl: listUnsubPostUrl,
         listId: listId,
         // One id per message: every copy of a lesson used to carry the same
         // one, and a provider that drops duplicates by id can then drop one
         // of two copies that reach the same mailbox by different addresses.
-        messageId: payload.guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '.' + String(sub.unsubToken).slice(0, 16) + '@' + host_(cfg.siteUrl),
+        messageId: guid.replace(/[^a-zA-Z0-9._-]/g, '_') + '.' + String(sub.unsubToken).slice(0, 16) + '@' + host_(cfg.siteUrl),
       });
       sendRaw_(mime);
-      sent++;
-      checkpointEmail = subEmailLower;
-
-      // Persist progress periodically so a crash loses at most
-      // SEND_PROGRESS_CHECKPOINT recipients on retry (they'd get a dupe,
-      // acceptable vs. silent gaps).
-      if (sent % SEND_PROGRESS_CHECKPOINT === 0) {
-        props_().setProperty(progressKey, checkpointEmail);
-      }
+      return null;
     } catch (err) {
-      failed++;
-      console.warn('send failed for ' + sub.email + ': ' + err);
-      // Per-recipient failure event: the kind of failure only. No address,
-      // no part of one, and none of the mail service's own text reaches
-      // PostHog.
-      trackPosthog_('blog_newsletter_send_failed', cfg.fromEmail, {
-        guid: payload.guid,
-        reason: mailErrorKind_(err),
-      });
-      // Advance the marker past the failed row, next retry will skip it
-      // (by design: per-recipient failures don't block the fan-out, and
-      // systematic failures surface via the aggregate blog_newsletter_sent
-      // event's `failed` count).
-      checkpointEmail = subEmailLower;
+      return { err: err };
     }
   }
 
-  // Full fan-out complete. Drop the progress marker and set the
-  // idempotency marker so any retry of this guid short-circuits.
-  props_().deleteProperty(progressKey);
-  props_().setProperty(seenKey, String(new Date().getTime()));
+  /**
+   * Handles one reader's failure. Returns a reply when the run must stop,
+   * or null to go on. `resumeAt` is the cursor before this reader.
+   */
+  function onFailure(sub, failure, resumeAt) {
+    var hash = readerHash_(sub.email);
+    if (failure.missing_unsub_token) {
+      // An old row predating this schema: never sent without the one-click
+      // unsubscribe URL, which Gmail's bulk-sender rules require.
+      console.warn('[newsletter] send_post: a row has no unsub_token; run migrateAddTokens()');
+      noteFailure('missing_unsub_token');
+      record(hash, 'missing_unsub_token', true);
+      retry.streak = [];
+      return null;
+    }
+    var kind = mailErrorKind_(failure.err);
+    console.warn('[newsletter] send_post: a send failed (' + kind + '): ' + redactedMailError_(failure.err));
+    noteFailure(kind);
+    if (SYSTEMIC_KINDS_[kind]) return stop(kind, resumeAt);
+    if (kind === 'invalid_recipient') {
+      record(hash, kind, true);
+      retry.streak = [];
+      return null;
+    }
+    // other
+    if (!retry.streak.length) retry.streak_from = resumeAt;
+    retry.streak.push({ h: hash, prevAt: retry.r[hash] ? retry.r[hash].at : 0 });
+    record(hash, kind, false);
+    if (retry.streak.length >= SEND_OTHER_STREAK_STOP_) {
+      var from = retry.streak_from;
+      refundStreak();
+      retry.streak = [];
+      delete retry.streak_from;
+      return stop('other_streak', from === undefined ? resumeAt : from);
+    }
+    return null;
+  }
+
+  // The first pass: every reader after the marker, in address order.
+  if (!retry.pass_done) {
+    for (var i = 0; i < subscribers.length; i++) {
+      var sub = subscribers[i];
+      var email = (sub.email || '').toLowerCase();
+      // Resume: lexicographic skip of recipients handled by a previous
+      // partial run. O(1) space for the marker regardless of list size.
+      if (cursor && email <= cursor) { skipped_already_sent++; continue; }
+      if (Date.now() - started > timeBudgetMs) return stop('time', cursor);
+
+      var failure = mailOne(sub);
+      if (failure) {
+        var reply = onFailure(sub, failure, cursor);
+        if (reply) return reply;
+        cursor = email;
+        // The record is durable before the marker moves past this reader.
+        if (!saveSendState_(guid, cursor, retry)) return stop('storage_full', cursor);
+        sinceCheckpoint = 0;
+        continue;
+      }
+      sent++;
+      cursor = email;
+      retry.streak = [];
+      delete retry.streak_from;
+      // Persist progress periodically so a crash loses at most
+      // SEND_PROGRESS_CHECKPOINT recipients on retry (they'd get a dupe,
+      // acceptable vs. silent gaps).
+      if (++sinceCheckpoint >= SEND_PROGRESS_CHECKPOINT) {
+        if (!saveSendState_(guid, cursor, retry)) return stop('storage_full', cursor);
+        sinceCheckpoint = 0;
+      }
+    }
+    retry.pass_done = 1;
+    retry.streak = [];
+    delete retry.streak_from;
+    if (!saveSendState_(guid, cursor, retry)) return stop('storage_full', cursor);
+  }
+
+  // Readers to try again: on the current confirmed list only, so a reader
+  // who unsubscribed or bounced since is dropped, not mailed.
+  var byHash = {};
+  subscribers.forEach(function (s) { byHash[readerHash_(s.email)] = s; });
+  var hashes = Object.keys(retry.r);
+  for (var j = 0; j < hashes.length; j++) {
+    var h = hashes[j];
+    var rec = retry.r[h];
+    if (rec.t) continue;
+    var who = byHash[h];
+    if (!who) { delete retry.r[h]; continue; }
+    if (Date.now() - (rec.at || 0) < SEND_RETRY_GAP_MS_) continue;
+    if (Date.now() - started > timeBudgetMs) return stop('time', cursor);
+    var again = mailOne(who);
+    if (!again) {
+      sent++;
+      delete retry.r[h];
+      retry.streak = [];
+    } else {
+      var stopReply = onFailure(who, again, cursor);
+      if (stopReply) return stopReply;
+    }
+    if (!saveSendState_(guid, cursor, retry)) return stop('storage_full', cursor);
+  }
+  retry.streak = [];
+
+  var c = counts();
+  if (c.waiting) {
+    // Someone is still to be tried again on a later run: not done yet.
+    if (!saveSendState_(guid, cursor, retry)) return stop('storage_full', cursor);
+    return stop('retry_waiting', cursor);
+  }
+
+  // Every reader was mailed or given up. Drop the progress and the records
+  // and set the idempotency marker so any retry of this guid short-circuits.
+  clearSendState_(guid);
+  props_().setProperty(seenKeys[0], String(new Date().getTime()));
+  reportFailures();
   trackPosthog_('blog_newsletter_sent', cfg.fromEmail, {
-    guid: payload.guid,
+    guid: guid,
     sent: sent,
-    failed: failed,
+    failed: c.gave_up,
     skipped_already_sent: skipped_already_sent,
     url: payload.url,
   });
   return jsonResponse_({
     ok: true,
     sent: sent,
-    failed: failed,
+    failed: c.gave_up,
     skipped_already_sent: skipped_already_sent,
   });
 }

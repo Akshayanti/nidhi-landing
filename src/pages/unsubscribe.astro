@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import tokenGuardScript from '../utils/shared/tokenGuard.js?raw';
+import formReplyScript from '../utils/shared/formReply.js?raw';
 // Reached from an English email, so there is no Hindi counterpart to point
 // search engines or a language switcher at.
 import { DEFAULT_LOCALE } from '../i18n';
@@ -61,6 +62,8 @@ const isDev = import.meta.env.DEV;
   </section>
 </BaseLayout>
 
+<script is:inline set:html={formReplyScript}></script>
+
 <script is:inline>
   (function () {
     var btn = document.getElementById('unsubscribe-button');
@@ -105,12 +108,30 @@ const isDev = import.meta.env.DEV;
       body.set('action', 'unsubscribe');
       body.set('t', token);
 
-      fetch(endpoint, {
+      // The script's JSON reply is read (#342): only a readable yes clears
+      // the local flag and says "Unsubscribed". An unknown link goes to the
+      // page that says so; anything else (an error page, no answer in 20
+      // seconds) leaves the button for another try, which is safe:
+      // unsubscribing twice changes nothing.
+      var abort = typeof AbortController === 'function' ? new AbortController() : null;
+      var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
+      window.nidhiFormReply(fetch(endpoint, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
-      }).then(function () {
+        signal: abort ? abort.signal : undefined,
+      })).then(function (outcome) {
+        if (giveUp) clearTimeout(giveUp);
+        if (outcome === 'invalid_token') {
+          window.location.replace('/subscription-invalid?reason=unsubscribe');
+          return;
+        }
+        if (outcome !== 'ok') {
+          setStatus('We couldn’t tell whether that went through. Please try again; trying twice is safe.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Unsubscribe me';
+          return;
+        }
         // Clear the local subscription flag so the SubscribeSection CTA
         // reappears on the site: symmetrical to confirm.astro writing it.
         // See /privacy.
@@ -127,10 +148,6 @@ const isDev = import.meta.env.DEV;
         setTimeout(function () {
           window.location.replace('/unsubscribed');
         }, 300);
-      }).catch(function () {
-        setStatus('Something went wrong. Please try again in a moment.', 'error');
-        btn.disabled = false;
-        btn.textContent = 'Unsubscribe me';
       });
     });
   })();

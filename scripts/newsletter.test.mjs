@@ -31,7 +31,7 @@ const NONE_PURGED = { unsubscribed: 0, bounced: 0 };
 function load(dataRows = []) {
   const rows = [HEADERS.slice(), ...dataRows.map((r) => r.slice())];
   const props = { SHEET_ID: 'sheet', SHEET_NAME: 'tab', FROM_EMAIL: 'updates@nidhi.today', HMAC_SECRET: SECRET };
-  const rec = { rows, props, mails: [], locked: false, lockTakes: 0, onSend: null, uuid: 0, readInLock: false, dirty: false, refuseLock: false };
+  const rec = { rows, props, mails: [], locked: false, lockTakes: 0, onSend: null, uuid: 0, readInLock: false, dirty: false, refuseLock: false, triggers: ['handleRemindPending'] };
 
   const mustHoldLock = (what) => {
     if (!rec.locked) throw new Error(`${what} without the script lock`);
@@ -87,11 +87,21 @@ function load(dataRows = []) {
       getScriptProperties: () => ({
         getProperty: (k) => (k in props ? props[k] : null),
         setProperty: (k, v) => { props[k] = String(v); },
+        setProperties: (o) => { for (const k of Object.keys(o)) props[k] = String(o[k]); },
         deleteProperty: (k) => { delete props[k]; },
         getProperties: () => ({ ...props }),
       }),
     },
-    ScriptApp: { getService: () => ({ getUrl: () => 'https://example.invalid/exec' }) },
+    ScriptApp: {
+      getService: () => ({ getUrl: () => 'https://example.invalid/exec' }),
+      // rec.triggers holds the handler name of each installed trigger.
+      getProjectTriggers: () => rec.triggers.map((name) => ({ name, getHandlerFunction: () => name })),
+      deleteTrigger: (t) => { rec.triggers.splice(rec.triggers.indexOf(t.name), 1); },
+      newTrigger: (name) => {
+        const b = { timeBased: () => b, everyHours: (n) => { b.hours = n; return b; }, create: () => { rec.triggers.push(name); rec.triggerHours = b.hours; } };
+        return b;
+      },
+    },
     LockService: {
       getScriptLock: () => ({
         // The real waitLock throws on a timeout. This one returns quietly when
@@ -225,14 +235,22 @@ describe('newsletter.gs: sheet writes hold the lock', () => {
       row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') }),
       row('b@x.io', 'pending', 1, { confirm: tok('3'), unsub: tok('4') }),
     ]);
-    ctx.doPost(req({ action: 'confirm', t: tok('3') }));
+    // From the /confirm/ page: a JSON answer the page reads (#342).
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('3') }))), { ok: true });
     assert.equal(find(ctx, 'a@x.io')[1], 'pending');
     assert.equal(find(ctx, 'b@x.io')[1], 'confirmed');
-    assert.equal(find(ctx, 'b@x.io')[6], '', 'confirm token is single-use');
     assert.deepEqual(ctx.rec.mails, ['b@x.io'], 'welcome mail');
+    // A second confirm (the first reply was lost) answers yes and does nothing.
+    const confirmed = JSON.stringify(find(ctx, 'b@x.io'));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('3') }))), { ok: true });
+    assert.equal(JSON.stringify(find(ctx, 'b@x.io')), confirmed);
+    assert.deepEqual(ctx.rec.mails, ['b@x.io'], 'no second welcome mail');
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('8') }))), { ok: false, error: 'invalid_token' });
 
     assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('4') }))), { ok: true });
     assert.equal(find(ctx, 'b@x.io')[1], 'unsubscribed');
+    assert.equal(find(ctx, 'b@x.io')[6], '', 'unsubscribing clears the confirmation link');
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('3') }))), { ok: false, error: 'invalid_token' });
     assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('9') }))), { ok: false, error: 'invalid_token' });
   });
 });
@@ -508,8 +526,9 @@ describe('newsletter.gs: subscriber states', () => {
   });
 
   it('a confirmation link confirms only a row that is waiting', () => {
-    // Rows left from before an unsubscribe cleared the link.
-    for (const status of ['unsubscribed', 'bounced', 'confirmed']) {
+    // Rows left from before an unsubscribe cleared the link. (A confirmed
+    // row's own link answers yes and changes nothing: next test.)
+    for (const status of ['unsubscribed', 'bounced']) {
       const ctx = load([row('x@x.io', status, 10, { confirm: tok('1'), unsub: tok('2'), left: new Date(NOW - DAY) })]);
       const before = JSON.stringify(ctx.rec.rows);
       const out = ctx.doGet(req({ action: 'confirm', t: tok('1') }));
@@ -517,6 +536,29 @@ describe('newsletter.gs: subscriber states', () => {
       assert.deepEqual(ctx.rec.mails, []);
       assert.match(JSON.stringify(out), /subscription-invalid/);
     }
+  });
+
+  it('a confirmation link of a confirmed row confirms again without a change, a mail or an event', () => {
+    const ctx = load([row('x@x.io', 'confirmed', 10, { confirm: tok('1'), unsub: tok('2') })]);
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (_url, options) => { sent.push(JSON.parse(options.payload)); return {}; };
+    const before = JSON.stringify(ctx.rec.rows);
+    assert.match(JSON.stringify(ctx.doGet(req({ action: 'confirm', t: tok('1') }))), /subscription-confirmed/);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('1') }))), { ok: true });
+    assert.equal(JSON.stringify(ctx.rec.rows), before);
+    assert.deepEqual([ctx.rec.mails, sent], [[], []]);
+  });
+
+  it('a sign-up after unsubscribing gets a new confirmation link, and the old one stays dead', () => {
+    const ctx = load([row('x@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    ctx.doPost(req({ action: 'confirm', t: tok('1') }));
+    ctx.doPost(req({ action: 'unsubscribe', t: tok('2') }));
+    sub(ctx, 'x@x.io');
+    const fresh = find(ctx, 'x@x.io')[6];
+    assert.ok(fresh && fresh !== tok('1'));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('1') }))), { ok: false, error: 'invalid_token' });
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: fresh }))), { ok: true });
   });
 });
 
@@ -1170,12 +1212,14 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
   it('past the day’s limit a request changes nothing: no row, no mail, and a waiting reader’s link still works', () => {
     const ctx = load([row('waiting@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
     vm.runInContext('MAX_CONFIRMATIONS_PER_DAY_ = 2;', ctx);
-    for (const email of ['a@x.io', 'b@x.io', 'c@x.io', 'd@x.io']) assert.deepEqual(sub(ctx, { email }), { ok: true });
+    for (const email of ['a@x.io', 'b@x.io']) assert.deepEqual(sub(ctx, { email }), { ok: true });
+    // Past the limit the reply says so (#342), the same for every address.
+    for (const email of ['c@x.io', 'd@x.io', 'a@x.io']) assert.deepEqual(sub(ctx, { email }), { ok: false, error: 'busy' });
     assert.deepEqual(ctx.rec.mails, ['a@x.io', 'b@x.io']);
     assert.deepEqual(emails(ctx), ['waiting@x.io', 'a@x.io', 'b@x.io']);
     // Someone else submits the waiting reader's address after the limit: their row is untouched.
     const before = JSON.stringify(find(ctx, 'waiting@x.io'));
-    assert.deepEqual(sub(ctx, { email: 'waiting@x.io' }), { ok: true });
+    assert.deepEqual(sub(ctx, { email: 'waiting@x.io' }), { ok: false, error: 'busy' });
     assert.equal(JSON.stringify(find(ctx, 'waiting@x.io')), before);
     ctx.doPost(req({ action: 'confirm', t: tok('1') }));
     assert.equal(find(ctx, 'waiting@x.io')[1], 'confirmed');
@@ -1290,14 +1334,41 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
 
   it('health says ok or not, and nothing about the sheet or the account', () => {
     const ctx = load([row('a@x.io', 'confirmed', 3, { unsub: tok('1') })]);
-    Object.assign(ctx.rec.props, { FROM_NAME: 'nidhi', SITE_URL: 'https://nidhi.today' });
+    Object.assign(ctx.rec.props, { FROM_NAME: 'nidhi', SITE_URL: 'https://nidhi.today', remind_last_run: String(vm.runInContext('Date.now()', ctx) - 60 * 60 * 1000) });
     const out = json(ctx.doGet(req({ action: 'health' })));
-    assert.deepEqual(out, { ok: true, checks: {
+    assert.deepEqual(out, { ok: true, version: ctx.VERSION, checks: {
       script_properties: { ok: true }, web_app_url: { ok: true }, gmail_advanced_service: { ok: true },
       sheet_access: { ok: true }, from_email_sendable: { ok: true },
+      reminder_trigger: { ok: true }, reminder_ran: { ok: true },
     } });
+    assert.match(out.version, /^[0-9a-f]{12}$/);
     // Nothing but the check names: no address, no sheet name or size, no web app address.
     assert.doesNotMatch(JSON.stringify(out), /@|nidhi|rows|example\.invalid|"tab"/i);
+  });
+
+  it('health fails when the reminder trigger is missing or has not run for three hours (#443)', () => {
+    const ctx = load();
+    Object.assign(ctx.rec.props, { FROM_NAME: 'nidhi', SITE_URL: 'https://nidhi.today' });
+    const health = () => json(ctx.doGet(req({ action: 'health' })));
+    assert.deepEqual(health().checks.reminder_ran, { ok: false }, 'never ran');
+    ctx.rec.props.remind_last_run = String(vm.runInContext('Date.now()', ctx) - 3.5 * 60 * 60 * 1000);
+    assert.deepEqual(health().checks.reminder_ran, { ok: false }, 'too long ago');
+    ctx.handleRemindPending();
+    assert.deepEqual(health().checks.reminder_ran, { ok: true }, 'a run stamps the time');
+    assert.equal(health().ok, true);
+    ctx.rec.triggers = [];
+    assert.deepEqual(health().checks.reminder_trigger, { ok: false });
+    assert.equal(health().ok, false);
+  });
+
+  it('installReminderTrigger leaves one hourly trigger however often it runs, and runs once', () => {
+    const ctx = load();
+    ctx.rec.triggers = ['handleRemindPending', 'handleRemindPending', 'somethingElse'];
+    ctx.installReminderTrigger();
+    ctx.installReminderTrigger();
+    assert.deepEqual(ctx.rec.triggers.sort(), ['handleRemindPending', 'somethingElse']);
+    assert.equal(ctx.rec.triggerHours, 1);
+    assert.ok(Number(ctx.rec.props.remind_last_run) > 0, 'the first run happened');
   });
 
   it('a failing check, and any other error, says nothing about why', () => {
@@ -1336,5 +1407,164 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     ctx.Utilities.computeDigest = (...a) => { hashed++; return digest(...a); };
     assert.deepEqual(json(ctx.doPost(inBody({ action: 'count', token: 'x'.repeat(129) }))), { ok: false, error: 'forbidden' });
     assert.equal(hashed, 0);
+  });
+});
+
+describe('newsletter.gs: a send that fails is stopped, retried or given up, never skipped (#437)', () => {
+  const GUID = 'https://nidhi.today/blog/x/';
+  const body = JSON.stringify({ guid: GUID, subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u' });
+  const send = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(body) }, body)));
+  const readers = (n) => Array.from({ length: n }, (_, i) => row(`r${i}@x.io`, 'confirmed', 30, { unsub: tok(String(i)) }));
+  /** Moves the script's clock on by `ms`. */
+  const later = (ctx, ms) => {
+    const t = ctx.Date.now() + ms;
+    vm.runInContext(`Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(${t}); } static now() { return ${t}; } };`, ctx);
+  };
+  const failFor = (ctx, plan) => { ctx.rec.onSend = (to) => { const m = plan[to]; if (m && m.length) throw new Error(m.shift()); }; };
+  const done = (ctx) => Boolean(ctx.rec.props[`sent_guid:${GUID}`]);
+  const state = (ctx) => JSON.stringify(Object.fromEntries(Object.entries(ctx.rec.props).filter(([k]) => /^send_(retry|progress):/.test(k))));
+
+  for (const [message, kind] of [
+    ['Service invoked too many times for one day: email.', 'quota'],
+    ['User-rate limit exceeded', 'rate_limited'],
+    ['Service unavailable: Gmail', 'unavailable'],
+    ['Authorization is required to perform that action.', 'auth'],
+  ]) {
+    it(`a ${kind} error stops the run before that reader, and the next run starts from them`, () => {
+      const ctx = load(readers(4));
+      failFor(ctx, { 'r2@x.io': [message] });
+      const first = send(ctx);
+      assert.equal(first.partial, true);
+      assert.equal(first.stopped, kind);
+      assert.deepEqual(ctx.rec.mails, ['r0@x.io', 'r1@x.io']);
+      assert.equal(done(ctx), false);
+      assert.deepEqual(send(ctx), { ok: true, sent: 2, failed: 0, skipped_already_sent: 2 });
+      assert.deepEqual(ctx.rec.mails, ['r0@x.io', 'r1@x.io', 'r2@x.io', 'r3@x.io'], 'nobody skipped, nobody mailed twice');
+      assert.equal(done(ctx), true);
+      assert.equal(state(ctx), '{}', 'nothing is left behind');
+    });
+  }
+
+  it('an address the mail service refuses is given up at once, and the post is finished', () => {
+    const ctx = load(readers(3));
+    failFor(ctx, { 'r1@x.io': ['Invalid To header'] });
+    assert.deepEqual(send(ctx), { ok: true, sent: 2, failed: 1, skipped_already_sent: 0 });
+    assert.equal(done(ctx), true);
+  });
+
+  it('an unknown error is tried again on a later run, not in the same one', () => {
+    const ctx = load(readers(3));
+    failFor(ctx, { 'r1@x.io': ['Something new'] });
+    const first = send(ctx);
+    assert.deepEqual([first.stopped, first.retry_waiting, first.sent], ['retry_waiting', 1, 2]);
+    assert.equal(done(ctx), false);
+    // Ten minutes on: too soon, nothing is sent.
+    later(ctx, 10 * 60 * 1000);
+    assert.equal(send(ctx).stopped, 'retry_waiting');
+    assert.deepEqual(ctx.rec.mails, ['r0@x.io', 'r2@x.io']);
+    later(ctx, 30 * 60 * 1000);
+    assert.deepEqual(send(ctx), { ok: true, sent: 1, failed: 0, skipped_already_sent: 0 });
+    assert.deepEqual(ctx.rec.mails, ['r0@x.io', 'r2@x.io', 'r1@x.io']);
+    assert.equal(done(ctx), true);
+    assert.equal(state(ctx), '{}');
+  });
+
+  it('an unknown error three times over gives that reader up', () => {
+    const ctx = load(readers(2));
+    failFor(ctx, { 'r0@x.io': ['odd', 'odd', 'odd', 'odd'] });
+    send(ctx);
+    later(ctx, 31 * 60 * 1000);
+    send(ctx);
+    later(ctx, 31 * 60 * 1000);
+    assert.deepEqual(send(ctx), { ok: true, sent: 0, failed: 1, skipped_already_sent: 0 });
+    assert.deepEqual(ctx.rec.mails, ['r1@x.io']);
+    assert.equal(done(ctx), true);
+  });
+
+  it('three unknown errors in a row stop the run before the first of them, charging nobody', () => {
+    const ctx = load(readers(5));
+    failFor(ctx, { 'r1@x.io': ['odd'], 'r2@x.io': ['odd'], 'r3@x.io': ['odd'] });
+    const first = send(ctx);
+    assert.equal(first.stopped, 'other_streak');
+    assert.deepEqual(ctx.rec.mails, ['r0@x.io']);
+    assert.equal(JSON.parse(ctx.rec.props[`send_retry:${GUID}`]).r && Object.keys(JSON.parse(ctx.rec.props[`send_retry:${GUID}`]).r).length, 0);
+    assert.equal(ctx.rec.props[`send_progress:${GUID}`], 'r0@x.io');
+    assert.deepEqual(send(ctx), { ok: true, sent: 4, failed: 0, skipped_already_sent: 1 });
+  });
+
+  it('a streak cut across two runs is still not charged', () => {
+    const ctx = load(readers(5));
+    failFor(ctx, { 'r1@x.io': ['odd'], 'r2@x.io': ['Service unavailable', 'odd'], 'r3@x.io': ['odd'] });
+    assert.equal(send(ctx).stopped, 'unavailable');
+    assert.equal(send(ctx).stopped, 'other_streak');
+    const retry = JSON.parse(ctx.rec.props[`send_retry:${GUID}`]);
+    assert.deepEqual(Object.keys(retry.r), [], 'the charge from the first run is taken back too');
+    assert.equal(ctx.rec.props[`send_progress:${GUID}`], 'r0@x.io');
+  });
+
+  it('a reader waiting for a retry who unsubscribes is not mailed again', () => {
+    const ctx = load(readers(2));
+    failFor(ctx, { 'r0@x.io': ['odd'] });
+    send(ctx);
+    ctx.rec.rows.find((r) => r[0] === 'r0@x.io')[1] = 'unsubscribed';
+    later(ctx, 31 * 60 * 1000);
+    assert.deepEqual(send(ctx), { ok: true, sent: 0, failed: 0, skipped_already_sent: 0 });
+    assert.deepEqual(ctx.rec.mails, ['r1@x.io']);
+  });
+
+  it('what is kept about a failed reader holds no part of the address, and no error text', () => {
+    const ctx = load(readers(3));
+    failFor(ctx, { 'r1@x.io': ['odd thing about r1@x.io'], 'r2@x.io': ['Invalid To header: r2@x.io'] });
+    send(ctx);
+    const kept = ctx.rec.props[`send_retry:${GUID}`];
+    assert.ok(kept);
+    assert.doesNotMatch(kept, /@|r1|r2|x\.io|odd|Invalid/);
+  });
+
+  it('the log names the kind and hides the address and any token', () => {
+    const ctx = load(readers(1));
+    const logged = [];
+    ctx.console.warn = (...a) => logged.push(a.join(' '));
+    failFor(ctx, { 'r0@x.io': [`odd for r0@x.io with ${'k'.repeat(40)}`] });
+    send(ctx);
+    assert.match(logged.join('\n'), /\(other\)/);
+    assert.doesNotMatch(logged.join('\n'), /r0@x\.io|kkkkkkkkkkkk/);
+  });
+
+  it('when the records would not fit, the run stops without moving on or finishing', () => {
+    const ctx = load(readers(3));
+    vm.runInContext('SEND_RETRY_MAX_BYTES_ = 10;', ctx);
+    failFor(ctx, { 'r1@x.io': ['Invalid To header'] });
+    const out = send(ctx);
+    assert.equal(out.stopped, 'storage_full');
+    assert.equal(done(ctx), false);
+    assert.notEqual(ctx.rec.props[`send_progress:${GUID}`], 'r1@x.io', 'the marker did not pass the reader whose record was lost');
+  });
+
+  it('one event per kind of failure, not one per reader', () => {
+    const ctx = load(readers(4));
+    ctx.rec.props.POSTHOG_API_KEY = 'phc_test_key';
+    const sent = [];
+    ctx.UrlFetchApp.fetch = (_url, options) => { sent.push(JSON.parse(options.payload)); return {}; };
+    failFor(ctx, { 'r0@x.io': ['Invalid To header'], 'r1@x.io': ['Invalid To header'], 'r2@x.io': ['Invalid To header'] });
+    send(ctx);
+    const failed = sent.filter((e) => e.event === 'blog_newsletter_send_failed');
+    assert.deepEqual(failed.map((e) => e.properties), [{ guid: GUID, reason: 'invalid_recipient' }]);
+    assert.deepEqual(sent.find((e) => e.event === 'blog_newsletter_sent').properties.failed, 3);
+  });
+
+  it('a post sent under its old address counts as sent under its new id, and a half-done send carries over', () => {
+    const id = 'x';
+    const b = (extra) => JSON.stringify({ guid: id, legacy_guid: GUID, subject: 'S', html: '<p>{{UNSUBSCRIBE_URL}}</p>', text: 't', url: 'u', ...extra });
+    const sendId = (ctx) => json(ctx.doPost(req({ action: 'send_post', sig: sign(b()) }, b())));
+    const sentBefore = load(readers(2));
+    sentBefore.rec.props[`sent_guid:${GUID}`] = '1';
+    assert.equal(sendId(sentBefore).skipped, 'already_sent');
+    assert.deepEqual(sentBefore.rec.mails, []);
+    const halfway = load(readers(3));
+    halfway.rec.props[`send_progress:${GUID}`] = 'r0@x.io';
+    assert.deepEqual(sendId(halfway), { ok: true, sent: 2, failed: 0, skipped_already_sent: 1 });
+    assert.ok(halfway.rec.props['sent_guid:x']);
+    assert.equal(`send_progress:${GUID}` in halfway.rec.props, false);
   });
 });

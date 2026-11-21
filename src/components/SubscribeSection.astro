@@ -8,6 +8,7 @@
 
 import { DEFAULT_LOCALE, dict, format, localizedPath, type Locale } from '../i18n';
 import { newsletterCount, shownNewsletterCount } from '../utils/newsletterCount';
+import formReplyScript from '../utils/shared/formReply.js?raw';
 
 export interface Props {
   /** The language of the page the box sits on. Defaults to English. */
@@ -217,7 +218,9 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
   )}
 </section>
 
-<script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, confirmYes: t.confirmYes, sending: t.sending, notConfigured: t.notConfigured, error: t.error, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
+<script is:inline set:html={formReplyScript}></script>
+
+<script is:inline define:vars={{ formId, statusId, variant, msg: { button: t.button, confirmYes: t.confirmYes, sending: t.sending, notConfigured: t.notConfigured, error: t.error, busy: t.busy, invalidEmail: t.invalidEmail, dismissedPermanent: t.dismissedPermanent, dismissedLater: t.dismissedLater } }}>
   (function () {
     // Single browser storage key shared across all SubscribeSection instances
     // and the confirm/unsubscribe pages. See /privacy.
@@ -538,23 +541,37 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
       body.set('email', email);
       body.set('source', window.location.pathname);
 
-      // Apps Script web apps don't set CORS headers, so we POST with
-      // mode: 'no-cors'. We can't read the response, but we also don't
-      // need to: the Apps Script always replies with a confirmation
-      // email on any valid submission, so the UX message is the same
-      // either way: "check your inbox to confirm".
+      // The script's JSON reply is read (Apps Script answers it with
+      // Access-Control-Allow-Origin: *). Only a readable yes shows "check
+      // your inbox": a refusal, an error page or no answer keeps the form so
+      // the reader can try again (#342). The reply is the same for a new
+      // address and one already on the list. formReply.js turns it into one
+      // word.
       // A request that hangs is given up after 20 seconds, so the form
       // answers instead of saying "Sending" for ever.
       var abort = typeof AbortController === 'function' ? new AbortController() : null;
       var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
-      fetch(endpoint, {
+      window.nidhiFormReply(fetch(endpoint, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
         signal: abort ? abort.signal : undefined,
-      }).then(function () {
+      })).then(function (outcome) {
         if (giveUp) clearTimeout(giveUp);
+        submitting = false;
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
+        if (outcome !== 'ok') {
+          setStatus(outcome === 'busy' ? msg.busy : outcome === 'invalid_email' ? msg.invalidEmail : msg.error, 'error');
+          if (outcome === 'invalid_email') {
+            // Back to the field, so the address can be corrected.
+            closeConfirm();
+            if (input) { try { input.focus(); } catch (_) {} }
+          } else if (yesBtn) {
+            yesBtn.removeAttribute('aria-disabled');
+            yesBtn.textContent = msg.confirmYes;
+          }
+          return;
+        }
         setStatus('', 'idle');
         // Clear any prior dismiss: an actual subscribe beats "not now."
         // We do NOT write subscription state here. The CTA stays visible
@@ -564,18 +581,10 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         clearDismissState();
         form.reset();
         closeConfirm();
-        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
-        submitting = false;
         showSuccessInSession(email);
         if (window.posthog) {
           window.posthog.capture('blog_subscribe_sent', { variant: variant });
         }
-      }).catch(function () {
-        if (giveUp) clearTimeout(giveUp);
-        submitting = false;
-        setStatus(msg.error, 'error');
-        if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = msg.confirmYes; }
-        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       });
     }
 
