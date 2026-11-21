@@ -2,7 +2,7 @@
 slug: "windfall-management"
 title: "Windfalls: What to Do With an Inheritance, Bonus or Sale Proceeds"
 seoTitle: "What to Do With an Inheritance, Bonus or Sale Proceeds"
-description: "What to do with an inheritance, bonus or sale proceeds: why many people park a windfall first, lump sum against spreading it out, and how a one-off sum becomes a permanent cost."
+description: "An inheritance, bonus or sale proceeds: why many people park a windfall first, lump sum against spreading it out, and how a one-off sum becomes a permanent cost."
 tldr:
   - "Sudden money brings its own traps: urgency, concentration in one asset and one-off money paying for permanent costs."
   - "Many people park it in a labelled account for 30 to 90 days, longer after a loss, then follow their usual priorities."

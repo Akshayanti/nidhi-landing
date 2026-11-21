@@ -1,7 +1,7 @@
 ---
 slug: "real-estate-as-investment"
 title: "Real Estate as an Investment: Beyond Just Owning a Home"
-description: "Real estate is the asset most people own, the one most people misunderstand, and the one where the math is least intuitive."
+description: "Many households own real estate. Where its returns come from, what upkeep, transaction costs and leverage do to them, and how a fair rent-or-buy comparison works."
 tldr:
   - "Property earns through rent and rising value, but maintenance, tax, insurance, vacancy and transaction costs take a larger share than people expect."
   - "A mortgage magnifies both gains and losses, and property is hard to sell and concentrated in one place."
@@ -13,8 +13,10 @@ takeaways:
   - "Why the fair comparison is buying vs renting and investing"
 order: 28
 pubDate: 2026-06-19
-updatedDate: 2026-11-17
+updatedDate: 2026-11-21
 corrections:
+  - date: 2026-11-21
+    note: "The summary said real estate was the asset most people own, most misunderstand, and find least intuitive; the lesson does not support those claims, and the summary now describes ownership, returns, costs and rent-or-buy comparisons."
   - date: 2026-11-17
     note: "The lesson said well-managed housing has returned roughly 3 to 6% a year after inflation and costs, below shares and above bonds, as if that were settled. Long-run estimates differ widely: one 16-country study puts housing, rent included, near 7% a year after inflation, about level with shares, while a study of what actual owners earned in Paris and Amsterdam, after costs and taxes, found about 4 to 5%."
 localRules: [property, tax]
@@ -47,7 +49,7 @@ referentialReading:
 
 "Real estate always goes up." "Rent is throwing money away." "Buying is an investment, renting isn't." These are the stories most people carry into the biggest financial decision of their lives, and most of them are wrong or incomplete.
 
-Real estate is a legitimate, useful asset class. It is also the asset where popular intuition breaks down most dramatically, because the maths is hidden in friction: maintenance, taxes, transaction costs, vacancy, leverage. The headline appreciation is almost never the actual return.
+Real estate is a legitimate, useful asset class. It is also an asset where popular intuition can break down, because the maths is hidden in friction: maintenance, taxes, transaction costs, vacancy, leverage. The headline appreciation is almost never the actual return.
 
 This post covers real estate as an asset class, separately from the lifestyle question of whether to buy a home. By the end you'll know how real estate actually generates returns, what leverage does to your risk, why illiquidity matters more than people think, and how to run a fair rent-vs-buy comparison instead of the sloppy one.
 
@@ -195,6 +197,6 @@ For retail investors with otherwise modest portfolios, direct rental property is
 6. **REITs offer exposure without the burden.** They don't give the levered upside of direct ownership, but they add the asset class without the operational complexity
 7. **Concentrated real estate shapes the rest of the portfolio.** When a home is already 60% of net worth, many people tilt the rest more global, more liquid, and less correlated to local real estate
 
-Real estate is a real, useful asset class. It's also the one where honest accounting matters most, because the popular accounting is usually optimistic: the total cost, the illiquidity and the two-way nature of leverage are where the story usually changes.
+Real estate is a real, useful asset class. It's also one where honest accounting matters, because the popular accounting is usually optimistic: the total cost, the illiquidity and the two-way nature of leverage are where the story usually changes.
 
 A property tied to one country also ties most of its returns to one currency. For anyone whose income, expenses, family obligations, or retirement plans span more than one currency, that concentration becomes a quiet structural risk. The next post unpacks how to manage finances when your money lives in more than one currency at a time.

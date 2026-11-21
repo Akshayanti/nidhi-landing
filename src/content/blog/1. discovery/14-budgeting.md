@@ -2,7 +2,7 @@
 slug: "budgeting"
 title: "Budgeting: Controlling the Gap Between Income and Spending"
 seoTitle: "Budgeting: The Gap Between Income and Spending"
-description: "You track your income. You know your expenses. But unless you tell each euro where to go before the month begins, you're not budgeting, you're just watching."
+description: "Tracking shows where your money went. A budget decides where it goes before the month begins. How 50/30/20, zero-based and pay-yourself-first budgets differ."
 tldr:
   - "A budget is a plan for your money, not a restriction on it."
   - "Common approaches are the 50/30/20 rule, zero-based budgeting and paying yourself first."
@@ -13,7 +13,10 @@ takeaways:
   - "Why automating savings makes consistency the default"
 order: 14
 pubDate: 2026-05-18
-updatedDate: 2026-11-08
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary and body defined budgeting as assigning every euro before spending it; the lesson teaches several methods, and both now describe budgeting without making zero-based budgeting the definition."
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
@@ -44,7 +47,7 @@ The previous posts gave you the vocabulary: [net worth](/blog/what-is-net-worth/
 
 ## What a budget actually is
 
-A budget is a plan that assigns every euro of income to a specific purpose before you spend it. It's not a spending limit. It's a spending instruction.
+A budget is a plan for where your money goes before the month begins; some methods assign every euro, while others set savings or category targets first. It's not a spending limit. It's a spending instruction.
 
 Think of it this way. Your [cash flow post](/blog/cash-flow-101/) showed that income minus expenses equals surplus (or deficit). A budget is how you decide, in advance, what the expenses will be and what happens to the surplus.
 

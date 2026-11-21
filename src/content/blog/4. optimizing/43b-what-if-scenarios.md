@@ -1,7 +1,7 @@
 ---
 slug: "what-if-scenarios"
 title: "What-If Scenarios: Test a Money Decision Before Making It"
-description: "Test a money decision before you make it: change one input in your projection, look at the gap from your baseline, and see why a monthly cost outweighs a one-off purchase."
+description: "Test a money decision before you make it: change one input in your projection, look at the gap from your baseline, and why a monthly cost can outweigh a bigger one-off."
 tldr:
   - "Changing one input in your long-term estimate shows what a decision does, and the useful number is the gap from your starting plan."
   - "Repeating costs outweigh one-offs: €150 a month more rent is about €146,000 over 30 years at 6% after inflation, a €4,000 holiday about €23,000."
@@ -28,7 +28,10 @@ glossary:
     definition: "The scenario with the less favourable inputs: lower growth, lower income or an unplanned cost. Running it first shows whether a plan still holds."
 order: 43.3
 pubDate: 2026-10-14
-updatedDate: "2026-10-21"
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary said a monthly cost outweighs a one-off purchase; that depends on the sizes and the period compared, and the summary now says it can."
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]

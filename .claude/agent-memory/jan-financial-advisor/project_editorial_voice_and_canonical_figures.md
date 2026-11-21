@@ -60,4 +60,9 @@ Conventions settled in the 2026-11-17 content-finance pass (branch content/finan
 - Left open (owner decision): which range lesson 19 keeps; full rewrite of lesson 26 "accelerates FIRE" (a one-sentence fix saying reinvested income is part of total return is in).
 - Verified outside facts 2026-11-17: Fuliza since Oct 2022 Sh2.50 + excise after 3 free days on Sh101-500, top band Sh25 + excise (HapaKenya 2022; operator page 403); SRS deductible, 50% of withdrawals taxed from statutory retirement age (IRAS, MOF); Eurostat 2024 PLI Denmark 143, Portugal about 87; BNPL paper authors Berg, Burg, Keil, Puri (JFE 171, 2025); Milevsky 2001 IFID Canada floating vs fixed 1950-2000; US worst 22-year real since 1926 about 1.4% ending 1982 (Carlson 2024).
 
+Description-line review for issue #735 (2026-11-21; descriptions feed llms.txt, RSS, search snippets; stay at or under 170 chars):
+- Flagged as Not Sound or off-voice: 04 (rate alone decides manageability; body line 72 says payments vs cash flow matter too), 23 ("save more than most fund-selection decisions": body only says "can matter as much"), 14 (zero-based framed as the definition of budgeting), 13 ("getting the sequence right"; body says no single right order), 28 (three superlatives).
+- Lower-priority precision fixes proposed: 01 "the clearest single number", 37 "every plan", 43b "a monthly cost outweighs a one-off", 47 and divorce lesson "without tax" (body: in many systems / immediate tax bill), 49 "the rate, not the size, sets a debt's cost", 59 "stop most attacks", 26 passive income as "the point", 15 credit-history hook (US-style tiered pricing), 51 "What to do with".
+- Recurring pattern: a description sharpens a body hedge ("in many systems" becomes universal, "can matter as much" becomes "more than").
+
 Related: [[savings-rate-claims]], [[tool-model-positions]]

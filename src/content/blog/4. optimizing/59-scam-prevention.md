@@ -1,7 +1,7 @@
 ---
 slug: "recognizing-and-avoiding-financial-scams-and-fraud"
 title: "Financial Scams: How to Spot One, and What to Do After"
-description: "Scam scripts change; the warning signs do not. Six red flags, the cheap defenses that stop most attacks, the emotional levers scammers use, and the four steps if fraud happens."
+description: "Common scam warning signs, defenses that can block common routes, emotional levers scammers use, and four steps if fraud happens."
 tldr:
   - "Fraud follows patterns: guaranteed returns above a safe rate, time pressure, unsolicited contact, hard-to-reverse payments, recruitment schemes and requests for passwords or codes."
   - "Cheap defences set up once, such as login codes, transaction alerts and calling back on a known number, can block attacks or expose them sooner."
@@ -9,8 +9,8 @@ tldr:
 takeaways:
   - text: "Why warning-sign patterns matter more than specific scam scripts"
     href: "#warning-sign-patterns-matter-more-than-specific-scripts"
-  - text: "Which cheap structural defenses stop most attacks before they start"
-    href: "#cheap-structural-defenses-stop-most-attacks-before-they-start"
+  - text: "Which cheap structural defenses can block common attack routes"
+    href: "#cheap-structural-defenses-can-block-common-attack-routes"
   - text: "Which emotional levers scammers pull and how to notice them"
     href: "#the-emotional-levers-scammers-pull"
   - text: "What to do first if fraud happens: freeze, document, report, monitor"
@@ -123,7 +123,7 @@ Three: unsolicited contact (the bank called her), time pressure (before it is to
 
 </details>
 
-## Cheap structural defenses stop most attacks before they start
+## Cheap structural defenses can block common attack routes
 
 A few defenses, many of them set up once, can block common routes into an account or make fraud easier to spot:
 

@@ -2,7 +2,7 @@
 slug: "passive-income-streams"
 title: "Passive Income Streams: Making Your Money Work Without You"
 seoTitle: "Passive Income: Making Your Money Work Without You"
-description: "Passive income is not free money. It's income from assets you've already built, and the point at which your life stops depending on your next pay cheque."
+description: "Passive income is not free money. It's income from assets you've already built, and once it can keep covering your spending, work becomes a choice."
 tldr:
   - "Passive income is money earned without directly trading time for it, such as dividends, interest, rent and royalties."
   - "Most real passive income needs a large sum invested first, typically tens or hundreds of thousands of euros, to replace even part of a salary."
@@ -14,8 +14,10 @@ takeaways:
   - "What the crossover point is and why it is worth tracking"
 order: 26
 pubDate: 2026-06-15
-updatedDate: 2026-11-19
+updatedDate: 2026-11-21
 corrections:
+  - date: 2026-11-21
+    note: "The summary called passive income the point where your life stops depending on your next pay cheque; that holds only once the income can keep covering your spending, and the summary now says so."
   - date: 2026-11-19
     note: "The lesson said passive income speeds up financial independence, that watching income arrive makes downturns easier to sit through, and that yield matters more than total return once you live off a portfolio. It now says dividends, interest and rent are part of total return, so receiving or reinvesting them adds no separate return; that how tracking income affects behavior depends on the person; and that total return still matters in drawdown, when spending can come from income payments and from selling assets."
   - date: 2026-11-17

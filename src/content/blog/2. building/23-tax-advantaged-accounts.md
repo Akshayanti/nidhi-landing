@@ -1,7 +1,7 @@
 ---
 slug: "tax-advantaged-accounts"
 title: "Tax-Advantaged Accounts: Where to Hold Your Investments"
-description: "Where you hold an investment can matter as much as what you invest in. Tax-advantaged accounts can save more than most fund-selection decisions."
+description: "Where you hold an investment can matter as much as what you invest in. How tax-deferred, tax-free and employer accounts work, and the order many people fill them."
 tldr:
   - "These accounts reduce or defer tax on your investments, and the names change by country while the logic does not."
   - "They fall into roughly five groups, including workplace retirement plans and accounts for health, education or a first home, though availability varies."
@@ -13,8 +13,10 @@ takeaways:
   - "That the account is a wrapper, not the investment itself"
 order: 23
 pubDate: 2026-06-08
-updatedDate: 2026-11-17
+updatedDate: 2026-11-21
 corrections:
+  - date: 2026-11-21
+    note: "The summary said tax-advantaged accounts can save more than most fund-selection decisions; the lesson does not show that comparison, and the summary now makes the weaker claim that where you hold an investment can matter as much as what you invest in."
   - date: 2026-11-17
     note: "The lesson said tax-deferred accounts win even when your tax rate stays the same. Against a tax-free account they come out the same at equal rates; deferral only beats a fully taxable account. Singapore's SRS was listed as equity-linked savings; it is a tax-deferred account, with deductible contributions and half of a withdrawal taxed if it is taken on or after the statutory retirement age that applied at the first contribution. The priority order now puts any employer match before the full emergency fund, as the other lessons do, and the 11% figure for paying off 8% debt is shown to assume returns taxed in full every year."
 localRules: [tax, pensions]

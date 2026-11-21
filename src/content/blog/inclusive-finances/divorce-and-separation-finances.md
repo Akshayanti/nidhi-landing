@@ -2,7 +2,7 @@
 slug: "divorce-and-separation-finances"
 title: "Divorce and Separation: Splitting Assets, Pensions and Debts Fairly"
 seoTitle: "Divorce: Splitting Assets, Pensions and Debts Fairly"
-description: "Separating? Why the inventory comes first, why €200,000 in cash, home equity and a pension are not equal, how to split a pension without tax, and the paperwork a settlement leaves behind."
+description: "Separating? Why the inventory comes first, why €200,000 in cash, home equity and a pension are not equal, and how a pension can be split without an immediate tax bill."
 tldr:
   - "An inventory of every asset and debt comes before any negotiation."
   - "€200,000 in cash, home equity and a pension are worth about €200,000, €176,000 and €160,000 after illustrative costs and tax, usable at different times."
@@ -30,7 +30,10 @@ glossary:
 companionOf: "windfall-management"
 order: 51.5
 pubDate: 2026-11-19
-updatedDate: 2026-10-28
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary said a pension can be split without tax; the lesson says without an immediate tax bill, and the summary now says the same."
 localRules: [family-law, pensions, tax, credit]
 level: "inclusive-finances"
 primaryPersona: "marcus"
