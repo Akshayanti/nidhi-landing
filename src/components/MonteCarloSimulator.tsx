@@ -1015,6 +1015,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const measured = useMeasuredText(svgRef, [
     ...endLabels.flatMap((l) => [{ cls: 'mcs-endName', text: `${l.label} ↑`, size: fs }, { cls: 'mcs-endValue', text: amounts.label(l.said, code), size: fv }]),
     ...titleWords.map((w) => ({ cls: 'mcs-axis mcs-axisTitle', text: w, size: fs })),
+    ...tickText.map((text) => ({ cls: 'mcs-axis mcs-axisAmount', text, size: fs })),
   ]);
   const endGutter = Math.ceil(16 + Math.max(...endLabels.map((l) => Math.max(measured.width({ cls: 'mcs-endName', text: `${l.label} ↑`, size: fs }), measured.width({ cls: 'mcs-endValue', text: amounts.label(l.said, code), size: fv })))));
   const endGap = Math.ceil(fs + fv + 0.5 * fs);
@@ -1026,7 +1027,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const PAD = {
     // Room for the top gridline's label: half of it above the plot, or all of
     // it when the labels sit inside the plot, above their lines.
-    top: Math.max(narrow ? BASE.top : 18, Math.ceil((margin.inside ? 1.2 : 0.7) * fs)),
+    top: Math.max(narrow ? BASE.top : 18, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
     right: showEndLabels ? Math.max(BASE.right, endGutter) : NARROW.PAD.right,
     // Year labels, then the axis title, a line each.
     bottom: Math.max(BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
@@ -1222,7 +1223,13 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
               <g key={`y${v}`}>
                 <line className={v === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(v)} y2={yPx(v)} />
                 {margin.inside
-                  ? v > 0 && <text className="mcs-axis mcs-axisAmount mcs-axisAmount--inside" x={PAD.left + 6} y={r1(yPx(v) - 0.3 * fs)} textAnchor="start">{axis.tick(v)}</text>
+                  ? v > 0 && (() => {
+                    // Inside the plot a long amount ("2,00,00,000" at 400% text on a
+                    // phone) may be wider than the drawing: drawn smaller down to the
+                    // floor, and left out below it (council, Nov 21 2026).
+                    const fit = Math.min(1, (W - PAD.left - 8) / Math.max(1, measured.width({ cls: 'mcs-axis mcs-axisAmount', text: axis.tick(v), size: fs })));
+                    return <text className="mcs-axis mcs-axisAmount mcs-axisAmount--inside" x={PAD.left + 6} y={r1(yPx(v) - 0.3 * fs)} textAnchor="start" style={fit < 1 ? { fontSize: `${fs * fit}px` } : undefined} visibility={fit < FIT_FLOOR ? 'hidden' : undefined}>{axis.tick(v)}</text>;
+                  })()
                   : <text className="mcs-axis mcs-axisAmount" x={r1(PAD.left - 0.6 * fs)} y={r1(yPx(v) + 0.35 * fs)} textAnchor="end">{axis.tick(v)}</text>}
               </g>
             ))}

@@ -335,7 +335,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   const titleLines = wrapWords(strings.balance.axisYears, BW - 8, titleWidth);
   const titleFit = Math.min(1, (BW - 4) / Math.max(1, ...titleLines.map(titleWidth)));
   const BPAD = {
-    top: Math.max(BPAD_BASE.top, Math.ceil((margin.inside ? 1.2 : 0.7) * fs)),
+    top: Math.max(BPAD_BASE.top, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
     right: BPAD_BASE.right,
     bottom: Math.max(BPAD_BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
     left: margin.left,

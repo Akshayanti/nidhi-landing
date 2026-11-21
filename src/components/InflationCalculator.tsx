@@ -1311,7 +1311,8 @@ function LineChart({
     );
   }
   const PAD = {
-    top: Math.max(BASE.top, Math.ceil((margin.inside ? 1.2 : 0.7) * fs)),
+    // A label drawn above its gridline needs its whole line height above the plot.
+    top: Math.max(BASE.top, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
     right: BASE.right,
     bottom: Math.max(BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
     left: margin.left,
