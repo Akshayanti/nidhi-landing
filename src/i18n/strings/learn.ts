@@ -1341,7 +1341,7 @@ export const learnCs: typeof learnEn = {
       'inclusive-finances': {
         name: 'Inkluzivní finance',
         title: 'Inkluzivní finance: když výchozí plán nesedí | nidhi',
-        description: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
+        description: 'Plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice.',
         card: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
       },
       'relationships': {

@@ -2,7 +2,7 @@
 
 ## Privacy Policy is the Source of Truth
 
-Every change that affects privacy must come with an entry in the privacy policy changelog in `src/components/pages/PrivacyPage.astro` (the `writtenChangelog` array; `src/pages/privacy.astro` and `src/pages/[locale]/privacy.astro` are thin routes that render it). Do not wait for a reminder: this is mandatory. Changes that do not affect privacy get no entry, so the log stays a record of what the site collects and promises, not of everything that ships.
+Every change that affects privacy must come with an entry in the privacy policy changelog, the `writtenChangelog` array in `src/utils/privacyChangelogEntries.ts`. The notice (`src/components/pages/PrivacyPage.astro`, rendered by the thin routes `src/pages/privacy.astro` and `src/pages/[locale]/privacy.astro`) shows the latest three entries; the complete record is at `/privacy/changelog/`, a page per year (`src/components/pages/PrivacyChangelogPage.astro`). Do not wait for a reminder: this is mandatory. Changes that do not affect privacy get no entry, so the log stays a record of what the site collects and promises, not of everything that ships.
 
 **Rules:**
 1. Before implementing any change, review the privacy notice (`src/components/pages/PrivacyPage.astro`, with its prose in the `privacy` namespace of the catalogs) to understand current commitments.
