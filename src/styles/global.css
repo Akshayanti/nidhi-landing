@@ -377,9 +377,6 @@ html:is([lang="hi"], [lang="mr"]) {
   --z-dialog: 9999;
   --z-skip: 10000;
   --z-progress: 10001;
-  /* The old name, still read by the newsletter form; it goes once that
-     form's open pull request has merged. */
-  --max-width: var(--layout-reading);
 
   /* Notice backgrounds */
   --notice-caution-bg:      var(--notice-caution-bg-light);

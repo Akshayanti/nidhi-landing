@@ -102,6 +102,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मुख्यपृष्ठ आता “धडा 1 वाचा” या बटणाने सुरू होते, आणि “यापैकी कोणती परिस्थिती तुम्हाला लागू होते?” मध्ये पैशांच्या बाबतीत नव्याने सुरुवात करणाऱ्यांसाठी तिसरे उत्तर आले आहे. भाषांतरासाठी मदतीचे आवाहन आता पानाच्या शेवटी आहे. मोफत साधनांमधील आलेखांतले शब्द आणि आकडे आता उर्वरित पानाप्रमाणे तुमच्या अक्षरांच्या आकारासोबत मोठे होतात; ते मोठे झाल्यावर आलेख कमी रेषा आणि लेबले दाखवतो, जेणेकरून काहीही एकमेकांवर येणार नाही किंवा कापले जाणार नाही. मॉन्टे कार्लो सिम्युलेटरमध्ये परताव्याचे पर्याय आता अक्षरे मोठी असताना कडेच्या बाहेर जाण्याऐवजी पुढच्या ओळींवर येतात.',
         },
       },
+      {
+        id: 'missing-page-in-your-language',
+        text: {
+          en: 'On a missing page at a Hindi, Spanish, Czech or Marathi address, the menu, the footer, the “Skip to content” link and the cookie question are now in that language too, not in English. On English lesson pages, the level badge now shows the level’s number in a circle instead of an emoji; Inclusive finances shows its name only. The email field and button of the newsletter and waitlist forms now use the site’s own fonts instead of a plain system font.',
+          hi: 'हिंदी, स्पैनिश, चेक या मराठी पते पर कोई पेज न मिलने पर अब मेन्यू, फ़ुटर, “मुख्य सामग्री पर जाएँ” लिंक और कुकी वाला सवाल भी उसी भाषा में दिखते हैं, अंग्रेज़ी में नहीं। अंग्रेज़ी पाठों के पेज पर स्तर वाले बैज में अब इमोजी की जगह गोले में स्तर का नंबर दिखता है; Inclusive finances में सिर्फ़ नाम दिखता है। न्यूज़लेटर और वेटलिस्ट के फ़ॉर्म में ईमेल वाला ख़ाना और बटन अब सिस्टम के सादे फ़ॉन्ट की जगह साइट के अपने फ़ॉन्ट में दिखते हैं।',
+          es: 'En una página que no existe, en una dirección en hindi, español, checo o maratí, el menú, el pie de página, el enlace «Saltar al contenido» y la pregunta sobre cookies salen ahora también en ese idioma, no en inglés. En las páginas de las lecciones en inglés, la insignia del nivel muestra ahora el número del nivel dentro de un círculo en lugar de un emoji; Inclusive finances muestra solo su nombre. El campo del correo y el botón de los formularios del boletín y de la lista de espera usan ahora las fuentes del sitio en lugar de una fuente genérica del sistema.',
+          cs: 'Na neexistující stránce s adresou v hindštině, španělštině, češtině nebo maráthštině jsou teď i nabídka, zápatí, odkaz „Přeskočit na obsah“ a otázka na cookies v tomto jazyce, ne anglicky. Na stránkách anglických lekcí teď odznak úrovně ukazuje místo emoji číslo úrovně v kroužku; Inclusive finances má jen název. Pole pro e-mail a tlačítko ve formulářích newsletteru a čekací listiny teď používají písmo webu místo obyčejného systémového písma.',
+          mr: 'हिंदी, स्पॅनिश, चेक किंवा मराठी पत्त्यावर पान सापडत नाही तेव्हा आता मेन्यू, पानाचा तळाचा भाग, “मुख्य मजकुराकडे जा” ही लिंक आणि कुकीविषयीचा प्रश्नही त्याच भाषेत दिसतात, इंग्रजीत नाही. इंग्रजी धड्यांच्या पानांवर पातळीच्या बॅजवर आता इमोजीऐवजी वर्तुळात पातळीचा क्रमांक दिसतो; Inclusive finances चे फक्त नाव दिसते. न्यूजलेटर आणि प्रतीक्षा यादीच्या फॉर्ममधील ईमेलची जागा आणि बटण आता सिस्टमच्या साध्या फॉन्टऐवजी साइटचे स्वतःचे फॉन्ट वापरतात.',
+        },
+      },
     ],
   },
   {

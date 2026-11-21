@@ -393,12 +393,12 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     text-align: center;
   }
 
-  @media (min-width: 640px) {
+  @media (width >= 640px) {
     .waitlist-box { padding: var(--space-6) var(--space-8); }
   }
 
   .waitlist-title {
-    font-size: 1.4rem;
+    font-size: var(--text-xl);
     color: white;
     margin-bottom: var(--space-4);
     font-weight: 600;
@@ -406,7 +406,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
 
   .waitlist-text {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     margin-bottom: var(--space-5);
     line-height: 1.5;
   }
@@ -440,7 +440,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     padding: var(--space-3) var(--space-4);
     border: 1px solid transparent;
     border-radius: var(--radius-md);
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     background: var(--color-bg-white);
     color: var(--color-text-primary);
   }
@@ -478,7 +478,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   .waitlist-confirm[hidden] { display: none; }
   .waitlist-confirm-text {
     margin: 0 0 var(--space-3);
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: white;
     overflow-wrap: anywhere;
   }
@@ -488,7 +488,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     border: none;
     padding: var(--space-2) 0;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: rgba(255, 255, 255, 0.85);
     text-decoration: underline;
     cursor: pointer;
@@ -498,7 +498,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   .waitlist .waitlist-confirm-actions { justify-content: center; }
 
   .waitlist-status {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     margin: var(--space-2) 0 0;
     min-height: 1.2em;
     color: rgba(255, 255, 255, 0.85);
@@ -509,7 +509,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   .waitlist-status--idle { color: rgba(255, 255, 255, 0.7); }
 
   .waitlist-privacy {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: rgba(255, 255, 255, 0.65);
     margin: var(--space-3) 0 0;
   }
@@ -536,7 +536,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   .waitlist-beta a:focus-visible {
     outline: 2px solid white;
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   /* Post-submit success */
@@ -561,14 +561,14 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   }
 
   .waitlist-success-title {
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     font-weight: 700;
     margin: 0 0 var(--space-2);
     color: white;
   }
 
   .waitlist-success-body {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.55;
     margin: 0;
     color: rgba(255, 255, 255, 0.85);
@@ -578,12 +578,12 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   .waitlist-dev-warning {
     margin: var(--space-3) 0 0;
     padding: var(--space-2) var(--space-3);
-    background: var(--warning-light-bg);
-    border: 1px solid var(--warning-light-border);
+    background: var(--color-warning-bg);
+    border: 1px solid var(--color-warning-border);
     border-radius: var(--radius-sm);
-    color: var(--warning-light-text);
-    font-size: 0.8125rem;
-    line-height: 1.4;
+    color: var(--color-warning-text);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
     text-align: left;
   }
 
@@ -596,9 +596,9 @@ const confirmTextId = `${idPrefix}-confirm-text`;
 
   @media (max-width: 480px) {
     .waitlist-box { padding: var(--space-4); }
-    .waitlist-title { font-size: 1.05rem; }
-    .waitlist-text { font-size: 0.875rem; }
-    .waitlist-success-title { font-size: 1.15rem; }
+    .waitlist-title { font-size: var(--text-prose); }
+    .waitlist-text { font-size: var(--text-small); }
+    .waitlist-success-title { font-size: var(--text-lead); }
   }
   /* More contrast asked for (#591): the softer lines on the blue band are
      plain white, like the heading. Error and success keep their colours. */
