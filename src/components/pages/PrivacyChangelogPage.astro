@@ -146,7 +146,7 @@ const webPageSchema = {
                 {m.entries.map((entry) => (
                   <li class="plog-entry" id={entryAnchor(entry.iso)}>
                     <div class="plog-head">
-                      <time datetime={entry.iso} class="plog-date">{entry.iso}</time>
+                      <a href={`#${entryAnchor(entry.iso)}`} class="plog-dateLink" aria-label={format(log.entryLinkLabel, { date: entry.iso })}><time datetime={entry.iso} class="plog-date">{entry.iso}</time></a>
                       {entry.material && (
                         <span class="plog-tag" aria-label={log.materialLabel}>{log.materialTag}</span>
                       )}
@@ -361,6 +361,18 @@ const webPageSchema = {
     gap: var(--space-2);
     flex-wrap: wrap;
     margin-bottom: var(--space-2);
+  }
+
+  /* The date is the entry's permanent link, to open, copy or share. */
+  .plog-dateLink {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .plog-dateLink:hover {
+    text-decoration-thickness: 2px;
   }
 
   .plog-date {
