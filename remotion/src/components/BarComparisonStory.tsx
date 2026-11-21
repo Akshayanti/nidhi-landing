@@ -14,6 +14,7 @@ import {
 } from "../data";
 import { ActiveCard, lastCardBeat } from "./cardBeats";
 import { QuestionHook } from "./QuestionHook";
+import { LessonFooter, lessonLift } from "./LessonFooter";
 import { ToolCard } from "./ToolCard";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -485,7 +486,8 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
   const details = progress(frame, fps * 0.35, fps * 0.9);
   const maker = progress(frame, fps * 1.05, fps * 1.6);
   const beat = toolCardBeat(input);
-  const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
+  // With lesson lines on the end card, the tool card stays in its own beat: both would not fit.
+  const card = beat?.anchor?.type === "card" && !input.plan.lessonBlock?.length ? beat.anchor : undefined;
   const story = input.plan.barStory;
   if (!story) return null;
   // A compact card is 410 px tall at two rows and 560 at three or four, so anything past two rows
@@ -501,10 +503,9 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 47, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1250, paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1250 - lessonLift(input.plan), paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>
@@ -668,8 +669,12 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
           <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", border: `5px dashed ${BRAND.amber}`, boxSizing: "border-box" }} />
           <div style={{ position: "absolute", left: 0, right: 0, top: (secondHeight - firstHeight) / 2 - 50, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 84 : 96, fontWeight: 850, color: BRAND.amber }}>?</div>
           <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: firstHeight, borderRadius: "0 0 10px 10px", background: BRAND.ink }} />
+          {story.hookShowsTotal
+            ? <div style={{ position: "absolute", left: -140, right: -140, top: -86, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 56 : 64, fontWeight: 850, color: BRAND.ink }}>{single.display}</div>
+            : <>
           <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 4, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 47 : 55, fontWeight: 850, color: BRAND.paper }}>{firstPart.display}</div>
           <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 44, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 25 : 29, fontWeight: 720, color: BRAND.paper }}>{firstPart.label}</div>
+            </>}
           <div style={{ position: "absolute", left: -120, right: -120, top: secondHeight + 20, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 29 : 33, lineHeight: 1.12, fontWeight: 770, color: BRAND.amber }}>{single.label}</div>
         </div>
       )}
@@ -769,10 +774,9 @@ function SegmentedBarCTA({ input }: { input: ReelInput }) {
           <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
           <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
         </div>
-        <div style={{ position: "absolute", left: 120, right: 160, top: 1235, paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-          <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-          <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-          <div style={{ marginTop: 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+        <div style={{ position: "absolute", left: 120, right: 160, top: 1235 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+          <LessonFooter plan={input.plan} />
+          <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
           <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
         </div>
       </div>
@@ -787,10 +791,9 @@ function SegmentedBarCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 47, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1290, paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1290 - lessonLift(input.plan), paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>
@@ -843,10 +846,9 @@ export function BarComparisonCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 116, lineHeight: 1.02, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 52, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1240, paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1240 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>

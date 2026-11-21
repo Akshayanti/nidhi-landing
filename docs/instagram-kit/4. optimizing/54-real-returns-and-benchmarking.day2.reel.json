@@ -1,0 +1,158 @@
+{
+  "slug": "real-returns-and-benchmarking",
+  "postTitle": "Real Returns: How to Tell if Your Portfolio Is Really Performing",
+  "postLevel": "optimizing",
+  "episode": 12,
+  "seriesTotal": 0,
+  "blogPath": "blog/real-returns-and-benchmarking",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A return only means something next to a comparison with the same mix",
+  "topicChip": "PERFORMANCE · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example: a portfolio of 60% global shares and 40% bonds rose 12%; a widely quoted share index rose 24%; a 60/40 blended index returned about 11%."
+  },
+  "hookVariants": [
+    {
+      "id": "twelve",
+      "layout": "bar-gap",
+      "narration": "Your investments made twelve percent. The index in the news made twenty four. Did you do badly?",
+      "onscreenLines": [
+        "Your investments made 12%. The index in the news made 24%",
+        "Did you do badly?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Your mix of shares and bonds made twelve percent.",
+      "onscreenText": "Your mix: 12%",
+      "subtext": "Shares and bonds",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "The news index tracks only shares, so the mix differs.",
+      "onscreenText": "Shares only: 24%",
+      "subtext": "A different mix from yours",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "A comparison with the same mix as yours made about eleven.",
+      "onscreenText": "Same mix: about 11%",
+      "subtext": "Shares and bonds, like yours",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "third"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "Against that, you were slightly ahead. One year proves little either way.",
+      "onscreenText": "Slightly ahead, in one year",
+      "subtext": "One year proves little either way",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "Compared with what?",
+        "rows": [
+          {
+            "label": "The index in the news",
+            "value": "Looks poor",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "The same mix",
+            "value": "Slightly ahead",
+            "valueSize": "small",
+            "tone": "teal"
+          }
+        ],
+        "footnote": "Illustrative. One year proves little either way."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone comparing their returns.",
+    "onscreenText": "Send this to them",
+    "subtext": "Small gaps are often noise",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your investments made 12%. The index in the news made 24%. Did you do badly?\n\nThe example: a portfolio of 60% global shares and 40% bonds rose 12% in a year when a widely quoted share index rose 24%. Next to that index it looks poor. Next to a blend of 60% shares and 40% bonds, which returned about 11%, it did slightly better.\n\nA fair comparison holds the same kinds of investments in the same proportions. Even then, a small gap in one year is usually noise. A gap that lasts, with a cause such as high fees or a mix that has drifted, is the kind people look into.\n\n→ Know someone comparing their returns? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Past returns do not predict future ones.",
+    "tiktok": "12% against 24% looks poor. Against the same mix, slightly ahead. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "investmentreturns",
+    "indexinvesting",
+    "moneymindset"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "%",
+    "basis": "One year's return, illustrative",
+    "bars": [
+      {
+        "id": "yours",
+        "label": "Your mix",
+        "sublabel": "shares and bonds",
+        "value": 12,
+        "display": "12%",
+        "tone": "ink"
+      },
+      {
+        "id": "news",
+        "label": "The index in the news",
+        "sublabel": "shares only",
+        "value": 24,
+        "display": "24%",
+        "tone": "amber"
+      },
+      {
+        "id": "same",
+        "label": "A comparison with your mix",
+        "sublabel": "shares and bonds",
+        "value": 11,
+        "display": "about 11%",
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. One year's figures; past returns say little about the next."
+  },
+  "lessonBlock": [
+    "Building a fair comparison",
+    "When a gap lasts",
+    "Why chasing winners loses"
+  ]
+}

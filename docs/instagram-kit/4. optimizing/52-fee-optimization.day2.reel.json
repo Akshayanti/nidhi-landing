@@ -37,7 +37,7 @@
           {
             "label": "Account company",
             "value": 300,
-            "display": "",
+            "display": "€300",
             "tone": "teal"
           },
           {
@@ -47,9 +47,9 @@
             "tone": "amber"
           },
           {
-            "label": "Buying, selling, tax",
+            "label": "Trading, tax",
             "value": 300,
-            "display": "",
+            "display": "€300",
             "tone": "teal"
           }
         ]
@@ -79,7 +79,7 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Say you have a hundred thousand euros invested. The fee you see: one thousand a year.",
+      "narration": "On a hundred thousand euros invested, the fee you see is one thousand a year.",
       "onscreenText": "The fee you see: €1,000",
       "subtext": "On €100,000 invested, a year",
       "emphasis": [],
@@ -92,9 +92,9 @@
     {
       "id": "b2",
       "kind": "example",
-      "narration": "The company holding your account can charge its own fee on top.",
+      "narration": "The company holding your account charges its own fee.",
       "onscreenText": "The company holding your account",
-      "subtext": "Its own fee, on top",
+      "subtext": "Its own fee, on top: about €300",
       "emphasis": [],
       "anchor": {
         "type": "bars",
@@ -105,7 +105,7 @@
     {
       "id": "b3",
       "kind": "example",
-      "narration": "An adviser, if you have one, can add another thousand.",
+      "narration": "An adviser can add another thousand.",
       "onscreenText": "An adviser: €1,000",
       "subtext": "If you have one",
       "emphasis": [],
@@ -118,9 +118,9 @@
     {
       "id": "b4",
       "kind": "example",
-      "narration": "Buying and selling costs money too, and so can tax.",
-      "onscreenText": "Buying, selling and tax",
-      "subtext": "Costs you may never see listed",
+      "narration": "Trading and tax cost money too. These two smaller parts: about three hundred each.",
+      "onscreenText": "Trading and tax",
+      "subtext": "About €300, like the account company",
       "emphasis": [],
       "anchor": {
         "type": "bars",
@@ -131,7 +131,7 @@
     {
       "id": "b5",
       "kind": "example",
-      "narration": "Fees and other costs, in this example: two thousand six hundred euros a year.",
+      "narration": "Together: two thousand six hundred euros a year, in this example.",
       "onscreenText": "Fees and other costs: €2,600 a year",
       "subtext": "In this example",
       "emphasis": [],
@@ -149,7 +149,7 @@
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your statement shows one yearly fee. Is that everything you pay?\n\nAn illustration on €100,000 invested: the fee you see, 1% or €1,000 a year. The company that holds the account, 0.3% or €300. An adviser, 1% or €1,000. Buying and selling inside the investment, plus tax, about 0.3% or €300. Together about €2,600 a year.\n\n→ Know someone reading their own statement? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which costs apply, and how large they are, varies by product, company and country.",
+    "instagram": "Your statement shows one yearly fee. Is that everything you pay?\n\nAn illustration on €100,000 invested: the fee you see, 1% or €1,000 a year. The company that holds the account, 0.3% or €300. An adviser, 1% or €1,000. Trading inside the investment, plus tax, about 0.3% or €300. Together about €2,600 a year.\n\n→ Know someone reading their own statement? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which costs apply, and how large they are, varies by product, company and country.",
     "tiktok": "One fee on the statement, more costs around it. Illustrative."
   },
   "hashtags": [
@@ -159,5 +159,10 @@
     "wealthmanagement",
     "investingtips"
   ],
-  "hookStyle": "questionOverPicture"
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Checking what you pay",
+    "What switching can cost",
+    "Fee names where you live"
+  ]
 }

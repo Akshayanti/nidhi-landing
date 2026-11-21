@@ -1,0 +1,146 @@
+{
+  "slug": "tax-loss-harvesting-and-asset-location",
+  "postTitle": "Tax-Loss Harvesting and Asset Location Explained",
+  "postLevel": "optimizing",
+  "episode": 11,
+  "seriesTotal": 0,
+  "blogPath": "blog/tax-loss-harvesting-and-asset-location",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The same investments held in different accounts can owe less tax each year",
+  "topicChip": "TAX · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example: €400,000 household, 70% shares, 25% bonds, 5% property companies. Same mix in every account: taxable account's bond interest and payouts cost €720 a year (30% rate). Placed by tax: the €720 goes; €60,000 more shares in the taxable account add about €180 of dividend tax (2% yield at 15%). Net about €540 less a year."
+  },
+  "hookVariants": [
+    {
+      "id": "placement",
+      "layout": "bar-gap",
+      "narration": "The same investments, held in different accounts. Could that change your yearly tax?",
+      "onscreenLines": [
+        "The same investments, held in different accounts",
+        "Could that change your yearly tax?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "definition",
+      "narration": "Some investments pay income every year, like interest, and that is often taxed every year.",
+      "onscreenText": "Income taxed every year",
+      "subtext": "Interest, for example",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "In this example, holding those in a tax sheltered account, like a pension, removes seven hundred twenty of yearly tax.",
+      "onscreenText": "Tax removed: €720 a year",
+      "subtext": "Income payers held in a sheltered account",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "The shares that take their place add about one eighty back.",
+      "onscreenText": "Tax added back: about €180",
+      "subtext": "Shares now in the taxed account",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "stat",
+      "narration": "About five hundred forty less a year, with the same mix. Withdrawals may still be taxed later.",
+      "onscreenText": "About €540 less a year",
+      "subtext": "Same mix. Withdrawals may be taxed later",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone with more than one account.",
+    "onscreenText": "Send this to them",
+    "subtext": "Rules differ by country",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "The same investments, held in different accounts. Could that change your yearly tax?\n\nThe example: a household with €400,000 across three accounts, 70% shares, 25% bonds and 5% property companies. With the same mix in every account, bond interest and payouts in the taxed account cost €720 a year at a 30% rate. Holding those in a tax sheltered account removes that. The shares that take their place add about €180 of dividend tax back. Net: about €540 less tax a year, and the overall mix has not changed.\n\nThe catches: each account becomes lopsided, keeping the mix on target takes more attention, and money in a sheltered account may be taxed when it comes out.\n\n→ Know someone with more than one account? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which accounts exist, and how they are taxed, differs by country.",
+    "tiktok": "Same investments, different accounts, about €540 less tax a year. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "investmentaccounts",
+    "pensionsavings",
+    "taxefficient"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "Yearly tax, €400,000 across three accounts, illustrative",
+    "setup": {
+      "label": "Income paid every year",
+      "display": "Often taxed every year",
+      "note": "interest, for example",
+      "tone": "ink"
+    },
+    "bars": [
+      {
+        "id": "removed",
+        "label": "Yearly tax removed",
+        "sublabel": "income payers moved to shelter",
+        "value": 720,
+        "display": "€720",
+        "tone": "teal"
+      },
+      {
+        "id": "added",
+        "label": "Yearly tax added back",
+        "sublabel": "shares that took their place",
+        "value": 180,
+        "display": "about €180",
+        "tone": "amber"
+      }
+    ],
+    "callout": {
+      "display": "About €540",
+      "from": "removed",
+      "to": "added",
+      "label": "less tax a year, same mix"
+    },
+    "disclosure": "Illustrative. Tax rates and account rules differ by country."
+  },
+  "lessonBlock": [
+    "Which accounts qualify",
+    "Keeping the mix balanced",
+    "Tax on withdrawals later"
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "slug": "tax-loss-harvesting-and-asset-location",
+  "postTitle": "Tax-Loss Harvesting and Asset Location Explained",
+  "postLevel": "optimizing",
+  "episode": 11,
+  "seriesTotal": 0,
+  "blogPath": "blog/tax-loss-harvesting-and-asset-location",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A loss can delay tax on a gain; the delayed tax stays invested, and it is a delay, not a saving",
+  "topicChip": "TAX · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example, illustrative rates: €10,000 gain taxed at 25% = €2,500. €2,500 at 7% a year for 20 years = €9,674, about €9,700. Not the net benefit: the replacement has a lower purchase price, so a later sale may owe more tax."
+  },
+  "hookVariants": [
+    {
+      "id": "delay",
+      "layout": "chart-gap",
+      "narration": "You owe tax on a gain, and another investment is below what you paid. Could that loss delay the tax?",
+      "onscreenLines": [
+        "You owe tax on a gain",
+        "Could a loss elsewhere delay it?",
+        ""
+      ],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "In many countries, selling at a loss can cancel a gain of the same size.",
+      "onscreenText": "A loss can cancel a gain",
+      "subtext": "In many countries, by local rules",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Say the tax was twenty five hundred euros. That tax stays invested instead.",
+      "onscreenText": "€2,500 of tax, not paid now",
+      "subtext": "People often buy something similar, to stay invested",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "race"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "At seven percent a year, twenty years could turn it into about ninety seven hundred.",
+      "onscreenText": "About €9,700 after 20 years",
+      "subtext": "At 7% a year, not guaranteed",
+      "emphasis": [],
+      "anchor": {
+        "type": "race",
+        "stage": "finish"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "A delay, not a saving: bought cheaper, the new investment can owe more tax later.",
+      "onscreenText": "A delay, not a saving",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "card",
+        "stage": "tool",
+        "title": "A delay, not a saving",
+        "rows": [
+          {
+            "label": "A later sale",
+            "value": "May owe more tax",
+            "valueSize": "small",
+            "tone": "amber"
+          },
+          {
+            "label": "Buying the same back",
+            "value": "Often limited",
+            "valueSize": "small",
+            "tone": "ink"
+          }
+        ],
+        "footnote": "Illustrative. Rules differ by country."
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who invests outside a pension.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: which account holds what?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You owe tax on a gain, and another investment is below what you paid. Could that loss delay the tax?\n\nThe example: a €10,000 gain taxed at 25% is €2,500 of tax. Where the rules allow, a €10,000 loss sold in the same year cancels the gain, so the €2,500 is not paid now. Left invested at 7% a year, it could reach about €9,700 after 20 years.\n\nThat is not the benefit. The replacement was bought at a lower price, so a later sale can owe more tax. What is left depends on future tax rates, the years held and trading costs. Many countries also limit selling at a loss and buying the same thing straight back.\n\n→ Know someone who invests outside a pension? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Tax rates and rules differ by country. Returns are not guaranteed.",
+    "tiktok": "A loss can delay tax on a gain. A delay, not a saving. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "capitalgains",
+    "investingbasics",
+    "taxplanning"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lineRace": {
+    "periodLabel": "Year",
+    "firstPeriod": 0,
+    "hideValueAxis": true,
+    "headStep": 100,
+    "cardOnBeat": true,
+    "series": [
+      {
+        "id": "kept",
+        "label": "Kept invested",
+        "tone": "teal",
+        "values": [
+          2500,
+          2675,
+          2862,
+          3063,
+          3277,
+          3506,
+          3752,
+          4014,
+          4295,
+          4596,
+          4918,
+          5262,
+          5630,
+          6025,
+          6446,
+          6898,
+          7380,
+          7897,
+          8450,
+          9041,
+          9674
+        ]
+      },
+      {
+        "id": "bill",
+        "label": "Tax bill today",
+        "tone": "amber",
+        "dashed": true,
+        "values": [
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500,
+          2500
+        ]
+      }
+    ],
+    "ceiling": 11000,
+    "gridlines": [],
+    "secondsPerPeriod": 0.4,
+    "headLabelsFrom": 8,
+    "scope": "Illustrative. 7% a year before tax and costs. Not guaranteed.",
+    "disclosure": "Illustrative. 7% a year before later tax and costs. Returns are not guaranteed."
+  },
+  "lessonBlock": [
+    "Rules for buying again",
+    "When costs outweigh tax",
+    "Future tax on a sale"
+  ]
+}

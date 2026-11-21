@@ -20,7 +20,7 @@ withheld: Why active funds mostly lose to passive after fees, the hidden fees th
 
 angle: A yearly fee of €1 on every €100 invested: what could it take over 40 years? About a quarter, in this example
 breadth: narrow | Needs a viewer who invests, or is about to
-number: €10,000 start, €500 a month, 40 years, 7% before fees, monthly: at 0.05% about €1.45M; at 1% about €1.11M, about €349,000 or 24% less. The reel says €1, €100, 40 and a quarter; the rest is in the caption
+number: €10,000 start, €500 a month, 40 years, 7% before fees, monthly: at 0.05% about €1.45M; at 1% about €1.11M, about €349,000 or 24% less. The voice says €1, €100, 40 and a quarter; the chart shows the running euro values, the gap in percent, about €349,000 and the inputs (owner, Nov 20)
 takeaway: Money taken as a fee is gone, and so is everything it would have grown into, so a small yearly fee becomes a large share over decades.
 tool: The fee check. Keep the contribution, return and years the same; change only the fee; read the gap in euros.
 send_to: Someone choosing where to invest.
@@ -107,7 +107,7 @@ read: The hidden fees that never appear on a statement
 
 angle: Your statement shows one yearly fee: is that everything you pay?
 breadth: narrow | Needs a viewer with an investment statement
-number: Illustrative, on €100,000 invested: the fee you see €1,000 (1.0%) + the company holding the account €300 (0.3%) + an adviser €1,000 (1.0%) + buying, selling and tax €300 (0.3%) = €2,600 a year. The reel says €100,000, €1,000 and €2,600; the rest is in the caption
+number: Illustrative, on €100,000 invested: the fee you see €1,000 (1.0%) + the company holding the account €300 (0.3%) + an adviser €1,000 (1.0%) + buying, selling and tax €300 (0.3%) = €2,600 a year. The reel says and shows every part, the two small ones as about €300 each (owner, Nov 20)
 takeaway: What investing costs is the sum of several parts; the statement often shows only one of them.
 tool: The fee audit. The fee on the statement, the account company's yearly charge, then adviser and trading costs.
 send_to: Someone reading their own statement.

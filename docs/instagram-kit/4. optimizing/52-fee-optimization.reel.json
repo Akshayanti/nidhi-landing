@@ -110,7 +110,7 @@
     "series": [
       {
         "id": "low",
-        "label": "same saving",
+        "label": "Lower fee",
         "tone": "teal",
         "values": [
           10000,
@@ -154,12 +154,11 @@
           1254669,
           1350896,
           1454027
-        ],
-        "headText": "Lower fee"
+        ]
       },
       {
         "id": "high",
-        "label": "per €100 a year",
+        "label": "€1 per €100 a year",
         "tone": "amber",
         "values": [
           10000,
@@ -203,8 +202,7 @@
           969343,
           1035297,
           1105320
-        ],
-        "headText": "€1 fee"
+        ]
       }
     ],
     "ceiling": 1600000,
@@ -214,13 +212,20 @@
     "gap": {
       "upper": "low",
       "lower": "high",
-      "label": "",
+      "label": "Gap so far: smaller by",
       "finalLabel": "After 40 years, in this example",
       "atPoint": true,
-      "text": "About a quarter smaller"
+      "text": "About a quarter smaller",
+      "percent": true,
+      "euroUnder": true
     },
-    "scope": "Illustrative. Same saving and growth before fees, before tax. Not guaranteed.",
+    "scope": "Illustrative. €10,000 to start, €500 a month, 7% a year before fees; fees of 1% and 0.05%. Before tax, not guaranteed.",
     "disclosure": "Illustrative. Same saving and growth before fees, before tax. Returns are not guaranteed."
   },
-  "hookStyle": "questionOverPicture"
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Why picked funds often trail",
+    "How an adviser's fee grows",
+    "Fee names where you live"
+  ]
 }
