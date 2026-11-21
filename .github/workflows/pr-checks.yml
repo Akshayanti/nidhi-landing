@@ -371,12 +371,17 @@ jobs:
 
   # ---------------------------------------------------------------------------
   # Final build. Catches any regressions that only surface during the static
-  # build (Astro template errors, broken imports, missing assets, etc.).
+  # build (Astro template errors, broken imports, missing assets, etc.), then
+  # checks what was built (#361, #363, #364). The checks are steps of this job,
+  # not jobs of their own, so they block a merge under the required check this
+  # job already is, and read the build it just made. Each one serves dist/
+  # itself, so nothing is deployed to check it.
   # ---------------------------------------------------------------------------
   build:
     name: Build (static)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The build is about 4 minutes, the browser checks about 8 more.
+    timeout-minutes: 30
     needs: [lint, typecheck, test, audit]
     steps:
       - name: Checkout
@@ -392,7 +397,28 @@ jobs:
         run: npm ci
 
       - name: Build
+        id: build
         run: npm run build
+
+      # Canonical and hreflang links, the sitemap, internal links, leftover
+      # template text and the feeds, read from dist/ (scripts/lib/check-dist.mjs).
+      - name: Check the built site
+        run: npm run check:dist
+
+      # Every tool in every language in a browser: the island mounts with no
+      # console error and shows a default result, and axe finds no WCAG A or
+      # AA violation in either theme. Known failures, each with its issue and
+      # a date it ends, are in scripts/lib/known-failures.mjs.
+      - name: Tool smoke test and accessibility pass
+        # Runs when an earlier check failed, so one run reports them all.
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: npm run smoke:pages
+
+      # Every page in every language at phone width (pages read from dist/).
+      - name: Phone-width audit
+        # Runs when an earlier check failed, so one run reports them all.
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: npm run audit:mobile
 
   # ---------------------------------------------------------------------------
   # The reel renderer (remotion/): its own package.json and lockfile. Runs only

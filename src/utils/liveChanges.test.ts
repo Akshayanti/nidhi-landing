@@ -76,6 +76,9 @@ describe('the lessons launch items wait for', () => {
   it('is what the sitemap dates /changes/ by, beside the written days', async () => {
     const { readFileSync } = await import('node:fs');
     const config = readFileSync(new URL('../../astro.config.mjs', import.meta.url), 'utf8');
-    assert.match(config, /Object\.values\(LAUNCH_HOST_SLUGS\)\s*\.map\(\(slug\) => contentMaps\.published\.get\(slug\)/);
+    assert.match(config, /newestChangeDay\(\s*CHANGE_DAYS\.map\(\(d\) => d\.date\),\s*Object\.values\(LAUNCH_HOST_SLUGS\),\s*contentMaps\.published,?\s*\)/);
+    // newestChangeDay (src/utils/sitemap.ts) reads each launch slug's publication day.
+    const sitemap = readFileSync(new URL('./sitemap.ts', import.meta.url), 'utf8');
+    assert.match(sitemap, /launchSlugs\.map\(\(slug\) => published\.get\(slug\)/);
   });
 });

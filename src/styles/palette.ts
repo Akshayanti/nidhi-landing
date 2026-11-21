@@ -95,8 +95,8 @@ export const SEMANTIC = {
   // CTA fills (must hold white text).
   ctaBgLight:        '#00796B',
   ctaBgHoverLight:   PALETTE.teal,
-  ctaBgDark:         '#00695C',
-  ctaBgHoverDark:    '#00897B',
+  ctaBgDark:         '#00806F',
+  ctaBgHoverDark:    '#00695C',
 
   // Destructive CTA: palette-derived.
   destructiveBg:        PALETTE.red,

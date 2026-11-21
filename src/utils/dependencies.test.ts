@@ -74,6 +74,10 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^1.9.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
+  // The accessibility pass of scripts/smoke-pages.mjs: injected into the
+  // test browser, never into a page a visitor is served. Pinned exactly: it
+  // gates the Build job, and a new axe version can add failures on its own.
+  'axe-core': '4.14.0',
   // Imported by src/utils/lessonRules.test.ts, to give headings the ids the
   // build gives them. Astro brings it too; named here so the test does not
   // depend on that.

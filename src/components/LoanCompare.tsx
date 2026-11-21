@@ -1366,7 +1366,8 @@ export default function LoanCompare({
             type="button"
             className="lc-cardAdd"
             onClick={addVendor}
-            aria-label={format(strings.phoneTabs.addAria, { n: vendors.length + 1, max: MAX_VENDORS })}
+            // No aria-label: the visible words are the name, so a reader who
+            // says "Add vendor" to voice control reaches it (WCAG 2.5.3).
             data-attr="lc-vendor-add"
           >
             <span className="lc-cardAddIcon" aria-hidden="true">+</span>

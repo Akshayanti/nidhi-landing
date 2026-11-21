@@ -1076,8 +1076,14 @@
 
 .lc-warning {
   font-size: 0.8125rem;
-  color: var(--color-warning);
+  /* Warning text: the light warning colour is a fill (2.7:1 on white), so
+     light mode writes in the notice text colour (palette.test.ts). */
+  color: var(--warning-light-text);
   margin: 0;
+}
+
+[data-theme="dark"] .lc-warning {
+  color: var(--color-warning);
 }
 
 /* Side-by-side delta */

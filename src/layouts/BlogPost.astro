@@ -12,6 +12,8 @@ import type { LayeredReadingTime } from '../utils/readingTime';
 import { DEFAULT_LOCALE, dict } from '../i18n';
 import { GLOSSARY_CARD_ID, termId } from '../utils/glossary.mjs';
 import LessonShare from '../components/LessonShare.astro';
+import lessonPageScript from '../utils/shared/lessonPage.js?raw';
+import termTipsScript from '../utils/shared/termTips.js?raw';
 
 interface Props {
   title: string;
@@ -556,215 +558,9 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   })();
 </script>
 
-<script is:inline>
-  // Glossary terms in the lesson body. The markdown links a term's first use
-  // to its card entry ([term](#term-...)); here each such link becomes the term
-  // itself, marked with a small question mark, with its definition (read from
-  // the glossary card) shown on hover or keyboard focus through CSS and on tap
-  // or click. A second tap, a tap elsewhere or Escape closes it. Each bubble is
-  // nudged to stay inside the screen, and flips above the term when there is
-  // no room below. Without this script the link still opens the card.
-  (function() {
-    var body = document.getElementById('post-content');
-    if (!body) return;
-    var defs = {};
-    document.querySelectorAll('[data-glossary-card] .post-glossary-item').forEach(function(item) {
-      var dt = item.querySelector('dt'), dd = item.querySelector('dd');
-      if (item.id && dt && dd) defs[item.id] = { term: dt.textContent, definition: dd.textContent };
-    });
-    body.querySelectorAll('a[href^="#term-"]').forEach(function(link, i) {
-      var id = link.getAttribute('href').slice(1);
-      var entry = defs[id];
-      if (!entry) return;
-      var tip = document.createElement('span');
-      tip.className = 'term-tip';
-      var trigger = document.createElement('button');
-      trigger.type = 'button';
-      trigger.className = 'term-tip-trigger';
-      // Opaque ids: an id built from the term would put the term clicked into
-      // autocaptured click events (privacy notice: clicks carry no content).
-      var defId = 'term-tip-' + (i + 1);
-      trigger.setAttribute('aria-describedby', defId);
-      while (link.firstChild) trigger.appendChild(link.firstChild);
-      var bubble = document.createElement('span');
-      bubble.className = 'term-tip-bubble';
-      bubble.setAttribute('role', 'tooltip');
-      // The button already names the term, so screen readers get only the
-      // definition as its description; the bold heading is for sighted readers.
-      var strong = document.createElement('strong');
-      strong.setAttribute('aria-hidden', 'true');
-      strong.textContent = entry.term + ' ';
-      var def = document.createElement('span');
-      def.id = defId;
-      def.textContent = entry.definition;
-      bubble.appendChild(strong);
-      bubble.appendChild(def);
-      tip.appendChild(trigger);
-      tip.appendChild(bubble);
-      link.replaceWith(tip);
-    });
-    var open = null;
-    function place(tip) {
-      var bubble = tip && tip.querySelector('.term-tip-bubble');
-      if (!bubble) return;
-      bubble.style.setProperty('--tip-shift', '0px');
-      tip.removeAttribute('data-above');
-      var hidden = getComputedStyle(bubble).display === 'none';
-      if (hidden) { bubble.style.visibility = 'hidden'; bubble.style.display = 'block'; }
-      var r = bubble.getBoundingClientRect();
-      var vw = document.documentElement.clientWidth, vh = window.innerHeight, edge = 12;
-      var shift = 0;
-      if (r.right > vw - edge) shift = vw - edge - r.right;
-      if (r.left + shift < edge) shift = edge - r.left;
-      bubble.style.setProperty('--tip-shift', shift + 'px');
-      var termTop = tip.getBoundingClientRect().top;
-      if (r.bottom > vh - edge && termTop - r.height - 16 > edge) tip.setAttribute('data-above', '');
-      if (hidden) { bubble.style.visibility = ''; bubble.style.display = ''; }
-    }
-    function close() {
-      if (!open) return;
-      open.removeAttribute('data-open');
-      open = null;
-    }
-    document.addEventListener('click', function(e) {
-      var trigger = e.target.closest && e.target.closest('.term-tip-trigger');
-      if (trigger) {
-        var tip = trigger.parentElement;
-        if (open === tip) { close(); return; }
-        close();
-        tip.removeAttribute('data-dismissed');
-        place(tip);
-        tip.setAttribute('data-open', '');
-        open = tip;
-        return;
-      }
-      if (open && !(e.target.closest && e.target.closest('.term-tip-bubble'))) close();
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key !== 'Escape') return;
-      var focused = document.activeElement && document.activeElement.closest && document.activeElement.closest('.term-tip');
-      document.querySelectorAll('.term-tip:hover').forEach(function(tip) { tip.setAttribute('data-dismissed', ''); });
-      if (focused) focused.setAttribute('data-dismissed', '');
-      if (open) {
-        var trigger = open.querySelector('.term-tip-trigger');
-        close();
-        if (trigger) trigger.focus();
-      }
-    });
-    document.addEventListener('mouseover', function(e) {
-      var tip = e.target.closest && e.target.closest('.term-tip');
-      if (tip && !tip.hasAttribute('data-open')) place(tip);
-    });
-    document.addEventListener('mouseout', function(e) {
-      var tip = e.target.closest && e.target.closest('.term-tip');
-      if (tip && !tip.contains(e.relatedTarget)) tip.removeAttribute('data-dismissed');
-    });
-    document.addEventListener('focusin', function(e) {
-      var trigger = e.target.closest && e.target.closest('.term-tip-trigger');
-      if (trigger) place(trigger.parentElement);
-    });
-    document.addEventListener('focusout', function(e) {
-      var tip = e.target.closest && e.target.closest('.term-tip');
-      if (tip && !tip.contains(e.relatedTarget)) tip.removeAttribute('data-dismissed');
-    });
-  })();
-</script>
+<script is:inline set:html={termTipsScript}></script>
 
-<script is:inline>
-  // A printed lesson shows every expander, the glossary and FAQ answer open;
-  // after printing, the page goes back to how the reader left it. The light
-  // colours on paper come from BaseLayout.astro, for every page.
-  (function() {
-    var closed = [];
-    var saved = document.querySelector('[data-print-saved]');
-    window.addEventListener('beforeprint', function() {
-      if (saved) saved.textContent = 'Saved on ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + '.';
-      closed = Array.prototype.filter.call(
-        document.querySelectorAll('#post-content details:not([open]), .post-faq details:not([open]), .post-glossary details:not([open])'),
-        function(d) { d.open = true; return true; }
-      );
-    });
-    window.addEventListener('afterprint', function() {
-      closed.forEach(function(d) { d.open = false; });
-      closed = [];
-    });
-  })();
-
-  // The share bars (LessonShare.astro). The browser's name is read here only, to
-  // say why a PDF needs another browser, and is never sent.
-  (function() {
-    var IN_APP = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|; wv\)/;
-    document.querySelectorAll('[data-lesson-share]').forEach(function(bar) {
-      var native = bar.querySelector('[data-share-native]');
-      var copy = bar.querySelector('[data-share-copy]');
-      var save = bar.querySelector('[data-share-save]');
-      var status = bar.querySelector('[data-share-status]');
-      var address = bar.querySelector('[data-share-address]');
-      var timer;
-
-      function copyLink(done, failed) {
-        var write = navigator.clipboard && navigator.clipboard.writeText(bar.dataset.copyUrl);
-        (write || Promise.reject()).then(done, function() {
-          address.hidden = false;
-          address.select();
-          status.textContent = failed;
-        });
-      }
-
-      copy.hidden = false;
-      save.hidden = false;
-      if (navigator.share) {
-        native.hidden = false;
-        bar.querySelectorAll('[data-share-fallback]').forEach(function(link) { link.hidden = true; });
-        native.addEventListener('click', function() {
-          navigator.share({ title: bar.dataset.title, url: bar.dataset.nativeUrl }).catch(function(err) {
-            if (err && err.name === 'AbortError') return;
-            copyLink(
-              function() { status.textContent = 'Sharing did not open, so the link was copied instead.'; },
-              'Sharing did not open. Press and hold the link to copy it.'
-            );
-          });
-        });
-      }
-
-      copy.addEventListener('click', function() {
-        copyLink(function() {
-          copy.textContent = '\u2713 Copied';
-          status.textContent = 'Link copied';
-          clearTimeout(timer);
-          timer = setTimeout(function() {
-            copy.textContent = 'Copy link';
-            status.textContent = '';
-          }, 4000);
-        }, 'Could not copy. Press and hold the link to copy it.');
-      });
-
-      save.addEventListener('click', function() {
-        if (IN_APP.test(navigator.userAgent)) {
-          status.textContent = "To save a PDF, first open this page in your phone's browser from the \u2022\u2022\u2022 menu. Or copy the link and paste it there.";
-          return;
-        }
-        status.textContent = 'In the print window, choose Save as PDF. On iPhone: Share, then Save to Files.';
-        window.print();
-      });
-    });
-  })();
-
-  // Auto-mark this post as read
-  (function() {
-    var path = window.location.pathname;
-    var slug = path.split('/').filter(Boolean).pop();
-    if (!slug) return;
-    var key = 'nidhi-reading-progress';
-    try {
-      var data = JSON.parse(localStorage.getItem(key) || '[]');
-      if (data.indexOf(slug) === -1) {
-        data.push(slug);
-        localStorage.setItem(key, JSON.stringify(data));
-      }
-    } catch(e) {}
-  })();
-</script>
+<script is:inline set:html={lessonPageScript}></script>
 
 <style>
   .blog-post {
@@ -1369,7 +1165,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
      a line of its own. */
   .ref-external {
     margin-left: 0.2em;
-    font-size: 0.85em;
+    font-size: 0.95em;
     user-select: none;
   }
 
