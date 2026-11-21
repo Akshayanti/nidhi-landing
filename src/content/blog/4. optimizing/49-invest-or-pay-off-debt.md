@@ -1,7 +1,7 @@
 ---
 slug: "invest-or-pay-off-debt"
 title: "Invest or Pay Off Debt First? How to Decide"
-description: "Should you invest or pay off debt first? Why the rate, not the size, sets a debt's cost, why many take an employer match early, and a common order for several debts."
+description: "Investing or paying off debt: how interest rates affect the savings from an extra euro repaid, employer matches, and a common order for several debts."
 tldr:
   - "Paying off a debt saves its interest for certain; investing has earned more on average, but not for sure."
   - "In low-inflation economies, debt above about 8 to 10% usually comes first, below about 4% investing has usually come out ahead."
@@ -32,8 +32,10 @@ glossary:
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
 pubDate: 2026-11-04
-updatedDate: 2026-11-17
+updatedDate: 2026-11-21
 corrections:
+  - date: 2026-11-21
+    note: "The summary said the rate, not the size, sets a debt's cost; the cost depends on both, and the summary now describes how the rate affects what an extra euro repaid saves."
   - date: 2026-11-17
     note: "The glossary called a debt's rate after tax relief its effective interest rate. On loan documents, the effective rate usually means the yearly rate once compounding, and often fees, are counted, so the term is now the after-tax interest rate. Kenya's Fuliza daily fees were out of date: under the tariff in force from October 2022, the lowest band costs about Sh3 a day including excise after three free days, not Sh5, so a month on Sh500 costs about Sh80 in daily fees, not Sh150."
 localRules: [tax, pensions, borrowing]

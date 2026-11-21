@@ -2,7 +2,7 @@
 slug: "credit-and-credit-scores"
 title: "Credit and Credit Scores: What They Are and Why They Matter"
 seoTitle: "Credit and Credit Scores: What They Are and Why"
-description: "You've never missed a payment. You have no debt. But the rate you're offered on a mortgage is higher than your colleague's. The difference? Your credit history."
+description: "How credit history affects borrowing: why it can influence mortgage rates in some markets and mainly affect approval in others."
 tldr:
   - "A credit score summarises how reliably you have handled borrowed money, and each country has its own system."
   - "It draws on payment history, how much available credit you use, how long accounts have been open and credit types."
@@ -14,7 +14,10 @@ takeaways:
   - "How to build good credit in your country's system"
 order: 15
 pubDate: 2026-05-20
-updatedDate: 2026-11-08
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary implied that credit scores determine mortgage rates regardless of market; the summary now distinguishes markets where credit history can influence rates from those where it mainly affects approval."
 localRules: [credit]
 level: "discovery"
 primaryPersona: "eva"
