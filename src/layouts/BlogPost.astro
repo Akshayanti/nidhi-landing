@@ -705,7 +705,10 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     color: var(--color-text-secondary);
   }
   .post-howto-line a, .post-howto-end a { font-weight: 600; }
-  .post-howto-min { color: var(--color-text-muted); white-space: nowrap; }
+  /* Kept on one line while it fits, as a block of its own; at a very large
+     text size on a phone it is wider than the line, and wraps inside rather
+     than pushing the page sideways. */
+  .post-howto-min { color: var(--color-text-muted); display: inline-block; max-width: 100%; }
   .post-howto-end { margin: var(--space-6) 0; font-size: var(--text-ui); }
 
   .post-tldr-list li + li {
