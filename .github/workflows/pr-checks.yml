@@ -97,7 +97,7 @@ jobs:
             'src/components/LangPicker.astro'
             'src/components/Analytics.astro'
             # The inflation calculator's World Bank data, refreshed monthly by
-            # inflation-data.yml in a pull request that should run the suite.
+            # inflation-data.yml on a branch whose pull request should run the suite.
             'src/data/*'
             # Global type declarations the type check reads.
             'src/types/*'

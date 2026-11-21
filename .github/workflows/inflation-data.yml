@@ -1,49 +1,53 @@
 name: Inflation data refresh
 
 # Refreshes the inflation calculator's country history from the World Bank
-# (indicator FP.CPI.TOTL.ZG) once a month, and opens a pull request when the
-# data changed. Never pushes to main: the new figures are reviewed and merged
-# like any other change, and the site serves them from its own origin.
+# (indicator FP.CPI.TOTL.ZG) once a month. When the data changed, it pushes a
+# branch and opens an issue with the link that opens its pull request; a
+# person opens the pull request (#704: workflows may not create pull requests
+# in this repository, Settings, Actions, General). Never pushes to main: the
+# new figures are reviewed and merged like any other change, and the site
+# serves them from its own origin.
 #
 # scripts/fetch-inflation.mjs exits non-zero on any unexpected response and
 # never writes a partial file, so a changed API fails this run loudly instead
-# of opening a pull request with a thinner dataset. When the World Bank has
-# nothing new, the script leaves the file untouched and no pull request opens.
+# of offering a thinner dataset. When the World Bank has nothing new, the
+# script leaves the file untouched and nothing is pushed.
 #
 # A changed dataset is compared with the file on main before anything is
 # pushed: countries removed, years removed, past values changed. The summary
-# goes into the run's summary and the pull request's description. A change
-# over the limits (CHANGE_LIMITS in scripts/lib/inflation-data.mjs) fails the
-# run instead of opening a pull request, and its summary ends with a short
+# goes into the run's summary and the issue. A change over the limits
+# (CHANGE_LIMITS in scripts/lib/inflation-data.mjs) fails the run instead of
+# pushing anything, and its summary ends with a short
 # name for that exact comparison. If the change is real, run the workflow by
 # hand with that name in "accept": it lets that same comparison through, and a
 # fetch that brings anything else is refused again.
 #
-# The comparison and the pull request are both made against main, whatever
+# The comparison and the branch are both made against main, whatever
 # branch the workflow is started from: the baseline is main's file, and the
 # refresh branch is main plus the one data file.
 #
 # One branch, data/inflation-refresh, is used every month, so a pull request
-# left open from one month is updated by the next instead of gaining a twin.
-# The branch is this workflow's own. It is replaced on every run, so nobody
-# commits to it by hand. Each run records the commit it pushed in the pull
-# request's description; the next run stops, rather than overwrite, if the
-# branch's tip is any other commit, and its push carries a lease on the tip
-# it read.
+# a person opened from it and left open is updated by the next month's push
+# instead of gaining a twin. One issue, labelled inflation-refresh, carries
+# the comparison and the link; the next month comments on it while it is
+# open. The branch is this workflow's own. It is replaced on every run, so
+# nobody commits to it by hand. Each run records the commit it pushed in the
+# issue; the next run stops, rather than overwrite, if the branch's tip is any
+# other commit, and its push carries a lease on the tip it read.
 #
-# A pull request opened with GITHUB_TOKEN does not trigger other workflows
+# A push made with GITHUB_TOKEN does not trigger other workflows
 # (workflow_dispatch and repository_dispatch are the exceptions GitHub
-# makes), so this workflow starts PR Checks and the tool privacy check on the
-# branch by workflow_dispatch. Both run every job on that event, under the
-# same names main requires, on the commit the pull request shows. The pull
-# request's description links those runs once they exist.
+# makes), so a pull request already open on the branch would get no checks
+# for the new commit. This workflow therefore starts PR Checks and the tool
+# privacy check on the branch by workflow_dispatch, under the same names main
+# requires, and links those runs in the issue. A pull request a person opens
+# starts its checks by itself.
 #
 # "dry_run" exercises all of this without the World Bank, from made-up data
 # built the same way every time (dryRunDataset): first a refresh that must be
 # refused, with its summary and no data written, then a small one that goes
-# through to a draft pull request on data/inflation-refresh-dry-run. That
-# pull request stays open so its checks can be read; a person closes it. It
-# is never merged.
+# through to data/inflation-refresh-dry-run and an issue marked as a dry run.
+# A person closes that issue and deletes the branch; it is never merged.
 
 on:
   schedule:
@@ -53,7 +57,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run: made-up data, a refused refresh and then a draft pull request (close it, never merge it)'
+        description: 'Dry run: made-up data, a refused refresh and then a dry-run branch and issue (close it, never merge it)'
         type: boolean
         default: false
       accept:
@@ -63,7 +67,10 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
+  # To find a pull request a person opened from the branch.
+  pull-requests: read
+  # The issue that carries the comparison and the link to open the pull request.
+  issues: write
   # To start PR Checks and the tool privacy check on the refresh branch.
   actions: write
 
@@ -143,10 +150,11 @@ jobs:
           fi
           exit "$CODE"
 
-      - name: Open or update the pull request if the data changed
+      - name: Push the branch and open or update its issue if the data changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
         run: |
           set -euo pipefail
           if cmp -s "$RUNNER_TEMP/baseline.json" "$FILE"; then
@@ -157,23 +165,36 @@ jobs:
           BOT_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
           DATE=$(date -u +%Y-%m-%d)
           BRANCH="data/inflation-refresh"
-          TITLE="Inflation calculator: World Bank data, $DATE"
-          DRAFT=()
+          TITLE="Inflation data refresh ready: open its pull request"
+          PR_TITLE="Inflation calculator: World Bank data, $DATE"
           if [ "$DRY_RUN" = "true" ]; then
             BRANCH="data/inflation-refresh-dry-run"
-            TITLE="[Dry run, do not merge] $TITLE"
-            DRAFT=(--draft)
+            TITLE="[Dry run, do not merge] Inflation data refresh dry run: close this issue and delete the branch"
+            PR_TITLE="[Dry run, do not merge] $PR_TITLE"
           fi
+          LABEL="inflation-refresh"
+          LABEL_TEXT="The monthly inflation data refresh: a branch waiting for its pull request"
+          if [ "$DRY_RUN" = "true" ]; then
+            # Its own label, so dry runs never crowd the real issue out of a lookup.
+            LABEL="inflation-refresh-dry-run"
+            LABEL_TEXT="A dry run of the monthly inflation data refresh: close it, never merge it"
+          fi
+          gh label create "$LABEL" --color 0E8A16 --description "$LABEL_TEXT" 2>/dev/null || true
 
           # The branch is this workflow's own. If it exists, its tip must be
-          # the very commit this workflow last pushed, which it records in its
-          # pull request's description (an author's name proves nothing: an
-          # amended or cherry-picked commit keeps it). The push then carries a
-          # lease on that tip, so a commit that lands in between is not
-          # overwritten either.
+          # the very commit this workflow last pushed to it, which it records
+          # in its issue (an author's name proves nothing: an amended or
+          # cherry-picked commit keeps it). The push then carries a lease on
+          # that tip, so a commit that lands in between is not overwritten.
           TIP=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
           if [ -n "$TIP" ]; then
-            RECORDED=$(gh pr list --head "$BRANCH" --state all --limit 1 --json body --jq '.[0].body // ""' | sed -n 's/.*<!-- refresh-commit: \([0-9a-f]\{40\}\) -->.*/\1/p' | head -n 1)
+            RECORDED=$(gh issue list --label "$LABEL" --state all --limit 20 --json body --jq '.[].body' | sed -n "s|.*<!-- refresh-commit: $BRANCH \([0-9a-f]\{40\}\) -->.*|\1|p" | head -n 1)
+            if [ -z "$RECORDED" ]; then
+              # Before #704 the record was in the pull request's description,
+              # without the branch name. Read it once; the push below then
+              # writes the new record into the issue.
+              RECORDED=$(gh pr list --head "$BRANCH" --state all --limit 1 --json body --jq '.[0].body // ""' | sed -n 's/.*<!-- refresh-commit: \([0-9a-f]\{40\}\) -->.*/\1/p' | head -n 1)
+            fi
             if [ "$RECORDED" != "$TIP" ]; then
               echo "::error::$BRANCH is at $TIP, which is not the commit this workflow last pushed (${RECORDED:-none recorded}). The branch is replaced on every run: move that commit elsewhere, delete the branch, and run again."
               exit 1
@@ -192,46 +213,55 @@ jobs:
           git push --force-with-lease="refs/heads/$BRANCH:$TIP" origin "HEAD:refs/heads/$BRANCH"
 
           UPDATED=$(node -e "console.log(require('./$FILE').lastUpdated)")
-          BODY="$RUNNER_TEMP/inflation-pr-body.md"
+          OPEN_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          ENC_TITLE=$(node -e "console.log(encodeURIComponent(process.argv[1]))" "$PR_TITLE")
+          BODY="$RUNNER_TEMP/inflation-issue-body.md"
           write_body() {
-            {
-              echo "Monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0). The World Bank's own update date is $UPDATED."
+          {
+            echo "The monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0) changed the data. The World Bank's own update date is $UPDATED. It is on the branch \`$BRANCH\`, commit $HEAD_SHA."
+            echo
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "**This is a dry run of the workflow, with made-up data. No pull request should be opened: close this issue and delete the branch.**"
+            elif [ -n "$OPEN_PR" ]; then
+              echo "**Pull request #$OPEN_PR is already open on this branch and now has this commit.** Review it there."
+            else
+              echo "**Open its pull request:** [compare main with $BRANCH]($REPO_URL/compare/main...$BRANCH?expand=1&title=$ENC_TITLE). Workflows may not open pull requests in this repository (#704), so a person opens it; its checks then start by themselves. Paste the comparison below into its description."
+            fi
+            echo
+            echo "## Compared with the file on main"
+            echo
+            cat "$RUNNER_TEMP/inflation-summary.md"
+            echo
+            if grep -q "let through by hand" "$RUNNER_TEMP/inflation-summary.md"; then
+              echo "This refresh was let through past the limits by hand. Read the comparison above before merging."
               echo
-              echo "## Compared with the file on main"
-              echo
-              cat "$RUNNER_TEMP/inflation-summary.md"
-              echo
-              if grep -q "let through by hand" "$RUNNER_TEMP/inflation-summary.md"; then
-                echo "This pull request was opened past the limits by hand. Read the comparison above before merging."
-                echo
-              fi
-              echo "## Checks"
-              echo
-              echo "$1"
-              echo
-              echo "Opened by .github/workflows/inflation-data.yml. The branch is replaced on every run, so it takes no commits by hand."
-              # What the next run checks the branch's tip against.
-              echo "<!-- refresh-commit: $HEAD_SHA -->"
-              if [ "$DRY_RUN" = "true" ]; then
-                echo
-                echo "**This is a dry run of the workflow, with made-up data. Close it; do not merge it.**"
-              fi
-            } > "$BODY"
+            fi
+            echo "## Checks on this commit"
+            echo
+            echo "$1"
+            echo
+            echo "Opened by .github/workflows/inflation-data.yml. The branch is replaced on every run, so it takes no commits by hand. Close this issue once the pull request is merged or closed."
+            # What the next run checks the branch's tip against.
+            echo "<!-- refresh-commit: $BRANCH $HEAD_SHA -->"
+          } > "$BODY"
           }
 
+          # The record of the pushed commit goes into the issue before anything
+          # else can fail, so the next run recognises its own branch.
           write_body "Not started yet."
-          NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+
+          NUMBER=$(gh issue list --label "$LABEL" --state open --search "\"$TITLE\" in:title" --json number,title --jq "[.[] | select(.title == \"$TITLE\")][0].number // empty")
           if [ -n "$NUMBER" ]; then
-            gh pr edit "$NUMBER" --title "$TITLE" --body-file "$BODY"
-            echo "Pull request #$NUMBER for $BRANCH was open; it now has the new commit and description."
+            gh issue edit "$NUMBER" --body-file "$BODY"
+            gh issue comment "$NUMBER" --body "New refresh pushed: commit $HEAD_SHA ($DATE). The description above is updated."
+            echo "Issue #$NUMBER for $BRANCH was open; it now describes the new commit."
           else
-            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body-file "$BODY" "${DRAFT[@]}"
-            NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+            URL=$(gh issue create --title "$TITLE" --label "$LABEL" --label "area: ci-deps" --body-file "$BODY")
+            NUMBER="${URL##*/}"
           fi
 
-          # Checks do not start by themselves on a pull request opened with
-          # GITHUB_TOKEN, so they are started on the branch, and the
-          # description names them only once they exist.
+          # A push with GITHUB_TOKEN starts no checks, so they are started on
+          # the branch: a pull request already open on it shows them.
           gh workflow run pr-checks.yml --ref "$BRANCH"
           gh workflow run tool-privacy.yml --ref "$BRANCH"
           run_url() {
@@ -245,5 +275,5 @@ jobs:
           CHECKS=$(run_url pr-checks.yml) || { echo "::error::PR Checks did not start on $HEAD_SHA."; exit 1; }
           PRIVACY=$(run_url tool-privacy.yml) || { echo "::error::The tool privacy check did not start on $HEAD_SHA."; exit 1; }
           write_body "Started by this workflow on commit $HEAD_SHA: [PR Checks]($CHECKS) and the [tool privacy check]($PRIVACY)."
-          gh pr edit "$NUMBER" --body-file "$BODY"
-          echo "Pull request #$NUMBER: checks started and linked."
+          gh issue edit "$NUMBER" --body-file "$BODY"
+          echo "Issue #$NUMBER: checks started and linked."
