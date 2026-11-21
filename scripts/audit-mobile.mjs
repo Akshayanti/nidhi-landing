@@ -121,7 +121,9 @@ function measure(MIN) {
     const box = svg.getBoundingClientRect();
     if (!vb || !vb.width || !box.width) return;
     const scale = box.width / vb.width;
-    const texts = [...svg.querySelectorAll('text')].filter((t) => t.textContent.trim());
+    // Text drawn unseen (the samples a chart measures its labels with) is not
+    // something a reader sees, so it is not measured.
+    const texts = [...svg.querySelectorAll('text')].filter((t) => t.textContent.trim() && getComputedStyle(t).visibility === 'visible');
     // Icons and legend swatches have no labels to measure.
     if (!texts.length) return;
     let minPx = Infinity;
