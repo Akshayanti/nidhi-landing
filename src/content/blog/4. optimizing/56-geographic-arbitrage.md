@@ -29,7 +29,7 @@ glossary:
   - term: "Exit tax"
     definition: "Tax some countries charge on unrealised gains when you stop being resident there."
 order: 56
-pubDate: 2099-01-19
+pubDate: 2026-11-30
 updatedDate: "2026-10-28"
 localRules: [tax, pensions, benefits]
 level: "optimizing"

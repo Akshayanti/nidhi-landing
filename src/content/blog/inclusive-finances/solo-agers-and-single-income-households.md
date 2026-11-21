@@ -35,7 +35,7 @@ glossary:
     definition: "Public support that depends on your income and savings, so your own money is used first."
 order: 57.5
 companionOf: "income-replacement-ratio"
-pubDate: 2099-01-22
+pubDate: 2026-12-07
 updatedDate: 2026-10-28
 localRules: [inheritance, benefits, tax]
 level: "inclusive-finances"

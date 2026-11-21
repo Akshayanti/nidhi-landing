@@ -26,7 +26,7 @@ glossary:
   - term: "Sequence-of-returns risk"
     definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 57
-pubDate: 2099-01-21
+pubDate: 2026-12-04
 updatedDate: "2026-10-28"
 localRules: [pensions, tax]
 level: "optimizing"
