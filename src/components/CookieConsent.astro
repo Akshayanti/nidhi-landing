@@ -54,6 +54,8 @@ const strings = dict(locale);
     max-height: min(45dvh, var(--cookie-room, 45dvh));
     overflow-y: auto;
     overscroll-behavior: contain;
+    /* A control scrolled into view by focus keeps its whole focus ring. */
+    scroll-padding-block: 8px;
     padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
     background: var(--color-bg-white);
     border-top: 1px solid var(--color-border);

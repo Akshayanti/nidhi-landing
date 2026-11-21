@@ -239,10 +239,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
      sideways) has no room to give a header that stays: it scrolls away with
      the page there. In em, so a reader who makes the text larger gets the
      same: at 400% the header alone was 330 to 500px of a laptop's 800, and
-     with the consent sheet open almost none of the page was left to read. */
+     with the consent sheet open almost none of the page was left to read.
+     Relative, not static: it still scrolls away, and its z-index still
+     holds, so the open menu stays above the consent sheet. */
   @media (max-height: 30em) {
     .site-header {
-      position: static;
+      position: relative;
     }
   }
 
