@@ -1256,10 +1256,11 @@
   max-width: 100%;
 }
 
+/* No height cap: at a large text size the drawing grows to hold its
+   wrapped legend and footnote (#676). */
 .lc-splitChart {
   width: 100%;
   height: auto;
-  max-height: 420px;
   display: block;
 }
 
@@ -1277,10 +1278,11 @@
   fill: var(--color-deep-blue);
 }
 
+/* The chart sets its text size from the reader's (#676). */
 .lc-splitEyebrowInterest,
 .lc-splitEyebrowPrincipal {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: var(--chart-fs, 14px);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1290,6 +1292,13 @@
   fill: var(--chart-text-warn);
 }
 
+/* At a large text size, a legend word in spaced capitals would not fit
+   across a phone: ordinary letters, at full size, instead (#676). */
+.lc-splitEyebrow--plain {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
 .lc-splitEyebrowPrincipal {
   /* Neutral: the bars below take the offer's colour, which is not for text. */
   fill: var(--color-text-primary);
@@ -1297,20 +1306,21 @@
 
 .lc-splitTickX {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--chart-fs, 14px);
   fill: var(--color-text-secondary);
 }
 
 .lc-splitValueInterest,
 .lc-splitValuePrincipal {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: var(--chart-fs, 14px);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .lc-splitFootnote {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--chart-fs, 14px);
   font-style: italic;
   fill: var(--color-text-muted);
 }
@@ -1526,11 +1536,6 @@
   .lc-resultListPrimary .lc-resultRowSteps { flex-basis: 100%; }
   .lc-resultListPrimary .lc-resultRowSteps .lc-resultValue { align-self: stretch; width: 100%; }
 
-  /* The phone drawing of the payment split is narrower; its labels get a
-     little more size to stay readable once scaled. */
-  .lc-splitChart--phone .lc-splitValueInterest,
-  .lc-splitChart--phone .lc-splitValuePrincipal,
-  .lc-splitChart--phone .lc-splitTickX { font-size: 11.5px; }
 
 /* The side-by-side table as one block per metric, each value marked by its
    offer's letter. This is the phone layout, but its width is in em (40em is
@@ -2949,7 +2954,6 @@
 .mcs-chart .mcs-axis {
   fill: var(--color-text-muted);
   font-family: var(--font-body);
-  font-size: 16px;
 }
 .mcs-key--outer {
   fill: color-mix(in srgb, var(--color-deep-blue) 16%, transparent);
@@ -3274,9 +3278,15 @@
   padding: 0;
   margin-bottom: 4px;
 }
+/* Three equal options on one row while their names fit; at a large text size
+   they wrap onto rows of their own instead of running past the edge (#745). */
 .mcs-switchRow {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* The tooltips are placed against the whole row, not one option: once the
+     options wrap, an option can sit anywhere, and a tip placed against it ran
+     past the edge of a phone (#745). */
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg);
@@ -3284,7 +3294,11 @@
   gap: 3px;
 }
 .mcs-switchOpt {
-  position: relative;
+  flex: 1 1 0;
+  cursor: pointer;
+  min-width: min(100%, max-content);
+  padding-inline: var(--space-2);
+  overflow-wrap: anywhere;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3297,12 +3311,16 @@
   cursor: pointer;
   text-align: center;
 }
+/* The radio is unseen; the whole label selects it. */
 .mcs-switchOpt input {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
   margin: 0;
   opacity: 0;
-  cursor: pointer;
+  pointer-events: none;
 }
 .mcs-switchOpt--on {
   background: var(--color-deep-blue);
@@ -3317,9 +3335,8 @@
 .mcs-tip {
   position: absolute;
   bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(280px, 80vw);
+  left: 0;
+  right: 0;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   background: var(--color-text-primary);
@@ -3344,15 +3361,6 @@
   right: 0;
   top: 100%;
   height: 12px;
-}
-.mcs-switchOpt:first-child .mcs-tip {
-  left: 0;
-  transform: none;
-}
-.mcs-switchOpt:last-child .mcs-tip {
-  left: auto;
-  right: 0;
-  transform: none;
 }
 .mcs-switchOpt:hover .mcs-tip,
 .mcs-switchOpt:focus-within .mcs-tip {
@@ -3411,9 +3419,10 @@
   outline: 2px solid var(--color-teal);
   outline-offset: 4px;
 }
+/* Sized from the reader's text size by the chart (useChartRem.ts, #676). */
 .mcs-chart text {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--chart-fs, 14px);
 }
 .mcs-plotBg {
   fill: color-mix(in srgb, var(--color-deep-blue) 3%, transparent);
@@ -3488,7 +3497,7 @@
   fill: var(--color-text-primary);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 17px;
+  font-size: var(--chart-fv, 16px);
 }
 .mcs-chart .mcs-endLabel--median .mcs-endValue {
   fill: var(--color-deep-blue);
@@ -3690,9 +3699,10 @@
   outline: 2px solid var(--color-teal);
   outline-offset: 4px;
 }
+/* Chart text is set from the reader's text size by the chart (#676). */
 .lc-chart text {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--chart-fs, 14px);
 }
 .lc-chart .lc-chartTick {
   fill: var(--color-text-muted);
@@ -4225,10 +4235,11 @@ button.mcnw-legendItem:focus-visible {
   width: 100%;
   height: auto;
 }
+/* Chart text is set from the reader's text size by the chart (#676). */
 .ifc-barsSvg text,
 .ifc-chart text {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--chart-fs, 14px);
 }
 .ifc-axis {
   fill: var(--color-text-muted);

@@ -6,6 +6,8 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
+import { FIT_FLOOR, edgeAnchor, labelStep, niceSteps, textWidth, useChartRem, wrapWords } from './chart/useChartRem.ts';
+import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
@@ -925,24 +927,15 @@ interface Geometry {
   endLabels: boolean;
 }
 
+// The plot's own height stays as drawn here at every text size; the room
+// around it is set by the text (#676), so larger text makes the drawing taller.
 const WIDE: Geometry = { W: 760, H: 420, PAD: { top: 40, right: 132, bottom: 56, left: 104 }, endLabels: true };
-// Drawn for a phone's width, so it fits without sideways scrolling and its
-// 16-unit labels stay about 15px on screen.
+// Drawn for a phone's width, so it fits without sideways scrolling.
 const NARROW: Geometry = { W: 360, H: 270, PAD: { top: 18, right: 14, bottom: 50, left: 66 }, endLabels: false };
 
 // Readout swatch colours, matching the chart's dots and inner band.
 const OUTER_DOT = 'color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white))';
 const INNER_BAND = 'color-mix(in srgb, var(--color-deep-blue) 34%, transparent)';
-
-/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
-function niceScale(v: number): { top: number; step: number; count: number } {
-  if (v <= 0) return { top: 6, step: 1, count: 6 };
-  const raw = v / 6;
-  const exp = Math.pow(10, Math.floor(Math.log10(raw)));
-  const step = [1, 2, 2.5, 5, 10].map((m) => m * exp).find((s) => s >= raw) ?? 10 * exp;
-  const count = Math.max(1, Math.ceil(v / step - 1e-9));
-  return { top: step * count, step, count };
-}
 
 /** Spreads end labels apart so none overlap, keeping their order. */
 function spreadLabels(ys: number[], gap: number, min: number, max: number): number[] {
@@ -954,9 +947,14 @@ function spreadLabels(ys: number[], gap: number, min: number, max: number): numb
     out[i] = placed;
     prev = placed;
   }
-  // If the stack ran past the bottom, push it back up.
-  const overflow = Math.max(0, Math.max(...out) - max);
-  return out.map((y) => y - overflow);
+  // If the stack ran past the bottom, push it back up: each label only as far
+  // as the one below it needs, so a label already near the top stays put.
+  let next = Infinity;
+  for (const [, i] of [...order].reverse()) {
+    out[i] = Math.min(out[i], max, next - gap);
+    next = out[i];
+  }
+  return out;
 }
 
 function Chart({ result, worded, state, code, strings }: { result: SimulationResult; worded: SimulationResult; state: ToolState; code: string; strings: Strings }) {
@@ -972,15 +970,24 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const [hover, setHover] = useState<number | null>(null);
   const { bands, straightLine, years } = result;
   const narrow = usePhone();
-  const { W, H, PAD: BASE, endLabels: showEndLabels } = narrow ? NARROW : WIDE;
+  const { W, H: BASE_H, PAD: BASE, endLabels: wideLabels } = narrow ? NARROW : WIDE;
+  // Chart text is sized from the reader's text size (#676): `rem` drawing
+  // units are one rem on screen. Axis numbers and words are 0.875 rem, the
+  // end values 1 rem.
+  const { rem, scale: textScale } = useChartRem(svgRef, W);
+  const fs = 0.875 * rem;
+  const fv = rem;
+  const PLOT_H = BASE_H - BASE.top - BASE.bottom;
 
   // Scale to the middle half of every year, plus the full 8-in-10 band while
   // saving. During withdrawals the luckiest paths keep compounding and would
   // otherwise squash the saving years into the bottom of the chart; the part
   // of the band above the top is clipped and labelled.
   const saveEnd = Math.min(state.saveYears, years);
-  const { top, step: yStep, count: yCount } = niceScale(
+  // Gridlines at least 1.8 label heights apart: fewer as the text grows.
+  const { top, step: yStep, count: yCount } = niceSteps(
     Math.max(...bands.map((b) => b.p75), ...bands.slice(0, saveEnd + 1).map((b) => b.p90), ...straightLine),
+    Math.min(6, PLOT_H / (1.8 * fs)),
   );
   const clipped = bands.some((b) => b.p90 > top);
 
@@ -992,11 +999,49 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const margin = useAxisMargin(
     svgRef,
     '.mcs-axisAmount',
-    { estimate: Math.max(...tickText.map((s) => s.length)) * 9.5, gap: 16, least: narrow ? 22 : 32, width: W, right: BASE.right },
+    { estimate: Math.max(...tickText.map((s) => textWidth(s, fs))), gap: fs, least: narrow ? 22 : 32, width: W, right: BASE.right },
   );
-  const PAD = { ...BASE, left: margin.left };
+  const end = bands[years];
+  const endLabels = [
+    { key: 'p90', label: strings.chart.endHigh, value: end.p90, said: worded.bands[years].p90, cls: 'mcs-endLabel--outer' },
+    { key: 'p50', label: strings.chart.endMedian, value: end.p50, said: worded.bands[years].p50, cls: 'mcs-endLabel--median' },
+    { key: 'p10', label: strings.chart.endLow, value: end.p10, said: worded.bands[years].p10, cls: 'mcs-endLabel--outer' },
+  ];
+  // End-of-line labels on wide screens, while their gutter leaves the plot at
+  // least 60% of the drawing and their stack fits beside it; the cards and the
+  // read-out carry the same figures.
+  // Measured as drawn: names, values and the axis title's words.
+  const titleWords = strings.chart.axisYears.split(/\s+/).filter(Boolean);
+  const measured = useMeasuredText(svgRef, [
+    ...endLabels.flatMap((l) => [{ cls: 'mcs-endName', text: `${l.label} ↑`, size: fs }, { cls: 'mcs-endValue', text: amounts.label(l.said, code), size: fv }]),
+    ...titleWords.map((w) => ({ cls: 'mcs-axis mcs-axisTitle', text: w, size: fs })),
+    ...tickText.map((text) => ({ cls: 'mcs-axis mcs-axisAmount', text, size: fs })),
+  ]);
+  const endGutter = Math.ceil(16 + Math.max(...endLabels.map((l) => Math.max(measured.width({ cls: 'mcs-endName', text: `${l.label} ↑`, size: fs }), measured.width({ cls: 'mcs-endValue', text: amounts.label(l.said, code), size: fv })))));
+  const endGap = Math.ceil(fs + fv + 0.5 * fs);
+  const showEndLabels = wideLabels && W - margin.left - endGutter >= W * 0.6 && 3 * endGap <= PLOT_H;
+  // The axis title, on as many lines as it needs across the drawing.
+  const titleWidth = (line: string) =>
+    line.split(' ').reduce((sum, w) => sum + measured.width({ cls: 'mcs-axis mcs-axisTitle', text: w, size: fs }), 0) + (line.split(' ').length - 1) * 0.3 * fs;
+  const titleLines = wrapWords(strings.chart.axisYears, W * 0.94, titleWidth);
+  const PAD = {
+    // Room for the top gridline's label: half of it above the plot, or all of
+    // it when the labels sit inside the plot, above their lines.
+    top: Math.max(narrow ? BASE.top : 18, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
+    right: showEndLabels ? Math.max(BASE.right, endGutter) : NARROW.PAD.right,
+    // Year labels, then the axis title, a line each.
+    bottom: Math.max(BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
+    left: margin.left,
+  };
+  const H = PAD.top + PLOT_H + PAD.bottom;
   const PLOT_W = W - PAD.left - PAD.right;
-  const PLOT_H = H - PAD.top - PAD.bottom;
+  // The axis title sits under the middle of the plot while it fits there, and
+  // is moved in from the edge only as far as it has to be.
+  // A single word wider than the whole drawing (Marathi at the largest text
+  // on a phone) is drawn smaller, by just enough to fit, rather than cut.
+  const titleFit = Math.min(1, (W - 4) / Math.max(...titleLines.map(titleWidth)));
+  const titleHalf = (titleFit * Math.max(...titleLines.map(titleWidth))) / 2 + 2;
+  const titleX = Math.round(Math.min(Math.max(PAD.left + PLOT_W / 2, titleHalf), W - titleHalf));
 
   const x = (y: number) => PAD.left + (years === 0 ? 0 : (y / years) * PLOT_W);
   const yPx = (v: number) => PAD.top + (1 - Math.min(v, top) / top) * PLOT_H;
@@ -1015,28 +1060,32 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const p90 = bands.map((b) => b.p90);
 
   const yTicks = Array.from({ length: yCount + 1 }, (_, i) => i * yStep);
-  const yMinor = Array.from({ length: yCount }, (_, i) => (i + 0.5) * yStep);
-  const xStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
+  // Minor gridlines go first, once the text is twice its default size.
+  const minor = textScale < 2;
+  const yMinor = minor ? Array.from({ length: yCount }, (_, i) => (i + 0.5) * yStep) : [];
+  // Year labels keep a gap of one label height between them.
+  const baseStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
+  const xStep = labelStep(
+    [1, 2, 5, 10, 20, 25, 50].filter((s) => s >= baseStep),
+    (s) => (years === 0 ? Infinity : (s / years) * PLOT_W),
+    textWidth(String(years), fs),
+    fs,
+  );
   const xTicks: number[] = [];
   for (let y = 0; y <= years; y += xStep) xTicks.push(y);
-  const xMinorStep = xStep === 1 ? 0 : xStep / 5 >= 1 ? xStep / 5 : 0;
+  const xMinorStep = !minor || xStep === 1 ? 0 : xStep / 5 >= 1 ? xStep / 5 : 0;
   const xMinor: number[] = [];
   if (xMinorStep) for (let y = xMinorStep; y < years; y += xMinorStep) if (y % xStep !== 0) xMinor.push(y);
 
   const withdrawing = state.withdrawal > 0 && state.withdrawYears > 0;
-  const end = bands[years];
 
   // End-of-line labels, read off directly instead of from the axis.
   // Rounded to a tenth of a unit so server and browser floating point agree
   // when the page hydrates.
   const r1 = (n: number) => Math.round(n * 10) / 10;
   const endRaw = [end.p90, end.p50, end.p10].map((v) => r1(yPx(v)));
-  const endY = spreadLabels(endRaw, 22, PAD.top + 8, H - PAD.bottom).map(r1);
-  const endLabels = [
-    { key: 'p90', label: strings.chart.endHigh, value: end.p90, said: worded.bands[years].p90, cls: 'mcs-endLabel--outer' },
-    { key: 'p50', label: strings.chart.endMedian, value: end.p50, said: worded.bands[years].p50, cls: 'mcs-endLabel--median' },
-    { key: 'p10', label: strings.chart.endLow, value: end.p10, said: worded.bands[years].p10, cls: 'mcs-endLabel--outer' },
-  ];
+  // Each label's two lines stay beside the plot, clear of the year labels below it.
+  const endY = spreadLabels(endRaw, endGap, PAD.top + fs, H - PAD.bottom - 1.4 * fv).map(r1);
 
   const desc = t(strings.chart.desc, {
     paths: grouped(result.paths, numberLocale),
@@ -1129,6 +1178,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
             className={narrow ? 'mcs-chart mcs-chart--narrow' : 'mcs-chart'}
+            style={{ '--chart-fs': `${fs}px`, '--chart-fv': `${fv}px` } as React.CSSProperties}
             {...pointer}
           >
             <title id={titleId}>{strings.chart.title}</title>
@@ -1150,13 +1200,15 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
               </clipPath>
             </defs>
 
+            <MeasureSamples list={measured.list} />
             <rect className="mcs-plotBg" x={PAD.left} y={PAD.top} width={PLOT_W} height={PLOT_H} rx="6" />
             {withdrawing && state.saveYears < years && (
               <g>
                 <rect className="mcs-phase" x={x(state.saveYears)} y={PAD.top} width={x(years) - x(state.saveYears)} height={PLOT_H} />
                 {/* Only when there is room; the readout names the phase too. */}
-                {x(years) - x(state.saveYears) >= 130 && (
-                  <text className="mcs-phaseLabel" x={x(state.saveYears) + 10} y={PAD.top + 22}>{strings.chart.livingOff}</text>
+                {x(years) - x(state.saveYears) >= textWidth(strings.chart.livingOff, fs) + 20 && PLOT_H >= 3 * fs
+                  && (!margin.inside || x(state.saveYears) + 10 > PAD.left + 6 + Math.max(...tickText.map((t) => textWidth(t, fs))) + fs) && (
+                  <text className="mcs-phaseLabel" x={x(state.saveYears) + 10} y={r1(PAD.top + 1.4 * fs)}>{strings.chart.livingOff}</text>
                 )}
               </g>
             )}
@@ -1171,17 +1223,25 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
               <g key={`y${v}`}>
                 <line className={v === 0 ? 'mcs-axisLine' : 'mcs-grid'} x1={PAD.left} x2={W - PAD.right} y1={yPx(v)} y2={yPx(v)} />
                 {margin.inside
-                  ? v > 0 && <text className="mcs-axis mcs-axisAmount mcs-axisAmount--inside" x={PAD.left + 6} y={yPx(v) - 5} textAnchor="start">{axis.tick(v)}</text>
-                  : <text className="mcs-axis mcs-axisAmount" x={PAD.left - 12} y={yPx(v) + 5} textAnchor="end">{axis.tick(v)}</text>}
+                  ? v > 0 && (() => {
+                    // Inside the plot a long amount ("2,00,00,000" at 400% text on a
+                    // phone) may be wider than the drawing: drawn smaller down to the
+                    // floor, and left out below it (council, Nov 21 2026).
+                    const fit = Math.min(1, (W - PAD.left - 8) / Math.max(1, measured.width({ cls: 'mcs-axis mcs-axisAmount', text: axis.tick(v), size: fs })));
+                    return <text className="mcs-axis mcs-axisAmount mcs-axisAmount--inside" x={PAD.left + 6} y={r1(yPx(v) - 0.3 * fs)} textAnchor="start" style={fit < 1 ? { fontSize: `${fs * fit}px` } : undefined} visibility={fit < FIT_FLOOR ? 'hidden' : undefined}>{axis.tick(v)}</text>;
+                  })()
+                  : <text className="mcs-axis mcs-axisAmount" x={r1(PAD.left - 0.6 * fs)} y={r1(yPx(v) + 0.35 * fs)} textAnchor="end">{axis.tick(v)}</text>}
               </g>
             ))}
             {xTicks.map((v) => (
               <g key={`x${v}`}>
                 {v > 0 && <line className="mcs-grid" x1={x(v)} x2={x(v)} y1={PAD.top} y2={H - PAD.bottom} />}
-                <text className="mcs-axis" x={x(v)} y={H - PAD.bottom + 24} textAnchor="middle">{v}</text>
+                <text className="mcs-axis" x={x(v)} y={r1(H - PAD.bottom + 1.4 * fs)} textAnchor={edgeAnchor(x(v), textWidth(String(v), fs), 0, W)}>{v}</text>
               </g>
             ))}
-            <text className="mcs-axis mcs-axisTitle" x={PAD.left + PLOT_W / 2} y={H - 8} textAnchor="middle">{strings.chart.axisYears}</text>
+            <text className="mcs-axis mcs-axisTitle" x={titleX} y={r1(H - PAD.bottom + 3.0 * fs)} textAnchor="middle" style={titleFit < 1 ? { fontSize: `${fs * titleFit}px` } : undefined} visibility={titleFit < FIT_FLOOR ? 'hidden' : undefined}>
+              {titleLines.map((l, i) => <tspan key={i} x={titleX} dy={i === 0 ? 0 : r1(1.2 * fs)}>{l}</tspan>)}
+            </text>
 
             <g clipPath={`url(#${clipId})`}>
               <path d={area(p10, p90)} fill={`url(#${gradId}-outer)`} />
@@ -1200,13 +1260,13 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
               <g key={l.key} className={`mcs-endLabel ${l.cls}`}>
                 {/* A leader line when the label had to move away from its point. */}
                 {showEndLabels && Math.abs(endY[i] - endRaw[i]) > 4 && (
-                  <line className="mcs-leader" x1={x(years) + 5} y1={endRaw[i]} x2={W - PAD.right + 8} y2={endY[i] - 7} />
+                  <line className="mcs-leader" x1={x(years) + 5} y1={endRaw[i]} x2={W - PAD.right + 8} y2={r1(endY[i] - 0.4 * fs)} />
                 )}
                 {(showEndLabels || l.value <= top) && <circle cx={x(years)} cy={endRaw[i]} r="4" />}
                 {showEndLabels && (
                   <text x={W - PAD.right + 12} y={endY[i] - 2}>
                     <tspan className="mcs-endName">{l.label}{l.value > top ? ' ↑' : ''}</tspan>
-                    <tspan x={W - PAD.right + 12} dy="17" className="mcs-endValue">{amounts.label(l.said, code)}</tspan>
+                    <tspan x={W - PAD.right + 12} dy={r1(1.1 * fv)} className="mcs-endValue">{amounts.label(l.said, code)}</tspan>
                   </text>
                 )}
               </g>

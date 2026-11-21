@@ -27,6 +27,8 @@ import {
 } from '../utils/multi-currency-net-worth/url.ts';
 import { CHART_SERIES, CHART_SERIES_ON, RISK_COLORS as PALETTE_RISK_COLORS } from '../styles/palette.ts';
 import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
+import { useChartRem } from './chart/useChartRem.ts';
+import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { downloadBlob, downloadWorkbook, guardText, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { netWorthSheets } from '../utils/multi-currency-net-worth/export.ts';
@@ -1511,6 +1513,55 @@ function ShareModal({
 // SVG Donut chart
 // ---------------------------------------------------------------------------
 
+/** One line of the words in the donut's hole: `drop` orders which goes first when they do not all fit. */
+interface CentreLine {
+  cls: string;
+  text: string;
+  main?: boolean;
+  drop: number;
+}
+
+/**
+ * The words in the donut's hole, sized from the reader's text size (#676;
+ * council, Nov 21 2026): the main figure at 1 rem, the others at 0.875 rem.
+ * Lines that would not fit inside the hole are left off one at a time, the
+ * highest `drop` first; the legend beside the donut says the same.
+ */
+function DonutCentre({ svgRef, width, cx, cy, r, lines }: { svgRef: React.RefObject<SVGSVGElement | null>; width: number; cx: number; cy: number; r: number; lines: CentreLine[] }) {
+  const { rem } = useChartRem(svgRef, width);
+  const sizeOf = (l: CentreLine) => (l.main ? 1 : 0.875) * rem;
+  const measured = useMeasuredText(svgRef, lines.map((l) => ({ cls: l.cls, text: l.text, size: sizeOf(l) })));
+  const layout = (shown: CentreLine[]) => {
+    const heights = shown.map((l) => 1.2 * sizeOf(l));
+    let y = cy - heights.reduce((a, b) => a + b, 0) / 2;
+    return shown.map((l, i) => {
+      const size = sizeOf(l);
+      const top = y + 0.1 * size;
+      y += heights[i];
+      return { l, size, top, bottom: top + size, baseline: top + 0.8 * size };
+    });
+  };
+  // Inside the hole when both corners of its box are: the half-width the
+  // circle leaves at the box's farther edge holds half the line.
+  const fits = (placed: ReturnType<typeof layout>) => placed.every(({ l, size, top, bottom }) => {
+    const dy = Math.max(Math.abs(top - cy), Math.abs(bottom - cy));
+    return dy < r && measured.width({ cls: l.cls, text: l.text, size }) / 2 <= Math.sqrt(r * r - dy * dy);
+  });
+  let shown = lines;
+  while (shown.length > 0 && !fits(layout(shown))) {
+    const worst = Math.max(...shown.map((l) => l.drop));
+    shown = shown.filter((l) => l.drop !== worst);
+  }
+  return (
+    <>
+      <MeasureSamples list={measured.list} />
+      {layout(shown).map(({ l, size, baseline }) => (
+        <text key={l.cls} x={cx} y={Math.round(baseline * 10) / 10} textAnchor="middle" className={l.cls} style={{ fontSize: `${size}px` }}>{l.text}</text>
+      ))}
+    </>
+  );
+}
+
 interface ConcentrationChartProps {
   positions: ReturnType<typeof aggregate>['positions'];
   functionalCurrency: string;
@@ -1522,6 +1573,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
   const { formatAmount, formatPercent } = useMoney();
   const [active, setActive] = useState<string | null>(null);
   const legendId = useId();
+  const svgRef = useRef<SVGSVGElement>(null);
 
   // Escape clears the highlighted currency wherever focus is.
   useEffect(() => {
@@ -1625,6 +1677,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
       <h3 className="mcnw-chartTitle">{strings.chart.heading}</h3>
       <div className="mcnw-chartWrap" onPointerLeave={(e) => { if (e.pointerType === 'mouse') setActive(null); }}>
         <svg
+          ref={svgRef}
           className="mcnw-chart"
           viewBox={`-10 -10 ${size + 20} ${size + 20}`}
           role="img"
@@ -1657,22 +1710,23 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
               <MarkerGlyph index={arc.slot} cx={arc.mark.x} cy={arc.mark.y} r={7} color={arc.ink} />
             </g>
           ))}
-          {activeArc ? (
-            <>
-              <text x={cx} y={cy - 16} textAnchor="middle" className="mcnw-chartCenterCode">{activeArc.pos.code}</text>
-              <text x={cx} y={cy + 10} textAnchor="middle" className="mcnw-chartCenterLabel">{pct(activeArc.amount)}</text>
-              {showAmounts && (
-                <text x={cx} y={cy + 32} textAnchor="middle" className="mcnw-chartCenterSub">{amountOf(activeArc.pos)}</text>
-              )}
-            </>
-          ) : (
-            <>
-              <text x={cx} y={cy + 2} textAnchor="middle" className="mcnw-chartCenterLabel">{positions.length}</text>
-              <text x={cx} y={cy + 24} textAnchor="middle" className="mcnw-chartCenterSub">
-                {plural(numberLocale, positions.length, strings.chart.currencyOne, strings.chart.currencyFew, strings.chart.currencyMany)}
-              </text>
-            </>
-          )}
+          <DonutCentre
+            svgRef={svgRef}
+            width={size + 20}
+            cx={cx}
+            cy={cy}
+            r={innerR - 4}
+            lines={activeArc
+              ? [
+                  { cls: 'mcnw-chartCenterCode', text: activeArc.pos.code, drop: 2 },
+                  { cls: 'mcnw-chartCenterLabel', text: pct(activeArc.amount), main: true, drop: 1 },
+                  ...(showAmounts ? [{ cls: 'mcnw-chartCenterSub', text: amountOf(activeArc.pos), drop: 3 }] : []),
+                ]
+              : [
+                  { cls: 'mcnw-chartCenterLabel', text: String(positions.length), main: true, drop: 1 },
+                  { cls: 'mcnw-chartCenterSub', text: plural(numberLocale, positions.length, strings.chart.currencyOne, strings.chart.currencyFew, strings.chart.currencyMany), drop: 2 },
+                ]}
+          />
         </svg>
 
         {/* Legend: each entry highlights its slice on hover, focus or tap. */}

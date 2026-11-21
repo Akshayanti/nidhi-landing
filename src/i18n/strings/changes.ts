@@ -92,6 +92,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोफत साधने आता नेमके काय खाजगी राहते ते सांगतात: तुम्ही जे लिहिता ते तुमच्या ब्राउझरमध्येच राहते. काही साधने आधी काहीच पाठवले जात नाही असे सांगायची; हा दावा अतिशय व्यापक होता. साधनांचे पान आता शोधासाठीच्या वर्णनात पाचही साधनांची नावे देते.',
         },
       },
+      {
+        id: 'home-lesson-one-chart-text-size',
+        text: {
+          en: 'The home page now opens with a “Read lesson 1” button, and “Which sounds like you?” has a third answer, for anyone new to money. The call for translators has moved to the end of the page. In the free tools, the words and numbers inside the charts now grow with your text size, like the rest of the page; as they grow, a chart shows fewer gridlines and labels, so nothing overlaps or is cut off. In the Monte Carlo simulator, the choice of returns now wraps onto more lines instead of running past the edge when the text is large.',
+          hi: 'होम पेज अब “पाठ 1 पढ़ें” बटन से शुरू होता है, और “इनमें से कौन-सी बात आप पर लागू होती है?” में तीसरा जवाब जुड़ा है, उन लोगों के लिए जिनके लिए पैसों की बातें नई हैं। अनुवाद में मदद की अपील अब पेज के आख़िर में है। मुफ़्त टूल के चार्ट में शब्द और अंक अब बाकी पेज की तरह आपके अक्षरों के आकार के साथ बड़े होते हैं; उनके बड़े होने पर चार्ट कम रेखाएँ और लेबल दिखाता है, ताकि कुछ भी एक-दूसरे पर न चढ़े और न कटे। मोंटे कार्लो सिम्युलेटर में रिटर्न के विकल्प अब अक्षर बड़े होने पर किनारे से बाहर जाने के बजाय अगली पंक्तियों में आ जाते हैं।',
+          es: 'La página de inicio empieza ahora con un botón «Leer la lección 1», y «¿Cuál se parece a tu caso?» tiene una tercera respuesta, para quienes dan sus primeros pasos en las finanzas. La llamada a personas traductoras está ahora al final de la página. En las herramientas gratuitas, las palabras y los números de los gráficos crecen ahora con el tamaño del texto, como el resto de la página; al crecer, cada gráfico muestra menos líneas de cuadrícula y menos etiquetas, para que nada se solape ni se corte. En el simulador Monte Carlo, las opciones de rentabilidad pasan ahora a más líneas en vez de salirse por el borde cuando el texto es grande.',
+          cs: 'Úvodní stránka teď začíná tlačítkem „Přečíst lekci 1“ a\u00a0otázka „Co z\u00a0toho se týká vás?“ má třetí odpověď, pro každého, kdo s\u00a0penězi začíná. Výzva pro překladatele se přesunula na konec stránky. V\u00a0nástrojích zdarma teď slova a\u00a0čísla v\u00a0grafech rostou s\u00a0velikostí písma jako zbytek stránky; když rostou, graf ukazuje méně čar mřížky a\u00a0popisků, aby se nic nepřekrývalo ani neořezávalo. V\u00a0simulátoru Monte Carlo se volba odhadu výnosu při velkém písmu teď zalomí na více řádků, místo aby přesahovala okraj.',
+          mr: 'मुख्यपृष्ठ आता “धडा 1 वाचा” या बटणाने सुरू होते, आणि “यापैकी कोणती परिस्थिती तुम्हाला लागू होते?” मध्ये पैशांच्या बाबतीत नव्याने सुरुवात करणाऱ्यांसाठी तिसरे उत्तर आले आहे. भाषांतरासाठी मदतीचे आवाहन आता पानाच्या शेवटी आहे. मोफत साधनांमधील आलेखांतले शब्द आणि आकडे आता उर्वरित पानाप्रमाणे तुमच्या अक्षरांच्या आकारासोबत मोठे होतात; ते मोठे झाल्यावर आलेख कमी रेषा आणि लेबले दाखवतो, जेणेकरून काहीही एकमेकांवर येणार नाही किंवा कापले जाणार नाही. मॉन्टे कार्लो सिम्युलेटरमध्ये परताव्याचे पर्याय आता अक्षरे मोठी असताना कडेच्या बाहेर जाण्याऐवजी पुढच्या ओळींवर येतात.',
+        },
+      },
     ],
   },
   {

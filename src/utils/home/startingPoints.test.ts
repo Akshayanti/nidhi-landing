@@ -42,7 +42,7 @@ describe('build-time slug check', () => {
   });
 
   it('names the missing slug', () => {
-    const all = homepageSlugs().slice(1).map((s, i) => post(s, 'discovery', i));
+    const all = homepageSlugs().filter((s) => s !== homepageSlugs()[0]).map((s, i) => post(s, 'discovery', i));
     assert.throws(() => assertHomepageSlugs(all), new RegExp(homepageSlugs()[0]));
   });
 });
@@ -112,23 +112,25 @@ describe('level counts', () => {
 });
 
 describe('situations', () => {
-  const posts = [post('managing-money-across-currencies', 'building', 29), post('understanding-loan-terms', 'building', 27)];
+  const posts = [post('what-is-net-worth', 'discovery', 1), post('managing-money-across-currencies', 'building', 29), post('understanding-loan-terms', 'building', 27)];
 
-  it('each one is a lesson and a tool, currencies first', () => {
+  it('each one is a lesson and a tool, the reader new to money first', () => {
     const sits = resolveSituations(posts, NOW);
     assert.deepEqual(sits.map((s) => [s.id, s.lesson.href, s.tool.href, s.tool.key]), [
+      ['basics', '/blog/what-is-net-worth/', '/free/multi-currency-net-worth/', 'netWorth'],
       ['currencies', '/blog/managing-money-across-currencies/', '/free/multi-currency-net-worth/', 'netWorth'],
       ['loans', '/blog/understanding-loan-terms/', '/free/loan-comparison/', 'loanComparison'],
     ]);
   });
 
   it('fails the build rather than show a chain with a step missing', () => {
-    assert.throws(() => resolveSituations([posts[0]], NOW), /understanding-loan-terms/);
-    assert.throws(() => resolveSituations([posts[0], post('understanding-loan-terms', 'building', 27, FUTURE)], NOW), /not published/);
+    assert.throws(() => resolveSituations(posts.slice(0, 2), NOW), /understanding-loan-terms/);
+    assert.throws(() => resolveSituations([...posts.slice(0, 2), post('understanding-loan-terms', 'building', 27, FUTURE)], NOW), /not published/);
     assert.throws(() => resolveSituations(posts, NOW, (href) => href !== '/free/loan-comparison/'), /not released/);
   });
 
   it('their lessons are in the build-time slug check', () => {
+    assert.ok(homepageSlugs().includes('what-is-net-worth'));
     assert.ok(homepageSlugs().includes('managing-money-across-currencies'));
     assert.ok(homepageSlugs().includes('understanding-loan-terms'));
   });

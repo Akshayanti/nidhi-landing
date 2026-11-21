@@ -42,6 +42,8 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts, SharedAmounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
+import { FIT_FLOOR, niceSteps, placeLabels, textWidth, useChartRem, wrapWords } from './chart/useChartRem.ts';
+import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { readsAsZero } from '../utils/shared/chartAmounts.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
@@ -295,20 +297,11 @@ interface ChartProps {
 const VENDOR_DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
 
 const BW = 760;
-const BH = 400;
-// The left margin is measured from the gridline numbers as drawn (`useAxisMargin`).
-const BPAD_FIXED = { top: 24, right: 28, bottom: 56 };
-const BPLOT_H = BH - BPAD_FIXED.top - BPAD_FIXED.bottom;
-
-/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most six, covering v. */
-function niceScale(v: number): { top: number; step: number; count: number } {
-  if (v <= 0) return { top: 6, step: 1, count: 6 };
-  const raw = v / 6;
-  const exp = Math.pow(10, Math.floor(Math.log10(raw)));
-  const step = [1, 2, 2.5, 5, 10].map((m) => m * exp).find((s) => s >= raw) ?? 10 * exp;
-  const count = Math.max(1, Math.ceil(v / step - 1e-9));
-  return { top: step * count, step, count };
-}
+// The plot keeps this height at every text size; the bands for the labels
+// around it grow with the text (#676). The left margin is measured from the
+// gridline numbers as drawn (`useAxisMargin`).
+const BPAD_BASE = { top: 24, right: 28, bottom: 56 };
+const BPLOT_H = 400 - BPAD_BASE.top - BPAD_BASE.bottom;
 
 function BalanceChart({ results, colors, vendorNames, currency, strings }: ChartProps) {
   const { formatAmount, formatMoney } = useMoney();
@@ -332,8 +325,22 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
 
   const factor = getCurrency(currency).factor;
   const maxMonths = valid.length ? Math.max(...valid.map(({ rows }) => rows.length)) : 1;
-  const margin = useAxisMargin(svgRef, '.lc-balanceAmount', { estimate: 92, gap: 16, least: 32, width: BW, right: BPAD_FIXED.right });
-  const BPAD = { ...BPAD_FIXED, left: margin.left };
+  // Text follows the reader's text size: `rem` drawing units make one rem on screen.
+  const { rem, scale: textScale } = useChartRem(svgRef, BW);
+  const fs = 0.875 * rem;
+  const margin = useAxisMargin(svgRef, '.lc-balanceAmount', { estimate: textWidth('000.0', fs), gap: fs, least: 32, width: BW, right: BPAD_BASE.right });
+  const measured = useMeasuredText(svgRef, strings.balance.axisYears.split(/\s+/).filter(Boolean).map((w) => ({ cls: 'lc-chartTick lc-chartAxisTitle', text: w, size: fs })));
+  const titleWidth = (line: string) =>
+    line.split(' ').reduce((sum, w) => sum + measured.width({ cls: 'lc-chartTick lc-chartAxisTitle', text: w, size: fs }), 0) + (line.split(' ').length - 1) * 0.3 * fs;
+  const titleLines = wrapWords(strings.balance.axisYears, BW - 8, titleWidth);
+  const titleFit = Math.min(1, (BW - 4) / Math.max(1, ...titleLines.map(titleWidth)));
+  const BPAD = {
+    top: Math.max(BPAD_BASE.top, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
+    right: BPAD_BASE.right,
+    bottom: Math.max(BPAD_BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
+    left: margin.left,
+  };
+  const BH = BPAD.top + BPLOT_H + BPAD.bottom;
   const BPLOT_W = BW - BPAD.left - BPAD.right;
   const x = (m: number) => BPAD.left + (m / Math.max(maxMonths, 1)) * BPLOT_W;
   const cardLeft = useReadoutPlacement(figureRef, svgRef, cardRef, hover === null ? null : x(hover) / BW, (BW - BPAD.right) / BW);
@@ -366,18 +373,27 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
     interest: s.interest[Math.min(m, s.interest.length - 1)],
   });
 
-  const { top, step: yStep, count: yCount } = niceScale(Math.max(...series.map((s) => (s.open ? Math.max(...s.balance) : s.balance[0]))));
+  // Gridlines thin out as the text grows, so their labels stay apart.
+  const { top, step: yStep, count: yCount } = niceSteps(Math.max(...series.map((s) => (s.open ? Math.max(...s.balance) : s.balance[0]))), Math.min(6, BPLOT_H / (1.8 * fs)));
   const y = (v: number) => BPAD.top + (1 - v / top) * BPLOT_H;
   const path = (vals: number[]) => vals.map((v, m) => `${m === 0 ? 'M' : 'L'}${x(m).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
 
   const years = maxMonths / 12;
-  const yearStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
-  const xTicks: number[] = [];
-  for (let yr = 0; yr * 12 <= maxMonths; yr += yearStep) xTicks.push(yr);
+  const baseStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
+  const yearStep = [1, 2, 5, 10, 20].filter((s) => s >= baseStep)
+    .find((s) => ((s * 12) / Math.max(maxMonths, 1)) * BPLOT_W >= textWidth(String(Math.floor(years)), fs) + fs) ?? 20;
+  const xCandidates: number[] = [];
+  for (let yr = 0; yr * 12 <= maxMonths; yr += yearStep) xCandidates.push(yr);
+  const xTicks = placeLabels(xCandidates.map((yr) => x(yr * 12)), xCandidates.map((yr) => textWidth(String(yr), fs)), 2, BW - 2, 0.6 * fs)
+    .map(({ i, anchor }) => ({ yr: xCandidates[i], anchor }));
+  // Minor gridlines go first as the text grows: none from twice the default size.
+  const minor = textScale < 2;
   const xMinor: number[] = [];
-  if (yearStep > 1) for (let yr = 1; yr * 12 < maxMonths; yr++) if (yr % yearStep !== 0) xMinor.push(yr);
+  if (minor && yearStep > 1) for (let yr = 1; yr * 12 < maxMonths; yr++) if (yr % yearStep !== 0) xMinor.push(yr);
   const yTicks = Array.from({ length: yCount + 1 }, (_, t) => t * yStep);
-  const yMinor = Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep);
+  const yMinor = minor ? Array.from({ length: yCount }, (_, t) => (t + 0.5) * yStep) : [];
+  const titleHalf = (titleFit * Math.max(1, ...titleLines.map(titleWidth))) / 2 + 2;
+  const titleX = Math.round(Math.min(Math.max(BPAD.left + BPLOT_W / 2, titleHalf), BW - titleHalf));
   // The axis names its unit once, above the chart; its gridlines carry bare numbers.
   const unit = chartAmounts.axis(top, currency);
 
@@ -485,13 +501,15 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
           <svg
             ref={svgRef}
             className="lc-chart"
-            viewBox={`0 0 ${BW} ${BH}`}
+            viewBox={`0 0 ${BW} ${Math.ceil(BH)}`}
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
+            style={{ '--chart-fs': `${fs}px` } as React.CSSProperties}
             {...pointer}
           >
             <title id={titleId}>{strings.balance.title}</title>
             <desc id={descId}>{ariaSummary}</desc>
+            <MeasureSamples list={measured.list} />
             <rect className="lc-plotBg" x={BPAD.left} y={BPAD.top} width={BPLOT_W} height={BPLOT_H} rx="6" />
             {yMinor.map((t) => (
               <line key={`ym${t}`} className="lc-gridMinor" x1={BPAD.left} x2={BW - BPAD.right} y1={y(t)} y2={y(t)} />
@@ -503,17 +521,19 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               <g key={`y${t}`}>
                 <line className={t === 0 ? 'lc-axisLine' : 'lc-chartGrid'} x1={BPAD.left} x2={BW - BPAD.right} y1={y(t)} y2={y(t)} />
                 {margin.inside
-                  ? t > 0 && <text className="lc-chartTick lc-balanceAmount" x={BPAD.left + 6} y={y(t) - 5} textAnchor="start">{unit.tick(t)}</text>
-                  : <text className="lc-chartTick lc-balanceAmount" x={BPAD.left - 12} y={y(t) + 5} textAnchor="end">{unit.tick(t)}</text>}
+                  ? t > 0 && <text className="lc-chartTick lc-balanceAmount" x={BPAD.left + 6} y={y(t) - 0.3 * fs} textAnchor="start">{unit.tick(t)}</text>
+                  : <text className="lc-chartTick lc-balanceAmount" x={BPAD.left - 0.75 * fs} y={y(t) + 0.35 * fs} textAnchor="end">{unit.tick(t)}</text>}
               </g>
             ))}
-            {xTicks.map((yr) => (
-              <g key={`x${yr}`}>
-                {yr > 0 && <line className="lc-chartGrid" x1={x(yr * 12)} x2={x(yr * 12)} y1={BPAD.top} y2={BH - BPAD.bottom} />}
-                <text className="lc-chartTick" x={x(yr * 12)} y={BH - BPAD.bottom + 24} textAnchor="middle">{yr}</text>
-              </g>
+            {xCandidates.map((yr) => yr > 0 && (
+              <line key={`xg${yr}`} className="lc-chartGrid" x1={x(yr * 12)} x2={x(yr * 12)} y1={BPAD.top} y2={BH - BPAD.bottom} />
             ))}
-            <text className="lc-chartTick lc-chartAxisTitle" x={BPAD.left + BPLOT_W / 2} y={BH - 8} textAnchor="middle">{strings.balance.axisYears}</text>
+            {xTicks.map(({ yr, anchor }) => (
+              <text key={`x${yr}`} className="lc-chartTick" x={x(yr * 12)} y={BH - BPAD.bottom + 1.4 * fs} textAnchor={anchor}>{yr}</text>
+            ))}
+            <text className="lc-chartTick lc-chartAxisTitle" x={titleX} y={BH - BPAD.bottom + 3.0 * fs} textAnchor="middle" style={titleFit < 1 ? { fontSize: `${fs * titleFit}px` } : undefined} visibility={titleFit < FIT_FLOOR ? 'hidden' : undefined}>
+              {titleLines.map((l, i) => <tspan key={i} x={titleX} dy={i === 0 ? 0 : 1.2 * fs}>{l}</tspan>)}
+            </text>
             {series.map((s) => (
               <path
                 key={`line-${s.i}`}
@@ -625,41 +645,51 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const { formatAmount, formatMoney } = useMoney();
   const titleId = useId();
   const descId = useId();
-  // Phones get a narrower drawing, so the labels stay readable once it is
-  // scaled down to the screen instead of shrinking to a few pixels.
+  // Phones get a narrower drawing, so its bars stay wide enough for their
+  // labels once it is scaled down to the screen.
   const phone = usePhone();
   const amounts = useChartAmounts();
   const svgRef = useRef<SVGSVGElement>(null);
-  // How wide each label is drawn, by its text, so labels that would run into
-  // each other can be moved or left off (#521). Unmeasured labels count by length.
-  const [drawnWidth, setDrawnWidth] = useState<Record<string, number>>({});
-  useLayoutEffect(() => {
-    const el = svgRef.current;
-    if (!el) return;
-    const measure = () => {
-      const next: Record<string, number> = {};
-      for (const t of el.querySelectorAll<SVGTextElement>('.lc-splitMeasure text')) {
-        try {
-          const w = t.getComputedTextLength();
-          if (w > 0) next[t.textContent ?? ''] = w;
-        } catch { /* not rendered */ }
-      }
-      const keys = Object.keys(next);
-      // A hidden chart measures as nothing: what was measured before stays.
-      if (keys.length === 0) return;
-      setDrawnWidth((prev) => {
-        return keys.length === Object.keys(prev).length && keys.every((k) => Math.abs((prev[k] ?? -9) - next[k]) < 0.5) ? prev : next;
-      });
-    };
-    // After every drawing: any payment, lump sum or currency can change a
-    // label. Unchanged widths keep the same state, so this settles at once.
-    measure();
-    let live = true;
-    document.fonts?.ready.then(() => { if (live) measure(); });
-    const seen = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
-    seen?.observe(el);
-    return () => { live = false; seen?.disconnect(); };
-  });
+  const width = phone ? 360 : 800;
+  // Text follows the reader's text size (#676; council, Nov 21 2026): `rem`
+  // drawing units make one rem on screen. The bars keep their height; as the
+  // text grows the chart shows six sample years, then three, then two, bar
+  // values that no longer fit are left off before any bar is, and the legend
+  // words and the footnote wrap inside the drawing, which grows to hold them.
+  const { rem } = useChartRem(svgRef, width);
+  const fs = 0.875 * rem;
+  const LINE = 1.2 * fs;
+  const padL = phone ? 8 : 56;
+  const padR = phone ? 8 : 24;
+  const plotW = width - padL - padR;
+  const plotH = (phone ? 330 : 360) - 56 - 64;
+  const factor = getCurrency(currency).factor;
+  const choices = [6, 3, 2].map((n) => pickSplitSamples(schedule.length, n));
+  const candidates = [...new Set(choices.flat())].map((m) => schedule[m - 1]).filter(Boolean);
+  // The chart names its unit once, in the heading above it, and the bars
+  // carry bare numbers, like every other chart. Whole units while every
+  // number fits its bar; otherwise one scale for the whole chart, chosen from
+  // the largest payment ("Amounts in thousands of €": 1.25, 0.25).
+  const whole = amounts.axis(0, currency);
+  const scaled = amounts.axis(Math.max(0, ...candidates.map((r) => r.payment)) / factor, currency);
+  const labelForms = (minor: number) => [whole.tick(Math.round(minor / factor)), scaled.tick(minor / factor)];
+  const words = (text: string) => text.split(/\s+/).filter(Boolean);
+  // How wide each label is drawn, measured in the drawing (#521, #676).
+  const measured = useMeasuredText(svgRef, [
+    ...candidates.flatMap((r) => [...labelForms(r.interest), ...labelForms(r.principal)]).map((text) => ({ cls: 'lc-splitValueInterest', text, size: fs })),
+    ...candidates.flatMap((r) => words(formatYearLabel(r.month, strings))).map((text) => ({ cls: 'lc-splitTickX', text, size: fs })),
+    ...['', ' lc-splitEyebrow--plain'].flatMap((plain) => [
+      ...words(strings.split.eyebrowInterest).map((text) => ({ cls: `lc-splitEyebrowInterest${plain}`, text, size: fs })),
+      ...words(strings.split.eyebrowPrincipal).map((text) => ({ cls: `lc-splitEyebrowPrincipal${plain}`, text, size: fs })),
+    ]),
+    ...words(strings.split.footnote).map((text) => ({ cls: 'lc-splitFootnote', text, size: fs })),
+  ]);
+  const widthOf = (text: string) => measured.width({ cls: 'lc-splitValueInterest', text, size: fs });
+  // A line's width from its words' widths; the eyebrows' letter spacing widens their spaces.
+  const lineWidth = (cls: string, line: string) => {
+    const w = words(line);
+    return w.reduce((sum, x) => sum + measured.width({ cls, text: x, size: fs }), 0) + (w.length - 1) * (cls.includes('Eyebrow') ? 0.45 : 0.3) * fs;
+  };
   if (schedule.length === 0) {
     return (
       <p className="lc-chartEmpty">
@@ -668,14 +698,12 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
     );
   }
 
-  const factor = getCurrency(currency).factor;
-  // The chart names its unit once, in the heading above it, and the bars
-  // carry bare numbers, like every other chart. Whole units while every
-  // number fits its bar; otherwise one scale for the whole chart, chosen from
-  // the largest payment ("Amounts in thousands of €": 1.25, 0.25).
-  const widthOf = (text: string) => drawnWidth[text] ?? text.length * (phone ? 8.2 : 7.4);
-  const samples = pickSplitSamples(schedule.length, 6);
+  // As many sample years as let each year's label fit its column on one line.
+  const samples = choices.find((c, k) => k === choices.length - 1 || c.every((m) => lineWidth('lc-splitTickX', formatYearLabel(m, strings)) + 0.6 * fs <= plotW / c.length))!;
   const rows = samples.map((m) => schedule[m - 1]);
+  // The table for screen readers keeps all six sample years whatever the
+  // drawing shows: it is where the years a narrow drawing leaves out are given.
+  const tableRows = choices[0].map((m) => schedule[m - 1]);
 
   // Bar height represents the total payment for that month. For a fully-
   // amortising fixed-rate loan all bars are the same height, which is
@@ -685,21 +713,39 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const maxPayment = Math.max(...rows.map((r) => r.payment));
   if (maxPayment <= 0) return null;
 
-  const width = phone ? 360 : 800;
-  const height = phone ? 330 : 360;
-  const padT = 56;
-  const padB = 64;
-  const padL = phone ? 8 : 56;
-  const padR = phone ? 8 : 24;
-  const plotH = height - padT - padB;
-  const plotW = width - padL - padR;
-  // Phones: wider bars and narrower gaps, so each label fits its bar.
-  const barWidth = Math.min(70, (plotW - 20) / rows.length - (phone ? 6 : 14));
+  // Phones: wider bars and narrower gaps, so each label fits its bar. Bars
+  // widen with the text while there is room.
+  const barWidth = Math.min(Math.max(70, 5 * fs), (plotW - 20) / rows.length - (phone ? 6 : 14));
   const gap = (plotW - barWidth * rows.length) / (rows.length + 1);
+  const column = barWidth + gap;
 
-  const whole = amounts.axis(0, currency);
-  const scaled = amounts.axis(maxPayment / factor, currency);
-  const labelForms = (minor: number) => [whole.tick(Math.round(minor / factor)), scaled.tick(minor / factor)];
+  // Words that wrap: each line within `max`, and a single word wider than
+  // that drawn smaller, by just enough to fit.
+  const wrapped = (cls: string, text: string, max: number) => {
+    const lines = wrapWords(text, max, (l) => lineWidth(cls, l));
+    return { lines, fit: Math.min(1, max / Math.max(1, ...lines.map((l) => lineWidth(cls, l)))) };
+  };
+  // The legend words are capitals with wide spacing while they fit; when a
+  // word would not, both are set in ordinary letters instead of smaller.
+  const capsFit = [['lc-splitEyebrowInterest', strings.split.eyebrowInterest], ['lc-splitEyebrowPrincipal', strings.split.eyebrowPrincipal]]
+    .every(([cls, text]) => words(text).every((w) => lineWidth(cls, w) <= plotW));
+  const plain = capsFit ? '' : ' lc-splitEyebrow--plain';
+  const eyeI = wrapped(`lc-splitEyebrowInterest${plain}`, strings.split.eyebrowInterest, plotW);
+  const eyeP = wrapped(`lc-splitEyebrowPrincipal${plain}`, strings.split.eyebrowPrincipal, plotW);
+  const ticks = rows.map((r) => wrapped('lc-splitTickX', formatYearLabel(r.month, strings), column - 0.4 * fs));
+  const tickLines = Math.max(...ticks.map((t) => t.lines.length));
+  const foot = wrapped('lc-splitFootnote', strings.split.footnote, width - 8);
+
+  // Top to bottom: the interest legend, the bars, the principal legend, the
+  // sample years and the footnote.
+  const padT = Math.max(56, Math.ceil(2.6 * fs + (eyeI.lines.length - 1) * LINE));
+  const eyeITop = padT - 1.45 * fs - (eyeI.lines.length - 1) * LINE;
+  const plotBottom = padT + plotH;
+  const eyePTop = plotBottom + 1.3 * fs;
+  const tickTop = eyePTop + (eyeP.lines.length - 1) * LINE + 1.5 * fs;
+  const footTop = tickTop + (tickLines - 1) * LINE + 1.6 * fs;
+  const height = Math.ceil(footTop + (foot.lines.length - 1) * LINE + 0.5 * fs);
+
   const wholeFits = rows.every((r) => [r.interest, r.principal].every((m) => widthOf(labelForms(m)[0]) <= barWidth - 4));
   const unit = wholeFits ? whole : scaled;
   const barLabel = (minor: number) => labelForms(minor)[wholeFits ? 0 : 1];
@@ -709,20 +755,27 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const saysNothing = (minor: number) => readsAsZero(minor, barLabel);
 
   // Where each bar's two labels go. A label that would run into one already
-  // placed moves to a second row inside its own segment when the segment is
-  // tall enough, and is otherwise left off: the table below the chart, and the
-  // schedule, still hold the figure.
-  const ROW = 15;
+  // placed, or into a legend line, moves to a second row inside its own
+  // segment when the segment is tall enough, and is otherwise left off: the
+  // table below the chart, and the schedule, still hold the figure.
+  const ROW = 1.25 * fs;
+  const ROOM = 2 * fs;
   const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
+  const legendBox = (top: number, lines: string[], cls: string, fit: number) => lines.forEach((l, i) => {
+    const yy = top + i * LINE;
+    placed.push({ x0: padL, x1: padL + fit * lineWidth(cls, l), y0: yy - fs, y1: yy + 0.3 * fs });
+  });
+  legendBox(eyeITop, eyeI.lines, `lc-splitEyebrowInterest${plain}`, eyeI.fit);
+  legendBox(eyePTop, eyeP.lines, `lc-splitEyebrowPrincipal${plain}`, eyeP.fit);
   const place = (text: string, cx: number, base: number, room: number, inside: boolean): number | null => {
     // Inside a bar, a label wider than the bar would run onto the next one.
     // Outside it, a label wider than the bar's own column would reach the next bar's.
-    if (widthOf(text) > (inside ? barWidth - 4 : barWidth + gap - 2)) return null;
+    if (widthOf(text) > (inside ? barWidth - 4 : column - 2)) return null;
     const w = widthOf(text) + 4;
     for (const row of [0, 1]) {
-      if (row === 1 && !(inside && room >= 22 + ROW)) break;
+      if (row === 1 && !(inside && room >= ROOM + ROW)) break;
       const yy = base + row * ROW;
-      const box = { x0: cx - w / 2, x1: cx + w / 2, y0: yy - 12, y1: yy + 3 };
+      const box = { x0: cx - w / 2, x1: cx + w / 2, y0: yy - fs, y1: yy + 0.25 * fs };
       if (!placed.some((b) => box.x0 < b.x1 && b.x0 < box.x1 && box.y0 < b.y1 && b.y0 < box.y1)) {
         placed.push(box);
         return yy;
@@ -731,17 +784,19 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
     return null;
   };
   const labelAt = rows.map((row, idx) => {
-    const cx = padL + gap + idx * (barWidth + gap) + barWidth / 2;
+    const cx = padL + gap + idx * column + barWidth / 2;
     const totalH = plotH * (row.payment / maxPayment);
     const interestH = totalH * (row.interest / row.payment);
     const principalH = totalH - interestH;
     const yTop = padT + (plotH - totalH);
     const yPrincipal = yTop + interestH;
-    const interestInside = interestH >= 22;
-    const principalInside = principalH >= 22;
+    const interestInside = interestH >= ROOM;
+    const principalInside = principalH >= ROOM;
     return {
-      interest: saysNothing(row.interest) ? null : place(barLabel(row.interest), cx, interestInside ? yTop + 14 : yTop - 4, interestH, interestInside),
-      principal: saysNothing(row.principal) ? null : place(barLabel(row.principal), cx, principalInside ? yPrincipal + 16 : yPrincipal + principalH + 14, principalH, principalInside),
+      interestInside,
+      principalInside,
+      interest: saysNothing(row.interest) ? null : place(barLabel(row.interest), cx, interestInside ? yTop + 1.15 * fs : yTop - 0.3 * fs, interestH, interestInside),
+      principal: saysNothing(row.principal) ? null : place(barLabel(row.principal), cx, principalInside ? yPrincipal + 1.3 * fs : yPrincipal + principalH + 1.15 * fs, principalH, principalInside),
     };
   });
 
@@ -758,13 +813,16 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
         });
       })
       .join(' ');
+  const fitStyle = (fit: number) => (fit < 1 ? { fontSize: `${fs * fit}px` } : undefined);
+  // Below the floor a word is left out rather than drawn too small.
+  const fitShown = (fit: number) => (fit < FIT_FLOOR ? 'hidden' : undefined);
 
   return (
     <>
       <ChartUnit>{unit.heading}</ChartUnit>
       <svg
         ref={svgRef}
-        className={`lc-splitChart ${phone ? 'lc-splitChart--phone' : ''}`}
+        className="lc-splitChart"
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         // The name and the amounts are text inside the drawing, never an
@@ -772,38 +830,31 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
         aria-labelledby={`${titleId} ${descId}`}
         preserveAspectRatio="xMidYMid meet"
         focusable="false"
+        style={{ '--chart-fs': `${fs}px` } as React.CSSProperties}
       >
         <title id={titleId}>{strings.split.title}</title>
         <desc id={descId}>{ariaSummary}</desc>
 
-        {/* Every label the bars could carry, drawn unseen so each is measured
-            as it would be drawn, including one that was left off. */}
-        <g className="lc-splitMeasure" aria-hidden="true" visibility="hidden">
-          {[...new Set(rows.flatMap((r) => [...labelForms(r.interest), ...labelForms(r.principal)]))].map((text) => (
-            <text key={text} className="lc-splitValueInterest" x={0} y={0} style={{ fontWeight: 600 }}>{text}</text>
-          ))}
-        </g>
+        {/* Every label the chart could carry, drawn unseen so each is
+            measured as it would be drawn, including one that was left off. */}
+        <MeasureSamples list={measured.list} />
 
         {/* Eyebrow legend, mirroring the blog figure */}
-        <text x={padL} y={padT - 16} className="lc-splitEyebrowInterest">
-          {strings.split.eyebrowInterest}
+        <text x={padL} y={eyeITop} className={`lc-splitEyebrowInterest${plain}`} style={fitStyle(eyeI.fit)} visibility={fitShown(eyeI.fit)}>
+          {eyeI.lines.map((l, i) => <tspan key={i} x={padL} dy={i === 0 ? 0 : LINE}>{l}</tspan>)}
         </text>
-        <text x={padL} y={height - padB + 18} className="lc-splitEyebrowPrincipal">
-          {strings.split.eyebrowPrincipal}
+        <text x={padL} y={eyePTop} className={`lc-splitEyebrowPrincipal${plain}`} style={fitStyle(eyeP.fit)} visibility={fitShown(eyeP.fit)}>
+          {eyeP.lines.map((l, i) => <tspan key={i} x={padL} dy={i === 0 ? 0 : LINE}>{l}</tspan>)}
         </text>
 
         {rows.map((row, idx) => {
-          const x = padL + gap + idx * (barWidth + gap);
+          const x = padL + gap + idx * column;
           const totalH = plotH * (row.payment / maxPayment);
           const interestH = totalH * (row.interest / row.payment);
           const principalH = totalH - interestH;
           const yTop = padT + (plotH - totalH);
           const yPrincipal = yTop + interestH;
-
-          // Show inline labels for the values when the segment has enough
-          // vertical room; otherwise skip to keep the chart legible.
-          const interestLabelInside = interestH >= 22;
-          const principalLabelInside = principalH >= 22;
+          const { interestInside, principalInside } = labelAt[idx];
 
           return (
             <g key={row.month}>
@@ -833,8 +884,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
                   // never holds white (2.7:1). When the segment is too thin
                   // the label goes above the bar, in an orange that reads
                   // as text on the card.
-                  fill: interestLabelInside ? 'var(--chart-on-warn)' : 'var(--chart-text-warn)',
-                  fontWeight: 600,
+                  fill: interestInside ? 'var(--chart-on-warn)' : 'var(--chart-text-warn)',
                 }}
               >
                 {barLabel(row.interest)}
@@ -845,21 +895,20 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
                 y={labelAt[idx].principal ?? 0}
                 className="lc-splitValuePrincipal"
                 textAnchor="middle"
-                style={{
-                  fill: principalLabelInside ? vendorInk : 'var(--color-text-primary)',
-                  fontWeight: 600,
-                }}
+                style={{ fill: principalInside ? vendorInk : 'var(--color-text-primary)' }}
               >
                 {barLabel(row.principal)}
               </text>}
               {/* X-axis label: "Year N" or "Month N" for very short loans */}
               <text
                 x={x + barWidth / 2}
-                y={height - padB + 36}
+                y={tickTop}
                 className="lc-splitTickX"
                 textAnchor="middle"
+                style={fitStyle(ticks[idx].fit)}
+                visibility={fitShown(ticks[idx].fit)}
               >
-                {formatYearLabel(row.month, strings)}
+                {ticks[idx].lines.map((l, i) => <tspan key={i} x={x + barWidth / 2} dy={i === 0 ? 0 : LINE}>{l}</tspan>)}
               </text>
             </g>
           );
@@ -867,11 +916,13 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
 
         <text
           x={width / 2}
-          y={height - 6}
+          y={footTop}
           className="lc-splitFootnote"
           textAnchor="middle"
+          style={fitStyle(foot.fit)}
+          visibility={fitShown(foot.fit)}
         >
-          {strings.split.footnote}
+          {foot.lines.map((l, i) => <tspan key={i} x={width / 2} dy={i === 0 ? 0 : LINE}>{l}</tspan>)}
         </text>
       </svg>
 
@@ -889,7 +940,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
             </tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
+            {tableRows.map((r) => (
               <tr key={r.month}>
                 <th scope="row">{formatYearLabel(r.month, strings)}</th>
                 <td><Amount>{formatMoney(r.payment, currency)}</Amount></td>

@@ -94,7 +94,15 @@ const href = (path: string) => navHref(locale, path);
     background: var(--color-bg-white);
     border-top: 1px solid var(--color-border-light);
     margin-top: var(--space-16);
-    padding: var(--space-10) 0 var(--space-6);
+    --footer-end: var(--space-6);
+    padding: var(--space-10) 0 var(--footer-end);
+  }
+
+  /* While the cookie sheet is open, the room the page keeps for it
+     (--cookie-space, set by the consent prompt) is the footer's own: the
+     page ends in the footer's colour, not in a blank band past it. */
+  :global(html.cookie-open) .site-footer {
+    padding-bottom: calc(var(--footer-end) + var(--cookie-space, 0px));
   }
 
   .footer-cols {
@@ -217,7 +225,8 @@ const href = (path: string) => navHref(locale, path);
   @media (width < 640px) {
     .site-footer {
       margin-top: var(--space-10);
-      padding: var(--space-5) 0;
+      --footer-end: var(--space-5);
+      padding: var(--space-5) 0 var(--footer-end);
     }
 
     /* Only while the header menu can open: it is opened by a script, which

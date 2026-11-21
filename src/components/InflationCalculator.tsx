@@ -4,6 +4,8 @@ import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
+import { FIT_FLOOR, niceSteps, placeLabels, textWidth, useChartRem, wrapWords } from './chart/useChartRem.ts';
+import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
@@ -941,24 +943,37 @@ function HistoryBars({
   const bottom = minV < 0 ? -Math.min(BAR_CAP, niceScale(-minV, 1).top) : 0;
   const capped = maxV > top || minV < bottom;
   const W = narrow ? 360 : 760;
-  const H = narrow ? 150 : 170;
-  const PAD = { top: 10, right: 8, bottom: 30, left: narrow ? 52 : 60 };
+  // Text follows the reader's text size (#676): the plot keeps its height
+  // while the labels fit beside each other, and grows only as far as two
+  // labels a line apart need; the margins grow with the labels.
+  const svgRef = useRef<SVGSVGElement>(null);
+  const { rem } = useChartRem(svgRef, W);
+  const fs = 0.875 * rem;
+  const fmt = (v: number) => pct(v, numberLocale, 0);
+  const yLabels = [top, 0, ...(bottom < 0 ? [bottom] : [])];
+  const labelW = Math.max(...yLabels.map((v) => textWidth(fmt(v), fs)));
+  // Tall enough that the labels at the top, zero and the bottom sit at least
+  // 1.4 label heights apart.
+  const plotH = Math.max(narrow ? 110 : 130, (1.4 * fs * (top - bottom)) / (bottom < 0 ? Math.min(top, -bottom) : top));
+  const PAD = { top: Math.max(10, Math.ceil(0.6 * fs)), right: 8, bottom: Math.max(30, Math.ceil(1.9 * fs)), left: Math.max(narrow ? 52 : 60, Math.ceil(labelW + 0.6 * fs)) };
+  const H = PAD.top + plotH + PAD.bottom;
   const plotW = W - PAD.left - PAD.right;
-  const plotH = H - PAD.top - PAD.bottom;
   const bw = plotW / Math.max(1, years.length);
   const y = (v: number) => PAD.top + ((top - Math.max(bottom, Math.min(top, v))) / (top - bottom)) * plotH;
   const zero = y(0);
-  const fmt = (v: number) => pct(v, numberLocale, 0);
   const first = years[0];
   const last = years[years.length - 1];
+  // The first and last years, while both fit along the foot; the last alone otherwise.
+  const yearW = textWidth(String(last), fs);
+  const bothYears = 2 * yearW + fs <= W - PAD.left;
   return (
     <figure className="ifc-bars">
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} className="ifc-barsSvg">
+      <svg ref={svgRef} viewBox={`0 0 ${W} ${Math.ceil(H)}`} role="img" aria-label={label} className="ifc-barsSvg" style={{ '--chart-fs': `${fs}px` } as React.CSSProperties}>
         <line className="ifc-gridLine" x1={PAD.left} x2={W - PAD.right} y1={y(top)} y2={y(top)} />
         {bottom < 0 && <line className="ifc-gridLine" x1={PAD.left} x2={W - PAD.right} y1={y(bottom)} y2={y(bottom)} />}
-        <text className="ifc-axis" x={PAD.left - 8} y={y(top) + 6} textAnchor="end">{fmt(top)}</text>
-        <text className="ifc-axis" x={PAD.left - 8} y={zero + 6} textAnchor="end">{fmt(0)}</text>
-        {bottom < 0 && <text className="ifc-axis" x={PAD.left - 8} y={y(bottom) + 2} textAnchor="end">{fmt(bottom)}</text>}
+        <text className="ifc-axis" x={PAD.left - 0.5 * fs} y={y(top) + 0.35 * fs} textAnchor="end">{fmt(top)}</text>
+        <text className="ifc-axis" x={PAD.left - 0.5 * fs} y={zero + 0.35 * fs} textAnchor="end">{fmt(0)}</text>
+        {bottom < 0 && <text className="ifc-axis" x={PAD.left - 0.5 * fs} y={y(bottom) + 0.35 * fs} textAnchor="end">{fmt(bottom)}</text>}
         {years.map((yr, i) => {
           if (!(yr in series)) return null;
           const v = series[yr];
@@ -976,8 +991,8 @@ function HistoryBars({
           );
         })}
         <line className="ifc-axisLine" x1={PAD.left} x2={W - PAD.right} y1={zero} y2={zero} />
-        <text className="ifc-axis" x={PAD.left} y={H - 6} textAnchor="start">{first}</text>
-        <text className="ifc-axis" x={W - PAD.right} y={H - 6} textAnchor="end">{last}</text>
+        {bothYears && <text className="ifc-axis" x={PAD.left} y={H - 0.5 * fs} textAnchor="start">{first}</text>}
+        <text className="ifc-axis" x={W - PAD.right} y={H - 0.5 * fs} textAnchor="end">{last}</text>
       </svg>
       <figcaption className="ifc-legend">
         <span><i className="ifc-key ifc-key--recent" aria-hidden="true" />{strings.history.legendRecent}</span>
@@ -1259,10 +1274,17 @@ function LineChart({
   const descId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
   const W = narrow ? 360 : 760;
+  // Text follows the reader's text size (#676): `rem` drawing units make one
+  // rem on screen. The plot keeps its height; gridlines thin out so their
+  // labels stay apart, and the margins grow with the labels.
+  const { rem } = useChartRem(svgRef, W);
+  const fs = 0.875 * rem;
+  const BASE = narrow ? { top: 14, right: 18, bottom: 54 } : { top: 18, right: 28, bottom: 58 };
+  const plotH = (narrow ? 210 : 300) - BASE.top - BASE.bottom;
   const values = points.map((p) => p.value);
   const maxV = Math.max(0, ...values);
   const drawn = points.length >= 2 && Number.isFinite(maxV) && maxV < DISPLAY_CEILING;
-  const { top, step, count } = niceScale(drawn ? maxV : 1, narrow ? 4 : 5);
+  const { top, step, count } = niceSteps(drawn ? maxV : 1, Math.min(narrow ? 4 : 5, plotH / (1.8 * fs)));
   // The axis names its unit once, above the chart, and its gridlines carry
   // bare numbers; the left margin is as wide as those numbers are drawn (#521).
   const unit = amounts.axis(top, code);
@@ -1271,8 +1293,14 @@ function LineChart({
   const margin = useAxisMargin(
     svgRef,
     '.ifc-axisAmount',
-    { estimate: Math.max(...tickText.map((s) => s.length)) * 9.5, gap: 14, least: narrow ? 18 : 28, width: W, right: narrow ? 18 : 28 },
+    { estimate: Math.max(...tickText.map((s) => textWidth(s, fs))), gap: fs, least: narrow ? 18 : 28, width: W, right: BASE.right },
   );
+  const titleWords = axis.split(/\s+/).filter(Boolean);
+  const measured = useMeasuredText(svgRef, titleWords.map((w) => ({ cls: 'ifc-axis ifc-axisTitle', text: w, size: fs })));
+  const titleWidth = (line: string) =>
+    line.split(' ').reduce((sum, w) => sum + measured.width({ cls: 'ifc-axis ifc-axisTitle', text: w, size: fs }), 0) + (line.split(' ').length - 1) * 0.3 * fs;
+  const titleLines = wrapWords(axis, W - 8, titleWidth);
+  const titleFit = Math.min(1, (W - 4) / Math.max(1, ...titleLines.map(titleWidth)));
   if (points.length < 2) return null;
   if (!drawn) {
     return (
@@ -1282,10 +1310,15 @@ function LineChart({
       </figure>
     );
   }
-  const H = narrow ? 210 : 300;
-  const PAD = { ...(narrow ? { top: 14, right: 18, bottom: 54 } : { top: 18, right: 28, bottom: 58 }), left: margin.left };
+  const PAD = {
+    // A label drawn above its gridline needs its whole line height above the plot.
+    top: Math.max(BASE.top, Math.ceil((margin.inside ? 1.4 : 0.8) * fs)),
+    right: BASE.right,
+    bottom: Math.max(BASE.bottom, Math.ceil((2.6 + 1.2 * titleLines.length) * fs)),
+    left: margin.left,
+  };
+  const H = PAD.top + plotH + PAD.bottom;
   const plotW = W - PAD.left - PAD.right;
-  const plotH = H - PAD.top - PAD.bottom;
   const x0 = points[0].x;
   const x1 = points[points.length - 1].x;
   const span = Math.max(1, x1 - x0);
@@ -1295,9 +1328,14 @@ function LineChart({
   const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${r1(px(p.x))},${r1(py(p.value))}`).join(' ');
   const area = `${line} L${r1(px(x1))},${r1(py(0))} L${r1(px(x0))},${r1(py(0))} Z`;
   const maxTicks = narrow ? 4 : 8;
-  const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks) ?? 100;
-  const xTicks: number[] = [];
-  for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xTicks.push(x);
+  const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(x1), fs) + fs) ?? 100;
+  const xCandidates: number[] = [];
+  for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xCandidates.push(x);
+  // Labels that would touch, or run past the drawing, are left out.
+  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), 2, W - 2, 0.6 * fs)
+    .map(({ i, anchor }) => ({ x: xCandidates[i], anchor }));
+  const titleHalf = (titleFit * Math.max(1, ...titleLines.map(titleWidth))) / 2 + 2;
+  const titleX = Math.round(Math.min(Math.max(PAD.left + plotW / 2, titleHalf), W - titleHalf));
   const xLabel = (x: number) => (calendar ? String(x) : t(strings.chart.yearsFrom, { n: x }));
   const start = points[0];
   const end = points[points.length - 1];
@@ -1311,22 +1349,25 @@ function LineChart({
     <figure className="ifc-figure">
       <figcaption className="ifc-chartTitle" id={titleId}><Amounts>{title}</Amounts></figcaption>
       <ChartUnit>{unit.heading}</ChartUnit>
-      <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} aria-describedby={descId} className="ifc-chart">
+      <svg ref={svgRef} viewBox={`0 0 ${W} ${Math.ceil(H)}`} role="img" aria-labelledby={titleId} aria-describedby={descId} className="ifc-chart" style={{ '--chart-fs': `${fs}px` } as React.CSSProperties}>
         <desc id={descId}>{desc}</desc>
+        <MeasureSamples list={measured.list} />
         {yTicks.map((v) => (
           <g key={`y${v}`}>
             <line className={v === 0 ? 'ifc-axisLine' : 'ifc-gridLine'} x1={PAD.left} x2={W - PAD.right} y1={r1(py(v))} y2={r1(py(v))} />
             {margin.inside
-              ? v > 0 && <text className="ifc-axis ifc-axisAmount" x={PAD.left + 6} y={r1(py(v)) - 5} textAnchor="start">{unit.tick(v)}</text>
-              : <text className="ifc-axis ifc-axisAmount" x={PAD.left - 10} y={r1(py(v)) + 5} textAnchor="end">{unit.tick(v)}</text>}
+              ? v > 0 && <text className="ifc-axis ifc-axisAmount" x={PAD.left + 6} y={r1(py(v) - 0.3 * fs)} textAnchor="start">{unit.tick(v)}</text>
+              : <text className="ifc-axis ifc-axisAmount" x={r1(PAD.left - 0.6 * fs)} y={r1(py(v) + 0.35 * fs)} textAnchor="end">{unit.tick(v)}</text>}
           </g>
         ))}
-        {xTicks.map((x) => (
-          <text key={`x${x}`} className="ifc-axis" x={r1(px(x))} y={H - PAD.bottom + 24} textAnchor={x === x0 ? 'start' : x === x1 ? 'end' : 'middle'}>
+        {xTicks.map(({ x, anchor }) => (
+          <text key={`x${x}`} className="ifc-axis" x={r1(px(x))} y={r1(H - PAD.bottom + 1.4 * fs)} textAnchor={anchor}>
             {x}
           </text>
         ))}
-        <text className="ifc-axis ifc-axisTitle" x={PAD.left + plotW / 2} y={H - 8} textAnchor="middle">{axis}</text>
+        <text className="ifc-axis ifc-axisTitle" x={titleX} y={r1(H - PAD.bottom + 3.0 * fs)} textAnchor="middle" style={titleFit < 1 ? { fontSize: `${fs * titleFit}px` } : undefined} visibility={titleFit < FIT_FLOOR ? 'hidden' : undefined}>
+          {titleLines.map((l, i) => <tspan key={i} x={titleX} dy={i === 0 ? 0 : r1(1.2 * fs)}>{l}</tspan>)}
+        </text>
         <path className="ifc-area" d={area} />
         <path className="ifc-line" d={line} />
         <circle className="ifc-dot" cx={r1(px(start.x))} cy={r1(py(start.value))} r="5" />
