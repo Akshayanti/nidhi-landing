@@ -219,7 +219,7 @@ const faqSchema = {
                     <span class="chain-q">
                       {planQuestion[s.id]}<span class="sr-only">,</span>{' '}
                       <span class="chain-soon">
-                        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.25" /><path d="M8 4.75V8l2.25 1.5" /></svg>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" /><path d="M12 7v5l3.5 2.25" /></svg>
                         {home.situations.soon}
                       </span>
                     </span>
@@ -299,7 +299,7 @@ const faqSchema = {
           <li style="--start-level: var(--level-inclusive-finances)">
             <a class="route" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
               <span class="route-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
               </span>
               <span class="route-title">{learn.levels['inclusive-finances']}</span>
               <span class="route-meta">{inclusiveText}</span>
@@ -388,7 +388,7 @@ const faqSchema = {
           </p>
         </figure>
       <div class="help-card">
-        <p class="help-eyebrow">{home.helpCard.eyebrow}</p>
+        <p class="eyebrow help-eyebrow">{home.helpCard.eyebrow}</p>
         <h2 class="help-heading" id="help-heading">{home.helpCard.heading}</h2>
         <p class="help-body">{home.helpCard.body}</p>
         <a class="help-link" href={href('/volunteers/')} data-attr="home-help-volunteer" aria-describedby="help-heading">{home.helpCard.link}&nbsp;<span aria-hidden="true">&rarr;</span></a>
@@ -477,7 +477,7 @@ const faqSchema = {
     border-bottom: 1px solid var(--color-border);
     color: var(--color-text-primary);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     line-height: 1.45;
     text-align: center;
   }
@@ -489,7 +489,7 @@ const faqSchema = {
     max-width: 100%;
     padding: 2px 10px;
     border: 1.5px solid var(--color-deep-blue);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     color: var(--color-deep-blue);
     font-weight: 600;
   }
@@ -505,22 +505,11 @@ const faqSchema = {
   }
 
   @media (max-width: 759px) {
-    .vol-bar { justify-content: flex-start; text-align: left; font-size: 0.8125rem; }
+    .vol-bar { justify-content: flex-start; text-align: left; font-size: var(--text-caption); }
   }
 
   /* Read by screen readers, not drawn: "Route 1" before each route line,
      the beta date in the planner heading, the pause before "soon". */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
 
   /* ----------------------------------------------------------------
      Section frame
@@ -534,7 +523,8 @@ const faqSchema = {
 
   .lp-section-inner {
     width: 100%;
-    max-width: 1100px;
+    /* The content edge meets the header's: the wide layout less its two gutters. */
+    max-width: calc(var(--layout-wide) - 2 * var(--layout-gutter));
     margin: 0 auto;
   }
 
@@ -559,7 +549,7 @@ const faqSchema = {
   .section-head { max-width: 720px; margin-bottom: 28px; }
 
   .cap-body {
-    font-size: 1.02rem;
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.6;
     max-width: 65ch;
@@ -578,7 +568,7 @@ const faqSchema = {
     text-underline-offset: 3px;
   }
 
-  .section-foot { margin: 24px 0 0; font-size: 0.95rem; }
+  .section-foot { margin: 24px 0 0; font-size: var(--text-ui); }
 
   /* A visible keyboard focus on every link on the page. */
   a:focus-visible {
@@ -608,7 +598,7 @@ const faqSchema = {
 
   .hero-copy h1 {
     font-family: var(--font-heading);
-    font-size: clamp(2.25rem, 4.2vw + 0.6rem, 3.6rem);
+    font-size: var(--title-hero);
     line-height: 1.05;
     letter-spacing: -0.02em;
     color: var(--color-deep-blue);
@@ -618,7 +608,7 @@ const faqSchema = {
   }
 
   .hero-lead {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     line-height: 1.55;
     color: var(--color-text-primary);
     max-width: 54ch;
@@ -632,7 +622,7 @@ const faqSchema = {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
   }
 
   .hero-lang { margin-top: 8px; max-width: 54ch; }
@@ -640,12 +630,12 @@ const faqSchema = {
 
   /* Which sounds like you? */
   .sits-heading {
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     color: var(--color-text-primary);
     margin: 24px 0 4px;
   }
 
-  @media (min-width: 900px) { .sits-heading { font-size: 1.125rem; margin-top: 0; } }
+  @media (min-width: 900px) { .sits-heading { font-size: var(--text-lead); margin-top: 0; } }
 
   .sits-list { list-style: none; margin: 0; padding: 0; }
 
@@ -655,7 +645,7 @@ const faqSchema = {
   .sit-who {
     margin: 0 0 2px;
     font-family: var(--font-heading);
-    font-size: 1.0625rem;
+    font-size: var(--text-prose);
     font-weight: 600;
     line-height: 1.35;
     color: var(--color-text-primary);
@@ -686,7 +676,7 @@ const faqSchema = {
     grid-template-columns: subgrid;
     align-items: baseline;
     margin: 0;
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     line-height: 1.45;
   }
 
@@ -721,7 +711,7 @@ const faqSchema = {
   .chain-q { color: var(--color-text-secondary); }
 
   .chain-k {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
@@ -731,7 +721,7 @@ const faqSchema = {
     align-items: center;
     gap: 5px;
     margin-top: 2px;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
@@ -742,7 +732,7 @@ const faqSchema = {
     margin: 14px 0 0;
     padding-top: 14px;
     border-top: 1px solid var(--color-border);
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
   }
 
@@ -771,7 +761,7 @@ const faqSchema = {
   }
   .howto-card-k {
     font-family: var(--font-heading);
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--color-text-primary);
   }
@@ -811,20 +801,20 @@ const faqSchema = {
     background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
     color: var(--start-level);
     font-family: var(--font-heading);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 700;
   }
 
   .route-title {
     font-family: var(--font-heading);
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     font-weight: 600;
     line-height: 1.3;
   }
 
   .route-meta {
     grid-column: 2;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
   }
 
@@ -834,7 +824,7 @@ const faqSchema = {
     max-width: 22ch;
     text-align: right;
     font-family: var(--font-heading);
-    font-size: 0.92rem;
+    font-size: var(--text-ui);
     font-weight: 600;
     color: var(--color-deep-blue);
   }
@@ -888,16 +878,16 @@ const faqSchema = {
   .tool-card:hover .tool-name,
   .tool-card:focus-visible .tool-name { text-decoration: underline; text-underline-offset: 3px; }
 
-  .tool-q { font-size: 0.9375rem; color: var(--color-text-primary); }
+  .tool-q { font-size: var(--text-ui); color: var(--color-text-primary); }
 
   .tool-name {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: var(--text-base);
     color: var(--color-deep-blue);
   }
 
-  .tool-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.45; }
+  .tool-desc { font-size: var(--text-small); color: var(--color-text-secondary); line-height: 1.45; }
 
   /* ----------------------------------------------------------------
      4. Planner
@@ -922,11 +912,11 @@ const faqSchema = {
     display: inline-block;
     margin: 0 0 10px;
     padding: 3px 10px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--color-bg-subtle);
     color: var(--color-deep-blue);
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -934,19 +924,18 @@ const faqSchema = {
 
   /* Devanagari's vowel signs shrink first at small sizes, and its marks above
      and below the line need more room between lines. */
-  :global(html:is([lang='hi'], [lang='mr'])) :is(.chain-k, .chain-soon, .route-meta, .tool-desc, .note-links, .vol-bar) { font-size: 0.9375rem; }
+  :global(html:is([lang='hi'], [lang='mr'])) :is(.chain-k, .chain-soon, .route-meta, .tool-desc, .note-links, .vol-bar) { font-size: var(--text-ui); }
   :global(html:is([lang='hi'], [lang='mr'])) .hero-copy h1 { line-height: 1.2; }
 
   /* Devanagari has no capitals, and tracking only spaces it apart. */
-  :global(html:is([lang='hi'], [lang='mr'])) .planner-badge,
-  :global(html:is([lang='hi'], [lang='mr'])) .help-eyebrow {
-    font-size: 0.8125rem;
+  :global(html:is([lang='hi'], [lang='mr'])) .planner-badge {
+    font-size: var(--text-caption);
     letter-spacing: normal;
   }
 
   .planner-qs-lead {
     margin: 18px 0 6px;
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     font-weight: 600;
     color: var(--color-text-primary);
   }
@@ -956,7 +945,7 @@ const faqSchema = {
   .planner-qs li {
     padding: 10px 0;
     border-top: 1px solid var(--color-border);
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     color: var(--color-text-primary);
   }
 
@@ -985,7 +974,7 @@ const faqSchema = {
 
   .note-label {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     line-height: 1.4;
     font-weight: 700;
     color: var(--warm);
@@ -997,8 +986,8 @@ const faqSchema = {
   .note-say p {
     margin: 0;
     max-width: 34em;
-    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-    font-size: 1.25rem;
+    font-family: var(--font-personal);
+    font-size: var(--text-lg);
     font-style: italic;
     line-height: 1.5;
     color: var(--color-text-primary);
@@ -1010,8 +999,8 @@ const faqSchema = {
   .note-say:is(:lang(hi), :lang(mr)) p { font-family: var(--font-body); font-style: normal; text-indent: 0; }
 
   .note-by {
-    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-    font-size: 0.9375rem;
+    font-family: var(--font-personal);
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
   }
 
@@ -1019,7 +1008,7 @@ const faqSchema = {
 
   .note-links {
     margin: 16px 0 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
@@ -1037,23 +1026,17 @@ const faqSchema = {
 
   .help-eyebrow {
     margin: 0;
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-teal);
   }
 
   .help-heading {
     margin: 6px 0 4px;
-    font-size: 1.125rem;
+    font-size: var(--text-lead);
     color: var(--color-text-primary);
   }
 
-  .help-body { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.55; color: var(--color-text-secondary); }
+  .help-body { margin: 0 0 8px; font-size: var(--text-ui); line-height: 1.55; color: var(--color-text-secondary); }
 
-  .help-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 0.95rem; }
+  .help-link { display: inline-flex; align-items: center; min-height: 32px; font-size: var(--text-ui); }
 
   /* ----------------------------------------------------------------
      6. FAQ
@@ -1079,7 +1062,7 @@ const faqSchema = {
   .faq-item h3 {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: 1.02rem;
+    font-size: var(--text-base);
     font-weight: 600;
     color: var(--color-text-primary);
   }
@@ -1088,7 +1071,7 @@ const faqSchema = {
     margin: 0 4px 18px;
     color: var(--color-text-secondary);
     line-height: 1.6;
-    font-size: 0.97rem;
+    font-size: var(--text-base);
     max-width: 64ch;
   }
 
@@ -1099,7 +1082,7 @@ const faqSchema = {
   /* ----------------------------------------------------------------
      Phones
      ---------------------------------------------------------------- */
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .lp-section { padding: 40px 16px; }
     #hero { padding-top: 24px; }
     .section-head { margin-bottom: 20px; }
@@ -1121,8 +1104,8 @@ const faqSchema = {
       align-items: start;
       padding: 14px 2px;
     }
-    .route-badge { grid-row: 1; width: 28px; height: 28px; font-size: 0.8125rem; }
-    .route-title { font-size: 1rem; }
+    .route-badge { grid-row: 1; width: 28px; height: 28px; font-size: var(--text-caption); }
+    .route-title { font-size: var(--text-base); }
     .route-go { grid-column: 2; grid-row: auto; max-width: none; text-align: left; margin-top: 4px; }
   }
 </style>

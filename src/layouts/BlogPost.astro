@@ -586,7 +586,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     display: inline-flex;
     align-items: center;
     min-height: 24px;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-family: var(--font-heading);
     font-weight: 500;
     color: var(--color-text-secondary);
@@ -602,21 +602,21 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-series-foot {
     margin-top: var(--space-10);
     margin-bottom: 0;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
   }
 
   .post-series-foot + .post-nav { margin-top: var(--space-4); }
 
   .post-reading-time {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
   }
 
   .post-byline {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-weight: 500;
@@ -633,14 +633,14 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .post-date {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
   }
 
   .post-correction {
     margin: var(--space-3) 0 0;
     padding: 0.6rem 0.85rem;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     line-height: 1.5;
     color: var(--color-text-secondary);
     background: var(--color-bg);
@@ -657,7 +657,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
      evergreen finance content; we use the same muted treatment as the
      pubDate so it reads as metadata, not an alert. */
   .post-updated {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
   }
 
@@ -668,7 +668,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .post-title {
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
     letter-spacing: -0.02em;
@@ -684,7 +684,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .tldr-label {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-deep-blue);
@@ -693,7 +693,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-tldr-list {
     margin: var(--space-2) 0 0;
     padding-inline-start: 1.1em;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     line-height: 1.5;
   }
@@ -701,12 +701,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-howto-line {
     margin: calc(var(--space-2) * -1) 0 var(--space-4);
     padding: 0 var(--space-5);
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
   }
   .post-howto-line a, .post-howto-end a { font-weight: 600; }
   .post-howto-min { color: var(--color-text-muted); white-space: nowrap; }
-  .post-howto-end { margin: var(--space-6) 0; font-size: 0.95rem; }
+  .post-howto-end { margin: var(--space-6) 0; font-size: var(--text-ui); }
 
   .post-tldr-list li + li {
     margin-top: var(--space-1);
@@ -722,7 +722,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-covers-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-deep-blue);
@@ -744,7 +744,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     min-width: 0;
     overflow-wrap: break-word;
     padding-left: 1.25rem;
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.5;
     color: var(--color-text-secondary);
   }
@@ -818,20 +818,20 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-glossary-heading {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: 1.125rem;
+    font-size: var(--text-lead);
     font-weight: 700;
     color: var(--color-text-primary);
   }
 
   .post-glossary-count {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
   }
 
   .post-glossary-all {
     margin-left: auto;
     flex: none;
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     padding: 0.6rem 0;
   }
 
@@ -850,10 +850,10 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     min-height: 40px;
     padding: 0.2rem 0.7rem;
     border: 1px solid var(--color-link-edge);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--color-deep-blue) 7%, var(--color-bg-white));
     color: var(--color-deep-blue);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 600;
     text-decoration: none;
   }
@@ -938,7 +938,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     background: var(--color-border-light);
     padding: 3px 10px;
     border-radius: var(--radius-sm);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-secondary);
     text-decoration: none;
     cursor: pointer;
@@ -958,7 +958,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
      is no sidebar. */
   .prose,
   .post-bottom-content {
-    max-width: var(--max-width);
+    max-width: var(--layout-reading);
     margin: 0 auto;
     padding: 0 var(--space-4);
   }
@@ -975,7 +975,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
 
   .post-tool-title {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin: 0 0 var(--space-3);
   }
@@ -1021,7 +1021,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .post-tool-stepLabel {
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -1030,7 +1030,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .post-tool-stepBody {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.5;
     color: var(--color-text-primary);
   }
@@ -1038,7 +1038,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-tool-check,
   .post-tool-note {
     color: var(--color-text-muted);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
   }
 
   .post-tool-note {
@@ -1070,7 +1070,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .post-faq-title {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
   }
@@ -1108,14 +1108,14 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .post-faq-q {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 600;
     color: var(--color-text-primary);
     line-height: 1.4;
   }
 
   .post-faq-a {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
     line-height: 1.65;
     margin: 0 4px var(--space-4);
@@ -1130,7 +1130,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .suggested-reading-title {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
   }
@@ -1142,7 +1142,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .suggested-reading-list li {
     padding: var(--space-2) 0;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     display: flex;
     align-items: baseline;
     gap: var(--space-2);
@@ -1182,12 +1182,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .ref-author {
     color: var(--color-text-secondary);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
   }
 
   .ref-type {
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     background: var(--color-border-light);
@@ -1222,7 +1222,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .post-nav-direction {
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-muted);
@@ -1230,7 +1230,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
   .post-nav-title {
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-deep-blue);
     line-height: 1.35;
   }
@@ -1240,7 +1240,6 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   @media (max-width: 480px) {
-    .post-title { font-size: 1.5rem; }
     .post-nav { flex-direction: column; gap: var(--space-3); }
     .post-nav-link { max-width: 100%; }
     .post-nav-next { text-align: left; }
@@ -1257,7 +1256,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   }
 
   .post-related-title {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
   }
@@ -1304,13 +1303,13 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .post-related-card-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: var(--text-base);
     color: var(--color-deep-blue);
     line-height: 1.3;
   }
 
   .post-related-card-desc {
-    font-size: 0.88rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     line-height: 1.5;
     text-wrap: pretty;
@@ -1325,7 +1324,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     position: fixed;
     right: var(--space-4);
     bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-4));
-    z-index: 90;
+    z-index: calc(var(--z-header) - 10);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1334,12 +1333,12 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     height: 48px;
     padding: 0 var(--space-3);
     border: 0;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--color-deep-blue);
     color: var(--color-bg-white);
     box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
     font: inherit;
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     font-weight: 600;
     cursor: pointer;
     visibility: hidden;
@@ -1388,7 +1387,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
      it now lives. Motion only; skipped for reduced motion. */
   :global(.lesson-index-ghost) {
     position: fixed;
-    z-index: 89;
+    z-index: calc(var(--z-header) - 11);
     margin: 0;
     padding: var(--space-3) var(--space-5);
     overflow: hidden;
@@ -1404,7 +1403,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   @media (min-width: 1200px) {
     .lesson-index-button {
       right: auto;
-      left: calc(50% + var(--max-width) / 2 + var(--space-4));
+      left: calc(50% + var(--layout-reading) / 2 + var(--space-4));
       bottom: var(--space-8);
       padding: 0 var(--space-4) 0 var(--space-3);
     }
@@ -1470,7 +1469,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .lesson-index-title {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1527,7 +1526,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
   .lesson-index-list li:has(a[aria-current])::before {
     left: 0;
     width: 0.65rem;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   .lesson-index-list a {
@@ -1536,7 +1535,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     min-height: 44px;
     padding: 0.35rem 0;
     color: var(--color-deep-blue);
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.4;
     text-decoration: none;
   }
@@ -1578,7 +1577,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
       margin-top: var(--space-6);
       padding-top: var(--space-3);
       border-top: 1px solid var(--color-border);
-      font-size: 0.85rem;
+      font-size: var(--text-small);
       color: var(--color-text-primary);
     }
   }
@@ -1590,7 +1589,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
     left: 0;
     height: 3px;
     background: var(--color-teal);
-    z-index: 10001;
+    z-index: var(--z-progress);
+    pointer-events: none;
     width: 0%;
     transition: width 0.1s linear;
   }

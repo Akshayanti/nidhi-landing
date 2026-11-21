@@ -3,7 +3,7 @@
  * to public/brand/social/how-to/<slug>.png, 1200×630.
  *
  * The card shows the guide's question, its hub group and how many steps it
- * has, in the site's fonts and colours: what someone sees when a guide is
+ * has, in the site's fonts, colours and brand mark (#420): what someone sees when a guide is
  * sent to them, before they open it. Run after adding a guide or changing a
  * title:
  *
@@ -47,6 +47,8 @@ function readGuide(file) {
 }
 
 const font = (name) => `data:font/woff2;base64,${readFileSync(join(ROOT, 'public/fonts', name)).toString('base64')}`;
+// The brand mark, the same file the site's own share cards are drawn from.
+const mark = `data:image/png;base64,${readFileSync(join(ROOT, 'public/brand/logo/icon-only/icon-128.png')).toString('base64')}`;
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 function html(g) {
@@ -56,19 +58,20 @@ function html(g) {
     @font-face { font-family: Inter; src: url(${font('inter-latin.woff2')}) format('woff2'); font-weight: 100 900; }
     @font-face { font-family: Roboto; src: url(${font('roboto-latin.woff2')}) format('woff2'); font-weight: 100 900; }
     * { box-sizing: border-box; margin: 0; }
-    body { width: 1200px; height: 630px; background: #F7F9FC; font-family: Roboto, sans-serif; }
+    body { width: 1200px; height: 630px; background: #F8F9FA; font-family: Roboto, sans-serif; }
     .card { position: absolute; inset: 0; padding: 64px 80px; display: flex; flex-direction: column; border-left: 18px solid #005B4F; }
-    .kicker { font-family: Inter; font-weight: 800; font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: #005B4F; }
-    .group { font-size: 26px; color: #4A5568; margin-top: 8px; }
-    h1 { font-family: Inter; font-weight: 800; font-size: ${size}px; line-height: 1.12; letter-spacing: -0.02em; color: #0A3D8F; margin-top: 40px; max-width: 1000px; }
-    .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; font-size: 26px; color: #4A5568; }
-    .brand { font-family: Inter; font-weight: 800; font-size: 40px; color: #0A3D8F; }
+    .kicker { font-family: Inter; font-weight: 700; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; color: #005B4F; }
+    .group { font-size: 26px; color: #616161; margin-top: 8px; }
+    h1 { font-family: Inter; font-weight: 700; font-size: ${size}px; line-height: 1.12; letter-spacing: -0.02em; color: #0A3D8F; margin-top: 40px; max-width: 1000px; }
+    .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; font-size: 26px; color: #616161; }
+    .brand { display: flex; align-items: center; gap: 16px; font-family: Inter; font-weight: 700; font-size: 40px; color: #0A3D8F; }
+    .brand img { width: 64px; height: 64px; border-radius: 14px; }
     .brand span { display: block; font-family: Roboto; font-weight: 400; font-size: 22px; color: #005B4F; }
   </style></head><body><div class="card">
     <div class="kicker">How-to</div>
     <div class="group">${esc(g.group)}</div>
     <h1>${esc(g.title)}</h1>
-    <div class="foot"><div>${esc(meta)} · answer first · free</div><div class="brand">nidhi<span>nidhi.today/how-to</span></div></div>
+    <div class="foot"><div>${esc(meta)} · answer first · free</div><div class="brand"><img src="${mark}" alt=""><div>nidhi<span>nidhi.today/how-to</span></div></div></div>
   </div></body></html>`;
 }
 

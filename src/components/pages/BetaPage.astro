@@ -92,20 +92,20 @@ const webPageSchema = {
   }
 
   .beta-container {
-    max-width: 680px;
+    max-width: calc(var(--layout-reading) - 2 * var(--layout-gutter));
     width: 100%;
   }
 
   .beta-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-3);
   }
 
   .beta-lead {
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     line-height: 1.7;
     color: var(--color-text-secondary);
   }
@@ -113,7 +113,7 @@ const webPageSchema = {
   h2 {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin: var(--space-6) 0 var(--space-3);
   }

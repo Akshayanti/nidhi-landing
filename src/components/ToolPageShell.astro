@@ -41,7 +41,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 ---
 
 <section class="toolp-page">
-  <nav class="toolp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
+  <nav class="crumbs toolp-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
     <ol>
       <li><a href={localizedPath(locale, '/')}>{breadcrumb.home}</a></li>
       <li><a href={localizedPath(locale, '/free/')}>{breadcrumb.freeTools}</a></li>
@@ -50,7 +50,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   </nav>
 
   <header class="toolp-header">
-    <p class="toolp-eyebrow">{eyebrow}</p>
+    <p class="eyebrow toolp-eyebrow">{eyebrow}</p>
     <h1 class="toolp-title">
       {typeof title === 'string'
         ? <LangRuns text={title} locale={locale} />
@@ -95,7 +95,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
       <div class="toolp-relatedGrid">
         {related.cards.map((post) => (
           <a href={post.url} hreflang="en" class="toolp-relatedCard link-card" data-attr={post.dataAttr}>
-            <span class="toolp-relatedKicker">{post.kicker}</span>
+            <span class="eyebrow toolp-relatedKicker">{post.kicker}</span>
             <span class="toolp-relatedTitle">{post.title}</span>
             <span class="toolp-relatedDesc">{post.desc}</span>
           </a>
@@ -108,14 +108,12 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 
 <style is:global>
 .toolp-page {
-  max-width: 1100px;
+  max-width: var(--layout-wide);
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4) var(--space-12);
+  padding: var(--space-6) var(--layout-gutter) var(--space-12);
 }
 .toolp-breadcrumbs {
   margin-bottom: var(--space-3);
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
 }
 .toolp-breadcrumbs ol {
   list-style: none;
@@ -132,10 +130,6 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   content: '/';
   margin-right: 4px;
 }
-.toolp-breadcrumbs a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-}
 .toolp-breadcrumbs a:hover,
 .toolp-breadcrumbs a:focus-visible {
   color: var(--color-deep-blue);
@@ -149,27 +143,21 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   margin-bottom: var(--space-8);
 }
 .toolp-eyebrow {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-teal);
   margin: 0 0 var(--space-2);
 }
 .toolp-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+  font-size: var(--title-hub);
   color: var(--color-deep-blue);
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: var(--leading-tight);
   margin: 0 0 var(--space-3);
   text-wrap: balance;
 }
 .toolp-lead {
   color: var(--color-text-secondary);
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.55;
   max-width: 62ch;
   margin: 0 auto;
@@ -187,7 +175,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 .toolp-sectionTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--color-deep-blue);
   margin: 0 0 var(--space-3);
 }
@@ -195,7 +183,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   margin: 0;
   padding-left: var(--space-5);
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.6;
 }
 .toolp-panel li {
@@ -210,7 +198,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 .toolp-lesson {
   margin: var(--space-4) 0 0;
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.6;
 }
 .toolp-lesson a {
@@ -220,7 +208,7 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
 }
 .toolp-source {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   line-height: 1.6;
   overflow-wrap: anywhere;
@@ -256,7 +244,7 @@ details.toolp-panel > summary {
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   /* A flex box sizes its text by the longest unbreakable piece; a bracketed
      term held together by a no-break space was wider than a narrow phone at
      large text in Hindi and Marathi (#599). It breaks only when it cannot fit
@@ -280,7 +268,7 @@ details.toolp-panel > summary {
   --amt-k: 0.57;
   margin: var(--space-2) 0 0;
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.6;
 }
 /* The questions of one topic, under a small heading (the loan comparison). */
@@ -289,7 +277,7 @@ details.toolp-panel > summary {
 }
 .toolp-faqGroupTitle {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   color: var(--color-text-muted);
   text-transform: uppercase;
@@ -311,14 +299,14 @@ details.toolp-panel > summary {
 .toolp-relatedAll {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-deep-blue);
   text-decoration: underline dotted;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 .toolp-relatedAllSecondary {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   text-decoration: underline dotted;
   text-decoration-thickness: 1px;
@@ -353,24 +341,18 @@ details.toolp-panel > summary {
 }
 .toolp-relatedKicker {
   overflow-wrap: anywhere;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-teal);
 }
 .toolp-relatedTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.3;
   color: var(--color-deep-blue);
   /* A long word wraps instead of widening the page at large text sizes. */
   overflow-wrap: anywhere;
 }
 .toolp-relatedDesc {
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
@@ -380,7 +362,7 @@ details.toolp-panel > summary {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .toolp-wideOnly {
     display: none;
   }
@@ -393,14 +375,14 @@ details.toolp-panel > summary {
     margin-left: 0;
   }
   .toolp-page {
-    padding: var(--space-4) var(--space-3) var(--space-8);
+    padding: var(--space-4) var(--layout-gutter) var(--space-8);
   }
   .toolp-panel {
     margin-top: var(--space-5);
     padding: var(--space-4) var(--space-3);
   }
   .toolp-sectionTitle {
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
   }
   .toolp-relatedDesc {
     display: none;

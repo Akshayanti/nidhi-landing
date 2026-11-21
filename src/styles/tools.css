@@ -73,20 +73,20 @@
 .lc-aprDocs {
   margin: 0 0 var(--space-4);
   max-width: 75ch;
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
 .lc-deltaNote {
   margin: var(--space-3) 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 
 /* The starting offers are an example until one is changed. */
 .lc-example {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.45;
   color: var(--color-text-secondary);
 }
@@ -97,7 +97,7 @@
 
 .lc-select {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -139,7 +139,7 @@
    per-vendor or FX. Margin-top:4px matches the field gap above. */
 .lc-fieldHelp {
   margin: 4px 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 400;
   color: var(--color-text-muted);
   line-height: 1.4;
@@ -154,7 +154,7 @@
   /* The box the sample amount is fitted to (.amt). */
   container-type: inline-size;
   margin: 6px 0 0;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   line-height: 1.4;
   color: var(--color-text-secondary);
   display: flex;
@@ -193,7 +193,7 @@
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   margin-top: var(--space-2);
 }
 
@@ -215,7 +215,7 @@
   /* A field: 16 px or more, or iOS Safari zooms the page when it is tapped.
      Primary text, since the secondary grey is under the palette's 8:1 on this
      surface in the light theme (#604). */
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-text-primary);
   font-family: var(--font-mono);
   padding: 2px 4px;
@@ -239,7 +239,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lc-grid {
     grid-template-columns: 1fr;
   }
@@ -272,7 +272,7 @@
 .lc-cardBadge {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   /* Neutral ink: the offer's colour is for its line and marker, not for text. */
   color: var(--color-text-primary);
   margin: 0;
@@ -297,7 +297,7 @@
   border: 2px solid var(--lc-color, currentColor);
   border-radius: 50%;
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   line-height: 1;
 }
@@ -325,7 +325,7 @@
   border: 1px solid transparent;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   line-height: 1;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -389,7 +389,7 @@
 
 .lc-cardAddIcon {
   grid-row: 1 / span 2;
-  font-size: 1.75rem;
+  font-size: var(--text-2xl);
   font-weight: 300;
   line-height: 1;
   color: var(--color-deep-blue);
@@ -397,13 +397,13 @@
 
 .lc-cardAddLabel {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 .lc-cardAddHint {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 
@@ -423,14 +423,14 @@
 .lc-fieldLabel {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 
 .lc-input {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -483,7 +483,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   background: var(--color-bg-white);
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
@@ -595,19 +595,19 @@
 
 .lc-fieldGroupTitle {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   font-weight: 600;
   color: var(--color-deep-blue);
 }
 
 .lc-fieldGroupState {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
 }
 
 .lc-fieldGroupHint {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   line-height: 1.4;
 }
@@ -646,7 +646,7 @@
 .lc-sectionLead {
   margin: var(--space-2) 0 0;
   color: var(--color-text-muted);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 /* Horizon controls: slider + numeric input side by side. */
@@ -718,7 +718,7 @@
   display: inline-flex;
   align-items: center;
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   font-weight: 500;
   color: var(--color-text-muted);
   cursor: pointer;
@@ -762,13 +762,13 @@
 .lc-chartLead {
   margin: var(--space-1) 0 0;
   color: var(--color-text-muted);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 /* How-it-works panel: prose. */
 .lc-howPanel {
   max-width: 760px;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.6;
 }
 
@@ -780,7 +780,7 @@
   border-radius: var(--radius-sm);
   padding: var(--space-2) var(--space-3);
   margin: var(--space-3) 0;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   text-align: center;
 }
 
@@ -798,7 +798,7 @@
   padding-top: var(--space-3);
   border-top: 1px dashed var(--color-border);
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
 }
 
 /* When a section lives inside a tab panel, drop the outer card chrome
@@ -817,7 +817,7 @@
 
 .lc-disclaimerWrap {
   margin-top: var(--space-5);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 
 .lc-disclaimerSummary {
@@ -872,7 +872,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 2px;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   /* A well inside the white card: the page colour, as the share bar uses. */
   background: var(--color-bg);
   border-radius: var(--radius-sm);
@@ -880,7 +880,7 @@
 }
 
 .lc-resultListPrimary .lc-resultLabel {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -889,16 +889,16 @@
 .lc-resultListPrimary .lc-resultValue {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-deep-blue);
 }
 
 .lc-resultListPrimary .lc-resultRowEmphasized .lc-resultValue {
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
 }
 
 .lc-resultListPrimary .lc-resultHint {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 400;
   color: var(--color-text-muted);
   /* Regular weight: its digits are narrower than the bold figure above it. */
@@ -924,7 +924,7 @@
 
 .lc-stepLabel {
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 400;
   color: var(--color-text-secondary);
   text-align: left;
@@ -941,7 +941,7 @@
 
 .lc-resultDetailsSummary {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 500;
   color: var(--color-deep-blue);
   /* The chevron comes from .disclosure. */
@@ -1000,7 +1000,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 2px var(--space-3);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
 }
 
 .lc-resultLabel {
@@ -1044,12 +1044,12 @@
   margin-top: 4px;
   padding-top: 8px;
   border-top: 1px dashed var(--color-border);
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 .lc-resultRowEmphasized .lc-resultValue {
   color: var(--color-text-primary);
-  font-size: 1.1rem;
+  font-size: var(--text-lead);
 }
 
 .lc-resultHint {
@@ -1059,13 +1059,13 @@
   text-align: start;
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   margin-top: 2px;
 }
 
 .lc-error {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-danger);
   background: color-mix(in srgb, var(--color-danger) 10%, transparent);
   border-left: 3px solid var(--color-danger);
@@ -1075,7 +1075,7 @@
 }
 
 .lc-warning {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   /* Warning text: the light warning colour is a fill (2.7:1 on white), so
      light mode writes in the notice text colour (palette.test.ts). */
   color: var(--warning-light-text);
@@ -1098,13 +1098,13 @@
 .lc-sectionTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: var(--text-lead);
   color: var(--color-deep-blue);
   margin: 0 0 var(--space-3);
 }
 
 .lc-deltaHero {
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-secondary);
   margin: 0 0 var(--space-3);
   line-height: 1.5;
@@ -1117,7 +1117,7 @@
 
 .lc-deltaEmpty {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   margin: 0;
 }
 
@@ -1134,7 +1134,7 @@
 }
 
 .lc-deltaNote {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   white-space: normal;
 }
@@ -1147,7 +1147,7 @@
 .lc-deltaTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   font-variant-numeric: tabular-nums;
   min-width: 30rem; /* keeps columns legible; outer wrap scrolls if needed */
 }
@@ -1163,7 +1163,7 @@
   font-weight: 700;
   color: var(--color-deep-blue);
   text-align: right;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 
 .lc-deltaTable tbody th[scope="row"] {
@@ -1180,13 +1180,13 @@
 .lc-deltaRowEmphasized th,
 .lc-deltaRowEmphasized td {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 .lc-deltaSavingsRow th,
 .lc-deltaSavingsRow td {
   border-bottom: none;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 
 /* Baseline row (the "lowest" vendor) renders an em-dash instead of a
@@ -1225,7 +1225,7 @@
 
 .lc-chartEmpty {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   margin: 0;
 }
 
@@ -1318,7 +1318,7 @@
 .lc-splitCaption {
   margin: var(--space-3) 0 0;
   color: var(--color-text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.55;
   text-wrap: pretty;
 }
@@ -1328,7 +1328,7 @@
 }
 
 .lc-disclaimer {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   line-height: 1.55;
   max-width: 70ch;
@@ -1402,7 +1402,7 @@
 
 .lc-vendorTabs { display: none; }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lc-vendorTabs {
     display: grid;
     /* Two abreast while each has 9rem; one per row at large text or with long
@@ -1453,13 +1453,13 @@
     border-radius: 50%;
     color: var(--color-text-primary);
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 700;
   }
 
   .lc-vendorTabName {
     font-family: var(--font-heading);
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     font-weight: 600;
     /* Wraps rather than clips. `anywhere`, not `break-word`: only it lets a
        long word shrink the tab's smallest width, so the page never scrolls
@@ -1480,7 +1480,7 @@
   .lc-jump {
     display: block;
     margin: calc(-1 * var(--space-2)) 0 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
   }
   .lc-jump button {
     min-height: 44px;
@@ -1576,7 +1576,7 @@
     flex: 0 0 100%;
     padding: 0 0 2px;
     border: 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
   }
 
   .lc-deltaTable td {
@@ -1620,7 +1620,7 @@
     margin: 0 0 12px;
     padding: 0;
     list-style: none;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-primary);
   }
   .lc-deltaKey li { display: flex; align-items: center; gap: 8px; }
@@ -1628,7 +1628,7 @@
   .lc-deltaTable td::before {
     content: attr(data-slot);
     font-family: var(--font-heading);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 700;
     color: var(--color-text-primary);
   }
@@ -1683,14 +1683,14 @@
 .mcnw-fieldLabel {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 
 .mcnw-select {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -1704,7 +1704,7 @@
 }
 
 .mcnw-selectSm {
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   padding: 8px 10px;
   min-height: 40px;
 }
@@ -1721,7 +1721,7 @@
 
 .mcnw-fieldHelp {
   margin: 4px 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 400;
   color: var(--color-text-secondary);
   line-height: 1.4;
@@ -1748,7 +1748,7 @@
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
 }
 
 .mcnw-shareUrlLabel {
@@ -1769,7 +1769,7 @@
   /* A field: 16 px or more, or iOS Safari zooms the page when it is tapped.
      Primary text, since the secondary grey is under the palette's 8:1 on this
      surface in the light theme (#604). */
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-text-primary);
   font-family: var(--font-mono);
   padding: 2px 4px;
@@ -1786,7 +1786,7 @@
 .mcnw-modalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1797,7 +1797,7 @@
 .mcnw-modalDialog {
   background: var(--color-bg-white);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-lg);
   max-width: 960px;
   width: 95vw;
   max-height: 90vh;
@@ -1827,7 +1827,7 @@
 
 .mcnw-modalTitle {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   margin: 0 0 20px 0;
   color: var(--color-text-primary);
@@ -1842,7 +1842,7 @@
 .mcnw-modalLegend {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   margin-bottom: 12px;
   padding: 0;
@@ -1880,12 +1880,12 @@
 }
 
 .mcnw-modalCheck span strong {
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   color: var(--color-text-primary);
 }
 
 .mcnw-modalCheck span small {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-secondary);
   line-height: 1.4;
 }
@@ -1905,14 +1905,14 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-heading);
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   font-weight: 600;
   margin: 0 0 10px 0;
   color: var(--color-text-secondary);
 }
 
 .mcnw-modalPreviewBadge {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 500;
   background: var(--color-deep-blue);
   color: var(--neutral-white);
@@ -1948,7 +1948,7 @@
 
 .mcnw-modalAssetTable {
   width: 100%;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   border-collapse: collapse;
   margin-top: 8px;
 }
@@ -1963,7 +1963,7 @@
 .mcnw-modalAssetTable th {
   font-weight: 600;
   color: var(--color-text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -2071,14 +2071,14 @@
 .mcnw-banner {
   padding: 12px 16px;
   border-radius: var(--radius-md);
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   line-height: 1.5;
 }
 
 .mcnw-bannerWarn {
-  background: var(--warning-light-bg);
-  border: 1px solid var(--warning-light-border-strong);
-  color: var(--warning-light-text-strong);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  color: var(--color-warning-text);
 }
 
 .mcnw-bannerInfo {
@@ -2087,17 +2087,11 @@
   color: var(--color-text-secondary);
 }
 
-[data-theme="dark"] .mcnw-bannerWarn {
-  background: var(--warning-dark-bg);
-  border-color: var(--warning-dark-border);
-  color: var(--warning-light-text-amber);
-}
-
 
 /* Input */
 .mcnw-input {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -2139,7 +2133,7 @@
 }
 
 .mcnw-rowCount {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   /* Keeps its words whole beside the heading; it wraps to its own line
      before a word breaks. */
@@ -2156,7 +2150,7 @@
 .mcnw-rowError {
   display: block;
   margin-top: 4px;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: var(--color-danger);
 }
@@ -2169,7 +2163,7 @@
 
 .mcnw-notCounted {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: var(--color-danger);
 }
@@ -2190,7 +2184,7 @@
 .mcnw-tableRowHead {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-muted);
@@ -2216,7 +2210,7 @@
   border: 1px solid var(--color-control-edge);
   background: transparent;
   color: var(--color-text-muted);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   line-height: 1;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -2241,7 +2235,7 @@
 
 .mcnw-csvConfirm p {
   margin: 0 0 var(--space-2);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-primary);
 }
 
@@ -2255,17 +2249,11 @@
 .mcnw-csvErrors {
   margin-top: var(--space-3);
   padding: var(--space-3);
-  background: var(--warning-light-bg);
-  border: 1px solid var(--warning-light-border-strong);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
-  color: var(--warning-light-text-strong);
-}
-
-[data-theme="dark"] .mcnw-csvErrors {
-  background: var(--warning-dark-bg);
-  border-color: var(--warning-dark-border);
-  color: var(--warning-light-text-amber);
+  font-size: var(--text-small);
+  color: var(--color-warning-text);
 }
 
 .mcnw-csvErrorsTitle {
@@ -2293,7 +2281,7 @@
   text-align: center;
   padding: var(--space-5) var(--space-4);
   color: var(--color-text-secondary);
-  font-size: 0.9375rem;
+  font-size: var(--text-ui);
   line-height: 1.5;
 }
 .mcnw-emptyState p {
@@ -2303,7 +2291,7 @@
 .mcnw-emptyLead {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-deep-blue);
 }
 
@@ -2314,7 +2302,7 @@
   gap: 4px var(--space-3);
   align-items: baseline;
   margin: 0 0 var(--space-2);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .mcnw-linkBtn {
@@ -2343,7 +2331,7 @@
   align-items: center;
   min-height: 44px;
   padding: 8px 36px 8px 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 600;
   color: var(--color-deep-blue);
 }
@@ -2368,7 +2356,7 @@
   display: block;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
@@ -2381,13 +2369,13 @@
 
 .mcnw-totalValue--hidden {
   font-style: italic;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 
 .mcnw-riskHidden {
   font-style: italic;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
 }
 
@@ -2409,7 +2397,7 @@
 
 .mcnw-totalHint {
   display: block;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   margin-top: 2px;
 }
@@ -2442,7 +2430,7 @@
 
 .mcnw-split dt {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
   color: var(--color-text-secondary);
 }
@@ -2451,7 +2439,7 @@
   margin: 2px 0 0;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: var(--text-lead);
   color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
 }
@@ -2460,7 +2448,7 @@
   max-width: 56ch;
   margin: 0 auto;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   line-height: 1.55;
   color: var(--color-text-secondary);
 }
@@ -2473,7 +2461,7 @@
 .mcnw-chartTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-deep-blue);
   margin: 0 0 var(--space-3);
 }
@@ -2495,19 +2483,19 @@
 .mcnw-chartCenterLabel {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   fill: var(--color-deep-blue);
 }
 
 .mcnw-chartCenterSub {
   font-family: var(--font-body);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   fill: var(--color-text-muted);
 }
 
 .mcnw-chartEmpty {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
 }
 
 .mcnw-legend {
@@ -2524,7 +2512,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 
@@ -2560,7 +2548,7 @@
 .mcnw-riskCardsTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-deep-blue);
   margin: 0;
 }
@@ -2591,7 +2579,7 @@
   display: inline-block;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   /* Every risk fill is 7:1 or more against this ink, in both themes. */
@@ -2603,18 +2591,18 @@
 .mcnw-riskCurrency {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
 }
 
 .mcnw-riskLabel {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   margin: 0 0 var(--space-1);
 }
 
 .mcnw-riskRec {
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   line-height: 1.55;
   margin: 0;
@@ -2622,7 +2610,7 @@
 
 /* Disclaimer */
 .mcnw-disclaimer {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   line-height: 1.5;
   margin: 0;
@@ -2645,7 +2633,7 @@
   .mcnw-cellLabel {
     display: block;
     margin-bottom: 2px;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-secondary);
   }
   .mcnw-cellActions { align-self: end; }
@@ -2658,7 +2646,7 @@
 /* A phone at a larger text size: two boxes side by side leave no room for
    their own names ("Currency"), so each box takes a line. In em, so it
    follows the reader's text size. */
-@media (max-width: 640px) and (max-width: 19em) {
+@media (width < 640px) and (max-width: 19em) {
   .mcnw-tableRow { grid-template-columns: minmax(0, 1fr); }
   .mcnw-cellValue,
   .mcnw-cellCurrency,
@@ -2690,12 +2678,12 @@
   vertical-align: -0.125em;
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .toolp-relatedKicker,
   .mcnw-shareBtn {
-    font-size: 0.8125rem !important;
+    font-size: var(--text-caption) !important;
   }
-  .lc-fieldHint, .lc-resultHint { font-size: 0.875rem !important; }
+  .lc-fieldHint, .lc-resultHint { font-size: var(--text-small) !important; }
   .lc-disclaimer,
   .mcnw-disclaimer,
   .toolp-faqQ,
@@ -2710,10 +2698,10 @@
   .lc-chartLead,
   .lc-splitCaption,
   .mcs-caveat {
-    font-size: 1rem !important;
+    font-size: var(--text-base) !important;
   }
   .toolp-relatedDesc {
-    font-size: 0.9375rem !important;
+    font-size: var(--text-ui) !important;
   }
 
   .toolp-relatedAll,
@@ -2773,19 +2761,19 @@
 .mcs-label {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .mcs-label strong {
   color: var(--color-text-primary);
 }
 .mcs-hint {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 .mcs-input {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -2842,7 +2830,7 @@
 .mcs-resultsTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--color-deep-blue);
   margin: 0;
 }
@@ -2873,13 +2861,13 @@
   border-color: var(--color-deep-blue);
 }
 .mcs-cardLabel {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-secondary);
 }
 .mcs-cardValue {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: var(--text-lg);
   color: var(--color-text-primary);
   /* An amount is read whole: it never splits across lines (.amt). Where
      three cards side by side cannot hold it, they stack (below, and the phone
@@ -2907,12 +2895,12 @@
 .mcs-lastedHead,
 .mcs-caveat {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.55;
   color: var(--color-text-secondary);
 }
 .mcs-lastedHead {
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
   color: var(--color-text-primary);
 }
 .mcs-lasted {
@@ -2925,7 +2913,7 @@
   border-radius: var(--radius-sm);
 }
 .mcs-caveat {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 .mcs-figure {
@@ -2937,7 +2925,7 @@
    text: it grows with the reader's text size and wraps. */
 .tool-chartUnit {
   margin: 0 0 var(--space-1);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   overflow-wrap: anywhere;
 }
@@ -2945,7 +2933,7 @@
 .chart-swipe {
   display: none;
   margin: 0 0 var(--space-1);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
 }
 .mcs-chartScroll {
@@ -2976,7 +2964,7 @@
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
   margin-top: var(--space-2);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .mcs-legend span {
@@ -2988,7 +2976,7 @@
   display: inline-block;
   width: 18px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 .mcs-key--median {
   height: 3px;
@@ -3013,13 +3001,13 @@
 .mcs-table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   font-variant-numeric: tabular-nums;
 }
 .mcs-table caption {
   text-align: left;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   padding-bottom: var(--space-2);
 }
 .mcs-table th,
@@ -3041,7 +3029,7 @@
     flex-basis: 100%;
   }
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .mcs-form,
   .mcs-results {
     padding: var(--space-4) var(--space-3);
@@ -3103,7 +3091,7 @@
 .mcs-settingsName {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
 }
 /* The row is the box and the values line sits in the flow under the name,
@@ -3137,7 +3125,7 @@
   position: static;
   margin: 0 44px 0 0;
   padding: 0 0 var(--space-3) var(--space-3);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   pointer-events: none;
 }
@@ -3145,7 +3133,7 @@
   display: none;
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .mcs-root {
     gap: var(--space-4);
   }
@@ -3174,7 +3162,7 @@
   .mcs-jump {
     display: block;
     margin: calc(-1 * var(--space-1, 4px)) 0 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
   }
   .mcs-jump button {
     display: inline-block;
@@ -3188,19 +3176,19 @@
     text-decoration: underline;
   }
   .mcs-quickTitle {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-secondary);
   }
   .mcs-quickValue {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: var(--text-xl);
     line-height: 1.2;
     color: var(--color-deep-blue);
     overflow-wrap: anywhere;
   }
   .mcs-quickRange {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     line-height: 1.45;
     color: var(--color-text-secondary);
   }
@@ -3220,12 +3208,12 @@
   .mcs-cardLabel {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
   .mcs-cardValue {
-    font-size: 0.98rem;
+    font-size: var(--text-base);
   }
   /* Three amounts side by side need about 30em; below that (any phone at a
      larger text size, and narrow phones at the default) the cards stack, one
@@ -3240,12 +3228,12 @@
       align-items: baseline;
       column-gap: var(--space-3);
     }
-    .mcs-cardValue { font-size: 1.1rem; }
+    .mcs-cardValue { font-size: var(--text-lead); }
 }
   .mcs-cardsKey {
     display: block;
     margin: 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     line-height: 1.5;
     color: var(--color-text-muted);
   }
@@ -3254,7 +3242,7 @@
     min-width: 0;
   }
 }
-@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+@media (width < 640px) and (prefers-reduced-motion: reduce) {
   .mcs-quick {
     transition: none;
   }
@@ -3304,7 +3292,7 @@
   border-radius: calc(var(--radius-md) - 2px);
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   cursor: pointer;
   text-align: center;
@@ -3338,14 +3326,14 @@
   color: var(--color-bg-white);
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.45;
   text-align: left;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-lg);
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.12s ease;
-  z-index: 20;
+  z-index: var(--z-sticky);
   pointer-events: none;
 }
 /* Keeps the pointer inside the label while it moves up onto the tooltip. */
@@ -3531,8 +3519,8 @@
   background: var(--color-bg-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
-  font-size: 0.875rem;
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   z-index: 5;
 }
@@ -3543,13 +3531,13 @@
   gap: var(--space-3);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
   margin-bottom: var(--space-2);
 }
 .chart-readoutTag {
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-teal);
 }
 .chart-readout dl {
@@ -3583,7 +3571,7 @@
 .mcs-legendHint {
   flex-basis: 100%;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 .mcs-srOnly,
 .chart-srOnly {
@@ -3604,7 +3592,7 @@
 .chart-readoutSlot {
   display: none;
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .chart-readout {
     position: static;
     left: auto !important;
@@ -3653,7 +3641,7 @@
 .chart-swatch--band {
   width: 18px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   background: currentColor;
 }
 .chart-swatch--dash {
@@ -3672,7 +3660,7 @@
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
   margin-bottom: var(--space-3);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-primary);
 }
 .lc-balanceLegend .lc-legendItem {
@@ -3689,7 +3677,7 @@
 .lc-legendNote {
   font-weight: 400;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 .lc-chartScroll {
   overflow-x: auto;
@@ -3738,10 +3726,10 @@
 }
 .lc-chartHint {
   margin: var(--space-2) 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lc-chart {
     min-width: 600px;
   }
@@ -3764,11 +3752,11 @@
 .mcnw-chartCenterCode {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   fill: var(--color-text-secondary);
 }
 .mcnw-chart .mcnw-chartCenterSub {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
 }
 button.mcnw-legendItem {
   /* Swatch, code, share and amount in fixed columns so rows line up. */
@@ -3782,7 +3770,7 @@ button.mcnw-legendItem {
   border-radius: var(--radius-md);
   background: transparent;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   text-align: left;
   cursor: pointer;
 }
@@ -3807,7 +3795,7 @@ button.mcnw-legendItem:focus-visible {
     transition: none;
   }
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   /* Stacked under the donut: size by content, not the desktop flex-basis. */
   .mcnw-chartWrap .mcnw-legend {
     flex: none;
@@ -3817,7 +3805,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .mcnw-chartNote {
   margin: var(--space-3) 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 
@@ -3979,7 +3967,7 @@ button.mcnw-legendItem:focus-visible {
   color: var(--color-text-secondary);
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   line-height: 1.25;
   cursor: pointer;
   text-align: center;
@@ -4010,7 +3998,7 @@ button.mcnw-legendItem:focus-visible {
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
   line-height: 1.4;
   color: var(--color-text-primary);
 }
@@ -4056,16 +4044,16 @@ button.mcnw-legendItem:focus-visible {
 .ifc-label {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .ifc-hint {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.45;
   color: var(--color-text-muted);
 }
 .ifc-error {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: var(--color-danger);
 }
@@ -4076,7 +4064,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-input {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
   border: 1px solid var(--color-control-edge);
@@ -4139,11 +4127,11 @@ button.mcnw-legendItem:focus-visible {
 .ifc-historyTitle {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
 }
 .ifc-historyStatus {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .ifc-historyFold {
@@ -4165,7 +4153,7 @@ button.mcnw-legendItem:focus-visible {
   margin: 0;
   flex: 1 1 14rem;
   min-width: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.45;
   color: var(--color-text-secondary);
 }
@@ -4192,7 +4180,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-historyAvg {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   line-height: 1.55;
   color: var(--color-text-secondary);
 }
@@ -4201,7 +4189,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-note {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   line-height: 1.55;
   color: var(--color-text-secondary);
 }
@@ -4217,7 +4205,7 @@ button.mcnw-legendItem:focus-visible {
   color: var(--color-deep-blue);
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -4226,7 +4214,7 @@ button.mcnw-legendItem:focus-visible {
 .ifc-linkBtn:focus-visible {
   outline: 2px solid var(--color-teal);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 .ifc-bars {
   margin: 0;
@@ -4272,7 +4260,7 @@ button.mcnw-legendItem:focus-visible {
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-4);
   margin-top: var(--space-1);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .ifc-legend span {
@@ -4284,7 +4272,7 @@ button.mcnw-legendItem:focus-visible {
   display: inline-block;
   width: 12px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 .ifc-key--recent {
   background: var(--color-deep-blue);
@@ -4299,7 +4287,7 @@ button.mcnw-legendItem:focus-visible {
   /* The chevron comes from .disclosure, just after the label. */
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-deep-blue);
   min-height: 44px;
   display: inline-flex;
@@ -4313,13 +4301,13 @@ button.mcnw-legendItem:focus-visible {
   border-collapse: collapse;
   width: 100%;
   max-width: 360px;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   font-variant-numeric: tabular-nums;
 }
 .ifc-table caption {
   text-align: left;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   padding-bottom: var(--space-2);
 }
 .ifc-table th,
@@ -4338,7 +4326,7 @@ button.mcnw-legendItem:focus-visible {
 .ifc-resultsTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--color-deep-blue);
   margin: 0;
 }
@@ -4363,7 +4351,7 @@ button.mcnw-legendItem:focus-visible {
   border-left: 4px solid var(--color-danger);
   background: var(--color-bg);
   border-radius: var(--radius-sm);
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   line-height: 1.5;
   color: var(--color-text-primary);
 }
@@ -4395,7 +4383,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-sentence {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   line-height: 1.55;
   color: var(--color-text-primary);
   overflow-wrap: anywhere;
@@ -4405,7 +4393,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-band {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   line-height: 1.55;
   color: var(--color-text-secondary);
   font-variant-numeric: tabular-nums;
@@ -4426,7 +4414,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .ifc-method {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 .ifc-figure {
@@ -4442,7 +4430,7 @@ button.mcnw-legendItem:focus-visible {
   margin: 0 0 var(--space-2);
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
   overflow-wrap: anywhere;
 }
@@ -4461,7 +4449,7 @@ button.mcnw-legendItem:focus-visible {
   stroke: var(--color-deep-blue);
   stroke-width: 2.5;
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .ifc-form,
   .ifc-results {
     padding: var(--space-4) var(--space-3);
@@ -4471,7 +4459,7 @@ button.mcnw-legendItem:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .ifc-tab {
-    font-size: 0.88rem;
+    font-size: var(--text-small);
     padding: 8px 6px;
   }
   /* Two to a row, never more: each column is at least just under half the
@@ -4525,7 +4513,7 @@ button.mcnw-legendItem:focus-visible {
 .tool-exportHeading {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 700;
   color: var(--color-text-primary);
 }
@@ -4560,13 +4548,13 @@ button.mcnw-legendItem:focus-visible {
   border-radius: var(--radius-md);
   background: var(--color-bg-white);
   color: var(--color-text-primary);
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.5;
 }
 .tool-exportNote,
 .tool-exportStatus {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--text-small);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -4577,7 +4565,7 @@ button.mcnw-legendItem:focus-visible {
 .tool-exportStatus:empty {
   display: none;
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .tool-exportButtons > * {
     flex: 1 1 100%;
   }
@@ -4869,7 +4857,7 @@ button.mcnw-legendItem:focus-visible {
 .iop-legend {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
   color: var(--color-deep-blue);
   padding: 0;
   margin-bottom: var(--space-2);
@@ -4923,7 +4911,7 @@ button.mcnw-legendItem:focus-visible {
 .iop-choiceLabel {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   color: var(--color-text-primary);
 }
 /* One field on its own keeps the width of a field in a row. */
@@ -4940,7 +4928,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-example {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.45;
   color: var(--color-text-secondary);
   flex: 1 1 14rem;
@@ -4972,11 +4960,11 @@ button.mcnw-legendItem:focus-visible {
 .iop-moreTitle {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
   color: var(--color-deep-blue);
 }
 .iop-moreStatus {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .iop-moreBody {
@@ -4991,7 +4979,7 @@ button.mcnw-legendItem:focus-visible {
   margin-block: var(--space-2);
 }
 .iop-basisTitle {
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 .iop-fix:empty {
   display: none;
@@ -5009,7 +4997,7 @@ button.mcnw-legendItem:focus-visible {
   border-left: 4px solid var(--color-teal);
   background: var(--color-bg);
   border-radius: var(--radius-sm, 4px);
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
   line-height: 1.5;
   color: var(--color-text-primary);
 }
@@ -5044,7 +5032,7 @@ button.mcnw-legendItem:focus-visible {
   --amt-k: 0.65;
 }
 .iop-answer .iop-headline {
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
   line-height: 1.4;
 }
 .iop-paths {
@@ -5063,14 +5051,14 @@ button.mcnw-legendItem:focus-visible {
 .iop-pathName {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-deep-blue);
   margin: 0 0 var(--space-2);
 }
 .iop-pathRange {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: var(--text-lead);
   margin-top: var(--space-1, 4px) !important;
 }
 .iop-pathMiddle {
@@ -5079,7 +5067,7 @@ button.mcnw-legendItem:focus-visible {
 .iop-pathFacts {
   margin: var(--space-2) 0 0;
   padding-left: var(--space-4);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
@@ -5096,7 +5084,7 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-chartLabel {
   display: block;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   margin-bottom: 4px;
 }
@@ -5133,7 +5121,7 @@ button.mcnw-legendItem:focus-visible {
 .iop-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: var(--text-ui);
 }
 .iop-table caption {
   text-align: left;
@@ -5153,7 +5141,7 @@ button.mcnw-legendItem:focus-visible {
   flex-direction: column;
   gap: 4px;
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .iop-paths {
     grid-template-columns: 1fr;
   }
@@ -5173,7 +5161,7 @@ button.mcnw-legendItem:focus-visible {
 .mcnw-select,
 .mcnw-selectSm {
   background-color: var(--color-bg);
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 10px 12px;
   min-height: 44px;
 }
@@ -5182,7 +5170,7 @@ button.mcnw-legendItem:focus-visible {
    components' scoped rules, phone sizes included. */
 body :is(.lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle)[class] {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: 0;
@@ -5192,7 +5180,7 @@ body :is(.lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-results
 /* A question in the FAQ: body type, and the whole row is the target. */
 body .toolp-faqQ[class] {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 500;
   line-height: 1.6;
   padding-top: 12px;
@@ -5222,7 +5210,7 @@ body .toolp-faqQ[class] {
   border-radius: 0;
   background: transparent;
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.3;
   /* Not the chosen one: primary text, so it stays at 8:1 or more; the rule
@@ -5288,7 +5276,7 @@ body .toolp-faqQ[class] {
   padding: 8px 10px;
   border-radius: 0;
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.3;
   background: var(--color-bg-white);
@@ -5311,7 +5299,7 @@ body .toolp-faqQ[class] {
 .lc-error,
 .ifc-error,
 .mcnw-rowError {
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-danger);
   background: none;
@@ -5329,7 +5317,7 @@ body .toolp-faqQ[class] {
   border-left: 3px solid var(--color-danger);
   border-radius: var(--radius-sm);
   padding: 12px;
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-text-primary);
 }
@@ -5341,7 +5329,7 @@ body .toolp-faqQ[class] {
 .ifc-hint,
 .lc-example,
 .ifc-example {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -5350,14 +5338,9 @@ body .toolp-faqQ[class] {
   margin-top: 6px;
 }
 
-/* Devanagari needs its own room: no tracking, taller lines. */
+/* Devanagari needs taller lines (its tracking is switched off in global.css). */
 :is(:lang(hi), :lang(mr)) :is(.lc-tab, .ifc-tab, .mcs-switchOpt, .lc-sectionTitle, .mcnw-sectionTitle, .toolp-sectionTitle, .mcs-resultsTitle, .ifc-resultsTitle) {
-  letter-spacing: 0;
   line-height: 1.6;
-}
-/* Tracking is for Latin capitals; it pulls Devanagari letters apart. */
-:is(:lang(hi), :lang(mr)) :is(.toolp-eyebrow, .toolp-relatedKicker) {
-  letter-spacing: 0;
 }
 
 /* Net worth, risk cards: the currency comes first in the markup, for a screen

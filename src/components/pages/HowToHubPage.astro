@@ -101,7 +101,7 @@ const english = locale !== DEFAULT_LOCALE;
   <link slot="head" rel="alternate" type="application/rss+xml" title={strings.rss.guidesLinkTitle} href="/how-to/rss.xml" />
   <section class="ht">
     <div class="ht-wrap">
-      <nav class="ht-crumbs" aria-label={strings.a11y.breadcrumb}>
+      <nav class="crumbs ht-crumbs" aria-label={strings.a11y.breadcrumb}>
         <a href={localizedPath(locale, '/')}>{howTo.crumbHome}</a> <span aria-hidden="true">/</span> <span>{howTo.name}</span>
       </nav>
       <p class="ht-eyebrow">{howTo.eyebrow}</p>
@@ -282,14 +282,14 @@ const english = locale !== DEFAULT_LOCALE;
   .ht-search { margin-top: var(--space-6); }
   .ht-search-label { display: block; font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-2); }
   .ht-search-row { display: flex; gap: var(--space-2); }
-  .ht-search input { flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--space-4); font: inherit; font-size: 1rem; border: 1.5px solid var(--color-control-edge); border-radius: 10px; background: var(--color-bg-white); color: var(--color-text-primary); }
+  .ht-search input { flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--space-4); font: inherit; font-size: var(--text-base); border: 1.5px solid var(--color-control-edge); border-radius: 10px; background: var(--color-bg-white); color: var(--color-text-primary); }
   /* The page has its own Clear button; the browser's second one would repeat it. */
   .ht-search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
   .ht-search input:focus-visible { outline: 3px solid var(--color-deep-blue); outline-offset: 1px; }
   .ht-clear { min-height: 48px; padding: 0 var(--space-4); border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-bg-white); color: var(--color-text-primary); font: inherit; font-weight: 600; cursor: pointer; }
   .ht-results { margin-top: var(--space-6); }
   .ht-none { color: var(--color-text-secondary); }
-  .ht-sub { font-size: 1rem; color: var(--color-text-primary); margin: var(--space-5) 0 var(--space-2); }
+  .ht-sub { font-size: var(--text-base); color: var(--color-text-primary); margin: var(--space-5) 0 var(--space-2); }
   .ht-lessons { margin: 0; padding-inline-start: 1.2rem; display: grid; gap: var(--space-2); }
   .ht-lessons a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
   /* Common questions: plain links, no pills (council, Nov 10 2026). */
@@ -298,8 +298,8 @@ const english = locale !== DEFAULT_LOCALE;
   .ht-common a { display: flex; align-items: center; min-height: 44px; color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
   .ht-situations { margin-top: var(--space-8); }
   .ht-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-5); }
-  .ht-filters-k { font-size: 0.9rem; color: var(--color-text-secondary); margin-inline-end: var(--space-1); }
-  .ht-filters button { min-height: 40px; padding: 0 var(--space-3); border: 1px solid var(--color-control-edge); border-radius: 999px; background: var(--color-bg-white); color: var(--color-text-primary); font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .ht-filters-k { font-size: var(--text-small); color: var(--color-text-secondary); margin-inline-end: var(--space-1); }
+  .ht-filters button { min-height: 40px; padding: 0 var(--space-3); border: 1px solid var(--color-control-edge); border-radius: var(--radius-pill); background: var(--color-bg-white); color: var(--color-text-primary); font: inherit; font-size: var(--text-small); cursor: pointer; }
   .ht-filters button[aria-pressed="true"] { background: var(--color-text-primary); border-color: var(--color-text-primary); color: var(--color-bg-white); }
   /* Forced colours drop the fill, which was the only mark of the chosen filter (#484). */
   @media (forced-colors: active) {
@@ -308,24 +308,23 @@ const english = locale !== DEFAULT_LOCALE;
   .ht-all { margin: var(--space-3) 0 0; }
   .ht-all a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
   .ht { padding: var(--space-8) 0 var(--space-16); }
-  .ht-wrap { max-width: 52rem; margin: 0 auto; padding: 0 var(--space-4); }
-  .ht-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-4); }
-  .ht-crumbs a { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
+  .ht-wrap { max-width: var(--layout-index); margin: 0 auto; padding: 0 var(--layout-gutter); }
+  .ht-crumbs { margin-bottom: var(--space-4); }
   /* A breadcrumb link is a target of its own, not a link in a sentence: 24px
      tall for a pointer, 44px for a thumb (#405). */
   .ht-crumbs a { display: inline-flex; align-items: center; justify-content: center; min-height: 24px; min-width: 24px; vertical-align: middle; }
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .ht-crumbs a { min-height: 44px; }
   }
   /* Brand colour by role (council, Nov 10 2026): blue for the page's headings and
      links, green for the eyebrow; repeated cards stay neutral. */
-  .ht-eyebrow { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--color-teal); margin: 0 0 var(--space-1); }
-  .ht-h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: 1.15; }
-  .ht-lede { font-size: 1.075rem; line-height: 1.6; margin: 0 0 var(--space-2); max-width: 40rem; }
-  .ht-scope { color: var(--color-text-muted); font-size: 0.9rem; margin: var(--space-2) 0 0; max-width: 40rem; }
+  .ht-eyebrow { font-family: var(--font-heading); font-weight: 700; font-size: var(--text-ui); color: var(--color-teal); margin: 0 0 var(--space-1); }
+  .ht-h1 { font-size: var(--title-hub); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-3); line-height: var(--leading-tight); }
+  .ht-lede { font-size: var(--text-prose); line-height: 1.6; margin: 0 0 var(--space-2); max-width: 40rem; }
+  .ht-scope { color: var(--color-text-muted); font-size: var(--text-small); margin: var(--space-2) 0 0; max-width: 40rem; }
   .ht-empty { margin-top: var(--space-6); }
   .ht-groups { display: grid; gap: var(--space-10, 2.5rem); margin-top: var(--space-8); }
-  .ht-group-h { font-size: 1.2rem; color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
+  .ht-group-h { font-size: var(--text-lg); color: var(--color-deep-blue); margin: 0 0 var(--space-3); }
   .ht-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--space-3); }
   .ht-card {
     display: grid;
@@ -343,8 +342,7 @@ const english = locale !== DEFAULT_LOCALE;
   .ht-card:hover { border-color: var(--color-link-edge); }
   .ht-card:hover .ht-card-q { text-decoration: underline; text-underline-offset: 0.2em; }
   .ht-card:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; }
-  .ht-card-q { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; line-height: 1.3; color: var(--color-text-primary); }
-  .ht-card-o { font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.5; }
-  .ht-card-meta { font-size: 0.8125rem; color: var(--color-text-muted); }
-  :global([data-theme="dark"]) .ht-eyebrow { color: var(--palette-teal-dark); }
+  .ht-card-q { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-prose); line-height: 1.3; color: var(--color-text-primary); }
+  .ht-card-o { font-size: var(--text-ui); color: var(--color-text-secondary); line-height: 1.5; }
+  .ht-card-meta { font-size: var(--text-caption); color: var(--color-text-muted); }
 </style>

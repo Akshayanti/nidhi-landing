@@ -11,8 +11,11 @@
  *
  * It keys off the document's `lang`, which is the same thing a screen reader
  * picks its voice from, so the two never disagree. With scripts off the
- * English block is the one left standing, which is the right fallback: the
- * header, footer and cookie banner around it are English either way.
+ * English block is the one left standing, which is the right fallback.
+ *
+ * The header, footer and cookie prompt follow the same `lang` (#523): every
+ * language's copy is rendered into a `<template>` and only the matching one
+ * is put into the page (see `chromeLocales` in BaseLayout).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { DEFAULT_LOCALE, LOCALE_META, dict, localePrefix, localizedPath } from '../i18n';
@@ -54,6 +57,7 @@ const switchCss = [
   robots="noindex, nofollow"
   noCanonical
   alternates={[DEFAULT_LOCALE]}
+  chromeLocales={[DEFAULT_LOCALE, ...MIRRORED_LOCALES]}
 >
   <script slot="head" is:inline define:vars={{ prefixed }}>
     // Runs in <head>, before the body is parsed and before the first paint, so
@@ -74,9 +78,9 @@ const switchCss = [
 
   {/* English first: it is the block that a reader with scripts off keeps. */}
   {blocks.map((block) => (
-    <div class={`container notfound notfound--${block.locale}`} lang={block.lang} style="text-align: center; padding: 8rem 1.5rem;">
-      <h1 style="font-size: 3rem; color: var(--color-deep-blue); margin-bottom: var(--space-4);">{block.strings.heading}</h1>
-      <p style="font-size: 1.2rem; color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+    <div class={`container notfound notfound--${block.locale}`} lang={block.lang} style="text-align: center; padding: 8rem var(--layout-gutter);">
+      <h1 style="color: var(--color-deep-blue); margin-bottom: var(--space-4);">{block.strings.heading}</h1>
+      <p style="font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
         {block.strings.body}
       </p>
       <a href={block.home} class="btn btn--primary">

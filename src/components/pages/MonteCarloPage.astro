@@ -233,12 +233,12 @@ const faqSchema = {
     margin: 0;
     padding-left: var(--space-5);
     color: var(--color-text-secondary);
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.6;
   }
   .mcsp-source {
     margin: var(--space-4) 0 0;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
     line-height: 1.55;
   }
@@ -252,7 +252,7 @@ const faqSchema = {
   .mcsp-more {
     display: none;
   }
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     [data-phone-more][data-ready]:not(.is-open) .mcsp-phoneHide {
       display: none;
     }
@@ -273,14 +273,14 @@ const faqSchema = {
       color: var(--color-deep-blue);
       font-family: var(--font-heading);
       font-weight: 600;
-      font-size: 0.92rem;
+      font-size: var(--text-ui);
       text-align: left;
       cursor: pointer;
     }
     .mcsp-more:focus-visible {
       outline: 2px solid var(--color-teal);
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: var(--radius-xs);
     }
     /* "How it works": the button sits under the heading; the method opens below it. */
     [data-phone-more].is-open #mcsp-how-body {

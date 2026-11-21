@@ -21,7 +21,7 @@
   bottom: 0;
   width: 3px;
   background: var(--color-border-light);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 
 .lp-levelActions {
@@ -33,7 +33,7 @@
 
 .lp-levelAction {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
   min-height: 32px;
   padding: 4px 10px;
@@ -59,7 +59,7 @@
    they follow up on. A diamond marker and a "Follows up on" line set them
    apart without making them a step of their own. */
 .lp-nodeDot.lp-nodeDotCompanion {
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   transform: rotate(45deg) scale(0.9);
 }
 
@@ -69,7 +69,7 @@
   gap: 6px;
   margin: 0 0 var(--space-1);
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
 }
 
@@ -96,7 +96,7 @@
   width: 40px;
   display: flex;
   justify-content: center;
-  z-index: 2;
+  z-index: var(--z-raised);
 }
 
 .lp-nodeDot {
@@ -164,7 +164,7 @@
 
 .lp-startHereLabel {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -176,7 +176,7 @@
 
 .lp-newLabel {
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -200,19 +200,19 @@
 }
 
 .lp-cardReadingTime {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   font-family: var(--font-heading);
   font-weight: 500;
 }
 
 .lp-cardDate {
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
 }
 
 .lp-cardTitle {
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.35;
   margin-bottom: var(--space-1);
@@ -230,7 +230,7 @@
 }
 
 .lp-cardDesc {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0 0 var(--space-2) 0;
@@ -251,7 +251,7 @@
      plus the anchor-specific resets (no underline, inherited
      display) so crawlers see a real link without UI regressions. */
   display: inline-block;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   background: var(--color-border-light);
@@ -314,7 +314,7 @@
   .lp-nodeCardStartHere { animation: none; }
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lp-pathContainer { padding-left: 40px; }
   .lp-pathLine { left: 12px; }
   .lp-nodeDotWrapper { left: -40px; width: 28px; }
@@ -335,7 +335,7 @@
 /* Level pages on phones (LevelLessons): lessons as compact rows: step,
    title and read time, read toggle. The date, summary and topic tags show
    on wider screens. */
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lp-levelPage .lp-levelPosts { padding-bottom: var(--space-4); }
 
   .lp-levelPage .lp-postNode { margin-bottom: var(--space-2); }
@@ -375,7 +375,7 @@
   .lp-levelPage .lp-cardTitle {
     grid-area: title;
     margin: 0;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.3;
   }
 
@@ -412,21 +412,21 @@
   .lp-nodeCard:hover { transform: none; }
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lp-startHereLabel,
   .lp-cardReadingTime,
   .lp-cardTag,
   .lp-newLabel {
-    font-size: 0.8125rem !important;
+    font-size: var(--text-caption) !important;
   }
   .if-scope,
   .level-page-covered p,
   .level-page-scope {
-    font-size: 1rem !important;
+    font-size: var(--text-base) !important;
   }
   .lp-cardDesc,
   .learn-levelSummary {
-    font-size: 0.9375rem !important;
+    font-size: var(--text-ui) !important;
   }
 
   .lp-cardTag,
@@ -476,7 +476,7 @@
   gap: 6px;
   max-width: 420px;
   margin-bottom: var(--space-3);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   color: var(--color-text-secondary);
 }
 .lp-levelPageBar {
@@ -522,11 +522,11 @@
 }
 .lp-topicGroupHead h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: var(--text-xl);
 }
 .lp-topicGroupHead a {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   font-weight: 600;
   color: var(--color-deep-blue);
   /* Beside a heading in the same colour family, so underlined: not told
@@ -538,9 +538,9 @@
   align-items: center;
   min-height: 24px;
 }
-@media (max-width: 640px) {
+@media (width < 640px) {
   .lp-topicGroup + .lp-topicGroup { margin-top: var(--space-8); }
-  .lp-topicGroupHead h2 { font-size: 1.2rem; }
+  .lp-topicGroupHead h2 { font-size: var(--text-lg); }
   .lp-topicGroupHead a { min-height: 44px; }
 }
 /* Step number on each learning-path card: the reading order within a level. */
@@ -552,10 +552,10 @@
   height: 1.6rem;
   padding: 0 0.35rem;
   border: 1.5px solid;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
   background: var(--color-bg-white);
 }
@@ -563,7 +563,7 @@
 .lp-orderHint {
   display: none;
   margin: 0 0 var(--space-3);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 600;
 }
 @media (min-width: 1024px) {
@@ -598,7 +598,7 @@
 /* /blog/'s two ways in: the path from the start, or one question answered by
    a short How-to guide. Equal weight, side by side; stacked on phones. */
 .learn-starts { display: flex; flex-direction: column; gap: var(--space-3); }
-.learn-startsHeading { margin: 0; font-size: 1.15rem; color: var(--color-deep-blue); }
+.learn-startsHeading { margin: 0; font-size: var(--text-lead); color: var(--color-deep-blue); }
 .learn-startsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: stretch; }
 .learn-howtoList { list-style: none; margin: 0; padding: 0; display: grid; }
 .learn-howtoList a {
@@ -618,29 +618,22 @@
 
 .learn-startText h2 {
   margin: 0 0 var(--space-1);
-  font-size: 1.35rem;
+  font-size: var(--text-lg);
   line-height: 1.3;
   color: var(--color-text-primary);
 }
 
 .learn-eyebrow {
   margin: 0 0 var(--space-1);
-  font-family: var(--font-heading);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
 }
 /* In the "Where would you like to start?" band, labels in sentence case
    (council, Nov 10 2026). */
 .learn-starts .learn-eyebrow {
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   letter-spacing: normal;
   text-transform: none;
   color: var(--color-teal);
 }
-[data-theme="dark"] .learn-starts .learn-eyebrow { color: var(--palette-teal-dark); }
 
 .learn-sub {
   margin: 0;
@@ -649,12 +642,12 @@
 
 .learn-muted {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-small);
 }
 
 .learn-note {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
 }
 
@@ -719,7 +712,7 @@
 
 .learn-helperText {
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: var(--text-lead);
   font-weight: 600;
   color: var(--color-text-primary);
 }
@@ -763,7 +756,7 @@
   border-radius: 10px;
   background: var(--color-bg-subtle);
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   line-height: 1.35;
   cursor: pointer;
 }
@@ -810,7 +803,7 @@
 
 .learn-helperResult h3 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
 }
 
 .learn-helperResult .learn-actions {
@@ -836,7 +829,7 @@
   margin: 0;
   /* "Search every lesson" on topic pages jumps here; clears the sticky header. */
   scroll-margin-top: 80px;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--color-text-primary);
 }
 
@@ -886,7 +879,7 @@ a.learn-level:hover {
   background: var(--lc);
   color: var(--color-bg-white);
   font-family: var(--font-heading);
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 700;
 }
 
@@ -916,13 +909,13 @@ a.learn-level:hover {
 .learn-levelName em {
   margin-left: 6px;
   font-style: normal;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
   color: var(--color-text-muted);
 }
 
 .learn-levelSummary {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: var(--color-text-secondary);
   overflow-wrap: break-word;
@@ -931,7 +924,7 @@ a.learn-level:hover {
 
 .learn-levelCount {
   flex: none;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-secondary);
@@ -989,7 +982,7 @@ a.learn-level:hover {
   gap: 10px;
   margin: var(--space-4) 0 var(--space-2);
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1020,14 +1013,14 @@ a.learn-level:hover {
   background: var(--color-bg-white);
   color: var(--color-text-primary);
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 /* On a page that is not in English, the line that says the search reads
    English words. It sits under the box, so it stays after the first key. */
 .learn-searchHint {
   margin: var(--space-2) 0 0;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--color-text-muted);
 }
 
@@ -1054,7 +1047,7 @@ a.learn-level:hover {
   background: var(--color-bg-white);
   color: var(--color-text-primary);
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
   font-weight: 600;
   text-decoration: none;
 }
@@ -1068,9 +1061,9 @@ a.learn-level:hover {
   flex: none;
   padding: 3px 9px;
   border: 1px solid var(--lc);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   color: var(--lc);
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
 }
 
@@ -1088,12 +1081,12 @@ a.learn-level:hover {
   color: var(--color-text-muted);
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
   .learn-home { gap: var(--space-6); }
 
   .learn-card { padding: var(--space-5) var(--space-4); }
 
-  .learn-startText h2 { font-size: 1.2rem; }
+  .learn-startText h2 { font-size: var(--text-lg); }
 
   .learn-actions .btn--primary,
   .learn-actions .btn--outline { width: 100%; }
@@ -1107,13 +1100,6 @@ a.learn-level:hover {
 
 @media (prefers-reduced-motion: reduce) {
   .learn-level { transition: none; }
-}
-
-/* Spaced capitals break how Devanagari letters join: small labels in Hindi and
-   Marathi keep normal spacing and case. */
-html:is([lang="hi"], [lang="mr"]) .learn-eyebrow {
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 @media (forced-colors: active) {

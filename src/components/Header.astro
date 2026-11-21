@@ -230,7 +230,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: var(--z-header);
     background: var(--color-bg-white);
     border-bottom: 1px solid var(--color-border-light);
   }
@@ -265,7 +265,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   }
 
   /* Phones: the logo link is a 44px tap target. */
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .logo { min-height: 44px; }
   }
 
@@ -287,13 +287,13 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .logo-text {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     line-height: 1;
     letter-spacing: -0.02em;
   }
 
   .logo-tagline {
-    font-size: 0.90625rem;
+    font-size: var(--text-ui);
     line-height: 1.15;
     color: var(--color-teal);
     white-space: nowrap;
@@ -307,14 +307,14 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
      the header and the wordmark keeps its full size. */
   @media (max-width: 519px) {
     .logo-tagline { display: none; }
-    .logo-text { font-size: 1.4rem; }
+    .logo-text { font-size: var(--text-xl); }
 
     .tagline-strip {
       display: block;
       margin: 0;
       padding: 5px var(--space-4);
       text-align: center;
-      font-size: 0.875rem;
+      font-size: var(--text-small);
       line-height: 1.3;
       color: var(--color-teal);
       background: var(--color-bg-white);
@@ -349,7 +349,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   }
 
   .nav-dropdownCaret {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     transition: transform 0.15s ease;
   }
 
@@ -370,7 +370,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     list-style: none;
     padding: var(--space-1) 0;
     min-width: 220px;
-    z-index: 200;
+    z-index: var(--z-dropdown);
   }
 
   .nav-dropdownMenu a {
@@ -378,7 +378,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     padding: 10px 16px;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     text-decoration: none;
     transition: background 0.1s ease, color 0.1s ease;
@@ -410,7 +410,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .nav-link {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-secondary);
@@ -428,7 +428,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .nav-link:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: var(--radius-xs);
   }
 
   /* Where you are: the current page's link, and the button of the section it
@@ -445,7 +445,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 
   @media (max-width: 480px) {
     .nav-right { gap: var(--space-3); }
-    .nav-link { font-size: 0.8125rem; }
+    .nav-link { font-size: var(--text-caption); }
     .nav-dropdownMenu { right: -40px; min-width: 200px; }
   }
 
@@ -532,7 +532,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-sheetHeading {
       margin: 0 0 var(--space-1);
       font-family: var(--font-heading);
-      font-size: 0.8125rem;
+      font-size: var(--text-caption);
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -550,7 +550,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       padding: 10px 0;
       font-family: var(--font-heading);
       font-weight: 600;
-      font-size: 1.02rem;
+      font-size: var(--text-base);
       color: var(--color-text-primary);
       text-decoration: none;
     }
@@ -571,7 +571,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       padding: 10px 0;
       font-family: var(--font-heading);
       font-weight: 600;
-      font-size: 1.02rem;
+      font-size: var(--text-base);
       color: var(--color-text-primary);
       list-style: none;
       cursor: pointer;
@@ -581,7 +581,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
 
     .nav-sheetSub > summary::after {
       content: '+' / '';
-      font-size: 1.2rem;
+      font-size: var(--text-lg);
       color: var(--color-teal);
     }
 
@@ -590,7 +590,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-sheetSub > summary:focus-visible {
       outline: 2px solid var(--color-teal);
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: var(--radius-xs);
     }
 
     /* Contact tiles: an icon badge, the channel and its address, and an
@@ -640,7 +640,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
       height: 22px;
       fill: none;
       stroke: currentColor;
-      stroke-width: 1.9;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -664,14 +664,14 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-contactLabel {
       font-family: var(--font-heading);
       font-weight: 700;
-      font-size: 1rem;
+      font-size: var(--text-base);
       color: var(--color-text-primary);
     }
 
     .nav-contactDetail {
       font-family: var(--font-body, inherit);
       font-weight: 400;
-      font-size: 0.88rem;
+      font-size: var(--text-small);
       color: var(--color-text-secondary);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -679,7 +679,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     }
 
     .nav-contactGo {
-      font-size: 1.15rem;
+      font-size: var(--text-lead);
       color: var(--color-text-muted);
     }
 
@@ -701,7 +701,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     .nav-sheetGroup a:focus-visible {
       outline: 2px solid var(--color-teal);
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: var(--radius-xs);
     }
   }
 

@@ -81,10 +81,10 @@ const breadcrumbSchema = {
   <section class="if-hub">
     <div class="container">
       <header class="if-header">
-        <nav class="if-breadcrumb" aria-label={strings.a11y.breadcrumb}>
-          <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a> <span class="sep">/</span> <span>{learn.crumb.inclusive}</span>
+        <nav class="crumbs if-breadcrumb" aria-label={strings.a11y.breadcrumb}>
+          <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a> <span class="sep" aria-hidden="true">/</span> <span>{learn.crumb.inclusive}</span>
         </nav>
-        <p class="if-eyebrow">{inclusiveFinances.eyebrow}</p>
+        <p class="eyebrow eyebrow--level if-eyebrow" style="--eyebrow-level: var(--level-inclusive-finances)">{inclusiveFinances.eyebrow}</p>
         <h1>{inclusiveFinances.h1}</h1>
         <p class="if-lede">
           {inclusiveFinances.lede1}
@@ -139,46 +139,33 @@ const breadcrumbSchema = {
   }
 
   .if-breadcrumb {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
-  .if-breadcrumb a {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
 
   .if-breadcrumb .sep {
     margin: 0 var(--space-1);
   }
 
   .if-eyebrow {
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--level-inclusive-finances);
     margin: 0 0 var(--space-2);
   }
 
   .if-header h1 {
-    font-size: 2.25rem;
+    font-size: var(--title-hub);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
   }
 
   .if-lede {
     color: var(--color-text-secondary);
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     line-height: 1.65;
     margin: 0 0 var(--space-3);
   }
 
   .if-scope {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     line-height: 1.5;
     padding: var(--space-3) var(--space-4);
@@ -194,12 +181,12 @@ const breadcrumbSchema = {
   }
 
   .if-situations h2 {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     margin: 0 0 var(--space-1);
   }
 
   .if-situations p {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
     margin: 0 0 var(--space-3);
   }
@@ -219,7 +206,7 @@ const breadcrumbSchema = {
     border: 1px solid color-mix(in srgb, var(--level-inclusive-finances) 45%, var(--color-border));
     border-radius: var(--radius-md);
     font-family: var(--font-heading);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 600;
     color: var(--level-inclusive-finances);
     text-decoration: none;
@@ -242,6 +229,5 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 600px) {
-    .if-header h1 { font-size: 1.75rem; }
   }
 </style>

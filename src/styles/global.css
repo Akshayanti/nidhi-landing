@@ -1,8 +1,12 @@
-/* Self-hosted fonts */
+/* Self-hosted fonts. Each file is variable, with a weight axis of 100 to 900
+   (checked with fontTools: fvar wght 100 to 900, and a gvar table), so each
+   face declares that whole range. A narrower range made the browser fake the
+   weights outside it: Roboto was declared 300 to 500, so the 600 of every
+   `strong` in a lesson was the 500 outlines smeared bold (#409). */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
   src: url('/fonts/inter-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -11,7 +15,7 @@
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
   src: url('/fonts/inter-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -20,7 +24,7 @@
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 300 500;
+  font-weight: 100 900;
   font-display: swap;
   src: url('/fonts/roboto-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -29,7 +33,7 @@
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 300 500;
+  font-weight: 100 900;
   font-display: swap;
   src: url('/fonts/roboto-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -207,7 +211,7 @@ html:is([lang="hi"], [lang="mr"]) {
   --warning-light-border-strong: #ffc107;
   --warning-light-text:       #665100;
   --warning-light-text-strong: #856404;
-  --warning-light-text-amber: #ffc107;
+  --warning-dark-text:        #ffc107;
   --warning-dark-bg:          #332b00;
   --warning-dark-border:      #664d00;
 }
@@ -245,6 +249,11 @@ html:is([lang="hi"], [lang="mr"]) {
   /* Semantic */
   --color-success:          var(--semantic-success-light);
   --color-warning:          var(--semantic-warning-light);
+  /* A warning panel (#419): its fill, edge and text, swapped together with
+     the theme, so no rule needs its own dark override. */
+  --color-warning-bg:       var(--warning-light-bg);
+  --color-warning-border:   var(--warning-light-border-strong);
+  --color-warning-text:     var(--warning-light-text-strong);
   /* Lesson figures: the ink of a label painted on a filled shape, the text
      colour for an orange figure, and the line round a shape whose fill is
      too close to the page to show its edge. The fills turn light in dark
@@ -285,6 +294,36 @@ html:is([lang="hi"], [lang="mr"]) {
   --font-body: 'Roboto', sans-serif;
   /* The one monospace stack: system faces only, so nothing is downloaded. */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* The founder's note on the home page: system serifs only, so nothing is
+     downloaded. Hindi and Marathi set it in the body face instead. */
+  --font-personal: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+
+  /* Type scale (#410, three-model council, Nov 21 2026). Every text size is
+     one of these steps, named for its job. In rem, so each follows the
+     reader's text size. Left out on purpose: em sizes (relative to their
+     parent by design), the print sheet's pt sizes, figure and chart text, and
+     the expressions that draw an amount smaller to fit its line. */
+  --text-caption: 0.8125rem; /* 13px: labels, badges, fine print, crumbs */
+  --text-small:   0.875rem;  /* 14px: help text, card body, meta lines */
+  --text-ui:      0.9375rem; /* 15px: controls, card titles, lists */
+  --text-base:    1rem;      /* 16px: body text */
+  --text-prose:   1.05rem;   /* 16.8px: lesson body (1rem on phones) */
+  --text-lead:    1.125rem;  /* 18px: lead paragraphs, small headings */
+  --text-lg:      1.25rem;   /* 20px: h3 */
+  --text-xl:      1.5rem;    /* 24px: section headings on tool and info pages */
+  --text-2xl:     1.75rem;   /* 28px: h2 */
+  --text-3xl:     2rem;      /* 32px: large figures, display numbers */
+  /* Page titles, in three tiers: reading pages (lessons, guides, the
+     information and transactional pages), hubs (learn, levels, topics,
+     glossary, how-to, the tools hub and the tools) and the home hero. The
+     phone step is written once, below, so no page can forget it. */
+  --title-page:   2rem;
+  --title-hub:    2.4rem;
+  --title-hero:   clamp(2.25rem, 0.6rem + 4.2vw, 3.6rem);
+  --leading-tight: 1.25;     /* headings (1.4 for Devanagari) */
+  --leading-snug:  1.4;
+  --leading-body:  1.6;
+  --leading-prose: 1.75;
 
   /* Spacing (8px unit) */
   --space-1: 4px;
@@ -299,19 +338,48 @@ html:is([lang="hi"], [lang="mr"]) {
   --space-16: 64px;
 
   /* Border radius */
+  --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-pill: 999px;
 
   /* Shadows / Elevation */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
 
-  /* Layout */
-  --max-width: 720px;
-  --max-width-wide: 1080px;
+  /* Layout (#415, three-model council, Nov 21 2026). Three widths, each
+     including the side gutter, and one gutter at every screen width:
+     wide for the header, footer, home, tools hub, tools, level and topic
+     pages, so their content edge is the logo's; index for the blog and how-to
+     hubs; reading for lessons, guides, the glossary and the information
+     pages. Reading and index columns are centred.
+     Breakpoints, which custom properties cannot hold: 480px (phones),
+     640px (small tablets: a pair is written `width < 640px` and
+     `width >= 640px`, so 640 itself matches one side only) and 900px.
+     The header and some charts keep queries tuned to their own content. */
+  --layout-wide: 1080px;
+  --layout-index: 832px;
+  --layout-reading: 720px;
+  --layout-gutter: 16px;
+
+  /* Stacking order (#415). Every layer above the page is one of these, in
+     this order; a value inside one component's own stacking context (a
+     chart tooltip, say) stays local. The reading progress bar is the top
+     layer and lets every click through. */
+  --z-raised: 2;
+  --z-sticky: 20;
+  --z-header: 100;
+  --z-dropdown: 200;
+  --z-overlay: 1000;
+  --z-dialog: 9999;
+  --z-skip: 10000;
+  --z-progress: 10001;
+  /* The old name, still read by the newsletter form; it goes once that
+     form's open pull request has merged. */
+  --max-width: var(--layout-reading);
 
   /* Notice backgrounds */
   --notice-caution-bg:      var(--notice-caution-bg-light);
@@ -384,6 +452,9 @@ html:is([lang="hi"], [lang="mr"]) {
 
   --color-success:          var(--semantic-success-dark);
   --color-warning:          var(--semantic-warning-dark);
+  --color-warning-bg:       var(--warning-dark-bg);
+  --color-warning-border:   var(--warning-dark-border);
+  --color-warning-text:     var(--warning-dark-text);
   --fig-on-fill:            var(--neutral-page-bg-dark);
   --fig-text-warn:          var(--semantic-warning-dark);
   --fig-outline:            #BDBDBD;
@@ -455,6 +526,25 @@ html:is([lang="hi"], [lang="mr"]) {
 html {
   font-size: 100%;
   scroll-behavior: smooth;
+  /* A weight the font does not have shows as the nearest real one, never as
+     a browser-made bold, so a missing weight is seen in review (#409). Weight
+     only: no italic face is shipped, so emphasis keeps its slanted form. */
+  font-synthesis-weight: none;
+}
+
+/* Form controls take the page's type. Browsers give them their own font
+   (Arial at 13.3px in Chrome), so a field or button that set no family drew in
+   neither of the site's faces (#411). An element rule: every class that sets
+   a size or a family still wins. Longhands rather than `font: inherit`, which
+   would also hand every field the page's 1.6 line height and make it taller. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -501,10 +591,18 @@ h1, h2, h3, h4, h5, h6 {
   :is(:lang(en), :lang(es), :lang(cs)) { hyphens: auto; }
 }
 
-h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
-h2 { font-size: 1.75rem; letter-spacing: -0.01em; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1rem; font-weight: 600; }
+h1 { font-size: var(--title-page); letter-spacing: -0.02em; }
+
+/* The one phone step for page and hub titles (#410). */
+@media (width < 640px) {
+  :root {
+    --title-page: 1.75rem;
+    --title-hub: 1.75rem;
+  }
+}
+h2 { font-size: var(--text-2xl); letter-spacing: -0.01em; }
+h3 { font-size: var(--text-lg); }
+h4 { font-size: var(--text-base); font-weight: 600; }
 
 /* Hindi typography.
 
@@ -517,11 +615,8 @@ h4 { font-size: 1rem; font-weight: 600; }
    back, rather than picking a new number, so Hindi gets the leading the Latin
    values were chosen for.
 
-   The negative tracking on h1 and h2 is a Latin optical correction: large Latin
-   type opens gaps between letters that the tracking closes again. Devanagari
-   clusters are already tight, so it only squeezes them. Positive tracking on
-   the small label styles is left alone: it adds air between clusters and the
-   shaping engine never splits a cluster to do it.
+   Tracking, negative on titles and positive on small labels, is a Latin
+   device and is switched off for Devanagari below.
 
    Figures inside lessons are a separate job. Their labels are positioned by hand
    against Latin widths, and re-tuning them is part of translating each lesson. */
@@ -541,6 +636,7 @@ html:is([lang="hi"], [lang="mr"]) body {
    is how a page says it wants something else. */
 html:is([lang="hi"], [lang="mr"]) :is(h1, h2, h3, h4, h5, h6):not(._):not(._) {
   line-height: 1.4; /* Latin rule: 1.25 */
+  /* Also set by the :lang() rule above; kept so this rule stands alone. */
   letter-spacing: normal;
 }
 
@@ -552,30 +648,22 @@ html:is([lang="hi"], [lang="mr"]) .prose figcaption {
   line-height: 1.7; /* Latin rule: 1.55 */
 }
 
-/* Uppercase is a Latin device: it does nothing to Devanagari and only shouts
-   the Latin words a Hindi label carries, so the brand in "nidhi के बारे में"
-   came out as "NIDHI". The tracking that goes with it is a Latin correction
-   too. The extra ancestor outweighs the components' scoped rules, which
-   carry Astro's scope attribute. */
-html:is([lang="hi"], [lang="mr"]) .site-footer .footer-col-heading,
-html:is([lang="hi"], [lang="mr"]) .site-header .nav-sheetHeading {
-  text-transform: none;
-  letter-spacing: normal;
-}
+/* Letter-spacing and capitals are Latin devices, and Devanagari takes neither
+   (#522). Tracking puts a gap between every pair of letters, which breaks the
+   headline (shirorekha) that joins the letters of a Devanagari word, so
+   "मोफत साधने" reads as "मो फ त सा ध ने". Uppercase does nothing to Devanagari
+   and only shouts the Latin words a Hindi label carries ("NIDHI").
 
-/* Spaced capitals break how Devanagari letters join: small labels in Hindi and
-   Marathi keep normal spacing and case. (The Learn page's own label has the
-   same rule in learn.css.) */
-html:is([lang="hi"], [lang="mr"]) .guide-label {
-  letter-spacing: normal;
-  text-transform: none;
-}
-
-/* The figure titles are set in the heading face at a size where the same
-   negative tracking applies. The rest of a figure's typography is tuned per
-   figure alongside its translation. */
-html:is([lang="hi"], [lang="mr"]) .prose figure svg .fig-title {
-  letter-spacing: normal;
+   One rule for every element in Hindi or Marathi, rather than a list of the
+   label classes that are tracked: the list missed the nav, the tools' field
+   labels and table heads, chart text and the privacy log's labels, and every
+   new label would have needed adding. `:lang()` follows the `lang` attribute
+   down the tree, so a run marked `lang="en"` inside a Hindi page (an English
+   lesson's title) keeps its Latin styling. `!important` because a component's
+   scoped rule carries an extra attribute and would otherwise outweigh this. */
+:is(:lang(hi), :lang(mr)) {
+  letter-spacing: normal !important;
+  text-transform: none !important;
 }
 
 a {
@@ -640,13 +728,13 @@ strong {
   position: absolute;
   top: -100%;
   left: var(--space-4);
-  z-index: 10000;
+  z-index: var(--z-skip);
   padding: var(--space-2) var(--space-4);
   background: var(--color-callout-bg);
   color: var(--color-callout-fg);
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   text-decoration: none;
   transition: top 0.15s ease;
@@ -675,7 +763,7 @@ strong {
   top: 50%;
   transform: translateY(-50%);
   font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-size: var(--text-xl);
   font-weight: 600;
   line-height: 1;
   color: var(--color-deep-blue);
@@ -694,6 +782,49 @@ strong {
  *   .btn--danger   removes or deletes; the label says what
  *   .btn--onCallout  the main action on the blue callout
  * Works on <button> and on <a>; a link stays a link. */
+/* Words for screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Breadcrumbs (#417): one size, one separator ("/", hidden from screen
+   readers) and underlined links, on every page that has them. Each nav is
+   labelled from the catalogue (`a11y.breadcrumb`). */
+.crumbs {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+.crumbs a {
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.crumbs a:hover { text-decoration-thickness: 2px; }
+
+/* Eyebrows (#417): the small label above a heading. One look everywhere:
+   Inter, caption size, bold, spaced capitals, teal. `--muted` is for a
+   label that only places the page (a level's number, a topic); `--level`
+   takes the colour a page sets in `--eyebrow-level`. Devanagari has no
+   capitals and is not spaced (the `:lang()` rule near the top). */
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+}
+.eyebrow--muted { color: var(--color-text-muted); }
+.eyebrow--level { color: var(--eyebrow-level, var(--color-teal)); }
+
 .btn {
   --btn-ink: var(--color-deep-blue);
   --btn-fill: transparent;
@@ -711,7 +842,7 @@ strong {
      by letter. */
   padding: 0.625rem min(1rem, 16px);
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.5;
   text-align: center;
@@ -852,20 +983,20 @@ details[open] > .disclosure::after,
 
 /* Utility */
 .container {
-  max-width: var(--max-width);
+  max-width: var(--layout-reading);
   margin: 0 auto;
-  padding: 0 var(--space-4);
+  padding: 0 var(--layout-gutter);
 }
 
 .container--wide {
-  max-width: var(--max-width-wide);
+  max-width: var(--layout-wide);
 }
 
 /* Prose for blog content */
 .prose {
-  max-width: var(--max-width);
+  max-width: var(--layout-reading);
   margin: 0 auto;
-  font-size: 1.05rem;
+  font-size: var(--text-prose);
   line-height: 1.75;
 }
 
@@ -942,7 +1073,7 @@ details[open] > .disclosure::after,
 .prose .term-tip-trigger:focus-visible {
   outline: 2px solid var(--color-deep-blue);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 .prose .term-tip-bubble {
   display: none;
@@ -961,7 +1092,7 @@ details[open] > .disclosure::after,
   border-left: 4px solid var(--color-deep-blue);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 16px color-mix(in srgb, var(--color-deep-blue) 18%, transparent);
-  font-size: 0.9375rem;
+  font-size: var(--text-ui);
   font-weight: 400;
   line-height: 1.45;
   text-align: left;
@@ -1071,7 +1202,7 @@ details[open] > .disclosure::after,
 .prose details.lesson-depth > summary::before {
   content: 'Optional detail';
   flex-basis: 100%;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1250,7 +1381,7 @@ details[open] > .disclosure::after,
   width: 100%;
   border-collapse: collapse;
   margin: var(--space-5) 0;
-  font-size: 0.9rem;
+  font-size: var(--text-small);
 }
 
 .prose .table-scroll > table {
@@ -1261,7 +1392,7 @@ details[open] > .disclosure::after,
   text-align: left;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-text-secondary);
@@ -1323,7 +1454,7 @@ details[open] > .disclosure::after,
 
 /* Figcaption (SVG diagrams): italic narrative context */
 .prose figcaption {
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   margin: var(--space-3) auto 0;
   line-height: 1.55;
@@ -1386,7 +1517,7 @@ details[open] > .disclosure::after,
    keeps the smallest label (11 to 12 units) at about 10px on screen, so
    min-width is about 0.92 of the viewBox width plus padding. The swipe hint
    and the caption stay pinned to the left edge while the chart scrolls. */
-@media (max-width: 640px) {
+@media (width < 640px) {
   .prose figure:has(> svg) {
     overflow-x: auto;
     overscroll-behavior-x: contain;
@@ -1403,12 +1534,12 @@ details[open] > .disclosure::after,
     left: 0;
     display: block;
     margin-bottom: var(--space-2);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 600;
     color: var(--color-text-muted);
     text-align: left;
   }
-  .prose figcaption { font-size: 0.875rem; }
+  .prose figcaption { font-size: var(--text-small); }
   .prose figure:has(> svg) figcaption {
     position: sticky;
     left: 0;
@@ -1425,7 +1556,7 @@ details[open] > .disclosure::after,
   padding: var(--space-4) var(--space-5);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   margin: var(--space-6) 0;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 .notice-danger {
@@ -1434,7 +1565,7 @@ details[open] > .disclosure::after,
   padding: var(--space-4) var(--space-5);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   margin: var(--space-6) 0;
-  font-size: 0.95rem;
+  font-size: var(--text-ui);
 }
 
 .disclaimer {
@@ -1442,15 +1573,14 @@ details[open] > .disclosure::after,
   border-radius: var(--radius-md);
   padding: var(--space-4) var(--space-5);
   margin: var(--space-8) 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   line-height: 1.5;
 }
 
 @media (max-width: 480px) {
-  h1 { font-size: 1.75rem; }
-  h2 { font-size: 1.4rem; }
-  .prose { font-size: 1rem; }
+  h2 { font-size: var(--text-xl); }
+  .prose { font-size: var(--text-base); }
 }
 
 @keyframes lp-startHerePulse {
@@ -1509,14 +1639,14 @@ details[open] > .disclosure::after,
 }
 
 .transactional-icon--warning {
-  background: rgba(234, 88, 12, 0.1);
-  color: var(--semantic-destructive-text-light);
+  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  color: var(--color-danger);
 }
 
 .transactional-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.75rem;
+  font-size: var(--title-page);
   color: var(--color-deep-blue);
   margin: 0 0 var(--space-3);
   letter-spacing: -0.02em;
@@ -1524,7 +1654,7 @@ details[open] > .disclosure::after,
 }
 
 .transactional-body {
-  font-size: 0.98rem;
+  font-size: var(--text-base);
   color: var(--color-text-secondary);
   line-height: 1.65;
   margin: 0 0 var(--space-6);
@@ -1547,20 +1677,17 @@ details[open] > .disclosure::after,
 
 .transactional-status {
   margin: var(--space-3) 0 0;
-  font-size: 0.88rem;
+  font-size: var(--text-small);
   min-height: 1.2em;
   color: var(--color-text-muted);
 }
 
-.transactional-status--error { color: var(--semantic-destructive-text-light); }
+.transactional-status--error { color: var(--color-danger); }
 .transactional-status--success { color: var(--color-teal); }
-
-[data-theme="dark"] .transactional-status--error { color: var(--palette-deep-orange-dark); }
-[data-theme="dark"] .transactional-status--success { color: var(--palette-teal-dark); }
 
 .transactional-secondary {
   margin: var(--space-6) 0 0;
-  font-size: 0.875rem;
+  font-size: var(--text-small);
   color: var(--color-text-muted);
   line-height: 1.6;
 }
@@ -1578,11 +1705,11 @@ details[open] > .disclosure::after,
 .transactional-dev-warning {
   margin: var(--space-5) 0 0;
   padding: var(--space-2) var(--space-3);
-  background: var(--warning-light-bg);
-  border: 1px solid var(--warning-light-border);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
   border-radius: var(--radius-sm);
-  color: var(--warning-light-text);
-  font-size: 0.8125rem;
+  color: var(--color-warning-text);
+  font-size: var(--text-caption);
   line-height: 1.5;
   text-align: left;
 }
@@ -1598,11 +1725,8 @@ details[open] > .disclosure::after,
   .transactional-card {
     padding: var(--space-6) var(--space-4);
   }
-  .transactional-title {
-    font-size: 1.4rem;
-  }
   .transactional-body {
-    font-size: 0.92rem;
+    font-size: var(--text-ui);
   }
 }
 /* The card's headline figures sit side by side while each has about 8em.
@@ -1778,7 +1902,7 @@ body[data-page="landing"] .site-footer {
    Several of these classes are styled inside scoped component styles, which
    outrank a plain global selector; !important keeps this block the single
    place that sets the phone floor. */
-@media (max-width: 640px) {
+@media (width < 640px) {
   .nav-dropdownCaret,
   .changelog-tag,
   .ft-kicker,
@@ -1786,9 +1910,9 @@ body[data-page="landing"] .site-footer {
   .ref-type,
   .post-nav-direction,
   .post-tool-stepLabel {
-    font-size: 0.8125rem !important;
+    font-size: var(--text-caption) !important;
   }
-  .prose code { font-size: 0.875rem !important; }
+  .prose code { font-size: var(--text-small) !important; }
   .post-tldr,
   .post-tldr li,
   .post-faq-a,
@@ -1818,7 +1942,7 @@ body[data-page="landing"] .site-footer {
   .post-tool-stepBody,
   .prose figcaption,
   .lessons-note {
-    font-size: 1rem !important;
+    font-size: var(--text-base) !important;
   }
   /* Emphasis inside running text keeps its weight and takes the block's size. */
   .belief-body strong, .belief-body a, .disclaimer strong, .privacy-container strong,
@@ -1829,7 +1953,7 @@ body[data-page="landing"] .site-footer {
   .post-related-card-desc,
   .tagHub-cardDesc,
   .route-meta {
-    font-size: 0.9375rem !important;
+    font-size: var(--text-ui) !important;
   }
 
   .nav-link,

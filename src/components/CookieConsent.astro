@@ -38,7 +38,7 @@ const strings = dict(locale);
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: var(--z-dialog);
     background: rgba(0, 0, 0, 0.5);
     align-items: safe center;
     justify-content: center;
@@ -64,14 +64,14 @@ const strings = dict(locale);
     overscroll-behavior: contain;
     margin: auto;
     text-align: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
   }
 
   /* Prose reads from a straight edge; only the link and the buttons stay centred. */
   .cookie-text {
     text-align: start;
     margin: 0 0 0.5rem;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     line-height: 1.6;
   }
@@ -83,7 +83,7 @@ const strings = dict(locale);
 
   .cookie-sub {
     margin: 0 0 1.25rem;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     line-height: 1.4;
   }
 
@@ -111,7 +111,7 @@ const strings = dict(locale);
     font-weight: 700;
   }
 
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .cookie-modal {
       padding: 1.5rem 1rem;
     }

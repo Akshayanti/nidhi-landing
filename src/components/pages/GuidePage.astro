@@ -72,8 +72,8 @@ const breadcrumbSchema = {
   <link slot="head" rel="alternate" type="application/rss+xml" title={dict(DEFAULT_LOCALE).rss.guidesLinkTitle} href="/how-to/rss.xml" />
   <article class="guide">
     <div class="guide-wrap">
-      <nav class="guide-crumbs" aria-label="Breadcrumb">
-        <a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">›</span> <span>{groupName}</span>
+      <nav class="crumbs guide-crumbs" aria-label={dict(DEFAULT_LOCALE).a11y.breadcrumb}>
+        <a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">/</span> <span>{groupName}</span>
       </nav>
 
       <p class="guide-meta">
@@ -237,30 +237,29 @@ const breadcrumbSchema = {
 
 <style>
   .guide { padding: var(--space-8) 0 var(--space-16); }
-  .guide-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
-  .guide-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
-  .guide-crumbs a { color: var(--color-deep-blue); }
+  .guide-wrap { max-width: var(--layout-reading); margin: 0 auto; padding: 0 var(--layout-gutter); }
+  .guide-crumbs { margin-bottom: var(--space-3); }
   /* A breadcrumb link is a target of its own, not a link in a sentence: 24px
      tall for a pointer, 44px for a thumb (#405). */
   .guide-crumbs a { display: inline-flex; align-items: center; min-height: 24px; vertical-align: middle; }
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .guide-crumbs a { min-height: 44px; }
   }
-  .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.875rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
-  .guide-correction { font-size: 0.9rem; padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
-  .guide-title { font-size: clamp(1.6rem, 4.5vw, 2.1rem); line-height: 1.2; color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
+  .guide-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: var(--text-small); color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
+  .guide-correction { font-size: var(--text-small); padding: var(--space-2) var(--space-3); border-inline-start: 3px solid var(--color-deep-blue); background: var(--color-border-light); }
+  .guide-title { font-size: var(--title-page); line-height: var(--leading-tight); color: var(--color-deep-blue); letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
   .guide-outcome { color: var(--color-text-secondary); margin: 0 0 var(--space-5); }
   /* Calm by design (council, Nov 10 2026): headings and labels in text colour,
      blue only for links, two surfaces only (the short answer and the stop). */
   .guide-label {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-primary);
     margin: 0 0 var(--space-1);
   }
   .guide-wrap a:not(.guide-lesson) { color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
-  .guide-wrap a:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; border-radius: 2px; }
+  .guide-wrap a:focus-visible { outline: 2px solid var(--color-deep-blue); outline-offset: 2px; border-radius: var(--radius-xs); }
   /* The one branded surface: where reading starts. */
   .guide-answer .guide-label { color: var(--color-teal); }
   .guide-answer {
@@ -268,12 +267,12 @@ const breadcrumbSchema = {
     border-radius: var(--radius-md);
     padding: var(--space-4) var(--space-5);
     margin-bottom: var(--space-4);
-    font-size: 1.075rem;
+    font-size: var(--text-prose);
     line-height: 1.6;
   }
   .guide-answer p { margin: 0; }
   .guide-answer p + p { margin-top: var(--space-2); }
-  .guide-scope { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-5); font-size: 0.95rem; }
+  .guide-scope { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-5); font-size: var(--text-ui); }
   .guide-scope p { margin: 0; color: var(--color-text-secondary); }
   @media (max-width: 34rem) { .guide-scope { grid-template-columns: 1fr; gap: var(--space-3); } }
 
@@ -285,29 +284,29 @@ const breadcrumbSchema = {
     margin-bottom: var(--space-5);
     background: var(--color-bg-white);
   }
-  .guide-protect h2 { font-size: 1.1rem; color: var(--color-text-primary); margin: 0 0 var(--space-3); }
-  .guide-protect h3 { font-size: 0.95rem; margin: 0 0 var(--space-2); }
+  .guide-protect h2 { font-size: var(--text-lead); color: var(--color-text-primary); margin: 0 0 var(--space-3); }
+  .guide-protect h3 { font-size: var(--text-ui); margin: 0 0 var(--space-2); }
   .guide-protect-cols { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-4); }
   @media (max-width: 34rem) { .guide-protect-cols { grid-template-columns: 1fr; } }
-  .guide-protect ol, .guide-protect ul { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--space-2); font-size: 0.95rem; }
-  .guide-protect-note { margin: var(--space-3) 0 0; font-size: 0.9rem; color: var(--color-text-secondary); }
+  .guide-protect ol, .guide-protect ul { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--space-2); font-size: var(--text-ui); }
+  .guide-protect-note { margin: var(--space-3) 0 0; font-size: var(--text-small); color: var(--color-text-secondary); }
 
   .guide-needs { margin-bottom: var(--space-5); }
   .guide-needs ul { margin: 0; padding-inline-start: 1.2em; }
   .guide-needs p { margin: 0; }
-  .guide-time { margin-top: var(--space-2) !important; font-size: 0.9rem; color: var(--color-text-secondary); }
+  .guide-time { margin-top: var(--space-2) !important; font-size: var(--text-small); color: var(--color-text-secondary); }
 
-  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: 1.3rem; color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
+  .guide-steps h2, .guide-stop h2, .guide-depends h2, .guide-deeper h2, .guide-template h2 { font-size: var(--text-lg); color: var(--color-deep-blue); margin: var(--space-8) 0 var(--space-3); }
   .guide-step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
   .guide-step { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: var(--space-3); overflow-wrap: anywhere; }
   .guide-step-n {
-    width: 2rem; height: 2rem; border-radius: 999px;
+    width: 2rem; height: 2rem; border-radius: var(--radius-pill);
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--color-teal); color: var(--color-bg-white); font-weight: 700;
   }
-  .guide-step-action { font-size: 1.05rem; margin: 0.2rem 0 var(--space-1); }
+  .guide-step-action { font-size: var(--text-prose); margin: 0.2rem 0 var(--space-1); }
   .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
-  .guide-step-example, .guide-step-caution { font-size: 0.93rem; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+  .guide-step-example, .guide-step-caution { font-size: var(--text-ui); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
   .guide-step-example { border-inline-start: 3px solid var(--color-border); border-radius: 0; }
   .guide-step-caution { border-inline-start: 3px solid var(--color-warning); border-radius: 0; }
   .guide-step-example span, .guide-step-caution span { font-weight: 700; }
@@ -318,31 +317,31 @@ const breadcrumbSchema = {
     border-radius: var(--radius-md);
     background: var(--color-border-light);
   }
-  .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: 1.1rem !important; color: var(--color-text-primary); }
+  .guide-stop h2 { margin: 0 0 var(--space-2) !important; font-size: var(--text-lead) !important; color: var(--color-text-primary); }
   .guide-stop p { margin: 0; }
 
-  .guide-template-note { font-size: 0.9rem; color: var(--color-text-secondary); }
-  .guide-print { margin-inline-start: var(--space-2); font: inherit; font-size: 0.875rem; min-height: 36px; padding: 2px 12px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); background: var(--color-bg-white); color: var(--color-text-primary); cursor: pointer; }
+  .guide-template-note { font-size: var(--text-small); color: var(--color-text-secondary); }
+  .guide-print { margin-inline-start: var(--space-2); font: inherit; font-size: var(--text-small); min-height: 36px; padding: 2px 12px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); background: var(--color-bg-white); color: var(--color-text-primary); cursor: pointer; }
   .guide-template-wrap { overflow-x: auto; }
-  .guide-template-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .guide-template-table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
   .guide-template-table th { text-align: start; padding: var(--space-2); border: 1px solid var(--color-border); background: var(--color-border-light); }
   .guide-template-table td { height: 2.2rem; border: 1px solid var(--color-border); }
 
   .guide-depends ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
   /* After the stop: all still here, in order, but smaller and without boxes. */
-  .guide-deeper, .guide-others { font-size: 0.95rem; }
-  .guide-deeper h2 { font-size: 1.1rem !important; }
+  .guide-deeper, .guide-others { font-size: var(--text-ui); }
+  .guide-deeper h2 { font-size: var(--text-lead) !important; }
   .guide-lessons { list-style: none; padding: 0; margin: 0 0 var(--space-4); }
   .guide-lessons li + li { border-top: 1px solid var(--color-border-light); }
   .guide-lesson { display: grid; gap: 2px; padding: var(--space-3) 0; text-decoration: none; color: inherit; min-height: 44px; }
-  .guide-lesson-k { font-size: 0.8125rem; color: var(--color-text-muted); }
+  .guide-lesson-k { font-size: var(--text-caption); color: var(--color-text-muted); }
   .guide-lesson-t { font-weight: 600; color: var(--color-deep-blue); text-decoration: underline; text-underline-offset: 0.2em; }
-  .guide-lesson-d { font-size: 0.9rem; color: var(--color-text-secondary); }
-  .guide-tool { font-size: 0.95rem; }
+  .guide-lesson-d { font-size: var(--text-small); color: var(--color-text-secondary); }
+  .guide-tool { font-size: var(--text-ui); }
   .guide-refs { padding-inline-start: 1.2em; display: grid; gap: var(--space-2); }
-  .guide-ref-pub { font-size: 0.85rem; color: var(--color-text-muted); }
-  .guide-sources { margin-top: var(--space-3); font-size: 0.9rem; }
-  .guide-note { margin-top: var(--space-8); font-size: 0.85rem; color: var(--color-text-muted); }
+  .guide-ref-pub { font-size: var(--text-small); color: var(--color-text-muted); }
+  .guide-sources { margin-top: var(--space-3); font-size: var(--text-small); }
+  .guide-note { margin-top: var(--space-8); font-size: var(--text-small); color: var(--color-text-muted); }
   .guide-others { margin-top: var(--space-6); }
   .guide-others ul { padding-inline-start: 1.2em; display: grid; gap: var(--space-1); }
   .guide-print-foot { display: none; }
@@ -350,11 +349,10 @@ const breadcrumbSchema = {
 
   @media print {
     .guide-others, .no-print, .guide-crumbs { display: none; }
-    .guide-print-foot { display: block; margin-top: var(--space-6); font-size: 0.85rem; border-top: 1px solid #999; padding-top: var(--space-2); }
+    .guide-print-foot { display: block; margin-top: var(--space-6); font-size: var(--text-small); border-top: 1px solid #999; padding-top: var(--space-2); }
     .guide-step, .guide-stop, .guide-protect, .guide-template { break-inside: avoid; }
     .guide-sources { display: block; }
   }
-  :global([data-theme="dark"]) .guide-answer { background: var(--color-bg-white); border: 1px solid var(--palette-teal-dark); }
-  :global([data-theme="dark"]) .guide-answer .guide-label { color: var(--palette-teal-dark); }
-  :global([data-theme="dark"]) .guide-step-n { background: var(--palette-teal-dark); color: var(--color-bg); }
+  :global([data-theme="dark"]) .guide-answer { background: var(--color-bg-white); border: 1px solid var(--color-teal); }
+  :global([data-theme="dark"]) .guide-step-n { background: var(--color-teal); color: var(--color-bg); }
 </style>

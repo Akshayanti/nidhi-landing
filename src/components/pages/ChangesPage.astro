@@ -125,7 +125,7 @@ const webPageSchema = {
   }
 
   .changes-container {
-    max-width: 680px;
+    max-width: calc(var(--layout-reading) - 2 * var(--layout-gutter));
     width: 100%;
   }
 
@@ -136,20 +136,20 @@ const webPageSchema = {
   .changes-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-3);
   }
 
   .changes-intro {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
     line-height: 1.7;
   }
 
   .changes-feed {
     margin: var(--space-3) 0 0;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
   }
 
   .changes-feed a {
@@ -163,13 +163,13 @@ const webPageSchema = {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin: var(--space-6) 0 var(--space-2);
   }
 
   .changes-day h3 {
-    font-size: 0.85rem;
+    font-size: var(--text-small);
     font-weight: 600;
     color: var(--color-text-muted);
     margin: var(--space-4) 0 var(--space-1);
@@ -186,7 +186,7 @@ const webPageSchema = {
     position: relative;
     padding: var(--space-2) 0 var(--space-2) 1.1rem;
     border-top: 1px solid var(--color-border-light);
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
@@ -226,11 +226,11 @@ const webPageSchema = {
     margin-left: var(--space-2);
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
   }
 
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .changes-page { padding: var(--space-6) var(--space-4); }
   }
 </style>

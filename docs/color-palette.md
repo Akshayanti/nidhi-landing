@@ -1,6 +1,6 @@
 # Color Palette
 
-> 5 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background, with one deliberate exception: the dark-mode teal used for text, accents, charts and the Discovery level (`#26A69A`, AA at 5.6:1). See "Dark mode: lightness, not just hue" below.
+> 6 level-identity pairs + 10-pair extended palette. All pairs share the same hue identity across light/dark modes. Every color meets WCAG AAA (≥ 8:1) on its respective background, with one deliberate exception: the dark-mode teal used for text, accents, charts and the Discovery level (`#26A69A`, AA at 5.6:1). See "Dark mode: lightness, not just hue" below.
 
 **Last updated:** 2026-11-06
 
@@ -91,7 +91,7 @@ In the planner, `frontend/public/favicon.svg` uses the same media query, and the
 
 ---
 
-## Blog Level Colors (5 pairs)
+## Blog Level Colors (6 pairs)
 
 Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.astro`, and future chart/graph components.
 
@@ -102,8 +102,9 @@ Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.
 | 3 | psychology | `#6B4800` | 8.2:1 | `#FFCC80` | 11.3:1 |
 | 4 | optimizing | `#991100` | 8.6:1 | `#FF9E80` | 8.3:1 |
 | 5 | mastery | `#311B92` | 12.3:1 | `#E1BEE7` | 10.1:1 |
+| 6 | inclusive finances | `#004D1A` | 10.1:1 | `#81C784` | 8.3:1 |
 
-Hue identity: `teal → blue → amber → red → purple`
+Hue identity: `teal → blue → amber → red → purple`, and green for the inclusive finances section, which sits beside the path rather than on it.
 
 ---
 
@@ -112,6 +113,12 @@ Hue identity: `teal → blue → amber → red → purple`
 On dark surfaces the pastel teal-dark (`#80CBC4`, L* 77), cyan-dark (`#80DEEA`, L* 83) and blue-dark (`#90CAF9`, L* 79) differ almost only in hue. On a dim screen hue is the first thing to go, so teal accents merged into blue headings, the first two chart series merged, and Discovery's badge looked like Building's.
 
 Dark mode therefore uses `--palette-teal-mid-dark` (`#26A69A`, L* 62) for `--color-teal`, `--level-discovery` and `--chart-usd`: 17 L* below blue-dark, so the pair stays apart when dimmed and desaturated. It is 5.6:1 on `#1E1E1E` and 6.3:1 on `#121212`, so it passes AA for text but not AAA. Keeping AAA would mean making blue-dark paler, closer to the white body text, which costs links more than it gains. The logo accent dot keeps `#80CBC4` (brand mark, non-text).
+
+**Text in teal on a dark page is `#26A69A`, through `--color-teal`** (#414). A rule does not reach for `--palette-teal-dark` to colour text. Three places keep the paler `#80CBC4` on purpose, each because its surface is not the page:
+
+- links on a raised callout (the Beliefs and Accessibility pages), where the paler teal holds AAA on the lifted surface;
+- the `prefers-contrast: more` block, which trades the lightness gap for the highest contrast;
+- the focus ring on the blue callout, where `#26A69A` would sit too close to the blue.
 
 Rule for new dark-mode colours that sit next to each other: at least about 12 L* apart, not hue alone.
 
@@ -161,7 +168,7 @@ Every color literal in the codebase lives in one of two files. Components consum
 | `src/styles/global.css` | CSS custom properties (`--palette-*`, `--neutral-*`, `--semantic-*`, theme-reactive `--color-*`) | All `.astro` and `.css` styling |
 | `src/styles/palette.ts` | TypeScript constants (`PALETTE`, `NEUTRAL`, `SEMANTIC`, `CHART_SERIES`, `RISK_COLORS`, `PERSONA_COLORS`) | All `.tsx` files and `.astro` frontmatter |
 
-Both files mirror each other. **Update both together** when palette values change.
+Both files mirror each other. **Update both together** when palette values change: `src/styles/cssTokens.test.ts` fails when a constant in `palette.ts` and its `global.css` twin disagree, or when either has one the other lacks.
 
 Two non-CSS surfaces also keep literal copies because they cannot consume CSS variables:
 
@@ -172,6 +179,10 @@ Two non-CSS surfaces also keep literal copies because they cannot consume CSS va
 
 ---
 
+### Control edges
+
+The edge of a text field, select or checkbox is a neutral of its own, `--color-control-edge`: `#858585` on light (3.7:1 on white) and `#7A7A7A` on dark (3.9:1 on `#1E1E1E`), so a field's outline passes the 3:1 non-text minimum, where the card border (`--color-border`) is decorative and does not. Only things a reader can type into or tick take it.
+
 ### Material Design and Off-Palette Colors
 
 The codebase contains a small set of off-palette literals, defined as named constants in `global.css` and `palette.ts`. They are **intentional** and serve specific purposes outside the brand identity:
@@ -180,7 +191,7 @@ The codebase contains a small set of off-palette literals, defined as named cons
 |--------|----------|------------------|
 | Semantic UI states | `--semantic-success-light` `#2E7D32`, `--semantic-warning-light` `#F57C00`, `--semantic-danger-light` `#C62828`, `--semantic-info-light` `#0288D1` | Material Design conventions. Users expect specific hues for success / warning / danger / info; mapping these to palette colors loses widely-recognised UI signals. |
 | CTA + callout backgrounds | `--semantic-cta-bg-*` `#00796B` etc., `--semantic-callout-bg` `#0D47A1` | Solid surfaces tuned to hold white text at AA. Currently mid-tone Material colors; could be palette teal/blue but at a noticeable visual shift. |
-| Pastel notice / status tints | `--notice-caution-bg-light` `#FFF8E1`, `--warning-light-bg` `#fff3cd`, `--status-success-on-dark` `#b2f2ea`, etc. | The palette has no pastel colors by design (pastels can't reach AAA contrast on white). Pastel alert backgrounds and light-on-dark status text need values outside the palette. |
+| Pastel notice / status tints | `--notice-caution-bg-light` `#FFF8E1`, `--warning-light-bg` `#fff3cd`, `--warning-dark-text` `#ffc107`, `--status-success-on-dark` `#b2f2ea`, etc. Components read a warning panel through `--color-warning-bg`, `--color-warning-border` and `--color-warning-text`, which swap with the theme. | The palette has no pastel colors by design (pastels can't reach AAA contrast on white). Pastel alert backgrounds and light-on-dark status text need values outside the palette. |
 | Chart series | `--chart-1` to `--chart-11` (`CHART_SERIES`) | Eleven slots, each a light and dark pair. The light values are mid-tones (several are Material Design picks, so that eleven lines stay apart on white); the dark values are the palette's pastel partners. See "Chart series, risk scale and figure inks" below. |
 | Persona identity colors | `PERSONA_COLORS.eva` `#7B1FA2`, `PERSONA_COLORS.petra` `#00897B`, etc. | Distinct identity hues for in-content persona badges. Could be palette but the personas predate the palette and are tuned for inline visibility. |
 

@@ -107,7 +107,7 @@ const webPageSchema = {
 </BaseLayout>
 
 <style>
-  .vol-howto { font-size: 0.9rem; color: var(--color-text-secondary); margin-top: 0.5rem; }
+  .vol-howto { font-size: var(--text-small); color: var(--color-text-secondary); margin-top: 0.5rem; }
   .vol-page {
     display: flex;
     justify-content: center;
@@ -115,20 +115,20 @@ const webPageSchema = {
   }
 
   .vol-container {
-    max-width: 680px;
+    max-width: calc(var(--layout-reading) - 2 * var(--layout-gutter));
     width: 100%;
   }
 
   .vol-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-3);
   }
 
   .vol-lead {
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     line-height: 1.7;
     color: var(--color-text-secondary);
   }
@@ -136,7 +136,7 @@ const webPageSchema = {
   h2 {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin: var(--space-6) 0 var(--space-3);
   }
@@ -152,9 +152,9 @@ const webPageSchema = {
 
   .chip {
     border: 1px solid var(--color-border);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 0.3rem 0.85rem;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-deep-blue);
   }
 
@@ -171,7 +171,7 @@ const webPageSchema = {
   }
 
   .vol-small {
-    font-size: 0.9rem;
+    font-size: var(--text-small);
   }
 
   /* The form note sits above the button it describes: the wider gap is
