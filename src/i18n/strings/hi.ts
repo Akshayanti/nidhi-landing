@@ -119,7 +119,7 @@ export const hi: Dict = {
   },
 
   cookie: {
-    dialogLabel: 'कुकी सहमति',
+    title: 'कुकी के विकल्प',
     // The space at the end of `textBefore` and the one at the start of
     // `textAfter` are part of the sentence, not formatting.
     textBefore:

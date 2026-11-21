@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-21',
+    items: [
+      {
+        id: 'cookie-question-at-the-bottom',
+        text: {
+          en: 'The cookie question no longer covers the page on your first visit. It now sits at the bottom of the screen, or in a corner on a wider screen, and you can read and use the site before you answer. Until you do, clicks are not recorded, as before. With a keyboard or a screen reader, a “Cookie choices” link right after “Skip to content” leads to it.',
+          hi: 'पहली बार आने पर कुकी वाला सवाल अब पूरे पेज को नहीं ढकता। यह अब स्क्रीन के नीचे रहता है, या चौड़ी स्क्रीन पर एक कोने में, और जवाब देने से पहले भी आप साइट पढ़ और इस्तेमाल कर सकते हैं। जब तक आप जवाब नहीं देते, क्लिक पहले की तरह दर्ज नहीं होते। कीबोर्ड या स्क्रीन रीडर से “मुख्य सामग्री पर जाएँ” के ठीक बाद वाला “कुकी के विकल्प” लिंक वहाँ ले जाता है।',
+          es: 'La pregunta sobre cookies ya no tapa la página en tu primera visita. Ahora está en la parte de abajo de la pantalla, o en una esquina si la pantalla es ancha, y puedes leer y usar el sitio antes de responder. Mientras no respondas, los clics no se registran, como antes. Con teclado o lector de pantalla, el enlace «Opciones de cookies», justo después de «Saltar al contenido», lleva hasta ella.',
+          cs: 'Otázka na cookies už při první návštěvě nezakrývá stránku. Je teď dole na obrazovce, na širší obrazovce v rohu, a web můžete číst a používat ještě před odpovědí. Dokud neodpovíte, kliknutí se jako dosud nezaznamenávají. Z klávesnice nebo se čtečkou obrazovky k ní vede odkaz „Volby cookies“ hned za odkazem „Přeskočit na obsah“.',
+          mr: 'पहिल्यांदा आल्यावर कुकीविषयीचा प्रश्न आता संपूर्ण पान झाकत नाही. तो आता स्क्रीनच्या तळाशी असतो, किंवा रुंद स्क्रीनवर एका कोपऱ्यात, आणि उत्तर देण्याआधीही तुम्ही साइट वाचू आणि वापरू शकता. तुम्ही उत्तर देईपर्यंत क्लिक पूर्वीप्रमाणेच नोंदवले जात नाहीत. कीबोर्ड किंवा स्क्रीन रीडरने “मुख्य मजकुराकडे जा” नंतर लगेच येणारी “कुकीचे पर्याय” ही लिंक तिथे घेऊन जाते.',
+        },
+      },
+      {
+        id: 'tool-pages-heading-outline',
+        text: {
+          en: 'On every free tool, the questions section and the planner waitlist box now have headings at the right level, so a screen reader’s list of headings shows the parts of the page in order.',
+          hi: 'हर मुफ़्त टूल पर सवालों वाले हिस्से और प्लानर की वेटलिस्ट वाले बॉक्स के शीर्षक अब सही स्तर पर हैं, ताकि स्क्रीन रीडर की शीर्षकों की सूची में पेज के हिस्से क्रम से दिखें।',
+          es: 'En todas las herramientas gratuitas, la sección de preguntas y el recuadro de la lista de espera del planificador tienen ahora encabezados del nivel correcto, así que la lista de encabezados de un lector de pantalla muestra las partes de la página en orden.',
+          cs: 'Ve všech nástrojích zdarma mají teď oddíl s dotazy a rámeček čekací listiny plánovače nadpisy správné úrovně, takže seznam nadpisů ve čtečce obrazovky ukazuje části stránky popořadě.',
+          mr: 'प्रत्येक मोफत साधनावर प्रश्नांचा भाग आणि प्लॅनरच्या प्रतीक्षा यादीची चौकट यांची शीर्षके आता योग्य पातळीवर आहेत, त्यामुळे स्क्रीन रीडरच्या शीर्षकांच्या यादीत पानाचे भाग क्रमाने दिसतात.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-20',
     items: [
       {

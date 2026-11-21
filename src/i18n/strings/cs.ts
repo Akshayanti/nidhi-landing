@@ -111,7 +111,7 @@ export const cs: Dict = {
   },
 
   cookie: {
-    dialogLabel: 'Souhlas s cookies',
+    title: 'Volby cookies',
     textBefore: 'Zobrazení stránek počítáme v každém případě, abychom viděli, co pomáhá. Můžeme zaznamenávat také ',
     textEmphasis: 'kliknutí',
     textAfter: ' a uložit ve vašem prohlížeči ID návštěvníka, které propojí vaše návštěvy, abychom našli nefunkční odkazy a matoucí rozvržení? Žádné reklamy, žádný prodej dat.',

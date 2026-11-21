@@ -26,9 +26,16 @@ interface Props {
    * box simply disappears, as before.
    */
   rememberedNote?: boolean;
+  /**
+   * The level of the box's headings. A free tool's page has no h2 above the
+   * box, so it asks for h2 there (#597); elsewhere the box sits in a section
+   * with its own h2, and its headings are h3.
+   */
+  headingLevel?: 2 | 3;
 }
 
-const { locale, showBeta = true, rememberedNote = false } = Astro.props;
+const { locale, showBeta = true, rememberedNote = false, headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
 const { waitlist } = dict(locale);
 // "12 people are waiting for a beta invite.": absent at 0, exact below 20, then rounded down (see waitlistCount).
 // The dev server shows the exact count instead, ungated, for the founder only.
@@ -51,7 +58,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   <div class="waitlist-box">
     <!-- Pre-submit: form -->
     <div class="waitlist-pre" data-waitlist-state="pre">
-      <h3 class="waitlist-title">{waitlist.heading}</h3>
+      <Heading class="waitlist-title">{waitlist.heading}</Heading>
       {import.meta.env.DEV ? (
         <p class="waitlist-text waitlist-devCount">
           {signups === null
@@ -123,7 +130,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h3 class="waitlist-success-title">{waitlist.successTitle}</h3>
+        <Heading class="waitlist-success-title">{waitlist.successTitle}</Heading>
         <p class="waitlist-success-body">{waitlist.rememberedBody}</p>
       </div>
     )}
@@ -135,7 +142,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
           <polyline points="20 6 9 17 4 12" />
         </svg>
       </div>
-      <h3 class="waitlist-success-title">{waitlist.successTitle}</h3>
+      <Heading class="waitlist-success-title">{waitlist.successTitle}</Heading>
       <p class="waitlist-success-body">
         {waitlist.successBody}
       </p>
