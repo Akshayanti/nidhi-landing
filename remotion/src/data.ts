@@ -167,6 +167,12 @@ export interface LineRaceStory {
   gap?: { upper: string; lower: string; label: string; finalLabel: string
     /** Read the gap between the lines at this point, not the sum so far. */
     atPoint?: boolean;
+    /** Words as the large line at the finish ("About a quarter smaller"), in place of the euro amount. */
+    text?: string;
+    /** With `text`: while the lines grow, the gap so far as a share of the upper line ("Gap so far: 9%"). */
+    percent?: boolean;
+    /** With `text`: the gap in euros ("About €349,000 less") as a small line under the words. */
+    euroUnder?: boolean;
   };
   /** Short scope line shown under the chart for the whole story. */
   scope: string;
@@ -395,6 +401,14 @@ export type BeatAnchor =
       segment?: number;
       /** Stage "days": a grid of working days, `unpaid` of them greyed out during the beat. */
       days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number };
+      /** Direct bars, this beat only: a bar's label by id ("Worth now" becomes "Sold for"). */
+      barLabels?: Record<string, string>;
+      /** Direct bars, this beat only: a box between the bars, in place of the story's callout. */
+      callout?: { display: string; label?: string };
+      /** This beat only: one plain line under the bars. */
+      note?: string;
+      /** One segmented bar, this beat only: the bar relabelled or redrawn (the same payment in another account). */
+      bar?: { label?: string; sublabel?: string; segments?: BarDatum["segments"] };
     }
   | { type: "months"; stage: MonthStage; months?: string[] }
   | { type: "columns"; stage: ColumnStage }
@@ -570,6 +584,10 @@ export interface ReelPlan {
     revealInHook?: boolean;
     /** Direct two-bar hook: draw both bars at one neutral length with "?" so the result waits for its beat. */
     hideValuesInHook?: boolean;
+    /** Segmented: keep the second bar's total back until the callout beat says it. */
+    totalOnCallout?: boolean;
+    /** One bar: the first screen names the whole (the bar's total) and leaves its parts unlabelled, for a reel that asks what the total is made of. */
+    hookShowsTotal?: boolean;
     disclosure: string;
   };
   /** Optional persistent month visual for calendar bars or runway depletion. */
@@ -594,6 +612,12 @@ export interface ReelPlan {
    * chart (line 1 the situation, line 2 the question in amber).
    */
   hookStyle?: "question" | "questionOverPicture";
+  /**
+   * Two or three short lines (about 30 characters) saying what the full lesson
+   * adds beyond the reel. Shown on the end card under "IN THE FULL LESSON",
+   * above "nidhi.today · link in bio".
+   */
+  lessonBlock?: string[];
   beats: Beat[];
   cta: CTABlock;
   caption: PlatformCaption;

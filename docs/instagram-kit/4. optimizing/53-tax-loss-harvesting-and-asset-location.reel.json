@@ -1,0 +1,159 @@
+{
+  "slug": "tax-loss-harvesting-and-asset-location",
+  "postTitle": "Tax-Loss Harvesting and Asset Location Explained",
+  "postLevel": "optimizing",
+  "episode": 11,
+  "seriesTotal": 0,
+  "blogPath": "blog/tax-loss-harvesting-and-asset-location",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A fall in value only becomes a loss for tax when the investment is sold",
+  "topicChip": "TAX · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own small example, illustrative: bought for €1,000, worth €800, sold for €800: a recorded loss of €200. The lesson's larger example (a €10,000 loss offsetting a €10,000 gain) is in the caption."
+  },
+  "hookVariants": [
+    {
+      "id": "fall",
+      "layout": "bar-gap",
+      "narration": "You paid a thousand euros. Now your investment is worth eight hundred. Does that lower your tax?",
+      "onscreenLines": [
+        "You paid €1,000. Now it is worth €800",
+        "Does that fall lower your tax?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "That is a two hundred euro fall. You have not sold anything yet.",
+      "onscreenText": "A fall in value",
+      "subtext": "Nothing sold yet",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio",
+        "callout": {
+          "display": "€200",
+          "label": "fall in value"
+        }
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "definition",
+      "narration": "Selling for eight hundred records the two hundred euro loss.",
+      "onscreenText": "Selling records the loss",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio",
+        "barLabels": {
+          "now": "Sold for"
+        },
+        "callout": {
+          "display": "€200",
+          "label": "recorded loss"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "Where local rules allow, that loss can reduce profit counted for tax on another sale.",
+      "onscreenText": "What the loss can do",
+      "subtext": "Where local rules allow",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio",
+        "barLabels": {
+          "now": "Sold for"
+        },
+        "callout": {
+          "display": "€200",
+          "label": "recorded loss"
+        },
+        "note": "Can reduce the profit taxed on another sale"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "Buying the same investment straight back can stop that loss reducing your tax now.",
+      "onscreenText": "Buying back has rules",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "ratio",
+        "barLabels": {
+          "now": "Sold for"
+        },
+        "callout": {
+          "display": "€200",
+          "label": "recorded loss"
+        },
+        "note": "Bought straight back: the loss may not count yet"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone whose investment has fallen in value.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: does the account matter?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You paid €1,000 and your investment is now worth €800. Does that fall lower your tax?\n\nNot on its own. A fall in value is only a number on a screen until the investment is sold. Selling for €800 records a €200 loss. Where the rules allow, a recorded loss can reduce the profit counted for tax on another sale, in the same year or a later one.\n\nTwo things the reel leaves for the lesson. People who sell at a loss often buy something similar straight away, so their money stays invested; in many countries, buying the same thing straight back means the loss does not count yet. And the tax is usually delayed, not removed: the replacement was bought at a lower price, so a later sale can show a bigger profit.\n\n→ Know someone whose investment has fallen in value? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Tax rules on losses differ by country.",
+    "tiktok": "A fall in value is not a loss for tax until you sell. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "capitalgains",
+    "investingbasics",
+    "taxplanning"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Why tax may come later",
+    "Staying invested after selling",
+    "Rules about buying back"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "One investment, illustrative",
+    "bars": [
+      {
+        "id": "paid",
+        "label": "You paid",
+        "value": 1000,
+        "display": "€1,000",
+        "tone": "ink"
+      },
+      {
+        "id": "now",
+        "label": "Worth now",
+        "value": 800,
+        "display": "€800",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Tax rules on losses differ by country."
+  }
+}
