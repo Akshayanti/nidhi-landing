@@ -18,3 +18,4 @@
 - [PR #752 review 21 Nov](pr752-review-2026-11-21.md) — px hero breakpoint hides h1/button at 150%+ laptop; loan split table loses rows; no-sandbox preload recipe
 - [Post-merge #746/#748 21 Nov](postmerge-746-748-2026-11-21.md) — sticky header + cookie sheet leave 1-24% at 400% laptop; smooth-scroll and body-transition probe traps
 - [PR #764 review 21 Nov](pr764-review-2026-11-21.md) — static header voids z-index: cookie sheet covers phone menu; "Sure" 310px in 256px sheet; audit needs --banner
+- [Tokens PR #754 21 Nov](tokens-pr754-review-2026-11-21.md) — scoped `.privacy-container p` beats global .eyebrow; lesson "All terms" sideways at 300-400%

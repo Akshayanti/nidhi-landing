@@ -103,8 +103,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         </form>
         <div class="subscribe-dismiss">
           <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">{t.alreadySubscribed}</button>
-          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button>
+          <span class="subscribe-dismiss-item"><span class="subscribe-dismiss-sep" aria-hidden="true">·</span><button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button></span>
         </div>
         {isDev && !endpoint && (
           <p class="subscribe-dev-warning">
@@ -186,10 +185,8 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
         )}
         <div class="subscribe-dismiss subscribe-dismiss--compact">
           <a class="subscribe-rss" href="/rss.xml" rel="alternate" type="application/rss+xml">{t.rssFollow}</a>
-          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">{t.alreadySubscribed}</button>
-          <span class="subscribe-dismiss-sep" aria-hidden="true">·</span>
-          <button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button>
+          <span class="subscribe-dismiss-item"><span class="subscribe-dismiss-sep" aria-hidden="true">·</span><button type="button" class="subscribe-dismiss-link" data-action="already-subscribed">{t.alreadySubscribed}</button></span>
+          <span class="subscribe-dismiss-item"><span class="subscribe-dismiss-sep" aria-hidden="true">·</span><button type="button" class="subscribe-dismiss-link" data-action="not-now">{t.notNow}</button></span>
         </div>
       </div>
 
@@ -936,6 +933,15 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
   }
   .subscribe-dismiss-sep {
     margin: 0 var(--space-1);
+  }
+  /* A dot travels with the link after it, so it never ends a line alone. */
+  .subscribe-dismiss-item {
+    display: inline-flex;
+    align-items: baseline;
+    max-width: 100%;
+  }
+  .subscribe-dismiss-item .subscribe-dismiss-link {
+    min-width: 0;
   }
 
   /* Full variant: light text on dark background. */
