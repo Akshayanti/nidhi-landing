@@ -4,12 +4,12 @@ title: "What-If Scenarios: Test a Money Decision Before Making It"
 description: "Test a money decision before you make it: change one input in your projection, look at the gap from your baseline, and why a monthly cost can outweigh a bigger one-off."
 tldr:
   - "Changing one input in your long-term estimate shows what a decision does, and the useful number is the gap from your starting plan."
-  - "Repeating costs outweigh one-offs: €150 a month more rent is about €146,000 over 30 years at 6% after inflation, a €4,000 holiday about €23,000."
+  - "A monthly cost can outweigh a bigger one-off: at 6% after inflation, €150 a month is about €146,000 over 30 years, a €4,000 holiday €23,000."
   - "Changing one thing at a time shows what drives the result; trying the bad case first shows whether the plan can withstand trouble."
 takeaways:
   - text: "Why the gap from your baseline matters more than the end balance"
     href: "#look-at-the-gap-from-your-baseline-not-the-end-balance"
-  - text: "Why costs that repeat monthly outweigh one-off purchases"
+  - text: "Why a monthly cost can outweigh a bigger one-off purchase"
     href: "#what-repeats-moves-a-plan-more-than-what-feels-expensive"
   - text: "Which inputs move a decision most"
     href: "#which-inputs-move-a-decision-most"
@@ -31,17 +31,17 @@ pubDate: 2026-10-14
 updatedDate: 2026-11-21
 corrections:
   - date: 2026-11-21
-    note: "The summary said a monthly cost outweighs a one-off purchase; that depends on the sizes and the period compared, and the summary now says it can."
+    note: "The summary, takeaway and FAQ question said a monthly cost outweighs a one-off purchase; that depends on the amounts and period compared, and they now say it can. The lesson also claimed, without a source, that most people would guess a figure nearer €50,000. That claim has been replaced with the €54,000 contributed before growth."
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "planning", "goals"]
 faq:
   - question: "How much does a monthly expense cost over 30 years?"
-    answer: "If the money were invested instead at a 6% real return, a monthly amount grows to very roughly 1,000 times itself over 30 years: €150 a month is about €146,000, €50 a month about €50,000. A one-time cost grows to roughly 6 times itself: a €4,000 holiday is about €23,000. These are rough illustrations under one growth assumption, not predictions."
+    answer: "If the money were invested instead at a 6% real return, a monthly amount grows to very roughly 1,000 times itself over 30 years: €150 a month is about €146,000, €50 a month about €50,000. A one-time cost grows to roughly 6 times itself: a €4,000 holiday is about €23,000. These are rough illustrations under one growth assumption, not predictions. The 6% rate is an illustrative assumption matching the middle scenario in the projections post. At 4% real growth, €150 a month invested at each month's end becomes about €103,000 over 30 years."
   - question: "What is a what-if scenario and how does it relate to a projection?"
     answer: "A what-if scenario is a projection with one variable changed to answer a specific question. The baseline projection uses your current inputs. A scenario asks: what if my savings rate went up by €200 per month? What if I retired five years earlier? What if I moved countries? The scenario re-runs the projection with the changed input and shows the new trajectory alongside the baseline. The value is not the ending number in the alternate; it is the delta between the two, which tells you how much the change actually matters. Change one variable at a time so you can attribute the effect. Model the downside case before the upside so you know whether the plan is robust or fragile."
-  - question: "Why does a monthly cost matter so much more than a one-off purchase?"
+  - question: "Why can a monthly cost matter more than a bigger one-off purchase?"
     answer: "Because it repeats, and every repetition is money that could have been invested and compounded for the rest of the period. Over 30 years at 6% real growth, €150 a month becomes about €146,000, while a single €4,000 purchase becomes about €23,000. Guilt tends to follow how noticeable a purchase is; the arithmetic follows how often it repeats."
   - question: "Why change only one thing at a time?"
     answer: "So you can tell which change is doing the work. If you change your city, your salary and your savings rate together, you see one combined result and no idea which part drove it. Run each change on its own, then all of them together, and compare the differences. Often one change dominates and the others barely matter."
@@ -65,7 +65,11 @@ referentialReading:
 
 Eva took a €4,000 holiday last year and felt guilty about it for months. The same year she moved to a nicer flat that costs €150 a month more, and has not thought about it since.
 
-Her projection has an opinion about which of those mattered. Over 30 years, invested at a 6% [real return](#term-real-return) instead of spent, the holiday would have become about €23,000. The rent would have become about €146,000. The decision she worried about was the small one.
+Her projection has an opinion about which of those mattered. Over 30 years, invested at a 6% [real return](#term-real-return) instead of spent, the holiday would have become about €23,000. The rent would have become about €146,000.
+
+The 6% assumption matches the middle scenario in the [projections post](/blog/financial-projections/); it is not a forecast or a typical return for every portfolio. For context, the [Global Investment Returns Yearbook 2025](https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/) reports an annualised real return of 5.2% for world equities over 1900 to 2024. At an assumed 4%, the holiday and rent figures are about €13,000 and €103,000. Under either assumption, the rent has the larger projected investment opportunity cost. These calculations express amounts in today's purchasing power, keep the monthly amount constant after inflation, and assume investment at each month's end. They apply a steady return without separately deducting investment fees or taxes.
+
+The decision she worried about was the small one.
 
 That comparison is a [what-if scenario](#term-what-if-scenario). The [post on financial projections](/blog/financial-projections/) built the [baseline](#term-baseline): today's numbers, played forward under a range of growth assumptions. This post uses that baseline to test decisions before you make them.
 
@@ -75,11 +79,11 @@ A scenario is your projection with one input changed to answer one question. The
 
 ## What repeats moves a plan more than what feels expensive
 
-**Costs that repeat are much bigger than they look.** €150 a month (a nicer flat, a car payment, higher childcare) over 30 years at 6% real is worth around €146,000. Asked to guess first, most people say something nearer €50,000.
+**Costs that repeat are much bigger than they look.** €150 a month (a nicer flat, a car payment, higher childcare) over 30 years at 6% real is worth around €146,000. €150 × 360 months is €54,000 before any growth; at 6% after inflation, growth multiplies that by nearly three.
 
 **One-off costs are much smaller than they feel.** Eva's €4,000 holiday is worth about €23,000 at year 30: real money, but a sixth of what the rent costs. Guilt tracks how noticeable a purchase is; the arithmetic tracks how often it repeats. The [mental accounting post](/blog/mental-accounting/) covers why the two come apart.
 
-A rough test for any cost over 30 years at 6% real: a one-time cost times about 6, a monthly cost times about 1,000. The holiday: €4,000 × 6, about €24,000. The rent: €150 × 1,000, about €150,000. It is a sketch for comparing choices, not a precise figure.
+A rough test for any cost over 30 years at 6% real: a one-time cost times about 6, a monthly cost times about 1,000. The holiday: €4,000 × 6, about €24,000. The rent: €150 × 1,000, about €150,000. It is a sketch for comparing choices, not a precise figure. At 4% real growth over the same 30 years, the corresponding rough multipliers are 3 for a one-time amount and 700 for a monthly amount, as in the projections post.
 
 **Time is lopsided.** The projections post showed the cost of starting late. It applies to every scenario: €200 a month more, started five years late, produces roughly 30% less by year 30, because the lost years are the ones with the most time to compound.
 

@@ -1,13 +1,13 @@
 ---
 slug: "overconfidence-and-the-planning-fallacy"
 title: "Overconfidence and the Planning Fallacy"
-description: "Overconfidence: most drivers in one study put themselves in the top half. It can make us trade too much and underestimate what our plans will take."
+description: "Overconfidence: most student drivers in one study put themselves in the top half. It can make us trade too much and underestimate what our plans will take."
 tldr:
   - "Overconfidence overrates our abilities and luck, and in money it shows up as heavy trading and concentrated bets."
   - "The planning fallacy underestimates time and cost, including in our own savings plans."
   - "One antidote asks how plans like yours usually go, then builds in cautious assumptions and a margin of safety."
 takeaways:
-  - "Why most people overrate their own investing skill"
+  - "How overconfidence can affect investing decisions"
   - "How overconfidence leads to overtrading and concentrated bets"
   - "How the outside view and conservative assumptions fix plans"
 order: 37
@@ -15,20 +15,20 @@ pubDate: 2026-07-10
 updatedDate: 2026-11-21
 corrections:
   - date: 2026-11-21
-    note: "The summary applied a study of drivers to most people and said overconfidence makes us underestimate every plan; the summary now keeps the study to drivers and describes these effects as tendencies."
+    note: "The summary applied a study of drivers to most people and said overconfidence makes us underestimate every plan; it now identifies the student-driver sample and describes these effects as tendencies. The takeaway now says how overconfidence can affect investing decisions rather than why most people overrate their own skill. The lesson also asserted that respondents genuinely believed their ratings, that the same pattern occurred when investors were asked to compare their skill, that most individual investors believe they can beat the market, and that each trade assumes the trader knows something the other side does not, without establishing those claims. It now distinguishes self-ratings from measured performance and points to the cited trading research, whose authors attribute the high trading levels to overconfidence; that finding does not establish every investor's beliefs."
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["psychology", "investing", "planning"]
 faq:
   - question: "What is overconfidence bias?"
-    answer: "Overconfidence bias is the tendency to overestimate our own abilities, the accuracy of our knowledge, and the favourability of our luck. The classic illustration is that when people are surveyed, a large majority rate themselves as better than the typical, median driver, which cannot hold for most people, since no more than half can be above the median. The same pattern appears in investing: most individual investors believe they can beat the market, even though the long-run evidence shows the great majority do not after costs. Overconfidence is not the same as confidence. Healthy confidence is calibrated to reality; overconfidence is confidence that outruns the evidence. In money it tends to be expensive, because it encourages people to take risks and make bets that their actual skill does not justify."
+    answer: "Overconfidence bias is the tendency to overestimate our own abilities, the accuracy of our knowledge, and the favourability of our luck. In Svenson's student-driver study, large majorities placed themselves above the median of their comparison group. On a single agreed ranking of a whole group, no more than half can be above its median. In investing, Barber and Odean found that the most active trading group at one US discount broker earned the lowest returns after trading costs during 1991 to 1996. This is consistent with overconfidence, but does not establish each investor's beliefs. Overconfidence is not the same as confidence. Healthy confidence is calibrated to reality; overconfidence is confidence that outruns the evidence. In money it tends to be expensive, because it encourages people to take risks and make bets that their actual skill does not justify."
   - question: "What is the planning fallacy?"
     answer: "The planning fallacy, described by Daniel Kahneman and Amos Tversky, is the reliable tendency to underestimate the time, cost, and difficulty of future tasks, even when we have done similar tasks before and watched them run over. Home renovations, big work projects, and personal savings plans all fall victim to it. The financial version sounds like I will start saving seriously next year when I am earning more, or this side project will be profitable within six months. Both assume the smooth path. The fix is to stop forecasting from inside the plan, where everything looks achievable, and instead look at how similar plans actually turned out, then build in a buffer for the overrun you cannot yet see."
   - question: "What is the difference between the inside view and the outside view?"
     answer: "The inside view forecasts a project by looking at its specific details and imagining how they will unfold, which almost always produces an optimistic estimate because we picture the version where nothing goes wrong. The outside view ignores the specifics and instead asks how projects of this general type usually turn out, using the track record of similar cases as the anchor. Kahneman and later researchers found the outside view usually gives more accurate forecasts. For money, the inside view says my savings plan will work because I have thought it through. The outside view asks how often plans like mine survive contact with real life, and adjusts the assumptions accordingly. When a base rate exists, it is usually a better anchor than your own narrative."
   - question: "Does trading more often improve investment returns?"
-    answer: "Generally the opposite. Research on individual investors, notably by Brad Barber and Terrance Odean using accounts at a US discount broker in the 1990s, found that the most active traders earned the lowest net returns, largely because frequent trading multiplies costs and tends to be driven by overconfidence rather than genuine insight. A study of day traders in Taiwan found a similar pattern. Each trade assumes you know something the person on the other side does not, and most of the time you do not. The pattern is strong enough that trading less is one of the more reliable findings in this research; many people set a diversified allocation, automate contributions and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
+    answer: "Frequent trading can reduce returns through trading costs. Brad Barber and Terrance Odean studied households at one US discount broker during 1991 to 1996 and found that the most active trading group earned the lowest returns after trading costs. The authors attribute the high trading levels to overconfidence. A study of day traders in Taiwan found a similar pattern. The pattern is strong enough that trading less is one of the more reliable findings in this research; many people set a diversified allocation, automate contributions and leave it alone. Activity feels like control and effort, but in investing, effort and reward are often inversely related once a sound plan is in place."
 reelPromise: "The top-half-driver paradox, why the most active traders earn the least, and the outside-view trick that fixes optimistic plans"
 relatedSlugs: ["present-bias-and-your-future-self", "why-smart-people-make-dumb-money-decisions", "getting-started-investing", "diversification", "setting-financial-goals"]
 referentialReading:
@@ -46,9 +46,13 @@ referentialReading:
     type: "book"
 ---
 
-Ask people whether they drive better than the median driver, the one in the exact middle, and most say yes: in one classic study of US students, around nine in ten placed themselves in the top half.
+In [Ola Svenson's 1981 study](https://gwern.net/doc/psychology/cognitive-bias/1981-svenson.pdf), licensed student drivers ranked themselves against other participants in the same session. Among US respondents, 88% placed themselves in the safer half and 93% in the more skilled half; the Swedish figures were 77% and 69%. These were small student samples, not representative surveys of all drivers.
 
-This cannot be true. The middle driver has half of everyone below them. By definition, a large chunk of those confident people are wrong about themselves. They are not lying. They genuinely believe it. And the exact same thing happens when you ask people whether they are better investors than most.
+On a single agreed ranking of a whole group, no more than half can be above the median. The study measured self-ratings, not driving performance or honesty. Svenson suggested possible explanations including limited information about others and difficulty recalling negative driving experiences.
+
+A [preregistered 2023 replication](https://conferences.lnu.se/index.php/metapsychology/article/view/2932) with about 1,200 US online participants also found widespread favourable self-ratings, this time against drivers in participants' own states. Because that comparison population extended beyond the sample, the sample percentages alone do not establish a mathematical contradiction.
+
+The [trading research](https://faculty.haas.berkeley.edu/odean/Papers%20current%20versions/Individual_Investor_Performance_Final.pdf) discussed below offers a related finding: among households at one US discount broker during 1991 to 1996, the most active trading group earned the lowest returns after trading costs. That pattern is consistent with overconfidence, but does not establish what every investor believed.
 
 Marcus, a friend who works in tech and reads the financial press every morning, was certain he could spot good companies before the market did. For two years he traded actively, buying what looked promising, selling what looked tired. He felt sharp and engaged the whole time. When he finally compared his results to what a boring, do-nothing index fund would have returned over the same period, he had underperformed it, before even counting the time he had spent.
 
@@ -60,7 +64,7 @@ Overconfidence is not the same as confidence. Confidence calibrated to reality i
 
 In money this is expensive in three recurring ways.
 
-**Too much trading.** Each trade is a quiet bet that you know something the person on the other side of it does not. Usually you do not. Research by Brad Barber and Terrance Odean on thousands of accounts at a US discount broker in the 1990s found that the most active traders earned the lowest net returns, dragged down by costs and by the very overconfidence that made them trade. A study of day traders in Taiwan found a similar pattern. Marcus, exactly.
+**Too much trading.** Frequent trading adds costs that can reduce investment returns. Research by Brad Barber and Terrance Odean on households at one US discount broker during 1991 to 1996 found that the most active trading group earned the lowest returns after trading costs. The authors attribute the high trading levels to overconfidence. A study of day traders in Taiwan found a similar pattern. Marcus, exactly.
 
 **Too little diversification.** Overconfidence whispers that you do not need to spread your bets, because you can see which one will win. So people concentrate, putting too much into one company, often their employer, or one hot sector. When the concentrated bet works, it confirms the overconfidence. When it fails, it takes an outsized chunk with it. [Diversification](/blog/diversification/) is, in part, an admission that you cannot reliably pick the winner, which is exactly the admission overconfidence resists.
 
