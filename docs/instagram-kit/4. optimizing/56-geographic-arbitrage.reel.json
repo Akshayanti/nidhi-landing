@@ -1,0 +1,141 @@
+{
+  "slug": "geographic-arbitrage",
+  "postTitle": "Geographic Arbitrage: Living Abroad to Save More",
+  "postLevel": "optimizing",
+  "episode": 13,
+  "seriesTotal": 0,
+  "blogPath": "blog/geographic-arbitrage",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Lower living costs work twice: more is saved each year and the pot needed is smaller",
+  "topicChip": "LIVING ABROAD · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example: €80,000 a year after tax; spending €48,000 (40% saved, target €1.2 million) or €24,000 (70% saved, target €600,000); 25 times spending; 5% a year after inflation from zero: about 22 and about 9 years."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Same pay, half the living costs. Why could that cut your working years by more than half?",
+      "onscreenLines": [
+        "Same pay. Half the living costs",
+        "Why could that cut working years by more than half?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "A common starting target is a pot of twenty five times yearly spending: here, one point two million euros.",
+      "onscreenText": "The pot follows spending",
+      "subtext": "25 times yearly spending, a common starting target",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Halve the spending and the pot needed halves too, to six hundred thousand.",
+      "onscreenText": "A closer finish line",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "And from the same pay, far more is saved every year.",
+      "onscreenText": "And a faster pace",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "note": "Saved from the same pay: 40% becomes 70%"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Together, about twenty two years of saving becomes about nine, in this example.",
+      "onscreenText": "It works twice",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "About 9 years",
+          "label": "of saving, down from about 22"
+        },
+        "note": "Saved from the same pay: 40% becomes 70%"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone weighing a move abroad.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: do 183 days settle tax?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Same pay, half the living costs. Why could that cut working years by more than half?\n\nBecause lower costs work twice. A common starting target for financial independence is a pot of 25 times yearly spending. At €48,000 a year that is €1.2 million; at €24,000 it is €600,000. And from the same €80,000 of pay after tax, the share saved rises from 40% to 70%.\n\nA faster pace toward a closer finish line: starting from zero, at an illustrative 5% a year after inflation, about 22 years of saving becomes about 9.\n\nWhat decides whether it holds in practice: tax in both countries, the right to live there, healthcare, currency, and whether the move lasts. The 25 times figure is a starting point from US data, not an answer.\n\n→ Know someone weighing a move abroad? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Returns are not guaranteed. Tax, visas and costs differ by country.",
+    "tiktok": "Same pay, half the living costs. Why could that cut working years by more than half? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "livingabroad",
+    "remotework",
+    "costofliving"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Tax residency tests",
+    "Healthcare eligibility",
+    "Currency exposure"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "€80,000 pay after tax, from zero, 5% a year after inflation",
+    "hookBars": 1,
+    "bars": [
+      {
+        "id": "high",
+        "label": "Spending €48,000 a year",
+        "sublabel": "pot needed",
+        "value": 1200000,
+        "display": "€1.2 million",
+        "tone": "ink"
+      },
+      {
+        "id": "low",
+        "label": "Spending €24,000 a year",
+        "sublabel": "pot needed",
+        "value": 600000,
+        "display": "€600,000",
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. €80,000 pay after tax, from zero, 5% a year after inflation. Before tax, visas and moving costs."
+  }
+}

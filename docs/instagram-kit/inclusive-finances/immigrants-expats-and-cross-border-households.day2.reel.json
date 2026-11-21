@@ -6,102 +6,29 @@
   "seriesTotal": 0,
   "blogPath": "blog/immigrants-expats-and-cross-border-households",
   "availableFigures": [],
-  "mode": "faithful",
-  "mood": "calm-authority",
-  "topic": "Sending money home: the same €300 a month costs very different amounts by provider",
-  "topicChip": "SENDING MONEY HOME",
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A transfer app that is cheap on one route can be dear on another, and the cost adds up",
+  "topicChip": "NEW COUNTRY · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Worked example from the post. A household sends €300 a month for 10 years. At 6.5% per transfer (around the global average): €19.50 a month, €234 a year, €2,340 over 10 years. At 2% (a competitive digital provider): €6 a month, €72 a year, €720 over 10 years. Difference: €13.50 a month, €162 a year, €1,620 over 10 years, which is 5.4 months of the €300 transfer. No growth or inflation applied. Costs vary by route and provider."
-  },
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "setup": {
-      "label": "Sent home every month",
-      "display": "€300",
-      "note": "For 10 years, same route",
-      "tone": "ink"
-    },
-    "unit": "EUR",
-    "basis": "Total transfer costs over 10 years on €300 a month, illustrative",
-    "bars": [
-      {
-        "id": "average",
-        "label": "Around the global average",
-        "sublabel": "6.5% per transfer",
-        "value": 2340,
-        "display": "€2,340",
-        "tone": "amber"
-      },
-      {
-        "id": "digital",
-        "label": "A competitive digital provider",
-        "sublabel": "2% per transfer",
-        "value": 720,
-        "display": "€720",
-        "tone": "teal"
-      }
-    ],
-    "callout": {
-      "display": "€1,620",
-      "from": "average",
-      "to": "digital",
-      "label": "The difference over 10 years"
-    },
-    "disclosure": "Illustrative. €300 a month for 10 years at 6.5% and 2% per transfer. Costs vary by route and provider."
+    "notes": "Lesson table: €300 a month at 6.5% (around the global average for sending $200, World Bank) costs €2,340 over ten years; at 2% (a competitive digital provider) €720. Cost depends on the corridor; the exchange rate margin is rarely shown and often the larger cost."
   },
   "hookVariants": [
     {
-      "id": "same-300",
+      "id": "h",
       "layout": "bar-gap",
-      "narration": "Sending three hundred euros home monthly? Over ten years, costs can differ by sixteen hundred and twenty euros.",
+      "narration": "Your friend's transfer app is cheap. Will it be cheap for your family too?",
       "onscreenLines": [
-        "€300 home, every month",
-        "10 years of costs",
-        "€1,620 apart"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "costs"
-      ]
-    },
-    {
-      "id": "zero-fees",
-      "layout": "bar-gap",
-      "narration": "A transfer home with zero fees can still be expensive. The cost hides in the exchange rate.",
-      "onscreenLines": [
-        "Zero fees",
-        "Still expensive",
+        "Your friend's transfer app is cheap",
+        "Will it be cheap for your family too?",
         ""
       ],
       "anchor": {
         "type": "bars",
         "stage": "hook"
       },
-      "emphasis": [
-        "rate"
-      ]
-    },
-    {
-      "id": "overpriced",
-      "layout": "bar-gap",
-      "narration": "Sending money home to family is one of the most overpriced transactions in everyday finance.",
-      "onscreenLines": [
-        "Sending money home",
-        "Often overpriced",
-        ""
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "overpriced"
-      ]
+      "emphasis": []
     }
   ],
   "useHookVariant": 0,
@@ -109,164 +36,112 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Take a household sending three hundred euros home every month, for ten years. Same family, same route.",
-      "onscreenText": "€300 home, every month",
-      "subtext": "Ten years, same route",
+      "narration": "Prices depend on the two countries: busy routes have more providers.",
+      "onscreenText": "The route sets the price",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "blank"
+        "stage": "blank",
+        "setup": {
+          "label": "Same app",
+          "display": "Another route, another price",
+          "size": 64,
+          "tone": "teal"
+        }
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "At six and a half percent per transfer, around the global average, the costs come to two thousand three hundred and forty euros.",
-      "onscreenText": "6.5% per transfer",
-      "subtext": "€2,340 over ten years",
-      "emphasis": [
-        "average"
-      ],
+      "narration": "The advertised fee leaves out another cost: the markup built into the exchange rate.",
+      "onscreenText": "More than the fee",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "blank",
+        "setup": {
+          "label": "What a transfer costs",
+          "display": "Fee plus exchange rate markup",
+          "size": 64,
+          "tone": "amber"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "Around the world average, three hundred euros a month loses two thousand three hundred forty in ten years.",
+      "onscreenText": "Over ten years",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "first"
       }
     },
     {
-      "id": "b3",
+      "id": "b4",
       "kind": "example",
-      "narration": "At two percent, a price some competitive digital providers charge, they come to seven hundred and twenty euros.",
-      "onscreenText": "2% per transfer",
-      "subtext": "€720 over ten years",
+      "narration": "At two percent: seven hundred twenty. For the same payment, compare what your family receives.",
+      "onscreenText": "Compare what arrives",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second"
       }
-    },
-    {
-      "id": "b4",
-      "kind": "stat",
-      "narration": "The difference is sixteen hundred and twenty euros. More than five months of the transfer itself, buying nothing.",
-      "onscreenText": "€1,620 apart",
-      "subtext": "More than five months of transfers",
-      "emphasis": [
-        "nothing"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "ratio"
-      }
-    },
-    {
-      "id": "b5",
-      "kind": "warning",
-      "narration": "And the fee is only part of it. The exchange rate margin is rarely shown, and is often the larger cost.",
-      "onscreenText": "The hidden part",
-      "subtext": "The exchange rate margin, rarely shown",
-      "emphasis": [
-        "margin"
-      ],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "list",
-      "narration": "So compare one number. Fix the amount, check three providers on your route, and see what actually arrives.",
-      "onscreenText": "The amount received test",
-      "subtext": "Three steps, one number",
-      "emphasis": [
-        "arrives"
-      ],
-      "anchor": {
-        "type": "card",
-        "stage": "tool",
-        "title": "The amount received test",
-        "rows": [
-          {
-            "label": "Fix the amount you send",
-            "value": "1",
-            "tone": "ink"
-          },
-          {
-            "label": "Three providers, same route",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "Compare what arrives",
-            "value": "3",
-            "tone": "teal"
-          },
-          {
-            "label": "Example gap over 10 years",
-            "value": "€1,620",
-            "valueSize": "small",
-            "tone": "amber"
-          }
-        ],
-        "footnote": "Illustrative. Costs vary by route and provider."
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "story",
-      "narration": "Prices change and new providers enter routes, so many people repeat the check every few months.",
-      "onscreenText": "Repeat every few months",
-      "subtext": "Prices on each route change",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "close"
-      }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for your next transfer home.",
-    "onscreenText": "Save the amount received test",
-    "subtext": "Three steps, one number",
+    "approved": "share",
+    "narration": "Send this to someone who sends money home every month.",
+    "onscreenText": "Send this to them",
+    "subtext": "The cheap app depends on the route",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Sending €300 home every month? Over ten years, the costs can differ by €1,620.\n\nAt 6.5% per transfer, around the global average, the costs come to €2,340 over ten years. At 2%, a price some competitive digital providers charge, they come to €720. The gap is more than five months of the transfer itself. Much of the cost hides in the exchange rate margin, not the fee.\n\nThe amount received test: fix the amount you send, check three providers on the same route, and compare what arrives in the recipient's currency.\n\n→ Save this for your next transfer home\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. €300 a month for 10 years at 6.5% and 2% per transfer. Costs vary by route and provider.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Sending €300 home every month? Over ten years, the costs can differ by €1,620.\n\nCompare what arrives, not the fee. Costs vary by route.",
-    "instagramKeywords": [
-      "send money home",
-      "remittance fees",
-      "money transfer fees",
-      "exchange rate margin",
-      "hidden fees",
-      "amount received",
-      "remittance corridor",
-      "family support",
-      "personal finance",
-      "global expats",
-      "Auslandsüberweisung",
-      "Überweisungsgebühren",
-      "envoi d'argent",
-      "remesas",
-      "enviar dinero"
-    ],
-    "tiktokTopics": [
-      "cheapest way to send money home",
-      "hidden exchange rate fees",
-      "how to compare money transfer providers"
-    ],
-    "tiktokExtraTags": [
-      "moneytok",
-      "europemoney"
-    ]
+    "instagram": "Your friend's transfer app is cheap. Will it be cheap for your family too?\n\nNot necessarily. What a transfer costs depends on the pair of countries the money travels between. Busy routes with many providers are cheap; thin ones are expensive; the same company can be cheap on one and dear on another.\n\nThe cost also has two parts, and only one is advertised: the fee, and the markup built into the exchange rate, which is rarely shown and often the larger part. One comparison captures both: for the same total paid, how much does the person at the other end receive?\n\nIt adds up. The World Bank puts the global average cost of a small transfer a little over 6%. At 6.5%, €300 a month costs €2,340 over ten years; at 2%, a competitive provider's price, €720. The €1,620 between them is more than five months of the money itself.\n\n→ Know someone who sends money home every month? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Prices change and differ by route and provider.",
+    "tiktok": "Your friend's transfer app is cheap. Will it be cheap for your family too? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhiforyouandme",
+    "sendmoneyhome",
     "remittances",
-    "sendingmoneyhome",
     "moneytransfer"
   ],
-  "reelPromise": "How a border resets your credit file and the order to rebuild it, tax in two countries, and what changes for refugees and family migrants"
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Fees and exchange rates",
+    "Why routes differ",
+    "Ways people cut the cost"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "€300 sent every month for ten years",
+    "hookBars": 0,
+    "bars": [
+      {
+        "id": "avg",
+        "label": "Illustrative cost at 6.5%",
+        "sublabel": "around the world average",
+        "value": 2340,
+        "display": "€2,340",
+        "tone": "amber"
+      },
+      {
+        "id": "low",
+        "label": "Illustrative cost at 2%",
+        "sublabel": "a competitive provider",
+        "value": 720,
+        "display": "€720",
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. €300 a month for ten years. The average is the World Bank's for small transfers."
+  }
 }

@@ -8,93 +8,27 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A border resets your credit file, and rebuilding it follows an order",
-  "topicChip": "FINANCIAL IDENTITY",
+  "topic": "The bank and landlord loop, and the documents that break it",
+  "topicChip": "NEW COUNTRY · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "No euro figures. Illustrative newcomer with twenty years of on time repayments in one country, which appear as no file in the next, because credit files are held nationally. Rebuild order from the post: ID and a tax number, a basic bank account, proof of address, income on the record (three to six months of wages paid in), then small reported credit where the local system scores people that way, then a credit report check after six months. Systems vary by country. Not immigration advice."
-  },
-  "columnStory": {
-    "left": {
-      "id": "before",
-      "title": "Before the move",
-      "rule": "Built over years",
-      "items": [
-        "20 years of repayments",
-        "A bank that knows you",
-        "An address on paper"
-      ],
-      "tone": "teal"
-    },
-    "right": {
-      "id": "after",
-      "title": "After the border",
-      "rule": "Seen as new",
-      "items": [
-        "No credit file",
-        "New documents asked for",
-        "No address until a lease"
-      ],
-      "tone": "amber"
-    },
-    "buffers": [
-      "An ID and a tax number",
-      "A basic bank account",
-      "Proof of address"
-    ],
-    "disclosure": "Illustrative. Banking and credit systems vary by country. Not immigration advice."
+    "notes": "Lesson: no account without an address, no tenancy without an account; the loop usually breaks with an employer letter, a registration certificate from the local authority, or a letter from a hostel, shelter or support organisation; EU legal residents generally have a right to a basic payment account, subject to checks; wages paid in create evidence of income."
   },
   "hookVariants": [
     {
-      "id": "twenty-years-nothing",
-      "layout": "columns-gap",
-      "narration": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.",
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop?",
       "onscreenLines": [
-        "20 years on time",
-        "Move countries",
-        "The lender sees nothing"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "nothing"
-      ]
-    },
-    {
-      "id": "history-stays",
-      "layout": "columns-gap",
-      "narration": "Your credit history does not cross the border with you. Few people hear that before they move.",
-      "onscreenLines": [
-        "Your credit history",
-        "stays at the border",
+        "Bank wants an address. Landlord wants an account",
+        "Which document breaks the loop?",
         ""
       ],
       "anchor": {
         "type": "columns",
         "stage": "hook"
       },
-      "emphasis": [
-        "border"
-      ]
-    },
-    {
-      "id": "address-loop",
-      "layout": "columns-gap",
-      "narration": "No bank account without an address. No address without a bank account. Many newcomers hit this loop.",
-      "onscreenLines": [
-        "No account, no address",
-        "No address, no account",
-        ""
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "loop"
-      ]
+      "emphasis": []
     }
   ],
   "useHookVariant": 0,
@@ -102,171 +36,136 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Before the move: twenty years of repayments, a bank that knows you, and an address on every letter.",
-      "onscreenText": "Before the move",
-      "subtext": "Built over years, almost by accident",
+      "narration": "Each application asks for something the other would create.",
+      "onscreenText": "Each needs the other",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "left"
+        "stage": "left",
+        "show": {
+          "left": [
+            "Bank: needs an address",
+            "Landlord: needs an account"
+          ],
+          "right": []
+        }
       }
     },
     {
       "id": "b2",
-      "kind": "warning",
-      "narration": "After the border, a lender sees a blank file. Credit records are held country by country, and rarely travel.",
-      "onscreenText": "After the border",
-      "subtext": "Credit files are held country by country",
-      "emphasis": [
-        "blank"
-      ],
+      "kind": "example",
+      "narration": "An accepted address letter can break it: from an employer, the local authority, or a support organisation.",
+      "onscreenText": "Ways out",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "right"
+        "stage": "right",
+        "show": {
+          "left": [
+            "Bank: needs an address",
+            "Landlord: needs an account"
+          ],
+          "right": [
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
+          ]
+        }
       }
     },
     {
       "id": "b3",
-      "kind": "definition",
-      "narration": "To a new lender, two decades of perfect repayment look the same as someone who just turned eighteen.",
-      "onscreenText": "Seen as brand new",
-      "subtext": "The same as someone who just turned 18",
-      "emphasis": [
-        "eighteen"
-      ],
+      "kind": "example",
+      "narration": "In the EU, legal residents generally have a right to a basic payment account, subject to checks.",
+      "onscreenText": "An account with a name",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "right-rule"
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Bank: needs an address",
+            "Landlord: needs an account"
+          ],
+          "right": [
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
+          ]
+        },
+        "note": "Ask for a “basic payment account”"
       }
     },
     {
       "id": "b4",
-      "kind": "list",
-      "narration": "Rebuilding has an order. Each step makes the paper the next one asks for. A tax number, a basic account, proof of address.",
-      "onscreenText": "Rebuild in order",
-      "subtext": "Each step unlocks the next",
-      "emphasis": [
-        "order"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "buffers"
-      }
-    },
-    {
-      "id": "b5",
       "kind": "example",
-      "narration": "Stuck in the address loop? An employer letter, a local registration, or a shelter letter often unlocks a basic account.",
-      "onscreenText": "Breaking the loop",
-      "subtext": "Employer, registration or shelter letter",
-      "emphasis": [
-        "loop"
-      ],
+      "narration": "Wages paid into it then become the proof of income a landlord looks for.",
+      "onscreenText": "Then income shows",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "buffers"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "list",
-      "narration": "The full order: ID and tax number, a basic account, proof of address, wages paid in, then small reported credit where scoring works that way.",
-      "onscreenText": "The rebuild order",
-      "subtext": "Five steps, each unlocking the next",
-      "emphasis": [
-        "order"
-      ],
-      "anchor": {
-        "type": "card",
-        "stage": "tool",
-        "title": "The rebuild order",
-        "rows": [
-          {
-            "label": "ID and a tax number",
-            "value": "1",
-            "tone": "ink"
-          },
-          {
-            "label": "A basic bank account",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "Proof of address",
-            "value": "3",
-            "tone": "ink"
-          },
-          {
-            "label": "Income on the record",
-            "value": "4",
-            "tone": "ink"
-          },
-          {
-            "label": "Small reported credit",
-            "value": "5",
-            "tone": "teal"
-          }
-        ],
-        "footnote": "Step 5 where the local system scores that way. Check your credit report at six months."
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "story",
-      "narration": "A border takes away a financial identity built by accident. Rebuilding it is the same steps, taken on purpose.",
-      "onscreenText": "The same steps, on purpose",
-      "subtext": "In the right order",
-      "emphasis": [
-        "purpose"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "buffers"
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Bank: needs an address",
+            "Landlord: needs an account"
+          ],
+          "right": [
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
+          ]
+        },
+        "note": "Wages on record: proof of income"
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for your first months in a new country.",
-    "onscreenText": "Save the rebuild order",
-    "subtext": "Five steps, in order",
+    "approved": "share",
+    "narration": "Send this to someone starting again in a new country.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: what does sending money home cost?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.\n\nCredit files are held country by country, so a lender in a new country usually cannot see one held abroad. Rebuilding has an order, because each step produces the document the next one asks for: an ID and a tax number, a basic bank account, proof of address, wages paid in for three to six months, then small reported credit where the local system scores people that way.\n\nAfter six months, a common step is to request the new credit report and check it for errors, which are frequent with foreign names and spellings.\n\n→ Save this for your first months in a new country\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Banking and credit systems vary by country. Not immigration advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.\n\nRebuilding a financial identity has an order. Systems vary by country.",
-    "instagramKeywords": [
-      "credit report",
-      "credit file",
-      "credit score abroad",
-      "basic bank account",
-      "proof of address",
-      "tax number",
-      "moving countries",
-      "financial identity",
-      "newcomers",
-      "personal finance",
-      "global expats",
-      "Kreditwürdigkeit",
-      "Basiskonto",
-      "historial crediticio",
-      "compte bancaire"
-    ],
-    "tiktokTopics": [
-      "how to build credit in a new country",
-      "open a bank account without proof of address",
-      "does credit history transfer between countries"
-    ],
-    "tiktokExtraTags": [
-      "moneytok",
-      "expatlifehacks"
-    ]
+    "instagram": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop?\n\nA border breaks a chain most settled adults never notice: each document once helped unlock the next. In a new country the loop usually breaks at one of three points: an employer's letter confirming your address, a registration certificate from the local authority, or a letter from a hostel, shelter or support organisation.\n\nIt also helps to know an account's name. Many countries require banks to offer a basic payment account with lighter document requirements; in the EU, legal residents generally have a right to one, including people with no fixed address, subject to identity and other checks.\n\nWages paid into that account then start a record of income, which is what a landlord or lender asks for next. The full lesson has the whole order, and what to collect before leaving.\n\n→ Know someone starting again in a new country? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules and accepted documents differ by country. Not immigration advice.",
+    "tiktok": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhiforyouandme",
-    "credithistory",
     "movingabroad",
-    "expatbanking"
-  ]
+    "expatlife",
+    "newcountry"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "The rebuilding order",
+    "Credit files abroad",
+    "Papers to keep"
+  ],
+  "columnStory": {
+    "left": {
+      "id": "loop",
+      "title": "The loop",
+      "rule": "Two demands",
+      "items": [
+        "Bank: needs an address",
+        "Landlord: needs an account"
+      ],
+      "tone": "amber"
+    },
+    "right": {
+      "id": "exits",
+      "title": "What can break it",
+      "rule": "Address proof",
+      "items": [],
+      "tone": "teal"
+    },
+    "disclosure": "Illustrative. Accepted documents differ by country and bank."
+  }
 }

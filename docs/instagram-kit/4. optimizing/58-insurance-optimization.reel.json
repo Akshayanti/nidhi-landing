@@ -1,0 +1,169 @@
+{
+  "slug": "insurance-optimization",
+  "postTitle": "How Much Insurance Do You Need as Your Wealth Grows?",
+  "postLevel": "optimizing",
+  "episode": 15,
+  "seriesTotal": 0,
+  "blogPath": "blog/insurance-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Life cover follows who depends on your pay, not marriage or age",
+  "topicChip": "INSURANCE · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson: life cover exists for financial dependence; once nobody would struggle without the income (children working, a partner able to live on their own income and the portfolio, the mortgage paid), many let term cover lapse; cover is hard to get back if health changes. €500,000 is the portfolio in the lesson's opening example."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for?",
+      "onscreenLines": [
+        "Your savings have grown. The mortgage is nearly paid",
+        "Who is your life cover still for?",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Life insurance replaces income your family would lose if you died.",
+      "onscreenText": "What the payout replaces",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": []
+        }
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "A five hundred thousand euro portfolio and a partner's earnings may already cover some bills.",
+      "onscreenText": "Other resources grow",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings"
+          ]
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "When the mortgage is paid, that dependence can fall further.",
+      "onscreenText": "Fewer bills need your pay",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings",
+            "Mortgage paid"
+          ]
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Many wait until they are sure nobody depends on their pay: changed health can make new cover hard to get.",
+      "onscreenText": "Why many wait",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings",
+            "Mortgage paid"
+          ]
+        },
+        "note": "Changed health can make new cover harder to get"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone close to their last mortgage payment.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: can a claim exceed net worth?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for?\n\nLife insurance replaces income that people who depend on you would lose if you died early. It exists for financial dependence, not for marriage or age. So the need changes as a household's finances do: a portfolio and a partner's own earnings can cover bills that once needed your pay, and a paid off mortgage removes the largest of them.\n\nOnce nobody would struggle without the income, many people let term cover lapse. Many also wait until they are confident of that, because cover can be hard to get back if health changes.\n\nThe same shift runs the other way for cover that protects what you own, which is part 2.\n\n→ Know someone close to their last mortgage payment? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Products and rules differ by country.",
+    "tiktok": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "lifeinsurance",
+    "mortgagefree",
+    "moneydecisions"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "When life cover can end",
+    "Income cover over a career",
+    "Liability limits"
+  ],
+  "columnStory": {
+    "left": {
+      "id": "then",
+      "title": "When cover started",
+      "rule": "Who needed it",
+      "items": [
+        "A mortgage",
+        "Family needs your pay"
+      ],
+      "tone": "amber"
+    },
+    "right": {
+      "id": "now",
+      "title": "Now",
+      "rule": "What has changed",
+      "items": [],
+      "tone": "teal"
+    },
+    "disclosure": "Illustrative. Whether cover is still needed depends on the household."
+  }
+}

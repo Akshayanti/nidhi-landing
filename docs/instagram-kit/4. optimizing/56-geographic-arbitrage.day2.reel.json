@@ -1,0 +1,170 @@
+{
+  "slug": "geographic-arbitrage",
+  "postTitle": "Geographic Arbitrage: Living Abroad to Save More",
+  "postLevel": "optimizing",
+  "episode": 13,
+  "seriesTotal": 0,
+  "blogPath": "blog/geographic-arbitrage",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Staying under 183 days does not on its own settle tax residency",
+  "topicChip": "LIVING ABROAD · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson: 183 days is a common starting test; many countries add ties to a home, work or family, or where life is centred."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Does staying below one hundred and eighty three days settle where you owe tax?",
+      "onscreenLines": [
+        "You plan fewer than 183 days abroad",
+        "Does that settle where you owe tax?",
+        ""
+      ],
+      "anchor": {
+        "type": "columns",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "That can avoid one test based on days.",
+      "onscreenText": "One possible test",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "left",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": []
+        }
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "But some countries also consider a home, work or family.",
+      "onscreenText": "Other connections",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "They may still count you as living there for tax. That's tax residency.",
+      "onscreenText": "Still counted",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
+        },
+        "note": "May still be resident for tax"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "So counting days alone cannot settle the tax cost of your move.",
+      "onscreenText": "The unresolved cost",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
+        },
+        "note": "Days alone do not settle it"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone counting days abroad.",
+    "onscreenText": "Send this to them",
+    "subtext": "A short stay can still matter",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You plan fewer than 183 days abroad. Does that settle where you owe tax?\n\nNot on its own. Spending more than 183 days in a country is a common starting test for tax residency, and staying under it can avoid that one test. Many countries add others: a home there, work, family, where your life is centred, or days averaged over several years. A few months somewhere does not necessarily change residency; a long lease, local registration and 200 days often does.\n\nTreaties between countries stop most income being taxed twice in full, but only when claimed correctly, and some countries tax unrealised gains when you leave. Tax can reduce or remove the saving from a move, depending on the two countries and the kind of income.\n\n→ Know someone counting days abroad? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Residency rules differ by country. Not tax advice.",
+    "tiktok": "You plan fewer than 183 days abroad. Does that settle where you owe tax? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "taxresidency",
+    "digitalnomadlife",
+    "movingoverseas"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Tax residency tests",
+    "Double taxation treaties",
+    "Visa and work rights"
+  ],
+  "columnStory": {
+    "left": {
+      "id": "days",
+      "title": "Days abroad",
+      "rule": "One test",
+      "items": [
+        "Fewer than 183 days"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "ties",
+      "title": "Connections there",
+      "rule": "Other tests",
+      "items": [],
+      "tone": "amber"
+    },
+    "disclosure": "Illustrative. Residency tests differ by country. Not tax advice."
+  }
+}
