@@ -227,7 +227,7 @@ export const learnEn = {
 
     /**
      * Shown on a page outside English that lists lessons. The lessons are
-     * written in English and are not translated, so a page whose cards are all
+     * written in English and are not translated yet, so a page whose cards are all
      * in English should say so rather than leave the reader to infer it from
      * the titles, and should say what the browser can do about it.
      */

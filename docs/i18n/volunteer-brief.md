@@ -48,7 +48,7 @@ These were each chosen for their own language; they are a reference, not a rule 
 
 **What stays as it is:**
 - **Names**: nidhi, product and company names, and people's names stay in their own script.
-- **Lessons** are written once, in English, and are not translated. A page in your language lists them and says they are in English.
+- **Lessons** are written in English and are not translated yet. A page in your language lists them and says they are in English. Translating lessons may come later; this review covers the site's own words.
 - **Amounts, sources and data caveats** stay as the English has them: translate, don't localise.
 - **No em dashes or double dashes.** Use a colon, a comma, or reword.
 

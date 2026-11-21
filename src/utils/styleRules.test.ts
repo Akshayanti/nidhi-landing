@@ -126,7 +126,10 @@ describe('the dash rule: lessons, guides, situations and served text', () => {
 
   it('reads the files it is meant to', () => {
     assert.ok(content.length >= 80, `only ${content.length} content files found`);
-    assert.ok(served.some((path) => path.endsWith('llms.txt')), 'public/llms.txt is not among the served text files');
+    // llms.txt is built from the lessons and catalogs (src/pages/llms.txt.ts),
+    // which this rule and the catalog tests already read; its own prose is
+    // checked in src/utils/llmsTxt.test.ts.
+    assert.ok(served.some((path) => path.endsWith('robots.txt')), 'public/robots.txt is not among the served text files');
   });
 
   it('finds no em dash and no double dash in any of them', () => {

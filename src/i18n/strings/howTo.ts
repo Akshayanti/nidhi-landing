@@ -2,7 +2,7 @@
  * The How-to section's own words (/how-to/ and the lines that lead to it), in
  * every language.
  *
- * The guides themselves are content, written once in English like the lessons
+ * The guides themselves are content, written in English like the lessons, and not translated yet
  * (src/content/guides/); only the hub and the links into it are copy. A module
  * of its own for the same reason as `learn.ts`: one file holds the section's
  * words in every language, and each language's catalog spreads its slice in.

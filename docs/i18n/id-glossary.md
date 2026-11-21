@@ -15,8 +15,8 @@ would need, so the work a volunteer puts in is kept and not repeated.
 
 The structure follows the other glossaries (`es-glossary.md`, `cs-glossary.md`):
 rules that apply to every string, then proposed renderings for recurring
-terms, all drafts until their Status says Agreed. Like them, it governs the site's own words; lessons are written once, in
-English, and are not translated.
+terms, all drafts until their Status says Agreed. Like them, it governs the site's own words; lessons are written in
+English and are not translated yet.
 
 Volunteer identities and raw discussion are never recorded here, only the
 outcome and, where it helps, the reason.
