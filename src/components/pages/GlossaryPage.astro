@@ -86,7 +86,7 @@ const jsonLd = [{
   robots={inSearch(locale, GLOSSARY_PATH) ? undefined : 'noindex,follow'}
 >
   <div class="container glossary-page">
-    <nav class="glossary-crumb" aria-label={strings.a11y.breadcrumb}><a href={localizedPath(locale, '/blog/')}>{strings.nav.items.blog}</a></nav>
+    <nav class="crumbs glossary-crumb" aria-label={strings.a11y.breadcrumb}><a href={localizedPath(locale, '/blog/')}>{strings.nav.items.blog}</a></nav>
     <h1>{t.h1}</h1>
     <p class="glossary-intro">{t.intro}</p>
     {locale !== DEFAULT_LOCALE && <p class="glossary-note" role="note">{t.inEnglish}</p>}
@@ -122,22 +122,24 @@ const jsonLd = [{
 
 <style>
   .glossary-page {
-    max-width: 46rem;
+    max-width: var(--layout-reading);
     padding-top: var(--space-6);
     padding-bottom: var(--space-8);
   }
 
-  .glossary-crumb { margin-bottom: var(--space-3); font-size: 0.9375rem; }
+  .glossary-page h1 { font-size: var(--title-hub); }
+
+  .glossary-crumb { margin-bottom: var(--space-3); }
   /* The one link above the heading is a target of its own: 24px tall for a
      pointer, 44px for a thumb (#405). */
   .glossary-crumb a { display: inline-flex; align-items: center; min-height: 24px; }
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .glossary-crumb a { min-height: 44px; }
   }
 
   .glossary-note {
     color: var(--color-text-secondary);
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
     margin: calc(-1 * var(--space-3)) 0 var(--space-5);
   }
 
@@ -169,7 +171,7 @@ const jsonLd = [{
   }
 
   .glossary-group h2 {
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     color: var(--color-deep-blue);
     border-bottom: 1px solid var(--color-border);
     padding-bottom: var(--space-2);
@@ -190,7 +192,7 @@ const jsonLd = [{
   .glossary-entry dt {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 1.0625rem;
+    font-size: var(--text-prose);
     color: var(--color-deep-blue);
   }
 
@@ -202,6 +204,6 @@ const jsonLd = [{
   .glossary-source {
     display: block;
     margin-top: var(--space-1);
-    font-size: 0.9375rem;
+    font-size: var(--text-ui);
   }
 </style>

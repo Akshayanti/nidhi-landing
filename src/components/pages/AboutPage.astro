@@ -170,7 +170,7 @@ const breadcrumbSchema = {
   }
 
   .about-container {
-    max-width: 680px;
+    max-width: calc(var(--layout-reading) - 2 * var(--layout-gutter));
     width: 100%;
   }
 
@@ -202,13 +202,13 @@ const breadcrumbSchema = {
   .about-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-2);
   }
 
   .about-intro {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
     line-height: 1.6;
   }
@@ -216,13 +216,13 @@ const breadcrumbSchema = {
   .about-body h2 {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
     color: var(--color-deep-blue);
     margin: var(--space-6) 0 var(--space-2);
   }
 
   .about-body p {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0 0 var(--space-3);
@@ -250,7 +250,7 @@ const breadcrumbSchema = {
   .about-cta-text {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: var(--text-base);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-4);
   }
@@ -263,7 +263,6 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 480px) {
-    .about-title { font-size: 1.6rem; }
     .about-cta-links { flex-direction: column; align-items: center; }
   }
 </style>

@@ -63,12 +63,15 @@ export const NEUTRAL = {
   n600:          '#5A5A5A',  // light-mode muted text
   n700:          '#616161',  // light-mode secondary text
   n800:          '#B0B0B0',  // dark-mode secondary text
+  n850:          '#3D3D3D',  // light-mode quiet button text
   n900:          '#212121',  // light-mode primary text
   nearBlack:     '#0D0D0D',
   pageBgDark:    '#121212',
   surfaceDark:   '#1E1E1E',
   surface2Dark:  '#2A2A2A',
   borderDark:    '#333333',
+  controlEdge:     '#858585',  // light: a control's edge, 3.5:1 or more on white and off-white
+  controlEdgeDark: '#7A7A7A',  // dark: a control's edge, 3.3:1 or more on every dark surface
 
   preBgLight:    '#1e293b',
   preFgLight:    '#e2e8f0',
@@ -124,7 +127,7 @@ export const SEMANTIC = {
   warningLightBorderStrong: '#ffc107',
   warningLightText:         '#665100',
   warningLightTextStrong:   '#856404',
-  warningLightTextAmber:    '#ffc107',
+  warningDarkText:          '#ffc107',
   warningDarkBg:            '#332b00',
   warningDarkBorder:        '#664d00',
 } as const;

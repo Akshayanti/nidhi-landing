@@ -133,7 +133,7 @@ const tagItemListSchema = {
 >
   <section class="topic-page">
     <div class="container topic-page-container">
-      <nav class="topic-page-crumb" aria-label={strings.a11y.breadcrumb}>
+      <nav class="crumbs topic-page-crumb" aria-label={strings.a11y.breadcrumb}>
         <a href={localizedPath(locale, '/blog/')}>{learn.crumb.learn}</a>
         <span aria-hidden="true"> / </span>
         <a href={localizedPath(locale, '/blog/tag/')}>{learn.crumb.topics}</a>
@@ -141,7 +141,7 @@ const tagItemListSchema = {
         <span aria-current="page">{formatted}</span>
       </nav>
       <header class="topic-page-header">
-        <p class="topic-page-eyebrow">{topicStrings.eyebrow}</p>
+        <p class="eyebrow eyebrow--muted topic-page-eyebrow">{topicStrings.eyebrow}</p>
         <h1>{formatted}</h1>
         <p class="topic-page-desc">{description}</p>
         {summary && <p class="topic-page-count">{summary}{strings.fullStop}</p>}
@@ -173,20 +173,13 @@ const tagItemListSchema = {
   }
 
   .topic-page-container {
-    max-width: 1040px;
+    max-width: var(--layout-wide);
   }
 
   .topic-page-crumb {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
-  .topic-page-crumb a {
-    color: var(--color-deep-blue);
-    /* A link inside a line of text is underlined, so it is not told apart by colour alone. */
-    text-decoration: underline;
-  }
 
   .topic-page-header {
     max-width: 680px;
@@ -195,30 +188,24 @@ const tagItemListSchema = {
 
   .topic-page-eyebrow {
     margin: 0;
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
   }
 
   .topic-page-header h1 {
     margin: var(--space-1) 0 var(--space-2);
-    font-size: 2.4rem;
-    line-height: 1.15;
+    font-size: var(--title-hub);
+    line-height: var(--leading-tight);
     color: var(--color-deep-blue);
   }
 
   .topic-page-desc {
     margin: 0 0 var(--space-2);
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     color: var(--color-text-secondary);
   }
 
   .topic-page-count {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-muted);
   }
 
@@ -242,13 +229,12 @@ const tagItemListSchema = {
     color: var(--color-deep-blue);
   }
 
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .topic-page { padding: var(--space-5) 0 var(--space-8); }
 
     .topic-page-header { margin-bottom: var(--space-6); }
 
-    .topic-page-header h1 { font-size: 2rem; }
 
-    .topic-page-desc { font-size: 1rem; }
+    .topic-page-desc { font-size: var(--text-base); }
   }
 </style>

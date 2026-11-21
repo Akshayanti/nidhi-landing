@@ -1,24 +1,34 @@
 ---
+/**
+ * The lesson's level, above its title: the level's number in an outlined,
+ * tinted disc and its name, the same mark the home page's routes use (#418).
+ * Inclusive finances sits beside the path, not on it, so it has no number and
+ * shows its name only. Lessons are English, so the names are too.
+ */
+import { LADDER_LEVELS } from '../utils/home/startingPoints';
+
 interface Props {
   level: 'discovery' | 'building' | 'psychology' | 'optimizing' | 'mastery' | 'inclusive-finances';
 }
 
 const { level } = Astro.props;
 
-const levels: Record<string, { label: string; icon: string }> = {
-  discovery: { label: 'Discovery', icon: '&#x1F4A1;' },
-  building: { label: 'Building', icon: '&#x1F3D7;' },
-  psychology: { label: 'Psychology', icon: '&#x1F9E0;' },
-  optimizing: { label: 'Optimizing', icon: '&#x2699;' },
-  mastery: { label: 'Mastery', icon: '&#x1F3C6;' },
-  'inclusive-finances': { label: 'Inclusive Finances', icon: '&#x1F9ED;' },
+const labels: Record<Props['level'], string> = {
+  discovery: 'Discovery',
+  building: 'Building',
+  psychology: 'Psychology',
+  optimizing: 'Optimizing',
+  mastery: 'Mastery',
+  'inclusive-finances': 'Inclusive Finances',
 };
 
-const { label, icon } = levels[level];
+const label = labels[level];
+const step = (LADDER_LEVELS as readonly string[]).indexOf(level) + 1;
 ---
 
 <span class:list={['level-badge', `level-badge--${level}`]}>
-  <span class="level-icon" set:html={icon} />
+  {step > 0 && <span class="level-num" aria-hidden="true">{step}</span>}
+  {step > 0 && <span class="sr-only">Level {step}: </span>}
   {label}
 </span>
 
@@ -36,19 +46,25 @@ const { label, icon } = levels[level];
   .level-badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-2);
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
-    background: color-mix(in srgb, var(--badge-color) 14%, var(--color-bg-white));
     color: var(--badge-color);
   }
 
-  .level-icon {
-    font-size: 0.8125rem;
+  .level-num {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 1.75em;
+    height: 1.75em;
+    border: 1.5px solid var(--badge-color);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--badge-color) 12%, var(--color-bg-white));
+    letter-spacing: normal;
+    line-height: 1;
   }
 </style>

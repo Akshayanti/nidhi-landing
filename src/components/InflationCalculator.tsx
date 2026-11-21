@@ -93,7 +93,7 @@ export interface CountryOption {
 // switch to the charts drawn for their width.
 // ===========================================================================
 
-const PHONE_QUERY = '(max-width: 640px)';
+const PHONE_QUERY = '(width < 640px)';
 
 function subscribePhone(onChange: () => void) {
   const mq = window.matchMedia(PHONE_QUERY);

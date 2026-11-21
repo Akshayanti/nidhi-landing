@@ -127,7 +127,7 @@ const WORKER_THRESHOLD = 10_000;
 // switch to the compact chart. Nothing is stored.
 // ---------------------------------------------------------------------------
 
-const PHONE_QUERY = '(max-width: 640px)';
+const PHONE_QUERY = '(width < 640px)';
 
 function subscribePhone(onChange: () => void) {
   const mq = window.matchMedia(PHONE_QUERY);

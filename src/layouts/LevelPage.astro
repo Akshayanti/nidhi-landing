@@ -96,13 +96,13 @@ const itemListSchema = {
 >
   <section class="level-page" style={`--lc: var(--level-${level})`}>
     <div class="container level-page-container">
-      <nav class="level-page-crumb" aria-label={strings.a11y.breadcrumb}>
+      <nav class="crumbs level-page-crumb" aria-label={strings.a11y.breadcrumb}>
         <a href={localizedPath(locale, '/blog/')} data-attr="level-page-crumb">{learn.crumb.learn}</a>
         <span aria-hidden="true"> / </span>
         <span aria-current="page">{label}</span>
       </nav>
       <header class="level-page-header">
-        <p class="level-page-eyebrow">{format(levelStrings.eyebrow, { index: index + 1, total: LADDER_LEVELS.length })}</p>
+        <p class="eyebrow eyebrow--muted level-page-eyebrow">{format(levelStrings.eyebrow, { index: index + 1, total: LADDER_LEVELS.length })}</p>
         <h1>{label}</h1>
         <p class="level-page-desc">{meta.description}</p>
         <details class="level-page-covered">
@@ -154,20 +154,13 @@ const itemListSchema = {
   }
 
   .level-page-container {
-    max-width: 1040px;
+    max-width: var(--layout-wide);
   }
 
   .level-page-crumb {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
-  .level-page-crumb a {
-    color: var(--color-deep-blue);
-    /* A link inside a line of text is underlined, so it is not told apart by colour alone. */
-    text-decoration: underline;
-  }
 
   .level-page-header {
     max-width: 680px;
@@ -176,29 +169,23 @@ const itemListSchema = {
 
   .level-page-eyebrow {
     margin: 0;
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
   }
 
   .level-page-header h1 {
     margin: var(--space-1) 0 var(--space-2);
-    font-size: 2.4rem;
-    line-height: 1.15;
+    font-size: var(--title-hub);
+    line-height: var(--leading-tight);
     color: var(--lc);
   }
 
   .level-page-desc {
     margin: 0 0 var(--space-3);
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     color: var(--color-text-secondary);
   }
 
   .level-page-covered {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
   }
 
@@ -218,7 +205,7 @@ const itemListSchema = {
 
   .level-page-scope {
     margin: var(--space-2) 0 0;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-muted);
   }
 
@@ -260,11 +247,10 @@ const itemListSchema = {
     color: var(--color-deep-blue);
   }
 
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .level-page { padding: var(--space-5) 0 var(--space-8); }
 
-    .level-page-header h1 { font-size: 2rem; }
 
-    .level-page-desc { font-size: 1rem; }
+    .level-page-desc { font-size: var(--text-base); }
   }
 </style>

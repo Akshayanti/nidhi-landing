@@ -87,7 +87,7 @@ const strings = dict(locale);
 
   /* Phones: each button is a 44px tap target. The group's own padding and
      gap shrink so the header row keeps its width. */
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .theme-toggle { padding: 1px; gap: 0; }
     .theme-btn { width: 44px; height: 44px; }
     .theme-icon { width: 18px; height: 18px; }

@@ -171,6 +171,24 @@ const noindex = !!robots && /noindex/i.test(robots);
 {preloadLatinExt && <link rel="preload" href="/fonts/roboto-latin-ext.woff2" as="font" type="font/woff2" crossorigin />}
 <meta name="theme-color" content={NEUTRAL.offWhite} />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content={NEUTRAL.pageBgDark} />
+{/* The browser bar follows the site's theme, not only the system's (#420):
+    a reader who picked light on a dark phone gets a light bar. Without
+    scripts, the two tags above follow the system. The script reads the
+    page's own data-theme only, so nothing is stored or sent. */}
+<script is:inline define:vars={{ lightBar: NEUTRAL.offWhite, darkBar: NEUTRAL.pageBgDark }}>
+  (function () {
+    var root = document.documentElement;
+    function sync() {
+      var colour = root.getAttribute('data-theme') === 'dark' ? darkBar : lightBar;
+      document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+        m.content = colour;
+      });
+    }
+    sync();
+    new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    window.addEventListener('pageshow', sync);
+  })();
+</script>
 <meta name="msapplication-TileColor" content={SEMANTIC.calloutBg} />
 <meta name="msapplication-TileImage" content="/brand/favicons/mstile-150x150.png" />
 <title>{title}</title>

@@ -10,6 +10,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { GUIDE_HUB, getSituations, guidePath, guideReadingMinutes, situationPath } from '../../../utils/guides';
+import { DEFAULT_LOCALE, dict } from '../../../i18n';
 
 export async function getStaticPaths() {
   const built = await getSituations();
@@ -51,7 +52,7 @@ const itemListSchema = {
 <BaseLayout title={`${s.title} | nidhi`} description={s.description} jsonLd={[breadcrumbSchema, itemListSchema]}>
   <section class="hts">
     <div class="hts-wrap">
-      <nav class="hts-crumbs" aria-label="Breadcrumb"><a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">›</span> <span>{s.title}</span></nav>
+      <nav class="crumbs hts-crumbs" aria-label={dict(DEFAULT_LOCALE).a11y.breadcrumb}><a href={GUIDE_HUB}>How-to</a> <span aria-hidden="true">/</span> <span>{s.title}</span></nav>
       <h1 class="hts-h1">{s.title}</h1>
       <p class="hts-intro">{s.intro}</p>
       <ol class="hts-list">
@@ -79,18 +80,17 @@ const itemListSchema = {
 
 <style>
   .hts { padding: var(--space-8) 0 var(--space-16); }
-  .hts-wrap { max-width: 42rem; margin: 0 auto; padding: 0 var(--space-4); }
-  .hts-crumbs { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
-  .hts-crumbs a { color: var(--color-deep-blue); }
-  .hts-h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); color: var(--color-deep-blue); margin: 0 0 var(--space-3); line-height: 1.2; }
-  .hts-intro { font-size: 1.075rem; line-height: 1.6; }
+  .hts-wrap { max-width: var(--layout-reading); margin: 0 auto; padding: 0 var(--layout-gutter); }
+  .hts-crumbs { margin-bottom: var(--space-3); }
+  .hts-h1 { font-size: var(--title-page); color: var(--color-deep-blue); margin: 0 0 var(--space-3); line-height: var(--leading-tight); }
+  .hts-intro { font-size: var(--text-prose); line-height: 1.6; }
   .hts-list { margin: var(--space-6) 0 0; padding-inline-start: 1.5rem; display: grid; gap: var(--space-3); }
   .hts-card { display: grid; gap: var(--space-1); padding: var(--space-4) 40px var(--space-4) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-white); text-decoration: none; color: inherit; }
   .hts-card::after { color: var(--color-text-muted) !important; }
   .hts-q { font-family: var(--font-heading); font-weight: 600; color: var(--color-text-primary); }
-  .hts-o { font-size: 0.92rem; color: var(--color-text-secondary); }
-  .hts-m { font-size: 0.8rem; color: var(--color-text-muted); }
-  .hts-note { font-size: 0.9rem; color: var(--color-text-secondary); margin-top: var(--space-4); }
-  .hts-h2 { font-size: 1.1rem; margin-top: var(--space-8); }
+  .hts-o { font-size: var(--text-ui); color: var(--color-text-secondary); }
+  .hts-m { font-size: var(--text-caption); color: var(--color-text-muted); }
+  .hts-note { font-size: var(--text-small); color: var(--color-text-secondary); margin-top: var(--space-4); }
+  .hts-h2 { font-size: var(--text-lead); margin-top: var(--space-8); }
   .hts-back { margin-top: var(--space-8); }
 </style>

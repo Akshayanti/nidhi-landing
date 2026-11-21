@@ -349,13 +349,13 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           <section id="level-helper" className="learn-card" aria-labelledby={nextInfo ? 'learn-start-h' : undefined}>
           {finished ? (
             <div className="learn-startText">
-              <p className="learn-eyebrow">{strings.finishedEyebrow}</p>
+              <p className="eyebrow eyebrow--muted learn-eyebrow">{strings.finishedEyebrow}</p>
               <StartH id="learn-start-h">{format(strings.finishedHeading, { count: core.length })}</StartH>
               <p className="learn-sub">{strings.finishedSub}</p>
             </div>
           ) : returning && nextInfo ? (
             <div className="learn-startText">
-              <p className="learn-eyebrow">{strings.returningEyebrow}</p>
+              <p className="eyebrow eyebrow--muted learn-eyebrow">{strings.returningEyebrow}</p>
               <StartH id="learn-start-h" lang="en">{nextInfo.lesson.title}</StartH>
               <p className="learn-sub">
                 {format(strings.returningSub, { level: nextInfo.levelLabel, index: nextInfo.index, total: nextInfo.total })} <span className="learn-muted">· {nextInfo.lesson.readingTime} {strings.minRead}</span>
@@ -367,7 +367,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
             </div>
           ) : nextInfo ? (
             <div className="learn-startText">
-              <p className="learn-eyebrow">{strings.newEyebrow}</p>
+              <p className="eyebrow eyebrow--muted learn-eyebrow">{strings.newEyebrow}</p>
               <StartH id="learn-start-h">{format(strings.newHeading, { level: nextInfo.levelLabel })}</StartH>
               <p className="learn-sub">
                 {/* The title is an English lesson's, so it gets its own `lang` inside a line in the page's language. */}
@@ -404,7 +404,7 @@ export function LearnHome({ levels, guides, lessonText, howTo, lessons, inclusiv
           {band && (
             <div className="learn-card learn-howtoCard">
               <div className="learn-startText">
-                <p className="learn-eyebrow">{howTo.oneQuestion}</p>
+                <p className="eyebrow eyebrow--muted learn-eyebrow">{howTo.oneQuestion}</p>
                 <p className="learn-sub">{howTo.body}</p>
               </div>
               <ul className="learn-howtoList" role="list">

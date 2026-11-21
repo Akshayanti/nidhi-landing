@@ -925,7 +925,7 @@ function formatYearLabel(month: number, strings: Strings): string {
 // view state only: it never enters the share link, the address, storage or
 // analytics.
 
-const PHONE_QUERY = '(max-width: 640px)';
+const PHONE_QUERY = '(width < 640px)';
 
 /** True on phone-width screens. Starts false so the server render and the
  *  first client render match (the desktop layout); updates after mount. */

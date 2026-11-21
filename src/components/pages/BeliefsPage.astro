@@ -212,7 +212,7 @@ const breadcrumbSchema = {
   }
 
   .beliefs-container {
-    max-width: 640px;
+    max-width: calc(var(--layout-reading) - 2 * var(--layout-gutter));
     width: 100%;
   }
 
@@ -256,13 +256,13 @@ const breadcrumbSchema = {
   .beliefs-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 2rem;
+    font-size: var(--title-page);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-2);
   }
 
   .beliefs-intro {
-    font-size: 1rem;
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.6;
     font-style: italic;
@@ -305,14 +305,14 @@ const breadcrumbSchema = {
     display: block;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.0625rem;
+    font-size: var(--text-prose);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-1);
   }
 
   /* Body size, not smaller: the page is all reading. */
   .belief p {
-    font-size: 1rem;
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: 1.6;
     margin: 0;
@@ -369,13 +369,13 @@ const breadcrumbSchema = {
   .cta-text {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: var(--text-prose);
     color: var(--color-deep-blue);
     margin-bottom: var(--space-1);
   }
 
   .cta-sub {
-    font-size: 0.88rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     margin-bottom: var(--space-4);
   }
@@ -388,11 +388,10 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 480px) {
-    .beliefs-title { font-size: 1.6rem; }
     .belief { flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
     .belief-icon { width: 36px; height: 36px; }
-    .belief strong { font-size: 0.88rem; }
-    .belief p { font-size: 0.875rem; }
+    .belief strong { font-size: var(--text-small); }
+    .belief p { font-size: var(--text-small); }
     .cta-links { flex-direction: column; align-items: center; }
   }
 </style>

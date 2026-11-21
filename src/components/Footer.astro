@@ -118,7 +118,7 @@ const href = (path: string) => navHref(locale, path);
   .footer-col-heading {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-deep-blue);
@@ -146,7 +146,7 @@ const href = (path: string) => navHref(locale, path);
   }
 
   .footer-col a {
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     overflow-wrap: anywhere;
   }
@@ -174,7 +174,7 @@ const href = (path: string) => navHref(locale, path);
   }
 
   .footer-bottom .disclaimer {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-muted);
     line-height: 1.5;
     margin: 0 0 var(--space-3);
@@ -192,7 +192,7 @@ const href = (path: string) => navHref(locale, path);
     align-items: center;
     gap: 4px 20px;
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--color-text-muted);
   }
 
@@ -214,7 +214,7 @@ const href = (path: string) => navHref(locale, path);
   /* Phones: the header menu carries the site's links, so the footer keeps
      only what must sit at the bottom of every page: a one-sentence
      disclaimer and the copyright line with Privacy and Cookie settings. */
-  @media (max-width: 640px) {
+  @media (width < 640px) {
     .site-footer {
       margin-top: var(--space-10);
       padding: var(--space-5) 0;
@@ -230,12 +230,12 @@ const href = (path: string) => navHref(locale, path);
       padding-top: 0;
     }
 
-    .footer-bottom .disclaimer { font-size: 0.9375rem; }
+    .footer-bottom .disclaimer { font-size: var(--text-ui); }
 
-    .footer-copy { font-size: 0.875rem; }
+    .footer-copy { font-size: var(--text-small); }
     .footer-copyText { flex-basis: 100%; }
 
     .footer-copy a,
-    .footer-cookieSettings { min-height: 44px; font-size: 0.9375rem; }
+    .footer-cookieSettings { min-height: 44px; font-size: var(--text-ui); }
   }
 </style>
