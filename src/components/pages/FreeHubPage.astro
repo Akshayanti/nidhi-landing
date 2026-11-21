@@ -146,7 +146,7 @@ const collectionPageSchema = {
   jsonLd={[breadcrumbSchema, itemListSchema, collectionPageSchema]}
 >
   <section class="ft-page">
-    <nav class="ft-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
+    <nav class="crumbs ft-breadcrumbs" aria-label={dict(locale).a11y.breadcrumb}>
       <ol>
         <li><a href={localizedPath(locale, '/')}>{hub.breadcrumb.home}</a></li>
         <li aria-current="page">{hub.breadcrumb.this}</li>
@@ -154,7 +154,7 @@ const collectionPageSchema = {
     </nav>
 
     <header class="ft-pageHeader">
-      <p class="ft-eyebrow">{hub.eyebrow}</p>
+      <p class="eyebrow ft-eyebrow">{hub.eyebrow}</p>
       <h1 class="ft-pageTitle">{hub.title}</h1>
       <p class="ft-pageLead">{hub.lead}</p>
     </header>
@@ -222,7 +222,7 @@ const collectionPageSchema = {
                 </svg>
               )}
             </div>
-            <span class="ft-kicker">{tool.kicker}</span>
+            <span class="eyebrow ft-kicker">{tool.kicker}</span>
             <span class="ft-title">{tool.title}</span>
             <span class="ft-desc">{tool.desc}</span>
             <span class="ft-cta" aria-hidden="true">{hub.cta}</span>
@@ -265,14 +265,12 @@ const collectionPageSchema = {
      page, hoist them into global.css then.
      ---------------------------------------------------------------- */
   .ft-page {
-    max-width: 980px;
+    max-width: var(--layout-wide);
     margin: 0 auto;
-    padding: var(--space-6) var(--space-4) var(--space-12);
+    padding: var(--space-6) var(--layout-gutter) var(--space-12);
   }
 
   .ft-breadcrumbs {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
@@ -287,18 +285,9 @@ const collectionPageSchema = {
 
   .ft-breadcrumbs li + li::before {
     content: "/";
+    /* The separator is drawn, not read: empty alternative text. */
+    content: "/" / "";
     margin-right: 6px;
-    color: var(--color-border);
-  }
-
-  .ft-breadcrumbs a {
-    color: var(--color-text-secondary);
-    text-decoration: none;
-  }
-
-  .ft-breadcrumbs a:hover {
-    color: var(--color-deep-blue);
-    text-decoration: underline;
   }
 
   .ft-pageHeader {
@@ -307,19 +296,13 @@ const collectionPageSchema = {
   }
 
   .ft-eyebrow {
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-teal);
-    font-weight: 700;
     margin: 0 0 var(--space-2);
   }
 
   .ft-pageTitle {
     font-family: var(--font-heading);
-    font-size: clamp(1.75rem, 2.4vw + 0.75rem, 2.4rem);
-    line-height: 1.2;
+    font-size: var(--title-hub);
+    line-height: var(--leading-tight);
     letter-spacing: -0.02em;
     color: var(--color-deep-blue);
     margin: 0 0 var(--space-3);
@@ -328,8 +311,8 @@ const collectionPageSchema = {
   }
 
   .ft-pageLead {
-    font-size: 1.02rem;
-    line-height: 1.6;
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
     color: var(--color-text-secondary);
     max-width: 64ch;
     margin: 0 auto;
@@ -398,25 +381,16 @@ const collectionPageSchema = {
 
   .ft-toolPreview svg { max-width: 100%; max-height: 100%; }
 
-  .ft-kicker {
-    font-family: var(--font-heading);
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-teal);
-    font-weight: 700;
-  }
-
   .ft-title {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     font-weight: 700;
     color: var(--color-deep-blue);
     line-height: 1.3;
   }
 
   .ft-desc {
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     color: var(--color-text-secondary);
     line-height: 1.55;
   }
@@ -425,7 +399,7 @@ const collectionPageSchema = {
     margin-top: auto;
     padding-top: var(--space-3);
     font-family: var(--font-heading);
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     font-weight: 600;
     color: var(--color-deep-blue);
     transition: transform 0.15s ease;
@@ -451,7 +425,7 @@ const collectionPageSchema = {
 
   .ft-sectionTitle {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     color: var(--color-deep-blue);
     margin: 0 0 var(--space-4);
     font-weight: 700;
@@ -467,7 +441,7 @@ const collectionPageSchema = {
   }
 
   .ft-howList li {
-    font-size: 0.95rem;
+    font-size: var(--text-ui);
     color: var(--color-text-secondary);
     line-height: 1.55;
     padding-left: var(--space-4);
@@ -500,8 +474,8 @@ const collectionPageSchema = {
   .ft-pageFooter {
     text-align: center;
     color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: var(--text-ui);
+    line-height: var(--leading-body);
   }
 
   .ft-pageFooter a {
@@ -511,7 +485,7 @@ const collectionPageSchema = {
   }
 
   @media (max-width: 480px) {
-    .ft-page { padding: var(--space-5) var(--space-3) var(--space-10); }
+    .ft-page { padding: var(--space-5) var(--layout-gutter) var(--space-10); }
     .ft-howItWorks { padding: var(--space-5) var(--space-4); }
     .ft-toolCard { padding: var(--space-4) 40px var(--space-4) var(--space-4); }
   }
