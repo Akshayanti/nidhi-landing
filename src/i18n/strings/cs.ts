@@ -553,7 +553,7 @@ export const cs: Dict = {
     meta: {
       title: 'Nástroje a kalkulačky pro osobní finance zdarma | nidhi',
       description:
-        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, úvěry, inflace, simulace důchodu a volba mezi investováním a splacením dluhu. Bez registrace. Co napíšete, zůstává ve vašem prohlížeči.',
+        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, úvěry, inflace, důchod, investice, nebo splacení dluhu. Bez registrace; co napíšete, zůstává v prohlížeči.',
     },
     schema: {
       breadcrumbHome: 'Domů',

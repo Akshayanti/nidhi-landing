@@ -1,7 +1,7 @@
 ---
 slug: "refinancing-timing"
 title: "Should You Refinance Your Mortgage? The Break-Even Test"
-description: "When does refinancing a mortgage or loan pay off? The break-even month, where the rate-drop rule of thumb breaks, the trade-off when waiting for lower rates, and cash-out risks."
+description: "When does refinancing a mortgage or loan pay off? The break-even month, where the rate-drop rule of thumb breaks, waiting for lower rates, and cash-out risks."
 tldr:
   - "Replacing a loan pays off only once the monthly saving has covered the cost of switching."
   - "Those costs divided by the monthly saving give a rough first estimate when both loans have similar time left."

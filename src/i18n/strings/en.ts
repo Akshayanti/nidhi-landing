@@ -481,7 +481,7 @@ export const en = {
     meta: {
       title: 'Editorial Policy: How nidhi Writes Its Lessons | nidhi',
       description:
-        'How each nidhi lesson is built and checked, where its figures come from, why it is written for any country, how AI tools are used, and the line between education and advice.',
+        'How each nidhi lesson is written and checked: where its figures come from, why it suits any country, how AI tools are used, and the line between education and advice.',
     },
     schema: {
       name: 'Editorial Policy',
@@ -699,7 +699,7 @@ export const en = {
     meta: {
       title: 'Free Personal Finance Tools and Calculators | nidhi',
       description:
-        'Free calculators for net worth in one currency or several, loans, inflation, retirement simulation, and investing or paying off debt. No signup. What you type stays in your browser.',
+        'Free calculators for net worth in one or more currencies, loans, inflation, retirement, investing or paying off debt. No signup; what you type stays in your browser.',
     },
     schema: {
       breadcrumbHome: 'Home',

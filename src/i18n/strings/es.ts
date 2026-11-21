@@ -583,7 +583,7 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras gratuitas de patrimonio neto en una o varias monedas, préstamos, inflación, simulación de jubilación e invertir o pagar deuda. Sin registro. Lo que escribes se queda en tu navegador.',
+        'Calculadoras gratis de patrimonio neto en varias monedas, préstamos, inflación, jubilación e invertir o pagar deuda. Sin registro; lo que escribes queda en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
