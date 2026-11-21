@@ -1,4 +1,5 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
+import { LessonFooter, lessonLift } from "./LessonFooter";
 import {
   BRAND,
   TYPE,
@@ -115,8 +116,10 @@ function ColumnHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolean }
   const story = plan.columnStory;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
   if (!story || !hook) return null;
-  const top = cover ? 535 : 405;
-  const height = cover ? 910 : 1010;
+  // Under a two line question the panels start lower, clear of the headline.
+  const big = plan.hookStyle === "questionOverPicture";
+  const top = big ? (cover ? 800 : 700) : cover ? 535 : 405;
+  const height = big ? (cover ? 640 : 700) : cover ? 910 : 1010;
   const width = 462;
   const gap = 20;
   const left = 68;
@@ -218,6 +221,8 @@ function ColumnVisual({ input, now }: { input: ReelInput; now: number }) {
   if (now < input.hookSpan.endMs) return <ColumnHook plan={input.plan} />;
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "columns" ? active.beat.anchor.stage : undefined;
+  const pair = active?.beat.anchor?.type === "columns" ? active.beat.anchor.show : undefined;
+  const pairNote = active?.beat.anchor?.type === "columns" ? active.beat.anchor.note : undefined;
   const toolBeat = cardBeat(input);
   const toolSpan = spanFor(input, toolBeat, "b7");
   const tool = toolBeat?.anchor?.type === "card" ? toolBeat.anchor : undefined;
@@ -235,10 +240,17 @@ function ColumnVisual({ input, now }: { input: ReelInput; now: number }) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <ColumnHeading input={input} now={now} />
-      {(stage === "left" || stage === "left-rule") && <SingleColumn input={input} now={now} group={story.left} stage="left" ruleStage="left-rule" />}
-      {(stage === "right" || stage === "right-rule") && <SingleColumn input={input} now={now} group={story.right} stage="right" ruleStage="right-rule" />}
-      {stage === "buffers" && <Buffers input={input} now={now} />}
-      {stage === "swap" && <SwapVisual input={input} now={now} />}
+      {pair && (
+        <>
+          <ColumnPanel group={story.left} left={68} top={470} width={462} height={pairNote ? 780 : 880} compact hero reveal={1} items={pair.left} />
+          <ColumnPanel group={story.right} left={550} top={470} width={462} height={pairNote ? 780 : 880} compact hero reveal={1} items={pair.right} />
+          {pairNote && <div style={{ position: "absolute", left: 68, right: 68, top: 1275, padding: "24px 30px", borderRadius: 18, background: BRAND.ink, color: BRAND.paper, textAlign: "center", fontFamily: TYPE.ui, fontSize: 40, lineHeight: 1.15, fontWeight: 790 }}>{pairNote}</div>}
+        </>
+      )}
+      {!pair && (stage === "left" || stage === "left-rule") && <SingleColumn input={input} now={now} group={story.left} stage="left" ruleStage="left-rule" />}
+      {!pair && (stage === "right" || stage === "right-rule") && <SingleColumn input={input} now={now} group={story.right} stage="right" ruleStage="right-rule" />}
+      {!pair && stage === "buffers" && <Buffers input={input} now={now} />}
+      {!pair && stage === "swap" && <SwapVisual input={input} now={now} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1465, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 560, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
   );
@@ -259,7 +271,24 @@ export function ColumnStoryCTA({ input }: { input: ReelInput }) {
   const beat = cardBeat(input);
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.columnStory;
-  if (!card || !story) return null;
+  if (!story) return null;
+  if (!card) {
+    // No tool card: the end card is the ask, then what the lesson adds.
+    return (
+      <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
+        <div style={{ position: "absolute", left: 130, right: 150, top: 300, textAlign: "center", fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.disclosure}</div>
+        <div style={{ position: "absolute", left: 70, right: 100, top: 420, textAlign: "center", opacity: enter }}>
+          <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
+          <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
+        </div>
+        <div style={{ position: "absolute", left: 120, right: 160, top: 1235 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+          <LessonFooter plan={input.plan} />
+          <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+          <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
+        </div>
+      </div>
+    );
+  }
   // A compact ToolCard is 410px tall for one or two rows, 560 for three or
   // four and 620 for five. Taller cards start higher (180, clear of the series
   // chip, as DirectBarCTA does), and the disclosure and

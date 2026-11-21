@@ -1,0 +1,145 @@
+{
+  "slug": "insurance-optimization",
+  "postTitle": "How Much Insurance Do You Need as Your Wealth Grows?",
+  "postLevel": "optimizing",
+  "episode": 15,
+  "seriesTotal": 0,
+  "blogPath": "blog/insurance-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A liability limit above your net worth can still leave a gap",
+  "topicChip": "INSURANCE · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson quick check: net worth €400,000, liability limit €1 million; a larger judgment could still leave an uninsured balance. The €1.2 million judgment is the reel's illustration."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your net worth is four hundred thousand euros. Could cover above it still leave a gap?",
+      "onscreenLines": [
+        "Your net worth is €400,000",
+        "Can cover above it still leave a gap?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Insurance for harm you cause others is liability cover. Its limit here is a million.",
+      "onscreenText": "What the policy covers",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "That exceeds your net worth.",
+      "onscreenText": "Above your net worth",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "note": "Above your net worth"
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "A covered injury judgment could reach one point two million here, regardless of your net worth.",
+      "onscreenText": "Harm determines the claim",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "third"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "The uninsured excess may reach assets or future income, depending on local law.",
+      "onscreenText": "Beyond the policy limit",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "third",
+        "note": "Excess: assets or future income"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone whose wealth has grown.",
+    "onscreenText": "Send this to them",
+    "subtext": "Net worth does not cap a claim",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your net worth is €400,000. Can cover above it still leave a gap?\n\nYes. Liability cover pays what you owe someone you have harmed, up to a limit: here €1 million, well above this household's net worth. But the size of a claim follows the harm done, not the wealth of the person who caused it. A serious injury judgment of €1.2 million would leave €200,000 uninsured, and depending on local rules that balance may be pursued from assets or future income.\n\nSerious claims are rare, which is why large limits tend to cost little. Net worth is a rough reference people use when looking at a limit; it is not a ceiling on what a claim can reach.\n\n→ Know someone whose wealth has grown? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Liability and enforcement rules differ by country.",
+    "tiktok": "You own €400,000. Can cover above your wealth still leave a gap? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "liabilityinsurance",
+    "protectyourassets",
+    "insurancereview"
+  ],
+  "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Liability limits",
+    "Protected assets and income",
+    "Gaps in everyday cover"
+  ],
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "One household",
+    "hookBars": 1,
+    "bars": [
+      {
+        "id": "worth",
+        "label": "Net worth",
+        "value": 400000,
+        "display": "€400,000",
+        "tone": "ink",
+        "sublabel": "what you own, after debts"
+      },
+      {
+        "id": "limit",
+        "label": "Policy limit",
+        "sublabel": "the most the insurer pays",
+        "value": 1000000,
+        "display": "€1 million",
+        "tone": "teal"
+      },
+      {
+        "id": "claim",
+        "label": "A covered judgment",
+        "sublabel": "illustrative",
+        "value": 1200000,
+        "display": "€1.2 million",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Enforcement and protection rules differ by country."
+  }
+}

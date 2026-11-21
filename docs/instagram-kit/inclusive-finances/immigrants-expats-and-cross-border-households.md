@@ -16,9 +16,9 @@ withheld: Tax residency in two countries in the year of the move, pension period
 
 ## Day 1 (angle)
 
-angle: A border resets your credit file, bank and paper trail; rebuilding follows an order, because each step produces the document the next one asks for
-number: Twenty years of on time repayments, read as no file at all
-takeaway: Credit files are held country by country. Rebuilding tends to follow an order, and how the local credit system scores people decides the last step.
+angle: The bank wants an address and the landlord wants a bank account: which document breaks the loop?
+number: No amounts. Three address documents and the basic payment account
+takeaway: The bank and landlord loop usually breaks with an accepted address document, and many countries have a basic payment account with lighter requirements; wages paid in then become proof of income.
 tool: The rebuild order. ID and a tax number, a basic bank account, proof of address, income on the record, then small reported credit where the local system works that way.
 
 ## Day 1 (reel)
@@ -142,10 +142,10 @@ read: What changes for refugees, family migrants and households without full sta
 
 ## Day 2 (angle)
 
-angle: Sending money home: the fee is only part of the price, and the same €300 a month can cost very different amounts over ten years
-number: €300 a month for 10 years: €2,340 in costs at 6.5% per transfer, €720 at 2%, €1,620 apart
-takeaway: The one comparison that captures both the fee and the exchange rate margin is how much the recipient actually receives for a fixed amount sent.
-tool: The amount received test. Fix the amount, check three providers on the same route, compare what arrives in the recipient's currency.
+angle: Your friend's transfer app is cheap: will it be cheap for your family too?
+number: €300 a month; over ten years €2,340 at 6.5% and €720 at 2%
+takeaway: A transfer's price depends on the pair of countries and includes the exchange rate markup, so a cheap app on one route can be dear on another; over years the difference adds up.
+tool: The amount received test. Fix the amount, look at several providers on the same route, and compare only what arrives.
 
 ## Day 2 (reel)
 
@@ -264,8 +264,8 @@ more: Accounts for citizens working abroad
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Your credit history stays behind
-d1_f1_caption: Why a lender abroad sees a blank file
+d1_f1_overlay: Bank or landlord first?
+d1_f1_caption: The document that breaks the loop
 
 d1_f2_kind: poll
 d1_f2_alt: Plain story background with the series label, for the poll sticker asking whether you have checked your credit report since you moved.
@@ -281,8 +281,8 @@ d1_f3_caption: The order to rebuild in a new country
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Same €300, €1,620 apart
-d2_f1_caption: What sending money home really costs
+d2_f1_overlay: Cheap app, cheap for you?
+d2_f1_caption: What sending money home costs over ten years
 
 d2_f2_kind: result
 d2_f2_alt: Yesterday's poll question, have you checked your credit report since you moved, with an empty box for the result.
