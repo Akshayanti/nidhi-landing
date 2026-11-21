@@ -1,7 +1,7 @@
 ---
 slug: "overconfidence-and-the-planning-fallacy"
 title: "Overconfidence and the Planning Fallacy"
-description: "Overconfidence: most people place themselves in the top half, which cannot be true of most people at once. It makes us trade too much and underestimate every plan."
+description: "Overconfidence: most drivers in one study put themselves in the top half. It can make us trade too much and underestimate what our plans will take."
 tldr:
   - "Overconfidence overrates our abilities and luck, and in money it shows up as heavy trading and concentrated bets."
   - "The planning fallacy underestimates time and cost, including in our own savings plans."
@@ -12,7 +12,10 @@ takeaways:
   - "How the outside view and conservative assumptions fix plans"
 order: 37
 pubDate: 2026-07-10
-updatedDate: 2026-11-08
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary applied a study of drivers to most people and said overconfidence makes us underestimate every plan; the summary now keeps the study to drivers and describes these effects as tendencies."
 level: "psychology"
 primaryPersona: "marcus"
 personas: ["eva", "petra", "jiri", "marcus"]

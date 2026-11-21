@@ -12,7 +12,10 @@ takeaways:
   - "Why the gap between income and spending builds wealth"
 order: 9
 pubDate: 2026-05-06
-updatedDate: 2026-11-08
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The lesson said the most effective approach does both; the lesson now calls doing both a common approach rather than the most effective one."
 level: "discovery"
 primaryPersona: "eva"
 personas: ["eva", "petra"]
@@ -79,7 +82,7 @@ Wealth isn't complicated. It comes down to one relationship:
 
 > Wealth = Income - Spending (over time)
 
-You can grow wealth by increasing income. You can grow it by reducing spending. The most effective approach does both. If you had to pick one to start with, reducing spending often gives faster results, because every euro saved is a euro earned, tax-free. If your budget is already lean, growing your income may be the bigger lever.
+You can grow wealth by increasing income. You can grow it by reducing spending. A common approach is to do both. If you had to pick one to start with, reducing spending often gives faster results, because every euro saved is a euro earned, tax-free. If your budget is already lean, growing your income may be the bigger lever.
 
 <figure>
   <svg viewBox="0 0 880 460" role="img" aria-labelledby="fig-iw-title fig-iw-desc" xmlns="http://www.w3.org/2000/svg">

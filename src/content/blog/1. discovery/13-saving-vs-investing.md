@@ -1,7 +1,7 @@
 ---
 slug: "saving-vs-investing"
 title: "Saving vs. Investing: When to Do Which"
-description: "Saving and investing are both ways to grow your wealth, but they serve different purposes. Getting the sequence right matters more than most people think."
+description: "Saving and investing are both ways to grow your wealth, but they serve different purposes. Why a common order puts a cash cushion first, and what can change it."
 tldr:
   - "Saving sets money aside in low-risk, accessible accounts for emergencies and short-term goals."
   - "Investing puts money into things that can grow but carry risk, for goals five or more years away."
@@ -12,8 +12,10 @@ takeaways:
   - "A common default order, and when people change it"
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-11-17
+updatedDate: 2026-11-21
 corrections:
+  - date: 2026-11-21
+    note: "The summary presented a right saving-and-investing order; the lesson says there is no single right order, and the summary now describes a common order and what can change it."
   - date: 2026-11-17
     note: "The comparison table set savings at 0 to 3% before inflation beside investing at 4 to 6% after inflation; both are now shown after inflation, with savings at about 0 to 1% over the long run. The 8 to 10% debt line is now described as applying in low-inflation economies, as in the other lessons."
 localRules: [tax, pensions]

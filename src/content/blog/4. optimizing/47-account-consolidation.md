@@ -2,7 +2,7 @@
 slug: "account-consolidation-and-financial-data-hygiene"
 title: "Account Consolidation: Combining Old Pensions and Bank Accounts"
 seoTitle: "How to Consolidate Old Pensions and Bank Accounts"
-description: "Old pensions, forgotten savings accounts, unused cards: how to consolidate accounts, move an old pension without a tax bill, and what closing a card does to a credit score."
+description: "Old pensions, forgotten accounts, unused cards: how consolidation works, when direct pension transfers can avoid tax, and how closing a card affects credit."
 tldr:
   - "Forgotten accounts can leak money through fees, idle cash and pricier investments, and hide part of your picture."
   - "A common clean-up lists every account, sorts each into keep or close, moves the rest and settles on two or three institutions."
@@ -35,7 +35,10 @@ glossary:
     definition: "Seeing balances from many institutions in one place, through an app or a regular manual list."
 order: 47
 pubDate: 2026-10-26
-updatedDate: 2026-10-28
+updatedDate: 2026-11-21
+corrections:
+  - date: 2026-11-21
+    note: "The summary presented moving an old pension without a tax bill without qualification; whether a direct transfer avoids tax depends on the applicable rules, and the summary now makes that outcome conditional."
 localRules: [pensions, credit]
 level: "optimizing"
 primaryPersona: "eva"
