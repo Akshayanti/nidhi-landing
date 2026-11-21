@@ -614,11 +614,15 @@ const faqSchema = {
     gap: 8px;
   }
 
-  @media (min-width: 900px) {
+  /* In em, so the two columns start at 900 px with the default text size but
+     give way to one column (heading and "Read lesson 1" first) as the reader
+     makes the text larger. Aligned to the top, so the heading is never pushed
+     below a taller situations column. */
+  @media (min-width: 56.25em) {
     .hero-grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 72px;
-      align-items: center;
+      align-items: start;
     }
   }
 
@@ -670,7 +674,7 @@ const faqSchema = {
     margin: 24px 0 4px;
   }
 
-  @media (min-width: 900px) { .sits-heading { font-size: var(--text-lead); margin-top: 0; } }
+  @media (min-width: 56.25em) { .sits-heading { font-size: var(--text-lead); margin-top: 0; } }
 
   .sits-list { list-style: none; margin: 0; padding: 0; container-type: inline-size; }
 
@@ -779,7 +783,7 @@ const faqSchema = {
     color: var(--color-text-secondary);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 56.25em) {
     .chain-go { min-height: 36px; padding: 6px 0; }
     .chain-plan { padding: 6px 0 2px; }
     .sit { padding: 12px 0 8px; }
@@ -944,7 +948,7 @@ const faqSchema = {
     align-items: center;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 56.25em) {
     .planner-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; }
   }
 
@@ -1003,7 +1007,7 @@ const faqSchema = {
     gap: 44px;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 56.25em) {
     .help-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 56px; align-items: center; }
   }
 

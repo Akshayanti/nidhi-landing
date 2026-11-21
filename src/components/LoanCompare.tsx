@@ -701,6 +701,9 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // As many sample years as let each year's label fit its column on one line.
   const samples = choices.find((c, k) => k === choices.length - 1 || c.every((m) => lineWidth('lc-splitTickX', formatYearLabel(m, strings)) + 0.6 * fs <= plotW / c.length))!;
   const rows = samples.map((m) => schedule[m - 1]);
+  // The table for screen readers keeps all six sample years whatever the
+  // drawing shows: it is where the years a narrow drawing leaves out are given.
+  const tableRows = choices[0].map((m) => schedule[m - 1]);
 
   // Bar height represents the total payment for that month. For a fully-
   // amortising fixed-rate loan all bars are the same height, which is
@@ -937,7 +940,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
             </tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
+            {tableRows.map((r) => (
               <tr key={r.month}>
                 <th scope="row">{formatYearLabel(r.month, strings)}</th>
                 <td><Amount>{formatMoney(r.payment, currency)}</Amount></td>
