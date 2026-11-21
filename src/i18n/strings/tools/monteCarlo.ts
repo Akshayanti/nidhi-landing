@@ -94,7 +94,7 @@ export const monteCarloEn = {
     lead: {
       before: 'Play your savings forward thousands of times',
       wide: ' with returns drawn from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it',
-      after: '. Everything runs in your browser; nothing is sent to a server.',
+      after: '. Everything runs in your browser; nothing you type is sent anywhere.',
     },
     /**
      * What the model cannot see. Four named limits rather than a list, so a
@@ -494,7 +494,7 @@ export const monteCarloHi: typeof monteCarloEn = {
     lead: {
       before: 'अपनी बचत को हज़ारों बार आगे चलाकर देखें',
       wide: ', हर बार दुनिया के बाज़ारों के लंबे रिकॉर्ड से लिए गए रिटर्न के साथ। कम, बीच का और ज़्यादा वाला नतीजा देखें, और यह भी कि उस पैसे से गुज़ारा करने पर वह कितनी बार टिकता है',
-      after: '। सब कुछ आपके ब्राउज़र में चलता है; कुछ भी किसी सर्वर पर नहीं भेजा जाता।',
+      after: '। सब कुछ आपके ब्राउज़र में चलता है; आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता।',
     },
     limits: {
       heading: 'यह क्या नहीं देख सकता',
@@ -827,7 +827,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     lead: {
       before: 'Proyecta tus ahorros hacia el futuro miles de veces',
       wide: ', con rentabilidades tomadas del historial a largo plazo de los mercados mundiales. Mira un resultado bajo, la mediana y uno alto, y con qué frecuencia el dinero alcanza una vez que empiezas a vivir de él',
-      after: '. Todo se ejecuta en tu navegador; no se envía nada a ningún servidor.',
+      after: '. Todo se ejecuta en tu navegador; nada de lo que escribes se envía a ninguna parte.',
     },
     limits: {
       heading: 'Lo que esto no puede ver',
@@ -1162,7 +1162,7 @@ export const monteCarloCs: typeof monteCarloEn = {
     lead: {
       before: 'Nasimulujte budoucí vývoj svých úspor v tisících variant',
       wide: ' s výnosy vybíranými z dlouhodobé historie světových trhů. Uvidíte nízký, mediánový a vysoký výsledek a jak často peníze vydrží, až z nich budete žít',
-      after: '. Vše běží ve vašem prohlížeči; nic se neposílá na server.',
+      after: '. Vše běží ve vašem prohlížeči; nic, co zadáte, se nikam neposílá.',
     },
     limits: {
       heading: 'Co tento model nevidí',
@@ -1489,7 +1489,7 @@ export const monteCarloMr: typeof monteCarloEn = {
     lead: {
       before: 'तुमची बचत हजारो वेळा पुढे नेऊन पाहा',
       wide: ', जगभरातील बाजारांच्या दीर्घकालीन नोंदींमधून घेतलेल्या परताव्यांसह. कमी, मध्यक आणि जास्त निकाल पाहा, आणि तुम्ही त्या पैशांवर जगू लागल्यावर पैसा किती वेळा पुरतो तेही',
-      after: '. सगळे तुमच्या ब्राउझरमध्ये चालते; सर्व्हरकडे काहीही पाठवले जात नाही.',
+      after: '. सगळे तुमच्या ब्राउझरमध्ये चालते; तुम्ही लिहिलेले काहीही कुठेही पाठवले जात नाही.',
     },
     limits: {
       heading: 'हे काय पाहू शकत नाही',

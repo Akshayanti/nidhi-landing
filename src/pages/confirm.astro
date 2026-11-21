@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import tokenGuardScript from '../utils/shared/tokenGuard.js?raw';
+import formReplyScript from '../utils/shared/formReply.js?raw';
 // Reached from an English email, so there is no Hindi counterpart to point
 // search engines or a language switcher at.
 import { DEFAULT_LOCALE } from '../i18n';
@@ -63,6 +64,8 @@ const isDev = import.meta.env.DEV;
   </section>
 </BaseLayout>
 
+<script is:inline set:html={formReplyScript}></script>
+
 <script is:inline>
   (function () {
     var btn = document.getElementById('confirm-button');
@@ -107,17 +110,30 @@ const isDev = import.meta.env.DEV;
       body.set('action', 'confirm');
       body.set('t', token);
 
-      // Apps Script doesn't emit CORS headers, so we can't read the
-      // response: fire and redirect. Apps Script is authoritative: if
-      // the token was valid, the row is now confirmed; if not, nothing
-      // changed and the user will see /subscription-invalid/ on retry
-      // if they click the original email link a second time.
-      fetch(endpoint, {
+      // The script's JSON reply is read (#342): only a readable yes stores
+      // "confirmed" and goes to the confirmed page. An unknown or used link
+      // goes to the page that says so; anything else (an error page, no
+      // answer in 20 seconds) leaves the button for another try, which is
+      // safe: confirming twice changes nothing.
+      var abort = typeof AbortController === 'function' ? new AbortController() : null;
+      var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
+      window.nidhiFormReply(fetch(endpoint, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
-      }).then(function () {
+        signal: abort ? abort.signal : undefined,
+      })).then(function (outcome) {
+        if (giveUp) clearTimeout(giveUp);
+        if (outcome === 'invalid_token') {
+          window.location.replace('/subscription-invalid?reason=confirm');
+          return;
+        }
+        if (outcome !== 'ok') {
+          setStatus('We couldn’t tell whether that went through. Please try again; trying twice is safe.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Yes, subscribe me';
+          return;
+        }
         // Set the subscription flag to confirmed. This is the ONLY place
         // that writes this key: form submit doesn't set it, so the CTA
         // stays visible until the double-opt-in loop is complete. Works
@@ -139,10 +155,6 @@ const isDev = import.meta.env.DEV;
         setTimeout(function () {
           window.location.replace('/subscription-confirmed');
         }, 300);
-      }).catch(function () {
-        setStatus('Something went wrong. Please try the link again in a moment.', 'error');
-        btn.disabled = false;
-        btn.textContent = 'Yes, subscribe me';
       });
     });
   })();

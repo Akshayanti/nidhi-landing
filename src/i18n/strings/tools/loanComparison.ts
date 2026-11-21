@@ -92,7 +92,7 @@ export const loanComparisonEn = {
       before:
         'Plug in two to five lenders. See the monthly payment, payoff time, total amount paid, and APR: the one-number cost that folds the fee into the rate.',
       wide: 'Watch where each payment splits between interest and principal. Multi-currency support for USD, EUR, GBP, INR, JPY, and more.',
-      after: 'Everything runs in your browser; nothing is sent to a server.',
+      after: 'Everything runs in your browser; nothing you type is sent anywhere.',
     },
     faq: {
       heading: 'Frequently asked questions',
@@ -607,7 +607,7 @@ export const loanComparisonEn = {
         strong: 'Prepayment penalties',
         rest: " apply only when the loan is fully paid off on or before the penalty's last month: by extra payments, by lump sums, or by refinancing it in the refinance scenario.",
       },
-      note: 'Everything runs in your browser. Nothing is sent to a server. Use the "Copy shareable link" button to encode every input into a URL you can hand to someone else.',
+      note: 'Everything runs in your browser, and nothing you type is sent anywhere. Use the "Copy shareable link" button to encode every input into a URL you can hand to someone else.',
     },
     horizon: {
       heading: 'If I sell or refinance at...',
@@ -801,7 +801,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       before:
         'दो से पाँच लोन ऑफ़र भर दें। मासिक किस्त, चुकाने का समय, कुल चुकाई जाने वाली राशि और APR देखें: वह एक आँकड़ा जो शुल्क को भी दर में जोड़ देता है।',
       wide: 'देखें कि हर किस्त ब्याज और मूलधन में कैसे बँटती है। USD, EUR, GBP, INR, JPY और अन्य मुद्राओं का सपोर्ट।',
-      after: 'सब कुछ आपके ब्राउज़र में चलता है; कुछ भी किसी सर्वर पर नहीं भेजा जाता।',
+      after: 'सब कुछ आपके ब्राउज़र में चलता है; आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता।',
     },
     faq: {
       heading: 'अक्सर पूछे जाने वाले सवाल',
@@ -1274,7 +1274,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         strong: 'समय से पहले भुगतान पर जुर्माना',
         rest: ' तभी लगता है जब लोन जुर्माने की अवधि के आखिरी महीने या उससे पहले पूरा चुक जाए: अतिरिक्त किस्तों से, एकमुश्त राशि से, या रीफ़ाइनेंस वाले हिस्से में उसे रीफ़ाइनेंस करने से।',
       },
-      note: 'सब कुछ आपके ब्राउज़र में चलता है। कुछ भी किसी सर्वर पर नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए "शेयर करने योग्य लिंक कॉपी करें" बटन इस्तेमाल करें।',
+      note: 'सब कुछ आपके ब्राउज़र में चलता है, और आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए "शेयर करने योग्य लिंक कॉपी करें" बटन इस्तेमाल करें।',
     },
     horizon: {
       heading: 'अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...',
@@ -1436,7 +1436,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       before:
         'Añade de dos a cinco entidades financieras. Verás la cuota mensual, el tiempo hasta liquidar el préstamo, el total pagado y el APR: la cifra única de costo que incorpora la comisión a la tasa.',
       wide: 'Observa cómo se reparte cada cuota entre intereses y capital. Compatible con USD, EUR, GBP, INR, JPY y más monedas.',
-      after: 'Todo funciona en tu navegador; no se envía nada a ningún servidor.',
+      after: 'Todo funciona en tu navegador; nada de lo que escribes se envía a ninguna parte.',
     },
     faq: {
       heading: 'Preguntas frecuentes',
@@ -1909,7 +1909,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         strong: 'Las penalizaciones por pago anticipado',
         rest: ' solo se aplican cuando el préstamo se liquida por completo en el último mes de la penalización o antes: con pagos extra, con pagos extraordinarios o al refinanciarlo en el escenario de refinanciación.',
       },
-      note: 'Todo funciona en tu navegador. No se envía nada a ningún servidor. Usa el botón «Copiar enlace para compartir» para codificar todos los datos en una dirección que puedes pasar a otra persona.',
+      note: 'Todo funciona en tu navegador, y nada de lo que escribes se envía a ninguna parte. Usa el botón «Copiar enlace para compartir» para codificar todos los datos en una dirección que puedes pasar a otra persona.',
     },
     horizon: {
       heading: 'Si vendo o refinancio en...',
@@ -2070,7 +2070,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       before:
         'Zadejte dva až pět poskytovatelů. Uvidíte měsíční splátku, dobu splácení, celkem zaplacenou částku a APR, tedy jedno číslo nákladů, které zahrnuje poplatek do sazby.',
       wide: 'Podívejte se, jak se každá splátka dělí mezi úrok a jistinu. Podpora více měn: USD, EUR, GBP, INR, JPY a další.',
-      after: 'Vše běží ve vašem prohlížeči; nic se neposílá na server.',
+      after: 'Vše běží ve vašem prohlížeči; nic, co zadáte, se nikam neposílá.',
     },
     faq: {
       heading: 'Časté dotazy',
@@ -2543,7 +2543,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         strong: 'Poplatky za předčasné splacení',
         rest: ' se uplatní jen tehdy, když je úvěr celý splacen v posledním měsíci platnosti poplatku nebo dřív: mimořádnými splátkami, jednorázovými splátkami nebo refinancováním ve scénáři refinancování.',
       },
-      note: 'Vše běží ve vašem prohlížeči. Nic se neposílá na server. Tlačítkem „Kopírovat odkaz ke sdílení“ uložíte všechny údaje do adresy, kterou můžete předat někomu dalšímu.',
+      note: 'Vše běží ve vašem prohlížeči a nic, co zadáte, se nikam neposílá. Tlačítkem „Kopírovat odkaz ke sdílení“ uložíte všechny údaje do adresy, kterou můžete předat někomu dalšímu.',
     },
     horizon: {
       heading: 'Pokud prodám nebo refinancuji v...',
@@ -2686,7 +2686,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     lead: {
       before: 'दोन ते पाच कर्जदात्यांची माहिती भरा. मासिक हप्ता, परतफेडीचा काळ, भरलेली एकूण रक्कम आणि APR पाहा; APR म्हणजे शुल्क व्याजदरात सामावून घेणारा एकाच आकड्यातील खर्च.',
       wide: 'प्रत्येक हप्ता व्याज आणि मुद्दल यांच्यात कसा विभागला जातो ते पाहा. INR, USD, EUR, GBP, JPY आणि आणखी चलनांची सोय.',
-      after: 'सगळे तुमच्या ब्राउझरमध्ये चालते; सर्व्हरकडे काहीही पाठवले जात नाही.',
+      after: 'सगळे तुमच्या ब्राउझरमध्ये चालते; तुम्ही लिहिलेले काहीही कुठेही पाठवले जात नाही.',
     },
     faq: {
       heading: 'वारंवार विचारले जाणारे प्रश्न',
@@ -3150,7 +3150,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         strong: 'मुदतपूर्व परतफेडीवरील दंड',
         rest: ' फक्त दंडाच्या शेवटच्या महिन्यात किंवा त्याआधी कर्ज पूर्ण फिटले तरच लागतो: अतिरिक्त हप्त्यांनी, एकरकमी रकमांनी किंवा पुनर्वित्त परिदृश्यात त्याचे पुनर्वित्त केल्याने.',
       },
-      note: 'सगळे तुमच्या ब्राउझरमध्ये चालते. सर्व्हरकडे काहीही पाठवले जात नाही. सगळी माहिती दुसऱ्याला देता येईल अशा URL मध्ये भरण्यासाठी “शेअर करण्याची लिंक कॉपी करा” हे बटण वापरा.',
+      note: 'सगळे तुमच्या ब्राउझरमध्ये चालते, आणि तुम्ही लिहिलेले काहीही कुठेही पाठवले जात नाही. सगळी माहिती दुसऱ्याला देता येईल अशा URL मध्ये भरण्यासाठी “शेअर करण्याची लिंक कॉपी करा” हे बटण वापरा.',
     },
     horizon: {
       heading: 'तुम्ही … महिन्याला विकले किंवा पुनर्वित्त केले तर',

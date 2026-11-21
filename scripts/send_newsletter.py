@@ -58,7 +58,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Iterable
@@ -170,6 +170,12 @@ class RssItem:
     pub_date: str
     guid: str          # we use link as guid if RSS didn't emit one
     categories: list[str]
+    # The post's newsletter id (#438): the feed's <nidhi:id>, which is the
+    # lesson's `newsletterId` or else its slug. It is what a post is known by
+    # here and in the Apps Script, so a changed address never sends a lesson
+    # twice. Empty when neither the feed nor a strict reading of the link
+    # gives one.
+    newsletter_id: str = ""
 
 
 def parse_rss(src: Path | bytes) -> list[RssItem]:
@@ -200,6 +206,9 @@ def parse_rss(src: Path | bytes) -> list[RssItem]:
         if not link:
             continue
         relative = urllib.parse.urlparse(link).path or link
+        newsletter_id = _text(node.find(f"{{{NIDHI_NS}}}id")) or (legacy_slug(link) or "")
+        if newsletter_id and not NEWSLETTER_ID_RE.fullmatch(newsletter_id):
+            newsletter_id = ""
         items.append(RssItem(
             title=title,
             description=description,
@@ -208,8 +217,28 @@ def parse_rss(src: Path | bytes) -> list[RssItem]:
             pub_date=pub_date,
             guid=guid,
             categories=categories,
+            newsletter_id=newsletter_id,
         ))
     return items
+
+
+# The feed's own namespace for the newsletter id (src/pages/rss.xml.ts).
+NIDHI_NS = "https://nidhi.today/ns/newsletter"
+NEWSLETTER_ID_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+# A post's address while its id was its slug: what the marker file and the
+# Apps Script recorded before #438.
+_LEGACY_URL_RE = re.compile(r"https://nidhi\.today/blog/([a-z0-9]+(?:-[a-z0-9]+)*)/?")
+
+
+def legacy_slug(url: str) -> str | None:
+    """The slug of a lesson address recorded before #438, read strictly; None otherwise."""
+    m = _LEGACY_URL_RE.fullmatch(url.strip())
+    return m.group(1) if m else None
+
+
+def legacy_url(newsletter_id: str) -> str:
+    """The address a post was recorded under before #438: /blog/<id>/, since its id was then its slug."""
+    return f"https://nidhi.today/blog/{newsletter_id}/"
 
 
 def _text(el) -> str:
@@ -268,6 +297,54 @@ def load_sent_guids(path: Path) -> set[str]:
         for line in path.read_text(encoding="utf-8").splitlines()
         if line.strip() and not line.startswith("#")
     }
+
+
+EXPIRED_PREFIX = "expired:"
+
+
+class MarkerError(ValueError):
+    """A marker line that cannot be tied to exactly one post: nothing is sent."""
+
+
+def sent_ids(lines: set[str], items: list[RssItem]) -> tuple[set[str], set[str]]:
+    """
+    Reads the marker into (sent ids, expired ids).
+
+    A line is a newsletter id, `expired:<id>`, or an address recorded before
+    #438. An address is read strictly as https://nidhi.today/blog/<slug>/ and
+    becomes the id of the one post it names: the post whose id is that slug,
+    or the post that lives at that slug now. A line that is neither, or an
+    address that could name two posts, stops the run (MarkerError): guessing
+    could send a lesson again or never.
+    """
+    by_slug: dict[str, set[str]] = {}
+    for it in items:
+        slug = legacy_slug(it.link)
+        if slug and it.newsletter_id:
+            by_slug.setdefault(slug, set()).add(it.newsletter_id)
+    ids = {it.newsletter_id for it in items if it.newsletter_id}
+
+    sent: set[str] = set()
+    expired: set[str] = set()
+    for line in lines:
+        if line.startswith(EXPIRED_PREFIX):
+            value = line[len(EXPIRED_PREFIX):]
+            if not NEWSLETTER_ID_RE.fullmatch(value):
+                raise MarkerError(f"marker line {line!r} is not expired:<id>")
+            expired.add(value)
+            continue
+        if NEWSLETTER_ID_RE.fullmatch(line):
+            sent.add(line)
+            continue
+        slug = legacy_slug(line)
+        if slug is None:
+            raise MarkerError(f"marker line {line!r} is neither an id nor a lesson address")
+        candidates = ({slug} & ids) | by_slug.get(slug, set())
+        if len(candidates) > 1:
+            raise MarkerError(f"marker line {line!r} could name {sorted(candidates)}")
+        # No post in the feed has it: the id is the slug, as it was then.
+        sent.add(next(iter(candidates)) if candidates else slug)
+    return sent, expired
 
 
 def record_sent(path: Path, guid: str) -> None:
@@ -983,6 +1060,23 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
 
 # The most lessons one run sends without BACKFILL_OK=1 (see main).
 MAX_POSTS_PER_RUN = 3
+# A lesson older than this that has not gone out is not sent: it is recorded
+# as expired and the run warns. Mail about a lesson weeks old is a marker
+# that was lost or an id that changed, not news (#438). BACKFILL_OK=1, after
+# a review, sends it anyway.
+MAX_POST_AGE = timedelta(days=14)
+def _now() -> datetime:
+    """The clock the age window reads; the tests set it."""
+    return datetime.now(timezone.utc)
+
+
+# A pubDate this far ahead of the clock is a wrong date, not a scheduled post
+# (the feed lists only posts whose date has passed when it was built).
+FUTURE_SKEW = timedelta(hours=1)
+# How the Apps Script says it stopped (newsletter.gs, sendPostFanOut_). Every
+# stop leaves the post unmarked so the next run resumes it; only these are
+# expected and quiet: a reader waits for a retry on a later run.
+QUIET_STOPS = {"retry_waiting"}
 
 
 def sign(secret: str, body: bytes) -> str:
@@ -1060,13 +1154,27 @@ def main() -> int:
         items = parse_rss(rss_path)
         post_source = cfg.dist_dir
 
-    sent = load_sent_guids(cfg.marker_file)
+    try:
+        sent, expired = sent_ids(load_sent_guids(cfg.marker_file), items)
+    except MarkerError as err:
+        print(f"[send_newsletter] {err}. Nothing was sent. Repair the marker "
+              f"file on the newsletter-state branch.", file=sys.stderr)
+        _write_gh_output({"any_failed": "1", "total_sent": "0", "total_failed": "0",
+                          "total_partial": "0", "posts_attempted": "0"})
+        return 2
 
-    pending = [it for it in items if it.guid not in sent]
-    if not pending:
+    no_id = [it for it in items if not it.newsletter_id]
+    for it in no_id:
+        print(f"[send_newsletter] {it.link} has no newsletter id and is not "
+              f"sent: check <nidhi:id> in the feed.", file=sys.stderr)
+
+    pending = [it for it in items
+               if it.newsletter_id and it.newsletter_id not in sent and it.newsletter_id not in expired]
+    if not pending and not no_id:
         print(f"[send_newsletter] No new posts to send "
               f"(feed has {len(items)}, {len(sent)} already sent).")
         return 0
+
 
     # First-run protection: if the marker file is empty and we have a huge
     # backlog, don't spam subscribers with every historical post. Require
@@ -1083,19 +1191,48 @@ def main() -> int:
               f"({newest.pub_date})")
         if not cfg.dry_run:
             for it in pending[1:]:
-                record_sent(cfg.marker_file, it.guid)
+                record_sent(cfg.marker_file, it.newsletter_id)
         pending = [newest]
 
     if cfg.only_most_recent and len(pending) > 1:
         pending.sort(key=lambda it: _parse_pub_date_for_sort(it.pub_date), reverse=True)
         if not cfg.dry_run:
             for it in pending[1:]:
-                record_sent(cfg.marker_file, it.guid)
+                record_sent(cfg.marker_file, it.newsletter_id)
         pending = pending[:1]
 
+    # Age: a post dated in the future is refused; one older than
+    # MAX_POST_AGE is recorded as expired, not sent and not counted as sent.
+    now = _now()
+    backfill = bool(os.environ.get("BACKFILL_OK"))
+    future = [it for it in pending if _parse_pub_date_for_sort(it.pub_date) > now + FUTURE_SKEW]
+    for it in future:
+        print(f"[send_newsletter] {it.link} is dated {it.pub_date}, in the "
+              f"future: not sent.", file=sys.stderr)
+    too_old = [] if backfill else [
+        it for it in pending if it not in future
+        and now - _parse_pub_date_for_sort(it.pub_date) > MAX_POST_AGE
+    ]
+    for it in too_old:
+        print(f"::warning title=Lesson not sent::{it.link} ({it.pub_date}) is more "
+              f"than {MAX_POST_AGE.days} days old and was never sent. It is "
+              f"recorded as expired:{it.newsletter_id}. To send it after all, "
+              f"remove that line from the marker and run with BACKFILL_OK=1.")
+        if not cfg.dry_run:
+            record_sent(cfg.marker_file, EXPIRED_PREFIX + it.newsletter_id)
+    pending = [it for it in pending if it not in future and it not in too_old]
+    # An expired post is a warning, not a failure; a post with no id or a
+    # date in the future is a failure, so the run is red and someone looks.
+    held_back = bool(no_id or future)
+    if not pending:
+        _write_gh_output({"any_failed": "1" if held_back else "0", "total_sent": "0",
+                          "total_failed": "0", "total_partial": "0", "posts_attempted": "0",
+                          "expired": str(len(too_old))})
+        return 2 if held_back else 0
+
     # A run sends a few lessons at most. More than that waiting at once is
-    # not a publishing day: it is a marker file that was lost or a feed whose
-    # addresses changed (a post's identity here is its address), and sending
+    # not a publishing day: it is a marker file that was lost or ids that
+    # changed, and sending
     # would mail the back catalogue to every subscriber. Nothing is sent and
     # nothing is recorded; the run fails so that someone looks.
     if len(pending) > MAX_POSTS_PER_RUN and not os.environ.get("BACKFILL_OK"):
@@ -1122,10 +1259,11 @@ def main() -> int:
     env = build_jinja()
     print(f"[send_newsletter] {len(pending)} post(s) to send.")
 
-    any_failed = False
+    any_failed = held_back
     total_sent = 0
     total_failed = 0
     total_partial = 0
+    stops: list[str] = []
     for item in pending:
         print(f"[send_newsletter] → {item.title}  ({item.link})")
         try:
@@ -1151,7 +1289,10 @@ def main() -> int:
             "html": html_out,
             "text": text_out,
             "url": item.link,
-            "guid": item.guid,
+            # The Apps Script keys the send on the id, and treats a record
+            # under the post's old address as the same post.
+            "guid": item.newsletter_id,
+            "legacy_guid": legacy_url(item.newsletter_id),
             "pubDate": item.pub_date,
             "title": post["title"] or item.title,
             "description": item.description,
@@ -1163,14 +1304,14 @@ def main() -> int:
                   f"Gmail may clip emails over ~102KB.", file=sys.stderr)
 
         if cfg.dry_run:
-            out = REPO_ROOT / "emails" / "_preview" / f"{slugify(item.guid)}.html"
+            out = REPO_ROOT / "emails" / "_preview" / f"{slugify(item.newsletter_id)}.html"
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(html_out, encoding="utf-8")
             print(f"[send_newsletter]   DRY_RUN: wrote preview to {out}")
             # Still record as "sent" so the caller's workflow matches steady-state
             # behaviour, but ONLY for dry runs that set DRY_RUN_RECORD=1.
             if os.environ.get("DRY_RUN_RECORD") == "1":
-                record_sent(cfg.marker_file, item.guid)
+                record_sent(cfg.marker_file, item.newsletter_id)
             continue
 
         try:
@@ -1237,18 +1378,26 @@ def main() -> int:
         # never get the email. Skip recording and flag as failure so the
         # next workflow run picks up where this one left off.
         if resp.get("partial"):
-            total_partial += 1
-            resume_after = resp.get("resume_after", "")
+            stopped = str(resp.get("stopped", ""))
+            waiting = int(resp.get("retry_waiting", 0) or 0)
             print(
                 f"[send_newsletter]   PARTIAL: sent={sent_count} failed={failed_count}"
-                + (f" resume_after={resume_after}" if resume_after else "")
-                + "; guid NOT marked, next workflow run will resume.",
+                + (f" stopped={stopped}" if stopped else "")
+                + (f" retry_waiting={waiting}" if waiting else "")
+                + "; NOT marked, the next run resumes it.",
                 file=sys.stderr,
             )
+            if stopped in QUIET_STOPS:
+                # Planned: a reader or two wait a while before they are tried
+                # again. Not an alert, unless someone was given up on.
+                continue
+            total_partial += 1
+            if stopped:
+                stops.append(stopped)
             any_failed = True
             continue
 
-        record_sent(cfg.marker_file, item.guid)
+        record_sent(cfg.marker_file, item.newsletter_id)
         print(f"[send_newsletter]   sent={sent_count} failed={failed_count}")
 
     # Emit step outputs so the workflow can make smart decisions about
@@ -1259,6 +1408,8 @@ def main() -> int:
         "total_failed": str(total_failed),
         "total_partial": str(total_partial),
         "posts_attempted": str(len(pending)),
+        "stopped": ",".join(stops),
+        "expired": str(len(too_old)),
     })
 
     return 2 if any_failed else 0
