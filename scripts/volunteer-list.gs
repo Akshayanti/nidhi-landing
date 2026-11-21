@@ -48,6 +48,11 @@
  * Any other POST action answers { ok: false, error: 'not_found' }.
  */
 
+// Which source this is: a hash of this file, written by `npm run gs:version`
+// and checked by a test. The health answer reports it, so the deployed
+// script can be compared with main (docs/operations.md, #443).
+var VERSION = '3b1dd0a3850e';
+
 // ============================================================================
 // Form contract: the header texts and the choice this script depends on.
 // Keep in step with scripts/volunteer-form.gs (a test compares them).
@@ -218,7 +223,7 @@ function handleList_(e) {
 // ============================================================================
 
 function handleHealth_() {
-  var report = { ok: true, checks: {} };
+  var report = { ok: true, version: VERSION, checks: {} };
 
   // The result is public, so it says only ok or not; the reason is logged.
   function check(name, fn) {

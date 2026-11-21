@@ -172,6 +172,19 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 21, 2026',
+    iso: '2026-11-21',
+    material: true,
+    summary: 'When a lesson email fails to reach one subscriber, the newsletter now keeps a short code made from the address until that lesson has gone out, so it can try again; failure events are now one per kind of failure per run. The forms show success only when it worked, and the free tools\' wording now matches this notice.',
+    details: [
+      'Newsletter, new record: when a lesson email to one subscriber fails, the newsletter script keeps, in its own settings, a short code made from the address (the first 16 hexadecimal characters of a SHA-256 hash, never the address), how many times it tried and the kind of error. Unknown errors are retried on later runs, up to three attempts in total; an address the mail service refuses is not retried. The records for a lesson are deleted once it has gone out to every subscriber it can reach. This notice\'s retention list gains a line for them.',
+      'Newsletter, changed server event: blog_newsletter_send_failed is now recorded once per kind of failure in each run, not once per subscriber whose email failed. Its properties are unchanged: guid and reason. In it and in blog_newsletter_sent, guid now holds the lesson\'s newsletter id (its slug, kept when the address changes) instead of its address, so a lesson whose address changes is not emailed twice. A failure of the mail service itself (its daily quota, a rate limit, an outage or a lost authorisation) now stops the run before that subscriber, and the next run starts from them.',
+      'Newsletter and waitlist forms, and the confirm and unsubscribe pages: they now read the reply from the sign-up script, so they show success only when it worked. The request and what it carries are unchanged. Once the day\'s cap is reached, the script answers "busy" for every address alike, so the reply says nothing about who is on a list. The confirmation link in the sign-up confirmation email keeps working for a confirmed subscriber (it used to work once); unsubscribing still ends it.',
+      'Wording: the free tools page (its description for search engines and its opening line) and the loan comparison, Monte Carlo and net worth pages said that nothing was sent to a server, or "no tracking". Every page sends an anonymous pageview, as this notice describes, so they now say what this notice promises: what you type stays in your browser.',
+      'No new analytics event, click label, browser storage key, third-party request or processor.',
+    ],
+  },
+  {
     date: 'Nov 14, 2026',
     iso: '2026-11-14',
     material: true,
@@ -978,6 +991,7 @@ const olderCount = format(plural(LOCALE_META[locale].htmlLang, earlierCount, log
         <li><strong>{retention.volunteers.lead}</strong>{retention.volunteers.rest}</li>
         <li><strong>{retention.invites.lead}</strong>{retention.invites.rest}</li>
         <li><strong>{retention.bounced.lead}</strong>{retention.bounced.rest}</li>
+        <li><strong>{retention.sendRetry.lead}</strong>{retention.sendRetry.rest}</li>
         <li><strong>{retention.visitorId.lead}</strong>{retention.visitorId.rest}</li>
         <li><strong>{retention.consentCookie.lead}</strong>{retention.consentCookie.rest}</li>
         <li><strong>{retention.localStorage.lead}</strong>{retention.localStorage.rest}</li>

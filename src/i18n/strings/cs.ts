@@ -553,9 +553,7 @@ export const cs: Dict = {
     meta: {
       title: 'Nástroje a kalkulačky pro osobní finance zdarma | nidhi',
       description:
-        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, srovnání úvěrů, inflace a důchodový simulátor Monte Carlo. Bez registrace a sledování, vše v prohlížeči.',
-      descriptionWithoutSimulator:
-        'Kalkulačky osobních financí zdarma: čisté jmění (v jedné i více měnách), srovnání úvěrů a inflace. Bez registrace, bez sledování, vše v prohlížeči.',
+        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, úvěry, inflace, simulace důchodu a volba mezi investováním a splacením dluhu. Bez registrace. Co napíšete, zůstává ve vašem prohlížeči.',
     },
     schema: {
       breadcrumbHome: 'Domů',
@@ -569,7 +567,7 @@ export const cs: Dict = {
     },
     eyebrow: 'Nástroje zdarma',
     title: 'Nástroje pro osobní finance zdarma, které běží ve vašem prohlížeči.',
-    lead: 'Bez registrace, bez účtu, žádná data se neposílají na server. Každá kalkulačka níže běží celá ve vašem prohlížeči, s nejnovějšími oficiálními směnnými kurzy tam, kde je potřeba převod měn. Pro lidi žijící v zahraničí, pro ty, kdo spoří přes hranice, a pro každého, komu už tabulka nestačí.',
+    lead: 'Nepotřebujete registraci ani účet a co do kalkulačky napíšete, zůstává ve vašem prohlížeči. Každá kalkulačka níže běží celá ve vašem prohlížeči, s nejnovějšími oficiálními směnnými kurzy tam, kde je potřeba převod měn. Pro lidi žijící v zahraničí, pro ty, kdo spoří přes hranice, a pro každého, komu už tabulka nestačí.',
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'Jedna měna i více',
@@ -914,6 +912,10 @@ export const cs: Dict = {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
         rest: ' smažeme, jakmile si jich všimneme, obvykle do týdne.',
       },
+      sendRetry: {
+        lead: 'E-maily s lekcí, které se nepodařilo odeslat:',
+        rest: ' když vám e-mail s lekcí nelze odeslat, skript newsletteru si uloží krátký kód vytvořený z vaší adresy (část hashe SHA-256, nikdy adresu samotnou), kolikrát to zkusil a druh chyby. Při neznámé chybě skript odeslání zopakuje při dalších spuštěních, celkem nejvýše třikrát; na adresy odmítnuté e-mailovou službou už odeslání neopakuje. Tyto záznamy se smažou, jakmile lekce dojde všem odběratelům, kterým ji lze doručit.',
+      },
       visitorId: {
         lead: 'Vaše ID návštěvníka v PostHogu (jen s vaším souhlasem):',
         rest: ' dokud nesmažete data prohlížeče, nebo dokud na cookie liště souhlas neodmítnete, čímž se smaže.',
@@ -1025,7 +1027,9 @@ export const cs: Dict = {
     dismissedLater: 'Vrátíme se k tomu později.',
     sending: 'Odesílání…',
     notConfigured: 'Odběr zatím není nastavený. Zkuste to brzy znovu, nebo použijte kanál RSS.',
-    error: 'Něco se pokazilo. Zkuste to prosím za chvíli znovu.',
+    error: 'Nepodařilo se zjistit, jestli to prošlo. Zkuste to prosím znovu; druhý pokus nic nepokazí.',
+    busy: 'Přihlášky k odběru jsou pro dnešek pozastavené. Zkuste to prosím zítra.',
+    invalidEmail: 'Ta adresa nevypadá správně. Zkontrolujte ji a zkuste to znovu.',
   },
 
   waitlist: {
@@ -1050,7 +1054,9 @@ export const cs: Dict = {
     noScript: 'K přihlášení je potřeba JavaScript, který je v tomto prohlížeči vypnutý nebo blokovaný. Můžete také napsat na hello@nidhi.today.',
     sending: 'Odesílání…',
     notConfigured: 'Zápis zatím není nastavený. Zkuste to brzy znovu.',
-    error: 'Něco se pokazilo. Zkuste to prosím za chvíli znovu.',
+    error: 'Nepodařilo se zjistit, jestli to prošlo. Zkuste to prosím znovu; druhý pokus nic nepokazí.',
+    busy: 'Zápis je pro dnešek pozastavený. Zkuste to prosím zítra.',
+    invalidEmail: 'Ta adresa nevypadá správně. Zkontrolujte ji a zkuste to znovu.',
   },
   home: {
     meta: {

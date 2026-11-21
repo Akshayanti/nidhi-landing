@@ -76,6 +76,11 @@
  *                            own logs).
  */
 
+// Which source this is: a hash of this file, written by `npm run gs:version`
+// and checked by a test. The health answer reports it, so the deployed
+// script can be compared with main (docs/operations.md, #443).
+var VERSION = '9b3011971adb';
+
 // ============================================================================
 // Config
 // ============================================================================
@@ -485,19 +490,31 @@ function handleWaitlist_(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   var added = false;
+  var busy = false;
   try {
-    var sh = sheet_();
-    dedupeOnce_(sh);
-    if (!hasEmail_(sh, email)) {
-      if (takeSignupSlot_()) {
+    // The day's limit is checked before the list is read, and once it is
+    // reached every request that day gets the same "busy" refusal, a new
+    // address or one already on the list alike. So the form can tell the
+    // reader nothing was written (#342), and the reply still says nothing
+    // about who is on the list.
+    if (signupsToday_() >= MAX_SIGNUPS_PER_DAY_) {
+      busy = true;
+    } else {
+      var sh = sheet_();
+      dedupeOnce_(sh);
+      if (!hasEmail_(sh, email)) {
+        takeSignupSlot_();
         sh.appendRow([email, source, new Date()]);
         added = true;
-      } else {
-        console.error('[waitlist] daily sign-up limit reached (' + MAX_SIGNUPS_PER_DAY_ + '): row not written');
       }
     }
   } finally {
     lock.releaseLock();
+  }
+
+  if (busy) {
+    console.error('[waitlist] daily sign-up limit reached (' + MAX_SIGNUPS_PER_DAY_ + '): row not written');
+    return jsonResponse_({ ok: false, error: 'busy' });
   }
 
   // A repeat changes nothing and sends nothing, and gets the same reply as a
@@ -514,7 +531,12 @@ function handleWaitlist_(e) {
   return jsonResponse_({ ok: true });
 }
 
-/** Counts one new row against today's limit; false once the limit is reached. Call inside the lock, which is where the day is read. */
+/** Sign-ups written today (UTC). */
+function signupsToday_() {
+  var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
+  return Number(PropertiesService.getScriptProperties().getProperty('signups:' + today)) || 0;
+}
+
 function takeSignupSlot_() {
   var store = PropertiesService.getScriptProperties();
   var today = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd');
@@ -575,7 +597,7 @@ function dedupeOnce_(sh) {
 // ============================================================================
 
 function handleHealth_() {
-  var report = { ok: true, checks: {} };
+  var report = { ok: true, version: VERSION, checks: {} };
 
   // The result is public, so it says only ok or not; the reason is logged.
   function check(name, fn) {
