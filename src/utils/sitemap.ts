@@ -264,7 +264,10 @@ export const STATIC_PAGE_SOURCE: Readonly<Record<string, readonly string[]>> = {
   'changes': ['src/components/pages/ChangesPage.astro'],
   'volunteers': ['src/components/pages/VolunteersPage.astro'],
   'editorial-policy': ['src/components/pages/EditorialPolicyPage.astro'],
-  'privacy': ['src/components/pages/PrivacyPage.astro'],
+  // The notice shows the latest changelog entries, which live in their own module.
+  'privacy': ['src/components/pages/PrivacyPage.astro', 'src/utils/privacyChangelogEntries.ts'],
+  // The changelog's index and its year pages (#722), dated by the entries.
+  'privacy/changelog': ['src/components/pages/PrivacyChangelogPage.astro', 'src/utils/privacyChangelogEntries.ts'],
   'blog': ['src/layouts/BlogIndex.astro'],
   'blog/tag': ['src/components/pages/TagHubPage.astro'],
   'blog/glossary': ['src/components/pages/GlossaryPage.astro'],
@@ -394,6 +397,8 @@ export function lastmodFor(pathname: string, { content, guides, changesDay, last
     return [...content.tag.values()].sort().pop() ?? fromGit('blog/tag');
   }
   if (path === 'changes') return changesDay ?? fromGit('changes');
+  // A year of the privacy changelog is built from the same sources as its index.
+  if (path.startsWith('privacy/changelog/')) return fromGit('privacy/changelog');
   // The terms come from the lessons and the words around them from the page
   // and its catalog: whichever changed last.
   if (path === 'blog/glossary') return laterOf(fromGit('blog/glossary'), content.glossary);

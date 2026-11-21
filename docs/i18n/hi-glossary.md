@@ -271,7 +271,7 @@ The Hindi notice is a translation and says so, in Hindi, above everything else:
 the English text is the one that binds. Two things follow from that, and both
 are structural rather than editorial.
 
-`PrivacyPage.astro` holds the changelog once, in English, and renders it into
+`src/utils/privacyChangelogEntries.ts` holds the changelog once, in English, and the notice renders it into
 every edition, so the Hindi page has no second copy of the record that could
 drift from it. A translated log would be a second, slightly different account
 of what the site did on a given day, and the record is worth more than the

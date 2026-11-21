@@ -86,6 +86,7 @@ jobs:
             'src/pages/free/*'
             'src/pages/privacy.astro'
             'src/components/pages/PrivacyPage.astro'
+            'src/utils/privacyChangelogEntries.ts'
             'src/components/LoanCompare.tsx'
             'src/components/MultiCurrencyNetWorth.tsx'
             'src/components/MonteCarloSimulator.tsx'

@@ -102,6 +102,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मुख्यपृष्ठ आता “धडा 1 वाचा” या बटणाने सुरू होते, आणि “यापैकी कोणती परिस्थिती तुम्हाला लागू होते?” मध्ये पैशांच्या बाबतीत नव्याने सुरुवात करणाऱ्यांसाठी तिसरे उत्तर आले आहे. भाषांतरासाठी मदतीचे आवाहन आता पानाच्या शेवटी आहे. मोफत साधनांमधील आलेखांतले शब्द आणि आकडे आता उर्वरित पानाप्रमाणे तुमच्या अक्षरांच्या आकारासोबत मोठे होतात; ते मोठे झाल्यावर आलेख कमी रेषा आणि लेबले दाखवतो, जेणेकरून काहीही एकमेकांवर येणार नाही किंवा कापले जाणार नाही. मॉन्टे कार्लो सिम्युलेटरमध्ये परताव्याचे पर्याय आता अक्षरे मोठी असताना कडेच्या बाहेर जाण्याऐवजी पुढच्या ओळींवर येतात.',
         },
       },
+      {
+        id: 'privacy-changelog-pages',
+        text: {
+          en: 'The privacy notice now shows its latest three changes, and the complete record of every change, kept word for word, has its own pages, one for each year. Each change there has a permanent link, so it can be shared or found again.',
+          hi: 'प्राइवेसी नोटिस में अब उसके सबसे नए तीन बदलाव दिखते हैं, और हर बदलाव का पूरा रिकॉर्ड, शब्द-ब-शब्द, अब अपने पेजों पर है, हर साल का एक पेज। वहाँ हर बदलाव का एक स्थायी लिंक है, ताकि उसे शेयर किया जा सके या बाद में फिर ढूँढा जा सके।',
+          es: 'El aviso de privacidad muestra ahora sus tres últimos cambios, y el registro completo de todos los cambios, palabra por palabra, tiene sus propias páginas, una por año. Cada cambio tiene allí un enlace permanente, para compartirlo o volver a encontrarlo.',
+          cs: 'Zásady ochrany soukromí teď ukazují své tři nejnovější změny a\u00a0úplný přehled všech změn, slovo od slova, má vlastní stránky, jednu pro každý rok. Každá změna tam má trvalý odkaz, takže ji jde sdílet nebo znovu najít.',
+          mr: 'गोपनीयता सूचनेत आता तिचे सर्वात अलीकडचे तीन बदल दिसतात, आणि प्रत्येक बदलाची संपूर्ण नोंद, जशी लिहिली तशीच, आता स्वतंत्र पानांवर आहे, प्रत्येक वर्षासाठी एक पान. तिथे प्रत्येक बदलाला एक कायमची लिंक आहे, त्यामुळे तो शेअर करता येतो किंवा नंतर पुन्हा शोधता येतो.',
+        },
+      },
     ],
   },
   {

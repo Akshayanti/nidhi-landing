@@ -1178,12 +1178,15 @@ export const en = {
       title: 'Changes to this notice',
       intro: {
         before:
-          'We update this page in place. Every change gets an entry in the log below, newest first, no matter how small. The latest few are shown in full; older ones are kept word for word under “Earlier changes”. Changes that affect how we handle personal data (a new processor, a new category of data, a retention change) are flagged ',
+          'We update this page in place. Every change gets an entry in the log, newest first, no matter how small. The latest three are shown below; the complete changelog keeps every entry word for word, on a page for each year. Changes that affect how we handle personal data (a new processor, a new category of data, a retention change) are flagged ',
         after: '.',
       },
       second:
         'We don’t push “we updated our privacy policy” emails. If you want to keep an eye on it, bookmark this page or read the log below when you’re curious. If a change ever makes you uncomfortable, unsubscribing from the newsletter is a one-click link in every email, and clearing your browser’s site data wipes everything stored locally.',
-      earlier: 'Earlier changes',
+      entryLink: 'Permanent link',
+      entryLinkLabel: 'Permanent link to the entry of {date}',
+      archiveLink: 'Browse the complete changelog',
+      archiveRange: '{count}, from {from} to {to}',
       // Three forms, picked by `plural()`: Hindi's word for "change" does not
       // inflect for number, and Czech has a third form for 2 to 4. English's
       // `Few` is its plural, like every English `Few`.
@@ -1199,6 +1202,29 @@ export const en = {
        */
       entriesInEnglish:
         'The log below is kept in English, in the words it was written in, and is not translated: it is a record of what this notice said on a given day.',
+    },
+    /** The changelog's own pages: the index at /privacy/changelog/ and a page per year (#722). */
+    archive: {
+      index: {
+        meta: {
+          title: 'Privacy Notice Changelog | nidhi',
+          description: 'Every change to the nidhi privacy notice since it was first published, newest first, kept word for word as it was written and grouped by year.',
+        },
+        title: 'Privacy notice changelog',
+        intro: 'Every change to the privacy notice has an entry here, newest first, kept word for word as it was written, on a page for each year. It is a record of what changed and when, not a set of old copies of the notice.',
+        yearsLabel: 'Years',
+      },
+      year: {
+        metaTitle: 'Privacy Notice Changelog, {year} | nidhi',
+        metaDescription: 'Every change to the nidhi privacy notice in {year}, newest first, word for word as written: what the site collects, stores and sends, and when that changed.',
+        title: 'Privacy notice changelog: {year}',
+        intro: 'Every change made to the privacy notice in {year}, newest first, each entry word for word as it was written. This is a record of changes, not old copies of the notice: what applies today is in the current notice.',
+        monthsLabel: 'Months in {year}',
+        otherYears: 'Other years',
+      },
+      backToNotice: 'Read the current privacy notice',
+      allYears: 'All years of the changelog',
+      breadcrumb: 'Changelog',
     },
   },
 
