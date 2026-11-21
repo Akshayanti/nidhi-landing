@@ -1,0 +1,174 @@
+{
+  "slug": "insurance-optimization",
+  "postTitle": "How Much Insurance Do You Need as Your Wealth Grows?",
+  "postLevel": "optimizing",
+  "episode": 15,
+  "seriesTotal": 0,
+  "blogPath": "blog/insurance-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The same loss takes a smaller share of larger savings",
+  "topicChip": "INSURANCE · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own example, illustrative: a €500 loss against €1,000 and against €4,000 of savings."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "You have a thousand euros saved. What would losing five hundred mean?",
+      "onscreenLines": [
+        "You have €1,000 saved",
+        "What would a €500 loss take?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "A five hundred euro loss takes half your savings.",
+      "onscreenText": "Half gone",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Now imagine having four thousand euros saved.",
+      "onscreenText": "More saved",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "segments": [
+            {
+              "label": "Savings",
+              "value": 4000,
+              "display": "€4,000",
+              "tone": "teal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "The same loss takes a smaller share.",
+      "onscreenText": "Same loss",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "As savings grow, some people pay smaller losses themselves.",
+      "onscreenText": "Paid from savings",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2,
+        "note": "Some people stop insuring small losses"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who has more savings now.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: can cover leave a gap?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You have €1,000 saved. What would a €500 loss take?\n\nHalf of it. With €4,000 saved, the same loss takes an eighth. Nothing about the loss changed; what changed is how much of it savings could absorb.\n\nInsurance costs more than it pays out on average, because premiums cover claims, costs and the insurer's profit. What it buys is turning a large, unpredictable loss into a small, known cost. So as savings grow, some people stop insuring the small losses they could now pay themselves, and keep cover for the ones no savings could absorb: a serious illness where healthcare is private, a large claim from someone they injured, a home.\n\n→ Know someone who has more savings now? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Cover, legal minimums and safety nets differ by country.",
+    "tiktok": "You have €1,000 saved. What would a €500 loss take? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "insurancebasics",
+    "emergencysavings",
+    "moneydecisions"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "The same €500 loss",
+    "hookFirstOnly": true,
+    "bars": [
+      {
+        "id": "small",
+        "label": "Savings of €1,000",
+        "value": 1000,
+        "display": "€1,000",
+        "tone": "ink",
+        "segments": [
+          {
+            "label": "Loss",
+            "value": 500,
+            "display": "€500",
+            "tone": "amber"
+          },
+          {
+            "label": "Left",
+            "value": 500,
+            "display": "€500",
+            "tone": "teal"
+          }
+        ]
+      },
+      {
+        "id": "large",
+        "label": "Savings of €4,000",
+        "value": 4000,
+        "display": "",
+        "tone": "teal",
+        "segments": [
+          {
+            "label": "Loss",
+            "value": 500,
+            "display": "€500",
+            "tone": "amber"
+          },
+          {
+            "label": "Left",
+            "value": 3500,
+            "display": "€3,500",
+            "tone": "teal"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. Some losses are too large for almost any savings."
+  },
+  "lessonBlock": [
+    "Losses savings can absorb",
+    "Cover for large losses",
+    "Reviewing old policies"
+  ]
+}

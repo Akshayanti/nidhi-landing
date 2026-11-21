@@ -1,0 +1,147 @@
+{
+  "slug": "income-replacement-ratio",
+  "postTitle": "Income Replacement Ratio: How Much Income You Need in Retirement",
+  "postLevel": "optimizing",
+  "episode": 14,
+  "seriesTotal": 0,
+  "blogPath": "blog/income-replacement-ratio",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A retirement budget as a share of pay is the income replacement ratio",
+  "topicChip": "RETIREMENT · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own monthly example, illustrative: €4,000 a month before tax, a €3,000 retirement budget including tax: 75%. The lesson's yearly example is €80,000 and €60,000, the same 75%."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your pay before tax is four thousand euros a month. Would retirement need all of it?",
+      "onscreenLines": [
+        "Your pay before tax is €4,000 a month",
+        "Would retirement need all of it?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Suppose your retirement budget, including tax, is three thousand euros.",
+      "onscreenText": "Your retirement budget",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "That is seventy five percent of your pay before tax.",
+      "onscreenText": "Share of pay",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "75%",
+          "label": "of pay before tax"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "That share of pay is called your income replacement ratio.",
+      "onscreenText": "Income replacement ratio",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "75%",
+          "label": "income replacement ratio"
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Your own spending could give a different share.",
+      "onscreenText": "Spending changes the share",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "75%",
+          "label": "income replacement ratio"
+        },
+        "note": "Illustrative budget. Your share can differ"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone wondering how much income retirement needs.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: what can a pension cover?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your pay before tax is €4,000 a month. Would retirement need all of it?\n\nThe example: a retirement budget of €3,000 a month, including tax, is 75% of that pay. The share has a name: the income replacement ratio.\n\nThe figure quoted most often is 70 to 80%. It comes mainly from US planning studies and rests on three things changing: saving for retirement stops, work costs stop, and tax often falls. Each can be wrong for a given household. Some live well on 40 to 50% of their old income; others need all of it or more. The lesson shows how to build the number line by line from current spending.\n\n→ Know someone wondering how much income retirement needs? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Retirement costs, pensions and tax differ by country.",
+    "tiktok": "Your pay before tax is €4,000 a month. Would retirement need all of it? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "retirementplanning",
+    "retirementincome",
+    "pensionplanning"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "Monthly",
+    "hookBars": 1,
+    "bars": [
+      {
+        "id": "pay",
+        "label": "Your pay before tax",
+        "value": 4000,
+        "display": "€4,000",
+        "tone": "ink"
+      },
+      {
+        "id": "budget",
+        "label": "Retirement budget",
+        "sublabel": "including tax",
+        "value": 3000,
+        "display": "€3,000",
+        "tone": "teal"
+      }
+    ],
+    "disclosure": "Illustrative. The share differs a lot between households and countries."
+  },
+  "lessonBlock": [
+    "Costs that change",
+    "Your retirement budget",
+    "Pensions and other income"
+  ]
+}

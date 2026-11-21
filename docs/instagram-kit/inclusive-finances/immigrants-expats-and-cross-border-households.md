@@ -16,9 +16,9 @@ withheld: Tax residency in two countries in the year of the move, pension period
 
 ## Day 1 (angle)
 
-angle: A border resets your credit file, bank and paper trail; rebuilding follows an order, because each step produces the document the next one asks for
-number: Twenty years of on time repayments, read as no file at all
-takeaway: Credit files are held country by country. Rebuilding tends to follow an order, and how the local credit system scores people decides the last step.
+angle: You repaid on time for 20 years: why might a lender abroad see no record?
+number: Twenty years of repayments, no local file
+takeaway: A credit record is usually held in the country where the borrowing happened, so a lender abroad may see no file: missing information, not missed payments.
 tool: The rebuild order. ID and a tax number, a basic bank account, proof of address, income on the record, then small reported credit where the local system works that way.
 
 ## Day 1 (reel)
@@ -142,10 +142,10 @@ read: What changes for refugees, family migrants and households without full sta
 
 ## Day 2 (angle)
 
-angle: Sending money home: the fee is only part of the price, and the same €300 a month can cost very different amounts over ten years
-number: €300 a month for 10 years: €2,340 in costs at 6.5% per transfer, €720 at 2%, €1,620 apart
-takeaway: The one comparison that captures both the fee and the exchange rate margin is how much the recipient actually receives for a fixed amount sent.
-tool: The amount received test. Fix the amount, check three providers on the same route, compare what arrives in the recipient's currency.
+angle: You send €300 home with no transfer fee: could changing currencies still cost you?
+number: €300 sent, a €6 conversion cost, €294 worth arrives
+takeaway: A transfer has two costs, the fee and the exchange rate; a transfer with no fee can still cost money in the rate.
+tool: The amount received test. Fix the amount, look at several providers on the same route, and compare only what arrives.
 
 ## Day 2 (reel)
 

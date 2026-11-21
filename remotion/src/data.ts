@@ -411,7 +411,12 @@ export type BeatAnchor =
       bar?: { label?: string; sublabel?: string; segments?: BarDatum["segments"] };
     }
   | { type: "months"; stage: MonthStage; months?: string[] }
-  | { type: "columns"; stage: ColumnStage }
+  | {
+      type: "columns";
+      stage: ColumnStage;
+      /** This beat: both columns side by side, holding exactly these tiles (a record at home, nothing yet abroad). */
+      show?: { left: string[]; right: string[] };
+    }
   | { type: "routes"; stage: RouteStage }
   | { type: "bands"; stage: BandStage }
   | { type: "race"; stage: RaceStage }
@@ -586,6 +591,12 @@ export interface ReelPlan {
     hideValuesInHook?: boolean;
     /** Segmented: keep the second bar's total back until the callout beat says it. */
     totalOnCallout?: boolean;
+    /** One bar, first screen: how much of the column is already filled (0 leaves it all an open question). Default: the first part. */
+    hookFill?: number;
+    /** Two segmented bars, first screen: draw the first bar alone, so the second waits for its beat. */
+    hookFirstOnly?: boolean;
+    /** Direct bars, first screen and cover: how many bars to draw (the rest wait for their beats). */
+    hookBars?: number;
     /** One bar: the first screen names the whole (the bar's total) and leaves its parts unlabelled, for a reel that asks what the total is made of. */
     hookShowsTotal?: boolean;
     disclosure: string;

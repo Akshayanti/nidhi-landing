@@ -16,10 +16,10 @@ withheld: Why one person needs about 70% of a couple's budget in retirement, no 
 
 ## Day 1 (angle)
 
-angle: The six month emergency fund rule hides a second income: the same rule gives a couple nearly 20 months of runway and a single earner 6
-number: Couple: €21,600 fund, €1,100 a month short, nearly 20 months. Single earner: €14,400 fund, €2,400 a month short, 6 months. More than three times the runway.
-takeaway: On one income the shortfall is the whole of your spending, so the same fund lasts a much shorter time. How far to adjust depends on how stable the income is and how fast it could be replaced.
-tool: The one income check. Your shortfall is all of your spending; how stable is the income; how long would it take to replace it?
+angle: Your monthly bills are €2,400: if your pay stops, what comes from savings?
+number: €2,400 of bills; all of it from savings on one income, €1,200 where another income remains, so the same fund lasts twice as long
+takeaway: The common emergency fund rule quietly assumes a second income; on one income savings cover the whole of the bills.
+tool: The one income check. How steady the income is, how long new work would take to find, and how many months that points to.
 
 ## Day 1 (reel)
 
@@ -136,10 +136,10 @@ read: Which rules of thumb to adjust on one income, and by how much
 
 ## Day 2 (angle)
 
-angle: Couples get a backup person by default; living alone, nobody is named unless you name them in writing
-number: Five documents stand in for the family fallback
-takeaway: Without a document, local law decides who acts for you, and it may be a distant relative or a court appointed guardian. Written choices replace that default, in the form your country requires.
-tool: The five documents. A financial power of attorney, a healthcare power of attorney, an advance directive, a will, and a list of where everything is.
+angle: You live alone: would half a couple's budget cover you?
+number: A couple's €3,000: €1,200 of shared bills and €900 each; one person needs €2,100
+takeaway: Shared bills do not halve, so one person needs more than half of a couple's budget: about 70% by a widely used statistical rule.
+tool: The five documents. Who acts for you if you cannot, named in writing.
 
 ## Day 2 (reel)
 

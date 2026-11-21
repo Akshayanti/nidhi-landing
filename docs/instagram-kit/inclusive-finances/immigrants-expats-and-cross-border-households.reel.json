@@ -8,93 +8,27 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A border resets your credit file, and rebuilding it follows an order",
-  "topicChip": "FINANCIAL IDENTITY",
+  "topic": "A credit record is held country by country, so a lender abroad may see no file",
+  "topicChip": "NEW COUNTRY · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "No euro figures. Illustrative newcomer with twenty years of on time repayments in one country, which appear as no file in the next, because credit files are held nationally. Rebuild order from the post: ID and a tax number, a basic bank account, proof of address, income on the record (three to six months of wages paid in), then small reported credit where the local system scores people that way, then a credit report check after six months. Systems vary by country. Not immigration advice."
-  },
-  "columnStory": {
-    "left": {
-      "id": "before",
-      "title": "Before the move",
-      "rule": "Built over years",
-      "items": [
-        "20 years of repayments",
-        "A bank that knows you",
-        "An address on paper"
-      ],
-      "tone": "teal"
-    },
-    "right": {
-      "id": "after",
-      "title": "After the border",
-      "rule": "Seen as new",
-      "items": [
-        "No credit file",
-        "New documents asked for",
-        "No address until a lease"
-      ],
-      "tone": "amber"
-    },
-    "buffers": [
-      "An ID and a tax number",
-      "A basic bank account",
-      "Proof of address"
-    ],
-    "disclosure": "Illustrative. Banking and credit systems vary by country. Not immigration advice."
+    "notes": "Lesson example: twenty years of on-time repayments at home, no credit file visible to a lender in the new country."
   },
   "hookVariants": [
     {
-      "id": "twenty-years-nothing",
-      "layout": "columns-gap",
-      "narration": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.",
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "You've repaid on time for twenty years. Why might a lender abroad see no record?",
       "onscreenLines": [
-        "20 years on time",
-        "Move countries",
-        "The lender sees nothing"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "nothing"
-      ]
-    },
-    {
-      "id": "history-stays",
-      "layout": "columns-gap",
-      "narration": "Your credit history does not cross the border with you. Few people hear that before they move.",
-      "onscreenLines": [
-        "Your credit history",
-        "stays at the border",
+        "You repaid on time for 20 years",
+        "Why might a lender abroad see no record?",
         ""
       ],
       "anchor": {
         "type": "columns",
         "stage": "hook"
       },
-      "emphasis": [
-        "border"
-      ]
-    },
-    {
-      "id": "address-loop",
-      "layout": "columns-gap",
-      "narration": "No bank account without an address. No address without a bank account. Many newcomers hit this loop.",
-      "onscreenLines": [
-        "No account, no address",
-        "No address, no account",
-        ""
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "hook"
-      },
-      "emphasis": [
-        "loop"
-      ]
+      "emphasis": []
     }
   ],
   "useHookVariant": 0,
@@ -102,165 +36,98 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Before the move: twenty years of repayments, a bank that knows you, and an address on every letter.",
-      "onscreenText": "Before the move",
-      "subtext": "Built over years, almost by accident",
+      "narration": "Those payments build a record of how you repay, called your credit history.",
+      "onscreenText": "A record of repayments",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "left"
+        "stage": "left",
+        "show": {
+          "left": [
+            "20 years of repayments",
+            "Credit history"
+          ],
+          "right": []
+        }
       }
     },
     {
       "id": "b2",
-      "kind": "warning",
-      "narration": "After the border, a lender sees a blank file. Credit records are held country by country, and rarely travel.",
-      "onscreenText": "After the border",
-      "subtext": "Credit files are held country by country",
-      "emphasis": [
-        "blank"
-      ],
+      "kind": "example",
+      "narration": "That record is usually held in the country where you borrowed.",
+      "onscreenText": "Usually held locally",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "right"
+        "stage": "left-rule",
+        "show": {
+          "left": [
+            "20 years of repayments",
+            "Credit history",
+            "Recorded here"
+          ],
+          "right": []
+        }
       }
     },
     {
       "id": "b3",
-      "kind": "definition",
-      "narration": "To a new lender, two decades of perfect repayment look the same as someone who just turned eighteen.",
-      "onscreenText": "Seen as brand new",
-      "subtext": "The same as someone who just turned 18",
-      "emphasis": [
-        "eighteen"
-      ],
+      "kind": "example",
+      "narration": "After a move, a local lender may see no file.",
+      "onscreenText": "Nothing visible locally",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "right-rule"
+        "stage": "right",
+        "show": {
+          "left": [
+            "20 years of repayments",
+            "Credit history",
+            "Recorded here"
+          ],
+          "right": [
+            "No local file"
+          ]
+        }
       }
     },
     {
       "id": "b4",
-      "kind": "list",
-      "narration": "Rebuilding has an order. Each step makes the paper the next one asks for. A tax number, a basic account, proof of address.",
-      "onscreenText": "Rebuild in order",
-      "subtext": "Each step unlocks the next",
-      "emphasis": [
-        "order"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "buffers"
-      }
-    },
-    {
-      "id": "b5",
       "kind": "example",
-      "narration": "Stuck in the address loop? An employer letter, a local registration, or a shelter letter often unlocks a basic account.",
-      "onscreenText": "Breaking the loop",
-      "subtext": "Employer, registration or shelter letter",
-      "emphasis": [
-        "loop"
-      ],
+      "narration": "That means missing information, not a history of missed payments.",
+      "onscreenText": "Missing information",
+      "subtext": "",
+      "emphasis": [],
       "anchor": {
         "type": "columns",
-        "stage": "buffers"
-      }
-    },
-    {
-      "id": "b6",
-      "kind": "list",
-      "narration": "The full order: ID and tax number, a basic account, proof of address, wages paid in, then small reported credit where scoring works that way.",
-      "onscreenText": "The rebuild order",
-      "subtext": "Five steps, each unlocking the next",
-      "emphasis": [
-        "order"
-      ],
-      "anchor": {
-        "type": "card",
-        "stage": "tool",
-        "title": "The rebuild order",
-        "rows": [
-          {
-            "label": "ID and a tax number",
-            "value": "1",
-            "tone": "ink"
-          },
-          {
-            "label": "A basic bank account",
-            "value": "2",
-            "tone": "ink"
-          },
-          {
-            "label": "Proof of address",
-            "value": "3",
-            "tone": "ink"
-          },
-          {
-            "label": "Income on the record",
-            "value": "4",
-            "tone": "ink"
-          },
-          {
-            "label": "Small reported credit",
-            "value": "5",
-            "tone": "teal"
-          }
-        ],
-        "footnote": "Step 5 where the local system scores that way. Check your credit report at six months."
-      }
-    },
-    {
-      "id": "b7",
-      "kind": "story",
-      "narration": "A border takes away a financial identity built by accident. Rebuilding it is the same steps, taken on purpose.",
-      "onscreenText": "The same steps, on purpose",
-      "subtext": "In the right order",
-      "emphasis": [
-        "purpose"
-      ],
-      "anchor": {
-        "type": "columns",
-        "stage": "buffers"
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "20 years of repayments",
+            "Credit history",
+            "Recorded here"
+          ],
+          "right": [
+            "No local file",
+            "Missing, not missed payments"
+          ]
+        }
       }
     }
   ],
   "cta": {
-    "approved": "save",
-    "narration": "Save this for your first months in a new country.",
-    "onscreenText": "Save the rebuild order",
-    "subtext": "Five steps, in order",
+    "approved": "share",
+    "narration": "Send this to someone who has just moved countries.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: can no fee still cost?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.\n\nCredit files are held country by country, so a lender in a new country usually cannot see one held abroad. Rebuilding has an order, because each step produces the document the next one asks for: an ID and a tax number, a basic bank account, proof of address, wages paid in for three to six months, then small reported credit where the local system scores people that way.\n\nAfter six months, a common step is to request the new credit report and check it for errors, which are frequent with foreign names and spellings.\n\n→ Save this for your first months in a new country\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Banking and credit systems vary by country. Not immigration advice.\n\nMade by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio.",
-    "tiktok": "Twenty years of paying every bill on time. Move countries, and a lender sees nothing at all.\n\nRebuilding a financial identity has an order. Systems vary by country.",
-    "instagramKeywords": [
-      "credit report",
-      "credit file",
-      "credit score abroad",
-      "basic bank account",
-      "proof of address",
-      "tax number",
-      "moving countries",
-      "financial identity",
-      "newcomers",
-      "personal finance",
-      "global expats",
-      "Kreditwürdigkeit",
-      "Basiskonto",
-      "historial crediticio",
-      "compte bancaire"
-    ],
-    "tiktokTopics": [
-      "how to build credit in a new country",
-      "open a bank account without proof of address",
-      "does credit history transfer between countries"
-    ],
-    "tiktokExtraTags": [
-      "moneytok",
-      "expatlifehacks"
-    ]
+    "instagram": "You repaid on time for 20 years. Why might a lender abroad see no record?\n\nRepayments build a record called a credit history, and that record is usually held in the country where the borrowing happened. After a move, a local lender checks local files and may find nothing. That is missing information, not a history of missed payments.\n\nRebuilding tends to follow an order, because each step produces the document the next one asks for: identification and a tax number, a basic bank account, proof of address, income on the record, and then, where the local system works that way, small reported credit. Systems differ: some need no credit card at all for a clean record.\n\n→ Know someone who has just moved countries? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Banking and credit systems vary by country. Not immigration advice.",
+    "tiktok": "You repaid on time for 20 years. Why might a lender abroad see no record? Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -268,5 +135,30 @@
     "credithistory",
     "movingabroad",
     "expatbanking"
+  ],
+  "hookStyle": "questionOverPicture",
+  "columnStory": {
+    "left": {
+      "id": "home",
+      "title": "Back home",
+      "rule": "Your record",
+      "items": [
+        "20 years of repayments"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "new",
+      "title": "New country",
+      "rule": "What a lender sees",
+      "items": [],
+      "tone": "amber"
+    },
+    "disclosure": "Illustrative. Credit systems differ by country. Not immigration advice."
+  },
+  "lessonBlock": [
+    "Credit records abroad",
+    "Opening a local account",
+    "Sending money home"
   ]
 }

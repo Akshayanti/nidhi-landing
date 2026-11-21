@@ -1,0 +1,146 @@
+{
+  "slug": "geographic-arbitrage",
+  "postTitle": "Geographic Arbitrage: Living Abroad to Save More",
+  "postLevel": "optimizing",
+  "episode": 13,
+  "seriesTotal": 0,
+  "blogPath": "blog/geographic-arbitrage",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "Earning in one currency and spending in another: the same local prices can cost more",
+  "topicChip": "LIVING ABROAD · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own example, illustrative: €2,000 of monthly bills in local money; the local currency rises 25%, so the same bills cost €2,500. The lesson's figure: major currencies can move 20 to 30% over a few years."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your monthly bills abroad cost two thousand euros. Could unchanged local prices still cost you more?",
+      "onscreenLines": [
+        "Your monthly bills abroad cost €2,000",
+        "Can the same local prices cost you more?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "The bills stay the same in local money.",
+      "onscreenText": "Same local prices",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "But buying that local money now costs five hundred euros more.",
+      "onscreenText": "Local money costs more",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "first",
+        "callout": {
+          "display": "€500",
+          "label": "more for the same local money"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "So those same bills now take two thousand five hundred euros.",
+      "onscreenText": "A higher euro bill",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "€500",
+          "label": "more for the same local money"
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "With unchanged euro pay, five hundred less is left to save.",
+      "onscreenText": "Less left to save",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "callout": {
+          "display": "€500",
+          "label": "more for the same local money"
+        },
+        "note": "€500 less left each month"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who earns and spends in different currencies.",
+    "onscreenText": "Send this to them",
+    "subtext": "Same prices, different euro cost",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your monthly bills abroad cost €2,000. Can the same local prices cost you more?\n\nThe example: the bills do not change in local money, but the local currency rises against the euro, so buying it costs €500 more. The same bills now take €2,500, and with unchanged euro pay, €500 less is left each month.\n\nMajor currencies can move 20 to 30% over a few years without any crisis, in either direction. Two habits people describe: converting savings as needed, not all at once, and in retirement holding more of the currency they spend in.\n\n→ Know someone who earns and spends in different currencies? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Exchange rates move in both directions.",
+    "tiktok": "Your monthly bills abroad cost €2,000. Can the same local prices cost you more? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "exchangerate",
+    "digitalnomadlife",
+    "movingoverseas"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "Monthly bills",
+    "hookBars": 1,
+    "bars": [
+      {
+        "id": "before",
+        "label": "Your bills, in euros",
+        "value": 2000,
+        "display": "€2,000",
+        "tone": "ink"
+      },
+      {
+        "id": "after",
+        "label": "Same bills, new exchange rate",
+        "value": 2500,
+        "display": "€2,500",
+        "tone": "amber"
+      }
+    ],
+    "disclosure": "Illustrative. Exchange rates can also move the other way."
+  },
+  "lessonBlock": [
+    "Currency and spending power",
+    "Healthcare costs abroad",
+    "Family and distance"
+  ]
+}

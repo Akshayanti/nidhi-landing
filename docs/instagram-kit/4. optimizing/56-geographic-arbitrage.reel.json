@@ -1,0 +1,190 @@
+{
+  "slug": "geographic-arbitrage",
+  "postTitle": "Geographic Arbitrage: Living Abroad to Save More",
+  "postLevel": "optimizing",
+  "episode": 13,
+  "seriesTotal": 0,
+  "blogPath": "blog/geographic-arbitrage",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The same pay with lower living costs leaves more to save",
+  "topicChip": "LIVING ABROAD · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own monthly example, illustrative: €6,000 a month after tax; living costs of €4,000 leave €2,000; the same life at €2,000 leaves €4,000. The lesson's yearly example (€80,000, 40% and 70% saved, about 22 and 9 years) is in the caption."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your pay stays the same abroad. How could lower living costs change your savings?",
+      "onscreenLines": [
+        "You earn €6,000 a month, wherever you live",
+        "What could lower living costs leave?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "You receive six thousand euros a month after tax.",
+      "onscreenText": "Same monthly pay",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "segments": [
+            {
+              "label": "Monthly pay",
+              "value": 6000,
+              "display": "€6,000",
+              "tone": "ink"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Four thousand goes on living costs, leaving two thousand.",
+      "onscreenText": "Your current costs",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "Abroad, the same life costs two thousand.",
+      "onscreenText": "Lower living costs",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "segments": [
+            {
+              "label": "Living costs",
+              "value": 2000,
+              "display": "€2,000",
+              "tone": "ink"
+            },
+            {
+              "label": "Left to save",
+              "value": 4000,
+              "display": "€4,000",
+              "tone": "teal"
+            }
+          ],
+          "sublabel": "where the same life costs less"
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "With unchanged pay, four thousand is now left to save.",
+      "onscreenText": "More left to save",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2,
+        "bar": {
+          "segments": [
+            {
+              "label": "Living costs",
+              "value": 2000,
+              "display": "€2,000",
+              "tone": "ink"
+            },
+            {
+              "label": "Left to save",
+              "value": 4000,
+              "display": "€4,000",
+              "tone": "teal"
+            }
+          ],
+          "sublabel": "where the same life costs less"
+        }
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who could keep their pay while living abroad.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: can currency undo it?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You earn €6,000 a month, wherever you live. What could lower living costs leave?\n\nThe example: €4,000 of living costs leaves €2,000 a month. Where the same life costs €2,000, the same pay leaves €4,000.\n\nThe lesson follows this through with yearly figures: €80,000 after tax, 40% saved in one place and 70% in the other. Lower costs work twice, because more is saved each year and less is needed later. On an illustrative 5% a year after inflation, that is about 22 years of saving against about 9.\n\nWhat decides whether it holds: tax in both countries, the right to live there, healthcare, and whether the move lasts.\n\n→ Know someone who could keep their pay while living abroad? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Tax, visas and costs differ by country and person.",
+    "tiktok": "You earn €6,000 a month, wherever you live. What could lower living costs leave? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "livingabroad",
+    "remotework",
+    "costofliving"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "One month",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "hookFill": 0,
+    "bars": [
+      {
+        "id": "bar",
+        "label": "Monthly pay after tax",
+        "sublabel": "the same in both places",
+        "value": 6000,
+        "display": "€6,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Living costs",
+            "value": 4000,
+            "display": "€4,000",
+            "tone": "ink"
+          },
+          {
+            "label": "Left to save",
+            "value": 2000,
+            "display": "€2,000",
+            "tone": "teal"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. Before tax changes, visas and moving costs."
+  },
+  "lessonBlock": [
+    "Living costs and savings",
+    "A smaller retirement pot",
+    "Tax and permission to stay"
+  ]
+}

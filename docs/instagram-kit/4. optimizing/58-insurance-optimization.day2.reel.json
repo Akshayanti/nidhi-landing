@@ -1,0 +1,148 @@
+{
+  "slug": "insurance-optimization",
+  "postTitle": "How Much Insurance Do You Need as Your Wealth Grows?",
+  "postLevel": "optimizing",
+  "episode": 15,
+  "seriesTotal": 0,
+  "blogPath": "blog/insurance-optimization",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A covered claim above the policy limit leaves a gap",
+  "topicChip": "INSURANCE · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson example: a €500,000 judgment against a €300,000 liability limit leaves €200,000 uninsured."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "You owe five hundred thousand euros. Will your insurance pay it all?",
+      "onscreenLines": [
+        "You owe €500,000 for injuring someone",
+        "Will your insurance pay it all?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Suppose your policy covers this payment for harm to someone else.",
+      "onscreenText": "Liability cover",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 0,
+        "note": "This claim is covered"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "The most it pays is three hundred thousand euros.",
+      "onscreenText": "Policy limit",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "The remaining two hundred thousand euros is uninsured.",
+      "onscreenText": "The gap",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Depending on local rules, that gap may come from your savings or income.",
+      "onscreenText": "Still owed",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2,
+        "note": "Your savings or income may pay"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who thinks covered means paid in full.",
+    "onscreenText": "Send this to them",
+    "subtext": "Covered can still leave a gap",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "You owe €500,000 for injuring someone. Will your insurance pay it all?\n\nThe example: the policy covers the claim, but the most it pays is €300,000. The remaining €200,000 is uninsured, and depending on local rules it may be pursued from savings or income.\n\nThis kind of cover is called liability insurance: it pays what you owe someone else, such as a guest hurt in your home or a cyclist you hit. Serious claims are rare, which is why large limits tend to cost little. As savings grow there is more that a claim above the limit could reach, so the limit is one of the things people look at again.\n\n→ Know someone who thinks covered means paid in full? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Liability rules and limits differ by country.",
+    "tiktok": "You owe €500,000 for injuring someone. Will your insurance pay it all? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "liabilityinsurance",
+    "protectyourassets",
+    "insurancereview"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "One claim",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "hookFill": 0,
+    "bars": [
+      {
+        "id": "bar",
+        "label": "Amount owed",
+        "sublabel": "for injuring someone",
+        "value": 500000,
+        "display": "€500,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Insurer pays",
+            "value": 300000,
+            "display": "€300,000",
+            "tone": "ink"
+          },
+          {
+            "label": "Uninsured",
+            "value": 200000,
+            "display": "€200,000",
+            "tone": "amber"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. Limits, enforcement and protection rules differ by country."
+  },
+  "lessonBlock": [
+    "Cover for harm to others",
+    "Limits and unpaid claims",
+    "Rules where you live"
+  ]
+}

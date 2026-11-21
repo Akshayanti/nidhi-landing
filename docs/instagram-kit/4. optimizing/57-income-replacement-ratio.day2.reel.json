@@ -1,0 +1,148 @@
+{
+  "slug": "income-replacement-ratio",
+  "postTitle": "Income Replacement Ratio: How Much Income You Need in Retirement",
+  "postLevel": "optimizing",
+  "episode": 14,
+  "seriesTotal": 0,
+  "blogPath": "blog/income-replacement-ratio",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "A pension covers part of a retirement budget; investments cover the rest",
+  "topicChip": "RETIREMENT · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own monthly example, illustrative: a €3,000 budget including tax, a €2,000 pension from the first day, €1,000 from investments. The lesson's yearly example: €55,000 of spending, €25,000 of pensions, €30,000 from the portfolio."
+  },
+  "hookVariants": [
+    {
+      "id": "h",
+      "layout": "bar-gap",
+      "narration": "Your retirement budget is three thousand euros a month. Must your investments pay it all?",
+      "onscreenLines": [
+        "Your retirement budget is €3,000 a month",
+        "Must your investments pay it all?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "This monthly budget includes any tax you expect to pay.",
+      "onscreenText": "Tax is included",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 0,
+        "note": "Including tax"
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "Suppose a pension pays two thousand euros from the day retirement begins.",
+      "onscreenText": "A pension pays part",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "That leaves one thousand euros of the budget still uncovered.",
+      "onscreenText": "The amount still needed",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "note": "€1,000 still uncovered"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "That remaining amount is what your investments need to provide.",
+      "onscreenText": "Investments cover the rest",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone wondering how pensions change their retirement sums.",
+    "onscreenText": "Send this to them",
+    "subtext": "A pension covers part of the bill",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your retirement budget is €3,000 a month. Must your investments pay it all?\n\nThe example: a pension pays €2,000 a month from the day retirement begins. That leaves €1,000 uncovered, and that gap is what investments need to provide.\n\nMany rules of thumb for the size of a retirement pot assume it pays for everything. With a pension or other lifelong income, the pot only has to cover the gap. In the lesson's yearly example, €25,000 of pensions against €55,000 of spending cuts an illustrative target from about €1.4 million to €750,000. A pension that starts later than retirement leaves a larger gap in the years before it.\n\n→ Know someone wondering how pensions change their retirement sums? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pensions, tax and retirement ages differ by country.",
+    "tiktok": "Your retirement budget is €3,000 a month. Must your investments pay it all? Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "statepension",
+    "retirementgoals",
+    "financialindependence"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "One month in retirement",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "hookFill": 0,
+    "bars": [
+      {
+        "id": "bar",
+        "label": "Monthly retirement budget",
+        "sublabel": "including tax",
+        "value": 3000,
+        "display": "€3,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Pension",
+            "value": 2000,
+            "display": "€2,000",
+            "tone": "ink"
+          },
+          {
+            "label": "From investments",
+            "value": 1000,
+            "display": "€1,000",
+            "tone": "teal"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. Pension amounts and start dates differ by country and person."
+  },
+  "lessonBlock": [
+    "Spending including tax",
+    "Pensions and other income",
+    "What investments must cover"
+  ]
+}

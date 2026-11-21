@@ -209,7 +209,7 @@ function BarHook({ input }: { input: ReelInput }) {
   if (!story) return null;
   if (input.plan.hookStyle === "question") return <QuestionHook plan={input.plan} />;
   const hook = input.plan.hookVariants[input.plan.useHookVariant];
-  const bars = story.bars.slice(0, 4);
+  const bars = story.bars.slice(0, story.hookBars ?? 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
 
   // With three or four items, use one shared hook headline and compact rows.
@@ -664,7 +664,7 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
   const baseline = cover ? 1360 : 1370;
   const chartHeight = big ? (cover ? 520 : 600) : cover ? 610 : 650;
   const barWidth = cover ? 300 : 320;
-  const firstHeight = ((receipts?.value ?? 0) / max) * chartHeight;
+  const firstHeight = ((single && story.hookFill !== undefined ? story.hookFill : receipts?.value ?? 0) / max) * chartHeight;
   const secondHeight = ((hidden?.value ?? 0) / max) * chartHeight;
   return (
     <div style={{ position: "absolute", inset: 0 }}>
@@ -688,7 +688,7 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
           <div style={{ position: "absolute", left: -120, right: -120, top: secondHeight + 20, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 29 : 33, lineHeight: 1.12, fontWeight: 770, color: BRAND.amber }}>{single.label}</div>
         </div>
       )}
-      {!single && [{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
+      {!single && [{ bar: receipts, x: story.hookFirstOnly ? 540 - barWidth / 2 : cover ? 145 : 130, height: story.hookFirstOnly ? chartHeight * 0.6 : firstHeight, color: story.hookFirstOnly ? BRAND.ink : "#8491A8", value: receipts?.display }, { bar: story.hookFirstOnly ? undefined : hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
         <div key={bar.id} style={{ position: "absolute", left: x, top: baseline - height, width: barWidth, height }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", background: color }} />
           {/* A bar too short to hold its value carries it just above, in the bar's colour. */}
@@ -737,7 +737,7 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
-      {anchor?.note && <BeatNote text={anchor.note} top={1010} opacity={local} />}
+      {anchor?.note && <BeatNote text={anchor.note} top={single ? 1010 : 1160} opacity={local} />}
       {stage === "first" && receipts && <SegmentedRow bar={receipts} top={690} max={max} segmentProgress={local} />}
       {stage === "second" && (
         <>
@@ -874,7 +874,7 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   if (!story || !hook) return null;
   if (plan.hookStyle === "question") return <QuestionHook plan={plan} cover />;
   if (story.mode === "segmented") return <SegmentedHook plan={plan} cover />;
-  const bars = story.bars.slice(0, 4);
+  const bars = story.bars.slice(0, story.hookBars ?? 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
 
   if (bars.length > 2 || (plan.hookStyle === "questionOverPicture" && story.mode === "direct")) {
