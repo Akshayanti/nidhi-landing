@@ -16,9 +16,9 @@ withheld: Why one person needs about 70% of a couple's budget in retirement, no 
 
 ## Day 1 (angle)
 
-angle: Your monthly bills are €2,400: if your pay stops, what comes from savings?
-number: €2,400 of bills; all of it from savings on one income, €1,200 where another income remains, so the same fund lasts twice as long
-takeaway: The common emergency fund rule quietly assumes a second income; on one income savings cover the whole of the bills.
+angle: You saved six months of spending on one income: why does a couple's same rule last longer?
+number: 6 months against nearly 20 months, the lesson's example
+takeaway: The same six month rule lasts a couple about three times longer after one job loss, because a second income keeps covering part of the spending; take that away and they are back to six.
 tool: The one income check. How steady the income is, how long new work would take to find, and how many months that points to.
 
 ## Day 1 (reel)
@@ -136,9 +136,9 @@ read: Which rules of thumb to adjust on one income, and by how much
 
 ## Day 2 (angle)
 
-angle: You live alone: would half a couple's budget cover you?
-number: A couple's €3,000: €1,200 of shared bills and €900 each; one person needs €2,100
-takeaway: Shared bills do not halve, so one person needs more than half of a couple's budget: about 70% by a widely used statistical rule.
+angle: You're planning retirement alone: how much smaller is your savings target?
+number: A couple's €3,000 a month, €2,100 for one person; about 70% of the spending, half the pension income
+takeaway: One person spends about 70% of what a couple does but, with equal pensions per person, has half the pension income, so the savings target shrinks by less than the spending does.
 tool: The five documents. Who acts for you if you cannot, named in writing.
 
 ## Day 2 (reel)
@@ -280,8 +280,8 @@ d1_f3_caption: Sizing an emergency fund on one income
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Who acts for you?
-d2_f1_caption: Naming your backup person when you live alone
+d2_f1_overlay: Alone: how much smaller?
+d2_f1_caption: One income, one pension
 
 d2_f2_kind: result
 d2_f2_alt: Yesterday's poll question, if your income stopped tomorrow how long would your savings last, with an empty box for the result.

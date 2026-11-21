@@ -403,6 +403,8 @@ export type BeatAnchor =
       days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number };
       /** Direct bars, this beat only: a bar's label by id ("Worth now" becomes "Sold for"). */
       barLabels?: Record<string, string>;
+      /** Stage "blank": a box of words for this beat, in place of the story's setup box. */
+      setup?: { label: string; display: string; note?: string; tone?: BarTone; size?: number };
       /** Direct bars, this beat only: a box between the bars, in place of the story's callout. */
       callout?: { display: string; label?: string };
       /** This beat only: one plain line under the bars. */
@@ -579,7 +581,7 @@ export interface ReelPlan {
     proportional?: boolean;
     /** Smallest bar width in px; set it low when one value is tiny next to another (51 day 1: €16 against €5,000). */
     minBarWidth?: number;
-    setup?: { label: string; display: string; note?: string; tone?: BarTone };
+    setup?: { label: string; display: string; note?: string; tone?: BarTone; size?: number };
     unit: string;
     basis: string;
     bars: BarDatum[];

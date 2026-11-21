@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A credit record is held country by country, so a lender abroad may see no file",
+  "topic": "The bank and landlord loop, and the documents that break it",
   "topicChip": "NEW COUNTRY · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Lesson example: twenty years of on-time repayments at home, no credit file visible to a lender in the new country."
+    "notes": "Lesson: no account without an address, no tenancy without an account; the loop usually breaks with an employer letter, a registration certificate from the local authority, or a letter from a hostel, shelter or support organisation; EU legal residents generally have a right to a basic payment account, subject to checks; wages paid in create evidence of income."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "You've repaid on time for twenty years. Why might a lender abroad see no record?",
+      "narration": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop?",
       "onscreenLines": [
-        "You repaid on time for 20 years",
-        "Why might a lender abroad see no record?",
+        "Bank wants an address. Landlord wants an account",
+        "Which document breaks the loop?",
         ""
       ],
       "anchor": {
@@ -36,8 +36,8 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Those payments build a record of how you repay, called your credit history.",
-      "onscreenText": "A record of repayments",
+      "narration": "Each application asks for something the other would create.",
+      "onscreenText": "Each needs the other",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -45,8 +45,8 @@
         "stage": "left",
         "show": {
           "left": [
-            "20 years of repayments",
-            "Credit history"
+            "Bank: needs an address",
+            "Landlord: needs an account"
           ],
           "right": []
         }
@@ -55,28 +55,8 @@
     {
       "id": "b2",
       "kind": "example",
-      "narration": "That record is usually held in the country where you borrowed.",
-      "onscreenText": "Usually held locally",
-      "subtext": "",
-      "emphasis": [],
-      "anchor": {
-        "type": "columns",
-        "stage": "left-rule",
-        "show": {
-          "left": [
-            "20 years of repayments",
-            "Credit history",
-            "Recorded here"
-          ],
-          "right": []
-        }
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "example",
-      "narration": "After a move, a local lender may see no file.",
-      "onscreenText": "Nothing visible locally",
+      "narration": "An accepted address letter can break it: from an employer, the local authority, or a support organisation.",
+      "onscreenText": "Ways out",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -84,21 +64,22 @@
         "stage": "right",
         "show": {
           "left": [
-            "20 years of repayments",
-            "Credit history",
-            "Recorded here"
+            "Bank: needs an address",
+            "Landlord: needs an account"
           ],
           "right": [
-            "No local file"
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
           ]
         }
       }
     },
     {
-      "id": "b4",
+      "id": "b3",
       "kind": "example",
-      "narration": "That means missing information, not a history of missed payments.",
-      "onscreenText": "Missing information",
+      "narration": "In the EU, legal residents generally have a right to a basic payment account, subject to checks.",
+      "onscreenText": "An account with a name",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -106,59 +87,85 @@
         "stage": "right-rule",
         "show": {
           "left": [
-            "20 years of repayments",
-            "Credit history",
-            "Recorded here"
+            "Bank: needs an address",
+            "Landlord: needs an account"
           ],
           "right": [
-            "No local file",
-            "Missing, not missed payments"
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
           ]
-        }
+        },
+        "note": "Ask for a “basic payment account”"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Wages paid into it then become the proof of income a landlord looks for.",
+      "onscreenText": "Then income shows",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Bank: needs an address",
+            "Landlord: needs an account"
+          ],
+          "right": [
+            "Employer letter",
+            "Local registration",
+            "Hostel or support letter"
+          ]
+        },
+        "note": "Wages on record: proof of income"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone who has just moved countries.",
+    "narration": "Send this to someone starting again in a new country.",
     "onscreenText": "Send this to them",
-    "subtext": "Part 2: can no fee still cost?",
+    "subtext": "Part 2: what does sending money home cost?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "You repaid on time for 20 years. Why might a lender abroad see no record?\n\nRepayments build a record called a credit history, and that record is usually held in the country where the borrowing happened. After a move, a local lender checks local files and may find nothing. That is missing information, not a history of missed payments.\n\nRebuilding tends to follow an order, because each step produces the document the next one asks for: identification and a tax number, a basic bank account, proof of address, income on the record, and then, where the local system works that way, small reported credit. Systems differ: some need no credit card at all for a clean record.\n\n→ Know someone who has just moved countries? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Banking and credit systems vary by country. Not immigration advice.",
-    "tiktok": "You repaid on time for 20 years. Why might a lender abroad see no record? Illustrative."
+    "instagram": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop?\n\nA border breaks a chain most settled adults never notice: each document once helped unlock the next. In a new country the loop usually breaks at one of three points: an employer's letter confirming your address, a registration certificate from the local authority, or a letter from a hostel, shelter or support organisation.\n\nIt also helps to know an account's name. Many countries require banks to offer a basic payment account with lighter document requirements; in the EU, legal residents generally have a right to one, including people with no fixed address, subject to identity and other checks.\n\nWages paid into that account then start a record of income, which is what a landlord or lender asks for next. The full lesson has the whole order, and what to collect before leaving.\n\n→ Know someone starting again in a new country? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Rules and accepted documents differ by country. Not immigration advice.",
+    "tiktok": "The bank wants an address. The landlord wants a bank account. Which document breaks the loop? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhiforyouandme",
-    "credithistory",
     "movingabroad",
-    "expatbanking"
+    "expatlife",
+    "newcountry"
   ],
   "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "The rebuilding order",
+    "Credit files abroad",
+    "Papers to keep"
+  ],
   "columnStory": {
     "left": {
-      "id": "home",
-      "title": "Back home",
-      "rule": "Your record",
+      "id": "loop",
+      "title": "The loop",
+      "rule": "Two demands",
       "items": [
-        "20 years of repayments"
+        "Bank: needs an address",
+        "Landlord: needs an account"
       ],
-      "tone": "teal"
-    },
-    "right": {
-      "id": "new",
-      "title": "New country",
-      "rule": "What a lender sees",
-      "items": [],
       "tone": "amber"
     },
-    "disclosure": "Illustrative. Credit systems differ by country. Not immigration advice."
-  },
-  "lessonBlock": [
-    "Credit records abroad",
-    "Opening a local account",
-    "Sending money home"
-  ]
+    "right": {
+      "id": "exits",
+      "title": "What can break it",
+      "rule": "Address proof",
+      "items": [],
+      "tone": "teal"
+    },
+    "disclosure": "Illustrative. Accepted documents differ by country and bank."
+  }
 }

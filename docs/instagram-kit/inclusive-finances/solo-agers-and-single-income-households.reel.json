@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "faithful",
   "mood": "curious",
-  "topic": "On one income, savings cover the whole of the monthly bills when pay stops",
+  "topic": "The same six month rule gives a couple about three times the runway",
   "topicChip": "SOLO · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Reel's own example, illustrative: €2,400 of monthly bills; with no other income savings cover all of it; with another income of €1,200 they cover half, so the same fund lasts twice as long. The lesson's example: a single earner's fund lasts 6 months, a couple's nearly 20."
+    "notes": "Lesson example: a couple each earn €2,500 after tax and spend €3,600; a single earner takes home €3,000 and spends €2,400; both hold six months of spending. One job lost: the couple is €1,100 a month short and €21,600 lasts nearly 20 months; the single earner is short €2,400 and €14,400 lasts 6."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "Your monthly bills are two thousand four hundred euros. If your pay stops, what comes from savings?",
+      "narration": "You saved six months of spending on one income. Why does a couple's same rule last longer?",
       "onscreenLines": [
-        "Your monthly bills are €2,400",
-        "If your pay stops, what comes from savings?",
+        "You saved six months of spending on one income",
+        "Why does a couple's same rule last longer?",
         ""
       ],
       "anchor": {
@@ -36,102 +36,64 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Your pay stops. Assume no benefits or other income.",
-      "onscreenText": "Pay stops",
+      "narration": "Lose your only pay and the fund covers every bill: six months.",
+      "onscreenText": "One income",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 0,
-        "note": "No other income"
+        "stage": "first"
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "Savings cover the whole two thousand four hundred euros.",
-      "onscreenText": "Savings cover everything",
+      "narration": "A couple losing one pay of two still has the other, so the same rule lasts nearly twenty months.",
+      "onscreenText": "Two incomes",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 1
+        "stage": "second"
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "With another household income, savings need cover only one thousand two hundred euros.",
-      "onscreenText": "Another income remains",
+      "narration": "Take away that second pay too, and they are back to six.",
+      "onscreenText": "Both pays gone",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second",
-        "segment": 2,
-        "bar": {
-          "sublabel": "with another income at home",
-          "segments": [
-            {
-              "label": "Other income",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "ink"
-            },
-            {
-              "label": "From savings",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "amber"
-            }
-          ]
-        }
+        "note": "Both pays lost: back to 6 months"
       }
     },
     {
       "id": "b4",
       "kind": "example",
-      "narration": "With bills and income unchanged, the same fund lasts twice as long.",
-      "onscreenText": "The same fund lasts longer",
+      "narration": "The extra time came from a surviving income, not from the rule.",
+      "onscreenText": "What the rule assumed",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second",
-        "segment": 2,
-        "bar": {
-          "sublabel": "with another income at home",
-          "segments": [
-            {
-              "label": "Other income",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "ink"
-            },
-            {
-              "label": "From savings",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "amber"
-            }
-          ]
-        },
-        "note": "The same fund lasts twice as long"
+        "note": "The extra time was the second income"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone who relies on one income.",
+    "narration": "Send this to someone whose household runs on one income.",
     "onscreenText": "Send this to them",
-    "subtext": "Part 2: half the people, half the bills?",
+    "subtext": "Part 2: is the retirement target smaller?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your monthly bills are €2,400. If your pay stops, what comes from savings?\n\nOn one income, all of it. In a household where another income still pays €1,200, savings cover only the other €1,200, so the same fund lasts twice as long.\n\nThat second income sits quietly inside the common rule of three to six months of spending. In the lesson's example a couple's six month fund lasts nearly 20 months after one job is lost, and a single earner's lasts six. On one income, many people aim for the upper end or beyond, often six to twelve months, depending on how steady the income is and how long new work would take to find.\n\n→ Know someone who relies on one income? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Benefits and safety nets differ by country.",
-    "tiktok": "Your monthly bills are €2,400. If your pay stops, what comes from savings? Illustrative."
+    "instagram": "You saved six months of spending on one income. Why does a couple's same rule last longer?\n\nTwo households follow the same rule. A couple each earn €2,500 a month after tax and spend €3,600; a single earner takes home €3,000 and spends €2,400. One job is lost in each.\n\nThe couple is €1,100 a month short, so their fund lasts nearly 20 months. The single earner is short the full €2,400, and hers lasts 6. Take the couple's second pay away as well and they are back to six: the extra time came from an income that survived, not from the rule.\n\nThat second income sits quietly inside several rules of thumb. On one income, many people aim for the upper end of the emergency fund range or beyond, often six to twelve months, depending on how steady the income is and how long new work would take to find.\n\n→ Know someone whose household runs on one income? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Benefits and safety nets differ by country.",
+    "tiktok": "You saved six months of spending on one income. Why does a couple's same rule last longer? Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -141,36 +103,35 @@
     "livingalone"
   ],
   "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Rules that assume two incomes",
+    "Income protection",
+    "Fixed costs on one income"
+  ],
   "barStory": {
-    "mode": "segmented",
-    "unit": "€",
-    "basis": "One month",
-    "totalOnCallout": true,
-    "hookShowsTotal": true,
-    "hookFill": 0,
+    "mode": "direct",
+    "proportional": true,
+    "unit": "months",
+    "basis": "Six months of spending saved; no benefits",
+    "hookBars": 1,
     "bars": [
       {
-        "id": "bar",
-        "label": "Monthly bills",
-        "sublabel": "when pay stops",
-        "value": 2400,
-        "display": "€2,400",
-        "tone": "amber",
-        "segments": [
-          {
-            "label": "From savings",
-            "value": 2400,
-            "display": "€2,400",
-            "tone": "amber"
-          }
-        ]
+        "id": "solo",
+        "label": "One income, pay lost",
+        "sublabel": "the fund lasts",
+        "value": 6,
+        "display": "6 months",
+        "tone": "amber"
+      },
+      {
+        "id": "couple",
+        "label": "Two incomes, one pay lost",
+        "sublabel": "the fund lasts nearly",
+        "value": 19.6,
+        "display": "20 months",
+        "tone": "teal"
       }
     ],
-    "disclosure": "Illustrative. Assumes no benefits or other income."
-  },
-  "lessonBlock": [
-    "Savings on one income",
-    "Retirement costs alone",
-    "Who can act for you"
-  ]
+    "disclosure": "Illustrative. Couple: €2,500 each, spending €3,600. Single: €3,000, spending €2,400."
+  }
 }

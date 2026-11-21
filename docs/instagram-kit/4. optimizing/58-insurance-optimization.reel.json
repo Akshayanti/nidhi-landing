@@ -8,24 +8,24 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A higher deductible saves premium over years; an early claim comes before the savings",
+  "topic": "Life cover follows who depends on your pay, not marriage or age",
   "topicChip": "INSURANCE · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Lesson example: moving a deductible from €500 to €2,500 saves €300 a year; seven claim-free years save €2,100, more than the extra €2,000 paid on a claim."
+    "notes": "Lesson: life cover exists for financial dependence; once nobody would struggle without the income (children working, a partner able to live on their own income and the portfolio, the mortgage paid), many let term cover lapse; cover is hard to get back if health changes. €500,000 is the portfolio in the lesson's opening example."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "Your cheaper policy raises your deductible by two thousand euros. When do premium savings catch up?",
+      "narration": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for?",
       "onscreenLines": [
-        "A cheaper policy raises your deductible by €2,000",
-        "When do premium savings catch up?",
+        "Your savings have grown. The mortgage is nearly paid",
+        "Who is your life cover still for?",
         ""
       ],
       "anchor": {
-        "type": "bars",
+        "type": "columns",
         "stage": "hook"
       },
       "emphasis": []
@@ -36,107 +36,134 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "The part you pay is the deductible. Raising it saves three hundred euros yearly here.",
-      "onscreenText": "Lower yearly premium",
-      "subtext": "The part of a claim you pay is the deductible",
+      "narration": "Life insurance replaces income your family would lose if you died.",
+      "onscreenText": "What the payout replaces",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "second"
+        "type": "columns",
+        "stage": "left",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": []
+        }
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "Seven claim free years build two thousand one hundred euros.",
-      "onscreenText": "Savings accumulate",
+      "narration": "A five hundred thousand euro portfolio and a partner's earnings may already cover some bills.",
+      "onscreenText": "Other resources grow",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "third"
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings"
+          ]
+        }
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "That offsets the extra cost of a single claim.",
-      "onscreenText": "Extra claim cost covered",
+      "narration": "When the mortgage is paid, that dependence can fall further.",
+      "onscreenText": "Fewer bills need your pay",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "third",
-        "note": "Covers one claim's extra cost"
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings",
+            "Mortgage paid"
+          ]
+        }
       }
     },
     {
       "id": "b4",
       "kind": "example",
-      "narration": "An early claim still needs extra cash before those savings accumulate.",
-      "onscreenText": "Timing matters",
+      "narration": "Many wait until they are sure nobody depends on their pay: changed health can make new cover hard to get.",
+      "onscreenText": "Why many wait",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "third",
-        "note": "An early claim comes first"
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "A mortgage",
+            "Family needs your pay"
+          ],
+          "right": [
+            "€500,000 saved",
+            "Partner's earnings",
+            "Mortgage paid"
+          ]
+        },
+        "note": "Changed health can make new cover harder to get"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone weighing a higher deductible.",
+    "narration": "Send this to someone close to their last mortgage payment.",
     "onscreenText": "Send this to them",
-    "subtext": "Part 2: can claims exceed wealth?",
+    "subtext": "Part 2: can a claim exceed net worth?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "A cheaper policy raises your deductible by €2,000. When do premium savings catch up?\n\nThe part of a claim you pay yourself is the deductible, and raising it lowers the premium. In the lesson's example, moving it from €500 to €2,500 saves €300 a year. Seven claim free years save €2,100, a little more than the extra €2,000 one large claim would cost.\n\nThe catch is timing. A claim in the first years arrives before the savings have built up, so the extra has to come from cash already set aside. That is why people who raise a deductible tend to do it once their reserves could absorb it, and why it suits cover where claims are rare.\n\n→ Know someone weighing a higher deductible? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Premiums and deductibles differ by insurer and country.",
-    "tiktok": "A cheaper policy adds €2,000 to what you pay per claim. When do the premium savings catch up? Illustrative."
+    "instagram": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for?\n\nLife insurance replaces income that people who depend on you would lose if you died early. It exists for financial dependence, not for marriage or age. So the need changes as a household's finances do: a portfolio and a partner's own earnings can cover bills that once needed your pay, and a paid off mortgage removes the largest of them.\n\nOnce nobody would struggle without the income, many people let term cover lapse. Many also wait until they are confident of that, because cover can be hard to get back if health changes.\n\nThe same shift runs the other way for cover that protects what you own, which is part 2.\n\n→ Know someone close to their last mortgage payment? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Products and rules differ by country.",
+    "tiktok": "Your savings have grown and the mortgage is nearly paid. Who is your life cover still for? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "insurancebasics",
-    "deductible",
+    "lifeinsurance",
+    "mortgagefree",
     "moneydecisions"
   ],
   "hookStyle": "questionOverPicture",
   "lessonBlock": [
-    "Deductibles and cash reserves",
-    "Life cover and dependence",
+    "When life cover can end",
+    "Income cover over a career",
     "Liability limits"
   ],
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "unit": "EUR",
-    "basis": "A deductible raised from €500 to €2,500",
-    "hookBars": 1,
-    "bars": [
-      {
-        "id": "extra",
-        "label": "Extra cost per claim",
-        "value": 2000,
-        "display": "up to €2,000",
-        "tone": "amber"
-      },
-      {
-        "id": "one",
-        "label": "Premium saved in one year",
-        "value": 300,
-        "display": "€300",
-        "tone": "teal"
-      },
-      {
-        "id": "seven",
-        "label": "Saved after 7 claim free years",
-        "value": 2100,
-        "display": "€2,100",
-        "tone": "teal"
-      }
-    ],
-    "disclosure": "Illustrative. Premium savings differ by insurer and policy."
+  "columnStory": {
+    "left": {
+      "id": "then",
+      "title": "When cover started",
+      "rule": "Who needed it",
+      "items": [
+        "A mortgage",
+        "Family needs your pay"
+      ],
+      "tone": "amber"
+    },
+    "right": {
+      "id": "now",
+      "title": "Now",
+      "rule": "What has changed",
+      "items": [],
+      "tone": "teal"
+    },
+    "disclosure": "Illustrative. Whether cover is still needed depends on the household."
   }
 }

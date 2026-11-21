@@ -431,14 +431,15 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const showBars = stage && !["blank", "hook", "days"].includes(stage);
   const callout = anchor?.callout ?? (stage === "ratio" ? story.callout ?? story.ratio : undefined);
   const showRatio = Boolean(callout);
+  const setup = anchor?.setup ?? story.setup;
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
-      {stage === "blank" && story.setup && (
-        <div style={{ position: "absolute", left: 148, top: 610, width: 784, padding: "46px 48px", boxSizing: "border-box", border: `3px solid ${barColor({ ...story.bars[0], tone: story.setup.tone ?? "ink" })}`, borderRadius: 28, background: BRAND.paper, boxShadow: "12px 14px 0 rgba(0,33,113,0.08)", opacity: enter, textAlign: "center" }}>
-          <div style={{ fontFamily: TYPE.ui, fontSize: 30, fontWeight: 790, color: BRAND.inkSoft }}>{story.setup.label}</div>
-          <div style={{ marginTop: 12, fontFamily: TYPE.ui, fontSize: 84, lineHeight: 1, fontWeight: 870, letterSpacing: "-0.05em", color: BRAND.ink }}>{story.setup.display}</div>
-          {story.setup.note && <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 29, fontWeight: 650, color: BRAND.inkMuted }}>{story.setup.note}</div>}
+      {stage === "blank" && setup && (
+        <div style={{ position: "absolute", left: 148, top: 610, width: 784, padding: "46px 48px", boxSizing: "border-box", border: `3px solid ${barColor({ ...story.bars[0], tone: setup.tone ?? "ink" })}`, borderRadius: 28, background: BRAND.paper, boxShadow: "12px 14px 0 rgba(0,33,113,0.08)", opacity: enter, textAlign: "center" }}>
+          <div style={{ fontFamily: TYPE.ui, fontSize: 30, fontWeight: 790, color: BRAND.inkSoft }}>{setup.label}</div>
+          <div style={{ marginTop: 12, fontFamily: TYPE.ui, fontSize: setup.size ?? 84, lineHeight: 1.08, fontWeight: 870, letterSpacing: "-0.05em", color: BRAND.ink }}>{setup.display}</div>
+          {setup.note && <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 29, fontWeight: 650, color: BRAND.inkMuted }}>{setup.note}</div>}
         </div>
       )}
       {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}

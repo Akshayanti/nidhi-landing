@@ -12,12 +12,12 @@ withheld: Health cover and where not to cut, term against whole life, when life 
 
 ## Day 1 (angle)
 
-angle: A cheaper policy raises your deductible by €2,000: when do premium savings catch up?
-breadth: broad | Anyone who has chosen a deductible
-number: €2,000 more per claim at most; €300 a year saved; seven claim free years; €2,100. The reel says all four
-takeaway: A higher deductible pays for itself over claim free years; a claim before then needs the extra from cash already set aside.
-tool: The deductible sum. The extra per claim, the premium saved each year, and the cash on hand for an early claim.
-send_to: Someone weighing a higher deductible.
+angle: Your savings have grown and the mortgage is nearly paid: who is your life cover still for?
+breadth: broad | Anyone with a mortgage, a family or life cover
+number: €500,000 saved. The reel says it once
+takeaway: Life cover follows who depends on your pay, not marriage or age; as savings grow and the mortgage ends the need can fall, and many wait until sure because changed health can make new cover hard to get.
+tool: The dependence check. Who relies on your pay, what they would have without it, and whether cover could be bought again.
+send_to: Someone close to their last mortgage payment.
 send_why: number
 
 ## Day 1 (reel)
@@ -27,20 +27,20 @@ render: cp "docs/instagram-kit/4. optimizing/58-insurance-optimization.reel.json
 video: output/videos/optimizing/58-insurance-optimization.mp4
 cover: output/thumbnails/optimizing/58-insurance-optimization.png
 caption: output/captions/optimizing/58-insurance-optimization.ig.txt
-hashtags: #nidhi #nidhicompounding #insurancebasics #deductible #moneydecisions
+hashtags: #nidhi #nidhicompounding #lifeinsurance #mortgagefree #moneydecisions
 
 ## Day 1 (story)
 
 ### Slide 1 (tool)
 
-alt: Tool card, the deductible sum, before raising it: the extra you would pay on a claim; the premium saved each year; and the cash on hand if a claim comes early.
+alt: Tool card, the dependence check, for life cover: who relies on your pay; what they would have without it; and whether cover could be bought again later.
 
-band: The deductible sum
-lead: Before raising it
-row: Extra | Per claim | warn | the higher deductible
-row: Saved | Each year | teal | the lower premium
-row: Cash | On hand? | ink | for an early claim
-note: Illustrative. Premiums differ by insurer.
+band: The dependence check
+lead: For life cover
+row: Relies | Who? | ink | on your pay today
+row: Without it | What? | teal | savings, other income
+row: Again | Could you? | warn | health can change
+note: Illustrative. Not advice on a policy.
 
 ## Day 2 (angle)
 
@@ -78,13 +78,13 @@ note: Illustrative. Rules differ by country.
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Cheaper policy. When does it pay?
-d1_f1_caption: A higher deductible, year by year
+d1_f1_overlay: Who is the cover still for?
+d1_f1_caption: Life cover follows dependence
 
 d1_f3_kind: tool
-d1_f3_alt: Story version of the deductible sum: the extra paid on a claim, the premium saved each year, and the cash on hand for an early claim.
+d1_f3_alt: Story version of the dependence check: who relies on your pay, what they would have without it, and whether cover could be bought again.
 d1_f3_time: evening
-d1_f3_caption: The deductible sum
+d1_f3_caption: The dependence check
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
@@ -97,10 +97,10 @@ d2_f3_time: evening
 d2_f3_caption: The liability check
 
 d2_f4_kind: extra
-d2_f4_alt: Beyond this post: life cover exists for people who depend on your income; once nobody would struggle without it, many people let term cover lapse.
+d2_f4_alt: Beyond this post: a higher deductible lowers the premium, and the saving builds over claim free years; a claim before then needs the extra from cash set aside.
 d2_f4_time: late evening
 d2_f4_label: Beyond this post
-d2_f4_title: Cover follows dependence.
-d2_f4_body: Life cover exists for people who depend on your income. Once nobody would, many let term cover lapse.
+d2_f4_title: A deductible is a trade.
+d2_f4_body: A higher deductible lowers the premium. The saving builds over claim free years; an early claim needs cash set aside.
 d2_f4_sticker: link sticker to the blog post
-d2_f4_caption: When life cover can end
+d2_f4_caption: Deductibles and cash reserves

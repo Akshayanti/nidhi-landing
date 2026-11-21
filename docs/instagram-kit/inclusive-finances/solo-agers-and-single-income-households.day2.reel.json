@@ -8,24 +8,24 @@
   "availableFigures": [],
   "mode": "faithful",
   "mood": "curious",
-  "topic": "One person needs more than half of a couple's budget, because shared bills stay",
+  "topic": "One person spends about 70% of a couple but may have half the pension income",
   "topicChip": "SOLO · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Lesson figures: a couple's budget of €3,000 a month, about €2,100 for one person (about 70%). The split into €1,200 of shared bills and €900 a person is the reel's own illustration of why."
+    "notes": "Lesson: on the square root scale one person needs about 70% of a couple's budget (€3,000 a month for a couple, about €2,100 for one); a couple typically has two state pensions, a single person one. Equal pensions per person and the same withdrawal rate are the reel's assumptions."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "You live alone. Would half a couple's retirement budget cover you?",
+      "narration": "You're planning retirement alone. How much smaller is your savings target?",
       "onscreenLines": [
-        "You live alone",
-        "Would half a couple's budget cover you?",
+        "You're planning retirement alone",
+        "How much smaller is your savings target?",
         ""
       ],
       "anchor": {
-        "type": "bars",
+        "type": "columns",
         "stage": "hook"
       },
       "emphasis": []
@@ -36,152 +36,135 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "In this example, shared bills cost one thousand two hundred euros a month.",
-      "onscreenText": "Shared bills",
-      "subtext": "Rent, heating, internet",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "segment": 1
-      }
-    },
-    {
-      "id": "b2",
-      "kind": "example",
-      "narration": "Other spending is nine hundred euros per person.",
-      "onscreenText": "Spending for each person",
+      "narration": "One person spends about seventy percent of what a couple does, not half: rent and heating barely shrink.",
+      "onscreenText": "Shared bills remain",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "segment": 3
-      }
-    },
-    {
-      "id": "b3",
-      "kind": "example",
-      "narration": "Living alone removes one person's nine hundred euro share.",
-      "onscreenText": "One share goes",
-      "subtext": "",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "segment": 2,
-        "bar": {
-          "label": "One person's monthly budget",
-          "segments": [
-            {
-              "label": "Shared bills",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "ink"
-            },
-            {
-              "label": "One person",
-              "value": 900,
-              "display": "€900",
-              "tone": "teal"
-            }
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "Spending €3,000"
+          ],
+          "right": [
+            "Spending €2,100"
           ]
         }
       }
     },
     {
-      "id": "b4",
+      "id": "b2",
       "kind": "example",
-      "narration": "The shared bills stay. That leaves two thousand one hundred euros for one person.",
-      "onscreenText": "Shared bills remain",
+      "narration": "If each person receives the same state pension, one person has half the couple's pension income.",
+      "onscreenText": "Half the pension income",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "segment": 2,
-        "bar": {
-          "label": "One person's monthly budget",
-          "segments": [
-            {
-              "label": "Shared bills",
-              "value": 1200,
-              "display": "€1,200",
-              "tone": "ink"
-            },
-            {
-              "label": "One person",
-              "value": 900,
-              "display": "€900",
-              "tone": "teal"
-            }
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "Spending €3,000",
+            "Two state pensions"
+          ],
+          "right": [
+            "Spending €2,100",
+            "One state pension"
+          ]
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "Spending falls less than pension income. Savings cover the rest.",
+      "onscreenText": "What savings cover",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Spending €3,000",
+            "Two state pensions"
+          ],
+          "right": [
+            "Spending €2,100",
+            "One state pension"
           ]
         },
-        "note": "One person: €2,100, more than half"
+        "note": "Savings cover spending minus pensions"
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "So one person's savings target can be more than seventy percent of the couple's.",
+      "onscreenText": "The ratio changes",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Spending €3,000",
+            "Two state pensions"
+          ],
+          "right": [
+            "Spending €2,100",
+            "One state pension"
+          ]
+        },
+        "note": "More than 70% of a couple's target"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone who thinks living alone means half the bills.",
+    "narration": "Send this to someone planning retirement solo.",
     "onscreenText": "Send this to them",
-    "subtext": "Some bills stay when you live alone",
+    "subtext": "One income, one pension",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "You live alone. Would half a couple's budget cover you?\n\nThe example: a couple spends €3,000 a month. €1,200 is shared bills, such as rent, heating and internet, and €900 is each person's own spending. Living alone removes one person's €900. The shared bills stay, which leaves €2,100: more than half.\n\nStatisticians use a rule for this. A widely used version, described by the OECD, says one person needs about 70% of a couple's budget for the same standard of living. None of this means a single person needs to be richer; it means the plan runs on its own numbers.\n\n→ Know someone who thinks living alone means half the bills? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. The split differs by household and country.",
-    "tiktok": "You live alone. Would half a couple's budget cover you? Illustrative."
+    "instagram": "You're planning retirement alone. How much smaller is your savings target?\n\nLess than it looks. Two people do not spend twice what one does: rent, heating, internet and a car cost about the same for one as for two. A widely used scale described by the OECD puts one person at about 70% of a couple's budget for the same standard of living: if a couple's retirement costs €3,000 a month, the single equivalent is about €2,100, not €1,500.\n\nPension income moves differently. A couple typically has two state pensions; one person has one, and no survivor pension to receive. With equal pensions per person, that is half the income.\n\nSavings cover what pensions do not. Spending falls by about 30% and pension income by half, so the part left for savings shrinks by less than 30%, and the target with it. How much less depends on the pensions involved.\n\n→ Know someone planning retirement solo? Send them this.\n\nPart of Money, For You and Me: for households the default plan was not written for.\n\nIllustrative. Pensions and costs differ by country.",
+    "tiktok": "You're planning retirement alone. How much smaller is your savings target? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhiforyouandme",
-    "solofinance",
-    "retirementalone",
-    "householdcosts"
+    "retirementplanning",
+    "livingalone",
+    "singleincome"
   ],
   "hookStyle": "questionOverPicture",
-  "barStory": {
-    "mode": "segmented",
-    "unit": "€",
-    "basis": "One month",
-    "totalOnCallout": true,
-    "hookShowsTotal": true,
-    "hookFill": 0,
-    "bars": [
-      {
-        "id": "bar",
-        "label": "A couple's monthly budget",
-        "sublabel": "the same home",
-        "value": 3000,
-        "display": "€3,000",
-        "tone": "amber",
-        "segments": [
-          {
-            "label": "Shared bills",
-            "value": 1200,
-            "display": "€1,200",
-            "tone": "ink"
-          },
-          {
-            "label": "One person",
-            "value": 900,
-            "display": "€900",
-            "tone": "teal"
-          },
-          {
-            "label": "Other person",
-            "value": 900,
-            "display": "€900",
-            "tone": "teal"
-          }
-        ]
-      }
-    ],
-    "disclosure": "Illustrative. The split differs by household; statisticians put one person near 70% of a couple."
-  },
   "lessonBlock": [
-    "Shared household costs",
-    "Retirement on one income",
-    "Paying for care"
-  ]
+    "The 70% scale",
+    "Pensions without a survivor",
+    "Who acts if you cannot"
+  ],
+  "columnStory": {
+    "left": {
+      "id": "couple",
+      "title": "A couple",
+      "rule": "Each month",
+      "items": [
+        "Spending €3,000"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "one",
+      "title": "One person",
+      "rule": "Each month",
+      "items": [
+        "Spending €2,100"
+      ],
+      "tone": "amber"
+    },
+    "disclosure": "Illustrative spending; equal pensions per person and the same withdrawal rate assumed."
+  }
 }
