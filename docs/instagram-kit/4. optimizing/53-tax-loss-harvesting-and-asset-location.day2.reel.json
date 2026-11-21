@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "The same investments held in different accounts can owe less tax each year",
+  "topic": "The same yearly payment keeps more invested in an account without yearly tax",
   "topicChip": "TAX · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Lesson example: €400,000 household, 70% shares, 25% bonds, 5% property companies. Same mix in every account: taxable account's bond interest and payouts cost €720 a year (30% rate). Placed by tax: the €720 goes; €60,000 more shares in the taxable account add about €180 of dividend tax (2% yield at 15%). Net about €540 less a year."
+    "notes": "Reel's own small example, illustrative: a €100 yearly payment taxed at 25% leaves €75 invested; in an account without yearly tax on the payment, €100. The lesson's household example (about €540 less yearly tax on €400,000) is in the caption."
   },
   "hookVariants": [
     {
-      "id": "placement",
+      "id": "payment",
       "layout": "bar-gap",
-      "narration": "The same investments, held in different accounts. Could that change your yearly tax?",
+      "narration": "Your investment pays a hundred euros this year. How much stays invested?",
       "onscreenLines": [
-        "The same investments, held in different accounts",
-        "Could that change your yearly tax?",
+        "Your investment pays €100 this year",
+        "How much stays invested?",
         ""
       ],
       "anchor": {
@@ -35,63 +35,100 @@
   "beats": [
     {
       "id": "b1",
-      "kind": "definition",
-      "narration": "Some investments pay income every year, like interest, and that is often taxed every year.",
-      "onscreenText": "Income taxed every year",
-      "subtext": "Interest, for example",
+      "kind": "example",
+      "narration": "In our example, yearly tax takes twenty five euros from that payment.",
+      "onscreenText": "Payment taxed yearly",
+      "subtext": "Example: one quarter",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "blank"
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "Taxed every year",
+          "sublabel": "one payment of €100"
+        }
       }
     },
     {
       "id": "b2",
-      "kind": "example",
-      "narration": "In this example, holding those in a tax sheltered account, like a pension, removes seven hundred twenty of yearly tax.",
-      "onscreenText": "Tax removed: €720 a year",
-      "subtext": "Income payers held in a sheltered account",
+      "kind": "stat",
+      "narration": "That leaves seventy five euros to keep invested.",
+      "onscreenText": "What stays invested",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "first"
+        "stage": "second",
+        "segment": 2,
+        "bar": {
+          "label": "Taxed every year",
+          "sublabel": "one payment of €100"
+        }
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "The shares that take their place add about one eighty back.",
-      "onscreenText": "Tax added back: about €180",
-      "subtext": "Shares now in the taxed account",
+      "narration": "In an account without yearly tax on this payment, the whole hundred can stay invested.",
+      "onscreenText": "No yearly tax on this payment",
+      "subtext": "Same investment, same payment",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second"
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "No yearly tax",
+          "sublabel": "the same payment of €100",
+          "segments": [
+            {
+              "label": "Stays invested",
+              "value": 100,
+              "display": "€100",
+              "tone": "teal"
+            }
+          ]
+        }
       }
     },
     {
       "id": "b4",
-      "kind": "stat",
-      "narration": "About five hundred forty less a year, with the same mix. Withdrawals may still be taxed later.",
-      "onscreenText": "About €540 less a year",
-      "subtext": "Same mix. Withdrawals may be taxed later",
+      "kind": "warning",
+      "narration": "Withdrawals may be taxed later. The available accounts and their rules depend on your country.",
+      "onscreenText": "Possible tax later",
+      "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "ratio"
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "No yearly tax",
+          "sublabel": "the same payment of €100",
+          "segments": [
+            {
+              "label": "Stays invested",
+              "value": 100,
+              "display": "€100",
+              "tone": "teal"
+            }
+          ]
+        },
+        "note": "Withdrawals may be taxed later"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone with more than one account.",
+    "narration": "Send this to someone comparing investment accounts.",
     "onscreenText": "Send this to them",
-    "subtext": "Rules differ by country",
+    "subtext": "Same payment, different account",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "The same investments, held in different accounts. Could that change your yearly tax?\n\nThe example: a household with €400,000 across three accounts, 70% shares, 25% bonds and 5% property companies. With the same mix in every account, bond interest and payouts in the taxed account cost €720 a year at a 30% rate. Holding those in a tax sheltered account removes that. The shares that take their place add about €180 of dividend tax back. Net: about €540 less tax a year, and the overall mix has not changed.\n\nThe catches: each account becomes lopsided, keeping the mix on target takes more attention, and money in a sheltered account may be taxed when it comes out.\n\n→ Know someone with more than one account? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which accounts exist, and how they are taxed, differs by country.",
-    "tiktok": "Same investments, different accounts, about €540 less tax a year. Illustrative."
+    "instagram": "Your investment pays €100 this year. How much stays invested?\n\nIt depends on the account. Where that payment is taxed every year, an example tax of one quarter takes €25 and leaves €75 invested. In an account without yearly tax on the payment, such as a pension in many countries, the whole €100 stays invested. Money taken out of such an account may be taxed later.\n\nThis is why investments that pay out a lot every year (interest, for example) are commonly held in the accounts without yearly tax, and investments that pay out little in ordinary ones, with the overall mix unchanged. In the lesson's example of a household with €400,000, that placement means about €540 less tax a year.\n\n→ Know someone comparing investment accounts? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which accounts exist, and how they are taxed, differs by country.",
+    "tiktok": "One €100 payment: €75 stays invested in one account, €100 in another. Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -102,45 +139,40 @@
   ],
   "hookStyle": "questionOverPicture",
   "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "unit": "EUR",
-    "basis": "Yearly tax, €400,000 across three accounts, illustrative",
-    "setup": {
-      "label": "Income paid every year",
-      "display": "Often taxed every year",
-      "note": "interest, for example",
-      "tone": "ink"
-    },
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "One yearly payment, example tax of one quarter",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
     "bars": [
       {
-        "id": "removed",
-        "label": "Yearly tax removed",
-        "sublabel": "income payers moved to shelter",
-        "value": 720,
-        "display": "€720",
-        "tone": "teal"
-      },
-      {
-        "id": "added",
-        "label": "Yearly tax added back",
-        "sublabel": "shares that took their place",
-        "value": 180,
-        "display": "about €180",
-        "tone": "amber"
+        "id": "payment",
+        "label": "One payment",
+        "sublabel": "this year",
+        "value": 100,
+        "display": "€100",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Yearly tax",
+            "value": 25,
+            "display": "€25",
+            "tone": "amber"
+          },
+          {
+            "label": "Stays invested",
+            "value": 75,
+            "display": "€75",
+            "tone": "teal"
+          }
+        ]
       }
     ],
-    "callout": {
-      "display": "About €540",
-      "from": "removed",
-      "to": "added",
-      "label": "less tax a year, same mix"
-    },
-    "disclosure": "Illustrative. Tax rates and account rules differ by country."
+    "disclosure": "Illustrative. Accounts and tax rates differ by country."
   },
   "lessonBlock": [
-    "Which accounts qualify",
-    "Keeping the mix balanced",
-    "Tax on withdrawals later"
+    "Which investments pay income",
+    "Keeping the same mix",
+    "Account rules and later tax"
   ]
 }

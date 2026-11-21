@@ -21,15 +21,19 @@ export function LessonFooter({ plan }: { plan: ReelPlan }) {
       </>
     );
   }
+  // Left aligned, one bullet per point, so the lines read as separate things the lesson adds.
   return (
-    <>
+    <div style={{ display: "inline-block", textAlign: "left", maxWidth: 760 }}>
       <div style={{ fontFamily: TYPE.ui, fontSize: 24, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>IN THE FULL LESSON</div>
-      <div style={{ marginTop: 14 }}>
+      <div style={{ marginTop: 16 }}>
         {lines.slice(0, 3).map((line) => (
-          <div key={line} style={{ fontFamily: TYPE.ui, fontSize: 35, lineHeight: 1.32, fontWeight: 650 }}>{line}</div>
+          <div key={line} style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 6, fontFamily: TYPE.ui, fontSize: 35, lineHeight: 1.28, fontWeight: 650 }}>
+            <span style={{ flex: "none", width: 12, height: 12, borderRadius: 6, background: "#9FE9DD", transform: "translateY(-5px)" }} />
+            <span>{line}</span>
+          </div>
         ))}
       </div>
-      <div style={{ marginTop: 18, fontFamily: TYPE.ui, fontSize: 31, fontWeight: 700, color: "#9FE9DD" }}>nidhi.today · link in bio</div>
-    </>
+      <div style={{ marginTop: 20, fontFamily: TYPE.ui, fontSize: 31, fontWeight: 700, color: "#9FE9DD" }}>nidhi.today · link in bio</div>
+    </div>
   );
 }

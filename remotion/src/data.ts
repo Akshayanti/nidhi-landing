@@ -401,6 +401,14 @@ export type BeatAnchor =
       segment?: number;
       /** Stage "days": a grid of working days, `unpaid` of them greyed out during the beat. */
       days?: { total: number; unpaid: number; paidLabel: string; unpaidLabel?: string; tail?: boolean; columns?: number };
+      /** Direct bars, this beat only: a bar's label by id ("Worth now" becomes "Sold for"). */
+      barLabels?: Record<string, string>;
+      /** Direct bars, this beat only: a box between the bars, in place of the story's callout. */
+      callout?: { display: string; label?: string };
+      /** This beat only: one plain line under the bars. */
+      note?: string;
+      /** One segmented bar, this beat only: the bar relabelled or redrawn (the same payment in another account). */
+      bar?: { label?: string; sublabel?: string; segments?: BarDatum["segments"] };
     }
   | { type: "months"; stage: MonthStage; months?: string[] }
   | { type: "columns"; stage: ColumnStage }

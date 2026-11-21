@@ -187,9 +187,10 @@ function RepeatField({ bar, input, fill, collapse }: { bar: BarDatum; input: Ree
   );
 }
 
-function ComparisonCallout({ input, amount, opacity }: { input: ReelInput; amount: string; opacity: number }) {
+function ComparisonCallout({ input, amount, opacity, label }: { input: ReelInput; amount: string; opacity: number; label?: string }) {
   const story = input.plan.barStory;
-  const callout = story?.callout ?? story?.ratio;
+  const base = story?.callout ?? story?.ratio;
+  const callout = label !== undefined ? { label } : base;
   if (!story || !callout) return null;
   const hasLabel = Boolean(callout.label);
   const isPhrase = /\s/.test(amount.trim());
@@ -214,7 +215,7 @@ function BarHook({ input }: { input: ReelInput }) {
   // With three or four items, use one shared hook headline and compact rows.
   // The two-item form below stays more dramatic by placing a claim above
   // each bar, which is the right treatment for a direct A versus B contrast.
-  if (bars.length > 2) {
+  if (bars.length > 2 || (input.plan.hookStyle === "questionOverPicture" && story.mode === "direct")) {
     const big = input.plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 225 : 285;
     return (
@@ -389,6 +390,12 @@ function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number
   );
 }
 
+function BeatNote({ text, top, opacity }: { text: string; top: number; opacity: number }) {
+  return (
+    <div style={{ position: "absolute", left: 76, right: 150, top, padding: "26px 32px", boxSizing: "border-box", borderLeft: `8px solid ${BRAND.teal}`, borderRadius: 14, background: "rgba(0,33,113,0.055)", fontFamily: TYPE.ui, fontSize: 40, lineHeight: 1.2, fontWeight: 760, color: BRAND.ink, opacity, transform: `translateY(${(1 - opacity) * 14}px)` }}>{text}</div>
+  );
+}
+
 function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const story = input.plan.barStory;
   if (!story) return null;
@@ -418,10 +425,12 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   }
 
   // One bar per beat: "first" shows one, "second" two, any later stage all of them.
-  const bars = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
+  const anchor = active?.beat.anchor?.type === "bars" ? active.beat.anchor : undefined;
+  const shown = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
+  const bars = shown.map((bar) => (anchor?.barLabels?.[bar.id] ? { ...bar, label: anchor.barLabels[bar.id] } : bar));
   const showBars = stage && !["blank", "hook", "days"].includes(stage);
-  const showRatio = stage === "ratio";
-  const callout = story.callout ?? story.ratio;
+  const callout = anchor?.callout ?? (stage === "ratio" ? story.callout ?? story.ratio : undefined);
+  const showRatio = Boolean(callout);
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
@@ -433,7 +442,8 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
         </div>
       )}
       {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
-      {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} opacity={enter} />}
+      {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} label={anchor?.callout ? anchor.callout.label ?? "" : undefined} opacity={anchor?.callout ? 1 : enter} />}
+      {anchor?.note && <BeatNote text={anchor.note} top={1262} opacity={enter} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
   );
@@ -705,7 +715,9 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   // A story with one bar builds that bar alone, part by part.
   const single = story.bars.length === 1;
   const receipts = single ? undefined : story.bars[0];
-  const pay = single ? story.bars[0] : story.bars[1];
+  const anchor = active?.beat.anchor?.type === "bars" ? active.beat.anchor : undefined;
+  const basePay = single ? story.bars[0] : story.bars[1];
+  const pay = anchor?.bar && basePay ? { ...basePay, ...anchor.bar } : basePay;
   const pension = story.bars[2];
   const max = Math.max(1, ...story.bars.map((bar) => bar.value));
   const beat = toolCardBeat(input);
@@ -725,6 +737,7 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
+      {anchor?.note && <BeatNote text={anchor.note} top={1010} opacity={local} />}
       {stage === "first" && receipts && <SegmentedRow bar={receipts} top={690} max={max} segmentProgress={local} />}
       {stage === "second" && (
         <>
@@ -864,7 +877,7 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
 
-  if (bars.length > 2) {
+  if (bars.length > 2 || (plan.hookStyle === "questionOverPicture" && story.mode === "direct")) {
     const big = plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 218 : 276;
     return (
