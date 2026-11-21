@@ -223,7 +223,7 @@ const EXPECTED_POSTHOG_CALLS = [
   'components/Analytics.astro: init',
   // Heatmaps are paused while a page shows what a click position could give away.
   'components/InvestOrPayOff.tsx: set_config',
-  'components/LearnHome.tsx: set_config',
+  'components/LearnHome.astro: set_config',
   // The subscriber's distinct id: a hash of the address, as the notice describes.
   'components/SubscribeSection.astro: identify',
   // The cookie banner's answer, applied to a running PostHog.
@@ -294,11 +294,11 @@ const EXPECTED_MENTIONS = [
   'components/InvestOrPayOff.tsx: navigator x1',
   'components/InvestOrPayOff.tsx: posthog x4',
   'components/InvestOrPayOff.tsx: track x8',
-  'components/LearnHome.tsx: capture x3',
-  'components/LearnHome.tsx: getItem x1',
-  'components/LearnHome.tsx: localStorage x1',
-  'components/LearnHome.tsx: location x2',
-  'components/LearnHome.tsx: posthog x4',
+  'components/LearnHome.astro: capture x3',
+  'components/LearnHome.astro: getItem x2',
+  'components/LearnHome.astro: localStorage x2',
+  'components/LearnHome.astro: location x2',
+  'components/LearnHome.astro: posthog x4',
   'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',

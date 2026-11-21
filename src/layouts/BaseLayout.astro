@@ -176,6 +176,12 @@ const chooseChrome = `(function () {
         <CookieConsent locale={locale} />
       </>
     )}
+    {/* The scripts that repeat on every page (analytics with its backstops,
+        the consent prompt, the language switch, print) stay inline rather than
+        in one shared file. Measured in #720: about 6.5 KB gzipped a page, but
+        GitHub Pages keeps files fresh for only 10 minutes, and moving them would
+        change when consent and analytics start. Revisit only with a measured
+        prototype (cold, warm and revalidated loads). */}
     <Analytics />
     <script is:inline>
       // Paper is light: a page printed from the dark theme would come out as
