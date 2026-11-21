@@ -1,9 +1,12 @@
 /**
  * Unit tests for src/utils/shared/consentPrompt.js, the cookie prompt that
- * CookieConsent.astro inlines (#363): it opens only when no answer is saved,
- * saves exactly the button pressed and applies it at once, keeps focus inside
- * while open and the page behind it inert (#481), puts everything back when
- * it closes, and reopens from "Cookie settings".
+ * CookieConsent.astro inlines (#363). Since #399 it is a sheet at the bottom
+ * of the screen that leaves the page alone: it opens only when no answer is
+ * saved, without moving focus or making anything inert; the "Cookie choices"
+ * link after "Skip to content" and the footer's "Cookie settings" lead into
+ * it; it keeps room for itself at the bottom of the page and below the
+ * header; it saves exactly the button pressed and applies it at once; and it
+ * gives focus back only when focus was inside it.
  *
  * How an answer is stored and applied is consentRuntime.js, tested in
  * consentRuntime.test.ts; here `window.nidhiConsent` is a stand-in that
@@ -19,6 +22,7 @@ import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'consentPrompt.js'), 'utf8');
 const COMPONENT = readFileSync(join(import.meta.dirname, '../../components/CookieConsent.astro'), 'utf8');
+const LAYOUT = readFileSync(join(import.meta.dirname, '../../layouts/BaseLayout.astro'), 'utf8');
 
 type Listener = (e: any) => void;
 
@@ -28,69 +32,83 @@ class El {
   children: El[] = [];
   parentElement: El | null = null;
   inert = false;
-  style: Record<string, string> = {};
-  classes = new Set<string>();
-  classList = { add: (c: string) => this.classes.add(c), remove: (c: string) => this.classes.delete(c) };
+  hidden = false;
   scrollTop = 40;
+  rect = { top: 0, bottom: 0 };
   handlers: Record<string, Listener[]> = {};
   attrs: Record<string, string>;
+  focusOptions: unknown = null;
   doc: any;
   constructor(tagName: string, id = '', attrs: Record<string, string> = {}) { this.tagName = tagName; this.id = id; this.attrs = attrs; }
   add(...kids: El[]) { for (const k of kids) { k.parentElement = this; this.children.push(k); } return this; }
   addEventListener(type: string, fn: Listener) { (this.handlers[type] ??= []).push(fn); }
-  focus() { this.doc.activeElement = this; }
-  all(): El[] { return this.children.flatMap((c) => [c, ...c.all()]); }
-  querySelector(sel: string) { return sel === '.cookie-modal' ? this.all().find((e) => e.classes.has('cookie-modal')) ?? null : null; }
-  querySelectorAll(_sel: string) { return this.all().filter((e) => e.tagName === 'BUTTON' || e.tagName === 'A'); }
+  focus(options?: unknown) { this.focusOptions = options ?? null; this.doc.activeElement = this; this.doc.fire('focusin', { target: this }); }
+  contains(other: El | null): boolean { for (let n = other; n; n = n.parentElement) if (n === this) return true; return false; }
+  hasAttribute(name: string) { return name in this.attrs; }
+  setAttribute(name: string, value: string) { this.attrs[name] = value; }
+  getBoundingClientRect() { return this.rect; }
   closest(sel: string): El | null {
     assert.equal(sel, '[data-cookie-settings]');
     for (let n: El | null = this; n; n = n.parentElement) if ('data-cookie-settings' in n.attrs) return n;
     return null;
   }
-  click() { (this.handlers.click ?? []).forEach((fn) => fn({ target: this })); }
+  click() { const e = { target: this, preventDefault() {} }; (this.handlers.click ?? []).forEach((fn) => fn(e)); this.doc.fire('click', e); }
 }
 
 function page(saved: string | null) {
-  const link = new El('A', 'privacy');
+  const skip = new El('A', 'cookie-skip');
+  skip.hidden = true;
+  const header = new El('HEADER');
+  header.rect = { top: 0, bottom: 60 };
+  const field = new El('INPUT', 'field');
+  const main = new El('MAIN', 'main-content').add(field);
+  const settings = new El('BUTTON', 'settings', { 'data-cookie-settings': '' });
+  const footer = new El('FOOTER').add(settings);
   const decline = new El('BUTTON', 'cookie-decline');
   const accept = new El('BUTTON', 'cookie-accept');
-  const modal = new El('DIV');
-  modal.classes.add('cookie-modal');
-  modal.add(link, decline, accept);
-  const overlay = new El('DIV', 'cookie-overlay').add(modal);
-  const settings = new El('BUTTON', 'settings', { 'data-cookie-settings': '' });
-  const header = new El('HEADER');
-  const main = new El('MAIN');
-  const footer = new El('FOOTER').add(settings);
-  const script = new El('SCRIPT');
-  const wrapper = new El('DIV').add(overlay, new El('SCRIPT'));
-  const body = new El('BODY').add(header, main, wrapper, footer, script);
+  const link = new El('A', 'privacy');
+  const sheet = new El('SECTION', 'cookie-sheet').add(decline, accept, link);
+  sheet.hidden = true;
+  sheet.rect = { top: 500, bottom: 800 };
+  const body = new El('BODY').add(skip, header, main, footer, sheet);
   const rootClasses = new Set<string>();
+  const rootProps = new Map<string, string>();
   const docHandlers: Record<string, Listener[]> = {};
+  const winHandlers: Record<string, Listener[]> = {};
   const calls: string[] = [];
+  const observed: El[] = [];
   const document: any = {
-    activeElement: main,
+    activeElement: body,
     body,
-    documentElement: { classList: { add: (c: string) => rootClasses.add(c), remove: (c: string) => rootClasses.delete(c) } },
-    getElementById: (id: string) => [overlay, accept, decline].find((e) => e.id === id) ?? null,
+    documentElement: {
+      classList: { add: (c: string) => rootClasses.add(c), remove: (c: string) => rootClasses.delete(c) },
+      style: { setProperty: (k: string, v: string) => rootProps.set(k, v), removeProperty: (k: string) => rootProps.delete(k) },
+    },
+    getElementById: (id: string) => [sheet, skip, accept, decline, main].find((e) => e.id === id) ?? null,
+    querySelector: (sel: string) => (sel === '.site-header' ? header : null),
     addEventListener: (type: string, fn: Listener) => { (docHandlers[type] ??= []).push(fn); },
     removeEventListener: (type: string, fn: Listener) => { docHandlers[type] = (docHandlers[type] ?? []).filter((f) => f !== fn); },
+    fire: (type: string, e: any) => (docHandlers[type] ?? []).forEach((fn) => fn(e)),
   };
-  for (const el of [link, decline, accept, modal, overlay, settings, header, main, footer, script, wrapper, body]) el.doc = document;
-  const window = {
+  for (const el of [skip, header, field, main, settings, footer, decline, accept, link, sheet, body]) el.doc = document;
+  const window: any = {
+    innerHeight: 800,
+    addEventListener: (type: string, fn: Listener) => { (winHandlers[type] ??= []).push(fn); },
+    removeEventListener: (type: string, fn: Listener) => { winHandlers[type] = (winHandlers[type] ?? []).filter((f) => f !== fn); },
     nidhiConsent: {
       read: () => saved,
       save: (choice: string) => calls.push(`save ${choice}`),
       apply: () => calls.push('apply'),
     },
   };
-  runInNewContext(SOURCE, { window, document, requestAnimationFrame: (fn: () => void) => fn() });
-  const fireDoc = (type: string, e: any) => (docHandlers[type] ?? []).forEach((fn) => fn(e));
+  class ResizeObserver {
+    observe(el: El) { observed.push(el); }
+    disconnect() { observed.length = 0; }
+  }
+  runInNewContext(SOURCE, { window, document, ResizeObserver, requestAnimationFrame: (fn: () => void) => { fn(); return 1; } });
   return {
-    overlay, accept, decline, link, settings, header, main, footer, script, modal, document, calls, rootClasses,
-    open: () => overlay.style.display === 'flex',
-    tab: (shiftKey = false) => { let prevented = false; fireDoc('keydown', { key: 'Tab', shiftKey, preventDefault: () => { prevented = true; } }); return prevented; },
-    clickDoc: (target: El) => { let prevented = false; fireDoc('click', { target, preventDefault: () => { prevented = true; } }); return prevented; },
+    sheet, skip, header, main, field, footer, settings, accept, decline, link, document, window, calls, rootClasses, rootProps, observed, winHandlers,
+    open: () => !sheet.hidden,
   };
 }
 
@@ -102,60 +120,112 @@ describe('consentPrompt.js', () => {
     assert.ok(runtime > 0 && prompt > runtime);
   });
 
+  it('is a labelled region, not a modal dialog (#399)', () => {
+    assert.match(COMPONENT, /<section id="cookie-sheet" class="cookie-sheet" role="region" aria-labelledby="cookie-title" hidden>/);
+    assert.match(COMPONENT, /<h2 id="cookie-title"/);
+    assert.doesNotMatch(COMPONENT, /aria-modal|role="dialog"/);
+    assert.doesNotMatch(SOURCE, /\.inert\s*=|trapFocus/);
+  });
+
+  it('puts "No thanks" first, before "Sure" and the privacy link', () => {
+    const decline = COMPONENT.indexOf('id="cookie-decline"');
+    const accept = COMPONENT.indexOf('id="cookie-accept"');
+    const link = COMPONENT.indexOf('data-attr="cookie-privacy-link"');
+    assert.ok(decline > 0 && decline < accept && accept < link);
+  });
+
+  it('has its "Cookie choices" link right after every "Skip to content"', () => {
+    const skips = LAYOUT.split('\n').map((l) => l.trim()).filter((l) => l.startsWith('<a class="skip-link" href="#main-content">'));
+    const cookieSkips = LAYOUT.match(/<a id="cookie-skip" class="skip-link" href="#cookie-sheet" hidden>/g) ?? [];
+    // The <noscript> header has none: without scripts the sheet never opens.
+    assert.equal(cookieSkips.length, skips.length - 1);
+  });
+
   it('stays closed when an answer is saved, and stores nothing', () => {
     for (const saved of ['accepted', 'declined']) {
       const p = page(saved);
-      assert.equal(p.overlay.style.display, 'none');
+      assert.ok(!p.open() && p.skip.hidden);
       assert.deepEqual(p.calls, []);
-      assert.ok(!p.header.inert && !p.rootClasses.has('consent-open'));
+      assert.ok(!p.rootClasses.has('cookie-open'));
     }
   });
 
-  it('opens when there is no answer, on its first line, with "No thanks" focused', () => {
+  it('opens when there is no answer, at its first line, without moving focus or blocking the page', () => {
     const p = page(null);
     assert.ok(p.open());
-    assert.ok(p.overlay.classes.has('cookie-overlay--visible'));
-    assert.equal(p.document.activeElement, p.decline);
-    assert.equal(p.modal.scrollTop, 0);
+    assert.ok(!p.skip.hidden, 'the "Cookie choices" link is shown');
+    assert.equal(p.document.activeElement, p.document.body, 'focus is not moved');
+    assert.equal(p.sheet.scrollTop, 0);
+    assert.ok(!p.header.inert && !p.main.inert && !p.footer.inert);
+    assert.ok(p.rootClasses.has('cookie-open'));
     assert.deepEqual(p.calls, [], 'opening saves nothing');
   });
 
-  it('makes the page behind it inert while open (#481), but not scripts or the prompt itself', () => {
+  it('keeps room for itself at the bottom of the page, and below the header', () => {
     const p = page(null);
-    assert.ok(p.header.inert && p.main.inert && p.footer.inert);
-    assert.ok(!p.script.inert && !p.overlay.inert);
-    assert.ok(p.rootClasses.has('consent-open'));
+    // 800 px screen, header bottom at 60, an 8 px gap.
+    assert.equal(p.rootProps.get('--cookie-room'), '732px');
+    // The sheet's top at 500: 300 px to the bottom edge, plus the gap.
+    assert.equal(p.rootProps.get('--cookie-space'), '308px');
+    assert.deepEqual(p.observed, [p.sheet]);
+    p.header.rect = { top: -60, bottom: 0 };
+    p.sheet.rect = { top: 400, bottom: 800 };
+    p.winHandlers.scroll.forEach((fn) => fn({}));
+    assert.equal(p.rootProps.get('--cookie-room'), '792px', 'a header scrolled away leaves the whole screen');
+    assert.equal(p.rootProps.get('--cookie-space'), '408px');
   });
 
-  it('saves exactly the button pressed, applies it at once, and puts the page back', () => {
+  it('saves exactly the button pressed, applies it at once, and takes the room back', () => {
     for (const [button, choice] of [['accept', 'accepted'], ['decline', 'declined']] as const) {
       const p = page(null);
       p[button].click();
       assert.deepEqual(p.calls, [`save ${choice}`, 'apply']);
-      assert.ok(!p.open());
-      assert.ok(!p.header.inert && !p.main.inert && !p.footer.inert);
-      assert.ok(!p.rootClasses.has('consent-open'));
-      assert.equal(p.document.activeElement, p.main, 'focus returns where it was');
-      assert.equal(p.tab(), false, 'the focus trap is gone');
+      assert.ok(!p.open() && p.skip.hidden);
+      assert.ok(!p.rootClasses.has('cookie-open'));
+      assert.ok(!p.rootProps.has('--cookie-space') && !p.rootProps.has('--cookie-room'));
+      assert.deepEqual(p.observed, []);
+      assert.equal(p.winHandlers.scroll.length + p.winHandlers.resize.length, 0);
     }
   });
 
-  it('keeps Tab inside the prompt while open', () => {
+  it('leaves focus alone when it was not inside the sheet', () => {
     const p = page(null);
-    p.document.activeElement = p.accept;
-    assert.equal(p.tab(), true);
-    assert.equal(p.document.activeElement, p.link, 'Tab from the last control goes to the first');
-    assert.equal(p.tab(true), true);
-    assert.equal(p.document.activeElement, p.accept, 'Shift+Tab from the first goes to the last');
+    p.field.focus();
+    p.accept.click();
+    assert.equal(p.document.activeElement, p.field);
   });
 
-  it('reopens from "Cookie settings", and only from there', () => {
+  it('the "Cookie choices" link moves focus to "No thanks"; an answer gives it back to the page', () => {
+    const p = page(null);
+    p.field.focus();
+    p.skip.focus();
+    p.skip.click();
+    assert.equal(p.document.activeElement, p.decline);
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.field, 'back to the last element focused outside the sheet');
+  });
+
+  it('falls back to the main content when there is nowhere else to go', () => {
+    const p = page(null);
+    p.skip.focus();
+    p.skip.click();
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.main);
+    assert.equal(p.main.attrs.tabindex, '-1');
+    assert.equal(JSON.stringify(p.main.focusOptions), JSON.stringify({ preventScroll: true }));
+  });
+
+  it('reopens from "Cookie settings", and only from there, with focus on "No thanks" and back on close', () => {
     const p = page('declined');
-    assert.equal(p.clickDoc(p.main), false);
+    p.main.click();
     assert.ok(!p.open());
-    assert.equal(p.clickDoc(p.settings), true);
-    assert.ok(p.open());
+    p.settings.focus();
+    p.settings.click();
+    assert.ok(p.open() && !p.skip.hidden);
+    assert.equal(p.document.activeElement, p.decline);
+    p.accept.focus();
     p.accept.click();
     assert.deepEqual(p.calls, ['save accepted', 'apply']);
+    assert.equal(p.document.activeElement, p.settings);
   });
 });

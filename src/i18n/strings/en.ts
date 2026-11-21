@@ -156,7 +156,8 @@ export const en = {
   },
 
   cookie: {
-    dialogLabel: 'Cookie consent',
+    /** The sheet's heading and name, and the link after "Skip to content" that leads to it. */
+    title: 'Cookie choices',
     /**
      * The prompt, split around the emphasised word so that no catalog entry
      * has to carry markup. Keep the space at the end of `textBefore` and the

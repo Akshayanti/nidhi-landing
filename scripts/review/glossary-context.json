@@ -307,9 +307,9 @@
         },
         {
           "term": "consent",
-          "meaning": "Permission a person gives for something optional; on this site, permission to record clicks as well as counting page visits.",
-          "key": "cookie.dialogLabel",
-          "example": "Cookie consent"
+          "meaning": "Permission a person gives for something optional; on this site, for example, permission to record clicks as well as counting page visits, or to be contacted by email.",
+          "key": "privacy.volunteers.consent",
+          "example": "Your consent to be contacted by email"
         },
         {
           "term": "privacy notice",

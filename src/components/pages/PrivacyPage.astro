@@ -172,6 +172,18 @@ const launchEntries: ChangelogEntry[] = [...monteCarloEntries, ...investOrPayOff
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 21, 2026',
+    iso: '2026-11-21',
+    material: true,
+    summary: 'The cookie banner no longer blocks the page. It is now a panel at the bottom of the screen that you can read past, scroll past and answer when you like. Until you answer, the site does what it did before an answer already: pageviews are counted, and clicks are not recorded.',
+    details: [
+      'Cookie banner, changed: on a first visit it used to cover the whole page with a dark overlay, keep keyboard focus inside itself and stop the page from scrolling until you chose. It is now a panel fixed to the bottom of the screen (on wider screens, a card in the bottom corner) with the heading "Cookie choices". The page stays readable, scrollable and usable while it is open, and focus is not moved into it. A "Cookie choices" link right after "Skip to content" leads keyboard and screen-reader users to it. It never covers the header, and the page leaves room at its end so nothing stays hidden behind it.',
+      'Its words, its two answers and their order are unchanged: "No thanks" comes first and looks the same as "Sure, that\'s fine". The link to this notice now follows the two answers. The panel goes away once you answer, and "Cookie settings" at the bottom of every page still opens it again.',
+      'Before you answer, which can now be for as long as you keep using the site: anonymous pageview and page-leave events and the free tools\' anonymous events are sent, as for a visitor who said no, with a visitor ID that lasts only for the page. Click recording (autocapture, heatmaps, rage and dead clicks) stays off, and no visitor ID is stored in your browser. This is what the site already did before an answer; it is written here because the banner no longer stands in the way of using the site without one.',
+      'No new analytics event, click label, browser storage key, cookie, third-party request or processor. The banner\'s answer is stored as before, in the nidhi-cookie-consent cookie, only when you pick one.',
+    ],
+  },
+  {
     date: 'Nov 14, 2026',
     iso: '2026-11-14',
     material: true,

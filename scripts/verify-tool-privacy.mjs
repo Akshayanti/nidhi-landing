@@ -834,13 +834,13 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       await context.setCookie({ name: 'nidhi-cookie-consent', value: 'accepted', url: base, path: '/' });
     }
 
-    // 1. Use the tool. Without the cookie, the banner is in front of the page:
+    // 1. Use the tool. Without the cookie, the banner is at the bottom of the page:
     // a reader who does not consent answers it with "decline", once.
     await open(path, 'use');
     if (consent === 'declined') {
       if (!(await click(page, '#cookie-decline'))) problems.push('the cookie banner was not shown to a reader with no answer');
       await sleep(400);
-    } else if ((await visible(page, '#cookie-overlay')).length) {
+    } else if ((await visible(page, '#cookie-sheet')).length) {
       problems.push('the cookie banner was shown although consent was already given');
     }
     // What the tool has sent so far while being used, as `name` and `name:format`.

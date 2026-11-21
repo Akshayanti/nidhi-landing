@@ -676,12 +676,10 @@ a {
   a { transition: none; }
 }
 
-/* Set while the phone menu or the consent prompt is open: the page behind
-   them does not scroll. Each has its own class, so closing one never
-   releases the other, and the room a scrollbar takes is kept, so the page
-   does not jump sideways. */
-html.menu-open,
-html.consent-open { overflow: hidden; scrollbar-gutter: stable; }
+/* Set while the phone menu is open: the page behind it does not scroll, and
+   the room a scrollbar takes is kept, so the page does not jump sideways.
+   The cookie sheet leaves the page scrollable (#399). */
+html.menu-open { overflow: hidden; scrollbar-gutter: stable; }
 
 a:hover {
   color: var(--color-teal);
@@ -1270,7 +1268,7 @@ details[open] > .disclosure::after,
   .site-header,
   .site-footer,
   .skip-link,
-  .cookie-overlay,
+  .cookie-sheet,
   .vol-bar,
   .blog-post .waitlist,
   .blog-post .subscribe,
@@ -1850,8 +1848,9 @@ details[open] > .disclosure::after,
   --chart-outline-warn: none; /* the dark orange stands clear of the dark card */
 }
 
-/* In-page links land below the sticky header. */
-html:has(body[data-page="landing"]) {
+/* In-page links land below the sticky header, on every page (#706); a
+   lesson adds a little space above (below). */
+html {
   scroll-padding-top: var(--site-header-block-size);
 }
 

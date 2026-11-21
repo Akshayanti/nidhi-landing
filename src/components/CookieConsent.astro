@@ -1,4 +1,13 @@
 ---
+/**
+ * The cookie prompt: a sheet at the bottom of the screen that leaves the page
+ * readable and scrollable (#399). Its behaviour is in consentPrompt.js; the
+ * "Cookie choices" link that leads to it sits right after "Skip to content"
+ * (BaseLayout.astro), and the sheet itself comes after the footer, so the
+ * page reads in its usual order. The text and the two answers are the same
+ * as when it was a dialog; "No thanks" comes first, and the two buttons look
+ * the same.
+ */
 import { DEFAULT_LOCALE, dict, localizedPath, type Locale } from '../i18n';
 import consentPromptScript from '../utils/shared/consentPrompt.js?raw';
 import consentRuntimeScript from '../utils/shared/consentRuntime.js?raw';
@@ -11,69 +20,92 @@ const { locale = DEFAULT_LOCALE } = Astro.props;
 const strings = dict(locale);
 ---
 
-<div id="cookie-overlay" class="cookie-overlay" role="dialog" aria-label={strings.cookie.dialogLabel} aria-describedby="cookie-text cookie-planner" aria-modal="true">
-  <div class="cookie-modal">
-    <p id="cookie-text" class="cookie-text">
-      {strings.cookie.textBefore}<em>{strings.cookie.textEmphasis}</em>{strings.cookie.textAfter}
-    </p>
-    <p id="cookie-planner" class="cookie-text">{strings.cookie.planner}</p>
-    <p class="cookie-sub">
-      <a href={localizedPath(locale, '/privacy/')} data-attr="cookie-privacy-link">{strings.cookie.privacyLink}</a>
-    </p>
-    <div class="cookie-actions">
-      <button id="cookie-decline" class="btn btn--outline" data-attr="cookie-decline">{strings.cookie.decline}</button>
-      <button id="cookie-accept" class="btn btn--outline" data-attr="cookie-accept">{strings.cookie.accept}</button>
-    </div>
+<section id="cookie-sheet" class="cookie-sheet" role="region" aria-labelledby="cookie-title" hidden>
+  <h2 id="cookie-title" class="cookie-title">{strings.cookie.title}</h2>
+  <p id="cookie-text" class="cookie-text">
+    {strings.cookie.textBefore}<em>{strings.cookie.textEmphasis}</em>{strings.cookie.textAfter}
+  </p>
+  <p id="cookie-planner" class="cookie-text">{strings.cookie.planner}</p>
+  <div class="cookie-actions">
+    <button type="button" id="cookie-decline" class="btn btn--outline" data-attr="cookie-decline">{strings.cookie.decline}</button>
+    <button type="button" id="cookie-accept" class="btn btn--outline" data-attr="cookie-accept">{strings.cookie.accept}</button>
   </div>
-</div>
+  <p class="cookie-sub">
+    <a href={localizedPath(locale, '/privacy/')} data-attr="cookie-privacy-link">{strings.cookie.privacyLink}</a>
+  </p>
+</section>
 
 <script is:inline set:html={consentRuntimeScript}></script>
 <script is:inline set:html={consentPromptScript}></script>
 
 <style is:global>
-  .cookie-overlay {
-    display: none;
+  /* Phones: the full width of the screen, on its bottom edge. Below the
+     header in the stacking order (--z-header), so the header and its menu
+     are never covered, and above the lesson index button (--z-header - 10). */
+  .cookie-sheet {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-dialog);
-    background: rgba(0, 0, 0, 0.5);
-    align-items: safe center;
-    justify-content: center;
-    padding: 1rem;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: calc(var(--z-header) - 5);
+    box-sizing: border-box;
+    /* Never more than 45% of the screen, and never higher than the space
+       below the header, which consentPrompt.js measures. One scroll area
+       holds everything, buttons included, and it opens at its first line. */
+    max-height: min(45dvh, var(--cookie-room, 45dvh));
     overflow-y: auto;
     overscroll-behavior: contain;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .cookie-overlay--visible {
-    opacity: 1;
-  }
-
-  .cookie-modal {
+    padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
     background: var(--color-bg-white);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    max-width: 420px;
-    width: 100%;
-    max-height: calc(100dvh - 2rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    margin: auto;
-    text-align: center;
-    box-shadow: var(--shadow-lg);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
   }
 
-  /* Prose reads from a straight edge; only the link and the buttons stay centred. */
+  .cookie-sheet[hidden] {
+    display: none;
+  }
+
+  /* Wider screens: a card in the bottom corner, so most of the page stays
+     clear. In rem, so with the text made larger the sheet keeps the full
+     width, where the text has the most room. */
+  @media (width >= 48rem) {
+    .cookie-sheet {
+      inset-inline: auto 1rem;
+      bottom: 1rem;
+      width: min(32rem, 100% - 2rem);
+      max-height: min(45dvh, var(--cookie-room, 45dvh) - 1rem);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+  }
+
+  /* While the sheet is open, the page keeps room for it at the bottom, so
+     its end can be scrolled above the sheet and a focused element is not
+     hidden behind it. */
+  html.cookie-open body {
+    padding-bottom: var(--cookie-space, 0px);
+  }
+
+  html.cookie-open {
+    scroll-padding-bottom: var(--cookie-space, 0px);
+  }
+
+  .cookie-title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-heading);
+    font-size: var(--text-lead);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    color: var(--color-deep-blue);
+  }
+
   .cookie-text {
-    text-align: start;
-    margin: 0 0 0.5rem;
+    margin: 0 0 var(--space-2);
     font-size: var(--text-small);
     color: var(--color-text-secondary);
-    line-height: 1.6;
+    line-height: var(--leading-body);
+    overflow-wrap: break-word;
   }
 
   .cookie-text em {
@@ -81,10 +113,27 @@ const strings = dict(locale);
     color: var(--color-deep-blue);
   }
 
+  .cookie-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin: var(--space-3) 0;
+  }
+
+  /* The shared .btn roles (docs/color-palette.md, "Buttons"). Declining is as
+     easy to see as accepting: the two are the same width, height and weight,
+     and they stack when they do not fit side by side. */
+  .cookie-actions .btn {
+    flex: 1 1 10rem;
+    min-width: 0;
+    font-weight: 700;
+    white-space: normal;
+  }
+
   .cookie-sub {
-    margin: 0 0 1.25rem;
+    margin: 0;
     font-size: var(--text-caption);
-    line-height: 1.4;
+    line-height: var(--leading-snug);
   }
 
   .cookie-sub a {
@@ -95,25 +144,5 @@ const strings = dict(locale);
 
   .cookie-sub a:hover {
     color: var(--color-teal-dark);
-  }
-
-  .cookie-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* The shared .btn roles (docs/color-palette.md, "Buttons"). Declining is as
-     easy to see as accepting: the two are the same width, height and weight. */
-  .cookie-actions .btn {
-    flex: 1 1 10rem;
-    font-weight: 700;
-  }
-
-  @media (width < 640px) {
-    .cookie-modal {
-      padding: 1.5rem 1rem;
-    }
   }
 </style>

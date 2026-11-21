@@ -110,7 +110,7 @@ export const es: Dict = {
   },
 
   cookie: {
-    dialogLabel: 'Consentimiento de cookies',
+    title: 'Opciones de cookies',
     // The space at the end of `textBefore` and the one at the start of
     // `textAfter` are part of the sentence. The opening ¿ sits in `textBefore`.
     textBefore:

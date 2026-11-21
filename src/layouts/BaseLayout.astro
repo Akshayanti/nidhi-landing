@@ -136,6 +136,7 @@ const chooseChrome = `(function () {
         {chromeLocales.map((l) => (
           <template data-chrome="header" data-lang={LOCALE_META[l].htmlLang}>
             <a class="skip-link" href="#main-content">{dict(l).skipToContent}</a>
+            <a id="cookie-skip" class="skip-link" href="#cookie-sheet" hidden>{dict(l).cookie.title}</a>
             <Header locale={l} alternates={[l]} />
           </template>
         ))}
@@ -148,6 +149,8 @@ const chooseChrome = `(function () {
     ) : (
       <>
         <a class="skip-link" href="#main-content">{strings.skipToContent}</a>
+        {/* Leads to the cookie sheet after the footer; shown only while it is open (consentPrompt.js). */}
+        <a id="cookie-skip" class="skip-link" href="#cookie-sheet" hidden>{strings.cookie.title}</a>
         <Header locale={locale} alternates={alternates} toolStateGlobal={toolStateGlobal} />
       </>
     )}

@@ -68,7 +68,12 @@ const { locale, breadcrumb, eyebrow, title, lead, faq, related } = Astro.props;
   <slot />
 
   <details class="toolp-panel toolp-faq">
-    <summary class="toolp-sectionTitle disclosure">{faq.heading}</summary>
+    {/* The fold's title is a heading, as the method folds' are (#597), so the
+        questions and their topic headings sit under an h2, not straight
+        under the page's h1. A summary may hold one heading and nothing else. */}
+    <summary class="disclosure">
+      <h2 id="toolp-faq-h" class="toolp-sectionTitle">{faq.heading}</h2>
+    </summary>
     {(faq.items ?? []).map((f) => (
       <details class="toolp-faqItem">
         <summary class="toolp-faqQ disclosure"><span><AmountsText text={f.q} /></span></summary>
@@ -223,6 +228,10 @@ details.toolp-panel > summary {
   display: flex;
   align-items: center;
   min-height: 44px;
+  margin: 0;
+}
+/* The heading inside a fold's summary sits on the summary's line. */
+details.toolp-panel > summary > .toolp-sectionTitle {
   margin: 0;
 }
 /* A box that opens, so its edge is a control's edge. */
