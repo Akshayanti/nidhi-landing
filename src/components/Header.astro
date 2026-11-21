@@ -235,9 +235,12 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     border-bottom: 1px solid var(--color-border-light);
   }
 
-  /* A screen under 480px tall (a phone held sideways) has no room to give a
-     header that stays: it scrolls away with the page there. */
-  @media (max-height: 480px) {
+  /* A screen under 30em tall (480px at the default text size: a phone held
+     sideways) has no room to give a header that stays: it scrolls away with
+     the page there. In em, so a reader who makes the text larger gets the
+     same: at 400% the header alone was 330 to 500px of a laptop's 800, and
+     with the consent sheet open almost none of the page was left to read. */
+  @media (max-height: 30em) {
     .site-header {
       position: static;
     }
@@ -885,7 +888,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     // Styles can arrive after this script; measure again once the page has loaded.
     window.addEventListener('load', measure);
     if (window.matchMedia) {
-      var short = window.matchMedia('(max-height: 480px)');
+      var short = window.matchMedia('(max-height: 30em)');
       if (short.addEventListener) short.addEventListener('change', measure);
     }
   })();

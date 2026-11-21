@@ -102,9 +102,10 @@ const strings = dict(locale);
     color: var(--color-deep-blue);
   }
 
+  /* The words a reader answers on are body size, not small print. */
   .cookie-text {
     margin: 0 0 var(--space-2);
-    font-size: var(--text-small);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     line-height: var(--leading-body);
     overflow-wrap: break-word;
@@ -128,13 +129,17 @@ const strings = dict(locale);
   .cookie-actions .btn {
     flex: 1 1 10rem;
     min-width: 0;
+    /* The top and bottom padding stops at 10px: growing with the text, it
+       made "No thanks" taller than the sheet on a small phone at 400%, with
+       its focus ring cut off. */
+    padding-block: min(0.625rem, 10px);
     font-weight: 700;
     white-space: normal;
   }
 
   .cookie-sub {
     margin: 0;
-    font-size: var(--text-caption);
+    font-size: var(--text-small);
     line-height: var(--leading-snug);
   }
 

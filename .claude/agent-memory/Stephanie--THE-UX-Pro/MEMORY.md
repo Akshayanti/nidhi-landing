@@ -15,3 +15,5 @@
 - [Phone pass Nov 2026](phone-pass-2026-11.md) — touch, hydration, print, forced-colour and email causes; emulation pitfalls (smooth scroll, font flags, widened viewport)
 - [Announcements review 20 Nov](announce-review-2026-11-20.md) — spoken abbreviations (es "a.", cs "měs.."), right-aligned long hints, overridden section fill, live-region log recipe
 - [Large text review 17 Nov](large-text-review-2026-11-17.md) — #667: .btn em padding causes letter breaks at 400%; fitted amounts smaller than labels; old-vs-new via addStyleTag
+- [PR #752 review 21 Nov](pr752-review-2026-11-21.md) — px hero breakpoint hides h1/button at 150%+ laptop; loan split table loses rows; no-sandbox preload recipe
+- [Post-merge #746/#748 21 Nov](postmerge-746-748-2026-11-21.md) — sticky header + cookie sheet leave 1-24% at 400% laptop; smooth-scroll and body-transition probe traps
