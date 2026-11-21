@@ -62,6 +62,36 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'प्रत्येक मोफत साधनावर प्रश्नांचा भाग आणि प्लॅनरच्या प्रतीक्षा यादीची चौकट यांची शीर्षके आता योग्य पातळीवर आहेत, त्यामुळे स्क्रीन रीडरच्या शीर्षकांच्या यादीत पानाचे भाग क्रमाने दिसतात.',
         },
       },
+      {
+        id: 'forms-say-what-happened',
+        text: {
+          en: 'The newsletter and waitlist forms now tell you what happened. They used to say you were signed up whatever the answer was; now they say so only when it worked, ask you to try again when they cannot tell (trying twice is safe), and say when sign-ups are paused for the day.',
+          hi: 'न्यूज़लेटर और वेटलिस्ट के फ़ॉर्म अब बताते हैं कि असल में क्या हुआ। पहले जवाब कुछ भी हो, वे यही कहते थे कि आप जुड़ गए; अब वे यह तभी कहते हैं जब सच में ऐसा हुआ हो, पक्का पता न चलने पर फिर से कोशिश करने को कहते हैं (दो बार कोशिश करना सुरक्षित है), और बताते हैं जब उस दिन के लिए साइनअप रुके हों।',
+          es: 'Los formularios del boletín y de la lista de espera ahora te dicen qué ha pasado. Antes decían que te habías apuntado fuera cual fuera la respuesta; ahora solo lo dicen cuando ha funcionado, te piden que lo intentes de nuevo cuando no pueden saberlo (probar dos veces no causa ningún problema) y avisan cuando las altas están en pausa por ese día.',
+          cs: 'Formuláře newsletteru a\u00a0čekací listiny teď říkají, co se doopravdy stalo. Dřív hlásily přihlášení, ať byla odpověď jakákoli; teď ho hlásí, jen když se povedlo, když to nejde zjistit, požádají o\u00a0nový pokus (druhý pokus nic nepokazí), a\u00a0řeknou, když je zápis pro daný den pozastavený.',
+          mr: 'न्यूजलेटर आणि प्रतीक्षा यादीचे फॉर्म आता नेमके काय झाले ते सांगतात. आधी उत्तर काहीही असले तरी ते तुम्ही सामील झालात असेच सांगायचे; आता ते खरोखर झाले तरच तसे सांगतात, खात्री न झाल्यास पुन्हा प्रयत्न करायला सांगतात (दोनदा प्रयत्न केल्याने काही बिघडत नाही), आणि त्या दिवसासाठी नोंदणी थांबवली असेल तर तसे सांगतात.',
+        },
+      },
+      {
+        id: 'confirm-link-works-twice',
+        text: {
+          en: 'The confirmation link in the email you get when you sign up for the newsletter now works if you open it twice. The second time, it used to say the link was invalid.',
+          hi: 'न्यूज़लेटर के लिए साइनअप करने पर आने वाले ईमेल का पुष्टि लिंक अब दो बार खोलने पर भी काम करता है। पहले दूसरी बार खोलने पर वह बताता था कि लिंक ग़लत है।',
+          es: 'El enlace de confirmación del correo que recibes al suscribirte al boletín ahora funciona aunque lo abras dos veces. Antes, la segunda vez decía que el enlace no era válido.',
+          cs: 'Potvrzovací odkaz v\u00a0e-mailu, který přijde po přihlášení k\u00a0newsletteru, teď funguje, i\u00a0když ho otevřete dvakrát. Dřív při druhém otevření hlásil, že je neplatný.',
+          mr: 'न्यूजलेटरसाठी नोंदणी केल्यावर येणाऱ्या ईमेलमधील पुष्टीची लिंक आता दोनदा उघडली तरी चालते. आधी दुसऱ्यांदा उघडल्यावर ती लिंक अवैध असल्याचे सांगायची.',
+        },
+      },
+      {
+        id: 'tools-say-what-stays-private',
+        text: {
+          en: 'The free tools now say exactly what stays private: what you type stays in your browser. Some previously said nothing was sent at all, which was too broad. The tools page now names all five tools in its search description.',
+          hi: 'मुफ़्त टूल अब ठीक-ठीक बताते हैं कि क्या निजी रहता है: आप जो लिखते हैं, वह आपके ब्राउज़र में ही रहता है। कुछ टूल पहले कहते थे कि कुछ भी नहीं भेजा जाता; यह दावा ज़रूरत से ज़्यादा व्यापक था। टूल वाला पेज अब अपने सर्च विवरण में पाँचों टूल के नाम लेता है।',
+          es: 'Las herramientas gratuitas dicen ahora exactamente qué queda en privado: lo que escribes se queda en tu navegador. Algunas decían que no se enviaba nada en absoluto, una afirmación demasiado amplia. La página de herramientas nombra ahora las cinco en su descripción para buscadores.',
+          cs: 'Nástroje zdarma teď přesně říkají, co zůstává soukromé: co napíšete, zůstává ve vašem prohlížeči. Některé dřív tvrdily, že se neposílá vůbec nic; takové tvrzení bylo příliš obecné. Stránka s\u00a0nástroji teď ve svém popisu pro vyhledávače jmenuje všech pět nástrojů.',
+          mr: 'मोफत साधने आता नेमके काय खाजगी राहते ते सांगतात: तुम्ही जे लिहिता ते तुमच्या ब्राउझरमध्येच राहते. काही साधने आधी काहीच पाठवले जात नाही असे सांगायची; हा दावा अतिशय व्यापक होता. साधनांचे पान आता शोधासाठीच्या वर्णनात पाचही साधनांची नावे देते.',
+        },
+      },
     ],
   },
   {

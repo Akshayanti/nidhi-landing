@@ -13,6 +13,7 @@
 import { dict, format, localizedPath, plural, type Locale } from '../i18n';
 import { PROSE_NUMBER_LOCALE } from '../i18n/config';
 import { shownWaitlistCount, waitlistCount } from '../utils/waitlistCount';
+import formReplyScript from '../utils/shared/formReply.js?raw';
 
 interface Props {
   /** The language of the page the box sits on. */
@@ -150,7 +151,9 @@ const confirmTextId = `${idPrefix}-confirm-text`;
   </div>
 </section>
 
-<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error, confirmYesLabel: waitlist.confirmYes }}>
+<script is:inline set:html={formReplyScript}></script>
+
+<script is:inline define:vars={{ formId, statusId, sending: waitlist.sending, notConfigured: waitlist.notConfigured, errorMessage: waitlist.error, busyMessage: waitlist.busy, invalidMessage: waitlist.invalidEmail, confirmYesLabel: waitlist.confirmYes }}>
   (function () {
     var STORAGE_KEY = 'nidhi-waitlist-signedup';
 
@@ -313,29 +316,39 @@ const confirmTextId = `${idPrefix}-confirm-text`;
       // answers instead of saying "Sending" for ever.
       var abort = typeof AbortController === 'function' ? new AbortController() : null;
       var giveUp = abort && setTimeout(function () { abort.abort(); }, 20000);
-      fetch(endpoint, {
+      // The script's JSON reply is read (Apps Script answers it with
+      // Access-Control-Allow-Origin: *), and only a readable yes counts: a
+      // refusal, an error page or no answer keeps the form, so the reader can
+      // try again, and this browser does not remember a sign-up the list
+      // never took (#342). formReply.js turns the reply into one word.
+      window.nidhiFormReply(fetch(endpoint, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
         signal: abort ? abort.signal : undefined,
-      }).then(function () {
+      })).then(function (outcome) {
         if (giveUp) clearTimeout(giveUp);
+        submitting = false;
+        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
+        if (outcome !== 'ok') {
+          setStatus(outcome === 'busy' ? busyMessage : outcome === 'invalid_email' ? invalidMessage : errorMessage, 'error');
+          if (outcome === 'invalid_email') {
+            // Back to the field, so the address can be corrected.
+            closeConfirm();
+            if (input) { try { input.focus(); } catch (_) {} }
+          } else if (yesBtn) {
+            yesBtn.removeAttribute('aria-disabled');
+            yesBtn.textContent = confirmYesLabel;
+          }
+          return;
+        }
         setStatus('', 'idle');
         form.reset();
         closeConfirm();
-        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
-        submitting = false;
         showSuccess();
         if (window.posthog) {
           window.posthog.capture('waitlist_sent', {});
         }
-      }).catch(function () {
-        if (giveUp) clearTimeout(giveUp);
-        submitting = false;
-        setStatus(errorMessage, 'error');
-        if (yesBtn) { yesBtn.removeAttribute('aria-disabled'); yesBtn.textContent = confirmYesLabel; }
-        if (changeBtn) changeBtn.removeAttribute('aria-disabled');
       });
     }
 

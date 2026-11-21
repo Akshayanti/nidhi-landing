@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 import { DEFAULT_LOCALE } from '../i18n/config.ts';
 import { dict } from '../i18n/index.ts';
+import { NEWSLETTER_NS, newsletterId } from '../utils/newsletterIds.ts';
 
 /**
  * The one feed, at /rss.xml, in English. The lessons are not translated, so
@@ -29,10 +30,13 @@ export async function GET(context: APIContext) {
       pubDate: post.data.pubDate,
       link: `/blog/${post.data.slug}/`,
       categories: post.data.tags,
+      // What the newsletter knows the lesson by, so an address that changes
+      // never sends it twice (scripts/send_newsletter.py, #438).
+      customData: `<nidhi:id>${newsletterId(post.data)}</nidhi:id>`,
     })),
     // The feed names its own address, as the Atom link the RSS best
     // practices ask for.
-    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
+    xmlns: { atom: 'http://www.w3.org/2005/Atom', nidhi: NEWSLETTER_NS },
     customData: `<language>en</language>\n    <lastBuildDate>${now.toUTCString()}</lastBuildDate>\n    <atom:link href="${new URL('rss.xml', context.site!).href}" rel="self" type="application/rss+xml"/>`,
   });
 }

@@ -9,6 +9,7 @@ The website for [nidhi.today](https://nidhi.today/?utm_source=github).
 - **Free tools**: calculators that run in the browser (`src/pages/free/`).
 - **Five languages**: the site's own pages and tools are published in English, Hindi, Spanish, Czech and Marathi (`src/i18n/`); lessons and guides stay in English.
 - **The newsletter and the reel pipeline**: `scripts/` and `remotion/`. [scripts/README.md](scripts/README.md) lists the tools that are run by hand.
+- **The Apps Script projects** behind the sign-up forms and the newsletter: deployed by hand. [docs/operations.md](docs/operations.md) says how, and how to check that production runs what `main` holds.
 
 ## Local development
 

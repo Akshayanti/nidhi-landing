@@ -247,8 +247,18 @@ describe('the newsletter workflow says so when something went wrong', () => {
       "steps.health.outputs.ok == 'false'",
       "steps.newsletter.outcome == 'failure'",
       "steps.marker.outcome == 'failure'",
+      "steps.load_marker.outcome == 'failure'",
     ]) assert.ok(notify.includes(condition), condition);
     assert.doesNotMatch(notify, /steps\.newsletter\.outcome != 'skipped'/, 'a run that could not start must alert too');
+  });
+
+  it('the record of sent lessons is never replaced by the old copy on main (#438)', () => {
+    const load = step('load_marker');
+    assert.match(load, /git ls-remote --exit-code --heads origin newsletter-state/);
+    assert.match(load, /NEWSLETTER_STATE_BOOTSTRAP/, 'a missing branch is allowed only on a first run');
+    assert.equal((load.match(/\n\s+exit 1\n/g) ?? []).length, 2, 'a missing branch and an unreadable one both fail');
+    assert.match(step('newsletter'), /steps\.load_marker\.outcome == 'success'/, 'nothing is sent without the record');
+    assert.doesNotMatch(step('marker'), /2>\/dev\/null; then\n\s+git worktree add --detach "\$STATE" origin\/newsletter-state\n\s+else\n\s+git worktree add --detach "\$STATE" HEAD/);
   });
 
   it('a run that alerted is red: the last step fails whenever the alert ran', () => {
