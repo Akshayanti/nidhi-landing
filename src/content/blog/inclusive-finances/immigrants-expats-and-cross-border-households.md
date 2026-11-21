@@ -33,7 +33,7 @@ glossary:
     definition: "A group in which each member pays a fixed amount regularly and each takes the whole pot in turn, known as a tontine, susu, tanda, chit fund or hui."
 order: 56.5
 companionOf: "geographic-arbitrage"
-pubDate: 2099-01-20
+pubDate: 2026-12-02
 updatedDate: 2026-10-28
 localRules: [residence, tax, pensions]
 level: "inclusive-finances"

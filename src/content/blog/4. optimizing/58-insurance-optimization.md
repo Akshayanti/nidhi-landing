@@ -31,7 +31,7 @@ glossary:
   - term: "Deductible"
     definition: "The part of each claim you pay yourself before the insurer pays, also called an excess. A higher deductible lowers the premium."
 order: 58
-pubDate: 2099-01-23
+pubDate: 2026-12-09
 updatedDate: "2026-10-28"
 localRules: [insurance, benefits]
 level: "optimizing"
