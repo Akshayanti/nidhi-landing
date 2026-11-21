@@ -1,0 +1,178 @@
+{
+  "slug": "tax-loss-harvesting-and-asset-location",
+  "postTitle": "Tax-Loss Harvesting and Asset Location Explained",
+  "postLevel": "optimizing",
+  "episode": 11,
+  "seriesTotal": 0,
+  "blogPath": "blog/tax-loss-harvesting-and-asset-location",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "The same yearly payment keeps more invested in an account without yearly tax",
+  "topicChip": "TAX · PART 2/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Reel's own small example, illustrative: a €100 yearly payment taxed at 25% leaves €75 invested; in an account without yearly tax on the payment, €100. The lesson's household example (about €540 less yearly tax on €400,000) is in the caption."
+  },
+  "hookVariants": [
+    {
+      "id": "payment",
+      "layout": "bar-gap",
+      "narration": "Your investment pays a hundred euros this year. How much stays invested?",
+      "onscreenLines": [
+        "Your investment pays €100 this year",
+        "How much stays invested?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "In our example, yearly tax takes twenty five euros from that payment.",
+      "onscreenText": "Payment taxed yearly",
+      "subtext": "Example: one quarter",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "Taxed every year",
+          "sublabel": "one payment of €100"
+        }
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "stat",
+      "narration": "That leaves seventy five euros to keep invested.",
+      "onscreenText": "What stays invested",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2,
+        "bar": {
+          "label": "Taxed every year",
+          "sublabel": "one payment of €100"
+        }
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "example",
+      "narration": "In an account without yearly tax on this payment, the whole hundred can stay invested.",
+      "onscreenText": "No yearly tax on this payment",
+      "subtext": "Same investment, same payment",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "No yearly tax",
+          "sublabel": "the same payment of €100",
+          "segments": [
+            {
+              "label": "Stays invested",
+              "value": 100,
+              "display": "€100",
+              "tone": "teal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "warning",
+      "narration": "Withdrawals may be taxed later. The available accounts and their rules depend on your country.",
+      "onscreenText": "Possible tax later",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1,
+        "bar": {
+          "label": "No yearly tax",
+          "sublabel": "the same payment of €100",
+          "segments": [
+            {
+              "label": "Stays invested",
+              "value": 100,
+              "display": "€100",
+              "tone": "teal"
+            }
+          ]
+        },
+        "note": "Withdrawals may be taxed later"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone comparing investment accounts.",
+    "onscreenText": "Send this to them",
+    "subtext": "Same payment, different account",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your investment pays €100 this year. How much stays invested?\n\nIt depends on the account. Where that payment is taxed every year, an example tax of one quarter takes €25 and leaves €75 invested. In an account without yearly tax on the payment, such as a pension in many countries, the whole €100 stays invested. Money taken out of such an account may be taxed later.\n\nThis is why investments that pay out a lot every year (interest, for example) are commonly held in the accounts without yearly tax, and investments that pay out little in ordinary ones, with the overall mix unchanged. In the lesson's example of a household with €400,000, that placement means about €540 less tax a year.\n\n→ Know someone comparing investment accounts? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Which accounts exist, and how they are taxed, differs by country.",
+    "tiktok": "One €100 payment: €75 stays invested in one account, €100 in another. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "investmentaccounts",
+    "pensionsavings",
+    "taxefficient"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "One yearly payment, example tax of one quarter",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "bars": [
+      {
+        "id": "payment",
+        "label": "One payment",
+        "sublabel": "this year",
+        "value": 100,
+        "display": "€100",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Yearly tax",
+            "value": 25,
+            "display": "€25",
+            "tone": "amber"
+          },
+          {
+            "label": "Stays invested",
+            "value": 75,
+            "display": "€75",
+            "tone": "teal"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. Accounts and tax rates differ by country."
+  },
+  "lessonBlock": [
+    "Which investments pay income",
+    "Keeping the same mix",
+    "Account rules and later tax"
+  ]
+}

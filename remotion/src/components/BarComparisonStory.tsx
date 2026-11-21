@@ -14,6 +14,7 @@ import {
 } from "../data";
 import { ActiveCard, lastCardBeat } from "./cardBeats";
 import { QuestionHook } from "./QuestionHook";
+import { LessonFooter, lessonLift } from "./LessonFooter";
 import { ToolCard } from "./ToolCard";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -186,9 +187,10 @@ function RepeatField({ bar, input, fill, collapse }: { bar: BarDatum; input: Ree
   );
 }
 
-function ComparisonCallout({ input, amount, opacity }: { input: ReelInput; amount: string; opacity: number }) {
+function ComparisonCallout({ input, amount, opacity, label }: { input: ReelInput; amount: string; opacity: number; label?: string }) {
   const story = input.plan.barStory;
-  const callout = story?.callout ?? story?.ratio;
+  const base = story?.callout ?? story?.ratio;
+  const callout = label !== undefined ? { label } : base;
   if (!story || !callout) return null;
   const hasLabel = Boolean(callout.label);
   const isPhrase = /\s/.test(amount.trim());
@@ -213,7 +215,7 @@ function BarHook({ input }: { input: ReelInput }) {
   // With three or four items, use one shared hook headline and compact rows.
   // The two-item form below stays more dramatic by placing a claim above
   // each bar, which is the right treatment for a direct A versus B contrast.
-  if (bars.length > 2) {
+  if (bars.length > 2 || (input.plan.hookStyle === "questionOverPicture" && story.mode === "direct")) {
     const big = input.plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 225 : 285;
     return (
@@ -388,6 +390,12 @@ function DayGrid({ days, local, enter }: { days: { total: number; unpaid: number
   );
 }
 
+function BeatNote({ text, top, opacity }: { text: string; top: number; opacity: number }) {
+  return (
+    <div style={{ position: "absolute", left: 76, right: 150, top, padding: "26px 32px", boxSizing: "border-box", borderLeft: `8px solid ${BRAND.teal}`, borderRadius: 14, background: "rgba(0,33,113,0.055)", fontFamily: TYPE.ui, fontSize: 40, lineHeight: 1.2, fontWeight: 760, color: BRAND.ink, opacity, transform: `translateY(${(1 - opacity) * 14}px)` }}>{text}</div>
+  );
+}
+
 function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const story = input.plan.barStory;
   if (!story) return null;
@@ -417,10 +425,12 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
   }
 
   // One bar per beat: "first" shows one, "second" two, any later stage all of them.
-  const bars = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
+  const anchor = active?.beat.anchor?.type === "bars" ? active.beat.anchor : undefined;
+  const shown = stage === "first" ? story.bars.slice(0, 1) : stage === "second" ? story.bars.slice(0, 2) : story.bars;
+  const bars = shown.map((bar) => (anchor?.barLabels?.[bar.id] ? { ...bar, label: anchor.barLabels[bar.id] } : bar));
   const showBars = stage && !["blank", "hook", "days"].includes(stage);
-  const showRatio = stage === "ratio";
-  const callout = story.callout ?? story.ratio;
+  const callout = anchor?.callout ?? (stage === "ratio" ? story.callout ?? story.ratio : undefined);
+  const showRatio = Boolean(callout);
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
@@ -432,7 +442,8 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
         </div>
       )}
       {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
-      {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} opacity={enter} />}
+      {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} label={anchor?.callout ? anchor.callout.label ?? "" : undefined} opacity={anchor?.callout ? 1 : enter} />}
+      {anchor?.note && <BeatNote text={anchor.note} top={1262} opacity={enter} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
   );
@@ -485,7 +496,8 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
   const details = progress(frame, fps * 0.35, fps * 0.9);
   const maker = progress(frame, fps * 1.05, fps * 1.6);
   const beat = toolCardBeat(input);
-  const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
+  // With lesson lines on the end card, the tool card stays in its own beat: both would not fit.
+  const card = beat?.anchor?.type === "card" && !input.plan.lessonBlock?.length ? beat.anchor : undefined;
   const story = input.plan.barStory;
   if (!story) return null;
   // A compact card is 410 px tall at two rows and 560 at three or four, so anything past two rows
@@ -501,10 +513,9 @@ function DirectBarCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 47, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1250, paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1250 - lessonLift(input.plan), paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>
@@ -580,7 +591,8 @@ function SegmentedRow({
   segmentProgress?: number;
   compact?: boolean;
 }) {
-  const segments = bar.segments ?? [{ label: bar.label, value: bar.value, display: bar.display, tone: bar.tone }];
+  // A bar with no parts shows its amount once, beside the bar, not inside it as well.
+  const segments = bar.segments ?? [{ label: bar.label, value: bar.value, display: "", tone: bar.tone }];
   const limit = segmentLimit === undefined ? segments.length : Math.max(0, Math.min(segmentLimit, segments.length));
   const complete = segments.slice(0, Math.max(0, limit - 1));
   const active = limit > 0 ? segments[limit - 1] : undefined;
@@ -640,10 +652,13 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
   const story = plan.barStory;
   if (!story) return null;
   const hook = plan.hookVariants[plan.useHookVariant] ?? plan.hookVariants[0];
-  const receipts = story.bars[0];
+  // One bar only: its first part stands as the known column, the whole bar as the question.
+  const single = story.bars.length === 1 ? story.bars[0] : undefined;
+  const firstPart = single?.segments?.[0];
+  const receipts = single && firstPart ? { ...single, id: `${single.id}-seen`, label: firstPart.label, value: firstPart.value, display: firstPart.display } : story.bars[0];
   // The hook compares receipts with the pay line itself. Pension is revealed
   // later, so the question does not leak the final answer.
-  const hidden = story.bars[1] ?? story.bars[2];
+  const hidden = single ?? story.bars[1] ?? story.bars[2];
   const max = Math.max(receipts?.value ?? 0, hidden?.value ?? 0, 1);
   const big = plan.hookStyle === "questionOverPicture";
   const baseline = cover ? 1360 : 1370;
@@ -658,7 +673,22 @@ function SegmentedHook({ plan, cover = false }: { plan: ReelPlan; cover?: boolea
         <div>{hook.onscreenLines[0]}</div>
         <div style={{ color: BRAND.amber }}>{hook.onscreenLines[1]}</div>
       </div>
-      {[{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
+      {single && firstPart && (
+        // One column: the known part filled, the rest of its height an open question.
+        <div style={{ position: "absolute", left: 540 - barWidth / 2 - 20, top: baseline - secondHeight, width: barWidth + 40, height: secondHeight }}>
+          <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", border: `5px dashed ${BRAND.amber}`, boxSizing: "border-box" }} />
+          <div style={{ position: "absolute", left: 0, right: 0, top: (secondHeight - firstHeight) / 2 - 50, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 84 : 96, fontWeight: 850, color: BRAND.amber }}>?</div>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: firstHeight, borderRadius: "0 0 10px 10px", background: BRAND.ink }} />
+          {story.hookShowsTotal
+            ? <div style={{ position: "absolute", left: -140, right: -140, top: -86, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 56 : 64, fontWeight: 850, color: BRAND.ink }}>{single.display}</div>
+            : <>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 4, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 47 : 55, fontWeight: 850, color: BRAND.paper }}>{firstPart.display}</div>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: firstHeight / 2 - 44, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 25 : 29, fontWeight: 720, color: BRAND.paper }}>{firstPart.label}</div>
+            </>}
+          <div style={{ position: "absolute", left: -120, right: -120, top: secondHeight + 20, textAlign: "center", fontFamily: TYPE.ui, fontSize: cover ? 29 : 33, lineHeight: 1.12, fontWeight: 770, color: BRAND.amber }}>{single.label}</div>
+        </div>
+      )}
+      {!single && [{ bar: receipts, x: cover ? 145 : 130, height: firstHeight, color: "#8491A8", value: receipts?.display }, { bar: hidden, x: cover ? 635 : 630, height: secondHeight, color: BRAND.amber, value: story.revealInHook ? hidden?.display : "?" }].map(({ bar, x, height, color, value }, index) => bar && (
         <div key={bar.id} style={{ position: "absolute", left: x, top: baseline - height, width: barWidth, height }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: "24px 24px 10px 10px", background: color }} />
           {/* A bar too short to hold its value carries it just above, in the bar's colour. */}
@@ -682,8 +712,12 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   const stage = active?.beat.anchor?.type === "bars" ? active.beat.anchor.stage : undefined;
   const segment = active?.beat.anchor?.type === "bars" ? active.beat.anchor.segment : undefined;
   const local = active ? progress(now, active.span.startMs + 100, active.span.startMs + 800) : 1;
-  const receipts = story.bars[0];
-  const pay = story.bars[1];
+  // A story with one bar builds that bar alone, part by part.
+  const single = story.bars.length === 1;
+  const receipts = single ? undefined : story.bars[0];
+  const anchor = active?.beat.anchor?.type === "bars" ? active.beat.anchor : undefined;
+  const basePay = single ? story.bars[0] : story.bars[1];
+  const pay = anchor?.bar && basePay ? { ...basePay, ...anchor.bar } : basePay;
   const pension = story.bars[2];
   const max = Math.max(1, ...story.bars.map((bar) => bar.value));
   const beat = toolCardBeat(input);
@@ -703,22 +737,23 @@ function SegmentedBarVisual({ input, now }: { input: ReelInput; now: number }) {
   return (
     <div style={{ position: "absolute", inset: 0 }}>
       <StoryHeading input={input} now={now} />
+      {anchor?.note && <BeatNote text={anchor.note} top={1010} opacity={local} />}
       {stage === "first" && receipts && <SegmentedRow bar={receipts} top={690} max={max} segmentProgress={local} />}
       {stage === "second" && (
         <>
           {receipts && <SegmentedRow bar={receipts} top={560} max={max} />}
-          {pay && <SegmentedRow bar={pay} top={930} max={max} segmentLimit={segment ?? 0} segmentProgress={local} />}
+          {pay && <SegmentedRow bar={story.totalOnCallout ? { ...pay, display: "" } : pay} top={single ? 760 : 930} max={max} segmentLimit={segment ?? 0} segmentProgress={local} />}
         </>
       )}
       {stage === "callout" && (
         <>
           {receipts && <SegmentedRow bar={receipts} top={540} max={max} />}
-          {pay && <SegmentedRow bar={pay} top={900} max={max} segmentLimit={pay.segments?.length} />}
-          <div style={{ position: "absolute", left: 250, top: 1280, width: 580, padding: "22px 30px", border: `3px solid ${BRAND.amber}`, borderRadius: 22, background: BRAND.paper, textAlign: "center", boxShadow: "9px 10px 0 rgba(201,121,26,0.10)" }}>
+          {pay && <SegmentedRow bar={pay} top={single ? 760 : 900} max={max} segmentLimit={pay.segments?.length} />}
+          {!single && <div style={{ position: "absolute", left: 250, top: 1280, width: 580, padding: "22px 30px", border: `3px solid ${BRAND.amber}`, borderRadius: 22, background: BRAND.paper, textAlign: "center", boxShadow: "9px 10px 0 rgba(201,121,26,0.10)" }}>
             <span style={{ fontFamily: TYPE.ui, fontSize: 49, fontWeight: 850, color: BRAND.amber }}>{pay?.display}</span>
             <span style={{ margin: "0 18px", fontFamily: TYPE.ui, fontSize: 42, fontWeight: 760, color: BRAND.inkSoft }}>&gt;</span>
             <span style={{ fontFamily: TYPE.ui, fontSize: 49, fontWeight: 850, color: BRAND.inkSoft }}>{receipts?.display}</span>
-          </div>
+          </div>}
         </>
       )}
       {stage === "third" && (
@@ -742,7 +777,24 @@ function SegmentedBarCTA({ input }: { input: ReelInput }) {
   const beat = toolCardBeat(input);
   const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
   const story = input.plan.barStory;
-  if (!card || !story) return null;
+  if (!story) return null;
+  if (!card) {
+    // No tool card: the end card is the ask alone.
+    return (
+      <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
+        <div style={{ position: "absolute", left: 130, right: 150, top: 300, textAlign: "center", fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.25, fontWeight: 650, color: "rgba(250,247,242,0.68)", opacity: enter }}>{story.basis} · {story.disclosure}</div>
+        <div style={{ position: "absolute", left: 70, right: 100, top: 420, textAlign: "center", opacity: enter }}>
+          <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
+          <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
+        </div>
+        <div style={{ position: "absolute", left: 120, right: 160, top: 1235 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+          <LessonFooter plan={input.plan} />
+          <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+          <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
+        </div>
+      </div>
+    );
+  }
   const hasFiveRows = card.rows.length > 4;
   return (
     <div style={{ position: "absolute", inset: 0, color: BRAND.paper }}>
@@ -752,10 +804,9 @@ function SegmentedBarCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 47, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1290, paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1290 - lessonLift(input.plan), paddingTop: 32, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 58, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>
@@ -808,10 +859,9 @@ export function BarComparisonCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 116, lineHeight: 1.02, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 52, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1240, paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1240 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>
@@ -827,7 +877,7 @@ export function BarComparisonCover({ plan }: { plan: ReelPlan }) {
   const bars = story.bars.slice(0, 4);
   const max = Math.max(1, ...bars.map((bar) => bar.value));
 
-  if (bars.length > 2) {
+  if (bars.length > 2 || (plan.hookStyle === "questionOverPicture" && story.mode === "direct")) {
     const big = plan.hookStyle === "questionOverPicture";
     const stride = bars.length === 4 ? 218 : 276;
     return (

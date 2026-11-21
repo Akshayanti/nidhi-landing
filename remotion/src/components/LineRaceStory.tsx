@@ -1,4 +1,5 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
+import { LessonFooter, lessonLift } from "./LessonFooter";
 import { ToolCard } from "./ToolCard";
 import {
   BRAND,
@@ -248,6 +249,31 @@ function GapCounter({ story, pos, finish }: { story: LineRaceData; pos: number; 
   const total = story.gap.atPoint
     ? valueAt(upper.values, Math.round(pos)) - valueAt(lower.values, Math.round(pos))
     : runningGap(upper.values, lower.values, (pos / Math.max(1, count - 1)) * count);
+  if (story.gap.text) {
+    // Words at the finish. While the lines grow, optionally the gap so far as a share of the upper line.
+    const posNow = Math.round(pos);
+    const upperNow = valueAt(upper.values, posNow);
+    const pct = upperNow > 0 ? ((upperNow - valueAt(lower.values, posNow)) / upperNow) * 100 : 0;
+    const gapEuros = upper.values[count - 1] - lower.values[count - 1];
+    if (finish <= 0 && !story.gap.percent) return null;
+    return (
+      <div style={{ position: "absolute", left: 72, right: 90, top: 1352 }}>
+        {finish < 1 && story.gap.percent && (
+          <div style={{ opacity: 1 - finish }}>
+            <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>{story.gap.label.toUpperCase()}</div>
+            <div style={{ marginTop: 6, fontFamily: TYPE.ui, fontSize: 92, fontWeight: 850, lineHeight: 1, letterSpacing: "-0.05em", color: BRAND.ink, fontVariantNumeric: "tabular-nums" }}>{Math.round(pct)}%</div>
+          </div>
+        )}
+        {finish > 0 && (
+          <div style={{ position: "absolute", left: 0, right: 0, top: 0, opacity: finish }}>
+            <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>{story.gap.finalLabel.toUpperCase()}</div>
+            <div style={{ marginTop: 6, fontFamily: TYPE.ui, fontSize: 78, fontWeight: 850, lineHeight: 1, letterSpacing: "-0.045em", color: BRAND.ink }}>{story.gap.text}</div>
+            {story.gap.euroUnder && <div style={{ marginTop: 8, fontFamily: TYPE.ui, fontSize: 40, fontWeight: 780, color: BRAND.amber }}>About {euro(gapEuros, 1000)} less</div>}
+          </div>
+        )}
+      </div>
+    );
+  }
   return (
     <div style={{ position: "absolute", left: 72, right: 90, top: 1352 }}>
       <div style={{ fontFamily: TYPE.ui, fontSize: 28, fontWeight: 830, letterSpacing: "0.14em", color: BRAND.teal }}>
@@ -262,7 +288,8 @@ function GapCounter({ story, pos, finish }: { story: LineRaceData; pos: number; 
 
 function ScopeLine({ story }: { story: LineRaceData }) {
   return (
-    <div style={{ position: "absolute", left: 72, right: 110, top: 1500, fontFamily: TYPE.ui, fontSize: 29, fontWeight: 640, lineHeight: 1.3, color: BRAND.inkSoft }}>
+    // A finish with a euro line under its words is taller, so the scope line sits lower and smaller.
+    <div style={{ position: "absolute", left: 72, right: 110, top: story.gap?.euroUnder ? 1532 : 1500, fontFamily: TYPE.ui, fontSize: story.gap?.euroUnder ? 25 : 29, fontWeight: 640, lineHeight: 1.3, color: BRAND.inkSoft }}>
       {story.scope}
     </div>
   );
@@ -323,7 +350,8 @@ export function LineRaceCTA({ input }: { input: ReelInput }) {
   const maker = progress(frame, fps * 1.05, fps * 1.6);
   const story = input.plan.lineRace;
   const beat = input.plan.beats.find((b) => b.anchor?.type === "card");
-  const card = beat?.anchor?.type === "card" ? beat.anchor : undefined;
+  // With lesson lines on the end card, the tool card stays in its own beat: both would not fit.
+  const card = beat?.anchor?.type === "card" && !input.plan.lessonBlock?.length ? beat.anchor : undefined;
   if (!story) return null;
   const rows = Math.min(card?.rows.length ?? 0, 5);
   const tall = rows > 2;
@@ -339,10 +367,9 @@ export function LineRaceCTA({ input }: { input: ReelInput }) {
         <div style={{ fontFamily: TYPE.display, fontSize: 108, lineHeight: 1.01, fontWeight: 800, letterSpacing: "-0.035em" }}>{input.plan.cta.onscreenText}</div>
         <div style={{ marginTop: 24, fontFamily: TYPE.ui, fontSize: 49, fontWeight: 760, lineHeight: 1.1, color: "#9FE9DD" }}>{input.plan.cta.subtext}</div>
       </div>
-      <div style={{ position: "absolute", left: 120, right: 160, top: 1235, paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
-        <div style={{ fontFamily: TYPE.ui, fontSize: 22, fontWeight: 800, letterSpacing: "0.2em", color: "#9FE9DD" }}>FULL ASSUMPTIONS</div>
-        <div style={{ marginTop: 14, fontFamily: TYPE.ui, fontSize: 34, fontWeight: 650 }}>nidhi.today</div>
-        <div style={{ marginTop: 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
+      <div style={{ position: "absolute", left: 120, right: 160, top: 1235 - lessonLift(input.plan), paddingTop: 34, borderTop: "1px solid rgba(250,247,242,0.22)", textAlign: "center", opacity: details }}>
+        <LessonFooter plan={input.plan} />
+        <div style={{ marginTop: input.plan.lessonBlock?.length ? 34 : 64, fontFamily: TYPE.ui, fontSize: 36, fontWeight: 760, letterSpacing: "0.08em" }}>{input.plan.cta.handle}</div>
         <div style={{ marginTop: 22, fontFamily: TYPE.ui, fontSize: 25, lineHeight: 1.25, fontWeight: 520, color: "rgba(250,247,242,0.62)", opacity: maker }}>nidhi, a planner in the making · free tools live today</div>
       </div>
     </div>

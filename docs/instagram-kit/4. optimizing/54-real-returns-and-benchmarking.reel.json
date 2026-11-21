@@ -1,0 +1,150 @@
+{
+  "slug": "real-returns-and-benchmarking",
+  "postTitle": "Real Returns: How to Tell if Your Portfolio Is Really Performing",
+  "postLevel": "optimizing",
+  "episode": 12,
+  "seriesTotal": 0,
+  "blogPath": "blog/real-returns-and-benchmarking",
+  "availableFigures": [],
+  "mode": "riff",
+  "mood": "curious",
+  "topic": "An account that grew €50,000 may have earned €7,000 after your own deposits and rising prices",
+  "topicChip": "PERFORMANCE · PART 1/2",
+  "assumptions": {
+    "currency": "EUR",
+    "notes": "Lesson figure: the account grew €50,000 in a year; €35,000 was added; investments earned about €15,000 (roughly 7%); inflation 4%: €8,000 only kept pace with prices; real return about €7,000."
+  },
+  "hookVariants": [
+    {
+      "id": "fifty",
+      "layout": "bar-gap",
+      "narration": "Your account grew fifty thousand euros this year. How much did your investments really earn?",
+      "onscreenLines": [
+        "Your account grew €50,000 this year",
+        "How much did your investments really earn?",
+        ""
+      ],
+      "anchor": {
+        "type": "bars",
+        "stage": "hook"
+      },
+      "emphasis": []
+    }
+  ],
+  "useHookVariant": 0,
+  "beats": [
+    {
+      "id": "b1",
+      "kind": "example",
+      "narration": "Thirty five thousand of it was money you added yourself.",
+      "onscreenText": "You added €35,000",
+      "subtext": "Your own saving",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 1
+      }
+    },
+    {
+      "id": "b2",
+      "kind": "example",
+      "narration": "In this example, eight thousand only kept up with rising prices.",
+      "onscreenText": "Rising prices: €8,000",
+      "subtext": "Growth that only kept pace",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2
+      }
+    },
+    {
+      "id": "b3",
+      "kind": "stat",
+      "narration": "What is left, about seven thousand, is growth in what your money can buy.",
+      "onscreenText": "What is left: about €7,000",
+      "subtext": "What your money can buy",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 3
+      }
+    },
+    {
+      "id": "b4",
+      "kind": "definition",
+      "narration": "This last part is the real return: growth after rising prices.",
+      "onscreenText": "Real return: about €7,000",
+      "subtext": "Growth after rising prices",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "callout"
+      }
+    }
+  ],
+  "cta": {
+    "approved": "share",
+    "narration": "Send this to someone who watches their balance.",
+    "onscreenText": "Send this to them",
+    "subtext": "Part 2: compared with what?",
+    "handle": "@nidhi.today"
+  },
+  "caption": {
+    "instagram": "Your account grew €50,000 this year. How much did your investments really earn?\n\nThe example: €35,000 of the growth was money added during the year. The investments earned about €15,000, roughly 7%. Prices rose 4% in the same year, so about €8,000 of that only kept up with them. About €7,000 is growth in what the money can buy: a real return of about 3%.\n\nThe statement shows the first number. The others take a few minutes with the year's deposits and the inflation figure where you live.\n\n→ Know someone who watches their balance? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. The exact split depends on when the money was added.",
+    "tiktok": "An account grew €50,000. About €7,000 was real growth. Illustrative."
+  },
+  "hashtags": [
+    "nidhi",
+    "nidhicompounding",
+    "realreturn",
+    "inflation",
+    "portfolioreview"
+  ],
+  "hookStyle": "questionOverPicture",
+  "barStory": {
+    "mode": "segmented",
+    "unit": "€",
+    "basis": "Growth in one year",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "bars": [
+      {
+        "id": "growth",
+        "label": "Your account grew",
+        "sublabel": "this year",
+        "value": 50000,
+        "display": "€50,000",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "You added",
+            "value": 35000,
+            "display": "€35,000",
+            "tone": "ink"
+          },
+          {
+            "label": "Rising prices",
+            "value": 8000,
+            "display": "€8,000",
+            "tone": "teal"
+          },
+          {
+            "label": "Real growth",
+            "value": 7000,
+            "display": "€7,000",
+            "tone": "amber"
+          }
+        ]
+      }
+    ],
+    "disclosure": "Illustrative. The split depends on when money was added."
+  },
+  "lessonBlock": [
+    "Measuring buying power",
+    "Saving versus growth",
+    "Why timing matters"
+  ]
+}
