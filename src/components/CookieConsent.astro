@@ -82,8 +82,10 @@ const strings = dict(locale);
 
   /* While the sheet is open, the page keeps room for it at the bottom, so
      its end can be scrolled above the sheet and a focused element is not
-     hidden behind it. */
-  html.cookie-open body {
+     hidden behind it. On a page with the site footer the room is the
+     footer's own bottom padding (Footer.astro), so the page ends in the
+     footer's colour; only a page without it pads the body. */
+  html.cookie-open body:not(:has(.site-footer)) {
     padding-bottom: var(--cookie-space, 0px);
   }
 
