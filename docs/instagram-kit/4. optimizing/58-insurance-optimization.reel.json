@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "The same loss takes a smaller share of larger savings",
+  "topic": "A higher deductible saves premium over years; an early claim comes before the savings",
   "topicChip": "INSURANCE · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Reel's own example, illustrative: a €500 loss against €1,000 and against €4,000 of savings."
+    "notes": "Lesson example: moving a deductible from €500 to €2,500 saves €300 a year; seven claim-free years save €2,100, more than the extra €2,000 paid on a claim."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "You have a thousand euros saved. What would losing five hundred mean?",
+      "narration": "Your cheaper policy raises your deductible by two thousand euros. When do premium savings catch up?",
       "onscreenLines": [
-        "You have €1,000 saved",
-        "What would a €500 loss take?",
+        "A cheaper policy raises your deductible by €2,000",
+        "When do premium savings catch up?",
         ""
       ],
       "anchor": {
@@ -36,139 +36,107 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "A five hundred euro loss takes half your savings.",
-      "onscreenText": "Half gone",
-      "subtext": "",
+      "narration": "The part you pay is the deductible. Raising it saves three hundred euros yearly here.",
+      "onscreenText": "Lower yearly premium",
+      "subtext": "The part of a claim you pay is the deductible",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "first"
+        "stage": "second"
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "Now imagine having four thousand euros saved.",
-      "onscreenText": "More saved",
+      "narration": "Seven claim free years build two thousand one hundred euros.",
+      "onscreenText": "Savings accumulate",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 1,
-        "bar": {
-          "segments": [
-            {
-              "label": "Savings",
-              "value": 4000,
-              "display": "€4,000",
-              "tone": "teal"
-            }
-          ]
-        }
+        "stage": "third"
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "The same loss takes a smaller share.",
-      "onscreenText": "Same loss",
+      "narration": "That offsets the extra cost of a single claim.",
+      "onscreenText": "Extra claim cost covered",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 2
+        "stage": "third",
+        "note": "Covers one claim's extra cost"
       }
     },
     {
       "id": "b4",
       "kind": "example",
-      "narration": "As savings grow, some people pay smaller losses themselves.",
-      "onscreenText": "Paid from savings",
+      "narration": "An early claim still needs extra cash before those savings accumulate.",
+      "onscreenText": "Timing matters",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 2,
-        "note": "Some people stop insuring small losses"
+        "stage": "third",
+        "note": "An early claim comes first"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone who has more savings now.",
+    "narration": "Send this to someone weighing a higher deductible.",
     "onscreenText": "Send this to them",
-    "subtext": "Part 2: can cover leave a gap?",
+    "subtext": "Part 2: can claims exceed wealth?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "You have €1,000 saved. What would a €500 loss take?\n\nHalf of it. With €4,000 saved, the same loss takes an eighth. Nothing about the loss changed; what changed is how much of it savings could absorb.\n\nInsurance costs more than it pays out on average, because premiums cover claims, costs and the insurer's profit. What it buys is turning a large, unpredictable loss into a small, known cost. So as savings grow, some people stop insuring the small losses they could now pay themselves, and keep cover for the ones no savings could absorb: a serious illness where healthcare is private, a large claim from someone they injured, a home.\n\n→ Know someone who has more savings now? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Cover, legal minimums and safety nets differ by country.",
-    "tiktok": "You have €1,000 saved. What would a €500 loss take? Illustrative."
+    "instagram": "A cheaper policy raises your deductible by €2,000. When do premium savings catch up?\n\nThe part of a claim you pay yourself is the deductible, and raising it lowers the premium. In the lesson's example, moving it from €500 to €2,500 saves €300 a year. Seven claim free years save €2,100, a little more than the extra €2,000 one large claim would cost.\n\nThe catch is timing. A claim in the first years arrives before the savings have built up, so the extra has to come from cash already set aside. That is why people who raise a deductible tend to do it once their reserves could absorb it, and why it suits cover where claims are rare.\n\n→ Know someone weighing a higher deductible? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Premiums and deductibles differ by insurer and country.",
+    "tiktok": "A cheaper policy adds €2,000 to what you pay per claim. When do the premium savings catch up? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
     "insurancebasics",
-    "emergencysavings",
+    "deductible",
     "moneydecisions"
   ],
   "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Deductibles and cash reserves",
+    "Life cover and dependence",
+    "Liability limits"
+  ],
   "barStory": {
-    "mode": "segmented",
-    "unit": "€",
-    "basis": "The same €500 loss",
-    "hookFirstOnly": true,
+    "mode": "direct",
+    "proportional": true,
+    "unit": "EUR",
+    "basis": "A deductible raised from €500 to €2,500",
+    "hookBars": 1,
     "bars": [
       {
-        "id": "small",
-        "label": "Savings of €1,000",
-        "value": 1000,
-        "display": "€1,000",
-        "tone": "ink",
-        "segments": [
-          {
-            "label": "Loss",
-            "value": 500,
-            "display": "€500",
-            "tone": "amber"
-          },
-          {
-            "label": "Left",
-            "value": 500,
-            "display": "€500",
-            "tone": "teal"
-          }
-        ]
+        "id": "extra",
+        "label": "Extra cost per claim",
+        "value": 2000,
+        "display": "up to €2,000",
+        "tone": "amber"
       },
       {
-        "id": "large",
-        "label": "Savings of €4,000",
-        "value": 4000,
-        "display": "",
-        "tone": "teal",
-        "segments": [
-          {
-            "label": "Loss",
-            "value": 500,
-            "display": "€500",
-            "tone": "amber"
-          },
-          {
-            "label": "Left",
-            "value": 3500,
-            "display": "€3,500",
-            "tone": "teal"
-          }
-        ]
+        "id": "one",
+        "label": "Premium saved in one year",
+        "value": 300,
+        "display": "€300",
+        "tone": "teal"
+      },
+      {
+        "id": "seven",
+        "label": "Saved after 7 claim free years",
+        "value": 2100,
+        "display": "€2,100",
+        "tone": "teal"
       }
     ],
-    "disclosure": "Illustrative. Some losses are too large for almost any savings."
-  },
-  "lessonBlock": [
-    "Losses savings can absorb",
-    "Cover for large losses",
-    "Reviewing old policies"
-  ]
+    "disclosure": "Illustrative. Premium savings differ by insurer and policy."
+  }
 }

@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A pension covers part of a retirement budget; investments cover the rest",
+  "topic": "A pension reduces withdrawals only from the year it starts",
   "topicChip": "RETIREMENT · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Reel's own monthly example, illustrative: a €3,000 budget including tax, a €2,000 pension from the first day, €1,000 from investments. The lesson's yearly example: €55,000 of spending, €25,000 of pensions, €30,000 from the portfolio."
+    "notes": "Lesson figures: €55,000 of yearly spending including tax, €25,000 of pensions, €30,000 from the portfolio; the lesson's 25 times shortcut assumes the income is received from the first year. A pension starting at 67 is the reel's illustration of a later start."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "Your retirement budget is three thousand euros a month. Must your investments pay it all?",
+      "narration": "You retire before your pension starts. Can it reduce your investment withdrawals straight away?",
       "onscreenLines": [
-        "Your retirement budget is €3,000 a month",
-        "Must your investments pay it all?",
+        "You retire before your pension starts",
+        "Can it cut what you withdraw straight away?",
         ""
       ],
       "anchor": {
@@ -36,22 +36,20 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "This monthly budget includes any tax you expect to pay.",
-      "onscreenText": "Tax is included",
+      "narration": "Before the pension starts, investments cover all fifty five thousand euros of yearly spending.",
+      "onscreenText": "Before the pension",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second",
-        "segment": 0,
-        "note": "Including tax"
+        "stage": "first"
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "Suppose a pension pays two thousand euros from the day retirement begins.",
-      "onscreenText": "A pension pays part",
+      "narration": "At sixty seven, the pension begins paying twenty five thousand euros yearly.",
+      "onscreenText": "Pension begins",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -63,22 +61,8 @@
     {
       "id": "b3",
       "kind": "example",
-      "narration": "That leaves one thousand euros of the budget still uncovered.",
-      "onscreenText": "The amount still needed",
-      "subtext": "",
-      "emphasis": [],
-      "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "segment": 1,
-        "note": "€1,000 still uncovered"
-      }
-    },
-    {
-      "id": "b4",
-      "kind": "example",
-      "narration": "That remaining amount is what your investments need to provide.",
-      "onscreenText": "Investments cover the rest",
+      "narration": "Only then do investment withdrawals fall to thirty thousand euros.",
+      "onscreenText": "After it starts",
       "subtext": "",
       "emphasis": [],
       "anchor": {
@@ -86,18 +70,32 @@
         "stage": "second",
         "segment": 2
       }
+    },
+    {
+      "id": "b4",
+      "kind": "example",
+      "narration": "Applying that smaller gap to every year would leave the earlier years underfunded.",
+      "onscreenText": "Earlier years still count",
+      "subtext": "",
+      "emphasis": [],
+      "anchor": {
+        "type": "bars",
+        "stage": "second",
+        "segment": 2,
+        "note": "The years before 67 need the full €55,000"
+      }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone wondering how pensions change their retirement sums.",
+    "narration": "Send this to someone hoping to retire before their pension starts.",
     "onscreenText": "Send this to them",
-    "subtext": "A pension covers part of the bill",
+    "subtext": "Earlier years need their own funding",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your retirement budget is €3,000 a month. Must your investments pay it all?\n\nThe example: a pension pays €2,000 a month from the day retirement begins. That leaves €1,000 uncovered, and that gap is what investments need to provide.\n\nMany rules of thumb for the size of a retirement pot assume it pays for everything. With a pension or other lifelong income, the pot only has to cover the gap. In the lesson's yearly example, €25,000 of pensions against €55,000 of spending cuts an illustrative target from about €1.4 million to €750,000. A pension that starts later than retirement leaves a larger gap in the years before it.\n\n→ Know someone wondering how pensions change their retirement sums? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pensions, tax and retirement ages differ by country.",
-    "tiktok": "Your retirement budget is €3,000 a month. Must your investments pay it all? Illustrative."
+    "instagram": "You retire before your pension starts. Can it cut what you withdraw straight away?\n\nNo. In this example yearly spending is €55,000, including tax. Until the pension begins, investments cover all of it. From 67 the pension pays €25,000 a year, and only then do withdrawals fall to €30,000.\n\nA common shortcut sizes the retirement pot as 25 times the gap between spending and pension income: here €750,000 instead of about €1.4 million. That shortcut assumes the income arrives from the first year of retirement. A pension that starts later leaves the earlier years to be funded in full, on top of that. The 25 times figure is itself a US rule of thumb that many treat as optimistic for long retirements.\n\n→ Know someone hoping to retire before their pension starts? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pension ages, amounts and tax differ by country.",
+    "tiktok": "You retire before your pension starts. Can it cut what you withdraw straight away? Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -107,42 +105,54 @@
     "financialindependence"
   ],
   "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Pension start dates",
+    "Funding the gap years",
+    "Withdrawal rate limits"
+  ],
   "barStory": {
     "mode": "segmented",
     "unit": "€",
-    "basis": "One month in retirement",
-    "totalOnCallout": true,
-    "hookShowsTotal": true,
-    "hookFill": 0,
+    "basis": "Yearly spending of €55,000, including tax",
+    "hookFirstOnly": true,
     "bars": [
       {
-        "id": "bar",
-        "label": "Monthly retirement budget",
-        "sublabel": "including tax",
-        "value": 3000,
-        "display": "€3,000",
+        "id": "before",
+        "label": "Before the pension starts",
+        "value": 55000,
+        "display": "€55,000",
         "tone": "amber",
         "segments": [
           {
+            "label": "From investments",
+            "value": 55000,
+            "display": "€55,000",
+            "tone": "amber"
+          }
+        ]
+      },
+      {
+        "id": "after",
+        "label": "From age 67",
+        "value": 55000,
+        "display": "",
+        "tone": "teal",
+        "segments": [
+          {
             "label": "Pension",
-            "value": 2000,
-            "display": "€2,000",
+            "value": 25000,
+            "display": "€25,000",
             "tone": "ink"
           },
           {
             "label": "From investments",
-            "value": 1000,
-            "display": "€1,000",
-            "tone": "teal"
+            "value": 30000,
+            "display": "€30,000",
+            "tone": "amber"
           }
         ]
       }
     ],
-    "disclosure": "Illustrative. Pension amounts and start dates differ by country and person."
-  },
-  "lessonBlock": [
-    "Spending including tax",
-    "Pensions and other income",
-    "What investments must cover"
-  ]
+    "disclosure": "Illustrative. Pension ages and amounts differ by country and person."
+  }
 }

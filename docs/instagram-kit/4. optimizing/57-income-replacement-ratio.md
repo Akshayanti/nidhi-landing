@@ -12,12 +12,12 @@ withheld: Where the 70 to 80% figure comes from and where it breaks, building th
 
 ## Day 1 (angle)
 
-angle: Your pay before tax is €4,000 a month: would retirement need all of it?
-breadth: broad | Anyone with a salary who will one day stop working
-number: €4,000 of pay, a €3,000 retirement budget including tax: 75%. The reel says all three
-takeaway: A retirement budget as a share of pay is called the income replacement ratio; a household's own spending sets it.
-tool: The share sum. Pay now, the budget later, and the share between them.
-send_to: Someone wondering how much income retirement needs.
+angle: The rule says retirement needs 70 to 80% of your pay: what does that number assume?
+breadth: broad | Anyone who has seen a retirement estimate
+number: 70 to 80% of pay; saving 10 to 15%, work costs 5 to 10%, tax 5 to 10% drop away; real households 40% to over 100%. The reel says the ranges
+takeaway: The 70 to 80% figure assumes retirement saving, work costs and some tax drop away; where one of those does not, the figure is off.
+tool: The three assumptions. Saving that stops, work costs that stop, and tax that falls.
+send_to: Someone wondering where retirement estimates come from.
 send_why: number
 
 ## Day 1 (reel)
@@ -33,23 +33,23 @@ hashtags: #nidhi #nidhicompounding #retirementplanning #retirementincome #pensio
 
 ### Slide 1 (tool)
 
-alt: Tool card, the share sum, for your own retirement: pay before tax now; the budget later, including tax; and the share between them.
+alt: Tool card, the three assumptions, behind 70 to 80%: retirement saving stops; work costs stop; and tax falls with a lower income.
 
-band: The share sum
-lead: For your own retirement
-row: Pay | Now | ink | before tax
-row: Budget | Later | teal | including tax
-row: Share | Yours | warn | often quoted as 70 to 80%
-note: Illustrative.
+band: The three assumptions
+lead: Behind 70 to 80%
+row: Saving | Stops? | ink | 10 to 15% of pay
+row: Work costs | Stop? | teal | 5 to 10% of pay
+row: Tax | Falls? | warn | 5 to 10% of pay
+note: Illustrative. Mainly from US studies.
 
 ## Day 2 (angle)
 
-angle: Your retirement budget is €3,000 a month: must your investments pay it all?
-breadth: broad | Anyone expecting a pension of any size
-number: €3,000 budget, €2,000 pension, €1,000 from investments. The reel says all three
-takeaway: A pension or other lifelong income covers part of the budget; investments only need to cover the gap.
-tool: The gap sum. The budget, what pensions pay, and what is left for investments.
-send_to: Someone wondering how pensions change their retirement sums.
+angle: You retire before your pension starts: can it cut what you withdraw straight away?
+breadth: narrow | Needs a viewer thinking of stopping work before pension age
+number: €55,000 of yearly spending; a pension of €25,000 from age 67; €30,000 from investments after that. The reel says all four
+takeaway: A pension reduces what investments must cover only from the year it starts; the years before it need the full amount.
+tool: The pension timeline. Spending each year, when the pension starts, and what savings cover before and after.
+send_to: Someone hoping to retire before their pension starts.
 send_why: number
 
 ## Day 2 (reel)
@@ -65,36 +65,36 @@ hashtags: #nidhi #nidhicompounding #statepension #retirementgoals #financialinde
 
 ### Slide 1 (tool)
 
-alt: Tool card, the gap sum, for a month in retirement: the budget including tax; what pensions pay; and the gap left for investments.
+alt: Tool card, the pension timeline, year by year: yearly spending including tax; the age the pension starts; and what savings cover before and after it.
 
-band: The gap sum
-lead: For a month in retirement
-row: Budget | All of it | ink | including tax
-row: Pensions | Pay part | teal | from which year?
-row: Gap | Investments | warn | what is left to cover
-note: Illustrative.
+band: The pension timeline
+lead: Year by year
+row: Spending | Each year | ink | including tax
+row: Pension | From when? | teal | its start age
+row: Savings | Cover? | warn | before it and after
+note: Illustrative. Pension ages differ.
 
 ## Stories
 
 d1_f1_share: the day 1 reel
 d1_f1_time: at posting
-d1_f1_overlay: Need all your pay later?
-d1_f1_caption: A retirement budget as a share of pay
+d1_f1_overlay: 70 to 80% of what?
+d1_f1_caption: What the retirement rule assumes
 
 d1_f3_kind: tool
-d1_f3_alt: Story version of the share sum: pay before tax now, the budget later including tax, and the share between them.
+d1_f3_alt: Story version of the three assumptions: retirement saving stops, work costs stop, and tax falls with a lower income.
 d1_f3_time: evening
-d1_f3_caption: The share sum
+d1_f3_caption: The three assumptions
 
 d2_f1_share: the day 2 reel
 d2_f1_time: at posting
-d2_f1_overlay: Must savings pay it all?
-d2_f1_caption: What a pension covers
+d2_f1_overlay: Retiring before the pension?
+d2_f1_caption: A pension has a start date
 
 d2_f3_kind: tool
-d2_f3_alt: Story version of the gap sum: the budget including tax, what pensions pay, and the gap left for investments.
+d2_f3_alt: Story version of the pension timeline: yearly spending including tax, the age the pension starts, and what savings cover before and after.
 d2_f3_time: evening
-d2_f3_caption: The gap sum
+d2_f3_caption: The pension timeline
 
 d2_f4_kind: extra
 d2_f4_alt: Beyond this post: spending is rarely flat across thirty years of retirement; travel and leisure often rise early and fall later, while care costs can arrive late.

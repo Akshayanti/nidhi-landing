@@ -222,6 +222,7 @@ function ColumnVisual({ input, now }: { input: ReelInput; now: number }) {
   const active = currentBeat(input, now);
   const stage = active?.beat.anchor?.type === "columns" ? active.beat.anchor.stage : undefined;
   const pair = active?.beat.anchor?.type === "columns" ? active.beat.anchor.show : undefined;
+  const pairNote = active?.beat.anchor?.type === "columns" ? active.beat.anchor.note : undefined;
   const toolBeat = cardBeat(input);
   const toolSpan = spanFor(input, toolBeat, "b7");
   const tool = toolBeat?.anchor?.type === "card" ? toolBeat.anchor : undefined;
@@ -241,14 +242,15 @@ function ColumnVisual({ input, now }: { input: ReelInput; now: number }) {
       <ColumnHeading input={input} now={now} />
       {pair && (
         <>
-          <ColumnPanel group={story.left} left={68} top={470} width={462} height={880} compact hero reveal={1} items={pair.left} />
-          <ColumnPanel group={story.right} left={550} top={470} width={462} height={880} compact hero reveal={1} items={pair.right} />
+          <ColumnPanel group={story.left} left={68} top={470} width={462} height={pairNote ? 780 : 880} compact hero reveal={1} items={pair.left} />
+          <ColumnPanel group={story.right} left={550} top={470} width={462} height={pairNote ? 780 : 880} compact hero reveal={1} items={pair.right} />
+          {pairNote && <div style={{ position: "absolute", left: 68, right: 68, top: 1275, padding: "24px 30px", borderRadius: 18, background: BRAND.ink, color: BRAND.paper, textAlign: "center", fontFamily: TYPE.ui, fontSize: 40, lineHeight: 1.15, fontWeight: 790 }}>{pairNote}</div>}
         </>
       )}
       {!pair && (stage === "left" || stage === "left-rule") && <SingleColumn input={input} now={now} group={story.left} stage="left" ruleStage="left-rule" />}
       {!pair && (stage === "right" || stage === "right-rule") && <SingleColumn input={input} now={now} group={story.right} stage="right" ruleStage="right-rule" />}
-      {stage === "buffers" && <Buffers input={input} now={now} />}
-      {stage === "swap" && <SwapVisual input={input} now={now} />}
+      {!pair && stage === "buffers" && <Buffers input={input} now={now} />}
+      {!pair && stage === "swap" && <SwapVisual input={input} now={now} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1465, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 560, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
   );

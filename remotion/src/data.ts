@@ -416,6 +416,8 @@ export type BeatAnchor =
       stage: ColumnStage;
       /** This beat: both columns side by side, holding exactly these tiles (a record at home, nothing yet abroad). */
       show?: { left: string[]; right: string[] };
+      /** With `show`: one line in a box under both columns. */
+      note?: string;
     }
   | { type: "routes"; stage: RouteStage }
   | { type: "bands"; stage: BandStage }

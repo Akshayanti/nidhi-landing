@@ -443,7 +443,7 @@ function DirectBarVisual({ input, now }: { input: ReelInput; now: number }) {
       )}
       {showBars && <ResolvedBars bars={bars} reveal={enter} top={stage === "first" ? 650 : 540} stagger={false} labelsReveal={enter} scaleMax={Math.max(1, ...story.bars.map((bar) => bar.value))} minBarWidth={story.minBarWidth ?? (story.proportional ? 69 : undefined)} />}
       {showRatio && callout && <ComparisonCallout input={input} amount={callout.display} label={anchor?.callout ? anchor.callout.label ?? "" : undefined} opacity={anchor?.callout ? 1 : enter} />}
-      {anchor?.note && <BeatNote text={anchor.note} top={1262} opacity={enter} />}
+      {anchor?.note && <BeatNote text={anchor.note} top={bars.length > 2 ? 1330 : 1262} opacity={enter} />}
       <div style={{ position: "absolute", left: 76, right: 150, top: 1450, fontFamily: TYPE.ui, fontSize: 23, lineHeight: 1.3, fontWeight: 550, color: BRAND.inkMuted }}>{story.disclosure}</div>
     </div>
   );

@@ -8,20 +8,20 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "A retirement budget as a share of pay is the income replacement ratio",
+  "topic": "What the 70 to 80% retirement rule assumes, and where an assumption fails",
   "topicChip": "RETIREMENT · PART 1/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Reel's own monthly example, illustrative: €4,000 a month before tax, a €3,000 retirement budget including tax: 75%. The lesson's yearly example is €80,000 and €60,000, the same 75%."
+    "notes": "Lesson: the 70 to 80% figure rests on retirement saving stopping (10 to 15% of gross pay), work costs stopping (5 to 10%) and tax falling (5 to 10%): roughly 20 to 30% removed. Real households can sit 20 points either side: some live on 40 to 50%, others need 100% or more."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "Your pay before tax is four thousand euros a month. Would retirement need all of it?",
+      "narration": "A common rule says retirement needs seventy to eighty percent of your pay. What does it assume?",
       "onscreenLines": [
-        "Your pay before tax is €4,000 a month",
-        "Would retirement need all of it?",
+        "The rule says retirement needs 70 to 80% of your pay",
+        "What does that number assume?",
         ""
       ],
       "anchor": {
@@ -36,75 +36,67 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "Suppose your retirement budget, including tax, is three thousand euros.",
-      "onscreenText": "Your retirement budget",
+      "narration": "It assumes saving for retirement stops: often ten to fifteen percent of pay.",
+      "onscreenText": "Retirement saving stops",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
-        "stage": "second"
+        "stage": "second",
+        "segment": 1
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "That is seventy five percent of your pay before tax.",
-      "onscreenText": "Share of pay",
+      "narration": "And work costs, like commuting: another five to ten.",
+      "onscreenText": "Work costs stop",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second",
-        "callout": {
-          "display": "75%",
-          "label": "of pay before tax"
-        }
+        "segment": 2
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "That share of pay is called your income replacement ratio.",
-      "onscreenText": "Income replacement ratio",
+      "narration": "And lower tax: five to ten more.",
+      "onscreenText": "Tax often falls",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second",
-        "callout": {
-          "display": "75%",
-          "label": "income replacement ratio"
-        }
+        "segment": 4
       }
     },
     {
       "id": "b4",
       "kind": "example",
-      "narration": "Your own spending could give a different share.",
-      "onscreenText": "Spending changes the share",
+      "narration": "Already working from home, or saved little? Less drops away. Households range from forty percent to over a hundred.",
+      "onscreenText": "An assumption can fail",
       "subtext": "",
       "emphasis": [],
       "anchor": {
         "type": "bars",
         "stage": "second",
-        "callout": {
-          "display": "75%",
-          "label": "income replacement ratio"
-        },
-        "note": "Illustrative budget. Your share can differ"
+        "segment": 4,
+        "note": "Real households: 40% to over 100%"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone wondering how much income retirement needs.",
+    "narration": "Send this to someone wondering where retirement estimates come from.",
     "onscreenText": "Send this to them",
-    "subtext": "Part 2: what can a pension cover?",
+    "subtext": "Part 2: what if the pension starts later?",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your pay before tax is €4,000 a month. Would retirement need all of it?\n\nThe example: a retirement budget of €3,000 a month, including tax, is 75% of that pay. The share has a name: the income replacement ratio.\n\nThe figure quoted most often is 70 to 80%. It comes mainly from US planning studies and rests on three things changing: saving for retirement stops, work costs stop, and tax often falls. Each can be wrong for a given household. Some live well on 40 to 50% of their old income; others need all of it or more. The lesson shows how to build the number line by line from current spending.\n\n→ Know someone wondering how much income retirement needs? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Retirement costs, pensions and tax differ by country.",
-    "tiktok": "Your pay before tax is €4,000 a month. Would retirement need all of it? Illustrative."
+    "instagram": "The rule says retirement needs 70 to 80% of your pay. What does that number assume?\n\nThree things dropping away when work stops. Saving for retirement itself, often 10 to 15% of pay before tax. Work costs such as commuting, another 5 to 10%. And tax, which often falls with a lower income, 5 to 10% more. Together that is roughly 20 to 30% of pay gone without any change in how someone lives.\n\nEach assumption can be wrong for a given household. Someone who saved little privately, already works from home, or will be taxed on retirement income much as on wages has less to drop. Real households sit well either side: some live on 40 to 50% of their old income, others need 100% or more. The figure comes mainly from US planning studies; the lesson builds the number line by line from actual spending.\n\n→ Know someone wondering where retirement estimates come from? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Pensions, tax and costs in retirement differ by country.",
+    "tiktok": "The rule says retirement needs 70 to 80% of your pay. What does that number assume? Illustrative."
   },
   "hashtags": [
     "nidhi",
@@ -114,34 +106,54 @@
     "pensionplanning"
   ],
   "hookStyle": "questionOverPicture",
+  "lessonBlock": [
+    "Where the benchmark breaks",
+    "Building from actual costs",
+    "Pensions and timing"
+  ],
   "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "unit": "EUR",
-    "basis": "Monthly",
-    "hookBars": 1,
+    "mode": "segmented",
+    "unit": "%",
+    "basis": "Shares of pay before tax",
+    "totalOnCallout": true,
+    "hookShowsTotal": true,
+    "hookFill": 0,
     "bars": [
       {
         "id": "pay",
         "label": "Your pay before tax",
-        "value": 4000,
-        "display": "€4,000",
-        "tone": "ink"
-      },
-      {
-        "id": "budget",
-        "label": "Retirement budget",
-        "sublabel": "including tax",
-        "value": 3000,
-        "display": "€3,000",
-        "tone": "teal"
+        "sublabel": "an illustrative split",
+        "value": 100,
+        "display": "70 to 80%",
+        "tone": "amber",
+        "segments": [
+          {
+            "label": "Saving",
+            "value": 10,
+            "display": "10%",
+            "tone": "ink"
+          },
+          {
+            "label": "Work costs",
+            "value": 5,
+            "display": "5%",
+            "tone": "teal"
+          },
+          {
+            "label": "Lower tax",
+            "value": 5,
+            "display": "5%",
+            "tone": "ink"
+          },
+          {
+            "label": "Still needed",
+            "value": 80,
+            "display": "80%",
+            "tone": "amber"
+          }
+        ]
       }
     ],
-    "disclosure": "Illustrative. The share differs a lot between households and countries."
-  },
-  "lessonBlock": [
-    "Costs that change",
-    "Your retirement budget",
-    "Pensions and other income"
-  ]
+    "disclosure": "Illustrative. The figure comes mainly from US planning studies."
+  }
 }

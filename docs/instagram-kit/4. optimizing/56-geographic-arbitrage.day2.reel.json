@@ -8,24 +8,24 @@
   "availableFigures": [],
   "mode": "riff",
   "mood": "curious",
-  "topic": "Earning in one currency and spending in another: the same local prices can cost more",
+  "topic": "Staying under 183 days does not on its own settle tax residency",
   "topicChip": "LIVING ABROAD · PART 2/2",
   "assumptions": {
     "currency": "EUR",
-    "notes": "Reel's own example, illustrative: €2,000 of monthly bills in local money; the local currency rises 25%, so the same bills cost €2,500. The lesson's figure: major currencies can move 20 to 30% over a few years."
+    "notes": "Lesson: 183 days is a common starting test; many countries add ties to a home, work or family, or where life is centred."
   },
   "hookVariants": [
     {
       "id": "h",
       "layout": "bar-gap",
-      "narration": "Your monthly bills abroad cost two thousand euros. Could unchanged local prices still cost you more?",
+      "narration": "Does staying below one hundred and eighty three days settle where you owe tax?",
       "onscreenLines": [
-        "Your monthly bills abroad cost €2,000",
-        "Can the same local prices cost you more?",
+        "You plan fewer than 183 days abroad",
+        "Does that settle where you owe tax?",
         ""
       ],
       "anchor": {
-        "type": "bars",
+        "type": "columns",
         "stage": "hook"
       },
       "emphasis": []
@@ -36,111 +36,135 @@
     {
       "id": "b1",
       "kind": "example",
-      "narration": "The bills stay the same in local money.",
-      "onscreenText": "Same local prices",
+      "narration": "That can avoid one test based on days.",
+      "onscreenText": "One possible test",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "first"
+        "type": "columns",
+        "stage": "left",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": []
+        }
       }
     },
     {
       "id": "b2",
       "kind": "example",
-      "narration": "But buying that local money now costs five hundred euros more.",
-      "onscreenText": "Local money costs more",
+      "narration": "But some countries also consider a home, work or family.",
+      "onscreenText": "Other connections",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "first",
-        "callout": {
-          "display": "€500",
-          "label": "more for the same local money"
+        "type": "columns",
+        "stage": "right",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
         }
       }
     },
     {
       "id": "b3",
       "kind": "example",
-      "narration": "So those same bills now take two thousand five hundred euros.",
-      "onscreenText": "A higher euro bill",
+      "narration": "They may still count you as living there for tax. That's tax residency.",
+      "onscreenText": "Still counted",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "callout": {
-          "display": "€500",
-          "label": "more for the same local money"
-        }
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
+        },
+        "note": "May still be resident for tax"
       }
     },
     {
       "id": "b4",
       "kind": "example",
-      "narration": "With unchanged euro pay, five hundred less is left to save.",
-      "onscreenText": "Less left to save",
+      "narration": "So counting days alone cannot settle the tax cost of your move.",
+      "onscreenText": "The unresolved cost",
       "subtext": "",
       "emphasis": [],
       "anchor": {
-        "type": "bars",
-        "stage": "second",
-        "callout": {
-          "display": "€500",
-          "label": "more for the same local money"
+        "type": "columns",
+        "stage": "right-rule",
+        "show": {
+          "left": [
+            "Fewer than 183 days",
+            "May avoid this test"
+          ],
+          "right": [
+            "Home",
+            "Work",
+            "Family"
+          ]
         },
-        "note": "€500 less left each month"
+        "note": "Days alone do not settle it"
       }
     }
   ],
   "cta": {
     "approved": "share",
-    "narration": "Send this to someone who earns and spends in different currencies.",
+    "narration": "Send this to someone counting days abroad.",
     "onscreenText": "Send this to them",
-    "subtext": "Same prices, different euro cost",
+    "subtext": "A short stay can still matter",
     "handle": "@nidhi.today"
   },
   "caption": {
-    "instagram": "Your monthly bills abroad cost €2,000. Can the same local prices cost you more?\n\nThe example: the bills do not change in local money, but the local currency rises against the euro, so buying it costs €500 more. The same bills now take €2,500, and with unchanged euro pay, €500 less is left each month.\n\nMajor currencies can move 20 to 30% over a few years without any crisis, in either direction. Two habits people describe: converting savings as needed, not all at once, and in retirement holding more of the currency they spend in.\n\n→ Know someone who earns and spends in different currencies? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Exchange rates move in both directions.",
-    "tiktok": "Your monthly bills abroad cost €2,000. Can the same local prices cost you more? Illustrative."
+    "instagram": "You plan fewer than 183 days abroad. Does that settle where you owe tax?\n\nNot on its own. Spending more than 183 days in a country is a common starting test for tax residency, and staying under it can avoid that one test. Many countries add others: a home there, work, family, where your life is centred, or days averaged over several years. A few months somewhere does not necessarily change residency; a long lease, local registration and 200 days often does.\n\nTreaties between countries stop most income being taxed twice in full, but only when claimed correctly, and some countries tax unrealised gains when you leave. Tax can reduce or remove the saving from a move, depending on the two countries and the kind of income.\n\n→ Know someone counting days abroad? Send them this.\n\nPart of the Money, Compounding series: short reels on fine tuning a plan you already have.\n\nIllustrative. Residency rules differ by country. Not tax advice.",
+    "tiktok": "You plan fewer than 183 days abroad. Does that settle where you owe tax? Illustrative."
   },
   "hashtags": [
     "nidhi",
     "nidhicompounding",
-    "exchangerate",
+    "taxresidency",
     "digitalnomadlife",
     "movingoverseas"
   ],
   "hookStyle": "questionOverPicture",
-  "barStory": {
-    "mode": "direct",
-    "proportional": true,
-    "unit": "EUR",
-    "basis": "Monthly bills",
-    "hookBars": 1,
-    "bars": [
-      {
-        "id": "before",
-        "label": "Your bills, in euros",
-        "value": 2000,
-        "display": "€2,000",
-        "tone": "ink"
-      },
-      {
-        "id": "after",
-        "label": "Same bills, new exchange rate",
-        "value": 2500,
-        "display": "€2,500",
-        "tone": "amber"
-      }
-    ],
-    "disclosure": "Illustrative. Exchange rates can also move the other way."
-  },
   "lessonBlock": [
-    "Currency and spending power",
-    "Healthcare costs abroad",
-    "Family and distance"
-  ]
+    "Tax residency tests",
+    "Double taxation treaties",
+    "Visa and work rights"
+  ],
+  "columnStory": {
+    "left": {
+      "id": "days",
+      "title": "Days abroad",
+      "rule": "One test",
+      "items": [
+        "Fewer than 183 days"
+      ],
+      "tone": "teal"
+    },
+    "right": {
+      "id": "ties",
+      "title": "Connections there",
+      "rule": "Other tests",
+      "items": [],
+      "tone": "amber"
+    },
+    "disclosure": "Illustrative. Residency tests differ by country. Not tax advice."
+  }
 }
