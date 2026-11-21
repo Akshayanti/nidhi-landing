@@ -2,7 +2,7 @@
  * What the homepage links to, chosen at build time from the blog collection.
  *
  * The homepage names lessons by slug in two places: the routes in the lessons
- * section, and the two situations in the hero ("Which sounds like you?").
+ * section, and the three situations in the hero ("Which sounds like you?").
  * Routes go through the same filter as everything else on the site, so a
  * scheduled post never gets a homepage link before its pubDate and a gated
  * tool never appears before it launches. A situation is a whole chain (lesson,
@@ -112,6 +112,9 @@ export function liveTools(isToolLive: (href: string) => boolean): Array<{ href: 
  * opens at its one address; the tool is localized by the page.
  */
 export const SITUATIONS = [
+  // First: someone new to money (#400). Lesson 1 of the learning path, which
+  // is also where the hero's "Read lesson 1" button leads.
+  { id: 'basics', lesson: 'what-is-net-worth', tool: '/free/multi-currency-net-worth/' },
   { id: 'currencies', lesson: 'managing-money-across-currencies', tool: '/free/multi-currency-net-worth/' },
   { id: 'loans', lesson: 'understanding-loan-terms', tool: '/free/loan-comparison/' },
 ] as const;

@@ -67,7 +67,7 @@ const EXPECTED_LABELS: string[] = [
   'free-invest-or-pay-off-export-xlsx', 'free-invest-or-pay-off-lesson-link', 'free-invest-or-pay-off-share',
   'free-monte-carlo-export-pdf', 'free-monte-carlo-export-xlsx', 'free-monte-carlo-net-worth-link',
   'free-monte-carlo-reset', 'free-monte-carlo-share', 'home-cta-about', 'home-cta-beliefs', 'home-cta-blog',
-  'home-editorial-policy', 'home-help-volunteer', 'home-hero-find', 'home-hero-planner', 'home-inclusive-finances',
+  'home-editorial-policy', 'home-help-volunteer', 'home-hero-find', 'home-hero-lesson-1', 'home-hero-planner', 'home-inclusive-finances',
   'home-lessons-head', 'home-level-helper', 'home-planner-head', 'home-privacy', 'home-tools-head',
   'home-tools-privacy', 'home-volunteers', 'instagram', 'lc-export-pdf', 'lc-export-xlsx', 'lc-reset',
   'lc-share-copy', 'lc-vendor-add', 'lc-vendor-remove', 'learn-editorial', 'lesson-copy-link', 'lesson-save-pdf',

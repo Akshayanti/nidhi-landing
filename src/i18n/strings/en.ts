@@ -1354,12 +1354,15 @@ export const en = {
       plannerLink: 'See the planner',
     },
     /**
-     * "Which sounds like you?", beside the hero: two readers' situations, each
+     * "Which sounds like you?", beside the hero: three readers' situations, each
      * followed through a lesson (Read), a free tool (Try) and the planner
      * (Plan). Keyed by `SITUATIONS` in src/utils/home/startingPoints.ts. Each
      * `who` is a reader speaking, so it carries its own quotation marks;
      * `lesson` is a short form of the lesson's title (the lesson itself is in
-     * English), and `plan` names the planner question in `planner.questions`.
+     * English), and the Plan row is the planner question in `planner.questions`.
+     * The reader who is new to money (`basics`, first) gets no invented planner
+     * question: its `plan` says what the planner brings together, in the
+     * planner section's own words, without quotation marks.
      */
     situations: {
       heading: 'Which sounds like you?',
@@ -1373,6 +1376,7 @@ export const en = {
       /** Jumps to the lessons section; the page adds the arrow. */
       moreLink: 'Find yours',
       items: {
+        basics: { who: '“I’m new to money and want a clear place to start.”', lesson: 'What is net worth?', plan: 'What you own, owe, earn and spend, together' },
         currencies: { who: '“I have money in more than one country.”', lesson: 'Managing money across currencies' },
         loans: { who: '“I’m comparing loan offers.”', lesson: 'How to compare loan terms' },
       },

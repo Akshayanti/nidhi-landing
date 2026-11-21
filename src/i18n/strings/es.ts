@@ -1147,6 +1147,7 @@ export const es: Dict = {
       more: 'Muchas más preguntas como estas, en {lessons} lecciones y {tools} herramientas.',
       moreLink: 'Encuentra la tuya',
       items: {
+        basics: { who: '«Las finanzas son nuevas para mí y busco un punto de partida claro»', lesson: '¿Qué es el patrimonio neto?', plan: 'Lo que tienes, lo que debes, lo que ganas y lo que gastas, todo junto' },
         currencies: { who: '«Tengo dinero en más de un país»', lesson: 'Gestionar el dinero en varias monedas' },
         loans: { who: '«Estoy comparando ofertas de préstamo»', lesson: 'Cómo comparar las condiciones de un préstamo' },
       },

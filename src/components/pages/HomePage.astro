@@ -9,8 +9,8 @@
  *
  * The page shows, for one reader at a time, how the three parts of nidhi work
  * together: read a lesson, try it on your own numbers with a free tool, and
- * (soon) see the whole picture in the planner. The hero does that with two
- * situations; the sections below are the lessons, the tools and the planner,
+ * (soon) see the whole picture in the planner. The hero leads with lesson 1
+ * and shows three readers' situations (#400; owner and council, Nov 21 2026); the sections below are the lessons, the tools and the planner,
  * then who is behind it and two common questions. The design and the
  * decisions behind it are in docs/plans/homepage-variant-c.md.
  *
@@ -42,7 +42,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const { home, learn, footer, fullStop, howTo } = dict(locale);
+const { home, learn, blogIndex, footer, fullStop, howTo } = dict(locale);
 
 /** This page's own address for a root-relative path. */
 const href = (path: string) => localizedPath(locale, path);
@@ -77,8 +77,15 @@ const counts = levelCounts(allPosts, now);
 /** A catalog question without its outer quotation marks, in any of the five languages' styles. */
 const unquote = (q: string) => q.replace(/^[“„«"]\s*/, '').replace(/\s*[”“»"]$/, '');
 
-// Each situation ends on one of the planner section's questions.
-const planQuestion = { currencies: home.planner.questions.currencies, loans: home.planner.questions.loan };
+// Each situation ends on one of the planner section's questions, or, for the
+// reader who is new to money, on what the planner brings together: no planner
+// question is invented for them (council, Nov 21 2026).
+const planQuestion = { basics: home.situations.items.basics.plan, currencies: home.planner.questions.currencies, loans: home.planner.questions.loan };
+// The hero's button opens lesson 1, the lesson the learning path's "Read
+// lesson 1" opens for a new reader, which is also the first situation's lesson.
+const lessonOne = situations.find((s) => s.id === 'basics')!.lesson;
+// Click labels: the beginner situation's links carry none (council, Nov 21 2026).
+const unlabelled = (id: string) => id === 'basics';
 
 // The names of things the catalog keys by id, read through a lookup rather than
 // indexed directly, so a card whose id the catalog does not carry renders an
@@ -168,23 +175,17 @@ const faqSchema = {
   mainClass="landing-shell"
   bodyData={{ 'data-page': 'landing' }}
 >
-  {/* The call for volunteer translators, directly under the header. The whole
-       bar is one link. Remove it, with its catalog strings, the volunteer card
-       below and the privacy changelog's mention, when the call closes. */}
-  <a class="vol-bar" href={href('/volunteers/')} data-attr="home-volunteers">
-    <span>{home.volunteers.text}</span>
-    <span class="vol-bar-pill">{home.volunteers.link}&nbsp;<span aria-hidden="true">&rarr;</span></span>
-  </a>
-
   {/* =============================================================
-       1. Hero: the promise, and two readers' situations
+       1. Hero: the promise, lesson 1, and three readers' situations
        ============================================================= */}
   <section class="lp-section" id="hero" aria-labelledby="hero-heading">
     <div class="lp-section-inner hero-grid">
       <div class="hero-copy">
         <h1 id="hero-heading">{home.hero.heading}</h1>
         <p class="hero-lead">{home.hero.lead}</p>
-        <p class="hero-jump">
+        {/* Lesson 1 first, the planner a quieter link under it (#400). */}
+        <p class="hero-actions">
+          <a class="btn btn--primary hero-start" href={lessonOne.href} data-attr="home-hero-lesson-1" {...lessonLang}>{blogIndex.island.readLesson1}</a>
           <a class="jump" href="#signup" data-attr="home-hero-planner">{home.hero.plannerLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
         </p>
         {/* Outside English, said here too and not only in the lessons section:
@@ -201,17 +202,32 @@ const faqSchema = {
             <li class="sit">
               <h3 class="sit-who" id={`sit-${s.id}`}>{home.situations.items[s.id].who}</h3>
               <ol class="chain" role="list" aria-labelledby={`sit-${s.id}`}>
+                {/* The same two links, with or without their click labels. */}
                 <li>
-                  <a class="chain-row chain-go" href={s.lesson.href} data-attr={`home-sit-${s.id}-lesson`} {...lessonLang}>
-                    <span class="chain-k">{home.situations.read}</span>
-                    <span class="chain-t"><span class="chain-u">{home.situations.items[s.id].lesson}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
-                  </a>
+                  {unlabelled(s.id) ? (
+                    <a class="chain-row chain-go" href={s.lesson.href} {...lessonLang}>
+                      <span class="chain-k">{home.situations.read}</span>
+                      <span class="chain-t"><span class="chain-u">{home.situations.items[s.id].lesson}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                  ) : (
+                    <a class="chain-row chain-go" href={s.lesson.href} data-attr={`home-sit-${s.id}-lesson`} {...lessonLang}>
+                      <span class="chain-k">{home.situations.read}</span>
+                      <span class="chain-t"><span class="chain-u">{home.situations.items[s.id].lesson}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                  )}
                 </li>
                 <li>
-                  <a class="chain-row chain-go" href={href(s.tool.href)} data-attr={`home-sit-${s.id}-tool`}>
-                    <span class="chain-k">{home.situations.try}</span>
-                    <span class="chain-t"><span class="chain-u">{home.toolCards[s.tool.key].name}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
-                  </a>
+                  {unlabelled(s.id) ? (
+                    <a class="chain-row chain-go" href={href(s.tool.href)}>
+                      <span class="chain-k">{home.situations.try}</span>
+                      <span class="chain-t"><span class="chain-u">{home.toolCards[s.tool.key].name}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                  ) : (
+                    <a class="chain-row chain-go" href={href(s.tool.href)} data-attr={`home-sit-${s.id}-tool`}>
+                      <span class="chain-k">{home.situations.try}</span>
+                      <span class="chain-t"><span class="chain-u">{home.toolCards[s.tool.key].name}</span>&nbsp;<span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                  )}
                 </li>
                 <li>
                   <p class="chain-row chain-plan">
@@ -413,6 +429,16 @@ const faqSchema = {
       </div>
     </div>
   </section>
+
+  {/* The call for volunteer translators: the last thing on the home page,
+       directly above the footer (#400; owner, "footer on that page only").
+       The whole bar is one link. Remove it, with its catalog strings, the
+       volunteer card above and the privacy changelog's mention, when the call
+       closes. */}
+  <a class="vol-bar" href={href('/volunteers/')} data-attr="home-volunteers">
+    <span>{home.volunteers.text}</span>
+    <span class="vol-bar-pill">{home.volunteers.link}&nbsp;<span aria-hidden="true">&rarr;</span></span>
+  </a>
 </BaseLayout>
 
 <script>
@@ -461,7 +487,7 @@ const faqSchema = {
 
 <style>
   /* ----------------------------------------------------------------
-     Volunteer bar, under the header: soft, with the link drawn as an
+     Volunteer bar, above the footer: soft, with the link drawn as an
      outlined pill. One link; at least 44px tall on phones.
      ---------------------------------------------------------------- */
   .vol-bar {
@@ -474,7 +500,7 @@ const faqSchema = {
     min-height: 44px;
     padding: 8px 16px;
     background: var(--color-bg-subtle);
-    border-bottom: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
     color: var(--color-text-primary);
     text-decoration: none;
     font-size: var(--text-small);
@@ -616,7 +642,16 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
-  .hero-jump { margin: 8px 0 0; }
+  /* The button, then the planner link on its own line under it, at every width. */
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    margin: var(--space-5) 0 0;
+  }
+  /* A long translation wraps inside the button rather than widening the page. */
+  .hero-start { max-width: 100%; white-space: normal; text-align: center; }
 
   .jump {
     display: inline-flex;
@@ -637,7 +672,7 @@ const faqSchema = {
 
   @media (min-width: 900px) { .sits-heading { font-size: var(--text-lead); margin-top: 0; } }
 
-  .sits-list { list-style: none; margin: 0; padding: 0; }
+  .sits-list { list-style: none; margin: 0; padding: 0; container-type: inline-size; }
 
   .sit { padding: 14px 0 10px; }
   .sit + .sit { border-top: 1px solid var(--color-border); }
@@ -705,6 +740,14 @@ const faqSchema = {
   .chain-go:hover .chain-u,
   .chain-go:focus-visible .chain-u { text-decoration-thickness: 2px; }
   :global(html:is([lang='hi'], [lang='mr'])) .chain-go .chain-u { text-underline-offset: 0.35em; }
+
+  /* At a large text size on a narrow screen the label column would take the
+     whole width (#745). Under 15em of room (in the list's own text size, so
+     never at 100%), each label sits above its link instead. */
+  @container (max-width: 15em) {
+    .chain { grid-template-columns: minmax(0, 1fr); }
+    .chain-row { row-gap: 2px; }
+  }
 
   .chain-plan { padding: 8px 0 4px; }
   /* Not a link yet: muted, no arrow, and a status line of its own under it. */
@@ -780,7 +823,7 @@ const faqSchema = {
 
   .route {
     display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     column-gap: 16px;
     row-gap: 2px;
     align-items: center;
@@ -794,8 +837,10 @@ const faqSchema = {
     grid-row: 1 / span 2;
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    /* Grows with the reader's text size, so its number stays inside the ring. */
+    width: max(32px, 2.25em);
+    height: max(32px, 2.25em);
+    line-height: 1;
     border: 1.5px solid var(--start-level);
     border-radius: 50%;
     background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
@@ -991,12 +1036,17 @@ const faqSchema = {
     font-style: italic;
     line-height: 1.5;
     color: var(--color-text-primary);
+    /* The opening quote mark hangs in the margin, inside the paragraph's own
+       box: the box starts 0.42em early, and every line but the first is
+       pushed back in line with the label above. */
+    margin-inline-start: -0.42em;
+    padding-inline-start: 0.42em;
     text-indent: -0.42em;
     text-wrap: pretty;
   }
 
   /* No faked italics or Latin serif for Devanagari, once the note is translated. */
-  .note-say:is(:lang(hi), :lang(mr)) p { font-family: var(--font-body); font-style: normal; text-indent: 0; }
+  .note-say:is(:lang(hi), :lang(mr)) p { font-family: var(--font-body); font-style: normal; text-indent: 0; margin-inline-start: 0; padding-inline-start: 0; }
 
   .note-by {
     font-family: var(--font-personal);
@@ -1099,13 +1149,22 @@ const faqSchema = {
 
     /* Routes: the start link drops under the title, so long titles keep room. */
     .route {
-      grid-template-columns: 28px minmax(0, 1fr);
+      grid-template-columns: auto minmax(0, 1fr);
       column-gap: 12px;
       align-items: start;
       padding: 14px 2px;
     }
-    .route-badge { grid-row: 1; width: 28px; height: 28px; font-size: var(--text-caption); }
+    .route-badge { grid-row: 1; width: max(28px, 2.25em); height: max(28px, 2.25em); font-size: var(--text-caption); }
     .route-title { font-size: var(--text-base); }
     .route-go { grid-column: 2; grid-row: auto; max-width: none; text-align: left; margin-top: 4px; }
+  }
+
+  /* At a large text size on a narrow screen the badge takes its own line, so
+     the title keeps the whole width and no word is broken (#745). */
+  .routes { container-type: inline-size; }
+  @container (width < 16em) {
+    .route { grid-template-columns: minmax(0, 1fr); }
+    .route-badge { grid-row: auto; }
+    .route-meta, .route-go { grid-column: 1; }
   }
 </style>

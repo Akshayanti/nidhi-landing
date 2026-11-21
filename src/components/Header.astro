@@ -259,6 +259,7 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
   .logo {
     display: flex;
     align-items: center;
+    min-width: 0;
     gap: var(--space-2);
     text-decoration: none;
     color: var(--color-deep-blue);
@@ -292,11 +293,13 @@ for (const l of LOCALES) prefixes[l] = localePrefix(l);
     letter-spacing: -0.02em;
   }
 
+  /* One line whenever the row has room for it (the controls move to a row of
+     their own first); at the largest text sizes it wraps rather than running
+     past the edge. */
   .logo-tagline {
     font-size: var(--text-ui);
     line-height: 1.15;
     color: var(--color-teal);
-    white-space: nowrap;
   }
 
   .tagline-strip { display: none; }

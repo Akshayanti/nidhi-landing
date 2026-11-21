@@ -30,6 +30,9 @@
 //   smaller to fit, left filling under 85% of its line (only the longest of a
 //   group that shares one size is held to that); and an amount in a tool's
 //   results that is not drawn as a unit at all
+// - chart: text inside a chart's SVG that runs past the drawing (or the box
+//   that clips it), sits on top of another label, or is drawn below 75% of
+//   the reader's text size: chart text grows with the page's (#676)
 // It counts, without failing, the numbers and words that are wider than the
 // line they sit in. Those have to break somewhere, so the counts are for
 // comparing a change with what was there before.
@@ -42,7 +45,7 @@
 // they fail. The 85% check is left out of that pass.
 //
 // What it does not reach: Safari, Firefox, a phone's own text-size setting,
-// dialogs, printed reports and the insides of charts.
+// dialogs, printed reports, and a chart's lines and shapes (its text is checked).
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -79,7 +82,7 @@ function measure(CHECK_FILL) {
   // A currency symbol against a figure, on either side.
   const RAW = /\p{Sc}[\u00a0\u202f]?\d[\d.,'\u00a0\u202f]*|\d[\d.,'\u00a0\u202f]*[\u00a0\u202f]?(?:\p{Sc}|K\u010d)/u;
   const vw = document.documentElement.clientWidth;
-  const out = { scroll: 0, culprits: [], spill: [], cut: [], overlap: [], split: [], amount: [], forcedNumbers: 0, forcedWords: 0, forcedSamples: [] };
+  const out = { scroll: 0, culprits: [], spill: [], cut: [], overlap: [], split: [], amount: [], chart: [], forcedNumbers: 0, forcedWords: 0, forcedSamples: [] };
   const name = (el) => {
     const cls = typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '';
     return el.tagName.toLowerCase() + cls;
@@ -308,6 +311,48 @@ function measure(CHECK_FILL) {
     }
   }
   out.overlap = [...found].slice(0, 6);
+
+  // Chart text (#676): every label drawn inside a chart's SVG grows with the
+  // reader's text size, stays inside the drawing, and sits clear of every
+  // other label. A label the chart left off is simply not there.
+  const root = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  for (const svg of document.querySelectorAll('svg')) {
+    if (hidden(svg)) continue;
+    const texts = [...svg.querySelectorAll('text')].filter((t) => t.textContent.trim() && t.checkVisibility({ visibilityProperty: true }) && !t.closest('[visibility="hidden"]'));
+    if (!texts.length) continue;
+    const sb = svg.getBoundingClientRect();
+    if (sb.width < 2) continue;
+    const vb = svg.viewBox.baseVal;
+    const scale = vb && vb.width ? Math.min(sb.width / vb.width, sb.height / vb.height) : 1;
+    const label = (t) => `"${t.textContent.trim().slice(0, 24)}" in ${name(svg)}`;
+    const boxes = [];
+    for (const t of texts) {
+      // Each line (tspan) is its own box; a text without tspans is one.
+      const parts = t.querySelectorAll('tspan').length ? [...t.querySelectorAll('tspan')] : [t];
+      for (const p of parts) {
+        const r = p.getBoundingClientRect();
+        if (r.width < 0.5) continue;
+        boxes.push({ r, t });
+        if (r.left < sb.left - 1.5 || r.right > sb.right + 1.5 || r.top < sb.top - 1.5 || r.bottom > sb.bottom + 1.5) out.chart.push(`cut ${label(t)}`);
+        // Two in a row past the side of the screen, say, inside a chart that scrolls.
+        const clip = clipperOf(svg);
+        if (clip && !/(auto|scroll)/.test(getComputedStyle(clip).overflowX)) {
+          const cb = clip.getBoundingClientRect();
+          if (r.right > cb.right + 1.5 || r.left < cb.left - 1.5) out.chart.push(`cut by ${name(clip)} ${label(t)}`);
+        }
+      }
+      const drawn = parseFloat(getComputedStyle(t).fontSize) * scale;
+      if (drawn < root * 0.75 - 0.5) out.chart.push(`small (${drawn.toFixed(1)}px at a ${root}px root) ${label(t)}`);
+    }
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+      const A = boxes[i]; const B = boxes[j];
+      if (A.t === B.t) continue;
+      const w = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+      const h = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+      if (w > 1 && h > 0.2 * Math.min(A.r.height, B.r.height)) out.chart.push(`overlap ${label(A.t)} × ${label(B.t)}`);
+    }
+  }
+  out.chart = [...new Set(out.chart)].slice(0, 8);
   out.spill = [...new Set(out.spill)].slice(0, 6);
   out.cut = [...new Set(out.cut)].slice(0, 6);
   out.split = [...new Set(out.split)].slice(0, 6);
@@ -417,7 +462,7 @@ const run = async (size) => {
             if (change) await page.evaluate(change, arg);
             const m = await page.evaluate(measure, !noFonts);
             taken.push({ tool, locale, width, size, state, ...m });
-            const bad = m.scroll || m.spill.length || m.cut.length || m.overlap.length || m.split.length || m.amount.length;
+            const bad = m.scroll || m.spill.length || m.cut.length || m.overlap.length || m.split.length || m.amount.length || m.chart.length;
             if (shots && bad) await page.screenshot({ path: join(shots, `${tool.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home'}-${locale}-${width}-${size}-${state.replace(/\s+/g, '-')}.png`), fullPage: true });
           }
           results.push(...taken);
@@ -447,6 +492,7 @@ for (const r of results) {
   if (r.overlap.length) lines.push(`OVERLAP ${r.overlap.join('; ')}`);
   if (r.split.length) lines.push(`SPLIT ${r.split.join('; ')}`);
   if (r.amount.length) lines.push(`AMOUNT ${r.amount.join('; ')}`);
+  if (r.chart.length) lines.push(`CHART ${r.chart.join('; ')}`);
   if (!lines.length) continue;
   failing += 1;
   console.log(`\n${r.tool} ${r.locale} ${r.width}px ${r.size}% [${r.state}]`);

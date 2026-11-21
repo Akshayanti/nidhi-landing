@@ -1105,6 +1105,7 @@ export const cs: Dict = {
       more: 'Mnohem víc podobných otázek najdete mezi {lessons} lekcemi a {tools} nástroji.',
       moreLink: 'Najděte tu svou',
       items: {
+        basics: { who: '„S\u00a0penězi teprve začínám a\u00a0hledám, kde začít.“', lesson: 'Co je čisté jmění?', plan: 'Co vlastníte, dlužíte, vyděláváte a\u00a0utrácíte, pohromadě' },
         currencies: { who: '„Mám peníze ve více než jedné zemi.“', lesson: 'Peníze ve více měnách' },
         loans: { who: '„Porovnávám nabídky úvěrů.“', lesson: 'Jak porovnat podmínky úvěrů' },
       },
