@@ -98,6 +98,7 @@ The project's agents are files in `.claude/agents/`, and what they have learnt i
 1. **This file is the source of the rules.** An agent prompt says who the agent is and how it works, and points here for anything every session must follow. A rule that matters is written here, not only in a prompt.
 2. **A change to an agent goes through a pull request**, like any other file. An agent's name is not changed without moving its memory folder, since memory is kept under the name.
 3. **Agent memory is public with the repository.** Nothing private goes in it: no personal data, no secrets, no planner internals.
+4. **Stephanie signs off every frontend change** (owner, Nov 21, 2026). A pull request that changes what a reader sees or uses (a page, component, layout, style, chart, form, tool's interface, the cookie or consent controls, the type scale or colours) is reviewed by Stephanie, and is not merged, nor set to auto-merge, until she answers SIGN OFF. This is on top of the council, not instead of it. The pull request names her verdict. When another agent built the pull request, the main session runs her review before calling it done. Her blocking findings are fixed in the same pull request; the rest are filed like any other finding.
 
 ## Automated Visits Use the Internal Address
 
