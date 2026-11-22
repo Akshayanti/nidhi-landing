@@ -37,7 +37,7 @@ const BOX_KEYS = {
 
 export type BoxField = keyof typeof BOX_KEYS;
 
-/** Beside a bad withdrawal amount: withdrawals are off. */
+/** Beside a withdrawal amount carried while withdrawals are off: that they are. */
 const OFF_KEY = 'o';
 
 const FIELDS = Object.keys(BOX_KEYS) as BoxField[];
@@ -97,19 +97,27 @@ export function formErrors(f: FormState): Record<BoxField, boolean> {
   };
 }
 
+/** The withdrawal boxes to carry with withdrawals off, where the plan holds neither. */
+function rememberedBoxes(f: FormState): BoxField[] {
+  if (f.withdrawOn) return [];
+  const untouched = { withdrawal: DEFAULT_WITHDRAWAL, withdrawYears: DEFAULTS.withdrawYears };
+  return (['withdrawal', 'withdrawYears'] as const).filter((field) => f[field] !== String(untouched[field]));
+}
+
 /** What the language switch carries: the form as it stands, every choice and every box. */
 export function publishableForm(f: FormState, pageCurrency: string): string {
   // The withdrawal boxes go along with withdrawals off too: switched on again
   // where they arrive, a bad one must still be wrong.
   const errors = formErrors({ ...f, withdrawOn: true });
   const bad = FIELDS.filter((field) => errors[field]);
-  if (bad.length === 0) return publishableState(toState(f), pageCurrency);
+  const carried = [...new Set([...bad, ...rememberedBoxes(f)])];
+  if (carried.length === 0) return publishableState(toState(f), pageCurrency);
 
   // The choices and the good boxes as a valid plan, the bad boxes written over it.
   const valid = { ...f };
   for (const field of bad) valid[field] = String(field === 'withdrawal' ? DEFAULT_WITHDRAWAL : DEFAULTS[field]);
-  const boxes: Record<string, string> = Object.fromEntries(bad.map((field) => [BOX_KEYS[field], boxValue(f[field], 'en')]));
-  if (!f.withdrawOn && errors.withdrawal) boxes[OFF_KEY] = '1';
+  const boxes: Record<string, string> = Object.fromEntries(carried.map((field) => [BOX_KEYS[field], boxValue(f[field], 'en')]));
+  if (!f.withdrawOn && boxes[BOX_KEYS.withdrawal] !== undefined) boxes[OFF_KEY] = '1';
   return withBoxes(encodeState(toState(valid)), boxes);
 }
 

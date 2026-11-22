@@ -136,3 +136,16 @@ describe('what was already right', () => {
     assert.deepEqual([arrived?.start, arrived?.withdrawal, arrived?.feePct, arrived?.withdrawOn], ['NaN', 'NaN', 'NaN', true]);
   });
 });
+
+describe('a remembered withdrawal travels with withdrawals off (#789)', () => {
+  for (const change of [{ withdrawal: '45000' }, { withdrawYears: '12' }, { withdrawal: '45000', withdrawYears: '12' }, { withdrawal: '45000', start: 'NaN' }]) {
+    it(JSON.stringify(change), async () => {
+      const { DEFAULTS: plan, decodeState: read } = await import('./url.ts');
+      const form = { ...toForm(plan), withdrawOn: false, ...change };
+      const sent = publishableForm(form, 'EUR');
+      const got = formFromLink(sent);
+      assert.deepEqual([got?.withdrawal, got?.withdrawYears, got?.withdrawOn], [form.withdrawal, form.withdrawYears, false]);
+      assert.equal(read(sent)?.withdrawal, 0, 'the plan still has none');
+    });
+  }
+});

@@ -113,8 +113,8 @@ export function decodeState(search: string): ToolState | null {
   };
   const code = (p.get('c') ?? '').toUpperCase();
   const currency = CURRENCIES.some((c) => c.code === code) ? code : DEFAULTS.currency;
-  // `o=1` goes beside a withdrawal amount typed wrong with withdrawals off:
-  // the one case where `w` does not mean they are on (form.ts).
+  // `o=1` goes beside a withdrawal amount carried with withdrawals off: the
+  // one case where `w` does not mean they are on (form.ts).
   const withdrawal = p.get('o') === '1' ? 0 : num('w', DEFAULTS.withdrawal);
   const clean = sanitizeInputs({
     start: num('s', DEFAULTS.start),
