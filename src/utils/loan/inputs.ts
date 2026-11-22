@@ -15,6 +15,7 @@ import {
   type RateSpec,
 } from './math.ts';
 import { UNREADABLE } from '../shared/linkInput.ts';
+import { MAX_LINK_LUMP_SUMS } from '../shared/linkInput.ts';
 import { parseLumpSums, type VendorInput } from './url.ts';
 
 /**
@@ -94,7 +95,9 @@ export function unreadableOptionalFields(v: VendorInput): OptionalField[] {
 
   // Lump sums: every pair that is written must read as "month:amount".
   const pairs = v.lumpSumsEncoded.split(';').filter((pair) => pair.trim() !== '');
-  if (pairs.length !== parseLumpSums(v.lumpSumsEncoded).length) out.push('lumpSumsEncoded');
+  // More than a link carries is invalid here too, or the sender could copy a
+  // link that opens without them (#789).
+  if (pairs.length > MAX_LINK_LUMP_SUMS || pairs.length !== parseLumpSums(v.lumpSumsEncoded).length) out.push('lumpSumsEncoded');
 
   return out;
 }

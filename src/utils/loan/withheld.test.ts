@@ -7,6 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { comparisonWithheld, computeFromInput, holdsMarker } from './inputs.ts';
+import { MAX_LINK_LUMP_SUMS } from '../shared/linkInput.ts';
 import { makeDefaultVendor, decodeFromQueryString, encodeToQueryString, defaultGlobalState } from './url.ts';
 
 const offers = (change: Record<string, string> = {}) => [{ ...makeDefaultVendor(0), ...change }, makeDefaultVendor(1), makeDefaultVendor(2)];
@@ -25,6 +26,24 @@ describe('the comparison is withheld while an offer is invalid (#793)', () => {
       assert.equal(withheld(arrived as ReturnType<typeof offers>), true, 'and where it arrives');
     });
   }
+});
+
+describe('a list of lump sums over the limit (#789)', () => {
+  const list = (count: number) => offers({ lumpSumsEncoded: Array(count).fill('12:1').join(';') });
+  const arrive = (from: ReturnType<typeof offers>) => decodeFromQueryString(encodeToQueryString(from, defaultGlobalState('EUR'))).vendors as ReturnType<typeof offers>;
+
+  it('at the limit it is compared, here and where it arrives', () => {
+    assert.equal(withheld(list(MAX_LINK_LUMP_SUMS)), false);
+    assert.equal(withheld(arrive(list(MAX_LINK_LUMP_SUMS))), false);
+  });
+  it('over it the sender cannot share: the comparison is withheld', () => {
+    assert.equal(withheld(list(MAX_LINK_LUMP_SUMS + 1)), true);
+  });
+  it('over it the switch carries the mark, not the first of the list', () => {
+    const arrived = arrive(list(MAX_LINK_LUMP_SUMS + 1));
+    assert.equal(arrived[0].lumpSumsEncoded, 'NaN');
+    assert.equal(withheld(arrived), true);
+  });
 });
 
 describe('a card that arrived holding the mark (#789)', () => {
