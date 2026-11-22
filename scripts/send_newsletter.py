@@ -530,12 +530,15 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
             continue
         if parsed.netloc != site_host:
             continue
-        if "utm_source=" in (parsed.query or ""):
-            continue
 
         # The canonical form of the path: with its trailing slash, except a
         # file such as /rss.xml (astro.config.mjs trailingSlash: 'always').
+        # Applied before the UTM check, so a link that already carries its
+        # own utm_source is still sent in the canonical form.
         path = _canonical_path(parsed.path)
+        if "utm_source=" in (parsed.query or ""):
+            a["href"] = urllib.parse.urlunparse(parsed._replace(path=path))
+            continue
 
         sep = "&" if parsed.query else "?"
         new_query = (parsed.query + sep + utm_query) if parsed.query else utm_query

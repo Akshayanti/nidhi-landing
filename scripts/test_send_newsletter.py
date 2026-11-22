@@ -170,6 +170,13 @@ class InPageLinkTest(unittest.TestCase):
         nl.absolutize_urls(soup.div, SITE_URL, utm_query="utm_source=newsletter", page_path="/blog/a-lesson/")
         self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson/?utm_source=newsletter#term-x")
 
+    def test_a_link_with_its_own_utm_still_gets_the_canonical_slash(self) -> None:
+        soup = nl.BeautifulSoup(
+            '<div><a href="/blog/example?utm_source=share">x</a></div>', "html.parser"
+        )
+        nl.absolutize_urls(soup.div, SITE_URL, utm_query="utm_source=newsletter", page_path="/blog/a-lesson/")
+        self.assertEqual(soup.a["href"], "https://nidhi.today/blog/example/?utm_source=share")
+
 
 class EmailColoursTest(unittest.TestCase):
     """The mails keep one set of colours, the site's, in one block per file (#416)."""
