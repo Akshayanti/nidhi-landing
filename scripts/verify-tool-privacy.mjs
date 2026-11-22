@@ -113,6 +113,8 @@ const TOOLS = {
   'loan-comparison': {
     global: '__nidhiLoanCompareShared',
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="lc-vendor-add"]', '[data-attr="lc-vendor-remove"]', []),
+    // On a phone one offer shows at a time, chosen by these tabs.
+    instanceTab: 'button.lc-vendorTab[aria-controls]',
     ownEvents: /^free_loan_comparison_/,
     mustSend: ['vendor_added', 'vendor_removed', 'details_toggled', 'tab_changed', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
@@ -686,6 +688,19 @@ async function useTool(page, tool, note, downloads, sent) {
   const island = 'astro-island';
   const failed = [];
 
+  // Where one offer or row shows at a time, its tab is pressed first, and
+  // then its boxes are the only ones visible: the place among the visible
+  // boxes to use. A tab that is not shown (a wide window shows every offer)
+  // is left alone.
+  const show = async (i) => {
+    if (!tool.instanceTab) return { nth: i };
+    const tab = (await page.$$(tool.instanceTab))[i];
+    if (!tab || !(await tab.boundingBox())) return { nth: i };
+    if (!(await press(page, tab))) throw new Error(`the tab of offer ${i + 1} could not be pressed`);
+    await sleep(120);
+    return { nth: 0 };
+  };
+
   // Type the distinctive values.
   note.step = 'typing values';
   await noteBoxes(page, note);
@@ -694,21 +709,24 @@ async function useTool(page, tool, note, downloads, sent) {
     if (f.reveal && f.all) {
       // Every offer's choice, so that every offer shows the box.
       const choices = (await page.$$(f.reveal)).length;
-      for (let i = 0; i < choices; i++) await reveal(page, f.reveal, note, { nth: i });
+      for (let i = 0; i < choices; i++) await reveal(page, f.reveal, note, await show(i));
+      await show(0);
       await noteBoxes(page, note);
     } else if (f.reveal && !(await choose(page, f.selector, f))) { await reveal(page, f.reveal, note); await noteBoxes(page, note); }
     if (f.all) {
       // Every offer or row, a closed one too: fill opens what holds the box.
       const n = (await page.$$(f.selector)).length;
       if (!n) throw new Error(`no visible field for ${f.selector}`);
-      for (let i = 0; i < n; i++) note.typed.add(await fill(page, f.selector, f.value, { nth: i }));
+      for (let i = 0; i < n; i++) note.typed.add(await fill(page, f.selector, f.value, await show(i)));
+      await show(0);
     } else {
       if (f.addRow && !(await click(page, f.addRow))) failed.push(`the row for a second amount could not be added (${f.addRow})`);
       note.typed.add(await fill(page, f.selector, f.value, f));
     }
     if (f.after && f.all) {
       const choices = (await page.$$(f.after)).length;
-      for (let i = 0; i < choices; i++) await reveal(page, f.after, note, { nth: i });
+      for (let i = 0; i < choices; i++) await reveal(page, f.after, note, await show(i));
+      await show(0);
     } else if (f.after) await reveal(page, f.after, note);
   }
   if (tool.removeNamedRow) {
