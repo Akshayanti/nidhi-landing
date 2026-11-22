@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-22',
+    date: '2026-11-23',
     items: [
       {
         id: 'tools-flag-unreadable-values',
@@ -82,6 +82,21 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'विनिमय दर उपलब्ध नसताना निव्वळ संपत्ती कॅल्क्युलेटर आधी फक्त इतर चलनांवर आधारित “एकूण निव्वळ संपत्ती” आणि टक्केवारीतील हिस्से दाखवत होता, आणि शेअर लिंक तो निकाल पूर्ण असल्याप्रमाणे दाखवत होती. सर्व विनिमय दर उपलब्ध नसल्यास एकूण दिसत नाही; अन्यथा “विनिमय दर उपलब्ध नसलेल्या चलनांना वगळून एकूण” दिसते, त्या चलनाच्या कार्डवर मूळ रक्कम कायम राहते, आणि पाठवणाऱ्या व प्राप्त करणाऱ्या दोघांसाठी, अहवालात आणि स्प्रेडशीटमध्ये टक्केवारीतील हिस्से, पट्टे आणि आलेख दिसत नाहीत. विनिमय दर उपलब्ध नसताना किंवा एखादी ओळ वाचता येत नसताना रकमा लपवलेली आवृत्ती शेअर करण्यासाठी लिंक तयार करता येत नाही. सर्व चलनांचा समावेश होता का याची खात्री न देणाऱ्या जुन्या लिंकमध्ये एकूण किंवा टक्केवारीतील हिस्से दिसत नाहीत.',
         },
       },
+      {
+        id: 'edited-shared-net-worth-is-yours',
+        text: {
+          en: 'When you edit a net worth view someone shared, it becomes your own, worked out from what is in the form at the rates on your page. Before, the sender’s total could stay over your edits.',
+          hi: 'किसी की साझा की हुई शुद्ध संपत्ति में बदलाव करने पर अब वह आपकी अपनी हो जाती है, और आपके पेज की दरों पर फ़ॉर्म में मौजूद जानकारी से गणना होती है। पहले बदलाव के बाद भी भेजने वाले का कुल दिखता रह सकता था।',
+          es: 'Al editar un patrimonio neto compartido, ahora pasa a ser el tuyo y se calcula con lo que hay en el formulario y los tipos de tu página. Antes, el total de quien lo envió podía mantenerse sobre tus cambios.',
+          cs: 'Když upravíte sdílené čisté jmění, stane se vaším a\u00a0počítá se z\u00a0toho, co je ve formuláři, podle kurzů na vaší stránce. Dřív mohl nad vašimi úpravami zůstat součet odesílatele.',
+          mr: 'कोणी शेअर केलेल्या निव्वळ संपत्तीत बदल केल्यावर आता ती तुमची स्वतःची होते, आणि तुमच्या पेजवरील दरांनुसार फॉर्ममधील माहितीवरून मोजली जाते. आधी बदलानंतरही पाठवणाऱ्याचे एकूण दिसत राहू शकत होते.',
+        },
+      },
+    ],
+  },
+  {
+    date: '2026-11-22',
+    items: [
       {
         id: 'learning-path-lists-every-lesson',
         text: {
