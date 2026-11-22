@@ -34,7 +34,7 @@ const PARTS = {
   learn: {
     sheet: 'styles/learn.css',
     files: [
-      /^components\/(LearnHome|LearningPath)\.tsx$/,
+      /^components\/(LearnHome\.astro|LearningPath\.tsx)$/,
       /^layouts\/(BlogIndex|LevelPage)\.astro$/,
       /^components\/pages\/(TagPage|InclusiveFinancesPage)\.astro$/,
     ],

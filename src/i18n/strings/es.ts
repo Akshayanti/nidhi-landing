@@ -583,7 +583,7 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras gratuitas de patrimonio neto en una o varias monedas, préstamos, inflación, simulación de jubilación e invertir o pagar deuda. Sin registro. Lo que escribes se queda en tu navegador.',
+        'Calculadoras gratis de patrimonio neto en varias monedas, préstamos, inflación, jubilación e invertir o pagar deuda. Sin registro; lo que escribes queda en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
@@ -1003,12 +1003,15 @@ export const es: Dict = {
       title: 'Cambios en este aviso',
       intro: {
         before:
-          'Actualizamos esta misma página. Cada cambio, por pequeño que sea, tiene una entrada en el registro de abajo, empezando por el más reciente. Los últimos se muestran completos; los anteriores se conservan palabra por palabra en «Cambios anteriores». Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
+          'Actualizamos esta misma página. Cada cambio, por pequeño que sea, tiene una entrada en el registro, empezando por el más reciente. Los tres últimos se muestran abajo; el registro de cambios completo conserva cada entrada palabra por palabra, en una página por año. Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
         after: '.',
       },
       second:
         'No enviamos correos de «hemos actualizado nuestra política de privacidad». Si quieres seguirla de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
-      earlier: 'Cambios anteriores',
+      entryLink: 'Enlace permanente',
+      entryLinkLabel: 'Enlace permanente a la entrada del {date}',
+      archiveLink: 'Ver el registro de cambios completo',
+      archiveRange: '{count}, del {from} al {to}',
       countOne: '{count} cambio',
       countOther: '{count} cambios',
       countFew: '{count} cambios',
@@ -1016,6 +1019,29 @@ export const es: Dict = {
       materialLabel: 'Cambio relevante',
       entriesInEnglish:
         'El registro de abajo se mantiene en inglés, con las palabras con que se escribió, y no se traduce: es la constancia de lo que decía este aviso en una fecha concreta.',
+    },
+    /** The changelog's own pages: the index at /privacy/changelog/ and a page per year (#722). */
+    archive: {
+      index: {
+        meta: {
+          title: 'Registro de cambios del aviso de privacidad | nidhi',
+          description: 'Cada cambio en el aviso de privacidad de nidhi desde su publicación, del más reciente al más antiguo, palabra por palabra tal como se escribió y agrupado por año.',
+        },
+        title: 'Registro de cambios del aviso de privacidad',
+        intro: 'Cada cambio en el aviso de privacidad tiene aquí una entrada, empezando por el más reciente, conservada palabra por palabra tal como se escribió, en una página por año. Es una constancia de qué cambió y cuándo, no un conjunto de copias antiguas del aviso.',
+        yearsLabel: 'Años',
+      },
+      year: {
+        metaTitle: 'Registro de cambios del aviso de privacidad, {year} | nidhi',
+        metaDescription: 'Cada cambio en el aviso de privacidad de nidhi en {year}, del más reciente al más antiguo, palabra por palabra: qué recoge, guarda y envía el sitio, y cuándo cambió.',
+        title: 'Registro de cambios del aviso de privacidad: {year}',
+        intro: 'Cada cambio hecho en el aviso de privacidad en {year}, empezando por el más reciente, con cada entrada palabra por palabra tal como se escribió. Es una constancia de los cambios, no copias antiguas del aviso: lo que se aplica hoy está en el aviso actual.',
+        monthsLabel: 'Meses de {year}',
+        otherYears: 'Otros años',
+      },
+      backToNotice: 'Leer el aviso de privacidad actual',
+      allYears: 'Todos los años del registro',
+      breadcrumb: 'Registro de cambios',
     },
   },
 

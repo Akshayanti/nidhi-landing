@@ -42,6 +42,6 @@ describe('JSON written into pages', () => {
     const raw = files.filter((path) => /set:html=\{\s*JSON\.stringify\(/.test(readFileSync(path, 'utf8'))).map((path) => path.slice(SRC.length + 1));
     assert.deepEqual(raw, [], 'use jsonForScript(value) from src/utils/shared/jsonForScript.ts');
     const safe = files.filter((path) => /set:html=\{jsonForScript\(/.test(readFileSync(path, 'utf8'))).map((path) => path.slice(SRC.length + 1)).sort();
-    assert.deepEqual(safe, ['components/BaseHead.astro', 'components/pages/HowToHubPage.astro']);
+    assert.deepEqual(safe, ['components/BaseHead.astro', 'components/LearnHome.astro', 'components/pages/HowToHubPage.astro']);
   });
 });

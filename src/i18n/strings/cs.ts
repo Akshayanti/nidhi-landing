@@ -553,7 +553,7 @@ export const cs: Dict = {
     meta: {
       title: 'Nástroje a kalkulačky pro osobní finance zdarma | nidhi',
       description:
-        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, úvěry, inflace, simulace důchodu a volba mezi investováním a splacením dluhu. Bez registrace. Co napíšete, zůstává ve vašem prohlížeči.',
+        'Kalkulačky zdarma: čisté jmění v jedné či více měnách, úvěry, inflace, důchod, investice, nebo splacení dluhu. Bez registrace; co napíšete, zůstává v prohlížeči.',
     },
     schema: {
       breadcrumbHome: 'Domů',
@@ -967,12 +967,15 @@ export const cs: Dict = {
       title: 'Změny těchto zásad',
       intro: {
         before:
-          'Tuto stránku upravujeme na místě. Každá změna dostane záznam v přehledu níže, od nejnovější změny po nejstarší, ať je jakkoli malá. Několik nejnovějších je zobrazeno celých; starší jsou slovo od slova zachované v části „Starší změny“. Změny, které ovlivňují, jak zacházíme s osobními údaji (nový zpracovatel, nová kategorie údajů, změna doby uchování), jsou označené jako ',
+          'Tuto stránku upravujeme na místě. Každá změna dostane záznam v přehledu, od nejnovější změny po nejstarší, ať je jakkoli malá. Tři nejnovější jsou zobrazené níže; úplný přehled změn zachovává každý záznam slovo od slova, na stránce pro každý rok. Změny, které ovlivňují, jak zacházíme s osobními údaji (nový zpracovatel, nová kategorie údajů, změna doby uchování), jsou označené jako ',
         after: '.',
       },
       second:
         'Neposíláme e-maily typu „aktualizovali jsme zásady ochrany soukromí“. Pokud je chcete sledovat, přidejte si tuto stránku do záložek nebo si přehled níže přečtěte, kdykoli vás to bude zajímat. Pokud by vám některá změna někdy byla nepříjemná, odhlášení newsletteru je jedním kliknutím na odkaz v každém e-mailu a smazáním dat webu v prohlížeči zmizí vše uložené místně.',
-      earlier: 'Starší změny',
+      entryLink: 'Trvalý odkaz',
+      entryLinkLabel: 'Trvalý odkaz na záznam ze dne {date}',
+      archiveLink: 'Procházet úplný přehled změn',
+      archiveRange: '{count}, od {from} do {to}',
       countOne: '{count} změna',
       countOther: '{count} změn',
       countFew: '{count} změny',
@@ -980,6 +983,29 @@ export const cs: Dict = {
       materialLabel: 'Podstatná změna',
       entriesInEnglish:
         'Přehled níže je vedený v angličtině, slovy, kterými byl napsán, a nepřekládá se: je to záznam toho, co tyto zásady v daný den říkaly.',
+    },
+    /** The changelog's own pages: the index at /privacy/changelog/ and a page per year (#722). */
+    archive: {
+      index: {
+        meta: {
+          title: 'Přehled změn zásad ochrany soukromí | nidhi',
+          description: 'Každá změna zásad ochrany soukromí nidhi od jejich zveřejnění, od nejnovější po nejstarší, slovo od slova tak, jak byla zapsána, rozdělená podle let.',
+        },
+        title: 'Přehled změn zásad ochrany soukromí',
+        intro: 'Každá změna zásad ochrany soukromí tu má svůj záznam, od nejnovější po nejstarší, slovo od slova tak, jak byl napsán, na stránce pro každý rok. Je to záznam toho, co se kdy změnilo, ne sbírka starých verzí zásad.',
+        yearsLabel: 'Roky',
+      },
+      year: {
+        metaTitle: 'Přehled změn zásad ochrany soukromí, {year} | nidhi',
+        metaDescription: 'Každá změna zásad ochrany soukromí nidhi v roce {year}, od nejnovější po nejstarší, slovo od slova: co web shromažďuje, ukládá a posílá a kdy se to změnilo.',
+        title: 'Přehled změn zásad ochrany soukromí: {year}',
+        intro: 'Každá změna zásad ochrany soukromí v roce {year}, od nejnovější po nejstarší, každý záznam slovo od slova tak, jak byl napsán. Je to záznam změn, ne staré verze zásad: co platí dnes, najdete v aktuálních zásadách.',
+        monthsLabel: 'Měsíce roku {year}',
+        otherYears: 'Další roky',
+      },
+      backToNotice: 'Přečíst si aktuální zásady ochrany soukromí',
+      allYears: 'Všechny roky přehledu',
+      breadcrumb: 'Přehled změn',
     },
   },
 

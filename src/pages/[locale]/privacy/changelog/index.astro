@@ -1,0 +1,13 @@
+---
+/** `/<locale>/privacy/changelog/`: the changelog's index outside English (#722). */
+import PrivacyChangelogPage from '../../../../components/pages/PrivacyChangelogPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../../i18n/routes.ts';
+
+export function getStaticPaths() {
+  return localizedStaticPaths();
+}
+
+const locale = routeLocale(Astro.params);
+---
+
+<PrivacyChangelogPage locale={locale} />

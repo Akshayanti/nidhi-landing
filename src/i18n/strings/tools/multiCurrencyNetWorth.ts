@@ -56,7 +56,7 @@ export const multiCurrencyNetWorthEn = {
   meta: {
     title: 'Net Worth Calculator, in One Currency or Several | nidhi',
     description:
-      'Free net worth calculator for one currency or several: 38 currencies at the latest official exchange rates, plus a currency risk check. Runs in your browser; what you type stays there.',
+      'Free net worth calculator for one currency or several: 38 currencies at the latest official rates and a currency risk check. What you type stays in your browser.',
   },
   schema: {
     name: 'nidhi Net Worth Calculator',
@@ -513,7 +513,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में | nidhi',
     description:
-      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक मुद्रा के लिए या कई के लिए: ताज़ा आधिकारिक दरों पर 38 मुद्राएँ, और साथ में मुद्रा जोखिम की जाँच। सारी गणना आपके ब्राउज़र में; आप जो लिखते हैं, वह वहीं रहता है।',
+      'मुफ़्त शुद्ध संपत्ति कैलकुलेटर, एक या कई मुद्राओं के लिए: ताज़ा आधिकारिक दरों पर 38 मुद्राएँ और मुद्रा जोखिम की जाँच। आप जो लिखते हैं, वह आपके ब्राउज़र में ही रहता है।',
   },
   schema: {
     name: 'nidhi शुद्ध संपत्ति कैलकुलेटर',
@@ -1337,7 +1337,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'Kalkulačka čistého jmění, v jedné měně i ve více | nidhi',
     description:
-      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Běží v prohlížeči; co napíšete, zůstává tam.',
+      'Kalkulačka čistého jmění zdarma pro jednu i více měn: 38 měn s nejnovějšími oficiálními kurzy a kontrola měnového rizika. Co napíšete, zůstává v prohlížeči.',
   },
   schema: {
     name: 'Kalkulačka čistého jmění nidhi',
@@ -1741,7 +1741,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
 export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   meta: {
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये | nidhi',
-    description: 'एका किंवा अनेक चलनांसाठी मोफत निव्वळ संपत्ती कॅल्क्युलेटर: नवीनतम अधिकृत दरांसह 38 चलने आणि चलन जोखमीची तपासणी. ब्राउझरमध्ये चालतो; तुम्ही लिहिलेले तिथेच राहते.',
+    description: 'एका किंवा अनेक चलनांसाठी मोफत निव्वळ संपत्ती कॅल्क्युलेटर: नवीनतम अधिकृत दरांसह 38 चलने आणि चलन जोखमीची तपासणी. तुम्ही लिहिलेले ब्राउझरमध्येच राहते.',
   },
   schema: {
     name: 'nidhi निव्वळ संपत्ती कॅल्क्युलेटर',
