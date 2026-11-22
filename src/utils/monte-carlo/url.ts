@@ -55,17 +55,20 @@ export const STATE_KEY_PATTERN = `[${STATE_KEYS.join('')}]`;
 
 export function encodeState(state: ToolState): string {
   const p = new URLSearchParams();
+  // As decodeState reads them: String() writes 0.0000001 as "1e-7", which is
+  // refused, and more than ten decimals are refused too.
+  const plain = (n: number) => n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 10 });
   setNonDefault(p, 'c', state.currency, DEFAULTS.currency);
-  setNonDefault(p, 's', state.start, DEFAULTS.start);
-  setNonDefault(p, 'm', state.monthly, DEFAULTS.monthly);
-  setNonDefault(p, 'y', state.saveYears, DEFAULTS.saveYears);
-  setNonDefault(p, 'k', state.stockPct, DEFAULTS.stockPct);
+  setNonDefault(p, 's', plain(state.start), DEFAULTS.start);
+  setNonDefault(p, 'm', plain(state.monthly), DEFAULTS.monthly);
+  setNonDefault(p, 'y', plain(state.saveYears), DEFAULTS.saveYears);
+  setNonDefault(p, 'k', plain(state.stockPct), DEFAULTS.stockPct);
   if (state.withdrawal > 0) {
-    p.set('w', String(state.withdrawal));
-    setNonDefault(p, 'r', state.withdrawYears, DEFAULTS.withdrawYears);
+    p.set('w', plain(state.withdrawal));
+    setNonDefault(p, 'r', plain(state.withdrawYears), DEFAULTS.withdrawYears);
   }
   setNonDefault(p, 'e', RETURN_CODES[state.returns], RETURN_CODES[DEFAULTS.returns]);
-  setNonDefault(p, 'f', state.feePct, DEFAULTS.feePct);
+  setNonDefault(p, 'f', plain(state.feePct), DEFAULTS.feePct);
   setNonDefault(p, 'n', state.paths, DEFAULTS.paths);
   return serializeParams(p);
 }

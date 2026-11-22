@@ -58,6 +58,11 @@ export function toForm(s: ToolState): FormState {
   };
 }
 
+/** The years of withdrawing are wrong, whether or not the box is on the page. */
+function badWithdrawYears(f: FormState): boolean {
+  return !isValidNumber(f.withdrawYears, 1, 60, true);
+}
+
 /** The plan to simulate. Only for a form without errors. */
 export function toState(f: FormState): ToolState {
   const n = (v: string) => (v.trim() === '' ? 0 : Number(v));
@@ -68,7 +73,8 @@ export function toState(f: FormState): ToolState {
     saveYears: n(f.saveYears),
     stockPct: n(f.stockPct),
     withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
-    withdrawYears: n(f.withdrawYears),
+    // Off the page, the box may hold anything; the plan still needs a number.
+    withdrawYears: !f.withdrawOn && badWithdrawYears(f) ? DEFAULTS.withdrawYears : n(f.withdrawYears),
     feePct: n(f.feePct),
     returns: f.returns,
     paths: f.paths,
@@ -90,7 +96,9 @@ export function formErrors(f: FormState): Record<BoxField, boolean> {
 
 /** What the language switch carries: the form as it stands, every choice and every box. */
 export function publishableForm(f: FormState, pageCurrency: string): string {
-  const errors = formErrors(f);
+  // Years typed wrong go along with withdrawals off too: switched on again
+  // where they arrive, they must still be wrong.
+  const errors = { ...formErrors(f), withdrawYears: badWithdrawYears(f) };
   const bad = FIELDS.filter((field) => errors[field]);
   if (bad.length === 0) return publishableState(toState(f), pageCurrency);
 

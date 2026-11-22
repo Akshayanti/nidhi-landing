@@ -5,7 +5,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { formErrors, formFromLink, publishableForm, toForm, type BoxField, type FormState } from './form.ts';
+import { formErrors, formFromLink, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
 import { defaultState } from './url.ts';
 
 const FIELDS: BoxField[] = ['start', 'monthly', 'saveYears', 'stockPct', 'withdrawal', 'withdrawYears', 'feePct'];
@@ -63,6 +63,31 @@ describe('a choice made while a box is invalid is kept (#789)', () => {
   it('the page’s own currency, when a bad box is the only change', () => {
     const form = { ...toForm(defaultState('INR')), start: 'NaN' };
     assert.equal(carried(form, 'INR').currency, 'INR');
+  });
+});
+
+describe('a value this page accepts is accepted where it arrives (#789)', () => {
+  for (const field of ['start', 'monthly', 'stockPct', 'feePct'] as const) {
+    it(`${field}: a very small number`, () => {
+      const arrived = carried(formWith({ [field]: '1e-7' }));
+      assert.equal(Number(arrived[field]), 1e-7);
+      assert.equal(formErrors(arrived)[field], false);
+    });
+  }
+});
+
+describe('years of withdrawing, typed wrong and then switched off', () => {
+  for (const value of ['NaN', '', '500']) {
+    it(`arrive as they were: ${value || 'empty'}`, () => {
+      const form = formWith({ withdrawOn: false, withdrawYears: value });
+      const arrived = carried(form);
+      assert.deepEqual([arrived.withdrawOn, arrived.withdrawYears], [false, value]);
+      assert.ok(formErrors({ ...arrived, withdrawOn: true }).withdrawYears, 'invalid once switched on again');
+    });
+  }
+
+  it('never reach the simulation as NaN', () => {
+    assert.ok(Object.values(toState(formWith({ withdrawOn: false, withdrawYears: 'NaN' }))).every((v) => !Number.isNaN(v)));
   });
 });
 

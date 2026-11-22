@@ -51,6 +51,15 @@ describe('a box that is not valid arrives invalid (#789)', () => {
   });
 });
 
+describe('too many decimals never arrive as a whole number', () => {
+  for (const to of LOCALES) {
+    it(`1.234 from en to ${to}`, () => {
+      const arrived = carried(formWith({ amount: '1.234' }), 'en', to);
+      assert.ok(boxErrors(arrived, to).amount, arrived.amount);
+    });
+  }
+});
+
 describe('a choice made while a box is invalid is kept (#789)', () => {
   const choices: Array<Partial<FormState>> = [{ currency: 'AOA' }, { mode: 'past' }, { mode: 'cost' }, { country: 'IND' }, { country: 'ARG', from: '2018' }];
   for (const change of choices) {
