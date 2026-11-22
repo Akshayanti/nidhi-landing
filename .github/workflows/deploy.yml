@@ -54,6 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           # Full history so the privacy notice can derive its "Last updated"
           # from `git log -1 --format=%aI -- src/components/pages/PrivacyPage.astro
           # src/utils/privacyChangelogEntries.ts` at build time (see the gitLastCommitDate
@@ -209,6 +210,7 @@ jobs:
         # Shallow checkout: we only need the script file to run.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 1
 
       - name: Setup Node

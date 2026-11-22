@@ -176,16 +176,32 @@ describe('every workflow', () => {
     assert.ok(seen >= 15, `only ${seen} jobs found: the test no longer reads the workflows`);
   });
 
-  it('installs the Python packages from the pinned file, never by name (#317)', () => {
+  it('installs the Python packages from the pinned file, never by name (#317), each file by its hash', () => {
     for (const [name, text] of workflows) {
       for (const [line] of text.matchAll(/^.*\bpip3? install\b.*$/gm)) {
-        assert.match(line, /pip install -r scripts\/requirements\.txt$/, `${name}: ${line.trim()}`);
+        assert.match(line, /pip install --require-hashes -r scripts\/requirements\.txt$/, `${name}: ${line.trim()}`);
       }
     }
-    for (const line of read('scripts/requirements.txt').split('\n')) {
-      if (line === '' || line.startsWith('#')) continue;
-      assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+$/, `scripts/requirements.txt: ${line}`);
+    const entries = read('scripts/requirements.txt').replace(/\\\n/g, '').split('\n').filter((l) => l !== '' && !l.startsWith('#'));
+    assert.ok(entries.length >= 5, 'the packages are listed');
+    for (const line of entries) {
+      assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+( +--hash=sha256:[0-9a-f]{64})+$/, `scripts/requirements.txt: ${line.slice(0, 120)}`);
     }
+  });
+
+  it('leaves the token in a checkout only where a job pushes', () => {
+    let seen = 0;
+    for (const [name, text] of workflows) {
+      const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
+      for (const job of jobs) {
+        for (const step of job.split(/\n(?= {6}- )/).filter((s) => s.includes('uses: actions/checkout@'))) {
+          seen++;
+          const wanted = /\bgit( -C \S+)? push\b/.test(job.replace(/^\s*#.*$/gm, '')) ? 'true' : 'false';
+          assert.match(step, new RegExp(`\\n {10}persist-credentials: ${wanted}(\\n|$)`), `${name}: job ${job.slice(2, job.indexOf(':'))}`);
+        }
+      }
+    }
+    assert.ok(seen >= 10, `only ${seen} checkouts found: the test no longer reads the workflows`);
   });
 });
 

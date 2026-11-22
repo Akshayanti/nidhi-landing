@@ -25,7 +25,7 @@ npm run typecheck    # type-check every .ts and .tsx file
 The newsletter script is Python and has its own tests, which `npm test` does not run:
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install --require-hashes -r scripts/requirements.txt
 python -m unittest scripts/test_send_newsletter.py scripts/test_newsletter_sender.py scripts/test_qr_svg.py
 ```
 

@@ -45,5 +45,5 @@ dates, so that constant is the line to update when one is.
 ## Python
 
 `send_newsletter.py` needs the packages in `requirements.txt`, at those exact
-versions: `pip install -r scripts/requirements.txt`. The other Python scripts
+versions: `pip install --require-hashes -r scripts/requirements.txt`. The other Python scripts
 use the standard library only.
