@@ -14,7 +14,7 @@ keywords_day1: "personal finance in Hindi, personal finance in Spanish, personal
 
 purpose: The Nov 1 call for volunteers, again, as a reel (carousels reached about 10 people a post in October). Same asks and facts as Nov 1; see `02-languages.md` for the full brief and honesty notes.
 why: The founder's reason, from the Nov 1 caption: only about 1 in 5 people speak English (about 1.5 billion of 8.1 billion, Ethnologue 2025); money help should reach the other four in their own language.
-reel_seconds: 6.5 6.5 6.5 6.5
+reel_seconds: 4 4 4 4
 honesty: Every card is from the Nov 1 post except card 2, whose figures are the Nov 1 caption's. The live languages are LOCALES (en, hi, es, cs, mr), shown in their own script as the site's picker shows them. Intake only through nidhi.today/volunteers/ (no DMs).
 
 ## Day 1 (carousel)
