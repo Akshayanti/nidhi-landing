@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-22',
+    items: [
+      {
+        id: 'inflation-years-own-digits',
+        text: {
+          en: 'In the inflation calculator, the years box now reads Devanagari digits too, like every other box in the free tools: type १० and it counts ten years. Before, that box would not take them at all.',
+          hi: 'महँगाई कैलकुलेटर में सालों वाला बॉक्स भी अब देवनागरी अंक पढ़ लेता है, जैसे मुफ़्त टूल के बाकी सभी बॉक्स पढ़ते हैं: १० लिखें तो यह दस साल गिनता है। पहले यह बॉक्स इन अंकों को लेता ही नहीं था।',
+          es: 'En la calculadora de inflación, la casilla de los años ya lee también las cifras devanagari, como todas las demás casillas de las herramientas gratuitas: si escribes १०, cuenta diez años. Antes, esa casilla no las aceptaba.',
+          cs: 'V\u00a0inflační kalkulačce teď i\u00a0pole s\u00a0počtem let čte dévanágarské číslice, stejně jako všechna ostatní pole v\u00a0nástrojích zdarma: když napíšete १०, počítá s\u00a0deseti lety. Dřív je toto pole vůbec nepřijímalo.',
+          mr: 'महागाई कॅल्क्युलेटरमधील वर्षांचा रकानाही आता देवनागरी अंक वाचतो, मोफत साधनांमधील इतर सर्व रकान्यांसारखेच: १० लिहिले तर तो दहा वर्षे मोजतो. आधी हा रकाना हे अंक स्वीकारतच नव्हता.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-21',
     items: [
       {

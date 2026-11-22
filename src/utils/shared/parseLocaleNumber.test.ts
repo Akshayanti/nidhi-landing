@@ -304,3 +304,68 @@ describe('a number too long to print in digits by default (#520)', () => {
     assert.equal(parseLocaleNumber(`${huge}x`, 'en'), null, 'still not a number when it is not one');
   });
 });
+
+/**
+ * The Arabic decimal mark "٫" (U+066B) and thousands mark "٬" (U+066C), #625.
+ * The rule: "٫" is always a decimal and "٬" always grouping, on every page,
+ * whatever the page's own marks are; a number that mixes either of them with
+ * a Latin point or comma is rejected rather than guessed at.
+ */
+describe('the Arabic decimal and thousands marks (#625)', () => {
+  const PAGES = ['en', 'hi', 'mr', 'en-IN', 'es', 'cs'];
+
+  it('reads "٫" as the decimal mark on every page, comma-decimal pages included', () => {
+    for (const locale of PAGES) {
+      assert.equal(parseLocaleNumber('٢٫٥', locale), 2.5, locale);
+      assert.equal(parseLocaleNumber('۲٫۵', locale), 2.5, `${locale}, Persian digits`);
+      assert.equal(parseLocaleNumber('2٫5', locale), 2.5, `${locale}, Latin digits`);
+      assert.equal(parseLocaleNumber('٠٫١٢٥', locale), 0.125, locale);
+      // Three digits after "٫" are still decimals, never a group.
+      assert.equal(parseLocaleNumber('١٫٢٣٤', locale), 1.234, locale);
+      assert.equal(canonicalNumber('٧٫٢٥', locale), '7.25', locale);
+    }
+  });
+
+  it('reads "٬" as grouping on every page, point-grouping pages included', () => {
+    for (const locale of PAGES) {
+      assert.equal(parseLocaleNumber('١٬٢٣٤', locale), 1234, locale);
+      assert.equal(parseLocaleNumber('١٬٢٣٤٬٥٦٧', locale), 1_234_567, locale);
+      assert.equal(parseLocaleNumber('١٬٢٣٤٫٥', locale), 1234.5, locale);
+      assert.equal(parseLocaleNumber('١٠٬٠٠٬٠٠٠', locale), 1_000_000, `${locale}, Indian grouping`);
+      assert.equal(parseLocaleNumber('١ ٢٣٤٫٥', locale), 1234.5, `${locale}, a space groups with "٫" as the decimal`);
+    }
+  });
+
+  it('never reads "٬" as a decimal mark, even where only that reading would fit', () => {
+    for (const locale of PAGES) {
+      for (const raw of ['٢٬٥', '١٢٬٣٤', '٠٬١٢٥', '١٬٢٣٤٬٥']) {
+        assert.equal(parseLocaleNumber(raw, locale), null, `"${raw}" on ${locale}`);
+      }
+    }
+  });
+
+  it('rejects a number that mixes Arabic marks with Latin ones, rather than guessing', () => {
+    for (const locale of PAGES) {
+      for (const raw of ['١٬٢٣٤.٥', '١٬٢٣٤,٥', '1.234٫5', '1,234٫5', '١.٢٣٤٫٥', '٢٫٥,', '١٬٢٣٤ ٥٦٧']) {
+        assert.equal(parseLocaleNumber(raw, locale), null, `"${raw}" on ${locale}`);
+      }
+    }
+  });
+
+  it('rejects misplaced Arabic marks', () => {
+    for (const locale of PAGES) {
+      for (const raw of ['٢٫٥٫٠', '١٫٢٣٤٬٥٦٧', '٫', '٬', '١٬', '٬١٢٣']) {
+        assert.equal(parseLocaleNumber(raw, locale), null, `"${raw}" on ${locale}`);
+      }
+    }
+    assert.equal(parseLocaleNumber('١٫٢٣٤', 'en', { maxDecimals: 2 }), null, 'more decimals than allowed');
+  });
+
+  it('completes a half-typed number with "٫" as with the page\'s own mark', () => {
+    for (const locale of PAGES) {
+      assert.equal(canonicalNumber('٢٫', locale), '2', locale);
+      assert.equal(canonicalNumber('٫٥', locale), '0.5', locale);
+      assert.equal(completeNumber('-٫٥', locale), '-0٫٥', locale);
+    }
+  });
+});

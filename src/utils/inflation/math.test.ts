@@ -168,6 +168,15 @@ describe('typed values, by the page locale', () => {
     assert.equal(parseYears('0'), null);
     assert.equal(parseYears('101'), null);
     assert.equal(parseYears('2.5'), null);
+    // Digits from a Devanagari, Arabic-Indic or Persian keyboard (#517).
+    assert.equal(parseYears('१०'), 10);
+    assert.equal(parseYears(' ३० '), 30);
+    assert.equal(parseYears('١٥'), 15);
+    assert.equal(parseYears('۲۰'), 20);
+    assert.equal(parseYears('१२३४'), null, 'past the most years');
+    assert.equal(parseYears('२.५'), null, 'still whole years only');
+    assert.equal(parseAmount('१५००००', 'en-IN'), 150_000);
+    assert.equal(parseAmount('१,५०,०००', 'en-IN'), 150_000);
     assert.equal(parseAmount('1000.50'), 1000.5);
     assert.equal(parseAmount('10,000', 'en'), 10_000);
     assert.equal(parseAmount('10.000', 'es'), 10_000);

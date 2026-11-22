@@ -593,7 +593,6 @@ export default function InflationCalculator({
                   hint={t(strings.fields.yearsHint, { min: MIN_YEARS, max: MAX_YEARS })}
                   error={errors.years ? t(strings.fields.yearsError, { min: MIN_YEARS, max: MAX_YEARS }) : null}
                   inputMode="numeric"
-                  type="number"
                 />
               </>
             )}
@@ -704,7 +703,6 @@ function Field(props: {
   hint?: string;
   error: string | null;
   inputMode: 'decimal' | 'numeric' | 'text';
-  type?: 'number' | 'text';
   unit?: string;
 }) {
   const hintId = `${props.id}-hint`;
@@ -717,9 +715,10 @@ function Field(props: {
         <input
           id={props.id}
           className="ifc-input"
-          type={props.type ?? 'text'}
+          // Always a text box: a number box refuses digits typed from a
+          // Devanagari keyboard, and the tool reads those as Latin (#517).
+          type="text"
           inputMode={props.inputMode}
-          step={props.type === 'number' ? 'any' : undefined}
           autoComplete="off"
           value={props.value}
           onChange={props.onChange}
