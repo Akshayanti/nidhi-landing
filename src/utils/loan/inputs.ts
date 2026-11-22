@@ -14,6 +14,7 @@ import {
   type PrepaymentPenalty,
   type RateSpec,
 } from './math.ts';
+import { UNREADABLE } from '../shared/linkInput.ts';
 import { parseLumpSums, type VendorInput } from './url.ts';
 
 /**
@@ -211,4 +212,18 @@ export function computeNoPointsBaseline(v: VendorInput, currency: string): LoanR
     annualRatePct: String((parseNumber(v.annualRatePct) || 0) + reduction),
   };
   return computeFromInput(baseline, currency);
+}
+
+/**
+ * Whether the comparison across the offers is withheld: one invalid offer is
+ * enough, since a range over the others would name the wrong lowest and
+ * spread (#793). An offer's own card depends on no other.
+ */
+export function comparisonWithheld(results: LoanResult[]): boolean {
+  return results.some((r) => Boolean(r.error) || r.schedule.length === 0);
+}
+
+/** Whether a box of this offer holds the mark of a value that could not be read. */
+export function holdsMarker(v: VendorInput): boolean {
+  return Object.entries(v).some(([key, value]) => key !== 'name' && String(value).split(/[;:]/).includes(UNREADABLE));
 }

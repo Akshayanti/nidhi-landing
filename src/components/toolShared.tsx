@@ -122,12 +122,13 @@ export const WITHHELD_SAID_AFTER = 1000;
  * from assistive technology, and the reason takes its place (#793). The
  * space stays, so the box being typed in does not move. The reason is not a
  * live region: the tool announces it once, after `WITHHELD_SAID_AFTER`.
+ * `unsaid` is a part that goes with another, which shows the one reason.
  */
-export function Withheld({ reason, children }: { reason: string | null; children: React.ReactNode }) {
+export function Withheld({ reason, unsaid = false, children }: { reason: string | null; unsaid?: boolean; children: React.ReactNode }) {
   return (
     <div className="tool-result">
       <div className={`tool-resultBody${reason ? ' tool-withheld' : ''}`} inert={Boolean(reason)}>{children}</div>
-      {reason && <p className="tool-resultReason">{reason}</p>}
+      {reason && !unsaid && <p className="tool-resultReason">{reason}</p>}
     </div>
   );
 }
