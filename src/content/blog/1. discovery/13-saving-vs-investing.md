@@ -12,8 +12,10 @@ takeaways:
   - "A common default order, and when people change it"
 order: 13
 pubDate: 2026-05-15
-updatedDate: 2026-11-21
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "Investing's long-run return was given as 4 to 6% a year after inflation across developed markets, with no source. In the cited data about half of developed markets fall in that range, several well below it and the US above it. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), and says single countries differ."
   - date: 2026-11-21
     note: "The summary presented a right saving-and-investing order; the lesson says there is no single right order, and the summary now describes a common order and what can change it."
   - date: 2026-11-17
@@ -25,6 +27,12 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "saving", "investing"]
 reelPromise: "The side-by-side of 1% savings versus a blended portfolio over time, and the simple test for which money belongs in which bucket"
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "Saving"
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Saving"
@@ -36,7 +44,7 @@ referentialReading:
 relatedSlugs: ["emergency-fund", "purchasing-power", "how-to-get-out-of-debt", "liquidity", "appreciation-vs-depreciation"]
 faq:
   - question: "What is the difference between saving and investing?"
-    answer: "Saving means setting money aside in safe, accessible accounts where the goal is preservation and availability, not growth. Think current accounts, savings accounts, and high-yield savings: low risk, low return (often 0 to 3 percent a year before inflation, and about 0 to 1 percent after it over the long run for Treasury bills in the US and world index), and immediate access. Investing means putting money into assets like stocks, bonds, and index funds that can grow over time but carry risk and are less liquid, historically returning around 4 to 6 percent per year after inflation for broad stocks in developed markets, with long stretches well below that. As a rule of thumb, not a guarantee against loss, saving suits money you need within 1 to 3 years and investing suits money you will not touch for 5 or more years. They are complementary tools with different jobs, not competing strategies."
+    answer: "Saving means setting money aside in safe, accessible accounts where the goal is preservation and availability, not growth. Think current accounts, savings accounts, and high-yield savings: low risk, low return (often 0 to 3 percent a year before inflation, and about 0 to 1 percent after it over the long run for Treasury bills in the US and world index), and immediate access. Investing means putting money into assets like stocks, bonds, and index funds that can grow over time but carry risk and are less liquid, historically returning about 5 percent a year after inflation for world shares from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below that and long stretches well below it. As a rule of thumb, not a guarantee against loss, saving suits money you need within 1 to 3 years and investing suits money you will not touch for 5 or more years. They are complementary tools with different jobs, not competing strategies."
   - question: "When should I save instead of invest?"
     answer: "Saving fits money needed soon or unpredictably. Emergency funds are usually kept in a savings account reachable within a day or so, not in the market. Short-term goals under 3 years, such as a holiday, a deposit, or a car, are commonly kept in savings too, because markets can drop 20 percent in a month and take years to recover. Known upcoming expenses like a tax bill or insurance renewal follow the same logic. A useful test: could you afford to lose 30 percent of this money right when you need it? If not, saving is the usual home for it."
   - question: "When should I invest instead of save?"
@@ -86,7 +94,7 @@ Typical investment vehicles:
 The defining features of investing:
 
 - **Higher risk**: values fluctuate, sometimes sharply
-- **Higher return**: historically around 4-6% per year after inflation (broad stocks, across major developed markets)
+- **Higher return**: world shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, UBS Global Investment Returns Yearbook 2025, Dimson, Marsh and Staunton), with single countries well above or below that and long stretches of losses along the way
 - **Lower liquidity**: selling takes days; some accounts lock money for years
 - **Long time horizon**: by a common rule of thumb, money you won't need for 5+ years; even 5-year periods have sometimes ended lower
 
@@ -98,7 +106,7 @@ Investing is about making money grow over time, accepting that the path won't be
 |---|---|---|
 | **Goal** | Preserve and access | Grow over time |
 | **Risk** | Very low | Moderate to high |
-| **Return** (after inflation, long run) | About 0-1% (Treasury bills, US and world) | 4-6% (broad stocks, developed markets) |
+| **Return** (after inflation, long run) | About 0-1% (Treasury bills, US and world) | About 5% (world shares, 1900 to 2024; single countries well above or below) |
 | **Liquidity** | Immediate | Days to months |
 | **Time horizon** | 0-3 years | 5+ years |
 | **Best for** | Emergency fund, short-term goals | Retirement, long-term wealth |

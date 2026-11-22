@@ -13,8 +13,10 @@ takeaways:
   - "Why keeping everything in cash carries its own risk"
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-11-17
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "The risk table gave diversified stocks 4 to 6% a year after inflation for developed markets, a range the cited data does not support for most markets: about half fall in it, several below and the US above. It now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). The 20-year example keeps its €21,900 to €32,100, now labelled as a scenario of 4% to 6% a year, and adds about €27,600 at the world figure."
   - date: 2026-11-17
     note: "The opening set a loss after inflation against a 7% gain before inflation; the colleague's money doubled on paper but, with inflation near 2.5%, grew by roughly half in what it could buy. The time-horizon section now says its table is US data before inflation, and gives one long US stretch that gained only about 1.4% a year after inflation. Cash is now about 0 to 1% a year after inflation over the long run for Treasury bills in the US and world index, not 0 to 2%, and the lesson no longer says the net worth calculator maps your future spending."
 level: "building"
@@ -22,6 +24,12 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "risk", "investing"]
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "Financial Risk"
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Financial_risk"
@@ -140,7 +148,7 @@ As we covered in the [purchasing power post](/blog/purchasing-power/), inflation
 
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
-| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms at 4-6%, not guaranteed |
+| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms in a scenario of 4% to 6% a year (about €27,600 at world shares' 5.2%), not guaranteed |
 | Keep in savings | Purchasing power erosion | Certain while the rate stays below inflation | €10,000 becomes ~€7,400 in real terms |
 | Keep as cash | Inflation + no interest | Certain | €10,000 becomes ~€6,100 in real terms |
 
@@ -171,7 +179,7 @@ Here's the fundamental relationship: risk and return are linked. Higher potentia
 | Cash / savings | About 0-1% (Treasury bills, US and world index; lower in some countries, negative in high-inflation periods) | Near zero |
 | Government bonds | ~1-2% | Low (5-10%) |
 | Corporate bonds | A little above government bonds | Moderate (5-15%) |
-| Diversified stocks | 4-6% (developed markets) | High (15-25%) |
+| Diversified stocks | About 5% (world shares, 1900 to 2024; single countries well above or below) | High (15-25%) |
 | Individual stocks | Varies widely | Very high (30%+) |
 
 *Long-run historical averages after inflation (purchasing-power change, not paper change), based on Dimson, Marsh and Staunton's data since 1900; the same figures as the [asset classes lesson](/blog/investing-101-asset-classes/). Past performance is not indicative of future results.*
