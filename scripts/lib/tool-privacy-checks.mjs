@@ -254,6 +254,41 @@ export function isMissedStepOnly(problems) {
   return problems.length > 0 && problems.every((p) => /^the tool never sent \S+: that step was not done, so what it sends was not checked$/.test(p));
 }
 
+/** The problems that say only that something was not seen or not done. */
+const ABSENCES = [
+  /^the run stopped while /,
+  /^the tool never sent \S+: that step was not done/,
+  /^the # share link never sent /,
+  /^the tool copied no share link$/,
+  /^the tool published no state /,
+  /^no PostHog request was seen at all/,
+  /^no \$page(view|leave) was seen /,
+  /^none of the tool’s own events was seen /,
+  /^consent was given but no \$/,
+  /^no \.\w+ file was saved/,
+  /^the print dialog was never asked for/,
+];
+
+/**
+ * Whether a run found anything: a problem that is more than an absence. One
+ * this list does not know counts as found.
+ */
+function hasFinding(problems) {
+  return problems.some((p) => !ABSENCES.some((absence) => absence.test(p)));
+}
+
+/**
+ * What the worker does after a run: judge it, or do it once more in the same
+ * browser ('repeat') or in a new one ('relaunch').
+ */
+export function afterRun({ attempt, problems, connected }) {
+  const lostPage = problems.some((p) => /the run stopped while .*(Session closed|Target closed|detached Frame|Connection closed|page has been closed)/.test(p));
+  // What was found stands, whatever became of the page or the browser after
+  // it: the second run would be the only one judged.
+  if (attempt === 1 || hasFinding(problems) || (connected && !lostPage && !isMissedStepOnly(problems))) return 'judge';
+  return connected ? 'repeat' : 'relaunch';
+}
+
 /**
  * Judges the runs together. `runs` are `{ slug, consent, counts }`. For every
  * tool that had a run with consent, some run must have shown a $rageclick and

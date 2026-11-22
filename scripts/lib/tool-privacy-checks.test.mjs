@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, afterRun, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
@@ -406,5 +406,43 @@ describe('a run that only missed a step', () => {
     const steps = result.problems.filter((p) => p.includes('that step was not done'));
     assert.ok(steps.length > 0, result.problems.join(' | '));
     assert.equal(isMissedStepOnly(steps), true);
+  });
+});
+
+describe('afterRun: what was found is never retried away', () => {
+  const stopped = 'the run stopped while pressing: Session closed. Most likely the page has been closed.';
+  const missed = 'the tool never sent free_loan_comparison_reset: that step was not done, so what it sends was not checked';
+  const FOUND = [
+    'a request to /i/v0/e/ carries what was typed: 7131719',
+    'a request to 127.0.0.1/ carries what was typed in its address: 7131719',
+    'a request to /e/ could not be decoded, so it could not be checked',
+    'what the run sent could not be checked: no such file',
+    'consent was declined, yet $autocapture was sent',
+    'a # share link left state in the address: /free/loan-comparison/#p=1',
+  ];
+  for (const found of FOUND) {
+    for (const [name, problems, connected] of [
+      ['a lost page', [found, stopped], true],
+      ['a lost browser', [found], false],
+      ['both lost', [stopped, found], false],
+    ]) {
+      it(`judged at once: ${found.slice(0, 60)}, then ${name}`, () => {
+        assert.equal(afterRun({ attempt: 0, problems, connected }), 'judge');
+      });
+    }
+  }
+
+  it('a run that found nothing may go again, once', () => {
+    assert.equal(afterRun({ attempt: 0, problems: [stopped], connected: true }), 'repeat');
+    assert.equal(afterRun({ attempt: 0, problems: [missed], connected: true }), 'repeat');
+    assert.equal(afterRun({ attempt: 0, problems: [stopped], connected: false }), 'relaunch');
+    assert.equal(afterRun({ attempt: 0, problems: [], connected: false }), 'relaunch');
+    assert.equal(afterRun({ attempt: 1, problems: [stopped], connected: false }), 'judge');
+  });
+
+  it('the worker asks afterRun, with no exception of its own', () => {
+    const worker = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8').split('async function worker()')[1];
+    assert.match(worker, /afterRun\(\{ attempt, problems: result\.problems, connected: browser\.connected \}\)/);
+    assert.doesNotMatch(worker, /lostPage|!PLANT && hasFinding/);
   });
 });

@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, afterRun, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -932,35 +932,45 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     try { note.leaving = true; await page.goto('about:blank'); await page.close(); } catch { /* already closed */ }
   } finally {
     await context.close().catch(() => {});
-    rmSync(downloads, { recursive: true, force: true });
+    // Cleaning up must not throw: what this run saw would go with it.
+    try { rmSync(downloads, { recursive: true, force: true }); } catch { /* left for the system */ }
   }
 
-  const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
-  // An event belongs to the page it is about, not to the moment it was sent:
-  // around a language switch the page left and the page arrived at both send,
-  // and their requests can cross. Each event names its own page.
-  const arrivedAt = `${locale === 'en' ? '/hi' : ''}/free/${slug}/`;
-  const partOf = (e, sentIn) => {
-    if (sentIn !== 'switch' && sentIn !== 'arrived') return sentIn;
-    const props = e.properties || {};
-    let pathname = typeof props.$pathname === 'string' ? props.$pathname : '';
-    if (!pathname && typeof props.$current_url === 'string') { try { pathname = new URL(props.$current_url).pathname; } catch { /* not an address */ } }
-    if (!pathname) return sentIn;
-    return pathname === arrivedAt ? 'arrived' : 'switch';
-  };
-  const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: partOf(e, d.phase) })));
-  const result = checkRun({
-    decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
-    ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
-  });
-  result.problems.unshift(...problems);
-  result.problems = [...new Set(result.problems)];
-  const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
-  if (DUMP) {
-    mkdirSync(DUMP, { recursive: true });
-    writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
+  try {
+    return conclude();
+  } catch (err) {
+    // Not an absence, so never done again: requests were seen and not judged.
+    return { problems: [...problems, `what the run sent could not be checked: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [], covered: [], parts: [] } };
   }
-  return { ...result, note: notes };
+
+  function conclude() {
+    const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
+    // An event belongs to the page it is about, not to the moment it was sent:
+    // around a language switch the page left and the page arrived at both send,
+    // and their requests can cross. Each event names its own page.
+    const arrivedAt = `${locale === 'en' ? '/hi' : ''}/free/${slug}/`;
+    const partOf = (e, sentIn) => {
+      if (sentIn !== 'switch' && sentIn !== 'arrived') return sentIn;
+      const props = e.properties || {};
+      let pathname = typeof props.$pathname === 'string' ? props.$pathname : '';
+      if (!pathname && typeof props.$current_url === 'string') { try { pathname = new URL(props.$current_url).pathname; } catch { /* not an address */ } }
+      if (!pathname) return sentIn;
+      return pathname === arrivedAt ? 'arrived' : 'switch';
+    };
+    const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: partOf(e, d.phase) })));
+    const result = checkRun({
+      decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
+      ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
+    });
+    result.problems.unshift(...problems);
+    result.problems = [...new Set(result.problems)];
+    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
+    if (DUMP) {
+      mkdirSync(DUMP, { recursive: true });
+      writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
+    }
+    return { ...result, note: notes };
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1019,18 +1029,16 @@ async function worker() {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         result = await run(browser, base, job);
-        // A page or a window that went away under the run (closed by hand,
-        // or by the machine) says nothing about the site: run it once more.
-        const lostPage = result.problems.some((p) => /the run stopped while .*(Session closed|Target closed|detached Frame|Connection closed|page has been closed)/.test(p));
-        // A run whose only fault is a step that was not done (a click that
-        // missed while the page moved: about one run in a hundred) found
-        // nothing wrong with what was sent and checked less than it should
-        // have. It is run once more, whole, and judged on that second run;
-        // the output says it was repeated. A leak is never retried away:
-        // any other problem ends the run as failed.
-        const missedStep = isMissedStepOnly(result.problems);
-        if (attempt === 1 || (browser.connected && !lostPage && !missedStep)) break;
-        if (browser.connected) { if (missedStep) repeated.add(name); continue; }
+        // A page or a window that went away under a run that found nothing
+        // (closed by hand, or by the machine) says nothing about the site, and
+        // a run whose only fault is a step that was not done (a click that
+        // missed while the page moved: about one run in a hundred) checked
+        // less than it should have. Either is run once more, whole, and the
+        // output says when a step was the reason. What was found is never
+        // retried away, with a planted leak or without (afterRun).
+        const then = afterRun({ attempt, problems: result.problems, connected: browser.connected });
+        if (then === 'judge') break;
+        if (then === 'repeat') { if (isMissedStepOnly(result.problems)) repeated.add(name); continue; }
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
         if (attempt === 1) break;
@@ -1038,6 +1046,12 @@ async function worker() {
       if (stopping) return;
       browsers.delete(browser);
       await browser.close().catch(() => {});
+      browser = await launch();
+      browsers.add(browser);
+    }
+    // A run judged although its browser went: the next one needs a browser.
+    if (!browser.connected && !stopping) {
+      browsers.delete(browser);
       browser = await launch();
       browsers.add(browser);
     }
