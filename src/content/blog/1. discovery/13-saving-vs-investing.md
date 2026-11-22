@@ -15,7 +15,7 @@ pubDate: 2026-05-15
 updatedDate: 2026-11-22
 corrections:
   - date: 2026-11-22
-    note: "Investing's long-run return was given as 4 to 6% a year after inflation across developed markets, with no source. In the cited data about half of developed markets fall in that range, several well below it and the US above it. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), and says single countries differ."
+    note: "Investing's long-run return was given as 4 to 6% a year after inflation across developed markets, with no source. Country returns vary widely, so describing 4 to 6% as the historical range for developed-market shares was misleading. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), and says single countries differ."
   - date: 2026-11-21
     note: "The summary presented a right saving-and-investing order; the lesson says there is no single right order, and the summary now describes a common order and what can change it."
   - date: 2026-11-17

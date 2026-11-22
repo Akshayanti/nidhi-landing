@@ -15,7 +15,7 @@ pubDate: 2026-05-11
 updatedDate: 2026-11-22
 corrections:
   - date: 2026-11-22
-    note: "The lesson said broad stock markets returned 4 to 6% a year after inflation across major developed markets, with the US at the higher end. In the cited data about half of developed markets fall in that range, several fall well below it, and the US, at 6.6%, is above it. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton)."
+    note: "The lesson said broad stock markets returned 4 to 6% a year after inflation across major developed markets, with the US at the higher end. Country returns vary widely, and the US returned 6.6% a year after inflation from 1900 to 2024, above the stated range. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton)."
   - date: 2026-11-17
     note: "The lesson gave real return as nominal return minus inflation. That is a shortcut that works when both are low; the exact figure is (1 + nominal return) ÷ (1 + inflation) − 1, and at high inflation the two differ a lot: a 40% return with 35% inflation is about 3.7% after inflation, not 5%."
 level: "discovery"

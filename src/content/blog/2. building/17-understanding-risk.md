@@ -16,7 +16,7 @@ pubDate: 2026-05-25
 updatedDate: 2026-11-22
 corrections:
   - date: 2026-11-22
-    note: "The risk table gave diversified stocks 4 to 6% a year after inflation for developed markets, a range the cited data does not support for most markets: about half fall in it, several below and the US above. It now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). The 20-year example keeps its €21,900 to €32,100, now labelled as a scenario of 4% to 6% a year, and adds about €27,600 at the world figure."
+    note: "The risk table gave diversified stocks a historical range of 4 to 6% a year after inflation across developed markets. Country returns vary widely, so that description was misleading. It now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). The 20-year example keeps its €21,900 to €32,100, now labelled as a scenario of 4% to 6% a year, and adds about €27,600 at the world figure."
   - date: 2026-11-17
     note: "The opening set a loss after inflation against a 7% gain before inflation; the colleague's money doubled on paper but, with inflation near 2.5%, grew by roughly half in what it could buy. The time-horizon section now says its table is US data before inflation, and gives one long US stretch that gained only about 1.4% a year after inflation. Cash is now about 0 to 1% a year after inflation over the long run for Treasury bills in the US and world index, not 0 to 2%, and the lesson no longer says the net worth calculator maps your future spending."
 level: "building"
@@ -148,7 +148,7 @@ As we covered in the [purchasing power post](/blog/purchasing-power/), inflation
 
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
-| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms in a scenario of 4% to 6% a year (about €27,600 at world shares' 5.2%), not guaranteed |
+| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms in a scenario of 4% to 6% a year (about €27,600 at world shares' 5.2% a year), not guaranteed |
 | Keep in savings | Purchasing power erosion | Certain while the rate stays below inflation | €10,000 becomes ~€7,400 in real terms |
 | Keep as cash | Inflation + no interest | Certain | €10,000 becomes ~€6,100 in real terms |
 

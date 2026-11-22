@@ -35,7 +35,7 @@ pubDate: 2026-11-04
 updatedDate: 2026-11-22
 corrections:
   - date: 2026-11-22
-    note: "The lesson said developed-market shares returned 4 to 6% a year after inflation since 1900; in the cited data about half of developed markets fall in that range, and the US is above it. It now gives the world figure, 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with US and UK examples. The before-inflation figure of 6 to 8% is now about 7%, the figure the examples already used; the bands and the order are unchanged."
+    note: "The lesson described 4 to 6% a year after inflation as the historical return range for developed-market shares since 1900. Country returns vary widely, so that description was misleading. It now gives the world figure, 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with US and UK examples. The before-inflation figure of 6 to 8% is now about 7%, the figure the examples already used; the bands and the order are unchanged."
   - date: 2026-11-21
     note: "The summary said the rate, not the size, sets a debt's cost; the cost depends on both, and the summary now describes how the rate affects what an extra euro repaid saves."
   - date: 2026-11-17
@@ -80,7 +80,7 @@ Eva, 31, has €500 a month to spare. She has a €280,000 mortgage at 3.4%, a �
 
 ## The rate sets a debt's cost, not its size
 
-Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing earns an [expected return](#term-expected-return) that is higher on average and not certain. Diversified world shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that. A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs near 2%. The examples here use 7%, an illustration rather than a forecast.
+Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing has an [expected return](#term-expected-return), but the actual return is uncertain and may be higher or lower than the debt's rate. Diversified world shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that. A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs near 2%. The examples here use 7%, an illustration rather than a forecast.
 
 For Eva, €500 extra on the mortgage avoids about €17 of interest in a year. The same €500 on the card avoids about €110. Size does not set the cost; the rate does.
 
@@ -182,7 +182,7 @@ Some steps run in parallel; the order sets where the main flow of cash goes.
 
 ## In the 4 to 8% band, either choice is defensible
 
-Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. This lesson assumes shares return 7% a year before inflation: world shares' 5.2% a year after inflation from 1900 to 2024, combined with an assumed 2% inflation, gives about 7.3%, rounded here to 7%. Actual returns include bad years and bad decades. That is close enough for either choice to be reasonable. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
+Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. This lesson assumes shares return 7% a year before inflation: world shares' 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), combined with an assumed 2% inflation, gives about 7.3%, rounded here to 7%. Actual returns include bad years and bad decades. At 6.5% against an assumed 7%, the rates are close enough that either choice can be reasonable, though only the interest saving is certain. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
 
 <details class="lesson-depth">
 <summary class="disclosure">When peace of mind outweighs the arithmetic</summary>

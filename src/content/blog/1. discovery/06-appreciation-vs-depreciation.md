@@ -16,7 +16,7 @@ pubDate: 2026-04-29
 updatedDate: 2026-11-22
 corrections:
   - date: 2026-11-22
-    note: "The lesson gave developed-market shares a range of 4 to 6% a year after inflation and said some countries were nearer 3%. In the cited data about half of developed markets fall in that range, the US is above it, and several countries returned under 3% a year. The lesson now leads with the world figure, about 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with country examples."
+    note: "The lesson gave developed-market shares a range of 4 to 6% a year after inflation and said some countries were nearer 3%. Country returns vary widely, so describing 4 to 6% as the historical range for developed-market shares was misleading. The lesson now leads with the world figure, about 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with country examples."
   - date: 2026-11-17
     note: "The early-start example used a 7% return without saying it is before inflation, beside a 4 to 6% figure after inflation; it now says so. The credit card example now states the minimum-payment rule it assumes, since a card with a higher minimum costs much less."
 localRules: [tax]

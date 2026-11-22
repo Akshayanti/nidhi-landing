@@ -201,7 +201,7 @@ If you want a fast way to reason about compounding without opening a spreadsheet
 | 7% (illustrative equity-heavy, nominal) | ~10 years |
 | 10% (optimistic nominal) | ~7 years |
 
-So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. After inflation, at the about 5% a year world shares returned from 1900 to 2024 (Dimson, Marsh and Staunton), each doubling takes about 14 years: about 12 years at 6% and 18 at 4%. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
+So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. World shares returned about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). At a constant real return of 5% a year, money doubles in about 14 years; at 6%, about 12 years; at 4%, about 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
 
 It's a shortcut, not a formula, but it's close enough for most mental-math decisions about when money will double, how inflation will erode purchasing power, or whether a given rate is worth chasing.
 
