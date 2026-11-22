@@ -2174,8 +2174,16 @@
   color: var(--color-danger);
 }
 
+/* Never display: none: a live region out of the tree is not heard when it fills. */
 .mcnw-limit:empty {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .mcnw-modalRefusal {
@@ -2415,6 +2423,12 @@
   container-type: inline-size;
 }
 
+/* A sentence, not a label: capitals and tracking broke its words at large text. */
+.mcnw-totalLabel--partial {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .mcnw-totalHint {
   display: block;
   font-size: var(--text-small);
@@ -2574,6 +2588,8 @@
 }
 
 .mcnw-riskCard {
+  /* An amount is sized by the card it is in, or it runs past it at large text. */
+  container-type: inline-size;
   padding: var(--space-3);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-light);

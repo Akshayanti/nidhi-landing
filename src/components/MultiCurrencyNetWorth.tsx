@@ -1137,12 +1137,12 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
       {/* Total NW */}
       {hideAmounts ? (
         <div className="mcnw-total mcnw-total--hidden">
-          <span className="mcnw-totalLabel">{totalWord}</span>
+          <span className={`mcnw-totalLabel${partial ? ' mcnw-totalLabel--partial' : ''}`}>{totalWord}</span>
           <span className="mcnw-totalValue mcnw-totalValue--hidden">{strings.results.hidden}</span>
         </div>
       ) : ratesUsable && totalLabel ? (
         <div className="mcnw-total">
-          <span className="mcnw-totalLabel">{totalWord}</span>
+          <span className={`mcnw-totalLabel${partial ? ' mcnw-totalLabel--partial' : ''}`}>{totalWord}</span>
           <span className="mcnw-totalValue"><Amounts>{totalLabel}</Amounts></span>
           {partial && (
             <span className="mcnw-totalHint">
