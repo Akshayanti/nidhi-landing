@@ -383,6 +383,27 @@ export function rateGap(result: AggregationResult, functionalCurrency: string, s
   return result.hasRates === 'partial' ? 'some' : null;
 }
 
+/** What decides whether the rates are still to come, and whether their failure is this view's. */
+interface RatesView {
+  loading: boolean;
+  failed: boolean;
+  shared: boolean;
+  singleCurrency: boolean;
+}
+
+/**
+ * Rates still on the way are not yet unavailable: until they arrive or fail
+ * nothing calls them so, and there is nothing to export or print (#795).
+ */
+export function ratesPending(view: RatesView, hasRates: AggregationResult['hasRates']): boolean {
+  return view.loading && !view.failed && !view.shared && !view.singleCurrency && hasRates === 'none';
+}
+
+/** The failure says raw amounts are shown: not while withheld, nor over a sender's converted ones. */
+export function ratesFailureShown(view: RatesView, withheld: boolean): boolean {
+  return view.failed && !view.singleCurrency && !view.shared && !withheld;
+}
+
 /** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */
 export function ownedAndOwed(rows: AssetRow[], currency: string): { owned: number; owed: number } {
   const code = currency.toUpperCase();

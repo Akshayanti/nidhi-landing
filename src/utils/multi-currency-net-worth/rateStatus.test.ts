@@ -286,3 +286,31 @@ describe('float residue is a net worth of zero (#795)', () => {
     assert.ok(result.totalNetWorthFunctional > 1900, String(result.totalNetWorthFunctional));
   });
 });
+
+describe('rates on the way are neither missing nor failed (#795)', () => {
+  const view = { loading: true, failed: false, shared: false, singleCurrency: false };
+  it('pending only where this page’s own rates are awaited', async () => {
+    const { ratesPending } = await import('./math.ts');
+    assert.equal(ratesPending(view, 'none'), true);
+    assert.equal(ratesPending(view, 'full'), false);
+    for (const change of [{ loading: false }, { failed: true }, { shared: true }, { singleCurrency: true }]) {
+      assert.equal(ratesPending({ ...view, ...change }, 'none'), false, JSON.stringify(change));
+    }
+  });
+  it('a failure says raw amounts only where they are shown', async () => {
+    const { ratesFailureShown } = await import('./math.ts');
+    const failed = { ...view, loading: false, failed: true };
+    assert.equal(ratesFailureShown(failed, false), true);
+    assert.equal(ratesFailureShown(failed, true), false, 'withheld');
+    assert.equal(ratesFailureShown({ ...failed, shared: true }, false), false, 'shared');
+    assert.equal(ratesFailureShown({ ...failed, singleCurrency: true }, false), false, 'one currency');
+  });
+  it('one rule for the cards, the export and the report', async () => {
+    const { readFileSync } = await import('node:fs');
+    const source = readFileSync(new URL('../../components/MultiCurrencyNetWorth.tsx', import.meta.url), 'utf8');
+    assert.match(source, /const exportReady = !withheld && !pendingRates && /);
+    assert.match(source, /\{!withheld && !pendingRates && <PrintedReport/);
+    assert.match(source, /pendingRates=\{pendingRates\}/);
+    assert.match(source, /\{ratesFailureShown\(ratesView, Boolean\(withheld \|\| \(refused && untouched\)\)\) && \(/, 'a refused list shows no amounts either');
+  });
+});

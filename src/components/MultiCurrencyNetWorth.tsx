@@ -6,6 +6,8 @@ import {
   getCurrencyLabel,
   isSingleCurrency,
   rateGap,
+  ratesPending,
+  ratesFailureShown,
   concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
@@ -290,6 +292,8 @@ export default function MultiCurrencyNetWorth({
   // Everything in the spending currency needs no exchange rates, so the rate
   // banners (loading, unavailable) do not apply.
   const singleCurrency = isSingleCurrency(result, functionalCurrency);
+  const ratesView = { loading: ratesLoading, failed: ratesError, shared: isReadOnlyView, singleCurrency };
+  const pendingRates = ratesPending(ratesView, result.hasRates);
   const noRateAtAll = rateGap(result, functionalCurrency, !(isReadOnlyView && sharedRedacted)) === 'all';
 
   // ---- Row operations ----
@@ -482,7 +486,7 @@ export default function MultiCurrencyNetWorth({
   // A copy holds what the results show and no more: a shared view that hides
   // amounts gives currencies and shares only. The event says only which kind.
   const showAmounts = !(isReadOnlyView && sharedRedacted);
-  const exportReady = !withheld && result.positions.length > 0 && (isReadOnlyView || hasData);
+  const exportReady = !withheld && !pendingRates && result.positions.length > 0 && (isReadOnlyView || hasData);
   const downloadSpreadsheet = () => {
     const sheets = netWorthSheets({
       island: strings,
@@ -554,7 +558,7 @@ export default function MultiCurrencyNetWorth({
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
       {/* ---- Rate status ---- */}
-      {ratesError && !singleCurrency && (
+      {ratesFailureShown(ratesView, Boolean(withheld || (refused && untouched))) && (
         <div className="mcnw-banner mcnw-bannerWarn" role="alert">
           <span>
             {strings.rates.errorBefore}{' '}
@@ -796,8 +800,7 @@ export default function MultiCurrencyNetWorth({
         withheld={withheld}
         result={result}
         functionalCurrency={functionalCurrency}
-        ratesLoading={ratesLoading}
-        ratesError={ratesError}
+        pendingRates={pendingRates}
         rows={isReadOnlyView ? undefined : rows}
         hideAmounts={isReadOnlyView && sharedRedacted}
         strings={strings}
@@ -841,7 +844,7 @@ export default function MultiCurrencyNetWorth({
         {strings.results.disclaimer}
       </p>
 
-      {!withheld && <PrintedReport
+      {!withheld && !pendingRates && <PrintedReport
         strings={strings}
         exportStrings={exportStrings}
         functionalCurrency={functionalCurrency}
@@ -1020,8 +1023,7 @@ interface ResultsPanelProps {
   withheld?: string | null;
   result: ReturnType<typeof aggregate>;
   functionalCurrency: string;
-  ratesLoading: boolean;
-  ratesError: boolean;
+  pendingRates: boolean;
   strings: Strings;
   hidePct?: boolean;
   hideAmounts?: boolean;
@@ -1055,7 +1057,7 @@ function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strin
   );
 }
 
-function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
+function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRates, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
   // Net worth of zero or less: no position is a share of it, so no card states one.
   // A shared view without amounts has no total to judge by and shows what it was given.
@@ -1132,8 +1134,6 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
   // A currency without a rate is in no total: what is left is a subtotal, and
   // no share, band or chart can be drawn from it (#795).
   const partial = gap === 'some';
-  // Rates still on the way are not yet unavailable.
-  const waiting = ratesLoading && !ratesError && result.hasRates === 'none';
   const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
   // Without a band to say "debt", the amount carries its sign.
   const cardMoney = (value: number, code: string) =>
@@ -1183,7 +1183,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable ? (
-                  !waiting && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                  !pendingRates && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
                 ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
@@ -1625,8 +1625,7 @@ function ShareModal({
                 withheld={withheld}
                 result={previewResult}
                 functionalCurrency={functionalCurrency}
-                ratesLoading={false}
-                ratesError={false}
+                pendingRates={false}
                 hidePct={false}
                 hideAmounts={!isFull}
                 strings={strings}
