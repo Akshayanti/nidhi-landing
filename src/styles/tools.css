@@ -5147,6 +5147,50 @@ button.mcnw-legendItem:focus-visible {
 .iop-table td {
   font-variant-numeric: tabular-nums;
 }
+/* Three columns stop fitting a phone as the text grows (#780): each row
+   becomes a record, named by its setting, with the column names on its lines. */
+@media (max-width: 20em) {
+  .iop-table.tool-recordTable,
+  .iop-table.tool-recordTable caption,
+  .iop-table.tool-recordTable tbody,
+  .iop-table.tool-recordTable tr,
+  .iop-table.tool-recordTable tbody th {
+    display: block;
+    max-width: none;
+  }
+  /* The column names are on every line; the heading row is kept for screen readers only. */
+  .iop-table.tool-recordTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .iop-table.tool-recordTable tbody tr {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .iop-table.tool-recordTable tbody th,
+  .iop-table.tool-recordTable tbody td {
+    padding: 2px 0;
+    border: 0;
+  }
+  /* Label, then value on a line of its own: the line an amount is fitted to. */
+  .iop-table.tool-recordTable tbody td {
+    display: block;
+    min-inline-size: 0;
+    container-type: inline-size;
+    --amt-k: 0.57;
+  }
+  .iop-table.tool-recordTable tbody td::before {
+    /* Shown, but not read out a second time: the column heading is already
+       the cell's header for a screen reader. */
+    content: attr(data-label) / "";
+    display: block;
+    color: var(--color-text-secondary);
+  }
+}
 .iop-share {
   display: inline-flex;
   flex-direction: column;

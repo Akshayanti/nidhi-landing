@@ -466,6 +466,15 @@ const STATES = [
     // A switch that is off hides its fields too ("Take money out later").
     for (const c of document.querySelectorAll('.toolp-page input[type="checkbox"]')) if (!c.checked && !c.closest('[hidden]')) c.click();
     await new Promise((r) => setTimeout(r, 400));
+    // "My own figure" above the optimistic setting adds the side-by-side
+    // table (#780); it stays for the state after this one, at the longest amounts.
+    const own = document.querySelector('.toolp-page input[id$="-ownReturn"]');
+    if (own) {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(own, '12');
+      for (const e of ['input', 'change', 'blur']) own.dispatchEvent(new Event(e, { bubbles: true }));
+      for (let i = 0; i < 100 && !document.querySelector('.iop-table'); i++) await new Promise((r) => setTimeout(r, 100));
+      if (!document.querySelector('.iop-table')) throw new Error('A return of 12% did not show the side-by-side table, so it was not measured');
+    }
   }],
   // The fields those choices revealed, at their own maxima as well.
   ['longest amounts, every choice', typeAmounts, LONGEST],
