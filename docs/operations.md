@@ -2,7 +2,7 @@
 
 The site is static, but five Google Apps Script projects hold the lists and send the mail. They are not deployed from this repository: each is pasted into its own project in the Apps Script editor and published by hand. This page is the record of what each needs, how to deploy it and how to tell that production runs what `main` holds (#443).
 
-Each file's header comment has the full setup; this page collects it in one place.
+Each file's header comment has the full setup; this page collects it in one place. The sheets the scripts read and write, their columns and how to add one are in [data-model.md](data-model.md).
 
 ## The scripts
 
