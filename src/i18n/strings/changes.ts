@@ -40,7 +40,7 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
-    date: '2026-11-21',
+    date: '2026-11-22',
     items: [
       {
         id: 'learning-path-lists-every-lesson',
@@ -52,6 +52,21 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'शिकण्याच्या मार्गाचे पान आता “धडा शोधा” खाली प्रत्येक धडा आणि प्रत्येक मार्गदर्शिका दाखवते, पातळीनुसार अशा विभागांत जे तुम्ही उघडू आणि बंद करू शकता, त्यामुळे सगळे एकत्र दिसते आणि हवे त्यावर थेट जाता येते. पान आता हलकेही आहे, आणि त्यातील लिंक JavaScript बंद असतानाही चालतात. शोध, तुमची वाचनाची प्रगती आणि पातळी निवडण्यासाठीची मदत पूर्वीप्रमाणेच चालतात.',
         },
       },
+      {
+        id: 'privacy-changelog-pages',
+        text: {
+          en: 'The privacy notice now shows its latest three changes, and the complete record of every change, kept word for word, has its own pages, one for each year. Each change there has a permanent link, so it can be shared or found again.',
+          hi: 'प्राइवेसी नोटिस में अब उसके सबसे नए तीन बदलाव दिखते हैं, और हर बदलाव का पूरा रिकॉर्ड, शब्द-ब-शब्द, अब अपने पेजों पर है, हर साल का एक पेज। वहाँ हर बदलाव का एक स्थायी लिंक है, ताकि उसे शेयर किया जा सके या बाद में फिर ढूँढा जा सके।',
+          es: 'El aviso de privacidad muestra ahora sus tres últimos cambios, y el registro completo de todos los cambios, palabra por palabra, tiene sus propias páginas, una por año. Cada cambio tiene allí un enlace permanente, para compartirlo o volver a encontrarlo.',
+          cs: 'Zásady ochrany soukromí teď ukazují své tři nejnovější změny a\u00a0úplný přehled všech změn, slovo od slova, má vlastní stránky, jednu pro každý rok. Každá změna tam má trvalý odkaz, takže ji jde sdílet nebo znovu najít.',
+          mr: 'गोपनीयता सूचनेत आता तिचे सर्वात अलीकडचे तीन बदल दिसतात, आणि प्रत्येक बदलाची संपूर्ण नोंद, जशी लिहिली तशीच, आता स्वतंत्र पानांवर आहे, प्रत्येक वर्षासाठी एक पान. तिथे प्रत्येक बदलाला एक कायमची लिंक आहे, त्यामुळे तो शेअर करता येतो किंवा नंतर पुन्हा शोधता येतो.',
+        },
+      },
+    ],
+  },
+  {
+    date: '2026-11-21',
+    items: [
       {
         id: 'cookie-question-at-the-bottom',
         text: {
@@ -120,16 +135,6 @@ export const CHANGE_DAYS: ChangeDay[] = [
           es: 'En una página que no existe, en una dirección en hindi, español, checo o maratí, el menú, el pie de página, el enlace «Saltar al contenido» y la pregunta sobre cookies salen ahora también en ese idioma, no en inglés. En las páginas de las lecciones en inglés, la insignia del nivel muestra ahora el número del nivel dentro de un círculo en lugar de un emoji; Inclusive finances muestra solo su nombre. El campo del correo y el botón de los formularios del boletín y de la lista de espera usan ahora las fuentes del sitio en lugar de una fuente genérica del sistema.',
           cs: 'Na neexistující stránce s adresou v hindštině, španělštině, češtině nebo maráthštině jsou teď i nabídka, zápatí, odkaz „Přeskočit na obsah“ a otázka na cookies v tomto jazyce, ne anglicky. Na stránkách anglických lekcí teď odznak úrovně ukazuje místo emoji číslo úrovně v kroužku; Inclusive finances má jen název. Pole pro e-mail a tlačítko ve formulářích newsletteru a čekací listiny teď používají písmo webu místo obyčejného systémového písma.',
           mr: 'हिंदी, स्पॅनिश, चेक किंवा मराठी पत्त्यावर पान सापडत नाही तेव्हा आता मेन्यू, पानाचा तळाचा भाग, “मुख्य मजकुराकडे जा” ही लिंक आणि कुकीविषयीचा प्रश्नही त्याच भाषेत दिसतात, इंग्रजीत नाही. इंग्रजी धड्यांच्या पानांवर पातळीच्या बॅजवर आता इमोजीऐवजी वर्तुळात पातळीचा क्रमांक दिसतो; Inclusive finances चे फक्त नाव दिसते. न्यूजलेटर आणि प्रतीक्षा यादीच्या फॉर्ममधील ईमेलची जागा आणि बटण आता सिस्टमच्या साध्या फॉन्टऐवजी साइटचे स्वतःचे फॉन्ट वापरतात.',
-        },
-      },
-      {
-        id: 'privacy-changelog-pages',
-        text: {
-          en: 'The privacy notice now shows its latest three changes, and the complete record of every change, kept word for word, has its own pages, one for each year. Each change there has a permanent link, so it can be shared or found again.',
-          hi: 'प्राइवेसी नोटिस में अब उसके सबसे नए तीन बदलाव दिखते हैं, और हर बदलाव का पूरा रिकॉर्ड, शब्द-ब-शब्द, अब अपने पेजों पर है, हर साल का एक पेज। वहाँ हर बदलाव का एक स्थायी लिंक है, ताकि उसे शेयर किया जा सके या बाद में फिर ढूँढा जा सके।',
-          es: 'El aviso de privacidad muestra ahora sus tres últimos cambios, y el registro completo de todos los cambios, palabra por palabra, tiene sus propias páginas, una por año. Cada cambio tiene allí un enlace permanente, para compartirlo o volver a encontrarlo.',
-          cs: 'Zásady ochrany soukromí teď ukazují své tři nejnovější změny a\u00a0úplný přehled všech změn, slovo od slova, má vlastní stránky, jednu pro každý rok. Každá změna tam má trvalý odkaz, takže ji jde sdílet nebo znovu najít.',
-          mr: 'गोपनीयता सूचनेत आता तिचे सर्वात अलीकडचे तीन बदल दिसतात, आणि प्रत्येक बदलाची संपूर्ण नोंद, जशी लिहिली तशीच, आता स्वतंत्र पानांवर आहे, प्रत्येक वर्षासाठी एक पान. तिथे प्रत्येक बदलाला एक कायमची लिंक आहे, त्यामुळे तो शेअर करता येतो किंवा नंतर पुन्हा शोधता येतो.',
         },
       },
     ],

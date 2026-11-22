@@ -85,10 +85,20 @@ export function launchChangelog({ monteCarloLaunch, investOrPayOffLaunch }: Laun
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 export const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 22, 2026',
+    iso: '2026-11-22',
+    material: true,
+    summary: 'This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/.',
+    details: [
+      'This changelog has its own pages: /privacy/changelog/ lists each year with its number of entries and their dates, and /privacy/changelog/2026/ holds every entry of 2026, newest first under its month, in full. The same pages are in every language, with the entries in English as on this notice. This notice now shows the latest three entries, each with a permanent link to its place on its year page, and then a link to the complete record, where it used to keep older entries under a folded "Earlier changes" section. Every entry moved with its text unchanged; none was removed or reworded.',
+      'The changelog pages send the same anonymous pageview and page-leave events as every page and carry no new click label: with cookie consent, a click on one of their links is recorded like any unlabelled click, by the kind of element and its position only. Nothing the site collects, stores or sends changed.',
+    ],
+  },
+  {
     date: 'Nov 21, 2026',
     iso: '2026-11-21',
     material: true,
-    summary: 'The cookie banner no longer blocks the page: it is now a panel at the bottom of the screen that you can read past and answer when you like, and until you answer, pageviews are counted and clicks are not recorded, as before. When a lesson email fails to reach one subscriber, the newsletter now keeps a short code made from the address until that lesson has gone out, so it can try again; failure events are now one per kind of failure per run. The forms show success only when it worked, and the free tools\' wording now matches this notice. The home page gains one new click label, home-hero-lesson-1, for its new "Read lesson 1" button, recorded only if you accept the cookie banner. This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/.',
+    summary: 'The cookie banner no longer blocks the page: it is now a panel at the bottom of the screen that you can read past and answer when you like, and until you answer, pageviews are counted and clicks are not recorded, as before. When a lesson email fails to reach one subscriber, the newsletter now keeps a short code made from the address until that lesson has gone out, so it can try again; failure events are now one per kind of failure per run. The forms show success only when it worked, and the free tools\' wording now matches this notice. The home page gains one new click label, home-hero-lesson-1, for its new "Read lesson 1" button, recorded only if you accept the cookie banner.',
     details: [
       'Cookie banner, changed: on a first visit it used to cover the whole page with a dark overlay, keep keyboard focus inside itself and stop the page from scrolling until you chose. It is now a panel fixed to the bottom of the screen (on wider screens, a card in the bottom corner) with the heading "Cookie choices". The page stays readable, scrollable and usable while it is open, and focus is not moved into it. A "Cookie choices" link right after "Skip to content" leads keyboard and screen-reader users to it. It never covers the header, and the page leaves room at its end so nothing stays hidden behind it.',
       'Its words, its two answers and their order are unchanged: "No thanks" comes first and looks the same as "Sure, that\'s fine". The link to this notice now follows the two answers. The panel goes away once you answer, and "Cookie settings" at the bottom of every page still opens it again.',
@@ -100,8 +110,6 @@ export const writtenChangelog: ChangelogEntry[] = [
       'New click label, recorded only if you accept the cookie banner, under the same click capture as before: home-hero-lesson-1 (the "Read lesson 1" button in the home page\'s opening section, which opens the first lesson of the learning path). The "See the planner" link, now under it, keeps its label, home-hero-planner.',
       'The home page\'s "Which sounds like you?" list gains a third situation, for someone new to money, with a link to the first lesson and one to the net worth calculator. Those two links carry no click labels: with consent, a click on them is recorded like any unlabelled click, by the kind of element and its position only.',
       'Labels that move but keep their names: home-volunteers (the call for translators now sits at the end of the home page, just above the footer).',
-      'This changelog has its own pages: /privacy/changelog/ lists each year with its number of entries and their dates, and /privacy/changelog/2026/ holds every entry of 2026, newest first under its month, in full. The same pages are in every language, with the entries in English as on this notice. This notice now shows the latest three entries, each with a permanent link to its place on its year page, and then a link to the complete record, where it used to keep older entries under a folded "Earlier changes" section. Every entry moved with its text unchanged; none was removed or reworded.',
-      'The changelog pages send the same anonymous pageview and page-leave events as every page and carry no new click label: with cookie consent, a click on one of their links is recorded like any unlabelled click, by the kind of element and its position only. Nothing the site collects, stores or sends changed.',
       'Beyond the home-hero-lesson-1 label: no new analytics event, no other new click label, and no new browser storage key, cookie, third-party request or processor. The cookie banner\'s answer is stored as before, in the nidhi-cookie-consent cookie, only when you pick one.',
     ],
   },
