@@ -133,3 +133,48 @@ jobs:
             echo "::error::A tool's privacy check did not pass (or did not run). See the 'Privacy check: <tool>' jobs."
             exit 1
           fi
+
+  # Nobody watches the nightly run, so one that failed or timed out opens an
+  # issue, or adds to the one already open. The issue links the run and says
+  # nothing of what was found: a weakness does not go in the public tracker
+  # (CLAUDE.md, "Private stays private").
+  alert:
+    needs: [verify-tool, verify]
+    if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write   # open or comment on the privacy-check-alert issue
+    steps:
+      - name: Open or update the privacy-check-alert issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No checkout in this job, so gh is told which repository.
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          TITLE="Nightly tool check did not pass ($(date -u +%Y-%m-%d))"
+          BODY="$RUNNER_TEMP/privacy-check-alert.md"
+          {
+            echo "The nightly check of the free tools did not finish green. The cause can be the test, the runner, a dependency or the site: this issue does not say which."
+            echo
+            echo "- Workflow run: $RUN_URL (attempt $ATTEMPT)"
+            echo
+            echo "Open the run to see which job failed. Do not copy what it found into this issue. Close the issue once a nightly run has passed. While it is open, further failures are added here as comments."
+          } > "$BODY"
+
+          # De-dupe: one open alert at a time.
+          EXISTING=$(gh issue list --state open --label privacy-check-alert --limit 1 --json number --jq '.[0].number // empty' || echo "")
+          if [ -n "${EXISTING:-}" ]; then
+            echo "Appending to existing issue #$EXISTING"
+            gh issue comment "$EXISTING" --body-file "$BODY"
+          else
+            echo "Opening new issue"
+            gh issue create --title "$TITLE" --label privacy-check-alert --body-file "$BODY" || {
+              # If the label doesn't exist yet, create it and retry once.
+              gh label create privacy-check-alert --color D93F0B --description "The nightly tool check did not pass" || true
+              gh issue create --title "$TITLE" --label privacy-check-alert --body-file "$BODY"
+            }
+          fi

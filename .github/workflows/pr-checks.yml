@@ -154,7 +154,8 @@ jobs:
         with:
           persist-credentials: false
           # The merge commit and its first parent, the base: the newsletter
-          # id test compares the lessons with it (src/utils/newsletterIds.test.ts).
+          # id test compares the lessons with it (src/utils/newsletterIds.test.ts),
+          # and the privacy guard the notice (src/utils/privacyNoticeGuard.test.ts).
           fetch-depth: 2
 
       - name: Setup Node
@@ -169,6 +170,7 @@ jobs:
       - name: Run tests
         env:
           NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
         run: npm test
 
       # The newsletter script is Python, so npm test does not reach it. The same

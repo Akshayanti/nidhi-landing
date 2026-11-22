@@ -132,6 +132,8 @@ describe('the required checks run on every pull request', () => {
     it(`${file}: no job is chosen by what changed`, () => {
       for (const job of jobs) {
         const id = job.slice(2, job.indexOf(':'));
+        // Not a check: it reports the nightly run (the next describe).
+        if (file === 'tool-privacy.yml' && id === 'alert') continue;
         const condition = /\n {4}if: (.*)/.exec(job);
         if (condition) assert.equal(condition[1], '${{ !cancelled() }}', `job ${id}`);
       }
@@ -142,6 +144,31 @@ describe('the required checks run on every pull request', () => {
       assert.match(text, /\n {2}group: [a-z-]+-\$\{\{ github\.event_name \}\}-/);
     });
   }
+});
+
+describe('a privacy problem is not left to be noticed', () => {
+  const privacy = read('.github/workflows/tool-privacy.yml');
+  const alert = privacy.slice(privacy.indexOf('\n  alert:\n'));
+
+  it('a nightly run that failed opens or updates one issue', () => {
+    assert.match(privacy, /\n {2}alert:\n/);
+    assert.ok(alert.includes('needs: [verify-tool, verify]'));
+    assert.ok(alert.includes("if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))"));
+    assert.match(alert, /permissions:\n\s+issues: write/);
+    assert.match(alert, /gh issue list --state open --label privacy-check-alert/);
+    assert.match(alert, /gh issue comment "\$EXISTING"/);
+    assert.match(alert, /gh issue create --title "\$TITLE" --label privacy-check-alert/);
+    assert.doesNotMatch(alert, /uses: actions\/checkout|gh run view|--log/);
+  });
+
+  it('the changelog guard is part of the Tests job, and fails', () => {
+    const checks = read('.github/workflows/pr-checks.yml');
+    const tests = checks.slice(checks.indexOf('\n  test:\n'), checks.indexOf('run: npm test'));
+    assert.match(tests, /fetch-depth: 2/);
+    assert.match(tests, /PRIVACY_NOTICE_BASE: HEAD\^1/);
+    assert.ok(JSON.parse(read('package.json')).scripts.test.includes('src/utils/privacyNoticeGuard.test.ts'));
+    assert.doesNotMatch(read('.github/workflows/deploy.yml'), /Privacy-notice changelog guard/);
+  });
 });
 
 describe('every workflow', () => {

@@ -73,28 +73,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Privacy-notice changelog guard
-        # Nudges (doesn't fail) when the privacy notice
-        # (src/components/pages/PrivacyPage.astro) was edited in the latest
-        # commit but its changelog (src/utils/privacyChangelogEntries.ts) wasn't also
-        # touched. The top-of-page "Last updated" bumps itself
-        # from git regardless; this guard is about the human-readable
-        # changelog staying in sync with real edits.
-        run: |
-          FILE=src/components/pages/PrivacyPage.astro
-          LOG=src/utils/privacyChangelogEntries.ts
-          # Did the latest commit touch the file at all?
-          if ! git diff --quiet HEAD~1 HEAD -- "$FILE" 2>/dev/null; then
-            # Did that same commit also add to the changelog?
-            # We look for added lines that contain ChangelogEntry-ish keys.
-            ADDED=$(git diff HEAD~1 HEAD -- "$LOG" | grep -E '^\+[[:space:]]*(date|iso|material|summary):' || true)
-            if [ -z "$ADDED" ]; then
-              echo "::warning file=$FILE::PrivacyPage.astro was modified but no new changelog entry was added. If the change is material (new processor, data category, retention), please add an entry to the \`writtenChangelog\` array in $LOG."
-            else
-              echo "PrivacyPage.astro changed and changelog entry was updated: ok."
-            fi
-          fi
-
       - name: Build
         run: npm run build
         env:
