@@ -65,6 +65,8 @@ const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
  * from LOCALE_META in `src/i18n/config.ts`.
  */
 const IDENTICAL_OK = new Set<string>([
+  // FIRE is the acronym, kept in capitals in every language.
+  'learn.tags.fire.name',
   // The privacy notice names five services, and four of those names are the
   // services' own (the fifth, "Your browser", is prose and is translated). A
   // reader who wants to look one up has to look up the name it actually has,
@@ -663,5 +665,37 @@ describe('each language spells a word one way', () => {
   it('quotes English and Hindi with curly marks, never straight double quotes', () => {
     const found = [...allWords(EN, 'en'), ...allWords(HI, 'hi')].filter(({ value }) => /"/.test(value));
     assert.deepEqual(found.map((l) => l.path), []);
+  });
+
+  it('calls a lesson a lesson, in every language', () => {
+    // The privacy notice says "post" on purpose: it covers the lessons and the
+    // optional guides that the newsletter also sends. A cited article and a
+    // newsletter's blog are somebody else's.
+    const allowed = new Set(['about.body.sourcesCount']);
+    const cases = [
+      ['en', EN, /\b([Pp]osts?|[Aa]rticles?|[Bb]log)\b/],
+      ['hi', HI, /(^|[\s“(])(लेख|लेखों|पोस्ट|पोस्टों|ब्लॉग)(?=[\s।,:.”)]|$)/],
+      ['es', ES, /\b([Aa]rtículos?|[Bb]log)\b/],
+      ['cs', CS, /[Čč]lán(ek|k)|\b[Bb]log/],
+      ['mr', MR, /(^|[\s“(])(लेख|लेखां\S*|लेखात|लेखाचे|लेखाखाली|पोस्ट|ब्लॉग\S*)(?=[\s,:.”)]|$)/],
+    ] as const;
+    for (const [locale, list, pattern] of cases) {
+      const found = list
+        .filter((l) => !l.path.startsWith('privacy.') && !allowed.has(l.path) && pattern.test(l.value))
+        .map((l) => l.path);
+      assert.deepEqual(found, [], locale);
+    }
+  });
+
+  it('keeps the settled names for a forecast, a spending currency and a loan offer', () => {
+    const cases = [
+      [EN, /functional currenc|\bvendors?\b(?!\})/i],
+      [HI, /मुख्य मुद्रा/],
+      [ES, /moneda (de referencia|funcional)/],
+      [CS, /předpově[ďd]/],
+    ] as const;
+    for (const [list, pattern] of cases) {
+      assert.deepEqual(list.filter((l) => pattern.test(l.value.replace(/\{vendor\}/g, ''))).map((l) => l.path), []);
+    }
   });
 });

@@ -300,6 +300,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | amortisation schedule | splátkový kalendář | |
 | balance (of a loan) | zbývající jistina | |
 | balance (of a portfolio) | hodnota portfolia | Not *zůstatek*, which reads as money owed or on account. |
+| offer (a card in the loan tool) | nabídka | *Nabídka A*, *Přidat nabídku*. The name field is *Název poskytovatele*. |
 | lender | poskytovatel úvěru | Not *věřitel* in labels; fine in prose. |
 | recast | přepočet splátky | Where the tool defines it: on the remaining principal, keeping the rate and the end date. |
 | apply to principal | snížit jistinu | |

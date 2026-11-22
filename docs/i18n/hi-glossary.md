@@ -196,6 +196,7 @@ why this one won, so it is not re-argued in a later lesson.
 | widowhood | जीवनसाथी को खोना | Not विधवापन, which covers widows only. |
 | survivor benefits | जीवनसाथी की मृत्यु के बाद मिलने वाले लाभ | Not उत्तरजीवी लाभ, which a beginner cannot decode. |
 | no prerequisite | पहले कुछ पढ़ना ज़रूरी नहीं | Not पूर्व शर्त, which reads as an eligibility condition. |
+| guide | गाइड (How-to) | A lesson is पाठ and is never called a guide; मार्गदर्शिका is kept for Inclusive Finances. |
 | follow-up (a companion lesson) | के आगे का पाठ | Not अनुवर्ती. |
 | tracking (progress) | नज़र रखना, प्रगति पर नज़र | Not ट्रैक करना or निगरानी, which were mixed in one tag. |
 | Inclusive Finances (the search pill) | सबके लिए वित्त | Never सबके लिए alone, which on a search result says the other lessons are not for everyone. |
@@ -333,7 +334,7 @@ and do translate.
 | indicator (World Bank) | संकेतक | |
 | net worth | शुद्ध संपत्ति | Glossary. |
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
-| functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. In prose the short form is खर्च की मुद्रा; मुख्य मुद्रा is kept for the badge alone, because मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
+| spending currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. The short form, in prose, table headings and the badge alike, is खर्च की मुद्रा (2026-11-22, #504). Not मुख्य मुद्रा: मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
 | currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. Prose and the table caption say जमाव; the chart itself (its heading, aria label, legend and the feature list naming it) keeps मुद्रा मिश्रण. |
 | exchange rate | विनिमय दर | **Bracket** (exchange rate; plural exchange rates), except in the privacy notice. Standard in Hindi news. |
 | ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |

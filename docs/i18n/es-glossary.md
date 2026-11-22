@@ -276,6 +276,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | balance (of a loan) | saldo pendiente | |
 | balance (of a portfolio) | valor de la cartera | Not *saldo*, which reads as money owed. |
 | lender | entidad financiera | *Prestamista* reads as a private moneylender. |
+| offer (a card in the loan tool) | oferta | *Oferta A*, *Añadir oferta*. The name field is *Nombre de la entidad*. |
 | recast | recalcular la cuota | Where the tool defines it: on the remaining balance, keeping the rate and the end date. |
 | apply to principal | aplicar al capital | *Reduce el capital* is fine for the effect. Never *sumar al capital*, which says the debt grows. |
 | total cost | costo total | |
@@ -286,7 +287,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | prepayment | pago anticipado | *Amortización anticipada* leans to Spain. |
 | exchange rate | tipo de cambio | |
 | currency | moneda | *Divisa* only for foreign currency in trading contexts. |
-| home currency | moneda de referencia | *Moneda principal* can read as a dominant world currency. |
+| spending currency (home currency) | la moneda en la que gastas | The badge, where it does not fit: *Moneda de gasto*. Not *moneda de referencia* (a benchmark) or *moneda funcional* (accounting), and *moneda principal* can read as a dominant world currency. |
 | percentile | percentil | |
 | median | mediana | |
 | APR | APR (tasa de porcentaje anual) | The tool's figure is the US nominal APR, glossed once. Never labelled TAE, and never glossed *tasa anual equivalente* (what TAE stands for). |

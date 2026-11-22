@@ -84,12 +84,12 @@ as a defect.
     - **never** in meta descriptions, other headings, nav labels, buttons,
       form labels, chart legends, cards, tag descriptions, or a tool's result
       lines. The one exception is an FAQ question that asks what a term means
-      (`“खर्चाचे चलन” (functional currency) म्हणजे काय?`), as on the Hindi page.
+      (`माझे खर्चाचे चलन (spending currency) कोणते?`), as on the Hindi page.
     - **only on a bookish, opaque or English-first term**: net worth,
       liabilities, cash flow, emergency fund, exchange rate, purchasing power,
       diversification, rebalancing, compounding, volatility, rule of thumb,
       tax residency, risk tolerance, tax-advantaged account, percentage point,
-      geometric average, scenario, functional currency, nominal balance, net
+      geometric average, scenario, spending currency, nominal balance, net
       debt, ongoing charge, recast, spread, margin, hedging, glide path,
       balloon payment, secondary (source), and the behavioural terms of the
       psychology level. Everyday Marathi (व्याज, बचत, कर्ज, महागाई, मुद्दल,
@@ -345,6 +345,7 @@ note records why this one won.
 | balance (of a loan) | बाकी कर्ज | Contested. |
 | balance (of a portfolio) | पोर्टफोलिओचे मूल्य | Contested. |
 | lender | कर्जदाता | |
+| offer (a card in the loan tool) | ऑफर | Feminine: ऑफर A, ऑफर जोडा. The name field is कर्जदात्याचे नाव. |
 | recast | हप्त्यांची पुनर्गणना | Contested. (recast) on first use. |
 | apply to principal | मुद्दलात जमा करा | |
 | total cost | एकूण खर्च | |

@@ -138,8 +138,8 @@ export const es: Dict = {
   // There is no Spanish feed (the lessons are English); translated anyway
   // because the catalog mirrors `en` key for key.
   rss: {
-    linkTitle: 'nidhi | Blog de finanzas personales',
-    feedTitle: 'nidhi: blog de finanzas personales',
+    linkTitle: 'nidhi | Lecciones de finanzas personales',
+    feedTitle: 'nidhi: lecciones de finanzas personales',
     feedDescription:
       'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Mejora tu educación financiera paso a paso.',
     guidesLinkTitle: 'nidhi | Guías Cómo hacerlo',
@@ -155,14 +155,14 @@ export const es: Dict = {
     meta: {
       title: 'Sobre nidhi: quién escribe y por qué confiar | nidhi',
       description:
-        'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada artículo de finanzas personales.',
+        'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada lección de finanzas personales.',
     },
     schema: {
       name: 'Sobre nidhi',
       description:
-        'Quién escribe nidhi, por qué puedes confiar en lo que escribe y cómo se investiga y documenta cada artículo.',
+        'Quién escribe nidhi, por qué puedes confiar en lo que escribe y cómo se investiga y documenta cada lección.',
       organization:
-        'Educación en finanzas personales basada en la práctica y la investigación, en nidhi.today, sobre patrimonio neto, gestión del dinero en varias monedas e independencia financiera. Construye las herramientas descritas en los artículos y cita sus fuentes en cada uno.',
+        'Educación en finanzas personales basada en la práctica y la investigación, en nidhi.today, sobre patrimonio neto, gestión del dinero en varias monedas e independencia financiera. Construye las herramientas descritas en las lecciones y cita sus fuentes en cada una.',
       knowsAbout: {
         personalFinance: 'Finanzas personales',
         financialLiteracy: 'Educación financiera',
@@ -180,17 +180,17 @@ export const es: Dict = {
     sections: {
       whoIsWriting: 'Quién escribe',
       whyYouCanTrustIt: 'Por qué puedes confiar en ello',
-      howPostsAreMade: 'Cómo se hacen los artículos',
+      howPostsAreMade: 'Cómo se hacen las lecciones',
       whatNidhiKnowsAbout: 'De qué sabe nidhi',
     },
     body: {
       // No gendered subject for the one person behind the site, as in the English.
       whoIsWriting:
-        'Cada artículo de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
+        'Cada lección de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
       // "Suggested Reading" is the lessons' own English heading, so it is
       // quoted as it appears there and glossed in Spanish.
       whyYouCanTrustIt1:
-        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada artículo bajo «Suggested Reading» (para seguir leyendo).',
+        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en las lecciones, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando una lección se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada lección bajo «Suggested Reading» (para seguir leyendo).',
       sourcesCount:
         'En las {lessons} lecciones publicadas, las listas de lecturas recomendadas remiten a {sources} libros, artículos y páginas de referencia distintos. Las fuentes citadas solo dentro del texto de una lección no se cuentan aquí.',
       correctionsCount: {
@@ -204,7 +204,7 @@ export const es: Dict = {
         'Lo que esto no es: asesoramiento financiero con licencia. nidhi explica cómo funciona el dinero para que puedas tomar tus propias decisiones. No te dice qué fondo comprar, ni lo hará nunca. Para las decisiones que dependen de tu residencia fiscal concreta, tu situación legal o tu tolerancia al riesgo, lo adecuado es acudir a un profesional acreditado. Ese límite es deliberado, y es el mismo que figura en el pie de cada página.',
       howPostsAreMade: {
         before:
-          'Cada artículo parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. Las herramientas de IA ayudan a investigar, redactar, editar y revisar las lecciones, lo que incluye cuestionar su razonamiento financiero, y a construir el sitio y sus herramientas gratuitas. Lo que produce la IA es un borrador, nunca una fuente: una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
+          'Cada lección parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. Las herramientas de IA ayudan a investigar, redactar, editar y revisar las lecciones, lo que incluye cuestionar su razonamiento financiero, y a construir el sitio y sus herramientas gratuitas. Lo que produce la IA es un borrador, nunca una fuente: una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
         link: 'página de política editorial',
         after: '.',
       },
@@ -607,7 +607,7 @@ export const es: Dict = {
       loanComparison: {
         kicker: 'Decisiones de endeudamiento',
         title: 'Comparador de préstamos',
-        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
+        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por oferta, sin hoja de cálculo.',
       },
       monteCarlo: {
         kicker: 'Proyecciones y jubilación',
@@ -621,7 +621,7 @@ export const es: Dict = {
       },
       investOrPayOff: {
         kicker: 'Deuda o inversión',
-        title: 'Calculadora: invertir o pagar deuda',
+        title: 'Invertir o pagar deuda',
         desc:
           'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un rango de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
       },
@@ -637,7 +637,7 @@ export const es: Dict = {
       rates: {
         strong: 'Tipos de cambio oficiales actualizados cuando hacen falta.',
         before: ' Cuando una herramienta necesita convertir monedas, tu navegador obtiene los tipos de referencia de la API de ',
-        after: ' (un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
+        after: ' (un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales). La solicitud solo incluye la moneda en la que gastas, no los datos de tus activos.',
       },
       noSignup: {
         strong: 'Sin registro, sin cuenta y sin correo electrónico.',
@@ -710,7 +710,7 @@ export const es: Dict = {
       },
       freeTools: {
         before:
-          'Eventos de interacción en las páginas de herramientas gratuitas. En el comparador de préstamos: qué moneda eliges; si cambias una entidad entre calcular el plazo y la cuota mensual, o entre una tasa fija y una que cambia; que añades o quitas una entidad (con cuántas hay y qué posición ocupa, de la A a la E, nunca su nombre); qué pestaña de resultados abres, y qué entidad eliges allí o de cuál abres los detalles; que cambiaste el horizonte o un ajuste de la refinanciación (qué ajuste, nunca su valor); que un campo quedó sin validar (cuántas entidades, qué posición y qué tipo de problema); si abres el cuadro para compartir, copias el enlace para compartir o abres una vista compartida (con cuántas entidades contiene y su fuente de campaña); y si restableces el formulario. ',
+          'Eventos de interacción en las páginas de herramientas gratuitas. En el comparador de préstamos: qué moneda eliges; si cambias una oferta entre calcular el plazo y la cuota mensual, o entre una tasa fija y una que cambia; que añades o quitas una oferta (con cuántas hay y qué posición ocupa, de la A a la E, nunca su nombre); qué pestaña de resultados abres, y qué oferta eliges allí o de cuál abres los detalles; que cambiaste el horizonte o un ajuste de la refinanciación (qué ajuste, nunca su valor); que un campo quedó sin validar (cuántas ofertas, qué posición y qué tipo de problema); si abres el cuadro para compartir, copias el enlace para compartir o abres una vista compartida (con cuántas ofertas contiene y su fuente de campaña); y si restableces el formulario. ',
         strong: 'Los valores financieros que escribes nunca se envían',
         after:
           ': ni la cantidad del préstamo, ni la tasa de interés, ni las comisiones, ni el nombre de la entidad financiera. La razón de ser de la calculadora es que los cálculos se hacen en tu navegador.',
@@ -1007,7 +1007,7 @@ export const es: Dict = {
         after: '.',
       },
       second:
-        'No enviamos correos de «hemos actualizado nuestra política de privacidad». Si quieres seguirla de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
+        'No enviamos correos de «hemos actualizado nuestro aviso de privacidad». Si quieres seguirlo de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
       entryLink: 'Enlace permanente',
       entryLinkLabel: 'Enlace permanente a la entrada del {date}',
       archiveLink: 'Ver el registro de cambios completo',
@@ -1059,14 +1059,14 @@ export const es: Dict = {
   /** The newsletter box. See the English catalog for what it promises. */
   subscribe: {
     region: 'Suscripción al boletín',
-    title: 'Recibe las nuevas entradas directamente en tu correo',
+    title: 'Recibe las lecciones nuevas directamente en tu correo',
     text: 'Un correo cuando hay algo nuevo. Sin spam, cancela cuando quieras.',
     inEnglish: 'Las lecciones y los correos están en inglés.',
     readers: '{n}+ personas reciben las lecciones nuevas por correo.',
     emailLabel: 'Correo electrónico',
     button: 'Suscribirme',
     privacyBefore: 'Doble confirmación. Cancela cuando quieras. ',
-    privacyLink: 'Política de privacidad',
+    privacyLink: 'Aviso de privacidad',
     privacyAfter: '.',
     rssFollow: 'Seguir por RSS',
     alreadySubscribed: 'Ya me suscribí',
@@ -1107,7 +1107,7 @@ export const es: Dict = {
     emailLabel: 'Correo electrónico',
     cta: 'Avísame',
     privacyBefore: 'Un correo cuando se abra el acceso. ',
-    privacyLink: 'Política de privacidad',
+    privacyLink: 'Aviso de privacidad',
     privacyAfter: '.',
     successTitle: 'Ya estás en la lista',
     successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',

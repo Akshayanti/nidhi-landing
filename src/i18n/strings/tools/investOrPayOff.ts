@@ -97,7 +97,7 @@ export const investOrPayOffEn = {
     },
     plannerLine: 'The planner is being built to show every debt you have alongside the rest of your picture.',
     faq: {
-      heading: 'Questions',
+      heading: 'Frequently asked questions',
       items: [
         {
           q: 'Does this tell me whether to invest or pay off my debt?',
@@ -126,7 +126,7 @@ export const investOrPayOffEn = {
       ],
     },
     related: {
-      heading: 'Related reading',
+      heading: 'Read more',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'The idea behind this tool', title: 'Invest or pay off debt first?', desc: 'Why the rate sets a debt\'s cost, the employer match, and a common order for several debts.' },
         'how-to-get-out-of-debt': { kicker: 'Several debts', title: 'How to get out of debt', desc: 'The avalanche and snowball methods for paying several debts.' },
@@ -360,7 +360,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
     },
     plannerLine: 'प्लानर इसलिए बनाया जा रहा है कि आपका हर कर्ज़ आपकी बाकी तस्वीर के साथ दिखे।',
     faq: {
-      heading: 'सवाल',
+      heading: 'अक्सर पूछे जाने वाले सवाल',
       items: [
         {
           q: 'क्या यह बताता है कि निवेश करना है या कर्ज़ चुकाना है?',
@@ -389,7 +389,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'आगे पढ़ें',
+      heading: 'और पढ़ें',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'इस टूल के पीछे की सोच', title: 'पहले निवेश या पहले कर्ज़ चुकाना?', desc: 'कर्ज़ की लागत दर से क्यों तय होती है, नियोक्ता का योगदान, और कई कर्ज़ों का एक आम क्रम।' },
         'how-to-get-out-of-debt': { kicker: 'कई कर्ज़', title: 'कर्ज़ से कैसे निकलें', desc: 'कई कर्ज़ चुकाने के एवलांच और स्नोबॉल तरीक़े।' },
@@ -618,7 +618,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     },
     plannerLine: 'प्लॅनर तुमचे प्रत्येक कर्ज तुमच्या बाकीच्या चित्रासोबत दाखवण्यासाठी बनवला जात आहे.',
     faq: {
-      heading: 'प्रश्न',
+      heading: 'वारंवार विचारले जाणारे प्रश्न',
       items: [
         {
           q: 'मी गुंतवणूक करायची की कर्ज फेडायचे, हे साधन सांगते का?',
@@ -647,7 +647,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'पुढे वाचा',
+      heading: 'आणखी वाचा',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'या साधनामागची कल्पना', title: 'आधी गुंतवणूक की आधी कर्जफेड?', desc: 'कर्जाचा खर्च दरावरून का ठरतो, नियोक्त्याचे योगदान, आणि अनेक कर्जांचा एक नेहमीचा क्रम.' },
         'how-to-get-out-of-debt': { kicker: 'अनेक कर्जे', title: 'कर्जातून कसे बाहेर पडावे', desc: 'अनेक कर्जे फेडण्याच्या ॲव्हलांच आणि स्नोबॉल पद्धती.' },
@@ -876,7 +876,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
     },
     plannerLine: 'El planificador se está construyendo para mostrar todas tus deudas junto al resto de tu situación.',
     faq: {
-      heading: 'Preguntas',
+      heading: 'Preguntas frecuentes',
       items: [
         {
           q: '¿Me dice si invertir o pagar mi deuda?',
@@ -905,7 +905,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'Lecturas relacionadas',
+      heading: 'Para seguir leyendo',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'La idea detrás de esta herramienta', title: '¿Invertir o pagar la deuda primero?', desc: 'Por qué la tasa marca el costo de una deuda, la aportación de la empresa y un orden habitual para varias deudas.' },
         'how-to-get-out-of-debt': { kicker: 'Varias deudas', title: 'Cómo salir de las deudas', desc: 'Los métodos avalancha y bola de nieve para pagar varias deudas.' },
@@ -1134,7 +1134,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
     },
     plannerLine: 'Plánovač vzniká proto, aby ukázal každý váš dluh vedle zbytku vaší finanční situace.',
     faq: {
-      heading: 'Otázky',
+      heading: 'Časté dotazy',
       items: [
         {
           q: 'Řekne mi to, jestli investovat, nebo splatit dluh?',
@@ -1163,7 +1163,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'Související čtení',
+      heading: 'Čtěte dál',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'Princip tohoto nástroje', title: 'Nejdřív investovat, nebo splatit dluh?', desc: 'Proč cenu dluhu určuje sazba, příspěvek zaměstnavatele a obvyklé pořadí pro více dluhů.' },
         'how-to-get-out-of-debt': { kicker: 'Více dluhů', title: 'Jak se dostat z dluhů', desc: 'Metody laviny a sněhové koule pro splácení více dluhů.' },

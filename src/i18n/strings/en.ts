@@ -83,7 +83,7 @@ export const en = {
      * translation is free to word them differently.
      */
     groups: { learn: 'Learn', tools: 'Free tools', about: 'About', language: 'Language' },
-    buttons: { tools: 'Free Tools', learn: 'Learn' },
+    buttons: { tools: 'Free tools', learn: 'Learn' },
     /** The wording every surface uses, unless `menu` overrides it. */
     items: {
       blog: 'Learning path',
@@ -110,11 +110,11 @@ export const en = {
      * what the site already shipped, so it is kept as it is.
      */
     menu: {
-      multiCurrencyNetWorth: 'Net Worth Calculator',
-      loanComparison: 'Loan Comparison',
-      monteCarloSimulator: 'Monte Carlo Simulator',
-      inflationCalculator: 'Inflation Calculator',
-      investOrPayOff: 'Invest or Pay Off',
+      multiCurrencyNetWorth: 'Net worth calculator',
+      loanComparison: 'Loan comparison',
+      monteCarloSimulator: 'Monte Carlo simulator',
+      inflationCalculator: 'Inflation calculator',
+      investOrPayOff: 'Invest or pay off',
       allTools: 'View all free tools',
     },
   },
@@ -123,7 +123,7 @@ export const en = {
     navLabel: 'Footer',
     columns: {
       learn: 'Learn',
-      tools: 'Free Tools',
+      tools: 'Free tools',
       about: 'About',
       connect: 'Connect',
     },
@@ -197,8 +197,8 @@ export const en = {
    * and a catalog missing a key is a build failure.
    */
   rss: {
-    linkTitle: 'nidhi | Personal Finance Blog',
-    feedTitle: 'nidhi: Personal Finance Blog',
+    linkTitle: 'nidhi | Lessons on personal finance',
+    feedTitle: 'nidhi: Lessons on personal finance',
     feedDescription:
       'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
     /** The how-to guides' own feed, at /how-to/rss.xml: the lesson feed is what the newsletter mails from, so guides are kept out of it. */
@@ -218,14 +218,14 @@ export const en = {
     meta: {
       title: 'About nidhi: Who Writes This and Why You Can Trust It | nidhi',
       description:
-        'Who writes nidhi, the qualifications behind the writing, and how every personal finance post is researched and sourced.',
+        'Who writes nidhi, the qualifications behind the writing, and how every personal finance lesson is researched and sourced.',
     },
     schema: {
       name: 'About nidhi',
       description:
-        'Who writes nidhi, why the writing can be trusted, and how each post is researched and sourced.',
+        'Who writes nidhi, why the writing can be trusted, and how each lesson is researched and sourced.',
       organization:
-        'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the posts describe and cites its sources in each article.',
+        'Practitioner and research-led personal finance education on nidhi.today, covering net worth, multi-currency money management, and financial independence. Builds the tools the lessons describe and cites its sources in each lesson.',
       /**
        * Read in this order into the JSON-LD `knowsAbout` array, so reordering
        * here reorders the structured data. Named keys rather than an array so
@@ -248,14 +248,14 @@ export const en = {
     sections: {
       whoIsWriting: 'Who is writing',
       whyYouCanTrustIt: 'Why you can trust it',
-      howPostsAreMade: 'How posts are made',
+      howPostsAreMade: 'How lessons are made',
       whatNidhiKnowsAbout: 'What nidhi knows about',
     },
     body: {
       whoIsWriting:
-        "Every post on this site goes out under one name: nidhi. I started it because I couldn't find a finance tool for an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The lessons come from the same place: real questions I have had to answer, explained the way I wish someone had explained them to me.",
+        "Every lesson on this site goes out under one name: nidhi. I started it because I couldn't find a finance tool for an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The lessons come from the same place: real questions I have had to answer, explained the way I wish someone had explained them to me.",
       whyYouCanTrustIt1:
-        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post rests on a study or a dataset, it names it, and the books, reference pages and primary material behind it are listed on each article under “Suggested Reading.”',
+        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the lessons describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a lesson rests on a study or a dataset, it names it, and the books, reference pages and primary material behind it are listed on each lesson under “Suggested Reading.”',
       /** Counted at build (src/utils/sourceCounts.ts); says what it does not count. */
       sourcesCount:
         "Across {lessons} published lessons, the further-reading lists point to {sources} distinct books, papers and reference pages. Sources cited only inside a lesson's text are not counted here.",
@@ -285,7 +285,7 @@ export const en = {
        */
       howPostsAreMade: {
         before:
-          'Each article starts from a concrete question, gets worked through with real numbers and worked examples, and is checked against cited references before it goes out. AI tools help research, draft, edit and check lessons, including questioning their financial reasoning, and help build the site and its free tools. AI output is a draft, never a source: a person is involved at every stage, and reads and approves every lesson before it is published. The full process, sourcing standards, and how corrections are handled live on the ',
+          'Each lesson starts from a concrete question, gets worked through with real numbers and worked examples, and is checked against cited references before it goes out. AI tools help research, draft, edit and check lessons, including questioning their financial reasoning, and help build the site and its free tools. AI output is a draft, never a source: a person is involved at every stage, and reads and approves every lesson before it is published. The full process, sourcing standards, and how corrections are handled live on the ',
         link: 'editorial policy page',
         after: '.',
       },
@@ -703,13 +703,13 @@ export const en = {
     },
     schema: {
       breadcrumbHome: 'Home',
-      breadcrumbThis: 'Free Tools',
+      breadcrumbThis: 'Free tools',
       itemListName: 'nidhi free personal finance tools',
       collectionName: 'Free Personal Finance Tools',
     },
     breadcrumb: {
       home: 'Home',
-      this: 'Free Tools',
+      this: 'Free tools',
     },
     eyebrow: 'Free tools',
     title: 'Free personal finance tools that run in your browser.',
@@ -717,27 +717,27 @@ export const en = {
     tools: {
       multiCurrencyNetWorth: {
         kicker: 'One currency or several',
-        title: 'Net Worth Calculator',
+        title: 'Net worth calculator',
         desc: 'Add what you own and what you owe to see your net worth. Works in one currency or across 38, at the latest official exchange rates, and if you hold several it shows how much sits in currencies you do not spend in.',
       },
       loanComparison: {
         kicker: 'Borrowing decisions',
-        title: 'Loan Comparison Calculator',
-        desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-vendor amortisation, without a spreadsheet.',
+        title: 'Loan comparison',
+        desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-offer amortisation, without a spreadsheet.',
       },
       monteCarlo: {
         kicker: 'Projections and retirement',
-        title: 'Monte Carlo Simulator',
+        title: 'Monte Carlo simulator',
         desc: 'Play your savings forward thousands of times with returns from the long-run record of world markets. See a low, median and high outcome, and how often the money lasts once you live off it.',
       },
       inflation: {
         kicker: 'Prices over time',
-        title: 'Inflation Calculator',
+        title: 'Inflation calculator',
         desc: 'Prices usually rise a little every year, and it adds up. See what your money could buy later at a rate you choose, what things may cost, what an old amount is worth today, and whether your raise keeps up. For past amounts it can use your country\'s actual yearly inflation, from the World Bank, for most countries.',
       },
       investOrPayOff: {
         kicker: 'Debt or investing',
-        title: 'Invest or Pay Off Calculator',
+        title: 'Invest or pay off',
         desc:
           'Compare paying a debt off early with investing the same money each month, on the same date and after your country\'s inflation. A range of outcomes from world stock history, not one assumed return.',
       },
@@ -754,7 +754,7 @@ export const en = {
       rates: {
         strong: 'Official exchange rates where needed.',
         before: ' When a tool needs a currency conversion, your browser fetches reference rates from the ',
-        after: ' API (a free, open service that combines the exchange rates published by central banks and other official sources). The request includes only your selected functional currency, not your asset data.',
+        after: ' API (a free, open service that combines the exchange rates published by central banks and other official sources). The request includes only your selected spending currency, not your asset data.',
       },
       noSignup: {
         strong: 'No signup, no account, no email needed.',
@@ -863,10 +863,10 @@ export const en = {
       // precedes it and `after` begins with the colon that follows it.
       freeTools: {
         before:
-          'Interaction events on the Free Tools pages. On the loan-comparison calculator: which currency you pick; whether you switch a vendor between solving for term and monthly payment, or between a fixed and a changing rate; that you add or remove a vendor (with how many there are and which slot, A to E, never its name); which results tab you open, and which vendor you pick there or open the details of; that you changed the time horizon or a refinance setting (which setting, never its value); that a field was left invalid (how many vendors, which slot and which kind of problem); whether you open the share dialog, copy the shareable link or open a shared view (with how many vendors it holds and its campaign source); and whether you reset the form. ',
+          'Interaction events on the Free tools pages. On the loan-comparison calculator: which currency you pick; whether you switch an offer between solving for term and monthly payment, or between a fixed and a changing rate; that you add or remove an offer (with how many there are and which slot, A to E, never its name); which results tab you open, and which offer you pick there or open the details of; that you changed the time horizon or a refinance setting (which setting, never its value); that a field was left invalid (how many offers, which slot and which kind of problem); whether you open the share dialog, copy the shareable link or open a shared view (with how many offers it holds and its campaign source); and whether you reset the form. ',
         strong: 'The financial values you type are never sent',
         after:
-          ': not the loan amount, not the interest rate, not the fees, not the vendor name. The whole point of the calculator is that the math runs in your browser.',
+          ': not the loan amount, not the interest rate, not the fees, not the lender’s name. The whole point of the calculator is that the math runs in your browser.',
       },
       toolAddresses:
         'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
@@ -1182,7 +1182,7 @@ export const en = {
         after: '.',
       },
       second:
-        'We don’t push “we updated our privacy policy” emails. If you want to keep an eye on it, bookmark this page or read the log below when you’re curious. If a change ever makes you uncomfortable, unsubscribing from the newsletter is a one-click link in every email, and clearing your browser’s site data wipes everything stored locally.',
+        'We don’t push “we updated our privacy notice” emails. If you want to keep an eye on it, bookmark this page or read the log below when you’re curious. If a change ever makes you uncomfortable, unsubscribing from the newsletter is a one-click link in every email, and clearing your browser’s site data wipes everything stored locally.',
       entryLink: 'Permanent link',
       entryLinkLabel: 'Permanent link to the entry of {date}',
       archiveLink: 'Browse the complete changelog',
@@ -1253,7 +1253,7 @@ export const en = {
    */
   subscribe: {
     region: 'Newsletter subscription',
-    title: 'Receive new posts directly in your inbox',
+    title: 'Receive new lessons directly in your inbox',
     text: 'One email when something new goes up. No spam, unsubscribe anytime.',
     inEnglish: 'The lessons and the emails are in English.',
     /** Under the text once 20 people have confirmed, rounded down to a multiple of 20 (src/utils/newsletterCount.ts). */
@@ -1262,7 +1262,7 @@ export const en = {
     button: 'Subscribe',
     /** Split around the link, so a translation can move it inside the sentence. */
     privacyBefore: 'Double opt-in. Unsubscribe anytime. ',
-    privacyLink: 'Privacy policy',
+    privacyLink: 'Privacy notice',
     privacyAfter: '.',
     rssFollow: 'Follow by RSS',
     alreadySubscribed: 'I already subscribed',
@@ -1318,7 +1318,7 @@ export const en = {
     cta: 'Notify me',
     /** Split around the link, so a translation can move it inside the sentence. */
     privacyBefore: 'One email when access opens. ',
-    privacyLink: 'Privacy policy',
+    privacyLink: 'Privacy notice',
     privacyAfter: '.',
     successTitle: "You're on the list",
     /** Also true for an address already on the list: the page never says which case it is. */

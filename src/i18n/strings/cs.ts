@@ -135,8 +135,8 @@ export const cs: Dict = {
   // The feed is English, and every page names it in English (see `BaseHead`);
   // these values are what a Czech page would show if that ever changed.
   rss: {
-    linkTitle: 'nidhi | Blog o osobních financích',
-    feedTitle: 'nidhi: blog o osobních financích',
+    linkTitle: 'nidhi | Lekce o osobních financích',
+    feedTitle: 'nidhi: lekce o osobních financích',
     feedDescription:
       'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem.',
     guidesLinkTitle: 'nidhi | Návody Jak na to',
@@ -149,14 +149,14 @@ export const cs: Dict = {
     meta: {
       title: 'O nidhi: kdo to píše a proč tomu můžete věřit | nidhi',
       description:
-        'Kdo píše nidhi, jaká kvalifikace stojí za texty a jak se každý článek o osobních financích zkoumá a dokládá zdroji.',
+        'Kdo píše nidhi, jaká kvalifikace stojí za texty a jak se každá lekce o osobních financích zkoumá a dokládá zdroji.',
     },
     schema: {
       name: 'O nidhi',
       description:
-        'Kdo píše nidhi, proč lze textům věřit a jak se každý článek zkoumá a dokládá zdroji.',
+        'Kdo píše nidhi, proč lze textům věřit a jak se každá lekce zkoumá a dokládá zdroji.',
       organization:
-        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých články píší, a\u00a0v\u00a0každém článku uvádí zdroje.',
+        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých lekce píší, a\u00a0v každé lekci uvádí zdroje.',
       knowsAbout: {
         personalFinance: 'Osobní finance',
         financialLiteracy: 'Finanční gramotnost',
@@ -174,14 +174,14 @@ export const cs: Dict = {
     sections: {
       whoIsWriting: 'Kdo píše',
       whyYouCanTrustIt: 'Proč tomu můžete věřit',
-      howPostsAreMade: 'Jak články vznikají',
+      howPostsAreMade: 'Jak lekce vznikají',
       whatNidhiKnowsAbout: 'Čemu nidhi rozumí',
     },
     body: {
       whoIsWriting:
-        'Každý článek na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
+        'Každá lekce na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
       whyYouCanTrustIt1:
-        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Pokud článek vychází ze studie nebo datového souboru, uvádí jejich název. Knihy, referenční stránky a\u00a0primární materiály, ze kterých čerpá, jsou u\u00a0každého článku uvedeny v\u00a0části „Suggested Reading“ (k dalšímu čtení).',
+        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých lekce píší, takže texty stojí na skutečném počítání, ne na opakování frází. Pokud lekce vychází ze studie nebo datového souboru, uvádí jejich název. Knihy, referenční stránky a\u00a0primární materiály, ze kterých čerpá, jsou u každé lekce uvedeny v\u00a0části „Suggested Reading“ (k dalšímu čtení).',
       sourcesCount:
         'Seznamy doporučené četby u zveřejněných lekcí (počet lekcí: {lessons}) odkazují na různé knihy, studie a referenční stránky. Počet různých zdrojů: {sources}. Zdroje citované jen v textu lekce tu započítané nejsou.',
       correctionsCount: {
@@ -195,7 +195,7 @@ export const cs: Dict = {
         'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí zápatí každé stránky.',
       howPostsAreMade: {
         before:
-          'Každý článek začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
+          'Každá lekce začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
         link: 'redakčních zásad',
         after: '.',
       },
@@ -577,7 +577,7 @@ export const cs: Dict = {
       loanComparison: {
         kicker: 'Rozhodování o půjčkách',
         title: 'Srovnání úvěrů',
-        desc: 'Porovnejte dvě nebo tři nabídky úvěru vedle sebe. APR (roční procentní sazba), celkové náklady úvěru, scénáře refinancování a splátkový kalendář pro každého poskytovatele, bez tabulky.',
+        desc: 'Porovnejte dvě nebo tři nabídky úvěru vedle sebe. APR (roční procentní sazba), celkové náklady úvěru, scénáře refinancování a splátkový kalendář pro každou nabídku, bez tabulky.',
       },
       monteCarlo: {
         kicker: 'Projekce a důchod',
@@ -591,7 +591,7 @@ export const cs: Dict = {
       },
       investOrPayOff: {
         kicker: 'Dluh, nebo investice',
-        title: 'Kalkulačka: investovat, nebo splatit dluh',
+        title: 'Investovat, nebo splatit dluh',
         desc:
           'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
       },
@@ -676,7 +676,7 @@ export const cs: Dict = {
       },
       freeTools: {
         before:
-          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u poskytovatele přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že přidáte nebo odeberete poskytovatele (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy jeho název); kterou záložku výsledků otevřete a kterého poskytovatele tam zvolíte nebo u kterého otevřete podrobnosti; že změníte časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika poskytovatelů, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik poskytovatelů obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u nabídky přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že přidáte nebo odeberete nabídku (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy její název); kterou záložku výsledků otevřete a kterou nabídku tam zvolíte nebo u které otevřete podrobnosti; že změníte časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika nabídek, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik nabídek obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Finanční hodnoty, které zadáte, se nikdy neposílají',
         after:
           ': ani výše úvěru, ani úroková sazba, ani poplatky, ani název poskytovatele. Celý smysl kalkulačky je v tom, že se výpočet provádí ve vašem prohlížeči.',
@@ -1022,7 +1022,7 @@ export const cs: Dict = {
 
   subscribe: {
     region: 'Odběr newsletteru',
-    title: 'Nové články přímo do vaší schránky',
+    title: 'Nové lekce přímo do vaší schránky',
     text: 'Jeden e-mail, když vyjde něco nového. Žádný spam, odhlásit se jde kdykoli.',
     inEnglish: 'Lekce i e-maily jsou v angličtině.',
     readers: 'Nové lekce už e-mailem dostává {n}+ lidí.',
