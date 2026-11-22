@@ -48,7 +48,7 @@ faq:
 
 You spent six months building an [emergency fund](/blog/emergency-fund/). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.
 
-Your neighbor had the same flood. She filed a claim with her contents insurance, paid a €150 deductible, and received a payout within two weeks. Her emergency fund is untouched. She's still on track.
+Your neighbor had the same flood. She filed a claim with her contents insurance, paid a €150 deductible (the part of a claim you pay yourself), and received a payout within two weeks. Her emergency fund is untouched. She's still on track.
 
 The difference isn't luck. It's insurance.
 
@@ -115,7 +115,7 @@ Replaces a portion of your income if you're unable to work due to illness or inj
 
 **Cash flow impact:** Typically €30-€80 per month, depending on coverage amount, waiting period, and definition of disability.
 
-**The overlooked risk:** Many people insure their car and their phone but not their ability to earn. What a country's social insurance pays, if anything, decides how big the remaining gap is and whether it is worth insuring privately.
+**The overlooked risk:** Many people insure their car and their phone but not their ability to earn. What a country's social insurance (public cover paid for through contributions or taxes) pays, if anything, decides how big the remaining gap is and whether it is worth insuring privately.
 
 ### Liability insurance
 

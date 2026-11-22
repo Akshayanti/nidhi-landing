@@ -92,7 +92,7 @@ You diversify along several dimensions at once. Most people think only about the
 
 **5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows what you own and owe by currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend is yours to make.
 
-**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis. We come back to this in the next post.
+**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis (what you paid, which tax on a later sale is worked out from). We come back to this in the next post.
 
 | Dimension | Concentrated | Diversified |
 |---|---|---|

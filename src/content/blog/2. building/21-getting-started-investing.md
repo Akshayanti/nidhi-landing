@@ -59,7 +59,7 @@ In almost every country, investment accounts fall into three broad categories. N
 
 **Tax-advantaged retirement account.** An account designed for long-term retirement savings, with special tax treatment. In some places you pay less tax on the money you put in. In others, the growth is tax-free. In exchange, the money is typically locked up or penalized if withdrawn before a certain age. Contribution limits often apply.
 
-**Employer-sponsored scheme.** A retirement account offered through your employer, sometimes with matching contributions (the employer adds money when you do). The details differ enormously by country and employer, but the common thread is that a match is extra money added to your own contribution, which is why it features so prominently in most planning frameworks. Vesting rules and whether you can afford to lock the money up still matter.
+**Employer-sponsored scheme.** A retirement account offered through your employer, sometimes with matching contributions (the employer adds money when you do). The details differ enormously by country and employer, but the common thread is that a match is extra money added to your own contribution, which is why it features so prominently in most planning frameworks. Vesting rules (how long you must stay before the employer's money is fully yours) and whether you can afford to lock the money up still matter.
 
 | Account type | Access | Tax treatment | Contribution limits | Typically used for |
 |---|---|---|---|---|

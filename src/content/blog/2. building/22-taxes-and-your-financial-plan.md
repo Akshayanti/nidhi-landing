@@ -119,7 +119,7 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- An employer match is often a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules or a need for liquidity can change the picture. A later post covers common priority orders across account types
+- An employer match is often a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules (how long you must stay before the employer's money is fully yours) or a need for liquidity can change the picture. A later post covers common priority orders across account types
 - Default contribution settings are often set low. Many plans allow contributing more than the default, and every extra euro inside the shelter grows tax-advantaged for decades, at the cost of locking it up
 
 The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.

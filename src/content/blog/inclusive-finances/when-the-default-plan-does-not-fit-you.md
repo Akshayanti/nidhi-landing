@@ -88,7 +88,7 @@ Nothing about the money was different. The only difference was which household t
 
 ## A default is a guess about your household
 
-A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's beneficiary form blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
+A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's [beneficiary form](#term-beneficiary-form) blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
 
 Defaults are useful: many people never write a will, and something sensible happening beats nothing happening. But each default is a guess about what you would have wanted, made with one household in mind. As the [life events](/blog/life-events/) post put it, the costly mistake is treating a foreseeable event as a surprise.
 
@@ -167,7 +167,7 @@ Take one workplace pension worth €80,000 and run the audit for three people.
 
 **A married employee.** Many schemes pay a survivor benefit to the legal spouse. The assumption holds, though many people still fill in the beneficiary form, because rules change and marriages end.
 
-**An employee with a long-term unmarried partner.** The assumption may fail. A scheme may apply different rules to a spouse's pension, a dependant's pension and any lump-sum death benefit. A [beneficiary form](#term-beneficiary-form) naming the partner may decide or influence some payments, but it may not change who qualifies for a survivor pension; the next section covers when a nomination is binding. Other protections people look into include a will, where local rules leave room for one, and life cover set up for the partner.
+**An employee with a long-term unmarried partner.** The assumption may fail. A scheme may apply different rules to a spouse's pension, a dependant's pension and any lump-sum death benefit. A beneficiary form naming the partner may decide or influence some payments, but it may not change who qualifies for a survivor pension; the next section covers when a nomination is binding. Other protections people look into include a will, where local rules leave room for one, and life cover set up for the partner.
 
 **A freelancer with no workplace pension.** There is no scheme to audit, so by default nothing is paid in for them and nothing is paid out to their family.
 

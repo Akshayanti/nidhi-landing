@@ -21,7 +21,7 @@ export const howToEn = {
     crumbHome: 'Home',
     eyebrow: 'Short guides',
     h1: 'What do you need help with?',
-    lede: 'Each guide answers one money question in a few minutes, in plain words. It starts with the answer, then shows what to check, and links to a longer lesson if you want to go deeper.',
+    lede: 'Each guide answers one money question in a few minutes, in plain words. It starts with the answer, then shows what to check, and, where there is one, links to a longer lesson.',
     scope: 'The guides explain how to work something out or check it. They do not decide for you: what to do next depends on your country, your income and your contracts.',
     /** Hub groups, in the reader's words. Ids match `group` in src/content.config.ts. */
     groups: {
@@ -91,7 +91,7 @@ export const howToHi: typeof howToEn = {
     crumbHome: 'होम',
     eyebrow: 'छोटी गाइडें',
     h1: 'आपको किस बात में मदद चाहिए?',
-    lede: 'हर गाइड पैसों से जुड़े एक सवाल का जवाब कुछ ही मिनटों में, आसान शब्दों में देती है। पहले जवाब आता है, फिर यह कि क्या जाँचना है, और अगर आप गहराई में जाना चाहें तो एक लंबे पाठ का लिंक।',
+    lede: 'हर गाइड पैसों से जुड़े एक सवाल का जवाब कुछ ही मिनटों में, आसान शब्दों में देती है। पहले जवाब आता है, फिर यह कि क्या जाँचना है, और जहाँ उस विषय पर लंबा पाठ है, वहाँ उसका लिंक।',
     scope: 'गाइडें बताती हैं कि कोई हिसाब कैसे लगाया जाए या कोई बात कैसे जाँची जाए। वे आपके लिए फ़ैसला नहीं करतीं: आगे क्या करना है, यह आपके देश, आपकी आमदनी और आपके अनुबंधों पर निर्भर करता है।',
     groups: {
       month: 'महीना कैसे निकले',
@@ -151,7 +151,7 @@ export const howToEs: typeof howToEn = {
     crumbHome: 'Inicio',
     eyebrow: 'Guías breves',
     h1: '¿Con qué necesitas ayuda?',
-    lede: 'Cada guía responde a una pregunta de dinero en pocos minutos, con palabras sencillas. Empieza por la respuesta, luego muestra qué comprobar y enlaza con una lección más larga si quieres profundizar.',
+    lede: 'Cada guía responde a una pregunta de dinero en pocos minutos, con palabras sencillas. Empieza por la respuesta, luego muestra qué comprobar y enlaza con una lección más larga cuando la hay.',
     scope: 'Las guías explican cómo calcular o comprobar algo. No deciden por ti: qué hacer después depende de tu país, tus ingresos y tus contratos.',
     groups: {
       month: 'Llegar a fin de mes',
@@ -211,7 +211,7 @@ export const howToCs: typeof howToEn = {
     crumbHome: 'Úvod',
     eyebrow: 'Krátké návody',
     h1: 'S čím potřebujete pomoct?',
-    lede: 'Každý návod odpoví na jednu otázku o penězích za pár minut, jednoduchými slovy. Začíná odpovědí, pak ukáže, co si ověřit, a odkáže na delší lekci, pokud chcete jít víc do hloubky.',
+    lede: 'Každý návod odpoví na jednu otázku o penězích za pár minut, jednoduchými slovy. Začíná odpovědí, pak ukáže, co si ověřit, a pokud je k tématu delší lekce, odkáže na ni.',
     scope: 'Návody vysvětlují, jak něco spočítat nebo ověřit. Nerozhodují za vás: co dál, záleží na vaší zemi, vašich příjmech a vašich smlouvách.',
     groups: {
       month: 'Jak vyjít do výplaty',
@@ -271,7 +271,7 @@ export const howToMr: typeof howToEn = {
     crumbHome: 'मुख्यपृष्ठ',
     eyebrow: 'छोट्या मार्गदर्शिका',
     h1: 'तुम्हाला कशात मदत हवी आहे?',
-    lede: 'प्रत्येक मार्गदर्शिका पैशांशी संबंधित एका प्रश्नाचे उत्तर काही मिनिटांत, सोप्या शब्दांत देते. आधी उत्तर येते, मग काय तपासायचे ते, आणि तुम्हाला खोलात जायचे असेल तर एका मोठ्या धड्याची लिंक.',
+    lede: 'प्रत्येक मार्गदर्शिका पैशांशी संबंधित एका प्रश्नाचे उत्तर काही मिनिटांत, सोप्या शब्दांत देते. आधी उत्तर येते, मग काय तपासायचे ते, आणि जिथे मोठा धडा आहे तिथे त्याची लिंक.',
     scope: 'मार्गदर्शिका एखादा हिशेब कसा करायचा किंवा एखादी गोष्ट कशी तपासायची हे सांगतात. त्या तुमच्यासाठी निर्णय घेत नाहीत: पुढे काय करायचे हे तुमच्या देशावर, तुमच्या उत्पन्नावर आणि तुमच्या करारांवर अवलंबून असते.',
     groups: {
       month: 'महिना कसा निभवायचा',

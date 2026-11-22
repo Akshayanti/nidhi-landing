@@ -21,7 +21,7 @@ steps:
     why: "Current and savings accounts, cards (including ones you no longer use), loans, pensions from every job, investment accounts. Note where each one is and its balance."
     example: "Old payslips and emails from past employers can point to pensions you'd forgotten."
   - action: "Go through two or three months of statements and mark every payment that repeats."
-    why: "Direct debits, standing orders and card payments that come back every month: rent, phone, insurance, subscriptions, gym."
+    why: "Direct debits (payments a company collects from your account), standing orders (payments you set up yourself) and card payments that come back every month: rent, phone, insurance, subscriptions, gym."
   - action: "For each payment, write the amount, the day it leaves and the account it leaves from."
     why: "This shows which account needs money on which day, and which payments cluster together."
   - action: "Add the yearly ones."

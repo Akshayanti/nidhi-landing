@@ -86,7 +86,7 @@ A settled adult has things they rarely notice: a credit file, a bank that knows 
 | Bank relationship | Usually does not transfer. A new account needs local documents. |
 | Proof of address | Gone until you have a tenancy, which may require a bank account. |
 | Pension contributions | Stay in the old country's system until claimed, often decades later. |
-| Tax residency | May apply in both countries in the year you move. |
+| [Tax residency](#term-tax-residency) | May apply in both countries in the year you move. |
 | Professional and rental references | Often not accepted from abroad. |
 
 The [credit scores post](/blog/credit-and-credit-scores/) explained how a score is built from your repayment record. That record is usually held in a national system, so a local lender may see no file even after two decades of on-time repayment elsewhere. This series calls that a [recognition gap](#term-recognition-gap): the distance between how your life works and what an institution can see.
@@ -175,7 +175,7 @@ Banking access depends on the country. Some tax systems issue an identification 
 <details class="lesson-depth">
 <summary class="disclosure">Tax residency in the year you move</summary>
 
-In the year you move, two countries may each treat you as a [tax resident](#term-tax-residency). Some country pairs have a tax treaty that allocates taxing rights or provides relief from double taxation, but many do not. Even where a treaty applies, relief often has to be claimed rather than happening automatically. Three habits reduce the risk: recording arrival and departure dates and days in each country; keeping evidence of where you lived and worked (tenancy agreements, employment contracts, travel records); and declaring foreign accounts where required, since penalties can apply even when no tax was due. The geographic arbitrage post goes further into residency tests; beyond the simplest case, many people find a local tax professional worth the fee in the year of the move.
+In the year you move, two countries may each treat you as a tax resident. Some country pairs have a tax treaty that allocates taxing rights or provides relief from double taxation, but many do not. Even where a treaty applies, relief often has to be claimed rather than happening automatically. Three habits reduce the risk: recording arrival and departure dates and days in each country; keeping evidence of where you lived and worked (tenancy agreements, employment contracts, travel records); and declaring foreign accounts where required, since penalties can apply even when no tax was due. The geographic arbitrage post goes further into residency tests; beyond the simplest case, many people find a local tax professional worth the fee in the year of the move.
 
 </details>
 

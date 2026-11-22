@@ -110,7 +110,7 @@ To generate €1,000 per month (€12,000 per year) of passive income at differe
 | 2% (broad equity dividend) | €600,000 |
 | 3% (balanced portfolio income) | €400,000 |
 | 4% (higher-yield mix; yield only, unlike the 4% withdrawal rule, which also spends principal) | €300,000 |
-| 5% (above typical net rental yields of 2-4%; some REITs) | €240,000 |
+| 5% (above typical net rental yields of 2-4%; some REITs, which are listed companies that own property) | €240,000 |
 | 8% (riskier credit / specific sectors) | €150,000 |
 
 A few observations:

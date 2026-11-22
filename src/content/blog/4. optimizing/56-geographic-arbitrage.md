@@ -120,7 +120,7 @@ Because it works twice: the savings rate rises (more saved each year) and the FI
 
 - **Working remotely from a cheaper country** while employed or paid by clients in a higher-income one. The most powerful version, because it shortens the whole accumulation, and the most complex: tax, visas and employment law in more than one country.
 - **Retiring abroad,** drawing on a portfolio built in a higher-cost currency. Investment and pension income travels; residency is the main hurdle. Portugal, Spain, Panama, Malaysia, Thailand and Ecuador, among others, run retirement residency programmes.
-- **Part of the year abroad** while keeping residency at home. The saving is smaller. Staying below a day-count threshold such as 183 days may avoid one route to tax residency, but home, work, family and other ties can still make someone resident.
+- **Part of the year abroad** while keeping residency at home. The saving is smaller. Staying below a day-count threshold such as 183 days may avoid one route to [tax residency](#term-tax-residency), but home, work, family and other ties can still make someone resident.
 - **A few years' work in a high-wage country,** then a return somewhere cheaper, common in internationally mobile professions such as medicine, engineering and some technology and finance roles.
 
 ## Visas: what lets you live there
@@ -141,7 +141,7 @@ Most moves need a residence permit, and the options have changed fast since 2020
 
 ## Tax residency can decide whether it works
 
-[Tax residency](#term-tax-residency) is often more complex than expected, and mistakes range from annoying to very expensive. Spending more than 183 days in a country is a common starting test, but many countries add others: ties to a home, work or family, where your life is centred, or day counts averaged over several years. A few months somewhere does not necessarily change residency; a long lease, local registration and 200 days often does. [Double taxation treaties](#term-double-taxation-treaty) stop most income being fully taxed twice, but only when claimed correctly, and some countries charge an [exit tax](#term-exit-tax) on unrealised gains when you leave. Tax can materially reduce or remove the saving, depending on the two countries, the type of income and the treaty between them. Generic guides, this one included, are directional; a licensed tax adviser in each country is what catches expensive mistakes.
+Tax residency is often more complex than expected, and mistakes range from annoying to very expensive. Spending more than 183 days in a country is a common starting test, but many countries add others: ties to a home, work or family, where your life is centred, or day counts averaged over several years. A few months somewhere does not necessarily change residency; a long lease, local registration and 200 days often does. [Double taxation treaties](#term-double-taxation-treaty) stop most income being fully taxed twice, but only when claimed correctly, and some countries charge an [exit tax](#term-exit-tax) on unrealised gains when you leave. Tax can materially reduce or remove the saving, depending on the two countries, the type of income and the treaty between them. Generic guides, this one included, are directional; a licensed tax adviser in each country is what catches expensive mistakes.
 
 <details class="lesson-depth">
 <summary class="disclosure">How residency is tested, and other tax traps</summary>
