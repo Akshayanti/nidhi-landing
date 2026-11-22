@@ -61,3 +61,8 @@ it('the loan’s Copy keeps the focus and says why (#793)', () => {
   assert.match(source, /if \(withheld\) return;/);
   assert.doesNotMatch(source, /disabled=\{withheld\}\n/);
 });
+
+it('the own-return note is of its own two boxes: another box’s error does not take it away (#793)', () => {
+  const source = readFileSync(new URL('../../components/InvestOrPayOff.tsx', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /!withheld && formNote/);
+});

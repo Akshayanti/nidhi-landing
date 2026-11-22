@@ -479,6 +479,9 @@ export default function MultiCurrencyNetWorth({
     setRows(makeDefaultRows(defaultCurrency));
     setFunctionalCurrency(defaultCurrency);
     leaveSharedView();
+    // Nothing is being typed: the space a left banner kept can go.
+    setArrivedShared(false);
+    setArrivedRefused(null);
     setCsvTooLong(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
@@ -566,46 +569,6 @@ export default function MultiCurrencyNetWorth({
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
-      {/* ---- Rate status ---- */}
-      {/* While an unreadable amount withholds the results its space stays, so the key typed does not move its field. */}
-      {ratesFailureShown(ratesView, Boolean(refused && untouched)) && (
-        <div className={`mcnw-banner mcnw-bannerWarn${withheld ? ' mcnw-banner--left' : ''}`} role="alert">
-          <span>
-            {strings.rates.errorBefore}{' '}
-            <button
-              type="button"
-              className="btn btn--outline mcnw-retryBtn"
-              data-attr="mcnw-rates-retry"
-              onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
-            >
-              {strings.rates.retry}
-            </button>
-          </span>
-        </div>
-      )}
-      {ratesLoading && !ratesError && !singleCurrency && (
-        <div className="mcnw-banner mcnw-bannerInfo" role="status">
-          {strings.rates.loading}
-        </div>
-      )}
-      {/*
-        Partial-rates banner: surfaces the case where the rates response
-        came back successfully but is missing one or more currencies the
-        user holds. The headline total excludes those positions, and each
-        affected per-currency card already flags `rateUnavailable`. We
-        still warn at the top so the user doesn't read the total as a
-        complete picture.
-      */}
-      {/* A shared view's rates are its sender's: this page's own request does not matter to it. */}
-      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesLoading && (!ratesError || rates !== null))) && (
-        <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
-          <span>
-            {/* Without any rate there is no total below to be left out of. */}
-            {noRateAtAll ? strings.rates.errorBefore : strings.rates.partial}
-          </span>
-        </div>
-      )}
-
       {arrivedRefused && (
         <div className={`mcnw-banner mcnw-bannerWarn${refused && untouched ? '' : ' mcnw-banner--left'}`} role="alert">
           <span>{format(arrivedRefused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
@@ -803,6 +766,46 @@ export default function MultiCurrencyNetWorth({
           </div>
         )}
       </div>
+
+      {/* ---- Rate status ---- */}
+      {/* After the table, by the results they describe: they follow every key, and above it they moved the field typed in (#795). */}
+      {ratesFailureShown(ratesView, Boolean(withheld || (refused && untouched))) && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
+          <span>
+            {strings.rates.errorBefore}{' '}
+            <button
+              type="button"
+              className="btn btn--outline mcnw-retryBtn"
+              data-attr="mcnw-rates-retry"
+              onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
+            >
+              {strings.rates.retry}
+            </button>
+          </span>
+        </div>
+      )}
+      {ratesLoading && !ratesError && !singleCurrency && (
+        <div className="mcnw-banner mcnw-bannerInfo" role="status">
+          {strings.rates.loading}
+        </div>
+      )}
+      {/*
+        Partial-rates banner: surfaces the case where the rates response
+        came back successfully but is missing one or more currencies the
+        user holds. The headline total excludes those positions, and each
+        affected per-currency card already flags `rateUnavailable`. We
+        still warn at the top so the user doesn't read the total as a
+        complete picture.
+      */}
+      {/* A shared view's rates are its sender's: this page's own request does not matter to it. */}
+      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesLoading && (!ratesError || rates !== null))) && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
+          <span>
+            {/* Without any rate there is no total below to be left out of. */}
+            {noRateAtAll ? strings.rates.errorBefore : strings.rates.partial}
+          </span>
+        </div>
+      )}
 
       {/* ---- Results panel ---- */}
       <TotalAnnouncement withheld={withheld} result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />

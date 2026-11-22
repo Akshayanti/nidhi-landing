@@ -82,3 +82,17 @@ it('an example ends a refusal, so clearing it carries nothing (#794)', () => {
   assert.match(body('const showExample = ', '};'), /EXAMPLE_SCALE/);
   assert.match(source.slice(source.indexOf('const showExample = '), source.indexOf('const clearExample = ')), /leaveSharedView\(\)/);
 });
+
+it('nothing that follows the rates stands above the field typed in (#795)', () => {
+  const table = source.indexOf('<div className="mcnw-tableSection">');
+  const results = source.indexOf('<TotalAnnouncement withheld');
+  for (const banner of ['{ratesFailureShown(', '{ratesLoading && !ratesError && !singleCurrency', "{!withheld && result.hasRates === 'partial'"]) {
+    const at = source.indexOf(banner);
+    assert.ok(at > table && at < results, banner);
+  }
+});
+
+it('Clear drops the space a left banner kept (#795)', () => {
+  const clear = body('const reset = useCallback(', '}, [');
+  assert.ok(clear.includes('setArrivedShared(false)') && clear.includes('setArrivedRefused(null)'));
+});

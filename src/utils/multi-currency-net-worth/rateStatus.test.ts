@@ -311,8 +311,8 @@ describe('rates on the way are neither missing nor failed (#795)', () => {
     assert.match(source, /const exportReady = !withheld && !pendingRates && /);
     assert.match(source, /\{!withheld && !pendingRates && <PrintedReport/);
     assert.match(source, /pendingRates=\{pendingRates\}/);
-    assert.match(source, /\{ratesFailureShown\(ratesView, Boolean\(refused && untouched\)\) && \(/, 'a refused list shows no amounts either');
-    assert.match(source, /mcnw-bannerWarn\$\{withheld \? ' mcnw-banner--left' : ''\}/, 'withheld, its space stays and its words go');
+    assert.match(source, /\{ratesFailureShown\(ratesView, Boolean\(withheld \|\| \(refused && untouched\)\)\) && \(/, 'a refused list shows no amounts either');
+    assert.doesNotMatch(source, /mcnw-bannerWarn\$\{withheld \?/, 'after the table it needs no kept space');
   });
 });
 
