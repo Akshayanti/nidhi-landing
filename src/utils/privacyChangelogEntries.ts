@@ -103,7 +103,7 @@ export const writtenChangelog: ChangelogEntry[] = [
     date: 'Nov 22, 2026',
     iso: '2026-11-22',
     material: true,
-    summary: 'This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/. The notice\'s own wording now uses the names the site uses, with no change to what is collected, stored, sent or promised.',
+    summary: 'This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/. The notice\'s own wording now uses the names and the spelling the site uses, with no change to what is collected, stored, sent or promised.',
     details: [
       'This changelog has its own pages: /privacy/changelog/ lists each year with its number of entries and their dates, and /privacy/changelog/2026/ holds every entry of 2026, newest first under its month, in full. The same pages are in every language, with the entries in English as on this notice. This notice now shows the latest three entries, each with a permanent link to its place on its year page, and then a link to the complete record, where it used to keep older entries under a folded "Earlier changes" section. Every entry moved with its text unchanged; none was removed or reworded.',
       'The changelog pages send the same anonymous pageview and page-leave events as every page and carry no new click label: with cookie consent, a click on one of their links is recorded like any unlabelled click, by the kind of element and its position only. Nothing the site collects, stores or sends changed.',
