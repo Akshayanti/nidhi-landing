@@ -128,3 +128,15 @@ export function Withheld({ reason, children }: { reason: string | null; children
     </div>
   );
 }
+
+/**
+ * A box holding nothing but "?", the mark of a value that could not be read,
+ * is selected, so typing replaces it (#789). On the click as well as on
+ * focus: the mouse coming up puts the caret where it was pressed.
+ */
+export function selectMarker(e: { currentTarget: HTMLInputElement }): void {
+  if (e.currentTarget.value === '?') e.currentTarget.select();
+}
+
+/** Props for every box that can show the mark. */
+export const markerSelect = { onFocus: selectMarker, onClick: selectMarker };
