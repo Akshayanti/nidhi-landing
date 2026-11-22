@@ -246,7 +246,7 @@ export const exportCs: typeof exportEn = {
     privacyText: 'Vytvořeno ve vašem prohlížeči. nidhi tato čísla nikdy nedostalo a tento soubor nevidí ani nemůže smazat.',
     note: 'Poznámka',
     noteText:
-      'Vzdělávací odhad z bezplatného nástroje, ne finanční poradenství. Stránka vysvětluje, jak se počítá a co do výpočtu nezahrnuje.',
+      'Vzdělávací odhad z nástroje zdarma, ne finanční poradenství. Stránka vysvětluje, jak se počítá a co do výpočtu nezahrnuje.',
     beta: "Beta plánovače",
     betaText: "Plánovač nidhi se připravuje. Jeho beta zdarma se má otevřít v lednu 2027: nidhi.today/cs/beta/",
   },

@@ -96,7 +96,7 @@ export const cs: Dict = {
       beliefs: 'Čemu věřím',
       volunteers: 'Dobrovolná pomoc',
       beta: "Beta plánovače",
-      editorialPolicy: 'Jak se lekce píšou',
+      editorialPolicy: 'Jak lekce vznikají',
       changes: 'Co se změnilo',
       accessibility: 'Přístupnost',
       privacy: 'Soukromí',
@@ -192,7 +192,7 @@ export const cs: Dict = {
         after: '.',
       },
       whyYouCanTrustIt2:
-        'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí patička každé stránky.',
+        'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí zápatí každé stránky.',
       howPostsAreMade: {
         before:
           'Každý článek začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
@@ -289,7 +289,7 @@ export const cs: Dict = {
       },
       rulesOfThumb: {
         text: 'Od každé lekce chci, aby řekla, proč pravidlo existuje, o jaké doklady se opírá, kde přestává platit a co závisí na vás.',
-        link: 'Přečtěte si, jak se lekce píšou a opravují',
+        link: 'Přečtěte si, jak lekce vznikají a jak se opravují',
       },
       noAds: {
         text: 'Analytika, která by mohla propojit vaše návštěvy, čeká na váš souhlas, a co napíšete do nástroje, zůstává ve vašem prohlížeči.',
@@ -335,7 +335,7 @@ export const cs: Dict = {
     },
     works: {
       textSize: 'Text se zvětšuje s velikostí textu nastavenou v prohlížeči a se zvětšením stránky.',
-      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, abyste se k nim dostali klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
+      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, aby byly dostupné klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
       motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
       theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
       charts: 'V nástrojích zdarma se čáry grafu liší vzorem i barvou a grafy se dají číst klávesnicí.',
@@ -360,7 +360,7 @@ export const cs: Dict = {
     report: {
       before: 'Napište na ',
       between: ' nebo pošlete zprávu účtu ',
-      after: ' na Instagramu a napište, o kterou stránku jde a o co jste se pokoušeli.',
+      after: ' na Instagramu a napište, o kterou stránku jde a co se vám nedařilo.',
       diagnosis: 'Diagnózu sdílet nemusíte.',
       setting: 'Pokud by vám pomohlo nějaké nastavení na stránce, napište mi které.',
     },
@@ -587,7 +587,7 @@ export const cs: Dict = {
       inflation: {
         kicker: 'Ceny v čase',
         title: 'Inflační kalkulačka',
-        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co byste si za své peníze mohli koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
+        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co by se za vaše peníze dalo koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
       },
       investOrPayOff: {
         kicker: 'Dluh, nebo investice',
@@ -676,7 +676,7 @@ export const cs: Dict = {
       },
       freeTools: {
         before:
-          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u poskytovatele přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že jste přidali nebo odebrali poskytovatele (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy jeho název); kterou záložku výsledků otevřete a kterého poskytovatele tam zvolíte nebo u kterého otevřete podrobnosti; že jste změnili časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika poskytovatelů, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik poskytovatelů obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u poskytovatele přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že přidáte nebo odeberete poskytovatele (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy jeho název); kterou záložku výsledků otevřete a kterého poskytovatele tam zvolíte nebo u kterého otevřete podrobnosti; že změníte časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika poskytovatelů, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik poskytovatelů obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Finanční hodnoty, které zadáte, se nikdy neposílají',
         after:
           ': ani výše úvěru, ani úroková sazba, ani poplatky, ani název poskytovatele. Celý smysl kalkulačky je v tom, že se výpočet provádí ve vašem prohlížeči.',
@@ -684,10 +684,10 @@ export const cs: Dict = {
       toolAddresses:
         'U žádného nástroje zdarma adresa stránky nenese to, co zadáte, takže to nemůže nést ani adresa URL, kterou zaznamenává webová analytika. Nástroje vaše údaje při používání do adresy nezapisují. Odkaz ke sdílení je nese za znakem #, v části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je z adresního řádku přesune dřív, než se spustí webová analytika. Jako pojistka skript webové analytiky před odesláním jakékoli události odstraní z adresy každého nástroje zdarma vše kromě parametrů kampaní (utm_source a podobně).',
       toolExports:
-        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, kterou z nich jste použili.',
+        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje zadané hodnoty a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, o kterou z nich šlo.',
       netWorth: {
         before:
-          'Události interakce v kalkulačce čistého jmění: kterou měnu výdajů zvolíte; že jste přidali nebo odebrali řádek nebo nahráli či stáhli soubor CSV (s počtem řádků; u souboru, který se nepodařilo přečíst celý, kolik řádků selhalo a jaký druh problému měl první z nich); že se nepodařilo načíst kurzy (s měnou výdajů a jedním z několika pevných důvodů) a zda to zkusíte znovu; zda otevřete dialog pro sdílení, jaký druh odkazu zkopírujete (s částkami, nebo bez nich) a zda otevřete sdílené zobrazení (s jeho druhem, počtem měn, které obsahuje, a zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce v kalkulačce čistého jmění: kterou měnu výdajů zvolíte; že přidáte nebo odeberete řádek nebo nahrajete či stáhnete soubor CSV (s počtem řádků; u souboru, který se nepodařilo přečíst celý, kolik řádků selhalo a jaký druh problému měl první z nich); že se nepodařilo načíst kurzy (s měnou výdajů a jedním z několika pevných důvodů) a zda to zkusíte znovu; zda otevřete dialog pro sdílení, jaký druh odkazu zkopírujete (s částkami, nebo bez nich) a zda otevřete sdílené zobrazení (s jeho druhem, počtem měn, které obsahuje, a zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Názvy, částky a součty, které zadáte, se nikdy neposílají.',
       },
       monteCarlo: {
@@ -713,12 +713,12 @@ export const cs: Dict = {
       lessonShare:
         'Sdílení nebo uložení lekce: systémová nabídka sdílení se otevře, jen když klepnete na Share, a odkaz s názvem dostane aplikace, kterou si vyberete. Odkazy na WhatsApp a e-mail se s těmito službami spojí, jen když na ně klepnete. Odkaz sdílený nebo zkopírovaný těmito tlačítky nese parametry kampaní, které říkají jen to, že byl sdílen a jak, nic o vás, a když ho někdo otevře, jeho událost zobrazení stránky je obsahuje. Save as PDF používá okno tisku vašeho prohlížeče ve vašem zařízení a nic nenahrává. Aby stránka v prohlížeči aplikace, který neumí tisknout, mohla vysvětlit další postup, přečte ve vašem zařízení název prohlížeče a výsledek nikam neposílá.',
       consentClicks:
-        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co jste zadali.',
+        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co zadáte.',
       consentVisitorId:
         'Náhodné ID návštěvníka, které PostHog ukládá ve vašem prohlížeči (localStorage), aby propojil vaše návštěvy. Neobsahuje jméno ani e-mail, ale protože propojuje vaše návštěvy v čase, odliší váš prohlížeč od ostatních. Proto je pseudonymní, ne anonymní, a čeká na váš souhlas. Když později souhlas odmítnete, smaže se; potom ID platí jen pro stránku, na které právě jste, takže pozdější události se s dřívějšími nepropojí.',
       planner: {
         anonymous:
-          'Dokud na cookie liště nedáte souhlas: zobrazení stránek a události používání, například kterou obrazovku jste otevřeli nebo že jste přidali účet, spustili projekci nebo uložili scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
+          'Dokud na cookie liště nedáte souhlas: zobrazení stránek a události používání, například kterou obrazovku otevřete nebo že přidáte účet, spustíte projekci nebo uložíte scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
         consented:
           'Jen pokud souhlasíte: tytéž události, propojené s kódem vytvořeným z vašeho účtu, abychom viděli, kde se jeden člověk napříč návštěvami zasekává. Kód neobsahuje vaše jméno, e-mail ani ID účtu a nedá se na ně převést zpět, ale když nás požádáte o dohledání nebo smazání vašich událostí, dokážeme ho s vaším účtem spárovat. PostHog pak ve vašem prohlížeči ukládá náhodné ID návštěvníka, aby propojil vaše návštěvy.',
       },
@@ -751,7 +751,7 @@ export const cs: Dict = {
       timestamp: 'Datum a čas zápisu.',
       singleOptIn: 'Potvrzovací e-mail není potřeba. Pokud vás pozveme, plánovač zaznamená stav pozvánky, jak je popsáno níže.',
       invites:
-        'Aby správce nidhi vybral, koho pozvat do bety plánovače, čte tento seznam v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a správci ho nikdy nedostanou. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které jste se přihlásili, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
+        'Aby správce nidhi vybral, koho pozvat do bety plánovače, čte tento seznam v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a správci ho nikdy nedostanou. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které přihlášení proběhlo, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
       total:
         'Web může ukázat, kolik lidí čeká na pozvánku do bety: lidé z této čekací listiny a dobrovolníci, kteří zaškrtli políčko pro betu plánovače, každý započtený jen jednou, i když je na obou seznamech. Číslo se spočítá uvnitř našeho účtu Google a ven z něj odchází jen samotné číslo. Pod 20 je přesné, takže změnu o jednoho člověka lze zaznamenat mezi dvěma sestaveními webu. Od 20 se zaokrouhluje dolů, do 49 na násobek 5 a od 50 na násobek 10. Žádná e-mailová adresa se nezobrazuje. Kdo už má informace o konkrétním přihlášení nebo zaškrtnutí políčka pro betu, může je ze změny celkového počtu odvodit.',
       from: {
@@ -781,9 +781,9 @@ export const cs: Dict = {
       followUp:
         'V soukromé tabulce s vašimi odpověďmi z formuláře si také zapisujeme stav vyřízení, datum našeho posledního kontaktu s vámi a kód každé revizní kopie, kterou vám pošleme, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
       invites:
-        'Pokud jste zaškrtli políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
+        'Pokud máte zaškrtnuté políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
       total:
-        'Pokud jste zaškrtli políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
+        'Pokud máte zaškrtnuté políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
       google:
         'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
     },
@@ -937,7 +937,7 @@ export const cs: Dict = {
         'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc i u revizních tabulek nám napište a vyřadíme vás i s vašimi revizními soubory, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to uděláme ručně.',
       analytics: {
         before:
-          'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud jste na cookie liště souhlasili; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',
+          'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud máte na cookie liště udělený souhlas; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',
         strong: 'Nastavení cookies',
         after: ' v dolní části každé stránky; když tam odmítnete, okamžitě se zastaví zaznamenávání kliknutí i ukládání ID návštěvníka ve vašem prohlížeči a v plánovači se nové události přestanou propojovat s vámi.',
       },
@@ -1152,7 +1152,7 @@ export const cs: Dict = {
       /** Replaces `start` for a route the reader has already begun. */
       doorContinue: 'Pokračovat: ',
       /** Replaces it once every lesson on the route is read. */
-      doorRead: 'Trasa dokončena. ',
+      doorRead: 'Cesta dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
       inclusiveGo: 'Prozkoumat',
     },
@@ -1231,7 +1231,7 @@ export const cs: Dict = {
       netWorth: { question: '„Jaké je moje čisté jmění napříč měnami?“', name: 'Kalkulačka čistého jmění', desc: 'Jedna měna i více.' },
       loanComparison: { question: '„Který úvěr mě vyjde levněji?“', name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { question: '„Jaké rozpětí výsledků může můj plán mít?“', name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
-      inflation: { question: '„Drží moje peníze krok s cenami?“', name: 'Inflační kalkulačka', desc: 'Minulost, budoucnost a vaše zvýšení platu, po zohlednění inflace.' },
+      inflation: { question: '„Drží moje peníze krok s cenami?“', name: 'Inflační kalkulačka', desc: 'Minulost, budoucnost a vaše zvýšení platu, očištěno o inflaci.' },
       investOrPayOff: { question: '„Mám nejdřív investovat, nebo splatit dluh?“', name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },

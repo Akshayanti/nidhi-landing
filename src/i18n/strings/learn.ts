@@ -1546,7 +1546,7 @@ export const learnCs: typeof learnEn = {
         'diversification': 'Co diverzifikace dělá a co ne',
         'tax-accounts': 'Co je daňově zvýhodněný účet',
         'rebalancing': 'Proč se portfolio odchyluje a rebalancuje',
-        'fees': 'Kolik dělá roční poplatek 1 % za desítky let',
+        'fees': 'Kolik dělá roční poplatek 1 % za desítky let',
         'real-returns': 'Co je reálný výnos po inflaci a nákladech',
         'tax-loss': 'Daňové využití ztrát a rozložení investic mezi účty',
         'glide-path': 'Co je postupné snižování rizika portfolia (glide path)',

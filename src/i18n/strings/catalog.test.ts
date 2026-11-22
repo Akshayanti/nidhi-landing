@@ -643,4 +643,15 @@ describe('each language spells a word one way', () => {
     // es-glossary.md rule 6, for a figure and for a placeholder that stands for one.
     assert.deepEqual(allWords(ES, 'es').filter(({ value }) => /[\d}] ?%/.test(value)).map((l) => l.path), []);
   });
+
+  it('puts a no-break space before a Czech percent sign', () => {
+    // cs-glossary.md rule 6. Written together ("80% šance") it is an adjective.
+    assert.deepEqual(allWords(CS, 'cs').filter(({ value }) => /[\d}] %/.test(value)).map((l) => l.path), []);
+  });
+
+  it('gives the Czech reader no gender through a participle', () => {
+    // cs-glossary.md rule 5: "jste zadali" and "byste měli" both mark the reader.
+    const participle = /(?<!\p{L})(?:(?:jste|byste)(?:\s(?:se|si|ho|je|už|také))?\s\p{L}+li|\p{L}+li\sjste)(?!\p{L})/iu;
+    assert.deepEqual(allWords(CS, 'cs').filter(({ value }) => participle.test(value)).map((l) => l.path), []);
+  });
 });

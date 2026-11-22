@@ -165,7 +165,7 @@ term already listed is not re-decided per page.
 | asset location | rozložení investic mezi účty | Which assets are held in which kind of account, said so on first use. |
 | glide path | postupné snižování rizika portfolia | *(glide path)* in brackets on first use. |
 | standard deviation | směrodatná odchylka | |
-| inflation-adjusted, real | očištěný o inflaci | *V dnešních penězích* for amounts. |
+| inflation-adjusted, real | očištěný o inflaci | *Po očištění o inflaci* in a phrase, never *po odečtení* or *po zohlednění inflace*. *V dnešních penězích* for amounts. |
 | mix (stocks/bonds) | poměr | *Poměr akcií a dluhopisů*. |
 | monthly contribution | měsíční vklad | |
 | withdrawal (a single one) | výběr | *Roční výběr*. |
@@ -231,7 +231,11 @@ term already listed is not re-decided per page.
 | Inclusive Finances | Inkluzivní finance | Never *inkluzivní* alone. |
 | topic (tag) | téma | |
 | guide (Inclusive Finances) | průvodce | 1 průvodce, 2 průvodci, 5 průvodců. |
-| free tools | nástroje zdarma | |
+| free tools | nástroje zdarma | Also in a sentence (*v nástrojích zdarma*), not *bezplatné nástroje*. |
+| route (home) | cesta | *Cesta dokončena*, not *trasa*. |
+| footer | zápatí | With *záhlaví* for the header. |
+| box (on a page) | rámeček | A focus ring is *obrys* where both are in one sentence. |
+| How lessons are written (link) | Jak lekce vznikají | |
 | net worth calculator | kalkulačka čistého jmění | |
 | loan comparison | srovnání úvěrů | |
 | Monte Carlo simulator | simulátor Monte Carlo | |

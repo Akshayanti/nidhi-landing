@@ -1472,7 +1472,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           q: 'Co je riziko měnové koncentrace?',
           a:
-            'Pokud je velká část vašeho čistého jmění v měně, ve které neutrácíte, změna kurzu mění vaši skutečnou kupní sílu. Pokud například plánujete odejít do důchodu v Evropě, ale 70 % majetku držíte v USD, pohyb kurzu USD/EUR o 10 % (rozsah, ve kterém se EUR/USD změnil během mnoha kalendářních let) by hodnotu vašich prostředků na důchod měřenou v eurech změnil zhruba o 7 %.',
+            'Pokud je velká část vašeho čistého jmění v měně, ve které neutrácíte, změna kurzu mění vaši skutečnou kupní sílu. Pokud například plánujete odejít do důchodu v Evropě, ale 70 % majetku držíte v USD, pohyb kurzu USD/EUR o 10 % (rozsah, ve kterém se EUR/USD změnil během mnoha kalendářních let) by hodnotu vašich prostředků na důchod měřenou v eurech změnil zhruba o 7 %.',
         },
         {
           q: 'Posílá tato kalkulačka moje finanční data někam?',
@@ -1502,7 +1502,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           q: 'Co znamenají „Nízká“, „Střední“ a „Zvýšená“?',
           a:
-            'Jsou to popisná pásma pro měny jiné než měna výdajů: pod 20 % čistého jmění je expozice „Nízká“, 20 až 40 % „Střední“ a nad 40 % „Zvýšená“. Popisují velikost koncentrace, ne to, co s ní dělat. Zda daná úroveň odpovídá vaší situaci, závisí na budoucích výdajích, na tom, kde chcete žít v důchodu, a na tom, jak vyvažujete měnové riziko s jinými cíli.',
+            'Jsou to popisná pásma pro měny jiné než měna výdajů: pod 20 % čistého jmění je expozice „Nízká“, 20 až 40 % „Střední“ a nad 40 % „Zvýšená“. Popisují velikost koncentrace, ne to, co s ní dělat. Zda daná úroveň odpovídá vaší situaci, závisí na budoucích výdajích, na tom, kde chcete žít v důchodu, a na tom, jak vyvažujete měnové riziko s jinými cíli.',
         },
         {
           q: 'Můžu zahrnout dluhy a závazky?',
@@ -1721,11 +1721,11 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       functionalHidden:
         'Toto je měna vašich výdajů. V této sdílené verzi není procento koncentrace uvedeno.',
       functionalMost:
-        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je v jiných měnách a pohybuje se s jejich kurzy.',
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je v jiných měnách a pohybuje se s jejich kurzy.',
       functionalMuch:
-        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
       functionalLittle:
-        'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
+        'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
       functionalOver:
         'To, co máte v měně vašich výdajů ({currency}), odpovídá {pct} % vašeho čistého jmění, tedy víc než celému. Rozdíl je to, co v jiných měnách po odečtení aktiv dlužíte.',
       functionalDebt:
@@ -1733,17 +1733,17 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       netDebt:
         'V {code} dlužíte víc, než máte (pozice „čistý dluh“). Když máte v nějaké měně víc závazků než aktiv, funguje to obráceně: pokud {code} posílí vůči {currency}, váš dluh roste a čisté jmění klesá; pokud {code} oslabí, čisté jmění roste.',
       elevatedHidden:
-        'Vaše pozice v {code} tvoří v tomto sdílení velký podíl čistého jmění. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním znatelně zvýší nebo sníží.',
+        'Vaše pozice v {code} tvoří v tomto sdílení velký podíl čistého jmění. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním znatelně zvýší nebo sníží.',
       elevatedShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       moderateHidden:
-        'Střední podíl vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o desetinu podílu drženého v {code}.',
+        'Střední podíl vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o desetinu podílu drženého v {code}.',
       moderateShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       lowHidden:
         'Malý podíl vašeho čistého jmění je v {code}. Kurz {code}/{currency} má na celkové čisté jmění jen omezený vliv.',
       lowShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       unbandedHidden: 'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat.',
       unbandedShown:
         'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {amount}.',

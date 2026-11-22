@@ -978,12 +978,12 @@ export const inflationCs: typeof inflationEn = {
     browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
     featureList: [
       'Co si za částku koupíte po letech inflace, v dnešních penězích',
-      'Kolik bude cena stát po letech inflace',
+      'Kolik může něco stát po letech inflace',
       'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě nebo při skutečné roční inflaci dané země',
       'Zda zvýšení platu nebo výnos z úspor drží krok s inflací, s přesnou reálnou sazbou',
       'Každý výsledek je uveden také pro sazbu o jeden procentní bod nižší a vyšší',
       'Roční historie inflace pro každou zahrnutou zemi a eurozónu, od Světové banky; počet zemí: {countries}',
-      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
+      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
       'Výsledky v 38 měnách',
       'Odkaz ke sdílení libovolného výpočtu',
     ],
@@ -1040,7 +1040,7 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Proč ke každé odpovědi patří další dvě?',
-          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
+          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
         },
         {
           q: 'Je celostátní inflace totéž co moje inflace?',
@@ -1051,12 +1051,12 @@ export const inflationCs: typeof inflationEn = {
           a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku.',
         },
         {
-          q: 'Proč může sazba jít až do {maxRate} %?',
-          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
+          q: 'Proč může sazba jít až do {maxRate} %?',
+          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
         },
         {
           q: 'Proč reálná sazba není jen míra zvýšení minus míra inflace?',
-          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
+          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
         },
         {
           q: 'Posílají se moje data někam?',
@@ -1161,12 +1161,12 @@ export const inflationCs: typeof inflationEn = {
       average: '{country}, {first} až {last}: v průměru zhruba {average} ročně.',
       averageGaps: '{country}, nejnovější roky s dostupným číslem (počet: {count}, období: {first} až {last}): v průměru zhruba {average} ročně.',
       averageNote:
-        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne předpověď.',
+        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne prognóza.',
       coverage: 'Čísla pokrývají roky {first} až {last}.',
       gaps: 'Bez čísla: {years}.',
       gapStart: '„Z minulosti do dneška“ nezačíná dřív než v roce {start}, aby se žádný rok nepřeskočil.',
       use: 'Použít tento průměr jako sazbu',
-      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
+      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
       currencyOther:
         'Částky zůstávají v měně {currency}: vlastní měna země {country} mezi měnami tohoto nástroje není. Historie je vyjádřena v procentech, takže odpověď ukazuje, o kolik tam vzrostly ceny, ne částku ve vlastní měně země {country}.',
       capped: 'Sloupce nad {cap} jsou nahoře oříznuté.',

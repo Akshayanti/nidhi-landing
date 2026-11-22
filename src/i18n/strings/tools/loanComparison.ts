@@ -2162,7 +2162,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Jak kalkulačka zvládá úvěr, jehož sazba je nejdřív pevná a potom se změní (v USA hybridní úvěr nebo ARM)?',
-              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Pevná, pak pohyblivá“ a zadejte počáteční období fixace (například 60 měsíců u pětileté fixace) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se sazbou, kterou jste zadali. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
+              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Pevná, pak pohyblivá“ a zadejte počáteční období fixace (například 60 měsíců u pětileté fixace) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se zadanou sazbou. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
             },
             {
               q: 'Proč je možnost „Pevná, pak pohyblivá“ nedostupná, když je zvoleno „Měsíce do splacení“?',
@@ -2183,7 +2183,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Jak funguje scénář refinancování?',
-              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, které jste zadali u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření zaplacené při refinancování a případný poplatek (pokud se náklady na uzavření přičtou k novému úvěru, počítá doba návratnosti i s vyšší jistinou: je to měsíc, od kterého ušetřené splátky převáží to, co dlužíte navíc). Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
+              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, zadané u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření zaplacené při refinancování a případný poplatek (pokud se náklady na uzavření přičtou k novému úvěru, počítá doba návratnosti i s vyšší jistinou: je to měsíc, od kterého ušetřené splátky převáží to, co dlužíte navíc). Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
             },
           ],
         },
@@ -2251,7 +2251,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
   island: {
     export: {
       tool: 'Srovnání úvěrů',
-      meaning: 'Rozpětí ukazuje, jak daleko od sebe jsou celkové náklady nabídek, včetně poplatků a sankcí. Nejnižší celková částka není vždy nejnižší měsíční splátka: delší doba splácení obvykle splátku sníží a celkovou částku zvýší. Co je důležitější, záleží na vašem rozpočtu, na tom, jak dlouho úvěr plánujete mít, a na podmínkách, které toto srovnání nezahrnuje.',
+      meaning: 'Rozpětí ukazuje, jak daleko od sebe jsou celkové náklady nabídek, včetně poplatků, i těch za předčasné splacení. Nejnižší celková částka není vždy nejnižší měsíční splátka: delší doba splácení obvykle splátku sníží a celkovou částku zvýší. Co je důležitější, záleží na vašem rozpočtu, na tom, jak dlouho úvěr plánujete mít, a na podmínkách, které toto srovnání nezahrnuje.',
       schedulesNote: 'Splátkový kalendář každé nabídky po měsících najdete v tabulce.',
       scheduleLabel: 'Splátkové kalendáře',
       scheduleText: 'Jeden list na každou nabídku, měsíc po měsíci, včetně mimořádných splátek jistiny a jednorázových mimořádných splátek: kalendář, ze kterého vycházejí grafy i součty.',
@@ -2377,7 +2377,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       monthlyFirst: 'Měsíce 1 až {lastMonth}',
       monthlyFrom: 'Od měsíce {month}',
       monthlyLast: 'Měsíc {month}, poslední splátka',
-      monthlyLaterNote: 'Pozdější splátka vychází ze sazby, kterou jste zadali, není to prognóza.',
+      monthlyLaterNote: 'Pozdější splátka vychází ze zadané sazby, není to prognóza.',
       monthlyIncludesExtra: 'včetně {extra} navíc každý měsíc',
       paidOffBeforeChange: 'Splaceno v měsíci {payoffMonth}, před změnou sazby',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
@@ -2511,7 +2511,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     split: {
       ariaPrefix: 'Kam jde každá měsíční splátka, poskytovatel {vendor}. ',
-      ariaRow: '{when}: úrok {interest} ({pct} %), jistina {principal}.',
+      ariaRow: '{when}: úrok {interest} ({pct} %), jistina {principal}.',
       title: 'Kam jde každá splátka',
       eyebrowInterest: 'Úrok',
       eyebrowPrincipal: 'Jistina',

@@ -1078,7 +1078,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'Čisté jmění k tomu datu: investice, minus daň ze zisku, minus dluh, který zbývá',
       'Výsledky v dnešních penězích, s nedávnou inflací země podle Světové banky nebo s vaším vlastním číslem',
       '{paths} spárovaných simulací výnosů světových akcií, aby rozdíl vycházel z rozhodnutí, ne ze štěstí',
-      'Upozornění, když je váš vlastní výnos po očištění o inflaci vyšší než {top} % ročně, se kterými model počítá, a výsledky vedle historického rozpětí',
+      'Upozornění, když je váš vlastní výnos po očištění o inflaci vyšší než {top} % ročně, se kterými model počítá, a výsledky vedle historického rozpětí',
       'Volitelně daňová úleva na úrocích, roční poplatek fondu a daň ze zisku',
       'Běží ve vašem prohlížeči: nic z toho, co napíšete, se nikam neposílá',
     ],
@@ -1096,7 +1096,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       heading: 'Co tu chybí',
       intro: 'Srovnání zahrnuje jeden dluh a jednu investici. Tyto věci model nezahrnuje, a kterákoli z nich může vážit víc než čísla tady:',
       items: {
-        match: { lead: 'Příspěvek zaměstnavatele. ', rest: 'Peníze, které zaměstnavatel přidá k penzijnímu spoření, když spoříte i vy, mohou převážit všechno na této stránce; vysvětluje to lekce níže.' },
+        match: { lead: 'Příspěvek zaměstnavatele. ', rest: 'Peníze, které zaměstnavatel přidá k vašemu spoření na důchod, když spoříte i vy, mohou převážit všechno na této stránce; vysvětluje to lekce níže.' },
         several: { lead: 'Více dluhů. ', rest: 'Když jich je víc, záleží i na pořadí, v jakém se splácejí.' },
         variable: { lead: 'Pohyblivá úroková sazba. ', rest: 'Dluh se po celou dobu úročí sazbou, kterou zadáte.' },
         prepayment: { lead: 'Poplatky za předčasné splacení. ', rest: 'Některé úvěry si účtují poplatek za mimořádnou splátku, což snižuje, co předčasné splacení přinese.' },
@@ -1107,14 +1107,14 @@ export const investOrPayOffCs: InvestOrPayOff = {
         feelings: { lead: 'Klid. ', rest: 'Být bez dluhu má pro mnoho lidí hodnotu, kterou žádný výpočet neukáže.' },
         inflation: { lead: 'Měnící se inflace. ', rest: 'Inflace je každý rok stejná; je to předpoklad pro plánování, ne prognóza.' },
       },
-      notAdvice: 'Je to model k učení, ne rada: ukazuje, co se stalo v simulovaných scénářích s čísly, která jste zvolili.',
+      notAdvice: 'Je to model k učení, ne rada: ukazuje, co se stalo v simulovaných scénářích s čísly, která zvolíte.',
     },
     method: {
       heading: 'Jak to funguje',
       items: {
         paths: { lead: 'Dvě cesty. ', rest: 'V jedné jdou peníze navíc na dluh, dokud není splacený, a pak se splátka i peníze navíc každý měsíc investují. Ve druhé dluh běží normálně a peníze navíc se investují; když dluh skončí, investuje se i jeho splátka.' },
         date: { lead: 'Stejné datum. ', rest: 'Obě cesty se porovnávají k datu, které zvolíte. Čisté jmění je hodnota investic, minus daň ze zisku, minus dluh, který zbývá.' },
-        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy vycházejí z historie světových akcií od roku 1900 (Dimson, Marsh a Staunton): po očištění o inflaci zhruba {low} % až {top} % ročně, s velkými výkyvy z roku na rok.' },
+        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy vycházejí z historie světových akcií od roku 1900 (Dimson, Marsh a Staunton): po očištění o inflaci zhruba {low} % až {top} % ročně, s velkými výkyvy z roku na rok.' },
         paired: { lead: 'Spárované scénáře. ', rest: 'Každý z {paths} scénářů provede obě cesty stejnými roky na trhu, takže rozdíl mezi nimi vychází z rozhodnutí, ne ze štěstí.' },
         money: { lead: 'Dnešní peníze. ', rest: 'Dluh se úročí svou vlastní úrokovou sazbou; výnosy investice se vaší inflací převedou na výnosy před inflací; každý výsledek se pak ukáže v dnešních penězích.' },
         timing: { lead: 'Načasování. ', rest: 'Úroky se účtují a splátky se platí na konci každého měsíce. Úleva na úrocích se počítá jako peníze vrácené každý měsíc a investuje se ve stejné cestě.' },
@@ -1138,7 +1138,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       items: [
         {
           q: 'Řekne mi to, jestli investovat, nebo splatit dluh?',
-          a: 'Ne. Ukazuje, jak si obě cesty vedly v simulovaných scénářích s čísly, která jste zvolili. Co se hodí vám, závisí i na věcech, které model nezahrnuje: příspěvek zaměstnavatele, vaše finanční rezerva, jak jistý je váš příjem, další dluhy a jak se cítíte, když dlužíte.',
+          a: 'Ne. Ukazuje, jak si obě cesty vedly v simulovaných scénářích s čísly, která zvolíte. Co se hodí vám, závisí i na věcech, které model nezahrnuje: příspěvek zaměstnavatele, vaše finanční rezerva, jak jistý je váš příjem, další dluhy a jak se cítíte, když dlužíte.',
         },
         {
           q: 'Proč je výsledek rozpětí, a ne jedno číslo?',
@@ -1146,11 +1146,11 @@ export const investOrPayOffCs: InvestOrPayOff = {
         },
         {
           q: 'Proč tu záleží na inflaci?',
-          a: 'Sazba dluhu i výnos, který fond uvádí, obsahují inflaci. Výnos 12 % je běžný tam, kde je inflace 8 %, a vysoký tam, kde je 2 %. Nástroj převádí obě strany stejnou inflací, aby se porovnávalo stejné se stejným, a výsledky ukazuje v dnešních penězích.',
+          a: 'Sazba dluhu i výnos, který fond uvádí, obsahují inflaci. Výnos 12 % je běžný tam, kde je inflace 8 %, a vysoký tam, kde je 2 %. Nástroj převádí obě strany stejnou inflací, aby se porovnávalo stejné se stejným, a výsledky ukazuje v dnešních penězích.',
         },
         {
           q: 'Co když zadám vysoký výnos?',
-          a: 'Použije se vaše číslo tak, jak jste ho zadali. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy horní konec dlouhodobého rozpětí, se kterým počítá tento model i lekce, upozornění to řekne a výsledky se ukážou i s historickým rozpětím vedle sebe. Žádný strop se nepoužívá.',
+          a: 'Použije se vaše číslo tak, jak ho zadáte. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy horní konec dlouhodobého rozpětí, se kterým počítá tento model i lekce, upozornění to řekne a výsledky se ukážou i s historickým rozpětím vedle sebe. Žádný strop se nepoužívá.',
         },
         {
           q: 'Odkud se bere inflace?',
@@ -1217,7 +1217,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       context: 'Posledních pět let {five}; samotný rok {last} {latest}.',
       contextNoFive: 'Samotný rok {last} {latest}.',
       noDefault: 'Pro zemi {country} je příliš málo nedávných údajů na průměr. Zadejte číslo.',
-      loading: 'Načítám historii…',
+      loading: 'Načítání historie…',
       error: 'Historii se nepodařilo načíst. Zadejte číslo.',
       euroArea: 'Eurozóna',
       needed: 'Pro srovnání zadejte inflaci: výsledky jsou v dnešních penězích a nastavení výnosu jsou po očištění o inflaci.',
@@ -1228,7 +1228,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       historical: { label: 'Historický', desc: '{rate} ročně po očištění o inflaci, světové akcie od roku 1900' },
       optimistic: { label: 'Optimistický', desc: '{rate} ročně po očištění o inflaci' },
       own: { label: 'Moje vlastní číslo', desc: 'Před inflací, jak ho uvádějí fondy' },
-      above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i naše lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
+      above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i naše lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
       below: 'To je {real} ročně po očištění o inflaci: investice by ztrácela kupní sílu.',
       realIs: 'Po očištění o inflaci: {real} ročně.',
       ownSwings: 'Model zachovává meziroční výkyvy světových akcií, ať zadáte jakékoli číslo. U dluhopisového fondu by skutečné rozpětí bylo užší, než jaké se zde zobrazuje, a u spořicího účtu mnohem užší.',
@@ -1243,7 +1243,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'no-balance': 'Zadejte, kolik dlužíte.',
       'payment-too-low': 'Měsíční splátka nepokryje ani úroky, takže by dluh nebyl nikdy splacen. Zadejte vyšší splátku.',
       'too-long': 'S touto splátkou by splacení trvalo déle než {years} let. Zadejte vyšší splátku.',
-      'impossible-rate': 'Úroková sazba -100 % nebo nižší není možná.',
+      'impossible-rate': 'Úroková sazba -100 % nebo nižší není možná.',
     },
     results: {
       heading: 'Jak si obě cesty vedly',
@@ -1297,7 +1297,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       copy: 'Zkopírovat odkaz na tyto výsledky',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
-      shareNote: 'Odkaz obsahuje čísla, která jste zadali, za znakem # v adrese.',
+      shareNote: 'Odkaz obsahuje zadaná čísla, za znakem # v adrese.',
     },
     export: {
       moneyLabel: 'Peníze',
@@ -1308,7 +1308,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       inflationSource: 'Zdroj inflace',
       inflationTyped: 'Zadaná',
       returns: 'Nastavení výnosu',
-      horizon: 'Porovnáno k',
+      horizon: 'Datum srovnání',
       months: 'Měsíců od dneška',
       paths: 'Scénáře',
       columns: { path: 'Cesta', p10: '10. ze 100', p50: 'Uprostřed', p90: '90. ze 100' },

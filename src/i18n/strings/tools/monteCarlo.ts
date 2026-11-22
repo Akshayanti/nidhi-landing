@@ -1181,7 +1181,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'Klidnější extrémy než v historii.',
-          rest: ' Roky se losují nezávisle z hladkého rozdělení, takže dlouhé série špatných let a propady jako v roce 2008 (světové akcie −42,9 % po odečtení inflace) jsou tu vzácnější, než byly ve skutečnosti.',
+          rest: ' Roky se losují nezávisle z hladkého rozdělení, takže dlouhé série špatných let a propady jako v roce 2008 (světové akcie −42,9 % po očištění o inflaci) jsou tu vzácnější, než byly ve skutečnosti.',
         },
       },
       more: 'Proč na každém z nich záleží',
@@ -1193,7 +1193,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       more: 'Metoda a její zdroje',
       steps: {
         draws:
-          'Každý simulovaný rok vylosuje výnos akcií a výnos dluhopisů po odečtení inflace. Jejich průměry a výkyvy odpovídají světovým trhům v letech 1900 až 2025: akcie v průměru {stocksMean} ročně se směrodatnou odchylkou {stocksSd}, dluhopisy {bondsMean} s {bondsSd}. Obojí je mírně provázané (korelace zhruba {correlation}). Tato vazba se v historii výrazně měnila, byla kladná i záporná, takže jde o zjednodušení. „{cautious}“ a „{optimistic}“ ponechávají tyto výkyvy a posouvají složený výnos akcií na 4 % nebo 6 % ročně a dluhopisů na 1 % nebo 3 %.',
+          'Každý simulovaný rok vylosuje výnos akcií a výnos dluhopisů po očištění o inflaci. Jejich průměry a výkyvy odpovídají světovým trhům v letech 1900 až 2025: akcie v průměru {stocksMean} ročně se směrodatnou odchylkou {stocksSd}, dluhopisy {bondsMean} s {bondsSd}. Obojí je mírně provázané (korelace zhruba {correlation}). Tato vazba se v historii výrazně měnila, byla kladná i záporná, takže jde o zjednodušení. „{cautious}“ a „{optimistic}“ ponechávají tyto výkyvy a posouvají složený výnos akcií na 4 % nebo 6 % ročně a dluhopisů na 1 % nebo 3 %.',
         blend:
           'Výnos vašeho portfolia odpovídá zvolenému poměru obou tříd aktiv, který se jednou ročně rebalancuje, po odečtení ročních poplatků. Výnos za daný rok se rozloží rovnoměrně do jeho dvanácti měsíců.',
         flows:
@@ -1218,7 +1218,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Odkud pocházejí předpoklady výnosů?',
-          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po odečtení inflace měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají články nidhi: akcie 4 % nebo 6 % ročně po odečtení inflace, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
+          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po očištění o inflaci měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají články nidhi: akcie 4 % nebo 6 % ročně po očištění o inflaci, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
         },
         {
           q: 'Kolik trajektorií spustit?',
@@ -1226,11 +1226,11 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Jak se počítají poplatky?',
-          a: 'Jako roční procento z hodnoty portfolia, odečtené od výnosu každého roku, od 0 do {maxFeePct} %. Běžně se zadává součet průběžných nákladů fondu a případného poplatku platformy. Pevné a jednorázové poplatky se nemodelují.',
+          a: 'Jako roční procento z hodnoty portfolia, odečtené od výnosu každého roku, od 0 do {maxFeePct} %. Běžně se zadává součet průběžných nákladů fondu a případného poplatku platformy. Pevné a jednorázové poplatky se nemodelují.',
         },
         {
           q: 'Proč je vše v dnešních penězích?',
-          a: 'Všechny výnosy jsou reálné, po odečtení inflace. Výsledek 500 000 znamená 500 000 v dnešní kupní síle, takže ho lze přímo porovnat s cenami a platy, které znáte. Znamená to také, že měsíční vklad a roční výběr zůstávají v reálném vyjádření stálé, což zhruba odpovídá tomu, když je s inflací zvyšujete.',
+          a: 'Všechny výnosy jsou reálné, po očištění o inflaci. Výsledek 500 000 znamená 500 000 v dnešní kupní síle, takže ho lze přímo porovnat s cenami a platy, které znáte. Znamená to také, že měsíční vklad a roční výběr zůstávají v reálném vyjádření stálé, což zhruba odpovídá tomu, když je s inflací zvyšujete.',
         },
         {
           q: 'Co znamená „peníze vydržely v 8 z 10 trajektorií“?',
@@ -1238,7 +1238,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Proč jedna čára leží nad většinou trajektorií?',
-          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára je ten druhý plán: průměrný výnos každý rok, bez vzestupů a poklesů. Obvykle pod ní skončí více než polovina trajektorií.',
+          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára je ten druhý plán: průměrný výnos každý rok, bez vzestupů a poklesů. Obvykle pod ní skončí více než polovina trajektorií.',
         },
         {
           q: 'Posílají se moje data někam?',
@@ -1287,15 +1287,15 @@ export const monteCarloCs: typeof monteCarloEn = {
     example: 'Ukázkový scénář. Nahraďte čísla svými.',
     export: {
       tool: 'Simulátor Monte Carlo',
-      meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o předpověď ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
+      meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o prognózu ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
       moneyLabel: 'Částky',
       moneyText: 'V dnešních penězích, na celé jednotky. Stránka zaokrouhluje víc: s jinými náhodnými trajektoriemi by poslední číslice vyšly jinak.',
       sheets: { assumptions: 'Předpoklady', byYear: 'Po letech', outcome: 'Výsledek' },
       stocks: 'Akcie, %',
       bonds: 'Dluhopisy, %',
       withdrawals: 'Výběry',
-      stocksGrowth: 'Akcie: roční růst po odečtení inflace, %',
-      bondsGrowth: 'Dluhopisy: roční růst po odečtení inflace, %',
+      stocksGrowth: 'Akcie: roční růst po očištění o inflaci, %',
+      bondsGrowth: 'Dluhopisy: roční růst po očištění o inflaci, %',
       rebalanced: 'Rebalancování',
       p25: '25. percentil',
       p75: '75. percentil',
@@ -1316,11 +1316,11 @@ export const monteCarloCs: typeof monteCarloEn = {
       saveYears: 'Počet let spoření',
       saveYearsHint: '0 až 60',
       mixBefore: 'Poměr: ',
-      mixStocks: '{pct} % akcií',
+      mixStocks: '{pct} % akcií',
       mixMiddle: ', ',
-      mixBonds: '{pct} % dluhopisů',
+      mixBonds: '{pct} % dluhopisů',
       mixHint: 'Jednou ročně se rebalancuje zpět na tento poměr.',
-      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
+      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
       crossLink: {
         before: 'Peníze ve více měnách? Nejdřív je sečtěte v ',
         link: 'kalkulačce čistého jmění',
@@ -1334,15 +1334,15 @@ export const monteCarloCs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
       historical:
-        'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
+        'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
       optimistic:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
     },
     settings: {
       toggle: 'Poplatky a\u00a0simulované trajektorie',
-      summary: 'poplatky {fees} % · trajektorie: {paths}',
+      summary: 'poplatky {fees} % · trajektorie: {paths}',
       legend: 'Odhad výnosu',
       feeLabel: 'Roční poplatky, %',
       feeHint: 'Poplatky fondu a platformy, odečtené od výnosu každého roku. 0 až {maxFeePct}.',
