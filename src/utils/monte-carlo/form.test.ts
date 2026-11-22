@@ -172,6 +172,16 @@ describe('a number too long for a link is invalid where it is typed (#789)', () 
     const { DEFAULTS: plan } = await import('./url.ts');
     assert.equal(formErrors({ ...toForm(plan), start: `0.${'0'.repeat(400)}1` }).start, true);
   });
+  it('the edge is 200 characters, written or typed', async () => {
+    const { DEFAULTS: plan } = await import('./url.ts');
+    const bad = (start: string) => formErrors({ ...toForm(plan), start }).start;
+    const at200 = `0.${'0'.repeat(197)}1`;
+    assert.equal(at200.length, 200);
+    assert.equal(bad(at200), false);
+    assert.equal(bad(`0.${'0'.repeat(198)}1`), true);
+    assert.equal(bad(`0.1${'0'.repeat(197)}`), false);
+    assert.equal(bad(`0.1${'0'.repeat(198)}`), true);
+  });
   it('up to 200 it travels whole', async () => {
     const { DEFAULTS: plan } = await import('./url.ts');
     const fits = `0.${'0'.repeat(196)}1`;
