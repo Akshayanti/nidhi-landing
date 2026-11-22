@@ -14,6 +14,7 @@ export function isValidNumber(v: string, min: number, max: number, whole = false
   if (v.trim() === '') return false;
   const n = Number(v);
   // A link carries a number of 200 characters at most: a longer one arrived
-  // as unreadable, so it is refused here, where it is typed (#789).
-  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n)) && plainDigits(n).length <= 200;
+  // as unreadable, or as zero when it was too small to be a number, so it is
+  // refused here, where it is typed (#789).
+  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n)) && v.trim().length <= 200 && plainDigits(n).length <= 200;
 }
