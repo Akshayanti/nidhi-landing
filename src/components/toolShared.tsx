@@ -30,6 +30,9 @@ export function heldUntilReady(ready: boolean): { inert?: boolean; 'aria-busy'?:
 /** The translated pattern `Error: {message}`, handed down by each island. */
 export const ErrorLeadContext = createContext('');
 
+/** What is said under a box that arrived holding the mark of an unreadable value. */
+export const UnreadableContext = createContext('');
+
 /** A field's error message with the lead-in in front. */
 export function useErrorText(message: string): string {
   const lead = useContext(ErrorLeadContext);

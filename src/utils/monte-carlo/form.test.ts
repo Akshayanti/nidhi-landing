@@ -6,7 +6,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { formErrors, formFromLink, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
-import { defaultState } from './url.ts';
+import { STATE_KEY_PATTERN, decodeState, defaultState } from './url.ts';
 
 const FIELDS: BoxField[] = ['start', 'monthly', 'saveYears', 'stockPct', 'withdrawal', 'withdrawYears', 'feePct'];
 
@@ -88,6 +88,32 @@ describe('years of withdrawing, typed wrong and then switched off', () => {
 
   it('never reach the simulation as NaN', () => {
     assert.ok(Object.values(toState(formWith({ withdrawOn: false, withdrawYears: 'NaN' }))).every((v) => !Number.isNaN(v)));
+  });
+});
+
+describe('an amount to withdraw, typed wrong and then switched off', () => {
+  for (const value of ['NaN', '', '0', '999999999999999']) {
+    it(`arrives as it was, with withdrawals off: ${value || 'empty'}`, () => {
+      const form = formWith({ withdrawOn: false, withdrawal: value });
+      const wire = publishableForm(form, 'EUR');
+      const arrived = carried(form);
+      assert.deepEqual([arrived.withdrawOn, arrived.withdrawal], [false, value]);
+      assert.equal(decodeState(wire)?.withdrawal, 0, 'the plan behind it has no withdrawal');
+      assert.ok(formErrors({ ...arrived, withdrawOn: true }).withdrawal, 'invalid once switched on again');
+    });
+  }
+
+  it('the guard takes every key of that link out of the address', () => {
+    const wire = publishableForm(formWith({ withdrawOn: false, withdrawal: 'NaN' }), 'EUR');
+    const key = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    assert.ok(new URLSearchParams(wire).has('o'));
+    for (const name of new URLSearchParams(wire).keys()) assert.match(name, key);
+  });
+
+  it('the key is written only then', () => {
+    for (const change of [{ withdrawOn: true, withdrawal: 'NaN' }, { withdrawOn: false, start: 'NaN' }]) {
+      assert.ok(!new URLSearchParams(publishableForm(formWith(change), 'EUR')).has('o'));
+    }
   });
 });
 

@@ -344,7 +344,7 @@ export const monteCarloEn = {
       /** The fallback prompt when the clipboard is unavailable. */
       copyPrompt: 'Copy this link:',
       reset: 'Reset',
-      fix: 'Fix the highlighted fields to update the results.',
+      fix: 'Fix the highlighted fields to see the results.',
       running: 'Running {paths} paths…',
     },
     /**
@@ -695,7 +695,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
       reset: 'रीसेट',
-      fix: 'नतीजे अपडेट करने के लिए चिह्नित खानों को ठीक करें।',
+      fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
     quick: {
@@ -1028,7 +1028,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
       reset: 'Restablecer',
-      fix: 'Corrige los campos resaltados para actualizar los resultados.',
+      fix: 'Corrige los campos marcados para ver los resultados.',
       running: 'Simulando {paths} trayectorias…',
     },
     quick: {
@@ -1363,7 +1363,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
       reset: 'Obnovit výchozí',
-      fix: 'Opravte zvýrazněná pole a výsledky se aktualizují.',
+      fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledky.',
       running: 'Probíhá simulace, počet trajektorií: {paths}…',
     },
     quick: {
@@ -1680,7 +1680,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
       reset: 'पूर्वनिश्चित मूल्ये परत आणा',
-      fix: 'निकाल अपडेट करण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
+      fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       running: '{paths} मार्ग चालवत आहे…',
     },
     quick: {

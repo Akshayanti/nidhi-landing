@@ -32,7 +32,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, WITHHELD_SAID_AFTER, Withheld } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -382,6 +382,7 @@ export default function MonteCarloSimulator({
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <NumberLocaleContext.Provider value={numberLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcs-root" {...heldUntilReady(toolReady)}>
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         {/* The example line and Reset share the first row, as in the other tools. */}
@@ -610,6 +611,7 @@ export default function MonteCarloSimulator({
 
       {!hasErrors && <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </NumberLocaleContext.Provider>
     </ChartWordsContext.Provider>
@@ -633,6 +635,10 @@ function NumberField(props: {
 }) {
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
+  const unreadable = useContext(UnreadableContext);
+  // The mark that arrived, as against text being typed here.
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && props.value === 'NaN';
   const showError = props.invalid && Boolean(props.error);
   const described = [showError ? errorId : '', props.hint ? hintId : ''].filter(Boolean).join(' ');
   return (
@@ -646,11 +652,11 @@ function NumberField(props: {
         inputMode={props.step === '1' ? 'numeric' : 'decimal'}
         autoComplete="off"
         value={props.value}
-        onValueChange={props.onChange}
+        onValueChange={(value) => { setTyped(true); props.onChange(value); }}
         aria-invalid={props.invalid || undefined}
         aria-describedby={described || undefined}
       />
-      {showError && <span className="ifc-error" id={errorId}><ErrorText>{props.error ?? ''}</ErrorText></span>}
+      {showError && <span className="ifc-error" id={errorId}><ErrorText>{arrived ? unreadable : props.error ?? ''}</ErrorText></span>}
       {props.hint && <span className="mcs-hint" id={hintId}>{props.hint}</span>}
     </div>
   );

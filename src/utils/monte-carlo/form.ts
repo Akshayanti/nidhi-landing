@@ -37,6 +37,9 @@ const BOX_KEYS = {
 
 export type BoxField = keyof typeof BOX_KEYS;
 
+/** Beside a bad withdrawal amount: withdrawals are off. */
+const OFF_KEY = 'o';
+
 const FIELDS = Object.keys(BOX_KEYS) as BoxField[];
 
 /** What the withdrawal box holds before anyone types in it. */
@@ -96,16 +99,17 @@ export function formErrors(f: FormState): Record<BoxField, boolean> {
 
 /** What the language switch carries: the form as it stands, every choice and every box. */
 export function publishableForm(f: FormState, pageCurrency: string): string {
-  // Years typed wrong go along with withdrawals off too: switched on again
-  // where they arrive, they must still be wrong.
-  const errors = { ...formErrors(f), withdrawYears: badWithdrawYears(f) };
+  // The withdrawal boxes go along with withdrawals off too: switched on again
+  // where they arrive, a bad one must still be wrong.
+  const errors = formErrors({ ...f, withdrawOn: true });
   const bad = FIELDS.filter((field) => errors[field]);
   if (bad.length === 0) return publishableState(toState(f), pageCurrency);
 
   // The choices and the good boxes as a valid plan, the bad boxes written over it.
   const valid = { ...f };
   for (const field of bad) valid[field] = String(field === 'withdrawal' ? DEFAULT_WITHDRAWAL : DEFAULTS[field]);
-  const boxes = Object.fromEntries(bad.map((field) => [BOX_KEYS[field], boxValue(f[field], 'en')]));
+  const boxes: Record<string, string> = Object.fromEntries(bad.map((field) => [BOX_KEYS[field], boxValue(f[field], 'en')]));
+  if (!f.withdrawOn && errors.withdrawal) boxes[OFF_KEY] = '1';
   return withBoxes(encodeState(toState(valid)), boxes);
 }
 
@@ -119,7 +123,7 @@ export function formFromLink(search: string): FormState | null {
     const value = boxes[BOX_KEYS[field]];
     if (value !== undefined) form[field] = value;
   }
-  // A link names a withdrawal only when withdrawals are on.
-  if (boxes[BOX_KEYS.withdrawal] !== undefined) form.withdrawOn = true;
+  // A link names a withdrawal only when withdrawals are on, unless it says they are off.
+  if (boxes[BOX_KEYS.withdrawal] !== undefined) form.withdrawOn = readBoxes(search, [OFF_KEY])[OFF_KEY] !== '1';
   return form;
 }

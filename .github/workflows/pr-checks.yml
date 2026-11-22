@@ -274,7 +274,7 @@ jobs:
         run: npm run audit:mobile
 
   # ---------------------------------------------------------------------------
-  # The reel renderer (remotion/): its own package.json and lockfile. Runs only
+  # The reel renderer (remotion/): its own package.json and lockfile. Runs
   # on every pull request, Dependabot's Remotion bumps included. It
   # installs strictly and type-checks; it renders nothing, since that needs a
   # browser download and a real reel plan (the layout guard rejects the

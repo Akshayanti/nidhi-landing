@@ -45,7 +45,7 @@ export const DEFAULTS: ToolState = {
 const RETURN_CODES: Record<ReturnSetting, string> = { cautious: 'c', historical: 'h', optimistic: 'o' };
 const RETURN_BY_CODE: Record<string, ReturnSetting> = { c: 'cautious', h: 'historical', o: 'optimistic' };
 
-export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n'] as const;
+export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n', 'o'] as const;
 
 /** Window property the page head script stores a shared fragment in. */
 export const SHARED_STATE_GLOBAL = '__nidhiMonteCarloShared';
@@ -113,7 +113,9 @@ export function decodeState(search: string): ToolState | null {
   };
   const code = (p.get('c') ?? '').toUpperCase();
   const currency = CURRENCIES.some((c) => c.code === code) ? code : DEFAULTS.currency;
-  const withdrawal = num('w', DEFAULTS.withdrawal);
+  // `o=1` goes beside a withdrawal amount typed wrong with withdrawals off:
+  // the one case where `w` does not mean they are on (form.ts).
+  const withdrawal = p.get('o') === '1' ? 0 : num('w', DEFAULTS.withdrawal);
   const clean = sanitizeInputs({
     start: num('s', DEFAULTS.start),
     monthly: num('m', DEFAULTS.monthly),

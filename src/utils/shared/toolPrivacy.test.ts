@@ -23,6 +23,7 @@ import * as loan from '../loan/url.ts';
 import * as netWorth from '../multi-currency-net-worth/url.ts';
 import type { AssetRow, CurrencyPosition } from '../multi-currency-net-worth/math.ts';
 import * as monteCarlo from '../monte-carlo/url.ts';
+import * as monteCarloForm from '../monte-carlo/form.ts';
 import * as inflation from '../inflation/url.ts';
 import * as investOrPayOff from '../invest-or-pay-off/url.ts';
 import { codeFiles, scanEvents } from '../privacySurface.ts';
@@ -227,7 +228,9 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
     for (const field of Object.keys(monteCarlo.DEFAULTS) as (keyof monteCarlo.ToolState)[]) {
       assert.notEqual(state[field], monteCarlo.DEFAULTS[field], `${field} is new: change it in this test`);
     }
-    const keys = keysOf(monteCarlo.encodeState(state));
+    // `o` is the form's alone: withdrawals off, beside an amount typed wrong.
+    const off = monteCarloForm.publishableForm({ ...monteCarloForm.toForm(state), withdrawOn: false, withdrawal: 'NaN' }, 'EUR');
+    const keys = [...new Set([...keysOf(monteCarlo.encodeState(state)), ...keysOf(off)])];
     assert.deepEqual(keys.slice().sort(), [...monteCarlo.STATE_KEYS].sort());
     const isKey = key(monteCarlo.STATE_KEY_PATTERN);
     for (const k of keys) assert.ok(isKey.test(k), `the pattern misses ${k}`);

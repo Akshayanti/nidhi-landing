@@ -211,7 +211,7 @@ export const investOrPayOffEn = {
     },
     results: {
       heading: 'How the two paths compared',
-      fix: 'Fix the highlighted fields to update the result.',
+      fix: 'Fix the highlighted fields to see the result.',
       on: 'Compared {when}.',
       when: {
         months: { one: 'in {n} month', few: 'in {n} months', other: 'in {n} months' },
@@ -473,7 +473,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
     },
     results: {
       heading: 'दोनों रास्तों की तुलना',
-      fix: 'नतीजा अपडेट करने के लिए लाल निशान वाले फ़ील्ड ठीक करें।',
+      fix: 'नतीजा देखने के लिए चिह्नित खाने ठीक करें।',
       on: 'तुलना {when}।',
       when: {
         months: { one: '{n} महीने बाद', few: '{n} महीने बाद', other: '{n} महीने बाद' },
@@ -731,7 +731,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     },
     results: {
       heading: 'दोन मार्गांची तुलना',
-      fix: 'निकाल अद्ययावत करण्यासाठी चिन्हांकित फील्ड दुरुस्त करा.',
+      fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       on: 'तुलना {when}.',
       when: {
         months: { one: '{n} महिन्यानंतर', few: '{n} महिन्यांनंतर', other: '{n} महिन्यांनंतर' },
@@ -989,7 +989,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
     },
     results: {
       heading: 'Cómo se compararon los dos caminos',
-      fix: 'Corrige los campos marcados para actualizar el resultado.',
+      fix: 'Corrige los campos marcados para ver el resultado.',
       on: 'Comparado {when}.',
       when: {
         months: { one: 'dentro de {n} mes', few: 'dentro de {n} meses', other: 'dentro de {n} meses' },
@@ -1247,7 +1247,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
     },
     results: {
       heading: 'Jak si obě cesty vedly',
-      fix: 'Opravte označená pole, aby se výsledek aktualizoval.',
+      fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledek.',
       on: 'Porovnáno {when}.',
       when: {
         months: { one: 'za {n} měsíc', few: 'za {n} měsíce', other: 'za {n} měsíců' },

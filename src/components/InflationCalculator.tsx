@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { CURRENCIES, amountFormat, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
@@ -49,7 +49,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -474,6 +474,7 @@ export default function InflationCalculator({
     <NumberLocaleContext.Provider value={numberLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="ifc-formHead">
@@ -648,6 +649,7 @@ export default function InflationCalculator({
 
       {report && !hasErrors && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
     </NumberLocaleContext.Provider>
@@ -666,6 +668,7 @@ function Field(props: {
   type?: 'number' | 'text';
   unit?: string;
 }) {
+  const unreadable = useContext(UnreadableContext);
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
   const describedBy = [props.error ? errorId : null, props.hint ? hintId : null].filter(Boolean).join(' ') || undefined;
@@ -690,7 +693,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.value.trim() === '?' ? unreadable : props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>

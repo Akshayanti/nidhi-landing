@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
@@ -40,7 +40,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -371,6 +371,7 @@ export default function InvestOrPayOff({
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root iop-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="iop-formHead">
@@ -582,6 +583,7 @@ export default function InvestOrPayOff({
 
       {report && !hasErrors && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
   );
@@ -769,6 +771,7 @@ function Field(props: {
   /** The id of fixed text elsewhere on the page that also describes this box. */
   alsoDescribedBy?: string;
 }) {
+  const unreadable = useContext(UnreadableContext);
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
   const describedBy = [props.error ? errorId : null, props.hint ? hintId : null, props.alsoDescribedBy ?? null].filter(Boolean).join(' ') || undefined;
@@ -793,7 +796,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.value.trim() === '?' ? unreadable : props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>
