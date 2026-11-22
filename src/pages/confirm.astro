@@ -153,7 +153,7 @@ const isDev = import.meta.env.DEV;
         // Delay redirect to let PostHog's async flush complete: without
         // this the navigation cancels the in-flight capture request.
         setTimeout(function () {
-          window.location.replace('/subscription-confirmed');
+          window.location.replace('/subscription-confirmed/');
         }, 300);
       });
     });
