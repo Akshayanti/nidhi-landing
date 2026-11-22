@@ -97,7 +97,7 @@ Where inflation is higher, mortgages at 8 to 9% can be normal and the bands move
   <title id="fig-debt-invest-title">Debt payoff versus investment return: where the crossover sits</title>
   <desc id="fig-debt-invest-desc">A horizontal number line from 0 to 25 percent, drawn to scale. A blue band from 0 to 4 percent labelled "investing usually wins". A pale band from 4 to 8 percent labelled "judgement call". An orange band from 8 percent onwards labelled "debt payoff usually wins". Example debts placed along the line: a mortgage at 3 percent in the blue band, a student loan at 5.5 percent and an auto loan at 6.5 percent in the judgement-call band, a personal loan at 12 percent and a credit card at 22 percent in the orange band.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">Where the crossover sits</text>
-  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">Illustrative bands for a low-inflation economy, assuming a share return of about 7% a year before inflation.</text>
+  <text class="fig-subtitle" x="360" y="68" text-anchor="middle"><tspan x="360" y="68">Illustrative bands for a low-inflation economy, </tspan><tspan x="360" y="90">assuming a share return of about 7% a year before inflation.</tspan></text>
   <line x1="80" y1="200" x2="680" y2="200" class="fig-stroke-muted" stroke-width="2" />
   <rect x="80" y="185" width="96" height="30" class="fig-fill-blue" opacity="0.18" />
   <rect x="176" y="185" width="96" height="30" class="fig-fill-warn" opacity="0.25" />
