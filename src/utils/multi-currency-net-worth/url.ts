@@ -43,8 +43,8 @@
  * indefinitely would erode the simplicity gain).
  */
 
-import type { AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
-import { concentrationShares } from './math.ts';
+import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
+import { aggregate, concentrationShares, isUnreadableAmount } from './math.ts';
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
@@ -71,7 +71,12 @@ export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
 const DEFAULT_ROW_COUNT = 2;
 /** How many blank rows the form opens with. Not part of the link format. */
 const START_ROW_COUNT = 1;
-const MAX_ROWS_FOR_URL = 50;
+/**
+ * The one limit of rows: the form, a CSV import, a link and the language
+ * switch (#794). Nothing is cut to it. What is over it is refused whole, and
+ * so is a list that arrives with fewer rows than it says.
+ */
+export const MAX_ROWS = 500;
 
 const DEFAULT_TYPE: AssetRow['type'] = 'asset';
 
@@ -102,6 +107,11 @@ export interface DecodeResult {
   shareMode: ShareMode | null;
   /** Reconstructed from URL params; avoids re-fetching rates for a shared view. */
   sharedPositions?: SharedPositionData[];
+  /**
+   * The list was not whole or was over MAX_ROWS, so none of it was loaded:
+   * a shared link, or the state a language switch carries.
+   */
+  refused?: 'link' | 'transfer';
 }
 
 // The codec uses DEFAULT_CURRENCY (imported from loan/math.ts so both free
@@ -225,8 +235,7 @@ export function encodeFullData(
 
   setNonDefault(params, 'n', nonEmpty.length, DEFAULT_ROW_COUNT);
 
-  const toEncode = nonEmpty.slice(0, MAX_ROWS_FOR_URL);
-  toEncode.forEach((row, i) => {
+  nonEmpty.forEach((row, i) => {
     const packed = encodeRow(row);
     if (packed !== '') params.set(`a${i + 1}`, packed);
   });
@@ -278,6 +287,26 @@ export function encodeShared(
     : encodeFull(rows, positions, functionalCurrency);
 }
 
+/**
+ * Why a redacted link cannot be made, and the first row to go to (#795):
+ * its shares would look like the whole list's. An amount that cannot be read
+ * comes before a missing rate.
+ */
+export function redactedRefusal(
+  rows: AssetRow[],
+  result: AggregationResult,
+): { reason: 'rows' | 'rates'; row: number; count: number } | null {
+  const unreadable = rows.filter((r) => isUnreadableAmount(r.value));
+  if (unreadable.length > 0) return { reason: 'rows', row: rows.indexOf(unreadable[0]), count: unreadable.length };
+  if (result.hasRates === 'full') return null;
+  const missing = new Set(
+    result.positions.filter((p) => (result.hasRates === 'none' ? !p.isFunctional : p.rateUnavailable)).map((p) => p.code),
+  );
+  if (missing.size === 0) return null;
+  const row = rows.findIndex((r) => r.value.trim() !== '' && missing.has(r.currency.toUpperCase()));
+  return { reason: 'rates', row: Math.max(0, row), count: missing.size };
+}
+
 function encodeFull(
   rows: AssetRow[],
   positions: CurrencyPosition[],
@@ -292,8 +321,7 @@ function encodeFull(
   const nonEmpty = rows.filter((r) => r.value.trim() !== '');
   setNonDefault(params, 'n', nonEmpty.length, DEFAULT_ROW_COUNT);
 
-  const toEncode = nonEmpty.slice(0, MAX_ROWS_FOR_URL);
-  toEncode.forEach((row, i) => {
+  nonEmpty.forEach((row, i) => {
     const packed = encodeRow(row);
     if (packed !== '') params.set(`a${i + 1}`, packed);
   });
@@ -346,6 +374,7 @@ export function decodeFromQueryString(qs: string): DecodeResult {
     };
   }
 
+  if (!rowsAreWhole(params)) return refusal(functionalCurrency, 'transfer');
   const rows = decodeAssetRows(params);
   return { rows, functionalCurrency, isReadOnly: false, shareMode: null };
 }
@@ -354,22 +383,37 @@ export function decodeFromQueryString(qs: string): DecodeResult {
 // Internal decode helpers
 // ---------------------------------------------------------------------------
 
-function decodeAssetRows(params: URLSearchParams): AssetRow[] {
-  // Resolve count: explicit `n` wins; otherwise scan for the highest-index
-  // populated tuple. Empty `aN` keys aren't valid (we only emit when the
-  // tuple is non-empty), so the marker is simply key presence.
-  let count = Number(params.get('n'));
-  if (!Number.isFinite(count) || count < 1) {
-    count = DEFAULT_ROW_COUNT;
-    for (let i = MAX_ROWS_FOR_URL; i > DEFAULT_ROW_COUNT; i--) {
-      if (params.has(`a${i}`)) {
-        count = i;
-        break;
-      }
-    }
-  }
-  count = Math.min(MAX_ROWS_FOR_URL, Math.max(1, Math.round(count)));
+/** How many rows a link says it holds, or null where the number is no count. */
+function declaredCount(params: URLSearchParams): number | null {
+  const n = params.get('n');
+  if (n !== null) return /^\d{1,9}$/.test(n) ? Number(n) : null;
+  // The writer leaves out a count of two. With no row either, none is claimed.
+  const present = [...params.keys()].filter((key) => /^a\d+$/.test(key)).length;
+  return present === 0 ? 0 : Math.max(DEFAULT_ROW_COUNT, present);
+}
 
+/** Whether every row the link says it holds is in it, and no other. */
+function rowsAreWhole(params: URLSearchParams): boolean {
+  const count = declaredCount(params);
+  if (count === null || count > MAX_ROWS) return false;
+  const keys = [...params.keys()].filter((key) => /^a\d+$/.test(key));
+  if (keys.length !== count) return false;
+  for (let i = 1; i <= count; i++) if (!params.has(`a${i}`)) return false;
+  return true;
+}
+
+function refusal(functionalCurrency: string, refused: 'link' | 'transfer'): DecodeResult {
+  return {
+    rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
+    functionalCurrency,
+    isReadOnly: false,
+    shareMode: null,
+    refused,
+  };
+}
+
+function decodeAssetRows(params: URLSearchParams): AssetRow[] {
+  const count = declaredCount(params) ?? 0;
   const rows: AssetRow[] = [];
   for (let i = 0; i < count; i++) {
     const packed = params.get(`a${i + 1}`);
@@ -394,8 +438,15 @@ function decodeAssetRows(params: URLSearchParams): AssetRow[] {
 
 function decodeFull(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
+  if (!rowsAreWhole(params)) return refusal(functionalCurrency, 'link');
   const rows = decodeAssetRows(params);
   const sharedPositions = decodePositions(params);
+  // The totals come last in a link, so a link cut short loses them first: one
+  // for each currency of the rows that can be read, or there is no total.
+  const totalled = new Set(sharedPositions.map((p) => p.code));
+  const needed = aggregate(rows, functionalCurrency, null).positions;
+  const nothingInIt = needed.length === 0 && !rows.some((r) => isUnreadableAmount(r.value)) && sharedPositions.length === 0;
+  if (nothingInIt || needed.some((p) => !totalled.has(p.code))) return refusal(functionalCurrency, 'link');
 
   return { rows, functionalCurrency, isReadOnly: true, shareMode: 'full', sharedPositions };
 }
@@ -403,6 +454,7 @@ function decodeFull(params: URLSearchParams): DecodeResult {
 function decodeRedacted(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
+  if (sharedPositions.length === 0) return refusal(functionalCurrency, 'link');
 
   return {
     rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
