@@ -335,7 +335,6 @@ export const inflationEn = {
       methodHistory: "Compounded year by year with each year's actual figure. History, not a forecast.",
       fix: 'Fix the highlighted fields to see the answer.',
       /** Shown, and announced, over a stale answer while a field is invalid. */
-      stale: 'This answer is out of date: fix the highlighted fields to update it.',
       /** Announced to screen readers after each recalculation. */
       announce: 'Updated answer: {headline}. {sentence}',
     },
@@ -633,7 +632,6 @@ export const inflationHi: typeof inflationEn = {
       method: 'साल में एक बार चक्रवृद्धि, हर साल एक ही दर पर। यह एक परिदृश्य है, पूर्वानुमान नहीं।',
       methodHistory: 'हर साल के दर्ज आँकड़े के साथ साल-दर-साल चक्रवृद्धि। यह इतिहास है, पूर्वानुमान नहीं।',
       fix: 'जवाब देखने के लिए चिह्नित खाने ठीक करें।',
-      stale: 'यह जवाब पुराना है: इसे अपडेट करने के लिए चिह्नित खाने ठीक करें।',
       announce: 'नया जवाब: {headline}। {sentence}',
     },
     chart: {
@@ -927,7 +925,6 @@ export const inflationEs: typeof inflationEn = {
       method: 'Capitalización una vez al año, a la misma tasa cada año. Un escenario, no una previsión.',
       methodHistory: 'Capitalización año a año con la cifra real de cada año. Historia, no una previsión.',
       fix: 'Corrige los campos marcados para ver la respuesta.',
-      stale: 'Esta respuesta está desactualizada: corrige los campos marcados para actualizarla.',
       announce: 'Respuesta actualizada: {headline}. {sentence}',
     },
     chart: {
@@ -1224,7 +1221,6 @@ export const inflationCs: typeof inflationEn = {
       method: 'Počítáno složeně jednou ročně, každý rok stejnou sazbou. Scénář, ne prognóza.',
       methodHistory: 'Počítáno rok po roku se skutečnou hodnotou za každý rok. Historie, ne prognóza.',
       fix: 'Opravte zvýrazněná pole a uvidíte odpověď.',
-      stale: 'Tato odpověď je zastaralá: opravte zvýrazněná pole a odpověď se aktualizuje.',
       announce: 'Aktualizovaná odpověď: {headline}. {sentence}',
     },
     chart: {
@@ -1513,7 +1509,6 @@ export const inflationMr: typeof inflationEn = {
       method: 'वर्षातून एकदा, प्रत्येक वर्षी त्याच दराने चक्रवाढ. एक परिदृश्य, भाकीत नाही.',
       methodHistory: 'प्रत्येक वर्षाच्या प्रत्यक्ष आकड्याने वर्षानुवर्षे चक्रवाढ. इतिहास, भाकीत नाही.',
       fix: 'उत्तर पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
-      stale: 'हे उत्तर जुने झाले आहे: ते अपडेट करण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       announce: 'अपडेट झालेले उत्तर: {headline}. {sentence}',
     },
     chart: {

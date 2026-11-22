@@ -32,7 +32,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, WITHHELD_SAID_AFTER, Withheld } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -474,7 +474,7 @@ export default function MonteCarloSimulator({
           <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
         </fieldset>
 
-        <QuickResult result={worded} state={shownState} busy={pending} strings={strings} />
+        <QuickResult result={worded} state={shownState} busy={pending} withheld={hasErrors} strings={strings} />
         {/* Phones only. A button, not a link: nothing is written to the address. */}
         <p className="mcs-jump">
           <button
@@ -575,12 +575,10 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
+          {hasErrors && <span className="mcs-hint">{strings.actions.fix}</span>}
+          <ResultAnnouncement text={hasErrors ? strings.actions.fix : ''} delay={WITHHELD_SAID_AFTER} />
           <span className="mcs-hint" role="status" aria-live="polite">
-            {hasErrors
-              ? strings.actions.fix
-              : running
-                ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) })
-                : ''}
+            {!hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : ''}
           </span>
         </div>
       </form>
@@ -591,6 +589,7 @@ export default function MonteCarloSimulator({
         state={shownState}
         code={shownState.currency}
         busy={running}
+        withheld={hasErrors ? { title: exportStrings.report.answer, reason: strings.actions.fix } : null}
         strings={strings}
         actions={
           <ToolExport
@@ -609,7 +608,7 @@ export default function MonteCarloSimulator({
         }
       />
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />
+      {!hasErrors && <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />}
     </div>
     </ErrorLeadContext.Provider>
     </NumberLocaleContext.Provider>
@@ -666,7 +665,7 @@ function NumberField(props: {
  * answers as you type instead of sitting below the whole form. The full
  * results below say the same, so screen readers skip this copy.
  */
-function QuickResult({ result, state, busy, strings }: { result: SimulationResult; state: ToolState; busy: boolean; strings: Strings }) {
+function QuickResult({ result, state, busy, withheld, strings }: { result: SimulationResult; state: ToolState; busy: boolean; withheld: boolean; strings: Strings }) {
   const { formatAmount, amountLocale } = useMoney();
   const code = state.currency;
   const r = result.atRetirement;
@@ -674,7 +673,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   const lasted = state.withdrawal > 0 ? result.lasted : null;
   if (!saving && lasted === null) return null;
   return (
-    <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}`} aria-hidden="true">
+    <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}${withheld ? ' tool-withheld' : ''}`} aria-hidden="true">
       {saving && (
         <>
           <span className="mcs-quickTitle">
@@ -697,7 +696,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   );
 }
 
-function Results({ result, exact, state, code, busy, strings, actions }: { result: SimulationResult; exact: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
+function Results({ result, exact, state, code, busy, withheld, strings, actions }: { withheld: { title: string; reason: string } | null; result: SimulationResult; exact: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
   const { formatAmount, amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   const r = result.atRetirement;
@@ -709,12 +708,16 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
   return (
     <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
       <h2 id="mcs-results-h" className="mcs-resultsTitle" tabIndex={-1}>
-        {saving
-          ? state.saveYears === 1
-            ? strings.results.headingOne
-            : t(strings.results.headingOther, { years: state.saveYears })
-          : strings.results.headingToday}
+        {/* The heading names the years, so it is a result too. */}
+        {withheld
+          ? withheld.title
+          : saving
+            ? state.saveYears === 1
+              ? strings.results.headingOne
+              : t(strings.results.headingOther, { years: state.saveYears })
+            : strings.results.headingToday}
       </h2>
+      <Withheld reason={withheld?.reason ?? null}>
 
       {saving && (
         <>
@@ -824,6 +827,7 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
           </table>
         </div>
       </details>}
+      </Withheld>
 
       {actions}
     </section>

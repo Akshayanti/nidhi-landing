@@ -109,3 +109,22 @@ export function NoticeRegion({ notice }: { notice: Notice }) {
   useNotice(notice, setSaid);
   return <span className="chart-srOnly" role="status" aria-atomic="true">{said}</span>;
 }
+
+/** How long after typing pauses a screen reader hears why there is no result. */
+export const WITHHELD_SAID_AFTER = 1000;
+
+/**
+ * A tool's results, or the reason there are none. While a box is wrong every
+ * result that depends on it goes at once, from the screen, from paper and
+ * from assistive technology, and the reason takes its place (#793). The
+ * space stays, so the box being typed in does not move. The reason is not a
+ * live region: the tool announces it once, after `WITHHELD_SAID_AFTER`.
+ */
+export function Withheld({ reason, children }: { reason: string | null; children: React.ReactNode }) {
+  return (
+    <div className="tool-result">
+      <div className={`tool-resultBody${reason ? ' tool-withheld' : ''}`} inert={Boolean(reason)}>{children}</div>
+      {reason && <p className="tool-resultReason">{reason}</p>}
+    </div>
+  );
+}

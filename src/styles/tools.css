@@ -4341,9 +4341,45 @@ button.mcnw-legendItem:focus-visible {
   color: var(--color-deep-blue);
   margin: 0;
 }
-.ifc-results--stale .ifc-answer,
-.ifc-results--stale .ifc-figure {
-  opacity: 0.45;
+/* A tool's results, and the reason in their place while a box is wrong
+   (Withheld in toolShared.tsx). Both share one cell, so the space is the
+   results' own, and grows only where the reason needs more. */
+.tool-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: inherit;
+}
+.tool-result > * {
+  grid-area: 1 / 1;
+}
+.tool-resultBody {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  min-width: 0;
+}
+/* Every descendant: one that sets its own visibility would show through. */
+.tool-withheld,
+.tool-withheld * {
+  visibility: hidden !important;
+}
+.tool-resultReason {
+  align-self: start;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--color-danger);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-ui);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  overflow-wrap: break-word;
+}
+@media print {
+  .tool-withheld {
+    display: none !important;
+  }
 }
 .ifc-srOnly {
   position: absolute;
@@ -4355,16 +4391,6 @@ button.mcnw-legendItem:focus-visible {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-.ifc-staleNote {
-  margin: 0;
-  padding: var(--space-2) var(--space-3);
-  border-left: 4px solid var(--color-danger);
-  background: var(--color-bg);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-ui);
-  line-height: 1.5;
-  color: var(--color-text-primary);
 }
 .ifc-resultBody {
   display: flex;

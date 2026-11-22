@@ -40,7 +40,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, WITHHELD_SAID_AFTER, Withheld } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -527,9 +527,10 @@ export default function InvestOrPayOff({
         <p className="ifc-hint iop-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
-      {/* The one announcement: the settled answer, or why the answer on screen
-          is an old one. The results below are not a live region. */}
+      {/* The one announcement: the settled answer, or why there is none.
+          The results below are not a live region. */}
       <ResultAnnouncement
+        delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix
           : inflation === null
@@ -539,8 +540,9 @@ export default function InvestOrPayOff({
               : shownNow ? `${shownNow.lines[1]} ${shownNow.lines[0]} ${shownNow.lines[2]}` : ''}
       />
 
-      <section className={`ifc-results iop-results${hasErrors ? ' ifc-results--stale' : ''}`} aria-labelledby={id('results')}>
+      <section className="ifc-results iop-results" aria-labelledby={id('results')}>
         <h2 id={id('results')} className="ifc-resultsTitle">{strings.results.heading}</h2>
+        <Withheld reason={hasErrors ? strings.results.fix : null}>
         {inflation === null && <p className="iop-note">{strings.country.needed}</p>}
         {problem && <p className="iop-note">{t(strings.problems[problem], { years: MAX_MONTHS / 12 })}</p>}
         {computed && (
@@ -558,6 +560,7 @@ export default function InvestOrPayOff({
             basisName={id('basis')}
           />
         )}
+        </Withheld>
       </section>
 
       <ToolExport
@@ -577,7 +580,7 @@ export default function InvestOrPayOff({
         onPrint={printPage}
       />
 
-      {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
+      {report && !hasErrors && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>

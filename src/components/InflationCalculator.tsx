@@ -49,7 +49,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -616,15 +616,15 @@ export default function InflationCalculator({
           />
         </div>
 
-        {/* Visible under the form; the live announcement is the one over the
-            stale answer, so it is not said twice. */}
+        {/* Visible under the form; the live announcement is the one in the
+            results, so it is not said twice. */}
         <p className="ifc-hint ifc-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
       <Results
         strings={strings}
         state={settled}
-        stale={hasErrors}
+        withheld={hasErrors}
         country={settled.country ? countryByCode.get(settled.country) ?? null : null}
         series={seriesFor(settled.country)}
         historyStatus={historyState(settled.country)}
@@ -646,7 +646,7 @@ export default function InflationCalculator({
         onPrint={printPage}
       />
 
-      {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
+      {report && !hasErrors && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
@@ -1134,7 +1134,7 @@ function computeAnswer(
 function Results({
   strings,
   state,
-  stale,
+  withheld,
   country,
   series,
   historyStatus,
@@ -1143,7 +1143,7 @@ function Results({
 }: {
   strings: Strings;
   state: ToolState;
-  stale: boolean;
+  withheld: boolean;
   country: CountryOption | null;
   series: Series | null;
   historyStatus: 'none' | 'loading' | 'ready' | 'error';
@@ -1166,16 +1166,15 @@ function Results({
   }, [state, historyStatus]);
 
   return (
-    <section className={`ifc-results${stale ? ' ifc-results--stale' : ''}`} aria-labelledby="ifc-results-h">
+    <section className="ifc-results" aria-labelledby="ifc-results-h">
       <h2 id="ifc-results-h" className="ifc-resultsTitle">{strings.results.heading}</h2>
-      <span className="ifc-srOnly" aria-live="polite">{stale ? '' : announcement}</span>
-      {/* While a field is invalid the answer below is the previous one: it is
-          dimmed, hidden from assistive technology, and this says why. */}
-      {stale && <p className="ifc-staleNote" role="status" aria-live="polite">{strings.results.stale}</p>}
+      <span className="ifc-srOnly" aria-live="polite">{withheld ? '' : announcement}</span>
+      <ResultAnnouncement text={withheld ? strings.results.fix : ''} delay={WITHHELD_SAID_AFTER} />
+      <Withheld reason={withheld ? strings.results.fix : null}>
       {result === 'loading' ? (
         <p className="ifc-note" role="status">{strings.history.loading}</p>
       ) : (
-        <div className="ifc-resultBody" aria-hidden={stale || undefined}>
+        <div className="ifc-resultBody">
           <div className="ifc-answer">
             <p className="ifc-headline"><Amounts>{result.headline}</Amounts></p>
             {result.sentences.map((s, i) => (
@@ -1206,6 +1205,7 @@ function Results({
           />
         </div>
       )}
+      </Withheld>
     </section>
   );
 }
