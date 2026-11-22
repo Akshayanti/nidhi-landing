@@ -25,6 +25,7 @@ import {
 } from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/monte-carlo/url.ts';
 import { formErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
+import { tooLongForLink } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
@@ -670,7 +671,7 @@ function NumberField(props: {
         aria-invalid={props.invalid || undefined}
         aria-describedby={described || undefined}
       />
-      {showError && <span className="ifc-error" id={errorId}><ErrorText>{arrived ? unreadable : props.error ?? ''}</ErrorText></span>}
+      {showError && <span className="ifc-error" id={errorId}><ErrorText>{arrived || tooLongForLink(props.value) ? unreadable : props.error ?? ''}</ErrorText></span>}
       {props.hint && <span className="mcs-hint" id={hintId}>{props.hint}</span>}
     </div>
   );

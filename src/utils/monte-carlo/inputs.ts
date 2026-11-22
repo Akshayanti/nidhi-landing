@@ -13,8 +13,15 @@ import { plainDigits } from '../shared/parseLocaleNumber.ts';
 export function isValidNumber(v: string, min: number, max: number, whole = false): boolean {
   if (v.trim() === '') return false;
   const n = Number(v);
-  // A link carries a number of 200 characters at most: a longer one arrived
-  // as unreadable, or as zero when it was too small to be a number, so it is
-  // refused here, where it is typed (#789).
-  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n)) && v.trim().length <= 200 && plainDigits(n).length <= 200;
+  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n)) && !tooLongForLink(v);
+}
+
+/**
+ * A link carries a number of 200 characters at most: a longer one arrived
+ * as unreadable, or as zero when it was too small to be a number, so it is
+ * refused where it is typed, and said to be unreadable there (#789).
+ */
+export function tooLongForLink(v: string): boolean {
+  const n = Number(v);
+  return v.trim().length > 200 || (Number.isFinite(n) && plainDigits(n).length > 200);
 }

@@ -8,7 +8,7 @@
  */
 import { boxValue, readBoxes, withBoxes } from '../shared/formBoxes.ts';
 import { UNREADABLE } from '../shared/linkInput.ts';
-import { isValidNumber } from './inputs.ts';
+import { isValidNumber, tooLongForLink } from './inputs.ts';
 import { MAX_FEE_PCT, MAX_MONTHLY, MAX_START, MAX_WITHDRAWAL, type ReturnSetting } from './math.ts';
 import { DEFAULTS, decodeState, encodeState, publishableState, type ToolState } from './url.ts';
 
@@ -118,7 +118,7 @@ export function publishableForm(f: FormState, pageCurrency: string): string {
   const valid = { ...f };
   for (const field of bad) valid[field] = String(field === 'withdrawal' ? DEFAULT_WITHDRAWAL : DEFAULTS[field]);
   // A box refused for its length goes as the marker: written shorter, it would arrive valid.
-  const box = (field: BoxField) => (f[field].trim().length > 200 ? UNREADABLE : boxValue(f[field], 'en'));
+  const box = (field: BoxField) => (tooLongForLink(f[field]) ? UNREADABLE : boxValue(f[field], 'en'));
   const boxes: Record<string, string> = Object.fromEntries(carried.map((field) => [BOX_KEYS[field], box(field)]));
   if (!f.withdrawOn && boxes[BOX_KEYS.withdrawal] !== undefined) boxes[OFF_KEY] = '1';
   return withBoxes(encodeState(toState(valid)), boxes);

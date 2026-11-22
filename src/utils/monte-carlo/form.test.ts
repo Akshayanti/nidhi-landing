@@ -197,3 +197,21 @@ describe('a number too long for a link is invalid where it is typed (#789)', () 
     assert.equal(Number(formFromLink(publishableForm(form, 'EUR'))!.start), Number(fits));
   });
 });
+
+describe('a box refused for its length says it cannot be read (#789)', () => {
+  it('tooLongForLink names exactly the boxes refused for their length', async () => {
+    const { tooLongForLink } = await import('./inputs.ts');
+    assert.equal(tooLongForLink(`0.${'0'.repeat(197)}1`), false);
+    assert.equal(tooLongForLink(`0.${'0'.repeat(198)}1`), true);
+    assert.equal(tooLongForLink(`0.${'0'.repeat(400)}1`), true);
+    assert.equal(tooLongForLink(`0.1${'0'.repeat(198)}`), true);
+    assert.equal(tooLongForLink('1e-250'), true);
+    assert.equal(tooLongForLink('2000000'), false);
+    assert.equal(tooLongForLink(''), false);
+  });
+  it('such a box shows the unreadable words, not the range', async () => {
+    const { readFileSync } = await import('node:fs');
+    const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
+    assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : props\.error/);
+  });
+});
