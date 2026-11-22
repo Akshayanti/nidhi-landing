@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, afterRun, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -90,14 +90,14 @@ const JOBS = Math.max(1, Number(many('--jobs')[0]) || 3);
 // scripts/lib/tool-privacy-checks.test.mjs: this script runs under plain node.
 export const LOCALE_CODES = ['en', 'hi', 'es', 'cs', 'mr'];
 
-const [A1, A2, A3] = AMOUNTS;
+const [A1, , A3] = AMOUNTS;
 const [N1, N2] = NAMES;
 
 /**
- * Each tool: where its sentinel values go, and what to do that is its own.
- * `fields` are filled in order; `{ all: true }` fills every match (each offer,
- * each row), otherwise the first. `addRow` is a button pressed before a
- * field is filled, for a value that needs a row the form does not open with. Everything else is found on the page.
+ * Each tool: what to do that is its own. The values typed into its boxes are
+ * in BOXES (scripts/lib/tool-privacy-checks.mjs), and filled in that order;
+ * `all` fills every match (each offer, each row). Everything else is found on
+ * the page.
  *
  * `removeNamedRow` adds a row, names it with the second name and removes it
  * with its own remove button: the click that sent a typed name in Oct 2026.
@@ -112,12 +112,6 @@ const [N1, N2] = NAMES;
 const TOOLS = {
   'loan-comparison': {
     global: '__nidhiLoanCompareShared',
-    fields: [
-      { selector: 'input[id$="-name"]', value: N1, all: true },
-      { selector: 'input[id$="-principal"]', value: A1, all: true },
-      { selector: 'input[id$="-fee"]', value: A2 },
-      { selector: 'input[id$="-extra"]', value: A3 },
-    ],
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="lc-vendor-add"]', '[data-attr="lc-vendor-remove"]', []),
     ownEvents: /^free_loan_comparison_/,
     mustSend: ['vendor_added', 'vendor_removed', 'details_toggled', 'tab_changed', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
@@ -125,12 +119,6 @@ const TOOLS = {
   },
   'multi-currency-net-worth': {
     global: '__nidhiNetWorthShared',
-    fields: [
-      { selector: 'input[id$="-name"]', value: N1 },
-      { selector: 'input[id$="-value"]', value: A1 },
-      // The form opens with one row, so the second amount gets a row of its own.
-      { selector: 'input[id$="-value"]', value: A2, last: true, addRow: '[data-attr="mcnw-asset-add"]' },
-    ],
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="mcnw-asset-add"]', '[data-attr="mcnw-asset-remove"]', [['input[id$="-value"]', A3]]),
     ownEvents: /^free_multi_currency_net_worth_/,
     mustSend: ['asset_added', 'asset_removed', 'csv_downloaded', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
@@ -140,28 +128,18 @@ const TOOLS = {
   },
   'monte-carlo-simulator': {
     global: '__nidhiMonteCarloShared',
-    fields: [
-      { selector: 'input.mcs-input', value: A1 },
-      { selector: 'input.mcs-input', value: A2, nth: 1 },
-    ],
     ownEvents: /^free_monte_carlo_/,
     mustSend: ['currency_changed', 'withdrawal_toggled', 'table_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
   },
   'inflation-calculator': {
     global: '__nidhiInflationShared',
-    fields: [{ selector: 'input[id$="-amount"]', value: A1 }],
     ownEvents: /^free_inflation_/,
     mustSend: ['mode_changed', 'currency_changed', 'country_changed', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
   },
   'invest-or-pay-off': {
     global: '__nidhiInvestOrPayOffShared',
-    fields: [
-      { selector: 'input[id$="-balance"]', value: A1 },
-      { selector: 'input[id$="-payment"]', value: A2 },
-      { selector: 'input[id$="-extra"]', value: A3 },
-    ],
     ownEvents: /^free_invest_or_pay_off_/,
     mustSend: ['calculated', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
@@ -342,7 +320,8 @@ async function watch(page, requests, problems, note) {
     // itself opens to try an old ?-style link, by its exact address.
     // The part after the # is left out: a browser keeps it and sends it to no one.
     if (!note.opening.has(req.url())) {
-      const leaks = findLeaks(`${req.url().split('#')[0]} ${posthog ? '' : req.postData() || ''}`);
+      const sentTo = req.url().split('#')[0];
+      const leaks = [...findLeaks(`${sentTo} ${posthog ? '' : req.postData() || ''}`), ...shortInAddress(sentTo)];
       if (leaks.length) problems.push(`a ${req.isNavigationRequest() ? 'page load' : 'request'} to ${url.hostname}${url.pathname} carries what was typed in its address${posthog ? '' : ' or body'}: ${leaks.join(', ')}`);
     }
 
@@ -528,32 +507,78 @@ async function click(page, selector, where = {}) {
  * nothing after it would be exercised.
  */
 async function fill(page, selector, value, where = {}) {
-  let el = await choose(page, selector, where);
-  if (!el) {
-    // Open every closed section that holds a match, then look again.
-    for (const hidden of await page.$$(selector)) {
-      const summary = await hidden.evaluateHandle((node) => {
-        const details = node.closest('details:not([open])');
-        return details ? details.querySelector(':scope > summary') : null;
-      });
-      const asElement = summary.asElement();
-      if (asElement) { await press(page, asElement); await sleep(200); }
-    }
-    el = await choose(page, selector, where);
-  }
+  const el = await reach(page, selector, where);
   if (!el) throw new Error(`no visible field for ${selector}`);
   // A field under an adornment (a currency sign, say) is reached with the keyboard instead.
   if (!(await press(page, el))) await el.focus();
   // Select what is there, so that typing replaces it.
-  const focused = await el.evaluate((node) => { node.focus(); if (typeof node.select === 'function') node.select(); return document.activeElement === node; });
+  const focused = await el.evaluate((node) => { node.focus(); if (node.type !== 'range' && typeof node.select === 'function') node.select(); return document.activeElement === node; });
   if (!focused) throw new Error(`the field for ${selector} could not take the focus`);
-  await page.keyboard.type(String(value), { delay: 5 });
-  const held = await el.evaluate((node) => node.value);
-  // Grouping marks a field adds as it formats are not a difference.
-  const bare = (v) => String(v).replace(/[\s.,'  ]/g, '');
-  if (bare(held) !== bare(value)) throw new Error(`the field for ${selector} holds "${held}" after "${value}" was typed`);
+  const locale = page.nidhiLocale;
+  if (where.steps === undefined) {
+    await page.keyboard.type(typedAs(value, locale), { delay: 5 });
+  } else {
+    await page.keyboard.press('Home');
+    for (let i = 0; i < where.steps; i++) await page.keyboard.press('ArrowRight');
+  }
+  const box = await el.evaluate(boxKey);
   await page.keyboard.press('Tab');
   await sleep(150);
+  // Read once the field has been left: that is when a box tidies or refuses what it was given.
+  const now = await el.evaluate((node) => ({ held: node.value, invalid: node.getAttribute('aria-invalid') === 'true' }));
+  if (!sameTyped(now.held, value, locale)) throw new Error(`the field for ${selector} holds "${now.held}" after "${value}" was typed`);
+  if (now.invalid) throw new Error(`the field for ${selector} refused "${value}", so what it sends was not checked`);
+  return box;
+}
+
+/** The visible match, after opening every closed section that holds one. */
+async function reach(page, selector, where = {}) {
+  const el = await choose(page, selector, where);
+  if (el) return el;
+  for (const hidden of await page.$$(selector)) {
+    const summary = await hidden.evaluateHandle((node) => {
+      const details = node.closest('details:not([open])');
+      return details ? details.querySelector(':scope > summary') : null;
+    });
+    const asElement = summary.asElement();
+    if (asElement) { await press(page, asElement); await sleep(200); }
+  }
+  return choose(page, selector, where);
+}
+
+/** Presses what shows a box: a tab, or a choice. */
+async function reveal(page, selector, note) {
+  const el = (await reach(page, selector)) || (await page.$(selector));
+  if (!el) throw new Error(`nothing matches ${selector}, which shows a box`);
+  if (!(await press(page, el))) {
+    await el.evaluate((node) => node.click());
+    note.unreachable.add(selector);
+  }
+  await sleep(250);
+}
+
+/**
+ * Runs in the page: a name for one box that holds through redraws and is the
+ * same for every offer or row. The suffix of its id where it has one, a
+ * slider's class, otherwise its label without amounts and units.
+ */
+function boxKey(node) {
+  const suffix = /^_[^-]*_-(.+)$/.exec(node.id);
+  if (suffix) return suffix[1];
+  if (node.type === 'range') return node.className;
+  const label = node.labels?.[0]?.textContent || node.getAttribute('aria-label') || node.className;
+  return label.replace(/\([^)]*\)|\d+/g, '').trim();
+}
+
+/** Notes every box on the page now, in a closed section too. */
+async function noteBoxes(page, note) {
+  const found = await page.$$('astro-island input, astro-island textarea, astro-island [contenteditable="true"]');
+  for (const el of found) {
+    const editable = await el.evaluate((node) => !node.readOnly && !['radio', 'checkbox', 'file', 'button', 'submit', 'hidden'].includes(node.type)).catch(() => false);
+    if (!editable) continue;
+    const key = await el.evaluate(boxKey).catch(() => null);
+    if (key !== null) note.shown.add(key);
+  }
 }
 
 async function waitForTool(page) {
@@ -633,6 +658,7 @@ async function makeChoices(page, note) {
     for (const el of await visible(page, selector)) {
       await press(page, el);
       await sleep(120);
+      await noteBoxes(page, note);
     }
   }
   await sleep(400);
@@ -646,14 +672,19 @@ async function useTool(page, tool, note, downloads, sent) {
 
   // Type the distinctive values.
   note.step = 'typing values';
-  for (const f of tool.fields) {
+  await noteBoxes(page, note);
+  for (const f of tool.boxes) {
+    note.step = `typing into ${f.name}`;
+    if (f.reveal && !(await choose(page, f.selector, f))) { await reveal(page, f.reveal, note); await noteBoxes(page, note); }
     if (f.all) {
       const n = (await visible(page, f.selector)).length;
-      for (let i = 0; i < n; i++) await fill(page, f.selector, f.value, { nth: i });
+      if (!n) throw new Error(`no visible field for ${f.selector}`);
+      for (let i = 0; i < n; i++) note.typed.add(await fill(page, f.selector, f.value, { nth: i }));
     } else {
       if (f.addRow && !(await click(page, f.addRow))) failed.push(`the row for a second amount could not be added (${f.addRow})`);
-      await fill(page, f.selector, f.value, f);
+      note.typed.add(await fill(page, f.selector, f.value, f));
     }
+    if (f.after) await reveal(page, f.after, note);
   }
   if (tool.removeNamedRow) {
     note.step = 'adding and removing a named row';
@@ -764,6 +795,8 @@ async function useTool(page, tool, note, downloads, sent) {
   }
   if (!(await page.evaluate(() => window.__printed || 0))) failed.push('the print dialog was never asked for: the PDF export did not run');
   note.saved = saved.length;
+  await noteBoxes(page, note);
+  failed.push(...uncoveredBoxes(note.shown, note.typed));
   return { resets, failed };
 }
 
@@ -772,7 +805,7 @@ async function useTool(page, tool, note, downloads, sent) {
 // ---------------------------------------------------------------------------
 
 async function run(browser, base, { slug, locale, viewport, consent }) {
-  const tool = TOOLS[slug];
+  const tool = { ...TOOLS[slug], boxes: BOXES[slug] };
   const prefix = locale === 'en' ? '' : `/${locale}`;
   const path = `${prefix}/free/${slug}/`;
   const requests = [];
@@ -780,7 +813,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   // `phase` names the part of the run a request belongs to: using the tool,
   // the # share link, the language switch, the old ? link. `opening` holds
   // the addresses the check itself is loading.
-  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), opening: new Set(), parts: new Set() };
+  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), shown: new Set(), typed: new Set(), opening: new Set(), parts: new Set() };
   const context = await browser.createBrowserContext();
   const downloads = mkdtempSync(join(tmpdir(), 'nidhi-privacy-'));
   let page;
@@ -791,6 +824,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     note.leaving = false;
     page = await context.newPage();
     page.nidhiNote = note;
+    page.nidhiLocale = locale;
     await page.setViewport(VIEWPORTS[viewport]);
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36');
     await watch(page, requests, problems, note);
@@ -809,13 +843,14 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     note.opening.delete(base + address);
     await waitForTool(page);
     if (PLANT) {
-      // One leak through analytics, one through an image on the site's own server.
-      await page.evaluate((amount) => {
-        window.posthog.capture('free_planted_leak', { amount });
+      // One leak through analytics, holding the value of every box, and one
+      // through an image on the site's own server.
+      await page.evaluate((amount, values) => {
+        window.posthog.capture('free_planted_leak', { amount, values });
         const img = document.createElement('img');
         img.src = `/?planted=${amount}`;
         document.body.appendChild(img);
-      }, A1);
+      }, A1, tool.boxes.map((box) => String(box.value)));
     }
   };
   // The page's last events go out as it unloads, while the abort still applies.
@@ -964,7 +999,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     });
     result.problems.unshift(...problems);
     result.problems = [...new Set(result.problems)];
-    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
+    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], shown: [...note.shown], typed: [...note.typed], parts: [...note.parts], opening: undefined };
     if (DUMP) {
       mkdirSync(DUMP, { recursive: true });
       writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
@@ -1060,7 +1095,9 @@ async function worker() {
     // Both planted leaks are found, the event sent to PostHog and the image
     // asked of the site's own server, and nothing else is wrong with the run.
     const leaks = result.problems.filter((p) => p.includes('carries what was typed'));
-    const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length;
+    const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length
+      // Every box's value was recognised, not only the amount.
+      && expectedLeaks(BOXES[job.slug]).every((value) => leaks.some((p) => p.split(': ').pop().split(', ').includes(value)));
     const ok = PLANT ? caught : result.problems.length === 0;
     done++;
     if (!ok) failed++;

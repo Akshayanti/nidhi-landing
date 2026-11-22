@@ -8,9 +8,161 @@ export const TEST_KEY = 'phc_local_test_build_not_a_real_key';
 
 // Distinctive values typed into the tools. Seven digits each, so a match in a
 // payload is not chance, and none is a prefix of another.
-export const AMOUNTS = [7131719, 8173391, 9377113];
+export const AMOUNTS = [7131719, 8173391, 9377113, 6241507, 5318263, 4429183, 3652141];
 // Distinctive names for a loan offer or an asset.
 export const NAMES = ['Zqxvora Bank', 'Wjkpelt Flat'];
+
+/**
+ * Every box a reader can type in or slide, tool by tool, in the order the
+ * check fills them, with a value of its own. A run fails on a box that was
+ * shown and is not here (uncoveredBoxes).
+ *
+ * An amount has seven digits and a rate two decimals, so either is looked for
+ * in everything sent. Years and months are short: they are looked for where
+ * an event or an address holds values (shortLeaks), and are above any count
+ * of rows, offers or tabs the tools send.
+ *
+ * `reveal` is pressed first, where the box is not showing, and `after` last; `addRow` adds the row a value
+ * needs; `steps` moves a slider that many keys from its lowest value.
+ */
+export const BOXES = {
+  'loan-comparison': [
+    { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0], all: true },
+    { name: 'principal', selector: 'input[id$="-principal"]', value: AMOUNTS[0], all: true },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.31' },
+    { name: 'term', selector: 'input[id$="-term"]', value: '347' },
+    { name: 'fee', selector: 'input[id$="-fee"]', value: AMOUNTS[1] },
+    { name: 'points cost', selector: 'input[id$="-pointsCost"]', value: AMOUNTS[3] },
+    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.13' },
+    { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2] },
+    { name: 'lump sums', selector: 'input[id$="-lumpSums"]', value: `23:${AMOUNTS[4]}` },
+    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.71' },
+    { name: 'penalty until', selector: 'input[id$="-prepayUntil"]', value: '29' },
+    // Before the hybrid rate: a payment is refused beside one.
+    { name: 'monthly payment', selector: 'input[id$="-monthly"]', value: AMOUNTS[5], reveal: 'input[type="radio"][value="payment"]', after: 'input[type="radio"][value="term"]' },
+    { name: 'fixed months', selector: 'input[id$="-initialFixedMonths"]', value: '59', reveal: 'input[type="radio"][value="hybrid"]' },
+    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.19' },
+    { name: 'horizon slider', selector: 'input.lc-horizonSlider', value: '61', steps: 60, reveal: '[data-attr="lc-tab-horizon"]' },
+    { name: 'horizon', selector: 'input.lc-horizonInput', value: '67' },
+    { name: 'refinance month', selector: '.lc-refiInputs input.lc-input', value: '41', reveal: '[data-attr="lc-tab-refi"]' },
+    { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.93' },
+    { name: 'new term', selector: '.lc-refiInputs input.lc-input', nth: 2, value: '293' },
+    { name: 'new costs', selector: '.lc-refiInputs input.lc-input', nth: 3, value: AMOUNTS[6] },
+  ],
+  'multi-currency-net-worth': [
+    { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0] },
+    { name: 'value', selector: 'input[id$="-value"]', value: AMOUNTS[0] },
+    // The form opens with one row, so the second amount gets a row of its own.
+    { name: 'second value', selector: 'input[id$="-value"]', value: AMOUNTS[1], last: true, addRow: '[data-attr="mcnw-asset-add"]' },
+  ],
+  'monte-carlo-simulator': [
+    { name: 'start', selector: 'input.mcs-input', value: AMOUNTS[0] },
+    { name: 'monthly', selector: 'input.mcs-input', nth: 1, value: AMOUNTS[1] },
+    { name: 'years of saving', selector: 'input.mcs-input', nth: 2, value: '37' },
+    { name: 'mix', selector: 'input.mcs-range', value: '65', steps: 13 },
+    // Before withdrawals are on: their boxes come after it on the page.
+    { name: 'fee', selector: 'input.mcs-input', nth: 3, value: '1.83', reveal: 'button.mcs-settingsToggle' },
+    { name: 'withdrawal', selector: 'input.mcs-input', nth: 4, value: AMOUNTS[2], reveal: 'astro-island input[type="checkbox"]' },
+    { name: 'years of withdrawals', selector: 'input.mcs-input', nth: 5, value: '43' },
+  ],
+  'inflation-calculator': [
+    { name: 'amount', selector: 'input[id$="-amount"]', value: AMOUNTS[0] },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '4.37' },
+    { name: 'years', selector: 'input[id$="-years"]', value: '47' },
+    { name: 'growth', selector: 'input[id$="-growth"]', value: '8.63', reveal: '[data-attr="free-inflation-tab-keep"]' },
+  ],
+  'invest-or-pay-off': [
+    { name: 'balance', selector: 'input[id$="-balance"]', value: AMOUNTS[0] },
+    { name: 'debt rate', selector: 'input[id$="-debtRate"]', value: '7.31' },
+    { name: 'payment', selector: 'input[id$="-payment"]', value: AMOUNTS[1] },
+    { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2] },
+    { name: 'inflation', selector: 'input[id$="-inflation"]', value: '3.79' },
+    { name: 'relief', selector: 'input[id$="-relief"]', value: '13.47' },
+    { name: 'fee', selector: 'input[id$="-feePct"]', value: '1.83' },
+    { name: 'tax on gains', selector: 'input[id$="-gainsTax"]', value: '17.29' },
+    { name: 'own return', selector: 'input[id$="-ownReturn"]', value: '8.63', reveal: 'input[type="radio"][value="own"]' },
+  ],
+};
+
+/** What finding each of a tool's values is reported as. */
+export function expectedLeaks(boxes) {
+  return boxes.flatMap((box) => {
+    const value = String(box.value);
+    return NAMES.includes(value) ? [value.toLowerCase().split(' ')[0]] : value.split(':');
+  });
+}
+
+const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
+// A value that stands by itself: no digit, letter or decimal part joined to it.
+const RATES = PROBES.filter((p) => /^\d+\.\d+$/.test(p))
+  .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '[.,]')}(?!\\w|[.,]\\d)`)]);
+const SHORT = PROBES.filter((p) => /^\d{1,3}$/.test(p))
+  .map((p) => [p, new RegExp(`(?<![\\w.,-])${p}(?![\\w-]|[.,]\\d)`)]);
+
+/** The short values in `text`. */
+function shortIn(text) {
+  const plain = variants(text);
+  return SHORT.filter(([, pattern]) => pattern.test(plain)).map(([value]) => value);
+}
+
+/** The short values in what follows the ? or the # of an address. */
+export function shortInAddress(address) {
+  const from = String(address).search(/[?#]/);
+  return from < 0 ? [] : shortIn(String(address).slice(from));
+}
+
+/**
+ * The short values in one event: in any property of the site's own (a name
+ * that does not start with $), and in any address. PostHog's own measurements
+ * (a window's size, a time, a version) hold small numbers all the time, and
+ * are not read.
+ */
+export function shortLeaks(event) {
+  const found = new Set();
+  const add = (values) => values.forEach((v) => found.add(v));
+  const walk = (value, own) => {
+    if (value === null || value === undefined) return;
+    if (typeof value === 'object') {
+      for (const [key, item] of Object.entries(value)) {
+        if (key === 'token' || key === 'distinct_id') continue;
+        const theirs = key.startsWith('$') && key !== '$set' && key !== '$set_once';
+        if (own && !theirs) add(shortIn(key));
+        walk(item, own && !theirs);
+      }
+    } else if (own) {
+      add(shortIn(String(value)));
+    } else if (typeof value === 'string' && /^(https?:|\/)/.test(value)) {
+      add(shortInAddress(value));
+    }
+  };
+  walk(event.properties || {}, true);
+  for (const key of ['$set', '$set_once']) walk(event[key], true);
+  return [...found];
+}
+
+/** What to report for the boxes that were shown and never given a value. */
+export function uncoveredBoxes(shown, typed) {
+  const given = new Set(typed);
+  return [...new Set(shown)].filter((box) => !given.has(box))
+    .map((box) => `a box was shown and given no test value, so what it sends was not checked: ${box}`);
+}
+
+/** The languages that write a decimal comma. */
+const DECIMAL_COMMA = new Set(['es', 'cs']);
+
+/** A probe as a reader of that language types it. */
+export function typedAs(value, locale) {
+  return DECIMAL_COMMA.has(locale) && /^\d+\.\d+$/.test(String(value)) ? String(value).replace('.', ',') : String(value);
+}
+
+/** Whether a box holds what was meant, read by the page's own marks. */
+export function sameTyped(held, value, locale) {
+  if (String(held) === String(value)) return true;
+  const plain = DECIMAL_COMMA.has(locale)
+    ? String(held).replace(/(?<=\d)[.\s](?=\d{3}(?:\D|$))/g, '').replace(',', '.')
+    : String(held).replace(/(?<=\d)[,\s'](?=(?:\d{2},)*\d{3}(?:\D|$))/g, '');
+  return plain === String(value);
+}
 
 const NAME_WORDS = NAMES.flatMap((n) => n.toLowerCase().split(' ').filter((w) => w.length > 5));
 
@@ -49,6 +201,7 @@ export function findLeaks(text) {
   // Grouping marks between digits are dropped; nothing else is.
   const digits = plain.replace(/(?<=\d)[,.\s  '’_](?=\d)/g, '');
   for (const a of AMOUNTS) if (digits.includes(String(a))) found.add(String(a));
+  for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
   const lower = plain.toLowerCase();
   for (const w of NAME_WORDS) if (lower.includes(w)) found.add(w);
   return [...found];
@@ -192,7 +345,7 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
     // The text as sent, and every string inside it as the receiver reads it
     // (a JSON escape such as \u005a is one letter once decoded).
     const texts = [d.text, d.url, d.json ? strings(d.json).join('\n') : ''].map(variants);
-    const leaks = new Set(texts.flatMap((t) => findLeaks(t)));
+    const leaks = new Set([...texts.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url)]);
     if (leaks.size) problems.push(`a request to ${where} carries what was typed: ${[...leaks].join(', ')}`);
     if (texts.some((t) => /\b(blob|data):[^"\s]{4,}/i.test(t))) problems.push(`a request to ${where} carries a blob: or data: address`);
     const file = texts.map((t) => /[\w%-]+\.(xlsx|csv|pdf)\b/i.exec(t)).find(Boolean);
@@ -201,6 +354,8 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
 
   // 2. Element descriptions and addresses, event by event.
   for (const e of events) {
+    const short = shortLeaks(e);
+    if (short.length) problems.push(`${e.event} carries what was typed: ${short.join(', ')}`);
     problems.push(...elementProblems(e), ...addressProblems(e, origin));
   }
 

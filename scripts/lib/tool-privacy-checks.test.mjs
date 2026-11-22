@@ -7,6 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
+import * as checks from './tool-privacy-checks.mjs';
 import {
   AMOUNTS, NAMES, TEST_KEY, addressProblems, afterRun, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
 
@@ -45,6 +46,81 @@ describe('tool privacy checks: a clean run passes', () => {
   it('with consent', () => assert.deepEqual(judge(cleanEvents()).problems, []));
   it('without consent', () => assert.deepEqual(judge(cleanEvents('declined'), { consent: 'declined' }).problems, []));
   it('counts each event', () => assert.equal(judge(cleanEvents()).counts.$pageview, 2));
+});
+
+describe('tool privacy checks: every box gets a value the check knows', () => {
+  const boxes = checks.BOXES ?? {};
+  // The forms a tool writes one in: as JSON, in the page's own marks, in a link, encoded, in base64.
+  const forms = (v) => [
+    ['an event property', { sent: Number.isFinite(Number(v)) ? Number(v) : v }],
+    ['text', { sent: `the value ${v} was typed` }],
+    ['a decimal comma', { sent: String(v).replace('.', ',') }],
+    ['a list', { sent: [{ deep: String(v) }] }],
+    ['a link in a property', { $current_url: `${ORIGIN}/free/x/#q=${encodeURIComponent(String(v))}` }],
+    ['an older link', { $referrer: `${ORIGIN}/free/x/?q=${encodeURIComponent(String(v))}&r=1` }],
+    ['a person property', { $set: { sent: String(v) } }],
+  ];
+
+  it('has boxes for the five tools', () => {
+    assert.deepEqual(Object.keys(boxes).sort(), ['inflation-calculator', 'invest-or-pay-off', 'loan-comparison', 'monte-carlo-simulator', 'multi-currency-net-worth']);
+  });
+
+  it('covers the years, rate and term boxes that had no value of their own', () => {
+    for (const [tool, value] of [['inflation-calculator', '47'], ['inflation-calculator', '4.37'], ['loan-comparison', '347'], ['monte-carlo-simulator', '43']]) {
+      assert.ok((boxes[tool] ?? []).some((b) => String(b.value) === value), `${tool}: ${value}`);
+    }
+  });
+
+  for (const value of ['4.37', '47', '347']) {
+    it(`finds ${value} in an event`, () => {
+      const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { sent: Number(value) })]);
+      assert.ok(problems.some((p) => p.includes('carries what was typed')), problems.join('\n'));
+    });
+  }
+
+  for (const [tool, list] of Object.entries(boxes)) {
+    for (const box of list) {
+      for (const part of String(box.value).split(':')) {
+        it(`${tool}, ${box.name}: ${part} is found in every form it can be sent in`, () => {
+          for (const [what, properties] of forms(part)) {
+            const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', properties)]);
+            assert.ok(problems.some((p) => p.includes('carries what was typed') && p.includes(part.toLowerCase().split(' ')[0])), `${what}: ${problems.join(' | ')}`);
+          }
+        });
+      }
+    }
+  }
+
+  it('finds one in a request address', () => {
+    for (const value of ['4.37', '47']) {
+      assert.ok(judge(cleanEvents(), { url: `https://eu.i.posthog.com/i/v0/e/?q=${value}` }).problems.some((p) => p.includes('carries what was typed')), value);
+    }
+  });
+
+  it('is not set off by what a clean event holds', () => {
+    const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { count: 3, runs: 1000, currency: 'EUR', $lib_version: '1.437.4', $screen_height: 847, $time: 1763824347.437, distinct_id: '019347a1-47bd-7e43-8437-4370a1b2c3d4' })]);
+    assert.deepEqual(problems, []);
+  });
+
+  it('two boxes of a tool never share a value', () => {
+    for (const [tool, list] of Object.entries(boxes)) assert.equal(new Set(list.map((b) => String(b.value))).size, list.length, tool);
+  });
+
+  it('fails a box that was shown and given no value', () => {
+    const uncovered = checks.uncoveredBoxes?.(['amount', 'rate', 'added later'], ['amount', 'rate']) ?? [];
+    assert.equal(uncovered.length, 1);
+    assert.match(uncovered[0], /added later/);
+    assert.deepEqual(checks.uncoveredBoxes?.(['amount'], ['amount']) ?? 'no rule', []);
+  });
+
+  it('compares what a box holds by the page’s own marks', () => {
+    const same = checks.sameTyped ?? (() => 'no rule');
+    assert.equal(same('2,5', '2.5', 'es'), true);
+    assert.equal(same('7,131,719', '7131719', 'en'), true);
+    assert.equal(same('7 131 719', '7131719', 'cs'), true);
+    assert.equal(same('25', '2.5', 'es'), false);
+    assert.equal(same('2,5', '2.5', 'en'), false);
+  });
 });
 
 describe('tool privacy checks: what was typed', () => {
