@@ -47,13 +47,17 @@
  *                            planner-beta box in the volunteer form's response
  *                            spreadsheet (opened by VOLUNTEER_SPREADSHEET_ID_),
  *                            and nothing else. If that spreadsheet cannot be
- *                            read or its headers do not match, it answers
+ *                            read, its headers do not match or two of its
+ *                            tabs carry them, it answers
  *                            { ok: false, error: 'schema' | 'error' } rather
  *                            than a lower number. The landing site's build
  *                            reads it to show how many people are waiting for
  *                            a beta invite.
  *                            The token travels in the body, never the URL,
  *                            so it does not end up in logs.
+ *
+ *   A sign-up that waits more than 10 seconds for another to finish with the
+ *   sheet answers { ok: false, error: 'locked' } and writes nothing.
  *
  *   POST action=list        form body: action, token
  *                            Returns { ok: true, items: [{ email, source,
@@ -79,7 +83,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '9b3011971adb';
+var VERSION = '1ff07442e01c';
 
 // ============================================================================
 // Config
@@ -139,7 +143,11 @@ function sheet_() {
 }
 
 // ============================================================================
-// Email validation
+// Shared helpers: begin
+// The same text in newsletter.gs, waitlist.gs and volunteer-list.gs. Each
+// file is pasted into its own Apps Script project, so they cannot share a
+// file: scripts/apps-script-shared.test.mjs fails when the copies differ.
+// Change all three together, then run `npm run gs:version`.
 // ============================================================================
 
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
@@ -148,10 +156,57 @@ function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 // with = + - or @ is read as a formula, so an address may not start with one
 // (very few do). It also may not hold white space, double quotes, brackets or
 // the marks that separate addresses in a list. Letters of any script, and an
-// apostrophe (o'brien@...), are fine. (Same rule as scripts/newsletter.gs.)
+// apostrophe (o'brien@...), are fine.
 function isValidEmail_(s) {
+  s = String(s || '');
   return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
 }
+
+/** The SHA-256 of the text's UTF-8 bytes, as 64 lowercase hex characters. */
+function sha256Hex_(s) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(s), Utilities.Charset.UTF_8);
+  // Apps Script gives signed bytes (-128..127); & 0xFF makes them unsigned.
+  return bytes.map(function (b) { var h = (b & 0xFF).toString(16); return h.length === 1 ? '0' + h : h; }).join('');
+}
+
+/**
+ * Whether two strings are equal, comparing every character rather than
+ * returning at the first difference, so the time taken says nothing about
+ * how much of a secret was right. Used for digests, tokens and signatures.
+ */
+function sameString_(a, b) {
+  a = String(a);
+  b = String(b);
+  var len = Math.max(a.length, b.length);
+  var diff = a.length ^ b.length;
+  for (var i = 0; i < len; i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return diff === 0;
+}
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// ============================================================================
+// Shared helpers: end
+// ============================================================================
 
 /**
  * The page a sign-up came from, as the site sends it: a path on the site.
@@ -168,11 +223,6 @@ function cleanSource_(raw) {
 // ============================================================================
 // PostHog
 // ============================================================================
-
-function sha256Hex_(s) {
-  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, s, Utilities.Charset.UTF_8);
-  return bytes.map(function (b) { var h = (b & 0xFF).toString(16); return h.length === 1 ? '0' + h : h; }).join('');
-}
 
 /**
  * The id a sign-up event is filed under: a fresh random one each time, made
@@ -251,7 +301,6 @@ function doGet(e) {
 
 function doPost(e) {
   try {
-    // The list action reads its action and token from the body only.
     // The list and count actions read their action and token from the body only.
     var bodyAction = formBody_(e).action;
     if (bodyAction === 'list') return handleList_(e);
@@ -287,8 +336,11 @@ var COUNT_TOKEN_SHA256_ = 'a443a8d061ebe14cf7cb89e48a63d4fc2d4d59dd5124c64337b9a
 // from before dedupe, blank or malformed addresses and volunteers who did not
 // tick the box do not inflate the total the site shows.
 //
-// If the volunteer sheet cannot be read or its headers moved, the answer is an
-// error rather than the waitlist alone: a silently lower number would be
+// The volunteers are found by the same code as volunteer-list.gs's list (the
+// "Volunteer form contract" block), so the count and the planner's invite
+// list agree on who ticked the box. If the volunteer sheet cannot be read,
+// its headers moved or two tabs carry them, the answer is an error rather
+// than the waitlist alone: a silently lower number would be
 // shown as the truth, while an error makes the build leave the line out.
 function handleCount_(e) {
   var given = String(formBody_(e).token || '');
@@ -309,32 +361,38 @@ function handleCount_(e) {
   }
   var volunteers;
   try {
-    volunteers = betaVolunteerEmails_();
+    volunteers = betaVolunteers_(SpreadsheetApp.openById(VOLUNTEER_SPREADSHEET_ID_));
   } catch (err) {
     console.error('[waitlist] volunteer sheet unreadable: ' + err);
     return jsonResponse_({ ok: false, error: 'error' });
   }
   if (!volunteers) return jsonResponse_({ ok: false, error: 'schema' });
-  volunteers.forEach(add);
+  volunteers.forEach(function (v) { add(v.email); });
   return jsonResponse_({ ok: true, count: count });
 }
 
-// ----------------------------------------------------------------------------
-// Volunteer form contract: the header texts and the choice the count depends
-// on. Same texts as scripts/volunteer-list.gs, found the same way (by header,
-// not position). Keep in step with scripts/volunteer-form.gs (a test compares
-// them). The spreadsheet id is not a secret: opening it needs access to the
-// Google account that owns it.
-// ----------------------------------------------------------------------------
-
+// The volunteer spreadsheet's id is not a secret: opening it needs access to
+// the Google account that owns it.
 var VOLUNTEER_SPREADSHEET_ID_ = '1K3LL_00Kq4L0ouTsr2cQc25xKNLn5YaI75KnKn9U3Z8';
+
+// ============================================================================
+// Volunteer form contract: begin
+// The same text in waitlist.gs (its count) and volunteer-list.gs (the
+// planner's invite list), so the number the site shows and the list the
+// planner reads come from one definition of "which tab" and "ticked the beta
+// box". scripts/apps-script-shared.test.mjs fails when the copies differ, and
+// compares the two scripts' answers on the same rows. The header texts and
+// the choice follow scripts/volunteer-form.gs (a test compares them).
+// ============================================================================
+
 var VOLUNTEER_HEADER_EMAIL_ = 'Email';
+var VOLUNTEER_HEADER_TIMESTAMP_ = 'Timestamp';
 var VOLUNTEER_HEADER_BETA_ = 'Planner beta (optional)';
 var VOLUNTEER_BETA_CHOICE_ = 'Invite me to the planner\'s beta when it opens.';
 
-/** Column index (0-based) of the email and beta headers, or null if either is missing. */
+/** Column index (0-based) of each required header, or null if one is missing. */
 function volunteerColumns_(headers) {
-  var wanted = { email: VOLUNTEER_HEADER_EMAIL_, beta: VOLUNTEER_HEADER_BETA_ };
+  var wanted = { email: VOLUNTEER_HEADER_EMAIL_, submitted: VOLUNTEER_HEADER_TIMESTAMP_, beta: VOLUNTEER_HEADER_BETA_ };
   var found = {};
   for (var key in wanted) {
     var idx = -1;
@@ -348,14 +406,15 @@ function volunteerColumns_(headers) {
 }
 
 /**
- * Raw email cells of the volunteers who ticked the beta box, from the first
- * tab whose header row has both headers (a form's spreadsheet can gain tabs,
- * so position is no guide). Null when no tab matches or when more than one
- * does (an archived copy would otherwise silently supply an old count);
- * throws when the spreadsheet cannot be opened.
+ * The response tab and its columns: the one tab whose header row has all
+ * three headers. Found by headers, not position, because a form's
+ * spreadsheet can gain tabs. Null when no tab matches, and null when more
+ * than one does: an archived copy of the responses would otherwise supply
+ * old answers, and guessing between them could make the count and the list
+ * disagree. Either case is logged.
  */
-function betaVolunteerEmails_() {
-  var sheets = SpreadsheetApp.openById(VOLUNTEER_SPREADSHEET_ID_).getSheets();
+function volunteerResponses_(ss) {
+  var sheets = ss.getSheets();
   var found = null;
   for (var i = 0; i < sheets.length; i++) {
     var sh = sheets[i];
@@ -363,17 +422,13 @@ function betaVolunteerEmails_() {
     if (width < 1 || sh.getLastRow() < 1) continue;
     var cols = volunteerColumns_(sh.getRange(1, 1, 1, width).getValues()[0]);
     if (!cols) continue;
-    if (found) return null;
-    var rows = sh.getLastRow() - 1;
-    if (rows < 1) { found = []; continue; }
-    var emails = sh.getRange(2, cols.email + 1, rows, 1).getValues();
-    var betas = sh.getRange(2, cols.beta + 1, rows, 1).getValues();
-    var out = [];
-    for (var r = 0; r < rows; r++) {
-      if (hasChoice_(betas[r][0], VOLUNTEER_BETA_CHOICE_)) out.push(emails[r][0]);
+    if (found) {
+      console.error('[volunteers] more than one tab has the response headers: refusing to guess');
+      return null;
     }
-    found = out;
+    found = { sheet: sh, cols: cols };
   }
+  if (!found) console.error('[volunteers] no tab has the response headers');
   return found;
 }
 
@@ -392,6 +447,41 @@ function hasChoice_(cell, choice) {
     text.indexOf(', ' + choice + ', ') >= 0;
 }
 
+/**
+ * The volunteers who ticked the beta box, in row order, as { email,
+ * submitted_at }: one per distinct, valid address, the first row winning.
+ * Null when the response tab cannot be told (see volunteerResponses_).
+ */
+function betaVolunteers_(ss) {
+  var found = volunteerResponses_(ss);
+  if (!found) return null;
+  var rows = found.sheet.getLastRow() - 1;
+  if (rows < 1) return [];
+  function column(index) {
+    return found.sheet.getRange(2, index + 1, rows, 1).getValues().map(function (r) { return r[0]; });
+  }
+  var betas = column(found.cols.beta);
+  var emails = column(found.cols.email);
+  var times = column(found.cols.submitted);
+  var seen = {};
+  var out = [];
+  for (var i = 0; i < rows; i++) {
+    if (!hasChoice_(betas[i], VOLUNTEER_BETA_CHOICE_)) continue;
+    var email = normalizeEmail_(emails[i]);
+    if (!isValidEmail_(email) || seen[email]) continue;
+    seen[email] = true;
+    out.push({
+      email: email,
+      submitted_at: times[i] instanceof Date ? times[i].toISOString() : String(times[i] || ''),
+    });
+  }
+  return out;
+}
+
+// ============================================================================
+// Volunteer form contract: end
+// ============================================================================
+
 // The list action has its own token, so a leaked count token (which the
 // landing build holds) cannot read addresses. The plain token lives only in
 // the planner server's environment. Rotate it like the count token: new
@@ -401,27 +491,6 @@ var LIST_TOKEN_SHA256_ = '3be003dad4fd77a8765f2b77c57328a8127e43300db7290b96303a
 // Longest token the list action will hash: the real one is 43 characters, so
 // anything longer is not it and is not worth hashing.
 var MAX_TOKEN_LENGTH_ = 128;
-
-/**
- * The form-encoded POST body as an object. e.parameter also carries the query
- * string, so a credential must come from here to be sure it was not sent in
- * the URL, where it would end up in logs.
- */
-function formBody_(e) {
-  var out = {};
-  var raw = (e && e.postData && e.postData.contents) || '';
-  if (raw.length > 4096) return out;
-  raw.split('&').forEach(function (pair) {
-    if (!pair) return;
-    var at = pair.indexOf('=');
-    try {
-      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
-      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
-      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
-    } catch (_) { /* a malformed pair is dropped */ }
-  });
-  return out;
-}
 
 // First occurrence of each distinct, valid address wins. Only these three
 // fields leave the sheet.
@@ -458,15 +527,6 @@ function headersMatch_(sh) {
   return true;
 }
 
-// Compare the fixed-length SHA-256 hex digests without returning at the first
-// mismatch.
-function sameString_(a, b) {
-  var len = Math.max(a.length, b.length);
-  var diff = a.length ^ b.length;
-  for (var i = 0; i < len; i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
-  return diff === 0;
-}
-
 // ============================================================================
 // Waitlist (single opt-in)
 // ============================================================================
@@ -480,6 +540,9 @@ function sameString_(a, b) {
 // a handful of sign-ups, so only a flood reaches it.
 var MAX_SIGNUPS_PER_DAY_ = 500;
 
+// How long a sign-up waits for another one to finish with the sheet.
+var LOCK_WAIT_MS_ = 10000;
+
 function handleWaitlist_(e) {
   var email = normalizeEmail_((e.parameter && e.parameter.email) || '');
   var source = cleanSource_(e.parameter && e.parameter.source);
@@ -488,7 +551,13 @@ function handleWaitlist_(e) {
   // The lock makes check-then-append atomic, so two submits arriving
   // together (a double click, or both boxes on one page) can't both append.
   var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  // tryLock answers false when the wait runs out, where waitLock would throw
+  // an error the reader sees only as "failed". Nothing has been written
+  // then, so the answer says so in one word and the log says why (#444).
+  if (!lock.tryLock(LOCK_WAIT_MS_)) {
+    console.warn('[waitlist] gave up waiting ' + LOCK_WAIT_MS_ + ' ms for the lock: row not written');
+    return jsonResponse_({ ok: false, error: 'locked' });
+  }
   var added = false;
   var busy = false;
   try {
