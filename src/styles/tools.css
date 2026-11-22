@@ -2086,6 +2086,11 @@
   color: var(--color-warning-text);
 }
 
+/* A banner whose moment has passed: neither seen nor heard, its space kept (#795). */
+.mcnw-banner--left {
+  visibility: hidden;
+}
+
 .mcnw-bannerInfo {
   background: var(--color-bg);
   border: 1px solid var(--color-border);

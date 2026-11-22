@@ -58,3 +58,22 @@ describe('a refused redacted copy is heard (#795)', () => {
     assert.match(source, /aria-describedby=\{refusalId\} onClick=\{\(\) => onGoToRow/);
   });
 });
+
+describe('what a first edit is (#795)', () => {
+  const edits = [['add', false], ['remove', false], [{ currency: 'USD' }, false], [{ type: 'liability' }, false], [{ name: 'a' }, true], [{ value: '1' }, true]] as const;
+  for (const [edit, ends] of edits) {
+    it(`${JSON.stringify(edit)} in a redacted view`, async () => {
+      const { endsSharedView } = await import('./url.ts');
+      assert.equal(endsSharedView(true, edit), ends);
+      assert.equal(endsSharedView(false, edit), true, 'a full view has rows');
+    });
+  }
+  it('the rows ask it', () => {
+    assert.match(body('const updateRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, patch\)\) leaveSharedView\(\)/);
+    assert.match(body('const addRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, 'add'\)\) leaveSharedView\(\)/);
+    assert.match(body('const removeRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, 'remove'\)\) leaveSharedView\(\)/);
+  });
+  it('a refusal is over at the first edit', () => {
+    assert.ok(body('const leaveSharedView = useCallback(', '}, [').includes('setRefused(null)'));
+  });
+});

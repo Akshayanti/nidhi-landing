@@ -604,3 +604,14 @@ function sharesAreWhole(positions: SharedPositionData[]): boolean {
 function isValidRiskLevel(s: string): s is RiskLevel {
   return ['functional', 'low', 'moderate', 'elevated', 'net-debt', 'unbanded'].includes(s);
 }
+
+/**
+ * Whether a change to the rows makes a shared view the reader's own. A
+ * redacted view has no rows, and an empty one added, removed or given a
+ * currency or type changes nothing that was shared: only a typed name or
+ * amount is its first edit. An import, the spending currency and Clear end
+ * any shared view where they happen.
+ */
+export function endsSharedView(redacted: boolean, edit: Partial<AssetRow> | 'add' | 'remove'): boolean {
+  return !redacted || (typeof edit !== 'string' && ('name' in edit || 'value' in edit));
+}

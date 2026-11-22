@@ -27,6 +27,7 @@ import {
   MAX_ROWS,
   publishableState,
   redactedRefusal,
+  endsSharedView,
   SHARED_STATE_GLOBAL,
   sharedResult,
   type ShareMode,
@@ -164,6 +165,10 @@ export default function MultiCurrencyNetWorth({
   const [csvTooLong, setCsvTooLong] = useState(false);
   // A link or a switched list that was not whole: none of it was loaded (#794).
   const [refused, setRefused] = useState<'link' | 'transfer' | null>(null);
+  // What the page opened with. Its banner leaves at the first edit and its space
+  // stays: above the field being typed in, removing it moved the field (#795).
+  const [arrivedRefused, setArrivedRefused] = useState<'link' | 'transfer' | null>(null);
+  const [arrivedShared, setArrivedShared] = useState(false);
   // The rows a shared view's sender could not have read.
   const [sharedUnreadable, setSharedUnreadable] = useState(0);
   // An older link that cannot say whether every rate was known (#795).
@@ -185,6 +190,8 @@ export default function MultiCurrencyNetWorth({
     setRows(shared && !decoded.refused ? decoded.rows : makeDefaultRows(defaultCurrency));
     setFunctionalCurrency(shared && !decoded.refused ? decoded.functionalCurrency : defaultCurrency);
     setRefused(decoded.refused ?? null);
+    setArrivedRefused(decoded.refused ?? null);
+    setArrivedShared(Boolean(decoded.isReadOnly && decoded.sharedPositions));
     if (decoded.isReadOnly && decoded.sharedPositions) {
       setSharedUnreadable(unreadableCount(decoded.rows));
       setSharedInDoubt(decoded.inDoubt === true);
@@ -307,16 +314,17 @@ export default function MultiCurrencyNetWorth({
     setSharedRedacted(false);
     setSharedUnreadable(0);
     setSharedInDoubt(false);
+    setRefused(null);
   }, []);
 
   const updateRow = useCallback((index: number, patch: Partial<AssetRow>) => {
-    leaveSharedView();
+    if (endsSharedView(sharedRedacted, patch)) leaveSharedView();
     setRows((prev) => {
       const next = prev.slice();
       next[index] = { ...next[index], ...patch };
       return next;
     });
-  }, [leaveSharedView]);
+  }, [sharedRedacted, leaveSharedView]);
 
   // We compute `next` outside the updater and reuse it for both setState
   // and analytics. Putting `track()` *inside* a setState updater would
@@ -325,7 +333,7 @@ export default function MultiCurrencyNetWorth({
   // running `npm run dev` against a real PostHog key would.
   const addRow = useCallback(() => {
     if (rows.length >= MAX_ROWS) return;
-    leaveSharedView();
+    if (endsSharedView(sharedRedacted, 'add')) leaveSharedView();
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
@@ -336,14 +344,14 @@ export default function MultiCurrencyNetWorth({
     // safe because StrictMode does not double-invoke the *enclosing*
     // callback, only the updater.
     track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length, defaultCurrency, leaveSharedView]);
+  }, [rows.length, defaultCurrency, sharedRedacted, leaveSharedView]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;
-    leaveSharedView();
+    if (endsSharedView(sharedRedacted, 'remove')) leaveSharedView();
     setRows((prev) => prev.filter((_, i) => i !== index));
     track('free_multi_currency_net_worth_asset_removed', { count: rows.length - 1 });
-  }, [rows.length, leaveSharedView]);
+  }, [rows.length, sharedRedacted, leaveSharedView]);
 
   // ---- CSV upload ----
 
@@ -471,7 +479,6 @@ export default function MultiCurrencyNetWorth({
     setRows(makeDefaultRows(defaultCurrency));
     setFunctionalCurrency(defaultCurrency);
     leaveSharedView();
-    setRefused(null);
     setCsvTooLong(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
@@ -558,8 +565,9 @@ export default function MultiCurrencyNetWorth({
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
       {/* ---- Rate status ---- */}
-      {ratesFailureShown(ratesView, Boolean(withheld || (refused && untouched))) && (
-        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
+      {/* While an unreadable amount withholds the results its space stays, so the key typed does not move its field. */}
+      {ratesFailureShown(ratesView, Boolean(refused && untouched)) && (
+        <div className={`mcnw-banner mcnw-bannerWarn${withheld ? ' mcnw-banner--left' : ''}`} role="alert">
           <span>
             {strings.rates.errorBefore}{' '}
             <button
@@ -596,15 +604,15 @@ export default function MultiCurrencyNetWorth({
         </div>
       )}
 
-      {refused && untouched && (
-        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
-          <span>{format(refused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
+      {arrivedRefused && (
+        <div className={`mcnw-banner mcnw-bannerWarn${refused && untouched ? '' : ' mcnw-banner--left'}`} role="alert">
+          <span>{format(arrivedRefused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
         </div>
       )}
 
       {/* ---- Read-only view banner ---- */}
-      {isReadOnlyView && (
-        <div className="mcnw-banner mcnw-bannerInfo">
+      {arrivedShared && (
+        <div className={`mcnw-banner mcnw-bannerInfo${isReadOnlyView ? '' : ' mcnw-banner--left'}`}>
           {strings.shared.readOnly}
         </div>
       )}
