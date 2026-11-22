@@ -255,7 +255,7 @@ export const en = {
       whoIsWriting:
         "Every post on this site goes out under one name: nidhi. I started it because I couldn't find a finance tool for an ordinary life with money in more than one currency, debts in another, and a future that crossed borders. The lessons come from the same place: real questions I have had to answer, explained the way I wish someone had explained them to me.",
       whyYouCanTrustIt1:
-        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post rests on a study or a dataset, it names it, and the books, reference pages and primary material behind it are listed on each article under "Suggested Reading."',
+        'The authority here is practitioner and research-led, not a wall of letters after a name. nidhi builds the tools that the posts describe, which means the writing is grounded in working through the numbers, not in repeating talking points. Where a post rests on a study or a dataset, it names it, and the books, reference pages and primary material behind it are listed on each article under “Suggested Reading.”',
       /** Counted at build (src/utils/sourceCounts.ts); says what it does not count. */
       sourcesCount:
         "Across {lessons} published lessons, the further-reading lists point to {sources} distinct books, papers and reference pages. Sources cited only inside a lesson's text are not counted here.",
@@ -348,7 +348,7 @@ export const en = {
       },
       freeForever: {
         heading: 'The lessons are free, forever',
-        body: 'No paywalls, no "subscribe for the good stuff" nonsense. If something I wrote helped you make a better decision, even if you never touch my product, that\'s the whole point. Tell me about it. That kind of thing keeps me going.',
+        body: 'No paywalls, no “subscribe for the good stuff” nonsense. If something I wrote helped you make a better decision, even if you never touch my product, that\'s the whole point. Tell me about it. That kind of thing keeps me going.',
       },
       rulesOfThumb: {
         heading: 'Not just the rules of thumb',
@@ -356,7 +356,7 @@ export const en = {
       },
       noAds: {
         heading: 'No ads, no data selling, no asterisks',
-        body: 'I don\'t run ads. I don\'t sell your data. I don\'t do that creepy thing where you search "term insurance" and then see ads for it everywhere for a week. Your finances are your business. Literally.',
+        body: 'I don\'t run ads. I don\'t sell your data. I don\'t do that creepy thing where you search “term insurance” and then see ads for it everywhere for a week. Your finances are your business. Literally.',
       },
       madeInPrague: {
         heading: 'Made in Prague, powered by word of mouth',
@@ -531,11 +531,11 @@ export const en = {
         },
       },
       builtOutro:
-        'A rule of thumb is a starting point, not an answer, so lessons describe what many people do and avoid "always" and "never" unless the evidence can carry them. Before a lesson is published, it is read back for two things: whether its claims are supported, and whether a beginner would follow it without a glossary. If one slips through, see Corrections below.',
+        'A rule of thumb is a starting point, not an answer, so lessons describe what many people do and avoid “always” and “never” unless the evidence can carry them. Before a lesson is published, it is read back for two things: whether its claims are supported, and whether a beginner would follow it without a glossary. If one slips through, see Corrections below.',
       anyCountry:
-        'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a "Where to check locally" note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
+        'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a “Where to check locally” note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
       sourcesAndFigures:
-        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under "Suggested Reading," so you can follow the trail rather than take our word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
+        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under “Suggested Reading,” so you can follow the trail rather than take our word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
       aiUsed1:
         "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
       aiUsed2: {
@@ -558,7 +558,7 @@ export const en = {
         before:
           'If something is wrong, we want to fix it. Spot an error, an out-of-date figure or a claim that no longer holds, and email ',
         after:
-          '. Substantive corrections are made in the lesson and reflected in its "Updated" date, so the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a date change.',
+          '. Substantive corrections are made in the lesson and reflected in its “Updated” date, so the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a date change.',
       },
       /** Above the list of corrections, which appears once there is one. */
       correctionsList:
@@ -1347,7 +1347,7 @@ export const en = {
       description:
         'Free personal finance lessons and private tools to understand your money and plan your future, from the basics to finances that span currencies.',
       imageAlt:
-        'nidhi: money, understood. Free personal finance lessons and private tools to understand your money and plan your future.',
+        'nidhi: Money, understood. Free personal finance lessons and private tools to understand your money and plan your future.',
     },
     /** Structured data, not visible text. It still reads in the page's language. */
     schema: {

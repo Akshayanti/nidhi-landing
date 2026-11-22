@@ -659,4 +659,9 @@ describe('each language spells a word one way', () => {
     const wrong = /हिशोब|पेज(?!व्ह)|सिमुले|अॅ|महागाई वजा जाता|मुख्य पान|चेक कोरुना/u;
     assert.deepEqual(allWords(MR, 'mr').filter(({ value }) => wrong.test(value)).map((l) => l.path), []);
   });
+
+  it('quotes English and Hindi with curly marks, never straight double quotes', () => {
+    const found = [...allWords(EN, 'en'), ...allWords(HI, 'hi')].filter(({ value }) => /"/.test(value));
+    assert.deepEqual(found.map((l) => l.path), []);
+  });
 });

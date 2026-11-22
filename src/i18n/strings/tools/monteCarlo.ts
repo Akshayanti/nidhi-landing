@@ -132,7 +132,7 @@ export const monteCarloEn = {
       /** The numbered method, in this order. Every figure in it comes from a constant. */
       steps: {
         draws:
-          'Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {stocksMean} a year on average with a standard deviation of {stocksSd}, bonds {bondsMean} with {bondsSd}. The two are mildly linked (a correlation of about {correlation}). That link has swung widely over history, positive and negative, so this is a simplification. "{cautious}" and "{optimistic}" keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.',
+          'Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {stocksMean} a year on average with a standard deviation of {stocksSd}, bonds {bondsMean} with {bondsSd}. The two are mildly linked (a correlation of about {correlation}). That link has swung widely over history, positive and negative, so this is a simplification. “{cautious}” and “{optimistic}” keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.',
         blend:
           "Your portfolio earns the blend of the two at your chosen mix, rebalanced once a year, less your yearly fees. The year's return is spread evenly over its twelve months.",
         flows:
@@ -168,7 +168,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Where do the return assumptions come from?',
-          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The "{historical}" setting draws yearly returns from a distribution with those averages and swings. "{cautious}" and "{optimistic}" keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi\'s articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
+          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The “{historical}” setting draws yearly returns from a distribution with those averages and swings. “{cautious}” and “{optimistic}” keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi\'s articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
         },
         {
           q: 'How many paths should I run?',
@@ -183,7 +183,7 @@ export const monteCarloEn = {
           a: "All returns are real returns, after inflation. A result of 500,000 means 500,000 of today's purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.",
         },
         {
-          q: 'What does "the money lasted in 8 in 10 paths" mean?',
+          q: 'What does “the money lasted in 8 in 10 paths” mean?',
           a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
         },
         {
@@ -192,7 +192,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The simulation runs in your browser and the numbers you type are not sent to us or anyone else. Nothing goes into the page address while you use the tool. When you press "{copyLink}", your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
+          a: 'No. The simulation runs in your browser and the numbers you type are not sent to us or anyone else. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
         },
         {
           q: 'Is this financial advice?',
@@ -525,7 +525,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       more: 'तरीक़ा और उसके स्रोत',
       steps: {
         draws:
-          'हर सिम्युलेटेड साल शेयरों का एक रिटर्न और बॉन्ड का एक रिटर्न निकालता है, महँगाई के बाद। इनके औसत और उतार-चढ़ाव (volatility) 1900 से 2025 तक के दुनिया के बाज़ारों से मेल खाते हैं: शेयरों में औसतन सालाना {stocksMean} और मानक विचलन {stocksSd}, बॉन्ड में {bondsMean} और {bondsSd}। दोनों आपस में थोड़े जुड़े हैं (लगभग {correlation} का सहसंबंध)। इतिहास में यह जुड़ाव बहुत बदलता रहा है, कभी सकारात्मक तो कभी नकारात्मक, इसलिए यह एक सरलीकरण है। "{cautious}" और "{optimistic}" इन्हीं उतार-चढ़ावों को रखते हुए चक्रवृद्धि (compounding) रिटर्न शेयरों में सालाना 4% या 6% और बॉन्ड में 1% या 3% कर देते हैं।',
+          'हर सिम्युलेटेड साल शेयरों का एक रिटर्न और बॉन्ड का एक रिटर्न निकालता है, महँगाई के बाद। इनके औसत और उतार-चढ़ाव (volatility) 1900 से 2025 तक के दुनिया के बाज़ारों से मेल खाते हैं: शेयरों में औसतन सालाना {stocksMean} और मानक विचलन {stocksSd}, बॉन्ड में {bondsMean} और {bondsSd}। दोनों आपस में थोड़े जुड़े हैं (लगभग {correlation} का सहसंबंध)। इतिहास में यह जुड़ाव बहुत बदलता रहा है, कभी सकारात्मक तो कभी नकारात्मक, इसलिए यह एक सरलीकरण है। “{cautious}” और “{optimistic}” इन्हीं उतार-चढ़ावों को रखते हुए चक्रवृद्धि (compounding) रिटर्न शेयरों में सालाना 4% या 6% और बॉन्ड में 1% या 3% कर देते हैं।',
         blend:
           'आपका पोर्टफ़ोलियो आपके चुने हुए मिश्रण पर इन दोनों का मिलाजुला रिटर्न कमाता है, हर साल एक बार रीबैलेंस होता है, और उसमें से आपका सालाना शुल्क कटता है। साल का रिटर्न उसके बारह महीनों पर बराबर बाँट दिया जाता है।',
         flows:
@@ -550,7 +550,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'रिटर्न की मान्यताएँ कहाँ से आती हैं?',
-          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। "{historical}" सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। "{cautious}" और "{optimistic}" वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को उस लंबी अवधि के दायरे के निचले और ऊपरी सिरे पर रख देते हैं जो nidhi के लेखों में इस्तेमाल होता है: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
+          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। “{historical}” सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। “{cautious}” और “{optimistic}” वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को उस लंबी अवधि के दायरे के निचले और ऊपरी सिरे पर रख देते हैं जो nidhi के लेखों में इस्तेमाल होता है: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
         },
         {
           q: 'कितने रास्ते चलाने चाहिए?',
@@ -574,7 +574,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े हमें या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप "{copyLink}" दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
+          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े हमें या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',

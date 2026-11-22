@@ -360,7 +360,7 @@ export const es: Dict = {
     },
     reviewed: {
       scope: 'La última revisión completa fue el 10 de noviembre de 2026. Abarcó 62 páginas en cinco anchos de pantalla, en el tema claro y en el oscuro y en los cinco idiomas, con un comprobador automático y comprobaciones a mano, en un navegador de escritorio. Una segunda pasada miró el uso táctil, las conexiones lentas, la impresión, el modo de alto contraste y los correos, imitando cada uno en ese navegador.',
-      limits: 'Es una revisión, no una garantía. No incluyó pruebas con lectores con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
+      limits: 'Es una revisión, no una garantía. No incluyó pruebas con personas con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
     },
     barriers: {
       intro: 'Estas siguen abiertas a 18 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
@@ -773,7 +773,7 @@ export const es: Dict = {
       analytics:
         'Los eventos propios del boletín (te suscribiste, confirmaste o te diste de baja) se registran en PostHog con un código creado a partir de tu dirección de correo (un hash SHA-256), para saber cuánta gente confirma. Solo con un sí en el aviso de cookies, suscribirte enlaza también las páginas vistas en este navegador con ese código, para saber qué páginas llevan a la gente a suscribirse.',
       total:
-        'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscriptores confirmados, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
+        'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscripciones confirmadas, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
         before: 'Los correos del boletín llegan desde ',
         after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
@@ -785,7 +785,7 @@ export const es: Dict = {
       timestamp: 'La fecha y hora en que te apuntaste.',
       singleOptIn: 'No hace falta ningún correo de confirmación. Si te invitamos, el planificador registra el estado de la invitación, como se explica más abajo.',
       invites:
-        'Para elegir a quién invitar a la beta del planificador, un administrador de nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que los administradores nunca reciben. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
+        'Para elegir a quién invitar a la beta del planificador, alguien con acceso de administración en nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que nunca recibe quien tiene acceso de administración. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
       total:
         'El sitio puede mostrar cuántas personas esperan una invitación a la beta: las de esta lista de espera más las personas voluntarias que marcaron la casilla de la beta del planificador, y cada una cuenta una sola vez aunque esté en ambas. Ese número se calcula dentro de nuestra cuenta de Google y solo el número sale de ella. Por debajo de 20 es exacto, así que entre una actualización del sitio y la siguiente puede verse un cambio de uno. Desde 20 se redondea hacia abajo, a un múltiplo de 5 hasta 49 y a un múltiplo de 10 desde 50. No se muestra ninguna dirección de correo. Alguien que ya tenga información sobre una inscripción concreta o la elección de la beta podría deducirla a partir de un cambio en el total.',
       from: {
@@ -815,7 +815,7 @@ export const es: Dict = {
       followUp:
         'En la hoja privada que contiene tus respuestas del formulario también anotamos el estado del seguimiento, la fecha de nuestro último contacto contigo y el código de cualquier copia de revisión que te enviemos, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
       invites:
-        'Si marcaste la casilla de la beta del planificador, un administrador de nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
+        'Si marcaste la casilla de la beta del planificador, alguien con acceso de administración en nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
       total:
         'Si marcaste la casilla de la beta del planificador, también cuentas en el total de personas que esperan una invitación a la beta que el sitio puede mostrar (descrito arriba, en la lista de espera), una sola vez aunque estés también en la lista de espera. Solo se muestra el número, nunca tu dirección. Aquí también existe la posibilidad de deducción descrita arriba.',
       google:
@@ -886,12 +886,12 @@ export const es: Dict = {
           before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
           middle: ' para contacto general y soporte, ',
           after:
-            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Esas hojas son privadas: los administradores de nidhi pueden leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella. Las copias de revisión del voluntariado también están en esta cuenta, pero no son privadas de esa manera: cualquier persona con el enlace de una copia puede abrirla y editarla, como se describe en el formulario de voluntariado. Los lotes guardados, nuestras notas sobre ellos y el registro de los textos publicados son privados.',
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Esas hojas son privadas: quien tiene acceso de administración en nidhi puede leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella. Las copias de revisión del voluntariado también están en esta cuenta, pero no son privadas de esa manera: cualquier persona con el enlace de una copia puede abrirla y editarla, como se describe en el formulario de voluntariado. Los lotes guardados, nuestras notas sobre ellos y el registro de los textos publicados son privados.',
         },
         planner: {
           name: 'DigitalOcean',
           rest:
-            ' (Fráncfort, Alemania; región FRA1, en la UE): aloja la base de datos del planificador, que guarda solo las direcciones de correo que un administrador invita y los registros de invitación descritos en «Cuánto tiempo lo conservamos». Los datos de cuenta los cubre el aviso de privacidad del propio planificador.',
+            ' (Fráncfort, Alemania; región FRA1, en la UE): aloja la base de datos del planificador, que guarda solo las direcciones de correo que invita alguien con acceso de administración y los registros de invitación descritos en «Cuánto tiempo lo conservamos». Los datos de cuenta los cubre el aviso de privacidad del propio planificador.',
         },
         github: {
           name: 'GitHub Pages',
@@ -917,7 +917,7 @@ export const es: Dict = {
         'No te rastreamos en los sitios web de otras empresas. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
       screen: 'No usamos grabación de sesiones ni analítica para capturar tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento, ni en este sitio ni en el planificador.',
       replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
-      imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando un administrador lo pide, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que un administrador invita, junto con los registros de invitación.',
+      imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando lo pide alguien con acceso de administración, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que invita alguien con acceso de administración, junto con los registros de invitación.',
     },
 
     retention: {
@@ -926,7 +926,7 @@ export const es: Dict = {
         rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente. Esto incluye también los eventos del planificador.',
       },
       newsletter: {
-        lead: 'Suscriptores del boletín:',
+        lead: 'Suscripciones al boletín:',
         rest: ' mientras mantengas la suscripción, y hasta 30 días después de que canceles la suscripción, para asegurarnos de que no te llegue ni un correo más por error. Pasado ese tiempo, se elimina la fila.',
       },
       waitlist: {
@@ -935,12 +935,12 @@ export const es: Dict = {
       },
       volunteers: {
         lead: 'Respuestas del formulario de voluntariado:',
-        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. Lo mismo vale para tus copias de revisión, los lotes guardados y nuestras notas sobre ellos, y las hojas aparte que mostraron tus sugerencias a otras personas voluntarias: un lote que envías cuenta como contacto, revisamos cada mes lo que tenga más de dos años y, cuando nos lo pides, eliminamos todos esos archivos en un plazo de 30 días. También eliminamos una copia de revisión cuando los cambios de su ronda ya están en el sitio. Al eliminar un archivo entero, se elimina también su historial de versiones. Después de vaciar la papelera de Drive, Google permite a nuestro administrador restaurar un archivo eliminado durante 25 días como máximo; después desaparece para siempre. No podemos recuperar las copias que alguien con el enlace haya hecho por su cuenta. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales. Para los textos tuyos que publicamos, ese registro indica también qué texto era, de qué lote salió y cuándo lo enviaste, vinculado a tu respuesta en la que diste el permiso; el resto del lote no se conserva.',
+        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. Lo mismo vale para tus copias de revisión, los lotes guardados y nuestras notas sobre ellos, y las hojas aparte que mostraron tus sugerencias a otras personas voluntarias: un lote que envías cuenta como contacto, revisamos cada mes lo que tenga más de dos años y, cuando nos lo pides, eliminamos todos esos archivos en un plazo de 30 días. También eliminamos una copia de revisión cuando los cambios de su ronda ya están en el sitio. Al eliminar un archivo entero, se elimina también su historial de versiones. Después de vaciar la papelera de Drive, Google permite a quien tiene nuestro acceso de administración restaurar un archivo eliminado durante 25 días como máximo; después desaparece para siempre. No podemos recuperar las copias que alguien con el enlace haya hecho por su cuenta. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales. Para los textos tuyos que publicamos, ese registro indica también qué texto era, de qué lote salió y cuándo lo enviaste, vinculado a tu respuesta en la que diste el permiso; el resto del lote no se conserva.',
       },
       invites: {
         lead: 'Invitaciones a la beta del planificador:',
         rest:
-          ' si un administrador te invita desde cualquiera de las dos listas, el planificador guarda tu correo electrónico, cuándo se creó la invitación, su caducidad, si se retiró o se usó y qué cuenta la usó. Los registros de invitaciones sin usar se eliminan 30 días después de que caduquen o se retiren. Una invitación sin fecha de fin se conserva hasta que se retire o se use. Los registros de invitaciones usadas se eliminan junto con la cuenta. Para que lo eliminemos antes, escríbenos a hello@nidhi.today: eso incluye tanto la entrada de la hoja como el registro del planificador.',
+          ' si alguien con acceso de administración te invita desde cualquiera de las dos listas, el planificador guarda tu correo electrónico, cuándo se creó la invitación, su caducidad, si se retiró o se usó y qué cuenta la usó. Los registros de invitaciones sin usar se eliminan 30 días después de que caduquen o se retiren. Una invitación sin fecha de fin se conserva hasta que se retire o se use. Los registros de invitaciones usadas se eliminan junto con la cuenta. Para que lo eliminemos antes, escríbenos a hello@nidhi.today: eso incluye tanto la entrada de la hoja como el registro del planificador.',
       },
       bounced: {
         lead: 'Correos rebotados o no válidos:',
@@ -948,7 +948,7 @@ export const es: Dict = {
       },
       sendRetry: {
         lead: 'Correos de una lección que no se pudieron enviar:',
-        rest: ' si el correo de una lección no se te puede enviar, el script del boletín guarda un código corto creado a partir de tu dirección (parte de un hash SHA-256, nunca la dirección), cuántas veces lo intentó y el tipo de error. Los errores desconocidos se reintentan en ejecuciones posteriores, hasta tres intentos en total; las direcciones rechazadas por el servicio de correo no se reintentan. Estas notas se borran en cuanto esa lección ha llegado a todos los suscriptores a los que se puede enviar.',
+        rest: ' si el correo de una lección no se te puede enviar, el script del boletín guarda un código corto creado a partir de tu dirección (parte de un hash SHA-256, nunca la dirección), cuántas veces lo intentó y el tipo de error. Los errores desconocidos se reintentan en ejecuciones posteriores, hasta tres intentos en total; las direcciones rechazadas por el servicio de correo no se reintentan. Estas notas se borran en cuanto esa lección ha llegado a todas las personas suscritas a las que se puede enviar.',
       },
       visitorId: {
         lead: 'Tu ID de visitante de PostHog (solo con tu sí):',
@@ -1062,7 +1062,7 @@ export const es: Dict = {
     title: 'Recibe las nuevas entradas directamente en tu correo',
     text: 'Un correo cuando hay algo nuevo. Sin spam, cancela cuando quieras.',
     inEnglish: 'Las lecciones y los correos están en inglés.',
-    readers: '{n}+ lectores reciben las lecciones nuevas por correo.',
+    readers: '{n}+ personas reciben las lecciones nuevas por correo.',
     emailLabel: 'Correo electrónico',
     button: 'Suscribirme',
     privacyBefore: 'Doble confirmación. Cancela cuando quieras. ',

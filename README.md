@@ -1,4 +1,4 @@
-# Nidhi
+# nidhi
 
 The website for [nidhi.today](https://nidhi.today/?utm_source=github).
 

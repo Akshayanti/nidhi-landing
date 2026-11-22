@@ -162,7 +162,7 @@ export const multiCurrencyNetWorthEn = {
             'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Exchange rates come from central banks and other official sources via Frankfurter, and are reference rates and may differ from the rates available to retail customers at their bank.',
         },
         {
-          q: 'What\'s the difference between the "Full" and "Redacted" share modes?',
+          q: 'What\'s the difference between the “Full” and “Redacted” share modes?',
           a:
             'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the math. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
         },
@@ -172,24 +172,24 @@ export const multiCurrencyNetWorthEn = {
             'Rates come from the free Frankfurter API (api.frankfurter.dev), which combines the exchange rates published by central banks and other official sources. They are reference rates, updated as those sources publish them (usually each business day), intended as benchmarks rather than transactable quotes. The rates you actually receive at your bank or broker include a spread and may be materially different, especially for smaller currencies. No API key is required, and the request is made directly from your browser.',
         },
         {
-          q: 'What does "functional currency" mean?',
+          q: 'What does “functional currency” mean?',
           a:
             'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We leave it out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
         },
         {
-          q: 'What do "low", "moderate", and "elevated" mean?',
+          q: 'What do “low”, “moderate”, and “elevated” mean?',
           a:
-            'They are descriptive bands for non-functional currencies: under 20% of net worth is "low", 20-40% is "moderate", and over 40% is "elevated". They describe concentration size, not what you should do about it. Whether a given level fits your situation depends on your future spending plans, where you intend to retire, and how you choose to balance currency risk with other goals.',
+            'They are descriptive bands for non-functional currencies: under 20% of net worth is “low”, 20-40% is “moderate”, and over 40% is “elevated”. They describe concentration size, not what you should do about it. Whether a given level fits your situation depends on your future spending plans, where you intend to retire, and how you choose to balance currency risk with other goals.',
         },
         {
           q: 'Can I include debts and liabilities?',
           a:
-            'Yes. Each row has an Asset/Liability toggle. Liability amounts are subtracted from that currency\'s net position. If you have a USD mortgage alongside USD savings, the tool shows your net USD exposure. A currency where you owe more than you hold gets flagged as "Net debt."',
+            'Yes. Each row has an Asset/Liability toggle. Liability amounts are subtracted from that currency\'s net position. If you have a USD mortgage alongside USD savings, the tool shows your net USD exposure. A currency where you owe more than you hold gets flagged as “Net debt.”',
         },
         {
           q: 'How does the CSV upload work?',
           a:
-            'Create a CSV file with columns: name (optional), value (required), currency (required, 3-letter code), type (optional, "asset" or "liability", defaults to asset). Click "Upload CSV", pick the file, and the rows populate automatically. Any invalid rows are listed with line numbers so you can fix them. Uploading replaces existing data after a confirmation prompt.',
+            'Create a CSV file with columns: name (optional), value (required), currency (required, 3-letter code), type (optional, “asset” or “liability”, defaults to asset). Click “Upload CSV”, pick the file, and the rows populate automatically. Any invalid rows are listed with line numbers so you can fix them. Uploading replaces existing data after a confirmation prompt.',
         },
       ],
     },
@@ -344,11 +344,11 @@ export const multiCurrencyNetWorthEn = {
       csvErrors: {
         empty: 'CSV is empty.',
         columns: 'Expected at least value and currency columns.',
-        invalidValue: '"{value}" is not a valid positive number.',
+        invalidValue: '“{value}” is not a valid positive number.',
         emptyCurrency: 'Currency code is empty.',
-        unsupportedCurrency: '"{value}" is not a supported currency. Supported: {supported}.',
+        unsupportedCurrency: '“{value}” is not a supported currency. Supported: {supported}.',
         /** `{asset}` and `{liability}` are the page's own words for the two types. */
-        unknownType: '"{value}" is not a type the tool knows. Use {asset} or {liability}.',
+        unknownType: '“{value}” is not a type the tool knows. Use {asset} or {liability}.',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -449,7 +449,7 @@ export const multiCurrencyNetWorthEn = {
       functionalDebt:
         'You owe more than you hold in your spending currency ({currency}), so your net worth sits in other currencies and moves with their exchange rates.',
       netDebt:
-        'You owe more than you hold in {code} (a "net debt" position). When you have more liabilities than assets in a currency, it works the other way round: if {code} strengthens against {currency}, what you owe grows and your net worth falls; if {code} weakens, your net worth rises.',
+        'You owe more than you hold in {code} (a “net debt” position). When you have more liabilities than assets in a currency, it works the other way round: if {code} strengthens against {currency}, what you owe grows and your net worth falls; if {code} weakens, your net worth rises.',
       elevatedHidden:
         'Your {code} position is a large share of net worth in this share. If {code} rises or falls 10% against {currency}, your net worth rises or falls with it by a meaningful amount.',
       elevatedShown:
@@ -610,7 +610,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'शुद्ध संपत्ति कैलकुलेटर कैसे काम करता है?',
           a:
-            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ताज़ा आधिकारिक विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र "ज़्यादा" स्तर पर है।',
+            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ताज़ा आधिकारिक विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र “ज़्यादा” स्तर पर है।',
         },
         {
           q: 'मुद्रा जमाव का जोखिम क्या है?',
@@ -628,9 +628,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
             '38 मुद्राएँ समर्थित हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
         },
         {
-          q: 'शेयर करने के "पूरा हिसाब" और "रकम और नाम छिपाकर" वाले तरीक़ों में क्या फ़र्क़ है?',
+          q: 'शेयर करने के “पूरा हिसाब” और “रकम और नाम छिपाकर” वाले तरीक़ों में क्या फ़र्क़ है?',
           a:
-            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और क़िस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
+            '“पूरा हिसाब” वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और क़िस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। “रकम और नाम छिपाकर” वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
         },
         {
           q: 'विनिमय दरें कहाँ से आती हैं?',
@@ -638,24 +638,24 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
             'दरें मुफ़्त Frankfurter API (api.frankfurter.dev) से आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। ये संदर्भ दरें हैं, जो इन स्रोतों के प्रकाशित करने पर अपडेट होती हैं (आम तौर पर हर कारोबारी दिन), और इन्हें लेन-देन का भाव नहीं बल्कि मानक माना जाना चाहिए। आपके बैंक या ब्रोकर पर असल में जो दर मिलती है उसमें स्प्रेड जुड़ा होता है और वह काफ़ी अलग हो सकती है, ख़ासकर छोटी मुद्राओं में। किसी API कुंजी की ज़रूरत नहीं है, और अनुरोध सीधे आपके ब्राउज़र से जाता है।',
         },
         {
-          q: '"खर्च की मुद्रा" (functional\u00A0currency) का क्या मतलब है?',
+          q: '“खर्च की मुद्रा” (functional\u00A0currency) का क्या मतलब है?',
           a:
-            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर "मुख्य मुद्रा" का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
+            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर “मुख्य मुद्रा” का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
         },
         {
-          q: '"कम", "मध्यम" और "ज़्यादा" का क्या मतलब है?',
+          q: '“कम”, “मध्यम” और “ज़्यादा” का क्या मतलब है?',
           a:
-            'ये उन मुद्राओं की स्थिति बताने वाले स्तर हैं जो आपकी खर्च की मुद्रा नहीं हैं: शुद्ध संपत्ति के 20% से नीचे "कम", 20-40% "मध्यम", और 40% से ऊपर "ज़्यादा"। ये सिर्फ़ जमाव का आकार बताते हैं, यह नहीं कि आपको इसके बारे में क्या करना चाहिए। कोई स्तर आपकी स्थिति में ठीक बैठता है या नहीं, यह इस पर निर्भर है कि आगे आपका खर्च कहाँ और किस मुद्रा में होगा, आप कहाँ रिटायर होना चाहते हैं, और आप मुद्रा जोखिम को बाकी लक्ष्यों के साथ कैसे संतुलित करना चुनते हैं।',
+            'ये उन मुद्राओं की स्थिति बताने वाले स्तर हैं जो आपकी खर्च की मुद्रा नहीं हैं: शुद्ध संपत्ति के 20% से नीचे “कम”, 20-40% “मध्यम”, और 40% से ऊपर “ज़्यादा”। ये सिर्फ़ जमाव का आकार बताते हैं, यह नहीं कि आपको इसके बारे में क्या करना चाहिए। कोई स्तर आपकी स्थिति में ठीक बैठता है या नहीं, यह इस पर निर्भर है कि आगे आपका खर्च कहाँ और किस मुद्रा में होगा, आप कहाँ रिटायर होना चाहते हैं, और आप मुद्रा जोखिम को बाकी लक्ष्यों के साथ कैसे संतुलित करना चुनते हैं।',
         },
         {
           q: 'क्या कर्ज़ और देनदारियाँ भी जोड़ी जा सकती हैं?',
           a:
-            'हाँ। हर पंक्ति में संपत्ति/देनदारी का टॉगल है। देनदारी की रकम उस मुद्रा की शुद्ध स्थिति से घटा दी जाती है। अगर आपके पास USD की बचत के साथ USD का होम लोन भी है, तो टूल आपका शुद्ध USD एक्सपोज़र दिखाता है। जिस मुद्रा में आपके पास जितना है उससे ज़्यादा आप पर बकाया है, उस पर "शुद्ध देनदारी" का निशान लगता है।',
+            'हाँ। हर पंक्ति में संपत्ति/देनदारी का टॉगल है। देनदारी की रकम उस मुद्रा की शुद्ध स्थिति से घटा दी जाती है। अगर आपके पास USD की बचत के साथ USD का होम लोन भी है, तो टूल आपका शुद्ध USD एक्सपोज़र दिखाता है। जिस मुद्रा में आपके पास जितना है उससे ज़्यादा आप पर बकाया है, उस पर “शुद्ध देनदारी” का निशान लगता है।',
         },
         {
           q: 'CSV अपलोड कैसे काम करता है?',
           a:
-            'एक CSV फ़ाइल बनाएँ जिसमें ये कॉलम हों: name (वैकल्पिक), value (ज़रूरी), currency (ज़रूरी, तीन अक्षरों का कोड), type (वैकल्पिक, "asset" या "liability", न दें तो संपत्ति माना जाता है)। "CSV अपलोड करें" पर क्लिक करें, फ़ाइल चुनें, और पंक्तियाँ अपने आप भर जाएँगी। जो पंक्तियाँ ग़लत हैं, वे लाइन नंबर के साथ दिखा दी जाती हैं, ताकि आप उन्हें ठीक कर सकें। अपलोड करने से पहले पुष्टि माँगी जाती है, फिर मौजूदा आँकड़ों की जगह फ़ाइल के आँकड़े आ जाते हैं।',
+            'एक CSV फ़ाइल बनाएँ जिसमें ये कॉलम हों: name (वैकल्पिक), value (ज़रूरी), currency (ज़रूरी, तीन अक्षरों का कोड), type (वैकल्पिक, “asset” या “liability”, न दें तो संपत्ति माना जाता है)। “CSV अपलोड करें” पर क्लिक करें, फ़ाइल चुनें, और पंक्तियाँ अपने आप भर जाएँगी। जो पंक्तियाँ ग़लत हैं, वे लाइन नंबर के साथ दिखा दी जाती हैं, ताकि आप उन्हें ठीक कर सकें। अपलोड करने से पहले पुष्टि माँगी जाती है, फिर मौजूदा आँकड़ों की जगह फ़ाइल के आँकड़े आ जाते हैं।',
         },
       ],
     },
@@ -790,10 +790,10 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       csvErrors: {
         empty: 'CSV फ़ाइल खाली है।',
         columns: 'कम से कम value और currency कॉलम होने चाहिए।',
-        invalidValue: '"{value}" शून्य से बड़ी कोई मान्य संख्या नहीं है।',
+        invalidValue: '“{value}” शून्य से बड़ी कोई मान्य संख्या नहीं है।',
         emptyCurrency: 'मुद्रा कोड खाली है।',
-        unsupportedCurrency: '"{value}" समर्थित मुद्रा नहीं है। समर्थित मुद्राएँ: {supported}।',
-        unknownType: '"{value}" ऐसी क़िस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
+        unsupportedCurrency: '“{value}” समर्थित मुद्रा नहीं है। समर्थित मुद्राएँ: {supported}।',
+        unknownType: '“{value}” ऐसी क़िस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -873,7 +873,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       functionalDebt:
         'आपकी खर्च की मुद्रा ({currency}) में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है, इसलिए आपकी शुद्ध संपत्ति दूसरी मुद्राओं में है और उनकी विनिमय दरों के साथ घटती-बढ़ती है।',
       netDebt:
-        '{code} में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है (यानी "शुद्ध देनदारी" (net\u00A0debt) की स्थिति)। जब किसी मुद्रा में देनदारियाँ संपत्तियों से ज़्यादा हों, तो असर उलटा होता है: अगर {currency} के मुक़ाबले {code} मज़बूत हो, तो आप पर जो बकाया है वह बढ़ता है और आपकी शुद्ध संपत्ति घटती है; अगर {code} कमज़ोर हो, तो आपकी शुद्ध संपत्ति बढ़ती है।',
+        '{code} में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है (यानी “शुद्ध देनदारी” (net\u00A0debt) की स्थिति)। जब किसी मुद्रा में देनदारियाँ संपत्तियों से ज़्यादा हों, तो असर उलटा होता है: अगर {currency} के मुक़ाबले {code} मज़बूत हो, तो आप पर जो बकाया है वह बढ़ता है और आपकी शुद्ध संपत्ति घटती है; अगर {code} कमज़ोर हो, तो आपकी शुद्ध संपत्ति बढ़ती है।',
       elevatedHidden:
         'इस शेयर किए गए हिसाब में आपकी {code} वाली स्थिति शुद्ध संपत्ति का बड़ा हिस्सा है। अगर {currency} के मुक़ाबले {code} 10% मज़बूत या कमज़ोर हो, तो आपकी शुद्ध संपत्ति भी उसके साथ काफ़ी बढ़ेगी या घटेगी।',
       elevatedShown:

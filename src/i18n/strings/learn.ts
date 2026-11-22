@@ -440,7 +440,7 @@ export const learnEn = {
     subtitle: 'Every topic on the learning path, with a lesson count for each. Pick one to read every lesson in that area.',
     empty: 'No topics yet.',
     /** A tag with no curated entry still gets a card, with this line. */
-    fallbackCard: 'Articles tagged "{tag}".',
+    fallbackCard: 'Articles tagged “{tag}”.',
     countOne: '{count} lesson',
     countMany: '{count} lessons',
     countFew: '{count} lessons',
@@ -833,7 +833,7 @@ export const learnHi: typeof learnEn = {
     h1: 'विषय से देखें',
     subtitle: 'सीखने के रास्ते के सभी विषय, हर एक के पाठ की गिनती के साथ। किसी एक को चुनकर उस क्षेत्र के सभी पाठ पढ़ें।',
     empty: 'अभी कोई विषय नहीं।',
-    fallbackCard: '"{tag}" टैग वाले पाठ।',
+    fallbackCard: '“{tag}” टैग वाले पाठ।',
     countOne: '{count} पाठ',
     countMany: '{count} पाठ',
     countFew: '{count} पाठ',
@@ -986,7 +986,7 @@ export const learnEs: typeof learnEn = {
       'investing': {
         name: 'Inversión',
         title: 'Nociones de inversión: educación financiera | nidhi',
-        description: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para principiantes y educación financiera.',
+        description: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para quien empieza y educación financiera.',
         card: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para quien empieza, como parte de la educación financiera.',
       },
       'risk': {

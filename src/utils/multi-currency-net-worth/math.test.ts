@@ -444,7 +444,7 @@ Test4,10000,GBP,debt`;
     const { rows, errors } = parseCSV(csv);
     assert.equal(rows.length, 0);
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].message, '"abc" is not a valid positive number.');
+    assert.equal(errors[0].message, '“abc” is not a valid positive number.');
   });
 
   it('reports error for unsupported currency', () => {
@@ -452,7 +452,7 @@ Test4,10000,GBP,debt`;
     const { rows, errors } = parseCSV(csv);
     assert.equal(rows.length, 0);
     assert.equal(errors.length, 1);
-    assert.ok(errors[0].message.startsWith('"XYZ" is not a supported currency. Supported:'));
+    assert.ok(errors[0].message.startsWith('“XYZ” is not a supported currency. Supported:'));
   });
 
   it('reports error for zero value', () => {
@@ -460,7 +460,7 @@ Test4,10000,GBP,debt`;
     const { rows, errors } = parseCSV(csv);
     assert.equal(rows.length, 0);
     assert.equal(errors.length, 1);
-    assert.equal(errors[0].message, '"0" is not a valid positive number.');
+    assert.equal(errors[0].message, '“0” is not a valid positive number.');
   });
 
   it('handles empty CSV', () => {

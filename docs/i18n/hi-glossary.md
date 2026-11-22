@@ -26,7 +26,8 @@ breach as a defect.
 1. **No em dashes and no double dashes.** Devanagari uses the danda `।` as a
    full stop; inside a sentence use a colon, a comma, or reword. This applies
    to Devanagari text as much as to Latin, so a long dash and a doubled hyphen
-   are both out, in prose and in code comments alike.
+   are both out, in prose and in code comments alike. Quotation marks are
+   curly, “ ”, as in the English.
 2. **Teach, do not prescribe.** The order is: the concept, why people use it,
    the cited evidence with its limits, where it breaks, what depends on the
    reader's situation. Describe common practice ("एक आम शुरुआत यह है कि...")

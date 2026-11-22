@@ -66,8 +66,8 @@ export const loanComparisonEn = {
       'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
       'Model origination fees and extra monthly principal',
       'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
-      'Horizon analysis ("if I sell at month N") showing principal repaid, interest paid, balance remaining, and total cash out per vendor',
-      'Refinance scenario builder comparing "keep" vs. "refinance" with closing costs and break-even horizon',
+      'Horizon analysis (“if I sell at month N”) showing principal repaid, interest paid, balance remaining, and total cash out per vendor',
+      'Refinance scenario builder comparing “keep” vs. “refinance” with closing costs and break-even horizon',
       'Cent-precise integer amortization schedule',
       'Shareable URL for any comparison state, including all advanced fields',
     ],
@@ -111,7 +111,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'How many loans can I compare at once?',
-              a: 'Two to five. The page starts with two side-by-side cards and an obvious "Add vendor" tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
+              a: 'Two to five. The page starts with two side-by-side cards and an obvious “Add vendor” tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
             },
             {
               q: 'Can I compare loans with different terms or rates?',
@@ -140,7 +140,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Does APR include the extra principal I plan to pay each month?',
-              a: 'No. APR is a measure of the contractual cost the lender is charging, not of any voluntary actions you take. Extra principal payments are optional, and including them would understate the disclosed APR. The "Where each payment goes" chart and the APR row both use the contract schedule (without extra principal); the monthly payment, time-to-payoff, and total-paid figures all reflect the schedule that includes your extra payments.',
+              a: 'No. APR is a measure of the contractual cost the lender is charging, not of any voluntary actions you take. Extra principal payments are optional, and including them would understate the disclosed APR. The “Where each payment goes” chart and the APR row both use the contract schedule (without extra principal); the monthly payment, time-to-payoff, and total-paid figures all reflect the schedule that includes your extra payments.',
             },
             {
               q: 'Should I include mandatory insurance or bundled products in the fee?',
@@ -148,7 +148,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Does the calculator handle origination fees and closing costs?',
-              a: 'Yes. Enter them in the "Origination / closing fee" field under "Costs and fees" on each vendor card. Fees are added to the total amount paid, so the side-by-side comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
+              a: 'Yes. Enter them in the “Origination / closing fee” field under “Costs and fees” on each vendor card. Fees are added to the total amount paid, so the side-by-side comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
             },
           ],
         },
@@ -157,7 +157,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'Can I model paying extra principal each month?',
-              a: 'Yes. Enter an amount under "Extra principal per month" in the Prepayments group on each vendor card. The calculator applies it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
+              a: 'Yes. Enter an amount under “Extra principal per month” in the Prepayments group on each vendor card. The calculator applies it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
             },
             {
               q: 'How are lump-sum prepayments entered?',
@@ -165,7 +165,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'How does the points break-even work?',
-              a: 'Discount points are an upfront cost that buys a lower interest rate. Whether they pay off depends on how long you keep the loan. Enter the cost of points and the rate reduction they purchased, and the calculator builds a hypothetical "no points paid" baseline (same loan, fee minus points cost, rate plus reduction) and compares the two. The "Points break-even" row shows how many months of lower payments are needed to recoup the upfront cost. If the new monthly payment is not actually lower, the break-even is reported as "never".',
+              a: 'Discount points are an upfront cost that buys a lower interest rate. Whether they pay off depends on how long you keep the loan. Enter the cost of points and the rate reduction they purchased, and the calculator builds a hypothetical “no points paid” baseline (same loan, fee minus points cost, rate plus reduction) and compares the two. The “Points break-even” row shows how many months of lower payments are needed to recoup the upfront cost. If the new monthly payment is not actually lower, the break-even is reported as “never”.',
             },
             {
               q: 'How does the prepayment penalty work?',
@@ -178,11 +178,11 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'How does the calculator handle a loan whose rate is fixed at first and then changes (a hybrid or ARM loan in the US)?',
-              a: 'Switch the rate type to "Fixed, then variable" in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a rate fixed for five years) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
+              a: 'Switch the rate type to “Fixed, then variable” in the “Rate structure” group, then enter the initial fixed period (e.g. 60 months for a rate fixed for five years) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
             },
             {
-              q: 'Why is the "Fixed, then variable" option disabled when I picked "Payoff months"?',
-              a: 'Fixed-then-variable loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for "Payoff months" you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch "Solve for" to "Monthly payment" to enable the option.',
+              q: 'Why is the “Fixed, then variable” option disabled when I picked “Payoff months”?',
+              a: 'Fixed-then-variable loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for “Payoff months” you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch “Solve for” to “Monthly payment” to enable the option.',
             },
           ],
         },
@@ -190,16 +190,16 @@ export const loanComparisonEn = {
           title: 'Analysis tabs',
           items: [
             {
-              q: 'What does the "Where each payment goes" chart show?',
+              q: 'What does the “Where each payment goes” chart show?',
               a: 'It splits a representative monthly payment from each year of the loan into its interest and principal portions, stacked on a single bar. Every bar has the same total height (the same monthly payment), but the split shifts dramatically: in the early years almost all of the payment is interest, while in the final years almost all of it is principal. In this model, an extra payment early in a long loan saves more interest than the same payment late: each euro taken off the principal early is not charged interest for the rest of the term.',
             },
             {
-              q: 'What is the horizon analysis ("if I sell or refinance at...")?',
+              q: 'What is the horizon analysis (“if I sell or refinance at...”)?',
               a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This view is useful if you expect to sell, move, or refinance well before the contractual end of the loan, because the vendor with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
             },
             {
               q: 'How does the refinance scenario builder work?',
-              a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under "keep the original loan to its end" against "make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end". If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs paid at the refinance, and any such penalty, are recouped (when closing costs are added to the new loan instead, the break-even counts the larger balance: it is the month from which the payments saved outweigh the extra still owed). The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is "never".',
+              a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under “keep the original loan to its end” against “make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end”. If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs paid at the refinance, and any such penalty, are recouped (when closing costs are added to the new loan instead, the break-even counts the larger balance: it is the month from which the payments saved outweigh the extra still owed). The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is “never”.',
             },
           ],
         },
@@ -224,7 +224,7 @@ export const loanComparisonEn = {
               a: 'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
             },
             {
-              q: 'What does "multi-currency" mean here?',
+              q: 'What does “multi-currency” mean here?',
               a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
@@ -609,7 +609,7 @@ export const loanComparisonEn = {
         strong: 'Prepayment penalties',
         rest: " apply only when the loan is fully paid off on or before the penalty's last month: by extra payments, by lump sums, or by refinancing it in the refinance scenario.",
       },
-      note: 'Everything runs in your browser, and nothing you type is sent anywhere. Use the "Copy shareable link" button to encode every input into a URL you can hand to someone else.',
+      note: 'Everything runs in your browser, and nothing you type is sent anywhere. Use the “Copy shareable link” button to encode every input into a URL you can hand to someone else.',
     },
     horizon: {
       heading: 'If I sell or refinance at...',
@@ -781,8 +781,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'तय अवधि देकर मासिक किस्त निकालें, या तय किस्त देकर चुकाने का समय निकालें',
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
       'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले, पहले तय फिर बदलती दर वाले लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
-      'हॉराइज़न विश्लेषण ("अगर मैं महीने N पर बेच दूँ") हर लोन ऑफ़र के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
-      'रीफ़ाइनेंस परिदृश्य, जो "पुराना लोन चलाते रहें" और "रीफ़ाइनेंस" की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
+      'हॉराइज़न विश्लेषण (“अगर मैं महीने N पर बेच दूँ”) हर लोन ऑफ़र के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
+      'रीफ़ाइनेंस परिदृश्य, जो “पुराना लोन चलाते रहें” और “रीफ़ाइनेंस” की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
       'मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) तक सटीक, पूर्णांकों में बना किस्तों का शेड्यूल',
       'किसी भी तुलना का शेयर करने योग्य लिंक, एडवांस्ड फ़ील्ड समेत',
     ],
@@ -822,7 +822,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'एक बार में कितने लोन की तुलना हो सकती है?',
-              a: 'दो से पाँच। पेज दो कार्ड से शुरू होता है और उनके बगल में "लोन ऑफ़र जोड़ें" वाला साफ़ बटन रहता है, जिससे तुलना पाँच लोन ऑफ़र तक बढ़ाई जा सकती है। हर कार्ड पर हटाने का बटन है, ताकि जो लोन ऑफ़र अब काम का न हो उसे हटाया जा सके।',
+              a: 'दो से पाँच। पेज दो कार्ड से शुरू होता है और उनके बगल में “लोन ऑफ़र जोड़ें” वाला साफ़ बटन रहता है, जिससे तुलना पाँच लोन ऑफ़र तक बढ़ाई जा सकती है। हर कार्ड पर हटाने का बटन है, ताकि जो लोन ऑफ़र अब काम का न हो उसे हटाया जा सके।',
             },
             {
               q: 'अलग-अलग अवधि या दर वाले लोन की तुलना हो सकती है?',
@@ -851,7 +851,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या APR में हर महीने चुकाया जाने वाला मेरा अतिरिक्त मूलधन शामिल है?',
-              a: 'नहीं। APR इस बात का माप है कि लोन देने वाला अनुबंध में कितनी लागत वसूल रहा है, न कि आपकी अपनी मर्ज़ी से किए गए भुगतानों का। अतिरिक्त मूलधन देना वैकल्पिक है, और उसे जोड़ने से बताया गया APR कम दिखने लगेगा। "हर किस्त कहाँ जाती है" चार्ट और APR की पंक्ति, दोनों अनुबंध वाला शेड्यूल इस्तेमाल करते हैं (बिना अतिरिक्त मूलधन); मासिक किस्त, चुकाने का समय और कुल चुकाई गई राशि वाले आँकड़े उस शेड्यूल को दिखाते हैं जिसमें आपका अतिरिक्त भुगतान शामिल है।',
+              a: 'नहीं। APR इस बात का माप है कि लोन देने वाला अनुबंध में कितनी लागत वसूल रहा है, न कि आपकी अपनी मर्ज़ी से किए गए भुगतानों का। अतिरिक्त मूलधन देना वैकल्पिक है, और उसे जोड़ने से बताया गया APR कम दिखने लगेगा। “हर किस्त कहाँ जाती है” चार्ट और APR की पंक्ति, दोनों अनुबंध वाला शेड्यूल इस्तेमाल करते हैं (बिना अतिरिक्त मूलधन); मासिक किस्त, चुकाने का समय और कुल चुकाई गई राशि वाले आँकड़े उस शेड्यूल को दिखाते हैं जिसमें आपका अतिरिक्त भुगतान शामिल है।',
             },
             {
               q: 'क्या ज़रूरी बीमा या साथ में बिकने वाले प्रोडक्ट शुल्क में जोड़ने चाहिए?',
@@ -859,7 +859,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या कैलकुलेटर लोन शुल्क और कागज़ी खर्च संभालता है?',
-              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर "लागत और शुल्क" के नीचे "लोन शुल्क और कागज़ी खर्च" वाले फ़ील्ड में इन्हें भर दें। ये शुल्क कुल चुकाई जाने वाली राशि में जुड़ जाते हैं, इसलिए साथ-साथ वाली तुलना लोन की असली लागत दिखाती है, और ये दिखाए गए APR में भी जुड़ जाते हैं।',
+              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर “लागत और शुल्क” के नीचे “लोन शुल्क और कागज़ी खर्च” वाले फ़ील्ड में इन्हें भर दें। ये शुल्क कुल चुकाई जाने वाली राशि में जुड़ जाते हैं, इसलिए साथ-साथ वाली तुलना लोन की असली लागत दिखाती है, और ये दिखाए गए APR में भी जुड़ जाते हैं।',
             },
           ],
         },
@@ -868,7 +868,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'क्या हर महीने अतिरिक्त मूलधन चुकाने का हिसाब लगाया जा सकता है?',
-              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर "समय से पहले भुगतान" वाले हिस्से में "हर महीने अतिरिक्त मूलधन" के नीचे राशि भर दें। कैलकुलेटर हर महीने उतनी राशि से सीधे मूलधन घटा देता है, जिससे चुकाने का समय छोटा हो जाता है और कुल ब्याज घट जाता है।',
+              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर “समय से पहले भुगतान” वाले हिस्से में “हर महीने अतिरिक्त मूलधन” के नीचे राशि भर दें। कैलकुलेटर हर महीने उतनी राशि से सीधे मूलधन घटा देता है, जिससे चुकाने का समय छोटा हो जाता है और कुल ब्याज घट जाता है।',
             },
             {
               q: 'एकमुश्त राशि कैसे भरी जाती है?',
@@ -876,7 +876,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'डिस्काउंट पॉइंट्स की बराबरी कैसे काम करती है?',
-              a: 'डिस्काउंट पॉइंट्स शुरू में दिया जाने वाला खर्च है, जो कम ब्याज दर खरीदता है। यह फ़ायदे में आएगा या नहीं, यह इस पर निर्भर है कि लोन कितने समय तक चलेगा। पॉइंट्स की लागत और उनसे मिली दर में कमी भर दें, और कैलकुलेटर "पॉइंट्स नहीं दिए" वाला काल्पनिक आधार बनाकर (वही लोन, शुल्क में से पॉइंट्स की लागत घटाकर, दर में कमी जोड़कर) दोनों की तुलना करता है। "पॉइंट्स की बराबरी" वाली पंक्ति बताती है कि शुरू का यह खर्च निकलने में कितने महीनों की कम किस्तें लगेंगी। अगर नई मासिक किस्त असल में कम नहीं है, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
+              a: 'डिस्काउंट पॉइंट्स शुरू में दिया जाने वाला खर्च है, जो कम ब्याज दर खरीदता है। यह फ़ायदे में आएगा या नहीं, यह इस पर निर्भर है कि लोन कितने समय तक चलेगा। पॉइंट्स की लागत और उनसे मिली दर में कमी भर दें, और कैलकुलेटर “पॉइंट्स नहीं दिए” वाला काल्पनिक आधार बनाकर (वही लोन, शुल्क में से पॉइंट्स की लागत घटाकर, दर में कमी जोड़कर) दोनों की तुलना करता है। “पॉइंट्स की बराबरी” वाली पंक्ति बताती है कि शुरू का यह खर्च निकलने में कितने महीनों की कम किस्तें लगेंगी। अगर नई मासिक किस्त असल में कम नहीं है, तो बराबरी का समय “कभी नहीं” बताया जाता है।',
             },
             {
               q: 'समय से पहले भुगतान पर जुर्माना कैसे काम करता है?',
@@ -889,11 +889,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कैलकुलेटर ऐसे लोन को कैसे संभालता है जिसकी दर पहले तय रहती है और फिर बदलती है (अमेरिका में हाइब्रिड या ARM लोन)?',
-              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार "पहले तय, फिर बदलती" पर बदल दें, फिर शुरुआत की तय अवधि (जैसे पाँच साल की तय दर के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
+              a: '“दर का ढाँचा” वाले हिस्से में दर का प्रकार “पहले तय, फिर बदलती” पर बदल दें, फिर शुरुआत की तय अवधि (जैसे पाँच साल की तय दर के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
             },
             {
-              q: '"चुकाने के महीने" चुनने पर "पहले तय, फिर बदलती" विकल्प बंद क्यों हो जाता है?',
-              a: 'पहले तय, फिर बदलती दर वाले लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। "चुकाने के महीने" चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। यह विकल्प चालू करने के लिए "क्या निकालना है" को "मासिक किस्त" पर बदल दें।',
+              q: '“चुकाने के महीने” चुनने पर “पहले तय, फिर बदलती” विकल्प बंद क्यों हो जाता है?',
+              a: 'पहले तय, फिर बदलती दर वाले लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। “चुकाने के महीने” चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। यह विकल्प चालू करने के लिए “क्या निकालना है” को “मासिक किस्त” पर बदल दें।',
             },
           ],
         },
@@ -901,16 +901,16 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           title: 'विश्लेषण के टैब',
           items: [
             {
-              q: '"हर किस्त कहाँ जाती है" चार्ट क्या दिखाता है?',
+              q: '“हर किस्त कहाँ जाती है” चार्ट क्या दिखाता है?',
               a: 'यह लोन के हर साल की एक प्रतिनिधि मासिक किस्त को ब्याज और मूलधन के हिस्सों में बाँटकर एक ही स्तंभ पर ऊपर-नीचे दिखाता है। हर स्तंभ की कुल ऊँचाई एक जैसी है (क्योंकि मासिक किस्त एक जैसी है), पर बँटवारा बहुत बदलता है: शुरुआती सालों में किस्त का लगभग पूरा हिस्सा ब्याज होता है, और आखिरी सालों में लगभग पूरा मूलधन। इस हिसाब में लंबे लोन की शुरुआत में किया गया अतिरिक्त भुगतान, बाद में किए गए उतने ही भुगतान से ज़्यादा ब्याज बचाता है: शुरू में घटाए गए मूलधन के हर यूरो पर बाकी पूरी अवधि का ब्याज नहीं लगता।',
             },
             {
-              q: 'हॉराइज़न (किस महीने तक का हिसाब) विश्लेषण ("अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...") क्या है?',
+              q: 'हॉराइज़न (किस महीने तक का हिसाब) विश्लेषण (“अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...”) क्या है?',
               a: 'महीने 36 और महीने 360 पर लोन बहुत अलग दिखते हैं। हॉराइज़न टैब पूछता है: जो महीना आप चुनें, उस तक आपने असल में कितना मूलधन चुकाया, कितना ब्याज दिया, कितना बकाया बचा, और अब तक कुल कितनी नकदी खर्च हुई (किस्तें और लोन शुल्क मिलाकर)? यह नज़रिया तब काम का है जब आप लोन की अनुबंध अवधि ख़त्म होने से काफ़ी पहले बेचने, शहर बदलने या रीफ़ाइनेंस करने की सोच रहे हों, क्योंकि जो लोन ऑफ़र 360 महीनों में सबसे कम कुल लागत पर आता है, ज़रूरी नहीं कि वही महीने 60 पर निकलने पर भी सबसे सस्ता हो।',
             },
             {
               q: 'रीफ़ाइनेंस परिदृश्य बनाने वाला हिस्सा कैसे काम करता है?',
-              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर "पुराना लोन आखिर तक चलाते रहने" में कुल खर्च की तुलना "रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने" से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के समय चुकाए गए कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी (अगर कागज़ी खर्च नए लोन में जोड़ा जाए, तो बराबरी का समय बड़े बकाए को भी गिनता है: यह वह महीना है जब से किस्तों में हुई बचत अतिरिक्त बकाए से ज़्यादा हो जाती है)। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
+              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर “पुराना लोन आखिर तक चलाते रहने” में कुल खर्च की तुलना “रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने” से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के समय चुकाए गए कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी (अगर कागज़ी खर्च नए लोन में जोड़ा जाए, तो बराबरी का समय बड़े बकाए को भी गिनता है: यह वह महीना है जब से किस्तों में हुई बचत अतिरिक्त बकाए से ज़्यादा हो जाती है)। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय “कभी नहीं” बताया जाता है।',
             },
           ],
         },
@@ -935,7 +935,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
               a: '38 मुद्राएँ शामिल हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
             },
             {
-              q: 'यहाँ "कई मुद्राओं" का क्या मतलब है?',
+              q: 'यहाँ “कई मुद्राओं” का क्या मतलब है?',
               a: 'इसका मतलब है कि कैलकुलेटर इनपुट और नतीजे उसी मुद्रा की परंपरा से लिखता है जो आप चुनते हैं। चिह्न, दशमलव के स्थान और अंकों का समूहन, सब उसी मुद्रा के हिसाब से बदल जाते हैं। गणित वही रहता है: तय दर वाला किस्तों में चुकने वाला लोन एक जैसा ही चलता है, चाहे उसकी इकाई को डॉलर कहें, रुपया या येन। एक ही तुलना में सारे लोन एक ही मुद्रा में रहते हैं, क्योंकि अलग-अलग मुद्राओं की नाममात्र किस्तों की तुलना, ताज़ा विनिमय दर (exchange\u00A0rate) के बिना, भ्रम में डालती है।',
             },
           ],
@@ -1278,7 +1278,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         strong: 'समय से पहले भुगतान पर जुर्माना',
         rest: ' तभी लगता है जब लोन जुर्माने की अवधि के आखिरी महीने या उससे पहले पूरा चुक जाए: अतिरिक्त किस्तों से, एकमुश्त राशि से, या रीफ़ाइनेंस वाले हिस्से में उसे रीफ़ाइनेंस करने से।',
       },
-      note: 'सब कुछ आपके ब्राउज़र में चलता है, और आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए "शेयर करने योग्य लिंक कॉपी करें" बटन इस्तेमाल करें।',
+      note: 'सब कुछ आपके ब्राउज़र में चलता है, और आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए “शेयर करने योग्य लिंक कॉपी करें” बटन इस्तेमाल करें।',
     },
     horizon: {
       heading: 'अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...',
@@ -1354,7 +1354,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
-        hybridMode: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि चाहिए: "क्या निकालना है" में "मासिक किस्त" चुनें।',
+        hybridMode: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि चाहिए: “क्या निकालना है” में “मासिक किस्त” चुनें।',
         refiOriginal: 'पुराना लोन सही नहीं है; रीफ़ाइनेंस की गणना नहीं हो सकती।',
         optionalUnreadable: 'वैकल्पिक बॉक्सों में से एक पढ़ा नहीं जा सका। सिर्फ़ अंक लिखें, या बॉक्स खाली कर दें।',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
