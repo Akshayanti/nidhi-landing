@@ -233,6 +233,14 @@ const pageData = {
           }
           var toggle = card.querySelector('[data-helper-toggle]');
           if (toggle) { toggle.hidden = false; toggle.style.visibility = 'hidden'; }
+          // The page's module runs before this event and marks the card. If
+          // it never ran, the card goes back to what a new reader sees.
+          document.addEventListener('DOMContentLoaded', function () {
+            if (card.dataset.start) return;
+            if (newer) newer.hidden = false;
+            if (back) back.hidden = true;
+            if (toggle) toggle.hidden = true;
+          });
         })();
       </script>
       {band && (

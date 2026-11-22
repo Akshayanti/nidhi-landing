@@ -1037,6 +1037,7 @@ a.learn-level:hover {
 
 .learn-result {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
@@ -1057,8 +1058,15 @@ a.learn-level:hover {
   color: var(--color-text-primary);
 }
 
+/* The title keeps a readable measure: at large text the level moves below it. */
+.learn-result > span[lang] {
+  flex: 1 1 12em;
+  min-width: 0;
+}
+
 .learn-pill {
-  flex: none;
+  flex: 0 1 auto;
+  max-width: 100%;
   padding: 3px 9px;
   border: 1px solid var(--lc);
   border-radius: var(--radius-pill);
@@ -1151,7 +1159,13 @@ a.learn-level:hover {
   align-items: baseline;
   column-gap: var(--space-3);
   min-width: 0;
+  padding-bottom: var(--space-2);
   overflow-wrap: anywhere;
+}
+
+/* A rule between rows, so a reading time reads with the title above it. */
+.learn-dirList > li + li {
+  border-top: 1px solid var(--color-border-light);
 }
 
 /* A row is a tap target of its own: 44px tall, underlined like the other
@@ -1190,7 +1204,8 @@ a.learn-level:hover {
 
   .learn-levelHere { padding: 9px calc(var(--space-3) - 1px); }
 
-  .learn-result { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .learn-result { align-items: flex-start; flex-direction: column; flex-wrap: nowrap; gap: 6px; }
+  .learn-result > span[lang] { flex: none; max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
