@@ -559,3 +559,12 @@ describe('a short value in an event’s name (P2)', () => {
     assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_exported', properties: {} }), []);
   });
 });
+
+describe('a typed rate in a list of numbers (P2)', () => {
+  it('two numbers, as PostHog sends a position, are not a rate typed with a decimal comma', () => {
+    for (const text of ['"coords":[[1,83],[2,4]]', '[1,83]', '[7,1,83]']) assert.deepEqual(checks.findLeaks(text), [], text);
+  });
+  it('the rate itself still is, in either mark', () => {
+    for (const text of ['fee 1,83 %', '"fee":"1,83"', '1.83', '"f":1.83', '[1.83]']) assert.ok(checks.findLeaks(text).includes('1.83'), text);
+  });
+});

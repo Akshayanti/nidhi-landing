@@ -520,6 +520,14 @@ async function fill(page, selector, value, where = {}) {
   } else {
     await page.keyboard.press('Home');
     for (let i = 0; i < where.steps; i++) await page.keyboard.press('ArrowRight');
+    // A slow page can lose a step (the laptop runs with consent did, 4 of 5):
+    // press on until the slider holds the value, never past it, and at most
+    // as many presses again; the check after Tab still fails if it never does.
+    for (let i = 0; i < where.steps; i++) {
+      const held = Number(await el.evaluate((node) => node.value));
+      if (!(held < Number(value))) break;
+      await page.keyboard.press('ArrowRight');
+    }
   }
   const box = await el.evaluate(boxKey);
   await page.keyboard.press('Tab');
@@ -547,8 +555,8 @@ async function reach(page, selector, where = {}) {
 }
 
 /** Presses what shows a box: a tab, or a choice. */
-async function reveal(page, selector, note) {
-  const el = (await reach(page, selector)) || (await page.$(selector));
+async function reveal(page, selector, note, where = {}) {
+  const el = (await reach(page, selector, where)) || (await page.$$(selector))[where.nth ?? 0];
   if (!el) throw new Error(`nothing matches ${selector}, which shows a box`);
   if (!(await press(page, el))) {
     await el.evaluate((node) => node.click());
@@ -558,25 +566,33 @@ async function reveal(page, selector, note) {
 }
 
 /**
- * Runs in the page: a name for one box that holds through redraws and is the
- * same for every offer or row. The suffix of its id where it has one, a
- * slider's class, otherwise its label without amounts and units.
+ * Runs in the page: a name for one box that holds through redraws. The suffix
+ * of its id where it has one, a slider's class, otherwise its label without
+ * amounts and units; and from the second offer or row on, which one it is, so
+ * that typing into the first does not stand for the others. A row a later
+ * step adds starts empty, so the last count names boxes by field only.
  */
-function boxKey(node) {
-  const suffix = /^_[^-]*_-(.+)$/.exec(node.id);
-  if (suffix) return suffix[1];
-  if (node.type === 'range') return node.className;
-  const label = node.labels?.[0]?.textContent || node.getAttribute('aria-label') || node.className;
-  return label.replace(/\([^)]*\)|\d+/g, '').trim();
+function boxKey(node, eachOne = true) {
+  const name = (box) => {
+    const suffix = /^_[^-]*_-(.+)$/.exec(box.id);
+    if (suffix) return suffix[1];
+    if (box.type === 'range') return box.className;
+    const label = box.labels?.[0]?.textContent || box.getAttribute('aria-label') || box.className;
+    return label.replace(/\([^)]*\)|\d+/g, '').trim();
+  };
+  const own = name(node);
+  const alike = [...document.querySelectorAll('astro-island input, astro-island textarea, astro-island [contenteditable="true"]')].filter((box) => name(box) === own);
+  const at = alike.indexOf(node);
+  return eachOne && at > 0 ? `${own} (${at + 1})` : own;
 }
 
 /** Notes every box on the page now, in a closed section too. */
-async function noteBoxes(page, note) {
+async function noteBoxes(page, note, eachOne = true) {
   const found = await page.$$('astro-island input, astro-island textarea, astro-island [contenteditable="true"]');
   for (const el of found) {
     const editable = await el.evaluate((node) => !node.readOnly && !['radio', 'checkbox', 'file', 'button', 'submit', 'hidden'].includes(node.type)).catch(() => false);
     if (!editable) continue;
-    const key = await el.evaluate(boxKey).catch(() => null);
+    const key = await el.evaluate(boxKey, eachOne).catch(() => null);
     if (key !== null) note.shown.add(key);
   }
 }
@@ -658,7 +674,7 @@ async function makeChoices(page, note) {
     for (const el of await visible(page, selector)) {
       await press(page, el);
       await sleep(120);
-      await noteBoxes(page, note);
+      await noteBoxes(page, note, false);
     }
   }
   await sleep(400);
@@ -675,16 +691,25 @@ async function useTool(page, tool, note, downloads, sent) {
   await noteBoxes(page, note);
   for (const f of tool.boxes) {
     note.step = `typing into ${f.name}`;
-    if (f.reveal && !(await choose(page, f.selector, f))) { await reveal(page, f.reveal, note); await noteBoxes(page, note); }
+    if (f.reveal && f.all) {
+      // Every offer's choice, so that every offer shows the box.
+      const choices = (await page.$$(f.reveal)).length;
+      for (let i = 0; i < choices; i++) await reveal(page, f.reveal, note, { nth: i });
+      await noteBoxes(page, note);
+    } else if (f.reveal && !(await choose(page, f.selector, f))) { await reveal(page, f.reveal, note); await noteBoxes(page, note); }
     if (f.all) {
-      const n = (await visible(page, f.selector)).length;
+      // Every offer or row, a closed one too: fill opens what holds the box.
+      const n = (await page.$$(f.selector)).length;
       if (!n) throw new Error(`no visible field for ${f.selector}`);
       for (let i = 0; i < n; i++) note.typed.add(await fill(page, f.selector, f.value, { nth: i }));
     } else {
       if (f.addRow && !(await click(page, f.addRow))) failed.push(`the row for a second amount could not be added (${f.addRow})`);
       note.typed.add(await fill(page, f.selector, f.value, f));
     }
-    if (f.after) await reveal(page, f.after, note);
+    if (f.after && f.all) {
+      const choices = (await page.$$(f.after)).length;
+      for (let i = 0; i < choices; i++) await reveal(page, f.after, note, { nth: i });
+    } else if (f.after) await reveal(page, f.after, note);
   }
   if (tool.removeNamedRow) {
     note.step = 'adding and removing a named row';
@@ -795,7 +820,7 @@ async function useTool(page, tool, note, downloads, sent) {
   }
   if (!(await page.evaluate(() => window.__printed || 0))) failed.push('the print dialog was never asked for: the PDF export did not run');
   note.saved = saved.length;
-  await noteBoxes(page, note);
+  await noteBoxes(page, note, false);
   failed.push(...uncoveredBoxes(note.shown, note.typed));
   return { resets, failed };
 }

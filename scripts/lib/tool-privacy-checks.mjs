@@ -10,7 +10,7 @@ export const TEST_KEY = 'phc_local_test_build_not_a_real_key';
 // payload is not chance, and none is a prefix of another.
 export const AMOUNTS = [7131719, 8173391, 9377113, 6241507, 5318263, 4429183, 3652141];
 // Distinctive names for a loan offer or an asset.
-export const NAMES = ['Zqxvora Bank', 'Wjkpelt Flat'];
+export const NAMES = ['Zqxvora Bank', 'Wjkpelt Flat', 'Qhuvdeb Fund'];
 
 /**
  * Every box a reader can type in or slide, tool by tool, in the order the
@@ -29,31 +29,36 @@ export const BOXES = {
   'loan-comparison': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0], all: true },
     { name: 'principal', selector: 'input[id$="-principal"]', value: AMOUNTS[0], all: true },
-    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.31' },
-    { name: 'term', selector: 'input[id$="-term"]', value: '347' },
-    { name: 'fee', selector: 'input[id$="-fee"]', value: AMOUNTS[1] },
-    { name: 'points cost', selector: 'input[id$="-pointsCost"]', value: AMOUNTS[3] },
-    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.13' },
-    { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2] },
-    { name: 'lump sums', selector: 'input[id$="-lumpSums"]', value: `23:${AMOUNTS[4]}` },
-    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.71' },
-    { name: 'penalty until', selector: 'input[id$="-prepayUntil"]', value: '29' },
-    // Before the hybrid rate: a payment is refused beside one.
-    { name: 'monthly payment', selector: 'input[id$="-monthly"]', value: AMOUNTS[5], reveal: 'input[type="radio"][value="payment"]', after: 'input[type="radio"][value="term"]' },
-    { name: 'fixed months', selector: 'input[id$="-initialFixedMonths"]', value: '59', reveal: 'input[type="radio"][value="hybrid"]' },
-    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.19' },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.31', all: true },
+    { name: 'term', selector: 'input[id$="-term"]', value: '347', all: true },
+    // Before the extra payments and lump sums, which pay every offer off early:
+    // the horizon and the refinance need the full term to take their values.
     { name: 'horizon slider', selector: 'input.lc-horizonSlider', value: '61', steps: 60, reveal: '[data-attr="lc-tab-horizon"]' },
     { name: 'horizon', selector: 'input.lc-horizonInput', value: '67' },
     { name: 'refinance month', selector: '.lc-refiInputs input.lc-input', value: '41', reveal: '[data-attr="lc-tab-refi"]' },
     { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.93' },
     { name: 'new term', selector: '.lc-refiInputs input.lc-input', nth: 2, value: '293' },
     { name: 'new costs', selector: '.lc-refiInputs input.lc-input', nth: 3, value: AMOUNTS[6] },
+    { name: 'fee', selector: 'input[id$="-fee"]', value: AMOUNTS[1], all: true },
+    { name: 'points cost', selector: 'input[id$="-pointsCost"]', value: AMOUNTS[3], all: true },
+    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.13', all: true },
+    { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2], all: true },
+    { name: 'lump sums', selector: 'input[id$="-lumpSums"]', value: `23:${AMOUNTS[4]}`, all: true },
+    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.71', all: true },
+    { name: 'penalty until', selector: 'input[id$="-prepayUntil"]', value: '29', all: true },
+    // Before the hybrid rate: a payment is refused beside one. The first offer
+    // only, so the second keeps a result for the analysis to work on.
+    { name: 'monthly payment', selector: 'input[id$="-monthly"]', value: AMOUNTS[5], reveal: 'input[type="radio"][value="payment"]', after: 'input[type="radio"][value="term"]' },
+    { name: 'fixed months', selector: 'input[id$="-initialFixedMonths"]', value: '59', reveal: 'input[type="radio"][value="hybrid"]' },
+    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.19' },
   ],
   'multi-currency-net-worth': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0] },
     { name: 'value', selector: 'input[id$="-value"]', value: AMOUNTS[0] },
     // The form opens with one row, so the second amount gets a row of its own.
     { name: 'second value', selector: 'input[id$="-value"]', value: AMOUNTS[1], last: true, addRow: '[data-attr="mcnw-asset-add"]' },
+    // Each row's boxes are checked as its own.
+    { name: 'second name', selector: 'input[id$="-name"]', value: NAMES[2], last: true },
   ],
   'monte-carlo-simulator': [
     { name: 'start', selector: 'input.mcs-input', value: AMOUNTS[0] },
@@ -94,8 +99,9 @@ export function expectedLeaks(boxes) {
 
 const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
 // A value that stands by itself: no digit, letter or decimal part joined to it.
+// With a decimal comma it is not two numbers of a list ([1,83], a position).
 const RATES = PROBES.filter((p) => /^\d+\.\d+$/.test(p))
-  .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '[.,]')}(?!\\w|[.,]\\d)`)]);
+  .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '\\.')}(?!\\w|[.,]\\d)|(?<![\\w.,[])${p.replace('.', ',')}(?![\\w\\]]|[.,]\\d)`)]);
 const SHORT = PROBES.filter((p) => /^\d{1,3}$/.test(p))
   .map((p) => [p, new RegExp(`(?<![\\w.,-])${p}(?![\\w-]|[.,]\\d)`)]);
 
