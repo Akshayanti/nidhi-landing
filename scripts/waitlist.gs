@@ -86,7 +86,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '00f5bb7e199c';
+var VERSION = 'c70b3585946b';
 
 // ============================================================================
 // Config
@@ -536,11 +536,11 @@ function headersMatch_(sh) {
 
 // New rows this script will add in one UTC day. A script posting made-up
 // addresses could otherwise fill the sheet and push up the number the site
-// shows without end. Past it, the reply is the same and nothing is written.
-// The site cannot read this script's reply, so a real reader who signs up
-// after the limit is hit that day sees the usual message and is not added;
-// the limit is logged as an error so the owner sees it. A normal day brings
-// a handful of sign-ups, so only a flood reaches it.
+// shows without end. Past it, every request gets 'busy' and nothing is
+// written, so a real reader who signs up after the limit is hit that day is
+// told sign-ups are paused and is not added (#342); the limit is logged as
+// an error so the owner sees it. A normal day brings a handful of sign-ups,
+// so only a flood reaches it.
 var MAX_SIGNUPS_PER_DAY_ = 500;
 
 // How long a sign-up waits for another one to finish with the sheet.

@@ -125,7 +125,7 @@ const isDev = import.meta.env.DEV;
       })).then(function (outcome) {
         if (giveUp) clearTimeout(giveUp);
         if (outcome === 'invalid_token') {
-          window.location.replace('/subscription-invalid?reason=confirm');
+          window.location.replace('/subscription-invalid/?reason=confirm');
           return;
         }
         if (outcome !== 'ok') {

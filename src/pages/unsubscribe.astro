@@ -123,7 +123,7 @@ const isDev = import.meta.env.DEV;
       })).then(function (outcome) {
         if (giveUp) clearTimeout(giveUp);
         if (outcome === 'invalid_token') {
-          window.location.replace('/subscription-invalid?reason=unsubscribe');
+          window.location.replace('/subscription-invalid/?reason=unsubscribe');
           return;
         }
         if (outcome !== 'ok') {

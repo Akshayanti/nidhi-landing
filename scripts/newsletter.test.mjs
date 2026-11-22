@@ -815,6 +815,7 @@ describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)
   it('headers are compared without regard to case or stray spaces', () => {
     const ctx = load(people());
     ctx.rec.rows[0] = ctx.rec.rows[0].map((h) => ` ${h.toUpperCase()} `);
+    assert.equal(json(ctx.doGet(req({ action: 'health' }))).checks.sheet_access.ok, true, 'health follows the same rule');
     assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
   });
 

@@ -116,7 +116,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '416a7061253d';
+var VERSION = '5fa1f11f04db';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
@@ -666,19 +666,8 @@ function handleHealth_() {
 
   check('sheet_access', function () {
     var cfg = config_();
+    // sheet_() checks the headers, by the rule every handler uses.
     var sh = sheet_();
-    var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
-    var mismatched = EXPECTED_HEADERS.filter(function (h, i) {
-      return String(headers[i] || '').toLowerCase() !== h;
-    });
-    if (mismatched.length) {
-      throw new Error(
-        'Sheet header row mismatch. Expected ' + EXPECTED_HEADERS.length + ' columns: ' +
-        EXPECTED_HEADERS.join(' | ') +
-        '. Got: ' + headers.join(' | ') +
-        '. Missing/wrong: ' + mismatched.join(', ')
-      );
-    }
     return { sheet_name: cfg.sheetName, rows: sh.getLastRow() };
   });
 
@@ -807,9 +796,9 @@ var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 // Confirmation mails this script will send in one UTC day. Past it, a
 // request changes nothing at all: no row is added (each would be owed a
 // reminder mail three days on) and no existing row is touched (its link must
-// keep working). The site cannot read this script's reply, so a real reader
-// who signs up after the limit is hit sees the usual message and gets no mail
-// that day; the limit is logged as an error so the owner sees it. That is the
+// keep working). The answer is 'busy', so a real reader who signs up after
+// the limit is hit is told sign-ups are paused for the day, and gets no mail
+// (#342); the limit is logged as an error so the owner sees it. That is the
 // price of not letting a script send mail without end from this address.
 //
 // Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
