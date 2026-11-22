@@ -104,7 +104,7 @@ export const exportHi: typeof exportEn = {
     answer: 'आपका जवाब',
     meaning: 'इसका मतलब',
     entered: 'आपने क्या भरा',
-    assumptions: 'धारणाएँ और सीमाएँ',
+    assumptions: 'मान्यताएँ और सीमाएँ',
     sampled: 'हर पाँचवाँ साल और आख़िरी साल दिखाया गया है। स्प्रेडशीट में हर साल की जानकारी है।',
     footer: 'nidhi.today पर {date} को बनाई गई। यह शैक्षिक अनुमान है, वित्तीय सलाह नहीं। इस रिपोर्ट में आपके भरे आँकड़े हैं। यह आपके डिवाइस पर बनी, और कुछ भी अपलोड नहीं हुआ।',
     beta: "nidhi का प्लानर बन रहा है। इसके मुफ़्त बीटा को जनवरी 2027 में खोलने की योजना है: nidhi.today/hi/beta/",
@@ -119,11 +119,11 @@ export const exportHi: typeof exportEn = {
   },
   about: {
     tool: 'टूल',
-    made: 'बनाने की तारीख',
+    made: 'बनाने की तारीख़',
     currency: 'मुद्रा',
     page: 'पेज',
     privacy: 'प्राइवेसी',
-    privacyText: 'आपके ब्राउज़र में बनी। ये आँकड़े nidhi तक कभी नहीं पहुँचे, और nidhi के पास यह फ़ाइल देखने या मिटाने का कोई तरीका नहीं है।',
+    privacyText: 'आपके ब्राउज़र में बनी। ये आँकड़े nidhi तक कभी नहीं पहुँचे, और nidhi के पास यह फ़ाइल देखने या मिटाने का कोई तरीक़ा नहीं है।',
     note: 'ध्यान दें',
     noteText:
       'यह एक मुफ़्त टूल का शैक्षिक अनुमान है, वित्तीय सलाह नहीं। पेज बताता है कि इसकी गणना कैसे होती है और यह किन बातों को शामिल नहीं करता।',
@@ -155,7 +155,7 @@ export const exportEs: typeof exportEn = {
   spreadsheet: 'Descargar como hoja de cálculo (Excel, Google Sheets)',
   print: 'Crear un informe en PDF',
   note: 'Se crea en tu dispositivo. No se sube nada.',
-  inApp: '¿Estás dentro de una app? Abre primero esta página en el navegador de tu móvil (menú •••) y luego guarda.',
+  inApp: '¿Estás dentro de una app? Abre primero esta página en el navegador de tu teléfono (menú •••) y luego guarda.',
   downloaded: 'Hoja de cálculo creada. Mírala en tus descargas.',
   notReady: 'Funcionan cuando se muestran los resultados.',
   report: {
@@ -163,7 +163,7 @@ export const exportEs: typeof exportEn = {
     made: 'Creado el {date}',
     answer: 'Tu respuesta',
     meaning: 'Qué significa',
-    entered: 'Lo que introdujiste',
+    entered: 'Lo que escribiste',
     assumptions: 'Supuestos y límites',
     sampled: 'Se muestra un año de cada cinco, además del último. La hoja de cálculo contiene todos los años.',
     footer: 'Creado en nidhi.today el {date}. Una estimación con fines educativos, no asesoramiento financiero. Este informe contiene las cifras que escribiste. Se creó en tu dispositivo y no se subió nada.',
@@ -171,7 +171,7 @@ export const exportEs: typeof exportEn = {
   },
   sheets: {
     about: 'Información',
-    inputs: 'Datos introducidos',
+    inputs: 'Datos que escribiste',
   },
   columns: {
     item: 'Concepto',
@@ -196,8 +196,8 @@ export const exportEs: typeof exportEn = {
    * written in millions by the formatter ("2.500 M €"), never with a B.
    */
   chart: {
-    amountsIn: 'Importes en {currency}',
-    amountsInScale: 'Importes en {scale} de {currency}',
+    amountsIn: 'Cantidades en {currency}',
+    amountsInScale: 'Cantidades en {scale} de {currency}',
     scales: { thousand: 'miles', lakh: 'cientos de miles', crore: 'decenas de millones', million: 'millones', billion: 'miles de millones' },
     short: { thousand: '{n}\u00a0mil', lakh: '{n}\u00a0lakh', crore: '{n}\u00a0crore', million: '{n}\u00a0M', billion: '{n}\u00a0mil\u00a0M' },
   },

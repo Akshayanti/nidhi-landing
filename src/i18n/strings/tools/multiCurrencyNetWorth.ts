@@ -567,7 +567,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'मुफ़्त टूल',
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में',
     lead:
-      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है, और आप जो लिखते हैं, वह वहीं रहता है। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
+      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है, और आप जो लिखते हैं, वह वहीं रहता है। INR, USD, EUR, GBP, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
     plannerLine:
       'nidhi का पूरा प्लानर कई मुद्राओं में फैली शुद्ध संपत्ति को लंबी अवधि की योजना में बदल देता है, ताकि आप देख सकें कि जगह, खर्च की मुद्रा और बड़े फ़ैसले इस रास्ते को कैसे बदलते हैं।',
     explainer: {
@@ -584,7 +584,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'खर्च की मुद्रा में दर',
           rest:
-            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें Frankfurter API से सीधे आपके ब्राउज़र में आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। दरें तब अपडेट होती हैं जब ये स्रोत उन्हें प्रकाशित करते हैं, आम तौर पर हर कारोबारी दिन। ये संदर्भ दरें मानक हैं, और आपके बैंक या ब्रोकर की असल दरों से अलग हो सकती हैं।',
+            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें Frankfurter API से सीधे आपके ब्राउज़र में आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। दरें तब अपडेट होती हैं जब ये स्रोत उन्हें प्रकाशित करते हैं, आम तौर पर हर कारोबारी दिन। ये संदर्भ दरें हैं: तुलना के पैमाने, जो आपके बैंक या ब्रोकर की असल दरों से अलग हो सकते हैं।',
         },
         {
           strong: 'जमाव के स्तर',
@@ -615,7 +615,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'मुद्रा जमाव का जोखिम क्या है?',
           a:
-            'अगर आपकी शुद्ध संपत्ति का बड़ा हिस्सा ऐसी मुद्रा में है जिसमें आप खर्च नहीं करते, तो विनिमय दर के घटने-बढ़ने से आपकी असल क्रय शक्ति (purchasing\u00A0power) बदल जाती है। जैसे, अगर आप यूरोप में रिटायर होने की सोच रहे हैं लेकिन अपनी 70% संपत्ति USD में रखते हैं, तो USD/EUR में 10% का बदलाव (EUR/USD में कई सालों में, एक ही साल के भीतर, इतना उतार-चढ़ाव देखा गया है) आपके रिटायरमेंट फ़ंड को यूरो में नापने पर क़रीब 7% बदल देगा।',
+            'अगर आपकी शुद्ध संपत्ति का बड़ा हिस्सा ऐसी मुद्रा में है जिसमें आप खर्च नहीं करते, तो विनिमय दर के घटने-बढ़ने से आपकी असल क्रय शक्ति (purchasing\u00A0power) बदल जाती है। जैसे, अगर आप यूरोप में रिटायर होने की सोच रहे हैं लेकिन अपनी 70% संपत्ति USD में रखते हैं, तो USD/EUR में 10% का बदलाव (EUR/USD में कई सालों में, एक ही साल के भीतर, इतना उतार-चढ़ाव देखा गया है) आपके रिटायरमेंट फंड को यूरो में नापने पर क़रीब 7% बदल देगा।',
         },
         {
           q: 'क्या यह मेरे वित्तीय आँकड़े कहीं भेजता है?',
@@ -625,12 +625,12 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'कौन सी मुद्राएँ समर्थित हैं?',
           a:
-            '38 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
+            '38 मुद्राएँ समर्थित हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
         },
         {
           q: 'शेयर करने के "पूरा हिसाब" और "रकम और नाम छिपाकर" वाले तरीक़ों में क्या फ़र्क़ है?',
           a:
-            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और किस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
+            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और क़िस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
         },
         {
           q: 'विनिमय दरें कहाँ से आती हैं?',
@@ -719,7 +719,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     currencies: currenciesHi,
     export: {
       meaning: 'शुद्ध संपत्ति यानी आपके पास जो है, उसमें से आप पर जो बकाया है वह घटाकर बची रकम।',
-      meaningShares: 'हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी ख़र्च वाली मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है।',
+      meaningShares: 'हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी खर्च की मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है।',
       meaningRates: 'दूसरी मुद्राओं की रकमें पेज पर लोड हुई दरों से रूपांतरित की गई हैं, जो रोज़ बदलती हैं।',
       tool: 'शुद्ध संपत्ति कैलकुलेटर',
       hiddenLabel: 'रकम',
@@ -774,7 +774,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       colName: 'नाम',
       colValue: 'रकम',
       colCurrency: 'मुद्रा',
-      colType: 'किस्म',
+      colType: 'क़िस्म',
       colActions: 'क्रियाएँ',
       addAsset: '+ संपत्ति जोड़ें',
       /** The row that unfolds the two CSV buttons. */
@@ -793,7 +793,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         invalidValue: '"{value}" शून्य से बड़ी कोई मान्य संख्या नहीं है।',
         emptyCurrency: 'मुद्रा कोड खाली है।',
         unsupportedCurrency: '"{value}" समर्थित मुद्रा नहीं है। समर्थित मुद्राएँ: {supported}।',
-        unknownType: '"{value}" ऐसी किस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
+        unknownType: '"{value}" ऐसी क़िस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -810,7 +810,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       nameAria: 'संपत्ति का नाम (कुल {total} में से पंक्ति {index})',
       valueAria: 'रकम (पंक्ति {index})',
       currencyAria: 'मुद्रा (पंक्ति {index})',
-      typeAria: 'किस्म (पंक्ति {index})',
+      typeAria: 'क़िस्म (पंक्ति {index})',
       valueError: 'यह रकम पढ़ी नहीं जा सकी। सिर्फ़ अंक लिखें, जैसे 50000।',
       valuePlaceholder: 'जैसे 50000',
       namePlaceholder: 'संपत्ति/देनदारी का नाम',
@@ -1144,9 +1144,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     export: {
       meaning: 'El patrimonio neto es lo que tienes menos lo que debes.',
       meaningShares: 'La parte de cada moneda muestra cuánto se mueve cuando esa moneda sube o baja frente a la que usas para gastar.',
-      meaningRates: 'Los importes en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
+      meaningRates: 'Las cantidades en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
       tool: 'Calculadora de patrimonio neto',
-      hiddenLabel: 'Importes',
+      hiddenLabel: 'Cantidades',
       hiddenText: 'No incluidos: esta vista compartida solo trae monedas y porcentajes.',
       sheets: { byCurrency: 'Por moneda', rates: 'Tipos de cambio' },
       code: 'Código',
@@ -1281,7 +1281,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       labelLow: 'Exposición baja',
       labelUnbanded: 'Sin parte del patrimonio neto',
       disclaimer:
-        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
+        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un asesor financiero con licencia.',
     },
     rec: {
       noRate:

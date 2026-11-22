@@ -558,7 +558,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'शुल्क का हिसाब कैसे लगता है?',
-          a: 'पोर्टफ़ोलियो की रकम का एक सालाना प्रतिशत, जो हर साल के रिटर्न में से कटता है, 0 से {maxFeePct}% तक। इसमें अपने फ़ंड का सालाना चालू शुल्क (ongoing\u00A0charge) और प्लेटफ़ॉर्म का शुल्क, अगर कोई हो, जोड़कर डालें। तय शुल्क और एकबारगी शुल्क नहीं जोड़े जाते।',
+          a: 'पोर्टफ़ोलियो की रकम का एक सालाना प्रतिशत, जो हर साल के रिटर्न में से कटता है, 0 से {maxFeePct}% तक। इसमें अपने फंड का सालाना चालू शुल्क (ongoing\u00A0charge) और प्लेटफ़ॉर्म का शुल्क, अगर कोई हो, जोड़कर डालें। तय शुल्क और एकबारगी शुल्क नहीं जोड़े जाते।',
         },
         {
           q: 'सब कुछ आज के पैसे में क्यों है?',
@@ -591,7 +591,7 @@ export const monteCarloHi: typeof monteCarloEn = {
           desc: 'एक सीधी लकीर क्यों भटकाती है, और उसके बजाय नतीजों का फैलाव कैसे पढ़ें।',
         },
         'what-if-scenarios': {
-          kicker: 'अगला क़दम',
+          kicker: 'अगला कदम',
           title: 'क्या-अगर के परिदृश्य',
           desc: 'एक बार में एक फ़ैसला बदलें और उसे अपनी मौजूदा स्थिति से मिलाकर देखें।',
         },
@@ -619,7 +619,7 @@ export const monteCarloHi: typeof monteCarloEn = {
     example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     export: {
       tool: 'मोंटे कार्लो सिम्युलेटर',
-      meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई धारणाओं पर चले सिमुलेशन के नतीजे हैं, भविष्यवाणी या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
+      meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई मान्यताओं पर चले सिम्युलेशन के नतीजे हैं, पूर्वानुमान या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
       moneyLabel: 'रकम',
       moneyText: 'आज के पैसे में, पूरी इकाइयों तक। पेज इन्हें और गोल करके दिखाता है: नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते।',
       sheets: { assumptions: 'मान्यताएँ', byYear: 'हर साल', outcome: 'नतीजा' },
@@ -677,7 +677,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       summary: '{fees}% शुल्क · {paths} रास्ते',
       legend: 'रिटर्न',
       feeLabel: 'सालाना शुल्क, %',
-      feeHint: 'फ़ंड और प्लेटफ़ॉर्म का शुल्क, जो हर साल के रिटर्न में से कटता है। 0 से {maxFeePct}।',
+      feeHint: 'फंड और प्लेटफ़ॉर्म का शुल्क, जो हर साल के रिटर्न में से कटता है। 0 से {maxFeePct}।',
       pathsLabel: 'सिम्युलेटेड रास्ते',
       pathsHint:
         'ज़्यादा रास्तों से आँकड़े ज़्यादा स्थिर रहते हैं; 10,000 से ऊपर वे ज़्यादा से ज़्यादा कुछ प्रतिशत ही बदलते हैं।',
@@ -740,7 +740,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         'जिन रास्तों में पैसा ख़त्म हुआ, उनमें ख़त्म होने का बीच का साल था: {years} में से साल {year}।',
       rounded: 'रकमें गोल करके दिखाई गई हैं: {paths} नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते। स्प्रेडशीट में पूरे अंक हैं।',
       caveat:
-        'ये {paths} सिम्युलेटेड रास्तों में से गिने गए अनुपात हैं, आपके साथ कुछ होने की संभावना नहीं। मॉडल एक सरलीकरण है; नीचे देखें कि इसमें क्या शामिल नहीं है।',
+        'ये {paths} सिम्युलेटेड रास्तों में से गिने गए अनुपात हैं; ये यह नहीं बताते कि आपके साथ कुछ होने की कितनी संभावना है। मॉडल एक सरलीकरण है; नीचे देखें कि इसमें क्या शामिल नहीं है।',
       caveatFew:
         ' सिर्फ़ {paths} रास्तों पर आँकड़े हज़ारों रास्तों से कई प्रतिशत दूर हो सकते हैं।',
       tableSummary: 'आँकड़े तालिका में देखें',
@@ -953,7 +953,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     export: {
       tool: 'Simulador Monte Carlo',
       meaning: 'La mediana es el resultado del medio: la mitad de las trayectorias simuladas terminó por encima y la otra mitad por debajo. El rango deja fuera la décima parte más baja y la más alta de las trayectorias. Son resultados de una simulación con los supuestos de abajo, no una previsión ni una promesa: las rentabilidades reales pueden ser mejores o peores que cualquier trayectoria de aquí.',
-      moneyLabel: 'Importes',
+      moneyLabel: 'Cantidades',
       moneyText: 'En dinero de hoy, en unidades enteras. La página redondea más: con otras trayectorias aleatorias, las últimas cifras saldrían distintas.',
       sheets: { assumptions: 'Supuestos', byYear: 'Por año', outcome: 'Resultado' },
       stocks: 'Acciones, %',
@@ -985,7 +985,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % bonos',
       mixHint: 'Se reequilibra a esta combinación una vez al año.',
-      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
+      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
       crossLink: {
         before: '¿Tienes dinero en varias monedas? Súmalo primero con la ',
         link: 'calculadora de patrimonio neto',
@@ -1007,7 +1007,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     },
     settings: {
       toggle: 'Comisiones y trayectorias simuladas',
-      summary: '{fees} % de comisiones · {paths} trayectorias',
+      summary: '{fees} % de comisiones · {paths} trayectorias',
       legend: 'Rentabilidad',
       feeLabel: 'Comisiones anuales, %',
       feeHint: 'Comisiones del fondo y de la plataforma, descontadas de la rentabilidad de cada año. De 0 a {maxFeePct}.',

@@ -103,7 +103,7 @@ export const es: Dict = {
       thirdParty: 'Licencias de terceros',
     },
     disclaimerShort:
-      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un profesional acreditado de las finanzas.',
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
     disclaimerLong:
       'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
     copyright: '© {year} nidhi. Todos los derechos reservados.',
@@ -451,12 +451,12 @@ export const es: Dict = {
         // Spanish keeps the space before the link; the English's missing
         // space is a known bug in that page only.
         before:
-          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional acreditado. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
+          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
         link: 'aviso de privacidad',
         after: '.',
       },
       advice:
-        'nidhi no es un profesional acreditado de las finanzas, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
           'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
@@ -623,7 +623,7 @@ export const es: Dict = {
         kicker: 'Deuda o inversión',
         title: 'Calculadora: invertir o pagar deuda',
         desc:
-          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un abanico de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
+          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un rango de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
       },
     },
     how: {
@@ -718,7 +718,7 @@ export const es: Dict = {
       toolAddresses:
         'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
       toolExports:
-        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
+        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que escribiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
       netWorth: {
         before:
           'Eventos de interacción en la calculadora de patrimonio neto: qué moneda de gastos eliges; que añades o quitas una fila, o subes o descargas un archivo CSV (con el número de filas; si un archivo no pudo leerse entero, cuántas líneas fallaron y qué tipo de problema tenía la primera); que los tipos de cambio no se cargaron (con la moneda de gastos y uno de unos pocos motivos fijos) y si lo vuelves a intentar; si abres el cuadro para compartir, qué tipo de enlace copias (con cantidades o sin ellas) y si abres una vista compartida (con su tipo, cuántas monedas contiene y su fuente de campaña); y si restableces el formulario. ',
@@ -727,17 +727,17 @@ export const es: Dict = {
       monteCarlo: {
         before:
           'Eventos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
-        strong: 'Las cantidades, los años, las comisiones y la combinación de activos que introduces nunca se envían.',
+        strong: 'Las cantidades, los años, las comisiones y la combinación de activos que escribes nunca se envían.',
       },
       inflation: {
         before:
           'Eventos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
-        strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
+        strong: 'Las cantidades, las tasas y los años que escribes nunca se envían.',
       },
       investOrPayOff: {
         before:
           'Eventos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
-        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
+        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que escribes nunca se envían.',
       },
       campaigns: {
         before: 'Parámetros de campaña (',
@@ -752,7 +752,7 @@ export const es: Dict = {
         'Un ID de visitante aleatorio que PostHog guarda en tu navegador (localStorage), para enlazar tus visitas entre sí. No contiene nombre ni correo, pero como enlaza tus visitas a lo largo del tiempo, distingue tu navegador de los demás. Eso lo hace seudónimo, no anónimo, y por eso espera a tu sí. Si después dices que no, se elimina; a partir de ahí, el ID dura solo mientras estás en cada página, así que los eventos posteriores no se enlazan con los anteriores.',
       planner: {
         anonymous:
-          'Salvo que digas que sí en el aviso de cookies: visitas a páginas y eventos de uso, como qué pantalla abriste o que añadiste una cuenta, calculaste una proyección o guardaste un escenario hipotético. Esos eventos registran los importes solo como rangos aproximados. No llevan nombre, correo ni ID de cuenta, y cualquier ID de cuenta o de elemento en la dirección de una página se sustituye antes de enviar nada. No se guarda nada en tu navegador para ellos.',
+          'Salvo que digas que sí en el aviso de cookies: visitas a páginas y eventos de uso, como qué pantalla abriste o que añadiste una cuenta, calculaste una proyección o guardaste un escenario hipotético. Esos eventos registran las cantidades solo como rangos aproximados. No llevan nombre, correo ni ID de cuenta, y cualquier ID de cuenta o de elemento en la dirección de una página se sustituye antes de enviar nada. No se guarda nada en tu navegador para ellos.',
         consented:
           'Solo si dices que sí: los mismos eventos, enlazados con un código creado a partir de tu cuenta, para ver dónde se atasca una persona a lo largo de sus visitas. El código no contiene tu nombre, tu correo ni tu ID de cuenta y no se puede convertir de nuevo en ellos, pero podemos relacionarlo con tu cuenta cuando nos pidas encontrar o borrar tus eventos. Entonces PostHog guarda un ID de visitante aleatorio en tu navegador para unir tus visitas.',
       },
@@ -1237,7 +1237,7 @@ export const es: Dict = {
         },
         {
           q: '¿Esto es asesoramiento financiero?',
-          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un profesional acreditado de las finanzas. Para las decisiones importantes, consulta a un profesional acreditado.',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
       ],
     },

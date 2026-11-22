@@ -48,7 +48,7 @@ describe('the heading over a chart', () => {
     assert.equal(axisHeading(exportHi.chart, 'lakh', 'INR'), `राशियाँ (लाख ₹${NBSP}में)`);
     assert.equal(axisHeading(exportHi.chart, 'million', 'EUR'), `राशियाँ (दस लाख €${NBSP}में)`);
     assert.equal(axisHeading(exportMr.chart, 'crore', 'INR'), `रकमा (कोटी ₹${NBSP}मध्ये)`);
-    assert.equal(axisHeading(exportEs.chart, 'billion', 'EUR', 'es'), 'Importes en miles de millones de €');
+    assert.equal(axisHeading(exportEs.chart, 'billion', 'EUR', 'es'), 'Cantidades en miles de millones de €');
     assert.equal(axisHeading(exportCs.chart, 'million', 'CZK', 'cs'), `Částky v${NBSP}milionech Kč`);
   });
 

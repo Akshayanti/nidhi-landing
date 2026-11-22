@@ -95,9 +95,10 @@ function months(count: number, s: Strings['months']): string {
   const y = Math.floor(count / 12);
   const m = count % 12;
   if (y === 0) return m === 1 ? s.one : format(s.some, { m });
-  if (m === 0) return format(s.years, { y });
-  if (m === 1) return format(s.yearsOne, { y });
-  return format(s.yearsSome, { y, m });
+  const years = y === 1 ? s.year : format(s.years, { y });
+  if (m === 0) return years;
+  if (m === 1) return format(s.yearsAndMonth, { years });
+  return format(s.yearsSome, { years, m });
 }
 
 /**

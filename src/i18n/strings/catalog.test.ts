@@ -23,7 +23,7 @@ import { hi } from './hi.ts';
 import { es } from './es.ts';
 import { cs } from './cs.ts';
 import { mr } from './mr.ts';
-import { CHANGE_DAYS } from './changes.ts';
+import { CHANGE_DAYS, LAUNCH_ITEMS } from './changes.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -610,5 +610,37 @@ describe('every string is used', async () => {
     for (const group of READ_WHOLE) {
       assert.ok(EN.some((leaf) => leaf.path.startsWith(group)), `${group} is in READ_WHOLE but no key starts with it`);
     }
+  });
+});
+
+/** A language's catalog and its "What's changed" lines, for the glossary checks. */
+function allWords(list: Leaf[], locale: (typeof LOCALES)[number]): Leaf[] {
+  const items = [...CHANGE_DAYS.flatMap((day) => day.items), ...Object.values(LAUNCH_ITEMS)];
+  return [...list, ...items.map((item) => ({ path: `changes.${item.id}`, value: item.text[locale] }))];
+}
+
+describe('each language spells a word one way', () => {
+  it('writes Hindi as the glossary does', () => {
+    // docs/i18n/hi-glossary.md: the nukta is a decomposed pair, so a word
+    // written without one is the bare letter followed by its vowel sign.
+    const wrong: Array<[RegExp, string]> = [
+      [/क़दम/u, 'कदम'], [/तारीख(?!़)/u, 'तारीख़'], [/तरीक(?!़)/u, 'तरीक़ा'],
+      [/(?<![ऀ-ॿ])गलत/u, 'ग़लत'], [/किस्म/u, 'क़िस्म'], [/खत्म/u, 'ख़त्म'],
+      [/(?<![ऀ-ॿ])खास/u, 'ख़ास'], [/कीमत/u, 'क़ीमत'], [/हिंदी/u, 'हिन्दी'],
+      [/फ़ंड/u, 'फंड'], [/नेट वर्थ/u, 'शुद्ध संपत्ति'], [/टैक्स(?!-लॉस)/u, 'कर'],
+    ];
+    const found = allWords(HI, 'hi').flatMap(({ path, value }) =>
+      wrong.filter(([re]) => re.test(value)).map(([, use]) => `${path}: use ${use}`));
+    assert.deepEqual(found, []);
+  });
+
+  it('writes Spanish in the glossary\'s neutral words', () => {
+    const wrong = /(?<!\p{L})(?:costes?|importes?|montos?|móvil|móviles|celular|ordenador|computadora)(?!\p{L})/iu;
+    assert.deepEqual(allWords(ES, 'es').filter(({ value }) => wrong.test(value)).map((l) => l.path), []);
+  });
+
+  it('puts a no-break space before a Spanish percent sign', () => {
+    // es-glossary.md rule 6, for a figure and for a placeholder that stands for one.
+    assert.deepEqual(allWords(ES, 'es').filter(({ value }) => /[\d}] ?%/.test(value)).map((l) => l.path), []);
   });
 });

@@ -153,7 +153,7 @@ why this one won, so it is not re-argued in a later lesson.
 | bond | बॉन्ड | |
 | fixed income | फिक्स्ड इनकम | |
 | expense ratio | एक्सपेंस रेशियो | Council, 2026-10-20: replaces व्यय अनुपात: it is the label on the fund page a reader checks. A loanword, so no bracket. |
-| tax | कर | आयकर for income tax. |
+| tax | कर | आयकर for income tax. Never टैक्स, in any tool; टैक्स-लॉस हार्वेस्टिंग is the one name that keeps it, glossed (घाटे से कर घटाना). |
 | tax-advantaged account | कर-बचत खाता | |
 | fees, charges | शुल्क | |
 
@@ -245,7 +245,7 @@ a promise costs the reader more than it teaches.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence. |
+| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence and for another company's own privacy policy (Google की प्राइवेसी नीति). |
 | analytics | एनालिटिक्स | |
 | processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
 | consent | सहमति | "Cookie consent" is कुकी सहमति. |
@@ -325,6 +325,11 @@ and do translate.
 | prepayment, extra principal | समय से पहले भुगतान | |
 | lump sum | एकमुश्त राशि | |
 | penalty | जुर्माना | |
+| assumption (a model's) | मान्यता, मान्यताएँ | Never अनुमान (an estimate) or धारणा, which the site keeps for आम धारणा (a default belief). |
+| highlighted fields | चिह्नित खाने | No colour: the English names none. |
+| negative (a figure) | शून्य से कम (माइनस) | माइनस alone once it is clear. |
+| disclosure (of an APR) | लोन के काग़ज़ों में बताया गया APR | Not प्रकटीकरण, which reads as a form. |
+| indicator (World Bank) | संकेतक | |
 | net worth | शुद्ध संपत्ति | Glossary. |
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
 | functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. In prose the short form is खर्च की मुद्रा; मुख्य मुद्रा is kept for the badge alone, because मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
@@ -421,9 +426,12 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | loan comparison | लोन की तुलना |
 | Monte Carlo simulator | मोंटे कार्लो सिम्युलेटर |
 | inflation calculator | महँगाई कैलकुलेटर |
-| our beliefs | हमारे सिद्धांत |
+| what I believe (the page, its title and every link to it) | मेरे सिद्धांत; हमारे सिद्धांत only in the privacy notice, which speaks as we |
 | editorial policy | संपादकीय नीति |
 | privacy | प्राइवेसी |
+| waitlist | वेटलिस्ट, also in short lines such as *आप वेटलिस्ट में हैं*; लिस्ट is never used alone, and a plain list is सूची |
+| address bar | ऐड्रेस बार, as in the privacy notice |
+| licensed (financial advisor, broker) | लाइसेंस प्राप्त, never लाइसेंस वाले |
 | cookie settings | कुकी सेटिंग |
 | theme | थीम |
 | language | भाषा |
@@ -490,7 +498,9 @@ takes its full stop from the catalog's `fullStop` key, which is the danda in
 Hindi, so no Hindi line ends in a Latin full stop.
 
 Spelling follows one convention across every catalog: the chandrabindu in आँकड़े,
-and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास and क़ीमत. Two everyday words
+and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास, क़ीमत, तारीख़, ग़लत, ग़लती
+and क़िस्म. The language is हिन्दी, as in its own name in the picker. फंड
+takes none. Two everyday words
 stay without it, कानून and कदम, because that is how the chrome has always
 written them. Write the nukta as the decomposed pair (letter plus ़), which is
 what the catalogs already use, so a search for one spelling finds every use.

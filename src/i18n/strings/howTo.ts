@@ -185,7 +185,7 @@ export const howToEs: typeof howToEn = {
     groupAll: 'Las {count} guías de este grupo',
     groupIntros: {
       month: 'Guías breves para las semanas antes de cobrar: cuánto gastas al mes, cuánto queda y qué hay que pagar y cuándo.',
-      owe: 'Guías breves sobre deudas y préstamos: hacer una lista de lo que debes, entender el pago mínimo de la tarjeta y comparar el coste total de préstamos y compras a plazos.',
+      owe: 'Guías breves sobre deudas y préstamos: hacer una lista de lo que debes, entender el pago mínimo de la tarjeta y comparar el costo total de préstamos y compras a plazos.',
       stock: 'Guías breves para ver dónde estás: lo que tienes y lo que debes, y todas tus cuentas y pagos en un solo lugar.',
       borders: 'Guías breves para comparar ofertas de envío de dinero según cuánto recibe realmente la otra persona.',
       safe: 'Guías breves para comprobar mensajes sospechosos sobre dinero y si una web sobre dinero es auténtica.',

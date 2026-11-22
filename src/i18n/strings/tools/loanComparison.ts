@@ -674,9 +674,10 @@ export const loanComparisonEn = {
       na: 'n/a',
       one: '1 mo',
       some: '{m} mo',
+      year: '1 yr',
       years: '{y} yr',
-      yearsOne: '{y} yr 1 mo',
-      yearsSome: '{y} yr {m} mo',
+      yearsAndMonth: '{years} 1 mo',
+      yearsSome: '{years} {m} mo',
     },
     /**
      * The messages the engine can hand back, addressed by what they say.
@@ -776,7 +777,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'दो से पाँच लोन ऑफ़र की साथ-साथ तुलना',
       'हर ऑफ़र का APR (सालाना प्रतिशत दर), जो शुल्क को भी एक ही तुलनीय दर में जोड़ देता है',
       'हर लोन के लिए ब्याज और मूलधन के बँटवारे का चार्ट, जो दिखाता है कि पूरी अवधि में हर किस्त कहाँ जाती है',
-      '38 मुद्राओं का सपोर्ट, जिनमें USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD शामिल हैं',
+      '38 मुद्राओं का सपोर्ट, जिनमें INR, USD, EUR, GBP, CHF, JPY, CNY, CAD, AUD, SGD शामिल हैं',
       'तय अवधि देकर मासिक किस्त निकालें, या तय किस्त देकर चुकाने का समय निकालें',
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
       'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले, पहले तय फिर बदलती दर वाले लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
@@ -802,7 +803,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     lead: {
       before:
         'दो से पाँच लोन ऑफ़र भर दें। मासिक किस्त, चुकाने का समय, कुल चुकाई जाने वाली राशि और APR देखें: वह एक आँकड़ा जो शुल्क को भी दर में जोड़ देता है।',
-      wide: 'देखें कि हर किस्त ब्याज और मूलधन में कैसे बँटती है। USD, EUR, GBP, INR, JPY और अन्य मुद्राओं का सपोर्ट।',
+      wide: 'देखें कि हर किस्त ब्याज और मूलधन में कैसे बँटती है। INR, USD, EUR, GBP, JPY और अन्य मुद्राओं का सपोर्ट।',
       after: 'सब कुछ आपके ब्राउज़र में चलता है; आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता।',
     },
     faq: {
@@ -833,7 +834,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-              a: 'नहीं। सब कुछ आपके ब्राउज़र में चलता है; कोई भी भरा हुआ आँकड़ा किसी सर्वर पर नहीं भेजा जाता। टूल इस्तेमाल करते समय पेज के पते में कुछ भी नहीं जाता। जब आप शेयर लिंक कॉपी करते हैं, तो आपके आँकड़े लिंक में # चिह्न के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर पर नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पता-पट्टी से हटा देता है।',
+              a: 'नहीं। सब कुछ आपके ब्राउज़र में चलता है; कोई भी भरा हुआ आँकड़ा किसी सर्वर पर नहीं भेजा जाता। टूल इस्तेमाल करते समय पेज के पते में कुछ भी नहीं जाता। जब आप शेयर लिंक कॉपी करते हैं, तो आपके आँकड़े लिंक में # चिह्न के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर पर नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले ऐड्रेस बार से हटा देता है।',
             },
           ],
         },
@@ -854,7 +855,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या ज़रूरी बीमा या साथ में बिकने वाले प्रोडक्ट शुल्क में जोड़ने चाहिए?',
-              a: 'अगर लोन देने वाला उसके साथ कोई प्रोडक्ट खरीदने को कहता है (जीवन बीमा, कोई खाता, कोई निवेश प्रोडक्ट), तो उस प्रोडक्ट की लागत भी आपकी असली उधार लागत का हिस्सा है। APR के नियम इस बात पर अलग-अलग देशों में अलग हैं कि ऐसे प्रोडक्ट आधिकारिक APR प्रकटीकरण में शामिल करने ही होंगे या नहीं। जो लागत शुरुआत में एक बार चुकाई जाती है, वह शुल्क वाले फ़ील्ड में जाती है। जो लागत हर महीने चुकाई जाती है, जैसे बीमे का प्रीमियम, वह यहाँ शामिल नहीं है: उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर वह पहले ही दिन चुकाई हुई मानी जाती है, जिससे APR असल से ज़्यादा दिखता है। उस APR को ऊपरी सीमा मानें; कुल चुकाई गई रकम में प्रीमियम फिर भी पूरा गिना जाता है, इसलिए कुल रकमों की भी तुलना करें।',
+              a: 'अगर लोन देने वाला उसके साथ कोई प्रोडक्ट खरीदने को कहता है (जीवन बीमा, कोई खाता, कोई निवेश प्रोडक्ट), तो उस प्रोडक्ट की लागत भी आपकी असली उधार लागत का हिस्सा है। APR के नियम इस बात पर अलग-अलग देशों में अलग हैं कि ऐसे प्रोडक्ट लोन के काग़ज़ों में बताए गए आधिकारिक APR में शामिल करने ही होंगे या नहीं। जो लागत शुरुआत में एक बार चुकाई जाती है, वह शुल्क वाले फ़ील्ड में जाती है। जो लागत हर महीने चुकाई जाती है, जैसे बीमे का प्रीमियम, वह यहाँ शामिल नहीं है: उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर वह पहले ही दिन चुकाई हुई मानी जाती है, जिससे APR असल से ज़्यादा दिखता है। उस APR को ऊपरी सीमा मानें; कुल चुकाई गई रकम में प्रीमियम फिर भी पूरा गिना जाता है, इसलिए कुल रकमों की भी तुलना करें।',
             },
             {
               q: 'क्या कैलकुलेटर लोन शुल्क और कागज़ी खर्च संभालता है?',
@@ -922,7 +923,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'गणना कितनी सटीक है?',
-              a: 'पूरा किस्तों का शेड्यूल मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) के पूर्णांकों में बनाया जाता है, ताकि दशमलव की गोलाई से गलती न हो। सूत्र से निकली मासिक किस्त सबसे नज़दीकी इकाई तक गोल की जाती है, और हर शेड्यूल की आखिरी किस्त ऐसे मिलाई जाती है कि मूलधन की सारी किस्तों का जोड़ लोन राशि के ठीक बराबर हो। APR उसी पूर्णांकों वाले शेड्यूल पर वर्तमान मूल्य के समीकरण को द्विभाजन से हल करके निकाला जाता है, इतनी सटीकता से कि किसी असली लोन देने वाले का प्रकटीकरण उस तक नहीं पहुँचता।',
+              a: 'पूरा किस्तों का शेड्यूल मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) के पूर्णांकों में बनाया जाता है, ताकि दशमलव की गोलाई से ग़लती न हो। सूत्र से निकली मासिक किस्त सबसे नज़दीकी इकाई तक गोल की जाती है, और हर शेड्यूल की आखिरी किस्त ऐसे मिलाई जाती है कि मूलधन की सारी किस्तों का जोड़ लोन राशि के ठीक बराबर हो। APR उसी पूर्णांकों वाले शेड्यूल पर वर्तमान मूल्य के समीकरण को द्विभाजन से हल करके निकाला जाता है, इतनी सटीकता से कि किसी असली लोन देने वाले के काग़ज़ों में बताया गया APR भी उतना सटीक नहीं होता।',
             },
           ],
         },
@@ -931,7 +932,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कौन-सी मुद्राएँ शामिल हैं?',
-              a: '38 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
+              a: '38 मुद्राएँ शामिल हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
             },
             {
               q: 'यहाँ "कई मुद्राओं" का क्या मतलब है?',
@@ -977,10 +978,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
   island: {
     export: {
       tool: 'लोन तुलना कैलकुलेटर',
-      meaning: 'यह दायरा दिखाता है कि फ़ीस और पेनल्टी जोड़कर ऑफ़र की कुल लागत में कितना फ़र्क है। सबसे कम कुल रकम का मतलब हमेशा सबसे कम मासिक किस्त नहीं होता: लंबी अवधि से किस्त आम तौर पर घटती है और कुल रकम बढ़ती है। आपके लिए क्या ज़्यादा मायने रखता है, यह आपके बजट पर, आप लोन कितने समय तक रखना चाहते हैं इस पर, और उन शर्तों पर निर्भर है जो यह तुलना शामिल नहीं करती।',
+      meaning: 'यह दायरा दिखाता है कि शुल्क और जुर्माना जोड़कर ऑफ़र की कुल लागत में कितना फ़र्क है। सबसे कम कुल रकम का मतलब हमेशा सबसे कम मासिक किस्त नहीं होता: लंबी अवधि से किस्त आम तौर पर घटती है और कुल रकम बढ़ती है। आपके लिए क्या ज़्यादा मायने रखता है, यह आपके बजट पर, आप लोन कितने समय तक रखना चाहते हैं इस पर, और उन शर्तों पर निर्भर है जो यह तुलना शामिल नहीं करती।',
       schedulesNote: 'हर ऑफ़र का महीने-दर-महीने का शेड्यूल स्प्रेडशीट में है।',
-      scheduleLabel: 'किस्तों की सूची',
-      scheduleText: 'हर ऑफ़र के लिए एक शीट, महीने-दर-महीने, अतिरिक्त मूलधन और एकमुश्त राशि समेत: वही सूची जिससे चार्ट और कुल रकम बनती हैं।',
+      scheduleLabel: 'किस्तों का शेड्यूल',
+      scheduleText: 'हर ऑफ़र के लिए एक शीट, महीने-दर-महीने, अतिरिक्त मूलधन और एकमुश्त राशि समेत: वही शेड्यूल जिससे चार्ट और कुल रकम बनती हैं।',
       sheets: { summary: 'सारांश' },
       months: 'महीने',
       aprPct: 'APR, %',
@@ -1142,7 +1143,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       breakEven: 'पॉइंट्स की बराबरी',
       never: 'कभी नहीं',
       breakEvenSaves: 'पूरी अवधि में {amount} की बचत',
-      breakEvenCosts: 'पूरी अवधि में {amount} ज़्यादा लगते हैं: पॉइंट्स की लागत निकलने से पहले ही लोन खत्म हो जाता है',
+      breakEvenCosts: 'पूरी अवधि में {amount} ज़्यादा लगते हैं: पॉइंट्स की लागत निकलने से पहले ही लोन ख़त्म हो जाता है',
       breakEvenNever: 'पॉइंट्स मासिक किस्त इतनी नहीं घटाते कि लागत निकल जाए',
     },
     delta: {
@@ -1281,7 +1282,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     horizon: {
       heading: 'अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...',
-      lead: 'महीने 36 पर और महीने 360 पर लोन बहुत अलग दिखते हैं। हर पंक्ति बताती है कि उस तारीख तक उधार लेने वाला असल में कहाँ खड़ा है।',
+      lead: 'महीने 36 पर और महीने 360 पर लोन बहुत अलग दिखते हैं। हर पंक्ति बताती है कि उस तारीख़ तक उधार लेने वाला असल में कहाँ खड़ा है।',
       label: 'हॉराइज़न: ',
       inputAria: 'हॉराइज़न महीनों में (टेक्स्ट)',
       empty: 'हॉराइज़न के आँकड़े देखने के लिए सही इनपुट भरें।',
@@ -1324,15 +1325,16 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'मान्यताएँ और ज़रूरी बातें',
-      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR आपकी भरी हुई दर के ही आधार पर दिखाया जाता है (मासिक दर × 12), जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि आधिकारिक APR/APRC प्रकटीकरण में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी। एक बार की लागत शुल्क वाले फ़ील्ड में जोड़ी जा सकती है; हर महीने चुकाई जाने वाली लागत यहाँ शामिल नहीं है, और उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर APR असल से ज़्यादा दिखता है। कनाडा के तय दर वाले मॉर्गेज की दर आम तौर पर छमाही ब्याज जुड़ने के हिसाब से बताई जाती है (कनाडा का Interest Act सालाना या छमाही, दोनों की इजाज़त देता है), और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा आपका अपना माना हुआ आँकड़ा है। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपनी स्थिति के हिसाब से सलाह के लिए किसी लाइसेंस वाले मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
+      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR आपकी भरी हुई दर के ही आधार पर दिखाया जाता है (मासिक दर × 12), जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि लोन के काग़ज़ों में बताए गए आधिकारिक APR/APRC में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी। एक बार की लागत शुल्क वाले फ़ील्ड में जोड़ी जा सकती है; हर महीने चुकाई जाने वाली लागत यहाँ शामिल नहीं है, और उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर APR असल से ज़्यादा दिखता है। कनाडा के तय दर वाले मॉर्गेज की दर आम तौर पर छमाही ब्याज जुड़ने के हिसाब से बताई जाती है (कनाडा का Interest Act सालाना या छमाही, दोनों की इजाज़त देता है), और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा आपका अपना माना हुआ आँकड़ा है। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपनी स्थिति के हिसाब से सलाह के लिए किसी लाइसेंस प्राप्त मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
     },
     months: {
       na: 'लागू नहीं',
       one: '1 महीना',
       some: '{m} महीने',
+      year: '1 साल',
       years: '{y} साल',
-      yearsOne: '{y} साल 1 महीना',
-      yearsSome: '{y} साल {m} महीने',
+      yearsAndMonth: '{years} 1 महीना',
+      yearsSome: '{years} {m} महीने',
     },
     engine: {
       errors: {
@@ -1478,7 +1480,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50% aquí es un 6,70% allí, y un 20% es un 21,94%. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
@@ -1506,7 +1508,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
               a: 'Sí. Escribe una cantidad en «Capital extra al mes», dentro del grupo «Pagos anticipados» de la tarjeta de cada entidad. La calculadora la aplica directamente al capital cada mes, lo que acorta el tiempo hasta liquidar el préstamo y reduce los intereses totales.',
             },
             {
-              q: '¿Cómo se introducen los pagos extraordinarios?',
+              q: '¿Cómo se escriben los pagos extraordinarios?',
               a: 'Con el formato mes:cantidad, separados por punto y coma. Por ejemplo, 12:5000;36:3000;60:10000 significa un pago anticipado de 5000 en el mes 12, de 3000 en el mes 36 y de 10.000 en el mes 60. Cada pago extraordinario se aplica al capital DESPUÉS de la cuota mensual ordinaria de ese mes, así que no genera intereses ese mismo mes. Normalmente el préstamo se liquida antes del plazo contractual y los intereses totales bajan en consecuencia.',
             },
             {
@@ -1613,10 +1615,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
   island: {
     export: {
       tool: 'Comparador de préstamos',
-      meaning: 'El rango muestra cuánto se separan los costes totales de las ofertas, con comisiones y penalizaciones incluidas. El total más bajo no siempre es la cuota mensual más baja: un plazo más largo suele bajar la cuota y subir el total. Qué pesa más depende de tu presupuesto, de cuánto tiempo pienses mantener el préstamo y de condiciones que esta comparación deja fuera.',
-      schedulesNote: 'El cuadro de amortización mes a mes de cada oferta está en la hoja de cálculo.',
-      scheduleLabel: 'Cuadros de amortización',
-      scheduleText: 'Una hoja por oferta, mes a mes, con el capital extra y los pagos extraordinarios que haya: el cuadro que usan los gráficos y los totales.',
+      meaning: 'El rango muestra cuánto se separan los costos totales de las ofertas, con comisiones y penalizaciones incluidas. El total más bajo no siempre es la cuota mensual más baja: un plazo más largo suele bajar la cuota y subir el total. Qué pesa más depende de tu presupuesto, de cuánto tiempo pienses mantener el préstamo y de condiciones que esta comparación deja fuera.',
+      schedulesNote: 'La tabla de amortización mes a mes de cada oferta está en la hoja de cálculo.',
+      scheduleLabel: 'Tablas de amortización',
+      scheduleText: 'Una hoja por oferta, mes a mes, con el capital extra y los pagos extraordinarios que haya: la tabla que usan los gráficos y los totales.',
       sheets: { summary: 'Resumen' },
       months: 'Meses',
       aprPct: 'APR, %',
@@ -1762,7 +1764,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       /** Under a card's APR: the basis the figure is on. */
       aprBasis: 'La misma base que tu tasa',
       /** Above the offers: why a lender's document can show a higher figure. */
-      aprDocs: 'Los documentos de préstamo de la UE, el Reino Unido y algunos otros países capitalizan los cargos mensuales, así que la cifra anual que muestran (TAE, APRC, RPSN) es más alta que el APR de aquí para el mismo préstamo. La diferencia crece con la tasa: un 6,50% aquí es un 6,70% allí, y un 20% es un 21,94%.',
+      aprDocs: 'Los documentos de préstamo de la UE, el Reino Unido y algunos otros países capitalizan los cargos mensuales, así que la cifra anual que muestran (TAE, APRC, RPSN) es más alta que el APR de aquí para el mismo préstamo. La diferencia crece con la tasa: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %.',
       aprFees: 'Incluye comisiones',
       aprNoFees: 'Sin comisiones',
       totalPaid: 'Total pagado',
@@ -1966,9 +1968,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       na: 'n. d.',
       one: '1 mes',
       some: '{m} meses',
-      years: '{y} a.',
-      yearsOne: '{y} a. y 1 mes',
-      yearsSome: '{y} a. y {m} meses',
+      year: '1 año',
+      years: '{y} años',
+      yearsAndMonth: '{years} y 1 mes',
+      yearsSome: '{years} y {m} meses',
     },
     engine: {
       errors: {
@@ -2601,9 +2604,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       na: 'není k dispozici',
       one: '1 měs.',
       some: '{m} měs.',
+      year: '1 r.',
       years: '{y} r.',
-      yearsOne: '{y} r. 1 měs.',
-      yearsSome: '{y} r. {m} měs.',
+      yearsAndMonth: '{years} 1 měs.',
+      yearsSome: '{years} {m} měs.',
     },
     engine: {
       errors: {
@@ -3209,9 +3213,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       na: 'लागू नाही',
       one: '1 महिना',
       some: '{m} महिने',
+      year: '1 वर्ष',
       years: '{y} वर्ष',
-      yearsOne: '{y} वर्ष 1 महिना',
-      yearsSome: '{y} वर्ष {m} महिने',
+      yearsAndMonth: '{years} 1 महिना',
+      yearsSome: '{years} {m} महिने',
     },
     engine: {
       errors: {

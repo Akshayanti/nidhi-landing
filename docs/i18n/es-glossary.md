@@ -76,7 +76,7 @@ listed is not re-decided per page.
     a no-break space: `547 mil €`, `2,16 M €`. A thousand million is written
     in millions, `2.500 M €`. Never `K`, and never `B`: a Spanish *billón* is
     a million millions. A chart's heading counts in *miles*, *millones* and
-    *miles de millones* (*Importes en miles de €*).
+    *miles de millones* (*Cantidades en miles de €*).
 
 ## Vocabulary
 
@@ -185,7 +185,7 @@ listed is not re-decided per page.
 | means-tested benefits | ayudas sujetas a nivel de ingresos y patrimonio | |
 | no prerequisite | no hace falta leer nada antes | |
 | qualified professional | profesional acreditado | Always. Never *cualificado* or *calificado*. |
-| licensed (financial adviser) | con licencia | *Asesor financiero con licencia*; not *autorizado*. |
+| licensed (financial adviser) | con licencia | *Asesor financiero con licencia*, in every disclaimer; not *autorizado*, and not *acreditado*, which is for a qualified professional. |
 | money scripts | guiones de dinero (money scripts) | English kept in brackets on first use. |
 | framing | encuadre | *Encuadre y anclaje*. |
 | blended families | familias reconstituidas | |
@@ -268,6 +268,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | English | Spanish | Notes |
 | --- | --- | --- |
 | monthly payment | cuota mensual | |
+| amount | cantidad | The label and chart heading too (*Cantidades*), never *importe* or *monto*. |
 | loan amount | cantidad del préstamo | *Importe* leans to Spain and *monto* to Latin America. |
 | annual interest rate | tasa de interés anual | |
 | term (months) | plazo (meses) | |
@@ -295,6 +296,9 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | row (of the net worth table) | elemento | *{count} elementos*; *fila* where the sentence is about the table itself (*fila {index}*). |
 | donut chart | gráfico de anillo | |
 | fan chart | gráfico de abanico | |
+| range (of outcomes) | rango | *Abanico* only in the Monte Carlo simulator, whose chart is the fan; never both words in one sentence. |
+| box (on a page) | recuadro | *Cuadro* only for a dialog (*cuadro de impresión*). |
+| starting routes (home) | rutas iniciales | Not *puntos de partida*, which the site keeps for a starting point. |
 | Full / Redacted (share options) | Versión completa / Versión con datos ocultos | Never *anónima*: the link still carries the currencies and each one's share. |
 | Cautious / Historical / Optimistic | Prudente / Histórico / Optimista | The return settings. |
 | lump sums | pagos extraordinarios | |
