@@ -218,10 +218,15 @@ function encodePositionRedacted(pos: CurrencyPosition, concentration: number | n
   return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG, rateStatus(pos)]);
 }
 
+/** A share as a link writes it. */
+const SHARE_TEXT = /^-?\d+(\.\d+)?$/;
+/** An amount as every writer has written it, to two decimals: one cut short, or spelt another way, is not one. */
+const AMOUNT_TEXT = /^-?\d+\.\d\d$/;
+
 function decodePosition(code: string, packed: string): SharedPositionData | null {
-  const [pctRaw, riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
-  const pct = parseFloat(pctRaw);
-  if (!Number.isFinite(pct)) return null;
+  const [pctRaw = '', riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
+  if (!SHARE_TEXT.test(pctRaw)) return null;
+  const pct = Number(pctRaw);
 
   const riskLevel: RiskLevel = isValidRiskLevel(riskRaw) ? riskRaw : 'low';
 
@@ -241,7 +246,7 @@ function amountsRead(params: URLSearchParams): boolean {
   for (const [key, value] of params) {
     if (!key.startsWith('p_') || !KNOWN_CURRENCIES.has(key.slice(2).toUpperCase())) continue;
     const amount = decodeTuple(value, 3)[2];
-    if (amount.trim() === '' || !Number.isFinite(Number(amount))) return false;
+    if (!AMOUNT_TEXT.test(amount)) return false;
   }
   return true;
 }
@@ -513,12 +518,15 @@ function decodeFull(params: URLSearchParams): DecodeResult {
   if (!rowsAreWhole(params)) return refusal(functionalCurrency, 'link');
   const rows = decodeAssetRows(params);
   const sharedPositions = decodePositions(params);
+  if (!sharedPositions) return refusal(functionalCurrency, 'link');
   // The totals come last in a link, so a link cut short loses them first: one
-  // for each currency of the rows that can be read, or there is no total.
+  // for each currency of the rows that can be read and no other, or no total.
   const totalled = new Set(sharedPositions.map((p) => p.code));
   const needed = aggregate(rows, functionalCurrency, null).positions;
   const nothingInIt = needed.length === 0 && !rows.some((r) => isUnreadableAmount(r.value)) && sharedPositions.length === 0;
-  if (nothingInIt || needed.some((p) => !totalled.has(p.code)) || !amountsRead(params)) return refusal(functionalCurrency, 'link');
+  if (nothingInIt || totalled.size !== needed.length || needed.some((p) => !totalled.has(p.code)) || !amountsRead(params)) {
+    return refusal(functionalCurrency, 'link');
+  }
 
   const own = new Map(needed.map((p) => [p.code, p.netAmountOriginal]));
   for (const pos of sharedPositions) pos.netAmountOriginal = own.get(pos.code) ?? 0;
@@ -535,7 +543,9 @@ function decodeRedacted(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
   // One that says a rate was missing is one the tool refuses to make.
-  if (sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable)) return refusal(functionalCurrency, 'link');
+  if (!sharedPositions || sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable) || !sharesAreWhole(sharedPositions)) {
+    return refusal(functionalCurrency, 'link');
+  }
   // With no rows to look at, any zero share could be a missing rate.
   const inDoubt = sharedPositions.some((p) => p.rateUnavailable === undefined && p.code !== functionalCurrency && p.pct === 0);
 
@@ -549,17 +559,35 @@ function decodeRedacted(params: URLSearchParams): DecodeResult {
   };
 }
 
-function decodePositions(params: URLSearchParams): SharedPositionData[] {
+/**
+ * A link's positions, or null where they are not whole: one that cannot be
+ * read, one twice, or a rate status on some only, as a link cut short has.
+ * None is skipped: what was left would look like everything (#795).
+ */
+function decodePositions(params: URLSearchParams): SharedPositionData[] | null {
   const positions: SharedPositionData[] = [];
   for (const [key, value] of params) {
     if (!key.startsWith('p_')) continue;
     const code = key.slice(2).toUpperCase();
     // The code is shown on the page: only a currency the tools know.
-    if (!KNOWN_CURRENCIES.has(code)) continue;
+    if (!KNOWN_CURRENCIES.has(code) || positions.some((p) => p.code === code)) return null;
     const pos = decodePosition(code, value);
-    if (pos !== null) positions.push(pos);
+    if (pos === null) return null;
+    positions.push(pos);
   }
-  return positions;
+  const withStatus = positions.filter((p) => p.rateUnavailable !== undefined).length;
+  return withStatus === 0 || withStatus === positions.length ? positions : null;
+}
+
+/**
+ * Whether a new redacted link's shares are all there. They add up to 100, each
+ * rounded to one decimal, or are all zero. A lost position whose share was
+ * zero passes: with no rows in the link nothing else can show it.
+ */
+function sharesAreWhole(positions: SharedPositionData[]): boolean {
+  if (positions.some((p) => p.rateUnavailable === undefined) || positions.every((p) => p.pct === 0)) return true;
+  const sum = positions.reduce((total, p) => total + p.pct, 0);
+  return Math.abs(sum - 100) <= 0.05 * positions.length + 1e-9;
 }
 
 function isValidRiskLevel(s: string): s is RiskLevel {

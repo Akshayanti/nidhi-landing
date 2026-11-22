@@ -146,3 +146,58 @@ describe('a redacted link', () => {
     it(`an older one with ${what} is not`, () => assert.ok(!open(`m=r&f=EUR&${p}`).inDoubt));
   }
 });
+
+const SENT_ROWS = 'm=f&f=EUR&a1=Cash~100000&a2=Fund~55000~USD';
+const SENT_EUR = 'p_EUR=66.7~functional~100000.00~~k';
+const HIDDEN_EUR = 'p_EUR=66.7~functional~~~k';
+
+describe('a cut or crafted link is refused (#795)', () => {
+  const refused: Record<string, string> = {
+    'cut inside the last amount': `${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~5`,
+    'cut after the amount, so the status is gone': `${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~50000.00`,
+    'an amount in hex': `${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~0x10~~k`,
+    'an amount with an exponent': `${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~5e4~~k`,
+    'an amount with one decimal': `${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~50000.0~~k`,
+    'a position no row backs': 'm=f&f=EUR&n=1&a1=Cash~100~EUR&p_EUR=100.0~functional~100.00~~k&p_USD=100.0~low~1000.00~~k',
+    'a total with no row at all': 'm=f&f=EUR&n=0&p_EUR=100.0~functional~5000.00~~k',
+    'redacted, the last entry empty': `m=r&f=EUR&${HIDDEN_EUR}&p_USD=`,
+    'redacted, cut inside a share': `m=r&f=EUR&${HIDDEN_EUR}&p_USD=3`,
+    'redacted, the last position gone': `m=r&f=EUR&${HIDDEN_EUR}`,
+  };
+  for (const [name, qs] of Object.entries(refused)) {
+    it(name, () => assert.equal(open(qs).refused, 'link'));
+  }
+});
+
+describe('what must still open (#795)', () => {
+  const CASES: Record<string, [AssetRow[], Record<string, number> | null]> = {
+    'one currency': [[row('1000', 'EUR')], null],
+    'a debt in another currency': [[row('100000', 'EUR'), row('55000', 'USD', 'liability')], { EUR: 1, USD: 1.1 }],
+    'three currencies': [[row('1', 'EUR'), row('1', 'USD'), row('1', 'CZK')], { EUR: 1, USD: 1, CZK: 1 }],
+    'net worth below zero': [[row('1000', 'EUR', 'liability'), row('500', 'USD')], { EUR: 1, USD: 1.1 }],
+    'rows that net to zero': [[row('1000', 'EUR'), row('1000', 'EUR', 'liability')], null],
+  };
+  for (const [name, [rows, rates]] of Object.entries(CASES)) {
+    for (const mode of ['full', 'redacted'] as const) {
+      it(`${mode}: ${name}`, () => {
+        const qs = encodeShared(rows, aggregate(rows, 'EUR', rates).positions, 'EUR', mode);
+        assert.equal(open(qs).refused, undefined, qs);
+      });
+    }
+  }
+  it('an older full link', () => {
+    assert.equal(open(`${SENT_ROWS}&p_EUR=66.7~functional~100000.00&p_USD=33.3~moderate~50000.00`).refused, undefined);
+  });
+  it('an older redacted link', () => {
+    assert.equal(open('m=r&f=EUR&p_EUR=66.7~functional&p_USD=33.3~moderate').refused, undefined);
+  });
+});
+
+describe('a link names each currency once, and all say or none say (#795)', () => {
+  it('a position twice', () => {
+    assert.equal(open(`${SENT_ROWS}&${SENT_EUR}&p_USD=33.3~moderate~50000.00~~k&p_usd=33.3~moderate~50000.00~~k`).refused, 'link');
+  });
+  it('a status on one position only, redacted', () => {
+    assert.equal(open(`m=r&f=EUR&${HIDDEN_EUR}&p_USD=33.3~moderate`).refused, 'link');
+  });
+});

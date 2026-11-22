@@ -605,9 +605,13 @@ describe('a hostile link', () => {
     assert.equal(decodeFromQueryString('n=1&a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
   });
 
-  it('a shared position names a currency the tools know, or is left out', () => {
-    const { sharedPositions } = decodeFromQueryString('m=r&f=EUR&p_USD=60~low&p_%3Cb%3E=30~low&p_ZZZ=10~low');
-    assert.deepEqual((sharedPositions ?? []).map((p) => p.code), ['USD']);
+  it('a shared position names a currency the tools know, or the link is refused and shows none (#795)', () => {
+    // Left out, what remained looked like the whole net worth.
+    for (const made of ['p_%3Cb%3E=30~low', 'p_ZZZ=10~low']) {
+      const decoded = decodeFromQueryString(`m=r&f=EUR&p_USD=60~low&${made}`);
+      assert.equal(decoded.refused, 'link', made);
+      assert.equal(decoded.sharedPositions, undefined, made);
+    }
   });
 });
 
