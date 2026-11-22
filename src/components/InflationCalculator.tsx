@@ -28,9 +28,6 @@ import {
   historyPath,
   keepingUp,
   missingYears,
-  parseAmount,
-  parsePercent,
-  parseYears,
   realRate,
   recentAverage,
   round2,
@@ -43,6 +40,7 @@ import {
 } from '../utils/inflation/math.ts';
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/inflation/url.ts';
+import { boxErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/inflation/form.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -168,49 +166,6 @@ function yearsPhrase(n: number, strings: Strings, numberLocale: string): string 
   return t(plural(numberLocale, n, one, few, other), { n });
 }
 
-// ===========================================================================
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ===========================================================================
-
-interface FormState {
-  mode: Mode;
-  currency: string;
-  amount: string;
-  rate: string;
-  years: string;
-  growth: string;
-  country: string;
-  /** '' means the default starting year for the country. */
-  from: string;
-}
-
-function toForm(s: ToolState, locale: string): FormState {
-  return {
-    mode: s.mode,
-    currency: s.currency,
-    amount: formatForInput(s.amount, locale),
-    rate: formatForInput(s.rate, locale),
-    years: String(s.years),
-    growth: formatForInput(s.growth, locale),
-    country: s.country,
-    from: s.from === null ? '' : String(s.from),
-  };
-}
-
-/** The form as a state, keeping `prev`'s value for any field that does not parse. */
-function toState(f: FormState, prev: ToolState, locale: string): ToolState {
-  return {
-    mode: f.mode,
-    currency: f.currency,
-    amount: parseAmount(f.amount, locale) ?? prev.amount,
-    rate: parsePercent(f.rate, MIN_RATE, MAX_RATE, locale) ?? prev.rate,
-    years: parseYears(f.years) ?? prev.years,
-    growth: parsePercent(f.growth, MIN_GROWTH, MAX_GROWTH, locale) ?? prev.growth,
-    country: f.country,
-    from: f.from === '' ? null : Number(f.from),
-  };
-}
-
 /** The starting years a country's history offers: its unbroken run up to the latest year, minus that last year. */
 function fromYearsFor(series: Series | null): number[] {
   if (!series) return [];
@@ -306,7 +261,9 @@ export default function InflationCalculator({
     setHydrated(true);
     if (!decoded) return;
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
-    setForm(toForm(shared, numberLocale));
+    // The boxes as the link has them, bad ones included; the state behind them stays finite.
+    const opened = formFromLink(raw as string, numberLocale) ?? toForm(shared, numberLocale);
+    setForm({ ...opened, country: shared.country });
     setSettled(shared);
     // A shared link that names a country shows its history without a click.
     if (shared.country && shared.country !== defaultCountry) setHistoryOpen(true);
@@ -318,13 +275,15 @@ export default function InflationCalculator({
     });
   }, [countryByCode, numberLocale]);
 
+  // The form as it stands, not the settled state: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   // Keeps what is on screen where the header's language switch can find it
   // (after the #, at click time; see src/utils/shared/toolState.ts). Never
   // the address: nothing here writes to it.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency, defaultCountry));
-  }, [hydrated, settled, defaultCurrency, defaultCountry]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, numberLocale, defaultCurrency, defaultCountry));
+  }, [hydrated, form, numberLocale, defaultCurrency, defaultCountry]);
 
   // A country's history, from the site's own origin, the first time one is
   // picked that the page did not arrive with.
@@ -372,11 +331,12 @@ export default function InflationCalculator({
   const fromOptions = fromYearsFor(formSeries);
   const pastByHistory = form.mode === 'past' && (formState === 'loading' || (formState === 'ready' && fromOptions.length > 0));
 
+  const wrong = boxErrors(form, numberLocale);
   const errors = {
-    amount: parseAmount(form.amount, numberLocale) === null,
-    rate: !pastByHistory && parsePercent(form.rate, MIN_RATE, MAX_RATE, numberLocale) === null,
-    years: !pastByHistory && parseYears(form.years) === null,
-    growth: form.mode === 'keep' && parsePercent(form.growth, MIN_GROWTH, MAX_GROWTH, numberLocale) === null,
+    amount: wrong.amount,
+    rate: !pastByHistory && wrong.rate,
+    years: !pastByHistory && wrong.years,
+    growth: form.mode === 'keep' && wrong.growth,
   };
   const hasErrors = Object.values(errors).some(Boolean);
 
@@ -593,7 +553,6 @@ export default function InflationCalculator({
                   hint={t(strings.fields.yearsHint, { min: MIN_YEARS, max: MAX_YEARS })}
                   error={errors.years ? t(strings.fields.yearsError, { min: MIN_YEARS, max: MAX_YEARS }) : null}
                   inputMode="numeric"
-                  type="number"
                 />
               </>
             )}
