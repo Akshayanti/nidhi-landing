@@ -59,7 +59,7 @@ describe('return model', () => {
     }
   });
 
-  it('cautious and optimistic hit the ends of the 4 to 6% and 1 to 3% ranges', () => {
+  it('cautious and optimistic hit their set rates: stocks 4% and 6%, bonds 1% and 3%', () => {
     const c = compoundRates('cautious');
     const o = compoundRates('optimistic');
     assert.ok(Math.abs(c.stocks - 0.04) < 1e-12 && Math.abs(c.bonds - 0.01) < 1e-12);

@@ -51,9 +51,9 @@ export const STOCK_BOND_CORRELATION = 0.2;
 /**
  * Return settings. "historical" is the lognormal fitted to the world indices
  * above. "cautious" and "optimistic" keep exactly the same ups and downs
- * (the same log-space spread) but move the compound yearly return to the low
- * and high ends of the long-run range used across nidhi's articles: stocks
- * about 4 to 6% a year after inflation, bonds 1 to 3%.
+ * (the same log-space spread) but move the compound yearly return to rates
+ * set either side of the world record (about 5.3% stocks, 1.7% bonds,
+ * compound): stocks 4% and 6% a year after inflation, bonds 1% and 3%.
  */
 export type ReturnSetting = 'cautious' | 'historical' | 'optimistic';
 export const RETURN_SETTINGS: readonly ReturnSetting[] = ['cautious', 'historical', 'optimistic'];

@@ -32,6 +32,7 @@ import {
   type ReturnChoice,
   type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
+import { QUOTED_RATES } from '../utils/monte-carlo/math.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
@@ -557,7 +558,7 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), low: REAL_RETURN_BOTTOM, top: REAL_RETURN_TOP })}</p>}
+                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
                 {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
                 {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>

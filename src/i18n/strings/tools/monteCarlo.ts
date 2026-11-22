@@ -168,7 +168,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Where do the return assumptions come from?',
-          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The "{historical}" setting draws yearly returns from a distribution with those averages and swings. "{cautious}" and "{optimistic}" keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi\'s articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
+          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The "{historical}" setting draws yearly returns from a distribution with those averages and swings. "{cautious}" and "{optimistic}" keep the same swings but set the compound yearly return to a cautious and an optimistic rate either side of that record\'s compound return (about 5.3% a year for stocks and 1.7% for bonds): stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
         },
         {
           q: 'How many paths should I run?',
@@ -313,11 +313,11 @@ export const monteCarloEn = {
     /** Each setting's explanation, on hover, on focus and below the switch on a touch screen. */
     returnTips: {
       cautious:
-        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: the low end of the long-run range. The ups and downs are as large as in history.',
+        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: a cautious setting, below what world markets returned since 1900. The ups and downs are as large as in history.',
       historical:
         'World markets from 1900 to 2025: stocks grew about {stocks} a year after inflation and bonds about {bonds}, with the ups and downs they actually had.',
       optimistic:
-        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: the high end of the long-run range. The ups and downs are as large as in history.',
+        'Stocks grow about {stocks} a year after inflation and bonds about {bonds}: an optimistic setting, above what world markets returned since 1900. The ups and downs are as large as in history.',
     },
     settings: {
       /** The button that opens the folded fees and paths. */
@@ -550,7 +550,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'रिटर्न की मान्यताएँ कहाँ से आती हैं?',
-          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। "{historical}" सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। "{cautious}" और "{optimistic}" वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को उस लंबी अवधि के दायरे के निचले और ऊपरी सिरे पर रख देते हैं जो nidhi के लेखों में इस्तेमाल होता है: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
+          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। "{historical}" सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। "{cautious}" और "{optimistic}" वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को एक सतर्क और एक आशावादी दर पर रख देते हैं, जो उसी रिकॉर्ड के चक्रवृद्धि रिटर्न (शेयरों में सालाना लगभग 5.3% और बॉन्ड में 1.7%) के दोनों ओर हैं: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
         },
         {
           q: 'कितने रास्ते चलाने चाहिए?',
@@ -666,11 +666,11 @@ export const monteCarloHi: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: लंबी अवधि के दायरे का निचला सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
+        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: यह एक सतर्क सेटिंग है, 1900 से दुनिया के बाज़ारों के रिटर्न से नीचे। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
       historical:
         '1900 से 2025 तक के दुनिया के बाज़ार: शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़े और बॉन्ड लगभग {bonds}, और उतार-चढ़ाव वही जो असल में आए।',
       optimistic:
-        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: लंबी अवधि के दायरे का ऊपरी सिरा। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
+        'शेयर महँगाई के बाद सालाना लगभग {stocks} बढ़ते हैं और बॉन्ड लगभग {bonds}: यह एक आशावादी सेटिंग है, 1900 से दुनिया के बाज़ारों के रिटर्न से ऊपर। उतार-चढ़ाव इतिहास जितने ही बड़े हैं।',
     },
     settings: {
       toggle: 'शुल्क और सिम्युलेटेड रास्ते',
@@ -883,7 +883,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿De dónde salen los supuestos de rentabilidad?',
-          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en el extremo bajo y el alto del rango a largo plazo que se usa en los artículos de nidhi: acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
+          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en una tasa prudente y otra optimista, a uno y otro lado de la rentabilidad compuesta de ese historial (alrededor del 5,3 % anual en acciones y del 1,7 % en bonos): acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
         },
         {
           q: '¿Cuántas trayectorias conviene simular?',
@@ -999,11 +999,11 @@ export const monteCarloEs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: el extremo bajo del rango a largo plazo. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario prudente, por debajo de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
       historical:
         'Los mercados mundiales de 1900 a 2025: las acciones crecieron alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}, con los altibajos que tuvieron en realidad.',
       optimistic:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: el extremo alto del rango a largo plazo. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario optimista, por encima de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
     },
     settings: {
       toggle: 'Comisiones y trayectorias simuladas',
@@ -1218,7 +1218,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Odkud pocházejí předpoklady výnosů?',
-          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po odečtení inflace měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají články nidhi: akcie 4 % nebo 6 % ročně po odečtení inflace, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
+          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po odečtení inflace měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na opatrnou a optimistickou hodnotu pod složeným výnosem z této historie a nad ním (zhruba 5,3 % ročně u akcií a 1,7 % u dluhopisů): akcie 4 % nebo 6 % ročně po odečtení inflace, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
         },
         {
           q: 'Kolik trajektorií spustit?',
@@ -1334,11 +1334,11 @@ export const monteCarloCs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: opatrné nastavení, pod tím, co světové trhy vynášely od roku 1900. Vzestupy a poklesy jsou stejně velké jako v historii.',
       historical:
         'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
       optimistic:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: optimistické nastavení, nad tím, co světové trhy vynášely od roku 1900. Vzestupy a poklesy jsou stejně velké jako v historii.',
     },
     settings: {
       toggle: 'Poplatky a\u00a0simulované trajektorie',
@@ -1539,7 +1539,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'परताव्याची गृहीतके कुठून येतात?',
-          a: '1900 ते 2025 मधील जागतिक शेअर आणि रोखे बाजारांच्या दीर्घकालीन नोंदींमधून; या नोंदी Dimson, Marsh आणि Staunton यांनी संकलित केल्या आणि Exponential Wealth (CFA Institute Research Foundation, 2026) मध्ये पुन्हा प्रसिद्ध केल्या. महागाई वजा जाता, जागतिक इक्विटीचा सरासरी परतावा दरवर्षी {stocksMean} होता, प्रमाण विचलन {stocksSd}, आणि जागतिक रोख्यांचा {bondsMean}, प्रमाण विचलन {bondsSd}. “{historical}” सेटिंग याच सरासरी आणि चढ-उतार असलेल्या वितरणातून वार्षिक परतावे निवडते. “{cautious}” आणि “{optimistic}” तेच चढ-उतार ठेवतात, पण चक्रवाढ वार्षिक परतावा nidhi च्या लेखांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या खालच्या आणि वरच्या टोकावर ठेवतात: महागाई वजा जाता शेअर दरवर्षी 4% किंवा 6%, रोखे 1% किंवा 3%. कोणतीही ऐतिहासिक आकडेमालिका साधनात कॉपी केलेली नाही.',
+          a: '1900 ते 2025 मधील जागतिक शेअर आणि रोखे बाजारांच्या दीर्घकालीन नोंदींमधून; या नोंदी Dimson, Marsh आणि Staunton यांनी संकलित केल्या आणि Exponential Wealth (CFA Institute Research Foundation, 2026) मध्ये पुन्हा प्रसिद्ध केल्या. महागाई वजा जाता, जागतिक इक्विटीचा सरासरी परतावा दरवर्षी {stocksMean} होता, प्रमाण विचलन {stocksSd}, आणि जागतिक रोख्यांचा {bondsMean}, प्रमाण विचलन {bondsSd}. “{historical}” सेटिंग याच सरासरी आणि चढ-उतार असलेल्या वितरणातून वार्षिक परतावे निवडते. “{cautious}” आणि “{optimistic}” तेच चढ-उतार ठेवतात, पण चक्रवाढ वार्षिक परतावा एका सावध आणि एका आशावादी दरावर ठेवतात, जे त्याच नोंदींतील चक्रवाढ परताव्याच्या (शेअरसाठी दरवर्षी सुमारे 5.3% आणि रोख्यांसाठी 1.7%) दोन्ही बाजूंना आहेत: महागाई वजा जाता शेअर दरवर्षी 4% किंवा 6%, रोखे 1% किंवा 3%. कोणतीही ऐतिहासिक आकडेमालिका साधनात कॉपी केलेली नाही.',
         },
         {
           q: 'किती मार्ग चालवायचे?',
@@ -1654,9 +1654,9 @@ export const monteCarloMr: typeof monteCarloEn = {
       optimistic: 'आशावादी',
     },
     returnTips: {
-      cautious: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे खालचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
+      cautious: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: ही सावध सेटिंग आहे, 1900 पासून जागतिक बाजारांनी दिलेल्या परताव्यापेक्षा कमी. चढ-उतार इतिहासाइतकेच मोठे.',
       historical: '1900 ते 2025 मधील जागतिक बाजार: महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढले, त्यांच्या प्रत्यक्ष चढ-उतारांसह.',
-      optimistic: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे वरचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
+      optimistic: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: ही आशावादी सेटिंग आहे, 1900 पासून जागतिक बाजारांनी दिलेल्या परताव्यापेक्षा जास्त. चढ-उतार इतिहासाइतकेच मोठे.',
     },
     settings: {
       toggle: 'शुल्क आणि संभाव्य मार्ग',
