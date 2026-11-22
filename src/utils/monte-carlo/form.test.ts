@@ -161,3 +161,18 @@ describe('a tiny number is never rounded on the way (#789)', () => {
     });
   }
 });
+
+describe('a number too long for a link is invalid where it is typed (#789)', () => {
+  it('past 200 characters', async () => {
+    const { DEFAULTS: plan } = await import('./url.ts');
+    const long = `0.${'0'.repeat(199)}1`;
+    assert.equal(formErrors({ ...toForm(plan), start: long }).start, true);
+  });
+  it('up to 200 it travels whole', async () => {
+    const { DEFAULTS: plan } = await import('./url.ts');
+    const fits = `0.${'0'.repeat(196)}1`;
+    const form = { ...toForm(plan), start: fits };
+    assert.equal(formErrors(form).start, false);
+    assert.equal(Number(formFromLink(publishableForm(form, 'EUR'))!.start), Number(fits));
+  });
+});

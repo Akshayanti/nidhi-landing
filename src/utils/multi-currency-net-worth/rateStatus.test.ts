@@ -375,3 +375,11 @@ describe('a failed refresh with rates held (#795)', () => {
     assert.equal(ratesFailureShown({ ...failed, held: false }, false), true);
   });
 });
+
+it('what the notice says can escape is what can (#795)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const log = readFileSync(new URL('../privacyChangelogEntries.ts', import.meta.url), 'utf8');
+  assert.ok(log.includes('and so can a dropped debt in an older link whose net worth was below zero.'));
+  // Such an older link, cut after a debt: a whole debts-only link reads the same.
+  assert.equal(open('m=r&f=EUR&p_EUR=125.0~functional&p_USD=62.5~net-debt').refused, undefined);
+});

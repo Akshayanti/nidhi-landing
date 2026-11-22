@@ -1,6 +1,8 @@
 /**
  * What the simulator accepts in a number box.
  */
+import { plainDigits } from '../shared/parseLocaleNumber.ts';
+
 
 /**
  * Whether a box holds a number from `min` to `max`. `whole` is for the two
@@ -11,5 +13,7 @@
 export function isValidNumber(v: string, min: number, max: number, whole = false): boolean {
   if (v.trim() === '') return false;
   const n = Number(v);
-  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n));
+  // A link carries a number of 200 characters at most: a longer one arrived
+  // as unreadable, so it is refused here, where it is typed (#789).
+  return Number.isFinite(n) && n >= min && n <= max && (!whole || Number.isInteger(n)) && plainDigits(n).length <= 200;
 }
