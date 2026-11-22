@@ -85,7 +85,7 @@ When relatives, advisers or salespeople push, one sentence covers all of them: *
 
 ## Why income often falls further than costs after a partner dies
 
-Two people do not spend twice what one does: rent, heating, internet, a car and home insurance cost about the same. Common statistical equivalence scales, such as the one the [solo agers post](/blog/solo-agers-and-single-income-households/) described, put one adult's needs at roughly two-thirds to **70%** of a couple's for the same standard of living; they compare households and do not predict a particular survivor's bills. Income can fall much further, depending on where it came from and whether the relationship was legally recognised:
+Two people do not spend twice what one does: rent, heating, internet, a car and home insurance cost about the same. Common statistical equivalence scales, such as the one the [solo agers post](/blog/solo-agers-and-single-income-households/) described, put one adult's needs at roughly two-thirds to **70%** of a couple's for the same standard of living; they compare households and do not predict a particular survivor's bills. Income can fall much further, depending on where it came from and whether the relationship was legally recognized:
 
 | The survivor's position | Income after the death | Monthly costs | Surplus or shortfall |
 |---|---|---|---|
@@ -93,7 +93,7 @@ Two people do not spend twice what one does: rent, heating, internet, a car and 
 | Married, scheme pays no survivor pension | €1,100 | €1,600 | -€500 |
 | Not married, no survivor benefit | €1,100 | €1,600 | -€500 |
 
-The figures are illustrative; survivor pensions range from nothing to the full amount. The same couple and the same loss differ by €770 a month for life, decided by a pension scheme rule and a line on a certificate; the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [marriage not recognised](/blog/when-your-marriage-is-not-recognised-abroad/) posts cover what to put in place while both partners are alive. For a younger survivor the pattern is sharper: a salary stops completely, children's costs continue, and childcare the couple shared may have to be bought.
+The figures are illustrative; survivor pensions range from nothing to the full amount. The same couple and the same loss differ by €770 a month for life, decided by a pension scheme rule and a line on a certificate; the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [marriage not recognized](/blog/when-your-marriage-is-not-recognised-abroad/) posts cover what to put in place while both partners are alive. For a younger survivor the pattern is sharper: a salary stops completely, children's costs continue, and childcare the couple shared may have to be bought.
 
 <details class="lesson-depth">
 <summary class="disclosure">What to check, and rebuilding the plan after the first year</summary>

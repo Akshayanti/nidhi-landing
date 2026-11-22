@@ -65,7 +65,7 @@ export const loanComparisonEn = {
       'Multi-currency support across 38 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
       'Model origination fees and extra monthly principal',
-      'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
+      'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modelling',
       'Horizon analysis (“if I sell at month N”) showing principal repaid, interest paid, balance remaining, and total cash out per offer',
       'Refinance scenario builder comparing “keep” vs. “refinance” with closing costs and break-even horizon',
       'Cent-precise integer amortization schedule',
@@ -107,7 +107,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What kinds of loans can I compare?',
-              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and fixed-then-variable loans, where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modeled.',
+              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and fixed-then-variable loans, where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modelled.',
             },
             {
               q: 'How many loans can I compare at once?',
@@ -225,7 +225,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What does “multi-currency” mean here?',
-              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
+              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
         },
@@ -238,7 +238,7 @@ export const loanComparisonEn = {
         {
           kicker: 'How to compare',
           title: 'Understanding loan terms',
-          desc: 'APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost.',
+          desc: 'APR, amortization, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost.',
         },
         {
           kicker: 'Before you borrow',
@@ -661,7 +661,7 @@ export const loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Assumptions and disclaimers',
-      body: 'Calculations assume monthly compounding and on-time payments. APR is quoted on the same basis as the rate you enter (the monthly rate × 12) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure. A one-off cost can be added to the fee field; a cost paid every month is not modelled, and adding its lifetime total as a fee overstates the APR. Canadian fixed-rate mortgages are usually stated with half-yearly compounding (Canada\'s Interest Act allows yearly or half-yearly) and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your own what-if rate. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
+      body: 'Calculations assume monthly compounding and on-time payments. APR is quoted on the same basis as the rate you enter (the monthly rate × 12) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure. A one-off cost can be added to the fee field; a cost paid every month is not modelled, and adding its lifetime total as a fee overstates the APR. Canadian fixed-rate mortgages are usually stated with half-yearly compounding (Canada\'s Interest Act allows yearly or half-yearly) and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your own what-if rate. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modelled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial adviser.',
     },
     /**
      * A count of months, as this tool writes it. The engine's own

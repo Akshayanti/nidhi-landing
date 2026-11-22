@@ -25,7 +25,7 @@ personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "planning"]
 faq:
   - question: "What kinds of investment accounts are there?"
-    answer: "Investment accounts fall into three broad categories in almost every country. A regular brokerage account lets you buy and sell freely with no contribution limits, but gains are usually taxed in the year you realize them. A tax-advantaged retirement account offers favorable tax treatment in exchange for locking the money up until a certain age, often with contribution limits. An employer-sponsored scheme is a retirement account through work, sometimes with matching contributions where the employer adds money when you do. Many people end up with a mix: some money in flexible accounts to stay accessible, and long-term money in tax-advantaged accounts for the tax benefit. The right balance depends on your country's rules, your income and when you will need the money."
+    answer: "Investment accounts fall into three broad categories in almost every country. A regular brokerage account lets you buy and sell freely with no contribution limits, but gains are usually taxed in the year you realize them. A tax-advantaged retirement account offers favourable tax treatment in exchange for locking the money up until a certain age, often with contribution limits. An employer-sponsored scheme is a retirement account through work, sometimes with matching contributions where the employer adds money when you do. Many people end up with a mix: some money in flexible accounts to stay accessible, and long-term money in tax-advantaged accounts for the tax benefit. The right balance depends on your country's rules, your income and when you will need the money."
   - question: "What is dollar-cost averaging and why does it help?"
     answer: "Dollar-cost averaging means investing a fixed amount on a fixed schedule, for example 300 euros on the first of every month, regardless of what the market is doing. When prices are high you buy fewer shares; when prices are low you buy more, so your average purchase price smooths out. It is not mathematically optimal in every scenario: if markets only rose, a lump sum invested immediately would always win. But it solves a bigger problem by removing timing decisions from your hands, which removes the temptation to wait, hesitate, or panic. Over a long career, consistently investing tends to matter far more than timing."
   - question: "Is a lump sum better invested all at once or spread out?"
@@ -64,8 +64,8 @@ In almost every country, investment accounts fall into three broad categories. N
 | Account type | Access | Tax treatment | Contribution limits | Typically used for |
 |---|---|---|---|---|
 | Regular brokerage | Anytime | Gains taxed when realized | None | Flexibility, goals before retirement |
-| Tax-advantaged retirement | Restricted (usually until retirement age) | Favorable (varies) | Yes | Long-term, tax-efficient growth |
-| Employer-sponsored | Varies | Often favorable; may include matching | Varies | Retirement saving, capturing any match |
+| Tax-advantaged retirement | Restricted (usually until retirement age) | Favourable (varies) | Yes | Long-term, tax-efficient growth |
+| Employer-sponsored | Varies | Often favourable; may include matching | Varies | Retirement saving, capturing any match |
 
 The specific products, rules, and names vary by country. Conceptually, many people end up with a mix: some money in flexible accounts to stay accessible, and long-term money in tax-advantaged accounts for the tax benefit.
 

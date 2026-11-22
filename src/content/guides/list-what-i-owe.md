@@ -30,7 +30,7 @@ steps:
   - action: "Work out a rough monthly interest cost for each debt."
     why: "Balance × yearly rate ÷ 12 gives an approximate cost of carrying each debt for a month. It shows which debts cost the most to keep."
     example: "A €6,500 card balance at 22% a year: 6,500 × 0.22 ÷ 12 ≈ €119 a month."
-    caution: "This estimate suits simple balances that charge interest. Flat-rate loans (interest on the whole amount borrowed for the whole term), deferred interest (interest that is held back and may be charged later), subsidised loans (someone else, often a government, pays part of the cost) and other arrangements can work differently, and fees aren't included."
+    caution: "This estimate suits simple balances that charge interest. Flat-rate loans (interest on the whole amount borrowed for the whole term), deferred interest (interest that is held back and may be charged later), subsidized loans (someone else, often a government, pays part of the cost) and other arrangements can work differently, and fees aren't included."
 visual:
   kind: table
   caption: "A made-up example, the same debts as in the lesson on getting out of debt. Interest a month is the rough figure from step 5."

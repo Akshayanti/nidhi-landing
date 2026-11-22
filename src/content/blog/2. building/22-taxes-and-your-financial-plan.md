@@ -88,7 +88,7 @@ Imagine an investment earning 7% per year (a hypothetical figure used for illust
 | 30 | €76,123 | €46,412 | €29,711 |
 | 40 | €149,745 | €77,420 | €72,325 |
 
-*Illustrative example only, not a forecast. The 7% figure is hypothetical; actual investment returns vary, can be negative, and past performance is not a reliable indicator of future results. The 25% drag is a simplification: real-world tax drag depends on the mix of dividends, interest, and realised gains, and is often lower than a flat annual model suggests. Inflation is ignored.*
+*Illustrative example only, not a forecast. The 7% figure is hypothetical; actual investment returns vary, can be negative, and past performance is not a reliable indicator of future results. The 25% drag is a simplification: real-world tax drag depends on the mix of dividends, interest, and realized gains, and is often lower than a flat annual model suggests. Inflation is ignored.*
 
 The same initial investment, the same time horizon, the same underlying market returns. In this deliberately harsh example, tax drag cuts the final amount roughly in half over 40 years; real-world drag is often smaller, but it still compounds.
 
@@ -156,7 +156,7 @@ The order in which you withdraw from different account types in retirement (with
 - **Leaving tax-advantaged contribution room on the table.** Contribution limits are "use it or lose it" in many systems (the UK ISA allowance, for example), though some, such as Canada's RRSP and TFSA and Australia's concessional super contributions (for up to five years, if your super balance is under A$500,000), let unused room carry forward. Leaving them unused trades decades of tax-sheltered growth for extra flexibility today, a trade worth making deliberately, whether for access, expected tax rates later or the products on offer
 - **Assuming retirement income is tax-free.** Depending on account mix, a surprising amount of retirement income can be taxable, which after-tax planning brings into view
 - **Trading frequently in taxable accounts.** Every realized gain is a taxable event. Frequent trading turns paper gains into smaller after-tax gains, sometimes dramatically
-- **Ignoring cross-border tax complications.** Living in one country and holding investments in another can introduce double taxation, reporting obligations, or unfavorable treatment. If your life spans borders, it's worth understanding your specific situation before making large moves
+- **Ignoring cross-border tax complications.** Living in one country and holding investments in another can introduce double taxation, reporting obligations, or unfavourable treatment. If your life spans borders, it's worth understanding your specific situation before making large moves
 
 ## What stays generic, and what needs local advice
 
@@ -182,7 +182,7 @@ The general rule: no blog post can replace jurisdiction-specific advice for larg
 
 ## What this means in practice
 
-> This is general education, not personalised advice. Your circumstances may call for something different; consider professional advice before making decisions involving real money.
+> This is general education, not personalized advice. Your circumstances may call for something different; consider professional advice before making decisions involving real money.
 
 1. **Run one calculation in after-tax terms.** Your monthly net income, your actual after-tax expenses, your realistic savings rate. This is usually more revealing than the gross version
 2. **Map your current accounts by tax treatment.** Which are pre-tax, which are post-tax, which are tax-deferred, which are plain taxable? If you don't know, finding out is worth an afternoon

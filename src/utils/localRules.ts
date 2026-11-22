@@ -34,7 +34,7 @@ export const LOCAL_RULE_SOURCES: Record<LocalRuleArea, { label: string; where: s
   'deposit-protection': { label: 'Bank deposits', where: 'your national deposit guarantee scheme or banking regulator, which publishes the protection limit' },
   credit: { label: 'Credit reports and scores', where: 'your national credit bureau, or the financial or consumer-protection regulator' },
   borrowing: { label: 'Loans and mortgages', where: "the lender's written terms, and the consumer-credit rules your financial or consumer-protection regulator publishes" },
-  investments: { label: 'Investment firms and products', where: "your financial regulator's register of authorised firms" },
+  investments: { label: 'Investment firms and products', where: "your financial regulator's register of authorized firms" },
   property: { label: 'Buying property', where: 'a local notary, solicitor or conveyancer' },
   inheritance: { label: 'Wills and inheritance', where: 'a local notary or estate lawyer' },
   insurance: { label: 'Insurance', where: 'your national insurance regulator or ombudsman, or an independent local broker' },

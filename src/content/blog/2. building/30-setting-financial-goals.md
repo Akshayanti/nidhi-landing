@@ -12,7 +12,7 @@ takeaways:
   - "Why a goal needs an amount, a date, a path and a place"
   - "How time horizon decides where a goal's money belongs"
   - "Why delaying a long-term goal costs more than it seems"
-  - "How to prioritise goals by math and timeline, not feeling"
+  - "How to prioritize goals by math and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
 updatedDate: 2026-11-17

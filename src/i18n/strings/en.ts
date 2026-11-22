@@ -535,7 +535,7 @@ export const en = {
       anyCountry:
         'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a “Where to check locally” note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
       sourcesAndFigures:
-        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under “Suggested Reading,” so you can follow the trail rather than take my word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
+        'Claims rest on primary and reputable secondary sources: established books, recognized reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under “Suggested Reading,” so you can follow the trail rather than take my word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
       aiUsed1:
         "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
       aiUsed2: {
@@ -723,7 +723,7 @@ export const en = {
       loanComparison: {
         kicker: 'Borrowing decisions',
         title: 'Loan comparison',
-        desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-offer amortisation, without a spreadsheet.',
+        desc: 'Compare two or three loan offers side by side. APR, total cost of borrowing, refinancing scenarios, and per-offer amortization, without a spreadsheet.',
       },
       monteCarlo: {
         kicker: 'Projections and retirement',
@@ -1002,7 +1002,7 @@ export const en = {
       dismissed: {
         before: 'Whether you’ve dismissed the newsletter subscribe prompt (',
         after:
-          '), so we honor your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.',
+          '), so we honour your choice to not see it again for a while. Contains only a dismissal type and timestamp, no email address or personal data.',
       },
       waitlistSignedUp: {
         before: 'Whether you’ve signed up for the planner waitlist (',

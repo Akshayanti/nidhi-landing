@@ -4,7 +4,7 @@ title: "Credit and Credit Scores: What They Are and Why They Matter"
 seoTitle: "Credit and Credit Scores: What They Are and Why"
 description: "How credit history affects borrowing: why it can influence mortgage rates in some markets and mainly affect approval in others."
 tldr:
-  - "A credit score summarises how reliably you have handled borrowed money, and each country has its own system."
+  - "A credit score summarizes how reliably you have handled borrowed money, and each country has its own system."
   - "It draws on payment history, how much available credit you use, how long accounts have been open and credit types."
   - "A stronger record usually means easier approval and, in many countries, lower rates; paying on time and borrowing modestly mostly build it."
 takeaways:
@@ -77,7 +77,7 @@ How long have your accounts been open? Longer history gives lenders more data. I
 
 ### 4. Types of credit
 
-Having experience with different forms of borrowing (credit card, installment loan, mortgage) can strengthen your profile. This matters less than payment history, but it demonstrates that you can manage various obligations.
+Having experience with different forms of borrowing (credit card, instalment loan, mortgage) can strengthen your profile. This matters less than payment history, but it demonstrates that you can manage various obligations.
 
 ### 5. Recent credit activity
 
@@ -151,7 +151,7 @@ Building credit is mostly about consistency and time. Points 1 to 4 matter most 
 
 **"I have no credit history, so my score must be fine."** Not necessarily. In systems that reward positive history, no history can be as limiting as bad history, because lenders have nothing to base their assessment on. This is common for people new to a country or young adults. Where that applies, a basic credit card used lightly is a common way to start a history.
 
-**"All debt is bad for my score."** Not true. In systems that record positive history, like the US and UK, a well-managed mortgage or installment loan that you pay on time actually strengthens your score by showing you can handle long-term obligations.
+**"All debt is bad for my score."** Not true. In systems that record positive history, like the US and UK, a well-managed mortgage or instalment loan that you pay on time actually strengthens your score by showing you can handle long-term obligations.
 
 ## The credit score and your net worth
 
@@ -166,6 +166,6 @@ As we covered in the [liabilities post](/blog/liabilities/), the interest rate i
 3. **One missed bill can outweigh years of good history.** That's why many people automate minimum payments as a backstop
 4. **It's a long game.** Credit records reward consistency over time. There are no shortcuts, and the payoff shows up as easier, often cheaper, borrowing later
 
-Your credit record is the invisible thread connecting your past financial behavior to your future borrowing costs. Looked after early, it quietly works in your favor for decades.
+Your credit record is the invisible thread connecting your past financial behaviour to your future borrowing costs. Looked after early, it quietly works in your favour for decades.
 
-Your credit score is one piece of your financial defense. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.
+Your credit score is one piece of your financial defence. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.

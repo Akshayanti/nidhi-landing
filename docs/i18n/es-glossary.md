@@ -272,7 +272,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | loan amount | cantidad del préstamo | *Importe* leans to Spain and *monto* to Latin America. |
 | annual interest rate | tasa de interés anual | |
 | term (months) | plazo (meses) | |
-| amortisation schedule | tabla de amortización | *Cuadro* leans to Spain. |
+| amortization schedule | tabla de amortización | *Cuadro* leans to Spain. |
 | balance (of a loan) | saldo pendiente | |
 | balance (of a portfolio) | valor de la cartera | Not *saldo*, which reads as money owed. |
 | lender | entidad financiera | *Prestamista* reads as a private moneylender. |

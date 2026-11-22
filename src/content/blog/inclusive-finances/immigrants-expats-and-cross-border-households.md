@@ -16,7 +16,7 @@ takeaways:
     href: "#comparing-remittances-by-the-amount-actually-received"
 glossary:
   - term: "Recognition gap"
-    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+    definition: "The distance between how your household works and what the law or an institution recognizes, such as a partner who is family in practice but a stranger on paper."
   - term: "Basic payment account"
     definition: "A simple bank account with lighter document requirements that banks in many countries must offer; in the EU, legal residents generally have a right to one, subject to identity and anti-money-laundering checks."
   - term: "Secured credit card"
@@ -45,7 +45,7 @@ faq:
   - question: "Does my credit history move with me when I change countries?"
     answer: "Almost never. Credit files are held by national bureaus under national data rules, and a lender in your new country usually cannot see a file held abroad. Twenty years of on-time payments elsewhere appear as no history at all. A few services exist that translate a foreign credit file for specific country pairs, and some international banks will consider your history with them in another country, but the general rule is that you start again."
   - question: "How do I open a bank account without proof of address?"
-    answer: "Ask specifically for a basic account and ask what documents it accepts. Many countries require banks to offer basic payment accounts with lighter requirements. In the European Union, consumers legally resident in the EU generally have a right to a basic payment account, including people with no fixed address and asylum seekers, subject to identity, anti-money-laundering and other statutory checks. Elsewhere, online banks and credit unions often accept a wider range of documents than large branch banks: a letter from an employer, a tenancy agreement, a registration certificate, or a letter from a shelter or support organisation."
+    answer: "Ask specifically for a basic account and ask what documents it accepts. Many countries require banks to offer basic payment accounts with lighter requirements. In the European Union, consumers legally resident in the EU generally have a right to a basic payment account, including people with no fixed address and asylum seekers, subject to identity, anti-money-laundering and other statutory checks. Elsewhere, online banks and credit unions often accept a wider range of documents than large branch banks: a letter from an employer, a tenancy agreement, a registration certificate, or a letter from a shelter or support organization."
   - question: "What is the cheapest way to send money home?"
     answer: "There is no single cheapest provider, because cost depends on the route. The same company can be cheap between one pair of countries and expensive between another. Compare on one number only: how much the recipient receives in their currency for a fixed amount you send. That figure captures both the fee and the exchange rate margin, which is where most of the cost hides. Digital transfers are usually cheaper than cash agents, and sending larger amounts less often reduces the share lost to fixed fees."
   - question: "Can I be taxed in two countries on the same income?"
@@ -53,7 +53,7 @@ faq:
   - question: "What happens to pension contributions I made in a country I left?"
     answer: "They usually remain yours, but they stay in that country's system until you claim them. Many countries have agreements that let periods of contribution in one country count toward qualifying for a pension in another, and the European Union coordinates this among its members. What matters now is evidence. Keep every contribution statement, your identification or insurance number in each country, and the dates you worked there. Tracing a pension decades later without those is slow and sometimes impossible."
   - question: "Is this immigration advice?"
-    answer: "No. This post is about money: accounts, credit, transfers, and records. Immigration status, the right to work, and what each status allows are legal questions that vary by country and change often, and the consequences of getting them wrong are serious. For those, use a qualified immigration adviser or a recognised support organisation."
+    answer: "No. This post is about money: accounts, credit, transfers, and records. Immigration status, the right to work, and what each status allows are legal questions that vary by country and change often, and the consequences of getting them wrong are serious. For those, use a qualified immigration adviser or a recognized support organization."
 relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
@@ -74,7 +74,7 @@ referentialReading:
 
 Someone has just moved countries. Back home they had twenty years of on-time repayments. In the new country a lender sees no credit file at all, the bank wants an address before opening an account, and the landlord wants a bank account before signing a lease.
 
-The [geographic arbitrage post](/blog/geographic-arbitrage/) treated moving as a planned strategy. Most people who cross a border are not running that play: they move for a job they need, to join a partner, to study, or because staying was not possible. Whatever the reason, the financial infrastructure built over years stays behind. This post covers rebuilding it and the cost of sending money home. It is not immigration advice: where status or the right to work is in question, a qualified adviser or a recognised support organisation is the right source.
+The [geographic arbitrage post](/blog/geographic-arbitrage/) treated moving as a planned strategy. Most people who cross a border are not running that play: they move for a job they need, to join a partner, to study, or because staying was not possible. Whatever the reason, the financial infrastructure built over years stays behind. This post covers rebuilding it and the cost of sending money home. It is not immigration advice: where status or the right to work is in question, a qualified adviser or a recognized support organization is the right source.
 
 ## Checking what credit history and banking carry across a border
 
@@ -97,7 +97,7 @@ Each step produces the document the next step asks for.
 
 1. **Identification and a tax number.** Everything else hangs on these, so many people find out first which tax or social insurance number their residence document entitles them to.
 2. **A basic bank account.** Asking for a [basic payment account](#term-basic-payment-account) by name helps: many countries require banks to offer one with lighter document requirements, and in the European Union, consumers legally resident in the EU generally have a right to one, including people with no fixed address and asylum seekers, subject to identity, anti-money-laundering and other statutory checks. Online banks and credit unions often accept a wider range of documents than large branch banks.
-3. **Proof of address.** The loop (no account without an address, no tenancy without an account) usually breaks at one of three points: an employer letter confirming your address, a registration certificate from the local authority, or a letter from a hostel, shelter or support organisation.
+3. **Proof of address.** The loop (no account without an address, no tenancy without an account) usually breaks at one of three points: an employer letter confirming your address, a registration certificate from the local authority, or a letter from a hostel, shelter or support organization.
 4. **Income on the record.** Wages paid into the account; regular deposits create evidence of income, though the period and documents a landlord or lender accepts vary.
 5. **Small, reported credit, where the local system works that way.** In US or UK style scoring, a file grows from borrowing a little and repaying on time: a phone contract in your own name, a [secured credit card](#term-secured-credit-card) or a small credit-builder loan. Systems such as Germany's SCHUFA or the Dutch BKR work differently and need no credit card for a clean record, so it helps to learn how the local system scores people first.
 6. **Checking the file.** Once a local file exists, checking the report can reveal errors, which are common with foreign names, several addresses or transliterated spellings, and easier to fix early.
@@ -157,7 +157,7 @@ The order above assumes documents, a legal right to work and time. Many people h
 <details class="lesson-depth">
 <summary class="disclosure">Refugees and family migrants</summary>
 
-**Refugees and people seeking asylum.** The first obstacle is usually identification: which document your status provides and which institutions must accept it. Support organisations often know which local banks open accounts on it. Work rights may be restricted at first, which makes recording any permitted income especially valuable later.
+**Refugees and people seeking asylum.** The first obstacle is usually identification: which document your status provides and which institutions must accept it. Support organizations often know which local banks open accounts on it. Work rights may be restricted at first, which makes recording any permitted income especially valuable later.
 
 **Family migrants.** Someone who arrives on a partner's visa often has no income, no account and no credit file in their own name, with every product in the sponsor's name. An account of their own, their name on the tenancy and on at least one bill, and a small credit line in their own name are protections as well as conveniences: if the relationship ends or the partner dies, a financial identity of their own is what they will need.
 

@@ -161,7 +161,7 @@ export const investOrPayOffEn = {
       extra: 'Extra money each month',
       extraHint: 'The amount you are deciding about',
       relief: 'Tax relief on the interest (optional)',
-      reliefHint: 'Your own estimate, as a share of the interest. Relief may be capped, may need itemising, may cover only part of the interest and may come once a year; it can change with tax rules or your income. The model holds it constant.',
+      reliefHint: 'Your own estimate, as a share of the interest. Relief may be capped, may need itemizing, may cover only part of the interest and may come once a year; it can change with tax rules or your income. The model holds it constant.',
       country: 'Country',
       countryNone: 'None (type a figure)',
       inflation: 'Inflation',

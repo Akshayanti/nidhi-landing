@@ -126,7 +126,7 @@ Not on its own. Keeping the money earns about €18 over the year, about half of
 <details class="lesson-depth">
 <summary class="disclosure">Instalment plans in India, Mexico, Brazil, the EU, the UK, the US, Australia, Indonesia, Saudi Arabia, Turkey, South Korea and South Africa</summary>
 
-- **India.** No-cost EMI is offered by banks, card issuers and lenders; GST at 18% applies to the interest and to any processing fee. The Reserve Bank of India's 2013 circular criticised zero percent EMI schemes that hid interest in processing fees.
+- **India.** No-cost EMI is offered by banks, card issuers and lenders; GST at 18% applies to the interest and to any processing fee. The Reserve Bank of India's 2013 circular criticized zero percent EMI schemes that hid interest in processing fees.
 - **Mexico.** "Meses sin intereses" are paid on top of the card's minimum payment; Condusef notes that the price for them can be higher than the cash price and that cash or debit discounts may not apply.
 - **Brazil.** Shops may charge different prices for paying now and for "parcelado sem juros" (since 2017), and must show the discount.
 - **European Union.** The revised Consumer Credit Directive applies from November 20, 2026 and brings most buy now pay later and interest-free credit under consumer credit rules, including a creditworthiness check, with narrow exemptions. National rules apply it.

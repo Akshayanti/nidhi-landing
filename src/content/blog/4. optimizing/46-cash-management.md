@@ -173,7 +173,7 @@ The short-duration bond fund usually falls more. A money-market fund's yield adj
 <details class="lesson-depth">
 <summary class="disclosure">The limit on deposit protection</summary>
 
-In the EU, €100,000 per person per bank under national schemes. In the UK, £120,000 per person per authorised institution under the FSCS (raised from £85,000 in December 2025). In the US, $250,000 per depositor per insured bank. In India, ₹5 lakh per depositor per bank under the DICGC. In Australia, A$250,000 per account holder per bank under the Financial Claims Scheme. In Canada, CAD$100,000 per depositor, per insured category, per member institution under the CDIC. Money-market funds sit outside these schemes; government bills are backed by the government directly. Limits change, and joint accounts or temporary high balances can have special rules, so the local scheme's own pages are the place to check.
+In the EU, €100,000 per person per bank under national schemes. In the UK, £120,000 per person per authorized institution under the FSCS (raised from £85,000 in December 2025). In the US, $250,000 per depositor per insured bank. In India, ₹5 lakh per depositor per bank under the DICGC. In Australia, A$250,000 per account holder per bank under the Financial Claims Scheme. In Canada, CAD$100,000 per depositor, per insured category, per member institution under the CDIC. Money-market funds sit outside these schemes; government bills are backed by the government directly. Limits change, and joint accounts or temporary high balances can have special rules, so the local scheme's own pages are the place to check.
 
 </details>
 

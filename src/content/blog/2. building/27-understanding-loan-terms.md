@@ -2,14 +2,14 @@
 slug: "understanding-loan-terms"
 title: "Understanding Loan Terms: How to Compare Borrowing Options"
 seoTitle: "Understanding Loan Terms and Borrowing Options"
-description: "When you borrow, interest rate is only part of the story. APR, amortisation, fixed vs. variable, and prepayment rules decide what the loan really costs."
+description: "When you borrow, interest rate is only part of the story. APR, amortization, fixed vs. variable, and prepayment rules decide what the loan really costs."
 tldr:
   - "The advertised rate rarely shows the full cost; the annual percentage rate includes many fees, though what it covers varies by country."
   - "Early payments go mostly to interest and late ones mostly to the loan itself, which affects any later change of loan."
   - "Fixed rates bring predictability, variable rates can cost less or jump, and paying early cuts interest where the loan allows it without penalty."
 takeaways:
   - "Why APR is a fairer comparison than the advertised rate"
-  - "How amortisation makes early payments mostly interest"
+  - "How amortization makes early payments mostly interest"
   - "How fixed and variable rates trade predictability against cost"
   - "How prepayment and break-even maths change the total cost"
 glossary:
@@ -35,21 +35,21 @@ tags: ["building", "debt", "planning"]
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "saving-vs-investing", "credit-and-credit-scores", "purchasing-power"]
 faq:
   - question: "Why is APR a fairer comparison than the advertised interest rate?"
-    answer: "The advertised interest rate is only the cost of borrowing the money itself. Many loans carry extra costs: arrangement or origination fees, mandatory insurance, account administration charges, valuation fees, and early-repayment penalties. APR, the annual percentage rate, folds the nominal rate, most mandatory fees, and the payment timing into a single annualised figure, so for loans of the same amount and term it is usually a fairer comparison under the same disclosure rules. It assumes the agreed repayment schedule. Repaying early spreads non-refundable upfront fees over fewer years, which can raise the annualised cost even while reducing total interest. A loan advertised at 2.9% with €5,000 of fees and €13,000 of bundled insurance can have a higher APR than one advertised at 3.2% with no fees. A common order is the APR first, then the total cost of borrowing, with the headline rate last."
+    answer: "The advertised interest rate is only the cost of borrowing the money itself. Many loans carry extra costs: arrangement or origination fees, mandatory insurance, account administration charges, valuation fees, and early-repayment penalties. APR, the annual percentage rate, folds the nominal rate, most mandatory fees, and the payment timing into a single annualized figure, so for loans of the same amount and term it is usually a fairer comparison under the same disclosure rules. It assumes the agreed repayment schedule. Repaying early spreads non-refundable upfront fees over fewer years, which can raise the annualized cost even while reducing total interest. A loan advertised at 2.9% with €5,000 of fees and €13,000 of bundled insurance can have a higher APR than one advertised at 3.2% with no fees. A common order is the APR first, then the total cost of borrowing, with the headline rate last."
   - question: "Why are early loan payments mostly interest?"
-    answer: "This is how amortisation works. Each monthly payment is split between interest, charged on the balance you still owe, and principal, which reduces that balance. Early on the balance is large, so most of the payment goes to interest and the principal barely moves. As the balance falls, the interest portion shrinks and the principal portion grows. On a €250,000 mortgage at 3% over 25 years, month one is about €625 interest and €561 principal, while by year 20 it has flipped to about €167 interest and €1,018 principal. This skew is why selling early builds little equity and why prepayments in the first years are so powerful."
+    answer: "This is how amortization works. Each monthly payment is split between interest, charged on the balance you still owe, and principal, which reduces that balance. Early on the balance is large, so most of the payment goes to interest and the principal barely moves. As the balance falls, the interest portion shrinks and the principal portion grows. On a €250,000 mortgage at 3% over 25 years, month one is about €625 interest and €561 principal, while by year 20 it has flipped to about €167 interest and €1,018 principal. This skew is why selling early builds little equity and why prepayments in the first years are so powerful."
   - question: "Should I choose a fixed or variable rate loan?"
     answer: "Fixed rates lock your interest for a set period, giving predictable payments and no exposure to rate rises, usually at a higher starting rate. Variable rates track a reference rate plus a margin, so payments rise and fall with the market: in some markets and periods they have cost less on average, but that is not a rule, and they are exposed to future payment shock. Hybrids fix an initial period then float, which reintroduces variable-rate risk while the balance is still large. The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for a payment jump. 'Cheaper on paper right now' is not the same as cheaper over the life of the loan."
   - question: "How powerful is prepaying a loan?"
     answer: "Prepaying principal reduces future interest on a loan that charges interest on the outstanding balance; any prepayment charge reduces the net saving. For a €250,000 mortgage fixed at 3% over 25 years, the monthly payment is about €1,186 and lifetime interest about €106,000. Assuming monthly interest at 3% divided by 12, no prepayment charge, and extra payments from the first month while the scheduled payment stays unchanged, an extra €100 a month shortens the term by about 2.75 years and saves around €13,000. An extra €200 shortens it by about 5 years and saves around €23,000. The saving rate is known for a fixed-rate loan, changes for a variable-rate loan, and is lower where interest receives tax relief. Prepaid money may be difficult to access again. For the same extra payment, paying earlier generally saves more interest because it reduces the balance for longer."
   - question: "When does refinancing a loan actually save money?"
-    answer: "Refinancing replaces an existing loan with a new one, usually for a lower rate, a different term, or a switch between fixed and variable. It makes sense when rates have dropped meaningfully, your credit has improved, or your loan type no longer fits. The test is break-even analysis: divide the new loan's fees by the monthly payment savings to get the number of months to recoup the cost, then compare that to how long you will actually hold the loan. Two cautions: some loans charge prepayment or early-termination penalties, and refinancing restarts the amortisation clock, so a fresh 25-year loan can lower the payment while increasing total interest paid."
+    answer: "Refinancing replaces an existing loan with a new one, usually for a lower rate, a different term, or a switch between fixed and variable. It makes sense when rates have dropped meaningfully, your credit has improved, or your loan type no longer fits. The test is break-even analysis: divide the new loan's fees by the monthly payment savings to get the number of months to recoup the cost, then compare that to how long you will actually hold the loan. Two cautions: some loans charge prepayment or early-termination penalties, and refinancing restarts the amortization clock, so a fresh 25-year loan can lower the payment while increasing total interest paid."
 relatedTool:
   url: "/free/loan-comparison"
   label: "Loan comparison calculator"
   cta: "Compare any two offers including fees"
   idea: "Compare loans by APR and total cost of borrowing, not by the advertised rate."
-reelPromise: "How APR hides fees, why amortisation matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
+reelPromise: "How APR hides fees, why amortization matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
 referentialReading:
   - title: "Amortization Schedule"
     author: "Wikipedia"
@@ -91,13 +91,13 @@ A fairer comparison uses a figure that folds the main costs in. The usual one is
 
 ## APR: the number that matters
 
-APR, or annual percentage rate, expresses the total cost of borrowing as a single annualised percentage. It rolls together:
+APR, or annual percentage rate, expresses the total cost of borrowing as a single annualized percentage. It rolls together:
 
 - The nominal interest rate
 - Most mandatory fees
 - The timing of payments over the life of the loan
 
-Specific definitions of APR vary by jurisdiction. Some countries require more costs to be included than others, and products like insurance may or may not count. For loans of the same amount and term, compared under the same disclosure rules, APR is usually a fairer comparison than the headline rate because it includes fees the headline rate leaves out. It has limits. It assumes the agreed repayment schedule. Repaying or refinancing early spreads any non-refundable upfront fees over fewer years, which can raise the annualised borrowing cost even while reducing total interest paid. For variable-rate loans, APR uses prescribed assumptions about future rates, not a forecast. It also excludes costs that local rules leave out. The total cost in euros provides another check, using the same repayment horizon and rate assumptions.
+Specific definitions of APR vary by jurisdiction. Some countries require more costs to be included than others, and products like insurance may or may not count. For loans of the same amount and term, compared under the same disclosure rules, APR is usually a fairer comparison than the headline rate because it includes fees the headline rate leaves out. It has limits. It assumes the agreed repayment schedule. Repaying or refinancing early spreads any non-refundable upfront fees over fewer years, which can raise the annualized borrowing cost even while reducing total interest paid. For variable-rate loans, APR uses prescribed assumptions about future rates, not a forecast. It also excludes costs that local rules leave out. The total cost in euros provides another check, using the same repayment horizon and rate assumptions.
 
 | Loan | Rate | Costs included in APR | Term | APR |
 |---|---|---|---|---|
@@ -108,7 +108,7 @@ Specific definitions of APR vary by jurisdiction. Some countries require more co
 
 The loan with the lowest rate (D) is not the cheapest once its fee and bundled insurance are counted: A costs less on both measures, its APR and its total (about €363,500 for A against about €369,800 for D). For loans of the same amount and term, a lower APR usually means a lower cost; the total in euros is the check.
 
-*The APR column annualises the monthly rate by multiplying it by 12, as US documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.32%, 3.56% and 3.47%), in the same order. Other countries have their own methods: Canadian documents, for example, divide the total cost of borrowing by the term and the average balance owed.*
+*The APR column annualizes the monthly rate by multiplying it by 12, as US documents do. EU and UK documents compound it over the year instead, so the same four loans would read about 0.05 to 0.06 points higher there (3.25%, 3.32%, 3.56% and 3.47%), in the same order. Other countries have their own methods: Canadian documents, for example, divide the total cost of borrowing by the term and the average balance owed.*
 
 *Those compounded EU and UK figures are [effective annual rates](#term-effective-annual-rate), which count compounding within the year. For example, a stated (nominal) annual interest rate of 12%, compounded monthly with no fees, gives an effective annual rate of about 12.7%. Whether a disclosed loan rate also includes fees depends on the disclosure rules.*
 
@@ -118,7 +118,7 @@ The loan with the lowest rate (D) is not the cheapest once its fee and bundled i
 
 ## Fixed vs. variable rates
 
-Most loans come in two structural flavors:
+Most loans come in two structural flavours:
 
 **Fixed rate.** The interest rate is locked for a set period, sometimes the full loan term, sometimes an initial period. Monthly payments are predictable. You know what you owe over time.
 
@@ -138,9 +138,9 @@ The right choice depends on your cash flow stability, how long you expect to hol
 
 ## Amortisation: how a loan actually gets paid
 
-When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realise how extreme the early-years skew is.
+When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realize how extreme the early-years skew is.
 
-Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortisation maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment of €1,185.53.
+Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortization maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment of €1,185.53.
 
 | Payment number | Interest portion | Principal portion | Balance after |
 |---|---|---|---|
@@ -232,7 +232,7 @@ The break-even analysis is the same: new loan fees ÷ monthly payment savings = 
 Caveats:
 
 - Some existing loans carry prepayment or early-termination penalties. Check before you refinance
-- Refinancing restarts the amortisation clock. A new 25-year loan from year 10 of an old one may have a lower payment but extend total interest paid
+- Refinancing restarts the amortization clock. A new 25-year loan from year 10 of an old one may have a lower payment but extend total interest paid
 - Hidden costs: new appraisal, new arrangement fees, legal fees. Not all are obvious in marketing copy
 
 ## Prepayment: a powerful interest-reducer
@@ -243,7 +243,7 @@ Example: the €250,000, 3%, 25-year mortgage above has total interest of about 
 
 The interest avoided through prepayment works like a return on the money used. On a fixed-rate loan, with no prepayment charge or tax relief on interest, that rate is known: about 3% a year for a 3% loan, or 7% for a 7% loan, while the debt would otherwise remain outstanding.
 
-On a variable-rate loan, the saving changes with the rate. Tax relief can reduce it too: if every euro of interest on a 3% loan reduces tax by 30 cents, the net saving is about 2.1% a year. Comparisons with investing use returns after fees and taxes and treat inflation consistently on both sides. Access to cash matters as well. Unless the loan has a redraw or similar facility, recovering prepaid money generally requires new borrowing on the terms available then. That makes prepayment different from an accessible emergency fund. Many people therefore prioritise expensive debt, while the choice for a low-rate loan depends more on taxes, cash reserves, investment risk and personal preferences. The [saving vs. investing post](/blog/saving-vs-investing/) explores that comparison.
+On a variable-rate loan, the saving changes with the rate. Tax relief can reduce it too: if every euro of interest on a 3% loan reduces tax by 30 cents, the net saving is about 2.1% a year. Comparisons with investing use returns after fees and taxes and treat inflation consistently on both sides. Access to cash matters as well. Unless the loan has a redraw or similar facility, recovering prepaid money generally requires new borrowing on the terms available then. That makes prepayment different from an accessible emergency fund. Many people therefore prioritize expensive debt, while the choice for a low-rate loan depends more on taxes, cash reserves, investment risk and personal preferences. The [saving vs. investing post](/blog/saving-vs-investing/) explores that comparison.
 
 Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy. Any right to repay early, and any cap on early-repayment fees, is set by consumer-credit law where you live, and the lender can say what your contract allows. A few examples of how much the rules differ: in India, lenders may not charge prepayment or foreclosure fees on floating-rate loans to individuals for non-business purposes (RBI rules in force from January 2026); in Germany, a fixed-rate mortgage can be ended without compensation with six months' notice once ten years have passed since the loan was fully disbursed, that is, since the lender handed over the whole amount (a later agreement on the repayment timing or the interest rate can restart the clock), while earlier repayment usually costs a Vorfälligkeitsentschädigung; in the UK, early repayment charges of a few percent are common during a fixed-rate period; in the US, most mortgages carry no prepayment penalty.
 
@@ -251,7 +251,7 @@ Important: some loans, especially fixed-rate mortgages in certain markets, charg
 
 Here's a side-by-side comparison framework that won't mislead you:
 
-1. **Normalise the amount and term.** Quote every lender on the same loan amount and the same term. Otherwise the numbers aren't comparable
+1. **Normalize the amount and term.** Quote every lender on the same loan amount and the same term. Otherwise the numbers aren't comparable
 2. **Get the full APR.** Include all mandatory fees and bundled products
 3. **Compute the total cost of borrowing.** Monthly payment × number of payments, plus upfront fees and any bundled costs such as insurance. This is the total money you'll hand over for the loan
 4. **Check all restrictions.** Prepayment penalties, rate reset dates, insurance bundles, account fees, early-termination clauses
@@ -290,6 +290,6 @@ The best offer is not always the one with the lowest rate. It's the one whose to
 6. **Do the break-even math on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
 7. **The case for prepaying rises with the rate.** A higher borrowing rate increases the interest avoided by repaying principal. For a fixed-rate loan, that saving can be calculated in advance under the loan's terms; investment returns remain uncertain. With a low-rate loan, taxes, investment fees and risk, the time horizon, access to cash and personal preferences can matter more to the comparison. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
 
-Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortisation schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
+Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortization schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
 
 The single largest loan most people will ever take is a mortgage, and the asset that loan buys is real estate. The next post zooms in on real estate as an asset class: how it actually generates returns once you net out maintenance, taxes, and transaction costs, why leverage cuts both ways, and how to run an honest rent-vs-buy comparison instead of the sloppy one.

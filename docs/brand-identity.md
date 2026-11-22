@@ -43,7 +43,7 @@ nidhi talks like a polite friend a few steps ahead: someone who has done the rea
 
 1. **Teach, and leave the decision with the reader.** The concept, why people use it, the evidence and its limits, where it breaks, what depends on circumstances. No "you should", no disguised steps for someone's money decision, no superlatives the evidence cannot carry.
 2. **Explain before relying on knowledge.** Every term before it is used, the reason before the definition, worked examples. Never "basic", "obvious", "easy" or "just".
-3. **Respect the whole working life.** Organise around situations, not ages. Never infer knowledge from age, or assume income, health, children or a conventional family.
+3. **Respect the whole working life.** Organize around situations, not ages. Never infer knowledge from age, or assume income, health, children or a conventional family.
 4. **Conversational and precise.** Plain words, natural sentences, contractions in English. No slang, emoji, exclamation marks in teaching text, or pet names. Polite always: if a sentence would be wrong to say to a stranger's grandparent, rewrite it.
 5. **Acknowledge difficulty without inventing feelings.** Once, conditionally ("this can feel overwhelming"). Never "I know how you feel", no guaranteed outcomes, no reassurance in place of explanation.
 6. **Name hard subjects plainly and gently.** Die, will, debt, estate, family conflict. No blame, drama or euphemism.

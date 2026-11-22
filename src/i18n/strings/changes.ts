@@ -1316,7 +1316,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'ai-assistant-visits',
         text: {
-          en: 'The analytics that note when a visit comes from an AI assistant or tool now recognise more of them, such as Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat and Kimi. No new kind of information is recorded, and the privacy notice lists them all.',
+          en: 'The analytics that note when a visit comes from an AI assistant or tool now recognize more of them, such as Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat and Kimi. No new kind of information is recorded, and the privacy notice lists them all.',
           es: 'La analítica que registra las visitas que llegan desde un asistente o una herramienta de IA ahora reconoce más, como Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat y Kimi. No se registra ningún tipo de información nuevo, y el aviso de privacidad los enumera todos.',
           cs: 'Webová analytika, která zaznamenává návštěvy přicházející z AI asistenta nebo nástroje, teď rozpoznává více z nich, například Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat a Kimi. Nezaznamenává se žádný nový druh údajů a zásady ochrany soukromí je všechny vyjmenovávají.',
           mr: 'भेट AI सहाय्यकाकडून किंवा साधनाकडून आली आहे हे नोंदवणारे वापराचे विश्लेषण (analytics) आता त्यांपैकी आणखी काही ओळखते, जसे Mistral Vibe, Meta AI, NotebookLM, Duck.ai, Poe, Qwen Chat आणि Kimi. कोणत्याही नव्या प्रकारची माहिती नोंदवली जात नाही, आणि गोपनीयता सूचनेत त्या सर्वांची नावे आहेत.',

@@ -78,7 +78,7 @@ The monthly check-in is the heartbeat. It should take 15-30 minutes. Four number
 | Net worth trend | Direction over 6-12 months | Growing, or clearly-explained dip |
 | Monthly cash flow | Positive / negative | Consistently positive |
 | Savings rate | Drift over 3-6 months | Stable or rising |
-| Debt balances | Declining at expected pace | Yes, or explicitly reprioritised |
+| Debt balances | Declining at expected pace | Yes, or explicitly reprioritized |
 
 Anything out of range is the prompt for a short investigation, not a full-system redesign.
 
@@ -118,7 +118,7 @@ Once a year, do the full review. This takes 2-4 hours, ideally with a partner if
 
 **Asset and liability audit.** Are any assets obsolete or no longer tracked? Any small forgotten accounts? Any closed credit lines or paid-off loans still listed?
 
-**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance post](/blog/insurance-basics/) covers the main triggers: new dependents, new home, significant income changes, changes in health, changes in country.
+**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance post](/blog/insurance-basics/) covers the main triggers: new dependants, new home, significant income changes, changes in health, changes in country.
 
 **Tax position.** Did the year hold any tax surprises? Are there structural changes for next year (retirement contribution capacity, tax-advantaged account use, jurisdiction shifts)?
 

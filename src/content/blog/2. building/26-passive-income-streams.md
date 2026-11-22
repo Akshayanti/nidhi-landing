@@ -80,7 +80,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 **Rental income.** Property you own but don't live in, rented to tenants. Gross yields typically sit in the 3-6% of property value range depending on the market; net yields (after maintenance, vacancy, taxes, and management) are lower. A later post in this series covers the full picture of costs.
 
-**Royalties.** Income from a creative or intellectual asset someone else uses: books, music, patents, software licenses. Usually small for most people; occasionally life-changing for a few.
+**Royalties.** Income from a creative or intellectual asset someone else uses: books, music, patents, software licences. Usually small for most people; occasionally life-changing for a few.
 
 **Business distributions (where you don't work daily).** A share of profits from a business where you're an investor, not an operator. Higher risk, less liquid, requires selection skill or partnership.
 
@@ -127,7 +127,7 @@ The idea, popularized in *Your Money or Your Life*, is beautifully concrete: the
 
 Before it: work income is what keeps your life going. After it: investment income can keep your life going, even if you keep working, as long as the income counted is one the portfolio can keep paying. Summaries of the book describe its measure as the capital multiplied by a long-term interest rate, which differs from a portfolio withdrawal rule; the [financial independence post](/blog/introduction-to-financial-independence/) uses the portfolio times a withdrawal rate. Counted the second way, the crossover comes when the portfolio reaches the FIRE number. Counted as one year's total return, the lines can cross in a good year and cross back in a bad one.
 
-For many people, tracking it changes behavior. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
+For many people, tracking it changes behaviour. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
 
 Small versions of this milestone are worth celebrating:
 

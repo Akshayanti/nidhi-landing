@@ -341,7 +341,7 @@ note records why this one won.
 | loan amount | कर्जाची रक्कम | |
 | annual interest rate | वार्षिक व्याजदर | |
 | term (months) | मुदत (महिने) | Contested. |
-| amortisation schedule | कर्जफेडीचे वेळापत्रक | Contested. |
+| amortization schedule | कर्जफेडीचे वेळापत्रक | Contested. |
 | balance (of a loan) | बाकी कर्ज | Contested. |
 | balance (of a portfolio) | पोर्टफोलिओचे मूल्य | Contested. |
 | lender | कर्जदाता | |

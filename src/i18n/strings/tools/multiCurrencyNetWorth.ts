@@ -417,7 +417,7 @@ export const multiCurrencyNetWorthEn = {
       labelLow: 'Low exposure',
       labelUnbanded: 'No share of net worth',
       disclaimer:
-        'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial advisor.',
+        'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial adviser.',
     },
     /**
      * The descriptive line under each currency.

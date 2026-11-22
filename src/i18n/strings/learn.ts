@@ -450,7 +450,7 @@ export const learnEn = {
   inclusiveFinances: {
     eyebrow: 'No prerequisite, relevant at any stage',
     h1: 'When the default plan does not fit you',
-    lede1: 'Most financial advice quietly assumes one kind of household: a legally married couple or a single adult, a steady employer, a family the law recognises, a life lived in one country. Survivor benefits, joint tax filing, inheritance rules, and workplace pensions are all built around that shape.',
+    lede1: 'Most financial advice quietly assumes one kind of household: a legally married couple or a single adult, a steady employer, a family the law recognizes, a life lived in one country. Survivor benefits, joint tax filing, inheritance rules, and workplace pensions are all built around that shape.',
     lede2: 'These guides are for everyone else. Each one takes a single default, shows what breaks when it does not hold for you, and walks through the deliberate choices that replace it. You do not need to have read anything else on this site first.',
     scope: 'These guides teach what to check and what to ask. The legal details differ by country, so they never tell you what the law where you live says. For that, speak to a local professional.',
     situations: {

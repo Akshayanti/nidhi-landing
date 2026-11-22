@@ -17,9 +17,9 @@ takeaways:
     href: "#why-the-funeral-often-needs-its-own-written-plan"
 glossary:
   - term: "Next of kin"
-    definition: "The closest relative the law recognises, often consulted or given priority when nobody has been appointed. The order usually follows marriage and blood, and what it allows varies by country."
+    definition: "The closest relative the law recognizes, often consulted or given priority when nobody has been appointed. The order usually follows marriage and blood, and what it allows varies by country."
   - term: "Recognition gap"
-    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+    definition: "The distance between how your household works and what the law or an institution recognizes, such as a partner who is family in practice but a stranger on paper."
   - term: "Power of attorney"
     definition: "A document naming who may act for you, for money or for health decisions, if you cannot make decisions yourself."
   - term: "Advance directive"
@@ -40,11 +40,11 @@ tags: ["inclusive-finances", "relationships", "planning"]
 regulatoryNote: "danger"
 faq:
   - question: "What does next of kin mean?"
-    answer: "Next of kin is the closest relative the law recognises. It is used when someone has to act or decide for you and you have appointed nobody: to receive medical information, to consent to treatment in some systems, to be notified of a death, to arrange a funeral, and to inherit if there is no will. The order is set by law and is based on marriage and blood. Friendship, however deep, gives no place in it."
+    answer: "Next of kin is the closest relative the law recognizes. It is used when someone has to act or decide for you and you have appointed nobody: to receive medical information, to consent to treatment in some systems, to be notified of a death, to arrange a funeral, and to inherit if there is no will. The order is set by law and is based on marriage and blood. Friendship, however deep, gives no place in it."
   - question: "Is telling my friends and family what I want enough?"
     answer: "No. A hospital, a bank, a funeral director and a court each need to know who has authority, and they look for it in a document or in the rules that apply locally. A spoken wish gives your friend nothing to show them. If nobody has been validly appointed, the institution may follow the local decision-making or consultation rules instead. Spoken wishes are still valuable, because they tell the person you appoint what to do, but they work only alongside the documents."
   - question: "What is a patient advocate or hospital visitation designation?"
-    answer: "It is a document, sometimes a standard hospital form, naming the people you want to be allowed to visit you and to receive information about your condition. In some places visiting and information are limited to legally recognised family unless you have said otherwise. It is different from a healthcare power of attorney, which names who makes decisions. The two are often completed together, and it is worth giving a copy to your doctor and to any hospital you use regularly."
+    answer: "It is a document, sometimes a standard hospital form, naming the people you want to be allowed to visit you and to receive information about your condition. In some places visiting and information are limited to legally recognized family unless you have said otherwise. It is different from a healthcare power of attorney, which names who makes decisions. The two are often completed together, and it is worth giving a copy to your doctor and to any hospital you use regularly."
   - question: "Can I leave everything to friends and nothing to my relatives?"
     answer: "In many common-law countries, largely yes, although some allow certain relatives or dependants to ask a court for a share. In countries with forced heirship, children and sometimes other relatives are entitled by law to a fixed portion, and only the rest is yours to leave as you wish. Pension lump sums and life insurance with a named beneficiary usually pass outside the estate, which can make them useful where a will is restricted, but a pension form may be only a guide for trustees and a survivor pension may follow separate rules."
   - question: "Who decides about my funeral?"
@@ -68,7 +68,7 @@ In many countries, when nobody has been appointed, the law's defaults point at r
 
 ## Next of kin follows blood and marriage, not closeness
 
-[Next of kin](#term-next-of-kin) means the closest relative the law recognises. When something has to be decided and nobody has been appointed, institutions work down an order that in many countries looks broadly like this, with details differing by jurisdiction: a spouse or registered partner; adult children; parents; siblings; grandparents, aunts, uncles, nieces, nephews and cousins; then the state. Friends do not appear, nor in many places an unmarried partner, nor the neighbour who has looked in daily for ten years.
+[Next of kin](#term-next-of-kin) means the closest relative the law recognizes. When something has to be decided and nobody has been appointed, institutions work down an order that in many countries looks broadly like this, with details differing by jurisdiction: a spouse or registered partner; adult children; parents; siblings; grandparents, aunts, uncles, nieces, nephews and cousins; then the state. Friends do not appear, nor in many places an unmarried partner, nor the neighbour who has looked in daily for ten years.
 
 | Situation | What local default rules may determine |
 |---|---|
@@ -82,7 +82,7 @@ The phrase **chosen family** comes from LGBTQ+ communities, where rejection by t
 
 ## Giving the people you choose authority, in writing
 
-Many people in this position have told their friends what they want, and it feels settled. It is not. A hospital, a bank, a funeral director and a court each need to know who has authority, and they look in two places: a document, or the list. A friend who says "she told me she would not want this" has nothing to show; a brother who arrives after twenty years may have standing that the friend lacks. Hospital visiting is the sharpest example: in some places access and information are limited to legally recognised family unless the patient has named someone, so the friend who came every day can be asked to wait outside while a relative the patient had cut off is briefed. Spoken wishes still matter, because they tell the person you appoint what to do; they work only once that person has been appointed.
+Many people in this position have told their friends what they want, and it feels settled. It is not. A hospital, a bank, a funeral director and a court each need to know who has authority, and they look in two places: a document, or the list. A friend who says "she told me she would not want this" has nothing to show; a brother who arrives after twenty years may have standing that the friend lacks. Hospital visiting is the sharpest example: in some places access and information are limited to legally recognized family unless the patient has named someone, so the friend who came every day can be asked to wait outside while a relative the patient had cut off is briefed. Spoken wishes still matter, because they tell the person you appoint what to do; they work only once that person has been appointed.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: Priya has told all four friends what treatment she would refuse. If she loses consciousness, who can decide?</summary>
@@ -98,7 +98,7 @@ Legal and institutional defaults often direct several roles toward a spouse or o
 | Role | What it involves | Who suits it |
 |---|---|---|
 | Health decisions | Talking to doctors, deciding under pressure, following your wishes when it is hard | The person who knows your values and stays calm |
-| Money and admin | Paying bills, dealing with the bank and landlord while you cannot | The organised one, ideally nearby |
+| Money and admin | Paying bills, dealing with the bank and landlord while you cannot | The organized one, ideally nearby |
 | Executor of the will | Months of paperwork after a death | Someone patient, preferably younger than you |
 | Emergency contact and visitors | Being called first, being allowed in | Whoever is closest, in both senses |
 | Funeral | Carrying out your wishes about your body and the ceremony | Someone who will stand firm if relatives object |
@@ -139,7 +139,7 @@ Because they may not be binding, and the will is sometimes not read until after 
 <details class="lesson-depth">
 <summary class="disclosure">Consent, inheritance, tax and privacy rules across countries</summary>
 
-- **Decisions for an unconscious patient.** Some countries give the next of kin a legal right to consent; others give doctors the decision and consult relatives only for information. Where a healthcare attorney appointment is recognised and valid, it can give decision-making authority or a formal role in consultation.
+- **Decisions for an unconscious patient.** Some countries give the next of kin a legal right to consent; others give doctors the decision and consult relatives only for information. Where a healthcare attorney appointment is recognized and valid, it can give decision-making authority or a formal role in consultation.
 - **Inheritance freedom.** Wide in many common-law countries; restricted by forced heirship across much of continental Europe, Latin America and countries applying religious inheritance law.
 - **Inheritance tax.** Where it exists, the gap between the rate for a spouse or child and for an unrelated person is often very large.
 - **Registered friendships.** A few jurisdictions let two people who are not a couple register a mutual support relationship with some rights. It is rare, and worth knowing about where it exists.

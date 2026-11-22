@@ -33,7 +33,7 @@ faq:
   - question: "What is the debt snowball method?"
     answer: "The snowball method pays off debts from smallest balance to largest. You make minimum payments on everything and put every extra euro toward the smallest debt. When it's gone, you roll that payment into the next smallest. Quick wins build momentum."
   - question: "What is the debt avalanche method?"
-    answer: "The avalanche method pays off debts from highest interest rate to lowest. You target the most expensive debt first to minimise total interest paid. It's mathematically optimal but requires patience since the first debt may take longer to clear."
+    answer: "The avalanche method pays off debts from highest interest rate to lowest. You target the most expensive debt first to minimize total interest paid. It's mathematically optimal but requires patience since the first debt may take longer to clear."
   - question: "Should I use snowball or avalanche to pay off debt?"
     answer: "Snowball tends to suit people who are motivated by visible progress and quick wins. Avalanche tends to suit people who are comfortable waiting for the first win in exchange for the lowest total cost. Some people use a hybrid: snowball for one or two small debts to build momentum, then avalanche. How big the difference is depends on how far apart your interest rates are."
 ---
@@ -144,7 +144,7 @@ It depends on what drives a person, and on how far apart their interest rates ar
 ## Common mistakes
 
 - **Not paying minimums on everything.** Putting all your money toward your target debt while skipping minimums on others triggers fees and credit damage, which usually costs more than the extra payment saves
-- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behavior that created the debt. Without a spending change, many people end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison/) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
+- **Borrowing to pay off debt.** A consolidation loan at a lower rate can make sense mathematically, but it doesn't fix the behaviour that created the debt. Without a spending change, many people end up with the consolidation loan plus new credit card debt. If you do consider consolidation, the [loan comparison calculator](/free/loan-comparison/) lets you put the consolidation offer next to the cost of paying down each existing debt directly, including origination fees, so the apparent rate advantage gets tested against the full picture rather than just the headline interest rate
 - **Stopping when the first debt is gone.** The whole point is to roll the freed-up payment into the next one. If the freed-up money is spent instead, each later debt loses that boost
 - **Waiting for the "right time."** Interest keeps accruing while you wait, so even small extra payments started early reduce the total cost
 

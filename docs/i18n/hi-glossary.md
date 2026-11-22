@@ -311,7 +311,7 @@ and do translate.
 | annual interest rate | सालाना ब्याज दर | |
 | term (months) | अवधि (महीने) | अवधि is the glossary's horizon word; the parenthesis is what tells a reader the field counts months, which the label has to do because the field is a number box. |
 | payoff months | चुकाने के महीने | The count of months until the loan is paid off. |
-| amortisation | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortisation schedule` is किस्तों का शेड्यूल. |
+| amortization | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortization schedule` is किस्तों का शेड्यूल. |
 | principal | मूलधन | No bracket: every Indian loan statement prints it. |
 | interest | ब्याज | |
 | balance (of a loan) | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |

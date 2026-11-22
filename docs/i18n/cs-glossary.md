@@ -297,7 +297,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | loan amount | výše úvěru | |
 | annual interest rate | roční úroková sazba | |
 | term (months) | doba splatnosti (měsíce) | |
-| amortisation schedule | splátkový kalendář | |
+| amortization schedule | splátkový kalendář | |
 | balance (of a loan) | zbývající jistina | |
 | balance (of a portfolio) | hodnota portfolia | Not *zůstatek*, which reads as money owed or on account. |
 | offer (a card in the loan tool) | nabídka | *Nabídka A*, *Přidat nabídku*. The name field is *Název poskytovatele*. |
