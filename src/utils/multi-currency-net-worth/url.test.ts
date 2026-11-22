@@ -601,10 +601,10 @@ describe('a hostile link', () => {
     assert.equal(decodeFromQueryString('a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
   });
 
-  it('a name is cut at the stated length, and a value that is not a number is dropped', () => {
+  it('a name is cut at the stated length, and a value that is not a number is marked (#789)', () => {
     const row = decodeFromQueryString(`a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
     assert.equal(row.name.length, 80);
-    assert.equal(row.value, '');
+    assert.equal(row.value, 'NaN');
     assert.equal(row.currency, 'USD');
     assert.equal(decodeFromQueryString('a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
   });

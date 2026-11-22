@@ -186,6 +186,8 @@ export function completeNumber(raw: string, locale: string): string {
 export function displayNumber(value: string, locale: string): string {
   const t = value.trim();
   if (t === '') return '';
+  // The marker of a box that could not be read: no English word in anyone's box.
+  if (t === 'NaN') return '?';
   // A plain number keeps every digit it has: only the decimal mark changes.
   if (/^\d+(\.\d+)?$/.test(t)) return t.replace('.', numberSeparators(locale).decimal);
   const n = Number(t.replace(/[\s,]/g, ''));

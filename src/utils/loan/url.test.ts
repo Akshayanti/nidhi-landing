@@ -791,9 +791,11 @@ describe('lump-sum box: read as the page writes numbers', () => {
     assert.deepEqual(parseLumpSums(canonicalLumpSums('12:5.000', 'es')), [{ month: 12, amountMajor: 5000 }]);
   });
 
-  it('keeps a pair still being typed as it is', () => {
-    assert.equal(canonicalLumpSums('12:5000;3', 'es'), '12:5000;3');
-    assert.equal(canonicalLumpSums('12:5000;36:', 'es'), '12:5000;36:');
+  // The box keeps the draft as typed (LocaleNumberInput); only the state is marked.
+  it('marks a pair still being typed, and keeps the finished ones', () => {
+    assert.equal(canonicalLumpSums('12:5000;3', 'es'), '12:5000;NaN');
+    assert.equal(canonicalLumpSums('12:5000;36:', 'es'), '12:5000;36:NaN');
+    assert.equal(canonicalLumpSums('12:5000;', 'es'), '12:5000;');
   });
 
   it('shows the plain format in the page\'s style', () => {
@@ -815,13 +817,13 @@ describe('a hostile link', () => {
     assert.equal(decode('c=INR&v1=Bank~100000~5').currency, 'INR');
   });
 
-  it('globals that do not read as numbers fall back to the defaults', () => {
+  it('globals that do not read as numbers are marked, not given the defaults (#789)', () => {
     const { global } = decode('h=abc&ra=%3Cb%3E&rr=5%25&rt=ten&rf=1e9&v1=Bank~100000~5');
-    assert.equal(global.horizonMonths, DEFAULT_GLOBAL_STATE.horizonMonths);
-    assert.equal(global.refiAtMonth, DEFAULT_GLOBAL_STATE.refiAtMonth);
-    assert.equal(global.refiNewRatePct, DEFAULT_GLOBAL_STATE.refiNewRatePct);
-    assert.equal(global.refiNewTermMonths, DEFAULT_GLOBAL_STATE.refiNewTermMonths);
-    assert.equal(global.refiNewFeeMajor, DEFAULT_GLOBAL_STATE.refiNewFeeMajor);
+    assert.equal(global.horizonMonths, 'NaN');
+    assert.equal(global.refiAtMonth, 'NaN');
+    assert.equal(global.refiNewRatePct, 'NaN');
+    assert.equal(global.refiNewTermMonths, 'NaN');
+    assert.equal(global.refiNewFeeMajor, 'NaN');
   });
 
   it('the refinance offer is one the link carries, or none', () => {
@@ -845,18 +847,17 @@ describe('a hostile link', () => {
     assert.equal(decode('v1=A%01B~100000~5').vendors[0].name, 'A~B');
   });
 
-  it('an offer’s numbers that do not read as numbers fall back to the slot’s own', () => {
-    const base = makeDefaultVendor(0);
-    const v = decode('v1=Bank~%3Cb%3E~five~term~ten~x~y~z&v1_fm=abc&v1_ls=%3Cscript%3E').vendors[0];
+  it('an offer’s numbers that do not read as numbers are marked, not given the slot’s own (#789)', () => {
+    const v = decode('v1=Bank~%3Cb%3E~five~term~ten~x~y~z&v1_if=abc&v1_ls=%3Cscript%3E').vendors[0];
     assert.equal(v.name, 'Bank');
-    assert.equal(v.principal, base.principal);
-    assert.equal(v.annualRatePct, base.annualRatePct);
-    assert.equal(v.termMonths, base.termMonths);
-    assert.equal(v.monthlyPayment, base.monthlyPayment);
-    assert.equal(v.feeMajor, base.feeMajor);
-    assert.equal(v.extraMonthly, base.extraMonthly);
-    assert.equal(v.initialFixedMonths, base.initialFixedMonths);
-    assert.equal(v.lumpSumsEncoded, base.lumpSumsEncoded);
+    assert.equal(v.principal, 'NaN');
+    assert.equal(v.annualRatePct, 'NaN');
+    assert.equal(v.termMonths, 'NaN');
+    assert.equal(v.monthlyPayment, 'NaN');
+    assert.equal(v.feeMajor, 'NaN');
+    assert.equal(v.extraMonthly, 'NaN');
+    assert.equal(v.initialFixedMonths, 'NaN');
+    assert.equal(v.lumpSumsEncoded, 'NaN');
   });
 
   it('numbers typed the way people type them still arrive', () => {
@@ -901,5 +902,66 @@ describe('what is kept at a rate change travels as one letter', () => {
     for (const qs of ['v1_rk=hybrid&v1_sr=9', 'v1_rk=hybrid&v1_sr=9&v1_rc=x', 'v1_rk=hybrid&v1_sr=9&v1_rc=payment', 'v1_rk=hybrid&v1_sr=9&v1_rc=']) {
       assert.equal(decodeFromQueryString(qs).vendors[0].rateChangeKeeps, 'term', qs);
     }
+  });
+});
+
+describe('an unreadable box never arrives as a valid one (#789)', () => {
+  const carried = (vendor: object, global: object = {}) => {
+    const vendors = DEFAULT_VENDORS.map((v, i) => (i === 0 ? { ...v, ...vendor } : { ...v }));
+    const encoded = encodeToQueryString(vendors, { ...defaultGlobalState(), ...global });
+    return { encoded, ...decodeFromQueryString(encoded) };
+  };
+
+  for (const field of ['principal', 'annualRatePct', 'termMonths', 'monthlyPayment', 'feeMajor', 'extraMonthly'] as const) {
+    it(`${field}: the marker travels`, () => {
+      assert.equal(carried({ [field]: 'NaN' }).vendors[0][field], 'NaN');
+    });
+
+    it(`${field}: typed text becomes the marker and is never written`, () => {
+      const out = carried({ [field]: '7secret' });
+      assert.equal(out.vendors[0][field], 'NaN');
+      assert.ok(!out.encoded.includes('secret'));
+    });
+  }
+
+  for (const field of ['horizonMonths', 'refiAtMonth', 'refiNewRatePct', 'refiNewTermMonths', 'refiNewFeeMajor'] as const) {
+    it(`${field}: the marker travels`, () => {
+      assert.equal(carried({}, { [field]: 'NaN' }).global[field], 'NaN');
+    });
+  }
+
+  it('a bad side of a lump sum is marked and its neighbours stay', () => {
+    const cases = [
+      ['12:5000;24:7x', '12:5000;24:NaN'],
+      ['Alice:5000', 'NaN:5000'],
+      ['12:', '12:NaN'],
+      [':5000', 'NaN:5000'],
+      ['5000', 'NaN'],
+      ['1:2:3', 'NaN'],
+      ['12:5000;;24:100', '12:5000;24:100'],
+    ];
+    for (const [typed, arrives] of cases) {
+      assert.equal(carried({ lumpSumsEncoded: typed }).vendors[0].lumpSumsEncoded, arrives, typed);
+      const oldLink = decodeFromQueryString(`v1_ls=${encodeURIComponent(typed)}`);
+      assert.equal(oldLink.vendors[0].lumpSumsEncoded, arrives, `old link: ${typed}`);
+    }
+  });
+
+  it('raw text in a link shared before the fix arrives marked', () => {
+    const { vendors, global } = decodeFromQueryString('v1=Bank~7x~7x&v1_pp=7x&h=7x&rf=7x');
+    const got = [vendors[0].principal, vendors[0].annualRatePct, vendors[0].prepayPenaltyPct, global.horizonMonths, global.refiNewFeeMajor];
+    assert.deepEqual(got, ['NaN', 'NaN', 'NaN', 'NaN', 'NaN']);
+  });
+
+  it('a payment in each of 1,200 months travels whole, one more is marked', () => {
+    const list = (n: number) => Array.from({ length: n }, (_, i) => `${i + 1}:${1000 + i}`).join(';');
+    assert.equal(carried({ lumpSumsEncoded: list(1200) }).vendors[0].lumpSumsEncoded, list(1200));
+    assert.equal(carried({ lumpSumsEncoded: list(1201) }).vendors[0].lumpSumsEncoded, 'NaN');
+  });
+
+  it('a lump sum typed on the page never keeps raw text', () => {
+    assert.equal(canonicalLumpSums('12:5000;24:7x', 'en'), '12:5000;24:NaN');
+    assert.equal(canonicalLumpSums('Alice', 'en'), 'NaN');
+    assert.equal(canonicalLumpSums('12.:150.000', 'cs'), 'NaN:150000');
   });
 });

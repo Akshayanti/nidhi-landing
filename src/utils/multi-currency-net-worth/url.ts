@@ -132,7 +132,8 @@ function encodeRow(row: AssetRow): string {
   fields[ROW_IDX.NAME] = row.name;
   // Value: emit verbatim. We never substitute a default because the value
   // is the row's reason for existing.
-  fields[ROW_IDX.VALUE] = row.value;
+  // Number text or the marker, never what else was typed (#789).
+  fields[ROW_IDX.VALUE] = linkNumber(row.value, '');
   // Currency: omit if default (EUR).
   fields[ROW_IDX.CURRENCY] = row.currency === DEFAULT_CURRENCY ? '' : row.currency;
   // Type: omit if default (asset).
