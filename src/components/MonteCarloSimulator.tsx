@@ -23,7 +23,7 @@ import {
   type ReturnSetting,
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
-import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
+import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/monte-carlo/url.ts';
 import { formErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
@@ -32,7 +32,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -235,6 +235,8 @@ export default function MonteCarloSimulator({
 }) {
   const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
+  // The form `settled` was worked out from.
+  const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
   const [tipsDismissed, setTipsDismissed] = useState(false);
   // Fees and paths start folded behind one row that says what they are set
@@ -277,6 +279,7 @@ export default function MonteCarloSimulator({
     const opened = formFromLink(raw as string) ?? toForm(shared);
     setForm(opened);
     setSettled(shared);
+    setSettledForm(opened);
     // A shared plan that sets a fee or a path count, or a fee box that is
     // wrong, shows it without a click.
     if (formErrors(opened).feePct || shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
@@ -307,7 +310,10 @@ export default function MonteCarloSimulator({
   // chart does not jump around on every keystroke.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled(toState(form)), 250);
+    const timer = window.setTimeout(() => {
+      setSettled(toState(form));
+      setSettledForm(form);
+    }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors]);
 
@@ -315,9 +321,10 @@ export default function MonteCarloSimulator({
   // What the page says in words: amounts rounded to what the runs can tell
   // apart. The chart's shapes and the spreadsheets use `result` itself.
   const worded = useMemo(() => roundedResult(result), [result]);
-  // Pending from the moment a new plan settles until its result is on screen,
-  // so Copy can never share a plan the results do not show yet.
+  // Pending from the moment a new plan settles until its result is on screen.
   const pending = running || settled !== shownState;
+  // Waiting from the keystroke, so Copy can never share a plan not shown yet.
+  const { withheld, waiting } = useResultGate(hasErrors, form === settledForm && !pending);
 
   // A number box hands over a plain number string, whatever the page's language wrote.
   const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -327,11 +334,12 @@ export default function MonteCarloSimulator({
     setForm((f) => ({ ...f, [key]: value }));
   };
 
-  // Shares the plan the results show (the settled state), not a half-typed one.
+  // Shares the form as it stands, once the results show it.
   function copyShareLink() {
-    // publishableState, not encodeState: an all-default plan in euros encodes
+    if (waiting) return;
+    // publishableForm, not encodeState: an all-default plan in euros encodes
     // to '' and would reopen in rupees on a Hindi link, so it says c=EUR.
-    const state = publishableState(settled, defaultCurrency);
+    const state = publishableForm(form, defaultCurrency);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=monte_carlo';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -367,8 +375,10 @@ export default function MonteCarloSimulator({
 
   function reset() {
     const start = defaultState(defaultCurrency);
-    setForm(toForm(start));
+    const blank = toForm(start);
+    setForm(blank);
     setSettled(start);
+    setSettledForm(blank);
     setSettingsOpen(false);
     track('free_monte_carlo_reset');
   }
@@ -475,7 +485,7 @@ export default function MonteCarloSimulator({
           <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
         </fieldset>
 
-        <QuickResult result={worded} state={shownState} busy={pending} withheld={hasErrors} strings={strings} />
+        <QuickResult result={worded} state={shownState} busy={pending} withheld={withheld} strings={strings} />
         {/* Phones only. A button, not a link: nothing is written to the address. */}
         <p className="mcs-jump">
           <button
@@ -576,7 +586,6 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          {hasErrors && <span className="mcs-hint">{strings.actions.fix}</span>}
           <ResultAnnouncement text={hasErrors ? strings.actions.fix : ''} delay={WITHHELD_SAID_AFTER} />
           <span className="mcs-hint" role="status" aria-live="polite">
             {!hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : ''}
@@ -590,26 +599,30 @@ export default function MonteCarloSimulator({
         state={shownState}
         code={shownState.currency}
         busy={running}
-        withheld={hasErrors ? { title: exportStrings.report.answer, reason: strings.actions.fix } : null}
+        withheld={withheld ? {
+          title: exportStrings.report.answer,
+          // A long run after a correction: nothing is left to fix.
+          reason: !hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : strings.actions.fix,
+        } : null}
         strings={strings}
         actions={
           <ToolExport
             strings={exportStrings}
             share={
-              <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
+              <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={waiting} data-attr="free-monte-carlo-share">
                 <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
               </button>
             }
             xlsxAttr="free-monte-carlo-export-xlsx"
             pdfAttr="free-monte-carlo-export-pdf"
-            ready={!hasErrors && !pending}
+            ready={!waiting}
             onSpreadsheet={downloadSpreadsheet}
             onPrint={printPage}
           />
         }
       />
 
-      {!hasErrors && <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />}
+      {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />}
     </div>
     </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>

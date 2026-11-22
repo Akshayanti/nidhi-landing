@@ -4201,12 +4201,6 @@ button.mcnw-legendItem:focus-visible {
 .ifc-reset {
   margin-left: auto;
 }
-.ifc-fix {
-  margin: 0;
-}
-.ifc-fix:empty {
-  display: none;
-}
 .ifc-history .ifc-input {
   background: var(--color-bg-white);
 }
@@ -5058,12 +5052,6 @@ button.mcnw-legendItem:focus-visible {
 }
 .iop-basisTitle {
   font-size: var(--text-ui);
-}
-.iop-fix:empty {
-  display: none;
-}
-.iop-fix {
-  margin: 0;
 }
 .iop-countryNote p,
 .iop-returnNote p {

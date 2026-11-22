@@ -30,7 +30,7 @@ import {
   type Result,
   type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
-import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
+import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import { fieldErrors, formFromLink, parseField, publishableForm, toForm, toState, type FormState, type TextKey } from '../utils/invest-or-pay-off/form.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
@@ -40,7 +40,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -134,6 +134,8 @@ export default function InvestOrPayOff({
   const start = defaultState(defaultCurrency, defaultCountry);
   const [form, setForm] = useState<FormState>(() => toForm(start, numberLocale));
   const [settled, setSettled] = useState<ToolState>(() => start);
+  // The form `settled` was worked out from.
+  const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
@@ -176,8 +178,10 @@ export default function InvestOrPayOff({
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
     // The boxes as the link has them, bad ones included; the state behind them stays finite.
     const opened = formFromLink(raw as string, numberLocale) ?? toForm(shared, numberLocale);
-    setForm({ ...opened, country: shared.country });
+    const arrived = { ...opened, country: shared.country };
+    setForm(arrived);
     setSettled(shared);
+    setSettledForm(arrived);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
     if (arrivedByLanguageSwitch()) return;
@@ -236,9 +240,13 @@ export default function InvestOrPayOff({
   // Recalculate a moment after typing stops, and only on valid input.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled((prev) => toState(form, prev, numberLocale)), 250);
+    const timer = window.setTimeout(() => {
+      setSettled((prev) => toState(form, prev, numberLocale));
+      setSettledForm(form);
+    }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
+  const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
 
   // The inflation the comparison uses: what the reader typed, else the
   // country's ten-year figure. Null means there is none yet.
@@ -275,8 +283,8 @@ export default function InvestOrPayOff({
   }
 
   function copyShareLink() {
-    if (hasErrors) return;
-    const state = publishableState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
+    if (waiting) return;
+    const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=invest_or_pay_off';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -290,8 +298,10 @@ export default function InvestOrPayOff({
   }
 
   function reset() {
-    setForm(toForm(start, numberLocale));
+    const blank = toForm(start, numberLocale);
+    setForm(blank);
     setSettled(start);
+    setSettledForm(blank);
     setMoreOpen(false);
     track('free_invest_or_pay_off_reset');
   }
@@ -482,9 +492,9 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), low: REAL_RETURN_BOTTOM, top: REAL_RETURN_TOP })}</p>}
-                {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
-                {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
+                {!withheld && formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), low: REAL_RETURN_BOTTOM, top: REAL_RETURN_TOP })}</p>}
+                {!withheld && formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
+                {!withheld && formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>
               <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>
             </>
@@ -525,8 +535,7 @@ export default function InvestOrPayOff({
           </div>
         </fieldset>
 
-        <p className="ifc-hint iop-fix">{hasErrors ? strings.results.fix : ''}</p>
-      </form>
+              </form>
 
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
@@ -534,7 +543,9 @@ export default function InvestOrPayOff({
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix
-          : inflation === null
+          : withheld
+            ? ''
+            : inflation === null
             ? strings.country.needed
             : problem
               ? t(strings.problems[problem], { years: MAX_MONTHS / 12 })
@@ -543,7 +554,7 @@ export default function InvestOrPayOff({
 
       <section className="ifc-results iop-results" aria-labelledby={id('results')}>
         <h2 id={id('results')} className="ifc-resultsTitle">{strings.results.heading}</h2>
-        <Withheld reason={hasErrors ? strings.results.fix : null}>
+        <Withheld reason={withheld ? strings.results.fix : null}>
         {inflation === null && <p className="iop-note">{strings.country.needed}</p>}
         {problem && <p className="iop-note">{t(strings.problems[problem], { years: MAX_MONTHS / 12 })}</p>}
         {computed && (
@@ -568,7 +579,7 @@ export default function InvestOrPayOff({
         strings={exportStrings}
         share={
           <span className="iop-share">
-            <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-invest-or-pay-off-share">
+            <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={waiting} data-attr="free-invest-or-pay-off-share">
               <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
             </button>
             <span className="ifc-hint">{strings.actions.shareNote}</span>
@@ -576,12 +587,12 @@ export default function InvestOrPayOff({
         }
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
-        ready={!hasErrors && shownNow !== null}
+        ready={!waiting && shownNow !== null}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
 
-      {report && !hasErrors && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
+      {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>

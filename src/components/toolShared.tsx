@@ -14,6 +14,7 @@
  *    from help text by more than its colour, in every language.
  */
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { resultGate } from '../utils/shared/settle.ts';
 
 /** False in the server-rendered page and on the first render; true once the island runs. */
 export function useToolReady(): boolean {
@@ -144,3 +145,12 @@ export function selectMarker(e: { currentTarget: HTMLInputElement }): void {
 
 /** Props for every box that can show the mark. */
 export const markerSelect = { onFocus: selectMarker, onClick: selectMarker };
+
+/** The results' gate (utils/shared/settle.ts): withheld from an invalid form until the corrected one's result is on screen. */
+export function useResultGate(invalid: boolean, current: boolean): { withheld: boolean; waiting: boolean } {
+  const [held, setHeld] = useState(false);
+  const gate = resultGate({ invalid, held, current });
+  // Set while rendering, so that no frame shows what is held.
+  if (gate.withheld !== held) setHeld(gate.withheld);
+  return gate;
+}
