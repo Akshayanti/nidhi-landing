@@ -4374,6 +4374,16 @@ button.mcnw-legendItem:focus-visible {
   gap: inherit;
   min-width: 0;
 }
+/* Net worth's results are blocks, not a column: in a column a box centred by
+   auto margins is only as wide as its content, and one the amounts are fitted
+   to (.mcnw-split) has none. */
+.mcnw-results .tool-resultBody {
+  display: block;
+}
+/* A cell's margin does not collapse with the export row's under it. */
+.mcnw-results .tool-resultBody > .mcnw-total:last-child {
+  margin-bottom: calc(var(--space-5) - var(--space-4));
+}
 /* Every descendant: one that sets its own visibility would show through. */
 .tool-withheld,
 .tool-withheld * {
