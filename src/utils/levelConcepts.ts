@@ -3,11 +3,11 @@
  *
  * This list is build-time only. It names lessons in every level, including
  * levels whose lessons are still held back, so it must never be imported by
- * the island (`src/components/LearnHome.tsx`): whatever an island imports is
- * shipped to every reader in its script, published or not (#464). The page
+ * the page's script (in `src/components/LearnHome.astro`): whatever a script
+ * imports is shipped to every reader, published or not (#464). The page
  * (`src/layouts/BlogIndex.astro`) picks the ideas of the levels that are fully
- * published with `conceptsFor` and hands only those to the island as a prop.
- * `levelHelper.test.ts` fails if the island imports this module.
+ * published with `conceptsFor` and writes only those into the page's data.
+ * `levelHelper.test.ts` fails if the script imports this module.
  *
  * The words a reader sees for each idea are in the catalog under
  * `blogIndex.island.concepts`; only structure lives here.

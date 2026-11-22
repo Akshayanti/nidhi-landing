@@ -55,10 +55,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Full history so the privacy notice can derive its "Last updated"
-          # from `git log -1 --format=%aI -- src/components/pages/PrivacyPage.astro`
-          # at build time (see the gitLastCommitDate helper in that file). With
-          # the default fetch-depth: 1, that query returns empty when the most
-          # recent commit didn't happen to touch PrivacyPage.astro, which would
+          # from `git log -1 --format=%aI -- src/components/pages/PrivacyPage.astro
+          # src/utils/privacyChangelogEntries.ts` at build time (see the gitLastCommitDate
+          # helper in the page). With the default fetch-depth: 1, that query returns
+          # empty when the most recent commit didn't happen to touch them, which would
           # silently fall back to the changelog entry's date and defeat the
           # whole point of the automation.
           fetch-depth: 0
@@ -73,21 +73,22 @@ jobs:
         run: npm ci
 
       - name: Privacy-notice changelog guard
-        # Nudges (doesn't fail) when the privacy notice (the changelog lives in
-        # src/components/pages/PrivacyPage.astro) was edited in
-        # the latest commit but the `changelog` array at the top of the file
-        # wasn't also touched. The top-of-page "Last updated" bumps itself
+        # Nudges (doesn't fail) when the privacy notice
+        # (src/components/pages/PrivacyPage.astro) was edited in the latest
+        # commit but its changelog (src/utils/privacyChangelogEntries.ts) wasn't also
+        # touched. The top-of-page "Last updated" bumps itself
         # from git regardless; this guard is about the human-readable
         # changelog staying in sync with real edits.
         run: |
           FILE=src/components/pages/PrivacyPage.astro
+          LOG=src/utils/privacyChangelogEntries.ts
           # Did the latest commit touch the file at all?
           if ! git diff --quiet HEAD~1 HEAD -- "$FILE" 2>/dev/null; then
-            # Did that same commit also modify the `changelog` array?
+            # Did that same commit also add to the changelog?
             # We look for added lines that contain ChangelogEntry-ish keys.
-            ADDED=$(git diff HEAD~1 HEAD -- "$FILE" | grep -E '^\+[[:space:]]*(date|iso|material|summary):' || true)
+            ADDED=$(git diff HEAD~1 HEAD -- "$LOG" | grep -E '^\+[[:space:]]*(date|iso|material|summary):' || true)
             if [ -z "$ADDED" ]; then
-              echo "::warning file=$FILE::PrivacyPage.astro was modified but no new changelog entry was added. If the change is material (new processor, data category, retention), please add an entry to the \`changelog\` array."
+              echo "::warning file=$FILE::PrivacyPage.astro was modified but no new changelog entry was added. If the change is material (new processor, data category, retention), please add an entry to the \`writtenChangelog\` array in $LOG."
             else
               echo "PrivacyPage.astro changed and changelog entry was updated: ok."
             fi

@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 
 import { readFileSync } from 'node:fs';
 
-import { goalsFor, suggestLevel as suggestFrom } from './levelHelper.ts';
+import { goalsFor, helperReason, suggestLevel as suggestFrom, type Suggestion } from './levelHelper.ts';
 import { assertConceptSlugs, CONCEPTS, conceptsFor } from './levelConcepts.ts';
 
 /** As the page calls it: with the ideas of the eligible levels. */
@@ -102,21 +102,23 @@ describe('suggestLevel', () => {
   });
 });
 
-describe('what the island ships', () => {
-  // An island's imports end up in its script. The full list of ideas names
-  // lessons in levels that are not published, so the island gets its ideas as
-  // a prop and must not import the list (#464).
-  it('keeps the list of ideas out of the learning path island', () => {
-    const island = readFileSync('src/components/LearnHome.tsx', 'utf8');
-    assert.doesNotMatch(island, /levelConcepts/);
-    const helper = readFileSync('src/utils/levelHelper.ts', 'utf8');
-    assert.doesNotMatch(helper, /from '\.\/levelConcepts/);
-    for (const { slug } of CONCEPTS) {
-      assert.ok(!island.includes(`'${slug}'`) && !helper.includes(`'${slug}'`), `${slug} is named in code the island ships`);
+describe('what the page ships', () => {
+  // A script's imports end up in the page. The full list of ideas names
+  // lessons in levels that are not published, so the page writes only the
+  // published levels' ideas into its data, and its script must not import the
+  // list (#464).
+  it('keeps the list of ideas out of the learning path page and its script', () => {
+    const shipped = ['src/components/LearnHome.astro', 'src/utils/levelHelper.ts', 'src/utils/learnProgress.ts', 'src/utils/learnResults.ts', 'src/utils/siteSearch.ts']
+      .map((f) => [f, readFileSync(f, 'utf8')] as const);
+    for (const [file, text] of shipped) {
+      assert.doesNotMatch(text, /from ['"][^'"]*levelConcepts/, `${file} imports the list of ideas`);
+      for (const { slug } of CONCEPTS) {
+        assert.ok(!text.includes(`'${slug}'`), `${slug} is named in ${file}, which the page ships`);
+      }
     }
   });
 
-  it('hands the island only the ideas of published levels', () => {
+  it('hands the page only the ideas of published levels', () => {
     const slugs = conceptsFor(NOW_LIVE).map((c) => c.slug);
     assert.equal(slugs.length, 8);
     assert.ok(!slugs.includes('fee-optimization'));
@@ -130,5 +132,30 @@ describe('assertConceptSlugs', () => {
 
   it('fails when a lesson is missing', () => {
     assert.throws(() => assertConceptSlugs(new Set()), /Level helper ideas name lessons/);
+  });
+});
+
+describe('helperReason', () => {
+  const words = {
+    resultReasonFoundation: 'F {ticked}/{total} {level}',
+    resultReasonGoalPsych: 'GP {topic}',
+    resultReasonGoal: 'G {topic}',
+    resultReasonGoalKnown: 'GK {topic} {ticked}/{total}',
+    resultReasonAllKnownPsych: 'AKP',
+    resultReasonAllKnown: 'AK',
+  };
+  const s = (over: Partial<Suggestion>): Suggestion => ({ level: 'discovery', reason: 'foundation', ticked: 1, total: 4, gapSlugs: [], also: null, ...over });
+
+  it('fills each reason from the reader\'s answers', () => {
+    assert.equal(helperReason(s({}), 'Discovery', words), 'F 1/4 Discovery');
+    assert.equal(helperReason(s({ reason: 'goal', level: 'building' }), 'Building', words, 'investing'), 'G investing');
+    assert.equal(helperReason(s({ reason: 'goal', level: 'psychology' }), 'Psychology', words, 'habits'), 'GP habits');
+    assert.equal(helperReason(s({ reason: 'goal-known', ticked: 3 }), 'Discovery', words, 'debt'), 'GK debt 3/4');
+    assert.equal(helperReason(s({ reason: 'all-known', level: 'psychology' }), 'Psychology', words), 'AKP');
+    assert.equal(helperReason(s({ reason: 'all-known', level: 'optimizing' }), 'Optimizing', words), 'AK');
+  });
+
+  it('leaves no placeholder when a goal has no topic', () => {
+    assert.equal(helperReason(s({ reason: 'goal', level: 'building' }), 'Building', words), 'G ');
   });
 });

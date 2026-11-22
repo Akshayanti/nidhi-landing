@@ -11,11 +11,12 @@
  * languages through `src/pages/[locale]/blog/index.astro`.
  *
  * Every word the reader sees comes from the catalog, including the JSON-LD, and
- * every link is built here with `localizedPath` and handed to the island as a
- * plain string, so `LearnHome.tsx` never has to know about languages.
+ * every link is built here with `localizedPath` and handed to `LearnHome.astro`
+ * as a plain string. The page ships no framework: Astro renders it, and small
+ * scripts in LearnHome.astro add progress, the level helper and search (#721).
  */
 import BaseLayout from './BaseLayout.astro';
-import { LearnHome } from '../components/LearnHome';
+import LearnHome from '../components/LearnHome.astro';
 import LessonsInEnglish from '../components/LessonsInEnglish.astro';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
@@ -24,6 +25,7 @@ import { conceptsFor } from '../utils/levelConcepts';
 import { getCollection } from 'astro:content';
 import { FEATURED_GUIDES, GUIDE_HUB, getGuides, guidePath } from '../utils/guides';
 import { inclusiveHostLevels, inclusiveLine } from '../utils/inclusiveGuides';
+import { directoryGroups, directoryProblems, guideId } from '../utils/learnDirectory';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
 
 interface Props {
@@ -61,9 +63,8 @@ const collections = {
 // Ladder lessons in reading order first, then the Inclusive Finances guides.
 // `href` is the lesson's own English address, set by `getPathPosts`: a lesson
 // is one document, not one per language, while the level links above are chrome.
-const lessons = [...ladder, ...inclusive].map(({ id, title, description, level, readingTime, tags, href }) => ({
-  id, title, description, level, readingTime, tags, href,
-}));
+const pathLessons = [...ladder, ...inclusive];
+const lessons = pathLessons.map(({ id, title, level, readingTime, href }) => ({ id, title, level, readingTime, href }));
 
 // Search also reads each lesson's FAQ questions and "In this lesson" phrases,
 // which are worded the way readers ask, and the live How-to guides. Only the
@@ -80,13 +81,28 @@ for (const entry of await getCollection('blog')) {
     ...(d.takeaways ?? []).map((t) => (typeof t === 'string' ? t : t.text)),
   ].join(' ');
 }
-const guides = (await getGuides()).map((g) => ({
-  id: g.data.slug,
-  title: g.data.title,
-  href: guidePath(g.data.slug),
-  terms: g.data.searchTerms,
-  text: [g.data.description, ...g.data.answer].join(' '),
-}));
+const liveGuides = await getGuides();
+const guides = liveGuides.map((g) => ({ id: g.data.slug, title: g.data.title, href: guidePath(g.data.slug) }));
+
+// What search reads beyond a title, once per item and keyed by its directory
+// id: guides first, then the lessons in reading order, the order search has
+// always ranked ties in.
+const searchText: Record<string, { terms: string[]; text: string }> = {};
+for (const g of liveGuides) {
+  searchText[guideId(g.data.slug)] = { terms: g.data.searchTerms, text: [g.data.description, ...g.data.answer].join(' ') };
+}
+for (const l of pathLessons) {
+  searchText[l.id] = { terms: l.tags, text: `${l.description} ${lessonText[l.id] ?? ''}` };
+}
+
+// Every published lesson and guide is in the directory exactly once, and every
+// search entry has its row: the build stops otherwise (#721).
+const directoryCheck = directoryProblems(
+  directoryGroups(LADDER_LEVELS, lessons, guides),
+  [...lessons.map((l) => l.id), ...guides.map((g) => guideId(g.id))],
+  Object.keys(searchText),
+);
+if (directoryCheck.length > 0) throw new Error(`The /blog/ directory is wrong:\n${directoryCheck.join('\n')}`);
 // The questions named on the "One money question?" side, live ones only.
 const featured = FEATURED_GUIDES
   .map((slug) => guides.find((g) => g.id === slug))
@@ -152,10 +168,12 @@ const blogItemListSchema = {
       {/* The cards below carry English titles: say so before the list, not after it. */}
       <LessonsInEnglish locale={locale} />
       <LearnHome
-        client:load
+        locale={locale}
+        lang={LOCALE_META[locale].htmlLang}
         levels={levels}
+        lessons={lessons}
         guides={guides}
-        lessonText={lessonText}
+        searchText={searchText}
         howTo={{
           label: howTo.searchGuide,
           empty: howTo.searchEmpty,
@@ -168,16 +186,12 @@ const blogItemListSchema = {
           inEnglish: locale === DEFAULT_LOCALE ? undefined : howTo.allInEnglish,
           featured,
         }}
-        lessons={lessons}
-        inclusiveCount={inclusive.length}
         collections={collections}
         helperLevels={helperLevels}
         concepts={conceptsFor(helperLevels)}
-        strings={blogIndex.island}
         inclusiveHref={localizedPath(locale, '/blog/inclusive-finances/')}
         topicsHref={localizedPath(locale, '/blog/tag/')}
         glossaryHref={localizedPath(locale, '/blog/glossary/')}
-        lang={LOCALE_META[locale].htmlLang}
       />
       <div class="blog-index-subscribe">
         <SubscribeSection variant="compact" locale={locale} />

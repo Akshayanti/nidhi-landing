@@ -1,7 +1,7 @@
 /**
  * Search on the learning path's front page (/blog/), across lessons and How-to
  * guides. Browser-safe: no imports, no catalog. It runs in the reader's
- * browser and what they type stays in memory (see LearnHome.tsx).
+ * browser and what they type stays in memory (see LearnHome.astro).
  *
  * The old search matched the whole query as one substring, so a reader's own
  * sentence ("how do I pay off my credit card") or a plural ("credit cards")

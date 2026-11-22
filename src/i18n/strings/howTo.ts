@@ -145,7 +145,7 @@ export const howToEs: typeof howToEn = {
   howTo: {
     name: 'Cómo hacerlo',
     meta: {
-      title: 'Cómo hacerlo: respuestas breves a preguntas de dinero de cada día | nidhi',
+      title: 'Cómo hacerlo: respuestas breves a dudas de dinero cotidianas | nidhi',
       description: 'Guías breves que responden a una pregunta de dinero cada una, con palabras sencillas: cuál es la respuesta, qué comprobar y dónde leer más. Gratis y sin registro.',
     },
     crumbHome: 'Inicio',

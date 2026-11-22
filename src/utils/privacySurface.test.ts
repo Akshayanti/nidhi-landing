@@ -4,7 +4,7 @@
  * CLAUDE.md, "Privacy Policy is the Source of Truth", rule 2: a new or renamed
  * click label, analytics event or event property, a new browser storage key,
  * and a new third-party request each need a `material: true` entry in the
- * privacy changelog (`writtenChangelog` in src/components/pages/PrivacyPage.astro),
+ * privacy changelog (`writtenChangelog` in src/utils/privacyChangelogEntries.ts),
  * in the same change. Nothing used to check that. These snapshots make every
  * such change an explicit edit to this file, the way dependencies.test.ts does
  * for packages: when one fails, add the changelog entry (or confirm none is
@@ -30,7 +30,7 @@ const ANALYTICS = readFileSync(join(SRC, 'components/Analytics.astro'), 'utf8');
 const RULE =
   '\n\nThe privacy surface changed. CLAUDE.md, "Privacy Policy is the Source of Truth", rule 2: ' +
   'a new or changed label, event, event property, storage key or third-party request needs a material: true entry in the privacy changelog ' +
-  '(writtenChangelog in src/components/pages/PrivacyPage.astro), and the notice text if it no longer describes what happens. ' +
+  '(writtenChangelog in src/utils/privacyChangelogEntries.ts), and the notice text if it no longer describes what happens. ' +
   'Removing a label needs no entry. Then update the snapshot in src/utils/privacySurface.test.ts.\n';
 
 /** What was added and what was removed, for the failure message. */
@@ -223,7 +223,7 @@ const EXPECTED_POSTHOG_CALLS = [
   'components/Analytics.astro: init',
   // Heatmaps are paused while a page shows what a click position could give away.
   'components/InvestOrPayOff.tsx: set_config',
-  'components/LearnHome.tsx: set_config',
+  'components/LearnHome.astro: set_config',
   // The subscriber's distinct id: a hash of the address, as the notice describes.
   'components/SubscribeSection.astro: identify',
   // The cookie banner's answer, applied to a running PostHog.
@@ -263,7 +263,8 @@ const EXPECTED_DYNAMIC_STORAGE = [
 // a link a reader follows (`href` is on every page). What a tool page really
 // sends, to any address, during everything the browser check does on it, is
 // checked by scripts/verify-tool-privacy.mjs.
-const NOTICE_PAGE = /^components\/pages\/PrivacyPage\.astro$/;
+// Its changelog's entries are words too, kept in their own module (#722).
+const NOTICE_PAGE = /^(components\/pages\/PrivacyPage\.astro|utils\/privacyChangelogEntries\.ts)$/;
 const EXPECTED_MENTIONS = [
   'components/Analytics.astro: .src= x1',
   'components/Analytics.astro: capture x5',
@@ -294,11 +295,11 @@ const EXPECTED_MENTIONS = [
   'components/InvestOrPayOff.tsx: navigator x1',
   'components/InvestOrPayOff.tsx: posthog x4',
   'components/InvestOrPayOff.tsx: track x8',
-  'components/LearnHome.tsx: capture x3',
-  'components/LearnHome.tsx: getItem x1',
-  'components/LearnHome.tsx: localStorage x1',
-  'components/LearnHome.tsx: location x2',
-  'components/LearnHome.tsx: posthog x4',
+  'components/LearnHome.astro: capture x3',
+  'components/LearnHome.astro: getItem x2',
+  'components/LearnHome.astro: localStorage x2',
+  'components/LearnHome.astro: location x2',
+  'components/LearnHome.astro: posthog x4',
   'components/LearningPath.tsx: getItem x3',
   'components/LearningPath.tsx: localStorage x6',
   'components/LearningPath.tsx: setItem x3',

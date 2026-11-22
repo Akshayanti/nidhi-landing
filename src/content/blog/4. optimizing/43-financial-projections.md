@@ -1,7 +1,7 @@
 ---
 slug: "financial-projections"
 title: "How Much Will Your Savings Grow? Financial Projections"
-description: "How to project your savings 10 to 30 years ahead: why one growth assumption can move the result by a million euros, how to choose it, and what a Monte Carlo result really means."
+description: "Projecting savings 10 to 30 years ahead: why one growth assumption can move the result by a million euros, how it is chosen, and what a Monte Carlo result means."
 tldr:
   - "Playing today's savings forward under stated assumptions gives a conditional picture, not a prediction."
   - "The growth rate moves the result enormously, so many planners use a range of inflation-adjusted rates based on long-run history."
