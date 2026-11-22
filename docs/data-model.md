@@ -24,7 +24,8 @@ One tab, named by the `SHEET_NAME` property of `newsletter.gs`, in the spreadshe
 
 - **Writes:** `newsletter.gs` only: sign-up appends a row; confirm, unsubscribe and the bounce scan change `status` and the dates; the hourly `handleRemindPending` stamps `reminder_sent_at` (a second sign-up while pending, which resends the link, counts as the reminder too) and deletes rows the notice says are deleted (pending after 7 days, unsubscribed after 30, bounced after a week); `migrateAddTokens` fills empty token columns, run by hand.
 - **Reads:** `newsletter.gs` only. Its `count` action gives the site's build one number (confirmed readers); `send_post` reads the confirmed rows to mail a lesson. Nothing outside the script reads the tab: `scripts/send_newsletter.py` sends the lesson to the script, not to the sheet.
-- **Checked:** every handler refuses a tab whose first nine headers are not these, in this order (`sheet_()`); columns after the ninth are allowed.
+- **Checked:** every handler that opens the tab refuses it unless its first nine headers are these, in this order (`sheet_()`); columns after the ninth are allowed. Nothing is then read past the header row or written: a POST answers `error`, a link opened with GET shows "Something went wrong", health is not ok and the hourly run fails, with the reason in the log.
+- **Not checked:** `migrateAddTokens`, which is run only from the editor. It rewrites the header row and fills the token columns by position, so run it only once the columns themselves are in this order.
 
 ## The waitlist tab (planner waitlist)
 
@@ -38,7 +39,7 @@ One tab, named by the `SHEET_NAME` property of `waitlist.gs`, in the spreadsheet
 
 - **Writes:** `waitlist.gs` only: a sign-up appends a row unless the address is already there; `dedupeOnce_` removed duplicates kept from before they were blocked, once.
 - **Reads:** `waitlist.gs`. Its `count` action gives the site's build one number (this tab and the beta volunteers below, each address once); its `list` action gives the planner's admin tools `email`, `source` and `created_at` for each address.
-- **Checked:** `count`, `list` and health refuse a tab whose first three headers are not these (`headersMatch_`).
+- **Checked:** every handler that opens the tab (sign-up, `count`, `list` and health) refuses it unless its first three headers are these, in this order (`headersMatch_`). The first three answer `schema` and health is not ok; a refused sign-up writes nothing and is logged. Past the day's limit a sign-up answers `busy` without opening the tab.
 
 ## The volunteer responses (volunteer form)
 
@@ -73,8 +74,8 @@ The scripts read and write cells by position, except the volunteer columns, whic
 1. **Add the column at the end** of the tab, after the last column a script uses, with its header in row 1. The subscriber tab allows extra columns after the ninth and the waitlist tab after the third, so the deployed scripts keep working; never insert a column between existing ones, or every handler refuses the tab (newsletter, waitlist) until the script matches.
 2. **Change the script** in a pull request: add the column to the file header, to `COL` and the expected headers if the script must check it, and to whatever writes or reads it; give old rows an empty value a handler can live with. Update this page in the same pull request. Run `npm run gs:version` and `npm test`.
 3. **Check the privacy notice.** A column that stores something new about a person needs a privacy changelog entry and, if the notice does not already say it, a change to the notice (CLAUDE.md, "Privacy Policy is the Source of Truth").
-4. **Deploy the script** from the branch once its checks pass (operations.md, "Deploying a script"), then check health and the version.
-5. **Merge**, then fill any old rows that need a value, by hand or with a one-off function run from the editor.
+4. **Deploy the script** from the branch once its checks pass, and check by hand that health is ok and its version is the branch's (operations.md, "Deploying a script").
+5. **Merge**, run the "Apps Script versions" workflow, then fill any old rows that need a value, by hand or with a one-off function run from the editor.
 
 To remove a column, go the other way: first deploy a script that no longer reads or writes it, then delete the column, last in the tab or with the scripts' header checks changed in the same deploy.
 

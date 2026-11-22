@@ -44,6 +44,12 @@ describe('formReply', () => {
     assert.equal(await reply(Promise.resolve(response('{"ok":false,"error":"toString"}'))), 'failed');
   });
 
+  it('a moved column and a busy lock are failed, so the form says try again (#444)', async () => {
+    for (const error of ['schema', 'locked']) {
+      assert.equal(await reply(Promise.resolve(response(JSON.stringify({ ok: false, error })))), 'failed', error);
+    }
+  });
+
   it('an HTTP error is failed, even with ok in its body', async () => {
     assert.equal(await reply(Promise.resolve(response('{"ok":true}', { ok: false }))), 'failed');
   });

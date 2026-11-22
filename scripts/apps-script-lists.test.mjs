@@ -405,6 +405,26 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
     assert.equal(state.tracked.length, 0);
   });
 
+  it('a sign-up refuses a tab whose columns moved and writes nothing', () => {
+    for (const moved of [['source', 'email', 'created_at'], ['email', 'created_at', 'source'], ['Timestamp', 'email', 'source']]) {
+      const { c, rows, store, state } = loadWritable([moved.slice()]);
+      assert.deepEqual(signup(c, { email: 'a@x.io', source: '/' }), { ok: false, error: 'schema' }, moved.join());
+      assert.equal(rows.length, 1, moved.join());
+      assert.equal(state.tracked.length, 0);
+      assert.equal(Object.keys(store).filter((k) => k.startsWith('signups:')).length, 0, 'no slot of the day is taken');
+      // The one-time dedupe deletes rows by position, so it must not run either.
+      delete store.waitlist_deduped_v1;
+      rows.push(['a@x.io', '/', '']);
+      assert.deepEqual(signup(c, { email: 'a@x.io' }), { ok: false, error: 'schema' }, 'the same for an address already there');
+      assert.equal(store.waitlist_deduped_v1, undefined, 'the dedupe did not run');
+      assert.equal(answer(c.doGet({ parameter: { action: 'health' } })).checks.sheet.ok, false, 'health refuses it too');
+    }
+    // Header case and spaces do not matter, as for count and list.
+    const { c, rows } = loadWritable([[' Email', 'SOURCE', 'created_at ']]);
+    assert.deepEqual(signup(c, { email: 'a@x.io' }), { ok: true });
+    assert.equal(rows.length, 2);
+  });
+
   it('a repeat sign-up takes no slot of the day', () => {
     const { c, rows } = loadWritable([header.slice()]);
     vm.runInContext('MAX_SIGNUPS_PER_DAY_ = 2;', c);

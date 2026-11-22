@@ -37,7 +37,10 @@
  *                            address is already on the list, in which case
  *                            nothing is written. Responds { ok: true } on
  *                            any valid email either way, so the response
- *                            never reveals who is on the list.
+ *                            never reveals who is on the list. If the
+ *                            tab's first three headers are not email,
+ *                            source, created_at it writes nothing and
+ *                            answers { ok: false, error: 'schema' }.
  *
  *   POST action=count       form body: action, token
  *                            Returns { ok: true, count } when the token's
@@ -83,7 +86,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '1ff07442e01c';
+var VERSION = '00f5bb7e199c';
 
 // ============================================================================
 // Config
@@ -560,6 +563,7 @@ function handleWaitlist_(e) {
   }
   var added = false;
   var busy = false;
+  var schema = false;
   try {
     // The day's limit is checked before the list is read, and once it is
     // reached every request that day gets the same "busy" refusal, a new
@@ -570,15 +574,26 @@ function handleWaitlist_(e) {
       busy = true;
     } else {
       var sh = sheet_();
-      dedupeOnce_(sh);
-      if (!hasEmail_(sh, email)) {
-        takeSignupSlot_();
-        sh.appendRow([email, source, new Date()]);
-        added = true;
+      // A tab whose columns moved would take the address into the wrong
+      // column, so a sign-up refuses it as count, list and health do.
+      if (!headersMatch_(sh)) {
+        schema = true;
+      } else {
+        dedupeOnce_(sh);
+        if (!hasEmail_(sh, email)) {
+          takeSignupSlot_();
+          sh.appendRow([email, source, new Date()]);
+          added = true;
+        }
       }
     }
   } finally {
     lock.releaseLock();
+  }
+
+  if (schema) {
+    console.error('[waitlist] the tab\'s first three headers are not email, source, created_at: row not written');
+    return jsonResponse_({ ok: false, error: 'schema' });
   }
 
   if (busy) {

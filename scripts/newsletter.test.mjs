@@ -791,6 +791,12 @@ describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)
     assert.match(ctx.doGet(req({ action: 'confirm', t: tok('2') })).html, /Something went wrong/);
     assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson))), { ok: false, error: 'error' });
     assert.throws(() => ctx.handleRemindPending(), /header row mismatch/);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('2') }))), { ok: false, error: 'error' });
+    vm.runInContext(`COUNT_TOKEN_SHA256_ = '${crypto.createHash('sha256').update('token').digest('hex')}';`, ctx);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'count' }, 'action=count&token=token'))), { ok: false, error: 'error' });
+    const ts = String(Math.floor(NOW / 1000));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'scan_bounces', ts, sig: sign(`scan_bounces:${ts}`) }))), { ok: false, error: 'error' });
+    assert.equal(json(ctx.doGet(req({ action: 'health' }))).checks.sheet_access.ok, false);
     assert.equal(JSON.stringify(ctx.rec.rows), before);
     assert.deepEqual(ctx.rec.mails, []);
     // The reason is in the log, for the owner; the caller is told nothing.
