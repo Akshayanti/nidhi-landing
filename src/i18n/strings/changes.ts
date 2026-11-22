@@ -117,6 +117,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'गोपनीयता सूचनेत आता तिचे सर्वात अलीकडचे तीन बदल दिसतात, आणि प्रत्येक बदलाची संपूर्ण नोंद, जशी लिहिली तशीच, आता स्वतंत्र पानांवर आहे, प्रत्येक वर्षासाठी एक पान. तिथे प्रत्येक बदलाला एक कायमची लिंक आहे, त्यामुळे तो शेअर करता येतो किंवा नंतर पुन्हा शोधता येतो.',
         },
       },
+      {
+        id: 'one-wording-in-every-language',
+        text: {
+          en: 'The site’s wording is more consistent in all five languages. The same thing has the same name from page to page, I say “I” where I’m the one acting, English follows one spelling (British, with -ize endings), and more terms are explained where a lesson or guide first uses them. The email boxes now show a short “Email” hint, and an invalid confirmation link says why it may not work.',
+          hi: 'साइट के शब्द अब पाँचों भाषाओं में ज़्यादा एक जैसे हैं। एक चीज़ का नाम हर पेज पर एक ही है, जहाँ बात मेरे अपने काम की है वहाँ अब “मैं” लिखा है, अंग्रेज़ी में एक ही वर्तनी चलती है (ब्रिटिश, -ize के साथ), और ज़्यादा शब्दों का मतलब पाठ या गाइड में उनके पहले इस्तेमाल पर ही बताया गया है। ईमेल के बॉक्स में अब छोटा सा “ईमेल” संकेत दिखता है, और पुष्टि का लिंक अमान्य हो तो पेज बताता है कि ऐसा क्यों हो सकता है।',
+          es: 'Los textos del sitio son más coherentes en los cinco idiomas. Cada cosa se llama igual en todas las páginas, hablo en primera persona del singular cuando actúo yo, el inglés sigue una sola ortografía (británica, con -ize) y se explican más términos la primera vez que aparecen en una lección o guía. Los campos de correo muestran ahora una pista breve, «Correo», y un enlace de confirmación no válido explica por qué puede no funcionar.',
+          cs: 'Texty webu jsou ve všech pěti jazycích jednotnější. Stejná věc se jmenuje stejně na každé stránce, kde něco dělám já, píšu „já“, angličtina má jeden pravopis (britský, s\u00a0koncovkou -ize) a\u00a0víc pojmů je vysvětlených tam, kde je lekce nebo návod používá poprvé. Pole pro e-mail teď mají krátkou nápovědu „E-mail“ a\u00a0neplatný potvrzovací odkaz říká, proč možná nefunguje.',
+          mr: 'साइटवरील शब्द आता पाचही भाषांमध्ये अधिक एकसारखे आहेत. एकाच गोष्टीचे नाव प्रत्येक पानावर तेच आहे, जिथे काम माझे स्वतःचे आहे तिथे आता “मी” लिहिले आहे, इंग्रजीत एकच लेखनपद्धती वापरली जाते (ब्रिटिश, -ize सह), आणि अधिक शब्दांचा अर्थ धड्यात किंवा मार्गदर्शिकेत ते पहिल्यांदा येतात तिथेच सांगितला आहे. ईमेलच्या चौकटीत आता “ईमेल” अशी छोटी सूचना दिसते, आणि पुष्टीची लिंक अवैध असल्यास पान तसे का असू शकते ते सांगते.',
+        },
+      },
     ],
   },
   {
