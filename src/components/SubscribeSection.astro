@@ -636,10 +636,6 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     gap: var(--space-2);
     margin-bottom: var(--space-2);
   }
-  @media (min-width: 480px) {
-    .subscribe-input-group { flex-direction: row; }
-  }
-
   .subscribe-input {
     flex: 1;
     min-width: 0;
@@ -650,7 +646,14 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     background: var(--color-bg-white);
     color: var(--color-text-primary);
   }
-  .subscribe-input::placeholder { color: var(--color-text-muted); }
+  /* One row only while the field has room for its example: at a large text
+     size the button drops to the next line (#641). */
+  @media (min-width: 480px) {
+    .subscribe-input-group { flex-direction: row; flex-wrap: wrap; }
+    .subscribe-input { flex: 1 1 8rem; }
+    .subscribe-input-group > .subscribe-button { max-width: 100%; }
+  }
+  .subscribe-input::placeholder { color: var(--color-text-muted); font-size: min(1em, 17.5vw); } /* whole at 400% text on a 320px phone (#641) */
   .subscribe-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
   /* On the blue box the teal ring cannot be seen (1.07:1), so every control
      there shows focus in white (8.6:1). */
@@ -756,7 +759,7 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
     align-items: center;
   }
   .subscribe-form--compact .subscribe-input {
-    flex: 1 1 200px;
+    flex: 1 1 max(200px, 8rem);
     min-width: 0;
   }
   /* The button may be no wider than the column: at a very large text size
