@@ -6,7 +6,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
-import { parseAmount, parsePercent, type Series } from '../utils/inflation/math.ts';
+import type { Series } from '../utils/inflation/math.ts';
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
 import {
   HORIZONS,
@@ -26,13 +26,12 @@ import {
   rates,
   returnNote,
   toReal,
-  type Horizon,
   type Inputs,
   type Result,
-  type ReturnChoice,
   type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
+import { fieldErrors, formFromLink, parseField, publishableForm, toForm, toState, type FormState, type TextKey } from '../utils/invest-or-pay-off/form.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -97,85 +96,6 @@ function whenText(months: number, strings: Strings, locale: string): string {
   if (y === 0) return t(pick(m, w.months), { n: m });
   if (m === 0) return t(pick(y, w.years), { n: y });
   return t(w.yearsMonths, { years: t(pick(y, w.yearsPart), { n: y }), months: t(pick(m, w.monthsPart), { n: m }) });
-}
-
-// ===========================================================================
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ===========================================================================
-
-type TextKey = 'balance' | 'debtRate' | 'payment' | 'extra' | 'relief' | 'inflation' | 'ownReturn' | 'feePct' | 'gainsTax';
-
-interface FormState extends Record<TextKey, string> {
-  currency: string;
-  country: string;
-  returns: ReturnChoice;
-  horizon: Horizon;
-  todayAt: TodayBasis;
-}
-
-function toForm(s: ToolState, locale: string): FormState {
-  const f = (n: number) => formatForInput(n, locale);
-  return {
-    currency: s.currency,
-    country: s.country,
-    returns: s.returns,
-    horizon: s.horizon,
-    todayAt: s.todayAt,
-    balance: f(s.balance),
-    debtRate: f(s.debtRate),
-    payment: f(s.payment),
-    extra: f(s.extra),
-    relief: f(s.relief),
-    inflation: s.inflation === null ? '' : f(s.inflation),
-    ownReturn: f(s.ownReturn),
-    feePct: f(s.feePct),
-    gainsTax: f(s.gainsTax),
-  };
-}
-
-const PERCENT_LIMITS: Record<'debtRate' | 'relief' | 'inflation' | 'ownReturn' | 'feePct' | 'gainsTax', [number, number]> = {
-  debtRate: [0, MAX_DEBT_RATE],
-  relief: [0, 100],
-  inflation: [-99.99, MAX_INFLATION],
-  ownReturn: [-99.99, MAX_INFLATION],
-  feePct: [0, MAX_FEE_PCT],
-  gainsTax: [0, 100],
-};
-
-function parseField(key: TextKey, raw: string, locale: string): number | null {
-  if (key === 'balance' || key === 'payment' || key === 'extra') return parseAmount(raw, locale);
-  const [min, max] = PERCENT_LIMITS[key];
-  return parsePercent(raw, min, max, locale);
-}
-
-/** Which fields do not parse. An empty inflation field means "the country's figure". */
-function fieldErrors(f: FormState, locale: string): Partial<Record<TextKey, boolean>> {
-  const keys: TextKey[] = ['balance', 'debtRate', 'payment', 'extra', 'relief', 'feePct', 'gainsTax'];
-  if (f.returns === 'own') keys.push('ownReturn');
-  if (f.inflation.trim() !== '') keys.push('inflation');
-  const out: Partial<Record<TextKey, boolean>> = {};
-  for (const k of keys) if (parseField(k, f[k], locale) === null) out[k] = true;
-  return out;
-}
-
-function toState(f: FormState, prev: ToolState, locale: string): ToolState {
-  const n = (k: TextKey, d: number) => parseField(k, f[k], locale) ?? d;
-  return {
-    currency: f.currency,
-    country: f.country,
-    returns: f.returns,
-    horizon: f.horizon,
-    todayAt: f.todayAt,
-    balance: n('balance', prev.balance),
-    debtRate: n('debtRate', prev.debtRate),
-    payment: n('payment', prev.payment),
-    extra: n('extra', prev.extra),
-    relief: n('relief', prev.relief),
-    inflation: f.inflation.trim() === '' ? null : n('inflation', prev.inflation ?? 0),
-    ownReturn: n('ownReturn', prev.ownReturn),
-    feePct: n('feePct', prev.feePct),
-    gainsTax: n('gainsTax', prev.gainsTax),
-  };
 }
 
 function toInputs(s: ToolState, inflation: number): Inputs {
@@ -254,7 +174,9 @@ export default function InvestOrPayOff({
     setHydrated(true);
     if (!decoded) return;
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
-    setForm(toForm(shared, numberLocale));
+    // The boxes as the link has them, bad ones included; the state behind them stays finite.
+    const opened = formFromLink(raw as string, numberLocale) ?? toForm(shared, numberLocale);
+    setForm({ ...opened, country: shared.country });
     setSettled(shared);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
@@ -264,12 +186,14 @@ export default function InvestOrPayOff({
     });
   }, [countryByCode, numberLocale]);
 
+  // The form as it stands, not the settled state: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   // Keeps what is on screen where the header's language switch can find it
   // (after the #, at click time). Never the address.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency, defaultCountry));
-  }, [hydrated, settled, defaultCurrency, defaultCountry]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, numberLocale, defaultCurrency, defaultCountry));
+  }, [hydrated, form, numberLocale, defaultCurrency, defaultCountry]);
 
   // A country's history, from the site's own origin, the first time one is
   // picked that the page did not arrive with.
