@@ -182,6 +182,13 @@ describe('a number too long for a link is invalid where it is typed (#789)', () 
     assert.equal(bad(`0.1${'0'.repeat(197)}`), false);
     assert.equal(bad(`0.1${'0'.repeat(198)}`), true);
   });
+  it('and arrives still invalid, through a link or the language switch', async () => {
+    const { DEFAULTS: plan } = await import('./url.ts');
+    for (const start of [`0.${'0'.repeat(400)}1`, `0.1${'0'.repeat(198)}`, `0.${'0'.repeat(198)}1`]) {
+      const arrived = formFromLink(publishableForm({ ...toForm(plan), start }, 'EUR'))!;
+      assert.equal(formErrors(arrived).start, true, start.length + ' characters');
+    }
+  });
   it('up to 200 it travels whole', async () => {
     const { DEFAULTS: plan } = await import('./url.ts');
     const fits = `0.${'0'.repeat(196)}1`;
