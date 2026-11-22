@@ -1210,6 +1210,7 @@ export default function LoanCompare({
   // Until every offer can be read, nothing compares them, and nothing is
   // shared or saved (#793).
   const withheld = comparisonWithheld(results);
+  const withheldReasonId = useId();
   const cheapestByTotal =
     withTotal.length > 0
       ? withTotal.reduce((best, cur) =>
@@ -1219,6 +1220,7 @@ export default function LoanCompare({
 
   const copyShareLink = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
     const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
     try {
@@ -1241,7 +1243,7 @@ export default function LoanCompare({
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
-  }, [vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
+  }, [withheld, vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
 
   // The copied address stays until the next change to the comparison, which
   // is when it stops being the address of what is on the page. It used to go
@@ -1450,6 +1452,7 @@ export default function LoanCompare({
 
       <DeltaSummary
         withheld={withheld}
+        reasonId={withheldReasonId}
         results={results}
         vendors={vendors}
         currency={currency}
@@ -1464,7 +1467,8 @@ export default function LoanCompare({
               type="button"
               className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
-              disabled={withheld}
+              aria-disabled={withheld || undefined}
+              aria-describedby={withheld ? withheldReasonId : undefined}
               title={strings.toolbar.shareTitle}
               data-attr="lc-share-copy"
             >
@@ -2367,6 +2371,7 @@ function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, al
 
 interface DeltaSummaryProps {
   withheld: boolean;
+  reasonId: string;
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
@@ -2377,7 +2382,7 @@ interface DeltaSummaryProps {
   strings: Strings;
 }
 
-function DeltaSummary({ withheld, results, vendors, currency, strings }: DeltaSummaryProps) {
+function DeltaSummary({ withheld, reasonId, results, vendors, currency, strings }: DeltaSummaryProps) {
   const { formatMoney, amountLocale } = useMoney();
   // The heading stays: the phone's jump to the comparison focuses it.
   const reason = withheld ? strings.delta.fix : null;
@@ -2394,7 +2399,7 @@ function DeltaSummary({ withheld, results, vendors, currency, strings }: DeltaSu
     return (
       <section className="lc-deltaSection">
         <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
-        <Withheld reason={reason}>
+        <Withheld reason={reason} reasonId={reasonId}>
           <p className="lc-deltaEmpty">
             {strings.delta.empty}
           </p>
@@ -2429,7 +2434,7 @@ function DeltaSummary({ withheld, results, vendors, currency, strings }: DeltaSu
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
       <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
-      <Withheld reason={reason}>
+      <Withheld reason={reason} reasonId={reasonId}>
       {/*
         Not a live region: the tool's one announcement says this sentence once
         typing has settled. The wording is deliberately neutral: it states the range and the

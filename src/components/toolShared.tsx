@@ -125,12 +125,12 @@ export const WITHHELD_SAID_AFTER = 1000;
  * live region: the tool announces it once, after `WITHHELD_SAID_AFTER`.
  * `unsaid` is a part that goes with another, which shows the one reason.
  */
-export function Withheld({ reason, unsaid = false, children }: { reason: string | null; unsaid?: boolean; children: React.ReactNode }) {
+export function Withheld({ reason, reasonId, unsaid = false, children }: { reason: string | null; reasonId?: string; unsaid?: boolean; children: React.ReactNode }) {
   return (
     <div className="tool-result">
       {/* An empty reason withholds too: a corrected box has nothing to fix while its result settles. */}
       <div className={`tool-resultBody${reason !== null ? ' tool-withheld' : ''}`} inert={reason !== null}>{children}</div>
-      {reason && !unsaid && <p className="tool-resultReason">{reason}</p>}
+      {reason && !unsaid && <p id={reasonId} className="tool-resultReason">{reason}</p>}
     </div>
   );
 }

@@ -77,3 +77,8 @@ describe('what a first edit is (#795)', () => {
     assert.ok(body('const leaveSharedView = useCallback(', '}, [').includes('setRefused(null)'));
   });
 });
+
+it('an example ends a refusal, so clearing it carries nothing (#794)', () => {
+  assert.match(body('const showExample = ', '};'), /EXAMPLE_SCALE/);
+  assert.match(source.slice(source.indexOf('const showExample = '), source.indexOf('const clearExample = ')), /leaveSharedView\(\)/);
+});

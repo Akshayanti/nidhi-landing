@@ -389,6 +389,8 @@ interface RatesView {
   failed: boolean;
   shared: boolean;
   singleCurrency: boolean;
+  /** Rates for the spending currency are held from an earlier answer. */
+  held?: boolean;
 }
 
 /**
@@ -399,9 +401,9 @@ export function ratesPending(view: RatesView, hasRates: AggregationResult['hasRa
   return view.loading && !view.failed && !view.shared && !view.singleCurrency && hasRates === 'none';
 }
 
-/** The failure says raw amounts are shown: not while withheld, nor over a sender's converted ones. */
+/** The failure says raw amounts are shown: not while withheld, nor over amounts held rates or a sender's converted. */
 export function ratesFailureShown(view: RatesView, withheld: boolean): boolean {
-  return view.failed && !view.singleCurrency && !view.shared && !withheld;
+  return view.failed && !view.held && !view.singleCurrency && !view.shared && !withheld;
 }
 
 /** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */

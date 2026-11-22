@@ -135,13 +135,13 @@ describe('a redacted link', () => {
     ['a zero share', 'p_EUR=100.0~functional&p_CZK=0.0~low'],
     ['a zero share with z', 'p_EUR=100.0~functional~~z&p_CZK=0.0~net-debt~~z'],
     ['a share of minus zero', 'p_EUR=100.0~functional&p_CZK=-0.0~net-debt'],
+    ['only a zero in the spending currency', 'p_EUR=0.0~functional'],
   ]) {
     it(`an older one with ${what} is in doubt`, () => assert.equal(open(`m=r&f=EUR&${p}`).inDoubt, true));
   }
   for (const [what, p] of [
     ['no zero share', 'p_EUR=90.0~functional&p_CZK=10.0~low'],
     ['z and no zero share', 'p_EUR=90.0~functional~~z&p_CZK=10.0~net-debt~~z'],
-    ['only the spending currency', 'p_EUR=0.0~functional'],
   ]) {
     it(`an older one with ${what} is not`, () => assert.ok(!open(`m=r&f=EUR&${p}`).inDoubt));
   }
@@ -313,5 +313,65 @@ describe('rates on the way are neither missing nor failed (#795)', () => {
     assert.match(source, /pendingRates=\{pendingRates\}/);
     assert.match(source, /\{ratesFailureShown\(ratesView, Boolean\(refused && untouched\)\) && \(/, 'a refused list shows no amounts either');
     assert.match(source, /mcnw-bannerWarn\$\{withheld \? ' mcnw-banner--left' : ''\}/, 'withheld, its space stays and its words go');
+  });
+});
+
+describe('a real tiny total opens its own redacted link (#795)', () => {
+  it('2 at a gross of 4e14', () => {
+    const rows = [row('419856381879655', 'EUR'), row('419856381879653', 'USD', 'liability')];
+    const result = aggregate(rows, 'EUR', { EUR: 1, USD: 1 });
+    assert.equal(result.totalNetWorthFunctional, 2);
+    assert.equal(open(encodeShared(rows, result.positions, 'EUR', 'redacted')).refused, undefined);
+  });
+});
+
+describe('a redacted link cut among its positions (#795)', () => {
+  const cases: Record<string, ReturnType<typeof row>[]> = {
+    'a zero share first': [row('50', 'EUR'), row('220000', 'USD')],
+    'a zero share last': [row('220000', 'EUR'), row('50', 'USD')],
+    'a debt': [row('150000', 'EUR'), row('11000', 'USD'), row('60000', 'CHF', 'liability')],
+    'three': [row('50000', 'EUR'), row('30000', 'USD'), row('20000', 'CHF')],
+  };
+  for (const [name, rows] of Object.entries(cases)) {
+    it(`${name}: no prefix opens, through the guard`, async () => {
+      const { readFileSync } = await import('node:fs');
+      const { runInNewContext } = await import('node:vm');
+      const { STATE_KEY_PATTERN } = await import('./url.ts');
+      const guard = readFileSync(new URL('../shared/toolStateGuard.js', import.meta.url), 'utf8');
+      const guarded = (hash: string) => {
+        const window: any = { location: { hash: `#${hash}`, search: '', pathname: '/free/x/' }, history: { state: null, replaceState() {} } };
+        runInNewContext(guard, { window, globalThis: window, URLSearchParams });
+        window.nidhiGuardToolState('kept', STATE_KEY_PATTERN);
+        return window.kept as string | undefined;
+      };
+      const sent = encodeShared(rows, aggregate(rows, 'EUR', { EUR: 1, USD: 1.1, CHF: 1 }).positions, 'EUR', 'redacted');
+      assert.equal(open(guarded(sent)!).refused, undefined);
+      for (let end = 1; end < sent.length; end += 1) {
+        const kept = guarded(sent.slice(0, end));
+        if (!kept) continue;
+        const got = decodeFromQueryString(kept);
+        assert.ok(got.refused || !got.sharedPositions, sent.slice(0, end));
+      }
+    });
+  }
+  it('no spending currency, no view', () => {
+    assert.equal(open('m=r&p_EUR=100.0~functional').refused, 'link');
+    assert.equal(open('m=r&f=XX&p_EUR=100.0~functional').refused, 'link');
+  });
+  it('an older lone zero is in doubt', () => {
+    assert.equal(open('m=r&f=EUR&p_EUR=0.0~functional').inDoubt, true);
+  });
+  it('older: over 100 is debts alone', () => {
+    assert.equal(open('m=r&f=EUR&p_EUR=150.0~functional&p_USD=10.0~low').refused, 'link');
+    assert.equal(open('m=r&f=EUR&p_EUR=120.0~functional&p_USD=10.0~net-debt').refused, undefined);
+  });
+});
+
+describe('a failed refresh with rates held (#795)', () => {
+  it('does not say raw amounts', async () => {
+    const { ratesFailureShown } = await import('./math.ts');
+    const failed = { loading: false, failed: true, shared: false, singleCurrency: false };
+    assert.equal(ratesFailureShown({ ...failed, held: true }, false), false);
+    assert.equal(ratesFailureShown({ ...failed, held: false }, false), true);
   });
 });

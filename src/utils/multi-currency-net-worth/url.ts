@@ -421,7 +421,6 @@ function encodeRedacted(
 ): string {
   const params = new URLSearchParams();
   params.set('m', 'r');
-  params.set('f', functionalCurrency);
 
   const total = netTotal(positions);
   const noShares = positions.some((p) => p.netAmountFunctional !== 0) && total <= 0;
@@ -429,6 +428,8 @@ function encodeRedacted(
   for (const pos of positions) {
     params.set(`p_${pos.code}`, encodePositionRedacted(pos, concentration ? concentration.get(pos.code) ?? 0 : null));
   }
+  // Last: a link cut anywhere among its positions has lost it, and is refused.
+  params.set('f', functionalCurrency);
 
   return serializeParams(params);
 }
@@ -548,11 +549,14 @@ function decodeRedacted(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
   // One that says a rate was missing is one the tool refuses to make.
-  if (!sharedPositions || sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable) || !sharesAreWhole(sharedPositions)) {
+  const named = KNOWN_CURRENCIES.has((params.get('f') ?? '').toUpperCase());
+  if (!named || !sharedPositions || sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable) || !sharesAreWhole(sharedPositions)) {
     return refusal(functionalCurrency, 'link');
   }
-  // With no rows to look at, any zero share could be a missing rate.
-  const inDoubt = sharedPositions.some((p) => p.rateUnavailable === undefined && p.code !== functionalCurrency && p.pct === 0);
+  // With no rows to look at, any zero share could be a missing rate, and a
+  // lone one in the spending currency the first of several that were cut away.
+  const lone = sharedPositions.length === 1;
+  const inDoubt = sharedPositions.some((p) => p.rateUnavailable === undefined && p.pct === 0 && (lone || p.code !== functionalCurrency));
 
   return {
     rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
@@ -586,19 +590,26 @@ function decodePositions(params: URLSearchParams): SharedPositionData[] | null {
 
 /**
  * Whether a redacted link's shares are all there: all zero, or 100 together,
- * each rounded to one decimal. A lone one is 100 or zero. An older link, or a
- * new one cut before its last field, has no status, and its shares never
- * totalled less than 100: with debts alone they can total more. A lost
- * position whose share was zero, or small enough to fall within the rounding,
- * passes: with no rows in the link nothing else can show it.
+ * each rounded to one decimal, give or take what adding shares that large
+ * loses (netTotal's bound). A lone one is 100 or zero. An older link, with no
+ * status, totals more only with debts alone: every share then above zero,
+ * none banded as held. A lost position whose share was zero, or small enough
+ * to fall within the rounding, can pass: with no rows in the link nothing
+ * else can show it.
  */
 function sharesAreWhole(positions: SharedPositionData[]): boolean {
   if (positions.every((p) => p.pct === 0)) return true;
   if (positions.length === 1) return positions[0].pct === 100;
-  const off = positions.reduce((total, p) => total + p.pct, 0) - 100;
-  const rounding = 0.05 * positions.length + 1e-9;
+  let sum = 0;
+  let size = 0;
+  for (const { pct } of positions) {
+    sum += pct;
+    size += Math.abs(pct);
+  }
+  const rounding = 0.05 * positions.length + 1e-9 + 2 * (positions.length + 1) * Number.EPSILON * size;
+  if (Math.abs(sum - 100) <= rounding) return true;
   const older = positions.some((p) => p.rateUnavailable === undefined);
-  return off >= -rounding && (older || off <= rounding);
+  return older && sum > 100 && positions.every((p) => p.pct === 0 || (p.pct > 0 && (p.riskLevel === 'functional' || p.riskLevel === 'net-debt')));
 }
 
 function isValidRiskLevel(s: string): s is RiskLevel {

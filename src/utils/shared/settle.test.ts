@@ -53,3 +53,11 @@ for (const name of ['InflationCalculator', 'InvestOrPayOff', 'MonteCarloSimulato
     });
   });
 }
+
+it('the loan’s Copy keeps the focus and says why (#793)', () => {
+  const source = readFileSync(new URL('../../components/LoanCompare.tsx', import.meta.url), 'utf8');
+  assert.match(source, /aria-disabled=\{withheld \|\| undefined\}/);
+  assert.match(source, /aria-describedby=\{withheld \? withheldReasonId : undefined\}/);
+  assert.match(source, /if \(withheld\) return;/);
+  assert.doesNotMatch(source, /disabled=\{withheld\}\n/);
+});

@@ -299,7 +299,7 @@ export default function MultiCurrencyNetWorth({
   // Everything in the spending currency needs no exchange rates, so the rate
   // banners (loading, unavailable) do not apply.
   const singleCurrency = isSingleCurrency(result, functionalCurrency);
-  const ratesView = { loading: ratesLoading, failed: ratesError, shared: isReadOnlyView, singleCurrency };
+  const ratesView = { loading: ratesLoading, failed: ratesError, shared: isReadOnlyView, singleCurrency, held: rates !== null };
   const pendingRates = ratesPending(ratesView, result.hasRates);
   const noRateAtAll = rateGap(result, functionalCurrency, !(isReadOnlyView && sharedRedacted)) === 'all';
 
@@ -537,6 +537,8 @@ export default function MultiCurrencyNetWorth({
       { name: strings.example.abroad, value: String(8000 * (EXAMPLE_SCALE[other] ?? 1)), currency: other, type: 'asset' },
       { name: strings.example.loan, value: String(9000 * scale), currency: functionalCurrency, type: 'liability' },
     ];
+    // It fills the form, so a refusal is over: clearing it then carries an empty form (#794).
+    leaveSharedView();
     setExampleRows(filled);
     setRows(filled);
     focusFirstRow();
@@ -595,7 +597,7 @@ export default function MultiCurrencyNetWorth({
         complete picture.
       */}
       {/* A shared view's rates are its sender's: this page's own request does not matter to it. */}
-      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesError && !ratesLoading)) && (
+      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesLoading && (!ratesError || rates !== null))) && (
         <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
           <span>
             {/* Without any rate there is no total below to be left out of. */}
