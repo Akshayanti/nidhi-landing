@@ -19,8 +19,11 @@ import {
 import {
   decodeFromQueryString,
   encodeShared,
+  isPristineFullData,
   makeDefaultRows,
+  MAX_ROWS,
   publishableState,
+  redactedRefusal,
   SHARED_STATE_GLOBAL,
   type ShareMode,
   type SharedPositionData,
@@ -42,7 +45,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -153,6 +156,12 @@ export default function MultiCurrencyNetWorth({
   const [exampleRows, setExampleRows] = useState<AssetRow[]>([]);
   // Whether the CSV actions are unfolded. View state only.
   const [csvOpen, setCsvOpen] = useState(false);
+  // A file over the row limit was refused whole.
+  const [csvTooLong, setCsvTooLong] = useState(false);
+  // A link or a switched list that was not whole: none of it was loaded (#794).
+  const [refused, setRefused] = useState<'link' | 'transfer' | null>(null);
+  // The rows a shared view's sender could not have read.
+  const [sharedUnreadable, setSharedUnreadable] = useState(0);
 
   const functionalCurrencySelectId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -167,9 +176,11 @@ export default function MultiCurrencyNetWorth({
     const decoded = decodeFromQueryString(shared);
     // No shared state: start in this page's currency. A shared state keeps
     // the codec's reading (no currency means EUR), so links mean the same anywhere.
-    setRows(shared ? decoded.rows : makeDefaultRows(defaultCurrency));
-    setFunctionalCurrency(shared ? decoded.functionalCurrency : defaultCurrency);
+    setRows(shared && !decoded.refused ? decoded.rows : makeDefaultRows(defaultCurrency));
+    setFunctionalCurrency(shared && !decoded.refused ? decoded.functionalCurrency : defaultCurrency);
+    setRefused(decoded.refused ?? null);
     if (decoded.isReadOnly && decoded.sharedPositions) {
+      setSharedUnreadable(unreadableCount(decoded.rows));
       setSharedPositions(decoded.sharedPositions);
       setSharedRedacted(decoded.shareMode === 'redacted');
       setIsReadOnlyView(true);
@@ -198,10 +209,13 @@ export default function MultiCurrencyNetWorth({
   // the editable layout, so a switch never turns them into a read-only view.
   useEffect(() => {
     if (!hydrated || isReadOnlyView) return;
+    // Until something is entered, a refused list stays what a switch carries,
+    // so the next page refuses it too and does not open blank.
+    if (refused && isPristineFullData(rows, functionalCurrency, defaultCurrency)) return;
     // Untouched publishes '' so the other language opens with its own
     // starting currency; anything changed carries as encoded.
     publishToolState(SHARED_STATE_GLOBAL, publishableState(rows, functionalCurrency, defaultCurrency));
-  }, [hydrated, isReadOnlyView, rows, functionalCurrency, defaultCurrency]);
+  }, [hydrated, isReadOnlyView, refused, rows, functionalCurrency, defaultCurrency]);
 
   // Fetch exchange rates when functional currency changes.
   useEffect(() => {
@@ -288,6 +302,7 @@ export default function MultiCurrencyNetWorth({
   // double-invokes updaters); production wouldn't see it, but anyone
   // running `npm run dev` against a real PostHog key would.
   const addRow = useCallback(() => {
+    if (rows.length >= MAX_ROWS) return;
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
@@ -316,6 +331,14 @@ export default function MultiCurrencyNetWorth({
         // its letters; the type column may use this page's own two words.
         const text = decodeCsv(new Uint8Array(reader.result as ArrayBuffer));
         const { rows: parsed, errors: parseErrors } = parseCSV(text, { asset: [strings.row.asset], liability: [strings.row.liability] });
+        // Over the limit nothing is imported, not the first rows of it.
+        const tooLong = parsed.length + parseErrors.filter((e) => e.line > 0).length > MAX_ROWS;
+        setCsvTooLong(tooLong);
+        if (tooLong) {
+          setCsvErrors([]);
+          setCsvConfirmPending(null);
+          return;
+        }
         setCsvErrors(parseErrors);
         // Surface parse errors as their own event so we can measure CSV
         // friction. Properties carry counts and a coarse classification
@@ -377,21 +400,29 @@ export default function MultiCurrencyNetWorth({
 
   const hasData = rows.some((r) => r.value.trim() !== '');
 
+  // A row that cannot be read hides every result (#793), and a full link
+  // still carries that row, so sharing stays on for it.
+  const unreadableRows = isReadOnlyView ? sharedUnreadable : unreadableCount(rows);
+  const withheld = unreadableRows > 0
+    ? format(plural(numberLocale, unreadableRows, strings.table.withheldOne, strings.table.withheldFew, strings.table.withheldMany), { count: unreadableRows })
+    : null;
+  const canShare = hasData && (withheld !== null || (result.hasRates !== 'none' && result.positions.length > 0));
   const openShareModal = useCallback(() => {
     // Allow share when rates are 'full' or 'partial' but not 'none':
     // a partial share encodes what's known and the recipient sees the
     // same gap the sender saw.
-    if (!hasData || result.hasRates === 'none' || result.positions.length === 0) return;
+    if (!canShare) return;
     setShareUrl('');
     setCopied(false);
     setCopyFailed(false);
     setShareNotice({ text: '', n: 0 });
     setShareModalOpen(true);
     track('free_multi_currency_net_worth_share_modal_opened');
-  }, [hasData, result.hasRates, result.positions.length]);
+  }, [canShare]);
 
   const copyShareLinkFromModal = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    if (shareMode === 'redacted' && redactedRefusal(rows, result)) return;
     const qs = encodeShared(rows, result.positions, functionalCurrency, shareMode);
     const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth#${qs}`;
     try {
@@ -409,7 +440,7 @@ export default function MultiCurrencyNetWorth({
       setCopied(false);
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
     }
-  }, [rows, result.positions, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
+  }, [rows, result, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
 
   const reset = useCallback(() => {
     setRows(makeDefaultRows(defaultCurrency));
@@ -417,6 +448,9 @@ export default function MultiCurrencyNetWorth({
     setIsReadOnlyView(false);
     setSharedPositions(null);
     setSharedRedacted(false);
+    setSharedUnreadable(0);
+    setRefused(null);
+    setCsvTooLong(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
     setExampleRows([]);
@@ -424,15 +458,13 @@ export default function MultiCurrencyNetWorth({
     track('free_multi_currency_net_worth_reset');
   }, [defaultCurrency]);
 
-  // A row whose amount cannot be read is in no total, so it is not counted
-  // as an item either, and the page says how many there are.
+  // A row whose amount cannot be read is not counted as an item.
   const filledCount = rows.filter((r) => r.value.trim() !== '' && !isUnreadableAmount(r.value)).length;
-  const notCounted = unreadableCount(rows);
 
   // A copy holds what the results show and no more: a shared view that hides
   // amounts gives currencies and shares only. The event says only which kind.
   const showAmounts = !(isReadOnlyView && sharedRedacted);
-  const exportReady = result.positions.length > 0 && (isReadOnlyView || hasData);
+  const exportReady = !withheld && result.positions.length > 0 && (isReadOnlyView || hasData);
   const downloadSpreadsheet = () => {
     const sheets = netWorthSheets({
       island: strings,
@@ -487,11 +519,21 @@ export default function MultiCurrencyNetWorth({
     focusFirstRow();
   };
 
+  const goToRow = (index: number) => {
+    setShareModalOpen(false);
+    setShareUrl('');
+    setCopied(false);
+    // After the dialog has handed focus back to what opened it.
+    requestAnimationFrame(() => rootRef.current?.querySelectorAll<HTMLInputElement>('.mcnw-cellValue input')[index]?.focus());
+  };
+  const addLimitId = useId();
+  const atLimit = rows.length >= MAX_ROWS;
   const toolReady = useToolReady();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
       {/* ---- Rate status ---- */}
       {ratesError && !singleCurrency && (
@@ -527,6 +569,12 @@ export default function MultiCurrencyNetWorth({
           <span>
             {strings.rates.partial}
           </span>
+        </div>
+      )}
+
+      {refused && untouched && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
+          <span>{format(refused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
         </div>
       )}
 
@@ -586,11 +634,6 @@ export default function MultiCurrencyNetWorth({
           </span>
         </div>
 
-        {/* Always in the page, so that a screen reader hears it when it fills. */}
-        <p className="mcnw-notCounted" role="status">
-          {notCounted > 0 && format(plural(numberLocale, notCounted, strings.table.notCountedOne, strings.table.notCountedFew, strings.table.notCountedMany), { count: notCounted })}
-        </p>
-
         {exampleLeft > 0 && (
           <p className="mcnw-exampleNote">
             <span>{strings.example.note}</span>
@@ -630,15 +673,21 @@ export default function MultiCurrencyNetWorth({
             type="button"
             className="btn btn--outline mcnw-addBtn"
             onClick={addRow}
+            aria-disabled={atLimit || undefined}
+            aria-describedby={atLimit ? addLimitId : undefined}
             data-attr="mcnw-asset-add"
           >
             {strings.table.addAsset}
           </button>
+          {/* Always in the page, so that a screen reader hears it when it fills. */}
+          <p className="mcnw-limit" id={addLimitId} role="status">
+            {atLimit && format(strings.table.addLimit, { max: MAX_ROWS })}
+          </p>
         </div>
 
         <details
           className="mcnw-csvFold"
-          open={csvOpen || csvErrors.length > 0 || csvConfirmPending !== null}
+          open={csvOpen || csvTooLong || csvErrors.length > 0 || csvConfirmPending !== null}
           onToggle={(e) => setCsvOpen(e.currentTarget.open)}
         >
           <summary className="mcnw-csvFoldSummary disclosure">{strings.table.csvFold}</summary>
@@ -661,7 +710,7 @@ export default function MultiCurrencyNetWorth({
                     track('free_multi_currency_net_worth_csv_downloaded', { count: filled.length });
                   }
                 }}
-                disabled={!hasData || isReadOnlyView}
+                disabled={!hasData || isReadOnlyView || Boolean(withheld)}
                 title={strings.table.downloadTitle}
                 data-attr="mcnw-csv-download"
               >
@@ -696,6 +745,11 @@ export default function MultiCurrencyNetWorth({
         )}
 
         {/* CSV parse errors */}
+        {csvTooLong && (
+          <div className="mcnw-csvErrors" role="alert">
+            <p className="mcnw-csvErrorsTitle">{format(strings.table.csvLimit, { max: MAX_ROWS })}</p>
+          </div>
+        )}
         {csvErrors.length > 0 && (
           <div className="mcnw-csvErrors" role="alert">
             <p className="mcnw-csvErrorsTitle">
@@ -716,8 +770,9 @@ export default function MultiCurrencyNetWorth({
       </div>
 
       {/* ---- Results panel ---- */}
-      <TotalAnnouncement result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />
+      <TotalAnnouncement withheld={withheld} result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />
       <ResultsPanel
+        withheld={withheld}
         result={result}
         functionalCurrency={functionalCurrency}
         ratesLoading={ratesLoading}
@@ -735,7 +790,7 @@ export default function MultiCurrencyNetWorth({
               type="button"
               className="btn btn--outline mcnw-shareBtn"
               onClick={openShareModal}
-              disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
+              disabled={!canShare}
               title={strings.toolbar.shareTitle}
               data-attr="mcnw-share-open"
             >
@@ -765,7 +820,7 @@ export default function MultiCurrencyNetWorth({
         {strings.results.disclaimer}
       </p>
 
-      <PrintedReport
+      {!withheld && <PrintedReport
         strings={strings}
         exportStrings={exportStrings}
         functionalCurrency={functionalCurrency}
@@ -773,12 +828,15 @@ export default function MultiCurrencyNetWorth({
         rows={isReadOnlyView ? null : rows}
         rates={isReadOnlyView ? null : rates}
         showAmounts={showAmounts}
-      />
+      />}
 
       {/* ---- Share modal ---- */}
       {shareModalOpen && (
         <ShareModal
           rows={rows}
+          withheld={withheld}
+          // Only the sender's own form has a row to go to.
+          onGoToRow={isReadOnlyView ? undefined : goToRow}
           result={result}
           functionalCurrency={functionalCurrency}
           shareMode={shareMode}
@@ -794,6 +852,7 @@ export default function MultiCurrencyNetWorth({
         />
       )}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
@@ -834,7 +893,11 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
     const timer = setTimeout(() => setSettled(true), 600);
     return () => clearTimeout(timer);
   }, [unreadable, row.value]);
-  const showValueError = unreadable && settled;
+  // The mark that arrived, as against text being typed here.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && row.value === 'NaN';
+  const showValueError = unreadable && (settled || arrived);
   // The aria names and the remove button report a position in the table, so
   // they count from one the way a reader counts rows.
   const at = format(strings.row.nameAria, { index: index + 1, total });
@@ -867,14 +930,14 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           inputMode="decimal"
           className="mcnw-input"
           value={row.value}
-          onValueChange={(v) => onChange({ value: v })}
+          onValueChange={(v) => { setTyped(true); onChange({ value: v }); }}
           onBlur={() => { if (unreadable) setSettled(true); }}
           placeholder={strings.row.valuePlaceholder}
           autoComplete="off"
           aria-invalid={showValueError ? true : undefined}
           aria-describedby={showValueError ? valueErrorId : undefined}
         />
-        {showValueError && <span className="mcnw-rowError" id={valueErrorId}><ErrorText>{strings.row.valueError}</ErrorText></span>}
+        {showValueError && <span className="mcnw-rowError" id={valueErrorId}><ErrorText>{arrived ? unreadableText : strings.row.valueError}</ErrorText></span>}
       </div>
       <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
         <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colCurrency}</span>
@@ -932,6 +995,8 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
 // ---------------------------------------------------------------------------
 
 interface ResultsPanelProps {
+  /** Why there are no results: the total, chart and shares all wait (#793). The actions stay. */
+  withheld?: string | null;
   result: ReturnType<typeof aggregate>;
   functionalCurrency: string;
   ratesLoading: boolean;
@@ -951,7 +1016,7 @@ interface ResultsPanelProps {
  * The tool's one announcement: the total, said once typing has settled. Silent
  * when there is no total to say (nothing entered, amounts hidden, no rates).
  */
-function TotalAnnouncement({ result, functionalCurrency, hidden, strings }: { result: ResultsPanelProps['result']; functionalCurrency: string; hidden: boolean; strings: Strings }) {
+function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strings }: { withheld: string | null; result: ResultsPanelProps['result']; functionalCurrency: string; hidden: boolean; strings: Strings }) {
   const { formatMoney } = useMoney();
   let total: string | null = null;
   if (!hidden && result.positions.length > 0) {
@@ -961,14 +1026,27 @@ function TotalAnnouncement({ result, functionalCurrency, hidden, strings }: { re
       total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency);
     }
   }
-  return <ResultAnnouncement text={total ? format(strings.results.announce, { total }) : ''} />;
+  return (
+    <ResultAnnouncement
+      text={withheld ?? (total ? format(strings.results.announce, { total }) : '')}
+      delay={withheld ? WITHHELD_SAID_AFTER : undefined}
+    />
+  );
 }
 
-function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
+function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
   // Net worth of zero or less: no position is a share of it, so no card states one.
   // A shared view without amounts has no total to judge by and shows what it was given.
   const noShares = result.noShares === true;
+  if (result.positions.length === 0 && withheld) {
+    return (
+      <section className="mcnw-results">
+        <p className="tool-resultReason">{withheld}</p>
+        {actions}
+      </section>
+    );
+  }
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
@@ -996,6 +1074,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
     // so the total reads "Hidden" rather than a zero it never had.
     return (
       <section className="mcnw-results">
+        <Withheld reason={withheld}>
         {hideAmounts ? (
           <div className="mcnw-total mcnw-total--hidden">
             <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
@@ -1017,6 +1096,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         <p className="mcnw-singleNote">
           {format(strings.results.singleNote, { currency: getCurrencyLabel(functionalCurrency, strings.currencies) })}
         </p>
+        </Withheld>
         {actions}
       </section>
     );
@@ -1034,6 +1114,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
 
   return (
     <section className="mcnw-results">
+      <Withheld reason={withheld}>
       {/* Total NW */}
       {hideAmounts ? (
         <div className="mcnw-total mcnw-total--hidden">
@@ -1052,7 +1133,11 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         </div>
       ) : null}
 
+      </Withheld>
+
       {actions}
+
+      <Withheld reason={withheld} unsaid>
 
       {/* Donut chart */}
       <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />
@@ -1091,6 +1176,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
           </div>
         ))}
       </div>
+      </Withheld>
     </section>
   );
 }
@@ -1268,6 +1354,8 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = f
 
 interface ShareModalProps {
   rows: AssetRow[];
+  withheld: string | null;
+  onGoToRow?: (index: number) => void;
   result: ReturnType<typeof aggregate>;
   functionalCurrency: string;
   shareMode: ShareMode;
@@ -1284,6 +1372,8 @@ interface ShareModalProps {
 
 function ShareModal({
   rows,
+  withheld,
+  onGoToRow,
   result,
   functionalCurrency,
   shareMode,
@@ -1382,6 +1472,10 @@ function ShareModal({
   );
 
   const nonEmpty = rows.filter((r) => r.value.trim() !== '');
+  // Redacted stays a choice and says why it cannot be copied; it never becomes Full (#795).
+  const refusal = isFull ? null : redactedRefusal(rows, result);
+  const refusalId = useId();
+  const words = strings.shareModal;
 
   return (
     <div className="mcnw-modalOverlay" onClick={handleOverlayClick}>
@@ -1429,11 +1523,31 @@ function ShareModal({
               </label>
             </fieldset>
 
+            {refusal && (
+              <div className="mcnw-modalRefusal">
+                <p id={refusalId}>
+                  {refusal.reason === 'rates'
+                    ? words.refusedRates
+                    : format(plural(numberLocale, refusal.count, words.refusedRowsOne, words.refusedRowsFew, words.refusedRowsMany), { count: refusal.count })}
+                </p>
+                {onGoToRow && (
+                  <button type="button" className="btn btn--outline" onClick={() => onGoToRow(refusal.row)}>{words.goToRow}</button>
+                )}
+              </div>
+            )}
+
             <div className="mcnw-modalFooter">
               <button type="button" className="btn btn--quiet mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
                 {strings.shareModal.cancel}
               </button>
-              <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
+              <button
+                type="button"
+                className="btn btn--primary mcnw-modalCopyBtn"
+                onClick={refusal ? undefined : onCopy}
+                aria-disabled={refusal ? true : undefined}
+                aria-describedby={refusal ? refusalId : undefined}
+                data-attr="mcnw-share-copy"
+              >
                 <SwapLabel label={strings.shareModal.copy} alternate={strings.shareModal.copied} swapped={copied} steady />
               </button>
             </div>
@@ -1469,6 +1583,7 @@ function ShareModal({
             </h3>
             <div className="mcnw-modalPreviewBody">
               <ResultsPanel
+                withheld={withheld}
                 result={previewResult}
                 functionalCurrency={functionalCurrency}
                 ratesLoading={false}
