@@ -69,7 +69,7 @@ The lesson must be live before its day 1 reel: the Apps Script trigger (`scripts
 
 **What every reel carries:**
 - **A tool you keep.** One named rule of thumb, checklist or test the reader can use on their own numbers, as the reel's screenshot moment and on the tool card story.
-- **A recurring cast.** Followers should meet the same few people across posts. Where the blog post's worked example already names someone (Petra, Jiri and Marcus appear in the blog), use them; otherwise use Eva, the "Eva-type" primary reader from `blog-content-plan.md`, as post 43 does. Do not invent a new character per post, and check names don't collide with another post's character.
+- **A recurring cast.** Followers should meet the same few people across posts. Where the blog post's worked example already names someone (Petra, Jiri and Marcus appear in the blog), use them; otherwise use Eva, the recurring example person from `blog-content-plan.md`, as post 43 does. Do not invent a new character per post, and check names don't collide with another post's character.
 - **Shown working.** Every chart is computed from stated inputs and labelled illustrative, with its assumptions on the frame. Ranges over single numbers. No "you should".
 - **A maker's mark, not a plug.** nidhi is described as being built, never as available, and the line points to the free tools, which are live (decided Oct 1, 2026). Captions end on "Made by the person building nidhi, a planner that shows its assumptions. No ads, no data selling. Free tools you can use today, link in bio." The reel end card carries "nidhi, a planner in the making · free tools live today". No ask is attached to either.
 
@@ -185,11 +185,10 @@ If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, 
 
 **No manual engagement.** No "first 5 replies get feedback", no "DM me for X", no "reply and I'll share mine" prompts.
 
-### Approved CTA patterns
-- **Save** — "Save this for..." / "Save this before..."
-- **Tag** — "Tag someone who..." / "Tag a friend considering..."
-- **Share** — "Share with anyone who..."
-- **Polls / quizzes / sliders** — self-contained, Instagram handles the interaction
+### The one ask
+- A kit's closer takes one ask, "save:" or, in the send format, "send:": the kit lint fails on more.
+- Captions and the reel end card carry none (§2.1), and polls are designed out of the reels only kits (§2.2).
+- Archived: the earlier approved patterns, in [done/PLAYBOOK.md](done/PLAYBOOK.md#4-engagement-philosophy-approved-cta-patterns).
 
 ### Rejected patterns
 - "Comment X and I'll DM you Y" (requires manual DM work)
@@ -219,8 +218,8 @@ Archived: see [done/PLAYBOOK.md](done/PLAYBOOK.md#5-carousel-structure) (no caro
 - Short paragraphs
 - Pattern-interrupt + tension + payoff, not article rehash
 
-### CTAs (near end)
-- 2–3 save / tag / share prompts
+### Near the end
+- No ask in the caption (§2.1). Archived: see [done/PLAYBOOK.md](done/PLAYBOOK.md#6-caption-structure-ctas-near-end).
 - Full post → link in bio
 - **Never put outbound links in caption body** — IG suppresses posts with them
 
@@ -233,7 +232,7 @@ Instagram now indexes a bracketed keyword block placed **after** the hashtags. I
 
 **Hashtags and keywords cover different ground.** Hashtags are a community/browse surface — users follow `#expatlife`, scroll `#fireeurope`, and IG places posts in those feeds. Keywords feed the search-query index — users type `50 30 20 rule` or `finanzielle freiheit` into IG search and IG matches the post. The two surfaces overlap in IG's topic classifier, but the reach mechanisms differ enough that using them for **the same terms is waste**. Split the work:
 
-- **Hashtags** → single-word compound community tags (`#purchasingpower`, `#indiansineurope`, `#fireeurope`). English-dominant. Community membership, not search.
+- **Hashtags** → single-word compound community tags (`#purchasingpower`, `#movingabroad`, `#fireeurope`). English-dominant. Community membership, not search.
 - **Keywords** → natural search phrases (`50 30 20 rule`, `compound interest`, `digital nomad`), multilingual terms, long-tail queries. Search-facing, not community-facing.
 
 Rule of thumb when picking hashtags: pick the community someone *follows*. When picking keywords: pick the phrase someone *types*. If a term works as both, put it in the hashtag (tags are scarcer — make them count); use the keyword slot for something the hashtag can't carry (a multi-word phrase, a non-English term, or a niche long-tail).
@@ -378,7 +377,7 @@ The current story set is in §2.1 (reel share, tool card story, "beyond this pos
 - Blog builds SEO authority that compounds; PDFs don't
 - Blog updates propagate; PDFs freeze on send
 - Email capture happens on blog, not inside PDFs
-- Every blog visit = chance to surface Nidhi (app/tool) later
+- Every blog visit = chance to surface nidhi (app/tool) later
 
 ### Link targeting
 - All "learn more" / "full post" links → specific blog article for that post
@@ -629,7 +628,7 @@ The active table covers what currently governs the playbook. Decisions that were
 
 | # | Decision | Rationale |
 |---|---|---|
-| 1 | Target audience = EU + expats + Indians (non-US) | Matches product positioning + available content angles |
+| 1 | Target audience = EU + expats + Indians (non-US). Superseded by §1 (global expats outside North America) and by Decision 30 on India-specific tags | Matches product positioning + available content angles |
 | 2 | 14:30 CET primary, 08:00 CET secondary | Maximum overlap of EU + India peak windows; enables same-day story cascade |
 | 3 | 5 hashtags max, no repeats, niche over broad | IG cap + saturation on big tags; small accounts rank on niche |
 | 4 | No manual-engagement CTAs | Founder time constraint; save/tag mechanics grow without it |
@@ -696,7 +695,7 @@ Memes belong on Instagram, not in blog post bodies and not inside educational ca
 The new shape:
 
 - **Educational carousels** stay clean information design. Diagrams, charts, key-number heroes, before/after layouts. No memes, no humor slides, no "relatability" beats. The carousel earns its slot as the authority surface.
-- **Blog posts** ship without memes but with a defined *figure* language — clean conceptual SVG diagrams that crystallize one idea per figure, designed to avoid math-anxiety triggers for the Eva-type primary audience. Full figure rules in `blog-content-plan.md` Editorial Rule 9; five figures remain after Decision #29 cut the cohort from nine on a stricter test, and they establish the visual grammar.
+- **Blog posts** ship without memes but with a defined *figure* language — clean conceptual SVG diagrams that crystallize one idea per figure, designed to avoid math-anxiety triggers for any of the brand guide's readers. Full figure rules and the current count are in `blog-content-plan.md` Editorial Rule 9; the five figures kept by Decision #29 (May 2026) set the visual grammar.
 - **Memes and humor live as a separate IG stream**, in two formats: **quote cards** (single-image standalone posts) and **Reels** (short-form video). Different cadence, different KPI, different production discipline. The two streams reinforce each other: the educational carousel teaches, the meme stream broadcasts the most quotable line from that teaching to a different segment of IG's algorithm.
 
 ### Format 1: Quote cards (never started)
@@ -728,7 +727,7 @@ Reels are produced by an automated build-time pipeline, NOT hand-edited in CapCu
 
 The original source priority remains valid for any future case where a humor-vector meme is appropriate (rare, not part of the standing cadence, used reactively to news/markets):
 
-1. **xkcd** — CC BY-NC 2.5, safe to embed with attribution. Best fit for conceptual humor. Note: xkcd #927 "Standards" is referenced in `blog-content-plan.md` post #23 (Tax-Advantaged Accounts) — as an embed in the blog HTML, not as a carousel slide.
+1. **xkcd** — CC BY-NC 2.5, safe to embed with attribution. Best fit for conceptual humor. Note: xkcd #927 "Standards" was embedded in lesson #23 (Tax-Advantaged Accounts) for a while and has been cut (`blog-content-plan.md` Rule 9).
 2. **Screenshot-style memes** — fake DMs, fake search results, fake bank notifications, real public-figure tweet screenshots when the joke is descriptive (not directive).
 3. **Globally released movie stills** — usable but rarely worth the production effort once production cost is honest.
 
@@ -747,7 +746,7 @@ Quote cards, Reels, and any other image content that includes financial numbers 
 1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Tax-advantaged-account *categories* (401(k), ISA, NPS) are allowed as descriptive references when the surrounding context is educational, never as a directive.
 2. **No return guarantees, no forecasts presented as fact.** Any number that depends on a return assumption must carry the disclaimer *visible inside the image itself* (not just in the caption, since images circulate standalone): "illustrative," "example," or "assumes X% return — past performance is not a forecast."
 3. **No specific tax rates or jurisdiction-locked tax math** in the image. Conceptual framings are fine; specific numbers are not.
-4. **No advice phrasing** in the image or caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "consider," "the math says," "common patterns," "research suggests."
+4. **No advice phrasing** in the image or caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "the math says," "common patterns," "research suggests."
 5. **No before/after performance of a real product.** Generic compound-interest curves with no product name attached are fine.
 6. **No screenshots of brokerage apps, exchanges, or trading interfaces.** Generic phone-UI styling only.
 7. **No product-vs-product comparisons** by name. Category-level comparisons (active vs. passive at the asset-class level, with no fund named) are fine.
