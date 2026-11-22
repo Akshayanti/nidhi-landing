@@ -294,13 +294,25 @@ export default function MultiCurrencyNetWorth({
 
   // ---- Row operations ----
 
+  // A shared view is its sender's until it is edited. From the first edit it
+  // is the reader's own form, worked out from its rows: no banner, frozen
+  // total or doubt. Frozen under an edit, the total was of other rows (#795).
+  const leaveSharedView = useCallback(() => {
+    setIsReadOnlyView(false);
+    setSharedPositions(null);
+    setSharedRedacted(false);
+    setSharedUnreadable(0);
+    setSharedInDoubt(false);
+  }, []);
+
   const updateRow = useCallback((index: number, patch: Partial<AssetRow>) => {
+    leaveSharedView();
     setRows((prev) => {
       const next = prev.slice();
       next[index] = { ...next[index], ...patch };
       return next;
     });
-  }, []);
+  }, [leaveSharedView]);
 
   // We compute `next` outside the updater and reuse it for both setState
   // and analytics. Putting `track()` *inside* a setState updater would
@@ -309,6 +321,7 @@ export default function MultiCurrencyNetWorth({
   // running `npm run dev` against a real PostHog key would.
   const addRow = useCallback(() => {
     if (rows.length >= MAX_ROWS) return;
+    leaveSharedView();
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
@@ -319,13 +332,14 @@ export default function MultiCurrencyNetWorth({
     // safe because StrictMode does not double-invoke the *enclosing*
     // callback, only the updater.
     track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length, defaultCurrency]);
+  }, [rows.length, defaultCurrency, leaveSharedView]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;
+    leaveSharedView();
     setRows((prev) => prev.filter((_, i) => i !== index));
     track('free_multi_currency_net_worth_asset_removed', { count: rows.length - 1 });
-  }, [rows.length]);
+  }, [rows.length, leaveSharedView]);
 
   // ---- CSV upload ----
 
@@ -382,12 +396,13 @@ export default function MultiCurrencyNetWorth({
     const padded = newRows.length < 1
       ? [{ name: '', value: '', currency: defaultCurrency, type: 'asset' as const }]
       : newRows;
+    leaveSharedView();
     setRows(padded);
     setCsvConfirmPending(null);
     // The lines that could not be read stay listed beside the rows that
     // were loaded: a file that was only partly read must not look whole.
     track('free_multi_currency_net_worth_csv_uploaded', { count: newRows.length });
-  }, [defaultCurrency]);
+  }, [defaultCurrency, leaveSharedView]);
 
   const confirmCsvOverwrite = useCallback(() => {
     if (csvConfirmPending) {
@@ -451,11 +466,7 @@ export default function MultiCurrencyNetWorth({
   const reset = useCallback(() => {
     setRows(makeDefaultRows(defaultCurrency));
     setFunctionalCurrency(defaultCurrency);
-    setIsReadOnlyView(false);
-    setSharedPositions(null);
-    setSharedRedacted(false);
-    setSharedUnreadable(0);
-    setSharedInDoubt(false);
+    leaveSharedView();
     setRefused(null);
     setCsvTooLong(false);
     setCsvErrors([]);
@@ -463,7 +474,7 @@ export default function MultiCurrencyNetWorth({
     setExampleRows([]);
     setCsvOpen(false);
     track('free_multi_currency_net_worth_reset');
-  }, [defaultCurrency]);
+  }, [defaultCurrency, leaveSharedView]);
 
   // A row whose amount cannot be read is not counted as an item.
   const filledCount = rows.filter((r) => r.value.trim() !== '' && !isUnreadableAmount(r.value)).length;
@@ -608,6 +619,7 @@ export default function MultiCurrencyNetWorth({
               value={functionalCurrency}
               onChange={(e) => {
                 const next = e.target.value;
+                leaveSharedView();
                 setFunctionalCurrency(next);
                 track('free_multi_currency_net_worth_func_currency_changed', { currency: next });
               }}
@@ -1500,6 +1512,13 @@ function ShareModal({
   const refusal = isFull ? null : redactedRefusal(rows, result);
   const refusalId = useId();
   const words = strings.shareModal;
+  const refusalText = !refusal ? ''
+    : refusal.reason === 'rates'
+      ? words.refusedRates
+      : format(plural(numberLocale, refusal.count, words.refusedRowsOne, words.refusedRowsFew, words.refusedRowsMany), { count: refusal.count });
+  // Said through the dialog's one region. Its count is below zero, apart from
+  // a copy's, and differs by reason, so a change of reason is said as well.
+  const refusalNotice = refusal ? { text: refusalText, n: refusal.reason === 'rates' ? -1 : -2 } : null;
 
   return (
     <div className="mcnw-modalOverlay" onClick={handleOverlayClick}>
@@ -1549,13 +1568,9 @@ function ShareModal({
 
             {refusal && (
               <div className="mcnw-modalRefusal">
-                <p id={refusalId}>
-                  {refusal.reason === 'rates'
-                    ? words.refusedRates
-                    : format(plural(numberLocale, refusal.count, words.refusedRowsOne, words.refusedRowsFew, words.refusedRowsMany), { count: refusal.count })}
-                </p>
+                <p id={refusalId}>{refusalText}</p>
                 {onGoToRow && (
-                  <button type="button" className="btn btn--outline" onClick={() => onGoToRow(refusal.row)}>{words.goToRow}</button>
+                  <button type="button" className="btn btn--outline" aria-describedby={refusalId} onClick={() => onGoToRow(refusal.row)}>{words.goToRow}</button>
                 )}
               </div>
             )}
@@ -1579,7 +1594,7 @@ function ShareModal({
                 dialog opens, empty until a copy, and only its text changes.
                 The bar under it is not a live region, and it stays until the
                 kind of link changes or the dialog closes (#603). */}
-            <NoticeRegion notice={notice} />
+            <NoticeRegion notice={refusalNotice ?? notice} />
             {shareUrl && (
               <div className="mcnw-shareUrlBar">
                 <span className="mcnw-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedLabel}</span>
