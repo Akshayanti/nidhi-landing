@@ -19,6 +19,7 @@ import hmac
 import io
 import json
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -481,7 +482,7 @@ class TheTemplates(unittest.TestCase):
         html, text = nl.render_email(self.env, item=self.item, post=dict(POST), site_url=SITE_URL)
         self.assertIn("Body of the lesson.", html)
         self.assertIn("Body of the lesson.", text)
-        self.assertIn("https://nidhi.today/blog/first?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=first", html)
+        self.assertIn("https://nidhi.today/blog/first/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=first", html)
         self.assertIn("utm_source=newsletter&utm_medium=email&utm_campaign=first", text)
         self.assertIn("{{UNSUBSCRIBE_URL}}&utm_source=newsletter", html)
         self.assertIn("{{UNSUBSCRIBE_URL}}", text)
@@ -499,7 +500,7 @@ class TheTemplates(unittest.TestCase):
         at = lines.index("Saving & investing: what's the difference?")
         self.assertEqual(lines[at + 1], "=" * len(lines[at]))
         # Every link in the text keeps its parameters whole.
-        self.assertIn("https://nidhi.today/blog/first?utm_source=newsletter&utm_medium=email&utm_campaign=first", text)
+        self.assertIn("https://nidhi.today/blog/first/?utm_source=newsletter&utm_medium=email&utm_campaign=first", text)
         # The HTML part still escapes what it is given as text.
         self.assertIn("Saving &amp; investing: what&#39;s the difference?", html)
         for name in ["post_teaser.txt.j2", "post_teaser.html.j2"]:
@@ -507,6 +508,23 @@ class TheTemplates(unittest.TestCase):
                 **{**post, "description": "d", "post_url": "u", "post_url_tracked": "https://x/?a=1&b=2", "blog_url": "b",
                    "site_url": SITE_URL, "utm_query": "a=1&b=2", "pub_date": ""})
             self.assertEqual("&amp;" in out, name.endswith(".html.j2"), name)
+
+    def test_every_site_link_in_a_lesson_mail_has_the_canonical_slash(self):
+        # A page link without its slash ("/blog?utm=", "/privacy?utm=") only
+        # works through the host's redirect keeping the query (#448).
+        with contextlib.redirect_stdout(io.StringIO()):
+            for long in (False, True):
+                post = {**POST, "content_html": POST["content_html"] + '<p><a href="/blog/other">x</a> <a href="/free/loan-comparison">y</a></p>'}
+                if long:
+                    post["content_html"] += "<p>" + "word " * (nl.TEASER_SIZE_THRESHOLD_BYTES // 4) + "</p>"
+                for part in nl.render_email(self.env, item=self.item, post=post, site_url=SITE_URL):
+                    links = re.findall(r"https://nidhi\.today(/[^\s\"'<>?#]*)?(?=[?#\s\"'<>.]|$)", part)
+                    self.assertTrue(links)
+                    for path in links:
+                        path = path or ""
+                        if path.rsplit("/", 1)[-1].count("."):
+                            continue  # a file: /rss.xml, a figure, the logo
+                        self.assertTrue(path.endswith("/"), f"a link without its slash: {path!r}")
 
     def test_a_very_long_lesson_is_sent_as_a_teaser(self):
         long_post = {**POST, "content_html": "<p>" + "word " * (nl.TEASER_SIZE_THRESHOLD_BYTES // 4) + "</p>"}
@@ -516,11 +534,16 @@ class TheTemplates(unittest.TestCase):
         self.assertIn("{{UNSUBSCRIBE_URL}}", html)
         self.assertIn("{{UNSUBSCRIBE_URL}}", text)
 
-    def test_links_are_tagged_with_the_lesson_and_lose_a_trailing_slash(self):
-        self.assertEqual(nl._with_utm("https://nidhi.today/blog/x/", "x"),
-                         "https://nidhi.today/blog/x?utm_source=newsletter&utm_medium=email&utm_campaign=x")
-        self.assertEqual(nl._with_utm("https://nidhi.today/blog?a=1", "x"),
-                         "https://nidhi.today/blog?a=1&utm_source=newsletter&utm_medium=email&utm_campaign=x")
+    def test_links_are_tagged_with_the_lesson_in_the_canonical_slash_form(self):
+        # astro.config.mjs sets trailingSlash: 'always' (#448).
+        utm = "utm_source=newsletter&utm_medium=email&utm_campaign=x"
+        self.assertEqual(nl._with_utm("https://nidhi.today/blog/x/", "x"), f"https://nidhi.today/blog/x/?{utm}")
+        self.assertEqual(nl._with_utm("https://nidhi.today/blog/x", "x"), f"https://nidhi.today/blog/x/?{utm}")
+        self.assertEqual(nl._with_utm("https://nidhi.today/blog?a=1", "x"), f"https://nidhi.today/blog/?a=1&{utm}")
+        self.assertEqual(nl._with_utm("https://nidhi.today", "x"), f"https://nidhi.today/?{utm}")
+        self.assertEqual(nl._with_utm("https://nidhi.today/rss.xml", "x"), f"https://nidhi.today/rss.xml?{utm}")
+        self.assertEqual(nl._with_utm("https://nidhi.today/blog/x/#y", "x"), f"https://nidhi.today/blog/x/?{utm}#y")
+        self.assertEqual(nl._live_post_url("https://nidhi.today", "/blog/x"), "https://nidhi.today/blog/x/")
         self.assertEqual(nl._post_slug("/blog/a lesson!/"), "a-lesson")
         self.assertEqual(nl._post_slug("/"), "post")
 

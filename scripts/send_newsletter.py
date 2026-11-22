@@ -104,7 +104,10 @@ class Config:
 def load_config() -> Config | None:
     endpoint = os.environ.get("NEWSLETTER_ENDPOINT", "").strip()
     secret = os.environ.get("NEWSLETTER_HMAC_SECRET", "").strip()
-    if not endpoint or not secret:
+    # Read first: a dry run writes previews and never calls the endpoint, so
+    # it needs neither the endpoint nor the secret (#448).
+    dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
+    if (not endpoint or not secret) and not dry_run:
         print("[send_newsletter] NEWSLETTER_ENDPOINT or NEWSLETTER_HMAC_SECRET "
               "not set: skipping newsletter send.")
         return None
@@ -112,7 +115,6 @@ def load_config() -> Config | None:
     site_url = os.environ.get("SITE_URL", "https://nidhi.today").rstrip("/")
     dist_dir = Path(os.environ.get("DIST_DIR", str(REPO_ROOT / "dist")))
     marker_file = Path(os.environ.get("MARKER_FILE", str(REPO_ROOT / ".last-sent-guid.txt")))
-    dry_run = os.environ.get("DRY_RUN", "").strip() == "1"
     only_most_recent = os.environ.get("SEND_ONLY_MOST_RECENT", "").strip() == "1"
     fetch_live = os.environ.get("NEWSLETTER_FETCH_LIVE", "").strip() == "1"
 
@@ -146,15 +148,11 @@ def _live_post_url(site_url: str, relative: str) -> str:
     """
     Build the URL to fetch a post's HTML from the live site.
 
-    Astro is configured with `trailingSlash: 'never'`, so `/blog/foo/` 404s
-    but `/blog/foo` serves the content (GH Pages handles the index.html
-    resolution internally). We strip any trailing slash from the relative
-    path to match, and don't append one.
+    astro.config.mjs sets `trailingSlash: 'always'`, so `/blog/foo/` is the
+    page's canonical address and `/blog/foo` only reaches it through the
+    host's redirect. The path is fetched with its slash (#448).
     """
-    rel = relative.rstrip("/")
-    if not rel.startswith("/"):
-        rel = "/" + rel
-    return site_url.rstrip("/") + rel
+    return site_url.rstrip("/") + _canonical_path(relative)
 
 
 # ---------------------------------------------------------------------------
@@ -391,10 +389,11 @@ def extract_post(
                 f"(tried {source / rel / 'index.html'})"
             )
         html_source = candidate.read_text(encoding="utf-8")
+        where = str(candidate)
     else:
-        # Live fetch. Astro serves without trailing slash (trailingSlash:
-        # 'never'), and GH Pages does the index.html resolution server-side.
+        # Live fetch, at the page's canonical address (with the slash).
         url = _live_post_url(source, relative)
+        where = url
         try:
             html_source = _http_get_bytes(url).decode("utf-8", errors="replace")
         except Exception as err:
@@ -426,7 +425,7 @@ def extract_post(
 
     content_node = soup.select_one("#post-content") or soup.select_one(".prose")
     if content_node is None:
-        raise RuntimeError(f"No #post-content / .prose found in {candidate}")
+        raise RuntimeError(f"No #post-content / .prose found in {where}")
     absolutize_urls(content_node, site_url, utm_query=utm_query, page_path=relative)
     flatten_details(content_node, soup)
     style_inline(content_node)
@@ -505,7 +504,9 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
         links, mailto:, tel:, fragment-only, and anything with a query that
         already contains `utm_source=`).
       - `?` if the URL has no existing query, `&` otherwise.
-      - Strips trailing `/` before appending (matches trailingSlash:'never').
+      - Gives the path its trailing `/` (astro.config.mjs sets
+        trailingSlash: 'always'), so the link is the page's canonical
+        address rather than one that rests on the host's redirect.
 
     `utm_query` is the canonical "utm_source=newsletter&utm_medium=email
     &utm_campaign=<slug>" string built once per post in render_email().
@@ -532,11 +533,9 @@ def absolutize_urls(node, site_url: str, utm_query: str | None = None, page_path
         if "utm_source=" in (parsed.query or ""):
             continue
 
-        # Normalise trailing slash on the path (but not on file-extension
-        # paths like /rss.xml) to match astro.config.mjs trailingSlash:'never'.
-        path = parsed.path
-        if path.endswith("/") and "." not in path.rsplit("/", 1)[-1]:
-            path = path.rstrip("/") or "/"
+        # The canonical form of the path: with its trailing slash, except a
+        # file such as /rss.xml (astro.config.mjs trailingSlash: 'always').
+        path = _canonical_path(parsed.path)
 
         sep = "&" if parsed.query else "?"
         new_query = (parsed.query + sep + utm_query) if parsed.query else utm_query
@@ -972,20 +971,33 @@ def _utm_query(campaign: str) -> str:
     )
 
 
+def _canonical_path(path: str) -> str:
+    """
+    A site path in the form the site serves it: astro.config.mjs sets
+    `trailingSlash: 'always'`, so a page's path ends in "/" ("/blog/x/",
+    "/"), and a file ("/rss.xml") keeps its name as it is.
+    """
+    if not path.startswith("/"):
+        path = "/" + path
+    if path.endswith("/") or "." in path.rsplit("/", 1)[-1]:
+        return path
+    return path + "/"
+
+
 def _with_utm(url: str, campaign: str) -> str:
     """
     Append nidhi's standard newsletter UTMs to an outbound email link.
 
-    - Strips any trailing "/" so the resulting URL matches astro.config.mjs
-      `trailingSlash: 'never'` (trailing slash before a query string 404s on
-      strict static hosts).
-    - Uses "?" or "&" depending on whether the base URL already has a query.
+    - Puts the path in its canonical form first (_canonical_path), so the
+      link reaches the page directly rather than through the host's redirect,
+      which would have to keep the query string (#448).
+    - Joins an existing query with "&", before any "#" part.
     - Campaign is the post slug so we can segment newsletter traffic per post
       in PostHog / GA.
     """
-    base = url.rstrip("/")
-    sep = "&" if "?" in base else "?"
-    return f"{base}{sep}{_utm_query(campaign)}"
+    parsed = urllib.parse.urlsplit(url)
+    query = f"{parsed.query}&{_utm_query(campaign)}" if parsed.query else _utm_query(campaign)
+    return urllib.parse.urlunsplit(parsed._replace(path=_canonical_path(parsed.path), query=query))
 
 
 def _post_slug(relative: str) -> str:
@@ -1016,7 +1028,7 @@ def render_email(env: Environment, *, item: RssItem, post: dict, site_url: str) 
     campaign = _post_slug(item.relative)
     utm_query = _utm_query(campaign)
     post_url_tracked = _with_utm(item.link, campaign)
-    blog_url = _with_utm(f"{site_url}/blog", campaign)
+    blog_url = _with_utm(f"{site_url}/blog/", campaign)
 
     ctx = {
         "title": post["title"] or item.title,

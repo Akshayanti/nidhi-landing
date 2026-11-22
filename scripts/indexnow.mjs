@@ -41,8 +41,9 @@ import { join } from 'node:path';
 
 /**
  * Map a fully-qualified URL to its expected static-output path inside the
- * distribution directory. Mirrors Astro's default trailing-slash behaviour
- * with `trailingSlash: 'never'`:
+ * distribution directory. Astro builds each page to <path>/index.html
+ * (astro.config.mjs sets `trailingSlash: 'always'`), and a URL maps there
+ * with or without its slash:
  *
  *   https://nidhi.today              -> index.html
  *   https://nidhi.today/             -> index.html

@@ -11,7 +11,7 @@ on:
   schedule:
     # Daily rebuild to publish date-gated posts. Since 27 Aug 2026 GitHub
     # starts this repository's scheduled workflows 4.5 to 10 hours after
-    # their cron time (this one at 10:55 to 12:38 UTC in Nov 2026), and the
+    # their cron time (this one at 10:55 to 12:54 UTC in Nov 2026), and the
     # twelve slots below come out as one run a day, because they all fall due
     # inside that delay. The lag is GitHub's: no cron expression here changes
     # it, and it is not stable enough to plan around (#329). That is after the

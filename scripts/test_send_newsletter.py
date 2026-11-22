@@ -168,7 +168,7 @@ class InPageLinkTest(unittest.TestCase):
     def test_utm_goes_before_the_fragment(self) -> None:
         soup = nl.BeautifulSoup('<div><a href="#term-x">x</a></div>', "html.parser")
         nl.absolutize_urls(soup.div, SITE_URL, utm_query="utm_source=newsletter", page_path="/blog/a-lesson/")
-        self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson?utm_source=newsletter#term-x")
+        self.assertEqual(soup.a["href"], "https://nidhi.today/blog/a-lesson/?utm_source=newsletter#term-x")
 
 
 class EmailColoursTest(unittest.TestCase):
