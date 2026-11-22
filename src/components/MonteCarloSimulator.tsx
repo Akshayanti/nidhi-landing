@@ -24,7 +24,7 @@ import {
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
-import { isValidNumber } from '../utils/monte-carlo/inputs.ts';
+import { formErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
@@ -140,59 +140,6 @@ function subscribePhone(onChange: () => void) {
 function usePhone(): boolean {
   return useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE_QUERY).matches, () => false);
 }
-
-// ---------------------------------------------------------------------------
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ---------------------------------------------------------------------------
-
-interface FormState {
-  currency: string;
-  start: string;
-  monthly: string;
-  saveYears: string;
-  stockPct: string;
-  withdrawOn: boolean;
-  withdrawal: string;
-  withdrawYears: string;
-  feePct: string;
-  returns: ReturnSetting;
-  paths: number;
-}
-
-const DEFAULT_WITHDRAWAL = 30_000;
-
-function toForm(s: ToolState): FormState {
-  return {
-    currency: s.currency,
-    start: String(s.start),
-    monthly: String(s.monthly),
-    saveYears: String(s.saveYears),
-    stockPct: String(s.stockPct),
-    withdrawOn: s.withdrawal > 0,
-    withdrawal: String(s.withdrawal > 0 ? s.withdrawal : DEFAULT_WITHDRAWAL),
-    withdrawYears: String(s.withdrawYears),
-    feePct: String(s.feePct),
-    returns: s.returns,
-    paths: s.paths,
-  };
-}
-
-function toState(f: FormState): ToolState {
-  const n = (v: string) => (v.trim() === '' ? 0 : Number(v));
-  return {
-    currency: f.currency,
-    start: n(f.start),
-    monthly: n(f.monthly),
-    saveYears: n(f.saveYears),
-    stockPct: n(f.stockPct),
-    withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
-    withdrawYears: n(f.withdrawYears),
-    feePct: n(f.feePct),
-    returns: f.returns,
-    paths: f.paths,
-  };
-}
-
 
 // ---------------------------------------------------------------------------
 // Simulation runner: small runs on the main thread, large ones in a worker,
@@ -326,10 +273,13 @@ export default function MonteCarloSimulator({
     const shared = typeof raw === 'string' ? decodeState(raw) : null;
     setHydrated(true);
     if (!shared) return;
-    setForm(toForm(shared));
+    // The boxes as the link has them, bad ones included; the plan behind them stays finite.
+    const opened = formFromLink(raw as string) ?? toForm(shared);
+    setForm(opened);
     setSettled(shared);
-    // A shared plan that sets a fee or a path count shows it without a click.
-    if (shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
+    // A shared plan that sets a fee or a path count, or a fee box that is
+    // wrong, shows it without a click.
+    if (formErrors(opened).feePct || shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
     // A language switch carries the plan too, but that view was already
     // counted on the page it came from.
     if (arrivedByLanguageSwitch()) return;
@@ -341,24 +291,16 @@ export default function MonteCarloSimulator({
   // Keeps what is on screen where the header's language switch can carry it,
   // after the # and only at click time (see src/utils/shared/toolState.ts).
   // Never the address: nothing here writes to it.
-  // The settled plan, the one the results show, the same one a share link
-  // would carry.
+  // The form as it stands, not the settled plan: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   useEffect(() => {
     if (!hydrated) return;
     // Untouched publishes '' so the other language opens with its own
     // starting currency; anything changed carries as encoded.
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency));
-  }, [hydrated, settled, defaultCurrency]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, defaultCurrency));
+  }, [hydrated, form, defaultCurrency]);
 
-  const errors = {
-    start: !isValidNumber(form.start, 0, MAX_START),
-    monthly: !isValidNumber(form.monthly, 0, MAX_MONTHLY),
-    saveYears: !isValidNumber(form.saveYears, 0, 60, true),
-    stockPct: !isValidNumber(form.stockPct, 0, 100),
-    withdrawal: form.withdrawOn && !isValidNumber(form.withdrawal, 1, MAX_WITHDRAWAL),
-    withdrawYears: form.withdrawOn && !isValidNumber(form.withdrawYears, 1, 60, true),
-    feePct: !isValidNumber(form.feePct, 0, MAX_FEE_PCT),
-  };
+  const errors = formErrors(form);
   const hasErrors = Object.values(errors).some(Boolean);
 
   // Simulate a moment after typing stops, and only on valid input, so the
