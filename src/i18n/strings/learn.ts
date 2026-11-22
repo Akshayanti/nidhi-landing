@@ -8,7 +8,8 @@
  * tag. That shared vocabulary lives in `learn`, and each page's own prose sits
  * under a namespace named after the page. Each island's copy is under
  * `<page>.island` (or `learn.island` for the components shared by several
- * pages), so `LearnHome.tsx` and `LearningPath.tsx` can take exactly one
+ * pages; `blogIndex.island` keeps its name now that /blog/ is plain HTML,
+ * #721), so `LearnHome.astro` and `LearningPath.tsx` can take exactly one
  * locale's slice as a prop and never import this module at runtime.
  *
  * Why a module of its own rather than more entries in each language's main
@@ -273,6 +274,19 @@ export const learnEn = {
       h1: 'Learn about your money',
       subtitle: 'Short lessons for every kind of household, in any country. Where local rules matter, lessons say what to check.',
       link: 'How lessons are written',
+    },
+    /**
+     * The directory under "Find a lesson": every lesson and guide, folded by
+     * level. A fold's summary is its name and `{count} {noun}`, the noun picked
+     * with `plural` (`guideOne`, `guideFew`, `guideMany`; lessons use the
+     * island's `lessonOne` and the rest).
+     */
+    directory: {
+      heading: 'All lessons and guides',
+      guidesName: 'How-to guides',
+      guideOne: 'guide',
+      guideFew: 'guides',
+      guideMany: 'guides',
     },
     island: {
       minRead: 'min read',
@@ -673,6 +687,13 @@ export const learnHi: typeof learnEn = {
       subtitle: 'हर तरह के घर के लिए, किसी भी देश में, छोटे पाठ। जहाँ स्थानीय नियम मायने रखते हैं, पाठ बताते हैं कि क्या जाँचें।',
       link: 'पाठ कैसे लिखे जाते हैं',
     },
+    directory: {
+      heading: 'सभी पाठ और गाइडें',
+      guidesName: 'कैसे करें: गाइडें',
+      guideOne: 'गाइड',
+      guideFew: 'गाइडें',
+      guideMany: 'गाइडें',
+    },
     island: {
       minRead: 'मिनट का पठन',
       finishedEyebrow: 'सभी पाठ पढ़ लिए',
@@ -1052,6 +1073,13 @@ export const learnEs: typeof learnEn = {
       subtitle: 'Lecciones breves para todo tipo de hogar, en cualquier país. Donde importan las normas locales, las lecciones dicen qué comprobar.',
       link: 'Cómo se escriben las lecciones',
     },
+    directory: {
+      heading: 'Todas las lecciones y guías',
+      guidesName: 'Guías Cómo hacerlo',
+      guideOne: 'guía',
+      guideFew: 'guías',
+      guideMany: 'guías',
+    },
     island: {
       minRead: 'min de lectura',
       finishedEyebrow: 'Todas las lecciones leídas',
@@ -1313,7 +1341,7 @@ export const learnCs: typeof learnEn = {
       'inclusive-finances': {
         name: 'Inkluzivní finance',
         title: 'Inkluzivní finance: když výchozí plán nesedí | nidhi',
-        description: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
+        description: 'Plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice.',
         card: 'Finanční plánování pro domácnosti, které běžné rady opomíjejí: nesezdané páry, stárnutí bez rodiny, práce na zakázku, zdravotní postižení, rodiny přes hranice. Bez předchozích znalostí.',
       },
       'relationships': {
@@ -1445,6 +1473,13 @@ export const learnCs: typeof learnEn = {
       h1: 'Porozumějte svým penězům',
       subtitle: 'Krátké lekce pro každý typ domácnosti, v jakékoli zemi. Kde záleží na místních pravidlech, lekce řeknou, co si ověřit.',
       link: 'Jak lekce vznikají',
+    },
+    directory: {
+      heading: 'Všechny lekce a návody',
+      guidesName: 'Návody Jak na to',
+      guideOne: 'návod',
+      guideFew: 'návody',
+      guideMany: 'návodů',
     },
     island: {
       minRead: 'min čtení',
@@ -1824,6 +1859,13 @@ export const learnMr: typeof learnEn = {
       h1: 'तुमच्या पैशांबद्दल शिका',
       subtitle: 'प्रत्येक प्रकारच्या घरासाठी, कोणत्याही देशात उपयोगी पडणारे छोटे धडे. जिथे स्थानिक नियम महत्त्वाचे असतात, तिथे काय तपासायचे ते धडे सांगतात.',
       link: 'धडे कसे लिहिले जातात',
+    },
+    directory: {
+      heading: 'सर्व धडे आणि मार्गदर्शिका',
+      guidesName: 'कसे करायचे: मार्गदर्शिका',
+      guideOne: 'मार्गदर्शिका',
+      guideFew: 'मार्गदर्शिका',
+      guideMany: 'मार्गदर्शिका',
     },
     island: {
       minRead: 'मिनिटांचे वाचन',

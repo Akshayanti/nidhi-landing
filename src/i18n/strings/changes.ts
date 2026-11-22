@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-22',
+    items: [
+      {
+        id: 'learning-path-lists-every-lesson',
+        text: {
+          en: 'The learning path page now lists every lesson and how-to guide under “Find a lesson”, grouped by level in sections you can open and close, so you can see everything there is and go straight to any of it. The page is also lighter, and its links work even with JavaScript turned off. Search, your reading progress and the level helper work as before.',
+          hi: 'सीखने के रास्ते वाला पेज अब “पाठ खोजें” के नीचे हर पाठ और हर गाइड की सूची दिखाता है, स्तर के हिसाब से ऐसे हिस्सों में जिन्हें आप खोल और बंद कर सकते हैं, ताकि सब कुछ एक साथ दिखे और आप सीधे किसी पर भी जा सकें। पेज अब हल्का भी है, और इसके लिंक JavaScript बंद होने पर भी काम करते हैं। खोज, आपकी पढ़ाई की प्रगति और स्तर चुनने में मदद पहले की तरह काम करते हैं।',
+          es: 'La página de la ruta de aprendizaje muestra ahora todas las lecciones y guías bajo «Encuentra una lección», agrupadas por nivel en secciones que puedes abrir y cerrar, para que veas todo lo que hay y vayas directamente a lo que quieras. La página también es más ligera, y sus enlaces funcionan aunque JavaScript esté desactivado. La búsqueda, tu progreso de lectura y la ayuda para elegir nivel funcionan como antes.',
+          cs: 'Stránka vzdělávací cesty teď pod nadpisem „Najít lekci“ uvádí všechny lekce a\u00a0návody, seřazené podle úrovní do oddílů, které můžete otevřít a\u00a0zavřít, takže vidíte všechno najednou a\u00a0můžete rovnou otevřít cokoli z\u00a0toho. Stránka je také lehčí a\u00a0její odkazy fungují i\u00a0s\u00a0vypnutým JavaScriptem. Vyhledávání, váš postup ve čtení a\u00a0pomocník s\u00a0výběrem úrovně fungují jako dosud.',
+          mr: 'शिकण्याच्या मार्गाचे पान आता “धडा शोधा” खाली प्रत्येक धडा आणि प्रत्येक मार्गदर्शिका दाखवते, पातळीनुसार अशा विभागांत जे तुम्ही उघडू आणि बंद करू शकता, त्यामुळे सगळे एकत्र दिसते आणि हवे त्यावर थेट जाता येते. पान आता हलकेही आहे, आणि त्यातील लिंक JavaScript बंद असतानाही चालतात. शोध, तुमची वाचनाची प्रगती आणि पातळी निवडण्यासाठीची मदत पूर्वीप्रमाणेच चालतात.',
+        },
+      },
+      {
+        id: 'privacy-changelog-pages',
+        text: {
+          en: 'The privacy notice now shows its latest three changes, and the complete record of every change, kept word for word, has its own pages, one for each year. Each change there has a permanent link, so it can be shared or found again.',
+          hi: 'प्राइवेसी नोटिस में अब उसके सबसे नए तीन बदलाव दिखते हैं, और हर बदलाव का पूरा रिकॉर्ड, शब्द-ब-शब्द, अब अपने पेजों पर है, हर साल का एक पेज। वहाँ हर बदलाव का एक स्थायी लिंक है, ताकि उसे शेयर किया जा सके या बाद में फिर ढूँढा जा सके।',
+          es: 'El aviso de privacidad muestra ahora sus tres últimos cambios, y el registro completo de todos los cambios, palabra por palabra, tiene sus propias páginas, una por año. Cada cambio tiene allí un enlace permanente, para compartirlo o volver a encontrarlo.',
+          cs: 'Zásady ochrany soukromí teď ukazují své tři nejnovější změny a\u00a0úplný přehled všech změn, slovo od slova, má vlastní stránky, jednu pro každý rok. Každá změna tam má trvalý odkaz, takže ji jde sdílet nebo znovu najít.',
+          mr: 'गोपनीयता सूचनेत आता तिचे सर्वात अलीकडचे तीन बदल दिसतात, आणि प्रत्येक बदलाची संपूर्ण नोंद, जशी लिहिली तशीच, आता स्वतंत्र पानांवर आहे, प्रत्येक वर्षासाठी एक पान. तिथे प्रत्येक बदलाला एक कायमची लिंक आहे, त्यामुळे तो शेअर करता येतो किंवा नंतर पुन्हा शोधता येतो.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-21',
     items: [
       {

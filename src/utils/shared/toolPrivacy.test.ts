@@ -141,7 +141,7 @@ describe('no code outside the allowed places writes to the address', () => {
   const ALLOWED: Record<string, string> = {
     'utils/shared/toolStateGuard.js': 'moves shared tool state out of the address',
     'components/Analytics.astro': 'removes ?internal= after reading it',
-    'components/LearnHome.tsx': 'removes ?q= after applying a search-engine query',
+    'components/LearnHome.astro': 'removes ?q= after applying a search-engine query',
     'utils/shared/tokenGuard.js': 'removes the confirm or unsubscribe token, in the page head',
   };
 

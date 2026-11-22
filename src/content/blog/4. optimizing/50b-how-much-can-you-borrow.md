@@ -2,7 +2,7 @@
 slug: "how-much-can-you-borrow"
 title: "How Much Can You Borrow? Home and Car Loan Rules of Thumb, Tested"
 seoTitle: "How Much Can You Borrow? Loan Rules of Thumb, Tested"
-description: "How much mortgage or car loan can your income carry? Rules of thumb that cap payments, debts, deposits and loan length, what regulators actually cap, and a stress test for your own numbers."
+description: "How much mortgage or car loan can an income carry? Rules of thumb that cap payments, debts, deposits and loan length, what regulators cap, and a stress test."
 tldr:
   - "A lender's maximum and the loan your budget can carry are different numbers."
   - "Popular rules cap the payment or all debts at a share of income, give very different answers for one salary, and regulators set different limits."
