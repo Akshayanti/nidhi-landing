@@ -239,9 +239,9 @@ describe('redacted mode', () => {
     // No per-row tuples (a1, a2, ...) and no amount segment in p_*.
     assert.ok(!qs.includes('a1='));
     assert.ok(!qs.includes('a2='));
-    // Position tuple has only pct~risk in redacted mode (2 fields → 1 tilde).
+    // pct~risk~(no amount)~(no z)~rate status: nothing sits where an amount would (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
-    assert.equal(usdParam.split('~').length, 2, `redacted p_* should have 2 fields, got: ${usdParam}`);
+    assert.deepEqual(usdParam.split('~').slice(2), ['', '', 'k'], `redacted p_* must hold no amount, got: ${usdParam}`);
   });
 
   it('decoded rows are default empty for the form', () => {
@@ -303,10 +303,10 @@ describe('full sharing mode', () => {
     assert.ok(qs.includes('m=f'));
     assert.ok(!qs.includes('mode=full')); // legacy form removed
     assert.ok(!qs.includes('anon=1'));
-    // p_USD position tuple should have all 3 fields: pct~risk~amount.
+    // p_USD position tuple: pct~risk~amount~(no z)~rate status (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
     const usdParts = usdParam.split('~');
-    assert.equal(usdParts.length, 3);
+    assert.deepEqual(usdParts.slice(3), ['', 'k']);
     assert.equal(usdParts[0], '22.0');
     assert.equal(usdParts[1], 'moderate');
     assert.equal(usdParts[2], '64814.81');

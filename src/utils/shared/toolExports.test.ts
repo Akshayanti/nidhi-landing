@@ -215,6 +215,47 @@ describe('net worth spreadsheet', () => {
   });
 });
 
+describe('net worth with a missing rate (#795)', () => {
+  const rows: AssetRow[] = [
+    { name: 'Savings', value: '1000', currency: 'EUR', type: 'asset' },
+    { name: 'Shares', value: '2000', currency: 'USD', type: 'asset' },
+    { name: 'Fund', value: '3000', currency: 'CZK', type: 'asset' },
+  ];
+  const rates = { EUR: 1, USD: 1.1 };
+  const result = aggregate(rows, 'EUR', rates);
+
+  for (const locale of LOCALES) {
+    const t = DICTS[locale].tools;
+    const island = t.multiCurrencyNetWorth.island;
+    const words = island.results as typeof island.results & { totalPartial?: string; announcePartial?: string };
+    const base = { island, common: t.export, functionalCurrency: 'EUR', result, riskLabel: (l: string) => l };
+
+    it(`${locale}: the workbook names a subtotal and states no share or band`, () => {
+      assert.ok(words.totalPartial, 'no subtotal label');
+      for (const shared of [false, true]) {
+        const sheets = netWorthSheets({ ...base, rows: shared ? null : rows, rates: shared ? null : rates, showAmounts: true, date: DATE, page: PAGE });
+        const table = sheet(sheets, island.export.sheets.byCurrency).rows;
+        const words_ = table.flat().map((c) => (c && typeof c === 'object' && 't' in c ? c.t : c));
+        for (const gone of [island.export.sharePct, island.export.exposurePct, island.chart.tableColRisk, island.results.totalLabel]) {
+          assert.ok(!words_.includes(gone), `${gone} is still there`);
+        }
+        assert.ok(words_.includes(words.totalPartial!));
+        assert.ok(words_.includes(island.results.partialHint));
+        assert.equal(num(table.find((r) => r[1] === 'CZK')![2]), 3000, 'the original amount stays');
+      }
+    });
+
+    it(`${locale}: the report draws no bars`, () => {
+      assert.equal(netWorthReport({ ...base, rows, rates, showAmounts: true, answer: ['a'] }).chart, null);
+    });
+
+    it(`${locale}: the subtotal is announced under its own label`, () => {
+      const end = locale === 'hi' ? '।' : '.';
+      assert.equal(words.announcePartial?.replace(/\u00a0/g, ' '), `${words.totalPartial?.replace(/\u00a0/g, ' ')}: {total}${end}`);
+    });
+  }
+});
+
 /** The invest or pay off tool's defaults as the maths takes them, with a typed inflation figure. */
 const investInputs = (over: Partial<Inputs> = {}): Inputs => ({
   balance: investDefaults.balance,

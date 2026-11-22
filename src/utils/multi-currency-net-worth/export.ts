@@ -84,9 +84,12 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   // Everything in the spending currency needs no rates, as on the page.
   const single = isSingleCurrency(result, fc);
   const converted = single || result.hasRates !== 'none';
+  // With a missing rate the total is a subtotal, and nothing is a share of it (#795).
+  const partial = !single && result.hasRates === 'partial';
+  const shareColumns = partial ? [] : [x.sharePct, x.exposurePct, island.chart.tableColRisk];
   const header = showAmounts
-    ? [island.chart.tableColCurrency, x.code, x.netOwn, ...(converted ? [format(x.netSpending, { currency: fc })] : []), x.sharePct, x.exposurePct, island.chart.tableColRisk]
-    : [island.chart.tableColCurrency, x.code, x.sharePct, x.exposurePct, island.chart.tableColRisk];
+    ? [island.chart.tableColCurrency, x.code, x.netOwn, ...(converted ? [format(x.netSpending, { currency: fc })] : []), ...shareColumns]
+    : [island.chart.tableColCurrency, x.code, ...shareColumns];
   // Two measures, never under one name: concentration adds to 100, exposure is the share of net worth.
   const concentration = concentrationShares(result.positions);
   // Net worth of zero or less: no position is a share of it. The cell says so; an empty one would read as missing data.
@@ -94,26 +97,25 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
     const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
     const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
-    if (!showAmounts) return [name(p.code), p.code, pctCell, exposureCell, e.riskLabel(p.riskLevel)];
+    const shareCells: Cell[] = partial ? [] : [pctCell, exposureCell, e.riskLabel(p.riskLevel)];
+    if (!showAmounts) return [name(p.code), p.code, ...shareCells];
     return [
       name(p.code),
       p.code,
       money(p.netAmountOriginal, p.code),
       ...(converted ? [p.rateUnavailable ? island.results.rateUnavailable : money(single ? p.netAmountOriginal : p.netAmountFunctional, fc)] : []),
-      pctCell,
-      exposureCell,
-      e.riskLabel(p.riskLevel),
+      ...shareCells,
     ];
   });
   const totals: Cell[][] = [];
   if (showAmounts && converted) {
     const total = single ? result.positions[0].netAmountOriginal : result.totalNetWorthFunctional;
-    totals.push([], [{ t: island.results.totalLabel, bold: true }, fc, null, money(total, fc)]);
+    totals.push([], [{ t: partial ? island.results.totalPartial : island.results.totalLabel, bold: true }, fc, null, money(total, fc)]);
     if (rows && single) {
       const split = ownedAndOwed(rows, fc);
       totals.push([island.results.whatYouOwn, fc, null, money(split.owned, fc)], [island.results.whatYouOwe, fc, null, money(split.owed, fc)]);
     }
-    if (result.hasRates === 'partial') totals.push([island.results.partialHint]);
+    if (partial) totals.push([island.results.partialHint]);
   }
   sheets.push({ name: x.sheets.byCurrency, widths: [28, 8, 18, 22, 16, 30], rows: [head(...header), ...byCurrency, ...totals] });
 

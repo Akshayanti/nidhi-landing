@@ -96,6 +96,10 @@ export interface SharedPositionData {
   riskLevel: RiskLevel;
   /** The sender's net worth was zero or less: `pct` is then the concentration, and no share of net worth is stated. */
   noShares?: boolean;
+  /** Whether the sender had no rate for it. Absent in a link from before links said so (#795). */
+  rateUnavailable?: boolean;
+  /** In a full link: the currency's own amount, worked out from the rows. */
+  netAmountOriginal?: number;
 }
 
 export interface DecodeResult {
@@ -112,6 +116,11 @@ export interface DecodeResult {
    * a shared link, or the state a language switch carries.
    */
   refused?: 'link' | 'transfer';
+  /**
+   * An older link with a zero that could be a missing rate: it cannot say its
+   * total and shares cover every currency, so none is shown (#795).
+   */
+  inDoubt?: boolean;
 }
 
 // The codec uses DEFAULT_CURRENCY (imported from loan/math.ts so both free
@@ -173,11 +182,25 @@ function decodeRow(packed: string): AssetRow {
 // Position tuple helpers
 // ---------------------------------------------------------------------------
 
+/** Fifth field of a position: whether its rate was known. An older link has none. */
+const RATE_KNOWN = 'k';
+const RATE_MISSING = 'x';
+
+function rateStatus(pos: CurrencyPosition): string {
+  // Copied on from an older link, which did not know either.
+  if (pos.rateUnknown) return '';
+  // With no rates at all nothing is flagged, and nothing is converted.
+  const missing = pos.rateUnavailable ?? (!pos.isFunctional && pos.netAmountFunctional === 0 && pos.netAmountOriginal !== 0);
+  return missing ? RATE_MISSING : RATE_KNOWN;
+}
+
 function encodePositionFull(pos: CurrencyPosition): string {
   return encodeTuple([
     pos.pctOfTotal.toFixed(1),
     pos.riskLevel,
     pos.netAmountFunctional.toFixed(2),
+    '',
+    rateStatus(pos),
   ]);
 }
 
@@ -191,12 +214,12 @@ const NO_SHARES_FLAG = 'z';
  * which the chart draws, and says so.
  */
 function encodePositionRedacted(pos: CurrencyPosition, concentration: number | null): string {
-  if (concentration === null) return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel]);
-  return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG]);
+  if (concentration === null) return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel, '', '', rateStatus(pos)]);
+  return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG, rateStatus(pos)]);
 }
 
 function decodePosition(code: string, packed: string): SharedPositionData | null {
-  const [pctRaw, riskRaw = 'low', amtRaw = '', flagRaw = ''] = decodeTuple(packed);
+  const [pctRaw, riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
   const pct = parseFloat(pctRaw);
   if (!Number.isFinite(pct)) return null;
 
@@ -209,6 +232,55 @@ function decodePosition(code: string, packed: string): SharedPositionData | null
     netAmountFunctional: Number.isFinite(amt) ? amt : 0,
     riskLevel,
     ...(flagRaw === NO_SHARES_FLAG ? { noShares: true } : {}),
+    ...(statusRaw === RATE_KNOWN ? { rateUnavailable: false } : statusRaw === RATE_MISSING ? { rateUnavailable: true } : {}),
+  };
+}
+
+/** Whether every amount in a full link reads. One that does not was shown as zero. */
+function amountsRead(params: URLSearchParams): boolean {
+  for (const [key, value] of params) {
+    if (!key.startsWith('p_') || !KNOWN_CURRENCIES.has(key.slice(2).toUpperCase())) continue;
+    const amount = decodeTuple(value, 3)[2];
+    if (amount.trim() === '' || !Number.isFinite(Number(amount))) return false;
+  }
+  return true;
+}
+
+/** A shared view's result, as far as its link can say. */
+export function sharedResult(
+  shared: SharedPositionData[],
+  functionalCurrency: string,
+  label: (level: RiskLevel) => string,
+): AggregationResult {
+  const funcCode = functionalCurrency.toUpperCase();
+  const positions: CurrencyPosition[] = shared.map((p) => ({
+    code: p.code,
+    netAmountOriginal: p.netAmountOriginal ?? p.netAmountFunctional,
+    netAmountFunctional: p.netAmountFunctional,
+    pctOfTotal: p.pct,
+    isFunctional: p.code === funcCode || p.riskLevel === 'functional',
+    riskLevel: p.riskLevel,
+    riskLabel: label(p.riskLevel),
+    ...(p.rateUnavailable === undefined ? { rateUnknown: true } : { rateUnavailable: p.rateUnavailable }),
+  }));
+
+  positions.sort((a, b) => {
+    if (a.isFunctional && !b.isFunctional) return -1;
+    if (!a.isFunctional && b.isFunctional) return 1;
+    return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
+  });
+
+  const totalNetWorthFunctional = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
+  // A redacted link has no amounts ('none'). A full one says itself which
+  // rates were missing; from before it could, it is in doubt or it is whole.
+  const anyAmount = shared.some((p) => p.netAmountFunctional !== 0);
+  const anyMissing = shared.some((p) => p.rateUnavailable === true);
+  return {
+    positions,
+    totalNetWorthFunctional,
+    hasRates: anyMissing ? 'partial' : anyAmount ? 'full' : 'none',
+    // With amounts the total says it; without, the link does.
+    noShares: anyAmount ? totalNetWorthFunctional <= 0 : shared.some((p) => p.noShares === true),
   };
 }
 
@@ -446,15 +518,26 @@ function decodeFull(params: URLSearchParams): DecodeResult {
   const totalled = new Set(sharedPositions.map((p) => p.code));
   const needed = aggregate(rows, functionalCurrency, null).positions;
   const nothingInIt = needed.length === 0 && !rows.some((r) => isUnreadableAmount(r.value)) && sharedPositions.length === 0;
-  if (nothingInIt || needed.some((p) => !totalled.has(p.code))) return refusal(functionalCurrency, 'link');
+  if (nothingInIt || needed.some((p) => !totalled.has(p.code)) || !amountsRead(params)) return refusal(functionalCurrency, 'link');
 
-  return { rows, functionalCurrency, isReadOnly: true, shareMode: 'full', sharedPositions };
+  const own = new Map(needed.map((p) => [p.code, p.netAmountOriginal]));
+  for (const pos of sharedPositions) pos.netAmountOriginal = own.get(pos.code) ?? 0;
+  // A missing rate was only ever written as a zero amount. Rows that net to
+  // zero add nothing with a rate or without.
+  const inDoubt = sharedPositions.some(
+    (p) => p.rateUnavailable === undefined && p.code !== functionalCurrency && p.netAmountFunctional === 0 && Math.abs(p.netAmountOriginal!) >= 1e-9,
+  );
+
+  return { rows, functionalCurrency, isReadOnly: true, shareMode: 'full', sharedPositions, inDoubt };
 }
 
 function decodeRedacted(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
-  if (sharedPositions.length === 0) return refusal(functionalCurrency, 'link');
+  // One that says a rate was missing is one the tool refuses to make.
+  if (sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable)) return refusal(functionalCurrency, 'link');
+  // With no rows to look at, any zero share could be a missing rate.
+  const inDoubt = sharedPositions.some((p) => p.rateUnavailable === undefined && p.code !== functionalCurrency && p.pct === 0);
 
   return {
     rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
@@ -462,6 +545,7 @@ function decodeRedacted(params: URLSearchParams): DecodeResult {
     isReadOnly: true,
     shareMode: 'redacted',
     sharedPositions,
+    inDoubt,
   };
 }
 

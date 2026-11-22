@@ -381,6 +381,11 @@ export const multiCurrencyNetWorthEn = {
       totalLabel: 'Total net worth',
       /** Said to a screen reader, once typing has settled, when the total changes. */
       announce: 'Total net worth: {total}.',
+      /** The total's label while a currency has no rate: it is a subtotal. */
+      totalPartial: 'Total excluding currencies with missing rates',
+      announcePartial: 'Total excluding currencies with missing rates: {total}.',
+      /** A link from before links said which rates were known, with a zero that could be a missing one. */
+      olderLink: 'This older link does not confirm whether all currencies were included. Totals and shares are unavailable.',
       hidden: 'Hidden',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} of net worth',
@@ -816,6 +821,11 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'यहाँ आपको एक ही मुद्रा में अपनी शुद्ध संपत्ति, हर मुद्रा का हिस्सा, और पैसे का किसी एक मुद्रा में कितना जमाव है, यह सब दिखेगा।',
       totalLabel: 'कुल शुद्ध संपत्ति',
       announce: 'कुल शुद्ध संपत्ति: {total}।',
+      /** The total's label while a currency has no rate: it is a subtotal. */
+      totalPartial: 'जिन मुद्राओं की विनिमय दरें उपलब्ध नहीं हैं, उन्हें छोड़कर कुल',
+      announcePartial: 'जिन मुद्राओं की विनिमय दरें उपलब्ध नहीं हैं, उन्हें छोड़कर कुल: {total}।',
+      /** A link from before links said which rates were known, with a zero that could be a missing one. */
+      olderLink: 'यह पुराना लिंक पुष्टि नहीं करता कि सभी मुद्राएँ शामिल थीं। कुल और प्रतिशत हिस्से उपलब्ध नहीं हैं।',
       hidden: 'छिपा हुआ',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: 'शुद्ध संपत्ति का {pct}',
@@ -1234,6 +1244,11 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'Verás tu patrimonio neto en una sola moneda, la parte que tienes en cada moneda y hasta qué punto se concentra en una sola moneda.',
       totalLabel: 'Patrimonio neto total',
       announce: 'Patrimonio neto total: {total}.',
+      /** The total's label while a currency has no rate: it is a subtotal. */
+      totalPartial: 'Total sin las monedas con tipos de cambio no disponibles',
+      announcePartial: 'Total sin las monedas con tipos de cambio no disponibles: {total}.',
+      /** A link from before links said which rates were known, with a zero that could be a missing one. */
+      olderLink: 'Este enlace antiguo no confirma si se incluyeron todas las monedas. El total y los porcentajes no están disponibles.',
       hidden: 'Oculto',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} del patrimonio neto',
@@ -1659,6 +1674,11 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'Uvidíte své čisté jmění v\u00a0jedné měně, podíl v\u00a0každé měně a\u00a0to, nakolik je jmění soustředěné v\u00a0jedné měně.',
       totalLabel: 'Celkové čisté jmění',
       announce: 'Celkové čisté jmění: {total}.',
+      /** The total's label while a currency has no rate: it is a subtotal. */
+      totalPartial: 'Součet bez měn s\u00a0chybějícími kurzy',
+      announcePartial: 'Součet bez měn s\u00a0chybějícími kurzy: {total}.',
+      /** A link from before links said which rates were known, with a zero that could be a missing one. */
+      olderLink: 'Tento starší odkaz nepotvrzuje, zda byly zahrnuty všechny měny. Součet a\u00a0procentní podíly nejsou k\u00a0dispozici.',
       hidden: 'Skryto',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: '{pct} čistého jmění',
@@ -2043,6 +2063,11 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       emptyShows: 'इथे तुम्हाला एकाच चलनात तुमची निव्वळ संपत्ती, प्रत्येक चलनाचा हिस्सा आणि ती एका चलनात किती एकवटलेली आहे हे दिसेल.',
       totalLabel: 'एकूण निव्वळ संपत्ती',
       announce: 'एकूण निव्वळ संपत्ती: {total}.',
+      /** The total's label while a currency has no rate: it is a subtotal. */
+      totalPartial: 'विनिमय दर उपलब्ध नसलेल्या चलनांना वगळून एकूण',
+      announcePartial: 'विनिमय दर उपलब्ध नसलेल्या चलनांना वगळून एकूण: {total}.',
+      /** A link from before links said which rates were known, with a zero that could be a missing one. */
+      olderLink: 'या जुन्या लिंकमध्ये सर्व चलनांचा समावेश होता का याची खात्री होत नाही. एकूण आणि टक्केवारीतील हिस्से उपलब्ध नाहीत.',
       hidden: 'लपवलेले',
       /** The percentage on a currency card: the net position as a share of net worth. */
       ofNetWorth: 'निव्वळ संपत्तीच्या {pct}',

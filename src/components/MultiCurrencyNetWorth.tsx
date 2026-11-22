@@ -25,6 +25,7 @@ import {
   publishableState,
   redactedRefusal,
   SHARED_STATE_GLOBAL,
+  sharedResult,
   type ShareMode,
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
@@ -162,6 +163,8 @@ export default function MultiCurrencyNetWorth({
   const [refused, setRefused] = useState<'link' | 'transfer' | null>(null);
   // The rows a shared view's sender could not have read.
   const [sharedUnreadable, setSharedUnreadable] = useState(0);
+  // An older link that cannot say whether every rate was known (#795).
+  const [sharedInDoubt, setSharedInDoubt] = useState(false);
 
   const functionalCurrencySelectId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -181,6 +184,7 @@ export default function MultiCurrencyNetWorth({
     setRefused(decoded.refused ?? null);
     if (decoded.isReadOnly && decoded.sharedPositions) {
       setSharedUnreadable(unreadableCount(decoded.rows));
+      setSharedInDoubt(decoded.inDoubt === true);
       setSharedPositions(decoded.sharedPositions);
       setSharedRedacted(decoded.shareMode === 'redacted');
       setIsReadOnlyView(true);
@@ -277,7 +281,7 @@ export default function MultiCurrencyNetWorth({
   // Compute positions. In read-only mode, reconstruct from URL-stored data.
   const result = useMemo(() => {
     if (isReadOnlyView && sharedPositions) {
-      return buildSharedResult(sharedPositions, functionalCurrency, strings);
+      return sharedResult(sharedPositions, functionalCurrency, (level) => riskLabel(strings, level));
     }
     return aggregate(rows, functionalCurrency, rates);
   }, [rows, functionalCurrency, rates, isReadOnlyView, sharedPositions, strings]);
@@ -405,7 +409,7 @@ export default function MultiCurrencyNetWorth({
   const unreadableRows = isReadOnlyView ? sharedUnreadable : unreadableCount(rows);
   const withheld = unreadableRows > 0
     ? format(plural(numberLocale, unreadableRows, strings.table.withheldOne, strings.table.withheldFew, strings.table.withheldMany), { count: unreadableRows })
-    : null;
+    : isReadOnlyView && sharedInDoubt ? strings.results.olderLink : null;
   const canShare = hasData && (withheld !== null || (result.hasRates !== 'none' && result.positions.length > 0));
   const openShareModal = useCallback(() => {
     // Allow share when rates are 'full' or 'partial' but not 'none':
@@ -449,6 +453,7 @@ export default function MultiCurrencyNetWorth({
     setSharedPositions(null);
     setSharedRedacted(false);
     setSharedUnreadable(0);
+    setSharedInDoubt(false);
     setRefused(null);
     setCsvTooLong(false);
     setCsvErrors([]);
@@ -564,7 +569,8 @@ export default function MultiCurrencyNetWorth({
         still warn at the top so the user doesn't read the total as a
         complete picture.
       */}
-      {!ratesError && !ratesLoading && result.hasRates === 'partial' && (
+      {/* A shared view's rates are its sender's: this page's own request does not matter to it. */}
+      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesError && !ratesLoading)) && (
         <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
           <span>
             {strings.rates.partial}
@@ -1028,7 +1034,7 @@ function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strin
   }
   return (
     <ResultAnnouncement
-      text={withheld ?? (total ? format(strings.results.announce, { total }) : '')}
+      text={withheld ?? (total ? format(result.hasRates === 'partial' ? strings.results.announcePartial : strings.results.announce, { total }) : '')}
       delay={withheld ? WITHHELD_SAID_AFTER : undefined}
     />
   );
@@ -1107,6 +1113,13 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
   // of the positions whose rate was returned; the missing-rate banner
   // tells the user that the total is incomplete).
   const ratesUsable = result.hasRates !== 'none';
+  // A currency without a rate is in no total: what is left is a subtotal, and
+  // no share, band or chart can be drawn from it (#795).
+  const partial = result.hasRates === 'partial';
+  const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
+  // Without a band to say "debt", the amount carries its sign.
+  const cardMoney = (value: number, code: string) =>
+    formatMoney(Math.round((partial ? value : Math.abs(value)) * getFactor(code)), code).replace(/^-/, '\u2212');
   const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
   const totalLabel = !hideAmounts && ratesUsable
     ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace(/^-/, '\u2212')
@@ -1118,14 +1131,14 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
       {/* Total NW */}
       {hideAmounts ? (
         <div className="mcnw-total mcnw-total--hidden">
-          <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
+          <span className="mcnw-totalLabel">{totalWord}</span>
           <span className="mcnw-totalValue mcnw-totalValue--hidden">{strings.results.hidden}</span>
         </div>
       ) : ratesUsable && totalLabel ? (
         <div className="mcnw-total">
-          <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
+          <span className="mcnw-totalLabel">{totalWord}</span>
           <span className="mcnw-totalValue"><Amounts>{totalLabel}</Amounts></span>
-          {result.hasRates === 'partial' && (
+          {partial && (
             <span className="mcnw-totalHint">
               {strings.results.partialHint}
             </span>
@@ -1140,39 +1153,43 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
       <Withheld reason={withheld} unsaid>
 
       {/* Donut chart */}
-      <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />
+      {!partial && <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />}
 
       {/* Risk cards */}
       <div className="mcnw-riskCards">
         <h3 className="mcnw-riskCardsTitle">{strings.results.riskHeading}</h3>
         {result.positions.map((pos) => (
-          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
+          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${partial || pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
             <div className="mcnw-riskCardHead">
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
-                ) : hidePct ? (
+                ) : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
                   pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
-                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</Amount></>}
+                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{cardMoney(pos.netAmountFunctional, functionalCurrency)}</Amount></>}
+                {/* Unconverted, in its own currency, from the rows. */}
+                {!hideAmounts && pos.rateUnavailable && <> · <Amount>{cardMoney(pos.netAmountOriginal, pos.code)}</Amount></>}
               </span>
-              <span
-                className="mcnw-riskBadge"
-                style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
-              >
-                {/* Without a rate there is no share to band: never "low". */}
-                {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
-              </span>
+              {!partial && (
+                <span
+                  className="mcnw-riskBadge"
+                  style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
+                >
+                  {/* Without a rate there is no share to band: never "low". */}
+                  {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
+                </span>
+              )}
             </div>
             {/* With no rate, the paragraph below says so once (#618); the head
                 already reads "Rate unavailable". */}
-            {!pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
-            <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />
+            {!partial && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
+            {(!partial || pos.rateUnavailable) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
           </div>
         ))}
       </div>
@@ -1204,7 +1221,7 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
   else if (!showAmounts) answer.push(`${r.totalLabel}: ${r.hidden}`);
   else if (single) answer.push(`${r.totalLabel}: ${money(result.positions[0].netAmountOriginal)}`);
   else if (result.hasRates !== 'none') {
-    answer.push(`${r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
+    answer.push(`${result.hasRates === 'partial' ? r.totalPartial : r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
     if (result.hasRates === 'partial') answer.push(r.partialHint);
   }
   const report = netWorthReport({
@@ -2019,47 +2036,6 @@ function riskBadge(strings: Strings, level: string): string {
   }
 }
 
-function buildSharedResult(
-  sharedPositions: SharedPositionData[],
-  functionalCurrency: string,
-  strings: Strings,
-): import('../utils/multi-currency-net-worth/math.ts').AggregationResult {
-  const funcCode = functionalCurrency.toUpperCase();
-  const positions = sharedPositions.map((p) => ({
-    code: p.code,
-    netAmountOriginal: p.netAmountFunctional,
-    netAmountFunctional: p.netAmountFunctional,
-    pctOfTotal: p.pct,
-    isFunctional: p.code === funcCode || p.riskLevel === 'functional',
-    riskLevel: p.riskLevel,
-    riskLabel: riskLabel(strings, p.riskLevel),
-  }));
-
-  positions.sort((a, b) => {
-    if (a.isFunctional && !b.isFunctional) return -1;
-    if (!a.isFunctional && b.isFunctional) return 1;
-    return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
-  });
-
-  const totalNetWorthFunctional = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
-
-  // For a shared (read-only) view we don't have the original rates response,
-  // so we infer rate availability from whether the encoded payload carries
-  // any per-position functional amounts. A redacted share has no amounts at
-  // all (`'none'`); a full share that round-tripped at least one non-zero
-  // amount is treated as `'full'`. We never report `'partial'` here because
-  // the wire format doesn't distinguish "amount was zero" from "rate was
-  // missing" once the values are flattened into the URL.
-  const anyAmount = sharedPositions.some((p) => p.netAmountFunctional !== 0);
-  return {
-    positions,
-    totalNetWorthFunctional,
-    hasRates: anyAmount ? 'full' : 'none',
-    // With amounts the total says it; without, the link does.
-    noShares: anyAmount ? totalNetWorthFunctional <= 0 : sharedPositions.some((p) => p.noShares === true),
-  };
-}
-
 function buildPreviewResult(
   realResult: ReturnType<typeof aggregate>,
   isFull: boolean,
@@ -2085,7 +2061,8 @@ function buildPreviewResult(
     // `'none'`. The full preview inherits whatever the underlying result
     // had ('full' | 'partial' | 'none'); the share modal will not let
     // the user copy a link if the underlying result is 'none' anyway.
-    hasRates: isFull ? realResult.hasRates : 'none',
+    // A missing rate still hides the shares there, beside the refusal.
+    hasRates: isFull || realResult.hasRates === 'partial' ? realResult.hasRates : 'none',
     noShares: realResult.noShares,
   };
 }

@@ -53,6 +53,8 @@ export interface CurrencyPosition {
    * performed. The position is shown in original units only.
    */
   rateUnavailable?: boolean;
+  /** Arrived in a link from before links said whether a rate was known (#795). */
+  rateUnknown?: boolean;
 }
 
 /**

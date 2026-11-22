@@ -41,7 +41,8 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
     answer,
     meaning: x.meaning,
     entered: inputs ? tableOf(inputs) : null,
-    chart: !isSingleCurrency(result, functionalCurrency) && bars.length > 0 ? { kind: 'bars', title: island.chart.heading, bars } : null,
+    // No bars of a subtotal: they would be read as shares of the whole (#795).
+    chart: !isSingleCurrency(result, functionalCurrency) && result.hasRates !== 'partial' && bars.length > 0 ? { kind: 'bars', title: island.chart.heading, bars } : null,
     tables: [tableOf(byCurrency, { caption: x.sheets.byCurrency, stack: true }), ...(rates ? [rates] : [])],
     assumptions: [...(rates ? [x.ratesText] : []), island.results.disclaimer],
   };
