@@ -44,7 +44,7 @@
  */
 
 import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
-import { aggregate, concentrationShares, isUnreadableAmount } from './math.ts';
+import { aggregate, netTotal, concentrationShares, isUnreadableAmount } from './math.ts';
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
@@ -220,18 +220,20 @@ function encodePositionRedacted(pos: CurrencyPosition, concentration: number | n
 
 // Both are written with toFixed(), which spells 1e21 and above with an
 // exponent. That spelling is taken; no smaller exponent is.
-/** A share as a link writes it. */
-const SHARE_TEXT = /^-?(\d+(\.\d+)?|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
+/** A share as every writer has written it, to one decimal. */
+const SHARE_TEXT = /^-?(\d+\.\d|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
 /** An amount as every writer has written it, to two decimals: one cut short, or spelt another way, is not one. */
 const AMOUNT_TEXT = /^-?(\d+\.\d\d|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
 
 function decodePosition(code: string, packed: string): SharedPositionData | null {
-  const [pctRaw = '', riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
+  const [pctRaw = '', riskRaw = '', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
   if (!SHARE_TEXT.test(pctRaw)) return null;
   const pct = Number(pctRaw);
   if (!Number.isFinite(pct)) return null;
 
-  const riskLevel: RiskLevel = isValidRiskLevel(riskRaw) ? riskRaw : 'low';
+  // No band is assumed: one cut short read as Low.
+  if (!isValidRiskLevel(riskRaw)) return null;
+  const riskLevel: RiskLevel = riskRaw;
 
   const amt = amtRaw === '' ? 0 : parseFloat(amtRaw);
   return {
@@ -278,7 +280,7 @@ export function sharedResult(
     return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
   });
 
-  const totalNetWorthFunctional = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
+  const totalNetWorthFunctional = netTotal(positions);
   // A redacted link has no amounts ('none'). A full one says itself which
   // rates were missing; from before it could, it is in doubt or it is whole.
   const anyAmount = shared.some((p) => p.netAmountFunctional !== 0);
@@ -421,7 +423,7 @@ function encodeRedacted(
   params.set('m', 'r');
   params.set('f', functionalCurrency);
 
-  const total = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
+  const total = netTotal(positions);
   const noShares = positions.some((p) => p.netAmountFunctional !== 0) && total <= 0;
   const concentration = noShares ? concentrationShares(positions) : null;
   for (const pos of positions) {
@@ -583,14 +585,20 @@ function decodePositions(params: URLSearchParams): SharedPositionData[] | null {
 }
 
 /**
- * Whether a new redacted link's shares are all there. They add up to 100, each
- * rounded to one decimal, or are all zero. A lost position whose share was
- * zero passes: with no rows in the link nothing else can show it.
+ * Whether a redacted link's shares are all there: all zero, or 100 together,
+ * each rounded to one decimal. A lone one is 100 or zero. An older link, or a
+ * new one cut before its last field, has no status, and its shares never
+ * totalled less than 100: with debts alone they can total more. A lost
+ * position whose share was zero, or small enough to fall within the rounding,
+ * passes: with no rows in the link nothing else can show it.
  */
 function sharesAreWhole(positions: SharedPositionData[]): boolean {
-  if (positions.some((p) => p.rateUnavailable === undefined) || positions.every((p) => p.pct === 0)) return true;
-  const sum = positions.reduce((total, p) => total + p.pct, 0);
-  return Math.abs(sum - 100) <= 0.05 * positions.length + 1e-9;
+  if (positions.every((p) => p.pct === 0)) return true;
+  if (positions.length === 1) return positions[0].pct === 100;
+  const off = positions.reduce((total, p) => total + p.pct, 0) - 100;
+  const rounding = 0.05 * positions.length + 1e-9;
+  const older = positions.some((p) => p.rateUnavailable === undefined);
+  return off >= -rounding && (older || off <= rounding);
 }
 
 function isValidRiskLevel(s: string): s is RiskLevel {

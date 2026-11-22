@@ -258,6 +258,7 @@ describe('net worth with every rate missing (#795)', () => {
       const { words, report } = told({ ...whole, hasRates: 'none', totalNetWorthFunctional: 0 }, false);
       assert.ok(words.includes(x.sharePct));
       assert.ok(report.meaning.includes(shareSentence));
+      assert.ok(!report.meaning.includes(rateSentence), 'says amounts were converted, and shows none');
     });
   }
 });

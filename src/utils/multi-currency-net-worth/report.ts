@@ -32,7 +32,8 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
 
   const gap = rateGap(result, functionalCurrency, e.showAmounts);
   // It explains only what is shown: shares, and converted amounts.
-  const meaning = [x.meaning, ...(gap ? [] : [x.meaningShares]), ...(gap === 'all' ? [] : [x.meaningRates])].join(' ');
+  const converted = e.showAmounts && gap !== 'all' && !isSingleCurrency(result, functionalCurrency) && result.hasRates !== 'none';
+  const meaning = [x.meaning, ...(gap ? [] : [x.meaningShares]), ...(converted ? [x.meaningRates] : [])].join(' ');
 
   // Nothing entered yet: the answer says so, and there is nothing to tabulate.
   if (result.positions.length === 0) {

@@ -232,3 +232,57 @@ describe('a number too large to be one is refused, never zero (#795)', () => {
     assert.equal(open('m=f&f=EUR&a1=x~100&p_EUR=1e%2B309~functional~100.00~~k').refused, 'link');
   });
 });
+
+describe('a redacted link cut short is refused, new or older (#795)', () => {
+  const cuts = {
+    'new, cut after the band': 'p_EUR=66.7~functional',
+    'new, cut in the share': 'p_EUR=6',
+    'older, cut in the last share': 'p_EUR=66.7~functional&p_USD=3',
+    'older, cut in the band': 'p_EUR=66.7~functional&p_USD=33.3~mod',
+    'a share of another spelling': 'p_EUR=100~functional',
+    'a band no writer knows': 'p_EUR=100.0~fine',
+  };
+  for (const [name, tail] of Object.entries(cuts)) {
+    it(name, () => assert.equal(open(`m=r&f=EUR&${tail}`).refused, 'link'));
+  }
+  const whole = {
+    'two': 'p_EUR=66.7~functional&p_USD=33.3~moderate',
+    'one': 'p_EUR=100.0~functional',
+    'no shares': 'p_EUR=40.0~functional~~z&p_USD=60.0~unbanded~~z',
+    'all zero': 'p_EUR=0.0~functional&p_USD=0.0~low',
+    'debts only': 'p_EUR=120.0~functional&p_USD=0.0~net-debt',
+  };
+  for (const [name, tail] of Object.entries(whole)) {
+    it(`older and whole: ${name}`, () => assert.equal(open(`m=r&f=EUR&${tail}`).refused, undefined));
+  }
+  it('no prefix of a link opens with fewer currencies or another band', () => {
+    const full = { new: 'p_EUR=66.7~functional~~~k&p_USD=33.3~moderate~~~k', older: 'p_EUR=66.7~functional&p_USD=33.3~moderate' };
+    for (const [name, tail] of Object.entries(full)) {
+      for (let end = 1; end < tail.length; end += 1) {
+        const got = decodeFromQueryString(`m=r&f=EUR&${tail.slice(0, end)}`);
+        if (got.refused) continue;
+        assert.deepEqual(got.sharedPositions!.map((p) => [p.code, p.pct, p.riskLevel]), [['EUR', 66.7, 'functional'], ['USD', 33.3, 'moderate']], `${name}: ${tail.slice(0, end)}`);
+      }
+    }
+  });
+});
+
+describe('float residue is a net worth of zero (#795)', () => {
+  const cases: Array<[string, string, number]> = [['1000', '1100', 1.1], ['50000', '55000', 1.1]];
+  for (const [owned, owed, rate] of cases) {
+    it(`${owned} less ${owed}`, () => {
+      const rows = [row(owned, 'EUR'), row(owed, 'USD', 'liability')];
+      const result = aggregate(rows, 'EUR', { EUR: 1, USD: rate });
+      assert.equal(result.totalNetWorthFunctional, 0);
+      assert.equal(result.noShares, true);
+      const sent = encodeShared(rows, result.positions, 'EUR', 'redacted');
+      assert.equal(open(sent).refused, undefined);
+      assert.match(sent, /~z~k/);
+    });
+  }
+  it('a real difference at a large gross stays', () => {
+    const rows = [row('100000000000999', 'EUR'), row('100000000000000', 'EUR', 'liability'), row('900000000000000', 'USD'), row('900000000000000', 'USD', 'liability'), row('500000000000000', 'CZK'), row('499999999999000', 'GBP', 'liability')];
+    const result = aggregate(rows, 'EUR', { EUR: 1, USD: 1, CZK: 1, GBP: 1 });
+    assert.ok(result.totalNetWorthFunctional > 1900, String(result.totalNetWorthFunctional));
+  });
+});

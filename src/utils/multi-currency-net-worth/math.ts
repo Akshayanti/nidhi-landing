@@ -246,10 +246,7 @@ export function aggregate(
   }
 
   // Total net worth in functional currency.
-  const totalNetWorthFunctional = positions.reduce(
-    (sum, p) => sum + p.netAmountFunctional,
-    0,
-  );
+  const totalNetWorthFunctional = netTotal(positions);
 
   // Percentages and risk levels.
   for (const pos of positions) {
@@ -287,6 +284,22 @@ export function aggregate(
     hasRates: missingRateCount > 0 ? 'partial' : 'full',
     noShares: positions.length > 0 && totalNetWorthFunctional <= 0,
   };
+}
+
+/**
+ * The converted positions' total. What adding them can itself lose is no net
+ * worth: €1,000 less $1,100 at 1.1 left 1.1e-13, shares of 8.8e17% and a link
+ * the tool refused as its own (#795). A fixed fraction of the gross would not
+ * do: a trillionth of 1e15 is a real 1,000.
+ */
+export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional'>[]): number {
+  let total = 0;
+  let gross = 0;
+  for (const { netAmountFunctional: amount } of positions) {
+    total += amount;
+    gross += Math.abs(amount);
+  }
+  return Number.isFinite(gross) && Math.abs(total) <= 2 * (positions.length + 1) * Number.EPSILON * gross ? 0 : total;
 }
 
 /**

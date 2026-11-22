@@ -251,10 +251,10 @@ describe('redacted mode', () => {
     assert.equal(decoded.rows[0].value, '');
   });
 
-  it('handles unrecognized risk levels gracefully', () => {
-    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=50.0~unknown');
-    const pos = decoded.sharedPositions!.find((p) => p.code === 'USD')!;
-    assert.equal(pos.riskLevel, 'low');
+  it('refuses a band it does not know, and never reads it as Low (#795)', () => {
+    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=100.0~unknown');
+    assert.equal(decoded.sharedPositions, undefined);
+    assert.equal(decoded.refused, 'link');
   });
 
   it('handles malformed percentage', () => {
