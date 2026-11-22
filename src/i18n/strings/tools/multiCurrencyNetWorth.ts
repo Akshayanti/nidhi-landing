@@ -1842,7 +1842,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     },
     eyebrow: 'मोफत साधने',
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये',
-    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते लिहा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. हिशेब तुमच्या ब्राउझरमध्ये होतो, आणि तुम्ही जे लिहिता ते तिथेच राहते. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
+    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते भरा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. हिशेब तुमच्या ब्राउझरमध्ये होतो, आणि तुम्ही जे लिहिता ते तिथेच राहते. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
     plannerLine:
       'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
     explainer: {
@@ -1971,7 +1971,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     export: {
       meaning: 'निव्वळ संपत्ती म्हणजे तुमच्याकडे जे आहे त्यातून तुम्ही देणे असलेले वजा करून उरलेली रक्कम.',
       meaningShares: 'प्रत्येक चलनाचा हिस्सा दाखवतो की ते चलन तुम्ही खर्च करता त्या चलनाच्या तुलनेत वर-खाली झाल्यावर निव्वळ संपत्तीचा किती भाग बदलतो.',
-      meaningRates: 'इतर चलनांतील रकमा पेजवर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
+      meaningRates: 'इतर चलनांतील रकमा पानावर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
       tool: 'निव्वळ संपत्ती कॅल्क्युलेटर',
       hiddenLabel: 'रक्कम',
       hiddenText: 'समाविष्ट नाही: या शेअर केलेल्या दृश्यात फक्त चलने आणि त्यांचे हिस्से आहेत.',
@@ -1981,7 +1981,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       netSpending: 'निव्वळ, {currency} मध्ये',
       sharePct: 'हिस्सा, %',
       exposurePct: 'निव्वळ संपत्तीच्या तुलनेत, %',
-      ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पेजवर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
+      ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पानावर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
       ratePer: '1 {currency} मागे एकके',
     },
     toolbar: {
@@ -2041,7 +2041,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         invalidValue: '“{value}” ही वैध धन संख्या नाही.',
         emptyCurrency: 'चलनाचा कोड रिकामा आहे.',
         unsupportedCurrency: '“{value}” हे उपलब्ध चलन नाही. उपलब्ध: {supported}.',
-        unknownType: '“{value}” हा साधनाला माहीत असलेला प्रकार नाही. {asset} किंवा {liability} लिहा.',
+        unknownType: '“{value}” हा साधनाला माहीत असलेला प्रकार नाही. {asset} किंवा {liability} भरा.',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -2059,7 +2059,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       valueAria: 'मूल्य (ओळ {index})',
       currencyAria: 'चलन (ओळ {index})',
       typeAria: 'प्रकार (ओळ {index})',
-      valueError: 'ही रक्कम वाचता आली नाही. फक्त अंक लिहा, उदा. 50000.',
+      valueError: 'ही रक्कम वाचता आली नाही. फक्त अंक भरा, उदा. 50000.',
       valuePlaceholder: 'उदा. 50000',
       namePlaceholder: 'मालमत्तेचे/देण्याचे नाव',
       asset: 'मालमत्ता',

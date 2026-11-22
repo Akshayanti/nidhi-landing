@@ -654,4 +654,9 @@ describe('each language spells a word one way', () => {
     const participle = /(?<!\p{L})(?:(?:jste|byste)(?:\s(?:se|si|ho|je|už|také))?\s\p{L}+li|\p{L}+li\sjste)(?!\p{L})/iu;
     assert.deepEqual(allWords(CS, 'cs').filter(({ value }) => participle.test(value)).map((l) => l.path), []);
   });
+
+  it('writes Marathi as the glossary does', () => {
+    const wrong = /हिशोब|पेज(?!व्ह)|सिमुले|अॅ|महागाई वजा जाता|मुख्य पान|चेक कोरुना/u;
+    assert.deepEqual(allWords(MR, 'mr').filter(({ value }) => wrong.test(value)).map((l) => l.path), []);
+  });
 });

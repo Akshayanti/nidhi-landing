@@ -213,7 +213,7 @@ note records why this one won.
 | asset location | खात्यांमधील मालमत्तांची मांडणी | Contested. (asset location) on first use. |
 | glide path | कालानुसार बदलणारे वाटप | Contested (ग्लाइड पाथ). (glide path) on first use. |
 | standard deviation | प्रमाण विचलन | |
-| inflation-adjusted, real | महागाई-समायोजित, वास्तविक | |
+| inflation-adjusted, real | महागाई-समायोजित, वास्तविक | In a phrase, *महागाईनंतर*, never *महागाई वजा जाता*. |
 | mix (stocks/bonds) | मिश्रण | |
 | monthly contribution | मासिक गुंतवणूक | Contested (योगदान, which reads as a donation). |
 | withdrawal (a single one) | काढलेली रक्कम | Contested. |
@@ -297,7 +297,10 @@ note records why this one won.
 | planner (the product) | प्लॅनर | |
 | Learn, Take stock, Plan ahead | शिका, आढावा घ्या, पुढचे नियोजन करा | |
 | Learn (nav, footer, breadcrumb) | शिका | |
-| Home | मुख्यपृष्ठ | |
+| Home | मुख्यपृष्ठ | Never मुख्य पान. |
+| page | पान | Never पेज alone (पेजव्ह्यू is its own word). |
+| footer | फूटर | तळटीप is a footnote. |
+| box (on a page) | चौकट | बॉक्स only for a tick box in the privacy notice. |
 | About (group) / About nidhi (page) | माहिती / nidhi विषयी | |
 | Browse topics | विषय पाहा | पाहा is the standard imperative. |
 | breadcrumb (landmark label) | पानाचा मार्ग | |
@@ -373,7 +376,11 @@ note records why this one won.
 | percentage point(s) | टक्के बिंदू | Contested. टक्केवारी अंक reads as a percentage figure, not the unit of difference between two percentages. |
 | refinancing scenario | पुनर्वित्त परिदृश्य | Contested. |
 | n/a | लागू नाही | |
-| input prompt (Enter...) | ... भरा | Contested. |
+| input prompt (Enter...) | ... भरा | Contested. In every tool and lead, never *... लिहा*. |
+| highlighted fields | ठळक केलेले रकाने | |
+| Reset (button) | रीसेट करा | The loan tool's longer "Reset to defaults" keeps पूर्वनिश्चित मूल्ये परत आणा. |
+| cent (rounding) | चलनाचे सर्वात लहान एकक (जसे सेंट किंवा पैसा) | Never पैसा alone, which is also money. |
+| Czech koruna | चेक प्रजासत्ताकाचा कोरुना | As in the Hindi edition: चेक alone also means a cheque. |
 | Add (button) | जोडा | |
 | simulation, path | सिम्युलेशन, संभाव्य मार्ग | Contested. |
 | raise (in pay) | पगारवाढ | |
