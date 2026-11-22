@@ -291,7 +291,7 @@ page they would be telling a reader something they already know.
 
 ### The free tools
 
-The three calculators are the densest interface on the site: a reader meets
+The five tools are the densest interface on the site: a reader meets
 forty labels per screen, and the same word appears in the label, the tooltip
 and the FAQ answer that explains it. So the rule here is stricter than the rest
 of the chrome's: one rendering, everywhere, and the FAQ uses the label's word
@@ -377,9 +377,9 @@ and do translate.
 
 #### The currency names
 
-All 29 names live in one list, `src/i18n/strings/tools/currencies.ts`, because
-the three tools share one dropdown and one engine table: a currency renamed
-there is renamed in all three. A code stays Latin in every language, in the key
+All 38 names live in one list, `src/i18n/strings/tools/currencies.ts`, because
+the five tools share one set of names and one engine table: a currency renamed
+there is renamed in all five. A code stays Latin in every language, in the key
 and in the bracket the name ends with, because it is what a reader looks up and
 what the tool writes into its own address. Only the name is Hindi. A test in
 `src/i18n/strings/catalog.test.ts` holds that list to `RAW_CURRENCIES` in

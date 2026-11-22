@@ -39,9 +39,9 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | Seu patrimônio líquido é o que você tem menos o que você deve. | Patrimônio líquido é o que se tem menos o que se deve. |
 | A tool instruction | Enter the amount you borrowed. | Digite o valor que você pegou emprestado. | Digite o valor do empréstimo. |
 | An error message | The rate you entered must be between 0% and 100%. | A taxa que você digitou deve estar entre 0% e 100%. | A taxa deve estar entre 0% e 100%. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | Se você está com pagamentos atrasados, você não está só, e existem formas de conseguir ajuda. | Atrasos nos pagamentos acontecem com muita gente, e existem formas de conseguir ajuda. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Atrasos nos seus pagamentos podem pesar, e existem formas de conseguir ajuda. | Atrasos nos pagamentos podem pesar, e existem formas de conseguir ajuda. |
 
-The examples use *só*, which does not change with gender, not *sozinho* or *sozinha*.
+The examples avoid words that change with gender, such as *sozinho* or *sozinha*.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),
 Czech (*vy*) and Marathi (तुम्ही) use the polite form. That is a reference, not

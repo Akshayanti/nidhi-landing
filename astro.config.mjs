@@ -46,6 +46,13 @@ const sitemapInputs = {
  */
 const REDIRECTS = {
   '/free/currency-risk/': '/free/multi-currency-net-worth/',
+  // A topic page that was live for one lesson's tag outside the closed list
+  // (#499); the lesson is under psychology now.
+  '/blog/tag/spending/': '/blog/tag/psychology/',
+  '/hi/blog/tag/spending/': '/hi/blog/tag/psychology/',
+  '/es/blog/tag/spending/': '/es/blog/tag/psychology/',
+  '/cs/blog/tag/spending/': '/cs/blog/tag/psychology/',
+  '/mr/blog/tag/spending/': '/mr/blog/tag/psychology/',
   // Short links for social bios (nidhi.today/ig and so on). The redirect
   // page loads no analytics; the pageview on the destination carries the
   // campaign parameters, which the privacy notice already covers. One

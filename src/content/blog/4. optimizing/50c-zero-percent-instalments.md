@@ -33,7 +33,7 @@ localRules: [credit, borrowing, tax]
 level: "optimizing"
 primaryPersona: "jiri"
 personas: ["jiri", "eva", "marcus", "petra"]
-tags: ["optimizing", "debt", "spending"]
+tags: ["optimizing", "debt", "psychology"]
 faq:
   - question: "Is no-cost EMI really free?"
     answer: "Often not entirely. In India, the bank usually still charges interest and the shop or platform gives an equal discount, so the interest is cancelled out. But the 18% GST on the interest is paid by the cardholder, many banks add a processing fee, and an upfront discount for paying in full may be lost. The Reserve Bank of India said in 2013 that in zero percent EMI schemes the interest is often passed on to customers as a processing fee. Comparing the total paid with the best price for paying in full shows the real cost."

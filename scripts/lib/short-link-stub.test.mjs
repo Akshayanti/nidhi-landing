@@ -91,6 +91,7 @@ describe('the short links in astro.config.mjs', () => {
     [`${path}${code}/`, `${path}?utm_source=${platforms[code]}&utm_medium=social&utm_campaign=bio&utm_content=${content}`];
   const expected = [
     ['/free/currency-risk/', '/free/multi-currency-net-worth/'],
+    ...locales.map((l) => [`${l}/blog/tag/spending/`, `${l}/blog/tag/psychology/`]),
     ...locales.flatMap((l) => Object.keys(platforms).map((code) => social(`${l}/`, code, 'home_link'))),
     ...Object.keys(platforms).map((code) => social('/blog/', code, 'blog_link')),
     social('/how-to/', 'ig', 'howto_link'),
@@ -101,9 +102,9 @@ describe('the short links in astro.config.mjs', () => {
     ['/yoga/', '/free/?utm_source=poster&utm_medium=print&utm_campaign=yoga&utm_content=typed'],
   ];
 
-  it('are the 50 addresses they were, each with the destination it had', () => {
+  it('are the 55 addresses they were, each with the destination it had', () => {
     const sort = (list) => [...list].sort((a, b) => (a[0] < b[0] ? -1 : 1));
-    assert.equal(entries.length, 50);
+    assert.equal(entries.length, 55);
     assert.deepEqual(sort(entries), sort(expected));
   });
 
