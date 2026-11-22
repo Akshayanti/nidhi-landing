@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -477,10 +477,10 @@ async function press(page, el, times = 1, gap = 60) {
     }
     // Never settled: no click is made on a page that is still moving.
     if (point && !point.covered && still < 3) point = { covered: 'nothing: the page did not stop moving' };
-  } catch { return false; }
+  } catch (err) { return refuse(page, `the element could not be read (${err && err.message ? err.message : err})`); }
   if (!point || point.covered) {
     if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
-    return false;
+    return refuse(page, point ? `covered by ${point.covered}` : 'the element could not be placed');
   }
   if (times > 1) {
     for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
@@ -501,9 +501,15 @@ async function press(page, el, times = 1, gap = 60) {
     if (page.nidhiNote) page.nidhiNote.moved = (page.nidhiNote.moved || 0) + 1;
     await sleep(350);
     point = await measure(null).catch(() => ({ covered: 'gone' }));
-    if (point.covered) return point.covered === 'gone';
+    if (point.covered) return point.covered === 'gone' || refuse(page, `moved, then covered by ${point.covered}`);
   }
   // It moved away every time: that click was not made.
+  return refuse(page, 'moved away under the pointer every time');
+}
+
+/** Keeps why the latest click was not made, for the step that asks. */
+function refuse(page, reason) {
+  if (page.nidhiNote) page.nidhiNote.refused = reason;
   return false;
 }
 
@@ -566,13 +572,15 @@ async function waitForTool(page) {
   await sleep(600);
 }
 
+// A button that clears the tool: never pressed until everything else is done.
+const RESET_BUTTON = /reset|--ghost/i;
+
 /** Presses every visible button of the tool that has not been pressed yet, reset buttons left for last. */
 async function pressButtons(page, note, pressed) {
-  const resets = [];
   for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
     const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`.trim()).catch(() => null);
     if (label === null || pressed.has(label)) continue;
-    if (/reset|--ghost/i.test(label)) { resets.push(el); continue; }
+    if (RESET_BUTTON.test(label)) continue; // pressed last, by pressResets
     if (/remove/.test(label)) continue; // done on a named row, and checked there
     note.step = `clicking the button ${label}`;
     pressed.add(label);
@@ -607,7 +615,40 @@ async function pressButtons(page, note, pressed) {
     }
     if (await page.$(DIALOG)) note.stuck = `the dialog opened by ${label} could not be closed`;
   }
-  return resets;
+}
+
+/** The buttons that put the tool back as it was. */
+async function resetButtons(page) {
+  const out = [];
+  for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
+    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`).catch(() => '');
+    if (RESET_BUTTON.test(label)) out.push(el);
+  }
+  return out;
+}
+
+/**
+ * Reset comes last, since it clears what the other steps need. It is looked
+ * up and pressed again until its event is seen; PostHog sends in batches
+ * every few seconds, hence the wait after each go.
+ */
+async function pressResets(page, note, sent) {
+  note.step = 'clicking Reset';
+  return pressUntilSent({
+    find: () => resetButtons(page),
+    press: async (el) => {
+      note.refused = null;
+      if (await press(page, el)) { await sleep(300); return null; }
+      return note.refused || 'not clicked';
+    },
+    sent: async () => {
+      for (let i = 0; i < 16; i++) {
+        if (sent().has('reset')) return true;
+        await sleep(300);
+      }
+      return false;
+    },
+  });
 }
 
 /** Clicks every field and changes every choice the tool offers. Returns the fields it found. */
@@ -718,7 +759,7 @@ async function useTool(page, tool, note, downloads, sent) {
   })).catch(() => null);
 
   // Buttons that only appeared after the choices were made, then reset.
-  let resets = await pressButtons(page, note, pressed);
+  await pressButtons(page, note, pressed);
   note.buttons = pressed.size;
   await sleep(500);
 
@@ -734,7 +775,7 @@ async function useTool(page, tool, note, downloads, sent) {
     note.retried = `${again}: ${todo.join(', ')}`;
     note.step = `doing again: ${todo.join(', ')}`;
     if (todo.some((need) => /removed/.test(need)) && tool.removeNamedRow) await tool.removeNamedRow(page);
-    resets = await pressButtons(page, note, new Set());
+    await pressButtons(page, note, new Set());
     // From the second go, a button the pointer keeps missing (the page moves
     // under it) is activated by calling its click directly, so that what it
     // sends is still checked. The output names it: such a run checks the
@@ -764,7 +805,7 @@ async function useTool(page, tool, note, downloads, sent) {
   }
   if (!(await page.evaluate(() => window.__printed || 0))) failed.push('the print dialog was never asked for: the PDF export did not run');
   note.saved = saved.length;
-  return { resets, failed };
+  return { failed };
 }
 
 // ---------------------------------------------------------------------------
@@ -858,13 +899,13 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       }
       return names;
     };
-    const { resets, failed } = await useTool(page, tool, note, downloads, sent);
+    const { failed } = await useTool(page, tool, note, downloads, sent);
     problems.push(...failed);
     if (note.stuck) problems.push(note.stuck);
     const state = await page.evaluate((g) => window[g] || '', tool.global);
     if (!state) problems.push('the tool published no state for the language switch, so the share-link steps had nothing to carry');
     if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}`);
-    for (const el of resets) { await press(page, el); await sleep(300); }
+    note.resetMisses = await pressResets(page, note, sent);
     await leave();
 
     // The link the tool itself copied is the one opened next, exactly. The
@@ -996,7 +1037,7 @@ console.log(`Checking ${matrix.length} runs against ${base} (${HEADLESS ? 'headl
 // died and start another, and the run could not be stopped.
 const browsers = new Set();
 // Runs that were done a second time because a step was missed the first time.
-const repeated = new Set();
+const repeated = new Map();
 let stopping = false;
 for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   process.on(signal, () => {
@@ -1030,7 +1071,7 @@ async function worker() {
         // any other problem ends the run as failed.
         const missedStep = isMissedStepOnly(result.problems);
         if (attempt === 1 || (browser.connected && !lostPage && !missedStep)) break;
-        if (browser.connected) { if (missedStep) repeated.add(name); continue; }
+        if (browser.connected) { if (missedStep) repeated.set(name, result.note.resetMisses || []); continue; }
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
         if (attempt === 1) break;
@@ -1053,6 +1094,8 @@ async function worker() {
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
     if (!ok && result.note.page) console.log(`       the page during the click steps: ${JSON.stringify(result.note.page)} (charts ${result.note.charts ?? '?'}, results ${result.note.cards ?? '?'}, text ${result.note.plain ?? '?'})`);
+    if (repeated.get(name)?.length) console.log(`       note: Reset, in the run that was repeated: ${repeated.get(name).join(' | ')}`);
+    if (result.note.resetMisses?.length) console.log(`       note: Reset was missed: ${result.note.resetMisses.join(' | ')}`);
     if (result.note.repeated) console.log('       note: done a second time, because a step was missed the first time; judged on the second run.');
     if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);

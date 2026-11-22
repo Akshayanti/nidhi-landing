@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly, pressUntilSent } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
@@ -406,5 +406,30 @@ describe('a run that only missed a step', () => {
     const steps = result.problems.filter((p) => p.includes('that step was not done'));
     assert.ok(steps.length > 0, result.problems.join(' | '));
     assert.equal(isMissedStepOnly(steps), true);
+  });
+});
+
+describe('pressUntilSent', () => {
+  it('stops at the first go whose event is seen', async () => {
+    let finds = 0;
+    const misses = await pressUntilSent({ find: async () => { finds++; return ['reset']; }, press: async () => null, sent: async () => true });
+    assert.deepEqual(misses, []);
+    assert.equal(finds, 1);
+  });
+
+  it('looks the button up again and says why each earlier go missed', async () => {
+    const buttons = [[], ['stale'], ['fresh']];
+    let seen = false;
+    const misses = await pressUntilSent({
+      find: async () => buttons.shift(),
+      press: async (el) => { if (el === 'stale') return 'detached'; seen = true; return null; },
+      sent: async () => seen,
+    });
+    assert.deepEqual(misses, ['go 1: no button found', 'go 2: detached; no event seen']);
+  });
+
+  it('gives up after its tries and says a click was made but sent nothing', async () => {
+    const misses = await pressUntilSent({ find: async () => ['reset'], press: async () => null, sent: async () => false });
+    assert.deepEqual(misses, [1, 2, 3].map((go) => `go ${go}: clicked; no event seen`));
   });
 });

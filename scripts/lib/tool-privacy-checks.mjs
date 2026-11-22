@@ -255,6 +255,26 @@ export function isMissedStepOnly(problems) {
 }
 
 /**
+ * Presses a step's buttons until its event is seen, looking them up again on
+ * each go: a handle taken earlier may point at a button since redrawn. `press`
+ * answers why a click was not made, or null when it was. Returns one line for
+ * each go that did not end with the event, to be printed with the run. It
+ * only does the step again: what any go sent is still checked, so a leak is
+ * not retried away.
+ */
+export async function pressUntilSent({ find, press, sent, tries = 3 }) {
+  const misses = [];
+  for (let go = 1; go <= tries; go++) {
+    const found = await find();
+    const why = [];
+    for (const el of found) why.push((await press(el)) ?? 'clicked');
+    if (found.length && (await sent())) return misses;
+    misses.push(`go ${go}: ${found.length ? `${why.join(', ')}; no event seen` : 'no button found'}`);
+  }
+  return misses;
+}
+
+/**
  * Judges the runs together. `runs` are `{ slug, consent, counts }`. For every
  * tool that had a run with consent, some run must have shown a $rageclick and
  * some run a $dead_click: both kinds of payload were then seen and checked
