@@ -41,7 +41,12 @@ for (const name of ['InflationCalculator', 'InvestOrPayOff', 'MonteCarloSimulato
       assert.doesNotMatch(source, /withheld=\{hasErrors/);
       assert.doesNotMatch(source, /<Withheld reason=\{hasErrors/);
       assert.doesNotMatch(source, /!hasErrors && <(ToolReport|PrintedReport)|report && !hasErrors/);
-      assert.match(source, /onClick=\{copyShareLink\} disabled=\{waiting\}/);
+      assert.match(source, /onClick=\{copyShareLink\} aria-disabled=\{waiting \|\| undefined\}/, 'Copy leaves the tab order');
+      assert.match(source, /if \(waiting\) return;/);
+    });
+    it('an ordinary settle says nothing, and a corrected box has nothing to fix (#793)', () => {
+      assert.match(source, /settling=\{/);
+      assert.doesNotMatch(source, /withheld \? strings\.results\.fix|: strings\.actions\.fix,/);
     });
     it('the form does not repeat the withheld reason (#793)', () => {
       assert.doesNotMatch(source, /className="ifc-hint (ifc|iop)-fix"|hasErrors && <span className="mcs-hint">/);

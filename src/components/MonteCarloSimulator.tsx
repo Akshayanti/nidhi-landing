@@ -601,21 +601,22 @@ export default function MonteCarloSimulator({
         busy={running}
         withheld={withheld ? {
           title: exportStrings.report.answer,
-          // A long run after a correction: nothing is left to fix.
-          reason: !hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : strings.actions.fix,
+          // After a correction nothing is left to fix: a long run says so, a short settle nothing.
+          reason: hasErrors ? strings.actions.fix : running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : '',
         } : null}
         strings={strings}
         actions={
           <ToolExport
             strings={exportStrings}
             share={
-              <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={waiting} data-attr="free-monte-carlo-share">
+              <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-monte-carlo-share">
                 <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
               </button>
             }
             xlsxAttr="free-monte-carlo-export-xlsx"
             pdfAttr="free-monte-carlo-export-pdf"
             ready={!waiting}
+            settling={waiting && !hasErrors && !running}
             onSpreadsheet={downloadSpreadsheet}
             onPrint={printPage}
           />

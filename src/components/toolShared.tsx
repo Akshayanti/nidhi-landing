@@ -128,7 +128,8 @@ export const WITHHELD_SAID_AFTER = 1000;
 export function Withheld({ reason, unsaid = false, children }: { reason: string | null; unsaid?: boolean; children: React.ReactNode }) {
   return (
     <div className="tool-result">
-      <div className={`tool-resultBody${reason ? ' tool-withheld' : ''}`} inert={Boolean(reason)}>{children}</div>
+      {/* An empty reason withholds too: a corrected box has nothing to fix while its result settles. */}
+      <div className={`tool-resultBody${reason !== null ? ' tool-withheld' : ''}`} inert={reason !== null}>{children}</div>
       {reason && !unsaid && <p className="tool-resultReason">{reason}</p>}
     </div>
   );

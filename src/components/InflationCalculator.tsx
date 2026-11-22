@@ -642,13 +642,14 @@ export default function InflationCalculator({
       <ToolExport
         strings={exportStrings}
         share={
-          <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={waiting} data-attr="free-inflation-share">
+          <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-inflation-share">
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
+        settling={waiting && !hasErrors && shownAnswer() !== null}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
@@ -1187,7 +1188,7 @@ function Results({
       <h2 id="ifc-results-h" className="ifc-resultsTitle">{strings.results.heading}</h2>
       <span className="ifc-srOnly" aria-live="polite">{withheld ? '' : announcement}</span>
       <ResultAnnouncement text={invalid ? strings.results.fix : ''} delay={WITHHELD_SAID_AFTER} />
-      <Withheld reason={withheld ? strings.results.fix : null}>
+      <Withheld reason={withheld ? (invalid ? strings.results.fix : '') : null}>
       {result === 'loading' ? (
         <p className="ifc-note" role="status">{strings.history.loading}</p>
       ) : (

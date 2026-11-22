@@ -535,7 +535,7 @@ export default function InvestOrPayOff({
           </div>
         </fieldset>
 
-              </form>
+      </form>
 
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
@@ -554,7 +554,7 @@ export default function InvestOrPayOff({
 
       <section className="ifc-results iop-results" aria-labelledby={id('results')}>
         <h2 id={id('results')} className="ifc-resultsTitle">{strings.results.heading}</h2>
-        <Withheld reason={withheld ? strings.results.fix : null}>
+        <Withheld reason={withheld ? (hasErrors ? strings.results.fix : '') : null}>
         {inflation === null && <p className="iop-note">{strings.country.needed}</p>}
         {problem && <p className="iop-note">{t(strings.problems[problem], { years: MAX_MONTHS / 12 })}</p>}
         {computed && (
@@ -579,7 +579,7 @@ export default function InvestOrPayOff({
         strings={exportStrings}
         share={
           <span className="iop-share">
-            <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={waiting} data-attr="free-invest-or-pay-off-share">
+            <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-invest-or-pay-off-share">
               <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
             </button>
             <span className="ifc-hint">{strings.actions.shareNote}</span>
@@ -588,6 +588,7 @@ export default function InvestOrPayOff({
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
         ready={!waiting && shownNow !== null}
+        settling={waiting && !hasErrors && shownNow !== null}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
