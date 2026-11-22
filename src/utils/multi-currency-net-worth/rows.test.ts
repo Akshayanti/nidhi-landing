@@ -122,3 +122,12 @@ describe('a redacted link is refused (#795)', () => {
     assert.deepEqual(refusal(list(6), { EUR: 1, USD: 1.1 }), { reason: 'rates', row: 2, count: 1 });
   });
 });
+
+describe('a tiny amount is not marked as unreadable (#789)', () => {
+  it('through the language switch', async () => {
+    const { canonicalNumber } = await import('../shared/parseLocaleNumber.ts');
+    const { encodeFullData, decodeFromQueryString } = await import('./url.ts');
+    const sent = encodeFullData([{ name: 'x', value: canonicalNumber('0.0000001', 'en'), currency: 'EUR', type: 'asset' }], 'EUR');
+    assert.equal(decodeFromQueryString(sent).rows[0].value, '0.0000001');
+  });
+});

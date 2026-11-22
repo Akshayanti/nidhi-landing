@@ -92,3 +92,12 @@ describe('what was already right', () => {
     assert.deepEqual([arrived?.amount, arrived?.rate, arrived?.years], ['?', '?', '?']);
   });
 });
+
+describe('a number just out of range is not rounded into it (#789)', () => {
+  for (const to of LOCALES) {
+    it(`growth of -99.99000000001, en to ${to}`, () => {
+      const arrived = carried(formWith({ growth: '-99.99000000001' }), 'en', to);
+      assert.ok(boxErrors(arrived, to).growth, arrived.growth);
+    });
+  }
+});

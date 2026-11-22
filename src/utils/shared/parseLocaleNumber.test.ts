@@ -304,3 +304,15 @@ describe('a number too long to print in digits by default (#520)', () => {
     assert.equal(parseLocaleNumber(`${huge}x`, 'en'), null, 'still not a number when it is not one');
   });
 });
+
+describe('a number in a link keeps every digit (#789)', () => {
+  it('displayNumber changes only the mark, below zero too', () => {
+    assert.equal(displayNumber('-99.99000000001', EN), '-99.99000000001');
+    assert.equal(displayNumber('-99.99000000001', ES), '-99,99000000001');
+  });
+  it('canonicalNumber writes a tiny number in plain digits', () => {
+    assert.equal(canonicalNumber('0.0000001', EN), '0.0000001');
+    assert.equal(canonicalNumber('0,00000000012', ES), '0.00000000012');
+    assert.equal(canonicalNumber(`0.${'0'.repeat(24)}5`, EN), `0.${'0'.repeat(24)}5`);
+  });
+});

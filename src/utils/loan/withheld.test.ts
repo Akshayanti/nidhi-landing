@@ -52,3 +52,15 @@ describe('a card that arrived holding the mark (#789)', () => {
   it('a whole box', () => assert.equal(marked({ ...makeDefaultVendor(0), annualRatePct: 'NaN' }), true));
   for (const lumps of ['NaN', 'NaN:500', '12:500;24:NaN']) it(`lump sums ${lumps}`, () => assert.equal(marked({ ...makeDefaultVendor(0), lumpSumsEncoded: lumps }), true));
 });
+
+describe('a tiny lump sum is not marked as unreadable (#789)', () => {
+  it('through a link', async () => {
+    const url = await import('./url.ts');
+    const lumpSumsEncoded = url.canonicalLumpSums('12:0.0000001', 'en');
+    const sent = url.encodeToQueryString(
+      [{ ...url.makeDefaultVendor(0), lumpSumsEncoded }, url.makeDefaultVendor(1)],
+      url.defaultGlobalState(),
+    );
+    assert.equal(url.decodeFromQueryString(sent).vendors[0].lumpSumsEncoded, '12:0.0000001');
+  });
+});
