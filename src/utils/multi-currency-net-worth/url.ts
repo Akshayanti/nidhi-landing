@@ -218,10 +218,12 @@ function encodePositionRedacted(pos: CurrencyPosition, concentration: number | n
   return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG, rateStatus(pos)]);
 }
 
+// Both are written with toFixed(), which spells 1e21 and above with an
+// exponent. That spelling is taken; no smaller exponent is.
 /** A share as a link writes it. */
-const SHARE_TEXT = /^-?\d+(\.\d+)?$/;
+const SHARE_TEXT = /^-?(\d+(\.\d+)?|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
 /** An amount as every writer has written it, to two decimals: one cut short, or spelt another way, is not one. */
-const AMOUNT_TEXT = /^-?\d+\.\d\d$/;
+const AMOUNT_TEXT = /^-?(\d+\.\d\d|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
 
 function decodePosition(code: string, packed: string): SharedPositionData | null {
   const [pctRaw = '', riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);

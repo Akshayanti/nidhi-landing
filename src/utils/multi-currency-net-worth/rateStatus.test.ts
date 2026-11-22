@@ -201,3 +201,25 @@ describe('a link names each currency once, and all say or none say (#795)', () =
     assert.equal(open(`m=r&f=EUR&${HIDDEN_EUR}&p_USD=33.3~moderate`).refused, 'link');
   });
 });
+
+describe('a link the tool writes opens, however large its amount (#795)', () => {
+  // From 1e21 toFixed() writes an exponent, and every writer has used toFixed().
+  for (const value of ['1000000000000000000000', '9999999999999999999999']) {
+    for (const type of ['asset', 'liability'] as const) {
+      it(`${type} of ${value}`, () => {
+        assert.equal(open(link([row(value, 'EUR', type), AWAY], { EUR: 1, CZK: 24 })).refused, undefined);
+      });
+    }
+  }
+  it('a share that large', () => {
+    const rows = [row('0.01', 'EUR'), row('100000000000000000000', 'CZK'), row('100000000000000000000', 'CZK', 'liability')];
+    assert.equal(open(link(rows, { EUR: 1, CZK: 24 })).refused, undefined);
+    const huge = open('m=f&f=EUR&n=1&a1=x~1000000000000000000000&p_EUR=1e%2B24~functional~1e%2B21~~k');
+    assert.equal(huge.refused, undefined);
+  });
+  for (const amount of ['1e%2B2', '1e21', '1e-7', '1e%2B']) {
+    it(`no other exponent: ${amount}`, () => {
+      assert.equal(open(`m=f&f=EUR&n=1&a1=x~100&p_EUR=100.0~functional~${amount}~~k`).refused, 'link');
+    });
+  }
+});
