@@ -215,6 +215,53 @@ describe('net worth spreadsheet', () => {
   });
 });
 
+describe('net worth with every rate missing (#795)', () => {
+  const rows: AssetRow[] = [
+    { name: 'Savings', value: '1000', currency: 'EUR', type: 'asset' },
+    { name: 'Fund', value: '3000', currency: 'CZK', type: 'asset' },
+  ];
+  const senders = { 'no answer': null, 'an answer without them': { EUR: 1 } as Record<string, number> };
+
+  for (const locale of LOCALES) {
+    const t = DICTS[locale].tools;
+    const island = t.multiCurrencyNetWorth.island;
+    const x = island.export as typeof island.export & { meaningShares?: string; meaningRates?: string };
+    const [, shareSentence, rateSentence] = x.meaningShares ? ['', x.meaningShares, x.meaningRates!] : x.meaning.split(/(?<=[.।]) /);
+    const told = (result: ReturnType<typeof aggregate>, showAmounts: boolean) => {
+      const base = { island, common: t.export, functionalCurrency: 'EUR', result, riskLabel: (l: string) => l, rows: null, rates: null, showAmounts };
+      const table = sheet(netWorthSheets({ ...base, date: DATE, page: PAGE }), island.export.sheets.byCurrency).rows;
+      return { table, words: table.flat().map((c) => (c && typeof c === 'object' && 't' in c ? c.t : c)), report: netWorthReport({ ...base, answer: ['a'] }) };
+    };
+
+    for (const [name, rates] of Object.entries(senders)) {
+      it(`${locale}, ${name}: original amounts, no total, share, band, bar or sentence about them`, () => {
+        const { table, words, report } = told(aggregate(rows, 'EUR', rates), true);
+        const gone = [x.sharePct, x.exposurePct, island.chart.tableColRisk, island.results.totalLabel, island.results.totalPartial];
+        for (const word of gone) assert.ok(!words.includes(word), `${word} is still there`);
+        assert.equal(num(table.find((r) => r[1] === 'CZK')![2]), 3000, 'the original amount stays');
+        assert.ok(words.includes(island.results.rateUnavailable), 'nothing says why');
+        assert.equal(report.chart, null);
+        assert.ok(!report.meaning.includes(shareSentence), 'explains shares it does not show');
+        assert.ok(!report.meaning.includes(rateSentence), 'says amounts were converted');
+      });
+    }
+
+    it(`${locale}: some rates missing explain no share, and still the conversion`, () => {
+      const some = [...rows, { name: 'Shares', value: '2000', currency: 'USD', type: 'asset' } as AssetRow];
+      const { report } = told(aggregate(some, 'EUR', { EUR: 1, USD: 1.1 }), true);
+      assert.ok(!report.meaning.includes(shareSentence), 'explains shares it does not show');
+      assert.ok(report.meaning.includes(rateSentence));
+    });
+
+    it(`${locale}: a view without amounts is not this case`, () => {
+      const whole = aggregate(rows, 'EUR', { EUR: 1, CZK: 24 });
+      const { words, report } = told({ ...whole, hasRates: 'none', totalNetWorthFunctional: 0 }, false);
+      assert.ok(words.includes(x.sharePct));
+      assert.ok(report.meaning.includes(shareSentence));
+    });
+  }
+});
+
 describe('net worth with a missing rate (#795)', () => {
   const rows: AssetRow[] = [
     { name: 'Savings', value: '1000', currency: 'EUR', type: 'asset' },

@@ -16,7 +16,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { getCurrency } from '../loan/math.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { concentrationShares, getCurrencyLabel, isSingleCurrency, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
+import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
 
 type Island = Dict['tools']['multiCurrencyNetWorth']['island'];
 type Common = Dict['tools']['export'];
@@ -83,10 +83,11 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
 
   // Everything in the spending currency needs no rates, as on the page.
   const single = isSingleCurrency(result, fc);
-  const converted = single || result.hasRates !== 'none';
-  // With a missing rate the total is a subtotal, and nothing is a share of it (#795).
-  const partial = !single && result.hasRates === 'partial';
-  const shareColumns = partial ? [] : [x.sharePct, x.exposurePct, island.chart.tableColRisk];
+  const gap = rateGap(result, fc, showAmounts);
+  const converted = single || gap !== null || result.hasRates !== 'none';
+  // Nothing is a share of a subtotal, or of no total (#795).
+  const partial = gap === 'some';
+  const shareColumns = gap ? [] : [x.sharePct, x.exposurePct, island.chart.tableColRisk];
   const header = showAmounts
     ? [island.chart.tableColCurrency, x.code, x.netOwn, ...(converted ? [format(x.netSpending, { currency: fc })] : []), ...shareColumns]
     : [island.chart.tableColCurrency, x.code, ...shareColumns];
@@ -97,18 +98,18 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
     const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
     const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
-    const shareCells: Cell[] = partial ? [] : [pctCell, exposureCell, e.riskLabel(p.riskLevel)];
+    const shareCells: Cell[] = gap ? [] : [pctCell, exposureCell, e.riskLabel(p.riskLevel)];
     if (!showAmounts) return [name(p.code), p.code, ...shareCells];
     return [
       name(p.code),
       p.code,
       money(p.netAmountOriginal, p.code),
-      ...(converted ? [p.rateUnavailable ? island.results.rateUnavailable : money(single ? p.netAmountOriginal : p.netAmountFunctional, fc)] : []),
+      ...(converted ? [p.rateUnavailable ? island.results.rateUnavailable : money(single || gap === 'all' ? p.netAmountOriginal : p.netAmountFunctional, fc)] : []),
       ...shareCells,
     ];
   });
   const totals: Cell[][] = [];
-  if (showAmounts && converted) {
+  if (showAmounts && converted && gap !== 'all') {
     const total = single ? result.positions[0].netAmountOriginal : result.totalNetWorthFunctional;
     totals.push([], [{ t: partial ? island.results.totalPartial : island.results.totalLabel, bold: true }, fc, null, money(total, fc)]);
     if (rows && single) {

@@ -5,6 +5,7 @@ import {
   decodeCsv,
   getCurrencyLabel,
   isSingleCurrency,
+  rateGap,
   concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
@@ -289,6 +290,7 @@ export default function MultiCurrencyNetWorth({
   // Everything in the spending currency needs no exchange rates, so the rate
   // banners (loading, unavailable) do not apply.
   const singleCurrency = isSingleCurrency(result, functionalCurrency);
+  const noRateAtAll = rateGap(result, functionalCurrency, !(isReadOnlyView && sharedRedacted)) === 'all';
 
   // ---- Row operations ----
 
@@ -573,7 +575,8 @@ export default function MultiCurrencyNetWorth({
       {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesError && !ratesLoading)) && (
         <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
           <span>
-            {strings.rates.partial}
+            {/* Without any rate there is no total below to be left out of. */}
+            {noRateAtAll ? strings.rates.errorBefore : strings.rates.partial}
           </span>
         </div>
       )}
@@ -1028,7 +1031,7 @@ function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strin
   if (!hidden && result.positions.length > 0) {
     if (isSingleCurrency(result, functionalCurrency)) {
       total = formatMoney(Math.round(result.positions[0].netAmountOriginal * getFactor(functionalCurrency)), functionalCurrency);
-    } else if (result.hasRates !== 'none') {
+    } else if (result.hasRates !== 'none' && rateGap(result, functionalCurrency, true) !== 'all') {
       total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency);
     }
   }
@@ -1112,14 +1115,17 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
   // 'full' or 'partial' = converted total is meaningful (partial is a sum
   // of the positions whose rate was returned; the missing-rate banner
   // tells the user that the total is incomplete).
-  const ratesUsable = result.hasRates !== 'none';
+  const gap = rateGap(result, functionalCurrency, !hideAmounts);
+  const ratesUsable = result.hasRates !== 'none' && gap !== 'all';
   // A currency without a rate is in no total: what is left is a subtotal, and
   // no share, band or chart can be drawn from it (#795).
-  const partial = result.hasRates === 'partial';
+  const partial = gap === 'some';
+  // Rates still on the way are not yet unavailable.
+  const waiting = ratesLoading && !ratesError && result.hasRates === 'none';
   const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
   // Without a band to say "debt", the amount carries its sign.
   const cardMoney = (value: number, code: string) =>
-    formatMoney(Math.round((partial ? value : Math.abs(value)) * getFactor(code)), code).replace(/^-/, '\u2212');
+    formatMoney(Math.round((gap ? value : Math.abs(value)) * getFactor(code)), code).replace(/^-/, '\u2212');
   const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
   const totalLabel = !hideAmounts && ratesUsable
     ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace(/^-/, '\u2212')
@@ -1153,30 +1159,30 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
       <Withheld reason={withheld} unsaid>
 
       {/* Donut chart */}
-      {!partial && <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />}
+      {!gap && <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />}
 
       {/* Risk cards */}
       <div className="mcnw-riskCards">
         <h3 className="mcnw-riskCardsTitle">{strings.results.riskHeading}</h3>
         {result.positions.map((pos) => (
-          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${partial || pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
+          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${gap || pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
             <div className="mcnw-riskCardHead">
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable ? (
-                  <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
-                ) : hidePct || partial ? (
+                  !waiting && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
                   pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
-                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{cardMoney(pos.netAmountFunctional, functionalCurrency)}</Amount></>}
+                {!hideAmounts && gap !== 'all' && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{cardMoney(pos.netAmountFunctional, functionalCurrency)}</Amount></>}
                 {/* Unconverted, in its own currency, from the rows. */}
-                {!hideAmounts && pos.rateUnavailable && <> · <Amount>{cardMoney(pos.netAmountOriginal, pos.code)}</Amount></>}
+                {!hideAmounts && (pos.rateUnavailable || gap === 'all') && <> · <Amount>{cardMoney(pos.netAmountOriginal, pos.code)}</Amount></>}
               </span>
-              {!partial && (
+              {!gap && (
                 <span
                   className="mcnw-riskBadge"
                   style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
@@ -1188,8 +1194,8 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, ratesLoadin
             </div>
             {/* With no rate, the paragraph below says so once (#618); the head
                 already reads "Rate unavailable". */}
-            {!partial && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
-            {(!partial || pos.rateUnavailable) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
+            {!gap && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
+            {(!gap || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
           </div>
         ))}
       </div>
@@ -1220,6 +1226,7 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
   if (result.positions.length === 0) answer.push(r.empty);
   else if (!showAmounts) answer.push(`${r.totalLabel}: ${r.hidden}`);
   else if (single) answer.push(`${r.totalLabel}: ${money(result.positions[0].netAmountOriginal)}`);
+  else if (rateGap(result, functionalCurrency, true) === 'all') answer.push(r.rateUnavailable);
   else if (result.hasRates !== 'none') {
     answer.push(`${result.hasRates === 'partial' ? r.totalPartial : r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
     if (result.hasRates === 'partial') answer.push(r.partialHint);

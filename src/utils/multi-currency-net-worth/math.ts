@@ -216,6 +216,7 @@ export function aggregate(
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
     positions.sort((a, b) => Math.abs(b.netAmountOriginal) - Math.abs(a.netAmountOriginal));
+    for (const pos of positions) if (!pos.isFunctional) pos.rateUnavailable = true;
     return { positions, totalNetWorthFunctional: 0, hasRates: 'none' };
   }
 
@@ -355,6 +356,18 @@ function assessRisk(
 export function isSingleCurrency(result: AggregationResult, functionalCurrency: string): boolean {
   const code = functionalCurrency.toUpperCase();
   return result.positions.length > 0 && result.positions.every((p) => p.code === code);
+}
+
+/**
+ * What missing rates leave to show (#795). 'some': a subtotal, and nothing is
+ * a share of it. 'all': original amounts, with no total either. A view without
+ * amounts has nothing original to show, so it is never 'all'.
+ */
+export function rateGap(result: AggregationResult, functionalCurrency: string, showAmounts: boolean): 'some' | 'all' | null {
+  if (isSingleCurrency(result, functionalCurrency)) return null;
+  const others = result.positions.filter((p) => !p.isFunctional);
+  if (showAmounts && others.length > 0 && others.every((p) => p.rateUnavailable)) return 'all';
+  return result.hasRates === 'partial' ? 'some' : null;
 }
 
 /** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */

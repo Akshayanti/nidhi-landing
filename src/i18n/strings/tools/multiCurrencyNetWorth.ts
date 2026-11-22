@@ -261,7 +261,9 @@ export const multiCurrencyNetWorthEn = {
     /** The spreadsheet's own sheets and columns; the rest reuses the labels below. */
     export: {
       /** The printed report's "What this means": interprets the answer, never advises. */
-      meaning: 'Net worth is what you own minus what you owe. Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in. Amounts in other currencies are converted at the rates loaded on the page, which change every day.',
+      meaning: 'Net worth is what you own minus what you owe.',
+      meaningShares: 'Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in.',
+      meaningRates: 'Amounts in other currencies are converted at the rates loaded on the page, which change every day.',
       tool: 'Multi-currency net worth calculator',
       hiddenLabel: 'Amounts',
       hiddenText: 'Not included: this shared view carries currencies and shares only.',
@@ -716,7 +718,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
   island: {
     currencies: currenciesHi,
     export: {
-      meaning: 'शुद्ध संपत्ति यानी आपके पास जो है, उसमें से आप पर जो बकाया है वह घटाकर बची रकम। हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी ख़र्च वाली मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है। दूसरी मुद्राओं की रकमें पेज पर लोड हुई दरों से रूपांतरित की गई हैं, जो रोज़ बदलती हैं।',
+      meaning: 'शुद्ध संपत्ति यानी आपके पास जो है, उसमें से आप पर जो बकाया है वह घटाकर बची रकम।',
+      meaningShares: 'हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी ख़र्च वाली मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है।',
+      meaningRates: 'दूसरी मुद्राओं की रकमें पेज पर लोड हुई दरों से रूपांतरित की गई हैं, जो रोज़ बदलती हैं।',
       tool: 'शुद्ध संपत्ति कैलकुलेटर',
       hiddenLabel: 'रकम',
       hiddenText: 'शामिल नहीं: इस शेयर किए गए व्यू में सिर्फ़ मुद्राएँ और उनके हिस्से हैं।',
@@ -1138,7 +1142,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   island: {
     currencies: currenciesEs,
     export: {
-      meaning: 'El patrimonio neto es lo que tienes menos lo que debes. La parte de cada moneda muestra cuánto se mueve cuando esa moneda sube o baja frente a la que usas para gastar. Los importes en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
+      meaning: 'El patrimonio neto es lo que tienes menos lo que debes.',
+      meaningShares: 'La parte de cada moneda muestra cuánto se mueve cuando esa moneda sube o baja frente a la que usas para gastar.',
+      meaningRates: 'Los importes en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
       tool: 'Calculadora de patrimonio neto',
       hiddenLabel: 'Importes',
       hiddenText: 'No incluidos: esta vista compartida solo trae monedas y porcentajes.',
@@ -1569,7 +1575,9 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
   island: {
     currencies: currenciesCs,
     export: {
-      meaning: 'Čisté jmění je to, co vlastníte, minus to, co dlužíte. Podíl každé měny ukazuje, jak velká část se pohne, když tato měna posílí nebo oslabí vůči měně, ve které utrácíte. Částky v ostatních měnách jsou přepočteny pomocí kurzů načtených na stránce, které se mění každý den.',
+      meaning: 'Čisté jmění je to, co vlastníte, minus to, co dlužíte.',
+      meaningShares: 'Podíl každé měny ukazuje, jak velká část se pohne, když tato měna posílí nebo oslabí vůči měně, ve které utrácíte.',
+      meaningRates: 'Částky v ostatních měnách jsou přepočteny pomocí kurzů načtených na stránce, které se mění každý den.',
       tool: 'Kalkulačka čistého jmění',
       hiddenLabel: 'Částky',
       hiddenText: 'Nejsou zahrnuty: toto sdílené zobrazení obsahuje jen měny a podíly.',
@@ -1961,7 +1969,9 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
   island: {
     currencies: currenciesMr,
     export: {
-      meaning: 'निव्वळ संपत्ती म्हणजे तुमच्याकडे जे आहे त्यातून तुम्ही देणे असलेले वजा करून उरलेली रक्कम. प्रत्येक चलनाचा हिस्सा दाखवतो की ते चलन तुम्ही खर्च करता त्या चलनाच्या तुलनेत वर-खाली झाल्यावर निव्वळ संपत्तीचा किती भाग बदलतो. इतर चलनांतील रकमा पेजवर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
+      meaning: 'निव्वळ संपत्ती म्हणजे तुमच्याकडे जे आहे त्यातून तुम्ही देणे असलेले वजा करून उरलेली रक्कम.',
+      meaningShares: 'प्रत्येक चलनाचा हिस्सा दाखवतो की ते चलन तुम्ही खर्च करता त्या चलनाच्या तुलनेत वर-खाली झाल्यावर निव्वळ संपत्तीचा किती भाग बदलतो.',
+      meaningRates: 'इतर चलनांतील रकमा पेजवर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
       tool: 'निव्वळ संपत्ती कॅल्क्युलेटर',
       hiddenLabel: 'रक्कम',
       hiddenText: 'समाविष्ट नाही: या शेअर केलेल्या दृश्यात फक्त चलने आणि त्यांचे हिस्से आहेत.',
