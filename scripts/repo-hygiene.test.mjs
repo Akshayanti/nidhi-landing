@@ -110,6 +110,40 @@ describe('deploy workflow permissions', () => {
   });
 });
 
+describe('the required checks run on every pull request', () => {
+  const REQUIRED = {
+    'pr-checks.yml': ['Detect changes', 'Install (lockfile integrity)', 'Lint', 'Type check', 'Tests', 'npm audit (high+)', 'Build (static)', 'Remotion'],
+    'tool-privacy.yml': ['No typed value reaches analytics'],
+  };
+  for (const [file, names] of Object.entries(REQUIRED)) {
+    const text = read(join('.github/workflows', file));
+    const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
+    const triggers = text.slice(text.indexOf('\non:\n'), text.indexOf('\npermissions:'));
+
+    it(`${file}: keeps the names branch protection waits for`, () => {
+      for (const name of names) assert.ok(jobs.some((job) => job.includes(`\n    name: ${name}\n`)), name);
+    });
+
+    it(`${file}: starts on every pull request, with no branch or path selection`, () => {
+      assert.match(triggers, /^ {2}pull_request:$/m);
+      assert.doesNotMatch(triggers, /^ +(paths|paths-ignore|branches|branches-ignore):/m);
+    });
+
+    it(`${file}: no job is chosen by what changed`, () => {
+      for (const job of jobs) {
+        const id = job.slice(2, job.indexOf(':'));
+        const condition = /\n {4}if: (.*)/.exec(job);
+        if (condition) assert.equal(condition[1], '${{ !cancelled() }}', `job ${id}`);
+      }
+      assert.doesNotMatch(text, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
+    });
+
+    it(`${file}: a manual, a scheduled and a pull request run never cancel one another`, () => {
+      assert.match(text, /\n {2}group: [a-z-]+-\$\{\{ github\.event_name \}\}-/);
+    });
+  }
+});
+
 describe('every workflow', () => {
   const workflows = readdirSync(join(ROOT, '.github/workflows'))
     .filter((name) => /\.ya?ml$/.test(name))

@@ -365,8 +365,8 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     // The required check keeps its name, waits for every tool, and runs after a failure.
     const required = workflow.slice(workflow.indexOf('\n  verify:\n'));
     assert.ok(required.includes('name: No typed value reaches analytics'));
-    assert.ok(required.includes('needs: [changes, verify-tool]'));
-    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) && /);
+    assert.ok(required.includes('needs: [verify-tool]'));
+    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) \}\}\n/);
     assert.ok(required.includes('[ "$TOOLS" != "success" ]'));
   });
 
