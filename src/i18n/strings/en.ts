@@ -1259,6 +1259,8 @@ export const en = {
     /** Under the text once 20 people have confirmed, rounded down to a multiple of 20 (src/utils/newsletterCount.ts). */
     readers: '{n}+ readers get new lessons by email.',
     emailLabel: 'Email address',
+    /** In the empty field, as its label is not shown: one short word, so it fits at a large text size (#641). */
+    emailPlaceholder: 'Email',
     button: 'Subscribe',
     /** Split around the link, so a translation can move it inside the sentence. */
     privacyBefore: 'Double opt-in. Unsubscribe anytime. ',
@@ -1315,6 +1317,8 @@ export const en = {
     /** After the heading: the beta reward, with a link to /beta/ (left out on that page). */
     beta: { before: "Beta testers get the paid features free for 12 months after launch. ", link: "How the beta works" },
     emailLabel: 'Email address',
+    /** In the empty field, as its label is not shown: one short word, so it fits at a large text size (#641). */
+    emailPlaceholder: 'Email',
     cta: 'Notify me',
     /** Split around the link, so a translation can move it inside the sentence. */
     privacyBefore: 'One email when access opens. ',
