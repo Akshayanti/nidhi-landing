@@ -10,7 +10,7 @@
  */
 import { serializeParams } from './compactUrl.ts';
 import { UNREADABLE } from './linkInput.ts';
-import { completeNumber, parseLocaleNumber } from './parseLocaleNumber.ts';
+import { completeNumber, parseLocaleNumber, plainDigits } from './parseLocaleNumber.ts';
 
 /** The longest number a box may carry in a link, as in linkInput.ts. */
 const MAX_LENGTH = 200;
@@ -23,8 +23,7 @@ export function boxValue(raw: string, locale: string): string {
   if (raw.trim() === '') return '';
   const n = parseLocaleNumber(completeNumber(raw, locale), locale, { allowNegative: true });
   if (n === null) return UNREADABLE;
-  // String() writes the very large and the very small with an exponent.
-  const plain = String(n).includes('e') ? n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 20 }) : String(n);
+  const plain = plainDigits(n);
   return plain.length <= MAX_LENGTH ? plain : UNREADABLE;
 }
 

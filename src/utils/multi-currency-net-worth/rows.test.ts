@@ -131,3 +131,15 @@ describe('a tiny amount is not marked as unreadable (#789)', () => {
     assert.equal(decodeFromQueryString(sent).rows[0].value, '0.0000001');
   });
 });
+
+describe('a CSV amount is written in plain digits (#789)', () => {
+  for (const value of ['0.0000001', '1000000000000000000000']) {
+    it(value, async () => {
+      const { parseCSV } = await import('./math.ts');
+      const { encodeFullData, decodeFromQueryString } = await import('./url.ts');
+      const { rows } = parseCSV(`name,value,currency\na,${value},EUR\n`, { asset: [], liability: [] });
+      assert.equal(rows[0].value, value);
+      assert.equal(decodeFromQueryString(encodeFullData(rows, 'EUR')).rows[0].value, value);
+    });
+  }
+});

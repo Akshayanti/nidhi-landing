@@ -5,7 +5,7 @@
 
 import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
 import { unguardText } from '../shared/exportFile.ts';
-import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+import { parseLocaleNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -481,7 +481,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
     // "€100") is refused, never guessed at.
     const read = parseLocaleNumber(valueStr, separator === ',' ? 'en' : 'es');
     const value = read === null ? NaN : read;
-    if (read !== null) valueStr = String(read);
+    if (read !== null) valueStr = plainDigits(read);
     if (!Number.isFinite(value) || value <= 0) {
       errors.push({
         line: lineNum,

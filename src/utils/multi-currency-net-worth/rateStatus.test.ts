@@ -223,3 +223,12 @@ describe('a link the tool writes opens, however large its amount (#795)', () => 
     });
   }
 });
+
+describe('a number too large to be one is refused, never zero (#795)', () => {
+  it('an amount', () => {
+    assert.equal(open('m=f&f=EUR&a1=x~100&a2=y~100~USD&p_EUR=50.0~functional~100.00~~k&p_USD=50.0~moderate~1e%2B309~~k').refused, 'link');
+  });
+  it('a share', () => {
+    assert.equal(open('m=f&f=EUR&a1=x~100&p_EUR=1e%2B309~functional~100.00~~k').refused, 'link');
+  });
+});

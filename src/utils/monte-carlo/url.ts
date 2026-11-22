@@ -23,6 +23,7 @@
  */
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
+import { plainDigits } from '../shared/parseLocaleNumber.ts';
 import { DEFAULT_PATHS, RUN_OPTIONS, sanitizeInputs, type ReturnSetting, type SimulationInputs } from './math.ts';
 
 export interface ToolState extends SimulationInputs {
@@ -56,8 +57,8 @@ export const STATE_KEY_PATTERN = `[${STATE_KEYS.join('')}]`;
 export function encodeState(state: ToolState): string {
   const p = new URLSearchParams();
   // As decodeState reads them: String() writes 0.0000001 as "1e-7", which is
-  // refused, and more than ten decimals are refused too.
-  const plain = (n: number) => n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 10 });
+  // refused. No decimal is rounded away: 0.00000000001 left as 0 (#789).
+  const plain = plainDigits;
   setNonDefault(p, 'c', state.currency, DEFAULTS.currency);
   setNonDefault(p, 's', plain(state.start), DEFAULTS.start);
   setNonDefault(p, 'm', plain(state.monthly), DEFAULTS.monthly);
@@ -107,7 +108,7 @@ export function decodeState(search: string): ToolState | null {
     // would also read "0x10" as 16, "1e3" as 1000 and " 12 " as 12, none of
     // which a link made here ever holds. A minus sign is read, and the range
     // check then brings the number back to zero.
-    if (!/^-?\d{1,15}(\.\d{1,10})?$/.test(raw)) return dflt;
+    if (!/^-?\d{1,15}(\.\d{1,200})?$/.test(raw)) return dflt;
     const n = Number(raw);
     return Number.isFinite(n) ? n : dflt;
   };

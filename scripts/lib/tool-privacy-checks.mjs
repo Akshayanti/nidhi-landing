@@ -140,6 +140,8 @@ export function shortLeaks(event) {
       add(shortInAddress(value));
     }
   };
+  // The name is the site's own too. Its words are joined with underscores.
+  add(shortIn(String(event.event ?? '').replace(/_/g, ' ')));
   walk(event.properties || {}, true);
   for (const key of ['$set', '$set_once']) walk(event[key], true);
   return [...found];

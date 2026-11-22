@@ -229,6 +229,7 @@ function decodePosition(code: string, packed: string): SharedPositionData | null
   const [pctRaw = '', riskRaw = 'low', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
   if (!SHARE_TEXT.test(pctRaw)) return null;
   const pct = Number(pctRaw);
+  if (!Number.isFinite(pct)) return null;
 
   const riskLevel: RiskLevel = isValidRiskLevel(riskRaw) ? riskRaw : 'low';
 
@@ -248,7 +249,7 @@ function amountsRead(params: URLSearchParams): boolean {
   for (const [key, value] of params) {
     if (!key.startsWith('p_') || !KNOWN_CURRENCIES.has(key.slice(2).toUpperCase())) continue;
     const amount = decodeTuple(value, 3)[2];
-    if (!AMOUNT_TEXT.test(amount)) return false;
+    if (!AMOUNT_TEXT.test(amount) || !Number.isFinite(Number(amount))) return false;
   }
   return true;
 }

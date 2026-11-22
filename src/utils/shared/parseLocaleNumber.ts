@@ -157,14 +157,17 @@ export function canonicalNumber(raw: string, locale: string): string {
   // From 1e21 up a number prints as "1e+21", which no engine here reads: a
   // 22-digit loan amount was answered with "greater than zero" (#520). Plain
   // digits, so the engine can say it is too large.
-  return Math.abs(n) >= 1e21 ? n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 }) : plainDigits(n);
+  return plainDigits(n);
 }
 
 /**
- * Below a millionth String() writes an exponent, which a link refuses: a valid
- * 0.0000001 arrived as unreadable (#789). Every digit is kept, none rounded.
+ * A number as a link carries it. String() writes an exponent from 1e21 up and
+ * below a millionth, which a link refuses: a valid 0.0000001 arrived as
+ * unreadable, and rounded to ten or twenty decimals an invalid one arrived as
+ * a valid zero (#789). Every digit is kept, none rounded.
  */
-function plainDigits(n: number): string {
+export function plainDigits(n: number): string {
+  if (Math.abs(n) >= 1e21) return n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 });
   const [mantissa, exponent] = String(n).split('e-');
   if (exponent === undefined) return mantissa;
   const digits = mantissa.replace(/[-.]/g, '');

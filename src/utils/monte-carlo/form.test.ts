@@ -149,3 +149,15 @@ describe('a remembered withdrawal travels with withdrawals off (#789)', () => {
     });
   }
 });
+
+describe('a tiny number is never rounded on the way (#789)', () => {
+  for (const [field, value] of [['start', '0.00000000012'], ['start', '0.00000000001'], ['monthly', '1.00000000001'], ['saveYears', '0.000000000000000000001']] as const) {
+    it(`${field} ${value}`, async () => {
+      const { DEFAULTS: plan } = await import('./url.ts');
+      const form = { ...toForm(plan), [field]: value };
+      const back = formFromLink(publishableForm(form, 'EUR'))!;
+      assert.equal(Number(back[field]), Number(value));
+      assert.equal(Boolean(formErrors(back)[field]), Boolean(formErrors(form)[field]));
+    });
+  }
+});

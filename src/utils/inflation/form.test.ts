@@ -101,3 +101,11 @@ describe('a number just out of range is not rounded into it (#789)', () => {
     });
   }
 });
+
+describe('a tiny invalid number does not arrive valid (#789)', () => {
+  for (const to of LOCALES) {
+    it(`years of 1e-21, en to ${to}`, () => {
+      assert.ok(boxErrors(carried(formWith({ years: '0.000000000000000000001' }), 'en', to), to).years);
+    });
+  }
+});

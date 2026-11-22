@@ -549,3 +549,13 @@ describe('a short value in a request body (P2)', () => {
     assert.match(script, /planted-body/);
   });
 });
+
+describe('a short value in an event’s name (P2)', () => {
+  it('is found', () => {
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_term 347', properties: {} }), ['347']);
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_term_347', properties: {} }), ['347']);
+  });
+  it('and not inside an ordinary one', () => {
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_exported', properties: {} }), []);
+  });
+});
