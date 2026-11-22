@@ -19,8 +19,8 @@ export const NAMES = ['Zqxvora Bank', 'Wjkpelt Flat'];
  *
  * An amount has seven digits and a rate two decimals, so either is looked for
  * in everything sent. Years and months are short: they are looked for where
- * an event or an address holds values (shortLeaks), and are above any count
- * of rows, offers or tabs the tools send.
+ * an event, an address or a body holds values (shortLeaks, shortInBody), and
+ * are above any count of rows, offers or tabs the tools send.
  *
  * `reveal` is pressed first, where the box is not showing, and `after` last; `addRow` adds the row a value
  * needs; `steps` moves a slider that many keys from its lowest value.
@@ -109,6 +109,11 @@ function shortIn(text) {
 export function shortInAddress(address) {
   const from = String(address).search(/[?#]/);
   return from < 0 ? [] : shortIn(String(address).slice(from));
+}
+
+/** The short values in a body sent to anyone but PostHog: all of it is the site's own. */
+export function shortInBody(body) {
+  return shortIn(String(body ?? ''));
 }
 
 /**
@@ -345,7 +350,9 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
     // The text as sent, and every string inside it as the receiver reads it
     // (a JSON escape such as \u005a is one letter once decoded).
     const texts = [d.text, d.url, d.json ? strings(d.json).join('\n') : ''].map(variants);
-    const leaks = new Set([...texts.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url)]);
+    // A body without events is read as an event's properties are.
+    const inBody = d.json && typeof d.json === 'object' && !carriesEvents(d.url) ? shortLeaks({ properties: d.json }) : [];
+    const leaks = new Set([...texts.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
     if (leaks.size) problems.push(`a request to ${where} carries what was typed: ${[...leaks].join(', ')}`);
     if (texts.some((t) => /\b(blob|data):[^"\s]{4,}/i.test(t))) problems.push(`a request to ${where} carries a blob: or data: address`);
     const file = texts.map((t) => /[\w%-]+\.(xlsx|csv|pdf)\b/i.exec(t)).find(Boolean);

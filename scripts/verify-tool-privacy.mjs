@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -321,7 +321,7 @@ async function watch(page, requests, problems, note) {
     // The part after the # is left out: a browser keeps it and sends it to no one.
     if (!note.opening.has(req.url())) {
       const sentTo = req.url().split('#')[0];
-      const leaks = [...findLeaks(`${sentTo} ${posthog ? '' : req.postData() || ''}`), ...shortInAddress(sentTo)];
+      const leaks = [...findLeaks(`${sentTo} ${posthog ? '' : req.postData() || ''}`), ...shortInAddress(sentTo), ...(posthog ? [] : shortInBody(req.postData()))];
       if (leaks.length) problems.push(`a ${req.isNavigationRequest() ? 'page load' : 'request'} to ${url.hostname}${url.pathname} carries what was typed in its address${posthog ? '' : ' or body'}: ${leaks.join(', ')}`);
     }
 
@@ -843,14 +843,17 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     note.opening.delete(base + address);
     await waitForTool(page);
     if (PLANT) {
-      // One leak through analytics, holding the value of every box, and one
-      // through an image on the site's own server.
-      await page.evaluate((amount, values) => {
+      // One leak through analytics, holding the value of every box, one
+      // through an image on the site's own server, and one of the short
+      // values alone, in a body sent there.
+      const short = expectedLeaks(tool.boxes).filter((value) => /^\d{1,3}$/.test(value));
+      await page.evaluate((amount, values, shortValues) => {
+        if (shortValues.length) fetch('/planted-body', { method: 'POST', body: shortValues.join(' ') }).catch(() => {});
         window.posthog.capture('free_planted_leak', { amount, values });
         const img = document.createElement('img');
         img.src = `/?planted=${amount}`;
         document.body.appendChild(img);
-      }, A1, tool.boxes.map((box) => String(box.value)));
+      }, A1, tool.boxes.map((box) => String(box.value)), short);
     }
   };
   // The page's last events go out as it unloads, while the abort still applies.
@@ -1092,10 +1095,12 @@ async function worker() {
     }
     if (repeated.has(name)) result.note.repeated = true;
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
-    // Both planted leaks are found, the event sent to PostHog and the image
-    // asked of the site's own server, and nothing else is wrong with the run.
+    // Every planted leak is found, the event sent to PostHog, the image asked
+    // of the site's own server and the short values in a body, and nothing
+    // else is wrong with the run.
     const leaks = result.problems.filter((p) => p.includes('carries what was typed'));
     const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length
+      && (!expectedLeaks(BOXES[job.slug]).some((value) => /^\d{1,3}$/.test(value)) || leaks.some((p) => /^a request to 127\.0\.0\.1\/planted-body /.test(p)))
       // Every box's value was recognised, not only the amount.
       && expectedLeaks(BOXES[job.slug]).every((value) => leaks.some((p) => p.split(': ').pop().split(', ').includes(value)));
     const ok = PLANT ? caught : result.problems.length === 0;

@@ -522,3 +522,30 @@ describe('afterRun: what was found is never retried away', () => {
     assert.doesNotMatch(worker, /lostPage|!PLANT && hasFinding/);
   });
 });
+
+describe('a short value in a request body (P2)', () => {
+  for (const [name, body] of Object.entries({ form: 'months=347&other=1', json: '{"term":"347"}', text: 'term 347', encoded: 'state%3D347' })) {
+    it(`to any host: ${name}`, () => {
+      assert.ok(checks.shortInBody, 'no check of a body');
+      assert.deepEqual(checks.shortInBody(body), ['347']);
+    });
+  }
+  it('none in a body without one', () => {
+    assert.ok(checks.shortInBody, 'no check of a body');
+    assert.deepEqual(checks.shortInBody('{"id":"a347b","size":3470,"rate":1.347}'), []);
+  });
+  it('to PostHog, in a request that holds no event', () => {
+    const extraRequests = [{ url: 'https://eu.i.posthog.com/flags/?v=2', body: gzipSync(JSON.stringify({ person_properties: { term: '347' } })) }];
+    const { problems } = judge(cleanEvents(), { extraRequests });
+    assert.ok(problems.some((p) => p.includes('/flags/ carries what was typed: 347')), problems.join('\n'));
+  });
+  it('not PostHog’s own measurements there', () => {
+    const extraRequests = [{ url: 'https://eu.i.posthog.com/flags/?v=2', body: gzipSync(JSON.stringify({ token: TEST_KEY, person_properties: { $screen_width: 347 } })) }];
+    assert.ok(!judge(cleanEvents(), { extraRequests }).problems.some((p) => p.includes('/flags/ carries what was typed')));
+  });
+  it('the browser check reads bodies with it, and plants one', () => {
+    const script = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8');
+    assert.match(script, /shortInBody\(req\.postData\(\)/);
+    assert.match(script, /planted-body/);
+  });
+});
