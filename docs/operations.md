@@ -26,12 +26,19 @@ An edit made in the Apps Script editor shows up as a difference too: copy it bac
 
 ## Deploying a script
 
-1. Open the project in the Apps Script editor and paste the whole file over the old one.
+For each script a pull request changes, once its checks pass:
+
+1. Open the project in the Apps Script editor and paste the whole file from the pull request's branch over the old one.
 2. Deploy → Manage deployments → pencil → Version: **New version** → Deploy. The `/exec` address stays the same. (A *new deployment* would give a new address, which the site does not know.)
 3. If Google asks for new permissions, read the list and approve.
-4. Run the "Apps Script versions" workflow by hand, or `curl` the health action: the version must match `main`, and `ok` must be true.
+4. Check the deployment by hand: `curl -sL "<exec address>?action=health"` must report `ok` true and the `version` of the branch's file (`npm run gs:check` on that branch prints it). The workflow cannot check this yet: it checks out `main`.
 
-**Order:** a pull request that changes both a script and the site says so. Deploy the script first, from the pull request's branch, once its checks pass, then merge. When a change needs a one-off step (a new trigger, a new property), the pull request lists it.
+Then, once every changed script is deployed and checked:
+
+5. Merge. If a script changes again on the branch before that, repeat steps 1 to 4 for it.
+6. Run the "Apps Script versions" workflow by hand: production and `main` must now agree.
+
+**Order:** deploy from the branch, check by hand, merge, run the workflow. Between the deploy and the merge, a run of the workflow (nightly or after a site deploy) reports a difference, which is expected, so keep that time short. A pull request that changes both a script and the site says so. When a change needs a one-off step (a new trigger, a new property), the pull request lists it.
 
 **Rollback:** Manage deployments → pencil → pick the earlier version → Deploy. The version check then reports a difference until `main` is reverted too, which is correct.
 
@@ -68,7 +75,7 @@ Set in Project Settings → Script properties. Values marked secret never go in 
 
 ## Tokens and rotation
 
-The scripts hold only the SHA-256 of each read token, so the source can be public. To rotate one: make a new token (`openssl rand -hex 32`), put its SHA-256 in the file, run `npm run gs:version`, merge, deploy a New version, then set the new token where it is used.
+The scripts hold only the SHA-256 of each read token, so the source can be public. To rotate one: make a new token (`openssl rand -hex 32`), put its SHA-256 in the file, run `npm run gs:version`, deploy from the branch and check it, set the new token where it is used, then merge and run the workflow ("Deploying a script").
 
 | Token | Hash in | Plain token lives in |
 |---|---|---|
