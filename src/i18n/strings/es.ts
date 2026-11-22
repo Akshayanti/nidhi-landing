@@ -521,7 +521,7 @@ export const es: Dict = {
   beta: {
     meta: {
       title: "Beta gratuita del planificador financiero personal | nidhi",
-      description: "Beta gratuita del planificador de nidhi, solo por invitación. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
+      description: "Beta gratuita del planificador de nidhi, solo por invitación desde la lista de espera. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
     },
     title: "La beta del planificador",
     lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y está previsto que se abra en enero de 2027. El acceso puede abrirse antes, por etapas.",

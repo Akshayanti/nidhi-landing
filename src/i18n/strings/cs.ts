@@ -496,7 +496,7 @@ export const cs: Dict = {
   beta: {
     meta: {
       title: "Beta osobního finančního plánovače zdarma | nidhi",
-      description: "Beta plánovače nidhi je zdarma a jen na pozvánku. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
+      description: "Beta plánovače nidhi je zdarma a jen na pozvánku z čekací listiny. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
     },
     title: "Beta plánovače",
     lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevřít se má v lednu 2027. Přístup se může otevírat i dřív, postupně.",
