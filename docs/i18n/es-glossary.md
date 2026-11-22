@@ -217,7 +217,7 @@ listed is not re-decided per page.
 | waitlist | lista de espera | |
 | newsletter | boletín | |
 | share link | enlace para compartir | |
-| beliefs (page) | en qué creemos | |
+| beliefs (page) | en qué creo | «En qué creemos» only in the privacy notice, which speaks as we. |
 | editorial policy | política editorial | |
 | personal finance | finanzas personales | |
 | financial literacy | educación financiera | |

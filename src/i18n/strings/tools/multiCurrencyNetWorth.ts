@@ -106,7 +106,7 @@ export const multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'How the calculation works',
       intro:
-        'For each currency, we net your assets and liabilities, then convert the result to your spending currency using the latest official exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
+        'For each currency, the calculator nets your assets and liabilities, then converts the result to your spending currency using the latest official exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
       formula:
         'Concentration % = (Net in currency X × Rate to spending currency) / Total net worth × 100',
       items: [
@@ -174,7 +174,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'What is my spending currency?',
           a:
-            'Your spending currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We leave it out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
+            'Your spending currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. It is left out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
         },
         {
           q: 'What do “low”, “moderate”, and “elevated” mean?',
@@ -573,7 +573,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'हिसाब कैसे लगता है',
       intro:
-        'हर मुद्रा में हम आपकी संपत्तियों में से देनदारियाँ (liabilities) घटाकर शुद्ध स्थिति निकालते हैं, फिर उसे ताज़ा विनिमय दरों (exchange\u00A0rates) पर आपकी खर्च की मुद्रा में बदल देते हैं। इन बदली हुई रकमों को जोड़ें, और आपको एक ही मुद्रा में अपनी कुल शुद्ध संपत्ति मिल जाती है। उस कुल में हर मुद्रा का हिस्सा ही उसका जमाव है:',
+        'हर मुद्रा में कैलकुलेटर आपकी संपत्तियों में से देनदारियाँ (liabilities) घटाकर शुद्ध स्थिति निकालता है, फिर उसे ताज़ा विनिमय दरों (exchange\u00A0rates) पर आपकी खर्च की मुद्रा में बदल देता है। इन बदली हुई रकमों को जोड़ें, और आपको एक ही मुद्रा में अपनी कुल शुद्ध संपत्ति मिल जाती है। उस कुल में हर मुद्रा का हिस्सा ही उसका जमाव है:',
       formula: 'जमाव % = (मुद्रा X में शुद्ध रकम × खर्च की मुद्रा में दर) / कुल शुद्ध संपत्ति × 100',
       items: [
         {
@@ -640,7 +640,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'मेरी खर्च की मुद्रा (spending\u00A0currency) क्या है?',
           a:
-            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर “खर्च की मुद्रा” का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
+            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर “खर्च की मुद्रा” का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से इसे अलग रखा जाता है, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
         },
         {
           q: '“कम”, “मध्यम” और “ज़्यादा” का क्या मतलब है?',
@@ -995,7 +995,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'Cómo se hace el cálculo',
       intro:
-        'Para cada moneda, restamos tus pasivos de tus activos y convertimos el resultado a la moneda en la que gastas con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
+        'Para cada moneda, la calculadora resta tus pasivos de tus activos y convierte el resultado a la moneda en la que gastas con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
       formula:
         'Concentración % = (Neto en la moneda X × Tipo de cambio a la moneda en la que gastas) / Patrimonio neto total × 100',
       items: [
@@ -1063,7 +1063,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Cuál es la moneda en la que gasto?',
           a:
-            'La moneda en la que gastas es la de tu vida diaria: aquella en la que están tus facturas, tu alquiler y la compra del día a día. La dejamos fuera de los niveles porque los movimientos del tipo de cambio no cambian directamente lo que compra, a precios locales, el dinero que tienes en la moneda en la que gastas.',
+            'La moneda en la que gastas es la de tu vida diaria: aquella en la que están tus facturas, tu alquiler y la compra del día a día. Queda fuera de los niveles porque los movimientos del tipo de cambio no cambian directamente lo que compra, a precios locales, el dinero que tienes en la moneda en la que gastas.',
         },
         {
           q: '¿Qué significan «bajo», «moderado» y «elevado»?',
@@ -1429,7 +1429,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'Jak výpočet funguje',
       intro:
-        'U každé měny odečteme vaše závazky od aktiv a výsledek převedeme do měny vašich výdajů podle aktuálních kurzů. Součet převedených pozic je vaše celkové čisté jmění v jedné měně. Podíl každé měny na tomto celku je vaše koncentrace:',
+        'U každé měny kalkulačka odečte vaše závazky od aktiv a výsledek převede do měny vašich výdajů podle aktuálních kurzů. Součet převedených pozic je vaše celkové čisté jmění v jedné měně. Podíl každé měny na tomto celku je vaše koncentrace:',
       formula:
         'Koncentrace v % = (Čistá pozice v měně X × Kurz k měně výdajů) / Celkové čisté jmění × 100',
       items: [
@@ -1497,7 +1497,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           q: 'Co je měna mých výdajů?',
           a:
-            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Z pásem ji vynecháváme, protože pohyby kurzů přímo nemění, co si za peníze v měně svých výdajů koupíte za místní ceny.',
+            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Do pásem se nezapočítává, protože pohyby kurzů přímo nemění, co si za peníze v měně svých výdajů koupíte za místní ceny.',
         },
         {
           q: 'Co znamenají „Nízká“, „Střední“ a „Zvýšená“?',
@@ -1847,7 +1847,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
     explainer: {
       heading: 'हिशेब कसा होतो',
-      intro: 'प्रत्येक चलनासाठी आम्ही तुमची मालमत्ता आणि देणी (liabilities) यांची निव्वळ रक्कम काढतो, आणि मग चालू विनिमय दरांनी (exchange rates) ती तुमच्या खर्चाच्या चलनात बदलतो. बदललेल्या या सर्व स्थितींची बेरीज म्हणजे एका चलनातील तुमची एकूण निव्वळ संपत्ती. त्या एकूण रकमेतील प्रत्येक चलनाचा हिस्सा म्हणजे त्या चलनातील एकवटलेली गुंतवणूक:',
+      intro: 'प्रत्येक चलनासाठी कॅल्क्युलेटर तुमची मालमत्ता आणि देणी (liabilities) यांची निव्वळ रक्कम काढतो, आणि मग चालू विनिमय दरांनी (exchange rates) ती तुमच्या खर्चाच्या चलनात बदलतो. बदललेल्या या सर्व स्थितींची बेरीज म्हणजे एका चलनातील तुमची एकूण निव्वळ संपत्ती. त्या एकूण रकमेतील प्रत्येक चलनाचा हिस्सा म्हणजे त्या चलनातील एकवटलेली गुंतवणूक:',
       formula: 'हिस्सा % = (चलन X मधील निव्वळ रक्कम × खर्चाच्या चलनाचा दर) / एकूण निव्वळ संपत्ती × 100',
       items: [
         {
@@ -1902,7 +1902,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
         {
           q: 'माझे खर्चाचे चलन (spending currency) कोणते?',
-          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. आम्ही ते पट्ट्यांमधून वगळतो, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात स्थानिक किमतींना तुम्हाला काय मिळते ते थेट बदलत नाही.',
+          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. ते पट्ट्यांमधून वगळले जाते, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात स्थानिक किमतींना तुम्हाला काय मिळते ते थेट बदलत नाही.',
         },
         {
           q: '“कमी”, “मध्यम” आणि “जास्त” यांचा अर्थ काय?',

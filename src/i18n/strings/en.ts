@@ -99,7 +99,7 @@ export const en = {
       about: 'About nidhi',
       beliefs: 'What I believe',
       editorialPolicy: 'Editorial policy',
-      contact: 'Contact us',
+      contact: 'Contact',
       email: 'Email',
       instagram: 'Instagram',
       beta: "Planner beta",
@@ -535,7 +535,7 @@ export const en = {
       anyCountry:
         'The lessons are written for readers anywhere, not for one country. The ideas they teach, such as net worth, diversification or how inflation shrinks savings, work the same way everywhere. The rules around those ideas do not: tax, retirement and tax-advantaged accounts, state pensions and benefits, credit scoring, deposit protection and consumer law differ from country to country, and sometimes within one. Lessons explain the general idea on purpose. Where one depends on rules like these, it says so, and a “Where to check locally” note after the lesson names the usual places to check them where you live, such as your tax authority, your financial regulator or a qualified local adviser. Examples are often in euros; that is a choice of currency, not a sign that a rule is European. Where evidence comes from one country\'s data, such as US stock market history, the lesson says that too, along with what it may not tell you about other markets.',
       sourcesAndFigures:
-        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under “Suggested Reading,” so you can follow the trail rather than take our word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
+        'Claims rest on primary and reputable secondary sources: established books, recognised reference material and public data. Where a lesson draws on specific sources, they are listed on the lesson itself under “Suggested Reading,” so you can follow the trail rather than take my word for it. Figures a reader could act on are given with their source and what they cover, and lessons are checked against each other so that the same quantity carries the same value. Rules of thumb with no single source are labelled as rules of thumb. If you find a figure that is neither sourced nor labelled, or two lessons that disagree, see Corrections below. Worked examples use realistic numbers, and where a number is illustrative rather than a forecast, the lesson says so. Exchange rates in the free tools are reference rates from central banks and other official sources, dated on screen.',
       aiUsed1:
         "nidhi uses AI tools, including Anthropic's Claude and other AI agents, in its work. They help research, draft and edit lessons; check lessons against this page; question the financial reasoning in a lesson or a tool from the point of view of an experienced adviser; and build the site and its free tools. Separate AI agents are set against each other's work on purpose, to catch what one of them misses.",
       aiUsed2: {
@@ -548,7 +548,7 @@ export const en = {
         // small change rather than a side effect of this one. Hindi keeps the
         // space, because its sentence is being written now, not moved.
         before:
-          'AI output is a draft, never a source. A person is involved at every stage, and reads and approves every lesson before it is published. An AI model asked to think like a financial adviser is a check on reasoning, not advice from a licensed professional. The site itself sends nothing you type or do to an AI service; what we collect is described in the ',
+          'AI output is a draft, never a source. A person is involved at every stage, and reads and approves every lesson before it is published. An AI model asked to think like a financial adviser is a check on reasoning, not advice from a licensed professional. The site itself sends nothing you type or do to an AI service; what the site collects is described in the ',
         link: 'privacy notice',
         after: '.',
       },
@@ -556,7 +556,7 @@ export const en = {
         'nidhi is not a licensed financial adviser, and nothing on the site is personal financial, investment or tax advice. Lessons do not recommend specific products, funds or securities. Past performance of any investment is not indicative of future results. For decisions that depend on your tax residency, legal situation or risk tolerance, a qualified professional can apply these ideas to your circumstances.',
       corrections: {
         before:
-          'If something is wrong, we want to fix it. Spot an error, an out-of-date figure or a claim that no longer holds, and email ',
+          'If something is wrong, I want to fix it. Spot an error, an out-of-date figure or a claim that no longer holds, and email ',
         after:
           '. Substantive corrections are made in the lesson and reflected in its “Updated” date, so the change is visible rather than quietly swapped in. Minor fixes such as typos are made without a date change.',
       },
@@ -1270,7 +1270,7 @@ export const en = {
     alreadySubscribed: 'I already subscribed',
     notNow: 'Not now',
     successTitle: 'Check your inbox',
-    successBefore: 'We sent a confirmation link to ',
+    successBefore: 'A confirmation link is on its way to ',
     successAfter: '. Click the button in that email to finish subscribing. Takes a second.',
     /** Stands in for the address until the script fills in the one typed. */
     yourEmail: 'your email',
@@ -1287,12 +1287,12 @@ export const en = {
     confirmChange: 'Change it',
     noScript: 'Signing up needs JavaScript, which is off or blocked in this browser. You can also write to hello@nidhi.today.',
     undo: 'Undo',
-    dismissedPermanent: 'Thanks for subscribing! We won’t show this banner on this device again.',
-    dismissedLater: 'We’ll check back later.',
+    dismissedPermanent: 'Thanks for subscribing! This banner won’t show on this device again.',
+    dismissedLater: 'This banner will be back later.',
     sending: 'Sending…',
     notConfigured: 'Subscriptions are not configured yet. Check back soon, or grab the RSS feed.',
     /** Shown when the outcome is not known (no answer, an error page): the request may have worked, and a repeat changes nothing. */
-    error: 'We couldn’t tell whether that went through. Please try again; trying twice is safe.',
+    error: 'It’s not clear whether that went through. Please try again; trying twice is safe.',
     /** Shown when the day's limit is reached: nothing was written. The same for every address, so it says nothing about who is on the list. */
     busy: 'Sign-ups are paused for today. Please try again tomorrow.',
     /** Shown when the script refused the address. */
@@ -1326,7 +1326,7 @@ export const en = {
     privacyAfter: '.',
     successTitle: "You're on the list",
     /** Also true for an address already on the list: the page never says which case it is. */
-    successBody: "We'll send you one email when access opens. That's it. An address already on the list stays on it once.",
+    successBody: "You’ll get one email when access opens. That’s it. An address already on the list stays on it once.",
     /** On the home page, for a browser that has already joined: shown with `successTitle` instead of the form. */
     rememberedBody: 'This browser remembers that you joined, so it shows this note instead of the form. On another browser or device the form still appears; there is no need to sign up again.',
     /** The check shown before anything is sent, with the typed address after it. */
@@ -1339,7 +1339,7 @@ export const en = {
     /** Shown when the build has no endpoint configured, so a signup cannot land. */
     notConfigured: 'Signups are not configured yet. Check back soon.',
     /** Shown when the outcome is not known (no answer, an error page): the request may have worked, and a repeat changes nothing. */
-    error: 'We couldn’t tell whether that went through. Please try again; trying twice is safe.',
+    error: 'It’s not clear whether that went through. Please try again; trying twice is safe.',
     /** Shown when the day's limit is reached: nothing was written. The same for every address, so it says nothing about who is on the list. */
     busy: 'Sign-ups are paused for today. Please try again tomorrow.',
     /** Shown when the script refused the address. */

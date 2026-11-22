@@ -192,7 +192,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The simulation runs in your browser and the numbers you type are not sent to us or anyone else. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
+          a: 'No. The simulation runs in your browser and the numbers you type are not sent to nidhi or anyone else. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
         },
         {
           q: 'Is this financial advice?',
@@ -574,7 +574,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े हमें या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
+          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े nidhi को या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',
@@ -907,7 +907,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
-          a: 'No. La simulación se ejecuta en tu navegador y los números que escribes no se nos envían ni a nosotros ni a nadie más. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
+          a: 'No. La simulación se ejecuta en tu navegador y los números que escribes no se envían ni a nidhi ni a nadie más. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
@@ -1242,7 +1242,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Posílají se moje data někam?',
-          a: 'Ne. Simulace běží ve vašem prohlížeči a čísla, která zadáte, se neposílají nám ani nikomu jinému. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
+          a: 'Ne. Simulace běží ve vašem prohlížeči a čísla, která zadáte, se neposílají nidhi ani nikomu jinému. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
         },
         {
           q: 'Je to finanční poradenství?',
@@ -1563,7 +1563,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
-          a: 'नाही. सिम्युलेशन तुमच्या ब्राउझरमध्ये चालते आणि तुम्ही लिहिलेले आकडे आम्हाला किंवा इतर कोणालाही पाठवले जात नाहीत. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते.',
+          a: 'नाही. सिम्युलेशन तुमच्या ब्राउझरमध्ये चालते आणि तुम्ही लिहिलेले आकडे nidhi ला किंवा इतर कोणालाही पाठवले जात नाहीत. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते.',
         },
         {
           q: 'हा आर्थिक सल्ला आहे का?',

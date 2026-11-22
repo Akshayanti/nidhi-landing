@@ -289,7 +289,7 @@ note records why this one won.
 | waitlist | प्रतीक्षा यादी | |
 | newsletter | न्यूजलेटर | |
 | share link | शेअर लिंक | |
-| beliefs (page) | आमची तत्त्वे | Contested (मूल्ये, श्रद्धा). The page states principles. |
+| beliefs (page) | माझी तत्त्वे; आमची तत्त्वे only in the privacy notice, which speaks as we | Contested (मूल्ये, श्रद्धा). The page states principles. |
 | editorial policy | संपादकीय धोरण | |
 | personal finance | वैयक्तिक वित्त | Contested. |
 | financial literacy | आर्थिक साक्षरता | |

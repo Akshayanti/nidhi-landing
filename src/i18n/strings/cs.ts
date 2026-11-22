@@ -41,7 +41,7 @@ export const cs: Dict = {
     homeLabel: 'úvodní stránka',
     tagline: 'Peníze srozumitelně',
     newTabHint: ' (otevře se na nové kartě)',
-    groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O nás', language: 'Jazyk' },
+    groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O webu', language: 'Jazyk' },
     buttons: { tools: 'Nástroje zdarma', learn: 'Lekce' },
     items: {
       blog: 'Vzdělávací cesta',
@@ -79,7 +79,7 @@ export const cs: Dict = {
     columns: {
       learn: 'Lekce',
       tools: 'Nástroje zdarma',
-      about: 'O nás',
+      about: 'O webu',
       connect: 'Kontakt',
     },
     links: {
@@ -166,7 +166,7 @@ export const cs: Dict = {
         moneyManagement: 'Správa peněz',
       },
       breadcrumbHome: 'Domů',
-      breadcrumbAbout: 'O nás',
+      breadcrumbAbout: 'O nidhi',
     },
     title: 'O nidhi',
     intro:
@@ -386,7 +386,7 @@ export const cs: Dict = {
       howALessonIsBuilt: 'Jak lekce vzniká',
       anyCountry: 'Psáno pro kteroukoli zemi',
       sourcesAndFigures: 'Zdroje a čísla',
-      ai: 'Jak používáme AI',
+      ai: 'Jak se používá AI',
       advice: 'Vzdělávání, ne poradenství',
       corrections: 'Opravy',
       whoIsBehind: 'Kdo za tím stojí',
@@ -421,12 +421,12 @@ export const cs: Dict = {
       anyCountry:
         'Lekce jsou psané pro čtenáře kdekoli, ne pro jednu zemi. Myšlenky, které učí, například čisté jmění, diverzifikace nebo to, jak inflace ukrajuje z úspor, fungují všude stejně. Pravidla kolem nich ne: daně, důchodové a daňově zvýhodněné účty, státní důchody a dávky, úvěrové skóre, pojištění vkladů a spotřebitelské právo se liší země od země a někdy i uvnitř jedné země. Lekce vysvětlují obecnou myšlenku záměrně. Kde něco na takových pravidlech závisí, řeknou to, a poznámka „Where to check locally“ (kde si to ověřit u vás) na konci lekce jmenuje obvyklá místa, kde si je ověřit tam, kde žijete, například finanční úřad, regulátora finančního trhu nebo kvalifikovaného místního poradce. Příklady bývají v eurech; je to volba měny, ne znamení, že jde o evropské pravidlo. Kde doklady pocházejí z dat jedné země, například z historie amerického akciového trhu, lekce to také řekne, spolu s tím, co vám tato data nemusejí říct o jiných trzích.',
       sourcesAndFigures:
-        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „Suggested Reading“ (k dalšímu čtení), aby šlo stopu sledovat, místo věřit nám na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
+        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „Suggested Reading“ (k dalšímu čtení), aby šlo stopu sledovat, místo věřit mi na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
       aiUsed1:
-        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Výstupy různých agentů AI necháváme záměrně vzájemně kontrolovat, aby zachytili to, co některý z nich přehlédne.',
+        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Různí agenti AI si záměrně kontrolují práci navzájem, aby zachytili to, co některý z nich přehlédne.',
       aiUsed2: {
         before:
-          'Výstup AI je koncept, nikdy zdroj. Člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Model AI, který má uvažovat jako finanční poradce, je kontrolou úvahy, ne radou od odborníka s příslušným oprávněním. Web sám neposílá nic z toho, co napíšete nebo uděláte, žádné službě AI; co sbíráme, popisují ',
+          'Výstup AI je koncept, nikdy zdroj. Člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Model AI, který má uvažovat jako finanční poradce, je kontrolou úvahy, ne radou od odborníka s příslušným oprávněním. Web sám neposílá nic z toho, co napíšete nebo uděláte, žádné službě AI; co web sbírá, popisují ',
         link: 'zásady ochrany soukromí',
         after: '.',
       },
@@ -434,7 +434,7 @@ export const cs: Dict = {
         'nidhi není finanční poradce s příslušným oprávněním a nic na tomto webu není osobní finanční, investiční ani daňové poradenství. Lekce nedoporučují konkrétní produkty, fondy ani cenné papíry. Minulá výkonnost žádné investice nezaručuje budoucí výsledky. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, může tyto myšlenky na vaši situaci uplatnit kvalifikovaný odborník.',
       corrections: {
         before:
-          'Pokud je něco špatně, chceme to opravit. Když narazíte na chybu, zastaralé číslo nebo tvrzení, které už neplatí, napište na ',
+          'Pokud je něco špatně, chci to opravit. Když narazíte na chybu, zastaralé číslo nebo tvrzení, které už neplatí, napište na ',
         after:
           '. Podstatné opravy se provádějí přímo v lekci a promítnou se do jejího data „Updated“ (aktualizováno), aby byla změna vidět, místo aby se tiše vyměnila. Drobnosti, jako jsou překlepy, se opravují bez změny data.',
       },
@@ -1036,7 +1036,7 @@ export const cs: Dict = {
     alreadySubscribed: 'Už odebírám',
     notNow: 'Teď ne',
     successTitle: 'Zkontrolujte svou schránku',
-    successBefore: 'Poslali jsme potvrzovací odkaz na adresu ',
+    successBefore: 'Potvrzovací odkaz je na cestě na adresu ',
     successAfter: '. Odběr dokončíte kliknutím na tlačítko v tom e-mailu. Zabere to vteřinu.',
     yourEmail: 'váš e-mail',
     hintBefore: 'Ani po minutě nepřišel žádný e-mail? Pokud tato adresa už odběr má, nic se nemění a nový e-mail nepřijde. Jinak zkontrolujte spam, nebo ',
@@ -1050,8 +1050,8 @@ export const cs: Dict = {
     confirmChange: 'Změnit',
     noScript: 'K přihlášení je potřeba JavaScript, který je v tomto prohlížeči vypnutý nebo blokovaný. Můžete také napsat na hello@nidhi.today.',
     undo: 'Vrátit zpět',
-    dismissedPermanent: 'Děkujeme za odběr! Na tomto zařízení už tento banner neukážeme.',
-    dismissedLater: 'Vrátíme se k tomu později.',
+    dismissedPermanent: 'Díky za odběr! Na tomto zařízení se už tento banner nezobrazí.',
+    dismissedLater: 'Tento banner se později zase zobrazí.',
     sending: 'Odesílání…',
     notConfigured: 'Odběr zatím není nastavený. Zkuste to brzy znovu, nebo použijte kanál RSS.',
     error: 'Nepodařilo se zjistit, jestli to prošlo. Zkuste to prosím znovu; druhý pokus nic nepokazí.',
@@ -1074,7 +1074,7 @@ export const cs: Dict = {
     privacyLink: 'Zásady ochrany soukromí',
     privacyAfter: '.',
     successTitle: 'Jste na seznamu',
-    successBody: 'Až se přístup otevře, pošleme vám jeden e-mail. Nic víc. Pokud už adresa na seznamu je, zůstane na něm jen jednou.',
+    successBody: 'Až se přístup otevře, přijde vám jeden e-mail. Nic víc. Pokud už adresa na seznamu je, zůstane na něm jen jednou.',
     rememberedBody: 'Tento prohlížeč si pamatuje vaši registraci, proto místo formuláře ukazuje tuto poznámku. V jiném prohlížeči nebo zařízení se formulář zobrazí znovu; znovu se registrovat není potřeba.',
     confirmPrompt: 'Je tato adresa správná?',
     confirmYes: 'Ano, dejte mi vědět',

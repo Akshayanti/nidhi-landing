@@ -420,7 +420,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | lesson | पाठ |
 | topic | विषय |
 | level | स्तर |
-| About (the nav and footer group) | हमारे बारे में | Distinct from its first link, nidhi के बारे में, so the menu does not say the same thing twice. |
+| About (the nav and footer group) | परिचय | Distinct from its first link, nidhi के बारे में, so the menu does not say the same thing twice. |
 | a level named in a template | {level} स्तर | A template writes the word स्तर after the name and keeps the verb शुरू away from it, because the first level is called शुरुआत. |
 | the six level names | शुरुआत, निर्माण, मनोविज्ञान, निखार, निपुणता, सबके लिए वित्त. Building was बनाना, which reads as a verb (and as "banana"); Optimizing was अनुकूलन, which reads as adaptation. |
 | free tools | मुफ़्त टूल |
@@ -438,7 +438,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | theme | थीम |
 | language | भाषा |
 | about nidhi | nidhi के बारे में |
-| contact us | हमसे संपर्क करें |
+| contact | संपर्क करें |
 | page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
 | Prague | प्राग | Devanagari, as Indian Hindi writing has it. It appears once, in the beliefs page's `foundingLocation`. |
 | Money, understood (brand tagline) | पैसे की समझ, एकदम सहज | Owner, 2026-11-06; replaces पैसा, समझ आ गया। See below. |

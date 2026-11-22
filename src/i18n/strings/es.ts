@@ -56,7 +56,7 @@ export const es: Dict = {
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
       editorialPolicy: 'Política editorial',
-      contact: 'Contáctanos',
+      contact: 'Contacto',
       email: 'Correo electrónico',
       instagram: 'Instagram',
       beta: "Beta del planificador",
@@ -444,14 +444,14 @@ export const es: Dict = {
       anyCountry:
         'Las lecciones están escritas para quien lea desde cualquier lugar, no para un solo país. Las ideas que enseñan, como el patrimonio neto, la diversificación o cómo la inflación reduce el valor de los ahorros, funcionan igual en todas partes. Las reglas en torno a esas ideas no: los impuestos, la jubilación y las cuentas con ventajas fiscales, las pensiones y ayudas públicas, la puntuación de crédito, la protección de los depósitos y la legislación de protección al consumidor cambian de un país a otro, y a veces dentro de un mismo país. Las lecciones explican la idea general a propósito. Cuando una lección depende de reglas como estas, lo dice, y una nota «Where to check locally» (dónde consultarlo en tu país) al final de la lección indica los lugares habituales para comprobarlas allí donde vives, como tu autoridad fiscal, tu regulador financiero o un asesor local acreditado. Los ejemplos suelen estar en euros; es una elección de moneda, no una señal de que una regla sea europea. Cuando la evidencia viene de los datos de un solo país, como el historial de la bolsa de EE. UU., la lección también lo dice, junto con lo que quizá no te diga sobre otros mercados.',
       sourcesAndFigures:
-        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «Suggested Reading» (para seguir leyendo), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
+        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «Suggested Reading» (para seguir leyendo), para que puedas seguir la pista en lugar de fiarte de mi palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
       aiUsed1:
         'nidhi usa herramientas de IA en su trabajo, entre ellas Claude, de Anthropic, y otros agentes de IA. Ayudan a investigar, redactar y editar las lecciones; a revisar las lecciones frente a esta página; a cuestionar el razonamiento financiero de una lección o de una herramienta desde el punto de vista de un asesor con experiencia; y a construir el sitio y sus herramientas gratuitas. Distintos agentes de IA se enfrentan a propósito al trabajo de los demás, para detectar lo que a uno se le escapa.',
       aiUsed2: {
         // Spanish keeps the space before the link; the English's missing
         // space is a known bug in that page only.
         before:
-          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
+          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recoge el sitio se describe en el ',
         link: 'aviso de privacidad',
         after: '.',
       },
@@ -459,7 +459,7 @@ export const es: Dict = {
         'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
-          'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
+          'Si algo está mal, quiero corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
         after:
           '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «Updated» (actualizado), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
       },
@@ -507,7 +507,7 @@ export const es: Dict = {
       say: { lead: 'Voz en las palabras:', rest: ' ayuda a decidir cómo explica nidhi el dinero en tu idioma.' },
       credit: {
         lead: 'Crédito, si lo quieres:',
-        rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que lo quitemos en cualquier momento.',
+        rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que se quite en cualquier momento.',
       },
       beta: {
         lead: "Invitación a la beta del planificador, si la quieres:",
@@ -1073,7 +1073,7 @@ export const es: Dict = {
     alreadySubscribed: 'Ya me suscribí',
     notNow: 'Ahora no',
     successTitle: 'Revisa tu correo',
-    successBefore: 'Hemos enviado un enlace de confirmación a ',
+    successBefore: 'Un enlace de confirmación va de camino a ',
     successAfter: '. Haz clic en el botón de ese correo para completar la suscripción. Es un momento.',
     yourEmail: 'tu correo',
     hintBefore: '¿No te ha llegado nada en un minuto? Si esta dirección ya estaba suscrita, no cambia nada y no llega ningún correo nuevo. Si no, revisa el spam o ',
@@ -1087,11 +1087,11 @@ export const es: Dict = {
     confirmChange: 'Cambiarla',
     noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     undo: 'Deshacer',
-    dismissedPermanent: '¡Gracias por suscribirte! No volveremos a mostrar este aviso en este dispositivo.',
-    dismissedLater: 'Volveremos a preguntar más adelante.',
+    dismissedPermanent: '¡Gracias por suscribirte! Este aviso no volverá a aparecer en este dispositivo.',
+    dismissedLater: 'Este aviso volverá a aparecer más adelante.',
     sending: 'Enviando…',
     notConfigured: 'Las suscripciones aún no están configuradas. Vuelve pronto o suscríbete al feed RSS.',
-    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    error: 'No se ha podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
     busy: 'Las suscripciones están en pausa por hoy. Inténtalo de nuevo mañana.',
     invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },
@@ -1112,7 +1112,7 @@ export const es: Dict = {
     privacyLink: 'Aviso de privacidad',
     privacyAfter: '.',
     successTitle: 'Ya estás en la lista',
-    successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',
+    successBody: 'Recibirás un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',
     rememberedBody: 'Este navegador recuerda que te apuntaste, así que muestra esta nota en lugar del formulario. En otro navegador o dispositivo seguirá apareciendo el formulario; no hace falta apuntarse otra vez.',
     confirmPrompt: '¿Es correcta esta dirección?',
     confirmYes: 'Sí, avísame',
@@ -1120,7 +1120,7 @@ export const es: Dict = {
     noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     sending: 'Enviando…',
     notConfigured: 'Las inscripciones aún no están configuradas. Vuelve pronto.',
-    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    error: 'No se ha podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
     busy: 'Las altas están en pausa por hoy. Inténtalo de nuevo mañana.',
     invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },

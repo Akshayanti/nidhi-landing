@@ -1368,7 +1368,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया हमें इसकी सूचना दें।',
+          'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
       },
@@ -2005,7 +2005,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avísanos, por favor.',
+          'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avisa del error, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
       },
@@ -2640,7 +2640,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste nám to prosím.',
+          'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste to prosím.',
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
       },
@@ -3247,7 +3247,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         newLoan: 'नवीन कर्ज वैध नाही.',
       },
       warnings: {
-        precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे आम्हाला कळवा.',
+        precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे कळवा.',
         subsequentRate: 'सुरुवातीच्या ठरावीक कालावधीनंतरचा दर इतका जास्त आहे की पुनर्गणना केलेल्या हप्त्यात व्याजही कसेबसे भागते.',
       },
     },

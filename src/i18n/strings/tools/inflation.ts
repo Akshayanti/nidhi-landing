@@ -150,7 +150,7 @@ export const inflationEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to us or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
+          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to nidhi or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
         },
         {
           q: 'Is this financial advice?',
@@ -471,7 +471,7 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल हमें या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
+          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल nidhi को या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',
@@ -764,7 +764,7 @@ export const inflationEs: typeof inflationEn = {
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
-          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se nos envían ni a nosotros ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
+          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se envían ni a nidhi ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
@@ -1060,7 +1060,7 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Posílají se moje data někam?',
-          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nám ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
+          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nidhi ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
         },
         {
           q: 'Je to finanční poradenství?',
@@ -1347,7 +1347,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
-          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे आम्हाला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
+          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे nidhi ला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
         },
         {
           q: 'हा आर्थिक सल्ला आहे का?',

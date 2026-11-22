@@ -698,4 +698,21 @@ describe('each language spells a word one way', () => {
       assert.deepEqual(list.filter((l) => pattern.test(l.value.replace(/\{vendor\}/g, ''))).map((l) => l.path), []);
     }
   });
+
+  it('speaks as I, or as nobody: only the notice and the cookie question say we', () => {
+    // docs/brand-identity.md: "I" where a person acts, neutral where the site does.
+    const cases = [
+      ['en', EN, /(?<!\p{L})([Ww]e|[Oo]ur|[Oo]urs|us)(?!\p{L})/u],
+      ['hi', HI, /(?<![\p{L}\p{M}])(हम|हमें|हमारा|हमारी|हमारे|हमने|हमसे)(?![\p{L}\p{M}])/u],
+      ['es', ES, /(?<!\p{L})(nosotros|nuestr[oa]s?|contáctanos|avísanos)(?!\p{L})/iu],
+      ['cs', CS, /(?<!\p{L})(nás|nám|náš|naše|naší|našich)(?!\p{L})/iu],
+      ['mr', MR, /(?<![\p{L}\p{M}])(आम्ही|आम्हाला|आमचा|आमची|आमचे|आमच्या)(?![\p{L}\p{M}])/u],
+    ] as const;
+    for (const [locale, list, pattern] of cases) {
+      const found = list
+        .filter((l) => !/^(privacy|cookie)\./.test(l.path) && pattern.test(l.value))
+        .map((l) => l.path);
+      assert.deepEqual(found, [], locale);
+    }
+  });
 });

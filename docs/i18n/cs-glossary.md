@@ -243,7 +243,7 @@ term already listed is not re-decided per page.
 | waitlist | čekací listina | |
 | newsletter | newsletter | |
 | share link | odkaz ke sdílení | |
-| beliefs (page) | čemu věříme | |
+| beliefs (page) | čemu věřím | „Čemu věříme“ only in the privacy notice, which speaks as we. |
 | editorial policy | redakční zásady | |
 | personal finance | osobní finance | |
 | financial literacy | finanční gramotnost | |
@@ -252,7 +252,7 @@ term already listed is not re-decided per page.
 | Learn, Take stock, Plan ahead (step names) | Učte se, Udělejte si přehled, Plánujte dopředu | Imperatives as labels, as in English. |
 | Learn (nav, footer, breadcrumb) | Lekce | The same word in the menu, the footer and the breadcrumb. A deliberate exception to one-term-one-rendering: the nav names the section, the step name above is an imperative. |
 | Home | Domů | |
-| About (group) / About nidhi (page) | O nás / O nidhi | |
+| About (group) / About nidhi (page) | O webu / O nidhi | |
 | Browse topics | Procházet témata | |
 | breadcrumb (landmark label) | Drobečková navigace | |
 | FAQ | Časté dotazy | |
