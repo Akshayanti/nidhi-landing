@@ -52,6 +52,7 @@ export function ToolExport({
   xlsxAttr,
   pdfAttr,
   ready,
+  settling = false,
   onSpreadsheet,
   onPrint,
 }: {
@@ -73,6 +74,11 @@ export function ToolExport({
   pdfAttr: string;
   /** False while there are no results to keep; the buttons stay focusable and say why. */
   ready: boolean;
+  /**
+   * Not ready only for the moment a keystroke takes to settle: nothing is
+   * said, as a note that came and went with each key moved the page (#793).
+   */
+  settling?: boolean;
   onSpreadsheet: () => void;
   onPrint: () => void;
 }) {
@@ -92,6 +98,7 @@ export function ToolExport({
   // aria-disabled, not disabled: a disabled button leaves the tab order, and
   // focus on it would drop to the page whenever a keystroke makes the results
   // pending for a moment.
+  const saysNotReady = !ready && !settling;
   const guarded = (action: () => void) => () => {
     if (ready) action();
   };
@@ -105,7 +112,7 @@ export function ToolExport({
           className="btn btn--outline tool-exportBtn"
           onClick={guarded(() => { onSpreadsheet(); setMade(true); })}
           aria-disabled={!ready || undefined}
-          aria-describedby={ready ? undefined : reasonId}
+          aria-describedby={saysNotReady ? reasonId : undefined}
           data-attr={xlsxAttr}
         >
           {strings.spreadsheet}
@@ -115,7 +122,7 @@ export function ToolExport({
           className="btn btn--outline tool-exportBtn"
           onClick={guarded(onPrint)}
           aria-disabled={!ready || undefined}
-          aria-describedby={ready ? undefined : reasonId}
+          aria-describedby={saysNotReady ? reasonId : undefined}
           data-attr={pdfAttr}
         >
           {strings.print}
@@ -124,7 +131,7 @@ export function ToolExport({
       </div>
       <p className="tool-exportNote">{strings.note}</p>
       {inApp && <p className="tool-exportNote tool-exportNote--app">{strings.inApp}</p>}
-      {!ready && <p id={reasonId} className="tool-exportNote">{strings.notReady}</p>}
+      {saysNotReady && <p id={reasonId} className="tool-exportNote">{strings.notReady}</p>}
       <p className="tool-exportStatus" role="status">{made ? strings.downloaded : ''}</p>
     </section>
   );

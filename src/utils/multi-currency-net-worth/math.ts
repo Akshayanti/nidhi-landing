@@ -5,7 +5,7 @@
 
 import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
 import { unguardText } from '../shared/exportFile.ts';
-import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+import { parseLocaleNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -53,6 +53,8 @@ export interface CurrencyPosition {
    * performed. The position is shown in original units only.
    */
   rateUnavailable?: boolean;
+  /** Arrived in a link from before links said whether a rate was known (#795). */
+  rateUnknown?: boolean;
 }
 
 /**
@@ -214,6 +216,7 @@ export function aggregate(
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
     positions.sort((a, b) => Math.abs(b.netAmountOriginal) - Math.abs(a.netAmountOriginal));
+    for (const pos of positions) if (!pos.isFunctional) pos.rateUnavailable = true;
     return { positions, totalNetWorthFunctional: 0, hasRates: 'none' };
   }
 
@@ -243,10 +246,7 @@ export function aggregate(
   }
 
   // Total net worth in functional currency.
-  const totalNetWorthFunctional = positions.reduce(
-    (sum, p) => sum + p.netAmountFunctional,
-    0,
-  );
+  const totalNetWorthFunctional = netTotal(positions);
 
   // Percentages and risk levels.
   for (const pos of positions) {
@@ -284,6 +284,22 @@ export function aggregate(
     hasRates: missingRateCount > 0 ? 'partial' : 'full',
     noShares: positions.length > 0 && totalNetWorthFunctional <= 0,
   };
+}
+
+/**
+ * The converted positions' total. What adding them can itself lose is no net
+ * worth: €1,000 less $1,100 at 1.1 left 1.1e-13, shares of 8.8e17% and a link
+ * the tool refused as its own (#795). A fixed fraction of the gross would not
+ * do: a trillionth of 1e15 is a real 1,000.
+ */
+export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional'>[]): number {
+  let total = 0;
+  let gross = 0;
+  for (const { netAmountFunctional: amount } of positions) {
+    total += amount;
+    gross += Math.abs(amount);
+  }
+  return Number.isFinite(gross) && Math.abs(total) <= 2 * (positions.length + 1) * Number.EPSILON * gross ? 0 : total;
 }
 
 /**
@@ -353,6 +369,41 @@ function assessRisk(
 export function isSingleCurrency(result: AggregationResult, functionalCurrency: string): boolean {
   const code = functionalCurrency.toUpperCase();
   return result.positions.length > 0 && result.positions.every((p) => p.code === code);
+}
+
+/**
+ * What missing rates leave to show (#795). 'some': a subtotal, and nothing is
+ * a share of it. 'all': original amounts, with no total either. A view without
+ * amounts has nothing original to show, so it is never 'all'.
+ */
+export function rateGap(result: AggregationResult, functionalCurrency: string, showAmounts: boolean): 'some' | 'all' | null {
+  if (isSingleCurrency(result, functionalCurrency)) return null;
+  const others = result.positions.filter((p) => !p.isFunctional);
+  if (showAmounts && others.length > 0 && others.every((p) => p.rateUnavailable)) return 'all';
+  return result.hasRates === 'partial' ? 'some' : null;
+}
+
+/** What decides whether the rates are still to come, and whether their failure is this view's. */
+interface RatesView {
+  loading: boolean;
+  failed: boolean;
+  shared: boolean;
+  singleCurrency: boolean;
+  /** Rates for the spending currency are held from an earlier answer. */
+  held?: boolean;
+}
+
+/**
+ * Rates still on the way are not yet unavailable: until they arrive or fail
+ * nothing calls them so, and there is nothing to export or print (#795).
+ */
+export function ratesPending(view: RatesView, hasRates: AggregationResult['hasRates']): boolean {
+  return view.loading && !view.failed && !view.shared && !view.singleCurrency && hasRates === 'none';
+}
+
+/** The failure says raw amounts are shown: not while withheld, nor over amounts held rates or a sender's converted. */
+export function ratesFailureShown(view: RatesView, withheld: boolean): boolean {
+  return view.failed && !view.held && !view.singleCurrency && !view.shared && !withheld;
 }
 
 /** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */
@@ -466,7 +517,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
     // "€100") is refused, never guessed at.
     const read = parseLocaleNumber(valueStr, separator === ',' ? 'en' : 'es');
     const value = read === null ? NaN : read;
-    if (read !== null) valueStr = String(read);
+    if (read !== null) valueStr = plainDigits(read);
     if (!Number.isFinite(value) || value <= 0) {
       errors.push({
         line: lineNum,

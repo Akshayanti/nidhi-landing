@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
@@ -6,7 +6,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
-import { parseAmount, parsePercent, type Series } from '../utils/inflation/math.ts';
+import type { Series } from '../utils/inflation/math.ts';
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
 import {
   HORIZONS,
@@ -26,13 +26,12 @@ import {
   rates,
   returnNote,
   toReal,
-  type Horizon,
   type Inputs,
   type Result,
-  type ReturnChoice,
   type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
-import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
+import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
+import { fieldErrors, formFromLink, parseField, publishableForm, toForm, toState, type FormState, type TextKey } from '../utils/invest-or-pay-off/form.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -41,7 +40,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -99,85 +98,6 @@ function whenText(months: number, strings: Strings, locale: string): string {
   return t(w.yearsMonths, { years: t(pick(y, w.yearsPart), { n: y }), months: t(pick(m, w.monthsPart), { n: m }) });
 }
 
-// ===========================================================================
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ===========================================================================
-
-type TextKey = 'balance' | 'debtRate' | 'payment' | 'extra' | 'relief' | 'inflation' | 'ownReturn' | 'feePct' | 'gainsTax';
-
-interface FormState extends Record<TextKey, string> {
-  currency: string;
-  country: string;
-  returns: ReturnChoice;
-  horizon: Horizon;
-  todayAt: TodayBasis;
-}
-
-function toForm(s: ToolState, locale: string): FormState {
-  const f = (n: number) => formatForInput(n, locale);
-  return {
-    currency: s.currency,
-    country: s.country,
-    returns: s.returns,
-    horizon: s.horizon,
-    todayAt: s.todayAt,
-    balance: f(s.balance),
-    debtRate: f(s.debtRate),
-    payment: f(s.payment),
-    extra: f(s.extra),
-    relief: f(s.relief),
-    inflation: s.inflation === null ? '' : f(s.inflation),
-    ownReturn: f(s.ownReturn),
-    feePct: f(s.feePct),
-    gainsTax: f(s.gainsTax),
-  };
-}
-
-const PERCENT_LIMITS: Record<'debtRate' | 'relief' | 'inflation' | 'ownReturn' | 'feePct' | 'gainsTax', [number, number]> = {
-  debtRate: [0, MAX_DEBT_RATE],
-  relief: [0, 100],
-  inflation: [-99.99, MAX_INFLATION],
-  ownReturn: [-99.99, MAX_INFLATION],
-  feePct: [0, MAX_FEE_PCT],
-  gainsTax: [0, 100],
-};
-
-function parseField(key: TextKey, raw: string, locale: string): number | null {
-  if (key === 'balance' || key === 'payment' || key === 'extra') return parseAmount(raw, locale);
-  const [min, max] = PERCENT_LIMITS[key];
-  return parsePercent(raw, min, max, locale);
-}
-
-/** Which fields do not parse. An empty inflation field means "the country's figure". */
-function fieldErrors(f: FormState, locale: string): Partial<Record<TextKey, boolean>> {
-  const keys: TextKey[] = ['balance', 'debtRate', 'payment', 'extra', 'relief', 'feePct', 'gainsTax'];
-  if (f.returns === 'own') keys.push('ownReturn');
-  if (f.inflation.trim() !== '') keys.push('inflation');
-  const out: Partial<Record<TextKey, boolean>> = {};
-  for (const k of keys) if (parseField(k, f[k], locale) === null) out[k] = true;
-  return out;
-}
-
-function toState(f: FormState, prev: ToolState, locale: string): ToolState {
-  const n = (k: TextKey, d: number) => parseField(k, f[k], locale) ?? d;
-  return {
-    currency: f.currency,
-    country: f.country,
-    returns: f.returns,
-    horizon: f.horizon,
-    todayAt: f.todayAt,
-    balance: n('balance', prev.balance),
-    debtRate: n('debtRate', prev.debtRate),
-    payment: n('payment', prev.payment),
-    extra: n('extra', prev.extra),
-    relief: n('relief', prev.relief),
-    inflation: f.inflation.trim() === '' ? null : n('inflation', prev.inflation ?? 0),
-    ownReturn: n('ownReturn', prev.ownReturn),
-    feePct: n('feePct', prev.feePct),
-    gainsTax: n('gainsTax', prev.gainsTax),
-  };
-}
-
 function toInputs(s: ToolState, inflation: number): Inputs {
   const { currency: _c, country: _n, inflation: _i, ...rest } = s;
   return { ...rest, inflation };
@@ -214,6 +134,8 @@ export default function InvestOrPayOff({
   const start = defaultState(defaultCurrency, defaultCountry);
   const [form, setForm] = useState<FormState>(() => toForm(start, numberLocale));
   const [settled, setSettled] = useState<ToolState>(() => start);
+  // The form `settled` was worked out from.
+  const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
@@ -254,8 +176,12 @@ export default function InvestOrPayOff({
     setHydrated(true);
     if (!decoded) return;
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
-    setForm(toForm(shared, numberLocale));
+    // The boxes as the link has them, bad ones included; the state behind them stays finite.
+    const opened = formFromLink(raw as string, numberLocale) ?? toForm(shared, numberLocale);
+    const arrived = { ...opened, country: shared.country };
+    setForm(arrived);
     setSettled(shared);
+    setSettledForm(arrived);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
     if (arrivedByLanguageSwitch()) return;
@@ -264,12 +190,14 @@ export default function InvestOrPayOff({
     });
   }, [countryByCode, numberLocale]);
 
+  // The form as it stands, not the settled state: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   // Keeps what is on screen where the header's language switch can find it
   // (after the #, at click time). Never the address.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency, defaultCountry));
-  }, [hydrated, settled, defaultCurrency, defaultCountry]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, numberLocale, defaultCurrency, defaultCountry));
+  }, [hydrated, form, numberLocale, defaultCurrency, defaultCountry]);
 
   // A country's history, from the site's own origin, the first time one is
   // picked that the page did not arrive with.
@@ -312,9 +240,13 @@ export default function InvestOrPayOff({
   // Recalculate a moment after typing stops, and only on valid input.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled((prev) => toState(form, prev, numberLocale)), 250);
+    const timer = window.setTimeout(() => {
+      setSettled((prev) => toState(form, prev, numberLocale));
+      setSettledForm(form);
+    }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
+  const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
 
   // The inflation the comparison uses: what the reader typed, else the
   // country's ten-year figure. Null means there is none yet.
@@ -351,8 +283,8 @@ export default function InvestOrPayOff({
   }
 
   function copyShareLink() {
-    if (hasErrors) return;
-    const state = publishableState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
+    if (waiting) return;
+    const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=invest_or_pay_off';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -366,8 +298,10 @@ export default function InvestOrPayOff({
   }
 
   function reset() {
-    setForm(toForm(start, numberLocale));
+    const blank = toForm(start, numberLocale);
+    setForm(blank);
     setSettled(start);
+    setSettledForm(blank);
     setMoreOpen(false);
     track('free_invest_or_pay_off_reset');
   }
@@ -447,6 +381,7 @@ export default function InvestOrPayOff({
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root iop-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="iop-formHead">
@@ -600,23 +535,26 @@ export default function InvestOrPayOff({
           </div>
         </fieldset>
 
-        <p className="ifc-hint iop-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
-      {/* The one announcement: the settled answer, or why the answer on screen
-          is an old one. The results below are not a live region. */}
+      {/* The one announcement: the settled answer, or why there is none.
+          The results below are not a live region. */}
       <ResultAnnouncement
+        delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix
-          : inflation === null
+          : withheld
+            ? ''
+            : inflation === null
             ? strings.country.needed
             : problem
               ? t(strings.problems[problem], { years: MAX_MONTHS / 12 })
               : shownNow ? `${shownNow.lines[1]} ${shownNow.lines[0]} ${shownNow.lines[2]}` : ''}
       />
 
-      <section className={`ifc-results iop-results${hasErrors ? ' ifc-results--stale' : ''}`} aria-labelledby={id('results')}>
+      <section className="ifc-results iop-results" aria-labelledby={id('results')}>
         <h2 id={id('results')} className="ifc-resultsTitle">{strings.results.heading}</h2>
+        <Withheld reason={withheld ? (hasErrors ? strings.results.fix : '') : null}>
         {inflation === null && <p className="iop-note">{strings.country.needed}</p>}
         {problem && <p className="iop-note">{t(strings.problems[problem], { years: MAX_MONTHS / 12 })}</p>}
         {computed && (
@@ -634,13 +572,14 @@ export default function InvestOrPayOff({
             basisName={id('basis')}
           />
         )}
+        </Withheld>
       </section>
 
       <ToolExport
         strings={exportStrings}
         share={
           <span className="iop-share">
-            <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-invest-or-pay-off-share">
+            <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-invest-or-pay-off-share">
               <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
             </button>
             <span className="ifc-hint">{strings.actions.shareNote}</span>
@@ -648,13 +587,15 @@ export default function InvestOrPayOff({
         }
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
-        ready={!hasErrors && shownNow !== null}
+        ready={!waiting && shownNow !== null}
+        settling={waiting && !hasErrors && shownNow !== null}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
 
-      {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
+      {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
   );
@@ -842,6 +783,7 @@ function Field(props: {
   /** The id of fixed text elsewhere on the page that also describes this box. */
   alsoDescribedBy?: string;
 }) {
+  const unreadable = useContext(UnreadableContext);
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
   const describedBy = [props.error ? errorId : null, props.hint ? hintId : null, props.alsoDescribedBy ?? null].filter(Boolean).join(' ') || undefined;
@@ -850,6 +792,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          {...markerSelect}
           id={props.id}
           className="ifc-input"
           type="text"
@@ -865,7 +808,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.value.trim() === '?' ? unreadable : props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>

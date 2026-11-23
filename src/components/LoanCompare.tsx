@@ -52,10 +52,14 @@ import {
   computeFromInput,
   loanFromInput,
   computeNoPointsBaseline,
+  isUnreadable,
+  OPTIONAL_UNREADABLE,
   parseNumber,
   pointsCostAboveFee,
   unreadableOptionalFields,
   type OptionalField,
+  comparisonWithheld,
+  holdsMarker,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, CHART_SERIES_ON } from '../styles/palette.ts';
 import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
@@ -66,7 +70,7 @@ import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -1203,6 +1207,10 @@ export default function LoanCompare({
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
   // Only an offer that is paid off has a total to be lowest.
   const withTotal = validResults.filter((x) => !isNotPaidOff(x.r));
+  // Until every offer can be read, nothing compares them, and nothing is
+  // shared or saved (#793).
+  const withheld = comparisonWithheld(results);
+  const withheldReasonId = useId();
   const cheapestByTotal =
     withTotal.length > 0
       ? withTotal.reduce((best, cur) =>
@@ -1212,6 +1220,7 @@ export default function LoanCompare({
 
   const copyShareLink = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
     const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
     try {
@@ -1234,7 +1243,7 @@ export default function LoanCompare({
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
-  }, [vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
+  }, [withheld, vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
 
   // The copied address stays until the next change to the comparison, which
   // is when it stops being the address of what is on the page. It used to go
@@ -1272,6 +1281,7 @@ export default function LoanCompare({
     <AmountLocaleContext.Provider value={amountLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
@@ -1431,6 +1441,7 @@ export default function LoanCompare({
       </div>
 
       <LoanAnnouncement
+        withheld={withheld}
         paidOff={withTotal.map((x) => x.r)}
         validCount={validResults.length}
         currency={currency}
@@ -1440,6 +1451,8 @@ export default function LoanCompare({
       />
 
       <DeltaSummary
+        withheld={withheld}
+        reasonId={withheldReasonId}
         results={results}
         vendors={vendors}
         currency={currency}
@@ -1454,6 +1467,8 @@ export default function LoanCompare({
               type="button"
               className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
+              aria-disabled={withheld || undefined}
+              aria-describedby={withheld ? withheldReasonId : undefined}
               title={strings.toolbar.shareTitle}
               data-attr="lc-share-copy"
             >
@@ -1478,11 +1493,12 @@ export default function LoanCompare({
         }
         xlsxAttr="lc-export-xlsx"
         pdfAttr="lc-export-pdf"
-        ready={validResults.length > 0}
+        ready={!withheld && validResults.length > 0}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
 
+      <Withheld reason={withheld ? strings.delta.fix : null} unsaid>
       <AnalysisTabs
         vendors={vendors}
         results={results}
@@ -1495,6 +1511,7 @@ export default function LoanCompare({
         onRefiSaid={setRefiSaid}
         strings={strings}
       />
+      </Withheld>
 
       <details className="lc-disclaimerWrap">
         <summary className="lc-disclaimerSummary disclosure">{strings.disclaimer.summary}</summary>
@@ -1503,8 +1520,9 @@ export default function LoanCompare({
         </p>
       </details>
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
+      {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
     </AmountLocaleContext.Provider>
@@ -1583,7 +1601,7 @@ function VendorCard({
   shared,
   currency,
   strings,
-  onChange,
+  onChange: onEdit,
   onRemove,
 }: VendorCardProps) {
   const { formatMoney, amountLocale } = useMoney();
@@ -1592,6 +1610,11 @@ function VendorCard({
   const id = (suffix: string) => `${baseId}-${suffix}`;
   const errorId = id('error');
   const hasError = Boolean(result.error);
+  // The mark that arrived, as against text being typed here.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && holdsMarker(vendor);
+  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => { setTyped(true); onEdit(patch); };
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
   const badOptional = new Set<OptionalField>([
@@ -1813,8 +1836,8 @@ function VendorCard({
       {/* Not a live region: the tool's one announcement says the settled result. */}
       <div className="lc-results">
         {hasError ? (
-          <p className="lc-error" id={errorId} role="alert">
-            <ErrorText>{engineError(result.error ?? '', strings)}</ErrorText>
+          <p className="lc-error" id={errorId}>
+            <ErrorText>{arrived ? unreadableText : engineError(result.error ?? '', strings)}</ErrorText>
           </p>
         ) : (
           <>
@@ -2301,7 +2324,8 @@ function ResultRow({ label, value, hint, note, emphasized, shared }: ResultRowPr
  * What a screen reader is told once typing has settled: one offer's payment
  * and total, or the range of totals across the offers (the side-by-side
  * section's own sentence). `paidOff` holds the offers that have a total.
- * Empty while no offer has a result: a card's error is an alert of its own.
+ * While an offer is invalid the reason is said instead, once, and the cards'
+ * errors are not live regions.
  */
 function announcedResult(
   paidOff: LoanResult[],
@@ -2331,14 +2355,23 @@ function announcedResult(
 }
 
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ paidOff, validCount, currency, strings, also, notice }: { paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
+function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
-  return <ResultAnnouncement text={announcedResult(paidOff, validCount, currency, strings, formatMoney)} also={also} notice={notice} />;
+  return (
+    <ResultAnnouncement
+      text={withheld ? strings.delta.fix : announcedResult(paidOff, validCount, currency, strings, formatMoney)}
+      delay={withheld ? WITHHELD_SAID_AFTER : undefined}
+      also={withheld ? undefined : also}
+      notice={notice}
+    />
+  );
 }
 
 // ---- Delta summary ---------------------------------------------------------
 
 interface DeltaSummaryProps {
+  withheld: boolean;
+  reasonId: string;
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
@@ -2349,8 +2382,10 @@ interface DeltaSummaryProps {
   strings: Strings;
 }
 
-function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
+function DeltaSummary({ withheld, reasonId, results, vendors, currency, strings }: DeltaSummaryProps) {
   const { formatMoney, amountLocale } = useMoney();
+  // The heading stays: the phone's jump to the comparison focuses it.
+  const reason = withheld ? strings.delta.fix : null;
   const valid = results
     .map((r, i) => ({
       r,
@@ -2364,9 +2399,11 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
     return (
       <section className="lc-deltaSection">
         <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
-        <p className="lc-deltaEmpty">
-          {strings.delta.empty}
-        </p>
+        <Withheld reason={reason} reasonId={reasonId}>
+          <p className="lc-deltaEmpty">
+            {strings.delta.empty}
+          </p>
+        </Withheld>
       </section>
     );
   }
@@ -2397,6 +2434,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
       <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
+      <Withheld reason={reason} reasonId={reasonId}>
       {/*
         Not a live region: the tool's one announcement says this sentence once
         typing has settled. The wording is deliberately neutral: it states the range and the
@@ -2555,6 +2593,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
       <p className="lc-deltaNote">
         {strings.delta.aprNote}
       </p>
+      </Withheld>
     </section>
   );
 }
@@ -3025,6 +3064,8 @@ function HorizonSection({
 }: HorizonSectionProps) {
   const { formatMoney } = useMoney();
   const horizonId = useId();
+  const horizonErrorId = useId();
+  const badHorizon = isUnreadable(horizonMonths);
   // Debounced engagement signal. We don't want to fire one event per
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
@@ -3033,8 +3074,11 @@ function HorizonSection({
   // the number itself is something a reader typed or dragged to, and events
   // carry choices, never values.
   const horizonTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
   const handleHorizonChange = useCallback(
     (next: string) => {
+      setTyped(true);
       onHorizonChange(next);
       if (horizonTrackTimer.current) {
         clearTimeout(horizonTrackTimer.current);
@@ -3077,7 +3121,7 @@ function HorizonSection({
 
       <div className="lc-horizonControls">
         <label className="lc-fieldLabel" htmlFor={horizonId}>
-          {strings.horizon.label}<strong>{months(horizon, strings.months)}</strong>
+          {strings.horizon.label}{!badHorizon && <strong>{months(horizon, strings.months)}</strong>}
         </label>
         <input
           id={horizonId}
@@ -3089,7 +3133,7 @@ function HorizonSection({
           onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
-          aria-valuetext={months(horizon, strings.months)}
+          aria-valuetext={badHorizon ? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
         <LocaleNumberInput
@@ -3098,10 +3142,14 @@ function HorizonSection({
           value={horizonMonths}
           onValueChange={(v) => handleHorizonChange(v)}
           aria-label={strings.horizon.inputAria}
+          aria-invalid={badHorizon || undefined}
+          aria-describedby={badHorizon ? horizonErrorId : undefined}
         />
       </div>
 
-      {validRows.length === 0 ? (
+      {badHorizon ? (
+        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+      ) : validRows.length === 0 ? (
         <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
         <div className="lc-deltaTableWrap">
@@ -3252,8 +3300,11 @@ function RefinanceSection({
   // in a single session; we want a single event per "burst of activity"
   // rather than one per keystroke. Property names the field that just
   // changed; values are never sent.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
   const refiTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trackRefiChange = useCallback((field: keyof GlobalState) => {
+    setTyped(true);
     if (refiTrackTimer.current) {
       clearTimeout(refiTrackTimer.current);
     }
@@ -3281,9 +3332,16 @@ function RefinanceSection({
   const newRate = parseNumber(state.refiNewRatePct) / 100;
   const newTerm = Math.round(parseNumber(state.refiNewTermMonths));
   const newFeeMinor = toMinor(parseNumber(state.refiNewFeeMajor) || 0, currency);
+  // An empty fee is none paid. One that cannot be read is not: it gives no result.
+  const refiErrorId = useId();
+  const badAtMonth = isUnreadable(state.refiAtMonth);
+  const badRate = isUnreadable(state.refiNewRatePct);
+  const badTerm = isUnreadable(state.refiNewTermMonths);
+  const badFee = isUnreadable(state.refiNewFeeMajor);
+  const badRefi = badAtMonth || badRate || badTerm || badFee;
 
   const cmp =
-    original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
+    !badRefi && original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
       ? // The offer as entered goes with its result: the refinance clears the
         // loan, so its penalty may be due, and its extra payments continue
         // on the new loan.
@@ -3332,6 +3390,8 @@ function RefinanceSection({
             id={atMonthId}
             inputMode="numeric"
             className="lc-input"
+            aria-invalid={badAtMonth || undefined}
+            aria-describedby={badAtMonth ? refiErrorId : undefined}
             value={state.refiAtMonth}
             onValueChange={(v) => {
               onChange({ refiAtMonth: v });
@@ -3346,6 +3406,8 @@ function RefinanceSection({
             id={newRateId}
             inputMode="decimal"
             className="lc-input"
+            aria-invalid={badRate || undefined}
+            aria-describedby={badRate ? refiErrorId : undefined}
             value={state.refiNewRatePct}
             onValueChange={(v) => {
               onChange({ refiNewRatePct: v });
@@ -3360,6 +3422,8 @@ function RefinanceSection({
             id={newTermId}
             inputMode="numeric"
             className="lc-input"
+            aria-invalid={badTerm || undefined}
+            aria-describedby={badTerm ? refiErrorId : undefined}
             value={state.refiNewTermMonths}
             onValueChange={(v) => {
               onChange({ refiNewTermMonths: v });
@@ -3376,6 +3440,8 @@ function RefinanceSection({
             id={newFeeId}
             inputMode="decimal"
             className="lc-input"
+            aria-invalid={badFee || undefined}
+            aria-describedby={badFee ? refiErrorId : undefined}
             value={state.refiNewFeeMajor}
             onValueChange={(v) => {
               onChange({ refiNewFeeMajor: v });
@@ -3400,7 +3466,9 @@ function RefinanceSection({
         </div>
       </div>
 
-      {!cmp ? (
+      {badRefi ? (
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+      ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}
         </p>

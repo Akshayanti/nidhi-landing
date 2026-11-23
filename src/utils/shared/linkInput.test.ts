@@ -5,7 +5,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { MAX_LINK_NAME_LENGTH, linkCurrency, linkName, linkNumber, linkWholeNumber } from './linkInput.ts';
+import { MAX_LINK_NAME_LENGTH, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from './linkInput.ts';
 
 const KNOWN = new Set(['EUR', 'USD', 'INR']);
 
@@ -24,15 +24,37 @@ describe('linkCurrency', () => {
 
 describe('linkNumber', () => {
   it('keeps numbers the way people type them', () => {
-    for (const typed of ['', '0', '250000', '4.5', '1,234.56', '1.234,56', '1 234,56', '1\u00a0234,56', '1\u202f234', "1'234", '1’234', '-5', '+5', '१२३', '12:5000;36:3000', '12:5000, 36:3000']) {
+    for (const typed of ['', '0', '250000', '4.5', '1,234.56', '1.234,56', '1 234,56', '1\u00a0234,56', '1\u202f234', "1'234", '1’234', '-5', '+5', '१२३']) {
       assert.equal(linkNumber(typed, 'fallback'), typed, typed);
     }
   });
 
-  it('falls back for text, markup and over-long values', () => {
-    for (const value of [null, 'abc', '12 months', '1e9', '<b>1</b>', '5%', '1/2', 'javascript:1', '1'.repeat(201), '12\u0001']) {
-      assert.equal(linkNumber(value, '60'), '60', String(value).slice(0, 20));
+  it('takes the default only when there is no value', () => {
+    assert.equal(linkNumber(null, '60'), '60');
+  });
+
+  it('marks text, markup and over-long values, never the default and never the text (#789)', () => {
+    for (const value of ['abc', '7x', '12 months', '1e9', '<b>1</b>', '5%', '1/2', 'javascript:1', '12:5000', '1;2', '1'.repeat(201), '12\u0001']) {
+      assert.equal(linkNumber(value, '60'), 'NaN', value.slice(0, 20));
     }
+  });
+});
+
+describe('linkNumber and an unreadable box (#789)', () => {
+  it('keeps the unreadable marker', () => {
+    assert.equal(linkNumber('NaN', '60'), 'NaN');
+  });
+});
+
+describe('linkLumpSums', () => {
+  it('bounds each side, not the list', () => {
+    const side = '1'.repeat(200);
+    assert.equal(linkLumpSums(`${side}:${side}`, ''), `${side}:${side}`);
+    assert.equal(linkLumpSums(`1:${side}1;2:300`, ''), '1:NaN;2:300');
+  });
+
+  it('takes the default only when there is no value', () => {
+    assert.equal(linkLumpSums(null, ''), '');
   });
 });
 

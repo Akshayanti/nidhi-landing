@@ -23,8 +23,9 @@ import {
   type ReturnSetting,
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
-import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/monte-carlo/url.ts';
-import { isValidNumber } from '../utils/monte-carlo/inputs.ts';
+import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/monte-carlo/url.ts';
+import { formErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
+import { tooLongForLink } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
@@ -32,7 +33,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -142,59 +143,6 @@ function usePhone(): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ---------------------------------------------------------------------------
-
-interface FormState {
-  currency: string;
-  start: string;
-  monthly: string;
-  saveYears: string;
-  stockPct: string;
-  withdrawOn: boolean;
-  withdrawal: string;
-  withdrawYears: string;
-  feePct: string;
-  returns: ReturnSetting;
-  paths: number;
-}
-
-const DEFAULT_WITHDRAWAL = 30_000;
-
-function toForm(s: ToolState): FormState {
-  return {
-    currency: s.currency,
-    start: String(s.start),
-    monthly: String(s.monthly),
-    saveYears: String(s.saveYears),
-    stockPct: String(s.stockPct),
-    withdrawOn: s.withdrawal > 0,
-    withdrawal: String(s.withdrawal > 0 ? s.withdrawal : DEFAULT_WITHDRAWAL),
-    withdrawYears: String(s.withdrawYears),
-    feePct: String(s.feePct),
-    returns: s.returns,
-    paths: s.paths,
-  };
-}
-
-function toState(f: FormState): ToolState {
-  const n = (v: string) => (v.trim() === '' ? 0 : Number(v));
-  return {
-    currency: f.currency,
-    start: n(f.start),
-    monthly: n(f.monthly),
-    saveYears: n(f.saveYears),
-    stockPct: n(f.stockPct),
-    withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
-    withdrawYears: n(f.withdrawYears),
-    feePct: n(f.feePct),
-    returns: f.returns,
-    paths: f.paths,
-  };
-}
-
-
-// ---------------------------------------------------------------------------
 // Simulation runner: small runs on the main thread, large ones in a worker,
 // falling back to the main thread if a worker cannot start.
 // ---------------------------------------------------------------------------
@@ -288,6 +236,8 @@ export default function MonteCarloSimulator({
 }) {
   const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
+  // The form `settled` was worked out from.
+  const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
   const [tipsDismissed, setTipsDismissed] = useState(false);
   // Fees and paths start folded behind one row that says what they are set
@@ -326,10 +276,14 @@ export default function MonteCarloSimulator({
     const shared = typeof raw === 'string' ? decodeState(raw) : null;
     setHydrated(true);
     if (!shared) return;
-    setForm(toForm(shared));
+    // The boxes as the link has them, bad ones included; the plan behind them stays finite.
+    const opened = formFromLink(raw as string) ?? toForm(shared);
+    setForm(opened);
     setSettled(shared);
-    // A shared plan that sets a fee or a path count shows it without a click.
-    if (shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
+    setSettledForm(opened);
+    // A shared plan that sets a fee or a path count, or a fee box that is
+    // wrong, shows it without a click.
+    if (formErrors(opened).feePct || shared.feePct !== DEFAULTS.feePct || shared.paths !== DEFAULTS.paths) setSettingsOpen(true);
     // A language switch carries the plan too, but that view was already
     // counted on the page it came from.
     if (arrivedByLanguageSwitch()) return;
@@ -341,31 +295,26 @@ export default function MonteCarloSimulator({
   // Keeps what is on screen where the header's language switch can carry it,
   // after the # and only at click time (see src/utils/shared/toolState.ts).
   // Never the address: nothing here writes to it.
-  // The settled plan, the one the results show, the same one a share link
-  // would carry.
+  // The form as it stands, not the settled plan: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   useEffect(() => {
     if (!hydrated) return;
     // Untouched publishes '' so the other language opens with its own
     // starting currency; anything changed carries as encoded.
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency));
-  }, [hydrated, settled, defaultCurrency]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, defaultCurrency));
+  }, [hydrated, form, defaultCurrency]);
 
-  const errors = {
-    start: !isValidNumber(form.start, 0, MAX_START),
-    monthly: !isValidNumber(form.monthly, 0, MAX_MONTHLY),
-    saveYears: !isValidNumber(form.saveYears, 0, 60, true),
-    stockPct: !isValidNumber(form.stockPct, 0, 100),
-    withdrawal: form.withdrawOn && !isValidNumber(form.withdrawal, 1, MAX_WITHDRAWAL),
-    withdrawYears: form.withdrawOn && !isValidNumber(form.withdrawYears, 1, 60, true),
-    feePct: !isValidNumber(form.feePct, 0, MAX_FEE_PCT),
-  };
+  const errors = formErrors(form);
   const hasErrors = Object.values(errors).some(Boolean);
 
   // Simulate a moment after typing stops, and only on valid input, so the
   // chart does not jump around on every keystroke.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled(toState(form)), 250);
+    const timer = window.setTimeout(() => {
+      setSettled(toState(form));
+      setSettledForm(form);
+    }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors]);
 
@@ -373,9 +322,10 @@ export default function MonteCarloSimulator({
   // What the page says in words: amounts rounded to what the runs can tell
   // apart. The chart's shapes and the spreadsheets use `result` itself.
   const worded = useMemo(() => roundedResult(result), [result]);
-  // Pending from the moment a new plan settles until its result is on screen,
-  // so Copy can never share a plan the results do not show yet.
+  // Pending from the moment a new plan settles until its result is on screen.
   const pending = running || settled !== shownState;
+  // Waiting from the keystroke, so Copy can never share a plan not shown yet.
+  const { withheld, waiting } = useResultGate(hasErrors, form === settledForm && !pending);
 
   // A number box hands over a plain number string, whatever the page's language wrote.
   const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -385,11 +335,12 @@ export default function MonteCarloSimulator({
     setForm((f) => ({ ...f, [key]: value }));
   };
 
-  // Shares the plan the results show (the settled state), not a half-typed one.
+  // Shares the form as it stands, once the results show it.
   function copyShareLink() {
-    // publishableState, not encodeState: an all-default plan in euros encodes
+    if (waiting) return;
+    // publishableForm, not encodeState: an all-default plan in euros encodes
     // to '' and would reopen in rupees on a Hindi link, so it says c=EUR.
-    const state = publishableState(settled, defaultCurrency);
+    const state = publishableForm(form, defaultCurrency);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=monte_carlo';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -425,8 +376,10 @@ export default function MonteCarloSimulator({
 
   function reset() {
     const start = defaultState(defaultCurrency);
-    setForm(toForm(start));
+    const blank = toForm(start);
+    setForm(blank);
     setSettled(start);
+    setSettledForm(blank);
     setSettingsOpen(false);
     track('free_monte_carlo_reset');
   }
@@ -440,6 +393,7 @@ export default function MonteCarloSimulator({
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <NumberLocaleContext.Provider value={numberLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcs-root" {...heldUntilReady(toolReady)}>
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         {/* The example line and Reset share the first row, as in the other tools. */}
@@ -532,7 +486,7 @@ export default function MonteCarloSimulator({
           <span className="mcs-hint" aria-hidden="true">{returnTip(strings, form.returns, amountLocale)}</span>
         </fieldset>
 
-        <QuickResult result={worded} state={shownState} busy={pending} strings={strings} />
+        <QuickResult result={worded} state={shownState} busy={pending} withheld={withheld} strings={strings} />
         {/* Phones only. A button, not a link: nothing is written to the address. */}
         <p className="mcs-jump">
           <button
@@ -633,12 +587,9 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
+          <ResultAnnouncement text={hasErrors ? strings.actions.fix : ''} delay={WITHHELD_SAID_AFTER} />
           <span className="mcs-hint" role="status" aria-live="polite">
-            {hasErrors
-              ? strings.actions.fix
-              : running
-                ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) })
-                : ''}
+            {!hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : ''}
           </span>
         </div>
       </form>
@@ -649,26 +600,33 @@ export default function MonteCarloSimulator({
         state={shownState}
         code={shownState.currency}
         busy={running}
+        withheld={withheld ? {
+          title: exportStrings.report.answer,
+          // After a correction nothing is left to fix: a long run says so, a short settle nothing.
+          reason: hasErrors ? strings.actions.fix : running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : '',
+        } : null}
         strings={strings}
         actions={
           <ToolExport
             strings={exportStrings}
             share={
-              <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors || pending} data-attr="free-monte-carlo-share">
+              <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-monte-carlo-share">
                 <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
               </button>
             }
             xlsxAttr="free-monte-carlo-export-xlsx"
             pdfAttr="free-monte-carlo-export-pdf"
-            ready={!hasErrors && !pending}
+            ready={!waiting}
+            settling={waiting && !hasErrors && !running}
             onSpreadsheet={downloadSpreadsheet}
             onPrint={printPage}
           />
         }
       />
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />
+      {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} state={shownState} result={worded} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </NumberLocaleContext.Provider>
     </ChartWordsContext.Provider>
@@ -692,6 +650,10 @@ function NumberField(props: {
 }) {
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
+  const unreadable = useContext(UnreadableContext);
+  // The mark that arrived, as against text being typed here.
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && props.value === 'NaN';
   const showError = props.invalid && Boolean(props.error);
   const described = [showError ? errorId : '', props.hint ? hintId : ''].filter(Boolean).join(' ');
   return (
@@ -705,11 +667,11 @@ function NumberField(props: {
         inputMode={props.step === '1' ? 'numeric' : 'decimal'}
         autoComplete="off"
         value={props.value}
-        onValueChange={props.onChange}
+        onValueChange={(value) => { setTyped(true); props.onChange(value); }}
         aria-invalid={props.invalid || undefined}
         aria-describedby={described || undefined}
       />
-      {showError && <span className="ifc-error" id={errorId}><ErrorText>{props.error ?? ''}</ErrorText></span>}
+      {showError && <span className="ifc-error" id={errorId}><ErrorText>{arrived || tooLongForLink(props.value) ? unreadable : props.error ?? ''}</ErrorText></span>}
       {props.hint && <span className="mcs-hint" id={hintId}>{props.hint}</span>}
     </div>
   );
@@ -724,7 +686,7 @@ function NumberField(props: {
  * answers as you type instead of sitting below the whole form. The full
  * results below say the same, so screen readers skip this copy.
  */
-function QuickResult({ result, state, busy, strings }: { result: SimulationResult; state: ToolState; busy: boolean; strings: Strings }) {
+function QuickResult({ result, state, busy, withheld, strings }: { result: SimulationResult; state: ToolState; busy: boolean; withheld: boolean; strings: Strings }) {
   const { formatAmount, amountLocale } = useMoney();
   const code = state.currency;
   const r = result.atRetirement;
@@ -732,7 +694,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   const lasted = state.withdrawal > 0 ? result.lasted : null;
   if (!saving && lasted === null) return null;
   return (
-    <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}`} aria-hidden="true">
+    <div className={`mcs-quick${busy ? ' mcs-quick--busy' : ''}${withheld ? ' tool-withheld' : ''}`} aria-hidden="true">
       {saving && (
         <>
           <span className="mcs-quickTitle">
@@ -755,7 +717,7 @@ function QuickResult({ result, state, busy, strings }: { result: SimulationResul
   );
 }
 
-function Results({ result, exact, state, code, busy, strings, actions }: { result: SimulationResult; exact: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
+function Results({ result, exact, state, code, busy, withheld, strings, actions }: { withheld: { title: string; reason: string } | null; result: SimulationResult; exact: SimulationResult; state: ToolState; code: string; busy: boolean; strings: Strings; actions: React.ReactNode }) {
   const { formatAmount, amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   const r = result.atRetirement;
@@ -767,12 +729,16 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
   return (
     <section className={`mcs-results${busy ? ' mcs-results--busy' : ''}`} aria-labelledby="mcs-results-h" aria-busy={busy}>
       <h2 id="mcs-results-h" className="mcs-resultsTitle" tabIndex={-1}>
-        {saving
-          ? state.saveYears === 1
-            ? strings.results.headingOne
-            : t(strings.results.headingOther, { years: state.saveYears })
-          : strings.results.headingToday}
+        {/* The heading names the years, so it is a result too. */}
+        {withheld
+          ? withheld.title
+          : saving
+            ? state.saveYears === 1
+              ? strings.results.headingOne
+              : t(strings.results.headingOther, { years: state.saveYears })
+            : strings.results.headingToday}
       </h2>
+      <Withheld reason={withheld?.reason ?? null}>
 
       {saving && (
         <>
@@ -882,6 +848,7 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
           </table>
         </div>
       </details>}
+      </Withheld>
 
       {actions}
     </section>

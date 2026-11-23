@@ -40,6 +40,61 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-23',
+    items: [
+      {
+        id: 'tools-flag-unreadable-values',
+        text: {
+          en: 'In all five free tools, a box with a value that cannot be read now says so, and the results that depend on it wait until it is fixed. A share link or a change of language keeps such a box marked with a question mark. Before, it could turn into another number, and the results still looked right.',
+          hi: 'पाँचों मुफ़्त टूल में जो मान पढ़ा नहीं जा सकता, उसका खाना अब यह बताता है, और उस पर टिके नतीजे उसके ठीक होने तक नहीं दिखते। शेयर लिंक या भाषा बदलने पर वह खाना प्रश्नचिह्न के साथ ही पहुँचता है। पहले वह किसी दूसरी संख्या में बदल सकता था, और नतीजे फिर भी सही लगते थे।',
+          es: 'En las cinco herramientas gratuitas, un campo con un valor que no se puede leer ahora lo indica, y los resultados que dependen de él esperan hasta que se corrija. Un enlace para compartir o un cambio de idioma mantiene ese campo marcado con un signo de interrogación. Antes podía convertirse en otro número, y los resultados seguían pareciendo correctos.',
+          cs: 'Ve všech pěti nástrojích zdarma teď pole s\u00a0hodnotou, kterou nelze přečíst, na to upozorní a\u00a0výsledky, které na ní závisejí, počkají na opravu. Odkaz ke sdílení i\u00a0změna jazyka takové pole zachovají označené otazníkem. Dřív se mohlo změnit na jiné číslo a\u00a0výsledky přitom vypadaly správně.',
+          mr: 'पाचही मोफत साधनांत वाचता न येणारे मूल्य असलेला रकाना आता तसे सांगतो, आणि त्यावर अवलंबून असलेले निकाल ते दुरुस्त होईपर्यंत दिसत नाहीत. शेअर लिंक किंवा भाषा बदलल्यावर तो रकाना प्रश्नचिन्हासहच पोहोचतो. आधी त्याचे दुसऱ्या संख्येत रूपांतर होऊ शकत होते, आणि निकाल तरीही बरोबर वाटत.',
+        },
+      },
+      {
+        id: 'language-switch-keeps-current-choices',
+        text: {
+          en: 'In Monte Carlo, inflation, and Invest or pay off, changing the language now keeps the form as it stands, including choices you made while a box contained an error. Before, those choices were lost, so the other language could open with a different setup.',
+          hi: 'Monte Carlo, महँगाई और निवेश या कर्ज़ चुकाना वाले टूल में भाषा बदलने पर अब फ़ॉर्म की मौजूदा स्थिति बनी रहती है, जिसमें किसी खाने में त्रुटि होने के दौरान किए गए चुनाव भी शामिल हैं। पहले ये चुनाव खो जाते थे, इसलिए दूसरी भाषा में अलग सेटिंग आ सकती थी।',
+          es: 'En Monte Carlo, inflación e Invertir o pagar deuda, cambiar de idioma ahora conserva el formulario tal como está, incluidas las opciones elegidas mientras había un error en un campo. Antes, esas opciones se perdían, por lo que en el otro idioma podía aparecer una configuración distinta.',
+          cs: 'V\u00a0nástrojích Monte Carlo, inflace a\u00a0Investovat, nebo splatit dluh nyní přepnutí jazyka zachovává aktuální stav formuláře včetně voleb provedených v\u00a0době, kdy některé pole obsahovalo chybu. Dříve se tyto volby ztrácely, takže se v\u00a0druhém jazyce mohlo zobrazit jiné nastavení.',
+          mr: 'Monte Carlo, महागाई आणि गुंतवणूक की कर्जफेड या साधनांमध्ये भाषा बदलल्यावर आता फॉर्मची सध्याची स्थिती कायम राहते, एखाद्या रकान्यात त्रुटी असताना केलेल्या निवडींसह. आधी या निवडी हरवत होत्या, त्यामुळे दुसऱ्या भाषेत वेगळी मांडणी दिसू शकत होती.',
+        },
+      },
+      {
+        id: 'long-lists-have-clear-limits',
+        text: {
+          en: 'The net worth calculator used to silently drop rows after the 50th from links and language switches, and switching languages calculated the total from that shorter list. Now the form, CSV, links, and language switching share a limit of 500 rows; the form and CSV previously had no limit. A CSV with more than 500 rows is refused in full, as are links or lists detected as incomplete. In loan comparison, a list of more than 1,200 lump sums in one offer is invalid; previously, lists longer than 200 characters disappeared from links.',
+          hi: 'शुद्ध संपत्ति कैलकुलेटर पहले लिंक और भाषा बदलते समय 50वीं पंक्ति के बाद की पंक्तियाँ बिना बताए हटा देता था, और भाषा बदलने पर उसी छोटी सूची से कुल निकालता था। अब फ़ॉर्म, CSV, लिंक और भाषा बदलने के लिए 500 पंक्तियों की एक ही सीमा है; फ़ॉर्म और CSV पर पहले कोई सीमा नहीं थी। 500 से अधिक पंक्तियों वाली CSV पूरी तरह अस्वीकार होती है, और अधूरे पाए गए लिंक या सूचियाँ भी अस्वीकार होती हैं। लोन तुलना में एक ऑफ़र के लिए 1,200 से अधिक एकमुश्त भुगतानों की सूची अमान्य है; पहले 200 से अधिक अक्षरों वाली सूची लिंक से गायब हो जाती थी।',
+          es: 'La calculadora de patrimonio neto antes descartaba sin avisar las filas posteriores a la 50 en los enlaces y al cambiar de idioma, y calculaba el total de esa lista más corta tras el cambio. Ahora el formulario, los CSV, los enlaces y el cambio de idioma comparten un límite de 500 filas; antes, el formulario y los CSV no tenían límite. Un CSV con más de 500 filas se rechaza por completo, al igual que los enlaces o listas detectados como incompletos. En el comparador de préstamos, una lista de más de 1200 pagos extraordinarios en una oferta no es válida; antes, las listas de más de 200 caracteres desaparecían de los enlaces.',
+          cs: 'Kalkulačka čistého jmění dříve v\u00a0odkazech a\u00a0při přepnutí jazyka bez upozornění vynechávala řádky po 50.\u00a0řádku a\u00a0po přepnutí počítala součet z\u00a0tohoto kratšího seznamu. Nyní platí jednotný limit 500 řádků pro formulář, CSV, odkazy i\u00a0přepnutí jazyka; formulář a\u00a0CSV dříve žádný limit neměly. CSV s\u00a0více než 500 řádky se odmítne celé, stejně jako odkazy nebo seznamy rozpoznané jako neúplné. Ve srovnání úvěrů je seznam s\u00a0více než 1\u00a0200 jednorázovými splátkami v\u00a0jedné nabídce neplatný; dříve seznamy delší než 200 znaků z\u00a0odkazů mizely.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरमध्ये आधी लिंक तयार करताना आणि भाषा बदलताना 50व्या ओळीनंतरच्या ओळी न सांगता वगळल्या जात होत्या, आणि भाषा बदलल्यावर त्या लहान यादीवरून एकूण मोजले जात होते. आता फॉर्म, CSV, लिंक आणि भाषा बदलणे यांसाठी 500 ओळींची एकच मर्यादा आहे; फॉर्म आणि CSV यांना आधी मर्यादा नव्हती. 500\u00a0पेक्षा जास्त ओळी असलेली CSV पूर्णपणे नाकारली जाते, तसेच अपूर्ण आढळलेल्या लिंक किंवा याद्याही नाकारल्या जातात. कर्जांची तुलना करताना एका ऑफरमध्ये 1,200\u00a0पेक्षा जास्त एकरकमी भरण्यांची यादी अवैध ठरते; आधी 200\u00a0पेक्षा जास्त अक्षरांची यादी लिंकमधून गायब होत होती.',
+        },
+      },
+      {
+        id: 'missing-rates-show-a-subtotal',
+        text: {
+          en: 'When an exchange rate was missing, the net worth calculator used to show “Total net worth” and shares based only on the other currencies, and a share link presented that result as complete. If every rate is missing, it shows no total; otherwise it shows “Total excluding currencies with missing rates”, keeps the original amount on that currency’s card, and omits shares, bands, and the chart for sender and recipient, in the report, and in the spreadsheet. A redacted share link cannot be made while an exchange rate is missing or a row is unreadable. An older link that cannot confirm whether every currency was included shows no total or shares.',
+          hi: 'विनिमय दर उपलब्ध न होने पर शुद्ध संपत्ति कैलकुलेटर पहले केवल बाकी मुद्राओं के आधार पर “कुल शुद्ध संपत्ति” और प्रतिशत हिस्से दिखाता था, और शेयर लिंक उस नतीजे को पूरा दिखाता था। अगर सभी विनिमय दरें अनुपलब्ध हैं, तो कोई कुल नहीं दिखता; अन्यथा “जिन मुद्राओं की विनिमय दरें उपलब्ध नहीं हैं, उन्हें छोड़कर कुल” दिखता है, उस मुद्रा के कार्ड पर मूल रकम बनी रहती है, और भेजने व पाने वाले दोनों के लिए, रिपोर्ट और स्प्रेडशीट में प्रतिशत हिस्से, स्तर और चार्ट नहीं दिखते। विनिमय दर उपलब्ध न होने या किसी पंक्ति को पढ़ा न जा सकने पर रकम और नाम छिपाकर शेयर लिंक नहीं बनाया जा सकता। अगर कोई पुराना लिंक यह पुष्टि नहीं कर सकता कि हर मुद्रा शामिल थी, तो उसमें कुल और प्रतिशत हिस्से नहीं दिखते।',
+          es: 'Cuando faltaba un tipo de cambio, la calculadora de patrimonio neto antes mostraba «Patrimonio neto total» y porcentajes basados solo en las demás monedas, y el enlace para compartir presentaba ese resultado como completo. Si faltan todos los tipos de cambio, no muestra ningún total; en caso contrario, muestra «Total sin las monedas con tipos de cambio no disponibles», conserva la cantidad original en la tarjeta de esa moneda y omite los porcentajes, los niveles y el gráfico para quien envía y quien recibe, en el informe y en la hoja de cálculo. No se puede crear un enlace para compartir de la versión con datos ocultos si falta un tipo de cambio o no se puede leer una fila. Un enlace antiguo que no permita confirmar si se incluyeron todas las monedas no muestra el total ni los porcentajes.',
+          cs: 'Když chyběl směnný kurz, kalkulačka čistého jmění dříve zobrazovala „Celkové čisté jmění“ a\u00a0procentní podíly pouze podle ostatních měn a\u00a0odkaz ke sdílení tento výsledek představoval jako úplný. Pokud chybějí všechny kurzy, nezobrazuje žádný součet; jinak zobrazuje „Součet bez měn s\u00a0chybějícími kurzy“, ponechává původní částku na kartě dané měny a\u00a0nezobrazuje procentní podíly, pásma ani graf odesílateli a\u00a0příjemci, v\u00a0sestavě ani v\u00a0tabulce. Odkaz ke sdílení verze se skrytými údaji nelze vytvořit, pokud chybí směnný kurz nebo je některý řádek nečitelný. Starší odkaz, u\u00a0kterého nelze potvrdit zahrnutí všech měn, nezobrazuje součet ani procentní podíly.',
+          mr: 'विनिमय दर उपलब्ध नसताना निव्वळ संपत्ती कॅल्क्युलेटर आधी फक्त इतर चलनांवर आधारित “एकूण निव्वळ संपत्ती” आणि टक्केवारीतील हिस्से दाखवत होता, आणि शेअर लिंक तो निकाल पूर्ण असल्याप्रमाणे दाखवत होती. सर्व विनिमय दर उपलब्ध नसल्यास एकूण दिसत नाही; अन्यथा “विनिमय दर उपलब्ध नसलेल्या चलनांना वगळून एकूण” दिसते, त्या चलनाच्या कार्डवर मूळ रक्कम कायम राहते, आणि पाठवणाऱ्या व प्राप्त करणाऱ्या दोघांसाठी, अहवालात आणि स्प्रेडशीटमध्ये टक्केवारीतील हिस्से, पट्टे आणि आलेख दिसत नाहीत. विनिमय दर उपलब्ध नसताना किंवा एखादी ओळ वाचता येत नसताना रकमा लपवलेली आवृत्ती शेअर करण्यासाठी लिंक तयार करता येत नाही. सर्व चलनांचा समावेश होता का याची खात्री न देणाऱ्या जुन्या लिंकमध्ये एकूण किंवा टक्केवारीतील हिस्से दिसत नाहीत.',
+        },
+      },
+      {
+        id: 'edited-shared-net-worth-is-yours',
+        text: {
+          en: 'When you edit a net worth view someone shared, it becomes your own, worked out from what is in the form at the rates on your page. Before, the sender’s total could stay over your edits.',
+          hi: 'किसी की साझा की हुई शुद्ध संपत्ति में बदलाव करने पर अब वह आपकी अपनी हो जाती है, और आपके पेज की दरों पर फ़ॉर्म में मौजूद जानकारी से गणना होती है। पहले बदलाव के बाद भी भेजने वाले का कुल दिखता रह सकता था।',
+          es: 'Al editar un patrimonio neto compartido, ahora pasa a ser el tuyo y se calcula con lo que hay en el formulario y los tipos de tu página. Antes, el total de quien lo envió podía mantenerse sobre tus cambios.',
+          cs: 'Když upravíte sdílené čisté jmění, stane se vaším a\u00a0počítá se z\u00a0toho, co je ve formuláři, podle kurzů na vaší stránce. Dřív mohl nad vašimi úpravami zůstat součet odesílatele.',
+          mr: 'कोणी शेअर केलेल्या निव्वळ संपत्तीत बदल केल्यावर आता ती तुमची स्वतःची होते, आणि तुमच्या पेजवरील दरांनुसार फॉर्ममधील माहितीवरून मोजली जाते. आधी बदलानंतरही पाठवणाऱ्याचे एकूण दिसत राहू शकत होते.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-22',
     items: [
       {

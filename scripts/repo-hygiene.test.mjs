@@ -110,6 +110,67 @@ describe('deploy workflow permissions', () => {
   });
 });
 
+describe('the required checks run on every pull request', () => {
+  const REQUIRED = {
+    'pr-checks.yml': ['Detect changes', 'Install (lockfile integrity)', 'Lint', 'Type check', 'Tests', 'npm audit (high+)', 'Build (static)', 'Remotion'],
+    'tool-privacy.yml': ['No typed value reaches analytics'],
+  };
+  for (const [file, names] of Object.entries(REQUIRED)) {
+    const text = read(join('.github/workflows', file));
+    const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
+    const triggers = text.slice(text.indexOf('\non:\n'), text.indexOf('\npermissions:'));
+
+    it(`${file}: keeps the names branch protection waits for`, () => {
+      for (const name of names) assert.ok(jobs.some((job) => job.includes(`\n    name: ${name}\n`)), name);
+    });
+
+    it(`${file}: starts on every pull request, with no branch or path selection`, () => {
+      assert.match(triggers, /^ {2}pull_request:$/m);
+      assert.doesNotMatch(triggers, /^ +(paths|paths-ignore|branches|branches-ignore):/m);
+    });
+
+    it(`${file}: no job is chosen by what changed`, () => {
+      for (const job of jobs) {
+        const id = job.slice(2, job.indexOf(':'));
+        // Not a check: it reports the nightly run (the next describe).
+        if (file === 'tool-privacy.yml' && id === 'alert') continue;
+        const condition = /\n {4}if: (.*)/.exec(job);
+        if (condition) assert.equal(condition[1], '${{ !cancelled() }}', `job ${id}`);
+      }
+      assert.doesNotMatch(text, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
+    });
+
+    it(`${file}: a manual, a scheduled and a pull request run never cancel one another`, () => {
+      assert.match(text, /\n {2}group: [a-z-]+-\$\{\{ github\.event_name \}\}-/);
+    });
+  }
+});
+
+describe('a privacy problem is not left to be noticed', () => {
+  const privacy = read('.github/workflows/tool-privacy.yml');
+  const alert = privacy.slice(privacy.indexOf('\n  alert:\n'));
+
+  it('a nightly run that failed opens or updates one issue', () => {
+    assert.match(privacy, /\n {2}alert:\n/);
+    assert.ok(alert.includes('needs: [verify-tool, verify]'));
+    assert.ok(alert.includes("if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))"));
+    assert.match(alert, /permissions:\n\s+issues: write/);
+    assert.match(alert, /gh issue list --state open --label privacy-check-alert/);
+    assert.match(alert, /gh issue comment "\$EXISTING"/);
+    assert.match(alert, /gh issue create --title "\$TITLE" --label privacy-check-alert/);
+    assert.doesNotMatch(alert, /uses: actions\/checkout|gh run view|--log/);
+  });
+
+  it('the changelog guard is part of the Tests job, and fails', () => {
+    const checks = read('.github/workflows/pr-checks.yml');
+    const tests = checks.slice(checks.indexOf('\n  test:\n'), checks.indexOf('run: npm test'));
+    assert.match(tests, /fetch-depth: 2/);
+    assert.match(tests, /PRIVACY_NOTICE_BASE: HEAD\^1/);
+    assert.ok(JSON.parse(read('package.json')).scripts.test.includes('src/utils/privacyNoticeGuard.test.ts'));
+    assert.doesNotMatch(read('.github/workflows/deploy.yml'), /Privacy-notice changelog guard/);
+  });
+});
+
 describe('every workflow', () => {
   const workflows = readdirSync(join(ROOT, '.github/workflows'))
     .filter((name) => /\.ya?ml$/.test(name))
@@ -142,16 +203,32 @@ describe('every workflow', () => {
     assert.ok(seen >= 15, `only ${seen} jobs found: the test no longer reads the workflows`);
   });
 
-  it('installs the Python packages from the pinned file, never by name (#317)', () => {
+  it('installs the Python packages from the pinned file, never by name (#317), each file by its hash', () => {
     for (const [name, text] of workflows) {
       for (const [line] of text.matchAll(/^.*\bpip3? install\b.*$/gm)) {
-        assert.match(line, /pip install -r scripts\/requirements\.txt$/, `${name}: ${line.trim()}`);
+        assert.match(line, /pip install --require-hashes -r scripts\/requirements\.txt$/, `${name}: ${line.trim()}`);
       }
     }
-    for (const line of read('scripts/requirements.txt').split('\n')) {
-      if (line === '' || line.startsWith('#')) continue;
-      assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+$/, `scripts/requirements.txt: ${line}`);
+    const entries = read('scripts/requirements.txt').replace(/\\\n/g, '').split('\n').filter((l) => l !== '' && !l.startsWith('#'));
+    assert.ok(entries.length >= 5, 'the packages are listed');
+    for (const line of entries) {
+      assert.match(line, /^[A-Za-z0-9_.-]+==\d+(\.\d+)+( +--hash=sha256:[0-9a-f]{64})+$/, `scripts/requirements.txt: ${line.slice(0, 120)}`);
     }
+  });
+
+  it('leaves the token in a checkout only where a job pushes', () => {
+    let seen = 0;
+    for (const [name, text] of workflows) {
+      const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
+      for (const job of jobs) {
+        for (const step of job.split(/\n(?= {6}- )/).filter((s) => s.includes('uses: actions/checkout@'))) {
+          seen++;
+          const wanted = /\bgit( -C \S+)? push\b/.test(job.replace(/^\s*#.*$/gm, '')) ? 'true' : 'false';
+          assert.match(step, new RegExp(`\\n {10}persist-credentials: ${wanted}(\\n|$)`), `${name}: job ${job.slice(2, job.indexOf(':'))}`);
+        }
+      }
+    }
+    assert.ok(seen >= 10, `only ${seen} checkouts found: the test no longer reads the workflows`);
   });
 });
 

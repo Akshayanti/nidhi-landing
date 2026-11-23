@@ -5,6 +5,9 @@ import {
   decodeCsv,
   getCurrencyLabel,
   isSingleCurrency,
+  rateGap,
+  ratesPending,
+  ratesFailureShown,
   concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
@@ -19,9 +22,14 @@ import {
 import {
   decodeFromQueryString,
   encodeShared,
+  isPristineFullData,
   makeDefaultRows,
+  MAX_ROWS,
   publishableState,
+  redactedRefusal,
+  endsSharedView,
   SHARED_STATE_GLOBAL,
+  sharedResult,
   type ShareMode,
   type SharedPositionData,
 } from '../utils/multi-currency-net-worth/url.ts';
@@ -42,7 +50,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -153,6 +161,18 @@ export default function MultiCurrencyNetWorth({
   const [exampleRows, setExampleRows] = useState<AssetRow[]>([]);
   // Whether the CSV actions are unfolded. View state only.
   const [csvOpen, setCsvOpen] = useState(false);
+  // A file over the row limit was refused whole.
+  const [csvTooLong, setCsvTooLong] = useState(false);
+  // A link or a switched list that was not whole: none of it was loaded (#794).
+  const [refused, setRefused] = useState<'link' | 'transfer' | null>(null);
+  // What the page opened with. Its banner leaves at the first edit and its space
+  // stays: above the field being typed in, removing it moved the field (#795).
+  const [arrivedRefused, setArrivedRefused] = useState<'link' | 'transfer' | null>(null);
+  const [arrivedShared, setArrivedShared] = useState(false);
+  // The rows a shared view's sender could not have read.
+  const [sharedUnreadable, setSharedUnreadable] = useState(0);
+  // An older link that cannot say whether every rate was known (#795).
+  const [sharedInDoubt, setSharedInDoubt] = useState(false);
 
   const functionalCurrencySelectId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -167,9 +187,14 @@ export default function MultiCurrencyNetWorth({
     const decoded = decodeFromQueryString(shared);
     // No shared state: start in this page's currency. A shared state keeps
     // the codec's reading (no currency means EUR), so links mean the same anywhere.
-    setRows(shared ? decoded.rows : makeDefaultRows(defaultCurrency));
-    setFunctionalCurrency(shared ? decoded.functionalCurrency : defaultCurrency);
+    setRows(shared && !decoded.refused ? decoded.rows : makeDefaultRows(defaultCurrency));
+    setFunctionalCurrency(shared && !decoded.refused ? decoded.functionalCurrency : defaultCurrency);
+    setRefused(decoded.refused ?? null);
+    setArrivedRefused(decoded.refused ?? null);
+    setArrivedShared(Boolean(decoded.isReadOnly && decoded.sharedPositions));
     if (decoded.isReadOnly && decoded.sharedPositions) {
+      setSharedUnreadable(unreadableCount(decoded.rows));
+      setSharedInDoubt(decoded.inDoubt === true);
       setSharedPositions(decoded.sharedPositions);
       setSharedRedacted(decoded.shareMode === 'redacted');
       setIsReadOnlyView(true);
@@ -198,10 +223,13 @@ export default function MultiCurrencyNetWorth({
   // the editable layout, so a switch never turns them into a read-only view.
   useEffect(() => {
     if (!hydrated || isReadOnlyView) return;
+    // Until something is entered, a refused list stays what a switch carries,
+    // so the next page refuses it too and does not open blank.
+    if (refused && isPristineFullData(rows, functionalCurrency, defaultCurrency)) return;
     // Untouched publishes '' so the other language opens with its own
     // starting currency; anything changed carries as encoded.
     publishToolState(SHARED_STATE_GLOBAL, publishableState(rows, functionalCurrency, defaultCurrency));
-  }, [hydrated, isReadOnlyView, rows, functionalCurrency, defaultCurrency]);
+  }, [hydrated, isReadOnlyView, refused, rows, functionalCurrency, defaultCurrency]);
 
   // Fetch exchange rates when functional currency changes.
   useEffect(() => {
@@ -263,7 +291,7 @@ export default function MultiCurrencyNetWorth({
   // Compute positions. In read-only mode, reconstruct from URL-stored data.
   const result = useMemo(() => {
     if (isReadOnlyView && sharedPositions) {
-      return buildSharedResult(sharedPositions, functionalCurrency, strings);
+      return sharedResult(sharedPositions, functionalCurrency, (level) => riskLabel(strings, level));
     }
     return aggregate(rows, functionalCurrency, rates);
   }, [rows, functionalCurrency, rates, isReadOnlyView, sharedPositions, strings]);
@@ -271,16 +299,32 @@ export default function MultiCurrencyNetWorth({
   // Everything in the spending currency needs no exchange rates, so the rate
   // banners (loading, unavailable) do not apply.
   const singleCurrency = isSingleCurrency(result, functionalCurrency);
+  const ratesView = { loading: ratesLoading, failed: ratesError, shared: isReadOnlyView, singleCurrency, held: rates !== null };
+  const pendingRates = ratesPending(ratesView, result.hasRates);
+  const noRateAtAll = rateGap(result, functionalCurrency, !(isReadOnlyView && sharedRedacted)) === 'all';
 
   // ---- Row operations ----
 
+  // A shared view is its sender's until it is edited. From the first edit it
+  // is the reader's own form, worked out from its rows: no banner, frozen
+  // total or doubt. Frozen under an edit, the total was of other rows (#795).
+  const leaveSharedView = useCallback(() => {
+    setIsReadOnlyView(false);
+    setSharedPositions(null);
+    setSharedRedacted(false);
+    setSharedUnreadable(0);
+    setSharedInDoubt(false);
+    setRefused(null);
+  }, []);
+
   const updateRow = useCallback((index: number, patch: Partial<AssetRow>) => {
+    if (endsSharedView(sharedRedacted, patch)) leaveSharedView();
     setRows((prev) => {
       const next = prev.slice();
       next[index] = { ...next[index], ...patch };
       return next;
     });
-  }, []);
+  }, [sharedRedacted, leaveSharedView]);
 
   // We compute `next` outside the updater and reuse it for both setState
   // and analytics. Putting `track()` *inside* a setState updater would
@@ -288,6 +332,8 @@ export default function MultiCurrencyNetWorth({
   // double-invokes updaters); production wouldn't see it, but anyone
   // running `npm run dev` against a real PostHog key would.
   const addRow = useCallback(() => {
+    if (rows.length >= MAX_ROWS) return;
+    if (endsSharedView(sharedRedacted, 'add')) leaveSharedView();
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
@@ -298,13 +344,14 @@ export default function MultiCurrencyNetWorth({
     // safe because StrictMode does not double-invoke the *enclosing*
     // callback, only the updater.
     track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length, defaultCurrency]);
+  }, [rows.length, defaultCurrency, sharedRedacted, leaveSharedView]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;
+    if (endsSharedView(sharedRedacted, 'remove')) leaveSharedView();
     setRows((prev) => prev.filter((_, i) => i !== index));
     track('free_multi_currency_net_worth_asset_removed', { count: rows.length - 1 });
-  }, [rows.length]);
+  }, [rows.length, sharedRedacted, leaveSharedView]);
 
   // ---- CSV upload ----
 
@@ -316,6 +363,14 @@ export default function MultiCurrencyNetWorth({
         // its letters; the type column may use this page's own two words.
         const text = decodeCsv(new Uint8Array(reader.result as ArrayBuffer));
         const { rows: parsed, errors: parseErrors } = parseCSV(text, { asset: [strings.row.asset], liability: [strings.row.liability] });
+        // Over the limit nothing is imported, not the first rows of it.
+        const tooLong = parsed.length + parseErrors.filter((e) => e.line > 0).length > MAX_ROWS;
+        setCsvTooLong(tooLong);
+        if (tooLong) {
+          setCsvErrors([]);
+          setCsvConfirmPending(null);
+          return;
+        }
         setCsvErrors(parseErrors);
         // Surface parse errors as their own event so we can measure CSV
         // friction. Properties carry counts and a coarse classification
@@ -353,12 +408,13 @@ export default function MultiCurrencyNetWorth({
     const padded = newRows.length < 1
       ? [{ name: '', value: '', currency: defaultCurrency, type: 'asset' as const }]
       : newRows;
+    leaveSharedView();
     setRows(padded);
     setCsvConfirmPending(null);
     // The lines that could not be read stay listed beside the rows that
     // were loaded: a file that was only partly read must not look whole.
     track('free_multi_currency_net_worth_csv_uploaded', { count: newRows.length });
-  }, [defaultCurrency]);
+  }, [defaultCurrency, leaveSharedView]);
 
   const confirmCsvOverwrite = useCallback(() => {
     if (csvConfirmPending) {
@@ -377,21 +433,29 @@ export default function MultiCurrencyNetWorth({
 
   const hasData = rows.some((r) => r.value.trim() !== '');
 
+  // A row that cannot be read hides every result (#793), and a full link
+  // still carries that row, so sharing stays on for it.
+  const unreadableRows = isReadOnlyView ? sharedUnreadable : unreadableCount(rows);
+  const withheld = unreadableRows > 0
+    ? format(plural(numberLocale, unreadableRows, strings.table.withheldOne, strings.table.withheldFew, strings.table.withheldMany), { count: unreadableRows })
+    : isReadOnlyView && sharedInDoubt ? strings.results.olderLink : null;
+  const canShare = hasData && (withheld !== null || (result.hasRates !== 'none' && result.positions.length > 0));
   const openShareModal = useCallback(() => {
     // Allow share when rates are 'full' or 'partial' but not 'none':
     // a partial share encodes what's known and the recipient sees the
     // same gap the sender saw.
-    if (!hasData || result.hasRates === 'none' || result.positions.length === 0) return;
+    if (!canShare) return;
     setShareUrl('');
     setCopied(false);
     setCopyFailed(false);
     setShareNotice({ text: '', n: 0 });
     setShareModalOpen(true);
     track('free_multi_currency_net_worth_share_modal_opened');
-  }, [hasData, result.hasRates, result.positions.length]);
+  }, [canShare]);
 
   const copyShareLinkFromModal = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    if (shareMode === 'redacted' && redactedRefusal(rows, result)) return;
     const qs = encodeShared(rows, result.positions, functionalCurrency, shareMode);
     const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth#${qs}`;
     try {
@@ -409,30 +473,30 @@ export default function MultiCurrencyNetWorth({
       setCopied(false);
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
     }
-  }, [rows, result.positions, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
+  }, [rows, result, functionalCurrency, shareMode, strings.toolbar.copiedLabel, strings.toolbar.copyPrompt]);
 
   const reset = useCallback(() => {
     setRows(makeDefaultRows(defaultCurrency));
     setFunctionalCurrency(defaultCurrency);
-    setIsReadOnlyView(false);
-    setSharedPositions(null);
-    setSharedRedacted(false);
+    leaveSharedView();
+    // Nothing is being typed: the space a left banner kept can go.
+    setArrivedShared(false);
+    setArrivedRefused(null);
+    setCsvTooLong(false);
     setCsvErrors([]);
     setCsvConfirmPending(null);
     setExampleRows([]);
     setCsvOpen(false);
     track('free_multi_currency_net_worth_reset');
-  }, [defaultCurrency]);
+  }, [defaultCurrency, leaveSharedView]);
 
-  // A row whose amount cannot be read is in no total, so it is not counted
-  // as an item either, and the page says how many there are.
+  // A row whose amount cannot be read is not counted as an item.
   const filledCount = rows.filter((r) => r.value.trim() !== '' && !isUnreadableAmount(r.value)).length;
-  const notCounted = unreadableCount(rows);
 
   // A copy holds what the results show and no more: a shared view that hides
   // amounts gives currencies and shares only. The event says only which kind.
   const showAmounts = !(isReadOnlyView && sharedRedacted);
-  const exportReady = result.positions.length > 0 && (isReadOnlyView || hasData);
+  const exportReady = !withheld && !pendingRates && result.positions.length > 0 && (isReadOnlyView || hasData);
   const downloadSpreadsheet = () => {
     const sheets = netWorthSheets({
       island: strings,
@@ -476,6 +540,8 @@ export default function MultiCurrencyNetWorth({
       { name: strings.example.abroad, value: String(8000 * (EXAMPLE_SCALE[other] ?? 1)), currency: other, type: 'asset' },
       { name: strings.example.loan, value: String(9000 * scale), currency: functionalCurrency, type: 'liability' },
     ];
+    // It fills the form, so a refusal is over: clearing it then carries an empty form (#794).
+    leaveSharedView();
     setExampleRows(filled);
     setRows(filled);
     focusFirstRow();
@@ -487,52 +553,31 @@ export default function MultiCurrencyNetWorth({
     focusFirstRow();
   };
 
+  const goToRow = (index: number) => {
+    setShareModalOpen(false);
+    setShareUrl('');
+    setCopied(false);
+    // After the dialog has handed focus back to what opened it.
+    requestAnimationFrame(() => rootRef.current?.querySelectorAll<HTMLInputElement>('.mcnw-cellValue input')[index]?.focus());
+  };
+  const addLimitId = useId();
+  const atLimit = rows.length >= MAX_ROWS;
   const toolReady = useToolReady();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
-      {/* ---- Rate status ---- */}
-      {ratesError && !singleCurrency && (
-        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
-          <span>
-            {strings.rates.errorBefore}{' '}
-            <button
-              type="button"
-              className="btn btn--outline mcnw-retryBtn"
-              data-attr="mcnw-rates-retry"
-              onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
-            >
-              {strings.rates.retry}
-            </button>
-          </span>
-        </div>
-      )}
-      {ratesLoading && !ratesError && !singleCurrency && (
-        <div className="mcnw-banner mcnw-bannerInfo" role="status">
-          {strings.rates.loading}
-        </div>
-      )}
-      {/*
-        Partial-rates banner: surfaces the case where the rates response
-        came back successfully but is missing one or more currencies the
-        user holds. The headline total excludes those positions, and each
-        affected per-currency card already flags `rateUnavailable`. We
-        still warn at the top so the user doesn't read the total as a
-        complete picture.
-      */}
-      {!ratesError && !ratesLoading && result.hasRates === 'partial' && (
-        <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
-          <span>
-            {strings.rates.partial}
-          </span>
+      {arrivedRefused && (
+        <div className={`mcnw-banner mcnw-bannerWarn${refused && untouched ? '' : ' mcnw-banner--left'}`} role="alert">
+          <span>{format(arrivedRefused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
         </div>
       )}
 
       {/* ---- Read-only view banner ---- */}
-      {isReadOnlyView && (
-        <div className="mcnw-banner mcnw-bannerInfo">
+      {arrivedShared && (
+        <div className={`mcnw-banner mcnw-bannerInfo${isReadOnlyView ? '' : ' mcnw-banner--left'}`}>
           {strings.shared.readOnly}
         </div>
       )}
@@ -551,6 +596,7 @@ export default function MultiCurrencyNetWorth({
               value={functionalCurrency}
               onChange={(e) => {
                 const next = e.target.value;
+                leaveSharedView();
                 setFunctionalCurrency(next);
                 track('free_multi_currency_net_worth_func_currency_changed', { currency: next });
               }}
@@ -585,11 +631,6 @@ export default function MultiCurrencyNetWorth({
             {format(plural(numberLocale, filledCount, strings.table.itemsOne, strings.table.itemsFew, strings.table.itemsMany), { count: filledCount })}
           </span>
         </div>
-
-        {/* Always in the page, so that a screen reader hears it when it fills. */}
-        <p className="mcnw-notCounted" role="status">
-          {notCounted > 0 && format(plural(numberLocale, notCounted, strings.table.notCountedOne, strings.table.notCountedFew, strings.table.notCountedMany), { count: notCounted })}
-        </p>
 
         {exampleLeft > 0 && (
           <p className="mcnw-exampleNote">
@@ -630,15 +671,21 @@ export default function MultiCurrencyNetWorth({
             type="button"
             className="btn btn--outline mcnw-addBtn"
             onClick={addRow}
+            aria-disabled={atLimit || undefined}
+            aria-describedby={atLimit ? addLimitId : undefined}
             data-attr="mcnw-asset-add"
           >
             {strings.table.addAsset}
           </button>
+          {/* Always in the page, so that a screen reader hears it when it fills. */}
+          <p className="mcnw-limit" id={addLimitId} role="status">
+            {atLimit && format(strings.table.addLimit, { max: MAX_ROWS })}
+          </p>
         </div>
 
         <details
           className="mcnw-csvFold"
-          open={csvOpen || csvErrors.length > 0 || csvConfirmPending !== null}
+          open={csvOpen || csvTooLong || csvErrors.length > 0 || csvConfirmPending !== null}
           onToggle={(e) => setCsvOpen(e.currentTarget.open)}
         >
           <summary className="mcnw-csvFoldSummary disclosure">{strings.table.csvFold}</summary>
@@ -661,7 +708,7 @@ export default function MultiCurrencyNetWorth({
                     track('free_multi_currency_net_worth_csv_downloaded', { count: filled.length });
                   }
                 }}
-                disabled={!hasData || isReadOnlyView}
+                disabled={!hasData || isReadOnlyView || Boolean(withheld)}
                 title={strings.table.downloadTitle}
                 data-attr="mcnw-csv-download"
               >
@@ -696,6 +743,11 @@ export default function MultiCurrencyNetWorth({
         )}
 
         {/* CSV parse errors */}
+        {csvTooLong && (
+          <div className="mcnw-csvErrors" role="alert">
+            <p className="mcnw-csvErrorsTitle">{format(strings.table.csvLimit, { max: MAX_ROWS })}</p>
+          </div>
+        )}
         {csvErrors.length > 0 && (
           <div className="mcnw-csvErrors" role="alert">
             <p className="mcnw-csvErrorsTitle">
@@ -715,13 +767,53 @@ export default function MultiCurrencyNetWorth({
         )}
       </div>
 
+      {/* ---- Rate status ---- */}
+      {/* After the table, by the results they describe: they follow every key, and above it they moved the field typed in (#795). */}
+      {ratesFailureShown(ratesView, Boolean(withheld || (refused && untouched))) && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="alert">
+          <span>
+            {strings.rates.errorBefore}{' '}
+            <button
+              type="button"
+              className="btn btn--outline mcnw-retryBtn"
+              data-attr="mcnw-rates-retry"
+              onClick={() => { setRatesRetryKey((k) => k + 1); track('free_multi_currency_net_worth_rates_retry'); }}
+            >
+              {strings.rates.retry}
+            </button>
+          </span>
+        </div>
+      )}
+      {ratesLoading && !ratesError && !singleCurrency && (
+        <div className="mcnw-banner mcnw-bannerInfo" role="status">
+          {strings.rates.loading}
+        </div>
+      )}
+      {/*
+        Partial-rates banner: surfaces the case where the rates response
+        came back successfully but is missing one or more currencies the
+        user holds. The headline total excludes those positions, and each
+        affected per-currency card already flags `rateUnavailable`. We
+        still warn at the top so the user doesn't read the total as a
+        complete picture.
+      */}
+      {/* A shared view's rates are its sender's: this page's own request does not matter to it. */}
+      {!withheld && result.hasRates === 'partial' && (isReadOnlyView || (!ratesLoading && (!ratesError || rates !== null))) && (
+        <div className="mcnw-banner mcnw-bannerWarn" role="status" aria-live="polite">
+          <span>
+            {/* Without any rate there is no total below to be left out of. */}
+            {noRateAtAll ? strings.rates.errorBefore : strings.rates.partial}
+          </span>
+        </div>
+      )}
+
       {/* ---- Results panel ---- */}
-      <TotalAnnouncement result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />
+      <TotalAnnouncement withheld={withheld} result={result} functionalCurrency={functionalCurrency} hidden={isReadOnlyView && sharedRedacted} strings={strings} />
       <ResultsPanel
+        withheld={withheld}
         result={result}
         functionalCurrency={functionalCurrency}
-        ratesLoading={ratesLoading}
-        ratesError={ratesError}
+        pendingRates={pendingRates}
         rows={isReadOnlyView ? undefined : rows}
         hideAmounts={isReadOnlyView && sharedRedacted}
         strings={strings}
@@ -735,7 +827,7 @@ export default function MultiCurrencyNetWorth({
               type="button"
               className="btn btn--outline mcnw-shareBtn"
               onClick={openShareModal}
-              disabled={!hasData || result.hasRates === 'none' || result.positions.length === 0}
+              disabled={!canShare}
               title={strings.toolbar.shareTitle}
               data-attr="mcnw-share-open"
             >
@@ -765,7 +857,7 @@ export default function MultiCurrencyNetWorth({
         {strings.results.disclaimer}
       </p>
 
-      <PrintedReport
+      {!withheld && !pendingRates && <PrintedReport
         strings={strings}
         exportStrings={exportStrings}
         functionalCurrency={functionalCurrency}
@@ -773,12 +865,15 @@ export default function MultiCurrencyNetWorth({
         rows={isReadOnlyView ? null : rows}
         rates={isReadOnlyView ? null : rates}
         showAmounts={showAmounts}
-      />
+      />}
 
       {/* ---- Share modal ---- */}
       {shareModalOpen && (
         <ShareModal
           rows={rows}
+          withheld={withheld}
+          // Only the sender's own form has a row to go to.
+          onGoToRow={isReadOnlyView ? undefined : goToRow}
           result={result}
           functionalCurrency={functionalCurrency}
           shareMode={shareMode}
@@ -794,6 +889,7 @@ export default function MultiCurrencyNetWorth({
         />
       )}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </AmountLocaleContext.Provider>
     </NumberLocaleContext.Provider>
@@ -834,7 +930,11 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
     const timer = setTimeout(() => setSettled(true), 600);
     return () => clearTimeout(timer);
   }, [unreadable, row.value]);
-  const showValueError = unreadable && settled;
+  // The mark that arrived, as against text being typed here.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && row.value === 'NaN';
+  const showValueError = unreadable && (settled || arrived);
   // The aria names and the remove button report a position in the table, so
   // they count from one the way a reader counts rows.
   const at = format(strings.row.nameAria, { index: index + 1, total });
@@ -867,14 +967,14 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           inputMode="decimal"
           className="mcnw-input"
           value={row.value}
-          onValueChange={(v) => onChange({ value: v })}
+          onValueChange={(v) => { setTyped(true); onChange({ value: v }); }}
           onBlur={() => { if (unreadable) setSettled(true); }}
           placeholder={strings.row.valuePlaceholder}
           autoComplete="off"
           aria-invalid={showValueError ? true : undefined}
           aria-describedby={showValueError ? valueErrorId : undefined}
         />
-        {showValueError && <span className="mcnw-rowError" id={valueErrorId}><ErrorText>{strings.row.valueError}</ErrorText></span>}
+        {showValueError && <span className="mcnw-rowError" id={valueErrorId}><ErrorText>{arrived ? unreadableText : strings.row.valueError}</ErrorText></span>}
       </div>
       <div className="mcnw-tableCell mcnw-cellCurrency" role="cell">
         <span className="mcnw-cellLabel" aria-hidden="true">{strings.table.colCurrency}</span>
@@ -932,10 +1032,11 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
 // ---------------------------------------------------------------------------
 
 interface ResultsPanelProps {
+  /** Why there are no results: the total, chart and shares all wait (#793). The actions stay. */
+  withheld?: string | null;
   result: ReturnType<typeof aggregate>;
   functionalCurrency: string;
-  ratesLoading: boolean;
-  ratesError: boolean;
+  pendingRates: boolean;
   strings: Strings;
   hidePct?: boolean;
   hideAmounts?: boolean;
@@ -951,24 +1052,37 @@ interface ResultsPanelProps {
  * The tool's one announcement: the total, said once typing has settled. Silent
  * when there is no total to say (nothing entered, amounts hidden, no rates).
  */
-function TotalAnnouncement({ result, functionalCurrency, hidden, strings }: { result: ResultsPanelProps['result']; functionalCurrency: string; hidden: boolean; strings: Strings }) {
+function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strings }: { withheld: string | null; result: ResultsPanelProps['result']; functionalCurrency: string; hidden: boolean; strings: Strings }) {
   const { formatMoney } = useMoney();
   let total: string | null = null;
   if (!hidden && result.positions.length > 0) {
     if (isSingleCurrency(result, functionalCurrency)) {
       total = formatMoney(Math.round(result.positions[0].netAmountOriginal * getFactor(functionalCurrency)), functionalCurrency);
-    } else if (result.hasRates !== 'none') {
+    } else if (result.hasRates !== 'none' && rateGap(result, functionalCurrency, true) !== 'all') {
       total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency);
     }
   }
-  return <ResultAnnouncement text={total ? format(strings.results.announce, { total }) : ''} />;
+  return (
+    <ResultAnnouncement
+      text={withheld ?? (total ? format(result.hasRates === 'partial' ? strings.results.announcePartial : strings.results.announce, { total }) : '')}
+      delay={withheld ? WITHHELD_SAID_AFTER : undefined}
+    />
+  );
 }
 
-function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
+function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRates, strings, hidePct = false, hideAmounts = false, rows, actions, onExample }: ResultsPanelProps) {
   const { formatMoney, formatPercent } = useMoney();
   // Net worth of zero or less: no position is a share of it, so no card states one.
   // A shared view without amounts has no total to judge by and shows what it was given.
   const noShares = result.noShares === true;
+  if (result.positions.length === 0 && withheld) {
+    return (
+      <section className="mcnw-results">
+        <p className="tool-resultReason">{withheld}</p>
+        {actions}
+      </section>
+    );
+  }
   if (result.positions.length === 0) {
     return (
       <section className="mcnw-results">
@@ -996,6 +1110,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
     // so the total reads "Hidden" rather than a zero it never had.
     return (
       <section className="mcnw-results">
+        <Withheld reason={withheld}>
         {hideAmounts ? (
           <div className="mcnw-total mcnw-total--hidden">
             <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
@@ -1017,6 +1132,7 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         <p className="mcnw-singleNote">
           {format(strings.results.singleNote, { currency: getCurrencyLabel(functionalCurrency, strings.currencies) })}
         </p>
+        </Withheld>
         {actions}
       </section>
     );
@@ -1026,7 +1142,15 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
   // 'full' or 'partial' = converted total is meaningful (partial is a sum
   // of the positions whose rate was returned; the missing-rate banner
   // tells the user that the total is incomplete).
-  const ratesUsable = result.hasRates !== 'none';
+  const gap = rateGap(result, functionalCurrency, !hideAmounts);
+  const ratesUsable = result.hasRates !== 'none' && gap !== 'all';
+  // A currency without a rate is in no total: what is left is a subtotal, and
+  // no share, band or chart can be drawn from it (#795).
+  const partial = gap === 'some';
+  const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
+  // Without a band to say "debt", the amount carries its sign.
+  const cardMoney = (value: number, code: string) =>
+    formatMoney(Math.round((gap ? value : Math.abs(value)) * getFactor(code)), code).replace(/^-/, '\u2212');
   const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
   const totalLabel = !hideAmounts && ratesUsable
     ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace(/^-/, '\u2212')
@@ -1034,17 +1158,18 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
 
   return (
     <section className="mcnw-results">
+      <Withheld reason={withheld}>
       {/* Total NW */}
       {hideAmounts ? (
         <div className="mcnw-total mcnw-total--hidden">
-          <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
+          <span className={`mcnw-totalLabel${partial ? ' mcnw-totalLabel--partial' : ''}`}>{totalWord}</span>
           <span className="mcnw-totalValue mcnw-totalValue--hidden">{strings.results.hidden}</span>
         </div>
       ) : ratesUsable && totalLabel ? (
         <div className="mcnw-total">
-          <span className="mcnw-totalLabel">{strings.results.totalLabel}</span>
+          <span className={`mcnw-totalLabel${partial ? ' mcnw-totalLabel--partial' : ''}`}>{totalWord}</span>
           <span className="mcnw-totalValue"><Amounts>{totalLabel}</Amounts></span>
-          {result.hasRates === 'partial' && (
+          {partial && (
             <span className="mcnw-totalHint">
               {strings.results.partialHint}
             </span>
@@ -1052,45 +1177,54 @@ function ResultsPanel({ result, functionalCurrency, ratesLoading, ratesError, st
         </div>
       ) : null}
 
+      </Withheld>
+
       {actions}
 
+      <Withheld reason={withheld} unsaid>
+
       {/* Donut chart */}
-      <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />
+      {!gap && <ConcentrationChart positions={result.positions} functionalCurrency={functionalCurrency} strings={strings} />}
 
       {/* Risk cards */}
       <div className="mcnw-riskCards">
         <h3 className="mcnw-riskCardsTitle">{strings.results.riskHeading}</h3>
         {result.positions.map((pos) => (
-          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
+          <div key={pos.code} className={`mcnw-riskCard mcnw-riskCard--${gap || pos.rateUnavailable ? 'unbanded' : pos.riskLevel}`}>
             <div className="mcnw-riskCardHead">
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable ? (
-                  <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
-                ) : hidePct ? (
+                  !pendingRates && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
                   pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
                 )}
-                {!hideAmounts && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{formatMoney(Math.round(Math.abs(pos.netAmountFunctional) * getFactor(functionalCurrency)), functionalCurrency)}</Amount></>}
+                {!hideAmounts && gap !== 'all' && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{cardMoney(pos.netAmountFunctional, functionalCurrency)}</Amount></>}
+                {/* Unconverted, in its own currency, from the rows. */}
+                {!hideAmounts && (pos.rateUnavailable || gap === 'all') && <> · <Amount>{cardMoney(pos.netAmountOriginal, pos.code)}</Amount></>}
               </span>
-              <span
-                className="mcnw-riskBadge"
-                style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
-              >
-                {/* Without a rate there is no share to band: never "low". */}
-                {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
-              </span>
+              {!gap && (
+                <span
+                  className="mcnw-riskBadge"
+                  style={{ background: RISK_COLORS[pos.rateUnavailable ? 'unbanded' : pos.riskLevel] ?? 'var(--color-text-muted)' }}
+                >
+                  {/* Without a rate there is no share to band: never "low". */}
+                  {riskBadge(strings, pos.rateUnavailable ? 'unbanded' : pos.riskLevel)}
+                </span>
+              )}
             </div>
             {/* With no rate, the paragraph below says so once (#618); the head
                 already reads "Rate unavailable". */}
-            {!pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
-            <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />
+            {!gap && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
+            {(!gap || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
           </div>
         ))}
       </div>
+      </Withheld>
     </section>
   );
 }
@@ -1117,8 +1251,9 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
   if (result.positions.length === 0) answer.push(r.empty);
   else if (!showAmounts) answer.push(`${r.totalLabel}: ${r.hidden}`);
   else if (single) answer.push(`${r.totalLabel}: ${money(result.positions[0].netAmountOriginal)}`);
+  else if (rateGap(result, functionalCurrency, true) === 'all') answer.push(r.rateUnavailable);
   else if (result.hasRates !== 'none') {
-    answer.push(`${r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
+    answer.push(`${result.hasRates === 'partial' ? r.totalPartial : r.totalLabel}: ${money(result.totalNetWorthFunctional)}`);
     if (result.hasRates === 'partial') answer.push(r.partialHint);
   }
   const report = netWorthReport({
@@ -1268,6 +1403,8 @@ function Recommendation({ pos, functionalCurrency, hidePct = false, noShares = f
 
 interface ShareModalProps {
   rows: AssetRow[];
+  withheld: string | null;
+  onGoToRow?: (index: number) => void;
   result: ReturnType<typeof aggregate>;
   functionalCurrency: string;
   shareMode: ShareMode;
@@ -1284,6 +1421,8 @@ interface ShareModalProps {
 
 function ShareModal({
   rows,
+  withheld,
+  onGoToRow,
   result,
   functionalCurrency,
   shareMode,
@@ -1382,6 +1521,17 @@ function ShareModal({
   );
 
   const nonEmpty = rows.filter((r) => r.value.trim() !== '');
+  // Redacted stays a choice and says why it cannot be copied; it never becomes Full (#795).
+  const refusal = isFull ? null : redactedRefusal(rows, result);
+  const refusalId = useId();
+  const words = strings.shareModal;
+  const refusalText = !refusal ? ''
+    : refusal.reason === 'rates'
+      ? words.refusedRates
+      : format(plural(numberLocale, refusal.count, words.refusedRowsOne, words.refusedRowsFew, words.refusedRowsMany), { count: refusal.count });
+  // Said through the dialog's one region. Its count is below zero, apart from
+  // a copy's, and differs by reason, so a change of reason is said as well.
+  const refusalNotice = refusal ? { text: refusalText, n: refusal.reason === 'rates' ? -1 : -2 } : null;
 
   return (
     <div className="mcnw-modalOverlay" onClick={handleOverlayClick}>
@@ -1429,11 +1579,27 @@ function ShareModal({
               </label>
             </fieldset>
 
+            {refusal && (
+              <div className="mcnw-modalRefusal">
+                <p id={refusalId}>{refusalText}</p>
+                {onGoToRow && (
+                  <button type="button" className="btn btn--outline" aria-describedby={refusalId} onClick={() => onGoToRow(refusal.row)}>{words.goToRow}</button>
+                )}
+              </div>
+            )}
+
             <div className="mcnw-modalFooter">
               <button type="button" className="btn btn--quiet mcnw-modalCancelBtn" onClick={onClose} data-attr="mcnw-share-cancel">
                 {strings.shareModal.cancel}
               </button>
-              <button type="button" className="btn btn--primary mcnw-modalCopyBtn" onClick={onCopy} data-attr="mcnw-share-copy">
+              <button
+                type="button"
+                className="btn btn--primary mcnw-modalCopyBtn"
+                onClick={refusal ? undefined : onCopy}
+                aria-disabled={refusal ? true : undefined}
+                aria-describedby={refusal ? refusalId : undefined}
+                data-attr="mcnw-share-copy"
+              >
                 <SwapLabel label={strings.shareModal.copy} alternate={strings.shareModal.copied} swapped={copied} steady />
               </button>
             </div>
@@ -1441,7 +1607,7 @@ function ShareModal({
                 dialog opens, empty until a copy, and only its text changes.
                 The bar under it is not a live region, and it stays until the
                 kind of link changes or the dialog closes (#603). */}
-            <NoticeRegion notice={notice} />
+            <NoticeRegion notice={refusalNotice ?? notice} />
             {shareUrl && (
               <div className="mcnw-shareUrlBar">
                 <span className="mcnw-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedLabel}</span>
@@ -1469,10 +1635,10 @@ function ShareModal({
             </h3>
             <div className="mcnw-modalPreviewBody">
               <ResultsPanel
+                withheld={withheld}
                 result={previewResult}
                 functionalCurrency={functionalCurrency}
-                ratesLoading={false}
-                ratesError={false}
+                pendingRates={false}
                 hidePct={false}
                 hideAmounts={!isFull}
                 strings={strings}
@@ -1904,47 +2070,6 @@ function riskBadge(strings: Strings, level: string): string {
   }
 }
 
-function buildSharedResult(
-  sharedPositions: SharedPositionData[],
-  functionalCurrency: string,
-  strings: Strings,
-): import('../utils/multi-currency-net-worth/math.ts').AggregationResult {
-  const funcCode = functionalCurrency.toUpperCase();
-  const positions = sharedPositions.map((p) => ({
-    code: p.code,
-    netAmountOriginal: p.netAmountFunctional,
-    netAmountFunctional: p.netAmountFunctional,
-    pctOfTotal: p.pct,
-    isFunctional: p.code === funcCode || p.riskLevel === 'functional',
-    riskLevel: p.riskLevel,
-    riskLabel: riskLabel(strings, p.riskLevel),
-  }));
-
-  positions.sort((a, b) => {
-    if (a.isFunctional && !b.isFunctional) return -1;
-    if (!a.isFunctional && b.isFunctional) return 1;
-    return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
-  });
-
-  const totalNetWorthFunctional = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
-
-  // For a shared (read-only) view we don't have the original rates response,
-  // so we infer rate availability from whether the encoded payload carries
-  // any per-position functional amounts. A redacted share has no amounts at
-  // all (`'none'`); a full share that round-tripped at least one non-zero
-  // amount is treated as `'full'`. We never report `'partial'` here because
-  // the wire format doesn't distinguish "amount was zero" from "rate was
-  // missing" once the values are flattened into the URL.
-  const anyAmount = sharedPositions.some((p) => p.netAmountFunctional !== 0);
-  return {
-    positions,
-    totalNetWorthFunctional,
-    hasRates: anyAmount ? 'full' : 'none',
-    // With amounts the total says it; without, the link does.
-    noShares: anyAmount ? totalNetWorthFunctional <= 0 : sharedPositions.some((p) => p.noShares === true),
-  };
-}
-
 function buildPreviewResult(
   realResult: ReturnType<typeof aggregate>,
   isFull: boolean,
@@ -1970,7 +2095,8 @@ function buildPreviewResult(
     // `'none'`. The full preview inherits whatever the underlying result
     // had ('full' | 'partial' | 'none'); the share modal will not let
     // the user copy a link if the underlying result is 'none' anyway.
-    hasRates: isFull ? realResult.hasRates : 'none',
+    // A missing rate still hides the shares there, beside the refusal.
+    hasRates: isFull || realResult.hasRates === 'partial' ? realResult.hasRates : 'none',
     noShares: realResult.noShares,
   };
 }

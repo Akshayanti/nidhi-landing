@@ -48,7 +48,7 @@
 
 import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
-import { linkCurrency, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
+import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 
 /**
@@ -291,17 +291,18 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
 /**
  * The lump-sum box's text as the plain "12:5000;36:3000" the tool keeps, with
  * each amount read the way the page writes numbers ("12:5.000,50" on a Spanish
- * page). A pair that does not read is kept as typed, and `parseLumpSums` skips it.
+ * page). A side that does not read is the marker, never the text typed: kept
+ * as typed it was read again with other rules, and "12.:150.000" on the Czech
+ * page became 150 (#789).
  */
 export function canonicalLumpSums(raw: string, locale: string): string {
   return raw
     .split(';')
     .map((pair) => {
-      const colon = pair.indexOf(':');
-      if (colon < 0) return pair;
-      const month = canonicalNumber(pair.slice(0, colon), locale);
-      const amount = canonicalNumber(pair.slice(colon + 1), locale);
-      return month === 'NaN' || amount === 'NaN' ? pair : `${month}:${amount}`;
+      if (pair.trim() === '') return '';
+      const sides = pair.split(':');
+      if (sides.length !== 2) return UNREADABLE;
+      return sides.map((side) => canonicalNumber(side, locale) || UNREADABLE).join(':');
     })
     .join(';');
 }
@@ -312,8 +313,9 @@ export function displayLumpSums(value: string, locale: string): string {
     .split(';')
     .map((pair) => {
       const colon = pair.indexOf(':');
-      if (colon < 0) return pair;
-      return `${pair.slice(0, colon)}:${displayNumber(pair.slice(colon + 1), locale)}`;
+      if (colon < 0) return displayNumber(pair, locale);
+      const month = pair.slice(0, colon);
+      return `${month === UNREADABLE ? displayNumber(month, locale) : month}:${displayNumber(pair.slice(colon + 1), locale)}`;
     })
     .join(';');
 }
@@ -346,11 +348,13 @@ const CLEARED = '-';
 
 /** `value` as the link writes it: the mark when it was emptied and its default is not empty. */
 function written(value: string, dflt: string): string {
-  return value === '' && dflt !== '' ? CLEARED : value;
+  if (value === '') return dflt === '' ? '' : CLEARED;
+  // A hyphen in the box is not the mark of an emptied one.
+  return value === CLEARED ? UNREADABLE : linkNumber(value, dflt);
 }
 
 /** What a link's value says about a box: emptied on purpose, or the value itself. */
-function read(value: string, fallback: string): string {
+function read(value: string | null, fallback: string): string {
   return value === CLEARED ? '' : linkNumber(value, fallback);
 }
 
@@ -444,7 +448,12 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
         params.set(`v${idx}_${key}`, 'p');
         continue;
       }
-      params.set(`v${idx}_${key}`, written(String(value), String(dflt)));
+      const text = String(value);
+      const out =
+        field === 'rateKind' ? text
+        : field === 'lumpSumsEncoded' ? linkLumpSums(text, '')
+        : written(text, String(dflt));
+      if (out !== '') params.set(`v${idx}_${key}`, out);
     }
   });
 
@@ -532,6 +541,8 @@ export function decodeFromQueryString(qs: string): DecodeResult {
       } else if (field === 'rateChangeKeeps') {
         // Anything but the one known code is today's behaviour.
         next.rateChangeKeeps = value === 'p' ? 'payment' : 'term';
+      } else if (field === 'lumpSumsEncoded') {
+        next.lumpSumsEncoded = value === CLEARED ? '' : linkLumpSums(value, '');
       } else {
         // All non-rateKind advanced fields are typed `string` on VendorInput
         // (see ADVANCED_DEFAULTS); the cast through `unknown` is needed only
@@ -552,13 +563,13 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   const global: GlobalState = {
     currency: currency ?? DEFAULT_GLOBAL_STATE.currency,
     activeTab,
-    horizonMonths: params.get('h') === CLEARED ? '' : linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
+    horizonMonths: read(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
     // '0' is "no offer chosen"; otherwise one of the offers the link carries.
     refiVendorIndex: linkWholeNumber(params.get('rv'), 0, count, DEFAULT_GLOBAL_STATE.refiVendorIndex),
-    refiAtMonth: params.get('ra') === CLEARED ? '' : linkNumber(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
-    refiNewRatePct: params.get('rr') === CLEARED ? '' : linkNumber(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
-    refiNewTermMonths: params.get('rt') === CLEARED ? '' : linkNumber(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
-    refiNewFeeMajor: params.get('rf') === CLEARED ? '' : linkNumber(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
+    refiAtMonth: read(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
+    refiNewRatePct: read(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
+    refiNewTermMonths: read(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
+    refiNewFeeMajor: read(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
     refiRollFee: params.get('rl') === '1',
   };
 

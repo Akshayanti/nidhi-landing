@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { CURRENCIES, amountFormat, amountStyle } from '../utils/loan/math.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
@@ -28,9 +28,6 @@ import {
   historyPath,
   keepingUp,
   missingYears,
-  parseAmount,
-  parsePercent,
-  parseYears,
   realRate,
   recentAverage,
   round2,
@@ -42,7 +39,8 @@ import {
   type Series,
 } from '../utils/inflation/math.ts';
 import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
-import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, publishableState, type ToolState } from '../utils/inflation/url.ts';
+import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/inflation/url.ts';
+import { boxErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/inflation/form.ts';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
@@ -51,7 +49,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, useToolReady } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -168,49 +166,6 @@ function yearsPhrase(n: number, strings: Strings, numberLocale: string): string 
   return t(plural(numberLocale, n, one, few, other), { n });
 }
 
-// ===========================================================================
-// Form state: inputs are kept as strings so a field can be empty while typing.
-// ===========================================================================
-
-interface FormState {
-  mode: Mode;
-  currency: string;
-  amount: string;
-  rate: string;
-  years: string;
-  growth: string;
-  country: string;
-  /** '' means the default starting year for the country. */
-  from: string;
-}
-
-function toForm(s: ToolState, locale: string): FormState {
-  return {
-    mode: s.mode,
-    currency: s.currency,
-    amount: formatForInput(s.amount, locale),
-    rate: formatForInput(s.rate, locale),
-    years: String(s.years),
-    growth: formatForInput(s.growth, locale),
-    country: s.country,
-    from: s.from === null ? '' : String(s.from),
-  };
-}
-
-/** The form as a state, keeping `prev`'s value for any field that does not parse. */
-function toState(f: FormState, prev: ToolState, locale: string): ToolState {
-  return {
-    mode: f.mode,
-    currency: f.currency,
-    amount: parseAmount(f.amount, locale) ?? prev.amount,
-    rate: parsePercent(f.rate, MIN_RATE, MAX_RATE, locale) ?? prev.rate,
-    years: parseYears(f.years) ?? prev.years,
-    growth: parsePercent(f.growth, MIN_GROWTH, MAX_GROWTH, locale) ?? prev.growth,
-    country: f.country,
-    from: f.from === '' ? null : Number(f.from),
-  };
-}
-
 /** The starting years a country's history offers: its unbroken run up to the latest year, minus that last year. */
 function fromYearsFor(series: Series | null): number[] {
   if (!series) return [];
@@ -270,6 +225,8 @@ export default function InflationCalculator({
   const start = defaultState(defaultCurrency, defaultCountry);
   const [form, setForm] = useState<FormState>(() => toForm(start, numberLocale));
   const [settled, setSettled] = useState<ToolState>(() => start);
+  // The form `settled` was worked out from.
+  const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
@@ -306,8 +263,12 @@ export default function InflationCalculator({
     setHydrated(true);
     if (!decoded) return;
     const shared = { ...decoded, country: countryByCode.has(decoded.country) ? decoded.country : '' };
-    setForm(toForm(shared, numberLocale));
+    // The boxes as the link has them, bad ones included; the state behind them stays finite.
+    const opened = formFromLink(raw as string, numberLocale) ?? toForm(shared, numberLocale);
+    const arrived = { ...opened, country: shared.country };
+    setForm(arrived);
     setSettled(shared);
+    setSettledForm(arrived);
     // A shared link that names a country shows its history without a click.
     if (shared.country && shared.country !== defaultCountry) setHistoryOpen(true);
     // A language switch carries the state too, but that view was counted on
@@ -318,13 +279,15 @@ export default function InflationCalculator({
     });
   }, [countryByCode, numberLocale]);
 
+  // The form as it stands, not the settled state: a bad box must arrive bad,
+  // and a choice made while one is bad must not be lost (#789).
   // Keeps what is on screen where the header's language switch can find it
   // (after the #, at click time; see src/utils/shared/toolState.ts). Never
   // the address: nothing here writes to it.
   useEffect(() => {
     if (!hydrated) return;
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(settled, defaultCurrency, defaultCountry));
-  }, [hydrated, settled, defaultCurrency, defaultCountry]);
+    publishToolState(SHARED_STATE_GLOBAL, publishableForm(form, numberLocale, defaultCurrency, defaultCountry));
+  }, [hydrated, form, numberLocale, defaultCurrency, defaultCountry]);
 
   // A country's history, from the site's own origin, the first time one is
   // picked that the page did not arrive with.
@@ -372,11 +335,12 @@ export default function InflationCalculator({
   const fromOptions = fromYearsFor(formSeries);
   const pastByHistory = form.mode === 'past' && (formState === 'loading' || (formState === 'ready' && fromOptions.length > 0));
 
+  const wrong = boxErrors(form, numberLocale);
   const errors = {
-    amount: parseAmount(form.amount, numberLocale) === null,
-    rate: !pastByHistory && parsePercent(form.rate, MIN_RATE, MAX_RATE, numberLocale) === null,
-    years: !pastByHistory && parseYears(form.years) === null,
-    growth: form.mode === 'keep' && parsePercent(form.growth, MIN_GROWTH, MAX_GROWTH, numberLocale) === null,
+    amount: wrong.amount,
+    rate: !pastByHistory && wrong.rate,
+    years: !pastByHistory && wrong.years,
+    growth: form.mode === 'keep' && wrong.growth,
   };
   const hasErrors = Object.values(errors).some(Boolean);
 
@@ -384,9 +348,13 @@ export default function InflationCalculator({
   // answer does not jump on every keystroke.
   useEffect(() => {
     if (hasErrors) return;
-    const timer = window.setTimeout(() => setSettled((prev) => toState(form, prev, numberLocale)), 250);
+    const timer = window.setTimeout(() => {
+      setSettled((prev) => toState(form, prev, numberLocale));
+      setSettledForm(form);
+    }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
+  const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
 
   const update = (key: 'amount' | 'rate' | 'years' | 'growth') => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -418,12 +386,10 @@ export default function InflationCalculator({
     track('free_inflation_country_changed', { country: code || 'none' });
   }
 
-  // The settled state is what the answer shows; a share link carries the
-  // form as it is now when it is valid, so a quick copy after typing is not
-  // a quarter of a second out of date.
+  // A share link carries the form as it stands, once the answer shows it.
   function copyShareLink() {
-    if (hasErrors) return;
-    const state = publishableState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
+    if (waiting) return;
+    const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
     navigator.clipboard?.writeText(url).then(
@@ -454,7 +420,7 @@ export default function InflationCalculator({
       history: a.calendar && settledCountry && first && last ? { country: settledCountry.name, from: first.x, to: last.x } : null,
     };
   }
-  const exportReady = !hasErrors && shownAnswer() !== null;
+  const exportReady = !waiting && shownAnswer() !== null;
 
   const decimals = Math.round(Math.log10(CURRENCIES.find((c) => c.code === settled.currency)?.factor ?? 100));
 
@@ -492,8 +458,10 @@ export default function InflationCalculator({
 
 
   function reset() {
-    setForm(toForm(start, numberLocale));
+    const blank = toForm(start, numberLocale);
+    setForm(blank);
     setSettled(start);
+    setSettledForm(blank);
     setHistoryOpen(false);
     track('free_inflation_reset');
   }
@@ -514,6 +482,7 @@ export default function InflationCalculator({
     <NumberLocaleContext.Provider value={numberLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         <div className="ifc-formHead">
@@ -593,7 +562,6 @@ export default function InflationCalculator({
                   hint={t(strings.fields.yearsHint, { min: MIN_YEARS, max: MAX_YEARS })}
                   error={errors.years ? t(strings.fields.yearsError, { min: MIN_YEARS, max: MAX_YEARS }) : null}
                   inputMode="numeric"
-                  type="number"
                 />
               </>
             )}
@@ -657,15 +625,13 @@ export default function InflationCalculator({
           />
         </div>
 
-        {/* Visible under the form; the live announcement is the one over the
-            stale answer, so it is not said twice. */}
-        <p className="ifc-hint ifc-fix">{hasErrors ? strings.results.fix : ''}</p>
       </form>
 
       <Results
         strings={strings}
         state={settled}
-        stale={hasErrors}
+        withheld={withheld}
+        invalid={hasErrors}
         country={settled.country ? countryByCode.get(settled.country) ?? null : null}
         series={seriesFor(settled.country)}
         historyStatus={historyState(settled.country)}
@@ -676,19 +642,21 @@ export default function InflationCalculator({
       <ToolExport
         strings={exportStrings}
         share={
-          <button type="button" className="btn btn--outline" onClick={copyShareLink} disabled={hasErrors} data-attr="free-inflation-share">
+          <button type="button" className="btn btn--outline" onClick={copyShareLink} aria-disabled={waiting || undefined} data-attr="free-inflation-share">
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
+        settling={waiting && !hasErrors && shownAnswer() !== null}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
 
-      {report && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
+      {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
     </NumberLocaleContext.Provider>
@@ -707,6 +675,7 @@ function Field(props: {
   type?: 'number' | 'text';
   unit?: string;
 }) {
+  const unreadable = useContext(UnreadableContext);
   const hintId = `${props.id}-hint`;
   const errorId = `${props.id}-error`;
   const describedBy = [props.error ? errorId : null, props.hint ? hintId : null].filter(Boolean).join(' ') || undefined;
@@ -715,6 +684,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          {...markerSelect}
           id={props.id}
           className="ifc-input"
           type={props.type ?? 'text'}
@@ -730,7 +700,7 @@ function Field(props: {
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
       </div>
       <div className="ifc-fieldNote">
-        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.error}</ErrorText></span>}
+        {props.error && <span className="ifc-error" id={errorId}><ErrorText>{props.value.trim() === '?' ? unreadable : props.error}</ErrorText></span>}
         {props.hint && <span className="ifc-hint" id={hintId}>{props.hint}</span>}
       </div>
     </div>
@@ -1175,7 +1145,8 @@ function computeAnswer(
 function Results({
   strings,
   state,
-  stale,
+  withheld,
+  invalid,
   country,
   series,
   historyStatus,
@@ -1184,7 +1155,9 @@ function Results({
 }: {
   strings: Strings;
   state: ToolState;
-  stale: boolean;
+  withheld: boolean;
+  /** Invalid now, which is announced; `withheld` lasts until the corrected answer is there. */
+  invalid: boolean;
   country: CountryOption | null;
   series: Series | null;
   historyStatus: 'none' | 'loading' | 'ready' | 'error';
@@ -1205,18 +1178,21 @@ function Results({
     setAnnouncement(announceText);
     // A new answer only: the text follows the state, not every render.
   }, [state, historyStatus]);
+  // What was said before the form went wrong is not said again as it returns.
+  useEffect(() => {
+    if (withheld) setAnnouncement('');
+  }, [withheld]);
 
   return (
-    <section className={`ifc-results${stale ? ' ifc-results--stale' : ''}`} aria-labelledby="ifc-results-h">
+    <section className="ifc-results" aria-labelledby="ifc-results-h">
       <h2 id="ifc-results-h" className="ifc-resultsTitle">{strings.results.heading}</h2>
-      <span className="ifc-srOnly" aria-live="polite">{stale ? '' : announcement}</span>
-      {/* While a field is invalid the answer below is the previous one: it is
-          dimmed, hidden from assistive technology, and this says why. */}
-      {stale && <p className="ifc-staleNote" role="status" aria-live="polite">{strings.results.stale}</p>}
+      <span className="ifc-srOnly" aria-live="polite">{withheld ? '' : announcement}</span>
+      <ResultAnnouncement text={invalid ? strings.results.fix : ''} delay={WITHHELD_SAID_AFTER} />
+      <Withheld reason={withheld ? (invalid ? strings.results.fix : '') : null}>
       {result === 'loading' ? (
         <p className="ifc-note" role="status">{strings.history.loading}</p>
       ) : (
-        <div className="ifc-resultBody" aria-hidden={stale || undefined}>
+        <div className="ifc-resultBody">
           <div className="ifc-answer">
             <p className="ifc-headline"><Amounts>{result.headline}</Amounts></p>
             {result.sentences.map((s, i) => (
@@ -1247,6 +1223,7 @@ function Results({
           />
         </div>
       )}
+      </Withheld>
     </section>
   );
 }

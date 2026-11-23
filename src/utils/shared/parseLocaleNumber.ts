@@ -157,7 +157,21 @@ export function canonicalNumber(raw: string, locale: string): string {
   // From 1e21 up a number prints as "1e+21", which no engine here reads: a
   // 22-digit loan amount was answered with "greater than zero" (#520). Plain
   // digits, so the engine can say it is too large.
-  return Math.abs(n) >= 1e21 ? n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 }) : String(n);
+  return plainDigits(n);
+}
+
+/**
+ * A number as a link carries it. String() writes an exponent from 1e21 up and
+ * below a millionth, which a link refuses: a valid 0.0000001 arrived as
+ * unreadable, and rounded to ten or twenty decimals an invalid one arrived as
+ * a valid zero (#789). Every digit is kept, none rounded.
+ */
+export function plainDigits(n: number): string {
+  if (Math.abs(n) >= 1e21) return n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 });
+  const [mantissa, exponent] = String(n).split('e-');
+  if (exponent === undefined) return mantissa;
+  const digits = mantissa.replace(/[-.]/g, '');
+  return `${n < 0 ? '-' : ''}0.${'0'.repeat(Number(exponent) - 1)}${digits}`;
 }
 
 /**
@@ -186,8 +200,11 @@ export function completeNumber(raw: string, locale: string): string {
 export function displayNumber(value: string, locale: string): string {
   const t = value.trim();
   if (t === '') return '';
+  // The marker of a box that could not be read: no English word in anyone's box.
+  if (t === 'NaN') return '?';
   // A plain number keeps every digit it has: only the decimal mark changes.
-  if (/^\d+(\.\d+)?$/.test(t)) return t.replace('.', numberSeparators(locale).decimal);
+  // Below zero too: rounded, -99.99000000001 arrived as a valid -99.99 (#789).
+  if (/^-?\d+(\.\d+)?$/.test(t)) return t.replace('.', numberSeparators(locale).decimal);
   const n = Number(t.replace(/[\s,]/g, ''));
   return Number.isFinite(n) ? formatForInput(n, locale, 10) : value;
 }

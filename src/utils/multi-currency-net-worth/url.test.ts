@@ -162,16 +162,11 @@ describe('full-data round-trip', () => {
     assert.equal(decoded.rows[0].type, 'asset');
   });
 
-  it('strips trailing empty rows on decode', () => {
-    // Simulate a URL with n=4 but only 2 rows have populated tuples.
-    // Empty `aN` entries shouldn't even round-trip, they'd be omitted
-    // by the encoder, but we still want decode to be defensive about
-    // hand-edited URLs.
-    const qs = 'a1=A~10000~USD&a2=B~20000&n=4';
-    const decoded = decodeFromQueryString(qs);
-    assert.equal(decoded.rows.length, 2);
-    assert.equal(decoded.rows[0].name, 'A');
-    assert.equal(decoded.rows[1].name, 'B');
+  it('refuses a link that says four rows and holds two', () => {
+    // It used to load the two, and their total looked like the whole (#794).
+    const decoded = decodeFromQueryString('a1=A~10000~USD&a2=B~20000&n=4');
+    assert.equal((decoded as { refused?: string }).refused, 'transfer');
+    assert.ok(decoded.rows.every((r) => r.value === ''));
   });
 
   it('ensures at least 2 rows', () => {
@@ -180,14 +175,14 @@ describe('full-data round-trip', () => {
     assert.equal(decoded.rows.length, 2); // DEFAULT_ROW_COUNT
   });
 
-  it('clamps hostile n=999 to MAX_ROWS_FOR_URL', () => {
-    // Fill all 50 clamped rows with data so stripping doesn't reduce count.
+  it('refuses a hostile n=999 rather than clamping it', () => {
     const params = ['n=999'];
     for (let i = 1; i <= 50; i++) {
       params.push(`a${i}=X~${i}~USD`);
     }
     const decoded = decodeFromQueryString(params.join('&'));
-    assert.equal(decoded.rows.length, 50);
+    assert.equal((decoded as { refused?: string }).refused, 'transfer');
+    assert.ok(decoded.rows.every((r) => r.value === ''));
   });
 });
 
@@ -244,9 +239,9 @@ describe('redacted mode', () => {
     // No per-row tuples (a1, a2, ...) and no amount segment in p_*.
     assert.ok(!qs.includes('a1='));
     assert.ok(!qs.includes('a2='));
-    // Position tuple has only pct~risk in redacted mode (2 fields → 1 tilde).
+    // pct~risk~(no amount)~(no z)~rate status: nothing sits where an amount would (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
-    assert.equal(usdParam.split('~').length, 2, `redacted p_* should have 2 fields, got: ${usdParam}`);
+    assert.deepEqual(usdParam.split('~').slice(2), ['', '', 'k'], `redacted p_* must hold no amount, got: ${usdParam}`);
   });
 
   it('decoded rows are default empty for the form', () => {
@@ -256,16 +251,17 @@ describe('redacted mode', () => {
     assert.equal(decoded.rows[0].value, '');
   });
 
-  it('handles unrecognized risk levels gracefully', () => {
-    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=50.0~unknown');
-    const pos = decoded.sharedPositions!.find((p) => p.code === 'USD')!;
-    assert.equal(pos.riskLevel, 'low');
+  it('refuses a band it does not know, and never reads it as Low (#795)', () => {
+    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=100.0~unknown');
+    assert.equal(decoded.sharedPositions, undefined);
+    assert.equal(decoded.refused, 'link');
   });
 
   it('handles malformed percentage', () => {
     const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=abc~moderate');
-    const pos = decoded.sharedPositions!.find((p) => p.code === 'USD');
-    assert.equal(pos, undefined);
+    // With no share left that reads, there is nothing to show.
+    assert.equal(decoded.sharedPositions, undefined);
+    assert.equal(decoded.refused, 'link');
   });
 });
 
@@ -307,10 +303,10 @@ describe('full sharing mode', () => {
     assert.ok(qs.includes('m=f'));
     assert.ok(!qs.includes('mode=full')); // legacy form removed
     assert.ok(!qs.includes('anon=1'));
-    // p_USD position tuple should have all 3 fields: pct~risk~amount.
+    // p_USD position tuple: pct~risk~amount~(no z)~rate status (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
     const usdParts = usdParam.split('~');
-    assert.equal(usdParts.length, 3);
+    assert.deepEqual(usdParts.slice(3), ['', 'k']);
     assert.equal(usdParts[0], '22.0');
     assert.equal(usdParts[1], 'moderate');
     assert.equal(usdParts[2], '64814.81');
@@ -588,30 +584,34 @@ describe('page starting currency and the language switch', () => {
 describe('a hostile link', () => {
   it('a spending currency the tools do not know becomes the default', () => {
     for (const f of ['ZZZ', 'usd', '%3Cb%3Ex%3C%2Fb%3E', 'EUR%26base%3DUSD%23', 'E'.repeat(3000)]) {
-      for (const qs of [`f=${f}&a1=Cash~10`, `m=f&f=${f}&a1=Cash~10&p_USD=50~low~5`, `m=r&f=${f}&p_USD=50~low`]) {
+      for (const qs of [`f=${f}&n=1&a1=Cash~10`, `m=f&f=${f}&n=1&a1=Cash~10&p_EUR=50~low~5`, `m=r&f=${f}&p_USD=50~low`]) {
         assert.equal(decodeFromQueryString(qs).functionalCurrency, 'EUR', qs.slice(0, 30));
       }
     }
-    assert.equal(decodeFromQueryString('f=INR&a1=Cash~10').functionalCurrency, 'INR');
+    assert.equal(decodeFromQueryString('f=INR&n=1&a1=Cash~10').functionalCurrency, 'INR');
   });
 
   it('a row’s currency the tools do not know becomes the default', () => {
-    assert.equal(decodeFromQueryString('a1=Cash~10~%3Cb%3E').rows[0].currency, 'EUR');
-    assert.equal(decodeFromQueryString('a1=Cash~10~ZZZ').rows[0].currency, 'EUR');
-    assert.equal(decodeFromQueryString('a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~%3Cb%3E').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~ZZZ').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
   });
 
-  it('a name is cut at the stated length, and a value that is not a number is dropped', () => {
-    const row = decodeFromQueryString(`a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
+  it('a name is cut at the stated length, and a value that is not a number is marked (#789)', () => {
+    const row = decodeFromQueryString(`n=1&a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
     assert.equal(row.name.length, 80);
-    assert.equal(row.value, '');
+    assert.equal(row.value, 'NaN');
     assert.equal(row.currency, 'USD');
-    assert.equal(decodeFromQueryString('a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
   });
 
-  it('a shared position names a currency the tools know, or is left out', () => {
-    const { sharedPositions } = decodeFromQueryString('m=r&f=EUR&p_USD=60~low&p_%3Cb%3E=30~low&p_ZZZ=10~low');
-    assert.deepEqual((sharedPositions ?? []).map((p) => p.code), ['USD']);
+  it('a shared position names a currency the tools know, or the link is refused and shows none (#795)', () => {
+    // Left out, what remained looked like the whole net worth.
+    for (const made of ['p_%3Cb%3E=30~low', 'p_ZZZ=10~low']) {
+      const decoded = decodeFromQueryString(`m=r&f=EUR&p_USD=60~low&${made}`);
+      assert.equal(decoded.refused, 'link', made);
+      assert.equal(decoded.sharedPositions, undefined, made);
+    }
   });
 });
 

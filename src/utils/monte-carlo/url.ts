@@ -23,6 +23,7 @@
  */
 import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
+import { plainDigits } from '../shared/parseLocaleNumber.ts';
 import { DEFAULT_PATHS, RUN_OPTIONS, sanitizeInputs, type ReturnSetting, type SimulationInputs } from './math.ts';
 
 export interface ToolState extends SimulationInputs {
@@ -45,7 +46,7 @@ export const DEFAULTS: ToolState = {
 const RETURN_CODES: Record<ReturnSetting, string> = { cautious: 'c', historical: 'h', optimistic: 'o' };
 const RETURN_BY_CODE: Record<string, ReturnSetting> = { c: 'cautious', h: 'historical', o: 'optimistic' };
 
-export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n'] as const;
+export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n', 'o'] as const;
 
 /** Window property the page head script stores a shared fragment in. */
 export const SHARED_STATE_GLOBAL = '__nidhiMonteCarloShared';
@@ -55,17 +56,20 @@ export const STATE_KEY_PATTERN = `[${STATE_KEYS.join('')}]`;
 
 export function encodeState(state: ToolState): string {
   const p = new URLSearchParams();
+  // As decodeState reads them: String() writes 0.0000001 as "1e-7", which is
+  // refused. No decimal is rounded away: 0.00000000001 left as 0 (#789).
+  const plain = plainDigits;
   setNonDefault(p, 'c', state.currency, DEFAULTS.currency);
-  setNonDefault(p, 's', state.start, DEFAULTS.start);
-  setNonDefault(p, 'm', state.monthly, DEFAULTS.monthly);
-  setNonDefault(p, 'y', state.saveYears, DEFAULTS.saveYears);
-  setNonDefault(p, 'k', state.stockPct, DEFAULTS.stockPct);
+  setNonDefault(p, 's', plain(state.start), DEFAULTS.start);
+  setNonDefault(p, 'm', plain(state.monthly), DEFAULTS.monthly);
+  setNonDefault(p, 'y', plain(state.saveYears), DEFAULTS.saveYears);
+  setNonDefault(p, 'k', plain(state.stockPct), DEFAULTS.stockPct);
   if (state.withdrawal > 0) {
-    p.set('w', String(state.withdrawal));
-    setNonDefault(p, 'r', state.withdrawYears, DEFAULTS.withdrawYears);
+    p.set('w', plain(state.withdrawal));
+    setNonDefault(p, 'r', plain(state.withdrawYears), DEFAULTS.withdrawYears);
   }
   setNonDefault(p, 'e', RETURN_CODES[state.returns], RETURN_CODES[DEFAULTS.returns]);
-  setNonDefault(p, 'f', state.feePct, DEFAULTS.feePct);
+  setNonDefault(p, 'f', plain(state.feePct), DEFAULTS.feePct);
   setNonDefault(p, 'n', state.paths, DEFAULTS.paths);
   return serializeParams(p);
 }
@@ -104,13 +108,15 @@ export function decodeState(search: string): ToolState | null {
     // would also read "0x10" as 16, "1e3" as 1000 and " 12 " as 12, none of
     // which a link made here ever holds. A minus sign is read, and the range
     // check then brings the number back to zero.
-    if (!/^-?\d{1,15}(\.\d{1,10})?$/.test(raw)) return dflt;
+    if (!/^-?\d{1,15}(\.\d{1,200})?$/.test(raw)) return dflt;
     const n = Number(raw);
     return Number.isFinite(n) ? n : dflt;
   };
   const code = (p.get('c') ?? '').toUpperCase();
   const currency = CURRENCIES.some((c) => c.code === code) ? code : DEFAULTS.currency;
-  const withdrawal = num('w', DEFAULTS.withdrawal);
+  // `o=1` goes beside a withdrawal amount carried with withdrawals off: the
+  // one case where `w` does not mean they are on (form.ts).
+  const withdrawal = p.get('o') === '1' ? 0 : num('w', DEFAULTS.withdrawal);
   const clean = sanitizeInputs({
     start: num('s', DEFAULTS.start),
     monthly: num('m', DEFAULTS.monthly),

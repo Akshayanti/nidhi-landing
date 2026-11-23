@@ -7,8 +7,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
+import * as checks from './tool-privacy-checks.mjs';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, afterRun, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
@@ -45,6 +46,81 @@ describe('tool privacy checks: a clean run passes', () => {
   it('with consent', () => assert.deepEqual(judge(cleanEvents()).problems, []));
   it('without consent', () => assert.deepEqual(judge(cleanEvents('declined'), { consent: 'declined' }).problems, []));
   it('counts each event', () => assert.equal(judge(cleanEvents()).counts.$pageview, 2));
+});
+
+describe('tool privacy checks: every box gets a value the check knows', () => {
+  const boxes = checks.BOXES ?? {};
+  // The forms a tool writes one in: as JSON, in the page's own marks, in a link, encoded, in base64.
+  const forms = (v) => [
+    ['an event property', { sent: Number.isFinite(Number(v)) ? Number(v) : v }],
+    ['text', { sent: `the value ${v} was typed` }],
+    ['a decimal comma', { sent: String(v).replace('.', ',') }],
+    ['a list', { sent: [{ deep: String(v) }] }],
+    ['a link in a property', { $current_url: `${ORIGIN}/free/x/#q=${encodeURIComponent(String(v))}` }],
+    ['an older link', { $referrer: `${ORIGIN}/free/x/?q=${encodeURIComponent(String(v))}&r=1` }],
+    ['a person property', { $set: { sent: String(v) } }],
+  ];
+
+  it('has boxes for the five tools', () => {
+    assert.deepEqual(Object.keys(boxes).sort(), ['inflation-calculator', 'invest-or-pay-off', 'loan-comparison', 'monte-carlo-simulator', 'multi-currency-net-worth']);
+  });
+
+  it('covers the years, rate and term boxes that had no value of their own', () => {
+    for (const [tool, value] of [['inflation-calculator', '47'], ['inflation-calculator', '4.37'], ['loan-comparison', '347'], ['monte-carlo-simulator', '43']]) {
+      assert.ok((boxes[tool] ?? []).some((b) => String(b.value) === value), `${tool}: ${value}`);
+    }
+  });
+
+  for (const value of ['4.37', '47', '347']) {
+    it(`finds ${value} in an event`, () => {
+      const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { sent: Number(value) })]);
+      assert.ok(problems.some((p) => p.includes('carries what was typed')), problems.join('\n'));
+    });
+  }
+
+  for (const [tool, list] of Object.entries(boxes)) {
+    for (const box of list) {
+      for (const part of String(box.value).split(':')) {
+        it(`${tool}, ${box.name}: ${part} is found in every form it can be sent in`, () => {
+          for (const [what, properties] of forms(part)) {
+            const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', properties)]);
+            assert.ok(problems.some((p) => p.includes('carries what was typed') && p.includes(part.toLowerCase().split(' ')[0])), `${what}: ${problems.join(' | ')}`);
+          }
+        });
+      }
+    }
+  }
+
+  it('finds one in a request address', () => {
+    for (const value of ['4.37', '47']) {
+      assert.ok(judge(cleanEvents(), { url: `https://eu.i.posthog.com/i/v0/e/?q=${value}` }).problems.some((p) => p.includes('carries what was typed')), value);
+    }
+  });
+
+  it('is not set off by what a clean event holds', () => {
+    const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { count: 3, runs: 1000, currency: 'EUR', $lib_version: '1.437.4', $screen_height: 847, $time: 1763824347.437, distinct_id: '019347a1-47bd-7e43-8437-4370a1b2c3d4' })]);
+    assert.deepEqual(problems, []);
+  });
+
+  it('two boxes of a tool never share a value', () => {
+    for (const [tool, list] of Object.entries(boxes)) assert.equal(new Set(list.map((b) => String(b.value))).size, list.length, tool);
+  });
+
+  it('fails a box that was shown and given no value', () => {
+    const uncovered = checks.uncoveredBoxes?.(['amount', 'rate', 'added later'], ['amount', 'rate']) ?? [];
+    assert.equal(uncovered.length, 1);
+    assert.match(uncovered[0], /added later/);
+    assert.deepEqual(checks.uncoveredBoxes?.(['amount'], ['amount']) ?? 'no rule', []);
+  });
+
+  it('compares what a box holds by the page’s own marks', () => {
+    const same = checks.sameTyped ?? (() => 'no rule');
+    assert.equal(same('2,5', '2.5', 'es'), true);
+    assert.equal(same('7,131,719', '7131719', 'en'), true);
+    assert.equal(same('7 131 719', '7131719', 'cs'), true);
+    assert.equal(same('25', '2.5', 'es'), false);
+    assert.equal(same('2,5', '2.5', 'en'), false);
+  });
 });
 
 describe('tool privacy checks: what was typed', () => {
@@ -365,8 +441,8 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     // The required check keeps its name, waits for every tool, and runs after a failure.
     const required = workflow.slice(workflow.indexOf('\n  verify:\n'));
     assert.ok(required.includes('name: No typed value reaches analytics'));
-    assert.ok(required.includes('needs: [changes, verify-tool]'));
-    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) && /);
+    assert.ok(required.includes('needs: [verify-tool]'));
+    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) \}\}\n/);
     assert.ok(required.includes('[ "$TOOLS" != "success" ]'));
   });
 
@@ -406,5 +482,89 @@ describe('a run that only missed a step', () => {
     const steps = result.problems.filter((p) => p.includes('that step was not done'));
     assert.ok(steps.length > 0, result.problems.join(' | '));
     assert.equal(isMissedStepOnly(steps), true);
+  });
+});
+
+describe('afterRun: what was found is never retried away', () => {
+  const stopped = 'the run stopped while pressing: Session closed. Most likely the page has been closed.';
+  const missed = 'the tool never sent free_loan_comparison_reset: that step was not done, so what it sends was not checked';
+  const FOUND = [
+    'a request to /i/v0/e/ carries what was typed: 7131719',
+    'a request to 127.0.0.1/ carries what was typed in its address: 7131719',
+    'a request to /e/ could not be decoded, so it could not be checked',
+    'what the run sent could not be checked: no such file',
+    'consent was declined, yet $autocapture was sent',
+    'a # share link left state in the address: /free/loan-comparison/#p=1',
+  ];
+  for (const found of FOUND) {
+    for (const [name, problems, connected] of [
+      ['a lost page', [found, stopped], true],
+      ['a lost browser', [found], false],
+      ['both lost', [stopped, found], false],
+    ]) {
+      it(`judged at once: ${found.slice(0, 60)}, then ${name}`, () => {
+        assert.equal(afterRun({ attempt: 0, problems, connected }), 'judge');
+      });
+    }
+  }
+
+  it('a run that found nothing may go again, once', () => {
+    assert.equal(afterRun({ attempt: 0, problems: [stopped], connected: true }), 'repeat');
+    assert.equal(afterRun({ attempt: 0, problems: [missed], connected: true }), 'repeat');
+    assert.equal(afterRun({ attempt: 0, problems: [stopped], connected: false }), 'relaunch');
+    assert.equal(afterRun({ attempt: 0, problems: [], connected: false }), 'relaunch');
+    assert.equal(afterRun({ attempt: 1, problems: [stopped], connected: false }), 'judge');
+  });
+
+  it('the worker asks afterRun, with no exception of its own', () => {
+    const worker = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8').split('async function worker()')[1];
+    assert.match(worker, /afterRun\(\{ attempt, problems: result\.problems, connected: browser\.connected \}\)/);
+    assert.doesNotMatch(worker, /lostPage|!PLANT && hasFinding/);
+  });
+});
+
+describe('a short value in a request body (P2)', () => {
+  for (const [name, body] of Object.entries({ form: 'months=347&other=1', json: '{"term":"347"}', text: 'term 347', encoded: 'state%3D347' })) {
+    it(`to any host: ${name}`, () => {
+      assert.ok(checks.shortInBody, 'no check of a body');
+      assert.deepEqual(checks.shortInBody(body), ['347']);
+    });
+  }
+  it('none in a body without one', () => {
+    assert.ok(checks.shortInBody, 'no check of a body');
+    assert.deepEqual(checks.shortInBody('{"id":"a347b","size":3470,"rate":1.347}'), []);
+  });
+  it('to PostHog, in a request that holds no event', () => {
+    const extraRequests = [{ url: 'https://eu.i.posthog.com/flags/?v=2', body: gzipSync(JSON.stringify({ person_properties: { term: '347' } })) }];
+    const { problems } = judge(cleanEvents(), { extraRequests });
+    assert.ok(problems.some((p) => p.includes('/flags/ carries what was typed: 347')), problems.join('\n'));
+  });
+  it('not PostHog’s own measurements there', () => {
+    const extraRequests = [{ url: 'https://eu.i.posthog.com/flags/?v=2', body: gzipSync(JSON.stringify({ token: TEST_KEY, person_properties: { $screen_width: 347 } })) }];
+    assert.ok(!judge(cleanEvents(), { extraRequests }).problems.some((p) => p.includes('/flags/ carries what was typed')));
+  });
+  it('the browser check reads bodies with it, and plants one', () => {
+    const script = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8');
+    assert.match(script, /shortInBody\(req\.postData\(\)/);
+    assert.match(script, /planted-body/);
+  });
+});
+
+describe('a short value in an event’s name (P2)', () => {
+  it('is found', () => {
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_term 347', properties: {} }), ['347']);
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_term_347', properties: {} }), ['347']);
+  });
+  it('and not inside an ordinary one', () => {
+    assert.deepEqual(checks.shortLeaks({ event: 'free_loan_comparison_exported', properties: {} }), []);
+  });
+});
+
+describe('a typed rate in a list of numbers (P2)', () => {
+  it('two numbers, as PostHog sends a position, are not a rate typed with a decimal comma', () => {
+    for (const text of ['"coords":[[1,83],[2,4]]', '[1,83]', '[7,1,83]']) assert.deepEqual(checks.findLeaks(text), [], text);
+  });
+  it('the rate itself still is, in either mark', () => {
+    for (const text of ['fee 1,83 %', '"fee":"1,83"', '1.83', '"f":1.83', '[1.83]']) assert.ok(checks.findLeaks(text).includes('1.83'), text);
   });
 });
