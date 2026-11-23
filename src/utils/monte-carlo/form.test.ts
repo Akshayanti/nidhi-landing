@@ -212,7 +212,7 @@ describe('a box refused for its length says it cannot be read (#789)', () => {
   it('such a box shows the unreadable words, not the range', async () => {
     const { readFileSync } = await import('node:fs');
     const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
-    assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : props\.error/);
+    assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : error\}/);
   });
 });
 
