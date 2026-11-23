@@ -98,9 +98,46 @@ export function expectedLeaks(boxes) {
 }
 
 const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
+/**
+ * The decimal probes. Two decimal places at most: the tools read rates no
+ * finer than that (parsePercent, maxDecimals 2). None ends in 0 or 5, the
+ * values a rounded time or percentage takes most often. 1.83 was once
+ * PostHog's own measure of how long the last page was open, and failed a
+ * clean run (#843): that number and the others PostHog computes are left out
+ * by name (SDK_MEASUREMENTS). A probe can still equal some other number a
+ * page sends; that fails the run visibly, never passes it silently.
+ */
+export const PROBE_DECIMALS = PROBES.filter((p) => /^\d+\.\d+$/.test(p));
+
+/**
+ * Numbers PostHog computes itself, never from the page: a time, a token count,
+ * how long the last page was open and how far it was scrolled. A typed value
+ * cannot reach them, and a decimal probe can equal one by chance, so decimal
+ * probes are not looked for in them (#843). Amounts and names are, like
+ * everywhere else; every other property is read in full.
+ */
+export const SDK_MEASUREMENTS = Object.freeze([
+  '$time',
+  '$lib_rate_limit_remaining_tokens',
+  '$prev_pageview_duration',
+  '$prev_pageview_last_content_percentage',
+  '$prev_pageview_max_content_percentage',
+  '$prev_pageview_last_scroll_percentage',
+  '$prev_pageview_max_scroll_percentage',
+]);
+
+/** `json` without the SDK's own measurements, for the decimal probes. */
+export function withoutMeasurements(json) {
+  if (Array.isArray(json)) return json.map(withoutMeasurements);
+  if (!json || typeof json !== 'object') return json;
+  return Object.fromEntries(Object.entries(json)
+    .filter(([key, value]) => !(SDK_MEASUREMENTS.includes(key) && typeof value === 'number'))
+    .map(([key, value]) => [key, withoutMeasurements(value)]));
+}
+
 // A value that stands by itself: no digit, letter or decimal part joined to it.
 // With a decimal comma it is not two numbers of a list ([1,83], a position).
-const RATES = PROBES.filter((p) => /^\d+\.\d+$/.test(p))
+const RATES = PROBE_DECIMALS
   .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '\\.')}(?!\\w|[.,]\\d)|(?<![\\w.,[])${p.replace('.', ',')}(?![\\w\\]]|[.,]\\d)`)]);
 const SHORT = PROBES.filter((p) => /^\d{1,3}$/.test(p))
   .map((p) => [p, new RegExp(`(?<![\\w.,-])${p}(?![\\w-]|[.,]\\d)`)]);
@@ -208,13 +245,13 @@ export function variants(text) {
  * read a value that was transformed (rounded, split across fields, hashed):
  * no check of this kind can.
  */
-export function findLeaks(text) {
+export function findLeaks(text, { decimals = true } = {}) {
   const found = new Set();
   const plain = variants(text);
   // Grouping marks between digits are dropped; nothing else is.
   const digits = plain.replace(/(?<=\d)[,.\s  '’_](?=\d)/g, '');
   for (const a of AMOUNTS) if (digits.includes(String(a))) found.add(String(a));
-  for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
+  if (decimals) for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
   const lower = plain.toLowerCase();
   for (const w of NAME_WORDS) if (lower.includes(w)) found.add(w);
   return [...found];
@@ -358,9 +395,12 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
     // The text as sent, and every string inside it as the receiver reads it
     // (a JSON escape such as \u005a is one letter once decoded).
     const texts = [d.text, d.url, d.json ? strings(d.json).join('\n') : ''].map(variants);
+    // Decimal probes are looked for in the body less PostHog's own measurements
+    // (SDK_MEASUREMENTS); an unreadable body is read whole.
+    const ratesIn = d.json ? [JSON.stringify(withoutMeasurements(d.json)), d.url, strings(withoutMeasurements(d.json)).join('\n')].map(variants) : texts;
     // A body without events is read as an event's properties are.
     const inBody = d.json && typeof d.json === 'object' && !carriesEvents(d.url) ? shortLeaks({ properties: d.json }) : [];
-    const leaks = new Set([...texts.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
+    const leaks = new Set([...texts.flatMap((t) => findLeaks(t, { decimals: false })), ...ratesIn.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
     if (leaks.size) problems.push(`a request to ${where} carries what was typed: ${[...leaks].join(', ')}`);
     if (texts.some((t) => /\b(blob|data):[^"\s]{4,}/i.test(t))) problems.push(`a request to ${where} carries a blob: or data: address`);
     const file = texts.map((t) => /[\w%-]+\.(xlsx|csv|pdf)\b/i.exec(t)).find(Boolean);
