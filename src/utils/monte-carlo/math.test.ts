@@ -379,6 +379,15 @@ describe('running out, in detail', () => {
     assert.equal(r.belowStraightLine, 0);
   });
 
+  it('a single path is its own every percentile, and runs out once, in its first year short', () => {
+    const r = simulate({ ...DRAWDOWN, start: 100_000, withdrawal: 40_000, withdrawYears: 10, paths: 1 });
+    for (const b of r.bands) assert.ok(b.p10 === b.p50 && b.p50 === b.p90 && b.p25 === b.p75 && b.p25 === b.p50);
+    const first = r.bands.findIndex((b) => b.p50 === 0);
+    assert.ok(first > 0 && first < 10, `ran out in year ${first}`);
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, first, 'the year it first ran short, not a later one');
+  });
+
   it('no years of saving: no path is below the line, whatever the plan', () => {
     for (const plan of [
       { ...DRAWDOWN, start: 500_000, withdrawal: 30_000, withdrawYears: 30, paths: 100 },

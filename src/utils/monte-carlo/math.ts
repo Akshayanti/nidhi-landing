@@ -226,7 +226,6 @@ export function averageRates(setting: ReturnSetting): { stocks: number; bonds: n
 // ---------------------------------------------------------------------------
 
 function percentile(sorted: Float64Array, q: number): number {
-  if (sorted.length === 0) return 0;
   const pos = (sorted.length - 1) * q;
   const lo = Math.floor(pos);
   const hi = Math.ceil(pos);
@@ -357,7 +356,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
       const growth = (w * stock + (1 - w) * bond) * keep;
       const step = stepYear(balance[p], growth, saving ? inputs.monthly : -monthlyOut);
       balance[p] = step.balance;
-      if (step.ranOut && !saving && runOutYear[p] < 0) runOutYear[p] = y - inputs.saveYears;
+      // A path that had run out was passed over above, so this is its first time.
+      if (step.ranOut && !saving) runOutYear[p] = y - inputs.saveYears;
     }
     bands.push(percentilesOf(balance));
     if (y === inputs.saveYears) for (let p = 0; p < paths; p++) if (balance[p] < straightLine[y]) below++;
@@ -379,7 +379,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
     bands,
     straightLine,
     atRetirement: bands[inputs.saveYears],
-    belowStraightLine: inputs.saveYears > 0 ? below / paths : 0,
+    // Counted only at the end of saving: none for a plan without any.
+    belowStraightLine: below / paths,
     lasted,
     medianRunOutYear,
     paths,
