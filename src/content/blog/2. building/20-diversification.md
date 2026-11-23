@@ -92,7 +92,7 @@ You diversify along several dimensions at once. Most people think only about the
 
 **5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows what you own and owe by currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend is yours to make.
 
-**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis. We come back to this in the next post.
+**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis (what you paid, which tax on a later sale is worked out from). We come back to this in the next post.
 
 | Dimension | Concentrated | Diversified |
 |---|---|---|
@@ -170,7 +170,7 @@ Imagine two companies. One makes sunscreen, one makes umbrellas. Both are decent
 <figcaption>Illustrative; the values are the ones in the table just above. The two single-company lines whip through wide swings while the combined portfolio stays flat at +5%. That visual flatness is the diversification benefit, made obvious.</figcaption>
 </figure>
 
-Holding either company alone is a rollercoaster. Holding both, in this stylised example, is a steady 5% every year, the average of their returns, with almost none of their volatility, because their movements cancel out. Same average return as you'd get by splitting, much less stress along the way.
+Holding either company alone is a rollercoaster. Holding both, in this stylized example, is a steady 5% every year, the average of their returns, with almost none of their volatility, because their movements cancel out. Same average return as you'd get by splitting, much less stress along the way.
 
 Real markets never line up this cleanly, and real correlations shift over time. But the underlying idea is right: combine things that behave differently, and the portfolio becomes smoother than its components.
 

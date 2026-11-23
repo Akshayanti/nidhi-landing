@@ -30,7 +30,7 @@ referentialReading:
 relatedSlugs: ["cash-flow-101", "saving-vs-investing", "income-vs-wealth", "what-is-net-worth", "emergency-fund"]
 faq:
   - question: "What is the 50/30/20 budgeting rule?"
-    answer: "The 50/30/20 rule splits your after-tax income into three buckets: 50% for needs (rent, groceries, insurance), 30% for wants (dining out, entertainment, hobbies), and 20% for savings and debt repayment. It was popularised by Elizabeth Warren and Amelia Warren Tyagi's 2005 book All Your Worth, written for US households, and is often described as one of the simplest methods; in expensive cities or on low incomes, needs often take more than half."
+    answer: "The 50/30/20 rule splits your after-tax income into three buckets: 50% for needs (rent, groceries, insurance), 30% for wants (dining out, entertainment, hobbies), and 20% for savings and debt repayment. It was popularized by Elizabeth Warren and Amelia Warren Tyagi's 2005 book All Your Worth, written for US households, and is often described as one of the simplest methods; in expensive cities or on low incomes, needs often take more than half."
   - question: "What is zero-based budgeting?"
     answer: "Zero-based budgeting assigns every euro of income to a specific purpose so that income minus all planned spending (including savings) equals exactly zero. It doesn't mean you spend everything. It means every euro is accounted for. Best for people who want full control and visibility."
   - question: "What is the pay-yourself-first method?"
@@ -161,7 +161,7 @@ Not all expenses respond to budgeting equally.
 
 Two common sources of gains:
 
-1. **Reducing fixed costs** (even slightly): Moving to a cheaper phone plan saves €15/month forever. That's €180/year without changing any daily behavior
+1. **Reducing fixed costs** (even slightly): Moving to a cheaper phone plan saves €15/month forever. That's €180/year without changing any daily behaviour
 2. **Setting limits on variable costs**: "I'll spend €150 on dining out this month" is more effective than "I should eat out less"
 
 ## The automation advantage

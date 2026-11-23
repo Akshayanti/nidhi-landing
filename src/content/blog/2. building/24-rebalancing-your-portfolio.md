@@ -164,7 +164,7 @@ What did that accomplish? You didn't "miss out" on any gains; you still have the
 
 Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost, and it shapes *where* people usually rebalance.
 
-**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA or RRSP typically don't trigger any current tax event (Australian super is an exception: realised gains are taxed inside the fund before retirement), which is why many investors rebalance there first and most often.
+**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA or RRSP typically don't trigger any current tax event (Australian super is an exception: realized gains are taxed inside the fund before retirement), which is why many investors rebalance there first and most often.
 
 **In taxable accounts: contribution-based rebalancing is the common approach.** New money avoids selling. When selling is unavoidable, a few factors shape the tax cost:
 
@@ -212,7 +212,7 @@ A few scenarios where the usual rules are less relevant:
 
 1. **Write down your target allocation.** Stocks, bonds, cash, any other asset classes, with specific percentages. Without a target, there is nothing to rebalance to.
 2. **One method, held consistently.** Annual calendar, 5% threshold bands, or contribution-based. Combining two is common; switching methods every quarter undoes the discipline.
-3. **Automation is often available.** Many brokerages and robo-advisors offer automatic rebalancing inside tax-advantaged accounts, which removes the decision entirely.
+3. **Automation is often available.** Many brokerages and robo-advisers offer automatic rebalancing inside tax-advantaged accounts, which removes the decision entirely.
 4. **Tax-advantaged accounts are usually the first place to rebalance.** Trades there typically don't trigger tax, which leaves the harder decisions for taxable accounts.
 5. **New contributions do much of the work.** Directing them to under-weight assets handles most of the rebalancing need while someone is actively saving.
 6. **The target itself changes slowly.** Not every month, but life changes (marriage, children, major income change, approaching retirement) can shift what allocation fits.

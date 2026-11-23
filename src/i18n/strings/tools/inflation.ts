@@ -114,7 +114,7 @@ export const inflationEn = {
       before: 'Yearly consumer price inflation by country, from the ',
       link: 'World Bank',
       after:
-        ' (indicator FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)"), licensed CC BY 4.0. The World Bank last updated these figures on {updated}. nidhi keeps a copy and checks for new figures every month, so your browser loads the history from nidhi.today and never contacts the World Bank. The euro area figure is for the euro area as a whole. Figures can be revised, and a few countries have years with no figure or a record that starts late.',
+        ' (indicator FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”), licensed CC BY 4.0. The World Bank last updated these figures on {updated}. nidhi keeps a copy and checks for new figures every month, so your browser loads the history from nidhi.today and never contacts the World Bank. The euro area figure is for the euro area as a whole. Figures can be revised, and a few countries have years with no figure or a record that starts late.',
     },
     /**
      * The FAQ, printed on the page and published as FAQPage structured data.
@@ -126,7 +126,7 @@ export const inflationEn = {
       items: [
         {
           q: 'What does the answer mean?',
-          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? "Buying power later" shows what an amount could buy in the future, in today\'s money. "Cost later" carries a price forward. "Past to today" brings an old amount up to date. "Keeping up" compares a raise or a savings return with inflation. Answers are rounded and say "about", because the rate is an assumption, not a measurement.',
+          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? “Buying power later” shows what an amount could buy in the future, in today\'s money. “Cost later” carries a price forward. “Past to today” brings an old amount up to date. “Keeping up” compares a raise or a savings return with inflation. Answers are rounded and say “about”, because the rate is an assumption, not a measurement.',
         },
         {
           q: 'Why does every answer come with two more?',
@@ -138,11 +138,11 @@ export const inflationEn = {
         },
         {
           q: 'Where does the history come from, and how recent is it?',
-          a: 'From the World Bank\'s World Development Indicators: "Inflation, consumer prices (annual %)" (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: "Past to today" starts only from years with an unbroken record up to the latest year.',
+          a: 'From the World Bank\'s World Development Indicators: “Inflation, consumer prices (annual %)” (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: “Past to today” starts only from years with an unbroken record up to the latest year.',
         },
         {
           q: 'Why can the rate go up to {maxRate}%?',
-          a: 'Because it has happened. Hyperinflation, often defined as prices rising more than 50% a month, has struck several countries in living memory, and yearly rates in the thousands of percent appear in the World Bank\'s own data. A tool capped at 20% could not show what those years did to savings. At such rates the answers grow so large or so small that the tool says "more than" or "less than" rather than printing every digit.',
+          a: 'Because it has happened. Hyperinflation, often defined as prices rising more than 50% a month, has struck several countries in living memory, and yearly rates in the thousands of percent appear in the World Bank\'s own data. A tool capped at 20% could not show what those years did to savings. At such rates the answers grow so large or so small that the tool says “more than” or “less than” rather than printing every digit.',
         },
         {
           q: 'Why is the real rate not just the raise minus inflation?',
@@ -150,7 +150,7 @@ export const inflationEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to us or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank. Nothing goes into the page address while you use the tool. When you press "{copyLink}", your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
+          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to nidhi or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
         },
         {
           q: 'Is this financial advice?',
@@ -209,7 +209,7 @@ export const inflationEn = {
       inWords: 'In words',
       years: 'Years used',
       source: 'Source',
-      sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0.',
+      sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
     },
     tabsLabel: 'Choose a question',
     tabs: {
@@ -256,7 +256,7 @@ export const inflationEn = {
     },
     history: {
       label: 'Inflation history, for context',
-      hint: "Optional. Shows a country's past inflation; the answer uses it only in \"Past to today\", or if you use its average.",
+      hint: "Optional. Shows a country's past inflation; the answer uses it only in “Past to today”, or if you use its average.",
       none: 'No country',
       euroArea: 'Euro area',
       loading: 'Loading the history…',
@@ -269,7 +269,7 @@ export const inflationEn = {
         'A geometric average: the steady rate that would have had the same total effect. This is history, not a prediction.',
       coverage: 'Figures cover {first} to {last}.',
       gaps: 'No figure for {years}.',
-      gapStart: '"Past to today" starts no earlier than {start}, so that no year is skipped.',
+      gapStart: '“Past to today” starts no earlier than {start}, so that no year is skipped.',
       use: 'Use this average as the rate',
       useOutside: 'This average is outside the {min} to {max}% the rate box accepts, so it cannot be used as the rate.',
       currencyOther:
@@ -389,7 +389,7 @@ export const inflationHi: typeof inflationEn = {
     browserRequirements: 'JavaScript ज़रूरी है। आधुनिक ब्राउज़र।',
     featureList: [
       'सालों की महँगाई के बाद किसी रकम से आज के पैसे में कितना ख़रीदा जा सकता है',
-      'सालों की महँगाई के बाद किसी चीज़ की कीमत',
+      'सालों की महँगाई के बाद किसी चीज़ की क़ीमत',
       'पुरानी रकम आज कितनी के बराबर है, आपकी चुनी दर पर या किसी देश की दर्ज हुई सालाना महँगाई के साथ',
       'वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चलता है या नहीं, सटीक असली दर के साथ',
       'हर नतीजा एक प्रतिशत अंक कम और ज़्यादा पर भी',
@@ -419,7 +419,7 @@ export const inflationHi: typeof inflationEn = {
       items: {
         steady: {
           lead: 'एक दर, हर साल।',
-          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। कीमतें असल में एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
+          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। क़ीमतें असल में एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
         },
         personal: {
           lead: 'देश की महँगाई एक औसत है।',
@@ -431,7 +431,7 @@ export const inflationHi: typeof inflationEn = {
         },
       },
       lesson: {
-        before: 'इस टूल के पीछे का विचार, उदाहरणों के साथ: ',
+        before: 'इस टूल के पीछे की सोच, उदाहरणों के साथ: ',
         after: ' (यह पाठ अंग्रेज़ी में है)।',
       },
     },
@@ -440,14 +440,14 @@ export const inflationHi: typeof inflationEn = {
       before: 'देशों की सालाना उपभोक्ता महँगाई, ',
       link: 'World Bank (विश्व बैंक)',
       after:
-        ' से (इंडिकेटर FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)"), CC BY 4.0 लाइसेंस के तहत। World Bank ने ये आँकड़े आख़िरी बार {updated} को अपडेट किए। nidhi इनकी एक कॉपी रखता है और हर महीने नए आँकड़े देखता है, इसलिए आपका ब्राउज़र इतिहास nidhi.today से लेता है और World Bank से कभी संपर्क नहीं करता। यूरो क्षेत्र का आँकड़ा पूरे यूरो क्षेत्र का है। आँकड़े बाद में संशोधित हो सकते हैं, और कुछ देशों के कुछ सालों का आँकड़ा नहीं है या उनका रिकॉर्ड देर से शुरू होता है।',
+        ' से (संकेतक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”), CC BY 4.0 लाइसेंस के तहत। World Bank ने ये आँकड़े आख़िरी बार {updated} को अपडेट किए। nidhi इनकी एक कॉपी रखता है और हर महीने नए आँकड़े देखता है, इसलिए आपका ब्राउज़र इतिहास nidhi.today से लेता है और World Bank से कभी संपर्क नहीं करता। यूरो क्षेत्र का आँकड़ा पूरे यूरो क्षेत्र का है। आँकड़े बाद में संशोधित हो सकते हैं, और कुछ देशों के कुछ सालों का आँकड़ा नहीं है या उनका रिकॉर्ड देर से शुरू होता है।',
     },
     faq: {
       heading: 'अक्सर पूछे जाने वाले सवाल',
       items: [
         {
           q: 'जवाब का मतलब क्या है?',
-          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर कीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर बैठती है? "आगे कितना ख़रीदा जा सकता है?" दिखाता है कि भविष्य में कोई रकम आज के पैसे में कितना ख़रीद सकती है। "आगे कितने का हो सकता है?" आज की कीमत को आगे ले जाता है। "बीते साल से आज तक" पुरानी रकम को आज तक लाता है। "क्या बराबरी हो रही है?" वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके "लगभग" के साथ दिखते हैं, क्योंकि दर एक अनुमान है, माप नहीं।',
+          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर क़ीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर बैठती है? “आगे कितना ख़रीदा जा सकता है?” दिखाता है कि भविष्य में कोई रकम आज के पैसे में कितना ख़रीद सकती है। “आगे कितने का हो सकता है?” आज की क़ीमत को आगे ले जाता है। “बीते साल से आज तक” पुरानी रकम को आज तक लाता है। “क्या बराबरी हो रही है?” वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके “लगभग” के साथ दिखते हैं, क्योंकि दर एक मान्यता है, माप नहीं।',
         },
         {
           q: 'हर जवाब के साथ दो और जवाब क्यों दिखते हैं?',
@@ -455,15 +455,15 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'क्या देश की महँगाई और मेरी महँगाई एक ही है?',
-          a: 'ज़रूरी नहीं। देश की महँगाई वस्तुओं और सेवाओं की उस टोकरी की कीमत मापती है जो एक आम परिवार के खर्च को दर्शाने के लिए चुनी जाती है। आपका खर्च अलग होता है: आप किराए पर रहते हैं या अपने घर में, कहाँ रहते हैं, आपकी उम्र, आप स्कूल की फ़ीस या देखभाल का खर्च उठाते हैं या नहीं। कई सांख्यिकी विभाग श्रेणी के हिसाब से महँगाई भी छापते हैं (खाना, घर, यातायात, स्वास्थ्य), जिससे पता चल सकता है कि आपके सबसे बड़े खर्च मुख्य आँकड़े से तेज़ बढ़े या धीमे। कुछ लोग देश की दर से एक-दो अंक ऊपर या नीचे की दर आज़माकर देखते हैं कि इससे कितना फ़र्क पड़ता है।',
+          a: 'ज़रूरी नहीं। देश की महँगाई वस्तुओं और सेवाओं की उस टोकरी की क़ीमत मापती है जो एक आम परिवार के खर्च को दर्शाने के लिए चुनी जाती है। आपका खर्च अलग होता है: आप किराए पर रहते हैं या अपने घर में, कहाँ रहते हैं, आपकी उम्र, आप स्कूल की फ़ीस या देखभाल का खर्च उठाते हैं या नहीं। कई सांख्यिकी विभाग श्रेणी के हिसाब से महँगाई भी छापते हैं (खाना, घर, यातायात, स्वास्थ्य), जिससे पता चल सकता है कि आपके सबसे बड़े खर्च मुख्य आँकड़े से तेज़ बढ़े या धीमे। कुछ लोग देश की दर से एक-दो अंक ऊपर या नीचे की दर आज़माकर देखते हैं कि इससे कितना फ़र्क पड़ता है।',
         },
         {
           q: 'इतिहास कहाँ से आता है, और कितना ताज़ा है?',
-          a: 'World Bank के World Development Indicators से: "Inflation, consumer prices (annual %)" (इंडिकेटर FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: "बीते साल से आज तक" सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है।',
+          a: 'World Bank के World Development Indicators से: “Inflation, consumer prices (annual %)” (संकेतक FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: “बीते साल से आज तक” सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है।',
         },
         {
           q: 'दर {maxRate}% तक क्यों जा सकती है?',
-          a: 'क्योंकि ऐसा हुआ है। हाइपरइन्फ़्लेशन, जिसे अक्सर कीमतों के हर महीने 50% से ज़्यादा बढ़ने के रूप में परिभाषित किया जाता है, हाल के दशकों में कई देशों में आया है, और हज़ारों प्रतिशत की सालाना दरें World Bank के अपने आँकड़ों में दिखती हैं। 20% पर रुकने वाला टूल यह नहीं दिखा सकता कि उन सालों ने बचत के साथ क्या किया। ऐसी दरों पर जवाब इतने बड़े या इतने छोटे हो जाते हैं कि टूल हर अंक लिखने के बजाय "से ज़्यादा" या "से कम" कहता है।',
+          a: 'क्योंकि ऐसा हुआ है। हाइपरइन्फ़्लेशन, जिसे अक्सर क़ीमतों के हर महीने 50% से ज़्यादा बढ़ने के रूप में परिभाषित किया जाता है, हाल के दशकों में कई देशों में आया है, और हज़ारों प्रतिशत की सालाना दरें World Bank के अपने आँकड़ों में दिखती हैं। 20% पर रुकने वाला टूल यह नहीं दिखा सकता कि उन सालों ने बचत के साथ क्या किया। ऐसी दरों पर जवाब इतने बड़े या इतने छोटे हो जाते हैं कि टूल हर अंक लिखने के बजाय “से ज़्यादा” या “से कम” कहता है।',
         },
         {
           q: 'असली दर सिर्फ़ वेतन वृद्धि में से महँगाई घटाकर क्यों नहीं निकलती?',
@@ -471,7 +471,7 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल हमें या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप "{copyLink}" दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
+          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल nidhi को या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',
@@ -483,9 +483,9 @@ export const inflationHi: typeof inflationEn = {
       heading: 'और पढ़ें',
       cards: {
         'purchasing-power': {
-          kicker: 'इस टूल के पीछे का विचार',
+          kicker: 'इस टूल के पीछे की सोच',
           title: 'क्रय शक्ति',
-          desc: 'कीमतें बढ़ने पर उसी पैसे से कम क्यों ख़रीदा जा पाता है, और असली रिटर्न कैसे निकालें।',
+          desc: 'क़ीमतें बढ़ने पर उसी पैसे से कम क्यों ख़रीदा जा पाता है, और असली रिटर्न कैसे निकालें।',
         },
         'saving-vs-investing': {
           kicker: 'अगला कदम',
@@ -516,7 +516,7 @@ export const inflationHi: typeof inflationEn = {
       inWords: 'शब्दों में',
       years: 'इस्तेमाल हुए साल',
       source: 'स्रोत',
-      sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0।',
+      sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0।',
     },
     tabsLabel: 'सवाल चुनें',
     tabs: {
@@ -527,7 +527,7 @@ export const inflationHi: typeof inflationEn = {
     },
     questions: {
       buy: 'कुछ सालों की महँगाई के बाद किसी रकम से, आज के पैसे में, कितना ख़रीदा जा सकता है?',
-      cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है, अगर कीमतें बढ़ती रहें?',
+      cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है, अगर क़ीमतें बढ़ती रहें?',
       past: 'बीते समय की कोई रकम आज कितने के बराबर है, आपकी चुनी दर पर?',
       pastCountry: 'बीते समय की कोई रकम {country} में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
       // The euro area is not a country, and takes its own sentence.
@@ -538,7 +538,7 @@ export const inflationHi: typeof inflationEn = {
       currency: 'मुद्रा',
       amount: {
         buy: 'रकम',
-        cost: 'आज की कीमत',
+        cost: 'आज की क़ीमत',
         past: 'उस समय की रकम',
         keep: 'आज की रकम',
       },
@@ -555,14 +555,14 @@ export const inflationHi: typeof inflationEn = {
       yearsHint: '{min} से {max}',
       yearsError: '{min} से {max} तक के पूरे साल लिखें।',
       growth: 'वेतन वृद्धि या रिटर्न, % सालाना',
-      growthHint: 'वेतन कटौती या नुकसान के लिए ऋणात्मक भी हो सकता है',
+      growthHint: 'वेतन कटौती या नुकसान के लिए शून्य से कम (माइनस) भी हो सकता है',
       growthError: '{min} से {max} तक की दर लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
       from: 'शुरुआती साल',
       fromHint: '{last} तक, जो आँकड़े वाला सबसे नया साल है।',
     },
     history: {
       label: 'महँगाई का इतिहास, संदर्भ के लिए',
-      hint: 'वैकल्पिक। किसी देश की पिछली महँगाई दिखाता है; जवाब इसे सिर्फ़ "बीते साल से आज तक" में इस्तेमाल करता है, या तब जब आप इसका औसत अपनाएँ।',
+      hint: 'वैकल्पिक। किसी देश की पिछली महँगाई दिखाता है; जवाब इसे सिर्फ़ “बीते साल से आज तक” में इस्तेमाल करता है, या तब जब आप इसका औसत अपनाएँ।',
       none: 'कोई देश नहीं',
       euroArea: 'यूरो क्षेत्र',
       loading: 'इतिहास लोड हो रहा है…',
@@ -575,11 +575,11 @@ export const inflationHi: typeof inflationEn = {
         'यह ज्यामितीय औसत (geometric\u00A0average) है: वह एक जैसी दर जिसका कुल असर उतना ही होता। यह इतिहास है, पूर्वानुमान नहीं।',
       coverage: 'आँकड़े {first} से {last} तक के हैं।',
       gaps: '{years} का आँकड़ा नहीं है।',
-      gapStart: '"बीते साल से आज तक" {start} से पहले शुरू नहीं होता, ताकि कोई साल छूटे नहीं।',
+      gapStart: '“बीते साल से आज तक” {start} से पहले शुरू नहीं होता, ताकि कोई साल छूटे नहीं।',
       use: 'यह औसत दर के रूप में अपनाएँ',
       useOutside: 'यह औसत {min} से {max}% के दायरे से बाहर है जो दर का खाना स्वीकार करता है, इसलिए इसे दर के रूप में नहीं अपनाया जा सकता।',
       currencyOther:
-        'रकम {currency} में ही रहेगी: {country} की अपनी मुद्रा इस टूल की मुद्राओं में नहीं है। इतिहास प्रतिशत में है, इसलिए जवाब यह दिखाता है कि वहाँ कीमतें कितनी बढ़ीं, {country} की अपनी मुद्रा की कोई रकम नहीं।',
+        'रकम {currency} में ही रहेगी: {country} की अपनी मुद्रा इस टूल की मुद्राओं में नहीं है। इतिहास प्रतिशत में है, इसलिए जवाब यह दिखाता है कि वहाँ क़ीमतें कितनी बढ़ीं, {country} की अपनी मुद्रा की कोई रकम नहीं।',
       capped: '{cap} से ऊपर के बार ऊपर से कटे हुए हैं।',
       legendRecent: 'औसत में शामिल साल',
       legendOlder: 'पहले के साल',
@@ -596,12 +596,12 @@ export const inflationHi: typeof inflationEn = {
       heading: 'जवाब',
       years: { one: '1 साल', few: '{n} साल', other: '{n} साल' },
       buy: 'अगर महँगाई औसतन {rate} सालाना रहे, तो {years} बाद {amount} से उतना ही ख़रीदा जा सकता है जितना आज {result} से।',
-      cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
+      cost: 'अगर क़ीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
       past: 'अगर महँगाई औसतन {rate} सालाना रही, तो {years} पहले के {amount} से उतना ख़रीदा जा सकता था जितना आज {result} से।',
       pastCountry: '{country} में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
       pastEuroArea: 'यूरो क्षेत्र में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
       pastCountryOld: '{country} में {from} की मुद्रा के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
-      pastCountryRise: 'इन {years} में कीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
+      pastCountryRise: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
       currencyChanged: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedUp: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedMore: '{country} ने {from} के बाद एक से ज़्यादा बार अपनी मुद्रा बदली ({years}): कुल मिलाकर {from} की मुद्रा की {ratio} इकाइयाँ आज की मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
@@ -610,10 +610,10 @@ export const inflationHi: typeof inflationEn = {
       changedDuring: '{year} के दौरान',
       monthsWithDay: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
       monthsAlone: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
-      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
-      mixedYearUp: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
-      mixedYearBefore: 'यह बदलाव {changeDate} हुआ, और {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYearUp: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYearBefore: 'यह बदलाव {changeDate} हुआ, और {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       euroBefore1999: '{from} में यूरो अभी शुरू नहीं हुआ था। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
       euro1999to2001: '{from} में यूरो हिसाब-किताब और इलेक्ट्रॉनिक भुगतानों के लिए मौजूद था; यूरो के नोट और सिक्के 2002 में चलन में आए। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
       keepMore: '{growth} सालाना वेतन वृद्धि या रिटर्न और औसतन {rate} महँगाई पर, क्रय शक्ति हर साल लगभग {real} बढ़ती है।',
@@ -671,7 +671,7 @@ export const inflationHi: typeof inflationEn = {
  */
 export const inflationEs: typeof inflationEn = {
   meta: {
-    title: 'Calculadora de inflación: qué compra tu dinero | nidhi',
+    title: 'Calculadora de inflación: qué compra tu dinero después | nidhi',
     description:
       'Calculadora de inflación gratuita: qué compra tu dinero tras años de inflación, cuánto podría costar algo después y la historia por país. En tu navegador.',
   },
@@ -764,7 +764,7 @@ export const inflationEs: typeof inflationEn = {
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
-          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se nos envían ni a nosotros ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
+          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se envían ni a nidhi ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
@@ -799,7 +799,7 @@ export const inflationEs: typeof inflationEn = {
     example: 'Cifras de ejemplo. Cámbialas por las tuyas.',
     export: {
       meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
-      moneyLabel: 'Importes',
+      moneyLabel: 'Cantidades',
       moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea su titular; estas son las cifras exactas que hay detrás.',
       sheets: { answer: 'Respuesta', byYear: 'Por año' },
       question: 'Pregunta',
@@ -978,12 +978,12 @@ export const inflationCs: typeof inflationEn = {
     browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
     featureList: [
       'Co si za částku koupíte po letech inflace, v dnešních penězích',
-      'Kolik bude cena stát po letech inflace',
+      'Kolik může něco stát po letech inflace',
       'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě nebo při skutečné roční inflaci dané země',
       'Zda zvýšení platu nebo výnos z úspor drží krok s inflací, s přesnou reálnou sazbou',
       'Každý výsledek je uveden také pro sazbu o jeden procentní bod nižší a vyšší',
       'Roční historie inflace pro každou zahrnutou zemi a eurozónu, od Světové banky; počet zemí: {countries}',
-      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
+      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
       'Výsledky v 38 měnách',
       'Odkaz ke sdílení libovolného výpočtu',
     ],
@@ -1040,7 +1040,7 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Proč ke každé odpovědi patří další dvě?',
-          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
+          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
         },
         {
           q: 'Je celostátní inflace totéž co moje inflace?',
@@ -1051,16 +1051,16 @@ export const inflationCs: typeof inflationEn = {
           a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku.',
         },
         {
-          q: 'Proč může sazba jít až do {maxRate} %?',
-          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
+          q: 'Proč může sazba jít až do {maxRate} %?',
+          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
         },
         {
           q: 'Proč reálná sazba není jen míra zvýšení minus míra inflace?',
-          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
+          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
         },
         {
           q: 'Posílají se moje data někam?',
-          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nám ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
+          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nidhi ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
         },
         {
           q: 'Je to finanční poradenství?',
@@ -1161,12 +1161,12 @@ export const inflationCs: typeof inflationEn = {
       average: '{country}, {first} až {last}: v průměru zhruba {average} ročně.',
       averageGaps: '{country}, nejnovější roky s dostupným číslem (počet: {count}, období: {first} až {last}): v průměru zhruba {average} ročně.',
       averageNote:
-        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne předpověď.',
+        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne prognóza.',
       coverage: 'Čísla pokrývají roky {first} až {last}.',
       gaps: 'Bez čísla: {years}.',
       gapStart: '„Z minulosti do dneška“ nezačíná dřív než v roce {start}, aby se žádný rok nepřeskočil.',
       use: 'Použít tento průměr jako sazbu',
-      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
+      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
       currencyOther:
         'Částky zůstávají v měně {currency}: vlastní měna země {country} mezi měnami tohoto nástroje není. Historie je vyjádřena v procentech, takže odpověď ukazuje, o kolik tam vzrostly ceny, ne částku ve vlastní měně země {country}.',
       capped: 'Sloupce nad {cap} jsou nahoře oříznuté.',
@@ -1331,7 +1331,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'राष्ट्रीय महागाई आणि माझी महागाई एकच असते का?',
-          a: 'असेच नाही. राष्ट्रीय महागाई एका सर्वसाधारण घराचे प्रतिनिधित्व करण्यासाठी निवडलेल्या वस्तू व सेवांच्या टोपलीची किंमत मोजते. तुमचा स्वतःचा खर्च वेगळा असतो: तुम्ही भाड्याने राहता की स्वतःच्या घरात, कुठे राहता, तुमचे वय, तुम्ही शाळेची फी किंवा काळजीचा खर्च भरता का. अनेक सांख्यिकी कार्यालये प्रकारानुसार महागाई प्रसिद्ध करतात (अन्न, घर, वाहतूक, आरोग्य), त्यावरून तुमचे सर्वात मोठे खर्च मुख्य आकड्यापेक्षा वेगाने वाढले की हळू, हे दिसू शकते. काही लोक हे किती महत्त्वाचे आहे हे पाहण्यासाठी राष्ट्रीय दरापेक्षा एक-दोन बिंदू जास्त किंवा कमी दर वापरून पाहतात.',
+          a: 'तसे असेलच असे नाही. राष्ट्रीय महागाई एका सर्वसाधारण घराचे प्रतिनिधित्व करण्यासाठी निवडलेल्या वस्तू व सेवांच्या टोपलीची किंमत मोजते. तुमचा स्वतःचा खर्च वेगळा असतो: तुम्ही भाड्याने राहता की स्वतःच्या घरात, कुठे राहता, तुमचे वय, तुम्ही शाळेची फी किंवा काळजीचा खर्च भरता का. अनेक सांख्यिकी कार्यालये प्रकारानुसार महागाई प्रसिद्ध करतात (अन्न, घर, वाहतूक, आरोग्य), त्यावरून तुमचे सर्वात मोठे खर्च मुख्य आकड्यापेक्षा वेगाने वाढले की हळू, हे दिसू शकते. काही लोक हे किती महत्त्वाचे आहे हे पाहण्यासाठी राष्ट्रीय दरापेक्षा एक-दोन बिंदू जास्त किंवा कमी दर वापरून पाहतात.',
         },
         {
           q: 'इतिहास कुठून येतो, आणि तो किती अलीकडचा आहे?',
@@ -1339,7 +1339,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'दर {maxRate}% पर्यंत का जाऊ शकतो?',
-          a: 'कारण असे घडले आहे. अतिमहागाई, ज्याची व्याख्या अनेकदा दरमहा 50% पेक्षा जास्त किंमतवाढ अशी केली जाते, अलीकडच्या काळात अनेक देशांत आली आहे, आणि World Bank च्या स्वतःच्या डेटामध्ये हजारो टक्क्यांचे वार्षिक दर दिसतात. 20% वर मर्यादा असलेले साधन त्या वर्षांनी बचतीचे काय केले हे दाखवू शकले नसते. अशा दरांवर उत्तरे इतकी मोठी किंवा इतकी लहान होतात की साधन प्रत्येक अंक छापण्याऐवजी “पेक्षा जास्त” किंवा “पेक्षा कमी” असे सांगते.',
+          a: 'कारण असे घडले आहे. अतिमहागाई, ज्याची व्याख्या अनेकदा दरमहा 50% पेक्षा जास्त किंमतवाढ अशी केली जाते, आज हयात असलेल्या लोकांच्या आठवणीत अनेक देशांत आली आहे, आणि World Bank च्या स्वतःच्या डेटामध्ये हजारो टक्क्यांचे वार्षिक दर दिसतात. 20% वर मर्यादा असलेले साधन त्या वर्षांनी बचतीचे काय केले हे दाखवू शकले नसते. अशा दरांवर उत्तरे इतकी मोठी किंवा इतकी लहान होतात की साधन प्रत्येक अंक छापण्याऐवजी “पेक्षा जास्त” किंवा “पेक्षा कमी” असे सांगते.',
         },
         {
           q: 'वास्तविक दर म्हणजे फक्त पगारवाढ वजा महागाई का नाही?',
@@ -1347,7 +1347,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
-          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे आम्हाला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
+          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे nidhi ला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
         },
         {
           q: 'हा आर्थिक सल्ला आहे का?',
@@ -1383,7 +1383,7 @@ export const inflationMr: typeof inflationEn = {
     export: {
       meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
       moneyLabel: 'रक्कम',
-      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पेज मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
+      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
       sheets: { answer: 'उत्तर', byYear: 'दरवर्षी' },
       question: 'प्रश्न',
       country: 'महागाईचा इतिहास',
@@ -1533,7 +1533,7 @@ export const inflationMr: typeof inflationEn = {
       copy: 'या हिशेबाची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
-      reset: 'पूर्वनिश्चित मूल्ये परत आणा',
+      reset: 'रीसेट करा',
     },
   },
 };

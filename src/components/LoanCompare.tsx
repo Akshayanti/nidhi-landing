@@ -95,9 +95,10 @@ function months(count: number, s: Strings['months']): string {
   const y = Math.floor(count / 12);
   const m = count % 12;
   if (y === 0) return m === 1 ? s.one : format(s.some, { m });
-  if (m === 0) return format(s.years, { y });
-  if (m === 1) return format(s.yearsOne, { y });
-  return format(s.yearsSome, { y, m });
+  const years = y === 1 ? s.year : format(s.years, { y });
+  if (m === 0) return years;
+  if (m === 1) return format(s.yearsAndMonth, { years });
+  return format(s.yearsSome, { years, m });
 }
 
 /**
@@ -1428,7 +1429,7 @@ export default function LoanCompare({
             className="lc-cardAdd"
             onClick={addVendor}
             // No aria-label: the visible words are the name, so a reader who
-            // says "Add vendor" to voice control reaches it (WCAG 2.5.3).
+            // says "Add an offer" to voice control reaches it (WCAG 2.5.3).
             data-attr="lc-vendor-add"
           >
             <span className="lc-cardAddIcon" aria-hidden="true">+</span>

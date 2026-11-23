@@ -153,7 +153,7 @@ Real estate means owning physical property: residential, commercial, or land. It
 
 ## Cash equivalents: safety
 
-Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills. They offer near-zero risk and near-zero return. That safety rests partly on deposit protection, whose limit and coverage differ by country.
+Cash equivalents include savings accounts, money market funds, certificates of deposit (term deposits), and treasury bills (short-term loans to a government). They offer near-zero risk and near-zero return. That safety rests partly on deposit protection, whose limit and coverage differ by country.
 
 **How they generate returns:**
 

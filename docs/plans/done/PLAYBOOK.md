@@ -106,6 +106,23 @@ After Beliefs 7 and these five posts, Sundays have no feed post until a new Sund
 - Series 1 to 3 did not post on Sundays. From the two-angle restart, Sundays alternate between Beliefs and free tools posts (§2.1), at 14:30 CET.
 - After Beliefs 7, Sundays go back to no feed post until a new Sunday plan is written here.
 
+## 4. Engagement Philosophy: approved CTA patterns
+
+> Moved 2026-11-22: §2.1 (no ask on captions or end cards), §2.2 (polls designed out) and the kit lint (one ask on a closer) replaced these.
+
+### Approved CTA patterns
+- **Save** — "Save this for..." / "Save this before..."
+- **Tag** — "Tag someone who..." / "Tag a friend considering..."
+- **Share** — "Share with anyone who..."
+- **Polls / quizzes / sliders** — self-contained, Instagram handles the interaction
+
+## 6. Caption Structure: CTAs (near end)
+
+> Moved 2026-11-22: §2.1 replaced this.
+
+### CTAs (near end)
+- 2–3 save / tag / share prompts
+
 ## 5. Carousel Structure
 
 > Moved 2026-11-03: no carousels since Oct 29, 2026 (owner); the carousel files are kept in the kits on purpose, and this spec stays here for reference. The Series 1 format's "unshipped Discovery posts" all shipped in May.

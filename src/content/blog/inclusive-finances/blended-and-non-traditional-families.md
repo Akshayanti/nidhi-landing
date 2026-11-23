@@ -18,7 +18,7 @@ takeaways:
     href: "#how-families-agree-costs-accounts-and-claims-across-homes"
 glossary:
   - term: "Legal parent"
-    definition: "A parent recognised by law through birth, adoption or a court order, with rights and duties toward the child."
+    definition: "A parent recognized by law through birth, adoption or a court order, with rights and duties toward the child."
   - term: "De facto parent"
     definition: "An adult who does the parenting without legal status, such as a step-parent or a parent's partner. A description, not a legal status, in most places."
   - term: "Beneficiary form"
@@ -45,7 +45,7 @@ faq:
   - question: "How can leaving everything to my spouse disinherit my children?"
     answer: "Because once your spouse inherits, the money is theirs. They are free to leave it as they choose, and if they die without a will, it goes to their legal heirs, which means their own children and not their stepchildren. No bad faith is required. A spouse may remarry, may need the money for care, or may simply never write a new will. Your children from an earlier relationship then receive nothing from your estate."
   - question: "What is the difference between a legal parent and a de facto parent?"
-    answer: "A legal parent is recognised by law, through birth, adoption, or a court order, and has rights and duties toward the child. A de facto parent, sometimes called a psychological parent, is an adult who actually does the parenting without that legal status: a step-parent, a partner of the legal parent, a co-parent in a family with more than two adults. The second term is a description and not a legal status in most places. The practical gap is that a de facto parent may be unable to consent to medical treatment, deal with a school, or keep the child in their care if the legal parent dies."
+    answer: "A legal parent is recognized by law, through birth, adoption, or a court order, and has rights and duties toward the child. A de facto parent, sometimes called a psychological parent, is an adult who actually does the parenting without that legal status: a step-parent, a partner of the legal parent, a co-parent in a family with more than two adults. The second term is a description and not a legal status in most places. The practical gap is that a de facto parent may be unable to consent to medical treatment, deal with a school, or keep the child in their care if the legal parent dies."
   - question: "Who controls money saved in a child's name?"
     answer: "The adult named as custodian or account holder, until the child reaches the age at which it becomes theirs. If that adult dies or a relationship ends, control passes according to the account rules and the law, usually to a legal parent. A step-parent or grandparent who has paid into an account held by someone else has no say over it. Where control matters, the usual options are opening the account yourself where rules allow, naming a successor custodian, or using a trust. Which exist depends on the country and account type."
   - question: "What does dependent claim coordination mean?"
@@ -166,7 +166,7 @@ In a first family, children's costs come out of one budget and nobody keeps coun
 | Yours, mine and ours | Each parent pays for their own children; shared costs come from a joint account | A common middle path |
 | Proportional | Shared costs split in proportion to income | Incomes that differ widely |
 
-Any can work; what fails is leaving it unsaid, so that one partner quietly resents subsidising or one child visibly has less than another in the same house. Many families put child maintenance in the budget and the [cash flow forecast](/blog/cash-flow-forecasting/) as a fixed line: maintenance received can stop when a former partner loses a job, and maintenance paid does not stop because the new household has a bad month.
+Any can work; what fails is leaving it unsaid, so that one partner quietly resents subsidizing or one child visibly has less than another in the same house. Many families put child maintenance in the budget and the [cash flow forecast](/blog/cash-flow-forecasting/) as a fixed line: maintenance received can stop when a former partner loses a job, and maintenance paid does not stop because the new household has a bad month.
 
 **Accounts in a child's name** have an adult in charge, the custodian, until the child comes of age, which creates traps when families blend (see below). **Some tax allowances, child benefits and care pension credits** can be claimed by only one person or household for a given period, while others can be divided or depend on residence and care, so separated parents often check and record who claims each ([dependent claim coordination](#term-dependent-claim-coordination)); the better claimant is not always obvious, since a credit can be worth more to the lower earner and a pension credit matters most to the parent with gaps (the [caregiving post](/blog/caregiving-and-the-career-break-wealth-gap/) covered why).
 
@@ -180,7 +180,7 @@ The custodian, usually the parent who opened the account. The step-parent's cont
 <details class="lesson-depth">
 <summary class="disclosure">The parenting adult with no legal standing</summary>
 
-A co-parent who is not a legal parent can find years of parenting count for nothing on paper. Depending on the country, they may be unable to consent to medical treatment, deal with a school or travel alone with the child, add the child to their health insurance, claim allowances for the child, keep the child in their care if the legal parent dies, or pass on wealth without tax at the rate for strangers. Tools that help, where available: adoption by a step-parent or second parent, which creates full legal parentage; a parental responsibility agreement or court order, which gives decision-making authority without adoption; a signed authorisation from the legal parent for medical and school matters, limited but much better than nothing; naming the child in the will and on beneficiary forms; and naming the co-parent as guardian in the legal parent's will. Families with more than two parenting adults face this more sharply, because most legal systems allow two legal parents at most.
+A co-parent who is not a legal parent can find years of parenting count for nothing on paper. Depending on the country, they may be unable to consent to medical treatment, deal with a school or travel alone with the child, add the child to their health insurance, claim allowances for the child, keep the child in their care if the legal parent dies, or pass on wealth without tax at the rate for strangers. Tools that help, where available: adoption by a step-parent or second parent, which creates full legal parentage; a parental responsibility agreement or court order, which gives decision-making authority without adoption; a signed authorization from the legal parent for medical and school matters, limited but much better than nothing; naming the child in the will and on beneficiary forms; and naming the co-parent as guardian in the legal parent's will. Families with more than two parenting adults face this more sharply, because most legal systems allow two legal parents at most.
 
 </details>
 
@@ -200,7 +200,7 @@ Children in a blended family often start from different places: one may expect a
 - **Common-law countries.** Wide freedom to leave assets as you wish, so the accidental disinheritance is a real risk; some let children or dependants ask a court for provision.
 - **Inheritance tax.** Stepchildren are treated like children in some countries and like strangers in others.
 - **Stepchild adoption and parental responsibility.** Available in many countries on differing conditions, usually needing the other legal parent's consent.
-- **Polygamous and customary marriages.** Where recognised, inheritance follows that system's rules; after a move to a country that does not recognise them, later spouses and their children can be in a very weak position (the [marriages not recognised post](/blog/when-your-marriage-is-not-recognised-abroad/) covers the general problem).
+- **Polygamous and customary marriages.** Where recognized, inheritance follows that system's rules; after a move to a country that does not recognize them, later spouses and their children can be in a very weak position (the [marriages not recognized post](/blog/when-your-marriage-is-not-recognised-abroad/) covers the general problem).
 
 </details>
 

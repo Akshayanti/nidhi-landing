@@ -65,9 +65,9 @@ export const loanComparisonEn = {
       'Multi-currency support across 38 currencies, including USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD',
       'Solve for monthly payment given a fixed term, or for payoff time given a fixed payment',
       'Model origination fees and extra monthly principal',
-      'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modeling',
-      'Horizon analysis ("if I sell at month N") showing principal repaid, interest paid, balance remaining, and total cash out per vendor',
-      'Refinance scenario builder comparing "keep" vs. "refinance" with closing costs and break-even horizon',
+      'Advanced mode: fixed-then-variable loans with the payment recalculated when the rate changes, discount-points break-even, lump-sum prepayments, prepayment penalty modelling',
+      'Horizon analysis (“if I sell at month N”) showing principal repaid, interest paid, balance remaining, and total cash out per offer',
+      'Refinance scenario builder comparing “keep” vs. “refinance” with closing costs and break-even horizon',
       'Cent-precise integer amortization schedule',
       'Shareable URL for any comparison state, including all advanced fields',
     ],
@@ -79,7 +79,7 @@ export const loanComparisonEn = {
     breadcrumb: {
       home: 'Home',
       freeTools: 'Free tools',
-      this: 'Loan comparison calculator',
+      this: 'Loan comparison',
     },
     eyebrow: 'Free tools',
     /** Split around the `<span class="lc-wideOnly">`, which phones hide. */
@@ -107,15 +107,15 @@ export const loanComparisonEn = {
             },
             {
               q: 'What kinds of loans can I compare?',
-              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and fixed-then-variable loans, where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modeled.',
+              a: 'Mortgages, auto loans, personal loans, and student loans on standard repayment plans. The calculator handles fixed-rate loans and fixed-then-variable loans, where an initial fixed rate is followed by a different rate. Interest-only periods and balloon payments are not modelled.',
             },
             {
               q: 'How many loans can I compare at once?',
-              a: 'Two to five. The page starts with two side-by-side cards and an obvious "Add vendor" tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop a vendor that no longer fits.',
+              a: 'Two to five. The page starts with two side-by-side cards and an obvious “Add an offer” tile that lets you grow the comparison up to a maximum of five loan offers. Each card has a remove button so you can drop an offer that no longer fits.',
             },
             {
               q: 'Can I compare loans with different terms or rates?',
-              a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across all of the loans you compare. Each vendor card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
+              a: 'Yes. You can mix and match terms, rates, fees, and even monthly payments across all of the loans you compare. Each offer card lets you choose whether to solve for monthly payment (fixed term) or for payoff time (fixed monthly payment).',
             },
             {
               q: 'Which fields are required?',
@@ -136,11 +136,11 @@ export const loanComparisonEn = {
             },
             {
               q: 'Why is APR usually higher than the headline rate?',
-              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. On documents that compound the monthly rate, as in the EU and the UK, APR is a little above the headline rate even with no fee; here, with no fee, the two are equal. For an in-depth treatment, see the post on understanding loan terms.',
+              a: 'The headline rate prices only the cost of the principal itself. APR also prices in the fee, which the borrower pays but does not get to use, so the rate the borrower pays on the money they actually receive is higher. Two loans with identical headline rates can have very different APRs, and a loan with a lower headline rate can have a higher APR than one with a higher headline rate but no fee. On documents that compound the monthly rate, as in the EU and the UK, APR is a little above the headline rate even with no fee; here, with no fee, the two are equal. For an in-depth treatment, see the lesson on understanding loan terms.',
             },
             {
               q: 'Does APR include the extra principal I plan to pay each month?',
-              a: 'No. APR is a measure of the contractual cost the lender is charging, not of any voluntary actions you take. Extra principal payments are optional, and including them would understate the disclosed APR. The "Where each payment goes" chart and the APR row both use the contract schedule (without extra principal); the monthly payment, time-to-payoff, and total-paid figures all reflect the schedule that includes your extra payments.',
+              a: 'No. APR is a measure of the contractual cost the lender is charging, not of any voluntary actions you take. Extra principal payments are optional, and including them would understate the disclosed APR. The “Where each payment goes” chart and the APR row both use the contract schedule (without extra principal); the monthly payment, time-to-payoff, and total-paid figures all reflect the schedule that includes your extra payments.',
             },
             {
               q: 'Should I include mandatory insurance or bundled products in the fee?',
@@ -148,7 +148,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Does the calculator handle origination fees and closing costs?',
-              a: 'Yes. Enter them in the "Origination / closing fee" field under "Costs and fees" on each vendor card. Fees are added to the total amount paid, so the side-by-side comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
+              a: 'Yes. Enter them in the “Origination / closing fee” field under “Costs and fees” on each offer card. Fees are added to the total amount paid, so the side-by-side comparison reflects the true cost of the loan, and they are folded into the displayed APR.',
             },
           ],
         },
@@ -157,7 +157,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'Can I model paying extra principal each month?',
-              a: 'Yes. Enter an amount under "Extra principal per month" in the Prepayments group on each vendor card. The calculator applies it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
+              a: 'Yes. Enter an amount under “Extra principal per month” in the Prepayments group on each offer card. The calculator applies it directly to the principal each month, shortening the payoff timeline and reducing total interest.',
             },
             {
               q: 'How are lump-sum prepayments entered?',
@@ -165,7 +165,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'How does the points break-even work?',
-              a: 'Discount points are an upfront cost that buys a lower interest rate. Whether they pay off depends on how long you keep the loan. Enter the cost of points and the rate reduction they purchased, and the calculator builds a hypothetical "no points paid" baseline (same loan, fee minus points cost, rate plus reduction) and compares the two. The "Points break-even" row shows how many months of lower payments are needed to recoup the upfront cost. If the new monthly payment is not actually lower, the break-even is reported as "never".',
+              a: 'Discount points are an upfront cost that buys a lower interest rate. Whether they pay off depends on how long you keep the loan. Enter the cost of points and the rate reduction they purchased, and the calculator builds a hypothetical “no points paid” baseline (same loan, fee minus points cost, rate plus reduction) and compares the two. The “Points break-even” row shows how many months of lower payments are needed to recoup the upfront cost. If the new monthly payment is not actually lower, the break-even is reported as “never”.',
             },
             {
               q: 'How does the prepayment penalty work?',
@@ -178,11 +178,11 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'How does the calculator handle a loan whose rate is fixed at first and then changes (a hybrid or ARM loan in the US)?',
-              a: 'Switch the rate type to "Fixed, then variable" in the "Rate structure" group, then enter the initial fixed period (e.g. 60 months for a rate fixed for five years) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
+              a: 'Switch the rate type to “Fixed, then variable” in the “Rate structure” group, then enter the initial fixed period (e.g. 60 months for a rate fixed for five years) and the rate that takes effect after the fixed window. The amortization schedule is built at the initial rate up to the transition month and then recast: the remaining balance is re-amortized over the remaining contractual months at the subsequent rate, so the loan still pays off in the original term. The APR uses this schedule, with the rate you entered. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change.',
             },
             {
-              q: 'Why is the "Fixed, then variable" option disabled when I picked "Payoff months"?',
-              a: 'Fixed-then-variable loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for "Payoff months" you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch "Solve for" to "Monthly payment" to enable the option.',
+              q: 'Why is the “Fixed, then variable” option disabled when I picked “Payoff months”?',
+              a: 'Fixed-then-variable loans need a fixed contractual term so the calculator can recast the payment at the rate transition. When you solve for “Payoff months” you are not providing a contractual term (you are providing a fixed monthly payment instead), so the recast is undefined. Switch “Solve for” to “Monthly payment” to enable the option.',
             },
           ],
         },
@@ -190,16 +190,16 @@ export const loanComparisonEn = {
           title: 'Analysis tabs',
           items: [
             {
-              q: 'What does the "Where each payment goes" chart show?',
+              q: 'What does the “Where each payment goes” chart show?',
               a: 'It splits a representative monthly payment from each year of the loan into its interest and principal portions, stacked on a single bar. Every bar has the same total height (the same monthly payment), but the split shifts dramatically: in the early years almost all of the payment is interest, while in the final years almost all of it is principal. In this model, an extra payment early in a long loan saves more interest than the same payment late: each euro taken off the principal early is not charged interest for the rest of the term.',
             },
             {
-              q: 'What is the horizon analysis ("if I sell or refinance at...")?',
-              a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This view is useful if you expect to sell, move, or refinance well before the contractual end of the loan, because the vendor with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
+              q: 'What is the horizon analysis (“if I sell or refinance at...”)?',
+              a: 'Loans look very different at month 36 vs. month 360. The horizon tab asks: at the month you select, how much principal have you actually repaid, how much interest have you paid, what is the remaining balance, and what is the total cash you have spent so far (payments plus origination fees)? This view is useful if you expect to sell, move, or refinance well before the contractual end of the loan, because the offer with the lowest total cost over 360 months may not be the lowest-cost one if you exit at month 60.',
             },
             {
               q: 'How does the refinance scenario builder work?',
-              a: 'Pick which vendor to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under "keep the original loan to its end" against "make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end". If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs paid at the refinance, and any such penalty, are recouped (when closing costs are added to the new loan instead, the break-even counts the larger balance: it is the month from which the payments saved outweigh the extra still owed). The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is "never".',
+              a: 'Pick which offer to refinance, the month at which the refinance happens, the new rate, the new term, and any closing costs. The calculator compares the total cash spent under “keep the original loan to its end” against “make the original payments through the refinance month, then pay off the remaining balance with a new loan that runs to its own contractual end”. If the original loan has an early repayment penalty that still applies in the refinance month, it is added to the refinance side. Extra payments and later lump sums you entered for the original loan continue on the new one, so both sides are paid down the same way. It also reports a break-even horizon: how many months of lower payments are needed before the closing costs paid at the refinance, and any such penalty, are recouped (when closing costs are added to the new loan instead, the break-even counts the larger balance: it is the month from which the payments saved outweigh the extra still owed). The break-even compares the payments due on each loan, without extra payments. If those payments never make up the cost, the break-even is “never”.',
             },
           ],
         },
@@ -208,7 +208,7 @@ export const loanComparisonEn = {
           items: [
             {
               q: 'Are share links self-contained?',
-              a: 'Yes. The share link encodes every input the recipient needs: every per-vendor field (rate type, later rate, points, lump sums, prepayment penalty), the currency, the active analysis tab, and the horizon and refinance scenario inputs. The recipient lands on the same view you were looking at with all of your inputs reproduced. The URL only contains values that differ from defaults, so a fresh comparison still produces a compact link.',
+              a: 'Yes. The share link encodes every input the recipient needs: every per-offer field (rate type, later rate, points, lump sums, prepayment penalty), the currency, the active analysis tab, and the horizon and refinance scenario inputs. The recipient lands on the same view you were looking at with all of your inputs reproduced. The URL only contains values that differ from defaults, so a fresh comparison still produces a compact link.',
             },
             {
               q: 'How accurate are the calculations?',
@@ -224,8 +224,8 @@ export const loanComparisonEn = {
               a: 'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Each currency is displayed using its own locale conventions. For example, INR uses Indian-style lakh/crore grouping (1,23,45,678) and JPY uses no decimals.',
             },
             {
-              q: 'What does "multi-currency" mean here?',
-              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortising loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
+              q: 'What does “multi-currency” mean here?',
+              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
         },
@@ -238,7 +238,7 @@ export const loanComparisonEn = {
         {
           kicker: 'How to compare',
           title: 'Understanding loan terms',
-          desc: 'APR, amortisation, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost.',
+          desc: 'APR, amortization, fixed vs variable, prepayment penalties: the fine print that decides which offer has the lowest total cost.',
         },
         {
           kicker: 'Before you borrow',
@@ -262,7 +262,7 @@ export const loanComparisonEn = {
         },
       ],
       footerTag: 'Read more on debt and loans',
-      footerAll: 'Or browse every article',
+      footerAll: 'Or browse every lesson',
     },
   },
   island: {
@@ -317,18 +317,18 @@ export const loanComparisonEn = {
     cardsHeading: 'Loan offers',
     example: 'Example offers. Replace the figures with your own.',
     phoneTabs: {
-      groupAria: 'Vendor to show',
-      tabName: 'Vendor {label}',
+      groupAria: 'Offer to show',
+      tabName: 'Offer {label}',
       add: 'Add',
-      addAria: 'Add another vendor to compare ({n} of {max})',
-      addCard: 'Add vendor',
+      addAria: 'Add another offer to compare ({n} of {max})',
+      addCard: 'Add an offer',
       addCardHint: 'Compare up to {max}',
     },
     card: {
-      badge: 'Vendor {label}',
-      removeAria: 'Remove vendor {label} from comparison',
+      badge: 'Offer {label}',
+      removeAria: 'Remove offer {label} from comparison',
       removeTitle: 'Remove from comparison',
-      name: 'Vendor name',
+      name: 'Lender name',
       principal: 'Loan amount',
       rate: 'Annual interest rate (%)',
       solveFor: 'Solve for',
@@ -464,13 +464,13 @@ export const loanComparisonEn = {
      */
     delta: {
       heading: 'Side-by-side',
-      empty: 'Enter valid inputs for at least two vendors to see how they compare.',
+      empty: 'Enter valid inputs for at least two offers to see how they compare.',
       /** Both sentences emphasize their money figures, so both split around them. */
-      sameBefore: 'All vendors come out at the same total cost of ',
+      sameBefore: 'All offers come out at the same total cost of ',
       sameAfter: '.',
       rangeBefore: 'Total cost ranges from ',
       rangeTo: ' to ',
-      rangeAcross: ' across the vendors below: a spread of ',
+      rangeAcross: ' across the offers below: a spread of ',
       rangeAfter: '.',
       /** The table's own column heading, for screen readers only. */
       metricAria: 'Metric',
@@ -514,11 +514,11 @@ export const loanComparisonEn = {
     charts: {
       balanceHeading: 'Balance over time',
       balanceLead:
-        "Each line is one vendor's outstanding balance, month by month. The dot on the axis marks when it is paid off.",
+        "Each line is one offer's outstanding balance, month by month. The dot on the axis marks when it is paid off.",
       splitHeading: 'Where each payment goes',
       splitLead:
         'Same monthly payment every month. Early on, almost all of it is interest; near the end, almost all of it is principal.',
-      vendorLabel: 'Vendor',
+      vendorLabel: 'Offer',
       autoOption: 'Auto (lowest total cost)',
       incomplete: ' (incomplete)',
       splitEmpty:
@@ -609,7 +609,7 @@ export const loanComparisonEn = {
         strong: 'Prepayment penalties',
         rest: " apply only when the loan is fully paid off on or before the penalty's last month: by extra payments, by lump sums, or by refinancing it in the refinance scenario.",
       },
-      note: 'Everything runs in your browser, and nothing you type is sent anywhere. Use the "Copy shareable link" button to encode every input into a URL you can hand to someone else.',
+      note: 'Everything runs in your browser, and nothing you type is sent anywhere. Use the “Copy shareable link” button to encode every input into a URL you can hand to someone else.',
     },
     horizon: {
       heading: 'If I sell or refinance at...',
@@ -632,7 +632,7 @@ export const loanComparisonEn = {
       newTerm: 'New term (months)',
       newFee: 'New closing costs',
       rollFee: 'Roll closing costs into new principal',
-      empty: 'Pick a valid vendor and enter a refinance month, rate, and term to see savings.',
+      empty: 'Pick a valid offer and enter a refinance month, rate, and term to see savings.',
       keepTotal: 'Keep current loan: total',
       refiTotal: 'Refinance: total paid (current loan up to the refinance, then the new loan)',
       saves: 'Refinancing saves',
@@ -661,7 +661,7 @@ export const loanComparisonEn = {
     },
     disclaimer: {
       summary: 'Assumptions and disclaimers',
-      body: 'Calculations assume monthly compounding and on-time payments. APR is quoted on the same basis as the rate you enter (the monthly rate × 12) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure. A one-off cost can be added to the fee field; a cost paid every month is not modelled, and adding its lifetime total as a fee overstates the APR. Canadian fixed-rate mortgages are usually stated with half-yearly compounding (Canada\'s Interest Act allows yearly or half-yearly) and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your own what-if rate. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modeled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial advisor.',
+      body: 'Calculations assume monthly compounding and on-time payments. APR is quoted on the same basis as the rate you enter (the monthly rate × 12) and is computed against the contractual schedule (without voluntary extras), folding the origination/closing fee into the effective cost of borrowing; jurisdictions differ on which other costs (mandatory insurance, account products, taxes) must be included in their official APR/APRC disclosure. A one-off cost can be added to the fee field; a cost paid every month is not modelled, and adding its lifetime total as a fee overstates the APR. Canadian fixed-rate mortgages are usually stated with half-yearly compounding (Canada\'s Interest Act allows yearly or half-yearly) and Brazilian and some UK products use other compounding conventions; on those products the monthly-compounding figures here will be slightly off. Real adjustable-rate loans track an index plus a margin and may have rate caps that this calculator does not enforce; the subsequent rate you enter is your own what-if rate. When the rate changes, this calculator recalculates the payment so the loan still ends on its original term. Some lenders, often with floating-rate home loans in India, keep the payment the same and change the number of months instead, which changes the total interest. A real variable rate can also change many times; this shows one change. Property taxes, building or community service charges, home insurance, and the tax treatment of loan interest in your jurisdiction are not modelled. Educational comparison only; not financial advice. For a binding loan comparison or personalized advice, consult a licensed mortgage broker or financial adviser.',
     },
     /**
      * A count of months, as this tool writes it. The engine's own
@@ -674,9 +674,10 @@ export const loanComparisonEn = {
       na: 'n/a',
       one: '1 mo',
       some: '{m} mo',
+      year: '1 yr',
       years: '{y} yr',
-      yearsOne: '{y} yr 1 mo',
-      yearsSome: '{y} yr {m} mo',
+      yearsAndMonth: '{years} 1 mo',
+      yearsSome: '{years} {m} mo',
     },
     /**
      * The messages the engine can hand back, addressed by what they say.
@@ -776,12 +777,12 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'दो से पाँच लोन ऑफ़र की साथ-साथ तुलना',
       'हर ऑफ़र का APR (सालाना प्रतिशत दर), जो शुल्क को भी एक ही तुलनीय दर में जोड़ देता है',
       'हर लोन के लिए ब्याज और मूलधन के बँटवारे का चार्ट, जो दिखाता है कि पूरी अवधि में हर किस्त कहाँ जाती है',
-      '38 मुद्राओं का सपोर्ट, जिनमें USD, EUR, GBP, CHF, JPY, INR, CNY, CAD, AUD, SGD शामिल हैं',
+      '38 मुद्राओं का सपोर्ट, जिनमें INR, USD, EUR, GBP, CHF, JPY, CNY, CAD, AUD, SGD शामिल हैं',
       'तय अवधि देकर मासिक किस्त निकालें, या तय किस्त देकर चुकाने का समय निकालें',
       'लोन शुल्क और हर महीने का अतिरिक्त मूलधन जोड़कर देखें',
       'एडवांस्ड मोड: दर बदलने पर किस्त नए सिरे से निकाली जाने वाले, पहले तय फिर बदलती दर वाले लोन, डिस्काउंट पॉइंट्स की बराबरी, एकमुश्त राशि, और समय से पहले भुगतान पर जुर्माना',
-      'हॉराइज़न विश्लेषण ("अगर मैं महीने N पर बेच दूँ") हर लोन ऑफ़र के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
-      'रीफ़ाइनेंस परिदृश्य, जो "पुराना लोन चलाते रहें" और "रीफ़ाइनेंस" की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
+      'हॉराइज़न विश्लेषण (“अगर मैं महीने N पर बेच दूँ”) हर लोन ऑफ़र के लिए: चुकाया गया मूलधन, दिया गया ब्याज, बची हुई रकम और अब तक गई कुल नकदी',
+      'रीफ़ाइनेंस परिदृश्य, जो “पुराना लोन चलाते रहें” और “रीफ़ाइनेंस” की तुलना कागज़ी खर्च और बराबरी के समय के साथ करता है',
       'मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) तक सटीक, पूर्णांकों में बना किस्तों का शेड्यूल',
       'किसी भी तुलना का शेयर करने योग्य लिंक, एडवांस्ड फ़ील्ड समेत',
     ],
@@ -792,7 +793,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     breadcrumb: {
       home: 'होम',
       freeTools: 'मुफ़्त टूल',
-      this: 'लोन तुलना कैलकुलेटर',
+      this: 'लोन की तुलना',
     },
     eyebrow: 'मुफ़्त टूल',
     title: {
@@ -802,7 +803,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     lead: {
       before:
         'दो से पाँच लोन ऑफ़र भर दें। मासिक किस्त, चुकाने का समय, कुल चुकाई जाने वाली राशि और APR देखें: वह एक आँकड़ा जो शुल्क को भी दर में जोड़ देता है।',
-      wide: 'देखें कि हर किस्त ब्याज और मूलधन में कैसे बँटती है। USD, EUR, GBP, INR, JPY और अन्य मुद्राओं का सपोर्ट।',
+      wide: 'देखें कि हर किस्त ब्याज और मूलधन में कैसे बँटती है। INR, USD, EUR, GBP, JPY और अन्य मुद्राओं का सपोर्ट।',
       after: 'सब कुछ आपके ब्राउज़र में चलता है; आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता।',
     },
     faq: {
@@ -821,7 +822,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'एक बार में कितने लोन की तुलना हो सकती है?',
-              a: 'दो से पाँच। पेज दो कार्ड से शुरू होता है और उनके बगल में "लोन ऑफ़र जोड़ें" वाला साफ़ बटन रहता है, जिससे तुलना पाँच लोन ऑफ़र तक बढ़ाई जा सकती है। हर कार्ड पर हटाने का बटन है, ताकि जो लोन ऑफ़र अब काम का न हो उसे हटाया जा सके।',
+              a: 'दो से पाँच। पेज दो कार्ड से शुरू होता है और उनके बगल में “लोन ऑफ़र जोड़ें” वाला साफ़ बटन रहता है, जिससे तुलना पाँच लोन ऑफ़र तक बढ़ाई जा सकती है। हर कार्ड पर हटाने का बटन है, ताकि जो लोन ऑफ़र अब काम का न हो उसे हटाया जा सके।',
             },
             {
               q: 'अलग-अलग अवधि या दर वाले लोन की तुलना हो सकती है?',
@@ -833,7 +834,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-              a: 'नहीं। सब कुछ आपके ब्राउज़र में चलता है; कोई भी भरा हुआ आँकड़ा किसी सर्वर पर नहीं भेजा जाता। टूल इस्तेमाल करते समय पेज के पते में कुछ भी नहीं जाता। जब आप शेयर लिंक कॉपी करते हैं, तो आपके आँकड़े लिंक में # चिह्न के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर पर नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पता-पट्टी से हटा देता है।',
+              a: 'नहीं। सब कुछ आपके ब्राउज़र में चलता है; कोई भी भरा हुआ आँकड़ा किसी सर्वर पर नहीं भेजा जाता। टूल इस्तेमाल करते समय पेज के पते में कुछ भी नहीं जाता। जब आप शेयर लिंक कॉपी करते हैं, तो आपके आँकड़े लिंक में # चिह्न के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर पर नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले ऐड्रेस बार से हटा देता है।',
             },
           ],
         },
@@ -850,15 +851,15 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'क्या APR में हर महीने चुकाया जाने वाला मेरा अतिरिक्त मूलधन शामिल है?',
-              a: 'नहीं। APR इस बात का माप है कि लोन देने वाला अनुबंध में कितनी लागत वसूल रहा है, न कि आपकी अपनी मर्ज़ी से किए गए भुगतानों का। अतिरिक्त मूलधन देना वैकल्पिक है, और उसे जोड़ने से बताया गया APR कम दिखने लगेगा। "हर किस्त कहाँ जाती है" चार्ट और APR की पंक्ति, दोनों अनुबंध वाला शेड्यूल इस्तेमाल करते हैं (बिना अतिरिक्त मूलधन); मासिक किस्त, चुकाने का समय और कुल चुकाई गई राशि वाले आँकड़े उस शेड्यूल को दिखाते हैं जिसमें आपका अतिरिक्त भुगतान शामिल है।',
+              a: 'नहीं। APR इस बात का माप है कि लोन देने वाला अनुबंध में कितनी लागत वसूल रहा है, न कि आपकी अपनी मर्ज़ी से किए गए भुगतानों का। अतिरिक्त मूलधन देना वैकल्पिक है, और उसे जोड़ने से बताया गया APR कम दिखने लगेगा। “हर किस्त कहाँ जाती है” चार्ट और APR की पंक्ति, दोनों अनुबंध वाला शेड्यूल इस्तेमाल करते हैं (बिना अतिरिक्त मूलधन); मासिक किस्त, चुकाने का समय और कुल चुकाई गई राशि वाले आँकड़े उस शेड्यूल को दिखाते हैं जिसमें आपका अतिरिक्त भुगतान शामिल है।',
             },
             {
               q: 'क्या ज़रूरी बीमा या साथ में बिकने वाले प्रोडक्ट शुल्क में जोड़ने चाहिए?',
-              a: 'अगर लोन देने वाला उसके साथ कोई प्रोडक्ट खरीदने को कहता है (जीवन बीमा, कोई खाता, कोई निवेश प्रोडक्ट), तो उस प्रोडक्ट की लागत भी आपकी असली उधार लागत का हिस्सा है। APR के नियम इस बात पर अलग-अलग देशों में अलग हैं कि ऐसे प्रोडक्ट आधिकारिक APR प्रकटीकरण में शामिल करने ही होंगे या नहीं। जो लागत शुरुआत में एक बार चुकाई जाती है, वह शुल्क वाले फ़ील्ड में जाती है। जो लागत हर महीने चुकाई जाती है, जैसे बीमे का प्रीमियम, वह यहाँ शामिल नहीं है: उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर वह पहले ही दिन चुकाई हुई मानी जाती है, जिससे APR असल से ज़्यादा दिखता है। उस APR को ऊपरी सीमा मानें; कुल चुकाई गई रकम में प्रीमियम फिर भी पूरा गिना जाता है, इसलिए कुल रकमों की भी तुलना करें।',
+              a: 'अगर लोन देने वाला उसके साथ कोई प्रोडक्ट खरीदने को कहता है (जीवन बीमा, कोई खाता, कोई निवेश प्रोडक्ट), तो उस प्रोडक्ट की लागत भी आपकी असली उधार लागत का हिस्सा है। APR के नियम इस बात पर अलग-अलग देशों में अलग हैं कि ऐसे प्रोडक्ट लोन के काग़ज़ों में बताए गए आधिकारिक APR में शामिल करने ही होंगे या नहीं। जो लागत शुरुआत में एक बार चुकाई जाती है, वह शुल्क वाले फ़ील्ड में जाती है। जो लागत हर महीने चुकाई जाती है, जैसे बीमे का प्रीमियम, वह यहाँ शामिल नहीं है: उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर वह पहले ही दिन चुकाई हुई मानी जाती है, जिससे APR असल से ज़्यादा दिखता है। उस APR को ऊपरी सीमा मानें; कुल चुकाई गई रकम में प्रीमियम फिर भी पूरा गिना जाता है, इसलिए कुल रकमों की भी तुलना करें।',
             },
             {
               q: 'क्या कैलकुलेटर लोन शुल्क और कागज़ी खर्च संभालता है?',
-              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर "लागत और शुल्क" के नीचे "लोन शुल्क और कागज़ी खर्च" वाले फ़ील्ड में इन्हें भर दें। ये शुल्क कुल चुकाई जाने वाली राशि में जुड़ जाते हैं, इसलिए साथ-साथ वाली तुलना लोन की असली लागत दिखाती है, और ये दिखाए गए APR में भी जुड़ जाते हैं।',
+              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर “लागत और शुल्क” के नीचे “लोन शुल्क और कागज़ी खर्च” वाले फ़ील्ड में इन्हें भर दें। ये शुल्क कुल चुकाई जाने वाली राशि में जुड़ जाते हैं, इसलिए साथ-साथ वाली तुलना लोन की असली लागत दिखाती है, और ये दिखाए गए APR में भी जुड़ जाते हैं।',
             },
           ],
         },
@@ -867,7 +868,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'क्या हर महीने अतिरिक्त मूलधन चुकाने का हिसाब लगाया जा सकता है?',
-              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर "समय से पहले भुगतान" वाले हिस्से में "हर महीने अतिरिक्त मूलधन" के नीचे राशि भर दें। कैलकुलेटर हर महीने उतनी राशि से सीधे मूलधन घटा देता है, जिससे चुकाने का समय छोटा हो जाता है और कुल ब्याज घट जाता है।',
+              a: 'हाँ। हर लोन ऑफ़र के कार्ड पर “समय से पहले भुगतान” वाले हिस्से में “हर महीने अतिरिक्त मूलधन” के नीचे राशि भर दें। कैलकुलेटर हर महीने उतनी राशि से सीधे मूलधन घटा देता है, जिससे चुकाने का समय छोटा हो जाता है और कुल ब्याज घट जाता है।',
             },
             {
               q: 'एकमुश्त राशि कैसे भरी जाती है?',
@@ -875,7 +876,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'डिस्काउंट पॉइंट्स की बराबरी कैसे काम करती है?',
-              a: 'डिस्काउंट पॉइंट्स शुरू में दिया जाने वाला खर्च है, जो कम ब्याज दर खरीदता है। यह फ़ायदे में आएगा या नहीं, यह इस पर निर्भर है कि लोन कितने समय तक चलेगा। पॉइंट्स की लागत और उनसे मिली दर में कमी भर दें, और कैलकुलेटर "पॉइंट्स नहीं दिए" वाला काल्पनिक आधार बनाकर (वही लोन, शुल्क में से पॉइंट्स की लागत घटाकर, दर में कमी जोड़कर) दोनों की तुलना करता है। "पॉइंट्स की बराबरी" वाली पंक्ति बताती है कि शुरू का यह खर्च निकलने में कितने महीनों की कम किस्तें लगेंगी। अगर नई मासिक किस्त असल में कम नहीं है, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
+              a: 'डिस्काउंट पॉइंट्स शुरू में दिया जाने वाला खर्च है, जो कम ब्याज दर खरीदता है। यह फ़ायदे में आएगा या नहीं, यह इस पर निर्भर है कि लोन कितने समय तक चलेगा। पॉइंट्स की लागत और उनसे मिली दर में कमी भर दें, और कैलकुलेटर “पॉइंट्स नहीं दिए” वाला काल्पनिक आधार बनाकर (वही लोन, शुल्क में से पॉइंट्स की लागत घटाकर, दर में कमी जोड़कर) दोनों की तुलना करता है। “पॉइंट्स की बराबरी” वाली पंक्ति बताती है कि शुरू का यह खर्च निकलने में कितने महीनों की कम किस्तें लगेंगी। अगर नई मासिक किस्त असल में कम नहीं है, तो बराबरी का समय “कभी नहीं” बताया जाता है।',
             },
             {
               q: 'समय से पहले भुगतान पर जुर्माना कैसे काम करता है?',
@@ -888,11 +889,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कैलकुलेटर ऐसे लोन को कैसे संभालता है जिसकी दर पहले तय रहती है और फिर बदलती है (अमेरिका में हाइब्रिड या ARM लोन)?',
-              a: '"दर का ढाँचा" वाले हिस्से में दर का प्रकार "पहले तय, फिर बदलती" पर बदल दें, फिर शुरुआत की तय अवधि (जैसे पाँच साल की तय दर के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
+              a: '“दर का ढाँचा” वाले हिस्से में दर का प्रकार “पहले तय, फिर बदलती” पर बदल दें, फिर शुरुआत की तय अवधि (जैसे पाँच साल की तय दर के लिए 60 महीने) और उसके बाद लागू होने वाली दर भर दें। किस्तों का शेड्यूल पहले शुरुआती दर पर, दर बदलने वाले महीने तक बनता है, और उसके बाद किस्त नए सिरे से निकाली जाती है: बची हुई रकम बाद की दर पर, अनुबंध की बाकी अवधि में बाँट दी जाती है, इसलिए लोन फिर भी तय की गई अवधि में चुक जाता है। APR इसी शेड्यूल पर बनता है, आपकी भरी हुई दर के साथ। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है।',
             },
             {
-              q: '"चुकाने के महीने" चुनने पर "पहले तय, फिर बदलती" विकल्प बंद क्यों हो जाता है?',
-              a: 'पहले तय, फिर बदलती दर वाले लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। "चुकाने के महीने" चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। यह विकल्प चालू करने के लिए "क्या निकालना है" को "मासिक किस्त" पर बदल दें।',
+              q: '“चुकाने के महीने” चुनने पर “पहले तय, फिर बदलती” विकल्प बंद क्यों हो जाता है?',
+              a: 'पहले तय, फिर बदलती दर वाले लोन में तय अनुबंध अवधि होनी चाहिए, तभी कैलकुलेटर दर बदलने पर किस्त नए सिरे से निकाल सकता है। “चुकाने के महीने” चुनने पर अनुबंध अवधि नहीं दी जाती (उसके बदले तय मासिक किस्त दी जाती है), इसलिए किस्त नए सिरे से निकालना संभव नहीं रहता। यह विकल्प चालू करने के लिए “क्या निकालना है” को “मासिक किस्त” पर बदल दें।',
             },
           ],
         },
@@ -900,16 +901,16 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           title: 'विश्लेषण के टैब',
           items: [
             {
-              q: '"हर किस्त कहाँ जाती है" चार्ट क्या दिखाता है?',
+              q: '“हर किस्त कहाँ जाती है” चार्ट क्या दिखाता है?',
               a: 'यह लोन के हर साल की एक प्रतिनिधि मासिक किस्त को ब्याज और मूलधन के हिस्सों में बाँटकर एक ही स्तंभ पर ऊपर-नीचे दिखाता है। हर स्तंभ की कुल ऊँचाई एक जैसी है (क्योंकि मासिक किस्त एक जैसी है), पर बँटवारा बहुत बदलता है: शुरुआती सालों में किस्त का लगभग पूरा हिस्सा ब्याज होता है, और आखिरी सालों में लगभग पूरा मूलधन। इस हिसाब में लंबे लोन की शुरुआत में किया गया अतिरिक्त भुगतान, बाद में किए गए उतने ही भुगतान से ज़्यादा ब्याज बचाता है: शुरू में घटाए गए मूलधन के हर यूरो पर बाकी पूरी अवधि का ब्याज नहीं लगता।',
             },
             {
-              q: 'हॉराइज़न (किस महीने तक का हिसाब) विश्लेषण ("अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...") क्या है?',
+              q: 'हॉराइज़न (किस महीने तक का हिसाब) विश्लेषण (“अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...”) क्या है?',
               a: 'महीने 36 और महीने 360 पर लोन बहुत अलग दिखते हैं। हॉराइज़न टैब पूछता है: जो महीना आप चुनें, उस तक आपने असल में कितना मूलधन चुकाया, कितना ब्याज दिया, कितना बकाया बचा, और अब तक कुल कितनी नकदी खर्च हुई (किस्तें और लोन शुल्क मिलाकर)? यह नज़रिया तब काम का है जब आप लोन की अनुबंध अवधि ख़त्म होने से काफ़ी पहले बेचने, शहर बदलने या रीफ़ाइनेंस करने की सोच रहे हों, क्योंकि जो लोन ऑफ़र 360 महीनों में सबसे कम कुल लागत पर आता है, ज़रूरी नहीं कि वही महीने 60 पर निकलने पर भी सबसे सस्ता हो।',
             },
             {
               q: 'रीफ़ाइनेंस परिदृश्य बनाने वाला हिस्सा कैसे काम करता है?',
-              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर "पुराना लोन आखिर तक चलाते रहने" में कुल खर्च की तुलना "रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने" से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के समय चुकाए गए कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी (अगर कागज़ी खर्च नए लोन में जोड़ा जाए, तो बराबरी का समय बड़े बकाए को भी गिनता है: यह वह महीना है जब से किस्तों में हुई बचत अतिरिक्त बकाए से ज़्यादा हो जाती है)। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय "कभी नहीं" बताया जाता है।',
+              a: 'चुनें कि कौन-सा लोन रीफ़ाइनेंस करना है, किस महीने में, नई दर, नई अवधि और कागज़ी खर्च। कैलकुलेटर “पुराना लोन आखिर तक चलाते रहने” में कुल खर्च की तुलना “रीफ़ाइनेंस वाले महीने तक पुरानी किस्तें देकर, बची हुई रकम नए लोन से चुकाकर, वह लोन अपनी अनुबंध अवधि तक चलाने” से करता है। अगर पुराने लोन पर जल्दी चुकाने का जुर्माना है और वह रीफ़ाइनेंस वाले महीने में अब भी लागू है, तो वह रीफ़ाइनेंस वाले पक्ष में जुड़ता है। पुराने लोन के लिए भरी गई अतिरिक्त किस्तें और बाद की एकमुश्त राशियाँ नए लोन पर भी जारी रहती हैं, ताकि दोनों पक्ष एक ही तरह चुकाए जाएँ। यह बराबरी का समय भी बताता है: रीफ़ाइनेंस के समय चुकाए गए कागज़ी खर्च और ऐसे किसी जुर्माने के निकलने में कितने महीनों की कम किस्तें लगेंगी (अगर कागज़ी खर्च नए लोन में जोड़ा जाए, तो बराबरी का समय बड़े बकाए को भी गिनता है: यह वह महीना है जब से किस्तों में हुई बचत अतिरिक्त बकाए से ज़्यादा हो जाती है)। बराबरी का समय दोनों लोन की देय किस्तों की तुलना करता है, अतिरिक्त भुगतानों के बिना। अगर वे किस्तें यह खर्च कभी नहीं निकाल पातीं, तो बराबरी का समय “कभी नहीं” बताया जाता है।',
             },
           ],
         },
@@ -922,7 +923,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'गणना कितनी सटीक है?',
-              a: 'पूरा किस्तों का शेड्यूल मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) के पूर्णांकों में बनाया जाता है, ताकि दशमलव की गोलाई से गलती न हो। सूत्र से निकली मासिक किस्त सबसे नज़दीकी इकाई तक गोल की जाती है, और हर शेड्यूल की आखिरी किस्त ऐसे मिलाई जाती है कि मूलधन की सारी किस्तों का जोड़ लोन राशि के ठीक बराबर हो। APR उसी पूर्णांकों वाले शेड्यूल पर वर्तमान मूल्य के समीकरण को द्विभाजन से हल करके निकाला जाता है, इतनी सटीकता से कि किसी असली लोन देने वाले का प्रकटीकरण उस तक नहीं पहुँचता।',
+              a: 'पूरा किस्तों का शेड्यूल मुद्रा की सबसे छोटी इकाई (जैसे सेंट या पैसा) के पूर्णांकों में बनाया जाता है, ताकि दशमलव की गोलाई से ग़लती न हो। सूत्र से निकली मासिक किस्त सबसे नज़दीकी इकाई तक गोल की जाती है, और हर शेड्यूल की आखिरी किस्त ऐसे मिलाई जाती है कि मूलधन की सारी किस्तों का जोड़ लोन राशि के ठीक बराबर हो। APR उसी पूर्णांकों वाले शेड्यूल पर वर्तमान मूल्य के समीकरण को द्विभाजन से हल करके निकाला जाता है, इतनी सटीकता से कि किसी असली लोन देने वाले के काग़ज़ों में बताया गया APR भी उतना सटीक नहीं होता।',
             },
           ],
         },
@@ -931,10 +932,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           items: [
             {
               q: 'कौन-सी मुद्राएँ शामिल हैं?',
-              a: '38 मुद्राएँ शामिल हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
+              a: '38 मुद्राएँ शामिल हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ हैं। हर मुद्रा अपनी ही परंपरा से दिखाई जाती है। उदाहरण के लिए, INR में भारतीय लाख/करोड़ वाला समूहन (1,23,45,678) होता है और JPY में दशमलव नहीं लिखा जाता।',
             },
             {
-              q: 'यहाँ "कई मुद्राओं" का क्या मतलब है?',
+              q: 'यहाँ “कई मुद्राओं” का क्या मतलब है?',
               a: 'इसका मतलब है कि कैलकुलेटर इनपुट और नतीजे उसी मुद्रा की परंपरा से लिखता है जो आप चुनते हैं। चिह्न, दशमलव के स्थान और अंकों का समूहन, सब उसी मुद्रा के हिसाब से बदल जाते हैं। गणित वही रहता है: तय दर वाला किस्तों में चुकने वाला लोन एक जैसा ही चलता है, चाहे उसकी इकाई को डॉलर कहें, रुपया या येन। एक ही तुलना में सारे लोन एक ही मुद्रा में रहते हैं, क्योंकि अलग-अलग मुद्राओं की नाममात्र किस्तों की तुलना, ताज़ा विनिमय दर (exchange\u00A0rate) के बिना, भ्रम में डालती है।',
             },
           ],
@@ -976,11 +977,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
   },
   island: {
     export: {
-      tool: 'लोन तुलना कैलकुलेटर',
-      meaning: 'यह दायरा दिखाता है कि फ़ीस और पेनल्टी जोड़कर ऑफ़र की कुल लागत में कितना फ़र्क है। सबसे कम कुल रकम का मतलब हमेशा सबसे कम मासिक किस्त नहीं होता: लंबी अवधि से किस्त आम तौर पर घटती है और कुल रकम बढ़ती है। आपके लिए क्या ज़्यादा मायने रखता है, यह आपके बजट पर, आप लोन कितने समय तक रखना चाहते हैं इस पर, और उन शर्तों पर निर्भर है जो यह तुलना शामिल नहीं करती।',
+      tool: 'लोन की तुलना',
+      meaning: 'यह दायरा दिखाता है कि शुल्क और जुर्माना जोड़कर ऑफ़र की कुल लागत में कितना फ़र्क है। सबसे कम कुल रकम का मतलब हमेशा सबसे कम मासिक किस्त नहीं होता: लंबी अवधि से किस्त आम तौर पर घटती है और कुल रकम बढ़ती है। आपके लिए क्या ज़्यादा मायने रखता है, यह आपके बजट पर, आप लोन कितने समय तक रखना चाहते हैं इस पर, और उन शर्तों पर निर्भर है जो यह तुलना शामिल नहीं करती।',
       schedulesNote: 'हर ऑफ़र का महीने-दर-महीने का शेड्यूल स्प्रेडशीट में है।',
-      scheduleLabel: 'किस्तों की सूची',
-      scheduleText: 'हर ऑफ़र के लिए एक शीट, महीने-दर-महीने, अतिरिक्त मूलधन और एकमुश्त राशि समेत: वही सूची जिससे चार्ट और कुल रकम बनती हैं।',
+      scheduleLabel: 'किस्तों का शेड्यूल',
+      scheduleText: 'हर ऑफ़र के लिए एक शीट, महीने-दर-महीने, अतिरिक्त मूलधन और एकमुश्त राशि समेत: वही शेड्यूल जिससे चार्ट और कुल रकम बनती हैं।',
       sheets: { summary: 'सारांश' },
       months: 'महीने',
       aprPct: 'APR, %',
@@ -1142,7 +1143,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       breakEven: 'पॉइंट्स की बराबरी',
       never: 'कभी नहीं',
       breakEvenSaves: 'पूरी अवधि में {amount} की बचत',
-      breakEvenCosts: 'पूरी अवधि में {amount} ज़्यादा लगते हैं: पॉइंट्स की लागत निकलने से पहले ही लोन खत्म हो जाता है',
+      breakEvenCosts: 'पूरी अवधि में {amount} ज़्यादा लगते हैं: पॉइंट्स की लागत निकलने से पहले ही लोन ख़त्म हो जाता है',
       breakEvenNever: 'पॉइंट्स मासिक किस्त इतनी नहीं घटाते कि लागत निकल जाए',
     },
     delta: {
@@ -1277,11 +1278,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         strong: 'समय से पहले भुगतान पर जुर्माना',
         rest: ' तभी लगता है जब लोन जुर्माने की अवधि के आखिरी महीने या उससे पहले पूरा चुक जाए: अतिरिक्त किस्तों से, एकमुश्त राशि से, या रीफ़ाइनेंस वाले हिस्से में उसे रीफ़ाइनेंस करने से।',
       },
-      note: 'सब कुछ आपके ब्राउज़र में चलता है, और आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए "शेयर करने योग्य लिंक कॉपी करें" बटन इस्तेमाल करें।',
+      note: 'सब कुछ आपके ब्राउज़र में चलता है, और आपका टाइप किया कुछ भी कहीं नहीं भेजा जाता। हर भरा हुआ आँकड़ा एक पते में बदलकर किसी और को देने के लिए “शेयर करने योग्य लिंक कॉपी करें” बटन इस्तेमाल करें।',
     },
     horizon: {
       heading: 'अगर मैं बेचूँ या रीफ़ाइनेंस करूँ...',
-      lead: 'महीने 36 पर और महीने 360 पर लोन बहुत अलग दिखते हैं। हर पंक्ति बताती है कि उस तारीख तक उधार लेने वाला असल में कहाँ खड़ा है।',
+      lead: 'महीने 36 पर और महीने 360 पर लोन बहुत अलग दिखते हैं। हर पंक्ति बताती है कि उस तारीख़ तक उधार लेने वाला असल में कहाँ खड़ा है।',
       label: 'हॉराइज़न: ',
       inputAria: 'हॉराइज़न महीनों में (टेक्स्ट)',
       empty: 'हॉराइज़न के आँकड़े देखने के लिए सही इनपुट भरें।',
@@ -1324,15 +1325,16 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     disclaimer: {
       summary: 'मान्यताएँ और ज़रूरी बातें',
-      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR आपकी भरी हुई दर के ही आधार पर दिखाया जाता है (मासिक दर × 12), जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि आधिकारिक APR/APRC प्रकटीकरण में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी। एक बार की लागत शुल्क वाले फ़ील्ड में जोड़ी जा सकती है; हर महीने चुकाई जाने वाली लागत यहाँ शामिल नहीं है, और उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर APR असल से ज़्यादा दिखता है। कनाडा के तय दर वाले मॉर्गेज की दर आम तौर पर छमाही ब्याज जुड़ने के हिसाब से बताई जाती है (कनाडा का Interest Act सालाना या छमाही, दोनों की इजाज़त देता है), और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा आपका अपना माना हुआ आँकड़ा है। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपनी स्थिति के हिसाब से सलाह के लिए किसी लाइसेंस वाले मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
+      body: 'गणना में यह माना गया है कि ब्याज हर महीने जुड़ता है और किस्तें समय पर दी जाती हैं। APR आपकी भरी हुई दर के ही आधार पर दिखाया जाता है (मासिक दर × 12), जो अनुबंध वाले शेड्यूल पर बनती है (बिना अपनी मर्ज़ी के अतिरिक्त भुगतान के) और लोन शुल्क तथा कागज़ी खर्च को उधार की असली लागत में जोड़ देती है; यह हर देश में अलग है कि लोन के काग़ज़ों में बताए गए आधिकारिक APR/APRC में और कौन-सी लागतें (ज़रूरी बीमा, खाते से जुड़े प्रोडक्ट, कर) शामिल करनी होंगी। एक बार की लागत शुल्क वाले फ़ील्ड में जोड़ी जा सकती है; हर महीने चुकाई जाने वाली लागत यहाँ शामिल नहीं है, और उसकी पूरी अवधि की रकम शुल्क में जोड़ने पर APR असल से ज़्यादा दिखता है। कनाडा के तय दर वाले मॉर्गेज की दर आम तौर पर छमाही ब्याज जुड़ने के हिसाब से बताई जाती है (कनाडा का Interest Act सालाना या छमाही, दोनों की इजाज़त देता है), और ब्राज़ील के तथा ब्रिटेन के कुछ प्रोडक्ट ब्याज जोड़ने के दूसरे तरीक़े अपनाते हैं; ऐसे प्रोडक्ट पर यहाँ की महीने-दर-महीने वाली गणना थोड़ी अलग पड़ेगी। असली बदलती दर वाले लोन किसी इंडेक्स और मार्जिन से चलते हैं और उन पर दर की ऊपरी सीमाएँ भी हो सकती हैं, जो यह कैलकुलेटर लागू नहीं करता; बाद की दर के लिए भरा गया आँकड़ा आपका अपना माना हुआ आँकड़ा है। दर बदलने पर यह कैलकुलेटर किस्त दोबारा निकालता है, ताकि लोन अपनी मूल अवधि में ही ख़त्म हो। कुछ लोन देने वाले, अक्सर भारत में बदलती दर वाले होम लोन में, किस्त वही रखते हैं और उसकी जगह महीनों की संख्या बदलते हैं, जिससे कुल ब्याज बदल जाता है। असली बदलती दर कई बार भी बदल सकती है; यहाँ एक ही बदलाव दिखता है। संपत्ति कर, इमारत या सोसाइटी का खर्च, घर का बीमा, और आपके देश में लोन के ब्याज पर कर का क्या असर होता है: ये सब इसमें शामिल नहीं हैं। यह केवल सीखने के लिए तुलना है; वित्तीय सलाह नहीं। किसी बाध्यकारी तुलना या अपनी स्थिति के हिसाब से सलाह के लिए किसी लाइसेंस प्राप्त मॉर्गेज ब्रोकर या वित्तीय सलाहकार से बात करें।',
     },
     months: {
       na: 'लागू नहीं',
       one: '1 महीना',
       some: '{m} महीने',
+      year: '1 साल',
       years: '{y} साल',
-      yearsOne: '{y} साल 1 महीना',
-      yearsSome: '{y} साल {m} महीने',
+      yearsAndMonth: '{years} 1 महीना',
+      yearsSome: '{years} {m} महीने',
     },
     engine: {
       errors: {
@@ -1352,7 +1354,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
-        hybridMode: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि चाहिए: "क्या निकालना है" में "मासिक किस्त" चुनें।',
+        hybridMode: 'पहले तय, फिर बदलती दर वाले लोन के लिए तय अवधि चाहिए: “क्या निकालना है” में “मासिक किस्त” चुनें।',
         refiOriginal: 'पुराना लोन सही नहीं है; रीफ़ाइनेंस की गणना नहीं हो सकती।',
         optionalUnreadable: 'वैकल्पिक बॉक्सों में से एक पढ़ा नहीं जा सका। सिर्फ़ अंक लिखें, या बॉक्स खाली कर दें।',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
@@ -1366,7 +1368,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया हमें इसकी सूचना दें।',
+          'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
       },
@@ -1416,7 +1418,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       'Calcula la cuota mensual a partir de un plazo fijo, o el tiempo hasta liquidar el préstamo a partir de una cuota fija',
       'Incluye la comisión de apertura y los pagos extra al capital cada mes',
       'Modo avanzado: préstamos de tasa fija y luego variable, con la cuota recalculada cuando cambia la tasa, punto de equilibrio de los puntos de descuento, pagos extraordinarios y penalización por pago anticipado',
-      'Análisis por horizonte («si vendo en el mes N») con el capital devuelto, los intereses pagados, el saldo pendiente y el desembolso total de cada entidad',
+      'Análisis por horizonte («si vendo en el mes N») con el capital devuelto, los intereses pagados, el saldo pendiente y el desembolso total de cada oferta',
       'Escenario de refinanciación que compara «mantener» y «refinanciar» con gastos iniciales y punto de equilibrio',
       'Tabla de amortización exacta hasta la unidad monetaria más pequeña (como el céntimo o el centavo), calculada con números enteros',
       'Enlace para compartir cualquier comparación, con todos los campos avanzados',
@@ -1457,11 +1459,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Cuántos préstamos puedo comparar a la vez?',
-              a: 'De dos a cinco. La página empieza con dos tarjetas lado a lado y un recuadro bien visible de «Añadir entidad» que permite ampliar la comparación hasta un máximo de cinco ofertas de préstamo. Cada tarjeta tiene un botón para quitarla, por si una entidad deja de encajar.',
+              a: 'De dos a cinco. La página empieza con dos tarjetas lado a lado y un recuadro bien visible de «Añadir oferta» que permite ampliar la comparación hasta un máximo de cinco ofertas de préstamo. Cada tarjeta tiene un botón para quitarla, por si una oferta deja de encajar.',
             },
             {
               q: '¿Puedo comparar préstamos con plazos o tasas distintos?',
-              a: 'Sí. Puedes combinar plazos, tasas, comisiones e incluso cuotas mensuales distintas entre todos los préstamos que compares. En la tarjeta de cada entidad eliges si calcular la cuota mensual (con plazo fijo) o el tiempo hasta liquidar el préstamo (con cuota mensual fija).',
+              a: 'Sí. Puedes combinar plazos, tasas, comisiones e incluso cuotas mensuales distintas entre todos los préstamos que compares. En la tarjeta de cada oferta eliges si calcular la cuota mensual (con plazo fijo) o el tiempo hasta liquidar el préstamo (con cuota mensual fija).',
             },
             {
               q: '¿Qué campos son obligatorios?',
@@ -1478,7 +1480,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50% aquí es un 6,70% allí, y un 20% es un 21,94%. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
@@ -1494,7 +1496,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿La calculadora tiene en cuenta la comisión de apertura y los gastos iniciales?',
-              a: 'Sí. Escríbelos en el campo «Comisión de apertura y gastos iniciales», dentro de «Costos y comisiones», en la tarjeta de cada entidad. Las comisiones se suman al total pagado, así que la comparación lado a lado refleja el costo real del préstamo, y se incorporan al APR mostrado.',
+              a: 'Sí. Escríbelos en el campo «Comisión de apertura y gastos iniciales», dentro de «Costos y comisiones», en la tarjeta de cada oferta. Las comisiones se suman al total pagado, así que la comparación lado a lado refleja el costo real del préstamo, y se incorporan al APR mostrado.',
             },
           ],
         },
@@ -1503,10 +1505,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Puedo simular un pago extra al capital cada mes?',
-              a: 'Sí. Escribe una cantidad en «Capital extra al mes», dentro del grupo «Pagos anticipados» de la tarjeta de cada entidad. La calculadora la aplica directamente al capital cada mes, lo que acorta el tiempo hasta liquidar el préstamo y reduce los intereses totales.',
+              a: 'Sí. Escribe una cantidad en «Capital extra al mes», dentro del grupo «Pagos anticipados» de la tarjeta de cada oferta. La calculadora la aplica directamente al capital cada mes, lo que acorta el tiempo hasta liquidar el préstamo y reduce los intereses totales.',
             },
             {
-              q: '¿Cómo se introducen los pagos extraordinarios?',
+              q: '¿Cómo se escriben los pagos extraordinarios?',
               a: 'Con el formato mes:cantidad, separados por punto y coma. Por ejemplo, 12:5000;36:3000;60:10000 significa un pago anticipado de 5000 en el mes 12, de 3000 en el mes 36 y de 10.000 en el mes 60. Cada pago extraordinario se aplica al capital DESPUÉS de la cuota mensual ordinaria de ese mes, así que no genera intereses ese mismo mes. Normalmente el préstamo se liquida antes del plazo contractual y los intereses totales bajan en consecuencia.',
             },
             {
@@ -1541,11 +1543,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Qué es el análisis por horizonte («si vendo o refinancio en...»)?',
-              a: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. La pestaña Horizonte pregunta: en el mes que elijas, ¿cuánto capital has devuelto realmente, cuántos intereses has pagado, cuál es el saldo pendiente y cuánto dinero has desembolsado en total hasta ese momento (cuotas más comisión de apertura)? Esta vista es útil si prevés vender, mudarte o refinanciar bastante antes del final contractual del préstamo, porque la entidad con el menor costo total a 360 meses puede no ser la de menor costo si sales en el mes 60.',
+              a: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. La pestaña Horizonte pregunta: en el mes que elijas, ¿cuánto capital has devuelto realmente, cuántos intereses has pagado, cuál es el saldo pendiente y cuánto dinero has desembolsado en total hasta ese momento (cuotas más comisión de apertura)? Esta vista es útil si prevés vender, mudarte o refinanciar bastante antes del final contractual del préstamo, porque la oferta con el menor costo total a 360 meses puede no ser la de menor costo si sales en el mes 60.',
             },
             {
               q: '¿Cómo funciona el escenario de refinanciación?',
-              a: 'Elige qué entidad refinanciar, el mes en que se refinancia, la nueva tasa, el nuevo plazo y los gastos iniciales. La calculadora compara el dinero total desembolsado si «mantienes el préstamo original hasta el final» con el de «pagar las cuotas originales hasta el mes de la refinanciación y luego liquidar el saldo pendiente con un préstamo nuevo que dura hasta su propio final contractual». Si el préstamo original tiene una penalización por pago anticipado que sigue vigente en el mes de la refinanciación, se suma al lado de la refinanciación. Los pagos extra y los pagos extraordinarios posteriores que escribiste para el préstamo original continúan en el nuevo, de modo que ambos lados se amortizan igual. También indica un punto de equilibrio: cuántos meses de cuotas más bajas hacen falta para recuperar los gastos iniciales pagados al refinanciar y esa penalización, si la hay (si los gastos iniciales se suman al préstamo nuevo, el punto de equilibrio cuenta el saldo mayor: es el mes a partir del cual lo ahorrado en cuotas supera lo que se debe de más). El punto de equilibrio compara las cuotas exigidas en cada préstamo, sin pagos extra. Si esas cuotas nunca compensan el costo, el punto de equilibrio es «nunca».',
+              a: 'Elige qué oferta refinanciar, el mes en que se refinancia, la nueva tasa, el nuevo plazo y los gastos iniciales. La calculadora compara el dinero total desembolsado si «mantienes el préstamo original hasta el final» con el de «pagar las cuotas originales hasta el mes de la refinanciación y luego liquidar el saldo pendiente con un préstamo nuevo que dura hasta su propio final contractual». Si el préstamo original tiene una penalización por pago anticipado que sigue vigente en el mes de la refinanciación, se suma al lado de la refinanciación. Los pagos extra y los pagos extraordinarios posteriores que escribiste para el préstamo original continúan en el nuevo, de modo que ambos lados se amortizan igual. También indica un punto de equilibrio: cuántos meses de cuotas más bajas hacen falta para recuperar los gastos iniciales pagados al refinanciar y esa penalización, si la hay (si los gastos iniciales se suman al préstamo nuevo, el punto de equilibrio cuenta el saldo mayor: es el mes a partir del cual lo ahorrado en cuotas supera lo que se debe de más). El punto de equilibrio compara las cuotas exigidas en cada préstamo, sin pagos extra. Si esas cuotas nunca compensan el costo, el punto de equilibrio es «nunca».',
             },
           ],
         },
@@ -1554,7 +1556,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Los enlaces para compartir están completos por sí solos?',
-              a: 'Sí. El enlace para compartir codifica todo lo que necesita quien lo recibe: todos los campos de cada entidad (tipo de tasa, tasa posterior, puntos, pagos extraordinarios, penalización por pago anticipado), la moneda, la pestaña de análisis activa y los datos del horizonte y del escenario de refinanciación. Quien lo abre llega a la misma vista que estabas viendo, con todos tus datos. La dirección solo contiene los valores que difieren de los predeterminados, así que una comparación nueva sigue produciendo un enlace corto.',
+              a: 'Sí. El enlace para compartir codifica todo lo que necesita quien lo recibe: todos los campos de cada oferta (tipo de tasa, tasa posterior, puntos, pagos extraordinarios, penalización por pago anticipado), la moneda, la pestaña de análisis activa y los datos del horizonte y del escenario de refinanciación. Quien lo abre llega a la misma vista que estabas viendo, con todos tus datos. La dirección solo contiene los valores que difieren de los predeterminados, así que una comparación nueva sigue produciendo un enlace corto.',
             },
             {
               q: '¿Qué precisión tienen los cálculos?',
@@ -1607,16 +1609,16 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         },
       ],
       footerTag: 'Más sobre deudas y préstamos',
-      footerAll: 'O explora todos los artículos',
+      footerAll: 'O explora todas las lecciones',
     },
   },
   island: {
     export: {
       tool: 'Comparador de préstamos',
-      meaning: 'El rango muestra cuánto se separan los costes totales de las ofertas, con comisiones y penalizaciones incluidas. El total más bajo no siempre es la cuota mensual más baja: un plazo más largo suele bajar la cuota y subir el total. Qué pesa más depende de tu presupuesto, de cuánto tiempo pienses mantener el préstamo y de condiciones que esta comparación deja fuera.',
-      schedulesNote: 'El cuadro de amortización mes a mes de cada oferta está en la hoja de cálculo.',
-      scheduleLabel: 'Cuadros de amortización',
-      scheduleText: 'Una hoja por oferta, mes a mes, con el capital extra y los pagos extraordinarios que haya: el cuadro que usan los gráficos y los totales.',
+      meaning: 'El rango muestra cuánto se separan los costos totales de las ofertas, con comisiones y penalizaciones incluidas. El total más bajo no siempre es la cuota mensual más baja: un plazo más largo suele bajar la cuota y subir el total. Qué pesa más depende de tu presupuesto, de cuánto tiempo pienses mantener el préstamo y de condiciones que esta comparación deja fuera.',
+      schedulesNote: 'La tabla de amortización mes a mes de cada oferta está en la hoja de cálculo.',
+      scheduleLabel: 'Tablas de amortización',
+      scheduleText: 'Una hoja por oferta, mes a mes, con el capital extra y los pagos extraordinarios que haya: la tabla que usan los gráficos y los totales.',
       sheets: { summary: 'Resumen' },
       months: 'Meses',
       aprPct: 'APR, %',
@@ -1650,16 +1652,16 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     cardsHeading: 'Ofertas de préstamo',
     example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
     phoneTabs: {
-      groupAria: 'Entidad que se muestra',
-      tabName: 'Entidad {label}',
+      groupAria: 'Oferta que se muestra',
+      tabName: 'Oferta {label}',
       add: 'Añadir',
-      addAria: 'Añadir otra entidad para comparar ({n} de {max})',
-      addCard: 'Añadir entidad',
+      addAria: 'Añadir otra oferta para comparar ({n} de {max})',
+      addCard: 'Añadir oferta',
       addCardHint: 'Compara hasta {max}',
     },
     card: {
-      badge: 'Entidad {label}',
-      removeAria: 'Quitar la entidad {label} de la comparación',
+      badge: 'Oferta {label}',
+      removeAria: 'Quitar la oferta {label} de la comparación',
       removeTitle: 'Quitar de la comparación',
       name: 'Nombre de la entidad',
       principal: 'Cantidad del préstamo',
@@ -1762,7 +1764,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       /** Under a card's APR: the basis the figure is on. */
       aprBasis: 'La misma base que tu tasa',
       /** Above the offers: why a lender's document can show a higher figure. */
-      aprDocs: 'Los documentos de préstamo de la UE, el Reino Unido y algunos otros países capitalizan los cargos mensuales, así que la cifra anual que muestran (TAE, APRC, RPSN) es más alta que el APR de aquí para el mismo préstamo. La diferencia crece con la tasa: un 6,50% aquí es un 6,70% allí, y un 20% es un 21,94%.',
+      aprDocs: 'Los documentos de préstamo de la UE, el Reino Unido y algunos otros países capitalizan los cargos mensuales, así que la cifra anual que muestran (TAE, APRC, RPSN) es más alta que el APR de aquí para el mismo préstamo. La diferencia crece con la tasa: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %.',
       aprFees: 'Incluye comisiones',
       aprNoFees: 'Sin comisiones',
       totalPaid: 'Total pagado',
@@ -1783,12 +1785,12 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     delta: {
       heading: 'Lado a lado',
-      empty: 'Escribe datos válidos de al menos dos entidades para ver cómo se comparan.',
-      sameBefore: 'Todas las entidades salen con el mismo costo total: ',
+      empty: 'Escribe datos válidos de al menos dos ofertas para ver cómo se comparan.',
+      sameBefore: 'Todas las ofertas salen con el mismo costo total: ',
       sameAfter: '.',
       rangeBefore: 'El costo total va de ',
       rangeTo: ' a ',
-      rangeAcross: ' entre las entidades de abajo: una diferencia de ',
+      rangeAcross: ' entre las ofertas de abajo: una diferencia de ',
       rangeAfter: '.',
       metricAria: 'Métrica',
       /** Accessible name of the phone table's key of letters and offer names. */
@@ -1830,11 +1832,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     charts: {
       balanceHeading: 'Saldo pendiente a lo largo del tiempo',
       balanceLead:
-        'Cada línea es el saldo pendiente de una entidad, mes a mes. El punto sobre el eje marca cuándo queda liquidado.',
+        'Cada línea es el saldo pendiente de una oferta, mes a mes. El punto sobre el eje marca cuándo queda liquidado.',
       splitHeading: 'Adónde va cada cuota',
       splitLead:
         'La misma cuota mensual cada mes. Al principio, casi toda son intereses; hacia el final, casi toda es capital.',
-      vendorLabel: 'Entidad',
+      vendorLabel: 'Oferta',
       autoOption: 'Automático (menor costo total)',
       incomplete: ' (incompleta)',
       splitEmpty:
@@ -1935,7 +1937,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       newTerm: 'Nuevo plazo (meses)',
       newFee: 'Nuevos gastos iniciales',
       rollFee: 'Financiar los gastos iniciales dentro del nuevo préstamo',
-      empty: 'Elige una entidad válida y escribe el mes, la tasa y el plazo de la refinanciación para ver el ahorro.',
+      empty: 'Elige una oferta válida y escribe el mes, la tasa y el plazo de la refinanciación para ver el ahorro.',
       keepTotal: 'Mantener el préstamo actual: total',
       refiTotal: 'Refinanciar: total pagado (el préstamo actual hasta la refinanciación y después el nuevo)',
       saves: 'La refinanciación ahorra',
@@ -1966,9 +1968,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       na: 'n. d.',
       one: '1 mes',
       some: '{m} meses',
-      years: '{y} a.',
-      yearsOne: '{y} a. y 1 mes',
-      yearsSome: '{y} a. y {m} meses',
+      year: '1 año',
+      years: '{y} años',
+      yearsAndMonth: '{years} y 1 mes',
+      yearsSome: '{years} y {m} meses',
     },
     engine: {
       errors: {
@@ -2002,7 +2005,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avísanos, por favor.',
+          'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avisa del error, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
       },
@@ -2051,7 +2054,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       'Výpočet měsíční splátky při pevné době splatnosti, nebo doby splácení při pevné splátce',
       'Modelování poplatku za sjednání a mimořádné měsíční splátky jistiny',
       'Pokročilý režim: úvěry s pevnou a pak pohyblivou sazbou s přepočtem splátky při změně sazby, doba návratnosti bodů na snížení sazby, jednorázové mimořádné splátky, modelování poplatku za předčasné splacení',
-      'Analýza horizontu („pokud prodám v měsíci N“): splacená jistina, zaplacené úroky, zbývající jistina a celkem vydané peníze u každého poskytovatele',
+      'Analýza horizontu („pokud prodám v měsíci N“): splacená jistina, zaplacené úroky, zbývající jistina a celkem vydané peníze u každé nabídky',
       'Scénář refinancování, který porovná „ponechat“ a „refinancovat“ včetně nákladů na uzavření a doby návratnosti',
       'Splátkový kalendář přesný na haléře, počítaný v celých číslech',
       'Odkaz ke sdílení na jakékoli srovnání, včetně všech pokročilých polí',
@@ -2092,11 +2095,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Kolik úvěrů můžu porovnat najednou?',
-              a: 'Dva až pět. Stránka začíná dvěma kartami vedle sebe a jasně viditelnou dlaždicí „Přidat poskytovatele“, kterou můžete srovnání rozšířit až na pět nabídek. Každá karta má tlačítko pro odebrání, takže poskytovatele, který už nesedí, můžete vyřadit.',
+              a: 'Dva až pět. Stránka začíná dvěma kartami vedle sebe a jasně viditelnou dlaždicí „Přidat nabídku“, kterou můžete srovnání rozšířit až na pět nabídek. Každá karta má tlačítko pro odebrání, takže nabídku, která už nesedí, můžete vyřadit.',
             },
             {
               q: 'Můžu porovnat úvěry s různou dobou splatnosti nebo sazbou?',
-              a: 'Ano. U všech porovnávaných úvěrů můžete libovolně kombinovat doby splatnosti, sazby, poplatky i měsíční splátky. Na každé kartě poskytovatele si zvolíte, zda se počítá měsíční splátka (pevná doba splatnosti), nebo doba splácení (pevná měsíční splátka).',
+              a: 'Ano. U všech porovnávaných úvěrů můžete libovolně kombinovat doby splatnosti, sazby, poplatky i měsíční splátky. Na každé kartě nabídky si zvolíte, zda se počítá měsíční splátka (pevná doba splatnosti), nebo doba splácení (pevná měsíční splátka).',
             },
             {
               q: 'Která pole jsou povinná?',
@@ -2117,7 +2120,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Proč je APR obvykle vyšší než nabízená sazba?',
-              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. V dokumentech, které počítají se složeným úročením měsíční sazby, jako v EU a ve Spojeném království, je APR o něco vyšší než nabízená sazba i bez poplatku; tady se bez poplatku obě rovnají. Podrobněji to rozebírá článek o podmínkách úvěrů.',
+              a: 'Nabízená sazba oceňuje jen náklady samotné jistiny. APR oceňuje i poplatek, který dlužník platí, ale nemůže ho použít, takže sazba z peněz, které dlužník skutečně dostane, je vyšší. Dva úvěry se stejnou nabízenou sazbou mohou mít velmi odlišné APR a úvěr s nižší nabízenou sazbou může mít vyšší APR než úvěr s vyšší nabízenou sazbou bez poplatku. V dokumentech, které počítají se složeným úročením měsíční sazby, jako v EU a ve Spojeném království, je APR o něco vyšší než nabízená sazba i bez poplatku; tady se bez poplatku obě rovnají. Podrobněji to rozebírá lekce o podmínkách úvěrů.',
             },
             {
               q: 'Zahrnuje APR mimořádnou splátku jistiny, kterou plánuji platit každý měsíc?',
@@ -2129,7 +2132,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Zvládá kalkulačka poplatek za sjednání a náklady na uzavření?',
-              a: 'Ano. Zadejte je do pole „Poplatek za sjednání a uzavření“ ve skupině „Náklady a poplatky“ na každé kartě poskytovatele. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží skutečné náklady úvěru, a jsou zahrnuty do zobrazeného APR.',
+              a: 'Ano. Zadejte je do pole „Poplatek za sjednání a uzavření“ ve skupině „Náklady a poplatky“ na každé kartě nabídky. Poplatky se přičítají k celkové zaplacené částce, takže srovnání vedle sebe odráží skutečné náklady úvěru, a jsou zahrnuty do zobrazeného APR.',
             },
           ],
         },
@@ -2138,7 +2141,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Můžu modelovat mimořádnou splátku jistiny každý měsíc?',
-              a: 'Ano. Zadejte částku do pole „Mimořádná splátka jistiny měsíčně“ ve skupině „Mimořádné splátky“ na každé kartě poskytovatele. Kalkulačka ji každý měsíc použije přímo na jistinu, čímž zkrátí dobu splácení a sníží úroky celkem.',
+              a: 'Ano. Zadejte částku do pole „Mimořádná splátka jistiny měsíčně“ ve skupině „Mimořádné splátky“ na každé kartě nabídky. Kalkulačka ji každý měsíc použije přímo na jistinu, čímž zkrátí dobu splácení a sníží úroky celkem.',
             },
             {
               q: 'Jak se zadávají jednorázové mimořádné splátky?',
@@ -2159,7 +2162,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Jak kalkulačka zvládá úvěr, jehož sazba je nejdřív pevná a potom se změní (v USA hybridní úvěr nebo ARM)?',
-              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Pevná, pak pohyblivá“ a zadejte počáteční období fixace (například 60 měsíců u pětileté fixace) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se sazbou, kterou jste zadali. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
+              a: 'Ve skupině „Struktura sazby“ přepněte typ sazby na „Pevná, pak pohyblivá“ a zadejte počáteční období fixace (například 60 měsíců u pětileté fixace) a sazbu, která platí po jeho skončení. Splátkový kalendář se až do měsíce změny počítá s počáteční sazbou a potom se splátka přepočítá: zbývající jistina se rozloží do zbývajících smluvních měsíců při následné sazbě, takže se úvěr i tak splatí v původní době. APR vychází z tohoto kalendáře, se zadanou sazbou. Když se sazba změní, kalkulačka přepočítá splátku tak, aby úvěr skončil v původní době. Někteří poskytovatelé, často u hypoték s pohyblivou sazbou v Indii, nechávají splátku stejnou a místo toho mění počet měsíců, což mění celkový úrok. Skutečná pohyblivá sazba se také může změnit mnohokrát; tady je vidět jedna změna.',
             },
             {
               q: 'Proč je možnost „Pevná, pak pohyblivá“ nedostupná, když je zvoleno „Měsíce do splacení“?',
@@ -2176,11 +2179,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Co je analýza horizontu („pokud prodám nebo refinancuji v...“)?',
-              a: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Záložka „Horizont“ se ptá: ve zvoleném měsíci, kolik jistiny je skutečně splaceno, kolik úroků zaplaceno, jaká je zbývající jistina a kolik peněz celkem už odešlo (splátky plus poplatky za sjednání)? Tento pohled se hodí, pokud čekáte, že prodáte, přestěhujete se nebo budete refinancovat dlouho před smluvním koncem úvěru, protože poskytovatel s nejnižšími celkovými náklady za 360 měsíců nemusí být nejlevnější, pokud úvěr ukončíte v 60. měsíci.',
+              a: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Záložka „Horizont“ se ptá: ve zvoleném měsíci, kolik jistiny je skutečně splaceno, kolik úroků zaplaceno, jaká je zbývající jistina a kolik peněz celkem už odešlo (splátky plus poplatky za sjednání)? Tento pohled se hodí, pokud čekáte, že prodáte, přestěhujete se nebo budete refinancovat dlouho před smluvním koncem úvěru, protože nabídka s nejnižšími celkovými náklady za 360 měsíců nemusí být nejlevnější, pokud úvěr ukončíte v 60. měsíci.',
             },
             {
               q: 'Jak funguje scénář refinancování?',
-              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, které jste zadali u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření zaplacené při refinancování a případný poplatek (pokud se náklady na uzavření přičtou k novému úvěru, počítá doba návratnosti i s vyšší jistinou: je to měsíc, od kterého ušetřené splátky převáží to, co dlužíte navíc). Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
+              a: 'Vyberte, který úvěr refinancovat, měsíc refinancování, novou sazbu, novou dobu splatnosti a případné náklady na uzavření. Kalkulačka porovná celkem vydané peníze u varianty „ponechat původní úvěr až do konce“ a varianty „platit původní splátky do měsíce refinancování a pak zbývající jistinu splatit novým úvěrem, který poběží do svého smluvního konce“. Pokud má původní úvěr poplatek za předčasné splacení, který v měsíci refinancování ještě platí, přičte se na stranu refinancování. Mimořádné splátky a pozdější jednorázové splátky, zadané u původního úvěru, pokračují i u nového, takže se obě varianty splácejí stejně. Uvádí také dobu návratnosti: kolik měsíců nižších splátek je potřeba, než se vrátí náklady na uzavření zaplacené při refinancování a případný poplatek (pokud se náklady na uzavření přičtou k novému úvěru, počítá doba návratnosti i s vyšší jistinou: je to měsíc, od kterého ušetřené splátky převáží to, co dlužíte navíc). Doba návratnosti porovnává předepsané splátky obou úvěrů, bez mimořádných splátek. Pokud tyto splátky náklady nikdy nevyrovnají, je doba návratnosti „nikdy“.',
             },
           ],
         },
@@ -2189,7 +2192,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           items: [
             {
               q: 'Obsahují odkazy ke sdílení vše potřebné?',
-              a: 'Ano. Odkaz ke sdílení obsahuje každý údaj, který příjemce potřebuje: každé pole u každého poskytovatele (typ sazby, následná sazba, body, jednorázové splátky, poplatek za předčasné splacení), měnu, aktivní záložku analýzy a údaje pro horizont a scénář refinancování. Příjemce uvidí stejný pohled jako vy, se všemi vašimi údaji. Adresa obsahuje jen hodnoty, které se liší od výchozích, takže nové srovnání dá krátký odkaz.',
+              a: 'Ano. Odkaz ke sdílení obsahuje každý údaj, který příjemce potřebuje: každé pole u každé nabídky (typ sazby, následná sazba, body, jednorázové splátky, poplatek za předčasné splacení), měnu, aktivní záložku analýzy a údaje pro horizont a scénář refinancování. Příjemce uvidí stejný pohled jako vy, se všemi vašimi údaji. Adresa obsahuje jen hodnoty, které se liší od výchozích, takže nové srovnání dá krátký odkaz.',
             },
             {
               q: 'Jak přesné jsou výpočty?',
@@ -2241,14 +2244,14 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           desc: 'Rozdíl mezi dluhem, který něco buduje, a dluhem, který domácnost jen vysává.',
         },
       ],
-      footerTag: 'Další články o dluzích a úvěrech',
-      footerAll: 'Nebo procházejte všechny články',
+      footerTag: 'Další lekce o dluzích a úvěrech',
+      footerAll: 'Nebo procházejte všechny lekce',
     },
   },
   island: {
     export: {
       tool: 'Srovnání úvěrů',
-      meaning: 'Rozpětí ukazuje, jak daleko od sebe jsou celkové náklady nabídek, včetně poplatků a sankcí. Nejnižší celková částka není vždy nejnižší měsíční splátka: delší doba splácení obvykle splátku sníží a celkovou částku zvýší. Co je důležitější, záleží na vašem rozpočtu, na tom, jak dlouho úvěr plánujete mít, a na podmínkách, které toto srovnání nezahrnuje.',
+      meaning: 'Rozpětí ukazuje, jak daleko od sebe jsou celkové náklady nabídek, včetně poplatků, i těch za předčasné splacení. Nejnižší celková částka není vždy nejnižší měsíční splátka: delší doba splácení obvykle splátku sníží a celkovou částku zvýší. Co je důležitější, záleží na vašem rozpočtu, na tom, jak dlouho úvěr plánujete mít, a na podmínkách, které toto srovnání nezahrnuje.',
       schedulesNote: 'Splátkový kalendář každé nabídky po měsících najdete v tabulce.',
       scheduleLabel: 'Splátkové kalendáře',
       scheduleText: 'Jeden list na každou nabídku, měsíc po měsíci, včetně mimořádných splátek jistiny a jednorázových mimořádných splátek: kalendář, ze kterého vycházejí grafy i součty.',
@@ -2285,16 +2288,16 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     cardsHeading: 'Nabídky úvěrů',
     example: 'Ukázkové nabídky. Nahraďte čísla svými.',
     phoneTabs: {
-      groupAria: 'Zobrazený poskytovatel',
-      tabName: 'Poskytovatel {label}',
+      groupAria: 'Zobrazená nabídka',
+      tabName: 'Nabídka {label}',
       add: 'Přidat',
-      addAria: 'Přidat dalšího poskytovatele ke srovnání ({n} z {max})',
-      addCard: 'Přidat poskytovatele',
+      addAria: 'Přidat další nabídku ke srovnání ({n} z {max})',
+      addCard: 'Přidat nabídku',
       addCardHint: 'Porovnejte nabídky (max. {max})',
     },
     card: {
-      badge: 'Poskytovatel {label}',
-      removeAria: 'Odebrat poskytovatele {label} ze srovnání',
+      badge: 'Nabídka {label}',
+      removeAria: 'Odebrat nabídku {label} ze srovnání',
       removeTitle: 'Odebrat ze srovnání',
       name: 'Název poskytovatele',
       principal: 'Výše úvěru',
@@ -2374,7 +2377,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       monthlyFirst: 'Měsíce 1 až {lastMonth}',
       monthlyFrom: 'Od měsíce {month}',
       monthlyLast: 'Měsíc {month}, poslední splátka',
-      monthlyLaterNote: 'Pozdější splátka vychází ze sazby, kterou jste zadali, není to prognóza.',
+      monthlyLaterNote: 'Pozdější splátka vychází ze zadané sazby, není to prognóza.',
       monthlyIncludesExtra: 'včetně {extra} navíc každý měsíc',
       paidOffBeforeChange: 'Splaceno v měsíci {payoffMonth}, před změnou sazby',
       // The payment is kept at the rate change: when the loan ends, or that it does not. {n}, {term} and {limit} are counts of months as the tool writes them; where those end in a full stop (Spanish, Czech), the sentence does not add its own.
@@ -2418,10 +2421,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     delta: {
       heading: 'Vedle sebe',
-      empty: 'Zadejte platné údaje alespoň u dvou poskytovatelů a uvidíte, jak si stojí.',
-      sameBefore: 'Všichni poskytovatelé vycházejí na stejné celkové náklady ',
+      empty: 'Zadejte platné údaje alespoň u dvou nabídek a uvidíte, jak si stojí.',
+      sameBefore: 'Všechny nabídky vycházejí na stejné celkové náklady ',
       sameAfter: '.',
-      rangeBefore: 'Celkové náklady se u poskytovatelů níže pohybují od ',
+      rangeBefore: 'Celkové náklady se u nabídek níže pohybují od ',
       rangeTo: ' do ',
       rangeAcross: ': rozpětí ',
       rangeAfter: '.',
@@ -2465,11 +2468,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     charts: {
       balanceHeading: 'Zbývající jistina v čase',
       balanceLead:
-        'Každá čára je zbývající jistina jednoho poskytovatele, měsíc po měsíci. Tečka na ose označuje, kdy je úvěr splacen.',
+        'Každá čára je zbývající jistina jedné nabídky, měsíc po měsíci. Tečka na ose označuje, kdy je úvěr splacen.',
       splitHeading: 'Kam jde každá splátka',
       splitLead:
         'Každý měsíc stejná splátka. Na začátku tvoří skoro celou splátku úrok; ke konci skoro celou splátku jistina.',
-      vendorLabel: 'Poskytovatel',
+      vendorLabel: 'Nabídka',
       autoOption: 'Automaticky (nejnižší celkové náklady)',
       incomplete: ' (neúplná data)',
       splitEmpty:
@@ -2507,13 +2510,13 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       tableCaption: 'Zbývající jistina úvěru v čase, vybrané měsíce',
     },
     split: {
-      ariaPrefix: 'Kam jde každá měsíční splátka, poskytovatel {vendor}. ',
-      ariaRow: '{when}: úrok {interest} ({pct} %), jistina {principal}.',
+      ariaPrefix: 'Kam jde každá měsíční splátka: {vendor}. ',
+      ariaRow: '{when}: úrok {interest} ({pct} %), jistina {principal}.',
       title: 'Kam jde každá splátka',
       eyebrowInterest: 'Úrok',
       eyebrowPrincipal: 'Jistina',
       footnote: 'Každý měsíc stejná splátka, mění se poměr',
-      tableCaption: 'Rozdělení na úrok a jistinu pro poskytovatele {vendor}, vybrané okamžiky během splácení úvěru',
+      tableCaption: 'Rozdělení na úrok a jistinu: {vendor}, vybrané okamžiky během splácení úvěru',
     },
     words: {
       month: 'Měsíc',
@@ -2570,7 +2573,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       newTerm: 'Nová doba splatnosti (měsíce)',
       newFee: 'Nové náklady na uzavření',
       rollFee: 'Přičíst náklady na uzavření k nové jistině',
-      empty: 'Vyberte platného poskytovatele a zadejte měsíc refinancování, sazbu a dobu splatnosti a uvidíte úsporu.',
+      empty: 'Vyberte platnou nabídku a zadejte měsíc refinancování, sazbu a dobu splatnosti a uvidíte úsporu.',
       keepTotal: 'Ponechat současný úvěr: celkem',
       refiTotal: 'Refinancovat: zaplaceno celkem (současný úvěr do refinancování, pak nový úvěr)',
       saves: 'Refinancování ušetří',
@@ -2601,9 +2604,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       na: 'není k dispozici',
       one: '1 měs.',
       some: '{m} měs.',
+      year: '1 r.',
       years: '{y} r.',
-      yearsOne: '{y} r. 1 měs.',
-      yearsSome: '{y} r. {m} měs.',
+      yearsAndMonth: '{years} 1 měs.',
+      yearsSome: '{years} {m} měs.',
     },
     engine: {
       errors: {
@@ -2636,7 +2640,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       },
       warnings: {
         precision:
-          'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste nám to prosím.',
+          'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste to prosím.',
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
       },
@@ -2669,9 +2673,9 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       'ठरावीक मुदतीसाठी मासिक हप्ता काढा, किंवा ठरावीक हप्त्यासाठी परतफेडीचा काळ काढा',
       'कर्जप्रक्रिया शुल्क आणि दरमहा अतिरिक्त मुद्दल यांचे गणित',
       'प्रगत पर्याय: बदलाच्या वेळी हप्त्यांची पुनर्गणना असलेली, आधी ठरावीक मग बदलत्या दराची कर्जे, डिस्काउंट पॉइंट्सचा खर्च वसूल होण्याचा टप्पा, एकरकमी मुदतपूर्व परतफेड, मुदतपूर्व परतफेडीवरील दंड',
-      'कालावधीचे विश्लेषण (“N व्या महिन्यात विक्री केली तर”): प्रत्येक कर्जदात्यासाठी फेडलेले मुद्दल, भरलेले व्याज, बाकी कर्ज आणि खर्च झालेली एकूण रक्कम',
+      'कालावधीचे विश्लेषण (“N व्या महिन्यात विक्री केली तर”): प्रत्येक ऑफरसाठी फेडलेले मुद्दल, भरलेले व्याज, बाकी कर्ज आणि खर्च झालेली एकूण रक्कम',
       'पुनर्वित्त परिदृश्य: “तसेच ठेवा” विरुद्ध “पुनर्वित्त करा”, व्यवहार खर्च आणि खर्च वसूल होण्याच्या टप्प्यासह',
-      'पैशापर्यंत अचूक, पूर्णांकांवर आधारित कर्जफेडीचे वेळापत्रक',
+      'चलनाच्या सर्वात लहान एककापर्यंत अचूक, पूर्णांकांवर आधारित कर्जफेडीचे वेळापत्रक',
       'कोणत्याही तुलनेची शेअर करता येणारी URL, सर्व प्रगत रकान्यांसह',
     ],
   },
@@ -2681,7 +2685,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     breadcrumb: {
       home: 'मुख्यपृष्ठ',
       freeTools: 'मोफत साधने',
-      this: 'कर्जांची तुलना करणारा कॅल्क्युलेटर',
+      this: 'कर्जांची तुलना',
     },
     eyebrow: 'मोफत साधने',
     title: {
@@ -2709,11 +2713,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'एका वेळी किती कर्जांची तुलना करता येते?',
-              a: 'दोन ते पाच. पान दोन शेजारी शेजारी कार्डांनी सुरू होते, आणि स्पष्ट दिसणाऱ्या “कर्जदाता जोडा” या टाइलने तुलना जास्तीत जास्त पाच ऑफरपर्यंत वाढवता येते. प्रत्येक कार्डवर काढून टाकण्याचे बटण असते, त्यामुळे तुलनेत नको असलेला कर्जदाता तुम्ही वगळू शकता.',
+              a: 'दोन ते पाच. पान दोन शेजारी शेजारी कार्डांनी सुरू होते, आणि स्पष्ट दिसणाऱ्या “ऑफर जोडा” या टाइलने तुलना जास्तीत जास्त पाच ऑफरपर्यंत वाढवता येते. प्रत्येक कार्डवर काढून टाकण्याचे बटण असते, त्यामुळे तुलनेत नको असलेली ऑफर तुम्ही वगळू शकता.',
             },
             {
               q: 'वेगवेगळ्या मुदती किंवा दरांच्या कर्जांची तुलना करता येते का?',
-              a: 'हो. तुम्ही तुलना करत असलेल्या प्रत्येक कर्जासाठी वेगवेगळ्या मुदती, दर, शुल्क आणि मासिक हप्ते वापरू शकता. प्रत्येक कर्जदात्याच्या कार्डवर मासिक हप्ता (ठरावीक मुदत) काढायचा की परतफेडीचा काळ (ठरावीक मासिक हप्ता), हे निवडता येते.',
+              a: 'हो. तुम्ही तुलना करत असलेल्या प्रत्येक कर्जासाठी वेगवेगळ्या मुदती, दर, शुल्क आणि मासिक हप्ते वापरू शकता. प्रत्येक ऑफरच्या कार्डवर मासिक हप्ता (ठरावीक मुदत) काढायचा की परतफेडीचा काळ (ठरावीक मासिक हप्ता), हे निवडता येते.',
             },
             {
               q: 'कोणते रकाने आवश्यक आहेत?',
@@ -2734,7 +2738,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'APR सहसा जाहिरातीतील दरापेक्षा जास्त का असतो?',
-              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. ज्या कागदपत्रांत मासिक दरावर चक्रवाढ धरली जाते, जसे युरोपियन युनियन आणि UK मध्ये, त्यांत APR शुल्क नसतानाही जाहिरातीतील दरापेक्षा थोडा जास्त असतो; इथे शुल्क नसेल तर दोन्ही सारखेच असतात. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा लेख पाहा.',
+              a: 'जाहिरातीतील दर फक्त मुद्दलाचा खर्च धरतो. APR शुल्कही धरतो, जे कर्जदार भरतो पण वापरू शकत नाही, त्यामुळे कर्जदाराला प्रत्यक्ष मिळालेल्या पैशांवर तो भरत असलेला दर जास्त असतो. सारखाच जाहिरातीतील दर असलेल्या दोन कर्जांचे APR खूप वेगळे असू शकतात, आणि कमी जाहिरातीतील दर असलेल्या कर्जाचा APR, जास्त जाहिरातीतील दर असलेल्या पण शुल्क नसलेल्या कर्जापेक्षा जास्त असू शकतो. ज्या कागदपत्रांत मासिक दरावर चक्रवाढ धरली जाते, जसे युरोपियन युनियन आणि UK मध्ये, त्यांत APR शुल्क नसतानाही जाहिरातीतील दरापेक्षा थोडा जास्त असतो; इथे शुल्क नसेल तर दोन्ही सारखेच असतात. सविस्तर माहितीसाठी कर्जाच्या अटी समजून घेण्यावरचा धडा पाहा.',
             },
             {
               q: 'मी दरमहा भरणार असलेले अतिरिक्त मुद्दल APR मध्ये धरले जाते का?',
@@ -2746,7 +2750,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'कॅल्क्युलेटर कर्जप्रक्रिया शुल्क आणि व्यवहार खर्च हाताळतो का?',
-              a: 'हो. प्रत्येक कर्जदात्याच्या कार्डवर “खर्च आणि शुल्क” खाली “कर्जप्रक्रिया / व्यवहार शुल्क” या रकान्यात ते भरा. शुल्क भरलेल्या एकूण रकमेत जोडले जाते, त्यामुळे शेजारी शेजारी तुलना कर्जाचा खरा खर्च दाखवते, आणि ते दाखवलेल्या APR मध्ये सामावलेले असते.',
+              a: 'हो. प्रत्येक ऑफरच्या कार्डवर “खर्च आणि शुल्क” खाली “कर्जप्रक्रिया / व्यवहार शुल्क” या रकान्यात ते भरा. शुल्क भरलेल्या एकूण रकमेत जोडले जाते, त्यामुळे शेजारी शेजारी तुलना कर्जाचा खरा खर्च दाखवते, आणि ते दाखवलेल्या APR मध्ये सामावलेले असते.',
             },
           ],
         },
@@ -2755,7 +2759,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'दरमहा अतिरिक्त मुद्दल भरण्याचे गणित करता येते का?',
-              a: 'हो. प्रत्येक कर्जदात्याच्या कार्डवरील मुदतपूर्व परतफेडीच्या गटात “दरमहा अतिरिक्त मुद्दल” खाली रक्कम भरा. कॅल्क्युलेटर ती दर महिन्याला थेट मुद्दलात जमा करतो, त्यामुळे परतफेडीचा काळ कमी होतो आणि एकूण व्याज घटते.',
+              a: 'हो. प्रत्येक ऑफरच्या कार्डवरील मुदतपूर्व परतफेडीच्या गटात “दरमहा अतिरिक्त मुद्दल” खाली रक्कम भरा. कॅल्क्युलेटर ती दर महिन्याला थेट मुद्दलात जमा करतो, त्यामुळे परतफेडीचा काळ कमी होतो आणि एकूण व्याज घटते.',
             },
             {
               q: 'एकरकमी मुदतपूर्व परतफेड कशी भरायची?',
@@ -2793,11 +2797,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'कालावधीचे विश्लेषण (“तुम्ही … महिन्याला विकले किंवा पुनर्वित्त केले तर”) म्हणजे काय?',
-              a: 'कर्जे 36 व्या महिन्यात आणि 360 व्या महिन्यात खूप वेगळी दिसतात. कालावधीचा टॅब विचारतो: तुम्ही निवडलेल्या महिन्यात तुम्ही प्रत्यक्षात किती मुद्दल फेडले आहे, किती व्याज भरले आहे, बाकी कर्ज किती आहे, आणि आत्तापर्यंत एकूण किती पैसे खर्च झाले आहेत (हप्ते आणि कर्जप्रक्रिया शुल्क)? कराराची मुदत संपण्याच्या खूप आधी तुम्ही विक्री करण्याची, स्थलांतराची किंवा पुनर्वित्ताची शक्यता असेल, तर हा दृष्टिकोन उपयोगी पडतो, कारण 360 महिन्यांत सर्वात कमी एकूण खर्च असलेला कर्जदाता 60 व्या महिन्यात बाहेर पडल्यास सर्वात कमी खर्चाचा असेलच असे नाही.',
+              a: 'कर्जे 36 व्या महिन्यात आणि 360 व्या महिन्यात खूप वेगळी दिसतात. कालावधीचा टॅब विचारतो: तुम्ही निवडलेल्या महिन्यात तुम्ही प्रत्यक्षात किती मुद्दल फेडले आहे, किती व्याज भरले आहे, बाकी कर्ज किती आहे, आणि आत्तापर्यंत एकूण किती पैसे खर्च झाले आहेत (हप्ते आणि कर्जप्रक्रिया शुल्क)? कराराची मुदत संपण्याच्या खूप आधी तुम्ही विक्री करण्याची, स्थलांतराची किंवा पुनर्वित्ताची शक्यता असेल, तर हा दृष्टिकोन उपयोगी पडतो, कारण 360 महिन्यांत सर्वात कमी एकूण खर्च असलेली ऑफर 60 व्या महिन्यात बाहेर पडल्यास सर्वात कमी खर्चाची असेलच असे नाही.',
             },
             {
               q: 'पुनर्वित्त परिदृश्य कसे काम करते?',
-              a: 'कोणत्या कर्जदात्याचे कर्ज पुनर्वित्त करायचे, पुनर्वित्त कोणत्या महिन्यात होते, नवीन दर, नवीन मुदत आणि व्यवहार खर्च असल्यास ते निवडा. कॅल्क्युलेटर “मूळ कर्ज शेवटपर्यंत तसेच ठेवा” आणि “पुनर्वित्ताच्या महिन्यापर्यंत मूळ हप्ते भरा, मग बाकी कर्ज स्वतःच्या कराराच्या शेवटापर्यंत चालणाऱ्या नवीन कर्जाने फेडा” या दोन्हींमध्ये खर्च झालेल्या एकूण पैशांची तुलना करतो. मूळ कर्जावर मुदतपूर्व परतफेडीचा दंड असेल आणि तो पुनर्वित्ताच्या महिन्यात अजून लागू असेल, तर तो पुनर्वित्ताच्या बाजूला जोडला जातो. मूळ कर्जासाठी भरलेले अतिरिक्त हप्ते आणि नंतरच्या एकरकमी रकमा नवीन कर्जावरही चालू राहतात, त्यामुळे दोन्ही बाजू एकाच पद्धतीने फेडल्या जातात. तो खर्च वसूल होण्याचा टप्पाही सांगतो: पुनर्वित्ताच्या वेळी भरलेला व्यवहार खर्च आणि असा दंड भरून निघण्यासाठी कमी हप्त्यांचे किती महिने लागतात (व्यवहार खर्च नवीन कर्जात जोडला, तर हा टप्पा वाढलेली बाकीही धरतो: ज्या महिन्यापासून हप्त्यांतील बचत जास्तीच्या बाकीपेक्षा जास्त होते तो महिना). हा टप्पा दोन्ही कर्जांच्या देय हप्त्यांची तुलना करतो, अतिरिक्त भरणा वगळून. त्या हप्त्यांतून हा खर्च कधीच भरून निघत नसेल, तर हा टप्पा “कधीच नाही” असतो.',
+              a: 'कोणत्या ऑफरचे कर्ज पुनर्वित्त करायचे, पुनर्वित्त कोणत्या महिन्यात होते, नवीन दर, नवीन मुदत आणि व्यवहार खर्च असल्यास ते निवडा. कॅल्क्युलेटर “मूळ कर्ज शेवटपर्यंत तसेच ठेवा” आणि “पुनर्वित्ताच्या महिन्यापर्यंत मूळ हप्ते भरा, मग बाकी कर्ज स्वतःच्या कराराच्या शेवटापर्यंत चालणाऱ्या नवीन कर्जाने फेडा” या दोन्हींमध्ये खर्च झालेल्या एकूण पैशांची तुलना करतो. मूळ कर्जावर मुदतपूर्व परतफेडीचा दंड असेल आणि तो पुनर्वित्ताच्या महिन्यात अजून लागू असेल, तर तो पुनर्वित्ताच्या बाजूला जोडला जातो. मूळ कर्जासाठी भरलेले अतिरिक्त हप्ते आणि नंतरच्या एकरकमी रकमा नवीन कर्जावरही चालू राहतात, त्यामुळे दोन्ही बाजू एकाच पद्धतीने फेडल्या जातात. तो खर्च वसूल होण्याचा टप्पाही सांगतो: पुनर्वित्ताच्या वेळी भरलेला व्यवहार खर्च आणि असा दंड भरून निघण्यासाठी कमी हप्त्यांचे किती महिने लागतात (व्यवहार खर्च नवीन कर्जात जोडला, तर हा टप्पा वाढलेली बाकीही धरतो: ज्या महिन्यापासून हप्त्यांतील बचत जास्तीच्या बाकीपेक्षा जास्त होते तो महिना). हा टप्पा दोन्ही कर्जांच्या देय हप्त्यांची तुलना करतो, अतिरिक्त भरणा वगळून. त्या हप्त्यांतून हा खर्च कधीच भरून निघत नसेल, तर हा टप्पा “कधीच नाही” असतो.',
             },
           ],
         },
@@ -2806,11 +2810,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           items: [
             {
               q: 'शेअर लिंक स्वयंपूर्ण असतात का?',
-              a: 'हो. शेअर लिंकमध्ये पाहणाऱ्याला लागणारी प्रत्येक माहिती असते: प्रत्येक कर्जदात्याचा प्रत्येक रकाना (दराचा प्रकार, नंतरचा दर, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड), चलन, उघडा असलेला विश्लेषणाचा टॅब, आणि कालावधी व पुनर्वित्त परिदृश्याची माहिती. तुम्ही पाहत असलेल्या त्याच दृश्यावर पाहणारी व्यक्ती तुमच्या सर्व माहितीसह पोहोचते. URL मध्ये फक्त पूर्वनिश्चित मूल्यांपेक्षा वेगळी मूल्ये असतात, त्यामुळे नवीन तुलनेची लिंकही छोटी राहते.',
+              a: 'हो. शेअर लिंकमध्ये पाहणाऱ्याला लागणारी प्रत्येक माहिती असते: प्रत्येक ऑफरचा प्रत्येक रकाना (दराचा प्रकार, नंतरचा दर, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड), चलन, उघडा असलेला विश्लेषणाचा टॅब, आणि कालावधी व पुनर्वित्त परिदृश्याची माहिती. तुम्ही पाहत असलेल्या त्याच दृश्यावर पाहणारी व्यक्ती तुमच्या सर्व माहितीसह पोहोचते. URL मध्ये फक्त पूर्वनिश्चित मूल्यांपेक्षा वेगळी मूल्ये असतात, त्यामुळे नवीन तुलनेची लिंकही छोटी राहते.',
             },
             {
               q: 'हिशेब किती अचूक असतात?',
-              a: 'दशांश पूर्णांकनाच्या चुका टाळण्यासाठी कर्जफेडीचे सर्व हिशेब पैशांच्या पूर्णांकांमध्ये होतात. मासिक हप्त्याचे सूत्र सर्वात जवळच्या पैशापर्यंत पूर्णांकित केले जाते, आणि प्रत्येक वेळापत्रकातील शेवटचा हप्ता असा जुळवला जातो की मुद्दलाच्या भरण्यांची बेरीज मूळ कर्जाच्या रकमेइतकीच होते. APR त्याच पूर्णांक वेळापत्रकावरील वर्तमान मूल्याच्या समीकरणातून द्विभाजन पद्धतीने काढला जातो, कोणत्याही प्रत्यक्ष कर्जदात्याच्या माहितीपत्रकापेक्षा खूप जास्त अचूकतेने.',
+              a: 'दशांश पूर्णांकनाच्या चुका टाळण्यासाठी कर्जफेडीचे सर्व हिशेब चलनाच्या सर्वात लहान एककाच्या (जसे सेंट किंवा पैसा) पूर्णांकांमध्ये होतात. मासिक हप्त्याचे सूत्र सर्वात जवळच्या अशा एककापर्यंत पूर्णांकित केले जाते, आणि प्रत्येक वेळापत्रकातील शेवटचा हप्ता असा जुळवला जातो की मुद्दलाच्या भरण्यांची बेरीज मूळ कर्जाच्या रकमेइतकीच होते. APR त्याच पूर्णांक वेळापत्रकावरील वर्तमान मूल्याच्या समीकरणातून द्विभाजन पद्धतीने काढला जातो, कोणत्याही प्रत्यक्ष कर्जदात्याच्या माहितीपत्रकापेक्षा खूप जास्त अचूकतेने.',
             },
           ],
         },
@@ -2859,7 +2863,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         },
       ],
       footerTag: 'कर्जांविषयी आणखी वाचा',
-      footerAll: 'किंवा सर्व लेख पाहा',
+      footerAll: 'किंवा सर्व धडे पाहा',
     },
   },
   island: {
@@ -2902,16 +2906,16 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     cardsHeading: 'कर्जाच्या ऑफर',
     example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
     phoneTabs: {
-      groupAria: 'दाखवायचा कर्जदाता',
-      tabName: 'कर्जदाता {label}',
+      groupAria: 'दाखवायची ऑफर',
+      tabName: 'ऑफर {label}',
       add: 'जोडा',
-      addAria: 'तुलनेसाठी आणखी एक कर्जदाता जोडा ({max} पैकी {n})',
-      addCard: 'कर्जदाता जोडा',
+      addAria: 'तुलनेसाठी आणखी एक ऑफर जोडा ({max} पैकी {n})',
+      addCard: 'ऑफर जोडा',
       addCardHint: '{max} पर्यंत तुलना करा',
     },
     card: {
-      badge: 'कर्जदाता {label}',
-      removeAria: 'कर्जदाता {label} तुलनेतून काढा',
+      badge: 'ऑफर {label}',
+      removeAria: 'ऑफर {label} तुलनेतून काढा',
       removeTitle: 'तुलनेतून काढा',
       name: 'कर्जदात्याचे नाव',
       principal: 'कर्जाची रक्कम',
@@ -3000,8 +3004,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       payoffEarlier: 'भरलेल्या {term} मुदतीपेक्षा {n} आधी.',
       payoffOnTerm: 'भरलेल्या {term} मुदतीइतकेच.',
       notPaidOff: 'फिटत नाही',
-      notPaidLess: 'महिना {month} पासून हप्ता महिन्याच्या व्याजापेक्षा कमी आहे. शिल्लक वाढत जाते.',
-      notPaidEqual: 'महिना {month} पासून हप्त्यातून फक्त महिन्याचे व्याज भरले जाते. शिल्लक कमी होत नाही.',
+      notPaidLess: 'महिना {month} पासून हप्ता महिन्याच्या व्याजापेक्षा कमी आहे. बाकी कर्ज वाढत जाते.',
+      notPaidEqual: 'महिना {month} पासून हप्त्यातून फक्त महिन्याचे व्याज भरले जाते. बाकी कर्ज कमी होत नाही.',
       beyondLimit: 'गणनेच्या मर्यादेपलीकडे',
       beyondLimitNote: 'कर्ज {limit} इतक्या काळात फिटत नाही. ते कधी फिटेल आणि एकूण रकमा किती होतील, हे काढलेले नाही.',
       noFiniteTotal: 'मर्यादित एकूण नाही',
@@ -3032,10 +3036,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     delta: {
       heading: 'शेजारी शेजारी',
-      empty: 'त्यांची तुलना पाहण्यासाठी किमान दोन कर्जदात्यांसाठी वैध माहिती भरा.',
-      sameBefore: 'सर्व कर्जदात्यांचा एकूण खर्च सारखाच येतो: ',
+      empty: 'त्यांची तुलना पाहण्यासाठी किमान दोन ऑफरसाठी वैध माहिती भरा.',
+      sameBefore: 'सर्व ऑफरचा एकूण खर्च सारखाच येतो: ',
       sameAfter: '.',
-      rangeBefore: 'खालील कर्जदात्यांमध्ये एकूण खर्च ',
+      rangeBefore: 'खालील ऑफरमध्ये एकूण खर्च ',
       rangeTo: ' पासून ',
       rangeAcross: ' पर्यंत आहे: फरक ',
       rangeAfter: '.',
@@ -3078,10 +3082,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     charts: {
       balanceHeading: 'काळानुसार बाकी कर्ज',
-      balanceLead: 'प्रत्येक रेषा म्हणजे एका कर्जदात्याचे बाकी कर्ज, महिन्यागणिक. अक्षावरील ठिपका ते कधी फिटते ते दाखवतो.',
+      balanceLead: 'प्रत्येक रेषा म्हणजे एका ऑफरचे बाकी कर्ज, महिन्यागणिक. अक्षावरील ठिपका ते कधी फिटते ते दाखवतो.',
       splitHeading: 'प्रत्येक हप्ता कुठे जातो',
       splitLead: 'दर महिन्याला तोच मासिक हप्ता. सुरुवातीला हप्त्याचा जवळपास सगळा भाग व्याज असतो; शेवटी जवळपास सगळा भाग मुद्दल असतो.',
-      vendorLabel: 'कर्जदाता',
+      vendorLabel: 'ऑफर',
       autoOption: 'आपोआप (सर्वात कमी एकूण खर्च)',
       incomplete: ' (अपूर्ण)',
       splitEmpty: 'प्रत्येक हप्ता व्याज आणि मुद्दल यांच्यात कसा विभागला जातो हे पाहण्यासाठी वर वैध माहिती भरा.',
@@ -3108,7 +3112,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       legendBeyond: 'गणनेच्या मर्यादेपलीकडे',
       seriesLineNotPaid: '{name}: {amount} पासून सुरू; फिटत नाही.',
       seriesLineBeyond: '{name}: {amount} पासून सुरू; परतफेड गणनेच्या मर्यादेपलीकडे.',
-      shownThrough: 'शिल्लक महिना {month} पर्यंत दाखवली आहे.',
+      shownThrough: 'बाकी कर्ज महिना {month} पर्यंत दाखवले आहे.',
       swipe: 'संपूर्ण आलेख पाहण्यासाठी सरकवा →',
       groupAria: 'बाकी कर्जाचा आलेख. प्रत्येक वर्ष वाचण्यासाठी डाव्या आणि उजव्या बाणांच्या कळा वापरा; एकेक महिन्यासाठी Shift दाबून ठेवा.',
       title: 'काळानुसार बाकी कर्ज',
@@ -3178,7 +3182,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       newTerm: 'नवीन मुदत (महिने)',
       newFee: 'नवीन व्यवहार खर्च',
       rollFee: 'व्यवहार खर्च नवीन मुद्दलात जोडा',
-      empty: 'बचत पाहण्यासाठी वैध कर्जदाता निवडा आणि पुनर्वित्ताचा महिना, दर आणि मुदत भरा.',
+      empty: 'बचत पाहण्यासाठी वैध ऑफर निवडा आणि पुनर्वित्ताचा महिना, दर आणि मुदत भरा.',
       keepTotal: 'सध्याचे कर्ज तसेच ठेवल्यास: एकूण',
       refiTotal: 'पुनर्वित्त केल्यास: एकूण भरलेले (पुनर्वित्तापर्यंत सध्याचे कर्ज, मग नवीन कर्ज)',
       saves: 'पुनर्वित्ताने बचत',
@@ -3209,9 +3213,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       na: 'लागू नाही',
       one: '1 महिना',
       some: '{m} महिने',
+      year: '1 वर्ष',
       years: '{y} वर्ष',
-      yearsOne: '{y} वर्ष 1 महिना',
-      yearsSome: '{y} वर्ष {m} महिने',
+      yearsAndMonth: '{years} 1 महिना',
+      yearsSome: '{years} {m} महिने',
     },
     engine: {
       errors: {
@@ -3231,7 +3236,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
         hybridMode: 'आधी ठरावीक, मग बदलत्या दराच्या कर्जाला ठरावीक मुदत लागते: “काय काढायचे” मध्ये “मासिक हप्ता” निवडा.',
         refiOriginal: 'मूळ कर्ज अवैध आहे; पुनर्वित्ताचा हिशेब करता येत नाही.',
-        optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक लिहा, किंवा चौकट रिकामी करा.',
+        optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक भरा, किंवा चौकट रिकामी करा.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'पॉइंट्सचा खर्च वरील शुल्कापेक्षा जास्त आहे. शुल्कात पॉइंट्स धरलेले असतात, त्यामुळे ते यापेक्षा कमी असू शकत नाही. जास्त शुल्क किंवा कमी पॉइंट्स खर्च भरा.',
         refiMonth: 'पुनर्वित्ताचा महिना किमान 1 असायला हवा.',
@@ -3242,7 +3247,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         newLoan: 'नवीन कर्ज वैध नाही.',
       },
       warnings: {
-        precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे आम्हाला कळवा.',
+        precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे कळवा.',
         subsequentRate: 'सुरुवातीच्या ठरावीक कालावधीनंतरचा दर इतका जास्त आहे की पुनर्गणना केलेल्या हप्त्यात व्याजही कसेबसे भागते.',
       },
     },

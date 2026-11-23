@@ -26,7 +26,8 @@ breach as a defect.
 1. **No em dashes and no double dashes.** Devanagari uses the danda `।` as a
    full stop; inside a sentence use a colon, a comma, or reword. This applies
    to Devanagari text as much as to Latin, so a long dash and a doubled hyphen
-   are both out, in prose and in code comments alike.
+   are both out, in prose and in code comments alike. Quotation marks are
+   curly, “ ”, as in the English.
 2. **Teach, do not prescribe.** The order is: the concept, why people use it,
    the cited evidence with its limits, where it breaks, what depends on the
    reader's situation. Describe common practice ("एक आम शुरुआत यह है कि...")
@@ -153,7 +154,7 @@ why this one won, so it is not re-argued in a later lesson.
 | bond | बॉन्ड | |
 | fixed income | फिक्स्ड इनकम | |
 | expense ratio | एक्सपेंस रेशियो | Council, 2026-10-20: replaces व्यय अनुपात: it is the label on the fund page a reader checks. A loanword, so no bracket. |
-| tax | कर | आयकर for income tax. |
+| tax | कर | आयकर for income tax. Never टैक्स, in any tool; टैक्स-लॉस हार्वेस्टिंग is the one name that keeps it, glossed (घाटे से कर घटाना). |
 | tax-advantaged account | कर-बचत खाता | |
 | fees, charges | शुल्क | |
 
@@ -195,6 +196,7 @@ why this one won, so it is not re-argued in a later lesson.
 | widowhood | जीवनसाथी को खोना | Not विधवापन, which covers widows only. |
 | survivor benefits | जीवनसाथी की मृत्यु के बाद मिलने वाले लाभ | Not उत्तरजीवी लाभ, which a beginner cannot decode. |
 | no prerequisite | पहले कुछ पढ़ना ज़रूरी नहीं | Not पूर्व शर्त, which reads as an eligibility condition. |
+| guide | गाइड (How-to) | A lesson is पाठ and is never called a guide; मार्गदर्शिका is kept for Inclusive Finances. |
 | follow-up (a companion lesson) | के आगे का पाठ | Not अनुवर्ती. |
 | tracking (progress) | नज़र रखना, प्रगति पर नज़र | Not ट्रैक करना or निगरानी, which were mixed in one tag. |
 | Inclusive Finances (the search pill) | सबके लिए वित्त | Never सबके लिए alone, which on a search result says the other lessons are not for everyone. |
@@ -245,7 +247,7 @@ a promise costs the reader more than it teaches.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence. |
+| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence and for another company's own privacy policy (Google की प्राइवेसी नीति). |
 | analytics | एनालिटिक्स | |
 | processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
 | consent | सहमति | "Cookie consent" is कुकी सहमति. |
@@ -289,7 +291,7 @@ page they would be telling a reader something they already know.
 
 ### The free tools
 
-The three calculators are the densest interface on the site: a reader meets
+The five tools are the densest interface on the site: a reader meets
 forty labels per screen, and the same word appears in the label, the tooltip
 and the FAQ answer that explains it. So the rule here is stricter than the rest
 of the chrome's: one rendering, everywhere, and the FAQ uses the label's word
@@ -309,7 +311,7 @@ and do translate.
 | annual interest rate | सालाना ब्याज दर | |
 | term (months) | अवधि (महीने) | अवधि is the glossary's horizon word; the parenthesis is what tells a reader the field counts months, which the label has to do because the field is a number box. |
 | payoff months | चुकाने के महीने | The count of months until the loan is paid off. |
-| amortisation | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortisation schedule` is किस्तों का शेड्यूल. |
+| amortization | किस्तों का शेड्यूल | The word is kept out of the prose: a Hindi reader meets the schedule, not the term. `amortization schedule` is किस्तों का शेड्यूल. |
 | principal | मूलधन | No bracket: every Indian loan statement prints it. |
 | interest | ब्याज | |
 | balance (of a loan) | बकाया | `remaining balance` is बची हुई रकम; a chart legend uses the short form. |
@@ -325,9 +327,14 @@ and do translate.
 | prepayment, extra principal | समय से पहले भुगतान | |
 | lump sum | एकमुश्त राशि | |
 | penalty | जुर्माना | |
+| assumption (a model's) | मान्यता, मान्यताएँ | Never अनुमान (an estimate) or धारणा, which the site keeps for आम धारणा (a default belief). |
+| highlighted fields | चिह्नित खाने | No colour: the English names none. |
+| negative (a figure) | शून्य से कम (माइनस) | माइनस alone once it is clear. |
+| disclosure (of an APR) | लोन के काग़ज़ों में बताया गया APR | Not प्रकटीकरण, which reads as a form. |
+| indicator (World Bank) | संकेतक | |
 | net worth | शुद्ध संपत्ति | Glossary. |
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
-| functional currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. A short form, मुख्य मुद्रा, is used in table headings where the phrase does not fit. In prose the short form is खर्च की मुद्रा; मुख्य मुद्रा is kept for the badge alone, because मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
+| spending currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. The short form, in prose, table headings and the badge alike, is खर्च की मुद्रा (2026-11-22, #504). Not मुख्य मुद्रा: मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
 | currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. Prose and the table caption say जमाव; the chart itself (its heading, aria label, legend and the feature list naming it) keeps मुद्रा मिश्रण. |
 | exchange rate | विनिमय दर | **Bracket** (exchange rate; plural exchange rates), except in the privacy notice. Standard in Hindi news. |
 | ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |
@@ -370,9 +377,9 @@ and do translate.
 
 #### The currency names
 
-All 29 names live in one list, `src/i18n/strings/tools/currencies.ts`, because
-the three tools share one dropdown and one engine table: a currency renamed
-there is renamed in all three. A code stays Latin in every language, in the key
+All 38 names live in one list, `src/i18n/strings/tools/currencies.ts`, because
+the five tools share one set of names and one engine table: a currency renamed
+there is renamed in all five. A code stays Latin in every language, in the key
 and in the bracket the name ends with, because it is what a reader looks up and
 what the tool writes into its own address. Only the name is Hindi. A test in
 `src/i18n/strings/catalog.test.ts` holds that list to `RAW_CURRENCIES` in
@@ -413,7 +420,7 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | lesson | पाठ |
 | topic | विषय |
 | level | स्तर |
-| About (the nav and footer group) | हमारे बारे में | Distinct from its first link, nidhi के बारे में, so the menu does not say the same thing twice. |
+| About (the nav and footer group) | परिचय | Distinct from its first link, nidhi के बारे में, so the menu does not say the same thing twice. |
 | a level named in a template | {level} स्तर | A template writes the word स्तर after the name and keeps the verb शुरू away from it, because the first level is called शुरुआत. |
 | the six level names | शुरुआत, निर्माण, मनोविज्ञान, निखार, निपुणता, सबके लिए वित्त. Building was बनाना, which reads as a verb (and as "banana"); Optimizing was अनुकूलन, which reads as adaptation. |
 | free tools | मुफ़्त टूल |
@@ -421,14 +428,17 @@ These are fixed by `src/i18n/strings/hi.ts` and appear in the chrome.
 | loan comparison | लोन की तुलना |
 | Monte Carlo simulator | मोंटे कार्लो सिम्युलेटर |
 | inflation calculator | महँगाई कैलकुलेटर |
-| our beliefs | हमारे सिद्धांत |
+| what I believe (the page, its title and every link to it) | मेरे सिद्धांत; हमारे सिद्धांत only in the privacy notice, which speaks as we |
 | editorial policy | संपादकीय नीति |
 | privacy | प्राइवेसी |
+| waitlist | वेटलिस्ट, also in short lines such as *आप वेटलिस्ट में हैं*; लिस्ट is never used alone, and a plain list is सूची |
+| address bar | ऐड्रेस बार, as in the privacy notice |
+| licensed (financial advisor, broker) | लाइसेंस प्राप्त, never लाइसेंस वाले |
 | cookie settings | कुकी सेटिंग |
 | theme | थीम |
 | language | भाषा |
 | about nidhi | nidhi के बारे में |
-| contact us | हमसे संपर्क करें |
+| contact | संपर्क करें |
 | page | पेज | पृष्ठ is the purer word and was the other candidate. पेज wins because होम पेज is already fixed in the chrome and because the list above is full of loanwords a reader meets in the newspaper; a reader who says होम पेज does not then say संपादकीय नीति वाले पृष्ठ. |
 | Prague | प्राग | Devanagari, as Indian Hindi writing has it. It appears once, in the beliefs page's `foundingLocation`. |
 | Money, understood (brand tagline) | पैसे की समझ, एकदम सहज | Owner, 2026-11-06; replaces पैसा, समझ आ गया। See below. |
@@ -490,7 +500,9 @@ takes its full stop from the catalog's `fullStop` key, which is the danda in
 Hindi, so no Hindi line ends in a Latin full stop.
 
 Spelling follows one convention across every catalog: the chandrabindu in आँकड़े,
-and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास and क़ीमत. Two everyday words
+and the nukta in ख़त्म, क़रीब, फ़ैसला, तरीक़ा, ख़ास, क़ीमत, तारीख़, ग़लत, ग़लती
+and क़िस्म. The language is हिन्दी, as in its own name in the picker. फंड
+takes none. Two everyday words
 stay without it, कानून and कदम, because that is how the chrome has always
 written them. Write the nukta as the decomposed pair (letter plus ़), which is
 what the catalogs already use, so a search for one spelling finds every use.

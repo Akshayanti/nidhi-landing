@@ -208,7 +208,7 @@ export const currenciesMr: Record<string, string> = {
   CDF: 'कॉंगोलीज फ्रँक (CDF)',
   CHF: 'स्विस फ्रँक (CHF)',
   CNY: 'चिनी युआन (CNY)',
-  CZK: 'चेक कोरुना (CZK)',
+  CZK: 'चेक प्रजासत्ताकाचा कोरुना (CZK)',
   DKK: 'डॅनिश क्रोन (DKK)',
   EUR: 'युरो (EUR)',
   GBP: 'ब्रिटिश पाउंड (GBP)',

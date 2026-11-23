@@ -16,7 +16,7 @@ pubDate: 2026-06-26
 updatedDate: 2026-11-17
 corrections:
   - date: 2026-11-17
-    note: "The sixth metric was called the income replacement ratio, a name that usually means the share of pre-retirement income needed in retirement, and it counted any investment income against spending. It is now the expense coverage ratio, counting only income the portfolio can keep paying, so that 100% matches the financial independence target. The snapshot's \"Healthy zone\" column is now \"Commonly quoted range\", with a note that these ranges are rules of thumb without a single source, and 3 to 3.5% is described as a more cautious illustration rather than a more defensible rate."
+    note: "The sixth metric was called the income replacement ratio, a name that usually means the share of pre-retirement income needed in retirement, and it counted any investment income against spending. It is now the expense coverage ratio, counting only income the portfolio can keep paying, so that 100% matches the financial independence target. The snapshot's “Healthy zone” column is now “Commonly quoted range”, with a note that these ranges are rules of thumb without a single source, and 3 to 3.5% is described as a more cautious illustration rather than a more defensible rate."
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
@@ -155,7 +155,7 @@ This metric is also the most volatile month to month, so track it as a rolling 3
 
 This metric becomes especially important before considering large new borrowing, like a new [mortgage](/blog/real-estate-as-investment/) or other major loan. Lenders and self-check alike should weigh the *total* picture after the new obligation, not the current one.
 
-**Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortisation and prepayment power).
+**Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortization and prepayment power).
 
 ## Metric 6: Expense coverage ratio
 
@@ -202,7 +202,7 @@ Any single metric can be misleading in isolation. The honest read comes from rea
 
 - **Healthy savings rate but low liquid %** → Probably locked into illiquid assets. Flexibility could bite you in a crisis
 - **Low debt-to-income but also low savings rate** → You're paying for your lifestyle from income, not debt, but you're not building wealth
-- **High emergency fund coverage but high debt-to-asset** → The cash is effectively canceling out the leverage; some people weigh using part of the fund against high-interest debt, keeping enough for genuine emergencies
+- **High emergency fund coverage but high debt-to-asset** → The cash is effectively cancelling out the leverage; some people weigh using part of the fund against high-interest debt, keeping enough for genuine emergencies
 - **Strong metrics across the board but low expense coverage** → You're set up well but early in the accumulation journey. Time will do the work
 - **High expense coverage but weakening savings rate** → You may be close to crossover and naturally scaling back; or you may be experiencing lifestyle creep. Which story matches?
 

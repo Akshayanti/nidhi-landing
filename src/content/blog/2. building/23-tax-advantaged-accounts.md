@@ -51,9 +51,9 @@ The previous post treated taxes as a concept: four points of contact, three func
 
 The universal principle: **a tax-advantaged euro grows faster than a taxed one, and the gap compounds**. The [taxes post](/blog/taxes-and-your-financial-plan/) worked out the maths: 7% a year untaxed against as little as 5.25% if every year's return were taxed at 25%, though buy-and-hold investors taxed only when they sell often see a smaller drag.
 
-The names and rules differ across countries, but the functional categories are remarkably consistent. This post is organised around those functions, with regional examples in each category so readers can map what they have locally.
+The names and rules differ across countries, but the functional categories are remarkably consistent. This post is organized around those functions, with regional examples in each category so readers can map what they have locally.
 
-> **Educational content, not advice.** This post lists vehicles across multiple jurisdictions for educational purposes only. Tax rules, contribution limits, and account availability change frequently and depend on your individual circumstances and country of tax residence. Nothing here is personalised investment, tax, or legal advice. Confirm current local rules and consider professional advice before making decisions involving real money.
+> **Educational content, not advice.** This post lists vehicles across multiple jurisdictions for educational purposes only. Tax rules, contribution limits, and account availability change frequently and depend on your individual circumstances and country of tax residence. Nothing here is personalized investment, tax, or legal advice. Confirm current local rules and consider professional advice before making decisions involving real money.
 
 ## The five functional categories
 
@@ -88,7 +88,7 @@ The rest of this post explains what each category looks like in practice, with a
 
 **The function:** Your employer pays a percentage of your salary into a retirement account. In some countries this is a match that depends on what you put in; in others it is a legal minimum paid whatever you do. Either way it usually comes on top of your own contribution and is tax-advantaged in the same way.
 
-**Why a match is a high priority:** An employer match is typically a 50% to 100% immediate uplift on your own contribution: if your employer matches 100% of the first 5% of salary you contribute, every euro up to that threshold is doubled (subject to vesting and continued employment). Few moves available to a retail investor produce a comparable bump.
+**Why a match is a high priority:** An employer match is typically a 50% to 100% immediate uplift on your own contribution: if your employer matches 100% of the first 5% of salary you contribute, every euro up to that threshold is doubled (subject to vesting, which is how long you must stay before the employer's money is fully yours, and to continued employment). Few moves available to a retail investor produce a comparable bump.
 
 **Common examples:** 401(k) plans in the US; workplace pensions under auto-enrolment in the UK; the Employees' Provident Fund (EPF) in India; Superannuation in Australia; CPF in Singapore. How it works varies widely. US employers typically match 50 to 100% of your first 3 to 6% of salary; UK auto-enrolment requires at least 3% from the employer and 8% in total; Australian employers must pay 12% of qualifying earnings (broadly ordinary pay) into super; employers covered by India's EPF pay 12% of basic wages; Singapore's CPF takes contributions from both employer and employee at age-based rates. The country reference at the end of this post has the full list.
 
@@ -163,7 +163,7 @@ A dash means there is no widely-used vehicle in that category in that jurisdicti
 - **Czechia 3-year securities exemption.** Czech tax law exempts income from selling securities held more than 3 years; a CZK 40 million annual cap introduced in 2025 was lifted for securities from 2026 (it still applies to crypto-assets). This is a holding-period rule, not a dedicated account, which is why Cat 3 is left blank.
 - **France PEA.** Capital gains and dividends inside the wrapper are exempt from income tax after 5 years, but social contributions (prélèvements sociaux, 18.6% from 2026) still apply on withdrawal. Not a clean Cat 3 equivalent of a Roth IRA or ISA in that respect.
 - **France Assurance-vie.** A widely-used long-term savings/insurance hybrid with favourable tax treatment after 8 years and generous succession rules. It does not fit cleanly into the five categories but is significant enough in the French landscape to flag.
-- **Germany Riester-Rente.** Subsidised pension product (state Zulagen for adults and per child) with tax-deductible contributions. A reform passed in 2026 replaces it for new savers from 1 January 2027 with a subsidised investment account (Altersvorsorgedepot); existing contracts continue.
+- **Germany Riester-Rente.** Subsidized pension product (state Zulagen for adults and per child) with tax-deductible contributions. A reform passed in 2026 replaces it for new savers from 1 January 2027 with a subsidized investment account (Altersvorsorgedepot); existing contracts continue.
 - **Japan NISA and iDeCo.** Since 2024, gains and dividends inside a NISA are tax-free with no time limit, within a lifetime limit of ¥18 million (¥3.6 million a year); contributions are not deductible, so it is the closest match to Cat 3. iDeCo contributions are deductible, and withdrawals from age 60 are taxed, with deductions.
 - **Netherlands Pillar 2.** Dutch occupational pensions are largely employer-driven and sectoral, not a personal-choice account. Personal tax-advantaged retirement contributions sit in Pillar 3 (lijfrente / annuity) within an annual allowance ("jaarruimte") based on unused pension space.
 - **South Africa retirement funds.** Contributions to pension, provident and retirement annuity funds are deductible within one shared annual limit (27.5% of income, with a rand cap). Since September 2024 new contributions are split under the two-pot system: part stays accessible, part is locked until retirement.
@@ -182,7 +182,7 @@ A dash means there is no widely-used vehicle in that category in that jurisdicti
 - **Only contributing to one category.** Many long-term savers diversify across multiple wrappers (tax-deferred for current deduction, tax-free-growth for future flexibility). Forcing everything into one wrapper sacrifices optionality on future tax brackets.
 - **Treating tax-advantaged accounts as the investment.** The account is a wrapper. What it holds still matters. An untouched default fund with high fees can easily erase the tax advantage.
 - **Using purpose-specific accounts for the wrong purpose.** Pulling money out of an HSA for non-medical reasons, or a 529 for non-education, usually triggers taxes and penalties that wipe out the advantage.
-- **Withdrawing early and losing the tax break.** Most tax-advantaged accounts penalise early withdrawals heavily. Money likely to be needed in the next five years usually fits poorly in a retirement-locked account.
+- **Withdrawing early and losing the tax break.** Most tax-advantaged accounts penalize early withdrawals heavily. Money likely to be needed in the next five years usually fits poorly in a retirement-locked account.
 
 ## What this means in practice
 

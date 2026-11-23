@@ -123,7 +123,7 @@ S&P's SPIVA scorecards and similar research have repeatedly found that, in most 
 <details class="lesson-depth">
 <summary class="disclosure">Where active management still has a case</summary>
 
-Some markets are less efficient than large developed-market shares. Small companies and emerging markets show a wider spread of manager results, so the case for active is somewhat stronger there. Distressed debt and some private-market strategies rely on skill that indices do not capture, and some specialised strategies are only available actively managed. For the core shares and bonds most household portfolios are built around, the evidence leans strongly toward low-cost passive funds: broad index funds or ETFs at roughly 0.03 to 0.15%, on platforms with low or no extra fees, in account types that keep tax drag down. The [investing 101 post](/blog/investing-101-asset-classes/) covers the regional index equivalents.
+Some markets are less efficient than large developed-market shares. Small companies and emerging markets show a wider spread of manager results, so the case for active is somewhat stronger there. Distressed debt and some private-market strategies rely on skill that indices do not capture, and some specialized strategies are only available actively managed. For the core shares and bonds most household portfolios are built around, the evidence leans strongly toward low-cost passive funds: broad index funds or ETFs at roughly 0.03 to 0.15%, on platforms with low or no extra fees, in account types that keep tax drag down. The [investing 101 post](/blog/investing-101-asset-classes/) covers the regional index equivalents.
 
 </details>
 
@@ -140,7 +140,7 @@ A 1% fee on €500,000 is €5,000 a year; on €2 million, €20,000. A common 
 
 ## Checking and switching
 
-A common one-time review lists every holding with its expense ratio, any load and the platform; adds the platform, adviser and currency costs; finds a low-cost equivalent for each core holding (specialised holdings may have none, and the fee is then the price of the specialisation); and compares the total cost now with the alternative over the remaining horizon. Switching inside a tax-advantaged account usually has no tax cost. In a taxable account, selling can trigger tax on gains that outweighs the fee saving, so a common middle path is sending new money to the cheaper fund and leaving the old position. Fees change and new low-cost products launch, which is why many people look again once a year.
+A common one-time review lists every holding with its expense ratio, any load and the platform; adds the platform, adviser and currency costs; finds a low-cost equivalent for each core holding (specialized holdings may have none, and the fee is then the price of the specialization); and compares the total cost now with the alternative over the remaining horizon. Switching inside a tax-advantaged account usually has no tax cost. In a taxable account, selling can trigger tax on gains that outweighs the fee saving, so a common middle path is sending new money to the cheaper fund and leaving the old position. Fees change and new low-cost products launch, which is why many people look again once a year.
 
 ## Fees where you live
 

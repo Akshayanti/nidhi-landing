@@ -523,7 +523,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
         line: lineNum,
         reason: 'invalidValue',
         values: { value: valueStr },
-        message: `"${valueStr}" is not a valid positive number.`,
+        message: `“${valueStr}” is not a valid positive number.`,
       });
       continue;
     }
@@ -539,7 +539,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
         line: lineNum,
         reason: 'unsupportedCurrency',
         values: { value: currencyStr, supported },
-        message: `"${currencyStr}" is not a supported currency. Supported: ${supported}.`,
+        message: `“${currencyStr}” is not a supported currency. Supported: ${supported}.`,
       });
       continue;
     }
@@ -555,7 +555,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
         line: lineNum,
         reason: 'unknownType',
         values: { value: typeStr },
-        message: `"${typeStr}" is not a type the tool knows. Use asset or liability.`,
+        message: `“${typeStr}” is not a type the tool knows. Use asset or liability.`,
       });
       continue;
     }

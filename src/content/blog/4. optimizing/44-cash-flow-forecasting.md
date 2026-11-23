@@ -38,7 +38,7 @@ personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "planning", "saving"]
 faq:
   - question: "How do I work out my cash runway?"
-    answer: "Divide your easy-access money by your real monthly costs, including a twelfth of the once-a-year costs. €18,300 against €4,575 a month is four months of runway. Many people count only cash and cash-like holdings as runway. Tradable investments may be reachable after a sale, but their value can be down when the money is needed, and pension access may be restricted, taxed or penalised."
+    answer: "Divide your easy-access money by your real monthly costs, including a twelfth of the once-a-year costs. €18,300 against €4,575 a month is four months of runway. Many people count only cash and cash-like holdings as runway. Tradable investments may be reachable after a sale, but their value can be down when the money is needed, and pension access may be restricted, taxed or penalized."
   - question: "How is cash flow forecasting different from a financial projection?"
     answer: "A financial projection asks: how big will my net worth be in the future? A cash flow forecast asks: will I have money in the right account at the right time? The projection sums assets and liabilities and grows them forward year by year. The forecast walks month by month through income and expenses, flagging months where the balance dips. You can have a healthy long-run projection and still fail a forecast, because lumpy annual costs (insurance premiums, tax bills, tuition, holidays) can create a shortfall in a specific month even when the average is fine. The two tools answer different questions, and many households use both when timing and long-term direction each matter."
   - question: "What is a shortfall month and why should I care?"
@@ -46,7 +46,7 @@ faq:
   - question: "What is cash runway?"
     answer: "Cash runway is the number of months you could sustain your current expenses if income stopped completely today, using only your liquid assets. It is the emergency fund concept made dynamic and measured against your actual expenses rather than a rule of thumb. A €30,000 cash cushion sounds like a lot until you notice your monthly expenses are €4,500, at which point it is 6.7 months of runway. If your expenses rise to €6,000 because you moved cities, the same €30,000 is now 5 months. Runway matters more than a fixed number of months because it reflects your actual cost of living, which changes over life stages."
   - question: "How far into the future should I forecast?"
-    answer: "For cash flow, 12 to 24 months is the useful window. Beyond that, uncertainty about specific monthly amounts (variable expenses, side-income timing, unplanned costs) makes month-level forecasts unreliable. Long-horizon planning belongs in the net worth projection, which uses annualised numbers and does not require you to guess which month a €400 utility bill lands. A common combination is a long-horizon projection for wealth trajectory and a 12 to 24 month forecast for liquidity, updated every few months. How often depends on how variable your income and costs are."
+    answer: "For cash flow, 12 to 24 months is the useful window. Beyond that, uncertainty about specific monthly amounts (variable expenses, side-income timing, unplanned costs) makes month-level forecasts unreliable. Long-horizon planning belongs in the net worth projection, which uses annualized numbers and does not require you to guess which month a €400 utility bill lands. A common combination is a long-horizon projection for wealth trajectory and a 12 to 24 month forecast for liquidity, updated every few months. How often depends on how variable your income and costs are."
   - question: "Can I have a growing net worth and still have cash flow problems?"
     answer: "Yes, and this is one of the reasons cash flow forecasting exists as a separate discipline. Wealth locked in real estate, retirement accounts, or private business equity is illiquid: it contributes to net worth but you cannot pay a plumber with it. A household that is asset-rich and cash-poor can hit a genuine liquidity crisis while looking wealthy on paper. Common patterns: heavy retirement contributions leaving little transactional cash, an expensive home eating too much of monthly cash flow into the mortgage, all liquid savings deployed to investments with insufficient buffer for lumpy expenses. The forecast is what surfaces this before it becomes a problem."
 reelPromise: "Why some months look fine on average and still leave you short of cash, and how a 12 month forecast catches problems that annual budgets miss"
@@ -143,7 +143,7 @@ A forecast also shows the large one-offs coming: a car in three years, a deposit
 
 [Cash runway](#term-cash-runway) is how many months your [liquid assets](#term-liquid-assets) would cover your real costs if income stopped today. It is the [emergency fund](/blog/emergency-fund/) made concrete against what you actually spend.
 
-Jiri's budget suggests €18,300 ÷ €4,000, about 4.6 months. His real costs include the lumpy items, so it is €18,300 ÷ €4,575: four months. For this measure, Jiri counts only his easy-access savings. His investments add to net worth and could be sold, but relying on them could force a sale after a fall, and pension access may be restricted, taxed or penalised.
+Jiri's budget suggests €18,300 ÷ €4,000, about 4.6 months. His real costs include the lumpy items, so it is €18,300 ÷ €4,575: four months. For this measure, Jiri counts only his easy-access savings. His investments add to net worth and could be sold, but relying on them could force a sale after a fall, and pension access may be restricted, taxed or penalized.
 
 Runway moves with costs: a baby, a more expensive city or a bigger mortgage means the same cash covers fewer months.
 
@@ -198,7 +198,7 @@ The idea travels; the list is your own.
 
 Net worth and cash flow can move in opposite directions.
 
-**Asset-rich, cash-poor.** Maximising pension contributions and investing every spare euro leaves too little liquid money. The projection looks great; any disruption forces an early withdrawal, often taxed or penalised, or expensive borrowing.
+**Asset-rich, cash-poor.** Maximizing pension contributions and investing every spare euro leaves too little liquid money. The projection looks great; any disruption forces an early withdrawal, often taxed or penalized, or expensive borrowing.
 
 **House-poor.** A large mortgage eats so much monthly cash flow that the current account is always thin, even while home equity lifts net worth. Refinancing, covered later in this series, is sometimes a fix; sometimes it is a smaller home.
 

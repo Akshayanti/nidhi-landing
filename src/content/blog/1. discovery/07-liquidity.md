@@ -137,8 +137,8 @@ The underlying idea is matching liquidity to timeline. Money needed in the next 
 There's no single correct ratio, but many people think in three tiers:
 
 1. **Emergency fund.** Enough in a savings account to cover a few months of essential expenses, often three to six. This is the liquidity baseline. As we'll cover in the next post, it exists so a crisis doesn't force a sale of investments at a loss or a high-interest loan
-2. **Medium-term savings.** Money needed in 1-5 years (a house deposit, a car, a wedding) is usually kept in relatively safe, accessible places: high-yield savings, short-term bonds, or term deposits
-3. **Long-term investments.** Money not needed for 5+ years is where people typically use index funds and other growth assets. The volatility, and in some accounts the lock-up, is the trade-off for higher expected returns
+2. **Medium-term savings.** Money needed in 1-5 years (a house deposit, a car, a wedding) is usually kept in relatively safe, accessible places: high-yield savings, short-term bonds (loans to governments or companies that are repaid within a few years), or term deposits (savings left for a fixed time at an agreed rate)
+3. **Long-term investments.** Money not needed for 5+ years is where people typically use index funds and other growth assets. The volatility, and in some accounts the lock-up, is the trade-off for higher expected returns (what they might earn on average, with no guarantee)
 
 The sizes depend on your income stability, insurance, your country's safety net and how soon your goals arrive.
 

@@ -56,8 +56,8 @@ describe("what's changed", () => {
     assert.deepEqual(lines('cs').filter(({ value }) => /(^|[^\p{L}])[vkszouai] (?=\S)/iu.test(value)).map((l) => l.i), []);
   });
 
-  it('quotes Czech with „…“, Spanish with «…» and Marathi with typographic marks', () => {
-    for (const l of ['cs', 'es', 'mr'] as const) {
+  it('quotes Czech with „…“, Spanish with «…», and English, Hindi and Marathi with typographic marks', () => {
+    for (const l of LOCALES) {
       assert.deepEqual(lines(l).filter(({ value }) => /"/.test(value)).map((x) => x.i), [], l);
     }
   });

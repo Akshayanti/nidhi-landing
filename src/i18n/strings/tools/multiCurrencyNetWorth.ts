@@ -72,7 +72,7 @@ export const multiCurrencyNetWorthEn = {
     operatingSystem: 'Any (web browser)',
     browserRequirements: 'Requires JavaScript. Modern browser.',
     featureList: [
-      'Calculate total net worth across 38 currencies in your chosen functional currency',
+      'Calculate total net worth across 38 currencies in your chosen spending currency',
       'Add unlimited assets and liabilities in any supported currency',
       'Latest official exchange rates via the Frankfurter API',
       'Currency concentration donut chart',
@@ -106,9 +106,9 @@ export const multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'How the calculation works',
       intro:
-        'For each currency, we net your assets and liabilities, then convert the result to your functional currency using the latest official exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
+        'For each currency, the calculator nets your assets and liabilities, then converts the result to your spending currency using the latest official exchange rates. Sum those converted positions and you have your total net worth in one currency. Each currency’s share of that total is your concentration:',
       formula:
-        'Concentration % = (Net in currency X × Rate to functional) / Total net worth × 100',
+        'Concentration % = (Net in currency X × Rate to spending currency) / Total net worth × 100',
       items: [
         {
           strong: 'Net position',
@@ -116,14 +116,14 @@ export const multiCurrencyNetWorthEn = {
             ' per currency = sum of assets minus sum of liabilities in that currency. A negative net means you owe more than you hold in that currency.',
         },
         {
-          strong: 'Rate to functional',
+          strong: 'Rate to spending currency',
           rest:
-            ' is the multiplier that converts one unit of currency X into your functional currency, taken from the Frankfurter API, which combines the rates published by central banks and other official sources, and fetched directly by your browser. Rates are updated as those sources publish them, usually each business day. They are reference rates: benchmarks that may differ from the rates your bank or broker actually offers.',
+            ' is the multiplier that converts one unit of currency X into your spending currency, taken from the Frankfurter API, which combines the rates published by central banks and other official sources, and fetched directly by your browser. Rates are updated as those sources publish them, usually each business day. They are reference rates: benchmarks that may differ from the rates your bank or broker actually offers.',
         },
         {
           strong: 'Concentration bands',
           rest:
-            ' apply only to non-functional currencies (currencies you don\'t spend in). Under 20% is low, 20-40% is moderate, and over 40% is elevated. These bands are this tool\'s own way of grouping shares: they are not a standard and not a judgement. They describe how big a share of net worth sits in that currency, not what to do about it. Your functional currency gets no band.',
+            ' apply only to currencies you don\'t spend in. Under 20% is low, 20-40% is moderate, and over 40% is elevated. These bands are this tool\'s own way of grouping shares: they are not a standard and not a judgement. They describe how big a share of net worth sits in that currency, not what to do about it. Your spending currency gets no band.',
         },
         {
           strong: 'Net vs. gross exposure.',
@@ -133,7 +133,7 @@ export const multiCurrencyNetWorthEn = {
         {
           strong: 'All computation is client-side.',
           rest:
-            ' Your asset names, values, and totals never leave your browser. The only network request fetches exchange rates from Frankfurter when the page opens, and again if you change your functional currency. It carries that currency’s code (e.g. ',
+            ' Your asset names, values, and totals never leave your browser. The only network request fetches exchange rates from Frankfurter when the page opens, and again if you change your spending currency. It carries that currency’s code (e.g. ',
           after: ') and nothing about your assets.',
         },
       ] as NetWorthExplainerItem[],
@@ -144,7 +144,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'How does the net worth calculator work?',
           a:
-            'You add your assets and liabilities with their currency and current value. The tool fetches the latest official exchange rates (via the free Frankfurter API), converts everything to your chosen functional currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any non-functional currency where you have elevated exposure.',
+            'You add your assets and liabilities with their currency and current value. The tool fetches the latest official exchange rates (via the free Frankfurter API), converts everything to your chosen spending currency, and shows your total net worth as a single number. Below that, it shows your currency concentration as a donut chart and flags any currency other than your spending currency where you have elevated exposure.',
         },
         {
           q: 'What is currency concentration risk?',
@@ -154,7 +154,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'Does this send my financial data anywhere?',
           a:
-            'No. Everything runs in your browser. Your asset names, values, and currencies are never sent to any server. The only external request is to the Frankfurter API to fetch exchange rates, and that request only includes your functional currency code, not your asset data. Nothing goes into the page address while you use the tool. When you copy a share link, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. You control whether to share.',
+            'No. Everything runs in your browser. Your asset names, values, and currencies are never sent to any server. The only external request is to the Frankfurter API to fetch exchange rates, and that request only includes your spending currency code, not your asset data. Nothing goes into the page address while you use the tool. When you copy a share link, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. You control whether to share.',
         },
         {
           q: 'Which currencies are supported?',
@@ -162,7 +162,7 @@ export const multiCurrencyNetWorthEn = {
             'Thirty-eight currencies are supported, including the Euro (EUR), US Dollar (USD), British Pound (GBP), Swiss Franc (CHF), Japanese Yen (JPY), Indian Rupee (INR), Chinese Yuan (CNY), Canadian Dollar (CAD), Australian Dollar (AUD), Singapore Dollar (SGD), Bangladeshi Taka (BDT), Kenyan Shilling (KES), the West and Central African CFA francs (XOF, XAF), and the main Nordic, Central European, Latin American, South Asian, South-East Asian and African currencies. Exchange rates come from central banks and other official sources via Frankfurter, and are reference rates and may differ from the rates available to retail customers at their bank.',
         },
         {
-          q: 'What\'s the difference between the "Full" and "Redacted" share modes?',
+          q: 'What\'s the difference between the “Full” and “Redacted” share modes?',
           a:
             'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the math. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
         },
@@ -172,24 +172,24 @@ export const multiCurrencyNetWorthEn = {
             'Rates come from the free Frankfurter API (api.frankfurter.dev), which combines the exchange rates published by central banks and other official sources. They are reference rates, updated as those sources publish them (usually each business day), intended as benchmarks rather than transactable quotes. The rates you actually receive at your bank or broker include a spread and may be materially different, especially for smaller currencies. No API key is required, and the request is made directly from your browser.',
         },
         {
-          q: 'What does "functional currency" mean?',
+          q: 'What is my spending currency?',
           a:
-            'Your functional currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. We leave it out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
+            'Your spending currency is the currency you primarily spend and live in. It\'s the one your bills, rent, and groceries are priced in. It is left out of the bands because exchange-rate moves do not directly change what money in your spending currency buys at local prices.',
         },
         {
-          q: 'What do "low", "moderate", and "elevated" mean?',
+          q: 'What do “low”, “moderate”, and “elevated” mean?',
           a:
-            'They are descriptive bands for non-functional currencies: under 20% of net worth is "low", 20-40% is "moderate", and over 40% is "elevated". They describe concentration size, not what you should do about it. Whether a given level fits your situation depends on your future spending plans, where you intend to retire, and how you choose to balance currency risk with other goals.',
+            'They are descriptive bands for currencies other than your spending currency: under 20% of net worth is “low”, 20-40% is “moderate”, and over 40% is “elevated”. They describe concentration size, not what you should do about it. Whether a given level fits your situation depends on your future spending plans, where you intend to retire, and how you choose to balance currency risk with other goals.',
         },
         {
           q: 'Can I include debts and liabilities?',
           a:
-            'Yes. Each row has an Asset/Liability toggle. Liability amounts are subtracted from that currency\'s net position. If you have a USD mortgage alongside USD savings, the tool shows your net USD exposure. A currency where you owe more than you hold gets flagged as "Net debt."',
+            'Yes. Each row has an Asset/Liability toggle. Liability amounts are subtracted from that currency\'s net position. If you have a USD mortgage alongside USD savings, the tool shows your net USD exposure. A currency where you owe more than you hold gets flagged as “Net debt.”',
         },
         {
           q: 'How does the CSV upload work?',
           a:
-            'Create a CSV file with columns: name (optional), value (required), currency (required, 3-letter code), type (optional, "asset" or "liability", defaults to asset). Click "Upload CSV", pick the file, and the rows populate automatically. Any invalid rows are listed with line numbers so you can fix them. Uploading replaces existing data after a confirmation prompt.',
+            'Create a CSV file with columns: name (optional), value (required), currency (required, 3-letter code), type (optional, “asset” or “liability”, defaults to asset). Click “Upload CSV”, pick the file, and the rows populate automatically. Any invalid rows are listed with line numbers so you can fix them. Uploading replaces existing data after a confirmation prompt.',
         },
       ],
     },
@@ -252,7 +252,7 @@ export const multiCurrencyNetWorthEn = {
         },
       ],
       footerTag: 'Read more on currency management',
-      footerAll: 'Or browse every article',
+      footerAll: 'Or browse every lesson',
     },
   },
   island: {
@@ -264,7 +264,7 @@ export const multiCurrencyNetWorthEn = {
       meaning: 'Net worth is what you own minus what you owe.',
       meaningShares: 'Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in.',
       meaningRates: 'Amounts in other currencies are converted at the rates loaded on the page, which change every day.',
-      tool: 'Multi-currency net worth calculator',
+      tool: 'Net worth calculator',
       hiddenLabel: 'Amounts',
       hiddenText: 'Not included: this shared view carries currencies and shares only.',
       sheets: { byCurrency: 'By currency', rates: 'Rates' },
@@ -344,11 +344,11 @@ export const multiCurrencyNetWorthEn = {
       csvErrors: {
         empty: 'CSV is empty.',
         columns: 'Expected at least value and currency columns.',
-        invalidValue: '"{value}" is not a valid positive number.',
+        invalidValue: '“{value}” is not a valid positive number.',
         emptyCurrency: 'Currency code is empty.',
-        unsupportedCurrency: '"{value}" is not a supported currency. Supported: {supported}.',
+        unsupportedCurrency: '“{value}” is not a supported currency. Supported: {supported}.',
         /** `{asset}` and `{liability}` are the page's own words for the two types. */
-        unknownType: '"{value}" is not a type the tool knows. Use {asset} or {liability}.',
+        unknownType: '“{value}” is not a type the tool knows. Use {asset} or {liability}.',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -401,7 +401,7 @@ export const multiCurrencyNetWorthEn = {
         'At least one currency was missing a current rate and is excluded from this total.',
       /** The two-word flag beside a currency whose rate the feed did not return. */
       rateUnavailable: 'Rate unavailable',
-      badgeFunctional: 'Functional',
+      badgeFunctional: 'Spending currency',
       badgeNetDebt: 'Net debt',
       badgeElevated: 'Elevated',
       badgeModerate: 'Moderate',
@@ -417,7 +417,7 @@ export const multiCurrencyNetWorthEn = {
       labelLow: 'Low exposure',
       labelUnbanded: 'No share of net worth',
       disclaimer:
-        'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial advisor.',
+        'This calculator shows mathematical concentrations of your net positions across currencies, using official reference rates that may differ from rates available at your bank or broker. It does not account for your future spending plans, tax residency, hedging strategies, or risk tolerance, and it is not financial advice. For personalized advice, consult a licensed financial adviser.',
     },
     /**
      * The descriptive line under each currency.
@@ -449,7 +449,7 @@ export const multiCurrencyNetWorthEn = {
       functionalDebt:
         'You owe more than you hold in your spending currency ({currency}), so your net worth sits in other currencies and moves with their exchange rates.',
       netDebt:
-        'You owe more than you hold in {code} (a "net debt" position). When you have more liabilities than assets in a currency, it works the other way round: if {code} strengthens against {currency}, what you owe grows and your net worth falls; if {code} weakens, your net worth rises.',
+        'You owe more than you hold in {code} (a “net debt” position). When you have more liabilities than assets in a currency, it works the other way round: if {code} strengthens against {currency}, what you owe grows and your net worth falls; if {code} weakens, your net worth rises.',
       elevatedHidden:
         'Your {code} position is a large share of net worth in this share. If {code} rises or falls 10% against {currency}, your net worth rises or falls with it by a meaningful amount.',
       elevatedShown:
@@ -567,13 +567,13 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     eyebrow: 'मुफ़्त टूल',
     title: 'शुद्ध संपत्ति (Net\u00A0Worth) कैलकुलेटर, एक मुद्रा में या कई में',
     lead:
-      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है, और आप जो लिखते हैं, वह वहीं रहता है। USD, EUR, GBP, INR, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
+      'जो आपके पास है और जो आप पर बकाया है, उसे एक मुद्रा में या कई मुद्राओं में दर्ज करें। अपनी चुनी हुई मुद्रा में अपनी शुद्ध संपत्ति देखें, ताज़ा आधिकारिक दरों पर बदलकर। अगर आपके पास एक से ज़्यादा मुद्राएँ हैं, तो देखें कि उनमें से कितना पैसा ऐसी मुद्राओं में पड़ा है जिनमें आप असल में खर्च नहीं करते। सारी गणना आपके ब्राउज़र में होती है, और आप जो लिखते हैं, वह वहीं रहता है। INR, USD, EUR, GBP, JPY और 33 अन्य मुद्राएँ समर्थित हैं।',
     plannerLine:
       'nidhi का पूरा प्लानर कई मुद्राओं में फैली शुद्ध संपत्ति को लंबी अवधि की योजना में बदल देता है, ताकि आप देख सकें कि जगह, खर्च की मुद्रा और बड़े फ़ैसले इस रास्ते को कैसे बदलते हैं।',
     explainer: {
       heading: 'हिसाब कैसे लगता है',
       intro:
-        'हर मुद्रा में हम आपकी संपत्तियों में से देनदारियाँ (liabilities) घटाकर शुद्ध स्थिति निकालते हैं, फिर उसे ताज़ा विनिमय दरों (exchange\u00A0rates) पर आपकी खर्च की मुद्रा में बदल देते हैं। इन बदली हुई रकमों को जोड़ें, और आपको एक ही मुद्रा में अपनी कुल शुद्ध संपत्ति मिल जाती है। उस कुल में हर मुद्रा का हिस्सा ही उसका जमाव है:',
+        'हर मुद्रा में कैलकुलेटर आपकी संपत्तियों में से देनदारियाँ (liabilities) घटाकर शुद्ध स्थिति निकालता है, फिर उसे ताज़ा विनिमय दरों (exchange\u00A0rates) पर आपकी खर्च की मुद्रा में बदल देता है। इन बदली हुई रकमों को जोड़ें, और आपको एक ही मुद्रा में अपनी कुल शुद्ध संपत्ति मिल जाती है। उस कुल में हर मुद्रा का हिस्सा ही उसका जमाव है:',
       formula: 'जमाव % = (मुद्रा X में शुद्ध रकम × खर्च की मुद्रा में दर) / कुल शुद्ध संपत्ति × 100',
       items: [
         {
@@ -584,7 +584,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'खर्च की मुद्रा में दर',
           rest:
-            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें Frankfurter API से सीधे आपके ब्राउज़र में आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। दरें तब अपडेट होती हैं जब ये स्रोत उन्हें प्रकाशित करते हैं, आम तौर पर हर कारोबारी दिन। ये संदर्भ दरें मानक हैं, और आपके बैंक या ब्रोकर की असल दरों से अलग हो सकती हैं।',
+            ' वह गुणक है जो मुद्रा X की एक इकाई को आपकी खर्च की मुद्रा में बदलता है। ये दरें Frankfurter API से सीधे आपके ब्राउज़र में आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। दरें तब अपडेट होती हैं जब ये स्रोत उन्हें प्रकाशित करते हैं, आम तौर पर हर कारोबारी दिन। ये संदर्भ दरें हैं: तुलना के पैमाने, जो आपके बैंक या ब्रोकर की असल दरों से अलग हो सकते हैं।',
         },
         {
           strong: 'जमाव के स्तर',
@@ -610,12 +610,12 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'शुद्ध संपत्ति कैलकुलेटर कैसे काम करता है?',
           a:
-            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ताज़ा आधिकारिक विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र "ज़्यादा" स्तर पर है।',
+            'आप अपनी संपत्तियाँ और देनदारियाँ, उनकी मुद्रा और मौजूदा रकम के साथ दर्ज करते हैं। टूल ताज़ा आधिकारिक विनिमय दरें लाता है (मुफ़्त Frankfurter API से), सब कुछ आपकी चुनी हुई खर्च की मुद्रा में बदलता है, और आपकी कुल शुद्ध संपत्ति एक ही संख्या में दिखाता है। उसके नीचे यह डोनट चार्ट में दिखाता है कि आपका पैसा किन मुद्राओं में कितना जमा है, और हर उस मुद्रा पर निशान लगाता है जो आपकी खर्च की मुद्रा नहीं है और जिसमें आपका एक्सपोज़र “ज़्यादा” स्तर पर है।',
         },
         {
           q: 'मुद्रा जमाव का जोखिम क्या है?',
           a:
-            'अगर आपकी शुद्ध संपत्ति का बड़ा हिस्सा ऐसी मुद्रा में है जिसमें आप खर्च नहीं करते, तो विनिमय दर के घटने-बढ़ने से आपकी असल क्रय शक्ति (purchasing\u00A0power) बदल जाती है। जैसे, अगर आप यूरोप में रिटायर होने की सोच रहे हैं लेकिन अपनी 70% संपत्ति USD में रखते हैं, तो USD/EUR में 10% का बदलाव (EUR/USD में कई सालों में, एक ही साल के भीतर, इतना उतार-चढ़ाव देखा गया है) आपके रिटायरमेंट फ़ंड को यूरो में नापने पर क़रीब 7% बदल देगा।',
+            'अगर आपकी शुद्ध संपत्ति का बड़ा हिस्सा ऐसी मुद्रा में है जिसमें आप खर्च नहीं करते, तो विनिमय दर के घटने-बढ़ने से आपकी असल क्रय शक्ति (purchasing\u00A0power) बदल जाती है। जैसे, अगर आप यूरोप में रिटायर होने की सोच रहे हैं लेकिन अपनी 70% संपत्ति USD में रखते हैं, तो USD/EUR में 10% का बदलाव (EUR/USD में कई सालों में, एक ही साल के भीतर, इतना उतार-चढ़ाव देखा गया है) आपके रिटायरमेंट फंड को यूरो में नापने पर क़रीब 7% बदल देगा।',
         },
         {
           q: 'क्या यह मेरे वित्तीय आँकड़े कहीं भेजता है?',
@@ -625,12 +625,12 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         {
           q: 'कौन सी मुद्राएँ समर्थित हैं?',
           a:
-            '38 मुद्राएँ समर्थित हैं, जिनमें यूरो (EUR), अमेरिकी डॉलर (USD), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), भारतीय रुपया (INR), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
+            '38 मुद्राएँ समर्थित हैं, जिनमें भारतीय रुपया (INR), अमेरिकी डॉलर (USD), यूरो (EUR), ब्रिटिश पाउंड (GBP), स्विस फ़्रैंक (CHF), जापानी येन (JPY), चीनी युआन (CNY), कनाडाई डॉलर (CAD), ऑस्ट्रेलियाई डॉलर (AUD), सिंगापुर डॉलर (SGD), बांग्लादेशी टका (BDT), केन्याई शिलिंग (KES), पश्चिम और मध्य अफ़्रीकी CFA फ़्रैंक (XOF, XAF), और नॉर्डिक, मध्य यूरोपीय, लैटिन अमेरिकी, दक्षिण एशियाई, दक्षिण-पूर्व एशियाई तथा अफ़्रीकी प्रमुख मुद्राएँ शामिल हैं। विनिमय दरें केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों से Frankfurter के ज़रिए आती हैं, जो संदर्भ दरें हैं और आम ग्राहक को उसके बैंक में मिलने वाली दरों से अलग हो सकती हैं।',
         },
         {
-          q: 'शेयर करने के "पूरा हिसाब" और "रकम और नाम छिपाकर" वाले तरीक़ों में क्या फ़र्क़ है?',
+          q: 'शेयर करने के “पूरा हिसाब” और “रकम और नाम छिपाकर” वाले तरीक़ों में क्या फ़र्क़ है?',
           a:
-            '"पूरा हिसाब" वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और किस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। "रकम और नाम छिपाकर" वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
+            '“पूरा हिसाब” वाले तरीक़े में आपकी संपत्तियों के नाम, रकमें, मुद्राएँ और क़िस्में सब लिंक में आती हैं: लिंक वाला कोई भी आपका पूरा ब्यौरा देख सकता है और हिसाब जाँच सकता है। “रकम और नाम छिपाकर” वाले तरीक़े में सिर्फ़ हर मुद्रा का जमाव प्रतिशत और हिस्से के स्तर आते हैं: न रकम, न संपत्तियों के नाम। जो भी तरीक़ा चुनें, वह एक लिंक के रूप में आपके क्लिपबोर्ड पर कॉपी होता है, और कौन सा भेजना है यह आप चुनते हैं।',
         },
         {
           q: 'विनिमय दरें कहाँ से आती हैं?',
@@ -638,24 +638,24 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
             'दरें मुफ़्त Frankfurter API (api.frankfurter.dev) से आती हैं, जो केंद्रीय बैंकों और दूसरे आधिकारिक स्रोतों की प्रकाशित दरों को मिलाकर देती है। ये संदर्भ दरें हैं, जो इन स्रोतों के प्रकाशित करने पर अपडेट होती हैं (आम तौर पर हर कारोबारी दिन), और इन्हें लेन-देन का भाव नहीं बल्कि मानक माना जाना चाहिए। आपके बैंक या ब्रोकर पर असल में जो दर मिलती है उसमें स्प्रेड जुड़ा होता है और वह काफ़ी अलग हो सकती है, ख़ासकर छोटी मुद्राओं में। किसी API कुंजी की ज़रूरत नहीं है, और अनुरोध सीधे आपके ब्राउज़र से जाता है।',
         },
         {
-          q: '"खर्च की मुद्रा" (functional\u00A0currency) का क्या मतलब है?',
+          q: 'मेरी खर्च की मुद्रा (spending\u00A0currency) क्या है?',
           a:
-            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर "मुख्य मुद्रा" का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से हम इसे अलग रखते हैं, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
+            'आपकी खर्च की मुद्रा (कैलकुलेटर में इस पर “खर्च की मुद्रा” का बैज लगता है) वह मुद्रा है जिसमें आपका रोज़ का खर्च चलता है: आपके बिल, किराया और राशन की क़ीमत उसी मुद्रा में होती है। इन स्तरों से इसे अलग रखा जाता है, क्योंकि विनिमय दरें बदलने से यह सीधे नहीं बदलता कि खर्च की मुद्रा में रखे पैसे से स्थानीय क़ीमतों पर क्या खरीदा जा सकता है।',
         },
         {
-          q: '"कम", "मध्यम" और "ज़्यादा" का क्या मतलब है?',
+          q: '“कम”, “मध्यम” और “ज़्यादा” का क्या मतलब है?',
           a:
-            'ये उन मुद्राओं की स्थिति बताने वाले स्तर हैं जो आपकी खर्च की मुद्रा नहीं हैं: शुद्ध संपत्ति के 20% से नीचे "कम", 20-40% "मध्यम", और 40% से ऊपर "ज़्यादा"। ये सिर्फ़ जमाव का आकार बताते हैं, यह नहीं कि आपको इसके बारे में क्या करना चाहिए। कोई स्तर आपकी स्थिति में ठीक बैठता है या नहीं, यह इस पर निर्भर है कि आगे आपका खर्च कहाँ और किस मुद्रा में होगा, आप कहाँ रिटायर होना चाहते हैं, और आप मुद्रा जोखिम को बाकी लक्ष्यों के साथ कैसे संतुलित करना चुनते हैं।',
+            'ये उन मुद्राओं की स्थिति बताने वाले स्तर हैं जो आपकी खर्च की मुद्रा नहीं हैं: शुद्ध संपत्ति के 20% से नीचे “कम”, 20-40% “मध्यम”, और 40% से ऊपर “ज़्यादा”। ये सिर्फ़ जमाव का आकार बताते हैं, यह नहीं कि आपको इसके बारे में क्या करना चाहिए। कोई स्तर आपकी स्थिति में ठीक बैठता है या नहीं, यह इस पर निर्भर है कि आगे आपका खर्च कहाँ और किस मुद्रा में होगा, आप कहाँ रिटायर होना चाहते हैं, और आप मुद्रा जोखिम को बाकी लक्ष्यों के साथ कैसे संतुलित करना चुनते हैं।',
         },
         {
           q: 'क्या कर्ज़ और देनदारियाँ भी जोड़ी जा सकती हैं?',
           a:
-            'हाँ। हर पंक्ति में संपत्ति/देनदारी का टॉगल है। देनदारी की रकम उस मुद्रा की शुद्ध स्थिति से घटा दी जाती है। अगर आपके पास USD की बचत के साथ USD का होम लोन भी है, तो टूल आपका शुद्ध USD एक्सपोज़र दिखाता है। जिस मुद्रा में आपके पास जितना है उससे ज़्यादा आप पर बकाया है, उस पर "शुद्ध देनदारी" का निशान लगता है।',
+            'हाँ। हर पंक्ति में संपत्ति/देनदारी का टॉगल है। देनदारी की रकम उस मुद्रा की शुद्ध स्थिति से घटा दी जाती है। अगर आपके पास USD की बचत के साथ USD का होम लोन भी है, तो टूल आपका शुद्ध USD एक्सपोज़र दिखाता है। जिस मुद्रा में आपके पास जितना है उससे ज़्यादा आप पर बकाया है, उस पर “शुद्ध देनदारी” का निशान लगता है।',
         },
         {
           q: 'CSV अपलोड कैसे काम करता है?',
           a:
-            'एक CSV फ़ाइल बनाएँ जिसमें ये कॉलम हों: name (वैकल्पिक), value (ज़रूरी), currency (ज़रूरी, तीन अक्षरों का कोड), type (वैकल्पिक, "asset" या "liability", न दें तो संपत्ति माना जाता है)। "CSV अपलोड करें" पर क्लिक करें, फ़ाइल चुनें, और पंक्तियाँ अपने आप भर जाएँगी। जो पंक्तियाँ ग़लत हैं, वे लाइन नंबर के साथ दिखा दी जाती हैं, ताकि आप उन्हें ठीक कर सकें। अपलोड करने से पहले पुष्टि माँगी जाती है, फिर मौजूदा आँकड़ों की जगह फ़ाइल के आँकड़े आ जाते हैं।',
+            'एक CSV फ़ाइल बनाएँ जिसमें ये कॉलम हों: name (वैकल्पिक), value (ज़रूरी), currency (ज़रूरी, तीन अक्षरों का कोड), type (वैकल्पिक, “asset” या “liability”, न दें तो संपत्ति माना जाता है)। “CSV अपलोड करें” पर क्लिक करें, फ़ाइल चुनें, और पंक्तियाँ अपने आप भर जाएँगी। जो पंक्तियाँ ग़लत हैं, वे लाइन नंबर के साथ दिखा दी जाती हैं, ताकि आप उन्हें ठीक कर सकें। अपलोड करने से पहले पुष्टि माँगी जाती है, फिर मौजूदा आँकड़ों की जगह फ़ाइल के आँकड़े आ जाते हैं।',
         },
       ],
     },
@@ -719,7 +719,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
     currencies: currenciesHi,
     export: {
       meaning: 'शुद्ध संपत्ति यानी आपके पास जो है, उसमें से आप पर जो बकाया है वह घटाकर बची रकम।',
-      meaningShares: 'हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी ख़र्च वाली मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है।',
+      meaningShares: 'हर मुद्रा का हिस्सा दिखाता है कि उस मुद्रा के आपकी खर्च की मुद्रा के मुक़ाबले चढ़ने या गिरने पर आपकी शुद्ध संपत्ति का कितना हिस्सा बदलता है।',
       meaningRates: 'दूसरी मुद्राओं की रकमें पेज पर लोड हुई दरों से रूपांतरित की गई हैं, जो रोज़ बदलती हैं।',
       tool: 'शुद्ध संपत्ति कैलकुलेटर',
       hiddenLabel: 'रकम',
@@ -774,7 +774,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       colName: 'नाम',
       colValue: 'रकम',
       colCurrency: 'मुद्रा',
-      colType: 'किस्म',
+      colType: 'क़िस्म',
       colActions: 'क्रियाएँ',
       addAsset: '+ संपत्ति जोड़ें',
       /** The row that unfolds the two CSV buttons. */
@@ -790,10 +790,10 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       csvErrors: {
         empty: 'CSV फ़ाइल खाली है।',
         columns: 'कम से कम value और currency कॉलम होने चाहिए।',
-        invalidValue: '"{value}" शून्य से बड़ी कोई मान्य संख्या नहीं है।',
+        invalidValue: '“{value}” शून्य से बड़ी कोई मान्य संख्या नहीं है।',
         emptyCurrency: 'मुद्रा कोड खाली है।',
-        unsupportedCurrency: '"{value}" समर्थित मुद्रा नहीं है। समर्थित मुद्राएँ: {supported}।',
-        unknownType: '"{value}" ऐसी किस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
+        unsupportedCurrency: '“{value}” समर्थित मुद्रा नहीं है। समर्थित मुद्राएँ: {supported}।',
+        unknownType: '“{value}” ऐसी क़िस्म नहीं है जिसे टूल जानता हो। {asset} या {liability} लिखें।',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -810,7 +810,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       nameAria: 'संपत्ति का नाम (कुल {total} में से पंक्ति {index})',
       valueAria: 'रकम (पंक्ति {index})',
       currencyAria: 'मुद्रा (पंक्ति {index})',
-      typeAria: 'किस्म (पंक्ति {index})',
+      typeAria: 'क़िस्म (पंक्ति {index})',
       valueError: 'यह रकम पढ़ी नहीं जा सकी। सिर्फ़ अंक लिखें, जैसे 50000।',
       valuePlaceholder: 'जैसे 50000',
       namePlaceholder: 'संपत्ति/देनदारी का नाम',
@@ -840,7 +840,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         'यहाँ सब कुछ एक ही मुद्रा में है: {currency}। इसलिए विनिमय दरों का इस पर असर नहीं पड़ता। अगर आप किसी और मुद्रा में रखी कोई चीज़ जोड़ेंगे, तो यह भी दिखेगा कि आपकी शुद्ध संपत्ति का कितना हिस्सा विनिमय दरों पर निर्भर है।',
       partialHint: 'कम से कम एक मुद्रा की ताज़ा दर नहीं मिली, इसलिए वह इस जोड़ में शामिल नहीं है।',
       rateUnavailable: 'दर नहीं मिली',
-      badgeFunctional: 'मुख्य मुद्रा',
+      badgeFunctional: 'खर्च की मुद्रा',
       badgeNetDebt: 'शुद्ध देनदारी',
       badgeElevated: 'ज़्यादा',
       badgeModerate: 'मध्यम',
@@ -873,7 +873,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
       functionalDebt:
         'आपकी खर्च की मुद्रा ({currency}) में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है, इसलिए आपकी शुद्ध संपत्ति दूसरी मुद्राओं में है और उनकी विनिमय दरों के साथ घटती-बढ़ती है।',
       netDebt:
-        '{code} में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है (यानी "शुद्ध देनदारी" (net\u00A0debt) की स्थिति)। जब किसी मुद्रा में देनदारियाँ संपत्तियों से ज़्यादा हों, तो असर उलटा होता है: अगर {currency} के मुक़ाबले {code} मज़बूत हो, तो आप पर जो बकाया है वह बढ़ता है और आपकी शुद्ध संपत्ति घटती है; अगर {code} कमज़ोर हो, तो आपकी शुद्ध संपत्ति बढ़ती है।',
+        '{code} में आपके पास जितना है, उससे ज़्यादा आप पर बकाया है (यानी “शुद्ध देनदारी” (net\u00A0debt) की स्थिति)। जब किसी मुद्रा में देनदारियाँ संपत्तियों से ज़्यादा हों, तो असर उलटा होता है: अगर {currency} के मुक़ाबले {code} मज़बूत हो, तो आप पर जो बकाया है वह बढ़ता है और आपकी शुद्ध संपत्ति घटती है; अगर {code} कमज़ोर हो, तो आपकी शुद्ध संपत्ति बढ़ती है।',
       elevatedHidden:
         'इस शेयर किए गए हिसाब में आपकी {code} वाली स्थिति शुद्ध संपत्ति का बड़ा हिस्सा है। अगर {currency} के मुक़ाबले {code} 10% मज़बूत या कमज़ोर हो, तो आपकी शुद्ध संपत्ति भी उसके साथ काफ़ी बढ़ेगी या घटेगी।',
       elevatedShown:
@@ -967,7 +967,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     operatingSystem: 'Cualquiera (navegador web)',
     browserRequirements: 'Requiere JavaScript. Navegador actualizado.',
     featureList: [
-      'Calcula tu patrimonio neto total en 38 monedas, expresado en la moneda de referencia que elijas',
+      'Calcula tu patrimonio neto total en 38 monedas, expresado en la moneda en la que gastas',
       'Añade todos los activos y pasivos que quieras, en cualquier moneda disponible',
       'Tipos de cambio oficiales actualizados, a través de la API de Frankfurter',
       'Gráfico de anillo de la concentración por moneda',
@@ -995,9 +995,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'Cómo se hace el cálculo',
       intro:
-        'Para cada moneda, restamos tus pasivos de tus activos y convertimos el resultado a tu moneda de referencia con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
+        'Para cada moneda, la calculadora resta tus pasivos de tus activos y convierte el resultado a la moneda en la que gastas con tipos de cambio al día. Al sumar esas posiciones convertidas obtienes tu patrimonio neto total en una sola moneda. La parte de ese total que corresponde a cada moneda es su concentración:',
       formula:
-        'Concentración % = (Neto en la moneda X × Tipo de cambio a la moneda de referencia) / Patrimonio neto total × 100',
+        'Concentración % = (Neto en la moneda X × Tipo de cambio a la moneda en la que gastas) / Patrimonio neto total × 100',
       items: [
         {
           strong: 'Posición neta',
@@ -1005,14 +1005,14 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
             ' por moneda = suma de los activos menos suma de los pasivos en esa moneda. Una posición neta negativa significa que en esa moneda debes más de lo que tienes.',
         },
         {
-          strong: 'Tipo de cambio a la moneda de referencia',
+          strong: 'Tipo de cambio a la moneda en la que gastas',
           rest:
-            ' es el multiplicador que convierte una unidad de la moneda X en tu moneda de referencia. Procede de la API de Frankfurter, que reúne los tipos que publican bancos centrales y otras fuentes oficiales, y tu navegador lo obtiene directamente. Los tipos se actualizan cuando esas fuentes los publican, normalmente cada día hábil. Son tipos de referencia, valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
+            ' es el multiplicador que convierte una unidad de la moneda X en la moneda en la que gastas. Procede de la API de Frankfurter, que reúne los tipos que publican bancos centrales y otras fuentes oficiales, y tu navegador lo obtiene directamente. Los tipos se actualizan cuando esas fuentes los publican, normalmente cada día hábil. Son tipos de referencia, valores orientativos y pueden diferir de los que te ofrecen en realidad tu banco o tu bróker.',
         },
         {
           strong: 'Niveles de concentración',
           rest:
-            ' se aplican solo a las monedas que no son la de referencia (monedas en las que no gastas). Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Estos niveles son la forma en que esta herramienta agrupa las partes: no son un estándar ni una valoración. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. Tu moneda de referencia no se clasifica en ningún nivel.',
+            ' se aplican solo a las monedas en las que no gastas. Menos del 20 % es bajo, del 20 % al 40 % es moderado y más del 40 % es elevado. Estos niveles son la forma en que esta herramienta agrupa las partes: no son un estándar ni una valoración. Describen qué parte del patrimonio neto está en esa moneda, no qué hacer al respecto. La moneda en la que gastas no se clasifica en ningún nivel.',
         },
         {
           strong: 'Exposición neta frente a bruta.',
@@ -1022,7 +1022,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           strong: 'Todo el cálculo se hace en tu dispositivo.',
           rest:
-            ' Los nombres, valores y totales de tus activos nunca salen de tu navegador. La única petición de red consulta los tipos de cambio a Frankfurter cuando se abre la página, y otra vez si cambias tu moneda de referencia. Lleva el código de esa moneda (por ejemplo, ',
+            ' Los nombres, valores y totales de tus activos nunca salen de tu navegador. La única petición de red consulta los tipos de cambio a Frankfurter cuando se abre la página, y otra vez si cambias la moneda en la que gastas. Lleva el código de esa moneda (por ejemplo, ',
           after: ') y nada sobre tus activos.',
         },
       ],
@@ -1033,7 +1033,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Cómo funciona la calculadora de patrimonio neto?',
           a:
-            'Añades tus activos y pasivos con su moneda y su valor actual. La herramienta obtiene los tipos de cambio oficiales más recientes (a través de la API gratuita de Frankfurter), lo convierte todo a la moneda de referencia que elijas y muestra tu patrimonio neto total como una sola cifra. Debajo, muestra tu concentración por moneda en un gráfico de anillo y señala cualquier moneda distinta de la de referencia en la que tu exposición sea elevada.',
+            'Añades tus activos y pasivos con su moneda y su valor actual. La herramienta obtiene los tipos de cambio oficiales más recientes (a través de la API gratuita de Frankfurter), lo convierte todo a la moneda en la que gastas y muestra tu patrimonio neto total como una sola cifra. Debajo, muestra tu concentración por moneda en un gráfico de anillo y señala las monedas en las que no gastas y en las que tu exposición es elevada.',
         },
         {
           q: '¿Qué es el riesgo de concentración en una moneda?',
@@ -1043,7 +1043,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         {
           q: '¿Envía esto mis datos financieros a algún sitio?',
           a:
-            'No. Todo funciona en tu navegador. Los nombres, valores y monedas de tus activos nunca se envían a ningún servidor. La única petición externa es a la API de Frankfurter para obtener los tipos de cambio, y solo incluye el código de tu moneda de referencia, no los datos de tus activos. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando copias un enlace para compartir, tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que empiece la analítica. Tú decides si compartes.',
+            'No. Todo funciona en tu navegador. Los nombres, valores y monedas de tus activos nunca se envían a ningún servidor. La única petición externa es a la API de Frankfurter para obtener los tipos de cambio, y solo incluye el código de la moneda en la que gastas, no los datos de tus activos. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando copias un enlace para compartir, tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que empiece la analítica. Tú decides si compartes.',
         },
         {
           q: '¿Qué monedas están disponibles?',
@@ -1061,14 +1061,14 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
             'Los tipos proceden de la API gratuita de Frankfurter (api.frankfurter.dev), que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales. Son tipos de referencia que se actualizan cuando esas fuentes los publican, normalmente cada día hábil, y sirven como valores orientativos, no como cotizaciones a las que se pueda operar. Los tipos que obtienes de verdad en tu banco o tu bróker incluyen un margen y pueden ser bastante distintos, sobre todo en monedas menos negociadas. No hace falta clave de API, y la petición sale directamente de tu navegador.',
         },
         {
-          q: '¿Qué significa «moneda de referencia»?',
+          q: '¿Cuál es la moneda en la que gasto?',
           a:
-            'Tu moneda de referencia es la moneda en la que gastas y vives principalmente: aquella en la que están tus facturas, tu alquiler y la compra del día a día. La dejamos fuera de los niveles porque los movimientos del tipo de cambio no cambian directamente lo que compra, a precios locales, el dinero que tienes en la moneda en la que gastas.',
+            'La moneda en la que gastas es la de tu vida diaria: aquella en la que están tus facturas, tu alquiler y la compra del día a día. Queda fuera de los niveles porque los movimientos del tipo de cambio no cambian directamente lo que compra, a precios locales, el dinero que tienes en la moneda en la que gastas.',
         },
         {
           q: '¿Qué significan «bajo», «moderado» y «elevado»?',
           a:
-            'Son niveles descriptivos para las monedas que no son la de referencia: menos del 20 % del patrimonio neto es «bajo», del 20 % al 40 % es «moderado» y más del 40 % es «elevado». Describen el tamaño de la concentración, no lo que deberías hacer al respecto. Que un nivel encaje o no con tu situación depende de tus planes de gasto futuros, de dónde piensas jubilarte y de cómo eliges equilibrar el riesgo cambiario con otros objetivos.',
+            'Son niveles descriptivos para las monedas en las que no gastas: menos del 20 % del patrimonio neto es «bajo», del 20 % al 40 % es «moderado» y más del 40 % es «elevado». Describen el tamaño de la concentración, no lo que deberías hacer al respecto. Que un nivel encaje o no con tu situación depende de tus planes de gasto futuros, de dónde piensas jubilarte y de cómo eliges equilibrar el riesgo cambiario con otros objetivos.',
         },
         {
           q: '¿Puedo incluir deudas y pasivos?',
@@ -1136,7 +1136,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
         },
       ],
       footerTag: 'Lee más sobre gestión de divisas',
-      footerAll: 'O consulta todos los artículos',
+      footerAll: 'O consulta todas las lecciones',
     },
   },
   island: {
@@ -1144,9 +1144,9 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
     export: {
       meaning: 'El patrimonio neto es lo que tienes menos lo que debes.',
       meaningShares: 'La parte de cada moneda muestra cuánto se mueve cuando esa moneda sube o baja frente a la que usas para gastar.',
-      meaningRates: 'Los importes en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
+      meaningRates: 'Las cantidades en otras monedas se convierten a los tipos cargados en la página, que cambian cada día.',
       tool: 'Calculadora de patrimonio neto',
-      hiddenLabel: 'Importes',
+      hiddenLabel: 'Cantidades',
       hiddenText: 'No incluidos: esta vista compartida solo trae monedas y porcentajes.',
       sheets: { byCurrency: 'Por moneda', rates: 'Tipos de cambio' },
       code: 'Código',
@@ -1266,7 +1266,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       partialHint:
         'Faltaba el tipo de cambio actual de al menos una moneda, que queda fuera de este total.',
       rateUnavailable: 'Tipo no disponible',
-      badgeFunctional: 'Referencia',
+      badgeFunctional: 'Moneda de gasto',
       badgeNetDebt: 'Deuda neta',
       badgeElevated: 'Elevado',
       badgeModerate: 'Moderado',
@@ -1281,7 +1281,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       labelLow: 'Exposición baja',
       labelUnbanded: 'Sin parte del patrimonio neto',
       disclaimer:
-        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un profesional acreditado.',
+        'Esta calculadora muestra la concentración matemática de tus posiciones netas en cada moneda, con tipos de referencia oficiales que pueden diferir de los que ofrecen tu banco o tu bróker. No tiene en cuenta tus planes de gasto futuros, tu residencia fiscal, tus estrategias de cobertura ni tu tolerancia al riesgo, y no es asesoramiento financiero. Para un asesoramiento personalizado, consulta a un asesor financiero con licencia.',
     },
     rec: {
       noRate:
@@ -1429,7 +1429,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
     explainer: {
       heading: 'Jak výpočet funguje',
       intro:
-        'U každé měny odečteme vaše závazky od aktiv a výsledek převedeme do měny vašich výdajů podle aktuálních kurzů. Součet převedených pozic je vaše celkové čisté jmění v jedné měně. Podíl každé měny na tomto celku je vaše koncentrace:',
+        'U každé měny kalkulačka odečte vaše závazky od aktiv a výsledek převede do měny vašich výdajů podle aktuálních kurzů. Součet převedených pozic je vaše celkové čisté jmění v jedné měně. Podíl každé měny na tomto celku je vaše koncentrace:',
       formula:
         'Koncentrace v % = (Čistá pozice v měně X × Kurz k měně výdajů) / Celkové čisté jmění × 100',
       items: [
@@ -1472,7 +1472,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         {
           q: 'Co je riziko měnové koncentrace?',
           a:
-            'Pokud je velká část vašeho čistého jmění v měně, ve které neutrácíte, změna kurzu mění vaši skutečnou kupní sílu. Pokud například plánujete odejít do důchodu v Evropě, ale 70 % majetku držíte v USD, pohyb kurzu USD/EUR o 10 % (rozsah, ve kterém se EUR/USD změnil během mnoha kalendářních let) by hodnotu vašich prostředků na důchod měřenou v eurech změnil zhruba o 7 %.',
+            'Pokud je velká část vašeho čistého jmění v měně, ve které neutrácíte, změna kurzu mění vaši skutečnou kupní sílu. Pokud například plánujete odejít do důchodu v Evropě, ale 70 % majetku držíte v USD, pohyb kurzu USD/EUR o 10 % (rozsah, ve kterém se EUR/USD změnil během mnoha kalendářních let) by hodnotu vašich prostředků na důchod měřenou v eurech změnil zhruba o 7 %.',
         },
         {
           q: 'Posílá tato kalkulačka moje finanční data někam?',
@@ -1495,14 +1495,14 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
             'Kurzy pocházejí z bezplatného API Frankfurter (api.frankfurter.dev), které spojuje směnné kurzy zveřejňované centrálními bankami a dalšími oficiálními zdroji. Jsou to referenční kurzy, aktualizované tak, jak je tyto zdroje zveřejňují (obvykle každý pracovní den), a slouží jako měřítko, nikoli jako kurzy, za které lze skutečně směňovat. Kurzy, které skutečně dostanete v bance nebo u brokera, obsahují kurzové rozpětí a mohou se podstatně lišit, zvlášť u menších měn. Není potřeba žádný klíč API a požadavek se odesílá přímo z vašeho prohlížeče.',
         },
         {
-          q: 'Co znamená „měna vašich výdajů“?',
+          q: 'Co je měna mých výdajů?',
           a:
-            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Z pásem ji vynecháváme, protože pohyby kurzů přímo nemění, co si za peníze v měně svých výdajů koupíte za místní ceny.',
+            'Měna vašich výdajů je měna, kterou používáte pro většinu výdajů v místě, kde žijete. Jsou v ní uvedené ceny vašich pravidelných plateb, nájmu a nákupů. Do pásem se nezapočítává, protože pohyby kurzů přímo nemění, co si za peníze v měně svých výdajů koupíte za místní ceny.',
         },
         {
           q: 'Co znamenají „Nízká“, „Střední“ a „Zvýšená“?',
           a:
-            'Jsou to popisná pásma pro měny jiné než měna výdajů: pod 20 % čistého jmění je expozice „Nízká“, 20 až 40 % „Střední“ a nad 40 % „Zvýšená“. Popisují velikost koncentrace, ne to, co s ní dělat. Zda daná úroveň odpovídá vaší situaci, závisí na budoucích výdajích, na tom, kde chcete žít v důchodu, a na tom, jak vyvažujete měnové riziko s jinými cíli.',
+            'Jsou to popisná pásma pro měny jiné než měna výdajů: pod 20 % čistého jmění je expozice „Nízká“, 20 až 40 % „Střední“ a nad 40 % „Zvýšená“. Popisují velikost koncentrace, ne to, co s ní dělat. Zda daná úroveň odpovídá vaší situaci, závisí na budoucích výdajích, na tom, kde chcete žít v důchodu, a na tom, jak vyvažujete měnové riziko s jinými cíli.',
         },
         {
           q: 'Můžu zahrnout dluhy a závazky?',
@@ -1568,8 +1568,8 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
             'Jak cíle často utvářejí alokaci aktiv, včetně toho, které měny lidé drží.',
         },
       ],
-      footerTag: 'Další články o správě měn',
-      footerAll: 'Nebo procházejte všechny články',
+      footerTag: 'Další lekce o správě měn',
+      footerAll: 'Nebo procházejte všechny lekce',
     },
   },
   island: {
@@ -1721,11 +1721,11 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       functionalHidden:
         'Toto je měna vašich výdajů. V této sdílené verzi není procento koncentrace uvedeno.',
       functionalMost:
-        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je v jiných měnách a pohybuje se s jejich kurzy.',
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je v jiných měnách a pohybuje se s jejich kurzy.',
       functionalMuch:
-        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
+        '{pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje podstatná část vaší každodenní kupní síly.',
       functionalLittle:
-        'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
+        'Jen {pct} % vašeho čistého jmění je v měně vašich výdajů ({currency}). Zbývajících {rest} % je drženo v jiných měnách, takže se s jejich kurzy pohybuje většina vaší kupní síly.',
       functionalOver:
         'To, co máte v měně vašich výdajů ({currency}), odpovídá {pct} % vašeho čistého jmění, tedy víc než celému. Rozdíl je to, co v jiných měnách po odečtení aktiv dlužíte.',
       functionalDebt:
@@ -1733,17 +1733,17 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       netDebt:
         'V {code} dlužíte víc, než máte (pozice „čistý dluh“). Když máte v nějaké měně víc závazků než aktiv, funguje to obráceně: pokud {code} posílí vůči {currency}, váš dluh roste a čisté jmění klesá; pokud {code} oslabí, čisté jmění roste.',
       elevatedHidden:
-        'Vaše pozice v {code} tvoří v tomto sdílení velký podíl čistého jmění. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním znatelně zvýší nebo sníží.',
+        'Vaše pozice v {code} tvoří v tomto sdílení velký podíl čistého jmění. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním znatelně zvýší nebo sníží.',
       elevatedShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       moderateHidden:
-        'Střední podíl vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o desetinu podílu drženého v {code}.',
+        'Střední podíl vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o desetinu podílu drženého v {code}.',
       moderateShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       lowHidden:
         'Malý podíl vašeho čistého jmění je v {code}. Kurz {code}/{currency} má na celkové čisté jmění jen omezený vliv.',
       lowShown:
-        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
+        '{pct} % vašeho čistého jmění je v {code}. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {sensitivity} %.',
       unbandedHidden: 'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat.',
       unbandedShown:
         'Vaše čisté jmění je nulové nebo záporné, takže podíl na něm nelze vypočítat. Pokud {code} vůči {currency} posílí nebo oslabí o 10 %, vaše čisté jmění se s ním zvýší nebo sníží zhruba o {amount}.',
@@ -1842,12 +1842,12 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     },
     eyebrow: 'मोफत साधने',
     title: 'निव्वळ संपत्ती (Net Worth) कॅल्क्युलेटर, एका किंवा अनेक चलनांमध्ये',
-    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते लिहा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. हिशेब तुमच्या ब्राउझरमध्ये होतो, आणि तुम्ही जे लिहिता ते तिथेच राहते. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
+    lead: 'तुमच्याकडे काय आहे आणि तुमची देणी काय आहेत ते भरा, एका चलनात किंवा अनेक चलनांमध्ये. नवीनतम अधिकृत विनिमय दरांनुसार तुमची निव्वळ संपत्ती तुम्ही निवडलेल्या चलनात पाहा. तुमच्याकडे एकापेक्षा जास्त चलने असतील, तर तुम्ही प्रत्यक्षात खर्च करत नाही अशा चलनांमध्ये किती हिस्सा आहे ते तपासा. हिशेब तुमच्या ब्राउझरमध्ये होतो, आणि तुम्ही जे लिहिता ते तिथेच राहते. INR, USD, EUR, GBP, JPY आणि आणखी 33 चलने उपलब्ध.',
     plannerLine:
       'nidhi चा संपूर्ण प्लॅनर अनेक चलनांमधील निव्वळ संपत्तीचे दीर्घकालीन योजनेत रूपांतर करतो, म्हणजे ठिकाण, खर्चाचे चलन आणि मोठे निर्णय मार्ग कसा बदलतात हे तुम्हाला दिसते.',
     explainer: {
       heading: 'हिशेब कसा होतो',
-      intro: 'प्रत्येक चलनासाठी आम्ही तुमची मालमत्ता आणि देणी (liabilities) यांची निव्वळ रक्कम काढतो, आणि मग चालू विनिमय दरांनी (exchange rates) ती तुमच्या खर्चाच्या चलनात बदलतो. बदललेल्या या सर्व स्थितींची बेरीज म्हणजे एका चलनातील तुमची एकूण निव्वळ संपत्ती. त्या एकूण रकमेतील प्रत्येक चलनाचा हिस्सा म्हणजे त्या चलनातील एकवटलेली गुंतवणूक:',
+      intro: 'प्रत्येक चलनासाठी कॅल्क्युलेटर तुमची मालमत्ता आणि देणी (liabilities) यांची निव्वळ रक्कम काढतो, आणि मग चालू विनिमय दरांनी (exchange rates) ती तुमच्या खर्चाच्या चलनात बदलतो. बदललेल्या या सर्व स्थितींची बेरीज म्हणजे एका चलनातील तुमची एकूण निव्वळ संपत्ती. त्या एकूण रकमेतील प्रत्येक चलनाचा हिस्सा म्हणजे त्या चलनातील एकवटलेली गुंतवणूक:',
       formula: 'हिस्सा % = (चलन X मधील निव्वळ रक्कम × खर्चाच्या चलनाचा दर) / एकूण निव्वळ संपत्ती × 100',
       items: [
         {
@@ -1901,8 +1901,8 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
           a: 'दर मोफत Frankfurter API (api.frankfurter.dev) कडून येतात, जी मध्यवर्ती बँका आणि इतर अधिकृत स्रोतांनी प्रसिद्ध केलेले विनिमय दर एकत्र करते. हे संदर्भ दर आहेत, ते स्रोत प्रसिद्ध करतात तसे अपडेट होतात (सहसा प्रत्येक कामकाजाच्या दिवशी), आणि व्यवहाराचे दर नसून मानक म्हणून दिलेले असतात. तुम्हाला तुमच्या बँकेत किंवा ब्रोकरकडे प्रत्यक्ष मिळणाऱ्या दरांमध्ये खरेदी-विक्री दरातील फरक (spread) असतो आणि ते लक्षणीयरीत्या वेगळे असू शकतात, विशेषतः लहान चलनांसाठी. API key ची गरज नाही, आणि विनंती थेट तुमच्या ब्राउझरमधून जाते.',
         },
         {
-          q: '“खर्चाचे चलन (functional currency)” म्हणजे काय?',
-          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. आम्ही ते पट्ट्यांमधून वगळतो, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात स्थानिक किमतींना तुम्हाला काय मिळते ते थेट बदलत नाही.',
+          q: 'माझे खर्चाचे चलन (spending currency) कोणते?',
+          a: 'खर्चाचे चलन म्हणजे ज्या चलनात तुम्ही मुख्यतः खर्च करता आणि जगता ते. तुमची बिले, भाडे आणि किराणा ज्या चलनात मोजले जातात ते हेच. ते पट्ट्यांमधून वगळले जाते, कारण विनिमय दरातील बदलांमुळे तुमच्या खर्चाच्या चलनातील पैशात स्थानिक किमतींना तुम्हाला काय मिळते ते थेट बदलत नाही.',
         },
         {
           q: '“कमी”, “मध्यम” आणि “जास्त” यांचा अर्थ काय?',
@@ -1963,7 +1963,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         },
       ],
       footerTag: 'चलनांच्या व्यवस्थापनावर आणखी वाचा',
-      footerAll: 'किंवा सर्व लेख पाहा',
+      footerAll: 'किंवा सर्व धडे पाहा',
     },
   },
   island: {
@@ -1971,7 +1971,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
     export: {
       meaning: 'निव्वळ संपत्ती म्हणजे तुमच्याकडे जे आहे त्यातून तुम्ही देणे असलेले वजा करून उरलेली रक्कम.',
       meaningShares: 'प्रत्येक चलनाचा हिस्सा दाखवतो की ते चलन तुम्ही खर्च करता त्या चलनाच्या तुलनेत वर-खाली झाल्यावर निव्वळ संपत्तीचा किती भाग बदलतो.',
-      meaningRates: 'इतर चलनांतील रकमा पेजवर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
+      meaningRates: 'इतर चलनांतील रकमा पानावर लोड झालेल्या दरांनी रूपांतरित केल्या आहेत, जे रोज बदलतात.',
       tool: 'निव्वळ संपत्ती कॅल्क्युलेटर',
       hiddenLabel: 'रक्कम',
       hiddenText: 'समाविष्ट नाही: या शेअर केलेल्या दृश्यात फक्त चलने आणि त्यांचे हिस्से आहेत.',
@@ -1981,7 +1981,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       netSpending: 'निव्वळ, {currency} मध्ये',
       sharePct: 'हिस्सा, %',
       exposurePct: 'निव्वळ संपत्तीच्या तुलनेत, %',
-      ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पेजवर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
+      ratesText: 'Frankfurter कडून अधिकृत संदर्भ दर, या पानावर लोड झाले तसे. तुमची बँक किंवा ब्रोकर वेगळे दर वापरू शकतात.',
       ratePer: '1 {currency} मागे एकके',
     },
     toolbar: {
@@ -1990,7 +1990,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       currencyHelp: 'तुमची निव्वळ संपत्ती या चलनात दाखवली जाते. दुसऱ्या चलनातील सगळे नवीनतम अधिकृत विनिमय दरांनी बदलले जाते.',
       share: 'शेअर करा',
       shareTitle: 'तुमची निव्वळ संपत्ती शेअर करा',
-      reset: 'पुन्हा सुरुवात करा',
+      reset: 'रीसेट करा',
       resetTitle: 'सगळा डेटा पुसून नव्याने सुरुवात करा',
       copiedLabel: 'लिंक क्लिपबोर्डवर कॉपी झाली',
       /** Above the address when the browser would not copy it: the reader copies it by hand. */
@@ -2041,7 +2041,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
         invalidValue: '“{value}” ही वैध धन संख्या नाही.',
         emptyCurrency: 'चलनाचा कोड रिकामा आहे.',
         unsupportedCurrency: '“{value}” हे उपलब्ध चलन नाही. उपलब्ध: {supported}.',
-        unknownType: '“{value}” हा साधनाला माहीत असलेला प्रकार नाही. {asset} किंवा {liability} लिहा.',
+        unknownType: '“{value}” हा साधनाला माहीत असलेला प्रकार नाही. {asset} किंवा {liability} भरा.',
       },
     },
     /** The example a reader can fill in while every row is still blank. The four names are the example rows' names. */
@@ -2059,7 +2059,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       valueAria: 'मूल्य (ओळ {index})',
       currencyAria: 'चलन (ओळ {index})',
       typeAria: 'प्रकार (ओळ {index})',
-      valueError: 'ही रक्कम वाचता आली नाही. फक्त अंक लिहा, उदा. 50000.',
+      valueError: 'ही रक्कम वाचता आली नाही. फक्त अंक भरा, उदा. 50000.',
       valuePlaceholder: 'उदा. 50000',
       namePlaceholder: 'मालमत्तेचे/देण्याचे नाव',
       asset: 'मालमत्ता',

@@ -35,7 +35,7 @@ faq:
   - question: "Is renting really throwing money away?"
     answer: "No. This is a common real estate myth. Rent pays for shelter, flexibility, and the transfer of property-specific risk to your landlord. Buying does not eliminate those costs, it moves them to your side. Equally, a primary home is not a pure investment: it generates no cash income, costs money every month, and appreciates only at modest real rates after maintenance, taxes, insurance, and transaction costs. The honest comparison is never simply rent versus buy. It is buying versus renting and investing the difference. Where prices are very high relative to rents, renting plus investing often wins; where rents are high relative to prices, owning often wins."
   - question: "Why does illiquidity matter for real estate?"
-    answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallise a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is why owners commonly keep a larger cash buffer than a pure-paper portfolio would need, and why it helps to make that trade deliberately."
+    answer: "Unlike a stock you can sell in a day, a property sale typically takes weeks to months, carries 5 to 10% round-trip transaction costs, and can stall entirely in a slow market. This has real consequences: you cannot easily rebalance out of property, a forced sale from job loss or relocation can crystallize a bad price, and your money is locked to one geography. Most owners are also heavily concentrated, with a single property in one city and one currency representing a large share of net worth. That is the opposite of diversification, which is why owners commonly keep a larger cash buffer than a pure-paper portfolio would need, and why it helps to make that trade deliberately."
 referentialReading:
   - title: "Real Estate Investing"
     author: "Wikipedia"
@@ -83,11 +83,11 @@ Typical ongoing costs of ownership, as an annual percentage of property value:
 | Insurance | 0.2-0.5% |
 | Vacancy (for rentals) | Equivalent of 4-10% of rent per year |
 | Property management (if used) | 8-12% of rent |
-| Transaction costs (one-time, amortised) | 5-10% total, round-trip |
+| Transaction costs (one-time, amortized) | 5-10% total, round-trip |
 
 For a typical residential property, total ongoing costs commonly consume 2-4% of property value per year, and transaction costs alone eat 5-10% when you buy and eventually sell. A property that "appreciated 30% over 10 years" may have delivered much less to the owner once those costs are netted out.
 
-> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 8-10% in the US (mostly agent commissions of around 5 to 6% paid on sale, plus closing costs), 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
+> **Transaction costs vary substantially by country.** The 5-10% figure above is a rough developed-market midpoint. Actual round-trip transaction costs (buying + eventually selling) tend to land in these ranges: roughly 8-10% in the US (mostly agent commissions of around 5 to 6% paid on sale, plus closing costs, which are the fees for completing the deal), 5-8% in the UK (stamp duty + legal + agent), 7-12% in India (stamp duty + registration + brokerage), and 10-15% in several European markets (France, Italy, Spain, parts of Germany) where notary and registration fees are heavier. Local norms are worth checking before running the maths; the difference between a 3% and a 12% round-trip materially changes how long you need to hold a property to come out ahead.
 
 This isn't an argument against real estate. It's an argument against treating gross appreciation as your return.
 
@@ -110,7 +110,7 @@ Suppose you buy a €300,000 property with a 20% down payment of €60,000. The 
 
 Leverage is why real estate has made many people wealthy, and also why it has wiped out many others. The asset moved a normal amount; the equity moved a lot more.
 
-This is also why the mortgage interest rate matters enormously. The [previous post on understanding loan terms](/blog/understanding-loan-terms/) covered the mechanics in detail: APR, amortisation, fixed vs. variable, prepayment. For real estate specifically, mortgage interest is simultaneously one of the largest expenses of ownership and the cost of access to the leverage that makes the math work. When you're shopping for a mortgage, the [loan comparison calculator](/free/loan-comparison/) makes it straightforward to put up to five offers side by side: monthly payment, time to payoff, total interest paid, and the effect of any extra-principal payments. A half-percentage-point difference between banks shows up there as the multi-thousand-currency-unit difference it actually is, rather than as a number that sounds small in a brochure.
+This is also why the mortgage interest rate matters enormously. The [previous post on understanding loan terms](/blog/understanding-loan-terms/) covered the mechanics in detail: APR, amortization, fixed vs. variable, prepayment. For real estate specifically, mortgage interest is simultaneously one of the largest expenses of ownership and the cost of access to the leverage that makes the math work. When you're shopping for a mortgage, the [loan comparison calculator](/free/loan-comparison/) makes it straightforward to put up to five offers side by side: monthly payment, time to payoff, total interest paid, and the effect of any extra-principal payments. A half-percentage-point difference between banks shows up there as the multi-thousand-currency-unit difference it actually is, rather than as a number that sounds small in a brochure.
 
 ## Illiquidity and concentration
 
@@ -119,7 +119,7 @@ Unlike a stock, you cannot sell a property in a day. A sale typically takes week
 This has practical consequences:
 
 - You cannot easily rebalance from real estate to something else
-- A forced sale (job loss, divorce, relocation) can crystallise a bad price
+- A forced sale (job loss, divorce, relocation) can crystallize a bad price
 - Owners commonly keep a larger emergency fund, because the property cannot fund a short-term crisis
 - Real estate locks your money in place at a specific geography
 
@@ -148,7 +148,7 @@ In markets where property prices are very high relative to rents, the difference
 
 A usable back-of-envelope framework:
 
-1. **Total monthly cost of owning.** Mortgage payment + maintenance allowance (roughly 1% of property value / 12) + property taxes / 12 + insurance / 12 + amortised transaction costs over expected years of ownership
+1. **Total monthly cost of owning.** Mortgage payment + maintenance allowance (roughly 1% of property value / 12) + property taxes / 12 + insurance / 12 + amortized transaction costs over expected years of ownership
 2. **Total monthly cost of renting.** Rent + renter's insurance
 3. **The "difference".** Owning cost minus renting cost (or the other way around)
 4. **What would the renter do with the difference?** If it would be invested into a diversified portfolio, project both paths over your realistic time horizon
@@ -169,7 +169,7 @@ Factors that still make buying structurally attractive in specific situations:
 
 Factors that often make renting structurally sensible:
 
-- Short expected stay (less than 5-7 years is rarely long enough to amortise transaction costs)
+- Short expected stay (less than 5-7 years is rarely long enough to amortize transaction costs)
 - High price-to-rent ratio in the local market
 - Career flexibility requirements
 - Desire for geographic or currency diversification

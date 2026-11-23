@@ -1,6 +1,6 @@
 # Brand identity: who nidhi is for, and how it speaks
 
-**Last updated:** 2026-11-10
+**Last updated:** 2026-11-22
 
 This is the reference for anyone writing for nidhi: the owner, volunteers, Claude, Codex and DeepSeek. Read it before writing copy, a lesson, a translation or a glossary entry. Volunteers get the short version, [`i18n/volunteer-brief.md`](i18n/volunteer-brief.md); a change here updates it in the same pull request. Colours, logo and tagline are in [`color-palette.md`](color-palette.md); Instagram has its own audience and rules ([`plans/PLAYBOOK.md`](plans/PLAYBOOK.md) §1, [`instagram-kit/BRAND-RULES.md`](instagram-kit/BRAND-RULES.md)).
 
@@ -16,7 +16,7 @@ The site is for a whole working life, from the first pay slip to retirement and 
 **The test for every page:** a first-jobber can follow it, and a retired reader would forward it. If a page is too simple for the fourth reader to trust, or too dense for the first to follow, it is not finished.
 
 What follows from this:
-- No single country, currency or age is the default reader. Examples rotate across countries and life stages (see `plans/blog-content-plan.md` Rule 7 for the currency defaults).
+- No single country, currency or age is the default reader. Examples rotate across countries and life stages. **The euro to compare** (owner, 2026-11-22): examples use the euro where one currency keeps figures comparable across lessons and guides, and rotate otherwise; published figures stay as they are (`plans/blog-content-plan.md` Rule 7).
 - Later-life topics (estates, pensions, care) are not niche: they are part of the site, and are written so a younger reader sees why they matter early.
 - The site does not talk down to the young or assume the old know everything.
 
@@ -29,6 +29,9 @@ The Instagram account targets a narrower audience (PLAYBOOK §1) to grow. That a
 - **Teach, don't prescribe.** The concept, why people use it, the evidence with its limits, where it breaks, what depends on the reader's situation (`CLAUDE.md`, "Editorial Voice").
 - **Plain words.** Every term is explained before it is used.
 - **The founder speaks as "I"** where a person is speaking, and is never given a gender, in any language.
+- **I where a person acts, neutral where the site does** (owner, 2026-11-22). "I read every reply", but "A confirmation link is on its way": what happens automatically is worded without a person. The privacy notice and the cookie question keep "we", so consent wording stays as it is. In a lesson, "we" meaning people in general ("we tend to...") is not the site's voice and is fine. This holds in every language.
+- **Oxford spelling in English** (owner, 2026-11-22). British words with -ize endings: behaviour, colour, programme, adviser; organize, optimize, amortization. -yse stays (analyse), and so do words that only take -ise (advise, exercise, compromise, revise). A quotation, the title of a cited work, a proper name, code, and an address or anchor already published keep their own spelling.
+- **Curly quotation marks in English**: “like this”, never straight double quotes, on every page. Each other language's marks are in its glossary.
 - **The reader is never given a gender**, in any language. Each glossary says how its language avoids it.
 - **No em dashes or double dashes** anywhere on the site.
 
@@ -40,7 +43,7 @@ nidhi talks like a polite friend a few steps ahead: someone who has done the rea
 
 1. **Teach, and leave the decision with the reader.** The concept, why people use it, the evidence and its limits, where it breaks, what depends on circumstances. No "you should", no disguised steps for someone's money decision, no superlatives the evidence cannot carry.
 2. **Explain before relying on knowledge.** Every term before it is used, the reason before the definition, worked examples. Never "basic", "obvious", "easy" or "just".
-3. **Respect the whole working life.** Organise around situations, not ages. Never infer knowledge from age, or assume income, health, children or a conventional family.
+3. **Respect the whole working life.** Organize around situations, not ages. Never infer knowledge from age, or assume income, health, children or a conventional family.
 4. **Conversational and precise.** Plain words, natural sentences, contractions in English. No slang, emoji, exclamation marks in teaching text, or pet names. Polite always: if a sentence would be wrong to say to a stranger's grandparent, rewrite it.
 5. **Acknowledge difficulty without inventing feelings.** Once, conditionally ("this can feel overwhelming"). Never "I know how you feel", no guaranteed outcomes, no reassurance in place of explanation.
 6. **Name hard subjects plainly and gently.** Die, will, debt, estate, family conflict. No blame, drama or euphemism.
