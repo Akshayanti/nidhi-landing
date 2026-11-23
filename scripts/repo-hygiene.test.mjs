@@ -145,7 +145,15 @@ describe('the required checks run on every pull request', () => {
         if (condition) assert.equal(condition[1], required ? '${{ always() }}' : '${{ !cancelled() }}', `job ${id}`);
         else assert.ok(!required, `job ${id}: the required summary job needs if: \${{ always() }}`);
       }
-      assert.doesNotMatch(text, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
+      // One output is allowed: the free tools gates' list of mutation shards,
+      // read from stryker.shards.json and never from what changed (#846).
+      let checked = text;
+      if (file === 'tool-gates.yml') {
+        const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf('\n  mutation:\n'));
+        assert.doesNotMatch(plan, /git |github\.event\.pull_request|changed/, 'the plan job reads stryker.shards.json only');
+        checked = text.replace('${{ fromJSON(needs.plan.outputs.shards) }}', '');
+      }
+      assert.doesNotMatch(checked, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
     });
 
     it(`${file}: a manual, a scheduled and a pull request run never cancel one another`, () => {
@@ -400,7 +408,12 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     const config = read('stryker.config.mjs');
     const scopes = [...config.slice(config.indexOf('const SCOPES = {'), config.indexOf('\n};', config.indexOf('const SCOPES = {'))).matchAll(/^ {2}'?([\w-]+)'?: \[/gm)].map((m) => m[1]);
     assert.ok(scopes.length >= 6, `only ${scopes.length} scopes`);
-    assert.deepEqual([...matrix('mutation')].sort(), [...scopes].sort());
+    // The matrix is built from stryker.shards.json (the plan job, #846).
+    const shards = JSON.parse(read('stryker.shards.json'));
+    assert.deepEqual(Object.keys(shards).sort(), [...scopes].sort());
+    for (const [scope, n] of Object.entries(shards)) assert.ok(Number.isInteger(n) && n >= 1 && n <= 8, `${scope}: ${n} shards`);
+    assert.match(gates, /readFileSync\("stryker\.shards\.json", "utf8"\)/);
+    assert.match(gates, /include: \$\{\{ fromJSON\(needs\.plan\.outputs\.shards\) \}\}/);
   });
 
   it('measures the text size of every tool the audit knows', () => {
@@ -411,7 +424,12 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
   it('holds every scope to its floors, never pooled', () => {
     assert.match(gates, /npx stryker run stryker\.config\.mjs\n/);
     assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
-    assert.match(gates, /run: node scripts\/mutation-floors\.mjs \$\{\{ matrix\.scope \}\}\n/);
+    assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
+    assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
+    // The required check waits for every part, the floors included.
+    assert.match(gates, /needs: \[plan, mutation, floors, text-size\]/);
+    // Pull requests reuse earlier results; the nightly run retests everything.
+    assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);
     assert.match(read('.github/workflows/pr-checks.yml'), /FLOORS_BASE: HEAD\^1/);
   });
 

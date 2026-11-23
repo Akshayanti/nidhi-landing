@@ -1,22 +1,34 @@
 #!/usr/bin/env node
-// Checks one scope's mutation report against its floors (#790).
+// Checks one scope's mutation reports against its floors (#790).
 //
 //   node scripts/mutation-floors.mjs <scope>
 //
-// Reads reports/mutation/<scope>.json (written by `npx stryker run`) and
-// stryker.floors.json. Exit 1 when a part is below its floor, 2 when the
-// report cannot be read.
+// Reads the scope's reports in reports/mutation/ (written by `npx stryker
+// run`): <scope>.json, or one <scope>-<i>of<n>.json per shard when
+// stryker.shards.json splits it (#846), all of which must be there. Exit 1
+// when a part is below its floor, 2 when a report is missing or unreadable.
 import { readFileSync } from 'node:fs';
-import { judgeScope, partScores } from './lib/checks/mutation-floors.mjs';
+import { judgeScope, mergeReports, partScores } from './lib/checks/mutation-floors.mjs';
 
 const scope = process.argv[2];
-let report;
-try {
-  report = JSON.parse(readFileSync(`reports/mutation/${scope}.json`, 'utf8'));
-} catch (error) {
-  console.error(`mutation-floors: no report to read for ${scope}: ${error.message}`);
+const count = JSON.parse(readFileSync('stryker.shards.json', 'utf8'))[scope];
+if (!count) {
+  console.error(`mutation-floors: ${scope} is not in stryker.shards.json`);
   process.exit(2);
 }
+const names = count === 1 ? [scope] : Array.from({ length: count }, (_, i) => `${scope}-${i + 1}of${count}`);
+const reports = [];
+for (const name of names) {
+  try {
+    reports.push(JSON.parse(readFileSync(`reports/mutation/${name}.json`, 'utf8')));
+  } catch (error) {
+    console.error(`mutation-floors: no report to read for ${name}: ${error.message}`);
+    process.exit(2);
+  }
+}
+const report = mergeReports(reports);
+const total = Object.values(report.files).reduce((n, f) => n + f.mutants.length, 0);
+console.log(`${scope}: ${total} mutants from ${reports.length} report(s)`);
 const floors = JSON.parse(readFileSync('stryker.floors.json', 'utf8'));
 const scores = partScores(report);
 for (const part of ['logic', 'component']) {

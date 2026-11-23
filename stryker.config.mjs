@@ -1,8 +1,15 @@
-// Mutation testing (#790): one scope per run, chosen by STRYKER_SCOPE, so CI
-// runs the tools and the shared code as separate shards, each held to its own
-// minimum (never pooled). Every test file may kill a mutant; per-test
-// coverage runs only the tests that reach it.
-import { globSync } from 'node:fs';
+// Mutation testing (#790): one scope per run, chosen by STRYKER_SCOPE, each
+// held to its own floors (never pooled). Every test file may kill a mutant;
+// per-test coverage runs only the tests that reach it.
+//
+// Speed (#846): STRYKER_SHARD=<i>/<n> runs one of a scope's n shards, cut
+// between top-level statements (scripts/lib/checks/mutation-shards.mjs), so
+// CI runs a slow scope on several runners at once; stryker.shards.json says
+// how many. Results are kept per shard (incremental mode): a run retests only
+// mutants whose code or tests changed. STRYKER_FORCE=1 (the nightly run)
+// retests everything.
+import { globSync, readFileSync } from 'node:fs';
+import { shardPatterns } from './scripts/lib/checks/mutation-shards.mjs';
 
 const SCOPES = {
   inflation: ['src/utils/inflation/*.ts', 'src/components/InflationCalculator.tsx'],
@@ -30,6 +37,14 @@ process.env.NIDHI_MUTATION_RUN = '1';
 const scope = process.env.STRYKER_SCOPE;
 if (!SCOPES[scope]) throw new Error(`STRYKER_SCOPE must be one of: ${Object.keys(SCOPES).join(', ')}`);
 
+const SHARDS = JSON.parse(readFileSync(new URL('./stryker.shards.json', import.meta.url), 'utf8'));
+const [shard, shardCount] = (process.env.STRYKER_SHARD ?? `1/${SHARDS[scope]}`).split('/').map(Number);
+if (shardCount !== SHARDS[scope]) throw new Error(`${scope} has ${SHARDS[scope]} shard(s) in stryker.shards.json, not ${shardCount}`);
+const files = globSync(SCOPES[scope]).filter((f) => !/\.test\.tsx?$/.test(f)).sort();
+const name = shardCount === 1 ? scope : `${scope}-${shard}of${shardCount}`;
+// One shard of several: whole-statement ranges. A scope of one shard: every file.
+const mutate = shardCount === 1 ? files : shardPatterns(files, shardCount, shard);
+
 export default {
   testRunner: 'tap',
   tap: {
@@ -41,10 +56,13 @@ export default {
     forceBail: true,
   },
   coverageAnalysis: 'perTest',
-  mutate: [...SCOPES[scope], '!**/*.test.ts', '!**/*.test.tsx'],
+  mutate,
   concurrency: Number(process.env.STRYKER_CONCURRENCY ?? 4),
   reporters: ['clear-text', 'json', 'progress'],
-  jsonReporter: { fileName: `reports/mutation/${scope}.json` },
+  jsonReporter: { fileName: `reports/mutation/${name}.json` },
+  incremental: true,
+  incrementalFile: `reports/stryker-incremental/${name}.json`,
+  force: process.env.STRYKER_FORCE === '1',
   clearTextReporter: { logTests: false, reportMutants: false },
   // Stryker's TypeScript checker step reads a tsconfig this project's tsx
   // setup does not need; skipping it leaves compile errors to the test run.

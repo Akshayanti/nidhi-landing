@@ -22,7 +22,7 @@ lines, and its tests are the test files beside it or importing it.
 | `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools gates", workflow "PR Checks", workflow "Tool privacy check" | `lint-figures.test.mjs` |
 | `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools gates", workflow "PR Checks", workflow "Tool privacy check" | none |
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
-| `mutation-floors.mjs` | Checks one scope's mutation report against its floors (#790). | workflow "Free tools gates" | none |
+| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools gates" | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
 | `preview_transactional_emails.py` | Render HTML previews of the two transactional emails built by scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and the welcome email (`sendWelcomeEmail_`). | by hand | none |
@@ -58,7 +58,7 @@ lines, and its tests are the test files beside it or importing it.
 The modules the entry points import, each with its tests beside it, kept in
 one folder per purpose:
 
-- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-floors.mjs`, `serve-dist.mjs`, `tool-privacy-checks.mjs`.
+- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-floors.mjs`, `mutation-shards.mjs`, `serve-dist.mjs`, `tool-privacy-checks.mjs`.
 - `lib/publishing/`: The site build and its data: the short-link pages and inline-script minifier astro.config.mjs runs, the inflation history and the Apps Script version stamp. Modules: `gs-version.mjs`, `inflation-data.mjs`, `minify-inline-scripts.mjs`, `short-link-stub.mjs`.
 - `lib/media/`: The reel, caption and Instagram pipeline: lesson and post parsers, the script writer, the scrubber and its maths check, speech, music, figures and captions. Modules: `generate-tts.mjs`, `llm-script-writer.mjs`, `math-consistency.mjs`, `parse-blog-meta.mjs`, `parse-markdown.js`, `parse-vtt.mjs`, `pick-music.mjs`, `prepare-figures.mjs`, `render-platform-caption.mjs`, `scrub-output.mjs`.
 

@@ -74,6 +74,9 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   '@anthropic-ai/sdk': '^1.10.0',
   // Mutation testing (#790): run in CI on every pull request, so pinned
   // exactly, like tsx. Nothing under src/ imports them.
+  // Reads the tools' top-level statements to cut the mutation shards
+  // (scripts/lib/checks/mutation-shards.mjs, #846), as Stryker reads them.
+  '@babel/parser': '7.29.9',
   '@stryker-mutator/core': '10.1.1',
   '@stryker-mutator/tap-runner': '10.1.1',
   // Component tests (*.dom.test.tsx): the five tools mounted in a test
