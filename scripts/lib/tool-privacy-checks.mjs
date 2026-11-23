@@ -29,28 +29,28 @@ export const BOXES = {
   'loan-comparison': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0], all: true },
     { name: 'principal', selector: 'input[id$="-principal"]', value: AMOUNTS[0], all: true },
-    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.31', all: true },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.3147', all: true },
     { name: 'term', selector: 'input[id$="-term"]', value: '347', all: true },
     // Before the extra payments and lump sums, which pay every offer off early:
     // the horizon and the refinance need the full term to take their values.
     { name: 'horizon slider', selector: 'input.lc-horizonSlider', value: '61', steps: 60, reveal: '[data-attr="lc-tab-horizon"]' },
     { name: 'horizon', selector: 'input.lc-horizonInput', value: '67' },
     { name: 'refinance month', selector: '.lc-refiInputs input.lc-input', value: '41', reveal: '[data-attr="lc-tab-refi"]' },
-    { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.93' },
+    { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.9381' },
     { name: 'new term', selector: '.lc-refiInputs input.lc-input', nth: 2, value: '293' },
     { name: 'new costs', selector: '.lc-refiInputs input.lc-input', nth: 3, value: AMOUNTS[6] },
     { name: 'fee', selector: 'input[id$="-fee"]', value: AMOUNTS[1], all: true },
     { name: 'points cost', selector: 'input[id$="-pointsCost"]', value: AMOUNTS[3], all: true },
-    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.13', all: true },
+    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.1371', all: true },
     { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2], all: true },
     { name: 'lump sums', selector: 'input[id$="-lumpSums"]', value: `23:${AMOUNTS[4]}`, all: true },
-    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.71', all: true },
+    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.7163', all: true },
     { name: 'penalty until', selector: 'input[id$="-prepayUntil"]', value: '29', all: true },
     // Before the hybrid rate: a payment is refused beside one. The first offer
     // only, so the second keeps a result for the analysis to work on.
     { name: 'monthly payment', selector: 'input[id$="-monthly"]', value: AMOUNTS[5], reveal: 'input[type="radio"][value="payment"]', after: 'input[type="radio"][value="term"]' },
     { name: 'fixed months', selector: 'input[id$="-initialFixedMonths"]', value: '59', reveal: 'input[type="radio"][value="hybrid"]' },
-    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.19' },
+    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.1927' },
   ],
   'multi-currency-net-worth': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0] },
@@ -66,26 +66,26 @@ export const BOXES = {
     { name: 'years of saving', selector: 'input.mcs-input', nth: 2, value: '37' },
     { name: 'mix', selector: 'input.mcs-range', value: '65', steps: 13 },
     // Before withdrawals are on: their boxes come after it on the page.
-    { name: 'fee', selector: 'input.mcs-input', nth: 3, value: '1.83', reveal: 'button.mcs-settingsToggle' },
+    { name: 'fee', selector: 'input.mcs-input', nth: 3, value: '1.8379', reveal: 'button.mcs-settingsToggle' },
     { name: 'withdrawal', selector: 'input.mcs-input', nth: 4, value: AMOUNTS[2], reveal: 'astro-island input[type="checkbox"]' },
     { name: 'years of withdrawals', selector: 'input.mcs-input', nth: 5, value: '43' },
   ],
   'inflation-calculator': [
     { name: 'amount', selector: 'input[id$="-amount"]', value: AMOUNTS[0] },
-    { name: 'rate', selector: 'input[id$="-rate"]', value: '4.37' },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '4.3719' },
     { name: 'years', selector: 'input[id$="-years"]', value: '47' },
-    { name: 'growth', selector: 'input[id$="-growth"]', value: '8.63', reveal: '[data-attr="free-inflation-tab-keep"]' },
+    { name: 'growth', selector: 'input[id$="-growth"]', value: '8.6347', reveal: '[data-attr="free-inflation-tab-keep"]' },
   ],
   'invest-or-pay-off': [
     { name: 'balance', selector: 'input[id$="-balance"]', value: AMOUNTS[0] },
-    { name: 'debt rate', selector: 'input[id$="-debtRate"]', value: '7.31' },
+    { name: 'debt rate', selector: 'input[id$="-debtRate"]', value: '7.3147' },
     { name: 'payment', selector: 'input[id$="-payment"]', value: AMOUNTS[1] },
     { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2] },
-    { name: 'inflation', selector: 'input[id$="-inflation"]', value: '3.79' },
-    { name: 'relief', selector: 'input[id$="-relief"]', value: '13.47' },
-    { name: 'fee', selector: 'input[id$="-feePct"]', value: '1.83' },
-    { name: 'tax on gains', selector: 'input[id$="-gainsTax"]', value: '17.29' },
-    { name: 'own return', selector: 'input[id$="-ownReturn"]', value: '8.63', reveal: 'input[type="radio"][value="own"]' },
+    { name: 'inflation', selector: 'input[id$="-inflation"]', value: '3.7921' },
+    { name: 'relief', selector: 'input[id$="-relief"]', value: '13.4719' },
+    { name: 'fee', selector: 'input[id$="-feePct"]', value: '1.8379' },
+    { name: 'tax on gains', selector: 'input[id$="-gainsTax"]', value: '17.2963' },
+    { name: 'own return', selector: 'input[id$="-ownReturn"]', value: '8.6347', reveal: 'input[type="radio"][value="own"]' },
   ],
 };
 
@@ -98,9 +98,42 @@ export function expectedLeaks(boxes) {
 }
 
 const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
+/**
+ * The decimal probes. Each has four or more decimal places (#843): a short one
+ * such as 1.83 was once PostHog's own measure of how long a page was open,
+ * and failed a clean run.
+ */
+export const PROBE_DECIMALS = PROBES.filter((p) => /^\d+\.\d+$/.test(p));
+
+/**
+ * Numbers PostHog computes itself, never from the page: a time, a token count,
+ * how long the last page was open and how far it was scrolled. A typed value
+ * cannot reach them, and a decimal probe can equal one by chance, so decimal
+ * probes are not looked for in them (#843). Amounts and names are, like
+ * everywhere else; every other property is read in full.
+ */
+export const SDK_MEASUREMENTS = Object.freeze([
+  '$time',
+  '$lib_rate_limit_remaining_tokens',
+  '$prev_pageview_duration',
+  '$prev_pageview_last_content_percentage',
+  '$prev_pageview_max_content_percentage',
+  '$prev_pageview_last_scroll_percentage',
+  '$prev_pageview_max_scroll_percentage',
+]);
+
+/** `json` without the SDK's own measurements, for the decimal probes. */
+export function withoutMeasurements(json) {
+  if (Array.isArray(json)) return json.map(withoutMeasurements);
+  if (!json || typeof json !== 'object') return json;
+  return Object.fromEntries(Object.entries(json)
+    .filter(([key, value]) => !(SDK_MEASUREMENTS.includes(key) && typeof value === 'number'))
+    .map(([key, value]) => [key, withoutMeasurements(value)]));
+}
+
 // A value that stands by itself: no digit, letter or decimal part joined to it.
-// With a decimal comma it is not two numbers of a list ([1,83], a position).
-const RATES = PROBES.filter((p) => /^\d+\.\d+$/.test(p))
+// With a decimal comma it is not two numbers of a list ([1,8379], a position).
+const RATES = PROBE_DECIMALS
   .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '\\.')}(?!\\w|[.,]\\d)|(?<![\\w.,[])${p.replace('.', ',')}(?![\\w\\]]|[.,]\\d)`)]);
 const SHORT = PROBES.filter((p) => /^\d{1,3}$/.test(p))
   .map((p) => [p, new RegExp(`(?<![\\w.,-])${p}(?![\\w-]|[.,]\\d)`)]);
@@ -208,13 +241,13 @@ export function variants(text) {
  * read a value that was transformed (rounded, split across fields, hashed):
  * no check of this kind can.
  */
-export function findLeaks(text) {
+export function findLeaks(text, { decimals = true } = {}) {
   const found = new Set();
   const plain = variants(text);
   // Grouping marks between digits are dropped; nothing else is.
   const digits = plain.replace(/(?<=\d)[,.\s  '’_](?=\d)/g, '');
   for (const a of AMOUNTS) if (digits.includes(String(a))) found.add(String(a));
-  for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
+  if (decimals) for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
   const lower = plain.toLowerCase();
   for (const w of NAME_WORDS) if (lower.includes(w)) found.add(w);
   return [...found];
@@ -358,9 +391,12 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
     // The text as sent, and every string inside it as the receiver reads it
     // (a JSON escape such as \u005a is one letter once decoded).
     const texts = [d.text, d.url, d.json ? strings(d.json).join('\n') : ''].map(variants);
+    // Decimal probes are looked for in the body less PostHog's own measurements
+    // (SDK_MEASUREMENTS); an unreadable body is read whole.
+    const ratesIn = d.json ? [JSON.stringify(withoutMeasurements(d.json)), d.url, strings(withoutMeasurements(d.json)).join('\n')].map(variants) : texts;
     // A body without events is read as an event's properties are.
     const inBody = d.json && typeof d.json === 'object' && !carriesEvents(d.url) ? shortLeaks({ properties: d.json }) : [];
-    const leaks = new Set([...texts.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
+    const leaks = new Set([...texts.flatMap((t) => findLeaks(t, { decimals: false })), ...ratesIn.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
     if (leaks.size) problems.push(`a request to ${where} carries what was typed: ${[...leaks].join(', ')}`);
     if (texts.some((t) => /\b(blob|data):[^"\s]{4,}/i.test(t))) problems.push(`a request to ${where} carries a blob: or data: address`);
     const file = texts.map((t) => /[\w%-]+\.(xlsx|csv|pdf)\b/i.exec(t)).find(Boolean);

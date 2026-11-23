@@ -66,12 +66,12 @@ describe('tool privacy checks: every box gets a value the check knows', () => {
   });
 
   it('covers the years, rate and term boxes that had no value of their own', () => {
-    for (const [tool, value] of [['inflation-calculator', '47'], ['inflation-calculator', '4.37'], ['loan-comparison', '347'], ['monte-carlo-simulator', '43']]) {
+    for (const [tool, value] of [['inflation-calculator', '47'], ['inflation-calculator', '4.3719'], ['loan-comparison', '347'], ['monte-carlo-simulator', '43']]) {
       assert.ok((boxes[tool] ?? []).some((b) => String(b.value) === value), `${tool}: ${value}`);
     }
   });
 
-  for (const value of ['4.37', '47', '347']) {
+  for (const value of ['4.3719', '47', '347']) {
     it(`finds ${value} in an event`, () => {
       const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { sent: Number(value) })]);
       assert.ok(problems.some((p) => p.includes('carries what was typed')), problems.join('\n'));
@@ -92,7 +92,7 @@ describe('tool privacy checks: every box gets a value the check knows', () => {
   }
 
   it('finds one in a request address', () => {
-    for (const value of ['4.37', '47']) {
+    for (const value of ['4.3719', '47']) {
       assert.ok(judge(cleanEvents(), { url: `https://eu.i.posthog.com/i/v0/e/?q=${value}` }).problems.some((p) => p.includes('carries what was typed')), value);
     }
   });
@@ -562,9 +562,47 @@ describe('a short value in an event’s name (P2)', () => {
 
 describe('a typed rate in a list of numbers (P2)', () => {
   it('two numbers, as PostHog sends a position, are not a rate typed with a decimal comma', () => {
-    for (const text of ['"coords":[[1,83],[2,4]]', '[1,83]', '[7,1,83]']) assert.deepEqual(checks.findLeaks(text), [], text);
+    for (const text of ['"coords":[[1,8379],[2,4]]', '[1,8379]', '[7,1,8379]']) assert.deepEqual(checks.findLeaks(text), [], text);
   });
   it('the rate itself still is, in either mark', () => {
-    for (const text of ['fee 1,83 %', '"fee":"1,83"', '1.83', '"f":1.83', '[1.83]']) assert.ok(checks.findLeaks(text).includes('1.83'), text);
+    for (const text of ['fee 1,8379 %', '"fee":"1,8379"', '1.8379', '"f":1.8379', '[1.8379]']) assert.ok(checks.findLeaks(text).includes('1.8379'), text);
+  });
+});
+
+describe('a probe value is not mistaken for PostHog’s own measurements (#843)', () => {
+  const decimals = checks.PROBE_DECIMALS;
+
+  it('every decimal probe has four or more decimal places, so no timing or count equals it by chance', () => {
+    assert.ok(decimals.length > 5, `only ${decimals.length} decimal probes`);
+    for (const p of decimals) assert.match(p, /^\d+\.\d{4,}$/, p);
+  });
+
+  it('the timings PostHog itself measures are not read as typed rates', () => {
+    for (const p of decimals) {
+      const sdk = Object.fromEntries(checks.SDK_MEASUREMENTS.map((key) => [key, Number(p)]));
+      const { problems } = judge([...cleanEvents(), ev('$pageview', sdk)]);
+      assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), [], p);
+    }
+  });
+
+  it('the same value anywhere else is still a leak', () => {
+    for (const p of decimals) {
+      for (const props of [{ $prev_pageview_label: p }, { rate: Number(p) }, { note: `at ${p}%` }]) {
+        const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', props)]);
+        assert.ok(problems.some((x) => x.includes('carries what was typed')), `${p} in ${JSON.stringify(props)}`);
+      }
+    }
+  });
+
+  it('names exactly the measurements it leaves out, each a number PostHog computes', () => {
+    assert.deepEqual([...checks.SDK_MEASUREMENTS].sort(), [
+      '$lib_rate_limit_remaining_tokens',
+      '$prev_pageview_duration',
+      '$prev_pageview_last_content_percentage',
+      '$prev_pageview_last_scroll_percentage',
+      '$prev_pageview_max_content_percentage',
+      '$prev_pageview_max_scroll_percentage',
+      '$time',
+    ]);
   });
 });
