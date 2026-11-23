@@ -143,16 +143,31 @@ describe('the required checks run on every pull request', () => {
         // pr-checks.yml's jobs are the required checks themselves; the others
         // gather their jobs into one summary job that is required.
         const required = file !== 'pr-checks.yml' && REQUIRED[file].some((name) => job.includes(`name: ${name}`) || job.includes(`name: '${name}'`));
-        if (condition) assert.equal(condition[1], required ? '${{ always() }}' : '${{ !cancelled() }}', `job ${id}`);
+        // The one exception: the mutation shards, which a pull request that
+        // changes no mutation input skips (the plan job decides, and the gate
+        // passes that case only by name, below).
+        const allowed = file === 'tool-mutation.yml' && id === 'mutation' ? "${{ !cancelled() && needs.plan.outputs.run == 'true' }}" : '${{ !cancelled() }}';
+        if (condition) assert.equal(condition[1], required ? '${{ always() }}' : allowed, `job ${id}`);
         else assert.ok(!required, `job ${id}: the required summary job needs if: \${{ always() }}`);
       }
-      // One output is allowed: the free tools gates' list of mutation shards,
-      // read from stryker.shards.json and never from what changed (#846).
+      // Two outputs are allowed, both from the free tools mutation plan job:
+      // the list of shards, read from stryker.shards.json (#846), and `run`,
+      // which is 'false' only when a pull request changes no mutation input
+      // (scripts/lib/checks/mutation-inputs.mjs) and 'true' otherwise.
       let checked = text;
       if (file === 'tool-mutation.yml') {
         const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf('\n  mutation:\n'));
-        assert.doesNotMatch(plan, /git |github\.event\.pull_request|changed/, 'the plan job reads stryker.shards.json only');
-        checked = text.replace('${{ fromJSON(needs.plan.outputs.shards) }}', '');
+        assert.match(plan, /run: \$\{\{ steps\.inputs\.outputs\.run \|\| 'true' \}\}/, 'run defaults to true');
+        assert.match(plan, /import \{ needsMutationRun \} from "\.\/scripts\/lib\/checks\/mutation-inputs\.mjs"/);
+        assert.match(plan, /\[ "\$run" = "false" \] \|\| run=true/, 'anything but a clear false runs');
+        assert.match(plan, /if: github\.event_name == 'pull_request'/, 'nightly and manual runs always run');
+        // The gate passes without the shards only when the plan said so and nothing ran.
+        assert.ok(text.includes('if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then'));
+        checked = text
+          .replace('${{ fromJSON(needs.plan.outputs.shards) }}', '')
+          .replace("${{ !cancelled() && needs.plan.outputs.run == 'true' }}", '')
+          .replace('RUN: ${{ needs.plan.outputs.run }}', '')
+          .replace(plan, '');
       }
       assert.doesNotMatch(checked, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
     });

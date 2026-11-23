@@ -60,7 +60,7 @@ lines, and its tests are the test files beside it or importing it.
 The modules the entry points import, each with its tests beside it, kept in
 one folder per purpose:
 
-- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-floors.mjs`, `mutation-shards.mjs`, `serve-dist.mjs`, `tool-privacy-checks.mjs`.
+- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-floors.mjs`, `mutation-inputs.mjs`, `mutation-shards.mjs`, `serve-dist.mjs`, `tool-privacy-checks.mjs`.
 - `lib/publishing/`: The site build and its data: the short-link pages and inline-script minifier astro.config.mjs runs, the inflation history and the Apps Script version stamp. Modules: `gs-version.mjs`, `inflation-data.mjs`, `minify-inline-scripts.mjs`, `short-link-stub.mjs`.
 - `lib/media/`: The reel, caption and Instagram pipeline: lesson and post parsers, the script writer, the scrubber and its maths check, speech, music, figures and captions. Modules: `generate-tts.mjs`, `llm-script-writer.mjs`, `math-consistency.mjs`, `parse-blog-meta.mjs`, `parse-markdown.js`, `parse-vtt.mjs`, `pick-music.mjs`, `prepare-figures.mjs`, `render-platform-caption.mjs`, `scrub-output.mjs`.
 
