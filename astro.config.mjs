@@ -13,7 +13,6 @@ import {
   sitemapSerialize,
 } from './src/utils/sitemap.ts';
 import { CHANGE_DAYS } from './src/i18n/strings/changes.ts';
-import { LAUNCH_HOST_SLUGS } from './src/utils/launchHosts.ts';
 import { minifySync } from 'vite';
 import { fileURLToPath } from 'node:url';
 import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/publishing/short-link-stub.mjs';
@@ -32,7 +31,7 @@ const guideMaps = readGuideMaps(join('src/content', 'guides'));
 const sitemapInputs = {
   content: contentMaps,
   guides: guideMaps,
-  changesDay: newestChangeDay(CHANGE_DAYS.map((d) => d.date), Object.values(LAUNCH_HOST_SLUGS), contentMaps.published),
+  changesDay: newestChangeDay(CHANGE_DAYS.map((d) => d.date)),
   lastmodOf: gitLastmod,
 };
 

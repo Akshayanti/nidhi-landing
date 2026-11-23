@@ -5,7 +5,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { formErrors, formFromLink, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
+import { formErrors, formFromLink, openedPlan, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
 import { STATE_KEY_PATTERN, decodeState, defaultState } from './url.ts';
 
 const FIELDS: BoxField[] = ['start', 'monthly', 'saveYears', 'stockPct', 'withdrawal', 'withdrawYears', 'feePct'];
@@ -213,5 +213,44 @@ describe('a box refused for its length says it cannot be read (#789)', () => {
     const { readFileSync } = await import('node:fs');
     const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
     assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : props\.error/);
+  });
+});
+
+describe('a shared plan opens as the plan its boxes give', () => {
+  // The page shows the plan a link decodes to and does not work it out again
+  // from the boxes, so the two must be one plan for every link it reads.
+  it('the boxes a link opens with give back the plan it decodes to', () => {
+    const links = [
+      '', 's=0', 's=20000&m=300&y=12&n=1000', 'y=0&w=30000&r=30', 'w=1000&r=1&y=0&s=100000', 'w=30000&o=1', 'w=30000&o=1&r=12.5',
+      'k=0&f=0.25&e=c&n=100', 'k=100&e=o&n=100000&c=INR', 'c=usd&s=-5&m=1e3', 's=999999999999999&m=999999999999999&w=999999999999999',
+      'y=61&r=0', 'f=40&n=5000', 's=1.5&m=0.25', 'e=constructor', 'r=60&w=1&y=60',
+    ];
+    for (const link of links) {
+      const plan = decodeState(link || 'c=EUR');
+      const form = formFromLink(link || 'c=EUR');
+      assert.ok(plan && form, link);
+      if (Object.values(formErrors(form)).some(Boolean)) continue;
+      assert.deepEqual(toState(form), plan, link);
+    }
+  });
+
+  it('shows the plan its boxes give when they disagree with the plan it decodes to', () => {
+    // The box reads as 1; the plan part is refused for its 16 digits and falls back.
+    const link = 's=0000000000000001&n=100';
+    const form = formFromLink(link);
+    const decoded = decodeState(link);
+    assert.ok(form && decoded);
+    assert.notDeepEqual(toState(form), decoded);
+    assert.deepEqual(openedPlan(form, decoded), toState(form));
+    assert.equal(openedPlan(form, decoded).start, 1);
+  });
+
+  it('shows the decoded plan when a box is in error', () => {
+    const link = 'c=EUR&s=7x';
+    const form = formFromLink(link);
+    const decoded = decodeState(link);
+    assert.ok(form && decoded);
+    assert.ok(Object.values(formErrors(form)).some(Boolean));
+    assert.deepEqual(openedPlan(form, decoded), decoded);
   });
 });

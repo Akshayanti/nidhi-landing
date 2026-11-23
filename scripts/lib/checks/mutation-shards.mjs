@@ -21,38 +21,97 @@ export function topLevelSpans(file, source = readFileSync(file, 'utf8')) {
 
 /**
  * The units a scope can be cut into: runs of top-level statements, never split
- * where one statement ends on the line the next begins.
+ * where one statement ends on the line the next begins. Each has a `key`, its
+ * name in a weights file: its first line's text, numbered (`#2`, `#3`) when
+ * the file repeats that line, so a weight follows its statement when lines
+ * above it are added or taken away.
  */
 export function units(files, read = (file) => readFileSync(file, 'utf8')) {
   const out = [];
   for (const file of files) {
-    const spans = topLevelSpans(file, read(file));
+    const source = read(file);
+    const spans = topLevelSpans(file, source);
     if (spans.length === 0) continue;
+    const lines = source.split('\n');
+    const seen = new Map();
+    const push = (u) => {
+      const head = (lines[u.start - 1] ?? '').trim();
+      const n = (seen.get(head) ?? 0) + 1;
+      seen.set(head, n);
+      out.push({ ...u, key: n === 1 ? head : `${head}#${n}` });
+    };
     let current = { file, start: spans[0][0], end: spans[0][1] };
     for (const [start, end] of spans.slice(1)) {
       if (start <= current.end) current.end = Math.max(current.end, end);
       else {
-        out.push(current);
+        push(current);
         current = { file, start, end };
       }
     }
-    out.push(current);
+    push(current);
   }
   return out;
 }
 
 /**
- * The units of shard `index` (1-based) of `count`, dealt round-robin. What a
- * mutant costs depends on the tests that reach it, not on its lines (a
- * component with no tests yet costs nothing, a simulation's maths a great
- * deal), so every file is spread across all the shards rather than cut into
- * blocks.
+ * The units of shard `index` (1-based) of `count`.
+ *
+ * Without `weights` they are dealt round-robin. What a mutant costs depends on
+ * the tests that reach it, not on its lines (a component with no tests yet
+ * costs nothing, a simulation's maths a great deal), so every file is spread
+ * across all the shards rather than cut into blocks.
+ *
+ * With `weights` (a scope's entry in stryker.shard-weights.json: seconds per
+ * unit key, per file, measured from a full run) they are dealt by cost: the
+ * dearest first, each to the shard with the least so far, ties to the earlier
+ * unit and the lower shard, so the same input always gives the same shards. A
+ * unit with no weight (a statement added since) is costed by its lines, at the
+ * scope's measured cost per line.
  */
-export function shardUnits(all, count, index) {
+export function shardUnits(all, count, index, weights = null) {
   if (!(Number.isInteger(count) && count >= 1 && Number.isInteger(index) && index >= 1 && index <= count)) {
     throw new Error(`a shard is 1 to ${count} of ${count}, not ${index}`);
   }
-  return all.filter((_, i) => i % count === index - 1);
+  if (!weights) return all.filter((_, i) => i % count === index - 1);
+  const cost = unitCosts(all, weights);
+  const order = all.map((_, i) => i).sort((a, b) => cost[b] - cost[a] || a - b);
+  const load = new Array(count).fill(0);
+  const shardOf = new Array(all.length);
+  for (const i of order) {
+    let lightest = 0;
+    for (let s = 1; s < count; s++) if (load[s] < load[lightest]) lightest = s;
+    shardOf[i] = lightest;
+    load[lightest] += cost[i];
+  }
+  return all.filter((_, i) => shardOf[i] === index - 1);
+}
+
+/** Each unit's cost under `weights`: its measured seconds, or its lines at the measured cost per line. */
+export function unitCosts(all, weights) {
+  const lines = (u) => u.end - u.start + 1;
+  const known = all.filter((u) => typeof weights[u.file]?.[u.key] === 'number');
+  const knownLines = known.reduce((sum, u) => sum + lines(u), 0);
+  const knownCost = known.reduce((sum, u) => sum + weights[u.file][u.key], 0);
+  const perLine = knownLines > 0 && knownCost > 0 ? knownCost / knownLines : 1;
+  return all.map((u) => weights[u.file]?.[u.key] ?? lines(u) * perLine);
+}
+
+/**
+ * A scope's weights from its merged mutation report: per file, per unit key,
+ * the seconds its mutants took to test, rounded to a tenth. What
+ * stryker.shard-weights.json holds; made from a full (nightly or forced) run,
+ * since a mutant whose result was reused took no time.
+ */
+export function weightsFromReport(all, report) {
+  const out = {};
+  for (const u of all) {
+    const mutants = report.files?.[u.file]?.mutants ?? [];
+    const ms = mutants
+      .filter((m) => m.location.start.line >= u.start && m.location.end.line <= u.end)
+      .reduce((sum, m) => sum + (m.duration ?? 0), 0);
+    (out[u.file] ??= {})[u.key] = Math.round(ms / 100) / 10;
+  }
+  return out;
 }
 
 /**
@@ -60,9 +119,9 @@ export function shardUnits(all, count, index) {
  * shard is named whole; otherwise one `file:first-last` range per run of
  * units that sit next to each other in the file.
  */
-export function shardPatterns(files, count, index, read) {
+export function shardPatterns(files, count, index, read, weights = null) {
   const all = units(files, read);
-  const mine = new Set(shardUnits(all, count, index));
+  const mine = new Set(shardUnits(all, count, index, weights));
   const patterns = [];
   for (const file of files) {
     const fileUnits = all.filter((u) => u.file === file);

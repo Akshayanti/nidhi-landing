@@ -103,8 +103,8 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-${{ github.sha }}
-          restore-keys: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-
+          key: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-${{ github.sha }}
+          restore-keys: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-
 
       # Fails on a failed first test run and on a shard that finds nothing
       # to mutate. The score is judged in the floors job, over all shards.

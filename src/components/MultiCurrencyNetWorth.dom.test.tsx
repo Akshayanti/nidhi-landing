@@ -55,27 +55,29 @@ afterEach(() => {
 });
 
 describe('the net worth calculator, mounted', () => {
-  it('publishes a typed row value for the language switch', async () => {
+  it('publishes what is typed, readable or not, and marks what cannot be read', async () => {
     mount();
-    await typeFirstValue('73191');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    const decoded = decodeFromQueryString(raw as string);
-    assert.equal(decoded.refused, undefined);
-    assert.equal(decoded.isReadOnly, false);
-    assert.equal(decoded.rows[0].value, '73191');
-  });
-
-  it('publishes an unreadable row value as still unreadable', async () => {
-    mount();
-    const box = await typeFirstValue('7x');
-    assert.equal(box.getAttribute('aria-invalid'), 'true');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    const decoded = decodeFromQueryString(raw as string);
-    assert.equal(decoded.refused, undefined);
-    assert.equal(isUnreadableAmount(decoded.rows[0].value), true);
+    {
+      // publishes a typed row value for the language switch
+      await typeFirstValue('73191');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      const decoded = decodeFromQueryString(raw as string);
+      assert.equal(decoded.refused, undefined);
+      assert.equal(decoded.isReadOnly, false);
+      assert.equal(decoded.rows[0].value, '73191');
+    }
+    {
+      // publishes an unreadable row value as still unreadable
+      const box = await typeFirstValue('7x');
+      assert.equal(box.getAttribute('aria-invalid'), 'true');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      const decoded = decodeFromQueryString(raw as string);
+      assert.equal(decoded.refused, undefined);
+      assert.equal(isUnreadableAmount(decoded.rows[0].value), true);
+    }
   });
 });

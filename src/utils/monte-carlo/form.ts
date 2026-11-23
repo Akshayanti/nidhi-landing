@@ -124,6 +124,15 @@ export function publishableForm(f: FormState, pageCurrency: string): string {
   return withBoxes(encodeState(toState(valid)), boxes);
 }
 
+/**
+ * The plan a link's page shows: the plan its boxes give when every box can be
+ * read, so the result always matches what the boxes say; the plan the link
+ * decodes to, kept finite, when a box is in error.
+ */
+export function openedPlan(form: FormState, decoded: ToolState): ToolState {
+  return Object.values(formErrors(form)).some(Boolean) ? decoded : toState(form);
+}
+
 /** The form a link opens, or null when it carries no plan. */
 export function formFromLink(search: string): FormState | null {
   const decoded = decodeState(search);

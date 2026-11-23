@@ -1,0 +1,12 @@
+---
+/**
+ * The Monte Carlo simulator, at /free/monte-carlo-simulator/.
+ *
+ * A thin wrapper, so that every language renders one component: the page
+ * itself is `src/components/pages/MonteCarloPage.astro`, and the other
+ * languages come through `src/pages/[locale]/free/monte-carlo-simulator.astro`.
+ */
+import MonteCarloPage from '../../components/pages/MonteCarloPage.astro';
+---
+
+<MonteCarloPage locale="en" />

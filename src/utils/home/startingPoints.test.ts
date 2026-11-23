@@ -11,7 +11,7 @@ import {
   assertHomepageSlugs,
   homepageSlugs,
   levelCounts,
-  liveTools,
+  toolList,
   resolveSituations,
   resolveStartingPoints,
   routeNext,
@@ -67,14 +67,12 @@ describe('starting points', () => {
     assert.equal(points[0].lessons[0].href, '/blog/what-is-net-worth/');
   });
 
-  it('names each route\'s tools, leaving out gated ones', () => {
+  it('names each route\'s tools', () => {
     const posts = [post('saving-vs-investing', 'building', 1), post('understanding-loan-terms', 'building', 2)];
     const all = resolveStartingPoints(posts, NOW);
     assert.deepEqual(all.find((p) => p.id === 'no-plan')!.tools.map((t) => t.href), ['/free/monte-carlo-simulator/']);
-    const gated = resolveStartingPoints(posts, NOW, (href) => href !== '/free/monte-carlo-simulator/');
-    assert.deepEqual(gated.find((p) => p.id === 'no-plan')!.tools, []);
     assert.deepEqual(
-      gated.find((p) => p.id === 'complex')!.tools.map((t) => t.href),
+      all.find((p) => p.id === 'complex')!.tools.map((t) => t.href),
       ['/free/loan-comparison/', '/free/multi-currency-net-worth/'],
     );
   });
@@ -126,7 +124,6 @@ describe('situations', () => {
   it('fails the build rather than show a chain with a step missing', () => {
     assert.throws(() => resolveSituations(posts.slice(0, 2), NOW), /understanding-loan-terms/);
     assert.throws(() => resolveSituations([...posts.slice(0, 2), post('understanding-loan-terms', 'building', 27, FUTURE)], NOW), /not published/);
-    assert.throws(() => resolveSituations(posts, NOW, (href) => href !== '/free/loan-comparison/'), /not released/);
   });
 
   it('their lessons are in the build-time slug check', () => {
@@ -137,16 +134,12 @@ describe('situations', () => {
 });
 
 describe('tool cards', () => {
-  it('lists live tools in the section\'s order, leaving out gated ones', () => {
-    assert.deepEqual(liveTools(() => true).map((t) => t.key), ['netWorth', 'loanComparison', 'investOrPayOff', 'inflation', 'monteCarlo']);
-    assert.deepEqual(
-      liveTools((href) => href !== '/free/invest-or-pay-off/').map((t) => t.href),
-      ['/free/multi-currency-net-worth/', '/free/loan-comparison/', '/free/inflation-calculator/', '/free/monte-carlo-simulator/'],
-    );
+  it('lists every tool in the section\'s order', () => {
+    assert.deepEqual(toolList().map((t) => t.key), ['netWorth', 'loanComparison', 'investOrPayOff', 'inflation', 'monteCarlo']);
   });
 
   it('every tool has its card copy in the catalog', () => {
-    for (const { key } of liveTools(() => true)) {
+    for (const { key } of toolList()) {
       const card = en.home.toolCards[key];
       assert.ok(card.question && card.name && card.desc, key);
     }

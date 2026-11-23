@@ -27,14 +27,12 @@ import {
   assertHomepageSlugs,
   LADDER_LEVELS,
   levelCounts,
-  liveTools,
+  toolList,
   resolveSituations,
   resolveStartingPoints,
 } from '../../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, inclusiveHostLevels, inclusiveLine, liveInclusive } from '../../utils/inclusiveGuides.ts';
 import { getPathPosts } from '../../utils/learnPosts';
-import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
-import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release.ts';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -61,17 +59,13 @@ const now = isDev ? new Date('2999-01-01') : new Date();
 const allPosts = await getCollection('blog');
 assertHomepageSlugs(allPosts);
 
-const showMonteCarlo = await isMonteCarloReleased();
-const showInvestOrPayOff = await isInvestOrPayOffReleased();
-const isToolLive = (href: string) =>
-  (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
-const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
+const startingPoints = resolveStartingPoints(allPosts, now);
 // The How-to line under the situations shows once a guide is live.
 const guideCount = (await getGuides()).length;
 const hasGuides = guideCount > 0;
 const guideHub = localizedPath(locale, GUIDE_HUB);
-const situations = resolveSituations(allPosts, now, isToolLive);
-const tools = liveTools(isToolLive);
+const situations = resolveSituations(allPosts, now);
+const tools = toolList();
 const counts = levelCounts(allPosts, now);
 
 /** A catalog question without its outer quotation marks, in any of the five languages' styles. */

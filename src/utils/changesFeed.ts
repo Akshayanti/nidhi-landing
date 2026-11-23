@@ -1,8 +1,7 @@
 import rss from '@astrojs/rss';
 import { LOCALE_META, dict, localizedPath, type Locale } from '../i18n';
-import type { ChangeItem } from '../i18n/strings/changes.ts';
+import { CHANGES, type ChangeItem } from '../i18n/strings/changes.ts';
 import { feedTitle } from './feedTitle.ts';
-import { liveChanges } from './liveChanges.ts';
 
 /**
  * One feed item per change, dated the day it shipped (UTC), linking to its
@@ -38,7 +37,6 @@ export function feedItems(locale: Locale, items: Array<ChangeItem & { date: stri
  */
 export async function changesFeed(locale: Locale, site: URL) {
   const { changes } = dict(locale);
-  const items = await liveChanges();
   const page = new URL(localizedPath(locale, '/changes/'), site).href;
   const self = new URL(localizedPath(locale, '/changes/rss.xml'), site).href;
   return rss({
@@ -46,7 +44,7 @@ export async function changesFeed(locale: Locale, site: URL) {
     description: changes.meta.description,
     site: page,
     xmlns: { atom: 'http://www.w3.org/2005/Atom' },
-    items: feedItems(locale, items).map((item) => ({ ...item, link: new URL(item.link, site).href })),
+    items: feedItems(locale, CHANGES).map((item) => ({ ...item, link: new URL(item.link, site).href })),
     customData:
       `<language>${LOCALE_META[locale].htmlLang}</language>` +
       `<atom:link href="${self}" rel="self" type="application/rss+xml"/>`,

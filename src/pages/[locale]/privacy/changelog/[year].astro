@@ -6,10 +6,10 @@
 import PrivacyChangelogPage from '../../../../components/pages/PrivacyChangelogPage.astro';
 import { localizedStaticPaths, routeLocale } from '../../../../i18n/routes.ts';
 import { changelogYears } from '../../../../utils/privacyChangelog.ts';
-import { privacyChangelog } from '../../../../utils/privacyChangelogSource.ts';
+import { writtenChangelog } from '../../../../utils/privacyChangelogEntries.ts';
 
 export async function getStaticPaths() {
-  const years = changelogYears(await privacyChangelog());
+  const years = changelogYears(writtenChangelog);
   return localizedStaticPaths().flatMap((p) => years.map(({ year }) => ({ params: { ...p.params, year } })));
 }
 

@@ -46,27 +46,29 @@ afterEach(() => {
 });
 
 describe('the loan comparison, mounted', () => {
-  it('publishes a typed loan amount for the language switch', async () => {
+  it('publishes what is typed, readable or not, and opens it where the switch lands', async () => {
     mount();
-    await typeFirstPrincipal('73191');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    assert.equal(decodeFromQueryString(raw as string).vendors[0].principal, '73191');
-  });
+    {
+      // publishes a typed loan amount for the language switch
+      await typeFirstPrincipal('73191');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      assert.equal(decodeFromQueryString(raw as string).vendors[0].principal, '73191');
+    }
+    {
+      // publishes an unreadable loan amount as still unreadable
+      await typeFirstPrincipal('7x');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      assert.equal(decodeFromQueryString(raw as string).vendors[0].principal, UNREADABLE);
 
-  it('publishes an unreadable loan amount as still unreadable', async () => {
-    mount();
-    await typeFirstPrincipal('7x');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    assert.equal(decodeFromQueryString(raw as string).vendors[0].principal, UNREADABLE);
-
-    // Opened where the switch lands, the box is still in error.
-    cleanup();
-    (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL] = raw;
-    mount();
-    assert.equal(screen.getAllByLabelText(principalLabel)[0].getAttribute('aria-invalid'), 'true');
+      // Opened where the switch lands, the box is still in error.
+      cleanup();
+      (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL] = raw;
+      mount();
+      assert.equal(screen.getAllByLabelText(principalLabel)[0].getAttribute('aria-invalid'), 'true');
+    }
   });
 });

@@ -23,7 +23,7 @@ import { hi } from './hi.ts';
 import { es } from './es.ts';
 import { cs } from './cs.ts';
 import { mr } from './mr.ts';
-import { CHANGE_DAYS, LAUNCH_ITEMS } from './changes.ts';
+import { CHANGE_DAYS } from './changes.ts';
 
 /** One translatable string, addressed by its dot path. */
 type Leaf = { path: string; value: string };
@@ -617,7 +617,7 @@ describe('every string is used', async () => {
 
 /** A language's catalog and its "What's changed" lines, for the glossary checks. */
 function allWords(list: Leaf[], locale: (typeof LOCALES)[number]): Leaf[] {
-  const items = [...CHANGE_DAYS.flatMap((day) => day.items), ...Object.values(LAUNCH_ITEMS)];
+  const items = CHANGE_DAYS.flatMap((day) => day.items);
   return [...list, ...items.map((item) => ({ path: `changes.${item.id}`, value: item.text[locale] }))];
 }
 

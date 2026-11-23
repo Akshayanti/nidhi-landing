@@ -38,12 +38,15 @@ const scope = process.env.STRYKER_SCOPE;
 if (!SCOPES[scope]) throw new Error(`STRYKER_SCOPE must be one of: ${Object.keys(SCOPES).join(', ')}`);
 
 const SHARDS = JSON.parse(readFileSync(new URL('./stryker.shards.json', import.meta.url), 'utf8'));
+// What each statement cost to test in a full run, for scopes dealt by cost
+// rather than round-robin, so their shards finish together (#848).
+const WEIGHTS = JSON.parse(readFileSync(new URL('./stryker.shard-weights.json', import.meta.url), 'utf8'));
 const [shard, shardCount] = (process.env.STRYKER_SHARD ?? `1/${SHARDS[scope]}`).split('/').map(Number);
 if (shardCount !== SHARDS[scope]) throw new Error(`${scope} has ${SHARDS[scope]} shard(s) in stryker.shards.json, not ${shardCount}`);
 const files = globSync(SCOPES[scope]).filter((f) => !/\.test\.tsx?$/.test(f)).sort();
 const name = shardCount === 1 ? scope : `${scope}-${shard}of${shardCount}`;
 // One shard of several: whole-statement ranges. A scope of one shard: every file.
-const mutate = shardCount === 1 ? files : shardPatterns(files, shardCount, shard);
+const mutate = shardCount === 1 ? files : shardPatterns(files, shardCount, shard, undefined, WEIGHTS[scope] ?? null);
 
 export default {
   testRunner: 'tap',
