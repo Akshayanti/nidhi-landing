@@ -441,9 +441,12 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     // The required check keeps its name, waits for every tool, and runs after a failure.
     const required = workflow.slice(workflow.indexOf('\n  verify:\n'));
     assert.ok(required.includes('name: No typed value reaches analytics'));
-    assert.ok(required.includes('needs: [verify-tool]'));
+    // (And for the plan job: a pull request that changes nothing the check
+    // reads skips the tools, and only that case passes without them;
+    // scripts/repo-hygiene.test.mjs holds the exact lines.)
+    assert.ok(required.includes('needs: [plan, verify-tool]'));
     assert.match(required, /\n    if: \$\{\{ always\(\) \}\}\n/);
-    assert.ok(required.includes('[ "$TOOLS" != "success" ]'));
+    assert.ok(required.includes('if [ "$PLAN" != "success" ] || [ "$TOOLS" != "success" ]; then'));
   });
 
   it('lets nothing through to PostHog but its static scripts', () => {

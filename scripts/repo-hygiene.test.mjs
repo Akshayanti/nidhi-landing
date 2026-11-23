@@ -118,6 +118,30 @@ describe('the required checks run on every pull request', () => {
     'tool-mutation.yml': ['Free tools: mutation'],
     'tool-text-size.yml': ['Free tools: text size'],
   };
+  // The three free tools workflows skip their jobs for a pull request that
+  // changes nothing they read: the job the plan decides, the summary job,
+  // what it waits for, and the two tests it makes, in this order.
+  const SKIPS = {
+    'tool-mutation.yml': {
+      job: 'mutation', summary: 'gate', needs: ['plan', 'mutation', 'floors'],
+      passes: 'if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then',
+      fails: 'if [ "$PLAN" != "success" ] || [ "$MUTATION" != "success" ] || [ "$FLOORS" != "success" ]; then',
+    },
+    'tool-text-size.yml': {
+      job: 'text-size', summary: 'gate', needs: ['plan', 'text-size'],
+      passes: 'if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TEXT_SIZE" = "skipped" ]; then',
+      fails: 'if [ "$PLAN" != "success" ] || [ "$TEXT_SIZE" != "success" ]; then',
+    },
+    'tool-privacy.yml': {
+      job: 'verify-tool', summary: 'verify', needs: ['plan', 'verify-tool'],
+      passes: 'if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TOOLS" = "skipped" ]; then',
+      fails: 'if [ "$PLAN" != "success" ] || [ "$TOOLS" != "success" ]; then',
+    },
+  };
+  it('the workflows that skip are the three check-inputs.mjs knows', () => {
+    const known = /export const WORKFLOWS = \[([^\]]*)\]/.exec(read('scripts/lib/checks/check-inputs.mjs'))[1].match(/tool-[\w-]+\.yml/g);
+    assert.deepEqual([...known].sort(), Object.keys(SKIPS).sort());
+  });
   for (const [file, names] of Object.entries(REQUIRED)) {
     const text = read(join('.github/workflows', file));
     const jobs = text.slice(text.indexOf('\njobs:\n') + 1).split(/\n(?= {2}[a-z][\w-]*:\n)/).slice(1);
@@ -143,27 +167,46 @@ describe('the required checks run on every pull request', () => {
         // pr-checks.yml's jobs are the required checks themselves; the others
         // gather their jobs into one summary job that is required.
         const required = file !== 'pr-checks.yml' && REQUIRED[file].some((name) => job.includes(`name: ${name}`) || job.includes(`name: '${name}'`));
-        // The one exception: the mutation shards, which a pull request that
-        // changes no mutation input skips (the plan job decides, and the gate
-        // passes that case only by name, below).
-        const allowed = file === 'tool-mutation.yml' && id === 'mutation' ? "${{ !cancelled() && needs.plan.outputs.run == 'true' }}" : '${{ !cancelled() }}';
+        // The one exception: each free tools workflow's own jobs, which a
+        // pull request that changes nothing they read skips (the plan job
+        // decides, and the summary job passes that case only by name, below).
+        const allowed = SKIPS[file]?.job === id ? "${{ !cancelled() && needs.plan.outputs.run == 'true' }}" : '${{ !cancelled() }}';
         if (condition) assert.equal(condition[1], required ? '${{ always() }}' : allowed, `job ${id}`);
         else assert.ok(!required, `job ${id}: the required summary job needs if: \${{ always() }}`);
       }
-      // Two outputs are allowed, both from the free tools mutation plan job:
-      // the list of shards, read from stryker.shards.json (#846), and `run`,
-      // which is 'false' only when a pull request changes no mutation input
-      // (scripts/lib/checks/mutation-inputs.mjs) and 'true' otherwise.
+      // The outputs allowed are the plan job's, in the three free tools
+      // workflows: `run`, which is 'false' only when a pull request changes
+      // nothing the workflow reads (scripts/lib/checks/check-inputs.mjs) and
+      // 'true' otherwise, and for mutation the list of shards, read from
+      // stryker.shards.json (#846).
       let checked = text;
-      if (file === 'tool-mutation.yml') {
-        const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf('\n  mutation:\n'));
+      const skip = SKIPS[file];
+      if (skip) {
+        const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf(`\n  ${skip.job}:\n`));
+        assert.ok(plan.startsWith('\n  plan:\n'), 'the plan job comes first, then the job it decides');
         assert.match(plan, /run: \$\{\{ steps\.inputs\.outputs\.run \|\| 'true' \}\}/, 'run defaults to true');
-        assert.match(plan, /import \{ changedPaths, needsMutationRun \} from "\.\/scripts\/lib\/checks\/mutation-inputs\.mjs"/);
-        assert.match(plan, /git diff --name-only --no-renames -z HEAD\^1 HEAD/, 'both ends of a move, NUL-separated');
+        assert.match(plan, /fetch-depth: 2\n/, 'the base as well, to list what changed');
+        assert.match(plan, /import \{ changedPaths, needsRun \} from "\.\/scripts\/lib\/checks\/check-inputs\.mjs"/);
+        assert.ok(plan.includes('process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));'));
+        // Its own file, and no other: the one workflow file whose change runs it.
+        assert.ok(plan.includes(`' "$RUNNER_TEMP/changed" ".github/workflows/${file}") || run=true\n`), 'the workflow names itself');
+        assert.match(plan, /if git diff --name-only --no-renames -z HEAD\^1 HEAD > "\$RUNNER_TEMP\/changed"; then/, 'both ends of a move, NUL-separated');
         assert.match(plan, /\[ "\$run" = "false" \] \|\| run=true/, 'anything but a clear false runs');
-        assert.match(plan, /if: github\.event_name == 'pull_request'/, 'nightly and manual runs always run');
-        // The gate passes without the shards only when the plan said so and nothing ran.
-        assert.ok(text.includes('if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then'));
+        assert.match(plan, /\n {8}id: inputs\n {8}if: github\.event_name == 'pull_request'\n/, 'nightly and manual runs always run');
+        assert.equal(plan.split('GITHUB_OUTPUT').length - 1, file === 'tool-mutation.yml' ? 2 : 1, 'nothing else writes an output');
+        // The job it decides waits for it, and the summary job reads it.
+        const decided = jobs.find((job) => job.startsWith(`  ${skip.job}:\n`));
+        assert.match(decided, /\n {4}needs: plan\n {4}if: \$\{\{ !cancelled\(\) && needs\.plan\.outputs\.run == 'true' \}\}\n/);
+        const summary = jobs.find((job) => job.startsWith(`  ${skip.summary}:\n`));
+        assert.ok(summary.includes(`\n    needs: [${skip.needs.join(', ')}]\n    if: \${{ always() }}\n`));
+        assert.ok(summary.includes('PLAN: ${{ needs.plan.result }}\n') && summary.includes('RUN: ${{ needs.plan.outputs.run }}\n'));
+        // It passes without its jobs only when the plan said so and nothing ran,
+        // and that is its only way out before the test every result must pass.
+        assert.ok(summary.includes(`          ${skip.passes}\n            echo `), skip.passes);
+        assert.equal(summary.split('exit 0').length - 1, 1, 'one way to pass without the jobs');
+        assert.ok(summary.includes(`\n          fi\n          ${skip.fails}\n`), skip.fails);
+        assert.ok(summary.indexOf(skip.passes) < summary.indexOf(skip.fails));
+        assert.match(summary.slice(summary.indexOf(skip.fails)), /^.*\n {12}echo "::error::[^\n]+\n {12}exit 1\n {10}fi\n/);
         checked = text
           .replace('${{ fromJSON(needs.plan.outputs.shards) }}', '')
           .replace("${{ !cancelled() && needs.plan.outputs.run == 'true' }}", '')
@@ -453,7 +496,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
     // Each required check waits for every part of its workflow, the floors included.
     assert.match(gates, /\n  gate:\n    name: 'Free tools: mutation'\n    needs: \[plan, mutation, floors\]\n/);
-    assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[text-size\]\n/);
+    assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[plan, text-size\]\n/);
     // Pull requests reuse earlier results; the nightly run retests everything.
     // Earlier results are kept only while what the tests run on is the same.
     const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**')";
