@@ -1,19 +1,21 @@
-import { describe, it } from 'node:test';
+import { after, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { TARGET, floorProblems, judgeScope, partOf, partScores } from './mutation-floors.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..');
-const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+const gitIn = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
 /**
  * The floors on the base commit, or null when that commit has no floors file.
  * Anything else (a base that is not a commit, a file that is not JSON) throws,
  * so the ratchet can never pass by failing to read the base.
  */
-function baseFloors(revision) {
+function baseFloors(revision, cwd = ROOT) {
+  const git = (...args) => gitIn(cwd, ...args);
   let commit;
   try {
     commit = git('rev-parse', '--verify', '--quiet', `${revision}^{commit}`).trim();
@@ -82,17 +84,35 @@ describe('stryker.floors.json', () => {
 });
 
 describe('the base floors are read or the check fails', () => {
+  // A repository made here, so the answers do not depend on how much history
+  // the checkout has (CI fetches two commits).
+  const repo = mkdtempSync(join(tmpdir(), 'floors-base-'));
+  const git = (...args) => gitIn(repo, '-c', 'user.name=test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', ...args);
+  const commit = (files) => {
+    for (const [name, text] of Object.entries(files)) writeFileSync(join(repo, name), text);
+    git('add', '-A');
+    git('commit', '-q', '-m', 'x');
+    return git('rev-parse', 'HEAD').trim();
+  };
+  git('init', '-q');
+  const none = commit({ 'README': 'no floors yet\n' });
+  const valid = commit({ 'stryker.floors.json': '{ "x": { "logic": 80, "component": 10 } }\n' });
+  const broken = commit({ 'stryker.floors.json': '{ not json\n' });
+  after(() => rmSync(repo, { recursive: true, force: true }));
+
   it('fails on a base that is not a commit, instead of passing', () => {
-    assert.throws(() => baseFloors('definitely-not-a-revision'), /not a commit/);
+    assert.throws(() => baseFloors('definitely-not-a-revision', repo), /not a commit/);
   });
 
   it('reads no floors from a commit that has no floors file', () => {
-    // The first commit of the repository has no stryker.floors.json.
-    const first = git('rev-list', '--max-parents=0', 'HEAD').trim().split('\n')[0];
-    assert.equal(baseFloors(first), null);
+    assert.equal(baseFloors(none, repo), null);
   });
 
   it('reads the floors of a commit that has them', () => {
-    assert.deepEqual(baseFloors('HEAD'), JSON.parse(git('show', 'HEAD:stryker.floors.json')));
+    assert.deepEqual(baseFloors(valid, repo), { x: { logic: 80, component: 10 } });
+  });
+
+  it('fails on a floors file that is not JSON, instead of passing', () => {
+    assert.throws(() => baseFloors(broken, repo), SyntaxError);
   });
 });
