@@ -51,6 +51,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       shards: ${{ steps.shards.outputs.shards }}
+      fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}
       run: ${{ steps.inputs.outputs.run || 'true' }}
     steps:
       - name: Checkout
@@ -78,6 +79,23 @@ jobs:
           [ "$run" = "false" ] || run=true
           if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
+
+      # What a shard's earlier results depend on, once for all shards
+      # (scripts/lib/checks/mutation-fingerprint.mjs): every tracked file but
+      # the test files the run starts, which Stryker compares itself, the
+      # lessons, and what no mutation run reads. A failure here fails the
+      # plan, and with it the gate.
+      - name: The fingerprint of what the shards run on
+        id: fingerprint
+        run: |
+          git ls-files -z > "$RUNNER_TEMP/tracked"
+          fingerprint=$(node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            import { fingerprint, trackedPaths } from "./scripts/lib/checks/mutation-fingerprint.mjs";
+            process.stdout.write(fingerprint(trackedPaths(readFileSync(process.argv[1], "utf8")), (path) => readFileSync(path)));
+          ' "$RUNNER_TEMP/tracked")
+          echo "$fingerprint" | grep -Eqx '[0-9a-f]{64}'
+          echo "fingerprint=$fingerprint" >> "$GITHUB_OUTPUT"
 
       - name: List the shards
         id: shards
@@ -119,20 +137,21 @@ jobs:
         run: npm ci
 
       # The shard's earlier results (incremental mode, #846): a pull request
-      # starts from the latest run on main (the nightly one) or its own last
-      # run, and retests only mutants whose code or tests changed. Stryker
-      # does not see a change outside the files it mutates and the test files
-      # (code a tool imports from elsewhere, the dependencies, its own
+      # starts from the latest run with the same fingerprint (its own last
+      # run, or main's) and retests only mutants whose code or tests changed.
+      # Stryker compares the code it mutates and the test files, and nothing
+      # else (code a tool imports from elsewhere, the dependencies, its own
       # settings, the shards, Node, the test helpers, the data the tests
-      # read), so a change to any of them, anywhere in src/ but the lessons,
-      # starts the shard afresh. The nightly run retests everything
-      # (STRYKER_FORCE) and saves afresh.
+      # read), so the plan job's fingerprint covers all of that, and the
+      # tools' own code too: a change to any of it starts the shard afresh.
+      # A change to test files alone keeps the earlier results. The nightly
+      # run retests everything (STRYKER_FORCE) and saves afresh.
       - name: Earlier results
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-${{ github.sha }}
-          restore-keys: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-
+          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}
+          restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-
 
       # Fails on a failed first test run and on a shard that finds nothing
       # to mutate. The score is judged in the floors job, over all shards.

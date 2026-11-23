@@ -178,7 +178,8 @@ describe('the required checks run on every pull request', () => {
       // workflows: `run`, which is 'false' only when a pull request changes
       // nothing the workflow reads (scripts/lib/checks/check-inputs.mjs) and
       // 'true' otherwise, and for mutation the list of shards, read from
-      // stryker.shards.json (#846).
+      // stryker.shards.json (#846), and the fingerprint its shards' earlier
+      // results are kept under.
       let checked = text;
       const skip = SKIPS[file];
       if (skip) {
@@ -193,7 +194,7 @@ describe('the required checks run on every pull request', () => {
         assert.match(plan, /if git diff --name-only --no-renames -z HEAD\^1 HEAD > "\$RUNNER_TEMP\/changed"; then/, 'both ends of a move, NUL-separated');
         assert.match(plan, /\[ "\$run" = "false" \] \|\| run=true/, 'anything but a clear false runs');
         assert.match(plan, /\n {8}id: inputs\n {8}if: github\.event_name == 'pull_request'\n/, 'nightly and manual runs always run');
-        assert.equal(plan.split('GITHUB_OUTPUT').length - 1, file === 'tool-mutation.yml' ? 2 : 1, 'nothing else writes an output');
+        assert.equal(plan.split('GITHUB_OUTPUT').length - 1, file === 'tool-mutation.yml' ? 3 : 1, 'nothing else writes an output');
         // The job it decides waits for it, and the summary job reads it.
         const decided = jobs.find((job) => job.startsWith(`  ${skip.job}:\n`));
         assert.match(decided, /\n {4}needs: plan\n {4}if: \$\{\{ !cancelled\(\) && needs\.plan\.outputs\.run == 'true' \}\}\n/);
@@ -209,6 +210,7 @@ describe('the required checks run on every pull request', () => {
         assert.match(summary.slice(summary.indexOf(skip.fails)), /^.*\n {12}echo "::error::[^\n]+\n {12}exit 1\n {10}fi\n/);
         checked = text
           .replace('${{ fromJSON(needs.plan.outputs.shards) }}', '')
+          .replaceAll('${{ needs.plan.outputs.fingerprint }}', '')
           .replace("${{ !cancelled() && needs.plan.outputs.run == 'true' }}", '')
           .replace('RUN: ${{ needs.plan.outputs.run }}', '')
           .replace(plan, '');
@@ -498,8 +500,19 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /\n  gate:\n    name: 'Free tools: mutation'\n    needs: \[plan, mutation, floors\]\n/);
     assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[plan, text-size\]\n/);
     // Pull requests reuse earlier results; the nightly run retests everything.
-    // Earlier results are kept only while what the tests run on is the same.
-    const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**')";
+    // Earlier results are kept only while what a result depends on is the
+    // same: the plan job's fingerprint, made once for every shard
+    // (scripts/lib/checks/mutation-fingerprint.mjs), not a list written here.
+    const fingerprint = 'needs.plan.outputs.fingerprint';
+    const planJob = gates.slice(gates.indexOf('\n  plan:\n'), gates.indexOf('\n  mutation:\n'));
+    assert.ok(planJob.includes('      fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}\n'));
+    assert.match(planJob, /\n {6}- name: [^\n]+\n {8}id: fingerprint\n {8}run: \|\n/, 'on every event, with no condition');
+    assert.ok(planJob.includes('git ls-files -z > "$RUNNER_TEMP/tracked"\n'));
+    assert.ok(planJob.includes('import { fingerprint, trackedPaths } from "./scripts/lib/checks/mutation-fingerprint.mjs";'));
+    assert.ok(planJob.includes('process.stdout.write(fingerprint(trackedPaths(readFileSync(process.argv[1], "utf8")), (path) => readFileSync(path)));'));
+    // Nothing but a whole sha256 is handed on; anything else fails the plan, and the gate with it.
+    assert.ok(planJob.includes(`          echo "$fingerprint" | grep -Eqx '[0-9a-f]{64}'\n          echo "fingerprint=$fingerprint" >> "$GITHUB_OUTPUT"\n`));
+    assert.doesNotMatch(gates, /hashFiles/);
     // Each shard's report holds only its own mutants before it is kept.
     assert.match(gates, /run: npx stryker run stryker\.config\.mjs\n\n(?:.*\n)*? {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report/);
     assert.ok(gates.includes(`key: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\${{ github.sha }}`));

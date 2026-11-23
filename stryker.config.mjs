@@ -9,6 +9,7 @@
 // mutants whose code or tests changed. STRYKER_FORCE=1 (the nightly run)
 // retests everything.
 import { globSync, readFileSync } from 'node:fs';
+import { isSelectedTest } from './scripts/lib/checks/mutation-fingerprint.mjs';
 import { shardPatterns } from './scripts/lib/checks/mutation-shards.mjs';
 
 export const SCOPES = {
@@ -27,9 +28,10 @@ export const SCOPES = {
   ],
 };
 
-const SOURCE_READERS = ['src/utils/privacySurface.test.ts'];
-
-const TEST_FILES = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter((f) => !SOURCE_READERS.includes(f)).sort();
+// Every test but the ones that read the source as text (SOURCE_READERS in
+// scripts/lib/checks/mutation-fingerprint.mjs, which also leaves exactly
+// these files out of the shards' fingerprint).
+const TEST_FILES = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest).sort();
 
 // Read by test/mutationRun.ts in every test process Stryker starts.
 process.env.NIDHI_MUTATION_RUN = '1';
