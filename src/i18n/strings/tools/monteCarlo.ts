@@ -1121,7 +1121,7 @@ export const monteCarloEs: typeof monteCarloEn = {
 
 /**
  * The Czech edition. Same shape and the same figures; vykání and „...“ quotes,
- * per `docs/i18n/cs-glossary.md`: simulace, trajektorie, výběr, po odečtení
+ * per `docs/i18n/cs-glossary.md`: simulace, trajektorie, výběr, po očištění o inflaci
  * inflace, medián, poměr akcií a dluhopisů, rebalancování.
  *
  * Counts the code fills without picking a form (`{paths}`, `{years}`) sit
@@ -1169,7 +1169,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'Jedno portfolio, jedna měna.',
-          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech po odečtení americké inflace. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
+          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech po očištění o americkou inflaci. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
         },
         steady: {
           lead: 'Stálé spoření a utrácení.',

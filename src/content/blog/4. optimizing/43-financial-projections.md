@@ -5,7 +5,7 @@ description: "Projecting savings 10 to 30 years ahead: why one growth assumption
 tldr:
   - "Playing today's savings forward under stated assumptions gives a conditional picture, not a prediction."
   - "The growth rate moves the result enormously, so many planners use a range of inflation-adjusted rates based on long-run history."
-  - "Running many random market paths shows the spread, and \"in 90% of runs\" is the model's estimate, not a promise."
+  - "Running many random market paths shows the spread, and “in 90% of runs” is the model's estimate, not a promise."
 takeaways:
   - text: "Why a projection is a conditional picture, not a prediction"
     href: "#glossary"

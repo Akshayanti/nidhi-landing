@@ -1990,7 +1990,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       currencyHelp: 'तुमची निव्वळ संपत्ती या चलनात दाखवली जाते. दुसऱ्या चलनातील सगळे नवीनतम अधिकृत विनिमय दरांनी बदलले जाते.',
       share: 'शेअर करा',
       shareTitle: 'तुमची निव्वळ संपत्ती शेअर करा',
-      reset: 'पुन्हा सुरुवात करा',
+      reset: 'रीसेट करा',
       resetTitle: 'सगळा डेटा पुसून नव्याने सुरुवात करा',
       copiedLabel: 'लिंक क्लिपबोर्डवर कॉपी झाली',
       /** Above the address when the browser would not copy it: the reader copies it by hand. */

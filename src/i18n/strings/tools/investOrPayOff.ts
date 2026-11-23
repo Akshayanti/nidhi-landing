@@ -1119,7 +1119,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
         money: { lead: 'Dnešní peníze. ', rest: 'Dluh se úročí svou vlastní úrokovou sazbou; výnosy investice se vaší inflací převedou na výnosy před inflací; každý výsledek se pak ukáže v dnešních penězích.' },
         timing: { lead: 'Načasování. ', rest: 'Úroky se účtují a splátky se platí na konci každého měsíce. Úleva na úrocích se počítá jako peníze vrácené každý měsíc a investuje se ve stejné cestě.' },
       },
-      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů a je měřená v amerických dolarech po odečtení americké inflace. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
+      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů a je měřená v amerických dolarech po očištění o americkou inflaci. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
     },
     lesson: {
       before: 'Lekce, ze které tento nástroj vychází, s příspěvkem zaměstnavatele, daňovou úlevou a obvyklým pořadím pro více dluhů: ',
@@ -1297,7 +1297,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       copy: 'Zkopírovat odkaz na tyto výsledky',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
-      shareNote: 'Odkaz obsahuje zadaná čísla, za znakem # v adrese.',
+      shareNote: 'Odkaz obsahuje zadaná čísla za znakem # v adrese.',
     },
     export: {
       moneyLabel: 'Peníze',

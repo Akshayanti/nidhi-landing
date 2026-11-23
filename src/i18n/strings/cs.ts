@@ -797,7 +797,7 @@ export const cs: Dict = {
       reading: {
         before: 'Které lekce máte přečtené (',
         after:
-          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé trase v části „Co z toho se týká vás?“.',
+          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé cestě v části „Co z toho se týká vás?“.',
       },
       subscription: {
         before: 'Zda je váš odběr newsletteru potvrzený (',

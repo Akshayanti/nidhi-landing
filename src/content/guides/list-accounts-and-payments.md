@@ -6,7 +6,7 @@ outcome: "One page listing the accounts and regular payments you've found, with 
 group: stock
 answer:
   - "Write every account you hold on one page: current and savings accounts, cards, loans, pensions and investments, with where each one is and roughly what's in it. Then list every payment that leaves on its own each month or year: how much, when, and from which account."
-  - "The list may turn up an old account, a subscription or a fee you'd forgotten. Anything you can't find yet can be marked \"unknown\" and filled in later."
+  - "The list may turn up an old account, a subscription or a fee you'd forgotten. Anything you can't find yet can be marked “unknown” and filled in later."
 scope:
   can: "Bring the accounts and regular payments you've found into one place, with unknowns marked."
   cannot: "Say which accounts to keep or close, or which payments to cancel."
@@ -27,7 +27,7 @@ steps:
   - action: "Add the yearly ones."
     why: "Insurance, memberships and licences that renew once a year are easy to miss. Card statements from a year back, or the renewal emails, show them."
   - action: "Mark anything you're unsure about."
-    why: "\"Unknown\" is a fine entry. It's a reminder to check, not a mistake."
+    why: "“Unknown” is a fine entry. It's a reminder to check, not a mistake."
     caution: "Never write down passwords, PINs or full card numbers on the list. The last four digits are enough to tell cards apart."
 visual:
   kind: table

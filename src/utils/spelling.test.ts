@@ -61,3 +61,24 @@ describe('the English is in Oxford spelling', () => {
     });
   }
 });
+
+describe('a page quotes with curly marks', () => {
+  // docs/brand-identity.md: curly quotation marks on every page. Markdown
+  // bodies are curled when they render; frontmatter strings (FAQ answers,
+  // guide steps, notes) reach the page as written.
+  for (const dir of ['blog', 'guides']) {
+    it(`in the frontmatter of src/content/${dir}`, async () => {
+      const { parse } = await import('yaml');
+      const root = new URL(`../content/${dir}/`, import.meta.url);
+      const found: string[] = [];
+      for (const file of readdirSync(root, { recursive: true }) as string[]) {
+        if (!file.endsWith('.md')) continue;
+        const text = readFileSync(new URL(file.split('/').map(encodeURIComponent).join('/'), root), 'utf8');
+        const head = /^---\n([\s\S]*?)\n---\n/.exec(text);
+        if (!head) continue;
+        for (const value of strings(parse(head[1]))) if (value.includes('"')) found.push(`${file}: ${value.slice(0, 60)}`);
+      }
+      assert.deepEqual(found, []);
+    });
+  }
+});

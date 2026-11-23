@@ -23,7 +23,7 @@ steps:
   - action: "For each debt, write down who you owe, the balance, the interest rate and the minimum monthly payment."
     why: "Together these say what the debt costs and what it asks of you every month. A due date is worth noting too."
   - action: "Find each interest rate on the statement or contract."
-    why: "A statement may show both an interest rate and an APR (annual percentage rate); depending on local rules, the APR can include fees. For the rough sum in step 5, the interest rate is the one to use. If you can't find it, you can ask the lender: \"What is my balance, my interest rate and my minimum monthly payment?\""
+    why: "A statement may show both an interest rate and an APR (annual percentage rate); depending on local rules, the APR can include fees. For the rough sum in step 5, the interest rate is the one to use. If you can't find it, you can ask the lender: “What is my balance, my interest rate and my minimum monthly payment?”"
     caution: "A 0% offer usually ends on a set date, after which a higher rate applies. Write that date down too."
   - action: "Add up two totals: everything you owe, and all the minimum payments."
     why: "The monthly total shows your scheduled debt payments, to set beside your essential living costs. The overall total shows the balances you've recorded."

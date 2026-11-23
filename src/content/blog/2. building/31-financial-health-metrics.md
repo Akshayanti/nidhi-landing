@@ -16,7 +16,7 @@ pubDate: 2026-06-26
 updatedDate: 2026-11-17
 corrections:
   - date: 2026-11-17
-    note: "The sixth metric was called the income replacement ratio, a name that usually means the share of pre-retirement income needed in retirement, and it counted any investment income against spending. It is now the expense coverage ratio, counting only income the portfolio can keep paying, so that 100% matches the financial independence target. The snapshot's \"Healthy zone\" column is now \"Commonly quoted range\", with a note that these ranges are rules of thumb without a single source, and 3 to 3.5% is described as a more cautious illustration rather than a more defensible rate."
+    note: "The sixth metric was called the income replacement ratio, a name that usually means the share of pre-retirement income needed in retirement, and it counted any investment income against spending. It is now the expense coverage ratio, counting only income the portfolio can keep paying, so that 100% matches the financial independence target. The snapshot's “Healthy zone” column is now “Commonly quoted range”, with a note that these ranges are rules of thumb without a single source, and 3 to 3.5% is described as a more cautious illustration rather than a more defensible rate."
 localRules: [borrowing]
 level: "building"
 primaryPersona: "eva"
