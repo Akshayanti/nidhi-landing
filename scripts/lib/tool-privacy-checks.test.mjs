@@ -442,7 +442,7 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     const required = workflow.slice(workflow.indexOf('\n  verify:\n'));
     assert.ok(required.includes('name: No typed value reaches analytics'));
     assert.ok(required.includes('needs: [verify-tool]'));
-    assert.match(required, /\n    if: \$\{\{ !cancelled\(\) \}\}\n/);
+    assert.match(required, /\n    if: \$\{\{ always\(\) \}\}\n/);
     assert.ok(required.includes('[ "$TOOLS" != "success" ]'));
   });
 
