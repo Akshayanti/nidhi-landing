@@ -378,4 +378,17 @@ describe('running out, in detail', () => {
     assert.equal(r.straightLine[3], 0);
     assert.equal(r.belowStraightLine, 0);
   });
+
+  it('no years of saving: no path is below the line, whatever the plan', () => {
+    for (const plan of [
+      { ...DRAWDOWN, start: 500_000, withdrawal: 30_000, withdrawYears: 30, paths: 100 },
+      { ...DRAWDOWN, start: 0, withdrawal: 1_000, withdrawYears: 5, paths: 10 },
+      { ...SAVE_ONLY, saveYears: 0, withdrawal: 0, withdrawYears: 0, paths: 100 },
+      { ...SAVE_ONLY, saveYears: 0, withdrawal: 0, withdrawYears: 0, start: 0, paths: 1 },
+    ]) {
+      const r = simulate(plan);
+      assert.equal(r.straightLine[0], plan.start, 'the line starts where every path does');
+      assert.equal(r.belowStraightLine, 0);
+    }
+  });
 });

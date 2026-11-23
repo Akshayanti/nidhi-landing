@@ -69,17 +69,17 @@ function badWithdrawYears(f: FormState): boolean {
 
 /** The plan to simulate. Only for a form without errors. */
 export function toState(f: FormState): ToolState {
-  const n = (v: string) => (v.trim() === '' ? 0 : Number(v));
+  // An empty or blank box is 0 to Number(), as the plan wants it.
   return {
     currency: f.currency,
-    start: n(f.start),
-    monthly: n(f.monthly),
-    saveYears: n(f.saveYears),
-    stockPct: n(f.stockPct),
-    withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
+    start: Number(f.start),
+    monthly: Number(f.monthly),
+    saveYears: Number(f.saveYears),
+    stockPct: Number(f.stockPct),
+    withdrawal: f.withdrawOn ? Number(f.withdrawal) : 0,
     // Off the page, the box may hold anything; the plan still needs a number.
-    withdrawYears: !f.withdrawOn && badWithdrawYears(f) ? DEFAULTS.withdrawYears : n(f.withdrawYears),
-    feePct: n(f.feePct),
+    withdrawYears: !f.withdrawOn && badWithdrawYears(f) ? DEFAULTS.withdrawYears : Number(f.withdrawYears),
+    feePct: Number(f.feePct),
     returns: f.returns,
     paths: f.paths,
   };

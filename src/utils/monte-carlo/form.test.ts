@@ -277,6 +277,15 @@ describe('the form and the plan, in detail', () => {
     assert.equal(toState(formWith({ withdrawOn: false, withdrawYears: '12.5' })).withdrawYears, 30);
   });
 
+  it('an empty or blank box gives the plan nothing, and spaces around a number are read past', () => {
+    for (const blank of ['', ' ', '   ', '\t', '\n']) {
+      const plan = toState(formWith({ start: blank, monthly: blank, withdrawal: blank }));
+      assert.deepEqual([plan.start, plan.monthly, plan.withdrawal], [0, 0, 0], JSON.stringify(blank));
+    }
+    const plan = toState(formWith({ start: ' 1200 ', monthly: '\t300', saveYears: '12 ', withdrawal: ' 0.5' }));
+    assert.deepEqual([plan.start, plan.monthly, plan.saveYears, plan.withdrawal], [1200, 300, 12, 0.5]);
+  });
+
   it('half a year is wrong in either year box', () => {
     assert.equal(formErrors(formWith({ saveYears: '12.5' })).saveYears, true);
     assert.equal(formErrors(formWith({ withdrawYears: '12.5' })).withdrawYears, true);

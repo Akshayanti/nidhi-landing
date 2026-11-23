@@ -128,6 +128,17 @@ describe('numbers in a link are plain decimals only (#354)', () => {
     assert.equal(decodeState('n=1e3')?.paths, DEFAULTS.paths);
   });
 
+  it('an empty, blank or malformed number is the default, the other keys still read', async () => {
+    const { decodeState, DEFAULTS } = await import('./url.ts');
+    for (const raw of ['', '%20', '+', '%20%20', '%09', '%0A', '.', '-', '1.', '.5', '1..2', '--1', 'null', 'abc']) {
+      const s = decodeState(`s=${raw}&y=25`);
+      assert.equal(s?.start, DEFAULTS.start, JSON.stringify(raw));
+      assert.equal(s?.saveYears, 25);
+    }
+    assert.equal(decodeState('s&y=25')?.start, DEFAULTS.start, 'a key without a value');
+    assert.equal(decodeState('y=25')?.start, DEFAULTS.start, 'a key left out');
+  });
+
   it('caps what a link can ask for', async () => {
     const { decodeState } = await import('./url.ts');
     const { MAX_START, MAX_MONTHLY, MAX_WITHDRAWAL } = await import('./math.ts');

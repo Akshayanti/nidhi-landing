@@ -106,7 +106,7 @@ export function decodeState(search: string): ToolState | null {
   if (!STATE_KEYS.some((k) => p.has(k))) return null;
   const num = (key: string, dflt: number) => {
     const raw = p.get(key);
-    if (raw === null || raw.trim() === '') return dflt;
+    if (raw === null) return dflt;
     // Only a plain decimal number, the way the page writes one. `Number()`
     // would also read "0x10" as 16, "1e3" as 1000 and " 12 " as 12, none of
     // which a link made here ever holds. A minus sign is read, and the range

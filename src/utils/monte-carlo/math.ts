@@ -334,7 +334,6 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
   const runOutYear = new Int32Array(paths).fill(-1);
   const bands: Percentiles[] = [percentilesOf(balance)];
   let below = 0;
-  if (inputs.saveYears === 0) for (let p = 0; p < paths; p++) if (balance[p] < straightLine[0]) below++;
 
   for (let y = 1; y <= years; y++) {
     const saving = y <= inputs.saveYears;
