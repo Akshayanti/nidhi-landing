@@ -24,7 +24,7 @@ import {
   type SimulationResult,
 } from '../utils/monte-carlo/math.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/monte-carlo/url.ts';
-import { formErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
+import { formErrors, formFromLink, openedPlan, publishableForm, toForm, toState, type FormState } from '../utils/monte-carlo/form.ts';
 import { tooLongForLink } from '../utils/monte-carlo/inputs.ts';
 import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts';
 import { format } from '../i18n/format.ts';
@@ -153,16 +153,16 @@ interface Shown {
   state: ToolState;
 }
 
-function useSimulation(state: ToolState): Shown & { busy: boolean } {
-  const [shown, setShown] = useState<Shown>(() => ({ result: simulate(state), state }));
+function useSimulation(state: ToolState, initialResult: SimulationResult): Shown & { busy: boolean } {
+  const [shown, setShown] = useState<Shown>(() => ({ result: initialResult, state }));
   const [busy, setBusy] = useState(false);
   const worker = useRef<Worker | null>(null);
   const latest = useRef(0);
 
   useEffect(() => () => worker.current?.terminate(), []);
 
-  // The first result is computed while rendering (also on the server), so
-  // the effect has nothing to do until the plan changes.
+  // The first result comes worked out by the page, so the effect has
+  // nothing to do until the plan changes.
   const initial = useRef(state);
 
   useEffect(() => {
@@ -224,6 +224,7 @@ export default function MonteCarloSimulator({
   defaultCurrency,
   amountLocale,
   numberLocale,
+  initialResult,
 }: {
   strings: Strings;
   exportStrings: ExportStrings;
@@ -233,6 +234,13 @@ export default function MonteCarloSimulator({
   amountLocale: string | null;
   /** The page's number style for typed numbers and counts (PROSE_NUMBER_LOCALE). */
   numberLocale: string;
+  /**
+   * The starting plan's result, `simulate(defaultState(defaultCurrency))`,
+   * worked out once by the page. The server draws it and the browser
+   * hydrates with it, so the browser never runs the starting plan itself:
+   * a shared plan replaces it as soon as it is read.
+   */
+  initialResult: SimulationResult;
 }) {
   const [form, setForm] = useState<FormState>(() => toForm(defaultState(defaultCurrency)));
   const [settled, setSettled] = useState<ToolState>(() => defaultState(defaultCurrency));
@@ -279,7 +287,7 @@ export default function MonteCarloSimulator({
     // The boxes as the link has them, bad ones included; the plan behind them stays finite.
     const opened = formFromLink(raw as string) ?? toForm(shared);
     setForm(opened);
-    setSettled(shared);
+    setSettled(openedPlan(opened, shared));
     setSettledForm(opened);
     // A shared plan that sets a fee or a path count, or a fee box that is
     // wrong, shows it without a click.
@@ -308,17 +316,18 @@ export default function MonteCarloSimulator({
   const hasErrors = Object.values(errors).some(Boolean);
 
   // Simulate a moment after typing stops, and only on valid input, so the
-  // chart does not jump around on every keystroke.
+  // chart does not jump around on every keystroke. A form already settled
+  // (the starting plan, a shared one as it opens, a reset) is not run again.
   useEffect(() => {
-    if (hasErrors) return;
+    if (hasErrors || form === settledForm) return;
     const timer = window.setTimeout(() => {
       setSettled(toState(form));
       setSettledForm(form);
     }, 250);
     return () => window.clearTimeout(timer);
-  }, [form, hasErrors]);
+  }, [form, settledForm, hasErrors]);
 
-  const { result, state: shownState, busy: running } = useSimulation(settled);
+  const { result, state: shownState, busy: running } = useSimulation(settled, initialResult);
   // What the page says in words: amounts rounded to what the runs can tell
   // apart. The chart's shapes and the spreadsheets use `result` itself.
   const worded = useMemo(() => roundedResult(result), [result]);
