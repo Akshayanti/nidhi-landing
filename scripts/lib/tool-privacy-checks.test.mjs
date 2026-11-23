@@ -568,3 +568,53 @@ describe('a typed rate in a list of numbers (P2)', () => {
     for (const text of ['fee 1,83 %', '"fee":"1,83"', '1.83', '"f":1.83', '[1.83]']) assert.ok(checks.findLeaks(text).includes('1.83'), text);
   });
 });
+
+describe('a probe value is not mistaken for PostHog’s own measurements (#843)', () => {
+  const decimals = checks.PROBE_DECIMALS;
+
+  it('every decimal probe can be typed (two decimals at most) and ends in neither 0 nor 5', () => {
+    assert.ok(decimals.length > 5, `only ${decimals.length} decimal probes`);
+    for (const p of decimals) assert.match(p, /^\d+\.\d?[1-46-9]$/, p);
+  });
+
+  it('the timings PostHog itself measures are not read as typed rates', () => {
+    for (const p of decimals) {
+      const sdk = Object.fromEntries(checks.SDK_MEASUREMENTS.map((key) => [key, Number(p)]));
+      const { problems } = judge([...cleanEvents(), ev('$pageview', sdk)]);
+      assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), [], p);
+    }
+  });
+
+  it('the same value anywhere else is still a leak', () => {
+    for (const p of decimals) {
+      for (const props of [{ $prev_pageview_label: p }, { rate: Number(p) }, { note: `at ${p}%` }]) {
+        const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', props)]);
+        assert.ok(problems.some((x) => x.includes('carries what was typed')), `${p} in ${JSON.stringify(props)}`);
+      }
+    }
+  });
+
+  it('names exactly the measurements it leaves out, each a number PostHog computes', () => {
+    assert.deepEqual([...checks.SDK_MEASUREMENTS].sort(), [
+      '$lib_rate_limit_remaining_tokens',
+      '$prev_pageview_duration',
+      '$prev_pageview_last_content_percentage',
+      '$prev_pageview_last_scroll_percentage',
+      '$prev_pageview_max_content_percentage',
+      '$prev_pageview_max_scroll_percentage',
+      '$time',
+    ]);
+  });
+});
+
+describe('a short probe is never looked for in PostHog’s own measurements (#843)', () => {
+  it('a scroll percentage or token count equal to a short probe is clean', () => {
+    const sdk = Object.fromEntries(checks.SDK_MEASUREMENTS.map((key) => [key, 47]));
+    const { problems } = judge([...cleanEvents(), ev('$pageview', sdk)]);
+    assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), []);
+  });
+  it('the same short value in the site’s own property is a leak', () => {
+    const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { years: 47 })]);
+    assert.ok(problems.some((x) => x.includes('carries what was typed')));
+  });
+});
