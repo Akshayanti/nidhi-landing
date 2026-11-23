@@ -6,7 +6,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { formErrors, formFromLink, openedPlan, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
-import { STATE_KEY_PATTERN, decodeState, defaultState } from './url.ts';
+import { STATE_KEY_PATTERN, decodeState, defaultState, publishableState } from './url.ts';
 
 const FIELDS: BoxField[] = ['start', 'monthly', 'saveYears', 'stockPct', 'withdrawal', 'withdrawYears', 'feePct'];
 
@@ -294,6 +294,32 @@ describe('the form and the plan, in detail', () => {
   it('a changed withdrawal with withdrawals on travels as the plan does', () => {
     const form = formWith({ withdrawal: '20000', withdrawYears: '25' });
     assert.equal(publishableForm(form, 'EUR'), 'w=20000&r=25');
+  });
+
+  it('with withdrawals on and every box readable, what travels is the plan, whatever the boxes hold', () => {
+    const changes: Partial<FormState>[] = [
+      {},
+      { withdrawal: '20000' },
+      { withdrawYears: '25' },
+      { withdrawal: '20000.50', withdrawYears: '1' },
+      { withdrawal: ' 1200 ', withdrawYears: '60 ' },
+      { withdrawal: '020000', start: '0', monthly: '0', feePct: '0.25' },
+      { withdrawal: '1', returns: 'cautious', paths: 1_000 },
+    ];
+    for (const currency of ['EUR', 'INR']) {
+      for (const change of changes) {
+        const form = formWith(change, currency);
+        assert.ok(!Object.values(formErrors(form)).some(Boolean), JSON.stringify(change));
+        for (const page of ['EUR', 'INR', 'USD']) {
+          assert.equal(publishableForm(form, page), publishableState(toState(form), page), `${currency} ${page} ${JSON.stringify(change)}`);
+        }
+      }
+    }
+  });
+
+  it('with withdrawals on and a bad box, the withdrawal goes as the plan has it, beside the bad box', () => {
+    const wire = publishableForm(formWith({ start: '7x', withdrawal: '020000.0', withdrawYears: '25' }), 'EUR');
+    assert.equal(wire, 'w=20000&r=25&s=NaN');
   });
 
   it('a bad withdrawal keeps the years beside it', () => {

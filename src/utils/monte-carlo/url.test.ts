@@ -166,6 +166,24 @@ describe('return settings and odd links, in detail', () => {
     }
   });
 
+  it('a link that names no setting, or one it does not know, has the default; e=h is the default too', () => {
+    for (const link of ['s=5', 's=5&e=', 's=5&e=h', 's=5&e=C', 's=5&e=O', 's=5&e=cautious', 's=5&e=c&e=o']) {
+      const expected = link.endsWith('e=c&e=o') ? 'cautious' : DEFAULTS.returns;
+      assert.equal(decodeState(link)?.returns, expected, link);
+    }
+    assert.equal(decodeState('s=5&e=o')?.returns, 'optimistic');
+    assert.equal(DEFAULTS.returns, 'historical');
+  });
+
+  it('a currency is read whatever its case, and one it does not know is the default', () => {
+    assert.equal(decodeState('s=5')?.currency, DEFAULTS.currency);
+    assert.equal(decodeState('c=usd')?.currency, 'USD');
+    assert.equal(decodeState('c=Inr')?.currency, 'INR');
+    for (const c of ['', 'xyz', 'EURO', ' EUR', 'constructor', 'null']) {
+      assert.equal(decodeState(`s=5&c=${c}`)?.currency, DEFAULTS.currency, c);
+    }
+  });
+
   it('only a ? or # at the very start is a prefix', () => {
     assert.equal(decodeState('s=20000&f=?')?.start, 20_000);
   });
