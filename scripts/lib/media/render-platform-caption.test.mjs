@@ -1,7 +1,7 @@
 /**
- * Unit tests for scripts/lib/render-platform-caption.mjs: the caption an
+ * Unit tests for scripts/lib/media/render-platform-caption.mjs: the caption an
  * operator pastes into Instagram and TikTok. The plan is the fixture
- * scripts/fixtures/caption-plan.json; captions are written to a temporary
+ * scripts/lib/media/fixtures/caption-plan.json; captions are written to a temporary
  * folder and read back.
  *
  * Run with:  npm test
@@ -14,7 +14,7 @@ import path from 'node:path';
 
 import { writePlatformCaptions } from './render-platform-caption.mjs';
 
-const PLAN = JSON.parse(fs.readFileSync('scripts/fixtures/caption-plan.json', 'utf8'));
+const PLAN = JSON.parse(fs.readFileSync('scripts/lib/media/fixtures/caption-plan.json', 'utf8'));
 const DISCLOSURE = 'Voice: AI narrated. Script: AI drafted, human edited. Research and editorial direction: human.';
 const TOOL = { url: '/free/loan-comparison/', label: 'Loan comparison', cta: 'Compare two loan offers' };
 const PROMISE = 'A worked example for three incomes';

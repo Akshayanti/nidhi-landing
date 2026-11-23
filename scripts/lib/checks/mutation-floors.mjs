@@ -30,6 +30,32 @@ export function partScores(report) {
   return { logic: score(tally.logic), component: score(tally.component), counts: tally };
 }
 
+/**
+ * One report from a scope's shard reports (#846): each file's mutants from
+ * every shard. A file cut into ranges appears in several shards, each with
+ * its own share of the mutants; nothing is counted twice, as no mutant lies
+ * in two shards (scripts/lib/checks/mutation-shards.mjs).
+ */
+export function mergeReports(reports) {
+  const files = {};
+  const seen = new Set();
+  for (const report of reports) {
+    for (const [file, entry] of Object.entries(report.files ?? {})) {
+      files[file] ??= { ...entry, mutants: [] };
+      for (const mutant of entry.mutants) {
+        // The same mutant from two shards would be counted twice: fail rather
+        // than score it (each shard keeps only its own, mutation-shards.mjs).
+        const { start, end } = mutant.location;
+        const id = `${file}:${start.line}:${start.column}-${end.line}:${end.column} ${mutant.mutatorName} ${mutant.replacement ?? ''}`;
+        if (seen.has(id)) throw new Error(`a mutant is in two shard reports: ${id}`);
+        seen.add(id);
+        files[file].mutants.push(mutant);
+      }
+    }
+  }
+  return { files };
+}
+
 /** What fails a scope: a part below its floor, a part with a floor and no mutants, or a scope with no floors. */
 export function judgeScope(scope, scores, floors) {
   const floor = floors[scope];

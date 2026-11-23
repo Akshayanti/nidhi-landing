@@ -1,7 +1,7 @@
 /**
  * scripts/fetch-inflation.mjs with the World Bank mocked: what it asks for,
  * and that a short, cut off or malformed answer is refused before anything
- * is written. The parsing itself is tested in lib/inflation-data.test.mjs;
+ * is written. The parsing itself is tested in lib/publishing/inflation-data.test.mjs;
  * this file is about the fetch and the file on disk.
  *
  * No request leaves the machine: `fetch` is replaced in every test, and the

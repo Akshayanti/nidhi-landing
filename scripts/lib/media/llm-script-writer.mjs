@@ -514,7 +514,7 @@ function deriveTopicChip(title) {
  *   attempt number. Return `null` to accept the plan, or a feedback string to
  *   ask the LLM to fix specific issues.
  * @param {number} [args.maxAttempts=3]
- * @returns {Promise<import('../../remotion/src/data').ReelPlan>}
+ * @returns {Promise<import('../../../remotion/src/data').ReelPlan>}
  */
 export async function generateReelPlan({
   meta,
@@ -555,7 +555,7 @@ export async function generateReelPlan({
       throw new Error(`The model declined to write this script (${response.stop_details?.category ?? "no category given"}).`);
     }
     if (response.stop_reason === "max_tokens") {
-      throw new Error(`The script was cut off at ${MAX_TOKENS} tokens; raise MAX_TOKENS in scripts/lib/llm-script-writer.mjs.`);
+      throw new Error(`The script was cut off at ${MAX_TOKENS} tokens; raise MAX_TOKENS in scripts/lib/media/llm-script-writer.mjs.`);
     }
 
     // Read by type, not position: a response can start with a thinking block.

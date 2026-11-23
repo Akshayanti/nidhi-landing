@@ -517,7 +517,7 @@ describe('afterRun: what was found is never retried away', () => {
   });
 
   it('the worker asks afterRun, with no exception of its own', () => {
-    const worker = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8').split('async function worker()')[1];
+    const worker = fs.readFileSync(new URL('../../verify-tool-privacy.mjs', import.meta.url), 'utf8').split('async function worker()')[1];
     assert.match(worker, /afterRun\(\{ attempt, problems: result\.problems, connected: browser\.connected \}\)/);
     assert.doesNotMatch(worker, /lostPage|!PLANT && hasFinding/);
   });
@@ -544,7 +544,7 @@ describe('a short value in a request body (P2)', () => {
     assert.ok(!judge(cleanEvents(), { extraRequests }).problems.some((p) => p.includes('/flags/ carries what was typed')));
   });
   it('the browser check reads bodies with it, and plants one', () => {
-    const script = fs.readFileSync(new URL('../verify-tool-privacy.mjs', import.meta.url), 'utf8');
+    const script = fs.readFileSync(new URL('../../verify-tool-privacy.mjs', import.meta.url), 'utf8');
     assert.match(script, /shortInBody\(req\.postData\(\)/);
     assert.match(script, /planted-body/);
   });

@@ -1,5 +1,5 @@
 /**
- * The rules for excusing a known browser-check failure (scripts/lib/known-failures.mjs),
+ * The rules for excusing a known browser-check failure (scripts/lib/checks/known-failures.mjs),
  * as the council agreed them on Nov 21, 2026, and the entries in use today.
  *
  * Run with:  npm test

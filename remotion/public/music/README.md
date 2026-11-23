@@ -7,7 +7,7 @@
 > bed is opt-in.
 
 This folder holds royalty-free music tracks layered under reel voiceovers.
-The picker is `scripts/lib/pick-music.mjs`. Manifest is `manifest.json`.
+The picker is `scripts/lib/media/pick-music.mjs`. Manifest is `manifest.json`.
 
 ## When to add music
 

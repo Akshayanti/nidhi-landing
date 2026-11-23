@@ -24,7 +24,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const MUSIC_DIR = join(import.meta.dirname, "../../remotion/public/music");
+const MUSIC_DIR = join(import.meta.dirname, "../../../remotion/public/music");
 const MANIFEST_PATH = join(MUSIC_DIR, "manifest.json");
 
 /**
@@ -41,7 +41,7 @@ function hash(s) {
 
 /**
  * @param {object} args
- * @param {import('../../remotion/src/data').Mood} args.mood
+ * @param {import('../../../remotion/src/data').Mood} args.mood
  * @param {string} args.slug
  * @returns {Promise<{ musicFile: string; track?: object }>}
  */

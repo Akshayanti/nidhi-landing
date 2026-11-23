@@ -2,24 +2,40 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import { formatTag, tagChipLabel } from './tags.ts';
-import { learnEn } from '../i18n/strings/learn.ts';
+import { parse } from 'yaml';
+import { learnCs, learnEn, learnEs, learnHi, learnMr } from '../i18n/strings/learn.ts';
+
+const CATALOGS = { en: learnEn, hi: learnHi, es: learnEs, cs: learnCs, mr: learnMr };
 
 describe('the tags lessons carry', () => {
-  it('all have a name and copy in the catalog (blog-content-plan Rule 4)', () => {
-    const dir = new URL('../content/blog/', import.meta.url);
-    const files = readdirSync(dir, { recursive: true, encoding: 'utf8' }).filter((f) => f.endsWith('.md'));
+  const dir = new URL('../content/blog/', import.meta.url);
+  const files = readdirSync(dir, { recursive: true, encoding: 'utf8' }).filter((f) => f.endsWith('.md'));
+  // Read as YAML, as the content collection reads them, so a tag list over
+  // several lines is read too (#835).
+  const tagged = files.flatMap((file) => {
+    const text = readFileSync(new URL(file.split('/').map(encodeURIComponent).join('/'), dir), 'utf8');
+    const head = /^---\n([\s\S]*?)\n---\n/.exec(text);
+    const tags = head ? (parse(head[1]) as { tags?: unknown })?.tags : undefined;
+    return Array.isArray(tags) ? [{ file, tags: tags as string[] }] : [];
+  });
+
+  it('are read from every lesson that has them', () => {
     assert.ok(files.length > 0);
-    const known = new Set(Object.keys(learnEn.learn.tags));
-    const unknown: string[] = [];
-    let read = 0;
-    for (const file of files) {
-      const list = readFileSync(new URL(file.split('/').map(encodeURIComponent).join('/'), dir), 'utf8').match(/^tags: *(\[.*\])$/m);
-      if (!list) continue;
-      read += 1;
-      for (const tag of JSON.parse(list[1]) as string[]) if (!known.has(tag)) unknown.push(`${file}: ${tag}`);
-    }
-    assert.ok(read > 50, 'the tags lines are no longer found');
-    assert.deepEqual(unknown, []);
+    assert.ok(tagged.length > 50, 'the tags are no longer found');
+  });
+
+  // A tag missing from one language's catalog shows the heading form there.
+  for (const [locale, catalog] of Object.entries(CATALOGS)) {
+    it(`all have a name and copy in the ${locale} catalog (blog-content-plan Rule 4)`, () => {
+      const known = new Set(Object.keys(catalog.learn.tags));
+      const unknown = tagged.flatMap(({ file, tags }) => tags.filter((tag) => !known.has(tag)).map((tag) => `${file}: ${tag}`));
+      assert.deepEqual(unknown, []);
+    });
+  }
+
+  it('reads a tag list written over several lines', () => {
+    const head = 'title: x\ntags:\n  - budgeting\n  - net-worth\n';
+    assert.deepEqual((parse(head) as { tags: string[] }).tags, ['budgeting', 'net-worth']);
   });
 });
 

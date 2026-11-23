@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // The audit check: fails on a high or critical advisory in any install the
 // repository runs, except an advisory that has a dated exception in
-// scripts/lib/audit-exceptions.mjs. See that file for when an exception is
+// scripts/lib/checks/audit-exceptions.mjs. See that file for when an exception is
 // given and how it ends.
 //
 // Every install, not only what the site ships (#791, council 2026-11-23): the
@@ -13,7 +13,7 @@
 // Exit code 1 when an advisory blocks, 2 when an audit itself could not run.
 
 import { spawnSync } from 'node:child_process';
-import { EXCEPTIONS, judge } from './lib/audit-exceptions.mjs';
+import { EXCEPTIONS, judge } from './lib/checks/audit-exceptions.mjs';
 
 /** Each lockfile in the repository, and what it installs. */
 export const INSTALLS = [

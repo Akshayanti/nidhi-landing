@@ -19,7 +19,7 @@
  *
  * Plain text parsing, no browser and no dependency: the build's HTML is
  * regular enough (quoted attributes, one tag per element) for it. The pure
- * functions here take a `site` object, so scripts/lib/check-dist.test.mjs runs
+ * functions here take a `site` object, so scripts/lib/checks/check-dist.test.mjs runs
  * them on small hand-made fixtures; scripts/check-dist.mjs loads dist/.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';

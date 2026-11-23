@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join, extname } from "node:path";
 
-const BLOG_ROOT = join(import.meta.dirname, "../../src/content/blog");
+const BLOG_ROOT = join(import.meta.dirname, "../../../src/content/blog");
 const LEVEL_DIRS = {
   discovery: "1. discovery",
   building: "2. building",

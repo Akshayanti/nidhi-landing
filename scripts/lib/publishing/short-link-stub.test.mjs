@@ -1,5 +1,5 @@
 /**
- * Unit tests for scripts/lib/short-link-stub.mjs, and a check that the list
+ * Unit tests for scripts/lib/publishing/short-link-stub.mjs, and a check that the list
  * of short links in astro.config.mjs is still the list it was.
  *
  * Run with:  npm test

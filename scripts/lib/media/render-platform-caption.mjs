@@ -32,7 +32,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
-const DEFAULT_CAPTIONS_DIR = join(import.meta.dirname, "../../output/captions");
+const DEFAULT_CAPTIONS_DIR = join(import.meta.dirname, "../../../output/captions");
 const SITE_BASE = "nidhi.today";
 
 /**
@@ -85,7 +85,7 @@ function buildDeepDiveBlock({ slug, relatedTool, reelPromise, platform = "tiktok
  * the trimmed narration of `plan.hookVariants[plan.useHookVariant]`, or null
  * when the plan lacks variants / index (callers then keep the body as-is).
  *
- * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @param {import('../../../remotion/src/data').ReelPlan} plan
  * @returns {string | null}
  */
 function leadHookText(plan) {
@@ -120,7 +120,7 @@ function replaceFirstLine(body, hookText) {
 
 /**
  * @param {object} args
- * @param {import('../../remotion/src/data').ReelPlan} args.plan
+ * @param {import('../../../remotion/src/data').ReelPlan} args.plan
  * @param {string} [args.captionsDir] - override the output directory (the orchestrator
  *   passes a per-level path like output/captions/discovery/).
  * @param {string} [args.fileBase] - override the filename stem (without
