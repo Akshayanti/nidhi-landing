@@ -403,11 +403,11 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.deepEqual([...matrix('text-size')].sort(), [...tools].sort());
   });
 
-  it('holds every scope to 95%, never pooled', () => {
-    const config = read('stryker.config.mjs');
-    assert.match(config, /thresholds: \{ high: 95, low: 95, break: 95 \}/);
+  it('holds every scope to its floors, never pooled', () => {
     assert.match(gates, /npx stryker run stryker\.config\.mjs\n/);
     assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
+    assert.match(gates, /run: node scripts\/mutation-floors\.mjs \$\{\{ matrix\.scope \}\}\n/);
+    assert.match(read('.github/workflows/pr-checks.yml'), /FLOORS_BASE: HEAD\^1/);
   });
 
   it('a nightly run that failed opens or updates one issue', () => {

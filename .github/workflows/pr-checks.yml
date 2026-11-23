@@ -180,6 +180,7 @@ jobs:
         env:
           NEWSLETTER_ID_BASE: HEAD^1
           PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
         run: npm test
 
       # The Python scripts (the newsletter sender, the QR code generator), which

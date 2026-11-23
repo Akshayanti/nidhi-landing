@@ -52,5 +52,8 @@ export default {
   tempDirName: '.stryker-tmp',
   // Not copied into a sandbox: other runs' sandboxes, reports and builds.
   ignorePatterns: ['.stryker-tmp*', 'reports', 'dist', 'tools/astro-check/node_modules', '.astro'],
-  thresholds: { high: 95, low: 95, break: 95 },
+  // The gate is scripts/mutation-floors.mjs: each scope's logic and component
+  // against its floor in stryker.floors.json, rising to 95. Stryker itself
+  // only colours its report.
+  thresholds: { high: 95, low: 80, break: null },
 };

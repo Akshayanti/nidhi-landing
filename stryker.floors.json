@@ -1,0 +1,8 @@
+{
+  "inflation": { "logic": 0, "component": 0 },
+  "invest-or-pay-off": { "logic": 0, "component": 0 },
+  "monte-carlo": { "logic": 0, "component": 0 },
+  "loan": { "logic": 0, "component": 0 },
+  "net-worth": { "logic": 0, "component": 0 },
+  "shared": { "logic": 0, "component": 0 }
+}

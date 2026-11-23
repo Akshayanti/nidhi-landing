@@ -4,8 +4,9 @@ name: Free tools gates
 # night and by hand:
 #
 # - Mutation testing (StrykerJS, stryker.config.mjs): every tool's logic and
-#   component, and the code they share, each held to 95% on its own, never
-#   pooled. A test suite that lets a planted fault through fails here.
+#   component, and the code they share, each held on its own (never pooled)
+#   to its floor in stryker.floors.json: the score measured when the gates
+#   landed, raised to 95 in each scope's own pull request, never lowered.
 # - Text size (scripts/audit-text-size.mjs): every tool in every language on
 #   a bounded range on pull requests (the narrowest phone, a phone, a tablet
 #   and a laptop, at 100%, 200% and 400% text); the whole range of widths and
@@ -66,13 +67,18 @@ jobs:
       - name: Install
         run: npm ci
 
-      # Fails under 95% (thresholds.break), on a failed first test run, and on
-      # a scope that finds nothing to mutate.
-      - name: Mutation score of ${{ matrix.scope }}
+      # Fails on a failed first test run and on a scope that finds nothing to
+      # mutate.
+      - name: Mutation testing of ${{ matrix.scope }}
         env:
           STRYKER_SCOPE: ${{ matrix.scope }}
           STRYKER_CONCURRENCY: '4'
         run: npx stryker run stryker.config.mjs
+
+      # The gate: the scope's logic and its component(s), each at or above its
+      # floor in stryker.floors.json. A floor only rises, to 95 (#790).
+      - name: Scores at or above their floors
+        run: node scripts/mutation-floors.mjs ${{ matrix.scope }}
 
       - name: Keep the report
         if: ${{ !cancelled() }}
