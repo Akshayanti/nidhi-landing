@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { globSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { shardPatterns, shardUnits, topLevelSpans, units } from './mutation-shards.mjs';
+import { shardPatterns, shardUnits, topLevelSpans, units, withinShard } from './mutation-shards.mjs';
 import { mergeReports, partScores } from './mutation-floors.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..');
@@ -80,13 +80,49 @@ describe('every top-level statement of every sharded scope is in exactly one sha
 });
 
 describe('a sharded scope is scored as one (#846)', () => {
+  const at = (line, status) => ({ status, mutatorName: 'X', location: { start: { line, column: 0 }, end: { line, column: 1 } } });
   it('adds each file’s mutants from every shard', () => {
     const merged = mergeReports([
-      { files: { 'src/utils/x.ts': { mutants: [{ status: 'Killed' }] } } },
-      { files: { 'src/utils/x.ts': { mutants: [{ status: 'Survived' }] }, 'src/components/X.tsx': { mutants: [{ status: 'Killed' }] } } },
+      { files: { 'src/utils/x.ts': { mutants: [at(1, 'Killed')] } } },
+      { files: { 'src/utils/x.ts': { mutants: [at(2, 'Survived')] }, 'src/components/X.tsx': { mutants: [at(1, 'Killed')] } } },
     ]);
     assert.equal(merged.files['src/utils/x.ts'].mutants.length, 2);
     assert.equal(partScores(merged).logic, 50);
     assert.equal(partScores(merged).component, 100);
+  });
+});
+
+describe('a shard keeps only its own mutants (#846)', () => {
+  const mutant = (line, endLine = line, mutatorName = 'X') => ({ mutatorName, replacement: 'r', status: 'Killed', location: { start: { line, column: 0 }, end: { line: endLine, column: 9 } } });
+
+  it('drops earlier results outside its ranges, and files it does not hold', () => {
+    const report = { files: {
+      'a.ts': { mutants: [mutant(2), mutant(5), mutant(9), mutant(4, 7)] },
+      'b.ts': { mutants: [mutant(1)] },
+      'c.ts': { mutants: [mutant(1)] },
+    } };
+    const kept = withinShard(report, ['a.ts:1-5', 'b.ts']);
+    assert.deepEqual(kept.files['a.ts'].mutants.map((m) => m.location.start.line), [2, 5]);
+    assert.equal(kept.files['b.ts'].mutants.length, 1);
+    assert.ok(!('c.ts' in kept.files));
+  });
+
+  it('a statement added before others moves them, and no mutant is counted twice', () => {
+    // Before: three statements dealt to two shards. After: one added at the top.
+    const before = ['export const a = 1;', 'export const b = 2;', 'export const c = 3;'].join('\n');
+    const after = ['export const z = 0;', 'export const a = 1;', 'export const b = 2;', 'export const c = 3;'].join('\n');
+    // Each shard's cached report still holds every mutant it has ever seen.
+    const all = (lines) => ({ files: { 'x.ts': { mutants: lines.map((l) => mutant(l)) } } });
+    const reports = [1, 2].map((i) => withinShard(all([1, 2, 3, 4]), shardPatterns(['x.ts'], 2, i, () => after)));
+    const merged = mergeReports(reports);
+    assert.deepEqual(merged.files['x.ts'].mutants.map((m) => m.location.start.line).sort(), [1, 2, 3, 4]);
+    // Without the trim, the shards' cached results overlap and the merge refuses them.
+    assert.throws(() => mergeReports([all([1, 2, 3, 4]), all([1, 2, 3, 4])]), /in two shard reports/);
+    assert.equal(units(['x.ts'], () => before).length, 3);
+  });
+
+  it('the merge fails on a mutant in two reports, rather than count it twice', () => {
+    const one = { files: { 'x.ts': { mutants: [mutant(3)] } } };
+    assert.throws(() => mergeReports([one, one]), /in two shard reports/);
   });
 });

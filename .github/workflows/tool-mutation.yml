@@ -93,16 +93,18 @@ jobs:
       # The shard's earlier results (incremental mode, #846): a pull request
       # starts from the latest run on main (the nightly one) or its own last
       # run, and retests only mutants whose code or tests changed. Stryker
-      # does not see a change to what the tests run on (the dependencies, its
-      # own settings, the shards, Node, the test helpers, the data files the
-      # tests read), so a change to any of them starts the shard afresh. The
-      # nightly run retests everything (STRYKER_FORCE) and saves afresh.
+      # does not see a change outside the files it mutates and the test files
+      # (code a tool imports from elsewhere, the dependencies, its own
+      # settings, the shards, Node, the test helpers, the data the tests
+      # read), so a change to any of them, anywhere in src/ but the lessons,
+      # starts the shard afresh. The nightly run retests everything
+      # (STRYKER_FORCE) and saves afresh.
       - name: Earlier results
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/data/**') }}-${{ github.sha }}
-          restore-keys: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/data/**') }}-
+          key: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-${{ github.sha }}
+          restore-keys: stryker-incremental-${{ matrix.name }}-${{ hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**') }}-
 
       # Fails on a failed first test run and on a shard that finds nothing
       # to mutate. The score is judged in the floors job, over all shards.
@@ -116,6 +118,14 @@ jobs:
           PRIVACY_NOTICE_BASE: HEAD^1
           FLOORS_BASE: HEAD^1
         run: npx stryker run stryker.config.mjs
+
+      # Incremental mode also writes earlier results for mutants outside this
+      # shard; left in, a mutant that moved shards would be counted twice.
+      - name: Keep only this shard's mutants
+        env:
+          STRYKER_SCOPE: ${{ matrix.scope }}
+          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
+        run: node scripts/mutation-shard-report.mjs
 
       - name: Keep the report
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

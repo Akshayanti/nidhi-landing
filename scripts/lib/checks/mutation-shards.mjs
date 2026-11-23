@@ -85,3 +85,32 @@ export function shardPatterns(files, count, index, read) {
   }
   return patterns;
 }
+
+/**
+ * One shard's report, keeping only the mutants its `mutate` entries hold.
+ *
+ * Stryker's incremental mode keeps earlier results for mutants outside the
+ * current ranges and writes them into the report too. When a statement is
+ * added, later statements move to other shards, so those kept results would
+ * be counted again by the shard that now holds them, and could lift a score
+ * past its floor. A file named whole keeps all its mutants; a `file:a-b`
+ * range keeps those wholly on lines a to b, as Stryker reads the range.
+ */
+export function withinShard(report, patterns) {
+  const ranges = new Map();
+  for (const p of patterns) {
+    const m = /^(.*):(\d+)-(\d+)$/.exec(p);
+    const [file, range] = m ? [m[1], [Number(m[2]), Number(m[3])]] : [p, null];
+    if (!ranges.has(file)) ranges.set(file, []);
+    ranges.get(file).push(range);
+  }
+  const files = {};
+  for (const [file, entry] of Object.entries(report.files ?? {})) {
+    const mine = ranges.get(file);
+    if (!mine) continue;
+    const inside = ({ location: { start, end } }) => mine.some((r) => r === null || (start.line >= r[0] && end.line <= r[1]));
+    const mutants = entry.mutants.filter(inside);
+    if (mutants.length) files[file] = { ...entry, mutants };
+  }
+  return { ...report, files };
+}

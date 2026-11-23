@@ -440,7 +440,9 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[text-size\]\n/);
     // Pull requests reuse earlier results; the nightly run retests everything.
     // Earlier results are kept only while what the tests run on is the same.
-    const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/data/**')";
+    const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**')";
+    // Each shard's report holds only its own mutants before it is kept.
+    assert.match(gates, /run: npx stryker run stryker\.config\.mjs\n\n(?:.*\n)*? {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report/);
     assert.ok(gates.includes(`key: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\${{ github.sha }}`));
     assert.ok(gates.includes(`restore-keys: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\n`));
     assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);

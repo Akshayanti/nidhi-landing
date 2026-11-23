@@ -38,10 +38,19 @@ export function partScores(report) {
  */
 export function mergeReports(reports) {
   const files = {};
+  const seen = new Set();
   for (const report of reports) {
     for (const [file, entry] of Object.entries(report.files ?? {})) {
       files[file] ??= { ...entry, mutants: [] };
-      files[file].mutants.push(...entry.mutants);
+      for (const mutant of entry.mutants) {
+        // The same mutant from two shards would be counted twice: fail rather
+        // than score it (each shard keeps only its own, mutation-shards.mjs).
+        const { start, end } = mutant.location;
+        const id = `${file}:${start.line}:${start.column}-${end.line}:${end.column} ${mutant.mutatorName} ${mutant.replacement ?? ''}`;
+        if (seen.has(id)) throw new Error(`a mutant is in two shard reports: ${id}`);
+        seen.add(id);
+        files[file].mutants.push(mutant);
+      }
     }
   }
   return { files };
