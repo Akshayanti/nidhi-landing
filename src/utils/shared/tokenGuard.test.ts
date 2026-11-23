@@ -8,7 +8,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'tokenGuard.js'), 'utf8');
@@ -32,7 +32,7 @@ function open(pathname: string, search: string, { blocked = false } = {}): Win {
       },
     },
   };
-  runInNewContext(SOURCE, { window, globalThis: window, URLSearchParams });
+  runClassicScript(SOURCE, { window, globalThis: window, URLSearchParams });
   window.nidhiTakeToken();
   return window;
 }

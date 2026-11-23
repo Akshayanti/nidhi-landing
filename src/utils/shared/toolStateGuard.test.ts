@@ -11,7 +11,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 import * as loan from '../loan/url.ts';
 import * as netWorth from '../multi-currency-net-worth/url.ts';
@@ -51,7 +51,7 @@ function visit(path: string, keyPattern: string, globalName = GLOBAL): Visit {
       },
     },
   };
-  runInNewContext(SOURCE, { window, globalThis: window, URLSearchParams });
+  runClassicScript(SOURCE, { window, globalThis: window, URLSearchParams });
   window.nidhiGuardToolState(globalName, keyPattern);
   return { state: window[globalName], address: location.pathname + location.search + location.hash, writes };
 }

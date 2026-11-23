@@ -10,7 +10,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'lessonPage.js'), 'utf8');
@@ -92,7 +92,7 @@ async function page(opts: Options = {}) {
     JSON,
     Date,
   };
-  runInNewContext(SOURCE, context);
+  runClassicScript(SOURCE, context);
   const settle = () => new Promise((r) => setImmediate(r));
   return { store, parts, details, printSaved, copied, shared, printed: () => printed, fireWindow: (t: string) => (windowHandlers[t] ?? []).forEach((fn) => fn()), settle };
 }

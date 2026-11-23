@@ -14,14 +14,14 @@ import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 import { scanLabels } from '../analyticsLabels.ts';
 
 type Props = Record<string, unknown>;
 const context: { nidhiCleanElements?: (props: Props, labels: { exact: string[]; prefixes: string[] }) => void } = {};
-runInNewContext(readFileSync(new URL('./cleanElements.js', import.meta.url), 'utf8'), { window: context });
+runClassicScript(readFileSync(new URL('./cleanElements.js', import.meta.url), 'utf8'), { window: context });
 const clean = context.nidhiCleanElements!;
 
 const labels = { exact: ['lc-vendor-remove', 'lc-share-copy', 'volunteers-form'], prefixes: ['related-', 'lc-tab-'] };

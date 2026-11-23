@@ -10,7 +10,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'consentRuntime.js'), 'utf8');
@@ -62,7 +62,7 @@ function page(host = 'nidhi.today', opts: { blockCookies?: boolean; cookie?: str
       reset: () => { p.resets += 1; },
     },
   };
-  runInNewContext(SOURCE, { window: p.window, globalThis: p.window });
+  runClassicScript(SOURCE, { window: p.window, globalThis: p.window });
   return p;
 }
 
@@ -163,7 +163,7 @@ describe('consentRuntime: applying to PostHog', () => {
   it('a second copy on the page keeps the first', () => {
     const p = page();
     const first = p.window.nidhiConsent;
-    runInNewContext(SOURCE, { window: p.window, globalThis: p.window });
+    runClassicScript(SOURCE, { window: p.window, globalThis: p.window });
     assert.equal(p.window.nidhiConsent, first);
   });
 });

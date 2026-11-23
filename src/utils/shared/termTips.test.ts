@@ -11,7 +11,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'termTips.js'), 'utf8');
@@ -82,7 +82,7 @@ function page() {
     if (sel === '.term-tip:hover') return [];
     throw new Error(`selector not in the stand-in: ${sel}`);
   };
-  runInNewContext(SOURCE, { document, window: { innerHeight: 800 }, getComputedStyle: () => ({ display: 'none' }) });
+  runClassicScript(SOURCE, { document, window: { innerHeight: 800 }, getComputedStyle: () => ({ display: 'none' }) });
   const fire = (type: string, e: any) => (handlers[type] ?? []).forEach((fn) => fn(e));
   return { body, p, outside, document, fire, tips: () => body.querySelectorAll('.term-tip') };
 }

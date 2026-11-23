@@ -11,7 +11,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 import { LOCALES, localePrefix } from '../../i18n/config.ts';
 
@@ -28,7 +28,7 @@ type Win = Record<string, any>;
 
 function page(): Win {
   const window: Win = { location: { origin: ORIGIN, host: 'nidhi.today' }, URL, URLSearchParams };
-  runInNewContext(SOURCE, { window, globalThis: window, URL, URLSearchParams });
+  runClassicScript(SOURCE, { window, globalThis: window, URL, URLSearchParams });
   return window;
 }
 
