@@ -30,7 +30,7 @@ import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts'
 import { format } from '../i18n/format.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
-import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
+import { monteCarloWorkbook } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
@@ -365,7 +365,7 @@ export default function MonteCarloSimulator({
   // Both copies are of the plan the results show, never a half-typed one, and
   // the event says only which kind was made.
   function downloadSpreadsheet() {
-    const sheets = monteCarloSheets({
+    const sheets = monteCarloWorkbook({
       island: strings,
       common: exportStrings,
       state: shownState,

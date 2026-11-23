@@ -13,7 +13,7 @@ import { DICTS } from '../../i18n/index.ts';
 import { buildXlsx, typedRate, type Cell, type Sheet } from './xlsx.ts';
 import { simulate } from '../monte-carlo/math.ts';
 import { defaultState as monteCarloDefaults } from '../monte-carlo/url.ts';
-import { monteCarloSheets } from '../monte-carlo/export.ts';
+import { monteCarloWorkbook } from '../monte-carlo/export.ts';
 import { DEFAULT_VENDORS } from '../loan/url.ts';
 import { computeFromInput } from '../loan/inputs.ts';
 import { fromMinor } from '../loan/math.ts';
@@ -55,7 +55,7 @@ describe('Monte Carlo spreadsheet', () => {
   it('keeps a typed fee with three decimals as typed', () => {
     const t = DICTS.en.tools;
     const typed = { ...state, feePct: 0.125 };
-    const sheets = monteCarloSheets({ island: t.monteCarlo.island, common: t.export, state: typed, result, date: DATE, page: PAGE });
+    const sheets = monteCarloWorkbook({ island: t.monteCarlo.island, common: t.export, state: typed, result, date: DATE, page: PAGE });
     const cells = sheets.flatMap((sh) => sh.rows.flat()).flatMap((c) => (typeof c === 'object' && c !== null && 'n' in c ? [c] : []));
     assert.ok(cells.some((c) => c.n === 0.125 && c.fmt === 'general'));
     assert.deepEqual(typedRate(0.5), { n: 0.5, fmt: 'decimal2' });
@@ -67,7 +67,7 @@ describe('Monte Carlo spreadsheet', () => {
   for (const locale of LOCALES) {
     it(`holds every year's spread as the simulation computed it (${locale})`, () => {
       const t = DICTS[locale].tools;
-      const sheets = monteCarloSheets({ island: t.monteCarlo.island, common: t.export, state, result, date: DATE, page: PAGE });
+      const sheets = monteCarloWorkbook({ island: t.monteCarlo.island, common: t.export, state, result, date: DATE, page: PAGE });
       builds(sheets);
       const byYear = sheet(sheets, t.monteCarlo.island.export.sheets.byYear);
       assert.equal(byYear.rows.length, result.bands.length + 1);

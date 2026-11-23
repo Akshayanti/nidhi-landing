@@ -34,7 +34,8 @@ const amount = (v: number): Cell => ({ n: Math.round(v), fmt: 'amount0' });
 const percent = (share: number): Cell => ({ n: Math.round(share * 10_000) / 100, fmt: 'decimal2' });
 const whole = (v: number): Cell => ({ n: v, fmt: 'integer' });
 
-export function monteCarloSheets(e: MonteCarloExport): Sheet[] {
+/** The whole workbook: "About", then the plan's sheets. */
+export function monteCarloWorkbook(e: MonteCarloExport): Sheet[] {
   const { island, common, state, date, page } = e;
   const x = island.export;
   const about: Sheet = {
@@ -52,11 +53,11 @@ export function monteCarloSheets(e: MonteCarloExport): Sheet[] {
       [common.about.beta, common.about.betaText],
     ],
   };
-  return [about, ...monteCarloPlanSheets(e)];
+  return [about, ...monteCarloSheets(e)];
 }
 
 /** The sheets after "About": the plan, the assumptions, every year and the outcome. The printed report shows the first three. */
-export function monteCarloPlanSheets({ island, common, state, result }: Omit<MonteCarloExport, 'date' | 'page'>): Sheet[] {
+export function monteCarloSheets({ island, common, state, result }: Omit<MonteCarloExport, 'date' | 'page'>): Sheet[] {
   const x = island.export;
   const withdrawing = state.withdrawal > 0;
 
