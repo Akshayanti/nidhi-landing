@@ -137,6 +137,15 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
+      # The .astro templates, which tsc does not read (#791). @astrojs/check
+      # needs TypeScript 5 or 6 and the site pins 7, so it has an install of
+      # its own, pinned by tools/astro-check/package-lock.json.
+      - name: Install astro check
+        run: npm ci --prefix tools/astro-check
+
+      - name: Type check the Astro templates
+        run: npm run typecheck:astro
+
   # ---------------------------------------------------------------------------
   # Unit tests + dependency-snapshot test. The snapshot test fails any PR
   # that adds, removes, or version-bumps a dep without updating the inline
@@ -173,22 +182,19 @@ jobs:
           PRIVACY_NOTICE_BASE: HEAD^1
         run: npm test
 
-      # The newsletter script is Python, so npm test does not reach it. The same
-      # pinned packages as the newsletter.yml send step (scripts/requirements.txt).
+      # The Python scripts (the newsletter sender, the QR code generator), which
+      # npm test does not reach. Found, not listed (#791): every
+      # scripts/test_*.py runs, with the same pinned packages as the
+      # newsletter.yml send step (scripts/requirements.txt).
       - name: Setup Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
 
-      - name: Run newsletter tests
+      - name: Run Python tests
         run: |
           pip install --require-hashes -r scripts/requirements.txt
-          python -m unittest scripts/test_send_newsletter.py
-          python -m unittest scripts/test_newsletter_sender.py
-
-      # The QR code generator for print material (standard library only).
-      - name: Run QR code tests
-        run: python -m unittest scripts/test_qr_svg.py
+          python -m unittest discover -s scripts -p 'test_*.py' -v
 
   # ---------------------------------------------------------------------------
   # Vulnerability audit. Lets a freshly-introduced known-vulnerable
@@ -219,17 +225,15 @@ jobs:
         # JS ecosystem and lower-severity findings often have no available
         # fix; gating on every advisory leads to dismissal fatigue.
         #
-        # Scope: `--omit=dev` audits `dependencies` only, the packages
-        # whose code is built into the site (astro, react and what they pull
-        # in). It does not audit devDependencies, and some of those run in
-        # every build and deploy without reaching a reader: puppeteer (the
-        # figure renders), tsx and typescript. Dependabot's alerts cover
-        # both lists.
+        # Scope: every lockfile in the repository (INSTALLS in the script):
+        # the site with its build and test tools, the video renders
+        # (remotion/) and astro check (tools/astro-check/). The build, test
+        # and render tools run in CI with the repository checked out, so they
+        # block as the shipped packages do (#791).
         #
-        # The script runs `npm audit --omit=dev` and fails on those two
-        # levels, as the plain command did, except for an advisory with a
-        # dated exception in scripts/lib/audit-exceptions.mjs: one published
-        # before its fix, which would otherwise hold every pull request. An
+        # It fails on those two levels except for an advisory with a dated
+        # exception in scripts/lib/audit-exceptions.mjs: one published before
+        # its fix, which would otherwise hold every pull request. An
         # exception names one advisory and ends on its date.
         run: node scripts/npm-audit.mjs
 

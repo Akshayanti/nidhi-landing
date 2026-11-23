@@ -517,3 +517,30 @@ export function checkMatrix(runs) {
   }
   return problems;
 }
+
+/**
+ * Presses a step's buttons until its event is sent (#782): the tool's Reset
+ * buttons, pressed last. A missed press is looked up again (`find`) and
+ * pressed again, up to `attempts` times. Each miss is noted with its reason
+ * (`pressOne` gives `{ ok, reason }`), so a run that still never sent the
+ * event says why. Only the press is repeated: the payloads already sent stay,
+ * so nothing found in them is retried away. Returns the notes.
+ */
+export async function pressUntilSent({ first, find, pressOne, wasSent, wait, attempts = 3, batch = 3600 }) {
+  const notes = [];
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const buttons = attempt === 1 ? first : await find();
+    if (buttons.length === 0) notes.push(`attempt ${attempt}: no button was found`);
+    for (const el of buttons) {
+      let outcome;
+      try { outcome = await pressOne(el); } catch (error) { outcome = { ok: false, reason: `the press threw: ${String(error?.message ?? error).split('\n')[0]}` }; }
+      if (!outcome.ok) notes.push(`attempt ${attempt}: ${outcome.reason}`);
+      await wait(300);
+    }
+    // PostHog sends its events in batches every few seconds.
+    await wait(batch);
+    if (wasSent()) return notes;
+    notes.push(`attempt ${attempt}: no event was sent after it`);
+  }
+  return notes;
+}

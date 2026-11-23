@@ -12,6 +12,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { testFiles } from './run-tests.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
@@ -114,6 +115,7 @@ describe('the required checks run on every pull request', () => {
   const REQUIRED = {
     'pr-checks.yml': ['Detect changes', 'Install (lockfile integrity)', 'Lint', 'Type check', 'Tests', 'npm audit (high+)', 'Build (static)', 'Remotion'],
     'tool-privacy.yml': ['No typed value reaches analytics'],
+    'tool-gates.yml': ['Free tools: mutation and behaviour'],
   };
   for (const [file, names] of Object.entries(REQUIRED)) {
     const text = read(join('.github/workflows', file));
@@ -121,7 +123,8 @@ describe('the required checks run on every pull request', () => {
     const triggers = text.slice(text.indexOf('\non:\n'), text.indexOf('\npermissions:'));
 
     it(`${file}: keeps the names branch protection waits for`, () => {
-      for (const name of names) assert.ok(jobs.some((job) => job.includes(`\n    name: ${name}\n`)), name);
+      // A name with a colon in it is quoted in the YAML.
+      for (const name of names) assert.ok(jobs.some((job) => job.includes(`\n    name: ${name}\n`) || job.includes(`\n    name: '${name}'\n`)), name);
     });
 
     it(`${file}: starts on every pull request, with no branch or path selection`, () => {
@@ -133,7 +136,7 @@ describe('the required checks run on every pull request', () => {
       for (const job of jobs) {
         const id = job.slice(2, job.indexOf(':'));
         // Not a check: it reports the nightly run (the next describe).
-        if (file === 'tool-privacy.yml' && id === 'alert') continue;
+        if (file !== 'pr-checks.yml' && id === 'alert') continue;
         const condition = /\n {4}if: (.*)/.exec(job);
         if (condition) assert.equal(condition[1], '${{ !cancelled() }}', `job ${id}`);
       }
@@ -166,7 +169,7 @@ describe('a privacy problem is not left to be noticed', () => {
     const tests = checks.slice(checks.indexOf('\n  test:\n'), checks.indexOf('run: npm test'));
     assert.match(tests, /fetch-depth: 2/);
     assert.match(tests, /PRIVACY_NOTICE_BASE: HEAD\^1/);
-    assert.ok(JSON.parse(read('package.json')).scripts.test.includes('src/utils/privacyNoticeGuard.test.ts'));
+    assert.ok(testFiles(ROOT).includes('src/utils/privacyNoticeGuard.test.ts'));
     assert.doesNotMatch(read('.github/workflows/deploy.yml'), /Privacy-notice changelog guard/);
   });
 });
@@ -366,5 +369,60 @@ describe('a sign-up form whose script has not run does not put the email into th
     }
     const subscribe = components.find(([name]) => name === 'SubscribeSection.astro')[1];
     assert.equal(subscribe.match(/<noscript>/g).length, 2, 'one line for each variant of the newsletter form');
+  });
+});
+
+describe('npm test finds its files (#791)', () => {
+  it('runs every test file in the repository', () => {
+    const found = new Set(testFiles(ROOT));
+    const named = spawnSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: ROOT, encoding: 'utf8' })
+      .stdout.split('\n')
+      .filter((f) => /\.test\.(ts|tsx|mjs|js)$/.test(f) && !f.includes('node_modules'));
+    assert.ok(named.length > 100, `only ${named.length} test files seen`);
+    assert.deepEqual(named.filter((f) => !found.has(f)), []);
+  });
+
+  it('is the runner npm test uses', () => {
+    assert.equal(JSON.parse(read('package.json')).scripts.test, 'node scripts/run-tests.mjs');
+  });
+});
+
+describe('the free tools gates cover every tool (#790, #791)', () => {
+  const gates = read('.github/workflows/tool-gates.yml');
+  const matrix = (key) => JSON.parse(`[${/\n {8}\w+: \[([^\]]*)\]/.exec(gates.slice(gates.indexOf(`\n  ${key}:\n`)))[1].split(',').map((v) => `"${v.trim()}"`).join(',')}]`);
+
+  it('mutates every scope stryker.config.mjs knows', () => {
+    const config = read('stryker.config.mjs');
+    const scopes = [...config.slice(config.indexOf('const SCOPES = {'), config.indexOf('\n};', config.indexOf('const SCOPES = {'))).matchAll(/^ {2}'?([\w-]+)'?: \[/gm)].map((m) => m[1]);
+    assert.ok(scopes.length >= 6, `only ${scopes.length} scopes`);
+    assert.deepEqual([...matrix('mutation')].sort(), [...scopes].sort());
+  });
+
+  it('measures the text size of every tool the audit knows', () => {
+    const tools = JSON.parse(/const TOOLS = (\[[^\]]*\]);/.exec(read('scripts/audit-text-size.mjs'))[1].replace(/'/g, '"'));
+    assert.deepEqual([...matrix('text-size')].sort(), [...tools].sort());
+  });
+
+  it('holds every scope to 95%, never pooled', () => {
+    const config = read('stryker.config.mjs');
+    assert.match(config, /thresholds: \{ high: 95, low: 95, break: 95 \}/);
+    assert.match(gates, /npx stryker run stryker\.config\.mjs\n/);
+    assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
+  });
+
+  it('a nightly run that failed opens or updates one issue', () => {
+    const alert = gates.slice(gates.indexOf('\n  alert:\n'));
+    assert.ok(alert.includes("if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))"));
+    assert.match(alert, /gh issue list --state open --label tool-gates-alert/);
+  });
+});
+
+describe('every install is audited (#791)', () => {
+  it('npm-audit.mjs reads every lockfile in the repository', () => {
+    const locks = spawnSync('git', ['ls-files', '*package-lock.json'], { cwd: ROOT, encoding: 'utf8' }).stdout.trim().split('\n')
+      .map((f) => (f === 'package-lock.json' ? '.' : f.replace(/\/package-lock\.json$/, ''))).sort();
+    const listed = /export const INSTALLS = \[([\s\S]*?)\];/.exec(read('scripts/npm-audit.mjs'))[1];
+    const dirs = [...listed.matchAll(/dir: '([^']+)'/g)].map((m) => m[1]).sort();
+    assert.deepEqual(dirs, locks);
   });
 });

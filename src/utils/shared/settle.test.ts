@@ -6,6 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readsSource } from '../../../test/mutationRun.ts';
 
 type Gate = (now: { invalid: boolean; held: boolean; current: boolean }) => { withheld: boolean; waiting: boolean };
 const module_ = './settle.ts';
@@ -31,7 +32,7 @@ describe('resultGate', () => {
 
 for (const name of ['InflationCalculator', 'InvestOrPayOff', 'MonteCarloSimulator']) {
   const source = readFileSync(new URL(`../../components/${name}.tsx`, import.meta.url), 'utf8');
-  describe(name, () => {
+  describe(name, { skip: readsSource }, () => {
     it('Copy serializes the form as it stands', () => {
       const copy = /function copyShareLink\(\) \{[\s\S]*?\n {2}\}/.exec(source)?.[0] ?? '';
       assert.match(copy, /publishableForm\(form,/);
@@ -54,7 +55,7 @@ for (const name of ['InflationCalculator', 'InvestOrPayOff', 'MonteCarloSimulato
   });
 }
 
-it('the loan’s Copy keeps the focus and says why (#793)', () => {
+it('the loan’s Copy keeps the focus and says why (#793)', { skip: readsSource }, () => {
   const source = readFileSync(new URL('../../components/LoanCompare.tsx', import.meta.url), 'utf8');
   assert.match(source, /aria-disabled=\{withheld \|\| undefined\}/);
   assert.match(source, /aria-describedby=\{withheld \? withheldReasonId : undefined\}/);
@@ -62,7 +63,7 @@ it('the loan’s Copy keeps the focus and says why (#793)', () => {
   assert.doesNotMatch(source, /disabled=\{withheld\}\n/);
 });
 
-it('the own-return note is of its own two boxes: another box’s error does not take it away (#793)', () => {
+it('the own-return note is of its own two boxes: another box’s error does not take it away (#793)', { skip: readsSource }, () => {
   const source = readFileSync(new URL('../../components/InvestOrPayOff.tsx', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /!withheld && formNote/);
 });

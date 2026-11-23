@@ -72,6 +72,17 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
   // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
   '@anthropic-ai/sdk': '^1.10.0',
+  // Mutation testing (#790): run in CI on every pull request, so pinned
+  // exactly, like tsx. Nothing under src/ imports them.
+  '@stryker-mutator/core': '10.1.1',
+  '@stryker-mutator/tap-runner': '10.1.1',
+  // Component tests (*.dom.test.tsx): the five tools mounted in a test
+  // browser. Pinned exactly, as test gates.
+  '@testing-library/dom': '10.4.2',
+  '@testing-library/react': '16.3.3',
+  '@testing-library/user-event': '14.6.8',
+  // Types for test/dom.ts, which `astro check` and `tsc` read.
+  '@types/jsdom': '30.0.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   // The accessibility pass of scripts/smoke-pages.mjs: injected into the
@@ -82,6 +93,8 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // build gives them. Astro brings it too; named here so the test does not
   // depend on that.
   'github-slugger': '^2.0.0',
+  // The test browser of the component tests (test/dom.ts). Pinned exactly.
+  jsdom: '31.0.0',
   puppeteer: '^25.18.1',
   // Imported by scripts/render-logo-with-url.mjs. It was there only because
   // astro lists it as optional, so an astro update could have removed it.

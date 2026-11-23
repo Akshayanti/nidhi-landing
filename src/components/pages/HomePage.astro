@@ -289,7 +289,7 @@ const faqSchema = {
             <div class="route route--soon">
               <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
               <span class="route-title">{s.level && <span class="sr-only">{t(home.lessons.routeN, { n: LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 })}</span>}{pointCopy(s.id).situation}</span>
-              <span class="route-meta">{s.level ? t(home.lessons.comingSoon, { level: levelLabel(s.level) }) : home.lessons.comingSoonNoLevel}</span>
+              <span class="route-meta">{levelLabel(s.level) ? t(home.lessons.comingSoon, { level: levelLabel(s.level) ?? '' }) : home.lessons.comingSoonNoLevel}</span>
             </div>
           </li>
         ) : (
@@ -306,7 +306,7 @@ const faqSchema = {
             >
               <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
               <span class="route-title">{s.level && <span class="sr-only">{t(home.lessons.routeN, { n: LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 })}</span>}{pointCopy(s.id).situation}</span>
-              <span class="route-meta">{s.level ? t(home.lessons.levelCount, { level: levelLabel(s.level), count: s.levelCount }) : home.lessons.severalLevels}</span>
+              <span class="route-meta">{levelLabel(s.level) ? t(home.lessons.levelCount, { level: levelLabel(s.level) ?? '', count: s.levelCount }) : home.lessons.severalLevels}</span>
               <span class="route-go"><span data-door-verb>{home.lessons.start}</span><span data-door-title></span> <span aria-hidden="true">&rarr;</span></span>
             </a>
           </li>

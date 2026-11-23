@@ -618,3 +618,44 @@ describe('a short probe is never looked for in PostHog’s own measurements (#84
     assert.ok(problems.some((x) => x.includes('carries what was typed')));
   });
 });
+
+describe('a Reset press that misses is tried again and says why (#782)', () => {
+  const none = () => [];
+  const wait = async () => {};
+
+  it('stops at the first press that sends the event, with nothing noted', async () => {
+    let sent = false;
+    const notes = await checks.pressUntilSent({ first: ['reset'], find: none, pressOne: async () => { sent = true; return { ok: true }; }, wasSent: () => sent, wait });
+    assert.deepEqual(notes, []);
+  });
+
+  it('looks the button up again and presses it again after a miss', async () => {
+    let presses = 0;
+    let sent = false;
+    const pressOne = async () => { presses++; if (presses === 1) return { ok: false, reason: 'covered by div.lc-toast' }; sent = true; return { ok: true }; };
+    const notes = await checks.pressUntilSent({ first: ['reset'], find: async () => ['reset again'], pressOne, wasSent: () => sent, wait });
+    assert.equal(presses, 2);
+    assert.deepEqual(notes, ['attempt 1: covered by div.lc-toast', 'attempt 1: no event was sent after it']);
+  });
+
+  it('names every reason when the event never comes: not found, thrown, refused', async () => {
+    let call = 0;
+    const pressOne = async () => { call++; if (call === 1) throw new Error('Node is detached from document\nstack'); return { ok: false, reason: 'it moved away under the pointer three times' }; };
+    let looks = 0;
+    const find = async () => (++looks === 1 ? [] : ['reset']);
+    const notes = await checks.pressUntilSent({ first: ['reset'], find, pressOne, wasSent: () => false, wait });
+    assert.deepEqual(notes, [
+      'attempt 1: the press threw: Node is detached from document',
+      'attempt 1: no event was sent after it',
+      'attempt 2: no button was found',
+      'attempt 2: no event was sent after it',
+      'attempt 3: it moved away under the pointer three times',
+      'attempt 3: no event was sent after it',
+    ]);
+  });
+
+  it('a run with a leak still fails, however many presses it took', () => {
+    const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_reset', { label: NAMES[0] })]);
+    assert.ok(problems.some((p) => p.includes('carries what was typed')));
+  });
+});
