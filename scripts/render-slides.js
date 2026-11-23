@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Renders Instagram carousel slides (1080x1080) from docs/instagram/ posts with
+// scripts/templates/slide-template.html. `npm run render-ig` drives it; it also
+// runs alone: node scripts/render-slides.js [post]
 
 import puppeteer from 'puppeteer';
 import { readFile, mkdir } from 'node:fs/promises';

@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Renders Instagram story frames (1080x1920) from docs/instagram/ posts with
+// scripts/templates/story-template.html. `npm run render-ig` drives it; it also
+// runs alone: node scripts/render-stories.js [post]
 
 import puppeteer from 'puppeteer';
 import { readFile, mkdir, readdir, unlink } from 'node:fs/promises';
