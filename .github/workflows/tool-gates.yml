@@ -1,0 +1,214 @@
+name: Free tools gates
+
+# The free tools' behaviour gates (#790, #791), on every pull request, every
+# night and by hand:
+#
+# - Mutation testing (StrykerJS, stryker.config.mjs): every tool's logic and
+#   component, and the code they share, each held on its own (never pooled)
+#   to its floor in stryker.floors.json: the score measured when the gates
+#   landed, raised to 95 in each scope's own pull request, never lowered.
+# - Text size (scripts/audit-text-size.mjs): every tool in every language on
+#   a bounded range on pull requests (the narrowest phone, a phone, a tablet
+#   and a laptop, at 100%, 200% and 400% text); the whole range of widths and
+#   sizes, with and without the web fonts, every night.
+#
+# The component tests (*.dom.test.tsx) are part of `npm test`, in the Tests
+# job of pr-checks.yml.
+#
+# "Free tools: mutation and behaviour" is a REQUIRED status check on `main`.
+# It runs on every pull request, whatever it touches: a job skipped by `if:`
+# reports "skipped", which satisfies a required check, so no job here is
+# chosen by what changed. Renaming it means changing the required check in
+# the same breath (scripts/repo-hygiene.test.mjs holds the name).
+on:
+  # No branch filter, as in pr-checks.yml: a stacked pull request gets the
+  # gates before it is retargeted to main.
+  pull_request:
+  schedule:
+    # 02:17 UTC every day, away from the privacy check, deploy and newsletter.
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# The event is part of the group, so a manual run never cancels the nightly one.
+concurrency:
+  group: tool-gates-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
+
+jobs:
+  mutation:
+    name: 'Mutation: ${{ matrix.scope }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      # Every scope reports, so one weak tool does not hide another.
+      fail-fast: false
+      matrix:
+        # Every scope in stryker.config.mjs; scripts/repo-hygiene.test.mjs
+        # fails when one is missing here.
+        scope: [inflation, invest-or-pay-off, monte-carlo, loan, net-worth, shared]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The base as well, for the tests that compare with it, as in the
+          # Tests job of pr-checks.yml: the first test run runs every test.
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Fails on a failed first test run and on a scope that finds nothing to
+      # mutate.
+      - name: Mutation testing of ${{ matrix.scope }}
+        env:
+          STRYKER_SCOPE: ${{ matrix.scope }}
+          STRYKER_CONCURRENCY: '4'
+          NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
+        run: npx stryker run stryker.config.mjs
+
+      # The gate: the scope's logic and its component(s), each at or above its
+      # floor in stryker.floors.json. A floor only rises, to 95 (#790).
+      - name: Scores at or above their floors
+        run: node scripts/mutation-floors.mjs ${{ matrix.scope }}
+
+      - name: Keep the report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mutation-${{ matrix.scope }}
+          path: reports/mutation/${{ matrix.scope }}.json
+          retention-days: 14
+          if-no-files-found: error
+
+  text-size:
+    name: 'Text size: ${{ matrix.tool }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        # The TOOLS of scripts/audit-text-size.mjs; scripts/repo-hygiene.test.mjs
+        # fails when one is missing here.
+        tool: [loan-comparison, multi-currency-net-worth, monte-carlo-simulator, invest-or-pay-off, inflation-calculator]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Ubuntu's runners stop unprivileged user namespaces, which Chrome's
+      # sandbox needs. Allowing them keeps the sandbox on, rather than
+      # starting Chrome without one.
+      - name: Let Chrome use its sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Serve the build
+        run: |
+          npx astro preview --port 4480 --host 127.0.0.1 > "$RUNNER_TEMP/preview.log" 2>&1 &
+          for i in $(seq 1 60); do curl -fsS -o /dev/null http://127.0.0.1:4480/ && exit 0; sleep 1; done
+          cat "$RUNNER_TEMP/preview.log"; exit 1
+
+      # Pull requests: the edges and the middle of the range, in every
+      # language and state. CLAUDE.md, "Layout is checked at every size at once".
+      - name: Text size, bounded range
+        if: github.event_name == 'pull_request'
+        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --width 320,375,768,1280 --size 100,200,400
+
+      # Nightly and by hand: every width and size, then again in the
+      # fallback fonts (what a reader sees while the fonts load).
+      - name: Text size, whole range
+        if: github.event_name != 'pull_request'
+        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }}
+
+      - name: Text size, whole range, fallback fonts
+        if: github.event_name != 'pull_request'
+        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --no-fonts
+
+  # The required check. It passes only when every job above passed.
+  #
+  # `always()` matters: a skipped job satisfies a required check. Without a
+  # status function GitHub skips this job when a job it needs has failed, and
+  # `!cancelled()` skips it when the run is cancelled before it starts; either
+  # way a gate that did not pass would read as a pass. With `always()` it runs
+  # every time and passes only when every job above succeeded.
+  gates:
+    name: 'Free tools: mutation and behaviour'
+    needs: [mutation, text-size]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every gate passed
+        env:
+          MUTATION: ${{ needs.mutation.result }}
+          TEXT_SIZE: ${{ needs.text-size.result }}
+        run: |
+          echo "mutation: $MUTATION, text size: $TEXT_SIZE"
+          if [ "$MUTATION" != "success" ] || [ "$TEXT_SIZE" != "success" ]; then
+            echo "::error::A free tools gate did not pass (or did not run). See the 'Mutation' and 'Text size' jobs."
+            exit 1
+          fi
+
+  # Nobody watches the nightly run, so one that failed or was cancelled opens
+  # an issue, or adds to the one already open.
+  alert:
+    needs: [mutation, text-size, gates]
+    if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write   # open or comment on the tool-gates-alert issue
+    steps:
+      - name: Open or update the tool-gates-alert issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          TITLE="Nightly free tools gates did not pass ($(date -u +%Y-%m-%d))"
+          BODY="$RUNNER_TEMP/tool-gates-alert.md"
+          {
+            echo "The nightly run of the free tools gates (mutation testing and the whole text-size range) did not finish green."
+            echo
+            echo "- Workflow run: $RUN_URL (attempt $ATTEMPT)"
+            echo
+            echo "Open the run to see which job failed. Close the issue once a nightly run has passed. While it is open, further failures are added here as comments."
+          } > "$BODY"
+          EXISTING=$(gh issue list --state open --label tool-gates-alert --limit 1 --json number --jq '.[0].number // empty' || echo "")
+          if [ -n "${EXISTING:-}" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY"
+          else
+            gh issue create --title "$TITLE" --label tool-gates-alert --body-file "$BODY" || {
+              gh label create tool-gates-alert --color D93F0B --description "The nightly free tools gates did not pass" || true
+              gh issue create --title "$TITLE" --label tool-gates-alert --body-file "$BODY"
+            }
+          fi

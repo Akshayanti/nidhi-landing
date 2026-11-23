@@ -112,9 +112,11 @@ export const PROBE_DECIMALS = PROBES.filter((p) => /^\d+\.\d+$/.test(p));
 /**
  * Numbers PostHog computes itself, never from the page: a time, a token count,
  * how long the last page was open and how far it was scrolled. A typed value
- * cannot reach them, and a decimal probe can equal one by chance, so decimal
- * probes are not looked for in them (#843). Amounts and names are, like
- * everywhere else; every other property is read in full.
+ * cannot reach them, and a probe can match one by chance, so neither the
+ * decimal probes (#843) nor the amounts are looked for in them: `$time`
+ * 1795442918.341 once read as the amount 4429183, its digits run together.
+ * Names are; a measurement given as a string is read in full, and so is every
+ * other property.
  */
 export const SDK_MEASUREMENTS = Object.freeze([
   '$time',
@@ -126,7 +128,7 @@ export const SDK_MEASUREMENTS = Object.freeze([
   '$prev_pageview_max_scroll_percentage',
 ]);
 
-/** `json` without the SDK's own measurements, for the decimal probes. */
+/** `json` without the SDK's own measurements, for the amounts and decimal probes. */
 export function withoutMeasurements(json) {
   if (Array.isArray(json)) return json.map(withoutMeasurements);
   if (!json || typeof json !== 'object') return json;
@@ -245,12 +247,13 @@ export function variants(text) {
  * read a value that was transformed (rounded, split across fields, hashed):
  * no check of this kind can.
  */
-export function findLeaks(text, { decimals = true } = {}) {
+export function findLeaks(text, { decimals = true, amounts = true } = {}) {
   const found = new Set();
   const plain = variants(text);
-  // Grouping marks between digits are dropped; nothing else is.
+  // Grouping marks between digits are dropped; nothing else is. An amount is
+  // found inside a longer number too (in cents, say).
   const digits = plain.replace(/(?<=\d)[,.\s  '’_](?=\d)/g, '');
-  for (const a of AMOUNTS) if (digits.includes(String(a))) found.add(String(a));
+  if (amounts) for (const a of AMOUNTS) if (digits.includes(String(a))) found.add(String(a));
   if (decimals) for (const [value, pattern] of RATES) if (pattern.test(plain)) found.add(value);
   const lower = plain.toLowerCase();
   for (const w of NAME_WORDS) if (lower.includes(w)) found.add(w);
@@ -395,12 +398,12 @@ export function checkRun({ decoded, events, consent, headless, ownEvents, mustSe
     // The text as sent, and every string inside it as the receiver reads it
     // (a JSON escape such as \u005a is one letter once decoded).
     const texts = [d.text, d.url, d.json ? strings(d.json).join('\n') : ''].map(variants);
-    // Decimal probes are looked for in the body less PostHog's own measurements
-    // (SDK_MEASUREMENTS); an unreadable body is read whole.
+    // Amounts and decimal probes are looked for in the body less PostHog's own
+    // measurements (SDK_MEASUREMENTS); an unreadable body is read whole.
     const ratesIn = d.json ? [JSON.stringify(withoutMeasurements(d.json)), d.url, strings(withoutMeasurements(d.json)).join('\n')].map(variants) : texts;
     // A body without events is read as an event's properties are.
     const inBody = d.json && typeof d.json === 'object' && !carriesEvents(d.url) ? shortLeaks({ properties: d.json }) : [];
-    const leaks = new Set([...texts.flatMap((t) => findLeaks(t, { decimals: false })), ...ratesIn.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
+    const leaks = new Set([...texts.flatMap((t) => findLeaks(t, { decimals: false, amounts: false })), ...ratesIn.flatMap((t) => findLeaks(t)), ...shortInAddress(d.url), ...inBody]);
     if (leaks.size) problems.push(`a request to ${where} carries what was typed: ${[...leaks].join(', ')}`);
     if (texts.some((t) => /\b(blob|data):[^"\s]{4,}/i.test(t))) problems.push(`a request to ${where} carries a blob: or data: address`);
     const file = texts.map((t) => /[\w%-]+\.(xlsx|csv|pdf)\b/i.exec(t)).find(Boolean);
@@ -516,4 +519,31 @@ export function checkMatrix(runs) {
     }
   }
   return problems;
+}
+
+/**
+ * Presses a step's buttons until its event is sent (#782): the tool's Reset
+ * buttons, pressed last. A missed press is looked up again (`find`) and
+ * pressed again, up to `attempts` times. Each miss is noted with its reason
+ * (`pressOne` gives `{ ok, reason }`), so a run that still never sent the
+ * event says why. Only the press is repeated: the payloads already sent stay,
+ * so nothing found in them is retried away. Returns the notes.
+ */
+export async function pressUntilSent({ first, find, pressOne, wasSent, wait, attempts = 3, batch = 3600 }) {
+  const notes = [];
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const buttons = attempt === 1 ? first : await find();
+    if (buttons.length === 0) notes.push(`attempt ${attempt}: no button was found`);
+    for (const el of buttons) {
+      let outcome;
+      try { outcome = await pressOne(el); } catch (error) { outcome = { ok: false, reason: `the press threw: ${String(error?.message ?? error).split('\n')[0]}` }; }
+      if (!outcome.ok) notes.push(`attempt ${attempt}: ${outcome.reason}`);
+      await wait(300);
+    }
+    // PostHog sends its events in batches every few seconds.
+    await wait(batch);
+    if (wasSent()) return notes;
+    notes.push(`attempt ${attempt}: no event was sent after it`);
+  }
+  return notes;
 }

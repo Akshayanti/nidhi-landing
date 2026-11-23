@@ -15,6 +15,7 @@
  *
  * Run with:  npm test
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -57,7 +58,7 @@ const TOOL_PAGES = [...new Set(ROUTES.flatMap(pageComponents))].sort();
 const key = (pattern: string): RegExp => new RegExp(`^(?:${pattern})$`);
 const keysOf = (encoded: string): string[] => [...new URLSearchParams(encoded).keys()];
 
-describe('tool pages: every route under /free/ renders a guarded page', () => {
+describe('tool pages: every route under /free/ renders a guarded page', { skip: readsSource }, () => {
   it('finds the tool routes in both the English and the [locale] tree', () => {
     assert.ok(ROUTES.length >= 10, `only ${ROUTES.length} routes found`);
     const en = ROUTES.filter((f) => f.startsWith('pages/free/')).map((f) => f.replace('pages/free/', ''));
@@ -115,7 +116,7 @@ describe('tool pages: every route under /free/ renders a guarded page', () => {
   }
 });
 
-describe('tool islands: state comes from the window property, never the address', () => {
+describe('tool islands: state comes from the window property, never the address', { skip: readsSource }, () => {
   // The React components the tool pages mount.
   const islands = codeFiles(SRC).filter((f) => /^components\/[A-Za-z]+\.tsx$/.test(f.path) && /SHARED_STATE_GLOBAL/.test(f.text));
 
@@ -137,7 +138,7 @@ describe('tool islands: state comes from the window property, never the address'
   }
 });
 
-describe('no code outside the allowed places writes to the address', () => {
+describe('no code outside the allowed places writes to the address', { skip: readsSource }, () => {
   // Each entry is a place that rewrites the address to take something out of it, never to put inputs in.
   const ALLOWED: Record<string, string> = {
     'utils/shared/toolStateGuard.js': 'moves shared tool state out of the address',
@@ -276,7 +277,7 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
   });
 });
 
-describe('tracked tool events carry choices, never values', () => {
+describe('tracked tool events carry choices, never values', { skip: readsSource }, () => {
   const { calls, unresolved } = scanEvents(codeFiles(SRC));
   const toolCalls = calls.filter((c) => c.event.startsWith('free_'));
 

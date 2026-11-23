@@ -37,7 +37,8 @@ const groups = navGroups({ showMonteCarlo, showInvestOrPayOff });
 
 // The desktop nav's two dropdowns, in the desktop nav's order.
 const dropdowns = DESKTOP_DROPDOWNS.map((key) => groups.find((group) => group.key === key)).filter(
-  (group): group is NavGroup => group !== undefined,
+  // Each of them opens from a button.
+  (group): group is NavGroup & { button: NonNullable<NavGroup['button']> } => group?.button !== undefined,
 );
 
 // Usually one; more if a third language ever lands.

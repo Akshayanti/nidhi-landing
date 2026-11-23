@@ -3,6 +3,7 @@
  * rate and a tiny known amount both read 0.00, so a link from before the
  * status cannot vouch for a total with such a zero in it: it is in doubt.
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -305,7 +306,7 @@ describe('rates on the way are neither missing nor failed (#795)', () => {
     assert.equal(ratesFailureShown({ ...failed, shared: true }, false), false, 'shared');
     assert.equal(ratesFailureShown({ ...failed, singleCurrency: true }, false), false, 'one currency');
   });
-  it('one rule for the cards, the export and the report', async () => {
+  it('one rule for the cards, the export and the report', { skip: readsSource }, async () => {
     const { readFileSync } = await import('node:fs');
     const source = readFileSync(new URL('../../components/MultiCurrencyNetWorth.tsx', import.meta.url), 'utf8');
     assert.match(source, /const exportReady = !withheld && !pendingRates && /);

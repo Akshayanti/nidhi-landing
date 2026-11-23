@@ -6,6 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { readsSource } from '../../../test/mutationRun.ts';
 
 import { decodeFromQueryString, encodeShared, sharedResult } from './url.ts';
 import { aggregate, type AssetRow } from './math.ts';
@@ -18,7 +19,7 @@ const body = (opens: string, closes: string) => {
   return source.slice(at, source.indexOf(closes, at));
 };
 
-describe('each edit makes a shared view the reader’s own', () => {
+describe('each edit makes a shared view the reader’s own', { skip: readsSource }, () => {
   const edits: Array<[string, string, string]> = [
     ['a row', 'const updateRow = useCallback(', '}, ['],
     ['add', 'const addRow = useCallback(', '}, ['],
@@ -52,7 +53,7 @@ describe('untouched, a full view copies what it was sent', () => {
   }
 });
 
-describe('a refused redacted copy is heard (#795)', () => {
+describe('a refused redacted copy is heard (#795)', { skip: readsSource }, () => {
   it('by the dialog’s one region, and from its button', () => {
     assert.match(source, /<NoticeRegion notice=\{refusalNotice \?\? notice\} \/>/);
     assert.match(source, /aria-describedby=\{refusalId\} onClick=\{\(\) => onGoToRow/);
@@ -68,22 +69,22 @@ describe('what a first edit is (#795)', () => {
       assert.equal(endsSharedView(false, edit), true, 'a full view has rows');
     });
   }
-  it('the rows ask it', () => {
+  it('the rows ask it', { skip: readsSource }, () => {
     assert.match(body('const updateRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, patch\)\) leaveSharedView\(\)/);
     assert.match(body('const addRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, 'add'\)\) leaveSharedView\(\)/);
     assert.match(body('const removeRow = useCallback(', '}, ['), /if \(endsSharedView\(sharedRedacted, 'remove'\)\) leaveSharedView\(\)/);
   });
-  it('a refusal is over at the first edit', () => {
+  it('a refusal is over at the first edit', { skip: readsSource }, () => {
     assert.ok(body('const leaveSharedView = useCallback(', '}, [').includes('setRefused(null)'));
   });
 });
 
-it('an example ends a refusal, so clearing it carries nothing (#794)', () => {
+it('an example ends a refusal, so clearing it carries nothing (#794)', { skip: readsSource }, () => {
   assert.match(body('const showExample = ', '};'), /EXAMPLE_SCALE/);
   assert.match(source.slice(source.indexOf('const showExample = '), source.indexOf('const clearExample = ')), /leaveSharedView\(\)/);
 });
 
-it('nothing that follows the rates stands above the field typed in (#795)', () => {
+it('nothing that follows the rates stands above the field typed in (#795)', { skip: readsSource }, () => {
   const table = source.indexOf('<div className="mcnw-tableSection">');
   const results = source.indexOf('<TotalAnnouncement withheld');
   for (const banner of ['{ratesFailureShown(', '{ratesLoading && !ratesError && !singleCurrency', "{!withheld && result.hasRates === 'partial'"]) {
@@ -92,7 +93,7 @@ it('nothing that follows the rates stands above the field typed in (#795)', () =
   }
 });
 
-it('Clear drops the space a left banner kept (#795)', () => {
+it('Clear drops the space a left banner kept (#795)', { skip: readsSource }, () => {
   const clear = body('const reset = useCallback(', '}, [');
   assert.ok(clear.includes('setArrivedShared(false)') && clear.includes('setArrivedRefused(null)'));
 });

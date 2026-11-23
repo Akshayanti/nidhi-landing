@@ -1,0 +1,12 @@
+{
+  "name": "nidhi-astro-check",
+  "private": true,
+  "description": "astro check for the site's .astro templates (#791), in its own install: @astrojs/check needs TypeScript 5 or 6, the site pins 7.",
+  "dependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "6.0.3"
+  },
+  "scripts": {
+    "check": "astro-check"
+  }
+}

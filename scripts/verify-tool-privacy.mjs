@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -409,7 +409,17 @@ async function visible(page, selector) {
  * element (or inside it). A sticky header or a notice can sit over it, and a
  * click meant for a button must never land on a link.
  */
+/** Presses an element; true if the click was made. `pressOutcome` says why not. */
 async function press(page, el, times = 1, gap = 60) {
+  return (await pressOutcome(page, el, times, gap)).ok;
+}
+
+/**
+ * Presses an element and says how it went (#782): `{ ok: true }`, or
+ * `{ ok: false, reason }` with what stopped it (not on the page, covered by
+ * what, still moving, moved away under the pointer, or what was thrown).
+ */
+async function pressOutcome(page, el, times = 1, gap = 60) {
   // Where the element's centre is, and whether that point really is the element.
   const measure = (block) => el.evaluate((node, where) => {
     if (where) {
@@ -458,14 +468,16 @@ async function press(page, el, times = 1, gap = 60) {
     }
     // Never settled: no click is made on a page that is still moving.
     if (point && !point.covered && still < 3) point = { covered: 'nothing: the page did not stop moving' };
-  } catch { return false; }
+  } catch (error) {
+    return { ok: false, reason: `the element could not be measured: ${String(error?.message ?? error).split('\n')[0]}` };
+  }
   if (!point || point.covered) {
     if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
-    return false;
+    return { ok: false, reason: point ? `covered by ${point.covered}` : 'not on the page' };
   }
   if (times > 1) {
     for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
-    return true;
+    return { ok: true };
   }
   // One click, watched: if the element moves away as the button goes down
   // (pressing can take the focus from something that then redraws the page),
@@ -478,14 +490,35 @@ async function press(page, el, times = 1, gap = 60) {
     await page.mouse.up();
     await sleep(gap);
     // Gone or replaced after the click is what a click often does: it counted.
-    if (under.covered === 'gone' || (!under.covered && Math.abs(under.x - point.x) < 2 && Math.abs(under.y - point.y) < 2)) return true;
+    if (under.covered === 'gone' || (!under.covered && Math.abs(under.x - point.x) < 2 && Math.abs(under.y - point.y) < 2)) return { ok: true };
     if (page.nidhiNote) page.nidhiNote.moved = (page.nidhiNote.moved || 0) + 1;
     await sleep(350);
     point = await measure(null).catch(() => ({ covered: 'gone' }));
-    if (point.covered) return point.covered === 'gone';
+    if (point.covered) return point.covered === 'gone' ? { ok: true } : { ok: false, reason: `covered by ${point.covered} after the button went down` };
   }
   // It moved away every time: that click was not made.
-  return false;
+  return { ok: false, reason: 'it moved away under the pointer three times' };
+}
+
+/** The tool's Reset buttons, pressed last, until the reset event is sent (pressUntilSent, #782). */
+async function pressResets(page, resets, note, wasSent) {
+  note.resetPresses = await pressUntilSent({
+    first: resets,
+    find: () => resetButtons(page),
+    pressOne: (el) => pressOutcome(page, el),
+    wasSent,
+    wait: sleep,
+  });
+}
+
+/** The tool's visible Reset buttons, as pressButtons tells them apart. */
+async function resetButtons(page) {
+  const found = [];
+  for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
+    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`.trim()).catch(() => null);
+    if (label !== null && /reset|--ghost/i.test(label)) found.push(el);
+  }
+  return found;
 }
 
 async function choose(page, selector, { last = false, nth = 0 } = {}) {
@@ -945,7 +978,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     const state = await page.evaluate((g) => window[g] || '', tool.global);
     if (!state) problems.push('the tool published no state for the language switch, so the share-link steps had nothing to carry');
     if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}`);
-    for (const el of resets) { await press(page, el); await sleep(300); }
+    await pressResets(page, resets, note, () => sent().has('reset'));
     await leave();
 
     // The link the tool itself copied is the one opened next, exactly. The
@@ -1156,6 +1189,7 @@ async function worker() {
     if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
+    if (!ok && result.note.resetPresses?.length) console.log(`       the Reset presses: ${result.note.resetPresses.join('; ')}`);
   }
   await browser.close().catch(() => {});
 }

@@ -10,6 +10,7 @@
  *
  * Run with:  npm test
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -139,7 +140,7 @@ describe('the label registry', () => {
     assert.deepEqual(scan.unresolved, []);
   });
 
-  it('knows the labels the notice and the dashboards rely on', () => {
+  it('knows the labels the notice and the dashboards rely on', { skip: readsSource }, () => {
     for (const label of ['volunteers-form', 'lc-share-copy', 'mcnw-csv-download', 'free-monte-carlo-share', 'waitlist-confirm-yes', 'post-inline-tool-loan-comparison']) {
       assert.ok(scan.exact.includes(label), label);
     }

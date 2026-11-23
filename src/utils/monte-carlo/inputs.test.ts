@@ -1,6 +1,7 @@
 /**
  * What the Monte Carlo simulator accepts in a number box (inputs.ts).
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -24,7 +25,7 @@ describe('the simulator’s year boxes', () => {
   const source = readFileSync(join(import.meta.dirname, '../../components/MonteCarloSimulator.tsx'), 'utf8');
   const form = readFileSync(join(import.meta.dirname, 'form.ts'), 'utf8');
 
-  it('are checked as whole numbers, and say so to the browser', () => {
+  it('are checked as whole numbers, and say so to the browser', { skip: readsSource }, () => {
     assert.match(form, /saveYears: !isValidNumber\(f\.saveYears, 0, 60, true\)/);
     assert.match(form, /withdrawYears: f\.withdrawOn && !isValidNumber\(f\.withdrawYears, 1, 60, true\)/);
     assert.equal((source.match(/step="1" value=\{form\.(saveYears|withdrawYears)\}/g) ?? []).length, 2);
