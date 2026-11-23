@@ -16,8 +16,8 @@ import { CHANGE_DAYS } from './src/i18n/strings/changes.ts';
 import { LAUNCH_HOST_SLUGS } from './src/utils/launchHosts.ts';
 import { minifySync } from 'vite';
 import { fileURLToPath } from 'node:url';
-import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/short-link-stub.mjs';
-import { minifyInlineScripts } from './scripts/lib/minify-inline-scripts.mjs';
+import { cleanPath, isSocialShortLink, readHead, refreshTarget, shortLinkStub } from './scripts/lib/publishing/short-link-stub.mjs';
+import { minifyInlineScripts } from './scripts/lib/publishing/minify-inline-scripts.mjs';
 
 /**
  * What the sitemap lists and how it dates each address live in
@@ -42,7 +42,7 @@ const sitemapInputs = {
  * canonical link, which is the strongest signal available without server-side
  * 301s. The social short links are then given a fuller page by
  * `socialShortLinks` below; this map stays the one list of where each leads,
- * and scripts/lib/short-link-stub.test.mjs pins it.
+ * and scripts/lib/publishing/short-link-stub.test.mjs pins it.
  */
 const REDIRECTS = {
   '/free/currency-risk/': '/free/multi-currency-net-worth/',
@@ -127,7 +127,7 @@ const REDIRECTS = {
 /**
  * Rewrites the page behind each social short link once the build has written
  * everything, so a link pasted into a chat previews as the site's card and not
- * as "Redirecting to: /?utm_source=..." (scripts/lib/short-link-stub.mjs).
+ * as "Redirecting to: /?utm_source=..." (scripts/lib/publishing/short-link-stub.mjs).
  *
  * It reads the destination page this build wrote and keeps the refresh as it
  * is in REDIRECTS. Then it reads back every redirect page, social or not, and
@@ -166,7 +166,7 @@ function socialShortLinks() {
 
 /**
  * Minifies the inline scripts in every page the build wrote (#450,
- * scripts/lib/minify-inline-scripts.mjs). It runs last, so the short-link
+ * scripts/lib/publishing/minify-inline-scripts.mjs). It runs last, so the short-link
  * pages rewritten above are covered too. The minifier is the one Vite uses for
  * the bundled scripts; a script it cannot read fails the build.
  */

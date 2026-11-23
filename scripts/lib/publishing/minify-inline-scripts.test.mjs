@@ -1,5 +1,5 @@
 /**
- * Unit tests for scripts/lib/minify-inline-scripts.mjs, with the minifier the
+ * Unit tests for scripts/lib/publishing/minify-inline-scripts.mjs, with the minifier the
  * build passes in (astro.config.mjs), so what is tested is what ships.
  *
  * Run with:  npm test
@@ -94,7 +94,7 @@ describe('minifyInlineScripts', () => {
     // The two analytics backstops and the consent answer are inlined on every
     // page. Each defines globals; the minified copy must define the same ones.
     for (const file of ['cleanElements.js', 'cleanUrls.js', 'consentRuntime.js', 'langSwitch.js', 'toolStateGuard.js', 'tokenGuard.js']) {
-      const source = readFileSync(new URL(`../../src/utils/shared/${file}`, import.meta.url), 'utf8');
+      const source = readFileSync(new URL(`../../../src/utils/shared/${file}`, import.meta.url), 'utf8');
       const globals = (code) => {
         const sandbox = { document: { cookie: '' }, location: { hostname: 'localhost', search: '', hash: '', pathname: '/' }, history: { replaceState() {} }, navigator: {} };
         sandbox.window = sandbox;

@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/checks/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -87,7 +87,7 @@ const PLANT = argv.includes('--plant-leak');
 const JOBS = Math.max(1, Number(many('--jobs')[0]) || 3);
 
 // Kept in step with LOCALES in src/i18n/config.ts by the unit test
-// scripts/lib/tool-privacy-checks.test.mjs: this script runs under plain node.
+// scripts/lib/checks/tool-privacy-checks.test.mjs: this script runs under plain node.
 export const LOCALE_CODES = ['en', 'hi', 'es', 'cs', 'mr'];
 
 const [A1, , A3] = AMOUNTS;
@@ -95,7 +95,7 @@ const [N1, N2] = NAMES;
 
 /**
  * Each tool: what to do that is its own. The values typed into its boxes are
- * in BOXES (scripts/lib/tool-privacy-checks.mjs), and filled in that order;
+ * in BOXES (scripts/lib/checks/tool-privacy-checks.mjs), and filled in that order;
  * `all` fills every match (each offer, each row). Everything else is found on
  * the page.
  *

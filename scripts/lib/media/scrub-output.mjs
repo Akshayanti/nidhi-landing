@@ -392,7 +392,7 @@ import { checkMathConsistency, checkMiFIDFraming } from "./math-consistency.mjs"
  * plan plus an array of unresolved violations. Caller decides whether to
  * throw, regenerate, or proceed.
  *
- * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @param {import('../../../remotion/src/data').ReelPlan} plan
  */
 export function scrubPlan(plan) {
   /** @type {Violation[]} */

@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { mkdir, writeFile, readFile, unlink } from "node:fs/promises";
 import { parseVtt } from "./parse-vtt.mjs";
 
-const AUDIO_DIR = join(import.meta.dirname, "../../remotion/public/audio");
+const AUDIO_DIR = join(import.meta.dirname, "../../../remotion/public/audio");
 
 // Voice options. We default to a UK male editorial voice ("authority + warmth").
 // Override per render via options.voice or the NIDHI_REEL_VOICE env var.
@@ -92,7 +92,7 @@ export async function generateTTS(text, slug, options = {}) {
  * between thoughts (~350ms in observed output). Hook gets a slightly longer
  * pause before the first beat. CTA is preceded by a clear breath beat.
  *
- * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @param {import('../../../remotion/src/data').ReelPlan} plan
  * @returns {{ text: string; hookText: string; beatTexts: string[]; ctaText: string }}
  */
 export function stitchNarration(plan) {

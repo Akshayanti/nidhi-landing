@@ -22,7 +22,7 @@ import { mkdir, copyFile, access } from "node:fs/promises";
 import { constants } from "node:fs";
 import { join } from "node:path";
 
-const ROOT = join(import.meta.dirname, "../..");
+const ROOT = join(import.meta.dirname, "../../..");
 const FIGURE_PNG_DIR = join(ROOT, "output/instagram/figures");
 const REMOTION_PUBLIC_FIGURES = join(ROOT, "remotion/public/figures");
 

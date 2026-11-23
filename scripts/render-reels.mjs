@@ -20,7 +20,7 @@
  *   node scripts/render-reels.mjs <slug> --variants-all     # render all 3 hook variants
  *
  * Required env: ANTHROPIC_API_KEY  (in .env)
- * Optional env: NIDHI_REEL_MODEL   (default: DEFAULT_REEL_MODEL in lib/llm-script-writer.mjs)
+ * Optional env: NIDHI_REEL_MODEL   (default: DEFAULT_REEL_MODEL in lib/media/llm-script-writer.mjs)
  *               NIDHI_REEL_VOICE   (default: en-GB-RyanNeural)
  *               NIDHI_REEL_RATE    (default: +5%)
  *               NIDHI_REEL_PITCH   (default: -2Hz)
@@ -30,13 +30,13 @@ import { join } from "node:path";
 import { mkdir, writeFile, readFile, unlink, rename } from "node:fs/promises";
 import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { loadPosts } from "./lib/parse-blog-meta.mjs";
-import { generateReelPlan } from "./lib/llm-script-writer.mjs";
-import { scrubPlan, assertNoViolations } from "./lib/scrub-output.mjs";
-import { generateTTS, stitchNarration, alignSegments } from "./lib/generate-tts.mjs";
-import { pickMusic } from "./lib/pick-music.mjs";
-import { writePlatformCaptions } from "./lib/render-platform-caption.mjs";
-import { prepareFigures } from "./lib/prepare-figures.mjs";
+import { loadPosts } from "./lib/media/parse-blog-meta.mjs";
+import { generateReelPlan } from "./lib/media/llm-script-writer.mjs";
+import { scrubPlan, assertNoViolations } from "./lib/media/scrub-output.mjs";
+import { generateTTS, stitchNarration, alignSegments } from "./lib/media/generate-tts.mjs";
+import { pickMusic } from "./lib/media/pick-music.mjs";
+import { writePlatformCaptions } from "./lib/media/render-platform-caption.mjs";
+import { prepareFigures } from "./lib/media/prepare-figures.mjs";
 
 const OUTPUT_BASE = join(import.meta.dirname, "../output");
 const REMOTION_DIR = join(import.meta.dirname, "../remotion");

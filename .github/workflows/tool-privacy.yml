@@ -54,7 +54,7 @@ jobs:
   # leak for its tool, then that tool's twenty runs, both window sizes among
   # them, so the script's rule that a tool shows both a rage click and a dead
   # click across its runs still applies. The list is every tool under
-  # src/pages/free; a unit test (scripts/lib/tool-privacy-checks.test.mjs)
+  # src/pages/free; a unit test (scripts/lib/checks/tool-privacy-checks.test.mjs)
   # fails when a tool is missing here.
   verify-tool:
     name: 'Privacy check: ${{ matrix.tool }}'

@@ -1,5 +1,5 @@
 /**
- * The post-build checks of scripts/lib/check-dist.mjs (#361), each run on a
+ * The post-build checks of scripts/lib/checks/check-dist.mjs (#361), each run on a
  * small hand-made site: it passes when the site is right, and fails, naming
  * the page, on the mistake it exists for.
  *

@@ -7,7 +7,7 @@
 // $REPORT (when set) and exits 1 on any mismatch or failure.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { VERSIONED_SCRIPTS, gsVersion } from './lib/gs-version.mjs';
+import { VERSIONED_SCRIPTS, gsVersion } from './lib/publishing/gs-version.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 

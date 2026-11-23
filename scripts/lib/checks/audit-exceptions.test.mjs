@@ -1,5 +1,5 @@
 /**
- * Unit tests for scripts/lib/audit-exceptions.mjs.
+ * Unit tests for scripts/lib/checks/audit-exceptions.mjs.
  *
  * Run with:  npm test
  */

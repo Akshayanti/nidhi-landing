@@ -1,7 +1,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, basename, relative } from 'node:path';
 
-const INSTAGRAM_DIR = join(import.meta.dirname, '..', '..', 'docs', 'instagram');
+const INSTAGRAM_DIR = join(import.meta.dirname, '..', '..', '..', 'docs', 'instagram');
 
 /**
  * Recursively find all .md files under a directory, returning relative paths.

@@ -233,7 +233,7 @@ jobs:
         # block as the shipped packages do (#791).
         #
         # It fails on those two levels except for an advisory with a dated
-        # exception in scripts/lib/audit-exceptions.mjs: one published before
+        # exception in scripts/lib/checks/audit-exceptions.mjs: one published before
         # its fix, which would otherwise hold every pull request. An
         # exception names one advisory and ends on its date.
         run: node scripts/npm-audit.mjs
@@ -272,14 +272,14 @@ jobs:
         run: npm run build
 
       # Canonical and hreflang links, the sitemap, internal links, leftover
-      # template text and the feeds, read from dist/ (scripts/lib/check-dist.mjs).
+      # template text and the feeds, read from dist/ (scripts/lib/checks/check-dist.mjs).
       - name: Check the built site
         run: npm run check:dist
 
       # Every tool in every language in a browser: the island mounts with no
       # console error and shows a default result, and axe finds no WCAG A or
       # AA violation in either theme. Known failures, each with its issue and
-      # a date it ends, are in scripts/lib/known-failures.mjs.
+      # a date it ends, are in scripts/lib/checks/known-failures.mjs.
       - name: Tool smoke test and accessibility pass
         # Runs when an earlier check failed, so one run reports them all.
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}

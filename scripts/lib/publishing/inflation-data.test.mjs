@@ -1,5 +1,5 @@
 /**
- * Unit tests for scripts/lib/inflation-data.mjs.
+ * Unit tests for scripts/lib/publishing/inflation-data.mjs.
  *
  * Run with:  npm test
  */

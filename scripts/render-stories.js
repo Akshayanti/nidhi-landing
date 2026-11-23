@@ -3,9 +3,9 @@
 import puppeteer from 'puppeteer';
 import { readFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
-import { loadAllPosts, loadPost } from './lib/parse-markdown.js';
+import { loadAllPosts, loadPost } from './lib/media/parse-markdown.js';
 
-const TEMPLATE_PATH = join(import.meta.dirname, 'story-template.html');
+const TEMPLATE_PATH = join(import.meta.dirname, 'templates', 'story-template.html');
 const OUTPUT_DIR = join(import.meta.dirname, '..', 'output', 'instagram');
 
 /**

@@ -5,7 +5,7 @@
 //
 // The pages are every page in dist/ (build first), in every language. With no
 // baseUrl the built site in dist/ is served locally, as GitHub Pages serves it
-// (scripts/lib/serve-dist.mjs); give a dev or preview server's address to
+// (scripts/lib/checks/serve-dist.mjs); give a dev or preview server's address to
 // audit that instead.
 //
 // For each page it reports:
@@ -18,7 +18,7 @@
 //   inline links inside a sentence (WCAG 2.2 target size, minimum)
 // Each finding names its page, its kind (`rule`) and the element, by a
 // selector unique in the page plus what was measured. Known findings, each
-// tracked in an issue, are listed in scripts/lib/known-failures.mjs (check
+// tracked in an issue, are listed in scripts/lib/checks/known-failures.mjs (check
 // 'audit'); a page that does not load or scrolls sideways cannot be excused.
 // Exit code 1 on any other finding, or on a known-failure entry that is
 // malformed, out of date or matches nothing.
@@ -26,9 +26,9 @@
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import puppeteer from 'puppeteer';
-import { loadDist, readHead } from './lib/check-dist.mjs';
-import { KNOWN_FAILURES, report, splitKnown } from './lib/known-failures.mjs';
-import { serveDist } from './lib/serve-dist.mjs';
+import { loadDist, readHead } from './lib/checks/check-dist.mjs';
+import { KNOWN_FAILURES, report, splitKnown } from './lib/checks/known-failures.mjs';
+import { serveDist } from './lib/checks/serve-dist.mjs';
 
 const args = process.argv.slice(2);
 const given = args.find((a) => /^https?:/.test(a));

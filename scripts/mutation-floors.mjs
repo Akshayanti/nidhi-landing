@@ -7,7 +7,7 @@
 // stryker.floors.json. Exit 1 when a part is below its floor, 2 when the
 // report cannot be read.
 import { readFileSync } from 'node:fs';
-import { judgeScope, partScores } from './lib/mutation-floors.mjs';
+import { judgeScope, partScores } from './lib/checks/mutation-floors.mjs';
 
 const scope = process.argv[2];
 let report;

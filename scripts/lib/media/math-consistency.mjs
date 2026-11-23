@@ -80,7 +80,7 @@ function normalizeWordNumerals(text) {
 }
 
 /**
- * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @param {import('../../../remotion/src/data').ReelPlan} plan
  * @returns {Violation[]}
  */
 export function checkMathConsistency(plan) {
@@ -237,7 +237,7 @@ export function checkMathConsistency(plan) {
  * require BOTH a historical hedge and a non-guarantee tail in the same beat
  * or the immediately following beat.
  *
- * @param {import('../../remotion/src/data').ReelPlan} plan
+ * @param {import('../../../remotion/src/data').ReelPlan} plan
  * @returns {Violation[]}
  */
 export function checkMiFIDFraming(plan) {

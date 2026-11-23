@@ -37,7 +37,7 @@ lives in a Google account, and its header says how to deploy it:
 ## The reel script writer's model
 
 `npm run render-reels` asks an Anthropic model to write each reel's script
-(`lib/llm-script-writer.mjs`, with `ANTHROPIC_API_KEY` set). The model id is
+(`lib/media/llm-script-writer.mjs`, with `ANTHROPIC_API_KEY` set). The model id is
 written in one place, `DEFAULT_REEL_MODEL` in that file, and
 `NIDHI_REEL_MODEL` overrides it for a run. Model ids are retired on published
 dates, so that constant is the line to update when one is.

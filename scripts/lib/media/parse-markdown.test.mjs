@@ -1,7 +1,7 @@
 /**
- * Unit tests for scripts/lib/parse-markdown.js: an Instagram post written in
+ * Unit tests for scripts/lib/media/parse-markdown.js: an Instagram post written in
  * Markdown, parsed into the caption, the slides and the story fields the
- * renderers draw. The post is the fixture scripts/fixtures/instagram-post.md.
+ * renderers draw. The post is the fixture scripts/lib/media/fixtures/instagram-post.md.
  *
  * Run with:  npm test
  */
@@ -11,7 +11,7 @@ import fs from 'node:fs';
 
 import { parseInstagramPost } from './parse-markdown.js';
 
-const SOURCE = fs.readFileSync('scripts/fixtures/instagram-post.md', 'utf8');
+const SOURCE = fs.readFileSync('scripts/lib/media/fixtures/instagram-post.md', 'utf8');
 const post = parseInstagramPost(SOURCE, 'series-1/14-budget-split.md');
 
 describe('parse-markdown: where the post is', () => {

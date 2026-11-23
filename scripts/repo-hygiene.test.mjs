@@ -281,8 +281,8 @@ describe('files that only work in one place are in it', () => {
       .filter((name) => /\.(mjs|js|ts|py|sh|md)$/.test(name) && name !== 'repo-hygiene.test.mjs')
       .flatMap((name) => (read(join('scripts', name)).match(id) ?? []).map((model) => `${name}: ${model}`));
     assert.equal(found.length, 1, found.join('\n'));
-    assert.match(found[0], /^lib\/llm-script-writer\.mjs: claude-[a-z]+-\d+(-\d+)?$/);
-    assert.match(read('scripts/lib/llm-script-writer.mjs'), /process\.env\.NIDHI_REEL_MODEL \|\| DEFAULT_REEL_MODEL/);
+    assert.match(found[0], /^lib\/media\/llm-script-writer\.mjs: claude-[a-z]+-\d+(-\d+)?$/);
+    assert.match(read('scripts/lib/media/llm-script-writer.mjs'), /process\.env\.NIDHI_REEL_MODEL \|\| DEFAULT_REEL_MODEL/);
   });
 });
 

@@ -16,7 +16,7 @@ name: Inflation data refresh
 # A changed dataset is compared with the file on main before anything is
 # pushed: countries removed, years removed, past values changed. The summary
 # goes into the run's summary and the issue. A change over the limits
-# (CHANGE_LIMITS in scripts/lib/inflation-data.mjs) fails the run instead of
+# (CHANGE_LIMITS in scripts/lib/publishing/inflation-data.mjs) fails the run instead of
 # pushing anything, and its summary ends with a short
 # name for that exact comparison. If the change is real, run the workflow by
 # hand with that name in "accept": it lets that same comparison through, and a

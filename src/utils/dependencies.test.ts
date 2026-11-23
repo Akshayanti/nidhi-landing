@@ -70,7 +70,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
-  // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
+  // (scripts/lib/media/llm-script-writer.mjs). Nothing under src/ imports it.
   '@anthropic-ai/sdk': '^1.10.0',
   // Mutation testing (#790): run in CI on every pull request, so pinned
   // exactly, like tsx. Nothing under src/ imports them.
