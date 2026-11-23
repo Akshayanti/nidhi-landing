@@ -889,6 +889,16 @@ describe('a shared plan', () => {
     }
   });
 
+  it('with a box out of range says the range, not that the box cannot be read', async () => {
+    w[SHARED_STATE_GLOBAL] = 's=-5';
+    mountWith();
+    await settle(20);
+    const box = screen.getByLabelText(island.fields.start) as HTMLInputElement;
+    assert.equal(box.value, '-5');
+    assert.equal(box.getAttribute('aria-invalid'), 'true');
+    assert.equal(describedBy(box)[0], 'Error: Enter an amount from 0 to 1,000,000,000,000.');
+  });
+
   for (const [name, change] of [['a fee', { feePct: 0.5 }], ['a run count', { paths: 1_000 }]] as const) {
     it(`that sets ${name} shows the fees and paths without a click`, async () => {
       openPlan(change);
