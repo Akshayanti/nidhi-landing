@@ -154,7 +154,12 @@ describe('the required checks run on every pull request', () => {
 
     it(`${file}: starts on every pull request, with no branch or path selection`, () => {
       assert.match(triggers, /^ {2}pull_request:$/m);
-      assert.doesNotMatch(triggers, /^ +(paths|paths-ignore|branches|branches-ignore):/m);
+      // The one selection allowed: the mutation run also starts on a merge
+      // to main, to keep main's results current (#855). It selects nothing
+      // for pull requests.
+      const push = "  push:\n    branches: [main]\n";
+      assert.equal(triggers.includes(push), file === 'tool-mutation.yml');
+      assert.doesNotMatch(triggers.replace(push, ''), /^ +(paths|paths-ignore|branches|branches-ignore):/m);
     });
 
     it(`${file}: no job is chosen by what changed`, () => {
@@ -185,7 +190,9 @@ describe('the required checks run on every pull request', () => {
       if (skip) {
         const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf(`\n  ${skip.job}:\n`));
         assert.ok(plan.startsWith('\n  plan:\n'), 'the plan job comes first, then the job it decides');
-        assert.match(plan, /run: \$\{\{ steps\.inputs\.outputs\.run \|\| 'true' \}\}/, 'run defaults to true');
+        assert.ok(plan.includes(file === 'tool-mutation.yml'
+          ? "      run: ${{ steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}\n"
+          : "      run: ${{ steps.inputs.outputs.run || 'true' }}\n"), 'run defaults to true');
         assert.match(plan, /fetch-depth: 2\n/, 'the base as well, to list what changed');
         assert.match(plan, /import \{ changedPaths, needsRun \} from "\.\/scripts\/lib\/checks\/check-inputs\.mjs"/);
         assert.ok(plan.includes('process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));'));
@@ -194,7 +201,7 @@ describe('the required checks run on every pull request', () => {
         assert.match(plan, /if git diff --name-only --no-renames -z HEAD\^1 HEAD > "\$RUNNER_TEMP\/changed"; then/, 'both ends of a move, NUL-separated');
         assert.match(plan, /\[ "\$run" = "false" \] \|\| run=true/, 'anything but a clear false runs');
         assert.match(plan, /\n {8}id: inputs\n {8}if: github\.event_name == 'pull_request'\n/, 'nightly and manual runs always run');
-        assert.equal(plan.split('GITHUB_OUTPUT').length - 1, file === 'tool-mutation.yml' ? 3 : 1, 'nothing else writes an output');
+        assert.equal(plan.split('GITHUB_OUTPUT').length - 1, file === 'tool-mutation.yml' ? 4 : 1, 'nothing else writes an output');
         // The job it decides waits for it, and the summary job reads it.
         const decided = jobs.find((job) => job.startsWith(`  ${skip.job}:\n`));
         assert.match(decided, /\n {4}needs: plan\n {4}if: \$\{\{ !cancelled\(\) && needs\.plan\.outputs\.run == 'true' \}\}\n/);
@@ -492,7 +499,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
   });
 
   it('holds every scope to its floors, never pooled', () => {
-    assert.match(gates, /npx stryker run stryker\.config\.mjs\n/);
+    assert.match(gates, /run: exec node node_modules\/@stryker-mutator\/core\/bin\/stryker\.js run stryker\.config\.mjs\n/);
     assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
     assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
@@ -513,11 +520,39 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     // Nothing but a whole sha256 is handed on; anything else fails the plan, and the gate with it.
     assert.ok(planJob.includes(`          echo "$fingerprint" | grep -Eqx '[0-9a-f]{64}'\n          echo "fingerprint=$fingerprint" >> "$GITHUB_OUTPUT"\n`));
     assert.doesNotMatch(gates, /hashFiles/);
-    // Each shard's report holds only its own mutants before it is kept.
-    assert.match(gates, /run: npx stryker run stryker\.config\.mjs\n\n(?:.*\n)*? {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report/);
-    assert.ok(gates.includes(`key: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\${{ github.sha }}`));
-    assert.ok(gates.includes(`restore-keys: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\n`));
-    assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);
+    // Each shard's report holds only its own mutants before it is kept,
+    // and neither step runs after a run that failed or was cancelled.
+    const shardJob = gates.slice(gates.indexOf('\n  mutation:\n'), gates.indexOf('\n  floors:\n'));
+    assert.match(shardJob, /\n {6}- name: Keep only this shard's mutants\n {8}env:\n(?: {10}.*\n)+ {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report\n {8}uses: actions\/upload-artifact@/);
+    const base = 'stryker-incremental-${{ matrix.name }}-${{ ' + fingerprint + ' }}-';
+    const saved = `${base}\${{ github.sha }}-\${{ github.run_id }}-\${{ github.run_attempt }}`;
+    // Restored by the fingerprint alone; saved under a key no other run or
+    // attempt has, so a part of a run never stands in the way of a later save.
+    assert.ok(shardJob.includes(`        id: earlier\n        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n          restore-keys: ${base}\n`));
+    assert.equal(shardJob.split('restore-keys:').length - 1, 1);
+    // Stryker hears the runner's signal itself (no npx in between), and what
+    // it finished is saved whether the run passed, failed or was cancelled:
+    // only a file that parses, and only the incremental file, never a report.
+    assert.ok(shardJob.indexOf('id: earlier') < shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js'));
+    assert.ok(shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js') < shardJob.indexOf('id: kept'));
+    assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
+    assert.ok(shardJob.includes(`if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
+    assert.ok(shardJob.includes(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n`));
+    assert.equal(shardJob.split('always()').length - 1, 2, 'nothing else runs after a failed or cancelled run');
+    assert.doesNotMatch(gates, /uses: actions\/cache@/);
+    // Forced on the nightly and the manual run only; a pull request and a
+    // merge to main start from earlier results.
+    assert.ok(gates.includes("STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}\n"));
+    // A newer push cancels a pull request's run. A merge to main is in a
+    // group of its own: never cancelled, and never replaced while it waits.
+    assert.ok(gates.includes("  group: tool-mutation-${{ github.event_name }}-${{ github.event_name == 'push' && github.run_id || github.event.pull_request.number || github.ref }}\n  cancel-in-progress: ${{ github.event_name == 'pull_request' }}\n"));
+    // A merge to main: what it changed, from the commit before it; anything unclear runs.
+    const pushed = planJob.slice(planJob.indexOf('        id: pushed\n'), planJob.indexOf('      # What a shard'));
+    assert.ok(pushed.startsWith("        id: pushed\n        if: github.event_name == 'push'\n        env:\n          BEFORE: ${{ github.event.before }}\n"));
+    assert.ok(pushed.includes(`if echo "$BEFORE" | grep -Eqx '[0-9a-f]{40}' && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \\\n`));
+    assert.ok(pushed.includes('&& git fetch --quiet --depth=1 origin "$BEFORE" \\\n            && git diff --name-only --no-renames -z "$BEFORE" HEAD > "$RUNNER_TEMP/changed"; then\n'));
+    assert.ok(pushed.includes(`' "$RUNNER_TEMP/changed" ".github/workflows/tool-mutation.yml") || run=true\n`));
+    assert.ok(pushed.includes('[ "$run" = "false" ] || run=true\n'));
     assert.match(read('.github/workflows/pr-checks.yml'), /FLOORS_BASE: HEAD\^1/);
   });
 

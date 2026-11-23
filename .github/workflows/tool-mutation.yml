@@ -26,6 +26,11 @@ on:
   # No branch filter, as in pr-checks.yml: a stacked pull request gets the
   # gates before it is retargeted to main.
   pull_request:
+  # Every merge, so main holds results under its current fingerprint and a
+  # pull request that changes only tests has something to start from on its
+  # first push (#855). Not forced: it starts from main's own earlier results.
+  push:
+    branches: [main]
   schedule:
     # 02:17 UTC every day, away from the privacy check, deploy and newsletter.
     - cron: '17 2 * * *'
@@ -35,9 +40,13 @@ permissions:
   contents: read
 
 # The event is part of the group, so a manual run never cancels the nightly one.
+# A newer push to a pull request cancels its run in progress; each shard
+# still saves what it had finished (below). Every merge to main has a group
+# of its own (its run id): none is cancelled, and none waits in a queue,
+# where a later merge would replace it and its results would never be made.
 concurrency:
-  group: tool-mutation-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: tool-mutation-${{ github.event_name }}-${{ github.event_name == 'push' && github.run_id || github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
@@ -52,7 +61,7 @@ jobs:
     outputs:
       shards: ${{ steps.shards.outputs.shards }}
       fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}
-      run: ${{ steps.inputs.outputs.run || 'true' }}
+      run: ${{ steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -70,6 +79,29 @@ jobs:
         run: |
           run=true
           if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
+            run=$(node --input-type=module -e '
+              import { readFileSync } from "node:fs";
+              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
+              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
+            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-mutation.yml") || run=true
+          fi
+          [ "$run" = "false" ] || run=true
+          if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+      # The same question for a merge to main: what the push changed, from
+      # the commit main was at before it. A first push, a forced one or a
+      # commit that cannot be fetched runs every shard.
+      - name: Whether the push can change a score
+        id: pushed
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          run=true
+          if echo "$BEFORE" | grep -Eqx '[0-9a-f]{40}' && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+            && git fetch --quiet --depth=1 origin "$BEFORE" \
+            && git diff --name-only --no-renames -z "$BEFORE" HEAD > "$RUNNER_TEMP/changed"; then
             run=$(node --input-type=module -e '
               import { readFileSync } from "node:fs";
               import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
@@ -136,21 +168,22 @@ jobs:
       - name: Install
         run: npm ci
 
-      # The shard's earlier results (incremental mode, #846): a pull request
-      # starts from the latest run with the same fingerprint (its own last
-      # run, or main's) and retests only mutants whose code or tests changed.
-      # Stryker compares the code it mutates and the test files, and nothing
-      # else (code a tool imports from elsewhere, the dependencies, its own
-      # settings, the shards, Node, the test helpers, the data the tests
-      # read), so the plan job's fingerprint covers all of that, and the
-      # tools' own code too: a change to any of it starts the shard afresh.
-      # A change to test files alone keeps the earlier results. The nightly
-      # run retests everything (STRYKER_FORCE) and saves afresh.
+      # The shard's earlier results (incremental mode, #846): a run starts
+      # from the latest results saved under the same fingerprint (this pull
+      # request's own, or main's) and retests only mutants whose code or
+      # tests changed. Stryker compares the code it mutates and the test
+      # files, and nothing else (code a tool imports from elsewhere, the
+      # dependencies, its own settings, the shards, Node, the test helpers,
+      # the data the tests read), so the plan job's fingerprint covers all of
+      # that, and the tools' own code too: a change to any of it starts the
+      # shard afresh. A change to test files alone keeps the earlier results.
+      # The nightly run retests everything (STRYKER_FORCE) and saves afresh.
       - name: Earlier results
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: earlier
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}
+          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-
 
       # Fails on a failed first test run and on a shard that finds nothing
@@ -160,11 +193,42 @@ jobs:
           STRYKER_SCOPE: ${{ matrix.scope }}
           STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
           STRYKER_CONCURRENCY: '4'
-          STRYKER_FORCE: ${{ github.event_name == 'pull_request' && '0' || '1' }}
+          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
           NEWSLETTER_ID_BASE: HEAD^1
           PRIVACY_NOTICE_BASE: HEAD^1
           FLOORS_BASE: HEAD^1
-        run: npx stryker run stryker.config.mjs
+        # `exec node`, not npx: when the run is cancelled the runner signals
+        # this process, and Stryker itself must be the one to hear it, to
+        # write what it has finished before it stops.
+        run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs
+
+      # What the shard finished is kept whether the run passed, failed or
+      # was cancelled by a newer push, so the next run does not start from
+      # nothing (#848 lost six runs that way). Each entry is one mutant's
+      # finished result, so a part of a run is as true as a whole one; the
+      # shard's own report and the floors are untouched by it, and a shard
+      # that did not finish still fails the gate. A file that does not parse
+      # is not saved. (A runner that is shut down runs no further step.)
+      - name: Whether there are results to keep
+        id: kept
+        if: ${{ always() }}
+        env:
+          FILE: reports/stryker-incremental/${{ matrix.name }}.json
+          RESTORED: ${{ steps.earlier.outputs.cache-matched-key }}
+        run: |
+          echo "Earlier results restored from: ${RESTORED:-nothing}"
+          if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1); console.log(`${Object.values(r.files).reduce((n, f) => n + f.mutants.length, 0)} mutant result(s) to keep`);' "$FILE"; then
+            echo "keep=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Nothing to keep."
+          fi
+
+      - name: Keep the results for the next run
+        if: ${{ always() && steps.kept.outputs.keep == 'true' }}
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: reports/stryker-incremental/${{ matrix.name }}.json
+          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
 
       # Incremental mode also writes earlier results for mutants outside this
       # shard; left in, a mutant that moved shards would be counted twice.
