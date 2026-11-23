@@ -8,7 +8,10 @@
 // mutation run starts every test in src/, and those tests read lessons,
 // public/, emails/, scripts/, astro.config.mjs and more, so anything not on
 // the list below runs the shards. A test (mutation-inputs.test.mjs) fails if
-// a test the mutation run starts begins to read one of these places.
+// a test the mutation run starts names one of these places directly in a
+// read (a literal path in join, resolve, readFileSync, readdirSync, globSync
+// or new URL); a read through a variable or a helper is not caught, so a new
+// read of these places is checked by hand before it lands.
 
 /** Prefixes (ending in /) and exact paths no mutation run reads. */
 export const NEVER_READ = ['docs/', '.claude/', '.github/', 'README.md', 'CLAUDE.md'];
