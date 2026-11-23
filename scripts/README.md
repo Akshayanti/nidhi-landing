@@ -63,8 +63,9 @@ one folder per purpose:
 - `lib/media/`: The reel, caption and Instagram pipeline: lesson and post parsers, the script writer, the scrubber and its maths check, speech, music, figures and captions. Modules: `generate-tts.mjs`, `llm-script-writer.mjs`, `math-consistency.mjs`, `parse-blog-meta.mjs`, `parse-markdown.js`, `parse-vtt.mjs`, `pick-music.mjs`, `prepare-figures.mjs`, `render-platform-caption.mjs`, `scrub-output.mjs`.
 
 Beside them: `templates/` holds the HTML the Instagram renderers read,
-`fixtures/` the files tests compare byte for byte, and `review/` the volunteer
-review sheets' Apps Script and the glossary export.
+`fixtures/` the files tests compare byte for byte (the media tests keep
+theirs in `lib/media/fixtures/`), and `review/` the volunteer review
+sheets' Apps Script and the glossary export.
 
 ## Pasted into Google Apps Script
 

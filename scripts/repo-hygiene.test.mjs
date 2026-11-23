@@ -439,6 +439,10 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /\n  gate:\n    name: 'Free tools: mutation'\n    needs: \[plan, mutation, floors\]\n/);
     assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[text-size\]\n/);
     // Pull requests reuse earlier results; the nightly run retests everything.
+    // Earlier results are kept only while what the tests run on is the same.
+    const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', '.nvmrc', 'test/**', 'src/data/**')";
+    assert.ok(gates.includes(`key: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\${{ github.sha }}`));
+    assert.ok(gates.includes(`restore-keys: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\n`));
     assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);
     assert.match(read('.github/workflows/pr-checks.yml'), /FLOORS_BASE: HEAD\^1/);
   });
