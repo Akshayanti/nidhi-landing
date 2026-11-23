@@ -29,28 +29,28 @@ export const BOXES = {
   'loan-comparison': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0], all: true },
     { name: 'principal', selector: 'input[id$="-principal"]', value: AMOUNTS[0], all: true },
-    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.3147', all: true },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '7.31', all: true },
     { name: 'term', selector: 'input[id$="-term"]', value: '347', all: true },
     // Before the extra payments and lump sums, which pay every offer off early:
     // the horizon and the refinance need the full term to take their values.
     { name: 'horizon slider', selector: 'input.lc-horizonSlider', value: '61', steps: 60, reveal: '[data-attr="lc-tab-horizon"]' },
     { name: 'horizon', selector: 'input.lc-horizonInput', value: '67' },
     { name: 'refinance month', selector: '.lc-refiInputs input.lc-input', value: '41', reveal: '[data-attr="lc-tab-refi"]' },
-    { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.9381' },
+    { name: 'new rate', selector: '.lc-refiInputs input.lc-input', nth: 1, value: '5.93' },
     { name: 'new term', selector: '.lc-refiInputs input.lc-input', nth: 2, value: '293' },
     { name: 'new costs', selector: '.lc-refiInputs input.lc-input', nth: 3, value: AMOUNTS[6] },
     { name: 'fee', selector: 'input[id$="-fee"]', value: AMOUNTS[1], all: true },
     { name: 'points cost', selector: 'input[id$="-pointsCost"]', value: AMOUNTS[3], all: true },
-    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.1371', all: true },
+    { name: 'points reduction', selector: 'input[id$="-pointsReduction"]', value: '1.13', all: true },
     { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2], all: true },
     { name: 'lump sums', selector: 'input[id$="-lumpSums"]', value: `23:${AMOUNTS[4]}`, all: true },
-    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.7163', all: true },
+    { name: 'penalty', selector: 'input[id$="-prepayPct"]', value: '2.71', all: true },
     { name: 'penalty until', selector: 'input[id$="-prepayUntil"]', value: '29', all: true },
     // Before the hybrid rate: a payment is refused beside one. The first offer
     // only, so the second keeps a result for the analysis to work on.
     { name: 'monthly payment', selector: 'input[id$="-monthly"]', value: AMOUNTS[5], reveal: 'input[type="radio"][value="payment"]', after: 'input[type="radio"][value="term"]' },
     { name: 'fixed months', selector: 'input[id$="-initialFixedMonths"]', value: '59', reveal: 'input[type="radio"][value="hybrid"]' },
-    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.1927' },
+    { name: 'rate afterwards', selector: 'input[id$="-subsequentRatePct"]', value: '6.19' },
   ],
   'multi-currency-net-worth': [
     { name: 'name', selector: 'input[id$="-name"]', value: NAMES[0] },
@@ -66,26 +66,26 @@ export const BOXES = {
     { name: 'years of saving', selector: 'input.mcs-input', nth: 2, value: '37' },
     { name: 'mix', selector: 'input.mcs-range', value: '65', steps: 13 },
     // Before withdrawals are on: their boxes come after it on the page.
-    { name: 'fee', selector: 'input.mcs-input', nth: 3, value: '1.8379', reveal: 'button.mcs-settingsToggle' },
+    { name: 'fee', selector: 'input.mcs-input', nth: 3, value: '1.83', reveal: 'button.mcs-settingsToggle' },
     { name: 'withdrawal', selector: 'input.mcs-input', nth: 4, value: AMOUNTS[2], reveal: 'astro-island input[type="checkbox"]' },
     { name: 'years of withdrawals', selector: 'input.mcs-input', nth: 5, value: '43' },
   ],
   'inflation-calculator': [
     { name: 'amount', selector: 'input[id$="-amount"]', value: AMOUNTS[0] },
-    { name: 'rate', selector: 'input[id$="-rate"]', value: '4.3719' },
+    { name: 'rate', selector: 'input[id$="-rate"]', value: '4.37' },
     { name: 'years', selector: 'input[id$="-years"]', value: '47' },
-    { name: 'growth', selector: 'input[id$="-growth"]', value: '8.6347', reveal: '[data-attr="free-inflation-tab-keep"]' },
+    { name: 'growth', selector: 'input[id$="-growth"]', value: '8.63', reveal: '[data-attr="free-inflation-tab-keep"]' },
   ],
   'invest-or-pay-off': [
     { name: 'balance', selector: 'input[id$="-balance"]', value: AMOUNTS[0] },
-    { name: 'debt rate', selector: 'input[id$="-debtRate"]', value: '7.3147' },
+    { name: 'debt rate', selector: 'input[id$="-debtRate"]', value: '7.31' },
     { name: 'payment', selector: 'input[id$="-payment"]', value: AMOUNTS[1] },
     { name: 'extra', selector: 'input[id$="-extra"]', value: AMOUNTS[2] },
-    { name: 'inflation', selector: 'input[id$="-inflation"]', value: '3.7921' },
-    { name: 'relief', selector: 'input[id$="-relief"]', value: '13.4719' },
-    { name: 'fee', selector: 'input[id$="-feePct"]', value: '1.8379' },
-    { name: 'tax on gains', selector: 'input[id$="-gainsTax"]', value: '17.2963' },
-    { name: 'own return', selector: 'input[id$="-ownReturn"]', value: '8.6347', reveal: 'input[type="radio"][value="own"]' },
+    { name: 'inflation', selector: 'input[id$="-inflation"]', value: '3.79' },
+    { name: 'relief', selector: 'input[id$="-relief"]', value: '13.47' },
+    { name: 'fee', selector: 'input[id$="-feePct"]', value: '1.83' },
+    { name: 'tax on gains', selector: 'input[id$="-gainsTax"]', value: '17.29' },
+    { name: 'own return', selector: 'input[id$="-ownReturn"]', value: '8.63', reveal: 'input[type="radio"][value="own"]' },
   ],
 };
 
@@ -99,10 +99,13 @@ export function expectedLeaks(boxes) {
 
 const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
 /**
- * The decimal probes. Each has four or more decimal places (#843), which makes
- * a chance match with a number the page sends unlikely, not impossible: a
- * short one such as 1.83 was once PostHog's own measure of how long a page
- * was open, and failed a clean run.
+ * The decimal probes. Two decimal places at most: the tools read rates no
+ * finer than that (parsePercent, maxDecimals 2). None ends in 0 or 5, the
+ * values a rounded time or percentage takes most often. 1.83 was once
+ * PostHog's own measure of how long the last page was open, and failed a
+ * clean run (#843): that number and the others PostHog computes are left out
+ * by name (SDK_MEASUREMENTS). A probe can still equal some other number a
+ * page sends; that fails the run visibly, never passes it silently.
  */
 export const PROBE_DECIMALS = PROBES.filter((p) => /^\d+\.\d+$/.test(p));
 
@@ -133,7 +136,7 @@ export function withoutMeasurements(json) {
 }
 
 // A value that stands by itself: no digit, letter or decimal part joined to it.
-// With a decimal comma it is not two numbers of a list ([1,8379], a position).
+// With a decimal comma it is not two numbers of a list ([1,83], a position).
 const RATES = PROBE_DECIMALS
   .map((p) => [p, new RegExp(`(?<![\\w.,])${p.replace('.', '\\.')}(?!\\w|[.,]\\d)|(?<![\\w.,[])${p.replace('.', ',')}(?![\\w\\]]|[.,]\\d)`)]);
 const SHORT = PROBES.filter((p) => /^\d{1,3}$/.test(p))
