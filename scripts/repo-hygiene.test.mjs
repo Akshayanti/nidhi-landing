@@ -138,7 +138,12 @@ describe('the required checks run on every pull request', () => {
         // Not a check: it reports the nightly run (the next describe).
         if (file !== 'pr-checks.yml' && id === 'alert') continue;
         const condition = /\n {4}if: (.*)/.exec(job);
-        if (condition) assert.equal(condition[1], '${{ !cancelled() }}', `job ${id}`);
+        // The required summary job runs every time: skipped, it would pass.
+        // pr-checks.yml's jobs are the required checks themselves; the others
+        // gather their jobs into one summary job that is required.
+        const required = file !== 'pr-checks.yml' && REQUIRED[file].some((name) => job.includes(`name: ${name}`) || job.includes(`name: '${name}'`));
+        if (condition) assert.equal(condition[1], required ? '${{ always() }}' : '${{ !cancelled() }}', `job ${id}`);
+        else assert.ok(!required, `job ${id}: the required summary job needs if: \${{ always() }}`);
       }
       assert.doesNotMatch(text, /git diff|GITHUB_OUTPUT"?\s*$[\s\S]*needs\.\w+\.outputs|needs\.\w+\.outputs/m);
     });

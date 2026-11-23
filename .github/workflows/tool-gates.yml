@@ -153,13 +153,15 @@ jobs:
 
   # The required check. It passes only when every job above passed.
   #
-  # `!cancelled()` matters: without a status function GitHub skips this job
-  # when a job it needs has failed, and a skipped job satisfies a required
-  # check, so a failing gate would read as a pass.
+  # `always()` matters: a skipped job satisfies a required check. Without a
+  # status function GitHub skips this job when a job it needs has failed, and
+  # `!cancelled()` skips it when the run is cancelled before it starts; either
+  # way a gate that did not pass would read as a pass. With `always()` it runs
+  # every time and passes only when every job above succeeded.
   gates:
     name: 'Free tools: mutation and behaviour'
     needs: [mutation, text-size]
-    if: ${{ !cancelled() }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

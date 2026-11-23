@@ -6,6 +6,27 @@ import { join } from 'node:path';
 import { TARGET, floorProblems, judgeScope, partOf, partScores } from './mutation-floors.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..');
+const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+
+/**
+ * The floors on the base commit, or null when that commit has no floors file.
+ * Anything else (a base that is not a commit, a file that is not JSON) throws,
+ * so the ratchet can never pass by failing to read the base.
+ */
+function baseFloors(revision) {
+  let commit;
+  try {
+    commit = git('rev-parse', '--verify', '--quiet', `${revision}^{commit}`).trim();
+  } catch {
+    throw new Error(`FLOORS_BASE ${revision} is not a commit here (is the checkout deep enough?)`);
+  }
+  try {
+    git('cat-file', '-e', `${commit}:stryker.floors.json`);
+  } catch {
+    return null;
+  }
+  return JSON.parse(git('show', `${commit}:stryker.floors.json`));
+}
 const mutants = (...statuses) => ({ mutants: statuses.map((status) => ({ status })) });
 
 describe('mutation floors (#790)', () => {
@@ -54,12 +75,24 @@ describe('stryker.floors.json', () => {
 
   // In CI, FLOORS_BASE names the base revision (pr-checks.yml, the Tests job).
   it('lowers no floor of the base branch', { skip: !process.env.FLOORS_BASE && 'FLOORS_BASE is not set' }, () => {
-    let base = null;
-    try {
-      base = JSON.parse(execFileSync('git', ['show', `${process.env.FLOORS_BASE}:stryker.floors.json`], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
-    } catch {
-      return; // The base branch has no floors yet: this is the change that adds them.
-    }
-    assert.deepEqual(floorProblems(floors, base), []);
+    const base = baseFloors(process.env.FLOORS_BASE);
+    // null only when the base has no floors file: the change that adds it.
+    if (base !== null) assert.deepEqual(floorProblems(floors, base), []);
+  });
+});
+
+describe('the base floors are read or the check fails', () => {
+  it('fails on a base that is not a commit, instead of passing', () => {
+    assert.throws(() => baseFloors('definitely-not-a-revision'), /not a commit/);
+  });
+
+  it('reads no floors from a commit that has no floors file', () => {
+    // The first commit of the repository has no stryker.floors.json.
+    const first = git('rev-list', '--max-parents=0', 'HEAD').trim().split('\n')[0];
+    assert.equal(baseFloors(first), null);
+  });
+
+  it('reads the floors of a commit that has them', () => {
+    assert.deepEqual(baseFloors('HEAD'), JSON.parse(git('show', 'HEAD:stryker.floors.json')));
   });
 });
