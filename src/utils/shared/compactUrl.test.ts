@@ -14,6 +14,7 @@ import {
   decodeTuple,
   encodeTuple,
   escapeField,
+  serializeParams,
   setNonDefault,
   unescapeField,
 } from './compactUrl.ts';
@@ -178,5 +179,49 @@ describe('setNonDefault', () => {
     assert.equal(params.has('n'), false);
     setNonDefault(params, 'n', 3, 2);
     assert.equal(params.get('n'), '3');
+  });
+});
+
+describe('tuples at their edges', () => {
+  it('encodes a tuple of nothing but empty fields, or of no fields, as an empty string', () => {
+    assert.equal(encodeTuple(['', '', '']), '');
+    assert.equal(encodeTuple([]), '');
+  });
+
+  it('treats a missing field as an empty one', () => {
+    assert.equal(encodeTuple(['a', undefined as unknown as string, 'b']), 'a~~b');
+    assert.equal(encodeTuple(['a', undefined as unknown as string]), 'a');
+  });
+
+  it('decodes an empty string as no fields at all unless a length is asked for', () => {
+    assert.deepEqual(decodeTuple(''), []);
+    assert.deepEqual(decodeTuple('', 2), ['', '']);
+    assert.deepEqual(decodeTuple('a'), ['a']);
+    assert.deepEqual(decodeTuple('a~b', 1), ['a', 'b'], 'fields beyond the expected length are kept');
+  });
+});
+
+describe('setNonDefault and serializeParams together', () => {
+  it('leaves out a value that is its default, same type or not', () => {
+    const p = new URLSearchParams();
+    setNonDefault(p, 'a', 5, 5);
+    setNonDefault(p, 'b', 'x', 'x');
+    setNonDefault(p, 'c', true, 'true');
+    setNonDefault(p, 'd', NaN, NaN);
+    assert.equal(p.toString(), '');
+  });
+
+  it('writes zero and false, which are values, not blanks', () => {
+    const p = new URLSearchParams();
+    setNonDefault(p, 'n', 0, 5);
+    setNonDefault(p, 'f', false, true);
+    assert.equal(p.toString(), 'n=0&f=false');
+  });
+
+  it('writes a tuple\'s separators as themselves, every one of them', () => {
+    const p = new URLSearchParams();
+    p.set('r', encodeTuple(['a', 'b', '', 'c d']));
+    assert.equal(p.toString(), 'r=a%7Eb%7E%7Ec+d');
+    assert.equal(serializeParams(p), 'r=a~b~~c+d');
   });
 });

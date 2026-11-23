@@ -6,7 +6,7 @@
 import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { TOOL_DEFAULT_CURRENCY, arrivedByLanguageSwitch, publishToolState } from './toolState.ts';
+import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY, arrivedByLanguageSwitch, publishToolState } from './toolState.ts';
 import { LOCALES } from '../../i18n/config.ts';
 import { CURRENCIES } from '../loan/math.ts';
 
@@ -43,11 +43,44 @@ describe('arrivedByLanguageSwitch', () => {
   });
 });
 
+describe('arrivedByLanguageSwitch, where there is nothing to go by', () => {
+  it('is false for a referrer that is no address', () => {
+    visit('https://nidhi.today/hi/free/loan-comparison/', 'not an address');
+    assert.equal(arrivedByLanguageSwitch(), false);
+  });
+
+  it('is false, without failing, where there is no document (the page built on the server)', () => {
+    assert.equal(typeof document, 'undefined');
+    assert.equal(arrivedByLanguageSwitch(), false);
+  });
+
+  it('is false for the same path on another origin, even one that differs only by port or scheme', () => {
+    visit('https://nidhi.today/hi/free/loan-comparison/', 'http://nidhi.today/free/loan-comparison/');
+    assert.equal(arrivedByLanguageSwitch(), false);
+    visit('https://nidhi.today/hi/free/loan-comparison/', 'https://nidhi.today:8443/free/loan-comparison/');
+    assert.equal(arrivedByLanguageSwitch(), false);
+  });
+});
+
 describe('publishToolState', () => {
   it('writes the encoded state to the named window property, and nothing else', () => {
     visit('https://nidhi.today/free/loan-comparison/', '');
     publishToolState('__test', 'c=INR');
     assert.equal((g.window as Record<string, unknown>).__test, 'c=INR');
+  });
+});
+
+describe('publishToolState on the server', () => {
+  it('does nothing, without failing, where there is no window', () => {
+    assert.equal(typeof window, 'undefined');
+    assert.doesNotThrow(() => publishToolState('__test', 'c=INR'));
+    assert.ok(!('__test' in g));
+  });
+});
+
+describe('TOOL_AMOUNT_LOCALE', () => {
+  it('writes amounts the Spanish way on Spanish pages and the Czech way on Czech ones, and each currency\'s own way elsewhere', () => {
+    assert.deepEqual(TOOL_AMOUNT_LOCALE, { en: null, hi: null, es: 'es', cs: 'cs', mr: null });
   });
 });
 

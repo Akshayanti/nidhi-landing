@@ -86,7 +86,7 @@ export function unescapeField(s: string): string {
  */
 export function encodeTuple(values: readonly string[]): string {
   const fields = values.map((v) => v ?? '');
-  while (fields.length > 0 && fields[fields.length - 1] === '') fields.pop();
+  while (fields[fields.length - 1] === '') fields.pop();
   return fields.map(escapeField).join(SEP);
 }
 
@@ -121,7 +121,6 @@ export function setNonDefault(
 ): void {
   if (value === undefined || value === null) return;
   if (value === '') return;
-  if (value === dflt) return;
   if (String(value) === String(dflt)) return;
   params.set(key, String(value));
 }

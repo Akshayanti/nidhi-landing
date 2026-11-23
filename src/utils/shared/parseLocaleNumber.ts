@@ -48,7 +48,6 @@ export function numberSeparators(locale: string): { group: string; decimal: stri
  * page rather than turned away. One separator only.
  */
 function ungroup(int: string, sep: string): string | null {
-  if (!int.includes(sep)) return /^\d+$/.test(int) ? int : null;
   const e = sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // The whole number matches one system or the other, never a mix of the two
   // ("1,234,56,789" is neither): western groups of three throughout, or, in
@@ -62,7 +61,7 @@ function ungroup(int: string, sep: string): string | null {
 
 /** True when `s` is a valid grouped whole number with `sep` as its only separator. */
 function isGrouping(s: string, sep: string): boolean {
-  return s.includes(sep) && ungroup(s, sep) !== null;
+  return ungroup(s, sep) !== null;
 }
 
 /**
@@ -82,13 +81,15 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   const { maxDecimals = Infinity, allowNegative = false } = options;
   let s = latinDigits(raw).trim().replace(/[   ]/g, ' ');
   let negative = false;
-  if (/^[-−]/.test(s)) {
+  if (s[0] === '-' || s[0] === '−') {
     if (!allowNegative) return null;
     negative = true;
     s = s.slice(1).trimStart();
   }
-  if (!/^\d[\d., ]*$/.test(s) || /\d$/.test(s) === false) return null;
-  if (/ {2,}/.test(s)) return null;
+  // Digits, marks and spaces only, from a digit on. What follows needs no
+  // more than that: a mark at the end leaves an empty decimal part, and a
+  // doubled space is no grouping, so both are refused below.
+  if (!/^\d[\d., ]*$/.test(s)) return null;
 
   const local = numberSeparators(locale);
   const hasDot = s.includes('.');
@@ -100,14 +101,12 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   } else if (hasDot || hasComma) {
     const mark = hasDot ? '.' : ',';
     const count = s.split(mark).length - 1;
-    const intPart = s.replace(/ /g, '');
     if (mark === local.decimal) {
       // The page's decimal mark: one of them is a decimal; several can only be grouping.
       decimal = count === 1 ? mark : null;
-    } else if (isGrouping(intPart, mark)) {
-      // The page's grouping mark, used as grouping.
-      decimal = null;
-    } else if (count === 1 && (!/^\d{3}$/.test(intPart.split(mark)[1] ?? '') || /^0+$/.test(intPart.split(mark)[0]))) {
+    } else if (isGrouping(s, mark)) {
+      // The page's grouping mark, used as grouping: there is no decimal mark.
+    } else if (count === 1 && (!/^\d{3}$/.test(s.split(mark)[1]) || /^0+$/.test(s.split(mark)[0]))) {
       // The page's grouping mark, but not in groups of three, or after a
       // whole part of zero ("0.125"): it can only be a decimal.
       decimal = mark;
@@ -125,8 +124,8 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   const groupMarks = new Set(intRaw.match(/[., ]/g) ?? []);
   if (groupMarks.size > 1) return null;
   const sep = [...groupMarks][0];
-  if (sep === decimal) return null;
-  const int = sep ? ungroup(intRaw, sep) : /^\d+$/.test(intRaw) ? intRaw : null;
+  // Without a mark the whole part is digits: the first check allowed nothing else.
+  const int = sep ? ungroup(intRaw, sep) : intRaw;
   if (int === null) return null;
 
   const parsed = Number(frac !== undefined ? `${int}.${frac}` : int);
@@ -171,7 +170,7 @@ export function plainDigits(n: number): string {
   const [mantissa, exponent] = String(n).split('e-');
   if (exponent === undefined) return mantissa;
   const digits = mantissa.replace(/[-.]/g, '');
-  return `${n < 0 ? '-' : ''}0.${'0'.repeat(Number(exponent) - 1)}${digits}`;
+  return `${mantissa.startsWith('-') ? '-' : ''}0.${'0'.repeat(Number(exponent) - 1)}${digits}`;
 }
 
 /**

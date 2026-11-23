@@ -190,3 +190,51 @@ describe('formatPercent', () => {
     assert.equal(formatPercent(NaN, 'USD'), '0.0%');
   });
 });
+
+describe('formatAmount: short forms it abbreviates itself', () => {
+  const nbsp = (v: string) => v.replace(/ /g, ' ');
+  // The yen's own locale is not English, so its short form is built here; so is a Spanish page's.
+  const yen = (v: number) => formatAmount(v, 'JPY', true);
+  const spanish = (v: number) => nbsp(formatAmount(v, 'EUR', true, 'es'));
+
+  it('writes an amount under a thousand in full', () => {
+    assert.equal(yen(7), '￥7');
+    assert.equal(yen(999), '￥999');
+    assert.equal(spanish(999), '999 €');
+    assert.equal(spanish(0), '0 €');
+  });
+
+  it('starts each abbreviation at its round figure exactly', () => {
+    assert.equal(yen(1_000), '￥1K');
+    assert.equal(yen(1_000_000), '￥1M');
+    assert.equal(yen(1_000_000_000), '￥1B');
+    assert.equal(spanish(1_000), '1K €');
+    assert.equal(spanish(1_000_000), '1M €');
+    assert.equal(spanish(1_000_000_000), '1 mil M €');
+  });
+
+  it('abbreviates an amount below zero by its size', () => {
+    assert.equal(yen(-1_500), '-￥1.5K');
+    assert.equal(spanish(-2.5e9), '-2,5 mil M €');
+  });
+
+  it('writes "B" for billions wherever the page is not Spanish', () => {
+    assert.equal(yen(2.5e9), '￥2.5B');
+    assert.equal(nbsp(formatAmount(2.5e9, 'PLN', true)), '2.5B zł');
+    assert.equal(nbsp(formatAmount(2.5e9, 'EUR', true, 'de')), '2,5B €');
+  });
+
+  it('writes "mil M" for any Spanish page style, regional ones too', () => {
+    assert.equal(nbsp(formatAmount(2.5e9, 'EUR', true, 'es-ES')), '2,5 mil M €');
+  });
+
+  it('puts the abbreviation right after the figure, before a symbol that follows it', () => {
+    assert.equal(nbsp(formatAmount(1_234_567, 'PLN', true)), '1.23M zł');
+    assert.equal(nbsp(formatAmount(1_234.5, 'CHF', true)), 'CHF 1.24K');
+  });
+
+  it('adds no abbreviation where there is no figure to abbreviate', () => {
+    assert.equal(spanish(Infinity), '∞ €');
+    assert.equal(yen(Infinity), '￥∞');
+  });
+});

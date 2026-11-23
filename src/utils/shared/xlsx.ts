@@ -107,8 +107,9 @@ function cellXml(cell: Cell, ref: string): string {
   if ('n' in cell) {
     // A number that is not finite has no cell value; leave the cell empty.
     if (!Number.isFinite(cell.n)) return '';
+    // Stryker disable next-line StringLiteral: with '' no style is found, and 'general' is style 0: neither writes an s attribute
     const style = STYLE[cell.fmt ?? 'general'];
-    return `<c r="${ref}"${style ? ` s="${style}"` : ''}><v>${cell.n === 0 ? 0 : cell.n}</v></c>`;
+    return `<c r="${ref}"${style ? ` s="${style}"` : ''}><v>${cell.n}</v></c>`;
   }
   const text = escapeXml(cell.t.slice(0, MAX_CELL_TEXT));
   return `<c r="${ref}" t="inlineStr"${cell.bold ? ` s="${STYLE.bold}"` : ''}><is><t xml:space="preserve">${text}</t></is></c>`;
@@ -244,7 +245,6 @@ export function crc32(bytes: Uint8Array): number {
 // Every entry is dated 1980-01-01 00:00, the zip format's earliest date: the
 // file then carries no trace of when or where it was made beyond its contents.
 const DOS_DATE = 0x0021;
-const DOS_TIME = 0;
 
 /** Files to a stored zip. */
 export function zipStore(files: [string, Uint8Array][]): Uint8Array<ArrayBuffer> {
@@ -255,18 +255,17 @@ export function zipStore(files: [string, Uint8Array][]): Uint8Array<ArrayBuffer>
   for (const [path, data] of files) {
     const name = enc.encode(path);
     const crc = crc32(data);
+    // A new buffer is all zeros, and so are the fields left unwritten: the
+    // method (0 is stored), the time (00:00) and the length of the extra field.
     const local = new DataView(new ArrayBuffer(30));
     local.setUint32(0, 0x04034b50, true);
     local.setUint16(4, 20, true); // version needed: 2.0
     local.setUint16(6, 0x0800, true); // names are UTF-8
-    local.setUint16(8, 0, true); // stored
-    local.setUint16(10, DOS_TIME, true);
     local.setUint16(12, DOS_DATE, true);
     local.setUint32(14, crc, true);
     local.setUint32(18, data.length, true);
     local.setUint32(22, data.length, true);
     local.setUint16(26, name.length, true);
-    local.setUint16(28, 0, true);
     chunks.push(new Uint8Array(local.buffer), name, data);
 
     const entry = new DataView(new ArrayBuffer(46));
@@ -274,14 +273,13 @@ export function zipStore(files: [string, Uint8Array][]): Uint8Array<ArrayBuffer>
     entry.setUint16(4, 20, true); // made by: 2.0
     entry.setUint16(6, 20, true);
     entry.setUint16(8, 0x0800, true);
-    entry.setUint16(10, 0, true);
-    entry.setUint16(12, DOS_TIME, true);
     entry.setUint16(14, DOS_DATE, true);
     entry.setUint32(16, crc, true);
     entry.setUint32(20, data.length, true);
     entry.setUint32(24, data.length, true);
     entry.setUint16(28, name.length, true);
-    // Extra, comment, disk, internal and external attributes: all zero.
+    // Method and time as above; extra, comment, disk, internal and external
+    // attributes: all zero.
     entry.setUint32(42, offset, true);
     central.push(new Uint8Array(entry.buffer), name);
     offset += 30 + name.length + data.length;

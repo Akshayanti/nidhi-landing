@@ -90,3 +90,41 @@ describe('linkName', () => {
     assert.equal(linkName('A\u0001B\u0000C\nD\u007fE\u0085F'), 'ABCDEF');
   });
 });
+
+describe('the edges of what a link may carry', () => {
+  it('keeps a number of 200 characters and marks one of 201', () => {
+    assert.equal(linkNumber('9'.repeat(200), 'f'), '9'.repeat(200));
+    assert.equal(linkNumber('9'.repeat(201), 'f'), 'NaN');
+  });
+
+  it('skips a blank lump sum between two real ones, and reads spaces around each side', () => {
+    assert.equal(linkLumpSums('1:2; ;3:4', 'f'), '1:2;3:4');
+    assert.equal(linkLumpSums(' 12 : 5 ', 'f'), '12:5');
+    assert.equal(linkLumpSums('1:2;', 'f'), '1:2');
+  });
+
+  it('marks a lump sum with a side missing or one too many, and keeps the other side', () => {
+    assert.equal(linkLumpSums(' :5', 'f'), 'NaN:5');
+    assert.equal(linkLumpSums('5: ', 'f'), '5:NaN');
+    assert.equal(linkLumpSums('5', 'f'), 'NaN');
+    assert.equal(linkLumpSums('1:2:3;4:5', 'f'), 'NaN;4:5');
+    assert.equal(linkLumpSums('x:5', 'f'), 'NaN:5');
+  });
+
+  it('keeps as many lump sums as a plan can hold and refuses one more', () => {
+    const pairs = (n: number) => Array.from({ length: n }, () => '1:2').join(';');
+    assert.equal(linkLumpSums(pairs(1200), 'f'), pairs(1200));
+    assert.equal(linkLumpSums(pairs(1201), 'f'), 'NaN');
+  });
+
+  it('keeps a whole number at either end of its range and falls back just outside', () => {
+    assert.equal(linkWholeNumber('1', 1, 10, 'f'), '1');
+    assert.equal(linkWholeNumber('10', 1, 10, 'f'), '10');
+    assert.equal(linkWholeNumber('0', 1, 10, 'f'), 'f');
+    assert.equal(linkWholeNumber('11', 1, 10, 'f'), 'f');
+    assert.equal(linkWholeNumber(null, 1, 10, 'f'), 'f');
+    assert.equal(linkWholeNumber('007', 1, 10, 'f'), '7');
+    assert.equal(linkWholeNumber('1234567890', 0, 1e12, 'f'), 'f', 'ten digits are too many');
+    assert.equal(linkWholeNumber('123456789', 0, 1e12, 'f'), '123456789');
+  });
+});
