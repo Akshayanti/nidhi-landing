@@ -3,11 +3,15 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 import { en } from '../i18n/strings/en.ts';
+import { howToEn } from '../i18n/strings/howTo.ts';
+import { learnEn } from '../i18n/strings/learn.ts';
+import { CHANGE_DAYS, LAUNCH_ITEMS } from '../i18n/strings/changes.ts';
+import { writtenChangelog } from './privacyChangelogEntries.ts';
 
 // Oxford spelling (docs/brand-identity.md, "How nidhi speaks"). A short list
 // of words that have no correct use in the site's own English; names and the
 // titles of cited works are listed in ALLOWED.
-const WRONG = /\b(?:behavior|behavioral|favorable|favorite|neighbor|neighborhood|flavor|honor|jewelry|skepticism|installments?|amortis\w+|annualis\w+|recognis\w+|realis(?:e|ed|es|ing)|unrealis\w+|organis(?:e|ed|es|ing|ations?)|optimis(?:e|ed|es|ing|ations?)|prioritis\w+|penalis\w+|subsidis\w+|specialis(?:e|ed|es|ing|ations?)|personalis\w+|utilis\w+|normalis\w+|maximis\w+|minimis\w+)\b/i;
+const WRONG = /\b(?:behavior|behavioral|favorable|favorite|neighbor|neighborhood|flavor|honor|jewelry|skepticism|installments?|amortis\w+|annualis\w+|recognis\w+|realis(?:e|ed|es|ing|ations?)|authoris(?:e|ed|es|ing|ations?)|criticis(?:e|ed|es|ing)|summaris(?:e|ed|es|ing)|unrealis\w+|organis(?:e|ed|es|ing|ations?)|optimis(?:e|ed|es|ing|ations?)|prioritis\w+|penalis\w+|subsidis\w+|specialis(?:e|ed|es|ing|ations?)|personalis\w+|utilis\w+|normalis\w+|maximis\w+|minimis\w+)\b/i;
 
 const ALLOWED = [
   'Making of Behavioral Economics',
@@ -40,10 +44,33 @@ function strings(value: unknown): string[] {
   return [];
 }
 
+/**
+ * The last day of privacy changelog entries already published. An entry is a
+ * record of what the notice said and when (CLAUDE.md, privacy rule 4), so
+ * those stay as written, spelling and all; every later entry is checked.
+ */
+const PRIVACY_PUBLISHED_UNTIL = '2026-11-23';
+
 describe('the English is in Oxford spelling', () => {
-  it('in the English catalog', () => {
-    const found = strings(en).filter((s) => /\s/.test(s) && WRONG.test(prose(s)));
-    assert.deepEqual(found, []);
+  // Every string, one word or many: a single-word label such as a button
+  // reads as English too (#835).
+  const sources: Record<string, unknown> = {
+    'the English catalog': en,
+    'the learning path': learnEn,
+    'the how-to guides': howToEn,
+    'What’s changed': [...CHANGE_DAYS.flatMap((d) => d.items), LAUNCH_ITEMS.investOrPayOff].map((item) => item.text.en),
+    'the privacy changelog, after the entries already published': writtenChangelog.filter((e) => e.iso > PRIVACY_PUBLISHED_UNTIL),
+  };
+  for (const [name, source] of Object.entries(sources)) {
+    it(`in ${name}`, () => {
+      const found = strings(source).filter((s) => WRONG.test(prose(s)));
+      assert.deepEqual(found, []);
+    });
+  }
+
+  it('finds the forms it is meant to (#835)', () => {
+    for (const word of ['authorise', 'criticised', 'summarising', 'realisation', 'honor', 'behavior']) assert.ok(WRONG.test(word), word);
+    for (const word of ['authorize', 'criticism', 'summary', 'realistic', 'realize', 'honour', 'advertise']) assert.ok(!WRONG.test(word), word);
   });
 
   for (const dir of ['blog', 'guides']) {
