@@ -7,11 +7,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { LOCALES } from '../config.ts';
-import { CHANGES as DATED, CHANGE_DAYS, LAUNCH_ITEMS } from './changes.ts';
+import { CHANGES, CHANGE_DAYS } from './changes.ts';
 
-// Launch items are held to every rule a dated item is; they only lack a date
-// until their release gate opens.
-const CHANGES = [...DATED, ...Object.values(LAUNCH_ITEMS).map((item) => ({ ...item, date: '' }))];
 const lines = (locale: (typeof LOCALES)[number]) => CHANGES.map((c, i) => ({ i, value: c.text[locale] }));
 
 describe("what's changed", () => {
@@ -37,6 +34,13 @@ describe("what's changed", () => {
     assert.deepEqual(names.filter((n) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(n ?? '')), []);
     const seen = new Set<string>();
     assert.deepEqual(names.filter((n) => (seen.has(n) ? true : (seen.add(n), false))), []);
+  });
+
+  it('announces the invest or pay off calculator on its lesson\'s day, first that day', () => {
+    // Added at build time until Nov 2026, when the launch gates were removed.
+    const day = CHANGE_DAYS.find((d) => d.date === '2026-11-04');
+    assert.equal(day?.items[0].id, 'invest-or-pay-off-tool');
+    assert.deepEqual(CHANGES.filter((c) => c.id === 'invest-or-pay-off-tool').map((c) => c.date), ['2026-11-04']);
   });
 
   it('says every line in every language, translated', () => {

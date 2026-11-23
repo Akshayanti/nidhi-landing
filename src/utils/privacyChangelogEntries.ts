@@ -4,8 +4,8 @@
  * The notice (`src/components/pages/PrivacyPage.astro`) shows the latest few
  * entries, and the complete record is on its own pages, one per year
  * (`src/components/pages/PrivacyChangelogPage.astro`, #722). Both read
- * this one module through `src/utils/privacyChangelogSource.ts`, so there is
- * one copy of the record and the two cannot disagree.
+ * this one module, so there is one copy of the record and the two cannot
+ * disagree.
  *
  * It is written and dated in English and is never translated. Everything in it
  * describes what the site did on a day: which events fired, which key was
@@ -19,68 +19,9 @@
  * later.
  *
  * This module is plain data with no import from `astro:content`, so a unit
- * test can read it. The entries that appear with a launch are built here from
- * their launch dates; the source module asks the release gates for those.
+ * test can read it.
  */
 import { assertOneEntryPerDate, type ChangelogEntry } from './privacyChangelog.ts';
-
-/** A tool's launch date, or null while it is not live. */
-export interface LaunchDates {
-  monteCarloLaunch: Date | null;
-  investOrPayOffLaunch: Date | null;
-}
-
-/**
- * The entries that appear with a launch rather than on the day they were
- * written. Each is dated with its launch, and merged into that day's entry if
- * the day has one.
- */
-export function launchChangelog({ monteCarloLaunch, investOrPayOffLaunch }: LaunchDates): ChangelogEntry[] {
-  // Entries that appear with a launch rather than on the day they were written.
-  const monteCarloEntries: ChangelogEntry[] = monteCarloLaunch
-      ? [
-          {
-            date: monteCarloLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
-            iso: monteCarloLaunch.toISOString().slice(0, 10),
-            material: true,
-            summary: 'New free tool: a Monte Carlo simulator.',
-            details: [
-              'The simulator plays a savings and withdrawal plan forward thousands of times with random yearly returns. The whole simulation runs in your browser (large runs in a background thread of the same page); the amounts, years, fees and stock/bond mix you enter are not sent to us or anyone else.',
-              'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, which return setting you pick (cautious, historical or optimistic), which number of simulated paths you pick, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
-              'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
-              'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
-              'The lesson Introduction to Financial Independence ends with a link to the simulator.',
-              'The tool makes no network requests of its own and adds no third parties.',
-            ],
-          },
-        ]
-      : [];
-
-  // The invest or pay off calculator launches with lesson 49
-  // (src/utils/invest-or-pay-off/release.ts), so its entry is dated with that
-  // launch and merged into that day's entry if the day has one.
-  const investOrPayOffEntries: ChangelogEntry[] = investOrPayOffLaunch
-      ? [
-          {
-            date: investOrPayOffLaunch.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
-            iso: investOrPayOffLaunch.toISOString().slice(0, 10),
-            material: true,
-            summary: 'New free tool: an invest or pay off calculator, in every language, linked from the lesson on whether to invest or pay off debt first. It sends fewer events than the other tools: none of them carries a choice you make, and clicks inside its form are not recorded even with cookie consent.',
-            details: [
-              'The calculator compares paying a debt off early with investing the same money, on the same date and after inflation, at /free/invest-or-pay-off/ and its Hindi, Spanish, Czech and Marathi editions. The whole comparison runs in your browser; the debt, payments, rates, amounts, fees and taxes you enter are not sent to us or anyone else.',
-              'New anonymous events, sent without cookie consent like the other tools\' events: free_invest_or_pay_off_calculated, once per page view when a comparison first shows, with no properties; free_invest_or_pay_off_share_copied; free_invest_or_pay_off_exported, with format "xlsx" or "pdf"; free_invest_or_pay_off_reset; and free_invest_or_pay_off_shared_view_opened, when you arrive from a shared link, with its utm_source. Unlike the other tools, no event says which country, currency, return setting or comparison date you picked, whether you entered tax relief or a tax on gains, or whether a note about your return appeared.',
-              'Click data, for visitors who accept the cookie banner: the calculator\'s form is marked so that PostHog does not record clicks inside it, and heatmaps, which record where a click lands, are paused on the page. Clicks on the result chart, the share and export buttons, and the links around the tool are recorded as on other pages. Reset still sends the anonymous reset event described above, but its click inside the form is not recorded.',
-              'New click labels, recorded only if you accept the cookie banner: free-invest-or-pay-off-share, free-invest-or-pay-off-export-xlsx, free-invest-or-pay-off-export-pdf, free-invest-or-pay-off-chart, free-invest-or-pay-off-lesson-link, related-invest-or-pay-off-debt, related-how-to-get-out-of-debt, tool-invest-or-pay-off (header), footer-invest-or-pay-off, free-cta-invest-or-pay-off (free tools page) and post-inline-tool-invest-or-pay-off (in the lesson).',
-              'Picking a country loads its yearly inflation from /data/inflation-history.json on nidhi.today, the same file the inflation calculator uses; your browser never contacts the World Bank. No new third party and no new storage key.',
-              'Like the other tools, it never writes your inputs into the page address. A share link carries them after the # sign, which browsers never send to a server, and the page moves them out of the address bar before analytics start; the share box says the link contains your numbers. The spreadsheet and PDF report work as on the other tools, and the file is named by the tool and the date only (nidhi-invest-or-pay-off-' + investOrPayOffLaunch.toISOString().slice(0, 10) + '.xlsx).',
-              'The page carries the planner waitlist box, the same form as on the other tools. The lesson Invest or Pay Off Debt First? links to the calculator, and the home page lists it with the other tools. The "What we collect, and when" section of this notice now says so.',
-            ],
-          },
-        ]
-      : [];
-
-  return [...monteCarloEntries, ...investOrPayOffEntries];
-}
 
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 export const writtenChangelog: ChangelogEntry[] = [
@@ -232,8 +173,15 @@ export const writtenChangelog: ChangelogEntry[] = [
     date: 'Nov 4, 2026',
     iso: '2026-11-04',
     material: true,
-    summary: 'The home page has a new layout, with new links and so new click labels, recorded only if you accept the cookie banner. Nothing new is stored, sent or requested. The home page no longer shows the "Welcome back" line, and still reads the same reading-progress key in your browser for its lesson routes. Privacy and Cookie settings now sit on the footer\'s copyright line, still at the bottom of every page and working as before. On the home page, a browser that has already joined the waitlist sees a short note in its place, read from the existing sign-up key in your browser.',
+    summary: 'New free tool: an invest or pay off calculator, in every language, linked from the lesson on whether to invest or pay off debt first. It sends fewer events than the other tools: none of them carries a choice you make, and clicks inside its form are not recorded even with cookie consent. The home page has a new layout, with new links and so new click labels, recorded only if you accept the cookie banner. Nothing new is stored, sent or requested. The home page no longer shows the "Welcome back" line, and still reads the same reading-progress key in your browser for its lesson routes. Privacy and Cookie settings now sit on the footer\'s copyright line, still at the bottom of every page and working as before. On the home page, a browser that has already joined the waitlist sees a short note in its place, read from the existing sign-up key in your browser.',
     details: [
+      'The calculator compares paying a debt off early with investing the same money, on the same date and after inflation, at /free/invest-or-pay-off/ and its Hindi, Spanish, Czech and Marathi editions. The whole comparison runs in your browser; the debt, payments, rates, amounts, fees and taxes you enter are not sent to us or anyone else.',
+      'New anonymous events, sent without cookie consent like the other tools\' events: free_invest_or_pay_off_calculated, once per page view when a comparison first shows, with no properties; free_invest_or_pay_off_share_copied; free_invest_or_pay_off_exported, with format "xlsx" or "pdf"; free_invest_or_pay_off_reset; and free_invest_or_pay_off_shared_view_opened, when you arrive from a shared link, with its utm_source. Unlike the other tools, no event says which country, currency, return setting or comparison date you picked, whether you entered tax relief or a tax on gains, or whether a note about your return appeared.',
+      'Click data, for visitors who accept the cookie banner: the calculator\'s form is marked so that PostHog does not record clicks inside it, and heatmaps, which record where a click lands, are paused on the page. Clicks on the result chart, the share and export buttons, and the links around the tool are recorded as on other pages. Reset still sends the anonymous reset event described above, but its click inside the form is not recorded.',
+      'New click labels, recorded only if you accept the cookie banner: free-invest-or-pay-off-share, free-invest-or-pay-off-export-xlsx, free-invest-or-pay-off-export-pdf, free-invest-or-pay-off-chart, free-invest-or-pay-off-lesson-link, related-invest-or-pay-off-debt, related-how-to-get-out-of-debt, tool-invest-or-pay-off (header), footer-invest-or-pay-off, free-cta-invest-or-pay-off (free tools page) and post-inline-tool-invest-or-pay-off (in the lesson).',
+      'Picking a country loads its yearly inflation from /data/inflation-history.json on nidhi.today, the same file the inflation calculator uses; your browser never contacts the World Bank. No new third party and no new storage key.',
+      'Like the other tools, it never writes your inputs into the page address. A share link carries them after the # sign, which browsers never send to a server, and the page moves them out of the address bar before analytics start; the share box says the link contains your numbers. The spreadsheet and PDF report work as on the other tools, and the file is named by the tool and the date only (nidhi-invest-or-pay-off-2026-11-04.xlsx).',
+      'The page carries the planner waitlist box, the same form as on the other tools. The lesson Invest or Pay Off Debt First? links to the calculator, and the home page lists it with the other tools. The "What we collect, and when" section of this notice now says so.',
       'New click labels, recorded only if you accept the cookie banner, under the same click capture as before: home-hero-planner and home-hero-find (the two links in the opening section that jump to the planner and the lessons further down the page), home-sit-currencies-lesson, home-sit-currencies-tool, home-sit-loans-lesson and home-sit-loans-tool (the lesson and tool links in the two example situations), home-lessons-head, home-tools-head and home-planner-head (the section headings, which are now links to the learning path, the free tools and the planner beta page), home-tools-privacy (a link to the free-tools part of this notice), home-cta-about (a link to the About page) and home-help-volunteer (a link to the volunteers page). There is no new event type and no new event property.',
       'Labels that move but keep their names: home-volunteers (the call for translators now sits directly under the header), home-cta-beliefs, home-editorial-policy and home-privacy (now next to the note about why nidhi exists), home-level-helper, home-cta-blog, the route labels home-start-*-door and home-inclusive-finances, the tool cards\' home-cta-* labels, and home-faq-1 and home-faq-2. Labels that go with what they were on: home-hero-start-learning, home-hero-tools, home-hero-continue and home-faq-3 to home-faq-6.',
       'The "Welcome back" line, which suggested the next lesson from the nidhi-reading-progress key, is gone. The lesson routes on the home page still read that key, in your browser only, to point to the first lesson on each route you have not read, as before. Browser storage is unchanged: no new key, and no new use of an existing one.',
@@ -397,8 +345,14 @@ export const writtenChangelog: ChangelogEntry[] = [
     date: 'Oct 12, 2026',
     iso: '2026-10-12',
     material: true,
-    summary: 'The site is published in Spanish as well, at /es/. The Spanish edition collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Spanish page says so. Also: the free tools start in rupees on Hindi pages, so an untouched Hindi net worth calculator asks the exchange-rate service for rupee rates.',
+    summary: 'New free tool: a Monte Carlo simulator. The site is published in Spanish as well, at /es/. The Spanish edition collects exactly what the English one does, with the same browser storage and no new third-party requests. The lessons stay in English, and a Spanish page says so. Also: the free tools start in rupees on Hindi pages, so an untouched Hindi net worth calculator asks the exchange-rate service for rupee rates.',
     details: [
+      'The simulator plays a savings and withdrawal plan forward thousands of times with random yearly returns. The whole simulation runs in your browser (large runs in a background thread of the same page); the amounts, years, fees and stock/bond mix you enter are not sent to us or anyone else.',
+      'New anonymous interaction events on /free/monte-carlo-simulator: which currency you select, which return setting you pick (cautious, historical or optimistic), which number of simulated paths you pick, whether you switch withdrawals on or off, whether you open the results table, whether you copy a shareable link, whether you reset the form, and, when you arrive from a shared link, that it was a shared link plus its utm_source. None of them carry the values you typed.',
+      'Unlike the other tools, this one does not write your inputs into the page address while you type. They only go into a link when you press "Copy a link to this plan", and then after the # sign, a part of the address browsers never send to a server. When you open such a link, the page moves the values out of the address bar before analytics start, so page-view analytics never record them.',
+      'The page links to the early-access list for the planner. Following that link is recorded only through the click data you accept on the cookie banner.',
+      'The lesson Introduction to Financial Independence ends with a link to the simulator.',
+      'The tool makes no network requests of its own and adds no third parties.',
       'The Spanish edition, at /es/: the site\'s pages are published in Spanish as well, on the same terms as the Hindi edition. The lessons and the pages a subscription email links to stay in English, and a Spanish page says so. A Spanish page sends the same anonymous pageview and page-leave events an English page sends, through the same PostHog project under the same consent choice. There are no new kinds of event, and no event or property carries anything you type. The free tools behave as their English counterparts do, including the rule that a tool never writes what you type into the page address, and the backstop that removes everything but campaign parameters from a free-tool address before any event is sent now covers /es/free/... as well. Spanish is an address and nothing else: no language is stored in your browser, and no automatic redirect picks one for you from your device settings.',
       'Click labels, recorded only if you accept the cookie banner, as before: the language picker\'s Spanish choice carries lang-switch-es. The picker on a Spanish page uses the labels it already had (lang-switch-en, lang-switch-hi).',
       'Lesson pages: the "Language" line at the top of an English lesson, which linked to the Hindi learning path, is removed, because it read as if the lesson itself were available in Hindi. Its click label, post-hindi-path, is no longer recorded. The lessons stay in English, and the Hindi and Spanish learning paths still list them and say so.',

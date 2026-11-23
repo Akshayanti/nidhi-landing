@@ -46,6 +46,9 @@ export const DEFAULTS: ToolState = {
 const RETURN_CODES: Record<ReturnSetting, string> = { cautious: 'c', historical: 'h', optimistic: 'o' };
 const RETURN_BY_CODE: Record<string, ReturnSetting> = { c: 'cautious', h: 'historical', o: 'optimistic' };
 
+/** The tool's own address, for the nav, the hub, the home page and its lesson. */
+export const MONTE_CARLO_URL = '/free/monte-carlo-simulator/';
+
 export const STATE_KEYS = ['c', 's', 'm', 'y', 'k', 'w', 'r', 'e', 'f', 'n', 'o'] as const;
 
 /** Window property the page head script stores a shared fragment in. */

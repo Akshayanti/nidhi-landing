@@ -147,11 +147,10 @@ export async function loadPostsAtLevel(level) {
   return posts;
 }
 
-// Mirrors src/utils/monte-carlo/release.ts: the simulator launches with the
-// financial-projections post. A post that goes live before then may name it
-// as its relatedTool (the site hides the link until launch), but its reel
-// script and captions must not point at it. Posts scheduled on or after the
-// launch keep the plug, so their reels can be rendered ahead of time.
+// The simulator launched with the financial-projections post. A post that
+// went live before then may name it as its relatedTool, but its reel script
+// and captions must not point at it, since the tool did not exist when the
+// post went out. Posts dated on or after the launch keep the plug.
 const MONTE_CARLO_HOST_SLUG = "financial-projections";
 
 function isMonteCarloUrl(url) {

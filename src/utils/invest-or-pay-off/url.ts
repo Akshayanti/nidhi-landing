@@ -76,6 +76,9 @@ const RETURN_BY_CODE: Record<string, ReturnChoice> = { c: 'cautious', h: 'histor
 const HORIZON_CODES: Record<Horizon, string> = { payoff: 'p', plus5: '5', plus10: '0' };
 const HORIZON_BY_CODE: Record<string, Horizon> = { p: 'payoff', '5': 'plus5', '0': 'plus10' };
 
+/** The tool's own address, for the nav, the hub, the home page and its lesson. */
+export const INVEST_OR_PAY_OFF_URL = '/free/invest-or-pay-off/';
+
 export const STATE_KEYS = ['c', 'b', 'r', 'p', 'x', 'l', 'n', 'i', 's', 'o', 'f', 't', 'h', 'a'] as const;
 
 /** Window property the page head script stores a shared fragment in. */

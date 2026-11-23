@@ -186,19 +186,12 @@ export function readGuideMaps(dir: string, now = new Date()): GuideMaps {
  * The newest day on the "What's changed" page, as an ISO date: the page gains
  * an item with every visible change, so its newest day is when it last
  * changed. A day dated after today is not on the page yet and is passed over.
- * A launch item (src/utils/liveChanges.ts) is dated by its lesson and is on
- * the page once that lesson is published, so the publication day of each
- * launch lesson that is live counts as a day too, whether or not anything
- * else was written up that day (#708).
  */
 export function newestChangeDay(
   changeDays: readonly string[],
-  launchSlugs: readonly string[],
-  published: ReadonlyMap<string, string>,
   today = new Date().toISOString().slice(0, 10),
 ): string | null {
-  const launches = launchSlugs.map((slug) => published.get(slug)?.slice(0, 10)).filter((d): d is string => Boolean(d));
-  const newest = [...changeDays, ...launches].filter((d) => d <= today).sort().pop();
+  const newest = [...changeDays].filter((d) => d <= today).sort().pop();
   return newest ? new Date(`${newest}T00:00:00Z`).toISOString() : null;
 }
 
@@ -282,9 +275,7 @@ export const STATIC_PAGE_SOURCE: Readonly<Record<string, readonly string[]>> = {
     'src/components/LoanCompare.tsx',
     'src/i18n/strings/tools/loanComparison.ts',
   ],
-  // :(literal) stops git reading the brackets in the filename as a pattern.
   'free/monte-carlo-simulator': [
-    ':(literal)src/pages/free/monte-carlo-simulator/[...path].astro',
     'src/components/pages/MonteCarloPage.astro',
     'src/components/MonteCarloSimulator.tsx',
     'src/i18n/strings/tools/monteCarlo.ts',
@@ -297,7 +288,6 @@ export const STATIC_PAGE_SOURCE: Readonly<Record<string, readonly string[]>> = {
     'src/data/inflation/worldbank.json',
   ],
   'free/invest-or-pay-off': [
-    ':(literal)src/pages/free/invest-or-pay-off/[...path].astro',
     'src/components/pages/InvestOrPayOffPage.astro',
     'src/components/InvestOrPayOff.tsx',
     'src/i18n/strings/tools/investOrPayOff.ts',

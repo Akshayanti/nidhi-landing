@@ -5,7 +5,7 @@ import { describe, it } from 'node:test';
 import { en } from '../i18n/strings/en.ts';
 import { howToEn } from '../i18n/strings/howTo.ts';
 import { learnEn } from '../i18n/strings/learn.ts';
-import { CHANGE_DAYS, LAUNCH_ITEMS } from '../i18n/strings/changes.ts';
+import { CHANGE_DAYS } from '../i18n/strings/changes.ts';
 import { writtenChangelog } from './privacyChangelogEntries.ts';
 
 // Oxford spelling (docs/brand-identity.md, "How nidhi speaks"). A short list
@@ -58,7 +58,7 @@ describe('the English is in Oxford spelling', () => {
     'the English catalog': en,
     'the learning path': learnEn,
     'the how-to guides': howToEn,
-    'What’s changed': [...CHANGE_DAYS.flatMap((d) => d.items), LAUNCH_ITEMS.investOrPayOff].map((item) => item.text.en),
+    'What’s changed': CHANGE_DAYS.flatMap((d) => d.items).map((item) => item.text.en),
     'the privacy changelog, after the entries already published': writtenChangelog.filter((e) => e.iso > PRIVACY_PUBLISHED_UNTIL),
   };
   for (const [name, source] of Object.entries(sources)) {
