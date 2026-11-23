@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { isValidNumber } from './inputs.ts';
+import { isValidNumber, tooLongForLink } from './inputs.ts';
 
 describe('isValidNumber', () => {
   it('takes a number in range and refuses anything else', () => {
@@ -29,5 +29,12 @@ describe('the simulator’s year boxes', () => {
     assert.match(form, /saveYears: !isValidNumber\(f\.saveYears, 0, 60, true\)/);
     assert.match(form, /withdrawYears: f\.withdrawOn && !isValidNumber\(f\.withdrawYears, 1, 60, true\)/);
     assert.equal((source.match(/step="1" value=\{form\.(saveYears|withdrawYears)\}/g) ?? []).length, 2);
+  });
+});
+
+describe('the length a link can carry', () => {
+  it('counts the number, not the spaces around it', () => {
+    assert.equal(tooLongForLink(`  ${'1'.repeat(199)}  `), false);
+    assert.equal(tooLongForLink(`  ${'1'.repeat(201)}  `), true);
   });
 });

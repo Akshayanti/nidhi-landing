@@ -254,3 +254,43 @@ describe('a shared plan opens as the plan its boxes give', () => {
     assert.deepEqual(openedPlan(form, decoded), decoded);
   });
 });
+
+describe('the form and the plan, in detail', () => {
+  it('a plan with a withdrawal opens with withdrawals on, at that amount', () => {
+    const form = toForm({ ...defaultState('EUR'), withdrawal: 24_000, withdrawYears: 20 });
+    assert.equal(form.withdrawOn, true);
+    assert.equal(form.withdrawal, '24000');
+    assert.equal(form.withdrawYears, '20');
+  });
+
+  it('a plan without one opens with them off, the box at its starting amount', () => {
+    const form = toForm(defaultState('EUR'));
+    assert.equal(form.withdrawOn, false);
+    assert.equal(form.withdrawal, '30000');
+  });
+
+  it('years of withdrawing that are fine are kept while withdrawals are off', () => {
+    assert.equal(toState(formWith({ withdrawOn: false, withdrawYears: '20' })).withdrawYears, 20);
+  });
+
+  it('half a year of withdrawing, off the page, gives the plan the default years', () => {
+    assert.equal(toState(formWith({ withdrawOn: false, withdrawYears: '12.5' })).withdrawYears, 30);
+  });
+
+  it('half a year is wrong in either year box', () => {
+    assert.equal(formErrors(formWith({ saveYears: '12.5' })).saveYears, true);
+    assert.equal(formErrors(formWith({ withdrawYears: '12.5' })).withdrawYears, true);
+  });
+
+  it('a changed withdrawal with withdrawals on travels as the plan does', () => {
+    const form = formWith({ withdrawal: '20000', withdrawYears: '25' });
+    assert.equal(publishableForm(form, 'EUR'), 'w=20000&r=25');
+  });
+
+  it('a bad withdrawal keeps the years beside it', () => {
+    const arrived = carried(formWith({ withdrawal: 'NaN', withdrawYears: '20' }));
+    assert.equal(arrived.withdrawal, 'NaN');
+    assert.equal(arrived.withdrawYears, '20');
+    assert.equal(arrived.withdrawOn, true);
+  });
+});

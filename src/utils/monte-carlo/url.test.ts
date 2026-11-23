@@ -145,3 +145,17 @@ describe('numbers in a link are plain decimals only (#354)', () => {
     assert.equal(decodeState('e=c')?.returns, 'cautious');
   });
 });
+
+describe('return settings and odd links, in detail', () => {
+  it('each setting has its own code, both ways', () => {
+    for (const [returns, code] of [['cautious', 'c'], ['historical', ''], ['optimistic', 'o']] as const) {
+      const encoded = encodeState({ ...DEFAULTS, returns });
+      assert.equal(encoded, code ? `e=${code}` : '');
+      if (code) assert.equal(decodeState(encoded)?.returns, returns);
+    }
+  });
+
+  it('only a ? or # at the very start is a prefix', () => {
+    assert.equal(decodeState('s=20000&f=?')?.start, 20_000);
+  });
+});
