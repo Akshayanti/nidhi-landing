@@ -184,7 +184,7 @@ If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, 
 
 ## 4. Engagement Philosophy
 
-**No engagement prompts in posts or captions.** No "first 5 replies get feedback", no "DM me for X", no "reply and I'll share mine". This rule is about what a post or caption asks of viewers. What the owner does by hand in the first hour (§2.1: the story share, sending the reel to a few people it would help, replying to comments when there are any) is separate and stays (owner, Nov 23, 2026, #800).
+**No engagement prompts in posts or captions** beyond the one ask below (save or send): no "first 5 replies get feedback", no "DM me for X", no "reply and I'll share mine". This rule is about what a post or caption asks of viewers. What the owner does by hand in the first hour (§2.1: the story share, sending the reel to a few people it would help, replying to comments when there are any) is separate and stays (owner, Nov 23, 2026, #800).
 
 ### The one ask
 - A kit's closer takes one ask, "save:" or, in the send format, "send:": the kit lint fails on more.
@@ -383,7 +383,7 @@ The current story set is in §2.1 (reel share, tool card story, "beyond this pos
 ### Link targeting
 - All "learn more" / "full post" links → specific blog article for that post
 - Exception: the Sunday free tools posts (now archived, see [done/PLAYBOOK.md](done/PLAYBOOK.md)) linked to the tool page itself, since the tool is the thing being shown
-- The Instagram bio carries three fixed links (owner, Nov 23, 2026, #803): the main site, `nidhi.today/ig/`; the blog, `nidhi.today/blog/ig/`; the volunteer page, `nidhi.today/volunteers/`. The two `/ig/` short links redirect with `utm_campaign=bio` (`astro.config.mjs`). The bio does not change daily and does not point to `/beta/`.
+- The Instagram bio has links to the main site, `nidhi.today/ig/`; the blog, `nidhi.today/blog/ig/`; and the volunteer page, `nidhi.today/volunteers/` (owner, Nov 23, 2026, #803). The two `/ig/` short links redirect with `utm_campaign=bio` (`astro.config.mjs`).
 
 ---
 
@@ -744,7 +744,7 @@ The original source priority remains valid for any future case where a humor-vec
 
 Quote cards, Reels, and any other image content that includes financial numbers carry the same regulatory rules that govern blog prose:
 
-1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Country-specific account names (401(k), ISA, NPS and the like) are not used either (§1, #801): describe the kind of account instead, as an educational reference, never as a directive.
+1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Tax-advantaged-account *categories* (401(k), ISA, NPS) may appear in an image as descriptive references when the surrounding context is educational, never as a directive. Captions do not name country-specific accounts (§1, #801): they describe the kind of account instead.
 2. **No return guarantees, no forecasts presented as fact.** Any number that depends on a return assumption must carry the disclaimer *visible inside the image itself* (not just in the caption, since images circulate standalone): "illustrative," "example," or "assumes X% return — past performance is not a forecast."
 3. **No specific tax rates or jurisdiction-locked tax math** in the image. Conceptual framings are fine; specific numbers are not.
 4. **No advice phrasing** in the image or caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "the math says," "common patterns," "research suggests."
