@@ -19,6 +19,7 @@ import { resultGate } from '../utils/shared/settle.ts';
 /** False in the server-rendered page and on the first render; true once the island runs. */
 export function useToolReady(): boolean {
   const [ready, setReady] = useState(false);
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, as the empty one does
   useEffect(() => setReady(true), []);
   return ready;
 }
@@ -51,6 +52,7 @@ export interface Notice { text: string; n: number }
 /** Says a notice through `say`: the region is emptied first, so a repeat is a change. */
 function useNotice(notice: Notice | undefined, say: (text: string) => void) {
   const n = notice?.n ?? 0;
+  // Stryker disable next-line StringLiteral: the fallback is for no notice, whose count is 0, and a count of 0 says nothing
   const text = notice?.text ?? '';
   useEffect(() => {
     // A notice taken back (a dialog reopened, another kind of link chosen) empties the region.
