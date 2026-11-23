@@ -14,11 +14,11 @@ name: Free tools mutation
 # run, or be cancelled, without the other.
 #
 # "Free tools: mutation" is a REQUIRED status check on `main`. The gate job
-# runs on every pull request. A pull request that changes nothing a score can
-# depend on (scripts/lib/checks/mutation-inputs.mjs: docs, lessons, other
-# scripts and workflows) skips the shards and the floors, and the gate passes
-# because the plan job said so, never because a job was skipped (owner,
-# Nov 23, 2026). When the plan cannot tell, everything runs. Nightly and
+# runs on every pull request. A pull request that changes only files no
+# mutation run reads (scripts/lib/checks/mutation-inputs.mjs: docs/, .claude/,
+# other workflows, README.md, CLAUDE.md) skips the shards and the floors, and
+# the gate passes because the plan job said so, never because a job was
+# skipped (owner, Nov 23, 2026). When the plan cannot tell, everything runs. Nightly and
 # manual runs always run everything. Renaming the gate means changing the
 # required check in the same breath (scripts/repo-hygiene.test.mjs holds the
 # name).
@@ -64,18 +64,19 @@ jobs:
       - name: Whether the pull request can change a score
         id: inputs
         if: github.event_name == 'pull_request'
-        # Anything but a clear "false" runs every shard.
+        # Both ends of a move (--no-renames), NUL-separated (-z) so no name
+        # is quoted or split. Anything but a clear "false" runs every shard.
         run: |
           run=true
-          if files=$(git diff --name-only HEAD^1 HEAD); then
-            run=$(printf '%s\n' "$files" | node --input-type=module -e '
+          if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
+            run=$(node --input-type=module -e '
               import { readFileSync } from "node:fs";
-              import { needsMutationRun } from "./scripts/lib/checks/mutation-inputs.mjs";
-              process.stdout.write(String(needsMutationRun(readFileSync(0, "utf8").split("\n"))));
-            ') || run=true
+              import { changedPaths, needsMutationRun } from "./scripts/lib/checks/mutation-inputs.mjs";
+              process.stdout.write(String(needsMutationRun(changedPaths(readFileSync(process.argv[1], "utf8")))));
+            ' "$RUNNER_TEMP/changed") || run=true
           fi
           [ "$run" = "false" ] || run=true
-          if [ "$run" = "false" ]; then echo "No mutation input changed: the shards are skipped."; else echo "Every shard runs."; fi
+          if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
 
       - name: List the shards

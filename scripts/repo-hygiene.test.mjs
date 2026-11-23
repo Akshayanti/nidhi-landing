@@ -158,7 +158,8 @@ describe('the required checks run on every pull request', () => {
       if (file === 'tool-mutation.yml') {
         const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf('\n  mutation:\n'));
         assert.match(plan, /run: \$\{\{ steps\.inputs\.outputs\.run \|\| 'true' \}\}/, 'run defaults to true');
-        assert.match(plan, /import \{ needsMutationRun \} from "\.\/scripts\/lib\/checks\/mutation-inputs\.mjs"/);
+        assert.match(plan, /import \{ changedPaths, needsMutationRun \} from "\.\/scripts\/lib\/checks\/mutation-inputs\.mjs"/);
+        assert.match(plan, /git diff --name-only --no-renames -z HEAD\^1 HEAD/, 'both ends of a move, NUL-separated');
         assert.match(plan, /\[ "\$run" = "false" \] \|\| run=true/, 'anything but a clear false runs');
         assert.match(plan, /if: github\.event_name == 'pull_request'/, 'nightly and manual runs always run');
         // The gate passes without the shards only when the plan said so and nothing ran.

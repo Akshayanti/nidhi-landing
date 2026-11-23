@@ -1,38 +1,30 @@
-// What a mutation result can depend on (#790, #846). A pull request that
-// changes none of these files cannot change a score, so the "Free tools
-// mutation" workflow skips its shards and its required gate passes without
-// them (owner, Nov 23, 2026: a docs-only pull request needs no mutation run).
-// Nightly and manual runs always test everything.
+// Whether a pull request can change a mutation result (#790, #846). The
+// "Free tools mutation" workflow skips its shards for a pull request that
+// changes only files no mutation run reads, and its required gate passes in
+// that one case (owner, Nov 23, 2026: a docs-only pull request needs no
+// mutation run). Nightly and manual runs always test everything.
 //
-// The list is the incremental cache's fingerprint in tool-mutation.yml
-// (what the tests run on), plus what decides how the run is made and judged:
-// the Stryker files, the mutation scripts, package.json, tsconfig.json and
-// the workflow itself. A test keeps it a superset of the fingerprint.
+// The rule is a short list of what is NEVER read, not a list of what is: a
+// mutation run starts every test in src/, and those tests read lessons,
+// public/, emails/, scripts/, astro.config.mjs and more, so anything not on
+// the list below runs the shards. A test (mutation-inputs.test.mjs) fails if
+// a test the mutation run starts begins to read one of these places.
 
-/** Path prefixes (ending in /) and exact paths whose change can move a score. */
-export const MUTATION_INPUTS = [
-  'src/',
-  'test/',
-  'package.json',
-  'package-lock.json',
-  'tsconfig.json',
-  '.nvmrc',
-  'stryker.config.mjs',
-  'stryker.shards.json',
-  'stryker.shard-weights.json',
-  'stryker.floors.json',
-  'scripts/mutation-',
-  'scripts/lib/checks/mutation-',
-  '.github/workflows/tool-mutation.yml',
-];
+/** Prefixes (ending in /) and exact paths no mutation run reads. */
+export const NEVER_READ = ['docs/', '.claude/', '.github/', 'README.md', 'CLAUDE.md'];
 
-/** Inside src/ but read by no test the mutation run starts: the lessons. */
-export const NOT_INPUTS = ['src/content/'];
+/** Inside a NEVER_READ prefix, but read by the run: its own workflow. */
+export const READ_AFTER_ALL = ['.github/workflows/tool-mutation.yml'];
 
 /** True when changing `path` can change a mutation result. */
 export function isMutationInput(path) {
-  if (NOT_INPUTS.some((p) => path.startsWith(p))) return false;
-  return MUTATION_INPUTS.some((p) => (p.endsWith('/') || p.endsWith('-') ? path.startsWith(p) : path === p));
+  if (READ_AFTER_ALL.includes(path)) return true;
+  return !NEVER_READ.some((p) => (p.endsWith('/') ? path.startsWith(p) : path === p));
+}
+
+/** The paths in `git diff --name-only --no-renames -z` output. */
+export function changedPaths(nulSeparated) {
+  return nulSeparated.split('\0').filter((p) => p !== '');
 }
 
 /**
@@ -41,6 +33,6 @@ export function isMutationInput(path) {
  * skipping.
  */
 export function needsMutationRun(paths) {
-  const list = (paths ?? []).map((p) => p.trim()).filter(Boolean);
+  const list = (paths ?? []).filter((p) => typeof p === 'string' && p !== '');
   return list.length === 0 || list.some(isMutationInput);
 }
