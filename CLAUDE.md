@@ -123,6 +123,7 @@ Once a pull request is merged, its branch is deleted from the local checkout, so
 2. **Remove its worktree too.** If the branch is checked out in another worktree, check that worktree for uncommitted work, then `git worktree remove` it and delete any folder left behind.
 3. **Switch off the branch first** if it is the one checked out, and run `git fetch --prune` so stale remote branches disappear. GitHub deletes the remote branch on merge.
 4. **Unmerged work is never deleted** without asking: a branch whose commits are not in a merged pull request stays until the owner decides.
+5. **Clean up `/tmp` too** (owner, Nov 23, 2026). Once the pull request is properly merged, delete the unused temporary files and folders this session created for its branch under `/tmp`, including scratch files and temporary browser profiles. This needs no asking. Never delete the owner's files, another session's files, or anything still in use, including by a running check or an open pull request. If ownership or use is uncertain, leave it alone.
 
 ## Issues Are Worked by Label, and What Is Found Is Filed
 
