@@ -11,7 +11,7 @@
 import { globSync, readFileSync } from 'node:fs';
 import { shardPatterns } from './scripts/lib/checks/mutation-shards.mjs';
 
-const SCOPES = {
+export const SCOPES = {
   inflation: ['src/utils/inflation/*.ts', 'src/components/InflationCalculator.tsx'],
   'invest-or-pay-off': ['src/utils/invest-or-pay-off/*.ts', 'src/components/InvestOrPayOff.tsx'],
   'monte-carlo': ['src/utils/monte-carlo/*.ts', 'src/components/MonteCarloSimulator.tsx'],
