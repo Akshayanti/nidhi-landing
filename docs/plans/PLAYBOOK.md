@@ -34,7 +34,8 @@ Agreed, not yet applied (try them case by case): the lesson's key figure near th
 - Indian audiences are a natural fit for the `nidhi` brand handshake (the word itself is Indian-origin) — one advantage among several, not the positioning centerpiece. Don't over-index on India-specific framing in content or keywords.
 
 **Explicitly avoid:**
-- US / Canada targeting — no US-focused hashtags, no `#americanexpat`, no US-specific credit (FICO) / tax (IRA, 401k, Roth) / retirement content.
+- US / Canada targeting: no US-focused hashtags, no `#americanexpat`, no US-specific credit (FICO) / tax / retirement content.
+- Country-specific account names in captions, any country's (401(k), IRA, Roth, ISA, NPS): a caption describes the kind of account instead, such as a tax-advantaged retirement account (owner, Nov 23, 2026, #801).
 - Framing that makes the account feel like a single-country publication (EU-only, India-only).
 
 **Language:** English, with a money context that's EU-dominant (€, EU examples) but cosmopolitan — expat hubs globally (Lisbon, Berlin, Helsinki, Bangkok, Dubai, Singapore) rotate in as examples.
@@ -183,7 +184,7 @@ If a topic genuinely fits one of these, choose a stronger niche (`#fireeurope`, 
 
 ## 4. Engagement Philosophy
 
-**No manual engagement.** No "first 5 replies get feedback", no "DM me for X", no "reply and I'll share mine" prompts.
+**No engagement prompts in posts or captions.** No "first 5 replies get feedback", no "DM me for X", no "reply and I'll share mine". This rule is about what a post or caption asks of viewers. What the owner does by hand in the first hour (§2.1: the story share, sending the reel to a few people it would help, replying to comments when there are any) is separate and stays (owner, Nov 23, 2026, #800).
 
 ### The one ask
 - A kit's closer takes one ask, "save:" or, in the send format, "send:": the kit lint fails on more.
@@ -382,7 +383,7 @@ The current story set is in §2.1 (reel share, tool card story, "beyond this pos
 ### Link targeting
 - All "learn more" / "full post" links → specific blog article for that post
 - Exception: the Sunday free tools posts (now archived, see [done/PLAYBOOK.md](done/PLAYBOOK.md)) linked to the tool page itself, since the tool is the thing being shown
-- Open question for the owner: what the Instagram bio link opens. This section said it swaps daily to the day's post; the beta plan (now [done/beta-reward.md](done/beta-reward.md)) said the bio points to `/beta/`; what it opened on any given date is not recorded.
+- The Instagram bio carries three fixed links (owner, Nov 23, 2026, #803): the main site, `nidhi.today/ig/`; the blog, `nidhi.today/blog/ig/`; the volunteer page, `nidhi.today/volunteers/`. The two `/ig/` short links redirect with `utm_campaign=bio` (`astro.config.mjs`). The bio does not change daily and does not point to `/beta/`.
 
 ---
 
@@ -743,7 +744,7 @@ The original source priority remains valid for any future case where a humor-vec
 
 Quote cards, Reels, and any other image content that includes financial numbers carry the same regulatory rules that govern blog prose:
 
-1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Tax-advantaged-account *categories* (401(k), ISA, NPS) are allowed as descriptive references when the surrounding context is educational, never as a directive.
+1. **No named investment products** in the image or caption (no stock tickers, fund names, ETF tickers, crypto coins, brokerage names). Country-specific account names (401(k), ISA, NPS and the like) are not used either (§1, #801): describe the kind of account instead, as an educational reference, never as a directive.
 2. **No return guarantees, no forecasts presented as fact.** Any number that depends on a return assumption must carry the disclaimer *visible inside the image itself* (not just in the caption, since images circulate standalone): "illustrative," "example," or "assumes X% return — past performance is not a forecast."
 3. **No specific tax rates or jurisdiction-locked tax math** in the image. Conceptual framings are fine; specific numbers are not.
 4. **No advice phrasing** in the image or caption: "you should buy," "now is a good time," "don't miss out," "this is the dip," "load up on X." Allowed: "the math says," "common patterns," "research suggests."
