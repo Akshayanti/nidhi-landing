@@ -39,7 +39,7 @@ interface PackageJson {
   engines?: Record<string, string>;
   scripts?: Record<string, string>;
   allowScripts?: Record<string, boolean>;
-  overrides?: Record<string, string>;
+  overrides?: Record<string, Record<string, string>>;
 }
 
 interface Lockfile {
@@ -162,9 +162,10 @@ describe('package.json: dependencies snapshot', () => {
   });
 
   it('overrides exactly the expected packages, each to one exact version', () => {
-    // Stryker 10.1.1, the latest, pins versions of these two that have
+    // Stryker 10.1.1, the latest, pins versions of these three that have
     // security advisories (moderate, development only: neither reaches the
-    // site). Each override forces the patched release underneath it. Drop an
+    // site). Each override forces the patched release, and only inside Stryker's own
+    // tree, so a future dependency that pulls these in is not touched. Drop an
     // override once Stryker's own dependencies reach the patched version
     // (npm ls qs minimatch), and never add one without a reason here.
     //   qs 6.16.1: typed-rest-client 2.3 pins 6.15.1 (GHSA advisories on
@@ -173,7 +174,8 @@ describe('package.json: dependencies snapshot', () => {
     //     fix the pattern-expansion denial of service.
     //   glob 14.0.6: the tap runner pins 13, and only 14.0.2 and later fix
     //     the AbortSignal cancellation bypass (GHSA-3g3m-2fjr-6pw4).
-    assert.deepEqual(pkg.overrides ?? {}, { qs: '6.16.1', minimatch: '11.0.9', glob: '14.0.6' });
+    const pins = { qs: '6.16.1', minimatch: '11.0.9', glob: '14.0.6' };
+    assert.deepEqual(pkg.overrides ?? {}, { '@stryker-mutator/core': pins, '@stryker-mutator/tap-runner': pins });
   });
 
   it('does not declare optionalDependencies, peerDependencies, or bundleDependencies', () => {
