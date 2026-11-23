@@ -659,3 +659,27 @@ describe('a Reset press that misses is tried again and says why (#782)', () => {
     assert.ok(problems.some((p) => p.includes('carries what was typed')));
   });
 });
+
+describe('an amount is not read out of PostHog’s own measurements', () => {
+  it('the $time whose digits once ran into 4429183 is clean', () => {
+    const { problems } = judge([...cleanEvents(), ev('$pageview', { $time: 1795442918.341 })]);
+    assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), []);
+  });
+
+  it('every amount inside a measurement is clean', () => {
+    for (const a of checks.AMOUNTS) {
+      const sdk = Object.fromEntries(checks.SDK_MEASUREMENTS.map((key) => [key, Number(`17${a}.341`)]));
+      const { problems } = judge([...cleanEvents(), ev('$pageview', sdk)]);
+      assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), [], String(a));
+    }
+  });
+
+  it('the same amount anywhere else is still a leak, inside a longer number too', () => {
+    for (const a of checks.AMOUNTS) {
+      for (const props of [{ amount: a }, { cents: Number(`${a}00`) }, { $current_url: `https://x/?v=${a}` }, { $time: `17${a}.341` }, { note: `${String(a).slice(0, 1)} ${String(a).slice(1, 4)} ${String(a).slice(4)}` }]) {
+        const { problems } = judge([...cleanEvents(), ev('free_monte_carlo_x', props)]);
+        assert.ok(problems.some((x) => x.includes('carries what was typed')), `${a} in ${JSON.stringify(props)}`);
+      }
+    }
+  });
+});
