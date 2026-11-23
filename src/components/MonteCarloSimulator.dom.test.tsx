@@ -561,6 +561,17 @@ describe('reading a year off the chart', () => {
     const y2 = worded.bands[2];
     assert.deepEqual([...document.querySelectorAll('.chart-readout dd')].map((d) => d.textContent), [money(y2.p90), `${money(y2.p25)} to ${money(y2.p75)}`, money(y2.p50), money(y2.p10), money(worded.straightLine[2])]);
     assert.deepEqual([...document.querySelectorAll('.chart-readout dt')].map((d) => d.textContent), [island.chart.readoutHigh, island.chart.readoutMiddle, island.chart.readoutMedian, island.chart.readoutLow, island.chart.readoutStraight]);
+    // Each line's swatch in the colour and shape the chart draws it with.
+    assert.deepEqual(
+      [...document.querySelectorAll<HTMLElement>('.chart-readout .chart-swatch')].map((el) => [el.className, el.style.color]),
+      [
+        ['chart-swatch chart-swatch--dot', 'color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white))'],
+        ['chart-swatch chart-swatch--band', 'color-mix(in srgb, var(--color-deep-blue) 34%, transparent)'],
+        ['chart-swatch chart-swatch--dot', 'var(--color-deep-blue)'],
+        ['chart-swatch chart-swatch--dot', 'color-mix(in srgb, var(--color-deep-blue) 55%, var(--color-bg-white))'],
+        ['chart-swatch chart-swatch--dot', 'var(--color-teal)'],
+      ],
+    );
     press('ArrowRight');
     assert.equal(one('.chart-readoutTag').textContent, island.chart.phaseSaving, 'the last year of saving');
     press('ArrowRight');
@@ -1534,6 +1545,27 @@ describe('large runs', () => {
       await runDone();
       assert.ok(one('.mcs-caveat').textContent?.includes('shares of 10,000 simulated paths'));
       assert.equal(results().getAttribute('aria-busy'), 'false');
+    }
+    {
+      // a newer plan that comes while the older one waits to start wins too
+      await typeInto(island.fields.saveYears, '3');
+      await choosePaths('100000');
+      await runDone();
+      assert.ok(one('.mcs-caveat').textContent?.includes('shares of 100,000 simulated paths'));
+      const reset = screen.getByRole('button', { name: island.actions.reset });
+      // Reset the moment the large run says it is running: before it starts on the page.
+      const observer = new MutationObserver(() => {
+        if (results().getAttribute('aria-busy') !== 'true') return;
+        observer.disconnect();
+        fireEvent.click(reset);
+      });
+      observer.observe(results(), { attributes: true, attributeFilter: ['aria-busy'] });
+      await typeInto(island.fields.saveYears, '4');
+      await settle(400);
+      observer.disconnect();
+      await runDone();
+      assert.equal(heading().textContent, 'After 30 years of saving');
+      assert.ok(one('.mcs-caveat').textContent?.includes('shares of 10,000 simulated paths'));
     }
   });
 
