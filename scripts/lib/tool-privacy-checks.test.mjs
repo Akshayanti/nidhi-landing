@@ -572,7 +572,7 @@ describe('a typed rate in a list of numbers (P2)', () => {
 describe('a probe value is not mistaken for PostHog’s own measurements (#843)', () => {
   const decimals = checks.PROBE_DECIMALS;
 
-  it('every decimal probe has four or more decimal places, so no timing or count equals it by chance', () => {
+  it('every decimal probe has four or more decimal places, so a timing or count is unlikely to equal it', () => {
     assert.ok(decimals.length > 5, `only ${decimals.length} decimal probes`);
     for (const p of decimals) assert.match(p, /^\d+\.\d{4,}$/, p);
   });
@@ -604,5 +604,17 @@ describe('a probe value is not mistaken for PostHog’s own measurements (#843)'
       '$prev_pageview_max_scroll_percentage',
       '$time',
     ]);
+  });
+});
+
+describe('a short probe is never looked for in PostHog’s own measurements (#843)', () => {
+  it('a scroll percentage or token count equal to a short probe is clean', () => {
+    const sdk = Object.fromEntries(checks.SDK_MEASUREMENTS.map((key) => [key, 47]));
+    const { problems } = judge([...cleanEvents(), ev('$pageview', sdk)]);
+    assert.deepEqual(problems.filter((x) => x.includes('carries what was typed')), []);
+  });
+  it('the same short value in the site’s own property is a leak', () => {
+    const { problems } = judge([...cleanEvents(), ev('free_loan_comparison_x', { years: 47 })]);
+    assert.ok(problems.some((x) => x.includes('carries what was typed')));
   });
 });

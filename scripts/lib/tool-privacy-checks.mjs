@@ -99,9 +99,10 @@ export function expectedLeaks(boxes) {
 
 const PROBES = [...new Set(Object.values(BOXES).flatMap(expectedLeaks))];
 /**
- * The decimal probes. Each has four or more decimal places (#843): a short one
- * such as 1.83 was once PostHog's own measure of how long a page was open,
- * and failed a clean run.
+ * The decimal probes. Each has four or more decimal places (#843), which makes
+ * a chance match with a number the page sends unlikely, not impossible: a
+ * short one such as 1.83 was once PostHog's own measure of how long a page
+ * was open, and failed a clean run.
  */
 export const PROBE_DECIMALS = PROBES.filter((p) => /^\d+\.\d+$/.test(p));
 
