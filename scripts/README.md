@@ -12,23 +12,23 @@ lines, and its tests are the test files beside it or importing it.
 | Script | What it does | Run by | Tests |
 |---|---|---|---|
 | `audit-mobile.mjs` | Phone-width audit of every site page. | `npm run audit:mobile`, workflow "PR Checks" | none |
-| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools gates" | `repo-hygiene.test.mjs` |
+| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools text size" | `repo-hygiene.test.mjs` |
 | `check-dist.mjs` | Checks the built site in dist/ (#361): canonical and hreflang links, the sitemap, internal links, leftover template text and the feeds. | `npm run check:dist`, workflow "PR Checks" | none |
 | `check-gs-versions.mjs` | Compares each deployed Apps Script with main (#443): asks its health action for the VERSION it runs and checks it against the hash of the file here. | workflow "Apps Script versions" | `gs-version.test.mjs` |
 | `deploy-trigger.gs` | Nidhi daily deploy trigger: Google Apps Script (no Web App). | pasted into Google Apps Script | `deploy-trigger.test.mjs` |
 | `fetch-inflation.mjs` | Refreshes the inflation calculator's history: World Bank indicator FP.CPI.TOTL.ZG (consumer price inflation, annual %) for every country. | workflow "Inflation data refresh" | `fetch-inflation.test.mjs` |
 | `gs-version.mjs` | Writes each Apps Script file's VERSION (scripts/lib/publishing/gs-version.mjs). | `npm run gs:check`, `npm run gs:version` | `gs-version.test.mjs` |
 | `indexnow.mjs` | IndexNow helper for the deploy pipeline. | workflow "Deploy to GitHub Pages" | `indexnow.test.mjs` |
-| `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools gates", workflow "PR Checks", workflow "Tool privacy check" | `lint-figures.test.mjs` |
-| `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools gates", workflow "PR Checks", workflow "Tool privacy check" | none |
+| `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | `lint-figures.test.mjs` |
+| `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | none |
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
-| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools gates" | none |
+| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools mutation" | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
 | `preview_transactional_emails.py` | Render HTML previews of the two transactional emails built by scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and the welcome email (`sendWelcomeEmail_`). | by hand | none |
 | `qr_svg.py` | Make a QR code for one URL, as a deterministic SVG file. | by hand | `test_qr_svg.py`, `src/utils/qr/encode.test.ts` |
 | `regenerate-captions.mjs` | Regenerate platform captions (.ig.txt / .tiktok.txt / .json) from saved reel plans without re-running TTS / Remotion. | by hand | none |
-| `render-email-figures.mjs` | Rasterise blog figures into email-ready PNGs. | `npm run build` (postbuild), `npm run render-email-figures`, workflow "Deploy to GitHub Pages", workflow "Free tools gates", workflow "PR Checks", workflow "Tool privacy check" | none |
+| `render-email-figures.mjs` | Rasterise blog figures into email-ready PNGs. | `npm run build` (postbuild), `npm run render-email-figures`, workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | none |
 | `render-figures.mjs` | Rasterise blog figures into Instagram-ready PNGs. | `npm run render-figures` | none |
 | `render-guide-cards.mjs` | Renders each How-to guide's share image (the og:image a link preview shows) to public/brand/social/how-to/<slug>.png, 1200×630. | by hand | none |
 | `render-ig.js` | Unified Instagram renderer. | `npm run render-ig` | none |

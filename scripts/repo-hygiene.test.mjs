@@ -9,7 +9,7 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { testFiles } from './run-tests.mjs';
@@ -115,7 +115,8 @@ describe('the required checks run on every pull request', () => {
   const REQUIRED = {
     'pr-checks.yml': ['Detect changes', 'Install (lockfile integrity)', 'Lint', 'Type check', 'Tests', 'npm audit (high+)', 'Build (static)', 'Remotion'],
     'tool-privacy.yml': ['No typed value reaches analytics'],
-    'tool-gates.yml': ['Free tools: mutation and behaviour'],
+    'tool-mutation.yml': ['Free tools: mutation'],
+    'tool-text-size.yml': ['Free tools: text size'],
   };
   for (const [file, names] of Object.entries(REQUIRED)) {
     const text = read(join('.github/workflows', file));
@@ -148,7 +149,7 @@ describe('the required checks run on every pull request', () => {
       // One output is allowed: the free tools gates' list of mutation shards,
       // read from stryker.shards.json and never from what changed (#846).
       let checked = text;
-      if (file === 'tool-gates.yml') {
+      if (file === 'tool-mutation.yml') {
         const plan = text.slice(text.indexOf('\n  plan:\n'), text.indexOf('\n  mutation:\n'));
         assert.doesNotMatch(plan, /git |github\.event\.pull_request|changed/, 'the plan job reads stryker.shards.json only');
         checked = text.replace('${{ fromJSON(needs.plan.outputs.shards) }}', '');
@@ -401,8 +402,16 @@ describe('npm test finds its files (#791)', () => {
 });
 
 describe('the free tools gates cover every tool (#790, #791)', () => {
-  const gates = read('.github/workflows/tool-gates.yml');
-  const matrix = (key) => JSON.parse(`[${/\n {8}\w+: \[([^\]]*)\]/.exec(gates.slice(gates.indexOf(`\n  ${key}:\n`)))[1].split(',').map((v) => `"${v.trim()}"`).join(',')}]`);
+  // Two workflows, so either can run or be cancelled without the other.
+  const gates = read('.github/workflows/tool-mutation.yml');
+  const textSize = read('.github/workflows/tool-text-size.yml');
+  const matrix = (text, key) => JSON.parse(`[${/\n {8}\w+: \[([^\]]*)\]/.exec(text.slice(text.indexOf(`\n  ${key}:\n`)))[1].split(',').map((v) => `"${v.trim()}"`).join(',')}]`);
+
+  it('is two workflows: mutation and text size, nothing of one in the other', () => {
+    assert.ok(!existsSync(join(ROOT, '.github/workflows/tool-gates.yml')), 'tool-gates.yml is split in two');
+    assert.doesNotMatch(gates, /audit-text-size/);
+    assert.doesNotMatch(textSize, /stryker/i);
+  });
 
   it('mutates every scope stryker.config.mjs knows', () => {
     const config = read('stryker.config.mjs');
@@ -418,7 +427,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
 
   it('measures the text size of every tool the audit knows', () => {
     const tools = JSON.parse(/const TOOLS = (\[[^\]]*\]);/.exec(read('scripts/audit-text-size.mjs'))[1].replace(/'/g, '"'));
-    assert.deepEqual([...matrix('text-size')].sort(), [...tools].sort());
+    assert.deepEqual([...matrix(textSize, 'text-size')].sort(), [...tools].sort());
   });
 
   it('holds every scope to its floors, never pooled', () => {
@@ -426,18 +435,21 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
     assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
-    // The required check waits for every part, the floors included.
-    assert.match(gates, /needs: \[plan, mutation, floors, text-size\]/);
+    // Each required check waits for every part of its workflow, the floors included.
+    assert.match(gates, /\n  gate:\n    name: 'Free tools: mutation'\n    needs: \[plan, mutation, floors\]\n/);
+    assert.match(textSize, /\n  gate:\n    name: 'Free tools: text size'\n    needs: \[text-size\]\n/);
     // Pull requests reuse earlier results; the nightly run retests everything.
     assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);
     assert.match(read('.github/workflows/pr-checks.yml'), /FLOORS_BASE: HEAD\^1/);
   });
 
-  it('a nightly run that failed opens or updates one issue', () => {
-    const alert = gates.slice(gates.indexOf('\n  alert:\n'));
-    assert.ok(alert.includes("if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))"));
-    assert.match(alert, /gh issue list --state open --label tool-gates-alert/);
-  });
+  for (const [name, text] of [['mutation', gates], ['text size', textSize]]) {
+    it(`a nightly ${name} run that failed opens or updates one issue`, () => {
+      const alert = text.slice(text.indexOf('\n  alert:\n'));
+      assert.ok(alert.includes("if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))"));
+      assert.match(alert, /gh issue list --state open --label tool-gates-alert/);
+    });
+  }
 });
 
 describe('every install is audited (#791)', () => {
