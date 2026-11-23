@@ -193,7 +193,7 @@ function useSimulation(state: ToolState, initialResult: SimulationResult): Shown
         setBusy(false);
       };
       w.onerror = () => {
-        worker.current?.terminate();
+        w.terminate();
         worker.current = null;
         fallback();
       };

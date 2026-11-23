@@ -7,12 +7,12 @@
  * Pure: no DOM, no analytics.
  */
 import { byYearTable, tableOf, type Report } from '../shared/report.ts';
-import { monteCarloSheets, type MonteCarloExport } from './export.ts';
+import { monteCarloPlanSheets, type MonteCarloExport } from './export.ts';
 
 export function monteCarloReport(e: Omit<MonteCarloExport, 'date' | 'page'> & { answer: string[] }): Report {
   const { island, common, state, result, answer } = e;
   const x = island.export;
-  const [, inputs, assumptions, byYear] = monteCarloSheets({ ...e, date: '', page: '' });
+  const [inputs, assumptions, byYear] = monteCarloPlanSheets(e);
   const years = result.bands.map((_, y) => y);
   const at = (pick: (b: (typeof result.bands)[number]) => number) => years.map((y) => ({ x: y, y: pick(result.bands[y]) }));
   const c = island.chart;

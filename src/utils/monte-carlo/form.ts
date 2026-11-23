@@ -98,9 +98,12 @@ export function formErrors(f: FormState): Record<BoxField, boolean> {
   };
 }
 
-/** The withdrawal boxes to carry with withdrawals off, where the plan holds neither. */
+/**
+ * The withdrawal boxes that differ from where they start. With withdrawals
+ * off the plan holds neither, so they are carried beside it; with them on,
+ * the plan already holds both as the boxes do, and carrying them changes nothing.
+ */
 function rememberedBoxes(f: FormState): BoxField[] {
-  if (f.withdrawOn) return [];
   const untouched = { withdrawal: DEFAULT_WITHDRAWAL, withdrawYears: DEFAULTS.withdrawYears };
   return (['withdrawal', 'withdrawYears'] as const).filter((field) => f[field] !== String(untouched[field]));
 }
