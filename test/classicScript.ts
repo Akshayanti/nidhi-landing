@@ -23,5 +23,13 @@ export function runClassicScript(source: string, globals: Record<string, unknown
   }
   const active = process.env.__STRYKER_ACTIVE_MUTANT__;
   if (namespace.activeMutant === undefined && active) namespace.activeMutant = active;
-  runInNewContext(source, { ...globals, [name]: namespace });
+  // On the test's own object, so what the script writes to its globals is
+  // still there for the test to read; the script looks the namespace up once,
+  // as it starts, so it is taken away again afterwards.
+  Object.defineProperty(globals, name, { value: namespace, configurable: true, enumerable: false });
+  try {
+    runInNewContext(source, globals);
+  } finally {
+    delete globals[name];
+  }
 }

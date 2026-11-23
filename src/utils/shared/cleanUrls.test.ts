@@ -26,8 +26,8 @@ const ORIGIN = 'https://nidhi.today';
 
 type Win = Record<string, any>;
 
-function page(): Win {
-  const window: Win = { location: { origin: ORIGIN, host: 'nidhi.today' }, URL, URLSearchParams };
+function page(origin = ORIGIN): Win {
+  const window: Win = { location: { origin, host: new URL(origin).host }, URL, URLSearchParams };
   runClassicScript(SOURCE, { window, globalThis: window, URL, URLSearchParams });
   return window;
 }
@@ -72,6 +72,37 @@ describe('cleanUrls: free tool addresses', () => {
     }
   });
 
+  it('cleans an address that comes with a space in front, as the browser would read it', () => {
+    assert.equal(clean(` /free/loan-comparison/?${SECRET_QUERY}#${SECRET_HASH}`), '/free/loan-comparison/');
+  });
+
+  it('keeps a relative address relative, even when a campaign tag holds a link', () => {
+    assert.equal(
+      clean(`/free/loan-comparison/?utm_source=https://example.com&${SECRET_QUERY}`),
+      '/free/loan-comparison/?utm_source=https%3A%2F%2Fexample.com',
+    );
+  });
+
+  it('keeps a plain http address absolute', () => {
+    const w = page('http://localhost:4321');
+    assert.equal(
+      w.nidhiCleanUrl(`http://localhost:4321/free/loan-comparison/?${SECRET_QUERY}#${SECRET_HASH}`, PREFIXES),
+      'http://localhost:4321/free/loan-comparison/',
+    );
+  });
+
+  it('cleans the English edition when it is given no list of prefixes', () => {
+    assert.equal(page().nidhiCleanUrl(`${ORIGIN}/free/loan-comparison/?${SECRET_QUERY}#${SECRET_HASH}`), `${ORIGIN}/free/loan-comparison/`);
+  });
+
+  it('reads a longer locale code that begins with a shorter one as its own edition', () => {
+    // A regional edition beside its language: /es-mx is not /es followed by a page.
+    for (const prefixes of [['/es', '/es-mx'], ['/es-mx', '/es']]) {
+      assert.equal(page().nidhiCleanUrl(`${ORIGIN}/es-mx/free/loan-comparison/?${SECRET_QUERY}`, prefixes), `${ORIGIN}/es-mx/free/loan-comparison/`);
+      assert.equal(page().nidhiCleanUrl(`${ORIGIN}/es/free/loan-comparison/?${SECRET_QUERY}`, prefixes), `${ORIGIN}/es/free/loan-comparison/`);
+    }
+  });
+
   it('leaves no typed value in any cleaned address', () => {
     for (const prefix of EDITIONS) {
       for (const form of [`?${SECRET_QUERY}`, `#${SECRET_HASH}`, `?${SECRET_QUERY}#${SECRET_HASH}`, `?utm_source=a&${SECRET_QUERY}#${SECRET_HASH}`]) {
@@ -106,6 +137,23 @@ describe('cleanUrls: what is left alone', () => {
     assert.equal(clean(value), value);
   });
 
+  it('passes on an address it leaves alone exactly as it came, anchor included', () => {
+    for (const value of ['/xx/free/loan-comparison/?a=1#b=2', '/learn/a-lesson/free/#notes', '/learn/free/../?a=1']) {
+      assert.equal(clean(value), value);
+    }
+  });
+
+  it('leaves an edition’s home page alone, whatever its query mentions', () => {
+    for (const value of [`${ORIGIN}/hi?next=/free/loan-comparison/`, `${ORIGIN}/hi/?next=/free/loan-comparison/`]) {
+      assert.equal(clean(value), value);
+    }
+  });
+
+  it('passes on an address it cannot read', () => {
+    const value = 'http://[/free/loan-comparison/?a=1';
+    assert.equal(clean(value), value);
+  });
+
   it('passes on anything that is not a string, and strings that are not addresses of interest', () => {
     for (const value of [undefined, null, 0, 42, true, 'plain text', `${ORIGIN}/learn/?level=discovery#x`]) {
       assert.equal(clean(value), value);
@@ -127,6 +175,24 @@ describe('cleanUrls: blog search', () => {
     const value = `${ORIGIN}/blog/a-lesson/?utm_source=q=1`;
     assert.equal(clean(value), value);
   });
+
+  it('removes ?q= from a /blog address that comes with a space in front', () => {
+    assert.equal(clean(' /blog/?q=my+salary+is+90000'), '/blog/');
+  });
+
+  it('leaves ?q= alone on a page that only has blog further down its path', () => {
+    for (const value of [`${ORIGIN}/learn/blog-notes/?q=1`, `${ORIGIN}/learn/blog/?q=1`, `${ORIGIN}/xx/blog/?q=1`]) {
+      assert.equal(clean(value), value);
+    }
+  });
+
+  it('passes on a parameter that holds nothing as it came: there is no search or token to remove', () => {
+    // ?q and ?t with no "=" carry no value. The last two name the other page's
+    // parameter, which means nothing there.
+    for (const value of ['/blog/?q', '/confirm?t', '/unsubscribe?t', '/blog/?q&t=1', '/confirm?t&q=1', '/unsubscribe/?t&q=1']) {
+      assert.equal(clean(value), value);
+    }
+  });
 });
 
 describe('cleanUrls: newsletter tokens', () => {
@@ -140,6 +206,12 @@ describe('cleanUrls: newsletter tokens', () => {
       for (const prefix of PREFIXES) {
         assert.equal(clean(`${ORIGIN}${prefix}/${pageName}/?t=${TOKEN}`), `${ORIGIN}${prefix}/${pageName}/`);
       }
+    }
+  });
+
+  it('removes ?t= from an address that comes with a space in front', () => {
+    for (const pageName of ['confirm', 'unsubscribe']) {
+      assert.equal(clean(` /${pageName}?t=${TOKEN}`), `/${pageName}`);
     }
   });
 
@@ -201,6 +273,28 @@ describe('cleanUrls: event properties', () => {
     assert.doesNotMatch(JSON.stringify(sent), /SECRETNAME|123456|Jane|98765/);
   });
 
+  it('when two addresses become one and the first has no list of points, the second is sent as it is', () => {
+    const w = page();
+    const tool = `${ORIGIN}/free/loan-comparison/`;
+    const point = { x: 1, y: 2, target_fixed: false, type: 'click' };
+    const props: Record<string, unknown> = { $heatmap_data: { [`${tool}?${SECRET_QUERY}`]: 7, [`${tool}#${SECRET_HASH}`]: [point] } };
+    w.nidhiCleanUrlProps(props, PREFIXES);
+    assert.deepEqual(JSON.parse(JSON.stringify(props.$heatmap_data)), { [tool]: [point] });
+  });
+
+  it('reads only what the event itself holds, never what it inherits', () => {
+    const w = page();
+    const dirty = `${ORIGIN}/free/loan-comparison/?${SECRET_QUERY}`;
+    const point = { x: 1, y: 2, target_fixed: false, type: 'click' };
+    const heatmap = Object.create({ [dirty]: [point] });
+    heatmap[`${ORIGIN}/learn/`] = [point];
+    const props: Record<string, unknown> = Object.create({ $referrer: dirty });
+    props.$heatmap_data = heatmap;
+    w.nidhiCleanUrlProps(props, PREFIXES);
+    assert.deepEqual(Object.keys(props), ['$heatmap_data']);
+    assert.deepEqual(JSON.parse(JSON.stringify(props.$heatmap_data)), { [`${ORIGIN}/learn/`]: [point] });
+  });
+
   it('sends no heatmap data it cannot read as addresses with points', () => {
     for (const odd of ['a string', 42, null, undefined, [`${ORIGIN}/free/x/?v1_n=SECRETNAME`]]) {
       const w = page();
@@ -213,6 +307,24 @@ describe('cleanUrls: event properties', () => {
   it('accepts a missing object', () => {
     const w = page();
     assert.doesNotThrow(() => { w.nidhiCleanUrlProps(undefined, PREFIXES); w.nidhiCleanUrlProps(null, PREFIXES); });
+  });
+});
+
+describe('cleanUrls: where it defines its functions', () => {
+  it('on the window when there is one, as on the page', () => {
+    const window: Win = {};
+    const other: Win = {};
+    runClassicScript(SOURCE, { window, globalThis: other, URL, URLSearchParams });
+    assert.equal(typeof window.nidhiCleanUrl, 'function');
+    assert.equal(typeof window.nidhiCleanUrlProps, 'function');
+    assert.deepEqual(Object.keys(other), []);
+  });
+
+  it('on the global object where there is no window', () => {
+    const global: Win = {};
+    runClassicScript(SOURCE, { globalThis: global, URL, URLSearchParams });
+    assert.equal(typeof global.nidhiCleanUrl, 'function');
+    assert.equal(typeof global.nidhiCleanUrlProps, 'function');
   });
 });
 

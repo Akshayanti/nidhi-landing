@@ -59,7 +59,7 @@ interface Page {
 }
 
 /** A page at `address` whose switch offers `targets`, with `state` in the tool's window property. */
-function page(address: string, opts: { targets?: string[]; toolStateGlobal?: string; state?: string } = {}): Page {
+function page(address: string, opts: { targets?: string[]; toolStateGlobal?: string; state?: string; pathname?: string } = {}): Page {
   const url = new URL(address, 'https://nidhi.today');
   const targets = opts.targets ?? LOCALES.filter((l) => PREFIXES[l] !== undefined);
   // Each locale appears twice, as it does on the page: the desktop picker and the phone menu.
@@ -69,7 +69,7 @@ function page(address: string, opts: { targets?: string[]; toolStateGlobal?: str
   const opened: string[] = [];
   const window: Record<string, any> = {
     Element,
-    location: { pathname: url.pathname, search: url.search, hash: url.hash, assign: (to: string) => { assigned.push(to); } },
+    location: { pathname: opts.pathname ?? url.pathname, search: url.search, hash: url.hash, assign: (to: string) => { assigned.push(to); } },
     open: (to: string, target: string, features: string) => {
       assert.equal(target, '_blank');
       assert.equal(features, 'noopener');
@@ -120,6 +120,11 @@ describe('langSwitch: links rebuilt from the live address', () => {
     assert.equal(page('/es/').href('en'), '/');
     assert.equal(page('/es').href('hi'), '/hi/');
     assert.equal(page('/').href('cs'), '/cs/');
+  });
+
+  it('reads a path that comes without its first slash', () => {
+    assert.equal(page('/', { pathname: 'learn/' }).href('hi'), '/hi/learn/');
+    assert.equal(page('/', { pathname: 'es/learn/' }).href('en'), '/learn/');
   });
 
   it('does not take a two-letter page segment or a longer word for a locale', () => {
@@ -190,6 +195,13 @@ describe('langSwitch: tool state is carried at click time, never in an href', ()
     assert.equal(p.opened.length, 1);
   });
 
+  it('auxclick carries for the middle button only, so no click is carried twice', () => {
+    const p = tool();
+    // Should a browser report the main button through auxclick as well as click.
+    assert.equal(p.fire('auxclick', p.links[1], { button: 0 }), false);
+    assert.deepEqual([p.assigned, p.opened], [[], []]);
+  });
+
   it('an Alt click, a handled click and a right click keep the clean link', () => {
     for (const init of [{ altKey: true }, { defaultPrevented: true }, { button: 2 }]) {
       const p = tool();
@@ -219,6 +231,27 @@ describe('langSwitch: tool state is carried at click time, never in an href', ()
   it('a page that is not a tool carries nothing and listens for nothing', () => {
     const p = page('/learn/');
     assert.deepEqual(p.listeners, []);
+  });
+
+  it('a tool page with no language switch listens for nothing', () => {
+    const p = page('/free/loan-comparison/', { targets: [], toolStateGlobal: GLOBAL, state: STATE });
+    assert.deepEqual(p.listeners, []);
+  });
+});
+
+describe('langSwitch: where it defines its function', () => {
+  it('on the window when there is one, as on the page', () => {
+    const window: Record<string, any> = {};
+    const other: Record<string, any> = {};
+    runClassicScript(SOURCE, { window, globalThis: other, URLSearchParams });
+    assert.equal(typeof window.nidhiLangSwitch, 'function');
+    assert.equal(other.nidhiLangSwitch, undefined);
+  });
+
+  it('on the global object where there is no window', () => {
+    const global: Record<string, any> = {};
+    runClassicScript(SOURCE, { globalThis: global, URLSearchParams });
+    assert.equal(typeof global.nidhiLangSwitch, 'function');
   });
 });
 

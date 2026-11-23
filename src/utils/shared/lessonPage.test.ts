@@ -35,6 +35,12 @@ interface Options {
   share?: 'none' | 'ok' | 'abort' | 'fail';
   clipboard?: 'ok' | 'fail' | 'none';
   shareBar?: boolean;
+  printSaved?: boolean;
+}
+
+/** The day every test page prints on, so the printed date can be read exactly. */
+class PrintDay extends Date {
+  constructor() { super(2026, 0, 5, 12); }
 }
 
 async function page(opts: Options = {}) {
@@ -57,6 +63,7 @@ async function page(opts: Options = {}) {
   const copied: string[] = [];
   const shared: unknown[] = [];
   let printed = 0;
+  const timers: Array<{ id: number; fn: () => void; ms: number; cleared: boolean }> = [];
   const navigator: Record<string, unknown> = { userAgent: opts.userAgent ?? 'Mozilla/5.0 (X11; Linux x86_64) Chrome/130' };
   if ((opts.clipboard ?? 'ok') !== 'none') {
     navigator.clipboard = { writeText: (t: string) => { copied.push(t); return opts.clipboard === 'fail' ? Promise.reject(new Error('denied')) : Promise.resolve(); } };
@@ -77,7 +84,7 @@ async function page(opts: Options = {}) {
       print: () => { printed += 1; },
     },
     document: {
-      querySelector: (sel: string) => (sel === '[data-print-saved]' ? printSaved : null),
+      querySelector: (sel: string) => (sel === '[data-print-saved]' && opts.printSaved !== false ? printSaved : null),
       querySelectorAll: (sel: string) => {
         if (sel === '[data-lesson-share]') return opts.shareBar === false ? [] : [bar];
         assert.match(sel, /details:not\(\[open\]\)/);
@@ -86,15 +93,17 @@ async function page(opts: Options = {}) {
     },
     navigator,
     localStorage,
-    setTimeout: () => 0,
-    clearTimeout: () => undefined,
+    setTimeout: (fn: () => void, ms: number) => { timers.push({ id: timers.length + 1, fn, ms, cleared: false }); return timers.length; },
+    clearTimeout: (id: number) => { const t = timers.find((x) => x.id === id); if (t) t.cleared = true; },
     Promise,
     JSON,
-    Date,
+    Date: PrintDay,
   };
   runClassicScript(SOURCE, context);
   const settle = () => new Promise((r) => setImmediate(r));
-  return { store, parts, details, printSaved, copied, shared, printed: () => printed, fireWindow: (t: string) => (windowHandlers[t] ?? []).forEach((fn) => fn()), settle };
+  /** Lets the given time pass: every timer due by then, and not cancelled, runs once. */
+  const wait = (ms: number) => timers.filter((t) => !t.cleared && t.ms <= ms).forEach((t) => { t.cleared = true; t.fn(); });
+  return { store, parts, details, printSaved, copied, shared, wait, pending: () => timers.filter((t) => !t.cleared).length, printed: () => printed, fireWindow: (t: string) => (windowHandlers[t] ?? []).forEach((fn) => fn()), settle };
 }
 
 describe('lessonPage.js', () => {
@@ -136,6 +145,21 @@ describe('the share bar', () => {
     await p.settle();
     assert.deepEqual(p.copied, ['https://nidhi.today/blog/x/?utm_source=share&utm_medium=copy']);
     assert.equal(p.parts.status.textContent, 'Link copied');
+    assert.equal(p.parts.copy.textContent, '\u2713 Copied');
+  });
+
+  it('puts the copy button back after four seconds, counted from the last press', async () => {
+    const p = await page();
+    p.parts.copy.fire('click');
+    await p.settle();
+    p.wait(3999);
+    assert.equal(p.parts.copy.textContent, '\u2713 Copied');
+    p.parts.copy.fire('click');
+    await p.settle();
+    assert.equal(p.pending(), 1, 'the first press no longer has a timer of its own');
+    p.wait(4000);
+    assert.equal(p.parts.copy.textContent, 'Copy link');
+    assert.equal(p.parts.status.textContent, '');
   });
 
   it('shows the address to copy by hand when copying fails', async () => {
@@ -163,6 +187,13 @@ describe('the share bar', () => {
     await failed.settle();
     await failed.settle();
     assert.equal(failed.copied.length, 1);
+    assert.equal(failed.parts.status.textContent, 'Sharing did not open, so the link was copied instead.');
+    const neither = await page({ share: 'fail', clipboard: 'fail' });
+    neither.parts.native.fire('click');
+    await neither.settle();
+    await neither.settle();
+    assert.ok(!neither.parts.address.hidden);
+    assert.equal(neither.parts.status.textContent, 'Sharing did not open. Press and hold the link to copy it.');
     const aborted = await page({ share: 'abort' });
     aborted.parts.native.fire('click');
     await aborted.settle();
@@ -173,6 +204,7 @@ describe('the share bar', () => {
     const normal = await page();
     normal.parts.save.fire('click');
     assert.equal(normal.printed(), 1);
+    assert.equal(normal.parts.status.textContent, 'In the print window, choose Save as PDF. On iPhone: Share, then Save to Files.');
     const inApp = await page({ userAgent: 'Mozilla/5.0 (iPhone) Instagram 300.0' });
     inApp.parts.save.fire('click');
     assert.equal(inApp.printed(), 0);
@@ -186,8 +218,15 @@ describe('printing', () => {
     p.details[1].open = true;
     p.fireWindow('beforeprint');
     assert.ok(p.details.every((d) => d.open));
-    assert.match(p.printSaved.textContent, /^Saved on /);
+    assert.equal(p.printSaved.textContent, 'Saved on January 5, 2026.');
     p.fireWindow('afterprint');
     assert.deepEqual(p.details.map((d) => d.open), [false, true]);
+  });
+
+  it('prints a page that has no line for the date', async () => {
+    const p = await page({ printSaved: false });
+    p.fireWindow('beforeprint');
+    assert.ok(p.details.every((d) => d.open));
+    assert.equal(p.printSaved.textContent, '');
   });
 });

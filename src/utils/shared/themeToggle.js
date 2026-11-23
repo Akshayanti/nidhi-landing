@@ -37,7 +37,6 @@
   }
 
   function updateButtons(mode) {
-    if (!toggle) return;
     var buttons = toggle.querySelectorAll('.theme-btn');
     buttons.forEach(function(btn) {
       btn.setAttribute('data-active', btn.getAttribute('data-mode') === mode ? 'true' : 'false');

@@ -32,6 +32,8 @@ interface Visit {
   address: string;
   /** How many times the address was rewritten. */
   writes: number;
+  /** The state and title handed to the history with each rewrite. */
+  entries: unknown[][];
 }
 
 /** Opens `path` (a path with its ? and # parts) and runs the guard. */
@@ -39,11 +41,13 @@ function visit(path: string, keyPattern: string, globalName = GLOBAL): Visit {
   const url = new URL(path, 'https://nidhi.today');
   const location = { pathname: url.pathname, search: url.search, hash: url.hash };
   let writes = 0;
+  const entries: unknown[][] = [];
   const window: Record<string, any> = {
     location,
     history: {
-      replaceState: (_s: unknown, _t: string, to: string) => {
+      replaceState: (state: unknown, title: string, to: string) => {
         writes += 1;
+        entries.push([state, title]);
         const next = new URL(to, 'https://nidhi.today');
         location.pathname = next.pathname;
         location.search = next.search;
@@ -53,7 +57,7 @@ function visit(path: string, keyPattern: string, globalName = GLOBAL): Visit {
   };
   runClassicScript(SOURCE, { window, globalThis: window, URLSearchParams });
   window.nidhiGuardToolState(globalName, keyPattern);
-  return { state: window[globalName], address: location.pathname + location.search + location.hash, writes };
+  return { state: window[globalName], address: location.pathname + location.search + location.hash, writes, entries };
 }
 
 const PATTERN = loan.STATE_KEY_PATTERN;
@@ -95,22 +99,50 @@ describe('toolStateGuard: moving state out of the address', () => {
       assert.doesNotMatch(visit(PAGE + form, PATTERN).address, /SECRET/, form);
     }
   });
+
+  it('finds old ? state behind a doubled question mark', () => {
+    // A hand-edited or badly joined link: the second ? must not hide the key.
+    const v = visit(`${PAGE}??c=SECRET&n=2`, PATTERN);
+    assert.equal(v.state, 'c=SECRET&n=2');
+    assert.equal(v.address, PAGE);
+  });
+
+  it('rewrites the address once, with no state and no title in the history entry', () => {
+    const v = visit(`${PAGE}?c=INR#v1=1~2~3`, PATTERN);
+    assert.deepEqual(v.entries, [[null, '']]);
+  });
+});
+
+describe('toolStateGuard: where it defines its function', () => {
+  it('on the window when there is one, as on the page', () => {
+    const window: Record<string, any> = {};
+    const other: Record<string, any> = {};
+    runClassicScript(SOURCE, { window, globalThis: other, URLSearchParams });
+    assert.equal(typeof window.nidhiGuardToolState, 'function');
+    assert.equal(other.nidhiGuardToolState, undefined);
+  });
+
+  it('on the global object where there is no window', () => {
+    const global: Record<string, any> = {};
+    runClassicScript(SOURCE, { globalThis: global, URLSearchParams });
+    assert.equal(typeof global.nidhiGuardToolState, 'function');
+  });
 });
 
 describe('toolStateGuard: what is left alone', () => {
   it('does nothing on a plain visit', () => {
     const v = visit(PAGE, PATTERN);
-    assert.deepEqual(v, { state: undefined, address: PAGE, writes: 0 });
+    assert.deepEqual(v, { state: undefined, address: PAGE, writes: 0, entries: [] });
   });
 
   it('does nothing for campaign parameters alone', () => {
     const v = visit(`${PAGE}?utm_source=instagram&utm_campaign=x`, PATTERN);
-    assert.deepEqual(v, { state: undefined, address: `${PAGE}?utm_source=instagram&utm_campaign=x`, writes: 0 });
+    assert.deepEqual(v, { state: undefined, address: `${PAGE}?utm_source=instagram&utm_campaign=x`, writes: 0, entries: [] });
   });
 
   it('does nothing for a plain anchor', () => {
     const v = visit(`${PAGE}#faq`, PATTERN);
-    assert.deepEqual(v, { state: undefined, address: `${PAGE}#faq`, writes: 0 });
+    assert.deepEqual(v, { state: undefined, address: `${PAGE}#faq`, writes: 0, entries: [] });
   });
 
   it('matches whole parameter names only', () => {

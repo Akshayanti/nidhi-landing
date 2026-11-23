@@ -20,15 +20,23 @@ const LAYOUT = readFileSync(join(import.meta.dirname, '../../layouts/BaseLayout.
 
 type Win = Record<string, any>;
 
-function open(pathname: string, search: string, { blocked = false } = {}): Win {
+function open(pathname: string, search: string, { blocked = false, unreadable = false } = {}): Win {
   const window: Win = {
-    location: { pathname, search },
+    location: {
+      pathname,
+      get search(): string {
+        if (unreadable) throw new Error('unreadable');
+        return search;
+      },
+    },
     URLSearchParams,
     replaced: [] as string[],
+    entries: [] as unknown[][],
     history: {
-      replaceState(_state: unknown, _title: string, url: string) {
+      replaceState(state: unknown, title: string, url: string) {
         if (blocked) throw new Error('blocked');
         window.replaced.push(url);
+        window.entries.push([state, title]);
       },
     },
   };
@@ -61,6 +69,33 @@ describe('tokenGuard', () => {
   it('still hands over the token when the address cannot be rewritten', () => {
     const w = open('/unsubscribe', '?t=abc123', { blocked: true });
     assert.equal(w.nidhiToken, 'abc123');
+  });
+
+  it('hands over an empty token, and writes nothing, when the address cannot be read', () => {
+    const w = open('/unsubscribe', '?t=abc123', { unreadable: true });
+    assert.equal(w.nidhiToken, '');
+    assert.deepEqual(w.replaced, []);
+  });
+
+  it('puts nothing but the path into the history entry: no state and no title', () => {
+    const w = open('/confirm', '?t=abc123');
+    assert.deepEqual(w.entries, [[null, '']]);
+  });
+});
+
+describe('tokenGuard: where it defines its function', () => {
+  it('on the window when there is one, as on the page', () => {
+    const window: Win = {};
+    const other: Win = {};
+    runClassicScript(SOURCE, { window, globalThis: other, URLSearchParams });
+    assert.equal(typeof window.nidhiTakeToken, 'function');
+    assert.equal(other.nidhiTakeToken, undefined);
+  });
+
+  it('on the global object where there is no window', () => {
+    const global: Win = {};
+    runClassicScript(SOURCE, { globalThis: global, URLSearchParams });
+    assert.equal(typeof global.nidhiTakeToken, 'function');
   });
 });
 

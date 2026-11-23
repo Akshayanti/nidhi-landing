@@ -65,6 +65,26 @@ describe('formReply', () => {
     assert.equal(await reply(Promise.resolve({ ok: true, text: () => Promise.reject(new Error('reset')) })), 'failed');
     assert.equal(await reply(Promise.resolve(undefined)), 'failed');
   });
+
+  it('a reply whose body cannot be asked for is failed, and nothing is thrown at the form', async () => {
+    assert.equal(await reply(Promise.resolve({ ok: true })), 'failed');
+    assert.equal(await reply(Promise.resolve({ ok: true, text: '{"ok":true}' })), 'failed');
+    assert.equal(await reply(Promise.resolve({ ok: true, text: () => { throw new Error('body already read'); } })), 'failed');
+    assert.equal(await reply(Promise.resolve(null)), 'failed');
+  });
+
+  it('JSON that is not an object is failed, whatever it holds', async () => {
+    for (const body of ['true', '1', '0', '""', '[]', '[{"ok":true}]', '"invalid_email"']) {
+      assert.equal(await reply(Promise.resolve(response(body))), 'failed', body);
+    }
+  });
+
+  it('only ok: true itself counts, not a value that merely reads as true', async () => {
+    for (const body of ['{"ok":"true"}', '{"ok":1}', '{"ok":{}}']) {
+      assert.equal(await reply(Promise.resolve(response(body))), 'failed', body);
+    }
+    assert.equal(await reply(Promise.resolve({ ok: 1, text: () => Promise.resolve('{"ok":true}') })), 'failed');
+  });
 });
 
 describe('the forms read the reply', () => {

@@ -33,11 +33,14 @@ class El {
   parentElement: El | null = null;
   inert = false;
   hidden = false;
+  isConnected = true;
   scrollTop = 40;
   rect = { top: 0, bottom: 0 };
   handlers: Record<string, Listener[]> = {};
   attrs: Record<string, string>;
   focusOptions: unknown = null;
+  /** How many clicks on this element had their default action stopped. */
+  prevented = 0;
   doc: any;
   constructor(tagName: string, id = '', attrs: Record<string, string> = {}) { this.tagName = tagName; this.id = id; this.attrs = attrs; }
   add(...kids: El[]) { for (const k of kids) { k.parentElement = this; this.children.push(k); } return this; }
@@ -52,10 +55,19 @@ class El {
     for (let n: El | null = this; n; n = n.parentElement) if ('data-cookie-settings' in n.attrs) return n;
     return null;
   }
-  click() { const e = { target: this, preventDefault() {} }; (this.handlers.click ?? []).forEach((fn) => fn(e)); this.doc.fire('click', e); }
+  /** A click as a pointer makes it: handlers run, focus is not moved (Safari does not focus a clicked button). */
+  click() { const e = { target: this, preventDefault: () => { this.prevented += 1; } }; (this.handlers.click ?? []).forEach((fn) => fn(e)); this.doc.fire('click', e); }
 }
 
-function page(saved: string | null) {
+interface Options {
+  /** `queued`: animation frames wait until the test runs them, as they wait for the next paint. */
+  frames?: 'at once' | 'queued';
+  resizeObserver?: boolean;
+  /** A page with no <main id="main-content">. */
+  main?: boolean;
+}
+
+function page(saved: string | null, opts: Options = {}) {
   const skip = new El('A', 'cookie-skip');
   skip.hidden = true;
   const header = new El('HEADER');
@@ -77,6 +89,9 @@ function page(saved: string | null) {
   const winHandlers: Record<string, Listener[]> = {};
   const calls: string[] = [];
   const observed: El[] = [];
+  const listenerOptions: Record<string, unknown> = {};
+  const frames: Array<() => void> = [];
+  let frameRequests = 0;
   const document: any = {
     activeElement: body,
     body,
@@ -84,7 +99,7 @@ function page(saved: string | null) {
       classList: { add: (c: string) => rootClasses.add(c), remove: (c: string) => rootClasses.delete(c) },
       style: { setProperty: (k: string, v: string) => rootProps.set(k, v), removeProperty: (k: string) => rootProps.delete(k) },
     },
-    getElementById: (id: string) => [sheet, skip, accept, decline, main].find((e) => e.id === id) ?? null,
+    getElementById: (id: string) => [sheet, skip, accept, decline, ...(opts.main === false ? [] : [main])].find((e) => e.id === id) ?? null,
     querySelector: (sel: string) => (sel === '.site-header' ? header : null),
     addEventListener: (type: string, fn: Listener) => { (docHandlers[type] ??= []).push(fn); },
     removeEventListener: (type: string, fn: Listener) => { docHandlers[type] = (docHandlers[type] ?? []).filter((f) => f !== fn); },
@@ -93,7 +108,7 @@ function page(saved: string | null) {
   for (const el of [skip, header, field, main, settings, footer, decline, accept, link, sheet, body]) el.doc = document;
   const window: any = {
     innerHeight: 800,
-    addEventListener: (type: string, fn: Listener) => { (winHandlers[type] ??= []).push(fn); },
+    addEventListener: (type: string, fn: Listener, options?: unknown) => { (winHandlers[type] ??= []).push(fn); listenerOptions[type] = options; },
     removeEventListener: (type: string, fn: Listener) => { winHandlers[type] = (winHandlers[type] ?? []).filter((f) => f !== fn); },
     nidhiConsent: {
       read: () => saved,
@@ -105,8 +120,16 @@ function page(saved: string | null) {
     observe(el: El) { observed.push(el); }
     disconnect() { observed.length = 0; }
   }
-  runClassicScript(SOURCE, { window, document, ResizeObserver, requestAnimationFrame: (fn: () => void) => { fn(); return 1; } });
+  const requestAnimationFrame = (fn: () => void) => {
+    frameRequests += 1;
+    if (opts.frames === 'queued') frames.push(fn); else fn();
+    return frameRequests;
+  };
+  runClassicScript(SOURCE, { window, document, requestAnimationFrame, ...(opts.resizeObserver === false ? {} : { ResizeObserver }) });
   return {
+    listenerOptions,
+    frameRequests: () => frameRequests,
+    paint: () => frames.splice(0).forEach((fn) => fn()),
     sheet, skip, header, main, field, footer, settings, accept, decline, link, document, window, calls, rootClasses, rootProps, observed, winHandlers,
     open: () => !sheet.hidden,
   };
@@ -193,6 +216,80 @@ describe('consentPrompt.js', () => {
     p.field.focus();
     p.accept.click();
     assert.equal(p.document.activeElement, p.field);
+    // A pointer answer on a first visit, with focus still on the page itself.
+    const fresh = page(null);
+    fresh.accept.click();
+    assert.equal(fresh.document.activeElement, fresh.document.body);
+    assert.ok(!('tabindex' in fresh.main.attrs), 'the main content is not made focusable for nothing');
+  });
+
+  it('gives focus back from the "Cookie choices" link too, which goes away with the sheet', () => {
+    const p = page(null);
+    p.field.focus();
+    p.skip.focus();
+    p.accept.click(); // a pointer answer while focus rests on the link
+    assert.equal(p.document.activeElement, p.field);
+    assert.ok(!('tabindex' in p.field.attrs), 'only the main content is given a tabindex');
+  });
+
+  it('does not follow the "Cookie choices" or "Cookie settings" link itself', () => {
+    const p = page(null);
+    p.skip.click();
+    assert.equal(p.skip.prevented, 1);
+    p.settings.click();
+    assert.equal(p.settings.prevented, 1);
+    p.main.click();
+    assert.equal(p.main.prevented, 0, 'every other click is left alone');
+  });
+
+  it('ignores a click that lands on no element', () => {
+    const p = page('declined');
+    p.document.fire('click', { target: p.document, preventDefault() { assert.fail('not a cookie control'); } });
+    p.document.fire('click', { target: null, preventDefault() { assert.fail('not a cookie control'); } });
+    assert.ok(!p.open());
+  });
+
+  it('asking for the sheet while it is open moves focus only: the reader keeps their place in it', () => {
+    const p = page(null);
+    p.sheet.scrollTop = 120;
+    p.skip.click();
+    assert.equal(p.document.activeElement, p.decline);
+    assert.equal(p.sheet.scrollTop, 120);
+    assert.equal(p.winHandlers.scroll.length, 1);
+    assert.equal(p.winHandlers.resize.length, 1);
+    assert.deepEqual(p.observed, [p.sheet]);
+  });
+
+  it('never holds up scrolling: its scroll listener is passive', () => {
+    const p = page(null);
+    assert.equal(JSON.stringify(p.listenerOptions.scroll), JSON.stringify({ passive: true }));
+  });
+
+  it('measures once per paint however often the page scrolls, and not at all once closed', () => {
+    const p = page(null, { frames: 'queued' });
+    const scroll = () => p.winHandlers.scroll.forEach((fn) => fn({}));
+    p.sheet.rect = { top: 400, bottom: 800 };
+    scroll();
+    scroll();
+    p.winHandlers.resize.forEach((fn) => fn({}));
+    assert.equal(p.frameRequests(), 1);
+    assert.equal(p.rootProps.get('--cookie-space'), '308px', 'not before the paint');
+    p.paint();
+    assert.equal(p.rootProps.get('--cookie-space'), '408px');
+    scroll();
+    assert.equal(p.frameRequests(), 2, 'the next scroll asks again');
+    p.decline.click();
+    p.paint(); // the frame asked for before the answer
+    assert.ok(!p.rootProps.has('--cookie-space') && !p.rootProps.has('--cookie-room'));
+  });
+
+  it('works in a browser without ResizeObserver', () => {
+    const p = page(null, { resizeObserver: false });
+    assert.ok(p.open());
+    assert.equal(p.rootProps.get('--cookie-room'), '732px');
+    p.accept.click();
+    assert.ok(!p.open());
+    assert.deepEqual(p.calls, ['save accepted', 'apply']);
   });
 
   it('the "Cookie choices" link moves focus to "No thanks"; an answer gives it back to the page', () => {
@@ -215,6 +312,23 @@ describe('consentPrompt.js', () => {
     assert.equal(JSON.stringify(p.main.focusOptions), JSON.stringify({ preventScroll: true }));
   });
 
+  it('keeps a tabindex the main content already has', () => {
+    const p = page(null);
+    p.main.attrs.tabindex = '0';
+    p.skip.focus();
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.main);
+    assert.equal(p.main.attrs.tabindex, '0');
+  });
+
+  it('closes and saves on a page with no main content to give focus to', () => {
+    const p = page(null, { main: false });
+    p.skip.focus();
+    p.decline.click();
+    assert.ok(!p.open());
+    assert.deepEqual(p.calls, ['save declined', 'apply']);
+  });
+
   it('reopens from "Cookie settings", and only from there, with focus on "No thanks" and back on close', () => {
     const p = page('declined');
     p.main.click();
@@ -227,5 +341,45 @@ describe('consentPrompt.js', () => {
     p.accept.click();
     assert.deepEqual(p.calls, ['save accepted', 'apply']);
     assert.equal(p.document.activeElement, p.settings);
+  });
+
+  it('gives focus back to "Cookie settings" even where a click did not focus it, and whichever way the reader went on', () => {
+    const p = page('declined');
+    p.field.focus();
+    p.settings.click(); // Safari: the clicked button never had focus
+    p.skip.focus();
+    p.skip.click(); // then the "Cookie choices" link, with the sheet already open
+    assert.equal(p.document.activeElement, p.decline);
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.settings);
+  });
+
+  it('forgets the control that opened it once it has closed', () => {
+    const p = page('declined');
+    p.settings.click();
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.settings);
+    // Opened again from the top of the page: focus goes back there, not to the footer.
+    p.field.focus();
+    p.skip.focus();
+    p.skip.click();
+    p.decline.click();
+    assert.equal(p.document.activeElement, p.field);
+  });
+
+  it('passes over a control that has left the page, is hidden or cannot take focus', () => {
+    const gone: Array<[string, (settings: El) => void]> = [
+      ['removed from the page', (settings) => { settings.isConnected = false; }],
+      ['hidden', (settings) => { settings.hidden = true; }],
+      ['not focusable', (settings) => { Object.assign(settings, { focus: undefined }); }],
+    ];
+    for (const [why, change] of gone) {
+      const p = page('declined');
+      p.field.focus();
+      p.settings.click();
+      change(p.settings);
+      p.decline.click();
+      assert.equal(p.document.activeElement, p.field, why);
+    }
   });
 });

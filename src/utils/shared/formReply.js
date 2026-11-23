@@ -25,15 +25,15 @@
 
   function fromBody(text) {
     var data;
-    try { data = JSON.parse(text); } catch (_) { return 'failed'; }
-    if (!data || typeof data !== 'object') return 'failed';
-    if (data.ok === true) return 'ok';
-    return KNOWN[data.error] === true ? data.error : 'failed';
+    try { data = JSON.parse(text); } catch (_) { /* not JSON: data stays undefined, which is 'failed' below */ }
+    if (data && data.ok === true) return 'ok';
+    return data && KNOWN[data.error] === true ? data.error : 'failed';
   }
 
   function fromResponse(response) {
     // An opaque reply (a no-cors request) has ok false: unknown, not done.
-    if (!response || response.ok !== true || typeof response.text !== 'function') return 'failed';
+    if (!response || response.ok !== true) return 'failed';
+    // A reply with no readable body throws here, which the last handler below turns into 'failed'.
     return response.text().then(fromBody, function () { return 'failed'; });
   }
 
