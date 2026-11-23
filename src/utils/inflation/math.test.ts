@@ -268,5 +268,6 @@ describe('the compact history the page serves', () => {
     assert.deepEqual(fromCompact(null), {});
     assert.deepEqual(fromCompact([2020]), {});
     assert.deepEqual(fromCompact(['x', [1]]), {});
+    assert.deepEqual(fromCompact(undefined), {});
   });
 });
