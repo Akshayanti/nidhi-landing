@@ -9,11 +9,14 @@ name: Free tools text size
 # Mutation testing is its own workflow (tool-mutation.yml), so either can
 # run, or be cancelled, without the other.
 #
-# "Free tools: text size" is a REQUIRED status check on `main`. It runs on
-# every pull request, whatever it touches: a job skipped by `if:` reports
-# "skipped", which satisfies a required check, so no job here is chosen by
-# what changed. Renaming it means changing the required check in the same
-# breath (scripts/repo-hygiene.test.mjs holds the name).
+# "Free tools: text size" is written as a required status check on `main`,
+# though it is not one yet (#851). Its summary job runs on every pull request,
+# whatever it touches: a job skipped by `if:` reports "skipped", which
+# satisfies a required check, so it passes without the audit only in the one
+# case it names (a pull request that changes nothing the audit reads; the
+# plan job, scripts/lib/checks/check-inputs.mjs). Renaming it means changing
+# the required check in the same breath (scripts/repo-hygiene.test.mjs holds
+# the name).
 on:
   # No branch filter, as in pr-checks.yml: a stacked pull request gets the
   # check before it is retargeted to main.
@@ -36,8 +39,46 @@ env:
   NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
 
 jobs:
+  # A pull request that changes only files the build and the audit never read
+  # (scripts/lib/checks/check-inputs.mjs: docs, agent files, other workflows,
+  # the two root notes) skips the audit, and the summary job passes in that
+  # one case. Nightly and manual runs always measure everything.
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.inputs.outputs.run || 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The base as well (HEAD^1 of the merge commit), to list what the
+          # pull request changes.
+          fetch-depth: 2
+
+      - name: Whether the pull request can change a measurement
+        id: inputs
+        if: github.event_name == 'pull_request'
+        # Both ends of a move (--no-renames), NUL-separated (-z) so no name
+        # is quoted or split. Anything but a clear "false" measures every tool.
+        run: |
+          run=true
+          if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
+            run=$(node --input-type=module -e '
+              import { readFileSync } from "node:fs";
+              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
+              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
+            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-text-size.yml") || run=true
+          fi
+          [ "$run" = "false" ] || run=true
+          if [ "$run" = "false" ]; then echo "Only files the audit never reads changed: the tools are skipped."; else echo "Every tool is measured."; fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
   text-size:
     name: 'Text size: ${{ matrix.tool }}'
+    needs: plan
+    if: ${{ !cancelled() && needs.plan.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -101,17 +142,25 @@ jobs:
   # every time and passes only when every job above succeeded.
   gate:
     name: 'Free tools: text size'
-    needs: [text-size]
+    needs: [plan, text-size]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Every job passed
         env:
+          PLAN: ${{ needs.plan.result }}
+          RUN: ${{ needs.plan.outputs.run }}
           TEXT_SIZE: ${{ needs.text-size.result }}
         run: |
-          echo "text-size: $TEXT_SIZE"
-          if [ "$TEXT_SIZE" != "success" ]; then
+          echo "plan: $PLAN (run: $RUN), text-size: $TEXT_SIZE"
+          # A pull request that changes nothing the audit reads: the plan said
+          # so, and nothing ran. Only that exact case passes without the audit.
+          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TEXT_SIZE" = "skipped" ]; then
+            echo "Nothing the audit reads changed: nothing to measure."
+            exit 0
+          fi
+          if [ "$PLAN" != "success" ] || [ "$TEXT_SIZE" != "success" ]; then
             echo "::error::The free tools text-size audit did not pass (or did not run). See the jobs above."
             exit 1
           fi
