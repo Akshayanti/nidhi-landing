@@ -157,6 +157,8 @@ function useSimulation(state: ToolState, initialResult: SimulationResult): Shown
   const worker = useRef<Worker | null>(null);
   const latest = useRef(0);
 
+  // The worker goes with the page.
+  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the cleanup runs once, on unmount; the mutant's one constant string never changes either.
   useEffect(() => () => worker.current?.terminate(), []);
 
   // The first result comes worked out by the page, so the effect has
