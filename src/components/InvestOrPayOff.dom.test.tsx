@@ -56,31 +56,32 @@ afterEach(() => {
 });
 
 describe('invest or pay off, mounted', () => {
-  it('publishes a typed balance for the language switch', async () => {
+  it('publishes what is typed, readable or not, and marks what cannot be read', async () => {
     mount();
-    await typeBalance('73191');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    assert.equal(decodeState(raw as string)?.balance, 73191);
-  });
-
-  it('publishes an unreadable balance as still in error', async () => {
-    mount();
-    await typeBalance('7x');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    const form = formFromLink(raw as string, LOCALE);
-    assert.ok(form, 'the published state decodes');
-    assert.equal(form.balance, '?');
-    assert.equal(boxErrors(form, LOCALE).balance, true);
-  });
-
-  it('marks an unreadable balance invalid and withholds the result', async () => {
-    mount();
-    const box = await typeBalance('7x');
-    assert.equal(box.getAttribute('aria-invalid'), 'true');
-    assert.ok(screen.getByText(island.results.fix, { selector: '.tool-resultReason' }));
+    {
+      // publishes a typed balance for the language switch
+      await typeBalance('73191');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      assert.equal(decodeState(raw as string)?.balance, 73191);
+    }
+    {
+      // publishes an unreadable balance as still in error
+      await typeBalance('7x');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      const form = formFromLink(raw as string, LOCALE);
+      assert.ok(form, 'the published state decodes');
+      assert.equal(form.balance, '?');
+      assert.equal(boxErrors(form, LOCALE).balance, true);
+    }
+    {
+      // marks an unreadable balance invalid and withholds the result
+      const box = screen.getByLabelText(island.fields.balance);
+      assert.equal(box.getAttribute('aria-invalid'), 'true');
+      assert.ok(screen.getByText(island.results.fix, { selector: '.tool-resultReason' }));
+    }
   });
 });

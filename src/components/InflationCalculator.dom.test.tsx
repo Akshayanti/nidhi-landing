@@ -47,36 +47,36 @@ afterEach(() => {
 });
 
 describe('the inflation calculator, mounted', () => {
-  it('renders its form', () => {
+  it('publishes what is typed, readable or not, and marks what cannot be read', async () => {
     mount();
-    assert.ok(screen.getAllByRole('textbox').length > 0);
-  });
-
-  it('publishes a typed amount for the language switch', async () => {
-    mount();
-    await typeAmount('73191');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    assert.equal(decodeState(raw as string)?.amount, 73191);
-  });
-
-  it('publishes an unreadable amount as still in error', async () => {
-    mount();
-    await typeAmount('7x');
-    const raw = shared();
-    assert.equal(typeof raw, 'string');
-    assert.notEqual(raw, '');
-    const form = formFromLink(raw as string, LOCALE);
-    assert.ok(form, 'the published state decodes');
-    assert.equal(form.amount, '?');
-    assert.equal(boxErrors(form, LOCALE).amount, true);
-  });
-
-  it('marks an unreadable amount invalid and withholds the answer', async () => {
-    mount();
-    const box = await typeAmount('7x');
-    assert.equal(box.getAttribute('aria-invalid'), 'true');
-    assert.ok(screen.getByText(t.inflation.island.results.fix, { selector: '.tool-resultReason' }));
+    {
+      // renders its form
+      assert.ok(screen.getAllByRole('textbox').length > 0);
+    }
+    {
+      // publishes a typed amount for the language switch
+      await typeAmount('73191');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      assert.equal(decodeState(raw as string)?.amount, 73191);
+    }
+    {
+      // publishes an unreadable amount as still in error
+      await typeAmount('7x');
+      const raw = shared();
+      assert.equal(typeof raw, 'string');
+      assert.notEqual(raw, '');
+      const form = formFromLink(raw as string, LOCALE);
+      assert.ok(form, 'the published state decodes');
+      assert.equal(form.amount, '?');
+      assert.equal(boxErrors(form, LOCALE).amount, true);
+    }
+    {
+      // marks an unreadable amount invalid and withholds the answer
+      const box = screen.getByLabelText(t.inflation.island.fields.amount.buy);
+      assert.equal(box.getAttribute('aria-invalid'), 'true');
+      assert.ok(screen.getByText(t.inflation.island.results.fix, { selector: '.tool-resultReason' }));
+    }
   });
 });
