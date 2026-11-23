@@ -88,7 +88,7 @@ export const writtenChangelog: ChangelogEntry[] = [
     date: 'Nov 23, 2026',
     iso: '2026-11-23',
     material: true,
-    summary: 'Free tools, changed links: newly created share links replace text in a number box that is not a number with a fixed mark, preserve the current form when changing language in three calculators, and carry up to 500 net worth rows plus exchange-rate status, while link data remains after the # and is never sent to a server.',
+    summary: 'Free tools, changed links: newly created share links replace text in a number box that is not a number with a fixed mark, preserve the current form when changing language in three calculators, and carry up to 500 net worth rows plus exchange-rate status, while link data remains after the # and is never sent to a server. The notice\'s own wording now uses the names and the spelling the site uses, with no change to what is collected, stored, sent or promised.',
     details: [
       'Previously, text in a number box that is not a number travelled as typed in loan comparison and net worth links and language switches, or was replaced by a last valid number or default. All five tools now carry a fixed mark instead of that typed or substituted text, show “?” with an error, and hide dependent results for sender and recipient until corrected. Out-of-range number text still travels as typed.',
       'Changing language in Monte Carlo, inflation, and invest or pay off now carries the current form, including choices made while an entry was invalid, which were previously lost. Copied links also carry an invalid entry that the current choice does not use, which was previously replaced. Monte Carlo now carries a remembered withdrawal while withdrawals are off, with o=1 to record that they are off.',
@@ -97,17 +97,17 @@ export const writtenChangelog: ChangelogEntry[] = [
       'Sharing and export wait on invalid input that the results use, with two exceptions: net worth’s full link remains available and retains the marked row, and an invalid loan horizon or refinance entry blocks only its own panel. Redacted net worth links cannot be created with a missing exchange rate or an unreadable row. Copy and export also wait for every pending calculation to settle; after invalid input, dependent results remain withheld until the corrected form’s result is displayed.',
       'Offer and row names still travel in links that carried them. Redacted links still carry no names or amounts. These changes do not alter or scrub links already shared.',
       'All link data remains after the # and is never sent to a server. No analytics event, property, click label, storage key, or outside request changes.',
+      'Wording only, in this notice: where it describes the loan comparison, a card is now called an offer and the company a lender, as the tool now labels them (both were "vendor"), the tools are "Free tools" rather than "Free Tools", and the sentence about emails we don\'t send now says "privacy notice", which is what this page is, rather than "privacy policy". The English notice also follows the site\'s British spelling, so "honor" is now "honour". The events and what each carries are unchanged, and so is every promise.',
     ],
   },
   {
     date: 'Nov 22, 2026',
     iso: '2026-11-22',
     material: true,
-    summary: 'This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/. The notice\'s own wording now uses the names and the spelling the site uses, with no change to what is collected, stored, sent or promised.',
+    summary: 'This changelog\'s older entries moved, word for word, to their own pages at /privacy/changelog/.',
     details: [
       'This changelog has its own pages: /privacy/changelog/ lists each year with its number of entries and their dates, and /privacy/changelog/2026/ holds every entry of 2026, newest first under its month, in full. The same pages are in every language, with the entries in English as on this notice. This notice now shows the latest three entries, each with a permanent link to its place on its year page, and then a link to the complete record, where it used to keep older entries under a folded "Earlier changes" section. Every entry moved with its text unchanged; none was removed or reworded.',
       'The changelog pages send the same anonymous pageview and page-leave events as every page and carry no new click label: with cookie consent, a click on one of their links is recorded like any unlabelled click, by the kind of element and its position only. Nothing the site collects, stores or sends changed.',
-      'Wording only, in this notice: where it describes the loan comparison, a card is now called an offer and the company a lender, as the tool now labels them (both were "vendor"), the tools are "Free tools" rather than "Free Tools", and the sentence about emails we don\'t send now says "privacy notice", which is what this page is, rather than "privacy policy". The English notice also follows the site\'s British spelling, so "honor" is now "honour". The events and what each carries are unchanged, and so is every promise.',
     ],
   },
   {
