@@ -57,6 +57,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # The base as well, for the tests that compare with it, as in the
+          # Tests job of pr-checks.yml: the first test run runs every test.
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -73,6 +76,9 @@ jobs:
         env:
           STRYKER_SCOPE: ${{ matrix.scope }}
           STRYKER_CONCURRENCY: '4'
+          NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
         run: npx stryker run stryker.config.mjs
 
       # The gate: the scope's logic and its component(s), each at or above its
@@ -116,6 +122,12 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # Ubuntu's runners stop unprivileged user namespaces, which Chrome's
+      # sandbox needs. Allowing them keeps the sandbox on, rather than
+      # starting Chrome without one.
+      - name: Let Chrome use its sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
       - name: Serve the build
         run: |
