@@ -1302,3 +1302,8 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
     </figure>
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole simulator around it. The page itself uses only the
+// default export.
+export { Chart, NumberField, PrintedReport, QuickResult, Results, formatShare, inTen, lastedLine, returnTip, spreadLabels, tableYears, usePhone, useSimulation };
