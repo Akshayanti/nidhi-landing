@@ -534,6 +534,10 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     // it finished is saved whether the run passed, failed or was cancelled:
     // only a file that parses, and only the incremental file, never a report.
     assert.ok(shardJob.indexOf('id: earlier') < shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js'));
+    // Between the two: earlier timeouts whose tests changed are taken out of
+    // the restored results, since Stryker would hand them on (#855).
+    const timeouts = shardJob.indexOf("      - name: Earlier timeouts whose tests changed are tested again\n        env:\n          STRYKER_SCOPE: ${{ matrix.scope }}\n          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}\n        run: node scripts/mutation-timeouts.mjs\n");
+    assert.ok(shardJob.indexOf('id: earlier') < timeouts && timeouts < shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js'));
     assert.ok(shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js') < shardJob.indexOf('id: kept'));
     assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
     assert.ok(shardJob.includes(`if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));

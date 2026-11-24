@@ -186,6 +186,17 @@ jobs:
           key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-
 
+      # One kind of earlier result Stryker would hand on wrongly: a mutant
+      # that timed out stays "caught" after the test that reached it is
+      # deleted, or edited so that it no longer reaches it (#855). Those
+      # results are taken out here, so Stryker tests those mutants again
+      # (scripts/lib/checks/mutation-timeouts.mjs).
+      - name: Earlier timeouts whose tests changed are tested again
+        env:
+          STRYKER_SCOPE: ${{ matrix.scope }}
+          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
+        run: node scripts/mutation-timeouts.mjs
+
       # Fails on a failed first test run and on a shard that finds nothing
       # to mutate. The score is judged in the floors job, over all shards.
       - name: Mutation testing of ${{ matrix.name }}
