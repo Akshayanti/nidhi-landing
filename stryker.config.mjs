@@ -10,6 +10,7 @@
 // retests everything.
 import { globSync, readFileSync } from 'node:fs';
 import { shardPatterns } from './scripts/lib/checks/mutation-shards.mjs';
+import { cheapestFirst } from './scripts/lib/checks/mutation-test-order.mjs';
 
 export const SCOPES = {
   inflation: ['src/utils/inflation/*.ts', 'src/components/InflationCalculator.tsx'],
@@ -29,7 +30,15 @@ export const SCOPES = {
 
 const SOURCE_READERS = ['src/utils/privacySurface.test.ts'];
 
-const TEST_FILES = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter((f) => !SOURCE_READERS.includes(f)).sort();
+// The components that are a whole tool's page: their tests mount the whole
+// tool, the dearest tests there are.
+const WHOLE_TOOLS = Object.entries(SCOPES).filter(([scope]) => scope !== 'shared')
+  .flatMap(([, patterns]) => patterns.filter((p) => p.startsWith('src/components/')).map((p) => p.split('/').pop().replace(/\.tsx$/, '')));
+
+// Cheapest first: for each mutant Stryker runs its covering test files in
+// this order and stops at the first that fails
+// (scripts/lib/checks/mutation-test-order.mjs).
+const TEST_FILES = cheapestFirst(globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter((f) => !SOURCE_READERS.includes(f)), WHOLE_TOOLS);
 
 // Read by test/mutationRun.ts in every test process Stryker starts.
 process.env.NIDHI_MUTATION_RUN = '1';
