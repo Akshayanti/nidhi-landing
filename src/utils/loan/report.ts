@@ -45,6 +45,7 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
       tableOf(rest, { caption: island.delta.heading, note, stack: true }),
       // An offer that could not be worked out has no payment to list here; the
       // comparison above says so.
+      // Stryker disable next-line StringLiteral: equivalent. A row's first payment cell is a number cell when the offer was worked out, and all its payment cells are null when it was not, so no row is kept or dropped by whichever text counts as empty.
       tableOf(cut(1, 1 + LATER_PAYMENT_COLUMNS), { caption: island.delta.monthlyPayment, stack: true, keep: (row) => !row.slice(1).every((c) => c === null || c === undefined || c === '') }),
     ];
   }
