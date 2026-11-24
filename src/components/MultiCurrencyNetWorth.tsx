@@ -1057,9 +1057,9 @@ function TotalAnnouncement({ withheld, result, functionalCurrency, hidden, strin
   let total: string | null = null;
   if (!hidden && result.positions.length > 0) {
     if (isSingleCurrency(result, functionalCurrency)) {
-      total = formatMoney(Math.round(result.positions[0].netAmountOriginal * getFactor(functionalCurrency)), functionalCurrency);
+      total = formatMoney(Math.round(result.positions[0].netAmountOriginal * getFactor(functionalCurrency)), functionalCurrency).replace('-', '\u2212');
     } else if (result.hasRates !== 'none' && rateGap(result, functionalCurrency, true) !== 'all') {
-      total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency);
+      total = formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(functionalCurrency)), functionalCurrency).replace('-', '\u2212');
     }
   }
   return (
@@ -1103,7 +1103,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
   // and a risk card that has nothing to assess. Needs no rates at all.
   if (isSingleCurrency(result, functionalCurrency)) {
     // A true minus sign, like the shares below; the amount is drawn as one unit (Amounts.tsx).
-    const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency).replace(/^-/, '\u2212');
+    const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency).replace('-', '\u2212');
     const split = rows ? ownedAndOwed(rows, functionalCurrency) : null;
     const splitLength = split ? longestAmount(money(split.owned), money(split.owed > 0 ? -split.owed : 0)) : 0;
     // A redacted shared link carries no amounts; its view passes hideAmounts,
@@ -1150,10 +1150,10 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
   const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
   // Without a band to say "debt", the amount carries its sign.
   const cardMoney = (value: number, code: string) =>
-    formatMoney(Math.round((gap ? value : Math.abs(value)) * getFactor(code)), code).replace(/^-/, '\u2212');
+    formatMoney(Math.round((gap ? value : Math.abs(value)) * getFactor(code)), code).replace('-', '\u2212');
   const displayCurrency = ratesUsable ? functionalCurrency : result.positions[0].code;
   const totalLabel = !hideAmounts && ratesUsable
-    ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace(/^-/, '\u2212')
+    ? formatMoney(Math.round(result.totalNetWorthFunctional * getFactor(displayCurrency)), displayCurrency).replace('-', '\u2212')
     : null;
 
   return (
@@ -1201,7 +1201,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
                   // Exposure, named as what it is: with a debt in another currency it can pass 100%.
-                  pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace(/^-/, '\u2212') })}</>
+                  pos.pctOfTotal !== 0 && !noShares && <> · {Math.abs(pos.pctOfTotal) > 999 ? strings.results.overOfNetWorth : format(strings.results.ofNetWorth, { pct: formatPercent(pos.pctOfTotal, functionalCurrency).replace('-', '\u2212') })}</>
                 )}
                 {!hideAmounts && gap !== 'all' && !pos.rateUnavailable && pos.netAmountFunctional !== 0 && <> · <Amount>{cardMoney(pos.netAmountFunctional, functionalCurrency)}</Amount></>}
                 {/* Unconverted, in its own currency, from the rows. */}
@@ -1246,7 +1246,7 @@ function PrintedReport({ strings, exportStrings, functionalCurrency, result, row
   const { formatMoney, amountLocale } = useMoney();
   const r = strings.results;
   const single = result.positions.length > 0 && isSingleCurrency(result, functionalCurrency);
-  const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency);
+  const money = (v: number) => formatMoney(Math.round(v * getFactor(functionalCurrency)), functionalCurrency).replace('-', '\u2212');
   const answer: string[] = [];
   if (result.positions.length === 0) answer.push(r.empty);
   else if (!showAmounts) answer.push(`${r.totalLabel}: ${r.hidden}`);
@@ -1786,7 +1786,7 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
   const pop = 7; // how far the highlighted slice moves out
 
   const pct = (amount: number) => formatPercent((amount / total) * 100, functionalCurrency);
-  const amountOf = (p: typeof positions[0]) => formatAmount(p.netAmountFunctional, functionalCurrency);
+  const amountOf = (p: typeof positions[0]) => formatAmount(p.netAmountFunctional, functionalCurrency).replace('-', '\u2212');
 
   // Build arcs. Coordinates are rounded so server and browser render the same.
   const r2 = (n: number) => n.toFixed(2);

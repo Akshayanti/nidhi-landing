@@ -106,8 +106,8 @@ describe('the currency donut', () => {
     chart(worked([own('1500', 'EUR'), own('400', 'USD'), owe('50000', 'JPY')]).positions);
     assert.deepEqual(text('.mcnw-legendCode'), ['EUR', 'JPY', 'USD']);
     assert.deepEqual(text('.mcnw-legendPct'), ['76.9%', '12.8%', '10.3%']);
-    // The legend writes the debt with a hyphen-minus (the cards use the minus sign).
-    assert.deepEqual(text('.mcnw-legendAmount'), ['€1,500', '-€250', '€200']);
+    // The debt with a true minus, as on the cards, never a hyphen.
+    assert.deepEqual(text('.mcnw-legendAmount'), ['€1,500', '\u2212€250', '€200']);
     assert.equal(one('svg.mcnw-chart').getAttribute('aria-label'),
       'Currency concentration donut chart. Euro (EUR): 76.9%. Japanese Yen (JPY): 12.8%. US Dollar (USD): 10.3%');
     assert.deepEqual(all('.mcnw-srOnly tbody tr').map((tr) => [...tr.children].map((td) => td.textContent)), [

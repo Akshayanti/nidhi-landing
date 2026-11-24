@@ -42,6 +42,12 @@ describe('the total, said', () => {
     assert.equal(heard({ result: nothing }, { result: worked([own('1500'), owe('200.50')]) }), 'Total net worth: €1,299.50.');
   });
 
+  it('a debt in Swiss francs is said with a true minus, which screen readers speak after a code', () => {
+    // Francs are written "CHF-1,500.00" with no amount style: a hyphen after
+    // letters is not spoken by NVDA by default, so the debt would sound owned.
+    assert.equal(heard({ result: nothing }, { result: worked([own('1000', 'CHF'), owe('2500', 'CHF')], 'CHF', null), currency: 'CHF' }), 'Total net worth: CHF\u22121,500.00.');
+  });
+
   it('everything in the spending currency needs no rates', () => {
     assert.equal(heard({ result: nothing }, { result: worked([own('1500')], 'EUR', null) }), 'Total net worth: €1,500.00.');
   });

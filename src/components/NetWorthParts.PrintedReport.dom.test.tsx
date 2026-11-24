@@ -39,6 +39,12 @@ describe('the answer the report leads with', () => {
     assert.deepEqual(answer(), ['Total net worth: €1,299.50']);
   });
 
+  it('a debt in Swiss francs keeps a true minus in the report, as on the page', () => {
+    const rows = [own('1000', 'CHF'), owe('2500', 'CHF')];
+    report(worked(rows, 'CHF', null), rows, { currency: 'CHF', rates: null });
+    assert.deepEqual(answer(), ['Total net worth: CHF\u22121,500.00']);
+  });
+
   it('in yen, whole yen', () => {
     const rows = [own('5000', 'JPY'), owe('1200', 'JPY')];
     report(worked(rows, 'JPY', null), rows, { currency: 'JPY', rates: null });
