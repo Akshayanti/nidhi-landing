@@ -2136,3 +2136,11 @@ function downloadCSV(rows: AssetRow[], mode: 'full' | 'anon') {
     mode === 'full' ? 'asset-details.csv' : 'asset-details-anonymous.csv',
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole calculator around it. The page itself uses only the
+// default export.
+export {
+  AssetRowInput, CSVConfirmDialog, ConcentrationChart, DonutCentre, PrintedReport, Recommendation, ResultsPanel,
+  ShareModal, TotalAnnouncement, buildPreviewResult, downloadCSV, getFactor, riskBadge, riskLabel,
+};
