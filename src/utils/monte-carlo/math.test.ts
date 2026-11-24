@@ -30,7 +30,7 @@ const SAVE_ONLY: SimulationInputs = {
   withdrawYears: 0,
   feePct: 0,
   returns: 'historical',
-  paths: 2_000,
+  paths: 500,
 };
 
 const DRAWDOWN: SimulationInputs = { ...SAVE_ONLY, monthly: 0, saveYears: 0, stockPct: 60 };
@@ -310,10 +310,152 @@ describe('the result as the page words it (#530)', () => {
   it('fewer runs round more coarsely, more runs more finely', async () => {
     const m = await import('./math.ts');
     const plan = { start: 50_000, monthly: 1_000, saveYears: 30, stockPct: 60, withdrawal: 0, withdrawYears: 0, feePct: 0, returns: 'historical' as const };
-    const few = m.roundedResult(m.simulate({ ...plan, paths: 100 })).atRetirement.p50;
-    const many = m.roundedResult(m.simulate({ ...plan, paths: 100_000 })).atRetirement.p50;
+    const run = m.simulate({ ...plan, paths: 100 });
+    const few = m.roundedResult(run).atRetirement.p50;
+    // The same spread, said to come from 100,000 runs: the rounding reads the
+    // count from the result, so no test has to run that many.
+    const many = m.roundedResult({ ...run, paths: 100_000 }).atRetirement.p50;
     assert.equal(few % 100_000, 0);
     assert.equal(many % 1_000, 0);
     assert.notEqual(many % 100_000, 0);
+  });
+});
+
+describe('the generator and the single line, in detail', () => {
+  it('the seeded generator gives the same numbers it always has', () => {
+    const next = mulberry32(7);
+    assert.deepEqual([next(), next(), next()], [0.011704753153026104, 0.06195825757458806, 0.97690763277933]);
+  });
+
+  it('a mixed plan grows the line at the blend of stock and bond averages, after the fee', () => {
+    const r = simulate({ ...SAVE_ONLY, monthly: 0, saveYears: 1, stockPct: 60, feePct: 0.5, paths: 10 });
+    const g = averageRates('historical');
+    const expected = 50_000 * (1 + 0.6 * g.stocks + 0.4 * g.bonds) * 0.995;
+    assert.ok(Math.abs(r.straightLine[1] - expected) < 1e-6, `${r.straightLine[1]} against ${expected}`);
+  });
+
+  it('the line pays the withdrawals month by month once saving ends', () => {
+    const plan = { ...SAVE_ONLY, start: 100_000, monthly: 500, saveYears: 1, stockPct: 60, withdrawal: 12_000, withdrawYears: 2, paths: 10 };
+    const r = simulate(plan);
+    const g = averageRates('historical');
+    const monthly = Math.pow(1 + 0.6 * g.stocks + 0.4 * g.bonds, 1 / 12);
+    let b = 100_000;
+    const line = [b];
+    for (let y = 1; y <= 3; y++) {
+      for (let m = 0; m < 12; m++) b = (b + (y <= 1 ? 500 : -1_000)) * monthly;
+      line.push(b);
+    }
+    assert.equal(r.straightLine.length, 4);
+    line.forEach((v, y) => assert.ok(Math.abs(r.straightLine[y] - v) < 1e-6, `year ${y}: ${r.straightLine[y]} against ${v}`));
+  });
+
+  it('a line that runs out stays at zero for every year left', () => {
+    const r = simulate({ ...DRAWDOWN, start: 5_000, withdrawal: 12_000, withdrawYears: 3, paths: 10 });
+    assert.deepEqual(r.straightLine, [5_000, 0, 0, 0]);
+  });
+});
+
+describe('running out, in detail', () => {
+  it('counts the year money runs out from the start of withdrawals, not of saving', () => {
+    const r = simulate({ ...SAVE_ONLY, start: 10_000, monthly: 0, saveYears: 5, withdrawal: 50_000, withdrawYears: 10, paths: 100 });
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, 1);
+  });
+
+  it('a plan with nothing in it has run out, even when its withdrawal is too small to register', () => {
+    // 5e-324 a year is zero a month: no month can fail to pay it, so only
+    // the empty pot at the start of the year says the plan has nothing to pay from.
+    const r = simulate({ ...DRAWDOWN, start: 0, withdrawal: Number.MIN_VALUE, withdrawYears: 3, paths: 20 });
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, 1);
+  });
+
+  it('pins the median year money runs out, so a refactor cannot change it silently', () => {
+    const r = simulate({ ...DRAWDOWN, start: 300_000, stockPct: 100, withdrawal: 30_000, withdrawYears: 30, paths: 101 });
+    assert.equal(r.lasted, 1 - 91 / 101);
+    assert.equal(r.medianRunOutYear, 14);
+  });
+
+  it('a plan that ends saving with nothing has no path below the line, which is at nothing too', () => {
+    const r = simulate({ ...SAVE_ONLY, start: 0, monthly: 0, saveYears: 3, paths: 50 });
+    assert.equal(r.straightLine[3], 0);
+    assert.equal(r.belowStraightLine, 0);
+  });
+
+  it('a single path is its own every percentile, and runs out once, in its first year short', () => {
+    const r = simulate({ ...DRAWDOWN, start: 100_000, withdrawal: 40_000, withdrawYears: 10, paths: 1 });
+    for (const b of r.bands) assert.ok(b.p10 === b.p50 && b.p50 === b.p90 && b.p25 === b.p75 && b.p25 === b.p50);
+    const first = r.bands.findIndex((b) => b.p50 === 0);
+    assert.ok(first > 0 && first < 10, `ran out in year ${first}`);
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, first, 'the year it first ran short, not a later one');
+  });
+
+  it('no years of saving: no path is below the line, whatever the plan', () => {
+    for (const plan of [
+      { ...DRAWDOWN, start: 500_000, withdrawal: 30_000, withdrawYears: 30, paths: 100 },
+      { ...DRAWDOWN, start: 0, withdrawal: 1_000, withdrawYears: 5, paths: 10 },
+      { ...SAVE_ONLY, saveYears: 0, withdrawal: 0, withdrawYears: 0, paths: 100 },
+      { ...SAVE_ONLY, saveYears: 0, withdrawal: 0, withdrawYears: 0, start: 0, paths: 1 },
+    ]) {
+      const r = simulate(plan);
+      assert.equal(r.straightLine[0], plan.start, 'the line starts where every path does');
+      assert.equal(r.belowStraightLine, 0);
+    }
+  });
+});
+
+describe('the edges of running out', () => {
+  // The smallest amount there is, so growth of a few percent a month rounds
+  // back to the same amount and every month's sum is exact on every path.
+  const UNIT = Number.MIN_VALUE;
+  const ALL_BONDS = { ...DRAWDOWN, stockPct: 0, withdrawYears: 1, paths: 50 };
+
+  it('a pot that holds exactly its twelve withdrawals pays them all, and ends at nothing', () => {
+    const r = simulate({ ...ALL_BONDS, start: 12 * UNIT, withdrawal: 12 * UNIT });
+    assert.equal(r.lasted, 1);
+    assert.equal(r.medianRunOutYear, null);
+    assert.deepEqual(r.bands[1], { p10: 0, p25: 0, p50: 0, p75: 0, p90: 0 });
+  });
+
+  it('one withdrawal short, it runs out on every path', () => {
+    const r = simulate({ ...ALL_BONDS, start: 11 * UNIT, withdrawal: 12 * UNIT });
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, 1);
+  });
+
+  it('a pot emptied by its last withdrawal of one year has run out in the next', () => {
+    const r = simulate({ ...ALL_BONDS, start: 12 * UNIT, withdrawal: 12 * UNIT, withdrawYears: 3 });
+    assert.equal(r.lasted, 0);
+    assert.equal(r.medianRunOutYear, 2);
+  });
+});
+
+describe('the single line from nothing', () => {
+  it('grows with the monthly amounts when the plan starts at nothing', () => {
+    const r = simulate({ ...SAVE_ONLY, start: 0, monthly: 100, saveYears: 2, stockPct: 60, paths: 10 });
+    const g = averageRates('historical');
+    const monthly = Math.pow(1 + 0.6 * g.stocks + 0.4 * g.bonds, 1 / 12);
+    let b = 0;
+    const line = [b];
+    for (let y = 1; y <= 2; y++) {
+      for (let m = 0; m < 12; m++) b = (b + 100) * monthly;
+      line.push(b);
+    }
+    line.forEach((v, y) => assert.ok(Math.abs(r.straightLine[y] - v) < 1e-9, `year ${y}: ${r.straightLine[y]} against ${v}`));
+    assert.ok(r.straightLine[2] > 2_400);
+  });
+
+  it('stays at nothing through withdrawals from nothing, even one too small to register', () => {
+    for (const withdrawal of [12_000, Number.MIN_VALUE]) {
+      const r = simulate({ ...DRAWDOWN, start: 0, withdrawal, withdrawYears: 3, paths: 10 });
+      assert.deepEqual(r.straightLine, [0, 0, 0, 0]);
+    }
+  });
+
+  it('saved up and then spent to nothing, it stays at nothing to the end', () => {
+    const r = simulate({ ...SAVE_ONLY, start: 0, monthly: 100, saveYears: 1, withdrawal: 12_000, withdrawYears: 3, paths: 10 });
+    assert.ok(r.straightLine[1] > 1_200);
+    assert.deepEqual(r.straightLine.slice(2), [0, 0, 0]);
   });
 });

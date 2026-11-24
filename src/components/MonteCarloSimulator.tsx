@@ -159,6 +159,8 @@ function useSimulation(state: ToolState, initialResult: SimulationResult): Shown
   const worker = useRef<Worker | null>(null);
   const latest = useRef(0);
 
+  // The worker goes with the page.
+  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the cleanup runs once, on unmount; the mutant's one constant string never changes either.
   useEffect(() => () => worker.current?.terminate(), []);
 
   // The first result comes worked out by the page, so the effect has
@@ -271,7 +273,9 @@ export default function MonteCarloSimulator({
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setTipsDismissed(true); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the listener is added once and removed on unmount; the mutant's one constant string never changes either.
+  []);
 
   // Shared links carry the plan after the #, which browsers never send to a
   // server. A script in the page head moves it out of the address bar before
@@ -298,7 +302,9 @@ export default function MonteCarloSimulator({
     track('free_monte_carlo_shared_view_opened', {
       utm_source: new URLSearchParams(window.location.search).get('utm_source'),
     });
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the shared plan is read once, on mount; the mutant's one constant string never changes either.
+  []);
 
   // Keeps what is on screen where the header's language switch can carry it,
   // after the # and only at click time (see src/utils/shared/toolState.ts).
@@ -978,10 +984,12 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
     { estimate: Math.max(...tickText.map((s) => textWidth(s, fs))), gap: fs, least: narrow ? 22 : 32, width: W, right: BASE.right },
   );
   const end = bands[years];
+  // Each label reads its own percentile: the exact end for its dot, the rounded one for its words.
+  const endLabel = (key: 'p90' | 'p50' | 'p10', label: string, cls: string) => ({ key, label, value: end[key], said: worded.bands[years][key], cls });
   const endLabels = [
-    { key: 'p90', label: strings.chart.endHigh, value: end.p90, said: worded.bands[years].p90, cls: 'mcs-endLabel--outer' },
-    { key: 'p50', label: strings.chart.endMedian, value: end.p50, said: worded.bands[years].p50, cls: 'mcs-endLabel--median' },
-    { key: 'p10', label: strings.chart.endLow, value: end.p10, said: worded.bands[years].p10, cls: 'mcs-endLabel--outer' },
+    endLabel('p90', strings.chart.endHigh, 'mcs-endLabel--outer'),
+    endLabel('p50', strings.chart.endMedian, 'mcs-endLabel--median'),
+    endLabel('p10', strings.chart.endLow, 'mcs-endLabel--outer'),
   ];
   // End-of-line labels on wide screens, while their gutter leaves the plot at
   // least 60% of the drawing and their stack fits beside it; the cards and the
@@ -1049,7 +1057,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   );
   const xTicks: number[] = [];
   for (let y = 0; y <= years; y += xStep) xTicks.push(y);
-  const xMinorStep = !minor || xStep === 1 ? 0 : xStep / 5 >= 1 ? xStep / 5 : 0;
+  const xMinorStep = minor && xStep / 5 >= 1 ? xStep / 5 : 0;
   const xMinor: number[] = [];
   if (xMinorStep) for (let y = xMinorStep; y < years; y += xMinorStep) if (y % xStep !== 0) xMinor.push(y);
 
@@ -1122,6 +1130,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
       })
     : '';
 
+  // Stryker disable next-line ArrayDeclaration: equivalent. The callback uses only the state setter, which never changes, so the list only has to never change for the callback to stay the same one; the mutant's one constant string never changes either.
   useEscapeToClose(hover !== null, useCallback(() => setHover(null), []));
   // Beside the crosshair, kept inside the plotted area so it never covers the
   // end labels (phones stack it below the chart).
@@ -1301,3 +1310,8 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
     </figure>
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole simulator around it. The page itself uses only the
+// default export.
+export { Chart, NumberField, PrintedReport, QuickResult, Results, formatShare, inTen, lastedLine, returnTip, spreadLabels, tableYears, usePhone, useSimulation };
