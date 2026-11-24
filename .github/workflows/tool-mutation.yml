@@ -145,15 +145,7 @@ jobs:
           NEWSLETTER_ID_BASE: HEAD^1
           PRIVACY_NOTICE_BASE: HEAD^1
           FLOORS_BASE: HEAD^1
-        # No process may take more than 4 GB (ulimit, for Stryker and every
-        # test process it starts). A few mutants make a test allocate without
-        # end, at more than a gigabyte a second (an observer made again on
-        # every drawing, a loop of a few steps become thousands of millions),
-        # and Node's own heap limit does not stop them: four at once took all
-        # the runner's memory and GitHub gave the runner up for lost. Under
-        # the limit such a process dies and its mutant is recorded as an
-        # error or a timeout. A test needs a tenth of this.
-        run: ulimit -v 4194304 && npx stryker run stryker.config.mjs
+        run: npx stryker run stryker.config.mjs
 
       # Incremental mode also writes earlier results for mutants outside this
       # shard; left in, a mutant that moved shards would be counted twice.
