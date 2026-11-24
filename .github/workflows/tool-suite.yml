@@ -1,0 +1,227 @@
+name: Free tools suite
+on:
+  workflow_call:
+    inputs:
+      suite:
+        description: "The suite to run: privacy, mutation or text-size"
+        required: true
+        type: string
+permissions:
+  contents: read
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: "true"
+jobs:
+  known-suite:
+    if: ${{ !contains(fromJSON('["privacy", "mutation", "text-size"]'), inputs.suite) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: The suite is one this file knows
+        env:
+          SUITE: ${{ inputs.suite }}
+        run: |
+          echo "::error::Unknown suite \"$SUITE\": expected privacy, mutation or text-size."
+          exit 1
+  privacy-plan:
+    if: inputs.suite == 'privacy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.toy.outputs.run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "privacy-plan" "${{ matrix.name || matrix.tool || '' }}"
+  privacy-tool:
+    name: "Privacy check: ${{ matrix.tool }}"
+    needs: privacy-plan
+    if: ${{ !cancelled() && needs.privacy-plan.outputs.run == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: ${{ github.event_name == 'pull_request' }}
+      max-parallel: 2
+      matrix:
+        tool:
+          - loan-comparison
+          - multi-currency-net-worth
+          - monte-carlo-simulator
+          - inflation-calculator
+          - invest-or-pay-off
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "privacy-tool" "${{ matrix.name || matrix.tool || '' }}"
+  privacy-gate:
+    name: No typed value reaches analytics
+    needs:
+      - privacy-plan
+      - privacy-tool
+    if: ${{ always() && inputs.suite == 'privacy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every tool's check passed
+        env:
+          PLAN: ${{ needs.privacy-plan.result }}
+          RUN: ${{ needs.privacy-plan.outputs.run }}
+          TOOLS: ${{ needs.privacy-tool.result }}
+        run: |
+          echo "plan: $PLAN (run: $RUN), tools: $TOOLS"
+          # A pull request that changes nothing the check reads: the plan said
+          # so, and nothing ran. Only that exact case passes without the check.
+          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TOOLS" = "skipped" ]; then
+            echo "Nothing the check reads changed: nothing to check."
+            exit 0
+          fi
+          if [ "$PLAN" != "success" ] || [ "$TOOLS" != "success" ]; then
+            echo "::error::A tool's privacy check did not pass (or did not run). See the 'Privacy check: <tool>' jobs."
+            exit 1
+          fi
+  mutation-plan:
+    if: inputs.suite == 'mutation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      shards: ${{ steps.toy.outputs.shards }}
+      fingerprint: ${{ steps.toy.outputs.fingerprint }}
+      run: ${{ steps.toy.outputs.run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "mutation-plan" "${{ matrix.name || matrix.tool || '' }}"
+  mutation-shard:
+    name: "Mutation: ${{ matrix.name }}"
+    needs: mutation-plan
+    if: ${{ !cancelled() && needs.mutation-plan.outputs.run == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: ${{ github.event_name == 'pull_request' }}
+      max-parallel: 6
+      matrix:
+        include: ${{ fromJSON(needs.mutation-plan.outputs.shards) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "mutation-shard" "${{ matrix.name || matrix.tool || '' }}"
+  mutation-floors:
+    needs: mutation-shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "mutation-floors" "${{ matrix.name || matrix.tool || '' }}"
+  mutation-gate:
+    name: "Free tools: mutation"
+    needs:
+      - mutation-plan
+      - mutation-shard
+      - mutation-floors
+    if: ${{ always() && inputs.suite == 'mutation' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every job passed
+        env:
+          PLAN: ${{ needs.mutation-plan.result }}
+          RUN: ${{ needs.mutation-plan.outputs.run }}
+          MUTATION: ${{ needs.mutation-shard.result }}
+          FLOORS: ${{ needs.mutation-floors.result }}
+        run: |
+          echo "plan: $PLAN (run: $RUN), mutation: $MUTATION, floors: $FLOORS"
+          # A pull request that changes no mutation input: the plan said so,
+          # and nothing ran. Only that exact case passes without the shards.
+          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then
+            echo "No mutation input changed: nothing to test."
+            exit 0
+          fi
+          if [ "$PLAN" != "success" ] || [ "$MUTATION" != "success" ] || [ "$FLOORS" != "success" ]; then
+            echo "::error::Free tools mutation testing did not pass (or did not run). See the jobs above."
+            exit 1
+          fi
+  text-size-plan:
+    if: inputs.suite == 'text-size'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.toy.outputs.run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "text-size-plan" "${{ matrix.name || matrix.tool || '' }}"
+  text-size-tool:
+    name: "Text size: ${{ matrix.tool }}"
+    needs: text-size-plan
+    if: ${{ !cancelled() && needs.text-size-plan.outputs.run == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: ${{ github.event_name == 'pull_request' }}
+      max-parallel: 2
+      matrix:
+        tool:
+          - loan-comparison
+          - multi-currency-net-worth
+          - monte-carlo-simulator
+          - invest-or-pay-off
+          - inflation-calculator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Toy
+        id: toy
+        run: bash .github/toy.sh "text-size-tool" "${{ matrix.name || matrix.tool || '' }}"
+  text-size-gate:
+    name: "Free tools: text size"
+    needs:
+      - text-size-plan
+      - text-size-tool
+    if: ${{ always() && inputs.suite == 'text-size' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every job passed
+        env:
+          PLAN: ${{ needs.text-size-plan.result }}
+          RUN: ${{ needs.text-size-plan.outputs.run }}
+          TEXT_SIZE: ${{ needs.text-size-tool.result }}
+        run: |
+          echo "plan: $PLAN (run: $RUN), text-size: $TEXT_SIZE"
+          # A pull request that changes nothing the audit reads: the plan said
+          # so, and nothing ran. Only that exact case passes without the audit.
+          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TEXT_SIZE" = "skipped" ]; then
+            echo "Nothing the audit reads changed: nothing to measure."
+            exit 0
+          fi
+          if [ "$PLAN" != "success" ] || [ "$TEXT_SIZE" != "success" ]; then
+            echo "::error::The free tools text-size audit did not pass (or did not run). See the jobs above."
+            exit 1
+          fi
