@@ -3531,3 +3531,13 @@ function RefinanceSection({
     </section>
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole comparison around it. The page itself uses only the
+// default export.
+export {
+  AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
+  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredMark, ResultRow, SplitChart, VendorCard,
+  analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
+};
