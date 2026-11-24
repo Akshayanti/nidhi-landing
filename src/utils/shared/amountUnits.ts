@@ -57,11 +57,7 @@ const AMOUNT = new RegExp(
 /** About one and a half digits wide in both fonts. */
 const WIDE = new Set(['M', 'W', 'm', 'w', '%', '₩', '₪', '@']);
 /** Thin letters, about two thirds of a digit at most. */
-const THIN = new Set([
-  'i', 'l', 'j', 't', 'f', 'r',
-  // Stryker disable next-line StringLiteral: a capital is counted as a capital before the thin letters are looked at, so this entry is never read
-  'I',
-]);
+const THIN = new Set(['i', 'l', 'j', 't', 'f', 'r']);
 /** Currency signs wider than a digit by a quarter. */
 const BROAD = new Set(['₱', '₦', '₴']);
 

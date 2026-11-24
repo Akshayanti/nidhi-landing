@@ -9,8 +9,12 @@
 //
 // So the cheap ones come first: tests that need no browser, then tests that
 // mount one part, then tests that mount a whole tool. Within a kind, by path.
-// The order changes how long a mutant takes to die, never whether it does:
-// every covering file still runs for a mutant none of them kills.
+// The order changes how long a mutant takes to die, not whether a test's
+// assertion catches it: every covering file still runs for a mutant none of
+// them stops. It can change what a mutant is called when one covering file
+// fails an assertion under it and another cannot run at all (Killed if the
+// first comes first, RuntimeError if the second does), since Stryker stops
+// at either.
 
 /** 0 for a test with no browser, 1 for one that mounts a part, 2 for one that mounts a whole tool. */
 export function testCost(file, wholeTools) {

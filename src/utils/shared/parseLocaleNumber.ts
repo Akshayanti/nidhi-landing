@@ -86,10 +86,8 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
     negative = true;
     s = s.slice(1).trimStart();
   }
-  // Digits, marks and spaces only, from a digit on. What follows needs no
-  // more than that: a mark at the end leaves an empty decimal part, and a
-  // doubled space is no grouping, so both are refused below.
-  if (!/^\d[\d., ]*$/.test(s)) return null;
+  if (!/^\d[\d., ]*$/.test(s) || /\d$/.test(s) === false) return null;
+  if (/ {2,}/.test(s)) return null;
 
   const local = numberSeparators(locale);
   const hasDot = s.includes('.');

@@ -121,6 +121,7 @@ export function setNonDefault(
 ): void {
   if (value === undefined || value === null) return;
   if (value === '') return;
+  if (value === dflt) return;
   if (String(value) === String(dflt)) return;
   params.set(key, String(value));
 }
