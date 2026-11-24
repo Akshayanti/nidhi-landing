@@ -38,14 +38,25 @@ describe('mutation floors (#790)', () => {
     assert.equal(partOf('src/utils/loan/math.ts'), 'logic');
   });
 
-  it('scores each part as Stryker does, leaving out what did not compile or run', () => {
+  it('scores each part: killed, timed out or crashed is caught; what did not compile is left out', () => {
     const report = { files: {
       'src/utils/x.ts': mutants('Killed', 'Killed', 'Timeout', 'Survived', 'CompileError', 'RuntimeError'),
       'src/components/X.tsx': mutants('Killed', 'NoCoverage', 'NoCoverage'),
     } };
     const s = partScores(report);
-    assert.equal(s.logic, 75);
+    assert.equal(s.logic, 80);
+    assert.deepEqual(s.counts.logic, { detected: 4, undetected: 1 });
     assert.equal(s.component, 33.33);
+  });
+
+  it('gives a mutant the same score whether a test failed under it or a test file could not run (#860)', () => {
+    const rest = ['Killed', 'Killed', 'Survived'];
+    const killed = partScores({ files: { 'src/utils/x.ts': mutants('Killed', ...rest) } });
+    const crashed = partScores({ files: { 'src/utils/x.ts': mutants('RuntimeError', ...rest) } });
+    const timedOut = partScores({ files: { 'src/utils/x.ts': mutants('Timeout', ...rest) } });
+    assert.equal(killed.logic, 75);
+    assert.equal(crashed.logic, 75);
+    assert.equal(timedOut.logic, 75);
   });
 
   it('a part below its floor fails; at or above it passes; a floored part with no mutants fails', () => {

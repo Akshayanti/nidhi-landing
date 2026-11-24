@@ -13,16 +13,22 @@ export function partOf(file) {
 }
 
 /**
- * Each part's mutation score, the way Stryker counts it: detected (killed or
- * timed out) over detected and undetected (survived or not covered). Mutants
- * that do not compile or crash the run are left out, as Stryker leaves them.
+ * Each part's mutation score: detected over detected and undetected
+ * (survived or not covered). Detected is killed, timed out, or a runtime
+ * error: a mutant under which a test file could not run to its tests was
+ * noticed by them as surely as one that failed an assertion. Stryker leaves
+ * runtime errors out of its own score; they count here (#860) because the
+ * same mutant can be Killed in one run and a RuntimeError in the next,
+ * depending only on which covering test file runs first, and a score must
+ * not move with that. A mutant that does not compile is left out: nothing
+ * ran.
  */
 export function partScores(report) {
   const tally = { logic: { detected: 0, undetected: 0 }, component: { detected: 0, undetected: 0 } };
   for (const [file, { mutants }] of Object.entries(report.files ?? {})) {
     const t = tally[partOf(file)];
     for (const { status } of mutants) {
-      if (status === 'Killed' || status === 'Timeout') t.detected++;
+      if (status === 'Killed' || status === 'Timeout' || status === 'RuntimeError') t.detected++;
       else if (status === 'Survived' || status === 'NoCoverage') t.undetected++;
     }
   }

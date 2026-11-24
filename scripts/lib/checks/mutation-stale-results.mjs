@@ -14,9 +14,9 @@
 //   test file added anywhere, one that never touches the mutant, lengthens
 //   it, and a mutant that timed out before may now finish and survive.
 //
-// A Timeout counts as caught, and a RuntimeError or CompileError is left out
-// of the score altogether, so either one handed on wrongly makes the score
-// better than a fresh run would. So none of them is handed on: every result
+// A Timeout and a RuntimeError count as caught, and a CompileError is left
+// out of the score altogether, so any of them handed on wrongly makes the
+// score better than a fresh run would. So none of them is handed on: every result
 // that is not of a kind listed below is taken out of the restored file
 // before Stryker reads it, and Stryker, finding no earlier result, runs that
 // mutant in full. They are few (63 timeouts over all seventeen shards when
@@ -24,7 +24,9 @@
 
 /**
  * Results that are safe to leave to Stryker. Killed: it checks the killing
- * test itself. Survived and NoCoverage: handed on wrongly they make the score
+ * test itself, and where a fresh run would call the mutant a RuntimeError
+ * instead (another covering test file now dies before its tests), the two
+ * score the same (mutation-floors.mjs, #860). Survived and NoCoverage: handed on wrongly they make the score
  * worse, never better. Ignored: decided afresh from the source on every run.
  * Any other status, one Stryker adds later included, is not safe.
  */
