@@ -321,10 +321,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
   let line = inputs.start;
   for (let y = 1; y <= years; y++) {
     const saving = y <= inputs.saveYears;
-    if (line <= 0 && !saving) {
-      straightLine.push(0);
-      continue;
-    }
+    // A line at nothing stays there once withdrawals start: the first month's
+    // withdrawal cannot be paid, and nothing times any growth is nothing.
     line = stepYear(line, lineGrowth, saving ? inputs.monthly : -monthlyOut).balance;
     straightLine.push(line);
   }

@@ -329,3 +329,16 @@ describe('the form and the plan, in detail', () => {
     assert.equal(arrived.withdrawOn, true);
   });
 });
+
+describe('a link for one form is always the same text', () => {
+  // The plan's keys keep their usual order (w, r, then f), and a box written
+  // over a key stays where that key was; only a box the plan lacks is added last.
+  it('a bad withdrawal amount is written where the plan has its withdrawal', () => {
+    assert.equal(publishableForm(formWith({ withdrawal: '7x', feePct: '0.25' }), 'EUR'), 'w=NaN&f=0.25');
+    assert.equal(publishableForm(formWith({ withdrawal: '', withdrawYears: '25', feePct: '0.25' }), 'EUR'), 'w=&r=25&f=0.25');
+  });
+
+  it('bad years of withdrawing follow the plan, which has the years it starts with', () => {
+    assert.equal(publishableForm(formWith({ withdrawal: '20000', withdrawYears: '12.5', feePct: '0.25' }), 'EUR'), 'w=20000&f=0.25&r=12.5');
+  });
+});

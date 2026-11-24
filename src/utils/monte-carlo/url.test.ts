@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DEFAULTS, decodeState, defaultState, encodeState, isPristineState, publishableState } from './url.ts';
+import { DEFAULTS, MONTE_CARLO_URL, SHARED_STATE_GLOBAL, STATE_KEYS, STATE_KEY_PATTERN, decodeState, defaultState, encodeState, isPristineState, publishableState } from './url.ts';
 
 describe('encodeState', () => {
   it('encodes the defaults as an empty string', () => {
@@ -186,5 +186,46 @@ describe('return settings and odd links, in detail', () => {
 
   it('only a ? or # at the very start is a prefix', () => {
     assert.equal(decodeState('s=20000&f=?')?.start, 20_000);
+  });
+});
+
+describe('what the page head and the site read from here', () => {
+  it('the tool has one address, under the free tools, ending in a slash', () => {
+    assert.equal(MONTE_CARLO_URL, '/free/monte-carlo-simulator/');
+  });
+
+  it('shared state waits in a window property of the simulator’s own', () => {
+    assert.equal(SHARED_STATE_GLOBAL, '__nidhiMonteCarloShared');
+  });
+
+  it('the guard’s pattern matches each state key and no other name', () => {
+    const one = new RegExp(`^${STATE_KEY_PATTERN}$`);
+    for (const key of STATE_KEYS) assert.match(key, one);
+    const keys: readonly string[] = STATE_KEYS;
+    for (let code = 32; code < 127; code++) {
+      const name = String.fromCharCode(code);
+      assert.equal(one.test(name), keys.includes(name), JSON.stringify(name));
+    }
+    for (const name of ['', 'cs', 'utm_source', 'S']) assert.equal(one.test(name), false, name);
+  });
+});
+
+describe('a withdrawal amount carried with withdrawals off', () => {
+  it('o=1 beside it means the plan has no withdrawal, and the years go back to their start', () => {
+    const s = decodeState('w=45000&r=12&o=1');
+    assert.equal(s?.withdrawal, 0);
+    assert.equal(s?.withdrawYears, DEFAULTS.withdrawYears);
+  });
+
+  it('only o=1 says so: any other value, or none, leaves the withdrawal on', () => {
+    for (const link of ['w=45000&r=12', 'w=45000&r=12&o=', 'w=45000&r=12&o=0', 'w=45000&r=12&o=true', 'w=45000&r=12&o=11']) {
+      const s = decodeState(link);
+      assert.equal(s?.withdrawal, 45_000, link);
+      assert.equal(s?.withdrawYears, 12, link);
+    }
+  });
+
+  it('o on its own is tool state: the link opens the starting plan', () => {
+    assert.deepEqual(decodeState('o=1'), DEFAULTS);
   });
 });
