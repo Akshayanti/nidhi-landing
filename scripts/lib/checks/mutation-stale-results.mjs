@@ -14,8 +14,8 @@
 //   test file added anywhere, one that never touches the mutant, lengthens
 //   it, and a mutant that timed out before may now finish and survive.
 //
-// A Timeout and a RuntimeError count as caught, and a CompileError is left
-// out of the score altogether, so any of them handed on wrongly makes the
+// A Timeout and a RuntimeError count as caught (but for a RuntimeError the
+// memory guard caused), and a CompileError is left out of the score altogether, so any of them handed on wrongly makes the
 // score better than a fresh run would. So none of them is handed on: every result
 // that is not of a kind listed below is taken out of the restored file
 // before Stryker reads it, and Stryker, finding no earlier result, runs that
@@ -23,12 +23,17 @@
 // this was written, eight at most in one), so the price is small.
 
 /**
- * Results that are safe to leave to Stryker. Killed: it checks the killing
- * test itself, and where a fresh run would call the mutant a RuntimeError
- * instead (another covering test file now dies before its tests), the two
- * score the same (mutation-floors.mjs, #860). Survived and NoCoverage: handed on wrongly they make the score
- * worse, never better. Ignored: decided afresh from the source on every run.
- * Any other status, one Stryker adds later included, is not safe.
+ * Results that are safe to leave to Stryker before the run. Killed: it
+ * checks the killing test itself. That alone is not the whole of it: where
+ * another covering test file, added or edited, now dies before its tests, a
+ * fresh run would call the mutant a RuntimeError instead, and the two do NOT
+ * always score the same: a RuntimeError the memory guard caused counts as
+ * not caught (mutation-floors.mjs, #860). Which test files cover a mutant is
+ * known only after the run, so those kills are taken out then and tested
+ * again (mutation-recheck.mjs, #854). Survived and NoCoverage: handed on
+ * wrongly they make the score worse, never better. Ignored: decided afresh
+ * from the source on every run. Any other status, one Stryker adds later
+ * included, is not safe.
  */
 export const SAFE_TO_HAND_ON = new Set(['Killed', 'Survived', 'NoCoverage', 'Ignored']);
 

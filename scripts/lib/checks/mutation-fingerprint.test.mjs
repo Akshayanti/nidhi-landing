@@ -74,7 +74,7 @@ describe('what a mutation shard’s earlier results depend on', () => {
   });
 
   it('has a schema number, part of every fingerprint', () => {
-    assert.equal(SCHEMA, 2);
+    assert.equal(SCHEMA, 3);
     assert.match(read('scripts/lib/checks/mutation-fingerprint.mjs'), /update\(`schema \$\{SCHEMA\}\\0`\)/);
   });
 });

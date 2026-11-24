@@ -38,7 +38,8 @@ const WHOLE_TOOLS = Object.entries(SCOPES).filter(([scope]) => scope !== 'shared
 // scripts/lib/checks/mutation-fingerprint.mjs, which also leaves exactly
 // these files out of the shards' fingerprint), cheapest first: for each
 // mutant Stryker runs its covering test files in this order and stops at
-// the first that fails (scripts/lib/checks/mutation-test-order.mjs).
+// the first that fails (scripts/lib/checks/mutation-test-order.mjs), which
+// the `tap-ordered` runner below holds it to.
 const TEST_FILES = cheapestFirst(globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest), WHOLE_TOOLS);
 
 // Read by test/mutationRun.ts in every test process Stryker starts.
@@ -59,7 +60,12 @@ const name = shardCount === 1 ? scope : `${scope}-${shard}of${shardCount}`;
 const mutate = shardCount === 1 ? files : shardPatterns(files, shardCount, shard, undefined, WEIGHTS[scope] ?? null);
 
 export default {
-  testRunner: 'tap',
+  // The tap runner, made to keep the order of TEST_FILES: alone it runs the
+  // files in whatever order it happens to find them, a different one each
+  // run (scripts/lib/checks/stryker-ordered-tap.mjs). Appended, so the
+  // plugins Stryker loads by itself (the tap runner among them) still load.
+  testRunner: 'tap-ordered',
+  appendPlugins: ['./scripts/lib/checks/stryker-ordered-tap.mjs'],
   tap: {
     // Tests that read the source as text (the privacy surface, the tool
     // privacy rules) cannot judge a mutant: under Stryker they read the

@@ -7,7 +7,8 @@
 // and a change to a test file (the tap runner reports one test per file, so
 // an edited, added or deleted test file is a changed, added or deleted test:
 // the mutants it killed are tested again, and so are the survivors it
-// covers). So the test files a mutation run starts are left out, and a
+// covers; the kills of other tests that it covers are tested again by the
+// recheck after the run, mutation-recheck.mjs). So the test files a mutation run starts are left out, and a
 // pull request that only edits tests keeps every shard's earlier results.
 //
 // Everything else tracked by git is in: the tools' own code (a change to one
@@ -26,9 +27,13 @@ import { isInput, WORKFLOWS } from './check-inputs.mjs';
 /**
  * Raised when the rule changes, so no earlier result outlives it. 2: results
  * saved before stale timeouts and errors were taken out (mutation-stale-results.mjs)
- * may hold one already handed on wrongly, and must not be restored.
+ * may hold one already handed on wrongly, and must not be restored. 3:
+ * results saved before reused kills were rechecked (mutation-recheck.mjs)
+ * may hold a kill that a test file added or edited since would have turned
+ * into an error, saved beside the new test sources, so no later run would
+ * recheck it.
  */
-export const SCHEMA = 2;
+export const SCHEMA = 3;
 
 /** Tests that read the source as text: no mutation run starts them. */
 export const SOURCE_READERS = ['src/utils/privacySurface.test.ts'];

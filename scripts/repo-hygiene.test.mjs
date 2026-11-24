@@ -533,16 +533,48 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     // Stryker hears the runner's signal itself (no npx in between), and what
     // it finished is saved whether the run passed, failed or was cancelled:
     // only a file that parses, and only the incremental file, never a report.
-    assert.ok(shardJob.indexOf('id: earlier') < shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js'));
+    const stryker = 'run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs\n';
+    const first = shardJob.indexOf(stryker);
+    assert.ok(shardJob.indexOf('id: earlier') < first);
     // Between the two: earlier timeouts and errors are taken out of the
-    // restored results, since Stryker would hand them on (#855).
-    const timeouts = shardJob.indexOf("      - name: Earlier timeouts and errors are tested again\n        env:\n          STRYKER_SCOPE: ${{ matrix.scope }}\n          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}\n        run: node scripts/mutation-stale-results.mjs\n");
-    assert.ok(shardJob.indexOf('id: earlier') < timeouts && timeouts < shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js'));
-    assert.ok(shardJob.indexOf('run: exec node node_modules/@stryker-mutator/core/bin/stryker.js') < shardJob.indexOf('id: kept'));
-    assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
+    // restored results, since Stryker would hand them on (#855), and the
+    // restored test files are noted for the recheck (#854). The step is told
+    // of a forced run in the words the Stryker steps are.
+    const force = "          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}\n";
+    const timeouts = shardJob.indexOf(`      - name: Earlier timeouts and errors are tested again\n        env:\n          STRYKER_SCOPE: \${{ matrix.scope }}\n          STRYKER_SHARD: \${{ matrix.shard }}/\${{ matrix.of }}\n${force}        run: node scripts/mutation-stale-results.mjs\n`);
+    assert.ok(shardJob.indexOf('id: earlier') < timeouts && timeouts < first);
+    // After the first run, whatever became of it: the kills a new or edited
+    // test file covers are taken out of the results (#854).
+    const recheck = shardJob.indexOf("      - name: Kills a new or edited test covers are taken out, to be tested again\n        id: recheck\n        if: ${{ always() }}\n        env:\n          STRYKER_SCOPE: ${{ matrix.scope }}\n          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}\n        run: node scripts/mutation-recheck.mjs\n");
+    assert.ok(first < recheck);
+    // Then the second run, only when the first passed and kills were taken
+    // out: Stryker twice and no more, the same command with the same settings.
+    const second = shardJob.indexOf(stryker, first + 1);
+    const again = shardJob.indexOf("      - name: Mutation testing of ${{ matrix.name }}, again for the kills taken out\n        if: ${{ success() && steps.recheck.outputs.selected != '0' }}\n        env:\n");
+    assert.ok(recheck < again && again < second);
+    assert.equal(shardJob.split(stryker).length - 1, 2);
+    const settings = (run) => /\n {8}env:\n((?: {10}.*\n)+)(?: {8}#.*\n)* {8}$/.exec(shardJob.slice(0, run))[1];
+    assert.equal(settings(second), settings(first));
+    assert.ok(settings(first).includes(force) && settings(first).split('\n').length - 1 === 7);
+    assert.equal(shardJob.split(force).length - 1, 3, 'the note, the first run and the second');
+    // Nothing is saved before the recheck, nor without it: the two saving
+    // steps come after both runs and wait for the output the recheck sets last.
+    const kept = shardJob.indexOf('id: kept');
+    assert.ok(second < kept);
+    assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) && steps\.recheck\.outputs\.checked == 'true' \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
     assert.ok(shardJob.includes(`if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
-    assert.ok(shardJob.includes(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n`));
-    assert.equal(shardJob.split('always()').length - 1, 2, 'nothing else runs after a failed or cancelled run');
+    const save = shardJob.indexOf(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n`);
+    assert.ok(kept < save);
+    assert.equal(shardJob.split('uses: actions/cache/save@').length - 1, 1, 'one save, after the recheck');
+    assert.match(read('scripts/mutation-recheck.mjs'), /\nif \(process\.env\.GITHUB_OUTPUT\) appendFileSync\(process\.env\.GITHUB_OUTPUT, `checked=true\\nselected=\$\{selected\}\\n`\);\n$/, 'the outputs are set last');
+    // Three steps run after a failed or cancelled run, in this order: the
+    // recheck, then the two that save.
+    const always = [...shardJob.matchAll(/always\(\)/g)].map((m) => m.index);
+    assert.equal(always.length, 3, 'nothing else runs after a failed or cancelled run');
+    assert.ok(recheck < always[0] && always[0] < again && again < always[1] && always[1] < save && save < always[2]);
+    // The note of the test files is beside the results, never saved with them.
+    assert.equal(shardJob.split('path: reports/stryker-incremental/${{ matrix.name }}.json\n').length - 1, 2, 'restored and saved: the results alone');
+    assert.doesNotMatch(shardJob, /before\.json/);
     assert.doesNotMatch(gates, /uses: actions\/cache@/);
     // Forced on the nightly and the manual run only; a pull request and a
     // merge to main start from earlier results.

@@ -192,10 +192,17 @@ jobs:
       # depends on how long the whole test run takes to start, which any
       # added test changes (#855). They are taken out here, so Stryker tests
       # those mutants on every run (scripts/lib/checks/mutation-stale-results.mjs).
+      #
+      # The same step notes the test files of the restored results as they
+      # were (a hash of each one's source), in a file beside them that is
+      # never saved, for the recheck after the run (below). With nothing
+      # restored, or on a forced run, Stryker reuses nothing, and the note
+      # says so.
       - name: Earlier timeouts and errors are tested again
         env:
           STRYKER_SCOPE: ${{ matrix.scope }}
           STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
+          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
         run: node scripts/mutation-stale-results.mjs
 
       # Fails on a failed first test run and on a shard that finds nothing
@@ -214,16 +221,89 @@ jobs:
         # write what it has finished before it stops.
         run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs
 
+      # The recheck of reused kills (#854,
+      # scripts/lib/checks/mutation-recheck.mjs). Stryker hands a Killed
+      # result on when a test that killed the mutant is unchanged. But a test
+      # file added or edited in the same push may cover that mutant too and
+      # run before the killer, and under the mutant it may crash as it loads
+      # or be ended by the memory guard: a fresh run would say RuntimeError,
+      # and one the guard ended counts as not caught. Which files cover a
+      # mutant now is known only after Stryker's first test run, so the check
+      # comes here: every Killed result that a new or edited test file covers
+      # is taken out of the results, and the step below runs Stryker again
+      # for those mutants.
+      #
+      # The rule for what is saved: no results are saved that still hold a
+      # kill this step would take out. Once Stryker has written results, they
+      # carry TODAY's test sources, so the next run would see no test as
+      # edited and would never recheck such a kill. So this step runs
+      # whatever happened before it (passed, failed, cancelled), before
+      # anything is saved, and the two saving steps below wait for its
+      # `checked` output: if it did not run, failed or was cut short, nothing
+      # is saved. Where a run can stop, and what is then saved:
+      #
+      # - Before or during the step above that notes the test files: there
+      #   is no note, this step fails, nothing is saved.
+      # - During Stryker's first test run: Stryker has written nothing. The
+      #   results on disk are the restored ones, with the OLD test sources;
+      #   no test file differs from the note, nothing is taken out, and they
+      #   are saved as they came. The next run compares them with its own
+      #   tests again, so its recheck is not skipped.
+      # - While Stryker tests mutants, or when it fails: it writes what it
+      #   finished, reused kills included, with today's test sources. This
+      #   step takes the kills to recheck out before the save; the next run
+      #   finds no result for them and tests them in full.
+      # - During this step: the results are replaced whole or not at all, and
+      #   the output is set last. Without the output nothing is saved.
+      # - During the second run's first test run: the results on disk are the
+      #   ones this step left, with those kills already out.
+      # - While the second run tests mutants, or when it fails: it writes
+      #   what it finished: results it ran itself, and reused ones that no
+      #   new or edited test file covers. The tests cannot change between
+      #   the two runs (one checkout), so nothing in it needs a recheck.
+      # - A runner that is shut down runs no further step: nothing is saved.
+      #
+      # On a forced run (nightly, by hand) and with nothing restored, every
+      # result is fresh: nothing is taken out and there is no second run.
+      - name: Kills a new or edited test covers are taken out, to be tested again
+        id: recheck
+        if: ${{ always() }}
+        env:
+          STRYKER_SCOPE: ${{ matrix.scope }}
+          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
+        run: node scripts/mutation-recheck.mjs
+
+      # The second run, only when the first passed and kills were taken out.
+      # The same command and settings as the first. It reuses every result
+      # left (their test sources are today's) and tests exactly the mutants
+      # taken out, in full and in today's order. The shard's report is then
+      # this run's; if it fails or is cancelled the shard fails, and the
+      # first run's report is never kept in its place (the steps that keep
+      # the report run only when every step before them passed).
+      - name: Mutation testing of ${{ matrix.name }}, again for the kills taken out
+        if: ${{ success() && steps.recheck.outputs.selected != '0' }}
+        env:
+          STRYKER_SCOPE: ${{ matrix.scope }}
+          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
+          STRYKER_CONCURRENCY: '4'
+          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
+          NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
+        run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs
+
       # What the shard finished is kept whether the run passed, failed or
       # was cancelled by a newer push, so the next run does not start from
       # nothing (#848 lost six runs that way). Each entry is one mutant's
       # finished result, so a part of a run is as true as a whole one; the
       # shard's own report and the floors are untouched by it, and a shard
       # that did not finish still fails the gate. A file that does not parse
-      # is not saved. (A runner that is shut down runs no further step.)
+      # is not saved, and nothing is saved unless the recheck step above
+      # finished (its `checked` output), so no kill it would take out is
+      # ever saved. (A runner that is shut down runs no further step.)
       - name: Whether there are results to keep
         id: kept
-        if: ${{ always() }}
+        if: ${{ always() && steps.recheck.outputs.checked == 'true' }}
         env:
           FILE: reports/stryker-incremental/${{ matrix.name }}.json
           RESTORED: ${{ steps.earlier.outputs.cache-matched-key }}
