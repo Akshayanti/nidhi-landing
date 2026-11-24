@@ -490,7 +490,9 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
   });
 
   it('holds every scope to its floors, never pooled', () => {
-    assert.match(gates, /npx stryker run stryker\.config\.mjs\n/);
+    // Under a memory limit for every process it starts: a mutant that allocates
+    // without end must not take the runner with it.
+    assert.match(gates, /\n {8}run: ulimit -v 4194304 && npx stryker run stryker\.config\.mjs\n/);
     assert.match(gates, /STRYKER_SCOPE: \$\{\{ matrix\.scope \}\}/);
     assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
@@ -501,7 +503,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     // Earlier results are kept only while what the tests run on is the same.
     const fingerprint = "hashFiles('package-lock.json', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', '.nvmrc', 'test/**', 'src/**', '!src/content/**')";
     // Each shard's report holds only its own mutants before it is kept.
-    assert.match(gates, /run: npx stryker run stryker\.config\.mjs\n\n(?:.*\n)*? {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report/);
+    assert.match(gates, /run: ulimit -v 4194304 && npx stryker run stryker\.config\.mjs\n\n(?:.*\n)*? {8}run: node scripts\/mutation-shard-report\.mjs\n\n {6}- name: Keep the report/);
     assert.ok(gates.includes(`key: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\${{ github.sha }}`));
     assert.ok(gates.includes(`restore-keys: stryker-incremental-\${{ matrix.name }}-\${{ ${fingerprint} }}-\n`));
     assert.match(gates, /STRYKER_FORCE: \$\{\{ github\.event_name == 'pull_request' && '0' \|\| '1' \}\}/);
