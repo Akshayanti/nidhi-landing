@@ -1,9 +1,9 @@
-// Whether a pull request can change what a free tools workflow measures
-// (#790, #846). "Free tools mutation", "Free tools text size" and "Tool
-// privacy check" each skip their jobs for a pull request that changes only
-// files none of them reads, and each summary job passes in that one case
-// (owner, Nov 23, 2026: a change to docs needs no mutation, text-size or
-// privacy run). Nightly and manual runs always run everything.
+// Whether a pull request can change what a free tools suite measures (#790,
+// #846). The mutation, text-size and privacy suites (tool-suite.yml, run by
+// PR Checks on a pull request) each skip their jobs for a pull request that
+// changes only files none of them reads, and each summary job passes in that
+// one case (owner, Nov 23, 2026: a change to docs needs no mutation,
+// text-size or privacy run). Nightly and manual runs always run everything.
 //
 // The rule is a short list of what is NEVER read, not a list of what is: a
 // mutation run starts every test in src/, and those tests read lessons,
@@ -20,8 +20,9 @@
 export const NEVER_READ = ['docs/', '.claude/', '.github/', 'README.md', 'CLAUDE.md'];
 
 /**
- * The three workflows. Each reads one file inside a NEVER_READ prefix: its
- * own. A change to one of them runs that workflow and not the other two.
+ * The three workflows, which name the three suites. Each reads one file
+ * inside a NEVER_READ prefix of its own: a change to one of them runs that
+ * suite and not the other two.
  */
 export const WORKFLOWS = [
   '.github/workflows/tool-mutation.yml',
@@ -29,9 +30,19 @@ export const WORKFLOWS = [
   '.github/workflows/tool-privacy.yml',
 ];
 
+/**
+ * The workflows every suite reads: tool-suite.yml holds the jobs of all
+ * three, and pr-checks.yml runs them on a pull request. A change to either
+ * runs all three suites.
+ */
+export const SHARED = [
+  '.github/workflows/tool-suite.yml',
+  '.github/workflows/pr-checks.yml',
+];
+
 /** True when changing `path` can change what the workflow `own` measures. */
 export function isInput(path, own) {
-  if (path === own) return true;
+  if (path === own || SHARED.includes(path)) return true;
   return !NEVER_READ.some((p) => (p.endsWith('/') ? path.startsWith(p) : path === p));
 }
 

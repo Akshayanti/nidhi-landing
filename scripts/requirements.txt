@@ -1,7 +1,8 @@
 # Python packages for scripts/send_newsletter.py and its tests. Exact versions,
 # the packages they pull in included, so the newsletter send installs what the
 # pull request checks tested. newsletter.yml and pr-checks.yml both install
-# this file; Dependabot (pip, /scripts) proposes updates.
+# this file, on the Python of .python-version and after the pinned pip of
+# requirements-pip.txt; Dependabot (pip, /scripts) proposes updates.
 #
 # Every file of each release is listed by its sha256, as PyPI publishes it,
 # and CI installs with --require-hashes: a package that is not listed, or a

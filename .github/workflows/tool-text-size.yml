@@ -1,26 +1,15 @@
 name: Free tools text size
 
-# The free tools at large text (#790, #791; scripts/audit-text-size.mjs), on
-# every pull request, every night and by hand: every tool in every language,
-# on a bounded range on pull requests (the narrowest phone, a phone, a tablet
-# and a laptop, at 100%, 200% and 400% text), and on the whole range of
-# widths and sizes, with and without the web fonts, every night.
+# The free tools at large text (#790, #791; scripts/audit-text-size.mjs). Its
+# jobs are in tool-suite.yml (the text-size suite).
 #
-# Mutation testing is its own workflow (tool-mutation.yml), so either can
-# run, or be cancelled, without the other.
-#
-# "Free tools: text size" is written as a required status check on `main`,
-# though it is not one yet (#851). Its summary job runs on every pull request,
-# whatever it touches: a job skipped by `if:` reports "skipped", which
-# satisfies a required check, so it passes without the audit only in the one
-# case it names (a pull request that changes nothing the audit reads; the
-# plan job, scripts/lib/checks/check-inputs.mjs). Renaming it means changing
-# the required check in the same breath (scripts/repo-hygiene.test.mjs holds
-# the name).
+# This workflow runs the suite every night and by hand, on the whole range of
+# widths and text sizes, with and without the web fonts. Pull requests do not
+# start it: PR Checks (pr-checks.yml) runs the same suite on every pull
+# request, on a bounded range, after the build, beside privacy and mutation,
+# and holds the check "Free tools: text size" (written as required, though it
+# is not one yet, #851).
 on:
-  # No branch filter, as in pr-checks.yml: a stacked pull request gets the
-  # check before it is retargeted to main.
-  pull_request:
   schedule:
     # 03:47 UTC every day, after the mutation run and away from the privacy
     # check, deploy and newsletter.
@@ -35,140 +24,21 @@ concurrency:
   group: tool-text-size-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
-
 jobs:
-  # A pull request that changes only files the build and the audit never read
-  # (scripts/lib/checks/check-inputs.mjs: docs, agent files, other workflows,
-  # the two root notes) skips the audit, and the summary job passes in that
-  # one case. Nightly and manual runs always measure everything.
-  plan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      run: ${{ steps.inputs.outputs.run || 'true' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          # The base as well (HEAD^1 of the merge commit), to list what the
-          # pull request changes.
-          fetch-depth: 2
-
-      - name: Whether the pull request can change a measurement
-        id: inputs
-        if: github.event_name == 'pull_request'
-        # Both ends of a move (--no-renames), NUL-separated (-z) so no name
-        # is quoted or split. Anything but a clear "false" measures every tool.
-        run: |
-          run=true
-          if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
-            run=$(node --input-type=module -e '
-              import { readFileSync } from "node:fs";
-              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
-              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
-            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-text-size.yml") || run=true
-          fi
-          [ "$run" = "false" ] || run=true
-          if [ "$run" = "false" ]; then echo "Only files the audit never reads changed: the tools are skipped."; else echo "Every tool is measured."; fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-
+  # Its jobs show as "Free tools text size / <job>". Every tool reports, even
+  # after one fails (the suite is fail-fast on pull requests only).
   text-size:
-    name: 'Text size: ${{ matrix.tool }}'
-    needs: plan
-    if: ${{ !cancelled() && needs.plan.outputs.run == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        # The TOOLS of scripts/audit-text-size.mjs; scripts/repo-hygiene.test.mjs
-        # fails when one is missing here.
-        tool: [loan-comparison, multi-currency-net-worth, monte-carlo-simulator, invest-or-pay-off, inflation-calculator]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      # Ubuntu's runners stop unprivileged user namespaces, which Chrome's
-      # sandbox needs. Allowing them keeps the sandbox on, rather than
-      # starting Chrome without one.
-      - name: Let Chrome use its sandbox
-        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-
-      - name: Serve the build
-        run: |
-          npx astro preview --port 4480 --host 127.0.0.1 > "$RUNNER_TEMP/preview.log" 2>&1 &
-          for i in $(seq 1 60); do curl -fsS -o /dev/null http://127.0.0.1:4480/ && exit 0; sleep 1; done
-          cat "$RUNNER_TEMP/preview.log"; exit 1
-
-      # Pull requests: the edges and the middle of the range, in every
-      # language and state. CLAUDE.md, "Layout is checked at every size at once".
-      - name: Text size, bounded range
-        if: github.event_name == 'pull_request'
-        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --width 320,375,768,1280 --size 100,200,400
-
-      # Nightly and by hand: every width and size, then again in the
-      # fallback fonts (what a reader sees while the fonts load).
-      - name: Text size, whole range
-        if: github.event_name != 'pull_request'
-        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }}
-
-      - name: Text size, whole range, fallback fonts
-        if: github.event_name != 'pull_request'
-        run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --no-fonts
-
-  # The required check. It passes only when every job above passed.
-  #
-  # `always()` matters: a skipped job satisfies a required check. Without a
-  # status function GitHub skips this job when a job it needs has failed, and
-  # `!cancelled()` skips it when the run is cancelled before it starts; either
-  # way a gate that did not pass would read as a pass. With `always()` it runs
-  # every time and passes only when every job above succeeded.
-  gate:
-    name: 'Free tools: text size'
-    needs: [plan, text-size]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Every job passed
-        env:
-          PLAN: ${{ needs.plan.result }}
-          RUN: ${{ needs.plan.outputs.run }}
-          TEXT_SIZE: ${{ needs.text-size.result }}
-        run: |
-          echo "plan: $PLAN (run: $RUN), text-size: $TEXT_SIZE"
-          # A pull request that changes nothing the audit reads: the plan said
-          # so, and nothing ran. Only that exact case passes without the audit.
-          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TEXT_SIZE" = "skipped" ]; then
-            echo "Nothing the audit reads changed: nothing to measure."
-            exit 0
-          fi
-          if [ "$PLAN" != "success" ] || [ "$TEXT_SIZE" != "success" ]; then
-            echo "::error::The free tools text-size audit did not pass (or did not run). See the jobs above."
-            exit 1
-          fi
+    name: Free tools text size
+    uses: ./.github/workflows/tool-suite.yml
+    with:
+      suite: text-size
 
   # Nobody watches the nightly run, so one that failed or was cancelled opens
-  # an issue, or adds to the one already open.
+  # an issue, or adds to the one already open. It is here, not in
+  # tool-suite.yml, so the suite never holds a token that can write: only
+  # this job, on a nightly run, can.
   alert:
-    needs: [text-size, gate]
+    needs: [text-size]
     if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
     runs-on: ubuntu-latest
     timeout-minutes: 5

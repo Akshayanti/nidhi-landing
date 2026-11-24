@@ -17,6 +17,9 @@ describe('what a mutation shard’s earlier results depend on', () => {
     'src/components/LoanCompare.tsx': 'loan', 'src/components/LoanCompare.dom.test.tsx': 'loan test',
     'src/data/inflation/worldbank.json': 'data', 'src/content/blog/01-a.md': 'lesson', 'docs/plans/PLAYBOOK.md': 'doc',
     '.github/workflows/tool-mutation.yml': 'workflow', '.github/workflows/deploy.yml': 'deploy',
+    // The suites' jobs (the shards' steps among them) and the workflow that
+    // runs them on a pull request: inputs of every suite (check-inputs.mjs).
+    '.github/workflows/tool-suite.yml': 'suites', '.github/workflows/pr-checks.yml': 'pr checks',
   };
   const of = (files) => fingerprint(Object.keys(files), (path) => files[path]);
   const BASE = of(FILES);
@@ -48,7 +51,7 @@ describe('what a mutation shard’s earlier results depend on', () => {
       assert.notEqual(of({ ...rest, [`${path}.moved`]: gone }), BASE, `${path} moved`);
     }
     assert.deepEqual(Object.keys(FILES).filter(isFingerprinted).sort(), [
-      '.github/workflows/tool-mutation.yml', '.nvmrc', 'package-lock.json', 'scripts/lib/checks/mutation-shards.mjs',
+      '.github/workflows/pr-checks.yml', '.github/workflows/tool-mutation.yml', '.github/workflows/tool-suite.yml', '.nvmrc', 'package-lock.json', 'scripts/lib/checks/mutation-shards.mjs',
       'src/components/LoanCompare.tsx', 'src/data/inflation/worldbank.json', 'src/utils/loan/math.ts',
       'stryker.config.mjs', 'test/dom.ts', 'tsconfig.json',
     ]);

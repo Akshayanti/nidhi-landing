@@ -25,15 +25,16 @@ npm run typecheck    # type-check every .ts and .tsx file
 The newsletter script is Python and has its own tests, which `npm test` does not run:
 
 ```bash
-pip install --require-hashes -r scripts/requirements.txt
+python -m pip install --require-hashes -r scripts/requirements-pip.txt
+python -m pip install --require-hashes -r scripts/requirements.txt
 python -m unittest scripts/test_send_newsletter.py scripts/test_newsletter_sender.py scripts/test_qr_svg.py
 ```
 
-Requires **Node.js 24 or later**; CI and deploys run the exact version in `.nvmrc` (`nvm use` picks it up).
+Requires **Node.js 24 or later**; CI and deploys run the exact version in `.nvmrc` (`nvm use` picks it up). CI runs the Python steps on the exact version in `.python-version` (pyenv picks it up).
 
 ### Version pins
 
-`package-lock.json` decides what is installed: CI and deploys run `npm ci`, which installs exactly what the lockfile names and fails if `package.json` disagrees with it. So most ranges in `package.json` are carets, and a new version arrives only in a pull request that changes the lockfile. Three things are exact on top of that, because for them even the range is the control: `tsx` (it runs the tests) and `typescript` (a compiler minor can add errors), in the root and in `remotion/`, and the one approved install script below. `src/utils/dependencies.test.ts` holds a snapshot of all of it, so a dependency change, Dependabot's included, fails `npm test` until the snapshot is edited in the same pull request. GitHub Actions are pinned to commit SHAs and the Python packages to exact versions in `scripts/requirements.txt`.
+`package-lock.json` decides what is installed: CI and deploys run `npm ci`, which installs exactly what the lockfile names and fails if `package.json` disagrees with it. So most ranges in `package.json` are carets, and a new version arrives only in a pull request that changes the lockfile. Three things are exact on top of that, because for them even the range is the control: `tsx` (it runs the tests) and `typescript` (a compiler minor can add errors), in the root and in `remotion/`, and the one approved install script below. `src/utils/dependencies.test.ts` holds a snapshot of all of it, so a dependency change, Dependabot's included, fails `npm test` until the snapshot is edited in the same pull request. GitHub Actions are pinned to commit SHAs, Python to the version in `.python-version`, pip to the version in `scripts/requirements-pip.txt` and the Python packages to exact versions in `scripts/requirements.txt`, each file by its hashes.
 
 ### Install scripts
 

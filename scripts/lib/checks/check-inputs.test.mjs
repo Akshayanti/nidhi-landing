@@ -2,15 +2,27 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
-import { NEVER_READ, WORKFLOWS, changedPaths, isInput, needsRun } from './check-inputs.mjs';
+import { NEVER_READ, SHARED, WORKFLOWS, changedPaths, isInput, needsRun } from './check-inputs.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..');
 const [MUTATION, TEXT_SIZE, PRIVACY] = WORKFLOWS;
 
+// One suite's jobs in tool-suite.yml: from its plan job to the next suite's
+// heading (or the end of the file).
+const SUITES = '.github/workflows/tool-suite.yml';
+const suiteJobs = (suite) => {
+  const text = readFileSync(join(ROOT, SUITES), 'utf8');
+  const start = text.indexOf(`\n  ${suite}-plan:\n`);
+  assert.ok(start > 0, `no ${suite}-plan job in ${SUITES}`);
+  const end = text.indexOf('\n  # ====', start);
+  return text.slice(start, end === -1 ? undefined : end);
+};
+
 describe('a pull request needs a free tools workflow unless it changes only what none of them reads', () => {
-  it('knows the three workflows, and each is a file', () => {
+  it('knows the three workflows and the two every suite reads, and each is a file', () => {
     assert.deepEqual(WORKFLOWS, ['.github/workflows/tool-mutation.yml', '.github/workflows/tool-text-size.yml', '.github/workflows/tool-privacy.yml']);
-    for (const own of WORKFLOWS) assert.ok(existsSync(join(ROOT, own)), own);
+    assert.deepEqual(SHARED, ['.github/workflows/tool-suite.yml', '.github/workflows/pr-checks.yml']);
+    for (const own of [...WORKFLOWS, ...SHARED]) assert.ok(existsSync(join(ROOT, own)), own);
   });
 
   for (const own of WORKFLOWS) {
@@ -27,7 +39,7 @@ describe('a pull request needs a free tools workflow unless it changes only what
         'package.json', 'package-lock.json', '.npmrc', '.nvmrc', 'tsconfig.json', 'astro.config.mjs',
         'stryker.config.mjs', 'stryker.floors.json', 'scripts/some-script.mjs', 'scripts/lib/checks/some-check.mjs',
         'scripts/lib/checks/check-inputs.mjs', 'public/third-party-notices.txt', 'emails/post.html.j2',
-        'remotion/package.json', 'LICENSE', 'a-new-file.txt', own,
+        'remotion/package.json', 'LICENSE', 'a-new-file.txt', own, ...SHARED,
       ]) {
         assert.equal(isInput(path, own), true, path);
         assert.equal(needsRun(['docs/x.md', path], own), true, path);
@@ -44,6 +56,28 @@ describe('a pull request needs a free tools workflow unless it changes only what
   it('a change to one workflow runs that workflow and not the other two', () => {
     for (const changed of WORKFLOWS) {
       for (const own of WORKFLOWS) assert.equal(needsRun([changed], own), changed === own, `${changed} for ${own}`);
+    }
+  });
+
+  it('a change to the suites or to PR Checks runs all three', () => {
+    // tool-suite.yml holds every suite's jobs, and pr-checks.yml runs them on
+    // a pull request: a change to either can change what any suite does.
+    for (const changed of SHARED) {
+      for (const own of WORKFLOWS) {
+        assert.equal(needsRun([changed], own), true, `${changed} for ${own}`);
+        assert.equal(needsRun(['docs/x.md', changed, 'CLAUDE.md'], own), true, `${changed} for ${own}, with docs`);
+      }
+    }
+    // Every other workflow is still one none of them reads.
+    for (const own of WORKFLOWS) assert.equal(needsRun(['.github/workflows/newsletter.yml', '.github/workflows/tool-suite.yml.bak'], own), false);
+  });
+
+  it('each suite names its own workflow, so it runs on a change to that one', () => {
+    for (const [suite, own] of [['mutation', MUTATION], ['text-size', TEXT_SIZE], ['privacy', PRIVACY]]) {
+      const jobs = suiteJobs(suite);
+      const named = [...jobs.matchAll(/' "\$RUNNER_TEMP\/changed" "([^"]+)"\) \|\| run=true\n/g)].map((m) => m[1]);
+      assert.ok(named.length >= 1, suite);
+      assert.deepEqual([...new Set(named)], [own], suite);
     }
   });
 
@@ -112,9 +146,9 @@ describe('nothing the three workflows start reads what they skip', () => {
     assert.equal(scripts.prebuild, 'node scripts/lint-figures.mjs && node scripts/lint-scoped-styles.mjs');
     assert.equal(scripts.build, 'astro build');
     assert.equal(scripts.postbuild, 'node scripts/render-email-figures.mjs');
-    const run = (workflow) => [...readFileSync(join(ROOT, workflow), 'utf8').matchAll(/node (scripts\/[\w./-]+)/g)].map((m) => m[1]);
-    assert.deepEqual([...new Set(run(TEXT_SIZE))], ['scripts/audit-text-size.mjs']);
-    assert.deepEqual([...new Set(run(PRIVACY))], ['scripts/verify-tool-privacy.mjs']);
+    const run = (suite) => [...suiteJobs(suite).matchAll(/node (scripts\/[\w./-]+)/g)].map((m) => m[1]);
+    assert.deepEqual([...new Set(run('text-size'))], ['scripts/audit-text-size.mjs']);
+    assert.deepEqual([...new Set(run('privacy'))], ['scripts/verify-tool-privacy.mjs']);
   });
 
   it('follows the scripts into what they import', () => {
