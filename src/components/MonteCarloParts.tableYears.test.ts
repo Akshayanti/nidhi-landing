@@ -22,4 +22,10 @@ describe('the years the table lists', () => {
   it('lists today alone for a plan of no years', () => {
     assert.deepEqual(tableYears(0), [0]);
   });
+
+  it('lists a plan of minus nought years as year 0, without the sign', () => {
+    const years = tableYears(-0);
+    assert.equal(years.length, 1);
+    assert.ok(Object.is(years[0], 0));
+  });
 });

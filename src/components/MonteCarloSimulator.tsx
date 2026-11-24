@@ -30,7 +30,7 @@ import type { WorkerReply, WorkerRequest } from '../utils/monte-carlo/worker.ts'
 import { format } from '../i18n/format.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
-import { monteCarloWorkbook } from '../utils/monte-carlo/export.ts';
+import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
 import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
@@ -93,8 +93,10 @@ const grouped = (n: number, numberLocale: string) => n.toLocaleString(numberLoca
 
 /** A return setting's description, with the rates it quotes filled in from the model. */
 function returnTip(strings: Strings, s: ReturnSetting, amountLocale: string | null): string {
-  // Without a locale of its own, the page writes a rate as English does ("5.3%").
-  const pct = (r: number) => new Intl.NumberFormat(amountLocale ?? 'en', { style: 'percent', maximumFractionDigits: 1 }).format(r);
+  const pct = (r: number) =>
+    amountLocale
+      ? new Intl.NumberFormat(amountLocale, { style: 'percent', maximumFractionDigits: 1 }).format(r)
+      : `${(r * 100).toFixed(1).replace(/\.0$/, '')}%`;
   return format(strings.returnTips[s], { stocks: pct(QUOTED_RATES[s].stocks), bonds: pct(QUOTED_RATES[s].bonds) });
 }
 
@@ -193,7 +195,7 @@ function useSimulation(state: ToolState, initialResult: SimulationResult): Shown
         setBusy(false);
       };
       w.onerror = () => {
-        w.terminate();
+        worker.current?.terminate();
         worker.current = null;
         fallback();
       };
@@ -369,7 +371,7 @@ export default function MonteCarloSimulator({
   // Both copies are of the plan the results show, never a half-typed one, and
   // the event says only which kind was made.
   function downloadSpreadsheet() {
-    const sheets = monteCarloWorkbook({
+    const sheets = monteCarloSheets({
       island: strings,
       common: exportStrings,
       state: shownState,
@@ -667,9 +669,8 @@ function NumberField(props: {
   // The mark that arrived, as against text being typed here.
   const [typed, setTyped] = useState(false);
   const arrived = !typed && props.value === 'NaN';
-  // The words under the box while it is wrong, when it has any.
-  const error = props.invalid ? props.error : undefined;
-  const described = [error ? errorId : '', props.hint ? hintId : ''].filter(Boolean).join(' ');
+  const showError = props.invalid && Boolean(props.error);
+  const described = [showError ? errorId : '', props.hint ? hintId : ''].filter(Boolean).join(' ');
   return (
     <div className="mcs-field">
       <label className="mcs-label" htmlFor={props.id}>{props.label}</label>
@@ -685,7 +686,7 @@ function NumberField(props: {
         aria-invalid={props.invalid || undefined}
         aria-describedby={described || undefined}
       />
-      {error && <span className="ifc-error" id={errorId}><ErrorText>{arrived || tooLongForLink(props.value) ? unreadable : error}</ErrorText></span>}
+      {showError && <span className="ifc-error" id={errorId}><ErrorText>{arrived || tooLongForLink(props.value) ? unreadable : props.error ?? ''}</ErrorText></span>}
       {props.hint && <span className="mcs-hint" id={hintId}>{props.hint}</span>}
     </div>
   );
@@ -891,8 +892,8 @@ function PrintedReport({ strings, exportStrings, state, result }: { strings: Str
 /** Every fifth year, plus the last one. */
 function tableYears(years: number): number[] {
   const out: number[] = [];
-  for (let y = 0; y < years; y += 5) out.push(y);
-  out.push(years);
+  for (let y = 0; y <= years; y += 5) out.push(y);
+  if (out[out.length - 1] !== years) out.push(years);
   return out;
 }
 
@@ -921,7 +922,7 @@ const INNER_BAND = 'color-mix(in srgb, var(--color-deep-blue) 34%, transparent)'
 /** Spreads end labels apart so none overlap, keeping their order. */
 function spreadLabels(ys: number[], gap: number, min: number, max: number): number[] {
   const order = ys.map((y, i) => [y, i] as const).sort((a, b) => a[0] - b[0]);
-  const out: number[] = [];
+  const out = new Array<number>(ys.length);
   let prev = -Infinity;
   for (const [y, i] of order) {
     const placed = Math.max(y, prev + gap, min);
@@ -1050,7 +1051,7 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   const baseStep = years <= 10 ? 1 : years <= 30 ? 5 : 10;
   const xStep = labelStep(
     [1, 2, 5, 10, 20, 25, 50].filter((s) => s >= baseStep),
-    (s) => (s / years) * PLOT_W,
+    (s) => (years === 0 ? Infinity : (s / years) * PLOT_W),
     textWidth(String(years), fs),
     fs,
   );
@@ -1089,9 +1090,10 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
     return Math.max(0, Math.min(years, Math.round(((vx - PAD.left) / PLOT_W) * years)));
   }
   function onKey(e: React.KeyboardEvent) {
+    const cur = hover ?? (e.key === 'ArrowLeft' || e.key === 'End' ? years : 0);
     let next: number | null = null;
-    if (e.key === 'ArrowRight') next = hover === null ? 0 : Math.min(years, hover + 1);
-    else if (e.key === 'ArrowLeft') next = hover === null ? years : Math.max(0, hover - 1);
+    if (e.key === 'ArrowRight') next = hover === null ? 0 : Math.min(years, cur + 1);
+    else if (e.key === 'ArrowLeft') next = hover === null ? years : Math.max(0, cur - 1);
     else if (e.key === 'Home') next = 0;
     else if (e.key === 'End') next = years;
     else if (e.key === 'Escape') {

@@ -11,7 +11,7 @@ import { DICTS } from '../../i18n/index.ts';
 import { format } from '../../i18n/format.ts';
 import { QUOTED_RATES, type SimulationResult } from './math.ts';
 import { defaultState, type ToolState } from './url.ts';
-import { monteCarloWorkbook } from './export.ts';
+import { monteCarloSheets } from './export.ts';
 import { monteCarloReport } from './report.ts';
 
 const t = DICTS.en.tools;
@@ -49,7 +49,7 @@ const STATE: ToolState = {
 };
 
 const sheets = (state: ToolState = STATE, result: SimulationResult = RESULT) =>
-  monteCarloWorkbook({ island, common, state, result, date: DATE, page: PAGE });
+  monteCarloSheets({ island, common, state, result, date: DATE, page: PAGE });
 
 const head = (...titles: string[]) => titles.map((title) => ({ t: title, bold: true }));
 const amount = (n: number) => ({ n, fmt: 'amount0' });

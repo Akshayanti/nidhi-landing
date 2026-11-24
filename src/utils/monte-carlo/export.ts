@@ -34,10 +34,10 @@ const amount = (v: number): Cell => ({ n: Math.round(v), fmt: 'amount0' });
 const percent = (share: number): Cell => ({ n: Math.round(share * 10_000) / 100, fmt: 'decimal2' });
 const whole = (v: number): Cell => ({ n: v, fmt: 'integer' });
 
-/** The whole workbook: "About", then the plan's sheets. */
-export function monteCarloWorkbook(e: MonteCarloExport): Sheet[] {
-  const { island, common, state, date, page } = e;
+export function monteCarloSheets({ island, common, state, result, date, page }: MonteCarloExport): Sheet[] {
   const x = island.export;
+  const withdrawing = state.withdrawal > 0;
+
   const about: Sheet = {
     name: common.sheets.about,
     widths: [22, 90],
@@ -53,13 +53,6 @@ export function monteCarloWorkbook(e: MonteCarloExport): Sheet[] {
       [common.about.beta, common.about.betaText],
     ],
   };
-  return [about, ...monteCarloSheets(e)];
-}
-
-/** The sheets after "About": the plan, the assumptions, every year and the outcome. The printed report shows the first three. */
-export function monteCarloSheets({ island, common, state, result }: Omit<MonteCarloExport, 'date' | 'page'>): Sheet[] {
-  const x = island.export;
-  const withdrawing = state.withdrawal > 0;
 
   const inputRows: Cell[][] = [
     [island.fields.start, amount(state.start)],
@@ -120,5 +113,5 @@ export function monteCarloSheets({ island, common, state, result }: Omit<MonteCa
   outcomeRows.push([x.sharesNote, format(island.results.caveat, { paths: String(result.paths) })]);
   const outcome: Sheet = { name: x.sheets.outcome, widths: [56, 18], rows: [head(common.columns.item, common.columns.value), ...outcomeRows] };
 
-  return [inputs, assumptions, byYear, outcome];
+  return [about, inputs, assumptions, byYear, outcome];
 }

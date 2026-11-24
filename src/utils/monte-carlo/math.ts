@@ -226,6 +226,7 @@ export function averageRates(setting: ReturnSetting): { stocks: number; bonds: n
 // ---------------------------------------------------------------------------
 
 function percentile(sorted: Float64Array, q: number): number {
+  if (sorted.length === 0) return 0;
   const pos = (sorted.length - 1) * q;
   const lo = Math.floor(pos);
   const hi = Math.ceil(pos);

@@ -69,17 +69,17 @@ function badWithdrawYears(f: FormState): boolean {
 
 /** The plan to simulate. Only for a form without errors. */
 export function toState(f: FormState): ToolState {
-  // An empty or blank box is 0 to Number(), as the plan wants it.
+  const n = (v: string) => (v.trim() === '' ? 0 : Number(v));
   return {
     currency: f.currency,
-    start: Number(f.start),
-    monthly: Number(f.monthly),
-    saveYears: Number(f.saveYears),
-    stockPct: Number(f.stockPct),
-    withdrawal: f.withdrawOn ? Number(f.withdrawal) : 0,
+    start: n(f.start),
+    monthly: n(f.monthly),
+    saveYears: n(f.saveYears),
+    stockPct: n(f.stockPct),
+    withdrawal: f.withdrawOn ? n(f.withdrawal) : 0,
     // Off the page, the box may hold anything; the plan still needs a number.
-    withdrawYears: !f.withdrawOn && badWithdrawYears(f) ? DEFAULTS.withdrawYears : Number(f.withdrawYears),
-    feePct: Number(f.feePct),
+    withdrawYears: !f.withdrawOn && badWithdrawYears(f) ? DEFAULTS.withdrawYears : n(f.withdrawYears),
+    feePct: n(f.feePct),
     returns: f.returns,
     paths: f.paths,
   };
@@ -98,12 +98,9 @@ export function formErrors(f: FormState): Record<BoxField, boolean> {
   };
 }
 
-/**
- * The withdrawal boxes that differ from where they start. With withdrawals
- * off the plan holds neither, so they are carried beside it; with them on,
- * the plan already holds both as the boxes do, and carrying them changes nothing.
- */
+/** The withdrawal boxes to carry with withdrawals off, where the plan holds neither. */
 function rememberedBoxes(f: FormState): BoxField[] {
+  if (f.withdrawOn) return [];
   const untouched = { withdrawal: DEFAULT_WITHDRAWAL, withdrawYears: DEFAULTS.withdrawYears };
   return (['withdrawal', 'withdrawYears'] as const).filter((field) => f[field] !== String(untouched[field]));
 }

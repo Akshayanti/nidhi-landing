@@ -213,7 +213,7 @@ describe('a box refused for its length says it cannot be read (#789)', () => {
   it('such a box shows the unreadable words, not the range', { skip: readsSource }, async () => {
     const { readFileSync } = await import('node:fs');
     const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
-    assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : error\}/);
+    assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : props\.error/);
   });
 });
 
@@ -287,6 +287,14 @@ describe('the form and the plan, in detail', () => {
     assert.deepEqual([plan.start, plan.monthly, plan.saveYears, plan.withdrawal], [1200, 300, 12, 0.5]);
   });
 
+  it('a box that holds no text at all is refused, not read as nothing', () => {
+    // Off the page's own types: the form only ever holds text. Nothing is made up for a box that does not.
+    for (const field of FIELDS) {
+      const form = { ...formWith({}), [field]: null } as unknown as FormState;
+      assert.throws(() => toState(form), TypeError, field);
+    }
+  });
+
   it('half a year is wrong in either year box', () => {
     assert.equal(formErrors(formWith({ saveYears: '12.5' })).saveYears, true);
     assert.equal(formErrors(formWith({ withdrawYears: '12.5' })).withdrawYears, true);
@@ -321,6 +329,40 @@ describe('the form and the plan, in detail', () => {
   it('with withdrawals on and a bad box, the withdrawal goes as the plan has it, beside the bad box', () => {
     const wire = publishableForm(formWith({ start: '7x', withdrawal: '020000.0', withdrawYears: '25' }), 'EUR');
     assert.equal(wire, 'w=20000&r=25&s=NaN');
+  });
+
+  // Boxes the page accepts though no link writes a number that way: the plan
+  // carries the number, never the text of the box.
+  it('with withdrawals on, a withdrawal typed as 1e3 travels as 1000 and opens as 1000', () => {
+    const form = formWith({ withdrawal: '1e3' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=1000');
+    const arrived = carried(form);
+    assert.equal(arrived.withdrawal, '1000');
+    assert.equal(arrived.withdrawYears, '30');
+    assert.equal(arrived.withdrawOn, true);
+  });
+
+  it('with withdrawals on, a withdrawal typed as 0x10 travels as 16 and opens as 16', () => {
+    const form = formWith({ withdrawal: '0x10' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=16');
+    assert.equal(carried(form).withdrawal, '16');
+  });
+
+  it('with withdrawals on, years typed as 30.0 are the years the plan starts with, so the link names none', () => {
+    const form = formWith({ withdrawYears: '30.0' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=30000');
+    assert.equal(carried(form).withdrawYears, '30');
+    assert.equal(publishableForm(formWith({ withdrawal: '1e3', withdrawYears: '30.0' }), 'EUR'), 'w=1000');
+  });
+
+  it('with withdrawals on and nothing wrong, no box is carried beside the plan', () => {
+    for (const change of [{ withdrawal: '1e3' }, { withdrawal: '0x10' }, { withdrawYears: '30.0' }, { withdrawal: '20000', withdrawYears: '25' }] as Partial<FormState>[]) {
+      const form = formWith(change);
+      assert.equal(publishableForm(form, 'EUR'), publishableState(toState(form), 'EUR'), JSON.stringify(change));
+    }
   });
 
   it('a bad withdrawal keeps the years beside it', () => {

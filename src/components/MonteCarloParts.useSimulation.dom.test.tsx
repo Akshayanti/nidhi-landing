@@ -204,6 +204,29 @@ describe('the simulation runner', () => {
     assert.equal(worker.requests.length, 1);
   });
 
+  it('a worker that fails twice is stopped once: the second time there is none to stop', () => {
+    const { rerender } = mount(plan({ paths: 100 }));
+    rerender({ state: plan({ start: 30_000, paths: 10_001 }) });
+    const worker = FakeWorker.made[0];
+    act(() => worker.onerror?.());
+    act(() => worker.onerror?.());
+    assert.equal(worker.terminated, 1);
+    assert.deepEqual(timers.map((timer) => timer.ms), [30, 30]);
+  });
+
+  it('a failed worker that fails again after its replacement started stops the one in use', () => {
+    const { rerender } = mount(plan({ paths: 100 }));
+    rerender({ state: plan({ start: 30_000, paths: 10_001 }) });
+    const failed = FakeWorker.made[0];
+    act(() => failed.onerror?.());
+    rerender({ state: plan({ start: 31_000, paths: 10_001 }) });
+    const replacement = FakeWorker.made[1];
+    act(() => failed.onerror?.());
+    assert.deepEqual([failed.terminated, replacement.terminated], [1, 1]);
+    rerender({ state: plan({ start: 32_000, paths: 10_001 }) });
+    assert.equal(FakeWorker.made.length, 3, 'and the next large run gets a new one');
+  });
+
   it('the worker goes with the page, and a page that never started one leaves cleanly', () => {
     const { rerender, unmount } = mount(plan({ paths: 100 }));
     rerender({ state: plan({ paths: 100_000 }) });

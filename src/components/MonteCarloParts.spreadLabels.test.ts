@@ -35,6 +35,15 @@ describe('the end-of-line labels, spread apart', () => {
     assert.deepEqual(spreadLabels([250], 10, 0, 192), [192]);
   });
 
+  it('gives back as many places as it was given positions, even when none could be placed', () => {
+    // A list whose own `map` hands back nothing: no label is placed, and the
+    // answer still has the list's length, every place left empty.
+    const ys = Object.assign([1, 2], { map: () => [] }) as number[];
+    const out = spreadLabels(ys, 10, 0, 200);
+    assert.equal(out.length, 2);
+    assert.ok(!(0 in out) && !(1 in out));
+  });
+
   it('does not change the positions it was given', () => {
     const ys = [100, 50, 52];
     spreadLabels(ys, 10, 0, 200);
