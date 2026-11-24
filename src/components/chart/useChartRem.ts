@@ -57,7 +57,9 @@ export function useChartRem(svg: RefObject<SVGSVGElement | null>, width: number)
       watched.current?.seen.disconnect();
       watched.current = null;
     };
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, so a list of one fixed string cannot differ from an empty one.
+  []);
   return state;
 }
 

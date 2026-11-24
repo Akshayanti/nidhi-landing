@@ -121,9 +121,11 @@ export function chartLabel(value: number, code: string, words: ChartWords, amoun
   }
   const suffix = words.short[scale].replace('{n}', '');
   const parts = amountFormat(code, amountLocale, { ...currency, ...digits }).formatToParts(v / SCALE_DIVISOR[scale]);
+  // Stryker disable next-line UnaryOperator: an amount with a scale is a finite number of a thousand or more, so it has digits and this starting value is always replaced
   let lastNumeric = -1;
   parts.forEach((p, i) => {
-    if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;
+    // The figure ends in digits: a grouping or decimal mark always has some after it.
+    if (p.type === 'integer' || p.type === 'fraction') lastNumeric = i;
   });
   return parts.map((p, i) => p.value + (i === lastNumeric ? suffix : '')).join('');
 }

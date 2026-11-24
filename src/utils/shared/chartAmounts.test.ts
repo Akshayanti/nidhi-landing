@@ -147,3 +147,43 @@ describe('a bar label never says zero for an amount that is not', () => {
     assert.equal(readsAsZero(0, wholeUnits), false);
   });
 });
+
+describe('chart labels and ticks at their edges', () => {
+  it('rounds an amount under a thousand to a whole unit, a half upwards', () => {
+    assert.equal(chartLabel(12.4, 'EUR', exportEn.chart), '€12');
+    assert.equal(chartLabel(12.5, 'EUR', exportEn.chart), '€13');
+    assert.equal(chartLabel(-12.5, 'EUR', exportEn.chart), '-€12');
+    assert.equal(chartLabel(999.4, 'EUR', exportEn.chart), '€999');
+  });
+
+  it('writes an amount that rounds to a thousand as one, on either side of zero', () => {
+    assert.equal(chartLabel(999.5, 'EUR', exportEn.chart), '€1K');
+    assert.equal(chartLabel(-999.5, 'EUR', exportEn.chart), '-€1K');
+    assert.equal(chartLabel(-999.4, 'EUR', exportEn.chart), '-€999');
+  });
+
+  it('writes a thousand million in millions for any Spanish page style, and as B elsewhere', () => {
+    assert.equal(chartLabel(2_500_000_000, 'EUR', exportEs.chart, 'es-ES'), `2.500${NBSP}M${NBSP}€`);
+    assert.equal(chartLabel(2_500_000_000, 'EUR', exportEn.chart, 'de'), `2,5B${NBSP}€`);
+  });
+
+  it('never writes a tick of minus zero', () => {
+    assert.equal(axisTick(-0, 'none', 'EUR'), '0');
+    assert.equal(axisTick(-0, 'thousand', 'EUR', 'es'), '0');
+    assert.equal(axisTick(0, 'none', 'EUR'), '0');
+  });
+
+  it('names the currency by its code where Intl has no mark for it', () => {
+    const real = Intl.NumberFormat;
+    // A stand-in for a browser whose formatted amount carries no currency part.
+    Intl.NumberFormat = function () {
+      return { formatToParts: () => [{ type: 'integer', value: '1' }] };
+    } as unknown as typeof Intl.NumberFormat;
+    try {
+      assert.equal(currencyMark('EUR'), 'EUR');
+    } finally {
+      Intl.NumberFormat = real;
+    }
+    assert.equal(currencyMark('EUR'), '€');
+  });
+});

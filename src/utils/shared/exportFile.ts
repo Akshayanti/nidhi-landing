@@ -46,7 +46,9 @@ export function guardText(text: string): string {
  * typed with a leading apostrophe ("'Tis") stays as typed.
  */
 export function unguardText(text: string): string {
-  return text.startsWith("'") && needsGuard(text.slice(1)) ? text.slice(1) : text;
+  if (!text.startsWith("'")) return text;
+  const rest = text.slice(1);
+  return needsGuard(rest) ? rest : text;
 }
 
 /** A date as YYYY-MM-DD, in the reader's own time zone. */

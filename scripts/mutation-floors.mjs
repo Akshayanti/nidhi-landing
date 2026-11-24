@@ -8,7 +8,7 @@
 // stryker.shards.json splits it (#846), all of which must be there. Exit 1
 // when a part is below its floor, 2 when a report is missing or unreadable.
 import { readFileSync } from 'node:fs';
-import { judgeScope, mergeReports, partScores } from './lib/checks/mutation-floors.mjs';
+import { guardStopped, judgeScope, mergeReports, partScores } from './lib/checks/mutation-floors.mjs';
 
 const scope = process.argv[2];
 const count = JSON.parse(readFileSync('stryker.shards.json', 'utf8'))[scope];
@@ -35,6 +35,8 @@ for (const part of ['logic', 'component']) {
   const c = scores.counts[part];
   console.log(`${scope} ${part}: ${scores[part] ?? 'no mutants'}% (floor ${floors[scope]?.[part] ?? 'none'}%; ${c.detected} detected, ${c.undetected} not)`);
 }
+const stopped = guardStopped(report);
+if (stopped.length) console.log(`${scope}: ${stopped.length} mutant(s) ended by the memory guard, counted as not caught: ${stopped.join(', ')}`);
 const problems = judgeScope(scope, scores, floors);
 for (const p of problems) console.error(`BELOW FLOOR: ${p}`);
 process.exit(problems.length ? 1 : 0);

@@ -51,3 +51,23 @@ describe('a finger on a chart', () => {
     assert.equal(touchDown(null, 3, 5, 5).mode, 'pending');
   });
 });
+
+describe('a finger on a chart, at the edges', () => {
+  it('starts afresh when the same finger comes down again', () => {
+    const scrubbing = touchMove(touchStart(1, 100, 100), 1, 130, 104, true).touch;
+    assert.deepEqual(touchDown(scrubbing, 1, 40, 60), { id: 1, x: 40, y: 60, mode: 'pending' });
+    assert.deepEqual(touchDown(null, 3, 5, 6), { id: 3, x: 5, y: 6, mode: 'pending' });
+  });
+
+  it('is no longer a tap once it has moved the full slop', () => {
+    const moved = touchMove(touchStart(1, 100, 100), 1, 100 + TAP_SLOP, 100, true);
+    assert.equal(moved.follow, true);
+    assert.equal(touchEndIsTap(moved.touch, 1), false);
+  });
+
+  it('is a scroll, not a scrub, when it moves as far down as across', () => {
+    const moved = touchMove(touchStart(1, 100, 100), 1, 100 + TAP_SLOP, 100 + TAP_SLOP, true);
+    assert.equal(moved.follow, false);
+    assert.equal(moved.touch?.mode, 'ignore');
+  });
+});

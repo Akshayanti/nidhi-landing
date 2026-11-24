@@ -110,3 +110,51 @@ describe('longestAmount', () => {
     assert.equal(longestAmount('no figures'), 0);
   });
 });
+
+describe('splitAmounts, piece by piece', () => {
+  it('gives no empty piece before an amount that starts the line, between two that touch, or after one that ends it', () => {
+    assert.deepEqual(splitAmounts('€5 and'), [{ amount: '€5', length: 2.1 }, ' and']);
+    assert.deepEqual(splitAmounts('costs €5'), ['costs ', { amount: '€5', length: 2.1 }]);
+    assert.deepEqual(splitAmounts('€5'), [{ amount: '€5', length: 2.1 }]);
+    assert.deepEqual(splitAmounts('5%+6'), [{ amount: '5%', length: 2.7 }, { amount: '+6', length: 2.1 }]);
+    assert.deepEqual(splitAmounts(''), []);
+  });
+});
+
+describe('amountLength, character by character', () => {
+  const NNBSP = String.fromCodePoint(0x202f);
+  const NBSP = String.fromCodePoint(0x00a0);
+  const APOSTROPHE = String.fromCodePoint(0x2019);
+
+  it('counts a narrow no-break space as a quarter and any other space as a little under half', () => {
+    assert.equal(amountLength(`1${NNBSP}1`), 2.3);
+    assert.equal(amountLength(`1${NNBSP}${NNBSP}1`), 2.5);
+    assert.equal(amountLength('1 1'), 2.5);
+    assert.equal(amountLength(`1${NBSP}${NBSP}1`), 2.9);
+  });
+
+  it('counts every separator as half: point, comma and both apostrophes', () => {
+    for (const sep of ['.', ',', "'", APOSTROPHE]) assert.equal(amountLength(`1${sep}1`), 2.5, sep);
+  });
+
+  it('counts each wide character as 1.7', () => {
+    for (const ch of ['M', 'W', 'm', 'w', '%', '₩', '₪', '@']) assert.equal(amountLength(ch), 1.7, ch);
+  });
+
+  it('counts each thin small letter as two thirds', () => {
+    for (const ch of ['i', 'l', 'j', 't', 'f', 'r']) assert.equal(amountLength(ch), 0.7, ch);
+    assert.equal(amountLength('ii'), 1.3);
+  });
+
+  it('counts a capital, the capital I too, and each broad currency sign as 1.3', () => {
+    for (const ch of ['K', 'Č', 'I', '₱', '₦', '₴']) assert.equal(amountLength(ch), 1.3, ch);
+  });
+
+  it('counts a small letter as one digit, and any other sign as a little more', () => {
+    assert.equal(amountLength('k'), 1);
+    assert.equal(amountLength('č'), 1);
+    assert.equal(amountLength('€'), 1.1);
+    assert.equal(amountLength('+'), 1.1);
+    assert.equal(amountLength('₹'), 1.1);
+  });
+});

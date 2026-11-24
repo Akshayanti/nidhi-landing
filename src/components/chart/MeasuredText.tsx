@@ -62,7 +62,9 @@ export function useMeasuredText(svg: RefObject<SVGSVGElement | null>, samples: S
     let live = true;
     document.fonts?.ready.then(() => { if (live) measure.current(); });
     return () => { live = false; };
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, so a list of one fixed string cannot differ from an empty one.
+  []);
   return {
     width: (s) => widths[keyOf(s)] ?? textWidth(s.text, s.size) * (/\p{Script=Devanagari}/u.test(s.text) ? 1.2 : 1),
     list,

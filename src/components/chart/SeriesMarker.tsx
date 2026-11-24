@@ -50,7 +50,7 @@ interface GlyphProps {
 export function MarkerGlyph({ index, cx, cy, r, color, halo, className }: GlyphProps) {
   const { shape, hollow } = seriesMarker(index);
   const line = n(Math.max(1.5, r * 0.42));
-  const draw = (style: CSSProperties, key: string, grow = 0) => {
+  const draw = (style: CSSProperties, grow = 0) => {
     const stroked = shape === 'cross' || shape === 'plus';
     if (stroked) {
       const a = r * (shape === 'cross' ? 0.78 : 1);
@@ -59,7 +59,7 @@ export function MarkerGlyph({ index, cx, cy, r, color, halo, className }: GlyphP
           ? `M${n(cx - a)} ${n(cy - a)} L${n(cx + a)} ${n(cy + a)} M${n(cx + a)} ${n(cy - a)} L${n(cx - a)} ${n(cy + a)}`
           : `M${n(cx - a)} ${n(cy)} L${n(cx + a)} ${n(cy)} M${n(cx)} ${n(cy - a)} L${n(cx)} ${n(cy + a)}`;
       return (
-        <g key={key}>
+        <g>
           <path d={d} style={{ ...style, fill: 'none', strokeWidth: n(line * 1.25 + grow), strokeLinecap: 'round' }} />
           {/* An outlined cross is a cross in a ring: a cross has no inside to leave empty. */}
           {hollow && <circle cx={n(cx)} cy={n(cy)} r={n(r * 1.15)} style={{ ...style, fill: 'none', strokeWidth: n(line * 0.8 + grow) }} />}
@@ -68,16 +68,17 @@ export function MarkerGlyph({ index, cx, cy, r, color, halo, className }: GlyphP
     }
     const s = { ...style, strokeWidth: n((hollow ? line : 0) + grow), strokeLinejoin: 'round' as const };
     const q = hollow ? r - line / 2 : r;
-    if (shape === 'circle') return <circle key={key} cx={n(cx)} cy={n(cy)} r={n(q)} style={s} />;
-    if (shape === 'square') return <rect key={key} x={n(cx - q * 0.88)} y={n(cy - q * 0.88)} width={n(q * 1.76)} height={n(q * 1.76)} style={s} />;
-    if (shape === 'triangle') return <path key={key} d={`M${n(cx)} ${n(cy - q * 1.05)} L${n(cx + q * 1.05)} ${n(cy + q * 0.85)} L${n(cx - q * 1.05)} ${n(cy + q * 0.85)} Z`} style={s} />;
-    return <path key={key} d={`M${n(cx)} ${n(cy - q * 1.15)} L${n(cx + q * 1.15)} ${n(cy)} L${n(cx)} ${n(cy + q * 1.15)} L${n(cx - q * 1.15)} ${n(cy)} Z`} style={s} />;
+    if (shape === 'circle') return <circle cx={n(cx)} cy={n(cy)} r={n(q)} style={s} />;
+    if (shape === 'square') return <rect x={n(cx - q * 0.88)} y={n(cy - q * 0.88)} width={n(q * 1.76)} height={n(q * 1.76)} style={s} />;
+    if (shape === 'triangle') return <path d={`M${n(cx)} ${n(cy - q * 1.05)} L${n(cx + q * 1.05)} ${n(cy + q * 0.85)} L${n(cx - q * 1.05)} ${n(cy + q * 0.85)} Z`} style={s} />;
+    return <path d={`M${n(cx)} ${n(cy - q * 1.15)} L${n(cx + q * 1.15)} ${n(cy)} L${n(cx)} ${n(cy + q * 1.15)} L${n(cx - q * 1.15)} ${n(cy)} Z`} style={s} />;
   };
-  const filled = !hollow && shape !== 'cross' && shape !== 'plus';
+  // A cross or a plus is drawn as lines, with no fill whatever is asked here.
+  const filled = !hollow;
   return (
     <g className={className}>
-      {halo && draw({ stroke: halo, fill: filled ? halo : 'none' }, 'halo', 3)}
-      {draw({ stroke: color, fill: filled ? color : 'none' }, 'mark')}
+      {halo && draw({ stroke: halo, fill: filled ? halo : 'none' }, 3)}
+      {draw({ stroke: color, fill: filled ? color : 'none' })}
     </g>
   );
 }
