@@ -1353,3 +1353,12 @@ function LineChart({
     </figure>
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole calculator around it. The page itself uses only the
+// default export.
+export {
+  Field, HistoryBars, HistoryPanel, LineChart, Results,
+  aboutText, allYears, changeDate, computeAnswer, defaultFrom, effectiveFrom, fromYearsFor, loadHistory, niceScale,
+  pct, typedAmount, usePhone, yearsPhrase,
+};
