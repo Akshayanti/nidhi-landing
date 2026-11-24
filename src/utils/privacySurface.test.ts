@@ -294,7 +294,7 @@ const EXPECTED_MENTIONS = [
   'components/InvestOrPayOff.tsx: location x6',
   'components/InvestOrPayOff.tsx: navigator x1',
   'components/InvestOrPayOff.tsx: posthog x4',
-  'components/InvestOrPayOff.tsx: track x8',
+  'components/InvestOrPayOff.tsx: track x9',
   'components/LearnHome.astro: capture x3',
   'components/LearnHome.astro: getItem x2',
   'components/LearnHome.astro: localStorage x2',
