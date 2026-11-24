@@ -64,12 +64,10 @@ export default {
     // privacy rules) cannot judge a mutant: under Stryker they read the
     // instrumented copy. They still run in `npm test` on every pull request.
     testFiles: TEST_FILES,
-    // The memory limit is for mutants, not for the tests (which need a
-    // fraction of it): a mutant can turn a short loop into one that fills a
-    // list for ever, and four of those at once, each free to take all the
-    // memory Node allows itself, starved the runner until GitHub gave it up
-    // for lost. Under the limit such a mutant's test process dies in seconds.
-    nodeArgs: ['--import', 'tsx', '--test-reporter=tap', '--max-old-space-size=768'],
+    // The guard ends a test process that passes a gigabyte: a mutant that
+    // allocates without end must not take the runner with it
+    // (test/mutationMemoryGuard.mjs).
+    nodeArgs: ['--import', './test/mutationMemoryGuard.mjs', '--import', 'tsx', '--test-reporter=tap'],
     forceBail: true,
   },
   coverageAnalysis: 'perTest',
