@@ -1,6 +1,6 @@
 {
   "inflation": { "logic": 95, "component": 95 },
-  "invest-or-pay-off": { "logic": 84, "component": 0 },
+  "invest-or-pay-off": { "logic": 95, "component": 95 },
   "monte-carlo": { "logic": 95, "component": 95 },
   "loan": { "logic": 72, "component": 0 },
   "net-worth": { "logic": 95, "component": 92 },
