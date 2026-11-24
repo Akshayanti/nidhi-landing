@@ -2,11 +2,12 @@
  * The simulator's form as the language switch and links carry it (form.ts).
  * A bad box arrives bad and every choice arrives as it was made (#789).
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { formErrors, formFromLink, openedPlan, publishableForm, toForm, toState, type BoxField, type FormState } from './form.ts';
-import { STATE_KEY_PATTERN, decodeState, defaultState } from './url.ts';
+import { STATE_KEY_PATTERN, decodeState, defaultState, publishableState } from './url.ts';
 
 const FIELDS: BoxField[] = ['start', 'monthly', 'saveYears', 'stockPct', 'withdrawal', 'withdrawYears', 'feePct'];
 
@@ -209,7 +210,7 @@ describe('a box refused for its length says it cannot be read (#789)', () => {
     assert.equal(tooLongForLink('2000000'), false);
     assert.equal(tooLongForLink(''), false);
   });
-  it('such a box shows the unreadable words, not the range', async () => {
+  it('such a box shows the unreadable words, not the range', { skip: readsSource }, async () => {
     const { readFileSync } = await import('node:fs');
     const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
     assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : props\.error/);
@@ -252,5 +253,135 @@ describe('a shared plan opens as the plan its boxes give', () => {
     assert.ok(form && decoded);
     assert.ok(Object.values(formErrors(form)).some(Boolean));
     assert.deepEqual(openedPlan(form, decoded), decoded);
+  });
+});
+
+describe('the form and the plan, in detail', () => {
+  it('a plan with a withdrawal opens with withdrawals on, at that amount', () => {
+    const form = toForm({ ...defaultState('EUR'), withdrawal: 24_000, withdrawYears: 20 });
+    assert.equal(form.withdrawOn, true);
+    assert.equal(form.withdrawal, '24000');
+    assert.equal(form.withdrawYears, '20');
+  });
+
+  it('a plan without one opens with them off, the box at its starting amount', () => {
+    const form = toForm(defaultState('EUR'));
+    assert.equal(form.withdrawOn, false);
+    assert.equal(form.withdrawal, '30000');
+  });
+
+  it('years of withdrawing that are fine are kept while withdrawals are off', () => {
+    assert.equal(toState(formWith({ withdrawOn: false, withdrawYears: '20' })).withdrawYears, 20);
+  });
+
+  it('half a year of withdrawing, off the page, gives the plan the default years', () => {
+    assert.equal(toState(formWith({ withdrawOn: false, withdrawYears: '12.5' })).withdrawYears, 30);
+  });
+
+  it('an empty or blank box gives the plan nothing, and spaces around a number are read past', () => {
+    for (const blank of ['', ' ', '   ', '\t', '\n']) {
+      const plan = toState(formWith({ start: blank, monthly: blank, withdrawal: blank }));
+      assert.deepEqual([plan.start, plan.monthly, plan.withdrawal], [0, 0, 0], JSON.stringify(blank));
+    }
+    const plan = toState(formWith({ start: ' 1200 ', monthly: '\t300', saveYears: '12 ', withdrawal: ' 0.5' }));
+    assert.deepEqual([plan.start, plan.monthly, plan.saveYears, plan.withdrawal], [1200, 300, 12, 0.5]);
+  });
+
+  it('a box that holds no text at all is refused, not read as nothing', () => {
+    // Off the page's own types: the form only ever holds text. Nothing is made up for a box that does not.
+    for (const field of FIELDS) {
+      const form = { ...formWith({}), [field]: null } as unknown as FormState;
+      assert.throws(() => toState(form), TypeError, field);
+    }
+  });
+
+  it('half a year is wrong in either year box', () => {
+    assert.equal(formErrors(formWith({ saveYears: '12.5' })).saveYears, true);
+    assert.equal(formErrors(formWith({ withdrawYears: '12.5' })).withdrawYears, true);
+  });
+
+  it('a changed withdrawal with withdrawals on travels as the plan does', () => {
+    const form = formWith({ withdrawal: '20000', withdrawYears: '25' });
+    assert.equal(publishableForm(form, 'EUR'), 'w=20000&r=25');
+  });
+
+  it('with withdrawals on and every box readable, what travels is the plan, whatever the boxes hold', () => {
+    const changes: Partial<FormState>[] = [
+      {},
+      { withdrawal: '20000' },
+      { withdrawYears: '25' },
+      { withdrawal: '20000.50', withdrawYears: '1' },
+      { withdrawal: ' 1200 ', withdrawYears: '60 ' },
+      { withdrawal: '020000', start: '0', monthly: '0', feePct: '0.25' },
+      { withdrawal: '1', returns: 'cautious', paths: 1_000 },
+    ];
+    for (const currency of ['EUR', 'INR']) {
+      for (const change of changes) {
+        const form = formWith(change, currency);
+        assert.ok(!Object.values(formErrors(form)).some(Boolean), JSON.stringify(change));
+        for (const page of ['EUR', 'INR', 'USD']) {
+          assert.equal(publishableForm(form, page), publishableState(toState(form), page), `${currency} ${page} ${JSON.stringify(change)}`);
+        }
+      }
+    }
+  });
+
+  it('with withdrawals on and a bad box, the withdrawal goes as the plan has it, beside the bad box', () => {
+    const wire = publishableForm(formWith({ start: '7x', withdrawal: '020000.0', withdrawYears: '25' }), 'EUR');
+    assert.equal(wire, 'w=20000&r=25&s=NaN');
+  });
+
+  // Boxes the page accepts though no link writes a number that way: the plan
+  // carries the number, never the text of the box.
+  it('with withdrawals on, a withdrawal typed as 1e3 travels as 1000 and opens as 1000', () => {
+    const form = formWith({ withdrawal: '1e3' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=1000');
+    const arrived = carried(form);
+    assert.equal(arrived.withdrawal, '1000');
+    assert.equal(arrived.withdrawYears, '30');
+    assert.equal(arrived.withdrawOn, true);
+  });
+
+  it('with withdrawals on, a withdrawal typed as 0x10 travels as 16 and opens as 16', () => {
+    const form = formWith({ withdrawal: '0x10' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=16');
+    assert.equal(carried(form).withdrawal, '16');
+  });
+
+  it('with withdrawals on, years typed as 30.0 are the years the plan starts with, so the link names none', () => {
+    const form = formWith({ withdrawYears: '30.0' });
+    assert.ok(!Object.values(formErrors(form)).some(Boolean));
+    assert.equal(publishableForm(form, 'EUR'), 'w=30000');
+    assert.equal(carried(form).withdrawYears, '30');
+    assert.equal(publishableForm(formWith({ withdrawal: '1e3', withdrawYears: '30.0' }), 'EUR'), 'w=1000');
+  });
+
+  it('with withdrawals on and nothing wrong, no box is carried beside the plan', () => {
+    for (const change of [{ withdrawal: '1e3' }, { withdrawal: '0x10' }, { withdrawYears: '30.0' }, { withdrawal: '20000', withdrawYears: '25' }] as Partial<FormState>[]) {
+      const form = formWith(change);
+      assert.equal(publishableForm(form, 'EUR'), publishableState(toState(form), 'EUR'), JSON.stringify(change));
+    }
+  });
+
+  it('a bad withdrawal keeps the years beside it', () => {
+    const arrived = carried(formWith({ withdrawal: 'NaN', withdrawYears: '20' }));
+    assert.equal(arrived.withdrawal, 'NaN');
+    assert.equal(arrived.withdrawYears, '20');
+    assert.equal(arrived.withdrawOn, true);
+  });
+});
+
+describe('a link for one form is always the same text', () => {
+  // The plan's keys keep their usual order (w, r, then f), and a box written
+  // over a key stays where that key was; only a box the plan lacks is added last.
+  it('a bad withdrawal amount is written where the plan has its withdrawal', () => {
+    assert.equal(publishableForm(formWith({ withdrawal: '7x', feePct: '0.25' }), 'EUR'), 'w=NaN&f=0.25');
+    assert.equal(publishableForm(formWith({ withdrawal: '', withdrawYears: '25', feePct: '0.25' }), 'EUR'), 'w=&r=25&f=0.25');
+  });
+
+  it('bad years of withdrawing follow the plan, which has the years it starts with', () => {
+    assert.equal(publishableForm(formWith({ withdrawal: '20000', withdrawYears: '12.5', feePct: '0.25' }), 'EUR'), 'w=20000&f=0.25&r=12.5');
   });
 });
