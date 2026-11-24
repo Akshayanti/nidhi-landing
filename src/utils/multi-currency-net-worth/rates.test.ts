@@ -17,6 +17,11 @@ describe('ratesRequestUrl', () => {
     }
   });
 
+  it('asks Frankfurter, at this address and no other', () => {
+    assert.equal(ratesRequestUrl('EUR'), 'https://api.frankfurter.dev/v2/rates?base=EUR');
+    assert.equal(ratesRequestUrl('INR'), 'https://api.frankfurter.dev/v2/rates?base=INR');
+  });
+
   it('builds no address for anything that is not one of them', () => {
     for (const base of ['', 'ZZZ', 'eur', 'EUR&base=USD#', 'EUR ', '<b>x</b>', 'E'.repeat(3000)]) {
       assert.equal(ratesRequestUrl(base), null, base.slice(0, 20));
@@ -60,5 +65,15 @@ describe('ratesErrorReason', () => {
     assert.equal(httpErrorReason(429), 'http_4xx');
     assert.equal(httpErrorReason(503), 'http_5xx');
     assert.equal(httpErrorReason(302), 'http_other');
+  });
+
+  it('sorts a status by its hundred, to the edge of each range', () => {
+    assert.equal(httpErrorReason(399), 'http_other');
+    assert.equal(httpErrorReason(400), 'http_4xx');
+    assert.equal(httpErrorReason(499), 'http_4xx');
+    assert.equal(httpErrorReason(500), 'http_5xx');
+    assert.equal(httpErrorReason(599), 'http_5xx');
+    assert.equal(httpErrorReason(600), 'http_other');
+    assert.equal(httpErrorReason(0), 'http_other');
   });
 });

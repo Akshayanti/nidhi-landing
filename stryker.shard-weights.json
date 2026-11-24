@@ -1049,5 +1049,6 @@
       "function clamp(n: number, min: number, max: number): number {": 1.2,
       "export function decodeState(search: string): ToolState | null {": 43.6
     }
-  }
+  },
+  "net-worth": {}
 }

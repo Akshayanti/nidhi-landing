@@ -20,8 +20,13 @@ import {
   unreadableCount,
   formatPct,
   getCurrencyLabel,
+  netTotal,
+  rateGap,
+  type AggregationResult,
   type AssetRow,
+  type CurrencyPosition,
 } from './math.ts';
+import { CURRENCIES } from '../loan/math.ts';
 import { format } from '../../i18n/format.ts';
 import {
   multiCurrencyNetWorthEn,
@@ -756,5 +761,354 @@ describe('a holding in another currency when net worth is zero or negative', () 
     assert.notEqual(positive.positions.find((p) => p.code === 'USD')!.riskLevel, 'unbanded');
     const owing = aggregate([{ name: 'Loan', value: '5000', currency: 'USD', type: 'liability' }, { name: 'Cash', value: '1000', currency: 'EUR', type: 'asset' }], 'EUR', rates);
     assert.equal(owing.positions.find((p) => p.code === 'USD')!.riskLevel, 'net-debt');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Figures worked out on paper. One euro buys 2 US dollars, 4 pounds and
+// 200 yen throughout, so every converted amount is a division by sight.
+// ---------------------------------------------------------------------------
+
+const ROUND = { EUR: 1, USD: 2, GBP: 4, JPY: 200 };
+const asset = (value: string, currency: string, name = ''): AssetRow => ({ name, value, currency, type: 'asset' });
+const debt = (value: string, currency: string, name = ''): AssetRow => ({ name, value, currency, type: 'liability' });
+const byCode = (result: AggregationResult, code: string): CurrencyPosition => result.positions.find((p) => p.code === code)!;
+
+/** Every order of a list, so a sorting rule is checked whatever order the rows were typed in. */
+function orders<T>(list: T[]): T[][] {
+  if (list.length <= 1) return [list];
+  return list.flatMap((item, i) => orders([...list.slice(0, i), ...list.slice(i + 1)]).map((rest) => [item, ...rest]));
+}
+
+describe('parseAmount', () => {
+  it('reads digits, with commas and spaces as grouping in any place', () => {
+    assert.equal(parseAmount('150000'), 150000);
+    assert.equal(parseAmount('1,00,000'), 100000);
+    assert.equal(parseAmount(' 1 500.25 '), 1500.25);
+    assert.equal(parseAmount('0'), 0);
+  });
+
+  it('gives no number for an empty box, or one that holds only spaces and commas', () => {
+    for (const value of ['', '   ', ',', ' , , ']) assert.ok(Number.isNaN(parseAmount(value)), JSON.stringify(value));
+  });
+
+  it('gives no number for a negative amount, text, or a number too large to hold', () => {
+    for (const value of ['-1', '-150000', 'abc', '€100', '1e999', 'Infinity']) assert.ok(Number.isNaN(parseAmount(value)), value);
+  });
+});
+
+describe('aggregate: the whole result, from sums written out', () => {
+  it('with nothing entered there is nothing but an empty list and a zero total', () => {
+    assert.deepEqual(aggregate([], 'EUR', ROUND), { positions: [], totalNetWorthFunctional: 0, hasRates: 'full' });
+    assert.deepEqual(aggregate([asset('', 'EUR'), asset('0', 'USD'), asset('abc', 'GBP')], 'EUR', ROUND), { positions: [], totalNetWorthFunctional: 0, hasRates: 'full' });
+    assert.deepEqual(aggregate([], 'EUR', null), { positions: [], totalNetWorthFunctional: 0, hasRates: 'none' });
+  });
+
+  it('converts each currency, totals them and states each share and band', () => {
+    // 600 euros; 400 dollars are 200 euros; 800 pounds are 200 euros: 1,000 in all.
+    const result = aggregate([asset('400', 'USD'), asset('1000', 'EUR'), debt('400', 'EUR'), asset('800', 'GBP')], 'EUR', ROUND);
+    assert.deepEqual(result, {
+      positions: [
+        { code: 'EUR', netAmountOriginal: 600, netAmountFunctional: 600, pctOfTotal: 60, isFunctional: true, riskLevel: 'functional', riskLabel: 'Your spending currency' },
+        { code: 'USD', netAmountOriginal: 400, netAmountFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
+        { code: 'GBP', netAmountOriginal: 800, netAmountFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
+      ],
+      totalNetWorthFunctional: 1000,
+      hasRates: 'full',
+      noShares: false,
+    });
+  });
+
+  it('with no rates it keeps each currency’s own amount, largest first, and converts, totals and bands nothing', () => {
+    // Sizes 5,000, 300 and 100: the debt is the largest.
+    for (const rows of orders([asset('100', 'EUR'), debt('5000', 'USD'), asset('300', 'GBP')])) {
+      assert.deepEqual(aggregate(rows, 'EUR', null), {
+        positions: [
+          { code: 'USD', netAmountOriginal: -5000, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: false, riskLevel: 'low', riskLabel: '', rateUnavailable: true },
+          { code: 'GBP', netAmountOriginal: 300, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: false, riskLevel: 'low', riskLabel: '', rateUnavailable: true },
+          { code: 'EUR', netAmountOriginal: 100, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: true, riskLevel: 'low', riskLabel: '' },
+        ],
+        totalNetWorthFunctional: 0,
+        hasRates: 'none',
+      });
+    }
+  });
+
+  it('puts the spending currency first and the others by the size of their share, whatever order the rows are in', () => {
+    // 50 euros; 600 dollars are 300; 1,600 pounds owed are -400; 110,000 yen are 550. Net worth 500.
+    const rows = [asset('50', 'EUR'), asset('600', 'USD'), debt('1600', 'GBP'), asset('110000', 'JPY')];
+    for (const order of orders(rows)) {
+      const result = aggregate(order, 'EUR', ROUND);
+      assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel]), [
+        ['EUR', 10, 'functional'],
+        ['JPY', (550 / 500) * 100, 'elevated'],
+        ['GBP', -80, 'net-debt'],
+        ['USD', 60, 'elevated'],
+      ]);
+      assert.equal(result.totalNetWorthFunctional, 500);
+    }
+  });
+
+  it('says a positive net worth has shares, and a zero or negative one has none', () => {
+    assert.equal(aggregate([asset('1', 'EUR')], 'EUR', ROUND).noShares, false);
+    assert.equal(aggregate([asset('100', 'EUR'), asset('100', 'USD')], 'EUR', ROUND).noShares, false);
+    assert.equal(aggregate([asset('100', 'EUR'), debt('200', 'USD')], 'EUR', ROUND).noShares, true, '100 less 100 is nothing');
+    assert.equal(aggregate([debt('100', 'EUR')], 'EUR', ROUND).noShares, true);
+  });
+});
+
+describe('aggregate: the bands', () => {
+  it('names each band in plain words', () => {
+    // Of 1,000: 100 is 10%, 300 is 30%, 500 is 50%, and the rest is euros.
+    const result = aggregate([asset('100', 'EUR'), asset('200', 'USD'), asset('1200', 'GBP'), asset('100000', 'JPY')], 'EUR', ROUND);
+    assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel, p.riskLabel]), [
+      ['EUR', 10, 'functional', 'Your spending currency'],
+      ['JPY', 50, 'elevated', 'Elevated exposure'],
+      ['GBP', 30, 'moderate', 'Moderate exposure'],
+      ['USD', 10, 'low', 'Low exposure'],
+    ]);
+    const owing = aggregate([asset('1000', 'EUR'), debt('200', 'USD')], 'EUR', ROUND);
+    assert.deepEqual([byCode(owing, 'USD').riskLevel, byCode(owing, 'USD').riskLabel], ['net-debt', 'Net debt in this currency']);
+  });
+
+  it('a share of exactly 20% is moderate and of exactly 40% is elevated: a band starts at its own number', () => {
+    // 400 dollars are 200 of 1,000.
+    const twenty = byCode(aggregate([asset('800', 'EUR'), asset('400', 'USD')], 'EUR', ROUND), 'USD');
+    assert.deepEqual([twenty.pctOfTotal, twenty.riskLevel], [20, 'moderate']);
+    // 800 dollars are 400 of 1,000.
+    const forty = byCode(aggregate([asset('600', 'EUR'), asset('800', 'USD')], 'EUR', ROUND), 'USD');
+    assert.deepEqual([forty.pctOfTotal, forty.riskLevel], [40, 'elevated']);
+    // 398 dollars are 199 of 1,000: 19.9%.
+    const under = byCode(aggregate([asset('801', 'EUR'), asset('398', 'USD')], 'EUR', ROUND), 'USD');
+    assert.deepEqual([under.pctOfTotal, under.riskLevel], [(199 / 1000) * 100, 'low']);
+  });
+
+  it('a currency whose rows net to nothing is no debt: it is low, at 0%', () => {
+    const usd = byCode(aggregate([asset('1000', 'EUR'), asset('100', 'USD'), debt('100', 'USD')], 'EUR', ROUND), 'USD');
+    assert.deepEqual([usd.netAmountOriginal, usd.pctOfTotal, usd.riskLevel, usd.riskLabel], [0, 0, 'low', 'Low exposure']);
+  });
+
+  it('amounts too large to add still get a band, the highest, never none', () => {
+    const usd = byCode(aggregate([asset('1e308', 'USD'), asset('1e308', 'USD'), asset('1', 'EUR')], 'EUR', ROUND), 'USD');
+    assert.equal(usd.netAmountOriginal, Infinity);
+    assert.deepEqual([usd.riskLevel, usd.riskLabel], ['elevated', 'Elevated exposure']);
+  });
+});
+
+describe('aggregate: net worth of zero or less', () => {
+  it('debts alone: each is its share of the debt, and no holding is unbanded', () => {
+    // 1,000 euros owed and 2,000 dollars owed, which are 1,000 euros: -2,000.
+    const result = aggregate([debt('1000', 'EUR'), debt('2000', 'USD')], 'EUR', ROUND);
+    assert.equal(result.totalNetWorthFunctional, -2000);
+    assert.deepEqual(result.positions.map((p) => [p.code, p.netAmountFunctional, p.pctOfTotal, p.riskLevel]), [
+      ['EUR', -1000, 50, 'functional'],
+      ['USD', -1000, 50, 'net-debt'],
+    ]);
+  });
+
+  it('a holding against a larger debt: the debt is over 100% of the negative total, the holding has no share', () => {
+    // 3,000 euros owed, 2,000 dollars held (1,000 euros): -2,000. The debt is 150% of it.
+    const result = aggregate([debt('3000', 'EUR'), asset('2000', 'USD')], 'EUR', ROUND);
+    assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel, p.riskLabel]), [
+      ['EUR', 150, 'functional', 'Your spending currency'],
+      ['USD', 0, 'unbanded', 'No share to work out'],
+    ]);
+  });
+
+  it('exactly zero: no share is worked out, and the holding in another currency is unbanded', () => {
+    // 1,000 euros owed and 2,000 dollars held, which are 1,000 euros.
+    const result = aggregate([debt('1000', 'EUR'), asset('2000', 'USD')], 'EUR', ROUND);
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel, p.riskLabel]), [
+      ['EUR', 0, 'functional', 'Your spending currency'],
+      ['USD', 0, 'unbanded', 'No share to work out'],
+    ]);
+  });
+
+  it('a currency that nets to nothing, or has no rate, has a share of plain zero and keeps its band', () => {
+    // 500 euros owed; dollars held and owed cancel; koruna have no rate.
+    const result = aggregate([debt('500', 'EUR'), asset('100', 'USD'), debt('100', 'USD'), asset('900', 'CZK')], 'EUR', ROUND);
+    assert.equal(result.totalNetWorthFunctional, -500);
+    for (const code of ['USD', 'CZK']) {
+      const pos = byCode(result, code);
+      // Not minus zero, which a number format writes as "-0".
+      assert.ok(Object.is(pos.pctOfTotal, 0), `${code} has ${Object.is(pos.pctOfTotal, -0) ? 'minus zero' : pos.pctOfTotal}`);
+      assert.deepEqual([pos.riskLevel, pos.riskLabel], ['low', 'Low exposure']);
+    }
+    assert.equal(byCode(result, 'CZK').rateUnavailable, true);
+  });
+});
+
+describe('concentrationShares: a debt larger than what is held', () => {
+  it('goes by the amounts, where the shares of net worth would say something else', () => {
+    // 200 euros owed and 100 euros' worth of dollars held: sizes 200 and 100 of 300,
+    // while as shares of the negative net worth they are 200% and nothing.
+    const shares = concentrationShares([
+      { code: 'EUR', netAmountFunctional: -200, pctOfTotal: 200 },
+      { code: 'USD', netAmountFunctional: 100, pctOfTotal: 0 },
+    ]);
+    assert.deepEqual([...shares], [['EUR', (200 / 300) * 100], ['USD', (100 / 300) * 100]]);
+  });
+});
+
+describe('netTotal', () => {
+  const total = (...amounts: number[]) => netTotal(amounts.map((netAmountFunctional) => ({ netAmountFunctional })));
+
+  it('adds the converted amounts', () => {
+    assert.equal(total(), 0);
+    assert.equal(total(600, 200, -300), 500);
+    assert.equal(total(-1000, -1000), -2000);
+  });
+
+  it('takes what adding can itself lose for zero, up to and including the stated bound', () => {
+    // Two amounts whose sizes add to 1, so the bound, 2 x 3 x epsilon x 1, is six epsilons.
+    const pair = (epsilons: number) => total(0.5 + (epsilons / 2) * Number.EPSILON, -(0.5 - (epsilons / 2) * Number.EPSILON));
+    assert.equal(pair(4), 0, 'four epsilons, inside the bound');
+    assert.equal(pair(6), 0, 'six epsilons, the bound itself');
+    assert.equal(pair(8), 8 * Number.EPSILON, 'eight epsilons, outside it');
+  });
+
+  it('takes the cent lost in converting for zero: 1,000 euros less 1,100 dollars at 1.1', () => {
+    assert.notEqual(1000 - 1100 / 1.1, 0, 'the plain sum leaves a residue');
+    assert.equal(total(1000, -1100 / 1.1), 0);
+  });
+
+  it('keeps a small difference that is real', () => {
+    assert.equal(total(1e15, -(1e15 - 1000)), 1000);
+  });
+});
+
+describe('rateGap', () => {
+  const position = (code: string, more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
+    code, netAmountOriginal: 100, netAmountFunctional: 100, pctOfTotal: 50, isFunctional: code === 'EUR', riskLevel: 'low', riskLabel: '', ...more,
+  });
+  const result = (hasRates: AggregationResult['hasRates'], ...positions: CurrencyPosition[]): AggregationResult => ({ positions, totalNetWorthFunctional: 0, hasRates });
+  const missing = { rateUnavailable: true };
+
+  it('is none when everything is in the spending currency, whatever the result says of rates', () => {
+    for (const hasRates of ['full', 'partial', 'none'] as const) {
+      assert.equal(rateGap(result(hasRates, position('EUR')), 'EUR', true), null, hasRates);
+      assert.equal(rateGap(result(hasRates, position('EUR')), 'EUR', false), null, hasRates);
+    }
+  });
+
+  it('is none with nothing entered', () => {
+    assert.equal(rateGap(result('none'), 'EUR', true), null);
+    assert.equal(rateGap(result('full'), 'EUR', true), null);
+  });
+
+  it('is "all" when every other currency lacks its rate, and "some" when only some do', () => {
+    assert.equal(rateGap(result('none', position('EUR'), position('USD', missing), position('GBP', missing)), 'EUR', true), 'all');
+    assert.equal(rateGap(result('partial', position('USD', missing)), 'EUR', true), 'all');
+    assert.equal(rateGap(result('partial', position('EUR'), position('USD'), position('GBP', missing)), 'EUR', true), 'some');
+    assert.equal(rateGap(result('full', position('EUR'), position('USD')), 'EUR', true), null);
+  });
+
+  it('is never "all" for a view without amounts, which has no original amounts to fall back on', () => {
+    assert.equal(rateGap(result('partial', position('EUR'), position('USD', missing)), 'EUR', false), 'some');
+    assert.equal(rateGap(result('none', position('EUR'), position('USD', missing)), 'EUR', false), null);
+  });
+});
+
+describe('parseCSV: which separator a file uses', () => {
+  const names = (text: string) => parseCSV(text).rows.map((r) => [r.name, r.value, r.currency]);
+
+  it('a comma file may hold a semicolon or a tab inside a name', () => {
+    assert.deepEqual(names('Flat; garage,250000,EUR,asset'), [['Flat; garage', '250000', 'EUR']]);
+    assert.deepEqual(names('Flat\tgarage,250000,EUR'), [['Flat\tgarage', '250000', 'EUR']]);
+    assert.deepEqual(names('A\tB\tC,1000,EUR'), [['A\tB\tC', '1000', 'EUR']], 'as many tabs as commas is still a comma file');
+  });
+
+  it('a semicolon file may hold as many tabs as semicolons', () => {
+    assert.deepEqual(names('Flat\tA\tB;1000;EUR'), [['Flat\tA\tB', '1000', 'EUR']]);
+  });
+
+  it('a tab file may hold a semicolon inside a name', () => {
+    assert.deepEqual(names('A;B\t1000\tEUR'), [['A;B', '1000', 'EUR']]);
+  });
+
+  it('in a semicolon or tab file a point groups and a comma is the decimal mark; in a comma file it is the other way', () => {
+    assert.deepEqual(names('Flat;1.500;EUR\nCash;1,500;EUR'), [['Flat', '1500', 'EUR'], ['Cash', '1.5', 'EUR']]);
+    assert.deepEqual(names('Flat\t1.500\tEUR'), [['Flat', '1500', 'EUR']]);
+    assert.deepEqual(names('Flat,1.500,EUR\nCash,"1,500",EUR'), [['Flat', '1.5', 'EUR'], ['Cash', '1500', 'EUR']]);
+  });
+});
+
+describe('parseCSV: which first line is a header', () => {
+  it('a header that names value and currency is skipped even when it holds a digit', () => {
+    assert.deepEqual(parseCSV('Name,Value 2026,Currency,Type\nSavings,100,EUR,asset'), {
+      rows: [{ name: 'Savings', value: '100', currency: 'EUR', type: 'asset' }],
+      errors: [],
+    });
+    assert.deepEqual(parseCSV('NAME,VALUE 2026,CURRENCY\nSavings,100,EUR').errors, []);
+  });
+
+  it('a first row whose name holds the word value, or the word currency, is a row', () => {
+    assert.deepEqual(parseCSV('Value fund,1000,EUR').rows, [{ name: 'Value fund', value: '1000', currency: 'EUR', type: 'asset' }]);
+    assert.deepEqual(parseCSV('Currency account,500,USD').rows, [{ name: 'Currency account', value: '500', currency: 'USD', type: 'asset' }]);
+  });
+
+  it('a first line of two cells, an amount that cannot be read and a currency, is an error and not a header', () => {
+    const { rows, errors } = parseCSV('lots,EUR');
+    assert.deepEqual(rows, []);
+    assert.deepEqual(errors.map((e) => [e.line, e.reason, e.values]), [[1, 'invalidValue', { value: 'lots' }]]);
+  });
+});
+
+describe('parseCSV: lines and marks that are not data', () => {
+  it('skips lines that hold only spaces', () => {
+    assert.deepEqual(parseCSV('A,1,EUR\n   \n\t\nB,2,EUR'), {
+      rows: [
+        { name: 'A', value: '1', currency: 'EUR', type: 'asset' },
+        { name: 'B', value: '2', currency: 'EUR', type: 'asset' },
+      ],
+      errors: [],
+    });
+  });
+
+  it('takes a byte-order mark off the start of the file, and leaves the same character inside a name alone', () => {
+    assert.deepEqual(parseCSV('﻿Savings,100,EUR').rows.map((r) => r.name), ['Savings']);
+    assert.deepEqual(parseCSV('Sav﻿ings,100,EUR').rows.map((r) => r.name), ['Sav﻿ings']);
+  });
+
+  it('reads the page’s words for the two types with spaces around them', () => {
+    const words = { asset: [' Activo '], liability: ['  Pasivo'] };
+    assert.deepEqual(parseCSV('A,1,EUR,activo\nB,2,EUR,PASIVO', words).rows.map((r) => r.type), ['asset', 'liability']);
+  });
+});
+
+describe('parseCSV: what an error says', () => {
+  it('names every supported code after a currency it does not know', () => {
+    const [error] = parseCSV('Coins,5,XYZ').errors;
+    const codes = CURRENCIES.map((c) => c.code);
+    assert.equal(codes.length, 38);
+    assert.equal(error.values?.supported, codes.join(', '));
+    assert.match(error.values!.supported, /^AOA, AUD, .*, ZAR$/);
+    assert.equal(error.message, `“XYZ” is not a supported currency. Supported: ${codes.join(', ')}.`);
+  });
+
+  it('says which type it did not know', () => {
+    const [error] = parseCSV('Coins,5,EUR,Gift').errors;
+    assert.deepEqual([error.line, error.reason, error.values], [1, 'unknownType', { value: 'gift' }]);
+    assert.equal(error.message, '“gift” is not a type the tool knows. Use asset or liability.');
+  });
+});
+
+describe('decodeCsv: a browser without the Windows code page', () => {
+  it('keeps the UTF-8 reading, broken letters and all, rather than nothing', () => {
+    const Real = globalThis.TextDecoder;
+    class Utf8Only extends Real {
+      constructor(label?: string) {
+        if (label !== 'utf-8') throw new RangeError('unsupported');
+        super(label);
+      }
+    }
+    globalThis.TextDecoder = Utf8Only as typeof TextDecoder;
+    try {
+      // "Café" in Windows-1252: é is 0xE9, which is no UTF-8.
+      assert.equal(decodeCsv(Uint8Array.from([0x43, 0x61, 0x66, 0xe9])), 'Caf�');
+    } finally {
+      globalThis.TextDecoder = Real;
+    }
   });
 });
