@@ -176,7 +176,7 @@ describe('the chart, on a wide screen', () => {
     }
     {
       // has no living-off shade without withdrawals
-      assert.equal(document.querySelector('rect.mcs-phase'), null);
+      assert.ok(document.querySelector('rect.mcs-phase') === null);
     }
     {
       // a plan of a multiple of five years ends its table on it once
@@ -265,7 +265,7 @@ describe('the chart, on a wide screen', () => {
   it('leaves the name out where the years of living off it are too narrow', async () => {
     await drawPlan({ saveYears: 28, withdrawal: 20_000, withdrawYears: 2, paths: 100 });
     assert.ok(document.querySelector('rect.mcs-phase'));
-    assert.equal(document.querySelector('.mcs-phaseLabel'), null);
+    assert.ok(document.querySelector('.mcs-phaseLabel') === null);
   });
 
 });

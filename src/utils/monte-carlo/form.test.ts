@@ -2,6 +2,7 @@
  * The simulator's form as the language switch and links carry it (form.ts).
  * A bad box arrives bad and every choice arrives as it was made (#789).
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -209,7 +210,7 @@ describe('a box refused for its length says it cannot be read (#789)', () => {
     assert.equal(tooLongForLink('2000000'), false);
     assert.equal(tooLongForLink(''), false);
   });
-  it('such a box shows the unreadable words, not the range', async () => {
+  it('such a box shows the unreadable words, not the range', { skip: readsSource }, async () => {
     const { readFileSync } = await import('node:fs');
     const page = readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8');
     assert.match(page, /arrived \|\| tooLongForLink\(props\.value\) \? unreadable : error\}/);

@@ -74,11 +74,11 @@ describe('the results in words: saving', () => {
       // no saving and no withdrawals: nothing to spread, said once
       await retype(island.fields.saveYears, '0');
       assert.equal(heading().textContent, island.results.headingToday);
-      assert.equal(document.querySelector('.mcs-quick'), null);
-      assert.equal(document.querySelector('.mcs-cards'), null);
+      assert.ok(document.querySelector('.mcs-quick') === null);
+      assert.ok(document.querySelector('.mcs-cards') === null);
       assert.deepEqual(text('.mcs-note'), [island.results.empty]);
-      assert.equal(document.querySelector('.mcs-figure'), null);
-      assert.equal(document.querySelector('.mcs-tableWrap'), null);
+      assert.ok(document.querySelector('.mcs-figure') === null);
+      assert.ok(document.querySelector('.mcs-tableWrap') === null);
       assert.ok(screen.getByText(island.results.empty, { selector: '.tool-reportBlock p' }));
     }
   });

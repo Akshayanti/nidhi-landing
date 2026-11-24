@@ -15,11 +15,11 @@ describe('the choices: withdrawals, a currency and reset', () => {
     {
       // withdrawals switch on with their boxes, and are counted
       assert.ok(screen.getByText(island.withdraw.off));
-      assert.equal(screen.queryByLabelText(island.withdraw.amountLabel), null);
+      assert.ok(screen.queryByLabelText(island.withdraw.amountLabel) === null);
       const user = reader();
       await user.click(screen.getByRole('checkbox', { name: island.withdraw.toggle }));
       assert.deepEqual(events.at(-1), ['free_monte_carlo_withdrawal_toggled', { on: true }]);
-      assert.equal(screen.queryByText(island.withdraw.off), null);
+      assert.ok(screen.queryByText(island.withdraw.off) === null);
       assert.equal((screen.getByLabelText(island.withdraw.amountLabel) as HTMLInputElement).value, '30000');
       assert.equal((screen.getByLabelText(island.withdraw.yearsLabel) as HTMLInputElement).value, '30');
       await user.click(screen.getByRole('checkbox', { name: island.withdraw.toggle }));
@@ -33,7 +33,7 @@ describe('the choices: withdrawals, a currency and reset', () => {
       assert.ok(screen.getByLabelText(island.withdraw.amountLabel));
       delete w.posthog;
       await user.click(screen.getByRole('checkbox', { name: island.withdraw.toggle }));
-      assert.equal(screen.queryByLabelText(island.withdraw.amountLabel), null);
+      assert.ok(screen.queryByLabelText(island.withdraw.amountLabel) === null);
       w.posthog = {};
       await user.click(screen.getByRole('checkbox', { name: island.withdraw.toggle }));
       assert.ok(screen.getByLabelText(island.withdraw.amountLabel));

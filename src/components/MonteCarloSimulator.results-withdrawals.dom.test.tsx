@@ -17,7 +17,7 @@ describe('the results in words: withdrawals', () => {
       assert.equal(one('.mcs-lasted .mcs-note').textContent, 'Among the paths where it ran out, the median year it did so was year 21 of 30.');
       assert.equal(one('.mcs-quick .mcs-quickRange').textContent, 'The money lasted all 30 years in 6 in 10 paths.');
       assert.equal(document.querySelector('.mcs-quickTitle'), null, 'no saving, no median of it');
-      assert.equal(document.querySelector('.mcs-cards'), null);
+      assert.ok(document.querySelector('.mcs-cards') === null);
     }
     {
       // nearly every path: more than 9 in 10, never all

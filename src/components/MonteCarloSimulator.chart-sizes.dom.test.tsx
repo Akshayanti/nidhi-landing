@@ -26,7 +26,7 @@ describe('the chart, on a phone', () => {
       assert.equal(H, p.bottom + Math.max(50, Math.ceil((2.6 + 1.2) * 14)));
       assert.equal(svg().getAttribute('class'), 'mcs-chart mcs-chart--narrow');
       assert.equal(one('.mcs-chartBox').getAttribute('class'), 'mcs-chartBox mcs-chartBox--scrub');
-      assert.equal(document.querySelector('.mcs-swipe'), null);
+      assert.ok(document.querySelector('.mcs-swipe') === null);
       assert.equal(document.querySelectorAll('.mcs-endLabel text').length, 0);
       assert.equal(document.querySelectorAll('.mcs-leader').length, 0);
       const ends = [exact.bands[30].p90, exact.bands[30].p50, exact.bands[30].p10];
@@ -111,7 +111,7 @@ describe('the chart at larger text', () => {
         assert.equal(Number(lines[1].getAttribute('dy')), Math.round(1.2 * fs * 10) / 10);
         const H = viewBox()[3];
         assert.equal(H - p.bottom, Math.max(50, Math.ceil((2.6 + 1.2 * lines.length) * fs)));
-        assert.equal(document.querySelector('.mcs-phaseLabel'), null);
+        assert.ok(document.querySelector('.mcs-phaseLabel') === null);
       });
     });
   });

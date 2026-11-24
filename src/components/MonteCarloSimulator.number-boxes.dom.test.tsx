@@ -17,7 +17,7 @@ describe('the number boxes', () => {
       // the export buttons say why they wait while a box is wrong, and not while a result settles
       const xlsx = screen.getByRole('button', { name: t.export.spreadsheet });
       assert.equal(xlsx.getAttribute('aria-disabled'), null);
-      assert.equal(screen.queryByText(t.export.notReady), null);
+      assert.ok(screen.queryByText(t.export.notReady) === null);
       const box = screen.getByLabelText(island.fields.start);
       await user.type(box, '1');
       assert.equal(xlsx.getAttribute('aria-disabled'), 'true');
@@ -25,7 +25,7 @@ describe('the number boxes', () => {
       await user.type(box, 'x');
       assert.ok(screen.getByText(t.export.notReady));
       await retype(island.fields.start, '50000');
-      assert.equal(screen.queryByText(t.export.notReady), null);
+      assert.ok(screen.queryByText(t.export.notReady) === null);
     }
     {
       // out of range says the range, in the page’s number style
@@ -50,7 +50,7 @@ describe('the number boxes', () => {
       assert.ok(one('.mcs-quick').classList.contains('tool-withheld'));
       assert.equal(one('.mcs-results .tool-resultReason').textContent, island.actions.fix);
       assert.equal(one('.mcs-actions [role="status"]').textContent, '');
-      assert.equal(document.querySelector('.tool-report'), null);
+      assert.ok(document.querySelector('.tool-report') === null);
       await settle(1_050);
       assert.equal(one('.mcs-actions .chart-srOnly').textContent, island.actions.fix);
       await typeInto(island.fields.saveYears, '20');

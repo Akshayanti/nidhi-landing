@@ -22,7 +22,7 @@ describe('large runs, on the page', () => {
       await runDone();
       assert.equal(one('.mcs-actions [role="status"]').textContent, '');
       assert.equal(results().getAttribute('aria-busy'), 'false');
-      assert.equal(screen.queryByText(t.export.notReady), null);
+      assert.ok(screen.queryByText(t.export.notReady) === null);
       assert.ok(one('.mcs-caveat').textContent?.includes('shares of 100,000 simulated paths'));
     }
     {

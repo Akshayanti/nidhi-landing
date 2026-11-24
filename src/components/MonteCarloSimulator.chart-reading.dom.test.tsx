@@ -16,7 +16,7 @@ describe('reading a year off the chart', () => {
 
   it('arrow keys step through the years, and say each one', async () => {
     const { exact, worded } = await drawPlan({ saveYears: 3, withdrawal: 20_000, withdrawYears: 4, paths: 100 });
-    assert.equal(readoutTitle(), null);
+    assert.ok(readoutTitle() === null);
     assert.equal(announced(), '');
     assert.ok(document.querySelector('.chart-readoutSlot') === null);
     press('ArrowRight');
@@ -58,7 +58,7 @@ describe('reading a year off the chart', () => {
     press('ArrowLeft');
     assert.equal(readoutTitle()?.firstChild?.textContent, 'Year 0', 'and at the first');
     press('Escape');
-    assert.equal(readoutTitle(), null);
+    assert.ok(readoutTitle() === null);
     assert.equal(announced(), '');
     press('ArrowLeft');
     assert.equal(readoutTitle()?.firstChild?.textContent, 'Year 7', 'left from nothing starts at the end');
@@ -71,7 +71,7 @@ describe('reading a year off the chart', () => {
       // other keys leave it alone, and the arrows keep the page from scrolling
       const ignored = fireEvent.keyDown(box(), { key: 'a' });
       assert.equal(ignored, true);
-      assert.equal(readoutTitle(), null);
+      assert.ok(readoutTitle() === null);
       const handled = fireEvent.keyDown(box(), { key: 'ArrowRight' });
       assert.equal(handled, false);
       const escape = fireEvent.keyDown(box(), { key: 'Escape' });
@@ -80,7 +80,7 @@ describe('reading a year off the chart', () => {
     {
       // a plan without withdrawals names no phase
       press('End');
-      assert.equal(document.querySelector('.chart-readoutTag'), null);
+      assert.ok(document.querySelector('.chart-readoutTag') === null);
       const b = worded.bands[4];
       assert.equal(announced(), `Year 4. High ${money(b.p90)}, middle half ${money(b.p25)} to ${money(b.p75)}, median ${money(b.p50)}, low ${money(b.p10)}, single line ${money(worded.straightLine[4])}.`);
       press('Escape');
@@ -108,18 +108,18 @@ describe('reading a year off the chart', () => {
       // leaving the chart, by focus or by mouse, puts the read-out away; a finger lifting does not
       press('ArrowRight');
       fireEvent.blur(box());
-      assert.equal(readoutTitle(), null);
+      assert.ok(readoutTitle() === null);
       press('ArrowRight');
       fireEvent.pointerLeave(one('.mcs-figure'), { pointerType: 'touch' });
       assert.ok(readoutTitle());
       fireEvent.pointerLeave(one('.mcs-figure'), { pointerType: 'mouse' });
-      assert.equal(readoutTitle(), null);
+      assert.ok(readoutTitle() === null);
     }
     {
       // Escape anywhere puts the read-out away
       press('ArrowRight');
       fireEvent.keyDown(window, { key: 'Escape' });
-      assert.equal(readoutTitle(), null);
+      assert.ok(readoutTitle() === null);
     }
   });
 
@@ -164,10 +164,10 @@ describe('reading a year off the chart', () => {
         fireEvent.pointerMove(s, { pointerType: 'mouse', clientX: p.right + 11 });
         assert.equal(readoutTitle()?.firstChild?.textContent, 'Year 10');
         fireEvent.pointerMove(s, { pointerType: 'mouse', clientX: p.x - 13 });
-        assert.equal(readoutTitle(), null);
+        assert.ok(readoutTitle() === null);
         fireEvent.pointerMove(s, { pointerType: 'mouse', clientX: at(2) });
         fireEvent.pointerMove(s, { pointerType: 'mouse', clientX: p.right + 13 });
-        assert.equal(readoutTitle(), null);
+        assert.ok(readoutTitle() === null);
       }
       {
         // reads the same year when the chart is drawn at another size or place
