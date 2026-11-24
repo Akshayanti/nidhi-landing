@@ -34,6 +34,7 @@ import {
   canonicalLumpSums,
   displayLumpSums,
   STATE_KEY_PATTERN,
+  SHARED_STATE_GLOBAL,
 } from './url.ts';
 
 /** Test helper: build a GlobalState that differs from default only in
@@ -963,5 +964,301 @@ describe('an unreadable box never arrives as a valid one (#789)', () => {
     assert.equal(canonicalLumpSums('12:5000;24:7x', 'en'), '12:5000;24:NaN');
     assert.equal(canonicalLumpSums('Alice', 'en'), 'NaN');
     assert.equal(canonicalLumpSums('12.:150.000', 'cs'), 'NaN:150000');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// What a link carries and what it refuses, value by value
+// ---------------------------------------------------------------------------
+
+/** An offer as a short or old link reads it: the slot's own starting values. */
+function slotOffer(name: string, annualRatePct: string, feeMajor: string): VendorInput {
+  return {
+    name,
+    principal: '250000',
+    annualRatePct,
+    modeKind: 'term',
+    termMonths: '360',
+    monthlyPayment: '',
+    feeMajor,
+    extraMonthly: '0',
+    rateKind: 'fixed',
+    initialFixedMonths: '60',
+    subsequentRatePct: '',
+    rateChangeKeeps: 'term',
+    pointsCostMajor: '0',
+    pointsRateReductionPct: '0',
+    lumpSumsEncoded: '',
+    prepayPenaltyPct: '0',
+    prepayPenaltyUntilMonth: '0',
+  };
+}
+
+const UNTOUCHED_VIEWS: GlobalState = {
+  currency: 'EUR',
+  activeTab: 'charts',
+  horizonMonths: '60',
+  refiVendorIndex: '1',
+  refiAtMonth: '36',
+  refiNewRatePct: '4.0',
+  refiNewTermMonths: '360',
+  refiNewFeeMajor: '0',
+  refiRollFee: false,
+};
+
+describe('what a link leaves out is read as these values', () => {
+  it('a link that only says "five offers" opens the five slots with their own rates and fees', () => {
+    const { vendors, currency, global } = decodeFromQueryString('n=5');
+    assert.deepEqual(vendors, [
+      slotOffer('Vendor A', '6.5', '0'),
+      slotOffer('Vendor B', '6.0', '2500'),
+      slotOffer('Vendor C', '5.75', '4000'),
+      slotOffer('Vendor D', '5.5', '5000'),
+      slotOffer('Vendor E', '5.25', '6000'),
+    ]);
+    assert.equal(currency, null);
+    assert.deepEqual(global, UNTOUCHED_VIEWS);
+  });
+
+  it('a link that carries only a name keeps the slot’s amount, rate, term and fee', () => {
+    const { vendors } = decodeFromQueryString('v1=Bank&v2=Other');
+    assert.deepEqual(vendors, [
+      { ...slotOffer('Vendor A', '6.5', '0'), name: 'Bank' },
+      { ...slotOffer('Vendor B', '6.0', '2500'), name: 'Other' },
+    ]);
+  });
+
+  it('no state at all is the page’s starting example: two offers, neither with a fee', () => {
+    const { vendors, currency, global } = decodeFromQueryString('');
+    assert.deepEqual(vendors, [slotOffer('Vendor A', '6.5', '0'), slotOffer('Vendor B', '6.0', '0')]);
+    assert.equal(currency, null);
+    assert.deepEqual(global, UNTOUCHED_VIEWS);
+  });
+
+  it('a link with any state reads offer B against its slot, fee included, as links made before the fee was dropped need', () => {
+    assert.equal(decodeFromQueryString('h=120').vendors[1].feeMajor, '2500');
+  });
+});
+
+describe('what a link writes', () => {
+  it('the starting example, in full', () => {
+    assert.equal(
+      encodeToQueryString(DEFAULT_VENDORS, DEFAULT_GLOBAL_STATE),
+      'v1=Vendor+A~250000~6.5~~360~~0~0&v2=Vendor+B~250000~6.0~~360~~0~0',
+    );
+  });
+
+  it('every field of an offer and of the two views, each under its own key', () => {
+    const offer: VendorInput = {
+      name: 'Bank One',
+      principal: '180000',
+      annualRatePct: '4.2',
+      modeKind: 'payment',
+      termMonths: '',
+      monthlyPayment: '1200',
+      feeMajor: '750',
+      extraMonthly: '50',
+      rateKind: 'hybrid',
+      initialFixedMonths: '84',
+      subsequentRatePct: '5.9',
+      rateChangeKeeps: 'payment',
+      pointsCostMajor: '500',
+      pointsRateReductionPct: '0.25',
+      lumpSumsEncoded: '12:5000;36:3000',
+      prepayPenaltyPct: '2',
+      prepayPenaltyUntilMonth: '24',
+    };
+    const views: GlobalState = {
+      currency: 'INR',
+      activeTab: 'refi',
+      horizonMonths: '84',
+      refiVendorIndex: '3',
+      refiAtMonth: '24',
+      refiNewRatePct: '3.5',
+      refiNewTermMonths: '240',
+      refiNewFeeMajor: '1500',
+      refiRollFee: true,
+    };
+    const link = encodeToQueryString([offer, makeDefaultVendor(1), makeDefaultVendor(2)], views);
+    assert.equal(
+      link,
+      'c=INR&n=3&t=refi&h=84&rv=3&ra=24&rr=3.5&rt=240&rf=1500&rl=1'
+        + '&v1=Bank+One~180000~4.2~payment~-~1200~750~50'
+        + '&v1_rk=hybrid&v1_if=84&v1_sr=5.9&v1_rc=p&v1_pc=500&v1_pr=0.25&v1_ls=12%3A5000%3B36%3A3000&v1_pp=2&v1_pu=24'
+        + '&v2=Vendor+B~250000~6.0~~360~~2500~0'
+        + '&v3=Vendor+C~250000~5.75~~360~~4000~0',
+    );
+    // And it opens as it was sent.
+    const back = decodeFromQueryString(link);
+    assert.deepEqual(back.vendors, [offer, slotOffer('Vendor B', '6.0', '2500'), slotOffer('Vendor C', '5.75', '4000')]);
+    assert.deepEqual(back.global, views);
+    assert.equal(back.currency, 'INR');
+  });
+
+  it('every key a link writes is one the guard takes out of the address', () => {
+    const key = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    const offer: VendorInput = {
+      ...makeDefaultVendor(4),
+      rateKind: 'hybrid',
+      initialFixedMonths: '84',
+      subsequentRatePct: '5.9',
+      rateChangeKeeps: 'payment',
+      pointsCostMajor: '500',
+      pointsRateReductionPct: '0.25',
+      lumpSumsEncoded: '12:5000',
+      prepayPenaltyPct: '2',
+      prepayPenaltyUntilMonth: '24',
+    };
+    const vendors = [0, 1, 2, 3, 4].map(() => offer);
+    const link = encodeToQueryString(vendors, {
+      currency: 'INR', activeTab: 'how', horizonMonths: '84', refiVendorIndex: '5', refiAtMonth: '24',
+      refiNewRatePct: '3.5', refiNewTermMonths: '240', refiNewFeeMajor: '1500', refiRollFee: true,
+    });
+    const keys = [...new URLSearchParams(link).keys()];
+    // 10 for the page and its views, and a tuple with 9 optional fields for each of 5 offers.
+    assert.equal(keys.length, 10 + 5 * 10);
+    for (const k of keys) assert.ok(key.test(k), k);
+    // The pattern is one parameter name, whole: it does not take a campaign tag or an unrelated key.
+    for (const other of ['utm_source', 'v', 'v1_', 'v1_abc', 'cc', 'x']) assert.ok(!key.test(other), other);
+  });
+
+  it('a hyphen typed into a box is not the mark of an emptied one: it travels as unreadable', () => {
+    const vendors = [{ ...makeDefaultVendor(0), principal: '-', pointsCostMajor: '-' }, makeDefaultVendor(1)];
+    const link = encodeToQueryString(vendors, withGlobal({ horizonMonths: '-' }));
+    assert.equal(link, 'h=NaN&v1=Vendor+A~NaN~6.5~~360~~0~0&v1_pc=NaN&v2=Vendor+B~250000~6.0~~360~~2500~0');
+    const back = decodeFromQueryString(link);
+    assert.equal(back.vendors[0].principal, 'NaN');
+    assert.equal(back.vendors[0].pointsCostMajor, 'NaN');
+    assert.equal(back.global.horizonMonths, 'NaN');
+  });
+
+  it('emptied boxes are written as the mark, wherever the default is not empty', () => {
+    const emptied = { ...makeDefaultVendor(0), initialFixedMonths: '', pointsCostMajor: '', pointsRateReductionPct: '', prepayPenaltyPct: '', prepayPenaltyUntilMonth: '' };
+    const link = encodeToQueryString(
+      [emptied, makeDefaultVendor(1)],
+      withGlobal({ horizonMonths: '', refiAtMonth: '', refiNewRatePct: '', refiNewTermMonths: '', refiNewFeeMajor: '' }),
+    );
+    assert.equal(
+      link,
+      'h=-&ra=-&rr=-&rt=-&rf=-&v1=Vendor+A~250000~6.5~~360~~0~0&v1_if=-&v1_pc=-&v1_pr=-&v1_pp=-&v1_pu=-&v2=Vendor+B~250000~6.0~~360~~2500~0',
+    );
+  });
+
+  it('a lump-sum box holding only separators writes nothing', () => {
+    for (const typed of [';', ' ; ', ' ']) {
+      const link = encodeToQueryString([{ ...makeDefaultVendor(0), lumpSumsEncoded: typed }, makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+      assert.equal(link, 'v1=Vendor+A~250000~6.5~~360~~0~0&v2=Vendor+B~250000~6.0~~360~~2500~0', JSON.stringify(typed));
+    }
+  });
+});
+
+describe('what a link is read as, at the edges', () => {
+  it('a stated count of two wins over a third offer in the link', () => {
+    const { vendors } = decodeFromQueryString('n=2&v1=A~1~1&v2=B~1~1&v3=C~1~1');
+    assert.deepEqual(vendors.map((v) => v.name), ['A', 'B']);
+  });
+
+  it('a count the link does not state is the highest offer it carries', () => {
+    for (const [qs, count] of [['v2=B~1~1', 2], ['v3=C~1~1', 3], ['v4=D~1~1', 4], ['v5=E~1~1', 5], ['v5=E~1~1&v3=C~1~1', 5], ['n=1&v4=D~1~1', 4]] as const) {
+      assert.equal(decodeFromQueryString(qs).vendors.length, count, qs);
+    }
+  });
+
+  it('a count is rounded to a whole number of offers', () => {
+    assert.equal(decodeFromQueryString('n=3.4').vendors.length, 3);
+    assert.equal(decodeFromQueryString('n=3.5').vendors.length, 4);
+  });
+
+  it('the emptied mark in the lump-sum position reads as an empty box', () => {
+    assert.equal(decodeFromQueryString('v1_ls=-').vendors[0].lumpSumsEncoded, '');
+  });
+
+  it('an empty tab opens the first tab, and each known tab opens itself', () => {
+    assert.equal(decodeFromQueryString('t=&n=3').global.activeTab, 'charts');
+    for (const tab of ['charts', 'horizon', 'refi', 'how'] as const) {
+      assert.equal(decodeFromQueryString(`t=${tab}`).global.activeTab, tab);
+    }
+  });
+
+  it('the fee is rolled into the new loan only for the one known code', () => {
+    assert.equal(decodeFromQueryString('rl=1').global.refiRollFee, true);
+    for (const qs of ['rl=0', 'rl=true', 'rl=', 'h=120']) assert.equal(decodeFromQueryString(qs).global.refiRollFee, false, qs);
+  });
+
+  it('an old ?-style link is the same text, and reads the same', () => {
+    // ToolStateGuard hands over what stood after the "?" or the "#"; a leading "?" changes nothing.
+    const state = 'c=USD&n=3&v1=Bank~100000~5~payment~~900&v3_pp=2';
+    assert.deepEqual(decodeFromQueryString(`?${state}`), decodeFromQueryString(state));
+    const { vendors, currency } = decodeFromQueryString(`?${state}`);
+    assert.equal(currency, 'USD');
+    assert.equal(vendors.length, 3);
+    assert.deepEqual(vendors[0], { ...slotOffer('Bank', '5', '0'), principal: '100000', modeKind: 'payment', monthlyPayment: '900' });
+    assert.equal(vendors[2].prepayPenaltyPct, '2');
+  });
+
+  it('a number longer than any amount is marked, one at the limit arrives', () => {
+    assert.equal(decodeFromQueryString(`v1=A~${'9'.repeat(200)}`).vendors[0].principal, '9'.repeat(200));
+    assert.equal(decodeFromQueryString(`v1=A~${'9'.repeat(201)}`).vendors[0].principal, 'NaN');
+  });
+});
+
+describe('lump sums, at the edges', () => {
+  it('a number with no month is not a payment', () => {
+    assert.deepEqual(parseLumpSums('125'), []);
+    assert.deepEqual(parseLumpSums('12:5000;125'), [{ month: 12, amountMajor: 5000 }]);
+  });
+
+  it('the first month is a month like any other', () => {
+    assert.deepEqual(parseLumpSums('1:500'), [{ month: 1, amountMajor: 500 }]);
+    assert.equal(encodeLumpSums([{ month: 1, amountMajor: 500 }]), '1:500');
+    // A month before the first is none; part of a month counts as the month it is in.
+    assert.deepEqual(parseLumpSums('0.9:500'), []);
+    assert.equal(encodeLumpSums([{ month: 0.9, amountMajor: 500 }, { month: 2.9, amountMajor: 0.5 }]), '2:0.5');
+  });
+
+  it('entries that are not numbers are left out when written', () => {
+    assert.equal(
+      encodeLumpSums([
+        { month: NaN, amountMajor: 100 },
+        { month: Infinity, amountMajor: 100 },
+        { month: 3, amountMajor: NaN },
+        { month: 4, amountMajor: Infinity },
+        { month: 5, amountMajor: -1 },
+        { month: 6, amountMajor: 100 },
+      ]),
+      '6:100',
+    );
+    assert.deepEqual(parseLumpSums('x:100;3:y;Infinity:100;4:Infinity;6:100'), [{ month: 6, amountMajor: 100 }]);
+  });
+
+  it('a space after the last separator is nothing typed, not an unreadable pair', () => {
+    assert.equal(canonicalLumpSums('12:5000; ', 'en'), '12:5000;');
+    assert.equal(canonicalLumpSums(' ', 'en'), '');
+  });
+
+  it('the box shows an unreadable month as a question mark and a readable one as it is kept', () => {
+    assert.equal(displayLumpSums('NaN:5000', 'es'), '?:5000');
+    assert.equal(displayLumpSums('12:NaN', 'es'), '12:?');
+    assert.equal(displayLumpSums('NaN', 'es'), '?');
+    assert.equal(displayLumpSums('12.5:5000', 'es'), '12.5:5000');
+    // An amount whose month is missing is still written the page's way.
+    assert.equal(displayLumpSums(':2500.5', 'es'), ':2500,5');
+  });
+});
+
+describe('where the shared state is handed over', () => {
+  it('a window property with a name of the tool’s own, never an empty one', () => {
+    assert.match(SHARED_STATE_GLOBAL, /^__nidhi[A-Za-z]+$/);
+    assert.ok(SHARED_STATE_GLOBAL.includes('Loan'));
+  });
+});
+
+describe('an optional field with nothing in it', () => {
+  it('writes no key where its default is empty too, and none for a rate kind that is missing', () => {
+    // A rate kind is never empty on the page; a state restored from elsewhere could hold one.
+    const offer = { ...makeDefaultVendor(0), rateKind: '' as VendorInput['rateKind'], subsequentRatePct: '', lumpSumsEncoded: '' };
+    const link = encodeToQueryString([offer, makeDefaultVendor(1)], DEFAULT_GLOBAL_STATE);
+    assert.equal(link, 'v1=Vendor+A~250000~6.5~~360~~0~0&v2=Vendor+B~250000~6.0~~360~~2500~0');
+    assert.equal(decodeFromQueryString(link).vendors[0].rateKind, 'fixed');
   });
 });

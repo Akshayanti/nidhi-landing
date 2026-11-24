@@ -8,8 +8,11 @@ import assert from 'node:assert/strict';
 
 import {
   buildAdvancedFields,
+  comparisonWithheld,
   computeFromInput,
   computeNoPointsBaseline,
+  isUnreadable,
+  loanFromInput,
   parseNumber,
   unreadableOptionalFields,
   OPTIONAL_UNREADABLE,
@@ -670,5 +673,127 @@ describe('an optional box that cannot be read (issue 513)', () => {
   it('the message sorts under "other" in the tool’s analytics: none of its words is a reason of its own', () => {
     const lower = OPTIONAL_UNREADABLE.toLowerCase();
     for (const word of ['principal', 'payment', 'interest', 'rate', 'term', 'range']) assert.ok(!lower.includes(word), word);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The edges of reading an offer
+// ---------------------------------------------------------------------------
+
+describe('reading what was typed, at the edges', () => {
+  it('a number may start at its decimal point, with any number of digits after it', () => {
+    assert.equal(parseNumber('.5'), 0.5);
+    assert.equal(parseNumber('.25'), 0.25);
+    assert.equal(parseNumber('-.125'), -0.125);
+    assert.ok(Number.isNaN(parseNumber('.')));
+    // A quarter point typed without its zero is a rate reduction, not an unreadable box.
+    assert.deepEqual(unreadableOptionalFields(vendor({ pointsRateReductionPct: '.25' })), []);
+  });
+
+  it('a box holding only spaces is empty, not unreadable', () => {
+    assert.equal(isUnreadable('  '), false);
+    assert.equal(isUnreadable(''), false);
+    assert.equal(isUnreadable('0'), false);
+    assert.equal(isUnreadable('-1'), true);
+    assert.equal(isUnreadable('abc'), true);
+    assert.deepEqual(unreadableOptionalFields(vendor({ feeMajor: '  ', extraMonthly: ' ' })), []);
+  });
+
+  it('a space after the last lump-sum separator is not a pair that fails to read', () => {
+    assert.deepEqual(unreadableOptionalFields(vendor({ lumpSumsEncoded: '12:5000; ' })), []);
+    assert.deepEqual(unreadableOptionalFields(vendor({ lumpSumsEncoded: ' ; ' })), []);
+  });
+
+  it('the boxes of a changing rate are not on the page for a loan set by its payment, so they are not counted', () => {
+    const offer = vendor({ rateKind: 'hybrid', modeKind: 'payment', monthlyPayment: '1500', initialFixedMonths: 'five', subsequentRatePct: 'abc' });
+    assert.deepEqual(unreadableOptionalFields(offer), []);
+  });
+
+  it('with no points cost there is nothing for the fee to contradict, whatever the fee box holds', () => {
+    assert.equal(pointsCostAboveFee(vendor({ pointsCostMajor: '0', feeMajor: '-5' })), false);
+    assert.equal(pointsCostAboveFee(vendor({ pointsCostMajor: '-1', feeMajor: '-5' })), false);
+    assert.equal(pointsCostAboveFee(vendor({ pointsCostMajor: 'abc', feeMajor: '-5' })), false);
+    // A cost of any size against a fee that does not read is above it.
+    assert.equal(pointsCostAboveFee(vendor({ pointsCostMajor: '0.01', feeMajor: 'abc' })), true);
+  });
+
+  it('the points message carries the phrase the page finds its translation by', () => {
+    assert.ok(POINTS_ABOVE_FEE.toLowerCase().includes('points cost is more than the fee'), POINTS_ABOVE_FEE);
+    assert.ok(OPTIONAL_UNREADABLE.toLowerCase().includes('optional boxes cannot be read'), OPTIONAL_UNREADABLE);
+  });
+});
+
+describe('what the engine is given', () => {
+  it('a loan set by its term: amount, rate, fee and extra in minor units, the term in months', () => {
+    const offer = vendor({ principal: '200,000', annualRatePct: '5', modeKind: 'term', termMonths: '240', feeMajor: '1,250.50', extraMonthly: '100' });
+    assert.deepEqual(loanFromInput(offer, 'USD'), {
+      inputs: { principalMinor: 20_000_000, annualRate: 0.05, feeMinor: 125_050, extraMonthlyMinor: 10_000 },
+      mode: { kind: 'term', months: 240 },
+    });
+  });
+
+  it('a loan set by its payment: the payment in minor units, empty optional boxes as zero', () => {
+    const offer = vendor({ principal: '200000', annualRatePct: '5', modeKind: 'payment', termMonths: '', monthlyPayment: '1500', feeMajor: '', extraMonthly: '' });
+    assert.deepEqual(loanFromInput(offer, 'USD'), {
+      inputs: { principalMinor: 20_000_000, annualRate: 0.05, feeMinor: 0, extraMonthlyMinor: 0 },
+      mode: { kind: 'payment', monthlyMinor: 150_000 },
+    });
+    // Yen has no minor unit.
+    assert.deepEqual(loanFromInput({ ...offer, principal: '20000000', monthlyPayment: '70000' }, 'JPY').mode, { kind: 'payment', monthlyMinor: 70_000 });
+  });
+
+  it('a fixed-rate offer has no rate change, whatever its folded boxes still hold', () => {
+    const offer = vendor({ rateKind: 'fixed', initialFixedMonths: '60', subsequentRatePct: '7', rateChangeKeeps: 'payment' });
+    assert.deepEqual(buildAdvancedFields(offer, 'USD'), {});
+  });
+
+  it('a changing rate says what stays the same only when it is the payment', () => {
+    const offer = vendor({ annualRatePct: '5', rateKind: 'hybrid', initialFixedMonths: '60', subsequentRatePct: '7' });
+    assert.deepEqual(buildAdvancedFields({ ...offer, rateChangeKeeps: 'payment' }, 'USD'), {
+      rateSpec: { kind: 'hybrid', initialAnnualRate: 0.05, initialMonths: 60, subsequentAnnualRate: 0.07, keeps: 'payment' },
+    });
+    assert.deepEqual(buildAdvancedFields({ ...offer, rateChangeKeeps: 'term' }, 'USD'), {
+      rateSpec: { kind: 'hybrid', initialAnnualRate: 0.05, initialMonths: 60, subsequentAnnualRate: 0.07 },
+    });
+  });
+});
+
+describe('points with nothing to recover', () => {
+  // The fee covers the points, so only the rate reduction decides.
+  const offer = { principal: '300000', annualRatePct: '5', modeKind: 'term' as const, termMonths: '360', feeMajor: '5000', pointsCostMajor: '2000' };
+
+  it('no baseline for a reduction of zero, below zero or unreadable', () => {
+    for (const pointsRateReductionPct of ['0', '-0.25', 'abc', '']) {
+      assert.equal(computeNoPointsBaseline(vendor({ ...offer, pointsRateReductionPct }), 'USD'), null, pointsRateReductionPct);
+    }
+  });
+
+  it('the smallest reduction has one: the same loan at the higher rate, with the fee less the points', () => {
+    const baseline = computeNoPointsBaseline(vendor({ ...offer, pointsRateReductionPct: '0.25' }), 'USD');
+    const plain = computeFromInput(vendor({ ...offer, annualRatePct: '5.25', feeMajor: '3000', pointsCostMajor: '' }), 'USD');
+    assert.ok(baseline);
+    assert.equal(baseline.error, undefined);
+    assert.equal(baseline.feeMinor, 300_000);
+    // 300,000 over 360 months at 5.25%: 1,656.61 a month.
+    assert.equal(baseline.monthlyPaymentMinor, 165_661);
+    assert.equal(baseline.totalPaidMinor, plain.totalPaidMinor);
+  });
+});
+
+describe('either sign of an invalid offer withholds the comparison', () => {
+  const valid = computeFromInput(vendor({ principal: '10000', annualRatePct: '5', modeKind: 'term', termMonths: '12' }), 'EUR');
+
+  it('valid offers are compared', () => {
+    assert.equal(valid.schedule.length, 12);
+    assert.equal(comparisonWithheld([valid, valid]), false);
+    assert.equal(comparisonWithheld([]), false);
+  });
+
+  it('a message alone is enough, even beside a schedule', () => {
+    assert.equal(comparisonWithheld([valid, { ...valid, error: 'Enter a loan amount greater than zero.' }]), true);
+  });
+
+  it('an offer with no schedule is enough, even without a message', () => {
+    assert.equal(comparisonWithheld([{ ...valid, schedule: [] }, valid]), true);
   });
 });
