@@ -38,10 +38,11 @@ name: Inflation data refresh
 # A push made with GITHUB_TOKEN does not trigger other workflows
 # (workflow_dispatch and repository_dispatch are the exceptions GitHub
 # makes), so a pull request already open on the branch would get no checks
-# for the new commit. This workflow therefore starts PR Checks and the tool
-# privacy check on the branch by workflow_dispatch, under the same names main
-# requires, and links those runs in the issue. A pull request a person opens
-# starts its checks by itself.
+# for the new commit. This workflow therefore starts PR Checks on the branch
+# by workflow_dispatch, under the same names main requires, and links that
+# run in the issue. PR Checks runs the free tools suites itself (privacy,
+# mutation and text size, after the build), so nothing else is started. A
+# pull request a person opens starts its checks by itself.
 #
 # "dry_run" exercises all of this without the World Bank, from made-up data
 # built the same way every time (dryRunDataset): first a refresh that must be
@@ -263,9 +264,9 @@ jobs:
           fi
 
           # A push with GITHUB_TOKEN starts no checks, so they are started on
-          # the branch: a pull request already open on it shows them.
+          # the branch: a pull request already open on it shows them. PR
+          # Checks holds every required check, the free tools' included.
           gh workflow run pr-checks.yml --ref "$BRANCH"
-          gh workflow run tool-privacy.yml --ref "$BRANCH"
           run_url() {
             for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
               URL=$(gh run list --workflow "$1" --branch "$BRANCH" --event workflow_dispatch --limit 5 --json url,headSha --jq "[.[] | select(.headSha == \"$HEAD_SHA\")][0].url // empty")
@@ -275,7 +276,6 @@ jobs:
             return 1
           }
           CHECKS=$(run_url pr-checks.yml) || { echo "::error::PR Checks did not start on $HEAD_SHA."; exit 1; }
-          PRIVACY=$(run_url tool-privacy.yml) || { echo "::error::The tool privacy check did not start on $HEAD_SHA."; exit 1; }
-          write_body "Started by this workflow on commit $HEAD_SHA: [PR Checks]($CHECKS) and the [tool privacy check]($PRIVACY)."
+          write_body "Started by this workflow on commit $HEAD_SHA: [PR Checks]($CHECKS), the free tools checks included."
           gh issue edit "$NUMBER" --body-file "$BODY"
           echo "Issue #$NUMBER: checks started and linked."

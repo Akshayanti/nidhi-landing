@@ -12,27 +12,27 @@ lines, and its tests are the test files beside it or importing it.
 | Script | What it does | Run by | Tests |
 |---|---|---|---|
 | `audit-mobile.mjs` | Phone-width audit of every site page. | `npm run audit:mobile`, workflow "PR Checks" | none |
-| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools text size" | `lib/checks/check-inputs.test.mjs`, `repo-hygiene.test.mjs` |
+| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `repo-hygiene.test.mjs` |
 | `check-dist.mjs` | Checks the built site in dist/ (#361): canonical and hreflang links, the sitemap, internal links, leftover template text and the feeds. | `npm run check:dist`, workflow "PR Checks" | none |
 | `check-gs-versions.mjs` | Compares each deployed Apps Script with main (#443): asks its health action for the VERSION it runs and checks it against the hash of the file here. | workflow "Apps Script versions" | `gs-version.test.mjs` |
 | `deploy-trigger.gs` | Nidhi daily deploy trigger: Google Apps Script (no Web App). | pasted into Google Apps Script | `deploy-trigger.test.mjs` |
 | `fetch-inflation.mjs` | Refreshes the inflation calculator's history: World Bank indicator FP.CPI.TOTL.ZG (consumer price inflation, annual %) for every country. | workflow "Inflation data refresh" | `fetch-inflation.test.mjs` |
 | `gs-version.mjs` | Writes each Apps Script file's VERSION (scripts/lib/publishing/gs-version.mjs). | `npm run gs:check`, `npm run gs:version` | `gs-version.test.mjs` |
 | `indexnow.mjs` | IndexNow helper for the deploy pipeline. | workflow "Deploy to GitHub Pages" | `indexnow.test.mjs` |
-| `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | `lib/checks/check-inputs.test.mjs`, `lint-figures.test.mjs` |
-| `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | `lib/checks/check-inputs.test.mjs` |
+| `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs`, `lint-figures.test.mjs` |
+| `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
-| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools mutation" | none |
-| `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools mutation" | `repo-hygiene.test.mjs` |
-| `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools mutation" | none |
-| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools mutation" | none |
+| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools suite" | none |
+| `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools suite" | `repo-hygiene.test.mjs` |
+| `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools suite" | none |
+| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | none |
 | `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
 | `preview_transactional_emails.py` | Render HTML previews of the two transactional emails built by scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and the welcome email (`sendWelcomeEmail_`). | by hand | none |
 | `qr_svg.py` | Make a QR code for one URL, as a deterministic SVG file. | by hand | `test_qr_svg.py`, `src/utils/qr/encode.test.ts` |
 | `regenerate-captions.mjs` | Regenerate platform captions (.ig.txt / .tiktok.txt / .json) from saved reel plans without re-running TTS / Remotion. | by hand | none |
-| `render-email-figures.mjs` | Rasterise blog figures into email-ready PNGs. | `npm run build` (postbuild), `npm run render-email-figures`, workflow "Deploy to GitHub Pages", workflow "Free tools text size", workflow "PR Checks", workflow "Tool privacy check" | `lib/checks/check-inputs.test.mjs` |
+| `render-email-figures.mjs` | Rasterise blog figures into email-ready PNGs. | `npm run build` (postbuild), `npm run render-email-figures`, workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
 | `render-figures.mjs` | Rasterise blog figures into Instagram-ready PNGs. | `npm run render-figures` | none |
 | `render-guide-cards.mjs` | Renders each How-to guide's share image (the og:image a link preview shows) to public/brand/social/how-to/<slug>.png, 1200×630. | by hand | none |
 | `render-ig.js` | Unified Instagram renderer. | `npm run render-ig` | none |
@@ -52,7 +52,7 @@ lines, and its tests are the test files beside it or importing it.
 | `slides-to-reel.sh` | Turn a kit's rendered carousel slides into 9:16 story frames (one per slide) and a silent slideshow reel with slide-left transitions. | by hand | none |
 | `smoke-pages.mjs` | Every free tool, in every language it is published in, opened in a real browser from the built site (#363, #364). | `npm run smoke:pages`, workflow "PR Checks" | none |
 | `smoke-render.mjs` | End-to-end smoke test for the reel pipeline minus the LLM call. | by hand | none |
-| `verify-tool-privacy.mjs` | The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6, as a script: nothing a reader types into a free tool may reach PostHog. | `npm run verify:tool-privacy`, workflow "Tool privacy check" | `lib/checks/check-inputs.test.mjs`, `lib/checks/tool-privacy-checks.test.mjs` |
+| `verify-tool-privacy.mjs` | The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6, as a script: nothing a reader types into a free tool may reach PostHog. | `npm run verify:tool-privacy`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `lib/checks/tool-privacy-checks.test.mjs` |
 | `volunteer-form.gs` | Nidhi volunteer translators: Google Form builder (Google Apps Script). | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `review/review-text.test.mjs`, `volunteer-form.test.mjs` |
 | `volunteer-list.gs` | Nidhi volunteer beta-interest list: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs` |
 | `waitlist.gs` | Nidhi product-launch waitlist: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `server-events.test.mjs` |

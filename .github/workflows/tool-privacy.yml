@@ -1,34 +1,16 @@
 name: Tool privacy check
 
 # The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6:
-# nothing a reader types into a free tool may reach PostHog. It uses every
-# free tool in a real browser, in every language, on a phone-sized and a
-# laptop-sized window, with cookie consent declined and accepted, and reads
-# every request the page tries to send to PostHog (scripts/verify-tool-privacy.mjs).
+# nothing a reader types into a free tool may reach PostHog. Its jobs are in
+# tool-suite.yml (the privacy suite), with what they check and how nothing
+# reaches PostHog.
 #
-# Runs on every pull request, every night and by hand. A pull request that
-# changes only files the build and the check never read skips the tools (the
-# plan job, scripts/lib/checks/check-inputs.mjs).
-#
-# Nothing reaches PostHog. The build carries a dummy key that PostHog rejects
-# (PUBLIC_ANALYTICS_TEST=1), the script answers PostHog's settings request
-# itself, aborts every other request to PostHog, and starts Chrome unable to
-# resolve the ingestion host. Only the SDK's static scripts are downloaded.
-#
-# The run needs a window: PostHog does not send $pageleave from a headless
-# browser, so Chrome runs under xvfb.
-
-# The job is a REQUIRED status check on `main` (Settings -> Branches), so a
-# pull request with auto-merge on waits for it. The summary job runs on every
-# pull request, whatever that touches: a job skipped by `if:` reports
-# "skipped", which satisfies a required check, so it passes without the tools
-# only in the one case it names.
-# Renaming the "No typed value reaches analytics" job means changing the
-# required check in the same breath.
+# This workflow runs the suite every night and by hand, on every tool,
+# language, window size and consent state. Pull requests do not start it:
+# PR Checks (pr-checks.yml) runs the same suite on every pull request, after
+# the build, beside mutation and text size, and holds the required check "No
+# typed value reaches analytics".
 on:
-  # No branch filter, as in pr-checks.yml: a pull request stacked on another
-  # branch gets the privacy check before it is retargeted to main.
-  pull_request:
   schedule:
     # 03:41 UTC every day, away from the deploy and newsletter crons. GitHub
     # starts it hours later (see deploy.yml).
@@ -38,159 +20,28 @@ on:
 permissions:
   contents: read
 
+# The event is part of the group, so a manual run never cancels the nightly one.
 concurrency:
   group: tool-privacy-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Install scripts: every `npm ci` here fails if a dependency has an install
-# script that the project's package.json `allowScripts` does not cover (for
-# example a puppeteer bump whose pinned approval has not been updated). Only
-# CI is strict: in .npmrc it would stop Dependabot from opening those PRs at
-# all. See README "Install scripts".
-env:
-  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
-
 jobs:
-  # A pull request that changes only files the build and the check never read
-  # (scripts/lib/checks/check-inputs.mjs: docs, agent files, other workflows,
-  # the two root notes) builds the same site main already has, so the check
-  # is skipped and the summary job passes in that one case. Nightly and
-  # manual runs always check everything.
-  plan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      run: ${{ steps.inputs.outputs.run || 'true' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          # The base as well (HEAD^1 of the merge commit), to list what the
-          # pull request changes.
-          fetch-depth: 2
-
-      - name: Whether the pull request can change what the check sees
-        id: inputs
-        if: github.event_name == 'pull_request'
-        # Both ends of a move (--no-renames), NUL-separated (-z) so no name
-        # is quoted or split. Anything but a clear "false" checks every tool.
-        run: |
-          run=true
-          if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
-            run=$(node --input-type=module -e '
-              import { readFileSync } from "node:fs";
-              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
-              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
-            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-privacy.yml") || run=true
-          fi
-          [ "$run" = "false" ] || run=true
-          if [ "$run" = "false" ]; then echo "Only files the check never reads changed: the tools are skipped."; else echo "Every tool is checked."; fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-
-  # One job per tool, side by side: the same hundred runs as one long job
-  # (every tool, language, window size and consent state), in about a third
-  # of the time. Each job is whole in itself: its own test build, the planted
-  # leak for its tool, then that tool's twenty runs, both window sizes among
-  # them, so the script's rule that a tool shows both a rage click and a dead
-  # click across its runs still applies. The list is every tool under
-  # src/pages/free; a unit test (scripts/lib/checks/tool-privacy-checks.test.mjs)
-  # fails when a tool is missing here.
-  verify-tool:
-    name: 'Privacy check: ${{ matrix.tool }}'
-    needs: plan
-    if: ${{ !cancelled() && needs.plan.outputs.run == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      # A leak in one tool does not stop the others from reporting.
-      fail-fast: false
-      matrix:
-        tool:
-          - loan-comparison
-          - multi-currency-net-worth
-          - monte-carlo-simulator
-          - inflation-calculator
-          - invest-or-pay-off
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
-      # A test build: analytics run on localhost with a key PostHog rejects.
-      # No real key is ever given to this workflow.
-      - name: Build (test build)
-        run: npm run build
-        env:
-          PUBLIC_ANALYTICS_TEST: '1'
-
-      # The check checking itself: with a typed amount planted in an event,
-      # every run must fail. A check that cannot fail proves nothing.
-      - name: The check catches a planted leak
-        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --plant-leak --tool ${{ matrix.tool }} --locale en --viewport laptop --jobs 2 --dump tool-privacy-payloads
-
-      - name: Every language, window size and consent state
-        run: xvfb-run -a node scripts/verify-tool-privacy.mjs --tool ${{ matrix.tool }} --jobs 3 --dump tool-privacy-payloads
-
-      # The decoded payloads of a failed run, to see what was sent. They hold
-      # only the test's own made-up values.
-      - name: Keep the payloads of a failed run
-        if: failure()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: tool-privacy-payloads-${{ matrix.tool }}
-          path: tool-privacy-payloads
-          retention-days: 7
-          if-no-files-found: ignore
-
-  # The required check. It passes only when every tool's job passed.
-  #
-  # `always()` matters: a skipped job satisfies a required check. Without a
-  # status function GitHub skips this job when a job it needs has failed, and
-  # `!cancelled()` skips it when the run is cancelled before it starts; either
-  # way a leak would read as a pass. With `always()` it runs every time and
-  # passes only when every tool's job succeeded.
-  verify:
-    name: No typed value reaches analytics
-    needs: [plan, verify-tool]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Every tool's check passed
-        env:
-          PLAN: ${{ needs.plan.result }}
-          RUN: ${{ needs.plan.outputs.run }}
-          TOOLS: ${{ needs.verify-tool.result }}
-        run: |
-          echo "plan: $PLAN (run: $RUN), tools: $TOOLS"
-          # A pull request that changes nothing the check reads: the plan said
-          # so, and nothing ran. Only that exact case passes without the check.
-          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$TOOLS" = "skipped" ]; then
-            echo "Nothing the check reads changed: nothing to check."
-            exit 0
-          fi
-          if [ "$PLAN" != "success" ] || [ "$TOOLS" != "success" ]; then
-            echo "::error::A tool's privacy check did not pass (or did not run). See the 'Privacy check: <tool>' jobs."
-            exit 1
-          fi
+  # Its jobs show as "Tool privacy check / <job>". Every tool reports, even
+  # after one fails (the suite is fail-fast on pull requests only).
+  privacy:
+    name: Tool privacy check
+    uses: ./.github/workflows/tool-suite.yml
+    with:
+      suite: privacy
 
   # Nobody watches the nightly run, so one that failed or timed out opens an
   # issue, or adds to the one already open. The issue links the run and says
   # nothing of what was found: a weakness does not go in the public tracker
-  # (CLAUDE.md, "Private stays private").
+  # (CLAUDE.md, "Private stays private"). It is here, not in tool-suite.yml,
+  # so the suite never holds a token that can write: only this job, on a
+  # nightly run, can.
   alert:
-    needs: [verify-tool, verify]
+    needs: [privacy]
     if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
     runs-on: ubuntu-latest
     timeout-minutes: 5

@@ -184,7 +184,7 @@ describe('a run cancelled after the first pass wrote its results', () => {
 // The two scripts the workflow runs, on files in a temp folder: the note is
 // written before Stryker, and the recheck sets its outputs last or not at all.
 describe('the scripts around a Stryker run', () => {
-  const NAME = 'reports/stryker-incremental/inflation.json';
+  const NAME = 'reports/stryker-incremental/net-worth.json';
   const { NODE_TEST_CONTEXT: _, NODE_OPTIONS: __, ...clean } = process.env;
   const inFolder = (use) => {
     const dir = mkdtempSync(join(tmpdir(), 'nidhi-recheck-scripts-'));
@@ -193,7 +193,7 @@ describe('the scripts around a Stryker run', () => {
       const script = (name, env = {}) => {
         writeFileSync(join(dir, 'outputs'), '');
         const done = spawnSync(process.execPath, [join(ROOT, 'scripts', name)], {
-          cwd: dir, encoding: 'utf8', env: { ...clean, STRYKER_SCOPE: 'inflation', STRYKER_SHARD: '1/1', GITHUB_OUTPUT: join(dir, 'outputs'), ...env },
+          cwd: dir, encoding: 'utf8', env: { ...clean, STRYKER_SCOPE: 'net-worth', STRYKER_SHARD: '1/1', GITHUB_OUTPUT: join(dir, 'outputs'), ...env },
         });
         return { status: done.status, out: done.stdout + done.stderr, outputs: readFileSync(join(dir, 'outputs'), 'utf8') };
       };
@@ -207,7 +207,7 @@ describe('the scripts around a Stryker run', () => {
   const NOW = { 'src/a.test.ts': 'a', ...OLD };
 
   it('has one shard for the scope these tests name', () => {
-    assert.equal(JSON.parse(readFileSync(join(ROOT, 'stryker.shards.json'), 'utf8')).inflation, 1, 'if inflation is cut into shards, name a scope of one shard in these tests');
+    assert.equal(JSON.parse(readFileSync(join(ROOT, 'stryker.shards.json'), 'utf8'))['net-worth'], 1, 'if net worth is cut into shards, name a scope of one shard in these tests');
   });
 
   it('note the restored test files, take out the kill a new test file covers, and say how many', () => {

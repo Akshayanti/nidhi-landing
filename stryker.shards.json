@@ -2,7 +2,7 @@
   "monte-carlo": 3,
   "loan": 5,
   "shared": 5,
-  "inflation": 1,
+  "inflation": 2,
   "invest-or-pay-off": 2,
   "net-worth": 1
 }

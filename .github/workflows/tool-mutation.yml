@@ -1,31 +1,15 @@
 name: Free tools mutation
 
-# Mutation testing of the free tools (#790, #846), on every pull request,
-# every night and by hand. StrykerJS (stryker.config.mjs) mutates every
-# tool's logic and component, and the code they share; each scope's logic and
-# component are held on their own (never pooled) to their floors in
-# stryker.floors.json: the score measured when the gates landed, raised to 95
-# in each scope's own pull request, never lowered. A slow scope runs as
-# several shards at once (stryker.shards.json), and a pull request retests
-# only the mutants its changes reach, reusing the results of the last run on
-# main; the nightly run retests everything.
+# Mutation testing of the free tools (#790, #846). Its jobs are in
+# tool-suite.yml (the mutation suite), with how the shards, the earlier
+# results and the floors work.
 #
-# The text-size audit is its own workflow (tool-text-size.yml), so either can
-# run, or be cancelled, without the other.
-#
-# "Free tools: mutation" is a REQUIRED status check on `main`. The gate job
-# runs on every pull request. A pull request that changes only files no
-# mutation run reads (scripts/lib/checks/check-inputs.mjs: docs/, .claude/,
-# other workflows, README.md, CLAUDE.md) skips the shards and the floors, and
-# the gate passes because the plan job said so, never because a job was
-# skipped (owner, Nov 23, 2026). When the plan cannot tell, everything runs. Nightly and
-# manual runs always run everything. Renaming the gate means changing the
-# required check in the same breath (scripts/repo-hygiene.test.mjs holds the
-# name).
+# This workflow runs the suite every night and by hand (both retest
+# everything) and on every merge to main. Pull requests do not start it: PR
+# Checks (pr-checks.yml) runs the same suite on every pull request, after the
+# build, beside privacy and text size, and holds the required check "Free
+# tools: mutation".
 on:
-  # No branch filter, as in pr-checks.yml: a stacked pull request gets the
-  # gates before it is retargeted to main.
-  pull_request:
   # Every merge, so main holds results under its current fingerprint and a
   # pull request that changes only tests has something to start from on its
   # first push (#855). Not forced: it starts from main's own earlier results.
@@ -40,374 +24,29 @@ permissions:
   contents: read
 
 # The event is part of the group, so a manual run never cancels the nightly one.
-# A newer push to a pull request cancels its run in progress; each shard
-# still saves what it had finished (below). Every merge to main has a group
-# of its own (its run id): none is cancelled, and none waits in a queue,
-# where a later merge would replace it and its results would never be made.
+# Every merge to main has a group of its own (its run id): none is cancelled,
+# and none waits in a queue, where a later merge would replace it and its
+# results would never be made. (The pull request part of the group is left
+# from when pull requests started this workflow; it changes nothing now.)
 concurrency:
   group: tool-mutation-${{ github.event_name }}-${{ github.event_name == 'push' && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-env:
-  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
-
 jobs:
-  # The mutation shards to run, from stryker.shards.json: a slow scope runs
-  # on several runners at once (#846). And whether to run them: a pull
-  # request that changes no mutation input does not (`run` is 'false').
-  plan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      shards: ${{ steps.shards.outputs.shards }}
-      fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}
-      run: ${{ steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          # The base as well (HEAD^1 of the merge commit), to list what the
-          # pull request changes.
-          fetch-depth: 2
-
-      - name: Whether the pull request can change a score
-        id: inputs
-        if: github.event_name == 'pull_request'
-        # Both ends of a move (--no-renames), NUL-separated (-z) so no name
-        # is quoted or split. Anything but a clear "false" runs every shard.
-        run: |
-          run=true
-          if git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed"; then
-            run=$(node --input-type=module -e '
-              import { readFileSync } from "node:fs";
-              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
-              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
-            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-mutation.yml") || run=true
-          fi
-          [ "$run" = "false" ] || run=true
-          if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-
-      # The same question for a merge to main: what the push changed, from
-      # the commit main was at before it. A first push, a forced one or a
-      # commit that cannot be fetched runs every shard.
-      - name: Whether the push can change a score
-        id: pushed
-        if: github.event_name == 'push'
-        env:
-          BEFORE: ${{ github.event.before }}
-        run: |
-          run=true
-          if echo "$BEFORE" | grep -Eqx '[0-9a-f]{40}' && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
-            && git fetch --quiet --depth=1 origin "$BEFORE" \
-            && git diff --name-only --no-renames -z "$BEFORE" HEAD > "$RUNNER_TEMP/changed"; then
-            run=$(node --input-type=module -e '
-              import { readFileSync } from "node:fs";
-              import { changedPaths, needsRun } from "./scripts/lib/checks/check-inputs.mjs";
-              process.stdout.write(String(needsRun(changedPaths(readFileSync(process.argv[1], "utf8")), process.argv[2])));
-            ' "$RUNNER_TEMP/changed" ".github/workflows/tool-mutation.yml") || run=true
-          fi
-          [ "$run" = "false" ] || run=true
-          if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-
-      # What a shard's earlier results depend on, once for all shards
-      # (scripts/lib/checks/mutation-fingerprint.mjs): every tracked file but
-      # the test files the run starts, which Stryker compares itself, the
-      # lessons, and what no mutation run reads. A failure here fails the
-      # plan, and with it the gate.
-      - name: The fingerprint of what the shards run on
-        id: fingerprint
-        run: |
-          git ls-files -z > "$RUNNER_TEMP/tracked"
-          fingerprint=$(node --input-type=module -e '
-            import { readFileSync } from "node:fs";
-            import { fingerprint, trackedPaths } from "./scripts/lib/checks/mutation-fingerprint.mjs";
-            process.stdout.write(fingerprint(trackedPaths(readFileSync(process.argv[1], "utf8")), (path) => readFileSync(path)));
-          ' "$RUNNER_TEMP/tracked")
-          echo "$fingerprint" | grep -Eqx '[0-9a-f]{64}'
-          echo "fingerprint=$fingerprint" >> "$GITHUB_OUTPUT"
-
-      - name: List the shards
-        id: shards
-        run: |
-          node -e '
-            const shards = JSON.parse(require("fs").readFileSync("stryker.shards.json", "utf8"));
-            const list = Object.entries(shards).flatMap(([scope, n]) =>
-              Array.from({ length: n }, (_, i) => ({ scope, shard: i + 1, of: n, name: n === 1 ? scope : `${scope}-${i + 1}of${n}` })));
-            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, `shards=${JSON.stringify(list)}\n`);
-          '
-
+  # Its jobs show as "Free tools mutation / <job>". Every shard reports, even
+  # after one fails (the suite is fail-fast on pull requests only).
   mutation:
-    name: 'Mutation: ${{ matrix.name }}'
-    needs: plan
-    if: ${{ !cancelled() && needs.plan.outputs.run == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    strategy:
-      # Every shard reports, so one weak tool does not hide another.
-      fail-fast: false
-      matrix:
-        include: ${{ fromJSON(needs.plan.outputs.shards) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          # The base as well, for the tests that compare with it, as in the
-          # Tests job of pr-checks.yml: the first test run runs every test.
-          fetch-depth: 2
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
-      # The shard's earlier results (incremental mode, #846): a run starts
-      # from the latest results saved under the same fingerprint (this pull
-      # request's own, or main's) and retests only mutants whose code or
-      # tests changed. Stryker compares the code it mutates and the test
-      # files, and nothing else (code a tool imports from elsewhere, the
-      # dependencies, its own settings, the shards, Node, the test helpers,
-      # the data the tests read), so the plan job's fingerprint covers all of
-      # that, and the tools' own code too: a change to any of it starts the
-      # shard afresh. A change to test files alone keeps the earlier results.
-      # The nightly run retests everything (STRYKER_FORCE) and saves afresh.
-      - name: Earlier results
-        id: earlier
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-
-
-      # The earlier results that are never handed on: a mutant that timed
-      # out, or whose test run ended in an error. Stryker would keep such a
-      # result after the test that reached it is gone, and a timeout also
-      # depends on how long the whole test run takes to start, which any
-      # added test changes (#855). They are taken out here, so Stryker tests
-      # those mutants on every run (scripts/lib/checks/mutation-stale-results.mjs).
-      #
-      # The same step notes the test files of the restored results as they
-      # were (a hash of each one's source), in a file beside them that is
-      # never saved, for the recheck after the run (below). With nothing
-      # restored, or on a forced run, Stryker reuses nothing, and the note
-      # says so.
-      - name: Earlier timeouts and errors are tested again
-        env:
-          STRYKER_SCOPE: ${{ matrix.scope }}
-          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
-          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
-        run: node scripts/mutation-stale-results.mjs
-
-      # Fails on a failed first test run and on a shard that finds nothing
-      # to mutate. The score is judged in the floors job, over all shards.
-      - name: Mutation testing of ${{ matrix.name }}
-        env:
-          STRYKER_SCOPE: ${{ matrix.scope }}
-          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
-          STRYKER_CONCURRENCY: '4'
-          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
-          NEWSLETTER_ID_BASE: HEAD^1
-          PRIVACY_NOTICE_BASE: HEAD^1
-          FLOORS_BASE: HEAD^1
-        # `exec node`, not npx: when the run is cancelled the runner signals
-        # this process, and Stryker itself must be the one to hear it, to
-        # write what it has finished before it stops.
-        run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs
-
-      # The recheck of reused kills (#854,
-      # scripts/lib/checks/mutation-recheck.mjs). Stryker hands a Killed
-      # result on when a test that killed the mutant is unchanged. But a test
-      # file added or edited in the same push may cover that mutant too and
-      # run before the killer, and under the mutant it may crash as it loads
-      # or be ended by the memory guard: a fresh run would say RuntimeError,
-      # and one the guard ended counts as not caught. Which files cover a
-      # mutant now is known only after Stryker's first test run, so the check
-      # comes here: every Killed result that a new or edited test file covers
-      # is taken out of the results, and the step below runs Stryker again
-      # for those mutants.
-      #
-      # The rule for what is saved: no results are saved that still hold a
-      # kill this step would take out. Once Stryker has written results, they
-      # carry TODAY's test sources, so the next run would see no test as
-      # edited and would never recheck such a kill. So this step runs
-      # whatever happened before it (passed, failed, cancelled), before
-      # anything is saved, and the two saving steps below wait for its
-      # `checked` output: if it did not run, failed or was cut short, nothing
-      # is saved. Where a run can stop, and what is then saved:
-      #
-      # - Before or during the step above that notes the test files: there
-      #   is no note, this step fails, nothing is saved.
-      # - During Stryker's first test run: Stryker has written nothing. The
-      #   results on disk are the restored ones, with the OLD test sources;
-      #   no test file differs from the note, nothing is taken out, and they
-      #   are saved as they came. The next run compares them with its own
-      #   tests again, so its recheck is not skipped.
-      # - While Stryker tests mutants, or when it fails: it writes what it
-      #   finished, reused kills included, with today's test sources. This
-      #   step takes the kills to recheck out before the save; the next run
-      #   finds no result for them and tests them in full.
-      # - During this step: the results are replaced whole or not at all, and
-      #   the output is set last. Without the output nothing is saved.
-      # - During the second run's first test run: the results on disk are the
-      #   ones this step left, with those kills already out.
-      # - While the second run tests mutants, or when it fails: it writes
-      #   what it finished: results it ran itself, and reused ones that no
-      #   new or edited test file covers. The tests cannot change between
-      #   the two runs (one checkout), so nothing in it needs a recheck.
-      # - A runner that is shut down runs no further step: nothing is saved.
-      #
-      # On a forced run (nightly, by hand) and with nothing restored, every
-      # result is fresh: nothing is taken out and there is no second run.
-      - name: Kills a new or edited test covers are taken out, to be tested again
-        id: recheck
-        if: ${{ always() }}
-        env:
-          STRYKER_SCOPE: ${{ matrix.scope }}
-          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
-        run: node scripts/mutation-recheck.mjs
-
-      # The second run, only when the first passed and kills were taken out.
-      # The same command and settings as the first. It reuses every result
-      # left (their test sources are today's) and tests exactly the mutants
-      # taken out, in full and in today's order. The shard's report is then
-      # this run's; if it fails or is cancelled the shard fails, and the
-      # first run's report is never kept in its place (the steps that keep
-      # the report run only when every step before them passed).
-      - name: Mutation testing of ${{ matrix.name }}, again for the kills taken out
-        if: ${{ success() && steps.recheck.outputs.selected != '0' }}
-        env:
-          STRYKER_SCOPE: ${{ matrix.scope }}
-          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
-          STRYKER_CONCURRENCY: '4'
-          STRYKER_FORCE: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '1' || '0' }}
-          NEWSLETTER_ID_BASE: HEAD^1
-          PRIVACY_NOTICE_BASE: HEAD^1
-          FLOORS_BASE: HEAD^1
-        run: exec node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.config.mjs
-
-      # What the shard finished is kept whether the run passed, failed or
-      # was cancelled by a newer push, so the next run does not start from
-      # nothing (#848 lost six runs that way). Each entry is one mutant's
-      # finished result, so a part of a run is as true as a whole one; the
-      # shard's own report and the floors are untouched by it, and a shard
-      # that did not finish still fails the gate. A file that does not parse
-      # is not saved, and nothing is saved unless the recheck step above
-      # finished (its `checked` output), so no kill it would take out is
-      # ever saved. (A runner that is shut down runs no further step.)
-      - name: Whether there are results to keep
-        id: kept
-        if: ${{ always() && steps.recheck.outputs.checked == 'true' }}
-        env:
-          FILE: reports/stryker-incremental/${{ matrix.name }}.json
-          RESTORED: ${{ steps.earlier.outputs.cache-matched-key }}
-        run: |
-          echo "Earlier results restored from: ${RESTORED:-nothing}"
-          if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1); console.log(`${Object.values(r.files).reduce((n, f) => n + f.mutants.length, 0)} mutant result(s) to keep`);' "$FILE"; then
-            echo "keep=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Nothing to keep."
-          fi
-
-      - name: Keep the results for the next run
-        if: ${{ always() && steps.kept.outputs.keep == 'true' }}
-        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: reports/stryker-incremental/${{ matrix.name }}.json
-          key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-
-      # Incremental mode also writes earlier results for mutants outside this
-      # shard; left in, a mutant that moved shards would be counted twice.
-      - name: Keep only this shard's mutants
-        env:
-          STRYKER_SCOPE: ${{ matrix.scope }}
-          STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
-        run: node scripts/mutation-shard-report.mjs
-
-      - name: Keep the report
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: mutation-${{ matrix.name }}
-          path: reports/mutation/${{ matrix.name }}.json
-          retention-days: 14
-          if-no-files-found: error
-
-  # The gate: each scope's logic and its component(s), over all its shards,
-  # each at or above its floor in stryker.floors.json. A floor only rises, to
-  # 95 (#790).
-  floors:
-    needs: mutation
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-
-      - name: The shards' reports
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          pattern: mutation-*
-          path: reports/mutation
-          merge-multiple: true
-
-      - name: Scores at or above their floors
-        run: |
-          failed=0
-          for scope in $(node -p 'Object.keys(JSON.parse(require("fs").readFileSync("stryker.shards.json", "utf8"))).join(" ")'); do
-            node scripts/mutation-floors.mjs "$scope" || failed=1
-          done
-          exit $failed
-
-  # The required check. It passes only when every job above passed.
-  #
-  # `always()` matters: a skipped job satisfies a required check. Without a
-  # status function GitHub skips this job when a job it needs has failed, and
-  # `!cancelled()` skips it when the run is cancelled before it starts; either
-  # way a gate that did not pass would read as a pass. With `always()` it runs
-  # every time and passes only when every job above succeeded.
-  gate:
-    name: 'Free tools: mutation'
-    needs: [plan, mutation, floors]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Every job passed
-        env:
-          PLAN: ${{ needs.plan.result }}
-          RUN: ${{ needs.plan.outputs.run }}
-          MUTATION: ${{ needs.mutation.result }}
-          FLOORS: ${{ needs.floors.result }}
-        run: |
-          echo "plan: $PLAN (run: $RUN), mutation: $MUTATION, floors: $FLOORS"
-          # A pull request that changes no mutation input: the plan said so,
-          # and nothing ran. Only that exact case passes without the shards.
-          if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then
-            echo "No mutation input changed: nothing to test."
-            exit 0
-          fi
-          if [ "$PLAN" != "success" ] || [ "$MUTATION" != "success" ] || [ "$FLOORS" != "success" ]; then
-            echo "::error::Free tools mutation testing did not pass (or did not run). See the jobs above."
-            exit 1
-          fi
+    name: Free tools mutation
+    uses: ./.github/workflows/tool-suite.yml
+    with:
+      suite: mutation
 
   # Nobody watches the nightly run, so one that failed or was cancelled opens
-  # an issue, or adds to the one already open.
+  # an issue, or adds to the one already open. It is here, not in
+  # tool-suite.yml, so the suite never holds a token that can write: only
+  # this job, on a nightly run, can.
   alert:
-    needs: [plan, mutation, floors, gate]
+    needs: [mutation]
     if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
     runs-on: ubuntu-latest
     timeout-minutes: 5
