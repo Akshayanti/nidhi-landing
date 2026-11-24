@@ -143,9 +143,10 @@ jobs:
       # request cannot merge either way. Nightly and by hand every tool
       # reports, so one leak does not hide another.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Two tools at a time, so the three suites together leave runners for
-      # the account's other work.
-      max-parallel: 2
+      # Three tools at a time. The three suites together use at most 16 of
+      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
+      # text size 3), so another pull request can still start.
+      max-parallel: 3
       matrix:
         tool:
           - loan-comparison
@@ -348,9 +349,10 @@ jobs:
       # had finished (below). Nightly, by hand and on a merge to main every
       # shard reports, so one weak tool does not hide another.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Six shards at a time, so the three suites together leave runners for
-      # the account's other work.
-      max-parallel: 6
+      # Ten shards at a time. The three suites together use at most 16 of
+      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
+      # text size 3), so another pull request can still start.
+      max-parallel: 10
       matrix:
         include: ${{ fromJSON(needs.mutation-plan.outputs.shards) }}
     steps:
@@ -672,9 +674,10 @@ jobs:
       # On a pull request a failed tool cancels the others: the pull request
       # cannot merge either way. Nightly and by hand every tool reports.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Two tools at a time, so the three suites together leave runners for
-      # the account's other work.
-      max-parallel: 2
+      # Three tools at a time. The three suites together use at most 16 of
+      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
+      # text size 3), so another pull request can still start.
+      max-parallel: 3
       matrix:
         # The TOOLS of scripts/audit-text-size.mjs; scripts/repo-hygiene.test.mjs
         # fails when one is missing here.

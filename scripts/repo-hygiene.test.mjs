@@ -228,8 +228,9 @@ describe('the required checks run on every pull request, in one workflow, in ord
     // A job or step that may fail without failing the run would let a
     // failure through without cancelling anything.
     for (const text of [checks, suites]) assert.doesNotMatch(text, /continue-on-error/);
-    // At most this many of each suite's jobs at once, in one run.
-    for (const [suite, cap] of [['privacy', 2], ['mutation', 6], ['text-size', 2]]) {
+    // At most this many of each suite's jobs at once, in one run: 16 of the
+    // account's 20 runners together (owner, 2026-11-24).
+    for (const [suite, cap] of [['privacy', 3], ['mutation', 10], ['text-size', 3]]) {
       assert.match(suiteJobsOf(suite), new RegExp(`\\n {6}max-parallel: ${cap}\\n`), suite);
     }
   });
