@@ -38,7 +38,8 @@ export function formatAmount(value: number, code: string, compact = false, amoun
   const parts = amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 3 }).formatToParts(v / div);
   let lastNumeric = -1;
   parts.forEach((p, i) => {
-    if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;
+    // The figure ends in digits: a grouping or decimal mark always has some after it.
+    if (p.type === 'integer' || p.type === 'fraction') lastNumeric = i;
   });
   return parts.map((p, i) => p.value + (i === lastNumeric ? suffix : '')).join('');
 }

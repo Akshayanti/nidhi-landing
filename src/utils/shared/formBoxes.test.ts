@@ -69,3 +69,26 @@ describe('withBoxes and readBoxes', () => {
     }
   });
 });
+
+describe('the longest number a box or a link may carry', () => {
+  it('carries a number of 200 characters and marks one of 201', () => {
+    assert.equal(boxValue(`1${'0'.repeat(199)}`, 'en').length, 200);
+    assert.equal(boxValue(`1${'0'.repeat(200)}`, 'en'), 'NaN');
+    const long = '9'.repeat(200);
+    assert.deepEqual(readBoxes(`a=${long}&b=${long}9`, ['a', 'b']), { a: long, b: 'NaN' });
+  });
+});
+
+describe('withBoxes and readBoxes at their edges', () => {
+  it('hands the state back untouched, character for character, when there is no box', () => {
+    assert.equal(withBoxes('n=a b&m=%7E', {}), 'n=a b&m=%7E');
+  });
+
+  it('reads a link with or without its leading ? or #, and only a leading one', () => {
+    assert.deepEqual(readBoxes('?x=5', ['x']), { x: '5' });
+    assert.deepEqual(readBoxes('#x=5', ['x']), { x: '5' });
+    assert.deepEqual(readBoxes('x=5', ['x']), { x: '5' });
+    assert.deepEqual(readBoxes('x=5&q=a?b', ['x']), { x: '5' });
+    assert.deepEqual(readBoxes('x=5&q=a%23b#c', ['x']), { x: '5' });
+  });
+});

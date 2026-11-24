@@ -7,6 +7,25 @@
 /** The minimum every floor reaches, and where it stops. */
 export const TARGET = 95;
 
+/**
+ * What the memory guard writes before it ends a test process that allocates
+ * without end (test/mutationMemoryGuard.mjs). Stryker keeps a failed
+ * process's output with the mutant, which is how such a mutant is known
+ * here.
+ */
+export const GUARD_NOTE = 'mutationMemoryGuard: past the memory limit, the test process is ended';
+
+/** True for a mutant whose test process the memory guard ended. */
+export function stoppedByGuard({ status, statusReason }) {
+  return status === 'RuntimeError' && typeof statusReason === 'string' && statusReason.includes(GUARD_NOTE);
+}
+
+/** The mutants the memory guard stopped, as `file:line:column`. */
+export function guardStopped(report) {
+  return Object.entries(report.files ?? {}).flatMap(([file, { mutants }]) =>
+    mutants.filter(stoppedByGuard).map((m) => `${file}:${m.location?.start.line}:${m.location?.start.column}`));
+}
+
 /** Which part of a scope a file is: its component(s) or its logic. */
 export function partOf(file) {
   return /^src\/components\//.test(file.split('\\').join('/')) ? 'component' : 'logic';
@@ -22,13 +41,20 @@ export function partOf(file) {
  * depending only on which covering test file runs first, and a score must
  * not move with that. A mutant that does not compile is left out: nothing
  * ran.
+ *
+ * One runtime error is the opposite: a mutant whose test process the memory
+ * guard ended counts as NOT caught. No test failed under it; the process was
+ * stopped from outside, and counting it as caught would let a run that ate
+ * its memory look better than one that finished.
  */
 export function partScores(report) {
   const tally = { logic: { detected: 0, undetected: 0 }, component: { detected: 0, undetected: 0 } };
   for (const [file, { mutants }] of Object.entries(report.files ?? {})) {
     const t = tally[partOf(file)];
-    for (const { status } of mutants) {
-      if (status === 'Killed' || status === 'Timeout' || status === 'RuntimeError') t.detected++;
+    for (const mutant of mutants) {
+      const { status } = mutant;
+      if (stoppedByGuard(mutant)) t.undetected++;
+      else if (status === 'Killed' || status === 'Timeout' || status === 'RuntimeError') t.detected++;
       else if (status === 'Survived' || status === 'NoCoverage') t.undetected++;
     }
   }

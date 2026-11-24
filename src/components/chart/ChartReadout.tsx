@@ -163,7 +163,7 @@ export function useReadoutSlot(cardRef: RefObject<HTMLDivElement | null>, open: 
   const [height, setHeight] = useState(0);
   useLayoutEffect(() => {
     const h = open ? cardRef.current?.offsetHeight ?? 0 : 0;
-    if (h > 0) setHeight((was) => (was === h ? was : h));
+    if (h > 0) setHeight(h);
   });
   return height;
 }

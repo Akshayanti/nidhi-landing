@@ -11,6 +11,7 @@
 import { globSync, readFileSync } from 'node:fs';
 import { isSelectedTest } from './scripts/lib/checks/mutation-fingerprint.mjs';
 import { shardPatterns } from './scripts/lib/checks/mutation-shards.mjs';
+import { cheapestFirst } from './scripts/lib/checks/mutation-test-order.mjs';
 
 export const SCOPES = {
   inflation: ['src/utils/inflation/*.ts', 'src/components/InflationCalculator.tsx'],
@@ -28,10 +29,17 @@ export const SCOPES = {
   ],
 };
 
+// The components that are a whole tool's page: their tests mount the whole
+// tool, the dearest tests there are.
+const WHOLE_TOOLS = Object.entries(SCOPES).filter(([scope]) => scope !== 'shared')
+  .flatMap(([, patterns]) => patterns.filter((p) => p.startsWith('src/components/')).map((p) => p.split('/').pop().replace(/\.tsx$/, '')));
+
 // Every test but the ones that read the source as text (SOURCE_READERS in
 // scripts/lib/checks/mutation-fingerprint.mjs, which also leaves exactly
-// these files out of the shards' fingerprint).
-const TEST_FILES = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest).sort();
+// these files out of the shards' fingerprint), cheapest first: for each
+// mutant Stryker runs its covering test files in this order and stops at
+// the first that fails (scripts/lib/checks/mutation-test-order.mjs).
+const TEST_FILES = cheapestFirst(globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest), WHOLE_TOOLS);
 
 // Read by test/mutationRun.ts in every test process Stryker starts.
 process.env.NIDHI_MUTATION_RUN = '1';
@@ -57,7 +65,10 @@ export default {
     // privacy rules) cannot judge a mutant: under Stryker they read the
     // instrumented copy. They still run in `npm test` on every pull request.
     testFiles: TEST_FILES,
-    nodeArgs: ['--import', 'tsx', '--test-reporter=tap'],
+    // The guard ends a test process that passes a gigabyte: a mutant that
+    // allocates without end must not take the runner with it
+    // (test/mutationMemoryGuard.mjs).
+    nodeArgs: ['--import', './test/mutationMemoryGuard.mjs', '--import', 'tsx', '--test-reporter=tap'],
     forceBail: true,
   },
   coverageAnalysis: 'perTest',

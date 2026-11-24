@@ -91,7 +91,8 @@ describe('the tests left out are exactly the tests a mutation run starts', () =>
   it('is the list stryker.config.mjs runs, made by the same function', () => {
     const config = read('stryker.config.mjs');
     assert.match(config, /import \{ isSelectedTest \} from '\.\/scripts\/lib\/checks\/mutation-fingerprint\.mjs';/);
-    assert.ok(config.includes("const TEST_FILES = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest).sort();"));
+    // Filtered by that function, then only put in order (cheapest first): the order adds and drops no file.
+    assert.ok(config.includes("const TEST_FILES = cheapestFirst(globSync(['src/**/*.test.ts', 'src/**/*.test.tsx']).filter(isSelectedTest), WHOLE_TOOLS);"));
     assert.ok(config.includes('testFiles: TEST_FILES,'));
     const globbed = globSync(['src/**/*.test.ts', 'src/**/*.test.tsx'], { cwd: ROOT }).sort();
     const tracked = trackedPaths(execFileSync('git', ['ls-files', '-z', 'src'], { cwd: ROOT, encoding: 'utf8' }));

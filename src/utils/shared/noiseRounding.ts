@@ -18,7 +18,8 @@
 /** The step for one row of results, or 0 when there is nothing to round by. */
 export function noiseStep(p10: number, p90: number, runs: number): number {
   const spread = Math.abs(p90 - p10);
-  if (!Number.isFinite(spread) || spread <= 0 || !(runs >= 1)) return 0;
+  if (!Number.isFinite(spread) || !(runs >= 1)) return 0;
+  // No spread at all gives a step of 0 here too: ten to the power of minus infinity.
   return Math.pow(10, Math.floor(Math.log10(spread / Math.sqrt(runs))));
 }
 
@@ -28,7 +29,8 @@ export function roundToStep(value: number, step: number): number {
   // Halves go away from zero on both sides: -5 to -10 as 5 to 10.
   const rounded = Math.sign(value) * Math.round(Math.abs(value) / step) * step;
   // A step below 1 leaves binary dust (0.30000000000000004): cut it at the step's own decimals.
-  const decimals = step < 1 ? Math.min(12, Math.ceil(-Math.log10(step))) : 0;
+  // (For a step of 1 or more this is zero or less, and nothing is cut.)
+  const decimals = Math.min(12, Math.ceil(-Math.log10(step)));
   const clean = decimals > 0 ? Number(rounded.toFixed(decimals)) : rounded;
   return Object.is(clean, -0) ? 0 : clean;
 }

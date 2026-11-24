@@ -4,5 +4,5 @@
   "monte-carlo": { "logic": 73, "component": 0 },
   "loan": { "logic": 72, "component": 0 },
   "net-worth": { "logic": 77, "component": 0 },
-  "shared": { "logic": 39, "component": 8 }
+  "shared": { "logic": 95, "component": 95 }
 }
