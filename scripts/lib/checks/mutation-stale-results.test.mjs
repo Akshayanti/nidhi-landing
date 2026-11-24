@@ -1,6 +1,6 @@
-// Earlier timeouts and errors whose tests have changed are tested again (#855):
-// the rule on a report of the shape Stryker writes, and a real Stryker run
-// where the test behind a timeout is deleted.
+// Earlier timeouts and errors are never handed on (#855): the rule on a
+// report of the shape Stryker writes, and a real Stryker run where the test
+// behind a timeout is deleted.
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -8,91 +8,48 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSyn
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { partScores } from './mutation-floors.mjs';
-import { SAFE_TO_HAND_ON, dropStaleResults } from './mutation-stale-results.mjs';
+import { SAFE_TO_HAND_ON, dropUnsafeResults } from './mutation-stale-results.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..');
 
-/** A report as Stryker's incremental file holds it: two test files, one source file. */
-function reportOf(mutants) {
-  return {
-    testFiles: {
-      'src/a.test.ts': { source: 'a v1', tests: [{ id: '0', name: 'src/a.test.ts' }] },
-      'src/b.test.ts': { source: 'b v1', tests: [{ id: '1', name: 'src/b.test.ts' }] },
-    },
-    files: { 'src/code.ts': { language: 'typescript', source: 'code', mutants } },
-  };
-}
-const ON_DISK = { 'src/a.test.ts': 'a v1', 'src/b.test.ts': 'b v1' };
-const reader = (files) => (path) => files[path] ?? null;
-const statuses = (report) => report.files['src/code.ts'].mutants.map((m) => `${m.id}:${m.status}`);
+const reportOf = (mutants) => ({ files: { 'src/code.ts': { language: 'typescript', source: 'code', mutants } } });
 
-describe('earlier timeouts and errors whose tests have changed', () => {
-  const MUTANTS = () => [
-    { id: 't-a', status: 'Timeout', coveredBy: ['0'] },
-    { id: 't-b', status: 'Timeout', coveredBy: ['1'] },
-    { id: 't-ab', status: 'Timeout', coveredBy: ['0', '1'] },
-    { id: 't-static', status: 'Timeout', static: true, coveredBy: [] },
-    { id: 't-bare', status: 'Timeout' },
-    { id: 'k-a', status: 'Killed', coveredBy: ['0'], killedBy: ['0'] },
-    { id: 's-a', status: 'Survived', coveredBy: ['0'] },
-    { id: 'n', status: 'NoCoverage', coveredBy: [] },
-  ];
-
-  it('are all kept while every test file is as it was', () => {
-    const report = reportOf(MUTANTS());
-    assert.equal(dropStaleResults(report, reader(ON_DISK)), 0);
-    assert.equal(report.files['src/code.ts'].mutants.length, 8);
-  });
-
-  it('are taken out when a test that covered them was deleted, and with it those no test is on record for', () => {
-    const report = reportOf(MUTANTS());
-    const { 'src/a.test.ts': gone, ...rest } = ON_DISK;
-    assert.equal(gone, 'a v1');
-    assert.equal(dropStaleResults(report, reader(rest)), 4);
-    assert.deepEqual(statuses(report), ['t-b:Timeout', 'k-a:Killed', 's-a:Survived', 'n:NoCoverage']);
-  });
-
-  it('are taken out when a test that covered them was edited', () => {
-    const report = reportOf(MUTANTS());
-    assert.equal(dropStaleResults(report, reader({ ...ON_DISK, 'src/b.test.ts': 'b v2' })), 4);
-    assert.deepEqual(statuses(report), ['t-a:Timeout', 'k-a:Killed', 's-a:Survived', 'n:NoCoverage']);
-  });
-
-  it('leave every other result alone: Stryker judges those itself', () => {
-    const report = reportOf(MUTANTS());
-    dropStaleResults(report, reader({}));
-    assert.deepEqual(statuses(report), ['k-a:Killed', 's-a:Survived', 'n:NoCoverage']);
-  });
-
-  it('are taken out when their covering test is not on record at all', () => {
-    const report = reportOf([{ id: 't-x', status: 'Timeout', coveredBy: ['7'] }, { id: 't-b', status: 'Timeout', coveredBy: ['1'] }]);
-    assert.equal(dropStaleResults(report, reader(ON_DISK)), 1);
-    assert.deepEqual(statuses(report), ['t-b:Timeout']);
-  });
-
-  it('covers every result but the four Stryker can be left with, errors and unknown ones included', () => {
+describe('earlier timeouts and errors', () => {
+  it('are taken out whatever their tests, and the four safe kinds are left alone', () => {
     assert.deepEqual([...SAFE_TO_HAND_ON].sort(), ['Ignored', 'Killed', 'NoCoverage', 'Survived']);
-    const all = () => ['Timeout', 'RuntimeError', 'CompileError', 'Pending', 'SomethingNew', 'Killed', 'Survived', 'NoCoverage', 'Ignored']
-      .map((status) => ({ id: status, status, coveredBy: ['0'] }));
-    const report = reportOf(all());
-    const { 'src/a.test.ts': _, ...rest } = ON_DISK;
-    assert.equal(dropStaleResults(report, reader(rest)), 5);
+    const report = reportOf(['Timeout', 'RuntimeError', 'CompileError', 'Pending', 'SomethingNew', 'Killed', 'Survived', 'NoCoverage', 'Ignored']
+      .map((status) => ({ id: status, status, coveredBy: ['0'], killedBy: status === 'Killed' ? ['0'] : undefined })));
+    assert.equal(dropUnsafeResults(report), 5);
     assert.deepEqual(report.files['src/code.ts'].mutants.map((m) => m.status), ['Killed', 'Survived', 'NoCoverage', 'Ignored']);
-    const untouched = reportOf(all());
-    assert.equal(dropStaleResults(untouched, reader(ON_DISK)), 0);
+    assert.deepEqual(report.files['src/code.ts'].mutants[0], { id: 'Killed', status: 'Killed', coveredBy: ['0'], killedBy: ['0'] }, 'a kept result is untouched');
   });
 
-  it('matters to the score: an error handed on wrongly hides a mutant no test reaches', () => {
+  it('are taken out with or without a covering test on record', () => {
+    const report = reportOf([{ id: 'a', status: 'Timeout' }, { id: 'b', status: 'Timeout', static: true, coveredBy: [] }, { id: 'c', status: 'Timeout', coveredBy: ['3'] }]);
+    assert.equal(dropUnsafeResults(report), 3);
+    assert.deepEqual(report.files['src/code.ts'].mutants, []);
+  });
+
+  it('count over every file, and a file with nothing to take out is left as it was', () => {
+    const report = { files: {
+      'src/a.ts': { mutants: [{ status: 'Timeout' }, { status: 'Killed' }] },
+      'src/b.ts': { mutants: [{ status: 'Survived' }] },
+      'src/c.ts': { mutants: [{ status: 'RuntimeError' }] },
+    } };
+    assert.equal(dropUnsafeResults(report), 2);
+    assert.deepEqual(Object.values(report.files).map((f) => f.mutants.length), [1, 1, 0]);
+    assert.equal(dropUnsafeResults({ files: {} }), 0);
+    assert.equal(dropUnsafeResults({}), 0);
+  });
+
+  it('matter to the score: an error handed on wrongly hides a mutant no test reaches', () => {
     // One mutant killed, one whose only test was deleted: the floors' own sum.
     const stale = { files: { 'src/utils/loan/math.ts': { mutants: [{ status: 'Killed' }, { status: 'RuntimeError' }] } } };
     const fresh = { files: { 'src/utils/loan/math.ts': { mutants: [{ status: 'Killed' }, { status: 'NoCoverage' }] } } };
     assert.equal(partScores(stale).logic, 100);
     assert.equal(partScores(fresh).logic, 50);
-  });
-
-  it('copes with a file that records no tests or no mutants', () => {
-    assert.equal(dropStaleResults({ files: {} }, reader({})), 0);
-    assert.equal(dropStaleResults({ testFiles: { 'src/a.test.ts': { source: 'a v1' } }, files: { 'src/code.ts': { mutants: [] } } }, reader(ON_DISK)), 0);
+    const timedOut = { files: { 'src/utils/loan/math.ts': { mutants: [{ status: 'Killed' }, { status: 'Timeout' }] } } };
+    assert.equal(partScores(timedOut).logic, 100);
   });
 });
 
@@ -130,9 +87,7 @@ describe('a real Stryker run, after the test behind a timeout is deleted', () =>
       rmSync(join(dir, 'src/count.test.mjs'));
       const incremental = join(dir, 'reports/inc.json');
       const report = JSON.parse(readFileSync(incremental, 'utf8'));
-      const dropped = dropStaleResults(report, (path) => {
-        try { return readFileSync(join(dir, path), 'utf8'); } catch { return null; }
-      });
+      const dropped = dropUnsafeResults(report);
       assert.equal(dropped, timeouts);
       writeFileSync(incremental, JSON.stringify(report));
       const second = run();

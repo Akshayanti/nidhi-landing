@@ -24,7 +24,7 @@ lines, and its tests are the test files beside it or importing it.
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
 | `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools mutation" | none |
 | `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools mutation" | none |
-| `mutation-stale-results.mjs` | Takes out of a shard's restored results the timeouts and errors whose tests have changed, so Stryker tests those mutants again (#855; the rule and the reason are in lib/checks/mutation-stale-results.mjs). | workflow "Free tools mutation" | none |
+| `mutation-stale-results.mjs` | Takes the timeouts and errors out of a shard's restored results, so Stryker tests those mutants again on every run (#855; the rule and the reason are in lib/checks/mutation-stale-results.mjs). | workflow "Free tools mutation" | none |
 | `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |

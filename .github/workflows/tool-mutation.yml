@@ -186,12 +186,13 @@ jobs:
           key: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.plan.outputs.fingerprint }}-
 
-      # The earlier results Stryker would hand on wrongly: a mutant that timed
-      # out, or whose test run ended in an error, keeps that result after the
-      # test that reached it is deleted, or edited so that it no longer
-      # reaches it (#855). Those results are taken out here, so Stryker tests
-      # those mutants again (scripts/lib/checks/mutation-stale-results.mjs).
-      - name: Earlier timeouts and errors whose tests changed are tested again
+      # The earlier results that are never handed on: a mutant that timed
+      # out, or whose test run ended in an error. Stryker would keep such a
+      # result after the test that reached it is gone, and a timeout also
+      # depends on how long the whole test run takes to start, which any
+      # added test changes (#855). They are taken out here, so Stryker tests
+      # those mutants on every run (scripts/lib/checks/mutation-stale-results.mjs).
+      - name: Earlier timeouts and errors are tested again
         env:
           STRYKER_SCOPE: ${{ matrix.scope }}
           STRYKER_SHARD: ${{ matrix.shard }}/${{ matrix.of }}
