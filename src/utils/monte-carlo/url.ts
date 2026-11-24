@@ -43,12 +43,8 @@ export const DEFAULTS: ToolState = {
   paths: DEFAULT_PATHS,
 };
 
-/** How a link names a return setting. The default (historical) goes unnamed, so it has no code. */
-const RETURN_CODES: Partial<Record<ReturnSetting, string>> = { cautious: 'c', optimistic: 'o' };
-/** A Map, so `e=constructor` finds nothing, and a link without `e` (null) neither. */
-const RETURN_BY_CODE: ReadonlyMap<string | null, ReturnSetting> = new Map(
-  Object.entries(RETURN_CODES).map(([setting, code]) => [code, setting as ReturnSetting]),
-);
+const RETURN_CODES: Record<ReturnSetting, string> = { cautious: 'c', historical: 'h', optimistic: 'o' };
+const RETURN_BY_CODE: Record<string, ReturnSetting> = { c: 'cautious', h: 'historical', o: 'optimistic' };
 
 /** The tool's own address, for the nav, the hub, the home page and its lesson. */
 export const MONTE_CARLO_URL = '/free/monte-carlo-simulator/';
@@ -75,8 +71,7 @@ export function encodeState(state: ToolState): string {
     p.set('w', plain(state.withdrawal));
     setNonDefault(p, 'r', plain(state.withdrawYears), DEFAULTS.withdrawYears);
   }
-  const returns = RETURN_CODES[state.returns];
-  if (returns) p.set('e', returns);
+  setNonDefault(p, 'e', RETURN_CODES[state.returns], RETURN_CODES[DEFAULTS.returns]);
   setNonDefault(p, 'f', plain(state.feePct), DEFAULTS.feePct);
   setNonDefault(p, 'n', state.paths, DEFAULTS.paths);
   return serializeParams(p);
@@ -111,7 +106,7 @@ export function decodeState(search: string): ToolState | null {
   if (!STATE_KEYS.some((k) => p.has(k))) return null;
   const num = (key: string, dflt: number) => {
     const raw = p.get(key);
-    if (raw === null) return dflt;
+    if (raw === null || raw.trim() === '') return dflt;
     // Only a plain decimal number, the way the page writes one. `Number()`
     // would also read "0x10" as 16, "1e3" as 1000 and " 12 " as 12, none of
     // which a link made here ever holds. A minus sign is read, and the range
@@ -120,8 +115,8 @@ export function decodeState(search: string): ToolState | null {
     const n = Number(raw);
     return Number.isFinite(n) ? n : dflt;
   };
-  const code = p.get('c')?.toUpperCase();
-  const currency = CURRENCIES.find((c) => c.code === code)?.code ?? DEFAULTS.currency;
+  const code = (p.get('c') ?? '').toUpperCase();
+  const currency = CURRENCIES.some((c) => c.code === code) ? code : DEFAULTS.currency;
   // `o=1` goes beside a withdrawal amount carried with withdrawals off: the
   // one case where `w` does not mean they are on (form.ts).
   const withdrawal = p.get('o') === '1' ? 0 : num('w', DEFAULTS.withdrawal);
@@ -133,7 +128,8 @@ export function decodeState(search: string): ToolState | null {
     withdrawal,
     withdrawYears: num('r', DEFAULTS.withdrawYears),
     feePct: num('f', DEFAULTS.feePct),
-    returns: RETURN_BY_CODE.get(p.get('e')) ?? DEFAULTS.returns,
+    // An own key only: `e=constructor` must not find Object's.
+    returns: Object.hasOwn(RETURN_BY_CODE, p.get('e') ?? '') ? RETURN_BY_CODE[p.get('e') ?? ''] : DEFAULTS.returns,
     paths: num('n', DEFAULTS.paths),
   });
   // Keep the default withdrawal horizon in the form even when withdrawals are
