@@ -79,7 +79,7 @@ The site has a "What's changed" page (`/changes/` in every language). It is how 
 
 ## Two Projects: the Site and the Planner
 
-nidhi is two projects in two repositories. This one is the public site (nidhi.today): lessons, free tools, the waitlist and the `/beta/` page. The **planner**, the product the waitlist leads to, is built in a separate, private repository, checked out beside this one as `../NetWorthAndExpenses`.
+nidhi is two projects in two repositories. This one is the public site (nidhi.today): lessons, free tools, the waitlist and the `/beta/` page. The **planner**, the product the waitlist leads to, is built in a separate, private repository, checked out beside this one as `../bijness`.
 
 1. **Separate.** Each project has its own `CLAUDE.md`, agents, agent memory, issues and sessions. This file's rules apply here and the planner's apply there; neither side's patterns are carried into the other.
 2. **Read-only across the line.** A session or agent working here may read the planner to answer a question, and cites the file it read. It never edits the planner, and nothing learnt there is saved outside this project's memory. The same holds in the other direction.

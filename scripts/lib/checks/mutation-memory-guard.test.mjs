@@ -38,8 +38,9 @@ describe('the memory guard of a mutation test process', () => {
     assert.equal(stoppedByGuard({ status: 'Killed', statusReason: GUARD_NOTE }), false);
     assert.equal(stoppedByGuard({ status: 'RuntimeError' }), false);
     const report = { files: { 'src/components/X.tsx': { mutants: [{ status: 'Killed' }, { status: 'Killed' }, { status: 'Killed' }, ended, crashed] } } };
-    assert.deepEqual(partScores(report).counts.component, { detected: 3, undetected: 1 });
-    assert.equal(partScores(report).component, 75);
+    // The other crash counts as caught (#860); the guard's does not.
+    assert.deepEqual(partScores(report).counts.component, { detected: 4, undetected: 1 });
+    assert.equal(partScores(report).component, 80);
     assert.deepEqual(guardStopped(report), ['src/components/X.tsx:88:28']);
   });
 

@@ -32,12 +32,20 @@ export function partOf(file) {
 }
 
 /**
- * Each part's mutation score, the way Stryker counts it: detected (killed or
- * timed out) over detected and undetected (survived or not covered). Mutants
- * that do not compile or crash the run are left out, as Stryker leaves them,
- * with one exception: a mutant whose test process the memory guard ended
- * counts as NOT caught. No test failed under it, and leaving it out would let
- * a run that ate its memory look better than one that finished.
+ * Each part's mutation score: detected over detected and undetected
+ * (survived or not covered). Detected is killed, timed out, or a runtime
+ * error: a mutant under which a test file could not run to its tests was
+ * noticed by them as surely as one that failed an assertion. Stryker leaves
+ * runtime errors out of its own score; they count here (#860) because the
+ * same mutant can be Killed in one run and a RuntimeError in the next,
+ * depending only on which covering test file runs first, and a score must
+ * not move with that. A mutant that does not compile is left out: nothing
+ * ran.
+ *
+ * One runtime error is the opposite: a mutant whose test process the memory
+ * guard ended counts as NOT caught. No test failed under it; the process was
+ * stopped from outside, and counting it as caught would let a run that ate
+ * its memory look better than one that finished.
  */
 export function partScores(report) {
   const tally = { logic: { detected: 0, undetected: 0 }, component: { detected: 0, undetected: 0 } };
@@ -45,8 +53,9 @@ export function partScores(report) {
     const t = tally[partOf(file)];
     for (const mutant of mutants) {
       const { status } = mutant;
-      if (status === 'Killed' || status === 'Timeout') t.detected++;
-      else if (status === 'Survived' || status === 'NoCoverage' || stoppedByGuard(mutant)) t.undetected++;
+      if (stoppedByGuard(mutant)) t.undetected++;
+      else if (status === 'Killed' || status === 'Timeout' || status === 'RuntimeError') t.detected++;
+      else if (status === 'Survived' || status === 'NoCoverage') t.undetected++;
     }
   }
   const score = ({ detected, undetected }) => (detected + undetected === 0 ? null : Math.floor((detected / (detected + undetected)) * 10000) / 100);

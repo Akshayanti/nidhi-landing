@@ -1,8 +1,9 @@
 // The order a mutation run starts its test files in (#790).
 //
 // For each mutant Stryker runs the test files that cover it one after the
-// other, in the order the configuration lists them, and stops at the first
-// that fails. Listed by path, every test under src/components/ comes before
+// other, in the order the configuration lists them (the tap runner alone
+// does not keep that order; stryker-ordered-tap.mjs makes it), and stops at
+// the first that fails. Listed by path, every test under src/components/ comes before
 // every test under src/utils/, so a mutant in a helper met the whole-page
 // tests of five tools (seconds each to start a browser and mount a page)
 // before the unit test beside it that kills it in a few milliseconds.
