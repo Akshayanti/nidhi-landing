@@ -143,9 +143,9 @@ jobs:
       # request cannot merge either way. Nightly and by hand every tool
       # reports, so one leak does not hide another.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Three tools at a time. The three suites together use at most 16 of
-      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
-      # text size 3), so another pull request can still start.
+      # Three tools at a time (owner, 2026-11-24). While it runs, mutation
+      # waits for runners beyond the account's 20 (its cap, 16, is set for
+      # after this suite and the other have finished).
       max-parallel: 3
       matrix:
         tool:
@@ -349,10 +349,13 @@ jobs:
       # had finished (below). Nightly, by hand and on a merge to main every
       # shard reports, so one weak tool does not hide another.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Ten shards at a time. The three suites together use at most 16 of
-      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
-      # text size 3), so another pull request can still start.
-      max-parallel: 10
+      # Up to sixteen shards at a time (owner, 2026-11-24). A cap cannot grow
+      # while a run goes on, so this one is set for when privacy and text
+      # size (three each) have finished: until then the three suites ask for
+      # 22 runners, GitHub gives the account 20 at most and queues the rest,
+      # and this pull request can take every runner. Afterwards mutation uses
+      # 16 and 4 stay free.
+      max-parallel: 16
       matrix:
         include: ${{ fromJSON(needs.mutation-plan.outputs.shards) }}
     steps:
@@ -674,9 +677,9 @@ jobs:
       # On a pull request a failed tool cancels the others: the pull request
       # cannot merge either way. Nightly and by hand every tool reports.
       fail-fast: ${{ github.event_name == 'pull_request' }}
-      # Three tools at a time. The three suites together use at most 16 of
-      # the account's 20 runners (owner, 2026-11-24: mutation 10, privacy 3,
-      # text size 3), so another pull request can still start.
+      # Three tools at a time (owner, 2026-11-24). While it runs, mutation
+      # waits for runners beyond the account's 20 (its cap, 16, is set for
+      # after this suite and the other have finished).
       max-parallel: 3
       matrix:
         # The TOOLS of scripts/audit-text-size.mjs; scripts/repo-hygiene.test.mjs
