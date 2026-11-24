@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { fromCompact, toCompact, toCompactSeries, type WorldBankFile } from './history.ts';
+import { existsSync } from 'node:fs';
+import { HISTORY_URL, INFLATION_URL, fromCompact, toCompact, toCompactSeries, type WorldBankFile } from './history.ts';
 
 describe('the compact inflation history', () => {
   it('a country becomes its first year and a dense list, null for a year with no figure', () => {
@@ -34,5 +35,27 @@ describe('the compact inflation history', () => {
       assert.deepEqual(fromCompact(bad), {}, JSON.stringify(bad));
     }
     assert.deepEqual(fromCompact([1960, [1, 'x', null, NaN, Infinity, 2]]), { 1960: 1, 1965: 2 });
+  });
+
+  it('orders the years by number, however the keys were written', () => {
+    assert.deepEqual(toCompactSeries({ '2003': 3, '2001': 1 }), [2001, [1, null, 3]]);
+    // Keys that are not plain whole numbers keep the order they were written in, so they need sorting.
+    assert.deepEqual(toCompactSeries({ '-1': 1, '-3': 2 }), [-3, [2, null, 1]]);
+    assert.deepEqual(toCompactSeries({ '-3': 1, '2': 2, '-1': 3 }), [-3, [1, null, 3, null, null, 2]]);
+  });
+
+  it('a year of each kind of bad figure is a gap, and the rest keep their years', () => {
+    assert.deepEqual(fromCompact([2000, [null, 1.5, '2', -Infinity, 0, true]]), { 2001: 1.5, 2004: 0 });
+    assert.deepEqual(fromCompact([2000, []]), {});
+    assert.deepEqual(fromCompact([null, [1]]), {});
+    assert.deepEqual(fromCompact([true, [1]]), {});
+    assert.deepEqual(fromCompact([NaN, [1]]), {});
+    assert.deepEqual(fromCompact([2000, { 0: 1, length: 1 }]), {});
+  });
+
+  it('is fetched from the address the site serves it at', () => {
+    assert.equal(HISTORY_URL, '/data/inflation-history.json');
+    assert.ok(existsSync(new URL(`../../pages${HISTORY_URL}.ts`, import.meta.url)), 'no page writes the history file at that address');
+    assert.equal(INFLATION_URL, '/free/inflation-calculator/');
   });
 });
