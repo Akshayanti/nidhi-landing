@@ -23,8 +23,12 @@
 import { createHash } from 'node:crypto';
 import { isInput, WORKFLOWS } from './check-inputs.mjs';
 
-/** Raised when the rule changes, so no earlier result outlives it. */
-export const SCHEMA = 1;
+/**
+ * Raised when the rule changes, so no earlier result outlives it. 2: results
+ * saved before stale timeouts and errors were taken out (mutation-stale-results.mjs)
+ * may hold one already handed on wrongly, and must not be restored.
+ */
+export const SCHEMA = 2;
 
 /** Tests that read the source as text: no mutation run starts them. */
 export const SOURCE_READERS = ['src/utils/privacySurface.test.ts'];
