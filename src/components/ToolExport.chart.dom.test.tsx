@@ -82,8 +82,8 @@ describe('the report chart of shares', () => {
     assert.equal(svg!.getAttribute('aria-hidden'), 'true');
     assert.equal(svg!.getAttribute('focusable'), 'false');
     assert.equal(container.querySelectorAll('figure').length, 1);
-    assert.equal(container.querySelector('.tool-reportUnit'), null, 'shares have no unit line');
-    assert.equal(container.querySelector('.tool-reportKey'), null);
+    assert.ok(container.querySelector('.tool-reportUnit') === null, 'shares have no unit line');
+    assert.ok(container.querySelector('.tool-reportKey') === null);
   });
 
   it('draws one row a bar: its name, a bar as long as its share, and the share in figures', () => {
@@ -224,9 +224,9 @@ describe('the report chart of lines', () => {
   it('has a key only when there is more than one thing to tell apart', () => {
     const one = line([[0, 0], [10, 100]]);
     const band = { label: 'Range', lower: [{ x: 0, y: 0 }], upper: [{ x: 10, y: 80 }], shade: 0.1 };
-    assert.equal(draw(lines([one])).figure!.querySelector('ul'), null);
+    assert.ok(draw(lines([one])).figure!.querySelector('ul') === null);
     cleanup();
-    assert.equal(draw(lines([one], { bands: [] })).figure!.querySelector('ul'), null);
+    assert.ok(draw(lines([one], { bands: [] })).figure!.querySelector('ul') === null);
     cleanup();
     assert.deepEqual([...draw(lines([one, one])).figure!.querySelectorAll('li')].map((li) => li.textContent), ['A line', 'A line']);
     cleanup();
@@ -244,9 +244,9 @@ describe('the report chart of lines', () => {
   });
 
   it('draws nothing when there is nothing to draw', () => {
-    assert.equal(draw(lines([])).figure, null);
+    assert.ok(draw(lines([])).figure === null);
     cleanup();
-    assert.equal(draw(lines([line([])], { bands: [{ label: 'Range', lower: [], upper: [], shade: 0.1 }] })).figure, null);
+    assert.ok(draw(lines([line([])], { bands: [{ label: 'Range', lower: [], upper: [], shade: 0.1 }] })).figure === null);
   });
 
   it('draws a chart that has bands and no lines', () => {

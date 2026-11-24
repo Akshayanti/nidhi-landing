@@ -21,7 +21,7 @@ const on = (amountLocale: string | null) =>
 describe('useMoney', () => {
   it('keeps each currency its own conventions on a page with no amount style', () => {
     const money = renderHook(() => useMoney()).result.current;
-    assert.equal(money.amountLocale, null);
+    assert.ok(money.amountLocale === null);
     assert.equal(money.formatAmount(1058721, 'EUR'), '€1,058,721');
     assert.equal(money.formatAmount(1058721, 'EUR', true), '€1.06M');
     assert.equal(money.formatMoney(123456, 'EUR'), '€1,234.56');

@@ -194,7 +194,7 @@ describe('where the read-out is placed', () => {
     const { container, rerender } = render(<Placed anchor={0.25} />);
     assert.equal(container.querySelector<HTMLElement>('.chart-readout')!.style.visibility, '');
     rerender(<Placed anchor={null} />);
-    assert.equal(place(), null);
+    assert.ok(place() === null);
     assert.equal(container.querySelector<HTMLElement>('.chart-readout')!.style.visibility, 'hidden');
     rerender(<Placed anchor={0.5} />);
     assert.deepEqual(place(), { left: 234, top: 28 });

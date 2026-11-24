@@ -101,7 +101,7 @@ describe('the printed report', () => {
     const assumptions = tables[3].closest('section') as HTMLElement;
     assert.equal(assumptions.querySelector('h2')!.textContent, r.assumptions);
     assert.deepEqual(texts(assumptions, 'ul > li'), ['Prices are national averages.', 'Past inflation says little about the future.']);
-    assert.equal(tables[1].closest('section'), null);
+    assert.ok(tables[1].closest('section') === null);
     assert.equal(tables[1].parentElement!.className, 'tool-reportBlock');
   });
 
@@ -187,7 +187,7 @@ describe('a table in the report', () => {
     assert.deepEqual(head.map((c) => [c.tagName, c.getAttribute('scope'), c.textContent]), [['TH', 'col', 'Year'], ['TH', 'col', 'Balance']]);
     const rows = [...table.tBodies[0].rows].map((row) => [...row.cells].map((c) => [c.tagName, c.getAttribute('scope'), c.textContent]));
     assert.deepEqual(rows, [[['TH', 'row', '2026'], ['TD', null, '5']], [['TH', 'row', '2027'], ['TD', null, '6']]]);
-    assert.equal(table.querySelector('caption'), null);
+    assert.ok(table.querySelector('caption') === null);
     assert.equal(table.querySelectorAll('.tool-reportLabel').length, 0);
   });
 

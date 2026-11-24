@@ -113,7 +113,7 @@ describe('results, or the reason there are none', () => {
     assert.equal(body.className, 'tool-resultBody');
     assert.equal(body.hasAttribute('inert'), false);
     assert.equal(body.textContent, '€120');
-    assert.equal(reason, null);
+    assert.ok(reason === null);
   });
 
   it('withholds them and gives the reason in their place while a box is wrong', () => {
@@ -131,15 +131,15 @@ describe('results, or the reason there are none', () => {
     const { body, reason } = parts(render(<Withheld reason=""><b>€120</b></Withheld>).container);
     assert.equal(body.className, 'tool-resultBody tool-withheld');
     assert.equal(body.hasAttribute('inert'), true);
-    assert.equal(reason, null);
+    assert.ok(reason === null);
   });
 
   it('leaves the reason to the part it goes with', () => {
     const { body, reason } = parts(render(<Withheld reason="Fix the marked fields" unsaid><b>€120</b></Withheld>).container);
     assert.equal(body.hasAttribute('inert'), true);
-    assert.equal(reason, null);
+    assert.ok(reason === null);
     cleanup();
-    assert.equal(parts(render(<Withheld reason={null} unsaid><b>€120</b></Withheld>).container).reason, null);
+    assert.ok(parts(render(<Withheld reason={null} unsaid><b>€120</b></Withheld>).container).reason === null);
   });
 });
 
