@@ -146,6 +146,10 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.equal(one("new URL('cases.json', 'file:///project/src/data/')").s, 'file:///project/src/data/cases.json');
     assert.equal(one("new URL('cases.json', 'file:///project/src/data/x.ts')").s, 'file:///project/src/data/cases.json');
     assert.equal(one("fileURLToPath(new URL('../c.json', import.meta.url))").s, '/project/c.json');
+    // Council round 4 (Codex): a URL with a host is not the local path it spells.
+    assert.equal(one("fileURLToPath('file://localhost/project/src/cases.json')"), null);
+    assert.equal(one("new URL('file://localhost/project/src/cases.json')"), null);
+    assert.equal(one("new URL('cases.json', 'file://host/project/src/')"), null);
   });
 
   it('a glob’s options count only when written out in full, the last of a name winning (council round 3, Codex)', () => {
@@ -199,6 +203,9 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
       ["const fs = require?.('node:fs'); fs.readFileSync('src/cases.json');", /require other than as a direct call/],
       ["const load = require; const fs = load('node:fs');", /require other than as a direct call/],
       ["const fs = module.require('node:fs');", /require through a member/],
+      // Council round 4 (DeepSeek): any member of require.
+      ["const fs = require.call(null, 'node:fs'); fs.readFileSync('src/cases.json');", /require other than as a direct call/],
+      ["const fs = require['call'](null, 'node:fs');", /require other than as a direct call/],
       ["const U = URL; new U('./a.json', import.meta.url);", /URL other than with new/],
       ["const { readFileSync } = require('node:fs');\nexport = readFileSync;", /hands on readFileSync/],
     ]) {

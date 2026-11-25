@@ -90,7 +90,10 @@ const partial = (s) => ({ s, exact: false });
  * outside ASCII) is decoded, cut off or encoded on the way to a file name.
  */
 const PLAIN_URL_PATH = /^[A-Za-z0-9._~/@+,=:-]*$/;
-const fromFileUrl = (v) => (v && v.s.startsWith('file://') && PLAIN_URL_PATH.test(v.s.slice(7)) ? { s: v.s.slice(7), exact: v.exact } : null);
+// Only a file URL with no host (`file:///...`): `file://localhost/x` and any
+// other authority are read differently by Node, so they are unknown.
+const isLocalFileUrl = (s) => s.startsWith('file:///');
+const fromFileUrl = (v) => (v && isLocalFileUrl(v.s) && PLAIN_URL_PATH.test(v.s.slice(7)) ? { s: v.s.slice(7), exact: v.exact } : null);
 /** Everything under a known folder, from a glob whose own text is known: a wildcard cannot climb out. */
 const listing = (s) => ({ s, exact: false, listing: true });
 
@@ -289,11 +292,12 @@ export function analyse(text, file, root) {
         // encodes the rest: a spec not spelled in plain URL characters is not
         // the file name it spells, so it is unknown. So is one naming another
         // host or scheme (`//x`, `http:`).
+        if (spec.s.startsWith('file:') && !isLocalFileUrl(spec.s)) return null;
         if (!PLAIN_URL_PATH.test(spec.s.startsWith('file://') ? spec.s.slice(7) : spec.s)) return null;
         if (spec.s.startsWith('//') || (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(spec.s) && !spec.s.startsWith('file://'))) return null;
         if (!b) return spec.s.startsWith('file://') ? spec : null;
         const base = evaluate(b);
-        if (!base || !base.exact || !base.s.startsWith('file://') || !PLAIN_URL_PATH.test(base.s.slice(7))) return null;
+        if (!base || !base.exact || !isLocalFileUrl(base.s) || !PLAIN_URL_PATH.test(base.s.slice(7))) return null;
         if (spec.s.startsWith('file://')) return spec;
         // A base ending in / is a folder: a name is resolved inside it.
         const basePath = base.s.slice(7);
@@ -512,10 +516,10 @@ export function analyse(text, file, root) {
     }
     if (node.type !== 'Identifier' || bindings.has(node)) return;
     if (node.name === 'require' && !declared.has('require')) {
+      // Every other use widens: an alias, `require?.()`, `require.call`,
+      // `require['x']`, and `require.resolve` (which widens on its own too).
       const direct = parent?.type === 'CallExpression' && key === 'callee';
-      const resolve = parent?.type === 'MemberExpression' && key === 'object';
-      const optional = parent?.type === 'OptionalCallExpression' && key === 'callee';
-      if (optional || (!direct && !resolve && isValueUse(node, parent, key))) opaque.push('uses require other than as a direct call');
+      if (!direct) opaque.push('uses require other than as a direct call');
     }
     if (node.name === 'URL' && !declared.has('URL')) {
       const constructed = parent?.type === 'NewExpression' && key === 'callee';
@@ -597,7 +601,7 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
     // (Before the query and hash are cut off, which would leave nothing.)
     if (spec.startsWith('#')) return null;
     const clean = spec.replace(/[?#].*$/, '');
-    if (clean.startsWith('file://')) return resolveImport(fromRel, clean.slice(7));
+    if (clean.startsWith('file:')) return isLocalFileUrl(clean) && PLAIN_URL_PATH.test(clean.slice(7)) ? resolveImport(fromRel, clean.slice(7)) : null;
     if (!clean.startsWith('.') && !clean.startsWith('/')) return undefined; // a package or a built-in: the lockfile and Node, in the global fingerprint
     const base = toRel(isAbsolute(clean) ? clean : join(root, dirname(fromRel), clean));
     const stems = [base];
@@ -618,6 +622,7 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
 
   /** Every tracked (or on-disk) path a read of `v` (an evaluated path) can touch. */
   const touched = (v) => {
+    if (v.s.startsWith('file:') && !isLocalFileUrl(v.s)) return null;
     let s = v.s.startsWith('file://') ? v.s.slice(7) : v.s;
     if (!s.startsWith('/')) s = `${root}/${s}`;
     if (v.exact) {
