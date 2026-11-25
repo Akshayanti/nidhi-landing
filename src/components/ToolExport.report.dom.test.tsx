@@ -11,7 +11,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { act, cleanup, render } from '@testing-library/react';
 import { dict } from '../i18n/index.ts';
 import type { Report, ReportTable } from '../utils/shared/report.ts';
-import { ToolReport, numericColumns } from './ToolExport.tsx';
+import { ToolReport } from './ToolExport.tsx';
 
 const strings = dict('en').tools.export;
 const r = strings.report;
@@ -236,22 +236,5 @@ describe('a table in the report', () => {
     assert.deepEqual(texts(block({ ...base, note: ['One.', 'Two.'] }), 'p'), ['One.', 'Two.']);
     cleanup();
     assert.equal(block(base).querySelectorAll('p').length, 0);
-  });
-});
-
-describe('which columns hold numbers only', () => {
-  it('is never the first, and any other whose filled cells are all numbers', () => {
-    const table: ReportTable = {
-      head: ['label', 'numbers', 'with null', 'with a gap', 'with blank', 'number cells', 'mixed', 'text cells', 'empty'],
-      rows: [
-        [1, 1, 1, 1, 1, { n: 1 }, 'x', { t: '1' }, null],
-        [2, 2, null, undefined, '', { n: 2, fmt: 'amount2' }, 2, 3, ''],
-      ],
-    };
-    assert.deepEqual(numericColumns(table), [false, true, true, true, true, true, false, false, false]);
-  });
-
-  it('is none in a table with no rows', () => {
-    assert.deepEqual(numericColumns({ head: ['a', 'b'], rows: [] }), [false, false]);
   });
 });

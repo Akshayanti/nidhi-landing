@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-25',
+    items: [
+      {
+        id: 'swiss-franc-true-minus',
+        text: {
+          en: 'In the net worth calculator and Invest or pay off, a negative amount in Swiss francs now has a true minus sign, as other currencies already did: “CHF−1,650”, not “CHF-1,650”. A screen reader could skip the hyphen after the currency code, so an amount owed, or a gap in favour of paying off, could be heard as a positive amount.',
+          hi: 'शुद्ध संपत्ति (net\u00a0worth) कैलकुलेटर और निवेश या कर्ज़ चुकाना टूल में स्विस फ़्रैंक की शून्य से कम (माइनस) राशि में अब असली माइनस चिह्न है, जैसा दूसरी मुद्राओं में पहले से था: “CHF−1,650”, न कि “CHF-1,650”। स्क्रीन रीडर मुद्रा कोड के बाद का हाइफ़न छोड़ सकता था, इसलिए बकाया राशि, या कर्ज़ चुकाने के पक्ष वाला अंतर, शून्य से ज़्यादा राशि की तरह सुनाई दे सकता था।',
+          es: 'En la calculadora de patrimonio neto y en Invertir o pagar deuda, una cantidad negativa en francos suizos ahora lleva un signo menos de verdad, como ya pasaba con otras monedas: «CHF−1,650», no «CHF-1,650». Un lector de pantalla podía saltarse el guion que va tras el código de la moneda, así que una deuda, o una diferencia a favor de pagar la deuda, podía oírse como una cantidad positiva.',
+          cs: 'V kalkulačce čistého jmění a v nástroji Investovat, nebo splatit dluh má teď záporná částka ve švýcarských francích skutečné znaménko minus, jako ho už měly ostatní měny: „CHF−1,650“, ne „CHF-1,650“. Čtečka obrazovky mohla spojovník za kódem měny přeskočit, takže dluh nebo rozdíl ve prospěch splacení mohl znít jako kladná částka.',
+          mr: 'निव्वळ संपत्ती (net\u00a0worth) कॅल्क्युलेटर आणि गुंतवणूक की कर्जफेड या साधनांमध्ये स्विस फ्रँकमधील शून्यापेक्षा कमी (मायनस) रकमेला आता खरे मायनस चिन्ह आहे, जसे इतर चलनांना आधीपासून होते: “CHF−1,650”, “CHF-1,650” नाही. स्क्रीन रीडर चलन कोडनंतरचा हायफन वगळू शकत होता, त्यामुळे देणे असलेली रक्कम, किंवा कर्जफेडीच्या बाजूचा फरक, शून्यापेक्षा जास्त रकमेसारखा ऐकू येऊ शकत होता.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-23',
     items: [
       {

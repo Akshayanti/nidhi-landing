@@ -1,25 +1,21 @@
 /**
  * toolShared: what every free tool shares around its form and results. The
- * form held until the island runs, the lead-in of a field error, the box
+ * form held until the island runs, the box
  * that selects the mark of an unreadable value, the results withheld while a
  * box is wrong, and the results' gate. The announcements have their own
- * file (toolShared.announce.dom.test.tsx).
+ * file (toolShared.announce.dom.test.tsx), and a field error's lead-in one
+ * that needs no browser (toolShared.errors.test.tsx).
  */
 import '../../test/dom.ts';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { useContext } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { cleanup, render, renderHook, screen } from '@testing-library/react';
 import {
-  ErrorLeadContext,
-  ErrorText,
-  UnreadableContext,
   Withheld,
   heldUntilReady,
   markerSelect,
   selectMarker,
-  useErrorText,
   useResultGate,
   useToolReady,
 } from './toolShared.tsx';
@@ -49,24 +45,6 @@ describe('a form held until it works', () => {
   it('holds with both attributes and releases with none', () => {
     assert.deepEqual(heldUntilReady(false), { inert: true, 'aria-busy': true });
     assert.deepEqual(heldUntilReady(true), {});
-  });
-});
-
-describe('a field error', () => {
-  const Said = () => <p>{`${useContext(ErrorLeadContext)}|${useContext(UnreadableContext)}`}</p>;
-
-  it('has no lead-in and no unreadable line until the island hands them down', () => {
-    assert.equal(render(<Said />).container.textContent, '|');
-    assert.equal(renderHook(() => useErrorText('Enter a rate')).result.current, 'Enter a rate');
-  });
-
-  it('puts the translated lead-in in front of the message', () => {
-    const { container } = render(
-      <ErrorLeadContext.Provider value="Chyba: {message}">
-        <p><ErrorText>Zadejte sazbu</ErrorText></p>
-      </ErrorLeadContext.Provider>,
-    );
-    assert.equal(container.textContent, 'Chyba: Zadejte sazbu');
   });
 });
 
