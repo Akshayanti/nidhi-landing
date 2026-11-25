@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 /**
- * Refreshes the monthly consumer price index the inflation calculator joins
- * to a country's yearly history: BIS data set "Consumer prices"
- * (WS_LONG_CPI), the monthly index, for every country the BIS publishes.
+ * Refreshes a monthly consumer price index the inflation calculator joins to
+ * a country's yearly history. There are two, and `--source` says which:
  *
- * Writes src/data/inflation/bis-monthly.json. The site serves what it needs
- * of it from its own origin, inside the same history file as the World Bank's
- * figures: a reader's browser never contacts the BIS. Run with the yearly
- * refresh by .github/workflows/inflation-data.yml; by hand with
- * `node scripts/fetch-inflation-monthly.mjs`.
+ *   bis (the default)   BIS data set "Consumer prices" (WS_LONG_CPI), the
+ *                       monthly index, into src/data/inflation/bis-monthly.json
+ *   world-bank          the World Bank's Global Economic Monitor, indicator
+ *                       CPTOTNSXN, into src/data/inflation/worldbank-monthly.json,
+ *                       for the countries the BIS has no index for
+ *
+ * The site serves what it needs of them from its own origin, inside the same
+ * history file as the World Bank's yearly figures: a reader's browser never
+ * contacts either. Run with the yearly refresh by
+ * .github/workflows/inflation-data.yml; by hand with
+ * `node scripts/fetch-inflation-monthly.mjs [--source world-bank]`.
  *
  * Fails with a non-zero exit, and leaves the existing file untouched, on any
  * network error or response it does not expect. The file is written whole,
@@ -40,19 +45,23 @@ import {
   serializeMonthly,
   summarizeMonthly,
 } from './lib/publishing/inflation-monthly.mjs';
+import { WB_MONTHLY_INDICATOR, WB_MONTHLY_SOURCE_ID, buildWorldBankMonthly, parseWorldBankMonthly } from './lib/publishing/inflation-monthly-wb.mjs';
+import { splitPage } from './lib/publishing/inflation-data.mjs';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(repoRoot, 'src/data/inflation/bis-monthly.json');
+const OUT_WORLD_BANK = join(repoRoot, 'src/data/inflation/worldbank-monthly.json');
 const WORLD_BANK = join(repoRoot, 'src/data/inflation/worldbank.json');
 const API = 'https://stats.bis.org/api/v2/data/dataflow/BIS/WS_LONG_CPI/1.0';
+const WB_API = 'https://api.worldbank.org/v2';
 
-async function getCsv(url) {
+async function get(url, accept, read) {
   let lastError;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const res = await fetch(url, { headers: { accept: 'application/vnd.sdmx.data+csv;version=1.0.0' }, signal: AbortSignal.timeout(120_000) });
+      const res = await fetch(url, { headers: { accept }, signal: AbortSignal.timeout(120_000) });
       if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-      return await res.text();
+      return await read(res);
     } catch (err) {
       lastError = err;
       if (attempt < 3) await new Promise((r) => setTimeout(r, 2000 * attempt));
@@ -61,13 +70,35 @@ async function getCsv(url) {
   throw lastError;
 }
 
+/** The BIS's months since the window's first, as a dataset. */
+async function fetchBis(worldBank, today) {
+  const csv = await get(`${API}/M..${UNIT}?startPeriod=${firstMonthFor(today)}`, 'application/vnd.sdmx.data+csv;version=1.0.0', (res) => res.text());
+  return buildMonthlyDataset(parseBisCsv(csv), worldBank, today);
+}
+
+/** The Global Economic Monitor's months since the window's first, every page, as a dataset. */
+async function fetchWorldBankMonthly(worldBank, today) {
+  const first = firstMonthFor(today).slice(0, 4);
+  const base = `${WB_API}/country/all/indicator/${WB_MONTHLY_INDICATOR}?source=${WB_MONTHLY_SOURCE_ID}&format=json&date=${first}M01:${today.slice(0, 4)}M12&per_page=30000`;
+  const page = (n) => get(`${base}&page=${n}`, 'application/json', (res) => res.json());
+  const pages = [await page(1)];
+  const { meta } = splitPage(pages[0]);
+  for (let n = 2; n <= meta.pages; n++) pages.push(await page(n));
+  return buildWorldBankMonthly(parseWorldBankMonthly(pages), worldBank, today);
+}
+
 function option(args, name) {
   const at = args.indexOf(name);
   return at >= 0 ? args[at + 1] : null;
 }
 
-/** `args`, `out` and `fetchCsv` are parameters so a test can run this without the BIS. */
-export async function main(args = process.argv.slice(2), out = OUT, fetchCsv = getCsv) {
+/** `args` and `out` are parameters so a test can run this against a temporary file. */
+export async function main(args = process.argv.slice(2), out = null) {
+  const source = option(args, '--source') ?? 'bis';
+  if (source !== 'bis' && source !== 'world-bank') throw new Error(`--source is "${source}": it is bis or world-bank`);
+  const fromWorldBank = source === 'world-bank';
+  out ??= fromWorldBank ? OUT_WORLD_BANK : OUT;
+  const title = fromWorldBank ? 'Monthly index (World Bank, Global Economic Monitor)' : 'Monthly index (BIS)';
   const summaryPath = option(args, '--summary');
   const accepted = option(args, '--accept');
   const baselinePath = option(args, '--baseline') ?? out;
@@ -88,8 +119,7 @@ export async function main(args = process.argv.slice(2), out = OUT, fetchCsv = g
     previous = null;
   }
 
-  const csv = await fetchCsv(`${API}/M..${UNIT}?startPeriod=${firstMonthFor(today)}`);
-  const dataset = buildMonthlyDataset(parseBisCsv(csv), worldBank, today);
+  const dataset = fromWorldBank ? await fetchWorldBankMonthly(worldBank, today) : await fetchBis(worldBank, today);
 
   if (sameMonthlyData(previous, dataset)) {
     console.log(`Unchanged: ${Object.keys(dataset.countries).length} countries of monthly figures.`);
@@ -100,7 +130,7 @@ export async function main(args = process.argv.slice(2), out = OUT, fetchCsv = g
     const comparison = compareMonthly(previous, dataset);
     const digest = monthlyDigest(previous, dataset);
     const refused = comparison.over.length > 0 && accepted !== digest;
-    let summary = `### Monthly index (BIS)\n\n${summarizeMonthly(comparison)}`;
+    let summary = `### ${title}\n\n${summarizeMonthly(comparison)}`;
     if (comparison.over.length) {
       summary += refused
         ? `\n\nRefused: no data was written. If this change is real, run again with this name to accept exactly this comparison: \`${digest}\``

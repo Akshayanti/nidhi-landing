@@ -13,6 +13,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import type { ToolState } from './url.ts';
+import type { MonthlySource } from './monthly.ts';
 
 type Island = Dict['tools']['inflation']['island'];
 type Common = Dict['tools']['export'];
@@ -37,7 +38,7 @@ export interface InflationAnswer {
    * Set when that answer ends at a month after the last full year, from the
    * monthly index (`monthly.ts`): the month as `YYYY-MM`, and the amount there.
    */
-  monthEnd?: { month: string; value: number } | null;
+  monthEnd?: { month: string; value: number; source: MonthlySource } | null;
 }
 
 export interface InflationExport {
@@ -99,7 +100,7 @@ export function inflationSheets({ island, common, state, answer, decimals, date,
     answerRows.push([x.years, span]);
     // The month is given as the index names it, 2026-09: the same in every language.
     if (answer.monthEnd) answerRows.push([x.monthEnd, answer.monthEnd.month]);
-    answerRows.push([x.source, answer.monthEnd ? `${x.sourceText} ${x.sourceTextMonthly}` : x.sourceText]);
+    answerRows.push([x.source, answer.monthEnd ? `${x.sourceText} ${x.sourceTextMonthly[answer.monthEnd.source]}` : x.sourceText]);
   }
   const answerSheet: Sheet = { name: x.sheets.answer, widths: [26, 100], rows: [head(common.columns.item, common.columns.value), ...answerRows] };
 

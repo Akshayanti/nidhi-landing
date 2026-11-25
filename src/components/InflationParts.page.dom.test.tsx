@@ -633,7 +633,7 @@ describe('the inflation calculator on its page', () => {
 
   it('a country whose history carries a month ends there on the page, in the report and in the spreadsheet', async () => {
     // 0% in 2018, 50% in 2019, and March 2020 another 20% above the 2019 average: 10,000 x 1.5 x 1.2 = 18,000.
-    mount({ defaultCurrency: 'INR', defaultCountry: 'TST', initialHistory: { code: 'TST', series: [2018, [0, 50], ['2020-03', 1.2]] } });
+    mount({ defaultCurrency: 'INR', defaultCountry: 'TST', initialHistory: { code: 'TST', series: [2018, [0, 50], ['2020-03', 1.2, 'bis']] } });
     fireEvent.click(tab('past'));
     settle();
     assert.equal(headline(), 'about ₹18,000');
@@ -644,17 +644,17 @@ describe('the inflation calculator on its page', () => {
     ]);
     assert.equal(all('rect.ifc-dot--month').length, 1);
     assert.deepEqual(reportLines()?.slice(0, 2), ['about ₹18,000', 'In Testland, ₹10,000 at average prices in 2018 bought what about ₹18,000 bought at prices in March 2020.']);
-    assert.deepEqual(reportMethod(), [island.results.methodHistory, fill(island.results.joinNote, { to: 2019 }), island.export.monthRow]);
+    assert.deepEqual(reportMethod(), [island.results.methodHistory, fill(island.results.joinNote, { to: 2019, source: island.results.monthlySource.bis }), island.export.monthRow]);
     fireEvent.click(xlsxButton());
     const file = await fileText(downloads[0].blob);
     assert.ok(file.includes('>2020-03</t>'));
     assert.ok(file.includes(`>${island.export.monthEnd}</t>`));
     assert.ok(file.includes('>2018 to 2019</t>'));
-    assert.ok(file.includes(`>${island.export.sourceText} ${island.export.sourceTextMonthly}</t>`.replace(/“|”/g, (q) => q)));
+    assert.ok(file.includes(`>${island.export.sourceText} ${island.export.sourceTextMonthly.bis}</t>`));
     {
       // a country fetched later brings its own join with it: 0%, 10%, 0% from 1998, and June 2001 50% above the 2000 average
       const euro = HISTORY.countries.EMU;
-      HISTORY.countries.EMU = [1998, [0, 10, 0], ['2001-06', 1.5]];
+      HISTORY.countries.EMU = [1998, [0, 10, 0], ['2001-06', 1.5, 'worldBank']];
       try {
         choose(island.history.label, 'EMU');
         await historyArrives();
@@ -662,6 +662,8 @@ describe('the inflation calculator on its page', () => {
         // 10,000 x 1.1 x 1.5 = 16,500.
         assert.equal(sentences()[0], 'In the euro area, 10,000 at average prices in 1998 bought what about €16,500 bought at prices in June 2001.');
         assert.equal(all('rect.ifc-dot--month').length, 1);
+        // The method names the World Bank's own monthly index for this one.
+        assert.equal(text('.ifc-answer > p.ifc-method')[1], fill(island.results.joinNote, { to: 2000, source: island.results.monthlySource.worldBank }));
       } finally {
         HISTORY.countries.EMU = euro;
       }

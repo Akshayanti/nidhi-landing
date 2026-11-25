@@ -113,7 +113,7 @@ describe('inflation printed report', () => {
   });
 
   it('an answer that ends at a month: its row closes the table, and the sentence about it goes with the method', () => {
-    const answer: InflationAnswer = { ...ANSWER, history: { country: 'Spain', from: 2014, to: 2016 }, monthEnd: { month: '2017-03', value: 1300 } };
+    const answer: InflationAnswer = { ...ANSWER, history: { country: 'Spain', from: 2014, to: 2016 }, monthEnd: { month: '2017-03', value: 1300, source: 'bis' } };
     const out = report(answer, { ...STATE, mode: 'past' });
     assert.deepEqual(out.tables[0].rows, [
       [whole(0), money(1000)],
@@ -121,9 +121,9 @@ describe('inflation printed report', () => {
       [whole(2), money(1210)],
       ['2017-03', money(1300)],
     ]);
-    assert.deepEqual(out.assumptions, [METHOD, 'The last row is one month, from the BIS monthly consumer price index, not a year’s average.']);
+    assert.deepEqual(out.assumptions, [METHOD, 'The last row is one month, from a monthly consumer price index, not a year’s average.']);
     // More on the method stands between the method and the sentence about the month's row.
-    assert.deepEqual(report(answer, { ...STATE, mode: 'past' }, ['Two sources.']).assumptions, [METHOD, 'Two sources.', 'The last row is one month, from the BIS monthly consumer price index, not a year’s average.']);
+    assert.deepEqual(report(answer, { ...STATE, mode: 'past' }, ['Two sources.']).assumptions, [METHOD, 'Two sources.', 'The last row is one month, from a monthly consumer price index, not a year’s average.']);
     assert.deepEqual(report(ANSWER, STATE, ['A note.', 'Another.']).assumptions, [METHOD, 'A note.', 'Another.']);
     // The chart keeps the yearly points: the month is in the answer's sentences and in the table.
     assert.equal(out.chart?.kind === 'lines' && out.chart.series[0].points.length, 3);
@@ -139,7 +139,7 @@ describe('inflation printed report', () => {
 
   it('a long path that ends at a month keeps the month’s row as its last', () => {
     // 40 years and the month: 41 rows, every fifth and the last.
-    const out = report({ ...ANSWER, points: path(40), history: { country: 'Spain', from: 0, to: 39 }, monthEnd: { month: '2026-09', value: 500 } }, { ...STATE, mode: 'past' });
+    const out = report({ ...ANSWER, points: path(40), history: { country: 'Spain', from: 0, to: 39 }, monthEnd: { month: '2026-09', value: 500, source: 'worldBank' } }, { ...STATE, mode: 'past' });
     const rows = out.tables[0].rows;
     assert.deepEqual(rows[rows.length - 1], ['2026-09', money(500)]);
     assert.equal(rows.length, 9);

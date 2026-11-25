@@ -288,6 +288,7 @@ export const STATIC_PAGE_SOURCE: Readonly<Record<string, readonly string[]>> = {
     'src/data/inflation/worldbank.json',
     // And the day the BIS's months were fetched, and how many countries end at a month.
     'src/data/inflation/bis-monthly.json',
+    'src/data/inflation/worldbank-monthly.json',
   ],
   'free/invest-or-pay-off': [
     'src/components/pages/InvestOrPayOffPage.astro',

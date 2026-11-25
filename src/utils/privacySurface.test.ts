@@ -190,6 +190,7 @@ const EXPECTED_HOSTS: Record<string, 'request' | 'link'> = {
   'eu.i.posthog.com': 'request', // analytics
   'data.bis.org': 'link', // the monthly price index's source, inflation calculator
   'data.worldbank.org': 'link',
+  'datacatalog.worldbank.org': 'link', // the World Bank's monthly index, inflation calculator
   'docs.google.com': 'link', // the volunteer form
   'posthog.com': 'link',
   'rpc.cfainstitute.org': 'link',

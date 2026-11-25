@@ -14,4 +14,6 @@ Review 2026-11-25 of the month join in `InflationCalculator.tsx` (uncommitted on
 
 - **Fixed and signed off the same day:** the legend names the month (catalog `monthsName`, nominative, not Intl, since the island's number locale is not the page language on hi); `descMonth` per language; joinNote moved after the method line. It still sits inside `.ifc-answer`, so the distance to the chart did not shrink (12.2k px at 320/400% en): moving it below the chart is the remaining lever, if raised again.
 
+- Second source (World Bank GEM, 65 more countries, India included) rechecked and signed off the same day. Probe trap: one es run missed the join note because the dev server hot-reloaded mid-run while the author edited; rerun before reporting a missing line.
+
 **Probe:** scratch `ifc.mjs` pattern: consent preset to declined via evaluateOnNewDocument, click third `[role=tab]`, `page.select('.ifc-countryField select', 'ESP')`, wait 2.5s. Pass flags into `page.evaluate` as arguments (no `process` in the page). Related: [[hero-cookie-sticky-review-2026-11-25]].

@@ -193,7 +193,7 @@ describe('a country’s history is used only for past to today', () => {
     assert.equal(computeAnswer(s, en, USA, null, 'loading', 'en', null, null), 'loading');
     assert.equal(computeAnswer(s, en, USA, rising(2019), 'loading', 'en', null, null), 'loading');
     // A month to end at does not make a history that is still loading ready.
-    assert.equal(computeAnswer(s, en, USA, rising(2019), 'loading', 'en', null, { month: '2023-03', factor: 1.1 }), 'loading');
+    assert.equal(computeAnswer(s, en, USA, rising(2019), 'loading', 'en', null, { month: '2023-03', factor: 1.1, source: 'bis' }), 'loading');
   });
 });
 
@@ -562,13 +562,13 @@ describe('keeping up with inflation', () => {
 describe('an answer that ends at a month, where the country has one to join', () => {
   // The 10%, 20%, 25% series ends in 2022; the monthly index stands 10% above the 2022 average in March 2023.
   // 1,000 x 1.65 x 1.1 = 1,815, and 1.815 is 82% (81.5 rounded) above the start.
-  const END: MonthlyJoin = { month: '2023-03', factor: 1.1 };
+  const END: MonthlyJoin = { month: '2023-03', factor: 1.1, source: 'bis' };
   const joined = (country: CountryOption, series: Series, amount: number, from: number | null, join: MonthlyJoin | null, currency = country.currency ?? 'EUR', numberLocale = 'en') => {
     const a = computeAnswer(state({ mode: 'past', currency, amount, from }), en, country, series, 'ready', numberLocale, null, join);
     assert.ok(a !== 'loading');
     return a;
   };
-  const JOIN_NOTE = (to: number) => format(r.joinNote, { to });
+  const JOIN_NOTE = (to: number, source: 'bis' | 'worldBank' = 'bis') => format(r.joinNote, { to, source: r.monthlySource[source] });
   const a = joined(USA, rising(2019), 1000, 2019, END);
 
   it('goes one step past the last year: the yearly result times the month’s step', () => {
@@ -586,8 +586,13 @@ describe('an answer that ends at a month, where the country has one to join', ()
     ]);
     // Which sources are joined is method: it follows the method line, not the answer's sentences.
     assert.deepEqual(a.methodNotes, [JOIN_NOTE(2022)]);
-    assert.match(JOIN_NOTE(2022), /^Two sources are joined here: the World Bank’s yearly inflation up to 2022, then the monthly consumer price index published by the BIS, for the step from the 2022 average to the latest month with a figure here\./);
-    assert.match(JOIN_NOTE(2022), /not a World Bank figure and not an official yearly inflation rate\.$/);
+    assert.equal(JOIN_NOTE(2022), 'Two sets of figures are joined here: the World Bank’s yearly inflation up to 2022, then the monthly consumer price index published by the BIS, for the step from the 2022 average to the latest month with a figure here. One month includes seasonal ups and downs and may be revised later. A monthly index reading is not an official yearly inflation rate.');
+    // The note names the index the month came from.
+    const other = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.1, source: 'worldBank' });
+    assert.deepEqual(other.methodNotes, [JOIN_NOTE(2022, 'worldBank')]);
+    assert.match(JOIN_NOTE(2022, 'worldBank'), /then the World Bank’s monthly consumer price index \(Global Economic Monitor\), for the step/);
+    assert.equal(other.monthPoint?.source, 'worldBank');
+    assert.equal(a.monthPoint?.source, 'bis');
     assert.equal(a.method, METHOD_HISTORY);
     assert.deepEqual(a.band, []);
     assert.ok(a.announceMore === undefined);
@@ -615,10 +620,10 @@ describe('an answer that ends at a month, where the country has one to join', ()
     const names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     names.forEach((name, i) => {
       const month = `2024-${String(i + 1).padStart(2, '0')}`;
-      assert.equal(joined(USA, rising(2019), 1000, 2019, { month, factor: 1.1 }).sentences[0], `In United States, $1,000 at average prices in 2019 bought what about $1,820 bought at prices in ${name} 2024.`);
+      assert.equal(joined(USA, rising(2019), 1000, 2019, { month, factor: 1.1, source: 'bis' }).sentences[0], `In United States, $1,000 at average prices in 2019 bought what about $1,820 bought at prices in ${name} 2024.`);
     });
     // In Czech the month takes the form that follows "v".
-    const czech = computeAnswer(state({ mode: 'past', currency: 'USD', from: 2019 }), cs, USA, rising(2019), 'ready', 'cs', null, { month: '2023-01', factor: 1.1 });
+    const czech = computeAnswer(state({ mode: 'past', currency: 'USD', from: 2019 }), cs, USA, rising(2019), 'ready', 'cs', null, { month: '2023-01', factor: 1.1, source: 'bis' });
     assert.ok(czech !== 'loading');
     assert.match(czech.sentences[0], /při cenách v\u00a0lednu 2023\.$/);
   });
@@ -640,7 +645,7 @@ describe('an answer that ends at a month, where the country has one to join', ()
 
   it('says a fall as a fall, in each of the three lines on its own', () => {
     // The years fell (0.9 x 0.8 = 0.72, 15.1% a year) and the month is 5% under the last year's average: 0.72 x 0.95 = 0.684.
-    const fall = joined(USA, { 2020: 1, 2021: -10, 2022: -20 }, 1000, 2020, { month: '2023-03', factor: 0.95 });
+    const fall = joined(USA, { 2020: 1, 2021: -10, 2022: -20 }, 1000, 2020, { month: '2023-03', factor: 0.95, source: 'bis' });
     close(fall.value, 684);
     assert.deepEqual(fall.sentences.slice(1, 4), [
       'Prices were about 32% lower in March 2023 than on average in 2020.',
@@ -648,14 +653,14 @@ describe('an answer that ends at a month, where the country has one to join', ()
       'Prices were 5% lower in March 2023 than on average in 2022.',
     ]);
     // The years rose and the month is under the last year's average: 1.65 x 0.4 = 0.66, lower overall.
-    const mixed = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 0.4 });
+    const mixed = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 0.4, source: 'bis' });
     assert.deepEqual(mixed.sentences.slice(1, 4), [
       'Prices were about 34% lower in March 2023 than on average in 2019.',
       'From 2019 to 2022, they rose 18.2% a year on average.',
       'Prices were 60% lower in March 2023 than on average in 2022.',
     ]);
     // The years fell and the month is above the last year's average: 0.72 x 1.5 = 1.08, higher overall.
-    const back = joined(USA, { 2020: 1, 2021: -10, 2022: -20 }, 1000, 2020, { month: '2023-03', factor: 1.5 });
+    const back = joined(USA, { 2020: 1, 2021: -10, 2022: -20 }, 1000, 2020, { month: '2023-03', factor: 1.5, source: 'bis' });
     assert.deepEqual(back.sentences.slice(1, 4), [
       'Prices were about 8% higher in March 2023 than on average in 2020.',
       'From 2020 to 2022, they fell 15.1% a year on average.',
@@ -664,15 +669,15 @@ describe('an answer that ends at a month, where the country has one to join', ()
   });
 
   it('a month level with the last year’s average is said as no rise, and a tenth of a percent is kept', () => {
-    const level = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1 });
+    const level = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1, source: 'bis' });
     assert.equal(level.sentences[3], 'Prices were 0% higher in March 2023 than on average in 2022.');
     close(level.value, 1650);
-    const tenth = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263 });
+    const tenth = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263, source: 'bis' });
     assert.equal(tenth.sentences[3], 'Prices were 2.6% higher in March 2023 than on average in 2022.');
   });
 
   it('follows the page’s number style', () => {
-    const czech = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263 }, 'USD', 'cs');
+    const czech = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263, source: 'bis' }, 'USD', 'cs');
     assert.equal(czech.sentences[1], 'Prices were about 69\u00a0% higher in March 2023 than on average in 2019.');
     assert.equal(czech.sentences[2], 'From 2019 to 2022, they rose 18,2\u00a0% a year on average.');
     assert.equal(czech.sentences[3], 'Prices were 2,6\u00a0% higher in March 2023 than on average in 2022.');
@@ -680,7 +685,7 @@ describe('an answer that ends at a month, where the country has one to join', ()
 
   it('across a change of currency, the month’s step is in the answer and in the answer for today’s money', () => {
     // Turkey: 2,000,000,000 x 1.65 x 1.1 = 3,630,000,000 old lira = 3,630 new.
-    const t = joined(TUR, rising(2003), 2e9, 2003, { month: '2007-03', factor: 1.1 });
+    const t = joined(TUR, rising(2003), 2e9, 2003, { month: '2007-03', factor: 1.1, source: 'bis' });
     const note = format(r.currencyChanged, { country: 'Türkiye', year: 2005, ratio: '1,000,000', from: 2003, unconverted: 'about ₺3,630,000,000' });
     close(t.value, 3630);
     assert.equal(t.headline, 'about ₺3,630');
@@ -692,7 +697,7 @@ describe('an answer that ends at a month, where the country has one to join', ()
 
   it('a month more than a year past the last full year still reads as one step from that year’s average', () => {
     // The yearly figures stop in 2022 and the month is March 2024: the step covers all of 2023 as well.
-    const late = joined(USA, rising(2019), 1000, 2019, { month: '2024-03', factor: 1.3 });
+    const late = joined(USA, rising(2019), 1000, 2019, { month: '2024-03', factor: 1.3, source: 'bis' });
     // 1,000 x 1.65 x 1.3 = 2,145, 114.5% above the start.
     close(late.value, 2145);
     assert.deepEqual(late.sentences.slice(0, 4), [
@@ -705,14 +710,28 @@ describe('an answer that ends at a month, where the country has one to join', ()
     close(late.monthPoint!.x, 2024 - 3.5 / 12);
   });
 
+  it('an index that repeats a value within each quarter says the month may carry a quarter’s figure, naming the country', () => {
+    const quarterly = joined(AUS, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.1, source: 'bis', quarterly: true }, 'AUD');
+    assert.deepEqual(quarterly.sentences.slice(3), [
+      'Prices were 10% higher in March 2023 than on average in 2022.',
+      'For Australia, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.',
+      START(2019),
+    ]);
+    // The country named is the one chosen, whichever it is.
+    const nz: CountryOption = { code: 'NZL', name: 'New Zealand', currency: 'NZD' };
+    assert.equal(joined(nz, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.1, source: 'bis', quarterly: true }, 'NZD').sentences[4], 'For New Zealand, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.');
+    // Without the mark there is no such line.
+    assert.equal(a.sentences.some((line) => line.includes('quarter')), false);
+  });
+
   it('the euro area takes its own sentence', () => {
-    const e = joined(EMU, { 2010: 1, 2011: 10, 2012: 20, 2013: 25 }, 1000, 2010, { month: '2014-03', factor: 1.1 });
+    const e = joined(EMU, { 2010: 1, 2011: 10, 2012: 20, 2013: 25 }, 1000, 2010, { month: '2014-03', factor: 1.1, source: 'bis' });
     assert.equal(e.sentences[0], 'In the euro area, €1,000 at average prices in 2010 bought what about €1,820 bought at prices in March 2014.');
   });
 });
 
 describe('a country with a monthly index that is not joined', () => {
-  const withheld = (reason: 'mismatch' | 'incomplete' | 'no-later-month' | 'listed') => {
+  const withheld = (reason: 'mismatch' | 'incomplete' | 'no-later-month' | 'stale' | 'listed') => {
     const a = computeAnswer(state({ mode: 'past', currency: 'USD', amount: 1000, from: 2019 }), en, USA, rising(2019), 'ready', 'en', null, { withheld: reason });
     assert.ok(a !== 'loading');
     return a;
@@ -722,7 +741,8 @@ describe('a country with a monthly index that is not joined', () => {
   const INCOMPLETE = 'A monthly figure is not joined for United States: the monthly index available here lacks months the join needs (all of 2022, and the years it is compared over), or has no month after 2022.';
 
   it('keeps the yearly answer whole, and says why there is no month', () => {
-    for (const [reason, why] of [['mismatch', MISMATCH], ['listed', MISMATCH], ['incomplete', INCOMPLETE], ['no-later-month', INCOMPLETE]] as const) {
+    const STALE = 'A monthly figure is not joined for United States: the latest month in the monthly index available here is more than six months old.';
+    for (const [reason, why] of [['mismatch', MISMATCH], ['listed', MISMATCH], ['incomplete', INCOMPLETE], ['no-later-month', INCOMPLETE], ['stale', STALE]] as const) {
       const a = withheld(reason);
       close(a.value, 1650);
       assert.equal(a.headline, 'about $1,650');
@@ -741,7 +761,7 @@ describe('a country with a monthly index that is not joined', () => {
   });
 
   it('a typed-rate question takes no notice of a join', () => {
-    const typed = computeAnswer(state({ mode: 'buy' }), en, USA, rising(2019), 'ready', 'en', null, { month: '2023-03', factor: 1.1 });
+    const typed = computeAnswer(state({ mode: 'buy' }), en, USA, rising(2019), 'ready', 'en', null, { month: '2023-03', factor: 1.1, source: 'bis' });
     assert.ok(typed !== 'loading');
     assert.deepEqual(typed.sentences, ['If inflation averages 10% a year, €1,000 in 2 years buys what about €826 buys today.']);
     assert.ok(typed.monthPoint === undefined);

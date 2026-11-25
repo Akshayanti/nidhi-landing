@@ -11,19 +11,31 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { dict } from '../../i18n/index.ts';
 import {
   TOLERANCE_POINTS,
   TOLERANCE_SHARE,
+  ACCEPTED_IMPLIED_WITHIN,
+  ACCEPTED_WORLD_BANK_WITHIN,
+  ACCEPTED_YEARS,
+  MONTHLY_SOURCES,
+  STALE_AFTER_MONTHS,
   WITHHELD,
   YEARS_COMPARED,
   YEARS_NEEDED,
+  bestJoin,
   impliedYearlyRate,
-  monthlyJoin,
+  isAcceptedYear,
+  isQuarterly,
+  monthlyJoin as monthlyJoinOf,
+  monthsBefore,
+  type MonthlySource,
   ratesAgree,
   yearMean,
 } from './monthly.ts';
 
 const key = (year: number, month: number) => `${year}-${String(month).padStart(2, '0')}`;
+const round = (v: number) => Math.round(v * 1e6) / 1e6;
 
 /** Every month of each year at that year's one value. */
 function flat(byYear: Record<number, number>, more: Record<string, number> = {}): Record<string, number> {
@@ -31,6 +43,10 @@ function flat(byYear: Record<number, number>, more: Record<string, number> = {})
   for (const [year, value] of Object.entries(byYear)) for (let m = 1; m <= 12; m++) months[key(Number(year), m)] = value;
   return { ...months, ...more };
 }
+
+/** The join from one source's months, their age measured from the middle of April 2026 unless a test says otherwise. */
+const monthlyJoin = (code: string, years: Record<string, number>, months: Record<string, number>, fetchedAt = '2026-04-15', source: MonthlySource = 'bis') =>
+  monthlyJoinOf(code, years, { source, months, asOf: fetchedAt });
 
 /** 10% a year, 2020 to 2025. */
 const INDEX = { 2020: 100, 2021: 110, 2022: 121, 2023: 133.1, 2024: 146.41, 2025: 161.051 };
@@ -46,6 +62,182 @@ describe('the settings of the join', () => {
     assert.equal(YEARS_COMPARED, 5);
     assert.equal(YEARS_NEEDED, 3);
     assert.deepEqual(WITHHELD, {});
+    assert.equal(STALE_AFTER_MONTHS, 6);
+    assert.deepEqual(MONTHLY_SOURCES, ['bis', 'worldBank']);
+  });
+
+  it('has one accepted year, India’s 2025, with its evidence written down', () => {
+    assert.deepEqual(Object.keys(ACCEPTED_YEARS), ['IND']);
+    assert.deepEqual(Object.keys(ACCEPTED_YEARS.IND), ['2025']);
+    assert.match(ACCEPTED_YEARS.IND[2025].evidence, /MOSPI.*2\.20%.*2\.18%.*2\.40/);
+    // The figures reviewed: the exception is for these, and no others.
+    assert.equal(ACCEPTED_YEARS.IND[2025].worldBank, 2.4);
+    assert.equal(ACCEPTED_YEARS.IND[2025].implied, 2.18);
+    assert.equal(ACCEPTED_WORLD_BANK_WITHIN, 0.005);
+    assert.equal(ACCEPTED_IMPLIED_WITHIN, 0.05);
+  });
+
+  it('is said on the page, in every language: the source paragraph and the FAQ name the country and the year', () => {
+    // The page says months are joined only where the two agree; an accepted year is the one exception, so it is named there.
+    for (const locale of ['en', 'hi', 'es', 'cs', 'mr'] as const) {
+      const page = dict(locale).tools.inflation.page;
+      assert.match(page.sourceMonthly.after, /\(2025\)/, `${locale}: the source paragraph`);
+      assert.match(page.faq.items[3].a, /\(2025\)/, `${locale}: the FAQ`);
+    }
+    assert.match(dict('en').tools.inflation.page.sourceMonthly.after, /or, for one year in India \(2025\), where the difference is traced to the yearly figure rather than the index;/);
+  });
+});
+
+describe('how old a month is', () => {
+  it('counts whole months from the month to the month of the day', () => {
+    assert.equal(monthsBefore('2026-09', '2026-11-25'), 2);
+    assert.equal(monthsBefore('2026-11', '2026-11-01'), 0);
+    assert.equal(monthsBefore('2025-12', '2026-01-31'), 1);
+    assert.equal(monthsBefore('2025-01', '2026-11-25'), 22);
+    assert.equal(monthsBefore('2024-11', '2026-11-25'), 24);
+    // A month after the day's is ahead of it.
+    assert.equal(monthsBefore('2026-12', '2026-11-25'), -1);
+  });
+});
+
+describe('a latest month that is too old', () => {
+  it('more than six months before the data was fetched is not joined; six months is', () => {
+    const months = flat(INDEX, LATER);
+    // March 2026: six months before September, seven before October.
+    assert.deepEqual(monthlyJoin('TST', YEARS, months, '2026-09-30'), { month: '2026-03', factor: 1.1, source: 'bis' });
+    assert.deepEqual(monthlyJoin('TST', YEARS, months, '2026-10-01'), { withheld: 'stale' });
+    assert.deepEqual(monthlyJoin('TST', YEARS, months, '2027-03-01'), { withheld: 'stale' });
+  });
+
+  it('is said before a mismatch, and after there being no later month at all', () => {
+    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2025': 12 }, flat(INDEX, LATER), '2026-10-01'), { withheld: 'stale' });
+    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX), '2027-10-01'), { withheld: 'no-later-month' });
+  });
+});
+
+describe('a year accepted although the yearly figure differs', () => {
+  // India's reviewed case: the World Bank's 2.4 for 2025 against an index that implies 2.18.
+  // An index at 100 in 2024 and 102.18 in 2025 implies exactly that; the years before agree at 10%.
+  const INDIA = { 2020: 66.550625, 2021: 73.2056875, 2022: 80.52625625, 2023: 88.578881875, 2024: 100, 2025: 102.18 };
+  const india = (wb2025: number, index2025 = 102.18, more: Record<string, number> = {}) =>
+    monthlyJoin('IND', { ...YEARS, '2024': 12.89, '2025': wb2025, ...more }, flat({ ...INDIA, 2025: index2025 }, { '2026-03': index2025 * 1.1 }));
+
+  it('is accepted only with both figures as they were reviewed', () => {
+    assert.equal(isAcceptedYear('IND', 2025, 2.18, 2.4), true);
+    // The yearly figure within rounding of the one reviewed, and no further.
+    assert.equal(isAcceptedYear('IND', 2025, 2.18, 2.404), true);
+    assert.equal(isAcceptedYear('IND', 2025, 2.18, 2.396), true);
+    assert.equal(isAcceptedYear('IND', 2025, 2.18, 2.41), false);
+    assert.equal(isAcceptedYear('IND', 2025, 2.18, 2.39), false);
+    // The implied figure within 0.05 of the one reviewed, and no further.
+    assert.equal(isAcceptedYear('IND', 2025, 2.22, 2.4), true);
+    assert.equal(isAcceptedYear('IND', 2025, 2.14, 2.4), true);
+    assert.equal(isAcceptedYear('IND', 2025, 2.24, 2.4), false);
+    assert.equal(isAcceptedYear('IND', 2025, 2.12, 2.4), false);
+    // Another year, another country, or a name every object has.
+    assert.equal(isAcceptedYear('IND', 2024, 2.18, 2.4), false);
+    assert.equal(isAcceptedYear('TST', 2025, 2.18, 2.4), false);
+    assert.equal(isAcceptedYear('toString', 2025, 2.18, 2.4), false);
+    assert.equal(isAcceptedYear('IND', 'toString' as unknown as number, 2.18, 2.4), false);
+  });
+
+  it('joins India with the figures reviewed, and no other country with the same figures', () => {
+    const join = india(2.4);
+    assert.ok(!('withheld' in join));
+    assert.equal(join.month, '2026-03');
+    assert.equal(join.factor, 1.1);
+    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2024': 12.89, '2025': 2.4 }, flat(INDIA, { '2026-03': 112.398 })), { withheld: 'mismatch' });
+  });
+
+  it('is a mismatch again once either figure is revised away from the one reviewed', () => {
+    // The World Bank revises to 3: not the case that was reviewed.
+    assert.deepEqual(india(3), { withheld: 'mismatch' });
+    assert.deepEqual(india(2.5), { withheld: 'mismatch' });
+    // The index is revised so that it implies 2.0, while the yearly figure stays at 2.4.
+    assert.deepEqual(india(2.4, 102), { withheld: 'mismatch' });
+    // The World Bank revises to what the index implies: it agrees, and needs no exception.
+    assert.ok(!('withheld' in india(2.2)));
+  });
+
+  it('does not excuse another year of India’s, a missing month, or a month that is too old', () => {
+    assert.deepEqual(india(2.4, 102.18, { '2023': 11 }), { withheld: 'mismatch' });
+    const months = flat(INDIA, { '2026-03': 112.398 });
+    delete months['2025-07'];
+    assert.deepEqual(monthlyJoin('IND', { ...YEARS, '2024': 12.89, '2025': 2.4 }, months), { withheld: 'incomplete' });
+    assert.deepEqual(monthlyJoin('IND', { ...YEARS, '2024': 12.89, '2025': 2.4 }, flat(INDIA, { '2026-03': 112.398 }), '2026-10-01'), { withheld: 'stale' });
+  });
+
+  it('counts as one of the years compared, not as a year passed over', () => {
+    // Only 2025 (accepted), 2024 and 2023 can be compared: three, which is enough.
+    const { '2021': _a, '2022': _b, ...three } = { ...YEARS, '2024': 12.89, '2025': 2.4 };
+    assert.ok(!('withheld' in monthlyJoin('IND', three, flat(INDIA, { '2026-03': 112.398 }))));
+    const { '2023': _c, ...two } = three;
+    assert.deepEqual(monthlyJoin('IND', two, flat(INDIA, { '2026-03': 112.398 })), { withheld: 'incomplete' });
+  });
+});
+
+describe('an index published by quarter', () => {
+  const quarters = (values: Record<string, number>) => {
+    const months: Record<string, number> = {};
+    for (const [quarter, value] of Object.entries(values)) {
+      const [year, q] = quarter.split('Q').map(Number);
+      for (let n = 1; n <= 3; n++) months[key(year, (q - 1) * 3 + n)] = value;
+    }
+    return months;
+  };
+
+  it('is one whose latest quarter and the two before it each carry one figure', () => {
+    const months = quarters({ '2025Q4': 100, '2026Q1': 101, '2026Q2': 102 });
+    assert.equal(isQuarterly(months, '2026-06'), true);
+    // Part of the latest quarter is enough, with its months so far alike.
+    assert.equal(isQuarterly({ ...quarters({ '2025Q4': 100, '2026Q1': 101 }), '2026-04': 102, '2026-05': 102 }, '2026-05'), true);
+    assert.equal(isQuarterly({ ...quarters({ '2025Q4': 100, '2026Q1': 101 }), '2026-04': 102 }, '2026-04'), true);
+    // Across a year's end: January's quarter, then the last two of the year before.
+    assert.equal(isQuarterly({ ...quarters({ '2025Q3': 99, '2025Q4': 100 }), '2026-01': 101 }, '2026-01'), true);
+  });
+
+  it('is not one when any of those months differs or is missing', () => {
+    const months = quarters({ '2025Q4': 100, '2026Q1': 101, '2026Q2': 102 });
+    for (const month of ['2025-10', '2025-12', '2026-01', '2026-03', '2026-04', '2026-06']) {
+      assert.equal(isQuarterly({ ...months, [month]: 150 }, '2026-06'), false, `${month} differs`);
+      const { [month]: _gone, ...without } = months;
+      assert.equal(isQuarterly(without, '2026-06'), false, `${month} is missing`);
+    }
+    // A monthly index, and one flat for a single quarter only.
+    assert.equal(isQuarterly(flat(INDEX, LATER), '2026-03'), false);
+    assert.equal(isQuarterly({ ...quarters({ '2026Q2': 102 }), '2026-01': 100, '2026-02': 100.5, '2026-03': 101, '2025-10': 98, '2025-11': 99, '2025-12': 99.5 }, '2026-06'), false);
+    // A month after the latest is not looked at: the quarter so far is what counts.
+    assert.equal(isQuarterly({ ...quarters({ '2025Q4': 100, '2026Q1': 101 }), '2026-04': 102, '2026-05': 103 }, '2026-04'), true);
+  });
+
+  it('marks the join, so the answer can say the month carries its quarter’s figure', () => {
+    // Flat years are flat quarters too: the made-up index reads as quarterly once its latest quarter is whole.
+    const quarterly = monthlyJoin('TST', YEARS, flat(INDEX, { '2026-01': 177.1561, '2026-02': 177.1561, '2026-03': 177.1561 }));
+    assert.deepEqual(quarterly, { month: '2026-03', factor: 1.1, source: 'bis', quarterly: true });
+    // A real monthly index carries no mark at all.
+    const monthly = monthlyJoin('TST', YEARS, { ...flat(INDEX, LATER), '2025-11': 161.0511 });
+    assert.deepEqual(monthly, { month: '2026-03', factor: round(177.1561 / ((161.051 * 11 + 161.0511) / 12)), source: 'bis' });
+    assert.equal('quarterly' in monthly, false);
+  });
+});
+
+describe('a country with more than one monthly source', () => {
+  const series = (source: MonthlySource, months: Record<string, number>, asOf = '2026-04-15') => ({ source, months, asOf });
+
+  it('takes the first that joins, in the order given, and names it', () => {
+    const both = [series('bis', flat(INDEX, LATER)), series('worldBank', flat(INDEX, { '2026-02': 161.051 }))];
+    assert.deepEqual(bestJoin('TST', YEARS, both), { month: '2026-03', factor: 1.1, source: 'bis' });
+    assert.deepEqual(bestJoin('TST', YEARS, [...both].reverse()), { month: '2026-02', factor: 1, source: 'worldBank' });
+  });
+
+  it('passes over a source that does not join for one that does', () => {
+    assert.deepEqual(bestJoin('TST', YEARS, [series('bis', flat(INDEX)), series('worldBank', flat(INDEX, LATER))]), { month: '2026-03', factor: 1.1, source: 'worldBank' });
+  });
+
+  it('gives the first source’s reason when none joins, and nothing when there is no source', () => {
+    assert.deepEqual(bestJoin('TST', YEARS, [series('bis', flat(INDEX)), series('worldBank', {})]), { withheld: 'no-later-month' });
+    assert.deepEqual(bestJoin('TST', YEARS, [series('worldBank', {}), series('bis', flat(INDEX))]), { withheld: 'incomplete' });
+    assert.equal(bestJoin('TST', YEARS, []), null);
   });
 });
 
@@ -116,18 +308,19 @@ describe('whether the index and the World Bank follow the same prices', () => {
 describe('the month a country’s answer may end at', () => {
   it('is the latest month, with the step to it from the last year’s average', () => {
     // 177.1561 / 161.051 = 1.1
-    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
   });
 
   it('is the latest of several, wherever it was written in the file', () => {
     const months = { '2026-04': 80.5255, ...flat(INDEX, LATER), '2026-02': 170 };
     // 80.5255 / 161.051 = 0.5: prices can be lower than the year's average.
-    assert.deepEqual(monthlyJoin('TST', YEARS, months), { month: '2026-04', factor: 0.5 });
+    assert.deepEqual(monthlyJoin('TST', YEARS, months), { month: '2026-04', factor: 0.5, source: 'bis' });
   });
 
   it('keeps the step to six decimals', () => {
     // 161.051 x 1.0123456789 = 163.03928...; the step is 1.012346 to six places.
-    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, { '2026-01': 161.051 * 1.0123456789 })), { month: '2026-01', factor: 1.012346 });
+    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, { '2026-01': 161.051 * 1.0123456789 })), { month: '2026-01', factor: 1.012346, source: 'bis', quarterly: true });
+    // (The made-up index is flat through 2025, so with one month after it, it reads as published by quarter.)
   });
 
   it('links from the World Bank’s last year, whichever that is', () => {
@@ -135,7 +328,7 @@ describe('the month a country’s answer may end at', () => {
     const { '2025': _none, ...to2024 } = YEARS;
     const join = monthlyJoin('TST', { ...to2024, '2020': 10, '2019': 10 }, flat({ 2019: 90.909090909, ...INDEX }, LATER));
     // 177.1561 / 146.41 = 1.21
-    assert.deepEqual(join, { month: '2026-03', factor: 1.21 });
+    assert.deepEqual(join, { month: '2026-03', factor: 1.21, source: 'bis' });
   });
 });
 
@@ -143,7 +336,7 @@ describe('a country that keeps its yearly answer', () => {
   it('when the index stops with the link year: no later month', () => {
     assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX)), { withheld: 'no-later-month' });
     // December of the link year is not later; January of the next is.
-    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, { '2026-01': 161.051 })), { month: '2026-01', factor: 1 });
+    assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, { '2026-01': 161.051 })), { month: '2026-01', factor: 1, source: 'bis', quarterly: true });
   });
 
   it('when a month of the link year is missing: incomplete', () => {
@@ -177,7 +370,7 @@ describe('a country that keeps its yearly answer', () => {
     assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2025': 10.5 }, flat(INDEX, LATER)), { withheld: 'mismatch' });
     assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2025': 9.5 }, flat(INDEX, LATER)), { withheld: 'mismatch' });
     // Inside the tolerance it is joined: 10.15 against the index's 10.
-    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2025': 10.15 }, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2025': 10.15 }, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
   });
 
   it('when they differ in any of the five years compared, and not for a year before those', () => {
@@ -185,21 +378,21 @@ describe('a country that keeps its yearly answer', () => {
       assert.deepEqual(monthlyJoin('TST', { ...YEARS, [year]: 11 }, flat(INDEX, LATER)), { withheld: 'mismatch' }, year);
     }
     // 2020 is the sixth year back: it is not compared (and the index has no 2019 to compare it with).
-    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2020': 50 }, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2020': 50 }, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
     // Nor is it compared when the index does reach back that far.
-    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2020': 50 }, flat({ 2019: 90, ...INDEX }, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', { ...YEARS, '2020': 50 }, flat({ 2019: 90, ...INDEX }, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
   });
 
   it('a year that only one of the two has is passed over, while three can still be compared', () => {
     // The World Bank has no 2023 and no 2022: 2025, 2024 and 2021 remain.
     const { '2023': _a, '2022': _b, ...three } = YEARS;
-    assert.deepEqual(monthlyJoin('TST', three, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', three, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
     // And none of 2021 either: two is too few.
     const { '2021': _c, ...two } = three;
     assert.deepEqual(monthlyJoin('TST', two, flat(INDEX, LATER)), { withheld: 'incomplete' });
     // The index has no 2021 or 2022: 2025, 2024 and 2023 can be compared, 2022 and 2021 cannot.
     const { 2020: _d, 2021: _e, ...from2022 } = INDEX;
-    assert.deepEqual(monthlyJoin('TST', YEARS, flat(from2022, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('TST', YEARS, flat(from2022, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
     // Without 2022 as well, only 2025 and 2024: too few.
     const { 2022: _f, ...from2023 } = from2022;
     assert.deepEqual(monthlyJoin('TST', YEARS, flat(from2023, LATER)), { withheld: 'incomplete' });
@@ -215,11 +408,11 @@ describe('a country that keeps its yearly answer', () => {
     list.TST = 'a made-up reason';
     try {
       assert.deepEqual(monthlyJoin('TST', YEARS, flat(INDEX, LATER)), { withheld: 'listed' });
-      assert.deepEqual(monthlyJoin('OTH', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+      assert.deepEqual(monthlyJoin('OTH', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
     } finally {
       delete list.TST;
     }
     // A name every object has is not a country on the list.
-    assert.deepEqual(monthlyJoin('toString', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1 });
+    assert.deepEqual(monthlyJoin('toString', YEARS, flat(INDEX, LATER)), { month: '2026-03', factor: 1.1, source: 'bis' });
   });
 });

@@ -173,7 +173,7 @@ describe('inflation spreadsheet', () => {
       ...ANSWER,
       sentences: ['Only sentence.'],
       history: { country: 'Spain', from: 2014, to: 2025 },
-      monthEnd: { month: '2026-09', value: 10_500.126 },
+      monthEnd: { month: '2026-09', value: 10_500.126, source: 'bis' },
     };
     const out = sheets({ ...STATE, mode: 'past' }, answer);
     assert.deepEqual(out[2].rows, [
@@ -183,9 +183,11 @@ describe('inflation spreadsheet', () => {
       ['In words', 'Only sentence.'],
       ['Years used', '2014 to 2025'],
       ['Ends at month', '2026-09'],
-      ['Source', `${x.sourceText} ${x.sourceTextMonthly}`],
+      ['Source', `${x.sourceText} ${x.sourceTextMonthly.bis}`],
     ]);
-    assert.equal(x.sourceTextMonthly, 'Months after the last full year: BIS, Consumer prices (monthly index).');
+    assert.equal(x.sourceTextMonthly.bis, 'Months after the last full year: BIS, Consumer prices (monthly index).');
+    // The other monthly source is named when the month came from it.
+    assert.deepEqual(sheets({ ...STATE, mode: 'past' }, { ...answer, monthEnd: { month: '2026-07', value: 1, source: 'worldBank' } })[2].rows[6], ['Source', `${x.sourceText} Months after the last full year: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0.`]);
     assert.deepEqual(out[3].rows, [
       [{ t: ANSWER.chartTitle, bold: true }],
       head('Years from now', 'Value'),
@@ -193,7 +195,7 @@ describe('inflation spreadsheet', () => {
       [whole(1), { n: 9708.74, fmt: 'amount2' }],
       [whole(2), { n: 9425.96, fmt: 'amount2' }],
       ['2026-09', { n: 10_500.13, fmt: 'amount2' }],
-      ['The last row is one month, from the BIS monthly consumer price index, not a year’s average.'],
+      ['The last row is one month, from a monthly consumer price index, not a year’s average.'],
     ]);
     // To the currency's own smallest unit, like every other amount.
     assert.deepEqual(sheets({ ...STATE, mode: 'past' }, answer, 0)[3].rows[5], ['2026-09', { n: 10_500, fmt: 'amount0' }]);
@@ -206,7 +208,7 @@ describe('inflation spreadsheet', () => {
       assert.equal(out[3].rows.length, 5);
     }
     // A typed-rate answer never has one, whatever it is handed.
-    const typed = sheets(STATE, { ...ANSWER, monthEnd: { month: '2026-09', value: 1 } });
+    const typed = sheets(STATE, { ...ANSWER, monthEnd: { month: '2026-09', value: 1, source: 'bis' } });
     assert.equal(typed[2].rows.some((row) => row[0] === 'Ends at month'), false);
     assert.equal(typed[2].rows.some((row) => row[0] === 'Source'), false);
   });

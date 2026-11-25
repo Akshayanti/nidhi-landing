@@ -300,7 +300,7 @@ describe('the answer of the inflation calculator', () => {
   it('a country with a month to end at: the answer, its lines and the chart all go to the month', () => {
     // 2020 rose 10% and 2021 not at all; the month stands 20% above the 2021 average: 1,000 x 1.1 x 1.2 = 1,320.
     const series = { 2018: 5, 2019: 10, 2020: 10, 2021: 0 };
-    const again = results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready', join: { month: '2022-03', factor: 1.2 } });
+    const again = results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready', join: { month: '2022-03', factor: 1.2, source: 'bis' } });
     assert.equal(headline(), 'about €1,320');
     assert.deepEqual(lines().slice(0, 4), [
       ['ifc-sentence', 'In Testland, €1,000 at average prices in 2019 bought what about €1,320 bought at prices in March 2022.'],
@@ -310,7 +310,7 @@ describe('the answer of the inflation calculator', () => {
     ]);
     assert.equal(lines().length, 5);
     // The method, then which two sources are joined.
-    assert.deepEqual(text('.ifc-answer > p.ifc-method'), [r.methodHistory, fill(r.joinNote, { to: 2021 })]);
+    assert.deepEqual(text('.ifc-answer > p.ifc-method'), [r.methodHistory, fill(r.joinNote, { to: 2021, source: r.monthlySource.bis })]);
     assert.equal(all('p.ifc-legend--line > span')[1].textContent, 'One month, the latest with a figure: March 2022');
     assert.equal(all('path.ifc-line--month').length, 1);
     assert.equal(all('rect.ifc-dot--month').length, 1);

@@ -260,3 +260,13 @@ decimals, and joins them to the World Bank's yearly figures only for countries
 where the two agree. The calculator is free to use. Its editions in other
 languages are not official BIS translations, and the BIS does not endorse
 nidhi.
+
+Monthly consumer prices in the inflation calculator, for countries the BIS
+data set has no matching index for: World Bank, Global Economic Monitor, "CPI
+Price, not seas. adj." (indicator CPTOTNSXN)
+(https://datacatalog.worldbank.org/search/dataset/0037798/global-economic-monitor).
+Licensed under Creative Commons Attribution 4.0
+(https://creativecommons.org/licenses/by/4.0/). nidhi keeps a copy of the
+months the calculator needs, rounded to four decimals, and joins them to the
+World Bank's yearly figures only for countries where the two agree. The World
+Bank does not endorse nidhi.

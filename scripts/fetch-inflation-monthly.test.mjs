@@ -264,3 +264,75 @@ describe('fetch-inflation-monthly: the files it reads', () => {
     assert.equal(fs.readFileSync(base.out, 'utf8'), base.before);
   });
 });
+
+describe('fetch-inflation-monthly: the World Bank’s own monthly index', () => {
+  const WB_NAMES = Array.from({ length: 100 }, (_, i) => `C${String(i).padStart(2, '0')}`);
+  const WB_REQUIRED = ['USA', 'DEU', 'KEN'];
+  const wbYearly = (dir) => {
+    const file = path.join(dir, 'worldbank.json');
+    fs.writeFileSync(file, JSON.stringify({ countries: Object.fromEntries([...WB_NAMES, ...WB_REQUIRED].map((c) => [c, { iso2: 'XX', years: { 2025: 1 } }])) }));
+    return file;
+  };
+  const wbRow = (id, month, value) => ({ indicator: { id: 'CPTOTNSXN', value: 'CPI' }, country: { id, value: id }, date: `${YEAR}M${month}`, value });
+  /** Two pages: the hundred made-up countries, then the three it always has; Kenya's July as given. */
+  const wbPages = (kenya = 288) => (url) => {
+    const n = Number(new URL(url).searchParams.get('page'));
+    const meta = { page: n, pages: 2, per_page: 30000, total: 206, sourceid: '15', lastupdated: '2026-09-08' };
+    const codes = n === 1 ? WB_NAMES : WB_REQUIRED;
+    return [meta, codes.flatMap((c) => [wbRow(c, '06', 100), wbRow(c, '07', c === 'KEN' ? kenya : 101)])];
+  };
+  function mockWorldBank(t, pages) {
+    const calls = [];
+    t.mock.method(globalThis, 'fetch', async (url, options) => {
+      calls.push({ url: String(url), options });
+      return { ok: true, status: 200, json: async () => pages(String(url)) };
+    });
+    const lines = [];
+    t.mock.method(console, 'log', (...a) => lines.push(a.join(' ')));
+    return { calls, said: () => lines.join('\n') };
+  }
+
+  it('asks the World Bank for the Global Economic Monitor’s index, every page, as JSON, and writes its own file', async (t) => {
+    const dir = newDir();
+    const out = path.join(dir, 'worldbank-monthly.json');
+    const { calls, said } = mockWorldBank(t, wbPages());
+    await main(['--source', 'world-bank', '--first-import', '--world-bank', wbYearly(dir)], out);
+    const base = `https://api.worldbank.org/v2/country/all/indicator/CPTOTNSXN?source=15&format=json&date=${YEAR - 8}M01:${YEAR}M12&per_page=30000`;
+    assert.deepEqual(calls.map((c) => c.url), [`${base}&page=1`, `${base}&page=2`]);
+    for (const call of calls) assert.deepEqual(call.options.headers, { accept: 'application/json' });
+    const data = JSON.parse(fs.readFileSync(out, 'utf8'));
+    assert.equal(data.indicator, 'CPTOTNSXN');
+    assert.equal(data.license, 'CC BY 4.0');
+    assert.equal(data.lastUpdated, '2026-09-08');
+    assert.deepEqual(data.countries.KEN, { area: 'KEN', months: { [`${YEAR}-06`]: 100, [`${YEAR}-07`]: 288 } });
+    assert.equal(Object.keys(data.countries).length, 103);
+    assert.match(said(), /^Wrote 103 countries of monthly figures to /m);
+  });
+
+  it('compares with the committed file under the same limits, under its own heading', async (t) => {
+    const dir = newDir();
+    const out = path.join(dir, 'worldbank-monthly.json');
+    const wb = wbYearly(dir);
+    mockWorldBank(t, wbPages());
+    await main(['--source', 'world-bank', '--first-import', '--world-bank', wb], out);
+    const before = fs.readFileSync(out, 'utf8');
+    t.mock.restoreAll();
+    const same = mockWorldBank(t, wbPages());
+    await main(['--source', 'world-bank', '--world-bank', wb], out);
+    assert.match(same.said(), /^Unchanged: 103 countries of monthly figures\.$/m);
+    t.mock.restoreAll();
+    // Kenya's July moved by more than 2%: refused, nothing written.
+    const moved = mockWorldBank(t, wbPages(300));
+    await assert.rejects(main(['--source', 'world-bank', '--world-bank', wb], out), /the new months differ from the committed file by more than a refresh may \(1 values moved by more than 2%\)$/);
+    assert.ok(moved.said().startsWith('### Monthly index (World Bank, Global Economic Monitor)\n\n- Months added: 0'));
+    assert.equal(fs.readFileSync(out, 'utf8'), before);
+  });
+
+  it('refuses a source it does not know, before asking anyone for anything', async (t) => {
+    const dir = newDir();
+    const { calls } = mockWorldBank(t, wbPages());
+    await assert.rejects(main(['--source', 'imf', '--first-import', '--world-bank', wbYearly(dir)], path.join(dir, 'x.json')), /--source is "imf": it is bis or world-bank/);
+    assert.equal(calls.length, 0);
+  });
+});
+

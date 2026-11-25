@@ -57,7 +57,7 @@ export const inflationEn = {
       'Whether a raise or a savings return keeps up with inflation, with the exact real rate',
       'Every result also shown one percentage point lower and higher',
       'Yearly inflation history for {countries} countries and the euro area, from the World Bank',
-      'For {joined} countries, answers up to the latest month, with the BIS monthly consumer price index',
+      'For {joinedAll} countries, answers up to the latest month, with a monthly consumer price index from the BIS or the World Bank',
       'Rates from {minRate} to {maxRate}% a year, so hyperinflation can be shown',
       'Results in 38 currencies',
       'Shareable link to any calculation',
@@ -122,7 +122,13 @@ export const inflationEn = {
       before: 'For {joined} countries, an answer from the country’s history goes on to the latest month with a figure, using the monthly consumer price index published by the ',
       link: 'BIS',
       after:
-        ' (Bank for International Settlements, “Consumer prices”), fetched on {fetched}. The months are joined only where that index’s own yearly changes match the World Bank’s; elsewhere the answer ends at the last full year, and says so. The BIS does not endorse this tool and gives no warranty for its statistics. Your browser loads these figures from nidhi.today as well and never contacts the BIS.',
+        ' (Bank for International Settlements, “Consumer prices”), fetched on {fetched}. The months are joined only where that index’s own yearly changes match the World Bank’s or, for one year in India (2025), where the difference is traced to the yearly figure rather than the index; elsewhere the answer ends at the last full year, and says so. The BIS does not endorse this tool and gives no warranty for its statistics. Your browser loads these figures from nidhi.today as well and never contacts the BIS.',
+    },
+    /** The third: the World Bank's own monthly database, for countries the BIS has no matching index for. The link's text is the database's name, in the component. */
+    sourceMonthlyWorldBank: {
+      before: 'For {joinedWorldBank} more countries the months come from the World Bank’s own ',
+      after:
+        ' (“CPI Price, not seas. adj.”, indicator CPTOTNSXN), licensed CC BY 4.0 and last updated by the World Bank on {monthlyUpdated}. It is used where the BIS has no matching index, under the same rule, and served from nidhi.today like the rest. A country whose latest month is more than six months old keeps its yearly answer.',
     },
     /**
      * The FAQ, printed on the page and published as FAQPage structured data.
@@ -146,7 +152,7 @@ export const inflationEn = {
         },
         {
           q: 'Where does the history come from, and how recent is it?',
-          a: 'From the World Bank\'s World Development Indicators: “Inflation, consumer prices (annual %)” (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: “Past to today” starts only from years with an unbroken record up to the latest year. For {joined} countries, an answer from the country’s history goes one step further, to the latest month in the monthly consumer price index published by the BIS (Bank for International Settlements), fetched on {fetched}; the answer names the month and says that two sources are joined. That step is taken only where the index’s yearly changes match the World Bank’s.',
+          a: 'From the World Bank\'s World Development Indicators: “Inflation, consumer prices (annual %)” (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: “Past to today” starts only from years with an unbroken record up to the latest year. For {joinedAll} countries, an answer from the country’s history goes one step further, to the latest month in a monthly consumer price index: the one published by the BIS (Bank for International Settlements) or, where that has no match, the World Bank’s own monthly index, both fetched on {fetched}. The answer names the month and says which figures are joined. That step is taken only where the index’s yearly changes match the World Bank’s yearly figures or, for one year in India (2025), where the difference is traced to the yearly figure rather than the index, and only while its latest month is no more than six months old.',
         },
         {
           q: 'Why can the rate go up to {maxRate}%?',
@@ -220,8 +226,11 @@ export const inflationEn = {
       sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
       /** When the answer ends at a month: the row that names it (as 2026-09), the sentence under the by-year rows, and the second source. */
       monthEnd: 'Ends at month',
-      monthRow: 'The last row is one month, from the BIS monthly consumer price index, not a year’s average.',
-      sourceTextMonthly: 'Months after the last full year: BIS, Consumer prices (monthly index).',
+      monthRow: 'The last row is one month, from a monthly consumer price index, not a year’s average.',
+      sourceTextMonthly: {
+        bis: 'Months after the last full year: BIS, Consumer prices (monthly index).',
+        worldBank: 'Months after the last full year: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Choose a question',
     tabs: {
@@ -321,13 +330,21 @@ export const inflationEn = {
       pastMonthAverageFall: 'From {from} to {to}, they fell {average} a year on average.',
       pastMonthFurtherRise: 'Prices were {more} higher {inMonth} than on average in {to}.',
       pastMonthFurtherFall: 'Prices were {more} lower {inMonth} than on average in {to}.',
+      /** Under a month-ended answer whose index repeats a value within each recent quarter (`isQuarterly`): says what is seen, not how the country publishes. */
+      quarterNote: 'For {country}, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.',
       /** Under a month-ended answer: which two sources are joined, and what one month is and is not. `{to}` is the last full year. */
-      joinNote: 'Two sources are joined here: the World Bank’s yearly inflation up to {to}, then the monthly consumer price index published by the BIS, for the step from the {to} average to the latest month with a figure here. One month includes seasonal ups and downs and may be revised later. The monthly figure is not a World Bank figure and not an official yearly inflation rate.',
+      joinNote: 'Two sets of figures are joined here: the World Bank’s yearly inflation up to {to}, then {source}, for the step from the {to} average to the latest month with a figure here. One month includes seasonal ups and downs and may be revised later. A monthly index reading is not an official yearly inflation rate.',
+      /** The monthly index a month-ended answer uses, as `{source}` in `joinNote`: one phrase a source (`MonthlySource`). */
+      monthlySource: {
+        bis: 'the monthly consumer price index published by the BIS',
+        worldBank: 'the World Bank’s monthly consumer price index (Global Economic Monitor)',
+      },
       /** Under an answer that ends at a year: nothing after that year is in it. */
       latestYearNote: '{to} is the latest year with a figure here. Price changes after it are not included.',
       /** For a country that has a monthly index which is not joined, and why (`WithheldReason`). */
       withheldMismatch: 'A monthly figure is not joined for {country}: the monthly index available here does not match this yearly history closely enough.',
       withheldIncomplete: 'A monthly figure is not joined for {country}: the monthly index available here lacks months the join needs (all of {to}, and the years it is compared over), or has no month after {to}.',
+      withheldStale: 'A monthly figure is not joined for {country}: the latest month in the monthly index available here is more than six months old.',
       /** Under every answer from a country's history: the start is a year's average. Describes; never grades a raise. */
       startCaveat: 'The starting amount is treated as the average for {from}. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.',
       pastCountryRise: 'Prices rose about {total} in total over those {years}, an average of {average} a year.',
@@ -438,7 +455,7 @@ export const inflationHi: typeof inflationEn = {
       'वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चलता है या नहीं, सटीक असली दर के साथ',
       'हर नतीजा एक प्रतिशत अंक कम और ज़्यादा पर भी',
       'World Bank से {countries} देशों और यूरो क्षेत्र की सालाना महँगाई का इतिहास',
-      '{joined} देशों के लिए सबसे नए महीने तक के जवाब, BIS के मासिक उपभोक्ता मूल्य सूचकांक से',
+      '{joinedAll} देशों के लिए सबसे नए महीने तक के जवाब, BIS या World Bank के मासिक उपभोक्ता मूल्य सूचकांक से',
       '{minRate} से {maxRate}% सालाना तक की दरें, ताकि हाइपरइन्फ़्लेशन भी दिखाया जा सके',
       '38 मुद्राओं में नतीजे',
       'किसी भी हिसाब का शेयर लिंक',
@@ -491,7 +508,12 @@ export const inflationHi: typeof inflationEn = {
       before: '{joined} देशों के लिए, देश के इतिहास से निकला जवाब आँकड़े वाले सबसे नए महीने तक जाता है। इसके लिए मासिक उपभोक्ता मूल्य सूचकांक का स्रोत है: ',
       link: 'BIS',
       after:
-        ' (Bank for International Settlements, “Consumer prices”)। ये आँकड़े {fetched} को लिए गए। महीने वहीं जोड़े जाते हैं जहाँ इस सूचकांक के अपने सालाना बदलाव World Bank के आँकड़ों से मेल खाते हैं; बाकी देशों में जवाब आख़िरी पूरे साल पर रुकता है, और यह बताया जाता है। BIS इस टूल का समर्थन नहीं करता और अपने आँकड़ों की कोई गारंटी नहीं देता। यह BIS का आधिकारिक अनुवाद नहीं है। आपका ब्राउज़र ये आँकड़े भी nidhi.today से ही लेता है और BIS से कभी संपर्क नहीं करता।',
+        ' (Bank for International Settlements, “Consumer prices”)। ये आँकड़े {fetched} को लिए गए। महीने वहीं जोड़े जाते हैं जहाँ इस सूचकांक के अपने सालाना बदलाव World Bank के आँकड़ों से मेल खाते हैं, या भारत के एक साल (2025) में, जहाँ अंतर सूचकांक की जगह सालाना आँकड़े में पाया गया है; बाकी देशों में जवाब आख़िरी पूरे साल पर रुकता है, और यह बताया जाता है। BIS इस टूल का समर्थन नहीं करता और अपने आँकड़ों की कोई गारंटी नहीं देता। यह BIS का आधिकारिक अनुवाद नहीं है। आपका ब्राउज़र ये आँकड़े भी nidhi.today से ही लेता है और BIS से कभी संपर्क नहीं करता।',
+    },
+    sourceMonthlyWorldBank: {
+      before: '{joinedWorldBank} और देशों के लिए महीनों का स्रोत World Bank का अपना डेटाबेस है: ',
+      after:
+        ' (“CPI Price, not seas. adj.”, संकेतक CPTOTNSXN), CC BY 4.0 लाइसेंस के तहत; World Bank ने इसे आख़िरी बार {monthlyUpdated} को अपडेट किया। इसका इस्तेमाल वहाँ होता है जहाँ BIS के पास मेल खाता सूचकांक नहीं है, उसी नियम के साथ, और बाकी आँकड़ों की तरह यह भी nidhi.today से ही आता है। जिस देश का सबसे नया महीना छह महीने से ज़्यादा पुराना है, उसका जवाब सालाना ही रहता है।',
     },
     faq: {
       heading: 'अक्सर पूछे जाने वाले सवाल',
@@ -510,7 +532,7 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'इतिहास कहाँ से आता है, और कितना ताज़ा है?',
-          a: 'World Bank के World Development Indicators से: “Inflation, consumer prices (annual %)” (संकेतक FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: “बीते साल से आज तक” सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है। {joined} देशों के लिए, देश के इतिहास से निकला जवाब एक कदम आगे जाता है: BIS (Bank for International Settlements) के प्रकाशित मासिक उपभोक्ता मूल्य सूचकांक के सबसे नए महीने तक, जिसके आँकड़े {fetched} को लिए गए; जवाब में महीना लिखा होता है और यह भी कि दो स्रोत जोड़े गए हैं। यह कदम वहीं लिया जाता है जहाँ सूचकांक के सालाना बदलाव World Bank के आँकड़ों से मेल खाते हैं।',
+          a: 'World Bank के World Development Indicators से: “Inflation, consumer prices (annual %)” (संकेतक FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: “बीते साल से आज तक” सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है। {joinedAll} देशों के लिए, देश के इतिहास से निकला जवाब एक कदम आगे जाता है: किसी मासिक उपभोक्ता मूल्य सूचकांक के सबसे नए महीने तक। यह सूचकांक BIS (Bank for International Settlements) का प्रकाशित सूचकांक है, या जहाँ वह मेल नहीं खाता, वहाँ World Bank का अपना मासिक सूचकांक; दोनों के आँकड़े {fetched} को लिए गए। जवाब में महीना लिखा होता है और यह भी कि कौन-से आँकड़े जोड़े गए हैं। यह कदम वहीं लिया जाता है जहाँ सूचकांक के सालाना बदलाव World Bank के सालाना आँकड़ों से मेल खाते हैं, या भारत के एक साल (2025) में, जहाँ अंतर सूचकांक की जगह सालाना आँकड़े में पाया गया है, और तभी तक जब तक उसका सबसे नया महीना छह महीने से ज़्यादा पुराना न हो।',
         },
         {
           q: 'दर {maxRate}% तक क्यों जा सकती है?',
@@ -569,8 +591,11 @@ export const inflationHi: typeof inflationEn = {
       source: 'स्रोत',
       sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0।',
       monthEnd: 'आख़िरी महीना',
-      monthRow: 'आख़िरी पंक्ति एक महीने की है, BIS के मासिक उपभोक्ता मूल्य सूचकांक से; वह साल का औसत नहीं है।',
-      sourceTextMonthly: 'आख़िरी पूरे साल के बाद के महीने: BIS, Consumer prices (मासिक सूचकांक)। यह BIS का आधिकारिक अनुवाद नहीं है।',
+      monthRow: 'आख़िरी पंक्ति एक महीने की है, मासिक उपभोक्ता मूल्य सूचकांक से; वह साल का औसत नहीं है।',
+      sourceTextMonthly: {
+        bis: 'आख़िरी पूरे साल के बाद के महीने: BIS, Consumer prices (मासिक सूचकांक)। यह BIS का आधिकारिक अनुवाद नहीं है।',
+        worldBank: 'आख़िरी पूरे साल के बाद के महीने: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0।',
+      },
     },
     tabsLabel: 'सवाल चुनें',
     tabs: {
@@ -664,10 +689,16 @@ export const inflationHi: typeof inflationEn = {
       pastMonthAverageFall: '{from} से {to} तक वे औसतन {average} सालाना घटीं।',
       pastMonthFurtherRise: '{inMonth} क़ीमतें {to} के औसत से {more} ज़्यादा थीं।',
       pastMonthFurtherFall: '{inMonth} क़ीमतें {to} के औसत से {more} कम थीं।',
-      joinNote: 'यहाँ दो स्रोत जोड़े गए हैं: {to} तक World Bank की सालाना महँगाई, और उसके बाद BIS का प्रकाशित मासिक उपभोक्ता मूल्य सूचकांक, जो {to} के औसत से उस सबसे नए महीने तक का बदलाव बताता है जिसका आँकड़ा यहाँ है। एक महीने के आँकड़े में मौसमी उतार-चढ़ाव शामिल होते हैं और बाद में वह बदला भी जा सकता है। मासिक आँकड़ा World Bank का आँकड़ा नहीं है, और न ही कोई आधिकारिक सालाना महँगाई दर।',
+      quarterNote: '{country} के सूचकांक में हाल की हर तिमाही के भीतर एक ही मान दोहराया गया है, इसलिए यहाँ बताए गए महीने का आँकड़ा पूरी तिमाही का हो सकता है।',
+      joinNote: 'यहाँ आँकड़ों के दो समूह जोड़े गए हैं: {to} तक World Bank की सालाना महँगाई, और उसके बाद {source}, जो {to} के औसत से उस सबसे नए महीने तक का बदलाव बताता है जिसका आँकड़ा यहाँ है। एक महीने के आँकड़े में मौसमी उतार-चढ़ाव शामिल होते हैं और बाद में वह बदला भी जा सकता है। मासिक सूचकांक का आँकड़ा कोई आधिकारिक सालाना महँगाई दर नहीं है।',
+      monthlySource: {
+        bis: 'BIS का प्रकाशित मासिक उपभोक्ता मूल्य सूचकांक',
+        worldBank: 'World Bank का मासिक उपभोक्ता मूल्य सूचकांक (Global Economic Monitor)',
+      },
       latestYearNote: '{to} वह सबसे नया साल है जिसका आँकड़ा यहाँ है। उसके बाद क़ीमतों में आए बदलाव इसमें शामिल नहीं हैं।',
       withheldMismatch: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक इस सालाना इतिहास से पर्याप्त मेल नहीं खाता।',
       withheldIncomplete: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक में वे महीने पूरे नहीं हैं जो जोड़ने के लिए चाहिए ({to} का पूरा साल, और वे साल जिनसे तुलना की जाती है), या {to} के बाद का कोई महीना नहीं है।',
+      withheldStale: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक का सबसे नया महीना छह महीने से ज़्यादा पुराना है।',
       startCaveat: 'शुरुआती रकम को {from} का औसत माना गया है। अगर आपका वेतन या कोई क़ीमत किसी ख़ास महीने में तय हुई थी, तो तब से क़ीमतें इससे ज़्यादा या कम बढ़ी हो सकती हैं।',
       pastCountryRise: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
       pastCountryFall: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} घटीं, यानी औसतन {average} सालाना।',
@@ -762,7 +793,7 @@ export const inflationEs: typeof inflationEn = {
       'Si una subida salarial o la rentabilidad de tus ahorros siguen el ritmo de la inflación, con la tasa real exacta',
       'Cada resultado, también un punto porcentual por debajo y por encima',
       'Historia de la inflación anual de {countries} países y la zona del euro, del Banco Mundial',
-      'Para {joined} países, respuestas hasta el último mes, con el índice mensual de precios de consumo del BIS',
+      'Para {joinedAll} países, respuestas hasta el último mes, con un índice mensual de precios de consumo del BIS o del Banco Mundial',
       'Tasas de {minRate} a {maxRate} % anual, para poder mostrar la hiperinflación',
       'Resultados en 38 monedas',
       'Enlace para compartir cualquier cálculo',
@@ -815,7 +846,12 @@ export const inflationEs: typeof inflationEn = {
       before: 'Para {joined} países, la respuesta basada en el historial del país llega hasta el último mes con cifra, con el índice mensual de precios de consumo que publica el ',
       link: 'BIS',
       after:
-        ' (Banco de Pagos Internacionales, «Consumer prices»), descargado el {fetched}. Los meses solo se unen cuando los cambios anuales de ese índice coinciden con los del Banco Mundial; en los demás países la respuesta termina en el último año completo, y lo dice. El BIS no respalda esta herramienta ni ofrece garantía sobre sus estadísticas. Esta no es una traducción oficial del BIS. Tu navegador carga también estas cifras desde nidhi.today y nunca contacta con el BIS.',
+        ' (Banco de Pagos Internacionales, «Consumer prices»), descargado el {fetched}. Los meses solo se unen cuando los cambios anuales de ese índice coinciden con los del Banco Mundial o, para un año en la India (2025), cuando la diferencia se ha localizado en la cifra anual y no en el índice; en los demás países la respuesta termina en el último año completo, y lo dice. El BIS no respalda esta herramienta ni ofrece garantía sobre sus estadísticas. Esta no es una traducción oficial del BIS. Tu navegador carga también estas cifras desde nidhi.today y nunca contacta con el BIS.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'Para {joinedWorldBank} países más, los meses proceden de la base de datos del propio Banco Mundial, ',
+      after:
+        ' («CPI Price, not seas. adj.», indicador CPTOTNSXN), con licencia CC BY 4.0 y actualizada por última vez por el Banco Mundial el {monthlyUpdated}. Se usa donde el BIS no tiene un índice que coincida, con la misma regla, y se sirve desde nidhi.today como el resto. Un país cuyo último mes tiene más de seis meses conserva su respuesta anual.',
     },
     faq: {
       heading: 'Preguntas frecuentes',
@@ -834,7 +870,7 @@ export const inflationEs: typeof inflationEn = {
         },
         {
           q: '¿De dónde sale la historia y cuán reciente es?',
-          a: 'De los Indicadores del Desarrollo Mundial del Banco Mundial: «Inflation, consumer prices (annual %)» (indicador FP.CPI.TOTL.ZG), con licencia CC BY 4.0, que reúne las cifras que publican las oficinas nacionales de estadística y el FMI. El Banco Mundial las actualizó por última vez el {updated}; nidhi busca cifras nuevas cada mes. Para la mayoría de los países, el último año es el último año natural completo; algunos van con retraso y unos pocos tienen años sin cifra. La herramienta muestra la cobertura de cada país y nunca rellena un hueco con una suposición: «Del pasado a hoy» solo empieza en años con un registro sin interrupciones hasta el último año. Para {joined} países, la respuesta basada en el historial del país da un paso más, hasta el último mes del índice mensual de precios de consumo que publica el BIS (Banco de Pagos Internacionales), descargado el {fetched}; la respuesta nombra el mes y dice que se unen dos fuentes. Ese paso solo se da cuando los cambios anuales del índice coinciden con los del Banco Mundial.',
+          a: 'De los Indicadores del Desarrollo Mundial del Banco Mundial: «Inflation, consumer prices (annual %)» (indicador FP.CPI.TOTL.ZG), con licencia CC BY 4.0, que reúne las cifras que publican las oficinas nacionales de estadística y el FMI. El Banco Mundial las actualizó por última vez el {updated}; nidhi busca cifras nuevas cada mes. Para la mayoría de los países, el último año es el último año natural completo; algunos van con retraso y unos pocos tienen años sin cifra. La herramienta muestra la cobertura de cada país y nunca rellena un hueco con una suposición: «Del pasado a hoy» solo empieza en años con un registro sin interrupciones hasta el último año. Para {joinedAll} países, la respuesta basada en el historial del país da un paso más, hasta el último mes de un índice mensual de precios de consumo: el que publica el BIS (Banco de Pagos Internacionales) o, donde este no coincide, el índice mensual del propio Banco Mundial, ambos descargados el {fetched}. La respuesta nombra el mes y dice qué cifras se unen. Ese paso solo se da cuando los cambios anuales del índice coinciden con las cifras anuales del Banco Mundial o, para un año en la India (2025), cuando la diferencia se ha localizado en la cifra anual y no en el índice, y solo mientras su último mes no tenga más de seis meses.',
         },
         {
           q: '¿Por qué la tasa puede llegar al {maxRate} %?',
@@ -893,8 +929,11 @@ export const inflationEs: typeof inflationEn = {
       source: 'Fuente',
       sourceText: 'Banco Mundial, indicador FP.CPI.TOTL.ZG, «Inflation, consumer prices (annual %)», CC BY 4.0.',
       monthEnd: 'Mes final',
-      monthRow: 'La última fila es un solo mes, del índice mensual de precios de consumo del BIS, no la media de un año.',
-      sourceTextMonthly: 'Meses posteriores al último año completo: BIS, Consumer prices (índice mensual). Esta no es una traducción oficial del BIS.',
+      monthRow: 'La última fila es un solo mes, de un índice mensual de precios de consumo, no la media de un año.',
+      sourceTextMonthly: {
+        bis: 'Meses posteriores al último año completo: BIS, Consumer prices (índice mensual). Esta no es una traducción oficial del BIS.',
+        worldBank: 'Meses posteriores al último año completo: Banco Mundial, Global Economic Monitor, «CPI Price, not seas. adj.» (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Elige una pregunta',
     tabs: {
@@ -988,10 +1027,16 @@ export const inflationEs: typeof inflationEn = {
       pastMonthAverageFall: 'De {from} a {to} bajaron un {average} al año de media.',
       pastMonthFurtherRise: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más altos.',
       pastMonthFurtherFall: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más bajos.',
-      joinNote: 'Aquí se unen dos fuentes: la inflación anual del Banco Mundial hasta {to} y, después, el índice mensual de precios de consumo que publica el BIS, para el paso desde la media de {to} hasta el último mes con cifra aquí. Un solo mes incluye altibajos estacionales y puede revisarse más adelante. La cifra mensual no es una cifra del Banco Mundial ni una tasa oficial de inflación anual.',
+      quarterNote: 'En {country}, el índice repite un mismo valor dentro de cada trimestre reciente, así que el mes indicado aquí puede llevar la cifra de un trimestre.',
+      joinNote: 'Aquí se unen dos series de cifras: la inflación anual del Banco Mundial hasta {to} y, después, {source}, para el paso desde la media de {to} hasta el último mes con cifra aquí. Un solo mes incluye altibajos estacionales y puede revisarse más adelante. Una lectura mensual del índice no es una tasa oficial de inflación anual.',
+      monthlySource: {
+        bis: 'el índice mensual de precios de consumo que publica el BIS',
+        worldBank: 'el índice mensual de precios de consumo del Banco Mundial (Global Economic Monitor)',
+      },
       latestYearNote: '{to} es el último año con cifra aquí. Los cambios de precios posteriores no están incluidos.',
       withheldMismatch: 'Para {country} no se une una cifra mensual: el índice mensual disponible aquí no coincide lo suficiente con este historial anual.',
       withheldIncomplete: 'Para {country} no se une una cifra mensual: al índice mensual disponible aquí le faltan meses que la unión necesita (todo {to} y los años con los que se compara), o no tiene ningún mes posterior a {to}.',
+      withheldStale: 'Para {country} no se une una cifra mensual: el último mes del índice mensual disponible aquí tiene más de seis meses.',
       startCaveat: 'La cantidad inicial se toma como la media de {from}. Si tu sueldo o un precio se fijó en un mes concreto, desde entonces los precios pueden haber subido más o menos que esto.',
       pastCountryRise: 'Los precios subieron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
       pastCountryFall: 'Los precios bajaron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
@@ -1089,7 +1134,7 @@ export const inflationCs: typeof inflationEn = {
       'Zda zvýšení platu nebo výnos z úspor drží krok s inflací, s přesnou reálnou sazbou',
       'Každý výsledek je uveden také pro sazbu o jeden procentní bod nižší a vyšší',
       'Roční historie inflace pro každou zahrnutou zemi a eurozónu, od Světové banky; počet zemí: {countries}',
-      'U {joined} zemí odpovědi až do posledního měsíce, podle měsíčního indexu spotřebitelských cen BIS',
+      'U {joinedAll} zemí odpovědi až do posledního měsíce, podle měsíčního indexu spotřebitelských cen BIS nebo Světové banky',
       'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
       'Výsledky v 38 měnách',
       'Odkaz ke sdílení libovolného výpočtu',
@@ -1142,7 +1187,12 @@ export const inflationCs: typeof inflationEn = {
       before: 'U {joined} zemí pokračuje odpověď z historie země až k poslednímu měsíci s údajem, a to podle měsíčního indexu spotřebitelských cen, který zveřejňuje ',
       link: 'BIS',
       after:
-        ' (Banka pro mezinárodní platby, „Consumer prices“); údaje byly staženy {fetched}. Měsíce se připojují jen tam, kde se roční změny tohoto indexu shodují s údaji Světové banky; jinde odpověď končí posledním celým rokem a je to u ní uvedeno. BIS tento nástroj nepodporuje a za své statistiky neposkytuje žádnou záruku. Nejde o oficiální překlad BIS. Váš prohlížeč načítá i tyto údaje z nidhi.today a BIS nikdy nekontaktuje.',
+        ' (Banka pro mezinárodní platby, „Consumer prices“); údaje byly staženy {fetched}. Měsíce se připojují jen tam, kde se roční změny tohoto indexu shodují s údaji Světové banky, nebo u jednoho roku v Indii (2025), kde byl rozdíl dohledán v ročním údaji, a ne v indexu; jinde odpověď končí posledním celým rokem a je to u ní uvedeno. BIS tento nástroj nepodporuje a za své statistiky neposkytuje žádnou záruku. Nejde o oficiální překlad BIS. Váš prohlížeč načítá i tyto údaje z nidhi.today a BIS nikdy nekontaktuje.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'U dalších {joinedWorldBank} zemí pocházejí měsíce z vlastní databáze Světové banky, ',
+      after:
+        ' („CPI Price, not seas. adj.“, ukazatel CPTOTNSXN), s licencí CC BY 4.0; Světová banka ji naposledy aktualizovala {monthlyUpdated}. Používá se tam, kde BIS nemá odpovídající index, podle stejného pravidla, a načítá se z nidhi.today jako ostatní údaje. Země, jejíž poslední měsíc je starší než šest měsíců, si ponechává roční odpověď.',
     },
     faq: {
       heading: 'Časté dotazy',
@@ -1161,7 +1211,7 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Odkud historie pochází a jak je aktuální?',
-          a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku. U {joined} zemí jde odpověď z historie země o krok dál, k poslednímu měsíci měsíčního indexu spotřebitelských cen, který zveřejňuje BIS (Banka pro mezinárodní platby) a který byl stažen {fetched}; odpověď uvádí měsíc i to, že se spojují dva zdroje. Tento krok se dělá jen tam, kde se roční změny indexu shodují s údaji Světové banky.',
+          a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku. U {joinedAll} zemí jde odpověď z historie země o krok dál, k poslednímu měsíci měsíčního indexu spotřebitelských cen: toho, který zveřejňuje BIS (Banka pro mezinárodní platby), nebo tam, kde se neshoduje, vlastního měsíčního indexu Světové banky; oba byly staženy {fetched}. Odpověď uvádí měsíc i to, které údaje se spojují. Tento krok se dělá jen tam, kde se roční změny indexu shodují s ročními údaji Světové banky, nebo u jednoho roku v Indii (2025), kde byl rozdíl dohledán v ročním údaji, a ne v indexu, a jen dokud jeho poslední měsíc není starší než šest měsíců.',
         },
         {
           q: 'Proč může sazba jít až do {maxRate} %?',
@@ -1220,8 +1270,11 @@ export const inflationCs: typeof inflationEn = {
       source: 'Zdroj',
       sourceText: 'Světová banka, ukazatel FP.CPI.TOTL.ZG, „Inflation, consumer prices (annual %)“, CC BY 4.0.',
       monthEnd: 'Koncový měsíc',
-      monthRow: 'Poslední řádek je jeden měsíc podle měsíčního indexu spotřebitelských cen BIS, ne průměr roku.',
-      sourceTextMonthly: 'Měsíce po posledním celém roce: BIS, Consumer prices (měsíční index). Nejde o oficiální překlad BIS.',
+      monthRow: 'Poslední řádek je jeden měsíc podle měsíčního indexu spotřebitelských cen, ne průměr roku.',
+      sourceTextMonthly: {
+        bis: 'Měsíce po posledním celém roce: BIS, Consumer prices (měsíční index). Nejde o oficiální překlad BIS.',
+        worldBank: 'Měsíce po posledním celém roce: Světová banka, Global Economic Monitor, „CPI Price, not seas. adj.“ (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Vyberte otázku',
     tabs: {
@@ -1315,10 +1368,16 @@ export const inflationCs: typeof inflationEn = {
       pastMonthAverageFall: 'Od roku {from} do roku {to} klesaly průměrně o {average} ročně.',
       pastMonthFurtherRise: 'Ceny byly {inMonth} o {more} vyšší než v průměru roku {to}.',
       pastMonthFurtherFall: 'Ceny byly {inMonth} o {more} nižší než v průměru roku {to}.',
-      joinNote: 'Tady se spojují dva zdroje: roční inflace podle Světové banky do roku {to} a poté měsíční index spotřebitelských cen, který zveřejňuje BIS, pro krok od průměru roku {to} k poslednímu měsíci, pro který tu je údaj. Jediný měsíc zahrnuje sezonní výkyvy a může být později upraven. Měsíční údaj není údajem Světové banky ani oficiální roční mírou inflace.',
+      quarterNote: 'U země {country} se v indexu během každého z posledních čtvrtletí opakuje stejná hodnota, takže uvedený měsíc může nést údaj za celé čtvrtletí.',
+      joinNote: 'Tady se spojují dvě řady údajů: roční inflace podle Světové banky do roku {to} a poté {source}, pro krok od průměru roku {to} k poslednímu měsíci, pro který tu je údaj. Jediný měsíc zahrnuje sezonní výkyvy a může být později upraven. Měsíční hodnota indexu není oficiální roční mírou inflace.',
+      monthlySource: {
+        bis: 'měsíční index spotřebitelských cen, který zveřejňuje BIS',
+        worldBank: 'měsíční index spotřebitelských cen Světové banky (Global Economic Monitor)',
+      },
       latestYearNote: 'Rok {to} je poslední, pro který tu je údaj. Pozdější změny cen nejsou zahrnuty.',
       withheldMismatch: 'Pro zemi {country} se měsíční údaj nepřipojuje: měsíční index, který je tu k dispozici, se s touto roční řadou dostatečně neshoduje.',
       withheldIncomplete: 'Pro zemi {country} se měsíční údaj nepřipojuje: měsíčnímu indexu, který je tu k dispozici, chybějí měsíce potřebné pro spojení (celý rok {to} a roky, se kterými se porovnává), nebo nemá žádný měsíc po roce {to}.',
+      withheldStale: 'Pro zemi {country} se měsíční údaj nepřipojuje: poslední měsíc měsíčního indexu, který je tu k dispozici, je starší než šest měsíců.',
       startCaveat: 'Výchozí částka se bere jako průměr roku {from}. Pokud byla vaše mzda nebo cena stanovena v konkrétním měsíci, mohly ceny od té doby vzrůst více nebo méně.',
       pastCountryRise: 'Za {years} vzrostly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
       pastCountryFall: 'Za {years} klesly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
@@ -1408,7 +1467,7 @@ export const inflationMr: typeof inflationEn = {
       'पगारवाढ किंवा बचतीवरील परतावा महागाईच्या बरोबरीने जातो का, नेमक्या वास्तविक दरासह',
       'प्रत्येक निकाल एक टक्के बिंदू कमी आणि जास्त दरानेही दाखवला जातो',
       '{countries} देश आणि युरो क्षेत्र यांचा वार्षिक महागाईचा इतिहास, World Bank कडून',
-      '{joined} देशांसाठी सर्वात अलीकडच्या महिन्यापर्यंतची उत्तरे, BIS च्या मासिक ग्राहक किंमत निर्देशांकावरून',
+      '{joinedAll} देशांसाठी सर्वात अलीकडच्या महिन्यापर्यंतची उत्तरे, BIS किंवा World Bank च्या मासिक ग्राहक किंमत निर्देशांकावरून',
       'दरवर्षी {minRate} ते {maxRate}% पर्यंतचे दर, म्हणजे अतिमहागाईही दाखवता येते',
       '38 चलनांमध्ये निकाल',
       'कोणत्याही हिशेबाची शेअर करता येणारी लिंक',
@@ -1460,7 +1519,12 @@ export const inflationMr: typeof inflationEn = {
       before: '{joined} देशांसाठी, देशाच्या इतिहासावरून काढलेले उत्तर आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंत जाते. त्यासाठी मासिक ग्राहक किंमत निर्देशांकाचा स्रोत: ',
       link: 'BIS',
       after:
-        ' (Bank for International Settlements, “Consumer prices”). हे आकडे {fetched} रोजी घेतले. या निर्देशांकाचे स्वतःचे वार्षिक बदल World Bank च्या आकड्यांशी जुळतात तिथेच महिने जोडले जातात; इतर देशांत उत्तर शेवटच्या पूर्ण वर्षावर थांबते, आणि तसे सांगितले जाते. BIS या साधनाला पाठिंबा देत नाही आणि आपल्या आकडेवारीची कोणतीही हमी देत नाही. हे BIS चे अधिकृत भाषांतर नाही. तुमचा ब्राउझर हे आकडेही nidhi.today वरूनच घेतो आणि BIS शी कधीही संपर्क करत नाही.',
+        ' (Bank for International Settlements, “Consumer prices”). हे आकडे {fetched} रोजी घेतले. या निर्देशांकाचे स्वतःचे वार्षिक बदल World Bank च्या आकड्यांशी जुळतात तिथेच, किंवा भारताच्या एका वर्षासाठी (2025), जिथे फरक निर्देशांकात नसून वार्षिक आकड्यात असल्याचे आढळले आहे, महिने जोडले जातात; इतर देशांत उत्तर शेवटच्या पूर्ण वर्षावर थांबते, आणि तसे सांगितले जाते. BIS या साधनाला पाठिंबा देत नाही आणि आपल्या आकडेवारीची कोणतीही हमी देत नाही. हे BIS चे अधिकृत भाषांतर नाही. तुमचा ब्राउझर हे आकडेही nidhi.today वरूनच घेतो आणि BIS शी कधीही संपर्क करत नाही.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'आणखी {joinedWorldBank} देशांसाठी महिन्यांचे आकडे World Bank च्या स्वतःच्या डेटाबेसमधून येतात: ',
+      after:
+        ' (“CPI Price, not seas. adj.”, निर्देशक CPTOTNSXN), CC BY 4.0 परवान्याखाली; World Bank ने तो शेवटचा {monthlyUpdated} रोजी अद्ययावत केला. जिथे BIS कडे जुळणारा निर्देशांक नाही तिथे, त्याच नियमाने, तो वापरला जातो, आणि इतर आकड्यांप्रमाणे तोही nidhi.today वरूनच येतो. ज्या देशाचा सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना आहे, त्याचे उत्तर वार्षिकच राहते.',
     },
     faq: {
       heading: 'वारंवार विचारले जाणारे प्रश्न',
@@ -1479,7 +1543,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'इतिहास कुठून येतो, आणि तो किती अलीकडचा आहे?',
-          a: 'World Bank च्या World Development Indicators मधून: “Inflation, consumer prices (annual %)” (निर्देशक FP.CPI.TOTL.ZG), CC BY 4.0 परवान्याखाली, ज्यात राष्ट्रीय सांख्यिकी कार्यालये आणि IMF प्रसिद्ध करत असलेले आकडे एकत्र केलेले असतात. World Bank ने ते शेवटचे {updated} रोजी अपडेट केले; nidhi दर महिन्याला नवीन आकडे तपासते. बहुतेक देशांसाठी सर्वात अलीकडचे वर्ष म्हणजे शेवटचे पूर्ण कॅलेंडर वर्ष असते, काही देश मागे असतात, आणि काहींच्या काही वर्षांचा आकडा नसतो. साधन प्रत्येक देशाची व्याप्ती दाखवते आणि रिकामी जागा कधीच अंदाजाने भरत नाही: “भूतकाळापासून आजपर्यंत” फक्त अशा वर्षांपासून सुरू होते जिथून सर्वात अलीकडच्या वर्षापर्यंत नोंद अखंड आहे. {joined} देशांसाठी, देशाच्या इतिहासावरून काढलेले उत्तर एक पाऊल पुढे जाते: BIS (Bank for International Settlements) ने प्रकाशित केलेल्या मासिक ग्राहक किंमत निर्देशांकातील सर्वात अलीकडच्या महिन्यापर्यंत, ज्याचे आकडे {fetched} रोजी घेतले; उत्तरात महिना दिलेला असतो आणि दोन स्रोत जोडल्याचेही सांगितलेले असते. निर्देशांकाचे वार्षिक बदल World Bank च्या आकड्यांशी जुळतात तिथेच हे पाऊल घेतले जाते.',
+          a: 'World Bank च्या World Development Indicators मधून: “Inflation, consumer prices (annual %)” (निर्देशक FP.CPI.TOTL.ZG), CC BY 4.0 परवान्याखाली, ज्यात राष्ट्रीय सांख्यिकी कार्यालये आणि IMF प्रसिद्ध करत असलेले आकडे एकत्र केलेले असतात. World Bank ने ते शेवटचे {updated} रोजी अपडेट केले; nidhi दर महिन्याला नवीन आकडे तपासते. बहुतेक देशांसाठी सर्वात अलीकडचे वर्ष म्हणजे शेवटचे पूर्ण कॅलेंडर वर्ष असते, काही देश मागे असतात, आणि काहींच्या काही वर्षांचा आकडा नसतो. साधन प्रत्येक देशाची व्याप्ती दाखवते आणि रिकामी जागा कधीच अंदाजाने भरत नाही: “भूतकाळापासून आजपर्यंत” फक्त अशा वर्षांपासून सुरू होते जिथून सर्वात अलीकडच्या वर्षापर्यंत नोंद अखंड आहे. {joinedAll} देशांसाठी, देशाच्या इतिहासावरून काढलेले उत्तर एक पाऊल पुढे जाते: एखाद्या मासिक ग्राहक किंमत निर्देशांकातील सर्वात अलीकडच्या महिन्यापर्यंत. हा निर्देशांक BIS (Bank for International Settlements) ने प्रकाशित केलेला असतो, किंवा तो जुळत नाही तिथे World Bank चा स्वतःचा मासिक निर्देशांक; दोन्हींचे आकडे {fetched} रोजी घेतले. उत्तरात महिना दिलेला असतो आणि कोणते आकडे जोडले आहेत हेही सांगितलेले असते. निर्देशांकाचे वार्षिक बदल World Bank च्या वार्षिक आकड्यांशी जुळतात तिथेच, किंवा भारताच्या एका वर्षासाठी (2025), जिथे फरक निर्देशांकात नसून वार्षिक आकड्यात असल्याचे आढळले आहे, आणि त्याचा सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना नसेल तोपर्यंतच, हे पाऊल घेतले जाते.',
         },
         {
           q: 'दर {maxRate}% पर्यंत का जाऊ शकतो?',
@@ -1538,8 +1602,11 @@ export const inflationMr: typeof inflationEn = {
       source: 'स्रोत',
       sourceText: 'World Bank, निर्देशक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
       monthEnd: 'शेवटचा महिना',
-      monthRow: 'शेवटची ओळ एका महिन्याची आहे, BIS च्या मासिक ग्राहक किंमत निर्देशांकातून; ती वर्षाची सरासरी नाही.',
-      sourceTextMonthly: 'शेवटच्या पूर्ण वर्षानंतरचे महिने: BIS, Consumer prices (मासिक निर्देशांक). हे BIS चे अधिकृत भाषांतर नाही.',
+      monthRow: 'शेवटची ओळ एका महिन्याची आहे, मासिक ग्राहक किंमत निर्देशांकातून; ती वर्षाची सरासरी नाही.',
+      sourceTextMonthly: {
+        bis: 'शेवटच्या पूर्ण वर्षानंतरचे महिने: BIS, Consumer prices (मासिक निर्देशांक). हे BIS चे अधिकृत भाषांतर नाही.',
+        worldBank: 'शेवटच्या पूर्ण वर्षानंतरचे महिने: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'प्रश्न निवडा',
     tabs: {
@@ -1635,10 +1702,16 @@ export const inflationMr: typeof inflationEn = {
       pastMonthAverageFall: '{from} ते {to} या काळात त्या दरवर्षी सरासरी {average} घटल्या.',
       pastMonthFurtherRise: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} जास्त होत्या.',
       pastMonthFurtherFall: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} कमी होत्या.',
-      joinNote: 'इथे दोन स्रोत जोडले आहेत: {to} पर्यंत World Bank ची वार्षिक महागाई, आणि त्यानंतर BIS ने प्रकाशित केलेला मासिक ग्राहक किंमत निर्देशांक, जो {to} सालच्या सरासरीपासून इथे आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंतचा बदल दाखवतो. एका महिन्याच्या आकड्यात हंगामी चढउतार असतात आणि तो नंतर सुधारला जाऊ शकतो. मासिक आकडा हा World Bank चा आकडा नाही, आणि अधिकृत वार्षिक महागाई दरही नाही.',
+      quarterNote: '{country} च्या निर्देशांकात अलीकडच्या प्रत्येक तिमाहीत एकच मूल्य पुन्हा आले आहे, त्यामुळे इथे दिलेल्या महिन्याचा आकडा पूर्ण तिमाहीचा असू शकतो.',
+      joinNote: 'इथे आकड्यांचे दोन संच जोडले आहेत: {to} पर्यंत World Bank ची वार्षिक महागाई, आणि त्यानंतर {source}, जो {to} सालच्या सरासरीपासून इथे आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंतचा बदल दाखवतो. एका महिन्याच्या आकड्यात हंगामी चढउतार असतात आणि तो नंतर सुधारला जाऊ शकतो. निर्देशांकाचा मासिक आकडा हा अधिकृत वार्षिक महागाई दर नाही.',
+      monthlySource: {
+        bis: 'BIS ने प्रकाशित केलेला मासिक ग्राहक किंमत निर्देशांक',
+        worldBank: 'World Bank चा मासिक ग्राहक किंमत निर्देशांक (Global Economic Monitor)',
+      },
       latestYearNote: '{to} हे इथे आकडा असलेले सर्वात अलीकडचे वर्ष आहे. त्यानंतरचे किमतींमधील बदल यात धरलेले नाहीत.',
       withheldMismatch: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेला मासिक निर्देशांक या वार्षिक इतिहासाशी पुरेसा जुळत नाही.',
       withheldIncomplete: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेल्या मासिक निर्देशांकात जोडणीसाठी लागणारे महिने पूर्ण नाहीत ({to} हे पूर्ण वर्ष, आणि ज्यांच्याशी तुलना केली जाते ती वर्षे), किंवा {to} नंतरचा एकही महिना नाही.',
+      withheldStale: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेल्या मासिक निर्देशांकातील सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना आहे.',
       startCaveat: 'सुरुवातीची रक्कम {from} सालची सरासरी मानली आहे. तुमचा पगार किंवा एखादी किंमत ठरावीक महिन्यात ठरली असेल, तर तेव्हापासून किमती यापेक्षा जास्त किंवा कमी वाढल्या असू शकतात.',
       pastCountryRise: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} वाढल्या, म्हणजे सरासरी दरवर्षी {average}.',
       pastCountryFall: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} घटल्या, म्हणजे सरासरी दरवर्षी {average}.',

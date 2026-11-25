@@ -39,7 +39,7 @@ import {
   type Series,
 } from '../utils/inflation/math.ts';
 import { fromCompact, joinFromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
-import type { MonthlyJoin } from '../utils/inflation/monthly.ts';
+import type { MonthlyJoin, MonthlySource } from '../utils/inflation/monthly.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/inflation/url.ts';
 import { boxErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/inflation/form.ts';
 import { format } from '../i18n/format.ts';
@@ -424,7 +424,7 @@ export default function InflationCalculator({
       axis: a.axis,
       chartTitle: a.chartTitle,
       history: a.calendar && settledCountry && first && last ? { country: settledCountry.name, from: first.x, to: last.x } : null,
-      monthEnd: a.monthPoint ? { month: a.monthPoint.month, value: a.monthPoint.value } : null,
+      monthEnd: a.monthPoint ? { month: a.monthPoint.month, value: a.monthPoint.value, source: a.monthPoint.source ?? 'bis' } : null,
     };
   }
   const exportReady = !waiting && shownAnswer() !== null;
@@ -1007,11 +1007,12 @@ interface Answer {
   axis: string;
 }
 
-/** A month an answer ends at: `YYYY-MM`, its place on a year axis, and the amount there. */
+/** A month an answer ends at: `YYYY-MM`, its place on a year axis, the amount there, and whose index it is from. */
 interface MonthPoint {
   month: string;
   x: number;
   value: number;
+  source?: MonthlySource;
 }
 
 /**
@@ -1144,12 +1145,15 @@ function computeAnswer(
       sentences.push(t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(Math.abs(total - 1) * 100, numberLocale, 0), from, inMonth: endPhrase }));
       if (span > 1) sentences.push(t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
       sentences.push(t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(Math.abs(end.factor - 1) * 100, numberLocale, 1), to, inMonth: endPhrase }));
+      // Prices published by quarter: the month named is one of three that share a figure.
+      if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
     } else {
       sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
       sentences.push(t(r.latestYearNote, { to }));
       // A country with a monthly index that is not joined is told why.
       if (join && 'withheld' in join) {
-        sentences.push(t(join.withheld === 'mismatch' || join.withheld === 'listed' ? r.withheldMismatch : r.withheldIncomplete, { country: country!.name, to }));
+        const why = join.withheld === 'mismatch' || join.withheld === 'listed' ? r.withheldMismatch : join.withheld === 'stale' ? r.withheldStale : r.withheldIncomplete;
+        sentences.push(t(why, { country: country!.name, to }));
       }
     }
     // True with or without a month at the end: the start is a year's average.
@@ -1163,9 +1167,9 @@ function computeAnswer(
       band: [],
       method: r.methodHistory,
       // Which two sources are joined is method, not answer: it follows the method line.
-      methodNotes: end ? [t(r.joinNote, { to })] : undefined,
+      methodNotes: end ? [t(r.joinNote, { to, source: r.monthlySource[end.source] })] : undefined,
       points,
-      monthPoint: end ? { month: end.month, x: monthOnYearAxis(end.month), value } : undefined,
+      monthPoint: end ? { month: end.month, x: monthOnYearAxis(end.month), value, source: end.source } : undefined,
       calendar: true,
       chartTitle: t(strings.chart.title.past, { amount: shownAmount }),
       axis: strings.chart.axis.pastCountry,
