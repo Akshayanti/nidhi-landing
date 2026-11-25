@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import {
   aggregate,
   decodeCsv,

@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import type { ReactNode } from 'react';
 import { cleanup, renderHook } from '@testing-library/react';
-import { formatMoney } from '../utils/loan/math.ts';
+import { formatMoney } from '../utils/shared/money.ts';
 import { formatAmount, formatPercent } from '../utils/shared/formatAmount.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 

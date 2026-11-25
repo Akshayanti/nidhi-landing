@@ -26,7 +26,7 @@ import {
   type AssetRow,
   type CurrencyPosition,
 } from './math.ts';
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from '../shared/money.ts';
 import { format } from '../../i18n/format.ts';
 import {
   multiCurrencyNetWorthEn,

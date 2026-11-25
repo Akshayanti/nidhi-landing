@@ -3,7 +3,7 @@
  * risk assessment, and CSV parsing are testable without React or a DOM.
  */
 
-import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
+import { CURRENCIES, type CurrencyInfo } from '../shared/money.ts';
 import { unguardText } from '../shared/exportFile.ts';
 import { parseLocaleNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 

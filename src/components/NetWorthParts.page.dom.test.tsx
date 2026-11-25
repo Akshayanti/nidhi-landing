@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent, screen } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import { aggregate, type AssetRow } from '../utils/multi-currency-net-worth/math.ts';
 import { decodeFromQueryString, encodeShared } from '../utils/multi-currency-net-worth/url.ts';
 

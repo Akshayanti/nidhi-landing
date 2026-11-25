@@ -425,25 +425,9 @@
       "export function holdsMarker(v: VendorInput): boolean {": 3.1
     },
     "src/utils/loan/math.ts": {
-      "export interface CurrencyInfo {": 0,
-      "const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [": 271,
-      "function resolveFactor(code: string): number {": 139.6,
-      "export const CURRENCIES: CurrencyInfo[] = RAW_CURRENCIES.map((c) => ({": 1.6,
-      "const CURRENCY_BY_CODE: Record<string, CurrencyInfo> = Object.fromEntries(": 3.1,
-      "export const DEFAULT_CURRENCY = 'EUR';": 1.7,
-      "export function getCurrency(code: string): CurrencyInfo {": 0.9,
-      "export function roundMinor(units: number): number {": 5.2,
       "const RATE_SCALE = 1e8;": 0,
       "const MONTH_DIVISOR = 12 * RATE_SCALE;": 3.4,
       "export function monthlyInterestMinor(balanceMinor: number, annualRate: number): number {": 106.6,
-      "export function toMinor(amount: number, currencyCode: string): number {": 3.2,
-      "export function fromMinor(units: number, currencyCode: string): number {": 3.3,
-      "export function amountStyle(code: string, amountLocale?: string | null): { locale: string; display: 'symbol' | 'narrowSymbol' } {": 3.2,
-      "export function amountNumberLocale(code: string, amountLocale?: string | null): string {": 453.6,
-      "function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {": 477,
-      "export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {": 30.1,
-      "const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);": 31.6,
-      "export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {": 25.4,
       "export interface AmortizationRow {": 0,
       "export type RateSpec =": 0,
       "export interface LumpSum {": 0,
@@ -540,49 +524,6 @@
       "export function Amount({ children, shared }: { children: string; shared?: number }) {": 6.6,
       "export function Amounts({ children, shared }: { children: string; shared?: number }) {": 10.5
     },
-    "src/components/ChartAmounts.tsx": {
-      "import { createContext, useContext, useLayoutEffect, useRef, useState, type RefObject } from 'react';": 0,
-      "import { useMoney } from './useMoney.ts';": 0,
-      "import { NumberLocaleContext } from './LocaleNumberInput.tsx';": 0,
-      "import {": 0,
-      "export const ChartWordsContext = createContext<ChartWords | null>(null);": 0,
-      "export function useChartAmounts() {": 18,
-      "export function ChartUnit({ children }: { children: string }) {": 2,
-      "export function useAxisMargin(": 139.6
-    },
-    "src/components/LocaleNumberInput.tsx": {
-      "import { createContext, useContext, useEffect, useRef, useState, type InputHTMLAttributes } from 'react';": 0,
-      "import { markerSelect } from './toolShared.tsx';": 0,
-      "import { canonicalNumber, displayNumber } from '../utils/shared/parseLocaleNumber.ts';": 0,
-      "export const NumberLocaleContext = createContext('en');": 26.2,
-      "type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'type'> & {": 0,
-      "export function LocaleNumberInput({": 16.7
-    },
-    "src/components/ToolExport.tsx": {
-      "import { useContext, useEffect, useId, useState, type ReactNode } from 'react';": 0,
-      "import { format } from '../i18n/format.ts';": 0,
-      "import type { Dict } from '../i18n/strings/types.ts';": 0,
-      "import { isoDate } from '../utils/shared/exportFile.ts';": 0,
-      "import type { Report, ReportChart, ReportPoint, ReportTable } from '../utils/shared/report.ts';": 0,
-      "import type { Cell } from '../utils/shared/xlsx.ts';": 0,
-      "import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/shared/chartAmounts.ts';": 0,
-      "import { NumberLocaleContext } from './LocaleNumberInput.tsx';": 0,
-      "import { useMoney } from './useMoney.ts';": 0,
-      "type Strings = Dict['tools']['export'];": 0,
-      "export function SwapLabel({ label, alternate, swapped, steady = false }: { label: string; alternate: string; swapped: boolean; steady?: boolean }) {": 352.9,
-      "const IN_APP = /Instagram|FBAN|FBAV|FB_IAB|FBIOS/;": 0,
-      "export function ToolExport({": 722,
-      "function cellText(c: Cell, locale: string): string {": 389.3,
-      "const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);": 522.3,
-      "export function numericColumns(table: ReportTable): boolean[] {": 1124.1,
-      "function Table({ table, locale, names }: { table: ReportTable; locale: string; names?: boolean }) {": 964.5,
-      "function niceTop(v: number): { top: number; step: number } {": 148.1,
-      "const W = 680;": 0,
-      "const H = 300;": 0,
-      "const PAD = { top: 12, right: 16, bottom: 44, left: 76 };": 39.5,
-      "function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale: string; currency: string; words: ChartWords }) {": 2196.6,
-      "export function ToolReport({ report, strings, locale }: { report: Report; strings: Strings; locale: string }) {": 746
-    },
     "src/components/chart/ChartReadout.tsx": {
       "import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type RefObject } from 'react';": 0,
       "import { touchEndIsTap, touchMove, touchDown, type Touch } from '../../utils/shared/chartTouch.ts';": 0,
@@ -627,6 +568,49 @@
       "export function wrapWords(text: string, max: number, width: (line: string) => number): string[] {": 43.8,
       "export function edgeAnchor(x: number, width: number, min: number, max: number): 'start' | 'middle' | 'end' {": 4.5,
       "export function placeLabels(xs: number[], widths: number[], min: number, max: number, gap: number): { i: number; anchor: 'start' | 'middle' | 'end' }[] {": 23.1
+    },
+    "src/components/ChartAmounts.tsx": {
+      "import { createContext, useContext, useLayoutEffect, useRef, useState, type RefObject } from 'react';": 0,
+      "import { useMoney } from './useMoney.ts';": 0,
+      "import { NumberLocaleContext } from './LocaleNumberInput.tsx';": 0,
+      "import {": 0,
+      "export const ChartWordsContext = createContext<ChartWords | null>(null);": 0,
+      "export function useChartAmounts() {": 18,
+      "export function ChartUnit({ children }: { children: string }) {": 2,
+      "export function useAxisMargin(": 139.6
+    },
+    "src/components/LocaleNumberInput.tsx": {
+      "import { createContext, useContext, useEffect, useRef, useState, type InputHTMLAttributes } from 'react';": 0,
+      "import { markerSelect } from './toolShared.tsx';": 0,
+      "import { canonicalNumber, displayNumber } from '../utils/shared/parseLocaleNumber.ts';": 0,
+      "export const NumberLocaleContext = createContext('en');": 26.2,
+      "type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'type'> & {": 0,
+      "export function LocaleNumberInput({": 16.7
+    },
+    "src/components/ToolExport.tsx": {
+      "import { useContext, useEffect, useId, useState, type ReactNode } from 'react';": 0,
+      "import { format } from '../i18n/format.ts';": 0,
+      "import type { Dict } from '../i18n/strings/types.ts';": 0,
+      "import { isoDate } from '../utils/shared/exportFile.ts';": 0,
+      "import type { Report, ReportChart, ReportPoint, ReportTable } from '../utils/shared/report.ts';": 0,
+      "import type { Cell } from '../utils/shared/xlsx.ts';": 0,
+      "import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/shared/chartAmounts.ts';": 0,
+      "import { NumberLocaleContext } from './LocaleNumberInput.tsx';": 0,
+      "import { useMoney } from './useMoney.ts';": 0,
+      "type Strings = Dict['tools']['export'];": 0,
+      "export function SwapLabel({ label, alternate, swapped, steady = false }: { label: string; alternate: string; swapped: boolean; steady?: boolean }) {": 352.9,
+      "const IN_APP = /Instagram|FBAN|FBAV|FB_IAB|FBIOS/;": 0,
+      "export function ToolExport({": 722,
+      "function cellText(c: Cell, locale: string): string {": 389.3,
+      "const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);": 522.3,
+      "export function numericColumns(table: ReportTable): boolean[] {": 1124.1,
+      "function Table({ table, locale, names }: { table: ReportTable; locale: string; names?: boolean }) {": 964.5,
+      "function niceTop(v: number): { top: number; step: number } {": 148.1,
+      "const W = 680;": 0,
+      "const H = 300;": 0,
+      "const PAD = { top: 12, right: 16, bottom: 44, left: 76 };": 39.5,
+      "function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale: string; currency: string; words: ChartWords }) {": 2196.6,
+      "export function ToolReport({ report, strings, locale }: { report: Report; strings: Strings; locale: string }) {": 746
     },
     "src/components/toolShared.tsx": {
       "import { createContext, useContext, useEffect, useRef, useState } from 'react';": 0,
@@ -732,6 +716,14 @@
       "export function downloadWorkbook(sheets: Sheet[], tool: string): void {": 26.2,
       "export function printResults(): void {": 9.4
     },
+    "src/utils/shared/formatAmount.ts": {
+      "import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';": 0,
+      "import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';": 0,
+      "export function formatAmount(value: number, code: string, compact = false, amountLocale?: string | null): string {": 23.9,
+      "export function formatPercent(pct: number, code: string, digits = 1, amountLocale?: string | null): string {": 2.4,
+      "export function formatProseAmount(": 2.6,
+      "export function formatProsePercent(fraction: number, locale: Locale = DEFAULT_LOCALE): string {": 1.2
+    },
     "src/utils/shared/formBoxes.ts": {
       "import { serializeParams } from './compactUrl.ts';": 0,
       "import { UNREADABLE } from './linkInput.ts';": 0,
@@ -744,14 +736,6 @@
     },
     "src/utils/shared/formReply.js": {
       "(function () {": 9.5
-    },
-    "src/utils/shared/formatAmount.ts": {
-      "import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';": 0,
-      "import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';": 0,
-      "export function formatAmount(value: number, code: string, compact = false, amountLocale?: string | null): string {": 23.9,
-      "export function formatPercent(pct: number, code: string, digits = 1, amountLocale?: string | null): string {": 2.4,
-      "export function formatProseAmount(": 2.6,
-      "export function formatProsePercent(fraction: number, locale: Locale = DEFAULT_LOCALE): string {": 1.2
     },
     "src/utils/shared/jsonForScript.ts": {
       "export function jsonForScript(value: unknown): string {": 0.7
@@ -781,6 +765,24 @@
       "export function linkLumpSums(value: string | null, fallback: string): string {": 12.2,
       "export function linkWholeNumber(value: string | null, min: number, max: number, fallback: string): string {": 11.8,
       "export function linkName(value: string): string {": 2.9
+    },
+    "src/utils/shared/money.ts": {
+      "export interface CurrencyInfo {": 0,
+      "const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [": 271,
+      "function resolveFactor(code: string): number {": 139.6,
+      "export const CURRENCIES: CurrencyInfo[] = RAW_CURRENCIES.map((c) => ({": 1.6,
+      "const CURRENCY_BY_CODE: Record<string, CurrencyInfo> = Object.fromEntries(": 3.1,
+      "export const DEFAULT_CURRENCY = 'EUR';": 1.7,
+      "export function getCurrency(code: string): CurrencyInfo {": 0.9,
+      "export function roundMinor(units: number): number {": 5.2,
+      "export function toMinor(amount: number, currencyCode: string): number {": 3.2,
+      "export function fromMinor(units: number, currencyCode: string): number {": 3.3,
+      "export function amountStyle(code: string, amountLocale?: string | null): { locale: string; display: 'symbol' | 'narrowSymbol' } {": 3.2,
+      "export function amountNumberLocale(code: string, amountLocale?: string | null): string {": 453.6,
+      "function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {": 477,
+      "export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {": 30.1,
+      "const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);": 31.6,
+      "export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {": 25.4
     },
     "src/utils/shared/noiseRounding.ts": {
       "export function noiseStep(p10: number, p90: number, runs: number): number {": 8.1,

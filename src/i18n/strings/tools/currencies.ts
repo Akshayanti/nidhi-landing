@@ -1,7 +1,7 @@
 /**
  * The 38 currencies the free tools offer, named in each language.
  *
- * One list for three tools. `RAW_CURRENCIES` in `src/utils/loan/math.ts` is the
+ * One list for three tools. `RAW_CURRENCIES` in `src/utils/shared/money.ts` is the
  * engine's own table (code, `Intl` locale, fraction digits) and every dropdown
  * reads its codes from it, so the *names* belong together rather than beside one
  * tool's labels: a currency renamed once is renamed in all three. Each tool's

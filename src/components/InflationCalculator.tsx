@@ -1,5 +1,5 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, amountFormat, amountStyle } from '../utils/loan/math.ts';
+import { CURRENCIES, amountFormat, amountStyle } from '../utils/shared/money.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';

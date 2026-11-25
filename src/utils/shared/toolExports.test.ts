@@ -16,7 +16,7 @@ import { defaultState as monteCarloDefaults } from '../monte-carlo/url.ts';
 import { monteCarloSheets } from '../monte-carlo/export.ts';
 import { DEFAULT_VENDORS } from '../loan/url.ts';
 import { computeFromInput } from '../loan/inputs.ts';
-import { fromMinor } from '../loan/math.ts';
+import { fromMinor } from './money.ts';
 import { loanSheets } from '../loan/export.ts';
 import { answerPath, whatItBuys } from '../inflation/math.ts';
 import { defaultState as inflationDefaults } from '../inflation/url.ts';

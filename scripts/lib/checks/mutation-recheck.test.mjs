@@ -9,6 +9,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GUARD_NOTE, partScores, stoppedByGuard } from './mutation-floors.mjs';
 import { beforePath, newOrChangedTestFiles, takeOutKillsToRecheck, testFilesBefore } from './mutation-recheck.mjs';
+import { CHANGED_MARK, depsPath, readStored, shardFingerprints } from './mutation-deps.mjs';
+import { isSelectedTest } from './mutation-fingerprint.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..');
 
@@ -193,6 +195,12 @@ describe('the scripts around a Stryker run', () => {
     const dir = mkdtempSync(join(tmpdir(), 'nidhi-recheck-scripts-'));
     try {
       mkdirSync(join(dir, 'reports/stryker-incremental'), { recursive: true });
+      // A checkout, as in a shard: the script fingerprints what git tracks.
+      mkdirSync(join(dir, 'src'));
+      for (const [path, source] of Object.entries(NOW)) writeFileSync(join(dir, path), source);
+      writeFileSync(join(dir, 'src/code.ts'), 'code');
+      execFileSync('git', ['init', '-q'], { cwd: dir });
+      execFileSync('git', ['add', '-A'], { cwd: dir });
       const script = (name, env = {}) => {
         writeFileSync(join(dir, 'outputs'), '');
         const done = spawnSync(process.execPath, [join(ROOT, 'scripts', name)], {
@@ -201,7 +209,9 @@ describe('the scripts around a Stryker run', () => {
         return { status: done.status, out: done.stdout + done.stderr, outputs: readFileSync(join(dir, 'outputs'), 'utf8') };
       };
       const file = (path) => (existsSync(join(dir, path)) ? JSON.parse(readFileSync(join(dir, path), 'utf8')) : null);
-      use({ dir, script, file });
+      // The fingerprints a shard saved with its results, here today's: nothing reached has changed.
+      const fingerprints = (report) => shardFingerprints({ root: dir, tracked: [...Object.keys(NOW), 'src/code.ts'].sort(), isTest: isSelectedTest, mutate: [], report });
+      use({ dir, script, file, fingerprints });
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
@@ -210,9 +220,12 @@ describe('the scripts around a Stryker run', () => {
   const NOW = { 'src/a.test.ts': 'a', ...OLD };
 
   it('note the restored test files, take out the kill a new test file covers, and say how many', () => {
-    inFolder(({ dir, script, file }) => {
-      writeFileSync(join(dir, NAME), JSON.stringify(reportOf(OLD, [killed(['0'], ['0']), { id: 't', status: 'Timeout', coveredBy: ['0'] }])));
+    inFolder(({ dir, script, file, fingerprints }) => {
+      const restored = reportOf(OLD, [killed(['0'], ['0']), { id: 't', status: 'Timeout', coveredBy: ['0'] }]);
+      writeFileSync(join(dir, NAME), JSON.stringify(restored));
+      writeFileSync(join(dir, depsPath(NAME)), JSON.stringify(fingerprints(restored)));
       const noted = script('mutation-stale-results.mjs');
+      assert.match(noted.out, /0 test file\(s\) whose dependencies changed/);
       assert.equal(noted.status, 0, noted.out);
       assert.deepEqual(file(beforePath(NAME)), testFilesBefore(reportOf(OLD, [])));
       assert.deepEqual(statuses(file(NAME)), ['Killed'], 'the timeout is taken out as before');
@@ -226,6 +239,33 @@ describe('the scripts around a Stryker run', () => {
       assert.equal(existsSync(join(dir, `${NAME}.tmp`)), false);
       // A second go, as after pass 2 would be: nothing more to take out.
       assert.equal(script('mutation-recheck.mjs').outputs, 'checked=true\nselected=0\n');
+    });
+  });
+
+  it('with no fingerprints on record, every restored test file looks edited, to Stryker and to the recheck (#891)', () => {
+    inFolder(({ dir, script, file, fingerprints }) => {
+      writeFileSync(join(dir, NAME), JSON.stringify(reportOf(OLD, [killed(['0'], ['0'])])));
+      const noted = script('mutation-stale-results.mjs');
+      assert.equal(noted.status, 0, noted.out);
+      assert.match(noted.out, /no dependency fingerprints on record, so 1 test file\(s\) whose dependencies changed/);
+      assert.equal(file(NAME).testFiles['src/z.test.ts'].source, `${CHANGED_MARK}z`);
+      // The note is taken after the mark, so the recheck sees the file as edited.
+      assert.deepEqual(file(beforePath(NAME)), testFilesBefore(file(NAME)));
+      // Today's fingerprints are saved beside the results.
+      assert.deepEqual(readStored(file(depsPath(NAME))), fingerprints(reportOf(OLD, [])));
+      // Pass 1 writes today's source for it; the kill it covers is rechecked.
+      writeFileSync(join(dir, NAME), JSON.stringify(reportOf(OLD, [killed(['0'], ['0'])])));
+      assert.equal(script('mutation-recheck.mjs').outputs, 'checked=true\nselected=1\n');
+    });
+  });
+
+  it('outside a checkout, writes no note, so nothing is saved', () => {
+    inFolder(({ dir, script, file }) => {
+      rmSync(join(dir, '.git'), { recursive: true, force: true });
+      writeFileSync(join(dir, NAME), JSON.stringify(reportOf(OLD, [killed(['0'], ['0'])])));
+      assert.notEqual(script('mutation-stale-results.mjs').status, 0);
+      assert.equal(file(beforePath(NAME)), null);
+      assert.notEqual(script('mutation-recheck.mjs').outputs, 'checked=true\nselected=0\n');
     });
   });
 

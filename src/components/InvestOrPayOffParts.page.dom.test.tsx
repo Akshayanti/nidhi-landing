@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import { formatAmount } from '../utils/shared/formatAmount.ts';
 import { compare, rates, type Inputs } from '../utils/invest-or-pay-off/math.ts';
 import { DEFAULTS, decodeState } from '../utils/invest-or-pay-off/url.ts';

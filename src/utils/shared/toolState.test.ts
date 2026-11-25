@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY, arrivedByLanguageSwitch, publishToolState } from './toolState.ts';
 import { LOCALES } from '../../i18n/config.ts';
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from './money.ts';
 
 const g = globalThis as unknown as Record<string, unknown>;
 

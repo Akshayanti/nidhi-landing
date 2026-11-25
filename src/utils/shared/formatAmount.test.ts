@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from './money.ts';
 import { formatAmount, formatPercent, formatProseAmount, formatProsePercent, trueMinus } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.

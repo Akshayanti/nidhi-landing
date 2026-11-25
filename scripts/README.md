@@ -15,6 +15,7 @@ lines, and its tests are the test files beside it or importing it.
 | `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `repo-hygiene.test.mjs` |
 | `check-dist.mjs` | Checks the built site in dist/ (#361): canonical and hreflang links, the sitemap, internal links, leftover template text and the feeds. | `npm run check:dist`, workflow "PR Checks" | none |
 | `check-gs-versions.mjs` | Compares each deployed Apps Script with main (#443): asks its health action for the VERSION it runs and checks it against the hash of the file here. | workflow "Apps Script versions" | `gs-version.test.mjs` |
+| `check-mutation-deps.mjs` | Checks the static dependency analysis of the mutation cache against what the tests really do (#891, condition 1: static analysis and run-time tracing together). | workflow "Free tools suite" | none |
 | `deploy-trigger.gs` | Nidhi daily deploy trigger: Google Apps Script (no Web App). | pasted into Google Apps Script | `deploy-trigger.test.mjs` |
 | `fetch-inflation.mjs` | Refreshes the inflation calculator's history: World Bank indicator FP.CPI.TOTL.ZG (consumer price inflation, annual %) for every country. | workflow "Inflation data refresh" | `fetch-inflation.test.mjs` |
 | `gs-version.mjs` | Writes each Apps Script file's VERSION (scripts/lib/publishing/gs-version.mjs). | `npm run gs:check`, `npm run gs:version` | `gs-version.test.mjs` |
@@ -22,11 +23,10 @@ lines, and its tests are the test files beside it or importing it.
 | `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs`, `lint-figures.test.mjs` |
 | `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
-| `check-mutation-deps.mjs` | Runs each test file a mutation run starts with a trace of what it loads and reads, and fails when it reaches a file under src/ that its dependency fingerprint leaves out (#891). | workflow "Free tools suite" (nightly), by hand | `lib/checks/mutation-deps.test.mjs` |
 | `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools suite" | none |
 | `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools suite" | `repo-hygiene.test.mjs` |
 | `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools suite" | none |
-| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker: marks the test files whose dependencies changed and saves today's fingerprints beside the results (#891), takes out timeouts and errors (#855), notes the test files for the recheck (#854). | workflow "Free tools suite" | none |
+| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | none |
 | `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |

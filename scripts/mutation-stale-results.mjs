@@ -22,8 +22,8 @@
 //   and nothing is saved.
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, isAbsolute, relative } from 'node:path';
-import { dependencyFingerprints, depsPath, invalidate, readStored } from './lib/checks/mutation-deps.mjs';
+import { dirname } from 'node:path';
+import { depsPath, invalidate, readStored, shardFingerprints } from './lib/checks/mutation-deps.mjs';
 import { isSelectedTest, trackedPaths } from './lib/checks/mutation-fingerprint.mjs';
 import { beforePath, testFilesBefore } from './lib/checks/mutation-recheck.mjs';
 import { dropUnsafeResults } from './lib/checks/mutation-stale-results.mjs';
@@ -44,13 +44,7 @@ const note = (report) => {
 // file this shard mutates or holds results for. A file that cannot be
 // fingerprinted fails the step: without the note below nothing is saved.
 const tracked = trackedPaths(execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
-const rel = (key) => (isAbsolute(key) ? relative(root, key).split('\\').join('/') : key);
-const fingerprintsFor = (report) => dependencyFingerprints({
-  root,
-  tracked,
-  tests: tracked.filter(isSelectedTest),
-  sources: [...config.mutate.map((m) => m.replace(/:\d+(:\d+)?-\d+(:\d+)?$/, '')), ...Object.keys(report?.files ?? {}).map(rel)],
-});
+const fingerprintsFor = (report) => shardFingerprints({ root, tracked, isTest: isSelectedTest, mutate: config.mutate, report });
 const saveFingerprints = (current) => {
   mkdirSync(dirname(path), { recursive: true });
   writeWhole(depsPath(path), JSON.stringify(current));

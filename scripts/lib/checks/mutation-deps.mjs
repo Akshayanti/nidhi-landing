@@ -652,6 +652,22 @@ export function dependencyFingerprints({ root, tracked, tests, sources, read }) 
   return { schema: DEPS_SCHEMA, tests: tests_, sources: sources_ };
 }
 
+/**
+ * A shard's fingerprints, as mutation-stale-results.mjs saves them: every
+ * test file a mutation run can start (`isTest` picks them from `tracked`),
+ * and every file the shard mutates (`mutate`, Stryker's patterns, ranges cut
+ * off) or holds results for (`report`'s files).
+ */
+export function shardFingerprints({ root, tracked, isTest, mutate, report }) {
+  const rel = (key) => (isAbsolute(key) ? relative(root, key).split('\\').join('/') : key);
+  return dependencyFingerprints({
+    root,
+    tracked,
+    tests: tracked.filter(isTest),
+    sources: [...mutate.map((m) => m.replace(/:\d+(:\d+)?-\d+(:\d+)?$/, '')), ...Object.keys(report?.files ?? {}).map(rel)],
+  });
+}
+
 /** Where a shard's dependency fingerprints are kept: beside its results, and saved with them. */
 export function depsPath(incrementalFile) {
   return `${incrementalFile.replace(/\.json$/, '')}.deps.json`;
