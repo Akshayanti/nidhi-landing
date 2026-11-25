@@ -32,6 +32,22 @@ describe('the result announcement', () => {
     assert.equal(live(container).textContent, '');
   });
 
+  it('while quiet, says nothing, and takes the text it ends on as the one the page loaded with (#880)', () => {
+    const view = render(<ResultAnnouncement quiet text="The example's result" />);
+    view.rerender(<ResultAnnouncement quiet text="Still arriving" />);
+    clock.pass(5000);
+    assert.equal(live(view.container).textContent, '');
+    view.rerender(<ResultAnnouncement quiet={false} text="The link's result" />);
+    clock.pass(5000);
+    assert.equal(live(view.container).textContent, '', 'the text it arrived on was said');
+    // From then on, a change is said as usual.
+    view.rerender(<ResultAnnouncement quiet={false} text="A new result" />);
+    clock.pass(599);
+    assert.equal(live(view.container).textContent, '');
+    clock.pass(1);
+    assert.equal(live(view.container).textContent, 'A new result');
+  });
+
   it('says a new result once it has stayed the same for the delay, and not before', () => {
     const view = render(<ResultAnnouncement text="A" />);
     view.rerender(<ResultAnnouncement text="B" />);

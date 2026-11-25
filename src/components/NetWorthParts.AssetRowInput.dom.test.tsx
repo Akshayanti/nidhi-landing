@@ -152,6 +152,20 @@ describe('an amount the tool cannot read', () => {
     assert.equal(described(), READ_ERROR);
   });
 
+  it('waits for the pause again after every keystroke, though each unreadable entry is held the same (#873)', () => {
+    draw(<Held start={own('')} />);
+    type(valueBox(), '5x');
+    later(400);
+    type(valueBox(), '5xy');
+    later(200);
+    assert.ok(marked() === null, 'marked while typing went on');
+    later(399);
+    assert.ok(marked() === null);
+    later(1);
+    assert.equal(marked(), 'true');
+    assert.equal(described(), READ_ERROR);
+  });
+
   it('a pause cut short by an amount that reads leaves nothing behind for the next slip', () => {
     draw(<Held start={own('')} />);
     type(valueBox(), '5x');

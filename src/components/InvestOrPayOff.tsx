@@ -147,6 +147,10 @@ export default function InvestOrPayOff({
   const [moreOpen, setMoreOpen] = useState(false);
   const loadedAll = useRef(false);
   const calculatedSent = useRef(false);
+  // Whether the comparison on screen is one somebody asked for: a readable
+  // shared link, or the reader's own inputs once they have settled. The
+  // example the page opens with is not (#882).
+  const [asked, setAsked] = useState(false);
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
   const countryByCode = useMemo(() => new Map(countries.map((c) => [c.code, c])), [countries]);
@@ -183,6 +187,7 @@ export default function InvestOrPayOff({
     setForm(arrived);
     setSettled(shared);
     setSettledForm(arrived);
+    setAsked(true);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
     if (arrivedByLanguageSwitch()) return;
@@ -213,8 +218,11 @@ export default function InvestOrPayOff({
     setHistoryFailed(false);
     loadHistory(historyUrl).then(
       (data) => {
+        // An answer thrown away leaves the history unloaded, so the country
+        // asks again when it is chosen again (#867, #879).
+        if (!live) return;
         loadedAll.current = true;
-        if (live) setCompact((c) => ({ ...data.countries, ...c }));
+        setCompact((c) => ({ ...data.countries, ...c }));
       },
       () => {
         if (live) setHistoryFailed(true);
@@ -239,11 +247,14 @@ export default function InvestOrPayOff({
   }, [moreError]);
 
   // Recalculate a moment after typing stops, and only on valid input.
+  // The form the page opened with is the example, not the reader's own.
+  const openedForm = useRef(form);
   useEffect(() => {
     if (hasErrors) return;
     const timer = window.setTimeout(() => {
       setSettled((prev) => toState(form, prev, numberLocale));
       setSettledForm(form);
+      if (form !== openedForm.current) setAsked(true);
     }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
@@ -268,10 +279,10 @@ export default function InvestOrPayOff({
   }, [JSON.stringify(inputs), problem]);
 
   useEffect(() => {
-    if (!computed || calculatedSent.current) return;
+    if (!asked || hasErrors || !computed || calculatedSent.current) return;
     calculatedSent.current = true;
     track('free_invest_or_pay_off_calculated');
-  }, [computed]);
+  }, [asked, hasErrors, computed]);
 
   const update = (key: TextKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -541,6 +552,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
+        quiet={!hydrated}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix

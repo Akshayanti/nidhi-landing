@@ -925,11 +925,15 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
   // typed. The message is a fixed sentence: it never repeats what was typed.
   const unreadable = isUnreadableAmount(row.value);
   const [settled, setSettled] = useState(unreadable);
+  // Every unreadable entry is held as "NaN", so the value alone does not
+  // change while someone keeps typing ("5x", "5xy"): each keystroke is
+  // counted, and the pause is waited for again after every one (#873).
+  const [keystrokes, setKeystrokes] = useState(0);
   useEffect(() => {
     if (!unreadable) { setSettled(false); return undefined; }
     const timer = setTimeout(() => setSettled(true), 600);
     return () => clearTimeout(timer);
-  }, [unreadable, row.value]);
+  }, [unreadable, row.value, keystrokes]);
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
   const [typed, setTyped] = useState(false);
@@ -967,7 +971,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           inputMode="decimal"
           className="mcnw-input"
           value={row.value}
-          onValueChange={(v) => { setTyped(true); onChange({ value: v }); }}
+          onValueChange={(v) => { setTyped(true); setKeystrokes((n) => n + 1); onChange({ value: v }); }}
           onBlur={() => { if (unreadable) setSettled(true); }}
           placeholder={strings.row.valuePlaceholder}
           autoComplete="off"

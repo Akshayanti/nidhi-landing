@@ -72,6 +72,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोफत साधनांत काही छोट्या दुरुस्त्या. छापील किंवा जतन केलेल्या अहवालात आलेखाखालची वर्षे आता समान अंतरावर असतात. गुंतवणूक की कर्जफेड या साधनात श्रेणीचा आलेख आता अशी शून्य रेषा काढत नाही जिथपर्यंत कोणतीही पट्टी पोहोचत नाही. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये विनिमय दर मिळू शकले नाहीत तर तुमच्या खर्चाच्या चलनावर आता “कमी” असे लिहिले जात नाही, आणि आयात केलेल्या CSV मधील चूक आता तुमच्या एडिटरमध्ये दिसणारा तोच ओळ क्रमांक सांगते, रिकाम्या ओळी मोजून.',
         },
       },
+      {
+        id: 'tools-timing-fixes',
+        text: {
+          en: 'In the inflation calculator and Invest or pay off, a country’s inflation history no longer says it could not load when you leave that country while it is loading and then come back. In the net worth calculator, the note that an amount cannot be read now waits until you stop typing. Invest or pay off no longer reads a shared link’s result aloud to a screen reader as the page opens, and it counts a comparison only once you or a shared link set one, not the example it opens with.',
+          hi: 'महँगाई कैलकुलेटर और निवेश या कर्ज़ चुकाना वाले टूल में, किसी देश का इतिहास लोड होते समय उस देश से हटकर वापस आने पर अब यह नहीं कहा जाता कि इतिहास लोड नहीं हो सका। शुद्ध संपत्ति कैलकुलेटर में, रकम पढ़ी न जा सकने की सूचना अब टाइप करना रुकने के बाद ही दिखती है। निवेश या कर्ज़ चुकाना वाला टूल अब पेज खुलते ही शेयर लिंक का नतीजा स्क्रीन रीडर पर नहीं पढ़ता, और तुलना तभी गिनता है जब आप या कोई शेयर लिंक उसे तय करे, पेज के साथ खुलने वाले उदाहरण को नहीं।',
+          es: 'En la calculadora de inflación y en Invertir o pagar deuda, la historia de inflación de un país ya no dice que no se pudo cargar si dejas ese país mientras carga y luego vuelves a él. En la calculadora de patrimonio neto, el aviso de que una cantidad no se puede leer ahora espera a que dejes de escribir. Invertir o pagar deuda ya no lee en voz alta el resultado de un enlace compartido con el lector de pantalla al abrirse la página, y solo cuenta una comparación cuando la defines tú o un enlace compartido, no el ejemplo con el que se abre.',
+          cs: 'V kalkulačce inflace a v nástroji Investovat, nebo splatit dluh už historie inflace země nehlásí, že se ji nepodařilo načíst, když zemi během načítání opustíte a pak se k ní vrátíte. V kalkulačce čistého jmění se upozornění, že částku nelze přečíst, teď objeví až ve chvíli, kdy přestanete psát. Nástroj Investovat, nebo splatit dluh už při otevření stránky nečte čtečce obrazovky výsledek ze sdíleného odkazu a srovnání započítá, až když ho nastavíte vy nebo sdílený odkaz, ne příklad, se kterým se otevírá.',
+          mr: 'महागाई कॅल्क्युलेटर आणि गुंतवणूक की कर्जफेड या साधनांमध्ये, एखाद्या देशाचा इतिहास लोड होत असताना तो देश सोडून परत आल्यावर आता इतिहास लोड होऊ शकला नाही असे सांगितले जात नाही. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये रक्कम वाचता येत नसल्याची सूचना आता टाइप करणे थांबल्यानंतरच दिसते. गुंतवणूक की कर्जफेड हे साधन आता पान उघडताच शेअर लिंकचा निकाल स्क्रीन रीडरवर वाचून दाखवत नाही, आणि तुम्ही किंवा शेअर लिंकने तुलना ठरवल्यावरच ती मोजते, पानासोबत उघडणारे उदाहरण नाही.',
+        },
+      },
     ],
   },
   {

@@ -302,8 +302,11 @@ export default function InflationCalculator({
     setHistoryFailed(false);
     loadHistory(historyUrl).then(
       (data) => {
+        // An answer thrown away leaves the history unloaded, so the country
+        // asks again when it is chosen again (#867, #879).
+        if (!live) return;
         loadedAll.current = true;
-        if (live) setCompact((c) => ({ ...data.countries, ...c }));
+        setCompact((c) => ({ ...data.countries, ...c }));
       },
       () => {
         if (live) setHistoryFailed(true);

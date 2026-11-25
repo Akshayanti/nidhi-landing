@@ -79,12 +79,21 @@ function useNotice(notice: Notice | undefined, say: (text: string) => void) {
  * and together with `text` when one keystroke changed both (#608).
  *
  * `notice` is said at once, each time its count rises (a link was copied).
+ *
+ * `quiet` is for the page still arriving (a shared link not yet read): while
+ * it holds, nothing is said, and the text it ends on is the one the page
+ * loaded with, so a link's own result is not read out on opening (#880).
  */
-export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: string; also?: string; notice?: Notice; delay?: number }) {
+export function ResultAnnouncement({ text, also, notice, delay = 600, quiet = false }: { text: string; also?: string; notice?: Notice; delay?: number; quiet?: boolean }) {
   const [said, setSaid] = useState('');
   const heard = useRef<{ text: string; also: string | undefined } | null>(null);
+  const wasQuiet = useRef(false);
   useEffect(() => {
-    if (!heard.current) { heard.current = { text, also }; return undefined; }
+    if (!heard.current || wasQuiet.current) {
+      heard.current = { text, also };
+      wasQuiet.current = quiet;
+      return undefined;
+    }
     // The part opening or closing is not a result to say, and it is the baseline
     // at once: an edit made before the delay has passed is then heard as a change.
     if ((also === undefined) !== (heard.current.also === undefined)) {
@@ -100,7 +109,7 @@ export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: 
       }
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [text, also, delay]);
+  }, [text, also, delay, quiet]);
   useNotice(notice, setSaid);
   return <span className="chart-srOnly" aria-live="polite" aria-atomic="true">{said}</span>;
 }
