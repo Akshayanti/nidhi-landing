@@ -13,11 +13,11 @@ describe('the order of a mutation run’s test files', () => {
     assert.equal(testCost('src/components/Amounts.dom.test.tsx', TOOLS), 1);
     assert.equal(testCost('src/components/MonteCarloParts.Results.dom.test.tsx', TOOLS), 1);
     assert.equal(testCost('src/utils/shared/exportFile.dom.test.ts', TOOLS), 1);
-    assert.equal(testCost('src/components/LoanCompare.dom.test.tsx', TOOLS), 2);
-    assert.equal(testCost('src/components/MonteCarloSimulator.chart-wide.dom.test.tsx', TOOLS), 2);
+    assert.equal(testCost('src/components/LoanCompare.dom.test.tsx', TOOLS), 3);
+    assert.equal(testCost('src/components/MonteCarloSimulator.chart-wide.dom.test.tsx', TOOLS), 3);
   });
 
-  it('counts a parts file\'s page tests as a whole tool, and its other parts as parts', () => {
+  it('counts a parts file\'s page tests after the parts and before a tool\'s own whole-tool tests', () => {
     assert.equal(testCost('src/components/NetWorthParts.page.dom.test.tsx', TOOLS), 2);
     assert.equal(testCost('src/components/NetWorthParts.page.share.rows.dom.test.tsx', TOOLS), 2);
     assert.equal(testCost('src/components/MonteCarloParts.page-form.dom.test.tsx', TOOLS), 2);
@@ -25,6 +25,10 @@ describe('the order of a mutation run’s test files', () => {
     assert.equal(testCost('src/components/NetWorthParts.PrintedReport.dom.test.tsx', TOOLS), 1);
     assert.equal(testCost('src/components/NetWorthParts.pageless.dom.test.tsx', TOOLS), 1);
     assert.equal(testCost('src/components/NetWorthParts.helpers.test.ts', TOOLS), 0);
+    // A tool's own page tests come before its older whole-tool file, which
+    // kills few of the page's mutants: by path alone it would run first.
+    assert.ok(cheapestFirst(['src/components/NetWorthParts.page.dom.test.tsx', 'src/components/MultiCurrencyNetWorth.dom.test.tsx'], ['MultiCurrencyNetWorth'])[0].includes('NetWorthParts.page'));
+    assert.ok(cheapestFirst(['src/components/InvestOrPayOff.dom.test.tsx', 'src/components/InvestOrPayOffParts.page.dom.test.tsx'], ['InvestOrPayOff'])[0].includes('InvestOrPayOffParts.page'));
   });
 
   it('does not take a part for a whole tool because their names begin alike', () => {

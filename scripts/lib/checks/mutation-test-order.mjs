@@ -9,7 +9,8 @@
 // before the unit test beside it that kills it in a few milliseconds.
 //
 // So the cheap ones come first: tests that need no browser, then tests that
-// mount one part, then tests that mount a whole tool. Within a kind, by path.
+// mount one part, then the parts files' page tests, then a tool's own
+// whole-tool tests. Within a kind, by path.
 // The order changes how long a mutant takes to die, not whether a test's
 // assertion catches it: every covering file still runs for a mutant none of
 // them stops. It can change what a mutant is called when one covering file
@@ -18,17 +19,21 @@
 // at either.
 
 /**
- * 0 for a test with no browser, 1 for one that mounts a part, 2 for one that
- * mounts a whole tool: `<Tool>.<...>.dom.test.tsx`, or a parts file's page
- * tests, `<Name>Parts.page<.or->...dom.test.tsx`, which mount the whole page
- * too. Named as a part, those ran before every cheap part test below them in
- * path order, so a mutant in shared code waited for several pages to mount.
+ * 0 for a test with no browser, 1 for one that mounts a part, 2 for a parts
+ * file's page tests (`<Name>Parts.page<.or->...dom.test.tsx`), 3 for a tool's
+ * own whole-tool tests (`<Tool>.<...>.dom.test.tsx`). Both of the last two
+ * mount the whole page. Counted as parts, the page tests ran before every
+ * cheap part test below them in path order, so a mutant in shared code
+ * waited for several pages to mount. Counted with the whole-tool tests and
+ * sorted by path, a tool's older test file (\`MultiCurrencyNetWorth.dom\`,
+ * \`InvestOrPayOff.dom\`) ran before the page tests that kill most of the
+ * page's mutants, adding its few seconds to each of them.
  */
 export function testCost(file, wholeTools) {
   const name = file.split('/').pop();
   if (!/\.dom\.test\.tsx?$/.test(name)) return 0;
   if (/^[A-Z]\w*Parts\.page[.-]/.test(name)) return 2;
-  return wholeTools.some((tool) => name.startsWith(`${tool}.`)) ? 2 : 1;
+  return wholeTools.some((tool) => name.startsWith(`${tool}.`)) ? 3 : 1;
 }
 
 /**

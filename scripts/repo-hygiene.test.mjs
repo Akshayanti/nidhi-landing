@@ -229,9 +229,9 @@ describe('the required checks run on every pull request, in one workflow, in ord
     // failure through without cancelling anything.
     for (const text of [checks, suites]) assert.doesNotMatch(text, /continue-on-error/);
     // At most this many of each suite's jobs at once, in one run (owner,
-    // 2026-11-25): privacy and text size four each, mutation eighteen, which
+    // 2026-11-25): privacy and text size five each, mutation eighteen, which
     // it reaches once the other two have finished.
-    for (const [suite, cap] of [['privacy', 4], ['mutation', 18], ['text-size', 4]]) {
+    for (const [suite, cap] of [['privacy', 5], ['mutation', 18], ['text-size', 5]]) {
       assert.match(suiteJobsOf(suite), new RegExp(`\\n {6}max-parallel: ${cap}\\n`), suite);
     }
   });
