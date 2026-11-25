@@ -212,12 +212,12 @@ describe('past to today with a country’s history', () => {
     assert.equal(a.axis, 'Year');
   });
 
-  it('a later starting year leaves the earlier rises out, and one year is said in the singular', () => {
+  it('a later starting year leaves the earlier rises out, and one year is said as one year, its change once (#868)', () => {
     const late = past(USA, rising(2019), 1000, 2021);
     close(late.value, 1250);
     assert.deepEqual(late.sentences, [
       'In United States, $1,000 in 2021 bought what about $1,250 bought in 2022.',
-      'Prices rose about 25% in total over those 1 year, an average of 25% a year.',
+      'Prices rose about 25% in that one year.',
     ]);
     samePoints(late.points, [[2021, 1000], [2022, 1250]]);
   });
@@ -242,7 +242,7 @@ describe('past to today with a country’s history', () => {
     // -10% then -20%: 0.9 x 0.8 = 0.72, an average of sqrt(0.72) - 1 = -15.1% a year.
     const fall = past(USA, { 2020: 1, 2021: -10, 2022: -20 }, 1000, 2020);
     close(fall.value, 720);
-    assert.equal(fall.sentences[1], 'Prices rose about -28% in total over those 2 years, an average of -15.1% a year.');
+    assert.equal(fall.sentences[1], 'Prices fell about 28% in total over those 2 years, an average of 15.1% a year.');
   });
 
   it('follows the page’s number style for the bare figures', () => {
@@ -268,7 +268,7 @@ describe('a history in a currency that is not the country’s own', () => {
 
   it('adds no note for the year both monies were in use', () => {
     const a = past(AUS, rising(1964), 1000, 1966, 'EUR');
-    assert.deepEqual(a.sentences, ['In Australia, €1,000 in 1966 bought what about €1,250 bought in 1967.', 'Prices rose about 25% in total over those 1 year, an average of 25% a year.']);
+    assert.deepEqual(a.sentences, ['In Australia, €1,000 in 1966 bought what about €1,250 bought in 1967.', 'Prices rose about 25% in that one year.']);
   });
 });
 
@@ -296,7 +296,7 @@ describe('a history that crosses one change of currency', () => {
 
   it('is not crossed from the year of the change itself', () => {
     const from2005 = past(TUR, rising(2003), 1000, 2005);
-    assert.deepEqual(from2005.sentences, ['In Türkiye, ₺1,000 in 2005 bought what about ₺1,250 bought in 2006.', 'Prices rose about 25% in total over those 1 year, an average of 25% a year.']);
+    assert.deepEqual(from2005.sentences, ['In Türkiye, ₺1,000 in 2005 bought what about ₺1,250 bought in 2006.', 'Prices rose about 25% in that one year.']);
     assert.ok(from2005.announceMore === undefined);
     close(from2005.value, 1250);
   });
@@ -359,7 +359,7 @@ describe('a starting year in which both monies were in use (#619)', () => {
     const mixed = format(r.mixedYearUp, { country: 'Australia', changeDate: 'on 14 February 1966', ratio: '2', oldResult: 'about $2,500', year: 1966 });
     assert.match(mixed, /^Australia changed its currency on 14 February 1966: 1 old unit became 2 new units\./);
     close(a.value, 1250);
-    assert.deepEqual(a.sentences, ['In Australia, $1,000 in 1966 bought what about $1,250 bought in 1967.', mixed, 'Prices rose about 25% in total over those 1 year, an average of 25% a year.']);
+    assert.deepEqual(a.sentences, ['In Australia, $1,000 in 1966 bought what about $1,250 bought in 1967.', mixed, 'Prices rose about 25% in that one year.']);
     assert.equal(a.announceMore, mixed);
   });
 
@@ -434,7 +434,7 @@ describe('the euro area as a whole', () => {
 
   it('from 2002, the amount is euros and there is no note', () => {
     const a = past(EMU, series, 1000, 2002);
-    assert.deepEqual(a.sentences, ['In the euro area, €1,000 in 2002 bought what about €1,000 bought in 2003.', 'Prices rose about 0% in total over those 1 year, an average of 0% a year.']);
+    assert.deepEqual(a.sentences, ['In the euro area, €1,000 in 2002 bought what about €1,000 bought in 2003.', 'Prices rose about 0% in that one year.']);
     assert.ok(a.announceMore === undefined);
     assert.equal(a.chartTitle, 'What €1,000 is worth each year since');
   });

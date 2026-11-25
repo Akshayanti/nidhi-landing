@@ -8,7 +8,7 @@ import data from '../data/inflation/worldbank.json';
 import { HISTORY_URL, toCompactSeries, type WorldBankFile } from '../utils/inflation/history.ts';
 import { SHARED_STATE_GLOBAL, decodeState } from '../utils/invest-or-pay-off/url.ts';
 import { boxErrors, formFromLink } from '../utils/invest-or-pay-off/form.ts';
-import InvestOrPayOff from './InvestOrPayOff.tsx';
+import InvestOrPayOff, { pct } from './InvestOrPayOff.tsx';
 
 const t = dict('en').tools;
 const island = t.investOrPayOff.island;
@@ -83,5 +83,17 @@ describe('invest or pay off, mounted', () => {
       assert.equal(box.getAttribute('aria-invalid'), 'true');
       assert.ok(screen.getByText(island.results.fix, { selector: '.tool-resultReason' }));
     }
+  });
+});
+
+describe('pct: a rate below zero', () => {
+  const MINUS = String.fromCodePoint(0x2212);
+  it('is written with the true minus sign the amounts use, in every language (#884)', () => {
+    assert.equal(pct(-1.5, 'en'), `${MINUS}1.5%`);
+    assert.equal(pct(-1.5, 'es'), `${MINUS}1,5${String.fromCodePoint(0xa0)}%`);
+    assert.equal(pct(-1.5, 'cs'), `${MINUS}1,5${String.fromCodePoint(0xa0)}%`);
+    assert.equal(pct(-1.5, 'hi'), `${MINUS}1.5%`);
+    assert.ok(!pct(-1.5, 'mr').includes('-'));
+    assert.equal(pct(2, 'en'), '2%');
   });
 });

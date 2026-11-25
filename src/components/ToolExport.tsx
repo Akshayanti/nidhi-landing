@@ -7,6 +7,7 @@ import type { Cell } from '../utils/shared/xlsx.ts';
 import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/shared/chartAmounts.ts';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { useMoney } from './useMoney.ts';
+import { trueMinus } from '../utils/shared/formatAmount.ts';
 
 /**
  * The free tools' "Save or share these results" block, placed right after a
@@ -141,18 +142,21 @@ export function ToolExport({
 // The report
 // ---------------------------------------------------------------------------
 
-/** A number cell in the reader's locale, as the spreadsheet formats it. */
-function cellText(c: Cell, locale: string): string {
+/**
+ * A number cell in the reader's locale, as the spreadsheet formats it, with
+ * the true minus sign the report's answer above it uses (#883).
+ */
+export function cellText(c: Cell, locale: string): string {
   if (c === null || c === undefined) return '';
   if (typeof c === 'string') return c;
-  if (typeof c === 'number') return new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c);
+  if (typeof c === 'number') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c));
   if ('t' in c) return c.t;
   const fmt = c.fmt ?? 'general';
-  if (fmt === 'general') return new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n);
+  if (fmt === 'general') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n));
   const digits = fmt === 'amount2' || fmt === 'decimal2' ? 2 : fmt === 'amount3' ? 3 : 0;
   // A year or a month count is not grouped; a count of thousands is.
   const useGrouping = fmt !== 'integer' || Math.abs(c.n) >= 10_000;
-  return new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(c.n);
+  return trueMinus(new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(c.n));
 }
 
 const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);

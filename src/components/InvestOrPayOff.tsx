@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
@@ -83,8 +83,9 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
-function pct(v: number, locale: string, digits = 1): string {
-  return new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100);
+/** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
+export function pct(v: number, locale: string, digits = 1): string {
+  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
 }
 
 /** "in 2 years and 4 months", from a month count. */

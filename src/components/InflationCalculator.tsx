@@ -1081,7 +1081,11 @@ function computeAnswer(
     if (beforeEuroCash) {
       say(t(from < EURO_BEGAN ? r.euroBefore1999 : r.euro1999to2001, { from }));
     }
-    sentences.push(t(r.pastCountryRise, { total: pct((factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(average, numberLocale, 1) }));
+    // Said as a fall when prices fell, never "rose about -28%", and over one
+    // year without "those 1 year" or an average equal to the total (#868).
+    const fell = factor < 1;
+    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
+    sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
     return {
       headline: aboutText(value, code, strings, amountLocale),
       value,

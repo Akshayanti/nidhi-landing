@@ -128,6 +128,25 @@ describe('the answer of the inflation calculator', () => {
     assert.equal(one('.ifc-method').textContent, r.method);
   });
 
+  it('a country’s own history over one year: the change, said once, with no “those 1 year” (#868)', () => {
+    const series = { 2018: 5, 2019: 5, 2020: 10 };
+    results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready' });
+    assert.deepEqual(lines()[1], ['ifc-note', 'Prices rose about 10% in that one year.']);
+  });
+
+  it('a country’s own history when prices fell: a fall, by how much, never “rose about -28%” (#868)', () => {
+    // 0.8 × 0.9 = 0.72: prices fell 28% over two years, 15.1% a year (1 − the root of 0.72).
+    const series = { 2017: 0, 2018: 0, 2019: -20, 2020: -10 };
+    results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2018 }, country: TESTLAND, series, historyStatus: 'ready' });
+    assert.deepEqual(lines()[1], ['ifc-note', 'Prices fell about 28% in total over those 2 years, an average of 15.1% a year.']);
+  });
+
+  it('a country’s own history when prices fell for one year', () => {
+    const series = { 2018: 0, 2019: 0, 2020: -10 };
+    results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready' });
+    assert.deepEqual(lines()[1], ['ifc-note', 'Prices fell about 10% in that one year.']);
+  });
+
   it('a country’s own history: the years, the total rise and its average, and no “either side”', () => {
     // 2020 rose 10% and 2021 not at all: 1,000 of 2019 is 1,100 in 2021, 10% in two years, 4.9% a year (the root of 1.1).
     const series = { 2018: 5, 2019: 10, 2020: 10, 2021: 0 };

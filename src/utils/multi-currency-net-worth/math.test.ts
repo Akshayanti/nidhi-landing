@@ -795,6 +795,15 @@ describe('parseAmount', () => {
   it('gives no number for a negative amount, text, or a number too large to hold', () => {
     for (const value of ['-1', '-150000', 'abc', '€100', '1e999', 'Infinity']) assert.ok(Number.isNaN(parseAmount(value)), value);
   });
+
+  it('gives no number for the other spellings JavaScript reads, which the CSV import refuses too (#872)', () => {
+    for (const value of ['1.5e5', '1E3', '0x10', '0b11', '0o7', '+5', '1.2.3', '.', '-0']) {
+      assert.ok(Number.isNaN(parseAmount(value)), value);
+      assert.ok(isUnreadableAmount(value), value);
+    }
+    assert.equal(parseAmount('.5'), 0.5);
+    assert.equal(parseAmount('5.'), 5);
+  });
 });
 
 describe('aggregate: the whole result, from sums written out', () => {
@@ -889,7 +898,9 @@ describe('aggregate: the bands', () => {
   });
 
   it('amounts too large to add still get a band, the highest, never none', () => {
-    const usd = byCode(aggregate([asset('1e308', 'USD'), asset('1e308', 'USD'), asset('1', 'EUR')], 'EUR', ROUND), 'USD');
+    // 1e308 in plain digits, the way a box holds it: an exponent is not an amount (#872).
+    const huge = `1${'0'.repeat(308)}`;
+    const usd = byCode(aggregate([asset(huge, 'USD'), asset(huge, 'USD'), asset('1', 'EUR')], 'EUR', ROUND), 'USD');
     assert.equal(usd.netAmountOriginal, Infinity);
     assert.deepEqual([usd.riskLevel, usd.riskLabel], ['elevated', 'Elevated exposure']);
   });

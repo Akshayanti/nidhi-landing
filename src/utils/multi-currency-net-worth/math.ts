@@ -110,10 +110,15 @@ export interface ParseError {
 // Aggregation
 // ---------------------------------------------------------------------------
 
-/** Strips cosmetic grouping characters before parsing so "1,00,000" and "100000" both work. Returns NaN on failure. */
+/**
+ * Strips cosmetic grouping characters before parsing so "1,00,000" and
+ * "100000" both work. Returns NaN on failure. What is left must be digits with
+ * at most one decimal point: `Number()` alone also reads "1.5e5", "0x10" and
+ * "0b11", which the CSV import refuses (#872).
+ */
 export function parseAmount(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
-  if (cleaned === '') return NaN;
+  if (!/^(\d+\.?\d*|\.\d+)$/.test(cleaned)) return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) && n >= 0 ? n : NaN;
 }
