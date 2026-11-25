@@ -282,7 +282,7 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
   // waits for, and the two tests it makes, in this order.
   const SKIPS = {
     mutation: {
-      job: 'mutation-shard', summary: 'mutation-gate', needs: ['mutation-plan', 'mutation-shard', 'mutation-floors'],
+      job: 'mutation-shard', summary: 'mutation-gate', needs: ['mutation-plan', 'mutation-shard', 'mutation-floors', 'mutation-deps-trace'],
       passes: 'if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then',
       fails: 'if [ "$PLAN" != "success" ] || [ "$MUTATION" != "success" ] || [ "$FLOORS" != "success" ]; then',
     },
@@ -345,8 +345,9 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       // runs only when the plan names a run to take results from.
       if (id === 'mutation-floors') assert.equal(condition, undefined);
       else if (id === 'mutation-seed') assert.equal(condition, "${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}");
-      // The trace of what each test reaches runs nightly and by hand, never on a pull request (#891).
-      else if (id === 'mutation-deps-trace') assert.equal(condition, "inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')");
+      // The trace of what each test reaches runs nightly and by hand (#891),
+      // and on a pull request whose plan says it changes the analysis or the trace.
+      else if (id === 'mutation-deps-trace') assert.equal(condition, "${{ !cancelled() && inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || needs.mutation-plan.outputs.trace == 'true') }}");
       else assert.equal(condition, allowed[id], `job ${id}`);
     }
   });
@@ -372,9 +373,15 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       // github.event_name is the caller's: pull_request only in PR Checks'
       // run of a pull request. Nightly and manual runs always run.
       assert.match(plan, /\n {8}id: inputs\n {8}if: github\.event_name == 'pull_request'\n/, 'nightly and manual runs always run');
-      // Mutation also writes the fingerprint, the shards, the note's name
-      // and, on a merge whose pull request's run counts, run=false and seed.
-      assert.equal(plan.split('GITHUB_OUTPUT').length - 1, suite === 'mutation' ? 6 : 1, 'nothing else writes an output');
+      // Mutation also writes the fingerprint, the shards, the note's name,
+      // whether the trace runs (#891) and, on a merge whose pull request's
+      // run counts, run=false and seed.
+      assert.equal(plan.split('GITHUB_OUTPUT').length - 1, suite === 'mutation' ? 7 : 1, 'nothing else writes an output');
+      if (suite === 'mutation') {
+        // The trace runs on a pull request only when it changes the analysis, the hook or the trace script.
+        assert.ok(plan.includes("        id: trace\n        if: github.event_name == 'pull_request'\n"));
+        assert.ok(plan.includes("grep -Eqx 'scripts/lib/checks/mutation-deps\\.mjs|scripts/lib/checks/trace-deps-hook\\.mjs|scripts/check-mutation-deps\\.mjs'; then trace=true; fi\n"));
+      }
       if (suite === 'mutation') {
         assert.ok(plan.includes("        id: reuse\n        if: github.event_name == 'push' && steps.pushed.outputs.run != 'false'\n"), 'reuse only on a merge that changed what mutation reads');
         assert.ok(plan.includes('if (answer.reuse) appendFileSync(process.env.GITHUB_OUTPUT, `run=false\\nseed=${answer.runId}\\n`);'), 'run=false only with a run to seed from');
@@ -406,7 +413,9 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       .replaceAll('${{ needs.mutation-plan.outputs.seed }}', '')
       .replace('${{ fromJSON(needs.mutation-plan.outputs.shards) }}', '')
       .replace('${{ fromJSON(needs.mutation-plan.outputs.shards) }}', '')
-      .replaceAll('${{ needs.mutation-plan.outputs.fingerprint }}', '');
+      .replaceAll('${{ needs.mutation-plan.outputs.fingerprint }}', '')
+      // The trace job (#891) runs when the plan says the analysis changed.
+      .replace("|| needs.mutation-plan.outputs.trace == 'true')", ')');
     for (const suite of SUITES) {
       checked = checked
         .replace(`\${{ !cancelled() && needs.${suite}-plan.outputs.run == 'true' }}`, '')
@@ -771,7 +780,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
     // Each suite's result waits for every part of it, the floors included.
-    assert.match(gates, /\n  mutation-gate:\n    name: 'Free tools: mutation'\n    needs: \[mutation-plan, mutation-shard, mutation-floors\]\n/);
+    assert.match(gates, /\n  mutation-gate:\n    name: 'Free tools: mutation'\n    needs: \[mutation-plan, mutation-shard, mutation-floors, mutation-deps-trace\]\n/);
     assert.match(textSize, /\n  text-size-gate:\n    name: 'Free tools: text size'\n    needs: \[text-size-plan, text-size-tool\]\n/);
     assert.match(gates, /\n  mutation-floors:\n    needs: mutation-shard\n/);
     // The floors read the shards' reports by their prefix, and no other

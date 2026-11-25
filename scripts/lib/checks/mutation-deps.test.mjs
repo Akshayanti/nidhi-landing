@@ -77,6 +77,21 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.deepEqual(reads.map((v) => v.s), ['a.css', 'b.css', 'c.txt']);
   });
 
+  it('reads through optional chains like plain ones (council round 2, DeepSeek)', () => {
+    const { reads, opaque } = at(`
+      import fs from 'node:fs';
+      import { readFileSync } from 'node:fs';
+      fs?.readFileSync('a.js');
+      fs.promises?.readFile('b.json');
+      fs?.promises.readFile('c.json');
+      readFileSync?.('d.json');
+    `);
+    assert.deepEqual(opaque, []);
+    assert.deepEqual(reads.map((v) => v.s), ['a.js', 'b.json', 'c.json', 'd.json']);
+    assert.match(at("import fs from 'node:fs'; const r = fs.promises?.readFile; r('x');").opaque.join(), /takes readFile off/);
+    assert.match(at("import fs from 'node:fs'; fs?.['readFileSync']('x');").opaque.join(), /computed member/);
+  });
+
   it('a destructured load of node:fs is followed, not counted as handing it on', () => {
     const { reads, opaque } = at("const { readFileSync } = await import('node:fs');\nreadFileSync(new URL('./a.css', import.meta.url), 'utf8');\n");
     assert.deepEqual(opaque, []);
@@ -108,6 +123,18 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     ]) {
       assert.deepEqual(at(text).reads, [null], text);
     }
+  });
+
+  it('reads a file through import-equals, and leaves out a URL that is not the name it spells (council round 2, Codex)', () => {
+    assert.deepEqual(at("import fs = require('node:fs'); fs.readFileSync('src/cases.json');").reads.map((v) => v.s), ['src/cases.json']);
+    for (const spec of ['./ca%73es.json', './cases.json?x', './cases.json#y', '.\\\\cases.json']) {
+      const { reads } = at(`import { readFileSync } from 'node:fs'; readFileSync(new URL('${spec}', import.meta.url));`);
+      assert.ok(reads.every((v) => v === null), spec);
+    }
+    // A declared __dirname, __filename or URL is not the built-in.
+    assert.deepEqual(at("import { readFileSync } from 'node:fs'; function read(__dirname) { return readFileSync(__dirname + '/cases.json'); }").reads, [null]);
+    assert.deepEqual(at("import { readFileSync } from 'node:fs'; const __filename = 'x'; readFileSync(__filename);").reads, [null]);
+    assert.deepEqual(at("import { readFileSync } from 'node:fs'; class URL {}; readFileSync(new URL('./a.json', import.meta.url));").reads, [null]);
   });
 
   it('takes only node:path’s join and resolve for paths, not a Promise’s resolve', () => {
@@ -142,6 +169,12 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
       ["import fs from 'node:fs'; const { readFileSync: r } = fs; r('a');", /hands on the module fs/],
       ["import fg from 'fast-glob'; fg.sync('src/data/*.json');", /calls sync on a file-system module/],
       ["import fg from 'fast-glob'; fg('src/data/*.json');", /calls the module fg itself/],
+      // Council round 2 (Codex): TypeScript wrappers, import-equals, one name for two functions.
+      ["import { readFileSync } from 'node:fs'; (readFileSync as typeof readFileSync)('src/cases.json');", /hands on readFileSync/],
+      ["import { readFileSync } from 'node:fs'; readFileSync!('src/cases.json');", /hands on readFileSync/],
+      ["import fs = require('node:fs'); const r = fs.readFileSync; r('x');", /takes readFileSync off/],
+      ["async function a() { const { readFileSync: io } = await import('node:fs'); io('a'); }\nasync function b() { const { writeFileSync: io } = await import('node:fs'); io('/tmp/b', ''); }", /binds io to more than one/],
+      ["const require = (x) => x; require('./a.ts');", /declares a require of its own/],
     ]) {
       assert.match(at(text).opaque.join('; '), reason, text);
     }
@@ -182,11 +215,17 @@ describe('a file’s fingerprint covers all it reaches, and nothing else', () =>
     assert.notEqual(fp({ ...FILES, 'src/b': 'x' }, 'src/a.test.ts'), BASE);
   });
 
-  it('a dynamic import with a known head reaches every file under it, new ones included', () => {
+  it('a path known only from its start widens, since its tail may climb out (`../x`) (council round 2, Codex)', () => {
+    assert.match(depsOf(FILES, 'src/locales.test.ts').all.join(), /import whose path is only partly known/);
     const before = fp(FILES, 'src/locales.test.ts');
-    assert.notEqual(fp({ ...FILES, 'src/locales/en.ts': 'export default { a: 1 };\n' }, 'src/locales.test.ts'), before);
-    assert.notEqual(fp({ ...FILES, 'src/locales/hi.ts': 'export default {};\n' }, 'src/locales.test.ts'), before);
-    assert.equal(fp({ ...FILES, 'src/other.ts': '' }, 'src/locales.test.ts'), before);
+    assert.notEqual(fp({ ...FILES, 'src/other.ts': 'changed' }, 'src/locales.test.ts'), before);
+    const reader = { ...FILES, 'src/r.test.ts': "import { readFileSync } from 'node:fs';\nexport const read = (name) => readFileSync(`src/data/${name}`, 'utf8');\n" };
+    assert.match(depsOf(reader, 'src/r.test.ts').all.join(), /read whose path is only partly known/);
+    // A glob's folder is a listing: its text is known, and a wildcard cannot climb out.
+    const glob = { ...FILES, 'src/g.test.ts': "import { globSync } from 'node:fs';\nglobSync('src/lessons/**/*.md');\n", 'src/h.test.ts': "import { globSync } from 'node:fs';\nglobSync('src/lessons/*/../../x.md');\n" };
+    assert.deepEqual(depsOf(glob, 'src/g.test.ts').all, []);
+    assert.notEqual(fp({ ...glob, 'src/lessons/new.md': 'new' }, 'src/g.test.ts'), fp(glob, 'src/g.test.ts'));
+    assert.match(depsOf(glob, 'src/h.test.ts').all.join(), /path is not known/);
   });
 
   it('a folder listing changes when a file is added to, edited in or taken from the folder', () => {
@@ -398,14 +437,15 @@ describe('Stryker, with the fingerprints, gives what a forced run gives (#891, c
       // 1. A helper: the limit moves, so `a >= LIMIT` no longer fails big(10).
       write('src/limit.mjs', 'export const LIMIT = 10.5;\n');
       const helper = step('a helper', true);
-      assert.deepEqual(helper.marked.tests, ['src/big.test.mjs']);
+      // small.test.mjs reaches a dynamic import known only from its start, so it widens and is marked on every change.
+      assert.deepEqual(helper.marked.tests, ['src/big.test.mjs', 'src/small.test.mjs']);
       assert.deepEqual(boundary(helper.forced.statuses, 'src/big.mjs', 'a >= LIMIT'), ['Survived']);
       assert.match(helper.inc.out, /of \d+ mutant result\(s\) are reused/);
 
       // 2. A data file a helper reads: a case at the new limit kills it again.
       write('src/cases.json', '[[10.5, false], [11, true]]');
       const data = step('a data file');
-      assert.deepEqual(data.marked.tests, ['src/big.test.mjs']);
+      assert.deepEqual(data.marked.tests, ['src/big.test.mjs', 'src/small.test.mjs']);
       assert.deepEqual(boundary(data.forced.statuses, 'src/big.mjs', 'a >= LIMIT'), ['Killed']);
 
       // 3. A module reached by a dynamic import.

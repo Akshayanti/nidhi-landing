@@ -82,7 +82,10 @@ export function readablePaths(tracked) {
 }
 
 const known = (s) => ({ s, exact: true });
+/** A path known from its start, with an unknown tail: the tail may hold `..`, so it is never trusted to stay under the head. */
 const partial = (s) => ({ s, exact: false });
+/** Everything under a known folder, from a glob whose own text is known: a wildcard cannot climb out. */
+const listing = (s) => ({ s, exact: false, listing: true });
 
 /**
  * The static analysis of one file's text. Returns `{ imports, reads, opaque }`:
@@ -188,6 +191,11 @@ export function analyse(text, file, root) {
   const pathSpaces = new Set(); // local names of the module, or of its posix/win32
   const urlFunctions = new Set(); // local names of fileURLToPath
   visit(ast.program, (node) => {
+    if (node.type === 'TSImportEqualsDeclaration' && node.moduleReference?.type === 'TSExternalModuleReference' && PATH_MODULES.has(node.moduleReference.expression.value)) {
+      pathSpaces.add(node.id.name);
+      bound(node.id.name);
+      return;
+    }
     if (node.type !== 'ImportDeclaration') return;
     const from = node.source.value;
     if (PATH_MODULES.has(from)) {
@@ -247,8 +255,9 @@ export function analyse(text, file, root) {
       case 'TSAsExpression': case 'TSSatisfiesExpression': case 'TSNonNullExpression': case 'ParenthesizedExpression': case 'TypeCastExpression':
         return evaluate(node.expression);
       case 'Identifier': {
-        if (node.name === '__dirname') return known(dir);
-        if (node.name === '__filename') return known(file);
+        // The CommonJS names count only when the file does not declare them itself.
+        if (node.name === '__dirname') return declared.has('__dirname') ? null : known(dir);
+        if (node.name === '__filename') return declared.has('__filename') ? null : known(file);
         const inits = declared.get(node.name);
         if (!inits || inits.length !== 1 || !inits[0] || evaluating.has(node.name)) return null;
         evaluating.add(node.name);
@@ -268,10 +277,13 @@ export function analyse(text, file, root) {
         return null;
       }
       case 'NewExpression': {
-        if (node.callee.type !== 'Identifier' || node.callee.name !== 'URL') return null;
+        if (node.callee.type !== 'Identifier' || node.callee.name !== 'URL' || declared.has('URL')) return null;
         const [a, b] = node.arguments;
         const spec = evaluate(a);
         if (!spec) return null;
+        // A URL decodes %xx, drops ?query and #hash and reads \ as /: a
+        // string with any of them is not the file name it spells, so it is unknown.
+        if (/[%?#\\]/.test(spec.s)) return null;
         if (!b) return spec.s.startsWith('file://') ? spec : null;
         const base = evaluate(b);
         if (!base || !base.exact || !base.s.startsWith('file://')) return null;
@@ -327,6 +339,7 @@ export function analyse(text, file, root) {
     } else if (node.type === 'TSImportEqualsDeclaration' && node.moduleReference?.type === 'TSExternalModuleReference') {
       importOf(known(node.moduleReference.expression.value));
     } else if (node.type === 'CallExpression' && (node.callee.type === 'Import' || (node.callee.type === 'Identifier' && node.callee.name === 'require'))) {
+      if (node.callee.type === 'Identifier' && declared.has('require')) opaque.push('declares a require of its own');
       importOf(evaluate(node.arguments[0]));
     } else if (node.type === 'ImportExpression') {
       importOf(evaluate(node.source));
@@ -344,6 +357,17 @@ export function analyse(text, file, root) {
   // await import('node:fs')`). A module bound any other way widens.
   const fsNames = new Map();
   const fsSpaces = new Set();
+  // One local name, one meaning: a name bound in one place to readFileSync
+  // and in another to writeFileSync (or to the whole module) cannot be told
+  // apart without scopes, so the file widens.
+  const nameFs = (local, fn) => {
+    if (fsSpaces.has(local) || (fsNames.has(local) && fsNames.get(local) !== fn)) opaque.push(`binds ${local} to more than one file-system function`);
+    fsNames.set(local, fn);
+  };
+  const spaceFs = (local) => {
+    if (fsNames.has(local)) opaque.push(`binds ${local} to more than one file-system function`);
+    fsSpaces.add(local);
+  };
   const isFsLoad = (node) => {
     let n = node;
     while (n && (n.type === 'AwaitExpression' || n.type === 'TSAsExpression' || n.type === 'ParenthesizedExpression')) n = n.argument ?? n.expression;
@@ -353,14 +377,14 @@ export function analyse(text, file, root) {
     return Boolean(v?.exact && FS_MODULES.has(v.s));
   };
   const bindPattern = (pattern) => {
-    if (pattern.type === 'Identifier') { fsSpaces.add(pattern.name); bound(pattern.name); return; }
+    if (pattern.type === 'Identifier') { spaceFs(pattern.name); bound(pattern.name); return; }
     if (pattern.type !== 'ObjectPattern') { opaque.push('binds a file-system module in a way this analysis does not follow'); return; }
     for (const prop of pattern.properties) {
       if (prop.type !== 'ObjectProperty' || prop.computed) { opaque.push('binds a file-system module in a way this analysis does not follow'); continue; }
       const name = prop.key.name ?? prop.key.value;
       const local = prop.value.type === 'AssignmentPattern' ? prop.value.left : prop.value;
       if (name === 'promises') bindPattern(local);
-      else if (local.type === 'Identifier') { fsNames.set(local.name, name); bound(local.name); }
+      else if (local.type === 'Identifier') { nameFs(local.name, name); bound(local.name); }
       else opaque.push('binds a file-system module in a way this analysis does not follow');
     }
   };
@@ -370,10 +394,14 @@ export function analyse(text, file, root) {
       for (const sp of node.specifiers) {
         const imported = sp.type === 'ImportSpecifier' ? (sp.imported.name ?? sp.imported.value) : null;
         // `import { promises as fsp }` is the whole module again, by another name.
-        if (imported === null || imported === 'promises' || imported === 'default') fsSpaces.add(sp.local.name);
-        else fsNames.set(sp.local.name, imported);
+        if (imported === null || imported === 'promises' || imported === 'default') spaceFs(sp.local.name);
+        else nameFs(sp.local.name, imported);
         bound(sp.local.name);
       }
+    } else if (node.type === 'TSImportEqualsDeclaration' && node.moduleReference?.type === 'TSExternalModuleReference' && FS_MODULES.has(node.moduleReference.expression.value)) {
+      // `import fs = require('node:fs')`: the whole module.
+      spaceFs(node.id.name);
+      bound(node.id.name);
     } else if (node.type === 'VariableDeclarator' && node.init && isFsLoad(node.init)) {
       bindPattern(node.id);
       fsLoads.add(node.init.type === 'AwaitExpression' ? node.init.argument : node.init);
@@ -386,11 +414,13 @@ export function analyse(text, file, root) {
   });
 
   /** The fs function a call reaches, or null. */
+  // Plain and optional members alike: `fs?.readFileSync`, `fs.promises?.readFile`.
+  const isMember = (n) => n?.type === 'MemberExpression' || n?.type === 'OptionalMemberExpression';
   const fsFunction = (callee) => {
     if (callee.type === 'Identifier') return fsNames.get(callee.name) ?? null;
-    if (callee.type !== 'MemberExpression' || callee.computed) return null;
+    if (!isMember(callee) || callee.computed) return null;
     let obj = callee.object;
-    if (obj.type === 'MemberExpression' && !obj.computed && obj.property.name === 'promises') obj = obj.object;
+    if (isMember(obj) && !obj.computed && obj.property.name === 'promises') obj = obj.object;
     return obj.type === 'Identifier' && fsSpaces.has(obj.name) ? callee.property.name : null;
   };
 
@@ -401,7 +431,7 @@ export function analyse(text, file, root) {
   /** The module a member expression is taken from (`fs.x`, `fs.promises.x`), or null. */
   const fsBase = (member) => {
     let obj = member.object;
-    if (obj.type === 'MemberExpression' && !obj.computed && obj.property.name === 'promises') obj = obj.object;
+    if (isMember(obj) && !obj.computed && obj.property.name === 'promises') obj = obj.object;
     return obj.type === 'Identifier' && fsSpaces.has(obj.name) ? obj.name : null;
   };
 
@@ -440,7 +470,7 @@ export function analyse(text, file, root) {
           // astro's glob({ pattern, base }): everything under base.
           const base = option(first, 'base');
           const v = base === undefined ? null : evaluate(base);
-          paths.push(v ? (v.exact ? partial(withTrailingSlash(v.s)) : v) : null);
+          paths.push(v?.exact ? listing(withTrailingSlash(v.s)) : null);
         } else if (first?.type === 'ArrayExpression') {
           for (const el of first.elements) paths.push(globHead(evaluate(el), cwd));
         } else if (name === 'globSync' || name === 'glob') {
@@ -455,7 +485,7 @@ export function analyse(text, file, root) {
       // A file-system function, or the whole module, handed on as a value:
       // what is read through it is unknown.
       if (fsNames.has(node.name) && FS_FUNCTIONS.has(fsNames.get(node.name))) opaque.push(`hands on ${node.name} as a value`);
-      if (fsSpaces.has(node.name) && !(parent.type === 'MemberExpression' && key === 'object')) opaque.push(`hands on the module ${node.name} as a value`);
+      if (fsSpaces.has(node.name) && !(isMember(parent) && key === 'object')) opaque.push(`hands on the module ${node.name} as a value`);
     });
   }
   return { imports, reads, opaque };
@@ -467,20 +497,21 @@ function withTrailingSlash(s) {
 
 /** A glob pattern as the folder its fixed part names. */
 function globHead(v, cwd) {
-  if (!v || !cwd) return null;
+  // Only a pattern known in full: an unknown part could hold `..`.
+  if (!v || !v.exact || !cwd || !cwd.exact) return null;
   const at = v.s.search(/[*?{[!(]/);
-  const head = at === -1 ? v.s : v.s.slice(0, at);
-  const exact = at === -1 && v.exact;
+  if (at === -1) return known(v.s.startsWith('/') ? v.s : `${cwd.s}/${v.s}`);
+  const head = v.s.slice(0, at);
+  // A wildcard never matches `..`, but a `..` written after one climbs out.
+  if (/(^|\/)\.\.(\/|$)/.test(v.s.slice(at))) return null;
   const base = head.startsWith('/') ? head : `${cwd.s}/${head}`;
-  if (!cwd.exact) return partial(cwd.s);
-  if (exact) return known(base);
-  // Up to the last full folder of the fixed part.
-  return partial(base.slice(0, base.lastIndexOf('/') + 1));
+  // Up to the last full folder of the fixed part: everything under it.
+  return listing(base.slice(0, base.lastIndexOf('/') + 1));
 }
 
 function isValueUse(node, parent, key) {
   if (!parent) return false;
-  if (parent.type === 'CallExpression' && key === 'callee') return false;
+  if ((parent.type === 'CallExpression' || parent.type === 'OptionalCallExpression') && key === 'callee') return false;
   if (parent.type === 'MemberExpression' && key === 'property' && !parent.computed) return false;
   if (parent.type === 'OptionalMemberExpression' && key === 'property' && !parent.computed) return false;
   if (parent.type === 'ImportSpecifier' || parent.type === 'ImportDefaultSpecifier' || parent.type === 'ImportNamespaceSpecifier') return false;
@@ -494,6 +525,10 @@ function isValueUse(node, parent, key) {
   if (parent.type === 'VariableDeclarator' && key === 'id') return false;
   if (parent.type === 'FunctionDeclaration' || parent.type === 'ClassMethod' || parent.type === 'ObjectMethod' || parent.type === 'TSDeclareFunction') return false;
   if (parent.type === 'ClassProperty' && key === 'key') return false;
+  // `x as T`, `x!`, `x satisfies T`, `<T>x`, `f<T>`: the value itself goes
+  // on, so it counts as handed on (a wrapped call to an fs function widens).
+  // Every other TypeScript node holding a name is a type, not a value.
+  if (['TSAsExpression', 'TSNonNullExpression', 'TSSatisfiesExpression', 'TSTypeAssertion', 'TSInstantiationExpression'].includes(parent.type)) return true;
   if (parent.type?.startsWith('TS')) return false;
   return true;
 }
@@ -574,24 +609,10 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
     for (const { spec, value } of imports) {
       if (!value) { result.all.push('an import whose path is not known'); continue; }
       if (!value.exact) {
-        // A relative import is relative to this file, not to the project;
-        // a package whose name is only partly known widens.
-        const s = value.s;
-        let from;
-        if (s.startsWith('./') || s.startsWith('../') || s === '.' || s === '..') {
-          const joined = posix.join(posix.dirname(rel), s);
-          from = { s: `${root}/${joined}${s.endsWith('/') && !joined.endsWith('/') ? '/' : ''}`, exact: false };
-        } else if (s.startsWith('/') || s.startsWith('file://')) {
-          from = value;
-        } else {
-          result.all.push(`an import whose package is not known: ${s}`);
-          continue;
-        }
-        const t = touched(from);
-        if (!t) { result.all.push(`an import outside the project: ${value.s}`); continue; }
-        if (t.prefix === '') { result.all.push('an import that may load any file of the project'); continue; }
-        // Any file under the prefix may be loaded: every one counts, and is followed.
-        for (const p of sortedTracked) if (p.startsWith(t.prefix)) { result.files.add(p); result.next.add(p); }
+        // Known only from its start (`./locales/${name}.ts`): the unknown
+        // part may climb out of the folder (`../x`), so it widens (council
+        // round 2, Codex). No test in the project imports this way today.
+        result.all.push(`an import whose path is only partly known: ${value.s}`);
         continue;
       }
       const target = resolveImport(rel, spec);
@@ -603,6 +624,9 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
     }
     for (const v of reads) {
       if (!v) { result.all.push('a file-system read whose path is not known'); continue; }
+      // An unknown tail may climb out of its head (`data/${name}` with
+      // `../x`): only a glob's own folder is trusted as a prefix.
+      if (!v.exact && !v.listing) { result.all.push(`a file-system read whose path is only partly known: ${v.s}`); continue; }
       const t = touched(v);
       if (!t) { result.all.push(`a read outside the project: ${v.s}`); continue; }
       if (t.prefix === '') { result.all.push('a read of the whole project'); continue; }

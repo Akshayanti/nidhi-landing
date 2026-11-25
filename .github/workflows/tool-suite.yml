@@ -266,6 +266,7 @@ jobs:
       fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}
       run: ${{ steps.reuse.outputs.run || steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}
       seed: ${{ steps.reuse.outputs.seed }}
+      trace: ${{ steps.trace.outputs.trace }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -292,6 +293,16 @@ jobs:
           [ "$run" = "false" ] || run=true
           if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
+
+      # Whether the pull request changes the dependency analysis or its
+      # trace (#891, council round 2): then the trace job runs on it too.
+      - name: Whether the pull request changes the dependency analysis
+        id: trace
+        if: github.event_name == 'pull_request'
+        run: |
+          trace=false
+          if git diff --name-only --no-renames HEAD^1 HEAD | grep -Eqx 'scripts/lib/checks/mutation-deps\.mjs|scripts/lib/checks/trace-deps-hook\.mjs|scripts/check-mutation-deps\.mjs'; then trace=true; fi
+          echo "trace=$trace" >> "$GITHUB_OUTPUT"
 
       # The same question for a merge to main (tool-mutation.yml's push
       # run): what the push changed, from the commit main was at before it.
@@ -715,7 +726,7 @@ jobs:
   # every job above succeeded.
   mutation-gate:
     name: 'Free tools: mutation'
-    needs: [mutation-plan, mutation-shard, mutation-floors]
+    needs: [mutation-plan, mutation-shard, mutation-floors, mutation-deps-trace]
     if: ${{ always() && inputs.suite == 'mutation' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -726,8 +737,14 @@ jobs:
           RUN: ${{ needs.mutation-plan.outputs.run }}
           MUTATION: ${{ needs.mutation-shard.result }}
           FLOORS: ${{ needs.mutation-floors.result }}
+          TRACE: ${{ needs.mutation-deps-trace.result }}
         run: |
-          echo "plan: $PLAN (run: $RUN), mutation: $MUTATION, floors: $FLOORS"
+          echo "plan: $PLAN (run: $RUN), mutation: $MUTATION, floors: $FLOORS, trace: $TRACE"
+          # The trace runs only when asked for (skipped otherwise); when it ran, it must pass.
+          if [ "$TRACE" != "skipped" ] && [ "$TRACE" != "success" ]; then
+            echo "::error::The trace of what each test reaches did not pass. See the job above."
+            exit 1
+          fi
           # A pull request that changes no mutation input: the plan said so,
           # and nothing ran. Only that exact case passes without the shards.
           if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then
@@ -803,11 +820,13 @@ jobs:
   # not make Stryker test that test's mutants again. Nightly and by hand,
   # like the forced run beside it, which retests everything and so clears
   # any result such a gap left stale; a failure opens the nightly issue
-  # (tool-mutation.yml). Not part of the gate, so a pull request spends no
-  # runner on it.
+  # (tool-mutation.yml). On a pull request only when it changes the analysis
+  # or the trace (the plan says so), and then the gate waits for it. A trace
+  # sees only what runs: the analysis itself must be conservative (council).
   mutation-deps-trace:
     name: 'Mutation: what each test reaches'
-    if: inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    needs: mutation-plan
+    if: ${{ !cancelled() && inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || needs.mutation-plan.outputs.trace == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
