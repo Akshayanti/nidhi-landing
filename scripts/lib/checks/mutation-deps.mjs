@@ -84,6 +84,13 @@ export function readablePaths(tracked) {
 const known = (s) => ({ s, exact: true });
 /** A path known from its start, with an unknown tail: the tail may hold `..`, so it is never trusted to stay under the head. */
 const partial = (s) => ({ s, exact: false });
+/**
+ * A file URL's path is trusted only when it is spelled in characters a URL
+ * keeps as they are: anything else (`%xx`, a space, `?`, `#`, `\`, a letter
+ * outside ASCII) is decoded, cut off or encoded on the way to a file name.
+ */
+const PLAIN_URL_PATH = /^[A-Za-z0-9._~/@+,=:-]*$/;
+const fromFileUrl = (v) => (v && v.s.startsWith('file://') && PLAIN_URL_PATH.test(v.s.slice(7)) ? { s: v.s.slice(7), exact: v.exact } : null);
 /** Everything under a known folder, from a glob whose own text is known: a wildcard cannot climb out. */
 const listing = (s) => ({ s, exact: false, listing: true });
 
@@ -270,10 +277,7 @@ export function analyse(text, file, root) {
           if (node.property.name === 'url') return known(fileUrl);
           return null;
         }
-        if (!node.computed && node.property.name === 'pathname') {
-          const v = evaluate(node.object);
-          return v && v.s.startsWith('file://') ? { s: v.s.slice(7), exact: v.exact } : null;
-        }
+        if (!node.computed && node.property.name === 'pathname') return fromFileUrl(evaluate(node.object));
         return null;
       }
       case 'NewExpression': {
@@ -281,14 +285,19 @@ export function analyse(text, file, root) {
         const [a, b] = node.arguments;
         const spec = evaluate(a);
         if (!spec) return null;
-        // A URL decodes %xx, drops ?query and #hash and reads \ as /: a
-        // string with any of them is not the file name it spells, so it is unknown.
-        if (/[%?#\\]/.test(spec.s)) return null;
+        // A URL decodes %xx, drops ?query and #hash, reads \ as / and
+        // encodes the rest: a spec not spelled in plain URL characters is not
+        // the file name it spells, so it is unknown. So is one naming another
+        // host or scheme (`//x`, `http:`).
+        if (!PLAIN_URL_PATH.test(spec.s.startsWith('file://') ? spec.s.slice(7) : spec.s)) return null;
+        if (spec.s.startsWith('//') || (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(spec.s) && !spec.s.startsWith('file://'))) return null;
         if (!b) return spec.s.startsWith('file://') ? spec : null;
         const base = evaluate(b);
-        if (!base || !base.exact || !base.s.startsWith('file://')) return null;
+        if (!base || !base.exact || !base.s.startsWith('file://') || !PLAIN_URL_PATH.test(base.s.slice(7))) return null;
         if (spec.s.startsWith('file://')) return spec;
-        const from = spec.s.startsWith('/') ? '' : posix.dirname(base.s.slice(7));
+        // A base ending in / is a folder: a name is resolved inside it.
+        const basePath = base.s.slice(7);
+        const from = spec.s.startsWith('/') ? '' : basePath.endsWith('/') ? basePath.slice(0, -1) : posix.dirname(basePath);
         const joined = spec.s.startsWith('/') ? spec.s : `${from}/${spec.s}`;
         return { s: `file://${spec.exact ? posix.normalize(joined) : joined}`, exact: spec.exact };
       }
@@ -298,10 +307,7 @@ export function analyse(text, file, root) {
         if (callee.type === 'MemberExpression' && !callee.computed && callee.object.type === 'Identifier' && callee.object.name === 'process'
           && callee.property.name === 'cwd' && !declared.has('process')) return known(root);
         const name = knownFunction(callee);
-        if (name === 'fileURLToPath') {
-          const v = evaluate(args[0]);
-          return v && v.s.startsWith('file://') ? { s: v.s.slice(7), exact: v.exact } : null;
-        }
+        if (name === 'fileURLToPath') return fromFileUrl(evaluate(args[0]));
         if (name === 'dirname') {
           const v = evaluate(args[0]);
           return v && v.exact ? known(posix.dirname(v.s.startsWith('file://') ? v.s.slice(7) : v.s)) : null;
@@ -460,16 +466,24 @@ export function analyse(text, file, root) {
         }
         const [first, second] = node.arguments;
         const paths = [];
-        const option = (obj, prop) => obj?.type === 'ObjectExpression'
-          ? obj.properties.find((p) => p.type === 'ObjectProperty' && !p.computed && (p.key.name ?? p.key.value) === prop)?.value
-          : undefined;
+        // An options object counts only when written out in full: no spread,
+        // no computed or method property. The last property of a name wins,
+        // as at run time. `{ ok: false }` when it cannot be read.
+        const literal = (obj) => obj?.type === 'ObjectExpression' && obj.properties.every((p) => p.type === 'ObjectProperty' && !p.computed);
+        const option = (obj, prop) => {
+          if (obj === undefined) return { ok: true, value: undefined };
+          if (!literal(obj)) return { ok: false };
+          const found = obj.properties.filter((p) => (p.key.name ?? p.key.value) === prop);
+          return { ok: true, value: found.length > 0 ? found[found.length - 1].value : undefined };
+        };
         if (second?.type === 'ObjectExpression' && second.properties.some((p) => p.type === 'SpreadElement')) opaque.push(`${name} with options this analysis does not follow`);
-        const cwdNode = option(second, 'cwd');
-        const cwd = cwdNode === undefined ? known(root) : evaluate(cwdNode);
+        const isGlob = name === 'globSync' || name === 'glob' || first?.type === 'ObjectExpression' || first?.type === 'ArrayExpression';
+        const cwdOption = isGlob ? option(second, 'cwd') : { ok: true, value: undefined };
+        const cwd = !cwdOption.ok ? null : cwdOption.value === undefined ? known(root) : evaluate(cwdOption.value);
         if (first?.type === 'ObjectExpression') {
           // astro's glob({ pattern, base }): everything under base.
           const base = option(first, 'base');
-          const v = base === undefined ? null : evaluate(base);
+          const v = !base.ok || base.value === undefined ? null : evaluate(base.value);
           paths.push(v?.exact ? listing(withTrailingSlash(v.s)) : null);
         } else if (first?.type === 'ArrayExpression') {
           for (const el of first.elements) paths.push(globHead(evaluate(el), cwd));
@@ -488,6 +502,27 @@ export function analyse(text, file, root) {
       if (fsSpaces.has(node.name) && !(isMember(parent) && key === 'object')) opaque.push(`hands on the module ${node.name} as a value`);
     });
   }
+  // The module loader and URL, anywhere but the places read above: `require`
+  // only as the direct callee of a call (never `require?.()`, an alias, or a
+  // `.require` off anything), `URL` only after `new` or before a member.
+  visit(ast.program, (node, parent, key) => {
+    if ((node.type === 'MemberExpression' || node.type === 'OptionalMemberExpression')
+      && ((!node.computed && node.property.name === 'require') || (node.computed && node.property.type === 'StringLiteral' && node.property.value === 'require'))) {
+      opaque.push('reaches a require through a member');
+    }
+    if (node.type !== 'Identifier' || bindings.has(node)) return;
+    if (node.name === 'require' && !declared.has('require')) {
+      const direct = parent?.type === 'CallExpression' && key === 'callee';
+      const resolve = parent?.type === 'MemberExpression' && key === 'object';
+      const optional = parent?.type === 'OptionalCallExpression' && key === 'callee';
+      if (optional || (!direct && !resolve && isValueUse(node, parent, key))) opaque.push('uses require other than as a direct call');
+    }
+    if (node.name === 'URL' && !declared.has('URL')) {
+      const constructed = parent?.type === 'NewExpression' && key === 'callee';
+      const member = (parent?.type === 'MemberExpression' || parent?.type === 'OptionalMemberExpression') && key === 'object';
+      if (!constructed && !member && isValueUse(node, parent, key)) opaque.push('uses URL other than with new');
+    }
+  });
   return { imports, reads, opaque };
 }
 
@@ -509,6 +544,13 @@ function globHead(v, cwd) {
   return listing(base.slice(0, base.lastIndexOf('/') + 1));
 }
 
+const TYPE_ONLY = new Set([
+  'TSTypeReference', 'TSQualifiedName', 'TSTypeQuery', 'TSTypeAnnotation', 'TSImportType', 'TSInterfaceHeritage',
+  'TSExpressionWithTypeArguments', 'TSTypeParameter', 'TSPropertySignature', 'TSMethodSignature', 'TSIndexSignature',
+  'TSInterfaceDeclaration', 'TSTypeAliasDeclaration', 'TSDeclareFunction', 'TSDeclareMethod', 'TSEnumDeclaration',
+  'TSModuleDeclaration', 'TSParameterProperty', 'TSTypePredicate', 'TSClassImplements',
+]);
+
 function isValueUse(node, parent, key) {
   if (!parent) return false;
   if ((parent.type === 'CallExpression' || parent.type === 'OptionalCallExpression') && key === 'callee') return false;
@@ -529,7 +571,9 @@ function isValueUse(node, parent, key) {
   // on, so it counts as handed on (a wrapped call to an fs function widens).
   // Every other TypeScript node holding a name is a type, not a value.
   if (['TSAsExpression', 'TSNonNullExpression', 'TSSatisfiesExpression', 'TSTypeAssertion', 'TSInstantiationExpression'].includes(parent.type)) return true;
-  if (parent.type?.startsWith('TS')) return false;
+  // Only these TypeScript nodes hold a name as a type or a declaration; any
+  // other (`export =`, an enum's value, one added later) is taken as a value.
+  if (TYPE_ONLY.has(parent.type)) return false;
   return true;
 }
 

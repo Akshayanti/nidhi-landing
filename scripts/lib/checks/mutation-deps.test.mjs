@@ -137,6 +137,26 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.deepEqual(at("import { readFileSync } from 'node:fs'; class URL {}; readFileSync(new URL('./a.json', import.meta.url));").reads, [null]);
   });
 
+  it('reads file URLs the way a URL does: encoded names unknown, a folder base kept (council round 3, Codex)', () => {
+    const one = (expr) => at(`import { readFileSync } from 'node:fs'; import { fileURLToPath } from 'node:url'; readFileSync(${expr});`).reads.at(-1);
+    assert.equal(one("fileURLToPath('file:///project/src/ca%73es.json')"), null);
+    assert.equal(one("new URL('./a b.json', import.meta.url).pathname"), null);
+    assert.equal(one("new URL('//host/x', import.meta.url)"), null);
+    assert.equal(one("new URL('http://x/y', import.meta.url)"), null);
+    assert.equal(one("new URL('cases.json', 'file:///project/src/data/')").s, 'file:///project/src/data/cases.json');
+    assert.equal(one("new URL('cases.json', 'file:///project/src/data/x.ts')").s, 'file:///project/src/data/cases.json');
+    assert.equal(one("fileURLToPath(new URL('../c.json', import.meta.url))").s, '/project/c.json');
+  });
+
+  it('a glob’s options count only when written out in full, the last of a name winning (council round 3, Codex)', () => {
+    const glob = (args) => at(`import { globSync } from 'node:fs'; ${args}`, 'src/a.test.ts').reads;
+    assert.deepEqual(glob("const opts = { cwd: 'src' }; globSync('data/*.json', opts);"), [null]);
+    assert.deepEqual(glob("globSync('data/*.json', { ['cwd']: 'src' });"), [null]);
+    assert.deepEqual(glob("globSync('data/*.json', { cwd: '/x', cwd: '/project/src' });").map((v) => v.s), ['/project/src/data/']);
+    const astro = at("import { glob } from 'astro/loaders'; const more = {}; glob({ base: './src/a', ...more });").reads;
+    assert.deepEqual(astro, [null]);
+  });
+
   it('takes only node:path’s join and resolve for paths, not a Promise’s resolve', () => {
     const own = at("import { readFileSync } from 'node:fs'; new Promise((resolve) => readFileSync(resolve('a', 'b')));");
     assert.deepEqual(own.reads, [null]);
@@ -175,6 +195,12 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
       ["import fs = require('node:fs'); const r = fs.readFileSync; r('x');", /takes readFileSync off/],
       ["async function a() { const { readFileSync: io } = await import('node:fs'); io('a'); }\nasync function b() { const { writeFileSync: io } = await import('node:fs'); io('/tmp/b', ''); }", /binds io to more than one/],
       ["const require = (x) => x; require('./a.ts');", /declares a require of its own/],
+      // Council round 3 (Codex): the loader and URL out of place, `export =`.
+      ["const fs = require?.('node:fs'); fs.readFileSync('src/cases.json');", /require other than as a direct call/],
+      ["const load = require; const fs = load('node:fs');", /require other than as a direct call/],
+      ["const fs = module.require('node:fs');", /require through a member/],
+      ["const U = URL; new U('./a.json', import.meta.url);", /URL other than with new/],
+      ["const { readFileSync } = require('node:fs');\nexport = readFileSync;", /hands on readFileSync/],
     ]) {
       assert.match(at(text).opaque.join('; '), reason, text);
     }
