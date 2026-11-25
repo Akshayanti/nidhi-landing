@@ -742,13 +742,23 @@ function Results({
  * screen; the bars are hidden from screen readers, which read the same
  * figures from the list.
  */
+/**
+ * The ends of the range chart's scale, with a little room around the figures.
+ * The room never carries the scale across zero: when nothing is negative it
+ * stops at zero, and when nothing is positive it stops there too, so a zero
+ * line is drawn only where the bars cross it (#881).
+ */
+export function rangeScale(low: number, high: number): { lo: number; hi: number } {
+  const span = Math.max(high - low, Math.abs(high) * 0.05, 1);
+  const crosses = low < 0 && high > 0;
+  const lo = crosses ? low - span * 0.05 : low - span * 0.15;
+  const hi = high + span * 0.05;
+  return { lo: low >= 0 ? Math.max(0, lo) : lo, hi: high <= 0 && low < 0 ? Math.min(0, hi) : hi };
+}
+
 function RangeChart({ strings, paths, money }: { strings: Strings; paths: { name: string; p: Result['a'] }[]; money: (v: number) => string }) {
   const s = strings.results;
-  const low = Math.min(...paths.map((p) => p.p.p10));
-  const high = Math.max(...paths.map((p) => p.p.p90));
-  const span = Math.max(high - low, Math.abs(high) * 0.05, 1);
-  const lo = low < 0 && high > 0 ? low - span * 0.05 : low - span * 0.15;
-  const hi = high + span * 0.05;
+  const { lo, hi } = rangeScale(Math.min(...paths.map((p) => p.p.p10)), Math.max(...paths.map((p) => p.p.p90)));
   const at = (v: number) => `${(((v - lo) / (hi - lo)) * 100).toFixed(2)}%`;
   // Both paths' figures are compared, so they share one size.
   const shared = longestAmount(...paths.flatMap((p) => [money(p.p.p10), money(p.p.p50), money(p.p.p90)]));

@@ -828,14 +828,14 @@ describe('aggregate: the whole result, from sums written out', () => {
     });
   });
 
-  it('with no rates it keeps each currency’s own amount, largest first, and converts, totals and bands nothing', () => {
+  it('with no rates it keeps each currency’s own amount, largest first, and converts, totals and bands nothing but the spending currency (#874)', () => {
     // Sizes 5,000, 300 and 100: the debt is the largest.
     for (const rows of orders([asset('100', 'EUR'), debt('5000', 'USD'), asset('300', 'GBP')])) {
       assert.deepEqual(aggregate(rows, 'EUR', null), {
         positions: [
           { code: 'USD', netAmountOriginal: -5000, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: false, riskLevel: 'low', riskLabel: '', rateUnavailable: true },
           { code: 'GBP', netAmountOriginal: 300, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: false, riskLevel: 'low', riskLabel: '', rateUnavailable: true },
-          { code: 'EUR', netAmountOriginal: 100, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: true, riskLevel: 'low', riskLabel: '' },
+          { code: 'EUR', netAmountOriginal: 100, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: true, riskLevel: 'functional', riskLabel: 'Your spending currency' },
         ],
         totalNetWorthFunctional: 0,
         hasRates: 'none',

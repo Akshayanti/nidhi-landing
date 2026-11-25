@@ -331,6 +331,21 @@ describe('the report chart axis', () => {
     assert.deepEqual(draw(lines([line([[0, 0], [50, 100]])])).years(), ['0', '10', '20', '30', '40', '50']);
   });
 
+  it('keeps its marks evenly spaced on a span that is not a multiple of the step (#862)', () => {
+    // A span of 12 once stepped by 2.5 and rounded each mark: 0, 3, 5, 8, 10.
+    for (const [end, expected] of [
+      [12, ['0', '2', '4', '6', '8', '10', '12']],
+      [11, ['0', '2', '4', '6', '8', '10']],
+      [7, ['0', '2', '4', '6']],
+    ] as const) {
+      const marks = draw(lines([line([[0, 0], [end, 100]])])).years().map(Number);
+      assert.deepEqual(marks.map(String), expected, `a span of ${end}`);
+      const gaps = marks.slice(1).map((m, i) => m - marks[i]);
+      assert.ok(gaps.every((g) => g === gaps[0]), `a span of ${end}: gaps ${gaps.join(', ')}`);
+      cleanup();
+    }
+  });
+
   it('still marks the end of a span that stops a hair short of it', () => {
     assert.deepEqual(draw(lines([line([[0, 0], [2 - 1e-9, 100]])])).years(), ['0', '1', '2']);
   });

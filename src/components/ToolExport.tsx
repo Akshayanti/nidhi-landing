@@ -210,7 +210,7 @@ function Table({ table, locale, names }: { table: ReportTable; locale: string; n
   );
 }
 
-/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most five. */
+/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most five steps: up to six gridlines, counting zero. */
 function niceTop(v: number): { top: number; step: number } {
   if (v <= 0) return { top: 1, step: 0.25 };
   const raw = v / 5;
@@ -273,8 +273,9 @@ function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale:
   const path = (pts: ReportPoint[]) => pts.map((p, i) => `${i ? 'L' : 'M'}${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join('');
   const ticks: number[] = [];
   for (let v = 0; v <= top + step / 2; v += step) ticks.push(yMin + v);
-  // Whole, evenly spaced ticks (years, or calendar years), never a fraction.
-  const xStep = Math.max(1, niceTop(xMax - xMin).step);
+  // Whole, evenly spaced ticks (years, or calendar years), never a fraction:
+  // a step of 2.5 would be rounded to marks 3 and 2 apart, so it becomes 2 (#862).
+  const xStep = Math.max(1, Math.floor(niceTop(xMax - xMin).step));
   const xTicks: number[] = [];
   for (let x = Math.ceil(xMin / xStep) * xStep; x <= xMax + 1e-9; x += xStep) xTicks.push(Math.round(x));
   const scale = amountScale(Math.max(Math.abs(yMin), Math.abs(yMin + top)), currency, amountLocale, numberLocale);

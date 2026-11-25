@@ -62,6 +62,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोफत साधने आता संख्या अधिक काळजीपूर्वक लिहितात. निवडलेल्या वर्षांत किमती घटल्या असतील, तर महागाई कॅल्क्युलेटर आता “सुमारे −28% वाढल्या” ऐवजी त्या घटल्या असे सांगतो, आणि एका वर्षासाठी “1 वर्ष” असा कालावधी आणि तेवढीच सरासरी पुन्हा लिहीत नाही. स्पॅनिश, हिंदी आणि मराठी पानांवर दहा लाखांपेक्षा जरा कमी असलेली छोटी लिहिलेली रक्कम आता 1000K नव्हे, तर 1M वाचली जाते. छापलेल्या तक्त्यातील शून्यापेक्षा कमी आकड्यावर, आणि गुंतवणूक की कर्जफेड साधनातील शून्यापेक्षा कमी दरावर, आता शेजारच्या रकमांवर असते तेच उणे चिन्ह लागते, आणि शून्यापेक्षा जरा कमी रक्कम 0 दिसते. निव्वळ संपत्ती कॅल्क्युलेटर आता 1.5e5 किंवा 0x10 अशी लिहिलेली रक्कम संख्या म्हणून वाचत नाही, तर ती वाचता येत नाही असे सांगतो.',
         },
       },
+      {
+        id: 'charts-even-years-no-stray-zero',
+        text: {
+          en: 'Small fixes in the free tools. In printed and saved reports, the years under the chart are now evenly spaced. In Invest or pay off, the range chart no longer draws a zero line that no bar reaches. In the net worth calculator, your spending currency is no longer marked “Low” when exchange rates cannot be loaded, and an error in an imported CSV names the line as your editor numbers it, counting blank lines.',
+          hi: 'मुफ़्त टूल में कुछ छोटे सुधार। छपी या सहेजी गई रिपोर्ट में चार्ट के नीचे के साल अब बराबर दूरी पर होते हैं। निवेश या कर्ज़ चुकाना टूल में दायरे वाला चार्ट अब ऐसी शून्य रेखा नहीं खींचता जिस तक कोई पट्टी नहीं पहुँचती। शुद्ध संपत्ति कैलकुलेटर में विनिमय दरें न मिल पाने पर आपकी खर्च की मुद्रा पर अब “कम” नहीं लिखा जाता, और आयात की गई CSV में ग़लती अब वही पंक्ति संख्या बताती है जो आपके एडिटर में दिखती है, खाली पंक्तियाँ गिनकर।',
+          es: 'Pequeños arreglos en las herramientas gratuitas. En los informes impresos o guardados, los años bajo el gráfico están ahora igual de espaciados. En Invertir o pagar deuda, el gráfico de rangos ya no dibuja una línea de cero a la que no llega ninguna barra. En la calculadora de patrimonio neto, tu moneda de gasto ya no aparece como “Bajo” cuando no se pueden cargar los tipos de cambio, y un error en un CSV importado indica la línea tal como la numera tu editor, contando las líneas en blanco.',
+          cs: 'Drobné opravy v nástrojích zdarma. V tištěných a uložených zprávách jsou roky pod grafem teď rozmístěné rovnoměrně. V nástroji Investovat, nebo splatit dluh už graf rozpětí nekreslí nulovou čáru, ke které nedosahuje žádný pruh. V kalkulačce čistého jmění už vaše měna výdajů není označená jako „Nízká“, když se nepodaří načíst směnné kurzy, a chyba v importovaném CSV uvádí řádek tak, jak ho čísluje váš editor, včetně prázdných řádků.',
+          mr: 'मोफत साधनांत काही छोट्या दुरुस्त्या. छापील किंवा जतन केलेल्या अहवालात आलेखाखालची वर्षे आता समान अंतरावर असतात. गुंतवणूक की कर्जफेड या साधनात श्रेणीचा आलेख आता अशी शून्य रेषा काढत नाही जिथपर्यंत कोणतीही पट्टी पोहोचत नाही. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये विनिमय दर मिळू शकले नाहीत तर तुमच्या खर्चाच्या चलनावर आता “कमी” असे लिहिले जात नाही, आणि आयात केलेल्या CSV मधील चूक आता तुमच्या एडिटरमध्ये दिसणारा तोच ओळ क्रमांक सांगते, रिकाम्या ओळी मोजून.',
+        },
+      },
     ],
   },
   {
