@@ -12,4 +12,8 @@ Net worth U+2212 change (branch fix/mutation-net-worth, 24 Nov 2026): OBJECT bec
 - **How to apply:** for any number-format change, read the live-region text in the browser (`.chart-srOnly`, ResultAnnouncement), not only the visible cards.
 - **Recipe:** worktrees symlink node_modules to another worktree, so `astro dev` 403s the React client (`/@fs/` outside allow list) and islands never hydrate; build to `dist` (ignored; `--outDir` in /tmp fails with a cross-device rename) and use `astro preview --port <free>`.
 
+- **Invest or pay off (25 Nov, fix/mutation-invest): SIGN OFF.** One `money` feeds answer, live region, paths, chart labels, side table and report answer lines; verified in 5 languages with CHF. Of 38 currencies under no page style, only CHF puts the sign after letters; NOK/SEK already emit U+2212. `splitAmounts` keeps every "CHF−…" whole.
+- **Left over (not blocking):** printed report tables format cells via `cellText` (hyphen "-1,520.00", print-only, spoken fine); `pct()` rates keep a hyphen; `formatAmount`'s `Math.round` turns (-0.5,0) into "−0" (roundToStep already cleans -0).
+- **Recipe:** `astro preview` daemonises (prints a pid); kill that pid. Resolve puppeteer with `node -e "require.resolve('puppeteer')"`; tsx scripts must be `.mts` for top-level await.
+
 Related: [[announce-review-2026-11-20]]
