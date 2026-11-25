@@ -23,3 +23,4 @@
 - [Numbers review 25 Nov](numbers-review-2026-11-25.md) — −0 left in pct/report cells; compact path is any non-en currency locale; tests via tsx
 - [PR #772 review 22 Nov](pr772-review-2026-11-22.md) — pre-paint swap blanks card if module fails; moved content loses phone floor; pill squeezes titles at 400%
 - [Timing review 25 Nov](timing-review-2026-11-25.md) — quiet={!hydrated} misses late history (non-default country link still announced); scratch probe recipe
+- [LinkField review 25 Nov](linkfield-review-2026-11-25.md) — e51afdc: uncontrolled share box safe (layout effect before focus); refusedOld copy; plain privacy bullets

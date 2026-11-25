@@ -69,8 +69,6 @@ export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+|' + 'mode|func|a\\d+_[
 
 /** A key only the first links (May 2026) wrote. */
 const FIRST_LINK_KEY = /^(?:mode|func|a\d+_[a-z]+|c_[A-Za-z]+|r_[A-Za-z]+|amt_[A-Za-z]+)$/;
-/** A key only today's links write (`n` and `f` are in both). */
-const TODAY_KEY = /^(?:m|a\d+|p_[A-Za-z]+)$/;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -449,15 +447,20 @@ function encodeRedacted(
 
 export function decodeFromQueryString(qs: string): DecodeResult {
   const params = new URLSearchParams(qs);
-  const mode = params.get('m');
+  const today = decodeToday(params);
   // A link from the first version (May 2026) cannot be read today: refused
-  // as such, never opened as an empty form. A key of theirs beside today's
-  // keys is a stray, and is ignored as before.
-  const keys = [...params.keys()];
-  if (keys.some((k) => FIRST_LINK_KEY.test(k)) && !keys.some((k) => TODAY_KEY.test(k))) {
-    return refusal(linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY), 'old');
+  // as such, never opened as an empty form. Its keys beside a link that
+  // today's reading takes are strays, ignored as before; beside one it
+  // refuses or finds nothing in, the link is an old one.
+  const empty = !today.isReadOnly && today.rows.every((row) => row.name.trim() === '' && row.value.trim() === '');
+  if ([...params.keys()].some((k) => FIRST_LINK_KEY.test(k)) && (today.refused || empty)) {
+    return refusal(today.functionalCurrency, 'old');
   }
+  return today;
+}
 
+function decodeToday(params: URLSearchParams): DecodeResult {
+  const mode = params.get('m');
   if (mode === 'r') return decodeRedacted(params);
   if (mode === 'f') return decodeFull(params);
 

@@ -911,6 +911,10 @@ describe('a link from the first version (May 2026)', () => {
       'mode=redacted&func=EUR&c_EUR=96.5&r_EUR=low&c_USD=3.5&r_USD=low',
       'func=EUR&n=1&a0_name=Flat&a0_value=1',
       'amt_EUR=250000.00',
+      // Today's key names that hold nothing make it no less old.
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&m=',
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&p_BOGUS=x',
+      'mode=full&func=EUR&a0_name=Flat&a0_value=1&a1=&n=0',
     ]) {
       const decoded = decodeFromQueryString(qs);
       assert.equal(decoded.refused, 'old', qs);
