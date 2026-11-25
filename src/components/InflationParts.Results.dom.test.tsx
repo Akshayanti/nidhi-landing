@@ -153,8 +153,10 @@ describe('the answer of the inflation calculator', () => {
     results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready' });
     assert.equal(headline(), 'about €1,100');
     assert.deepEqual(lines(), [
-      ['ifc-sentence', 'In Testland, €1,000 in 2019 bought what about €1,100 bought in 2021.'],
+      ['ifc-sentence', 'In Testland, €1,000 at average prices in 2019 bought what about €1,100 bought at average prices in 2021.'],
       ['ifc-note', 'Prices rose about 10% in total over those 2 years, an average of 4.9% a year.'],
+      ['ifc-note', '2021 is the latest year with a figure here. Price changes after it are not included.'],
+      ['ifc-note', 'The starting amount is treated as the average for 2019. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.'],
     ]);
     none('.ifc-band');
     none('.ifc-bandLabel');
@@ -166,7 +168,7 @@ describe('the answer of the inflation calculator', () => {
     clear();
     // With no starting year chosen it starts ten years back, or where the figures start: 2018, so 1.1 x 1.1 = 1.21.
     results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST' }, country: TESTLAND, series, historyStatus: 'ready' });
-    assert.equal(lines()[0][1], 'In Testland, €1,000 in 2018 bought what about €1,210 bought in 2021.');
+    assert.equal(lines()[0][1], 'In Testland, €1,000 at average prices in 2018 bought what about €1,210 bought at average prices in 2021.');
     clear();
     // A history that could not be loaded leaves the rate that was typed: 10,000 x 1.343916 = 13,439.
     results({ state: { ...DEFAULTS, mode: 'past', country: 'TST' }, country: TESTLAND, series: null, historyStatus: 'error' });
@@ -200,10 +202,10 @@ describe('the answer of the inflation calculator', () => {
     assert.equal(said(), 'Updated answer: about €9,840. If prices rise 7% a year on average, something that costs €5,000 today costs about €9,840 in 10 years.');
     // Once it arrives, the same question has its answer, and that is told.
     again({ series: { 2019: 10, 2020: 10, 2021: 0 }, historyStatus: 'ready' });
-    assert.equal(said(), 'Updated answer: about €1,100. In Testland, €1,000 in 2019 bought what about €1,100 bought in 2021.');
+    assert.equal(said(), 'Updated answer: about €1,100. In Testland, €1,000 at average prices in 2019 bought what about €1,100 bought at average prices in 2021.');
     // Back at the very state the page loaded with: that one was never an update.
     again({ state: BUY, country: null, series: null, historyStatus: 'none' });
-    assert.equal(said(), 'Updated answer: about €1,100. In Testland, €1,000 in 2019 bought what about €1,100 bought in 2021.');
+    assert.equal(said(), 'Updated answer: about €1,100. In Testland, €1,000 at average prices in 2019 bought what about €1,100 bought at average prices in 2021.');
     // An equal state that is a new answer is told.
     again({ state: { ...BUY } });
     assert.equal(said(), `Updated answer: about €7,440. ${BUY_SENTENCE}`);
@@ -214,7 +216,7 @@ describe('the answer of the inflation calculator', () => {
     // 1,000 x 1.1 / 5.94573 = 185.01; without the change it would be 1,100. The cube root of 1.1 is 1.0323.
     const series = { 2000: 0, 2001: 10, 2002: 0, 2003: 0 };
     const changed = fill(r.currencyChanged, { country: 'Finland', year: 2002, ratio: '5.94573', from: 2000, unconverted: 'about €1,100' });
-    const first = 'In Finland, 1,000 in the money of 2000 bought what about €185 bought in 2003.';
+    const first = 'In Finland, 1,000 in the money of 2000, at that year’s average prices, bought what about €185 bought at average prices in 2003.';
     const again = results();
     again({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'FIN', from: 2000 }, country: FINLAND, series, historyStatus: 'ready' });
     assert.equal(headline(), 'about €185');
@@ -222,6 +224,8 @@ describe('the answer of the inflation calculator', () => {
       ['ifc-sentence', first],
       ['ifc-note', changed],
       ['ifc-note', 'Prices rose about 10% in total over those 3 years, an average of 3.2% a year.'],
+      ['ifc-note', '2003 is the latest year with a figure here. Price changes after it are not included.'],
+      ['ifc-note', 'The starting amount is treated as the average for 2000. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.'],
     ]);
     assert.ok(changed.startsWith('Finland changed its currency in 2002: 5.94573 units of the old money became 1 unit of the new.'));
     assert.equal(said(), `Updated answer: about €185. ${first} ${changed}`);
@@ -230,8 +234,8 @@ describe('the answer of the inflation calculator', () => {
     // The euro area before the euro: the amount is a plain number, and the note says why.
     again({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'EMU', from: 1998 }, country: EURO_AREA, series: { 1998: 0, 1999: 10, 2000: 0 }, historyStatus: 'ready' });
     const euro = fill(r.euroBefore1999, { from: 1998 });
-    assert.deepEqual(lines().slice(0, 2), [['ifc-sentence', 'In the euro area, 1,000 in 1998 bought what about €1,100 bought in 2000.'], ['ifc-note', euro]]);
-    assert.equal(said(), `Updated answer: about €1,100. In the euro area, 1,000 in 1998 bought what about €1,100 bought in 2000. ${euro}`);
+    assert.deepEqual(lines().slice(0, 2), [['ifc-sentence', 'In the euro area, 1,000 at average prices in 1998 bought what about €1,100 bought at average prices in 2000.'], ['ifc-note', euro]]);
+    assert.equal(said(), `Updated answer: about €1,100. In the euro area, 1,000 at average prices in 1998 bought what about €1,100 bought at average prices in 2000. ${euro}`);
   });
 
   it('while a box is wrong the answer is withheld, the reason is shown at once and said after a pause', () => {
@@ -291,5 +295,38 @@ describe('the answer of the inflation calculator', () => {
     // 10,000 / 1.025^10 = 10,000 / 1.280085 = 7,812.
     assert.equal(headline(), 'about 7810 €');
     assert.equal(lines()[0][1], fill(r.buy, { rate: '2,5 %', amount: '10.000 €', years: '10 years', result: 'about 7810 €' }));
+  });
+
+  it('a country with a month to end at: the answer, its lines and the chart all go to the month', () => {
+    // 2020 rose 10% and 2021 not at all; the month stands 20% above the 2021 average: 1,000 x 1.1 x 1.2 = 1,320.
+    const series = { 2018: 5, 2019: 10, 2020: 10, 2021: 0 };
+    const again = results({ state: { ...DEFAULTS, mode: 'past', amount: 1000, country: 'TST', from: 2019 }, country: TESTLAND, series, historyStatus: 'ready', join: { month: '2022-03', factor: 1.2 } });
+    assert.equal(headline(), 'about €1,320');
+    assert.deepEqual(lines().slice(0, 4), [
+      ['ifc-sentence', 'In Testland, €1,000 at average prices in 2019 bought what about €1,320 bought at prices in March 2022.'],
+      ['ifc-note', 'Prices were about 32% higher in March 2022 than on average in 2019.'],
+      ['ifc-note', 'From 2019 to 2021, they rose 4.9% a year on average.'],
+      ['ifc-note', 'Prices were 20% higher in March 2022 than on average in 2021.'],
+    ]);
+    assert.equal(lines().length, 5);
+    // The method, then which two sources are joined.
+    assert.deepEqual(text('.ifc-answer > p.ifc-method'), [r.methodHistory, fill(r.joinNote, { to: 2021 })]);
+    assert.equal(all('p.ifc-legend--line > span')[1].textContent, 'One month, the latest with a figure: March 2022');
+    assert.equal(all('path.ifc-line--month').length, 1);
+    assert.equal(all('rect.ifc-dot--month').length, 1);
+    assert.equal(all('p.ifc-legend--line > span').length, 2);
+    // The same country when its months are not joined: the yearly answer, and the reason.
+    again({ join: { withheld: 'mismatch' } });
+    assert.deepEqual(text('.ifc-answer > p.ifc-method'), [r.methodHistory]);
+    assert.equal(headline(), 'about €1,100');
+    assert.equal(lines()[3][1], 'A monthly figure is not joined for Testland: the monthly index available here does not match this yearly history closely enough.');
+    none('path.ifc-line--month');
+    none('p.ifc-legend--line');
+    // And with no monthly index at all, which is also what leaving the join out means.
+    again({ join: null });
+    assert.equal(lines().length, 4);
+    again({ join: undefined });
+    assert.equal(lines().length, 4);
+    assert.equal(headline(), 'about €1,100');
   });
 });

@@ -188,6 +188,7 @@ const EXPECTED_STORAGE_KEYS = [
 const EXPECTED_HOSTS: Record<string, 'request' | 'link'> = {
   'api.frankfurter.dev': 'request', // exchange rates, net worth calculator
   'eu.i.posthog.com': 'request', // analytics
+  'data.bis.org': 'link', // the monthly price index's source, inflation calculator
   'data.worldbank.org': 'link',
   'docs.google.com': 'link', // the volunteer form
   'posthog.com': 'link',

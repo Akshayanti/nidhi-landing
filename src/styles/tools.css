@@ -4321,6 +4321,23 @@ button.mcnw-legendItem:focus-visible {
 .ifc-key--older {
   background: color-mix(in srgb, var(--color-deep-blue) 32%, var(--color-bg-white));
 }
+/* The line chart's two marks, as they are drawn: a ring for a year's
+   average, a square for the one month the answer ends at. */
+.ifc-key--year,
+.ifc-key--month {
+  box-sizing: border-box;
+  background: var(--color-bg-white);
+  border: 2.5px solid var(--color-deep-blue);
+}
+.ifc-key--year {
+  border-radius: 50%;
+}
+.ifc-key--month {
+  border-radius: 0;
+}
+.ifc-legend--line {
+  margin-top: var(--space-2);
+}
 .ifc-tableWrap {
   margin-top: var(--space-1);
 }
@@ -4525,6 +4542,10 @@ button.mcnw-legendItem:focus-visible {
   fill: var(--color-bg-white);
   stroke: var(--color-deep-blue);
   stroke-width: 2.5;
+}
+/* From the last year's average to one month: a different kind of step. */
+.ifc-line--month {
+  stroke-dasharray: 2 7;
 }
 @media (width < 640px) {
   .ifc-form,

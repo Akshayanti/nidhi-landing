@@ -217,3 +217,46 @@ Indicators, "Inflation, consumer prices (annual %)", indicator FP.CPI.TOTL.ZG
 (https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG). Licensed under Creative
 Commons Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/).
 nidhi keeps a copy of the fields the calculator needs, rounded to two decimals.
+
+Monthly consumer prices in the inflation calculator: Bank for International
+Settlements (BIS), "Consumer prices" (data set WS_LONG_CPI, monthly index)
+(https://data.bis.org/topics/CPI). Source: BIS. Used under the BIS's "Terms of
+permitted use of BIS statistics" (https://data.bis.org/help/legal), as read on
+25 November 2026:
+
+"""
+The use of the statistics is unrestricted, provided that:
+
+if the statistics are reproduced, the BIS must be cited in your publication or
+product as the source of the statistics;
+
+if the statistics will be translated into another language, a statement must be
+included in your publication or product that the translation is not an official
+BIS translation;
+
+your use of the statistics must not be potentially misleading, for example by
+implying endorsement or affiliation with the BIS or any body affiliated with
+the BIS;
+
+if the statistics will be used in a commercial publication or product, their
+inclusion in the publication or product will not result in any additional
+charge to subscribers or other users;
+
+the BIS does not warrant or guarantee the accuracy, completeness or fitness for
+any contemplated purpose of any statistics on this website. Under no
+circumstances shall the BIS be liable for any loss, damage, liability or
+expense suffered in connection with reliance by any person on any such
+statistics; and
+
+nothing in these statistics shall be construed as containing any investment
+recommendation or advice.
+
+No other use is permissible. The BIS reserves the right to alter these terms at
+any time.
+"""
+
+nidhi keeps a copy of the months the calculator needs, rounded to four
+decimals, and joins them to the World Bank's yearly figures only for countries
+where the two agree. The calculator is free to use. Its editions in other
+languages are not official BIS translations, and the BIS does not endorse
+nidhi.

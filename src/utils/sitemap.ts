@@ -286,6 +286,8 @@ export const STATIC_PAGE_SOURCE: Readonly<Record<string, readonly string[]>> = {
     'src/i18n/strings/tools/inflation.ts',
     // The page quotes the World Bank's update date, so new data is a new page.
     'src/data/inflation/worldbank.json',
+    // And the day the BIS's months were fetched, and how many countries end at a month.
+    'src/data/inflation/bis-monthly.json',
   ],
   'free/invest-or-pay-off': [
     'src/components/pages/InvestOrPayOffPage.astro',

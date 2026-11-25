@@ -167,4 +167,47 @@ describe('inflation spreadsheet', () => {
     assert.equal(empty[2].rows.length, 3);
     assert.deepEqual(empty[3].rows, [[{ t: ANSWER.chartTitle, bold: true }], head('Years from now', 'Value')]);
   });
+
+  it('an answer that ends at a month names the month, both sources, and gives the month a row of its own', () => {
+    const answer: InflationAnswer = {
+      ...ANSWER,
+      sentences: ['Only sentence.'],
+      history: { country: 'Spain', from: 2014, to: 2025 },
+      monthEnd: { month: '2026-09', value: 10_500.126 },
+    };
+    const out = sheets({ ...STATE, mode: 'past' }, answer);
+    assert.deepEqual(out[2].rows, [
+      HEADER,
+      ['Question', 'Buying power later'],
+      ['Result', { n: 7440.94, fmt: 'amount2' }],
+      ['In words', 'Only sentence.'],
+      ['Years used', '2014 to 2025'],
+      ['Ends at month', '2026-09'],
+      ['Source', `${x.sourceText} ${x.sourceTextMonthly}`],
+    ]);
+    assert.equal(x.sourceTextMonthly, 'Months after the last full year: BIS, Consumer prices (monthly index).');
+    assert.deepEqual(out[3].rows, [
+      [{ t: ANSWER.chartTitle, bold: true }],
+      head('Years from now', 'Value'),
+      [whole(0), { n: 10_000.46, fmt: 'amount2' }],
+      [whole(1), { n: 9708.74, fmt: 'amount2' }],
+      [whole(2), { n: 9425.96, fmt: 'amount2' }],
+      ['2026-09', { n: 10_500.13, fmt: 'amount2' }],
+      ['The last row is one month, from the BIS monthly consumer price index, not a year’s average.'],
+    ]);
+    // To the currency's own smallest unit, like every other amount.
+    assert.deepEqual(sheets({ ...STATE, mode: 'past' }, answer, 0)[3].rows[5], ['2026-09', { n: 10_500, fmt: 'amount0' }]);
+  });
+
+  it('an answer that ends at a year has no month row, and the one source', () => {
+    for (const monthEnd of [null, undefined]) {
+      const out = sheets({ ...STATE, mode: 'past' }, { ...ANSWER, history: { country: 'India', from: 2014, to: 2024 }, monthEnd });
+      assert.deepEqual(out[2].rows.slice(-2), [['Years used', '2014 to 2024'], ['Source', x.sourceText]]);
+      assert.equal(out[3].rows.length, 5);
+    }
+    // A typed-rate answer never has one, whatever it is handed.
+    const typed = sheets(STATE, { ...ANSWER, monthEnd: { month: '2026-09', value: 1 } });
+    assert.equal(typed[2].rows.some((row) => row[0] === 'Ends at month'), false);
+    assert.equal(typed[2].rows.some((row) => row[0] === 'Source'), false);
+  });
 });

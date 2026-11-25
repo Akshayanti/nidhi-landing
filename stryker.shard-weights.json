@@ -983,11 +983,8 @@
       "import type { Series } from './math.ts';": 0,
       "export const INFLATION_URL = '/free/inflation-calculator/';": 0.7,
       "export const HISTORY_URL = '/data/inflation-history.json';": 0.4,
-      "export type CompactSeries = [number, (number | null)[]];": 0,
       "export interface CompactHistory {": 0,
       "export interface WorldBankFile {": 0,
-      "export function toCompactSeries(years: Record<string, number>): CompactSeries | null {": 3.2,
-      "export function toCompact(file: WorldBankFile): CompactHistory {": 1.4,
       "export function fromCompact(entry: unknown): Series {": 14.8
     },
     "src/utils/inflation/math.ts": {
@@ -1029,8 +1026,7 @@
     },
     "src/utils/inflation/report.ts": {
       "import { byYearTable, tableOf, type Report } from '../shared/report.ts';": 0,
-      "import { inflationSheets, type InflationExport } from './export.ts';": 0,
-      "export function inflationReport(e: Omit<InflationExport, 'date' | 'page'> & { lines: string[]; method: string }): Report {": 17.4
+      "import { inflationSheets, type InflationExport } from './export.ts';": 0
     },
     "src/utils/inflation/url.ts": {
       "import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';": 0,
