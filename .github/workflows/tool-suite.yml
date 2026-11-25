@@ -301,7 +301,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           trace=false
-          if git diff --name-only --no-renames HEAD^1 HEAD | grep -Eqx 'scripts/lib/checks/mutation-deps\.mjs|scripts/lib/checks/trace-deps-hook\.mjs|scripts/check-mutation-deps\.mjs'; then trace=true; fi
+          if git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi
           echo "trace=$trace" >> "$GITHUB_OUTPUT"
 
       # The same question for a merge to main (tool-mutation.yml's push
