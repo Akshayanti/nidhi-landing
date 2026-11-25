@@ -312,21 +312,29 @@ export function analyse(text, file, root) {
           && callee.property.name === 'cwd' && !declared.has('process')) return known(root);
         const name = knownFunction(callee);
         if (name === 'fileURLToPath') return fromFileUrl(evaluate(args[0]));
+        // Node's own path functions, run on the parts when every part is
+        // known (resolve against the working folder, which is the project
+        // root when tests run). A URL string is not a path: unknown.
         if (name === 'dirname') {
           const v = evaluate(args[0]);
-          return v && v.exact ? known(posix.dirname(v.s.startsWith('file://') ? v.s.slice(7) : v.s)) : null;
+          return v && v.exact && !v.s.startsWith('file:') ? known(posix.dirname(posix.normalize(v.s))) : null;
         }
         if (name === 'join' || name === 'resolve') {
-          // The parts known from the start, and an unknown tail after them.
-          let s = null;
+          const parts = [];
           for (const arg of args) {
             const v = evaluate(arg);
-            if (!v) return s === null ? null : partial(`${s}/`);
-            const part = v.s;
-            s = s === null || (name === 'resolve' && part.startsWith('/')) ? part : `${s}/${part}`;
-            if (!v.exact) return partial(s);
+            if (!v || v.s.startsWith('file:')) {
+              // Known from the start, then unknown: a partial path, which widens where it is used.
+              return parts.length === 0 ? null : partial(`${name === 'resolve' ? posix.resolve(root, ...parts) : posix.join(...parts)}/`);
+            }
+            if (!v.exact) {
+              const head = parts.length === 0 ? '' : `${name === 'resolve' ? posix.resolve(root, ...parts) : posix.join(...parts)}/`;
+              return partial(v.s.startsWith('/') ? v.s : `${head}${v.s}`);
+            }
+            parts.push(v.s);
           }
-          return s === null ? null : known(s);
+          if (parts.length === 0) return null;
+          return known(name === 'resolve' ? posix.resolve(root, ...parts) : posix.join(...parts));
         }
         return null;
       }

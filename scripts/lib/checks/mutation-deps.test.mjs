@@ -58,9 +58,9 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.deepEqual(reads.map((v) => v && [v.s, v.exact]), [
       ['file:///project/src/utils/x.json', true],
       ['file:///project/src/utils/x.json', true],
-      ['/project/src/utils/../data', true],
-      ['/project/src/utils/../data/', false],
-      ['/project/src/utils/../data/fixed.json', true],
+      ['/project/src/data', true],
+      ['/project/src/data/', false],
+      ['/project/src/data/fixed.json', true],
     ]);
   });
 
@@ -90,6 +90,20 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.deepEqual(reads.map((v) => v.s), ['a.js', 'b.json', 'c.json', 'd.json']);
     assert.match(at("import fs from 'node:fs'; const r = fs.promises?.readFile; r('x');").opaque.join(), /takes readFile off/);
     assert.match(at("import fs from 'node:fs'; fs?.['readFileSync']('x');").opaque.join(), /computed member/);
+  });
+
+  it('join and resolve work as Node’s do: resolve from the project root, join and dirname normalised (council round 5, Codex)', () => {
+    const files = {
+      'src/r.test.ts': "import { resolve } from 'node:path';\nconst { default: cases } = await import(resolve('src/cases.json'), { with: { type: 'json' } });\n",
+      'src/cases.json': '[[10, false], [11, true]]',
+    };
+    assert.ok(depsOf(files, 'src/r.test.ts').files.includes('src/cases.json'));
+    assert.notEqual(fp({ ...files, 'src/cases.json': '[[11, true]]' }, 'src/r.test.ts'), fp(files, 'src/r.test.ts'));
+    const one = (expr) => at(`import { readFileSync } from 'node:fs'; import { join, resolve, dirname } from 'node:path'; readFileSync(${expr});`).reads[0];
+    assert.equal(one("dirname(join('src', 'data', '..', 'x.json'))").s, 'src');
+    assert.equal(one("join('a', '/b', 'c')").s, 'a/b/c');
+    assert.equal(one("resolve('src', 'x.json')").s, '/project/src/x.json');
+    assert.equal(one("resolve('/a', '../b')").s, '/b');
   });
 
   it('a destructured load of node:fs is followed, not counted as handing it on', () => {
