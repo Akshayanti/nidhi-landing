@@ -16,7 +16,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
-import { CURRENCIES } from '../../utils/loan/math.ts';
+import { CURRENCIES } from '../../utils/shared/money.ts';
 import { currenciesCs, currenciesEn, currenciesEs, currenciesHi, currenciesMr } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
@@ -293,7 +293,7 @@ describe('the Czech catalog is translated, not copied', () => {
 /**
  * The three free tools name their currencies from `./tools/currencies.ts`, and
  * the codes they offer come from the engine's own table in
- * `src/utils/loan/math.ts`. The two are written by hand in different files, so
+ * `src/utils/shared/money.ts`. The two are written by hand in different files, so
  * these three assertions are what keeps them one list: a currency added to the
  * engine without a name fails here, a name for a currency the engine does not
  * have fails here, and so does a Hindi name that quotes the wrong code.

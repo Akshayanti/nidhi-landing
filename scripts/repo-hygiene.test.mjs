@@ -223,8 +223,11 @@ describe('the required checks run on every pull request, in one workflow, in ord
     assert.equal(checks.split('\n    strategy:\n').slice(1).filter((s) => /^(?: {6}#.*\n)* {6}fail-fast: true\n/.test(s)).length, 2);
     // tool-suite.yml: each suite's workers, fail-fast on a pull request, and
     // every one reporting nightly and by hand.
-    assert.equal(suites.split('\n    strategy:\n').length - 1, 3);
+    assert.equal(suites.split('\n    strategy:\n').length - 1, 4);
     assert.equal(suites.split("\n      fail-fast: ${{ github.event_name == 'pull_request' }}\n").length - 1, 3);
+    // The fourth: mutation-seed, which runs only on a merge to main and only
+    // fills a cache (each shard's copy reports on its own).
+    assert.ok(suites.includes("  mutation-seed:\n    name: 'Mutation results from the pull request: ${{ matrix.name }}'\n    needs: mutation-plan\n    if: ${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    permissions:\n      actions: read\n    strategy:\n      fail-fast: false\n"));
     // A job or step that may fail without failing the run would let a
     // failure through without cancelling anything.
     for (const text of [checks, suites]) assert.doesNotMatch(text, /continue-on-error/);
@@ -240,9 +243,14 @@ describe('the required checks run on every pull request, in one workflow, in ord
     const tools = job('tools');
     assert.match(tools, /\n {4}needs: build\n/);
     assert.ok(tools.includes("\n    name: 'Tool stage: ${{ matrix.suite }}'\n"));
-    assert.ok(tools.includes('\n        suite: [privacy, mutation, text-size]\n    uses: ./.github/workflows/tool-suite.yml\n    with:\n      suite: ${{ matrix.suite }}\n'));
-    // No secrets and no permissions handed on: the suites only read.
-    assert.doesNotMatch(tools, /secrets|permissions/);
+    assert.ok(tools.includes('\n        suite: [privacy, mutation, text-size]\n'));
+    assert.ok(tools.includes('\n    uses: ./.github/workflows/tool-suite.yml\n    with:\n      suite: ${{ matrix.suite }}\n'));
+    // No secrets handed on, and only reading: the code, and on a merge the
+    // pull request's runs and artifacts (mutation-plan, mutation-seed).
+    assert.doesNotMatch(tools, /secrets/);
+    assert.match(tools, new RegExp('\n {4}permissions:\n {6}contents: read\n {6}actions: read\n {6}pull-requests: read\n'));
+    assert.equal(tools.split('permissions:').length - 1, 1);
+    assert.doesNotMatch(tools, /: write/);
     assert.match(checks, /\npermissions:\n {2}contents: read\n\n/);
   });
 
@@ -274,7 +282,7 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
   // waits for, and the two tests it makes, in this order.
   const SKIPS = {
     mutation: {
-      job: 'mutation-shard', summary: 'mutation-gate', needs: ['mutation-plan', 'mutation-shard', 'mutation-floors'],
+      job: 'mutation-shard', summary: 'mutation-gate', needs: ['mutation-plan', 'mutation-shard', 'mutation-floors', 'mutation-deps-trace'],
       passes: 'if [ "$PLAN" = "success" ] && [ "$RUN" = "false" ] && [ "$MUTATION" = "skipped" ] && [ "$FLOORS" = "skipped" ]; then',
       fails: 'if [ "$PLAN" != "success" ] || [ "$MUTATION" != "success" ] || [ "$FLOORS" != "success" ]; then',
     },
@@ -303,7 +311,14 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
 
   it('only reads, holds no secret, and is given none', () => {
     assert.match(suites, /\npermissions:\n {2}contents: read\n\n/);
-    assert.doesNotMatch(suites, /secrets\.|\n {4}permissions:/);
+    assert.doesNotMatch(suites, /secrets\./);
+    // Two jobs read more than the code, and only read: the mutation plan (on
+    // a merge, which pull request the commit came from, its runs, jobs and
+    // artifacts) and the seed (that run's artifacts).
+    const granted = [...suites.matchAll(/\n {4}permissions:\n((?: {6}[\w-]+: \w+\n)+)/g)].map((m) => m[1]);
+    assert.deepEqual(granted, ['      contents: read\n      actions: read\n      pull-requests: read\n', '      actions: read\n']);
+    assert.ok(suites.includes("  mutation-plan:\n    if: inputs.suite == 'mutation'\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    # Read only"));
+    assert.doesNotMatch(suites, /: write\b/);
   });
 
   it('the workflows whose files name the suites are the three check-inputs.mjs knows', () => {
@@ -326,8 +341,13 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
         // Its summary runs every time its suite is asked for: skipped, it would pass.
         [SKIPS[suite].summary]: `\${{ always() && inputs.suite == '${suite}' }}`,
       };
-      // The floors need the shards, so they are skipped with them.
+      // The floors need the shards, so they are skipped with them; the seed
+      // runs only when the plan names a run to take results from.
       if (id === 'mutation-floors') assert.equal(condition, undefined);
+      else if (id === 'mutation-seed') assert.equal(condition, "${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}");
+      // The trace of what each test reaches runs nightly and by hand (#891),
+      // and on a pull request whose plan says it changes the analysis or the trace.
+      else if (id === 'mutation-deps-trace') assert.equal(condition, "${{ !cancelled() && inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || needs.mutation-plan.outputs.trace == 'true') }}");
       else assert.equal(condition, allowed[id], `job ${id}`);
     }
   });
@@ -340,7 +360,7 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       // merge) changes nothing the suite reads (scripts/lib/checks/check-inputs.mjs)
       // and 'true' otherwise.
       assert.ok(plan.includes(suite === 'mutation'
-        ? "      run: ${{ steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}\n"
+        ? "      run: ${{ steps.reuse.outputs.run || steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}\n"
         : "      run: ${{ steps.inputs.outputs.run || 'true' }}\n"), 'run defaults to true');
       assert.match(plan, /fetch-depth: 2\n/, 'the base as well, to list what changed');
       assert.match(plan, /import \{ changedPaths, needsRun \} from "\.\/scripts\/lib\/checks\/check-inputs\.mjs"/);
@@ -353,7 +373,21 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       // github.event_name is the caller's: pull_request only in PR Checks'
       // run of a pull request. Nightly and manual runs always run.
       assert.match(plan, /\n {8}id: inputs\n {8}if: github\.event_name == 'pull_request'\n/, 'nightly and manual runs always run');
-      assert.equal(plan.split('GITHUB_OUTPUT').length - 1, suite === 'mutation' ? 4 : 1, 'nothing else writes an output');
+      // Mutation also writes the fingerprint, the shards, the note's name,
+      // whether the trace runs (#891) and, on a merge whose pull request's
+      // run counts, run=false and seed.
+      assert.equal(plan.split('GITHUB_OUTPUT').length - 1, suite === 'mutation' ? 7 : 1, 'nothing else writes an output');
+      if (suite === 'mutation') {
+        // The trace runs on a pull request only when it changes the analysis, the hook or the trace script.
+        assert.ok(plan.includes("        id: trace\n        if: github.event_name == 'pull_request'\n"));
+        // The three paths named to git diff, not a pattern: scripts-index.test.mjs checks every path a run line names exists.
+        assert.ok(plan.includes("git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi\n"));
+      }
+      if (suite === 'mutation') {
+        assert.ok(plan.includes("        id: reuse\n        if: github.event_name == 'push' && steps.pushed.outputs.run != 'false'\n"), 'reuse only on a merge that changed what mutation reads');
+        assert.ok(plan.includes('if (answer.reuse) appendFileSync(process.env.GITHUB_OUTPUT, `run=false\\nseed=${answer.runId}\\n`);'), 'run=false only with a run to seed from');
+        assert.ok(plan.includes('import { decideReuse } from "./scripts/lib/checks/mutation-reuse.mjs";'));
+      }
       // The job it decides waits for it, and the summary job reads it.
       const decided = jobs.find((job) => job.startsWith(`  ${skip.job}:\n`));
       assert.ok(decided.includes(`\n    needs: ${suite}-plan\n    if: \${{ !cancelled() && needs.${suite}-plan.outputs.run == 'true' }}\n`));
@@ -374,9 +408,15 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
     // The outputs allowed: each plan's `run`, and for mutation the list of
     // shards, read from stryker.shards.json (#846), and the fingerprint its
     // shards' earlier results are kept under.
+    // The seed job reads which run to take results from.
     let checked = suites
+      .replace("if: ${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}", '')
+      .replaceAll('${{ needs.mutation-plan.outputs.seed }}', '')
       .replace('${{ fromJSON(needs.mutation-plan.outputs.shards) }}', '')
-      .replaceAll('${{ needs.mutation-plan.outputs.fingerprint }}', '');
+      .replace('${{ fromJSON(needs.mutation-plan.outputs.shards) }}', '')
+      .replaceAll('${{ needs.mutation-plan.outputs.fingerprint }}', '')
+      // The trace job (#891) runs when the plan says the analysis changed.
+      .replace("|| needs.mutation-plan.outputs.trace == 'true')", ')');
     for (const suite of SUITES) {
       checked = checked
         .replace(`\${{ !cancelled() && needs.${suite}-plan.outputs.run == 'true' }}`, '')
@@ -392,7 +432,11 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       const own = jobsOf(text);
       assert.deepEqual(own.map(jobIdOf), [suite, 'alert']);
       assert.ok(own[0].includes(`\n    uses: ./.github/workflows/tool-suite.yml\n    with:\n      suite: ${suite}\n`));
-      assert.doesNotMatch(own[0], /secrets|permissions/);
+      // No secrets, and only reading (the suite's mutation jobs read, on a
+      // merge, the pull request's runs and artifacts).
+      assert.doesNotMatch(own[0], /secrets|: write/);
+      assert.match(own[0], new RegExp('\n {4}permissions:\n {6}contents: read\n {6}actions: read\n {6}pull-requests: read\n'));
+      assert.equal(own[0].split('permissions:').length - 1, 1);
       assert.match(text, /\npermissions:\n {2}contents: read\n\n/);
       const triggers = triggersOf(text);
       assert.match(triggers, /^ {2}schedule:$/m);
@@ -737,7 +781,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     assert.match(gates, /STRYKER_SHARD: \$\{\{ matrix\.shard \}\}\/\$\{\{ matrix\.of \}\}/);
     assert.match(gates, /node scripts\/mutation-floors\.mjs "\$scope" \|\| failed=1/);
     // Each suite's result waits for every part of it, the floors included.
-    assert.match(gates, /\n  mutation-gate:\n    name: 'Free tools: mutation'\n    needs: \[mutation-plan, mutation-shard, mutation-floors\]\n/);
+    assert.match(gates, /\n  mutation-gate:\n    name: 'Free tools: mutation'\n    needs: \[mutation-plan, mutation-shard, mutation-floors, mutation-deps-trace\]\n/);
     assert.match(textSize, /\n  text-size-gate:\n    name: 'Free tools: text size'\n    needs: \[text-size-plan, text-size-tool\]\n/);
     assert.match(gates, /\n  mutation-floors:\n    needs: mutation-shard\n/);
     // The floors read the shards' reports by their prefix, and no other
@@ -771,7 +815,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     const saved = `${base}\${{ github.sha }}-\${{ github.run_id }}-\${{ github.run_attempt }}`;
     // Restored by the fingerprint alone; saved under a key no other run or
     // attempt has, so a part of a run never stands in the way of a later save.
-    assert.ok(shardJob.includes(`        id: earlier\n        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n          restore-keys: ${base}\n`));
+    assert.ok(shardJob.includes(`        id: earlier\n        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: |\n            reports/stryker-incremental/\${{ matrix.name }}.json\n            reports/stryker-incremental/\${{ matrix.name }}.deps.json\n          key: ${saved}\n          restore-keys: ${base}\n`));
     assert.equal(shardJob.split('restore-keys:').length - 1, 1);
     // Stryker hears the runner's signal itself (no npx in between), and what
     // it finished is saved whether the run passed, failed or was cancelled:
@@ -805,18 +849,24 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     const kept = shardJob.indexOf('id: kept');
     assert.ok(second < kept);
     assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) && steps\.recheck\.outputs\.checked == 'true' \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
-    assert.ok(shardJob.includes(`if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
-    const save = shardJob.indexOf(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n`);
+    assert.ok(shardJob.includes(`if [ -s "$FILE" ] && [ -s "\${FILE%.json}.deps.json" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
+    const save = shardJob.indexOf(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: |\n            reports/stryker-incremental/\${{ matrix.name }}.json\n            reports/stryker-incremental/\${{ matrix.name }}.deps.json\n          key: ${saved}\n`);
     assert.ok(kept < save);
     assert.equal(shardJob.split('uses: actions/cache/save@').length - 1, 1, 'one save, after the recheck');
+    // On a pull request, the same results as an artifact too, for the merge
+    // to main, under the same condition as the save, right after it.
+    const merge = shardJob.indexOf("      - name: Keep the results for the merge\n        if: ${{ always() && steps.kept.outputs.keep == 'true' && github.event_name == 'pull_request' }}\n        uses: actions/upload-artifact@");
+    assert.ok(save < merge && merge < shardJob.indexOf("Keep only this shard's mutants"));
+    assert.ok(shardJob.includes('          name: stryker-incremental-${{ matrix.name }}\n          path: |\n            reports/stryker-incremental/${{ matrix.name }}.json\n            reports/stryker-incremental/${{ matrix.name }}.deps.json\n'));
     assert.match(read('scripts/mutation-recheck.mjs'), /\nif \(process\.env\.GITHUB_OUTPUT\) appendFileSync\(process\.env\.GITHUB_OUTPUT, `checked=true\\nselected=\$\{selected\}\\n`\);\n$/, 'the outputs are set last');
     // Three steps run after a failed or cancelled run, in this order: the
     // recheck, then the two that save.
     const always = [...shardJob.matchAll(/always\(\)/g)].map((m) => m.index);
-    assert.equal(always.length, 3, 'nothing else runs after a failed or cancelled run');
-    assert.ok(recheck < always[0] && always[0] < again && again < always[1] && always[1] < save && save < always[2]);
-    // The note of the test files is beside the results, never saved with them.
-    assert.equal(shardJob.split('path: reports/stryker-incremental/${{ matrix.name }}.json\n').length - 1, 2, 'restored and saved: the results alone');
+    assert.equal(always.length, 4, 'nothing else runs after a failed or cancelled run');
+    assert.ok(recheck < always[0] && always[0] < again && again < always[1] && always[1] < save && save < always[2] && always[2] < merge && merge < always[3]);
+    // The note of the test files is beside the results, never saved with
+    // them; the dependency fingerprints (#891) always are.
+    assert.equal(shardJob.split('path: |\n            reports/stryker-incremental/${{ matrix.name }}.json\n            reports/stryker-incremental/${{ matrix.name }}.deps.json\n          ').length - 1, 3, 'restored, saved and kept for the merge: the results and their fingerprints');
     assert.doesNotMatch(shardJob, /before\.json/);
     assert.doesNotMatch(gates, /uses: actions\/cache@/);
     // Forced on the nightly and the manual run only; a pull request and a

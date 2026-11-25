@@ -9,7 +9,7 @@
  * one of a fixed list of reasons, never as the browser's own message
  * (which can hold an address or whatever a proxy wrote).
  */
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from '../shared/money.ts';
 
 export const FRANKFURTER_RATES = 'https://api.frankfurter.dev/v2/rates';
 

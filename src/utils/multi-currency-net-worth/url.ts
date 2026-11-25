@@ -45,7 +45,7 @@
 
 import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
 import { aggregate, netTotal, concentrationShares, isUnreadableAmount } from './math.ts';
-import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../shared/money.ts';
 import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 
@@ -130,7 +130,7 @@ export interface DecodeResult {
   inDoubt?: boolean;
 }
 
-// The codec uses DEFAULT_CURRENCY (imported from loan/math.ts so both free
+// The codec uses DEFAULT_CURRENCY (imported from shared/money.ts so all free
 // tools share a single source of truth) as the value that gets omitted from
 // the URL to keep share links short. When the audience-default changed from
 // USD to EUR, every place this codec hard-coded 'USD' had to move to the

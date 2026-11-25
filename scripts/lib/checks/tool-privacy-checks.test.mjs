@@ -458,7 +458,8 @@ describe('verify-tool-privacy.mjs stays in step with the site', () => {
     const required = checks.slice(checks.indexOf('\n  privacy:\n'), checks.indexOf('\n  mutation:\n'));
     assert.ok(required.includes('\n    name: No typed value reaches analytics\n    needs: tools\n    if: ${{ always() }}\n'));
     assert.ok(required.includes('if [ "$TOOLS" != "success" ]; then'));
-    assert.match(checks, /\n {8}suite: \[privacy, mutation, text-size\]\n {4}uses: \.\/\.github\/workflows\/tool-suite\.yml\n/);
+    // Between the matrix and the call: only the read permissions the suites need.
+    assert.match(checks, /\n {8}suite: \[privacy, mutation, text-size\]\n(?: {4}#.*\n)* {4}permissions:\n {6}contents: read\n {6}actions: read\n {6}pull-requests: read\n {4}uses: \.\/\.github\/workflows\/tool-suite\.yml\n/);
   });
 
   it('lets nothing through to PostHog but its static scripts', () => {

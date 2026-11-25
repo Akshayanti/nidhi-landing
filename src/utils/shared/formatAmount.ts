@@ -3,7 +3,7 @@
  * illustrative figures the site quotes in its own writing. The two are not the
  * same rule; see `formatProseAmount` for the second.
  */
-import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
+import { amountFormat, amountNumberLocale, amountStyle } from './money.ts';
 import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**

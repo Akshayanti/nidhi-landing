@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { COUNTRY_CURRENCY } from './countries.ts';
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from '../shared/money.ts';
 
 describe('COUNTRY_CURRENCY', () => {
   it('maps only to currencies the tools offer', () => {

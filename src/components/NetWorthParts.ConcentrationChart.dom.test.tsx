@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent } from '@testing-library/react';
 import { all, atTextSize, czech, draw, island, one, own, owe, text, textDrawnAs, worked, type Strings } from '../../test/netWorthParts.charts.tsx';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import type { CurrencyPosition } from '../utils/multi-currency-net-worth/math.ts';
 import { ConcentrationChart } from './MultiCurrencyNetWorth.tsx';
 

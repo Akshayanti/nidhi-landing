@@ -9,13 +9,23 @@
 // the mutants it killed are tested again, and so are the survivors it
 // covers; the kills of other tests that it covers are tested again by the
 // recheck after the run, mutation-recheck.mjs). So the test files a mutation run starts are left out, and a
-// pull request that only edits tests keeps every shard's earlier results.
+// pull request that only edits tests keeps every shard's earlier results,
+// but for what the test files that depend on everything cover: those are
+// marked on any change, another test file's included (mutation-deps.mjs).
 //
-// Everything else tracked by git is in: the tools' own code (a change to one
-// function can stop an unchanged test from killing an unchanged mutant in
-// another), what the tests import or read, the test helpers, the settings,
-// the shards, the dependencies. Left out as well: what no mutation run reads
-// (check-inputs.mjs) and the lessons, as before.
+// Since #891 the code under src/ is left out too: each test file and each
+// mutated file has a fingerprint of its own, of everything it reaches
+// (mutation-deps.mjs), saved beside the shard's results, and a test file
+// whose fingerprint changed is made to look changed to Stryker. So a change
+// to one tool's code no longer starts every shard of every tool afresh.
+//
+// What stays in is what can change any result and that no test reaches
+// through its imports and reads: everything tracked outside src/ that a
+// mutation run reads (check-inputs.mjs): the dependencies (package.json,
+// package-lock.json), Node (.nvmrc), Stryker's settings and the shards, the
+// runner and its ordering, the test helpers and setup in test/, tsconfig, the
+// workflows. A file outside src/ that a test does reach is in both, which
+// costs nothing.
 //
 // Leaving a test file out is safe only while no other test's result depends
 // on its contents. mutation-fingerprint.test.mjs holds that: no file imports
@@ -31,9 +41,10 @@ import { isInput, WORKFLOWS } from './check-inputs.mjs';
  * results saved before reused kills were rechecked (mutation-recheck.mjs)
  * may hold a kill that a test file added or edited since would have turned
  * into an error, saved beside the new test sources, so no later run would
- * recheck it.
+ * recheck it. 4: src/ left out (#891); results saved under 3 have no
+ * per-file fingerprints beside them.
  */
-export const SCHEMA = 3;
+export const SCHEMA = 4;
 
 /** Tests that read the source as text: no mutation run starts them. */
 export const SOURCE_READERS = ['src/utils/privacySurface.test.ts'];
@@ -43,10 +54,15 @@ export function isSelectedTest(path) {
   return /^src\/(.+\/)?[^/]+\.test\.tsx?$/.test(path) && !SOURCE_READERS.includes(path);
 }
 
+/** Files Node or tsx look up in each folder of a module's path (check-mutation-deps.mjs sees the lookups). */
+export const PACKAGE_SCOPE = /(^|\/)(package\.json|tsconfig[^/]*\.json)$/;
+
 /** True when a change to `path` must start every shard afresh. */
 export function isFingerprinted(path) {
-  if (isSelectedTest(path)) return false;
-  if (path.startsWith('src/content/')) return false;
+  // Under src/, only what Node and tsx look for in every folder while they
+  // load any module (a package.json says how a folder's files load, a
+  // tsconfig how tsx compiles them): added or changed, it changes every run.
+  if (path.startsWith('src/')) return PACKAGE_SCOPE.test(path) && isInput(path, WORKFLOWS[0]);
   return isInput(path, WORKFLOWS[0]);
 }
 

@@ -14,7 +14,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
-import { getCurrency } from '../loan/math.ts';
+import { getCurrency } from '../shared/money.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
 import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
 

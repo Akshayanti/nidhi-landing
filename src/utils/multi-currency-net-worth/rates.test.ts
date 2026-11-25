@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CURRENCIES } from '../loan/math.ts';
+import { CURRENCIES } from '../shared/money.ts';
 import { decodeFromQueryString } from './url.ts';
 import { FRANKFURTER_RATES, RATES_ERROR_REASONS, RatesError, httpErrorReason, ratesErrorReason, ratesRequestUrl } from './rates.ts';
 

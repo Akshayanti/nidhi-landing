@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CURRENCIES, formatMoney } from '../loan/math.ts';
+import { CURRENCIES, formatMoney } from './money.ts';
 import { formatAmount, formatPercent } from './formatAmount.ts';
 import { amountLength, longestAmount, splitAmounts } from './amountUnits.ts';
 

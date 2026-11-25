@@ -21,7 +21,7 @@
  * moves them out of the address bar into SHARED_STATE_GLOBAL before analytics
  * start, so they are not recorded with the pageview either.
  */
-import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../shared/money.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { plainDigits } from '../shared/parseLocaleNumber.ts';
 import { DEFAULT_PATHS, RUN_OPTIONS, sanitizeInputs, type ReturnSetting, type SimulationInputs } from './math.ts';

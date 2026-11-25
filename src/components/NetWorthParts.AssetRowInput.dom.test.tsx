@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import { act, fireEvent, screen } from '@testing-library/react';
 import { useState } from 'react';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import type { AssetRow } from '../utils/multi-currency-net-worth/math.ts';
 import { AssetRowInput } from './MultiCurrencyNetWorth.tsx';
 

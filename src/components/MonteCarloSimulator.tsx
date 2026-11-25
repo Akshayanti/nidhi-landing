@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
-import { CURRENCIES } from '../utils/loan/math.ts';
+import { CURRENCIES } from '../utils/shared/money.ts';
 import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';

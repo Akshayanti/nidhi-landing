@@ -22,7 +22,7 @@
  * way (Hindi and Marathi, `PROSE_NUMBER_LOCALE`; the owner's choice, #678):
  * "€18.7 लाख", never "€1.87M".
  */
-import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
+import { amountFormat, amountNumberLocale, amountStyle } from './money.ts';
 
 export type AmountScale = 'none' | 'thousand' | 'lakh' | 'crore' | 'million' | 'billion';
 

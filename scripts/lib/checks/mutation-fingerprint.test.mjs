@@ -43,7 +43,24 @@ describe('what a mutation shard’s earlier results depend on', () => {
     assert.equal(of({ ...FILES, 'docs/plans/PLAYBOOK.md': 'edited', '.github/workflows/deploy.yml': 'edited', 'CLAUDE.md': 'new' }), BASE);
   });
 
-  it('changes with anything else: code, helpers, data, settings, the workflow, a new or a moved file', () => {
+  it('stays the same for code and data under src/, which each test file fingerprints for itself (#891)', () => {
+    for (const path of ['src/utils/loan/math.ts', 'src/components/LoanCompare.tsx', 'src/data/inflation/worldbank.json']) {
+      assert.equal(of({ ...FILES, [path]: `${FILES[path]} changed` }), BASE, path);
+      const { [path]: gone, ...rest } = FILES;
+      assert.equal(of(rest), BASE, `${path} deleted`);
+    }
+    assert.equal(of({ ...FILES, 'src/new.ts': 'new', 'src/utils/shared/new.json': '{}' }), BASE);
+  });
+
+  it('changes with a package.json or tsconfig under src/: Node and tsx look for them while they load any module', () => {
+    for (const path of ['src/package.json', 'src/components/chart/package.json', 'src/tsconfig.json', 'src/utils/tsconfig.test.json']) {
+      assert.equal(isFingerprinted(path), true, path);
+      assert.notEqual(of({ ...FILES, [path]: '{"type":"commonjs"}' }), BASE, path);
+    }
+    for (const path of ['src/data/package.json.ts', 'src/apackage.json', 'src/i18n/strings/tsconfigs.ts']) assert.equal(isFingerprinted(path), false, path);
+  });
+
+  it('changes with anything else: helpers, settings, the dependencies, the workflow, a new or a moved file', () => {
     for (const path of Object.keys(FILES).filter(isFingerprinted)) {
       assert.notEqual(of({ ...FILES, [path]: `${FILES[path]} changed` }), BASE, path);
       const { [path]: gone, ...rest } = FILES;
@@ -52,10 +69,9 @@ describe('what a mutation shard’s earlier results depend on', () => {
     }
     assert.deepEqual(Object.keys(FILES).filter(isFingerprinted).sort(), [
       '.github/workflows/pr-checks.yml', '.github/workflows/tool-mutation.yml', '.github/workflows/tool-suite.yml', '.nvmrc', 'package-lock.json', 'scripts/lib/checks/mutation-shards.mjs',
-      'src/components/LoanCompare.tsx', 'src/data/inflation/worldbank.json', 'src/utils/loan/math.ts',
       'stryker.config.mjs', 'test/dom.ts', 'tsconfig.json',
     ]);
-    for (const path of ['src/new.ts', 'public/new.svg', 'emails/post.html.j2', 'a-new-file.txt', 'scripts/new.mjs']) {
+    for (const path of ['package.json', 'public/new.svg', 'emails/post.html.j2', 'a-new-file.txt', 'scripts/new.mjs']) {
       assert.notEqual(of({ ...FILES, [path]: 'new' }), BASE, path);
     }
   });
@@ -68,7 +84,8 @@ describe('what a mutation shard’s earlier results depend on', () => {
   it('refuses to answer without files, or with one it cannot read', () => {
     assert.throws(() => fingerprint([], () => ''), /nothing to fingerprint/);
     assert.throws(() => fingerprint(['docs/a.md', 'src/a.test.ts'], () => ''), /nothing to fingerprint/);
-    assert.throws(() => fingerprint(['src/a.ts'], () => { throw new Error('ENOENT'); }), /ENOENT/);
+    assert.throws(() => fingerprint(['test/a.ts'], () => { throw new Error('ENOENT'); }), /ENOENT/);
+    assert.throws(() => fingerprint(['src/a.ts', 'src/b.json'], () => ''), /nothing to fingerprint/);
   });
 
   it('reads git’s list whole, names with spaces included', () => {
@@ -77,7 +94,7 @@ describe('what a mutation shard’s earlier results depend on', () => {
   });
 
   it('has a schema number, part of every fingerprint', () => {
-    assert.equal(SCHEMA, 3);
+    assert.equal(SCHEMA, 4);
     assert.match(read('scripts/lib/checks/mutation-fingerprint.mjs'), /update\(`schema \$\{SCHEMA\}\\0`\)/);
   });
 });
