@@ -104,6 +104,9 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     assert.equal(one("join('a', '/b', 'c')").s, 'a/b/c');
     assert.equal(one("resolve('src', 'x.json')").s, '/project/src/x.json');
     assert.equal(one("resolve('/a', '../b')").s, '/b');
+    // A part known only from its start (council round 6, DeepSeek): join keeps the earlier parts, resolve restarts.
+    assert.deepEqual(one("join('a', '/b' + unknown)"), { s: 'a/b', exact: false });
+    assert.deepEqual(one("resolve('a', '/b' + unknown)"), { s: '/b', exact: false });
   });
 
   it('a destructured load of node:fs is followed, not counted as handing it on', () => {

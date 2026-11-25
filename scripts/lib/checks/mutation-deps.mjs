@@ -328,8 +328,9 @@ export function analyse(text, file, root) {
               return parts.length === 0 ? null : partial(`${name === 'resolve' ? posix.resolve(root, ...parts) : posix.join(...parts)}/`);
             }
             if (!v.exact) {
-              const head = parts.length === 0 ? '' : `${name === 'resolve' ? posix.resolve(root, ...parts) : posix.join(...parts)}/`;
-              return partial(v.s.startsWith('/') ? v.s : `${head}${v.s}`);
+              // The known start of this part joined as Node would (join never
+              // restarts at a later absolute part; resolve does).
+              return partial(name === 'resolve' ? posix.resolve(root, ...parts, v.s) : posix.join(...parts, v.s));
             }
             parts.push(v.s);
           }
