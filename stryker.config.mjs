@@ -17,7 +17,12 @@ export const SCOPES = {
   inflation: ['src/utils/inflation/*.ts', 'src/components/InflationCalculator.tsx'],
   'invest-or-pay-off': ['src/utils/invest-or-pay-off/*.ts', 'src/components/InvestOrPayOff.tsx'],
   'monte-carlo': ['src/utils/monte-carlo/*.ts', 'src/components/MonteCarloSimulator.tsx'],
-  loan: ['src/utils/loan/*.ts', 'src/components/LoanCompare.tsx'],
+  // The money code every tool uses (currencies, minor units, amount formats)
+  // lives in src/utils/shared/money.ts since #891, but is scored here, with
+  // the loan engine it came from: its kills were measured as loan's, and
+  // loan's floor was set with them in (moved to shared, loan logic would
+  // drop from 72.6% to 69.4%, below its floor of 72).
+  loan: ['src/utils/loan/*.ts', 'src/components/LoanCompare.tsx', 'src/utils/shared/money.ts'],
   'net-worth': ['src/utils/multi-currency-net-worth/*.ts', 'src/components/MultiCurrencyNetWorth.tsx'],
   // What the tools share: the helpers, and the components every tool draws with.
   shared: [
@@ -28,6 +33,15 @@ export const SCOPES = {
     'src/components/chart/*.{ts,tsx}',
   ],
 };
+
+/** Files a scope's patterns match that another scope scores instead. */
+const SCORED_ELSEWHERE = { shared: ['src/utils/shared/money.ts'] };
+
+/** The files a scope mutates: its patterns, tests and files scored by another scope left out. */
+export function scopeFiles(name) {
+  const elsewhere = SCORED_ELSEWHERE[name] ?? [];
+  return globSync(SCOPES[name]).filter((f) => !/\.test\.tsx?$/.test(f) && !elsewhere.includes(f)).sort();
+}
 
 // The components that are a whole tool's page: their tests mount the whole
 // tool, the dearest tests there are.
@@ -54,7 +68,7 @@ const SHARDS = JSON.parse(readFileSync(new URL('./stryker.shards.json', import.m
 const WEIGHTS = JSON.parse(readFileSync(new URL('./stryker.shard-weights.json', import.meta.url), 'utf8'));
 const [shard, shardCount] = (process.env.STRYKER_SHARD ?? `1/${SHARDS[scope]}`).split('/').map(Number);
 if (shardCount !== SHARDS[scope]) throw new Error(`${scope} has ${SHARDS[scope]} shard(s) in stryker.shards.json, not ${shardCount}`);
-const files = globSync(SCOPES[scope]).filter((f) => !/\.test\.tsx?$/.test(f)).sort();
+const files = scopeFiles(scope);
 const name = shardCount === 1 ? scope : `${scope}-${shard}of${shardCount}`;
 // One shard of several: whole-statement ranges. A scope of one shard: every file.
 const mutate = shardCount === 1 ? files : shardPatterns(files, shardCount, shard, undefined, WEIGHTS[scope] ?? null);

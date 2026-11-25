@@ -90,8 +90,12 @@ export function decideReuse({ repo, pulls, runs, jobsOf, artifactsOf, tree, base
   const jobs = jobsAnswer && Array.isArray(jobsAnswer.jobs) ? jobsAnswer.jobs : null;
   if (!jobs) return no(`run ${run.id}'s jobs could not be read`);
   if (typeof jobsAnswer.total_count !== 'number' || jobsAnswer.total_count > jobs.length) return no(`run ${run.id} has more jobs than were read`);
+  // PR Checks calls the suite workflow once per suite, and each call lists
+  // every job of the file: the privacy and text-size legs report their own
+  // `mutation-floors` (and shards) as skipped. Those are not the mutation
+  // leg's, so they are left out; exactly one job must then remain, and pass.
   const passed = (suffix) => {
-    const found = jobs.filter((j) => j && typeof j.name === 'string' && (j.name === suffix || j.name.endsWith(` / ${suffix}`)));
+    const found = jobs.filter((j) => j && typeof j.name === 'string' && (j.name === suffix || j.name.endsWith(` / ${suffix}`)) && j.conclusion !== 'skipped');
     return found.length === 1 && found[0].status === 'completed' && found[0].conclusion === 'success';
   };
   for (const shard of shards) {

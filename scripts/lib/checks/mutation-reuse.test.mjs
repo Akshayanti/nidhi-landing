@@ -13,7 +13,15 @@ const SHARDS = ['inflation-1of2', 'inflation-2of2', 'shared'];
 const pull = (over = {}) => ({ number: 890, merged_at: '2026-11-25T12:00:00Z', base: { ref: 'main' }, head: { sha: HEAD, repo: { full_name: REPO } }, ...over });
 const run = (over = {}) => ({ id: 77, run_number: 5, event: 'pull_request', head_sha: HEAD, path: '.github/workflows/pr-checks.yml', status: 'completed', conclusion: 'success', run_attempt: 1, ...over });
 const job = (name, over = {}) => ({ name: `Tool stage: mutation / ${name}`, status: 'completed', conclusion: 'success', ...over });
-const allJobs = () => [...SHARDS.map((s) => job(`Mutation: ${s}`)), job('mutation-floors'), job('mutation-plan'), { name: 'Lint', status: 'completed', conclusion: 'success' }];
+// As a real PR Checks run lists them: the suite workflow is called once per
+// suite, so the privacy and text-size legs report the mutation jobs too, as
+// skipped (Fable's review: run 45600165767 lists three mutation-floors).
+const skippedIn = (leg, name) => ({ name: `Tool stage: ${leg} / ${name}`, status: 'completed', conclusion: 'skipped' });
+const allJobs = () => [
+  ...SHARDS.map((s) => job(`Mutation: ${s}`)), job('mutation-floors'), job('mutation-plan'),
+  ...['privacy', 'text-size'].flatMap((leg) => [...SHARDS.map((s) => skippedIn(leg, `Mutation: ${s}`)), skippedIn(leg, 'mutation-floors'), skippedIn(leg, 'mutation-plan')]),
+  { name: 'Lint', status: 'completed', conclusion: 'success' },
+];
 const artifacts = (names = [manifestName({ tree: TREE, baseTree: BASE, fingerprint: FP })]) => ({ total_count: names.length, artifacts: names.map((name) => ({ name, expired: false })) });
 
 function decide(over = {}) {
@@ -74,6 +82,8 @@ describe('mutation results a merge can take from its pull request', () => {
     assert.equal(decide({ jobsOf: jobsWith(changed('Mutation: shared', { conclusion: 'skipped' })) }).reuse, false);
     assert.equal(decide({ jobsOf: jobsWith(without('mutation-floors')) }).reuse, false);
     assert.equal(decide({ jobsOf: jobsWith(changed('mutation-floors', { conclusion: 'skipped' })) }).reuse, false);
+    // Two of the mutation leg's floors that did run cannot be told apart.
+    assert.equal(decide({ jobsOf: jobsWith([...allJobs(), { ...job('mutation-floors'), name: 'Other / mutation-floors' }]) }).reuse, false);
     assert.equal(decide({ jobsOf: jobsWith([...allJobs(), job('Mutation: shared')]) }).reuse, false, 'a shard listed twice');
     assert.equal(decide({ jobsOf: () => ({ total_count: 500, jobs: allJobs() }) }).reuse, false, 'more jobs than were read');
     assert.equal(decide({ jobsOf: () => null }).reuse, false);

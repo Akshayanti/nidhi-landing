@@ -9,7 +9,9 @@
 // the mutants it killed are tested again, and so are the survivors it
 // covers; the kills of other tests that it covers are tested again by the
 // recheck after the run, mutation-recheck.mjs). So the test files a mutation run starts are left out, and a
-// pull request that only edits tests keeps every shard's earlier results.
+// pull request that only edits tests keeps every shard's earlier results,
+// but for what the test files that depend on everything cover: those are
+// marked on any change, another test file's included (mutation-deps.mjs).
 //
 // Since #891 the code under src/ is left out too: each test file and each
 // mutated file has a fingerprint of its own, of everything it reaches

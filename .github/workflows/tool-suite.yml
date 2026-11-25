@@ -407,31 +407,34 @@ jobs:
           tree=$(git rev-parse 'HEAD^{tree}')
           base=$(git rev-parse 'HEAD^1^{tree}' 2>/dev/null || echo none)
           if ! gh api "repos/$REPO/commits/$SHA/pulls" > "$dir/pulls.json"; then echo "The pull request could not be read: every shard runs."; exit 0; fi
-          head=$(node -e 'const p = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); const m = Array.isArray(p) ? p.filter((x) => x && x.merged_at) : []; process.stdout.write(m.length === 1 && /^[0-9a-f]{40}$/.test(m[0].head?.sha ?? "") ? m[0].head.sha : "")' "$dir/pulls.json")
+          head=$(node -e 'const p = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); const m = Array.isArray(p) ? p.filter((x) => x && x.merged_at) : []; process.stdout.write(m.length === 1 && /^[0-9a-f]{40}$/.test(m[0].head?.sha ?? "") ? m[0].head.sha : "")' "$dir/pulls.json") || head=""
           if [ -z "$head" ]; then echo "No single merged pull request leads here: every shard runs."; exit 0; fi
           if ! gh api "repos/$REPO/actions/runs?head_sha=$head&event=pull_request&per_page=100" > "$dir/runs.json"; then echo "The runs could not be read: every shard runs."; exit 0; fi
-          run=$(node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).workflow_runs ?? []; const o = r.filter((x) => x.path === ".github/workflows/pr-checks.yml").sort((a, b) => b.run_number - a.run_number || b.id - a.id)[0]; process.stdout.write(o ? `${o.id} ${o.run_attempt}` : "")' "$dir/runs.json")
+          run=$(node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).workflow_runs ?? []; const o = r.filter((x) => x.path === ".github/workflows/pr-checks.yml").sort((a, b) => b.run_number - a.run_number || b.id - a.id)[0]; process.stdout.write(o ? `${o.id} ${o.run_attempt}` : "")' "$dir/runs.json") || run=""
           if [ -n "$run" ]; then
             set -- $run
-            gh api "repos/$REPO/actions/runs/$1/attempts/$2/jobs?per_page=100" > "$dir/jobs-$1-$2.json" || true
-            gh api "repos/$REPO/actions/runs/$1/artifacts?per_page=100" > "$dir/artifacts-$1.json" || true
+            # Every page (--paginate --slurp: an array of pages), merged below.
+            gh api --paginate --slurp "repos/$REPO/actions/runs/$1/attempts/$2/jobs?per_page=100" > "$dir/jobs-$1-$2.json" || true
+            gh api --paginate --slurp "repos/$REPO/actions/runs/$1/artifacts?per_page=100" > "$dir/artifacts-$1.json" || true
           fi
           node --input-type=module -e '
             import { existsSync, readFileSync, appendFileSync } from "node:fs";
             import { decideReuse } from "./scripts/lib/checks/mutation-reuse.mjs";
             const [dir, repo, tree, baseTree, fingerprint, shardsJson] = process.argv.slice(1);
             const read = (f) => { try { return existsSync(f) ? JSON.parse(readFileSync(f, "utf8")) : null; } catch { return null; } };
+            // Pages of a list, as --paginate --slurp writes them: one object, its items joined.
+            const pages = (f, key) => { const p = read(f); if (!Array.isArray(p) || p.length === 0 || !p.every((x) => x && Array.isArray(x[key]))) return null; return { total_count: p[0].total_count, [key]: p.flatMap((x) => x[key]) }; };
             const answer = decideReuse({
               repo, tree, baseTree, fingerprint,
               pulls: read(`${dir}/pulls.json`),
               runs: read(`${dir}/runs.json`),
-              jobsOf: (id, attempt) => read(`${dir}/jobs-${id}-${attempt}.json`),
-              artifactsOf: (id) => read(`${dir}/artifacts-${id}.json`),
+              jobsOf: (id, attempt) => pages(`${dir}/jobs-${id}-${attempt}.json`, "jobs"),
+              artifactsOf: (id) => pages(`${dir}/artifacts-${id}.json`, "artifacts"),
               shards: JSON.parse(shardsJson).map((s) => s.name),
             });
             console.log(`${answer.reuse ? "Taken" : "Not taken"}: ${answer.reason}.`);
             if (answer.reuse) appendFileSync(process.env.GITHUB_OUTPUT, `run=false\nseed=${answer.runId}\n`);
-          ' "$dir" "$REPO" "$tree" "$base" "$FINGERPRINT" "$SHARDS"
+          ' "$dir" "$REPO" "$tree" "$base" "$FINGERPRINT" "$SHARDS" || echo "The decision could not be made: every shard runs."
 
   mutation-shard:
     name: 'Mutation: ${{ matrix.name }}'
@@ -663,6 +666,8 @@ jobs:
             reports/stryker-incremental/${{ matrix.name }}.deps.json
           retention-days: 7
           if-no-files-found: error
+          # A rerun of a shard in the same run uploads its results again.
+          overwrite: true
 
       # Incremental mode also writes earlier results for mutants outside this
       # shard; left in, a mutant that moved shards would be counted twice.

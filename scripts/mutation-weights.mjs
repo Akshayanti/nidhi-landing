@@ -20,7 +20,7 @@ if (!dir) {
 }
 // The config needs a scope to load; any will do, since only its scope list is read.
 process.env.STRYKER_SCOPE ??= 'inflation';
-const { SCOPES } = await import('../stryker.config.mjs');
+const { SCOPES, scopeFiles } = await import('../stryker.config.mjs');
 const shards = JSON.parse(readFileSync('stryker.shards.json', 'utf8'));
 
 const weights = {};
@@ -30,7 +30,7 @@ for (const scope of Object.keys(SCOPES)) {
     console.error(`mutation-weights: no reports for ${scope} in ${dir}`);
     process.exit(2);
   }
-  const all = units(globSync(SCOPES[scope]).filter((f) => !/\.test\.tsx?$/.test(f)).sort());
+  const all = units(scopeFiles(scope));
   const measured = weightsFromReport(all, mergeReports(reports));
   const costs = unitCosts(all, measured);
   const count = shards[scope];

@@ -512,6 +512,24 @@
       "const KNOWN_CURRENCIES: ReadonlySet<string> = new Set(CURRENCIES.map((c) => c.code));": 0.8,
       "export interface DecodeResult {": 0,
       "export function decodeFromQueryString(qs: string): DecodeResult {": 51.9
+    },
+    "src/utils/shared/money.ts": {
+      "export interface CurrencyInfo {": 0,
+      "const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [": 271,
+      "function resolveFactor(code: string): number {": 139.6,
+      "export const CURRENCIES: CurrencyInfo[] = RAW_CURRENCIES.map((c) => ({": 1.6,
+      "const CURRENCY_BY_CODE: Record<string, CurrencyInfo> = Object.fromEntries(": 3.1,
+      "export const DEFAULT_CURRENCY = 'EUR';": 1.7,
+      "export function getCurrency(code: string): CurrencyInfo {": 0.9,
+      "export function roundMinor(units: number): number {": 5.2,
+      "export function toMinor(amount: number, currencyCode: string): number {": 3.2,
+      "export function fromMinor(units: number, currencyCode: string): number {": 3.3,
+      "export function amountStyle(code: string, amountLocale?: string | null): { locale: string; display: 'symbol' | 'narrowSymbol' } {": 3.2,
+      "export function amountNumberLocale(code: string, amountLocale?: string | null): string {": 453.6,
+      "function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {": 477,
+      "export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {": 30.1,
+      "const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);": 31.6,
+      "export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {": 25.4
     }
   },
   "shared": {
@@ -765,24 +783,6 @@
       "export function linkLumpSums(value: string | null, fallback: string): string {": 12.2,
       "export function linkWholeNumber(value: string | null, min: number, max: number, fallback: string): string {": 11.8,
       "export function linkName(value: string): string {": 2.9
-    },
-    "src/utils/shared/money.ts": {
-      "export interface CurrencyInfo {": 0,
-      "const RAW_CURRENCIES: Omit<CurrencyInfo, 'factor'>[] = [": 271,
-      "function resolveFactor(code: string): number {": 139.6,
-      "export const CURRENCIES: CurrencyInfo[] = RAW_CURRENCIES.map((c) => ({": 1.6,
-      "const CURRENCY_BY_CODE: Record<string, CurrencyInfo> = Object.fromEntries(": 3.1,
-      "export const DEFAULT_CURRENCY = 'EUR';": 1.7,
-      "export function getCurrency(code: string): CurrencyInfo {": 0.9,
-      "export function roundMinor(units: number): number {": 5.2,
-      "export function toMinor(amount: number, currencyCode: string): number {": 3.2,
-      "export function fromMinor(units: number, currencyCode: string): number {": 3.3,
-      "export function amountStyle(code: string, amountLocale?: string | null): { locale: string; display: 'symbol' | 'narrowSymbol' } {": 3.2,
-      "export function amountNumberLocale(code: string, amountLocale?: string | null): string {": 453.6,
-      "function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {": 477,
-      "export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {": 30.1,
-      "const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'AUD', 'SGD', 'HKD', 'NZD']);": 31.6,
-      "export function formatMoney(units: number, currencyCode: string, amountLocale?: string | null): string {": 25.4
     },
     "src/utils/shared/noiseRounding.ts": {
       "export function noiseStep(p10: number, p90: number, runs: number): number {": 8.1,
