@@ -95,6 +95,19 @@ describe('the invest or pay off calculator: taxes and fees, amounts, today\'s mo
     nothingTypedSent('1000', 'USD');
   });
 
+  it('gives a negative amount in Swiss francs a true minus, though its sign follows the code', () => {
+    // With no amount style, francs are written "CHF-1,650": a hyphen after
+    // letters, which screen readers do not speak by default.
+    mount();
+    fireEvent.change(currencySelect(), { target: { value: 'CHF' } });
+    clock.pass(250);
+    assert.equal(currencySelect().value, 'CHF');
+    const answer = text('.iop-answer p').join(' ');
+    assert.ok(answer.includes('CHF−'), answer);
+    assert.ok(!/CHF-/.test(document.body.textContent ?? ''), 'no hyphen in place of a minus');
+    nothingTypedSent();
+  });
+
   it('lets the reader count today\'s money at the comparison date, and the page says so', () => {
     mount();
     const end = radio('basis', 'end');

@@ -308,7 +308,7 @@ export default function InvestOrPayOff({
 
   // A true minus sign. On the page each amount is drawn as one unit that never
   // breaks (Amounts.tsx): the sign alone does not hold "−" to "€1,520".
-  const money = (v: number) => formatAmount(v, settled.currency, false, amountLocale).replace(/^-/, '\u2212');
+  const money = (v: number) => formatAmount(v, settled.currency, false, amountLocale).replace('-', '\u2212');
   const settledCountry = settled.country ? countryByCode.get(settled.country) ?? null : null;
 
   function shown(): ShownComparison | null {
