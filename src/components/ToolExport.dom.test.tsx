@@ -3,7 +3,8 @@
  * buttons act only when there are results, stay focusable and say why when
  * there are none, and carry nothing for analytics but their fixed label.
  * The printed report has its own files (ToolExport.report.dom.test.tsx and
- * ToolExport.chart.dom.test.tsx).
+ * ToolExport.chart.dom.test.tsx), and the buttons' changing label one that
+ * needs no browser (ToolExport.SwapLabel.test.tsx).
  */
 import '../../test/dom.ts';
 import assert from 'node:assert/strict';
@@ -12,7 +13,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { clock } from '../../test/windowClock.ts';
 import { dict } from '../i18n/index.ts';
-import { SwapLabel, ToolExport } from './ToolExport.tsx';
+import { ToolExport } from './ToolExport.tsx';
 
 const strings = dict('en').tools.export;
 const realAgent = window.navigator.userAgent;
@@ -23,33 +24,6 @@ afterEach(() => {
   cleanup();
   clock.restore();
   browseWith(realAgent);
-});
-
-describe('a button label that changes for a moment', () => {
-  it('shows the label and keeps room for the other one, hidden', () => {
-    assert.equal(
-      renderToStaticMarkup(<SwapLabel label="Copy link" alternate="Copied" swapped={false} />),
-      '<span class="tool-swapLabel"><span>Copy link</span><span class="tool-swapLabel__ghost" aria-hidden="true">Copied</span></span>',
-    );
-  });
-
-  it('shows the other label once swapped, as the button name', () => {
-    assert.equal(
-      renderToStaticMarkup(<SwapLabel label="Copy link" alternate="Copied" swapped />),
-      '<span class="tool-swapLabel"><span>Copied</span><span class="tool-swapLabel__ghost" aria-hidden="true">Copy link</span></span>',
-    );
-  });
-
-  it('keeps the button name for a screen reader when the tool announces the change itself', () => {
-    assert.equal(
-      renderToStaticMarkup(<SwapLabel label="Copy link" alternate="Copied" swapped steady />),
-      '<span class="tool-swapLabel"><span aria-hidden="true">Copied</span><span class="tool-swapLabel__ghost" aria-hidden="true">Copy link</span><span class="chart-srOnly">Copy link</span></span>',
-    );
-    assert.equal(
-      renderToStaticMarkup(<SwapLabel label="Copy link" alternate="Copied" swapped={false} steady />),
-      '<span class="tool-swapLabel"><span>Copy link</span><span class="tool-swapLabel__ghost" aria-hidden="true">Copied</span></span>',
-    );
-  });
 });
 
 function mount(props: Partial<Parameters<typeof ToolExport>[0]> = {}) {
