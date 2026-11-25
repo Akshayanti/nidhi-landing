@@ -119,13 +119,14 @@ describe('the invest or pay off calculator: links, sharing and saving', () => {
     // The language switch carries it still unreadable, and nothing is worked out from it.
     assert.equal(new URLSearchParams(shared() as string).get('b'), 'NaN');
     clock.pass(1000);
-    assert.equal(said(), island.results.fix);
-    // (The page counts its first comparison as it starts, before the link is read.)
-    assert.deepEqual(eventNames(), ['free_invest_or_pay_off_shared_view_opened', 'free_invest_or_pay_off_calculated']);
-    // Typed again, the comparison comes.
+    // A page opened from a link says nothing on load, its marked box included (#880).
+    assert.equal(said(), '');
+    // An unreadable link sends no comparison (#882).
+    assert.deepEqual(eventNames(), ['free_invest_or_pay_off_shared_view_opened']);
+    // Typed again, the comparison comes, and is counted once it has settled.
     typeAndSettle('balance', '1000');
     assert.equal(headline(), linesFor(LINKED, 'USD')[1]);
-    assert.equal(events.length, 2);
+    assert.deepEqual(eventNames(), ['free_invest_or_pay_off_shared_view_opened', 'free_invest_or_pay_off_calculated']);
   });
 
   it('ignores what the page head left that is not a link\'s state', () => {
@@ -135,7 +136,8 @@ describe('the invest or pay off calculator: links, sharing and saving', () => {
       arriveWith(left);
       const view = mount();
       assert.equal(boxes.balance().value, '18000', String(left));
-      assert.deepEqual(eventNames(), ['free_invest_or_pay_off_calculated'], String(left));
+      // the example, untouched: no comparison sent (#882)
+      assert.deepEqual(eventNames(), [], String(left));
       assert.deepEqual(published, [''], String(left));
       view.unmount();
     }

@@ -20,4 +20,6 @@
 - [PR #764 review 21 Nov](pr764-review-2026-11-21.md) — static header voids z-index: cookie sheet covers phone menu; "Sure" 310px in 256px sheet; audit needs --banner
 - [Tokens PR #754 21 Nov](tokens-pr754-review-2026-11-21.md) — scoped `.privacy-container p` beats global .eyebrow; lesson "All terms" sideways at 300-400%
 - [Minus sign review 24 Nov](minus-sign-review-2026-11-24.md) — NVDA reads "CHF-1"/"-₹1" as positive; spoken total formatted apart; invest tool 25 Nov leftovers; preview recipe
+- [Numbers review 25 Nov](numbers-review-2026-11-25.md) — −0 left in pct/report cells; compact path is any non-en currency locale; tests via tsx
 - [PR #772 review 22 Nov](pr772-review-2026-11-22.md) — pre-paint swap blanks card if module fails; moved content loses phone floor; pill squeezes titles at 400%
+- [Timing review 25 Nov](timing-review-2026-11-25.md) — quiet={!hydrated} misses late history (non-default country link still announced); scratch probe recipe

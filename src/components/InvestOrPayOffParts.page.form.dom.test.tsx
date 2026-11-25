@@ -33,7 +33,8 @@ const linesFor = (s: Partial<Inputs> & { currency?: string } = {}, locale = 'en'
   const inputs: Inputs = { ...DEFAULTS, inflation: 2, ...rest } as Inputs;
   return resultLines(compare(inputs), island, locale, money(currency), 'month');
 };
-const pctText = (v: number, digits = 1) => new Intl.NumberFormat('en', { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100);
+/** A rate as the page writes it: below zero with the true minus, not a hyphen (#884). */
+const pctText = (v: number, digits = 1) => new Intl.NumberFormat('en', { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100).replace('-', '−');
 /** Nothing typed reached analytics. */
 const nothingTypedSent = (...typed: string[]) => {
   const sent = sentText();

@@ -81,14 +81,14 @@ describe('the invest or pay off calculator: copying, starting again and saving',
     assert.equal(label(), island.actions.copy);
     assert.equal(eventNames().at(-1), 'free_invest_or_pay_off_share_copied');
     view.unmount();
-    // No clipboard at all: still counted, nothing thrown.
+    // No clipboard at all: still counted, nothing thrown; the untouched example sends no "calculated" (#882).
     delete (navigator as unknown as Record<string, unknown>).clipboard;
     events.length = 0;
     arriveWith(undefined);
     mount();
     fireEvent.click(shareButton());
     await turn();
-    assert.deepEqual(eventNames(), ['free_invest_or_pay_off_calculated', 'free_invest_or_pay_off_share_copied']);
+    assert.deepEqual(eventNames(), ['free_invest_or_pay_off_share_copied']);
     assert.equal(prompted.length, 1);
   });
 
@@ -163,7 +163,7 @@ describe('the invest or pay off calculator: copying, starting again and saving',
     // amounts in the report's tables are the page's rounding, written the Spanish way
     const cells = text('.tool-report td');
     const worded = wordedResult(exact);
-    const es = (v: number) => new Intl.NumberFormat('es', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }).format(v);
+    const es = (v: number) => new Intl.NumberFormat('es', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }).format(v).replace('-', '\u2212');
     assert.ok(cells.includes(es(worded.a.p50)), `${es(worded.a.p50)} in ${cells.join(' | ')}`);
     assert.ok(!cells.includes(es(exact.a.p50)) || worded.a.p50 === exact.a.p50);
     const range = compareRange(inputs);

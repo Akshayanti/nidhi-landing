@@ -31,7 +31,7 @@ export const writtenChangelog: ChangelogEntry[] = [
     material: true,
     summary: 'Invest or pay off now sends its "comparison shown" event only for a comparison someone asked for, not for the example the page opens with.',
     details: [
-      'free_invest_or_pay_off_calculated used to be sent on every page view, for the example comparison the page opens with, a moment before a shared link\'s figures replaced it, and even when the link that was opened could not be read. It is now sent once per page view, when a shared link that could be read has opened, or when your own changes to the form have settled into a comparison, and not while an entry cannot be read. A page left untouched, or opened from a link that could not be read, sends none.',
+      'free_invest_or_pay_off_calculated used to be sent on every page view, for the example comparison the page opens with, a moment before a shared link\'s figures replaced it, and even when the link that was opened could not be read. It is now sent once per page view, when a shared link that could be read has opened, or when your own changes to the form have settled into a comparison, and not while an entry cannot be read. A page left untouched, or opened from a link that could not be read, sends none until you change the figures and they settle.',
       'The event still carries no properties, and it is still sent without cookie consent like the other tools\' events. No other event, property, click label, storage key or outside request changes.',
     ],
   },

@@ -1,12 +1,14 @@
 /**
  * The invest or pay off calculator's range chart (#790): each path's 10th to
  * 90th scenario as a bar with the middle marked, on one scale that spans
- * both, with room around them and a line at zero when the scale crosses it.
+ * both, with room around them and a line at zero when the bars cross it.
  *
  * Every position below is worked out by hand from the chart's rule: the
  * span is the distance from the lowest 10th to the highest 90th (at least 5%
  * of the top, and at least 1); the scale starts 15% of the span below the
- * lowest figure (5% when the figures cross zero) and ends 5% above the highest.
+ * lowest figure (5% when the figures cross zero) and ends 5% above the highest,
+ * except that the room never carries the scale across zero: it stops at zero
+ * when nothing is negative, and at zero when nothing is positive (#881).
  */
 import '../../test/dom.ts';
 import assert from 'node:assert/strict';
@@ -72,22 +74,22 @@ describe('the range chart', () => {
   });
 
   const cases: Array<[string, P, P, number, number, boolean]> = [
-    // low 50, high 900, span 850.
-    ['all above zero: the scale starts 15% of the span below the lowest, which can still reach below zero', { p10: 100, p50: 200, p90: 300 }, { p10: 50, p50: 250, p90: 900 }, -77.5, 942.5, true],
+    // low 50, high 900, span 850: 15% below the lowest would be -77.5, so the scale stops at zero.
+    ['all above zero: the scale starts 15% of the span below the lowest, but never below zero (#881)', { p10: 100, p50: 200, p90: 300 }, { p10: 50, p50: 250, p90: 900 }, 0, 942.5, false],
     // low -500, high 600, span 1100.
     ['across zero: 5% of the span below the lowest, and a line at zero', { p10: -300, p50: -100, p90: 100 }, { p10: -500, p50: 0, p90: 600 }, -555, 655, true],
-    // low 0, high 100, span 100.
-    ['starting exactly at zero is not across it', { p10: 0, p50: 50, p90: 100 }, { p10: 0, p50: 25, p90: 80 }, -15, 105, true],
-    // low -100, high 0, span 100.
-    ['ending exactly at zero is not across it either', { p10: -100, p50: -50, p90: 0 }, { p10: -80, p50: -40, p90: -20 }, -115, 5, true],
+    // low 0, high 100, span 100: the scale stops at zero, with no line there (#881).
+    ['starting exactly at zero is not across it', { p10: 0, p50: 50, p90: 100 }, { p10: 0, p50: 25, p90: 80 }, 0, 105, false],
+    // low -100, high 0, span 100: the scale stops at zero, with no line there (#881).
+    ['ending exactly at zero is not across it either', { p10: -100, p50: -50, p90: 0 }, { p10: -80, p50: -40, p90: -20 }, -115, 0, false],
     // low -500, high -100, span 400.
     ['all below zero: no line at zero', { p10: -500, p50: -300, p90: -100 }, { p10: -400, p50: -200, p90: -100 }, -560, -80, false],
     // span 5% of 1000.
     ['no spread: the span is 5% of the top', { p10: 1000, p50: 1000, p90: 1000 }, { p10: 1000, p50: 1000, p90: 1000 }, 992.5, 1002.5, false],
     // span 5% of the size of -1000.
     ['no spread below zero: 5% of the top’s size', { p10: -1000, p50: -1000, p90: -1000 }, { p10: -1000, p50: -1000, p90: -1000 }, -1007.5, -997.5, false],
-    // span 1.
-    ['nothing at all: the span is 1, and zero is marked', { p10: 0, p50: 0, p90: 0 }, { p10: 0, p50: 0, p90: 0 }, -0.15, 0.05, true],
+    // span 1: the scale starts at zero and still has width (#881).
+    ['nothing at all: the span is 1, from zero, and no line at zero', { p10: 0, p50: 0, p90: 0 }, { p10: 0, p50: 0, p90: 0 }, 0, 0.05, false],
     // low 1000, high 1010: span max(10, 50.5) = 50.5.
     ['a small spread far from zero still spans 5% of the top', { p10: 1000, p50: 1005, p90: 1010 }, { p10: 1002, p50: 1004, p90: 1008 }, 992.425, 1012.525, false],
     // low 0.2, high 0.6: span max(0.4, 0.03, 1) = 1.

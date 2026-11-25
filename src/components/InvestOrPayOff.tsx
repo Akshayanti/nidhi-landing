@@ -84,7 +84,7 @@ function loadHistory(url: string): Promise<CompactHistory> {
 }
 
 /** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
-export function pct(v: number, locale: string, digits = 1): string {
+function pct(v: number, locale: string, digits = 1): string {
   return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
 }
 
@@ -175,6 +175,9 @@ export default function InvestOrPayOff({
   // head, moved it out of the address bar into a window property before
   // analytics started; it is read from there, never from window.location.
   const [hydrated, setHydrated] = useState(false);
+  // The form a shared link opened, while it is still untouched: its result
+  // can arrive after the page opens, when the link's history loads.
+  const [linkForm, setLinkForm] = useState<typeof form | null>(null);
   useEffect(() => {
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
     const decoded = typeof raw === 'string' ? decodeState(raw) : null;
@@ -187,6 +190,7 @@ export default function InvestOrPayOff({
     setForm(arrived);
     setSettled(shared);
     setSettledForm(arrived);
+    setLinkForm(arrived);
     setAsked(true);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
@@ -279,10 +283,13 @@ export default function InvestOrPayOff({
   }, [JSON.stringify(inputs), problem]);
 
   useEffect(() => {
-    if (!asked || hasErrors || !computed || calculatedSent.current) return;
+    // Only a comparison that has settled: a link with a box that cannot be
+    // read is \`asked\` already, and a fix to that box must still wait for
+    // the pause like any other edit.
+    if (!asked || hasErrors || !computed || form !== settledForm || calculatedSent.current) return;
     calculatedSent.current = true;
     track('free_invest_or_pay_off_calculated');
-  }, [asked, hasErrors, computed]);
+  }, [asked, hasErrors, computed, form, settledForm]);
 
   const update = (key: TextKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -552,7 +559,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
-        quiet={!hydrated}
+        quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix

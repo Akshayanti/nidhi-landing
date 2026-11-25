@@ -112,6 +112,24 @@ describe('invest or pay off, as time passes', () => {
     assert.equal(calculated(), 0);
   });
 
+  it('a link with a box that cannot be read is counted only once its fix has settled (#882)', async () => {
+    w[SHARED_STATE_GLOBAL] = 'b=oops&i=2';
+    mount();
+    await turn();
+    clock.pass(2000);
+    assert.equal(calculated(), 0, 'counted while a box could not be read');
+    const balance = screen.getByLabelText(island.fields.balance);
+    fireEvent.change(balance, { target: { value: '42000' } });
+    assert.equal(calculated(), 0, 'counted before the fix settled');
+    clock.pass(100);
+    fireEvent.change(balance, { target: { value: 'x' } });
+    clock.pass(2000);
+    assert.equal(calculated(), 0, 'counted for a fix that was undone before the pause');
+    fireEvent.change(balance, { target: { value: '42000' } });
+    clock.pass(250);
+    assert.equal(calculated(), 1);
+  });
+
   it('the reader’s own inputs are counted once they settle, and the new result is said', async () => {
     mount();
     await turn();

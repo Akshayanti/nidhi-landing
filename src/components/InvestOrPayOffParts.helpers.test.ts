@@ -27,11 +27,11 @@ afterEach(() => {
 });
 
 describe('a percentage as the page writes it', () => {
-  it('one decimal at most, none when it is whole', () => {
+  it('one decimal at most, none when it is whole, below zero with the true minus (#884)', () => {
     assert.equal(pct(6.7, 'en'), '6.7%');
     assert.equal(pct(6.789, 'en'), '6.8%');
     assert.equal(pct(5, 'en'), '5%');
-    assert.equal(pct(-1.25, 'en'), '-1.3%');
+    assert.equal(pct(-1.25, 'en'), '−1.3%');
   });
 
   it('as many decimals as asked for, in the page’s own marks', () => {
