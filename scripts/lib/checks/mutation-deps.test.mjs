@@ -64,6 +64,19 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     ]);
   });
 
+  it('the same fs function loaded twice, in two functions, is still followed; writes and fs.constants do not widen', () => {
+    const { reads, opaque } = at(`
+      import fs from 'node:fs';
+      async function a() { const { readFileSync } = await import('node:fs'); return readFileSync('a.css'); }
+      async function b() { const { readFileSync } = await import('node:fs'); return readFileSync('b.css'); }
+      fs.writeFileSync('/tmp/x', '');
+      fs.mkdtempSync('/tmp/y');
+      fs.accessSync('c.txt', fs.constants.R_OK);
+    `);
+    assert.deepEqual(opaque, []);
+    assert.deepEqual(reads.map((v) => v.s), ['a.css', 'b.css', 'c.txt']);
+  });
+
   it('a destructured load of node:fs is followed, not counted as handing it on', () => {
     const { reads, opaque } = at("const { readFileSync } = await import('node:fs');\nreadFileSync(new URL('./a.css', import.meta.url), 'utf8');\n");
     assert.deepEqual(opaque, []);
@@ -118,6 +131,17 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
       ["const { readFileSync } = await import('node:fs'); use({ read: readFileSync });", /hands on readFileSync/],
       ["import { readFileSync } from 'node:fs'; readFileSync('a', { ...opts });", /options/],
       ['this is not code (', /cannot be parsed/],
+      // Council round 1 (DeepSeek, Codex): shadowed names, handed-on members, unknown functions.
+      ["import { readFileSync } from 'node:fs'; import { join } from 'node:path'; function read(join) { return readFileSync(join('src', 'decoy.json')); }", /name join .* declared again/],
+      ["import { readFileSync } from 'node:fs'; function f(readFileSync) { return readFileSync('a.json'); }", /name readFileSync .* declared again/],
+      ["import fs from 'node:fs'; const g = (fs) => fs.readFileSync('a.json');", /name fs .* declared again/],
+      ["import { fileURLToPath } from 'node:url'; import { readFileSync } from 'node:fs'; { const fileURLToPath = (u) => 'x'; readFileSync(fileURLToPath(new URL('./a', import.meta.url))); }", /name fileURLToPath .* declared again/],
+      ["import fs from 'node:fs'; const read = fs.readFileSync; read('src/cases.json');", /takes readFileSync off a file-system module/],
+      ["import fs from 'node:fs'; const read = fs.promises.readFile; read('a');", /takes readFile off/],
+      ["import fs from 'node:fs'; fs['readFileSync']('a');", /computed member/],
+      ["import fs from 'node:fs'; const { readFileSync: r } = fs; r('a');", /hands on the module fs/],
+      ["import fg from 'fast-glob'; fg.sync('src/data/*.json');", /calls sync on a file-system module/],
+      ["import fg from 'fast-glob'; fg('src/data/*.json');", /calls the module fg itself/],
     ]) {
       assert.match(at(text).opaque.join('; '), reason, text);
     }

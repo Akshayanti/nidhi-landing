@@ -59,6 +59,17 @@ const FS_FUNCTIONS = new Set([
   'opendirSync', 'opendir', 'createReadStream', 'globSync', 'glob', 'accessSync', 'access', 'realpathSync', 'realpath',
   'readlinkSync', 'readlink', 'openSync', 'open', 'watch', 'watchFile', 'cpSync', 'cp', 'copyFileSync', 'copyFile',
 ]);
+/**
+ * File-system functions that read nothing of the project (they write,
+ * create, remove or close): calling one does not widen. Anything else
+ * called on a file-system module that is not in FS_FUNCTIONS widens.
+ */
+const FS_WRITES = new Set([
+  'writeFileSync', 'writeFile', 'appendFileSync', 'appendFile', 'mkdirSync', 'mkdir', 'mkdtempSync', 'mkdtemp',
+  'rmSync', 'rm', 'rmdirSync', 'rmdir', 'unlinkSync', 'unlink', 'renameSync', 'rename', 'symlinkSync', 'symlink',
+  'chmodSync', 'chmod', 'utimesSync', 'utimes', 'truncateSync', 'truncate', 'closeSync', 'close', 'writeSync', 'write',
+  'fsyncSync', 'fsync',
+]);
 const PARSEABLE = /\.(ts|tsx|mts|cts|js|mjs|cjs|jsx)$/;
 const EXTENSIONS = ['.ts', '.tsx', '.mts', '.js', '.mjs', '.cjs', '.jsx', '.json'];
 
@@ -168,6 +179,11 @@ export function analyse(text, file, root) {
   // (a Promise's resolve, an array helper) is not a path at all.
   const PATH_MODULES = new Set(['path', 'node:path', 'path/posix', 'node:path/posix']);
   const URL_MODULES = new Set(['url', 'node:url']);
+  // How often each name was bound to a known function or module. A name
+  // declared more often than that is shadowed somewhere (a parameter, a
+  // local), and a use of it may be the other binding: it widens, below.
+  const boundAs = new Map();
+  const bound = (name) => boundAs.set(name, (boundAs.get(name) ?? 0) + 1);
   const pathFunctions = new Map(); // local name -> join | resolve | dirname
   const pathSpaces = new Set(); // local names of the module, or of its posix/win32
   const urlFunctions = new Set(); // local names of fileURLToPath
@@ -176,14 +192,14 @@ export function analyse(text, file, root) {
     const from = node.source.value;
     if (PATH_MODULES.has(from)) {
       for (const sp of node.specifiers) {
-        if (sp.type !== 'ImportSpecifier') { pathSpaces.add(sp.local.name); continue; }
+        if (sp.type !== 'ImportSpecifier') { pathSpaces.add(sp.local.name); bound(sp.local.name); continue; }
         const name = sp.imported.name ?? sp.imported.value;
-        if (name === 'posix' || name === 'win32' || name === 'default') pathSpaces.add(sp.local.name);
-        else if (name === 'join' || name === 'resolve' || name === 'dirname') pathFunctions.set(sp.local.name, name);
+        if (name === 'posix' || name === 'win32' || name === 'default') { pathSpaces.add(sp.local.name); bound(sp.local.name); }
+        else if (name === 'join' || name === 'resolve' || name === 'dirname') { pathFunctions.set(sp.local.name, name); bound(sp.local.name); }
       }
     } else if (URL_MODULES.has(from)) {
       for (const sp of node.specifiers) {
-        if (sp.type === 'ImportSpecifier' && (sp.imported.name ?? sp.imported.value) === 'fileURLToPath') urlFunctions.add(sp.local.name);
+        if (sp.type === 'ImportSpecifier' && (sp.imported.name ?? sp.imported.value) === 'fileURLToPath') { urlFunctions.add(sp.local.name); bound(sp.local.name); }
       }
     }
   });
@@ -337,14 +353,14 @@ export function analyse(text, file, root) {
     return Boolean(v?.exact && FS_MODULES.has(v.s));
   };
   const bindPattern = (pattern) => {
-    if (pattern.type === 'Identifier') { fsSpaces.add(pattern.name); return; }
+    if (pattern.type === 'Identifier') { fsSpaces.add(pattern.name); bound(pattern.name); return; }
     if (pattern.type !== 'ObjectPattern') { opaque.push('binds a file-system module in a way this analysis does not follow'); return; }
     for (const prop of pattern.properties) {
       if (prop.type !== 'ObjectProperty' || prop.computed) { opaque.push('binds a file-system module in a way this analysis does not follow'); continue; }
       const name = prop.key.name ?? prop.key.value;
       const local = prop.value.type === 'AssignmentPattern' ? prop.value.left : prop.value;
       if (name === 'promises') bindPattern(local);
-      else if (local.type === 'Identifier') fsNames.set(local.name, name);
+      else if (local.type === 'Identifier') { fsNames.set(local.name, name); bound(local.name); }
       else opaque.push('binds a file-system module in a way this analysis does not follow');
     }
   };
@@ -356,6 +372,7 @@ export function analyse(text, file, root) {
         // `import { promises as fsp }` is the whole module again, by another name.
         if (imported === null || imported === 'promises' || imported === 'default') fsSpaces.add(sp.local.name);
         else fsNames.set(sp.local.name, imported);
+        bound(sp.local.name);
       }
     } else if (node.type === 'VariableDeclarator' && node.init && isFsLoad(node.init)) {
       bindPattern(node.id);
@@ -377,11 +394,40 @@ export function analyse(text, file, root) {
     return obj.type === 'Identifier' && fsSpaces.has(obj.name) ? callee.property.name : null;
   };
 
+  for (const [name, n] of boundAs) {
+    if ((declared.get(name)?.length ?? 0) !== n) opaque.push(`the name ${name} of a file-system or path function is declared again`);
+  }
+
+  /** The module a member expression is taken from (`fs.x`, `fs.promises.x`), or null. */
+  const fsBase = (member) => {
+    let obj = member.object;
+    if (obj.type === 'MemberExpression' && !obj.computed && obj.property.name === 'promises') obj = obj.object;
+    return obj.type === 'Identifier' && fsSpaces.has(obj.name) ? obj.name : null;
+  };
+
   if (fsNames.size > 0 || fsSpaces.size > 0) {
     visit(ast.program, (node, parent, key) => {
-      if (node.type === 'CallExpression') {
+      if ((node.type === 'MemberExpression' || node.type === 'OptionalMemberExpression') && fsBase(node) !== null) {
+        // Taken off a file-system module: a direct call is read below;
+        // `fs.promises` and `fs.constants` lead on to another member;
+        // anything else (a computed name, a function taken as a value) widens.
+        const prop = node.computed ? null : node.property.name;
+        const isCallee = (parent?.type === 'CallExpression' || parent?.type === 'OptionalCallExpression') && key === 'callee';
+        const leadsOn = (prop === 'promises' || prop === 'constants') && (parent?.type === 'MemberExpression' || parent?.type === 'OptionalMemberExpression') && key === 'object';
+        if (prop === null) opaque.push('takes a computed member of a file-system module');
+        else if (!isCallee && !leadsOn) opaque.push(`takes ${prop} off a file-system module as a value`);
+      }
+      if (node.type === 'CallExpression' || node.type === 'OptionalCallExpression') {
+        if (node.callee.type === 'Identifier' && fsSpaces.has(node.callee.name)) {
+          opaque.push(`calls the module ${node.callee.name} itself`);
+          return;
+        }
         const name = fsFunction(node.callee);
-        if (name === null || !FS_FUNCTIONS.has(name)) return;
+        if (name === null) return;
+        if (!FS_FUNCTIONS.has(name)) {
+          if (!FS_WRITES.has(name)) opaque.push(`calls ${name} on a file-system module, which this analysis does not follow`);
+          return;
+        }
         const [first, second] = node.arguments;
         const paths = [];
         const option = (obj, prop) => obj?.type === 'ObjectExpression'
