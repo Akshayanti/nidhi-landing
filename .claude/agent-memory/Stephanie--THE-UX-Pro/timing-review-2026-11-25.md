@@ -12,3 +12,5 @@ Invest or pay off `quiet={!hydrated}` (ed43f3b, #880) only covers links whose co
 **How to apply:** for any "silent on load" fix, ask what else arrives after mount (history, rates, fonts) and test a link that needs it.
 
 Probe recipe without touching the tree: copy a committed test with `git show`, rewrite relative imports to absolute worktree paths, import `@testing-library/react` via `node_modules/.../dist/index.js` and add `import React` (tsconfig JSX settings do not apply outside the tree), run `npx tsx --test --test-name-pattern=PROBE <scratch file>` from the worktree. Related: [[announce-review-2026-11-20]], [[numbers-review-2026-11-25]].
+
+Follow-up 25 Nov 12:17: fix applied (`linkForm` state + `quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}`), re-probed: silent while loading and after, the reader's next edit is said. SIGNED OFF. A parallel agent editing the same tree removed the new regression test mid-review: re-list `it(` names before trusting a coordinator's "new test added".

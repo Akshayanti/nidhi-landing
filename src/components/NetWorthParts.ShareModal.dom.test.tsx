@@ -235,6 +235,9 @@ describe('the share dialog', () => {
     const box = urlBox();
     assert.ok(box !== null);
     assert.equal(box.value, link);
+    // The link is the field's value, never an attribute of the page's markup.
+    assert.ok(box.getAttribute('value') === null);
+    assert.ok(!document.body.innerHTML.includes(link.split('#')[1]!));
     assert.equal(box.readOnly, true);
     assert.equal(box.getAttribute('aria-label'), 'Shareable link URL');
     assert.equal(one('.mcnw-shareUrlLabel').textContent, 'Link copied to clipboard');

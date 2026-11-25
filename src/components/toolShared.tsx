@@ -13,7 +13,7 @@
  * 2. The lead-in of a field error ("Error: …"), so an error is told apart
  *    from help text by more than its colour, in every language.
  */
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
 import { resultGate } from '../utils/shared/settle.ts';
 
 /** False in the server-rendered page and on the first render; true once the island runs. */
@@ -165,4 +165,34 @@ export function useResultGate(invalid: boolean, current: boolean): { withheld: b
   // Set while rendering, so that no frame shows what is held.
   if (gate.withheld !== held) setHeld(gate.withheld);
   return gate;
+}
+
+type LinkFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'readOnly' | 'ref'> & {
+  /** The share link to show and select. */
+  link: string;
+  ref?: Ref<HTMLInputElement>;
+};
+
+/**
+ * A read-only box holding a share link. The link is set as the field's value
+ * property, never as its `value` attribute (which React writes for a
+ * controlled input), so the page's markup never carries a link's state: no
+ * attribute should hold what a reader typed (CLAUDE.md, free tools rule 4).
+ */
+export function LinkField({ link, ref, ...rest }: LinkFieldProps) {
+  const own = useRef<HTMLInputElement | null>(null);
+  useLayoutEffect(() => {
+    if (own.current && own.current.value !== link) own.current.value = link;
+  }, [link]);
+  return (
+    <input
+      {...rest}
+      readOnly
+      ref={(el) => {
+        own.current = el;
+        if (typeof ref === 'function') ref(el);
+        else if (ref) ref.current = el;
+      }}
+    />
+  );
 }

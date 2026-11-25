@@ -70,7 +70,7 @@ import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -1482,10 +1482,9 @@ export default function LoanCompare({
           shareUrl && (
             <div className="lc-shareUrlBar">
               <span className="lc-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedBar}</span>
-              <input
+              <LinkField
                 className="lc-shareUrlInput"
-                value={shareUrl}
-                readOnly
+                link={shareUrl}
                 onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
                 aria-label={strings.toolbar.shareUrlAria}
               />
