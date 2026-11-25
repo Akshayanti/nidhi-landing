@@ -17,6 +17,16 @@ describe('the order of a mutation run’s test files', () => {
     assert.equal(testCost('src/components/MonteCarloSimulator.chart-wide.dom.test.tsx', TOOLS), 2);
   });
 
+  it('counts a parts file\'s page tests as a whole tool, and its other parts as parts', () => {
+    assert.equal(testCost('src/components/NetWorthParts.page.dom.test.tsx', TOOLS), 2);
+    assert.equal(testCost('src/components/NetWorthParts.page.share.rows.dom.test.tsx', TOOLS), 2);
+    assert.equal(testCost('src/components/MonteCarloParts.page-form.dom.test.tsx', TOOLS), 2);
+    assert.equal(testCost('src/components/InvestOrPayOffParts.page.history.dom.test.tsx', TOOLS), 2);
+    assert.equal(testCost('src/components/NetWorthParts.PrintedReport.dom.test.tsx', TOOLS), 1);
+    assert.equal(testCost('src/components/NetWorthParts.pageless.dom.test.tsx', TOOLS), 1);
+    assert.equal(testCost('src/components/NetWorthParts.helpers.test.ts', TOOLS), 0);
+  });
+
   it('does not take a part for a whole tool because their names begin alike', () => {
     assert.equal(testCost('src/components/LoanCompareRow.dom.test.tsx', TOOLS), 1);
     assert.equal(testCost('src/components/MonteCarloSimulator.test.ts', TOOLS), 0);

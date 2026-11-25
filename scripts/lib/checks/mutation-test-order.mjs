@@ -17,10 +17,17 @@
 // first comes first, RuntimeError if the second does), since Stryker stops
 // at either.
 
-/** 0 for a test with no browser, 1 for one that mounts a part, 2 for one that mounts a whole tool. */
+/**
+ * 0 for a test with no browser, 1 for one that mounts a part, 2 for one that
+ * mounts a whole tool: `<Tool>.<...>.dom.test.tsx`, or a parts file's page
+ * tests, `<Name>Parts.page<.or->...dom.test.tsx`, which mount the whole page
+ * too. Named as a part, those ran before every cheap part test below them in
+ * path order, so a mutant in shared code waited for several pages to mount.
+ */
 export function testCost(file, wholeTools) {
   const name = file.split('/').pop();
   if (!/\.dom\.test\.tsx?$/.test(name)) return 0;
+  if (/^[A-Z]\w*Parts\.page[.-]/.test(name)) return 2;
   return wholeTools.some((tool) => name.startsWith(`${tool}.`)) ? 2 : 1;
 }
 
