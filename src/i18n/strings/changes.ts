@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-25',
     items: [
       {
+        id: 'home-planner-button-cookie-answers',
+        text: {
+          en: 'The home page gives the planner a button again, right after “Read lesson 1”, and both buttons now come before the introduction, so they are easier to find on a small phone. The cookie question’s two answers are easier to reach too: on most screens they stay at the bottom of the panel while its words scroll above them, and on a phone the panel is a little shorter.',
+          hi: 'होम पेज पर प्लानर को फिर से अपना बटन मिला है, “पाठ 1 पढ़ें” के ठीक बाद, और दोनों बटन अब परिचय से पहले आते हैं, ताकि छोटे फोन पर वे आसानी से दिखें। कुकी वाले सवाल के दोनों जवाबों तक पहुँचना भी अब आसान है: ज़्यादातर स्क्रीन पर वे सवाल वाले हिस्से में सबसे नीचे टिके रहते हैं और उसके शब्द उनके ऊपर स्क्रॉल होते हैं, और फोन पर यह हिस्सा थोड़ा छोटा भी है।',
+          es: 'La página de inicio vuelve a dar al planificador un botón propio, justo después de «Leer la lección 1», y los dos botones van ahora antes de la introducción, para que sea más fácil verlos en un teléfono pequeño. También es más fácil llegar a las dos respuestas de la pregunta sobre cookies: en la mayoría de las pantallas se quedan en la parte de abajo del panel mientras el texto se desplaza por encima, y en un teléfono el panel es un poco más bajo.',
+          cs: 'Na úvodní stránce má plánovač znovu vlastní tlačítko, hned za „Přečíst lekci 1“, a\u00a0obě tlačítka jsou teď před úvodním textem, aby byla na malém telefonu lépe vidět. Snáz se teď dostanete i\u00a0k\u00a0oběma odpovědím na otázku na cookies: na většině obrazovek zůstávají u\u00a0spodního okraje panelu, zatímco se text posouvá nad nimi, a\u00a0na telefonu je panel o\u00a0něco nižší.',
+          mr: 'मुख्यपृष्ठावर प्लॅनरला पुन्हा स्वतःचे बटण मिळाले आहे, “धडा 1 वाचा” नंतर लगेच, आणि दोन्ही बटणे आता प्रस्तावनेच्या आधी येतात, जेणेकरून लहान फोनवर ती सहज दिसतील. कुकीविषयीच्या प्रश्नाच्या दोन्ही उत्तरांपर्यंत पोहोचणेही आता सोपे झाले आहे: बहुतेक स्क्रीनवर ती प्रश्नाच्या भागात सर्वात खाली राहतात आणि त्याचा मजकूर त्यांच्या वर सरकतो, आणि फोनवर हा भाग थोडा लहान आहे.',
+        },
+      },
+      {
         id: 'swiss-franc-true-minus',
         text: {
           en: 'In the net worth calculator and Invest or pay off, a negative amount in Swiss francs now has a true minus sign, as other currencies already did: “CHF−1,650”, not “CHF-1,650”. A screen reader could skip the hyphen after the currency code, so an amount owed, or a gap in favour of paying off, could be heard as a positive amount.',
