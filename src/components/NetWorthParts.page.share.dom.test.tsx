@@ -3,7 +3,8 @@
  * link or a switched list arriving through the window property the page head
  * fills (never the address), rows that cannot be read, the CSV import and its
  * confirmation, the example, the reset, the share dialog and the exports.
- * The form, the rows and the exchange rates are in NetWorthParts.page.dom.test.tsx.
+ * The form, the rows and the exchange rates are in NetWorthParts.page.dom.test.tsx,
+ * and a list of five hundred rows in NetWorthParts.page.share.rows.dom.test.tsx.
  *
  * Throughout: the address is never written, a link carries state after the
  * `#` only, and analytics get choices and counts, never a typed name or
@@ -470,19 +471,5 @@ describe('the net worth calculator on its page: links, files, sharing and export
     assert.equal(all('.mcnw-banner.mcnw-bannerInfo').filter((b) => b.textContent === island.shared.readOnly).length, 0);
     // The form is the reader's own again: the example is offered.
     assert.equal(exampleButton()?.textContent, island.example.show);
-  });
-
-  // Last, as it is the slowest: five hundred rows to draw.
-  it('five hundred rows: a CSV of exactly that many is taken, and no row more can be added', async () => {
-    mount();
-    await upload(csvLines(500));
-    const add = addButton();
-    assert.equal(ariaDisabled(add), true);
-    const limit = one('.mcnw-tableFooter > p.mcnw-limit');
-    assert.equal(add.getAttribute('aria-describedby'), limit.id);
-    assert.equal(limit.textContent, fill(tb.addLimit, { max: 500 }));
-    fireEvent.click(add);
-    assert.equal(all('.mcnw-tableBody .mcnw-tableRow').length, 500);
-    assert.deepEqual(events, [['free_multi_currency_net_worth_csv_uploaded', { count: 500 }]]);
   });
 });
