@@ -64,6 +64,12 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
     ]);
   });
 
+  it('a destructured load of node:fs is followed, not counted as handing it on', () => {
+    const { reads, opaque } = at("const { readFileSync } = await import('node:fs');\nreadFileSync(new URL('./a.css', import.meta.url), 'utf8');\n");
+    assert.deepEqual(opaque, []);
+    assert.equal(reads.length, 2);
+  });
+
   it('sees fs.promises, `promises as`, a namespace and a default import', () => {
     const { reads } = at(`
       import fs from 'node:fs';
@@ -108,6 +114,8 @@ describe('what a file reaches, from its syntax tree (#891)', () => {
       ['const p = require.resolve("./x");', /require\.resolve/],
       ["import { readFileSync } from 'node:fs'; const read = readFileSync; read('a');", /hands on readFileSync/],
       ["import * as fs from 'node:fs'; use(fs);", /hands on the module fs/],
+      ["import { readFileSync } from 'node:fs'; use({ readFileSync });", /hands on readFileSync/],
+      ["const { readFileSync } = await import('node:fs'); use({ read: readFileSync });", /hands on readFileSync/],
       ["import { readFileSync } from 'node:fs'; readFileSync('a', { ...opts });", /options/],
       ['this is not code (', /cannot be parsed/],
     ]) {

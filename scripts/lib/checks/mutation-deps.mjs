@@ -439,9 +439,11 @@ function isValueUse(node, parent, key) {
   if (parent.type === 'OptionalMemberExpression' && key === 'property' && !parent.computed) return false;
   if (parent.type === 'ImportSpecifier' || parent.type === 'ImportDefaultSpecifier' || parent.type === 'ImportNamespaceSpecifier') return false;
   if (parent.type === 'ExportSpecifier') return true;
-  if (parent.type === 'ObjectProperty' && key === 'key' && !parent.computed && !parent.shorthand) return false;
-  // `const { readFileSync } = ...` is a declaration, not a use.
-  if (parent.type === 'ObjectProperty' && parent.shorthand && key === 'value') return false;
+  // A key names a property, never a value (babel gives a shorthand `{ a }`
+  // a key node and a value node of its own). The value is a use: in a
+  // pattern (`const { readFileSync } = ...`) it is a binding, which the
+  // caller has already left out; in an object literal it hands the value on.
+  if (parent.type === 'ObjectProperty' && key === 'key' && !parent.computed) return false;
   if (parent.type === 'ObjectProperty' && key === 'value') return true;
   if (parent.type === 'VariableDeclarator' && key === 'id') return false;
   if (parent.type === 'FunctionDeclaration' || parent.type === 'ClassMethod' || parent.type === 'ObjectMethod' || parent.type === 'TSDeclareFunction') return false;
