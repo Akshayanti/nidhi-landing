@@ -255,10 +255,17 @@ jobs:
     if: inputs.suite == 'mutation'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # Read only: on a push, which pull request the commit came from, that
+    # pull request's runs, their jobs and artifacts (below).
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
     outputs:
       shards: ${{ steps.shards.outputs.shards }}
       fingerprint: ${{ steps.fingerprint.outputs.fingerprint }}
-      run: ${{ steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}
+      run: ${{ steps.reuse.outputs.run || steps.inputs.outputs.run || steps.pushed.outputs.run || 'true' }}
+      seed: ${{ steps.reuse.outputs.seed }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -336,6 +343,82 @@ jobs:
               Array.from({ length: n }, (_, i) => ({ scope, shard: i + 1, of: n, name: n === 1 ? scope : `${scope}-${i + 1}of${n}` })));
             require("fs").appendFileSync(process.env.GITHUB_OUTPUT, `shards=${JSON.stringify(list)}\n`);
           '
+
+      # What this pull request's run tests, for the merge to main to compare
+      # with (scripts/lib/checks/mutation-reuse.mjs): an artifact whose name
+      # holds the tested tree (the merge ref's), its base tree and the
+      # fingerprint. Its content is the same three, for a reader.
+      - name: Note what this run tests
+        id: manifest
+        if: github.event_name == 'pull_request'
+        env:
+          FINGERPRINT: ${{ steps.fingerprint.outputs.fingerprint }}
+        run: |
+          tree=$(git rev-parse 'HEAD^{tree}')
+          base=$(git rev-parse 'HEAD^1^{tree}')
+          name=$(node --input-type=module -e '
+            import { manifestName } from "./scripts/lib/checks/mutation-reuse.mjs";
+            process.stdout.write(manifestName({ tree: process.argv[1], baseTree: process.argv[2], fingerprint: process.argv[3] }));
+          ' "$tree" "$base" "$FINGERPRINT")
+          mkdir -p "$RUNNER_TEMP/manifest"
+          printf 'tree %s\nbase %s\nfingerprint %s\n' "$tree" "$base" "$FINGERPRINT" > "$RUNNER_TEMP/manifest/manifest.txt"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the note
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ steps.manifest.outputs.name }}
+          path: ${{ runner.temp }}/manifest/manifest.txt
+          retention-days: 7
+          if-no-files-found: error
+
+      # A merge to main: a pull request's cache cannot be read from main, so
+      # without this the push run would test again exactly what the pull
+      # request's last run tested. When that run counts (mutation-reuse.mjs
+      # says when), no shard runs here, the gate passes because the plan says
+      # so, and mutation-seed copies each shard's results into main's cache.
+      # Anything it cannot read or check runs every shard, as before.
+      - name: Whether the pull request's last run already tested this code
+        id: reuse
+        if: github.event_name == 'push' && steps.pushed.outputs.run != 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          FINGERPRINT: ${{ steps.fingerprint.outputs.fingerprint }}
+          SHARDS: ${{ steps.shards.outputs.shards }}
+        run: |
+          dir="$RUNNER_TEMP/reuse"
+          mkdir -p "$dir"
+          tree=$(git rev-parse 'HEAD^{tree}')
+          base=$(git rev-parse 'HEAD^1^{tree}' 2>/dev/null || echo none)
+          if ! gh api "repos/$REPO/commits/$SHA/pulls" > "$dir/pulls.json"; then echo "The pull request could not be read: every shard runs."; exit 0; fi
+          head=$(node -e 'const p = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); const m = Array.isArray(p) ? p.filter((x) => x && x.merged_at) : []; process.stdout.write(m.length === 1 && /^[0-9a-f]{40}$/.test(m[0].head?.sha ?? "") ? m[0].head.sha : "")' "$dir/pulls.json")
+          if [ -z "$head" ]; then echo "No single merged pull request leads here: every shard runs."; exit 0; fi
+          if ! gh api "repos/$REPO/actions/runs?head_sha=$head&event=pull_request&per_page=100" > "$dir/runs.json"; then echo "The runs could not be read: every shard runs."; exit 0; fi
+          run=$(node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).workflow_runs ?? []; const o = r.filter((x) => x.path === ".github/workflows/pr-checks.yml").sort((a, b) => b.run_number - a.run_number || b.id - a.id)[0]; process.stdout.write(o ? `${o.id} ${o.run_attempt}` : "")' "$dir/runs.json")
+          if [ -n "$run" ]; then
+            set -- $run
+            gh api "repos/$REPO/actions/runs/$1/attempts/$2/jobs?per_page=100" > "$dir/jobs-$1-$2.json" || true
+            gh api "repos/$REPO/actions/runs/$1/artifacts?per_page=100" > "$dir/artifacts-$1.json" || true
+          fi
+          node --input-type=module -e '
+            import { existsSync, readFileSync, appendFileSync } from "node:fs";
+            import { decideReuse } from "./scripts/lib/checks/mutation-reuse.mjs";
+            const [dir, repo, tree, baseTree, fingerprint, shardsJson] = process.argv.slice(1);
+            const read = (f) => { try { return existsSync(f) ? JSON.parse(readFileSync(f, "utf8")) : null; } catch { return null; } };
+            const answer = decideReuse({
+              repo, tree, baseTree, fingerprint,
+              pulls: read(`${dir}/pulls.json`),
+              runs: read(`${dir}/runs.json`),
+              jobsOf: (id, attempt) => read(`${dir}/jobs-${id}-${attempt}.json`),
+              artifactsOf: (id) => read(`${dir}/artifacts-${id}.json`),
+              shards: JSON.parse(shardsJson).map((s) => s.name),
+            });
+            console.log(`${answer.reuse ? "Taken" : "Not taken"}: ${answer.reason}.`);
+            if (answer.reuse) appendFileSync(process.env.GITHUB_OUTPUT, `run=false\nseed=${answer.runId}\n`);
+          ' "$dir" "$REPO" "$tree" "$base" "$FINGERPRINT" "$SHARDS"
 
   mutation-shard:
     name: 'Mutation: ${{ matrix.name }}'
@@ -536,6 +619,18 @@ jobs:
           path: reports/stryker-incremental/${{ matrix.name }}.json
           key: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
 
+      # The same results as an artifact, for the merge to main (its cache
+      # cannot read this pull request's): mutation-seed copies them over.
+      # Not named mutation-*, which the floors job collects as reports.
+      - name: Keep the results for the merge
+        if: ${{ always() && steps.kept.outputs.keep == 'true' && github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: stryker-incremental-${{ matrix.name }}
+          path: reports/stryker-incremental/${{ matrix.name }}.json
+          retention-days: 7
+          if-no-files-found: error
+
       # Incremental mode also writes earlier results for mutants outside this
       # shard; left in, a mutant that moved shards would be counted twice.
       - name: Keep only this shard's mutants
@@ -621,6 +716,61 @@ jobs:
             echo "::error::Free tools mutation testing did not pass (or did not run). See the jobs above."
             exit 1
           fi
+
+  # A merge whose pull request's last run already tested this exact code
+  # (mutation-plan's reuse step): each shard's results from that run go into
+  # main's cache, so later pull requests start from them. Only parsed and
+  # saved, never run. A shard whose results are not there (expired, or the
+  # shard kept none) is not seeded, and the nightly run seeds it. The gate
+  # does not wait for this job: it only fills a cache.
+  mutation-seed:
+    name: 'Mutation results from the pull request: ${{ matrix.name }}'
+    needs: mutation-plan
+    if: ${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.mutation-plan.outputs.shards) }}
+    steps:
+      # gh run download, not the download action: an artifact that expired or
+      # went since the plan looked is then a shard not seeded, never a
+      # failed job on main.
+      - name: The pull request's results
+        id: there
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN: ${{ needs.mutation-plan.outputs.seed }}
+          NAME: stryker-incremental-${{ matrix.name }}
+        run: |
+          if gh run download "$RUN" --name "$NAME" --dir reports/stryker-incremental; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not kept by run $RUN, or no longer there: not seeded."
+          fi
+
+      - name: They are results
+        id: valid
+        if: steps.there.outputs.found == 'true'
+        env:
+          FILE: reports/stryker-incremental/${{ matrix.name }}.json
+        run: |
+          if node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r || typeof r !== "object" || !r.files || typeof r.files !== "object") process.exit(1);' "$FILE"; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not a results file: not seeded."
+          fi
+
+      - name: Into main's cache
+        if: steps.valid.outputs.ok == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: reports/stryker-incremental/${{ matrix.name }}.json
+          key: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
 
   # ===========================================================================
   # Text size: the free tools at large text (#790, #791;

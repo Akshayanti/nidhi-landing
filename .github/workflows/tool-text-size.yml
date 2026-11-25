@@ -29,6 +29,13 @@ jobs:
   # after one fails (the suite is fail-fast on pull requests only).
   text-size:
     name: Free tools text size
+    # The suite's mutation jobs read, on a merge, the pull request's runs and
+    # artifacts (tool-suite.yml, mutation-plan and mutation-seed); a called
+    # workflow can ask for no more than its caller grants.
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
     uses: ./.github/workflows/tool-suite.yml
     with:
       suite: text-size
