@@ -317,11 +317,13 @@ jobs:
           if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
 
-      # What a shard's earlier results depend on, once for all shards
-      # (scripts/lib/checks/mutation-fingerprint.mjs): every tracked file but
-      # the test files the run starts, which Stryker compares itself, the
-      # lessons, and what no mutation run reads. A failure here fails the
-      # plan, and with it the gate.
+      # What every shard's earlier results depend on, once for all shards
+      # (scripts/lib/checks/mutation-fingerprint.mjs): every tracked file
+      # outside src/ that a mutation run reads (the dependencies, Node,
+      # Stryker's settings, the runner, the test helpers, the workflows).
+      # The code under src/ is fingerprinted per test file in each shard
+      # instead (#891, mutation-deps.mjs). A failure here fails the plan, and
+      # with it the gate.
       - name: The fingerprint of what the shards run on
         id: fingerprint
         run: |
@@ -463,22 +465,38 @@ jobs:
       # from the latest results saved under the same fingerprint (this pull
       # request's own, or main's) and retests only mutants whose code or
       # tests changed. Stryker compares the code it mutates and the test
-      # files, and nothing else (code a tool imports from elsewhere, the
-      # dependencies, its own settings, the shards, Node, the test helpers,
-      # the data the tests read), so the plan job's fingerprint covers all of
-      # that, and the tools' own code too: a change to any of it starts the
-      # shard afresh. A change to test files alone keeps the earlier results.
+      # files, and nothing else. What every result depends on (the
+      # dependencies, its own settings, the shards, Node, the test helpers)
+      # is in the plan job's fingerprint: a change to any of it starts the
+      # shard afresh. What one test file reaches (the code it imports, the
+      # data it reads) is in that file's own fingerprint, saved beside the
+      # results (#891): the step below makes Stryker see a test file whose
+      # fingerprint changed as changed, so only its mutants are tested again.
       # The nightly run retests everything (STRYKER_FORCE) and saves afresh.
       # The key holds the caller's run id and attempt, so no two runs, or
       # attempts, ever save under one key.
+      #
+      # The results travel with the dependency fingerprints they were saved
+      # with (#891), the same two paths wherever they are restored or saved:
+      # the paths are part of a cache's version, so another list would never
+      # match.
       - name: Earlier results
         id: earlier
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: reports/stryker-incremental/${{ matrix.name }}.json
+          path: |
+            reports/stryker-incremental/${{ matrix.name }}.json
+            reports/stryker-incremental/${{ matrix.name }}.deps.json
           key: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-
 
+      # Before anything else, the test files whose dependencies changed since
+      # the results were saved are marked, so Stryker treats them as edited,
+      # and today's dependency fingerprints are written beside the results
+      # (scripts/lib/checks/mutation-deps.mjs). The note below is taken after
+      # the marks, so the recheck after the run sees those files as edited
+      # too.
+      #
       # The earlier results that are never handed on: a mutant that timed
       # out, or whose test run ended in an error. Stryker would keep such a
       # result after the test that reached it is gone, and a timeout also
@@ -606,7 +624,7 @@ jobs:
           RESTORED: ${{ steps.earlier.outputs.cache-matched-key }}
         run: |
           echo "Earlier results restored from: ${RESTORED:-nothing}"
-          if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1); console.log(`${Object.values(r.files).reduce((n, f) => n + f.mutants.length, 0)} mutant result(s) to keep`);' "$FILE"; then
+          if [ -s "$FILE" ] && [ -s "${FILE%.json}.deps.json" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1); JSON.parse(require("fs").readFileSync(process.argv[2], "utf8")); console.log(`${Object.values(r.files).reduce((n, f) => n + f.mutants.length, 0)} mutant result(s) to keep`);' "$FILE" "${FILE%.json}.deps.json"; then
             echo "keep=true" >> "$GITHUB_OUTPUT"
           else
             echo "Nothing to keep."
@@ -616,7 +634,9 @@ jobs:
         if: ${{ always() && steps.kept.outputs.keep == 'true' }}
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: reports/stryker-incremental/${{ matrix.name }}.json
+          path: |
+            reports/stryker-incremental/${{ matrix.name }}.json
+            reports/stryker-incremental/${{ matrix.name }}.deps.json
           key: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
 
       # The same results as an artifact, for the merge to main (its cache
@@ -627,7 +647,9 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: stryker-incremental-${{ matrix.name }}
-          path: reports/stryker-incremental/${{ matrix.name }}.json
+          path: |
+            reports/stryker-incremental/${{ matrix.name }}.json
+            reports/stryker-incremental/${{ matrix.name }}.deps.json
           retention-days: 7
           if-no-files-found: error
 
@@ -759,18 +781,58 @@ jobs:
         env:
           FILE: reports/stryker-incremental/${{ matrix.name }}.json
         run: |
-          if node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r || typeof r !== "object" || !r.files || typeof r.files !== "object") process.exit(1);' "$FILE"; then
+          if node -e 'const fs = require("fs"); const r = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); if (!r || typeof r !== "object" || !r.files || typeof r.files !== "object") process.exit(1); const d = JSON.parse(fs.readFileSync(process.argv[2], "utf8")); if (!d || typeof d !== "object" || !d.tests || typeof d.tests !== "object" || !d.sources || typeof d.sources !== "object") process.exit(1);' "$FILE" "${FILE%.json}.deps.json"; then
             echo "ok=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Not a results file: not seeded."
+            echo "Not a results file with its dependency fingerprints: not seeded."
           fi
 
       - name: Into main's cache
         if: steps.valid.outputs.ok == 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: reports/stryker-incremental/${{ matrix.name }}.json
+          path: |
+            reports/stryker-incremental/${{ matrix.name }}.json
+            reports/stryker-incremental/${{ matrix.name }}.deps.json
           key: stryker-incremental-${{ matrix.name }}-${{ needs.mutation-plan.outputs.fingerprint }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+  # The check of the shards' per-test-file fingerprints (#891): every test
+  # file a mutation run starts, run with a trace of what it loads and reads
+  # (scripts/check-mutation-deps.mjs). It fails when a test reaches a file
+  # under src/ that its fingerprint leaves out: a change to that file would
+  # not make Stryker test that test's mutants again. Nightly and by hand,
+  # like the forced run beside it, which retests everything and so clears
+  # any result such a gap left stale; a failure opens the nightly issue
+  # (tool-mutation.yml). Not part of the gate, so a pull request spends no
+  # runner on it.
+  mutation-deps-trace:
+    name: 'Mutation: what each test reaches'
+    if: inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The base as well, for the tests that compare with it, as in the shards.
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Each test's fingerprint holds what it reaches
+        env:
+          NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
+        run: node scripts/check-mutation-deps.mjs
 
   # ===========================================================================
   # Text size: the free tools at large text (#790, #791;

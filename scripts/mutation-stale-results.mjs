@@ -10,24 +10,54 @@
 //   lib/checks/mutation-stale-results.mjs). Earlier results that cannot be
 //   read are removed, so the shard starts afresh rather than from a file
 //   nobody can vouch for.
+// - Makes Stryker see as changed every test file whose dependencies
+//   changed since the results were saved (#891; the rule and the reason
+//   are in lib/checks/mutation-deps.mjs), and writes today's dependency
+//   fingerprints beside the results, saved with them.
 // - Notes the test files of the restored results as they were, in a file
 //   beside them, for the recheck after the run (mutation-recheck.mjs; the
 //   rule and the reason are in lib/checks/mutation-recheck.mjs). With no
 //   earlier results, or on a forced run, Stryker reuses nothing, and the
 //   note says so. The note is written last: without it the recheck fails
 //   and nothing is saved.
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname, isAbsolute, relative } from 'node:path';
+import { dependencyFingerprints, depsPath, invalidate, readStored } from './lib/checks/mutation-deps.mjs';
+import { isSelectedTest, trackedPaths } from './lib/checks/mutation-fingerprint.mjs';
 import { beforePath, testFilesBefore } from './lib/checks/mutation-recheck.mjs';
 import { dropUnsafeResults } from './lib/checks/mutation-stale-results.mjs';
 
 const { default: config } = await import('../stryker.config.mjs');
 const path = config.incrementalFile;
+const root = process.cwd();
+const writeWhole = (file, text) => {
+  writeFileSync(`${file}.tmp`, text);
+  renameSync(`${file}.tmp`, file);
+};
 const note = (report) => {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(beforePath(path), JSON.stringify(testFilesBefore(report)));
 };
+
+// Today's fingerprints: every test file a mutation run can start, and every
+// file this shard mutates or holds results for. A file that cannot be
+// fingerprinted fails the step: without the note below nothing is saved.
+const tracked = trackedPaths(execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+const rel = (key) => (isAbsolute(key) ? relative(root, key).split('\\').join('/') : key);
+const fingerprintsFor = (report) => dependencyFingerprints({
+  root,
+  tracked,
+  tests: tracked.filter(isSelectedTest),
+  sources: [...config.mutate.map((m) => m.replace(/:\d+(:\d+)?-\d+(:\d+)?$/, '')), ...Object.keys(report?.files ?? {}).map(rel)],
+});
+const saveFingerprints = (current) => {
+  mkdirSync(dirname(path), { recursive: true });
+  writeWhole(depsPath(path), JSON.stringify(current));
+};
+
 if (!existsSync(path)) {
+  saveFingerprints(fingerprintsFor(null));
   note(null);
   console.log(`${path}: no earlier results.`);
   process.exit(0);
@@ -38,12 +68,29 @@ try {
   if (!report.files || typeof report.files !== 'object') throw new Error('no files in it');
 } catch (error) {
   rmSync(path);
+  saveFingerprints(fingerprintsFor(null));
   note(null);
   console.log(`${path}: earlier results could not be read (${error.message}); the shard starts afresh.`);
   process.exit(0);
 }
 const dropped = dropUnsafeResults(report);
-if (dropped > 0) writeFileSync(path, JSON.stringify(report));
+const current = fingerprintsFor(report);
+let stored = null;
+try {
+  stored = readStored(JSON.parse(readFileSync(depsPath(path), 'utf8')));
+} catch {
+  stored = null;
+}
+// With no fingerprints on record every test file counts as changed.
+const { tests, mutants } = invalidate(report, stored, current, root);
+// The results first, then the fingerprints: a step cut short between the
+// two leaves the old fingerprints, and the next run marks the same files
+// again. The other way round would pair today's fingerprints with results
+// that were never marked.
+if (dropped > 0 || tests.length > 0 || mutants > 0) writeWhole(path, JSON.stringify(report));
+saveFingerprints(current);
 // A forced run retests every mutant: nothing is reused, so nothing is rechecked.
 note(config.force ? null : report);
 console.log(`${path}: ${dropped} earlier timeout(s) or error(s) taken out, to be tested again.`);
+console.log(`${path}: ${stored ? '' : 'no dependency fingerprints on record, so '}${tests.length} test file(s) whose dependencies changed are tested again; ${mutants} mutant(s) with no test on record in a changed file taken out.`);
+if (tests.length > 0 && tests.length <= 40) console.log(tests.map((t) => `  ${t}`).join('\n'));

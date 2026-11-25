@@ -97,8 +97,6 @@ export function analyse(text, file, root) {
   const imports = [];
   const reads = [];
 
-  // Constants by name: a name declared once, as a const, with a value.
-  const declared = new Map();
   const visit = (node, fn, parent = null, key = null) => {
     if (!node || typeof node.type !== 'string') return;
     fn(node, parent, key);
@@ -109,38 +107,102 @@ export function analyse(text, file, root) {
       else if (child && typeof child.type === 'string') visit(child, fn, node, k);
     }
   };
+
+  // The identifiers a pattern declares (a parameter, a destructuring, a
+  // catch clause), and nothing else: keys, defaults and computed parts are
+  // expressions.
+  const bindings = new Set();
+  const patternNames = (pattern, out = []) => {
+    if (!pattern) return out;
+    switch (pattern.type) {
+      case 'Identifier': out.push(pattern); break;
+      case 'ObjectPattern':
+        for (const prop of pattern.properties) patternNames(prop.type === 'RestElement' ? prop.argument : prop.value, out);
+        break;
+      case 'ArrayPattern': for (const el of pattern.elements) patternNames(el, out); break;
+      case 'AssignmentPattern': patternNames(pattern.left, out); break;
+      case 'RestElement': patternNames(pattern.argument, out); break;
+      case 'TSParameterProperty': patternNames(pattern.parameter, out); break;
+      default: break;
+    }
+    return out;
+  };
+
+  // Constants by name. A name counts as a constant only when it is declared
+  // once in the whole file, as `const NAME = value`. Every other declaration
+  // of a name (a parameter, a destructured name, let or var, an import, a
+  // function or class) is recorded with no value, so a name declared twice
+  // anywhere, in any scope, is unknown: no shadowed name is ever read as
+  // another one's value.
+  const declared = new Map();
+  const declare = (name, init) => {
+    const entry = declared.get(name) ?? [];
+    entry.push(init);
+    declared.set(name, entry);
+  };
   visit(ast.program, (node, parent) => {
-    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier') {
-      const entry = declared.get(node.id.name) ?? [];
-      entry.push(parent?.kind === 'const' ? node.init : undefined);
-      declared.set(node.id.name, entry);
-    } else if ((node.type === 'FunctionDeclaration' || node.type === 'ClassDeclaration') && node.id) {
-      const entry = declared.get(node.id.name) ?? [];
-      entry.push(undefined);
-      declared.set(node.id.name, entry);
+    if (node.type === 'VariableDeclarator') {
+      if (node.id.type === 'Identifier') {
+        bindings.add(node.id);
+        declare(node.id.name, parent?.kind === 'const' ? node.init : undefined);
+      } else {
+        for (const id of patternNames(node.id)) { bindings.add(id); declare(id.name, undefined); }
+      }
+    } else if (node.type === 'CatchClause' && node.param) {
+      for (const id of patternNames(node.param)) { bindings.add(id); declare(id.name, undefined); }
+    } else if (Array.isArray(node.params) && /Function|Method/.test(node.type)) {
+      for (const param of node.params) for (const id of patternNames(param)) { bindings.add(id); declare(id.name, undefined); }
+      if (node.id && node.type !== 'FunctionDeclaration') declare(node.id.name, undefined);
+    }
+    if ((node.type === 'FunctionDeclaration' || node.type === 'ClassDeclaration' || node.type === 'ClassExpression') && node.id) {
+      declare(node.id.name, undefined);
+    } else if (node.type === 'ImportSpecifier' || node.type === 'ImportDefaultSpecifier' || node.type === 'ImportNamespaceSpecifier') {
+      declare(node.local.name, undefined);
+    } else if (node.type === 'TSImportEqualsDeclaration' || node.type === 'TSEnumDeclaration' || node.type === 'TSModuleDeclaration') {
+      if (node.id?.type === 'Identifier') declare(node.id.name, undefined);
     }
   });
 
-  // Identifiers that declare a name (in a pattern, a parameter): not uses.
-  const bindings = new Set();
-  const bind = (pattern) => visit(pattern, (n, parent, key) => {
-    if (n.type === 'Identifier' && !(parent?.type === 'ObjectProperty' && key === 'value' && !parent.shorthand && false)) {
-      // Default values inside a pattern are expressions, not bindings.
-      if (parent?.type === 'AssignmentPattern' && key === 'right') return;
-      bindings.add(n);
+  // The local names of the path and url functions this analysis knows. A
+  // function called `join` or `resolve` that does not come from node:path
+  // (a Promise's resolve, an array helper) is not a path at all.
+  const PATH_MODULES = new Set(['path', 'node:path', 'path/posix', 'node:path/posix']);
+  const URL_MODULES = new Set(['url', 'node:url']);
+  const pathFunctions = new Map(); // local name -> join | resolve | dirname
+  const pathSpaces = new Set(); // local names of the module, or of its posix/win32
+  const urlFunctions = new Set(); // local names of fileURLToPath
+  visit(ast.program, (node) => {
+    if (node.type !== 'ImportDeclaration') return;
+    const from = node.source.value;
+    if (PATH_MODULES.has(from)) {
+      for (const sp of node.specifiers) {
+        if (sp.type !== 'ImportSpecifier') { pathSpaces.add(sp.local.name); continue; }
+        const name = sp.imported.name ?? sp.imported.value;
+        if (name === 'posix' || name === 'win32' || name === 'default') pathSpaces.add(sp.local.name);
+        else if (name === 'join' || name === 'resolve' || name === 'dirname') pathFunctions.set(sp.local.name, name);
+      }
+    } else if (URL_MODULES.has(from)) {
+      for (const sp of node.specifiers) {
+        if (sp.type === 'ImportSpecifier' && (sp.imported.name ?? sp.imported.value) === 'fileURLToPath') urlFunctions.add(sp.local.name);
+      }
     }
   });
-  visit(ast.program, (node) => {
-    if (node.type === 'VariableDeclarator') bind(node.id);
-    else if (node.type === 'CatchClause' && node.param) bind(node.param);
-    else if (/Function|Method/.test(node.type) && Array.isArray(node.params)) for (const param of node.params) bind(param);
-  });
-  const evaluating = new Set();
-  const calleeName = (callee) => {
-    if (callee.type === 'Identifier') return callee.name;
-    if (callee.type === 'MemberExpression' && !callee.computed && callee.property.type === 'Identifier') return callee.property.name;
-    return null;
+  /** join | resolve | dirname | fileURLToPath for a call to one of them from its module, else null. */
+  const knownFunction = (callee) => {
+    if (callee.type === 'Identifier') {
+      if (urlFunctions.has(callee.name)) return 'fileURLToPath';
+      return pathFunctions.get(callee.name) ?? null;
+    }
+    if (callee.type !== 'MemberExpression' || callee.computed || callee.property.type !== 'Identifier') return null;
+    let obj = callee.object;
+    // path.posix.join and the like.
+    if (obj.type === 'MemberExpression' && !obj.computed && ['posix', 'win32'].includes(obj.property.name)) obj = obj.object;
+    if (obj.type !== 'Identifier' || !pathSpaces.has(obj.name)) return null;
+    return ['join', 'resolve', 'dirname'].includes(callee.property.name) ? callee.property.name : null;
   };
+
+  const evaluating = new Set();
+
   /** A string value, maybe with an unknown tail; null when unknown from its start. */
   const evaluate = (node) => {
     if (!node) return null;
@@ -199,12 +261,15 @@ export function analyse(text, file, root) {
         if (!base || !base.exact || !base.s.startsWith('file://')) return null;
         if (spec.s.startsWith('file://')) return spec;
         const from = spec.s.startsWith('/') ? '' : posix.dirname(base.s.slice(7));
-        return { s: `file://${spec.s.startsWith('/') ? spec.s : `${from}/${spec.s}`}`, exact: spec.exact };
+        const joined = spec.s.startsWith('/') ? spec.s : `${from}/${spec.s}`;
+        return { s: `file://${spec.exact ? posix.normalize(joined) : joined}`, exact: spec.exact };
       }
       case 'CallExpression': {
-        const name = calleeName(node.callee);
         const args = node.arguments;
-        if (name === 'cwd' && node.callee.type === 'MemberExpression' && node.callee.object.name === 'process') return known(root);
+        const callee = node.callee;
+        if (callee.type === 'MemberExpression' && !callee.computed && callee.object.type === 'Identifier' && callee.object.name === 'process'
+          && callee.property.name === 'cwd' && !declared.has('process')) return known(root);
+        const name = knownFunction(callee);
         if (name === 'fileURLToPath') {
           const v = evaluate(args[0]);
           return v && v.s.startsWith('file://') ? { s: v.s.slice(7), exact: v.exact } : null;
@@ -214,9 +279,7 @@ export function analyse(text, file, root) {
           return v && v.exact ? known(posix.dirname(v.s.startsWith('file://') ? v.s.slice(7) : v.s)) : null;
         }
         if (name === 'join' || name === 'resolve') {
-          // join, resolve, path.join, path.resolve, posix.join...: the parts
-          // known from the start, and an unknown tail after them.
-          if (node.callee.type === 'MemberExpression' && !['path', 'posix', 'win32'].includes(node.callee.object.name)) return null;
+          // The parts known from the start, and an unknown tail after them.
           let s = null;
           for (const arg of args) {
             const v = evaluate(arg);
@@ -239,6 +302,11 @@ export function analyse(text, file, root) {
   };
   visit(ast.program, (node) => {
     if (node.type === 'ImportDeclaration' || node.type === 'ExportAllDeclaration' || (node.type === 'ExportNamedDeclaration' && node.source)) {
+      // `import type` and `export type ... from` are erased whole before
+      // anything runs (tsx compiles with esbuild, which keeps no trace of
+      // them), so they load nothing. An inline `{ type X }` is kept: under
+      // some settings the import itself stays, for its side effects.
+      if (node.importKind === 'type' || node.exportKind === 'type') return;
       importOf(known(node.source.value));
     } else if (node.type === 'TSImportEqualsDeclaration' && node.moduleReference?.type === 'TSExternalModuleReference') {
       importOf(known(node.moduleReference.expression.value));
@@ -275,8 +343,8 @@ export function analyse(text, file, root) {
       if (prop.type !== 'ObjectProperty' || prop.computed) { opaque.push('binds a file-system module in a way this analysis does not follow'); continue; }
       const name = prop.key.name ?? prop.key.value;
       const local = prop.value.type === 'AssignmentPattern' ? prop.value.left : prop.value;
-      if (local.type === 'Identifier') fsNames.set(local.name, name);
-      else if (name === 'promises') bindPattern(local);
+      if (name === 'promises') bindPattern(local);
+      else if (local.type === 'Identifier') fsNames.set(local.name, name);
       else opaque.push('binds a file-system module in a way this analysis does not follow');
     }
   };
@@ -284,8 +352,10 @@ export function analyse(text, file, root) {
   visit(ast.program, (node) => {
     if (node.type === 'ImportDeclaration' && FS_MODULES.has(node.source.value)) {
       for (const sp of node.specifiers) {
-        if (sp.type === 'ImportSpecifier') fsNames.set(sp.local.name, sp.imported.name ?? sp.imported.value);
-        else fsSpaces.add(sp.local.name);
+        const imported = sp.type === 'ImportSpecifier' ? (sp.imported.name ?? sp.imported.value) : null;
+        // `import { promises as fsp }` is the whole module again, by another name.
+        if (imported === null || imported === 'promises' || imported === 'default') fsSpaces.add(sp.local.name);
+        else fsNames.set(sp.local.name, imported);
       }
     } else if (node.type === 'VariableDeclarator' && node.init && isFsLoad(node.init)) {
       bindPattern(node.id);
@@ -395,6 +465,10 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
   const toRel = (abs) => normalize(relative(root, abs)).split('\\').join('/');
 
   const resolveImport = (fromRel, spec) => {
+    // package.json subpath imports (#name): the project has none, and one
+    // added later is not followed, so it resolves to nothing and widens.
+    // (Before the query and hash are cut off, which would leave nothing.)
+    if (spec.startsWith('#')) return null;
     const clean = spec.replace(/[?#].*$/, '');
     if (clean.startsWith('file://')) return resolveImport(fromRel, clean.slice(7));
     if (!clean.startsWith('.') && !clean.startsWith('/')) return undefined; // a package or a built-in: the lockfile and Node, in the global fingerprint
@@ -406,8 +480,14 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
     for (const stem of stems) {
       candidates.push(stem, ...EXTENSIONS.map((e) => `${stem}${e}`), ...EXTENSIONS.map((e) => `${stem}/index${e}`));
     }
-    return candidates.find(exists) ?? null;
+    const at = candidates.findIndex(exists);
+    if (at === -1) return null;
+    // The names tried before the one found: a file added at one of them
+    // would be loaded instead, so each counts by whether it is there.
+    tried.set(`${fromRel}\0${spec}`, [...new Set(candidates.slice(0, at))].filter((c) => c !== candidates[at]));
+    return candidates[at];
   };
+  const tried = new Map();
 
   /** Every tracked (or on-disk) path a read of `v` (an evaluated path) can touch. */
   const touched = (v) => {
@@ -446,8 +526,22 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
     for (const { spec, value } of imports) {
       if (!value) { result.all.push('an import whose path is not known'); continue; }
       if (!value.exact) {
-        const t = touched(value);
+        // A relative import is relative to this file, not to the project;
+        // a package whose name is only partly known widens.
+        const s = value.s;
+        let from;
+        if (s.startsWith('./') || s.startsWith('../') || s === '.' || s === '..') {
+          const joined = posix.join(posix.dirname(rel), s);
+          from = { s: `${root}/${joined}${s.endsWith('/') && !joined.endsWith('/') ? '/' : ''}`, exact: false };
+        } else if (s.startsWith('/') || s.startsWith('file://')) {
+          from = value;
+        } else {
+          result.all.push(`an import whose package is not known: ${s}`);
+          continue;
+        }
+        const t = touched(from);
         if (!t) { result.all.push(`an import outside the project: ${value.s}`); continue; }
+        if (t.prefix === '') { result.all.push('an import that may load any file of the project'); continue; }
         // Any file under the prefix may be loaded: every one counts, and is followed.
         for (const p of sortedTracked) if (p.startsWith(t.prefix)) { result.files.add(p); result.next.add(p); }
         continue;
@@ -457,13 +551,18 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
       if (target === null) { result.all.push(`an import that resolves to no file: ${spec}`); continue; }
       result.files.add(target);
       result.next.add(target);
+      for (const c of tried.get(`${rel}\0${spec}`) ?? []) result.files.add(`?${c}`);
     }
     for (const v of reads) {
       if (!v) { result.all.push('a file-system read whose path is not known'); continue; }
       const t = touched(v);
       if (!t) { result.all.push(`a read outside the project: ${v.s}`); continue; }
       if (t.prefix === '') { result.all.push('a read of the whole project'); continue; }
-      if (t.exact !== undefined) result.files.add(`?${t.exact}`);
+      if (t.exact !== undefined) {
+        // The file itself, by its contents (when it is one), and whether it is there.
+        result.files.add(`?${t.exact}`);
+        if (exists(t.exact)) result.files.add(t.exact);
+      }
       for (const p of sortedTracked) if (p.startsWith(t.prefix)) result.files.add(p);
       // A listing names files that are not there yet: the prefix itself counts.
       result.files.add(`>${t.prefix}`);
@@ -587,14 +686,40 @@ const relativeKey = (root, key) => (isAbsolute(key) ? relative(root, key).split(
  * edited and rechecks the kills they cover. A static mutant has no per-test
  * coverage, so a survivor would be kept: those, and mutants with no
  * coverage on record, are taken out when their file's fingerprint changed.
+ *
+ * A test file is also marked when the stored coverage says it ran a mutant
+ * in a file whose fingerprint changed: that catches a test that reaches the
+ * file in a way the syntax tree does not show. A test that newly reaches a
+ * mutant is new coverage, which Stryker itself treats as an added test.
  */
 export function invalidate(report, stored, current, root = process.cwd()) {
+  const same = (now, was) => typeof now === 'string' && typeof was === 'string' && now === was;
+  // The mutated files whose fingerprint changed.
+  const changedSources = new Set();
+  for (const key of Object.keys(report.files ?? {})) {
+    const path = relativeKey(root, key);
+    if (!same(current.sources[path], stored?.sources?.[path])) changedSources.add(key);
+  }
+  // What each test file covered last time, from the stored coverage: a test
+  // that ran a mutant in a changed file reaches it at run time, whether or
+  // not the syntax tree shows how (condition 1 of #891: static analysis and
+  // run-time coverage together).
+  const fileOfTest = new Map();
+  for (const [key, file] of Object.entries(report.testFiles ?? {})) {
+    for (const test of file?.tests ?? []) fileOfTest.set(test.id, key);
+  }
+  const reachesChanged = new Set();
+  for (const key of changedSources) {
+    for (const m of report.files[key].mutants ?? []) {
+      for (const id of [...(m.coveredBy ?? []), ...(m.killedBy ?? [])]) {
+        if (fileOfTest.has(id)) reachesChanged.add(fileOfTest.get(id));
+      }
+    }
+  }
   const marked = [];
   for (const [key, file] of Object.entries(report.testFiles ?? {})) {
     const path = relativeKey(root, key);
-    const now = current.tests[path];
-    const was = stored?.tests?.[path];
-    if (typeof now === 'string' && typeof was === 'string' && now === was) continue;
+    if (same(current.tests[path], stored?.tests?.[path]) && !reachesChanged.has(key)) continue;
     if (!file || typeof file !== 'object') continue;
     if (typeof file.source !== 'string' || !file.source.startsWith(CHANGED_MARK)) {
       file.source = `${CHANGED_MARK}${typeof file.source === 'string' ? file.source : ''}`;
@@ -602,11 +727,8 @@ export function invalidate(report, stored, current, root = process.cwd()) {
     marked.push(path);
   }
   let mutants = 0;
-  for (const [key, file] of Object.entries(report.files ?? {})) {
-    const path = relativeKey(root, key);
-    const now = current.sources[path];
-    const was = stored?.sources?.[path];
-    if (typeof now === 'string' && typeof was === 'string' && now === was) continue;
+  for (const key of changedSources) {
+    const file = report.files[key];
     const kept = file.mutants.filter((m) => m.status === 'Ignored' || (m.static !== true && Array.isArray(m.coveredBy) && m.coveredBy.length > 0));
     mutants += file.mutants.length - kept.length;
     file.mutants = kept;

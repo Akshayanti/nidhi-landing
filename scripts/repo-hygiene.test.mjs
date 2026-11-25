@@ -345,6 +345,8 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
       // runs only when the plan names a run to take results from.
       if (id === 'mutation-floors') assert.equal(condition, undefined);
       else if (id === 'mutation-seed') assert.equal(condition, "${{ !cancelled() && needs.mutation-plan.outputs.seed != '' }}");
+      // The trace of what each test reaches runs nightly and by hand, never on a pull request (#891).
+      else if (id === 'mutation-deps-trace') assert.equal(condition, "inputs.suite == 'mutation' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')");
       else assert.equal(condition, allowed[id], `job ${id}`);
     }
   });
@@ -803,7 +805,7 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     const saved = `${base}\${{ github.sha }}-\${{ github.run_id }}-\${{ github.run_attempt }}`;
     // Restored by the fingerprint alone; saved under a key no other run or
     // attempt has, so a part of a run never stands in the way of a later save.
-    assert.ok(shardJob.includes(`        id: earlier\n        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n          restore-keys: ${base}\n`));
+    assert.ok(shardJob.includes(`        id: earlier\n        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: |\n            reports/stryker-incremental/\${{ matrix.name }}.json\n            reports/stryker-incremental/\${{ matrix.name }}.deps.json\n          key: ${saved}\n          restore-keys: ${base}\n`));
     assert.equal(shardJob.split('restore-keys:').length - 1, 1);
     // Stryker hears the runner's signal itself (no npx in between), and what
     // it finished is saved whether the run passed, failed or was cancelled:
@@ -837,23 +839,24 @@ describe('the free tools gates cover every tool (#790, #791)', () => {
     const kept = shardJob.indexOf('id: kept');
     assert.ok(second < kept);
     assert.match(shardJob, /\n {8}id: kept\n {8}if: \$\{\{ always\(\) && steps\.recheck\.outputs\.checked == 'true' \}\}\n {8}env:\n {10}FILE: reports\/stryker-incremental\/\$\{\{ matrix\.name \}\}\.json\n/);
-    assert.ok(shardJob.includes(`if [ -s "$FILE" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
-    const save = shardJob.indexOf(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: reports/stryker-incremental/\${{ matrix.name }}.json\n          key: ${saved}\n`);
+    assert.ok(shardJob.includes(`if [ -s "$FILE" ] && [ -s "\${FILE%.json}.deps.json" ] && node -e 'const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); if (!r.files || typeof r.files !== "object") process.exit(1);`));
+    const save = shardJob.indexOf(`        if: \${{ always() && steps.kept.outputs.keep == 'true' }}\n        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0\n        with:\n          path: |\n            reports/stryker-incremental/\${{ matrix.name }}.json\n            reports/stryker-incremental/\${{ matrix.name }}.deps.json\n          key: ${saved}\n`);
     assert.ok(kept < save);
     assert.equal(shardJob.split('uses: actions/cache/save@').length - 1, 1, 'one save, after the recheck');
     // On a pull request, the same results as an artifact too, for the merge
     // to main, under the same condition as the save, right after it.
     const merge = shardJob.indexOf("      - name: Keep the results for the merge\n        if: ${{ always() && steps.kept.outputs.keep == 'true' && github.event_name == 'pull_request' }}\n        uses: actions/upload-artifact@");
     assert.ok(save < merge && merge < shardJob.indexOf("Keep only this shard's mutants"));
-    assert.ok(shardJob.includes('          name: stryker-incremental-${{ matrix.name }}\n          path: reports/stryker-incremental/${{ matrix.name }}.json\n'));
+    assert.ok(shardJob.includes('          name: stryker-incremental-${{ matrix.name }}\n          path: |\n            reports/stryker-incremental/${{ matrix.name }}.json\n            reports/stryker-incremental/${{ matrix.name }}.deps.json\n'));
     assert.match(read('scripts/mutation-recheck.mjs'), /\nif \(process\.env\.GITHUB_OUTPUT\) appendFileSync\(process\.env\.GITHUB_OUTPUT, `checked=true\\nselected=\$\{selected\}\\n`\);\n$/, 'the outputs are set last');
     // Three steps run after a failed or cancelled run, in this order: the
     // recheck, then the two that save.
     const always = [...shardJob.matchAll(/always\(\)/g)].map((m) => m.index);
     assert.equal(always.length, 4, 'nothing else runs after a failed or cancelled run');
     assert.ok(recheck < always[0] && always[0] < again && again < always[1] && always[1] < save && save < always[2] && always[2] < merge && merge < always[3]);
-    // The note of the test files is beside the results, never saved with them.
-    assert.equal(shardJob.split('path: reports/stryker-incremental/${{ matrix.name }}.json\n').length - 1, 3, 'restored, saved and kept for the merge: the results alone');
+    // The note of the test files is beside the results, never saved with
+    // them; the dependency fingerprints (#891) always are.
+    assert.equal(shardJob.split('path: |\n            reports/stryker-incremental/${{ matrix.name }}.json\n            reports/stryker-incremental/${{ matrix.name }}.deps.json\n          ').length - 1, 3, 'restored, saved and kept for the merge: the results and their fingerprints');
     assert.doesNotMatch(shardJob, /before\.json/);
     assert.doesNotMatch(gates, /uses: actions\/cache@/);
     // Forced on the nightly and the manual run only; a pull request and a
