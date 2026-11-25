@@ -1,7 +1,7 @@
 /**
  * The Monte Carlo simulator's chart, mounted by itself, for the tests of what
  * it draws and of its read-out
- * (src/components/MonteCarloParts.chart-readout*.dom.test.tsx): the chart as
+ * (src/components/MonteCarloParts.Chart.readout.dom.test.tsx): the chart as
  * the page gives it a plan and its result, readers for what is drawn where,
  * and stand-ins for what jsdom does not lay out (a phone's width, the
  * reader's text size, the sizes the read-out is placed by). Not a test file.
@@ -13,7 +13,8 @@ import './dom.ts';
 import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { dict } from '../src/i18n/index.ts';
+// The English catalog by itself: the other languages' catalogs are not drawn here.
+import { en } from '../src/i18n/strings/en.ts';
 import { DEFAULTS, type ToolState } from '../src/utils/monte-carlo/url.ts';
 import { roundedResult, simulate, type SimulationResult } from '../src/utils/monte-carlo/math.ts';
 import { formatAmount } from '../src/utils/shared/formatAmount.ts';
@@ -22,7 +23,7 @@ import { ChartWordsContext } from '../src/components/ChartAmounts.tsx';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { Chart } from '../src/components/MonteCarloSimulator.tsx';
 
-export const tools = dict('en').tools;
+export const tools = en.tools;
 export const island = tools.monteCarlo.island;
 export const words = island.chart;
 export type Strings = typeof island;
