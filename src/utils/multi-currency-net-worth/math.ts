@@ -110,10 +110,15 @@ export interface ParseError {
 // Aggregation
 // ---------------------------------------------------------------------------
 
-/** Strips cosmetic grouping characters before parsing so "1,00,000" and "100000" both work. Returns NaN on failure. */
+/**
+ * Strips cosmetic grouping characters before parsing so "1,00,000" and
+ * "100000" both work. Returns NaN on failure. What is left must be digits with
+ * at most one decimal point: `Number()` alone also reads "1.5e5", "0x10" and
+ * "0b11", which the CSV import refuses (#872).
+ */
 export function parseAmount(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
-  if (cleaned === '') return NaN;
+  if (!/^(\d+\.?\d*|\.\d+)$/.test(cleaned)) return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) && n >= 0 ? n : NaN;
 }
@@ -216,7 +221,12 @@ export function aggregate(
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
     positions.sort((a, b) => Math.abs(b.netAmountOriginal) - Math.abs(a.netAmountOriginal));
-    for (const pos of positions) if (!pos.isFunctional) pos.rateUnavailable = true;
+    for (const pos of positions) {
+      if (!pos.isFunctional) pos.rateUnavailable = true;
+      // The spending currency needs no rate: it is the reader's own, with
+      // rates or without, never "Low" (#874).
+      else [pos.riskLevel, pos.riskLabel] = assessRisk(0, true, pos.netAmountOriginal);
+    }
     return { positions, totalNetWorthFunctional: 0, hasRates: 'none' };
   }
 
@@ -450,7 +460,10 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
   const errors: ParseError[] = [];
   const same = (list: string[] | undefined, word: string) => (list ?? []).some((w) => w.trim().toLowerCase() === word);
 
-  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() !== '');
+  // Blank lines are skipped, but each line keeps its number in the file, so
+  // an error names the line the reader's editor shows (#875).
+  const numbered = text.replace(/^\uFEFF/, '').split(/\r?\n/).map((line, i) => ({ line, num: i + 1 })).filter(({ line }) => line.trim() !== '');
+  const lines = numbered.map(({ line }) => line);
   if (lines.length === 0) {
     return { rows, errors: [{ line: 0, reason: 'empty', message: 'CSV is empty.' }] };
   }
@@ -470,7 +483,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
   }
 
   for (let i = startIdx; i < lines.length; i++) {
-    const lineNum = i + 1; // 1-based for user display
+    const lineNum = numbered[i].num; // 1-based, as the file counts them
     const cols = splitCSVLine(lines[i], separator);
 
     if (cols.length < 2) {

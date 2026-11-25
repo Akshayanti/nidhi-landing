@@ -251,13 +251,14 @@ describe('nidhiCleanElements', () => {
     assert.deepEqual(event.deleted.sort(), ['$el_text', '$element_selectors', '$external_click_url', '$selected_content']);
   });
 
-  it('leaves events without element data alone', () => {
+  it('leaves the rest of an event without element data alone, and adds no element data to it', () => {
     const props: Props = { $current_url: 'https://nidhi.today/', count: 2 };
     clean(props, labels);
     assert.deepEqual(props, { $current_url: 'https://nidhi.today/', count: 2 });
+    // The four text properties are dropped from every event, element data or not.
     const event = watched({ $current_url: 'https://nidhi.today/', count: 2 });
     clean(event.props, labels);
-    assert.deepEqual(event.deleted, []);
+    assert.deepEqual(event.deleted.sort(), ['$el_text', '$element_selectors', '$external_click_url', '$selected_content']);
   });
 
   it('accepts a missing event, and touches nothing that is not an object', () => {
@@ -307,5 +308,25 @@ describe('the label registry', () => {
     for (const label of [...scan.exact, ...scan.prefixes.map((p) => p.replace(/-$/, ''))]) {
       assert.match(label, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     }
+  });
+});
+
+describe('cleanElements: words an empty object would know', () => {
+  it('keeps no tag named after an object property, in a chain or a list', () => {
+    for (const word of ['constructor', '__proto__', 'toString', 'hasOwnProperty', 'valueOf']) {
+      assert.equal(cleanedChain(`${word}:nth-child="1"`), '', word);
+      assert.deepEqual(cleanedList([{ tag_name: word }]), [], word);
+    }
+  });
+});
+
+describe('cleanElements: text about a click, without element data', () => {
+  it('is dropped from an event that carries no element data at all', () => {
+    const props: Props = {
+      $el_text: 'TYPED-12345', $external_click_url: 'https://example.com/#s=1',
+      $element_selectors: ['#a'], $selected_content: 'TYPED', $current_url: 'https://nidhi.today/',
+    };
+    clean(props, labels);
+    assert.deepEqual(props, { $current_url: 'https://nidhi.today/' });
   });
 });

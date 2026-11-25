@@ -60,8 +60,15 @@ export type ShareMode = 'full' | 'redacted';
  */
 export const SHARED_STATE_GLOBAL = '__nidhiNetWorthShared';
 
-/** Matches one state parameter name, for ToolStateGuard. */
-export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
+/**
+ * Matches one state parameter name, for ToolStateGuard: today's keys, and the
+ * keys of the first links (May 2026: mode, func, a0_name, c_EUR, r_EUR,
+ * amt_EUR), so those too leave the address and are refused, never shown.
+ */
+export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+|' + 'mode|func|a\\d+_[a-z]+|c_[A-Za-z]+|r_[A-Za-z]+|amt_[A-Za-z]+';
+
+/** A key only the first links (May 2026) wrote. */
+const FIRST_LINK_KEY = /^(?:mode|func|a\d+_[a-z]+|c_[A-Za-z]+|r_[A-Za-z]+|amt_[A-Za-z]+)$/;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -115,7 +122,7 @@ export interface DecodeResult {
    * The list was not whole or was over MAX_ROWS, so none of it was loaded:
    * a shared link, or the state a language switch carries.
    */
-  refused?: 'link' | 'transfer';
+  refused?: 'link' | 'transfer' | 'old';
   /**
    * An older link with a zero that could be a missing rate: it cannot say its
    * total and shares cover every currency, so none is shown (#795).
@@ -440,8 +447,20 @@ function encodeRedacted(
 
 export function decodeFromQueryString(qs: string): DecodeResult {
   const params = new URLSearchParams(qs);
-  const mode = params.get('m');
+  const today = decodeToday(params);
+  // A link from the first version (May 2026) cannot be read today: refused
+  // as such, never opened as an empty form. Its keys beside a link that
+  // today's reading takes are strays, ignored as before; beside one it
+  // refuses or finds nothing in, the link is an old one.
+  const empty = !today.isReadOnly && today.rows.every((row) => row.name.trim() === '' && row.value.trim() === '');
+  if ([...params.keys()].some((k) => FIRST_LINK_KEY.test(k)) && (today.refused || empty)) {
+    return refusal(today.functionalCurrency, 'old');
+  }
+  return today;
+}
 
+function decodeToday(params: URLSearchParams): DecodeResult {
+  const mode = params.get('m');
   if (mode === 'r') return decodeRedacted(params);
   if (mode === 'f') return decodeFull(params);
 
@@ -485,7 +504,7 @@ function rowsAreWhole(params: URLSearchParams): boolean {
   return true;
 }
 
-function refusal(functionalCurrency: string, refused: 'link' | 'transfer'): DecodeResult {
+function refusal(functionalCurrency: string, refused: 'link' | 'transfer' | 'old'): DecodeResult {
   return {
     rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
     functionalCurrency,

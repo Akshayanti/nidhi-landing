@@ -50,7 +50,7 @@ import { Amount, Amounts } from './Amounts.tsx';
 import { format } from '../i18n/format.ts';
 import { plural } from '../i18n/plural.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, NoticeRegion, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, NoticeRegion, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -164,10 +164,10 @@ export default function MultiCurrencyNetWorth({
   // A file over the row limit was refused whole.
   const [csvTooLong, setCsvTooLong] = useState(false);
   // A link or a switched list that was not whole: none of it was loaded (#794).
-  const [refused, setRefused] = useState<'link' | 'transfer' | null>(null);
+  const [refused, setRefused] = useState<'link' | 'transfer' | 'old' | null>(null);
   // What the page opened with. Its banner leaves at the first edit and its space
   // stays: above the field being typed in, removing it moved the field (#795).
-  const [arrivedRefused, setArrivedRefused] = useState<'link' | 'transfer' | null>(null);
+  const [arrivedRefused, setArrivedRefused] = useState<'link' | 'transfer' | 'old' | null>(null);
   const [arrivedShared, setArrivedShared] = useState(false);
   // The rows a shared view's sender could not have read.
   const [sharedUnreadable, setSharedUnreadable] = useState(0);
@@ -571,7 +571,7 @@ export default function MultiCurrencyNetWorth({
     <div className="mcnw-root" ref={rootRef} {...heldUntilReady(toolReady)}>
       {arrivedRefused && (
         <div className={`mcnw-banner mcnw-bannerWarn${refused && untouched ? '' : ' mcnw-banner--left'}`} role="alert">
-          <span>{format(arrivedRefused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
+          <span>{arrivedRefused === 'old' ? strings.table.refusedOld : format(arrivedRefused === 'link' ? strings.table.refusedLink : strings.table.refusedTransfer, { max: MAX_ROWS })}</span>
         </div>
       )}
 
@@ -925,11 +925,15 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
   // typed. The message is a fixed sentence: it never repeats what was typed.
   const unreadable = isUnreadableAmount(row.value);
   const [settled, setSettled] = useState(unreadable);
+  // Every unreadable entry is held as "NaN", so the value alone does not
+  // change while someone keeps typing ("5x", "5xy"): each keystroke is
+  // counted, and the pause is waited for again after every one (#873).
+  const [keystrokes, setKeystrokes] = useState(0);
   useEffect(() => {
     if (!unreadable) { setSettled(false); return undefined; }
     const timer = setTimeout(() => setSettled(true), 600);
     return () => clearTimeout(timer);
-  }, [unreadable, row.value]);
+  }, [unreadable, row.value, keystrokes]);
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
   const [typed, setTyped] = useState(false);
@@ -967,7 +971,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
           inputMode="decimal"
           className="mcnw-input"
           value={row.value}
-          onValueChange={(v) => { setTyped(true); onChange({ value: v }); }}
+          onValueChange={(v) => { setTyped(true); setKeystrokes((n) => n + 1); onChange({ value: v }); }}
           onBlur={() => { if (unreadable) setSettled(true); }}
           placeholder={strings.row.valuePlaceholder}
           autoComplete="off"
@@ -1611,11 +1615,10 @@ function ShareModal({
             {shareUrl && (
               <div className="mcnw-shareUrlBar">
                 <span className="mcnw-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedLabel}</span>
-                <input
+                <LinkField
                   ref={urlField}
                   className="mcnw-shareUrlInput"
-                  value={shareUrl}
-                  readOnly
+                  link={shareUrl}
                   onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
                   aria-label={strings.toolbar.shareUrlAria}
                 />

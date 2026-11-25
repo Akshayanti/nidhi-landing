@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/loan/math.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
@@ -83,8 +83,9 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
+/** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
 function pct(v: number, locale: string, digits = 1): string {
-  return new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100);
+  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
 }
 
 /** "in 2 years and 4 months", from a month count. */
@@ -146,6 +147,10 @@ export default function InvestOrPayOff({
   const [moreOpen, setMoreOpen] = useState(false);
   const loadedAll = useRef(false);
   const calculatedSent = useRef(false);
+  // Whether the comparison on screen is one somebody asked for: a readable
+  // shared link, or the reader's own inputs once they have settled. The
+  // example the page opens with is not (#882).
+  const [asked, setAsked] = useState(false);
   const uid = useId();
   const id = (k: string) => `${uid}-${k}`;
   const countryByCode = useMemo(() => new Map(countries.map((c) => [c.code, c])), [countries]);
@@ -170,6 +175,9 @@ export default function InvestOrPayOff({
   // head, moved it out of the address bar into a window property before
   // analytics started; it is read from there, never from window.location.
   const [hydrated, setHydrated] = useState(false);
+  // The form a shared link opened, while it is still untouched: its result
+  // can arrive after the page opens, when the link's history loads.
+  const [linkForm, setLinkForm] = useState<typeof form | null>(null);
   useEffect(() => {
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
     const decoded = typeof raw === 'string' ? decodeState(raw) : null;
@@ -182,6 +190,8 @@ export default function InvestOrPayOff({
     setForm(arrived);
     setSettled(shared);
     setSettledForm(arrived);
+    setLinkForm(arrived);
+    setAsked(true);
     // A shared link that sets a tax or a fee shows it without a click.
     if (shared.relief > 0 || shared.feePct > 0 || shared.gainsTax > 0) setMoreOpen(true);
     if (arrivedByLanguageSwitch()) return;
@@ -212,8 +222,11 @@ export default function InvestOrPayOff({
     setHistoryFailed(false);
     loadHistory(historyUrl).then(
       (data) => {
+        // An answer thrown away leaves the history unloaded, so the country
+        // asks again when it is chosen again (#867, #879).
+        if (!live) return;
         loadedAll.current = true;
-        if (live) setCompact((c) => ({ ...data.countries, ...c }));
+        setCompact((c) => ({ ...data.countries, ...c }));
       },
       () => {
         if (live) setHistoryFailed(true);
@@ -238,11 +251,14 @@ export default function InvestOrPayOff({
   }, [moreError]);
 
   // Recalculate a moment after typing stops, and only on valid input.
+  // The form the page opened with is the example, not the reader's own.
+  const openedForm = useRef(form);
   useEffect(() => {
     if (hasErrors) return;
     const timer = window.setTimeout(() => {
       setSettled((prev) => toState(form, prev, numberLocale));
       setSettledForm(form);
+      if (form !== openedForm.current) setAsked(true);
     }, 250);
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
@@ -267,10 +283,13 @@ export default function InvestOrPayOff({
   }, [JSON.stringify(inputs), problem]);
 
   useEffect(() => {
-    if (!computed || calculatedSent.current) return;
+    // Only a comparison that has settled: a link with a box that cannot be
+    // read is \`asked\` already, and a fix to that box must still wait for
+    // the pause like any other edit.
+    if (!asked || hasErrors || !computed || form !== settledForm || calculatedSent.current) return;
     calculatedSent.current = true;
     track('free_invest_or_pay_off_calculated');
-  }, [computed]);
+  }, [asked, hasErrors, computed, form, settledForm]);
 
   const update = (key: TextKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -540,6 +559,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
+        quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
           ? strings.results.fix
@@ -741,13 +761,23 @@ function Results({
  * screen; the bars are hidden from screen readers, which read the same
  * figures from the list.
  */
+/**
+ * The ends of the range chart's scale, with a little room around the figures.
+ * The room never carries the scale across zero: when nothing is negative it
+ * stops at zero, and when nothing is positive it stops there too, so a zero
+ * line is drawn only where the bars cross it (#881).
+ */
+export function rangeScale(low: number, high: number): { lo: number; hi: number } {
+  const span = Math.max(high - low, Math.abs(high) * 0.05, 1);
+  const crosses = low < 0 && high > 0;
+  const lo = crosses ? low - span * 0.05 : low - span * 0.15;
+  const hi = high + span * 0.05;
+  return { lo: low >= 0 ? Math.max(0, lo) : lo, hi: high <= 0 && low < 0 ? Math.min(0, hi) : hi };
+}
+
 function RangeChart({ strings, paths, money }: { strings: Strings; paths: { name: string; p: Result['a'] }[]; money: (v: number) => string }) {
   const s = strings.results;
-  const low = Math.min(...paths.map((p) => p.p.p10));
-  const high = Math.max(...paths.map((p) => p.p.p90));
-  const span = Math.max(high - low, Math.abs(high) * 0.05, 1);
-  const lo = low < 0 && high > 0 ? low - span * 0.05 : low - span * 0.15;
-  const hi = high + span * 0.05;
+  const { lo, hi } = rangeScale(Math.min(...paths.map((p) => p.p.p10)), Math.max(...paths.map((p) => p.p.p90)));
   const at = (v: number) => `${(((v - lo) / (hi - lo)) * 100).toFixed(2)}%`;
   // Both paths' figures are compared, so they share one size.
   const shared = longestAmount(...paths.flatMap((p) => [money(p.p.p10), money(p.p.p50), money(p.p.p90)]));

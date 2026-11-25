@@ -156,6 +156,39 @@ describe('the size of a rem in a chart', () => {
   });
 });
 
+/** A chart whose measuring part is drawn inside its own SVG, like the net worth donut's centre (#876). */
+function Inside({ width }: { width: number }) {
+  seen = useChartRem(insideRef, width);
+  return <g />;
+}
+let insideRef: RefObject<SVGSVGElement | null> = { current: null };
+function Framed({ width }: { width: number }) {
+  insideRef = useRef<SVGSVGElement | null>(null);
+  return <svg ref={insideRef}><Inside width={width} /></svg>;
+}
+
+describe('a chart measured from inside its own drawing (#876)', () => {
+  it('measures and watches the drawing on its first draw, once the drawing is there', async () => {
+    shown = 320;
+    const { container } = render(<Framed width={640} />);
+    await act(async () => {});
+    assert.deepEqual(seen, { rem: 32, scale: 1 });
+    assert.equal(live().length, 1);
+    assert.ok(watches(live()[0], container.querySelector('svg')));
+  });
+
+  it('watches the drawing even when the first measurement is the default', async () => {
+    shown = 640;
+    const { container } = render(<Framed width={640} />);
+    await act(async () => {});
+    assert.deepEqual(seen, { rem: 16, scale: 1 });
+    assert.ok(watches(live()[0], container.querySelector('svg')));
+    shown = 320;
+    live()[0].resize();
+    assert.deepEqual(seen, { rem: 32, scale: 1 });
+  });
+});
+
 describe('a chart whose box changes', () => {
   it('measures again when the drawing is resized', () => {
     shown = 320;

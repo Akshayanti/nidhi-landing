@@ -895,7 +895,36 @@ describe('the state the language switch carries, character by character', () => 
       assert.ok(keys.length >= 3);
       for (const key of keys) assert.match(key, state);
     }
-    for (const key of ['utm_source', 'utm_medium', 'internal', 'a', 'p_', 'a1_name', 'mode', 'ma', 'fn']) assert.doesNotMatch(key, state);
+    for (const key of ['utm_source', 'utm_medium', 'internal', 'a', 'p_', 'a1_', 'modes', 'c_', 'amt', 'ma', 'fn']) assert.doesNotMatch(key, state);
+  });
+
+  it('the keys of the first links (May 2026) are taken out of the address too', () => {
+    const state = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    for (const key of ['mode', 'func', 'a0_name', 'a12_value', 'a1_currency', 'c_EUR', 'r_USD', 'amt_INR']) assert.match(key, state, key);
+  });
+});
+
+describe('a link from the first version (May 2026)', () => {
+  it('is refused as one, in either of its modes, and nothing of it is loaded', () => {
+    for (const qs of [
+      'mode=full&func=EUR&n=2&a0_name=Flat&a0_value=250000&a0_currency=EUR&a1_name=Fund&a1_value=9000&a1_currency=USD',
+      'mode=redacted&func=EUR&c_EUR=96.5&r_EUR=low&c_USD=3.5&r_USD=low',
+      'func=EUR&n=1&a0_name=Flat&a0_value=1',
+      'amt_EUR=250000.00',
+      // Today's key names that hold nothing make it no less old.
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&m=',
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&p_BOGUS=x',
+      'mode=full&func=EUR&a0_name=Flat&a0_value=1&a1=&n=0',
+    ]) {
+      const decoded = decodeFromQueryString(qs);
+      assert.equal(decoded.refused, 'old', qs);
+      assert.equal(decoded.isReadOnly, false, qs);
+      assert.ok(decoded.rows.every((row) => row.value === '' && row.name === ''), qs);
+    }
+  });
+
+  it('today’s links are not taken for one', () => {
+    assert.equal(decodeFromQueryString('n=1&a1=Flat~250000').refused, undefined);
   });
 });
 
@@ -911,8 +940,8 @@ describe('reading the state back: the rows', () => {
     assert.deepEqual(open('f=USD'), { ...BLANK_FORM, functionalCurrency: 'USD' });
   });
 
-  it('keys from before the format changed are not read: the form opens blank, with none of their names or amounts', () => {
-    assert.deepEqual(open('mode=full&a1_name=Flat&a1_value=250000&a1_currency=USD'), { ...BLANK_FORM, functionalCurrency: 'EUR' });
+  it('keys from before the format changed are not read: the link is refused as an old one, with none of their names or amounts', () => {
+    assert.deepEqual(open('mode=full&a1_name=Flat&a1_value=250000&a1_currency=USD'), { ...BLANK_FORM, functionalCurrency: 'EUR', refused: 'old' });
   });
 
   it('a key that only looks like a row’s is not counted as one', () => {

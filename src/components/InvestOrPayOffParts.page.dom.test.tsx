@@ -73,7 +73,7 @@ describe('the invest or pay off calculator on its page', () => {
     assert.equal(waiting.querySelector('.iop-results .iop-note')?.textContent, island.country.needed);
   });
 
-  it('as the page loads: its parts, their names, the Euro area figure, one analytics event and nothing else sent, asked for or written', () => {
+  it('as the page loads: its parts, their names, the Euro area figure, and nothing sent, asked for or written', () => {
     // A catalog with no name of its own for one currency.
     const { INR: _none, ...named } = island.currencies;
     mount({ strings: { ...island, currencies: named as typeof island.currencies } });
@@ -245,8 +245,9 @@ describe('the invest or pay off calculator on its page', () => {
       assert.ok(!text('.tool-exportNote').includes(t.export.notReady));
       assert.ok(has('.tool-report'));
     }
-    // One event, with nothing in it; the state kept for the language switch is the untouched one.
-    assert.deepEqual(events, [['free_invest_or_pay_off_calculated', undefined]]);
+    // No event: the example the page opens with is not a comparison anyone asked for (#882);
+    // the state kept for the language switch is the untouched one.
+    assert.deepEqual(events, []);
     assert.deepEqual(published, ['']);
     assert.deepEqual(asked, []);
     assert.ok(addressUntouched());
@@ -299,7 +300,7 @@ describe('the invest or pay off calculator on its page', () => {
     assert.equal(said(), `${lines[1]} ${lines[0]} ${lines[2]}`);
     // the example is over
     assert.equal(one('.iop-example').textContent, '');
-    // still one calculated event, and nothing typed sent or written
+    // one calculated event, for the reader's own figures once they settled (#882), and nothing typed sent or written
     assert.deepEqual(eventNames(), ['free_invest_or_pay_off_calculated']);
     nothingTypedSent('3000', '1000');
     // the language switch carries what is typed
@@ -394,6 +395,8 @@ describe('the invest or pay off calculator on its page', () => {
     for (const [name, value, note] of cases) {
       typeAndSettle(name, value);
       assert.deepEqual(resultNotes(), [note]);
+      // A problem leaves no comparison, so nothing is sent for it (#882).
+      if (name === 'balance') assert.deepEqual(events, []);
       assert.equal(one('.iop-results .tool-resultBody > .iop-note').tagName, 'P');
       assert.equal(headline(), null);
       assert.equal(ariaDisabled(xlsxButton()), true);
@@ -410,7 +413,7 @@ describe('the invest or pay off calculator on its page', () => {
       typeAndSettle(name, name === 'balance' ? '18000' : '400');
     }
     assert.deepEqual(resultNotes(), []);
-    // the first comparison was sent on loading; none of these sends another
-    assert.deepEqual(events, []);
+    // the first comparison the reader's own figures settle on is sent, once (#882); none after it sends another
+    assert.deepEqual(events, [['free_invest_or_pay_off_calculated', undefined]]);
   });
 });

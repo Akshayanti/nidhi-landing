@@ -161,6 +161,26 @@ describe('the width of a label', () => {
   });
 });
 
+let insideRef: RefObject<SVGSVGElement | null> = { current: null };
+/** The measuring part drawn inside its own SVG, like the net worth donut's centre (#876). */
+function Inside({ samples }: { samples: Sample[] }) {
+  seen = useMeasuredText(insideRef, samples);
+  return <MeasureSamples list={seen.list} />;
+}
+function Framed({ samples }: { samples: Sample[] }) {
+  insideRef = useRef<SVGSVGElement | null>(null);
+  return <svg ref={insideRef}><Inside samples={samples} /></svg>;
+}
+
+describe('a label measured from inside its own drawing (#876)', () => {
+  it('is measured on the first draw, once the drawing is there', async () => {
+    drawnWidth = { 2030: 31.5 };
+    render(<Framed samples={[tick('2030')]} />);
+    await act(async () => {});
+    assert.equal(seen.width(tick('2030')), 31.5);
+  });
+});
+
 describe('a label measured again', () => {
   it('keeps its width when it comes out less than half a unit different', () => {
     drawnWidth = { 2030: 31.5, 2040: 30 };

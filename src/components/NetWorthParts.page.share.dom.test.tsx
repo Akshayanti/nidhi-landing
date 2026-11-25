@@ -183,6 +183,17 @@ describe('the net worth calculator on its page: links, files, sharing and export
     assert.deepEqual(events, []);
   });
 
+  it('a link from the first version (May 2026): refused as an old link, nothing of it loaded, its figures nowhere on the page', async () => {
+    arriveWith('mode=full&func=USD&n=1&a0_name=Boat+Eta&a0_value=987654&a0_currency=USD');
+    mount();
+    assert.deepEqual(banners(), [['mcnw-banner mcnw-bannerWarn', 'alert', tb.refusedOld], ['mcnw-banner mcnw-bannerInfo', 'status', island.rates.loading]]);
+    assert.deepEqual(formRows(), [['', '', 'EUR', 'asset']]);
+    assert.ok(!document.body.innerHTML.includes('987654') && !document.body.innerHTML.includes('Boat'));
+    await failRequest('offline');
+    assert.deepEqual(published, []);
+    assert.deepEqual(events.map(([name]) => name), ['free_multi_currency_net_worth_rates_error']);
+  });
+
   it('a link that is not whole: nothing of it loaded, said until the first edit, and carried on refused until then', async () => {
     arriveWith('m=f&f=USD&n=3&a1=Boat+Eta~5');
     mount();

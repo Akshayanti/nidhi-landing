@@ -57,7 +57,11 @@ export function useMeasuredText(svg: RefObject<SVGSVGElement | null>, samples: S
     if (keys.length === 0) return;
     setWidths((prev) => (keys.every((k) => Math.abs((prev[k] ?? -9) - next[k]) < 0.5) ? prev : { ...prev, ...next }));
   };
-  useLayoutEffect(() => measure.current());
+  useLayoutEffect(() => {
+    // Inside its own SVG the hook runs before the SVG's ref is attached (#876).
+    if (svg.current) measure.current();
+    else queueMicrotask(() => measure.current());
+  });
   useLayoutEffect(() => {
     let live = true;
     document.fonts?.ready.then(() => { if (live) measure.current(); });

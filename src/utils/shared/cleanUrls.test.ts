@@ -374,3 +374,18 @@ describe('Analytics.astro: how PostHog is started', () => {
     assert.match(ANALYTICS, /if \(typeof window\.nidhiCleanElements !== 'function'\) return null;/);
   });
 });
+
+describe('cleanUrls: addresses the quick test cannot read as written', () => {
+  it('cleans a percent-encoded key or a backslashed path the parser reads as a match', () => {
+    assert.equal(clean(`${ORIGIN}/blog?%71=SECRETSEARCH`), `${ORIGIN}/blog`);
+    assert.equal(clean(`${ORIGIN}/confirm?%74=SECRETTOKEN`), `${ORIGIN}/confirm`);
+    assert.equal(clean(`${ORIGIN}\\free\\loan-comparison\\?${SECRET_QUERY}`), `${ORIGIN}/free/loan-comparison/`);
+    assert.equal(clean(`${ORIGIN}/es/free/loan-comparison/?utm_source=share&%76%31_n=SECRETNAME`), `${ORIGIN}/es/free/loan-comparison/?utm_source=share`);
+  });
+
+  it('leaves a percent sign or backslash that hides nothing as it was written', () => {
+    for (const value of [`${ORIGIN}/learn/%C3%A9t%C3%A9/`, `${ORIGIN}/blog?tag=a%20b`, '/a\\b', 'https://example.com/blog?%71=x']) {
+      assert.equal(clean(value), value);
+    }
+  });
+});

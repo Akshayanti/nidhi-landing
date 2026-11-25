@@ -848,3 +848,19 @@ describe('the inflation calculator on its page', () => {
     assert.equal(errorOf(f.rate), null);
   });
 });
+
+describe('a history that arrives after the reader has moved on (#867)', () => {
+  it('is not taken for a failure: going back to the country uses it', async () => {
+    mount();
+    // A country, then "No country" before its history comes.
+    choose(island.history.label, 'TST');
+    choose(island.history.label, '');
+    await historyArrives();
+    choose(island.history.label, 'TST');
+    await historyArrives();
+    none('.ifc-note--warn');
+    assert.ok(!historyNotes().some(([, said]) => said === island.history.error), 'said to have failed');
+    assert.equal(one('.ifc-historyStatus').textContent, 'Testland');
+    assert.ok(document.querySelector('.ifc-historyAvg strong'), 'the history is not shown');
+  });
+});
