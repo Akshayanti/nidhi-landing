@@ -119,7 +119,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Which fields are required?',
-              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. If you choose a rate that is fixed, then variable, the initial fixed period and the subsequent rate are needed too. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty) is optional and you can leave it at its default.',
+              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. If you choose “Fixed, then variable”, the initial fixed period and the subsequent rate are needed too. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty) is optional and you can leave it at its default.',
             },
             {
               q: 'Is my data sent anywhere?',
