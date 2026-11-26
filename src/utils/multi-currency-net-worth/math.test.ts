@@ -672,6 +672,17 @@ describe('CSV amounts are read strictly (issue 340)', () => {
     assert.deepEqual(errors.map((e) => [e.line, e.reason]), [[1, 'invalidValue'], [2, 'invalidValue'], [3, 'invalidValue'], [4, 'invalidValue'], [5, 'invalidValue']]);
   });
 
+  it('refuses a plus sign, as the amount box does: the two read one amount one way (#888)', () => {
+    // A comma file, a semicolon file (a decimal comma) and the two-column form.
+    for (const [file, value] of [['Cash,+5000,EUR,asset\nGold,5000,EUR,asset', '+5000'], ['Cash;+5000,50;EUR;asset\nGold;5000,50;EUR;asset', '+5000,50'], ['+5000,EUR\n5000,EUR', '+5000']] as const) {
+      const { rows, errors } = parseCSV(file);
+      assert.deepEqual(errors.map((e) => [e.line, e.reason, e.values]), [[1, 'invalidValue', { value }]], file);
+      assert.equal(rows.length, 1, file);
+      // The same text typed into a row's amount box is not an amount there either.
+      assert.equal(isUnreadableAmount(value), true, value);
+    }
+  });
+
   it('a lower-case code in the two-column form is the currency it names', () => {
     const { rows, errors } = parseCSV('1000,eur\n500,Usd');
     assert.deepEqual(errors, []);
