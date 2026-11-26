@@ -107,6 +107,45 @@ describe('the payment split chart goes by what the browser draws', () => {
     near(c.bars[3].principal.y, 56 - 36.4, 'the fourth principal part starts higher still');
   });
 
+  it('counts a figure as on another when it reaches into the space kept under it, and a part of exactly two lines as room for both', () => {
+    // Built by hand, as above: the plot is 240 tall for a payment of 24.00,
+    // starting at 56, and the text is 14.
+    //   month 2 gives back 0.60 of interest: its principal part starts 6
+    //     above the bar's top. The interest figure above the bar has its
+    //     baseline at 51.8 and keeps a quarter line (3.5) clear under it, to
+    //     55.3; the principal figure's first line would start at 54.2, so it
+    //     goes one line down, to 50 + 18.2 + 17.5.
+    //   month 3 pays 3.35 and gives back 1.20: its principal part is 45.5
+    //     tall, exactly two lines and the room a figure needs (28 + 17.5),
+    //     so its figure moves down a line rather than being left off.
+    const c = chart([
+      { month: 1, payment: 2400, interest: 0, principal: 2400, balance: 9000 },
+      { month: 2, payment: 2400, interest: -60, principal: 2460, balance: 6540 },
+      { month: 3, payment: 335, interest: -120, principal: 455, balance: 6085 },
+      { month: 4, payment: 2400, interest: 0, principal: 2400, balance: 3685 },
+    ]);
+    assert.ok(c.principalLabels.every((label) => label !== null), `every principal figure is kept: ${c.principalLabels.join(', ')}`);
+    near(c.bars[1].principal.y, 50, 'the second principal part starts above the plot');
+    near(c.bars[1].principalLabel!.y, 50 + 1.3 * 14 + 1.25 * 14, 'its figure one line down');
+    near(c.bars[2].principal.y, 56 + 240 - 33.5 - 12, 'the third principal part starts above its bar');
+    near(c.bars[2].principalLabel!.y, 56 + 240 - 33.5 - 12 + 1.3 * 14 + 1.25 * 14, 'its figure one line down, inside the part');
+  });
+
+  it('keeps a figure on its line when it only touches the space kept under another', () => {
+    // Built by hand, with the plot 240 tall for a payment of 48.00: month 2
+    // gives back 0.98 of interest, so its principal part starts 4.9 above the
+    // bar's top, and its figure's first line starts at 51.1 + 4.2 = 55.3,
+    // exactly where the space under the interest figure ends.
+    const c = chart([
+      { month: 1, payment: 4800, interest: 0, principal: 4800, balance: 9000 },
+      { month: 2, payment: 4800, interest: -98, principal: 4898, balance: 4102 },
+      { month: 3, payment: 4800, interest: 0, principal: 4800, balance: 0 },
+    ]);
+    assert.equal(c.interestLabels[1], '-1');
+    near(c.bars[1].principal.y, 56 - 4.9, 'the second principal part starts above the plot');
+    near(c.bars[1].principalLabel!.y, 56 - 4.9 + 1.3 * 14, 'its figure on its first line', 1e-9);
+  });
+
   it('leaves off a figure under the first bar when it would run into the legend below the plot', () => {
     // Built by hand, as the page hands over a loan that is never paid off:
     // every payment is all interest, so each "0" of principal goes under its
