@@ -16,15 +16,23 @@ import assert from 'node:assert/strict';
 import { after, afterEach } from 'node:test';
 import { act, cleanup, render } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { dict } from '../src/i18n/index.ts';
+import { multiCurrencyNetWorthEn, multiCurrencyNetWorthCs } from '../src/i18n/strings/tools/multiCurrencyNetWorth.ts';
+import { exportEn, exportCs } from '../src/i18n/strings/tools/export.ts';
 import { aggregate, type AggregationResult, type AssetRow, type AssetType } from '../src/utils/multi-currency-net-worth/math.ts';
 import { AmountLocaleContext } from '../src/components/useMoney.ts';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { ErrorLeadContext, UnreadableContext } from '../src/components/toolShared.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { multiCurrencyNetWorth: multiCurrencyNetWorthEn, export: exportEn },
+  cs: { multiCurrencyNetWorth: multiCurrencyNetWorthCs, export: exportCs },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.multiCurrencyNetWorth.island;
-export const czech = dict('cs').tools.multiCurrencyNetWorth.island;
+export const czech = TOOL_STRINGS.cs.multiCurrencyNetWorth.island;
 export type Strings = typeof island;
 
 /** Units of each currency that one euro buys. */

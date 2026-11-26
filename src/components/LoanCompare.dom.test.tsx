@@ -3,12 +3,19 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { UNREADABLE } from '../utils/shared/linkInput.ts';
 import { SHARED_STATE_GLOBAL, decodeFromQueryString } from '../utils/loan/url.ts';
 import LoanCompare from './LoanCompare.tsx';
 
-const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+const t = TOOL_STRINGS.en;
 const island = t.loanComparison.island;
 // The label also holds the required mark and the currency, so it is matched by its start.
 const principalLabel = new RegExp(`^${island.card.principal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);

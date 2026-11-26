@@ -13,7 +13,8 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { cleanup, render } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { dict } from '../src/i18n/index.ts';
+import { monteCarloEn } from '../src/i18n/strings/tools/monteCarlo.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { DEFAULTS, type ToolState } from '../src/utils/monte-carlo/url.ts';
 import { roundedResult, simulate } from '../src/utils/monte-carlo/math.ts';
 import { formatAmount as formatAmountIn } from '../src/utils/shared/formatAmount.ts';
@@ -22,7 +23,13 @@ import { ChartWordsContext } from '../src/components/ChartAmounts.tsx';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { ErrorLeadContext, UnreadableContext } from '../src/components/toolShared.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.monteCarlo.island;
 
 /** Analytics as the page would send them, recorded. */

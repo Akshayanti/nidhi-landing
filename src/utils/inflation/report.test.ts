@@ -7,12 +7,19 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DICTS } from '../../i18n/index.ts';
+import { inflationEn } from '../../i18n/strings/tools/inflation.ts';
+import { exportEn } from '../../i18n/strings/tools/export.ts';
 import { defaultState, type ToolState } from './url.ts';
 import type { InflationAnswer } from './export.ts';
 import { inflationReport } from './report.ts';
 
-const tools = DICTS.en.tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn, export: exportEn },
+};
+
+const tools = TOOL_STRINGS.en;
 const island = tools.inflation.island;
 const common = tools.export;
 

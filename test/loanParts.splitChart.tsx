@@ -12,15 +12,22 @@
  */
 import assert from 'node:assert/strict';
 import { act, cleanup, render } from '@testing-library/react';
-import { dict } from '../src/i18n/index.ts';
+import { loanComparisonEn } from '../src/i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { computeLoan, type AmortizationRow } from '../src/utils/loan/math.ts';
 import { ChartWordsContext } from '../src/components/ChartAmounts.tsx';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { AmountLocaleContext } from '../src/components/useMoney.ts';
 import { SplitChart } from '../src/components/LoanCompare.tsx';
 
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
 const g = globalThis as unknown as Record<string, unknown>;
-const t = dict('en').tools;
+const t = TOOL_STRINGS.en;
 export const island = t.loanComparison.island;
 export type Strings = typeof island;
 

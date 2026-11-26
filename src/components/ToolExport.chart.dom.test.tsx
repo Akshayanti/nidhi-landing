@@ -9,13 +9,19 @@ import '../../test/dom.ts';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import { cleanup, render } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import type { Report, ReportChart, ReportPoint } from '../utils/shared/report.ts';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ToolReport } from './ToolExport.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
-const strings = dict('en').tools.export;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { export: exportEn },
+};
+
+const strings = TOOL_STRINGS.en.export;
 
 const REPORT: Report = {
   tool: 'A tool',

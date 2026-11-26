@@ -10,12 +10,20 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DICTS } from '../../i18n/index.ts';
+import { multiCurrencyNetWorthEn, multiCurrencyNetWorthEs } from '../../i18n/strings/tools/multiCurrencyNetWorth.ts';
+import { exportEn, exportEs } from '../../i18n/strings/tools/export.ts';
 import type { AggregationResult, AssetRow, CurrencyPosition } from './math.ts';
 import { aggregate } from './math.ts';
 import { netWorthSheets, type NetWorthExport } from './export.ts';
 
-const t = DICTS.en.tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { multiCurrencyNetWorth: multiCurrencyNetWorthEn, export: exportEn },
+  es: { multiCurrencyNetWorth: multiCurrencyNetWorthEs, export: exportEs },
+};
+
+const t = TOOL_STRINGS.en;
 const island = t.multiCurrencyNetWorth.island;
 const common = t.export;
 const x = island.export;
@@ -112,7 +120,7 @@ describe('net worth spreadsheet: the reader’s own list, every rate known', () 
   });
 
   it('names currencies in the page’s language', () => {
-    const es = DICTS.es.tools;
+    const es = TOOL_STRINGS.es;
     const sheets = netWorthSheets({ ...base, island: es.multiCurrencyNetWorth.island, common: es.export, result: aggregate(ROWS, 'EUR', RATES), rows: ROWS, rates: RATES, showAmounts: true });
     assert.notEqual(es.multiCurrencyNetWorth.island.currencies.USD, DOLLAR);
     assert.equal(sheets[2].rows[2][0], es.multiCurrencyNetWorth.island.currencies.USD);

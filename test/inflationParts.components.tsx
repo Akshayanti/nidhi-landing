@@ -12,13 +12,20 @@ import assert from 'node:assert/strict';
 import { after, afterEach } from 'node:test';
 import { cleanup, render } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { dict } from '../src/i18n/index.ts';
+import { inflationEn } from '../src/i18n/strings/tools/inflation.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { AmountLocaleContext } from '../src/components/useMoney.ts';
 import { ChartWordsContext } from '../src/components/ChartAmounts.tsx';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { ErrorLeadContext, UnreadableContext } from '../src/components/toolShared.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.inflation.island;
 export type Strings = typeof island;
 

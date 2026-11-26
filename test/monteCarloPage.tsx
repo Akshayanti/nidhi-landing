@@ -17,13 +17,20 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { dict } from '../src/i18n/index.ts';
+import { monteCarloEn } from '../src/i18n/strings/tools/monteCarlo.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, defaultState, encodeState, type ToolState } from '../src/utils/monte-carlo/url.ts';
 import { roundedResult, simulate, type SimulationResult } from '../src/utils/monte-carlo/math.ts';
 import { formatAmount as formatAmountIn } from '../src/utils/shared/formatAmount.ts';
 import MonteCarloSimulator from '../src/components/MonteCarloSimulator.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.monteCarlo.island;
 export const w = window as unknown as Record<string, unknown>;
 /** What the page keeps for the language switch to carry. */

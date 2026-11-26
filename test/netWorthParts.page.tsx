@@ -20,11 +20,18 @@ import { after, afterEach, beforeEach } from 'node:test';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { clock } from './windowClock.ts';
-import { dict } from '../src/i18n/index.ts';
+import { multiCurrencyNetWorthEn } from '../src/i18n/strings/tools/multiCurrencyNetWorth.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { SHARED_STATE_GLOBAL } from '../src/utils/multi-currency-net-worth/url.ts';
 import MultiCurrencyNetWorth from '../src/components/MultiCurrencyNetWorth.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { multiCurrencyNetWorth: multiCurrencyNetWorthEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.multiCurrencyNetWorth.island;
 export type Strings = typeof island;
 export const w = window as unknown as Record<string, unknown>;

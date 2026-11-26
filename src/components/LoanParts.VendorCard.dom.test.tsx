@@ -12,7 +12,8 @@ import '../../test/dom.ts';
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { computeFromInput, computeNoPointsBaseline } from '../utils/loan/inputs.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { UNREADABLE } from '../utils/shared/linkInput.ts';
@@ -21,7 +22,13 @@ import { VendorCard } from './LoanCompare.tsx';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ErrorLeadContext, UnreadableContext } from './toolShared.tsx';
 
-const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+const t = TOOL_STRINGS.en;
 const s = t.loanComparison.island;
 const c = s.card;
 const r = s.results;

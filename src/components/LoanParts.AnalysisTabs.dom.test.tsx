@@ -16,14 +16,22 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { useState } from 'react';
 import { act, cleanup, fireEvent, render } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn, loanComparisonHi } from '../i18n/strings/tools/loanComparison.ts';
+import { exportEn, exportHi } from '../i18n/strings/tools/export.ts';
 import { computeFromInput } from '../utils/loan/inputs.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { DEFAULT_GLOBAL_STATE, makeAddedVendor, type AnalysisTab, type GlobalState, type VendorInput } from '../utils/loan/url.ts';
 import { ChartWordsContext } from './ChartAmounts.tsx';
 import { AnalysisTabs, HowItWorksPanel } from './LoanCompare.tsx';
 
-const tools = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+  hi: { loanComparison: loanComparisonHi, export: exportHi },
+};
+
+const tools = TOOL_STRINGS.en;
 const island = tools.loanComparison.island;
 const g = globalThis as unknown as Record<string, unknown>;
 const win = window as unknown as { posthog?: unknown };
@@ -352,7 +360,7 @@ describe('the how-it-works panel', () => {
   });
 
   it('reads in the language of the page', () => {
-    const hindi = dict('hi').tools.loanComparison.island;
+    const hindi = TOOL_STRINGS.hi.loanComparison.island;
     const { container } = render(<HowItWorksPanel strings={hindi} />);
     assert.equal(one(container, '.lc-howPanel h3').textContent, hindi.how.heading);
     assert.equal(one(container, '.lc-howNote').textContent, hindi.how.note);

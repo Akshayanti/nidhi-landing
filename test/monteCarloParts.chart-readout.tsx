@@ -14,7 +14,8 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 // The English catalog by itself: the other languages' catalogs are not drawn here.
-import { en } from '../src/i18n/strings/en.ts';
+import { monteCarloEn } from '../src/i18n/strings/tools/monteCarlo.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { DEFAULTS, type ToolState } from '../src/utils/monte-carlo/url.ts';
 import { roundedResult, simulate, type SimulationResult } from '../src/utils/monte-carlo/math.ts';
 import { formatAmount } from '../src/utils/shared/formatAmount.ts';
@@ -23,7 +24,13 @@ import { ChartWordsContext } from '../src/components/ChartAmounts.tsx';
 import { NumberLocaleContext } from '../src/components/LocaleNumberInput.tsx';
 import { Chart } from '../src/components/MonteCarloSimulator.tsx';
 
-export const tools = en.tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn, export: exportEn },
+};
+
+export const tools = TOOL_STRINGS.en;
 export const island = tools.monteCarlo.island;
 export const words = island.chart;
 export type Strings = typeof island;

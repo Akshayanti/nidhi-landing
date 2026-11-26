@@ -15,15 +15,22 @@
  * The tests state the figures they expect as numbers; nothing here works an
  * expectation out.
  */
-import { DICTS } from '../src/i18n/index.ts';
+import { loanComparisonEn } from '../src/i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { computeFromInput } from '../src/utils/loan/inputs.ts';
 import type { LoanResult } from '../src/utils/loan/math.ts';
 import type { LoanExport } from '../src/utils/loan/export.ts';
 import type { VendorInput } from '../src/utils/loan/url.ts';
 import type { Cell } from '../src/utils/shared/xlsx.ts';
 
-export const island = DICTS.en.tools.loanComparison.island;
-export const common = DICTS.en.tools.export;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+export const island = TOOL_STRINGS.en.loanComparison.island;
+export const common = TOOL_STRINGS.en.export;
 
 /** An offer's boxes: 1,200.00 at 12% over 3 months, every optional box empty. */
 export const offer = (over: Partial<VendorInput> = {}): VendorInput => ({

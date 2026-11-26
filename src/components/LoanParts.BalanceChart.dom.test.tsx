@@ -18,14 +18,21 @@ import '../../test/dom.ts';
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { CHART_SERIES } from '../styles/palette.ts';
 import { computeLoan, emptyResult, type LoanResult } from '../utils/loan/math.ts';
 import { ChartWordsContext } from './ChartAmounts.tsx';
 import { BalanceChart } from './LoanCompare.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
-const tools = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+const tools = TOOL_STRINGS.en;
 const island = tools.loanComparison.island;
 const words = island.balance;
 // As the page passes them: the first five chart colours, one per offer slot.

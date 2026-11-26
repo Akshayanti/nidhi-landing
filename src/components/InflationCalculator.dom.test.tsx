@@ -3,12 +3,19 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { dict } from '../i18n/index.ts';
+import { inflationEn } from '../i18n/strings/tools/inflation.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { SHARED_STATE_GLOBAL, decodeState } from '../utils/inflation/url.ts';
 import { boxErrors, formFromLink } from '../utils/inflation/form.ts';
 import InflationCalculator from './InflationCalculator.tsx';
 
-const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn, export: exportEn },
+};
+
+const t = TOOL_STRINGS.en;
 const LOCALE = 'en';
 const shared = () => (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
 

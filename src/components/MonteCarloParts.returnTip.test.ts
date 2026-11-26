@@ -4,11 +4,17 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { monteCarloEn } from '../i18n/strings/tools/monteCarlo.ts';
 import { QUOTED_RATES } from '../utils/monte-carlo/math.ts';
 import { returnTip } from './MonteCarloSimulator.tsx';
 
-const island = dict('en').tools.monteCarlo.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn },
+};
+
+const island = TOOL_STRINGS.en.monteCarlo.island;
 const plain = (s: string) => s.replace(/\s/g, ' ');
 
 describe('a return setting’s description', () => {
