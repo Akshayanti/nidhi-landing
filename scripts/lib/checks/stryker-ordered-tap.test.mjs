@@ -130,11 +130,12 @@ describe('the runner Stryker is given', () => {
 describe('stryker.config.mjs', () => {
   it('uses the ordered runner, beside the plugins Stryker loads by itself', () => {
     const source = read('stryker.config.mjs');
-    assert.ok(source.includes("  testRunner: 'tap-ordered',\n  appendPlugins: ['./scripts/lib/checks/stryker-ordered-tap.mjs'],\n"));
+    assert.ok(source.includes("  testRunner: 'tap-ordered',\n"));
+    assert.ok(source.includes("  appendPlugins: ['./scripts/lib/checks/stryker-ordered-tap.mjs', './scripts/lib/checks/stryker-run-plan.mjs'],\n"));
     assert.doesNotMatch(source, /\n\s*plugins:/, 'the default plugins are not replaced');
     assert.equal(config.testRunner, NAME);
-    assert.deepEqual(config.appendPlugins, ['./scripts/lib/checks/stryker-ordered-tap.mjs']);
-    assert.ok(existsSync(join(ROOT, config.appendPlugins[0])));
+    assert.deepEqual(config.appendPlugins, ['./scripts/lib/checks/stryker-ordered-tap.mjs', './scripts/lib/checks/stryker-run-plan.mjs']);
+    for (const plugin of config.appendPlugins) assert.ok(existsSync(join(ROOT, plugin)), plugin);
     assert.ok(source.includes('    testFiles: TEST_FILES,\n'));
   });
 
