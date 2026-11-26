@@ -165,5 +165,10 @@ describe('the results', () => {
       ['Cautious (4%)', '31', '€-250'],
       ['Optimistic (6%)', '79', '€600'],
     ]);
+    // Drawn as records, each value line names its column; the row heading needs none.
+    for (const tr of document.querySelectorAll('.iop-side tbody tr')) {
+      assert.deepEqual([...tr.querySelectorAll('td')].map((c) => c.querySelector('.tool-recordLabel')?.textContent), [s.side.invest, s.side.gap]);
+      assert.equal(tr.querySelectorAll('th .tool-recordLabel').length, 0);
+    }
   });
 });
