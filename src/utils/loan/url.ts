@@ -275,9 +275,11 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
   if (!encoded) return [];
   const out: LumpSumEntry[] = [];
   for (const pair of encoded.split(';')) {
+    // Stryker disable next-line MethodExpression: equivalent. Each side of the pair is trimmed again below, and a pair that is only spaces has no colon, so it is skipped either way.
     const trimmed = pair.trim();
     if (!trimmed) continue;
     const colon = trimmed.indexOf(':');
+    // Stryker disable next-line ArithmeticOperator: equivalent. A colon at the end leaves an empty amount, which reads as 0 and is skipped by the amount check below.
     if (colon <= 0 || colon === trimmed.length - 1) continue;
     const month = Number(trimmed.slice(0, colon).trim());
     const amount = Number(trimmed.slice(colon + 1).trim());
@@ -363,6 +365,7 @@ function encodeVendorTuple(v: VendorInput, slotIndex: number): string {
   // Build the simple-mode tuple. Each position is the field's string value,
   // with the omit-when-default behaviour (substitute '' for fields that
   // match a stable single-valued default: currently just modeKind).
+  // Stryker disable next-line ArrayDeclaration,StringLiteral: equivalent. Every one of the eight positions is assigned below, so the starting array and its fill are never read.
   const fields = new Array<string>(SIMPLE_FIELD_COUNT).fill('');
   fields[V_IDX.NAME] = v.name;
   fields[V_IDX.PRINCIPAL] = written(v.principal, dflt.principal);
@@ -396,11 +399,13 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
 
   // modeKind: any unknown value coerces to 'term' so a malformed share
   // link can never put the UI into an unexpected state.
+  // Stryker disable next-line StringLiteral: equivalent. Every slot template's mode is 'term', and an empty position reads as 'term', so an empty mode lands on the same value either way.
   if (fields[V_IDX.MODE_KIND] !== '') {
     next.modeKind = fields[V_IDX.MODE_KIND] === 'payment' ? 'payment' : 'term';
   }
 
   if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = read(fields[V_IDX.TERM_MONTHS], next.termMonths);
+  // Stryker disable next-line StringLiteral: equivalent. Every slot template's monthly payment is empty, and an empty position reads back as empty, so the box ends the same either way.
   if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = read(fields[V_IDX.MONTHLY_PAYMENT], next.monthlyPayment);
   if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = read(fields[V_IDX.FEE_MAJOR], next.feeMajor);
   if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = read(fields[V_IDX.EXTRA_MONTHLY], next.extraMonthly);
@@ -443,6 +448,7 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       //   - matches the inactive default (no semantic difference)
       if (value === dflt) continue;
       // An emptied box whose default is not empty is written as the mark.
+      // Stryker disable next-line StringLiteral: equivalent. An empty value with an empty default is skipped by `value === dflt` above, and an empty rate kind writes nothing below, so no link changes whichever text is compared.
       if (value === '' && (field === 'rateKind' || dflt === '')) continue;
       if (field === 'rateChangeKeeps') {
         params.set(`v${idx}_${key}`, 'p');

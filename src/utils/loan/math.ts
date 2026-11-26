@@ -79,6 +79,7 @@ export function monthlyInterestMinor(balanceMinor: number, annualRate: number): 
     return roundMinor(balanceMinor * (annualRate / 12));
   }
   const product = balanceMinor * scaled;
+  // Stryker disable next-line BlockStatement: equivalent. The BigInt path below rounds half up exactly as this block does, so every balance and rate gives the same interest.
   if (Number.isSafeInteger(product)) {
     const whole = Math.floor(product / MONTH_DIVISOR);
     const rest = product - whole * MONTH_DIVISOR;
@@ -434,6 +435,7 @@ export function buildScheduleAdvanced(spec: {
   const principalMinor = spec.principalMinor;
   const totalMonths = Math.max(0, Math.floor(spec.totalMonths));
   const extraMonthlyMinor = Math.max(0, Math.floor(spec.extraMonthlyMinor ?? 0));
+  // Stryker disable next-line ArrayDeclaration: equivalent. An entry with no finite month is skipped when the lump sums are put into months, so the mutant's one string adds nothing.
   const lumpSums = spec.lumpSums ?? [];
 
   if (principalMinor <= 0) {
@@ -508,6 +510,7 @@ export function buildScheduleAdvanced(spec: {
         spec.rateSpec.subsequentAnnualRate,
         remainingMonths,
       );
+      // Stryker disable next-line BooleanLiteral: equivalent. The recast runs only in the month after the fixed period, which comes once, so whether it was marked as applied is never asked again.
       recastApplied = true;
       recastPaymentMinor = currentPayment;
       if (spec.rateSpec.subsequentAnnualRate > 0) {
@@ -530,7 +533,9 @@ export function buildScheduleAdvanced(spec: {
     if (
       keepsPayment &&
       !stalled &&
+      // Stryker disable next-line ConditionalExpression: equivalent. `keepsPayment` above is only true for a hybrid rate, so this condition is already true wherever it is reached.
       spec.rateSpec.kind === 'hybrid' &&
+      // Stryker disable next-line ConditionalExpression: equivalent. Before the rate change the payment is above the first month's interest and the balance only falls, so the payment never stops covering interest there.
       month > spec.rateSpec.initialMonths &&
       month > lastLumpMonth &&
       principal <= 0
@@ -559,6 +564,7 @@ export function buildScheduleAdvanced(spec: {
     // is principal-only; it doesn't accrue interest the same month
     // because interest was already computed on the pre-payment balance.
     const lump = lumpByMonth.get(month) ?? 0;
+    // Stryker disable next-line LogicalOperator: equivalent. When the lump sum or the balance is 0, the amount applied is the smaller of the two, 0, so nothing changes.
     if (lump > 0 && balance > 0) {
       const applied = Math.min(lump, balance);
       balance -= applied;
@@ -1122,6 +1128,7 @@ export function pointsBreakEven(withPoints: LoanResult, withoutPoints: LoanResul
     // a shorter loan. The points have paid for themselves in the first month
     // in which the loan with points owes less by at least what they cost.
     months = Infinity;
+    // Stryker disable next-line MethodExpression: equivalent. The loan with points ends first; after that it owes nothing and the gap only shrinks as the other loan is paid, so no later month can reach the cost.
     const last = Math.max(withPoints.schedule.length, withoutPoints.schedule.length);
     for (let m = 1; m <= last; m++) {
       const owedWith = withPoints.schedule[m - 1]?.balance ?? 0;
@@ -1329,6 +1336,7 @@ export function refinanceComparison(
   const carriedExtra = Math.max(0, roundMinor(source?.inputs.extraMonthlyMinor ?? 0));
   // A lump sum planned for month 48 of the original loan is month 12 of a
   // loan that starts after month 36. One already paid stays where it was.
+  // Stryker disable next-line ArrayDeclaration: equivalent. Without `source` the list is filtered to nothing (an entry with no month is never after the refinance), and its other use is guarded by `source`.
   const originalLumps = source?.inputs.lumpSums ?? [];
   const carriedLumps = originalLumps
     .filter((l) => l.month > refiMonth && l.amountMinor > 0)
@@ -1344,7 +1352,9 @@ export function refinanceComparison(
     },
     { kind: 'term', months: Math.floor(newTermMonths) },
   );
+  // Stryker disable next-line LogicalOperator: equivalent. computeLoan returns an empty schedule exactly when it returns an error, so either test sends the same loans back.
   if (newLoan.error || newLoan.schedule.length === 0) {
+    // Stryker disable next-line StringLiteral: unreachable. computeLoan always gives an error with an empty schedule, so the fallback text is never used.
     return { error: newLoan.error ?? 'New loan is not valid.' };
   }
 

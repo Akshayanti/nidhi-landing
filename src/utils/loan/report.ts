@@ -19,6 +19,7 @@ const DASHES = ['', '9 5', '2 4', '12 4 2 4', '5 5'];
 export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: string[] }): Report {
   const { island, currency, results, names, answer } = e;
   const x = island.export;
+  // Stryker disable next-line StringLiteral: equivalent. The date and the page appear only on the about sheet, which the report leaves out.
   const [, summary, inputs] = loanSheets({ ...e, date: '', page: '', worded: true });
   const series = results.flatMap((r, i) => {
     if (r.error || r.schedule.length === 0) return [];
