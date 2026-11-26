@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, 
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GUARD_NOTE, partScores, stoppedByGuard } from './mutation-floors.mjs';
-import { beforePath, newOrChangedTestFiles, takeOutKillsToRecheck, testFilesBefore } from './mutation-recheck.mjs';
+import { PLAN_SCHEMA, beforePath, killsRunNow, newOrChangedTestFiles, planNote, planPath, reportHash, takeOutKillsToRecheck, testFilesBefore } from './mutation-recheck.mjs';
 import { CHANGED_MARK, depsPath, readStored, shardFingerprints } from './mutation-deps.mjs';
 import { isSelectedTest } from './mutation-fingerprint.mjs';
 
@@ -142,6 +142,92 @@ describe('the kills taken out to be tested again', () => {
   });
 });
 
+// The plan a run leaves (stryker-run-plan.mjs): which mutants it ran itself.
+// A kill among them is this run's own, so it is not taken out to be run a
+// second time; the plan is believed only for the very results it was written for.
+describe('the plan of the run, and the kills it ran itself', () => {
+  const OLD = { 'src/z.test.ts': 'z' };
+  const NOW = { 'src/a.test.ts': 'a', ...OLD };
+  const before = roundTrip(testFilesBefore(reportOf(OLD, [])));
+  const FILE = 'reports/stryker-incremental/loan-2of3.json';
+  const mutant = (id, coveredBy = ['0', '1'], status = 'Killed') => ({ id, status, coveredBy, killedBy: ['1'] });
+
+  it('is kept beside the results, under a name of its own, and never under the results\' or the note\'s', () => {
+    assert.equal(planPath(FILE), 'reports/stryker-incremental/loan-2of3.plan.json');
+    assert.notEqual(planPath(FILE), beforePath(FILE));
+  });
+
+  it('holds the results file, the mutants planned to run and the hash of the report, and comes back as it went in', () => {
+    const note = planNote(FILE, new Set(['1', '4']), 'the report');
+    assert.deepEqual(note, { schema: PLAN_SCHEMA, file: FILE, ran: ['1', '4'], report: reportHash('the report') });
+    assert.match(note.report, /^[0-9a-f]{64}$/);
+    assert.deepEqual(roundTrip(note), note);
+    assert.deepEqual([...killsRunNow(roundTrip(note), FILE, 'the report')], ['1', '4']);
+    assert.deepEqual([...killsRunNow(planNote(FILE, [], 'r'), FILE, 'r')], [], 'a run that reused everything ran nothing, and says so');
+  });
+
+  it('vouches for nothing unless it is of this shape, for these results, and for this very report', () => {
+    const good = planNote(FILE, ['1'], 'the report');
+    assert.ok(killsRunNow(good, FILE, 'the report'));
+    assert.equal(killsRunNow(good, FILE, 'the report, cut short'), null, 'other bytes on disk');
+    assert.equal(killsRunNow(good, FILE, 'the report\n'), null);
+    assert.equal(killsRunNow(good, 'reports/stryker-incremental/loan-1of3.json', 'the report'), null, 'another shard');
+    assert.equal(killsRunNow(good, FILE, undefined), null);
+    assert.equal(killsRunNow(good, undefined, 'the report'), null);
+    for (const bad of [undefined, null, 'plan', [], {}, { ...good, schema: PLAN_SCHEMA + 1 }, { ...good, schema: undefined }, { ...good, file: undefined },
+      { ...good, report: undefined }, { ...good, report: 7 }, { ...good, ran: undefined }, { ...good, ran: { 1: true } }, { ...good, ran: ['1', 2] }, { ...good, ran: ['1', ''] }]) {
+      assert.equal(killsRunNow(bad, FILE, 'the report'), null, JSON.stringify(bad));
+    }
+  });
+
+  it('leaves in a kill the run ran itself, though a new test file covers it, and takes out the reused one', () => {
+    const report = reportOf(NOW, [mutant('1'), mutant('2'), mutant('3', ['1'])]);
+    assert.equal(takeOutKillsToRecheck(report, before, new Set(['1'])), 1);
+    assert.deepEqual(report.files['src/code.ts'].mutants.map((m) => m.id), ['1', '3'], 'the one it ran, and the one no new file covers');
+  });
+
+  it('takes out both kinds without a plan, as before', () => {
+    for (const none of [null, undefined, ['1'], { 1: true }, 'all']) {
+      const report = reportOf(NOW, [mutant('1'), mutant('2')]);
+      assert.equal(takeOutKillsToRecheck(report, before, none), 2, String(none));
+    }
+    const report = reportOf(NOW, [mutant('1'), mutant('2')]);
+    assert.equal(takeOutKillsToRecheck(report, before), 2);
+  });
+
+  it('counts a test file whose dependencies changed as edited, and still leaves in what the run ran (#891)', () => {
+    // As mutation-deps.mjs marks it: the stored source with the mark before it.
+    const marked = roundTrip(testFilesBefore(reportOf({ 'src/z.test.ts': `${CHANGED_MARK}z` }, [])));
+    const afterPassOne = () => reportOf(OLD, [mutant('1', ['0']), mutant('2', ['0'])]);
+    assert.deepEqual([...newOrChangedTestFiles(marked, afterPassOne())], ['src/z.test.ts']);
+    const all = afterPassOne();
+    assert.equal(takeOutKillsToRecheck(all, marked, null), 2);
+    const ranBoth = afterPassOne();
+    assert.equal(takeOutKillsToRecheck(ranBoth, marked, new Set(['1', '2'])), 0, 'pass 1 ran both: nothing for a second pass');
+    const ranOne = afterPassOne();
+    assert.equal(takeOutKillsToRecheck(ranOne, marked, new Set(['2'])), 1);
+    assert.deepEqual(ranOne.files['src/code.ts'].mutants.map((m) => m.id), ['2']);
+  });
+
+  it('leaves in a kill it ran whose covering tests cannot be traced, and takes out one it did not run', () => {
+    const report = reportOf(NOW, [mutant('1', []), mutant('2', undefined), mutant('3', ['1', '7']), mutant('4', [])]);
+    assert.equal(takeOutKillsToRecheck(report, before, new Set(['1', '2', '3'])), 1);
+    assert.deepEqual(report.files['src/code.ts'].mutants.map((m) => m.id), ['1', '2', '3']);
+  });
+
+  it('names mutants by their own id only: a mutant with none, or one that is not text, is never left in', () => {
+    const report = reportOf(NOW, [{ status: 'Killed', coveredBy: ['0'] }, { id: 1, status: 'Killed', coveredBy: ['0'] }, mutant('1')]);
+    assert.equal(takeOutKillsToRecheck(report, before, new Set(['1', 'undefined'])), 2);
+    assert.deepEqual(report.files['src/code.ts'].mutants.map((m) => m.id), ['1']);
+  });
+
+  it('changes nothing for what is not a kill, and nothing when nothing was reused', () => {
+    const report = reportOf(NOW, ['Survived', 'NoCoverage', 'Ignored'].map((status) => mutant(status, ['0', '1'], status)));
+    assert.equal(takeOutKillsToRecheck(report, before, new Set(['Survived'])), 0);
+    assert.equal(takeOutKillsToRecheck(reportOf(NOW, [mutant('1')]), roundTrip(testFilesBefore(null)), new Set()), 0);
+  });
+});
+
 // A run cancelled while Stryker tests mutants: Stryker writes what it had
 // finished, the reused kill included, with today's test sources. The
 // workflow's recheck step still runs, and only then are the results saved.
@@ -239,6 +325,55 @@ describe('the scripts around a Stryker run', () => {
       assert.equal(existsSync(join(dir, `${NAME}.tmp`)), false);
       // A second go, as after pass 2 would be: nothing more to take out.
       assert.equal(script('mutation-recheck.mjs').outputs, 'checked=true\nselected=0\n');
+    });
+  });
+
+  it('leave in the kill the run ran itself when its plan vouches for the results, and remove the plan as they read it', () => {
+    inFolder(({ dir, script, file }) => {
+      const plan = join(dir, planPath(NAME));
+      const passOne = () => {
+        // As Stryker leaves them: two kills the new test file covers; it ran `m1`, and reused `m2`.
+        const text = JSON.stringify(reportOf(NOW, [{ ...killed(['0', '1'], ['1']), id: 'm1' }, { ...killed(['0', '1'], ['1']), id: 'm2' }]), null, 2);
+        writeFileSync(join(dir, beforePath(NAME)), JSON.stringify(testFilesBefore(reportOf(OLD, []))));
+        writeFileSync(join(dir, NAME), text);
+        return text;
+      };
+      const ids = () => file(NAME).files['src/code.ts'].mutants.map((m) => m.id);
+
+      writeFileSync(plan, JSON.stringify(planNote(NAME, ['m1'], passOne())));
+      const checked = script('mutation-recheck.mjs');
+      assert.equal(checked.status, 0, checked.out);
+      assert.equal(checked.outputs, 'checked=true\nselected=1\n');
+      assert.match(checked.out, /the run's plan names 1 mutant\(s\) it ran itself; a kill among them stays\./);
+      assert.deepEqual(ids(), ['m1']);
+      assert.equal(existsSync(plan), false, 'read once');
+
+      // The same results with no plan, and with one that does not match them: the old rule.
+      passOne();
+      const none = script('mutation-recheck.mjs');
+      assert.equal(none.outputs, 'checked=true\nselected=2\n');
+      assert.match(none.out, /no plan of this run vouches for these results, so no kill stays on its word\./);
+      for (const bad of [JSON.stringify(planNote(NAME, ['m1'], `${passOne()} `)), JSON.stringify(planNote('reports/stryker-incremental/other.json', ['m1'], passOne())), '{"schema":1,"ran":["m1"', '[]']) {
+        passOne();
+        writeFileSync(plan, bad);
+        assert.equal(script('mutation-recheck.mjs').outputs, 'checked=true\nselected=2\n', bad.slice(0, 40));
+        assert.deepEqual(ids(), []);
+        assert.equal(existsSync(plan), false, 'removed all the same');
+      }
+
+      // A plan that cannot be removed fails the step: nothing is saved.
+      const text = passOne();
+      mkdirSync(plan);
+      writeFileSync(join(plan, 'kept'), '');
+      const stuck = script('mutation-recheck.mjs');
+      assert.deepEqual([stuck.status, stuck.outputs], [1, '']);
+      assert.equal(readFileSync(join(dir, NAME), 'utf8'), text, 'the results are left as they were');
+      rmSync(plan, { recursive: true });
+
+      // The step before Stryker removes a plan an earlier run left.
+      writeFileSync(plan, JSON.stringify(planNote(NAME, ['m1'], passOne())));
+      assert.equal(script('mutation-stale-results.mjs').status, 0);
+      assert.equal(existsSync(plan), false);
     });
   });
 
@@ -341,15 +476,23 @@ describe('real Stryker runs, after a test file is added before the unchanged kil
     // wants every listed file to be there, so the list is given again when
     // a.test.mjs is added.
     const configure = (testFiles) => writeFileSync(join(dir, 'stryker.config.mjs'), `export default ${JSON.stringify({
-      testRunner: 'tap-ordered', appendPlugins: [join(import.meta.dirname, 'stryker-ordered-tap.mjs')],
+      testRunner: 'tap-ordered', appendPlugins: [join(import.meta.dirname, 'stryker-ordered-tap.mjs'), join(import.meta.dirname, 'stryker-run-plan.mjs')],
       tap: { testFiles, nodeArgs: ['--test-reporter=tap'], forceBail: true },
       coverageAnalysis: 'perTest', mutate: ['src/five.mjs', 'src/sum.mjs'], concurrency: 1,
-      reporters: ['json'], jsonReporter: { fileName: 'reports/m.json' },
+      reporters: ['json', 'run-plan'], jsonReporter: { fileName: 'reports/m.json' },
       incremental: true, incrementalFile: 'reports/inc.json', tempDirName: '.stryker-tmp', thresholds: { break: null },
     })};\n`);
     configure(['src/z.test.mjs']);
     const { NODE_TEST_CONTEXT: _, NODE_OPTIONS: __, ...env } = process.env;
     const incremental = join(dir, 'reports/inc.json');
+    // The plan the run left, if it vouches for the results on disk, as
+    // scripts/mutation-recheck.mjs reads it: once, then it is gone.
+    const ranNow = () => {
+      const plan = join(dir, planPath('reports/inc.json'));
+      const ran = existsSync(plan) ? killsRunNow(JSON.parse(readFileSync(plan, 'utf8')), 'reports/inc.json', readFileSync(incremental, 'utf8')) : null;
+      rmSync(plan, { force: true });
+      return ran;
+    };
     return {
       dir,
       incremental,
@@ -360,16 +503,18 @@ describe('real Stryker runs, after a test file is added before the unchanged kil
       },
       // One Stryker run: what it says, and its report with each file's mutants.
       run: () => {
-        const out = execFileSync(process.execPath, [join(ROOT, 'node_modules/@stryker-mutator/core/bin/stryker.js'), 'run', 'stryker.config.mjs'], { cwd: dir, encoding: 'utf8', env });
+        const out = execFileSync(process.execPath, [join(ROOT, 'node_modules/@stryker-mutator/core/bin/stryker.js'), 'run', 'stryker.config.mjs'], { cwd: dir, encoding: 'utf8', env, stdio: ['ignore', 'pipe', 'pipe'] });
         const report = JSON.parse(readFileSync(join(dir, 'reports/m.json'), 'utf8'));
         return { out, report, five: report.files['src/five.mjs'].mutants, sum: report.files['src/sum.mjs'].mutants };
       },
       // The step before Stryker: the note, from the results as restored.
       note: () => roundTrip(testFilesBefore(JSON.parse(readFileSync(incremental, 'utf8')))),
+      ranNow,
       // The step after Stryker: the kills to recheck taken out, in the file.
-      recheck: (before) => {
+      // `ran` is what ranNow() gave; left out, it is read here.
+      recheck: (before, ran = ranNow()) => {
         const report = JSON.parse(readFileSync(incremental, 'utf8'));
-        const taken = takeOutKillsToRecheck(report, before);
+        const taken = takeOutKillsToRecheck(report, before, ran);
         writeFileSync(incremental, JSON.stringify(report));
         return taken;
       },
@@ -380,7 +525,7 @@ describe('real Stryker runs, after a test file is added before the unchanged kil
   const ranFirst = ({ report }) => Object.entries(report.testFiles).find(([, file]) => file.tests[0].id === '0')[0];
 
   it('without the recheck the kill is reused; with it the second pass finds the error a fresh run finds', () => {
-    const { dir, incremental, run, note, recheck, addFirst } = project();
+    const { dir, incremental, run, note, recheck, ranNow, addFirst } = project();
     try {
       const first = run();
       assert.deepEqual(first.five.map((m) => m.status), ['Killed'], 'five has one mutant, killed by z.test.mjs');
@@ -401,7 +546,11 @@ describe('real Stryker runs, after a test file is added before the unchanged kil
       assert.equal(partScores({ files: { 'src/utils/five.ts': { mutants: passOne.five } } }).logic, 100);
 
       // The recheck takes out that kill and no other, and pass 2 tests it.
-      assert.equal(recheck(before), 1);
+      // The run's plan vouches for the results and names no mutant: pass 1
+      // reused every result, so the plan leaves no kill in.
+      const ranInPassOne = ranNow();
+      assert.deepEqual([...ranInPassOne], []);
+      assert.equal(recheck(before, ranInPassOne), 1);
       const left = JSON.parse(readFileSync(incremental, 'utf8'));
       assert.deepEqual(left.files['src/five.mjs'].mutants, []);
       assert.equal(left.files['src/sum.mjs'].mutants.length, first.sum.length);
@@ -433,6 +582,76 @@ describe('real Stryker runs, after a test file is added before the unchanged kil
       assert.equal(ranFirst(retry), 'src/a.test.mjs');
       assert.deepEqual(retry.five.map((m) => m.status), ['RuntimeError']);
       assert.equal(recheck(next), 0);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  // The case that made a shard with earlier results slower than one with
+  // none: a test file is marked because something it reaches changed (#891),
+  // Stryker runs every mutant it killed again in pass 1, and the recheck,
+  // not knowing that, took them all out for pass 2 to run once more.
+  it('a kill the first pass ran itself is not taken out to be run a second time', () => {
+    const { dir, incremental, run, note, recheck, ranNow } = project();
+    try {
+      const first = run();
+      const all = 1 + first.sum.length;
+      assert.ok([...first.five, ...first.sum].every((m) => m.status === 'Killed'));
+      // The step before Stryker marks z.test.mjs, then takes the note.
+      const restored = JSON.parse(readFileSync(incremental, 'utf8'));
+      restored.testFiles['src/z.test.mjs'].source = `${CHANGED_MARK}${restored.testFiles['src/z.test.mjs'].source}`;
+      writeFileSync(incremental, JSON.stringify(restored));
+      rmSync(join(dir, planPath('reports/inc.json')), { force: true });
+      const before = note();
+
+      // Pass 1 reuses nothing: the only killer looks edited, so every kill is made again.
+      const passOne = run();
+      assert.equal(reused(passOne.out), 0, passOne.out);
+      assert.ok([...passOne.five, ...passOne.sum].every((m) => m.status === 'Killed'));
+      // The plan is this run's: the hash it holds is of the results on disk, byte for byte.
+      const plan = JSON.parse(readFileSync(join(dir, planPath('reports/inc.json')), 'utf8'));
+      assert.equal(plan.report, reportHash(readFileSync(incremental, 'utf8')));
+      assert.equal(plan.file, 'reports/inc.json');
+      assert.deepEqual([...plan.ran].sort(), [...passOne.five, ...passOne.sum].map((m) => m.id).sort(), 'every mutant was planned to run, under the id the results give it');
+      // Without the plan every kill would be taken out, and pass 2 would run them all again.
+      assert.equal(takeOutKillsToRecheck(JSON.parse(readFileSync(incremental, 'utf8')), before, null), all);
+      // Results that are not the plan's own are not vouched for.
+      assert.equal(killsRunNow(plan, 'reports/inc.json', `${readFileSync(incremental, 'utf8')}\n`), null);
+      // With it, none is: there is no second pass.
+      const ran = ranNow();
+      assert.equal(ran.size, all);
+      assert.equal(recheck(before, ran), 0);
+      assert.equal(existsSync(join(dir, planPath('reports/inc.json'))), false);
+
+      // The results now saved are what a run with no earlier results gives.
+      const kept = JSON.parse(readFileSync(incremental, 'utf8'));
+      rmSync(incremental);
+      const fresh = run();
+      const outcome = (report) => Object.fromEntries(Object.entries(report.files).map(([path, f]) => [path, f.mutants.map((m) => `${m.mutatorName} ${m.status}`).sort()]));
+      assert.deepEqual(outcome(kept), outcome(fresh.report));
+
+      // A later run with nothing changed reuses them all, and its plan says it ran nothing.
+      const next = note();
+      const again = run();
+      assert.equal(reused(again.out), all);
+      assert.deepEqual([...ranNow()], []);
+      assert.equal(recheck(next, new Set()), 0);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('a run that stops before its report is made leaves no plan, and an earlier run\'s plan does not outlive the next run\'s start', () => {
+    const { dir, run, addFirst } = project();
+    try {
+      run();
+      const plan = join(dir, planPath('reports/inc.json'));
+      assert.ok(existsSync(plan));
+      const earlier = readFileSync(plan, 'utf8');
+      // A test that fails on the code as written: the first test run fails, and Stryker stops there.
+      addFirst(`${head}test('a', () => { assert.equal(1 + 1, 3); });\n`);
+      assert.throws(() => run());
+      assert.equal(existsSync(plan), false, `the earlier plan is gone: ${earlier.slice(0, 40)}`);
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }

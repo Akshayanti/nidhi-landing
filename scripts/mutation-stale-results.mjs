@@ -3,7 +3,7 @@
 //
 //   STRYKER_SCOPE=<scope> STRYKER_SHARD=<i>/<n> STRYKER_FORCE=<0|1> node scripts/mutation-stale-results.mjs
 //
-// Run before Stryker, in the same environment. It does two things:
+// Run before Stryker, in the same environment. It does these things:
 //
 // - Takes the timeouts and errors out, so Stryker tests those mutants again
 //   on every run (the rule and the reason are in
@@ -20,17 +20,22 @@
 //   earlier results, or on a forced run, Stryker reuses nothing, and the
 //   note says so. The note is written last: without it the recheck fails
 //   and nothing is saved.
+// - Removes the plan an earlier Stryker run may have left beside the
+//   results (lib/checks/stryker-run-plan.mjs), before anything else.
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { depsPath, invalidate, readStored, shardFingerprints } from './lib/checks/mutation-deps.mjs';
 import { isSelectedTest, trackedPaths } from './lib/checks/mutation-fingerprint.mjs';
-import { beforePath, testFilesBefore } from './lib/checks/mutation-recheck.mjs';
+import { beforePath, planPath, testFilesBefore } from './lib/checks/mutation-recheck.mjs';
 import { dropUnsafeResults } from './lib/checks/mutation-stale-results.mjs';
 
 const { default: config } = await import('../stryker.config.mjs');
 const path = config.incrementalFile;
 const root = process.cwd();
+// No plan of an earlier run outlives this step (lib/checks/mutation-recheck.mjs):
+// the recheck believes only the one the run after this step writes.
+rmSync(planPath(path), { force: true });
 const writeWhole = (file, text) => {
   writeFileSync(`${file}.tmp`, text);
   renameSync(`${file}.tmp`, file);
