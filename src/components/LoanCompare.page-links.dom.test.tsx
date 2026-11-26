@@ -13,16 +13,30 @@
  */
 import {
   island, events, eventNames, published, arriveWith, cameFrom, mount, offer, link, cards, currencySelect, has, box, c,
-  splitFollows, rowAmount, addressUntouched, one, all,
+  splitFollows, rowAmount, addressUntouched, one, all, page,
 } from '../../test/loanCompare.page.tsx';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
+import { renderToString } from 'react-dom/server';
 import { amountLength } from '../utils/shared/amountUnits.ts';
 
 const r = island.results;
 const tabSelected = (label: string) => all('[role="tab"]').find((b) => b.textContent?.includes(label))?.getAttribute('aria-selected');
 
 describe('the loan comparison: a shared link arriving', () => {
+  it('as the server sends it: held until the island runs, in the page\'s currency, nothing copied and nothing said', () => {
+    const doc = new DOMParser().parseFromString(renderToString(page({ defaultCurrency: 'INR' })), 'text/html');
+    const root = doc.querySelector('.lc-root');
+    assert.ok(root);
+    assert.equal(root.hasAttribute('inert'), true);
+    assert.equal(root.getAttribute('aria-busy'), 'true');
+    assert.equal(doc.querySelector('.lc-currencyField option[selected]')?.getAttribute('value'), 'INR');
+    assert.equal(doc.querySelectorAll('.lc-grid > article.lc-card').length, 2);
+    assert.equal(doc.querySelector('.lc-shareUrlBar'), null);
+    assert.equal(doc.querySelector('[data-attr="lc-share-copy"] .tool-swapLabel > span')?.textContent, island.toolbar.share);
+    assert.equal(doc.querySelector('.lc-root > span[aria-live="polite"]')?.textContent, '');
+  });
+
   it('opens without a link in the page\'s own currency, as the example, keeping nothing for the switch', () => {
     mount({ defaultCurrency: 'INR' });
     assert.equal(currencySelect().value, 'INR');
