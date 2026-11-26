@@ -871,11 +871,11 @@ function Results({ result, exact, state, code, busy, strings, actions }: { resul
             <tbody role="rowgroup">
               {tableYears(result.years).map((y) => (
                 <tr key={y} role="row">
-                  <th scope="row" role="rowheader" data-label={strings.results.tableYear}>{y}</th>
-                  <td role="cell" data-label={strings.results.tableLow}><Amount>{formatAmount(result.bands[y].p10, code)}</Amount></td>
-                  <td role="cell" data-label={strings.results.tableMedian}><Amount>{formatAmount(result.bands[y].p50, code)}</Amount></td>
-                  <td role="cell" data-label={strings.results.tableHigh}><Amount>{formatAmount(result.bands[y].p90, code)}</Amount></td>
-                  <td role="cell" data-label={strings.results.tableStraight}><Amount>{formatAmount(result.straightLine[y], code)}</Amount></td>
+                  <th scope="row" role="rowheader"><span className="tool-recordLabel" aria-hidden="true">{strings.results.tableYear}</span>{y}</th>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{strings.results.tableLow}</span><Amount>{formatAmount(result.bands[y].p10, code)}</Amount></td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{strings.results.tableMedian}</span><Amount>{formatAmount(result.bands[y].p50, code)}</Amount></td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{strings.results.tableHigh}</span><Amount>{formatAmount(result.bands[y].p90, code)}</Amount></td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{strings.results.tableStraight}</span><Amount>{formatAmount(result.straightLine[y], code)}</Amount></td>
                 </tr>
               ))}
             </tbody>

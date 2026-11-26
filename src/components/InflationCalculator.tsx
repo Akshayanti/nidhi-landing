@@ -874,8 +874,8 @@ function HistoryPanel({
                     .reverse()
                     .map((y) => (
                       <tr key={y} role="row">
-                        <th scope="row" role="rowheader" data-label={h.tableYear}>{y}</th>
-                        <td role="cell" data-label={h.tableRate}>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
+                        <th scope="row" role="rowheader"><span className="tool-recordLabel" aria-hidden="true">{h.tableYear}</span>{y}</th>
+                        <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{h.tableRate}</span>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
                       </tr>
                     ))}
                 </tbody>

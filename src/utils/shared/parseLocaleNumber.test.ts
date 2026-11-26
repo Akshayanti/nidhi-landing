@@ -368,4 +368,10 @@ describe('the Arabic decimal and thousands marks (#625)', () => {
       assert.equal(completeNumber('-٫٥', locale), '-0٫٥', locale);
     }
   });
+
+  it('completing a number never hides a mixture of Arabic and Latin marks', () => {
+    for (const [raw, locale] of [['٢٫٥,', 'es'], ['150.000٫', 'en'], ['1,234٫', 'en'], [',5٬000', 'es']]) {
+      assert.equal(canonicalNumber(raw, locale), 'NaN', `${raw} on ${locale}`);
+    }
+  });
 });

@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import {
-  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, isMissedStepOnly, pressUntilSent } from './tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, addressProblems, checkMatrix, checkRun, decodeBody, elementProblems, eventsIn, findLeaks, hasFinding, isMissedStepOnly, pressUntilSent } from './tool-privacy-checks.mjs';
 
 const ORIGIN = 'http://127.0.0.1:4000';
 const OWN = /^free_loan_comparison_/;
@@ -431,5 +431,25 @@ describe('pressUntilSent', () => {
   it('gives up after its tries and says a click was made but sent nothing', async () => {
     const misses = await pressUntilSent({ find: async () => ['reset'], press: async () => null, sent: async () => false });
     assert.deepEqual(misses, [1, 2, 3].map((go) => `go ${go}: clicked; no event seen`));
+  });
+});
+
+describe('hasFinding', () => {
+  const stopped = 'the run stopped while pressing: Session closed. Most likely the page has been closed.';
+
+  it('is false where things were only not seen, so a lost page may run again', () => {
+    assert.equal(hasFinding([]), false);
+    assert.equal(hasFinding([stopped, 'no $pageleave was seen while the tool was used: the events sent as that page unloads were not checked']), false);
+  });
+
+  it('is true for anything found, beside a lost page too', () => {
+    for (const found of [
+      'a request to /i/v0/e/ carries what was typed: 7131719',
+      'a request to /e/ could not be decoded, so it could not be checked',
+      'a request to /e/ arrived with no body, so it could not be checked',
+      'what the run sent could not be checked: no such file',
+      'consent was declined, yet $autocapture was sent',
+      'a # share link left state in the address: /free/loan-comparison/#p=1',
+    ]) assert.equal(hasFinding([stopped, found]), true, found);
   });
 });

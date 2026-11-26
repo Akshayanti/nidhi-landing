@@ -195,6 +195,9 @@ export function canonicalNumber(raw: string, locale: string): string {
  */
 export function completeNumber(raw: string, locale: string): string {
   const t = raw.trim();
+  // Arabic marks mixed with Latin ones have no reading (#625): taking one off
+  // the end here would hide the mixture from the parser that refuses it.
+  if (/[\u066b\u066c]/.test(t) && /[.,]/.test(t)) return t;
   const sign = /^[-−]/.test(t) ? t[0] : '';
   let body = t.slice(sign.length).trimStart();
   const { decimal } = numberSeparators(locale);

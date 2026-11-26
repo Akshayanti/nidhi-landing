@@ -781,8 +781,8 @@ function Results({
               ].map((row) => (
                 <tr key={row.label} role="row">
                   <th scope="row" role="rowheader">{row.label}</th>
-                  <td role="cell" data-label={s.side.invest}>{Math.round(row.res.bAhead * 100)}</td>
-                  <td role="cell" data-label={s.side.gap}><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.invest}</span>{Math.round(row.res.bAhead * 100)}</td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.gap}</span><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
                 </tr>
               ))}
             </tbody>

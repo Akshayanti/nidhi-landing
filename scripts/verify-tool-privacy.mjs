@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, hasFinding, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -973,35 +973,45 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     try { note.leaving = true; await page.goto('about:blank'); await page.close(); } catch { /* already closed */ }
   } finally {
     await context.close().catch(() => {});
-    rmSync(downloads, { recursive: true, force: true });
+    // Cleaning up must not throw: what this run saw would go with it.
+    try { rmSync(downloads, { recursive: true, force: true }); } catch { /* left for the system */ }
   }
 
-  const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
-  // An event belongs to the page it is about, not to the moment it was sent:
-  // around a language switch the page left and the page arrived at both send,
-  // and their requests can cross. Each event names its own page.
-  const arrivedAt = `${locale === 'en' ? '/hi' : ''}/free/${slug}/`;
-  const partOf = (e, sentIn) => {
-    if (sentIn !== 'switch' && sentIn !== 'arrived') return sentIn;
-    const props = e.properties || {};
-    let pathname = typeof props.$pathname === 'string' ? props.$pathname : '';
-    if (!pathname && typeof props.$current_url === 'string') { try { pathname = new URL(props.$current_url).pathname; } catch { /* not an address */ } }
-    if (!pathname) return sentIn;
-    return pathname === arrivedAt ? 'arrived' : 'switch';
-  };
-  const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: partOf(e, d.phase) })));
-  const result = checkRun({
-    decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
-    ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
-  });
-  result.problems.unshift(...problems);
-  result.problems = [...new Set(result.problems)];
-  const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
-  if (DUMP) {
-    mkdirSync(DUMP, { recursive: true });
-    writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
+  try {
+    return conclude();
+  } catch (err) {
+    // Not an absence, so never done again: requests were seen and not judged.
+    return { problems: [...problems, `what the run sent could not be checked: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [], covered: [], parts: [] } };
   }
-  return { ...result, note: notes };
+
+  function conclude() {
+    const decoded = requests.map((r) => ({ url: r.url, phase: r.phase, ...decodeBody(r.url, r.body, gunzipSync) }));
+    // An event belongs to the page it is about, not to the moment it was sent:
+    // around a language switch the page left and the page arrived at both send,
+    // and their requests can cross. Each event names its own page.
+    const arrivedAt = `${locale === 'en' ? '/hi' : ''}/free/${slug}/`;
+    const partOf = (e, sentIn) => {
+      if (sentIn !== 'switch' && sentIn !== 'arrived') return sentIn;
+      const props = e.properties || {};
+      let pathname = typeof props.$pathname === 'string' ? props.$pathname : '';
+      if (!pathname && typeof props.$current_url === 'string') { try { pathname = new URL(props.$current_url).pathname; } catch { /* not an address */ } }
+      if (!pathname) return sentIn;
+      return pathname === arrivedAt ? 'arrived' : 'switch';
+    };
+    const events = decoded.flatMap((d) => eventsIn(d.json).map((e) => ({ ...e, phase: partOf(e, d.phase) })));
+    const result = checkRun({
+      decoded, events, consent, headless: HEADLESS, origin: base, parts: [...note.parts],
+      ownEvents: tool.ownEvents, mustSend: tool.mustSend, sharedView: tool.sharedView, planted: PLANT,
+    });
+    result.problems.unshift(...problems);
+    result.problems = [...new Set(result.problems)];
+    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
+    if (DUMP) {
+      mkdirSync(DUMP, { recursive: true });
+      writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
+    }
+    return { ...result, note: notes };
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1070,7 +1080,8 @@ async function worker() {
         // the output says it was repeated. A leak is never retried away:
         // any other problem ends the run as failed.
         const missedStep = isMissedStepOnly(result.problems);
-        if (attempt === 1 || (browser.connected && !lostPage && !missedStep)) break;
+        // A lost page repeats only a run that found nothing before it went.
+        if (attempt === 1 || (!PLANT && hasFinding(result.problems)) || (browser.connected && !lostPage && !missedStep)) break;
         if (browser.connected) { if (missedStep) repeated.set(name, result.note.resetMisses || []); continue; }
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
@@ -1079,6 +1090,11 @@ async function worker() {
       if (stopping) return;
       browsers.delete(browser);
       await browser.close().catch(() => {});
+      browser = await launch();
+      browsers.add(browser);
+    }
+    if (!browser.connected && !stopping) {
+      browsers.delete(browser);
       browser = await launch();
       browsers.add(browser);
     }

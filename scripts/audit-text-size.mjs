@@ -469,6 +469,7 @@ const STATES = [
     // "My own figure" above the optimistic setting adds the side-by-side
     // table (#780); it stays for the state after this one, at the longest amounts.
     const own = document.querySelector('.toolp-page input[id$="-ownReturn"]');
+    if (!own && location.pathname.includes('/invest-or-pay-off/')) throw new Error('The own-return box was not found, so its table was not measured');
     if (own) {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(own, '12');
       for (const e of ['input', 'change', 'blur']) own.dispatchEvent(new Event(e, { bubbles: true }));

@@ -301,7 +301,9 @@ export function canonicalLumpSums(raw: string, locale: string): string {
       if (colon < 0) return pair;
       const month = canonicalNumber(pair.slice(0, colon), locale);
       const amount = canonicalNumber(pair.slice(colon + 1), locale);
-      return month === 'NaN' || amount === 'NaN' ? pair : `${month}:${amount}`;
+      // An unreadable side is 'NaN', as in every other box. The text as typed
+      // must not go through: parseLumpSums would read "150.000" as 150.
+      return `${month}:${amount}`;
     })
     .join(';');
 }

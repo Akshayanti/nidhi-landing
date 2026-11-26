@@ -791,6 +791,15 @@ describe('lump-sum box: read as the page writes numbers', () => {
     assert.deepEqual(parseLumpSums(canonicalLumpSums('12:5.000', 'es')), [{ month: 12, amountMajor: 5000 }]);
   });
 
+  it('marks a pair it cannot read, so no second reader takes it another way', () => {
+    for (const [raw, locale] of [['12.:150.000', 'cs'], ['12.:150.000', 'es'], ['12:1500.000', 'es'], ['12:1500.000', 'cs'], ['+12:5.000', 'es']]) {
+      const value = canonicalLumpSums(raw, locale);
+      assert.match(value, /NaN/, `${raw} on ${locale}`);
+      assert.deepEqual(parseLumpSums(value), [], `${raw} on ${locale}`);
+    }
+    assert.equal(canonicalLumpSums('12:150.000', 'cs'), '12:150000');
+  });
+
   it('keeps a pair still being typed as it is', () => {
     assert.equal(canonicalLumpSums('12:5000;3', 'es'), '12:5000;3');
     assert.equal(canonicalLumpSums('12:5000;36:', 'es'), '12:5000;36:');

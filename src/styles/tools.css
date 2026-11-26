@@ -3840,6 +3840,12 @@ button.mcnw-legendItem:focus-visible {
    roles, so a screen reader still reads a table. */
 /* Five columns need about 40em: narrower than that (any phone, or a wider
    screen at a larger text size) the Monte Carlo table is drawn as records. */
+/* The column name on each line of a record: real text, so it needs no
+   generated content, and hidden from a screen reader, which already has the
+   column heading. Shown only where the table has become records. */
+.tool-recordLabel {
+  display: none;
+}
 @media (max-width: 40em) {
   .mcs-tableScroll { overflow-x: visible; }
   .mcs-table.tool-recordTable,
@@ -3879,13 +3885,8 @@ button.mcnw-legendItem:focus-visible {
     text-align: right;
     white-space: normal;
   }
-  .mcs-table.tool-recordTable tbody th[scope="row"]::before,
-  .mcs-table.tool-recordTable tbody td::before {
-    /* Shown, but not read out a second time: the column heading is already
-       the cell's header for a screen reader. One declaration on purpose: a
-       browser that does not know the "/" form shows no label at all, which is
-       better than one read twice. */
-    content: attr(data-label) / "";
+  .mcs-table .tool-recordLabel {
+    display: block;
     font-weight: 400;
     color: var(--color-text-secondary);
     text-align: left;
@@ -3935,13 +3936,8 @@ button.mcnw-legendItem:focus-visible {
     text-align: right;
     white-space: normal;
   }
-  .ifc-table.tool-recordTable tbody th[scope="row"]::before,
-  .ifc-table.tool-recordTable tbody td::before {
-    /* Shown, but not read out a second time: the column heading is already
-       the cell's header for a screen reader. One declaration on purpose: a
-       browser that does not know the "/" form shows no label at all, which is
-       better than one read twice. */
-    content: attr(data-label) / "";
+  .ifc-table .tool-recordLabel {
+    display: block;
     font-weight: 400;
     color: var(--color-text-secondary);
     text-align: left;
@@ -5183,10 +5179,7 @@ button.mcnw-legendItem:focus-visible {
     container-type: inline-size;
     --amt-k: 0.57;
   }
-  .iop-table.tool-recordTable tbody td::before {
-    /* Shown, but not read out a second time: the column heading is already
-       the cell's header for a screen reader. */
-    content: attr(data-label) / "";
+  .iop-table .tool-recordLabel {
     display: block;
     color: var(--color-text-secondary);
   }

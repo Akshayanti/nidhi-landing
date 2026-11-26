@@ -254,6 +254,30 @@ export function isMissedStepOnly(problems) {
   return problems.length > 0 && problems.every((p) => /^the tool never sent \S+: that step was not done, so what it sends was not checked$/.test(p));
 }
 
+/** The problems that say only that something was not seen or not done. */
+const ABSENCES = [
+  /^the run stopped while /,
+  /^the tool never sent \S+: that step was not done/,
+  /^the # share link never sent /,
+  /^the tool copied no share link$/,
+  /^the tool published no state /,
+  /^no PostHog request was seen at all/,
+  /^no \$page(view|leave) was seen /,
+  /^none of the tool’s own events was seen /,
+  /^consent was given but no \$/,
+  /^no \.\w+ file was saved/,
+  /^the print dialog was never asked for/,
+];
+
+/**
+ * Whether a run found anything: a problem that is more than an absence. A run
+ * with a finding is never done again, whatever became of its page or browser,
+ * since the second run would be the only one judged.
+ */
+export function hasFinding(problems) {
+  return problems.some((p) => !ABSENCES.some((absence) => absence.test(p)));
+}
+
 /**
  * Presses a step's buttons until its event is seen, looking them up again on
  * each go: a handle taken earlier may point at a button since redrawn. `press`

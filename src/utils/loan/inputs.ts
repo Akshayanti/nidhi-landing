@@ -30,6 +30,13 @@ export function parseNumber(s: string): number {
   return Number.isFinite(n) ? n : NaN;
 }
 
+/** Whether a box holds something that cannot be used. An empty box holds nothing. */
+export function isUnreadable(text: string): boolean {
+  if (text.trim() === '') return false;
+  const n = parseNumber(text);
+  return !Number.isFinite(n) || n < 0;
+}
+
 /** The optional boxes of an offer: left empty they are simply not in use. */
 export type OptionalField =
   | 'feeMajor'
@@ -74,11 +81,7 @@ export function pointsCostAboveFee(v: VendorInput): boolean {
  */
 export function unreadableOptionalFields(v: VendorInput): OptionalField[] {
   const out: OptionalField[] = [];
-  const bad = (text: string): boolean => {
-    if (text.trim() === '') return false;
-    const n = parseNumber(text);
-    return !Number.isFinite(n) || n < 0;
-  };
+  const bad = isUnreadable;
   const numeric: OptionalField[] = ['feeMajor', 'pointsCostMajor', 'pointsRateReductionPct', 'extraMonthly', 'prepayPenaltyPct', 'prepayPenaltyUntilMonth'];
   for (const field of numeric) if (bad(v[field])) out.push(field);
 
