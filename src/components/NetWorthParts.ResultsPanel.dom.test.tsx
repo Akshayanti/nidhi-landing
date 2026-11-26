@@ -243,6 +243,17 @@ describe('several currencies, all with rates', () => {
     assert.equal(chart(), 1);
   });
 
+  it('amounts that cancel inside one currency: a plain zero and no shares, never a share of what the floats left (#824)', () => {
+    // 500,000.30 euros held, 499,000.10 owed, and 1,100.22 dollars owed at 1.1: nothing in all.
+    panel(worked([own('500000.30'), owe('499000.10'), owe('1100.22', 'USD')], 'EUR', { EUR: 1, USD: 1.1 }));
+    assert.equal(total()?.value, '€0.00');
+    assert.deepEqual(cards().map((c) => [c.band, c.head]), [
+      ['functional', `${name.EUR} · €1,000.20`],
+      ['net-debt', `${name.USD} · €1,000.20`],
+    ]);
+    assert.ok(!document.body.textContent!.includes('of net worth ·'), 'no card states a share');
+  });
+
   it('in the spending currency of the page, in its minor units', () => {
     // In yen: 5,000 yen and 100 euros (20,000 yen).
     panel(worked([own('5000', 'JPY'), own('100')], 'JPY', { JPY: 1, EUR: 1 / 200 }), { currency: 'JPY' });

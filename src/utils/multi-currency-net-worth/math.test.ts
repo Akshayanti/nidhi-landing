@@ -836,9 +836,10 @@ describe('aggregate: the whole result, from sums written out', () => {
     const result = aggregate([asset('400', 'USD'), asset('1000', 'EUR'), debt('400', 'EUR'), asset('800', 'GBP')], 'EUR', ROUND);
     assert.deepEqual(result, {
       positions: [
-        { code: 'EUR', netAmountOriginal: 600, netAmountFunctional: 600, pctOfTotal: 60, isFunctional: true, riskLevel: 'functional', riskLabel: 'Your spending currency' },
-        { code: 'USD', netAmountOriginal: 400, netAmountFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
-        { code: 'GBP', netAmountOriginal: 800, netAmountFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
+        // The gross is what is held plus what is owed, converted, before they cancel (#824): 1,000 + 400 euros.
+        { code: 'EUR', netAmountOriginal: 600, netAmountFunctional: 600, grossFunctional: 1400, pctOfTotal: 60, isFunctional: true, riskLevel: 'functional', riskLabel: 'Your spending currency' },
+        { code: 'USD', netAmountOriginal: 400, netAmountFunctional: 200, grossFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
+        { code: 'GBP', netAmountOriginal: 800, netAmountFunctional: 200, grossFunctional: 200, pctOfTotal: 20, isFunctional: false, riskLevel: 'moderate', riskLabel: 'Moderate exposure' },
       ],
       totalNetWorthFunctional: 1000,
       hasRates: 'full',
@@ -1004,6 +1005,80 @@ describe('netTotal', () => {
 
   it('keeps a small difference that is real', () => {
     assert.equal(total(1e15, -(1e15 - 1000)), 1000);
+  });
+
+  it('measures the bound against what was held and owed before it cancelled, where a position says it (#824)', () => {
+    const one = (netAmountFunctional: number, grossFunctional?: number) => netTotal([{ netAmountFunctional, grossFunctional }]);
+    // One currency, so the bound is 2 x 2 x epsilon x the gross: four epsilons of a gross of 1.
+    assert.equal(one(4 * Number.EPSILON, 1), 0, 'the bound itself');
+    assert.equal(one(-4 * Number.EPSILON, 1), 0, 'below zero too');
+    assert.equal(one(6 * Number.EPSILON, 1), 6 * Number.EPSILON, 'outside it');
+    // The same net amount is a net worth by its own size, and residue beside the million it was left by.
+    assert.equal(one(1e-11), 1e-11);
+    assert.equal(one(1e-11, 1e6), 0);
+    // A gross of nothing leaves no room: a currency with no rate adds none.
+    assert.equal(netTotal([{ netAmountFunctional: 1e-11 }, { netAmountFunctional: 0, grossFunctional: 0 }]), 1e-11);
+    // Each position by what it says, the others by their own size: 1 + 0.5 + 0.5, three currencies, 16 epsilons.
+    const mixed = (residue: number) => netTotal([{ netAmountFunctional: residue, grossFunctional: 1 }, { netAmountFunctional: 0.5 }, { netAmountFunctional: -0.5 }]);
+    assert.equal(mixed(16 * Number.EPSILON), 0);
+    assert.equal(mixed(18 * Number.EPSILON), 18 * Number.EPSILON);
+  });
+});
+
+describe('amounts that cancel inside one currency (#824)', () => {
+  const RATES = { EUR: 1, USD: 1.1 };
+
+  it('€500,000.30 held, €499,000.10 and $1,100.22 owed at 1.1: what the floats leave is a net worth of zero, with no shares', () => {
+    assert.ok(Math.abs(500000.30 - 499000.10 - 1100.22 / 1.1) > 1e-11, 'the plain sum leaves a residue');
+    for (const rows of orders([asset('500000.30', 'EUR'), debt('499000.10', 'EUR'), debt('1100.22', 'USD')])) {
+      const result = aggregate(rows, 'EUR', RATES);
+      assert.equal(result.totalNetWorthFunctional, 0);
+      assert.equal(result.noShares, true);
+      assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel]), [['EUR', 0, 'functional'], ['USD', 0, 'net-debt']]);
+      // The gross is the rows', not the net positions': 999,000.40 euros, and 1,100.22 dollars at 1.1.
+      assert.equal(byCode(result, 'EUR').grossFunctional, 500000.30 + 499000.10);
+      assert.equal(byCode(result, 'USD').grossFunctional, 1100.22 / 1.1);
+    }
+  });
+
+  it('a cent more is a real net worth of a cent, and is kept', () => {
+    const result = aggregate([asset('500000.31', 'EUR'), debt('499000.10', 'EUR'), debt('1100.22', 'USD')], 'EUR', RATES);
+    assert.ok(Math.abs(result.totalNetWorthFunctional - 0.01) < 1e-10, String(result.totalNetWorthFunctional));
+    assert.equal(result.noShares, false);
+    // The smallest total kept beside these amounts: 2 x 3 x epsilon x 1,000,000.61 is 1.3e-9, seven million times less than a cent.
+    assert.ok(2 * 3 * Number.EPSILON * 1_000_000.61 < 1.4e-9);
+  });
+
+  it('one currency alone: 0.1 and 0.2 held against 0.3 owed is nothing', () => {
+    assert.notEqual(0.1 + 0.2 - 0.3, 0);
+    const result = aggregate([asset('0.1', 'EUR'), asset('0.2', 'EUR'), debt('0.3', 'EUR')], 'EUR', RATES);
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.noShares, true);
+  });
+
+  it('500 rows at a gross of 1e15 keep a real 222, which a count of rows would take for zero', () => {
+    // 250 holdings and 250 debts of two million million each, and 222 more held.
+    const rows = [...Array.from({ length: 250 }, (_, i) => asset(i === 0 ? '2000000000222' : '2000000000000', 'EUR')), ...Array.from({ length: 250 }, () => debt('2000000000000', 'EUR'))];
+    const result = aggregate(rows, 'EUR', RATES);
+    assert.equal(byCode(result, 'EUR').grossFunctional, 1e15 + 222);
+    assert.equal(result.totalNetWorthFunctional, 222);
+    assert.equal(result.noShares, false);
+    // One currency: the bound is 2 x 2 x epsilon x 1e15, under 1. Counting the 500 rows it would be over 222.
+    assert.ok(2 * 2 * Number.EPSILON * 1e15 < 1);
+    assert.ok(2 * 501 * Number.EPSILON * 1e15 > 222);
+  });
+
+  it('the gross is converted like the amounts: a currency of large numbers does not widen the bound', () => {
+    // A million yen-like units to the euro: 1e12 + 1 held against 1e12 owed is one unit, a millionth of a euro, and real.
+    const result = aggregate([asset('1000000000001', 'JPY'), debt('1000000000000', 'JPY'), asset('1', 'EUR'), debt('1', 'EUR')], 'EUR', { EUR: 1, JPY: 1e6 });
+    assert.equal(byCode(result, 'JPY').grossFunctional, 2000000000001 / 1e6);
+    assert.equal(result.totalNetWorthFunctional, 1e-6);
+  });
+
+  it('a currency with no rate adds nothing to the gross', () => {
+    const result = aggregate([asset('1000', 'EUR'), asset('500', 'GBP'), debt('200', 'GBP')], 'EUR', { EUR: 1 });
+    assert.equal(byCode(result, 'GBP').grossFunctional, 0);
+    assert.equal(byCode(result, 'EUR').grossFunctional, 1000);
   });
 });
 

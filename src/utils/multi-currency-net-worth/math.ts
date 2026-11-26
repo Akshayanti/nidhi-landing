@@ -55,6 +55,13 @@ export interface CurrencyPosition {
   rateUnavailable?: boolean;
   /** Arrived in a link from before links said whether a rate was known (#795). */
   rateUnknown?: boolean;
+  /**
+   * Everything held plus everything owed in this currency, converted, before
+   * the two cancel: the size `netTotal` measures float error against (#824).
+   * Nothing for a currency with no rate, which is in no total. Absent on a
+   * position that arrived in a link, which carries the net amount only.
+   */
+  grossFunctional?: number;
 }
 
 /**
@@ -217,6 +224,11 @@ export function aggregate(
       riskLabel: '',
     });
   }
+  /** What a currency holds and owes together, in its own units: the size of its rows before they cancel. */
+  const grossOriginal = (code: string) => {
+    const bucket = byCurrency.get(code)!;
+    return bucket.assets + bucket.liabilities;
+  };
 
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
@@ -237,6 +249,7 @@ export function aggregate(
   for (const pos of positions) {
     if (pos.code === funcCode) {
       pos.netAmountFunctional = pos.netAmountOriginal;
+      pos.grossFunctional = grossOriginal(pos.code);
     } else {
       const rate = rates[pos.code];
       if (rate === undefined || rate === 0) {
@@ -245,12 +258,14 @@ export function aggregate(
         // because the user shouldn't see a "total" that silently omits part
         // of their portfolio. The UI surfaces this via `hasRates === 'partial'`.
         pos.netAmountFunctional = 0;
+        pos.grossFunctional = 0;
         pos.rateUnavailable = true;
         missingRateCount++;
       } else {
         // rate is "1 funcCurrency = rate units of pos.code"
         // So pos.netAmountOriginal / rate = amount in funcCurrency
         pos.netAmountFunctional = pos.netAmountOriginal / rate;
+        pos.grossFunctional = grossOriginal(pos.code) / rate;
       }
     }
   }
@@ -301,13 +316,24 @@ export function aggregate(
  * worth: €1,000 less $1,100 at 1.1 left 1.1e-13, shares of 8.8e17% and a link
  * the tool refused as its own (#795). A fixed fraction of the gross would not
  * do: a trillionth of 1e15 is a real 1,000.
+ *
+ * The gross is everything held plus everything owed, converted, before any of
+ * it cancels (`grossFunctional`), not the size of each currency's net
+ * position: €500,000.30 held against €499,000.10 owed leaves a net of 1,000.20
+ * that carries the float error of amounts of half a million, and measured
+ * against 1,000.20 that error (1.2e-11) passed for a net worth, with shares of
+ * 8.5e15% (#824). Amounts are floats of whole units (euros, not cents), so
+ * each row is already off by up to half a step of its own size. The count
+ * stays the number of currencies, never the number of rows: 500 rows at a
+ * gross of 1e15 would then take a real 222 for zero. A position from a link
+ * has only its net amount, rounded to the cent, and is measured by that.
  */
-export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional'>[]): number {
+export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional' | 'grossFunctional'>[]): number {
   let total = 0;
   let gross = 0;
-  for (const { netAmountFunctional: amount } of positions) {
+  for (const { netAmountFunctional: amount, grossFunctional } of positions) {
     total += amount;
-    gross += Math.abs(amount);
+    gross += grossFunctional ?? Math.abs(amount);
   }
   return Number.isFinite(gross) && Math.abs(total) <= 2 * (positions.length + 1) * Number.EPSILON * gross ? 0 : total;
 }
