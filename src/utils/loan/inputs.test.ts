@@ -15,8 +15,10 @@ import {
   loanFromInput,
   parseNumber,
   unreadableOptionalFields,
+  LUMP_MONTH,
   OPTIONAL_UNREADABLE,
   POINTS_ABOVE_FEE,
+  lumpMonthFault,
   RATE_CHANGE_INCOMPLETE,
   missingRateChangeFields,
   pointsCostAboveFee,
@@ -920,14 +922,39 @@ describe('a lump sum in a month the loan does not have (issue 796)', () => {
   // 100,000 at 6% over 120 months: 133,224.33 in all.
   const base = { principal: '100000', annualRatePct: '6', modeKind: 'term' as const, termMonths: '120' };
 
-  it('part of a month, or a month past 1,200, makes the box unreadable: the lump sum is never moved or dropped', () => {
+  it('part of a month, or a month outside 1 to 1,200, is an error on the lump-sum box with a message of its own: the lump sum is never moved or dropped', () => {
     for (const lumpSumsEncoded of ['12.5:5000', '1300:5000', '1201:5000', '12:5000;12.5:5000', '12:5000;1300:5000']) {
       const offer = vendor({ ...base, lumpSumsEncoded });
       assert.deepEqual(unreadableOptionalFields(offer), ['lumpSumsEncoded'], lumpSumsEncoded);
       const r = computeFromInput(offer, 'EUR');
-      assert.equal(r.error, OPTIONAL_UNREADABLE, lumpSumsEncoded);
+      assert.equal(r.error, LUMP_MONTH, lumpSumsEncoded);
       assert.equal(r.schedule.length, 0, lumpSumsEncoded);
+      assert.equal(lumpMonthFault(offer), true, lumpSumsEncoded);
     }
+    // A month of zero or below is no month either, and digits are not what is wrong with it.
+    for (const lumpSumsEncoded of ['0:5000', '-3:5000', '0.5:5000']) assert.equal(computeFromInput(vendor({ ...base, lumpSumsEncoded }), 'EUR').error, LUMP_MONTH, lumpSumsEncoded);
+  });
+
+  it('text that does not read keeps the message about digits, alone or beside such a month, in this box or another', () => {
+    for (const patch of [
+      { lumpSumsEncoded: '12-5000' }, { lumpSumsEncoded: 'abc' }, { lumpSumsEncoded: '12.5:5000;12-5000' }, { lumpSumsEncoded: '12-5000;1300:5000' },
+      { lumpSumsEncoded: '12.5:5000', feeMajor: '€5' }, { lumpSumsEncoded: '1300:5000', extraMonthly: 'x' },
+    ]) {
+      const offer = vendor({ ...base, ...patch });
+      assert.equal(computeFromInput(offer, 'EUR').error, OPTIONAL_UNREADABLE, JSON.stringify(patch));
+    }
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: '12-5000' })), false);
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: '12.5:5000;12-5000' })), false);
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: '12:5000' })), false);
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: '' })), false);
+  });
+
+  it('more lump sums than an offer may carry is the other fault, whatever their months', () => {
+    const many = (count: number) => `${Array.from({ length: count - 1 }, (_, i) => `${i + 1}:1`).join(';')};12.5:1`;
+    assert.equal(computeFromInput(vendor({ ...base, lumpSumsEncoded: many(1200) }), 'EUR').error, LUMP_MONTH);
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: many(1200) })), true);
+    assert.equal(computeFromInput(vendor({ ...base, lumpSumsEncoded: many(1201) }), 'EUR').error, OPTIONAL_UNREADABLE);
+    assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: many(1201) })), false);
   });
 
   it('a whole month up to 1,200 is fine: 5,000 in month 12 ends the loan in month 113, for 129,796.70', () => {
@@ -956,6 +983,6 @@ describe('a lump sum in a month the loan does not have (issue 796)', () => {
   it('a link that carries such a month opens with the box in error', () => {
     const { vendors } = decodeFromQueryString('v1=A~100000~6~~120~~0~0&v1_ls=12.5:5000');
     assert.deepEqual(unreadableOptionalFields(vendors[0]), ['lumpSumsEncoded']);
-    assert.equal(computeFromInput(vendors[0], 'EUR').error, OPTIONAL_UNREADABLE);
+    assert.equal(computeFromInput(vendors[0], 'EUR').error, LUMP_MONTH);
   });
 });

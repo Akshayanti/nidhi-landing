@@ -167,12 +167,15 @@ const LABELS = {
   rate: `${c.rate} *`,
   term: `${c.term} *`,
   monthly: `${c.monthly} * (EUR)`,
+  // The two boxes of a rate that changes are required while they are shown.
+  initialFixed: `${c.initialFixed} *`,
+  subsequentRate: `${c.subsequentRate} *`,
 };
 
 /** The optional boxes: the field each one edits, its label, and whether it shows only for a rate that changes. */
 const OPTIONAL: { key: keyof VendorInput; label: string; hybrid?: boolean; bad?: string }[] = [
-  { key: 'initialFixedMonths', label: c.initialFixed, hybrid: true },
-  { key: 'subsequentRatePct', label: c.subsequentRate, hybrid: true },
+  { key: 'initialFixedMonths', label: LABELS.initialFixed, hybrid: true },
+  { key: 'subsequentRatePct', label: LABELS.subsequentRate, hybrid: true },
   { key: 'feeMajor', label: `${c.fee} (EUR)` },
   { key: 'pointsCostMajor', label: `${c.pointsCost} (EUR)` },
   { key: 'pointsRateReductionPct', label: c.pointsReduction },
@@ -665,8 +668,11 @@ describe('the offer card: the rows of optional boxes', () => {
     };
     assert.equal(state({ rateKind: 'hybrid' }, c.rateStructure.title), c.statusHybrid);
     assert.equal(state({ rateKind: 'hybrid', rateChangeKeeps: 'payment' }, c.rateStructure.title), c.statusHybridKept);
-    // Entered by its payment, the offer is worked out as a fixed rate whatever the choice says.
-    assert.equal(state({ rateKind: 'hybrid', modeKind: 'payment', monthlyPayment: '100' }, c.rateStructure.title), c.statusFixed);
+    // Entered by its payment, the row still says what is chosen: the offer is refused for it, not worked out as a fixed rate.
+    assert.equal(state({ rateKind: 'hybrid', modeKind: 'payment', monthlyPayment: '100' }, c.rateStructure.title), c.statusHybrid);
+    // What happens at the change is not asked there, so the row does not say it.
+    assert.equal(state({ rateKind: 'hybrid', rateChangeKeeps: 'payment', modeKind: 'payment', monthlyPayment: '100' }, c.rateStructure.title), c.statusHybrid);
+    assert.equal(state({ modeKind: 'payment', monthlyPayment: '100' }, c.rateStructure.title), c.statusFixed);
     assert.equal(state({ rateChangeKeeps: 'payment' }, c.rateStructure.title), c.statusFixed);
 
     assert.equal(state({ feeMajor: '60' }, c.costs.title), c.foldSet);
@@ -742,7 +748,15 @@ describe('the offer card: the optional boxes', () => {
       assert.equal(input.value, vendor[field.key], field.key);
       assert.deepEqual(wiring(card, input), UNMARKED, field.key);
       assert.ok(!input.hasAttribute('aria-describedby'), field.key);
-      assert.ok(!input.hasAttribute('aria-required'), field.key);
+      // The two boxes of a changing rate are needed while they are shown; the rest are optional.
+      assert.equal(input.getAttribute('aria-required'), field.hybrid ? 'true' : null, field.key);
+    }
+    // Each of the two carries the mark the required boxes have, beside theirs.
+    assert.equal(card.querySelectorAll(`[title="${c.requiredTitle}"]`).length, 6);
+    for (const label of [LABELS.initialFixed, LABELS.subsequentRate]) {
+      const mark = box(card, label).labels?.[0]?.querySelector('.lc-required');
+      assert.equal(mark?.getAttribute('aria-hidden'), 'true', label);
+      assert.equal(mark?.getAttribute('title'), c.requiredTitle, label);
     }
     const text = card.textContent ?? '';
     const lumps = c.lumpsHelp;
@@ -773,12 +787,16 @@ describe('the offer card: the optional boxes', () => {
   it('marks the lump-sum box for part of a month or a month past 1,200, where the lump sum used to be moved or dropped (issue 796)', () => {
     for (const lumpSumsEncoded of ['3.5:100', '1300:100']) {
       const { card, unmount } = show(loan({ lumpSumsEncoded }));
-      assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`, lumpSumsEncoded);
+      assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.lumpMonth}`, lumpSumsEncoded);
       assert.deepEqual(wiring(card, box(card, c.lumps)), MARKED, lumpSumsEncoded);
       assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED, lumpSumsEncoded);
       assert.deepEqual(rows(card), [], lumpSumsEncoded);
       unmount();
     }
+    // Text that does not read keeps the other message, also beside such a month.
+    const mixed = show(loan({ lumpSumsEncoded: '3.5:100;12-5000' }));
+    assert.equal(errorOf(mixed.card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`);
+    mixed.unmount();
     const { card } = show(loan({ lumpSumsEncoded: '3:100' }));
     assert.equal(errorOf(card), null);
     assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
@@ -803,8 +821,8 @@ describe('the offer card: the optional boxes', () => {
       const { card, unmount } = show(loan({ ...HYBRID, ...patch }));
       const at = JSON.stringify(patch);
       assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.rateChangeIncomplete}`, at);
-      assert.deepEqual(wiring(card, box(card, c.initialFixed)), months, at);
-      assert.deepEqual(wiring(card, box(card, c.subsequentRate)), later, at);
+      assert.deepEqual(wiring(card, box(card, LABELS.initialFixed)), months, at);
+      assert.deepEqual(wiring(card, box(card, LABELS.subsequentRate)), later, at);
       for (const label of [LABELS.principal, LABELS.rate, LABELS.term, `${c.fee} (EUR)`]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, `${label} with ${at}`);
       // No result rows while a box is missing: the offer is not worked out at its starting rate.
       assert.deepEqual(rows(card), [], at);
@@ -814,7 +832,7 @@ describe('the offer card: the optional boxes', () => {
     // Both filled: nothing is marked and the offer is worked out.
     const { card } = show(loan(HYBRID));
     assert.equal(errorOf(card), null);
-    assert.deepEqual(wiring(card, box(card, c.subsequentRate)), UNMARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.subsequentRate)), UNMARKED);
     assert.ok(rows(card).length > 0);
   });
 
@@ -848,8 +866,8 @@ describe('the offer card: a rate that changes', () => {
     assert.deepEqual([...(hybrid.closest('label') as Element).classList], ['lc-modeOption']);
     assert.equal(fixed.closest('fieldset')?.querySelector('legend')?.textContent, c.rateTypeAria);
     // A fixed rate has no later rate to ask about.
-    assert.ok(!asks(card, c.initialFixed));
-    assert.ok(!asks(card, c.subsequentRate));
+    assert.ok(!asks(card, LABELS.initialFixed));
+    assert.ok(!asks(card, LABELS.subsequentRate));
     assert.ok(!asks(card, c.atChange.term));
     assert.ok(!(card.textContent ?? '').includes(c.hybridHint.before));
   });
@@ -883,8 +901,8 @@ describe('the offer card: a rate that changes', () => {
     assert.equal(hint.textContent, `${h.before}${h.solveFor}${h.mid}${h.modeTerm}${h.after}`);
     assert.deepEqual([...hint.querySelectorAll('em')].map((em) => em.textContent), [h.solveFor, h.modeTerm]);
     // Its boxes are not shown: they would not be used.
-    assert.ok(!asks(card, c.initialFixed));
-    assert.ok(!asks(card, c.subsequentRate));
+    assert.ok(!asks(card, LABELS.initialFixed));
+    assert.ok(!asks(card, LABELS.subsequentRate));
     assert.ok(!asks(card, c.atChange.payment));
 
     // The offer is not worked out as a fixed rate while its choice says the rate changes (issue 818).
@@ -893,6 +911,13 @@ describe('the offer card: a rate that changes', () => {
     const empty = show(loan({ rateKind: 'hybrid', initialFixedMonths: '', subsequentRatePct: '', modeKind: 'payment', monthlyPayment: '100' }));
     assert.equal(errorOf(empty.card)?.textContent, `Error: ${s.engine.errors.hybridMode}`);
     assert.deepEqual(rows(empty.card), []);
+    // The message says where to go: the amount, rate and payment are not what is wrong, so none is marked.
+    for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(empty.card, box(empty.card, label)), UNMARKED, label);
+    cleanup();
+    // With the payment missing as well, that is said first and the required boxes are marked as ever.
+    const noPayment = show(loan({ rateKind: 'hybrid', modeKind: 'payment', monthlyPayment: '' }));
+    assert.equal(errorOf(noPayment.card)?.textContent, `Error: ${s.engine.errors.paymentEnter}`);
+    for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(noPayment.card, box(noPayment.card, label)), MARKED, label);
 
     cleanup();
     // The reason is there before the choice is ever made.

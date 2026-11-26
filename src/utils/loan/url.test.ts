@@ -23,6 +23,7 @@ import {
   decodeFromQueryString,
   defaultGlobalState,
   encodeLumpSums,
+  lumpSumFault,
   encodeToQueryString,
   isPristineState,
   makeAddedVendor,
@@ -507,6 +508,19 @@ describe('parseLumpSums', () => {
     assert.deepEqual(parseLumpSums('1200:5000'), [{ month: 1200, amountMajor: 5000 }]);
     assert.deepEqual(parseLumpSums('1201:5000'), []);
     assert.deepEqual(parseLumpSums('1300:5000;24:100'), [{ month: 24, amountMajor: 100 }]);
+  });
+
+  it('tells a month no loan has from a pair that does not read, and says the unreadable one first', () => {
+    assert.equal(lumpSumFault(''), null);
+    assert.equal(lumpSumFault('12:5000;36:3000; '), null);
+    for (const month of ['12.5:5000', '0:5000', '0.5:5000', '-3:5000', '1201:5000', '12:5000;1300:1']) assert.equal(lumpSumFault(month), 'month', month);
+    for (const unreadable of ['12-5000', 'abc', ':5000', ' :5000', '12:', '12:0', '12:-5', '12:abc', 'x:100', 'Infinity:100', '12:Infinity', 'NaN:5000', '12:5:6']) assert.equal(lumpSumFault(unreadable), 'unreadable', unreadable);
+    // Both in one box: the pair that does not read is said first, wherever it stands.
+    assert.equal(lumpSumFault('12.5:5000;12-5000'), 'unreadable');
+    assert.equal(lumpSumFault('12-5000;12.5:5000'), 'unreadable');
+    // The spaces around a side are not part of it.
+    assert.deepEqual(parseLumpSums(' 12 : 5000 '), [{ month: 12, amountMajor: 5000 }]);
+    assert.deepEqual(parseLumpSums(':5000; :5000;12:'), []);
   });
 
   it('a link with such a month arrives with it as written, for the page to refuse', () => {

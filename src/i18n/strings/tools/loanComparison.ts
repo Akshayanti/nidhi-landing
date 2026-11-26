@@ -119,7 +119,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'Which fields are required?',
-              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty, a later rate) is optional and you can leave it at its default.',
+              a: 'Loan amount, annual interest rate, and either the term in months or the monthly payment (depending on which you want to solve for). These are marked with a red asterisk. If you choose a rate that is fixed, then variable, the initial fixed period and the subsequent rate are needed too. Every other field on the card (origination fee, extra principal, points, lump sums, prepayment penalty) is optional and you can leave it at its default.',
             },
             {
               q: 'Is my data sent anywhere?',
@@ -716,7 +716,9 @@ export const loanComparisonEn = {
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'The points cost is more than the fee above. The fee includes the points, so it cannot be smaller. Enter a larger fee or a smaller points cost.',
         /** A rate that changes, with the month of the change or the later rate left out. Names the two boxes and the other choice by their labels. */
-        rateChangeIncomplete: 'This offer’s rate is fixed, then variable, so it needs both an initial fixed period of at least one month and a subsequent rate. Enter both, or choose “Fixed” under “Rate structure”.',
+        rateChangeIncomplete: 'This offer’s rate is fixed, then variable, so it needs an initial fixed period of at least one month and a subsequent rate. Fill in what is missing, or choose “Fixed” under “Rate structure”.',
+        /** A lump sum whose month is not a whole one from 1 to 1,200. Never quotes what was typed. */
+        lumpMonth: 'A lump sum is written as month:amount, with a whole month from 1 to 1,200. Correct it, or clear the box.',
         refiMonth: 'Refinance month must be at least 1.',
         refiMonthEnd: 'Refinance month must be before the original loan ends.',
         refiRate: 'New rate must be non-negative.',
@@ -832,7 +834,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
             },
             {
               q: 'कौन-से फ़ील्ड ज़रूरी हैं?',
-              a: 'लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त (इस पर निर्भर कि क्या निकालना है)। इनके आगे लाल तारा लगा है। कार्ड के बाकी सारे फ़ील्ड (लोन शुल्क, अतिरिक्त मूलधन, डिस्काउंट पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना, बाद की दर) वैकल्पिक हैं और उन्हें जैसा है वैसा छोड़ा जा सकता है।',
+              a: 'लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त (इस पर निर्भर कि क्या निकालना है)। इनके आगे लाल तारा लगा है। अगर दर “पहले तय, फिर बदलती” चुनी जाए, तो शुरुआत की तय अवधि और बाद की दर भी चाहिए। कार्ड के बाकी सारे फ़ील्ड (लोन शुल्क, अतिरिक्त मूलधन, डिस्काउंट पॉइंट्स, एकमुश्त राशि, समय से पहले भुगतान पर जुर्माना) वैकल्पिक हैं और उन्हें जैसा है वैसा छोड़ा जा सकता है।',
             },
             {
               q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
@@ -1361,7 +1363,8 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         optionalUnreadable: 'वैकल्पिक बॉक्सों में से एक पढ़ा नहीं जा सका। सिर्फ़ अंक लिखें, या बॉक्स खाली कर दें।',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'पॉइंट्स की लागत ऊपर के शुल्क से ज़्यादा है। शुल्क में पॉइंट्स शामिल होते हैं, इसलिए वह इससे कम नहीं हो सकता। बड़ा शुल्क या पॉइंट्स की कम लागत भरें।',
-        rateChangeIncomplete: 'इस लोन ऑफ़र की दर पहले तय, फिर बदलती है, इसलिए इसमें शुरुआत की तय अवधि (कम से कम एक महीना) और बाद की दर, दोनों चाहिए। दोनों भरें, या “दर का ढाँचा” में “तय” चुनें।',
+        rateChangeIncomplete: 'इस लोन ऑफ़र की दर पहले तय, फिर बदलती है, इसलिए इसमें शुरुआत की तय अवधि (कम से कम एक महीना) और बाद की दर, दोनों चाहिए। जो छूटा है उसे भरें, या “दर का ढाँचा” में “तय” चुनें।',
+        lumpMonth: 'एकमुश्त राशि महीना:राशि के रूप में लिखी जाती है, और महीना 1 से 1,200 तक का पूरा अंक होना चाहिए। इसे ठीक करें, या बॉक्स खाली कर दें।',
         refiMonth: 'रीफ़ाइनेंस का महीना कम से कम 1 होना चाहिए।',
         refiMonthEnd: 'रीफ़ाइनेंस का महीना पुराने लोन के ख़त्म होने से पहले होना चाहिए।',
         refiRate: 'नई दर शून्य या उससे ज़्यादा होनी चाहिए।',
@@ -1470,7 +1473,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
             },
             {
               q: '¿Qué campos son obligatorios?',
-              a: 'La cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual (según lo que quieras calcular). Están marcados con un asterisco rojo. Todos los demás campos de la tarjeta (comisión de apertura, capital extra, puntos, pagos extraordinarios, penalización por pago anticipado, tasa posterior) son opcionales y puedes dejarlos con su valor predeterminado.',
+              a: 'La cantidad del préstamo, la tasa de interés anual y el plazo en meses o la cuota mensual (según lo que quieras calcular). Están marcados con un asterisco rojo. Si eliges una tasa «Fija y luego variable», también hacen falta el periodo fijo inicial y la tasa posterior. Todos los demás campos de la tarjeta (comisión de apertura, capital extra, puntos, pagos extraordinarios, penalización por pago anticipado) son opcionales y puedes dejarlos con su valor predeterminado.',
             },
             {
               q: '¿Se envían mis datos a algún sitio?',
@@ -1999,7 +2002,8 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         optionalUnreadable: 'No se pudo leer una de las casillas opcionales. Usa solo cifras o deja la casilla vacía.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'El costo de los puntos es mayor que la comisión de arriba. La comisión incluye los puntos, así que no puede ser menor. Escribe una comisión mayor o un costo de puntos menor.',
-        rateChangeIncomplete: 'La tasa de esta oferta es fija y luego variable, así que necesita las dos cosas: un periodo fijo inicial de al menos un mes y una tasa posterior. Escribe las dos, o elige «Fija» en «Estructura de la tasa».',
+        rateChangeIncomplete: 'La tasa de esta oferta es fija y luego variable, así que necesita un periodo fijo inicial de al menos un mes y una tasa posterior. Completa lo que falta, o elige «Fija» en «Estructura de la tasa».',
+        lumpMonth: 'Un pago extraordinario se escribe como mes:cantidad, con un mes entero del 1 al 1200. Corrígelo o deja la casilla vacía.',
         refiMonth: 'El mes de refinanciación debe ser al menos 1.',
         refiMonthEnd: 'El mes de refinanciación debe ser anterior al final del préstamo original.',
         refiRate: 'La nueva tasa no puede ser negativa.',
@@ -2107,7 +2111,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
             },
             {
               q: 'Která pole jsou povinná?',
-              a: 'Výše úvěru, roční úroková sazba a buď doba splatnosti v měsících, nebo měsíční splátka (podle toho, co chcete spočítat). Jsou označené červenou hvězdičkou. Všechna ostatní pole na kartě (poplatek za sjednání, mimořádná splátka jistiny, body, jednorázové splátky, poplatek za předčasné splacení, následná sazba) jsou volitelná a mohou zůstat na výchozí hodnotě.',
+              a: 'Výše úvěru, roční úroková sazba a buď doba splatnosti v měsících, nebo měsíční splátka (podle toho, co chcete spočítat). Jsou označené červenou hvězdičkou. Pokud zvolíte sazbu „Pevná, pak pohyblivá“, je potřeba vyplnit i počáteční období fixace a následnou sazbu. Všechna ostatní pole na kartě (poplatek za sjednání, mimořádná splátka jistiny, body, jednorázové splátky, poplatek za předčasné splacení) jsou volitelná a mohou zůstat na výchozí hodnotě.',
             },
             {
               q: 'Posílají se moje data někam?',
@@ -2635,7 +2639,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         optionalUnreadable: 'Jedno z nepovinných polí se nepodařilo přečíst. Použijte jen číslice, nebo pole vymažte.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'Cena bodů je vyšší než poplatek výše. Poplatek body zahrnuje, takže nemůže být nižší. Zadejte vyšší poplatek nebo nižší cenu bodů.',
-        rateChangeIncomplete: 'Sazba této nabídky je pevná, pak pohyblivá, takže potřebuje obojí: počáteční období fixace v\u00a0délce alespoň jednoho měsíce a\u00a0následnou sazbu. Zadejte obojí, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
+        rateChangeIncomplete: 'Sazba této nabídky je pevná, pak pohyblivá, takže potřebuje počáteční období fixace v\u00a0délce alespoň jednoho měsíce a\u00a0následnou sazbu. Doplňte, co chybí, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
+        lumpMonth: 'Jednorázová splátka se zapisuje jako měsíc:částka, s\u00a0celým měsícem od 1 do 1\u00a0200. Opravte ji, nebo pole vymažte.',
         refiMonth: 'Měsíc refinancování musí být alespoň 1.',
         refiMonthEnd: 'Měsíc refinancování musí být před koncem původního úvěru.',
         refiRate: 'Nová sazba nesmí být záporná.',
@@ -2726,7 +2731,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
             },
             {
               q: 'कोणते रकाने आवश्यक आहेत?',
-              a: 'कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता (तुम्हाला काय काढायचे आहे त्यानुसार). यांच्यावर लाल तारका असते. कार्डवरील इतर प्रत्येक रकाना (कर्जप्रक्रिया शुल्क, अतिरिक्त मुद्दल, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड, नंतरचा दर) ऐच्छिक आहे आणि तो पूर्वनिश्चित मूल्यावर ठेवता येतो.',
+              a: 'कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता (तुम्हाला काय काढायचे आहे त्यानुसार). यांच्यावर लाल तारका असते. दर “आधी ठरावीक, मग बदलता” निवडल्यास सुरुवातीचा ठरावीक कालावधी आणि नंतरचा दर हेही भरावे लागतात. कार्डवरील इतर प्रत्येक रकाना (कर्जप्रक्रिया शुल्क, अतिरिक्त मुद्दल, पॉइंट्स, एकरकमी रकमा, मुदतपूर्व परतफेडीवरील दंड) ऐच्छिक आहे आणि तो पूर्वनिश्चित मूल्यावर ठेवता येतो.',
             },
             {
               q: 'माझा डेटा कुठे पाठवला जातो का?',
@@ -3244,7 +3249,8 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक भरा, किंवा चौकट रिकामी करा.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'पॉइंट्सचा खर्च वरील शुल्कापेक्षा जास्त आहे. शुल्कात पॉइंट्स धरलेले असतात, त्यामुळे ते यापेक्षा कमी असू शकत नाही. जास्त शुल्क किंवा कमी पॉइंट्स खर्च भरा.',
-        rateChangeIncomplete: 'या ऑफरचा दर आधी ठरावीक, मग बदलता आहे, त्यामुळे सुरुवातीचा ठरावीक कालावधी (किमान एक महिना) आणि नंतरचा दर, दोन्ही लागतात. दोन्ही भरा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
+        rateChangeIncomplete: 'या ऑफरचा दर आधी ठरावीक, मग बदलता आहे, त्यामुळे सुरुवातीचा ठरावीक कालावधी (किमान एक महिना) आणि नंतरचा दर, दोन्ही लागतात. जे राहिले आहे ते भरा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
+        lumpMonth: 'एकरकमी रक्कम महिना:रक्कम अशी लिहितात, आणि महिना 1 ते 1,200 मधला पूर्ण अंक असावा. ती दुरुस्त करा, किंवा चौकट रिकामी करा.',
         refiMonth: 'पुनर्वित्ताचा महिना किमान 1 असायला हवा.',
         refiMonthEnd: 'पुनर्वित्ताचा महिना मूळ कर्ज संपण्यापूर्वीचा असायला हवा.',
         refiRate: 'नवीन दर उणे असू शकत नाही.',

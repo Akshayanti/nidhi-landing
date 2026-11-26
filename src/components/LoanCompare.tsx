@@ -215,6 +215,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['optional boxes cannot be read', 'optionalUnreadable'],
   ['points cost is more than the fee', 'pointsAboveFee'],
   ['changing offer needs both of its boxes', 'rateChangeIncomplete'],
+  // `computeLoan` and `computeFromInput`.
+  ['lump sum needs a whole month', 'lumpMonth'],
 ];
 
 /** The two messages that carry a count of months, which goes back in as `{months}`. */
@@ -229,14 +231,19 @@ const WITH_MONTHS = new Set<keyof Strings['engine']['errors']>(['notAmortizing',
  * message to `track()`.
  */
 export function engineError(raw: string, s: Strings): string {
-  const lower = raw.toLowerCase();
-  const found = ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase));
-  if (!found) return raw;
-  if (WITH_MONTHS.has(found[1])) {
+  const key = engineErrorKey(raw);
+  if (!key) return raw;
+  if (WITH_MONTHS.has(key)) {
     const matched = /(\d+)/.exec(raw);
-    return format(s.engine.errors[found[1]], { months: matched ? matched[1] : '' });
+    return format(s.engine.errors[key], { months: matched ? matched[1] : '' });
   }
-  return s.engine.errors[found[1]];
+  return s.engine.errors[key];
+}
+
+/** Which of the engine's messages this is, by the catalog key of its translation. */
+export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] | undefined {
+  const lower = raw.toLowerCase();
+  return ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase))?.[1];
 }
 
 /**
@@ -1648,7 +1655,10 @@ function VendorCard({
     ...missingRateChangeFields(vendor),
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
-  const requiredError = hasError && badOptional.size === 0;
+  // Nor for a changing rate on a loan set by its payment: the message says
+  // where to go, and the amount, rate and payment are not what is wrong.
+  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
+  const requiredError = hasError && badOptional.size === 0 && errorKey !== 'hybridMode';
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
@@ -1674,8 +1684,11 @@ function VendorCard({
   const folds = {
     rate: {
       ...fold('rate', differs('rateKind', 'rateChangeKeeps'), unreadable('initialFixedMonths', 'subsequentRatePct')),
-      state: hybrid
-        ? vendor.rateChangeKeeps === 'payment' ? strings.card.statusHybridKept : strings.card.statusHybrid
+      // The status says what is chosen, also on a loan set by its payment,
+      // where the choice is refused: "Fixed rate" beside that message would
+      // contradict it. What happens at the change is not asked there.
+      state: vendor.rateKind === 'hybrid'
+        ? hybrid && vendor.rateChangeKeeps === 'payment' ? strings.card.statusHybridKept : strings.card.statusHybrid
         : strings.card.statusFixed,
     },
     costs: {
@@ -2085,7 +2098,7 @@ function VendorCard({
           <>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed}
+                {strings.card.initialFixed} <RequiredMark title={strings.card.requiredTitle} />
               </label>
               <LocaleNumberInput
                 id={id('initialFixedMonths')}
@@ -2094,6 +2107,7 @@ function VendorCard({
                 value={vendor.initialFixedMonths}
                 onValueChange={(v) => onChange({ initialFixedMonths: v })}
                 aria-invalid={badOptional.has('initialFixedMonths') || undefined}
+                aria-required="true"
                 aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
                 autoComplete="off"
               />
@@ -2101,7 +2115,7 @@ function VendorCard({
             </div>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate}
+                {strings.card.subsequentRate} <RequiredMark title={strings.card.requiredTitle} />
               </label>
               <LocaleNumberInput
                 id={id('subsequentRatePct')}
@@ -2110,6 +2124,7 @@ function VendorCard({
                 value={vendor.subsequentRatePct}
                 onValueChange={(v) => onChange({ subsequentRatePct: v })}
                 aria-invalid={badOptional.has('subsequentRatePct') || undefined}
+                aria-required="true"
                 aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
                 autoComplete="off"
               />

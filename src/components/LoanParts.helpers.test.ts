@@ -16,6 +16,7 @@ import {
   ENGINE_PHRASES,
   aprText,
   engineError,
+  engineErrorKey,
   engineWarning,
   isTypedName,
   months,
@@ -288,6 +289,7 @@ const ENGINE_MESSAGES: [raw: string, key: keyof typeof s.engine.errors][] = [
   ['One of the optional boxes cannot be read. Use digits only, or clear the box.', 'optionalUnreadable'],
   ['The points cost is more than the fee above. The fee includes the points, so it cannot be smaller. Enter a larger fee or a smaller points cost.', 'pointsAboveFee'],
   ['A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', 'rateChangeIncomplete'],
+  ['A lump sum needs a whole month from 1 to 1200, written as month:amount. Correct it, or clear the box.', 'lumpMonth'],
 ];
 
 describe('the engine\'s messages, in the reader\'s language', () => {
@@ -302,11 +304,24 @@ describe('the engine\'s messages, in the reader\'s language', () => {
   it('names the two boxes of a changing rate by their labels, and the other choice by its own', () => {
     // The sentence the tool works with names no box (the tool's analytics would file "rate" as a missing rate); the reader's does.
     const shown = engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', s);
-    assert.equal(shown, 'This offer’s rate is fixed, then variable, so it needs both an initial fixed period of at least one month and a subsequent rate. Enter both, or choose “Fixed” under “Rate structure”.');
+    assert.equal(shown, 'This offer’s rate is fixed, then variable, so it needs an initial fixed period of at least one month and a subsequent rate. Fill in what is missing, or choose “Fixed” under “Rate structure”.');
     for (const label of [s.card.hybrid.toLowerCase(), 'initial fixed period', 'subsequent rate', `“${s.card.fixed}”`, `“${s.card.rateStructure.title}”`]) assert.ok(shown.includes(label), label);
     assert.ok(s.card.initialFixed.toLowerCase().startsWith('initial fixed period'));
     assert.ok(s.card.subsequentRate.toLowerCase().startsWith('subsequent rate'));
     assert.equal(engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', hi), hi.engine.errors.rateChangeIncomplete);
+  });
+
+  it('says how a lump sum is written, in the words of the box: the format as its help names it', () => {
+    const raw = 'A lump sum needs a whole month from 1 to 1200, written as month:amount. Correct it, or clear the box.';
+    assert.equal(engineError(raw, s), 'A lump sum is written as month:amount, with a whole month from 1 to 1,200. Correct it, or clear the box.');
+    for (const island of [s, es, hi]) assert.ok(engineError(raw, island).includes(island.card.lumpsHelp.format), island.card.lumpsHelp.format);
+    assert.equal(engineError(raw, es), es.engine.errors.lumpMonth);
+  });
+
+  it('names a message by the key of its translation, and a message it does not know by none', () => {
+    assert.equal(engineErrorKey('Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.'), 'hybridMode');
+    assert.equal(engineErrorKey('ENTER A LOAN AMOUNT GREATER THAN ZERO.'), 'amount');
+    assert.equal(engineErrorKey('Something the engine grew later.'), undefined);
   });
 
   it('shows the message of a real loan with no amount', () => {

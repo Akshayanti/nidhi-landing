@@ -3,6 +3,7 @@
  * Extracted from the component so it's testable without React or a DOM.
  */
 import {
+  LUMP_MONTH,
   OPTIONAL_UNREADABLE,
   computeLoan,
   emptyResult,
@@ -17,7 +18,7 @@ import {
 } from './math.ts';
 import { UNREADABLE } from '../shared/linkInput.ts';
 import { MAX_LINK_LUMP_SUMS } from '../shared/linkInput.ts';
-import { parseLumpSums, type VendorInput } from './url.ts';
+import { lumpSumFault, parseLumpSums, type VendorInput } from './url.ts';
 
 /**
  * Strips cosmetic grouping (spaces, commas) so "1,234,567" and "1 234 567" both parse.
@@ -53,7 +54,7 @@ export type OptionalField =
   | 'subsequentRatePct';
 
 /** The message for an offer with an optional box that cannot be read; the engine uses it too. */
-export { OPTIONAL_UNREADABLE };
+export { LUMP_MONTH, OPTIONAL_UNREADABLE };
 
 /**
  * The message for a points cost larger than the fee it is part of. Written,
@@ -134,6 +135,16 @@ export function unreadableOptionalFields(v: VendorInput): OptionalField[] {
 }
 
 /**
+ * Whether the lump-sum box reads, pair by pair, and is wrong only in a month:
+ * part of one ("12.5:5000"), or one outside 1 to 1,200. More pairs than a
+ * link carries is a different fault, with the other message.
+ */
+export function lumpMonthFault(v: VendorInput): boolean {
+  const pairs = v.lumpSumsEncoded.split(';').filter((pair) => pair.trim() !== '');
+  return pairs.length <= MAX_LINK_LUMP_SUMS && lumpSumFault(v.lumpSumsEncoded) === 'month';
+}
+
+/**
  * Translates URL-shape inputs into typed engine fields. Omits properties at their defaults
  * so the engine's fallback logic runs unchanged when a feature is not in use.
  */
@@ -194,7 +205,10 @@ export function buildAdvancedFields(
 export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   // An optional box that cannot be read is an error, like a required one:
   // a result that quietly left it out would look complete and be wrong.
-  if (unreadableOptionalFields(v).length > 0) return emptyResult(0, OPTIONAL_UNREADABLE);
+  // A lump sum in a month no loan has is said in its own words, when that is
+  // all that is wrong: any box that does not read at all is said first.
+  const unreadable = unreadableOptionalFields(v);
+  if (unreadable.length > 0) return emptyResult(0, unreadable.length === 1 && lumpMonthFault(v) ? LUMP_MONTH : OPTIONAL_UNREADABLE);
   if (missingRateChangeFields(v).length > 0) return emptyResult(0, RATE_CHANGE_INCOMPLETE);
   if (pointsCostAboveFee(v)) return emptyResult(0, POINTS_ABOVE_FEE);
   const { inputs, mode } = loanFromInput(v, currency);

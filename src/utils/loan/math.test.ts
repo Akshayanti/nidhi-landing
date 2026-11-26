@@ -40,6 +40,7 @@ import {
   MAX_TERM_MONTHS,
   MAX_PRINCIPAL_MINOR,
   OPTIONAL_UNREADABLE,
+  LUMP_MONTH,
   monthlyInterestMinor,
   shownMonths,
   type LoanInputs,
@@ -1951,22 +1952,32 @@ describe('the engine refuses what it cannot use (issue 352)', () => {
     it('part of a month is an error, where it used to be moved to the month before', () => {
       for (const month of [12.5, 1.9, 3.000001]) {
         const r = lump(month);
-        assert.equal(r.error, OPTIONAL_UNREADABLE, String(month));
+        assert.equal(r.error, LUMP_MONTH, String(month));
         assert.equal(r.schedule.length, 0, String(month));
       }
     });
 
     it('a month past the last one the tool counts is an error, where it used to be left out', () => {
-      for (const month of [MAX_TERM_MONTHS + 1, 1300, 5000]) assert.equal(lump(month).error, OPTIONAL_UNREADABLE, String(month));
+      for (const month of [MAX_TERM_MONTHS + 1, 1300, 5000]) assert.equal(lump(month).error, LUMP_MONTH, String(month));
     });
 
     it('a month before the first is an error too', () => {
-      assert.equal(lump(0).error, OPTIONAL_UNREADABLE);
+      assert.equal(lump(0).error, LUMP_MONTH);
+    });
+
+    it('a month that is not a number at all, or below zero, keeps the message of a box that cannot be read', () => {
+      for (const month of [NaN, Infinity, -1]) assert.equal(lump(month).error, OPTIONAL_UNREADABLE, String(month));
+    });
+
+    it('the message is filed under "other" by the analytics classifier, and carries the phrase the page finds its translation by', () => {
+      const lower = LUMP_MONTH.toLowerCase();
+      for (const word of ['principal', 'payment', 'interest', 'rate', 'term', 'range']) assert.ok(!lower.includes(word), word);
+      assert.ok(lower.includes('lump sum needs a whole month'), LUMP_MONTH);
     });
 
     it('one such lump sum among good ones is enough', () => {
       const r = computeLoan({ ...small, lumpSums: [{ month: 3, amountMinor: 10000 }, { month: 12.5, amountMinor: 10000 }] }, year);
-      assert.equal(r.error, OPTIONAL_UNREADABLE);
+      assert.equal(r.error, LUMP_MONTH);
     });
 
     it('the first month is a month: 100.00 then leaves 1,000.00, paid off in 11 months', () => {
