@@ -9,11 +9,17 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { act, cleanup, render } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import type { Report, ReportTable } from '../utils/shared/report.ts';
 import { ToolReport } from './ToolExport.tsx';
 
-const strings = dict('en').tools.export;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { export: exportEn },
+};
+
+const strings = TOOL_STRINGS.en.export;
 const r = strings.report;
 
 const REPORT: Report = {

@@ -9,12 +9,18 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { useRef, type ReactNode, type RefObject } from 'react';
 import { act, cleanup, render, renderHook } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
-const words = dict('en').tools.export.chart;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { export: exportEn },
+};
+
+const words = TOOL_STRINGS.en.export.chart;
 const g = globalThis as unknown as Record<string, unknown>;
 
 describe('how a chart writes amounts', () => {

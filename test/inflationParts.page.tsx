@@ -14,12 +14,19 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { clock } from './windowClock.ts';
-import { dict } from '../src/i18n/index.ts';
+import { inflationEn } from '../src/i18n/strings/tools/inflation.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { SHARED_STATE_GLOBAL } from '../src/utils/inflation/url.ts';
 import type { CompactHistory, CompactSeries } from '../src/utils/inflation/history.ts';
 import InflationCalculator, { type CountryOption } from '../src/components/InflationCalculator.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.inflation.island;
 export type Strings = typeof island;
 export const w = window as unknown as Record<string, unknown>;

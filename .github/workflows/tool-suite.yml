@@ -719,6 +719,12 @@ jobs:
           path: reports/mutation
           merge-multiple: true
 
+      # What the test files that depend on everything cover (#904): any
+      # change tests those mutants again, so the number is printed with every
+      # run. It judges nothing (scripts/mutation-wide-coverage.mjs).
+      - name: What the tests that depend on everything cover
+        run: node scripts/mutation-wide-coverage.mjs
+
       - name: Scores at or above their floors
         run: |
           failed=0

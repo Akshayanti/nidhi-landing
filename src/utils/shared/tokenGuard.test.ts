@@ -12,10 +12,12 @@ import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'tokenGuard.js'), 'utf8');
-const PAGES = ['confirm', 'unsubscribe'].map((name) => ({
-  name,
-  source: readFileSync(join(import.meta.dirname, `../../pages/${name}.astro`), 'utf8'),
-}));
+// Each path is written out, not built from a name: the mutation cache works out what a test
+// reads from its source, and a path it cannot work out ties the test to every file (#904).
+const PAGES = [
+  { name: 'confirm', source: readFileSync(join(import.meta.dirname, '../../pages/confirm.astro'), 'utf8') },
+  { name: 'unsubscribe', source: readFileSync(join(import.meta.dirname, '../../pages/unsubscribe.astro'), 'utf8') },
+];
 const LAYOUT = readFileSync(join(import.meta.dirname, '../../layouts/BaseLayout.astro'), 'utf8');
 
 type Win = Record<string, any>;

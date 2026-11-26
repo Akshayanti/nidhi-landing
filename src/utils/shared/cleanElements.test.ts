@@ -8,16 +8,16 @@
  * alphabetical order), so the filter is tested against the string the live
  * project sends.
  *
+ * The label registry the filter is given on the page is checked in
+ * cleanElements.registry.test.ts: it is made by reading the whole source, and
+ * this file reads only the script it runs (#904).
+ *
  * Run with:  npm test
  */
-import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runClassicScript } from '../../../test/classicScript.ts';
-import { join } from 'node:path';
-
-import { scanLabels } from '../analyticsLabels.ts';
 
 type Props = Record<string, unknown>;
 type Labels = { exact: string[]; prefixes: string[] };
@@ -286,28 +286,6 @@ describe('nidhiCleanElements: where it is defined', () => {
     const global: { nidhiCleanElements?: Clean } = {};
     runClassicScript(SOURCE, { globalThis: global });
     assert.equal(typeof global.nidhiCleanElements, 'function');
-  });
-});
-
-describe('the label registry', () => {
-  // From this file's own place, not the directory the runner starts in (#366).
-  const scan = scanLabels(join(import.meta.dirname, '..', '..'));
-
-  it('resolves every data-attr in the source', () => {
-    assert.deepEqual(scan.unresolved, []);
-  });
-
-  it('knows the labels the notice and the dashboards rely on', { skip: readsSource }, () => {
-    for (const label of ['volunteers-form', 'lc-share-copy', 'mcnw-csv-download', 'free-monte-carlo-share', 'waitlist-confirm-yes', 'post-inline-tool-loan-comparison']) {
-      assert.ok(scan.exact.includes(label), label);
-    }
-    for (const prefix of ['related-', 'lc-tab-', 'nav-menu-']) assert.ok(scan.prefixes.includes(prefix), prefix);
-  });
-
-  it('holds only slugs', () => {
-    for (const label of [...scan.exact, ...scan.prefixes.map((p) => p.replace(/-$/, ''))]) {
-      assert.match(label, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-    }
   });
 });
 

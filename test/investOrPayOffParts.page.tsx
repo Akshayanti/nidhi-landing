@@ -21,13 +21,20 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { clock } from './windowClock.ts';
-import { dict } from '../src/i18n/index.ts';
+import { investOrPayOffEn } from '../src/i18n/strings/tools/investOrPayOff.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { SHARED_STATE_GLOBAL } from '../src/utils/invest-or-pay-off/url.ts';
 import type { CompactHistory, CompactSeries } from '../src/utils/inflation/history.ts';
 import type { CountryOption } from '../src/components/InflationCalculator.tsx';
 import InvestOrPayOff from '../src/components/InvestOrPayOff.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { investOrPayOff: investOrPayOffEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.investOrPayOff.island;
 export type Strings = typeof island;
 export const w = window as unknown as Record<string, unknown>;

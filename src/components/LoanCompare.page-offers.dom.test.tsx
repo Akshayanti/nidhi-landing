@@ -16,7 +16,13 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent } from '@testing-library/react';
 import { CURRENCIES } from '../utils/loan/math.ts';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonHi } from '../i18n/strings/tools/loanComparison.ts';
+
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  hi: { loanComparison: loanComparisonHi },
+};
 
 const p = island.phoneTabs;
 const addCard = () => document.querySelector('.lc-grid > .lc-cardAdd') as HTMLButtonElement | null;
@@ -109,7 +115,7 @@ describe('the loan comparison: adding and removing offers', () => {
 
 describe('the loan comparison: the currency, the reset and the tabs', () => {
   it('names each currency in the page\'s language', () => {
-    const hi = dict('hi').tools.loanComparison.island;
+    const hi = TOOL_STRINGS.hi.loanComparison.island;
     mount({ strings: hi, defaultCurrency: 'INR' });
     const options = [...currencySelect().options];
     assert.deepEqual(options.map((o) => o.textContent), CURRENCIES.map((x) => hi.currencies[x.code as keyof typeof hi.currencies]));

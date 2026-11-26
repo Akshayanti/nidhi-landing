@@ -30,8 +30,14 @@ describe('resultGate', () => {
   }
 });
 
-for (const name of ['InflationCalculator', 'InvestOrPayOff', 'MonteCarloSimulator']) {
-  const source = readFileSync(new URL(`../../components/${name}.tsx`, import.meta.url), 'utf8');
+// Each path is written out, not built from a name: the mutation cache works out what a test
+// reads from its source, and a path it cannot work out ties the test to every file (#904).
+const COMPONENTS = {
+  InflationCalculator: readFileSync(new URL('../../components/InflationCalculator.tsx', import.meta.url), 'utf8'),
+  InvestOrPayOff: readFileSync(new URL('../../components/InvestOrPayOff.tsx', import.meta.url), 'utf8'),
+  MonteCarloSimulator: readFileSync(new URL('../../components/MonteCarloSimulator.tsx', import.meta.url), 'utf8'),
+};
+for (const [name, source] of Object.entries(COMPONENTS)) {
   describe(name, { skip: readsSource }, () => {
     it('Copy serializes the form as it stands', () => {
       const copy = /function copyShareLink\(\) \{[\s\S]*?\n {2}\}/.exec(source)?.[0] ?? '';

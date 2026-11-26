@@ -7,10 +7,17 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn, loanComparisonHi } from '../i18n/strings/tools/loanComparison.ts';
 import { analysisTabs } from './LoanCompare.tsx';
 
-const island = dict('en').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+  hi: { loanComparison: loanComparisonHi },
+};
+
+const island = TOOL_STRINGS.en.loanComparison.island;
 
 describe('the analysis tabs, as a list', () => {
   it('lists charts, horizon, refinance and how it works, in that order, with the English words', () => {
@@ -23,7 +30,7 @@ describe('the analysis tabs, as a list', () => {
   });
 
   it('keeps the ids and takes only the words from another language', () => {
-    const hindi = dict('hi').tools.loanComparison.island;
+    const hindi = TOOL_STRINGS.hi.loanComparison.island;
     const tabs = analysisTabs(hindi);
     assert.deepEqual(tabs.map((t) => t.id), ['charts', 'horizon', 'refi', 'how']);
     assert.deepEqual(tabs.map((t) => t.label), [hindi.tabs.charts.label, hindi.tabs.horizon.label, hindi.tabs.refi.label, hindi.tabs.how.label]);

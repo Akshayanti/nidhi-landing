@@ -278,12 +278,14 @@ describe('no test’s result depends on the contents of another test file', () =
   // A test that runs mutated code AND lists a folder: each such listing is
   // named here with the line that keeps test files out of what it reads. A
   // new one fails until it is read and added.
+  // (In #904 the assertions that walk the source moved to files of their own:
+  // catalog.used.test.ts and jsonForScript.pages.test.ts are listed under those names.)
   const LISTS = {
-    'src/i18n/strings/catalog.test.ts': ["/\\.(astro|tsx|ts|js|mjs)$/.test(name) && !/\\.test\\./.test(name) ? readFileSync(path, 'utf8') : ''"],
-    'src/utils/shared/jsonForScript.test.ts': ["else if (name.endsWith('.astro')) files.push(path);"],
+    'src/i18n/strings/catalog.used.test.ts': ["/\\.(astro|tsx|ts|js|mjs)$/.test(name) && !/\\.test\\./.test(name) ? readFileSync(path, 'utf8') : ''"],
+    'src/utils/shared/jsonForScript.pages.test.ts': ["else if (name.endsWith('.astro')) files.push(path);"],
+    'src/utils/analyticsLabels.ts': ["else if (match.test(name) && !/\\.test\\./.test(name) && !SKIP.test(path)) out.push(path);"],
     'src/utils/shared/toolPrivacy.test.ts': ["else if (name.endsWith('.astro')) out.push(path);"],
     'src/utils/privacySurface.ts': ["if (!CODE.test(name) || /\\.test\\./.test(name) || WORDS.test(path) || SELF.test(path)) continue;"],
-    'src/utils/analyticsLabels.ts': ["else if (match.test(name) && !/\\.test\\./.test(name) && !SKIP.test(path)) out.push(path);"],
     'src/utils/sitemap.ts': ["else if (/\\.(md|mdx)$/.test(entry)) out.push(full);", "const files = readdirSync(dir).filter((entry) => entry.endsWith('.md'));"],
     'src/utils/spelling.test.ts': ["if (!file.endsWith('.md')) continue;", "if (!file.endsWith('.md')) continue;"],
   };
@@ -314,7 +316,9 @@ describe('no test’s result depends on the contents of another test file', () =
     const viaText = closure('src/utils/shared/cleanElements.test.ts');
     assert.ok(![...viaText].some((f) => mutated.has(f)), 'cleanElements.test.ts imports no mutated file');
     assert.ok([...viaText].some((f) => RUNS_SOURCE.test(read(f)) || names.test(read(f))), 'and is still seen to run one');
-    assert.ok(listing.has('src/utils/analyticsLabels.ts'), 'so the listing it reaches is reviewed');
+    // Since #904 it no longer reaches the label registry's walk of the source: that
+    // check has a file of its own (cleanElements.registry.test.ts), which runs no mutated code.
+    assert.ok(!viaText.has('src/utils/analyticsLabels.ts'));
     for (const line of ["runInNewContext(source, {})", "import vm from 'node:vm';", "new Function(text)()", "readFileSync(join(here, 'cleanElements.js'), 'utf8')"]) {
       assert.ok(RUNS_SOURCE.test(line) || names.test(line), line);
     }

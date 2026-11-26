@@ -22,9 +22,15 @@ import {
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent, screen } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { multiCurrencyNetWorthEs } from '../i18n/strings/tools/multiCurrencyNetWorth.ts';
 import { aggregate, type AssetRow } from '../utils/multi-currency-net-worth/math.ts';
 import { decodeFromQueryString, encodeShared } from '../utils/multi-currency-net-worth/url.ts';
+
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  es: { multiCurrencyNetWorth: multiCurrencyNetWorthEs },
+};
 
 const ADDRESS = 'https://nidhi.today/free/';
 const SHARE = `${ADDRESS}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=multi_currency_net_worth#`;
@@ -361,7 +367,7 @@ describe('the net worth calculator on its page: links, files, sharing and export
   });
 
   it('a CSV in the page\'s own words for the two kinds is read in them', async () => {
-    const es = dict('es').tools.multiCurrencyNetWorth.island;
+    const es = TOOL_STRINGS.es.multiCurrencyNetWorth.island;
     mount({ strings: es, numberLocale: 'es' });
     await upload(`Casa;100;EUR;${es.row.asset}\nPrestamo;40;EUR;${es.row.liability}\n`);
     assert.deepEqual(formRows().map((r) => r[3]), ['asset', 'liability']);

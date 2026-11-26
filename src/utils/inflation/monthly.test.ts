@@ -11,7 +11,7 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { dict } from '../../i18n/index.ts';
+import { inflationEn, inflationHi, inflationEs, inflationCs, inflationMr } from '../../i18n/strings/tools/inflation.ts';
 import {
   TOLERANCE_POINTS,
   TOLERANCE_SHARE,
@@ -33,6 +33,16 @@ import {
   ratesAgree,
   yearMean,
 } from './monthly.ts';
+
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn },
+  hi: { inflation: inflationHi },
+  es: { inflation: inflationEs },
+  cs: { inflation: inflationCs },
+  mr: { inflation: inflationMr },
+};
 
 const key = (year: number, month: number) => `${year}-${String(month).padStart(2, '0')}`;
 const round = (v: number) => Math.round(v * 1e6) / 1e6;
@@ -80,11 +90,11 @@ describe('the settings of the join', () => {
   it('is said on the page, in every language: the source paragraph and the FAQ name the country and the year', () => {
     // The page says months are joined only where the two agree; an accepted year is the one exception, so it is named there.
     for (const locale of ['en', 'hi', 'es', 'cs', 'mr'] as const) {
-      const page = dict(locale).tools.inflation.page;
+      const page = TOOL_STRINGS[locale].inflation.page;
       assert.match(page.sourceMonthly.after, /\(2025\)/, `${locale}: the source paragraph`);
       assert.match(page.faq.items[3].a, /\(2025\)/, `${locale}: the FAQ`);
     }
-    assert.match(dict('en').tools.inflation.page.sourceMonthly.after, /or, for one year in India \(2025\), where the difference is traced to the yearly figure rather than the index;/);
+    assert.match(TOOL_STRINGS.en.inflation.page.sourceMonthly.after, /or, for one year in India \(2025\), where the difference is traced to the yearly figure rather than the index;/);
   });
 });
 

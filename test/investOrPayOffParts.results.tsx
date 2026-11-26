@@ -13,12 +13,19 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { cleanup, render } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { dict } from '../src/i18n/index.ts';
+import { investOrPayOffEn } from '../src/i18n/strings/tools/investOrPayOff.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import type { Result } from '../src/utils/invest-or-pay-off/math.ts';
 import { AmountLocaleContext } from '../src/components/useMoney.ts';
 import { ErrorLeadContext, UnreadableContext } from '../src/components/toolShared.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { investOrPayOff: investOrPayOffEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.investOrPayOff.island;
 
 /** Analytics as the page would send them, recorded. */
