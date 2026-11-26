@@ -150,6 +150,8 @@ describe('the loan comparison: what is worked out across the offers', () => {
     arriveWith(link([offer(0, never), offer(1, never)]));
     view = mount();
     assert.equal(cards().length, 2);
+    // With no total to compare, it follows the first offer that has a schedule.
+    assert.equal(splitFollows(), 'Offer A');
     view.unmount();
     arriveWith(link([offer(0, { principal: '' }), offer(1, { principal: '' })]));
     mount();

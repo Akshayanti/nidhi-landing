@@ -16,6 +16,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent } from '@testing-library/react';
 import { CURRENCIES } from '../utils/loan/math.ts';
+import { dict } from '../i18n/index.ts';
 
 const p = island.phoneTabs;
 const addCard = () => document.querySelector('.lc-grid > .lc-cardAdd') as HTMLButtonElement | null;
@@ -107,6 +108,33 @@ describe('the loan comparison: adding and removing offers', () => {
 });
 
 describe('the loan comparison: the currency, the reset and the tabs', () => {
+  it('names each currency in the page\'s language', () => {
+    const hi = dict('hi').tools.loanComparison.island;
+    mount({ strings: hi, defaultCurrency: 'INR' });
+    const options = [...currencySelect().options];
+    assert.deepEqual(options.map((o) => o.textContent), CURRENCIES.map((x) => hi.currencies[x.code as keyof typeof hi.currencies]));
+    assert.notEqual(options[0].textContent, CURRENCIES[0].label);
+  });
+
+  it('on a phone, jumps to the comparison and puts the reader there, without scrolling twice', () => {
+    const scrolled: Array<[string, unknown]> = [];
+    const focused: Array<[string, unknown]> = [];
+    const real = { scroll: window.HTMLElement.prototype.scrollIntoView, focus: window.HTMLElement.prototype.focus };
+    window.HTMLElement.prototype.scrollIntoView = function (this: HTMLElement, arg?: unknown) { scrolled.push([this.id, arg]); };
+    window.HTMLElement.prototype.focus = function (this: HTMLElement, arg?: unknown) { focused.push([this.id, arg]); real.focus.call(this, arg as FocusOptions); };
+    try {
+      mount();
+      fireEvent.click(one('.lc-jump button'));
+      assert.deepEqual(scrolled, [['lc-delta-h', { block: 'start' }]]);
+      assert.deepEqual(focused, [['lc-delta-h', { preventScroll: true }]]);
+      assert.equal(document.activeElement?.id, 'lc-delta-h');
+      assert.equal(document.activeElement?.textContent, island.delta.heading);
+    } finally {
+      window.HTMLElement.prototype.scrollIntoView = real.scroll;
+      window.HTMLElement.prototype.focus = real.focus;
+    }
+  });
+
   it('shows amounts in the currency chosen, resets to the page\'s start, and opens the tab clicked', () => {
     mount();
     const select = currencySelect();

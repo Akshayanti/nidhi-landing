@@ -11,7 +11,7 @@
  */
 import {
   island, events, eventNames, copied, prompted, printed, downloads, clipboard, clock, mount, offer, link, shareAddress, cards, type, c,
-  shareButton, xlsxButton, pdfButton, ariaDisabled, withheld, said, shareLabel, has, one, byId, sentText, addressUntouched, arriveWith,
+  shareButton, xlsxButton, fileText, pdfButton, ariaDisabled, withheld, said, shareLabel, has, one, byId, sentText, addressUntouched, arriveWith,
 } from '../../test/loanCompare.page.tsx';
 import assert from 'node:assert/strict';
 import { describe, it, mock } from 'node:test';
@@ -44,6 +44,10 @@ describe('the loan comparison: copying a link', () => {
     assert.equal(barLabel(), tb.copiedBar);
     assert.equal(barLink(), shareAddress(start));
     assert.equal(shareLabel(), tb.shareCopied);
+    // Reached from the keyboard, the field selects the whole address to copy.
+    const field = one('.lc-shareUrlBar input') as HTMLInputElement;
+    fireEvent.focus(field);
+    assert.deepEqual([field.selectionStart, field.selectionEnd], [0, field.value.length]);
     clock.pass(60);
     assert.equal(said(), tb.shareStatus);
 
@@ -90,7 +94,7 @@ describe('the loan comparison: copying a link', () => {
 });
 
 describe('the loan comparison: saving a copy, and what is held back', () => {
-  it('saves a spreadsheet and prints, each counted by its kind, with the printed copy in the page', () => {
+  it('saves a spreadsheet and prints, each counted by its kind, with the printed copy in the page', async () => {
     mount();
     assert.equal(ariaDisabled(xlsxButton()), false);
     assert.equal(ariaDisabled(pdfButton()), false);
@@ -98,6 +102,10 @@ describe('the loan comparison: saving a copy, and what is held back', () => {
     fireEvent.click(xlsxButton());
     assert.equal(downloads.length, 1);
     assert.match(downloads[0].name, /^nidhi-loan-comparison-\d{4}-\d{2}-\d{2}\.xlsx$/);
+    // The spreadsheet names the page it came from: the address without anything after it.
+    const sheet = await fileText(downloads[0].blob);
+    assert.ok(sheet.includes('https://nidhi.today/free/'));
+    assert.ok(!sheet.includes('https://nidhi.today/free/?'));
     fireEvent.click(pdfButton());
     assert.equal(printed.length, 1);
     assert.deepEqual(events, [

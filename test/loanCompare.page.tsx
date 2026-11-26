@@ -155,11 +155,11 @@ after(() => window.close());
 // Mounting the page
 // ---------------------------------------------------------------------------
 
-export type PageProps = Partial<{ defaultCurrency: string; amountLocale: string | null }>;
+export type PageProps = Partial<{ strings: typeof island; defaultCurrency: string; amountLocale: string | null }>;
 
 export const page = (props: PageProps = {}) => (
   <LoanCompare
-    strings={island}
+    strings={props.strings ?? island}
     exportStrings={t.export}
     defaultCurrency={props.defaultCurrency ?? 'EUR'}
     numberLocale="en"
@@ -234,6 +234,9 @@ export function rowAmount(card: HTMLElement, label: string): { text: string; len
   const amt = one('.amt', dt.parentElement as HTMLElement);
   return { text: amt.textContent ?? '', length: Number(amt.style.getPropertyValue('--amt-len')) };
 }
+
+/** A downloaded file's bytes as text: the workbook is a stored zip, so its XML can be read as it is. */
+export const fileText = async (blob: Blob) => new TextDecoder().decode(await blob.arrayBuffer());
 
 /** Everything the page sent to analytics, as one string, to search for a typed value. */
 export const sentText = () => JSON.stringify(events);
