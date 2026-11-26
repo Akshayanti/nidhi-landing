@@ -8,6 +8,7 @@ import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/sh
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { useMoney } from './useMoney.ts';
 import { trueMinus } from '../utils/shared/formatAmount.ts';
+import { shownNumber } from '../utils/shared/money.ts';
 
 /**
  * The free tools' "Save or share these results" block, placed right after a
@@ -144,19 +145,21 @@ export function ToolExport({
 
 /**
  * A number cell in the reader's locale, as the spreadsheet formats it, with
- * the true minus sign the report's answer above it uses (#883).
+ * the true minus sign the report's answer above it uses (#883). What a sum
+ * leaves behind in a float (−0.001 in a column of two decimals) is written as
+ * the zero it rounds to, never "−0.00" (#888).
  */
 export function cellText(c: Cell, locale: string): string {
   if (c === null || c === undefined) return '';
   if (typeof c === 'string') return c;
-  if (typeof c === 'number') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c));
+  if (typeof c === 'number') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c + 0));
   if ('t' in c) return c.t;
   const fmt = c.fmt ?? 'general';
-  if (fmt === 'general') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n));
+  if (fmt === 'general') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n + 0));
   const digits = fmt === 'amount2' || fmt === 'decimal2' ? 2 : fmt === 'amount3' ? 3 : 0;
   // A year or a month count is not grouped; a count of thousands is.
   const useGrouping = fmt !== 'integer' || Math.abs(c.n) >= 10_000;
-  return trueMinus(new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(c.n));
+  return trueMinus(new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(shownNumber(c.n, digits)));
 }
 
 const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);
@@ -251,7 +254,7 @@ function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale:
               <g key={i}>
                 <text x={labelW - 8} y={y + 15} textAnchor="end" className="tool-reportAxis">{b.label}</text>
                 <rect x={labelW} y={y + 3} width={w} height={rowH - 10} fill={b.share < 0 ? '#fff' : '#555'} stroke="#222" strokeWidth="1" />
-                <text x={labelW + w + 6} y={y + 15} className="tool-reportAxis">{pct.format(b.share)}%</text>
+                <text x={labelW + w + 6} y={y + 15} className="tool-reportAxis">{pct.format(shownNumber(b.share, 1))}%</text>
               </g>
             );
           })}

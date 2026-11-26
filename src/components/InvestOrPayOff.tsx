@@ -1,5 +1,5 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES } from '../utils/shared/money.ts';
+import { CURRENCIES, shownNumber } from '../utils/shared/money.ts';
 import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
@@ -84,9 +84,13 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
-/** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
+/**
+ * A rate in the page's marks, below zero with the true minus sign the amounts
+ * use (#884). A rate that rounds to nothing is "0%", never "−0%": a 3% loan
+ * with 3.03% inflation has a real rate of −0.03% (#888).
+ */
 function pct(v: number, locale: string, digits = 1): string {
-  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
+  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(shownNumber(v, digits) / 100));
 }
 
 /** "in 2 years and 4 months", from a month count. */

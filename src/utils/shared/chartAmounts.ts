@@ -22,7 +22,7 @@
  * way (Hindi and Marathi, `PROSE_NUMBER_LOCALE`; the owner's choice, #678):
  * "€18.7 लाख", never "€1.87M".
  */
-import { amountFormat, amountNumberLocale, amountStyle } from './money.ts';
+import { amountFormat, amountNumberLocale, amountStyle, shownNumber } from './money.ts';
 
 export type AmountScale = 'none' | 'thousand' | 'lakh' | 'crore' | 'million' | 'billion';
 
@@ -85,7 +85,7 @@ export function axisTick(value: number, scale: AmountScale, code: string, amount
   const v = value / SCALE_DIVISOR[scale];
   // Up to two decimals, so neighbouring gridlines never round to one figure
   // ("0.25", "0.5", "0.75"), and none that are not needed.
-  return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(Object.is(v, -0) ? 0 : v);
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(shownNumber(v, 2));
 }
 
 /**
@@ -107,7 +107,8 @@ export function chartLabel(value: number, code: string, words: ChartWords, amoun
   const { locale, display } = amountStyle(code, amountLocale);
   // Rounded to the three digits it is written with before its unit is chosen,
   // so 999,600 reads "1M" and never "1,000K".
-  const v = Math.abs(value) >= 999.5 ? Number(value.toPrecision(3)) : Math.round(value);
+  // Less than half a unit below zero is "€0", never "-€0" (#888).
+  const v = Math.abs(value) >= 999.5 ? Number(value.toPrecision(3)) : Math.round(value) + 0;
   let scale = amountScale(v, code, amountLocale, numberLocale);
   const currency = { style: 'currency', currency: code, currencyDisplay: display } as const;
   if (scale === 'none') return amountFormat(code, amountLocale, { ...currency, maximumFractionDigits: 0 }).format(v);

@@ -552,6 +552,13 @@ describe('formatPct', () => {
     assert.equal(formatPct(0), '0.0%');
   });
 
+  it('writes a share that rounds to nothing as zero, never "-0.0%" (#888)', () => {
+    assert.equal(formatPct(-0.04), '0.0%');
+    assert.equal(formatPct(-0), '0.0%');
+    assert.equal(formatPct(-0.05), '-0.1%');
+    assert.equal(formatPct(-12.34), '-12.3%');
+  });
+
   it('handles non-finite values', () => {
     assert.equal(formatPct(NaN), '0%');
     assert.equal(formatPct(Infinity), '0%');

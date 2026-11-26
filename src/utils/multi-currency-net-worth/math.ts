@@ -3,7 +3,7 @@
  * risk assessment, and CSV parsing are testable without React or a DOM.
  */
 
-import { CURRENCIES, type CurrencyInfo } from '../shared/money.ts';
+import { CURRENCIES, shownNumber, type CurrencyInfo } from '../shared/money.ts';
 import { unguardText } from '../shared/exportFile.ts';
 import { parseLocaleNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
@@ -653,5 +653,6 @@ export function getCurrencyLabel(code: string, names?: Record<string, string>): 
 /** One decimal is enough for concentration percentages; more precision is visual noise. */
 export function formatPct(pct: number): string {
   if (!Number.isFinite(pct)) return '0%';
-  return pct.toFixed(1) + '%';
+  // A share that rounds to nothing is "0.0%", never "-0.0%" (#888).
+  return shownNumber(pct, 1).toFixed(1) + '%';
 }

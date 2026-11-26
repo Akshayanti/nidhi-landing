@@ -38,6 +38,23 @@ describe('cellText: a negative cell', () => {
     assert.ok(!cellText({ n: -1520, fmt: 'amount2' }, 'mr').includes('-'));
   });
 
+  it('writes what rounds to nothing as zero, never "−0" (#888)', () => {
+    // What a sum leaves behind in a float, in a column of two decimals.
+    assert.equal(cellText({ n: 0.1 + 0.2 - 0.3 - 1e-12, fmt: 'amount2' }, 'en'), '0.00');
+    assert.equal(cellText({ n: -0.004, fmt: 'amount2' }, 'en'), '0.00');
+    assert.equal(cellText({ n: -0.004, fmt: 'decimal2' }, 'cs'), '0,00');
+    assert.equal(cellText({ n: -0.0004, fmt: 'amount3' }, 'en'), '0.000');
+    assert.equal(cellText({ n: -0.4, fmt: 'integer' }, 'en'), '0');
+    assert.equal(cellText({ n: -0.4, fmt: 'amount0' }, 'en'), '0');
+    assert.equal(cellText(-0, 'en'), '0');
+    assert.equal(cellText({ n: -0 }, 'en'), '0');
+    assert.equal(cellText({ n: -0, fmt: 'general' }, 'en'), '0');
+    // The digits a column shows still decide: half a cent below zero is a cent.
+    assert.equal(cellText({ n: -0.005, fmt: 'amount2' }, 'en'), `${MINUS}0.01`);
+    assert.equal(cellText({ n: -0.006, fmt: 'amount3' }, 'en'), `${MINUS}0.006`);
+    assert.equal(cellText({ n: -0.6, fmt: 'integer' }, 'en'), `${MINUS}1`);
+  });
+
   it('leaves a positive cell and a text cell as they are', () => {
     assert.equal(cellText({ n: 1520, fmt: 'amount2' }, 'en'), '1,520.00');
     assert.equal(cellText({ t: 'a-b' }, 'en'), 'a-b');
