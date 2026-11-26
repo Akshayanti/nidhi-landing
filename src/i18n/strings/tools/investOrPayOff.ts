@@ -712,7 +712,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       historical: { label: 'ऐतिहासिक', desc: '1900 ते 2025 मधील जागतिक शेअरच्या परताव्यांशी जुळवलेल्या मॉडेलनुसार महागाईनंतर दरवर्षी {rate}' },
       optimistic: { label: 'आशावादी', desc: 'महागाईनंतर दरवर्षी {rate}' },
       own: { label: 'माझा स्वतःचा आकडा', desc: 'महागाईपूर्वी, फंड सांगतात तसा' },
-      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे मॉडेलच्या {top}% च्या आशावादी सेटिंगपेक्षा जास्त. 1900 ते 2025 या काळात जागतिक शेअरनी महागाईनंतर, चक्रवाढीच्या हिशेबाने, दरवर्षी सुमारे {historical} परतावा दिला आहे (Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार), आणि मॉडेलच्या सावध आणि आशावादी सेटिंग्ज त्याच्या दोन्ही बाजूंना आहेत. खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी सावध आणि आशावादी सेटिंग्जचे निकालही दाखवतात.',
+      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे मॉडेलच्या आशावादी सेटिंगपेक्षा, {top}% पेक्षा, जास्त. 1900 ते 2025 या काळात जागतिक शेअरनी महागाईनंतर, चक्रवाढीच्या हिशेबाने, दरवर्षी सुमारे {historical} परतावा दिला आहे (Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार), आणि मॉडेलच्या सावध आणि आशावादी सेटिंग्ज त्याच्या दोन्ही बाजूंना आहेत. खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी सावध आणि आशावादी सेटिंग्जचे निकालही दाखवतात.',
       below: 'हे महागाईनंतर दरवर्षी {real} आहे: असे राहिल्यास गुंतवणुकीची क्रयशक्ती कमी होईल.',
       realIs: 'महागाईनंतर: दरवर्षी {real}.',
       ownSwings: 'तुम्ही कोणताही आकडा भरला तरी मॉडेल जागतिक शेअर्सचे वर्षागणिक चढ-उतार तसेच ठेवते. बाँड फंडासाठी प्रत्यक्ष कक्षा इथे दाखवलेल्यापेक्षा अरुंद असेल, आणि बचत खात्यासाठी बरीच अरुंद.',
@@ -892,7 +892,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
         },
         {
           q: '¿Qué pasa si escribo una rentabilidad alta?',
-          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top} % anual descontada la inflación, la opción optimista del modelo, un aviso lo dice y los resultados se muestran también con las opciones prudente y optimista, uno al lado del otro. No hay ningún tope.',
+          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top} % anual descontada la inflación, la opción optimista del modelo, un aviso lo dice y los resultados se muestran también, al lado, con las opciones prudente y optimista. No hay ningún tope.',
         },
         {
           q: '¿De dónde sale la cifra de inflación?',

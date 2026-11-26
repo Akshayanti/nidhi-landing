@@ -144,9 +144,9 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     clock.pass(250);
     assert.equal(headline(), linesFor({ returns: 'own' })[1]);
     assert.equal(has('.iop-side'), false);
-    // Above the top of the range: said, and the range shown beside it.
+    // Above the optimistic setting: said, and the cautious and optimistic settings shown beside it.
     type('ownReturn', '20');
-    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(20, 2)), historical: '5.3%', low: 4, top: 6 })]);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(20, 2)), historical: '5.3%', top: 6 })]);
     assert.equal(one('.iop-returnNote p').className, 'iop-note');
     clock.pass(250);
     assert.equal(one('.iop-side h3').textContent, r.side.heading);
