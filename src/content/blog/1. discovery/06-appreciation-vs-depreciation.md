@@ -67,7 +67,7 @@ Depreciation is when something loses value over time.
 - A laptop bought for €1,200 is worth a few hundred within a few years
 - Furniture, electronics, clothing: almost everything you buy for personal use depreciates
 
-This isn't a moral judgment. It's just how things work. Cars get you from A to B. Laptops help you work. But they are not investments. They're expenses that happen to be physical objects.
+This isn't a moral judgement. It's just how things work. Cars get you from A to B. Laptops help you work. But they are not investments. They're expenses that happen to be physical objects.
 
 ## The force behind both: compound interest
 

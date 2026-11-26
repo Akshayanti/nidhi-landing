@@ -27,14 +27,12 @@ import {
   assertHomepageSlugs,
   LADDER_LEVELS,
   levelCounts,
-  liveTools,
+  toolList,
   resolveSituations,
   resolveStartingPoints,
 } from '../../utils/home/startingPoints.ts';
 import { assertInclusiveGroups, INCLUSIVE_HUB, inclusiveHostLevels, inclusiveLine, liveInclusive } from '../../utils/inclusiveGuides.ts';
 import { getPathPosts } from '../../utils/learnPosts';
-import { isMonteCarloReleased, MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
-import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release.ts';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -61,17 +59,13 @@ const now = isDev ? new Date('2999-01-01') : new Date();
 const allPosts = await getCollection('blog');
 assertHomepageSlugs(allPosts);
 
-const showMonteCarlo = await isMonteCarloReleased();
-const showInvestOrPayOff = await isInvestOrPayOffReleased();
-const isToolLive = (href: string) =>
-  (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
-const startingPoints = resolveStartingPoints(allPosts, now, isToolLive);
+const startingPoints = resolveStartingPoints(allPosts, now);
 // The How-to line under the situations shows once a guide is live.
 const guideCount = (await getGuides()).length;
 const hasGuides = guideCount > 0;
 const guideHub = localizedPath(locale, GUIDE_HUB);
-const situations = resolveSituations(allPosts, now, isToolLive);
-const tools = liveTools(isToolLive);
+const situations = resolveSituations(allPosts, now);
+const tools = toolList();
 const counts = levelCounts(allPosts, now);
 
 /** A catalog question without its outer quotation marks, in any of the five languages' styles. */
@@ -182,12 +176,14 @@ const faqSchema = {
     <div class="lp-section-inner hero-grid">
       <div class="hero-copy">
         <h1 id="hero-heading">{home.hero.heading}</h1>
-        <p class="hero-lead">{home.hero.lead}</p>
-        {/* Lesson 1 first, the planner a quieter link under it (#400). */}
+        {/* Lesson 1 first and filled (#400), the planner the outline button
+            after it. Both come before the lead, so a long translated lead
+            never pushes them down the first screen. */}
         <p class="hero-actions">
           <a class="btn btn--primary hero-start" href={lessonOne.href} data-attr="home-hero-lesson-1" {...lessonLang}>{blogIndex.island.readLesson1}</a>
-          <a class="jump" href="#signup" data-attr="home-hero-planner">{home.hero.plannerLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
+          <a class="btn btn--outline hero-planner" href="#signup" data-attr="home-hero-planner">{home.hero.plannerLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
         </p>
+        <p class="hero-lead">{home.hero.lead}</p>
         {/* Outside English, said here too and not only in the lessons section:
             the situations' first links open English lessons. */}
         {locale !== DEFAULT_LOCALE && <div class="hero-lang"><LessonsInEnglish locale={locale} /></div>}
@@ -289,7 +285,7 @@ const faqSchema = {
             <div class="route route--soon">
               <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
               <span class="route-title">{s.level && <span class="sr-only">{t(home.lessons.routeN, { n: LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 })}</span>}{pointCopy(s.id).situation}</span>
-              <span class="route-meta">{s.level ? t(home.lessons.comingSoon, { level: levelLabel(s.level) }) : home.lessons.comingSoonNoLevel}</span>
+              <span class="route-meta">{levelLabel(s.level) ? t(home.lessons.comingSoon, { level: levelLabel(s.level) ?? '' }) : home.lessons.comingSoonNoLevel}</span>
             </div>
           </li>
         ) : (
@@ -306,7 +302,7 @@ const faqSchema = {
             >
               <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
               <span class="route-title">{s.level && <span class="sr-only">{t(home.lessons.routeN, { n: LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 })}</span>}{pointCopy(s.id).situation}</span>
-              <span class="route-meta">{s.level ? t(home.lessons.levelCount, { level: levelLabel(s.level), count: s.levelCount }) : home.lessons.severalLevels}</span>
+              <span class="route-meta">{levelLabel(s.level) ? t(home.lessons.levelCount, { level: levelLabel(s.level) ?? '', count: s.levelCount }) : home.lessons.severalLevels}</span>
               <span class="route-go"><span data-door-verb>{home.lessons.start}</span><span data-door-title></span> <span aria-hidden="true">&rarr;</span></span>
             </a>
           </li>
@@ -646,16 +642,18 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
-  /* The button, then the planner link on its own line under it, at every width. */
+  /* The two buttons side by side while they fit, one under the other when
+     they do not, directly under the heading. */
   .hero-actions {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-    margin: var(--space-5) 0 0;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--space-2) var(--space-3);
+    margin: 0 0 var(--space-4);
   }
   /* A long translation wraps inside the button rather than widening the page. */
-  .hero-start { max-width: 100%; white-space: normal; text-align: center; }
+  .hero-start,
+  .hero-planner { max-width: 100%; white-space: normal; text-align: center; }
 
   .jump {
     display: inline-flex;

@@ -84,12 +84,12 @@ as a defect.
     - **never** in meta descriptions, other headings, nav labels, buttons,
       form labels, chart legends, cards, tag descriptions, or a tool's result
       lines. The one exception is an FAQ question that asks what a term means
-      (`“खर्चाचे चलन” (functional currency) म्हणजे काय?`), as on the Hindi page.
+      (`माझे खर्चाचे चलन (spending currency) कोणते?`), as on the Hindi page.
     - **only on a bookish, opaque or English-first term**: net worth,
       liabilities, cash flow, emergency fund, exchange rate, purchasing power,
       diversification, rebalancing, compounding, volatility, rule of thumb,
       tax residency, risk tolerance, tax-advantaged account, percentage point,
-      geometric average, scenario, functional currency, nominal balance, net
+      geometric average, scenario, spending currency, nominal balance, net
       debt, ongoing charge, recast, spread, margin, hedging, glide path,
       balloon payment, secondary (source), and the behavioural terms of the
       psychology level. Everyday Marathi (व्याज, बचत, कर्ज, महागाई, मुद्दल,
@@ -213,7 +213,7 @@ note records why this one won.
 | asset location | खात्यांमधील मालमत्तांची मांडणी | Contested. (asset location) on first use. |
 | glide path | कालानुसार बदलणारे वाटप | Contested (ग्लाइड पाथ). (glide path) on first use. |
 | standard deviation | प्रमाण विचलन | |
-| inflation-adjusted, real | महागाई-समायोजित, वास्तविक | |
+| inflation-adjusted, real | महागाई-समायोजित, वास्तविक | In a phrase, *महागाईनंतर*, never *महागाई वजा जाता*. |
 | mix (stocks/bonds) | मिश्रण | |
 | monthly contribution | मासिक गुंतवणूक | Contested (योगदान, which reads as a donation). |
 | withdrawal (a single one) | काढलेली रक्कम | Contested. |
@@ -289,7 +289,7 @@ note records why this one won.
 | waitlist | प्रतीक्षा यादी | |
 | newsletter | न्यूजलेटर | |
 | share link | शेअर लिंक | |
-| beliefs (page) | आमची तत्त्वे | Contested (मूल्ये, श्रद्धा). The page states principles. |
+| beliefs (page) | माझी तत्त्वे; आमची तत्त्वे only in the privacy notice, which speaks as we | Contested (मूल्ये, श्रद्धा). The page states principles. |
 | editorial policy | संपादकीय धोरण | |
 | personal finance | वैयक्तिक वित्त | Contested. |
 | financial literacy | आर्थिक साक्षरता | |
@@ -297,7 +297,10 @@ note records why this one won.
 | planner (the product) | प्लॅनर | |
 | Learn, Take stock, Plan ahead | शिका, आढावा घ्या, पुढचे नियोजन करा | |
 | Learn (nav, footer, breadcrumb) | शिका | |
-| Home | मुख्यपृष्ठ | |
+| Home | मुख्यपृष्ठ | Never मुख्य पान. |
+| page | पान | Never पेज alone (पेजव्ह्यू is its own word). |
+| footer | फूटर | तळटीप is a footnote. |
+| box (on a page) | चौकट | बॉक्स only for a tick box in the privacy notice. |
 | About (group) / About nidhi (page) | माहिती / nidhi विषयी | |
 | Browse topics | विषय पाहा | पाहा is the standard imperative. |
 | breadcrumb (landmark label) | पानाचा मार्ग | |
@@ -338,10 +341,11 @@ note records why this one won.
 | loan amount | कर्जाची रक्कम | |
 | annual interest rate | वार्षिक व्याजदर | |
 | term (months) | मुदत (महिने) | Contested. |
-| amortisation schedule | कर्जफेडीचे वेळापत्रक | Contested. |
+| amortization schedule | कर्जफेडीचे वेळापत्रक | Contested. |
 | balance (of a loan) | बाकी कर्ज | Contested. |
 | balance (of a portfolio) | पोर्टफोलिओचे मूल्य | Contested. |
 | lender | कर्जदाता | |
+| offer (a card in the loan tool) | ऑफर | Feminine: ऑफर A, ऑफर जोडा. The name field is कर्जदात्याचे नाव. |
 | recast | हप्त्यांची पुनर्गणना | Contested. (recast) on first use. |
 | apply to principal | मुद्दलात जमा करा | |
 | total cost | एकूण खर्च | |
@@ -373,7 +377,11 @@ note records why this one won.
 | percentage point(s) | टक्के बिंदू | Contested. टक्केवारी अंक reads as a percentage figure, not the unit of difference between two percentages. |
 | refinancing scenario | पुनर्वित्त परिदृश्य | Contested. |
 | n/a | लागू नाही | |
-| input prompt (Enter...) | ... भरा | Contested. |
+| input prompt (Enter...) | ... भरा | Contested. In every tool and lead, never *... लिहा*. |
+| highlighted fields | ठळक केलेले रकाने | |
+| Reset (button) | रीसेट करा | The loan tool's longer "Reset to defaults" keeps पूर्वनिश्चित मूल्ये परत आणा. |
+| cent (rounding) | चलनाचे सर्वात लहान एकक (जसे सेंट किंवा पैसा) | Never पैसा alone, which is also money. |
+| Czech koruna | चेक प्रजासत्ताकाचा कोरुना | As in the Hindi edition: चेक alone also means a cheque. |
 | Add (button) | जोडा | |
 | simulation, path | सिम्युलेशन, संभाव्य मार्ग | Contested. |
 | raise (in pay) | पगारवाढ | |

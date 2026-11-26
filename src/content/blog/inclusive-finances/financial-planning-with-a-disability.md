@@ -56,9 +56,9 @@ faq:
   - question: "What is a special-needs trust?"
     answer: "It is a trust set up to hold money for a disabled person in a way that does not count as their own resources for means-testing. Trustees manage the money and spend it on things that improve the person's life without replacing what benefits already cover. It goes by different names in different countries. Families commonly use one to leave an inheritance, because money left directly to a person on means-tested support can disqualify them until it is spent."
   - question: "What is supported decision-making?"
-    answer: "It is an arrangement in which a person keeps the legal right to make their own decisions and chooses trusted people to help them understand options and communicate choices. It is an alternative to guardianship or conservatorship, where a court transfers decision-making power to someone else. Guardianship is sometimes necessary, but it removes rights that can be hard to get back. Many countries now recognise supported decision-making formally, and it is usually worth considering first."
+    answer: "It is an arrangement in which a person keeps the legal right to make their own decisions and chooses trusted people to help them understand options and communicate choices. It is an alternative to guardianship or conservatorship, where a court transfers decision-making power to someone else. Guardianship is sometimes necessary, but it removes rights that can be hard to get back. Many countries now recognize supported decision-making formally, and it is usually worth considering first."
   - question: "Does this post tell me what the limits are in my country?"
-    answer: "No, and deliberately. Benefit thresholds, the list of what counts as income or savings, and the rules for protected accounts and trusts are set nationally or regionally and are revised often. Any figure printed here would soon be wrong somewhere. Use the three-question check in this post with your own benefit agency, a welfare rights adviser, or a disability organisation, and get the answer in writing where you can."
+    answer: "No, and deliberately. Benefit thresholds, the list of what counts as income or savings, and the rules for protected accounts and trusts are set nationally or regionally and are revised often. Any figure printed here would soon be wrong somewhere. Use the three-question check in this post with your own benefit agency, a welfare rights adviser, or a disability organization, and get the answer in writing where you can."
 reelPromise: "A worked benefit cliff example showing how a raise can leave someone worse off, and the three questions to ask before any change to income or savings"
 relatedSlugs: ["insurance-basics", "solo-agers-and-single-income-households", "tax-advantaged-accounts", "emergency-fund"]
 referentialReading:
@@ -150,7 +150,7 @@ In some systems, a right to demand payment can cause the money to be treated as 
 
 ## Families often leave money to a structure, not the person
 
-A parent who leaves €50,000 directly to a disabled adult child on means-tested support may find the child's benefits stop, the inheritance is spent on living costs the benefits used to cover, and when it runs out the child reapplies, no better off. Where the law recognises an appropriate trust for means-testing, the same €50,000 in a suitably drafted trust may fund permitted extras without all of it counting as the child's own savings. Steps families commonly take, after checking local rules with a specialist:
+A parent who leaves €50,000 directly to a disabled adult child on means-tested support may find the child's benefits stop, the inheritance is spent on living costs the benefits used to cover, and when it runs out the child reapplies, no better off. Where the law recognizes an appropriate trust for means-testing, the same €50,000 in a suitably drafted trust may fund permitted extras without all of it counting as the child's own savings. Steps families commonly take, after checking local rules with a specialist:
 
 - **Checking whether the will and each pension or insurance scheme can direct money to the intended trust or structure,** and whether that has the expected benefit and tax effect.
 - **Telling the rest of the family,** because a generous grandparent's direct bequest, or a well-meaning aunt's, can undo the plan.
@@ -161,14 +161,14 @@ Families often fund the trust with life insurance on the parents, so the money a
 <details class="lesson-depth">
 <summary class="disclosure">Help with decisions, without losing control</summary>
 
-Some disabled people need support to manage money or make decisions, and there is a range of ways to provide it. In [supported decision-making](#term-supported-decision-making), the person keeps the legal right to decide and chooses trusted supporters to help them understand options and communicate choices; many countries now recognise it formally. With a [power of attorney](#term-power-of-attorney), the person appoints someone to act for them and can usually cancel it. **Guardianship or conservatorship** transfers decision-making to someone else by court order: sometimes necessary, and it removes rights that can be hard to get back. Many disability advocates, and the UN Convention on the Rights of Persons with Disabilities, favour trying the less restrictive options first. Practical tools help too: a benefit paid to an appointed person, a bank account with a second authorised user, automatic bill payments.
+Some disabled people need support to manage money or make decisions, and there is a range of ways to provide it. In [supported decision-making](#term-supported-decision-making), the person keeps the legal right to decide and chooses trusted supporters to help them understand options and communicate choices; many countries now recognize it formally. With a [power of attorney](#term-power-of-attorney), the person appoints someone to act for them and can usually cancel it. **Guardianship or conservatorship** transfers decision-making to someone else by court order: sometimes necessary, and it removes rights that can be hard to get back. Many disability advocates, and the UN Convention on the Rights of Persons with Disabilities, favour trying the less restrictive options first. Practical tools help too: a benefit paid to an appointed person, a bank account with a second authorized user, automatic bill payments.
 
 </details>
 
 <details class="lesson-depth">
 <summary class="disclosure">The other half of the budget: extra costs, insurance and one income</summary>
 
-Disability changes spending as well as income: equipment, adapted transport, higher energy use, specialist food, personal assistance and insurance all cost more. Research by disability organisations in several countries, such as Scope in the UK, has found these extra costs can run to hundreds of euros or pounds a month, varying widely by condition. Rules of thumb such as "housing at about a third of income" assume the rest is free for ordinary living, so they need adjusting when a fixed slice goes on disability costs first. Extra-cost benefits are usually separate, often not means-tested, and frequently under-claimed.
+Disability changes spending as well as income: equipment, adapted transport, higher energy use, specialist food, personal assistance and insurance all cost more. Research by disability organizations in several countries, such as Scope in the UK, has found these extra costs can run to hundreds of euros or pounds a month, varying widely by condition. Rules of thumb such as "housing at about a third of income" assume the rest is free for ordinary living, so they need adjusting when a fixed slice goes on disability costs first. Extra-cost benefits are usually separate, often not means-tested, and frequently under-claimed.
 
 New health, life or income protection cover can be difficult or expensive to buy with a disability, which is why employer group schemes, often without medical questions, are valuable and why many people keep existing policies going (the [insurance basics post](/blog/insurance-basics/) covers the types). On one income, the [solo agers post](/blog/solo-agers-and-single-income-households/) argued for a larger emergency fund and a backup person named in writing; both still apply, and many people hold the fund somewhere the means test ignores.
 
@@ -185,7 +185,7 @@ New health, life or income protection cover can be difficult or expensive to buy
 - **Continental Europe.** Systems lean more on contribution-based and needs-based support, so cliffs are less common, though they exist where social assistance tops up income. Many countries assess the household, not the individual.
 - **India and some other countries with less comprehensive public provision.** Support varies by programme and region, and families may provide a large share of day-to-day support. Trusts and guardianship for disabled adults exist in law, and planning centres on who will manage money after the parents.
 
-Local disability organisations, benefit agencies and welfare rights advisers may be able to explain the current rules; availability and cost vary.
+Local disability organizations, benefit agencies and welfare rights advisers may be able to explain the current rules; availability and cost vary.
 
 </details>
 

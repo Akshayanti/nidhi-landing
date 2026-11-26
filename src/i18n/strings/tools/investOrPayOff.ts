@@ -97,7 +97,7 @@ export const investOrPayOffEn = {
     },
     plannerLine: 'The planner is being built to show every debt you have alongside the rest of your picture.',
     faq: {
-      heading: 'Questions',
+      heading: 'Frequently asked questions',
       items: [
         {
           q: 'Does this tell me whether to invest or pay off my debt?',
@@ -126,7 +126,7 @@ export const investOrPayOffEn = {
       ],
     },
     related: {
-      heading: 'Related reading',
+      heading: 'Read more',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'The idea behind this tool', title: 'Invest or pay off debt first?', desc: 'Why the rate sets a debt\'s cost, the employer match, and a common order for several debts.' },
         'how-to-get-out-of-debt': { kicker: 'Several debts', title: 'How to get out of debt', desc: 'The avalanche and snowball methods for paying several debts.' },
@@ -161,7 +161,7 @@ export const investOrPayOffEn = {
       extra: 'Extra money each month',
       extraHint: 'The amount you are deciding about',
       relief: 'Tax relief on the interest (optional)',
-      reliefHint: 'Your own estimate, as a share of the interest. Relief may be capped, may need itemising, may cover only part of the interest and may come once a year; it can change with tax rules or your income. The model holds it constant.',
+      reliefHint: 'Your own estimate, as a share of the interest. Relief may be capped, may need itemizing, may cover only part of the interest and may come once a year; it can change with tax rules or your income. The model holds it constant.',
       country: 'Country',
       countryNone: 'None (type a figure)',
       inflation: 'Inflation',
@@ -191,7 +191,7 @@ export const investOrPayOffEn = {
       historical: { label: 'Historical', desc: '{rate} a year after inflation, world stocks since 1900' },
       optimistic: { label: 'Optimistic', desc: '{rate} a year after inflation' },
       own: { label: 'My own figure', desc: 'Before inflation, as funds quote it' },
-      above: 'This is {real} a year after inflation, above the top of the long-run range used in this model and in our lessons ({low}% to {top}% a year after inflation for world stocks since 1900, Dimson, Marsh and Staunton; mostly developed markets). The results below use your figure and also show the historical range beside it.',
+      above: 'This is {real} a year after inflation, above the top of the long-run range used in this model and in the lessons ({low}% to {top}% a year after inflation for world stocks since 1900, Dimson, Marsh and Staunton; mostly developed markets). The results below use your figure and also show the historical range beside it.',
       below: 'This is {real} a year after inflation: the investment would lose buying power.',
       realIs: 'After inflation: {real} a year.',
       /** Under the reader's own figure: the swings stay those of world stocks. */
@@ -211,7 +211,7 @@ export const investOrPayOffEn = {
     },
     results: {
       heading: 'How the two paths compared',
-      fix: 'Fix the highlighted fields to update the result.',
+      fix: 'Fix the highlighted fields to see the result.',
       on: 'Compared {when}.',
       when: {
         months: { one: 'in {n} month', few: 'in {n} months', other: 'in {n} months' },
@@ -301,11 +301,11 @@ export const investOrPayOffHi: InvestOrPayOff = {
     browserRequirements: 'JavaScript चाहिए। आधुनिक ब्राउज़र।',
     featureList: [
       'कर्ज़ जल्दी चुकाने और हर महीने उतनी ही रकम निवेश करने की तुलना, एक ही तारीख़ पर',
-      'उस तारीख़ की शुद्ध संपत्ति: निवेश, मुनाफ़े पर टैक्स घटाकर, बाक़ी कर्ज़ घटाकर',
+      'उस तारीख़ की शुद्ध संपत्ति: निवेश, मुनाफ़े पर कर घटाकर, बाक़ी कर्ज़ घटाकर',
       'नतीजे आज के पैसे में, World Bank से किसी देश की हाल की महँगाई या आपके अपने आँकड़े के साथ',
       'दुनिया के शेयरों के रिटर्न के {paths} जोड़ीदार सिम्युलेशन, ताकि फ़र्क़ चुनाव से आए, क़िस्मत से नहीं',
       'जब आपका अपना रिटर्न महँगाई के बाद मॉडल के {top}% सालाना से ऊपर हो, तो एक नोट, और नतीजे ऐतिहासिक दायरे के साथ',
-      'ब्याज पर टैक्स छूट, सालाना फंड शुल्क और मुनाफ़े पर टैक्स, सब वैकल्पिक',
+      'ब्याज पर कर छूट, सालाना फंड शुल्क और मुनाफ़े पर कर, सब वैकल्पिक',
       'आपके ब्राउज़र में चलता है: आप जो लिखते हैं, वह कहीं नहीं भेजा जाता',
     ],
   },
@@ -329,7 +329,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
         incomeBased: { lead: 'आय पर आधारित और माफ़ होने वाले लोन। ', rest: 'कुछ एजुकेशन लोन आय के हिसाब से चुकाए जाते हैं और एक अवधि के बाद माफ़ हो जाते हैं, जिससे उन्हें जल्दी चुकाने का हिसाब बदल जाता है।' },
         access: { lead: 'पैसा वापस पाना। ', rest: 'कर्ज़ चुकाने में लगा पैसा जल्दी वापस नहीं निकलता; निवेश बेचा जा सकता है, उस दिन बाज़ार जो भी दाम दे।' },
         buffer: { lead: 'आपातकालीन कोष। ', rest: 'बहुत से लोग किसी भी रास्ते में अतिरिक्त पैसा लगाने से पहले यह कोष रखते हैं।' },
-        investCosts: { lead: 'निवेश के दूसरे खर्च और टैक्स। ', rest: 'सिर्फ़ सालाना फंड शुल्क और आख़िरी मुनाफ़े पर वैकल्पिक टैक्स मॉडल किए गए हैं; प्लेटफ़ॉर्म और लेन-देन के शुल्क, डिविडेंड और विदहोल्डिंग टैक्स, और टैक्स कब भरा जाता है, यह सब छोड़ दिया गया है। अगर आप कर्ज़ पर छूट लिखते हैं और मुनाफ़े पर टैक्स 0 रहने देते हैं, तो तुलना निवेश की तरफ़ झुक सकती है।' },
+        investCosts: { lead: 'निवेश के दूसरे खर्च और कर। ', rest: 'सिर्फ़ सालाना फंड शुल्क और आख़िरी मुनाफ़े पर वैकल्पिक कर मॉडल किए गए हैं; प्लेटफ़ॉर्म और लेन-देन के शुल्क, डिविडेंड और स्रोत पर कटने वाला कर (withholding tax), और कर कब भरा जाता है, यह सब छोड़ दिया गया है। अगर आप कर्ज़ पर छूट लिखते हैं और मुनाफ़े पर कर 0 रहने देते हैं, तो तुलना निवेश की तरफ़ झुक सकती है।' },
         feelings: { lead: 'मन की शांति। ', rest: 'कर्ज़ से मुक्त होना बहुत से लोगों के लिए ऐसा मूल्य रखता है जो कोई हिसाब नहीं दिखाता।' },
         inflation: { lead: 'बदलती महँगाई। ', rest: 'महँगाई का आँकड़ा हर साल एक जैसा रखा गया है; यह योजना के लिए एक मान्यता है, पूर्वानुमान नहीं।' },
       },
@@ -338,8 +338,8 @@ export const investOrPayOffHi: InvestOrPayOff = {
     method: {
       heading: 'यह कैसे काम करता है',
       items: {
-        paths: { lead: 'दो रास्ते। ', rest: 'एक में अतिरिक्त पैसा कर्ज़ चुकने तक कर्ज़ में जाता है, फिर पुरानी किस्त और अतिरिक्त रकम हर महीने निवेश होती है। दूसरे में कर्ज़ अपने सामान्य तरीके से चलता है और अतिरिक्त पैसा निवेश होता है; कर्ज़ ख़त्म होने पर उसकी किस्त भी निवेश होती है।' },
-        date: { lead: 'एक ही तारीख़। ', rest: 'दोनों की तुलना आपकी चुनी तारीख़ पर होती है। शुद्ध संपत्ति यानी निवेश की उस दिन की कीमत, उसमें से मुनाफ़े पर टैक्स और बाक़ी कर्ज़ घटाकर।' },
+        paths: { lead: 'दो रास्ते। ', rest: 'एक में अतिरिक्त पैसा कर्ज़ चुकने तक कर्ज़ में जाता है, फिर पुरानी किस्त और अतिरिक्त रकम हर महीने निवेश होती है। दूसरे में कर्ज़ अपने सामान्य तरीक़े से चलता है और अतिरिक्त पैसा निवेश होता है; कर्ज़ ख़त्म होने पर उसकी किस्त भी निवेश होती है।' },
+        date: { lead: 'एक ही तारीख़। ', rest: 'दोनों की तुलना आपकी चुनी तारीख़ पर होती है। शुद्ध संपत्ति यानी निवेश की उस दिन की क़ीमत, उसमें से मुनाफ़े पर कर और बाक़ी कर्ज़ घटाकर।' },
         returns: { lead: 'निवेश। ', rest: 'दुनिया भर के शेयरों का एक विविध पोर्टफ़ोलियो। उसके सालाना रिटर्न 1900 से दुनिया के शेयरों के इतिहास (Dimson, Marsh और Staunton) से लिए गए हैं: महँगाई के बाद सालाना लगभग {low}% से {top}%, और साल-दर-साल बड़े उतार-चढ़ाव।' },
         paired: { lead: 'जोड़ीदार परिदृश्य। ', rest: '{paths} में से हर परिदृश्य दोनों रास्तों को बाज़ार के उन्हीं सालों से गुज़ारता है, ताकि दोनों का फ़र्क़ चुनाव से आए, क़िस्मत से नहीं।' },
         money: { lead: 'आज का पैसा। ', rest: 'कर्ज़ पर उसकी अपनी दर से ब्याज लगता है; निवेश के रिटर्न को आपके महँगाई के आँकड़े से महँगाई से पहले के रिटर्न में बदला जाता है; फिर हर नतीजा आज के पैसे में दिखाया जाता है।' },
@@ -348,7 +348,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       limits: 'मॉडल की सीमाएँ: हर साल का रिटर्न अलग से निकाला जाता है, इसलिए बुरे सालों के लंबे दौर संयोग से ज़्यादा संभावित नहीं होते, और चरम हालात इतिहास के सबसे बुरे सालों से हल्के रहते हैं। रिटर्न का इतिहास ज़्यादातर विकसित बाज़ारों से है और अमेरिकी डॉलर में, अमेरिकी महँगाई घटाकर, नापा गया है। उसे किसी और मुद्रा में इस्तेमाल करने का मतलब यह मान लेना है कि विनिमय दरें दोनों मुद्राओं की महँगाई के फ़र्क़ के साथ चलती हैं: दशकों में अक्सर ऐसा हुआ है, कुछ सालों में अक्सर नहीं।',
     },
     lesson: {
-      before: 'इस टूल के पीछे का पाठ, नियोक्ता के योगदान, टैक्स छूट और कई कर्ज़ों के एक आम क्रम के साथ: ',
+      before: 'इस टूल के पीछे का पाठ, नियोक्ता के योगदान, कर छूट और कई कर्ज़ों के एक आम क्रम के साथ: ',
       after: '।',
     },
     source: {
@@ -360,7 +360,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
     },
     plannerLine: 'प्लानर इसलिए बनाया जा रहा है कि आपका हर कर्ज़ आपकी बाकी तस्वीर के साथ दिखे।',
     faq: {
-      heading: 'सवाल',
+      heading: 'अक्सर पूछे जाने वाले सवाल',
       items: [
         {
           q: 'क्या यह बताता है कि निवेश करना है या कर्ज़ चुकाना है?',
@@ -389,10 +389,10 @@ export const investOrPayOffHi: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'आगे पढ़ें',
+      heading: 'और पढ़ें',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'इस टूल के पीछे की सोच', title: 'पहले निवेश या पहले कर्ज़ चुकाना?', desc: 'कर्ज़ की लागत दर से क्यों तय होती है, नियोक्ता का योगदान, और कई कर्ज़ों का एक आम क्रम।' },
-        'how-to-get-out-of-debt': { kicker: 'कई कर्ज़', title: 'कर्ज़ से कैसे निकलें', desc: 'कई कर्ज़ चुकाने के एवलांच और स्नोबॉल तरीके।' },
+        'how-to-get-out-of-debt': { kicker: 'कई कर्ज़', title: 'कर्ज़ से कैसे निकलें', desc: 'कई कर्ज़ चुकाने के एवलांच और स्नोबॉल तरीक़े।' },
         'purchasing-power': { kicker: 'बुनियाद', title: 'क्रय शक्ति', desc: 'वही रकम समय के साथ कम क्यों ख़रीदती है।' },
       },
     },
@@ -401,12 +401,12 @@ export const investOrPayOffHi: InvestOrPayOff = {
     formLabel: 'निवेश या कर्ज़ चुकाना कैलकुलेटर',
     example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     more: {
-      title: 'टैक्स और शुल्क',
-      none: 'कुछ नहीं भरा गया: नतीजे फ़ंड शुल्क और कर से पहले के हैं',
+      title: 'कर और शुल्क',
+      none: 'कुछ नहीं भरा गया: नतीजे फंड शुल्क और कर से पहले के हैं',
       inUse: 'लागू: {list}',
-      relief: 'टैक्स छूट',
+      relief: 'कर छूट',
       feePct: 'फंड शुल्क',
-      gainsTax: 'मुनाफ़े पर टैक्स',
+      gainsTax: 'मुनाफ़े पर कर',
     },
     sections: {
       debt: 'आपका कर्ज़',
@@ -417,14 +417,14 @@ export const investOrPayOffHi: InvestOrPayOff = {
     },
     fields: {
       currency: 'मुद्रा',
-      balance: 'आप पर कितना बाक़ी है',
+      balance: 'आप पर कितना बकाया है',
       debtRate: 'ब्याज दर',
       debtRateHint: 'सालाना दर, जैसी आपके स्टेटमेंट में है',
       payment: 'मासिक किस्त',
       extra: 'हर महीने का अतिरिक्त पैसा',
       extraHint: 'वह रकम जिसके बारे में आप फ़ैसला कर रहे हैं',
-      relief: 'ब्याज पर टैक्स छूट (वैकल्पिक)',
-      reliefHint: 'आपका अपना अनुमान, ब्याज के हिस्से के रूप में। छूट की ऊपरी सीमा हो सकती है, उसके लिए मदवार विवरण देना पड़ सकता है, वह ब्याज के कुछ हिस्से पर ही मिल सकती है और साल में एक बार आ सकती है; टैक्स नियमों या आपकी आय के साथ वह बदल सकती है। मॉडल इसे स्थिर रखता है।',
+      relief: 'ब्याज पर कर छूट (वैकल्पिक)',
+      reliefHint: 'आपका अपना अनुमान, ब्याज के हिस्से के रूप में। छूट की ऊपरी सीमा हो सकती है, उसके लिए मदवार विवरण देना पड़ सकता है, वह ब्याज के कुछ हिस्से पर ही मिल सकती है और साल में एक बार आ सकती है; कर नियमों या आपकी आय के साथ वह बदल सकती है। मॉडल इसे स्थिर रखता है।',
       country: 'देश',
       countryNone: 'कोई नहीं (आँकड़ा लिखें)',
       inflation: 'महँगाई',
@@ -433,7 +433,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       ownReturn: 'आपका रिटर्न, महँगाई से पहले',
       ownReturnHint: 'सालाना, जैसा फंड आम तौर पर बताते हैं',
       fee: 'सालाना फंड शुल्क (वैकल्पिक)',
-      gainsTax: 'मुनाफ़े पर टैक्स (वैकल्पिक)',
+      gainsTax: 'मुनाफ़े पर कर (वैकल्पिक)',
       gainsTaxHint: 'तुलना की तारीख़ पर मुनाफ़े पर एक बार लिया जाता है। यह खाते और देश पर निर्भर करता है।',
       amountError: '0 से {max} तक कोई रकम लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
       percentError: '{min} से {max} तक कोई प्रतिशत लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
@@ -454,7 +454,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       historical: { label: 'ऐतिहासिक', desc: 'महँगाई के बाद सालाना {rate}, 1900 से दुनिया के शेयर' },
       optimistic: { label: 'आशावादी', desc: 'महँगाई के बाद सालाना {rate}' },
       own: { label: 'मेरा अपना आँकड़ा', desc: 'महँगाई से पहले, जैसा फंड बताते हैं' },
-      above: 'यह महँगाई के बाद सालाना {real} है, जो इस मॉडल और हमारे पाठों में इस्तेमाल लंबी अवधि के दायरे के ऊपरी सिरे से ज़्यादा है (1900 से दुनिया के शेयरों के लिए महँगाई के बाद सालाना {low}% से {top}%, Dimson, Marsh और Staunton; ज़्यादातर विकसित बाज़ार)। नीचे के नतीजे आपका आँकड़ा इस्तेमाल करते हैं और बगल में ऐतिहासिक सीमा भी दिखाते हैं।',
+      above: 'यह महँगाई के बाद सालाना {real} है, जो इस मॉडल और पाठों में इस्तेमाल लंबी अवधि के दायरे के ऊपरी सिरे से ज़्यादा है (1900 से दुनिया के शेयरों के लिए महँगाई के बाद सालाना {low}% से {top}%, Dimson, Marsh और Staunton; ज़्यादातर विकसित बाज़ार)। नीचे के नतीजे आपका आँकड़ा इस्तेमाल करते हैं और बगल में ऐतिहासिक सीमा भी दिखाते हैं।',
       below: 'यह महँगाई के बाद सालाना {real} है: ऐसा रहा तो निवेश की क्रय शक्ति घटेगी।',
       realIs: 'महँगाई के बाद: सालाना {real}।',
       ownSwings: 'आप जो भी आँकड़ा भरें, मॉडल दुनिया भर के शेयरों का साल-दर-साल उतार-चढ़ाव वैसा ही रखता है। बॉन्ड फंड के लिए असल दायरा यहाँ दिखाए गए दायरे से संकरा होगा, और बचत खाते के लिए काफ़ी ज़्यादा संकरा।',
@@ -466,14 +466,14 @@ export const investOrPayOffHi: InvestOrPayOff = {
       plus10: 'उसके दस साल बाद',
     },
     problems: {
-      'no-balance': 'लिखें कि आप पर कितना बाक़ी है।',
+      'no-balance': 'लिखें कि आप पर कितना बकाया है।',
       'payment-too-low': 'मासिक किस्त ब्याज भी पूरा नहीं करती, इसलिए कर्ज़ कभी नहीं चुकेगा। बड़ी किस्त लिखें।',
       'too-long': 'इस किस्त से कर्ज़ चुकाने में {years} साल से ज़्यादा लगेंगे। बड़ी किस्त लिखें।',
       'impossible-rate': '-100% या उससे कम दर संभव नहीं है।',
     },
     results: {
       heading: 'दोनों रास्तों की तुलना',
-      fix: 'नतीजा अपडेट करने के लिए लाल निशान वाले फ़ील्ड ठीक करें।',
+      fix: 'नतीजा देखने के लिए चिह्नित खाने ठीक करें।',
       on: 'तुलना {when}।',
       when: {
         months: { one: '{n} महीने बाद', few: '{n} महीने बाद', other: '{n} महीने बाद' },
@@ -482,10 +482,10 @@ export const investOrPayOffHi: InvestOrPayOff = {
         yearsPart: { one: '{n} साल', few: '{n} साल', other: '{n} साल' },
         monthsPart: { one: '{n} महीने', few: '{n} महीने', other: '{n} महीने' },
       },
-      share: 'अतिरिक्त पैसा निवेश करने पर 100 में से {invest} परिदृश्यों में मॉडल की शुद्ध संपत्ति ज़्यादा रही; कर्ज़ चुकाने पर {payoff} में।',
+      share: 'अतिरिक्त पैसा निवेश करने पर 100 में से {invest} परिदृश्यों में मॉडल के हिसाब से शुद्ध संपत्ति ज़्यादा रही; कर्ज़ चुकाने पर {payoff} में।',
       shareEven: 'हर परिदृश्य में दोनों रास्ते बराबर रहे: तुलना के लिए कोई अतिरिक्त पैसा नहीं है।',
       gap: 'फ़र्क़, निवेश घटा कर्ज़ चुकाना, आज के पैसे में: 100 में से 10वें परिदृश्य में {p10}, बीच वाले में {p50}, 90वें में {p90}।',
-      gapNote: 'माइनस का मतलब है कि उस परिदृश्य में कर्ज़ चुकाना आगे रहा। 10वाँ सबसे बुरा हाल नहीं है: दस में से एक परिदृश्य उससे भी बुरा रहा। बीच का फ़र्क़ पहले हर परिदृश्य में निकाला जाता है, इसलिए वह दोनों रास्तों के बीच वाले आँकड़ों के सीधे अंतर से अलग हो सकता है।',
+      gapNote: 'शून्य से कम (माइनस) का मतलब है कि उस परिदृश्य में कर्ज़ चुकाना आगे रहा। 10वाँ सबसे बुरा हाल नहीं है: दस में से एक परिदृश्य उससे भी बुरा रहा। बीच का फ़र्क़ पहले हर परिदृश्य में निकाला जाता है, इसलिए वह दोनों रास्तों के बीच वाले आँकड़ों के सीधे अंतर से अलग हो सकता है।',
       rounded: 'रकमें गोल करके दिखाई गई हैं: {paths} नए रैंडम परिदृश्यों के साथ आख़िरी अंक अलग आते। स्प्रेडशीट में पूरे अंक हैं।',
       payoffPath: 'पहले कर्ज़ चुकाना',
       investPath: 'अतिरिक्त पैसे का निवेश',
@@ -559,7 +559,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     browserRequirements: 'JavaScript लागते. आधुनिक ब्राउझर.',
     featureList: [
       'कर्ज लवकर फेडणे आणि दर महिन्याला तेवढीच रक्कम गुंतवणे यांची तुलना, एकाच तारखेला',
-      'त्या तारखेची निव्वळ संपत्ती: गुंतवणूक, नफ्यावरील कर वजा, शिल्लक कर्ज वजा',
+      'त्या तारखेची निव्वळ संपत्ती: गुंतवणूक, नफ्यावरील कर वजा, बाकी कर्ज वजा',
       'निकाल आजच्या पैशात, World Bank कडील एखाद्या देशाच्या अलीकडच्या महागाईनुसार किंवा तुमच्या स्वतःच्या आकड्यानुसार',
       'जागतिक शेअरच्या परताव्यांचे {paths} जोडीदार सिम्युलेशन, म्हणजे फरक निवडीमुळे येतो, नशिबामुळे नाही',
       'तुमचा स्वतःचा परतावा महागाईनंतर मॉडेलच्या दरवर्षी {top}% पेक्षा जास्त असेल तर एक टीप, आणि निकाल ऐतिहासिक पल्ल्याशेजारी',
@@ -584,11 +584,11 @@ export const investOrPayOffMr: InvestOrPayOff = {
         several: { lead: 'अनेक कर्जे. ', rest: 'एकापेक्षा जास्त कर्जे असतील, तर ती कोणत्या क्रमाने फेडली जातात हेही महत्त्वाचे असते.' },
         variable: { lead: 'बदलता व्याजदर. ', rest: 'कर्जावर संपूर्ण काळ तुम्ही लिहिलेलाच दर लागतो.' },
         prepayment: { lead: 'लवकर फेडण्याचे शुल्क. ', rest: 'काही कर्जे मुदतपूर्व परतफेडीवर शुल्क घेतात, त्यामुळे कर्जफेडीचा फायदा कमी होतो.' },
-        incomeBased: { lead: 'उत्पन्नावर आधारित आणि माफ होणारी कर्जे. ', rest: 'काही शैक्षणिक कर्जे उत्पन्नानुसार फेडली जातात आणि ठरावीक काळानंतर माफ होतात, त्यामुळे ती लवकर फेडण्याचा हिशोब बदलतो.' },
+        incomeBased: { lead: 'उत्पन्नावर आधारित आणि माफ होणारी कर्जे. ', rest: 'काही शैक्षणिक कर्जे उत्पन्नानुसार फेडली जातात आणि ठरावीक काळानंतर माफ होतात, त्यामुळे ती लवकर फेडण्याचा हिशेब बदलतो.' },
         access: { lead: 'पैसे परत मिळवणे. ', rest: 'कर्ज फेडण्यात गेलेले पैसे पटकन परत काढता येत नाहीत; गुंतवणूक विकता येते, त्या दिवशी बाजार देईल त्या किमतीला.' },
         buffer: { lead: 'आपत्कालीन निधी. ', rest: 'अनेक जण कोणत्याही मार्गात जादा पैसे घालण्याआधी हा निधी ठेवतात.' },
         investCosts: { lead: 'गुंतवणुकीचे इतर खर्च आणि कर. ', rest: 'फक्त वार्षिक फंड शुल्क आणि अंतिम नफ्यावरील ऐच्छिक कर मॉडेल केले आहेत; प्लॅटफॉर्म आणि व्यवहार शुल्क, लाभांश आणि उद्गम कर, आणि कर कधी भरला जातो, हे सगळे वगळले आहे. तुम्ही कर्जावर सवलत लिहिली आणि नफ्यावरील कर 0 ठेवला, तर तुलना गुंतवणुकीकडे झुकू शकते.' },
-        feelings: { lead: 'मनःशांती. ', rest: 'कर्जमुक्त असण्याचे अनेकांसाठी असे मूल्य असते, जे कोणताही हिशोब दाखवत नाही.' },
+        feelings: { lead: 'मनःशांती. ', rest: 'कर्जमुक्त असण्याचे अनेकांसाठी असे मूल्य असते, जे कोणताही हिशेब दाखवत नाही.' },
         inflation: { lead: 'बदलती महागाई. ', rest: 'महागाईचा आकडा दरवर्षी सारखाच धरला आहे; ते नियोजनासाठीचे गृहीतक आहे, भाकीत नाही.' },
       },
       notAdvice: 'हे शिकण्यासाठीचे मॉडेल आहे, सल्ला नाही: तुम्ही निवडलेल्या आकड्यांसह सिम्युलेट केलेल्या परिदृश्यांत काय झाले, ते दाखवते.',
@@ -597,7 +597,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       heading: 'हे कसे चालते',
       items: {
         paths: { lead: 'दोन मार्ग. ', rest: 'एकात जादा पैसे कर्ज फिटेपर्यंत कर्जात जातात, मग जुना हप्ता आणि जादा रक्कम दर महिन्याला गुंतवली जाते. दुसऱ्यात कर्ज नेहमीप्रमाणे चालते आणि जादा पैसे गुंतवले जातात; कर्ज संपल्यावर त्याचा हप्ताही गुंतवला जातो.' },
-        date: { lead: 'एकच तारीख. ', rest: 'दोघांची तुलना तुम्ही निवडलेल्या तारखेला होते. निव्वळ संपत्ती म्हणजे गुंतवणुकीचे त्या दिवशीचे मूल्य, नफ्यावरील कर आणि शिल्लक कर्ज वजा करून.' },
+        date: { lead: 'एकच तारीख. ', rest: 'दोघांची तुलना तुम्ही निवडलेल्या तारखेला होते. निव्वळ संपत्ती म्हणजे गुंतवणुकीचे त्या दिवशीचे मूल्य, नफ्यावरील कर आणि बाकी कर्ज वजा करून.' },
         returns: { lead: 'गुंतवणूक. ', rest: 'जगभरातील शेअरचा एक वैविध्यपूर्ण पोर्टफोलिओ. त्याचे वार्षिक परतावे 1900 पासूनच्या जागतिक शेअरच्या इतिहासातून (Dimson, Marsh आणि Staunton) घेतले आहेत: महागाईनंतर दरवर्षी सुमारे {low}% ते {top}%, आणि वर्षागणिक मोठे चढ-उतार.' },
         paired: { lead: 'जोडीदार परिदृश्ये. ', rest: '{paths} पैकी प्रत्येक परिदृश्य दोन्ही मार्गांना बाजाराच्या त्याच वर्षांतून नेते, म्हणजे दोघांतील फरक निवडीमुळे येतो, नशिबामुळे नाही.' },
         money: { lead: 'आजचा पैसा. ', rest: 'कर्जावर त्याच्या स्वतःच्या दराने व्याज लागते; गुंतवणुकीचे परतावे तुमच्या महागाईच्या आकड्याने महागाईपूर्वीच्या परताव्यांत बदलले जातात; मग प्रत्येक निकाल आजच्या पैशात दाखवला जातो.' },
@@ -618,7 +618,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     },
     plannerLine: 'प्लॅनर तुमचे प्रत्येक कर्ज तुमच्या बाकीच्या चित्रासोबत दाखवण्यासाठी बनवला जात आहे.',
     faq: {
-      heading: 'प्रश्न',
+      heading: 'वारंवार विचारले जाणारे प्रश्न',
       items: [
         {
           q: 'मी गुंतवणूक करायची की कर्ज फेडायचे, हे साधन सांगते का?',
@@ -647,7 +647,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'पुढे वाचा',
+      heading: 'आणखी वाचा',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'या साधनामागची कल्पना', title: 'आधी गुंतवणूक की आधी कर्जफेड?', desc: 'कर्जाचा खर्च दरावरून का ठरतो, नियोक्त्याचे योगदान, आणि अनेक कर्जांचा एक नेहमीचा क्रम.' },
         'how-to-get-out-of-debt': { kicker: 'अनेक कर्जे', title: 'कर्जातून कसे बाहेर पडावे', desc: 'अनेक कर्जे फेडण्याच्या ॲव्हलांच आणि स्नोबॉल पद्धती.' },
@@ -675,7 +675,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     },
     fields: {
       currency: 'चलन',
-      balance: 'तुमच्यावर किती शिल्लक आहे',
+      balance: 'तुमचे किती कर्ज बाकी आहे',
       debtRate: 'व्याजदर',
       debtRateHint: 'वार्षिक दर, तुमच्या स्टेटमेंटमध्ये आहे तसा',
       payment: 'मासिक हप्ता',
@@ -684,7 +684,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       relief: 'व्याजावरील कर सवलत (ऐच्छिक)',
       reliefHint: 'तुमचा स्वतःचा अंदाज, व्याजाचा हिस्सा म्हणून. सवलतीला मर्यादा असू शकते, तिच्यासाठी कपातींचा तपशील द्यावा लागू शकतो, ती व्याजाच्या काही भागावरच मिळू शकते आणि वर्षातून एकदा येऊ शकते; कर नियम किंवा तुमच्या उत्पन्नानुसार ती बदलू शकते. मॉडेल ती स्थिर धरते.',
       country: 'देश',
-      countryNone: 'काहीही नाही (आकडा लिहा)',
+      countryNone: 'काहीही नाही (आकडा भरा)',
       inflation: 'महागाई',
       inflationHint: 'वार्षिक, दरवर्षी सारखीच',
       useCountry: 'देशाचा आकडा वापरा',
@@ -693,18 +693,18 @@ export const investOrPayOffMr: InvestOrPayOff = {
       fee: 'वार्षिक फंड शुल्क (ऐच्छिक)',
       gainsTax: 'नफ्यावरील कर (ऐच्छिक)',
       gainsTaxHint: 'तुलनेच्या तारखेला नफ्यावर एकदाच घेतला जातो. तो खात्यावर आणि देशावर अवलंबून असतो.',
-      amountError: '0 ते {max} मधली रक्कम लिहा, जास्तीत जास्त दोन दशांश स्थानांपर्यंत.',
-      percentError: '{min} ते {max} मधली टक्केवारी लिहा, जास्तीत जास्त दोन दशांश स्थानांपर्यंत.',
+      amountError: '0 ते {max} मधली रक्कम भरा, जास्तीत जास्त दोन दशांश स्थानांपर्यंत.',
+      percentError: '{min} ते {max} मधली टक्केवारी भरा, जास्तीत जास्त दोन दशांश स्थानांपर्यंत.',
     },
     country: {
       average: '{country}, {first} ते {last}: सरासरी दरवर्षी {avg} (World Bank).',
       context: 'शेवटची पाच वर्षे {five}; फक्त {last} मध्ये {latest}.',
       contextNoFive: 'फक्त {last} मध्ये {latest}.',
-      noDefault: '{country} चे अलीकडचे आकडे सरासरी काढण्यासाठी खूप कमी आहेत. आकडा लिहा.',
+      noDefault: '{country} चे अलीकडचे आकडे सरासरी काढण्यासाठी खूप कमी आहेत. आकडा भरा.',
       loading: 'इतिहास लोड होत आहे…',
-      error: 'इतिहास लोड होऊ शकला नाही. आकडा लिहा.',
+      error: 'इतिहास लोड होऊ शकला नाही. आकडा भरा.',
       euroArea: 'युरो क्षेत्र',
-      needed: 'तुलना पाहण्यासाठी महागाईचा आकडा लिहा: निकाल आजच्या पैशात दिसतात आणि परताव्याच्या सेटिंग्ज महागाईनंतरच्या आहेत.',
+      needed: 'तुलना पाहण्यासाठी महागाईचा आकडा भरा: निकाल आजच्या पैशात दिसतात आणि परताव्याच्या सेटिंग्ज महागाईनंतरच्या आहेत.',
     },
     returns: {
       legend: 'परतावा',
@@ -712,7 +712,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       historical: { label: 'ऐतिहासिक', desc: 'महागाईनंतर दरवर्षी {rate}, 1900 पासूनचे जागतिक शेअर' },
       optimistic: { label: 'आशावादी', desc: 'महागाईनंतर दरवर्षी {rate}' },
       own: { label: 'माझा स्वतःचा आकडा', desc: 'महागाईपूर्वी, फंड सांगतात तसा' },
-      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे या मॉडेलमध्ये आणि आमच्या धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या वरच्या टोकापेक्षा जास्त (1900 पासूनच्या जागतिक शेअरसाठी महागाईनंतर दरवर्षी {low}% ते {top}%, Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार). खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी ऐतिहासिक पल्लाही दाखवतात.',
+      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे या मॉडेलमध्ये आणि धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या वरच्या टोकापेक्षा जास्त (1900 पासूनच्या जागतिक शेअरसाठी महागाईनंतर दरवर्षी {low}% ते {top}%, Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार). खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी ऐतिहासिक पल्लाही दाखवतात.',
       below: 'हे महागाईनंतर दरवर्षी {real} आहे: असे राहिल्यास गुंतवणुकीची क्रयशक्ती कमी होईल.',
       realIs: 'महागाईनंतर: दरवर्षी {real}.',
       ownSwings: 'तुम्ही कोणताही आकडा भरला तरी मॉडेल जागतिक शेअर्सचे वर्षागणिक चढ-उतार तसेच ठेवते. बाँड फंडासाठी प्रत्यक्ष कक्षा इथे दाखवलेल्यापेक्षा अरुंद असेल, आणि बचत खात्यासाठी बरीच अरुंद.',
@@ -724,14 +724,14 @@ export const investOrPayOffMr: InvestOrPayOff = {
       plus10: 'त्यानंतर दहा वर्षांनी',
     },
     problems: {
-      'no-balance': 'तुमच्यावर किती शिल्लक आहे ते लिहा.',
-      'payment-too-low': 'मासिक हप्त्यातून व्याजही भरत नाही, त्यामुळे कर्ज कधीच फिटणार नाही. मोठा हप्ता लिहा.',
-      'too-long': 'या हप्त्याने कर्ज फेडायला {years} वर्षांपेक्षा जास्त लागतील. मोठा हप्ता लिहा.',
+      'no-balance': 'तुमचे किती कर्ज बाकी आहे ते भरा.',
+      'payment-too-low': 'मासिक हप्त्यातून व्याजही भरत नाही, त्यामुळे कर्ज कधीच फिटणार नाही. मोठा हप्ता भरा.',
+      'too-long': 'या हप्त्याने कर्ज फेडायला {years} वर्षांपेक्षा जास्त लागतील. मोठा हप्ता भरा.',
       'impossible-rate': '-100% किंवा त्याहून कमी दर शक्य नाही.',
     },
     results: {
       heading: 'दोन मार्गांची तुलना',
-      fix: 'निकाल अद्ययावत करण्यासाठी चिन्हांकित फील्ड दुरुस्त करा.',
+      fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       on: 'तुलना {when}.',
       when: {
         months: { one: '{n} महिन्यानंतर', few: '{n} महिन्यांनंतर', other: '{n} महिन्यांनंतर' },
@@ -752,7 +752,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       middle: 'मधले: {p50}',
       paidIn: 'कर्ज {when} फिटले',
       paidAfter: 'कर्ज {when} फिटले, तुलनेच्या तारखेनंतर',
-      stillOwed: 'त्या तारखेला शिल्लक: {amount}',
+      stillOwed: 'त्या तारखेला बाकी कर्ज: {amount}',
       interest: 'त्या तारखेपर्यंत लागलेले व्याज: {amount}',
       avoided: 'लवकर फेडल्याने त्या तारखेपर्यंत {amount} व्याज वाचते (आजच्या पैशात {today}).',
       basis: {
@@ -785,7 +785,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
     },
     export: {
       moneyLabel: 'पैसा',
-      moneyText: 'निव्वळ संपत्ती आणि फरक आजच्या पैशात आहेत; कर्जाचे आकडे लागले तसे आहेत. पेज सिम्युलेशनच्या रकमा ढोबळ करून दाखवते; इथे त्या पूर्ण आहेत.',
+      moneyText: 'निव्वळ संपत्ती आणि फरक आजच्या पैशात आहेत; कर्जाचे आकडे लागले तसे आहेत. पान सिम्युलेशनच्या रकमा ढोबळ करून दाखवते; इथे त्या पूर्ण आहेत.',
       meaning: 'लिहिलेल्या आकड्यांसह सिम्युलेट केलेल्या परिदृश्यांत दोन मार्गांची तुलना कशी झाली. कोणता निवडावा हे हे सांगत नाही.',
       sheets: { result: 'निकाल', range: 'पल्ला' },
       inflation: 'वापरलेली महागाई',
@@ -820,7 +820,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       'Patrimonio neto en esa fecha: lo invertido, menos impuestos sobre la ganancia, menos la deuda pendiente',
       'Resultados en dinero de hoy, con la inflación reciente de un país según el Banco Mundial o con tu propia cifra',
       '{paths} simulaciones emparejadas de la rentabilidad de las bolsas mundiales, para que la diferencia venga de la decisión y no de la suerte',
-      'Un aviso cuando tu propia rentabilidad supera el {top}% anual descontada la inflación que usa el modelo, con los resultados junto al rango histórico',
+      'Un aviso cuando tu propia rentabilidad supera el {top} % anual descontada la inflación que usa el modelo, con los resultados junto al rango histórico',
       'Desgravación opcional de los intereses, comisión anual del fondo e impuesto sobre la ganancia',
       'Funciona en tu navegador: nada de lo que escribes se envía a ninguna parte',
     ],
@@ -845,7 +845,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
         incomeBased: { lead: 'Préstamos según ingresos y condonables. ', rest: 'Algunos préstamos de estudios se devuelven según los ingresos y se condonan pasado un tiempo, lo que cambia el cálculo de pagarlos antes.' },
         access: { lead: 'Recuperar el dinero. ', rest: 'El dinero usado para pagar una deuda no se puede sacar rápido; una inversión se puede vender, al precio que dé el mercado ese día.' },
         buffer: { lead: 'Un fondo de emergencia. ', rest: 'Mucha gente tiene uno antes de destinar dinero extra a cualquiera de los dos caminos.' },
-        investCosts: { lead: 'Otros costes e impuestos de la inversión. ', rest: 'Solo se modelan una comisión anual del fondo y un impuesto opcional sobre la ganancia final; quedan fuera las comisiones de plataforma y de operación, los impuestos sobre dividendos y las retenciones, y cuándo se paga el impuesto. Si indicas una desgravación en la deuda y dejas el impuesto sobre la ganancia en 0, la comparación puede favorecer a la inversión.' },
+        investCosts: { lead: 'Otros costos e impuestos de la inversión. ', rest: 'Solo se modelan una comisión anual del fondo y un impuesto opcional sobre la ganancia final; quedan fuera las comisiones de plataforma y de operación, los impuestos sobre dividendos y las retenciones, y cuándo se paga el impuesto. Si indicas una desgravación en la deuda y dejas el impuesto sobre la ganancia en 0, la comparación puede favorecer a la inversión.' },
         feelings: { lead: 'La tranquilidad. ', rest: 'Para mucha gente, no tener deudas tiene un valor que ningún cálculo muestra.' },
         inflation: { lead: 'Una inflación que cambia. ', rest: 'La cifra de inflación se mantiene igual cada año; es un supuesto para planificar, no una previsión.' },
       },
@@ -856,7 +856,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       items: {
         paths: { lead: 'Dos caminos. ', rest: 'En uno, el dinero extra va a la deuda hasta pagarla, y después la cuota anterior y el extra se invierten cada mes. En el otro, la deuda sigue su curso normal y el dinero extra se invierte; cuando la deuda termina, su cuota también se invierte.' },
         date: { lead: 'La misma fecha. ', rest: 'Ambos se comparan en la fecha que elijas. El patrimonio neto es lo que valen las inversiones, menos el impuesto sobre la ganancia, menos la deuda pendiente.' },
-        returns: { lead: 'La inversión. ', rest: 'Una cartera diversificada de acciones mundiales. Sus rentabilidades anuales salen de la historia de las bolsas mundiales desde 1900 (Dimson, Marsh y Staunton): entre el {low}% y el {top}% anual aproximadamente, descontada la inflación, con grandes vaivenes de un año a otro.' },
+        returns: { lead: 'La inversión. ', rest: 'Una cartera diversificada de acciones mundiales. Sus rentabilidades anuales salen de la historia de las bolsas mundiales desde 1900 (Dimson, Marsh y Staunton): entre el {low} % y el {top} % anual aproximadamente, descontada la inflación, con grandes vaivenes de un año a otro.' },
         paired: { lead: 'Escenarios emparejados. ', rest: 'Cada uno de los {paths} escenarios hace pasar los dos caminos por los mismos años de mercado, así que la diferencia entre ellos viene de la decisión, no de la suerte.' },
         money: { lead: 'Dinero de hoy. ', rest: 'La deuda se cobra a su propia tasa de interés; las rentabilidades de la inversión se convierten en rentabilidades antes de inflación con tu cifra de inflación; después, cada resultado se muestra en dinero de hoy.' },
         timing: { lead: 'Momentos. ', rest: 'Los intereses se cobran y las cuotas se pagan al final de cada mes. La desgravación de los intereses cuenta como dinero devuelto cada mes y se invierte en el mismo camino.' },
@@ -872,11 +872,11 @@ export const investOrPayOffEs: InvestOrPayOff = {
       inflationBefore: 'Inflación: ',
       inflationLink: 'Banco Mundial, precios al consumidor (% anual)',
       inflationAfter: ', cifras anuales de {countries} países y de la zona del euro, actualizadas por última vez el {updated}. Van un año o más por detrás, y la inflación pasada no predice la futura.',
-      returns: 'Rentabilidad de las acciones: acciones mundiales de Dimson, Marsh y Staunton, de 1900 a 2025, reproducidas en Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026); el mismo modelo que el simulador de Montecarlo.',
+      returns: 'Rentabilidad de las acciones: acciones mundiales de Dimson, Marsh y Staunton, de 1900 a 2025, reproducidas en Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026); el mismo modelo que el simulador Monte Carlo.',
     },
     plannerLine: 'El planificador se está construyendo para mostrar todas tus deudas junto al resto de tu situación.',
     faq: {
-      heading: 'Preguntas',
+      heading: 'Preguntas frecuentes',
       items: [
         {
           q: '¿Me dice si invertir o pagar mi deuda?',
@@ -888,11 +888,11 @@ export const investOrPayOffEs: InvestOrPayOff = {
         },
         {
           q: '¿Por qué importa aquí la inflación?',
-          a: 'Tanto la tasa de interés de una deuda como la rentabilidad que anuncia un fondo incluyen la inflación. Una rentabilidad del 12% es normal donde la inflación es del 8% y alta donde es del 2%. La herramienta convierte todo con la misma cifra de inflación, para comparar los dos lados en igualdad de condiciones, y muestra los resultados en dinero de hoy.',
+          a: 'Tanto la tasa de interés de una deuda como la rentabilidad que anuncia un fondo incluyen la inflación. Una rentabilidad del 12 % es normal donde la inflación es del 8 % y alta donde es del 2 %. La herramienta convierte todo con la misma cifra de inflación, para comparar los dos lados en igualdad de condiciones, y muestra los resultados en dinero de hoy.',
         },
         {
           q: '¿Qué pasa si escribo una rentabilidad alta?',
-          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top}% anual descontada la inflación, el extremo alto del rango a largo plazo que usan este modelo y las lecciones, un aviso lo dice y los resultados se muestran también con el rango histórico, uno al lado del otro. No hay ningún tope.',
+          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top} % anual descontada la inflación, el extremo alto del rango a largo plazo que usan este modelo y las lecciones, un aviso lo dice y los resultados se muestran también con el rango histórico, uno al lado del otro. No hay ningún tope.',
         },
         {
           q: '¿De dónde sale la cifra de inflación?',
@@ -905,9 +905,9 @@ export const investOrPayOffEs: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'Lecturas relacionadas',
+      heading: 'Para seguir leyendo',
       cards: {
-        'invest-or-pay-off-debt': { kicker: 'La idea detrás de esta herramienta', title: '¿Invertir o pagar la deuda primero?', desc: 'Por qué la tasa marca el coste de una deuda, la aportación de la empresa y un orden habitual para varias deudas.' },
+        'invest-or-pay-off-debt': { kicker: 'La idea detrás de esta herramienta', title: '¿Invertir o pagar la deuda primero?', desc: 'Por qué la tasa marca el costo de una deuda, la aportación de la empresa y un orden habitual para varias deudas.' },
         'how-to-get-out-of-debt': { kicker: 'Varias deudas', title: 'Cómo salir de las deudas', desc: 'Los métodos avalancha y bola de nieve para pagar varias deudas.' },
         'purchasing-power': { kicker: 'Fundamentos', title: 'Poder adquisitivo', desc: 'Por qué la misma cantidad compra menos con el tiempo.' },
       },
@@ -970,7 +970,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       historical: { label: 'Histórico', desc: '{rate} anual descontada la inflación, acciones mundiales desde 1900' },
       optimistic: { label: 'Optimista', desc: '{rate} anual descontada la inflación' },
       own: { label: 'Mi propia cifra', desc: 'Antes de inflación, como la indican los fondos' },
-      above: 'Esto es un {real} anual descontada la inflación, por encima del extremo alto del rango a largo plazo que usan este modelo y nuestras lecciones (del {low}% al {top}% anual descontada la inflación para las acciones mundiales desde 1900, Dimson, Marsh y Staunton; sobre todo mercados desarrollados). Los resultados de abajo usan tu cifra y muestran también el rango histórico al lado.',
+      above: 'Esto es un {real} anual descontada la inflación, por encima del extremo alto del rango a largo plazo que usan este modelo y las lecciones (del {low} % al {top} % anual descontada la inflación para las acciones mundiales desde 1900, Dimson, Marsh y Staunton; sobre todo mercados desarrollados). Los resultados de abajo usan tu cifra y muestran también el rango histórico al lado.',
       below: 'Esto es un {real} anual descontada la inflación: la inversión perdería poder adquisitivo.',
       realIs: 'Descontada la inflación: {real} anual.',
       ownSwings: 'El modelo mantiene los altibajos anuales de la bolsa mundial sea cual sea la cifra que escribas. Para un fondo de bonos, el rango real sería más estrecho que el mostrado, y para una cuenta de ahorro, mucho más estrecho.',
@@ -985,11 +985,11 @@ export const investOrPayOffEs: InvestOrPayOff = {
       'no-balance': 'Escribe lo que debes.',
       'payment-too-low': 'La cuota mensual no cubre los intereses, así que la deuda nunca se pagaría. Escribe una cuota mayor.',
       'too-long': 'Con esta cuota la deuda tardaría más de {years} años en pagarse. Escribe una cuota mayor.',
-      'impossible-rate': 'Una tasa de interés del -100% o menos no es posible.',
+      'impossible-rate': 'Una tasa de interés del -100 % o menos no es posible.',
     },
     results: {
       heading: 'Cómo se compararon los dos caminos',
-      fix: 'Corrige los campos marcados para actualizar el resultado.',
+      fix: 'Corrige los campos marcados para ver el resultado.',
       on: 'Comparado {when}.',
       when: {
         months: { one: 'dentro de {n} mes', few: 'dentro de {n} meses', other: 'dentro de {n} meses' },
@@ -1078,7 +1078,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'Čisté jmění k tomu datu: investice, minus daň ze zisku, minus dluh, který zbývá',
       'Výsledky v dnešních penězích, s nedávnou inflací země podle Světové banky nebo s vaším vlastním číslem',
       '{paths} spárovaných simulací výnosů světových akcií, aby rozdíl vycházel z rozhodnutí, ne ze štěstí',
-      'Upozornění, když je váš vlastní výnos po očištění o inflaci vyšší než {top} % ročně, se kterými model počítá, a výsledky vedle historického rozpětí',
+      'Upozornění, když je váš vlastní výnos po očištění o inflaci vyšší než {top} % ročně, se kterými model počítá, a výsledky vedle historického rozpětí',
       'Volitelně daňová úleva na úrocích, roční poplatek fondu a daň ze zisku',
       'Běží ve vašem prohlížeči: nic z toho, co napíšete, se nikam neposílá',
     ],
@@ -1096,7 +1096,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       heading: 'Co tu chybí',
       intro: 'Srovnání zahrnuje jeden dluh a jednu investici. Tyto věci model nezahrnuje, a kterákoli z nich může vážit víc než čísla tady:',
       items: {
-        match: { lead: 'Příspěvek zaměstnavatele. ', rest: 'Peníze, které zaměstnavatel přidá k penzijnímu spoření, když spoříte i vy, mohou převážit všechno na této stránce; vysvětluje to lekce níže.' },
+        match: { lead: 'Příspěvek zaměstnavatele. ', rest: 'Peníze, které zaměstnavatel přidá k vašemu spoření na důchod, když spoříte i vy, mohou převážit všechno na této stránce; vysvětluje to lekce níže.' },
         several: { lead: 'Více dluhů. ', rest: 'Když jich je víc, záleží i na pořadí, v jakém se splácejí.' },
         variable: { lead: 'Pohyblivá úroková sazba. ', rest: 'Dluh se po celou dobu úročí sazbou, kterou zadáte.' },
         prepayment: { lead: 'Poplatky za předčasné splacení. ', rest: 'Některé úvěry si účtují poplatek za mimořádnou splátku, což snižuje, co předčasné splacení přinese.' },
@@ -1107,19 +1107,19 @@ export const investOrPayOffCs: InvestOrPayOff = {
         feelings: { lead: 'Klid. ', rest: 'Být bez dluhu má pro mnoho lidí hodnotu, kterou žádný výpočet neukáže.' },
         inflation: { lead: 'Měnící se inflace. ', rest: 'Inflace je každý rok stejná; je to předpoklad pro plánování, ne prognóza.' },
       },
-      notAdvice: 'Je to model k učení, ne rada: ukazuje, co se stalo v simulovaných scénářích s čísly, která jste zvolili.',
+      notAdvice: 'Je to model k učení, ne rada: ukazuje, co se stalo v simulovaných scénářích s čísly, která zvolíte.',
     },
     method: {
       heading: 'Jak to funguje',
       items: {
         paths: { lead: 'Dvě cesty. ', rest: 'V jedné jdou peníze navíc na dluh, dokud není splacený, a pak se splátka i peníze navíc každý měsíc investují. Ve druhé dluh běží normálně a peníze navíc se investují; když dluh skončí, investuje se i jeho splátka.' },
         date: { lead: 'Stejné datum. ', rest: 'Obě cesty se porovnávají k datu, které zvolíte. Čisté jmění je hodnota investic, minus daň ze zisku, minus dluh, který zbývá.' },
-        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy vycházejí z historie světových akcií od roku 1900 (Dimson, Marsh a Staunton): po očištění o inflaci zhruba {low} % až {top} % ročně, s velkými výkyvy z roku na rok.' },
+        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy vycházejí z historie světových akcií od roku 1900 (Dimson, Marsh a Staunton): po očištění o inflaci zhruba {low} % až {top} % ročně, s velkými výkyvy z roku na rok.' },
         paired: { lead: 'Spárované scénáře. ', rest: 'Každý z {paths} scénářů provede obě cesty stejnými roky na trhu, takže rozdíl mezi nimi vychází z rozhodnutí, ne ze štěstí.' },
         money: { lead: 'Dnešní peníze. ', rest: 'Dluh se úročí svou vlastní úrokovou sazbou; výnosy investice se vaší inflací převedou na výnosy před inflací; každý výsledek se pak ukáže v dnešních penězích.' },
         timing: { lead: 'Načasování. ', rest: 'Úroky se účtují a splátky se platí na konci každého měsíce. Úleva na úrocích se počítá jako peníze vrácené každý měsíc a investuje se ve stejné cestě.' },
       },
-      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů a je měřená v amerických dolarech po odečtení americké inflace. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
+      limits: 'Meze modelu: výnos každého roku se losuje zvlášť, takže dlouhé řady špatných let nejsou pravděpodobnější než náhodou, a extrémy jsou mírnější než nejhorší roky historie. Historie výnosů pochází hlavně z rozvinutých trhů a je měřená v amerických dolarech po očištění o americkou inflaci. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
     },
     lesson: {
       before: 'Lekce, ze které tento nástroj vychází, s příspěvkem zaměstnavatele, daňovou úlevou a obvyklým pořadím pro více dluhů: ',
@@ -1134,11 +1134,11 @@ export const investOrPayOffCs: InvestOrPayOff = {
     },
     plannerLine: 'Plánovač vzniká proto, aby ukázal každý váš dluh vedle zbytku vaší finanční situace.',
     faq: {
-      heading: 'Otázky',
+      heading: 'Časté dotazy',
       items: [
         {
           q: 'Řekne mi to, jestli investovat, nebo splatit dluh?',
-          a: 'Ne. Ukazuje, jak si obě cesty vedly v simulovaných scénářích s čísly, která jste zvolili. Co se hodí vám, závisí i na věcech, které model nezahrnuje: příspěvek zaměstnavatele, vaše finanční rezerva, jak jistý je váš příjem, další dluhy a jak se cítíte, když dlužíte.',
+          a: 'Ne. Ukazuje, jak si obě cesty vedly v simulovaných scénářích s čísly, která zvolíte. Co se hodí vám, závisí i na věcech, které model nezahrnuje: příspěvek zaměstnavatele, vaše finanční rezerva, jak jistý je váš příjem, další dluhy a jak se cítíte, když dlužíte.',
         },
         {
           q: 'Proč je výsledek rozpětí, a ne jedno číslo?',
@@ -1146,11 +1146,11 @@ export const investOrPayOffCs: InvestOrPayOff = {
         },
         {
           q: 'Proč tu záleží na inflaci?',
-          a: 'Sazba dluhu i výnos, který fond uvádí, obsahují inflaci. Výnos 12 % je běžný tam, kde je inflace 8 %, a vysoký tam, kde je 2 %. Nástroj převádí obě strany stejnou inflací, aby se porovnávalo stejné se stejným, a výsledky ukazuje v dnešních penězích.',
+          a: 'Sazba dluhu i výnos, který fond uvádí, obsahují inflaci. Výnos 12 % je běžný tam, kde je inflace 8 %, a vysoký tam, kde je 2 %. Nástroj převádí obě strany stejnou inflací, aby se porovnávalo stejné se stejným, a výsledky ukazuje v dnešních penězích.',
         },
         {
           q: 'Co když zadám vysoký výnos?',
-          a: 'Použije se vaše číslo tak, jak jste ho zadali. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy horní konec dlouhodobého rozpětí, se kterým počítá tento model i lekce, upozornění to řekne a výsledky se ukážou i s historickým rozpětím vedle sebe. Žádný strop se nepoužívá.',
+          a: 'Použije se vaše číslo tak, jak ho zadáte. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy horní konec dlouhodobého rozpětí, se kterým počítá tento model i lekce, upozornění to řekne a výsledky se ukážou i s historickým rozpětím vedle sebe. Žádný strop se nepoužívá.',
         },
         {
           q: 'Odkud se bere inflace?',
@@ -1163,7 +1163,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       ],
     },
     related: {
-      heading: 'Související čtení',
+      heading: 'Čtěte dál',
       cards: {
         'invest-or-pay-off-debt': { kicker: 'Princip tohoto nástroje', title: 'Nejdřív investovat, nebo splatit dluh?', desc: 'Proč cenu dluhu určuje sazba, příspěvek zaměstnavatele a obvyklé pořadí pro více dluhů.' },
         'how-to-get-out-of-debt': { kicker: 'Více dluhů', title: 'Jak se dostat z dluhů', desc: 'Metody laviny a sněhové koule pro splácení více dluhů.' },
@@ -1217,7 +1217,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       context: 'Posledních pět let {five}; samotný rok {last} {latest}.',
       contextNoFive: 'Samotný rok {last} {latest}.',
       noDefault: 'Pro zemi {country} je příliš málo nedávných údajů na průměr. Zadejte číslo.',
-      loading: 'Načítám historii…',
+      loading: 'Načítání historie…',
       error: 'Historii se nepodařilo načíst. Zadejte číslo.',
       euroArea: 'Eurozóna',
       needed: 'Pro srovnání zadejte inflaci: výsledky jsou v dnešních penězích a nastavení výnosu jsou po očištění o inflaci.',
@@ -1228,7 +1228,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       historical: { label: 'Historický', desc: '{rate} ročně po očištění o inflaci, světové akcie od roku 1900' },
       optimistic: { label: 'Optimistický', desc: '{rate} ročně po očištění o inflaci' },
       own: { label: 'Moje vlastní číslo', desc: 'Před inflací, jak ho uvádějí fondy' },
-      above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i naše lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
+      above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
       below: 'To je {real} ročně po očištění o inflaci: investice by ztrácela kupní sílu.',
       realIs: 'Po očištění o inflaci: {real} ročně.',
       ownSwings: 'Model zachovává meziroční výkyvy světových akcií, ať zadáte jakékoli číslo. U dluhopisového fondu by skutečné rozpětí bylo užší, než jaké se zde zobrazuje, a u spořicího účtu mnohem užší.',
@@ -1243,11 +1243,11 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'no-balance': 'Zadejte, kolik dlužíte.',
       'payment-too-low': 'Měsíční splátka nepokryje ani úroky, takže by dluh nebyl nikdy splacen. Zadejte vyšší splátku.',
       'too-long': 'S touto splátkou by splacení trvalo déle než {years} let. Zadejte vyšší splátku.',
-      'impossible-rate': 'Úroková sazba -100 % nebo nižší není možná.',
+      'impossible-rate': 'Úroková sazba -100 % nebo nižší není možná.',
     },
     results: {
       heading: 'Jak si obě cesty vedly',
-      fix: 'Opravte označená pole, aby se výsledek aktualizoval.',
+      fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledek.',
       on: 'Porovnáno {when}.',
       when: {
         months: { one: 'za {n} měsíc', few: 'za {n} měsíce', other: 'za {n} měsíců' },
@@ -1297,7 +1297,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       copy: 'Zkopírovat odkaz na tyto výsledky',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
-      shareNote: 'Odkaz obsahuje čísla, která jste zadali, za znakem # v adrese.',
+      shareNote: 'Odkaz obsahuje zadaná čísla za znakem # v adrese.',
     },
     export: {
       moneyLabel: 'Peníze',
@@ -1308,7 +1308,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       inflationSource: 'Zdroj inflace',
       inflationTyped: 'Zadaná',
       returns: 'Nastavení výnosu',
-      horizon: 'Porovnáno k',
+      horizon: 'Datum srovnání',
       months: 'Měsíců od dneška',
       paths: 'Scénáře',
       columns: { path: 'Cesta', p10: '10. ze 100', p50: 'Uprostřed', p90: '90. ze 100' },

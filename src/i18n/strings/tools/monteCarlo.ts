@@ -132,7 +132,7 @@ export const monteCarloEn = {
       /** The numbered method, in this order. Every figure in it comes from a constant. */
       steps: {
         draws:
-          'Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {stocksMean} a year on average with a standard deviation of {stocksSd}, bonds {bondsMean} with {bondsSd}. The two are mildly linked (a correlation of about {correlation}). That link has swung widely over history, positive and negative, so this is a simplification. "{cautious}" and "{optimistic}" keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.',
+          'Each simulated year draws a stock return and a bond return, after inflation. Their averages and swings match world markets from 1900 to 2025: stocks {stocksMean} a year on average with a standard deviation of {stocksSd}, bonds {bondsMean} with {bondsSd}. The two are mildly linked (a correlation of about {correlation}). That link has swung widely over history, positive and negative, so this is a simplification. “{cautious}” and “{optimistic}” keep these swings and move the compound return to stocks 4% or 6% a year and bonds 1% or 3%.',
         blend:
           "Your portfolio earns the blend of the two at your chosen mix, rebalanced once a year, less your yearly fees. The year's return is spread evenly over its twelve months.",
         flows:
@@ -168,7 +168,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Where do the return assumptions come from?',
-          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The "{historical}" setting draws yearly returns from a distribution with those averages and swings. "{cautious}" and "{optimistic}" keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi\'s articles: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
+          a: 'From the long-run record of world stock and bond markets, 1900 to 2025, compiled by Dimson, Marsh and Staunton and reprinted in Exponential Wealth (CFA Institute Research Foundation, 2026). After inflation, world equities averaged {stocksMean} a year with a standard deviation of {stocksSd}, and world bonds {bondsMean} with {bondsSd}. The “{historical}” setting draws yearly returns from a distribution with those averages and swings. “{cautious}” and “{optimistic}” keep the same swings but set the compound yearly return to the low and high ends of the long-run range used across nidhi\'s lessons: stocks 4% or 6% a year after inflation, bonds 1% or 3%. No historical series is copied into the tool.',
         },
         {
           q: 'How many paths should I run?',
@@ -183,7 +183,7 @@ export const monteCarloEn = {
           a: "All returns are real returns, after inflation. A result of 500,000 means 500,000 of today's purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.",
         },
         {
-          q: 'What does "the money lasted in 8 in 10 paths" mean?',
+          q: 'What does “the money lasted in 8 in 10 paths” mean?',
           a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
         },
         {
@@ -192,7 +192,7 @@ export const monteCarloEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The simulation runs in your browser and the numbers you type are not sent to us or anyone else. Nothing goes into the page address while you use the tool. When you press "{copyLink}", your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
+          a: 'No. The simulation runs in your browser and the numbers you type are not sent to nidhi or anyone else. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start.',
         },
         {
           q: 'Is this financial advice?',
@@ -344,7 +344,7 @@ export const monteCarloEn = {
       /** The fallback prompt when the clipboard is unavailable. */
       copyPrompt: 'Copy this link:',
       reset: 'Reset',
-      fix: 'Fix the highlighted fields to update the results.',
+      fix: 'Fix the highlighted fields to see the results.',
       running: 'Running {paths} paths…',
     },
     /**
@@ -525,7 +525,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       more: 'तरीक़ा और उसके स्रोत',
       steps: {
         draws:
-          'हर सिम्युलेटेड साल शेयरों का एक रिटर्न और बॉन्ड का एक रिटर्न निकालता है, महँगाई के बाद। इनके औसत और उतार-चढ़ाव (volatility) 1900 से 2025 तक के दुनिया के बाज़ारों से मेल खाते हैं: शेयरों में औसतन सालाना {stocksMean} और मानक विचलन {stocksSd}, बॉन्ड में {bondsMean} और {bondsSd}। दोनों आपस में थोड़े जुड़े हैं (लगभग {correlation} का सहसंबंध)। इतिहास में यह जुड़ाव बहुत बदलता रहा है, कभी सकारात्मक तो कभी नकारात्मक, इसलिए यह एक सरलीकरण है। "{cautious}" और "{optimistic}" इन्हीं उतार-चढ़ावों को रखते हुए चक्रवृद्धि (compounding) रिटर्न शेयरों में सालाना 4% या 6% और बॉन्ड में 1% या 3% कर देते हैं।',
+          'हर सिम्युलेटेड साल शेयरों का एक रिटर्न और बॉन्ड का एक रिटर्न निकालता है, महँगाई के बाद। इनके औसत और उतार-चढ़ाव (volatility) 1900 से 2025 तक के दुनिया के बाज़ारों से मेल खाते हैं: शेयरों में औसतन सालाना {stocksMean} और मानक विचलन {stocksSd}, बॉन्ड में {bondsMean} और {bondsSd}। दोनों आपस में थोड़े जुड़े हैं (लगभग {correlation} का सहसंबंध)। इतिहास में यह जुड़ाव बहुत बदलता रहा है, कभी सकारात्मक तो कभी नकारात्मक, इसलिए यह एक सरलीकरण है। “{cautious}” और “{optimistic}” इन्हीं उतार-चढ़ावों को रखते हुए चक्रवृद्धि (compounding) रिटर्न शेयरों में सालाना 4% या 6% और बॉन्ड में 1% या 3% कर देते हैं।',
         blend:
           'आपका पोर्टफ़ोलियो आपके चुने हुए मिश्रण पर इन दोनों का मिलाजुला रिटर्न कमाता है, हर साल एक बार रीबैलेंस होता है, और उसमें से आपका सालाना शुल्क कटता है। साल का रिटर्न उसके बारह महीनों पर बराबर बाँट दिया जाता है।',
         flows:
@@ -550,7 +550,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'रिटर्न की मान्यताएँ कहाँ से आती हैं?',
-          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। "{historical}" सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। "{cautious}" और "{optimistic}" वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को उस लंबी अवधि के दायरे के निचले और ऊपरी सिरे पर रख देते हैं जो nidhi के लेखों में इस्तेमाल होता है: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
+          a: 'दुनिया के शेयर और बॉन्ड बाज़ारों के 1900 से 2025 तक के लंबे रिकॉर्ड से, जिसे Dimson, Marsh और Staunton ने संकलित किया और जो Exponential Wealth (CFA Institute Research Foundation, 2026) में दोबारा छपा। महँगाई के बाद दुनिया के शेयरों ने औसतन सालाना {stocksMean} दिया, मानक विचलन {stocksSd}, और दुनिया के बॉन्ड ने {bondsMean}, मानक विचलन {bondsSd}। “{historical}” सेटिंग उन्हीं औसतों और उतार-चढ़ावों वाले वितरण से हर साल का रिटर्न निकालती है। “{cautious}” और “{optimistic}” वही उतार-चढ़ाव रखते हैं, पर चक्रवृद्धि सालाना रिटर्न को उस लंबी अवधि के दायरे के निचले और ऊपरी सिरे पर रख देते हैं जो nidhi के पाठों में इस्तेमाल होता है: शेयर महँगाई के बाद सालाना 4% या 6%, बॉन्ड 1% या 3%। इस टूल में इतिहास की कोई साल-दर-साल श्रृंखला शामिल नहीं है।',
         },
         {
           q: 'कितने रास्ते चलाने चाहिए?',
@@ -558,7 +558,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'शुल्क का हिसाब कैसे लगता है?',
-          a: 'पोर्टफ़ोलियो की रकम का एक सालाना प्रतिशत, जो हर साल के रिटर्न में से कटता है, 0 से {maxFeePct}% तक। इसमें अपने फ़ंड का सालाना चालू शुल्क (ongoing\u00A0charge) और प्लेटफ़ॉर्म का शुल्क, अगर कोई हो, जोड़कर डालें। तय शुल्क और एकबारगी शुल्क नहीं जोड़े जाते।',
+          a: 'पोर्टफ़ोलियो की रकम का एक सालाना प्रतिशत, जो हर साल के रिटर्न में से कटता है, 0 से {maxFeePct}% तक। इसमें अपने फंड का सालाना चालू शुल्क (ongoing\u00A0charge) और प्लेटफ़ॉर्म का शुल्क, अगर कोई हो, जोड़कर डालें। तय शुल्क और एकबारगी शुल्क नहीं जोड़े जाते।',
         },
         {
           q: 'सब कुछ आज के पैसे में क्यों है?',
@@ -574,7 +574,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े हमें या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप "{copyLink}" दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
+          a: 'नहीं। सिम्युलेशन आपके ब्राउज़र में चलता है और आपके टाइप किए आँकड़े nidhi को या किसी और को नहीं भेजे जाते। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',
@@ -591,7 +591,7 @@ export const monteCarloHi: typeof monteCarloEn = {
           desc: 'एक सीधी लकीर क्यों भटकाती है, और उसके बजाय नतीजों का फैलाव कैसे पढ़ें।',
         },
         'what-if-scenarios': {
-          kicker: 'अगला क़दम',
+          kicker: 'अगला कदम',
           title: 'क्या-अगर के परिदृश्य',
           desc: 'एक बार में एक फ़ैसला बदलें और उसे अपनी मौजूदा स्थिति से मिलाकर देखें।',
         },
@@ -619,7 +619,7 @@ export const monteCarloHi: typeof monteCarloEn = {
     example: 'उदाहरण के आँकड़े। इनकी जगह अपने आँकड़े भरें।',
     export: {
       tool: 'मोंटे कार्लो सिम्युलेटर',
-      meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई धारणाओं पर चले सिमुलेशन के नतीजे हैं, भविष्यवाणी या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
+      meaning: 'बीच की रकम बीच का नतीजा है: आधे सिम्युलेटेड रास्ते इससे ऊपर ख़त्म हुए और आधे नीचे। दायरे में सबसे नीचे और सबसे ऊपर के दसवें हिस्से के रास्ते शामिल नहीं हैं। ये नीचे दी गई मान्यताओं पर चले सिम्युलेशन के नतीजे हैं, पूर्वानुमान या वादा नहीं: असल रिटर्न यहाँ के किसी भी रास्ते से बेहतर या ख़राब हो सकते हैं।',
       moneyLabel: 'रकम',
       moneyText: 'आज के पैसे में, पूरी इकाइयों तक। पेज इन्हें और गोल करके दिखाता है: नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते।',
       sheets: { assumptions: 'मान्यताएँ', byYear: 'हर साल', outcome: 'नतीजा' },
@@ -677,7 +677,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       summary: '{fees}% शुल्क · {paths} रास्ते',
       legend: 'रिटर्न',
       feeLabel: 'सालाना शुल्क, %',
-      feeHint: 'फ़ंड और प्लेटफ़ॉर्म का शुल्क, जो हर साल के रिटर्न में से कटता है। 0 से {maxFeePct}।',
+      feeHint: 'फंड और प्लेटफ़ॉर्म का शुल्क, जो हर साल के रिटर्न में से कटता है। 0 से {maxFeePct}।',
       pathsLabel: 'सिम्युलेटेड रास्ते',
       pathsHint:
         'ज़्यादा रास्तों से आँकड़े ज़्यादा स्थिर रहते हैं; 10,000 से ऊपर वे ज़्यादा से ज़्यादा कुछ प्रतिशत ही बदलते हैं।',
@@ -695,7 +695,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
       reset: 'रीसेट',
-      fix: 'नतीजे अपडेट करने के लिए चिह्नित खानों को ठीक करें।',
+      fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
     quick: {
@@ -740,7 +740,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         'जिन रास्तों में पैसा ख़त्म हुआ, उनमें ख़त्म होने का बीच का साल था: {years} में से साल {year}।',
       rounded: 'रकमें गोल करके दिखाई गई हैं: {paths} नए रैंडम रास्तों के साथ आख़िरी अंक अलग आते। स्प्रेडशीट में पूरे अंक हैं।',
       caveat:
-        'ये {paths} सिम्युलेटेड रास्तों में से गिने गए अनुपात हैं, आपके साथ कुछ होने की संभावना नहीं। मॉडल एक सरलीकरण है; नीचे देखें कि इसमें क्या शामिल नहीं है।',
+        'ये {paths} सिम्युलेटेड रास्तों में से गिने गए अनुपात हैं; ये यह नहीं बताते कि आपके साथ कुछ होने की कितनी संभावना है। मॉडल एक सरलीकरण है; नीचे देखें कि इसमें क्या शामिल नहीं है।',
       caveatFew:
         ' सिर्फ़ {paths} रास्तों पर आँकड़े हज़ारों रास्तों से कई प्रतिशत दूर हो सकते हैं।',
       tableSummary: 'आँकड़े तालिका में देखें',
@@ -883,7 +883,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿De dónde salen los supuestos de rentabilidad?',
-          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en el extremo bajo y el alto del rango a largo plazo que se usa en los artículos de nidhi: acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
+          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en el extremo bajo y el alto del rango a largo plazo que se usa en las lecciones de nidhi: acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
         },
         {
           q: '¿Cuántas trayectorias conviene simular?',
@@ -907,7 +907,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
-          a: 'No. La simulación se ejecuta en tu navegador y los números que escribes no se nos envían ni a nosotros ni a nadie más. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
+          a: 'No. La simulación se ejecuta en tu navegador y los números que escribes no se envían ni a nidhi ni a nadie más. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
@@ -953,7 +953,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     export: {
       tool: 'Simulador Monte Carlo',
       meaning: 'La mediana es el resultado del medio: la mitad de las trayectorias simuladas terminó por encima y la otra mitad por debajo. El rango deja fuera la décima parte más baja y la más alta de las trayectorias. Son resultados de una simulación con los supuestos de abajo, no una previsión ni una promesa: las rentabilidades reales pueden ser mejores o peores que cualquier trayectoria de aquí.',
-      moneyLabel: 'Importes',
+      moneyLabel: 'Cantidades',
       moneyText: 'En dinero de hoy, en unidades enteras. La página redondea más: con otras trayectorias aleatorias, las últimas cifras saldrían distintas.',
       sheets: { assumptions: 'Supuestos', byYear: 'Por año', outcome: 'Resultado' },
       stocks: 'Acciones, %',
@@ -985,7 +985,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       mixMiddle: ', ',
       mixBonds: '{pct} % bonos',
       mixHint: 'Se reequilibra a esta combinación una vez al año.',
-      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
+      mixExample: '{pct} % en acciones es un valor de ejemplo, no una combinación sugerida.',
       crossLink: {
         before: '¿Tienes dinero en varias monedas? Súmalo primero con la ',
         link: 'calculadora de patrimonio neto',
@@ -1007,7 +1007,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     },
     settings: {
       toggle: 'Comisiones y trayectorias simuladas',
-      summary: '{fees} % de comisiones · {paths} trayectorias',
+      summary: '{fees} % de comisiones · {paths} trayectorias',
       legend: 'Rentabilidad',
       feeLabel: 'Comisiones anuales, %',
       feeHint: 'Comisiones del fondo y de la plataforma, descontadas de la rentabilidad de cada año. De 0 a {maxFeePct}.',
@@ -1028,7 +1028,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
       reset: 'Restablecer',
-      fix: 'Corrige los campos resaltados para actualizar los resultados.',
+      fix: 'Corrige los campos marcados para ver los resultados.',
       running: 'Simulando {paths} trayectorias…',
     },
     quick: {
@@ -1121,7 +1121,7 @@ export const monteCarloEs: typeof monteCarloEn = {
 
 /**
  * The Czech edition. Same shape and the same figures; vykání and „...“ quotes,
- * per `docs/i18n/cs-glossary.md`: simulace, trajektorie, výběr, po odečtení
+ * per `docs/i18n/cs-glossary.md`: simulace, trajektorie, výběr, po očištění o inflaci
  * inflace, medián, poměr akcií a dluhopisů, rebalancování.
  *
  * Counts the code fills without picking a form (`{paths}`, `{years}`) sit
@@ -1169,7 +1169,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       items: {
         onePot: {
           lead: 'Jedno portfolio, jedna měna.',
-          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech po odečtení americké inflace. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
+          rest: ' Pokud jsou vaše úspory ve více než jedné měně nebo budete v důchodu žít tam, kde se platí jinou, přidávají směnné kurzy riziko, které tento model nezahrnuje. Historie výnosů je měřená v amerických dolarech po očištění o americkou inflaci. Použít ji v jiné měně znamená předpokládat, že se směnné kurzy pohybují podle rozdílu v inflaci mezi oběma měnami: v průběhu desetiletí tomu tak často bylo, v průběhu několika let často ne.',
         },
         steady: {
           lead: 'Stálé spoření a utrácení.',
@@ -1181,7 +1181,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'Klidnější extrémy než v historii.',
-          rest: ' Roky se losují nezávisle z hladkého rozdělení, takže dlouhé série špatných let a propady jako v roce 2008 (světové akcie −42,9 % po odečtení inflace) jsou tu vzácnější, než byly ve skutečnosti.',
+          rest: ' Roky se losují nezávisle z hladkého rozdělení, takže dlouhé série špatných let a propady jako v roce 2008 (světové akcie −42,9 % po očištění o inflaci) jsou tu vzácnější, než byly ve skutečnosti.',
         },
       },
       more: 'Proč na každém z nich záleží',
@@ -1193,7 +1193,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       more: 'Metoda a její zdroje',
       steps: {
         draws:
-          'Každý simulovaný rok vylosuje výnos akcií a výnos dluhopisů po odečtení inflace. Jejich průměry a výkyvy odpovídají světovým trhům v letech 1900 až 2025: akcie v průměru {stocksMean} ročně se směrodatnou odchylkou {stocksSd}, dluhopisy {bondsMean} s {bondsSd}. Obojí je mírně provázané (korelace zhruba {correlation}). Tato vazba se v historii výrazně měnila, byla kladná i záporná, takže jde o zjednodušení. „{cautious}“ a „{optimistic}“ ponechávají tyto výkyvy a posouvají složený výnos akcií na 4 % nebo 6 % ročně a dluhopisů na 1 % nebo 3 %.',
+          'Každý simulovaný rok vylosuje výnos akcií a výnos dluhopisů po očištění o inflaci. Jejich průměry a výkyvy odpovídají světovým trhům v letech 1900 až 2025: akcie v průměru {stocksMean} ročně se směrodatnou odchylkou {stocksSd}, dluhopisy {bondsMean} s {bondsSd}. Obojí je mírně provázané (korelace zhruba {correlation}). Tato vazba se v historii výrazně měnila, byla kladná i záporná, takže jde o zjednodušení. „{cautious}“ a „{optimistic}“ ponechávají tyto výkyvy a posouvají složený výnos akcií na 4 % nebo 6 % ročně a dluhopisů na 1 % nebo 3 %.',
         blend:
           'Výnos vašeho portfolia odpovídá zvolenému poměru obou tříd aktiv, který se jednou ročně rebalancuje, po odečtení ročních poplatků. Výnos za daný rok se rozloží rovnoměrně do jeho dvanácti měsíců.',
         flows:
@@ -1218,7 +1218,7 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Odkud pocházejí předpoklady výnosů?',
-          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po odečtení inflace měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají články nidhi: akcie 4 % nebo 6 % ročně po odečtení inflace, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
+          a: 'Z dlouhodobé historie světových akciových a dluhopisových trhů v letech 1900 až 2025, kterou sestavili Dimson, Marsh a Staunton a která vyšla v publikaci Exponential Wealth (CFA Institute Research Foundation, 2026). Po očištění o inflaci měly světové akcie průměrný výnos {stocksMean} ročně se směrodatnou odchylkou {stocksSd} a světové dluhopisy {bondsMean} s {bondsSd}. Nastavení „{historical}“ losuje roční výnosy z rozdělení s těmito průměry a výkyvy. „{cautious}“ a „{optimistic}“ ponechávají stejné výkyvy, ale nastavují složený roční výnos na dolní a horní okraj dlouhodobého rozpětí, které používají lekce nidhi: akcie 4 % nebo 6 % ročně po očištění o inflaci, dluhopisy 1 % nebo 3 %. Žádná historická řada se do nástroje nekopíruje.',
         },
         {
           q: 'Kolik trajektorií spustit?',
@@ -1226,11 +1226,11 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Jak se počítají poplatky?',
-          a: 'Jako roční procento z hodnoty portfolia, odečtené od výnosu každého roku, od 0 do {maxFeePct} %. Běžně se zadává součet průběžných nákladů fondu a případného poplatku platformy. Pevné a jednorázové poplatky se nemodelují.',
+          a: 'Jako roční procento z hodnoty portfolia, odečtené od výnosu každého roku, od 0 do {maxFeePct} %. Běžně se zadává součet průběžných nákladů fondu a případného poplatku platformy. Pevné a jednorázové poplatky se nemodelují.',
         },
         {
           q: 'Proč je vše v dnešních penězích?',
-          a: 'Všechny výnosy jsou reálné, po odečtení inflace. Výsledek 500 000 znamená 500 000 v dnešní kupní síle, takže ho lze přímo porovnat s cenami a platy, které znáte. Znamená to také, že měsíční vklad a roční výběr zůstávají v reálném vyjádření stálé, což zhruba odpovídá tomu, když je s inflací zvyšujete.',
+          a: 'Všechny výnosy jsou reálné, po očištění o inflaci. Výsledek 500 000 znamená 500 000 v dnešní kupní síle, takže ho lze přímo porovnat s cenami a platy, které znáte. Znamená to také, že měsíční vklad a roční výběr zůstávají v reálném vyjádření stálé, což zhruba odpovídá tomu, když je s inflací zvyšujete.',
         },
         {
           q: 'Co znamená „peníze vydržely v 8 z 10 trajektorií“?',
@@ -1238,11 +1238,11 @@ export const monteCarloCs: typeof monteCarloEn = {
         },
         {
           q: 'Proč jedna čára leží nad většinou trajektorií?',
-          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára je ten druhý plán: průměrný výnos každý rok, bez vzestupů a poklesů. Obvykle pod ní skončí více než polovina trajektorií.',
+          a: 'Kolísání ubírá ze složeného úročení: po ztrátě 20 % je potřeba zisk 25 %, aby se hodnota vrátila na původní úroveň. Plán, který má daný průměrný výnos se vzestupy a poklesy, proto obvykle skončí níž než stejný plán s tímto výnosem každý rok. Jedna čára je ten druhý plán: průměrný výnos každý rok, bez vzestupů a poklesů. Obvykle pod ní skončí více než polovina trajektorií.',
         },
         {
           q: 'Posílají se moje data někam?',
-          a: 'Ne. Simulace běží ve vašem prohlížeči a čísla, která zadáte, se neposílají nám ani nikomu jinému. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
+          a: 'Ne. Simulace běží ve vašem prohlížeči a čísla, která zadáte, se neposílají nidhi ani nikomu jinému. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika.',
         },
         {
           q: 'Je to finanční poradenství?',
@@ -1287,15 +1287,15 @@ export const monteCarloCs: typeof monteCarloEn = {
     example: 'Ukázkový scénář. Nahraďte čísla svými.',
     export: {
       tool: 'Simulátor Monte Carlo',
-      meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o předpověď ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
+      meaning: 'Medián je prostřední výsledek: polovina simulovaných trajektorií skončila nad ním a polovina pod ním. Rozpětí vynechává nejnižší a nejvyšší desetinu trajektorií. Jde o výsledky simulace za níže uvedených předpokladů, ne o prognózu ani slib: skutečné výnosy mohou být lepší i horší než kterákoli zdejší trajektorie.',
       moneyLabel: 'Částky',
       moneyText: 'V dnešních penězích, na celé jednotky. Stránka zaokrouhluje víc: s jinými náhodnými trajektoriemi by poslední číslice vyšly jinak.',
       sheets: { assumptions: 'Předpoklady', byYear: 'Po letech', outcome: 'Výsledek' },
       stocks: 'Akcie, %',
       bonds: 'Dluhopisy, %',
       withdrawals: 'Výběry',
-      stocksGrowth: 'Akcie: roční růst po odečtení inflace, %',
-      bondsGrowth: 'Dluhopisy: roční růst po odečtení inflace, %',
+      stocksGrowth: 'Akcie: roční růst po očištění o inflaci, %',
+      bondsGrowth: 'Dluhopisy: roční růst po očištění o inflaci, %',
       rebalanced: 'Rebalancování',
       p25: '25. percentil',
       p75: '75. percentil',
@@ -1316,11 +1316,11 @@ export const monteCarloCs: typeof monteCarloEn = {
       saveYears: 'Počet let spoření',
       saveYearsHint: '0 až 60',
       mixBefore: 'Poměr: ',
-      mixStocks: '{pct} % akcií',
+      mixStocks: '{pct} % akcií',
       mixMiddle: ', ',
-      mixBonds: '{pct} % dluhopisů',
+      mixBonds: '{pct} % dluhopisů',
       mixHint: 'Jednou ročně se rebalancuje zpět na tento poměr.',
-      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
+      mixExample: '{pct} % akcií je ukázková hodnota, ne doporučený poměr.',
       crossLink: {
         before: 'Peníze ve více měnách? Nejdřív je sečtěte v ',
         link: 'kalkulačce čistého jmění',
@@ -1334,15 +1334,15 @@ export const monteCarloCs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}: dolní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
       historical:
-        'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
+        'Světové trhy v letech 1900 až 2025: akcie rostly zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}, se vzestupy a poklesy, které skutečně měly.',
       optimistic:
-        'Akcie rostou zhruba o {stocks} ročně po odečtení inflace a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
+        'Akcie rostou zhruba o {stocks} ročně po očištění o inflaci a dluhopisy zhruba o {bonds}: horní okraj dlouhodobého rozpětí. Vzestupy a poklesy jsou stejně velké jako v historii.',
     },
     settings: {
       toggle: 'Poplatky a\u00a0simulované trajektorie',
-      summary: 'poplatky {fees} % · trajektorie: {paths}',
+      summary: 'poplatky {fees} % · trajektorie: {paths}',
       legend: 'Odhad výnosu',
       feeLabel: 'Roční poplatky, %',
       feeHint: 'Poplatky fondu a platformy, odečtené od výnosu každého roku. 0 až {maxFeePct}.',
@@ -1363,7 +1363,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
       reset: 'Obnovit výchozí',
-      fix: 'Opravte zvýrazněná pole a výsledky se aktualizují.',
+      fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledky.',
       running: 'Probíhá simulace, počet trajektorií: {paths}…',
     },
     quick: {
@@ -1473,7 +1473,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       '1900 ते 2025 मधील जागतिक शेअर आणि रोखे बाजारांवर आधारित परताव्याची गृहीतके, सावध आणि आशावादी सेटिंग्जसह',
       'वार्षिक शुल्क',
       'बचतीचा टप्पा आणि ऐच्छिक पैसे काढण्याचा टप्पा',
-      'शेअर आणि रोख्यांचे मिश्रण, दरवर्षी पुनर्संतुलित',
+      'शेअर आणि रोख्यांचे मिश्रण, दरवर्षी पुनर्संतुलन',
       'आजच्या पैशांच्या हिशेबात निकाल, 38 चलनांमध्ये',
       'कोणत्याही योजनेची शेअर करता येणारी लिंक',
     ],
@@ -1508,7 +1508,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'इतिहासापेक्षा सौम्य टोके.',
-          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाई वजा जाता जागतिक शेअर -42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
+          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाईनंतर जागतिक शेअर -42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
         },
       },
       more: 'प्रत्येक गोष्ट का महत्त्वाची आहे',
@@ -1519,8 +1519,8 @@ export const monteCarloMr: typeof monteCarloEn = {
       heading: 'हे कसे काम करते',
       more: 'पद्धत आणि तिचे स्रोत',
       steps: {
-        draws: 'प्रत्येक संभाव्य वर्षात, महागाई वजा जाता, शेअरचा एक परतावा आणि रोख्यांचा एक परतावा निवडला जातो. त्यांच्या सरासरी आणि चढ-उतार (volatility) 1900 ते 2025 मधील जागतिक बाजारांशी जुळतात: शेअर सरासरी दरवर्षी {stocksMean}, प्रमाण विचलन {stocksSd}; रोखे {bondsMean}, प्रमाण विचलन {bondsSd}. दोन्ही थोड्याशा प्रमाणात एकमेकांशी जोडलेले आहेत (सुमारे {correlation} सहसंबंध). इतिहासात हा संबंध सकारात्मक आणि नकारात्मक दोन्ही बाजूंनी खूप बदलला आहे, त्यामुळे हे सोपे केलेले रूप आहे. “{cautious}” आणि “{optimistic}” हेच चढ-उतार ठेवतात, आणि चक्रवाढ (compounding) परतावा शेअरसाठी दरवर्षी 4% किंवा 6% आणि रोख्यांसाठी 1% किंवा 3% वर नेतात.',
-        blend: 'तुम्ही निवडलेल्या मिश्रणानुसार तुमच्या पोर्टफोलिओला दोन्हींचा एकत्रित परतावा मिळतो; हे मिश्रण वर्षातून एकदा पुन्हा संतुलित केले जाते आणि त्यातून तुमचे वार्षिक शुल्क वजा होते. वर्षाचा परतावा बारा महिन्यांमध्ये समान पसरवला जातो.',
+        draws: 'प्रत्येक संभाव्य वर्षात, महागाईनंतर, शेअरचा एक परतावा आणि रोख्यांचा एक परतावा निवडला जातो. त्यांच्या सरासरी आणि चढ-उतार (volatility) 1900 ते 2025 मधील जागतिक बाजारांशी जुळतात: शेअर सरासरी दरवर्षी {stocksMean}, प्रमाण विचलन {stocksSd}; रोखे {bondsMean}, प्रमाण विचलन {bondsSd}. दोन्ही थोड्याशा प्रमाणात एकमेकांशी जोडलेले आहेत (सुमारे {correlation} सहसंबंध). इतिहासात हा संबंध सकारात्मक आणि नकारात्मक दोन्ही बाजूंनी खूप बदलला आहे, त्यामुळे हे सोपे केलेले रूप आहे. “{cautious}” आणि “{optimistic}” हेच चढ-उतार ठेवतात, आणि चक्रवाढ (compounding) परतावा शेअरसाठी दरवर्षी 4% किंवा 6% आणि रोख्यांसाठी 1% किंवा 3% वर नेतात.',
+        blend: 'तुम्ही निवडलेल्या मिश्रणानुसार तुमच्या पोर्टफोलिओला दोन्हींचा एकत्रित परतावा मिळतो; या मिश्रणाचे वर्षातून एकदा पुनर्संतुलन केले जाते आणि त्यातून तुमचे वार्षिक शुल्क वजा होते. वर्षाचा परतावा बारा महिन्यांमध्ये समान पसरवला जातो.',
         flows: 'तुमची मासिक बचत प्रत्येक महिन्याच्या सुरुवातीला जमा होते. तुम्ही पैसे काढणे चालू केले, तर बचतीची वर्षे संपल्यावर दर महिन्याला वार्षिक रकमेचा बारावा भाग काढला जातो. शून्याला पोहोचलेला मार्ग शून्यावरच राहतो.',
         runs: 'हे तुम्ही निवडाल तितक्या वेळा पुन्हा होते, पूर्वनिश्चित सेटिंगमध्ये {defaultPaths} वेळा. आलेख प्रत्येक वर्षी मार्ग कुठे पडतात ते दाखवतो: छायांकित पट्टे मधल्या 10 पैकी 8 आणि मधल्या अर्ध्या मार्गांना धरतात.',
         deterministic: 'तीच माहिती नेहमी तोच निकाल देते, त्यामुळे शेअर केलेली लिंक तुम्ही जे पाहिले तेच नेमके दाखवते.',
@@ -1539,7 +1539,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'परताव्याची गृहीतके कुठून येतात?',
-          a: '1900 ते 2025 मधील जागतिक शेअर आणि रोखे बाजारांच्या दीर्घकालीन नोंदींमधून; या नोंदी Dimson, Marsh आणि Staunton यांनी संकलित केल्या आणि Exponential Wealth (CFA Institute Research Foundation, 2026) मध्ये पुन्हा प्रसिद्ध केल्या. महागाई वजा जाता, जागतिक इक्विटीचा सरासरी परतावा दरवर्षी {stocksMean} होता, प्रमाण विचलन {stocksSd}, आणि जागतिक रोख्यांचा {bondsMean}, प्रमाण विचलन {bondsSd}. “{historical}” सेटिंग याच सरासरी आणि चढ-उतार असलेल्या वितरणातून वार्षिक परतावे निवडते. “{cautious}” आणि “{optimistic}” तेच चढ-उतार ठेवतात, पण चक्रवाढ वार्षिक परतावा nidhi च्या लेखांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या खालच्या आणि वरच्या टोकावर ठेवतात: महागाई वजा जाता शेअर दरवर्षी 4% किंवा 6%, रोखे 1% किंवा 3%. कोणतीही ऐतिहासिक आकडेमालिका साधनात कॉपी केलेली नाही.',
+          a: '1900 ते 2025 मधील जागतिक शेअर आणि रोखे बाजारांच्या दीर्घकालीन नोंदींमधून; या नोंदी Dimson, Marsh आणि Staunton यांनी संकलित केल्या आणि Exponential Wealth (CFA Institute Research Foundation, 2026) मध्ये पुन्हा प्रसिद्ध केल्या. महागाईनंतर, जागतिक इक्विटीचा सरासरी परतावा दरवर्षी {stocksMean} होता, प्रमाण विचलन {stocksSd}, आणि जागतिक रोख्यांचा {bondsMean}, प्रमाण विचलन {bondsSd}. “{historical}” सेटिंग याच सरासरी आणि चढ-उतार असलेल्या वितरणातून वार्षिक परतावे निवडते. “{cautious}” आणि “{optimistic}” तेच चढ-उतार ठेवतात, पण चक्रवाढ वार्षिक परतावा nidhi च्या धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या खालच्या आणि वरच्या टोकावर ठेवतात: महागाईनंतर शेअर दरवर्षी 4% किंवा 6%, रोखे 1% किंवा 3%. कोणतीही ऐतिहासिक आकडेमालिका साधनात कॉपी केलेली नाही.',
         },
         {
           q: 'किती मार्ग चालवायचे?',
@@ -1547,11 +1547,11 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'शुल्क कसे धरले जाते?',
-          a: 'शिल्लक रकमेची वार्षिक टक्केवारी म्हणून, प्रत्येक वर्षीच्या परताव्यातून वजा केलेली, 0 ते {maxFeePct}% पर्यंत. तुमच्या फंडाचे चालू शुल्क (ongoing charge) आणि प्लॅटफॉर्म शुल्क असल्यास त्यांची बेरीज वापरा. ठरावीक शुल्क आणि एकदाच लागणारे शुल्क मॉडेलमध्ये नाहीत.',
+          a: 'पोर्टफोलिओच्या मूल्याची वार्षिक टक्केवारी म्हणून, प्रत्येक वर्षीच्या परताव्यातून वजा केलेली, 0 ते {maxFeePct}% पर्यंत. तुमच्या फंडाचे चालू शुल्क (ongoing charge) आणि प्लॅटफॉर्म शुल्क असल्यास त्यांची बेरीज वापरा. ठरावीक शुल्क आणि एकदाच लागणारे शुल्क मॉडेलमध्ये नाहीत.',
         },
         {
           q: 'सगळे आजच्या पैशांच्या हिशेबात का आहे?',
-          a: 'सर्व परतावे वास्तविक परतावे आहेत, महागाई वजा जाता. 500,000 चा निकाल म्हणजे आजच्या क्रयशक्तीचे (purchasing power) 500,000, त्यामुळे तुम्ही तो तुम्हाला माहीत असलेल्या किमती आणि पगारांशी थेट ताडून पाहू शकता. याचा अर्थ असाही की तुमची मासिक बचत आणि दरवर्षी काढली जाणारी रक्कम वास्तविक अर्थाने स्थिर राहतात, जे साधारणपणे तुम्ही त्या रकमा महागाईनुसार वाढवल्या तर होते.',
+          a: 'सर्व परतावे वास्तविक परतावे आहेत, महागाईनंतर. 500,000 चा निकाल म्हणजे आजच्या क्रयशक्तीचे (purchasing power) 500,000, त्यामुळे तुम्ही तो तुम्हाला माहीत असलेल्या किमती आणि पगारांशी थेट ताडून पाहू शकता. याचा अर्थ असाही की तुमची मासिक बचत आणि दरवर्षी काढली जाणारी रक्कम वास्तविक अर्थाने स्थिर राहतात, जे साधारणपणे तुम्ही त्या रकमा महागाईनुसार वाढवल्या तर होते.',
         },
         {
           q: '“10 पैकी 8 मार्गांमध्ये पैसा पुरला” याचा अर्थ काय?',
@@ -1563,7 +1563,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
-          a: 'नाही. सिम्युलेशन तुमच्या ब्राउझरमध्ये चालते आणि तुम्ही लिहिलेले आकडे आम्हाला किंवा इतर कोणालाही पाठवले जात नाहीत. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते.',
+          a: 'नाही. सिम्युलेशन तुमच्या ब्राउझरमध्ये चालते आणि तुम्ही लिहिलेले आकडे nidhi ला किंवा इतर कोणालाही पाठवले जात नाहीत. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते.',
         },
         {
           q: 'हा आर्थिक सल्ला आहे का?',
@@ -1608,16 +1608,16 @@ export const monteCarloMr: typeof monteCarloEn = {
     example: 'उदाहरणाचे आकडे. त्यांच्या जागी तुमचे आकडे भरा.',
     export: {
       tool: 'मॉन्टे कार्लो सिम्युलेटर',
-      meaning: 'मध्यक हा मधला निकाल आहे: सिम्युलेट केलेल्या मार्गांपैकी निम्मे त्याच्या वर संपले आणि निम्मे खाली. पल्ल्यात सगळ्यात खालचा आणि सगळ्यात वरचा दहावा हिस्सा धरलेला नाही. हे खाली दिलेल्या गृहीतकांवर चाललेल्या सिमुलेशनचे निकाल आहेत, भाकीत किंवा वचन नाही: प्रत्यक्ष परतावा इथल्या कोणत्याही मार्गापेक्षा चांगला किंवा वाईट असू शकतो.',
+      meaning: 'मध्यक हा मधला निकाल आहे: सिम्युलेट केलेल्या मार्गांपैकी निम्मे त्याच्या वर संपले आणि निम्मे खाली. पल्ल्यात सगळ्यात खालचा आणि सगळ्यात वरचा दहावा हिस्सा धरलेला नाही. हे खाली दिलेल्या गृहीतकांवर चाललेल्या सिम्युलेशनचे निकाल आहेत, भाकीत किंवा वचन नाही: प्रत्यक्ष परतावा इथल्या कोणत्याही मार्गापेक्षा चांगला किंवा वाईट असू शकतो.',
       moneyLabel: 'रक्कम',
-      moneyText: 'आजच्या पैशांच्या हिशेबात, पूर्ण एककांपर्यंत. पेज याहून ढोबळ आकडे दाखवते: मार्गांच्या दुसऱ्या फेरीत शेवटचे अंक वेगळे आले असते.',
+      moneyText: 'आजच्या पैशांच्या हिशेबात, पूर्ण एककांपर्यंत. पान याहून ढोबळ आकडे दाखवते: मार्गांच्या दुसऱ्या फेरीत शेवटचे अंक वेगळे आले असते.',
       sheets: { assumptions: 'गृहीतके', byYear: 'दरवर्षी', outcome: 'निकाल' },
       stocks: 'शेअर, %',
       bonds: 'रोखे, %',
       withdrawals: 'पैसे काढणे',
       stocksGrowth: 'शेअर: महागाईनंतरची वार्षिक वाढ, %',
       bondsGrowth: 'रोखे: महागाईनंतरची वार्षिक वाढ, %',
-      rebalanced: 'पुन्हा मिश्रणावर आणणे',
+      rebalanced: 'पुनर्संतुलन',
       p25: '25 वे शतमक',
       p75: '75 वे शतमक',
       atEndOfSaving: 'बचतीच्या वर्षांच्या शेवटी',
@@ -1632,7 +1632,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       startHint: 'आजच्या पैशांच्या हिशेबात',
       amountError: '{min} ते {max} दरम्यानची रक्कम भरा.',
       yearsError: '{min} ते {max} दरम्यान वर्षांची पूर्ण संख्या भरा.',
-      percentError: '{min} ते {max} मधली टक्केवारी लिहा.',
+      percentError: '{min} ते {max} मधली टक्केवारी भरा.',
       monthly: 'दरमहा जोडलेले',
       saveYears: 'बचतीची वर्षे',
       saveYearsHint: '0 ते 60',
@@ -1640,7 +1640,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       mixStocks: '{pct}% शेअर',
       mixMiddle: ', ',
       mixBonds: '{pct}% रोखे',
-      mixHint: 'वर्षातून एकदा पुन्हा या मिश्रणावर आणले जाते.',
+      mixHint: 'वर्षातून एकदा या मिश्रणानुसार पुनर्संतुलन केले जाते.',
       mixExample: '{pct}% शेअर्स हे फक्त एक उदाहरण आहे, सुचवलेले मिश्रण नाही.',
       crossLink: {
         before: 'अनेक चलनांमध्ये पैसा आहे? आधी ',
@@ -1654,9 +1654,9 @@ export const monteCarloMr: typeof monteCarloEn = {
       optimistic: 'आशावादी',
     },
     returnTips: {
-      cautious: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे खालचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
-      historical: '1900 ते 2025 मधील जागतिक बाजार: महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढले, त्यांच्या प्रत्यक्ष चढ-उतारांसह.',
-      optimistic: 'महागाई वजा जाता शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे वरचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
+      cautious: 'महागाईनंतर शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे खालचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
+      historical: '1900 ते 2025 मधील जागतिक बाजार: महागाईनंतर शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढले, त्यांच्या प्रत्यक्ष चढ-उतारांसह.',
+      optimistic: 'महागाईनंतर शेअर दरवर्षी सुमारे {stocks} आणि रोखे सुमारे {bonds} वाढतात: दीर्घकालीन पल्ल्याचे वरचे टोक. चढ-उतार इतिहासाइतकेच मोठे.',
     },
     settings: {
       toggle: 'शुल्क आणि संभाव्य मार्ग',
@@ -1679,8 +1679,8 @@ export const monteCarloMr: typeof monteCarloEn = {
       copy: 'या योजनेची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
-      reset: 'पूर्वनिश्चित मूल्ये परत आणा',
-      fix: 'निकाल अपडेट करण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
+      reset: 'रीसेट करा',
+      fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       running: '{paths} मार्ग चालवत आहे…',
     },
     quick: {
@@ -1755,7 +1755,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       phaseWithdrawing: 'पैसे काढणे, वर्ष {year}',
       legendPaths: '10 पैकी 8 मार्ग',
       legendMiddle: 'मधला अर्धा भाग',
-      legendMedian: 'मध्यक शिल्लक',
+      legendMedian: 'मध्यक मूल्य',
       legendStraight: 'एकच ठरावीक परताव्याची रेषा',
       legendHint: 'कोणत्याही वर्षाचे आकडे वाचण्यासाठी आलेखावर पॉइंटर ठेवा, त्यावर टॅप करा, किंवा डाव्या आणि उजव्या बाणांच्या कळा वापरा.',
       clippedLabels: ' सर्वात फिकट पट्टा आलेखाच्या वरच्या टोकापलीकडे जातो; उजवीकडील “जास्त” लेबल तो कुठे संपतो ते दाखवते.',

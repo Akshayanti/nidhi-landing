@@ -16,8 +16,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { loadPosts } from "./lib/parse-blog-meta.mjs";
-import { writePlatformCaptions } from "./lib/render-platform-caption.mjs";
+import { loadPosts } from "./lib/media/parse-blog-meta.mjs";
+import { writePlatformCaptions } from "./lib/media/render-platform-caption.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 

@@ -79,7 +79,7 @@ The site has a "What's changed" page (`/changes/` in every language). It is how 
 
 ## Two Projects: the Site and the Planner
 
-nidhi is two projects in two repositories. This one is the public site (nidhi.today): lessons, free tools, the waitlist and the `/beta/` page. The **planner**, the product the waitlist leads to, is built in a separate, private repository, checked out beside this one as `../NetWorthAndExpenses`.
+nidhi is two projects in two repositories. This one is the public site (nidhi.today): lessons, free tools, the waitlist and the `/beta/` page. The **planner**, the product the waitlist leads to, is built in a separate, private repository, checked out beside this one as `../bijness`.
 
 1. **Separate.** Each project has its own `CLAUDE.md`, agents, agent memory, issues and sessions. This file's rules apply here and the planner's apply there; neither side's patterns are carried into the other.
 2. **Read-only across the line.** A session or agent working here may read the planner to answer a question, and cites the file it read. It never edits the planner, and nothing learnt there is saved outside this project's memory. The same holds in the other direction.
@@ -123,6 +123,7 @@ Once a pull request is merged, its branch is deleted from the local checkout, so
 2. **Remove its worktree too.** If the branch is checked out in another worktree, check that worktree for uncommitted work, then `git worktree remove` it and delete any folder left behind.
 3. **Switch off the branch first** if it is the one checked out, and run `git fetch --prune` so stale remote branches disappear. GitHub deletes the remote branch on merge.
 4. **Unmerged work is never deleted** without asking: a branch whose commits are not in a merged pull request stays until the owner decides.
+5. **Clean up `/tmp` too** (owner, Nov 23, 2026). Once the pull request is properly merged, delete the unused temporary files and folders this session created for its branch under `/tmp`, including scratch files and temporary browser profiles. This needs no asking. Never delete the owner's files, another session's files, or anything still in use, including by a running check or an open pull request. If ownership or use is uncertain, leave it alone.
 
 ## Issues Are Worked by Label, and What Is Found Is Filed
 

@@ -198,7 +198,7 @@ For cash and informal work, two more gaps open. **Proof:** landlords, lenders an
 <details class="lesson-depth">
 <summary class="disclosure">Rotating savings groups, and their risks</summary>
 
-Informal workers have built their own smoothing tools for generations. In a [rotating savings group](#term-rotating-savings-group), each member pays a fixed amount regularly and each takes the whole pot in turn. They exist on every continent: tontine, susu, tanda, chit fund, hui. They turn small, irregular surpluses into a usable lump sum, and they run on trust, which is also their weakness: if a member defaults or an organiser disappears, there is rarely any legal protection. They tend to work best among people who know each other well, and as a supplement to savings held in your own name.
+Informal workers have built their own smoothing tools for generations. In a [rotating savings group](#term-rotating-savings-group), each member pays a fixed amount regularly and each takes the whole pot in turn. They exist on every continent: tontine, susu, tanda, chit fund, hui. They turn small, irregular surpluses into a usable lump sum, and they run on trust, which is also their weakness: if a member defaults or an organizer disappears, there is rarely any legal protection. They tend to work best among people who know each other well, and as a supplement to savings held in your own name.
 
 </details>
 

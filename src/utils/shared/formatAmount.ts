@@ -3,7 +3,7 @@
  * illustrative figures the site quotes in its own writing. The two are not the
  * same rule; see `formatProseAmount` for the second.
  */
-import { amountFormat, amountNumberLocale, amountStyle } from '../loan/math.ts';
+import { amountFormat, amountNumberLocale, amountStyle } from './money.ts';
 import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**
@@ -21,7 +21,8 @@ import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/con
  */
 export function formatAmount(value: number, code: string, compact = false, amountLocale?: string | null): string {
   const { locale, display } = amountStyle(code, amountLocale);
-  const v = Math.round(value);
+  // An amount that rounds to nothing is nothing: "−€0" for -0.3 read as a loss (#885).
+  const v = Math.round(value) || 0;
   if (!compact) {
     return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumFractionDigits: 0 }).format(v);
   }
@@ -31,16 +32,27 @@ export function formatAmount(value: number, code: string, compact = false, amoun
   if (locale.startsWith('en-') || locale === 'cs') {
     return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, notation: 'compact', maximumSignificantDigits: 3 }).format(v);
   }
-  const abs = Math.abs(v);
+  // The unit is chosen after rounding to the three digits shown, as the
+  // short form writes them: 999,999 is "1M", never "1000K" (#861).
+  const abs = Math.abs(v) < 1e3 ? Math.abs(v) : Number(Math.abs(v).toPrecision(3));
   // A Spanish reader takes "B" for billón, a million millions: "2,5 mil M €".
   const billion = amountLocale?.startsWith('es') ? ' mil M' : 'B';
   const [div, suffix] = abs >= 1e9 ? [1e9, billion] : abs >= 1e6 ? [1e6, 'M'] : abs >= 1e3 ? [1e3, 'K'] : [1, ''];
   const parts = amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 3 }).formatToParts(v / div);
   let lastNumeric = -1;
   parts.forEach((p, i) => {
-    if (p.type === 'integer' || p.type === 'group' || p.type === 'decimal' || p.type === 'fraction') lastNumeric = i;
+    // The figure ends in digits: a grouping or decimal mark always has some after it.
+    if (p.type === 'integer' || p.type === 'fraction') lastNumeric = i;
   });
   return parts.map((p, i) => p.value + (i === lastNumeric ? suffix : '')).join('');
+}
+
+/**
+ * A formatted number with the true minus sign (U+2212) where `Intl` writes a
+ * hyphen, as the tools' answers write it: one sign on a page, never two (#883, #884).
+ */
+export function trueMinus(text: string): string {
+  return text.replace('-', String.fromCodePoint(0x2212));
 }
 
 /**

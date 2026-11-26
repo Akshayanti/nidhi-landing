@@ -26,7 +26,7 @@
  * starting point (rupees and India on the Hindi page) applies only when no
  * state arrived; see `publishableState`.
  */
-import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../shared/money.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { MAX_AMOUNT, MAX_GROWTH, MAX_RATE, MAX_YEARS, MIN_GROWTH, MIN_RATE, MIN_YEARS, round2, type Mode } from './math.ts';
 

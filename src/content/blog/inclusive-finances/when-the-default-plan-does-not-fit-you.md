@@ -23,7 +23,7 @@ glossary:
   - term: "Deliberate designation"
     definition: "A written choice, in a form the law or an institution accepts, meant to replace or influence a default: a will, a beneficiary form or a power of attorney."
   - term: "Recognition gap"
-    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+    definition: "The distance between how your household works and what the law or an institution recognizes, such as a partner who is family in practice but a stranger on paper."
   - term: "Beneficiary form"
     definition: "The form naming who receives a pension or insurance payout. Depending on the scheme, it is binding or only a guide. Some schemes call it a nomination or a designation."
   - term: "Expression of wishes"
@@ -52,11 +52,11 @@ faq:
   - question: "What is a financial default?"
     answer: "A default is what happens when you make no choice. If you die without a will, a set of legal rules decides who inherits. If you never name a beneficiary on a pension, the scheme's own rules decide who is paid. If you cannot make decisions and have appointed nobody, the law or a court decides who acts for you. Defaults are not bad. They exist so that something sensible happens for most people most of the time. The problem is that 'most people' was defined with a particular household in mind, usually a married couple with children living in one country."
   - question: "Who do financial defaults usually fail?"
-    answer: "Anyone whose household does not match the shape the rules were written for. Common examples: couples who live together without marrying, couples whose marriage is not recognised where they live, people whose closest relationships are friends or chosen family and not blood relatives, blended families, people living alone, freelancers and informal workers with no employer benefits, people who moved countries and left their credit history behind, and people whose faith rules out interest. None of these situations is rare. Together they describe a large share of households."
+    answer: "Anyone whose household does not match the shape the rules were written for. Common examples: couples who live together without marrying, couples whose marriage is not recognized where they live, people whose closest relationships are friends or chosen family and not blood relatives, blended families, people living alone, freelancers and informal workers with no employer benefits, people who moved countries and left their credit history behind, and people whose faith rules out interest. None of these situations is rare. Together they describe a large share of households."
   - question: "What is a deliberate designation?"
-    answer: "It is a written choice, in a form the institution recognises, meant to replace or influence a default. A will is a deliberate designation of who inherits. A beneficiary form on a pension or an insurance policy may decide who is paid or only guide the scheme's decision, depending on the scheme and local law. A power of attorney is a deliberate designation of who can act for you. The common feature is that you decide in advance."
+    answer: "It is a written choice, in a form the institution recognizes, meant to replace or influence a default. A will is a deliberate designation of who inherits. A beneficiary form on a pension or an insurance policy may decide who is paid or only guide the scheme's decision, depending on the scheme and local law. A power of attorney is a deliberate designation of who can act for you. The common feature is that you decide in advance."
   - question: "What is a recognition gap?"
-    answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognises. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap. Naming it can show where a designation, a workaround or local advice could help, though some gaps cannot be fully closed."
+    answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognizes. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap. Naming it can show where a designation, a workaround or local advice could help, though some gaps cannot be fully closed."
   - question: "Does this mean I need a lawyer for everything?"
     answer: "No. Many useful steps cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home and checking that the title or registry says the same, and keeping a list of accounts somewhere someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
   - question: "Is this post legal advice?"
@@ -88,7 +88,7 @@ Nothing about the money was different. The only difference was which household t
 
 ## A default is a guess about your household
 
-A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's beneficiary form blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
+A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's [beneficiary form](#term-beneficiary-form) blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
 
 Defaults are useful: many people never write a will, and something sensible happening beats nothing happening. But each default is a guess about what you would have wanted, made with one household in mind. As the [life events](/blog/life-events/) post put it, the costly mistake is treating a foreseeable event as a surprise.
 
@@ -99,7 +99,7 @@ These defaults mostly imagine two married adults with shared children, a steady 
 | Default | What it assumes | Who it misses |
 |---|---|---|
 | Inheritance without a will | Your heirs are your spouse and blood relatives | Unmarried partners, chosen family, stepchildren |
-| Survivor benefits in pensions | The person who depends on you is your legal spouse | Cohabiting partners, partners in unrecognised marriages |
+| Survivor benefits in pensions | The person who depends on you is your legal spouse | Cohabiting partners, partners in unrecognized marriages |
 | The tax unit | A couple is a married couple | Unmarried couples, who are often taxed as two strangers |
 | Benefits through work | You have an employer who withholds tax and funds a pension | Freelancers, gig workers, informal workers |
 | Credit and banking history | Your financial record was built here and is continuous | Anyone who moved countries or works in cash |
@@ -121,7 +121,7 @@ The audit asks three questions, in order, about any account that pays out and an
 
 **1. What is this assuming about me?** Read the rule, not the brochure. Who does the pension pay if you die? Who inherits under the rules where you live?
 
-**2. Does that assumption hold for my household?** For your actual life, not the tidy version. Would the person you rely on be recognised here?
+**2. Does that assumption hold for my household?** For your actual life, not the tidy version. Would the person you rely on be recognized here?
 
 **3. If not, what goes in its place on purpose?** Sometimes a five-minute form, sometimes a document that needs a professional, sometimes a workaround such as extra insurance or a larger cash buffer.
 
@@ -167,7 +167,7 @@ Take one workplace pension worth €80,000 and run the audit for three people.
 
 **A married employee.** Many schemes pay a survivor benefit to the legal spouse. The assumption holds, though many people still fill in the beneficiary form, because rules change and marriages end.
 
-**An employee with a long-term unmarried partner.** The assumption may fail. A scheme may apply different rules to a spouse's pension, a dependant's pension and any lump-sum death benefit. A [beneficiary form](#term-beneficiary-form) naming the partner may decide or influence some payments, but it may not change who qualifies for a survivor pension; the next section covers when a nomination is binding. Other protections people look into include a will, where local rules leave room for one, and life cover set up for the partner.
+**An employee with a long-term unmarried partner.** The assumption may fail. A scheme may apply different rules to a spouse's pension, a dependant's pension and any lump-sum death benefit. A beneficiary form naming the partner may decide or influence some payments, but it may not change who qualifies for a survivor pension; the next section covers when a nomination is binding. Other protections people look into include a will, where local rules leave room for one, and life cover set up for the partner.
 
 **A freelancer with no workplace pension.** There is no scheme to audit, so by default nothing is paid in for them and nothing is paid out to their family.
 
@@ -217,7 +217,7 @@ A list of defaults that fail you can look like a list of expensive problems. Mos
 
 **Modest, and worth doing properly.** A will. Powers of attorney for money and for health decisions. A written agreement between partners about shared property. These need the form your jurisdiction requires, and many people find a local professional worth the cost.
 
-**Hard: gaps no document closes.** A marriage that is not recognised, a status that blocks access to banking, a tax system that treats a partner as a stranger. Here the tools are workarounds. Insurance can stand in for a benefit you are excluded from. A bigger emergency fund can stand in for a missing safety net. In some places, whose name an asset is held in from the start affects later tax and inheritance, though changing it has its own consequences and needs local advice.
+**Hard: gaps no document closes.** A marriage that is not recognized, a status that blocks access to banking, a tax system that treats a partner as a stranger. Here the tools are workarounds. Insurance can stand in for a benefit you are excluded from. A bigger emergency fund can stand in for a missing safety net. In some places, whose name an asset is held in from the start affects later tax and inheritance, though changing it has its own consequences and needs local advice.
 
 </details>
 

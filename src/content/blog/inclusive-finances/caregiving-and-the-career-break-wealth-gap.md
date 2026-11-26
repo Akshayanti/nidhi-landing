@@ -141,7 +141,7 @@ A single parent, or someone caring alone for a relative, has no household to sha
 <details class="lesson-depth">
 <summary class="disclosure">Caring for a parent or a disabled relative</summary>
 
-Care for a child has a rough timetable. Care for an ageing parent or a disabled relative can begin overnight after a fall or a diagnosis, last an unknown number of years, and arrive in the carer's fifties, usually the highest-earning and highest-saving years. Fewer pension systems credit it, and it more often means years of reduced hours than a clean break. Stepping back at 52 does less damage through compounding, with fewer years left for lost contributions to grow, and more through lost earnings, since those are peak years and returning at 57 is harder than at 40. The conversation worth having early is among siblings: when one provides the care and the others do not, the carer is subsidising the family from their own retirement, and shared contributions toward paid help or the carer's pension even that out.
+Care for a child has a rough timetable. Care for an ageing parent or a disabled relative can begin overnight after a fall or a diagnosis, last an unknown number of years, and arrive in the carer's fifties, usually the highest-earning and highest-saving years. Fewer pension systems credit it, and it more often means years of reduced hours than a clean break. Stepping back at 52 does less damage through compounding, with fewer years left for lost contributions to grow, and more through lost earnings, since those are peak years and returning at 57 is harder than at 40. The conversation worth having early is among siblings: when one provides the care and the others do not, the carer is subsidizing the family from their own retirement, and shared contributions toward paid help or the carer's pension even that out.
 
 </details>
 
@@ -158,6 +158,6 @@ Care for a child has a rough timetable. Care for an ageing parent or a disabled 
 
 </details>
 
-Care is work that every family and every economy depends on. Pension systems count it unevenly, so it is worth checking what the public system recognises and what gap remains for the household.
+Care is work that every family and every economy depends on. Pension systems count it unevenly, so it is worth checking what the public system recognizes and what gap remains for the household.
 
 If someone in your household stepped back from paid work next year, whose name would their pension contributions be paid in?

@@ -44,6 +44,8 @@ So far:
 
 These were each chosen for their own language; they are a reference, not a rule for yours.
 
+**"I" where a person acts.** nidhi is one person, so a sentence where someone does something says "I", and something automatic is worded without a person ("A confirmation link is on its way"). Only the privacy notice and the cookie question say "we": keep it there, and nowhere else.
+
 **Never give the reader or the founder a gender.** The founder writes nidhi and speaks as "I" now and then. If your language marks gender in verbs, adjectives or pronouns, reword: the existing glossaries show how each language does it.
 
 **What stays as it is:**
@@ -51,6 +53,7 @@ These were each chosen for their own language; they are a reference, not a rule 
 - **Lessons** are written in English and are not translated yet. A page in your language lists them and says they are in English. Translating lessons may come later; this review covers the site's own words.
 - **Amounts, sources and data caveats** stay as the English has them: translate, don't localise.
 - **No em dashes or double dashes.** Use a colon, a comma, or reword.
+- **The English is in Oxford spelling** (behaviour, colour, organize, amortization). If you point out a problem in the English, please keep to that.
 
 ## How your advice is used
 

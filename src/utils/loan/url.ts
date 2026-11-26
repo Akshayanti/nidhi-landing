@@ -48,7 +48,7 @@
 
 import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
-import { linkCurrency, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
+import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 
 /**
@@ -275,9 +275,11 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
   if (!encoded) return [];
   const out: LumpSumEntry[] = [];
   for (const pair of encoded.split(';')) {
+    // Stryker disable next-line MethodExpression: equivalent. Each side of the pair is trimmed again below, and a pair that is only spaces has no colon, so it is skipped either way.
     const trimmed = pair.trim();
     if (!trimmed) continue;
     const colon = trimmed.indexOf(':');
+    // Stryker disable next-line ArithmeticOperator: equivalent. A colon at the end leaves an empty amount, which reads as 0 and is skipped by the amount check below.
     if (colon <= 0 || colon === trimmed.length - 1) continue;
     const month = Number(trimmed.slice(0, colon).trim());
     const amount = Number(trimmed.slice(colon + 1).trim());
@@ -291,19 +293,18 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
 /**
  * The lump-sum box's text as the plain "12:5000;36:3000" the tool keeps, with
  * each amount read the way the page writes numbers ("12:5.000,50" on a Spanish
- * page). A pair that does not read is kept as typed, and `parseLumpSums` skips it.
+ * page). A side that does not read is the marker, never the text typed: kept
+ * as typed it was read again with other rules, and "12.:150.000" on the Czech
+ * page became 150 (#789).
  */
 export function canonicalLumpSums(raw: string, locale: string): string {
   return raw
     .split(';')
     .map((pair) => {
-      const colon = pair.indexOf(':');
-      if (colon < 0) return pair;
-      const month = canonicalNumber(pair.slice(0, colon), locale);
-      const amount = canonicalNumber(pair.slice(colon + 1), locale);
-      // An unreadable side is 'NaN', as in every other box. The text as typed
-      // must not go through: parseLumpSums would read "150.000" as 150.
-      return `${month}:${amount}`;
+      if (pair.trim() === '') return '';
+      const sides = pair.split(':');
+      if (sides.length !== 2) return UNREADABLE;
+      return sides.map((side) => canonicalNumber(side, locale) || UNREADABLE).join(':');
     })
     .join(';');
 }
@@ -314,8 +315,9 @@ export function displayLumpSums(value: string, locale: string): string {
     .split(';')
     .map((pair) => {
       const colon = pair.indexOf(':');
-      if (colon < 0) return pair;
-      return `${pair.slice(0, colon)}:${displayNumber(pair.slice(colon + 1), locale)}`;
+      if (colon < 0) return displayNumber(pair, locale);
+      const month = pair.slice(0, colon);
+      return `${month === UNREADABLE ? displayNumber(month, locale) : month}:${displayNumber(pair.slice(colon + 1), locale)}`;
     })
     .join(';');
 }
@@ -348,11 +350,13 @@ const CLEARED = '-';
 
 /** `value` as the link writes it: the mark when it was emptied and its default is not empty. */
 function written(value: string, dflt: string): string {
-  return value === '' && dflt !== '' ? CLEARED : value;
+  if (value === '') return dflt === '' ? '' : CLEARED;
+  // A hyphen in the box is not the mark of an emptied one.
+  return value === CLEARED ? UNREADABLE : linkNumber(value, dflt);
 }
 
 /** What a link's value says about a box: emptied on purpose, or the value itself. */
-function read(value: string, fallback: string): string {
+function read(value: string | null, fallback: string): string {
   return value === CLEARED ? '' : linkNumber(value, fallback);
 }
 
@@ -361,6 +365,7 @@ function encodeVendorTuple(v: VendorInput, slotIndex: number): string {
   // Build the simple-mode tuple. Each position is the field's string value,
   // with the omit-when-default behaviour (substitute '' for fields that
   // match a stable single-valued default: currently just modeKind).
+  // Stryker disable next-line ArrayDeclaration,StringLiteral: equivalent. Every one of the eight positions is assigned below, so the starting array and its fill are never read.
   const fields = new Array<string>(SIMPLE_FIELD_COUNT).fill('');
   fields[V_IDX.NAME] = v.name;
   fields[V_IDX.PRINCIPAL] = written(v.principal, dflt.principal);
@@ -394,6 +399,7 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
 
   // modeKind: any unknown value coerces to 'term' so a malformed share
   // link can never put the UI into an unexpected state.
+  // Stryker disable next-line StringLiteral: equivalent. Every slot template's mode is 'term', and an empty position reads as 'term', so an empty mode lands on the same value either way.
   if (fields[V_IDX.MODE_KIND] !== '') {
     next.modeKind = fields[V_IDX.MODE_KIND] === 'payment' ? 'payment' : 'term';
   }
@@ -441,12 +447,18 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       //   - matches the inactive default (no semantic difference)
       if (value === dflt) continue;
       // An emptied box whose default is not empty is written as the mark.
+      // Stryker disable next-line StringLiteral: equivalent. An empty value with an empty default is skipped by `value === dflt` above, and an empty rate kind writes nothing below, so no link changes whichever text is compared.
       if (value === '' && (field === 'rateKind' || dflt === '')) continue;
       if (field === 'rateChangeKeeps') {
         params.set(`v${idx}_${key}`, 'p');
         continue;
       }
-      params.set(`v${idx}_${key}`, written(String(value), String(dflt)));
+      const text = String(value);
+      const out =
+        field === 'rateKind' ? text
+        : field === 'lumpSumsEncoded' ? linkLumpSums(text, '')
+        : written(text, String(dflt));
+      if (out !== '') params.set(`v${idx}_${key}`, out);
     }
   });
 
@@ -534,6 +546,8 @@ export function decodeFromQueryString(qs: string): DecodeResult {
       } else if (field === 'rateChangeKeeps') {
         // Anything but the one known code is today's behaviour.
         next.rateChangeKeeps = value === 'p' ? 'payment' : 'term';
+      } else if (field === 'lumpSumsEncoded') {
+        next.lumpSumsEncoded = value === CLEARED ? '' : linkLumpSums(value, '');
       } else {
         // All non-rateKind advanced fields are typed `string` on VendorInput
         // (see ADVANCED_DEFAULTS); the cast through `unknown` is needed only
@@ -554,13 +568,13 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   const global: GlobalState = {
     currency: currency ?? DEFAULT_GLOBAL_STATE.currency,
     activeTab,
-    horizonMonths: params.get('h') === CLEARED ? '' : linkNumber(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
+    horizonMonths: read(params.get('h'), DEFAULT_GLOBAL_STATE.horizonMonths),
     // '0' is "no offer chosen"; otherwise one of the offers the link carries.
     refiVendorIndex: linkWholeNumber(params.get('rv'), 0, count, DEFAULT_GLOBAL_STATE.refiVendorIndex),
-    refiAtMonth: params.get('ra') === CLEARED ? '' : linkNumber(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
-    refiNewRatePct: params.get('rr') === CLEARED ? '' : linkNumber(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
-    refiNewTermMonths: params.get('rt') === CLEARED ? '' : linkNumber(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
-    refiNewFeeMajor: params.get('rf') === CLEARED ? '' : linkNumber(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
+    refiAtMonth: read(params.get('ra'), DEFAULT_GLOBAL_STATE.refiAtMonth),
+    refiNewRatePct: read(params.get('rr'), DEFAULT_GLOBAL_STATE.refiNewRatePct),
+    refiNewTermMonths: read(params.get('rt'), DEFAULT_GLOBAL_STATE.refiNewTermMonths),
+    refiNewFeeMajor: read(params.get('rf'), DEFAULT_GLOBAL_STATE.refiNewFeeMajor),
     refiRollFee: params.get('rl') === '1',
   };
 

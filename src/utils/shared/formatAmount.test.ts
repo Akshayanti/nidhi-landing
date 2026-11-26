@@ -6,8 +6,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CURRENCIES } from '../loan/math.ts';
-import { formatAmount, formatPercent, formatProseAmount, formatProsePercent } from './formatAmount.ts';
+import { CURRENCIES } from './money.ts';
+import { formatAmount, formatPercent, formatProseAmount, formatProsePercent, trueMinus } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
 const FOREIGN_ABBREVIATIONS = /Mio|mio|mln|mil\.|mill|\bmn\b|\bMn\b|\bmi\b|jt|\bJ\b|万|만|억|億|\bm\. /;
@@ -188,5 +188,92 @@ describe('formatPercent', () => {
     assert.equal(formatPercent(0, 'USD'), '0.0%');
     assert.equal(formatPercent(-12.5, 'USD'), '-12.5%');
     assert.equal(formatPercent(NaN, 'USD'), '0.0%');
+  });
+});
+
+describe('formatAmount: short forms it abbreviates itself', () => {
+  const nbsp = (v: string) => v.replace(/ /g, ' ');
+  // The yen's own locale is not English, so its short form is built here; so is a Spanish page's.
+  const yen = (v: number) => formatAmount(v, 'JPY', true);
+  const spanish = (v: number) => nbsp(formatAmount(v, 'EUR', true, 'es'));
+
+  it('writes an amount under a thousand in full', () => {
+    assert.equal(yen(7), '￥7');
+    assert.equal(yen(999), '￥999');
+    assert.equal(spanish(999), '999 €');
+    assert.equal(spanish(0), '0 €');
+  });
+
+  it('starts each abbreviation at its round figure exactly', () => {
+    assert.equal(yen(1_000), '￥1K');
+    assert.equal(yen(1_000_000), '￥1M');
+    assert.equal(yen(1_000_000_000), '￥1B');
+    assert.equal(spanish(1_000), '1K €');
+    assert.equal(spanish(1_000_000), '1M €');
+    assert.equal(spanish(1_000_000_000), '1 mil M €');
+  });
+
+  it('abbreviates an amount below zero by its size', () => {
+    assert.equal(yen(-1_500), '-￥1.5K');
+    assert.equal(spanish(-2.5e9), '-2,5 mil M €');
+  });
+
+  it('writes "B" for billions wherever the page is not Spanish', () => {
+    assert.equal(yen(2.5e9), '￥2.5B');
+    assert.equal(nbsp(formatAmount(2.5e9, 'PLN', true)), '2.5B zł');
+    assert.equal(nbsp(formatAmount(2.5e9, 'EUR', true, 'de')), '2,5B €');
+  });
+
+  it('writes "mil M" for any Spanish page style, regional ones too', () => {
+    assert.equal(nbsp(formatAmount(2.5e9, 'EUR', true, 'es-ES')), '2,5 mil M €');
+  });
+
+  it('puts the abbreviation right after the figure, before a symbol that follows it', () => {
+    assert.equal(nbsp(formatAmount(1_234_567, 'PLN', true)), '1.23M zł');
+    assert.equal(nbsp(formatAmount(1_234.5, 'CHF', true)), 'CHF 1.24K');
+  });
+
+  it('adds no abbreviation where there is no figure to abbreviate', () => {
+    assert.equal(spanish(Infinity), '∞ €');
+    assert.equal(yen(Infinity), '￥∞');
+  });
+});
+
+describe('formatAmount: just under a round figure (#861)', () => {
+  const nbsp = (v: string) => v.replace(/[\u00a0\u202f]/g, ' ');
+  it('moves to the larger unit when the three digits shown round up to a thousand', () => {
+    assert.equal(nbsp(formatAmount(999_999, 'EUR', true, 'es')), '1M €');
+    assert.equal(nbsp(formatAmount(999_999_999, 'EUR', true, 'es')), '1 mil M €');
+    assert.equal(formatAmount(999_999, 'EUR', true, 'hi'), '€1M');
+    assert.equal(formatAmount(999_999_999, 'EUR', true, 'hi'), '€1B');
+    assert.equal(formatAmount(999_999, 'JPY', true), '￥1M');
+    assert.equal(formatAmount(999_500, 'JPY', true), '￥1M');
+    assert.equal(formatAmount(-999_999, 'JPY', true), '-￥1M');
+    assert.equal(formatAmount(999.6, 'JPY', true), '￥1K');
+  });
+
+  it('stays in the smaller unit when the figure does not round up', () => {
+    assert.equal(formatAmount(999_499, 'JPY', true), '￥999K');
+    assert.equal(nbsp(formatAmount(999_499, 'EUR', true, 'es')), '999K €');
+    assert.ok(!formatAmount(999_999, 'EUR', true, 'mr').includes('K'));
+  });
+});
+
+describe('formatAmount: an amount that rounds to zero (#885)', () => {
+  it('is written as zero, with no sign', () => {
+    for (const v of [-0.4, -0.0001, -0]) {
+      assert.equal(formatAmount(v, 'EUR'), '€0', String(v));
+      assert.equal(formatAmount(v, 'EUR', true), '€0', String(v));
+      assert.equal(formatAmount(v, 'CHF', false, 'es').replace(/\s/g, ' '), '0 CHF', String(v));
+      assert.equal(formatAmount(v, 'JPY', true), '￥0', String(v));
+    }
+    assert.equal(formatAmount(-0.6, 'EUR'), '-€1');
+  });
+});
+
+describe('trueMinus', () => {
+  it('writes the hyphen of a negative figure as U+2212, and leaves other text alone', () => {
+    assert.equal(trueMinus('-1.5%'), '\u22121.5%');
+    assert.equal(trueMinus('1.5%'), '1.5%');
   });
 });

@@ -24,10 +24,8 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { execSync } from 'node:child_process';
-import { isMonteCarloReleased } from '../../utils/monte-carlo/release.ts';
-import { isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
 import { NOTICE_ENTRIES, entryAnchor, entryYear } from '../../utils/privacyChangelog.ts';
-import { privacyChangelog } from '../../utils/privacyChangelogSource.ts';
+import { writtenChangelog } from '../../utils/privacyChangelogEntries.ts';
 import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 
 interface Props {
@@ -77,16 +75,10 @@ const KEY = {
   privacyWord: 'privacy',
 };
 
-// The Monte Carlo simulator's and the invest or pay off calculator's events
-// appear in the notice once the tool itself is live (src/utils/*/release.ts).
-const showMonteCarlo = await isMonteCarloReleased();
-const showInvestOrPayOff = await isInvestOrPayOffReleased();
-
-// The changelog: the hand-written entries and the launch entries of the
-// tools that are live, one entry per date, newest first. The entries live in
+// The changelog: one entry per date, newest first. The entries live in
 // src/utils/privacyChangelogEntries.ts; the notice shows the latest NOTICE_ENTRIES and
 // links to the complete record, one page per year (#722).
-const changelog = await privacyChangelog();
+const changelog = writtenChangelog;
 const [first, ...recent] = changelog.slice(0, NOTICE_ENTRIES);
 
 /**
@@ -255,19 +247,15 @@ const archiveRange = earliest && first
         </li>
         <li>{collect.toolAddresses}</li>
         <li>{collect.toolExports}</li>
-        {showMonteCarlo && (
-          <li>
-            {collect.monteCarlo.before}<strong>{collect.monteCarlo.strong}</strong>
-          </li>
-        )}
+        <li>
+          {collect.monteCarlo.before}<strong>{collect.monteCarlo.strong}</strong>
+        </li>
         <li>
           {collect.inflation.before}<strong>{collect.inflation.strong}</strong>
         </li>
-        {showInvestOrPayOff && (
-          <li>
-            {collect.investOrPayOff.before}<strong>{collect.investOrPayOff.strong}</strong>
-          </li>
-        )}
+        <li>
+          {collect.investOrPayOff.before}<strong>{collect.investOrPayOff.strong}</strong>
+        </li>
         <li>
           {collect.campaigns.before}<code>{KEY.utmSource}</code>{collect.campaigns.middle}<code>{KEY.utmMedium}</code>{collect.campaigns.after}
         </li>

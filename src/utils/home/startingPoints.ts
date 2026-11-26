@@ -98,11 +98,9 @@ export const TOOLS: Record<string, { key: ToolKey }> = {
   '/free/monte-carlo-simulator/': { key: 'monteCarlo' },
 };
 
-/** The tools section's cards: every tool `isToolLive` accepts, in TOOLS order. */
-export function liveTools(isToolLive: (href: string) => boolean): Array<{ href: string; key: ToolKey }> {
-  return Object.entries(TOOLS)
-    .filter(([href]) => isToolLive(href))
-    .map(([href, meta]) => ({ href, key: meta.key }));
+/** The tools section's cards: every tool, in TOOLS order. */
+export function toolList(): Array<{ href: string; key: ToolKey }> {
+  return Object.entries(TOOLS).map(([href, meta]) => ({ href, key: meta.key }));
 }
 
 /**
@@ -123,13 +121,12 @@ export type SituationId = (typeof SITUATIONS)[number]['id'];
 
 /**
  * The situations ready to render. Each one is a whole chain, so a lesson that
- * is not published or a tool that is not released fails the build with a
+ * is not published or a tool that is not in TOOLS fails the build with a
  * message, rather than leaving a situation with a missing step.
  */
 export function resolveSituations(
   posts: HomePost[],
   now: Date,
-  isToolLive: (href: string) => boolean = () => true,
 ): Array<{ id: SituationId; lesson: LessonLink; tool: { href: string; key: ToolKey } }> {
   const live = liveIndex(posts, now);
   return SITUATIONS.map((s) => {
@@ -137,8 +134,8 @@ export function resolveSituations(
     if (!lesson) {
       throw new Error(`The homepage situation "${s.id}" links to the lesson "${s.lesson}", which is not published. Publish it or change SITUATIONS in src/utils/home/startingPoints.ts.`);
     }
-    if (!TOOLS[s.tool] || !isToolLive(s.tool)) {
-      throw new Error(`The homepage situation "${s.id}" links to the tool ${s.tool}, which is not released. Change SITUATIONS in src/utils/home/startingPoints.ts.`);
+    if (!TOOLS[s.tool]) {
+      throw new Error(`The homepage situation "${s.id}" links to the tool ${s.tool}, which is not in TOOLS. Change SITUATIONS in src/utils/home/startingPoints.ts.`);
     }
     return { id: s.id, lesson, tool: { href: s.tool, key: TOOLS[s.tool].key } };
   });
@@ -194,12 +191,12 @@ export interface StartingPoint {
 /**
  * Routes with at least one live lesson, plus those marked showWhenEmpty
  * (with no lessons until theirs go live); lessons that are not live yet are
- * left out, and so are tools `isToolLive` rejects.
+ * left out, and so are tools that are not in TOOLS.
  *
  * No words come back from here: the caller looks up `home.startingPoints[id]`
  * and `home.levels[level]` for those.
  */
-export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: (href: string) => boolean = () => true): StartingPoint[] {
+export function resolveStartingPoints(posts: HomePost[], now: Date): StartingPoint[] {
   const live = liveIndex(posts, now);
   const { byLevel } = levelCounts(posts, now);
   return STARTING_POINTS.map((s) => ({
@@ -207,9 +204,7 @@ export function resolveStartingPoints(posts: HomePost[], now: Date, isToolLive: 
     level: s.level,
     levelCount: s.level ? byLevel[s.level] ?? 0 : 0,
     lessons: toLinks(s.lessons, live),
-    tools: (s.tools ?? [])
-      .filter((href) => TOOLS[href] && isToolLive(href))
-      .map((href) => ({ href })),
+    tools: (s.tools ?? []).filter((href) => TOOLS[href]).map((href) => ({ href })),
     showWhenEmpty: s.showWhenEmpty ?? false,
   })).filter((s) => s.lessons.length > 0 || s.showWhenEmpty);
 }

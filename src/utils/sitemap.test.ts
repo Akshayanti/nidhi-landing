@@ -115,16 +115,13 @@ describe('guideMapsFrom', () => {
 });
 
 describe('newestChangeDay', () => {
-  const published = new Map([['launch-lesson', '2026-11-18T00:00:00.000Z'], ['future-launch', '2026-12-01T00:00:00.000Z']]);
-
-  it('takes the newest day up to today, counting a live launch lesson as a day', () => {
-    assert.equal(newestChangeDay(['2026-11-10', '2026-11-15'], ['launch-lesson'], published, '2026-11-21'), '2026-11-18T00:00:00.000Z');
-    assert.equal(newestChangeDay(['2026-11-10', '2026-11-19'], ['launch-lesson'], published, '2026-11-21'), '2026-11-19T00:00:00.000Z');
+  it('takes the newest day up to today', () => {
+    assert.equal(newestChangeDay(['2026-11-10', '2026-11-19', '2026-11-15'], '2026-11-21'), '2026-11-19T00:00:00.000Z');
   });
 
-  it('passes over a day after today, and a launch whose lesson is not live', () => {
-    assert.equal(newestChangeDay(['2026-11-10', '2026-11-30'], ['future-launch', 'missing'], new Map(), '2026-11-21'), '2026-11-10T00:00:00.000Z');
-    assert.equal(newestChangeDay(['2026-12-01'], [], new Map(), '2026-11-21'), null);
+  it('passes over a day after today', () => {
+    assert.equal(newestChangeDay(['2026-11-10', '2026-11-30'], '2026-11-21'), '2026-11-10T00:00:00.000Z');
+    assert.equal(newestChangeDay(['2026-12-01'], '2026-11-21'), null);
   });
 });
 

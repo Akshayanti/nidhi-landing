@@ -86,6 +86,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
   // A figure a loan that is not paid off does not have: empty, or in words.
   const missing = (r: LoanResult, what: 'months' | 'total' | 'apr'): Cell => {
     if (!worded) return null;
+    // Stryker disable next-line OptionalChaining: equivalent. `missing` is only called for a loan that is not paid off, and `isNotPaidOff` is only true when `keptPayment` is set.
     const never = r.keptPayment?.outcome === 'never';
     if (what === 'months') return never ? island.results.notPaidOff : island.results.beyondLimit;
     if (what === 'total') return never ? island.results.noFiniteTotal : island.results.notAvailable;

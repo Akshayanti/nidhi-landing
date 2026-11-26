@@ -70,7 +70,7 @@ import { extname, join, normalize } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import puppeteer from 'puppeteer';
 import {
-  AMOUNTS, NAMES, TEST_KEY, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, hasFinding, isMissedStepOnly, pressUntilSent } from './lib/tool-privacy-checks.mjs';
+  AMOUNTS, BOXES, NAMES, TEST_KEY, afterRun, expectedLeaks, sameTyped, shortInAddress, shortInBody, typedAs, uncoveredBoxes, findLeaks, eventsIn, decodeBody, checkRun, checkMatrix, isMissedStepOnly, pressUntilSent } from './lib/checks/tool-privacy-checks.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
@@ -87,17 +87,17 @@ const PLANT = argv.includes('--plant-leak');
 const JOBS = Math.max(1, Number(many('--jobs')[0]) || 3);
 
 // Kept in step with LOCALES in src/i18n/config.ts by the unit test
-// scripts/lib/tool-privacy-checks.test.mjs: this script runs under plain node.
+// scripts/lib/checks/tool-privacy-checks.test.mjs: this script runs under plain node.
 export const LOCALE_CODES = ['en', 'hi', 'es', 'cs', 'mr'];
 
-const [A1, A2, A3] = AMOUNTS;
+const [A1, , A3] = AMOUNTS;
 const [N1, N2] = NAMES;
 
 /**
- * Each tool: where its sentinel values go, and what to do that is its own.
- * `fields` are filled in order; `{ all: true }` fills every match (each offer,
- * each row), otherwise the first. `addRow` is a button pressed before a
- * field is filled, for a value that needs a row the form does not open with. Everything else is found on the page.
+ * Each tool: what to do that is its own. The values typed into its boxes are
+ * in BOXES (scripts/lib/checks/tool-privacy-checks.mjs), and filled in that order;
+ * `all` fills every match (each offer, each row). Everything else is found on
+ * the page.
  *
  * `removeNamedRow` adds a row, names it with the second name and removes it
  * with its own remove button: the click that sent a typed name in Oct 2026.
@@ -112,25 +112,15 @@ const [N1, N2] = NAMES;
 const TOOLS = {
   'loan-comparison': {
     global: '__nidhiLoanCompareShared',
-    fields: [
-      { selector: 'input[id$="-name"]', value: N1, all: true },
-      { selector: 'input[id$="-principal"]', value: A1, all: true },
-      { selector: 'input[id$="-fee"]', value: A2 },
-      { selector: 'input[id$="-extra"]', value: A3 },
-    ],
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="lc-vendor-add"]', '[data-attr="lc-vendor-remove"]', []),
+    // On a phone one offer shows at a time, chosen by these tabs.
+    instanceTab: 'button.lc-vendorTab[aria-controls]',
     ownEvents: /^free_loan_comparison_/,
     mustSend: ['vendor_added', 'vendor_removed', 'details_toggled', 'tab_changed', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
   },
   'multi-currency-net-worth': {
     global: '__nidhiNetWorthShared',
-    fields: [
-      { selector: 'input[id$="-name"]', value: N1 },
-      { selector: 'input[id$="-value"]', value: A1 },
-      // The form opens with one row, so the second amount gets a row of its own.
-      { selector: 'input[id$="-value"]', value: A2, last: true, addRow: '[data-attr="mcnw-asset-add"]' },
-    ],
     removeNamedRow: (page) => addNameRemove(page, '[data-attr="mcnw-asset-add"]', '[data-attr="mcnw-asset-remove"]', [['input[id$="-value"]', A3]]),
     ownEvents: /^free_multi_currency_net_worth_/,
     mustSend: ['asset_added', 'asset_removed', 'csv_downloaded', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
@@ -140,28 +130,18 @@ const TOOLS = {
   },
   'monte-carlo-simulator': {
     global: '__nidhiMonteCarloShared',
-    fields: [
-      { selector: 'input.mcs-input', value: A1 },
-      { selector: 'input.mcs-input', value: A2, nth: 1 },
-    ],
     ownEvents: /^free_monte_carlo_/,
     mustSend: ['currency_changed', 'withdrawal_toggled', 'table_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
   },
   'inflation-calculator': {
     global: '__nidhiInflationShared',
-    fields: [{ selector: 'input[id$="-amount"]', value: A1 }],
     ownEvents: /^free_inflation_/,
     mustSend: ['mode_changed', 'currency_changed', 'country_changed', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
   },
   'invest-or-pay-off': {
     global: '__nidhiInvestOrPayOffShared',
-    fields: [
-      { selector: 'input[id$="-balance"]', value: A1 },
-      { selector: 'input[id$="-payment"]', value: A2 },
-      { selector: 'input[id$="-extra"]', value: A3 },
-    ],
     ownEvents: /^free_invest_or_pay_off_/,
     mustSend: ['calculated', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
@@ -342,7 +322,8 @@ async function watch(page, requests, problems, note) {
     // itself opens to try an old ?-style link, by its exact address.
     // The part after the # is left out: a browser keeps it and sends it to no one.
     if (!note.opening.has(req.url())) {
-      const leaks = findLeaks(`${req.url().split('#')[0]} ${posthog ? '' : req.postData() || ''}`);
+      const sentTo = req.url().split('#')[0];
+      const leaks = [...findLeaks(`${sentTo} ${posthog ? '' : req.postData() || ''}`), ...shortInAddress(sentTo), ...(posthog ? [] : shortInBody(req.postData()))];
       if (leaks.length) problems.push(`a ${req.isNavigationRequest() ? 'page load' : 'request'} to ${url.hostname}${url.pathname} carries what was typed in its address${posthog ? '' : ' or body'}: ${leaks.join(', ')}`);
     }
 
@@ -428,7 +409,17 @@ async function visible(page, selector) {
  * element (or inside it). A sticky header or a notice can sit over it, and a
  * click meant for a button must never land on a link.
  */
+/** Presses an element; true if the click was made. `pressOutcome` says why not. */
 async function press(page, el, times = 1, gap = 60) {
+  return (await pressOutcome(page, el, times, gap)).ok;
+}
+
+/**
+ * Presses an element and says how it went (#782): `{ ok: true }`, or
+ * `{ ok: false, reason }` with what stopped it (not on the page, covered by
+ * what, still moving, moved away under the pointer, or what was thrown).
+ */
+async function pressOutcome(page, el, times = 1, gap = 60) {
   // Where the element's centre is, and whether that point really is the element.
   const measure = (block) => el.evaluate((node, where) => {
     if (where) {
@@ -477,14 +468,16 @@ async function press(page, el, times = 1, gap = 60) {
     }
     // Never settled: no click is made on a page that is still moving.
     if (point && !point.covered && still < 3) point = { covered: 'nothing: the page did not stop moving' };
-  } catch (err) { return refuse(page, `the element could not be read (${err && err.message ? err.message : err})`); }
+  } catch (error) {
+    return { ok: false, reason: `the element could not be measured: ${String(error?.message ?? error).split('\n')[0]}` };
+  }
   if (!point || point.covered) {
     if (point && page.nidhiNote) page.nidhiNote.covered.add(point.covered);
-    return refuse(page, point ? `covered by ${point.covered}` : 'the element could not be placed');
+    return { ok: false, reason: point ? `covered by ${point.covered}` : 'not on the page' };
   }
   if (times > 1) {
     for (let i = 0; i < times; i++) { await page.mouse.click(point.x, point.y); await sleep(gap); }
-    return true;
+    return { ok: true };
   }
   // One click, watched: if the element moves away as the button goes down
   // (pressing can take the focus from something that then redraws the page),
@@ -497,20 +490,35 @@ async function press(page, el, times = 1, gap = 60) {
     await page.mouse.up();
     await sleep(gap);
     // Gone or replaced after the click is what a click often does: it counted.
-    if (under.covered === 'gone' || (!under.covered && Math.abs(under.x - point.x) < 2 && Math.abs(under.y - point.y) < 2)) return true;
+    if (under.covered === 'gone' || (!under.covered && Math.abs(under.x - point.x) < 2 && Math.abs(under.y - point.y) < 2)) return { ok: true };
     if (page.nidhiNote) page.nidhiNote.moved = (page.nidhiNote.moved || 0) + 1;
     await sleep(350);
     point = await measure(null).catch(() => ({ covered: 'gone' }));
-    if (point.covered) return point.covered === 'gone' || refuse(page, `moved, then covered by ${point.covered}`);
+    if (point.covered) return point.covered === 'gone' ? { ok: true } : { ok: false, reason: `covered by ${point.covered} after the button went down` };
   }
   // It moved away every time: that click was not made.
-  return refuse(page, 'moved away under the pointer every time');
+  return { ok: false, reason: 'it moved away under the pointer three times' };
 }
 
-/** Keeps why the latest click was not made, for the step that asks. */
-function refuse(page, reason) {
-  if (page.nidhiNote) page.nidhiNote.refused = reason;
-  return false;
+/** The tool's Reset buttons, pressed last, until the reset event is sent (pressUntilSent, #782). */
+async function pressResets(page, resets, note, wasSent) {
+  note.resetPresses = await pressUntilSent({
+    first: resets,
+    find: () => resetButtons(page),
+    pressOne: (el) => pressOutcome(page, el),
+    wasSent,
+    wait: sleep,
+  });
+}
+
+/** The tool's visible Reset buttons, as pressButtons tells them apart. */
+async function resetButtons(page) {
+  const found = [];
+  for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
+    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`.trim()).catch(() => null);
+    if (label !== null && /reset|--ghost/i.test(label)) found.push(el);
+  }
+  return found;
 }
 
 async function choose(page, selector, { last = false, nth = 0 } = {}) {
@@ -534,32 +542,94 @@ async function click(page, selector, where = {}) {
  * nothing after it would be exercised.
  */
 async function fill(page, selector, value, where = {}) {
-  let el = await choose(page, selector, where);
-  if (!el) {
-    // Open every closed section that holds a match, then look again.
-    for (const hidden of await page.$$(selector)) {
-      const summary = await hidden.evaluateHandle((node) => {
-        const details = node.closest('details:not([open])');
-        return details ? details.querySelector(':scope > summary') : null;
-      });
-      const asElement = summary.asElement();
-      if (asElement) { await press(page, asElement); await sleep(200); }
-    }
-    el = await choose(page, selector, where);
-  }
+  const el = await reach(page, selector, where);
   if (!el) throw new Error(`no visible field for ${selector}`);
   // A field under an adornment (a currency sign, say) is reached with the keyboard instead.
   if (!(await press(page, el))) await el.focus();
   // Select what is there, so that typing replaces it.
-  const focused = await el.evaluate((node) => { node.focus(); if (typeof node.select === 'function') node.select(); return document.activeElement === node; });
+  const focused = await el.evaluate((node) => { node.focus(); if (node.type !== 'range' && typeof node.select === 'function') node.select(); return document.activeElement === node; });
   if (!focused) throw new Error(`the field for ${selector} could not take the focus`);
-  await page.keyboard.type(String(value), { delay: 5 });
-  const held = await el.evaluate((node) => node.value);
-  // Grouping marks a field adds as it formats are not a difference.
-  const bare = (v) => String(v).replace(/[\s.,'  ]/g, '');
-  if (bare(held) !== bare(value)) throw new Error(`the field for ${selector} holds "${held}" after "${value}" was typed`);
+  const locale = page.nidhiLocale;
+  if (where.steps === undefined) {
+    await page.keyboard.type(typedAs(value, locale), { delay: 5 });
+  } else {
+    await page.keyboard.press('Home');
+    for (let i = 0; i < where.steps; i++) await page.keyboard.press('ArrowRight');
+    // A slow page can lose a step (the laptop runs with consent did, 4 of 5):
+    // press on until the slider holds the value, never past it, and at most
+    // as many presses again; the check after Tab still fails if it never does.
+    for (let i = 0; i < where.steps; i++) {
+      const held = Number(await el.evaluate((node) => node.value));
+      if (!(held < Number(value))) break;
+      await page.keyboard.press('ArrowRight');
+    }
+  }
+  const box = await el.evaluate(boxKey);
   await page.keyboard.press('Tab');
   await sleep(150);
+  // Read once the field has been left: that is when a box tidies or refuses what it was given.
+  const now = await el.evaluate((node) => ({ held: node.value, invalid: node.getAttribute('aria-invalid') === 'true' }));
+  if (!sameTyped(now.held, value, locale)) throw new Error(`the field for ${selector} holds "${now.held}" after "${value}" was typed`);
+  if (now.invalid) throw new Error(`the field for ${selector} refused "${value}", so what it sends was not checked`);
+  return box;
+}
+
+/** The visible match, after opening every closed section that holds one. */
+async function reach(page, selector, where = {}) {
+  const el = await choose(page, selector, where);
+  if (el) return el;
+  for (const hidden of await page.$$(selector)) {
+    const summary = await hidden.evaluateHandle((node) => {
+      const details = node.closest('details:not([open])');
+      return details ? details.querySelector(':scope > summary') : null;
+    });
+    const asElement = summary.asElement();
+    if (asElement) { await press(page, asElement); await sleep(200); }
+  }
+  return choose(page, selector, where);
+}
+
+/** Presses what shows a box: a tab, or a choice. */
+async function reveal(page, selector, note, where = {}) {
+  const el = (await reach(page, selector, where)) || (await page.$$(selector))[where.nth ?? 0];
+  if (!el) throw new Error(`nothing matches ${selector}, which shows a box`);
+  if (!(await press(page, el))) {
+    await el.evaluate((node) => node.click());
+    note.unreachable.add(selector);
+  }
+  await sleep(250);
+}
+
+/**
+ * Runs in the page: a name for one box that holds through redraws. The suffix
+ * of its id where it has one, a slider's class, otherwise its label without
+ * amounts and units; and from the second offer or row on, which one it is, so
+ * that typing into the first does not stand for the others. A row a later
+ * step adds starts empty, so the last count names boxes by field only.
+ */
+function boxKey(node, eachOne = true) {
+  const name = (box) => {
+    const suffix = /^_[^-]*_-(.+)$/.exec(box.id);
+    if (suffix) return suffix[1];
+    if (box.type === 'range') return box.className;
+    const label = box.labels?.[0]?.textContent || box.getAttribute('aria-label') || box.className;
+    return label.replace(/\([^)]*\)|\d+/g, '').trim();
+  };
+  const own = name(node);
+  const alike = [...document.querySelectorAll('astro-island input, astro-island textarea, astro-island [contenteditable="true"]')].filter((box) => name(box) === own);
+  const at = alike.indexOf(node);
+  return eachOne && at > 0 ? `${own} (${at + 1})` : own;
+}
+
+/** Notes every box on the page now, in a closed section too. */
+async function noteBoxes(page, note, eachOne = true) {
+  const found = await page.$$('astro-island input, astro-island textarea, astro-island [contenteditable="true"]');
+  for (const el of found) {
+    const editable = await el.evaluate((node) => !node.readOnly && !['radio', 'checkbox', 'file', 'button', 'submit', 'hidden'].includes(node.type)).catch(() => false);
+    if (!editable) continue;
+    const key = await el.evaluate(boxKey, eachOne).catch(() => null);
+    if (key !== null) note.shown.add(key);
+  }
 }
 
 async function waitForTool(page) {
@@ -572,15 +642,13 @@ async function waitForTool(page) {
   await sleep(600);
 }
 
-// A button that clears the tool: never pressed until everything else is done.
-const RESET_BUTTON = /reset|--ghost/i;
-
 /** Presses every visible button of the tool that has not been pressed yet, reset buttons left for last. */
 async function pressButtons(page, note, pressed) {
+  const resets = [];
   for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
     const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`.trim()).catch(() => null);
     if (label === null || pressed.has(label)) continue;
-    if (RESET_BUTTON.test(label)) continue; // pressed last, by pressResets
+    if (/reset|--ghost/i.test(label)) { resets.push(el); continue; }
     if (/remove/.test(label)) continue; // done on a named row, and checked there
     note.step = `clicking the button ${label}`;
     pressed.add(label);
@@ -615,40 +683,7 @@ async function pressButtons(page, note, pressed) {
     }
     if (await page.$(DIALOG)) note.stuck = `the dialog opened by ${label} could not be closed`;
   }
-}
-
-/** The buttons that put the tool back as it was. */
-async function resetButtons(page) {
-  const out = [];
-  for (const el of await visible(page, 'astro-island button:not([role="tab"])')) {
-    const label = await el.evaluate((node) => `${node.getAttribute('data-attr') || ''} ${node.className}`).catch(() => '');
-    if (RESET_BUTTON.test(label)) out.push(el);
-  }
-  return out;
-}
-
-/**
- * Reset comes last, since it clears what the other steps need. It is looked
- * up and pressed again until its event is seen; PostHog sends in batches
- * every few seconds, hence the wait after each go.
- */
-async function pressResets(page, note, sent) {
-  note.step = 'clicking Reset';
-  return pressUntilSent({
-    find: () => resetButtons(page),
-    press: async (el) => {
-      note.refused = null;
-      if (await press(page, el)) { await sleep(300); return null; }
-      return note.refused || 'not clicked';
-    },
-    sent: async () => {
-      for (let i = 0; i < 16; i++) {
-        if (sent().has('reset')) return true;
-        await sleep(300);
-      }
-      return false;
-    },
-  });
+  return resets;
 }
 
 /** Clicks every field and changes every choice the tool offers. Returns the fields it found. */
@@ -674,6 +709,7 @@ async function makeChoices(page, note) {
     for (const el of await visible(page, selector)) {
       await press(page, el);
       await sleep(120);
+      await noteBoxes(page, note, false);
     }
   }
   await sleep(400);
@@ -685,16 +721,46 @@ async function useTool(page, tool, note, downloads, sent) {
   const island = 'astro-island';
   const failed = [];
 
+  // Where one offer or row shows at a time, its tab is pressed first, and
+  // then its boxes are the only ones visible: the place among the visible
+  // boxes to use. A tab that is not shown (a wide window shows every offer)
+  // is left alone.
+  const show = async (i) => {
+    if (!tool.instanceTab) return { nth: i };
+    const tab = (await page.$$(tool.instanceTab))[i];
+    if (!tab || !(await tab.boundingBox())) return { nth: i };
+    if (!(await press(page, tab))) throw new Error(`the tab of offer ${i + 1} could not be pressed`);
+    await sleep(120);
+    return { nth: 0 };
+  };
+
   // Type the distinctive values.
   note.step = 'typing values';
-  for (const f of tool.fields) {
+  await noteBoxes(page, note);
+  for (const f of tool.boxes) {
+    note.step = `typing into ${f.name}`;
+    if (f.reveal && f.all) {
+      // Every offer's choice, so that every offer shows the box.
+      const choices = (await page.$$(f.reveal)).length;
+      for (let i = 0; i < choices; i++) await reveal(page, f.reveal, note, await show(i));
+      await show(0);
+      await noteBoxes(page, note);
+    } else if (f.reveal && !(await choose(page, f.selector, f))) { await reveal(page, f.reveal, note); await noteBoxes(page, note); }
     if (f.all) {
-      const n = (await visible(page, f.selector)).length;
-      for (let i = 0; i < n; i++) await fill(page, f.selector, f.value, { nth: i });
+      // Every offer or row, a closed one too: fill opens what holds the box.
+      const n = (await page.$$(f.selector)).length;
+      if (!n) throw new Error(`no visible field for ${f.selector}`);
+      for (let i = 0; i < n; i++) note.typed.add(await fill(page, f.selector, f.value, await show(i)));
+      await show(0);
     } else {
       if (f.addRow && !(await click(page, f.addRow))) failed.push(`the row for a second amount could not be added (${f.addRow})`);
-      await fill(page, f.selector, f.value, f);
+      note.typed.add(await fill(page, f.selector, f.value, f));
     }
+    if (f.after && f.all) {
+      const choices = (await page.$$(f.after)).length;
+      for (let i = 0; i < choices; i++) await reveal(page, f.after, note, await show(i));
+      await show(0);
+    } else if (f.after) await reveal(page, f.after, note);
   }
   if (tool.removeNamedRow) {
     note.step = 'adding and removing a named row';
@@ -759,7 +825,7 @@ async function useTool(page, tool, note, downloads, sent) {
   })).catch(() => null);
 
   // Buttons that only appeared after the choices were made, then reset.
-  await pressButtons(page, note, pressed);
+  let resets = await pressButtons(page, note, pressed);
   note.buttons = pressed.size;
   await sleep(500);
 
@@ -775,7 +841,7 @@ async function useTool(page, tool, note, downloads, sent) {
     note.retried = `${again}: ${todo.join(', ')}`;
     note.step = `doing again: ${todo.join(', ')}`;
     if (todo.some((need) => /removed/.test(need)) && tool.removeNamedRow) await tool.removeNamedRow(page);
-    await pressButtons(page, note, new Set());
+    resets = await pressButtons(page, note, new Set());
     // From the second go, a button the pointer keeps missing (the page moves
     // under it) is activated by calling its click directly, so that what it
     // sends is still checked. The output names it: such a run checks the
@@ -805,7 +871,9 @@ async function useTool(page, tool, note, downloads, sent) {
   }
   if (!(await page.evaluate(() => window.__printed || 0))) failed.push('the print dialog was never asked for: the PDF export did not run');
   note.saved = saved.length;
-  return { failed };
+  await noteBoxes(page, note, false);
+  failed.push(...uncoveredBoxes(note.shown, note.typed));
+  return { resets, failed };
 }
 
 // ---------------------------------------------------------------------------
@@ -813,7 +881,7 @@ async function useTool(page, tool, note, downloads, sent) {
 // ---------------------------------------------------------------------------
 
 async function run(browser, base, { slug, locale, viewport, consent }) {
-  const tool = TOOLS[slug];
+  const tool = { ...TOOLS[slug], boxes: BOXES[slug] };
   const prefix = locale === 'en' ? '' : `/${locale}`;
   const path = `${prefix}/free/${slug}/`;
   const requests = [];
@@ -821,7 +889,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
   // `phase` names the part of the run a request belongs to: using the tool,
   // the # share link, the language switch, the old ? link. `opening` holds
   // the addresses the check itself is loading.
-  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), opening: new Set(), parts: new Set() };
+  const note = { phase: 'use', covered: new Set(), unreachable: new Set(), shown: new Set(), typed: new Set(), opening: new Set(), parts: new Set() };
   const context = await browser.createBrowserContext();
   const downloads = mkdtempSync(join(tmpdir(), 'nidhi-privacy-'));
   let page;
@@ -832,6 +900,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     note.leaving = false;
     page = await context.newPage();
     page.nidhiNote = note;
+    page.nidhiLocale = locale;
     await page.setViewport(VIEWPORTS[viewport]);
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36');
     await watch(page, requests, problems, note);
@@ -850,13 +919,17 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     note.opening.delete(base + address);
     await waitForTool(page);
     if (PLANT) {
-      // One leak through analytics, one through an image on the site's own server.
-      await page.evaluate((amount) => {
-        window.posthog.capture('free_planted_leak', { amount });
+      // One leak through analytics, holding the value of every box, one
+      // through an image on the site's own server, and one of the short
+      // values alone, in a body sent there.
+      const short = expectedLeaks(tool.boxes).filter((value) => /^\d{1,3}$/.test(value));
+      await page.evaluate((amount, values, shortValues) => {
+        if (shortValues.length) fetch('/planted-body', { method: 'POST', body: shortValues.join(' ') }).catch(() => {});
+        window.posthog.capture('free_planted_leak', { amount, values });
         const img = document.createElement('img');
         img.src = `/?planted=${amount}`;
         document.body.appendChild(img);
-      }, A1);
+      }, A1, tool.boxes.map((box) => String(box.value)), short);
     }
   };
   // The page's last events go out as it unloads, while the abort still applies.
@@ -899,13 +972,13 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       }
       return names;
     };
-    const { failed } = await useTool(page, tool, note, downloads, sent);
+    const { resets, failed } = await useTool(page, tool, note, downloads, sent);
     problems.push(...failed);
     if (note.stuck) problems.push(note.stuck);
     const state = await page.evaluate((g) => window[g] || '', tool.global);
     if (!state) problems.push('the tool published no state for the language switch, so the share-link steps had nothing to carry');
     if ((await address()) !== path) problems.push(`the address changed while the tool was used: ${await address()}`);
-    note.resetMisses = await pressResets(page, note, sent);
+    await pressResets(page, resets, note, () => sent().has('reset'));
     await leave();
 
     // The link the tool itself copied is the one opened next, exactly. The
@@ -1005,7 +1078,7 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
     });
     result.problems.unshift(...problems);
     result.problems = [...new Set(result.problems)];
-    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], parts: [...note.parts], opening: undefined };
+    const notes = { ...note, covered: [...note.covered], unreachable: [...note.unreachable], shown: [...note.shown], typed: [...note.typed], parts: [...note.parts], opening: undefined };
     if (DUMP) {
       mkdirSync(DUMP, { recursive: true });
       writeFileSync(join(DUMP, `${slug}.${locale}.${viewport}.${consent}.json`), JSON.stringify({ note: notes, problems: result.problems, counts: result.counts, decoded }, null, 1));
@@ -1047,7 +1120,7 @@ console.log(`Checking ${matrix.length} runs against ${base} (${HEADLESS ? 'headl
 // died and start another, and the run could not be stopped.
 const browsers = new Set();
 // Runs that were done a second time because a step was missed the first time.
-const repeated = new Map();
+const repeated = new Set();
 let stopping = false;
 for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
   process.on(signal, () => {
@@ -1070,19 +1143,16 @@ async function worker() {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         result = await run(browser, base, job);
-        // A page or a window that went away under the run (closed by hand,
-        // or by the machine) says nothing about the site: run it once more.
-        const lostPage = result.problems.some((p) => /the run stopped while .*(Session closed|Target closed|detached Frame|Connection closed|page has been closed)/.test(p));
-        // A run whose only fault is a step that was not done (a click that
-        // missed while the page moved: about one run in a hundred) found
-        // nothing wrong with what was sent and checked less than it should
-        // have. It is run once more, whole, and judged on that second run;
-        // the output says it was repeated. A leak is never retried away:
-        // any other problem ends the run as failed.
-        const missedStep = isMissedStepOnly(result.problems);
-        // A lost page repeats only a run that found nothing before it went.
-        if (attempt === 1 || (!PLANT && hasFinding(result.problems)) || (browser.connected && !lostPage && !missedStep)) break;
-        if (browser.connected) { if (missedStep) repeated.set(name, result.note.resetMisses || []); continue; }
+        // A page or a window that went away under a run that found nothing
+        // (closed by hand, or by the machine) says nothing about the site, and
+        // a run whose only fault is a step that was not done (a click that
+        // missed while the page moved: about one run in a hundred) checked
+        // less than it should have. Either is run once more, whole, and the
+        // output says when a step was the reason. What was found is never
+        // retried away, with a planted leak or without (afterRun).
+        const then = afterRun({ attempt, problems: result.problems, connected: browser.connected });
+        if (then === 'judge') break;
+        if (then === 'repeat') { if (isMissedStepOnly(result.problems)) repeated.add(name); continue; }
       } catch (err) {
         result = { problems: [`the browser stopped: ${err && err.message ? err.message : err}`], counts: {}, note: { unreachable: [] } };
         if (attempt === 1) break;
@@ -1093,6 +1163,7 @@ async function worker() {
       browser = await launch();
       browsers.add(browser);
     }
+    // A run judged although its browser went: the next one needs a browser.
     if (!browser.connected && !stopping) {
       browsers.delete(browser);
       browser = await launch();
@@ -1100,22 +1171,25 @@ async function worker() {
     }
     if (repeated.has(name)) result.note.repeated = true;
     const counts = Object.entries(result.counts).map(([k, v]) => `${k} ${v}`).join(', ');
-    // Both planted leaks are found, the event sent to PostHog and the image
-    // asked of the site's own server, and nothing else is wrong with the run.
+    // Every planted leak is found, the event sent to PostHog, the image asked
+    // of the site's own server and the short values in a body, and nothing
+    // else is wrong with the run.
     const leaks = result.problems.filter((p) => p.includes('carries what was typed'));
-    const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length;
+    const caught = leaks.some((p) => /^a request to \/(e|i\/v0\/e)\//.test(p)) && leaks.some((p) => /^a request to 127\.0\.0\.1\/ /.test(p)) && leaks.length === result.problems.length
+      && (!expectedLeaks(BOXES[job.slug]).some((value) => /^\d{1,3}$/.test(value)) || leaks.some((p) => /^a request to 127\.0\.0\.1\/planted-body /.test(p)))
+      // Every box's value was recognised, not only the amount.
+      && expectedLeaks(BOXES[job.slug]).every((value) => leaks.some((p) => p.split(': ').pop().split(', ').includes(value)));
     const ok = PLANT ? caught : result.problems.length === 0;
     done++;
     if (!ok) failed++;
     finished.push({ slug: job.slug, consent: job.consent, counts: result.counts });
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${String(done).padStart(3)}/${matrix.length}  ${name}  (${counts})`);
     if (!ok && result.note.page) console.log(`       the page during the click steps: ${JSON.stringify(result.note.page)} (charts ${result.note.charts ?? '?'}, results ${result.note.cards ?? '?'}, text ${result.note.plain ?? '?'})`);
-    if (repeated.get(name)?.length) console.log(`       note: Reset, in the run that was repeated: ${repeated.get(name).join(' | ')}`);
-    if (result.note.resetMisses?.length) console.log(`       note: Reset was missed: ${result.note.resetMisses.join(' | ')}`);
     if (result.note.repeated) console.log('       note: done a second time, because a step was missed the first time; judged on the second run.');
     if (result.note.unreachable.length) console.log(`       note: activated directly, not by the pointer (cut off, covered or moving on this layout), so only what it sends was checked: ${result.note.unreachable.join(', ')}`);
     if (PLANT && !caught) console.log(`       - ${leaks.length >= 2 ? 'both planted leaks were caught, but something else went wrong with the run' : 'the two planted leaks were not both caught'}:`);
     if (!ok) for (const p of result.problems) console.log(`       - ${p}`);
+    if (!ok && result.note.resetPresses?.length) console.log(`       the Reset presses: ${result.note.resetPresses.join('; ')}`);
   }
   await browser.close().catch(() => {});
 }

@@ -61,7 +61,6 @@ export function numberSeparators(locale: string): { group: string; decimal: stri
  * page rather than turned away. One separator only.
  */
 function ungroup(int: string, sep: string): string | null {
-  if (!int.includes(sep)) return /^\d+$/.test(int) ? int : null;
   const e = sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // The whole number matches one system or the other, never a mix of the two
   // ("1,234,56,789" is neither): western groups of three throughout, or, in
@@ -75,7 +74,7 @@ function ungroup(int: string, sep: string): string | null {
 
 /** True when `s` is a valid grouped whole number with `sep` as its only separator. */
 function isGrouping(s: string, sep: string): boolean {
-  return s.includes(sep) && ungroup(s, sep) !== null;
+  return ungroup(s, sep) !== null;
 }
 
 /**
@@ -100,7 +99,7 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   const { maxDecimals = Infinity, allowNegative = false } = options;
   let s = latinDigits(raw).trim().replace(/[   ]/g, ' ');
   let negative = false;
-  if (/^[-−]/.test(s)) {
+  if (s[0] === '-' || s[0] === '−') {
     if (!allowNegative) return null;
     negative = true;
     s = s.slice(1).trimStart();
@@ -123,14 +122,12 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   } else if (hasDot || hasComma) {
     const mark = hasDot ? '.' : ',';
     const count = s.split(mark).length - 1;
-    const intPart = s.replace(/ /g, '');
     if (mark === local.decimal) {
       // The page's decimal mark: one of them is a decimal; several can only be grouping.
       decimal = count === 1 ? mark : null;
-    } else if (isGrouping(intPart, mark)) {
-      // The page's grouping mark, used as grouping.
-      decimal = null;
-    } else if (count === 1 && (!/^\d{3}$/.test(intPart.split(mark)[1] ?? '') || /^0+$/.test(intPart.split(mark)[0]))) {
+    } else if (isGrouping(s, mark)) {
+      // The page's grouping mark, used as grouping: there is no decimal mark.
+    } else if (count === 1 && (!/^\d{3}$/.test(s.split(mark)[1]) || /^0+$/.test(s.split(mark)[0]))) {
       // The page's grouping mark, but not in groups of three, or after a
       // whole part of zero ("0.125"): it can only be a decimal.
       decimal = mark;
@@ -148,11 +145,11 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   const groupMarks = new Set(intRaw.match(/[., \u066b\u066c]/g) ?? []);
   if (groupMarks.size > 1) return null;
   const sep = [...groupMarks][0];
-  if (sep === decimal || sep === ARABIC_DECIMAL) return null;
-  // "٬" groups exactly as a comma does, Indian grouping included.
+  // "٬" groups exactly as a comma does, Indian grouping included. Without a
+  // mark the whole part is digits: the first check allowed nothing else.
   const int = sep === ARABIC_GROUP
     ? ungroup(intRaw.split(ARABIC_GROUP).join(','), ',')
-    : sep ? ungroup(intRaw, sep) : /^\d+$/.test(intRaw) ? intRaw : null;
+    : sep ? ungroup(intRaw, sep) : intRaw;
   if (int === null) return null;
 
   const parsed = Number(frac !== undefined ? `${int}.${frac}` : int);
@@ -183,7 +180,21 @@ export function canonicalNumber(raw: string, locale: string): string {
   // From 1e21 up a number prints as "1e+21", which no engine here reads: a
   // 22-digit loan amount was answered with "greater than zero" (#520). Plain
   // digits, so the engine can say it is too large.
-  return Math.abs(n) >= 1e21 ? n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 }) : String(n);
+  return plainDigits(n);
+}
+
+/**
+ * A number as a link carries it. String() writes an exponent from 1e21 up and
+ * below a millionth, which a link refuses: a valid 0.0000001 arrived as
+ * unreadable, and rounded to ten or twenty decimals an invalid one arrived as
+ * a valid zero (#789). Every digit is kept, none rounded.
+ */
+export function plainDigits(n: number): string {
+  if (Math.abs(n) >= 1e21) return n.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 0 });
+  const [mantissa, exponent] = String(n).split('e-');
+  if (exponent === undefined) return mantissa;
+  const digits = mantissa.replace(/[-.]/g, '');
+  return `${mantissa.startsWith('-') ? '-' : ''}0.${'0'.repeat(Number(exponent) - 1)}${digits}`;
 }
 
 /**
@@ -217,8 +228,11 @@ export function completeNumber(raw: string, locale: string): string {
 export function displayNumber(value: string, locale: string): string {
   const t = value.trim();
   if (t === '') return '';
+  // The marker of a box that could not be read: no English word in anyone's box.
+  if (t === 'NaN') return '?';
   // A plain number keeps every digit it has: only the decimal mark changes.
-  if (/^\d+(\.\d+)?$/.test(t)) return t.replace('.', numberSeparators(locale).decimal);
+  // Below zero too: rounded, -99.99000000001 arrived as a valid -99.99 (#789).
+  if (/^-?\d+(\.\d+)?$/.test(t)) return t.replace('.', numberSeparators(locale).decimal);
   const n = Number(t.replace(/[\s,]/g, ''));
   return Number.isFinite(n) ? formatForInput(n, locale, 10) : value;
 }

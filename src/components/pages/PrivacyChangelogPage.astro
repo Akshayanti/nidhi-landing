@@ -19,7 +19,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
 import { changelogMonths, changelogYears, entryAnchor } from '../../utils/privacyChangelog.ts';
-import { privacyChangelog } from '../../utils/privacyChangelogSource.ts';
+import { writtenChangelog } from '../../utils/privacyChangelogEntries.ts';
 
 interface Props {
   locale: Locale;
@@ -32,7 +32,7 @@ const { privacy, a11y } = dict(locale);
 const log = privacy.changelog;
 const archive = privacy.archive;
 
-const years = changelogYears(await privacyChangelog());
+const years = changelogYears(writtenChangelog);
 const thisYear = year ? years.find((y) => y.year === year) : undefined;
 if (year && !thisYear) throw new Error(`the privacy changelog has no entries for ${year}`);
 

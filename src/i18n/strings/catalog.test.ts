@@ -16,7 +16,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { DICTS, LOCALES, dict } from '../index.ts';
-import { CURRENCIES } from '../../utils/loan/math.ts';
+import { CURRENCIES } from '../../utils/shared/money.ts';
 import { currenciesCs, currenciesEn, currenciesEs, currenciesHi, currenciesMr } from './tools/currencies.ts';
 import { en } from './en.ts';
 import { hi } from './hi.ts';
@@ -65,6 +65,8 @@ const EN_BY_PATH = new Map(EN.map((leaf) => [leaf.path, leaf.value]));
  * from LOCALE_META in `src/i18n/config.ts`.
  */
 const IDENTICAL_OK = new Set<string>([
+  // FIRE is the acronym, kept in capitals in every language.
+  'learn.tags.fire.name',
   // The privacy notice names five services, and four of those names are the
   // services' own (the fifth, "Your browser", is prose and is translated). A
   // reader who wants to look one up has to look up the name it actually has,
@@ -291,7 +293,7 @@ describe('the Czech catalog is translated, not copied', () => {
 /**
  * The three free tools name their currencies from `./tools/currencies.ts`, and
  * the codes they offer come from the engine's own table in
- * `src/utils/loan/math.ts`. The two are written by hand in different files, so
+ * `src/utils/shared/money.ts`. The two are written by hand in different files, so
  * these three assertions are what keeps them one list: a currency added to the
  * engine without a name fails here, a name for a currency the engine does not
  * have fails here, and so does a Hindi name that quotes the wrong code.
@@ -609,6 +611,108 @@ describe('every string is used', async () => {
   it('lists only groups that exist', () => {
     for (const group of READ_WHOLE) {
       assert.ok(EN.some((leaf) => leaf.path.startsWith(group)), `${group} is in READ_WHOLE but no key starts with it`);
+    }
+  });
+});
+
+/** A language's catalog and its "What's changed" lines, for the glossary checks. */
+function allWords(list: Leaf[], locale: (typeof LOCALES)[number]): Leaf[] {
+  const items = CHANGE_DAYS.flatMap((day) => day.items);
+  return [...list, ...items.map((item) => ({ path: `changes.${item.id}`, value: item.text[locale] }))];
+}
+
+describe('each language spells a word one way', () => {
+  it('writes Hindi as the glossary does', () => {
+    // docs/i18n/hi-glossary.md: the nukta is a decomposed pair, so a word
+    // written without one is the bare letter followed by its vowel sign.
+    const wrong: Array<[RegExp, string]> = [
+      [/क़दम/u, 'कदम'], [/तारीख(?!़)/u, 'तारीख़'], [/तरीक(?!़)/u, 'तरीक़ा'],
+      [/(?<![ऀ-ॿ])गलत/u, 'ग़लत'], [/किस्म/u, 'क़िस्म'], [/खत्म/u, 'ख़त्म'],
+      [/(?<![ऀ-ॿ])खास/u, 'ख़ास'], [/कीमत/u, 'क़ीमत'], [/हिंदी/u, 'हिन्दी'],
+      [/फ़ंड/u, 'फंड'], [/नेट वर्थ/u, 'शुद्ध संपत्ति'], [/टैक्स(?!-लॉस)/u, 'कर'],
+    ];
+    const found = allWords(HI, 'hi').flatMap(({ path, value }) =>
+      wrong.filter(([re]) => re.test(value)).map(([, use]) => `${path}: use ${use}`));
+    assert.deepEqual(found, []);
+  });
+
+  it('writes Spanish in the glossary\'s neutral words', () => {
+    const wrong = /(?<!\p{L})(?:costes?|importes?|montos?|móvil|móviles|celular|ordenador|computadora)(?!\p{L})/iu;
+    assert.deepEqual(allWords(ES, 'es').filter(({ value }) => wrong.test(value)).map((l) => l.path), []);
+  });
+
+  it('puts a no-break space before a Spanish percent sign', () => {
+    // es-glossary.md rule 6, for a figure and for a placeholder that stands for one.
+    assert.deepEqual(allWords(ES, 'es').filter(({ value }) => /[\d}] ?%/.test(value)).map((l) => l.path), []);
+  });
+
+  it('puts a no-break space before a Czech percent sign', () => {
+    // cs-glossary.md rule 6. Written together ("80% šance") it is an adjective.
+    assert.deepEqual(allWords(CS, 'cs').filter(({ value }) => /[\d}] %/.test(value)).map((l) => l.path), []);
+  });
+
+  it('gives the Czech reader no gender through a participle', () => {
+    // cs-glossary.md rule 5: "jste zadali" and "byste měli" both mark the reader.
+    const participle = /(?<!\p{L})(?:(?:jste|byste)(?:\s(?:se|si|ho|je|už|také))?\s\p{L}+li|\p{L}+li\sjste)(?!\p{L})/iu;
+    assert.deepEqual(allWords(CS, 'cs').filter(({ value }) => participle.test(value)).map((l) => l.path), []);
+  });
+
+  it('writes Marathi as the glossary does', () => {
+    const wrong = /हिशोब|पेज(?!व्ह)|सिमुले|अॅ|महागाई वजा जाता|मुख्य पान|चेक कोरुना/u;
+    assert.deepEqual(allWords(MR, 'mr').filter(({ value }) => wrong.test(value)).map((l) => l.path), []);
+  });
+
+  it('quotes English and Hindi with curly marks, never straight double quotes', () => {
+    const found = [...allWords(EN, 'en'), ...allWords(HI, 'hi')].filter(({ value }) => /"/.test(value));
+    assert.deepEqual(found.map((l) => l.path), []);
+  });
+
+  it('calls a lesson a lesson, in every language', () => {
+    // The privacy notice says "post" on purpose: it covers the lessons and the
+    // optional guides that the newsletter also sends. A cited article and a
+    // newsletter's blog are somebody else's.
+    const allowed = new Set(['about.body.sourcesCount']);
+    const cases = [
+      ['en', EN, /\b([Pp]osts?|[Aa]rticles?|[Bb]log)\b/],
+      ['hi', HI, /(^|[\s“(])(लेख|लेखों|पोस्ट|पोस्टों|ब्लॉग)(?=[\s।,:.”)]|$)/],
+      ['es', ES, /\b([Aa]rtículos?|[Bb]log)\b/],
+      ['cs', CS, /[Čč]lán(ek|k)|\b[Bb]log/],
+      ['mr', MR, /(^|[\s“(])(लेख|लेखां\S*|लेखात|लेखाचे|लेखाखाली|पोस्ट|ब्लॉग\S*)(?=[\s,:.”)]|$)/],
+    ] as const;
+    for (const [locale, list, pattern] of cases) {
+      const found = list
+        .filter((l) => !l.path.startsWith('privacy.') && !allowed.has(l.path) && pattern.test(l.value))
+        .map((l) => l.path);
+      assert.deepEqual(found, [], locale);
+    }
+  });
+
+  it('keeps the settled names for a forecast, a spending currency and a loan offer', () => {
+    const cases = [
+      [EN, /functional currenc|\bvendors?\b(?!\})/i],
+      [HI, /मुख्य मुद्रा/],
+      [ES, /moneda (de referencia|funcional)/],
+      [CS, /předpově[ďd]/],
+    ] as const;
+    for (const [list, pattern] of cases) {
+      assert.deepEqual(list.filter((l) => pattern.test(l.value.replace(/\{vendor\}/g, ''))).map((l) => l.path), []);
+    }
+  });
+
+  it('speaks as I, or as nobody: only the notice and the cookie question say we', () => {
+    // docs/brand-identity.md: "I" where a person acts, neutral where the site does.
+    const cases = [
+      ['en', EN, /(?<!\p{L})([Ww]e|[Oo]ur|[Oo]urs|us)(?!\p{L})/u],
+      ['hi', HI, /(?<![\p{L}\p{M}])(हम|हमें|हमारा|हमारी|हमारे|हमने|हमसे)(?![\p{L}\p{M}])/u],
+      ['es', ES, /(?<!\p{L})(nosotros|nuestr[oa]s?|contáctanos|avísanos)(?!\p{L})/iu],
+      ['cs', CS, /(?<!\p{L})(nás|nám|náš|naše|naší|našich)(?!\p{L})/iu],
+      ['mr', MR, /(?<![\p{L}\p{M}])(आम्ही|आम्हाला|आमचा|आमची|आमचे|आमच्या)(?![\p{L}\p{M}])/u],
+    ] as const;
+    for (const [locale, list, pattern] of cases) {
+      const found = list
+        .filter((l) => !/^(privacy|cookie)\./.test(l.path) && pattern.test(l.value))
+        .map((l) => l.path);
+      assert.deepEqual(found, [], locale);
     }
   });
 });

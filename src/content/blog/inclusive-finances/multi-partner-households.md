@@ -2,9 +2,9 @@
 slug: "multi-partner-households"
 title: "Polyamorous and Multi-Partner Households: Protecting Everyone"
 seoTitle: "Polyamorous Households: Protecting Everyone"
-description: "Where the law recognises one spouse at most, other partners get no automatic protection. Who marries whom, and how wills, beneficiary forms and proxies cover everyone else."
+description: "Where the law recognizes one spouse at most, other partners get no automatic protection. Who marries whom, and how wills, beneficiary forms and proxies cover everyone else."
 tldr:
-  - "In most countries the law recognises one spouse at a time, so marriage's automatic protections reach one pair at most."
+  - "In most countries the law recognizes one spouse at a time, so marriage's automatic protections reach one pair at most."
   - "Wills naming every partner, account nominations with percentages, healthcare proxies, legal authority to act and a written agreement can cover most of the gap."
   - "Joint tax, partner visas and legal parentage generally stay with one pair and need workarounds."
 takeaways:
@@ -16,7 +16,7 @@ takeaways:
     href: "#planning-for-limits-on-joint-tax-partner-visas-and-parentage"
 glossary:
   - term: "Recognition gap"
-    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+    definition: "The distance between how your household works and what the law or an institution recognizes, such as a partner who is family in practice but a stranger on paper."
   - term: "Forced heirship"
     definition: "Rules reserving part of an estate for children or other relatives, whatever a will says."
   - term: "Beneficiary form"
@@ -37,17 +37,17 @@ tags: ["inclusive-finances", "relationships", "planning"]
 regulatoryNote: "danger"
 faq:
   - question: "Can a group of partners marry or register together?"
-    answer: "In most countries, no. Marriage and registered partnerships are generally limited to two people at a time, and in many places a second legal marriage while already married is a criminal offence. A private commitment ceremony is a personal matter but carries no legal effect. There are two kinds of exception. A number of countries, mainly in parts of Africa, the Middle East and Asia, allow a man to have more than one wife under civil, religious or customary law, with their own rules on property and inheritance, and those marriages are often not recognised in other countries. Separately, a few places have experimented at a small scale: some cities in Massachusetts in the United States register domestic partnerships for more than two people, mostly covering things like hospital visits and local benefits. For everyone else, contracts, wills and designations do the work that a legal status would."
+    answer: "In most countries, no. Marriage and registered partnerships are generally limited to two people at a time, and in many places a second legal marriage while already married is a criminal offence. A private commitment ceremony is a personal matter but carries no legal effect. There are two kinds of exception. A number of countries, mainly in parts of Africa, the Middle East and Asia, allow a man to have more than one wife under civil, religious or customary law, with their own rules on property and inheritance, and those marriages are often not recognized in other countries. Separately, a few places have experimented at a small scale: some cities in Massachusetts in the United States register domestic partnerships for more than two people, mostly covering things like hospital visits and local benefits. For everyone else, contracts, wills and designations do the work that a legal status would."
   - question: "Should two of us marry, and which two?"
     answer: "That is a personal decision, and it helps to make it knowing what it changes. The married pair may gain inheritance, survivor-pension, tax and, where relevant, immigration rights. Partners outside the marriage cannot assume those protections: local law may give them some rights, while pension schemes and institutions apply their own rules. Households weigh which partner most needs the protection: the one with the least savings, the one without residency, or the one with no pension of their own. Whatever is chosen, each protection for partners outside the marriage needs checking and any gap needs covering in writing."
   - question: "Can I name more than one partner on a pension or an insurance policy?"
     answer: "Usually, yes. Many insurance and investment forms, and some pension forms, let you name several beneficiaries with a percentage for each. Three things need checking. Some pension schemes pay the ongoing survivor pension only to a legal spouse, even where a lump sum can go to anyone named. Some treat the form as a guide for their trustees rather than a binding instruction. And in some systems a spouse has a legal right to a share whatever the form says."
   - question: "Who makes medical decisions if I have several partners?"
-    answer: "Without documents, local law decides who may act, and a legal spouse or blood relative may take priority over an unrecognised partner. A healthcare power of attorney lets you choose where local law recognises one. Depending on the form, it may name one decision-maker, joint decision-makers or alternates in sequence. Separate consent, visitation or information forms may let several partners receive information or visit."
+    answer: "Without documents, local law decides who may act, and a legal spouse or blood relative may take priority over an unrecognized partner. A healthcare power of attorney lets you choose where local law recognizes one. Depending on the form, it may name one decision-maker, joint decision-makers or alternates in sequence. Separate consent, visitation or information forms may let several partners receive information or visit."
   - question: "Can a child have more than two legal parents?"
-    answer: "In most countries, no. The law generally recognises two legal parents at most, however many adults are raising the child. A small number of jurisdictions allow three or more in specific circumstances. A partner who parents without legal status may be unable to consent to treatment, deal with a school, or keep the child in their care if a legal parent dies. Wills naming a guardian, written authorisations, and where available a parental responsibility order are the tools."
+    answer: "In most countries, no. The law generally recognizes two legal parents at most, however many adults are raising the child. A small number of jurisdictions allow three or more in specific circumstances. A partner who parents without legal status may be unable to consent to treatment, deal with a school, or keep the child in their care if a legal parent dies. Wills naming a guardian, written authorizations, and where available a parental responsibility order are the tools."
   - question: "How are we taxed as a household of three or more?"
-    answer: "As individuals, with at most one pair treated as a couple where the system recognises couples. There is generally no way to file as a group. Allowances that spouses can share, and tax-free transfers between spouses, are available to one pair only. A dependant can usually be claimed by one adult. Transfers between partners who are not married to each other may count as taxable gifts. The specifics depend on the country, so this is a question for a local tax adviser."
+    answer: "As individuals, with at most one pair treated as a couple where the system recognizes couples. There is generally no way to file as a group. Allowances that spouses can share, and tax-free transfers between spouses, are available to one pair only. A dependant can usually be claimed by one adult. Transfers between partners who are not married to each other may count as taxable gifts. The specifics depend on the country, so this is a question for a local tax adviser."
 reelPromise: "A table of what the one legal spouse gets automatically and the document that extends each protection to every other partner"
 relatedSlugs: ["unmarried-and-cohabiting-couples", "owning-a-home-with-more-than-two-people", "shared-households-money-for-three-or-more", "solo-agers-and-single-income-households"]
 referentialReading:
@@ -61,19 +61,19 @@ referentialReading:
     type: "paper"
 ---
 
-Three adults share a home and a life as partners. The law where they live recognises a marriage between two people, so at most one pair of them can marry. The married pair may get reciprocal legal protections; any partner outside it depends on the rights local law gives unmarried partners and on what is written down.
+Three adults share a home and a life as partners. The law where they live recognizes a marriage between two people, so at most one pair of them can marry. The married pair may get reciprocal legal protections; any partner outside it depends on the rights local law gives unmarried partners and on what is written down.
 
 The [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) set out what marriage switches on and how two people can rebuild each piece with documents. This companion is for households of three or four partners. It assumes everyday money works as in the [shared households](/blog/shared-households-money-for-three-or-more/) post and any home is owned as in [owning with more than two people](/blog/owning-a-home-with-more-than-two-people/). What is left is what comes from being partners: inheritance, decisions, pensions, children and tax. Family law differs in every country; this teaches what to check, and it is not legal advice.
 
 ## The law offers one spouse slot
 
-Marriage is limited to two people in most legal systems. Where a country allows a man more than one wife, under civil, religious or customary law, it has its own property and inheritance rules, and those marriages are often not recognised after a family moves abroad. Elsewhere, marriage-based protections reach the two people in the married pair. Partners outside it may have some cohabitation rights, but often face a [recognition gap](#term-recognition-gap) that varies by country and institution.
+Marriage is limited to two people in most legal systems. Where a country allows a man more than one wife, under civil, religious or customary law, it has its own property and inheritance rules, and those marriages are often not recognized after a family moves abroad. Elsewhere, marriage-based protections reach the two people in the married pair. Partners outside it may have some cohabitation rights, but often face a [recognition gap](#term-recognition-gap) that varies by country and institution.
 
 | Default | Who gets it by law | What extends it to others |
 |---|---|---|
 | Inheritance with no will | A spouse, children or other relatives, in the order local law sets | A will naming each partner, within any protected shares |
 | Pension survivor benefits | Often the spouse only | Check whether the scheme allows a nominee; otherwise cover with insurance or savings |
-| Medical decisions | The person or people local law ranks first | A healthcare proxy or equivalent, where recognised |
+| Medical decisions | The person or people local law ranks first | A healthcare proxy or equivalent, where recognized |
 | Hospital access and information | Rules vary by law, consent and hospital policy | Consent or visitation forms where available, kept where staff can find them |
 | Joint tax treatment | One pair at most | Not extendable; plan around it |
 | Tax-free transfers between partners | Often spouses only | Lifetime gifts within allowances; insurance for expected tax |
@@ -113,7 +113,7 @@ A [trust](#term-trust) can hold a shared home or investments and spell out who r
 
 ## Planning for limits on joint tax, partner visas and parentage
 
-Three things stay with one pair at most. Tax systems assess individuals and, in some countries, one married or registered pair; there is no group filing. A partner visa normally covers one partner. And the law of most countries recognises two legal parents at most, however many adults raise a child.
+Three things stay with one pair at most. Tax systems assess individuals and, in some countries, one married or registered pair; there is no group filing. A partner visa normally covers one partner. And the law of most countries recognizes two legal parents at most, however many adults raise a child.
 
 <details class="lesson-depth">
 <summary class="disclosure">Why tax and partner visas stay with one pair</summary>
@@ -127,14 +127,14 @@ Three things stay with one pair at most. Tax systems assess individuals and, in 
 <details class="lesson-depth">
 <summary class="disclosure">Children, and the two parent limit</summary>
 
-Parentage is a legal question separate from love or care. A small number of jurisdictions in Canada and the US allow a child more than two legal parents in specific cases; most do not. A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. Three protections are common: each legal parent's will names a guardian; the legal parents sign an authorisation for the other adults covering school and medical matters; and every partner's will and beneficiary forms name the children explicitly. A later post in this series covers non-biological co-parents and stepchildren in detail.
+Parentage is a legal question separate from love or care. A small number of jurisdictions in Canada and the US allow a child more than two legal parents in specific cases; most do not. A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. Three protections are common: each legal parent's will names a guardian; the legal parents sign an authorization for the other adults covering school and medical matters; and every partner's will and beneficiary forms name the children explicitly. A later post in this series covers non-biological co-parents and stepchildren in detail.
 
 </details>
 
 <details class="lesson-depth">
 <summary class="disclosure">When the carer needs care</summary>
 
-A household that plans to age together carries an untested assumption: that the partners will look after each other, until the person expected to help is the one who needs care. Survivor pensions and spousal benefits run through a legal spouse and stop there. Unpaid care can reduce earnings and pension saving; some countries give carers pension credits or benefits, but eligibility may depend on the recognised relationship, the hours of care or benefits claimed. A shared home may need a plan for a member who needs different housing or care. Households that grow older together often write down who takes which role, and what happens if someone can no longer contribute. The [solo agers post](/blog/solo-agers-and-single-income-households/) covers later life when a spouse is not the backstop; its documents apply to each partner here.
+A household that plans to age together carries an untested assumption: that the partners will look after each other, until the person expected to help is the one who needs care. Survivor pensions and spousal benefits run through a legal spouse and stop there. Unpaid care can reduce earnings and pension saving; some countries give carers pension credits or benefits, but eligibility may depend on the recognized relationship, the hours of care or benefits claimed. A shared home may need a plan for a member who needs different housing or care. Households that grow older together often write down who takes which role, and what happens if someone can no longer contribute. The [solo agers post](/blog/solo-agers-and-single-income-households/) covers later life when a spouse is not the backstop; its documents apply to each partner here.
 
 </details>
 
@@ -144,7 +144,7 @@ A household that plans to age together carries an untested assumption: that the 
 <summary class="disclosure">How countries differ</summary>
 
 - **Most of Europe, the Americas and Australasia.** Marriage is limited to two. Multi-partner households rely on contracts, wills and designations. Forced heirship in much of continental Europe and Latin America limits what a will can leave to partners.
-- **Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia, under rules that differ by country and by religious or customary law. Such marriages are often not recognised elsewhere, which can leave later spouses with no legal status after a move. Marriage and property rules differ too: in Kenya, customary and Islamic marriages are potentially polygamous under the 2014 Marriage Act, and in South Africa a husband in a customary marriage who wants to enter another must apply to a court to approve a written contract regulating the future property system of his marriages, and needs his first wife's consent.
+- **Countries that permit polygamous marriage.** Several in Africa, the Middle East and Asia, under rules that differ by country and by religious or customary law. Such marriages are often not recognized elsewhere, which can leave later spouses with no legal status after a move. Marriage and property rules differ too: in Kenya, customary and Islamic marriages are potentially polygamous under the 2014 Marriage Act, and in South Africa a husband in a customary marriage who wants to enter another must apply to a court to approve a written contract regulating the future property system of his marriages, and needs his first wife's consent.
 - **United States.** A few cities, such as some in Massachusetts, register domestic partnerships for more than two people, usually covering local matters such as hospital visits and city employee benefits; they do not change state or federal law.
 - **Criminal law.** In some countries, living as a multi-partner household carries legal risk beyond the financial, and a financial plan is not the right tool for that decision.
 

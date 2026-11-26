@@ -13,6 +13,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import type { ToolState } from './url.ts';
+import type { MonthlySource } from './monthly.ts';
 
 type Island = Dict['tools']['inflation']['island'];
 type Common = Dict['tools']['export'];
@@ -33,6 +34,11 @@ export interface InflationAnswer {
   chartTitle: string;
   /** Set when the answer uses a country's actual yearly inflation. */
   history: { country: string; from: number; to: number } | null;
+  /**
+   * Set when that answer ends at a month after the last full year, from the
+   * monthly index (`monthly.ts`): the month as `YYYY-MM`, and the amount there.
+   */
+  monthEnd?: { month: string; value: number; source: MonthlySource } | null;
 }
 
 export interface InflationExport {
@@ -91,7 +97,10 @@ export function inflationSheets({ island, common, state, answer, decimals, date,
   ];
   if (answer.history) {
     const span = format(island.history.range, { first: answer.history.from, last: answer.history.to });
-    answerRows.push([x.years, span], [x.source, x.sourceText]);
+    answerRows.push([x.years, span]);
+    // The month is given as the index names it, 2026-09: the same in every language.
+    if (answer.monthEnd) answerRows.push([x.monthEnd, answer.monthEnd.month]);
+    answerRows.push([x.source, answer.monthEnd ? `${x.sourceText} ${x.sourceTextMonthly[answer.monthEnd.source]}` : x.sourceText]);
   }
   const answerSheet: Sheet = { name: x.sheets.answer, widths: [26, 100], rows: [head(common.columns.item, common.columns.value), ...answerRows] };
 
@@ -102,6 +111,8 @@ export function inflationSheets({ island, common, state, answer, decimals, date,
       [{ t: answer.chartTitle, bold: true }],
       head(answer.axis, common.columns.value),
       ...answer.points.map((p): Cell[] => [whole(p.x), money(p.value)]),
+      // One month, not a year's average: the row after it says so.
+      ...(answer.monthEnd ? [[answer.monthEnd.month, money(answer.monthEnd.value)] as Cell[], [x.monthRow] as Cell[]] : []),
     ],
   };
 

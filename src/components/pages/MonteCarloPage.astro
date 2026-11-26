@@ -2,11 +2,9 @@
 /**
  * The Monte Carlo simulator page, in whichever language it was asked for.
  *
- * English is served from `src/pages/free/monte-carlo-simulator/[...path].astro`,
- * which is a short wrapper around this, and holds the release gate on its own
- * (see `src/utils/monte-carlo/release.ts`). The other languages come through
- * `src/pages/[locale]/free/monte-carlo-simulator/[...path].astro`, which
- * combines that same gate with `localizedStaticPaths()`. Both paths render this
+ * English is served from `src/pages/free/monte-carlo-simulator.astro`, which
+ * is a short wrapper around this. The other languages come through
+ * `src/pages/[locale]/free/monte-carlo-simulator.astro`. Both paths render this
  * one component, so the two versions cannot drift apart in markup or styling.
  *
  * The copy is in the catalog, under `tools.monteCarlo.page`, and the sentence
@@ -35,8 +33,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import MonteCarloSimulator from '../MonteCarloSimulator.tsx';
 import ToolStateGuard from '../ToolStateGuard.astro';
 import { getCollection } from 'astro:content';
-import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT } from '../../utils/monte-carlo/math.ts';
-import { MONTE_CARLO_URL } from '../../utils/monte-carlo/release.ts';
+import { STOCKS, BONDS, STOCK_BOND_CORRELATION, DEFAULT_PATHS, RUN_OPTIONS, MAX_FEE_PCT, simulate } from '../../utils/monte-carlo/math.ts';
+import { MONTE_CARLO_URL, defaultState } from '../../utils/monte-carlo/url.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/monte-carlo/url.ts';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
@@ -170,6 +168,7 @@ const faqSchema = {
       defaultCurrency={TOOL_DEFAULT_CURRENCY[locale]}
       amountLocale={TOOL_AMOUNT_LOCALE[locale]}
       numberLocale={PROSE_NUMBER_LOCALE[locale]}
+      initialResult={simulate(defaultState(TOOL_DEFAULT_CURRENCY[locale]))}
     />
 
     {/* Phones show the four limits by name; their explanations open with

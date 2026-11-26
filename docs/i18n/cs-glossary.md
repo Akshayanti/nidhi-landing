@@ -165,7 +165,7 @@ term already listed is not re-decided per page.
 | asset location | rozložení investic mezi účty | Which assets are held in which kind of account, said so on first use. |
 | glide path | postupné snižování rizika portfolia | *(glide path)* in brackets on first use. |
 | standard deviation | směrodatná odchylka | |
-| inflation-adjusted, real | očištěný o inflaci | *V dnešních penězích* for amounts. |
+| inflation-adjusted, real | očištěný o inflaci | *Po očištění o inflaci* in a phrase, never *po odečtení* or *po zohlednění inflace*. *V dnešních penězích* for amounts. |
 | mix (stocks/bonds) | poměr | *Poměr akcií a dluhopisů*. |
 | monthly contribution | měsíční vklad | |
 | withdrawal (a single one) | výběr | *Roční výběr*. |
@@ -231,7 +231,11 @@ term already listed is not re-decided per page.
 | Inclusive Finances | Inkluzivní finance | Never *inkluzivní* alone. |
 | topic (tag) | téma | |
 | guide (Inclusive Finances) | průvodce | 1 průvodce, 2 průvodci, 5 průvodců. |
-| free tools | nástroje zdarma | |
+| free tools | nástroje zdarma | Also in a sentence (*v nástrojích zdarma*), not *bezplatné nástroje*. |
+| route (home) | cesta | *Cesta dokončena*, not *trasa*. |
+| footer | zápatí | With *záhlaví* for the header. |
+| box (on a page) | rámeček | A focus ring is *obrys* where both are in one sentence. |
+| How lessons are written (link) | Jak lekce vznikají | |
 | net worth calculator | kalkulačka čistého jmění | |
 | loan comparison | srovnání úvěrů | |
 | Monte Carlo simulator | simulátor Monte Carlo | |
@@ -239,7 +243,7 @@ term already listed is not re-decided per page.
 | waitlist | čekací listina | |
 | newsletter | newsletter | |
 | share link | odkaz ke sdílení | |
-| beliefs (page) | čemu věříme | |
+| beliefs (page) | čemu věřím | „Čemu věříme“ only in the privacy notice, which speaks as we. |
 | editorial policy | redakční zásady | |
 | personal finance | osobní finance | |
 | financial literacy | finanční gramotnost | |
@@ -248,7 +252,7 @@ term already listed is not re-decided per page.
 | Learn, Take stock, Plan ahead (step names) | Učte se, Udělejte si přehled, Plánujte dopředu | Imperatives as labels, as in English. |
 | Learn (nav, footer, breadcrumb) | Lekce | The same word in the menu, the footer and the breadcrumb. A deliberate exception to one-term-one-rendering: the nav names the section, the step name above is an imperative. |
 | Home | Domů | |
-| About (group) / About nidhi (page) | O nás / O nidhi | |
+| About (group) / About nidhi (page) | O webu / O nidhi | |
 | Browse topics | Procházet témata | |
 | breadcrumb (landmark label) | Drobečková navigace | |
 | FAQ | Časté dotazy | |
@@ -293,9 +297,10 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | loan amount | výše úvěru | |
 | annual interest rate | roční úroková sazba | |
 | term (months) | doba splatnosti (měsíce) | |
-| amortisation schedule | splátkový kalendář | |
+| amortization schedule | splátkový kalendář | |
 | balance (of a loan) | zbývající jistina | |
 | balance (of a portfolio) | hodnota portfolia | Not *zůstatek*, which reads as money owed or on account. |
+| offer (a card in the loan tool) | nabídka | *Nabídka A*, *Přidat nabídku*. The name field is *Název poskytovatele*. |
 | lender | poskytovatel úvěru | Not *věřitel* in labels; fine in prose. |
 | recast | přepočet splátky | Where the tool defines it: on the remaining principal, keeping the rate and the end date. |
 | apply to principal | snížit jistinu | |

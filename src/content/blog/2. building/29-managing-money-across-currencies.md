@@ -40,7 +40,7 @@ faq:
   - question: "Why does higher inflation tend to weaken a currency?"
     answer: "If prices rise faster in one country than another while the exchange rate stays put, that country's goods get steadily more expensive for foreign buyers and foreign goods get cheaper for its own residents, so demand for its currency falls. Savers can add to the pressure when some of them move money into steadier currencies. Over long periods exchange rates tend to make up part of the accumulated inflation difference (relative purchasing power parity), though price levels themselves can stay apart. World Bank data for 2005 to 2024 show the pattern: the Turkish lira, Indian rupee, Brazilian real and Mexican peso, all with higher inflation than the US, weakened against the dollar, while the low-inflation Swiss franc strengthened. It is a long-run tendency, not a forecast: the yen weakened despite low inflation, the Czech koruna held its value despite higher inflation, and gaps typically take years to close."
   - question: "When does diversifying into multiple currencies make sense?"
-    answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependents in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, having about 80% of the portfolio's underlying currency exposure in euros is consistent with that default. Chasing currency diversification through frequent trading usually adds cost without improving on staying simple."
+    answer: "Mostly when obligations justify it. Holding several currencies tends to make sense when future spending spans several currencies, when a home currency has been historically volatile, or when someone plans to retire, relocate, or support dependants in another currency zone. Staying largely in one currency tends to make sense when life really is single-currency, because cross-border complexity carries real costs: transfer fees, spreads, paperwork, and tax complications. The common default is to match the asset currency mix to the obligation currency mix with a bias toward simplicity. If 80% of your future spending will be in EUR, having about 80% of the portfolio's underlying currency exposure in euros is consistent with that default. Chasing currency diversification through frequent trading usually adds cost without improving on staying simple."
   - question: "How often should I review my currency exposure?"
     answer: "Annually, not daily. Currency moves over days and months are mostly noise for planning, so many people avoid decisions based on them. Real deviations from fair value can persist for years, which is where multi-currency people occasionally feel genuine pain or gain, and over decades currencies of higher-inflation countries tend to weaken against lower-inflation ones. The practical approach is a once-a-year audit alongside other rebalancing checks: map your currency flows across income, expenses, family support, savings, investments, and planned retirement spending, then check the big mismatches. You do not need to trade currencies. You need to notice mismatches and decide whether each is fine, tolerable, or worth reducing."
 referentialReading:
@@ -143,7 +143,7 @@ Savers can add to the pressure. When a currency is losing buying power quickly, 
 
 The pattern shows up in the data, measured against the US dollar. US prices rose about 2.5% a year over the same period:
 
-| Currency | Yearly price rise (annualised), 2005 to 2024 | Units per US dollar, 2005 | Units per US dollar, 2024 | Direction |
+| Currency | Yearly price rise (annualized), 2005 to 2024 | Units per US dollar, 2005 | Units per US dollar, 2024 | Direction |
 |---|---|---|---|---|
 | Turkish lira | 17.1% | 1.34 | 32.81 | Weakened sharply |
 | Indian rupee | 6.7% | 44.10 | 83.67 | Weakened |
@@ -184,7 +184,7 @@ There is a real trade-off here, and it matters.
 
 - Your future obligations span multiple currencies
 - You want to reduce concentration if your home currency has historically been volatile
-- You plan to retire, relocate, or support dependents in a different currency zone
+- You plan to retire, relocate, or support dependants in a different currency zone
 - Your income is in a smaller or more volatile currency than your target lifestyle
 
 **Reasons to stay largely in one currency:**

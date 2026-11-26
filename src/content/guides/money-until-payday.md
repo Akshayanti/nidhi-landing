@@ -18,10 +18,10 @@ taskTime: "about 15 minutes"
 form: steps
 steps:
   - action: "Write down today's balance and the date of your next pay."
-    why: "Everything else is measured against these two things. Use your own money available today, not an unused overdraft or credit, and count pending payments once. If bills leave from different accounts, keep a separate running balance for each."
+    why: "Everything else is measured against these two things. Use your own money available today, not an unused overdraft (spending below zero that the bank allows, usually at a cost) or credit, and count pending payments once. If bills leave from different accounts, keep a separate running balance for each."
   - action: "List every bill and payment due before payday, with its date."
     why: "Dates matter as much as amounts. A bill that leaves before your pay arrives can push the balance below zero even when the month adds up overall."
-    example: "Rent, phone, energy, loan or card payments, subscriptions. Your app's list of scheduled payments or direct debits shows most of them."
+    example: "Rent, phone, energy, loan or card payments, subscriptions. Your app's list of scheduled payments or direct debits (payments a company collects from your account) shows most of them."
     caution: "Bills that come once a year or once a quarter, such as insurance or a subscription renewal, are the easiest to miss. Check last year's statement for this month."
   - action: "Estimate everyday spending until payday."
     why: "Food, transport and small purchases don't arrive as bills, but they add up. A rough daily figure is enough here: add up one recent week of them on your statement and divide by 7."

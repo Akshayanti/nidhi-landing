@@ -2,7 +2,7 @@
  * For tests only: lets a test load a module that imports `astro:content`.
  *
  * `astro:content` exists only inside an Astro build. Modules such as
- * `guides.ts`, `learnPosts.ts` and the release gates import it for the parts
+ * `guides.ts` and `learnPosts.ts` import it for the parts
  * that read the collections, and keep their checks pure beside them. A test
  * imports this file first, then loads the module with `await import(...)`, and
  * tests the pure parts. The stub's `getCollection` answers with an empty list,

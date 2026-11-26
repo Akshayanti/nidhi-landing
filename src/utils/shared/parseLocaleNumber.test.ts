@@ -11,8 +11,10 @@ import {
   completeNumber,
   displayNumber,
   formatForInput,
+  latinDigits,
   numberSeparators,
   parseLocaleNumber,
+  plainDigits,
 } from './parseLocaleNumber.ts';
 
 const EN = 'en';
@@ -373,5 +375,121 @@ describe('the Arabic decimal and thousands marks (#625)', () => {
     for (const [raw, locale] of [['٢٫٥,', 'es'], ['150.000٫', 'en'], ['1,234٫', 'en'], [',5٬000', 'es']]) {
       assert.equal(canonicalNumber(raw, locale), 'NaN', `${raw} on ${locale}`);
     }
+  });
+});
+
+describe('a number in a link keeps every digit (#789)', () => {
+  it('displayNumber changes only the mark, below zero too', () => {
+    assert.equal(displayNumber('-99.99000000001', EN), '-99.99000000001');
+    assert.equal(displayNumber('-99.99000000001', ES), '-99,99000000001');
+  });
+  it('canonicalNumber writes a tiny number in plain digits', () => {
+    assert.equal(canonicalNumber('0.0000001', EN), '0.0000001');
+    assert.equal(canonicalNumber('0,00000000012', ES), '0.00000000012');
+    assert.equal(canonicalNumber(`0.${'0'.repeat(24)}5`, EN), `0.${'0'.repeat(24)}5`);
+  });
+});
+
+describe('the marks of a page', () => {
+  it('takes a space-like grouping mark as a plain space', () => {
+    assert.deepEqual(numberSeparators('cs'), { group: ' ', decimal: ',' });
+  });
+
+  it('works a locale\'s marks out once', () => {
+    assert.equal(numberSeparators('es'), numberSeparators('es'));
+  });
+
+  it('falls back to a comma and a point when Intl names no marks', () => {
+    const real = Intl.NumberFormat;
+    // A stand-in for a locale whose formatted number has neither part.
+    Intl.NumberFormat = function () {
+      return { formatToParts: () => [{ type: 'integer', value: '1234567' }] };
+    } as unknown as typeof Intl.NumberFormat;
+    try {
+      assert.deepEqual(numberSeparators('x-no-marks'), { group: ',', decimal: '.' });
+    } finally {
+      Intl.NumberFormat = real;
+    }
+  });
+});
+
+describe('each check, at its edge', () => {
+  it('refuses text that is not digits, marks and spaces from a digit on', () => {
+    for (const raw of ['abc', 'a1', '1a', 'x', '-', '1-2', '5-', '1.5a', ',', '.', ' ']) {
+      assert.equal(parseLocaleNumber(raw, EN), null, JSON.stringify(raw));
+      assert.equal(parseLocaleNumber(raw, EN, { allowNegative: true }), null, JSON.stringify(raw));
+    }
+    assert.equal(parseLocaleNumber('7', EN), 7, 'one digit is a number');
+  });
+
+  it('reads the Persian and Arabic-Indic zero, and the last digit of each script', () => {
+    assert.equal(latinDigits('۰۹ ٠٩ ०९'), '09 09 09');
+  });
+
+  it('refuses a space, of any kind, that is not between groups of three', () => {
+    assert.equal(parseLocaleNumber('1 2', EN), null);
+    assert.equal(parseLocaleNumber('1 2', EN), null);
+    assert.equal(parseLocaleNumber('1 2', EN), null);
+    assert.equal(parseLocaleNumber('1 000', EN), 1000);
+    assert.equal(parseLocaleNumber('1 000', EN), 1000);
+    assert.equal(parseLocaleNumber('1.5 0', EN), null, 'nor one among the decimals');
+    assert.equal(parseLocaleNumber('1.50 ', EN), 1.5, 'spaces around the number are not part of it');
+  });
+
+  it('reads a minus sign set off by a space', () => {
+    assert.equal(parseLocaleNumber('- 5', EN, { allowNegative: true }), -5);
+    assert.equal(parseLocaleNumber('− 2,5', ES, { allowNegative: true }), -2.5);
+  });
+
+  it('reads a point with more than three digits after it as a decimal on a page that groups with points', () => {
+    assert.equal(parseLocaleNumber('1.2345678', ES), 1.2345678);
+    assert.equal(parseLocaleNumber('1,2345', EN), 1.2345);
+  });
+
+  it('refuses three digits after the grouping mark when the whole part is no group', () => {
+    assert.equal(parseLocaleNumber('1230,125', EN), null);
+    assert.equal(parseLocaleNumber('1234.567', ES), null);
+  });
+
+  it('reads a whole part of several zeros as zero', () => {
+    assert.equal(parseLocaleNumber('00,125', EN), 0.125);
+    assert.equal(parseLocaleNumber('00.125', ES), 0.125);
+  });
+
+  it('refuses two kinds of grouping in one number', () => {
+    assert.equal(parseLocaleNumber('1 234,567', EN), null);
+    assert.equal(parseLocaleNumber('1.234 567', ES), null);
+  });
+});
+
+describe('plainDigits, completeNumber and displayNumber at their edges', () => {
+  it('writes a tiny number below zero with its sign', () => {
+    assert.equal(plainDigits(-0.0000001), '-0.0000001');
+    assert.equal(plainDigits(-1.5e-9), '-0.0000000015');
+    assert.equal(plainDigits(1.5e-9), '0.0000000015');
+    assert.equal(plainDigits(0), '0');
+    assert.equal(plainDigits(-2.5), '-2.5');
+    assert.equal(plainDigits(-1e21), '-1' + '0'.repeat(21));
+  });
+
+  it('completes a number with spaces around it or after its sign', () => {
+    assert.equal(completeNumber('2. ', EN), '2');
+    assert.equal(completeNumber('25.', EN), '25', 'only the mark is dropped');
+    assert.equal(completeNumber('1.250,', ES), '1.250');
+    assert.equal(completeNumber(' .5', EN), '0.5');
+    assert.equal(completeNumber('- .5', EN), '-0.5');
+    assert.equal(completeNumber('−,5', ES), '−0,5');
+  });
+
+  it('leaves text that is not a number as it was typed', () => {
+    assert.equal(completeNumber('2.5-3', EN), '2.5-3');
+    assert.equal(completeNumber('2 -', EN), '2 -');
+  });
+
+  it('shows a box of nothing but spaces as empty, and an unreadable one as a question mark', () => {
+    assert.equal(displayNumber('   ', ES), '');
+    assert.equal(displayNumber(' NaN ', ES), '?');
+    assert.equal(displayNumber('abc', ES), 'abc');
+    assert.equal(displayNumber(' 2.5 ', ES), '2,5');
   });
 });

@@ -7,7 +7,7 @@ import { DEFAULT_LOCALE } from '../i18n';
 
 <BaseLayout
   title="Link not valid | nidhi"
-  description="This subscription link is no longer valid. The link may have expired or already been used. Try subscribing again from the homepage."
+  description="This subscription link is no longer valid. It may have expired, or been cancelled by unsubscribing. Try subscribing again from the homepage."
   robots="noindex,nofollow"
   alternates={[DEFAULT_LOCALE]}
 >
@@ -23,20 +23,20 @@ import { DEFAULT_LOCALE } from '../i18n';
 
       <h1 class="transactional-title">This link isn&rsquo;t valid.</h1>
       <p class="transactional-body" id="invalid-copy">
-        Either it&rsquo;s been used already, it&rsquo;s expired, or something
-        got mangled in transit. Nothing on your account has changed.
+        It may have expired, been cancelled by unsubscribing, or got mangled
+        in transit. Nothing on your account has changed.
       </p>
 
       <div class="transactional-actions">
         <a class="btn btn--primary" href="/blog/">Go to the learning path</a>
         <a class="btn btn--outline" href="mailto:hello@nidhi.today?subject=subscription link issue">
-          Email us
+          Email me
         </a>
       </div>
 
       <p class="transactional-secondary">
         If you meant to <strong>unsubscribe</strong> and nothing happened,
-        reply to any of our emails and we&rsquo;ll remove you manually.
+        reply to any email from nidhi and I&rsquo;ll remove you by hand.
       </p>
     </div>
   </section>
@@ -48,9 +48,9 @@ import { DEFAULT_LOCALE } from '../i18n';
     if (!copy) return;
     var reason = new URLSearchParams(window.location.search).get('reason') || '';
     if (reason === 'confirm') {
-      copy.textContent = 'This confirmation link has already been used or has expired. If you meant to subscribe, pop your email back into the form on the learning path and we\u2019ll send a new confirmation.';
+      copy.textContent = 'This confirmation link has expired or is no longer valid. If you meant to subscribe, pop your email back into the form on the learning path and a new confirmation link will be on its way.';
     } else if (reason === 'unsubscribe') {
-      copy.textContent = 'This unsubscribe link isn\u2019t valid anymore. If you want to stop getting our emails, reply to any of them and we\u2019ll remove you manually.';
+      copy.textContent = 'This unsubscribe link isn\u2019t valid anymore. If you want to stop getting emails from nidhi, reply to any of them and I\u2019ll remove you by hand.';
     }
   })();
 </script>

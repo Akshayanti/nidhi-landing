@@ -76,7 +76,7 @@ listed is not re-decided per page.
     a no-break space: `547 mil €`, `2,16 M €`. A thousand million is written
     in millions, `2.500 M €`. Never `K`, and never `B`: a Spanish *billón* is
     a million millions. A chart's heading counts in *miles*, *millones* and
-    *miles de millones* (*Importes en miles de €*).
+    *miles de millones* (*Cantidades en miles de €*).
 
 ## Vocabulary
 
@@ -185,7 +185,7 @@ listed is not re-decided per page.
 | means-tested benefits | ayudas sujetas a nivel de ingresos y patrimonio | |
 | no prerequisite | no hace falta leer nada antes | |
 | qualified professional | profesional acreditado | Always. Never *cualificado* or *calificado*. |
-| licensed (financial adviser) | con licencia | *Asesor financiero con licencia*; not *autorizado*. |
+| licensed (financial adviser) | con licencia | *Asesor financiero con licencia*, in every disclaimer; not *autorizado*, and not *acreditado*, which is for a qualified professional. |
 | money scripts | guiones de dinero (money scripts) | English kept in brackets on first use. |
 | framing | encuadre | *Encuadre y anclaje*. |
 | blended families | familias reconstituidas | |
@@ -217,7 +217,7 @@ listed is not re-decided per page.
 | waitlist | lista de espera | |
 | newsletter | boletín | |
 | share link | enlace para compartir | |
-| beliefs (page) | en qué creemos | |
+| beliefs (page) | en qué creo | «En qué creemos» only in the privacy notice, which speaks as we. |
 | editorial policy | política editorial | |
 | personal finance | finanzas personales | |
 | financial literacy | educación financiera | |
@@ -268,13 +268,15 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | English | Spanish | Notes |
 | --- | --- | --- |
 | monthly payment | cuota mensual | |
+| amount | cantidad | The label and chart heading too (*Cantidades*), never *importe* or *monto*. |
 | loan amount | cantidad del préstamo | *Importe* leans to Spain and *monto* to Latin America. |
 | annual interest rate | tasa de interés anual | |
 | term (months) | plazo (meses) | |
-| amortisation schedule | tabla de amortización | *Cuadro* leans to Spain. |
+| amortization schedule | tabla de amortización | *Cuadro* leans to Spain. |
 | balance (of a loan) | saldo pendiente | |
 | balance (of a portfolio) | valor de la cartera | Not *saldo*, which reads as money owed. |
 | lender | entidad financiera | *Prestamista* reads as a private moneylender. |
+| offer (a card in the loan tool) | oferta | *Oferta A*, *Añadir oferta*. The name field is *Nombre de la entidad*. |
 | recast | recalcular la cuota | Where the tool defines it: on the remaining balance, keeping the rate and the end date. |
 | apply to principal | aplicar al capital | *Reduce el capital* is fine for the effect. Never *sumar al capital*, which says the debt grows. |
 | total cost | costo total | |
@@ -285,7 +287,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | prepayment | pago anticipado | *Amortización anticipada* leans to Spain. |
 | exchange rate | tipo de cambio | |
 | currency | moneda | *Divisa* only for foreign currency in trading contexts. |
-| home currency | moneda de referencia | *Moneda principal* can read as a dominant world currency. |
+| spending currency (home currency) | la moneda en la que gastas | The badge, where it does not fit: *Moneda de gasto*. Not *moneda de referencia* (a benchmark) or *moneda funcional* (accounting), and *moneda principal* can read as a dominant world currency. |
 | percentile | percentil | |
 | median | mediana | |
 | APR | APR (tasa de porcentaje anual) | The tool's figure is the US nominal APR, glossed once. Never labelled TAE, and never glossed *tasa anual equivalente* (what TAE stands for). |
@@ -295,6 +297,9 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | row (of the net worth table) | elemento | *{count} elementos*; *fila* where the sentence is about the table itself (*fila {index}*). |
 | donut chart | gráfico de anillo | |
 | fan chart | gráfico de abanico | |
+| range (of outcomes) | rango | *Abanico* only in the Monte Carlo simulator, whose chart is the fan; never both words in one sentence. |
+| box (on a page) | recuadro | *Cuadro* only for a dialog (*cuadro de impresión*). |
+| starting routes (home) | rutas iniciales | Not *puntos de partida*, which the site keeps for a starting point. |
 | Full / Redacted (share options) | Versión completa / Versión con datos ocultos | Never *anónima*: the link still carries the currencies and each one's share. |
 | Cautious / Historical / Optimistic | Prudente / Histórico / Optimista | The return settings. |
 | lump sums | pagos extraordinarios | |

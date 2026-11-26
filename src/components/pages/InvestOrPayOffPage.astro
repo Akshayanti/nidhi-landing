@@ -3,11 +3,9 @@
  * The invest or pay off calculator page, in whichever language it was asked
  * for.
  *
- * English is served from `src/pages/free/invest-or-pay-off/[...path].astro`,
- * the other languages from
- * `src/pages/[locale]/free/invest-or-pay-off/[...path].astro`; both render
- * this one component. Both routes are gated on lesson 49's pubDate
- * (src/utils/invest-or-pay-off/release.ts), so the tool goes live with it.
+ * English is served from `src/pages/free/invest-or-pay-off.astro`, the other
+ * languages from `src/pages/[locale]/free/invest-or-pay-off.astro`; both
+ * render this one component.
  *
  * The copy is in the catalog, under `tools.investOrPayOff.page`, and what the
  * tool says under `tools.investOrPayOff.island`, which is handed to the
@@ -35,10 +33,10 @@ import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
 import { countryNamer } from '../../utils/inflation/countryNames.ts';
 import { HISTORY_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
 import { PATHS, REAL_RETURN_BOTTOM, REAL_RETURN_TOP } from '../../utils/invest-or-pay-off/math.ts';
-import { INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/release.ts';
+import { INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/url.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/invest-or-pay-off/url.ts';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
-import { CURRENCIES } from '../../utils/loan/math.ts';
+import { CURRENCIES } from '../../utils/shared/money.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
 

@@ -58,6 +58,8 @@ import {
   pointsCostAboveFee,
   unreadableOptionalFields,
   type OptionalField,
+  comparisonWithheld,
+  holdsMarker,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, CHART_SERIES_ON } from '../styles/palette.ts';
 import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
@@ -68,7 +70,7 @@ import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, useToolReady, type Notice } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -93,9 +95,10 @@ function months(count: number, s: Strings['months']): string {
   const y = Math.floor(count / 12);
   const m = count % 12;
   if (y === 0) return m === 1 ? s.one : format(s.some, { m });
-  if (m === 0) return format(s.years, { y });
-  if (m === 1) return format(s.yearsOne, { y });
-  return format(s.yearsSome, { y, m });
+  const years = y === 1 ? s.year : format(s.years, { y });
+  if (m === 0) return years;
+  if (m === 1) return format(s.yearsAndMonth, { years });
+  return format(s.yearsSome, { years, m });
 }
 
 /**
@@ -266,8 +269,10 @@ function engineWarning(raw: string, s: Strings): string {
 // The PostHog object on `window` is declared once, in the types file under src/types/.
 
 function track(event: string, properties?: Record<string, unknown>) {
+  // Stryker disable next-line StringLiteral: equivalent. Without a window the call below throws a ReferenceError that the catch swallows, so returning early and not returning look the same to every caller.
   if (typeof window === 'undefined') return;
   try {
+    // Stryker disable next-line OptionalChaining: equivalent. Without the analytics library, or without its send method, the call as written stops quietly and the mutant throws a TypeError that the catch swallows, so nothing is sent and nothing breaks either way.
     window.posthog?.capture?.(event, properties);
   } catch {
     /* never let analytics throw block UI updates */
@@ -280,8 +285,10 @@ function track(event: string, properties?: Record<string, unknown>) {
 // has no place in URL state. Indices align with VENDOR_LABELS A-E. The
 // values come from CHART_SERIES (single source of truth in palette.ts);
 // we slice the first 5 because the loan grid maxes out at 5 vendors.
+// Stryker disable next-line MethodExpression: equivalent. There are at most five offers (MAX_VENDORS), so no colour past the fifth is ever read.
 const VENDOR_COLORS = CHART_SERIES.slice(0, 5);
 // The ink for a label painted on an offer's colour (the principal bars).
+// Stryker disable next-line MethodExpression: equivalent. There are at most five offers (MAX_VENDORS), so no ink past the fifth is ever read.
 const VENDOR_INKS = CHART_SERIES_ON.slice(0, 5);
 
 // ---- Chart -----------------------------------------------------------------
@@ -314,6 +321,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   const figureRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
+  // Stryker disable next-line ArrayDeclaration: any list that never changes keeps the same function, as the empty one does.
   const close = useCallback(() => setHover(null), []);
   useEscapeToClose(hover !== null, close);
 
@@ -428,6 +436,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
     else if (e.key === 'Home') next = 0;
     else if (e.key === 'End') next = maxMonths;
     else if (e.key === 'Escape') {
+      // Stryker disable next-line CallExpression: equivalent. While the read-out is open the window listener of useEscapeToClose closes it on Escape as well, and while it is closed there is nothing to close.
       setHover(null);
       return;
     }
@@ -762,6 +771,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // table below the chart, and the schedule, still hold the figure.
   const ROW = 1.25 * fs;
   const ROOM = 2 * fs;
+  // Stryker disable next-line ArrayDeclaration: equivalent. A string in the list has no box edges, so every comparison with it is false and it never stops a label being placed.
   const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
   const legendBox = (top: number, lines: string[], cls: string, fit: number) => lines.forEach((l, i) => {
     const yy = top + i * LINE;
@@ -990,7 +1000,9 @@ function usePhone(): boolean {
     sync();
     mq.addEventListener?.('change', sync);
     return () => mq.removeEventListener?.('change', sync);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, as the empty one does.
+  []);
   return phone;
 }
 
@@ -1023,7 +1035,9 @@ export default function LoanCompare({
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   // The browser would not copy: the bar asks the reader to copy the address by hand.
+  // Stryker disable next-line BooleanLiteral: equivalent. The effect that clears the copied address runs on mount and sets this false, and until then no address is shown, so the label it chooses is never seen.
   const [copyFailed, setCopyFailed] = useState(false);
+  // Stryker disable next-line StringLiteral: equivalent. A notice whose count is 0 is never said, so its starting words are never heard.
   const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
   // One timer for the button's "Copied": a second copy restarts it.
   const copiedTimer = useRef<number | undefined>(undefined);
@@ -1045,6 +1059,7 @@ export default function LoanCompare({
   const aprDocsId = useId();
   const setCurrency = useCallback(
     (next: string) => setGlobalState((g) => ({ ...g, currency: next })),
+    // Stryker disable next-line ArrayDeclaration: equivalent. The callback uses only the state setter, which never changes, so the list only has to never change; the mutant's one constant string never changes either.
     [],
   );
 
@@ -1052,6 +1067,7 @@ export default function LoanCompare({
   // already moved its state out of the address bar into a window property,
   // before analytics started (see SHARED_STATE_GLOBAL in the url module).
   useEffect(() => {
+    // Stryker disable next-line StringLiteral: equivalent. Effects run only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
     const shared = typeof raw === 'string' ? raw : '';
@@ -1161,12 +1177,14 @@ export default function LoanCompare({
   const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!hydrated) return;
+    // Stryker disable next-line ConditionalExpression,CallExpression: equivalent. The effect's cleanup below already clears the waiting timer before the effect runs again, so this clear and its check change nothing.
     if (validationTrackTimer.current) clearTimeout(validationTrackTimer.current);
     validationTrackTimer.current = setTimeout(() => {
       const errored = results
         .map((r, i) => ({ r, i }))
         .filter((x) => Boolean(x.r.error));
       if (errored.length === 0) return;
+      // Stryker disable next-line StringLiteral: equivalent. Only offers with an error are here, so the fallback for a missing message is never used.
       const firstMsg = (errored[0].r.error ?? '').toLowerCase();
       let firstReason:
         | 'missing_principal'
@@ -1200,11 +1218,16 @@ export default function LoanCompare({
     [vendors, currency],
   );
 
+  // Stryker disable next-line MethodExpression: equivalent. Outside a held-back comparison every result has no error and a schedule, so the filter keeps them all; inside one, these values reach only parts that are hidden and inert.
   const validResults = results
     .map((r, i) => ({ r, i }))
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
   // Only an offer that is paid off has a total to be lowest.
   const withTotal = validResults.filter((x) => !isNotPaidOff(x.r));
+  // Until every offer can be read, nothing compares them, and nothing is
+  // shared or saved (#793).
+  const withheld = comparisonWithheld(results);
+  const withheldReasonId = useId();
   const cheapestByTotal =
     withTotal.length > 0
       ? withTotal.reduce((best, cur) =>
@@ -1213,7 +1236,9 @@ export default function LoanCompare({
       : -1;
 
   const copyShareLink = useCallback(async () => {
+    // Stryker disable next-line StringLiteral: equivalent. A click runs only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
+    if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
     const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
     try {
@@ -1236,13 +1261,14 @@ export default function LoanCompare({
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
-  }, [vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
+  }, [withheld, vendors, globalState, strings.toolbar.copyPrompt, strings.toolbar.shareStatus]);
 
   // The copied address stays until the next change to the comparison, which
   // is when it stops being the address of what is on the page. It used to go
   // after 2.5 s, from under a reader who had tabbed into it (#603).
   useEffect(() => {
     setShareUrl('');
+    // Stryker disable next-line BooleanLiteral: equivalent. The address is empty after this, so the bar and its label are gone, and every copy that shows the address sets this again.
     setCopyFailed(false);
   }, [vendors, globalState]);
 
@@ -1274,6 +1300,7 @@ export default function LoanCompare({
     <AmountLocaleContext.Provider value={amountLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
+    <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
@@ -1378,7 +1405,9 @@ export default function LoanCompare({
           type="button"
           onClick={() => {
             const heading = document.getElementById('lc-delta-h');
+            // Stryker disable next-line OptionalChaining: equivalent. The comparison's heading is always on the page, so there is no missing heading to guard.
             heading?.scrollIntoView({ block: 'start' });
+            // Stryker disable next-line OptionalChaining: equivalent. The comparison's heading is always on the page, so there is no missing heading to guard.
             heading?.focus({ preventScroll: true });
           }}
         >
@@ -1420,7 +1449,7 @@ export default function LoanCompare({
             className="lc-cardAdd"
             onClick={addVendor}
             // No aria-label: the visible words are the name, so a reader who
-            // says "Add vendor" to voice control reaches it (WCAG 2.5.3).
+            // says "Add an offer" to voice control reaches it (WCAG 2.5.3).
             data-attr="lc-vendor-add"
           >
             <span className="lc-cardAddIcon" aria-hidden="true">+</span>
@@ -1433,6 +1462,7 @@ export default function LoanCompare({
       </div>
 
       <LoanAnnouncement
+        withheld={withheld}
         paidOff={withTotal.map((x) => x.r)}
         validCount={validResults.length}
         currency={currency}
@@ -1442,6 +1472,8 @@ export default function LoanCompare({
       />
 
       <DeltaSummary
+        withheld={withheld}
+        reasonId={withheldReasonId}
         results={results}
         vendors={vendors}
         currency={currency}
@@ -1456,6 +1488,8 @@ export default function LoanCompare({
               type="button"
               className="btn btn--outline lc-shareBtn"
               onClick={copyShareLink}
+              aria-disabled={withheld || undefined}
+              aria-describedby={withheld ? withheldReasonId : undefined}
               title={strings.toolbar.shareTitle}
               data-attr="lc-share-copy"
             >
@@ -1468,10 +1502,9 @@ export default function LoanCompare({
           shareUrl && (
             <div className="lc-shareUrlBar">
               <span className="lc-shareUrlLabel">{copyFailed ? strings.toolbar.copyPrompt : strings.toolbar.copiedBar}</span>
-              <input
+              <LinkField
                 className="lc-shareUrlInput"
-                value={shareUrl}
-                readOnly
+                link={shareUrl}
                 onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
                 aria-label={strings.toolbar.shareUrlAria}
               />
@@ -1480,11 +1513,12 @@ export default function LoanCompare({
         }
         xlsxAttr="lc-export-xlsx"
         pdfAttr="lc-export-pdf"
-        ready={validResults.length > 0}
+        ready={!withheld && validResults.length > 0}
         onSpreadsheet={downloadSpreadsheet}
         onPrint={printPage}
       />
 
+      <Withheld reason={withheld ? strings.delta.fix : null} unsaid>
       <AnalysisTabs
         vendors={vendors}
         results={results}
@@ -1497,6 +1531,7 @@ export default function LoanCompare({
         onRefiSaid={setRefiSaid}
         strings={strings}
       />
+      </Withheld>
 
       <details className="lc-disclaimerWrap">
         <summary className="lc-disclaimerSummary disclosure">{strings.disclaimer.summary}</summary>
@@ -1505,8 +1540,9 @@ export default function LoanCompare({
         </p>
       </details>
 
-      <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />
+      {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />}
     </div>
+    </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
     </ChartWordsContext.Provider>
     </AmountLocaleContext.Provider>
@@ -1585,15 +1621,21 @@ function VendorCard({
   shared,
   currency,
   strings,
-  onChange,
+  onChange: onEdit,
   onRemove,
 }: VendorCardProps) {
   const { formatMoney, amountLocale } = useMoney();
   const numberLocale = useContext(NumberLocaleContext);
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
+  // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
   const hasError = Boolean(result.error);
+  // The mark that arrived, as against text being typed here.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
+  const arrived = !typed && holdsMarker(vendor);
+  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => { setTyped(true); onEdit(patch); };
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
   const badOptional = new Set<OptionalField>([
@@ -1603,6 +1645,7 @@ function VendorCard({
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   const requiredError = hasError && badOptional.size === 0;
+  // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
 
@@ -1613,6 +1656,7 @@ function VendorCard({
   const isSet = (s: string) => Number(s) > 0;
   // Every offer starts with its optional boxes empty (the example and an
   // added one alike), so that is what "unchanged" means: an empty row stays folded.
+  // Stryker disable next-line MethodExpression: equivalent. Every slot's added offer has the same empty optional boxes, the only fields compared with it, so the slot it is read from changes nothing.
   const slot = Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label));
   const start = makeAddedVendor(slot);
   const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
@@ -1815,8 +1859,8 @@ function VendorCard({
       {/* Not a live region: the tool's one announcement says the settled result. */}
       <div className="lc-results">
         {hasError ? (
-          <p className="lc-error" id={errorId} role="alert">
-            <ErrorText>{engineError(result.error ?? '', strings)}</ErrorText>
+          <p className="lc-error" id={errorId}>
+            <ErrorText>{arrived ? unreadableText : engineError(result.error ?? '', strings)}</ErrorText>
           </p>
         ) : (
           <>
@@ -2303,7 +2347,8 @@ function ResultRow({ label, value, hint, note, emphasized, shared }: ResultRowPr
  * What a screen reader is told once typing has settled: one offer's payment
  * and total, or the range of totals across the offers (the side-by-side
  * section's own sentence). `paidOff` holds the offers that have a total.
- * Empty while no offer has a result: a card's error is an alert of its own.
+ * While an offer is invalid the reason is said instead, once, and the cards'
+ * errors are not live regions.
  */
 function announcedResult(
   paidOff: LoanResult[],
@@ -2333,14 +2378,23 @@ function announcedResult(
 }
 
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ paidOff, validCount, currency, strings, also, notice }: { paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
+function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
-  return <ResultAnnouncement text={announcedResult(paidOff, validCount, currency, strings, formatMoney)} also={also} notice={notice} />;
+  return (
+    <ResultAnnouncement
+      text={withheld ? strings.delta.fix : announcedResult(paidOff, validCount, currency, strings, formatMoney)}
+      delay={withheld ? WITHHELD_SAID_AFTER : undefined}
+      also={withheld ? undefined : also}
+      notice={notice}
+    />
+  );
 }
 
 // ---- Delta summary ---------------------------------------------------------
 
 interface DeltaSummaryProps {
+  withheld: boolean;
+  reasonId: string;
   results: LoanResult[];
   vendors: VendorInput[];
   currency: string;
@@ -2351,8 +2405,10 @@ interface DeltaSummaryProps {
   strings: Strings;
 }
 
-function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps) {
+function DeltaSummary({ withheld, reasonId, results, vendors, currency, strings }: DeltaSummaryProps) {
   const { formatMoney, amountLocale } = useMoney();
+  // The heading stays: the phone's jump to the comparison focuses it.
+  const reason = withheld ? strings.delta.fix : null;
   const valid = results
     .map((r, i) => ({
       r,
@@ -2366,9 +2422,11 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
     return (
       <section className="lc-deltaSection">
         <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
-        <p className="lc-deltaEmpty">
-          {strings.delta.empty}
-        </p>
+        <Withheld reason={reason} reasonId={reasonId}>
+          <p className="lc-deltaEmpty">
+            {strings.delta.empty}
+          </p>
+        </Withheld>
       </section>
     );
   }
@@ -2399,6 +2457,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
   return (
     <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
       <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
+      <Withheld reason={reason} reasonId={reasonId}>
       {/*
         Not a live region: the tool's one announcement says this sentence once
         typing has settled. The wording is deliberately neutral: it states the range and the
@@ -2557,6 +2616,7 @@ function DeltaSummary({ results, vendors, currency, strings }: DeltaSummaryProps
       <p className="lc-deltaNote">
         {strings.delta.aprNote}
       </p>
+      </Withheld>
     </section>
   );
 }
@@ -2684,6 +2744,7 @@ function AnalysisTabs({
   // Refs to each tab button so the keyboard handler can move DOM focus
   // when the user navigates with arrow keys. Per WAI-ARIA APG for tabs,
   // arrow keys MUST move both selection and focus.
+  // Stryker disable next-line ArrayDeclaration: equivalent. Every tab sets its own place in the list when it is drawn, so what the list starts with is never read.
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Keyboard handler implementing the WAI-ARIA Tabs (manual activation
@@ -2699,6 +2760,7 @@ function AnalysisTabs({
   // panel announced as soon as they navigate.
   const onTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const currentIdx = tabs.findIndex((t) => t.id === active);
+    // Stryker disable next-line UnaryOperator: equivalent. Every key that is handled sets the index before it is used, and every other key returns first.
     let nextIdx = -1;
     switch (e.key) {
       case 'ArrowRight':
@@ -2884,6 +2946,7 @@ function ChartsPanel({
           <select
             id={splitSelectId}
             className="lc-select lc-splitSelect"
+            // Stryker disable next-line StringLiteral: equivalent. A value no option has leaves React to select the first option, the automatic choice, which is what the empty value selects.
             value={splitVendorIdx == null ? '' : String(splitVendorIdx)}
             onChange={(e) => {
               const v = e.target.value;
@@ -3037,8 +3100,11 @@ function HorizonSection({
   // the number itself is something a reader typed or dragged to, and events
   // carry choices, never values.
   const horizonTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
   const handleHorizonChange = useCallback(
     (next: string) => {
+      setTyped(true);
       onHorizonChange(next);
       if (horizonTrackTimer.current) {
         clearTimeout(horizonTrackTimer.current);
@@ -3053,7 +3119,9 @@ function HorizonSection({
   );
   useEffect(() => () => {
     if (horizonTrackTimer.current) clearTimeout(horizonTrackTimer.current);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the cleanup once, on unmount, as the empty one does.
+  []);
   // The slider's max is the longest valid schedule: a horizon past every
   // vendor's payoff is meaningless. We clamp to a sensible minimum of
   // 1 month so the slider always renders.
@@ -3108,7 +3176,7 @@ function HorizonSection({
       </div>
 
       {badHorizon ? (
-        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{engineError(OPTIONAL_UNREADABLE, strings)}</ErrorText></p>
+        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
       ) : validRows.length === 0 ? (
         <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
@@ -3260,18 +3328,25 @@ function RefinanceSection({
   // in a single session; we want a single event per "burst of activity"
   // rather than one per keystroke. Property names the field that just
   // changed; values are never sent.
+  const unreadableText = useContext(UnreadableContext);
+  const [typed, setTyped] = useState(false);
   const refiTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const trackRefiChange = useCallback((field: keyof GlobalState) => {
+    setTyped(true);
     if (refiTrackTimer.current) {
       clearTimeout(refiTrackTimer.current);
     }
     refiTrackTimer.current = setTimeout(() => {
       track('free_loan_comparison_refi_changed', { field });
     }, 600);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes keeps the same function, as the empty one does.
+  []);
   useEffect(() => () => {
     if (refiTrackTimer.current) clearTimeout(refiTrackTimer.current);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the cleanup once, on unmount, as the empty one does.
+  []);
 
   // Resolve the vendor to refinance. We accept any 1-based index that
   // points to a valid result; on mismatch we fall back to the first
@@ -3333,6 +3408,7 @@ function RefinanceSection({
             }}
           >
             {vendors.map((v, i) => (
+              // Stryker disable next-line OptionalChaining: unreachable. Every offer has a result here: the offers to refinance, worked out above, read results[i].error without it and would have thrown first.
               <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
                 {shownName(v.name, i, strings)}
                 {results[i]?.error ? strings.charts.incomplete : ''}
@@ -3424,7 +3500,7 @@ function RefinanceSection({
       </div>
 
       {badRefi ? (
-        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{engineError(OPTIONAL_UNREADABLE, strings)}</ErrorText></p>
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
       ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}
@@ -3488,3 +3564,13 @@ function RefinanceSection({
     </section>
   );
 }
+
+// The parts of the page, for their own tests: each can be mounted or called
+// without the whole comparison around it. The page itself uses only the
+// default export.
+export {
+  AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
+  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredMark, ResultRow, SplitChart, VendorCard,
+  analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
+};

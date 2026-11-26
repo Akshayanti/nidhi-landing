@@ -16,7 +16,7 @@ import { defaultState as monteCarloDefaults } from '../monte-carlo/url.ts';
 import { monteCarloSheets } from '../monte-carlo/export.ts';
 import { DEFAULT_VENDORS } from '../loan/url.ts';
 import { computeFromInput } from '../loan/inputs.ts';
-import { fromMinor } from '../loan/math.ts';
+import { fromMinor } from './money.ts';
 import { loanSheets } from '../loan/export.ts';
 import { answerPath, whatItBuys } from '../inflation/math.ts';
 import { defaultState as inflationDefaults } from '../inflation/url.ts';
@@ -213,6 +213,95 @@ describe('net worth spreadsheet', () => {
       assert.ok(row.filter((c) => c && typeof c === 'object' && 'n' in c).every((c) => (c as { fmt?: string }).fmt === 'decimal2'));
     }
   });
+});
+
+describe('net worth with every rate missing (#795)', () => {
+  const rows: AssetRow[] = [
+    { name: 'Savings', value: '1000', currency: 'EUR', type: 'asset' },
+    { name: 'Fund', value: '3000', currency: 'CZK', type: 'asset' },
+  ];
+  const senders = { 'no answer': null, 'an answer without them': { EUR: 1 } as Record<string, number> };
+
+  for (const locale of LOCALES) {
+    const t = DICTS[locale].tools;
+    const island = t.multiCurrencyNetWorth.island;
+    const x = island.export as typeof island.export & { meaningShares?: string; meaningRates?: string };
+    const [, shareSentence, rateSentence] = x.meaningShares ? ['', x.meaningShares, x.meaningRates!] : x.meaning.split(/(?<=[.।]) /);
+    const told = (result: ReturnType<typeof aggregate>, showAmounts: boolean) => {
+      const base = { island, common: t.export, functionalCurrency: 'EUR', result, riskLabel: (l: string) => l, rows: null, rates: null, showAmounts };
+      const table = sheet(netWorthSheets({ ...base, date: DATE, page: PAGE }), island.export.sheets.byCurrency).rows;
+      return { table, words: table.flat().map((c) => (c && typeof c === 'object' && 't' in c ? c.t : c)), report: netWorthReport({ ...base, answer: ['a'] }) };
+    };
+
+    for (const [name, rates] of Object.entries(senders)) {
+      it(`${locale}, ${name}: original amounts, no total, share, band, bar or sentence about them`, () => {
+        const { table, words, report } = told(aggregate(rows, 'EUR', rates), true);
+        const gone = [x.sharePct, x.exposurePct, island.chart.tableColRisk, island.results.totalLabel, island.results.totalPartial];
+        for (const word of gone) assert.ok(!words.includes(word), `${word} is still there`);
+        assert.equal(num(table.find((r) => r[1] === 'CZK')![2]), 3000, 'the original amount stays');
+        assert.ok(words.includes(island.results.rateUnavailable), 'nothing says why');
+        assert.equal(report.chart, null);
+        assert.ok(!report.meaning.includes(shareSentence), 'explains shares it does not show');
+        assert.ok(!report.meaning.includes(rateSentence), 'says amounts were converted');
+      });
+    }
+
+    it(`${locale}: some rates missing explain no share, and still the conversion`, () => {
+      const some = [...rows, { name: 'Shares', value: '2000', currency: 'USD', type: 'asset' } as AssetRow];
+      const { report } = told(aggregate(some, 'EUR', { EUR: 1, USD: 1.1 }), true);
+      assert.ok(!report.meaning.includes(shareSentence), 'explains shares it does not show');
+      assert.ok(report.meaning.includes(rateSentence));
+    });
+
+    it(`${locale}: a view without amounts is not this case`, () => {
+      const whole = aggregate(rows, 'EUR', { EUR: 1, CZK: 24 });
+      const { words, report } = told({ ...whole, hasRates: 'none', totalNetWorthFunctional: 0 }, false);
+      assert.ok(words.includes(x.sharePct));
+      assert.ok(report.meaning.includes(shareSentence));
+      assert.ok(!report.meaning.includes(rateSentence), 'says amounts were converted, and shows none');
+    });
+  }
+});
+
+describe('net worth with a missing rate (#795)', () => {
+  const rows: AssetRow[] = [
+    { name: 'Savings', value: '1000', currency: 'EUR', type: 'asset' },
+    { name: 'Shares', value: '2000', currency: 'USD', type: 'asset' },
+    { name: 'Fund', value: '3000', currency: 'CZK', type: 'asset' },
+  ];
+  const rates = { EUR: 1, USD: 1.1 };
+  const result = aggregate(rows, 'EUR', rates);
+
+  for (const locale of LOCALES) {
+    const t = DICTS[locale].tools;
+    const island = t.multiCurrencyNetWorth.island;
+    const words = island.results as typeof island.results & { totalPartial?: string; announcePartial?: string };
+    const base = { island, common: t.export, functionalCurrency: 'EUR', result, riskLabel: (l: string) => l };
+
+    it(`${locale}: the workbook names a subtotal and states no share or band`, () => {
+      assert.ok(words.totalPartial, 'no subtotal label');
+      for (const shared of [false, true]) {
+        const sheets = netWorthSheets({ ...base, rows: shared ? null : rows, rates: shared ? null : rates, showAmounts: true, date: DATE, page: PAGE });
+        const table = sheet(sheets, island.export.sheets.byCurrency).rows;
+        const words_ = table.flat().map((c) => (c && typeof c === 'object' && 't' in c ? c.t : c));
+        for (const gone of [island.export.sharePct, island.export.exposurePct, island.chart.tableColRisk, island.results.totalLabel]) {
+          assert.ok(!words_.includes(gone), `${gone} is still there`);
+        }
+        assert.ok(words_.includes(words.totalPartial!));
+        assert.ok(words_.includes(island.results.partialHint));
+        assert.equal(num(table.find((r) => r[1] === 'CZK')![2]), 3000, 'the original amount stays');
+      }
+    });
+
+    it(`${locale}: the report draws no bars`, () => {
+      assert.equal(netWorthReport({ ...base, rows, rates, showAmounts: true, answer: ['a'] }).chart, null);
+    });
+
+    it(`${locale}: the subtotal is announced under its own label`, () => {
+      const end = locale === 'hi' ? '।' : '.';
+      assert.equal(words.announcePartial?.replace(/\u00a0/g, ' '), `${words.totalPartial?.replace(/\u00a0/g, ' ')}: {total}${end}`);
+    });
+  }
 });
 
 /** The invest or pay off tool's defaults as the maths takes them, with a typed inflation figure. */

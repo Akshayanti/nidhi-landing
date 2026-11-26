@@ -188,7 +188,9 @@ const EXPECTED_STORAGE_KEYS = [
 const EXPECTED_HOSTS: Record<string, 'request' | 'link'> = {
   'api.frankfurter.dev': 'request', // exchange rates, net worth calculator
   'eu.i.posthog.com': 'request', // analytics
+  'data.bis.org': 'link', // the monthly price index's source, inflation calculator
   'data.worldbank.org': 'link',
+  'datacatalog.worldbank.org': 'link', // the World Bank's monthly index, inflation calculator
   'docs.google.com': 'link', // the volunteer form
   'posthog.com': 'link',
   'rpc.cfainstitute.org': 'link',
@@ -279,7 +281,7 @@ const EXPECTED_MENTIONS = [
   'components/BaseHead.astro: getItem x1',
   'components/BaseHead.astro: localStorage x1',
   'components/BaseHead.astro: setAttribute x1',
-  'components/CookieConsent.astro: cookie x42',
+  'components/CookieConsent.astro: cookie x46',
   'components/Footer.astro: cookie x6',
   'components/Header.astro: setAttribute x4',
   'components/InflationCalculator.tsx: capture x1',
@@ -294,7 +296,7 @@ const EXPECTED_MENTIONS = [
   'components/InvestOrPayOff.tsx: location x6',
   'components/InvestOrPayOff.tsx: navigator x1',
   'components/InvestOrPayOff.tsx: posthog x4',
-  'components/InvestOrPayOff.tsx: track x8',
+  'components/InvestOrPayOff.tsx: track x9',
   'components/LearnHome.astro: capture x3',
   'components/LearnHome.astro: getItem x2',
   'components/LearnHome.astro: localStorage x2',

@@ -13,7 +13,7 @@
  */
 
 import puppeteer from 'puppeteer';
-import { loadAllPosts, loadPost } from './lib/parse-markdown.js';
+import { loadAllPosts, loadPost } from './lib/media/parse-markdown.js';
 import { renderSlides } from './render-slides.js';
 import { renderStoriesForPost } from './render-stories.js';
 
