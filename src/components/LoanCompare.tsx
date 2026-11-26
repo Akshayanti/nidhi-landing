@@ -1026,7 +1026,9 @@ export default function LoanCompare({
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   // The browser would not copy: the bar asks the reader to copy the address by hand.
+  // Stryker disable next-line BooleanLiteral: equivalent. The effect that clears the copied address runs on mount and sets this false, and until then no address is shown, so the label it chooses is never seen.
   const [copyFailed, setCopyFailed] = useState(false);
+  // Stryker disable next-line StringLiteral: equivalent. A notice whose count is 0 is never said, so its starting words are never heard.
   const [shareNotice, setShareNotice] = useState<Notice>({ text: '', n: 0 });
   // One timer for the button's "Copied": a second copy restarts it.
   const copiedTimer = useRef<number | undefined>(undefined);
@@ -1048,6 +1050,7 @@ export default function LoanCompare({
   const aprDocsId = useId();
   const setCurrency = useCallback(
     (next: string) => setGlobalState((g) => ({ ...g, currency: next })),
+    // Stryker disable next-line ArrayDeclaration: equivalent. The callback uses only the state setter, which never changes, so the list only has to never change; the mutant's one constant string never changes either.
     [],
   );
 
@@ -1055,6 +1058,7 @@ export default function LoanCompare({
   // already moved its state out of the address bar into a window property,
   // before analytics started (see SHARED_STATE_GLOBAL in the url module).
   useEffect(() => {
+    // Stryker disable next-line StringLiteral: equivalent. Effects run only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
     const shared = typeof raw === 'string' ? raw : '';
@@ -1084,6 +1088,7 @@ export default function LoanCompare({
         utm_source: new URLSearchParams(window.location.search).get('utm_source') ?? null,
       });
     }
+  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the shared link is read once, on mount; the mutant's one constant string never changes either.
   }, []);
 
   // The inputs are never written into the address while you type: a URL can
@@ -1106,6 +1111,7 @@ export default function LoanCompare({
       next[index] = { ...next[index], ...patch };
       return next;
     });
+  // Stryker disable next-line ArrayDeclaration: equivalent. The callback uses only the state setter, which never changes, so the list only has to never change; the mutant's one constant string never changes either.
   }, []);
 
   // track() is intentionally outside the setState updater. React 18
@@ -1164,12 +1170,14 @@ export default function LoanCompare({
   const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!hydrated) return;
+    // Stryker disable next-line ConditionalExpression,CallExpression: equivalent. The effect's cleanup below already clears the waiting timer before the effect runs again, so this clear and its check change nothing.
     if (validationTrackTimer.current) clearTimeout(validationTrackTimer.current);
     validationTrackTimer.current = setTimeout(() => {
       const errored = results
         .map((r, i) => ({ r, i }))
         .filter((x) => Boolean(x.r.error));
       if (errored.length === 0) return;
+      // Stryker disable next-line StringLiteral: equivalent. Only offers with an error are here, so the fallback for a missing message is never used.
       const firstMsg = (errored[0].r.error ?? '').toLowerCase();
       let firstReason:
         | 'missing_principal'
@@ -1203,8 +1211,10 @@ export default function LoanCompare({
     [vendors, currency],
   );
 
+  // Stryker disable next-line MethodExpression: equivalent. Outside a held-back comparison every result has no error and a schedule, so the filter keeps them all; inside one, these values reach only parts that are hidden and inert.
   const validResults = results
     .map((r, i) => ({ r, i }))
+    // Stryker disable next-line LogicalOperator: equivalent. Outside a held-back comparison every result has no error and a schedule, so either test keeps them all; inside one, these values reach only parts that are hidden and inert.
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
   // Only an offer that is paid off has a total to be lowest.
   const withTotal = validResults.filter((x) => !isNotPaidOff(x.r));
@@ -1220,6 +1230,7 @@ export default function LoanCompare({
       : -1;
 
   const copyShareLink = useCallback(async () => {
+    // Stryker disable next-line StringLiteral: equivalent. A click runs only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
@@ -1230,6 +1241,7 @@ export default function LoanCompare({
       setCopyFailed(false);
       setCopied(true);
       // Said once, by the tool's one announcement (#603).
+      // Stryker disable next-line ArithmeticOperator: equivalent. The count only has to change with each copy and never come back to 0; counting down does the same.
       setShareNotice((s) => ({ text: strings.toolbar.shareStatus, n: s.n + 1 }));
       window.clearTimeout(copiedTimer.current);
       copiedTimer.current = window.setTimeout(() => setCopied(false), 2500);
@@ -1241,6 +1253,7 @@ export default function LoanCompare({
       setShareUrl(url);
       setCopyFailed(true);
       setCopied(false);
+      // Stryker disable next-line ArithmeticOperator: equivalent. The count only has to change with each copy and never come back to 0; counting down does the same.
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
@@ -1251,6 +1264,7 @@ export default function LoanCompare({
   // after 2.5 s, from under a reader who had tabbed into it (#603).
   useEffect(() => {
     setShareUrl('');
+    // Stryker disable next-line BooleanLiteral: equivalent. The address is empty after this, so the bar and its label are gone, and every copy that shows the address sets this again.
     setCopyFailed(false);
   }, [vendors, globalState]);
 
@@ -1387,7 +1401,9 @@ export default function LoanCompare({
           type="button"
           onClick={() => {
             const heading = document.getElementById('lc-delta-h');
+            // Stryker disable next-line OptionalChaining: equivalent. The comparison's heading is always on the page, so there is no missing heading to guard.
             heading?.scrollIntoView({ block: 'start' });
+            // Stryker disable next-line OptionalChaining: equivalent. The comparison's heading is always on the page, so there is no missing heading to guard.
             heading?.focus({ preventScroll: true });
           }}
         >
