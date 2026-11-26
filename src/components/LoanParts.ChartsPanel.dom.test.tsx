@@ -310,4 +310,3 @@ describe('the charts panel', () => {
     assert.deepEqual(alone.rows.at(-1)!.slice(1), ['€100.00', '€100.00', '€0.00']);
   });
 });
-

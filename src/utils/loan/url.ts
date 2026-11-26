@@ -405,7 +405,7 @@ function decodeVendorTuple(packed: string, slotIndex: number): VendorInput {
   }
 
   if (fields[V_IDX.TERM_MONTHS] !== '') next.termMonths = read(fields[V_IDX.TERM_MONTHS], next.termMonths);
-  // Stryker disable next-line StringLiteral: equivalent. Every slot template's monthly payment is empty, and an empty position reads back as empty, so the box ends the same either way.
+  // Stryker disable next-line StringLiteral: equivalent for every link a reader can make. The mutant compares with Stryker's own placeholder text instead of an empty position; an empty position reads back as the template's empty payment either way, so only a link holding that exact placeholder text could tell them apart.
   if (fields[V_IDX.MONTHLY_PAYMENT] !== '') next.monthlyPayment = read(fields[V_IDX.MONTHLY_PAYMENT], next.monthlyPayment);
   if (fields[V_IDX.FEE_MAJOR] !== '') next.feeMajor = read(fields[V_IDX.FEE_MAJOR], next.feeMajor);
   if (fields[V_IDX.EXTRA_MONTHLY] !== '') next.extraMonthly = read(fields[V_IDX.EXTRA_MONTHLY], next.extraMonthly);

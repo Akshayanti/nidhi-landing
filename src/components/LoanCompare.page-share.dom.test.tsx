@@ -91,6 +91,39 @@ describe('the loan comparison: copying a link', () => {
     assert.equal(said(), tb.copyPrompt);
     assert.deepEqual(eventNames(), ['free_loan_comparison_share_modal_opened']);
   });
+
+  it('says each copy, when one copy works and the next is refused, and the other way round', async () => {
+    // Each copy is a new announcement however the one before it went: a copy
+    // must never bring the count of what was said back to where it started.
+    clipboard();
+    mount();
+    await copy();
+    clock.pass(60);
+    assert.equal(said(), tb.shareStatus);
+    clipboard(false);
+    clock.pass(1000);
+    await copy();
+    clock.pass(60);
+    assert.equal(said(), tb.copyPrompt);
+    clipboard();
+    clock.pass(1000);
+    await copy();
+    clock.pass(60);
+    assert.equal(said(), tb.shareStatus);
+  });
+
+  it('says the copy that works after one that was refused', async () => {
+    clipboard(false);
+    mount();
+    await copy();
+    clock.pass(60);
+    assert.equal(said(), tb.copyPrompt);
+    clipboard();
+    clock.pass(1000);
+    await copy();
+    clock.pass(60);
+    assert.equal(said(), tb.shareStatus);
+  });
 });
 
 describe('the loan comparison: saving a copy, and what is held back', () => {
@@ -204,4 +237,3 @@ describe('the loan comparison: the validation event', () => {
     }
   });
 });
-

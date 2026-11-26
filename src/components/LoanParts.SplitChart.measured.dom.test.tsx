@@ -359,4 +359,3 @@ describe('the payment split chart with a legend of several words', () => {
     near(c.bars[0].tick.y, 310 + 1.3 * 14 + 2 * 16.8 + 1.5 * 14, 'the months, below three lines of legend');
   });
 });
-

@@ -1247,7 +1247,6 @@ export default function LoanCompare({
       setCopyFailed(false);
       setCopied(true);
       // Said once, by the tool's one announcement (#603).
-      // Stryker disable next-line ArithmeticOperator: equivalent. The count only has to change with each copy and never come back to 0; counting down does the same.
       setShareNotice((s) => ({ text: strings.toolbar.shareStatus, n: s.n + 1 }));
       window.clearTimeout(copiedTimer.current);
       copiedTimer.current = window.setTimeout(() => setCopied(false), 2500);
@@ -1259,7 +1258,6 @@ export default function LoanCompare({
       setShareUrl(url);
       setCopyFailed(true);
       setCopied(false);
-      // Stryker disable next-line ArithmeticOperator: equivalent. The count only has to change with each copy and never come back to 0; counting down does the same.
       setShareNotice((s) => ({ text: strings.toolbar.copyPrompt, n: s.n + 1 }));
       window.prompt(strings.toolbar.copyPrompt, url);
     }
