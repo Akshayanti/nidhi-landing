@@ -66,6 +66,13 @@ export const invalid = (slot = 0): VendorInput => offer({ principal: '0' }, slot
 export const neverPaid = (slot = 0): VendorInput =>
   offer({ rateKind: 'hybrid', initialFixedMonths: '1', subsequentRatePct: '120', rateChangeKeeps: 'payment' }, slot);
 
+/**
+ * 12,000.00 at 12% a year over 60 months. Refinanced at month 1 into 9% over
+ * 120 months with closing costs put into the loan, the lower rate soon makes
+ * up the costs, but ten years of interest cost more in total.
+ */
+export const stretched = (slot = 0): VendorInput => offer({ principal: '12000', annualRatePct: '12', termMonths: '60' }, slot);
+
 /** The results of these offers, as the page computes them. */
 export const resultsOf = (vendors: VendorInput[], currency = 'EUR'): LoanResult[] =>
   vendors.map((v) => computeFromInput(v, currency));
