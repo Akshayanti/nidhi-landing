@@ -17,7 +17,7 @@ describe('the choices: returns, the mix, runs and fees', () => {
       assert.deepEqual(events.at(-1), ['free_monte_carlo_returns_changed', { setting: 'cautious' }]);
       assert.equal((radio('cautious') as HTMLInputElement).checked, true);
       assert.deepEqual(text('.mcs-switchOpt--on span:first-of-type'), [island.returns.cautious]);
-      const tip = 'Stocks grow about 4% a year after inflation and bonds about 1%: the low end of the long-run range. The ups and downs are as large as in history.';
+      const tip = 'Stocks grow about 4% a year after inflation and bonds about 1%: a cautious setting, below what world markets returned since 1900. The ups and downs are as large as in history.';
       assert.equal(one('.mcs-switch > .mcs-hint').textContent, tip);
     }
     {
