@@ -11,6 +11,11 @@ import { fireEvent } from '@testing-library/react';
 import { amountLength } from '../utils/shared/amountUnits.ts';
 import { Results } from './MonteCarloSimulator.tsx';
 
+/** A cell's own text, without the column name it shows where the table is drawn as records. */
+const cellText = (c: Element) => { const x = c.cloneNode(true) as Element; x.querySelectorAll('.tool-recordLabel').forEach((l) => l.remove()); return x.textContent; };
+/** The column name a cell shows where the table is drawn as records. */
+const cellLabel = (c: Element) => c.querySelector('.tool-recordLabel')?.textContent ?? null;
+
 type Plan = ReturnType<typeof worked>;
 const panel = (plan: Plan, change: Partial<{ busy: boolean; withheld: { title: string; reason: string } | null }> = {}, style: Style = {}) =>
   draw(
@@ -135,15 +140,15 @@ describe('the results of a plan of saving', () => {
     assert.deepEqual(text('thead th'), columns);
     const b = plan.worded.bands;
     assert.deepEqual(
-      [...document.querySelectorAll('tbody tr')].map((row) => [...row.children].map((cell) => cell.textContent)),
+      [...document.querySelectorAll('tbody tr')].map((row) => [...row.children].map(cellText)),
       [0, 5, 10, 12].map((y) => [String(y), money(b[y].p10), money(b[y].p50), money(b[y].p90), money(plan.worded.straightLine[y])]),
     );
-    assert.deepEqual(text('tbody tr:last-child td'), ['€190,000', '€300,000', '€480,000', '€310,000']);
-    assert.deepEqual(text('tbody tr:first-child td'), ['€50,000', '€50,000', '€50,000', '€50,000']);
+    assert.deepEqual([...document.querySelectorAll('tbody tr:last-child td')].map(cellText), ['€190,000', '€300,000', '€480,000', '€310,000']);
+    assert.deepEqual([...document.querySelectorAll('tbody tr:first-child td')].map(cellText), ['€50,000', '€50,000', '€50,000', '€50,000']);
     // Where the columns do not fit, each year is a short list and every amount carries its column's name.
     for (const row of document.querySelectorAll('tbody tr')) {
-      assert.deepEqual([...row.children].map((cell) => cell.getAttribute('data-label')), columns);
-      assert.deepEqual([...row.querySelectorAll('.amt')].map((a) => a.textContent), [...row.querySelectorAll('td')].map((c) => c.textContent));
+      assert.deepEqual([...row.children].map(cellLabel), columns);
+      assert.deepEqual([...row.querySelectorAll('.amt')].map((a) => a.textContent), [...row.querySelectorAll('td')].map(cellText));
     }
   });
 

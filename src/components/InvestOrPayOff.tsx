@@ -724,25 +724,26 @@ function Results({
       {range && ownReal !== null && (
         <div className="iop-side">
           <h3 className="iop-pathName">{s.side.heading}</h3>
-          <table className="iop-table">
+          {/* Records where three columns do not fit (tool-recordTable); the roles keep it a table for screen readers. */}
+          <table className="iop-table tool-recordTable" role="table">
             <caption className="ifc-hint">{s.side.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{s.side.figure}</th>
-                <th scope="col">{s.side.invest}</th>
-                <th scope="col">{s.side.gap}</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">{s.side.figure}</th>
+                <th scope="col" role="columnheader">{s.side.invest}</th>
+                <th scope="col" role="columnheader">{s.side.gap}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {[
                 { label: t(s.side.yours, { rate: pct(ownReal, numberLocale) }), res: r },
                 { label: t(s.side.cautious, { rate: pct(REAL_RETURN_BOTTOM, numberLocale) }), res: range.cautious },
                 { label: t(s.side.optimistic, { rate: pct(REAL_RETURN_TOP, numberLocale) }), res: range.optimistic },
               ].map((row) => (
-                <tr key={row.label}>
-                  <th scope="row">{row.label}</th>
-                  <td>{Math.round(row.res.bAhead * 100)}</td>
-                  <td><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
+                <tr key={row.label} role="row">
+                  <th scope="row" role="rowheader">{row.label}</th>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.invest}</span>{Math.round(row.res.bAhead * 100)}</td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.gap}</span><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
                 </tr>
               ))}
             </tbody>

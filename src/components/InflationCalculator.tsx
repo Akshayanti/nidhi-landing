@@ -680,7 +680,6 @@ function Field(props: {
   hint?: string;
   error: string | null;
   inputMode: 'decimal' | 'numeric' | 'text';
-  type?: 'number' | 'text';
   unit?: string;
 }) {
   const unreadable = useContext(UnreadableContext);
@@ -695,9 +694,10 @@ function Field(props: {
           {...markerSelect}
           id={props.id}
           className="ifc-input"
-          type={props.type ?? 'text'}
+          // Always a text box: a number box refuses digits typed from a
+          // Devanagari keyboard, and the tool reads those as Latin (#517).
+          type="text"
           inputMode={props.inputMode}
-          step={props.type === 'number' ? 'any' : undefined}
           autoComplete="off"
           value={props.value}
           onChange={props.onChange}
@@ -853,8 +853,8 @@ function HistoryPanel({
                     .reverse()
                     .map((y) => (
                       <tr key={y} role="row">
-                        <th scope="row" role="rowheader" data-label={h.tableYear}>{y}</th>
-                        <td role="cell" data-label={h.tableRate}>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
+                        <th scope="row" role="rowheader"><span className="tool-recordLabel" aria-hidden="true">{h.tableYear}</span>{y}</th>
+                        <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{h.tableRate}</span>{y in series ? pct(series[y], numberLocale, 2) : h.tableNone}</td>
                       </tr>
                     ))}
                 </tbody>

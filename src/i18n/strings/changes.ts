@@ -43,6 +43,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-26',
     items: [
       {
+        id: 'inflation-years-own-digits',
+        text: {
+          en: 'In the inflation calculator, the years box now reads Devanagari digits too, like every other box in the free tools: type १० and it counts ten years. Before, that box would not take them at all.',
+          hi: 'महँगाई कैलकुलेटर में सालों वाला बॉक्स भी अब देवनागरी अंक पढ़ लेता है, जैसे मुफ़्त टूल के बाकी सभी बॉक्स पढ़ते हैं: १० लिखें तो यह दस साल गिनता है। पहले यह बॉक्स इन अंकों को लेता ही नहीं था।',
+          es: 'En la calculadora de inflación, la casilla de los años ya lee también las cifras devanagari, como todas las demás casillas de las herramientas gratuitas: si escribes १०, cuenta diez años. Antes, esa casilla no las aceptaba.',
+          cs: 'V\u00a0inflační kalkulačce teď i\u00a0pole s\u00a0počtem let čte dévanágarské číslice, stejně jako všechna ostatní pole v\u00a0nástrojích zdarma: když napíšete १०, počítá s\u00a0deseti lety. Dřív je toto pole vůbec nepřijímalo.',
+          mr: 'महागाई कॅल्क्युलेटरमधील वर्षांचा रकानाही आता देवनागरी अंक वाचतो, मोफत साधनांमधील इतर सर्व रकान्यांसारखेच: १० लिहिले तर तो दहा वर्षे मोजतो. आधी हा रकाना हे अंक स्वीकारतच नव्हता.',
+        },
+      },
+      {
+        id: 'own-return-table-fits-large-text',
+        text: {
+          en: 'In the invest or pay off tool, the table that sets your own return figure beside the historical range no longer pushes the page sideways at very large text sizes. Where its three columns would be cramped, each row now becomes a short list, with every value on its own line.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल में, आपके अपने रिटर्न के आँकड़े को ऐतिहासिक दायरे के बगल में रखने वाली तालिका अब बहुत बड़े अक्षरों में पेज को बाहर नहीं धकेलती, इसलिए दाएँ-बाएँ स्क्रोल नहीं करना पड़ता। जहाँ उसके तीन कॉलम के लिए जगह कम हो, वहाँ हर पंक्ति अब एक छोटी सूची बन जाती है, जिसमें हर आँकड़ा अपनी अलग पंक्ति में होता है।',
+          es: 'En la herramienta Invertir o pagar deuda, la tabla que pone tu propia cifra de rentabilidad junto al rango histórico ya no obliga a desplazar la página de lado con el texto muy grande. Donde sus tres columnas quedarían apretadas, cada fila se convierte ahora en una lista corta, con cada valor en su propia línea.',
+          cs: 'V nástroji Investovat, nebo splatit dluh už tabulka, která staví vaše vlastní číslo výnosu vedle historického rozpětí, při velmi velkém písmu nenutí posouvat stránku do stran. Kde by se její tři sloupce tísnily, změní se teď každý řádek v krátký seznam a každá hodnota má vlastní řádek.',
+          mr: 'गुंतवणूक की कर्जफेड या साधनात, तुमचा परताव्याचा आकडा ऐतिहासिक पल्ल्याशेजारी ठेवणाऱ्या तक्त्यामुळे आता खूप मोठ्या अक्षरांत पान आडवे सरकवावे लागत नाही. जिथे त्याच्या तीन स्तंभांना जागा अपुरी पडते, तिथे प्रत्येक ओळ आता एक छोटी यादी बनते, आणि प्रत्येक आकडा स्वतःच्या वेगळ्या ओळीत दिसतो.',
+        },
+      },
+      {
         id: 'inflation-answers-to-latest-month',
         text: {
           en: 'The inflation calculator no longer stops at the last full year for 123 countries. Where a monthly price index is published that matches the yearly figures, an answer from a country’s history now ends at the latest month with a figure, September 2026 for many and July 2026 for most of the rest, and says which figures it joins: the World Bank’s yearly ones up to the last full year, then a monthly index from the BIS or from the World Bank itself. Other countries still end at their last full year, and the answer now says so. Every such answer also says that the starting amount is taken as that year’s average.',

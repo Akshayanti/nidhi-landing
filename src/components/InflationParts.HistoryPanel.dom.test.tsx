@@ -14,6 +14,11 @@ import type { ComponentProps } from 'react';
 import { renderToString } from 'react-dom/server';
 import { HistoryPanel, type CountryOption } from './InflationCalculator.tsx';
 
+/** A cell's own text, without the column name it shows where the table is drawn as records. */
+const cellText = (c: Element) => { const x = c.cloneNode(true) as Element; x.querySelectorAll('.tool-recordLabel').forEach((l) => l.remove()); return x.textContent; };
+/** The column name a cell shows where the table is drawn as records. */
+const cellLabel = (c: Element) => c.querySelector('.tool-recordLabel')?.textContent ?? null;
+
 const h = island.history;
 const TESTLAND: CountryOption = { code: 'TST', name: 'Testland', currency: 'EUR' };
 const OTHERLAND: CountryOption = { code: 'OTH', name: 'Otherland', currency: null };
@@ -53,7 +58,7 @@ function panel(props: Partial<Props> = {}) {
 
 const select = () => screen.getByLabelText(h.label, { selector: 'select' }) as HTMLSelectElement;
 const hints = () => text('.ifc-historyBody > p.ifc-hint');
-const rows = () => all('tbody tr').map((r) => [...r.children].map((c) => c.textContent));
+const rows = () => all('tbody tr').map((r) => [...r.children].map(cellText));
 
 // Two years with no gap: 5.26% then -1.04%. The steady rate with the same
 // effect is the square root of 1.0526 x 0.9896 = 1.04165, less one: 2.06%.
@@ -155,8 +160,8 @@ describe('the country history of the inflation calculator', () => {
       assert.deepEqual([one('thead').getAttribute('role'), one('tbody').getAttribute('role'), one('thead tr').getAttribute('role')], ['rowgroup', 'rowgroup', 'row']);
       assert.deepEqual(rows(), [['2011', '-1.04%'], ['2010', '5.26%']]);
       assert.deepEqual(all('tbody tr').map((r) => r.getAttribute('role')), ['row', 'row']);
-      assert.deepEqual(all('tbody th').map((c) => [c.getAttribute('scope'), c.getAttribute('role'), c.getAttribute('data-label')]), [['row', 'rowheader', h.tableYear], ['row', 'rowheader', h.tableYear]]);
-      assert.deepEqual(all('tbody td').map((c) => [c.getAttribute('role'), c.getAttribute('data-label')]), [['cell', h.tableRate], ['cell', h.tableRate]]);
+      assert.deepEqual(all('tbody th').map((c) => [c.getAttribute('scope'), c.getAttribute('role'), cellLabel(c)]), [['row', 'rowheader', h.tableYear], ['row', 'rowheader', h.tableYear]]);
+      assert.deepEqual(all('tbody td').map((c) => [c.getAttribute('role'), cellLabel(c)]), [['cell', h.tableRate], ['cell', h.tableRate]]);
     }
     {
       // nothing is said of another currency while the country's own is one of the tool's

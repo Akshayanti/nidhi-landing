@@ -16,7 +16,7 @@
  * result from claiming a precision that a guessed rate cannot carry.
  */
 
-import { completeNumber, parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+import { completeNumber, latinDigits, parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
 
 export type Mode = 'buy' | 'cost' | 'past' | 'keep';
 export const MODES: readonly Mode[] = ['buy', 'cost', 'past', 'keep'];
@@ -121,9 +121,13 @@ export function parsePercent(raw: string, min: number, max: number, locale = 'en
   return n !== null && n >= min && n <= max ? n : null;
 }
 
-/** Parses a typed whole number of years, or null. */
+/**
+ * Parses a typed whole number of years, or null. Digits from a Devanagari,
+ * Arabic-Indic or Persian keyboard are read as Latin ones ("१०" is 10), as
+ * in every other box (#517).
+ */
 export function parseYears(raw: string): number | null {
-  const v = raw.trim();
+  const v = latinDigits(raw).trim();
   if (!/^\d{1,3}$/.test(v)) return null;
   const n = Number(v);
   return n >= MIN_YEARS && n <= MAX_YEARS ? n : null;

@@ -15,6 +15,19 @@
  * the decimal mark. Anything else, such as misplaced groups ("12,34"), two
  * decimal marks or letters, is rejected rather than guessed at.
  *
+ * The Arabic decimal mark "٫" (U+066B) and thousands mark "٬" (U+066C), as an
+ * Arabic or Persian keyboard types them, mean one thing only, so the page's
+ * convention never enters into them (#625):
+ *   - "٫" is always the decimal mark, on every page: "٢٫٥" is two and a half,
+ *     and "١٫٢٣٤" is 1.234, never one thousand two hundred and thirty-four,
+ *     even on a page whose own decimal mark is a comma;
+ *   - "٬" is always grouping, in groups of three (or Indian twos before the
+ *     last three, as with a comma): "١٬٢٣٤" is 1234, and "٢٬٥" is rejected,
+ *     not read as two and a half;
+ *   - a number holding either of them and a Latin point or comma ("١٬٢٣٤.٥",
+ *     "1.234٫5") is rejected rather than guessed at. Spaces may group the whole
+ *     part in place of "٬", but not alongside it, as with the Latin marks.
+ *
  * Browser-safe and dependency-free, so any tool's island can import it.
  */
 
@@ -76,6 +89,11 @@ export function latinDigits(text: string): string {
   });
 }
 
+/** The Arabic decimal mark (U+066B), a decimal on every page. */
+const ARABIC_DECIMAL = '\u066b';
+/** The Arabic thousands mark (U+066C), grouping on every page. */
+const ARABIC_GROUP = '\u066c';
+
 /** Parses `raw` by `locale`'s conventions, or returns null when it is not a number. */
 export function parseLocaleNumber(raw: string, locale: string, options: ParseOptions = {}): number | null {
   const { maxDecimals = Infinity, allowNegative = false } = options;
@@ -86,15 +104,20 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
     negative = true;
     s = s.slice(1).trimStart();
   }
-  if (!/^\d[\d., ]*$/.test(s) || /\d$/.test(s) === false) return null;
+  if (!/^\d[\d., \u066b\u066c]*$/.test(s) || /\d$/.test(s) === false) return null;
   if (/ {2,}/.test(s)) return null;
 
   const local = numberSeparators(locale);
   const hasDot = s.includes('.');
   const hasComma = s.includes(',');
+  const hasArabic = /[\u066b\u066c]/.test(s);
   let decimal: string | null = null;
 
-  if (hasDot && hasComma) {
+  if (hasArabic) {
+    // Arabic marks have one reading each; mixed with Latin ones, none (#625).
+    if (hasDot || hasComma) return null;
+    decimal = s.includes(ARABIC_DECIMAL) ? ARABIC_DECIMAL : null;
+  } else if (hasDot && hasComma) {
     decimal = s.lastIndexOf('.') > s.lastIndexOf(',') ? '.' : ',';
   } else if (hasDot || hasComma) {
     const mark = hasDot ? '.' : ',';
@@ -119,11 +142,14 @@ export function parseLocaleNumber(raw: string, locale: string, options: ParseOpt
   if (frac !== undefined && frac.length > maxDecimals) return null;
 
   // Grouping in the whole part: spaces, or the one mark that is not the decimal.
-  const groupMarks = new Set(intRaw.match(/[., ]/g) ?? []);
+  const groupMarks = new Set(intRaw.match(/[., \u066b\u066c]/g) ?? []);
   if (groupMarks.size > 1) return null;
   const sep = [...groupMarks][0];
-  // Without a mark the whole part is digits: the first check allowed nothing else.
-  const int = sep ? ungroup(intRaw, sep) : intRaw;
+  // "٬" groups exactly as a comma does, Indian grouping included. Without a
+  // mark the whole part is digits: the first check allowed nothing else.
+  const int = sep === ARABIC_GROUP
+    ? ungroup(intRaw.split(ARABIC_GROUP).join(','), ',')
+    : sep ? ungroup(intRaw, sep) : intRaw;
   if (int === null) return null;
 
   const parsed = Number(frac !== undefined ? `${int}.${frac}` : int);
@@ -180,11 +206,16 @@ export function plainDigits(n: number): string {
  */
 export function completeNumber(raw: string, locale: string): string {
   const t = raw.trim();
+  // Arabic marks mixed with Latin ones have no reading (#625): taking one off
+  // the end here would hide the mixture from the parser that refuses it.
+  if (/[\u066b\u066c]/.test(t) && /[.,]/.test(t)) return t;
   const sign = /^[-−]/.test(t) ? t[0] : '';
   let body = t.slice(sign.length).trimStart();
   const { decimal } = numberSeparators(locale);
-  if (body.length > 1 && body.endsWith(decimal)) body = body.slice(0, -1);
-  if (body.length > 1 && body.startsWith(decimal)) body = `0${body}`;
+  // The Arabic decimal mark is a decimal on every page, so it completes too.
+  const isDecimal = (mark: string) => mark === decimal || mark === ARABIC_DECIMAL;
+  if (body.length > 1 && isDecimal(body.slice(-1))) body = body.slice(0, -1);
+  if (body.length > 1 && isDecimal(body[0])) body = `0${body}`;
   return sign + body;
 }
 
