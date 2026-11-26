@@ -269,8 +269,10 @@ function engineWarning(raw: string, s: Strings): string {
 // The PostHog object on `window` is declared once, in the types file under src/types/.
 
 function track(event: string, properties?: Record<string, unknown>) {
+  // Stryker disable next-line StringLiteral: equivalent. Without a window the call below throws a ReferenceError that the catch swallows, so returning early and not returning look the same to every caller.
   if (typeof window === 'undefined') return;
   try {
+    // Stryker disable next-line OptionalChaining: equivalent. Without PostHog, or without its capture, either form throws a TypeError that the catch swallows, so nothing is sent and nothing breaks either way.
     window.posthog?.capture?.(event, properties);
   } catch {
     /* never let analytics throw block UI updates */
@@ -283,8 +285,10 @@ function track(event: string, properties?: Record<string, unknown>) {
 // has no place in URL state. Indices align with VENDOR_LABELS A-E. The
 // values come from CHART_SERIES (single source of truth in palette.ts);
 // we slice the first 5 because the loan grid maxes out at 5 vendors.
+// Stryker disable next-line MethodExpression: equivalent. There are at most five offers (MAX_VENDORS), so no colour past the fifth is ever read.
 const VENDOR_COLORS = CHART_SERIES.slice(0, 5);
 // The ink for a label painted on an offer's colour (the principal bars).
+// Stryker disable next-line MethodExpression: equivalent. There are at most five offers (MAX_VENDORS), so no ink past the fifth is ever read.
 const VENDOR_INKS = CHART_SERIES_ON.slice(0, 5);
 
 // ---- Chart -----------------------------------------------------------------
@@ -317,6 +321,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
   const figureRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<number | null>(null);
+  // Stryker disable next-line ArrayDeclaration: any list that never changes keeps the same function, as the empty one does.
   const close = useCallback(() => setHover(null), []);
   useEscapeToClose(hover !== null, close);
 
@@ -431,6 +436,7 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
     else if (e.key === 'Home') next = 0;
     else if (e.key === 'End') next = maxMonths;
     else if (e.key === 'Escape') {
+      // Stryker disable next-line CallExpression: equivalent. While the read-out is open the window listener of useEscapeToClose closes it on Escape as well, and while it is closed there is nothing to close.
       setHover(null);
       return;
     }
@@ -765,6 +771,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // table below the chart, and the schedule, still hold the figure.
   const ROW = 1.25 * fs;
   const ROOM = 2 * fs;
+  // Stryker disable next-line ArrayDeclaration: equivalent. A string in the list has no box edges, so every comparison with it is false and it never stops a label being placed.
   const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
   const legendBox = (top: number, lines: string[], cls: string, fit: number) => lines.forEach((l, i) => {
     const yy = top + i * LINE;
@@ -993,7 +1000,9 @@ function usePhone(): boolean {
     sync();
     mq.addEventListener?.('change', sync);
     return () => mq.removeEventListener?.('change', sync);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, as the empty one does.
+  []);
   return phone;
 }
 
@@ -1621,6 +1630,7 @@ function VendorCard({
   const numberLocale = useContext(NumberLocaleContext);
   const baseId = useId();
   const id = (suffix: string) => `${baseId}-${suffix}`;
+  // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
   const hasError = Boolean(result.error);
   // The mark that arrived, as against text being typed here.
@@ -1637,6 +1647,7 @@ function VendorCard({
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   const requiredError = hasError && badOptional.size === 0;
+  // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
 
@@ -1647,6 +1658,7 @@ function VendorCard({
   const isSet = (s: string) => Number(s) > 0;
   // Every offer starts with its optional boxes empty (the example and an
   // added one alike), so that is what "unchanged" means: an empty row stays folded.
+  // Stryker disable next-line MethodExpression: equivalent. Every slot's added offer has the same empty optional boxes, the only fields compared with it, so the slot it is read from changes nothing.
   const slot = Math.max(0, (VENDOR_LABELS as readonly string[]).indexOf(label));
   const start = makeAddedVendor(slot);
   const differs = (...keys: (keyof VendorInput)[]) => keys.some((k) => vendor[k] !== start[k]);
@@ -2734,6 +2746,7 @@ function AnalysisTabs({
   // Refs to each tab button so the keyboard handler can move DOM focus
   // when the user navigates with arrow keys. Per WAI-ARIA APG for tabs,
   // arrow keys MUST move both selection and focus.
+  // Stryker disable next-line ArrayDeclaration: equivalent. Every tab sets its own place in the list when it is drawn, so what the list starts with is never read.
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Keyboard handler implementing the WAI-ARIA Tabs (manual activation
@@ -2749,6 +2762,7 @@ function AnalysisTabs({
   // panel announced as soon as they navigate.
   const onTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const currentIdx = tabs.findIndex((t) => t.id === active);
+    // Stryker disable next-line UnaryOperator: equivalent. Every key that is handled sets the index before it is used, and every other key returns first.
     let nextIdx = -1;
     switch (e.key) {
       case 'ArrowRight':
@@ -2934,6 +2948,7 @@ function ChartsPanel({
           <select
             id={splitSelectId}
             className="lc-select lc-splitSelect"
+            // Stryker disable next-line StringLiteral: equivalent. A value no option has leaves React to select the first option, the automatic choice, which is what the empty value selects.
             value={splitVendorIdx == null ? '' : String(splitVendorIdx)}
             onChange={(e) => {
               const v = e.target.value;
@@ -3106,7 +3121,9 @@ function HorizonSection({
   );
   useEffect(() => () => {
     if (horizonTrackTimer.current) clearTimeout(horizonTrackTimer.current);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the cleanup once, on unmount, as the empty one does.
+  []);
   // The slider's max is the longest valid schedule: a horizon past every
   // vendor's payoff is meaningless. We clamp to a sensible minimum of
   // 1 month so the slider always renders.
@@ -3324,10 +3341,14 @@ function RefinanceSection({
     refiTrackTimer.current = setTimeout(() => {
       track('free_loan_comparison_refi_changed', { field });
     }, 600);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes keeps the same function, as the empty one does.
+  []);
   useEffect(() => () => {
     if (refiTrackTimer.current) clearTimeout(refiTrackTimer.current);
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the cleanup once, on unmount, as the empty one does.
+  []);
 
   // Resolve the vendor to refinance. We accept any 1-based index that
   // points to a valid result; on mismatch we fall back to the first
@@ -3389,6 +3410,7 @@ function RefinanceSection({
             }}
           >
             {vendors.map((v, i) => (
+              // Stryker disable next-line OptionalChaining: unreachable. Every offer has a result here: the offers to refinance, worked out above, read results[i].error without it and would have thrown first.
               <option key={i} value={String(i + 1)} disabled={Boolean(results[i]?.error)}>
                 {shownName(v.name, i, strings)}
                 {results[i]?.error ? strings.charts.incomplete : ''}
