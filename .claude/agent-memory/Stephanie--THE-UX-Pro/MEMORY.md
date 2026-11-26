@@ -25,4 +25,5 @@
 - [Timing review 25 Nov](timing-review-2026-11-25.md) — quiet={!hydrated} misses late history (non-default country link still announced); scratch probe recipe
 - [LinkField review 25 Nov](linkfield-review-2026-11-25.md) — e51afdc: uncontrolled share box safe (layout effect before focus); refusedOld copy; plain privacy bullets
 - [Hero + sticky cookie answers 25 Nov](hero-cookie-sticky-review-2026-11-25.md) — pinning and 39dvh only at ~100-175% on phones (rem guard); #769 unchanged; planner focus partly under sheet at 400%
+- [Loan rate change review 26 Nov](loan-rate-change-review-2026-11-26.md) — required box vs FAQ "optional"; period pre-filled 60; error far above fold; "digits only" misleads
 - [Inflation month review 25 Nov](inflation-month-review-2026-11-25.md) — legend lacked the month despite brief; 12k px answer at 400%; hi/mr desc postposition clash
