@@ -106,24 +106,24 @@ bottom. ~5–8s wall-clock per still.
 ```
 src/content/blog/{1. discovery,2. building}/<n>-<slug>.md
         │
-        ▼  scripts/lib/parse-blog-meta.mjs  (level-agnostic loader)
+        ▼  scripts/lib/media/parse-blog-meta.mjs  (level-agnostic loader)
 { meta, body }   ← FULL BODY: paragraphs, tables, blockquotes, figures
         │
-        ▼  scripts/lib/llm-script-writer.mjs   (Claude Sonnet 4.5)
+        ▼  scripts/lib/media/llm-script-writer.mjs   (Claude Sonnet 4.5)
         │     • System prompt: brand voice, EU-leaning, anti-US, anti-India-only
         │       MiFID-safe, Save/Tag/Share/Poll CTA, no em dashes
         │     • 3 hook variants per post; LLM picks default
         │     • Modes: faithful (faithful summary) | riff (concept-driven new angle)
 ReelPlan { hookVariants[3], beats[7-15], cta, caption{ig,tiktok}, hashtags[5] }
         │
-        ▼  scripts/lib/scrub-output.mjs        (HARD brand-rule gate)
+        ▼  scripts/lib/media/scrub-output.mjs        (HARD brand-rule gate)
         │     • Auto-fix: em/en dashes, double-hyphen, multi-space
         │     • Reject: $/USD/dollar default, 401k/IRA/Roth/FICO/Fed,
         │       Walmart/Costco/Black Friday, lakh/crore/SIP, tickers,
         │       brokerages, return-as-fact, banned CTAs, banned hashtags
         │     • Throws if any unresolved violation → operator regenerates
         │
-        ▼  scripts/lib/generate-tts.mjs        (Microsoft edge-tts)
+        ▼  scripts/lib/media/generate-tts.mjs        (Microsoft edge-tts)
         │     • Default voice: en-GB-RyanNeural (override: NIDHI_REEL_VOICE)
         │     • Rate +5%, pitch -2Hz for editorial-authority cadence
         │     • Acronym spellout (rewriteForTTS): APR/IRA/ISA/PAYE → A.P.R.
@@ -133,15 +133,15 @@ ReelPlan { hookVariants[3], beats[7-15], cta, caption{ig,tiktok}, hashtags[5] }
         │     • One audio file per reel, word-level VTT timings
 audio/<slug>.mp3  +  Array<WordTiming>
         │
-        ▼  scripts/lib/generate-tts.mjs::alignSegments
+        ▼  scripts/lib/media/generate-tts.mjs::alignSegments
 beatSpans[]   (mapping each beat.id to a startMs/endMs in the audio)
         │
-        ▼  scripts/lib/pick-music.mjs          (manifest-based picker)
+        ▼  scripts/lib/media/pick-music.mjs          (manifest-based picker)
         │     • Reads remotion/public/music/manifest.json
         │     • Deterministic per-slug pick keyed off plan.mood
         │     • DEFAULT: empty manifest = voice-only renders
         │
-        ▼  scripts/lib/render-platform-caption.mjs
+        ▼  scripts/lib/media/render-platform-caption.mjs
 output/captions/<slug>.{ig,tiktok}.txt
         │
         ▼  remotion/src/render-single.ts        (Remotion bundle + render)
@@ -193,7 +193,7 @@ gradient slides → monotone Aria voiceover. v2 replaces this with:
 
 ## Brand rules (hard-enforced)
 
-The scrubber `scripts/lib/scrub-output.mjs` is a non-bypassable gate before
+The scrubber `scripts/lib/media/scrub-output.mjs` is a non-bypassable gate before
 TTS. If the LLM emits anything in these categories, the renderer halts:
 
 - **Dashes** (em `—`, en `–`, double `--`) → auto-replaced with comma or period.
@@ -251,7 +251,7 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
   preserve the range with a separator ("5-15%", "5 to 15%", or use a
   `compare` anchor with two cards). The scrubber's
   `collapsed-numeric-range` rule (`detectCollapsedRange` in
-  `scripts/lib/scrub-output.mjs`) will reject any plan where the field
+  `scripts/lib/media/scrub-output.mjs`) will reject any plan where the field
   collapses the digits into a fused number ("515%", "7085%"), because on
   screen that reads as "five hundred and fifteen percent" and contradicts
   the narration. Discovered May 2026 after a satellite-assets reel rendered
@@ -270,7 +270,7 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
 Run the scrubber tests in CI:
 
 ```sh
-npm test    # includes scripts/lib/scrub-output.test.mjs (56 tests)
+npm test    # includes scripts/lib/media/scrub-output.test.mjs (56 tests)
 ```
 
 ---
@@ -280,7 +280,7 @@ npm test    # includes scripts/lib/scrub-output.test.mjs (56 tests)
 The brand rules above are mechanical (term blocklists, count caps, surface
 formatting). The doctrine in this section is *editorial*: voice, register,
 framing, and how a reel earns the viewer's attention. These rules are baked
-into the system prompt in `scripts/lib/llm-script-writer.mjs` so the LLM
+into the system prompt in `scripts/lib/media/llm-script-writer.mjs` so the LLM
 enforces them per-call, but they're documented here so an operator (or
 future-you) doesn't have to re-derive them every session.
 
@@ -689,7 +689,7 @@ with different story sources:
 
 ### 7. Where this is enforced
 
-- **Authoritative source**: `scripts/lib/llm-script-writer.mjs` `SYSTEM_PROMPT`
+- **Authoritative source**: `scripts/lib/media/llm-script-writer.mjs` `SYSTEM_PROMPT`
   constant (sections "Engagement-first principle", "Series progression
   doctrine", "Reel-vs-blog division of labour", "Math-literacy rule",
   "Public-domain fable rules", "Building-specific opener guidance").

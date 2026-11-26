@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | Votre patrimoine net, c’est ce que vous possédez moins ce que vous devez. | Ton patrimoine net, c’est ce que tu possèdes moins ce que tu dois. | Le patrimoine net, c’est ce que l’on possède moins ce que l’on doit. |
 | A tool instruction | Enter the amount you borrowed. | Saisissez le montant que vous avez emprunté. | Saisis le montant que tu as emprunté. | Saisir le montant emprunté. |
 | An error message | The rate you entered must be between 0% and 100%. | Le taux que vous avez saisi doit être compris entre 0 % et 100 %. | Le taux que tu as saisi doit être compris entre 0 % et 100 %. | Le taux doit être compris entre 0 % et 100 %. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | Si vous avez du retard dans vos remboursements, vous n’êtes pas la seule personne dans ce cas, et il existe des moyens d’obtenir de l’aide. | Si tu as du retard dans tes remboursements, tu n’es pas la seule personne dans ce cas, et il existe des moyens d’obtenir de l’aide. | Un retard de remboursement arrive à beaucoup de monde, et il existe des moyens d’obtenir de l’aide. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Avoir du retard dans vos remboursements peut sembler accablant, et il existe des moyens d’obtenir de l’aide. | Avoir du retard dans tes remboursements peut sembler accablant, et il existe des moyens d’obtenir de l’aide. | Un retard de remboursement peut sembler accablant, et il existe des moyens d’obtenir de l’aide. |
 
 The examples avoid *seul* or *seule*, which would give the reader a gender.
 

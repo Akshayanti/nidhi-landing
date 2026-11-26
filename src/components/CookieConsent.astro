@@ -50,7 +50,8 @@ const strings = dict(locale);
     box-sizing: border-box;
     /* Never more than 45% of the screen, and never higher than the space
        below the header, which consentPrompt.js measures. One scroll area
-       holds everything, buttons included, and it opens at its first line. */
+       holds everything, and it opens at its first line; the two answers
+       stay at its bottom edge (.cookie-actions, below). */
     max-height: min(45dvh, var(--cookie-room, 45dvh));
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -60,6 +61,16 @@ const strings = dict(locale);
     background: var(--color-bg-white);
     border-top: 1px solid var(--color-border);
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  /* On a phone, 39%: the home page's two buttons then stay clear of it on a
+     320 by 568 px screen in every language. Only while the screen is tall
+     for its text (in rem, like the pinned answers below): with the text made
+     much larger the sheet keeps its 45%, where every pixel is needed (#769). */
+  @media (height >= 30rem) and (width < 48rem) {
+    .cookie-sheet {
+      max-height: min(39dvh, var(--cookie-room, 39dvh));
+    }
   }
 
   .cookie-sheet[hidden] {
@@ -125,11 +136,31 @@ const strings = dict(locale);
     margin: var(--space-3) 0;
   }
 
+  /* The two answers stay in view while the words above them scroll: on a
+     phone the sheet is shorter than its text, and an answer should not have
+     to be looked for. Only while the screen is tall enough for the text to
+     keep most of the sheet (in rem, so with the text made much larger the
+     answers scroll with it again and never fill the sheet). */
+  @media (height >= 30rem) {
+    .cookie-actions {
+      position: sticky;
+      bottom: calc(-1 * (var(--space-4) + env(safe-area-inset-bottom, 0px)));
+      z-index: 1;
+      margin-block: 0;
+      padding-block: var(--space-3);
+      background: var(--color-bg-white);
+      /* Words cut off above the answers read as "more above". */
+      border-top: 1px solid var(--color-border);
+    }
+  }
+
   /* The shared .btn roles (docs/color-palette.md, "Buttons"). Declining is as
      easy to see as accepting: the two are the same width, height and weight,
-     and they stack when they do not fit side by side. */
+     and they stack when they do not fit side by side. Side by side down to
+     a 320 px phone, where a longer label takes two lines: stacked, they
+     left two lines of the question showing above them. */
   .cookie-actions .btn {
-    flex: 1 1 10rem;
+    flex: 1 1 8rem;
     min-width: 0;
     /* The top and bottom padding stops at 10px: growing with the text, it
        made "No thanks" taller than the sheet on a small phone at 400%, with

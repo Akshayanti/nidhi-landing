@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { formatMoney as formatMoneyIn } from '../utils/loan/math.ts';
+import { formatMoney as formatMoneyIn } from '../utils/shared/money.ts';
 import { formatAmount as formatAmountIn, formatPercent as formatPercentIn } from '../utils/shared/formatAmount.ts';
 
 /**

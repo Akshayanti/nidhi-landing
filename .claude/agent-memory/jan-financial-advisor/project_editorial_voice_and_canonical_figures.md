@@ -10,7 +10,7 @@ Editorial goal (stated 2026-10-07): lessons should say "here's the useful rule o
 **Why:** the 2026-10-07 audit of published lessons (discovery, building, psychology) found repeated overclaims and cross-lesson contradictions; the team is fixing body text and frontmatter (tldr, description, faq) together.
 
 **How to apply:** when reviewing any lesson, check against these canonical positions:
-- Long-run real stock returns: 4-6% developed markets (DMS), US at the high end. Several FAQs said 5-7% and the Rule of 72 table used 7% "real"; flag any drift.
+- Long-run real stock returns: SUPERSEDED 2026-11-22 (issue #766, see section at the end). Anchor on world about 5% (5.2%, 1900-2024); "4-6% developed markets" is not what DMS shows. Flag 5-7% or 7% "real" as before.
 - Real estate: low single digit real appreciation; never put a nominal 3-5% in a "real" column.
 - Savings rate: a powerful lever and a strong signal, not "the single most predictive metric". Zones for 50%+ must match the FI lesson table (about 17 years at 50%).
 - High-interest debt threshold differed (5-6% vs 8-10%); should be framed relative to inflation and expected after-tax returns, since 8-10% mortgages are normal in India and other high-inflation markets.
@@ -69,6 +69,16 @@ Lesson 43 rate review for issue #759 (2026-11-21):
 - 4/6/8 fan is a chosen grid; 6% is the middle line, not "central": it sits above the DMS world figure (5.2% annualised real, 1900-2024, JBS summary). Position: rename "central" to "middle", add the 5% figures (x about 800 monthly, x about 4.3 lump; Eva about €1.03M), keep the multipliers.
 - Arithmetic vs compound: the simulation script (scripts/simulate-projection-paths.mjs) shifts the JST equal-weighted series to a 6% SIMPLE average, which compounds at 4.9% (implies sd about 15%). Its median (€1.08M) is about where a smooth 5.2% line ends (€1.07M, my calc). DMS "annualised" figures are already compound: the drag must not be subtracted again. Lesson text "average the 6% of the middle line" conflated the two.
 - DMS 2025 public summary, verified: US real equities 6.6% a year annualised, 8.5% average year (simple); UK 5.4%; cross-country average sd of real equity returns 23.0%. Use the US 8.5 vs 6.6 as the sourced example of simple vs compound.
-- "4 to 6% developed markets" is per country; the US (6.6%) sits above it. Not fixed; country range unread.
+- "4 to 6% developed markets" is per country; the US (6.6%) sits above it. Settled 2026-11-22 under #766, below.
+
+Real equity return range, issue #766 (2026-11-22; sources read as PDFs this session):
+- Verified: UBS GIRY 2025 public summary Fig. 10: US 6.6%, UK 5.4% real equities 1900-2024 (US bills 0.5%, bonds 1.6%; US nominal 9.7%, US inflation 2.9%). World 5.2% / bonds 1.7% / bills 0.5% from Cambridge JBS summary of the 2025 Yearbook (not in the public PDF itself). GIRY 2026 summary: US 6.6% real 1900-2025; no world figure in it.
+- Country spread verified from CS GIRY 2023 Summary Edition Table 1 (1900-2022, local-currency real, geometric): of 20 developed continuous-history markets, 10 in 4-6% (CAN 5.7, DNK 5.7, FIN 5.4, IRL 4.2, JPN 4.2, NLD 5.0, NOR 4.4, SWE 5.9, CHE 4.5, GBR 5.3); 7 below (AUT 0.9, ITA 2.1, BEL 2.7, DEU 3.1, FRA 3.4, ESP 3.4, PRT 3.7); 3 above (USA 6.4, NZL 6.1, AUS 6.7); ZAF 7.0 (EM). World 5.0, Developed 5.1, Europe 4.1, World ex-US 4.3 ("real USD"). Authors' own words: "typically around 3% to 6% per year".
+- Triumph of the Optimists ch. 4 (2002), 1900-2000, 16 countries: BEL 2.5 to SWE 7.6, average 5.1%, "all within three percentage points of the average"; only 6 of 15 developed in 4-6.
+- Position: "most developed markets 4-6%" is Not Sound. Lessons anchor on world about 5% with US/UK as examples and "single countries well above or below". 4% and 6% survive only as a cautious/optimistic modelling band (lesson 43 fan, Monte Carlo and invest-or-pay-off presets), labelled as a choice, not a historical finding.
+- Lesson 49 derived: 1.052 x 1.02 = 1.073, so "about 7% before inflation" replaces "6 to 8%" (FAQ, body, SVG subtitle); bands 0-4/4-8/8+ unchanged.
+- Tool wording (investOrPayOff.ts returns.rest and returns.above, 5 languages) attributes "about 4% to 6%" to DMS world history: Partially Valid; the history is about 5.3% (1900-2025), the band is the model's choice. Tools cite 5.3% (1900-2025, Exponential Wealth), lessons 5.2% (1900-2024): both fine if each states its period.
+- Second pass (same day, branch fix/equity-return-range): wording proposed for 06, 11, 17, 18, 21 and the tool strings. Lesson 06 "some countries nearer 3%" understates (Austria 0.9, Italy 2.1, Belgium 2.7); 18's "US about 6.5%" is 6.6%. Rule of 72 at 5.2%: doubling about 14 years (12 at 6%, 18 at 4%). Lesson 17's 20-year band stays as a 4% and 6% scenario (€21,900 to €32,100); at 5.2% about €27,600. Tool strings: the 4 and 6% presets are "cautious/optimistic settings set either side of the world record", never "the long-run range used in the lessons" (investOrPayOff features line 44, FAQ 116, returns.rest 80, returns.above 194; monteCarlo 171, 316, 320).
+- Lesson 43 was fixed on main on 2026-11-21 (#768). A first read reported it unfixed because the local checkout was behind origin: read from an up-to-date worktree or `git show origin/main:<path>`, never the main checkout.
 
 Related: [[savings-rate-claims]], [[tool-model-positions]]

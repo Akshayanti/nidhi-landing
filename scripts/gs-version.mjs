@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Writes each Apps Script file's VERSION (scripts/lib/gs-version.mjs). Run it
+// Writes each Apps Script file's VERSION (scripts/lib/publishing/gs-version.mjs). Run it
 // after editing a .gs file: npm run gs:version. With --check it only reports.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { VERSIONED_SCRIPTS, gsVersion, writtenVersion, withVersion } from './lib/gs-version.mjs';
+import { VERSIONED_SCRIPTS, gsVersion, writtenVersion, withVersion } from './lib/publishing/gs-version.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const check = process.argv.includes('--check');

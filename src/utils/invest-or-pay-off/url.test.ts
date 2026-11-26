@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DEFAULTS, STATE_KEY_PATTERN, decodeState, defaultState, encodeState, isPristineState, publishableState, type ToolState } from './url.ts';
+import { DEFAULTS, INVEST_OR_PAY_OFF_URL, SHARED_STATE_GLOBAL, STATE_KEY_PATTERN, decodeState, defaultState, encodeState, isPristineState, publishableState, type ToolState } from './url.ts';
 
 describe('encodeState', () => {
   it('encodes the defaults as an empty string', () => {
@@ -101,5 +101,56 @@ describe('STATE_KEY_PATTERN', () => {
     const re = new RegExp(`^${STATE_KEY_PATTERN}$`);
     for (const k of ['c', 'b', 'r', 'p', 'x', 'l', 'n', 'i', 's', 'o', 'f', 't', 'h']) assert.ok(re.test(k), k);
     assert.ok(!re.test('utm_source'));
+  });
+});
+
+describe('each code and each edge (#790)', () => {
+  it('the tool’s address, its window property and its key pattern', () => {
+    assert.equal(INVEST_OR_PAY_OFF_URL, '/free/invest-or-pay-off/');
+    assert.equal(SHARED_STATE_GLOBAL, '__nidhiInvestOrPayOffShared');
+    assert.equal(STATE_KEY_PATTERN, '[cbrpxlnisofth' + 'a]');
+  });
+
+  it('every return setting and comparison date has its own code, both ways', () => {
+    const codes: Array<[Partial<ToolState>, string]> = [
+      [{ returns: 'cautious' }, 's=c'],
+      [{ returns: 'optimistic' }, 's=o'],
+      [{ returns: 'own' }, 's=w'],
+      [{ horizon: 'payoff' }, 'h=p'],
+      [{ horizon: 'plus10' }, 'h=0'],
+    ];
+    for (const [change, code] of codes) {
+      assert.equal(encodeState({ ...DEFAULTS, ...change }), code);
+      assert.deepEqual(decodeState(code), { ...DEFAULTS, ...change });
+    }
+    assert.equal(decodeState('s=h&h=5')?.returns, 'historical');
+    assert.equal(decodeState('s=h&h=5')?.horizon, 'plus5');
+  });
+
+  it('the page’s country is none unless named', () => {
+    assert.equal(isPristineState(DEFAULTS, 'EUR'), true);
+    assert.equal(publishableState(DEFAULTS, 'EUR'), '');
+    assert.equal(isPristineState({ ...DEFAULTS, currency: 'USD' }, 'EUR'), false);
+    assert.equal(isPristineState({ ...DEFAULTS, country: 'IND' }, 'EUR'), false);
+    assert.equal(isPristineState({ ...DEFAULTS, country: 'IND' }, 'EUR', 'IND'), true);
+  });
+
+  it('only a leading ? or # is dropped', () => {
+    assert.equal(decodeState('b=1000&r=7?')?.balance, 1000);
+    assert.equal(decodeState('b=1000&r=7?')?.debtRate, DEFAULTS.debtRate);
+  });
+
+  it('an empty or blank number is the default, never 0', () => {
+    assert.equal(decodeState('b=')?.balance, DEFAULTS.balance);
+    assert.equal(decodeState('b=%20%20')?.balance, DEFAULTS.balance);
+    assert.equal(decodeState('b=0')?.balance, 0);
+    assert.equal(decodeState('i=%20')?.inflation, null);
+    assert.equal(decodeState('i=0')?.inflation, 0);
+  });
+
+  it('a country code is exactly three letters', () => {
+    assert.equal(decodeState('n=abcd')?.country, '');
+    assert.equal(decodeState('n=1ind')?.country, '');
+    assert.equal(decodeState('n=ind')?.country, 'IND');
   });
 });

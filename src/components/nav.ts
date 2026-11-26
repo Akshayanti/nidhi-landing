@@ -9,8 +9,8 @@
  * `key`. See `navLabel`.
  */
 import { localizedPath, type Dict, type Locale } from '../i18n';
-import { MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
-import { INVEST_OR_PAY_OFF_URL } from '../utils/invest-or-pay-off/release.ts';
+import { MONTE_CARLO_URL } from '../utils/monte-carlo/url.ts';
+import { INVEST_OR_PAY_OFF_URL } from '../utils/invest-or-pay-off/url.ts';
 import { INFLATION_URL } from '../utils/inflation/history.ts';
 
 /**
@@ -68,7 +68,7 @@ export interface NavGroup {
 }
 
 /** The phone sheet's groups, in the order it shows them. */
-export function navGroups({ showMonteCarlo, showInvestOrPayOff }: { showMonteCarlo: boolean; showInvestOrPayOff: boolean }): NavGroup[] {
+export function navGroups(): NavGroup[] {
   return [
     {
       key: 'learn',
@@ -86,13 +86,9 @@ export function navGroups({ showMonteCarlo, showInvestOrPayOff }: { showMonteCar
       entries: [
         { key: 'multiCurrencyNetWorth', href: '/free/multi-currency-net-worth/', attr: 'tool-multi-currency-net-worth' },
         { key: 'loanComparison', href: '/free/loan-comparison/', attr: 'tool-loan-comparison' },
-        ...(showMonteCarlo
-          ? [{ key: 'monteCarloSimulator' as const, href: MONTE_CARLO_URL, attr: 'tool-monte-carlo-simulator' }]
-          : []),
+        { key: 'monteCarloSimulator', href: MONTE_CARLO_URL, attr: 'tool-monte-carlo-simulator' },
         { key: 'inflationCalculator', href: INFLATION_URL, attr: 'tool-inflation-calculator' },
-        ...(showInvestOrPayOff
-          ? [{ key: 'investOrPayOff' as const, href: INVEST_OR_PAY_OFF_URL, attr: 'tool-invest-or-pay-off' }]
-          : []),
+        { key: 'investOrPayOff', href: INVEST_OR_PAY_OFF_URL, attr: 'tool-invest-or-pay-off' },
         { key: 'allTools', href: '/free/', attr: 'tool-all', dividerBefore: true },
       ],
     },

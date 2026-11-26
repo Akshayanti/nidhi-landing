@@ -1,0 +1,12 @@
+---
+/**
+ * The invest or pay off calculator, at /free/invest-or-pay-off/.
+ *
+ * A thin wrapper, so that every language renders one component: the page
+ * itself is `src/components/pages/InvestOrPayOffPage.astro`, and the other
+ * languages come through `src/pages/[locale]/free/invest-or-pay-off.astro`.
+ */
+import InvestOrPayOffPage from '../../components/pages/InvestOrPayOffPage.astro';
+---
+
+<InvestOrPayOffPage locale="en" />

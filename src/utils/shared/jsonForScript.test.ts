@@ -1,12 +1,10 @@
 /**
  * JSON written into a <script> element cannot end that element
- * (jsonForScript.ts), and no page writes JSON there any other way.
+ * (jsonForScript.ts). That no page writes JSON there any other way is checked
+ * against the source in jsonForScript.pages.test.ts: this file reads no file (#904).
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
-
 import { jsonForScript } from './jsonForScript.ts';
 
 describe('jsonForScript', () => {
@@ -23,25 +21,5 @@ describe('jsonForScript', () => {
 
   it('leaves ordinary text as it is', () => {
     assert.equal(jsonForScript({ name: 'nidhi', q: 'कैसे करें?' }), '{"name":"nidhi","q":"कैसे करें?"}');
-  });
-});
-
-describe('JSON written into pages', () => {
-  const SRC = join(import.meta.dirname, '../..');
-  const files: string[] = [];
-  const walk = (dir: string) => {
-    for (const name of readdirSync(dir)) {
-      const path = join(dir, name);
-      if (statSync(path).isDirectory()) walk(path);
-      else if (name.endsWith('.astro')) files.push(path);
-    }
-  };
-  walk(SRC);
-
-  it('goes through jsonForScript wherever it is set as a script’s content', () => {
-    const raw = files.filter((path) => /set:html=\{\s*JSON\.stringify\(/.test(readFileSync(path, 'utf8'))).map((path) => path.slice(SRC.length + 1));
-    assert.deepEqual(raw, [], 'use jsonForScript(value) from src/utils/shared/jsonForScript.ts');
-    const safe = files.filter((path) => /set:html=\{jsonForScript\(/.test(readFileSync(path, 'utf8'))).map((path) => path.slice(SRC.length + 1)).sort();
-    assert.deepEqual(safe, ['components/BaseHead.astro', 'components/pages/HowToHubPage.astro']);
   });
 });

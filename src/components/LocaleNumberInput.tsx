@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type InputHTMLAttributes } from 'react';
+import { markerSelect } from './toolShared.tsx';
 import { canonicalNumber, displayNumber } from '../utils/shared/parseLocaleNumber.ts';
 
 /**
@@ -47,6 +48,7 @@ export function LocaleNumberInput({
 
   return (
     <input
+      {...markerSelect}
       {...rest}
       type="text"
       value={draft}

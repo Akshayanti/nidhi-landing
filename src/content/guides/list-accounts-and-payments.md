@@ -6,7 +6,7 @@ outcome: "One page listing the accounts and regular payments you've found, with 
 group: stock
 answer:
   - "Write every account you hold on one page: current and savings accounts, cards, loans, pensions and investments, with where each one is and roughly what's in it. Then list every payment that leaves on its own each month or year: how much, when, and from which account."
-  - "The list may turn up an old account, a subscription or a fee you'd forgotten. Anything you can't find yet can be marked \"unknown\" and filled in later."
+  - "The list may turn up an old account, a subscription or a fee you'd forgotten. Anything you can't find yet can be marked “unknown” and filled in later."
 scope:
   can: "Bring the accounts and regular payments you've found into one place, with unknowns marked."
   cannot: "Say which accounts to keep or close, or which payments to cancel."
@@ -21,13 +21,13 @@ steps:
     why: "Current and savings accounts, cards (including ones you no longer use), loans, pensions from every job, investment accounts. Note where each one is and its balance."
     example: "Old payslips and emails from past employers can point to pensions you'd forgotten."
   - action: "Go through two or three months of statements and mark every payment that repeats."
-    why: "Direct debits, standing orders and card payments that come back every month: rent, phone, insurance, subscriptions, gym."
+    why: "Direct debits (payments a company collects from your account), standing orders (payments you set up yourself) and card payments that come back every month: rent, phone, insurance, subscriptions, gym."
   - action: "For each payment, write the amount, the day it leaves and the account it leaves from."
     why: "This shows which account needs money on which day, and which payments cluster together."
   - action: "Add the yearly ones."
     why: "Insurance, memberships and licences that renew once a year are easy to miss. Card statements from a year back, or the renewal emails, show them."
   - action: "Mark anything you're unsure about."
-    why: "\"Unknown\" is a fine entry. It's a reminder to check, not a mistake."
+    why: "“Unknown” is a fine entry. It's a reminder to check, not a mistake."
     caution: "Never write down passwords, PINs or full card numbers on the list. The last four digits are enough to tell cards apart."
 visual:
   kind: table

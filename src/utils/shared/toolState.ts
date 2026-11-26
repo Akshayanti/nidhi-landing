@@ -67,10 +67,12 @@ export function publishToolState(globalName: string, encoded: string): void {
  * reader flipping language is not counted as a second share.
  */
 export function arrivedByLanguageSwitch(): boolean {
-  if (typeof document === 'undefined' || !document.referrer) return false;
+  if (typeof document === 'undefined') return false;
+  const { referrer } = document;
   let from: URL;
   try {
-    from = new URL(document.referrer);
+    // No referrer at all is no address either, and ends here too.
+    from = new URL(referrer);
   } catch {
     return false;
   }

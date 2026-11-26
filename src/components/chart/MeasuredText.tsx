@@ -57,12 +57,18 @@ export function useMeasuredText(svg: RefObject<SVGSVGElement | null>, samples: S
     if (keys.length === 0) return;
     setWidths((prev) => (keys.every((k) => Math.abs((prev[k] ?? -9) - next[k]) < 0.5) ? prev : { ...prev, ...next }));
   };
-  useLayoutEffect(() => measure.current());
+  useLayoutEffect(() => {
+    // Inside its own SVG the hook runs before the SVG's ref is attached (#876).
+    if (svg.current) measure.current();
+    else queueMicrotask(() => measure.current());
+  });
   useLayoutEffect(() => {
     let live = true;
     document.fonts?.ready.then(() => { if (live) measure.current(); });
     return () => { live = false; };
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, so a list of one fixed string cannot differ from an empty one.
+  []);
   return {
     width: (s) => widths[keyOf(s)] ?? textWidth(s.text, s.size) * (/\p{Script=Devanagari}/u.test(s.text) ? 1.2 : 1),
     list,

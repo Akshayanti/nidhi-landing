@@ -12,7 +12,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'themeToggle.js'), 'utf8');
@@ -46,7 +46,7 @@ function page(opts: { saved?: string; storage?: Storage; systemDark?: boolean; t
   const window = {
     matchMedia: (q: string) => {
       assert.equal(q, '(prefers-color-scheme: dark)');
-      return { get matches() { return media.matches; }, addEventListener: (_t: string, fn: () => void) => media.listeners.push(fn) };
+      return { get matches() { return media.matches; }, addEventListener: (type: string, fn: () => void) => { assert.equal(type, 'change'); media.listeners.push(fn); } };
     },
     addEventListener: (type: string, fn: (e: any) => void) => { (windowListeners[type] ??= []).push(fn); },
   };
@@ -54,11 +54,13 @@ function page(opts: { saved?: string; storage?: Storage; systemDark?: boolean; t
     documentElement: root,
     getElementById: (id: string) => { assert.equal(id, 'theme-toggle'); return opts.toggle === false ? null : toggle; },
   };
-  runInNewContext(SOURCE, { window, document, localStorage });
+  runClassicScript(SOURCE, { window, document, localStorage });
   return {
     store,
     theme: () => attrs['data-theme'],
     pressed: () => buttons.filter((b) => b.attrs['aria-pressed'] === 'true').map((b) => b.attrs['data-mode']),
+    /** Every button's state as the page marks it: [mode, data-active, aria-pressed]. */
+    marks: () => buttons.map((b) => [b.attrs['data-mode'], b.attrs['data-active'], b.attrs['aria-pressed']]),
     click: (mode: string) => buttons.find((b) => b.attrs['data-mode'] === mode)!.click(),
     systemChanges: (dark: boolean) => { media.matches = dark; media.listeners.forEach((fn) => fn()); },
     pageshow: (persisted: boolean) => (windowListeners.pageshow ?? []).forEach((fn) => fn({ persisted })),
@@ -75,6 +77,13 @@ describe('themeToggle.js', () => {
     assert.deepEqual(page({ saved: 'dark' }).pressed(), ['dark']);
     assert.deepEqual(page().pressed(), ['system']);
     assert.deepEqual(page({ storage: 'blocked' }).pressed(), ['system']);
+  });
+
+  it('marks every button, for the eye and for a screen reader: one on, the others off', () => {
+    const p = page({ saved: 'dark' });
+    assert.deepEqual(p.marks(), [['light', 'false', 'false'], ['system', 'false', 'false'], ['dark', 'true', 'true']]);
+    p.click('light');
+    assert.deepEqual(p.marks(), [['light', 'true', 'true'], ['system', 'false', 'false'], ['dark', 'false', 'false']]);
   });
 
   it('applies and saves a button press, under nidhi-theme-mode only', () => {

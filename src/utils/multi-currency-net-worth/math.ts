@@ -3,9 +3,9 @@
  * risk assessment, and CSV parsing are testable without React or a DOM.
  */
 
-import { CURRENCIES, type CurrencyInfo } from '../loan/math.ts';
+import { CURRENCIES, type CurrencyInfo } from '../shared/money.ts';
 import { unguardText } from '../shared/exportFile.ts';
-import { parseLocaleNumber } from '../shared/parseLocaleNumber.ts';
+import { parseLocaleNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
 // ---------------------------------------------------------------------------
 // Data model
@@ -53,6 +53,8 @@ export interface CurrencyPosition {
    * performed. The position is shown in original units only.
    */
   rateUnavailable?: boolean;
+  /** Arrived in a link from before links said whether a rate was known (#795). */
+  rateUnknown?: boolean;
 }
 
 /**
@@ -108,10 +110,15 @@ export interface ParseError {
 // Aggregation
 // ---------------------------------------------------------------------------
 
-/** Strips cosmetic grouping characters before parsing so "1,00,000" and "100000" both work. Returns NaN on failure. */
+/**
+ * Strips cosmetic grouping characters before parsing so "1,00,000" and
+ * "100000" both work. Returns NaN on failure. What is left must be digits with
+ * at most one decimal point: `Number()` alone also reads "1.5e5", "0x10" and
+ * "0b11", which the CSV import refuses (#872).
+ */
 export function parseAmount(s: string): number {
   const cleaned = s.replace(/[\s,]/g, '');
-  if (cleaned === '') return NaN;
+  if (!/^(\d+\.?\d*|\.\d+)$/.test(cleaned)) return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) && n >= 0 ? n : NaN;
 }
@@ -214,6 +221,12 @@ export function aggregate(
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
     positions.sort((a, b) => Math.abs(b.netAmountOriginal) - Math.abs(a.netAmountOriginal));
+    for (const pos of positions) {
+      if (!pos.isFunctional) pos.rateUnavailable = true;
+      // The spending currency needs no rate: it is the reader's own, with
+      // rates or without, never "Low" (#874).
+      else [pos.riskLevel, pos.riskLabel] = assessRisk(0, true, pos.netAmountOriginal);
+    }
     return { positions, totalNetWorthFunctional: 0, hasRates: 'none' };
   }
 
@@ -243,10 +256,7 @@ export function aggregate(
   }
 
   // Total net worth in functional currency.
-  const totalNetWorthFunctional = positions.reduce(
-    (sum, p) => sum + p.netAmountFunctional,
-    0,
-  );
+  const totalNetWorthFunctional = netTotal(positions);
 
   // Percentages and risk levels.
   for (const pos of positions) {
@@ -284,6 +294,22 @@ export function aggregate(
     hasRates: missingRateCount > 0 ? 'partial' : 'full',
     noShares: positions.length > 0 && totalNetWorthFunctional <= 0,
   };
+}
+
+/**
+ * The converted positions' total. What adding them can itself lose is no net
+ * worth: €1,000 less $1,100 at 1.1 left 1.1e-13, shares of 8.8e17% and a link
+ * the tool refused as its own (#795). A fixed fraction of the gross would not
+ * do: a trillionth of 1e15 is a real 1,000.
+ */
+export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional'>[]): number {
+  let total = 0;
+  let gross = 0;
+  for (const { netAmountFunctional: amount } of positions) {
+    total += amount;
+    gross += Math.abs(amount);
+  }
+  return Number.isFinite(gross) && Math.abs(total) <= 2 * (positions.length + 1) * Number.EPSILON * gross ? 0 : total;
 }
 
 /**
@@ -355,6 +381,41 @@ export function isSingleCurrency(result: AggregationResult, functionalCurrency: 
   return result.positions.length > 0 && result.positions.every((p) => p.code === code);
 }
 
+/**
+ * What missing rates leave to show (#795). 'some': a subtotal, and nothing is
+ * a share of it. 'all': original amounts, with no total either. A view without
+ * amounts has nothing original to show, so it is never 'all'.
+ */
+export function rateGap(result: AggregationResult, functionalCurrency: string, showAmounts: boolean): 'some' | 'all' | null {
+  if (isSingleCurrency(result, functionalCurrency)) return null;
+  const others = result.positions.filter((p) => !p.isFunctional);
+  if (showAmounts && others.length > 0 && others.every((p) => p.rateUnavailable)) return 'all';
+  return result.hasRates === 'partial' ? 'some' : null;
+}
+
+/** What decides whether the rates are still to come, and whether their failure is this view's. */
+interface RatesView {
+  loading: boolean;
+  failed: boolean;
+  shared: boolean;
+  singleCurrency: boolean;
+  /** Rates for the spending currency are held from an earlier answer. */
+  held?: boolean;
+}
+
+/**
+ * Rates still on the way are not yet unavailable: until they arrive or fail
+ * nothing calls them so, and there is nothing to export or print (#795).
+ */
+export function ratesPending(view: RatesView, hasRates: AggregationResult['hasRates']): boolean {
+  return view.loading && !view.failed && !view.shared && !view.singleCurrency && hasRates === 'none';
+}
+
+/** The failure says raw amounts are shown: not while withheld, nor over amounts held rates or a sender's converted. */
+export function ratesFailureShown(view: RatesView, withheld: boolean): boolean {
+  return view.failed && !view.held && !view.singleCurrency && !view.shared && !withheld;
+}
+
 /** Totals of what is owned and what is owed, for rows in `currency` (same parsing as `aggregate`). */
 export function ownedAndOwed(rows: AssetRow[], currency: string): { owned: number; owed: number } {
   const code = currency.toUpperCase();
@@ -399,7 +460,10 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
   const errors: ParseError[] = [];
   const same = (list: string[] | undefined, word: string) => (list ?? []).some((w) => w.trim().toLowerCase() === word);
 
-  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim() !== '');
+  // Blank lines are skipped, but each line keeps its number in the file, so
+  // an error names the line the reader's editor shows (#875).
+  const numbered = text.replace(/^\uFEFF/, '').split(/\r?\n/).map((line, i) => ({ line, num: i + 1 })).filter(({ line }) => line.trim() !== '');
+  const lines = numbered.map(({ line }) => line);
   if (lines.length === 0) {
     return { rows, errors: [{ line: 0, reason: 'empty', message: 'CSV is empty.' }] };
   }
@@ -419,7 +483,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
   }
 
   for (let i = startIdx; i < lines.length; i++) {
-    const lineNum = i + 1; // 1-based for user display
+    const lineNum = numbered[i].num; // 1-based, as the file counts them
     const cols = splitCSVLine(lines[i], separator);
 
     if (cols.length < 2) {
@@ -466,13 +530,13 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
     // "€100") is refused, never guessed at.
     const read = parseLocaleNumber(valueStr, separator === ',' ? 'en' : 'es');
     const value = read === null ? NaN : read;
-    if (read !== null) valueStr = String(read);
+    if (read !== null) valueStr = plainDigits(read);
     if (!Number.isFinite(value) || value <= 0) {
       errors.push({
         line: lineNum,
         reason: 'invalidValue',
         values: { value: valueStr },
-        message: `"${valueStr}" is not a valid positive number.`,
+        message: `“${valueStr}” is not a valid positive number.`,
       });
       continue;
     }
@@ -488,7 +552,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
         line: lineNum,
         reason: 'unsupportedCurrency',
         values: { value: currencyStr, supported },
-        message: `"${currencyStr}" is not a supported currency. Supported: ${supported}.`,
+        message: `“${currencyStr}” is not a supported currency. Supported: ${supported}.`,
       });
       continue;
     }
@@ -504,7 +568,7 @@ export function parseCSV(text: string, words: CsvWords = {}): { rows: AssetRow[]
         line: lineNum,
         reason: 'unknownType',
         values: { value: typeStr },
-        message: `"${typeStr}" is not a type the tool knows. Use asset or liability.`,
+        message: `“${typeStr}” is not a type the tool knows. Use asset or liability.`,
       });
       continue;
     }

@@ -54,3 +54,37 @@ describe('rounding simulated amounts to what the runs can tell apart (#530)', ()
     }
   });
 });
+
+describe('noiseStep and roundToStep at their edges', () => {
+  it('a single run still has a step: the spread\'s own power of ten', () => {
+    assert.equal(noiseStep(0, 50, 1), 10);
+    assert.equal(noiseStep(0, 50, 0.5), 0, 'less than one run is none');
+    assert.equal(noiseStep(0, 50, NaN), 0);
+  });
+
+  it('there is no step when both ends are the same, zero included', () => {
+    assert.equal(noiseStep(0, 0, 100), 0);
+    assert.equal(noiseStep(-7, -7, 1), 0);
+  });
+
+  it('the spread counts whichever end is the larger', () => {
+    assert.equal(noiseStep(2_160_000, 547_000, 10_000), 10_000);
+  });
+
+  it('a value that is not a finite number is handed back as it is', () => {
+    assert.equal(roundToStep(Infinity, 10), Infinity);
+    assert.ok(Number.isNaN(roundToStep(NaN, 10)));
+    assert.equal(roundToStep(12.3, -1), 12.3);
+    assert.equal(roundToStep(12.3, NaN), 12.3);
+  });
+
+  it('a step of one or more that is not whole keeps its own decimals', () => {
+    assert.equal(roundToStep(7, 2.5), 7.5);
+    assert.equal(roundToStep(7.3, 1), 7);
+  });
+
+  it('cuts binary dust at the step\'s decimals, and at twelve decimals for a finer step', () => {
+    assert.equal(roundToStep(0.1 + 0.2, 0.1), 0.3);
+    assert.equal(roundToStep(0.12345678901234, 1e-14), 0.123456789012);
+  });
+});

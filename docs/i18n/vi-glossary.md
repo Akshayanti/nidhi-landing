@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | Tài sản ròng của bạn là những gì bạn sở hữu trừ đi những gì bạn nợ. | Tài sản ròng của quý vị là những gì quý vị sở hữu trừ đi những gì quý vị nợ. | Tài sản ròng là tổng tài sản sở hữu trừ đi tổng các khoản nợ. |
 | A tool instruction | Enter the amount you borrowed. | Nhập số tiền bạn đã vay. | Xin quý vị nhập số tiền đã vay. | Nhập số tiền đã vay. |
 | An error message | The rate you entered must be between 0% and 100%. | Lãi suất bạn nhập phải nằm trong khoảng từ 0% đến 100%. | Lãi suất quý vị nhập phải nằm trong khoảng từ 0% đến 100%. | Lãi suất phải nằm trong khoảng từ 0% đến 100%. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | Nếu bạn đang chậm trả nợ, bạn không đơn độc, và có những cách để được giúp đỡ. | Nếu quý vị đang chậm trả nợ, quý vị không đơn độc, và có những cách để được giúp đỡ. | Chậm trả nợ là chuyện nhiều người gặp phải, và có những cách để được giúp đỡ. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Việc chậm trả nợ có thể khiến bạn cảm thấy quá sức, và có những cách để được giúp đỡ. | Việc chậm trả nợ có thể khiến quý vị cảm thấy quá sức, và có những cách để được giúp đỡ. | Chậm trả nợ có thể gây cảm giác quá sức, và có những cách để được giúp đỡ. |
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),
 Czech (*vy*) and Marathi (तुम्ही) use the polite form. That is a reference, not

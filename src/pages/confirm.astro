@@ -31,8 +31,8 @@ const isDev = import.meta.env.DEV;
 
       <h1 class="transactional-title">Confirm your subscription</h1>
       <p class="transactional-body">
-        You asked to get new posts from <strong>nidhi</strong> by email. One click
-        below and you&rsquo;re set. We&rsquo;ll email you when something new
+        You asked to get new lessons from <strong>nidhi</strong> by email. One click
+        below and you&rsquo;re set. An email comes when something new
         is published. Nothing else.
       </p>
 
@@ -129,7 +129,7 @@ const isDev = import.meta.env.DEV;
           return;
         }
         if (outcome !== 'ok') {
-          setStatus('We couldn’t tell whether that went through. Please try again; trying twice is safe.', 'error');
+          setStatus('It’s not clear whether that went through. Please try again; trying twice is safe.', 'error');
           btn.disabled = false;
           btn.textContent = 'Yes, subscribe me';
           return;

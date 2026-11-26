@@ -56,7 +56,7 @@ export const es: Dict = {
       about: 'Sobre nidhi',
       beliefs: 'En qué creo',
       editorialPolicy: 'Política editorial',
-      contact: 'Contáctanos',
+      contact: 'Contacto',
       email: 'Correo electrónico',
       instagram: 'Instagram',
       beta: "Beta del planificador",
@@ -103,7 +103,7 @@ export const es: Dict = {
       thirdParty: 'Licencias de terceros',
     },
     disclaimerShort:
-      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un profesional acreditado de las finanzas.',
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
     disclaimerLong:
       'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
     copyright: '© {year} nidhi. Todos los derechos reservados.',
@@ -138,8 +138,8 @@ export const es: Dict = {
   // There is no Spanish feed (the lessons are English); translated anyway
   // because the catalog mirrors `en` key for key.
   rss: {
-    linkTitle: 'nidhi | Blog de finanzas personales',
-    feedTitle: 'nidhi: blog de finanzas personales',
+    linkTitle: 'nidhi | Lecciones de finanzas personales',
+    feedTitle: 'nidhi: lecciones de finanzas personales',
     feedDescription:
       'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Mejora tu educación financiera paso a paso.',
     guidesLinkTitle: 'nidhi | Guías Cómo hacerlo',
@@ -155,14 +155,14 @@ export const es: Dict = {
     meta: {
       title: 'Sobre nidhi: quién escribe y por qué confiar | nidhi',
       description:
-        'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada artículo de finanzas personales.',
+        'Quién escribe nidhi, la formación que hay detrás de los textos y cómo se investiga y documenta cada lección de finanzas personales.',
     },
     schema: {
       name: 'Sobre nidhi',
       description:
-        'Quién escribe nidhi, por qué puedes confiar en lo que escribe y cómo se investiga y documenta cada artículo.',
+        'Quién escribe nidhi, por qué puedes confiar en lo que escribe y cómo se investiga y documenta cada lección.',
       organization:
-        'Educación en finanzas personales basada en la práctica y la investigación, en nidhi.today, sobre patrimonio neto, gestión del dinero en varias monedas e independencia financiera. Construye las herramientas descritas en los artículos y cita sus fuentes en cada uno.',
+        'Educación en finanzas personales basada en la práctica y la investigación, en nidhi.today, sobre patrimonio neto, gestión del dinero en varias monedas e independencia financiera. Construye las herramientas descritas en las lecciones y cita sus fuentes en cada una.',
       knowsAbout: {
         personalFinance: 'Finanzas personales',
         financialLiteracy: 'Educación financiera',
@@ -180,17 +180,17 @@ export const es: Dict = {
     sections: {
       whoIsWriting: 'Quién escribe',
       whyYouCanTrustIt: 'Por qué puedes confiar en ello',
-      howPostsAreMade: 'Cómo se hacen los artículos',
+      howPostsAreMade: 'Cómo se hacen las lecciones',
       whatNidhiKnowsAbout: 'De qué sabe nidhi',
     },
     body: {
       // No gendered subject for the one person behind the site, as in the English.
       whoIsWriting:
-        'Cada artículo de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
+        'Cada lección de este sitio sale bajo un solo nombre: nidhi. Lo empecé porque no encontraba una herramienta financiera que sirviera para una vida corriente, con dinero en más de una moneda, deudas en otra y un futuro que cruzaba fronteras. Las lecciones salen de ese mismo lugar: preguntas reales que he tenido que responder, explicadas como me habría gustado que me las explicaran.',
       // "Suggested Reading" is the lessons' own English heading, so it is
       // quoted as it appears there and glossed in Spanish.
       whyYouCanTrustIt1:
-        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en los artículos, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando un artículo se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada artículo bajo «Suggested Reading» (para seguir leyendo).',
+        'La autoridad aquí viene de la práctica y de la investigación, no de una lista de títulos detrás de un nombre. nidhi construye las herramientas descritas en las lecciones, así que lo escrito se apoya en hacer los números, no en repetir frases hechas. Cuando una lección se apoya en un estudio o en un conjunto de datos, lo nombra, y los libros, las páginas de referencia y el material primario en que se basa aparecen en cada lección bajo «Suggested Reading» (para seguir leyendo).',
       sourcesCount:
         'En las {lessons} lecciones publicadas, las listas de lecturas recomendadas remiten a {sources} libros, artículos y páginas de referencia distintos. Las fuentes citadas solo dentro del texto de una lección no se cuentan aquí.',
       correctionsCount: {
@@ -204,7 +204,7 @@ export const es: Dict = {
         'Lo que esto no es: asesoramiento financiero con licencia. nidhi explica cómo funciona el dinero para que puedas tomar tus propias decisiones. No te dice qué fondo comprar, ni lo hará nunca. Para las decisiones que dependen de tu residencia fiscal concreta, tu situación legal o tu tolerancia al riesgo, lo adecuado es acudir a un profesional acreditado. Ese límite es deliberado, y es el mismo que figura en el pie de cada página.',
       howPostsAreMade: {
         before:
-          'Cada artículo parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. Las herramientas de IA ayudan a investigar, redactar, editar y revisar las lecciones, lo que incluye cuestionar su razonamiento financiero, y a construir el sitio y sus herramientas gratuitas. Lo que produce la IA es un borrador, nunca una fuente: una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
+          'Cada lección parte de una pregunta concreta, se elabora con números reales y ejemplos resueltos, y se contrasta con referencias citadas antes de publicarse. Las herramientas de IA ayudan a investigar, redactar, editar y revisar las lecciones, lo que incluye cuestionar su razonamiento financiero, y a construir el sitio y sus herramientas gratuitas. Lo que produce la IA es un borrador, nunca una fuente: una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. El proceso completo, los criterios sobre fuentes y cómo se gestionan las correcciones están en la ',
         link: 'página de política editorial',
         after: '.',
       },
@@ -360,7 +360,7 @@ export const es: Dict = {
     },
     reviewed: {
       scope: 'La última revisión completa fue el 10 de noviembre de 2026. Abarcó 62 páginas en cinco anchos de pantalla, en el tema claro y en el oscuro y en los cinco idiomas, con un comprobador automático y comprobaciones a mano, en un navegador de escritorio. Una segunda pasada miró el uso táctil, las conexiones lentas, la impresión, el modo de alto contraste y los correos, imitando cada uno en ese navegador.',
-      limits: 'Es una revisión, no una garantía. No incluyó pruebas con lectores con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
+      limits: 'Es una revisión, no una garantía. No incluyó pruebas con personas con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
     },
     barriers: {
       intro: 'Estas siguen abiertas a 18 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
@@ -444,22 +444,22 @@ export const es: Dict = {
       anyCountry:
         'Las lecciones están escritas para quien lea desde cualquier lugar, no para un solo país. Las ideas que enseñan, como el patrimonio neto, la diversificación o cómo la inflación reduce el valor de los ahorros, funcionan igual en todas partes. Las reglas en torno a esas ideas no: los impuestos, la jubilación y las cuentas con ventajas fiscales, las pensiones y ayudas públicas, la puntuación de crédito, la protección de los depósitos y la legislación de protección al consumidor cambian de un país a otro, y a veces dentro de un mismo país. Las lecciones explican la idea general a propósito. Cuando una lección depende de reglas como estas, lo dice, y una nota «Where to check locally» (dónde consultarlo en tu país) al final de la lección indica los lugares habituales para comprobarlas allí donde vives, como tu autoridad fiscal, tu regulador financiero o un asesor local acreditado. Los ejemplos suelen estar en euros; es una elección de moneda, no una señal de que una regla sea europea. Cuando la evidencia viene de los datos de un solo país, como el historial de la bolsa de EE. UU., la lección también lo dice, junto con lo que quizá no te diga sobre otros mercados.',
       sourcesAndFigures:
-        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «Suggested Reading» (para seguir leyendo), para que puedas seguir la pista en lugar de fiarte de nuestra palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
+        'Las afirmaciones se apoyan en fuentes primarias y en fuentes secundarias de prestigio: libros reconocidos, material de referencia acreditado y datos públicos. Cuando una lección se basa en fuentes concretas, aparecen en la propia lección bajo «Suggested Reading» (para seguir leyendo), para que puedas seguir la pista en lugar de fiarte de mi palabra. Las cifras con las que alguien podría tomar una decisión se dan con su fuente y con lo que abarcan, y las lecciones se comparan entre sí para que una misma magnitud tenga el mismo valor. Las reglas generales que no tienen una fuente única se presentan como reglas generales. Si encuentras una cifra sin fuente y sin esa indicación, o dos lecciones que no coinciden, consulta «Correcciones» más abajo. Los ejemplos resueltos usan números realistas, y cuando un número es ilustrativo y no una previsión, la lección lo dice. Los tipos de cambio de las herramientas gratuitas son tipos de referencia de bancos centrales y otras fuentes oficiales, con su fecha en pantalla.',
       aiUsed1:
         'nidhi usa herramientas de IA en su trabajo, entre ellas Claude, de Anthropic, y otros agentes de IA. Ayudan a investigar, redactar y editar las lecciones; a revisar las lecciones frente a esta página; a cuestionar el razonamiento financiero de una lección o de una herramienta desde el punto de vista de un asesor con experiencia; y a construir el sitio y sus herramientas gratuitas. Distintos agentes de IA se enfrentan a propósito al trabajo de los demás, para detectar lo que a uno se le escapa.',
       aiUsed2: {
         // Spanish keeps the space before the link; the English's missing
         // space is a known bug in that page only.
         before:
-          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional acreditado. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recogemos se describe en el ',
+          'Lo que produce la IA es un borrador, nunca una fuente. Una persona interviene en cada etapa y lee y aprueba cada lección antes de publicarla. Un modelo de IA al que se le pide pensar como un asesor financiero sirve para comprobar el razonamiento, no ofrece el asesoramiento de un profesional con licencia. El propio sitio no envía a ningún servicio de IA nada de lo que escribes o haces; lo que recoge el sitio se describe en el ',
         link: 'aviso de privacidad',
         after: '.',
       },
       advice:
-        'nidhi no es un profesional acreditado de las finanzas, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
-          'Si algo está mal, queremos corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
+          'Si algo está mal, quiero corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
         after:
           '. Las correcciones de fondo se hacen en la lección y se reflejan en su fecha de «Updated» (actualizado), para que el cambio se vea en lugar de colarse en silencio. Los arreglos menores, como las erratas, se hacen sin cambiar la fecha.',
       },
@@ -507,7 +507,7 @@ export const es: Dict = {
       say: { lead: 'Voz en las palabras:', rest: ' ayuda a decidir cómo explica nidhi el dinero en tu idioma.' },
       credit: {
         lead: 'Crédito, si lo quieres:',
-        rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que lo quitemos en cualquier momento.',
+        rest: ' elige el nombre que aparece en el sitio. Varias personas pueden recibir crédito por un mismo idioma, y puedes pedir que se quite en cualquier momento.',
       },
       beta: {
         lead: "Invitación a la beta del planificador, si la quieres:",
@@ -521,7 +521,7 @@ export const es: Dict = {
   beta: {
     meta: {
       title: "Beta gratuita del planificador financiero personal | nidhi",
-      description: "Beta gratuita del planificador de nidhi, solo por invitación. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
+      description: "Beta gratuita del planificador de nidhi, solo por invitación desde la lista de espera. Las funciones de pago siguen gratis 12 meses tras el lanzamiento.",
     },
     title: "La beta del planificador",
     lead: "Estoy creando un planificador para vidas reales: lo que tienes, debes, ganas y prevés gastar en un solo lugar, en una moneda o en varias, proyectado hacia el futuro con los supuestos a la vista. La beta es gratuita y está previsto que se abra en enero de 2027. El acceso puede abrirse antes, por etapas.",
@@ -583,7 +583,7 @@ export const es: Dict = {
     meta: {
       title: 'Calculadoras y herramientas financieras gratuitas | nidhi',
       description:
-        'Calculadoras gratuitas de patrimonio neto en una o varias monedas, préstamos, inflación, simulación de jubilación e invertir o pagar deuda. Sin registro. Lo que escribes se queda en tu navegador.',
+        'Calculadoras gratis de patrimonio neto en varias monedas, préstamos, inflación, jubilación e invertir o pagar deuda. Sin registro; lo que escribes queda en tu navegador.',
     },
     schema: {
       breadcrumbHome: 'Inicio',
@@ -607,7 +607,7 @@ export const es: Dict = {
       loanComparison: {
         kicker: 'Decisiones de endeudamiento',
         title: 'Comparador de préstamos',
-        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por entidad financiera, sin hoja de cálculo.',
+        desc: 'Compara dos o tres ofertas de préstamo una al lado de otra. Tasa porcentual anual (APR), costo total del préstamo, escenarios de refinanciación y tabla de amortización por oferta, sin hoja de cálculo.',
       },
       monteCarlo: {
         kicker: 'Proyecciones y jubilación',
@@ -621,9 +621,9 @@ export const es: Dict = {
       },
       investOrPayOff: {
         kicker: 'Deuda o inversión',
-        title: 'Calculadora: invertir o pagar deuda',
+        title: 'Invertir o pagar deuda',
         desc:
-          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un abanico de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
+          'Compara pagar antes una deuda con invertir el mismo dinero cada mes, en la misma fecha y descontada la inflación de tu país. Un rango de resultados según la historia de las bolsas mundiales, no una única rentabilidad supuesta.',
       },
     },
     how: {
@@ -637,7 +637,7 @@ export const es: Dict = {
       rates: {
         strong: 'Tipos de cambio oficiales actualizados cuando hacen falta.',
         before: ' Cuando una herramienta necesita convertir monedas, tu navegador obtiene los tipos de referencia de la API de ',
-        after: ' (un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales). La solicitud solo incluye la moneda funcional que eliges, no los datos de tus activos.',
+        after: ' (un servicio gratuito y abierto que reúne los tipos de cambio que publican bancos centrales y otras fuentes oficiales). La solicitud solo incluye la moneda en la que gastas, no los datos de tus activos.',
       },
       noSignup: {
         strong: 'Sin registro, sin cuenta y sin correo electrónico.',
@@ -710,7 +710,7 @@ export const es: Dict = {
       },
       freeTools: {
         before:
-          'Eventos de interacción en las páginas de herramientas gratuitas. En el comparador de préstamos: qué moneda eliges; si cambias una entidad entre calcular el plazo y la cuota mensual, o entre una tasa fija y una que cambia; que añades o quitas una entidad (con cuántas hay y qué posición ocupa, de la A a la E, nunca su nombre); qué pestaña de resultados abres, y qué entidad eliges allí o de cuál abres los detalles; que cambiaste el horizonte o un ajuste de la refinanciación (qué ajuste, nunca su valor); que un campo quedó sin validar (cuántas entidades, qué posición y qué tipo de problema); si abres el cuadro para compartir, copias el enlace para compartir o abres una vista compartida (con cuántas entidades contiene y su fuente de campaña); y si restableces el formulario. ',
+          'Eventos de interacción en las páginas de herramientas gratuitas. En el comparador de préstamos: qué moneda eliges; si cambias una oferta entre calcular el plazo y la cuota mensual, o entre una tasa fija y una que cambia; que añades o quitas una oferta (con cuántas hay y qué posición ocupa, de la A a la E, nunca su nombre); qué pestaña de resultados abres, y qué oferta eliges allí o de cuál abres los detalles; que cambiaste el horizonte o un ajuste de la refinanciación (qué ajuste, nunca su valor); que un campo quedó sin validar (cuántas ofertas, qué posición y qué tipo de problema); si abres el cuadro para compartir, copias el enlace para compartir o abres una vista compartida (cuántas ofertas contiene y su fuente de campaña); y si restableces el formulario. ',
         strong: 'Los valores financieros que escribes nunca se envían',
         after:
           ': ni la cantidad del préstamo, ni la tasa de interés, ni las comisiones, ni el nombre de la entidad financiera. La razón de ser de la calculadora es que los cálculos se hacen en tu navegador.',
@@ -718,26 +718,26 @@ export const es: Dict = {
       toolAddresses:
         'En todas las herramientas gratuitas, la dirección de la página nunca lleva lo que escribes, así que la URL de la página que queda registrada en la analítica tampoco puede llevarlo. Las herramientas no escriben tus datos en la dirección mientras las usas. Un enlace para compartir los lleva después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los saca de la barra de direcciones antes de que empiece la analítica. Como medida de respaldo, el script de analítica elimina todo salvo los parámetros de campaña (utm_source y similares) de cualquier dirección de una herramienta gratuita antes de enviar un evento.',
       toolExports:
-        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que introdujiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
+        'Todas las herramientas gratuitas pueden descargar una hoja de cálculo con sus resultados o crear un informe en PDF: un resumen breve de los resultados que el cuadro de impresión de tu navegador imprime o guarda como PDF. Las dos cosas se crean en tu navegador y nunca se suben. El archivo o la copia impresa contiene los valores que escribiste y, una vez guardado, queda fuera de nuestro alcance (tu carpeta de descargas, carpetas sincronizadas, copias de seguridad, otras apps), así que no podemos verlo ni borrarlo. Tu navegador puede añadir la dirección de la página y la fecha en el encabezado o el pie de una copia impresa; puedes desactivarlo en el cuadro de impresión. Usar cualquiera de las dos envía un evento que dice cuál de las dos usaste, y nada más.',
       netWorth: {
         before:
-          'Eventos de interacción en la calculadora de patrimonio neto: qué moneda de gastos eliges; que añades o quitas una fila, o subes o descargas un archivo CSV (con el número de filas; si un archivo no pudo leerse entero, cuántas líneas fallaron y qué tipo de problema tenía la primera); que los tipos de cambio no se cargaron (con la moneda de gastos y uno de unos pocos motivos fijos) y si lo vuelves a intentar; si abres el cuadro para compartir, qué tipo de enlace copias (con cantidades o sin ellas) y si abres una vista compartida (con su tipo, cuántas monedas contiene y su fuente de campaña); y si restableces el formulario. ',
+          'Eventos de interacción en la calculadora de patrimonio neto: en qué moneda gastas; que añades o quitas una fila, o subes o descargas un archivo CSV (con el número de filas; si un archivo no pudo leerse entero, cuántas líneas fallaron y qué tipo de problema tenía la primera); que los tipos de cambio no se cargaron (con la moneda en la que gastas y uno de unos pocos motivos fijos) y si lo vuelves a intentar; si abres el cuadro para compartir, qué tipo de enlace copias (con cantidades o sin ellas) y si abres una vista compartida (con su tipo, cuántas monedas contiene y su fuente de campaña); y si restableces el formulario. ',
         strong: 'Los nombres, las cantidades y los totales que escribes nunca se envían.',
       },
       monteCarlo: {
         before:
           'Eventos de interacción en el simulador Monte Carlo: qué moneda eliges, qué ajuste de rentabilidad y qué número de trayectorias simuladas escoges, si activas o desactivas los retiros, si abres la tabla de resultados, si copias el enlace para compartir y si restableces el formulario. ',
-        strong: 'Las cantidades, los años, las comisiones y la combinación de activos que introduces nunca se envían.',
+        strong: 'Las cantidades, los años, las comisiones y la combinación de activos que escribes nunca se envían.',
       },
       inflation: {
         before:
           'Eventos de interacción en la calculadora de inflación: qué pregunta eliges («Poder de compra futuro», «Costo futuro», «Del pasado a hoy», «¿Sigue el ritmo?»), qué moneda eliges y de qué país quieres ver la historia, si usas la media de un país como tasa, si copias el enlace para compartir y si restableces el formulario. Elegir un país carga su historia desde el propio nidhi.today, nunca desde el Banco Mundial. ',
-        strong: 'Las cantidades, las tasas y los años que introduces nunca se envían.',
+        strong: 'Las cantidades, las tasas y los años que escribes nunca se envían.',
       },
       investOrPayOff: {
         before:
           'Eventos de interacción en la calculadora de invertir o pagar deuda: que se mostró una comparación, si copias el enlace para compartir, si exportas una hoja de cálculo o un PDF, si reinicias el formulario y si abres una vista compartida, con su fuente de campaña. A diferencia de las otras herramientas, ninguno lleva una elección tuya: ni el país, ni la moneda, ni la opción de rentabilidad, ni la fecha de comparación. Si aceptas el aviso de cookies, los clics dentro del formulario de la calculadora no se registran y los mapas de calor se pausan en esa página. Al elegir un país, su historia de inflación se carga desde el propio nidhi.today, nunca desde el Banco Mundial. ',
-        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que introduces nunca se envían.',
+        strong: 'La deuda, las cuotas, las tasas, las cantidades, las comisiones y los impuestos que escribes nunca se envían.',
       },
       campaigns: {
         before: 'Parámetros de campaña (',
@@ -752,7 +752,7 @@ export const es: Dict = {
         'Un ID de visitante aleatorio que PostHog guarda en tu navegador (localStorage), para enlazar tus visitas entre sí. No contiene nombre ni correo, pero como enlaza tus visitas a lo largo del tiempo, distingue tu navegador de los demás. Eso lo hace seudónimo, no anónimo, y por eso espera a tu sí. Si después dices que no, se elimina; a partir de ahí, el ID dura solo mientras estás en cada página, así que los eventos posteriores no se enlazan con los anteriores.',
       planner: {
         anonymous:
-          'Salvo que digas que sí en el aviso de cookies: visitas a páginas y eventos de uso, como qué pantalla abriste o que añadiste una cuenta, calculaste una proyección o guardaste un escenario hipotético. Esos eventos registran los importes solo como rangos aproximados. No llevan nombre, correo ni ID de cuenta, y cualquier ID de cuenta o de elemento en la dirección de una página se sustituye antes de enviar nada. No se guarda nada en tu navegador para ellos.',
+          'Salvo que digas que sí en el aviso de cookies: visitas a páginas y eventos de uso, como qué pantalla abriste o que añadiste una cuenta, calculaste una proyección o guardaste un escenario hipotético. Esos eventos registran las cantidades solo como rangos aproximados. No llevan nombre, correo ni ID de cuenta, y cualquier ID de cuenta o de elemento en la dirección de una página se sustituye antes de enviar nada. No se guarda nada en tu navegador para ellos.',
         consented:
           'Solo si dices que sí: los mismos eventos, enlazados con un código creado a partir de tu cuenta, para ver dónde se atasca una persona a lo largo de sus visitas. El código no contiene tu nombre, tu correo ni tu ID de cuenta y no se puede convertir de nuevo en ellos, pero podemos relacionarlo con tu cuenta cuando nos pidas encontrar o borrar tus eventos. Entonces PostHog guarda un ID de visitante aleatorio en tu navegador para unir tus visitas.',
       },
@@ -773,7 +773,7 @@ export const es: Dict = {
       analytics:
         'Los eventos propios del boletín (te suscribiste, confirmaste o te diste de baja) se registran en PostHog con un código creado a partir de tu dirección de correo (un hash SHA-256), para saber cuánta gente confirma. Solo con un sí en el aviso de cookies, suscribirte enlaza también las páginas vistas en este navegador con ese código, para saber qué páginas llevan a la gente a suscribirse.',
       total:
-        'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscriptores confirmados, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
+        'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscripciones confirmadas, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
         before: 'Los correos del boletín llegan desde ',
         after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
@@ -785,7 +785,7 @@ export const es: Dict = {
       timestamp: 'La fecha y hora en que te apuntaste.',
       singleOptIn: 'No hace falta ningún correo de confirmación. Si te invitamos, el planificador registra el estado de la invitación, como se explica más abajo.',
       invites:
-        'Para elegir a quién invitar a la beta del planificador, un administrador de nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que los administradores nunca reciben. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
+        'Para elegir a quién invitar a la beta del planificador, alguien con acceso de administración en nidhi lee esta lista desde las herramientas de administración del planificador. Esas herramientas llegan a la hoja mediante un enlace protegido, con una clave secreta que se queda en el servidor del planificador y que nunca recibe quien tiene acceso de administración. Esa lectura envía al planificador solo tu correo electrónico, la página desde la que te apuntaste y cuándo lo hiciste. Estar en la lista no invita a nadie por sí solo: una persona elige cada invitación. La lista de espera sigue enviándote un solo correo: tu invitación a la beta.',
       total:
         'El sitio puede mostrar cuántas personas esperan una invitación a la beta: las de esta lista de espera más las personas voluntarias que marcaron la casilla de la beta del planificador, y cada una cuenta una sola vez aunque esté en ambas. Ese número se calcula dentro de nuestra cuenta de Google y solo el número sale de ella. Por debajo de 20 es exacto, así que entre una actualización del sitio y la siguiente puede verse un cambio de uno. Desde 20 se redondea hacia abajo, a un múltiplo de 5 hasta 49 y a un múltiplo de 10 desde 50. No se muestra ninguna dirección de correo. Alguien que ya tenga información sobre una inscripción concreta o la elección de la beta podría deducirla a partir de un cambio en el total.',
       from: {
@@ -815,7 +815,7 @@ export const es: Dict = {
       followUp:
         'En la hoja privada que contiene tus respuestas del formulario también anotamos el estado del seguimiento, la fecha de nuestro último contacto contigo y el código de cualquier copia de revisión que te enviemos, para gestionar las respuestas y aplicar el plazo de conservación indicado más abajo. Cada respuesta nueva nos envía un aviso que no incluye ninguna de tus respuestas. Una persona lee cada respuesta, y nada ocurre de forma automática: ni respuestas, ni decisiones, ni créditos, ni altas en la beta.',
       invites:
-        'Si marcaste la casilla de la beta del planificador, un administrador de nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
+        'Si marcaste la casilla de la beta del planificador, alguien con acceso de administración en nidhi puede leer tu correo electrónico y cuándo enviaste el formulario desde las herramientas de administración del planificador, que usan el mismo tipo de enlace protegido, para elegir a quién invitar. Esa lectura envía al planificador solo esas dos cosas, y solo de las personas que marcaron la casilla; tus demás respuestas se quedan en la hoja. Marcar la casilla no invita a nadie por sí solo: una persona elige cada invitación, y la invitación es el único correo que sale de ello.',
       total:
         'Si marcaste la casilla de la beta del planificador, también cuentas en el total de personas que esperan una invitación a la beta que el sitio puede mostrar (descrito arriba, en la lista de espera), una sola vez aunque estés también en la lista de espera. Solo se muestra el número, nunca tu dirección. Aquí también existe la posibilidad de deducción descrita arriba.',
       google:
@@ -886,12 +886,12 @@ export const es: Dict = {
           before: ' (regiones de Google Cloud en la UE): nuestras direcciones de correo (',
           middle: ' para contacto general y soporte, ',
           after:
-            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Esas hojas son privadas: los administradores de nidhi pueden leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella. Las copias de revisión del voluntariado también están en esta cuenta, pero no son privadas de esa manera: cualquier persona con el enlace de una copia puede abrirla y editarla, como se describe en el formulario de voluntariado. Los lotes guardados, nuestras notas sobre ellos y el registro de los textos publicados son privados.',
+            ' para correos automáticos del producto, como invitaciones a la beta y envíos del boletín) y la hoja de Google Sheets que guarda las suscripciones al boletín y las altas en la lista de espera (en pestañas separadas), y el formulario de Google para quienes se ofrecen a traducir, con la hoja donde se guardan sus respuestas. Esas hojas son privadas: quien tiene acceso de administración en nidhi puede leerlas directamente, y el servidor del planificador solo puede obtener los campos descritos en la lista de espera y en el formulario de voluntariado. El script de la lista de espera también abre la hoja de voluntariado, dentro de nuestra cuenta de Google, para calcular el total de personas que esperan una invitación a la beta; solo ese número sale de ella. Las copias de revisión del voluntariado también están en esta cuenta, pero no son privadas de esa manera: cualquier persona con el enlace de una copia puede abrirla y editarla, como se describe en el formulario de voluntariado. Los lotes guardados, nuestras notas sobre ellos y el registro de los textos publicados son privados.',
         },
         planner: {
           name: 'DigitalOcean',
           rest:
-            ' (Fráncfort, Alemania; región FRA1, en la UE): aloja la base de datos del planificador, que guarda solo las direcciones de correo que un administrador invita y los registros de invitación descritos en «Cuánto tiempo lo conservamos». Los datos de cuenta los cubre el aviso de privacidad del propio planificador.',
+            ' (Fráncfort, Alemania; región FRA1, en la UE): aloja la base de datos del planificador, que guarda solo las direcciones de correo que invita alguien con acceso de administración y los registros de invitación descritos en «Cuánto tiempo lo conservamos». Los datos de cuenta los cubre el aviso de privacidad del propio planificador.',
         },
         github: {
           name: 'GitHub Pages',
@@ -917,7 +917,7 @@ export const es: Dict = {
         'No te rastreamos en los sitios web de otras empresas. Sin píxel de Facebook, sin etiqueta de Google Ads, sin LinkedIn Insight, sin píxel de TikTok, sin retargeting de ningún tipo.',
       screen: 'No usamos grabación de sesiones ni analítica para capturar tu pantalla, tus pulsaciones de teclado, los valores de los formularios ni un registro continuo de tu desplazamiento, ni en este sitio ni en el planificador.',
       replies: 'Las respuestas a los correos del boletín llegan a una persona en hello@nidhi.today, que las lee. Nunca las introducimos en ningún sistema de analítica ni de publicidad.',
-      imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando un administrador lo pide, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que un administrador invita, junto con los registros de invitación.',
+      imports: 'No importamos la lista del boletín a otras herramientas ni sistemas de envío de correos. Cuando lo pide alguien con acceso de administración, el planificador lee los datos limitados de la lista de espera y de la lista de personas voluntarias interesadas en la beta, descritos arriba, para ayudar a elegir a quién invitar. En su base de datos solo se guardan las direcciones que invita alguien con acceso de administración, junto con los registros de invitación.',
     },
 
     retention: {
@@ -926,7 +926,7 @@ export const es: Dict = {
         rest: ' 12 meses (el plazo de conservación predeterminado de PostHog; no lo hemos ampliado), y después se eliminan automáticamente. Esto incluye también los eventos del planificador.',
       },
       newsletter: {
-        lead: 'Suscriptores del boletín:',
+        lead: 'Suscripciones al boletín:',
         rest: ' mientras mantengas la suscripción, y hasta 30 días después de que canceles la suscripción, para asegurarnos de que no te llegue ni un correo más por error. Pasado ese tiempo, se elimina la fila.',
       },
       waitlist: {
@@ -935,12 +935,12 @@ export const es: Dict = {
       },
       volunteers: {
         lead: 'Respuestas del formulario de voluntariado:',
-        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. Lo mismo vale para tus copias de revisión, los lotes guardados y nuestras notas sobre ellos, y las hojas aparte que mostraron tus sugerencias a otras personas voluntarias: un lote que envías cuenta como contacto, revisamos cada mes lo que tenga más de dos años y, cuando nos lo pides, eliminamos todos esos archivos en un plazo de 30 días. También eliminamos una copia de revisión cuando los cambios de su ronda ya están en el sitio. Al eliminar un archivo entero, se elimina también su historial de versiones. Después de vaciar la papelera de Drive, Google permite a nuestro administrador restaurar un archivo eliminado durante 25 días como máximo; después desaparece para siempre. No podemos recuperar las copias que alguien con el enlace haya hecho por su cuenta. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales. Para los textos tuyos que publicamos, ese registro indica también qué texto era, de qué lote salió y cuándo lo enviaste, vinculado a tu respuesta en la que diste el permiso; el resto del lote no se conserva.',
+        rest: ' hasta que nos pidas que las eliminemos, o dos años después de nuestro último contacto contigo, lo que ocurra antes. Lo mismo vale para tus copias de revisión, los lotes guardados y nuestras notas sobre ellos, y las hojas aparte que mostraron tus sugerencias a otras personas voluntarias: un lote que envías cuenta como contacto, revisamos cada mes lo que tenga más de dos años y, cuando nos lo pides, eliminamos todos esos archivos en un plazo de 30 días. También eliminamos una copia de revisión cuando los cambios de su ronda ya están en el sitio. Al eliminar un archivo entero, se elimina también su historial de versiones. Después de vaciar la papelera de Drive, Google permite a quien tiene nuestro acceso de administración restaurar un archivo eliminado durante 25 días como máximo; después desaparece para siempre. No podemos recuperar las copias que alguien con el enlace haya hecho por su cuenta. El crédito en el sitio se mantiene hasta que nos pidas quitarlo. El registro de tu permiso se conserva mientras usemos tu trabajo y, después, solo el tiempo razonablemente necesario para formular, ejercer o defender reclamaciones legales. Para los textos tuyos que publicamos, ese registro indica también qué texto era, de qué lote salió y cuándo lo enviaste, vinculado a tu respuesta en la que diste el permiso; el resto del lote no se conserva.',
       },
       invites: {
         lead: 'Invitaciones a la beta del planificador:',
         rest:
-          ' si un administrador te invita desde cualquiera de las dos listas, el planificador guarda tu correo electrónico, cuándo se creó la invitación, su caducidad, si se retiró o se usó y qué cuenta la usó. Los registros de invitaciones sin usar se eliminan 30 días después de que caduquen o se retiren. Una invitación sin fecha de fin se conserva hasta que se retire o se use. Los registros de invitaciones usadas se eliminan junto con la cuenta. Para que lo eliminemos antes, escríbenos a hello@nidhi.today: eso incluye tanto la entrada de la hoja como el registro del planificador.',
+          ' si alguien con acceso de administración te invita desde cualquiera de las dos listas, el planificador guarda tu correo electrónico, cuándo se creó la invitación, su caducidad, si se retiró o se usó y qué cuenta la usó. Los registros de invitaciones sin usar se eliminan 30 días después de que caduquen o se retiren. Una invitación sin fecha de fin se conserva hasta que se retire o se use. Los registros de invitaciones usadas se eliminan junto con la cuenta. Para que lo eliminemos antes, escríbenos a hello@nidhi.today: eso incluye tanto la entrada de la hoja como el registro del planificador.',
       },
       bounced: {
         lead: 'Correos rebotados o no válidos:',
@@ -948,7 +948,7 @@ export const es: Dict = {
       },
       sendRetry: {
         lead: 'Correos de una lección que no se pudieron enviar:',
-        rest: ' si el correo de una lección no se te puede enviar, el script del boletín guarda un código corto creado a partir de tu dirección (parte de un hash SHA-256, nunca la dirección), cuántas veces lo intentó y el tipo de error. Los errores desconocidos se reintentan en ejecuciones posteriores, hasta tres intentos en total; las direcciones rechazadas por el servicio de correo no se reintentan. Estas notas se borran en cuanto esa lección ha llegado a todos los suscriptores a los que se puede enviar.',
+        rest: ' si el correo de una lección no se te puede enviar, el script del boletín guarda un código corto creado a partir de tu dirección (parte de un hash SHA-256, nunca la dirección), cuántas veces lo intentó y el tipo de error. Los errores desconocidos se reintentan en ejecuciones posteriores, hasta tres intentos en total; las direcciones rechazadas por el servicio de correo no se reintentan. Estas notas se borran en cuanto esa lección ha llegado a todas las personas suscritas a las que se puede enviar.',
       },
       visitorId: {
         lead: 'Tu ID de visitante de PostHog (solo con tu sí):',
@@ -1003,12 +1003,15 @@ export const es: Dict = {
       title: 'Cambios en este aviso',
       intro: {
         before:
-          'Actualizamos esta misma página. Cada cambio, por pequeño que sea, tiene una entrada en el registro de abajo, empezando por el más reciente. Los últimos se muestran completos; los anteriores se conservan palabra por palabra en «Cambios anteriores». Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
+          'Actualizamos esta misma página. Cada cambio, por pequeño que sea, tiene una entrada en el registro, empezando por el más reciente. Los tres últimos se muestran abajo; el registro de cambios completo conserva cada entrada palabra por palabra, en una página por año. Los cambios que afectan a cómo tratamos los datos personales (un nuevo encargado del tratamiento, una nueva categoría de datos, un cambio en la conservación) se marcan como ',
         after: '.',
       },
       second:
-        'No enviamos correos de «hemos actualizado nuestra política de privacidad». Si quieres seguirla de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
-      earlier: 'Cambios anteriores',
+        'No enviamos correos de «hemos actualizado nuestro aviso de privacidad». Si quieres seguirlo de cerca, guarda esta página en favoritos o lee el registro de abajo cuando tengas curiosidad. Si algún cambio te incomoda, puedes cancelar la suscripción al boletín con un enlace de un clic en cada correo, y borrar los datos del sitio en tu navegador elimina todo lo guardado localmente.',
+      entryLink: 'Enlace permanente',
+      entryLinkLabel: 'Enlace permanente a la entrada del {date}',
+      archiveLink: 'Ver el registro de cambios completo',
+      archiveRange: '{count}, del {from} al {to}',
       countOne: '{count} cambio',
       countOther: '{count} cambios',
       countFew: '{count} cambios',
@@ -1016,6 +1019,29 @@ export const es: Dict = {
       materialLabel: 'Cambio relevante',
       entriesInEnglish:
         'El registro de abajo se mantiene en inglés, con las palabras con que se escribió, y no se traduce: es la constancia de lo que decía este aviso en una fecha concreta.',
+    },
+    /** The changelog's own pages: the index at /privacy/changelog/ and a page per year (#722). */
+    archive: {
+      index: {
+        meta: {
+          title: 'Registro de cambios del aviso de privacidad | nidhi',
+          description: 'Cada cambio en el aviso de privacidad de nidhi desde su publicación, del más reciente al más antiguo, palabra por palabra tal como se escribió y agrupado por año.',
+        },
+        title: 'Registro de cambios del aviso de privacidad',
+        intro: 'Cada cambio en el aviso de privacidad tiene aquí una entrada, empezando por el más reciente, conservada palabra por palabra tal como se escribió, en una página por año. Es una constancia de qué cambió y cuándo, no un conjunto de copias antiguas del aviso.',
+        yearsLabel: 'Años',
+      },
+      year: {
+        metaTitle: 'Registro de cambios del aviso de privacidad, {year} | nidhi',
+        metaDescription: 'Cada cambio en el aviso de privacidad de nidhi en {year}, del más reciente al más antiguo, palabra por palabra: qué recoge, guarda y envía el sitio, y cuándo cambió.',
+        title: 'Registro de cambios del aviso de privacidad: {year}',
+        intro: 'Cada cambio hecho en el aviso de privacidad en {year}, empezando por el más reciente, con cada entrada palabra por palabra tal como se escribió. Es una constancia de los cambios, no copias antiguas del aviso: lo que se aplica hoy está en el aviso actual.',
+        monthsLabel: 'Meses de {year}',
+        otherYears: 'Otros años',
+      },
+      backToNotice: 'Leer el aviso de privacidad actual',
+      allYears: 'Todos los años del registro',
+      breadcrumb: 'Registro de cambios',
     },
   },
 
@@ -1033,20 +1059,21 @@ export const es: Dict = {
   /** The newsletter box. See the English catalog for what it promises. */
   subscribe: {
     region: 'Suscripción al boletín',
-    title: 'Recibe las nuevas entradas directamente en tu correo',
+    title: 'Recibe las lecciones nuevas directamente en tu correo',
     text: 'Un correo cuando hay algo nuevo. Sin spam, cancela cuando quieras.',
     inEnglish: 'Las lecciones y los correos están en inglés.',
-    readers: '{n}+ lectores reciben las lecciones nuevas por correo.',
+    readers: '{n}+ personas reciben las lecciones nuevas por correo.',
     emailLabel: 'Correo electrónico',
+    emailPlaceholder: 'Correo',
     button: 'Suscribirme',
     privacyBefore: 'Doble confirmación. Cancela cuando quieras. ',
-    privacyLink: 'Política de privacidad',
+    privacyLink: 'Aviso de privacidad',
     privacyAfter: '.',
     rssFollow: 'Seguir por RSS',
     alreadySubscribed: 'Ya me suscribí',
     notNow: 'Ahora no',
     successTitle: 'Revisa tu correo',
-    successBefore: 'Hemos enviado un enlace de confirmación a ',
+    successBefore: 'Un enlace de confirmación va de camino a ',
     successAfter: '. Haz clic en el botón de ese correo para completar la suscripción. Es un momento.',
     yourEmail: 'tu correo',
     hintBefore: '¿No te ha llegado nada en un minuto? Si esta dirección ya estaba suscrita, no cambia nada y no llega ningún correo nuevo. Si no, revisa el spam o ',
@@ -1060,11 +1087,11 @@ export const es: Dict = {
     confirmChange: 'Cambiarla',
     noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     undo: 'Deshacer',
-    dismissedPermanent: '¡Gracias por suscribirte! No volveremos a mostrar este aviso en este dispositivo.',
-    dismissedLater: 'Volveremos a preguntar más adelante.',
+    dismissedPermanent: '¡Gracias por suscribirte! Este aviso no volverá a aparecer en este dispositivo.',
+    dismissedLater: 'Este aviso volverá a aparecer más adelante.',
     sending: 'Enviando…',
     notConfigured: 'Las suscripciones aún no están configuradas. Vuelve pronto o suscríbete al feed RSS.',
-    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    error: 'No se ha podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
     busy: 'Las suscripciones están en pausa por hoy. Inténtalo de nuevo mañana.',
     invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },
@@ -1079,12 +1106,13 @@ export const es: Dict = {
     waitingAtLeast: '{n}+ personas esperan una invitación a la beta.',
     beta: { before: "Quienes prueben la beta reciben las funciones de pago gratis durante 12 meses tras el lanzamiento. ", link: "Cómo funciona la beta" },
     emailLabel: 'Correo electrónico',
+    emailPlaceholder: 'Correo',
     cta: 'Avísame',
     privacyBefore: 'Un correo cuando se abra el acceso. ',
-    privacyLink: 'Política de privacidad',
+    privacyLink: 'Aviso de privacidad',
     privacyAfter: '.',
     successTitle: 'Ya estás en la lista',
-    successBody: 'Te enviaremos un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',
+    successBody: 'Recibirás un correo cuando se abra el acceso. Nada más. Una dirección que ya estaba en la lista sigue en ella una sola vez.',
     rememberedBody: 'Este navegador recuerda que te apuntaste, así que muestra esta nota en lugar del formulario. En otro navegador o dispositivo seguirá apareciendo el formulario; no hace falta apuntarse otra vez.',
     confirmPrompt: '¿Es correcta esta dirección?',
     confirmYes: 'Sí, avísame',
@@ -1092,7 +1120,7 @@ export const es: Dict = {
     noScript: 'Para apuntarte hace falta JavaScript, que en este navegador está desactivado o bloqueado. También puedes escribir a hello@nidhi.today.',
     sending: 'Enviando…',
     notConfigured: 'Las inscripciones aún no están configuradas. Vuelve pronto.',
-    error: 'No hemos podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
+    error: 'No se ha podido saber si ha llegado. Inténtalo de nuevo; probar dos veces no causa ningún problema.',
     busy: 'Las altas están en pausa por hoy. Inténtalo de nuevo mañana.',
     invalidEmail: 'Esa dirección no parece correcta. Revísala e inténtalo de nuevo.',
   },
@@ -1211,7 +1239,7 @@ export const es: Dict = {
         },
         {
           q: '¿Esto es asesoramiento financiero?',
-          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un profesional acreditado de las finanzas. Para las decisiones importantes, consulta a un profesional acreditado.',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
       ],
     },

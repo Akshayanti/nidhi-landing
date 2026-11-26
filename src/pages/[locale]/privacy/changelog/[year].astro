@@ -1,0 +1,20 @@
+---
+/**
+ * `/<locale>/privacy/changelog/<year>/`: one year of the changelog outside
+ * English (#722). The entries stay English, as on the notice.
+ */
+import PrivacyChangelogPage from '../../../../components/pages/PrivacyChangelogPage.astro';
+import { localizedStaticPaths, routeLocale } from '../../../../i18n/routes.ts';
+import { changelogYears } from '../../../../utils/privacyChangelog.ts';
+import { writtenChangelog } from '../../../../utils/privacyChangelogEntries.ts';
+
+export async function getStaticPaths() {
+  const years = changelogYears(writtenChangelog);
+  return localizedStaticPaths().flatMap((p) => years.map(({ year }) => ({ params: { ...p.params, year } })));
+}
+
+const locale = routeLocale(Astro.params);
+const year = Astro.params.year as string;
+---
+
+<PrivacyChangelogPage locale={locale} year={year} />

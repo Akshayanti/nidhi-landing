@@ -1,0 +1,438 @@
+---
+/**
+ * The privacy notice's complete changelog (#722): the index at
+ * `/privacy/changelog/` when `year` is left out, and the record of one year at
+ * `/privacy/changelog/<year>/` when it is given, in every language.
+ *
+ * The notice shows the latest three entries and links here. A year page holds
+ * every entry of its year, including the ones the notice also shows, so it
+ * never changes once its year is over. Each entry has a permanent anchor on
+ * its year page (`#change-2026-05-05`); the notice's entries link to it and
+ * carry no id of their own.
+ *
+ * The entries are English in every edition, marked `lang="en"`, with the
+ * notice's note saying so; the words around them are the catalog's
+ * (`privacy.archive`). The entries come from `src/utils/privacyChangelogEntries.ts`
+ * through the same source as the notice, so the launch entries are resolved
+ * and the dates merged the same way.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { DATE_LOCALE, DEFAULT_LOCALE, LOCALES, LOCALE_META, dict, format, plural, localizedPath, type Locale } from '../../i18n';
+import { changelogMonths, changelogYears, entryAnchor } from '../../utils/privacyChangelog.ts';
+import { writtenChangelog } from '../../utils/privacyChangelogEntries.ts';
+
+interface Props {
+  locale: Locale;
+  /** The year whose record this page is; left out on the index. */
+  year?: string;
+}
+
+const { locale, year } = Astro.props;
+const { privacy, a11y } = dict(locale);
+const log = privacy.changelog;
+const archive = privacy.archive;
+
+const years = changelogYears(writtenChangelog);
+const thisYear = year ? years.find((y) => y.year === year) : undefined;
+if (year && !thisYear) throw new Error(`the privacy changelog has no entries for ${year}`);
+
+const htmlLang = LOCALE_META[locale].htmlLang;
+const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+const longDate = new Intl.DateTimeFormat(DATE_LOCALE[locale], { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const monthName = new Intl.DateTimeFormat(DATE_LOCALE[locale], { year: 'numeric', month: 'long', timeZone: 'UTC' });
+const countOf = (n: number) => format(plural(htmlLang, n, log.countOne, log.countFew, log.countOther), { count: n });
+const rangeOf = (y: { entries: unknown[]; from: string; to: string }) =>
+  format(log.archiveRange, { count: countOf(y.entries.length), from: longDate.format(asDate(y.from)), to: longDate.format(asDate(y.to)) });
+
+const noticePath = localizedPath(locale, '/privacy/');
+const indexPath = localizedPath(locale, '/privacy/changelog/');
+const yearPath = (y: string) => localizedPath(locale, `/privacy/changelog/${y}/`);
+const months = thisYear ? changelogMonths(thisYear.entries) : [];
+const otherYears = thisYear ? years.filter((y) => y.year !== thisYear.year) : [];
+
+const title = thisYear ? format(archive.year.title, { year: thisYear.year }) : archive.index.title;
+const metaTitle = thisYear ? format(archive.year.metaTitle, { year: thisYear.year }) : archive.index.meta.title;
+const metaDescription = thisYear ? format(archive.year.metaDescription, { year: thisYear.year }) : archive.index.meta.description;
+const englishGoverns = locale === DEFAULT_LOCALE;
+
+const siteUrl = 'https://nidhi.today';
+const homeUrl = new URL(localizedPath(locale, '/'), siteUrl).href;
+const noticeUrl = new URL(noticePath, siteUrl).href;
+const indexUrl = new URL(indexPath, siteUrl).href;
+const pageUrl = thisYear ? new URL(yearPath(thisYear.year), siteUrl).href : indexUrl;
+const newest = thisYear ? thisYear.to : years[0]?.to;
+const oldest = thisYear ? thisYear.from : years.at(-1)?.from;
+
+const crumbs = [
+  { name: privacy.schema.breadcrumbHome, item: homeUrl },
+  { name: privacy.schema.breadcrumbThis, item: noticeUrl },
+  { name: archive.breadcrumb, item: indexUrl },
+  ...(thisYear ? [{ name: thisYear.year, item: pageUrl }] : []),
+];
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })),
+};
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description: metaDescription,
+  url: pageUrl,
+  inLanguage: htmlLang,
+  isPartOf: { '@type': 'WebSite', name: 'nidhi', url: homeUrl },
+  ...(oldest ? { datePublished: oldest } : {}),
+  ...(newest ? { dateModified: newest } : {}),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  alternates={LOCALES}
+  title={metaTitle}
+  description={metaDescription}
+  jsonLd={[webPageSchema, breadcrumbSchema]}
+  robots="index,follow"
+>
+  <section class="plog">
+    <div class="plog-container">
+      <nav class="crumbs plog-crumbs" aria-label={a11y.breadcrumb}>
+        <ol>
+          <li><a href={localizedPath(locale, '/')}>{privacy.schema.breadcrumbHome}</a></li>
+          <li><a href={noticePath}>{privacy.schema.breadcrumbThis}</a></li>
+          {thisYear
+            ? <><li><a href={indexPath}>{archive.breadcrumb}</a></li><li aria-current="page">{thisYear.year}</li></>
+            : <li aria-current="page">{archive.breadcrumb}</li>}
+        </ol>
+      </nav>
+
+      <header class="plog-header">
+        <h1 class="plog-title">{title}</h1>
+        <p class="plog-intro">{thisYear ? format(archive.year.intro, { year: thisYear.year }) : archive.index.intro}</p>
+        {thisYear && !englishGoverns && <p class="plog-note">{log.entriesInEnglish}</p>}
+        <p class="plog-back"><a href={noticePath}>{archive.backToNotice}</a></p>
+      </header>
+
+      {!thisYear && (
+        <section aria-labelledby="plog-years">
+          <h2 id="plog-years" class="plog-h2">{archive.index.yearsLabel}</h2>
+          <ul class="plog-years">
+            {years.map((y) => (
+              <li>
+                <a href={yearPath(y.year)} class="plog-yearLink">{y.year}</a>
+                <span class="plog-range">{rangeOf(y)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {thisYear && (
+        <>
+          <p class="plog-range plog-range--year">{rangeOf(thisYear)}</p>
+          <nav class="plog-months" aria-label={format(archive.year.monthsLabel, { year: thisYear.year })}>
+            <ul>
+              {months.map((m) => (
+                <li><a href={`#month-${m.key}`}>{monthName.format(asDate(`${m.key}-01`))}</a></li>
+              ))}
+            </ul>
+          </nav>
+
+          {months.map((m) => (
+            <section class="plog-month" aria-labelledby={`month-${m.key}`}>
+              <h2 id={`month-${m.key}`} class="plog-h2">{monthName.format(asDate(`${m.key}-01`))}</h2>
+              <ol class="plog-entries">
+                {m.entries.map((entry) => (
+                  <li class="plog-entry" id={entryAnchor(entry.iso)}>
+                    <div class="plog-head">
+                      <a href={`#${entryAnchor(entry.iso)}`} class="plog-dateLink" aria-label={format(log.entryLinkLabel, { date: entry.iso })}><time datetime={entry.iso} class="plog-date">{entry.iso}</time></a>
+                      {entry.material && (
+                        <span class="plog-tag" aria-label={log.materialLabel}>{log.materialTag}</span>
+                      )}
+                    </div>
+                    <p class="plog-summary" lang="en">{entry.summary}</p>
+                    {entry.details && entry.details.length > 0 && (
+                      <ul class="plog-details" lang="en">
+                        {entry.details.map((d) => <li>{d}</li>)}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ))}
+
+          <footer class="plog-footer">
+            {otherYears.length > 0 && (
+              <nav aria-labelledby="plog-other">
+                <h2 id="plog-other" class="plog-h2">{archive.year.otherYears}</h2>
+                <ul class="plog-years">
+                  {otherYears.map((y) => (
+                    <li>
+                      <a href={yearPath(y.year)} class="plog-yearLink">{y.year}</a>
+                      <span class="plog-range">{rangeOf(y)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+            <p class="plog-back"><a href={indexPath}>{archive.allYears}</a></p>
+            <p class="plog-back"><a href={noticePath}>{archive.backToNotice}</a></p>
+          </footer>
+        </>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .plog {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .plog-container {
+    max-width: 640px;
+    width: 100%;
+    /* Event names and paths (free_multi_currency_net_worth_shared_view_opened)
+       have no break points; let them wrap so a phone never scrolls sideways. */
+    overflow-wrap: anywhere;
+  }
+
+  .plog-crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .plog-crumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .plog-crumbs li + li::before {
+    content: '/';
+    margin-right: 4px;
+  }
+
+  .plog-crumbs [aria-current="page"] {
+    color: var(--color-text-primary);
+  }
+
+  .plog-header {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .plog-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--title-page);
+    color: var(--color-deep-blue);
+    margin: 0 0 var(--space-3);
+    letter-spacing: -0.02em;
+  }
+
+  .plog-intro {
+    font-size: var(--text-base);
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+  }
+
+  /* The note that the entries are kept in English, set apart like the
+     notice's own. */
+  .plog-note {
+    font-size: var(--text-base);
+    color: var(--color-deep-blue);
+    line-height: 1.65;
+    margin: 0 0 var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-border-light);
+    border-left: 3px solid var(--color-teal);
+    border-radius: var(--radius-sm);
+  }
+
+  .plog-back {
+    margin: 0;
+    font-size: var(--text-ui);
+  }
+
+  .plog-back + .plog-back {
+    margin-top: var(--space-2);
+  }
+
+  .plog a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .plog a:hover {
+    color: var(--color-teal-dark);
+  }
+
+  .plog-crumbs a {
+    color: var(--color-deep-blue);
+  }
+
+  .plog-h2 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--text-lead);
+    color: var(--color-deep-blue);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+
+  .plog-years {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .plog-years li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .plog-yearLink {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--text-lead);
+  }
+
+  .plog-range {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .plog-range--year {
+    margin: 0 0 var(--space-3);
+  }
+
+  .plog-months ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    font-size: var(--text-ui);
+  }
+
+  .plog-months a {
+    display: inline-block;
+    padding: var(--space-1) 0;
+  }
+
+  .plog-entries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .plog-entry {
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--color-border-light);
+    /* An anchor jump leaves the entry clear of the top of the window. */
+    scroll-margin-top: var(--space-6);
+  }
+
+  .plog-entry:target {
+    background: var(--color-border-light);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    border-radius: var(--radius-sm);
+  }
+
+  .plog-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-2);
+  }
+
+  /* The date is the entry's permanent link, to open, copy or share. */
+  .plog-dateLink {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .plog-dateLink:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .plog-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-deep-blue);
+    font-weight: 600;
+  }
+
+  /* Page-background text on teal, as on the notice: 7.4:1 in light mode, 6.3:1 in dark. */
+  .plog-tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--text-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+    background: var(--color-teal);
+    color: var(--color-bg);
+  }
+
+  .plog-summary {
+    font-size: var(--text-ui);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .plog-details {
+    margin: var(--space-2) 0 0;
+    padding-left: var(--space-6);
+    list-style: disc;
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .plog-details li + li {
+    margin-top: var(--space-1);
+  }
+
+  .plog-footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .plog-footer .plog-h2 {
+    margin-top: 0;
+  }
+
+  .plog-footer nav {
+    margin-bottom: var(--space-4);
+  }
+
+  @media (width < 640px) {
+    .plog { padding: var(--space-6) var(--space-4); }
+  }
+</style>

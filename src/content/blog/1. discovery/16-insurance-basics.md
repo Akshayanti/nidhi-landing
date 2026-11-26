@@ -37,7 +37,7 @@ faq:
   - question: "What does insurance actually do?"
     answer: "Insurance is a contract that transfers financial risk from you to an insurer. You pay a regular premium, and in return the insurer covers the financial damage from a specific bad event, up to your policy limits. The trade-off is clear: premiums are certain and predictable, while the losses they protect against are uncertain and potentially catastrophic. You swap a small guaranteed cost for protection against a large uncertain one. This is rational whenever a potential loss is big enough to disrupt your financial life. Paying 30 euros a month to avoid a 50,000 euro hospital bill makes sense; paying 30 euros a month to avoid a 100 euro phone repair does not."
   - question: "What are the main types of insurance I should consider?"
-    answer: "Five categories cover most people's financial risks. Health insurance covers medical expenses and prevents bills that take years to repay. Life insurance pays your dependents if you die, mattering most when others rely on your income. Property insurance, including homeowner's and renter's contents cover, protects your home and belongings. Disability insurance replaces part of your income if illness or injury stops you working, and is commonly overlooked. Liability insurance covers costs if you are legally responsible for harm to others. How much of each you need depends on where you live, since public systems already cover some of these in many countries. The gaps are what private cover is for."
+    answer: "Five categories cover most people's financial risks. Health insurance covers medical expenses and prevents bills that take years to repay. Life insurance pays your dependants if you die, mattering most when others rely on your income. Property insurance, including homeowner's and renter's contents cover, protects your home and belongings. Disability insurance replaces part of your income if illness or injury stops you working, and is commonly overlooked. Liability insurance covers costs if you are legally responsible for harm to others. How much of each you need depends on where you live, since public systems already cover some of these in many countries. The gaps are what private cover is for."
   - question: "How does insurance work with an emergency fund?"
     answer: "Insurance and your emergency fund both handle unexpected shocks, and the balance between them matters. More comprehensive insurance means fewer scenarios can generate a huge surprise bill, so a smaller emergency fund of around 3 months of expenses may suffice. Less insurance means your emergency fund is the only buffer, so people commonly hold 4 to 6 months or more. For example, skipping disability cover leaves only your fund to absorb lost income, and a long disability will outlast it. This is why guidance says 3 to 6 months rather than a single number: the right amount depends on how much risk you have already transferred to insurers."
   - question: "How much insurance do I actually need?"
@@ -48,7 +48,7 @@ faq:
 
 You spent six months building an [emergency fund](/blog/emergency-fund/). Three months of expenses, carefully saved. Then your apartment floods. The damage to your belongings, laptop, furniture, clothing, adds up to €4,500. Your emergency fund covers it, but now it's nearly gone. You're back to square one.
 
-Your neighbor had the same flood. She filed a claim with her contents insurance, paid a €150 deductible, and received a payout within two weeks. Her emergency fund is untouched. She's still on track.
+Your neighbour had the same flood. She filed a claim with her contents insurance, paid a €150 deductible (the part of a claim you pay yourself), and received a payout within two weeks. Her emergency fund is untouched. She's still on track.
 
 The difference isn't luck. It's insurance.
 
@@ -90,7 +90,7 @@ Pays a sum of money to your beneficiaries if you die. There are two basic types:
 - **Term life insurance**: Covers you for a set period (10, 20, 30 years). If you die during the term, it pays out. If you don't, it expires. Simple, affordable
 - **Whole life insurance (or endowment)**: Covers you for life and includes a savings component that builds cash value over time. More expensive, more complex
 
-**Why it matters financially:** If anyone depends on your income (a partner, children, aging parents), your death would create an immediate financial gap. Life insurance fills it. If no one depends on your income, you may not need it.
+**Why it matters financially:** If anyone depends on your income (a partner, children, ageing parents), your death would create an immediate financial gap. Life insurance fills it. If no one depends on your income, you may not need it.
 
 **Cash flow impact:** Term life insurance for a healthy 30-year-old might cost €15-€40 per month for €200,000 of coverage. Whole life costs significantly more.
 
@@ -115,11 +115,11 @@ Replaces a portion of your income if you're unable to work due to illness or inj
 
 **Cash flow impact:** Typically €30-€80 per month, depending on coverage amount, waiting period, and definition of disability.
 
-**The overlooked risk:** Many people insure their car and their phone but not their ability to earn. What a country's social insurance pays, if anything, decides how big the remaining gap is and whether it is worth insuring privately.
+**The overlooked risk:** Many people insure their car and their phone but not their ability to earn. What a country's social insurance (public cover paid for through contributions or taxes) pays, if anything, decides how big the remaining gap is and whether it is worth insuring privately.
 
 ### Liability insurance
 
-Covers the cost if you're legally responsible for damage to someone else or their property. This includes personal liability (your child breaks a neighbor's window, someone slips on your icy walkway) and professional liability (errors in your work cause financial loss to a client).
+Covers the cost if you're legally responsible for damage to someone else or their property. This includes personal liability (your child breaks a neighbour's window, someone slips on your icy walkway) and professional liability (errors in your work cause financial loss to a client).
 
 **Why it matters financially:** Liability claims can reach tens or hundreds of thousands of euros. Without coverage, you'd pay from your own assets. Personal liability insurance is inexpensive and in many countries available as a standalone policy or bundled with homeowner's or renter's insurance.
 
@@ -132,7 +132,7 @@ Insurance premiums are a recurring expense: they reduce your monthly [cash flow]
 | Insurance Type | Typical Monthly Cost | What It Protects |
 |----------------|---------------------|------------------|
 | Health (supplemental) | €50-€300 | Medical expenses beyond public coverage |
-| Life (term, €200k) | €15-€40 | Dependents' financial security |
+| Life (term, €200k) | €15-€40 | Dependants' financial security |
 | Renter's / contents | €10-€25 | Personal belongings |
 | Disability | €30-€80 | Income replacement |
 | Personal liability | €5-€15 | Legal liability claims |
@@ -199,7 +199,7 @@ A useful rule of thumb: insure what you can't afford to lose. Self-insure what y
     <text x="700" y="166" text-anchor="end" class="fig-tick">unlikely events</text>
     <text x="440" y="398" text-anchor="middle" class="fig-tick" style="font-style: italic;">Conceptual. Total cost = premiums paid plus the risk you carry yourself. Optimal coverage depends on your assets and risk tolerance.</text>
   </svg>
-  <figcaption>Insurance is not a thing you maximise. Too little and one bad day undoes years of saving; too much and you bleed cash flow on risks you could absorb. The goal is the bottom of the curve: cover what you couldn't survive, self-insure the rest.</figcaption>
+  <figcaption>Insurance is not a thing you maximize. Too little and one bad day undoes years of saving; too much and you bleed cash flow on risks you could absorb. The goal is the bottom of the curve: cover what you couldn't survive, self-insure the rest.</figcaption>
 </figure>
 
 ## Insurance and your net worth
@@ -209,7 +209,7 @@ Insurance doesn't appear directly on most balance sheets (except for whole life 
 - **Property insurance** protects your real estate and belongings (the [asset](/blog/assets/) side)
 - **Liability insurance** protects against claims that would create new [liabilities](/blog/liabilities/)
 - **Disability insurance** protects your income stream, which funds everything else
-- **Life insurance** ensures your dependents' financial security isn't tied to a single point of failure
+- **Life insurance** ensures your dependants' financial security isn't tied to a single point of failure
 
 Think of insurance as the defensive layer around your net worth. It doesn't grow your wealth, but it prevents a single event from destroying what you've built.
 
@@ -219,7 +219,7 @@ Think of insurance as the defensive layer around your net worth. It doesn't grow
 
 **Over-insuring out of anxiety.** Insuring every small risk adds up. Extended warranties, gadget insurance, travel insurance for a €200 weekend trip, these are often more profitable for the insurer than for you.
 
-**Not reviewing coverage.** Your insurance needs change as your life changes. A single person with no dependents often doesn't need life insurance. A parent with a mortgage and two children usually does, unless savings or a partner's income would cover the gap. Many people review cover once a year.
+**Not reviewing coverage.** Your insurance needs change as your life changes. A single person with no dependants often doesn't need life insurance. A parent with a mortgage and two children usually does, unless savings or a partner's income would cover the gap. Many people review cover once a year.
 
 **Ignoring deductibles.** A lower premium often means a higher deductible (the amount you pay out of pocket before insurance kicks in). A deductible that your emergency fund can't cover defeats part of the purpose.
 

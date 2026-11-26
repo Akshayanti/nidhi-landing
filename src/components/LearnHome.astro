@@ -1,0 +1,803 @@
+---
+/**
+ * The learning path's front page (/blog/): where to start or continue, an
+ * optional two-question helper that suggests a level (src/utils/levelHelper.ts),
+ * the five levels and Inclusive Finances as one list, a search across every
+ * lesson and guide, and a directory of all of them, folded by level.
+ *
+ * Plain HTML first (council, Nov 21 2026, #721). Astro renders the whole page
+ * as a new reader sees it, so every lesson is a link without any script, and
+ * the Discovery fold is open. Three small controllers in the script below then
+ * add what needs the browser: reading progress, the level helper and search.
+ * Each starts on its own, so one that fails leaves the others working. The
+ * search box and the helper's button are in the page from the start but stay
+ * hidden until their script runs, so nobody meets a control that does nothing.
+ *
+ * One source per kind of data. A lesson's id, title, address, level and
+ * reading time are on its directory row, and every controller reads them from
+ * there. The text only search needs sits once in the `learn-search-data`
+ * block, keyed by the same ids; the build checks the two agree
+ * (src/utils/learnDirectory.ts).
+ *
+ * Privacy (see the privacy notice):
+ * - Reading progress comes from the existing nidhi-reading-progress key and
+ *   never leaves the browser. Nothing new is stored.
+ * - Search terms stay in memory. A ?q= that arrives from a search engine is
+ *   read once and removed from the address; typing never writes to it.
+ * - The helper's answers stay in the page's memory. Its panel is marked
+ *   ph-no-capture and heatmaps are paused while it is open, so no click
+ *   event or click position records which answer was picked.
+ */
+import { format } from '../i18n/format.ts';
+import { plural } from '../i18n/plural.ts';
+import { dict, type Locale } from '../i18n';
+import { jsonForScript } from '../utils/shared/jsonForScript.ts';
+import { goalsFor, type Concept } from '../utils/levelHelper.ts';
+import { GUIDES, INCLUSIVE, directoryGroups, type DirectoryGroup } from '../utils/learnDirectory.ts';
+
+export interface LearnLesson {
+  id: string;
+  title: string;
+  level: string;
+  readingTime: number;
+  /** The lesson's one address, built by the page. */
+  href: string;
+}
+
+/** A How-to guide: English, at its one address. */
+export interface LearnGuide {
+  id: string;
+  title: string;
+  href: string;
+}
+
+export interface LearnLevel {
+  id: string;
+  label: string;
+  summary: string;
+  /** Published lessons in the level; 0 means none is out yet. */
+  total: number;
+  /** Locale-aware link to the level's own page, built by the page. */
+  href: string;
+}
+
+interface Props {
+  locale: Locale;
+  /** BCP-47 tag of the page, which picks a count's form (`plural`). */
+  lang: string;
+  levels: LearnLevel[];
+  /** Every published lesson, ladder lessons in reading order first. */
+  lessons: LearnLesson[];
+  /** Live How-to guides, listed and searched with the lessons. */
+  guides: LearnGuide[];
+  /** What search reads beyond a title, keyed by directory id. */
+  searchText: Record<string, { terms: string[]; text: string }>;
+  /** The How-to words the page needs, and the hub's address in this language. */
+  howTo: {
+    label: string; empty: string; link: string; href: string;
+    startHeading: string; oneQuestion: string; body: string; all: string;
+    /** Outside English: the guides are in English. */
+    inEnglish?: string;
+    featured: { title: string; href: string }[];
+  };
+  /** The collections group after the levels: its heading and the Inclusive Finances line, built by the page. */
+  collections: { heading: string; inclusiveName: string; inclusiveLine: string };
+  /** Levels the helper may suggest: fully published (src/utils/levelHelper.ts). */
+  helperLevels: string[];
+  /** The helper's ideas for those levels, picked by the page at build time (#464). */
+  concepts: Concept[];
+  inclusiveHref: string;
+  topicsHref: string;
+  glossaryHref: string;
+}
+
+const {
+  locale, lang, levels, lessons, guides, searchText, howTo, collections, helperLevels, concepts, inclusiveHref, topicsHref, glossaryHref,
+} = Astro.props;
+const { learn, blogIndex } = dict(locale);
+const s = blogIndex.island;
+const dir = blogIndex.directory;
+
+const core = lessons.filter((l) => l.level !== INCLUSIVE);
+const inclusiveCount = lessons.length - core.length;
+const first = core[0] ?? null;
+const firstLevel = first ? levels.find((l) => l.id === first.level)?.label ?? '' : '';
+const [newBefore, newAfter = ''] = s.newSub.split('{title}');
+
+const band = guides.length > 0 && howTo.featured.length > 0;
+const StartH = band ? 'h3' : 'h2';
+
+const goals = goalsFor(helperLevels);
+
+const groups: DirectoryGroup[] = directoryGroups(levels.map((l) => l.id), lessons, guides);
+// Without a script, Discovery is the open fold (or the first one, should a
+// language ever list no Discovery lesson).
+const openFold = groups.some((g) => g.id === 'discovery') ? 'discovery' : groups[0]?.id;
+const foldName = (id: string) => (id === GUIDES ? dir.guidesName : learn.levels[id] ?? id);
+const foldCount = (id: string, n: number) => (id === GUIDES
+  ? `${n} ${plural(lang, n, dir.guideOne, dir.guideFew, dir.guideMany)}`
+  : `${n} ${plural(lang, n, s.lessonOne, s.lessonFew, s.lessonMany)}`);
+const foldPill = (id: string) => (id === GUIDES ? howTo.label : id === INCLUSIVE ? s.inclusivePill : learn.levels[id] ?? id);
+const foldColour = (id: string) => (id === GUIDES ? 'var(--color-teal-dark, var(--color-teal))' : `var(--level-${id})`);
+
+// What the controllers need beyond the markup: words with a value to fill in,
+// and the helper's rule. Lesson titles and addresses are read from the rows.
+const pageData = {
+  lang,
+  levels: Object.fromEntries(levels.map((l) => [l.id, { label: l.label, href: l.href }])),
+  words: {
+    returningSub: s.returningSub,
+    returningNote: s.returningNote,
+    pathProgress: s.pathProgress,
+    helperOpen: s.helperOpen,
+    helperClose: s.helperClose,
+    resultHeading: s.resultHeading,
+    resultSuffix: s.resultSuffix,
+    resultReasonFoundation: s.resultReasonFoundation,
+    resultReasonGoalPsych: s.resultReasonGoalPsych,
+    resultReasonGoal: s.resultReasonGoal,
+    resultReasonGoalKnown: s.resultReasonGoalKnown,
+    resultReasonAllKnownPsych: s.resultReasonAllKnownPsych,
+    resultReasonAllKnown: s.resultReasonAllKnown,
+    gapsNote: s.gapsNote,
+    firstLessonNote: s.firstLessonNote,
+    seeAll: s.seeAll,
+    noMatches: s.noMatches,
+    lessonOne: s.lessonOne,
+    lessonFew: s.lessonFew,
+    lessonMany: s.lessonMany,
+    showAll: s.showAll,
+  },
+  helper: {
+    levels: helperLevels,
+    concepts,
+    topics: Object.fromEntries(goals.map((g) => [g.id, s.goals[g.id]?.topic ?? ''])),
+  },
+};
+---
+
+<div class="learn-home" data-learn-home>
+  {/* Two ways in, side by side: the path from the start, or one question
+      answered by a short guide (council, Nov 10 2026). Without live guides,
+      the start card stands alone. */}
+  <section class={band ? 'learn-starts' : undefined} aria-labelledby={band ? 'learn-starts-h' : undefined}>
+    {band && <h2 id="learn-starts-h" class="learn-startsHeading">{howTo.startHeading}</h2>}
+    <div class={band ? 'learn-startsGrid' : undefined}>
+      {/* `level-helper` is where the home page's "answer two questions" link
+          lands (/blog/#level-helper). The card holds three versions of its
+          text (new, returning, finished); the page is built as a new reader
+          sees it, and the progress script shows another. Without a lesson
+          to start, the card has no heading of its own. */}
+      <section id="level-helper" class="learn-card" aria-labelledby={first ? 'learn-start-h' : undefined}>
+        {first && (
+          <div class="learn-startText" data-start-state="new">
+            <p class="eyebrow eyebrow--muted learn-eyebrow">{s.newEyebrow}</p>
+            <StartH id="learn-start-h">{format(s.newHeading, { level: firstLevel })}</StartH>
+            <p class="learn-sub">
+              {/* The title is an English lesson's, so it gets its own `lang` inside a line in the page's language. */}
+              {newBefore}<span lang="en">{first.title}</span>{newAfter}{' '}<span class="learn-muted">{first.readingTime} {s.minRead}</span>
+            </p>
+          </div>
+        )}
+        {/* Filled in by the progress script. Each line holds a space until
+            then, so the card keeps its height when the text arrives. */}
+        <div class="learn-startText" data-start-state="returning" hidden>
+          <p class="eyebrow eyebrow--muted learn-eyebrow">{s.returningEyebrow}</p>
+          <StartH lang="en" data-start-title>&nbsp;</StartH>
+          <p class="learn-sub">
+            <span data-start-where>&nbsp;</span> <span class="learn-muted" data-start-time hidden>· <span data-start-minutes></span> {s.minRead}</span>
+          </p>
+          <div class="learn-bar" aria-hidden="true"><i data-start-bar></i></div>
+          <p class="learn-note" data-start-note>&nbsp;</p>
+        </div>
+        <div class="learn-startText" data-start-state="finished" hidden>
+          <p class="eyebrow eyebrow--muted learn-eyebrow">{s.finishedEyebrow}</p>
+          <StartH>{format(s.finishedHeading, { count: core.length })}</StartH>
+          <p class="learn-sub">{s.finishedSub}</p>
+        </div>
+        <div class="learn-actions">
+          {first && (
+            <>
+              <a class="btn btn--primary" href={first.href} data-start-action="new" data-attr="blog-start-first-lesson">{s.readLesson1}</a>
+              <a class="btn btn--primary" href={first.href} data-start-action="returning" data-attr="blog-start-continue" hidden>{s.continueReading}</a>
+            </>
+          )}
+          <a class="btn btn--primary" href={inclusiveHref} data-start-action="finished" data-attr="blog-start-inclusive" hidden>{s.exploreInclusive}</a>
+          <button
+            type="button"
+            class="btn btn--outline"
+            aria-expanded="false"
+            aria-controls="learn-helper"
+            data-attr="blog-level-helper"
+            data-helper-toggle
+            hidden
+          >{s.helperOpen}</button>
+        </div>
+      </section>
+      {/* Runs as soon as the card is parsed, before it is drawn: a browser
+          with reading progress gets the returning version's shape at once,
+          and the helper's button keeps its place until its script starts.
+          Reads the same local key as the progress script; nothing leaves
+          the browser. */}
+      <script is:inline>
+        (function () {
+          var card = document.getElementById('level-helper');
+          if (!card) return;
+          var read = [];
+          try { read = JSON.parse(localStorage.getItem('nidhi-reading-progress') || '[]'); } catch (e) { read = []; }
+          var newer = card.querySelector('[data-start-state="new"]');
+          var back = card.querySelector('[data-start-state="returning"]');
+          if (newer && back && Array.isArray(read) && read.length > 0) {
+            newer.hidden = true;
+            back.hidden = false;
+          }
+          var toggle = card.querySelector('[data-helper-toggle]');
+          if (toggle) { toggle.hidden = false; toggle.style.visibility = 'hidden'; }
+          // The page's module runs before this event and marks the card. If
+          // it never ran, the card goes back to what a new reader sees.
+          document.addEventListener('DOMContentLoaded', function () {
+            if (card.dataset.start) return;
+            if (newer) newer.hidden = false;
+            if (back) back.hidden = true;
+            if (toggle) toggle.hidden = true;
+          });
+        })();
+      </script>
+      {band && (
+        <div class="learn-card learn-howtoCard">
+          <div class="learn-startText">
+            <p class="eyebrow eyebrow--muted learn-eyebrow">{howTo.oneQuestion}</p>
+            <p class="learn-sub">{howTo.body}</p>
+          </div>
+          <ul class="learn-howtoList" role="list">
+            {howTo.featured.map((g) => (
+              <li><a href={g.href} lang="en">{g.title}</a></li>
+            ))}
+          </ul>
+          <p class="learn-howtoAll">
+            <a href={howTo.href}>{format(howTo.all, { count: guides.length })}&nbsp;<span aria-hidden="true">&rarr;</span></a>
+          </p>
+          {howTo.inEnglish && <p class="learn-note">{howTo.inEnglish}</p>}
+        </div>
+      )}
+    </div>
+    <div id="learn-helper" class="learn-card learn-helper ph-no-capture" hidden data-helper>
+      <fieldset class="learn-helperQuestion" data-step="0">
+        <legend tabindex="-1" data-helper-focus>
+          <span class="learn-note">{s.q1Note}</span>
+          <span class="learn-helperText">{s.q1Text}</span>
+          <span class="learn-note">{s.q1Hint}</span>
+        </legend>
+        <div class="learn-checks">
+          {concepts.map((c) => (
+            <label class="learn-check">
+              <input type="checkbox" value={c.id} data-helper-tick />
+              <span>{s.concepts[c.id]}</span>
+            </label>
+          ))}
+        </div>
+        <div class="learn-actions learn-helperNav">
+          <button type="button" class="btn btn--primary" data-helper-next>{s.next}</button>
+        </div>
+      </fieldset>
+      <fieldset class="learn-helperQuestion" data-step="1" hidden>
+        <legend tabindex="-1" data-helper-focus>
+          <span class="learn-note">{s.q2Note}</span>
+          <span class="learn-helperText">{s.q2Text}</span>
+        </legend>
+        <div class="learn-options">
+          {goals.map((g) => (
+            <button type="button" class="learn-option" data-helper-goal={g.id}>{s.goals[g.id].label}</button>
+          ))}
+        </div>
+        <div class="learn-actions learn-helperNav">
+          <button type="button" class="btn btn--quiet" data-helper-back>{s.back}</button>
+        </div>
+      </fieldset>
+      <div class="learn-helperResult" aria-live="polite" data-step="2" hidden>
+        <h3 tabindex="-1" data-helper-focus data-result-heading></h3>
+        <p class="learn-sub" data-result-reason></p>
+        <div class="learn-helperLessons" data-result-lessons>
+          <p class="learn-note" data-result-note></p>
+          <ul data-result-list></ul>
+        </div>
+        <p class="learn-sub" data-result-also hidden>{s.alsoLead}<a data-result-also-link></a>{s.alsoEnd}</p>
+        <div class="learn-actions">
+          <a class="btn btn--primary" data-result-all></a>
+          <button type="button" class="btn btn--quiet" data-helper-restart>{s.startOver}</button>
+        </div>
+      </div>
+      <p class="learn-note">{s.answersNote}</p>
+      <template data-result-item><li><a lang="en" hreflang="en"></a></li></template>
+    </div>
+  </section>
+
+  <section class="learn-path" id="learn-path" aria-labelledby="learn-path-h">
+    <div class="learn-head">
+      <h2 id="learn-path-h">{s.pathHeading}</h2>
+      <span class="learn-note" data-path-note>{s.pathHint}</span>
+    </div>
+    <ol class="learn-levels">
+      {levels.map((level, i) => (
+        <li>
+          {level.total === 0 ? (
+            <div class="learn-level learn-levelSoon">
+              <span class="learn-num" aria-hidden="true">{i + 1}</span>
+              <span class="learn-levelText">
+                <span class="learn-levelName">{level.label}</span>
+                <span class="learn-levelSummary">{level.summary}</span>
+              </span>
+              <span class="learn-levelCount">{s.notYetAvailable}</span>
+            </div>
+          ) : (
+            <a
+              class="learn-level"
+              href={level.href}
+              style={`--lc: var(--level-${level.id})`}
+              data-attr={`blog-level-${level.id}`}
+              data-level-card={level.id}
+            >
+              <span class="learn-num" aria-hidden="true">{i + 1}</span>
+              <span class="learn-levelText">
+                <span class="learn-levelName">{level.label}<em data-level-here hidden> {s.youAreHere}</em></span>
+                <span class="learn-levelSummary">{level.summary}</span>
+              </span>
+              <span class="learn-levelCount">
+                <span data-level-total>{format(s.lessonsCount, { count: level.total })}</span>
+                <span data-level-read hidden><span data-level-read-n>0</span> / {level.total}<span class="lp-srOnly"> {s.srRead}</span></span>
+              </span>
+              <svg class="learn-chevron" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 4l6 6-6 6" />
+              </svg>
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+    {inclusiveCount > 0 && (
+      <>
+        <h3 class="learn-alongside">{collections.heading}</h3>
+        <a
+          class="learn-level"
+          href={inclusiveHref}
+          style="--lc: var(--level-inclusive-finances)"
+          data-attr="blog-index-inclusive-hub"
+        >
+          <span class="learn-num learn-numRoute" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M15.5 8.5l-2 5-5 2 2-5z" />
+            </svg>
+          </span>
+          <span class="learn-levelText">
+            <span class="learn-levelName">{collections.inclusiveName}</span>
+            <span class="learn-levelSummary">{collections.inclusiveLine}</span>
+          </span>
+          <svg class="learn-chevron" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 4l6 6-6 6" />
+          </svg>
+        </a>
+      </>
+    )}
+  </section>
+
+  <section class="learn-find" aria-labelledby="learn-find-h">
+    <div class="learn-head">
+      <h2 id="learn-find-h">{s.findHeading}</h2>
+      <span class="learn-headLinks">
+        <a class="learn-topics" href={topicsHref} data-attr="blog-index-browse-topics">{s.browseByTopic}</a>
+        <a class="learn-topics" href={glossaryHref} data-attr="blog-index-glossary">{s.glossary}</a>
+      </span>
+    </div>
+    {/* Shown by the search script once it runs: without it there is no box
+        that does nothing, and the directory below lists every lesson. */}
+    <div data-search hidden>
+      <label class="lp-srOnly" for="learn-search">{s.searchLabel}</label>
+      <input
+        id="learn-search"
+        class="learn-search"
+        type="search"
+        aria-describedby="learn-search-hint"
+        autocomplete="off"
+        maxlength="200"
+      />
+      {/* The hint is a line under the box in every language, not a
+          placeholder: it does not vanish at the first key, and outside
+          English it is the one instruction that matters, since the search
+          reads English words (#397). */}
+      <p id="learn-search-hint" class="learn-searchHint">{s.searchPlaceholder}</p>
+      {/* Only the count is announced, once typing has paused: the result
+          links below are found by moving on, not read out on every key. */}
+      <span class="lp-srOnly" aria-live="polite" aria-atomic="true" data-search-said></span>
+      {/* A ranked list of its own, above the directory, which never moves. */}
+      <div class="learn-results" data-search-results hidden>
+        <p class="learn-note" data-search-count hidden></p>
+        {guides.length > 0 && (
+          <p class="learn-note" data-search-empty hidden>{howTo.empty} <a href={howTo.href}>{howTo.link}</a></p>
+        )}
+        <button type="button" class="btn btn--outline learn-showAll" data-attr="blog-search-show-all" data-search-more hidden></button>
+      </div>
+      <template data-search-result>
+        <a class="learn-result" data-attr="blog-search-result"><span lang="en"></span><span class="learn-pill"></span></a>
+      </template>
+    </div>
+
+    <h3 class="learn-dirHeading">{dir.heading}</h3>
+    <div class="learn-dir">
+      {groups.map((g) => {
+        const List = g.id === GUIDES || g.id === INCLUSIVE ? 'ul' : 'ol';
+        return (
+          <details class="learn-fold" open={g.id === openFold} data-fold={g.id} data-pill={foldPill(g.id)} style={`--lc: ${foldColour(g.id)}`}>
+            <summary class="learn-foldSummary disclosure">
+              <span class="learn-foldName">{foldName(g.id)}</span>{' '}
+              <span class="learn-foldCount">{foldCount(g.id, g.rows.length)}</span>
+            </summary>
+            <List class="learn-dirList" role="list">
+              {g.rows.map((r) => (
+                <li>
+                  <a
+                    class="learn-dirLink"
+                    href={r.href}
+                    lang="en"
+                    hreflang="en"
+                    data-row={r.id}
+                    data-level={r.level}
+                    data-seq={r.seq}
+                    data-minutes={r.minutes}
+                  >{r.title}</a>
+                  {r.minutes !== undefined && <span class="learn-muted">{r.minutes} {s.minRead}</span>}
+                </li>
+              ))}
+            </List>
+          </details>
+        );
+      })}
+    </div>
+  </section>
+
+  <script type="application/json" id="learn-home-data" set:html={jsonForScript(pageData)} />
+  <script type="application/json" id="learn-search-data" set:html={jsonForScript(searchText)} />
+</div>
+
+<script>
+  import { format } from '../i18n/format.ts';
+  import { helperReason, suggestLevel, type Concept, type ReasonWords } from '../utils/levelHelper.ts';
+  import { parseProgress, progressState, startState } from '../utils/learnProgress.ts';
+  import { queryFromAddress, resultView } from '../utils/learnResults.ts';
+  import { prepare, search, type SearchItem } from '../utils/siteSearch.ts';
+
+  interface PageData {
+    lang: string;
+    levels: Record<string, { label: string; href: string }>;
+    words: Record<string, string> & ReasonWords;
+    helper: { levels: string[]; concepts: Concept[]; topics: Record<string, string> };
+  }
+
+  interface Row {
+    id: string;
+    level: string;
+    title: string;
+    href: string;
+    minutes: number;
+    seq: number;
+    link: HTMLAnchorElement;
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-learn-home]');
+  const data = readJson<PageData>('learn-home-data');
+
+  function readJson<T>(id: string): T | null {
+    try {
+      return JSON.parse(document.getElementById(id)?.textContent || '') as T;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Each controller on its own: one that fails leaves the others working, and
+   * its part of the page stays as it was built (the plain list, the start
+   * card as a new reader sees it, no search box).
+   */
+  function start(run: () => void) {
+    try {
+      run();
+    } catch {
+      /* this part stays as built */
+    }
+  }
+
+  if (root && data) {
+    const w = data.words;
+    const rows: Row[] = [...root.querySelectorAll<HTMLAnchorElement>('[data-row]')].map((link) => ({
+      id: link.dataset.row ?? '',
+      level: link.dataset.level ?? '',
+      title: (link.textContent ?? '').trim(),
+      href: link.getAttribute('href') ?? '',
+      minutes: Number(link.dataset.minutes ?? 0),
+      seq: link.dataset.seq === undefined ? -1 : Number(link.dataset.seq),
+      link,
+    }));
+    const rowById = new Map(rows.map((r) => [r.id, r]));
+    // The ladder in reading order: what progress and the helper count.
+    const core = rows.filter((r) => r.seq >= 0).sort((a, b) => a.seq - b.seq);
+    const card = document.getElementById('level-helper');
+
+    start(() => {
+      if (!card) return;
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem('nidhi-reading-progress');
+      } catch {
+        /* storage blocked: a new reader */
+      }
+      const p = progressState(core, parseProgress(stored));
+      const state = startState(p);
+      card.dataset.start = state;
+
+      // The start card: one version of its text, its heading named by the card.
+      card.querySelectorAll<HTMLElement>('[data-start-state]').forEach((el) => {
+        const on = el.dataset.startState === state;
+        el.hidden = !on;
+        const heading = el.querySelector<HTMLElement>('h2, h3');
+        if (heading && on) heading.id = 'learn-start-h';
+        else if (heading) heading.removeAttribute('id');
+      });
+      card.querySelectorAll<HTMLElement>('[data-start-action]').forEach((el) => {
+        el.hidden = el.dataset.startAction !== state;
+      });
+      if (state === 'returning' && p.next) {
+        const { lesson, index, total, levelRead } = p.next;
+        const levelName = data.levels[lesson.level]?.label ?? '';
+        const text = (sel: string, value: string) => {
+          const el = card.querySelector<HTMLElement>(sel);
+          if (el) el.textContent = value;
+        };
+        text('[data-start-title]', lesson.title);
+        text('[data-start-where]', format(w.returningSub, { level: levelName, index, total }));
+        text('[data-start-minutes]', String(lesson.minutes));
+        const time = card.querySelector<HTMLElement>('[data-start-time]');
+        if (time) time.hidden = false;
+        text('[data-start-note]', format(w.returningNote, { read: levelRead, total, level: levelName }));
+        const bar = card.querySelector<HTMLElement>('[data-start-bar]');
+        if (bar) {
+          bar.style.width = `${total ? (levelRead / total) * 100 : 0}%`;
+          bar.style.background = `var(--level-${lesson.level})`;
+        }
+        const go = card.querySelector<HTMLAnchorElement>('[data-start-action="returning"]');
+        if (go) go.href = lesson.href;
+      }
+      if (!p.returning) return;
+
+      // The level cards: read counts, and where the reader is.
+      const note = root.querySelector<HTMLElement>('[data-path-note]');
+      if (note) note.textContent = format(w.pathProgress, { read: p.readCount, total: core.length });
+      root.querySelectorAll<HTMLElement>('[data-level-card]').forEach((el) => {
+        const id = el.dataset.levelCard ?? '';
+        const here = id === p.currentLevel;
+        el.classList.toggle('learn-levelHere', here);
+        el.ariaCurrent = here ? 'step' : null;
+        const flag = el.querySelector<HTMLElement>('[data-level-here]');
+        if (flag) flag.hidden = !here;
+        const totalLine = el.querySelector<HTMLElement>('[data-level-total]');
+        const readLine = el.querySelector<HTMLElement>('[data-level-read]');
+        const readN = el.querySelector<HTMLElement>('[data-level-read-n]');
+        if (totalLine && readLine && readN) {
+          readN.textContent = String(p.perLevel.get(id) ?? 0);
+          totalLine.hidden = true;
+          readLine.hidden = false;
+        }
+      });
+
+      // The directory opens at the level the reader is in; from then on the
+      // folds are the reader's.
+      if (p.currentLevel && root.querySelector(`[data-fold="${p.currentLevel}"]`)) {
+        root.querySelectorAll<HTMLDetailsElement>('details[data-fold]').forEach((d) => {
+          d.open = d.dataset.fold === p.currentLevel;
+        });
+      }
+    });
+
+    start(() => {
+      const toggle = card?.querySelector<HTMLButtonElement>('[data-helper-toggle]');
+      const panel = document.getElementById('learn-helper');
+      if (!card || !toggle || !panel) return;
+      const steps = [...panel.querySelectorAll<HTMLElement>('[data-step]')];
+      const ticks = [...panel.querySelectorAll<HTMLInputElement>('[data-helper-tick]')];
+      const ticked = new Set<string>();
+      let goal: string | null = null;
+      let open = false;
+
+      const show = (step: number) => {
+        if (step === 2) drawResult();
+        steps.forEach((el) => { el.hidden = Number(el.dataset.step) !== step; });
+        // Focus moves to the new question or the suggestion, so keyboard and
+        // screen reader users follow along.
+        if (open) panel.querySelector<HTMLElement>(`[data-step="${step}"] [data-helper-focus]`)?.focus();
+      };
+      const restart = () => {
+        ticked.clear();
+        ticks.forEach((t) => { t.checked = false; });
+        goal = null;
+        show(0);
+      };
+      const setOpen = (next: boolean) => {
+        open = next;
+        panel.hidden = !open;
+        toggle.ariaExpanded = String(open);
+        toggle.textContent = open ? w.helperClose : w.helperOpen;
+        pauseHeatmaps(open);
+        restart();
+      };
+
+      function drawResult() {
+        const result = panel!.querySelector<HTMLElement>('[data-step="2"]');
+        if (!result) return;
+        const sug = suggestLevel(ticked, goal, data!.helper.levels, data!.helper.concepts);
+        const level = data!.levels[sug.level];
+        const name = level?.label ?? sug.level;
+        const heading = result.querySelector<HTMLElement>('[data-result-heading]')!;
+        heading.textContent = format(w.resultHeading, { level: name });
+        heading.style.color = `var(--level-${sug.level})`;
+        const goalTopic = goal ? data!.helper.topics[goal] : undefined;
+        result.querySelector<HTMLElement>('[data-result-reason]')!.textContent = `${helperReason(sug, name, w, goalTopic || undefined)} ${w.resultSuffix}`;
+
+        const gaps = sug.gapSlugs.map((slug) => rowById.get(slug)).filter((r): r is Row => Boolean(r));
+        const firstOfLevel = core.find((r) => r.level === sug.level);
+        const listed = gaps.length > 0 ? gaps : firstOfLevel ? [firstOfLevel] : [];
+        const box = result.querySelector<HTMLElement>('[data-result-lessons]')!;
+        box.hidden = listed.length === 0;
+        box.querySelector<HTMLElement>('[data-result-note]')!.textContent = gaps.length > 0 ? w.gapsNote : w.firstLessonNote;
+        const item = panel!.querySelector<HTMLTemplateElement>('[data-result-item]')!;
+        box.querySelector<HTMLElement>('[data-result-list]')!.replaceChildren(...listed.map((r) => {
+          const li = item.content.firstElementChild!.cloneNode(true) as HTMLElement;
+          const a = li.querySelector('a')!;
+          a.href = r.href;
+          a.textContent = r.title;
+          return li;
+        }));
+
+        const also = sug.also ? data!.levels[sug.also] : undefined;
+        const alsoLine = result.querySelector<HTMLElement>('[data-result-also]')!;
+        alsoLine.hidden = !also;
+        if (also) {
+          const a = alsoLine.querySelector<HTMLAnchorElement>('[data-result-also-link]')!;
+          a.href = also.href;
+          a.textContent = also.label;
+        }
+        const all = result.querySelector<HTMLAnchorElement>('[data-result-all]')!;
+        all.href = level?.href ?? '';
+        all.textContent = format(w.seeAll, { level: name });
+      }
+
+      ticks.forEach((t) => t.addEventListener('change', () => {
+        if (t.checked) ticked.add(t.value); else ticked.delete(t.value);
+      }));
+      panel.querySelector('[data-helper-next]')?.addEventListener('click', () => show(1));
+      panel.querySelector('[data-helper-back]')?.addEventListener('click', () => show(0));
+      panel.querySelector('[data-helper-restart]')?.addEventListener('click', restart);
+      panel.querySelectorAll<HTMLButtonElement>('[data-helper-goal]').forEach((b) => b.addEventListener('click', () => {
+        goal = b.dataset.helperGoal ?? null;
+        show(2);
+      }));
+      toggle.addEventListener('click', () => setOpen(!open));
+
+      // A reader who has read every lesson is offered Inclusive Finances instead.
+      toggle.hidden = card.dataset.start === 'finished';
+      toggle.style.visibility = '';
+      // The home page links to /blog/#level-helper: open the helper on arrival.
+      if (window.location.hash === '#level-helper' && !toggle.hidden) {
+        setOpen(true);
+        // The browser's own move to the #target comes after this script and
+        // takes focus back to the page: hand it to the first question again.
+        const refocus = () => { if (open && !panel.contains(document.activeElement)) show(0); };
+        if (document.readyState === 'complete') window.setTimeout(refocus, 0);
+        else window.addEventListener('load', () => window.setTimeout(refocus, 0), { once: true });
+      }
+    });
+
+    start(() => {
+      const area = root.querySelector<HTMLElement>('[data-search]');
+      const input = root.querySelector<HTMLInputElement>('#learn-search');
+      const results = root.querySelector<HTMLElement>('[data-search-results]');
+      const count = root.querySelector<HTMLElement>('[data-search-count]');
+      const empty = root.querySelector<HTMLElement>('[data-search-empty]');
+      const more = root.querySelector<HTMLButtonElement>('[data-search-more]');
+      const said = root.querySelector<HTMLElement>('[data-search-said]');
+      const tpl = root.querySelector<HTMLTemplateElement>('[data-search-result]');
+      const text = readJson<Record<string, { terms: string[]; text: string }>>('learn-search-data');
+      if (!area || !input || !results || !count || !more || !said || !tpl || !text) return;
+
+      // Lessons and guides in one index, built once, in the order of the
+      // search block (guides first, as before). What is typed stays in memory.
+      const index = prepare(Object.entries(text)
+        .filter(([id]) => rowById.has(id))
+        .map(([id, e]): SearchItem => ({
+          id,
+          kind: id.startsWith('guide:') ? 'guide' : 'lesson',
+          title: rowById.get(id)!.title,
+          terms: e.terms,
+          text: e.text,
+        })));
+
+      // A result is made from its directory row: the same title and address.
+      const resultFor = (id: string): HTMLAnchorElement | null => {
+        const row = rowById.get(id);
+        const fold = row?.link.closest<HTMLElement>('[data-fold]');
+        if (!row || !fold) return null;
+        const a = tpl.content.firstElementChild!.cloneNode(true) as HTMLAnchorElement;
+        a.href = row.href;
+        a.querySelector('span[lang]')!.textContent = row.title;
+        const pill = a.querySelector<HTMLElement>('.learn-pill')!;
+        pill.textContent = fold.dataset.pill ?? '';
+        pill.style.cssText = fold.style.cssText;
+        return a;
+      };
+
+      let showAll = false;
+      let saidLine = '';
+      let timer = 0;
+      const draw = () => {
+        const v = resultView(search(index, input.value.trim().toLowerCase()), input.value, showAll, {
+          noMatches: w.noMatches, lessonOne: w.lessonOne, lessonFew: w.lessonFew, lessonMany: w.lessonMany,
+        }, data.lang);
+        results.querySelectorAll('.learn-result').forEach((el) => el.remove());
+        const links = v.shown.map((m) => resultFor(m.id)).filter((a): a is HTMLAnchorElement => Boolean(a));
+        more.before(...links);
+        count.textContent = v.countLine;
+        count.hidden = !v.countLine;
+        if (empty) empty.hidden = !v.none;
+        more.hidden = v.more === 0;
+        if (v.more) more.textContent = format(w.showAll, { count: v.more });
+        results.hidden = !v.countLine && links.length === 0 && !(empty && v.none);
+        // Said to a screen reader once the count has stayed the same for a moment.
+        if (v.countLine !== saidLine) {
+          saidLine = v.countLine;
+          window.clearTimeout(timer);
+          timer = window.setTimeout(() => { said.textContent = saidLine; }, 600);
+        }
+        return links;
+      };
+
+      input.addEventListener('input', () => {
+        // A new search starts from the short list again.
+        showAll = false;
+        draw();
+      });
+      more.addEventListener('click', () => {
+        const before = results.querySelectorAll('.learn-result').length;
+        showAll = true;
+        // The button goes once everything is shown: focus moves to the first
+        // result it brought in, rather than being lost.
+        draw()[before]?.focus();
+      });
+
+      // A search engine's sitelinks box sends people to /blog/?q=...: apply
+      // the query, then take it out of the address.
+      const incoming = queryFromAddress(window.location.href);
+      if (incoming) {
+        input.value = incoming.query;
+        window.history.replaceState(window.history.state, '', incoming.address);
+      }
+      area.hidden = false;
+      if (input.value) draw();
+    });
+  }
+
+  /**
+   * Heatmaps record where every click lands and ignore ph-no-capture, so the
+   * helper switches them off while it is open. Analytics.astro reads the same
+   * flag when PostHog finishes loading later.
+   */
+  function pauseHeatmaps(paused: boolean) {
+    window.nidhiHeatmapsPaused = paused;
+    // PostHog is called where it stands, never kept in a variable
+    // (src/utils/privacySurface.test.ts).
+    if (!window.posthog?.__loaded || typeof window.posthog.set_config !== 'function') return;
+    if (paused) {
+      window.posthog.set_config?.({ enable_heatmaps: false });
+    } else {
+      if (window.nidhiConsent?.accepted()) window.posthog.set_config?.({ enable_heatmaps: true });
+    }
+  }
+</script>

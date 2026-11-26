@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | 純資産とは、保有する資産の総額から負債の総額を差し引いた金額です。 | 純資産とは、保有する資産の総額から負債の総額を差し引いた金額である。 |
 | A tool instruction | Enter the amount you borrowed. | 借りた金額を入力してください。 | 借入額を入力。 |
 | An error message | The rate you entered must be between 0% and 100%. | 金利は0%から100%の間で入力してください。 | 金利は0%から100%の間で入力する。 |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | 返済が遅れていても、一人ではありません。助けを得る方法があります。 | 返済が遅れていても、一人ではない。助けを得る方法がある。 |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | 返済が遅れていると、重荷に感じることがあります。助けを得る方法があります。 | 返済が遅れていると、重荷に感じることがある。助けを得る方法がある。 |
 
 Neither column uses *あなた*.
 

@@ -14,10 +14,10 @@
 import { join } from "node:path";
 import { mkdir, writeFile } from "node:fs/promises";
 import { execSync } from "node:child_process";
-import { scrubPlan, assertNoViolations } from "./lib/scrub-output.mjs";
-import { generateTTS, stitchNarration, alignSegments } from "./lib/generate-tts.mjs";
-import { pickMusic } from "./lib/pick-music.mjs";
-import { writePlatformCaptions } from "./lib/render-platform-caption.mjs";
+import { scrubPlan, assertNoViolations } from "./lib/media/scrub-output.mjs";
+import { generateTTS, stitchNarration, alignSegments } from "./lib/media/generate-tts.mjs";
+import { pickMusic } from "./lib/media/pick-music.mjs";
+import { writePlatformCaptions } from "./lib/media/render-platform-caption.mjs";
 
 const noRender = process.argv.includes("--no-render");
 

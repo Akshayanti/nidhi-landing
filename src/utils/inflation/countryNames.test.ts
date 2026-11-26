@@ -32,3 +32,26 @@ test('no country in the tools is named with a dash used as a dash, in any langua
     assert.ok(named > 100, `${locale}: only ${named} countries named`);
   }
 });
+
+test('however much space surrounds the dash, the name is left with one space before the bracket', () => {
+  assert.equal(tidyCountryName('Kongo  –  Kinshasa'), 'Kongo (Kinshasa)');
+  assert.equal(tidyCountryName('Kongo\u00a0 –\u00a0 Kinshasa'), 'Kongo (Kinshasa)');
+  assert.equal(tidyCountryName('Kongo \u2012 Kinshasa'), 'Kongo (Kinshasa)');
+  assert.equal(tidyCountryName('Kongo \u2015 Kinshasa'), 'Kongo (Kinshasa)');
+});
+
+test('only the first spaced dash opens the bracket', () => {
+  assert.equal(tidyCountryName('A – B – C'), 'A (B – C)');
+});
+
+test('a country is named in the language asked for', () => {
+  assert.equal(countryNamer('es')('DE'), 'Alemania');
+  assert.equal(countryNamer('cs')('DE'), 'Německo');
+  assert.equal(countryNamer('hi')('IN'), 'भारत');
+  assert.equal(countryNamer('cs')('CD'), 'Kongo (Kinshasa)');
+});
+
+test('a code the language has no name for is not passed off as a name', () => {
+  assert.equal(countryNamer('en')('XX'), undefined);
+  assert.equal(countryNamer('cs')('QQ'), undefined);
+});

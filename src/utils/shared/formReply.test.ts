@@ -8,7 +8,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { runClassicScript } from '../../../test/classicScript.ts';
 import { join } from 'node:path';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'formReply.js'), 'utf8');
@@ -17,7 +17,7 @@ type Reply = (pending: unknown) => Promise<string>;
 
 function load(): Reply {
   const window: Record<string, any> = {};
-  runInNewContext(SOURCE, { window, Promise, JSON });
+  runClassicScript(SOURCE, { window, Promise, JSON });
   return window.nidhiFormReply as Reply;
 }
 
@@ -71,17 +71,38 @@ describe('formReply', () => {
     assert.equal(await reply(Promise.resolve({ ok: true, text: () => Promise.reject(new Error('reset')) })), 'failed');
     assert.equal(await reply(Promise.resolve(undefined)), 'failed');
   });
+
+  it('a reply whose body cannot be asked for is failed, and nothing is thrown at the form', async () => {
+    assert.equal(await reply(Promise.resolve({ ok: true })), 'failed');
+    assert.equal(await reply(Promise.resolve({ ok: true, text: '{"ok":true}' })), 'failed');
+    assert.equal(await reply(Promise.resolve({ ok: true, text: () => { throw new Error('body already read'); } })), 'failed');
+    assert.equal(await reply(Promise.resolve(null)), 'failed');
+  });
+
+  it('JSON that is not an object is failed, whatever it holds', async () => {
+    for (const body of ['true', '1', '0', '""', '[]', '[{"ok":true}]', '"invalid_email"']) {
+      assert.equal(await reply(Promise.resolve(response(body))), 'failed', body);
+    }
+  });
+
+  it('only ok: true itself counts, not a value that merely reads as true', async () => {
+    for (const body of ['{"ok":"true"}', '{"ok":1}', '{"ok":{}}']) {
+      assert.equal(await reply(Promise.resolve(response(body))), 'failed', body);
+    }
+    assert.equal(await reply(Promise.resolve({ ok: 1, text: () => Promise.resolve('{"ok":true}') })), 'failed');
+  });
 });
 
 describe('the forms read the reply', () => {
-  const FILES = [
-    'components/WaitlistSection.astro',
-    'components/SubscribeSection.astro',
-    'pages/confirm.astro',
-    'pages/unsubscribe.astro',
-  ];
-  for (const file of FILES) {
-    const source = readFileSync(join(import.meta.dirname, '../..', file), 'utf8');
+  // Each path is written out, not built from a name: the mutation cache works out what a test
+  // reads from its source, and a path it cannot work out ties the test to every file (#904).
+  const FILES = {
+    'components/WaitlistSection.astro': readFileSync(join(import.meta.dirname, '../../components/WaitlistSection.astro'), 'utf8'),
+    'components/SubscribeSection.astro': readFileSync(join(import.meta.dirname, '../../components/SubscribeSection.astro'), 'utf8'),
+    'pages/confirm.astro': readFileSync(join(import.meta.dirname, '../../pages/confirm.astro'), 'utf8'),
+    'pages/unsubscribe.astro': readFileSync(join(import.meta.dirname, '../../pages/unsubscribe.astro'), 'utf8'),
+  };
+  for (const [file, source] of Object.entries(FILES)) {
     it(`${file} inlines formReply.js and never posts with no-cors`, () => {
       assert.match(source, /formReply\.js\?raw/);
       assert.match(source, /nidhiFormReply\(/);

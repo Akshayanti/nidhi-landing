@@ -12,8 +12,10 @@ takeaways:
   - "Why cash in a low-interest account loses value over time"
 order: 11
 pubDate: 2026-05-11
-updatedDate: 2026-11-17
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "The lesson said broad stock markets returned 4 to 6% a year after inflation across major developed markets, with the US at the higher end. Country returns vary widely, and the US returned 6.6% a year after inflation from 1900 to 2024, above the stated range. The lesson now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton)."
   - date: 2026-11-17
     note: "The lesson gave real return as nominal return minus inflation. That is a shortcut that works when both are low; the exact figure is (1 + nominal return) ÷ (1 + inflation) − 1, and at high inflation the two differ a lot: a 40% return with 35% inflation is about 3.7% after inflation, not 5%."
 level: "discovery"
@@ -22,6 +24,12 @@ personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals"]
 reelPromise: "The real-return formula, the 30-year worked example where the balance grows but its value shrinks, and what to do about it"
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "The Economics of Money, Banking and Financial Markets"
     author: "Frederic Mishkin"
     url: "https://www.goodreads.com/book/show/299577.The_Economics_of_Money_Banking_and_Financial_Markets"
@@ -48,9 +56,9 @@ faq:
   - question: "What is the real return on savings?"
     answer: "Real return is what your return is worth after inflation. When both rates are low, a close shortcut is the nominal return minus inflation. If a savings account pays 1 percent while prices rise 2.5 percent, you did not gain 1 percent, you lost 1.5 percent in real terms. Cash under a mattress earning 0 percent against 2.5 percent inflation has a real return of negative 2.5 percent. A high-yield account at 3 percent against the same inflation gives a modest positive 0.5 percent. A negative real return means you are getting poorer on paper even as the balance grows. A quick estimate is to subtract inflation from any rate or raise; at high inflation the exact sum, (1 + return) ÷ (1 + inflation) − 1, gives a noticeably different answer, and the inflation calculator does it for you."
   - question: "Does inflation help or hurt people with debt?"
-    answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favor. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
+    answer: "Inflation generally helps borrowers with fixed-rate debt. If you owe a fixed amount and prices rise, you repay the loan with money that is worth less than when you borrowed it. Your salary often rises roughly with inflation over time, but the debt balance does not, so the real burden of repayment shrinks. This is one of the few situations where inflation works in your favour. It does not apply to variable-rate debt, where the interest charged can climb with inflation, and it does not make borrowing free, since you still pay the interest rate agreed on the loan itself."
   - question: "How can I protect my savings from inflation?"
-    answer: "The first step is thinking in real terms: take inflation off every interest rate, return, and raise to see the true number (subtracting is close enough when rates are low). Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: over the long term, broad stock market investments have historically returned around 4 to 6 percent a year after inflation across major developed markets, with the US at the higher end and no guarantee for any future decade, helped by compounding. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
+    answer: "The first step is thinking in real terms: take inflation off every interest rate, return, and raise to see the true number (subtracting is close enough when rates are low). Beyond that, people usually weigh three things. Cash beyond an emergency fund that earns less than inflation loses value in real terms, which is why idle cash is a cost. Many people invest money they will not need for years in growth assets, accepting volatility: world shares returned about 5 percent a year after inflation, compounded, from 1900 to 2024 (Dimson, Marsh and Staunton), with the US above that, several countries well below it, and no guarantee for any future decade. And plans get revisited periodically, since prices, salary, and the right size of an emergency fund all change over time. How much to keep in cash versus investments depends on your timeline and how much fluctuation you can live with."
 ---
 
 You have €10,000 in the bank. Ten years from now, you'll still have €10,000 (plus a little interest). But you won't be able to buy the same things with it.
@@ -153,7 +161,7 @@ High inflation usually comes with high interest rates, so the comparison that ma
 
 **Savings**: Cash sitting in a low-interest account tends to lose value over time. If your savings account's interest rate is below inflation, you're going backward in real terms.
 
-**[Debt](/blog/liabilities/)**: Inflation tends to help borrowers with fixed-rate debt. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favor.
+**[Debt](/blog/liabilities/)**: Inflation tends to help borrowers with fixed-rate debt. If you owe a fixed amount and inflation rises, you're repaying with money that's worth less. Your salary may increase with inflation, but your debt doesn't. This is one of the few times inflation works in your favour.
 
 **Investments**: Stocks, real estate, and other assets that tend to grow over time can outpace inflation. That's one of the main reasons people invest instead of just saving.
 
@@ -163,7 +171,7 @@ High inflation usually comes with high interest rates, so the comparison that ma
 
 1. **Think in real terms.** When you see an interest rate, a return, or a salary increase, take inflation off it (subtracting is close enough when rates are low). That's the number that actually matters
 2. **Idle cash has a cost.** Beyond an emergency fund, money that earns less than inflation loses value in real terms. How much cash is "idle" depends on your upcoming needs
-3. **Many people turn to growth assets, with trade-offs.** Over the long term, broad stock market investments have historically returned around 4-6% a year after inflation across major developed markets, thanks to [compound interest](/blog/appreciation-vs-depreciation/). That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
+3. **Many people turn to growth assets, with trade-offs.** World shares returned about 5% a year after inflation, compounded, from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below that; over decades, [compound interest](/blog/appreciation-vs-depreciation/) turns a rate like that into a large multiple of the money invested. That is why many people invest money they won't need for years, accepting that values can fall sharply along the way
 4. **Plans need revisiting.** Prices change. An emergency fund, a salary and a savings rate all drift, so it helps to check them periodically.
 
 Understanding purchasing power, and the inflation that erodes it is the key to understanding why standing still financially is actually moving backward.

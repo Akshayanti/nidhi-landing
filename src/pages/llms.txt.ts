@@ -8,9 +8,7 @@ import { DEFAULT_LOCALE, LOCALES, LOCALE_META, localizedPath } from '../i18n/con
 import { dict } from '../i18n/index.ts';
 import { getPathPosts } from '../utils/learnPosts.ts';
 import { getGuides, guidePath, GUIDE_HUB } from '../utils/guides.ts';
-import { LADDER_LEVELS, liveTools, type ToolKey } from '../utils/home/startingPoints.ts';
-import { isMonteCarloReleased, MONTE_CARLO_URL } from '../utils/monte-carlo/release.ts';
-import { isInvestOrPayOffReleased, INVEST_OR_PAY_OFF_URL } from '../utils/invest-or-pay-off/release.ts';
+import { LADDER_LEVELS, toolList, type ToolKey } from '../utils/home/startingPoints.ts';
 import { buildLlmsTxt } from '../utils/llmsTxt.ts';
 
 /** Each tool card's key, against the tool's own catalog module. */
@@ -28,14 +26,7 @@ export async function GET(context: APIContext) {
   const t = dict(DEFAULT_LOCALE);
   const site = new URL(context.site!).origin;
 
-  const [posts, guides, showMonteCarlo, showInvestOrPayOff] = await Promise.all([
-    getPathPosts(),
-    getGuides(),
-    isMonteCarloReleased(),
-    isInvestOrPayOffReleased(),
-  ]);
-  const isToolLive = (href: string) =>
-    (href !== MONTE_CARLO_URL || showMonteCarlo) && (href !== INVEST_OR_PAY_OFF_URL || showInvestOrPayOff);
+  const [posts, guides] = await Promise.all([getPathPosts(), getGuides()]);
 
   const levels: Record<string, { name: string; summary: string }> = {};
   for (const level of LADDER_LEVELS) {
@@ -52,7 +43,7 @@ export async function GET(context: APIContext) {
     lessons: posts.map((p) => ({ title: p.title, description: p.description, level: p.level, href: p.href })),
     levelOrder: [...LADDER_LEVELS, INCLUSIVE],
     levels,
-    tools: liveTools(isToolLive).map(({ href, key }) => ({
+    tools: toolList().map(({ href, key }) => ({
       title: t.home.toolCards[key].name,
       description: t.tools[TOOL_CATALOG[key]].meta.description,
       href,

@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CHANGE_DAYS, LAUNCH_ITEMS } from '../i18n/strings/changes.ts';
+import { CHANGE_DAYS } from '../i18n/strings/changes.ts';
 import { LOCALES } from '../i18n/config.ts';
 import { TITLE_MAX, feedTitle, firstSentence } from './feedTitle.ts';
 
@@ -74,7 +74,7 @@ describe('feedTitle', () => {
 });
 
 describe('the titles of the real feed', () => {
-  const items = [...CHANGE_DAYS.flatMap((d) => d.items), ...Object.values(LAUNCH_ITEMS)];
+  const items = CHANGE_DAYS.flatMap((d) => d.items);
 
   for (const locale of LOCALES) {
     it(`${locale}: every title is short, starts its item and ends at a word`, () => {

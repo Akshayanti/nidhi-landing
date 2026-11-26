@@ -57,6 +57,7 @@ export const inflationEn = {
       'Whether a raise or a savings return keeps up with inflation, with the exact real rate',
       'Every result also shown one percentage point lower and higher',
       'Yearly inflation history for {countries} countries and the euro area, from the World Bank',
+      'For {joinedAll} countries, answers up to the latest month, with a monthly consumer price index from the BIS or the World Bank',
       'Rates from {minRate} to {maxRate}% a year, so hyperinflation can be shown',
       'Results in 38 currencies',
       'Shareable link to any calculation',
@@ -114,7 +115,20 @@ export const inflationEn = {
       before: 'Yearly consumer price inflation by country, from the ',
       link: 'World Bank',
       after:
-        ' (indicator FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)"), licensed CC BY 4.0. The World Bank last updated these figures on {updated}. nidhi keeps a copy and checks for new figures every month, so your browser loads the history from nidhi.today and never contacts the World Bank. The euro area figure is for the euro area as a whole. Figures can be revised, and a few countries have years with no figure or a record that starts late.',
+        ' (indicator FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”), licensed CC BY 4.0. The World Bank last updated these figures on {updated}. nidhi keeps a copy and checks for new figures every month, so your browser loads the history from nidhi.today and never contacts the World Bank. The euro area figure is for the euro area as a whole. Figures can be revised, and a few countries have years with no figure or a record that starts late.',
+    },
+    /** The second source, for the months after the last full year: split around its link like `source`. `{joined}` countries, fetched on `{fetched}`. */
+    sourceMonthly: {
+      before: 'For {joined} countries, an answer from the country’s history goes on to the latest month with a figure, using the monthly consumer price index published by the ',
+      link: 'BIS',
+      after:
+        ' (Bank for International Settlements, “Consumer prices”), fetched on {fetched}. The months are joined only where that index’s own yearly changes match the World Bank’s or, for one year in India (2025), where the difference is traced to the yearly figure rather than the index; elsewhere the answer ends at the last full year, and says so. The BIS does not endorse this tool and gives no warranty for its statistics. Your browser loads these figures from nidhi.today as well and never contacts the BIS.',
+    },
+    /** The third: the World Bank's own monthly database, for countries the BIS has no matching index for. The link's text is the database's name, in the component. */
+    sourceMonthlyWorldBank: {
+      before: 'For {joinedWorldBank} more countries the months come from the World Bank’s own ',
+      after:
+        ' (“CPI Price, not seas. adj.”, indicator CPTOTNSXN), licensed CC BY 4.0 and last updated by the World Bank on {monthlyUpdated}. It is used where the BIS has no matching index, under the same rule, and served from nidhi.today like the rest. A country whose latest month is more than six months old keeps its yearly answer.',
     },
     /**
      * The FAQ, printed on the page and published as FAQPage structured data.
@@ -126,7 +140,7 @@ export const inflationEn = {
       items: [
         {
           q: 'What does the answer mean?',
-          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? "Buying power later" shows what an amount could buy in the future, in today\'s money. "Cost later" carries a price forward. "Past to today" brings an old amount up to date. "Keeping up" compares a raise or a savings return with inflation. Answers are rounded and say "about", because the rate is an assumption, not a measurement.',
+          a: 'It works out one scenario: if prices rise at the rate you typed, every year, for the years you chose, what does an amount correspond to? “Buying power later” shows what an amount could buy in the future, in today\'s money. “Cost later” carries a price forward. “Past to today” brings an old amount up to date. “Keeping up” compares a raise or a savings return with inflation. Answers are rounded and say “about”, because the rate is an assumption, not a measurement.',
         },
         {
           q: 'Why does every answer come with two more?',
@@ -138,11 +152,11 @@ export const inflationEn = {
         },
         {
           q: 'Where does the history come from, and how recent is it?',
-          a: 'From the World Bank\'s World Development Indicators: "Inflation, consumer prices (annual %)" (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: "Past to today" starts only from years with an unbroken record up to the latest year.',
+          a: 'From the World Bank\'s World Development Indicators: “Inflation, consumer prices (annual %)” (indicator FP.CPI.TOTL.ZG), licensed CC BY 4.0, which gathers the figures national statistics offices and the IMF publish. The World Bank last updated them on {updated}; nidhi checks for new figures every month. For most countries the latest year is the last full calendar year, some lag behind, and a few have years with no figure. The tool shows each country\'s coverage and never fills a gap with a guess: “Past to today” starts only from years with an unbroken record up to the latest year. For {joinedAll} countries, an answer from the country’s history goes one step further, to the latest month in a monthly consumer price index: the one published by the BIS (Bank for International Settlements) or, where that has no match, the World Bank’s own monthly index, both fetched on {fetched}. The answer names the month and says which figures are joined. That step is taken only where the index’s yearly changes match the World Bank’s yearly figures or, for one year in India (2025), where the difference is traced to the yearly figure rather than the index, and only while its latest month is no more than six months old.',
         },
         {
           q: 'Why can the rate go up to {maxRate}%?',
-          a: 'Because it has happened. Hyperinflation, often defined as prices rising more than 50% a month, has struck several countries in living memory, and yearly rates in the thousands of percent appear in the World Bank\'s own data. A tool capped at 20% could not show what those years did to savings. At such rates the answers grow so large or so small that the tool says "more than" or "less than" rather than printing every digit.',
+          a: 'Because it has happened. Hyperinflation, often defined as prices rising more than 50% a month, has struck several countries in living memory, and yearly rates in the thousands of percent appear in the World Bank\'s own data. A tool capped at 20% could not show what those years did to savings. At such rates the answers grow so large or so small that the tool says “more than” or “less than” rather than printing every digit.',
         },
         {
           q: 'Why is the real rate not just the raise minus inflation?',
@@ -150,7 +164,7 @@ export const inflationEn = {
         },
         {
           q: 'Is my data sent anywhere?',
-          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to us or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank. Nothing goes into the page address while you use the tool. When you press "{copyLink}", your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
+          a: 'No. The calculations run in your browser, and the amounts, rates and years you type are not sent to nidhi or anyone else. Picking a country loads its history from nidhi.today, this site, never from the World Bank or the BIS. Nothing goes into the page address while you use the tool. When you press “{copyLink}”, your values go into the link after the # sign, a part of the address browsers never send to a server, and the page removes them from the address bar before analytics start. Analytics records which question, currency and country you pick, never the numbers.',
         },
         {
           q: 'Is this financial advice?',
@@ -209,7 +223,14 @@ export const inflationEn = {
       inWords: 'In words',
       years: 'Years used',
       source: 'Source',
-      sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0.',
+      sourceText: 'World Bank, indicator FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
+      /** When the answer ends at a month: the row that names it (as 2026-09), the sentence under the by-year rows, and the second source. */
+      monthEnd: 'Ends at month',
+      monthRow: 'The last row is one month, from a monthly consumer price index, not a year’s average.',
+      sourceTextMonthly: {
+        bis: 'Months after the last full year: BIS, Consumer prices (monthly index).',
+        worldBank: 'Months after the last full year: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Choose a question',
     tabs: {
@@ -223,9 +244,9 @@ export const inflationEn = {
       buy: "What could an amount buy after some years of inflation, in today's money?",
       cost: 'What could something that costs this today cost later, if prices keep rising?',
       past: 'What is an amount from the past worth today, at a rate you choose?',
-      pastCountry: "What is an amount from the past worth today in {country}, using its actual yearly inflation?",
+      pastCountry: 'What is an amount from the past worth in {country} now, using its recorded inflation?',
       // The euro area is not a country, and takes its own sentence.
-      pastEuroArea: "What is an amount from the past worth today in the euro area, using its actual yearly inflation?",
+      pastEuroArea: 'What is an amount from the past worth in the euro area now, using its recorded inflation?',
       keep: 'Does a raise or a savings return keep up with inflation?',
     },
     fields: {
@@ -256,7 +277,7 @@ export const inflationEn = {
     },
     history: {
       label: 'Inflation history, for context',
-      hint: "Optional. Shows a country's past inflation; the answer uses it only in \"Past to today\", or if you use its average.",
+      hint: "Optional. Shows a country's past inflation; the answer uses it only in “Past to today”, or if you use its average.",
       none: 'No country',
       euroArea: 'Euro area',
       loading: 'Loading the history…',
@@ -269,7 +290,7 @@ export const inflationEn = {
         'A geometric average: the steady rate that would have had the same total effect. This is history, not a prediction.',
       coverage: 'Figures cover {first} to {last}.',
       gaps: 'No figure for {years}.',
-      gapStart: '"Past to today" starts no earlier than {start}, so that no year is skipped.',
+      gapStart: '“Past to today” starts no earlier than {start}, so that no year is skipped.',
       use: 'Use this average as the rate',
       useOutside: 'This average is outside the {min} to {max}% the rate box accepts, so it cannot be used as the rate.',
       currencyOther:
@@ -294,11 +315,44 @@ export const inflationEn = {
       buy: 'If inflation averages {rate} a year, {amount} in {years} buys what {result} buys today.',
       cost: 'If prices rise {rate} a year on average, something that costs {amount} today costs {result} in {years}.',
       past: 'If inflation averaged {rate} a year, {amount} from {years} ago buys what {result} buys today.',
-      pastCountry: 'In {country}, {amount} in {from} bought what {result} bought in {to}.',
-      pastEuroArea: 'In the euro area, {amount} in {from} bought what {result} bought in {to}.',
+      pastCountry: 'In {country}, {amount} at average prices in {from} bought what {result} bought at average prices in {to}.',
+      pastEuroArea: 'In the euro area, {amount} at average prices in {from} bought what {result} bought at average prices in {to}.',
       /** The first sentence when a change of currency was allowed for: `{amount}` is a plain number, in the money of its year. */
-      pastCountryOld: 'In {country}, {amount} in the money of {from} bought what {result} bought in {to}.',
+      pastCountryOld: 'In {country}, {amount} in the money of {from}, at that year’s average prices, bought what {result} bought at average prices in {to}.',
+      /** The same three sentences when the answer ends at a month (`monthly.ts`): `{inMonth}` is "in September 2026", worded like `changedIn`. */
+      pastCountryMonth: 'In {country}, {amount} at average prices in {from} bought what {result} bought at prices {inMonth}.',
+      pastEuroAreaMonth: 'In the euro area, {amount} at average prices in {from} bought what {result} bought at prices {inMonth}.',
+      pastCountryOldMonth: 'In {country}, {amount} in the money of {from}, at that year’s average prices, bought what {result} bought at prices {inMonth}.',
+      /** Under a month-ended answer: the whole change to the month, the yearly average over full years only, and the step from the last year's average. `{total}`, `{average}` and `{more}` arrive without a minus sign. */
+      pastMonthRise: 'Prices were about {total} higher {inMonth} than on average in {from}.',
+      pastMonthFall: 'Prices were about {total} lower {inMonth} than on average in {from}.',
+      pastMonthAverageRise: 'From {from} to {to}, they rose {average} a year on average.',
+      pastMonthAverageFall: 'From {from} to {to}, they fell {average} a year on average.',
+      pastMonthFurtherRise: 'Prices were {more} higher {inMonth} than on average in {to}.',
+      pastMonthFurtherFall: 'Prices were {more} lower {inMonth} than on average in {to}.',
+      /** Under a month-ended answer whose index repeats a value within each recent quarter (`isQuarterly`): says what is seen, not how the country publishes. */
+      quarterNote: 'For {country}, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.',
+      /** Under a month-ended answer: which two sources are joined, and what one month is and is not. `{to}` is the last full year. */
+      joinNote: 'Two sets of figures are joined here: the World Bank’s yearly inflation up to {to}, then {source}, for the step from the {to} average to the latest month with a figure here. One month includes seasonal ups and downs and may be revised later. A monthly index reading is not an official yearly inflation rate.',
+      /** The monthly index a month-ended answer uses, as `{source}` in `joinNote`: one phrase a source (`MonthlySource`). */
+      monthlySource: {
+        bis: 'the monthly consumer price index published by the BIS',
+        worldBank: 'the World Bank’s monthly consumer price index (Global Economic Monitor)',
+      },
+      /** Under an answer that ends at a year: nothing after that year is in it. */
+      latestYearNote: '{to} is the latest year with a figure here. Price changes after it are not included.',
+      /** For a country that has a monthly index which is not joined, and why (`WithheldReason`). */
+      withheldMismatch: 'A monthly figure is not joined for {country}: the monthly index available here does not match this yearly history closely enough.',
+      withheldIncomplete: 'A monthly figure is not joined for {country}: the monthly index available here lacks months the join needs (all of {to}, and the years it is compared over), or has no month after {to}.',
+      withheldStale: 'A monthly figure is not joined for {country}: the latest month in the monthly index available here is more than six months old.',
+      /** Under every answer from a country's history: the start is a year's average. Describes; never grades a raise. */
+      startCaveat: 'The starting amount is treated as the average for {from}. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.',
       pastCountryRise: 'Prices rose about {total} in total over those {years}, an average of {average} a year.',
+      /** When prices fell over the years chosen: `{total}` and `{average}` arrive without their minus sign. */
+      pastCountryFall: 'Prices fell about {total} in total over those {years}, an average of {average} a year.',
+      /** When the years chosen are one year, whose change is its own average. */
+      pastCountryRiseOneYear: 'Prices rose about {total} in that one year.',
+      pastCountryFallOneYear: 'Prices fell about {total} in that one year.',
       /** When the years chosen cross a change of currency unit (`currencyChanges.ts`): one or several after the first year. The answer is then in today's money. */
       currencyChanged: '{country} changed its currency in {year}: {ratio} units of the old money became 1 unit of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
       currencyChangedUp: '{country} changed its currency in {year}: 1 unit of the old money became {ratio} units of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
@@ -309,6 +363,8 @@ export const inflationEn = {
       changedDuring: 'during {year}',
       monthsWithDay: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       monthsAlone: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      /** The months as they stand on their own, for a label: "September 2026". Czech `monthsAlone` follow "v" and cannot. */
+      monthsName: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       // The first year is the year the change took effect: both monies were in use.
       mixedYear: '{country} changed its currency {changeDate}: {ratio} old units became 1 new unit. This answer treats your amount as the money introduced by that {year} change. If your amount was in the money used before that change, the answer is {oldResult}. The price figure for {year} is an average for the whole year, so for an amount from one month the answer is approximate.',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
@@ -335,7 +391,6 @@ export const inflationEn = {
       methodHistory: "Compounded year by year with each year's actual figure. History, not a forecast.",
       fix: 'Fix the highlighted fields to see the answer.',
       /** Shown, and announced, over a stale answer while a field is invalid. */
-      stale: 'This answer is out of date: fix the highlighted fields to update it.',
       /** Announced to screen readers after each recalculation. */
       announce: 'Updated answer: {headline}. {sentence}',
     },
@@ -354,8 +409,13 @@ export const inflationEn = {
         pastCountry: 'Year',
       },
       desc: 'Line chart. Starts at {start} ({from}) and ends at {end} ({to}).',
+      /** The same when the answer ends at a month: `{inMonth}` is "in September 2026". */
+      descMonth: 'Line chart. Starts at {start} ({from}) and ends {inMonth} at {end}.',
       yearsFrom: 'year {n}',
       tooLarge: 'At this rate the amounts grow too large to draw.',
+      /** Under the line chart when the answer ends at a month: what its two marks are. */
+      legendYear: 'A year’s average',
+      legendMonth: 'One month, the latest with a figure: {month} {year}',
     },
     actions: {
       copy: 'Copy a link to this calculation',
@@ -390,11 +450,12 @@ export const inflationHi: typeof inflationEn = {
     browserRequirements: 'JavaScript ज़रूरी है। आधुनिक ब्राउज़र।',
     featureList: [
       'सालों की महँगाई के बाद किसी रकम से आज के पैसे में कितना ख़रीदा जा सकता है',
-      'सालों की महँगाई के बाद किसी चीज़ की कीमत',
+      'सालों की महँगाई के बाद किसी चीज़ की क़ीमत',
       'पुरानी रकम आज कितनी के बराबर है, आपकी चुनी दर पर या किसी देश की दर्ज हुई सालाना महँगाई के साथ',
       'वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चलता है या नहीं, सटीक असली दर के साथ',
       'हर नतीजा एक प्रतिशत अंक कम और ज़्यादा पर भी',
       'World Bank से {countries} देशों और यूरो क्षेत्र की सालाना महँगाई का इतिहास',
+      '{joinedAll} देशों के लिए सबसे नए महीने तक के जवाब, BIS या World Bank के मासिक उपभोक्ता मूल्य सूचकांक से',
       '{minRate} से {maxRate}% सालाना तक की दरें, ताकि हाइपरइन्फ़्लेशन भी दिखाया जा सके',
       '38 मुद्राओं में नतीजे',
       'किसी भी हिसाब का शेयर लिंक',
@@ -420,7 +481,7 @@ export const inflationHi: typeof inflationEn = {
       items: {
         steady: {
           lead: 'एक दर, हर साल।',
-          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। कीमतें असल में एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
+          rest: ' टूल आपकी टाइप की गई दर साल में एक बार लगाता है, हर साल वही। क़ीमतें असल में एक जैसी नहीं बढ़तीं: किसी साल तेज़ी से बढ़ती हैं, कभी-कभी घटती भी हैं, और दस साल का औसत दोनों को छिपा देता है।',
         },
         personal: {
           lead: 'देश की महँगाई एक औसत है।',
@@ -432,7 +493,7 @@ export const inflationHi: typeof inflationEn = {
         },
       },
       lesson: {
-        before: 'इस टूल के पीछे का विचार, उदाहरणों के साथ: ',
+        before: 'इस टूल के पीछे की सोच, उदाहरणों के साथ: ',
         after: ' (यह पाठ अंग्रेज़ी में है)।',
       },
     },
@@ -441,14 +502,25 @@ export const inflationHi: typeof inflationEn = {
       before: 'देशों की सालाना उपभोक्ता महँगाई, ',
       link: 'World Bank (विश्व बैंक)',
       after:
-        ' से (इंडिकेटर FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)"), CC BY 4.0 लाइसेंस के तहत। World Bank ने ये आँकड़े आख़िरी बार {updated} को अपडेट किए। nidhi इनकी एक कॉपी रखता है और हर महीने नए आँकड़े देखता है, इसलिए आपका ब्राउज़र इतिहास nidhi.today से लेता है और World Bank से कभी संपर्क नहीं करता। यूरो क्षेत्र का आँकड़ा पूरे यूरो क्षेत्र का है। आँकड़े बाद में संशोधित हो सकते हैं, और कुछ देशों के कुछ सालों का आँकड़ा नहीं है या उनका रिकॉर्ड देर से शुरू होता है।',
+        ' से (संकेतक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”), CC BY 4.0 लाइसेंस के तहत। World Bank ने ये आँकड़े आख़िरी बार {updated} को अपडेट किए। nidhi इनकी एक कॉपी रखता है और हर महीने नए आँकड़े देखता है, इसलिए आपका ब्राउज़र इतिहास nidhi.today से लेता है और World Bank से कभी संपर्क नहीं करता। यूरो क्षेत्र का आँकड़ा पूरे यूरो क्षेत्र का है। आँकड़े बाद में संशोधित हो सकते हैं, और कुछ देशों के कुछ सालों का आँकड़ा नहीं है या उनका रिकॉर्ड देर से शुरू होता है।',
+    },
+    sourceMonthly: {
+      before: '{joined} देशों के लिए, देश के इतिहास से निकला जवाब आँकड़े वाले सबसे नए महीने तक जाता है। इसके लिए मासिक उपभोक्ता मूल्य सूचकांक का स्रोत है: ',
+      link: 'BIS',
+      after:
+        ' (Bank for International Settlements, “Consumer prices”)। ये आँकड़े {fetched} को लिए गए। महीने वहीं जोड़े जाते हैं जहाँ इस सूचकांक के अपने सालाना बदलाव World Bank के आँकड़ों से मेल खाते हैं, या भारत के एक साल (2025) में, जहाँ अंतर सूचकांक की जगह सालाना आँकड़े में पाया गया है; बाकी देशों में जवाब आख़िरी पूरे साल पर रुकता है, और यह बताया जाता है। BIS इस टूल का समर्थन नहीं करता और अपने आँकड़ों की कोई गारंटी नहीं देता। यह BIS का आधिकारिक अनुवाद नहीं है। आपका ब्राउज़र ये आँकड़े भी nidhi.today से ही लेता है और BIS से कभी संपर्क नहीं करता।',
+    },
+    sourceMonthlyWorldBank: {
+      before: '{joinedWorldBank} और देशों के लिए महीनों का स्रोत World Bank का अपना डेटाबेस है: ',
+      after:
+        ' (“CPI Price, not seas. adj.”, संकेतक CPTOTNSXN), CC BY 4.0 लाइसेंस के तहत; World Bank ने इसे आख़िरी बार {monthlyUpdated} को अपडेट किया। इसका इस्तेमाल वहाँ होता है जहाँ BIS के पास मेल खाता सूचकांक नहीं है, उसी नियम के साथ, और बाकी आँकड़ों की तरह यह भी nidhi.today से ही आता है। जिस देश का सबसे नया महीना छह महीने से ज़्यादा पुराना है, उसका जवाब सालाना ही रहता है।',
     },
     faq: {
       heading: 'अक्सर पूछे जाने वाले सवाल',
       items: [
         {
           q: 'जवाब का मतलब क्या है?',
-          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर कीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर बैठती है? "आगे कितना ख़रीदा जा सकता है?" दिखाता है कि भविष्य में कोई रकम आज के पैसे में कितना ख़रीद सकती है। "आगे कितने का हो सकता है?" आज की कीमत को आगे ले जाता है। "बीते साल से आज तक" पुरानी रकम को आज तक लाता है। "क्या बराबरी हो रही है?" वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके "लगभग" के साथ दिखते हैं, क्योंकि दर एक अनुमान है, माप नहीं।',
+          a: 'यह एक परिदृश्य का हिसाब लगाता है: अगर क़ीमतें आपकी टाइप की गई दर से, हर साल, आपके चुने सालों तक बढ़ें, तो कोई रकम किसके बराबर बैठती है? “आगे कितना ख़रीदा जा सकता है?” दिखाता है कि भविष्य में कोई रकम आज के पैसे में कितना ख़रीद सकती है। “आगे कितने का हो सकता है?” आज की क़ीमत को आगे ले जाता है। “बीते साल से आज तक” पुरानी रकम को आज तक लाता है। “क्या बराबरी हो रही है?” वेतन वृद्धि या बचत पर रिटर्न की तुलना महँगाई से करता है। जवाब गोल करके “लगभग” के साथ दिखते हैं, क्योंकि दर एक मान्यता है, माप नहीं।',
         },
         {
           q: 'हर जवाब के साथ दो और जवाब क्यों दिखते हैं?',
@@ -456,15 +528,15 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'क्या देश की महँगाई और मेरी महँगाई एक ही है?',
-          a: 'ज़रूरी नहीं। देश की महँगाई वस्तुओं और सेवाओं की उस टोकरी की कीमत मापती है जो एक आम परिवार के खर्च को दर्शाने के लिए चुनी जाती है। आपका खर्च अलग होता है: आप किराए पर रहते हैं या अपने घर में, कहाँ रहते हैं, आपकी उम्र, आप स्कूल की फ़ीस या देखभाल का खर्च उठाते हैं या नहीं। कई सांख्यिकी विभाग श्रेणी के हिसाब से महँगाई भी छापते हैं (खाना, घर, यातायात, स्वास्थ्य), जिससे पता चल सकता है कि आपके सबसे बड़े खर्च मुख्य आँकड़े से तेज़ बढ़े या धीमे। कुछ लोग देश की दर से एक-दो अंक ऊपर या नीचे की दर आज़माकर देखते हैं कि इससे कितना फ़र्क पड़ता है।',
+          a: 'ज़रूरी नहीं। देश की महँगाई वस्तुओं और सेवाओं की उस टोकरी की क़ीमत मापती है जो एक आम परिवार के खर्च को दर्शाने के लिए चुनी जाती है। आपका खर्च अलग होता है: आप किराए पर रहते हैं या अपने घर में, कहाँ रहते हैं, आपकी उम्र, आप स्कूल की फ़ीस या देखभाल का खर्च उठाते हैं या नहीं। कई सांख्यिकी विभाग श्रेणी के हिसाब से महँगाई भी छापते हैं (खाना, घर, यातायात, स्वास्थ्य), जिससे पता चल सकता है कि आपके सबसे बड़े खर्च मुख्य आँकड़े से तेज़ बढ़े या धीमे। कुछ लोग देश की दर से एक-दो अंक ऊपर या नीचे की दर आज़माकर देखते हैं कि इससे कितना फ़र्क पड़ता है।',
         },
         {
           q: 'इतिहास कहाँ से आता है, और कितना ताज़ा है?',
-          a: 'World Bank के World Development Indicators से: "Inflation, consumer prices (annual %)" (इंडिकेटर FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: "बीते साल से आज तक" सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है।',
+          a: 'World Bank के World Development Indicators से: “Inflation, consumer prices (annual %)” (संकेतक FP.CPI.TOTL.ZG), CC BY 4.0 लाइसेंस के तहत, जिसमें देशों के सांख्यिकी विभागों और IMF द्वारा प्रकाशित आँकड़े इकट्ठा होते हैं। World Bank ने इन्हें आख़िरी बार {updated} को अपडेट किया; nidhi हर महीने नए आँकड़े देखता है। ज़्यादातर देशों का सबसे नया साल पिछला पूरा कैलेंडर साल होता है, कुछ देश पीछे चलते हैं, और कुछ के कुछ सालों का आँकड़ा नहीं है। टूल हर देश के आँकड़ों की अवधि दिखाता है और किसी कमी को अंदाज़े से नहीं भरता: “बीते साल से आज तक” सिर्फ़ उन सालों से शुरू होता है जिनसे सबसे नए साल तक रिकॉर्ड बिना टूटे चलता है। {joinedAll} देशों के लिए, देश के इतिहास से निकला जवाब एक कदम आगे जाता है: किसी मासिक उपभोक्ता मूल्य सूचकांक के सबसे नए महीने तक। यह सूचकांक BIS (Bank for International Settlements) का प्रकाशित सूचकांक है, या जहाँ वह मेल नहीं खाता, वहाँ World Bank का अपना मासिक सूचकांक; दोनों के आँकड़े {fetched} को लिए गए। जवाब में महीना लिखा होता है और यह भी कि कौन-से आँकड़े जोड़े गए हैं। यह कदम वहीं लिया जाता है जहाँ सूचकांक के सालाना बदलाव World Bank के सालाना आँकड़ों से मेल खाते हैं, या भारत के एक साल (2025) में, जहाँ अंतर सूचकांक की जगह सालाना आँकड़े में पाया गया है, और तभी तक जब तक उसका सबसे नया महीना छह महीने से ज़्यादा पुराना न हो।',
         },
         {
           q: 'दर {maxRate}% तक क्यों जा सकती है?',
-          a: 'क्योंकि ऐसा हुआ है। हाइपरइन्फ़्लेशन, जिसे अक्सर कीमतों के हर महीने 50% से ज़्यादा बढ़ने के रूप में परिभाषित किया जाता है, हाल के दशकों में कई देशों में आया है, और हज़ारों प्रतिशत की सालाना दरें World Bank के अपने आँकड़ों में दिखती हैं। 20% पर रुकने वाला टूल यह नहीं दिखा सकता कि उन सालों ने बचत के साथ क्या किया। ऐसी दरों पर जवाब इतने बड़े या इतने छोटे हो जाते हैं कि टूल हर अंक लिखने के बजाय "से ज़्यादा" या "से कम" कहता है।',
+          a: 'क्योंकि ऐसा हुआ है। हाइपरइन्फ़्लेशन, जिसे अक्सर क़ीमतों के हर महीने 50% से ज़्यादा बढ़ने के रूप में परिभाषित किया जाता है, हाल के दशकों में कई देशों में आया है, और हज़ारों प्रतिशत की सालाना दरें World Bank के अपने आँकड़ों में दिखती हैं। 20% पर रुकने वाला टूल यह नहीं दिखा सकता कि उन सालों ने बचत के साथ क्या किया। ऐसी दरों पर जवाब इतने बड़े या इतने छोटे हो जाते हैं कि टूल हर अंक लिखने के बजाय “से ज़्यादा” या “से कम” कहता है।',
         },
         {
           q: 'असली दर सिर्फ़ वेतन वृद्धि में से महँगाई घटाकर क्यों नहीं निकलती?',
@@ -472,7 +544,7 @@ export const inflationHi: typeof inflationEn = {
         },
         {
           q: 'क्या मेरा डेटा कहीं भेजा जाता है?',
-          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल हमें या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप "{copyLink}" दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
+          a: 'नहीं। हिसाब आपके ब्राउज़र में होता है, और आपकी टाइप की गई रकम, दरें और साल nidhi को या किसी और को नहीं भेजे जाते। कोई देश चुनने पर उसका इतिहास nidhi.today से, यानी इसी साइट से, आता है, World Bank या BIS से कभी नहीं। टूल इस्तेमाल करते समय पेज के पते में कुछ नहीं जाता। जब आप “{copyLink}” दबाते हैं, तो आपके आँकड़े लिंक में # के बाद जाते हैं, और पते का वह हिस्सा ब्राउज़र कभी सर्वर को नहीं भेजता; पेज उन्हें एनालिटिक्स शुरू होने से पहले पते से हटा देता है। एनालिटिक्स यह दर्ज करता है कि आपने कौन-सा सवाल, कौन-सी मुद्रा और कौन-सा देश चुना, आँकड़े कभी नहीं।',
         },
         {
           q: 'क्या यह वित्तीय सलाह है?',
@@ -484,9 +556,9 @@ export const inflationHi: typeof inflationEn = {
       heading: 'और पढ़ें',
       cards: {
         'purchasing-power': {
-          kicker: 'इस टूल के पीछे का विचार',
+          kicker: 'इस टूल के पीछे की सोच',
           title: 'क्रय शक्ति',
-          desc: 'कीमतें बढ़ने पर उसी पैसे से कम क्यों ख़रीदा जा पाता है, और असली रिटर्न कैसे निकालें।',
+          desc: 'क़ीमतें बढ़ने पर उसी पैसे से कम क्यों ख़रीदा जा पाता है, और असली रिटर्न कैसे निकालें।',
         },
         'saving-vs-investing': {
           kicker: 'अगला कदम',
@@ -517,7 +589,13 @@ export const inflationHi: typeof inflationEn = {
       inWords: 'शब्दों में',
       years: 'इस्तेमाल हुए साल',
       source: 'स्रोत',
-      sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, "Inflation, consumer prices (annual %)", CC BY 4.0।',
+      sourceText: 'World Bank (विश्व बैंक), संकेतक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0।',
+      monthEnd: 'आख़िरी महीना',
+      monthRow: 'आख़िरी पंक्ति एक महीने की है, मासिक उपभोक्ता मूल्य सूचकांक से; वह साल का औसत नहीं है।',
+      sourceTextMonthly: {
+        bis: 'आख़िरी पूरे साल के बाद के महीने: BIS, Consumer prices (मासिक सूचकांक)। यह BIS का आधिकारिक अनुवाद नहीं है।',
+        worldBank: 'आख़िरी पूरे साल के बाद के महीने: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0।',
+      },
     },
     tabsLabel: 'सवाल चुनें',
     tabs: {
@@ -528,18 +606,18 @@ export const inflationHi: typeof inflationEn = {
     },
     questions: {
       buy: 'कुछ सालों की महँगाई के बाद किसी रकम से, आज के पैसे में, कितना ख़रीदा जा सकता है?',
-      cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है, अगर कीमतें बढ़ती रहें?',
+      cost: 'जो चीज़ आज इतने की है, वह आगे कितने की हो सकती है, अगर क़ीमतें बढ़ती रहें?',
       past: 'बीते समय की कोई रकम आज कितने के बराबर है, आपकी चुनी दर पर?',
-      pastCountry: 'बीते समय की कोई रकम {country} में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
+      pastCountry: 'बीते समय की कोई रकम {country} में अब कितने के बराबर है, वहाँ की दर्ज हुई महँगाई के हिसाब से?',
       // The euro area is not a country, and takes its own sentence.
-      pastEuroArea: 'बीते समय की कोई रकम यूरो क्षेत्र में आज कितने के बराबर है, वहाँ की दर्ज हुई सालाना महँगाई के हिसाब से?',
+      pastEuroArea: 'बीते समय की कोई रकम यूरो क्षेत्र में अब कितने के बराबर है, वहाँ की दर्ज हुई महँगाई के हिसाब से?',
       keep: 'क्या वेतन वृद्धि या बचत पर रिटर्न महँगाई के बराबर चल रहा है?',
     },
     fields: {
       currency: 'मुद्रा',
       amount: {
         buy: 'रकम',
-        cost: 'आज की कीमत',
+        cost: 'आज की क़ीमत',
         past: 'उस समय की रकम',
         keep: 'आज की रकम',
       },
@@ -556,14 +634,14 @@ export const inflationHi: typeof inflationEn = {
       yearsHint: '{min} से {max}',
       yearsError: '{min} से {max} तक के पूरे साल लिखें।',
       growth: 'वेतन वृद्धि या रिटर्न, % सालाना',
-      growthHint: 'वेतन कटौती या नुकसान के लिए ऋणात्मक भी हो सकता है',
+      growthHint: 'वेतन कटौती या नुकसान के लिए शून्य से कम (माइनस) भी हो सकता है',
       growthError: '{min} से {max} तक की दर लिखें, दशमलव के बाद अधिकतम 2 अंक के साथ।',
       from: 'शुरुआती साल',
       fromHint: '{last} तक, जो आँकड़े वाला सबसे नया साल है।',
     },
     history: {
       label: 'महँगाई का इतिहास, संदर्भ के लिए',
-      hint: 'वैकल्पिक। किसी देश की पिछली महँगाई दिखाता है; जवाब इसे सिर्फ़ "बीते साल से आज तक" में इस्तेमाल करता है, या तब जब आप इसका औसत अपनाएँ।',
+      hint: 'वैकल्पिक। किसी देश की पिछली महँगाई दिखाता है; जवाब इसे सिर्फ़ “बीते साल से आज तक” में इस्तेमाल करता है, या तब जब आप इसका औसत अपनाएँ।',
       none: 'कोई देश नहीं',
       euroArea: 'यूरो क्षेत्र',
       loading: 'इतिहास लोड हो रहा है…',
@@ -576,11 +654,11 @@ export const inflationHi: typeof inflationEn = {
         'यह ज्यामितीय औसत (geometric\u00A0average) है: वह एक जैसी दर जिसका कुल असर उतना ही होता। यह इतिहास है, पूर्वानुमान नहीं।',
       coverage: 'आँकड़े {first} से {last} तक के हैं।',
       gaps: '{years} का आँकड़ा नहीं है।',
-      gapStart: '"बीते साल से आज तक" {start} से पहले शुरू नहीं होता, ताकि कोई साल छूटे नहीं।',
+      gapStart: '“बीते साल से आज तक” {start} से पहले शुरू नहीं होता, ताकि कोई साल छूटे नहीं।',
       use: 'यह औसत दर के रूप में अपनाएँ',
       useOutside: 'यह औसत {min} से {max}% के दायरे से बाहर है जो दर का खाना स्वीकार करता है, इसलिए इसे दर के रूप में नहीं अपनाया जा सकता।',
       currencyOther:
-        'रकम {currency} में ही रहेगी: {country} की अपनी मुद्रा इस टूल की मुद्राओं में नहीं है। इतिहास प्रतिशत में है, इसलिए जवाब यह दिखाता है कि वहाँ कीमतें कितनी बढ़ीं, {country} की अपनी मुद्रा की कोई रकम नहीं।',
+        'रकम {currency} में ही रहेगी: {country} की अपनी मुद्रा इस टूल की मुद्राओं में नहीं है। इतिहास प्रतिशत में है, इसलिए जवाब यह दिखाता है कि वहाँ क़ीमतें कितनी बढ़ीं, {country} की अपनी मुद्रा की कोई रकम नहीं।',
       capped: '{cap} से ऊपर के बार ऊपर से कटे हुए हैं।',
       legendRecent: 'औसत में शामिल साल',
       legendOlder: 'पहले के साल',
@@ -597,12 +675,35 @@ export const inflationHi: typeof inflationEn = {
       heading: 'जवाब',
       years: { one: '1 साल', few: '{n} साल', other: '{n} साल' },
       buy: 'अगर महँगाई औसतन {rate} सालाना रहे, तो {years} बाद {amount} से उतना ही ख़रीदा जा सकता है जितना आज {result} से।',
-      cost: 'अगर कीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
+      cost: 'अगर क़ीमतें औसतन {rate} सालाना बढ़ें, तो जो चीज़ आज {amount} की है, वह {years} बाद {result} की हो सकती है।',
       past: 'अगर महँगाई औसतन {rate} सालाना रही, तो {years} पहले के {amount} से उतना ख़रीदा जा सकता था जितना आज {result} से।',
-      pastCountry: '{country} में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
-      pastEuroArea: 'यूरो क्षेत्र में {from} के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
-      pastCountryOld: '{country} में {from} की मुद्रा के {amount} से उतना ख़रीदा जा सकता था जितना {to} में {result} से।',
-      pastCountryRise: 'इन {years} में कीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
+      pastCountry: '{country} में {from} की औसत क़ीमतों पर {amount} से उतना ख़रीदा जा सकता था जितना {to} की औसत क़ीमतों पर {result} से।',
+      pastEuroArea: 'यूरो क्षेत्र में {from} की औसत क़ीमतों पर {amount} से उतना ख़रीदा जा सकता था जितना {to} की औसत क़ीमतों पर {result} से।',
+      pastCountryOld: '{country} में {from} की मुद्रा के {amount} से, उस साल की औसत क़ीमतों पर, उतना ख़रीदा जा सकता था जितना {to} की औसत क़ीमतों पर {result} से।',
+      pastCountryMonth: '{country} में {from} की औसत क़ीमतों पर {amount} से उतना ख़रीदा जा सकता था जितना {inMonth} चल रही क़ीमतों पर {result} से।',
+      pastEuroAreaMonth: 'यूरो क्षेत्र में {from} की औसत क़ीमतों पर {amount} से उतना ख़रीदा जा सकता था जितना {inMonth} चल रही क़ीमतों पर {result} से।',
+      pastCountryOldMonth: '{country} में {from} की मुद्रा के {amount} से, उस साल की औसत क़ीमतों पर, उतना ख़रीदा जा सकता था जितना {inMonth} चल रही क़ीमतों पर {result} से।',
+      pastMonthRise: '{inMonth} क़ीमतें {from} के औसत से लगभग {total} ज़्यादा थीं।',
+      pastMonthFall: '{inMonth} क़ीमतें {from} के औसत से लगभग {total} कम थीं।',
+      pastMonthAverageRise: '{from} से {to} तक वे औसतन {average} सालाना बढ़ीं।',
+      pastMonthAverageFall: '{from} से {to} तक वे औसतन {average} सालाना घटीं।',
+      pastMonthFurtherRise: '{inMonth} क़ीमतें {to} के औसत से {more} ज़्यादा थीं।',
+      pastMonthFurtherFall: '{inMonth} क़ीमतें {to} के औसत से {more} कम थीं।',
+      quarterNote: '{country} के सूचकांक में हाल की हर तिमाही के भीतर एक ही मान दोहराया गया है, इसलिए यहाँ बताए गए महीने का आँकड़ा पूरी तिमाही का हो सकता है।',
+      joinNote: 'यहाँ आँकड़ों के दो समूह जोड़े गए हैं: {to} तक World Bank की सालाना महँगाई, और उसके बाद {source}, जो {to} के औसत से उस सबसे नए महीने तक का बदलाव बताता है जिसका आँकड़ा यहाँ है। एक महीने के आँकड़े में मौसमी उतार-चढ़ाव शामिल होते हैं और बाद में वह बदला भी जा सकता है। मासिक सूचकांक का आँकड़ा कोई आधिकारिक सालाना महँगाई दर नहीं है।',
+      monthlySource: {
+        bis: 'BIS का प्रकाशित मासिक उपभोक्ता मूल्य सूचकांक',
+        worldBank: 'World Bank का मासिक उपभोक्ता मूल्य सूचकांक (Global Economic Monitor)',
+      },
+      latestYearNote: '{to} वह सबसे नया साल है जिसका आँकड़ा यहाँ है। उसके बाद क़ीमतों में आए बदलाव इसमें शामिल नहीं हैं।',
+      withheldMismatch: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक इस सालाना इतिहास से पर्याप्त मेल नहीं खाता।',
+      withheldIncomplete: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक में वे महीने पूरे नहीं हैं जो जोड़ने के लिए चाहिए ({to} का पूरा साल, और वे साल जिनसे तुलना की जाती है), या {to} के बाद का कोई महीना नहीं है।',
+      withheldStale: '{country} के लिए मासिक आँकड़ा नहीं जोड़ा गया है: यहाँ उपलब्ध मासिक सूचकांक का सबसे नया महीना छह महीने से ज़्यादा पुराना है।',
+      startCaveat: 'शुरुआती रकम को {from} का औसत माना गया है। अगर आपका वेतन या कोई क़ीमत किसी ख़ास महीने में तय हुई थी, तो तब से क़ीमतें इससे ज़्यादा या कम बढ़ी हो सकती हैं।',
+      pastCountryRise: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} बढ़ीं, यानी औसतन {average} सालाना।',
+      pastCountryFall: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} घटीं, यानी औसतन {average} सालाना।',
+      pastCountryRiseOneYear: 'उस एक साल में क़ीमतें लगभग {total} बढ़ीं।',
+      pastCountryFallOneYear: 'उस एक साल में क़ीमतें लगभग {total} घटीं।',
       currencyChanged: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedUp: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedMore: '{country} ने {from} के बाद एक से ज़्यादा बार अपनी मुद्रा बदली ({years}): कुल मिलाकर {from} की मुद्रा की {ratio} इकाइयाँ आज की मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
@@ -611,10 +712,11 @@ export const inflationHi: typeof inflationEn = {
       changedDuring: '{year} के दौरान',
       monthsWithDay: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
       monthsAlone: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
-      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      monthsName: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
+      mixedYear: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
-      mixedYearUp: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
-      mixedYearBefore: 'यह बदलाव {changeDate} हुआ, और {year} के लिए कीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYearUp: '{country} ने {changeDate} अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {year} के उस बदलाव से आई मुद्रा में मानता है। अगर आपकी रकम उस बदलाव से पहले चल रही मुद्रा में थी, तो जवाब {oldResult} है। {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
+      mixedYearBefore: 'यह बदलाव {changeDate} हुआ, और {year} के लिए क़ीमतों का आँकड़ा पूरे साल का औसत है, इसलिए किसी एक महीने की रकम के लिए जवाब अनुमानित है।',
       euroBefore1999: '{from} में यूरो अभी शुरू नहीं हुआ था। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
       euro1999to2001: '{from} में यूरो हिसाब-किताब और इलेक्ट्रॉनिक भुगतानों के लिए मौजूद था; यूरो के नोट और सिक्के 2002 में चलन में आए। इस तुलना के लिए कैलकुलेटर आपकी भरी हुई संख्या को एक सादी रकम मानता है और यूरो क्षेत्र के लिए World Bank के महँगाई के आँकड़े इस्तेमाल करता है। यह किसी देश की पुरानी मुद्रा में दी गई रकम को यूरो में नहीं बदलता। उसके लिए सदस्य देश चुनें।',
       keepMore: '{growth} सालाना वेतन वृद्धि या रिटर्न और औसतन {rate} महँगाई पर, क्रय शक्ति हर साल लगभग {real} बढ़ती है।',
@@ -633,7 +735,6 @@ export const inflationHi: typeof inflationEn = {
       method: 'साल में एक बार चक्रवृद्धि, हर साल एक ही दर पर। यह एक परिदृश्य है, पूर्वानुमान नहीं।',
       methodHistory: 'हर साल के दर्ज आँकड़े के साथ साल-दर-साल चक्रवृद्धि। यह इतिहास है, पूर्वानुमान नहीं।',
       fix: 'जवाब देखने के लिए चिह्नित खाने ठीक करें।',
-      stale: 'यह जवाब पुराना है: इसे अपडेट करने के लिए चिह्नित खाने ठीक करें।',
       announce: 'नया जवाब: {headline}। {sentence}',
     },
     chart: {
@@ -651,8 +752,11 @@ export const inflationHi: typeof inflationEn = {
         pastCountry: 'साल',
       },
       desc: 'लाइन चार्ट। {start} ({from}) से शुरू होकर {end} ({to}) पर ख़त्म होता है।',
+      descMonth: 'लाइन चार्ट। {start} ({from}) से शुरू होकर {inMonth} {end} पर ख़त्म होता है।',
       yearsFrom: 'साल {n}',
       tooLarge: 'इस दर पर रकम इतनी बड़ी हो जाती है कि चार्ट में नहीं बन सकती।',
+      legendYear: 'साल का औसत',
+      legendMonth: 'एक महीना, आँकड़े वाला सबसे नया: {month} {year}',
     },
     actions: {
       copy: 'इस हिसाब का लिंक कॉपी करें',
@@ -673,7 +777,7 @@ export const inflationHi: typeof inflationEn = {
  */
 export const inflationEs: typeof inflationEn = {
   meta: {
-    title: 'Calculadora de inflación: qué compra tu dinero | nidhi',
+    title: 'Calculadora de inflación: qué compra tu dinero después | nidhi',
     description:
       'Calculadora de inflación gratuita: qué compra tu dinero tras años de inflación, cuánto podría costar algo después y la historia por país. En tu navegador.',
   },
@@ -689,6 +793,7 @@ export const inflationEs: typeof inflationEn = {
       'Si una subida salarial o la rentabilidad de tus ahorros siguen el ritmo de la inflación, con la tasa real exacta',
       'Cada resultado, también un punto porcentual por debajo y por encima',
       'Historia de la inflación anual de {countries} países y la zona del euro, del Banco Mundial',
+      'Para {joinedAll} países, respuestas hasta el último mes, con un índice mensual de precios de consumo del BIS o del Banco Mundial',
       'Tasas de {minRate} a {maxRate} % anual, para poder mostrar la hiperinflación',
       'Resultados en 38 monedas',
       'Enlace para compartir cualquier cálculo',
@@ -737,6 +842,17 @@ export const inflationEs: typeof inflationEn = {
       after:
         ' (indicador FP.CPI.TOTL.ZG, «Inflation, consumer prices (annual %)»), con licencia CC BY 4.0. El Banco Mundial actualizó estas cifras por última vez el {updated}. nidhi guarda una copia y busca cifras nuevas cada mes, así que tu navegador carga la historia desde nidhi.today y nunca contacta con el Banco Mundial. La cifra de la zona del euro corresponde a la zona del euro en su conjunto. Las cifras pueden revisarse, y algunos países tienen años sin cifra o un registro que empieza tarde.',
     },
+    sourceMonthly: {
+      before: 'Para {joined} países, la respuesta basada en el historial del país llega hasta el último mes con cifra, con el índice mensual de precios de consumo que publica el ',
+      link: 'BIS',
+      after:
+        ' (Banco de Pagos Internacionales, «Consumer prices»), descargado el {fetched}. Los meses solo se unen cuando los cambios anuales de ese índice coinciden con los del Banco Mundial o, para un año en la India (2025), cuando la diferencia se ha localizado en la cifra anual y no en el índice; en los demás países la respuesta termina en el último año completo, y lo dice. El BIS no respalda esta herramienta ni ofrece garantía sobre sus estadísticas. Esta no es una traducción oficial del BIS. Tu navegador carga también estas cifras desde nidhi.today y nunca contacta con el BIS.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'Para {joinedWorldBank} países más, los meses proceden de la base de datos del propio Banco Mundial, ',
+      after:
+        ' («CPI Price, not seas. adj.», indicador CPTOTNSXN), con licencia CC BY 4.0 y actualizada por última vez por el Banco Mundial el {monthlyUpdated}. Se usa donde el BIS no tiene un índice que coincida, con la misma regla, y se sirve desde nidhi.today como el resto. Un país cuyo último mes tiene más de seis meses conserva su respuesta anual.',
+    },
     faq: {
       heading: 'Preguntas frecuentes',
       items: [
@@ -754,7 +870,7 @@ export const inflationEs: typeof inflationEn = {
         },
         {
           q: '¿De dónde sale la historia y cuán reciente es?',
-          a: 'De los Indicadores del Desarrollo Mundial del Banco Mundial: «Inflation, consumer prices (annual %)» (indicador FP.CPI.TOTL.ZG), con licencia CC BY 4.0, que reúne las cifras que publican las oficinas nacionales de estadística y el FMI. El Banco Mundial las actualizó por última vez el {updated}; nidhi busca cifras nuevas cada mes. Para la mayoría de los países, el último año es el último año natural completo; algunos van con retraso y unos pocos tienen años sin cifra. La herramienta muestra la cobertura de cada país y nunca rellena un hueco con una suposición: «Del pasado a hoy» solo empieza en años con un registro sin interrupciones hasta el último año.',
+          a: 'De los Indicadores del Desarrollo Mundial del Banco Mundial: «Inflation, consumer prices (annual %)» (indicador FP.CPI.TOTL.ZG), con licencia CC BY 4.0, que reúne las cifras que publican las oficinas nacionales de estadística y el FMI. El Banco Mundial las actualizó por última vez el {updated}; nidhi busca cifras nuevas cada mes. Para la mayoría de los países, el último año es el último año natural completo; algunos van con retraso y unos pocos tienen años sin cifra. La herramienta muestra la cobertura de cada país y nunca rellena un hueco con una suposición: «Del pasado a hoy» solo empieza en años con un registro sin interrupciones hasta el último año. Para {joinedAll} países, la respuesta basada en el historial del país da un paso más, hasta el último mes de un índice mensual de precios de consumo: el que publica el BIS (Banco de Pagos Internacionales) o, donde este no coincide, el índice mensual del propio Banco Mundial, ambos descargados el {fetched}. La respuesta nombra el mes y dice qué cifras se unen. Ese paso solo se da cuando los cambios anuales del índice coinciden con las cifras anuales del Banco Mundial o, para un año en la India (2025), cuando la diferencia se ha localizado en la cifra anual y no en el índice, y solo mientras su último mes no tenga más de seis meses.',
         },
         {
           q: '¿Por qué la tasa puede llegar al {maxRate} %?',
@@ -766,7 +882,7 @@ export const inflationEs: typeof inflationEn = {
         },
         {
           q: '¿Se envían mis datos a algún sitio?',
-          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se nos envían ni a nosotros ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
+          a: 'No. Los cálculos se hacen en tu navegador, y las cantidades, tasas y años que escribes no se envían ni a nidhi ni a nadie más. Elegir un país carga su historia desde nidhi.today, este mismo sitio, nunca desde el Banco Mundial ni el BIS. Mientras usas la herramienta, no se escribe nada en la dirección de la página. Cuando pulsas «{copyLink}», tus valores van en el enlace después del signo #, una parte de la dirección que los navegadores nunca envían a un servidor, y la página los quita de la barra de direcciones antes de que se inicie la analítica. La analítica registra qué pregunta, qué moneda y qué país eliges, nunca las cifras.',
         },
         {
           q: '¿Esto es asesoramiento financiero?',
@@ -801,7 +917,7 @@ export const inflationEs: typeof inflationEn = {
     example: 'Cifras de ejemplo. Cámbialas por las tuyas.',
     export: {
       meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
-      moneyLabel: 'Importes',
+      moneyLabel: 'Cantidades',
       moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea su titular; estas son las cifras exactas que hay detrás.',
       sheets: { answer: 'Respuesta', byYear: 'Por año' },
       question: 'Pregunta',
@@ -812,6 +928,12 @@ export const inflationEs: typeof inflationEn = {
       years: 'Años usados',
       source: 'Fuente',
       sourceText: 'Banco Mundial, indicador FP.CPI.TOTL.ZG, «Inflation, consumer prices (annual %)», CC BY 4.0.',
+      monthEnd: 'Mes final',
+      monthRow: 'La última fila es un solo mes, de un índice mensual de precios de consumo, no la media de un año.',
+      sourceTextMonthly: {
+        bis: 'Meses posteriores al último año completo: BIS, Consumer prices (índice mensual). Esta no es una traducción oficial del BIS.',
+        worldBank: 'Meses posteriores al último año completo: Banco Mundial, Global Economic Monitor, «CPI Price, not seas. adj.» (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Elige una pregunta',
     tabs: {
@@ -824,9 +946,9 @@ export const inflationEs: typeof inflationEn = {
       buy: '¿Qué podría comprar una cantidad tras unos años de inflación, en dinero de hoy?',
       cost: '¿Cuánto podría costar más adelante algo que hoy cuesta esto, si los precios siguen subiendo?',
       past: '¿Cuánto vale hoy una cantidad del pasado, a la tasa que elijas?',
-      pastCountry: '¿Cuánto vale hoy en {country} una cantidad del pasado, con su inflación anual real?',
+      pastCountry: '¿Cuánto vale ahora en {country} una cantidad del pasado, con su inflación registrada?',
       // The euro area is not a country, and takes its own sentence.
-      pastEuroArea: '¿Cuánto vale hoy en la zona del euro una cantidad del pasado, con su inflación anual real?',
+      pastEuroArea: '¿Cuánto vale ahora en la zona del euro una cantidad del pasado, con su inflación registrada?',
       keep: '¿Sigue el ritmo de la inflación una subida salarial o la rentabilidad de tus ahorros?',
     },
     fields: {
@@ -893,10 +1015,33 @@ export const inflationEs: typeof inflationEn = {
       buy: 'Si la inflación media fuera del {rate} anual, {amount} dentro de {years} comprarían lo que hoy compran {result}.',
       cost: 'Si los precios subieran de media un {rate} anual, algo que hoy cuesta {amount} costaría {result} dentro de {years}.',
       past: 'Si la inflación media fue del {rate} anual, {amount} de hace {years} compran lo que hoy compran {result}.',
-      pastCountry: 'En {country}, {amount} en {from} compraban lo que en {to} compraban {result}.',
-      pastEuroArea: 'En la zona del euro, {amount} en {from} compraban lo que en {to} compraban {result}.',
-      pastCountryOld: 'En {country}, {amount} en la moneda de {from} compraban lo que en {to} compraban {result}.',
+      pastCountry: 'En {country}, {amount} a los precios medios de {from} compraban lo que {result} a los precios medios de {to}.',
+      pastEuroArea: 'En la zona del euro, {amount} a los precios medios de {from} compraban lo que {result} a los precios medios de {to}.',
+      pastCountryOld: 'En {country}, {amount} en la moneda de {from}, a los precios medios de ese año, compraban lo que {result} a los precios medios de {to}.',
+      pastCountryMonth: 'En {country}, {amount} a los precios medios de {from} compraban lo que {result} con los precios que había {inMonth}.',
+      pastEuroAreaMonth: 'En la zona del euro, {amount} a los precios medios de {from} compraban lo que {result} con los precios que había {inMonth}.',
+      pastCountryOldMonth: 'En {country}, {amount} en la moneda de {from}, a los precios medios de ese año, compraban lo que {result} con los precios que había {inMonth}.',
+      pastMonthRise: 'Respecto a la media de {from}, los precios eran {inMonth} alrededor de un {total} más altos.',
+      pastMonthFall: 'Respecto a la media de {from}, los precios eran {inMonth} alrededor de un {total} más bajos.',
+      pastMonthAverageRise: 'De {from} a {to} subieron un {average} al año de media.',
+      pastMonthAverageFall: 'De {from} a {to} bajaron un {average} al año de media.',
+      pastMonthFurtherRise: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más altos.',
+      pastMonthFurtherFall: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más bajos.',
+      quarterNote: 'En {country}, el índice repite un mismo valor dentro de cada trimestre reciente, así que el mes indicado aquí puede llevar la cifra de un trimestre.',
+      joinNote: 'Aquí se unen dos series de cifras: la inflación anual del Banco Mundial hasta {to} y, después, {source}, para el paso desde la media de {to} hasta el último mes con cifra aquí. Un solo mes incluye altibajos estacionales y puede revisarse más adelante. Una lectura mensual del índice no es una tasa oficial de inflación anual.',
+      monthlySource: {
+        bis: 'el índice mensual de precios de consumo que publica el BIS',
+        worldBank: 'el índice mensual de precios de consumo del Banco Mundial (Global Economic Monitor)',
+      },
+      latestYearNote: '{to} es el último año con cifra aquí. Los cambios de precios posteriores no están incluidos.',
+      withheldMismatch: 'Para {country} no se une una cifra mensual: el índice mensual disponible aquí no coincide lo suficiente con este historial anual.',
+      withheldIncomplete: 'Para {country} no se une una cifra mensual: al índice mensual disponible aquí le faltan meses que la unión necesita (todo {to} y los años con los que se compara), o no tiene ningún mes posterior a {to}.',
+      withheldStale: 'Para {country} no se une una cifra mensual: el último mes del índice mensual disponible aquí tiene más de seis meses.',
+      startCaveat: 'La cantidad inicial se toma como la media de {from}. Si tu sueldo o un precio se fijó en un mes concreto, desde entonces los precios pueden haber subido más o menos que esto.',
       pastCountryRise: 'Los precios subieron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
+      pastCountryFall: 'Los precios bajaron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
+      pastCountryRiseOneYear: 'Los precios subieron alrededor de un {total} en ese año.',
+      pastCountryFallOneYear: 'Los precios bajaron alrededor de un {total} en ese año.',
       currencyChanged: '{country} cambió de moneda en {year}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       currencyChangedUp: '{country} cambió de moneda en {year}: 1 unidad de la moneda anterior pasó a ser {ratio} unidades de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       currencyChangedMore: '{country} cambió de moneda más de una vez después de {from} ({years}): en total, {ratio} unidades de la moneda de {from} pasaron a ser 1 unidad de la de hoy. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
@@ -905,6 +1050,7 @@ export const inflationEs: typeof inflationEn = {
       changedDuring: 'durante {year}',
       monthsWithDay: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
       monthsAlone: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+      monthsName: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
       mixedYear: '{country} cambió de moneda {changeDate}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste en la moneda que introdujo ese cambio de {year}. Si la cantidad estaba en la moneda que se usaba antes de ese cambio, la respuesta es {oldResult}. La cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
       mixedYearUp: '{country} cambió de moneda {changeDate}: 1 unidad de la moneda anterior pasó a ser {ratio} unidades de la nueva. Esta respuesta toma la cantidad que escribiste en la moneda que introdujo ese cambio de {year}. Si la cantidad estaba en la moneda que se usaba antes de ese cambio, la respuesta es {oldResult}. La cifra de precios de {year} es una media de todo el año, así que para una cantidad de un mes concreto la respuesta es aproximada.',
@@ -927,7 +1073,6 @@ export const inflationEs: typeof inflationEn = {
       method: 'Capitalización una vez al año, a la misma tasa cada año. Un escenario, no una previsión.',
       methodHistory: 'Capitalización año a año con la cifra real de cada año. Historia, no una previsión.',
       fix: 'Corrige los campos marcados para ver la respuesta.',
-      stale: 'Esta respuesta está desactualizada: corrige los campos marcados para actualizarla.',
       announce: 'Respuesta actualizada: {headline}. {sentence}',
     },
     chart: {
@@ -945,8 +1090,11 @@ export const inflationEs: typeof inflationEn = {
         pastCountry: 'Año',
       },
       desc: 'Gráfico de líneas. Empieza en {start} ({from}) y termina en {end} ({to}).',
+      descMonth: 'Gráfico de líneas. Empieza en {start} ({from}) y termina {inMonth} en {end}.',
       yearsFrom: 'año {n}',
       tooLarge: 'A esta tasa, las cantidades crecen demasiado para dibujarlas.',
+      legendYear: 'Media de un año',
+      legendMonth: 'Un mes, el último con cifra: {month} de {year}',
     },
     actions: {
       copy: 'Copiar un enlace a este cálculo',
@@ -981,12 +1129,13 @@ export const inflationCs: typeof inflationEn = {
     browserRequirements: 'Vyžaduje JavaScript. Moderní prohlížeč.',
     featureList: [
       'Co si za částku koupíte po letech inflace, v dnešních penězích',
-      'Kolik bude cena stát po letech inflace',
+      'Kolik může něco stát po letech inflace',
       'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě nebo při skutečné roční inflaci dané země',
       'Zda zvýšení platu nebo výnos z úspor drží krok s inflací, s přesnou reálnou sazbou',
       'Každý výsledek je uveden také pro sazbu o jeden procentní bod nižší a vyšší',
       'Roční historie inflace pro každou zahrnutou zemi a eurozónu, od Světové banky; počet zemí: {countries}',
-      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
+      'U {joinedAll} zemí odpovědi až do posledního měsíce, podle měsíčního indexu spotřebitelských cen BIS nebo Světové banky',
+      'Sazby od {minRate} do {maxRate} % ročně, aby šla ukázat i hyperinflace',
       'Výsledky v 38 měnách',
       'Odkaz ke sdílení libovolného výpočtu',
     ],
@@ -1034,6 +1183,17 @@ export const inflationCs: typeof inflationEn = {
       after:
         ' (ukazatel FP.CPI.TOTL.ZG, „Inflation, consumer prices (annual %)“), s licencí CC BY 4.0. Světová banka tato čísla naposledy aktualizovala {updated}. nidhi uchovává jejich kopii a každý měsíc kontroluje nová čísla, takže váš prohlížeč načítá historii z nidhi.today a nikdy nekontaktuje Světovou banku. Číslo za eurozónu platí pro eurozónu jako celek. Čísla mohou být revidována a u několika zemí chybějí některé roky nebo záznam začíná pozdě.',
     },
+    sourceMonthly: {
+      before: 'U {joined} zemí pokračuje odpověď z historie země až k poslednímu měsíci s údajem, a to podle měsíčního indexu spotřebitelských cen, který zveřejňuje ',
+      link: 'BIS',
+      after:
+        ' (Banka pro mezinárodní platby, „Consumer prices“); údaje byly staženy {fetched}. Měsíce se připojují jen tam, kde se roční změny tohoto indexu shodují s údaji Světové banky, nebo u jednoho roku v Indii (2025), kde byl rozdíl dohledán v ročním údaji, a ne v indexu; jinde odpověď končí posledním celým rokem a je to u ní uvedeno. BIS tento nástroj nepodporuje a za své statistiky neposkytuje žádnou záruku. Nejde o oficiální překlad BIS. Váš prohlížeč načítá i tyto údaje z nidhi.today a BIS nikdy nekontaktuje.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'U dalších {joinedWorldBank} zemí pocházejí měsíce z vlastní databáze Světové banky, ',
+      after:
+        ' („CPI Price, not seas. adj.“, ukazatel CPTOTNSXN), s licencí CC BY 4.0; Světová banka ji naposledy aktualizovala {monthlyUpdated}. Používá se tam, kde BIS nemá odpovídající index, podle stejného pravidla, a načítá se z nidhi.today jako ostatní údaje. Země, jejíž poslední měsíc je starší než šest měsíců, si ponechává roční odpověď.',
+    },
     faq: {
       heading: 'Časté dotazy',
       items: [
@@ -1043,7 +1203,7 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Proč ke každé odpovědi patří další dvě?',
-          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
+          a: 'Nikdo neví, jaká bude průměrná inflace v příštích deseti letech. Řádek pod každou odpovědí zopakuje výpočet o jeden procentní bod níž a o jeden výš (nikdy pod 0 %), takže je vidět, jak moc odpověď na sazbě závisí. Za dlouhá období dělá jediný bod velký rozdíl, a proto může jedno číslo samo o sobě působit jistěji, než je.',
         },
         {
           q: 'Je celostátní inflace totéž co moje inflace?',
@@ -1051,19 +1211,19 @@ export const inflationCs: typeof inflationEn = {
         },
         {
           q: 'Odkud historie pochází a jak je aktuální?',
-          a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku.',
+          a: 'Z ukazatelů světového rozvoje Světové banky (World Development Indicators): „Inflation, consumer prices (annual %)“ (ukazatel FP.CPI.TOTL.ZG), s licencí CC BY 4.0, které shromažďují čísla zveřejněná národními statistickými úřady a MMF. Světová banka je naposledy aktualizovala {updated}; nidhi každý měsíc kontroluje nová čísla. U většiny zemí je posledním rokem poslední celý kalendářní rok, některé se zpožďují a u několika chybějí některé roky. Nástroj u každé země ukazuje pokrytí a mezeru nikdy nevyplní odhadem: „Z minulosti do dneška“ začíná jen od let s nepřerušeným záznamem až do posledního roku. U {joinedAll} zemí jde odpověď z historie země o krok dál, k poslednímu měsíci měsíčního indexu spotřebitelských cen: toho, který zveřejňuje BIS (Banka pro mezinárodní platby), nebo tam, kde se neshoduje, vlastního měsíčního indexu Světové banky; oba byly staženy {fetched}. Odpověď uvádí měsíc i to, které údaje se spojují. Tento krok se dělá jen tam, kde se roční změny indexu shodují s ročními údaji Světové banky, nebo u jednoho roku v Indii (2025), kde byl rozdíl dohledán v ročním údaji, a ne v indexu, a jen dokud jeho poslední měsíc není starší než šest měsíců.',
         },
         {
-          q: 'Proč může sazba jít až do {maxRate} %?',
-          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
+          q: 'Proč může sazba jít až do {maxRate} %?',
+          a: 'Protože se to stalo. Hyperinflace, často definovaná jako růst cen o více než 50 % měsíčně, za života dnešních lidí zasáhla několik zemí a roční sazby v tisících procent se objevují i v datech samotné Světové banky. Nástroj omezený na 20 % by nedokázal ukázat, co takové roky udělaly s úsporami. Při takových sazbách jsou odpovědi tak velké nebo tak malé, že nástroj místo vypsání všech číslic řekne „více než“ nebo „méně než“.',
         },
         {
           q: 'Proč reálná sazba není jen míra zvýšení minus míra inflace?',
-          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
+          a: 'Protože obě sazby působí složeně. Kupní síla roste v poměru (1 + zvýšení) ÷ (1 + inflace), minus jedna. Při zvýšení o 5 % a inflaci 3 % je to zhruba 1,94 % ročně, ne 2 %. Při nízkých sazbách dává prosté odečtení podobný výsledek, při vysoké inflaci se však výrazně rozchází: zvýšení o 110 % při inflaci 100 % přinese o 5 % víc kupní síly, ne o 10 %.',
         },
         {
           q: 'Posílají se moje data někam?',
-          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nám ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
+          a: 'Ne. Výpočty běží ve vašem prohlížeči a částky, sazby a roky, které zadáte, se neposílají nidhi ani nikomu jinému. Výběr země načte její historii z nidhi.today, tohoto webu, nikdy ze Světové banky ani z BIS. Při používání nástroje se do adresy stránky nic nezapisuje. Když stisknete „{copyLink}“, vaše hodnoty se vloží do odkazu za znak #, do části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je odstraní z adresního řádku dřív, než se spustí analytika. Analytika zaznamenává, kterou otázku, měnu a zemi vyberete, nikdy čísla.',
         },
         {
           q: 'Je to finanční poradenství?',
@@ -1109,6 +1269,12 @@ export const inflationCs: typeof inflationEn = {
       years: 'Použité roky',
       source: 'Zdroj',
       sourceText: 'Světová banka, ukazatel FP.CPI.TOTL.ZG, „Inflation, consumer prices (annual %)“, CC BY 4.0.',
+      monthEnd: 'Koncový měsíc',
+      monthRow: 'Poslední řádek je jeden měsíc podle měsíčního indexu spotřebitelských cen, ne průměr roku.',
+      sourceTextMonthly: {
+        bis: 'Měsíce po posledním celém roce: BIS, Consumer prices (měsíční index). Nejde o oficiální překlad BIS.',
+        worldBank: 'Měsíce po posledním celém roce: Světová banka, Global Economic Monitor, „CPI Price, not seas. adj.“ (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'Vyberte otázku',
     tabs: {
@@ -1121,9 +1287,9 @@ export const inflationCs: typeof inflationEn = {
       buy: 'Co by si za částku šlo koupit po několika letech inflace, v dnešních penězích?',
       cost: 'Kolik by mohlo později stát něco, co dnes stojí tolik, pokud ceny porostou dál?',
       past: 'Jakou hodnotu má dnes částka z minulosti při vámi zvolené sazbě?',
-      pastCountry: 'Jakou hodnotu má dnes částka z minulosti v zemi {country} podle její skutečné roční inflace?',
+      pastCountry: 'Jakou hodnotu má teď částka z minulosti v zemi {country} podle její zaznamenané inflace?',
       // The euro area is not a country, and takes its own sentence.
-      pastEuroArea: 'Jakou hodnotu má dnes částka z minulosti v eurozóně podle její skutečné roční inflace?',
+      pastEuroArea: 'Jakou hodnotu má teď částka z minulosti v eurozóně podle její zaznamenané inflace?',
       keep: 'Drží zvýšení platu nebo výnos z úspor krok s inflací?',
     },
     fields: {
@@ -1164,12 +1330,12 @@ export const inflationCs: typeof inflationEn = {
       average: '{country}, {first} až {last}: v průměru zhruba {average} ročně.',
       averageGaps: '{country}, nejnovější roky s dostupným číslem (počet: {count}, období: {first} až {last}): v průměru zhruba {average} ročně.',
       averageNote:
-        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne předpověď.',
+        'Geometrický průměr: stálá sazba, která by měla stejný celkový účinek. Je to historie, ne prognóza.',
       coverage: 'Čísla pokrývají roky {first} až {last}.',
       gaps: 'Bez čísla: {years}.',
       gapStart: '„Z minulosti do dneška“ nezačíná dřív než v roce {start}, aby se žádný rok nepřeskočil.',
       use: 'Použít tento průměr jako sazbu',
-      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
+      useOutside: 'Tento průměr je mimo rozsah {min} až {max} %, který pole sazby přijímá, takže ho nelze použít jako sazbu.',
       currencyOther:
         'Částky zůstávají v měně {currency}: vlastní měna země {country} mezi měnami tohoto nástroje není. Historie je vyjádřena v procentech, takže odpověď ukazuje, o kolik tam vzrostly ceny, ne částku ve vlastní měně země {country}.',
       capped: 'Sloupce nad {cap} jsou nahoře oříznuté.',
@@ -1190,10 +1356,33 @@ export const inflationCs: typeof inflationEn = {
       buy: 'Pokud bude inflace v průměru {rate} ročně, bude mít {amount} za {years} stejnou kupní sílu jako dnes {result}.',
       cost: 'Pokud budou ceny růst v průměru o {rate} ročně, bude něco, co dnes stojí {amount}, za {years} stát {result}.',
       past: 'Pokud byla inflace v průměru {rate} ročně, odpovídá {amount} z doby o {years} dříve dnešní částce {result}.',
-      pastCountry: 'V zemi {country} měla částka {amount} v roce {from} stejnou kupní sílu jako {result} v roce {to}.',
-      pastEuroArea: 'V eurozóně měla částka {amount} v roce {from} stejnou kupní sílu jako {result} v roce {to}.',
-      pastCountryOld: 'V zemi {country} měla částka {amount} v měně roku {from} stejnou kupní sílu jako {result} v roce {to}.',
+      pastCountry: 'V zemi {country} měla částka {amount} při průměrných cenách roku {from} stejnou kupní sílu jako {result} při průměrných cenách roku {to}.',
+      pastEuroArea: 'V eurozóně měla částka {amount} při průměrných cenách roku {from} stejnou kupní sílu jako {result} při průměrných cenách roku {to}.',
+      pastCountryOld: 'V zemi {country} měla částka {amount} v měně roku {from}, při průměrných cenách toho roku, stejnou kupní sílu jako {result} při průměrných cenách roku {to}.',
+      pastCountryMonth: 'V zemi {country} měla částka {amount} při průměrných cenách roku {from} stejnou kupní sílu jako {result} při cenách {inMonth}.',
+      pastEuroAreaMonth: 'V eurozóně měla částka {amount} při průměrných cenách roku {from} stejnou kupní sílu jako {result} při cenách {inMonth}.',
+      pastCountryOldMonth: 'V zemi {country} měla částka {amount} v měně roku {from}, při průměrných cenách toho roku, stejnou kupní sílu jako {result} při cenách {inMonth}.',
+      pastMonthRise: 'Ceny byly {inMonth} asi o {total} vyšší než v průměru roku {from}.',
+      pastMonthFall: 'Ceny byly {inMonth} asi o {total} nižší než v průměru roku {from}.',
+      pastMonthAverageRise: 'Od roku {from} do roku {to} rostly průměrně o {average} ročně.',
+      pastMonthAverageFall: 'Od roku {from} do roku {to} klesaly průměrně o {average} ročně.',
+      pastMonthFurtherRise: 'Ceny byly {inMonth} o {more} vyšší než v průměru roku {to}.',
+      pastMonthFurtherFall: 'Ceny byly {inMonth} o {more} nižší než v průměru roku {to}.',
+      quarterNote: 'U země {country} se v indexu během každého z posledních čtvrtletí opakuje stejná hodnota, takže uvedený měsíc může nést údaj za celé čtvrtletí.',
+      joinNote: 'Tady se spojují dvě řady údajů: roční inflace podle Světové banky do roku {to} a poté {source}, pro krok od průměru roku {to} k poslednímu měsíci, pro který tu je údaj. Jediný měsíc zahrnuje sezonní výkyvy a může být později upraven. Měsíční hodnota indexu není oficiální roční mírou inflace.',
+      monthlySource: {
+        bis: 'měsíční index spotřebitelských cen, který zveřejňuje BIS',
+        worldBank: 'měsíční index spotřebitelských cen Světové banky (Global Economic Monitor)',
+      },
+      latestYearNote: 'Rok {to} je poslední, pro který tu je údaj. Pozdější změny cen nejsou zahrnuty.',
+      withheldMismatch: 'Pro zemi {country} se měsíční údaj nepřipojuje: měsíční index, který je tu k dispozici, se s touto roční řadou dostatečně neshoduje.',
+      withheldIncomplete: 'Pro zemi {country} se měsíční údaj nepřipojuje: měsíčnímu indexu, který je tu k dispozici, chybějí měsíce potřebné pro spojení (celý rok {to} a roky, se kterými se porovnává), nebo nemá žádný měsíc po roce {to}.',
+      withheldStale: 'Pro zemi {country} se měsíční údaj nepřipojuje: poslední měsíc měsíčního indexu, který je tu k dispozici, je starší než šest měsíců.',
+      startCaveat: 'Výchozí částka se bere jako průměr roku {from}. Pokud byla vaše mzda nebo cena stanovena v konkrétním měsíci, mohly ceny od té doby vzrůst více nebo méně.',
       pastCountryRise: 'Za {years} vzrostly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
+      pastCountryFall: 'Za {years} klesly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
+      pastCountryRiseOneYear: 'Za ten jeden rok vzrostly ceny zhruba o {total}.',
+      pastCountryFallOneYear: 'Za ten jeden rok klesly ceny zhruba o {total}.',
       currencyChanged: 'V zemi {country} se v roce {year} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       currencyChangedUp: 'V zemi {country} se v roce {year} změnila měna v poměru 1 : {ratio} (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       currencyChangedMore: 'V zemi {country} se po roce {from} měna změnila víckrát ({years}), celkem v poměru {ratio} : 1 (měna roku {from} k dnešní měně). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
@@ -1202,6 +1391,7 @@ export const inflationCs: typeof inflationEn = {
       changedDuring: 'v průběhu roku {year}',
       monthsWithDay: ['ledna', 'února', 'března', 'dubna', 'května', 'června', 'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'],
       monthsAlone: ['lednu', 'únoru', 'březnu', 'dubnu', 'květnu', 'červnu', 'červenci', 'srpnu', 'září', 'říjnu', 'listopadu', 'prosinci'],
+      monthsName: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
       mixedYear: 'V zemi {country} se {changeDate} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně, kterou zavedla tato změna v roce {year}. Pokud byla zadaná částka v měně platné před touto změnou, odpověď je {oldResult}. Cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
       mixedYearUp: 'V zemi {country} se {changeDate} změnila měna v poměru 1 : {ratio} (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně, kterou zavedla tato změna v roce {year}. Pokud byla zadaná částka v měně platné před touto změnou, odpověď je {oldResult}. Cenový údaj za rok {year} je průměr za celý rok, takže pro částku z jednoho měsíce je odpověď jen přibližná.',
@@ -1224,7 +1414,6 @@ export const inflationCs: typeof inflationEn = {
       method: 'Počítáno složeně jednou ročně, každý rok stejnou sazbou. Scénář, ne prognóza.',
       methodHistory: 'Počítáno rok po roku se skutečnou hodnotou za každý rok. Historie, ne prognóza.',
       fix: 'Opravte zvýrazněná pole a uvidíte odpověď.',
-      stale: 'Tato odpověď je zastaralá: opravte zvýrazněná pole a odpověď se aktualizuje.',
       announce: 'Aktualizovaná odpověď: {headline}. {sentence}',
     },
     chart: {
@@ -1242,8 +1431,11 @@ export const inflationCs: typeof inflationEn = {
         pastCountry: 'Rok',
       },
       desc: 'Spojnicový graf. Začíná na {start} ({from}) a končí na {end} ({to}).',
+      descMonth: 'Spojnicový graf. Začíná na {start} ({from}) a končí {inMonth} na {end}.',
       yearsFrom: 'rok {n}',
       tooLarge: 'Při této sazbě jsou částky příliš velké na vykreslení.',
+      legendYear: 'Průměr roku',
+      legendMonth: 'Jeden měsíc, poslední s údajem: {month} {year}',
     },
     actions: {
       copy: 'Kopírovat odkaz na tento výpočet',
@@ -1275,6 +1467,7 @@ export const inflationMr: typeof inflationEn = {
       'पगारवाढ किंवा बचतीवरील परतावा महागाईच्या बरोबरीने जातो का, नेमक्या वास्तविक दरासह',
       'प्रत्येक निकाल एक टक्के बिंदू कमी आणि जास्त दरानेही दाखवला जातो',
       '{countries} देश आणि युरो क्षेत्र यांचा वार्षिक महागाईचा इतिहास, World Bank कडून',
+      '{joinedAll} देशांसाठी सर्वात अलीकडच्या महिन्यापर्यंतची उत्तरे, BIS किंवा World Bank च्या मासिक ग्राहक किंमत निर्देशांकावरून',
       'दरवर्षी {minRate} ते {maxRate}% पर्यंतचे दर, म्हणजे अतिमहागाईही दाखवता येते',
       '38 चलनांमध्ये निकाल',
       'कोणत्याही हिशेबाची शेअर करता येणारी लिंक',
@@ -1322,6 +1515,17 @@ export const inflationMr: typeof inflationEn = {
       link: 'World Bank',
       after: ' कडून (निर्देशक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”), CC BY 4.0 परवान्याखाली. World Bank ने हे आकडे शेवटचे {updated} रोजी अपडेट केले. nidhi त्यांची प्रत ठेवते आणि दर महिन्याला नवीन आकडे तपासते, त्यामुळे तुमचा ब्राउझर इतिहास nidhi.today वरून घेतो आणि World Bank शी कधीच संपर्क साधत नाही. युरो क्षेत्राचा आकडा संपूर्ण युरो क्षेत्रासाठी आहे. आकडे सुधारले जाऊ शकतात, आणि काही देशांच्या काही वर्षांचा आकडा नसतो किंवा नोंद उशिरा सुरू होते.',
     },
+    sourceMonthly: {
+      before: '{joined} देशांसाठी, देशाच्या इतिहासावरून काढलेले उत्तर आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंत जाते. त्यासाठी मासिक ग्राहक किंमत निर्देशांकाचा स्रोत: ',
+      link: 'BIS',
+      after:
+        ' (Bank for International Settlements, “Consumer prices”). हे आकडे {fetched} रोजी घेतले. या निर्देशांकाचे स्वतःचे वार्षिक बदल World Bank च्या आकड्यांशी जुळतात तिथेच, किंवा भारताच्या एका वर्षासाठी (2025), जिथे फरक निर्देशांकात नसून वार्षिक आकड्यात असल्याचे आढळले आहे, महिने जोडले जातात; इतर देशांत उत्तर शेवटच्या पूर्ण वर्षावर थांबते, आणि तसे सांगितले जाते. BIS या साधनाला पाठिंबा देत नाही आणि आपल्या आकडेवारीची कोणतीही हमी देत नाही. हे BIS चे अधिकृत भाषांतर नाही. तुमचा ब्राउझर हे आकडेही nidhi.today वरूनच घेतो आणि BIS शी कधीही संपर्क करत नाही.',
+    },
+    sourceMonthlyWorldBank: {
+      before: 'आणखी {joinedWorldBank} देशांसाठी महिन्यांचे आकडे World Bank च्या स्वतःच्या डेटाबेसमधून येतात: ',
+      after:
+        ' (“CPI Price, not seas. adj.”, निर्देशक CPTOTNSXN), CC BY 4.0 परवान्याखाली; World Bank ने तो शेवटचा {monthlyUpdated} रोजी अद्ययावत केला. जिथे BIS कडे जुळणारा निर्देशांक नाही तिथे, त्याच नियमाने, तो वापरला जातो, आणि इतर आकड्यांप्रमाणे तोही nidhi.today वरूनच येतो. ज्या देशाचा सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना आहे, त्याचे उत्तर वार्षिकच राहते.',
+    },
     faq: {
       heading: 'वारंवार विचारले जाणारे प्रश्न',
       items: [
@@ -1335,15 +1539,15 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'राष्ट्रीय महागाई आणि माझी महागाई एकच असते का?',
-          a: 'असेच नाही. राष्ट्रीय महागाई एका सर्वसाधारण घराचे प्रतिनिधित्व करण्यासाठी निवडलेल्या वस्तू व सेवांच्या टोपलीची किंमत मोजते. तुमचा स्वतःचा खर्च वेगळा असतो: तुम्ही भाड्याने राहता की स्वतःच्या घरात, कुठे राहता, तुमचे वय, तुम्ही शाळेची फी किंवा काळजीचा खर्च भरता का. अनेक सांख्यिकी कार्यालये प्रकारानुसार महागाई प्रसिद्ध करतात (अन्न, घर, वाहतूक, आरोग्य), त्यावरून तुमचे सर्वात मोठे खर्च मुख्य आकड्यापेक्षा वेगाने वाढले की हळू, हे दिसू शकते. काही लोक हे किती महत्त्वाचे आहे हे पाहण्यासाठी राष्ट्रीय दरापेक्षा एक-दोन बिंदू जास्त किंवा कमी दर वापरून पाहतात.',
+          a: 'तसे असेलच असे नाही. राष्ट्रीय महागाई एका सर्वसाधारण घराचे प्रतिनिधित्व करण्यासाठी निवडलेल्या वस्तू व सेवांच्या टोपलीची किंमत मोजते. तुमचा स्वतःचा खर्च वेगळा असतो: तुम्ही भाड्याने राहता की स्वतःच्या घरात, कुठे राहता, तुमचे वय, तुम्ही शाळेची फी किंवा काळजीचा खर्च भरता का. अनेक सांख्यिकी कार्यालये प्रकारानुसार महागाई प्रसिद्ध करतात (अन्न, घर, वाहतूक, आरोग्य), त्यावरून तुमचे सर्वात मोठे खर्च मुख्य आकड्यापेक्षा वेगाने वाढले की हळू, हे दिसू शकते. काही लोक हे किती महत्त्वाचे आहे हे पाहण्यासाठी राष्ट्रीय दरापेक्षा एक-दोन बिंदू जास्त किंवा कमी दर वापरून पाहतात.',
         },
         {
           q: 'इतिहास कुठून येतो, आणि तो किती अलीकडचा आहे?',
-          a: 'World Bank च्या World Development Indicators मधून: “Inflation, consumer prices (annual %)” (निर्देशक FP.CPI.TOTL.ZG), CC BY 4.0 परवान्याखाली, ज्यात राष्ट्रीय सांख्यिकी कार्यालये आणि IMF प्रसिद्ध करत असलेले आकडे एकत्र केलेले असतात. World Bank ने ते शेवटचे {updated} रोजी अपडेट केले; nidhi दर महिन्याला नवीन आकडे तपासते. बहुतेक देशांसाठी सर्वात अलीकडचे वर्ष म्हणजे शेवटचे पूर्ण कॅलेंडर वर्ष असते, काही देश मागे असतात, आणि काहींच्या काही वर्षांचा आकडा नसतो. साधन प्रत्येक देशाची व्याप्ती दाखवते आणि रिकामी जागा कधीच अंदाजाने भरत नाही: “भूतकाळापासून आजपर्यंत” फक्त अशा वर्षांपासून सुरू होते जिथून सर्वात अलीकडच्या वर्षापर्यंत नोंद अखंड आहे.',
+          a: 'World Bank च्या World Development Indicators मधून: “Inflation, consumer prices (annual %)” (निर्देशक FP.CPI.TOTL.ZG), CC BY 4.0 परवान्याखाली, ज्यात राष्ट्रीय सांख्यिकी कार्यालये आणि IMF प्रसिद्ध करत असलेले आकडे एकत्र केलेले असतात. World Bank ने ते शेवटचे {updated} रोजी अपडेट केले; nidhi दर महिन्याला नवीन आकडे तपासते. बहुतेक देशांसाठी सर्वात अलीकडचे वर्ष म्हणजे शेवटचे पूर्ण कॅलेंडर वर्ष असते, काही देश मागे असतात, आणि काहींच्या काही वर्षांचा आकडा नसतो. साधन प्रत्येक देशाची व्याप्ती दाखवते आणि रिकामी जागा कधीच अंदाजाने भरत नाही: “भूतकाळापासून आजपर्यंत” फक्त अशा वर्षांपासून सुरू होते जिथून सर्वात अलीकडच्या वर्षापर्यंत नोंद अखंड आहे. {joinedAll} देशांसाठी, देशाच्या इतिहासावरून काढलेले उत्तर एक पाऊल पुढे जाते: एखाद्या मासिक ग्राहक किंमत निर्देशांकातील सर्वात अलीकडच्या महिन्यापर्यंत. हा निर्देशांक BIS (Bank for International Settlements) ने प्रकाशित केलेला असतो, किंवा तो जुळत नाही तिथे World Bank चा स्वतःचा मासिक निर्देशांक; दोन्हींचे आकडे {fetched} रोजी घेतले. उत्तरात महिना दिलेला असतो आणि कोणते आकडे जोडले आहेत हेही सांगितलेले असते. निर्देशांकाचे वार्षिक बदल World Bank च्या वार्षिक आकड्यांशी जुळतात तिथेच, किंवा भारताच्या एका वर्षासाठी (2025), जिथे फरक निर्देशांकात नसून वार्षिक आकड्यात असल्याचे आढळले आहे, आणि त्याचा सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना नसेल तोपर्यंतच, हे पाऊल घेतले जाते.',
         },
         {
           q: 'दर {maxRate}% पर्यंत का जाऊ शकतो?',
-          a: 'कारण असे घडले आहे. अतिमहागाई, ज्याची व्याख्या अनेकदा दरमहा 50% पेक्षा जास्त किंमतवाढ अशी केली जाते, अलीकडच्या काळात अनेक देशांत आली आहे, आणि World Bank च्या स्वतःच्या डेटामध्ये हजारो टक्क्यांचे वार्षिक दर दिसतात. 20% वर मर्यादा असलेले साधन त्या वर्षांनी बचतीचे काय केले हे दाखवू शकले नसते. अशा दरांवर उत्तरे इतकी मोठी किंवा इतकी लहान होतात की साधन प्रत्येक अंक छापण्याऐवजी “पेक्षा जास्त” किंवा “पेक्षा कमी” असे सांगते.',
+          a: 'कारण असे घडले आहे. अतिमहागाई, ज्याची व्याख्या अनेकदा दरमहा 50% पेक्षा जास्त किंमतवाढ अशी केली जाते, आज हयात असलेल्या लोकांच्या आठवणीत अनेक देशांत आली आहे, आणि World Bank च्या स्वतःच्या डेटामध्ये हजारो टक्क्यांचे वार्षिक दर दिसतात. 20% वर मर्यादा असलेले साधन त्या वर्षांनी बचतीचे काय केले हे दाखवू शकले नसते. अशा दरांवर उत्तरे इतकी मोठी किंवा इतकी लहान होतात की साधन प्रत्येक अंक छापण्याऐवजी “पेक्षा जास्त” किंवा “पेक्षा कमी” असे सांगते.',
         },
         {
           q: 'वास्तविक दर म्हणजे फक्त पगारवाढ वजा महागाई का नाही?',
@@ -1351,7 +1555,7 @@ export const inflationMr: typeof inflationEn = {
         },
         {
           q: 'माझा डेटा कुठे पाठवला जातो का?',
-          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे आम्हाला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
+          a: 'नाही. हिशेब तुमच्या ब्राउझरमध्ये होतात, आणि तुम्ही लिहिलेल्या रकमा, दर आणि वर्षे nidhi ला किंवा इतर कोणालाही पाठवली जात नाहीत. देश निवडल्यावर त्याचा इतिहास nidhi.today या साइटवरूनच येतो, World Bank किंवा BIS कडून कधीच नाही. साधन वापरताना पानाच्या पत्त्यात काहीही जात नाही. तुम्ही “{copyLink}” दाबता तेव्हा तुमची मूल्ये लिंकमध्ये # चिन्हानंतर जातात, पत्त्याचा हा भाग ब्राउझर कधीच सर्व्हरकडे पाठवत नाहीत, आणि वापराचे विश्लेषण सुरू होण्यापूर्वी पान ती पत्त्याच्या पट्टीतून काढून टाकते. वापराचे विश्लेषण तुम्ही कोणता प्रश्न, चलन आणि देश निवडता याची नोंद करते, आकड्यांची कधीच नाही.',
         },
         {
           q: 'हा आर्थिक सल्ला आहे का?',
@@ -1387,7 +1591,7 @@ export const inflationMr: typeof inflationEn = {
     export: {
       meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
       moneyLabel: 'रक्कम',
-      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पेज मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
+      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
       sheets: { answer: 'उत्तर', byYear: 'दरवर्षी' },
       question: 'प्रश्न',
       country: 'महागाईचा इतिहास',
@@ -1397,6 +1601,12 @@ export const inflationMr: typeof inflationEn = {
       years: 'वापरलेली वर्षे',
       source: 'स्रोत',
       sourceText: 'World Bank, निर्देशक FP.CPI.TOTL.ZG, “Inflation, consumer prices (annual %)”, CC BY 4.0.',
+      monthEnd: 'शेवटचा महिना',
+      monthRow: 'शेवटची ओळ एका महिन्याची आहे, मासिक ग्राहक किंमत निर्देशांकातून; ती वर्षाची सरासरी नाही.',
+      sourceTextMonthly: {
+        bis: 'शेवटच्या पूर्ण वर्षानंतरचे महिने: BIS, Consumer prices (मासिक निर्देशांक). हे BIS चे अधिकृत भाषांतर नाही.',
+        worldBank: 'शेवटच्या पूर्ण वर्षानंतरचे महिने: World Bank, Global Economic Monitor, “CPI Price, not seas. adj.” (CPTOTNSXN), CC BY 4.0.',
+      },
     },
     tabsLabel: 'प्रश्न निवडा',
     tabs: {
@@ -1409,9 +1619,9 @@ export const inflationMr: typeof inflationEn = {
       buy: 'काही वर्षांच्या महागाईनंतर एखाद्या रकमेत, आजच्या पैशांच्या हिशेबात, काय मिळू शकेल?',
       cost: 'किमती वाढत राहिल्या, तर आज इतकी किंमत असलेली वस्तू पुढे किती महाग होऊ शकेल?',
       past: 'तुम्ही निवडलेल्या दराने, भूतकाळातील एखाद्या रकमेचे आज मूल्य किती?',
-      pastCountry: '{country} च्या प्रत्यक्ष वार्षिक महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आज मूल्य किती?',
+      pastCountry: '{country} च्या नोंदवलेल्या महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आता मूल्य किती?',
       // The euro area is not a country, and takes its own sentence.
-      pastEuroArea: 'युरो क्षेत्राच्या प्रत्यक्ष वार्षिक महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आज मूल्य किती?',
+      pastEuroArea: 'युरो क्षेत्राच्या नोंदवलेल्या महागाईनुसार, भूतकाळातील एखाद्या रकमेचे तिथे आता मूल्य किती?',
       keep: 'पगारवाढ किंवा बचतीवरील परतावा महागाईच्या बरोबरीने जातो का?',
     },
     fields: {
@@ -1480,10 +1690,33 @@ export const inflationMr: typeof inflationEn = {
       buy: 'महागाईची सरासरी दरवर्षी {rate} राहिली, तर {years} उलटल्यावर {amount} मध्ये तेवढे मिळेल जेवढे आज {result} मध्ये मिळते.',
       cost: 'किमती सरासरी दरवर्षी {rate} वाढल्या, तर आज {amount} किंमत असलेली वस्तू {years} उलटल्यावर {result} ला मिळेल.',
       past: 'महागाईची सरासरी दरवर्षी {rate} राहिली असेल, तर {years} आधीच्या {amount} मध्ये तेवढे मिळत असे जेवढे आज {result} मध्ये मिळते.',
-      pastCountry: '{country} मध्ये, {from} साली {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
-      pastEuroArea: 'युरो क्षेत्रात, {from} साली {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
-      pastCountryOld: '{country} मध्ये, {from} सालच्या चलनातील {amount} मध्ये तेवढे मिळत असे जेवढे {to} साली {result} मध्ये मिळत होते.',
+      pastCountry: '{country} मध्ये, {from} सालच्या सरासरी किमतींनुसार {amount} मध्ये तेवढे मिळत असे जेवढे {to} सालच्या सरासरी किमतींनुसार {result} मध्ये मिळत होते.',
+      pastEuroArea: 'युरो क्षेत्रात, {from} सालच्या सरासरी किमतींनुसार {amount} मध्ये तेवढे मिळत असे जेवढे {to} सालच्या सरासरी किमतींनुसार {result} मध्ये मिळत होते.',
+      pastCountryOld: '{country} मध्ये, {from} सालच्या चलनातील {amount} मध्ये, त्या वर्षाच्या सरासरी किमतींनुसार, तेवढे मिळत असे जेवढे {to} सालच्या सरासरी किमतींनुसार {result} मध्ये मिळत होते.',
+      pastCountryMonth: '{country} मध्ये, {from} सालच्या सरासरी किमतींनुसार {amount} मध्ये तेवढे मिळत असे जेवढे {inMonth} असलेल्या किमतींनुसार {result} मध्ये मिळत होते.',
+      pastEuroAreaMonth: 'युरो क्षेत्रात, {from} सालच्या सरासरी किमतींनुसार {amount} मध्ये तेवढे मिळत असे जेवढे {inMonth} असलेल्या किमतींनुसार {result} मध्ये मिळत होते.',
+      pastCountryOldMonth: '{country} मध्ये, {from} सालच्या चलनातील {amount} मध्ये, त्या वर्षाच्या सरासरी किमतींनुसार, तेवढे मिळत असे जेवढे {inMonth} असलेल्या किमतींनुसार {result} मध्ये मिळत होते.',
+      pastMonthRise: '{inMonth} किमती {from} सालच्या सरासरीपेक्षा सुमारे {total} जास्त होत्या.',
+      pastMonthFall: '{inMonth} किमती {from} सालच्या सरासरीपेक्षा सुमारे {total} कमी होत्या.',
+      pastMonthAverageRise: '{from} ते {to} या काळात त्या दरवर्षी सरासरी {average} वाढल्या.',
+      pastMonthAverageFall: '{from} ते {to} या काळात त्या दरवर्षी सरासरी {average} घटल्या.',
+      pastMonthFurtherRise: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} जास्त होत्या.',
+      pastMonthFurtherFall: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} कमी होत्या.',
+      quarterNote: '{country} च्या निर्देशांकात अलीकडच्या प्रत्येक तिमाहीत एकच मूल्य पुन्हा आले आहे, त्यामुळे इथे दिलेल्या महिन्याचा आकडा पूर्ण तिमाहीचा असू शकतो.',
+      joinNote: 'इथे आकड्यांचे दोन संच जोडले आहेत: {to} पर्यंत World Bank ची वार्षिक महागाई, आणि त्यानंतर {source}, जो {to} सालच्या सरासरीपासून इथे आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंतचा बदल दाखवतो. एका महिन्याच्या आकड्यात हंगामी चढउतार असतात आणि तो नंतर सुधारला जाऊ शकतो. निर्देशांकाचा मासिक आकडा हा अधिकृत वार्षिक महागाई दर नाही.',
+      monthlySource: {
+        bis: 'BIS ने प्रकाशित केलेला मासिक ग्राहक किंमत निर्देशांक',
+        worldBank: 'World Bank चा मासिक ग्राहक किंमत निर्देशांक (Global Economic Monitor)',
+      },
+      latestYearNote: '{to} हे इथे आकडा असलेले सर्वात अलीकडचे वर्ष आहे. त्यानंतरचे किमतींमधील बदल यात धरलेले नाहीत.',
+      withheldMismatch: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेला मासिक निर्देशांक या वार्षिक इतिहासाशी पुरेसा जुळत नाही.',
+      withheldIncomplete: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेल्या मासिक निर्देशांकात जोडणीसाठी लागणारे महिने पूर्ण नाहीत ({to} हे पूर्ण वर्ष, आणि ज्यांच्याशी तुलना केली जाते ती वर्षे), किंवा {to} नंतरचा एकही महिना नाही.',
+      withheldStale: '{country} साठी मासिक आकडा जोडलेला नाही: इथे उपलब्ध असलेल्या मासिक निर्देशांकातील सर्वात अलीकडचा महिना सहा महिन्यांपेक्षा जुना आहे.',
+      startCaveat: 'सुरुवातीची रक्कम {from} सालची सरासरी मानली आहे. तुमचा पगार किंवा एखादी किंमत ठरावीक महिन्यात ठरली असेल, तर तेव्हापासून किमती यापेक्षा जास्त किंवा कमी वाढल्या असू शकतात.',
       pastCountryRise: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} वाढल्या, म्हणजे सरासरी दरवर्षी {average}.',
+      pastCountryFall: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} घटल्या, म्हणजे सरासरी दरवर्षी {average}.',
+      pastCountryRiseOneYear: 'त्या एका वर्षात किमती सुमारे {total} वाढल्या.',
+      pastCountryFallOneYear: 'त्या एका वर्षात किमती सुमारे {total} घटल्या.',
       currencyChanged: '{country} ने {year} साली आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       currencyChangedUp: '{country}\u00a0ने {year} साली आपले चलन बदलले: जुन्या चलनाचे 1 एकक नव्या चलनाच्या {ratio} एककांएवढे झाले. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       currencyChangedMore: '{country} ने {from} नंतर एकापेक्षा जास्त वेळा चलन बदलले ({years}): एकूण, {from} सालच्या चलनाची {ratio} एकके आजच्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
@@ -1492,6 +1725,7 @@ export const inflationMr: typeof inflationEn = {
       changedDuring: '{year} या वर्षादरम्यान',
       monthsWithDay: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
       monthsAlone: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
+      monthsName: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
       mixedYear: '{country} ने {changeDate} आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {year} सालच्या त्या बदलाने आलेल्या चलनात आहे असे धरते. तुमची रक्कम त्या बदलापूर्वी वापरात असलेल्या चलनात असेल, तर उत्तर {oldResult} आहे. {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
       // The same, for a change that made more units, not fewer (one pound became two dollars).
       mixedYearUp: '{country} ने {changeDate} आपले चलन बदलले: जुन्या चलनाचे 1 एकक नव्या चलनाच्या {ratio} एककांएवढे झाले. हे उत्तर तुम्ही भरलेली रक्कम {year} सालच्या त्या बदलाने आलेल्या चलनात आहे असे धरते. तुमची रक्कम त्या बदलापूर्वी वापरात असलेल्या चलनात असेल, तर उत्तर {oldResult} आहे. {year} सालचा किमतींचा आकडा संपूर्ण वर्षाची सरासरी आहे, त्यामुळे एखाद्या महिन्यातील रकमेसाठी उत्तर अंदाजे आहे.',
@@ -1513,7 +1747,6 @@ export const inflationMr: typeof inflationEn = {
       method: 'वर्षातून एकदा, प्रत्येक वर्षी त्याच दराने चक्रवाढ. एक परिदृश्य, भाकीत नाही.',
       methodHistory: 'प्रत्येक वर्षाच्या प्रत्यक्ष आकड्याने वर्षानुवर्षे चक्रवाढ. इतिहास, भाकीत नाही.',
       fix: 'उत्तर पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
-      stale: 'हे उत्तर जुने झाले आहे: ते अपडेट करण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
       announce: 'अपडेट झालेले उत्तर: {headline}. {sentence}',
     },
     chart: {
@@ -1531,14 +1764,17 @@ export const inflationMr: typeof inflationEn = {
         pastCountry: 'वर्ष',
       },
       desc: 'रेषा आलेख. {start} ({from}) पासून सुरू होतो आणि {end} ({to}) ला संपतो.',
+      descMonth: 'रेषा आलेख. {start} ({from}) पासून सुरू होतो आणि {inMonth} {end} ला संपतो.',
       yearsFrom: 'वर्ष {n}',
       tooLarge: 'या दराने रकमा इतक्या मोठ्या होतात की आलेख काढता येत नाही.',
+      legendYear: 'वर्षाची सरासरी',
+      legendMonth: 'एक महिना, आकडा असलेला सर्वात अलीकडचा: {month} {year}',
     },
     actions: {
       copy: 'या हिशेबाची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
-      reset: 'पूर्वनिश्चित मूल्ये परत आणा',
+      reset: 'रीसेट करा',
     },
   },
 };

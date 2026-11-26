@@ -5,6 +5,7 @@
  * (which is `node --test src/utils/**\/*.test.ts` under the hood,
  *  using Node 22's built-in test runner and TS type-stripping).
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -1523,7 +1524,7 @@ describe('engineError covers every engine message', () => {
     ),
   ];
 
-  it('finds the messages in math.ts', () => {
+  it('finds the messages in math.ts', { skip: readsSource }, () => {
     assert.ok(maxTerm, 'MAX_TERM_MONTHS not found');
     assert.ok(messages.length >= 19, `only ${messages.length} messages found`);
   });
@@ -1669,6 +1670,13 @@ describe('the points row tells a saving from a loss (issues 526 and 528)', () =>
 
   it('points that cost nothing break even at once', () => {
     assert.equal(pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0.0025).months, 0);
+  });
+
+  it('points that come out even over the loan are not called a loss', () => {
+    const be = pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0);
+    assert.equal(be.months, 0);
+    assert.equal(be.lifetimeSavingsMinor, 0);
+    assert.equal(pointsVerdict(be), 'saves');
   });
 });
 

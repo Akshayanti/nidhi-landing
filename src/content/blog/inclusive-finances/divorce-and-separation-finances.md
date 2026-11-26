@@ -44,11 +44,11 @@ faq:
   - question: "What is the first financial step when separating?"
     answer: "An inventory. Before discussing who gets what, list every asset and every debt: bank accounts, investments, pensions, property, vehicles, business interests, loans, cards, and tax owed. For each, record whose name it is in, roughly when it was acquired, and its current value, and keep a statement or document as evidence. Negotiating without a complete list is how assets get overlooked and how one person ends up accepting a settlement that looked fair and was not."
   - question: "What is the difference between community property and equitable distribution?"
-    answer: "They are two broad approaches to dividing what a married couple owns. Under community property, most assets and debts acquired during the marriage belong to both spouses equally and are generally split in half. Under equitable distribution, a court divides property in a way it considers fair, which may or may not be equal, taking account of factors such as each person's contributions and needs. A third approach, used in some European countries, keeps property separate during the marriage and equalises the gains each spouse made. Which applies depends on where you live and sometimes on where you married."
+    answer: "They are two broad approaches to dividing what a married couple owns. Under community property, most assets and debts acquired during the marriage belong to both spouses equally and are generally split in half. Under equitable distribution, a court divides property in a way it considers fair, which may or may not be equal, taking account of factors such as each person's contributions and needs. A third approach, used in some European countries, keeps property separate during the marriage and equalizes the gains each spouse made. Which applies depends on where you live and sometimes on where you married."
   - question: "Why is an equal split by value not always a fair split?"
     answer: "Because different assets carry different costs and restrictions. A pension may be taxed when withdrawn and may not be accessible for decades. A home costs money to sell and to maintain and cannot be spent without selling or borrowing. Cash is worth its face value today. Taking the asset with the largest number on paper can leave you with less usable wealth. Compare assets after tax, after costs, and with an eye on when you can actually use them."
   - question: "How do I split a pension without an immediate tax bill?"
-    answer: "Through the formal mechanism available for the particular pension or retirement account, rather than by withdrawing the money yourself. In the United States, qualified employer plans commonly use a qualified domestic relations order, while IRAs generally use a transfer incident to divorce. England and Wales use pension sharing orders, and Germany equalises qualifying pension rights through the divorce process. The correct route can preserve the account's tax treatment; withdrawing the money and handing it over may instead trigger tax and, sometimes, a penalty."
+    answer: "Through the formal mechanism available for the particular pension or retirement account, rather than by withdrawing the money yourself. In the United States, qualified employer plans commonly use a qualified domestic relations order, while IRAs generally use a transfer incident to divorce. England and Wales use pension sharing orders, and Germany equalizes qualifying pension rights through the divorce process. The correct route can preserve the account's tax treatment; withdrawing the money and handing it over may instead trigger tax and, sometimes, a penalty."
   - question: "Am I still responsible for joint debts after the divorce?"
     answer: "To the lender, usually yes. A settlement or court order can say that one of you will pay a joint loan, but the lender was not party to that agreement. If the payments stop, the lender can still pursue either of you, and a missed payment can damage both credit records. The cleanest route, where it is affordable, is usually paying off joint debts or refinancing them into one name as part of the separation, and closing joint accounts. Whether a single income qualifies for the refinance is often the constraint."
   - question: "Does this apply if we were never married?"
@@ -83,7 +83,7 @@ An inventory stops assets being overlooked, and it turns a conversation about fa
 
 While the inventory is built, people commonly take a few protective steps, subject to local law and any court orders: copies of statements for every account going back at least a year; their own credit report, where one exists, to see every debt in their name, including forgotten joint ones; an account in their sole name for their own income; and agreed limits on joint credit lines, or a lawyer's view on them, so new debt is not run up in both names.
 
-There is a line. Documenting and protecting is sensible; moving, hiding or spending down shared assets is not. Courts in most countries look back at transactions around a separation and can reverse them or penalise the person who made them.
+There is a line. Documenting and protecting is sensible; moving, hiding or spending down shared assets is not. Courts in most countries look back at transactions around a separation and can reverse them or penalize the person who made them.
 
 </details>
 
@@ -96,7 +96,7 @@ Married couples start from their country's default regime for who owns what.
 |---|---|---|
 | [Community property](#term-community-property) | Most things acquired during the marriage belong to both equally | Several US states, France, Spain, much of Latin America |
 | [Equitable distribution](#term-equitable-distribution) | A court divides property fairly, which may not mean equally | Most US states, England and Wales |
-| Separate property with equalisation | Each keeps their own property, and gains made during the marriage are evened out | Germany and Switzerland, with related forms elsewhere in Europe |
+| Separate property with equalization | Each keeps their own property, and gains made during the marriage are evened out | Germany and Switzerland, with related forms elsewhere in Europe |
 
 These are defaults, and a marriage contract, where one was signed, can replace them. And each usually separates what was built during the marriage from what each person brought in or inherited, which is why the inventory records when things were acquired.
 
@@ -138,7 +138,7 @@ Before keeping the home, many people run a [cash flow forecast](/blog/cash-flow-
 
 Retirement accounts get favourable tax treatment in exchange for rules on when money can come out (the [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered them), and those rules do not pause for a divorce. If a settlement gives a spouse half a pension and the holder withdraws half and hands over cash, it is the trap the [account consolidation post](/blog/account-consolidation-and-financial-data-hygiene/) described for job changes: most tax systems see a withdrawal, with tax, possibly a penalty, and the tax status lost for good.
 
-Many jurisdictions provide a formal route that moves part of one person's pension into the other's name and keeps it inside the system. In the US, qualified employer plans commonly use a [qualified domestic relations order](#term-qualified-domestic-relations-order), while IRAs generally use a transfer incident to divorce; in England and Wales, the mechanism is a pension sharing order; in Germany, qualifying pension rights built during the marriage are equalised through the divorce process. The names differ and the principle is the same. Finding out what it is called where you live before anything is signed is the step where a professional most clearly pays for themselves.
+Many jurisdictions provide a formal route that moves part of one person's pension into the other's name and keeps it inside the system. In the US, qualified employer plans commonly use a [qualified domestic relations order](#term-qualified-domestic-relations-order), while IRAs generally use a transfer incident to divorce; in England and Wales, the mechanism is a pension sharing order; in Germany, qualifying pension rights built during the marriage are equalized through the divorce process. The names differ and the principle is the same. Finding out what it is called where you live before anything is signed is the step where a professional most clearly pays for themselves.
 
 ## Beneficiary forms, wills and joint debts need checking after a settlement
 
@@ -179,7 +179,7 @@ Rebuilding takes longer than dividing. Two homes cost more than one, so the new 
 - **The family home:** several countries protect a spouse's or children's right to stay for a period, whoever's name is on it.
 - **Japan and Indonesia:** since April 2026 Japan's Civil Code presumes that both spouses contributed equally to property acquired together during the marriage, and the time to claim a division rose from two to five years after divorce. In Indonesia property acquired during the marriage is generally joint, but its division follows the law that applies to the couple; for Muslims the Compilation of Islamic Law generally gives each spouse half unless a marriage agreement says otherwise.
 - **Cross-border marriages:** if you married in one country and live in another, more than one country's rules may be arguable, and which court hears the case can change the result, so early advice matters.
-- **Religious and customary marriages:** a marriage made only under religious or customary rites may not be recognised by civil law where you live, which can leave a spouse with the weaker position of an unmarried partner.
+- **Religious and customary marriages:** a marriage made only under religious or customary rites may not be recognized by civil law where you live, which can leave a spouse with the weaker position of an unmarried partner.
 
 </details>
 

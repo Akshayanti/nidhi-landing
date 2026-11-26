@@ -51,9 +51,9 @@ export const STOCK_BOND_CORRELATION = 0.2;
 /**
  * Return settings. "historical" is the lognormal fitted to the world indices
  * above. "cautious" and "optimistic" keep exactly the same ups and downs
- * (the same log-space spread) but move the compound yearly return to the low
- * and high ends of the long-run range used across nidhi's articles: stocks
- * about 4 to 6% a year after inflation, bonds 1 to 3%.
+ * (the same log-space spread) but move the compound yearly return to rates
+ * set either side of the world record (about 5.3% stocks, 1.7% bonds,
+ * compound): stocks 4% and 6% a year after inflation, bonds 1% and 3%.
  */
 export type ReturnSetting = 'cautious' | 'historical' | 'optimistic';
 export const RETURN_SETTINGS: readonly ReturnSetting[] = ['cautious', 'historical', 'optimistic'];
@@ -322,10 +322,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
   let line = inputs.start;
   for (let y = 1; y <= years; y++) {
     const saving = y <= inputs.saveYears;
-    if (line <= 0 && !saving) {
-      straightLine.push(0);
-      continue;
-    }
+    // A line at nothing stays there once withdrawals start: the first month's
+    // withdrawal cannot be paid, and nothing times any growth is nothing.
     line = stepYear(line, lineGrowth, saving ? inputs.monthly : -monthlyOut).balance;
     straightLine.push(line);
   }
@@ -334,7 +332,6 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
   const runOutYear = new Int32Array(paths).fill(-1);
   const bands: Percentiles[] = [percentilesOf(balance)];
   let below = 0;
-  if (inputs.saveYears === 0) for (let p = 0; p < paths; p++) if (balance[p] < straightLine[0]) below++;
 
   for (let y = 1; y <= years; y++) {
     const saving = y <= inputs.saveYears;
@@ -358,7 +355,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
       const growth = (w * stock + (1 - w) * bond) * keep;
       const step = stepYear(balance[p], growth, saving ? inputs.monthly : -monthlyOut);
       balance[p] = step.balance;
-      if (step.ranOut && !saving && runOutYear[p] < 0) runOutYear[p] = y - inputs.saveYears;
+      // A path that had run out was passed over above, so this is its first time.
+      if (step.ranOut && !saving) runOutYear[p] = y - inputs.saveYears;
     }
     bands.push(percentilesOf(balance));
     if (y === inputs.saveYears) for (let p = 0; p < paths; p++) if (balance[p] < straightLine[y]) below++;
@@ -380,7 +378,8 @@ export function simulate(raw: SimulationInputs, options: SimulationOptions = {})
     bands,
     straightLine,
     atRetirement: bands[inputs.saveYears],
-    belowStraightLine: inputs.saveYears > 0 ? below / paths : 0,
+    // Counted only at the end of saving: none for a plan without any.
+    belowStraightLine: below / paths,
     lasted,
     medianRunOutYear,
     paths,

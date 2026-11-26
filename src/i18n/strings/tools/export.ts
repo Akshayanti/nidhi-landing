@@ -20,6 +20,7 @@
 export const exportEn = {
   /** In front of a field's error message, so it is told apart from help text by more than colour. */
   fieldError: 'Error: {message}',
+  fieldUnreadable: 'This value could not be read. Enter it again.',
   heading: 'Save or share these results',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'This tool needs JavaScript, which is off or blocked in this browser. The figures below are an example and will not change when you type.',
@@ -87,6 +88,7 @@ export const exportEn = {
  */
 export const exportHi: typeof exportEn = {
   fieldError: 'त्रुटि: {message}',
+  fieldUnreadable: 'यह मान पढ़ा नहीं जा सका। इसे दोबारा लिखें।',
   heading: 'इन नतीजों को सेव या शेयर करें',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'इस टूल के लिए JavaScript ज़रूरी है, जो इस ब्राउज़र में बंद या ब्लॉक है। नीचे के आँकड़े एक उदाहरण हैं और आपके कुछ भरने पर नहीं बदलेंगे।',
@@ -102,7 +104,7 @@ export const exportHi: typeof exportEn = {
     answer: 'आपका जवाब',
     meaning: 'इसका मतलब',
     entered: 'आपने क्या भरा',
-    assumptions: 'धारणाएँ और सीमाएँ',
+    assumptions: 'मान्यताएँ और सीमाएँ',
     sampled: 'हर पाँचवाँ साल और आख़िरी साल दिखाया गया है। स्प्रेडशीट में हर साल की जानकारी है।',
     footer: 'nidhi.today पर {date} को बनाई गई। यह शैक्षिक अनुमान है, वित्तीय सलाह नहीं। इस रिपोर्ट में आपके भरे आँकड़े हैं। यह आपके डिवाइस पर बनी, और कुछ भी अपलोड नहीं हुआ।',
     beta: "nidhi का प्लानर बन रहा है। इसके मुफ़्त बीटा को जनवरी 2027 में खोलने की योजना है: nidhi.today/hi/beta/",
@@ -117,11 +119,11 @@ export const exportHi: typeof exportEn = {
   },
   about: {
     tool: 'टूल',
-    made: 'बनाने की तारीख',
+    made: 'बनाने की तारीख़',
     currency: 'मुद्रा',
     page: 'पेज',
     privacy: 'प्राइवेसी',
-    privacyText: 'आपके ब्राउज़र में बनी। ये आँकड़े nidhi तक कभी नहीं पहुँचे, और nidhi के पास यह फ़ाइल देखने या मिटाने का कोई तरीका नहीं है।',
+    privacyText: 'आपके ब्राउज़र में बनी। ये आँकड़े nidhi तक कभी नहीं पहुँचे, और nidhi के पास यह फ़ाइल देखने या मिटाने का कोई तरीक़ा नहीं है।',
     note: 'ध्यान दें',
     noteText:
       'यह एक मुफ़्त टूल का शैक्षिक अनुमान है, वित्तीय सलाह नहीं। पेज बताता है कि इसकी गणना कैसे होती है और यह किन बातों को शामिल नहीं करता।',
@@ -146,13 +148,14 @@ export const exportHi: typeof exportEn = {
 /** Spanish: tú, as the tools address the reader. */
 export const exportEs: typeof exportEn = {
   fieldError: 'Error: {message}',
+  fieldUnreadable: 'No se pudo leer este valor. Escríbelo de nuevo.',
   heading: 'Guarda o comparte estos resultados',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'Esta herramienta necesita JavaScript, que en este navegador está desactivado o bloqueado. Las cifras de abajo son un ejemplo y no cambiarán cuando escribas.',
   spreadsheet: 'Descargar como hoja de cálculo (Excel, Google Sheets)',
   print: 'Crear un informe en PDF',
   note: 'Se crea en tu dispositivo. No se sube nada.',
-  inApp: '¿Estás dentro de una app? Abre primero esta página en el navegador de tu móvil (menú •••) y luego guarda.',
+  inApp: '¿Estás dentro de una app? Abre primero esta página en el navegador de tu teléfono (menú •••) y luego guarda.',
   downloaded: 'Hoja de cálculo creada. Mírala en tus descargas.',
   notReady: 'Funcionan cuando se muestran los resultados.',
   report: {
@@ -160,7 +163,7 @@ export const exportEs: typeof exportEn = {
     made: 'Creado el {date}',
     answer: 'Tu respuesta',
     meaning: 'Qué significa',
-    entered: 'Lo que introdujiste',
+    entered: 'Lo que escribiste',
     assumptions: 'Supuestos y límites',
     sampled: 'Se muestra un año de cada cinco, además del último. La hoja de cálculo contiene todos los años.',
     footer: 'Creado en nidhi.today el {date}. Una estimación con fines educativos, no asesoramiento financiero. Este informe contiene las cifras que escribiste. Se creó en tu dispositivo y no se subió nada.',
@@ -168,7 +171,7 @@ export const exportEs: typeof exportEn = {
   },
   sheets: {
     about: 'Información',
-    inputs: 'Datos introducidos',
+    inputs: 'Datos que escribiste',
   },
   columns: {
     item: 'Concepto',
@@ -193,8 +196,8 @@ export const exportEs: typeof exportEn = {
    * written in millions by the formatter ("2.500 M €"), never with a B.
    */
   chart: {
-    amountsIn: 'Importes en {currency}',
-    amountsInScale: 'Importes en {scale} de {currency}',
+    amountsIn: 'Cantidades en {currency}',
+    amountsInScale: 'Cantidades en {scale} de {currency}',
     scales: { thousand: 'miles', lakh: 'cientos de miles', crore: 'decenas de millones', million: 'millones', billion: 'miles de millones' },
     short: { thousand: '{n}\u00a0mil', lakh: '{n}\u00a0lakh', crore: '{n}\u00a0crore', million: '{n}\u00a0M', billion: '{n}\u00a0mil\u00a0M' },
   },
@@ -205,6 +208,7 @@ export const exportEs: typeof exportEn = {
 /** Czech: vy, as the tools address the reader; imperatives in the plural. */
 export const exportCs: typeof exportEn = {
   fieldError: 'Chyba: {message}',
+  fieldUnreadable: 'Tuto hodnotu se nepodařilo přečíst. Zadejte ji znovu.',
   heading: 'Uložte nebo sdílejte tyto výsledky',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'Tento nástroj potřebuje JavaScript, který je v\u00a0tomto prohlížeči vypnutý nebo blokovaný. Čísla níže jsou ukázka a\u00a0při psaní se nezmění.',
@@ -242,7 +246,7 @@ export const exportCs: typeof exportEn = {
     privacyText: 'Vytvořeno ve vašem prohlížeči. nidhi tato čísla nikdy nedostalo a tento soubor nevidí ani nemůže smazat.',
     note: 'Poznámka',
     noteText:
-      'Vzdělávací odhad z bezplatného nástroje, ne finanční poradenství. Stránka vysvětluje, jak se počítá a co do výpočtu nezahrnuje.',
+      'Vzdělávací odhad z nástroje zdarma, ne finanční poradenství. Stránka vysvětluje, jak se počítá a co do výpočtu nezahrnuje.',
     beta: "Beta plánovače",
     betaText: "Plánovač nidhi se připravuje. Jeho beta zdarma se má otevřít v lednu 2027: nidhi.today/cs/beta/",
   },
@@ -263,13 +267,14 @@ export const exportCs: typeof exportEn = {
 /** Marathi: तुम्ही, as the tools address the reader. */
 export const exportMr: typeof exportEn = {
   fieldError: 'त्रुटी: {message}',
+  fieldUnreadable: 'हे मूल्य वाचता आले नाही. ते पुन्हा भरा.',
   heading: 'हे निकाल सेव्ह किंवा शेअर करा',
   /** Shown above a tool when the browser runs no JavaScript: the page does not calculate. */
   noScript: 'या साधनासाठी JavaScript आवश्यक आहे, जे या ब्राउझरमध्ये बंद किंवा ब्लॉक केलेले आहे. खालील आकडे उदाहरण आहेत आणि तुम्ही काही भरल्यावर बदलणार नाहीत.',
   spreadsheet: 'स्प्रेडशीट म्हणून डाउनलोड करा (Excel, Google Sheets)',
   print: 'PDF अहवाल तयार करा',
   note: 'तुमच्या डिव्हाइसवर तयार होते. काहीही अपलोड होत नाही.',
-  inApp: 'एखाद्या ॲपच्या आत आहात? आधी हे पेज तुमच्या फोनच्या ब्राउझरमध्ये उघडा (••• मेन्यू), मग सेव्ह करा.',
+  inApp: 'एखाद्या ॲपच्या आत आहात? आधी हे पान तुमच्या फोनच्या ब्राउझरमध्ये उघडा (••• मेन्यू), मग सेव्ह करा.',
   downloaded: 'स्प्रेडशीट तयार झाली. तुमचे डाउनलोड पाहा.',
   notReady: 'निकाल दिसल्यावर ही बटणे काम करतात.',
   report: {
@@ -295,12 +300,12 @@ export const exportMr: typeof exportEn = {
     tool: 'साधन',
     made: 'तयार केल्याची तारीख',
     currency: 'चलन',
-    page: 'पेज',
+    page: 'पान',
     privacy: 'गोपनीयता',
     privacyText: 'तुमच्या ब्राउझरमध्ये तयार झाली. हे आकडे nidhi पर्यंत कधीच पोहोचले नाहीत, आणि nidhi ही फाइल पाहू किंवा हटवू शकत नाही.',
     note: 'टीप',
     noteText:
-      'हा एका मोफत साधनाचा शैक्षणिक अंदाज आहे, आर्थिक सल्ला नाही. पेजवर याची गणना कशी होते आणि यात कोणत्या गोष्टी धरलेल्या नाहीत हे सांगितले आहे.',
+      'हा एका मोफत साधनाचा शैक्षणिक अंदाज आहे, आर्थिक सल्ला नाही. पानावर याची गणना कशी होते आणि यात कोणत्या गोष्टी धरलेल्या नाहीत हे सांगितले आहे.',
     beta: "प्लॅनर बीटा",
     betaText: "nidhi चा प्लॅनर तयार होत आहे. त्याचा मोफत बीटा जानेवारी 2027 मध्ये सुरू करण्याची योजना आहे: nidhi.today/mr/beta/",
   },

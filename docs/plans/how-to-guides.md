@@ -31,7 +31,7 @@ Short guides at `/how-to/` that each answer one money question a reader recognis
 8. **You can stop here**: the result the reader now holds.
 9. A **blank sheet** to print and fill in where readers repeat the task. No download file.
 10. **What depends on you**: the decision the page leaves to the reader first, then what it depends on.
-11. **Go deeper**: the lessons (unpublished ones appear when they go live), a matching tool, two or three references; sources folded; last checked date.
+11. **Go deeper**: the lessons (unpublished ones appear when they go live; while none is live the section is headed Further reading), a matching tool, two or three references; sources folded; last checked date.
 
 ## Topic rule
 

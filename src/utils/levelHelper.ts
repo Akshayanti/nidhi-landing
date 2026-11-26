@@ -13,18 +13,20 @@
  * Psychology sits beside the ladder: it has no ideas to tick, and is
  * suggested when the goal is about following through.
  *
- * Only structure lives here, and only the part the island may carry: the goals
- * and the rule that turns ticks into a suggestion. The ideas themselves (which
- * lesson teaches each one) are in `levelConcepts.ts`, which the page reads at
- * build time; the island is handed the ideas of the published levels as a prop
- * and passes them to `suggestLevel`, so its script never names a lesson that is
- * not out yet (#464). Every word the reader sees (an idea's label, a goal's
+ * Only structure lives here, and only the part the page's script may carry:
+ * the goals and the rule that turns ticks into a suggestion. The ideas
+ * themselves (which lesson teaches each one) are in `levelConcepts.ts`, which
+ * the page reads at build time; the script is handed the ideas of the
+ * published levels in the page's data and passes them to `suggestLevel`, so it
+ * never names a lesson that is not out yet (#464). Every word the reader sees (an idea's label, a goal's
  * question and the phrase its reason completes) is in the catalog under
  * `blogIndex.island.concepts` and `blogIndex.island.goals`, so a language's
  * helper speaks that language without this module knowing any.
  *
- * Answers never leave the page (see LearnHome.tsx and the privacy notice).
+ * Answers never leave the page (see LearnHome.astro and the privacy notice).
  */
+
+import { format } from '../i18n/format.ts';
 
 /** Levels whose ideas build on each other, in order. */
 const LADDER = ['discovery', 'building', 'optimizing'] as const;
@@ -122,4 +124,34 @@ export function suggestLevel(ticked: ReadonlySet<string>, goalId: string | null,
   if (firstGap) return make(firstGap, 'foundation', null);
   const last = ladder[ladder.length - 1] ?? 'discovery';
   return make(psychology ?? last, 'all-known', psychology ? last : null);
+}
+
+/** The catalog lines a suggestion's reason is written from (`blogIndex.island`). */
+export interface ReasonWords {
+  resultReasonFoundation: string;
+  resultReasonGoalPsych: string;
+  resultReasonGoal: string;
+  resultReasonGoalKnown: string;
+  resultReasonAllKnownPsych: string;
+  resultReasonAllKnown: string;
+}
+
+/**
+ * Why the level was suggested, in terms of the reader's own answers. `name`
+ * is the level's name and `goalTopic` the phrase of the goal picked, both in
+ * the page's language.
+ */
+export function helperReason(s: Suggestion, name: string, words: ReasonWords, goalTopic?: string): string {
+  switch (s.reason) {
+    case 'foundation':
+      return format(words.resultReasonFoundation, { ticked: s.ticked, total: s.total, level: name });
+    case 'goal':
+      return s.level === 'psychology'
+        ? format(words.resultReasonGoalPsych, { topic: goalTopic ?? '' })
+        : format(words.resultReasonGoal, { topic: goalTopic ?? '' });
+    case 'goal-known':
+      return format(words.resultReasonGoalKnown, { topic: goalTopic ?? '', ticked: s.ticked, total: s.total });
+    case 'all-known':
+      return s.level === 'psychology' ? words.resultReasonAllKnownPsych : words.resultReasonAllKnown;
+  }
 }

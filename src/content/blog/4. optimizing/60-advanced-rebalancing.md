@@ -153,7 +153,7 @@ Everything above assumes the portfolio covers much of retirement spending. When 
 - **Australia.** Superannuation funds often offer age-based options; transition-to-retirement rules allow specific strategies in the late working years.
 - **Canada.** Converting an RRSP to a RRIF, which must happen by a statutory deadline rather than necessarily at retirement, can be a rebalancing moment; a TFSA has different tax effects when rebalancing.
 - **Mexico.** Since December 2019 the workplace pension managers (afores) invest each account in a generational fund (SIEFORE) set by year of birth, in five-year groups, which moves to less risky assets with age: a target-date fund built into the system.
-- **Chile.** Members have chosen among five pension funds, from A (the most shares) to E (the fewest), with a default that moves to safer funds with age. Under the 2025 pension reform these give way to generational funds, organised by age group like Mexico's, from April 2027.
+- **Chile.** Members have chosen among five pension funds, from A (the most shares) to E (the fewest), with a default that moves to safer funds with age. Under the 2025 pension reform these give way to generational funds, organized by age group like Mexico's, from April 2027.
 
 </details>
 

@@ -32,7 +32,7 @@ const isDev = import.meta.env.DEV;
 
       <h1 class="transactional-title">Unsubscribe from nidhi</h1>
       <p class="transactional-body">
-        Click the button below and you&rsquo;ll stop receiving emails from us.
+        Click the button below and you&rsquo;ll stop receiving emails from nidhi.
         No questions, no &ldquo;are you sure,&rdquo; no re-engagement sequence.
       </p>
 
@@ -127,7 +127,7 @@ const isDev = import.meta.env.DEV;
           return;
         }
         if (outcome !== 'ok') {
-          setStatus('We couldn’t tell whether that went through. Please try again; trying twice is safe.', 'error');
+          setStatus('It’s not clear whether that went through. Please try again; trying twice is safe.', 'error');
           btn.disabled = false;
           btn.textContent = 'Unsubscribe me';
           return;

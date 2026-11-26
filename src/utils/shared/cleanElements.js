@@ -30,7 +30,8 @@
  */
 (function (root) {
   // Tags a click on this site can land on or pass through, HTML and SVG.
-  var TAGS = {};
+  // No prototype, so a word such as "constructor" is not found as a tag.
+  var TAGS = Object.create(null);
   ('a abbr article aside b blockquote body button caption circle code dd details dialog div dl dt ' +
     'em fieldset figcaption figure footer form g h1 h2 h3 h4 h5 h6 header hr html i img input ins kbd ' +
     'label legend li line main mark nav ol optgroup option output p path picture polygon polyline pre ' +
@@ -58,7 +59,7 @@
 
   function tag(value) {
     var t = typeof value === 'string' ? value.toLowerCase() : '';
-    return TAGS[t] ? t : null;
+    return TAGS[t] === true ? t : null;
   }
 
   // One clean element, from whatever was read; null when nothing is known.
@@ -162,9 +163,9 @@
     if (!props || typeof props !== 'object') return;
     var hasChain = Object.prototype.hasOwnProperty.call(props, '$elements_chain');
     var hasList = Object.prototype.hasOwnProperty.call(props, '$elements');
-    if (!hasChain && !hasList) return;
+    // Dropped from every event, with element data or without it.
+    for (var d = 0; d < DROP.length; d++) delete props[DROP[d]];
     if (hasChain) props.$elements_chain = cleanChain(props.$elements_chain, labels);
     if (hasList) props.$elements = cleanList(props.$elements, labels);
-    for (var d = 0; d < DROP.length; d++) delete props[DROP[d]];
   };
 })(typeof window !== 'undefined' ? window : globalThis);

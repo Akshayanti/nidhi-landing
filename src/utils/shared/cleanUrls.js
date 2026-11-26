@@ -51,7 +51,10 @@
     var isTool = value.indexOf('/free/') !== -1;
     var isBlog = value.indexOf('/blog') !== -1 && value.indexOf('q=') !== -1;
     var isToken = (value.indexOf('/confirm') !== -1 || value.indexOf('/unsubscribe') !== -1) && value.indexOf('t=') !== -1;
-    if (!isTool && !isBlog && !isToken) return value;
+    // A percent sign or a backslash can hide a match from the tests above
+    // ("?%71=", "\\free\\"): such a value goes to the parser too.
+    var unsure = value.indexOf('%') !== -1 || value.indexOf('\\') !== -1;
+    if (!isTool && !isBlog && !isToken && !unsure) return value;
     var u;
     try { u = new URL(value, root.location.origin); } catch (e) { return value; }
     if (u.host !== root.location.host) return value;

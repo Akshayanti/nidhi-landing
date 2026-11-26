@@ -36,7 +36,7 @@ export function useChartRem(svg: RefObject<SVGSVGElement | null>, width: number)
     setState((prev) => (Math.abs(prev.rem - rem) < 0.15 && prev.scale === scale ? prev : { rem, scale }));
   };
   const watched = useRef<{ el: SVGSVGElement; seen: ResizeObserver } | null>(null);
-  useLayoutEffect(() => {
+  const watch = () => {
     const el = svg.current;
     if (watched.current && watched.current.el !== el) {
       watched.current.seen.disconnect();
@@ -48,6 +48,13 @@ export function useChartRem(svg: RefObject<SVGSVGElement | null>, width: number)
       watched.current = { el, seen };
     }
     measure.current();
+  };
+  useLayoutEffect(() => {
+    // A hook drawn inside its own SVG (a donut's centre, say) runs before the
+    // SVG's ref is attached: React attaches a parent's ref after its
+    // children's effects. Look again once the drawing is committed (#876).
+    watch();
+    if (!svg.current) queueMicrotask(watch);
   });
   useLayoutEffect(() => {
     let live = true;
@@ -57,7 +64,9 @@ export function useChartRem(svg: RefObject<SVGSVGElement | null>, width: number)
       watched.current?.seen.disconnect();
       watched.current = null;
     };
-  }, []);
+  },
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, so a list of one fixed string cannot differ from an empty one.
+  []);
   return state;
 }
 

@@ -155,3 +155,30 @@ describe('currency changes: the day a change took effect (#619)', () => {
   });
 });
 
+describe('currency changes: the last year of the span', () => {
+  it('a change in the very year the figures end is crossed, not still to come', () => {
+    const c = currencyChangesBetween('TUR', 2000, 2005);
+    assert.deepEqual(c.crossed, [{ year: 2005, ratio: 1_000_000 }]);
+    assert.equal(c.ratio, 1_000_000);
+    assert.deepEqual(c.later, []);
+  });
+
+  it('a change the year after the figures end is still to come', () => {
+    const c = currencyChangesBetween('TUR', 2000, 2004);
+    assert.deepEqual(c.crossed, []);
+    assert.equal(c.ratio, 1);
+    assert.deepEqual(c.later, [{ year: 2005, ratio: 1_000_000 }]);
+  });
+
+  it('Finland from 1960 to 2001: the new mark is crossed and the euro is still to come', () => {
+    const c = currencyChangesBetween('FIN', 1960, 2001);
+    assert.deepEqual(c.crossed, [{ year: 1963, ratio: 100 }]);
+    assert.deepEqual(c.later, [{ year: 2002, ratio: 5.94573 }]);
+    assert.equal(c.ratio, 100);
+  });
+
+  it('a country not in the table has no mixed year', () => {
+    assert.equal(mixedYearChange('nowhere', 1993), null);
+    assert.equal(mixedYearChange('LVA', 2014), null, 'a change on 1 January has no date of its own');
+  });
+});

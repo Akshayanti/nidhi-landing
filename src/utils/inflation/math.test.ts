@@ -8,7 +8,10 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  MAX_AMOUNT,
   MAX_RATE,
+  MODES,
+  answer,
   answerPath,
   bandRates,
   cumulativeFactor,
@@ -22,7 +25,9 @@ import {
   parseYears,
   realRate,
   recentAverage,
+  round2,
   roundAbout,
+  seriesYears,
   unbrokenStart,
   whatItBuys,
   whatItCosts,
@@ -168,6 +173,15 @@ describe('typed values, by the page locale', () => {
     assert.equal(parseYears('0'), null);
     assert.equal(parseYears('101'), null);
     assert.equal(parseYears('2.5'), null);
+    // Digits from a Devanagari, Arabic-Indic or Persian keyboard.
+    assert.equal(parseYears('१०'), 10);
+    assert.equal(parseYears(' ३० '), 30);
+    assert.equal(parseYears('١٥'), 15);
+    assert.equal(parseYears('۲۰'), 20);
+    assert.equal(parseYears('१२३४'), null, 'past the most years');
+    assert.equal(parseYears('२.५'), null, 'still whole years only');
+    assert.equal(parseAmount('१५००००', 'en-IN'), 150_000);
+    assert.equal(parseAmount('१,५०,०००', 'en-IN'), 150_000);
     assert.equal(parseAmount('1000.50'), 1000.5);
     assert.equal(parseAmount('10,000', 'en'), 10_000);
     assert.equal(parseAmount('10.000', 'es'), 10_000);
@@ -268,5 +282,149 @@ describe('the compact history the page serves', () => {
     assert.deepEqual(fromCompact(null), {});
     assert.deepEqual(fromCompact([2020]), {});
     assert.deepEqual(fromCompact(['x', [1]]), {});
+    assert.deepEqual(fromCompact(undefined), {});
+  });
+});
+
+describe('the four questions', () => {
+  it('are offered in the order of the tabs', () => {
+    assert.deepEqual(MODES, ['buy', 'cost', 'past', 'keep']);
+  });
+
+  it('each has its own sum: 1,000 at 10% inflation over 2 years, with a 21% raise for keeping up', () => {
+    close(answer('buy', 1000, 10, 2), 1000 / 1.21);
+    close(answer('cost', 1000, 10, 2), 1210);
+    close(answer('past', 1000, 10, 2), 1210);
+    // (1.21 / 1.10)^2 = 1.1^2 = 1.21
+    close(answer('keep', 1000, 10, 2, 21), 1210);
+    // With no raise given, keeping up is the same as what it buys.
+    close(answer('keep', 1000, 10, 2), 1000 / 1.21);
+  });
+
+  it('keeping up is drawn year by year at the real rate', () => {
+    const path = answerPath('keep', 1000, 10, 2, 21);
+    assert.equal(path.length, 3);
+    close(path[0], 1000);
+    close(path[1], 1100);
+    close(path[2], 1210);
+  });
+});
+
+describe('a rate kept to two decimals', () => {
+  it('rounds to the nearest hundredth', () => {
+    assert.equal(round2(3.14159), 3.14);
+    assert.equal(round2(2.345), 2.35);
+    assert.equal(round2(-2.5049), -2.5);
+  });
+
+  it('never gives a negative zero, which would be shown as "-0"', () => {
+    assert.ok(Object.is(round2(-0.001), 0));
+    assert.ok(Object.is(round2(-0), 0));
+    assert.ok(Object.is(round2(0), 0));
+  });
+});
+
+describe('the edges of what a box accepts', () => {
+  it('a rate that cannot be negative refuses a minus sign, even before a zero', () => {
+    assert.equal(parsePercent('-0', 0, MAX_RATE), null);
+    assert.equal(parsePercent('-0.00', 0, MAX_RATE), null);
+  });
+
+  it('a range that reaches below zero accepts its own lowest value', () => {
+    assert.equal(parsePercent('-99.99', -99.99, MAX_RATE), -99.99);
+    assert.equal(parsePercent('5', 5, 10), 5);
+    assert.equal(parsePercent('10', 5, 10), 10);
+    assert.equal(parsePercent('4.99', 5, 10), null);
+    assert.equal(parsePercent('10.01', 5, 10), null);
+    assert.equal(parsePercent('abc', 5, 10), null);
+  });
+
+  it('years: 1 and 100 are in, spaces around the number are ignored, four digits are out', () => {
+    assert.equal(parseYears('1'), 1);
+    assert.equal(parseYears('100'), 100);
+    assert.equal(parseYears(' 10 '), 10);
+    assert.equal(parseYears('1000'), null);
+    assert.equal(parseYears('x10'), null);
+    assert.equal(parseYears('10x'), null);
+    assert.equal(parseYears(''), null);
+  });
+
+  it('an amount of exactly a trillion is in, and 0 is an amount', () => {
+    assert.equal(parseAmount('1000000000000'), MAX_AMOUNT);
+    assert.equal(parseAmount('1000000000000.01'), null);
+    assert.equal(parseAmount('0'), 0);
+    assert.equal(parseAmount('abc'), null);
+  });
+});
+
+describe('a history with nothing in it, or with a gap', () => {
+  it('an empty history has no years, no gaps and no rise', () => {
+    assert.deepEqual(seriesYears({}), []);
+    assert.deepEqual(missingYears({}), []);
+    assert.deepEqual(cumulativeFactor({}, 2000), { factor: 1, toYear: null, missing: [] });
+    assert.deepEqual(historyPath({}, 2000, 100), []);
+    assert.deepEqual(historyPath({}, -5, 100), []);
+  });
+
+  it('years come oldest first, by number, however the keys were written', () => {
+    assert.deepEqual(seriesYears({ 2021: 1, 1999: 2, 2005: 3 }), [1999, 2005, 2021]);
+    // Keys that are not plain whole numbers keep the order they were written in, so they need sorting.
+    assert.deepEqual(seriesYears({ [-1]: 1, [-3]: 2, [-2]: 3 }), [-3, -2, -1]);
+    assert.deepEqual(seriesYears({ [-3]: 1, 2: 2, [-1]: 3 }), [-3, -1, 2]);
+  });
+
+  it('a history with no gap has no missing years', () => {
+    assert.deepEqual(missingYears({ 2019: 2, 2020: 10, 2021: 5 }), []);
+    assert.deepEqual(missingYears({ 2020: 10 }), []);
+  });
+
+  it('the path holds its value through a year with no figure', () => {
+    // 100 in 2012, +10% in 2013, nothing for 2014 and 2015, +20% in 2016.
+    const path = historyPath({ 2012: 25, 2013: 10, 2016: 20 }, 2012, 100);
+    assert.deepEqual(path.map((p) => p.year), [2012, 2013, 2014, 2015, 2016]);
+    close(path[1].value, 110);
+    close(path[2].value, 110);
+    close(path[3].value, 110);
+    close(path[4].value, 132);
+  });
+
+  it('a single year averages to itself', () => {
+    close(geometricAverage([7]), 7);
+  });
+});
+
+describe('years grouped into runs', () => {
+  it('sorts first, and starts a new run after every break', () => {
+    assert.deepEqual(yearRuns([2020, 2014, 2016, 2015]), [[2014, 2016], [2020, 2020]]);
+    assert.deepEqual(yearRuns([2001, 2003, 2005]), [[2001, 2001], [2003, 2003], [2005, 2005]]);
+    assert.deepEqual(yearRuns([9, 10, 11, 100]), [[9, 11], [100, 100]]);
+    assert.deepEqual(yearRuns([]), []);
+  });
+
+  it('leaves the list it was given as it was', () => {
+    const years = [2020, 2014];
+    yearRuns(years);
+    assert.deepEqual(years, [2020, 2014]);
+  });
+});
+
+describe('the highest and the lowest year', () => {
+  const series: Series = { 2019: -3, 2020: 5, 2021: 5, 2022: 1, 2023: -3, 2024: 2 };
+
+  it('the earliest year wins a tie, high or low', () => {
+    assert.deepEqual(extremes(series, [2019, 2020, 2021, 2022, 2023, 2024]), {
+      high: { year: 2020, rate: 5 },
+      low: { year: 2019, rate: -3 },
+    });
+  });
+
+  it('looks only at the years asked for, and only at those with a figure', () => {
+    assert.deepEqual(extremes(series, [2022, 2024]), { high: { year: 2024, rate: 2 }, low: { year: 2022, rate: 1 } });
+    assert.deepEqual(extremes(series, [2018, 2022, 2030]), { high: { year: 2022, rate: 1 }, low: { year: 2022, rate: 1 } });
+  });
+
+  it('is nothing when no year asked for has a figure', () => {
+    assert.equal(extremes(series, [2018, 2030]), null);
+    assert.equal(extremes(series, []), null);
   });
 });

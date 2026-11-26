@@ -109,7 +109,7 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
     <text x="428" y="153" text-anchor="start" class="fig-tick">with a gentle 3% real return</text>
     <text x="440" y="438" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative 3% real return, after inflation. Not a forecast. Returns are not guaranteed and can be negative.</text>
   </svg>
-  <figcaption>Identical paychecks, very different outcomes. The taller bars add a gentle 3% real return; even with zero growth, the saver who keeps more pulls far ahead. The gap was never the salary. It was the spending.</figcaption>
+  <figcaption>Identical paychecks, very different outcomes. The taller bars add a gentle 3% real return (growth left after inflation, the rise in prices); even with zero growth, the saver who keeps more pulls far ahead. The gap was never the salary. It was the spending.</figcaption>
 </figure>
 
 ## How to shift from income thinking to wealth thinking?

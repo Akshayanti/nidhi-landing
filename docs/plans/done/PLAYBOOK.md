@@ -106,6 +106,23 @@ After Beliefs 7 and these five posts, Sundays have no feed post until a new Sund
 - Series 1 to 3 did not post on Sundays. From the two-angle restart, Sundays alternate between Beliefs and free tools posts (§2.1), at 14:30 CET.
 - After Beliefs 7, Sundays go back to no feed post until a new Sunday plan is written here.
 
+## 4. Engagement Philosophy: approved CTA patterns
+
+> Moved 2026-11-22: §2.1 (no ask on captions or end cards), §2.2 (polls designed out) and the kit lint (one ask on a closer) replaced these.
+
+### Approved CTA patterns
+- **Save** — "Save this for..." / "Save this before..."
+- **Tag** — "Tag someone who..." / "Tag a friend considering..."
+- **Share** — "Share with anyone who..."
+- **Polls / quizzes / sliders** — self-contained, Instagram handles the interaction
+
+## 6. Caption Structure: CTAs (near end)
+
+> Moved 2026-11-22: §2.1 replaced this.
+
+### CTAs (near end)
+- 2–3 save / tag / share prompts
+
 ## 5. Carousel Structure
 
 > Moved 2026-11-03: no carousels since Oct 29, 2026 (owner); the carousel files are kept in the kits on purpose, and this spec stays here for reference. The Series 1 format's "unshipped Discovery posts" all shipped in May.
@@ -154,7 +171,7 @@ The carousel system has two formats. Series 1 (Discovery, posts 1 through 16b) s
 
 **No legacy `>>` / `>>>` / `———` directives.** The Series 1 format used these for centered/right-aligned text and divider rendering; the new layout system handles alignment via CSS per-layout, so authors don't write alignment markup. The renderer silently strips legacy markers if it encounters them, so old markdown re-renders without crashing, but Series 2 markdown should never use them.
 
-**Stories use the same visual system.** `scripts/story-template.html` was redesigned alongside the carousel template to share palette, type, eyebrow chip, and chrome conventions. A Series 2 post's feed carousel and 4-frame story cascade read as one branded surface. See §7 for the story spec.
+**Stories use the same visual system.** `scripts/templates/story-template.html` was redesigned alongside the carousel template to share palette, type, eyebrow chip, and chrome conventions. A Series 2 post's feed carousel and 4-frame story cascade read as one branded surface. See §7 for the story spec.
 
 ### 5.2 Series 1 legacy format (used through Discovery 16b)
 
@@ -173,7 +190,7 @@ This format remains the spec for any unshipped Discovery posts (13 onwards) so t
 
 > Moved 2026-11-03: the 13 to 18 reel count contradicts the kit lint (18 to 24, `scripts/render-kit.mjs`), and reel keywords now live in the kit, not in an LLM plan; the count is an open question in the live file.
 
-**Reels parity (added May 2026).** The same keyword surface applies to IG Reels — the topic classifier reads the Reels caption identically to feed posts. Reels carry a slightly tighter `13–18` keyword count than carousels (Reels captions are scrolled past faster; longer keyword blocks dilute the engagement signal). Reels tooling lives in `scripts/lib/render-platform-caption.mjs`; the LLM emits the array under `caption.instagramKeywords` and the scrubber rejects count violations, hashtag duplicates, and banned terms. Per-reel audience-angle notes belong in `docs/plans/IG-KEYWORDS.md` alongside carousel rationale; final keyword arrays live in the saved plan JSON at `output/plans/<level>/<slug>.json`.
+**Reels parity (added May 2026).** The same keyword surface applies to IG Reels — the topic classifier reads the Reels caption identically to feed posts. Reels carry a slightly tighter `13–18` keyword count than carousels (Reels captions are scrolled past faster; longer keyword blocks dilute the engagement signal). Reels tooling lives in `scripts/lib/media/render-platform-caption.mjs`; the LLM emits the array under `caption.instagramKeywords` and the scrubber rejects count violations, hashtag duplicates, and banned terms. Per-reel audience-angle notes belong in `docs/plans/IG-KEYWORDS.md` alongside carousel rationale; final keyword arrays live in the saved plan JSON at `output/plans/<level>/<slug>.json`.
 
 ## 7. Story Structure
 

@@ -91,7 +91,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
             id={inputId}
             type="email"
             name="email"
-            placeholder="your@email.com"
+            placeholder={waitlist.emailPlaceholder}
             required
             autocomplete="email"
             class="waitlist-input"
@@ -430,10 +430,6 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     margin-bottom: var(--space-2);
   }
 
-  @media (min-width: 480px) {
-    .waitlist-input-group { flex-direction: row; }
-  }
-
   .waitlist-input {
     flex: 1;
     min-width: 0;
@@ -445,6 +441,14 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     color: var(--color-text-primary);
   }
 
+  /* One row only while the field has room for its example: at a large text
+     size the button drops to the next line (#641). */
+  @media (min-width: 480px) {
+    .waitlist-input-group { flex-direction: row; flex-wrap: wrap; }
+    .waitlist-input { flex: 1 1 8rem; }
+    .waitlist-input-group > .waitlist-button { max-width: 100%; }
+  }
+
 
   /* Dark theme: the field is nearly as dark as the blue band (1.93:1), so it
      gets an edge of its own (4.0:1 on the band, #644). The padding gives up
@@ -454,7 +458,7 @@ const confirmTextId = `${idPrefix}-confirm-text`;
     padding: calc(var(--space-3) - 1px) calc(var(--space-4) - 1px);
   }
 
-  .waitlist-input::placeholder { color: var(--color-text-muted); }
+  .waitlist-input::placeholder { color: var(--color-text-muted); font-size: min(1em, 17.5vw); } /* whole at 400% text on a 320px phone (#641) */
   .waitlist-input:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 0; }
   /* On the blue card the teal ring cannot be seen, so every control there
      shows focus in white. */

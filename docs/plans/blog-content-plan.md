@@ -86,19 +86,19 @@ Replace with one of:
 
 **Check before shipping:** run `rg "(—|–|\s--\s)" src/content/blog/` — must return no matches.
 
-### 7. Universal concepts, eurozone defaults, cross-continent examples from Building onward
+### 7. Universal concepts, the euro to compare, cross-continent examples from Building onward
 
-**Core principle.** The *concepts* we teach are universal and should add value for readers across continents. The *examples* we use to teach them default to the eurozone (euro as base currency, eurozone baselines like 2% inflation target) for simplicity and coherence. From the Building level onward, we actively supplement with cross-continent examples wherever the specifics materially differ by jurisdiction.
+**Core principle.** The *concepts* we teach are universal and should add value for readers across continents. The *examples* use the euro where one currency keeps figures comparable across lessons and guides, and rotate across countries and life stages otherwise (owner, 2026-11-22; `../brand-identity.md`). Figures already published stay. From the Building level onward, we actively supplement with cross-continent examples wherever the specifics materially differ by jurisdiction.
 
 **What this means in practice:**
 
 **Concepts must be universal.** Net worth math, compound interest, risk-return tradeoffs, diversification, inflation effects, amortization, savings-rate thinking — these work everywhere and should be taught without geographic caveats. If a "concept" only applies in one country, it's not a concept, it's a local feature.
 
-**Default teaching currency: euro.** Consistent currency across examples makes the content easier to write, easier to read, and keeps cost-of-delay and compounding tables comparable across posts. Do not force currency-cycling inside Discovery posts — it adds noise without adding teaching value.
+**Euro to compare.** Where figures are read against each other (cost-of-delay and compounding tables, a worked example that returns in later lessons or guides), they are in euros, with eurozone baselines such as the 2% inflation target. An example that stands on its own rotates across countries and currencies, with one currency inside any one example.
 
-**Discovery level (posts 1-16): eurozone-default, jurisdiction-light.** Stay focused on the concept. Mention other jurisdictions only when the concept *itself* requires it — for example, Post 15 (credit scores) has to name FICO, SCHUFA, CIBIL, etc. because the very topic is "different scoring systems exist." Don't cram cross-continent comparisons into posts where they add nothing.
+**Discovery level (posts 1-16): euro to compare, jurisdiction-light.** Stay focused on the concept. Mention other jurisdictions only when the concept *itself* requires it — for example, Post 15 (credit scores) has to name FICO, SCHUFA, CIBIL, etc. because the very topic is "different scoring systems exist." Don't cram cross-continent comparisons into posts where they add nothing.
 
-**Building level onward (posts 17+): cross-continent examples where specifics differ.** Once readers are making concrete decisions — choosing investment vehicles, evaluating mortgages, computing FIRE targets, structuring goals — the eurozone default alone stops carrying the freight. In these posts, add:
+**Building level onward (posts 17+): cross-continent examples where specifics differ.** Once readers are making concrete decisions — choosing investment vehicles, evaluating mortgages, computing FIRE targets, structuring goals — one currency and one country's baselines stop carrying the freight. In these posts, add:
 - **Named regional equivalents** when introducing country-specific vehicles. Example: a retirement account post uses "a tax-advantaged retirement account (equivalent to the 401(k) in the US, EPF/NPS in India, SIPP in the UK, Superannuation in Australia, RRSP in Canada)" rather than picking one and privileging it.
 - **Cross-continent comparison tables** where structural variation matters: mortgage tenure norms, property transaction costs, tax-advantaged account contribution limits, credit-building mechanics.
 - **Return and inflation ranges, not single anchors.** A Building-level compounding example should span 5-9% nominal returns (covering developed and emerging markets) rather than anchor on 7% US equity.
@@ -116,9 +116,7 @@ Replace with one of:
 
 **Not in scope:** the site's own commercial or pricing copy (no price is set yet). This rule governs educational content.
 
-Open question for the owner: does the euro default hold for readers in India? (Raised in `reports/Lesson organisation for casual readers.md`; Rule 7 itself was not amended on Oct 25, 2026.)
-
-**Check before shipping a Building+ post:** does it name its eurozone defaults, and does it supplement with at least one cross-continent comparison (named equivalents, a comparison table, a range, or an explicit caveat) where readers in other regions would otherwise get stuck?
+**Check before shipping a Building+ post:** does it name the currency and baselines it compares in, and does it supplement with at least one cross-continent comparison (named equivalents, a comparison table, a range, or an explicit caveat) where readers in other regions would otherwise get stuck?
 
 ### 8. No memes or comics in blog post bodies
 
@@ -134,7 +132,7 @@ Posts use **diagrams, charts, tables, and conceptual illustrations** where visua
 
 ### 9. Blog figures: clean conceptual SVG, audience-anxiety-aware
 
-Blog posts include figures where visualization genuinely closes a comprehension gap that prose can't close on its own. The Eva-type primary audience reads personal finance because money makes them anxious; **a figure that reads as math homework makes the post worse, not better**. The figure language is shaped accordingly.
+Blog posts include figures where visualization genuinely closes a comprehension gap that prose can't close on its own. Any of the brand guide's four readers (`../brand-identity.md`) may find money or math stressful; **a figure that reads as math homework makes the post worse, not better**. The figure language is shaped accordingly.
 
 **What figures are for:**
 - Crystallizing a single conceptual idea the prose has just made (a structural "shape," not a data dump).
@@ -162,7 +160,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 - One title, one optional subtitle, one short caption. Captions can run an italic line of context; they should not re-explain the figure.
 - All numerical figures carry an "Illustrative" tag inside the figure or in the caption — same MiFID-on-images rule as image content elsewhere.
 
-**First shipped figures (May 2026; on Nov 3, 2026, 49 lessons carry 50 figures):** eight figures across eight posts (four Building, four Discovery), all inline SVG with one consistent visual grammar. xkcd #927 was retained briefly on #23 as the only photo embed but cut on consistency grounds — see PLAYBOOK Decision #30. Each kept figure shows something prose alone cannot.
+**First shipped figures (May 2026; on Nov 3, 2026, 49 lessons carry 50 figures):** eight figures across eight posts (four Building, four Discovery), all inline SVG with one consistent visual grammar. xkcd #927 was retained briefly on #23 as the only photo embed but cut on consistency grounds (no numbered PLAYBOOK decision records the cut; Decision #29 still lists it). Each kept figure shows something prose alone cannot.
 
 | Post | Figure | Why it earns the slot |
 |---|---|---|
@@ -186,7 +184,7 @@ Verification rule that catches both: a `curl` of the rendered page only proves t
 
 **Pre-publish checklist (every figure):**
 - [ ] Closes a real comprehension gap, or it gets cut.
-- [ ] Math-anxiety check: would an Eva-type reader treat this as homework? If yes, simplify.
+- [ ] Math-anxiety check: would a reader made anxious by numbers treat this as homework? If yes, simplify.
 - [ ] Brand palette via CSS custom properties (no hard-coded hex except `#ffffff` for text-on-color).
 - [ ] Renders cleanly at 320px width (mobile) — text inside SVG ≥ ~14px at viewBox scale, equivalent to ~6–7px at narrowest mobile but still legible because the figure scales smoothly.
 - [ ] Dark-mode pass: no element invisible against `#121212` background.

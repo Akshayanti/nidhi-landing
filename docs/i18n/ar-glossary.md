@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | صافي ثروتك هو ما تملكه مطروحًا منه ما عليك من ديون. | صافي ثروتكم هو ما تملكونه مطروحًا منه ما عليكم من ديون. | صافي الثروة هو مجموع ما يُملك مطروحًا منه مجموع الديون. |
 | A tool instruction | Enter the amount you borrowed. | أدخل المبلغ الذي اقترضته. | أدخلوا المبلغ الذي اقترضتموه. | يُرجى إدخال المبلغ المقترَض. |
 | An error message | The rate you entered must be between 0% and 100%. | يجب أن يكون سعر الفائدة الذي أدخلته بين 0% و100%. | يجب أن يكون سعر الفائدة الذي أدخلتموه بين 0% و100%. | يجب أن يكون سعر الفائدة بين 0% و100%. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | إذا كنت متأخرًا في السداد فلست وحدك، وهناك طرق للحصول على المساعدة. | إذا كنتم متأخرين في السداد فلستم وحدكم، وهناك طرق للحصول على المساعدة. | التأخر في السداد يحدث لكثيرين، وهناك طرق للحصول على المساعدة. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | قد يكون التأخر في سداد مدفوعاتك مرهقًا، وهناك طرق للحصول على المساعدة. | قد يكون التأخر في سداد مدفوعاتكم مرهقًا، وهناك طرق للحصول على المساعدة. | قد يكون التأخر في السداد مرهقًا، وهناك طرق للحصول على المساعدة. |
 
 The singular and plural columns are labelled demonstrations of the problem, not defaults the site could ship: the site does not give the reader a gender (`CLAUDE.md`). The impersonal column is the option that avoids it.
 

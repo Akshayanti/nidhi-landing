@@ -19,8 +19,14 @@ import {
   isPristineFullData,
   makeDefaultRows,
   publishableState,
+  redactedRefusal,
+  sharedResult,
+  SHARED_STATE_GLOBAL,
+  STATE_KEY_PATTERN,
+  type SharedPositionData,
 } from './url.ts';
-import type { AssetRow, CurrencyPosition } from './math.ts';
+import { aggregate } from './math.ts';
+import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
 
 // ---------------------------------------------------------------------------
 // encodeFullData + decodeFromQueryString round-trips (user's own URL sync)
@@ -162,16 +168,11 @@ describe('full-data round-trip', () => {
     assert.equal(decoded.rows[0].type, 'asset');
   });
 
-  it('strips trailing empty rows on decode', () => {
-    // Simulate a URL with n=4 but only 2 rows have populated tuples.
-    // Empty `aN` entries shouldn't even round-trip, they'd be omitted
-    // by the encoder, but we still want decode to be defensive about
-    // hand-edited URLs.
-    const qs = 'a1=A~10000~USD&a2=B~20000&n=4';
-    const decoded = decodeFromQueryString(qs);
-    assert.equal(decoded.rows.length, 2);
-    assert.equal(decoded.rows[0].name, 'A');
-    assert.equal(decoded.rows[1].name, 'B');
+  it('refuses a link that says four rows and holds two', () => {
+    // It used to load the two, and their total looked like the whole (#794).
+    const decoded = decodeFromQueryString('a1=A~10000~USD&a2=B~20000&n=4');
+    assert.equal((decoded as { refused?: string }).refused, 'transfer');
+    assert.ok(decoded.rows.every((r) => r.value === ''));
   });
 
   it('ensures at least 2 rows', () => {
@@ -180,14 +181,14 @@ describe('full-data round-trip', () => {
     assert.equal(decoded.rows.length, 2); // DEFAULT_ROW_COUNT
   });
 
-  it('clamps hostile n=999 to MAX_ROWS_FOR_URL', () => {
-    // Fill all 50 clamped rows with data so stripping doesn't reduce count.
+  it('refuses a hostile n=999 rather than clamping it', () => {
     const params = ['n=999'];
     for (let i = 1; i <= 50; i++) {
       params.push(`a${i}=X~${i}~USD`);
     }
     const decoded = decodeFromQueryString(params.join('&'));
-    assert.equal(decoded.rows.length, 50);
+    assert.equal((decoded as { refused?: string }).refused, 'transfer');
+    assert.ok(decoded.rows.every((r) => r.value === ''));
   });
 });
 
@@ -244,9 +245,9 @@ describe('redacted mode', () => {
     // No per-row tuples (a1, a2, ...) and no amount segment in p_*.
     assert.ok(!qs.includes('a1='));
     assert.ok(!qs.includes('a2='));
-    // Position tuple has only pct~risk in redacted mode (2 fields → 1 tilde).
+    // pct~risk~(no amount)~(no z)~rate status: nothing sits where an amount would (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
-    assert.equal(usdParam.split('~').length, 2, `redacted p_* should have 2 fields, got: ${usdParam}`);
+    assert.deepEqual(usdParam.split('~').slice(2), ['', '', 'k'], `redacted p_* must hold no amount, got: ${usdParam}`);
   });
 
   it('decoded rows are default empty for the form', () => {
@@ -256,16 +257,17 @@ describe('redacted mode', () => {
     assert.equal(decoded.rows[0].value, '');
   });
 
-  it('handles unrecognized risk levels gracefully', () => {
-    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=50.0~unknown');
-    const pos = decoded.sharedPositions!.find((p) => p.code === 'USD')!;
-    assert.equal(pos.riskLevel, 'low');
+  it('refuses a band it does not know, and never reads it as Low (#795)', () => {
+    const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=100.0~unknown');
+    assert.equal(decoded.sharedPositions, undefined);
+    assert.equal(decoded.refused, 'link');
   });
 
   it('handles malformed percentage', () => {
     const decoded = decodeFromQueryString('m=r&f=EUR&p_USD=abc~moderate');
-    const pos = decoded.sharedPositions!.find((p) => p.code === 'USD');
-    assert.equal(pos, undefined);
+    // With no share left that reads, there is nothing to show.
+    assert.equal(decoded.sharedPositions, undefined);
+    assert.equal(decoded.refused, 'link');
   });
 });
 
@@ -307,10 +309,10 @@ describe('full sharing mode', () => {
     assert.ok(qs.includes('m=f'));
     assert.ok(!qs.includes('mode=full')); // legacy form removed
     assert.ok(!qs.includes('anon=1'));
-    // p_USD position tuple should have all 3 fields: pct~risk~amount.
+    // p_USD position tuple: pct~risk~amount~(no z)~rate status (#795).
     const usdParam = new URLSearchParams(qs).get('p_USD')!;
     const usdParts = usdParam.split('~');
-    assert.equal(usdParts.length, 3);
+    assert.deepEqual(usdParts.slice(3), ['', 'k']);
     assert.equal(usdParts[0], '22.0');
     assert.equal(usdParts[1], 'moderate');
     assert.equal(usdParts[2], '64814.81');
@@ -588,30 +590,34 @@ describe('page starting currency and the language switch', () => {
 describe('a hostile link', () => {
   it('a spending currency the tools do not know becomes the default', () => {
     for (const f of ['ZZZ', 'usd', '%3Cb%3Ex%3C%2Fb%3E', 'EUR%26base%3DUSD%23', 'E'.repeat(3000)]) {
-      for (const qs of [`f=${f}&a1=Cash~10`, `m=f&f=${f}&a1=Cash~10&p_USD=50~low~5`, `m=r&f=${f}&p_USD=50~low`]) {
+      for (const qs of [`f=${f}&n=1&a1=Cash~10`, `m=f&f=${f}&n=1&a1=Cash~10&p_EUR=50~low~5`, `m=r&f=${f}&p_USD=50~low`]) {
         assert.equal(decodeFromQueryString(qs).functionalCurrency, 'EUR', qs.slice(0, 30));
       }
     }
-    assert.equal(decodeFromQueryString('f=INR&a1=Cash~10').functionalCurrency, 'INR');
+    assert.equal(decodeFromQueryString('f=INR&n=1&a1=Cash~10').functionalCurrency, 'INR');
   });
 
   it('a row’s currency the tools do not know becomes the default', () => {
-    assert.equal(decodeFromQueryString('a1=Cash~10~%3Cb%3E').rows[0].currency, 'EUR');
-    assert.equal(decodeFromQueryString('a1=Cash~10~ZZZ').rows[0].currency, 'EUR');
-    assert.equal(decodeFromQueryString('a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~%3Cb%3E').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~ZZZ').rows[0].currency, 'EUR');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~10~usd').rows[0].currency, 'USD', 'case is forgiven, as before');
   });
 
-  it('a name is cut at the stated length, and a value that is not a number is dropped', () => {
-    const row = decodeFromQueryString(`a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
+  it('a name is cut at the stated length, and a value that is not a number is marked (#789)', () => {
+    const row = decodeFromQueryString(`n=1&a1=${'x'.repeat(5000)}~%3Cscript%3E~USD`).rows[0];
     assert.equal(row.name.length, 80);
-    assert.equal(row.value, '');
+    assert.equal(row.value, 'NaN');
     assert.equal(row.currency, 'USD');
-    assert.equal(decodeFromQueryString('a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
+    assert.equal(decodeFromQueryString('n=1&a1=Cash~1%20234%2C56').rows[0].value, '1 234,56');
   });
 
-  it('a shared position names a currency the tools know, or is left out', () => {
-    const { sharedPositions } = decodeFromQueryString('m=r&f=EUR&p_USD=60~low&p_%3Cb%3E=30~low&p_ZZZ=10~low');
-    assert.deepEqual((sharedPositions ?? []).map((p) => p.code), ['USD']);
+  it('a shared position names a currency the tools know, or the link is refused and shows none (#795)', () => {
+    // Left out, what remained looked like the whole net worth.
+    for (const made of ['p_%3Cb%3E=30~low', 'p_ZZZ=10~low']) {
+      const decoded = decodeFromQueryString(`m=r&f=EUR&p_USD=60~low&${made}`);
+      assert.equal(decoded.refused, 'link', made);
+      assert.equal(decoded.sharedPositions, undefined, made);
+    }
   });
 });
 
@@ -641,5 +647,510 @@ describe('a link without amounts when net worth is zero or less', () => {
     const qs = encodeShared([], afloat, 'EUR', 'redacted');
     assert.ok(!/~z(&|$)/.test(qs));
     assert.ok(decodeFromQueryString(qs).sharedPositions!.every((p) => p.noShares === undefined));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Exactly what a link carries and what it refuses. One euro buys 2 US
+// dollars, 4 pounds and 200 yen throughout, so each figure can be checked by
+// sight, and each link is written out character by character.
+// ---------------------------------------------------------------------------
+
+const ROUND = { EUR: 1, USD: 2, GBP: 4, JPY: 200 };
+const asset = (value: string, currency = 'EUR', name = ''): AssetRow => ({ name, value, currency, type: 'asset' });
+const debt = (value: string, currency = 'EUR', name = ''): AssetRow => ({ name, value, currency, type: 'liability' });
+const blank = (currency = 'EUR'): AssetRow => ({ name: '', value: '', currency, type: 'asset' });
+const position = (code: string, more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
+  code, netAmountOriginal: 0, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: false, riskLevel: 'low', riskLabel: '', ...more,
+});
+const open = decodeFromQueryString;
+const BLANK_FORM = { rows: [blank(), blank()], isReadOnly: false, shareMode: null };
+
+/** Every order of a list, so a sorting rule is checked whatever order the positions arrive in. */
+function orders<T>(list: T[]): T[][] {
+  if (list.length <= 1) return [list];
+  return list.flatMap((item, i) => orders([...list.slice(0, i), ...list.slice(i + 1)]).map((rest) => [item, ...rest]));
+}
+
+describe('a full link, character by character', () => {
+  // 1,000.50 euros less 500.50 owed is 500; 4,000 dollars are 2,000 euros: 2,500 in all, a fifth and four fifths.
+  const rows: AssetRow[] = [
+    asset('1,000.50', 'EUR', 'Savings'),
+    asset('4000', 'USD', 'Shares'),
+    blank('USD'),
+    asset('   ', 'EUR', 'Not filled in'),
+    debt('500.50', 'EUR', 'Card'),
+    asset('', 'EUR', 'An idea'),
+  ];
+  const positions = aggregate(rows, 'EUR', ROUND).positions;
+  const link = 'm=f&f=EUR&n=3&a1=Savings~1%2C000.50&a2=Shares~4000~USD&a3=Card~500.50~~liability&p_EUR=20.0~functional~500.00~~k&p_USD=80.0~elevated~2000.00~~k';
+
+  it('carries the rows that hold an amount, each currency’s share, band and amount, and that every rate was known', () => {
+    assert.equal(encodeShared(rows, positions, 'EUR', 'full'), link);
+  });
+
+  it('opens as a view that cannot be edited, with every row and figure it carried', () => {
+    assert.deepEqual(open(link), {
+      rows: [asset('1,000.50', 'EUR', 'Savings'), asset('4000', 'USD', 'Shares'), debt('500.50', 'EUR', 'Card')],
+      functionalCurrency: 'EUR',
+      isReadOnly: true,
+      shareMode: 'full',
+      sharedPositions: [
+        { code: 'EUR', pct: 20, netAmountFunctional: 500, riskLevel: 'functional', rateUnavailable: false, netAmountOriginal: 500 },
+        { code: 'USD', pct: 80, netAmountFunctional: 2000, riskLevel: 'elevated', rateUnavailable: false, netAmountOriginal: 4000 },
+      ],
+      inDoubt: false,
+    });
+  });
+
+  it('opens the same with a question mark in front, as an older address had it', () => {
+    assert.deepEqual(open(`?${link}`), open(link));
+  });
+
+  it('keeps the spending currency it names', () => {
+    const dollars = 'm=f&f=USD&n=1&a1=~100~USD&p_USD=100.0~functional~100.00~~k';
+    assert.equal(encodeShared([asset('100', 'USD')], aggregate([asset('100', 'USD')], 'USD', ROUND).positions, 'USD', 'full'), dollars);
+    assert.equal(open(dollars).functionalCurrency, 'USD');
+    assert.equal(open(dollars).refused, undefined);
+  });
+});
+
+describe('a link without amounts, character by character', () => {
+  const rows: AssetRow[] = [asset('1,000.50', 'EUR', 'Savings account'), asset('4000', 'USD', 'Brokerage'), debt('500.50', 'EUR', 'Card')];
+  const positions = aggregate(rows, 'EUR', ROUND).positions;
+  const link = 'm=r&p_EUR=20.0~functional~~~k&p_USD=80.0~elevated~~~k&f=EUR';
+
+  it('carries each currency’s share and band, the spending currency last, and no name, row or amount', () => {
+    const made = encodeShared(rows, positions, 'EUR', 'redacted');
+    assert.equal(made, link);
+    for (const typed of ['Savings', 'Brokerage', 'Card', '1%2C000', '4000', '500', '2000', 'a1', 'n=']) assert.ok(!made.includes(typed), typed);
+  });
+
+  it('opens as a view with shares only: blank rows and amounts of zero', () => {
+    assert.deepEqual(open(link), {
+      ...BLANK_FORM,
+      functionalCurrency: 'EUR',
+      isReadOnly: true,
+      shareMode: 'redacted',
+      sharedPositions: [
+        { code: 'EUR', pct: 20, netAmountFunctional: 0, riskLevel: 'functional', rateUnavailable: false },
+        { code: 'USD', pct: 80, netAmountFunctional: 0, riskLevel: 'elevated', rateUnavailable: false },
+      ],
+      inDoubt: false,
+    });
+  });
+
+  it('keeps the spending currency it names', () => {
+    assert.equal(open('m=r&p_USD=100.0~functional~~~k&f=USD').functionalCurrency, 'USD');
+  });
+
+  it('net worth below zero: carries the concentration, with the mark that no share of net worth is stated', () => {
+    // 200 euros owed and 200 dollars held, which are 100 euros: sizes 200 and 100 of 300.
+    const under = aggregate([debt('200'), asset('200', 'USD')], 'EUR', ROUND).positions;
+    assert.equal(encodeShared([], under, 'EUR', 'redacted'), 'm=r&p_EUR=66.7~functional~~z~k&p_USD=33.3~unbanded~~z~k&f=EUR');
+  });
+
+  it('net worth below zero with a currency that nets to nothing: the mark is still there', () => {
+    // 200 euros owed; 100 dollars held and 100 owed.
+    const under = aggregate([debt('200'), asset('100', 'USD'), debt('100', 'USD')], 'EUR', ROUND).positions;
+    assert.equal(encodeShared([], under, 'EUR', 'redacted'), 'm=r&p_EUR=100.0~functional~~z~k&p_USD=0.0~low~~z~k&f=EUR');
+  });
+
+  it('copied again from a view that has no amounts, it says what it was sent and adds no mark', () => {
+    for (const sent of ['m=r&p_EUR=60.0~functional~~~k&p_USD=40.0~elevated~~~k&f=EUR', 'm=r&p_EUR=60.0~functional&p_USD=40.0~elevated&f=EUR']) {
+      const view = sharedResult(open(sent).sharedPositions!, 'EUR', () => '');
+      assert.equal(encodeShared([], view.positions, 'EUR', 'redacted'), sent);
+    }
+  });
+});
+
+describe('whether a rate was known, as a full link says it', () => {
+  const said = (pos: CurrencyPosition) => new URLSearchParams(encodeShared([], [pos], 'EUR', 'full')).get(`p_${pos.code}`);
+
+  it('a currency with an amount of its own and none converted lacked its rate, flagged or not', () => {
+    assert.equal(said(position('USD', { netAmountOriginal: 500 })), '0.0~low~0.00~~x');
+    assert.equal(said(position('USD', { netAmountOriginal: 500, rateUnavailable: true })), '0.0~low~0.00~~x');
+    assert.equal(said(position('USD', { netAmountOriginal: -500 })), '0.0~low~0.00~~x');
+  });
+
+  it('a currency whose rows net to nothing had its rate', () => {
+    const usd = aggregate([asset('100'), asset('100', 'USD'), debt('100', 'USD')], 'EUR', ROUND).positions.find((p) => p.code === 'USD')!;
+    assert.equal(said(usd), '0.0~low~0.00~~k');
+  });
+
+  it('the spending currency needs none, and a flag that says the rate was known is believed', () => {
+    assert.equal(said(position('EUR', { netAmountOriginal: 500, isFunctional: true, riskLevel: 'functional' })), '0.0~functional~0.00~~k');
+    assert.equal(said(position('USD', { netAmountOriginal: 500, rateUnavailable: false })), '0.0~low~0.00~~k');
+  });
+
+  it('a view opened from an older link, which did not say, is copied on without saying', () => {
+    assert.equal(said(position('USD', { netAmountOriginal: 2000, netAmountFunctional: 1000, pctOfTotal: 50, riskLevel: 'elevated', rateUnknown: true })), '50.0~elevated~1000.00');
+    assert.equal(said(position('USD', { netAmountOriginal: 2000, rateUnknown: true })), '0.0~low~0.00');
+  });
+});
+
+describe('the view a link gives the page', () => {
+  const label = (level: RiskLevel) => `label:${level}`;
+  const shared = (code: string, more: Partial<SharedPositionData> = {}): SharedPositionData => ({ code, pct: 0, netAmountFunctional: 0, riskLevel: 'low', ...more });
+
+  it('a full link: each currency with its own amount, its converted amount, share, band and label, and their total', () => {
+    const result = sharedResult([
+      shared('USD', { pct: 25, netAmountFunctional: 250, riskLevel: 'moderate', rateUnavailable: false, netAmountOriginal: 500 }),
+      shared('EUR', { pct: 75, netAmountFunctional: 750, riskLevel: 'functional', rateUnavailable: false, netAmountOriginal: 750 }),
+    ], 'EUR', label);
+    assert.deepEqual(result, {
+      positions: [
+        { code: 'EUR', netAmountOriginal: 750, netAmountFunctional: 750, pctOfTotal: 75, isFunctional: true, riskLevel: 'functional', riskLabel: 'label:functional', rateUnavailable: false },
+        { code: 'USD', netAmountOriginal: 500, netAmountFunctional: 250, pctOfTotal: 25, isFunctional: false, riskLevel: 'moderate', riskLabel: 'label:moderate', rateUnavailable: false },
+      ],
+      totalNetWorthFunctional: 1000,
+      hasRates: 'full',
+      noShares: false,
+    });
+  });
+
+  it('an older link without amounts: shares only, no rates, and each rate marked as not known either way', () => {
+    const result = sharedResult([shared('EUR', { pct: 60, riskLevel: 'functional' }), shared('USD', { pct: 40, riskLevel: 'elevated' })], 'EUR', label);
+    assert.deepEqual(result, {
+      positions: [
+        { code: 'EUR', netAmountOriginal: 0, netAmountFunctional: 0, pctOfTotal: 60, isFunctional: true, riskLevel: 'functional', riskLabel: 'label:functional', rateUnknown: true },
+        { code: 'USD', netAmountOriginal: 0, netAmountFunctional: 0, pctOfTotal: 40, isFunctional: false, riskLevel: 'elevated', riskLabel: 'label:elevated', rateUnknown: true },
+      ],
+      totalNetWorthFunctional: 0,
+      hasRates: 'none',
+      noShares: false,
+    });
+  });
+
+  it('the spending currency is the one the link names, in either case, or the one banded as it', () => {
+    const is = (code: string, riskLevel: RiskLevel, functionalCurrency: string) => sharedResult([shared(code, { riskLevel })], functionalCurrency, label).positions[0].isFunctional;
+    assert.equal(is('EUR', 'low', 'EUR'), true);
+    assert.equal(is('EUR', 'low', 'eur'), true);
+    assert.equal(is('USD', 'functional', 'EUR'), true);
+    assert.equal(is('USD', 'low', 'EUR'), false);
+    assert.equal(is('USD', 'net-debt', 'EUR'), false);
+  });
+
+  it('puts the spending currency first and the others by the size of their share, whatever order the link has them in', () => {
+    const four = [
+      shared('EUR', { pct: 10, riskLevel: 'functional' }),
+      shared('USD', { pct: 60, riskLevel: 'elevated' }),
+      shared('GBP', { pct: -80, riskLevel: 'net-debt' }),
+      shared('JPY', { pct: 110, riskLevel: 'elevated' }),
+    ];
+    for (const order of orders(four)) {
+      assert.deepEqual(sharedResult(order, 'EUR', label).positions.map((p) => p.code), ['EUR', 'JPY', 'GBP', 'USD']);
+    }
+  });
+
+  it('says the rates were whole, partial or absent', () => {
+    const rates = (...list: SharedPositionData[]) => sharedResult(list, 'EUR', label).hasRates;
+    const eur = shared('EUR', { pct: 100, netAmountFunctional: 100, riskLevel: 'functional', rateUnavailable: false });
+    assert.equal(rates(eur, shared('USD', { netAmountFunctional: 50, rateUnavailable: false })), 'full');
+    assert.equal(rates(eur, shared('USD', { rateUnavailable: false })), 'full', 'one currency that nets to nothing does not make the rates absent');
+    assert.equal(rates(eur, shared('USD', { rateUnavailable: true })), 'partial');
+    assert.equal(rates(shared('EUR', { pct: 60 }), shared('USD', { pct: 40 })), 'none');
+    assert.equal(rates(shared('EUR', { pct: 60, rateUnavailable: false }), shared('USD', { pct: 40, rateUnavailable: false })), 'none');
+  });
+
+  it('with amounts, their total says whether there are shares: none at zero or below', () => {
+    const none = (...amounts: number[]) => sharedResult(amounts.map((netAmountFunctional, i) => shared(['EUR', 'USD', 'GBP'][i], { netAmountFunctional, noShares: i === 0 })), 'EUR', label).noShares;
+    assert.equal(none(100, 50), false);
+    assert.equal(none(100, 0), false);
+    assert.equal(none(100, -100), true);
+    assert.equal(none(100, -150), true);
+    assert.equal(none(-1), true);
+  });
+
+  it('without amounts, the link’s own mark says it, on any one currency', () => {
+    const none = (...marks: (boolean | undefined)[]) => sharedResult(marks.map((noShares, i) => shared(['EUR', 'USD', 'GBP'][i], { pct: 50, ...(noShares === undefined ? {} : { noShares }) })), 'EUR', label).noShares;
+    assert.equal(none(undefined, undefined), false);
+    assert.equal(none(false, false), false);
+    assert.equal(none(true, true), true);
+    assert.equal(none(undefined, true, undefined), true);
+  });
+});
+
+describe('the state the language switch carries, character by character', () => {
+  it('holds every row with something in it: an amount, a name, or a currency that was picked', () => {
+    const rows = [asset('100', 'EUR', 'Savings'), asset('', 'EUR', 'Flat'), blank('USD'), blank(), debt('250.5', 'GBP')];
+    assert.equal(encodeFullData(rows, 'INR'), 'f=INR&n=4&a1=Savings~100&a2=Flat&a3=~~USD&a4=~250.5~GBP~liability');
+  });
+
+  it('leaves out a row that holds only spaces', () => {
+    assert.equal(encodeFullData([asset('   '), asset('100'), asset('', 'EUR', '  ')], 'EUR'), 'n=1&a1=~100');
+  });
+
+  it('a form with only spaces typed into it is still untouched', () => {
+    assert.equal(isPristineFullData([asset('  ', 'EUR', '   ')], 'EUR', 'EUR'), true);
+    assert.equal(publishableState([asset('  ', 'EUR', '   ')], 'EUR', 'EUR'), '');
+  });
+
+  it('every key it or a link writes is one the page takes out of the address, and no other key is', () => {
+    const state = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    const rows = [asset('100', 'USD', 'Savings'), ...Array.from({ length: 11 }, () => asset('1'))];
+    const result = aggregate(rows, 'INR', { INR: 1, USD: 2, EUR: 4 });
+    for (const qs of [encodeFullData(rows, 'INR'), encodeShared(rows, result.positions, 'INR', 'full'), encodeShared(rows, result.positions, 'INR', 'redacted')]) {
+      const keys = [...new URLSearchParams(qs).keys()];
+      assert.ok(keys.length >= 3);
+      for (const key of keys) assert.match(key, state);
+    }
+    for (const key of ['utm_source', 'utm_medium', 'internal', 'a', 'p_', 'a1_', 'modes', 'c_', 'amt', 'ma', 'fn']) assert.doesNotMatch(key, state);
+  });
+
+  it('the keys of the first links (May 2026) are taken out of the address too', () => {
+    const state = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    for (const key of ['mode', 'func', 'a0_name', 'a12_value', 'a1_currency', 'c_EUR', 'r_USD', 'amt_INR']) assert.match(key, state, key);
+  });
+});
+
+describe('a link from the first version (May 2026)', () => {
+  it('is refused as one, in either of its modes, and nothing of it is loaded', () => {
+    for (const qs of [
+      'mode=full&func=EUR&n=2&a0_name=Flat&a0_value=250000&a0_currency=EUR&a1_name=Fund&a1_value=9000&a1_currency=USD',
+      'mode=redacted&func=EUR&c_EUR=96.5&r_EUR=low&c_USD=3.5&r_USD=low',
+      'func=EUR&n=1&a0_name=Flat&a0_value=1',
+      'amt_EUR=250000.00',
+      // Today's key names that hold nothing make it no less old.
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&m=',
+      'mode=redacted&func=EUR&c_EUR=100&r_EUR=low&p_BOGUS=x',
+      'mode=full&func=EUR&a0_name=Flat&a0_value=1&a1=&n=0',
+    ]) {
+      const decoded = decodeFromQueryString(qs);
+      assert.equal(decoded.refused, 'old', qs);
+      assert.equal(decoded.isReadOnly, false, qs);
+      assert.ok(decoded.rows.every((row) => row.value === '' && row.name === ''), qs);
+    }
+  });
+
+  it('today’s links are not taken for one', () => {
+    assert.equal(decodeFromQueryString('n=1&a1=Flat~250000').refused, undefined);
+  });
+});
+
+describe('where a link’s state is kept once it is out of the address', () => {
+  it('is the window property the page head fills and the tool reads', () => {
+    assert.equal(SHARED_STATE_GLOBAL, '__nidhiNetWorthShared');
+  });
+});
+
+describe('reading the state back: the rows', () => {
+  it('nothing at all, or a spending currency alone, is a blank form and no refusal', () => {
+    assert.deepEqual(open(''), { ...BLANK_FORM, functionalCurrency: 'EUR' });
+    assert.deepEqual(open('f=USD'), { ...BLANK_FORM, functionalCurrency: 'USD' });
+  });
+
+  it('keys from before the format changed are not read: the link is refused as an old one, with none of their names or amounts', () => {
+    assert.deepEqual(open('mode=full&a1_name=Flat&a1_value=250000&a1_currency=USD'), { ...BLANK_FORM, functionalCurrency: 'EUR', refused: 'old' });
+  });
+
+  it('a key that only looks like a row’s is not counted as one', () => {
+    for (const stray of ['data1=x', 'a1_name=Old', 'xa3=~9', 'a3x=~9']) {
+      const decoded = open(`a1=~1&a2=~2&${stray}`);
+      assert.equal(decoded.refused, undefined, stray);
+      assert.deepEqual(decoded.rows, [asset('1'), asset('2')], stray);
+      assert.equal(open(`n=2&a1=~1&a2=~2&${stray}`).refused, undefined, stray);
+    }
+  });
+
+  it('a list without a count is taken to hold the rows it has, past the ninth', () => {
+    const qs = Array.from({ length: 11 }, (_, i) => `a${i + 1}=~${i + 1}`).join('&');
+    const decoded = open(qs);
+    assert.equal(decoded.refused, undefined);
+    assert.deepEqual(decoded.rows.map((r) => r.value), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']);
+  });
+
+  it('a count that is not a plain whole number refuses the list', () => {
+    for (const n of ['2.0', '%202', '2%20', '%2B2', '0000000002', '1e1', '-2', '', 'two']) {
+      assert.equal(open(`n=${n}&a1=~1&a2=~2`).refused, 'transfer', n);
+      assert.equal(open(`m=f&f=EUR&n=${n}&a1=~1&a2=~2&p_EUR=100.0~functional~3.00~~k`).refused, 'link', n);
+    }
+    assert.equal(open('n=2&a1=~1&a2=~2').refused, undefined);
+  });
+
+  it('the right number of rows under the wrong numbers refuses the list', () => {
+    assert.deepEqual(open('a1=~1&a3=~3'), { ...BLANK_FORM, functionalCurrency: 'EUR', refused: 'transfer' });
+    assert.equal(open('n=2&a1=~1&a3=~3').refused, 'transfer');
+    assert.equal(open('n=2&a2=~1&a3=~3').refused, 'transfer');
+    assert.equal(open('f=USD&n=3&a1=~1&a2=~2&a4=~4').refused, 'transfer');
+    assert.equal(open('f=USD&n=3&a1=~1&a2=~2&a4=~4').functionalCurrency, 'USD');
+  });
+
+  it('blank rows at the end are not shown, down to the two the form keeps', () => {
+    assert.deepEqual(open('n=4&a1=~1&a2=~2&a3=~~USD&a4=~~GBP').rows, [asset('1'), asset('2')]);
+    assert.deepEqual(open('n=3&a1=~1&a2=~~USD&a3=~~GBP').rows, [asset('1'), blank('USD')]);
+    assert.deepEqual(open('a1=~1&a2=~~USD').rows, [asset('1'), blank('USD')], 'the second of two stays, with the currency picked for it');
+  });
+
+  it('a last row with a name alone, or an amount alone, is kept', () => {
+    assert.deepEqual(open('n=3&a1=~1&a2=~2&a3=Flat').rows, [asset('1'), asset('2'), asset('', 'EUR', 'Flat')]);
+    assert.deepEqual(open('n=3&a1=~1&a2=~2&a3=~3').rows, [asset('1'), asset('2'), asset('3')]);
+    assert.deepEqual(open('n=4&a1=~1&a2=~2&a3=Flat&a4=~~USD').rows, [asset('1'), asset('2'), asset('', 'EUR', 'Flat')]);
+  });
+
+  it('one row is shown with a blank one after it', () => {
+    assert.deepEqual(open('n=1&a1=Flat~100~USD~liability').rows, [debt('100', 'USD', 'Flat'), blank()]);
+  });
+});
+
+describe('reading a full link back: what it must hold', () => {
+  const REFUSED = { ...BLANK_FORM, functionalCurrency: 'EUR', refused: 'link' };
+  const one = (pos: string) => open(`m=f&f=EUR&n=1&a1=~100&${pos}`);
+
+  it('a full link with nothing in it shows nothing', () => {
+    assert.deepEqual(open('m=f&f=EUR'), REFUSED);
+    assert.deepEqual(open('m=f'), REFUSED);
+  });
+
+  it('a total for another currency than the rows’ refuses it', () => {
+    assert.deepEqual(open('m=f&f=EUR&n=1&a1=~100~USD&p_GBP=100.0~elevated~50.00~~k'), REFUSED);
+    assert.equal(open('m=f&f=EUR&n=1&a1=~100~USD&p_USD=100.0~elevated~50.00~~k').refused, undefined);
+  });
+
+  it('a parameter that is no position is not read as one', () => {
+    for (const stray of ['x_USD=1', 'xxUSD=1', 'usd=1']) assert.equal(one(`p_EUR=100.0~functional~100.00~~k&${stray}`).refused, undefined, stray);
+  });
+
+  it('takes a share as the tool writes it: one decimal, or the exponent a very large one is spelt with', () => {
+    for (const share of ['100.0', '-100.0', '0.0', '1e+21', '1.5e+21', '1.25e+21', '-1.25e+21', '2e+29', '1e+30', '9.5e+99', '1e+100', '1.5e+308']) {
+      const decoded = one(`p_EUR=${encodeURIComponent(share)}~functional~100.00~~k`);
+      assert.equal(decoded.refused, undefined, share);
+      assert.equal(decoded.sharedPositions![0].pct, Number(share), share);
+    }
+  });
+
+  it('refuses a share spelt any other way, or too large to be a number', () => {
+    for (const share of [' 50.0', '+50.0', '50.0 ', '50.05', '50.0x', 'x50.0', '50', '50.', '.5', '1e+5', '1e+10', '1e+20', '1e21', '1.5e+2x', '1e+1000', '1e+400', '1.e+21', '']) {
+      assert.deepEqual(one(`p_EUR=${encodeURIComponent(share)}~functional~100.00~~k`), REFUSED, JSON.stringify(share));
+    }
+  });
+
+  it('takes an amount as the tool writes it: two decimals, or the same exponent', () => {
+    for (const amount of ['100.00', '-100.00', '0.00', '1e+21', '1.5e+21', '1.25e+21', '-1.25e+21', '2e+29', '1e+30', '9.5e+99', '1e+100', '1.5e+308']) {
+      const decoded = one(`p_EUR=100.0~functional~${encodeURIComponent(amount)}~~k`);
+      assert.equal(decoded.refused, undefined, amount);
+      assert.equal(decoded.sharedPositions![0].netAmountFunctional, Number(amount), amount);
+    }
+  });
+
+  it('refuses an amount spelt any other way, cut short, or too large to be a number', () => {
+    for (const amount of [' 100.00', '+100.00', '100.00 ', '100.0', '100.005', '100.00x', 'x100.00', '100', '1e+5', '1e+10', '1e+20', '1e21', '1.5e+2x', '1e+1000', '1e+400', '']) {
+      assert.deepEqual(one(`p_EUR=100.0~functional~${encodeURIComponent(amount)}~~k`), REFUSED, JSON.stringify(amount));
+    }
+  });
+
+  it('an older link whose zero stands against a billionth or more of its own currency is in doubt', () => {
+    const older = (value: string) => open(`m=f&f=EUR&n=1&a1=~${value}~USD&p_USD=0.0~low~0.00`).inDoubt;
+    assert.equal(older('0.000000001'), true);
+    assert.equal(older('0.0000000009'), false);
+    assert.equal(older('100'), true);
+  });
+});
+
+describe('reading a link without amounts back: whether its shares are all there', () => {
+  const view = (positions: string) => open(`m=r&${positions}&f=EUR`);
+  const REFUSED = { ...BLANK_FORM, functionalCurrency: 'EUR', refused: 'link' };
+
+  it('shares that add to 100 open, within the rounding of one decimal each', () => {
+    assert.equal(view('p_EUR=60.0~functional~~~k&p_USD=40.0~elevated~~~k').refused, undefined);
+    assert.equal(view('p_EUR=33.3~functional~~~k&p_USD=33.3~moderate~~~k&p_GBP=33.3~moderate~~~k').refused, undefined);
+    assert.equal(view('p_EUR=60.0~functional~~~k&p_USD=40.1~elevated~~~k').refused, undefined);
+    assert.deepEqual(view('p_EUR=60.0~functional~~~k&p_USD=40.2~elevated~~~k'), REFUSED);
+    assert.deepEqual(view('p_EUR=60.0~functional~~~k&p_USD=39.8~moderate~~~k'), REFUSED);
+  });
+
+  it('a zero share beside others does not excuse them from adding up', () => {
+    assert.deepEqual(view('p_EUR=0.0~functional~~~k&p_USD=50.0~elevated~~~k'), REFUSED);
+    assert.equal(view('p_EUR=0.0~functional~~~k&p_USD=100.0~elevated~~~k').refused, undefined);
+    assert.equal(view('p_EUR=0.0~functional~~~k&p_USD=0.0~low~~~k').refused, undefined, 'all zero is whole');
+  });
+
+  it('a lone share is 100 or zero, older link or new', () => {
+    assert.equal(view('p_EUR=100.0~functional~~~k').refused, undefined);
+    assert.equal(view('p_EUR=0.0~functional~~~k').refused, undefined);
+    assert.deepEqual(view('p_EUR=150.0~functional'), REFUSED);
+    assert.deepEqual(view('p_USD=150.0~net-debt'), REFUSED);
+    assert.deepEqual(view('p_EUR=99.9~functional~~~k'), REFUSED);
+  });
+
+  it('more than 100 is whole only in an older link, of debts alone', () => {
+    assert.equal(view('p_EUR=150.0~functional&p_USD=50.0~net-debt').refused, undefined);
+    assert.deepEqual(view('p_EUR=150.0~functional~~~k&p_USD=50.0~net-debt~~~k'), REFUSED, 'a new link never totals more');
+    assert.deepEqual(view('p_EUR=250.0~functional&p_USD=-50.0~net-debt'), REFUSED, 'a share below zero is no debt alone');
+    assert.deepEqual(view('p_EUR=150.0~functional&p_USD=50.0~low'), REFUSED, 'a holding is no debt');
+  });
+
+  it('less than 100 is never whole, older link or new, whatever the bands', () => {
+    assert.deepEqual(view('p_EUR=30.0~functional&p_USD=20.0~net-debt'), REFUSED);
+    assert.deepEqual(view('p_EUR=30.0~functional~~~k&p_USD=20.0~net-debt~~~k'), REFUSED);
+  });
+
+  it('shares as large as a million million million are allowed what adding them loses, and no more', () => {
+    // Two shares of sizes that add to 2e18: the allowance is 2 x 3 epsilons of that, about 2,664.
+    const pair = (short: number) => view(`p_EUR=1000000000000000000.0~functional~~~k&p_USD=-${(1e18 - short).toFixed(1)}~net-debt~~~k`).refused;
+    assert.equal((1e18 - 2048).toFixed(1), '999999999999997952.0');
+    assert.equal(pair(2048), undefined);
+    assert.equal(pair(4096), 'link');
+  });
+
+  it('a sum that differs from 100 by exactly the allowance is inside it', () => {
+    // Sizes that add to 2 to the 110th: the allowance, 2 x 3 epsilons of that, is 6 x 2 to the 58th, and so is the sum.
+    const half = 2 ** 109;
+    const pair = (over: number, under: number) =>
+      view(`p_EUR=${encodeURIComponent((half + over * 2 ** 58).toFixed(1))}~functional~~~k&p_USD=${encodeURIComponent((-(half - under * 2 ** 58)).toFixed(1))}~net-debt~~~k`).refused;
+    assert.equal(half + 3 * 2 ** 58 - (half - 3 * 2 ** 58), 6 * 2 ** 58);
+    assert.equal(pair(3, 3), undefined);
+    assert.equal(pair(4, 3), 'link', 'seven, past it');
+  });
+
+  it('an older link is in doubt over a zero share in another currency, not over the spending currency’s among several', () => {
+    assert.equal(view('p_EUR=0.0~functional&p_USD=100.0~elevated').inDoubt, false);
+    assert.equal(view('p_EUR=100.0~functional&p_USD=0.0~low').inDoubt, true);
+    assert.equal(view('p_EUR=0.0~functional').inDoubt, true, 'a lone zero could be the first of several');
+    assert.equal(view('p_EUR=100.0~functional&p_USD=0.0~low~~~k&p_GBP=0.0~low~~~k').refused, 'link', 'a status on some only');
+    assert.equal(view('p_EUR=100.0~functional~~~k&p_USD=0.0~low~~~k').inDoubt, false, 'a new link says the rate was known');
+  });
+});
+
+describe('why a link without amounts cannot be made (#795)', () => {
+  it('with no rates at all: every other currency is missing, and the first row that needs one is named', () => {
+    const rows = [blank('USD'), asset('   ', 'GBP'), asset('100'), asset('200', 'USD'), asset('300', 'GBP'), asset('5', 'USD')];
+    assert.deepEqual(redactedRefusal(rows, aggregate(rows, 'EUR', null)), { reason: 'rates', row: 3, count: 2 });
+  });
+
+  it('a view that carries no rates and flags none is refused the same', () => {
+    const rows = [asset('100'), asset('200', 'usd')];
+    const view: AggregationResult = {
+      positions: [position('EUR', { isFunctional: true, riskLevel: 'functional', pctOfTotal: 50 }), position('USD', { pctOfTotal: 50 })],
+      totalNetWorthFunctional: 0,
+      hasRates: 'none',
+    };
+    assert.deepEqual(redactedRefusal(rows, view), { reason: 'rates', row: 1, count: 1 });
+  });
+
+  it('with some rates: only the currencies that lack theirs count', () => {
+    const rows = [asset('100'), asset('200', 'USD'), asset('300', 'CZK'), asset('400', 'INR')];
+    assert.deepEqual(redactedRefusal(rows, aggregate(rows, 'EUR', ROUND)), { reason: 'rates', row: 2, count: 2 });
+  });
+
+  it('everything in the spending currency needs no rate, loaded or not', () => {
+    const rows = [asset('100'), debt('40')];
+    assert.equal(redactedRefusal(rows, aggregate(rows, 'EUR', null)), null);
+    assert.equal(redactedRefusal(rows, aggregate(rows, 'EUR', ROUND)), null);
+    assert.equal(redactedRefusal([], aggregate([], 'EUR', null)), null);
+  });
+
+  it('a result that says every rate was there is not refused over a rate', () => {
+    const view: AggregationResult = {
+      positions: [position('EUR', { isFunctional: true, riskLevel: 'functional', pctOfTotal: 50 }), position('USD', { pctOfTotal: 50, rateUnavailable: true })],
+      totalNetWorthFunctional: 0,
+      hasRates: 'full',
+    };
+    assert.equal(redactedRefusal([asset('100'), asset('200', 'USD')], view), null);
+  });
+
+  it('a missing rate with no row to point at points at the first row', () => {
+    const view: AggregationResult = { positions: [position('USD', { rateUnavailable: true })], totalNetWorthFunctional: 0, hasRates: 'partial' };
+    assert.deepEqual(redactedRefusal([asset('100')], view), { reason: 'rates', row: 0, count: 1 });
   });
 });

@@ -1,49 +1,95 @@
 # scripts/
 
-What runs by itself is named where it runs: the npm scripts in `package.json`
-(build, lint, tests, audits, the reel and Instagram renders) and the workflows
-in `.github/workflows/` (`send_newsletter.py`, `fetch-inflation.mjs`,
-`indexnow.mjs`, `npm-audit.mjs`, `verify-tool-privacy.mjs`). `lib/` holds the
-modules those scripts share, with their tests beside them.
+<!-- Written by `node scripts/scripts-index.mjs`; do not edit by hand. -->
 
-This page lists the rest: tools a person runs by hand. Each one's header has
-its full usage. A script that is finished for good is deleted, not kept here.
+Every entry point stays at its path here. Each row is read from the script:
+its purpose is the first sentence of its header comment (the header has the
+full usage), who runs it comes from `package.json` and the workflows' `run:`
+lines, and its tests are the test files beside it or importing it.
 
-## Run by hand
+## Entry points
 
-| Script | What it does | Run |
-|---|---|---|
-| `regenerate-captions.mjs` | Rewrites the platform captions from saved reel plans, without rendering video again. Reads `output/plans/`, writes `output/captions/`. | `node scripts/regenerate-captions.mjs [--level <level>] [--slug <slug>]` |
-| `render-kit.mjs` | Renders an Instagram kit from `docs/instagram-kit/`: carousel, story frames, captions and a posting sheet. | `node scripts/render-kit.mjs` (see `docs/plans/REELS-PIPELINE.md`) |
-| `render-slides.js`, `render-stories.js` | The carousel and story renderers that `npm run render-ig` drives; each also runs alone. | `node scripts/render-slides.js [post]` |
-| `slides-to-reel.sh` | Turns rendered carousel slides into story frames and a silent slideshow reel. Needs ffmpeg and ImageMagick. | `scripts/slides-to-reel.sh <carousel dir> <out dir>` |
-| `smoke-render.mjs` | Runs the reel pipeline end to end from a fixed plan, with no call to the script-writing model. | `node scripts/smoke-render.mjs [--no-render]` |
-| `render-guide-cards.mjs` | Renders each How-to guide's share image into `public/brand/social/how-to/`. Run after adding a guide or changing a title. | `node scripts/render-guide-cards.mjs` |
-| `render-logo-with-url.mjs` | Composes logo variants with the site address under the wordmark, for print and merchandise. Writes to `output/brand/`, which git ignores; needs the Inter font installed. | `node scripts/render-logo-with-url.mjs` |
-| `simulate-projection-paths.mjs` | Reproduces the Monte Carlo figure in lesson 43 from the Jordà-Schularick-Taylor data, which is downloaded by hand and not checked in. | see its header |
-| `preview_transactional_emails.py` | Writes local previews of the confirmation and welcome emails to `emails/_preview/`. It copies their wording from `newsletter.gs` by hand, so check it against that file before trusting a preview; the reminder email has no preview. | `python3 scripts/preview_transactional_emails.py` |
-| `qr_svg.py` | Makes a QR code for one address as an SVG, with the standard library only, so no QR service sees the link. | `python3 scripts/qr_svg.py <url> -o qr.svg` |
-| `review/glossary-export.ts` | Builds the data for a language's glossary review sheets. | `npx --no-install tsx scripts/review/glossary-export.ts --langs <codes> --out <dir>` |
+| Script | What it does | Run by | Tests |
+|---|---|---|---|
+| `audit-mobile.mjs` | Phone-width audit of every site page. | `npm run audit:mobile`, workflow "PR Checks" | none |
+| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `lib/checks/mutation-fingerprint.test.mjs`, `repo-hygiene.test.mjs` |
+| `check-dist.mjs` | Checks the built site in dist/ (#361): canonical and hreflang links, the sitemap, internal links, leftover template text and the feeds. | `npm run check:dist`, workflow "PR Checks" | none |
+| `check-gs-versions.mjs` | Compares each deployed Apps Script with main (#443): asks its health action for the VERSION it runs and checks it against the hash of the file here. | workflow "Apps Script versions" | `gs-version.test.mjs` |
+| `check-mutation-deps.mjs` | Checks the static dependency analysis of the mutation cache against what the tests really do (#891, condition 1: static analysis and run-time tracing together). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs`, `lib/checks/mutation-trace.test.mjs` |
+| `deploy-trigger.gs` | Nidhi daily deploy trigger: Google Apps Script (no Web App). | pasted into Google Apps Script | `deploy-trigger.test.mjs` |
+| `fetch-inflation-monthly.mjs` | Refreshes a monthly consumer price index the inflation calculator joins to a country's yearly history. | workflow "Inflation data refresh" | `fetch-inflation-monthly.test.mjs` |
+| `fetch-inflation.mjs` | Refreshes the inflation calculator's history: World Bank indicator FP.CPI.TOTL.ZG (consumer price inflation, annual %) for every country. | workflow "Inflation data refresh" | `fetch-inflation.test.mjs` |
+| `gs-version.mjs` | Writes each Apps Script file's VERSION (scripts/lib/publishing/gs-version.mjs). | `npm run gs:check`, `npm run gs:version` | `gs-version.test.mjs` |
+| `indexnow.mjs` | IndexNow helper for the deploy pipeline. | workflow "Deploy to GitHub Pages" | `indexnow.test.mjs` |
+| `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs`, `lint-figures.test.mjs` |
+| `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
+| `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
+| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
+| `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every reused kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs`, `lib/checks/mutation-trace.test.mjs`, `repo-hygiene.test.mjs` |
+| `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
+| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
+| `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
+| `mutation-wide-coverage.mjs` | Prints what the test files that depend on everything cover in a mutation run (#904). | workflow "Free tools suite" | none |
+| `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
+| `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
+| `preview_transactional_emails.py` | Render HTML previews of the two transactional emails built by scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and the welcome email (`sendWelcomeEmail_`). | by hand | none |
+| `qr_svg.py` | Make a QR code for one URL, as a deterministic SVG file. | by hand | `test_qr_svg.py`, `src/utils/qr/encode.test.ts` |
+| `regenerate-captions.mjs` | Regenerate platform captions (.ig.txt / .tiktok.txt / .json) from saved reel plans without re-running TTS / Remotion. | by hand | none |
+| `render-email-figures.mjs` | Rasterise blog figures into email-ready PNGs. | `npm run build` (postbuild), `npm run render-email-figures`, workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
+| `render-figures.mjs` | Rasterise blog figures into Instagram-ready PNGs. | `npm run render-figures` | none |
+| `render-guide-cards.mjs` | Renders each How-to guide's share image (the og:image a link preview shows) to public/brand/social/how-to/<slug>.png, 1200×630. | by hand | none |
+| `render-ig.js` | Unified Instagram renderer. | `npm run render-ig` | none |
+| `render-kit.mjs` | Instagram content kit renderer: one source file per blog post, two days, one angle per day. | by hand | `lib/checks/mutation-fingerprint.test.mjs` |
+| `render-logo-with-url.mjs` | Composes merchandise-oriented logo variants that include the website URL beneath the existing wordmark and tagline. | by hand | none |
+| `render-reels.mjs` | Reel render orchestrator (v2). | `npm run reels:plan-only`, `npm run render-reels`, `npm run render-reels:building`, `npm run render-reels:discovery` | none |
+| `render-slides.js` | Renders Instagram carousel slides (1080x1080) from docs/instagram/ posts with scripts/templates/slide-template.html. | by hand | none |
+| `render-stories.js` | Renders Instagram story frames (1080x1920) from docs/instagram/ posts with scripts/templates/story-template.html. | by hand | none |
+| `render-thumbnails.mjs` | Backfill / batch render reel cover thumbnails from saved plan JSONs. | `npm run render-thumbnails` | none |
+| `review/glossary-export.ts` | Builds the data for one language's glossary review sheets: every batch. | by hand | none |
+| `review/review-sheet.gs` | nidhi volunteer review sheets: the "nidhi review" menu. | pasted into Google Apps Script | `review/review-sheet.test.mjs` |
+| `review/review-text.gs` | The words a volunteer sees in a review sheet, per language. | pasted into Google Apps Script | `review/review-sheet.test.mjs`, `review/review-text.test.mjs` |
+| `run-tests.mjs` | `npm test` (#791): every test file in the repository, found rather than listed. | `npm test`, workflow "PR Checks" | `repo-hygiene.test.mjs` |
+| `scripts-index.mjs` | Writes scripts/README.md, the index of every script in scripts/, from the scripts themselves. | by hand | `scripts-index.test.mjs` |
+| `send_newsletter.py` | Send blog-post newsletters to the Apps Script newsletter endpoint. | workflow "Newsletter pipeline" | `test_newsletter_sender.py`, `test_send_newsletter.py` |
+| `simulate-projection-paths.mjs` | Reproducible Monte Carlo behind the "One line versus ten thousand paths" figure in src/content/blog/4. optimizing/43-financial-projections.md. | by hand | none |
+| `slides-to-reel.sh` | Turn a kit's rendered carousel slides into 9:16 story frames (one per slide) and a silent slideshow reel with slide-left transitions. | by hand | none |
+| `smoke-pages.mjs` | Every free tool, in every language it is published in, opened in a real browser from the built site (#363, #364). | `npm run smoke:pages`, workflow "PR Checks" | none |
+| `smoke-render.mjs` | End-to-end smoke test for the reel pipeline minus the LLM call. | by hand | none |
+| `verify-tool-privacy.mjs` | The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6, as a script: nothing a reader types into a free tool may reach PostHog. | `npm run verify:tool-privacy`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `lib/checks/tool-privacy-checks.test.mjs` |
+| `volunteer-form.gs` | Nidhi volunteer translators: Google Form builder (Google Apps Script). | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `review/review-text.test.mjs`, `volunteer-form.test.mjs` |
+| `volunteer-list.gs` | Nidhi volunteer beta-interest list: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs` |
+| `waitlist.gs` | Nidhi product-launch waitlist: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `server-events.test.mjs` |
+
+## Modules in `lib/`
+
+The modules the entry points import, each with its tests beside it, kept in
+one folder per purpose:
+
+- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `check-inputs.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-deps.mjs`, `mutation-fingerprint.mjs`, `mutation-floors.mjs`, `mutation-recheck.mjs`, `mutation-reuse.mjs`, `mutation-shards.mjs`, `mutation-stale-results.mjs`, `mutation-test-order.mjs`, `mutation-trace.mjs`, `mutation-wide-tests.mjs`, `serve-dist.mjs`, `stryker-ordered-tap.mjs`, `stryker-run-plan.mjs`, `tool-privacy-checks.mjs`, `trace-deps-hook.mjs`.
+- `lib/publishing/`: The site build and its data: the short-link pages and inline-script minifier astro.config.mjs runs, the inflation history and the Apps Script version stamp. Modules: `gs-version.mjs`, `inflation-data.mjs`, `inflation-monthly-wb.mjs`, `inflation-monthly.mjs`, `minify-inline-scripts.mjs`, `short-link-stub.mjs`.
+- `lib/media/`: The reel, caption and Instagram pipeline: lesson and post parsers, the script writer, the scrubber and its maths check, speech, music, figures and captions. Modules: `generate-tts.mjs`, `llm-script-writer.mjs`, `math-consistency.mjs`, `parse-blog-meta.mjs`, `parse-markdown.js`, `parse-vtt.mjs`, `pick-music.mjs`, `prepare-figures.mjs`, `render-platform-caption.mjs`, `scrub-output.mjs`.
+
+Beside them: `templates/` holds the HTML the Instagram renderers read,
+`fixtures/` the files tests compare byte for byte (the media tests keep
+theirs in `lib/media/fixtures/`), and `review/` the volunteer review
+sheets' Apps Script and the glossary export.
 
 ## Pasted into Google Apps Script
 
-These do not run from this repository. Each is the source of a script that
-lives in a Google account, and its header says how to deploy it:
-`newsletter.gs` (the newsletter backend; its header is the setup guide),
-`waitlist.gs`, `deploy-trigger.gs` (asks GitHub for the daily deploy),
-`volunteer-form.gs`, `volunteer-list.gs`, `review/review-sheet.gs` and
-`review/review-text.gs`.
+The `.gs` files do not run from this repository. Each is the source of a
+script that lives in a Google account, and its header says how to deploy
+it. After editing one, `npm run gs:version` stamps its VERSION.
 
 ## The reel script writer's model
 
 `npm run render-reels` asks an Anthropic model to write each reel's script
-(`lib/llm-script-writer.mjs`, with `ANTHROPIC_API_KEY` set). The model id is
-written in one place, `DEFAULT_REEL_MODEL` in that file, and
-`NIDHI_REEL_MODEL` overrides it for a run. Model ids are retired on published
-dates, so that constant is the line to update when one is.
+(`lib/media/llm-script-writer.mjs`, with `ANTHROPIC_API_KEY` set). The model
+id is written in one place, `DEFAULT_REEL_MODEL` in that file, and
+`NIDHI_REEL_MODEL` overrides it for a run. Model ids are retired on
+published dates, so that constant is the line to update when one is.
 
 ## Python
 
 `send_newsletter.py` needs the packages in `requirements.txt`, at those exact
-versions: `pip install -r scripts/requirements.txt`. The other Python scripts
-use the standard library only.
+versions: `pip install --require-hashes -r scripts/requirements.txt`. The
+other Python scripts use the standard library only.

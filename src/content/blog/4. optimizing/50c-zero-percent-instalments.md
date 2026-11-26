@@ -2,7 +2,7 @@
 slug: "zero-percent-instalments"
 title: "Is 0% EMI or Buy Now Pay Later Really Free? When Free Is Free"
 seoTitle: "Is 0% EMI or Buy Now Pay Later Really Free?"
-description: "No-cost EMI, buy now pay later, interest-free card instalments and deferred-interest store cards: who pays when it is free, the costs that turn it into credit, and the rules where you live."
+description: "No-cost EMI, buy now pay later and deferred-interest offers: who pays when it is free, the costs that turn it into credit, and the rules where you live."
 tldr:
   - "A 0% instalment plan can be truly free, but someone usually pays: the shop, or you through a higher price, lost discount or fees."
   - "Twelve month-end payments of €100 instead of paying €1,140 up front cost about 10% a year."
@@ -33,7 +33,7 @@ localRules: [credit, borrowing, tax]
 level: "optimizing"
 primaryPersona: "jiri"
 personas: ["jiri", "eva", "marcus", "petra"]
-tags: ["optimizing", "debt", "spending"]
+tags: ["optimizing", "debt", "psychology"]
 faq:
   - question: "Is no-cost EMI really free?"
     answer: "Often not entirely. In India, the bank usually still charges interest and the shop or platform gives an equal discount, so the interest is cancelled out. But the 18% GST on the interest is paid by the cardholder, many banks add a processing fee, and an upfront discount for paying in full may be lost. The Reserve Bank of India said in 2013 that in zero percent EMI schemes the interest is often passed on to customers as a processing fee. Comparing the total paid with the best price for paying in full shows the real cost."
@@ -126,7 +126,7 @@ Not on its own. Keeping the money earns about €18 over the year, about half of
 <details class="lesson-depth">
 <summary class="disclosure">Instalment plans in India, Mexico, Brazil, the EU, the UK, the US, Australia, Indonesia, Saudi Arabia, Turkey, South Korea and South Africa</summary>
 
-- **India.** No-cost EMI is offered by banks, card issuers and lenders; GST at 18% applies to the interest and to any processing fee. The Reserve Bank of India's 2013 circular criticised zero percent EMI schemes that hid interest in processing fees.
+- **India.** No-cost EMI is offered by banks, card issuers and lenders; GST at 18% applies to the interest and to any processing fee. The Reserve Bank of India's 2013 circular criticized zero percent EMI schemes that hid interest in processing fees.
 - **Mexico.** "Meses sin intereses" are paid on top of the card's minimum payment; Condusef notes that the price for them can be higher than the cash price and that cash or debit discounts may not apply.
 - **Brazil.** Shops may charge different prices for paying now and for "parcelado sem juros" (since 2017), and must show the discount.
 - **European Union.** The revised Consumer Credit Directive applies from November 20, 2026 and brings most buy now pay later and interest-free credit under consumer credit rules, including a creditworthiness check, with narrow exemptions. National rules apply it.

@@ -178,7 +178,8 @@ const breadcrumbSchema = {
       )}
 
       <section class="guide-deeper" aria-labelledby="guide-deeper-h">
-        <h2 id="guide-deeper-h">Go deeper</h2>
+        {/* Until a guide's lesson is live there is nothing to go deeper into (#508). */}
+        <h2 id="guide-deeper-h">{lessons.length > 0 ? 'Go deeper' : 'Further reading'}</h2>
         {lessons.length > 0 && (
           <ul class="guide-lessons">
             {lessons.map((l, i) => (
@@ -193,7 +194,7 @@ const breadcrumbSchema = {
           </ul>
         )}
         {g.tool && <p class="guide-tool">Try it with your own numbers: <a href={g.tool.url}>{g.tool.label}</a>. Free, and what you enter stays in your browser.</p>}
-        <h3 class="guide-label">Further reading</h3>
+        {lessons.length > 0 && <h3 class="guide-label">Further reading</h3>}
         <ul class="guide-refs">
           {g.references.map((r) => (
             <li><a href={r.url} target="_blank" rel="noopener noreferrer">{r.title}&#x2060;<span aria-hidden="true"> ↗</span><span class="guide-sr"> (opens in a new tab)</span></a> <span class="guide-ref-pub">{r.publisher}</span></li>

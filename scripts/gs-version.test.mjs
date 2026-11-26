@@ -5,7 +5,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { VERSIONED_SCRIPTS, gsVersion, writtenVersion, withVersion } from './lib/gs-version.mjs';
+import { VERSIONED_SCRIPTS, gsVersion, writtenVersion, withVersion } from './lib/publishing/gs-version.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 

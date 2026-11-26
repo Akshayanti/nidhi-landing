@@ -99,7 +99,7 @@ A widely used rule of thumb: when the interest rate on a debt is higher than the
 Every liability subtracts from your net worth. But the way debts are handled makes a big difference:
 
 - High-interest debt is the clearest case for fast repayment, because clearing it is a high, guaranteed return
-- Low-interest debt is where people differ: some prefer to invest the difference for a higher expected return, others prefer the certainty of being debt-free
+- Low-interest debt is where people differ: some prefer to invest the difference for a higher expected return (what it might earn on average, with no guarantee), others prefer the certainty of being debt-free
 - Missing minimum payments is costly almost everywhere: lenders add fees and penalties, and it damages your credit record
 
 In the next post, we'll look at two well-known strategies for paying off debt, and what each one suits.

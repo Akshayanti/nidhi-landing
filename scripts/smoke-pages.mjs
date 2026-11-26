@@ -19,7 +19,7 @@
  *
  * The tool pages are read from dist/ (a page under /free/ holding an island),
  * so a new tool or language is covered with no change here. The site is
- * served locally (scripts/lib/serve-dist.mjs). The exchange-rate provider the
+ * served locally (scripts/lib/checks/serve-dist.mjs). The exchange-rate provider the
  * net worth calculator asks is answered here with fixed rates, as the privacy
  * check does, and the run fails if that tool never asked; every other request
  * to another host is aborted. A normal build starts no analytics off
@@ -27,16 +27,16 @@
  * answered "declined" before the page loads, so the prompt does not cover the
  * tool.
  *
- * Known accessibility failures are listed in scripts/lib/known-failures.mjs,
+ * Known accessibility failures are listed in scripts/lib/checks/known-failures.mjs,
  * each with its issue and a date it ends. Exits 1 on anything else.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import puppeteer from 'puppeteer';
-import { loadDist } from './lib/check-dist.mjs';
-import { KNOWN_FAILURES, report, splitKnown } from './lib/known-failures.mjs';
-import { serveDist } from './lib/serve-dist.mjs';
+import { loadDist } from './lib/checks/check-dist.mjs';
+import { KNOWN_FAILURES, report, splitKnown } from './lib/checks/known-failures.mjs';
+import { serveDist } from './lib/checks/serve-dist.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (name) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : null);

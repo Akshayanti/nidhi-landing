@@ -7,6 +7,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  HORIZONS,
+  RETURN_CHOICES,
+  MAX_MONTHS,
   REAL_RETURN_TOP,
   PATHS,
   SEED,
@@ -206,7 +209,7 @@ describe('the paired simulation', () => {
     assert.ok(r5.a.p50 < r0.a.p50);
   });
 
-  it('runs the historical range beside the reader\'s own figure', () => {
+  it('runs the cautious and optimistic settings beside the reader\'s own figure', () => {
     const own = { ...BASE, returns: 'own' as const, ownReturn: 15, horizon: 'plus10' as const };
     const range = compareRange(own, FAST);
     assert.ok(range.cautious.b.p50 < range.optimistic.b.p50);
@@ -506,5 +509,98 @@ describe('the result as the page words it (#530)', () => {
     const m = await import('./math.ts');
     const flat = m.compare({ ...BASE, returns: 'own', ownReturn: 5 }, { paths: 1, flat: true });
     assert.deepEqual(m.wordedResult(flat).b, flat.b);
+  });
+});
+
+describe('the edges of each rule (#790)', () => {
+  const ONE = { paths: 1 };
+
+  it('the return settings, in the page’s order, each kept as chosen', () => {
+    assert.deepEqual(RETURN_CHOICES, ['cautious', 'historical', 'optimistic', 'own']);
+    for (const returns of RETURN_CHOICES) assert.equal(sanitizeInputs({ ...BASE, returns }).returns, returns);
+  });
+
+  it('the comparison dates, in the page’s order', () => {
+    assert.deepEqual(HORIZONS, ['payoff', 'plus5', 'plus10']);
+    const payoff = compare({ ...BASE, horizon: 'payoff' }, ONE);
+    assert.equal(compare({ ...BASE, horizon: 'plus5' }, ONE).months, payoff.months + 60);
+    assert.equal(compare({ ...BASE, horizon: 'plus10' }, ONE).months, payoff.months + 120);
+  });
+
+  it('the inflation default reads the years in order, whatever order they arrive in', () => {
+    // Years that are not array indices keep the order they were written in.
+    const s: Record<number, number> = {};
+    for (const y of [-5, -1, -3, -10, -2, -7, -4, -9, -6, -8]) s[y] = y === -1 ? 9 : 1;
+    const d = inflationDefault(s, 0);
+    assert.ok(d);
+    assert.equal(d.last, -1);
+    assert.equal(d.first, -10);
+    assert.equal(d.latest, 9);
+  });
+
+  it('figures three years old are recent enough, four are not', () => {
+    const s: Record<number, number> = {};
+    for (let y = 2013; y <= 2022; y++) s[y] = 2;
+    assert.ok(inflationDefault(s, 2025));
+    assert.equal(inflationDefault(s, 2026), null);
+  });
+
+  it('no five-year figure unless all five of the last years have one', () => {
+    // Six figures in the window, but only the latest among the last five years.
+    const d = inflationDefault({ 2015: 2, 2016: 2, 2017: 2, 2018: 2, 2019: 2, 2024: 3 }, 2025);
+    assert.ok(d);
+    assert.equal(d.count, 6);
+    assert.equal(d.fiveYear, null);
+  });
+
+  it('a setting’s note ignores the reader’s own figure, however high', () => {
+    assert.equal(returnNote({ ...BASE, returns: 'historical', ownReturn: 50 }), null);
+    assert.equal(returnNote({ ...BASE, returns: 'cautious', ownReturn: -50 }), null);
+  });
+
+  it('the reader’s own figure is impossible only at or below -100%, and only when it is in use', () => {
+    assert.equal(inputProblem({ ...BASE, returns: 'own', ownReturn: 7 }), null);
+    assert.equal(inputProblem({ ...BASE, returns: 'own', ownReturn: 150 }), null);
+    assert.equal(inputProblem({ ...BASE, returns: 'own', ownReturn: -99 }), null);
+    assert.equal(inputProblem({ ...BASE, returns: 'historical', ownReturn: -150 }), null);
+  });
+
+  it('a debt paid in exactly sixty years is allowed, a month more is not', () => {
+    assert.equal(inputProblem({ ...BASE, debtRate: 0, balance: MAX_MONTHS, payment: 1 }), null);
+    assert.equal(inputProblem({ ...BASE, debtRate: 0, balance: MAX_MONTHS + 1, payment: 1 }), 'too-long');
+  });
+
+  it('a debt never paid is counted as paid after the longest schedule', () => {
+    const r = compare({ ...BASE, payment: 1, extra: 0 }, ONE);
+    assert.equal(r.payoffMonthA, MAX_MONTHS + 2);
+    assert.equal(r.payoffMonthB, MAX_MONTHS + 2);
+  });
+
+  it('a rounding crumb left on the debt counts as paid, but a millionth of a unit does not', () => {
+    // 0.7 less seven payments of 0.1 leaves 2.8e-17 in floating point.
+    assert.equal(compare({ ...BASE, debtRate: 0, balance: 0.7, payment: 0.1, extra: 0 }, ONE).payoffMonthB, 7);
+    // 2e-6 less 1e-6 leaves exactly 1e-6, which is still owed.
+    assert.equal(compare({ ...BASE, debtRate: 0, balance: 2e-6, payment: 1e-6, extra: 0 }, ONE).payoffMonthB, 2);
+  });
+
+  it('tax on gains is charged on the paying-off path too, and never on its loss', () => {
+    const flat = (over: Partial<Inputs>) => compare({
+      ...BASE, balance: 1200, debtRate: 0, payment: 100, extra: 100, inflation: 0, returns: 'own', ownReturn: 10, horizon: 'plus5', ...over,
+    }, { paths: 1, flat: true });
+    // Path A is paid in 6 months, then invests 200 a month for 60 months: 12,000 put in.
+    const untaxed = flat({}).a.p50;
+    assert.ok(untaxed > 12_000);
+    close(flat({ gainsTax: 25 }).a.p50, untaxed - 0.25 * (untaxed - 12_000), 1e-6);
+    const loss = flat({ ownReturn: -10 }).a.p50;
+    assert.ok(loss < 12_000);
+    close(flat({ ownReturn: -10, gainsTax: 25 }).a.p50, loss, 1e-9);
+  });
+
+  it('the range runs the same inputs with the cautious and optimistic settings', () => {
+    const own = { ...BASE, returns: 'own' as const, ownReturn: 15 };
+    const range = compareRange(own, { paths: 200 });
+    assert.deepEqual(range.cautious, compare({ ...BASE, returns: 'cautious' }, { paths: 200 }));
+    assert.deepEqual(range.optimistic, compare({ ...BASE, returns: 'optimistic' }, { paths: 200 }));
+    assert.notDeepEqual(range.cautious, compare({ ...BASE, returns: 'historical' }, { paths: 200 }));
   });
 });

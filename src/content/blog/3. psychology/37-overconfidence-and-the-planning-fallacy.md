@@ -122,6 +122,6 @@ The outside view feels deflating, which is exactly why it works. It drags your f
 - **Run the driver test on yourself.** Before any confident financial move, ask honestly whether you are relying on being above average. If half of all people doing this cannot be, what makes you the half that is?
 - **Switch to the outside view.** For any plan or bet, find the base rate. How do projects, trades, or timelines like this usually turn out? Anchor on that record, not on your own story.
 - **Stress-test your assumptions.** When you project savings or returns, check whether the plan still works if the next few years disappoint. Pleasant surprises are easy to absorb; unpleasant ones break optimistic plans.
-- **Notice the urge to tinker.** If you find yourself trading or tinkering to feel in control, recognise the urge for what it is. In the research, diversified plans left alone have usually outperformed clever plans fussed over.
+- **Notice the urge to tinker.** If you find yourself trading or tinkering to feel in control, recognize the urge for what it is. In the research, diversified plans left alone have usually outperformed clever plans fussed over.
 
 Overconfidence is about misjudging your own skill and luck. The next bias is about how easily your judgement gets swayed by something outside you entirely: the way a choice is worded and the first number you happen to see. That is framing and anchoring, and it is where we go next.

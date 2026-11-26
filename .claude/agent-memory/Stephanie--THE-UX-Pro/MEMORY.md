@@ -19,3 +19,10 @@
 - [Post-merge #746/#748 21 Nov](postmerge-746-748-2026-11-21.md) — sticky header + cookie sheet leave 1-24% at 400% laptop; smooth-scroll and body-transition probe traps
 - [PR #764 review 21 Nov](pr764-review-2026-11-21.md) — static header voids z-index: cookie sheet covers phone menu; "Sure" 310px in 256px sheet; audit needs --banner
 - [Tokens PR #754 21 Nov](tokens-pr754-review-2026-11-21.md) — scoped `.privacy-container p` beats global .eyebrow; lesson "All terms" sideways at 300-400%
+- [Minus sign review 24 Nov](minus-sign-review-2026-11-24.md) — NVDA reads "CHF-1"/"-₹1" as positive; spoken total formatted apart; invest tool 25 Nov leftovers; preview recipe
+- [Numbers review 25 Nov](numbers-review-2026-11-25.md) — −0 left in pct/report cells; compact path is any non-en currency locale; tests via tsx
+- [PR #772 review 22 Nov](pr772-review-2026-11-22.md) — pre-paint swap blanks card if module fails; moved content loses phone floor; pill squeezes titles at 400%
+- [Timing review 25 Nov](timing-review-2026-11-25.md) — quiet={!hydrated} misses late history (non-default country link still announced); scratch probe recipe
+- [LinkField review 25 Nov](linkfield-review-2026-11-25.md) — e51afdc: uncontrolled share box safe (layout effect before focus); refusedOld copy; plain privacy bullets
+- [Hero + sticky cookie answers 25 Nov](hero-cookie-sticky-review-2026-11-25.md) — pinning and 39dvh only at ~100-175% on phones (rem guard); #769 unchanged; planner focus partly under sheet at 400%
+- [Inflation month review 25 Nov](inflation-month-review-2026-11-25.md) — legend lacked the month despite brief; 12k px answer at 400%; hi/mr desc postposition clash

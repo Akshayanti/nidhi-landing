@@ -30,7 +30,7 @@ referentialReading:
 relatedSlugs: ["what-is-net-worth", "how-to-calculate-net-worth"]
 faq:
   - question: "What counts as an asset?"
-    answer: "An asset is something you own that has monetary value: it is either cash, something you can sell for cash, or something that generates income. Common assets include cash and bank accounts, investments like stocks, bonds, index funds and ETFs, pension and retirement balances, real estate and land, vehicles, and valuables such as jewelry or art that you could realistically sell. The test is ownership plus convertibility: if you can turn it into money or it pays you income, it belongs on your asset list at its current value."
+    answer: "An asset is something you own that has monetary value: it is either cash, something you can sell for cash, or something that generates income. Common assets include cash and bank accounts, investments like stocks, bonds, index funds and ETFs, pension and retirement balances, real estate and land, vehicles, and valuables such as jewellery or art that you could realistically sell. The test is ownership plus convertibility: if you can turn it into money or it pays you income, it belongs on your asset list at its current value."
   - question: "Is my salary an asset?"
     answer: "No. Your salary is income, a flow of money in, not a stock of value you own. It becomes an asset only once you save or invest it. The same goes for your degree, your job, and your future earning potential: education raises your earning power but you cannot sell a diploma, you do not own your employer, and future income is not a present asset. Counting these things inflates your asset list and gives a false picture. A high earner with little saved is not in the same position as someone with a large invested portfolio."
   - question: "Why does asset quality matter more than the total?"
@@ -54,7 +54,7 @@ Common assets:
 - **Retirement accounts**: pension funds, employer-sponsored plans, private retirement savings. These are investments, but they deserve their own category because you usually can't access the money until a certain age and withdrawing early often means penalties or taxes. The access age, penalties and tax treatment depend on your country and the plan. They count toward your net worth, but their liquidity is very different from a regular brokerage account
 - **Property**: real estate, land
 - **Vehicles**: cars, motorcycles (though they depreciate fast)
-- **Valuables**: jewelry, art, collectibles (if you can actually sell them)
+- **Valuables**: jewellery, art, collectibles (if you can actually sell them)
 
 ## What doesn't count as an asset
 

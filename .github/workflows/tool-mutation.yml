@@ -1,0 +1,88 @@
+name: Free tools mutation
+
+# Mutation testing of the free tools (#790, #846). Its jobs are in
+# tool-suite.yml (the mutation suite), with how the shards, the earlier
+# results and the floors work.
+#
+# This workflow runs the suite every night and by hand (both retest
+# everything) and on every merge to main. Pull requests do not start it: PR
+# Checks (pr-checks.yml) runs the same suite on every pull request, after the
+# build, beside privacy and text size, and holds the required check "Free
+# tools: mutation".
+on:
+  # Every merge, so main holds results under its current fingerprint and a
+  # pull request that changes only tests has something to start from on its
+  # first push (#855). Not forced: it starts from main's own earlier results.
+  push:
+    branches: [main]
+  schedule:
+    # 02:17 UTC every day, away from the privacy check, deploy and newsletter.
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# The event is part of the group, so a manual run never cancels the nightly one.
+# Every merge to main has a group of its own (its run id): none is cancelled,
+# and none waits in a queue, where a later merge would replace it and its
+# results would never be made. (The pull request part of the group is left
+# from when pull requests started this workflow; it changes nothing now.)
+concurrency:
+  group: tool-mutation-${{ github.event_name }}-${{ github.event_name == 'push' && github.run_id || github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # Its jobs show as "Free tools mutation / <job>". Every shard reports, even
+  # after one fails (the suite is fail-fast on pull requests only).
+  mutation:
+    name: Free tools mutation
+    # The suite's mutation jobs read, on a merge, the pull request's runs and
+    # artifacts (tool-suite.yml, mutation-plan and mutation-seed); a called
+    # workflow can ask for no more than its caller grants.
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    uses: ./.github/workflows/tool-suite.yml
+    with:
+      suite: mutation
+
+  # Nobody watches the nightly run, so one that failed or was cancelled opens
+  # an issue, or adds to the one already open. It is here, not in
+  # tool-suite.yml, so the suite never holds a token that can write: only
+  # this job, on a nightly run, can.
+  alert:
+    needs: [mutation]
+    if: github.event_name == 'schedule' && (failure() || (!cancelled() && contains(needs.*.result, 'cancelled')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write   # open or comment on the tool-gates-alert issue
+    steps:
+      - name: Open or update the tool-gates-alert issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          TITLE="Nightly free tools mutation testing did not pass ($(date -u +%Y-%m-%d))"
+          BODY="$RUNNER_TEMP/tool-gates-alert.md"
+          {
+            echo "The nightly run of the free tools mutation testing did not finish green."
+            echo
+            echo "- Workflow run: $RUN_URL (attempt $ATTEMPT)"
+            echo
+            echo "Open the run to see which job failed. Close the issue once a nightly run has passed. While it is open, further failures are added here as comments."
+          } > "$BODY"
+          EXISTING=$(gh issue list --state open --label tool-gates-alert --limit 1 --json number --jq '.[0].number // empty' || echo "")
+          if [ -n "${EXISTING:-}" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY"
+          else
+            gh issue create --title "$TITLE" --label tool-gates-alert --body-file "$BODY" || {
+              gh label create tool-gates-alert --color D93F0B --description "The nightly free tools gates did not pass" || true
+              gh issue create --title "$TITLE" --label tool-gates-alert --body-file "$BODY"
+            }
+          fi

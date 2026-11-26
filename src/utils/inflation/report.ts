@@ -9,8 +9,8 @@
 import { byYearTable, tableOf, type Report } from '../shared/report.ts';
 import { inflationSheets, type InflationExport } from './export.ts';
 
-export function inflationReport(e: Omit<InflationExport, 'date' | 'page'> & { lines: string[]; method: string }): Report {
-  const { island, common, state, answer, lines, method } = e;
+export function inflationReport(e: Omit<InflationExport, 'date' | 'page'> & { lines: string[]; method: string; notes?: string[] }): Report {
+  const { island, common, state, answer, lines, method, notes = [] } = e;
   const [, inputs, , byYear] = inflationSheets({ ...e, date: '', page: '' });
   return {
     tool: island.formLabel,
@@ -22,7 +22,9 @@ export function inflationReport(e: Omit<InflationExport, 'date' | 'page'> & { li
       ? { kind: 'lines', title: answer.chartTitle, xLabel: answer.axis, series: [{ label: answer.chartTitle, points: answer.points.map((p) => ({ x: p.x, y: p.value })), strong: true }] }
       : null,
     // The sheet's first row is the chart's title, the second its header.
-    tables: [byYearTable(byYear.rows[1], byYear.rows.slice(2), answer.chartTitle, common.report.sampled)],
-    assumptions: [method],
+    // The sheet's last row, when the answer ends at a month, is the sentence
+    // that says what that month's row is: here it goes with the method.
+    tables: [byYearTable(byYear.rows[1], byYear.rows.slice(2, answer.monthEnd ? -1 : undefined), answer.chartTitle, common.report.sampled)],
+    assumptions: answer.monthEnd ? [method, ...notes, island.export.monthRow] : [method, ...notes],
   };
 }

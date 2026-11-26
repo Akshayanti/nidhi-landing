@@ -43,9 +43,9 @@
  * indefinitely would erode the simplicity gain).
  */
 
-import type { AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
-import { concentrationShares } from './math.ts';
-import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';
+import { aggregate, netTotal, concentrationShares, isUnreadableAmount } from './math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../shared/money.ts';
 import { linkCurrency, linkName, linkNumber } from '../shared/linkInput.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 
@@ -60,8 +60,15 @@ export type ShareMode = 'full' | 'redacted';
  */
 export const SHARED_STATE_GLOBAL = '__nidhiNetWorthShared';
 
-/** Matches one state parameter name, for ToolStateGuard. */
-export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
+/**
+ * Matches one state parameter name, for ToolStateGuard: today's keys, and the
+ * keys of the first links (May 2026: mode, func, a0_name, c_EUR, r_EUR,
+ * amt_EUR), so those too leave the address and are refused, never shown.
+ */
+export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+|' + 'mode|func|a\\d+_[a-z]+|c_[A-Za-z]+|r_[A-Za-z]+|amt_[A-Za-z]+';
+
+/** A key only the first links (May 2026) wrote. */
+const FIRST_LINK_KEY = /^(?:mode|func|a\d+_[a-z]+|c_[A-Za-z]+|r_[A-Za-z]+|amt_[A-Za-z]+)$/;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -71,7 +78,12 @@ export const STATE_KEY_PATTERN = 'm|f|n|a\\d+|p_[A-Za-z]+';
 const DEFAULT_ROW_COUNT = 2;
 /** How many blank rows the form opens with. Not part of the link format. */
 const START_ROW_COUNT = 1;
-const MAX_ROWS_FOR_URL = 50;
+/**
+ * The one limit of rows: the form, a CSV import, a link and the language
+ * switch (#794). Nothing is cut to it. What is over it is refused whole, and
+ * so is a list that arrives with fewer rows than it says.
+ */
+export const MAX_ROWS = 500;
 
 const DEFAULT_TYPE: AssetRow['type'] = 'asset';
 
@@ -91,6 +103,10 @@ export interface SharedPositionData {
   riskLevel: RiskLevel;
   /** The sender's net worth was zero or less: `pct` is then the concentration, and no share of net worth is stated. */
   noShares?: boolean;
+  /** Whether the sender had no rate for it. Absent in a link from before links said so (#795). */
+  rateUnavailable?: boolean;
+  /** In a full link: the currency's own amount, worked out from the rows. */
+  netAmountOriginal?: number;
 }
 
 export interface DecodeResult {
@@ -102,9 +118,19 @@ export interface DecodeResult {
   shareMode: ShareMode | null;
   /** Reconstructed from URL params; avoids re-fetching rates for a shared view. */
   sharedPositions?: SharedPositionData[];
+  /**
+   * The list was not whole or was over MAX_ROWS, so none of it was loaded:
+   * a shared link, or the state a language switch carries.
+   */
+  refused?: 'link' | 'transfer' | 'old';
+  /**
+   * An older link with a zero that could be a missing rate: it cannot say its
+   * total and shares cover every currency, so none is shown (#795).
+   */
+  inDoubt?: boolean;
 }
 
-// The codec uses DEFAULT_CURRENCY (imported from loan/math.ts so both free
+// The codec uses DEFAULT_CURRENCY (imported from shared/money.ts so all free
 // tools share a single source of truth) as the value that gets omitted from
 // the URL to keep share links short. When the audience-default changed from
 // USD to EUR, every place this codec hard-coded 'USD' had to move to the
@@ -132,7 +158,8 @@ function encodeRow(row: AssetRow): string {
   fields[ROW_IDX.NAME] = row.name;
   // Value: emit verbatim. We never substitute a default because the value
   // is the row's reason for existing.
-  fields[ROW_IDX.VALUE] = row.value;
+  // Number text or the marker, never what else was typed (#789).
+  fields[ROW_IDX.VALUE] = linkNumber(row.value, '');
   // Currency: omit if default (EUR).
   fields[ROW_IDX.CURRENCY] = row.currency === DEFAULT_CURRENCY ? '' : row.currency;
   // Type: omit if default (asset).
@@ -162,11 +189,25 @@ function decodeRow(packed: string): AssetRow {
 // Position tuple helpers
 // ---------------------------------------------------------------------------
 
+/** Fifth field of a position: whether its rate was known. An older link has none. */
+const RATE_KNOWN = 'k';
+const RATE_MISSING = 'x';
+
+function rateStatus(pos: CurrencyPosition): string {
+  // Copied on from an older link, which did not know either.
+  if (pos.rateUnknown) return '';
+  // With no rates at all nothing is flagged, and nothing is converted.
+  const missing = pos.rateUnavailable ?? (!pos.isFunctional && pos.netAmountFunctional === 0 && pos.netAmountOriginal !== 0);
+  return missing ? RATE_MISSING : RATE_KNOWN;
+}
+
 function encodePositionFull(pos: CurrencyPosition): string {
   return encodeTuple([
     pos.pctOfTotal.toFixed(1),
     pos.riskLevel,
     pos.netAmountFunctional.toFixed(2),
+    '',
+    rateStatus(pos),
   ]);
 }
 
@@ -180,16 +221,26 @@ const NO_SHARES_FLAG = 'z';
  * which the chart draws, and says so.
  */
 function encodePositionRedacted(pos: CurrencyPosition, concentration: number | null): string {
-  if (concentration === null) return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel]);
-  return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG]);
+  if (concentration === null) return encodeTuple([pos.pctOfTotal.toFixed(1), pos.riskLevel, '', '', rateStatus(pos)]);
+  return encodeTuple([concentration.toFixed(1), pos.riskLevel, '', NO_SHARES_FLAG, rateStatus(pos)]);
 }
 
+// Both are written with toFixed(), which spells 1e21 and above with an
+// exponent. That spelling is taken; no smaller exponent is.
+/** A share as every writer has written it, to one decimal. */
+const SHARE_TEXT = /^-?(\d+\.\d|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
+/** An amount as every writer has written it, to two decimals: one cut short, or spelt another way, is not one. */
+const AMOUNT_TEXT = /^-?(\d+\.\d\d|\d(\.\d+)?e\+(2[1-9]|[3-9]\d|\d{3}))$/;
+
 function decodePosition(code: string, packed: string): SharedPositionData | null {
-  const [pctRaw, riskRaw = 'low', amtRaw = '', flagRaw = ''] = decodeTuple(packed);
-  const pct = parseFloat(pctRaw);
+  const [pctRaw = '', riskRaw = '', amtRaw = '', flagRaw = '', statusRaw = ''] = decodeTuple(packed);
+  if (!SHARE_TEXT.test(pctRaw)) return null;
+  const pct = Number(pctRaw);
   if (!Number.isFinite(pct)) return null;
 
-  const riskLevel: RiskLevel = isValidRiskLevel(riskRaw) ? riskRaw : 'low';
+  // No band is assumed: one cut short read as Low.
+  if (!isValidRiskLevel(riskRaw)) return null;
+  const riskLevel: RiskLevel = riskRaw;
 
   const amt = amtRaw === '' ? 0 : parseFloat(amtRaw);
   return {
@@ -198,6 +249,55 @@ function decodePosition(code: string, packed: string): SharedPositionData | null
     netAmountFunctional: Number.isFinite(amt) ? amt : 0,
     riskLevel,
     ...(flagRaw === NO_SHARES_FLAG ? { noShares: true } : {}),
+    ...(statusRaw === RATE_KNOWN ? { rateUnavailable: false } : statusRaw === RATE_MISSING ? { rateUnavailable: true } : {}),
+  };
+}
+
+/** Whether every amount in a full link reads. One that does not was shown as zero. */
+function amountsRead(params: URLSearchParams): boolean {
+  for (const [key, value] of params) {
+    if (!key.startsWith('p_') || !KNOWN_CURRENCIES.has(key.slice(2).toUpperCase())) continue;
+    const amount = decodeTuple(value, 3)[2];
+    if (!AMOUNT_TEXT.test(amount) || !Number.isFinite(Number(amount))) return false;
+  }
+  return true;
+}
+
+/** A shared view's result, as far as its link can say. */
+export function sharedResult(
+  shared: SharedPositionData[],
+  functionalCurrency: string,
+  label: (level: RiskLevel) => string,
+): AggregationResult {
+  const funcCode = functionalCurrency.toUpperCase();
+  const positions: CurrencyPosition[] = shared.map((p) => ({
+    code: p.code,
+    netAmountOriginal: p.netAmountOriginal ?? p.netAmountFunctional,
+    netAmountFunctional: p.netAmountFunctional,
+    pctOfTotal: p.pct,
+    isFunctional: p.code === funcCode || p.riskLevel === 'functional',
+    riskLevel: p.riskLevel,
+    riskLabel: label(p.riskLevel),
+    ...(p.rateUnavailable === undefined ? { rateUnknown: true } : { rateUnavailable: p.rateUnavailable }),
+  }));
+
+  positions.sort((a, b) => {
+    if (a.isFunctional && !b.isFunctional) return -1;
+    if (!a.isFunctional && b.isFunctional) return 1;
+    return Math.abs(b.pctOfTotal) - Math.abs(a.pctOfTotal);
+  });
+
+  const totalNetWorthFunctional = netTotal(positions);
+  // A redacted link has no amounts ('none'). A full one says itself which
+  // rates were missing; from before it could, it is in doubt or it is whole.
+  const anyAmount = shared.some((p) => p.netAmountFunctional !== 0);
+  const anyMissing = shared.some((p) => p.rateUnavailable === true);
+  return {
+    positions,
+    totalNetWorthFunctional,
+    hasRates: anyMissing ? 'partial' : anyAmount ? 'full' : 'none',
+    // With amounts the total says it; without, the link does.
+    noShares: anyAmount ? totalNetWorthFunctional <= 0 : shared.some((p) => p.noShares === true),
   };
 }
 
@@ -224,8 +324,7 @@ export function encodeFullData(
 
   setNonDefault(params, 'n', nonEmpty.length, DEFAULT_ROW_COUNT);
 
-  const toEncode = nonEmpty.slice(0, MAX_ROWS_FOR_URL);
-  toEncode.forEach((row, i) => {
+  nonEmpty.forEach((row, i) => {
     const packed = encodeRow(row);
     if (packed !== '') params.set(`a${i + 1}`, packed);
   });
@@ -277,6 +376,26 @@ export function encodeShared(
     : encodeFull(rows, positions, functionalCurrency);
 }
 
+/**
+ * Why a redacted link cannot be made, and the first row to go to (#795):
+ * its shares would look like the whole list's. An amount that cannot be read
+ * comes before a missing rate.
+ */
+export function redactedRefusal(
+  rows: AssetRow[],
+  result: AggregationResult,
+): { reason: 'rows' | 'rates'; row: number; count: number } | null {
+  const unreadable = rows.filter((r) => isUnreadableAmount(r.value));
+  if (unreadable.length > 0) return { reason: 'rows', row: rows.indexOf(unreadable[0]), count: unreadable.length };
+  if (result.hasRates === 'full') return null;
+  const missing = new Set(
+    result.positions.filter((p) => (result.hasRates === 'none' ? !p.isFunctional : p.rateUnavailable)).map((p) => p.code),
+  );
+  if (missing.size === 0) return null;
+  const row = rows.findIndex((r) => r.value.trim() !== '' && missing.has(r.currency.toUpperCase()));
+  return { reason: 'rates', row: Math.max(0, row), count: missing.size };
+}
+
 function encodeFull(
   rows: AssetRow[],
   positions: CurrencyPosition[],
@@ -291,8 +410,7 @@ function encodeFull(
   const nonEmpty = rows.filter((r) => r.value.trim() !== '');
   setNonDefault(params, 'n', nonEmpty.length, DEFAULT_ROW_COUNT);
 
-  const toEncode = nonEmpty.slice(0, MAX_ROWS_FOR_URL);
-  toEncode.forEach((row, i) => {
+  nonEmpty.forEach((row, i) => {
     const packed = encodeRow(row);
     if (packed !== '') params.set(`a${i + 1}`, packed);
   });
@@ -310,14 +428,15 @@ function encodeRedacted(
 ): string {
   const params = new URLSearchParams();
   params.set('m', 'r');
-  params.set('f', functionalCurrency);
 
-  const total = positions.reduce((sum, p) => sum + p.netAmountFunctional, 0);
+  const total = netTotal(positions);
   const noShares = positions.some((p) => p.netAmountFunctional !== 0) && total <= 0;
   const concentration = noShares ? concentrationShares(positions) : null;
   for (const pos of positions) {
     params.set(`p_${pos.code}`, encodePositionRedacted(pos, concentration ? concentration.get(pos.code) ?? 0 : null));
   }
+  // Last: a link cut anywhere among its positions has lost it, and is refused.
+  params.set('f', functionalCurrency);
 
   return serializeParams(params);
 }
@@ -328,8 +447,20 @@ function encodeRedacted(
 
 export function decodeFromQueryString(qs: string): DecodeResult {
   const params = new URLSearchParams(qs);
-  const mode = params.get('m');
+  const today = decodeToday(params);
+  // A link from the first version (May 2026) cannot be read today: refused
+  // as such, never opened as an empty form. Its keys beside a link that
+  // today's reading takes are strays, ignored as before; beside one it
+  // refuses or finds nothing in, the link is an old one.
+  const empty = !today.isReadOnly && today.rows.every((row) => row.name.trim() === '' && row.value.trim() === '');
+  if ([...params.keys()].some((k) => FIRST_LINK_KEY.test(k)) && (today.refused || empty)) {
+    return refusal(today.functionalCurrency, 'old');
+  }
+  return today;
+}
 
+function decodeToday(params: URLSearchParams): DecodeResult {
+  const mode = params.get('m');
   if (mode === 'r') return decodeRedacted(params);
   if (mode === 'f') return decodeFull(params);
 
@@ -345,6 +476,7 @@ export function decodeFromQueryString(qs: string): DecodeResult {
     };
   }
 
+  if (!rowsAreWhole(params)) return refusal(functionalCurrency, 'transfer');
   const rows = decodeAssetRows(params);
   return { rows, functionalCurrency, isReadOnly: false, shareMode: null };
 }
@@ -353,22 +485,37 @@ export function decodeFromQueryString(qs: string): DecodeResult {
 // Internal decode helpers
 // ---------------------------------------------------------------------------
 
-function decodeAssetRows(params: URLSearchParams): AssetRow[] {
-  // Resolve count: explicit `n` wins; otherwise scan for the highest-index
-  // populated tuple. Empty `aN` keys aren't valid (we only emit when the
-  // tuple is non-empty), so the marker is simply key presence.
-  let count = Number(params.get('n'));
-  if (!Number.isFinite(count) || count < 1) {
-    count = DEFAULT_ROW_COUNT;
-    for (let i = MAX_ROWS_FOR_URL; i > DEFAULT_ROW_COUNT; i--) {
-      if (params.has(`a${i}`)) {
-        count = i;
-        break;
-      }
-    }
-  }
-  count = Math.min(MAX_ROWS_FOR_URL, Math.max(1, Math.round(count)));
+/** How many rows a link says it holds, or null where the number is no count. */
+function declaredCount(params: URLSearchParams): number | null {
+  const n = params.get('n');
+  if (n !== null) return /^\d{1,9}$/.test(n) ? Number(n) : null;
+  // The writer leaves out a count of two. With no row either, none is claimed.
+  const present = [...params.keys()].filter((key) => /^a\d+$/.test(key)).length;
+  return present === 0 ? 0 : Math.max(DEFAULT_ROW_COUNT, present);
+}
 
+/** Whether every row the link says it holds is in it, and no other. */
+function rowsAreWhole(params: URLSearchParams): boolean {
+  const count = declaredCount(params);
+  if (count === null || count > MAX_ROWS) return false;
+  const keys = [...params.keys()].filter((key) => /^a\d+$/.test(key));
+  if (keys.length !== count) return false;
+  for (let i = 1; i <= count; i++) if (!params.has(`a${i}`)) return false;
+  return true;
+}
+
+function refusal(functionalCurrency: string, refused: 'link' | 'transfer' | 'old'): DecodeResult {
+  return {
+    rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
+    functionalCurrency,
+    isReadOnly: false,
+    shareMode: null,
+    refused,
+  };
+}
+
+function decodeAssetRows(params: URLSearchParams): AssetRow[] {
+  const count = declaredCount(params) ?? 0;
   const rows: AssetRow[] = [];
   for (let i = 0; i < count; i++) {
     const packed = params.get(`a${i + 1}`);
@@ -393,15 +540,42 @@ function decodeAssetRows(params: URLSearchParams): AssetRow[] {
 
 function decodeFull(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
+  if (!rowsAreWhole(params)) return refusal(functionalCurrency, 'link');
   const rows = decodeAssetRows(params);
   const sharedPositions = decodePositions(params);
+  if (!sharedPositions) return refusal(functionalCurrency, 'link');
+  // The totals come last in a link, so a link cut short loses them first: one
+  // for each currency of the rows that can be read and no other, or no total.
+  const totalled = new Set(sharedPositions.map((p) => p.code));
+  const needed = aggregate(rows, functionalCurrency, null).positions;
+  const nothingInIt = needed.length === 0 && !rows.some((r) => isUnreadableAmount(r.value)) && sharedPositions.length === 0;
+  if (nothingInIt || totalled.size !== needed.length || needed.some((p) => !totalled.has(p.code)) || !amountsRead(params)) {
+    return refusal(functionalCurrency, 'link');
+  }
 
-  return { rows, functionalCurrency, isReadOnly: true, shareMode: 'full', sharedPositions };
+  const own = new Map(needed.map((p) => [p.code, p.netAmountOriginal]));
+  for (const pos of sharedPositions) pos.netAmountOriginal = own.get(pos.code) ?? 0;
+  // A missing rate was only ever written as a zero amount. Rows that net to
+  // zero add nothing with a rate or without.
+  const inDoubt = sharedPositions.some(
+    (p) => p.rateUnavailable === undefined && p.code !== functionalCurrency && p.netAmountFunctional === 0 && Math.abs(p.netAmountOriginal!) >= 1e-9,
+  );
+
+  return { rows, functionalCurrency, isReadOnly: true, shareMode: 'full', sharedPositions, inDoubt };
 }
 
 function decodeRedacted(params: URLSearchParams): DecodeResult {
   const functionalCurrency = linkCurrency(params.get('f'), KNOWN_CURRENCIES, DEFAULT_CURRENCY);
   const sharedPositions = decodePositions(params);
+  // One that says a rate was missing is one the tool refuses to make.
+  const named = KNOWN_CURRENCIES.has((params.get('f') ?? '').toUpperCase());
+  if (!named || !sharedPositions || sharedPositions.length === 0 || sharedPositions.some((p) => p.rateUnavailable) || !sharesAreWhole(sharedPositions)) {
+    return refusal(functionalCurrency, 'link');
+  }
+  // With no rows to look at, any zero share could be a missing rate, and a
+  // lone one in the spending currency the first of several that were cut away.
+  const lone = sharedPositions.length === 1;
+  const inDoubt = sharedPositions.some((p) => p.rateUnavailable === undefined && p.pct === 0 && (lone || p.code !== functionalCurrency));
 
   return {
     rows: Array.from({ length: DEFAULT_ROW_COUNT }, () => makeDefaultRow()),
@@ -409,22 +583,65 @@ function decodeRedacted(params: URLSearchParams): DecodeResult {
     isReadOnly: true,
     shareMode: 'redacted',
     sharedPositions,
+    inDoubt,
   };
 }
 
-function decodePositions(params: URLSearchParams): SharedPositionData[] {
+/**
+ * A link's positions, or null where they are not whole: one that cannot be
+ * read, one twice, or a rate status on some only, as a link cut short has.
+ * None is skipped: what was left would look like everything (#795).
+ */
+function decodePositions(params: URLSearchParams): SharedPositionData[] | null {
   const positions: SharedPositionData[] = [];
   for (const [key, value] of params) {
     if (!key.startsWith('p_')) continue;
     const code = key.slice(2).toUpperCase();
     // The code is shown on the page: only a currency the tools know.
-    if (!KNOWN_CURRENCIES.has(code)) continue;
+    if (!KNOWN_CURRENCIES.has(code) || positions.some((p) => p.code === code)) return null;
     const pos = decodePosition(code, value);
-    if (pos !== null) positions.push(pos);
+    if (pos === null) return null;
+    positions.push(pos);
   }
-  return positions;
+  const withStatus = positions.filter((p) => p.rateUnavailable !== undefined).length;
+  return withStatus === 0 || withStatus === positions.length ? positions : null;
+}
+
+/**
+ * Whether a redacted link's shares are all there: all zero, or 100 together,
+ * each rounded to one decimal, give or take what adding shares that large
+ * loses (netTotal's bound). A lone one is 100 or zero. An older link, with no
+ * status, totals more only with debts alone: every share then above zero,
+ * none banded as held. A lost position whose share was zero, or small enough
+ * to fall within the rounding, can pass: with no rows in the link nothing
+ * else can show it.
+ */
+function sharesAreWhole(positions: SharedPositionData[]): boolean {
+  if (positions.every((p) => p.pct === 0)) return true;
+  if (positions.length === 1) return positions[0].pct === 100;
+  let sum = 0;
+  let size = 0;
+  for (const { pct } of positions) {
+    sum += pct;
+    size += Math.abs(pct);
+  }
+  const rounding = 0.05 * positions.length + 1e-9 + 2 * (positions.length + 1) * Number.EPSILON * size;
+  if (Math.abs(sum - 100) <= rounding) return true;
+  const older = positions.some((p) => p.rateUnavailable === undefined);
+  return older && sum > 100 && positions.every((p) => p.pct === 0 || (p.pct > 0 && (p.riskLevel === 'functional' || p.riskLevel === 'net-debt')));
 }
 
 function isValidRiskLevel(s: string): s is RiskLevel {
   return ['functional', 'low', 'moderate', 'elevated', 'net-debt', 'unbanded'].includes(s);
+}
+
+/**
+ * Whether a change to the rows makes a shared view the reader's own. A
+ * redacted view has no rows, and an empty one added, removed or given a
+ * currency or type changes nothing that was shared: only a typed name or
+ * amount is its first edit. An import, the spending currency and Clear end
+ * any shared view where they happen.
+ */
+export function endsSharedView(redacted: boolean, edit: Partial<AssetRow> | 'add' | 'remove'): boolean {
+  return !redacted || (typeof edit !== 'string' && ('name' in edit || 'value' in edit));
 }

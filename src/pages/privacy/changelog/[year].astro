@@ -1,0 +1,17 @@
+---
+/**
+ * `/privacy/changelog/<year>/`: the complete record of one year of the privacy
+ * notice's changelog, in English (#722). One page per year that has entries.
+ */
+import PrivacyChangelogPage from '../../../components/pages/PrivacyChangelogPage.astro';
+import { changelogYears } from '../../../utils/privacyChangelog.ts';
+import { writtenChangelog } from '../../../utils/privacyChangelogEntries.ts';
+
+export async function getStaticPaths() {
+  return changelogYears(writtenChangelog).map(({ year }) => ({ params: { year } }));
+}
+
+const year = Astro.params.year as string;
+---
+
+<PrivacyChangelogPage locale="en" year={year} />

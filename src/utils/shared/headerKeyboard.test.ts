@@ -14,6 +14,7 @@
  *
  * Run with:  npm test
  */
+import { readsSource } from '../../../test/mutationRun.ts';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -61,7 +62,7 @@ describe('theme switch', () => {
     assert.equal((theme.match(/<button class="theme-btn"[^>]*aria-pressed="false"/g) ?? []).length, 3);
   });
 
-  it('the script keeps the pressed state with the choice', () => {
+  it('the script keeps the pressed state with the choice', { skip: readsSource }, () => {
     // The script is themeToggle.js, which ThemeToggle.astro inlines (themeToggle.test.ts runs it).
     const script = readFileSync(join(import.meta.dirname, 'themeToggle.js'), 'utf8');
     assert.match(script, /btn\.setAttribute\('aria-pressed', btn\.getAttribute\('data-mode'\) === mode \? 'true' : 'false'\);/);
