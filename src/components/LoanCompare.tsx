@@ -272,7 +272,7 @@ function track(event: string, properties?: Record<string, unknown>) {
   // Stryker disable next-line StringLiteral: equivalent. Without a window the call below throws a ReferenceError that the catch swallows, so returning early and not returning look the same to every caller.
   if (typeof window === 'undefined') return;
   try {
-    // Stryker disable next-line OptionalChaining: equivalent. Without the analytics library, or without its send method, either form throws a TypeError that the catch swallows, so nothing is sent and nothing breaks either way.
+    // Stryker disable next-line OptionalChaining: equivalent. Without the analytics library, or without its send method, the call as written stops quietly and the mutant throws a TypeError that the catch swallows, so nothing is sent and nothing breaks either way.
     window.posthog?.capture?.(event, properties);
   } catch {
     /* never let analytics throw block UI updates */
