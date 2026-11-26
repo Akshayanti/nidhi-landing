@@ -263,6 +263,25 @@ describe('past to today with a country’s history', () => {
     assert.equal(fall.sentences[1], 'Prices fell about 28% in total over those 2 years, an average of 15.1% a year.');
   });
 
+  it('a change written as 0% claims neither a rise nor a fall (#888)', () => {
+    const line = (series: Series, from: number, numberLocale = 'en') => answerOf(state({ mode: 'past', currency: 'USD', from }), USA, series, 'ready', numberLocale).sentences[1];
+    const FLAT = 'Prices changed by less than 0.5% in total over those 2 years.';
+    const FLAT_YEAR = 'Prices changed by less than 0.5% in that one year.';
+    // 0.998 x 0.998 = 0.996: a fall of 0.4%, which was "fell about 0%"; 1.002 x 1.002 = 1.004 was "rose about 0%".
+    assert.equal(line({ 2020: 1, 2021: -0.2, 2022: -0.2 }, 2020), FLAT);
+    assert.equal(line({ 2020: 1, 2021: 0.2, 2022: 0.2 }, 2020), FLAT);
+    assert.equal(line({ 2020: 1, 2021: 0, 2022: 0 }, 2020), FLAT);
+    assert.equal(line({ 2021: 1, 2022: -0.4 }, 2021), FLAT_YEAR);
+    assert.equal(line({ 2021: 1, 2022: 0.4 }, 2021), FLAT_YEAR);
+    // From half a percent it is a rise or a fall again: 0.997 x 0.997 = 0.994.
+    assert.equal(line({ 2020: 1, 2021: -0.3, 2022: -0.3 }, 2020), 'Prices fell about 1% in total over those 2 years, an average of 0.3% a year.');
+    assert.equal(line({ 2020: 1, 2021: 0.3, 2022: 0.3 }, 2020), 'Prices rose about 1% in total over those 2 years, an average of 0.3% a year.');
+    assert.equal(line({ 2021: 1, 2022: -0.6 }, 2021), 'Prices fell about 1% in that one year.');
+    assert.equal(line({ 2021: 1, 2022: 0.6 }, 2021), 'Prices rose about 1% in that one year.');
+    // The limit is written the page's way.
+    assert.equal(line({ 2020: 1, 2021: -0.2, 2022: -0.2 }, 2020, 'cs'), 'Prices changed by less than 0,5\u00a0% in total over those 2 years.');
+  });
+
   it('follows the page’s number style for the bare figures', () => {
     const indian = answerOf(state({ mode: 'past', currency: 'TRY', amount: 2e9, from: 2003 }), TUR, rising(2003), 'ready', 'en-IN');
     assert.equal(indian.sentences[0], 'In Türkiye, 2,00,00,00,000 in the money of 2003, at that year’s average prices, bought what about ₺3,300 bought at average prices in 2006.');
@@ -445,7 +464,7 @@ describe('the euro area as a whole', () => {
     for (const [from, result, rise] of [
       // From 1999: 1.2 x 1.25 = 1.5 over 4 years, 10.7% a year. From 2001: flat for 2 years.
       [1999, '€1,500', 'Prices rose about 50% in total over those 4 years, an average of 10.7% a year.'],
-      [2001, '€1,000', 'Prices rose about 0% in total over those 2 years, an average of 0% a year.'],
+      [2001, '€1,000', 'Prices changed by less than 0.5% in total over those 2 years.'],
     ] as const) {
       const a = past(EMU, series, 1000, from);
       const note = format(r.euro1999to2001, { from });
@@ -457,7 +476,7 @@ describe('the euro area as a whole', () => {
 
   it('from 2002, the amount is euros and there is no note', () => {
     const a = past(EMU, series, 1000, 2002);
-    assert.deepEqual(a.sentences, ['In the euro area, €1,000 at average prices in 2002 bought what about €1,000 bought at average prices in 2003.', 'Prices rose about 0% in that one year.', LATEST(2003), START(2002)]);
+    assert.deepEqual(a.sentences, ['In the euro area, €1,000 at average prices in 2002 bought what about €1,000 bought at average prices in 2003.', 'Prices changed by less than 0.5% in that one year.', LATEST(2003), START(2002)]);
     assert.ok(a.announceMore === undefined);
     assert.equal(a.chartTitle, 'What €1,000 is worth each year since');
   });
@@ -675,12 +694,43 @@ describe('an answer that ends at a month, where the country has one to join', ()
     ]);
   });
 
-  it('a month level with the last year’s average is said as no rise, and a tenth of a percent is kept', () => {
+  it('a month level with the last year’s average is said as neither higher nor lower (#888), and a tenth of a percent is kept', () => {
     const level = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1, source: 'bis' });
-    assert.equal(level.sentences[3], 'Prices were 0% higher in March 2023 than on average in 2022.');
+    assert.equal(level.sentences[3], 'Prices in March 2023 were within 0.05% of their average in 2022.');
     close(level.value, 1650);
     const tenth = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263, source: 'bis' });
     assert.equal(tenth.sentences[3], 'Prices were 2.6% higher in March 2023 than on average in 2022.');
+  });
+
+  it('a line whose change is written as 0% claims neither a rise nor a fall, each of the three on its own (#888)', () => {
+    const lines = (series: Series, factor: number) => joined(USA, series, 1000, 2020, { month: '2023-03', factor, source: 'bis' }).sentences.slice(1, 4);
+    const TOTAL = 'Prices in March 2023 were within 0.5% of their average in 2020.';
+    const AVERAGE = 'From 2020 to 2022, they changed by less than 0.05% a year on average.';
+    const MORE = 'Prices in March 2023 were within 0.05% of their average in 2022.';
+    // 1.001 x 1.001 x 1.0002 = 1.0022: 0.22% in all, 0.1% a year, 0.02% since the last year.
+    assert.deepEqual(lines({ 2020: 1, 2021: 0.1, 2022: 0.1 }, 1.0002), [TOTAL, 'From 2020 to 2022, they rose 0.1% a year on average.', MORE]);
+    // The same downwards: 0.999 x 0.999 x 0.9998 = 0.9978.
+    assert.deepEqual(lines({ 2020: 1, 2021: -0.1, 2022: -0.1 }, 0.9998), [TOTAL, 'From 2020 to 2022, they fell 0.1% a year on average.', MORE]);
+    // 0.02% a year for two years, then a month 10% up: only the yearly average rounds to nothing.
+    assert.deepEqual(lines({ 2020: 1, 2021: 0.02, 2022: 0.02 }, 1.1), ['Prices were about 10% higher in March 2023 than on average in 2020.', AVERAGE, 'Prices were 10% higher in March 2023 than on average in 2022.']);
+    assert.deepEqual(lines({ 2020: 1, 2021: -0.02, 2022: -0.02 }, 0.9), ['Prices were about 10% lower in March 2023 than on average in 2020.', AVERAGE, 'Prices were 10% lower in March 2023 than on average in 2022.']);
+    // Nothing moved at all.
+    assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 1), [TOTAL, AVERAGE, MORE]);
+    // From half of the last digit shown, it is a rise or a fall again: 0.6% in all, 0.06% a year, 0.06% since.
+    assert.deepEqual(lines({ 2020: 1, 2021: 0.06, 2022: 0.06 }, 1.0048), ['Prices were about 1% higher in March 2023 than on average in 2020.', 'From 2020 to 2022, they rose 0.1% a year on average.', 'Prices were 0.5% higher in March 2023 than on average in 2022.']);
+    assert.deepEqual(lines({ 2020: 1, 2021: -0.06, 2022: -0.06 }, 0.9994), ['Prices in March 2023 were within 0.5% of their average in 2020.', 'From 2020 to 2022, they fell 0.1% a year on average.', 'Prices were 0.1% lower in March 2023 than on average in 2022.']);
+    assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 1.0006), [TOTAL, AVERAGE, 'Prices were 0.1% higher in March 2023 than on average in 2022.']);
+    assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 0.994), ['Prices were about 1% lower in March 2023 than on average in 2020.', AVERAGE, 'Prices were 0.6% lower in March 2023 than on average in 2022.']);
+    // Over one full year there is no yearly average line, and the two that remain are judged the same way.
+    assert.deepEqual(joined(USA, { 2021: 1, 2022: 0.1 }, 1000, 2021, { month: '2023-03', factor: 0.9999, source: 'bis' }).sentences.slice(1, 3), [
+      'Prices in March 2023 were within 0.5% of their average in 2021.',
+      'Prices in March 2023 were within 0.05% of their average in 2022.',
+    ]);
+    // The limit is written the page's way.
+    assert.deepEqual(
+      joined(USA, { 2020: 1, 2021: 0, 2022: 0 }, 1000, 2020, { month: '2023-03', factor: 1, source: 'bis' }, 'USD', 'cs').sentences.slice(1, 4),
+      ['Prices in March 2023 were within 0,5\u00a0% of their average in 2020.', 'From 2020 to 2022, they changed by less than 0,05\u00a0% a year on average.', 'Prices in March 2023 were within 0,05\u00a0% of their average in 2022.'],
+    );
   });
 
   it('follows the page’s number style', () => {

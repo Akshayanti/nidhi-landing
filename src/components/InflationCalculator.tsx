@@ -1139,17 +1139,34 @@ function computeAnswer(
     // year without "those 1 year" or an average equal to the total (#868).
     const fell = factor < 1;
     const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
+    // A change written as 0% is neither a rise nor a fall: "fell about 0%"
+    // said more than the figure does (#888). It is said as less than half of
+    // the last digit shown, which is all the rounding tells.
+    const flat = (v: number, digits: number) => shownNumber(v, digits) === 0;
+    const limit = (digits: number) => pct(0.5 / 10 ** digits, numberLocale, digits + 1);
     if (end) {
       // Three lines, each over its own stretch: the whole rise to the month,
       // the yearly average over full years only (a part year is never made
       // into a yearly rate), and the step from the last year's average on.
-      sentences.push(t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(Math.abs(total - 1) * 100, numberLocale, 0), from, inMonth: endPhrase }));
-      if (span > 1) sentences.push(t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
-      sentences.push(t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(Math.abs(end.factor - 1) * 100, numberLocale, 1), to, inMonth: endPhrase }));
+      const whole = Math.abs(total - 1) * 100;
+      const more = Math.abs(end.factor - 1) * 100;
+      sentences.push(flat(whole, 0)
+        ? t(r.pastMonthFlat, { limit: limit(0), inMonth: endPhrase, year: from })
+        : t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(whole, numberLocale, 0), from, inMonth: endPhrase }));
+      if (span > 1) {
+        sentences.push(flat(average, 1)
+          ? t(r.pastMonthAverageFlat, { from, to, limit: limit(1) })
+          : t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
+      }
+      sentences.push(flat(more, 1)
+        ? t(r.pastMonthFlat, { limit: limit(1), inMonth: endPhrase, year: to })
+        : t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(more, numberLocale, 1), to, inMonth: endPhrase }));
       // Prices published by quarter: the month named is one of three that share a figure.
       if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
     } else {
-      sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
+      sentences.push(flat((factor - 1) * 100, 0)
+        ? t(span === 1 ? r.pastCountryFlatOneYear : r.pastCountryFlat, { limit: limit(0), years: change.years })
+        : t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
       sentences.push(t(r.latestYearNote, { to }));
       // A country with a monthly index that is not joined is told why.
       if (join && 'withheld' in join) {
