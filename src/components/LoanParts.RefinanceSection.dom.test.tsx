@@ -341,6 +341,13 @@ describe('the note that a refinance can break even and still cost more', () => {
     assert.deepEqual(row(section, r.breakEven), [r.breakEven, '1 mo', r.breakEvenHint]);
   });
 
+  it('is not said when the refinance comes out even', () => {
+    // `dear` at month 1 into 0% over 3 months: 12.08 of costs is exactly the interest saved.
+    const { section } = show([dear()], { refiAtMonth: '1', refiNewTermMonths: '3', refiNewFeeMajor: '12.08' });
+    assert.deepEqual(row(section, r.saves)?.slice(0, 2), [r.saves, '€0.00']);
+    assert.deepEqual(row(section, r.breakEven), [r.breakEven, '1 mo', r.breakEvenHint]);
+  });
+
   it('is not said when the new loan does not end later', () => {
     // The 250.00 extra each month continues on the new loan, which ends with the current one.
     const { section } = show([withExtra()], { refiAtMonth: '1', refiNewFeeMajor: '10' });
@@ -456,6 +463,21 @@ describe('the sentence handed to the announcement', () => {
     const { section, calls } = show([plain()], { refiNewFeeMajor: '100' });
     typeInto(fee(section), '');
     assert.equal(calls.said.at(-1), 'Refinancing saves €0.00 in total. Time to break even: From the first month.');
+  });
+
+  it('is taken back from a receiver the page has replaced, and handed to the new one', () => {
+    const vendors = [plain()];
+    const results = resultsOf(vendors);
+    const first: (string | undefined)[] = [];
+    const second: (string | undefined)[] = [];
+    const mount = (onSaid: (text: string | undefined) => void) => (
+      <RefinanceSection vendors={vendors} results={results} currency="EUR" state={scenario({ refiNewFeeMajor: '100' })} onChange={() => {}} onSaid={onSaid} strings={s} />
+    );
+    const view = render(mount((text) => { first.push(text); }));
+    view.rerender(mount((text) => { second.push(text); }));
+    const sentence = 'Refinancing costs €100.00 more in total. Time to break even: 2 months.';
+    assert.deepEqual(first, [sentence, undefined]);
+    assert.deepEqual(second, [sentence]);
   });
 
   it('is empty while there is nothing to compare', () => {
