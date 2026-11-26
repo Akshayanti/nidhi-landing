@@ -13,10 +13,10 @@
  * Pure: no DOM, no analytics. The island hands the sheets to `downloadWorkbook`.
  */
 import type { Dict } from '../../i18n/strings/types.ts';
-import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
+import { MAX_CELL_TEXT, amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
-import { parseLumpSums, type VendorInput } from './url.ts';
+import { lumpSumFault, parseLumpSums, type VendorInput } from './url.ts';
 
 type Island = Dict['tools']['loanComparison']['island'];
 type Common = Dict['tools']['export'];
@@ -42,6 +42,22 @@ export interface LoanExport {
 }
 
 const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true }));
+
+/**
+ * Pieces of text joined into cells, each as long as `limit` allows and no
+ * longer, and none holding part of a piece: a spreadsheet cell holds 32,767
+ * characters, and a list joined into one cell was cut there, mid-amount,
+ * without a word (#819). A piece longer than the limit has a cell to itself.
+ */
+export function packCells(pieces: string[], separator: string, limit: number): string[] {
+  const cells: string[] = [];
+  for (const piece of pieces) {
+    const last = cells.length - 1;
+    if (last >= 0 && cells[last].length + separator.length + piece.length <= limit) cells[last] += separator + piece;
+    else cells.push(piece);
+  }
+  return cells;
+}
 
 /** True when at least one offer really has a payment after its rate change. */
 export function hasLaterPayment(results: LoanResult[]): boolean {
@@ -72,11 +88,14 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
   // the box holds. Text that does not read as lump sums is left as typed.
   // A no-break space keeps "Month 12" on one line in a narrow column.
   const amountText = new Intl.NumberFormat(locale ?? 'en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-  const lumps = (encoded: string): Cell => {
-    if (!encoded.trim()) return null;
+  // One offer's lump sums as the cells of its column, top to bottom: one
+  // cell for a list a cell can hold, more for a longer one. No cell for an
+  // empty box. Text that does not all read as lump sums is one cell, as typed.
+  const lumps = (encoded: string): string[] => {
+    if (!encoded.trim()) return [];
     const entries = parseLumpSums(encoded);
-    if (entries.length === 0) return encoded;
-    return entries.map((l) => `${island.balance.month.replace('{m}', String(l.month)).replace(/ /g, '\u00a0')}: ${amountText.format(l.amountMajor)}`).join('; ');
+    if (entries.length === 0 || lumpSumFault(encoded) !== null) return [encoded];
+    return packCells(entries.map((l) => `${island.balance.month.replace('{m}', String(l.month)).replace(/ /g, '\u00a0')}: ${amountText.format(l.amountMajor)}`), '; ', MAX_CELL_TEXT);
   };
   const whole = (raw: string): Cell => {
     const n = parseNumber(raw);
@@ -113,6 +132,14 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
   // Inputs: one column per offer, one row per field, as the cards have them.
   const field = (label: string, cell: (v: VendorInput) => Cell): Cell[] => [label, ...vendors.map(cell)];
   const anyHybrid = vendors.some((v) => v.rateKind === 'hybrid');
+  // The lump sums: one row, as ever, while every offer's list fits a cell.
+  // A longer list goes on in the rows below, under an empty label, each
+  // offer in its own column.
+  const lumpColumns = vendors.map((v) => lumps(v.lumpSumsEncoded));
+  const lumpRows: Cell[][] = Array.from({ length: Math.max(1, ...lumpColumns.map((cells) => cells.length)) }, (_, row) => [
+    row === 0 ? c.lumps : null,
+    ...lumpColumns.map((cells) => cells[row] ?? null),
+  ]);
   const inputRows: Cell[][] = [
     head(common.columns.item, ...names),
     field(c.principal, (v) => major(v.principal)),
@@ -134,7 +161,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     field(c.pointsCost, (v) => major(v.pointsCostMajor || '0')),
     field(c.pointsReduction, (v) => rate(v.pointsRateReductionPct || '0')),
     field(c.extra, (v) => major(v.extraMonthly || '0')),
-    field(c.lumps, (v) => lumps(v.lumpSumsEncoded)),
+    ...lumpRows,
     field(c.penaltyPct, (v) => rate(v.prepayPenaltyPct || '0')),
     field(c.penaltyUntil, (v) => whole(v.prepayPenaltyUntilMonth || '0')),
   );

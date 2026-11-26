@@ -12,7 +12,8 @@ import assert from 'node:assert/strict';
 import { format } from '../../i18n/format.ts';
 import type { Cell } from '../shared/xlsx.ts';
 import type { LoanResult } from './math.ts';
-import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets } from './export.ts';
+import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets, packCells } from './export.ts';
+import { buildXlsx, MAX_CELL_TEXT } from '../shared/xlsx.ts';
 import {
   amount, BROKEN, BY_PAYMENT, common, EARLY, exportOf, FIXED, head, island, KEPT, NEVER, offer, pct, RESET, result, whole, worthToday,
 } from '../../../test/loanParts.exportOffers.ts';
@@ -250,6 +251,81 @@ describe('loan spreadsheet: the Inputs sheet', () => {
       assert.equal(lumpCell('soon'), 'soon');
       assert.equal(lumpCell(' 12 5000 '), ' 12 5000 ');
     });
+
+    it('are left as typed, whole, when only part of the text reads: nothing is left out of the record', () => {
+      assert.equal(lumpCell('12:5000;soon'), '12:5000;soon');
+      assert.equal(lumpCell('12:5000;12.5:300'), '12:5000;12.5:300');
+    });
+  });
+
+  describe('a list of lump sums too long for one cell (issue 819)', () => {
+    // 1,200 lump sums of nine digits, grouped as India writes them: "Month 1200: 99,99,98,800.00"
+    // and the like, 33,691 characters joined, where a cell holds 32,767.
+    const LONG = Array.from({ length: 1200 }, (_, i) => `${i + 1}:${999_999_999 - i}`).join(';');
+    const entry = (i: number) => `Month\u00a0${i + 1}: ${(999_999_999 - i).toLocaleString('en-IN')}.00`;
+    const INDIA = { locale: 'en-IN' };
+    const lumpRows = (offers: [string, ReturnType<typeof offer>][], over: Parameters<typeof exportOf>[1] = INDIA) => {
+      const rows = loanSheets(exportOf(offers, over))[2].rows;
+      const from = rows.findIndex((row) => row[0] === c.lumps);
+      const to = rows.findIndex((row) => row[0] === c.penaltyPct);
+      return rows.slice(from, to);
+    };
+
+    it('goes on in the rows below, every lump sum whole and none cut', () => {
+      const rows = lumpRows([['Bank A', offer({ lumpSumsEncoded: LONG })]]);
+      assert.equal(rows.length, 2);
+      assert.deepEqual(rows.map((row) => row[0]), [c.lumps, null]);
+      const cells = rows.map((row) => row[1] as string);
+      for (const cell of cells) assert.ok(cell.length <= MAX_CELL_TEXT, String(cell.length));
+      assert.deepEqual(cells.flatMap((cell) => cell.split('; ')), Array.from({ length: 1200 }, (_, i) => entry(i)));
+      // The first cell is as full as whole entries allow: the next one would not have fitted.
+      assert.ok(cells[0].length + '; '.length + cells[1].split('; ')[0].length > MAX_CELL_TEXT);
+    });
+
+    it('reaches the file whole: no cell of the workbook is cut', () => {
+      const sheets = loanSheets(exportOf([['Bank A', offer({ lumpSumsEncoded: LONG })]], INDIA));
+      const xml = new TextDecoder().decode(buildXlsx(sheets));
+      assert.ok(!xml.includes('…'));
+      for (let i = 0; i < 1200; i++) assert.ok(xml.includes(`${entry(i)};`) || xml.includes(`${entry(i)}<`), entry(i));
+    });
+
+    it('each offer goes on in its own column, and a short list beside it stays one cell', () => {
+      const rows = lumpRows([['Bank A', offer({ lumpSumsEncoded: '12:5000' })], ['Bank B', offer({ lumpSumsEncoded: LONG })], ['Bank C', offer()]]);
+      assert.equal(rows.length, 2);
+      assert.deepEqual(rows[0].slice(0, 2), [c.lumps, 'Month\u00a012: 5,000.00']);
+      assert.equal(rows[0][3], null);
+      assert.deepEqual([rows[1][0], rows[1][1], rows[1][3]], [null, null, null]);
+      assert.ok((rows[0][2] as string).startsWith(entry(0)));
+      assert.ok((rows[1][2] as string).endsWith(entry(1199)));
+      assert.equal(rows[0].length, 4);
+      assert.equal(rows[1].length, 4);
+    });
+
+    it('a list a cell can hold is one row, as it always was, and so is no list at all', () => {
+      assert.deepEqual(lumpRows([['Bank A', offer({ lumpSumsEncoded: '12:5000;36:3000.5' })], ['Bank B', offer()]], {}), [[c.lumps, 'Month\u00a012: 5,000.00; Month\u00a036: 3,000.50', null]]);
+      assert.deepEqual(lumpRows([['Bank A', offer()]], {}), [[c.lumps, null]]);
+      // Grouped in threes the same 1,200 nine-digit lump sums are 32,491 characters: one cell, whole.
+      const usd = lumpRows([['Bank A', offer({ lumpSumsEncoded: LONG })]], {});
+      assert.equal(usd.length, 1);
+      assert.equal((usd[0][1] as string).split('; ').length, 1200);
+      assert.equal((usd[0][1] as string).length, 32_491);
+    });
+  });
+});
+
+describe('packCells', () => {
+  it('fills each cell to the limit and no further, never with part of a piece', () => {
+    assert.deepEqual(packCells(['aa', 'bb', 'cc'], ', ', 6), ['aa, bb', 'cc']);
+    assert.deepEqual(packCells(['aa', 'bb', 'cc'], ', ', 5), ['aa', 'bb', 'cc']);
+    assert.deepEqual(packCells(['aa', 'bb', 'cc'], ', ', 10), ['aa, bb, cc']);
+    assert.deepEqual(packCells(['aa', 'bb', 'cc'], ', ', 9), ['aa, bb', 'cc']);
+    assert.deepEqual(packCells(['a', 'b', 'c', 'd'], '', 2), ['ab', 'cd']);
+  });
+
+  it('gives a piece longer than the limit a cell to itself, and nothing for no pieces', () => {
+    assert.deepEqual(packCells(['a', 'bbbbbbbb', 'c'], ', ', 4), ['a', 'bbbbbbbb', 'c']);
+    assert.deepEqual(packCells([], ', ', 4), []);
+    assert.deepEqual(packCells(['', 'a'], ', ', 4), [', a']);
   });
 });
 
