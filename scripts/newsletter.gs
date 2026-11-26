@@ -116,7 +116,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = 'd2409544cad2';
+var VERSION = '513538776a7e';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
@@ -518,7 +518,7 @@ function doGet(e) {
     return htmlResponse_(pageTemplate_(
       'Nothing here',
       'This endpoint powers newsletter signups on nidhi.today.',
-      'Go to the blog',
+      'Read the lessons',
       config_().siteUrl + '/blog/'
     ));
   } catch (err) {
@@ -528,7 +528,7 @@ function doGet(e) {
     return htmlResponse_(pageTemplate_(
       'Something went wrong',
       'Please try again in a little while.',
-      'Go to the blog',
+      'Read the lessons',
       safeSiteUrl_() + '/blog/'
     ));
   }
