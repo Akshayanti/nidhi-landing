@@ -91,7 +91,7 @@ describe('the loan comparison: a shared link arriving', () => {
   });
 
   it('opens in euros on a page whose starting currency the tool does not offer', () => {
-    mount({ defaultCurrency: 'XXX' });
+    mount({ defaultCurrency: 'QQQ' });
     assert.equal(currencySelect().value, 'EUR');
   });
 });
