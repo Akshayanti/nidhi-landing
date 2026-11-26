@@ -116,7 +116,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '5fa1f11f04db';
+var VERSION = 'd2409544cad2';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
@@ -1219,10 +1219,10 @@ function sendReminderEmail_(email, confirmToken) {
   var text =
     cfg.fromName + ', reminder\r\n\r\n' +
     'Hi,\r\n\r\n' +
-    'You started subscribing to the ' + cfg.fromName + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
+    'You started subscribing to the ' + cfg.fromName + ' newsletter a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
     'If you still want in, click below:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'Changed your mind? No worries, ignore this email and we won’t email you again.\r\n\r\n' +
+    'Changed your mind? No worries, ignore this email and nothing more will follow.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl + '/', campaign) + '\r\n';
 
@@ -1244,11 +1244,11 @@ function sendReminderEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
+              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> newsletter a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Or copy and paste this link:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
+              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and nothing more will follow.</p>' +
             '</td></tr>' +
             footerHtml_(cfg, /* isNewsletter */ false, campaign) +
           '</table>' +
@@ -2254,7 +2254,7 @@ function sendConfirmationEmail_(email, confirmToken) {
   var text =
     cfg.fromName + ', confirm your subscription\r\n\r\n' +
     'Hi,\r\n\r\n' +
-    'Click the link below to confirm you\u2019d like a heads-up from ' + cfg.fromName + ' whenever a new post goes up:\r\n\r\n' +
+    'Click the link below to confirm you\u2019d like a heads-up from ' + cfg.fromName + ' whenever a new lesson goes up:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
     // At most one reminder follows (handleRemindPending), so the mail says so (#474).
     'If you didn\u2019t sign up, ignore this email. You\u2019ll get at most one reminder, and nothing after that.\r\n\r\n' +
@@ -2279,7 +2279,7 @@ function sendConfirmationEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
+              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new lesson goes up.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
@@ -2336,8 +2336,8 @@ function sendWelcomeEmail_(email, unsubToken) {
 
   var text =
     cfg.fromName + ', you\u2019re in.\r\n\r\n' +
-    'Thanks for confirming. We\u2019ll ping you from ' + cfg.fromEmail + ' whenever a new post goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
-    'While you wait for the next one, the existing posts are all on the blog:\r\n' +
+    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' whenever a new lesson goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
+    'While you wait for the next one, the lessons so far are all here:\r\n' +
     blogUrl + '\r\n\r\n' +
     'Reply to this email if anything ever lands wrong, a real person reads it.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
@@ -2365,8 +2365,8 @@ function sendWelcomeEmail_(email, unsubToken) {
             banner +
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
-              '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new lesson goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
+              '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far are all here:</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong, a real person reads it.</p>' +
               '<p style="margin:24px 0 0;color:' + EMAIL.text2 + ';font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
