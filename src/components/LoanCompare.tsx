@@ -1088,7 +1088,6 @@ export default function LoanCompare({
         utm_source: new URLSearchParams(window.location.search).get('utm_source') ?? null,
       });
     }
-  // Stryker disable next-line ArrayDeclaration: equivalent. The empty list only has to never change, so the shared link is read once, on mount; the mutant's one constant string never changes either.
   }, []);
 
   // The inputs are never written into the address while you type: a URL can
@@ -1111,7 +1110,6 @@ export default function LoanCompare({
       next[index] = { ...next[index], ...patch };
       return next;
     });
-  // Stryker disable next-line ArrayDeclaration: equivalent. The callback uses only the state setter, which never changes, so the list only has to never change; the mutant's one constant string never changes either.
   }, []);
 
   // track() is intentionally outside the setState updater. React 18
@@ -1214,7 +1212,6 @@ export default function LoanCompare({
   // Stryker disable next-line MethodExpression: equivalent. Outside a held-back comparison every result has no error and a schedule, so the filter keeps them all; inside one, these values reach only parts that are hidden and inert.
   const validResults = results
     .map((r, i) => ({ r, i }))
-    // Stryker disable next-line LogicalOperator: equivalent. Outside a held-back comparison every result has no error and a schedule, so either test keeps them all; inside one, these values reach only parts that are hidden and inert.
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
   // Only an offer that is paid off has a total to be lowest.
   const withTotal = validResults.filter((x) => !isNotPaidOff(x.r));
