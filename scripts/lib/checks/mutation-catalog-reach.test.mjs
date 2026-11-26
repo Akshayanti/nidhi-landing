@@ -57,6 +57,21 @@ const TOOLS = {
   investOrPayOff: /^src\/(components\/InvestOrPayOff|utils\/invest-or-pay-off\/)/,
 };
 
+/**
+ * The test files, among `list`, that reach `tool`'s strings without being
+ * that tool's own tests (`own`) or named in `broad`. A test that depends on
+ * everything (`graph.dependencies(test).all` holds its reasons: a read that
+ * cannot be worked out) is left out: every change marks it already, so
+ * what it imports adds nothing to what is tested again.
+ */
+function othersReaching(graph, list, tool, own, broad) {
+  const file = `src/i18n/strings/tools/${tool}.ts`;
+  return list.filter((test) => {
+    const { files, all } = graph.dependencies(test);
+    return files.includes(file) && !own.test(test) && !(test in broad) && all.length === 0;
+  });
+}
+
 describe('which tests reach the whole strings catalog', () => {
   it('only the ones named, each for its reason', () => {
     assert.ok(tests.length > 200, `only ${tests.length} test files found`);
@@ -89,12 +104,34 @@ describe('which tests reach one tool\'s strings', () => {
       assert.ok(tracked.includes(file), file);
       const reaching = tests.filter((test) => reach.get(test).has(file));
       assert.ok(reaching.some((test) => own.test(test)), 'its own tests reach it');
-      const others = reaching.filter((test) => !own.test(test) && !(test in BROAD) && graph.dependencies(test).all.length === 0);
-      assert.deepEqual(others, []);
+      assert.deepEqual(othersReaching(graph, tests, tool, own, BROAD), []);
       // Far from the hundred that reached it through the catalog.
       assert.ok(reaching.length < 60, `${reaching.length} test files reach ${file}`);
     });
   }
+
+  // The guard does fail: an inflation test that takes a loan label is found,
+  // directly and through a helper, and not when it only names the type.
+  it('finds another tool\'s test that imports a tool\'s strings (council, DeepSeek)', () => {
+    const files = {
+      'src/i18n/strings/tools/loanComparison.ts': 'export const loanComparisonEn = {};\n',
+      'src/i18n/strings/tools/inflation.ts': 'export const inflationEn = {};\n',
+      'test/helper.ts': "export { loanComparisonEn as loan } from '../src/i18n/strings/tools/loanComparison.ts';\n",
+      'src/components/InflationParts.a.test.ts': "import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';\n",
+      'src/components/InflationParts.b.test.ts': "import { loan } from '../../test/helper.ts';\n",
+      'src/components/InflationParts.c.test.ts': "import type { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';\nimport { inflationEn } from '../i18n/strings/tools/inflation.ts';\n",
+      'src/components/LoanParts.a.test.ts': "import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';\n",
+      'src/components/InflationParts.wide.test.ts': "import { execFileSync } from 'node:child_process';\nimport { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';\n",
+    };
+    const g = createGraph({ root: '/project', tracked: Object.keys(files), read: (p) => files[p] });
+    const list = Object.keys(files).filter(isSelectedTest);
+    assert.equal(list.length, 5);
+    assert.deepEqual(othersReaching(g, list, 'loanComparison', TOOLS.loanComparison, {}), ['src/components/InflationParts.a.test.ts', 'src/components/InflationParts.b.test.ts']);
+    assert.deepEqual(othersReaching(g, list, 'loanComparison', TOOLS.loanComparison, { 'src/components/InflationParts.a.test.ts': 'named' }), ['src/components/InflationParts.b.test.ts']);
+    assert.deepEqual(othersReaching(g, list, 'inflation', TOOLS.inflation, {}), []);
+    // The one left out depends on everything, and that is why.
+    assert.ok(g.dependencies('src/components/InflationParts.wide.test.ts').all.length > 0);
+  });
 
   it('an edit to one tool\'s strings changes the fingerprint of a test of that tool, through its helper too, and of no other tool\'s test', () => {
     const edited = (path) => createGraph({ root: ROOT, tracked, read: (p) => (p === path ? `${readFileSync(join(ROOT, p), 'utf8')}\n// edited\n` : readFileSync(join(ROOT, p), 'utf8')) });
