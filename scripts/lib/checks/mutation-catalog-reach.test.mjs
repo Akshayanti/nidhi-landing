@@ -41,6 +41,7 @@ const WHOLE = [
  */
 const BROAD = {
   'src/i18n/strings/catalog.test.ts': 'the catalogs themselves: every key in every language',
+  'src/i18n/strings/catalog.used.test.ts': 'that every key of the English catalog is named somewhere in the source',
   'src/utils/shared/toolExports.test.ts': 'every tool\'s export labels in every language, on purpose',
   'src/components/nav.test.ts': 'the navigation labels, which live in the catalog proper',
   'src/utils/home/startingPoints.test.ts': 'the home page\'s tool cards, in the catalog proper',

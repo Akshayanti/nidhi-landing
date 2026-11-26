@@ -88,14 +88,15 @@ describe('formReply', () => {
 });
 
 describe('the forms read the reply', () => {
-  const FILES = [
-    'components/WaitlistSection.astro',
-    'components/SubscribeSection.astro',
-    'pages/confirm.astro',
-    'pages/unsubscribe.astro',
-  ];
-  for (const file of FILES) {
-    const source = readFileSync(join(import.meta.dirname, '../..', file), 'utf8');
+  // Each path is written out, not built from a name: the mutation cache works out what a test
+  // reads from its source, and a path it cannot work out ties the test to every file (#904).
+  const FILES = {
+    'components/WaitlistSection.astro': readFileSync(join(import.meta.dirname, '../../components/WaitlistSection.astro'), 'utf8'),
+    'components/SubscribeSection.astro': readFileSync(join(import.meta.dirname, '../../components/SubscribeSection.astro'), 'utf8'),
+    'pages/confirm.astro': readFileSync(join(import.meta.dirname, '../../pages/confirm.astro'), 'utf8'),
+    'pages/unsubscribe.astro': readFileSync(join(import.meta.dirname, '../../pages/unsubscribe.astro'), 'utf8'),
+  };
+  for (const [file, source] of Object.entries(FILES)) {
     it(`${file} inlines formReply.js and never posts with no-cors`, () => {
       assert.match(source, /formReply\.js\?raw/);
       assert.match(source, /nidhiFormReply\(/);
