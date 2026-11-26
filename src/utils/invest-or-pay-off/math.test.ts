@@ -209,7 +209,7 @@ describe('the paired simulation', () => {
     assert.ok(r5.a.p50 < r0.a.p50);
   });
 
-  it('runs the historical range beside the reader\'s own figure', () => {
+  it('runs the cautious and optimistic settings beside the reader\'s own figure', () => {
     const own = { ...BASE, returns: 'own' as const, ownReturn: 15, horizon: 'plus10' as const };
     const range = compareRange(own, FAST);
     assert.ok(range.cautious.b.p50 < range.optimistic.b.p50);

@@ -13,9 +13,9 @@ const plain = (s: string) => s.replace(/\s/g, ' ');
 
 describe('a return setting’s description', () => {
   it('quotes the rates of that setting, to one decimal, as English writes them', () => {
-    assert.equal(returnTip(island, 'cautious', null), 'Stocks grow about 4% a year after inflation and bonds about 1%: the low end of the long-run range. The ups and downs are as large as in history.');
+    assert.equal(returnTip(island, 'cautious', null), 'Stocks grow about 4% a year after inflation and bonds about 1%: a cautious setting, below what world markets returned since 1900. The ups and downs are as large as in history.');
     assert.equal(returnTip(island, 'historical', null), 'World markets from 1900 to 2025: stocks grew about 5.3% a year after inflation and bonds about 1.7%, with the ups and downs they actually had.');
-    assert.equal(returnTip(island, 'optimistic', null), 'Stocks grow about 6% a year after inflation and bonds about 3%: the high end of the long-run range. The ups and downs are as large as in history.');
+    assert.equal(returnTip(island, 'optimistic', null), 'Stocks grow about 6% a year after inflation and bonds about 3%: an optimistic setting, above what world markets returned since 1900. The ups and downs are as large as in history.');
   });
 
   it('writes the rates in a page’s own style where it has one', () => {
