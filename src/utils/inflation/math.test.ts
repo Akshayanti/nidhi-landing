@@ -173,7 +173,7 @@ describe('typed values, by the page locale', () => {
     assert.equal(parseYears('0'), null);
     assert.equal(parseYears('101'), null);
     assert.equal(parseYears('2.5'), null);
-    // Digits from a Devanagari, Arabic-Indic or Persian keyboard (#517).
+    // Digits from a Devanagari, Arabic-Indic or Persian keyboard.
     assert.equal(parseYears('१०'), 10);
     assert.equal(parseYears(' ३० '), 30);
     assert.equal(parseYears('١٥'), 15);

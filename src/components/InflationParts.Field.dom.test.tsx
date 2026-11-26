@@ -79,19 +79,16 @@ describe('a box of the inflation calculator', () => {
     none('.ifc-error');
   });
 
-  it('a number box takes any step, and what is typed is handed on', () => {
+  it('is always a text box, so digits from any keyboard are taken, and what is typed is handed on', () => {
     const typed: string[] = [];
-    draw(<Field id="n" label="Number" value="?" onChange={(e) => typed.push(e.target.value)} error={null} inputMode="text" type="number" />);
+    draw(<Field id="n" label="Number" value="?" onChange={(e) => typed.push(e.target.value)} error={null} inputMode="numeric" />);
     const input = document.getElementById('n') as HTMLInputElement;
-    assert.equal(input.getAttribute('type'), 'number');
-    assert.equal(input.getAttribute('step'), 'any');
-    assert.equal(input.getAttribute('inputmode'), 'text');
-    fireEvent.change(input, { target: { value: '12' } });
-    assert.deepEqual(typed, ['12']);
-    clear();
+    assert.equal(input.getAttribute('type'), 'text');
+    assert.equal(input.hasAttribute('step'), false);
+    assert.equal(input.getAttribute('inputmode'), 'numeric');
+    fireEvent.change(input, { target: { value: '१२' } });
+    assert.deepEqual(typed, ['१२']);
     // A text box holding only the mark is selected when it is entered, so typing replaces it.
-    draw(<Field id="n" label="Number" value="?" onChange={() => {}} error={null} inputMode="text" type="text" />);
-    assert.equal(box().hasAttribute('step'), false);
     fireEvent.focus(box());
     assert.deepEqual([box().selectionStart, box().selectionEnd], [0, 1]);
   });

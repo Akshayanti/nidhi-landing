@@ -308,12 +308,12 @@ describe('a number too long to print in digits by default (#520)', () => {
 });
 
 /**
- * The Arabic decimal mark "٫" (U+066B) and thousands mark "٬" (U+066C), #625.
+ * The Arabic decimal mark "٫" (U+066B) and thousands mark "٬" (U+066C).
  * The rule: "٫" is always a decimal and "٬" always grouping, on every page,
  * whatever the page's own marks are; a number that mixes either of them with
  * a Latin point or comma is rejected rather than guessed at.
  */
-describe('the Arabic decimal and thousands marks (#625)', () => {
+describe('the Arabic decimal and thousands marks', () => {
   const PAGES = ['en', 'hi', 'mr', 'en-IN', 'es', 'cs'];
 
   it('reads "٫" as the decimal mark on every page, comma-decimal pages included', () => {

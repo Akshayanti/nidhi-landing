@@ -15,6 +15,9 @@ import type { Result, TodayBasis } from '../utils/invest-or-pay-off/math.ts';
 import { draw, island, money, none, one, result, sentNone, text } from '../../test/investOrPayOffParts.results.tsx';
 import { Results } from './InvestOrPayOff.tsx';
 
+/** A cell's own text, without the column name it shows where the table is drawn as records. */
+const cellText = (c: Element) => { const x = c.cloneNode(true) as Element; x.querySelectorAll('.tool-recordLabel').forEach((l) => l.remove()); return x.textContent; };
+
 const s = island.results;
 
 function results(over: {
@@ -156,7 +159,7 @@ describe('the results', () => {
     assert.equal(one('.iop-side caption').textContent, s.side.caption);
     assert.deepEqual(text('.iop-side thead th'), [s.side.figure, s.side.invest, s.side.gap]);
     for (const th of document.querySelectorAll('.iop-side th')) assert.equal(th.getAttribute('scope'), th.closest('thead') ? 'col' : 'row');
-    const rows = [...document.querySelectorAll('.iop-side tbody tr')].map((tr) => [...tr.children].map((c) => c.textContent));
+    const rows = [...document.querySelectorAll('.iop-side tbody tr')].map((tr) => [...tr.children].map(cellText));
     assert.deepEqual(rows, [
       ['Your figure (7.5% after inflation)', '54', '€100'],
       ['Cautious (4%)', '31', '€-250'],
