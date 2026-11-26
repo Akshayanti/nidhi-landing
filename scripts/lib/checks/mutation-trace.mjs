@@ -5,18 +5,24 @@ import { isInput, WORKFLOWS } from './check-inputs.mjs';
 
 /**
  * True when `rel` (a traced path) is held by `files` (paths, ?paths and
- * >prefixes): a file that is there only by its contents, so a read of it is
- * not covered by a mere "is it there"; a path that is not a file (a folder,
- * or a name looked for and not found) by whether it is there, or by a
- * listing of it or of a folder above it.
+ * >prefixes, the dependencies of a test whose reads are all known):
+ *
+ * - a file that is there, only by its contents: a read of it is not covered
+ *   by a mere "is it there";
+ * - a folder that was LISTED (`listed`), only by a listing of it or of a
+ *   folder above it: what the listing gave changes when a file is added,
+ *   and "is it there" (as an import's lookups record) does not change with
+ *   it (council, Codex);
+ * - a folder that was only looked at, or a name looked for and not found,
+ *   by whether it is there, or by such a listing.
  */
-export function covered(rel, files, isFile) {
+export function covered(rel, files, isFile, listed = false) {
   if (isFile(rel)) return files.has(rel);
-  if (files.has(`?${rel}`) || files.has(`>${rel}/`)) return true;
+  if (files.has(`>${rel}/`)) return true;
   for (const entry of files) {
     if (entry.startsWith('>') && rel.startsWith(entry.slice(1))) return true;
   }
-  return false;
+  return !listed && files.has(`?${rel}`);
 }
 
 /**

@@ -82,6 +82,15 @@ describe('when a test with known reads holds a traced path', () => {
     assert.equal(covered('emails/none.j2', new Set(['>public/']), isFile), false);
     assert.equal(covered('public/none.svg', new Set(), isFile), false);
   });
+
+  it('a folder that was listed, only by a listing: that it is there says nothing of what is in it', () => {
+    assert.equal(covered('src/helper', new Set(['?src/helper']), isFile), true, 'looked at');
+    assert.equal(covered('src/helper', new Set(['?src/helper']), isFile, true), false, 'listed');
+    assert.equal(covered('src/helper', new Set(['>src/helper/']), isFile, true), true);
+    assert.equal(covered('src/helper/deep', new Set(['>src/helper/']), isFile, true), true);
+    assert.equal(covered('src/helper', new Set(['src/helper/index.ts']), isFile, true), false);
+    assert.equal(covered('src', new Set(['>src/helper/']), isFile, true), false, 'a listing below it is not a listing of it');
+  });
 });
 
 describe('when a test that depends on everything holds a traced path', () => {
@@ -164,6 +173,23 @@ describe('the check on a small checkout', { timeout: 120_000 }, () => {
     // And a listing the analysis does see is in the test's fingerprint.
     const seen = check({ 'src/a.test.ts': `${head}import { readdirSync } from 'node:fs';\ntest('t', () => { assert.ok(!readdirSync('public').includes('disable.txt')); });\n` });
     assert.equal(seen.status, 0, seen.out);
+  });
+
+  // The second case the review found (Codex): the import of './helper'
+  // makes the analysis record that the folder src/helper is there. That is
+  // not a listing of it: a file added to it changes a hidden listing and no
+  // fingerprint.
+  it('fails on a hidden listing of a folder the test only imports from', () => {
+    const files = {
+      'src/helper/index.ts': 'export const f = () => 1;\n',
+      'src/a.test.ts': `${head}import { f } from './helper';\nconst list = process.getBuiltinModule('node:fs').readdirSync;\ntest('t', () => { const got = f(); if (!list('src/helper').includes('disable.txt')) assert.equal(got, 1); });\n`,
+    };
+    const { status, out } = check(files);
+    assert.equal(status, 1, out);
+    assert.ok(out.includes('src/a.test.ts reaches, but its fingerprint leaves out:\n  src/helper\n'), out);
+    // The same import with no listing passes: the lookups are in the fingerprint.
+    const plain = check({ ...files, 'src/a.test.ts': `${head}import { f } from './helper';\ntest('t', () => { assert.equal(f(), 1); });\n` });
+    assert.equal(plain.status, 0, plain.out);
   });
 
   it('fails on a name looked for at the root that is not there, when the analysis left the look out', () => {

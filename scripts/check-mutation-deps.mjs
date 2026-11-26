@@ -101,7 +101,7 @@ for (const { test, code, stderr, lines, traced } of results.sort((a, b) => a.tes
     if (outside(rel) || (rel === '' && !listed)) continue;
     const kind = kindOf(() => statSync(join(root, rel)));
     if (inSharedFingerprint(rel, isFingerprinted, trackedSet, kind)) continue;
-    const held = everything ? heldByEverything(rel, trackedSet, kind) : covered(rel, files, isFile);
+    const held = everything ? heldByEverything(rel, trackedSet, kind) : covered(rel, files, isFile, listed);
     if (!held) missing.add(rel === '' ? '. (the project folder, listed)' : rel);
   }
   if (missing.size > 0) {
