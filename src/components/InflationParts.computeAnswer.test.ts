@@ -516,23 +516,23 @@ describe('keeping up with inflation', () => {
   it('says buying power shrinks when inflation outruns the raise, with the size unsigned in the sentence', () => {
     // 1.02 / 1.04 - 1 = -1.923%; over 2 years 1,000 x (1.02 / 1.04)^2 = 961.9.
     const less = answerOf(state({ mode: 'keep', growth: 2, rate: 4 }));
-    assert.equal(less.headline, '-1.92% a year');
+    assert.equal(less.headline, '−1.92% a year');
     close(less.value, (1.02 / 1.04 - 1) * 100);
     assert.deepEqual(less.sentences.slice(0, 2), [
       'With a raise or return of 2% a year and inflation averaging 4%, buying power shrinks about 1.92% a year.',
       'After 2 years, €1,000 growing at 2% a year buys what about €962 buys today.',
     ]);
-    assert.match(less.sentences[2], /\(2% − 4% = -2%\)/);
+    assert.match(less.sentences[2], /\(2% − 4% = −2%\)/);
     // 1.02 / 1.03 - 1 = -0.97%; 1.02 / 1.05 - 1 = -2.86%.
-    assert.deepEqual(less.band, ['At 3% inflation: -0.97% a year', 'At 5% inflation: -2.86% a year']);
+    assert.deepEqual(less.band, ['At 3% inflation: −0.97% a year', 'At 5% inflation: −2.86% a year']);
   });
 
   it('a pay cut is a negative raise, in every place it is named', () => {
     // 0.975 / 1.03 - 1 = -5.34%.
     const cut = answerOf(state({ mode: 'keep', growth: -2.5, rate: 3 }));
-    assert.equal(cut.headline, '-5.34% a year');
-    assert.equal(cut.sentences[0], 'With a raise or return of -2.5% a year and inflation averaging 3%, buying power shrinks about 5.34% a year.');
-    assert.match(cut.sentences[2], /\(1 \+ -2\.5%\) ÷ \(1 \+ 3%\) − 1\. .*\(-2\.5% − 3% = -5\.5%\)/);
+    assert.equal(cut.headline, '−5.34% a year');
+    assert.equal(cut.sentences[0], 'With a raise or return of −2.5% a year and inflation averaging 3%, buying power shrinks about 5.34% a year.');
+    assert.match(cut.sentences[2], /\(1 \+ −2\.5%\) ÷ \(1 \+ 3%\) − 1\. .*\(−2\.5% − 3% = −5\.5%\)/);
   });
 
   it('says buying power stays the same when the two rates match, and gives exactly zero', () => {
@@ -560,7 +560,7 @@ describe('keeping up with inflation', () => {
     close(up.value, (1.0301 / 1.03 - 1) * 100);
     assert.match(up.sentences[0], /buying power grows about 0\.01% a year\.$/);
     const down = answerOf(state({ mode: 'keep', growth: 2.99, rate: 3 }));
-    assert.equal(down.headline, '-0.01% a year');
+    assert.equal(down.headline, '−0.01% a year');
     close(down.value, (1.0299 / 1.03 - 1) * 100);
     assert.match(down.sentences[0], /buying power shrinks about 0\.01% a year\.$/);
   });

@@ -67,12 +67,34 @@ describe('a percentage in the page’s number style', () => {
 
   it('carries a plus sign only when asked, and never on a zero', () => {
     assert.equal(pct(2, 'en', 2, true), '+2%');
-    assert.equal(pct(-2.5, 'en', 2, true), '-2.5%');
+    assert.equal(pct(-2.5, 'en', 2, true), '−2.5%');
     assert.equal(pct(0, 'en', 2, true), '0%');
     assert.equal(pct(0.004, 'en', 2, true), '0%');
     assert.equal(pct(2, 'en', 2), '2%');
     assert.equal(pct(2, 'en', 2, false), '2%');
-    assert.equal(pct(-2.5, 'en'), '-2.5%');
+    assert.equal(pct(-2.5, 'en'), '−2.5%');
+  });
+
+  it('writes a fall with the true minus sign the other tools use, in every page style (#888)', () => {
+    for (const locale of ['en', 'hi', 'es', 'cs', 'mr']) {
+      for (const signed of [false, true]) {
+        const text = pct(-2.5, locale, 2, signed);
+        assert.ok(text.startsWith('\u2212'), `${locale}: ${text}`);
+        assert.ok(!text.includes('-'), `${locale}: ${text}`);
+      }
+    }
+  });
+
+  it('writes a rate that rounds to nothing as 0%, never "-0%" (#888)', () => {
+    assert.equal(pct(-0.004, 'en'), '0%');
+    assert.equal(pct(-0.04, 'en', 1), '0%');
+    assert.equal(pct(-0.4, 'en', 0), '0%');
+    assert.equal(pct(-0.004, 'en', 2, true), '0%');
+    assert.equal(pct(-0.04, 'cs', 1).replace(/\s/g, ' '), '0 %');
+    // The digits shown still decide.
+    assert.equal(pct(-0.005, 'en'), '\u22120.01%');
+    assert.equal(pct(-0.04, 'en'), '\u22120.04%');
+    assert.equal(pct(-0.6, 'en', 0), '\u22121%');
   });
 });
 

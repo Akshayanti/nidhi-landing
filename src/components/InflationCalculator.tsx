@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, amountFormat, amountStyle } from '../utils/shared/money.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { CURRENCIES, amountFormat, amountStyle, shownNumber } from '../utils/shared/money.ts';
+import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
@@ -132,15 +132,16 @@ function loadHistory(url: string): Promise<CompactHistory> {
 /**
  * A percentage in the page's own number style ("1.94%", "1,94 %"), since it
  * sits in the page's sentences. Amounts follow `amountStyle`, as on the other
- * tools.
+ * tools. Below zero it carries the true minus sign the other tools write, and
+ * a rate that rounds to nothing is "0%", never "-0%" (#888).
  */
 function pct(v: number, locale: string, digits = 2, signed = false): string {
-  return new Intl.NumberFormat(locale, {
+  return trueMinus(new Intl.NumberFormat(locale, {
     style: 'percent',
     maximumFractionDigits: digits,
     minimumFractionDigits: 0,
     signDisplay: signed ? 'exceptZero' : 'auto',
-  }).format(v / 100);
+  }).format(shownNumber(v, digits) / 100));
 }
 
 /** What the reader typed, to the cent where they typed cents. */
