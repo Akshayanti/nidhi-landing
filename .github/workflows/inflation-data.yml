@@ -8,6 +8,16 @@ name: Inflation data refresh
 # new figures are reviewed and merged like any other change, and the site
 # serves them from its own origin.
 #
+# The same run then refreshes the two monthly consumer price indices
+# (scripts/fetch-inflation-monthly.mjs): the BIS's
+# (src/data/inflation/bis-monthly.json) and the World Bank's own, from its
+# Global Economic Monitor (src/data/inflation/worldbank-monthly.json), which
+# let an answer end at a month where they match the yearly figures. Each is
+# compared with main's copy under its own limits (MONTHLY_LIMITS in
+# scripts/lib/publishing/inflation-monthly.mjs) and accepted with its own
+# name, in "accept_monthly" or "accept_monthly_world_bank". All three files
+# go on the one branch, in one commit.
+#
 # scripts/fetch-inflation.mjs exits non-zero on any unexpected response and
 # never writes a partial file, so a changed API fails this run loudly instead
 # of offering a thinner dataset. When the World Bank has nothing new, the
@@ -24,7 +34,7 @@ name: Inflation data refresh
 #
 # The comparison and the branch are both made against main, whatever
 # branch the workflow is started from: the baseline is main's file, and the
-# refresh branch is main plus the one data file.
+# refresh branch is main plus the three data files.
 #
 # One branch, data/inflation-refresh, is used every month, so a pull request
 # a person opened from it and left open is updated by the next month's push
@@ -65,6 +75,14 @@ on:
         description: 'A person has read a refused comparison: its name, from that run''s summary'
         type: string
         default: ''
+      accept_monthly:
+        description: 'The same for a refused comparison of the BIS monthly index: its name, from that run''s summary'
+        type: string
+        default: ''
+      accept_monthly_world_bank:
+        description: 'The same for a refused comparison of the World Bank monthly index: its name, from that run''s summary'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -83,6 +101,13 @@ concurrency:
 # workflow installs nothing.
 env:
   FILE: src/data/inflation/worldbank.json
+  # The BIS's monthly consumer price index, which lets an answer end at a
+  # month (scripts/fetch-inflation-monthly.mjs). Refreshed in the same run,
+  # after the yearly file, and proposed on the same branch.
+  FILE_MONTHLY: src/data/inflation/bis-monthly.json
+  # And the World Bank's own monthly index (Global Economic Monitor), for the
+  # countries the BIS has none for.
+  FILE_MONTHLY_WB: src/data/inflation/worldbank-monthly.json
 
 jobs:
   refresh:
@@ -105,8 +130,12 @@ jobs:
           set -euo pipefail
           git fetch --no-tags --depth=1 origin main
           git show "origin/main:$FILE" > "$RUNNER_TEMP/baseline.json"
-          # The new data is written over main's file, so the diff is main's.
+          git show "origin/main:$FILE_MONTHLY" > "$RUNNER_TEMP/baseline-monthly.json"
+          git show "origin/main:$FILE_MONTHLY_WB" > "$RUNNER_TEMP/baseline-monthly-wb.json"
+          # The new data is written over main's files, so the diff is main's.
           cp "$RUNNER_TEMP/baseline.json" "$FILE"
+          cp "$RUNNER_TEMP/baseline-monthly.json" "$FILE_MONTHLY"
+          cp "$RUNNER_TEMP/baseline-monthly-wb.json" "$FILE_MONTHLY_WB"
 
       - name: 'Dry run: a refresh over the limits is refused'
         if: ${{ inputs.dry_run }}
@@ -153,6 +182,34 @@ jobs:
           fi
           exit "$CODE"
 
+      # After the yearly file, whose countries name the monthly ones. Not in a
+      # dry run, whose data is made up. Each summary is added under the yearly
+      # one; a change over a source's own limits fails here, with nothing
+      # written for that source. Both are tried, so one refusal does not hide
+      # the other's comparison.
+      - name: Fetch the monthly indices (BIS, World Bank) and compare them with main's
+        if: ${{ !inputs.dry_run }}
+        env:
+          ACCEPT_BIS: ${{ inputs.accept_monthly }}
+          ACCEPT_WB: ${{ inputs.accept_monthly_world_bank }}
+        run: |
+          set +e -uo pipefail
+          SUMMARY="$RUNNER_TEMP/inflation-summary.md"
+          BEFORE=$(wc -c < "$SUMMARY" 2>/dev/null || echo 0)
+          FAILED=0
+          fetch_monthly() {
+            # $1 the source, $2 its baseline, $3 the name accepted for it
+            local ARGS=(--source "$1" --baseline "$2" --world-bank "$FILE" --summary "$SUMMARY")
+            if [ -n "$3" ]; then ARGS+=(--accept "$3"); fi
+            node scripts/fetch-inflation-monthly.mjs "${ARGS[@]}" || FAILED=1
+          }
+          fetch_monthly bis "$RUNNER_TEMP/baseline-monthly.json" "$ACCEPT_BIS"
+          fetch_monthly world-bank "$RUNNER_TEMP/baseline-monthly-wb.json" "$ACCEPT_WB"
+          if [ -f "$SUMMARY" ] && [ "$(wc -c < "$SUMMARY")" -gt "$BEFORE" ]; then
+            tail -c "+$((BEFORE + 1))" "$SUMMARY" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit "$FAILED"
+
       - name: Push the branch and open or update its issue if the data changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -160,8 +217,8 @@ jobs:
           REPO_URL: ${{ github.server_url }}/${{ github.repository }}
         run: |
           set -euo pipefail
-          if cmp -s "$RUNNER_TEMP/baseline.json" "$FILE"; then
-            echo "No change in $FILE."
+          if cmp -s "$RUNNER_TEMP/baseline.json" "$FILE" && cmp -s "$RUNNER_TEMP/baseline-monthly.json" "$FILE_MONTHLY" && cmp -s "$RUNNER_TEMP/baseline-monthly-wb.json" "$FILE_MONTHLY_WB"; then
+            echo "No change in $FILE, $FILE_MONTHLY or $FILE_MONTHLY_WB."
             exit 0
           fi
           BOT_NAME="github-actions[bot]"
@@ -169,7 +226,7 @@ jobs:
           DATE=$(date -u +%Y-%m-%d)
           BRANCH="data/inflation-refresh"
           TITLE="Inflation data refresh ready: open its pull request"
-          PR_TITLE="Inflation calculator: World Bank data, $DATE"
+          PR_TITLE="Inflation calculator: World Bank and BIS data, $DATE"
           if [ "$DRY_RUN" = "true" ]; then
             BRANCH="data/inflation-refresh-dry-run"
             TITLE="[Dry run, do not merge] Inflation data refresh dry run: close this issue and delete the branch"
@@ -205,13 +262,17 @@ jobs:
           fi
 
           cp "$FILE" "$RUNNER_TEMP/new.json"
+          cp "$FILE_MONTHLY" "$RUNNER_TEMP/new-monthly.json"
+          cp "$FILE_MONTHLY_WB" "$RUNNER_TEMP/new-monthly-wb.json"
           git config user.name  "$BOT_NAME"
           git config user.email "$BOT_EMAIL"
-          # Main plus the one data file, whatever branch this run started from.
+          # Main plus the three data files, whatever branch this run started from.
           git checkout --force -B "$BRANCH" origin/main
           cp "$RUNNER_TEMP/new.json" "$FILE"
-          git add "$FILE"
-          git commit -m "chore(data): refresh World Bank inflation history ($DATE)"
+          cp "$RUNNER_TEMP/new-monthly.json" "$FILE_MONTHLY"
+          cp "$RUNNER_TEMP/new-monthly-wb.json" "$FILE_MONTHLY_WB"
+          git add "$FILE" "$FILE_MONTHLY" "$FILE_MONTHLY_WB"
+          git commit -m "chore(data): refresh the inflation history, World Bank and BIS ($DATE)"
           HEAD_SHA=$(git rev-parse HEAD)
           git push --force-with-lease="refs/heads/$BRANCH:$TIP" origin "HEAD:refs/heads/$BRANCH"
 
@@ -221,7 +282,7 @@ jobs:
           BODY="$RUNNER_TEMP/inflation-issue-body.md"
           write_body() {
           {
-            echo "The monthly refresh of \`$FILE\` from World Bank indicator FP.CPI.TOTL.ZG (CC BY 4.0) changed the data. The World Bank's own update date is $UPDATED. It is on the branch \`$BRANCH\`, commit $HEAD_SHA."
+            echo "The monthly refresh of \`$FILE\` (World Bank indicator FP.CPI.TOTL.ZG, CC BY 4.0) and of the monthly indices, \`$FILE_MONTHLY\` (BIS, Consumer prices) and \`$FILE_MONTHLY_WB\` (World Bank, Global Economic Monitor, CC BY 4.0), changed the data. The World Bank's own update date is $UPDATED. It is on the branch \`$BRANCH\`, commit $HEAD_SHA."
             echo
             if [ "$DRY_RUN" = "true" ]; then
               echo "**This is a dry run of the workflow, with made-up data. No pull request should be opened: close this issue and delete the branch.**"

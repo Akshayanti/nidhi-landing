@@ -176,12 +176,14 @@ const faqSchema = {
     <div class="lp-section-inner hero-grid">
       <div class="hero-copy">
         <h1 id="hero-heading">{home.hero.heading}</h1>
-        <p class="hero-lead">{home.hero.lead}</p>
-        {/* Lesson 1 first, the planner a quieter link under it (#400). */}
+        {/* Lesson 1 first and filled (#400), the planner the outline button
+            after it. Both come before the lead, so a long translated lead
+            never pushes them down the first screen. */}
         <p class="hero-actions">
           <a class="btn btn--primary hero-start" href={lessonOne.href} data-attr="home-hero-lesson-1" {...lessonLang}>{blogIndex.island.readLesson1}</a>
-          <a class="jump" href="#signup" data-attr="home-hero-planner">{home.hero.plannerLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
+          <a class="btn btn--outline hero-planner" href="#signup" data-attr="home-hero-planner">{home.hero.plannerLink}&nbsp;<span aria-hidden="true">&darr;</span></a>
         </p>
+        <p class="hero-lead">{home.hero.lead}</p>
         {/* Outside English, said here too and not only in the lessons section:
             the situations' first links open English lessons. */}
         {locale !== DEFAULT_LOCALE && <div class="hero-lang"><LessonsInEnglish locale={locale} /></div>}
@@ -640,16 +642,18 @@ const faqSchema = {
     text-wrap: pretty;
   }
 
-  /* The button, then the planner link on its own line under it, at every width. */
+  /* The two buttons side by side while they fit, one under the other when
+     they do not, directly under the heading. */
   .hero-actions {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-    margin: var(--space-5) 0 0;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--space-2) var(--space-3);
+    margin: 0 0 var(--space-4);
   }
   /* A long translation wraps inside the button rather than widening the page. */
-  .hero-start { max-width: 100%; white-space: normal; text-align: center; }
+  .hero-start,
+  .hero-planner { max-width: 100%; white-space: normal; text-align: center; }
 
   .jump {
     display: inline-flex;

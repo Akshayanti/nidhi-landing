@@ -26,6 +26,19 @@ import { assertOneEntryPerDate, type ChangelogEntry } from './privacyChangelog.t
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 export const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 26, 2026',
+    iso: '2026-11-26',
+    material: true,
+    summary: 'The cookie banner\'s layout changed: its two answers now stay in view at the bottom of the panel on most screens, and on a phone the panel is a little shorter. Its words, its answers and when it appears are unchanged. The inflation calculator gains two more data sources, the BIS and the World Bank\'s monthly database, served from nidhi.today like the first.',
+    details: [
+      'Cookie banner, layout changed: on a phone the panel\'s text is longer than the panel, and its two answers used to sit at the end of that text, so they had to be scrolled to. On a screen at least 30 times as tall as the text size (480 px at the default size), "No thanks" and "Sure, that\'s fine" now stay at the bottom of the panel while its words scroll above them, with a thin line over them; the link to this notice still follows them, at the end of the panel. With the text made much larger the answers scroll with the words, as before, so they never fill the panel. The two answers now sit side by side on a narrower screen than before, at the same size as each other.',
+      'On a screen narrower than 768 px at the default text size, and tall enough for its text in the same way, the panel now takes at most 39% of the screen\'s height instead of 45%. With the text made much larger it keeps 45%, and the card in the corner of a wider screen is unchanged.',
+      'The banner\'s words, its two answers, their order ("No thanks" first), their equal look, when the banner appears, what each answer does and where the answer is stored are all unchanged. Until you answer, pageviews are counted and clicks are not recorded, as before.',
+      'The inflation calculator can now end an answer from a country\'s history at the latest month with a figure, for countries where a monthly price index matches the yearly one. The monthly figures come from the BIS (Bank for International Settlements, "Consumer prices") and, for countries it has no matching index for, from the World Bank\'s own monthly database (Global Economic Monitor). Like the World Bank\'s yearly figures, nidhi keeps a copy of both and serves it from nidhi.today, inside the same history file the calculator already loaded when you pick a country, so your browser makes no new request and never contacts the BIS or the World Bank. The page gains two links, to the BIS\'s site and to the World Bank\'s data catalog, which your browser opens only if you follow them. No new analytics event, event property, click label, browser storage key or cookie.',
+      'On the home page, the "See the planner" link is now a button directly after "Read lesson 1", and both come before the introduction. It opens the same part of the page and keeps its click label, home-hero-planner, recorded only if you accept the cookie banner. No new click label, analytics event, browser storage key, cookie, third-party request or processor.',
+    ],
+  },
+  {
     date: 'Nov 25, 2026',
     iso: '2026-11-25',
     material: true,

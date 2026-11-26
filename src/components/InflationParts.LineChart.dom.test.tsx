@@ -11,11 +11,11 @@ import { describe, it } from 'node:test';
 import { LineChart } from './InflationCalculator.tsx';
 
 type Point = { x: number; value: number };
-type Options = Partial<{ calendar: boolean; code: string; title: string; axis: string; narrow: boolean }>;
+type Options = Partial<{ calendar: boolean; code: string; title: string; axis: string; narrow: boolean; monthPoint: { month: string; x: number; value: number } }>;
 
 function chart(points: Point[], o: Options = {}, page: Page = {}) {
   return draw(
-    <LineChart points={points} calendar={o.calendar ?? false} code={o.code ?? 'EUR'} title={o.title ?? 'What €10,000 buys each year'} axis={o.axis ?? 'Years from now'} strings={island} narrow={o.narrow ?? false} />,
+    <LineChart points={points} monthPoint={o.monthPoint} calendar={o.calendar ?? false} code={o.code ?? 'EUR'} title={o.title ?? 'What €10,000 buys each year'} axis={o.axis ?? 'Years from now'} strings={island} narrow={o.narrow ?? false} />,
     page,
   );
 }
@@ -353,5 +353,80 @@ describe('the chart of an answer, year by year', () => {
     none('.tool-chartUnit');
     assert.deepEqual(amounts().map((a) => a.words), ['€0', '€2,000', '€4,000', '€6,000', '€8,000', '€10,000']);
     assert.equal(t.export.chart.amountsInScale, 'Amounts in {scale} of {currency}');
+  });
+});
+
+describe('the chart of an answer that ends at a month', () => {
+  // January 2021 sits 5.5 months before the middle of 2021: 2021 - 5.5 / 12 = 2020.5417 on the year axis.
+  const MONTH = { month: '2021-01', x: 2021 - 5.5 / 12, value: 177.1561 };
+  const yearly = () => all('path.ifc-line:not(.ifc-line--month)');
+  const monthly = () => all('path.ifc-line--month');
+  const squares = () => all('rect.ifc-dot--month').map((q) => [q.getAttribute('class'), num(q, 'x'), num(q, 'y'), num(q, 'width'), num(q, 'height')]);
+  const legend = () => all('p.ifc-legend--line > span').map((sp) => [sp.querySelector('i')?.className, sp.querySelector('i')?.getAttribute('aria-hidden'), sp.textContent]);
+
+  it('draws the years as before up to the last, then a dashed step to a square at the month', () => {
+    chart(RISING, { calendar: true, narrow: true, axis: 'Year', title: 'What €100 is worth each year since', monthPoint: MONTH });
+    // The same scale as without the month: 177 still fits under 200.
+    assert.equal(one('.tool-chartUnit').textContent, 'Amounts in €');
+    assert.deepEqual(amounts().map((a) => a.words), ['0', '50', '100', '150', '200']);
+    // The axis now runs 5.5417 years across 302 units: 54.5 to a year, and the month at the right edge.
+    assert.equal(yearly().length, 1);
+    assert.equal(yearly()[0].getAttribute('d'), 'M40,85 L94.5,77.9 L149,70.1 L203.5,61.5 L258,52 L312.5,41.7');
+    // 177.1561 of 200 on a plot 142 high from 14: 14 + (1 - 0.88578) x 142 = 30.2.
+    assert.equal(monthly().length, 1);
+    assert.equal(monthly()[0].getAttribute('d'), 'M312.5,41.7 L342,30.2');
+    assert.equal(monthly()[0].getAttribute('class'), 'ifc-line ifc-line--month');
+    // The filled area runs on under the month.
+    assert.equal(one('path.ifc-area').getAttribute('d'), 'M40,85 L94.5,77.9 L149,70.1 L203.5,61.5 L258,52 L312.5,41.7 L342,30.2 L342,156 L40,156 Z');
+    // A dot at the first and the last year, and a square of 10 centred on the month.
+    assert.deepEqual(dots(), [[40, 85, 5], [312.5, 41.7, 5]]);
+    assert.deepEqual(squares(), [['ifc-dot ifc-dot--month', 337, 25.2, 10, 10]]);
+    // Every second year still, each at its own place on the longer axis.
+    assert.deepEqual(years().map((y) => [y.words, y.x, y.anchor]), [['2016', 94.5, 'middle'], ['2018', 203.5, 'middle'], ['2020', 312.5, 'middle']]);
+  });
+
+  it('tells a screen reader where it ends, and says under the drawing which mark is which', () => {
+    chart(RISING, { calendar: true, narrow: true, axis: 'Year', title: 'What €100 is worth each year since', monthPoint: MONTH });
+    assert.equal(one('desc').textContent, 'Line chart. Starts at about €100 (2015) and ends in January 2021 at about €177.');
+    assert.deepEqual(legend(), [
+      ['ifc-key ifc-key--year', 'true', 'A year’s average'],
+      ['ifc-key ifc-key--month', 'true', 'One month, the latest with a figure: January 2021'],
+    ]);
+    assert.equal(one('p.ifc-legend--line').className, 'ifc-legend ifc-legend--line');
+    // Under the drawing, inside the figure.
+    assert.ok(one('svg.ifc-chart').nextElementSibling === one('p.ifc-legend--line'));
+    assert.ok(one('figure').contains(one('p.ifc-legend--line')));
+  });
+
+  it('names each month in the key and in the description', () => {
+    const names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    names.forEach((name, i) => {
+      chart(RISING, { calendar: true, narrow: true, axis: 'Year', monthPoint: { ...MONTH, month: `2022-${String(i + 1).padStart(2, '0')}` } });
+      assert.equal(legend()[1][2], `One month, the latest with a figure: ${name} 2022`);
+      assert.equal(one('desc').textContent, `Line chart. Starts at about €100 (2015) and ends in ${name} 2022 at about €177.`);
+      clear();
+    });
+  });
+
+  it('makes room on the scale for a month higher than every year', () => {
+    chart(RISING, { calendar: true, narrow: true, axis: 'Year', monthPoint: { ...MONTH, value: 450 } });
+    // A phone's chart has four steps at most, so 450 needs steps of 200 up to 600: the years alone would have stopped at 200.
+    assert.deepEqual(amounts().map((a) => a.words), ['0', '200', '400', '600']);
+  });
+
+  it('a month too large to draw is said in words, like a year that is', () => {
+    chart(RISING, { calendar: true, monthPoint: { ...MONTH, value: 2e15 } });
+    none('svg.ifc-chart');
+    assert.equal(one('.ifc-note').textContent, island.chart.tooLarge);
+  });
+
+  it('an answer that ends at a year has no dashed step, no square and no key', () => {
+    chart(RISING, { calendar: true, narrow: true, axis: 'Year' });
+    assert.equal(yearly().length, 1);
+    none('path.ifc-line--month');
+    none('rect.ifc-dot--month');
+    none('p.ifc-legend--line');
+    assert.equal(one('desc').textContent, 'Line chart. Starts at about €100 (2015) and ends at about €161 (2020).');
+    assert.ok(one('path.ifc-area').getAttribute('d')?.endsWith('L342,41.7 L342,156 L40,156 Z'));
   });
 });

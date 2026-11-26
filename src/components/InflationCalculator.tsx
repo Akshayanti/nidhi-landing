@@ -38,7 +38,8 @@ import {
   type Mode,
   type Series,
 } from '../utils/inflation/math.ts';
-import { fromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
+import { fromCompact, joinFromCompact, type CompactHistory, type CompactSeries } from '../utils/inflation/history.ts';
+import type { MonthlyJoin, MonthlySource } from '../utils/inflation/monthly.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/inflation/url.ts';
 import { boxErrors, formFromLink, publishableForm, toForm, toState, type FormState } from '../utils/inflation/form.ts';
 import { format } from '../i18n/format.ts';
@@ -329,6 +330,8 @@ export default function InflationCalculator({
   };
   const historyState = (code: string): 'none' | 'loading' | 'ready' | 'error' =>
     !code ? 'none' : compact[code] ? 'ready' : historyFailed ? 'error' : 'loading';
+  // The month a country's answer may end at, or why not (monthly.ts).
+  const joinFor = (code: string): MonthlyJoin | null => (code ? joinFromCompact(compact[code]) : null);
 
   // What the form shows. "Past to today" with a country uses the history
   // instead of the rate and the years, unless the history could not load or
@@ -409,7 +412,7 @@ export default function InflationCalculator({
   // answer is there: not while a field is invalid or a history is loading.
   const settledCountry = settled.country ? countryByCode.get(settled.country) ?? null : null;
   function shownAnswer(): InflationAnswer | null {
-    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale);
+    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale, joinFor(settled.country));
     if (a === 'loading') return null;
     const first = a.points[0];
     const last = a.points[a.points.length - 1];
@@ -421,6 +424,7 @@ export default function InflationCalculator({
       axis: a.axis,
       chartTitle: a.chartTitle,
       history: a.calendar && settledCountry && first && last ? { country: settledCountry.name, from: first.x, to: last.x } : null,
+      monthEnd: a.monthPoint ? { month: a.monthPoint.month, value: a.monthPoint.value, source: a.monthPoint.source ?? 'bis' } : null,
     };
   }
   const exportReady = !waiting && shownAnswer() !== null;
@@ -431,10 +435,10 @@ export default function InflationCalculator({
   // Hidden on screen (see ToolReport); absent while there is no answer.
   function printedReport() {
     const answer = shownAnswer();
-    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale);
+    const a = computeAnswer(settled, strings, settledCountry, seriesFor(settled.country), historyState(settled.country), numberLocale, amountLocale, joinFor(settled.country));
     if (!answer || a === 'loading') return null;
     const band = a.band.length > 0 ? [`${strings.results.bandLabel} ${a.band.join(' · ')}`] : [];
-    return inflationReport({ island: strings, common: exportStrings, state: settled, answer, decimals, lines: [a.headline, ...a.sentences, ...band], method: a.method });
+    return inflationReport({ island: strings, common: exportStrings, state: settled, answer, decimals, lines: [a.headline, ...a.sentences, ...band], method: a.method, notes: a.methodNotes });
   }
   const report = printedReport();
 
@@ -638,6 +642,7 @@ export default function InflationCalculator({
         country={settled.country ? countryByCode.get(settled.country) ?? null : null}
         series={seriesFor(settled.country)}
         historyStatus={historyState(settled.country)}
+        join={joinFor(settled.country)}
         narrow={narrow}
         numberLocale={numberLocale}
       />
@@ -987,12 +992,46 @@ interface Answer {
   sentences: string[];
   band: string[];
   method: string;
+  /** More on the method, shown after it: which sources an answer that ends at a month joins. */
+  methodNotes?: string[];
   points: { x: number; value: number }[];
+  /**
+   * The answer's own end, when it is a month after the last full year
+   * (monthly.ts): where it sits on the chart's year axis, and its value.
+   */
+  monthPoint?: MonthPoint;
   /** A sentence the announcement must not leave out: the answer allowed for a change of currency. */
   announceMore?: string;
   calendar: boolean;
   chartTitle: string;
   axis: string;
+}
+
+/** A month an answer ends at: `YYYY-MM`, its place on a year axis, the amount there, and whose index it is from. */
+interface MonthPoint {
+  month: string;
+  x: number;
+  value: number;
+  source?: MonthlySource;
+}
+
+/**
+ * Where a month sits on an axis whose years are yearly averages: a year's
+ * average stands at the year's middle, so January is half a year before its
+ * year's mark less half a month, and December as far after it.
+ */
+export function monthOnYearAxis(month: string): number {
+  return Number(month.slice(0, 4)) + (Number(month.slice(5, 7)) - 6.5) / 12;
+}
+
+/** "in September 2026", in the page's language: the same words a currency change's month is given in. */
+function inMonth(month: string, r: Strings['results']): string {
+  return t(r.changedIn, { month: r.monthsAlone[Number(month.slice(5, 7)) - 1], year: Number(month.slice(0, 4)) });
+}
+
+/** "September 2026", in the page's language, for a label: the month's name as it stands on its own. */
+function monthName(month: string, r: Strings['results']): { month: string; year: number } {
+  return { month: r.monthsName[Number(month.slice(5, 7)) - 1], year: Number(month.slice(0, 4)) };
 }
 
 /** When a change took effect, as far as its source says: "on 5 March 1993", "in July 1995", "during 1999". */
@@ -1015,6 +1054,8 @@ function computeAnswer(
   historyStatus: 'none' | 'loading' | 'ready' | 'error',
   numberLocale: string,
   amountLocale: string | null,
+  /** The month the country's answer may end at, or why not; null for a country with no monthly index. */
+  join: MonthlyJoin | null,
 ): Answer | 'loading' {
   const r = strings.results;
   const code = s.currency;
@@ -1037,7 +1078,13 @@ function computeAnswer(
     // symbol stands for. The note says so, and gives the other reading.
     const changes = country!.currency === code ? (() => { const c = currencyChangesBetween(country!.code, from, to); return [...c.crossed, ...c.later]; })() : [];
     const unit = changes.reduce((r, c) => r * c.ratio, 1);
-    const value = (A * factor) / unit;
+    // Where the country has a monthly index that matches its yearly history,
+    // the answer goes one step on, from the last year's average to the latest
+    // month with a figure (monthly.ts). Otherwise it ends at the last year.
+    const end = join && !('withheld' in join) ? join : null;
+    const total = factor * (end ? end.factor : 1);
+    const endPhrase = end ? inMonth(end.month, r) : '';
+    const value = (A * total) / unit;
     const plain = (n: number) => new Intl.NumberFormat(numberLocale, { maximumFractionDigits: 6 }).format(n);
     // The first year can be the very year a change took effect, when both
     // monies were in use (#619). The amount is read by the year the table
@@ -1048,8 +1095,11 @@ function computeAnswer(
     const beforeEuroCash = country!.code === EURO_AREA && country!.currency === code && from < EURO_CASH;
     // Across a change the typed amount was not today's money, so it carries no symbol.
     const shownAmount = changes.length > 0 || beforeEuroCash ? plain(A) : amount;
+    const first = { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to, inMonth: endPhrase };
     const sentences = [
-      t(country!.code === EURO_AREA ? r.pastEuroArea : changes.length > 0 ? r.pastCountryOld : r.pastCountry, { country: country!.name, amount: shownAmount, from, result: aboutText(value, code, strings, amountLocale), to }),
+      end
+        ? t(country!.code === EURO_AREA ? r.pastEuroAreaMonth : changes.length > 0 ? r.pastCountryOldMonth : r.pastCountryMonth, first)
+        : t(country!.code === EURO_AREA ? r.pastEuroArea : changes.length > 0 ? r.pastCountryOld : r.pastCountry, first),
     ];
     let announceMore: string | undefined;
     const say = (note: string) => {
@@ -1069,7 +1119,7 @@ function computeAnswer(
       }));
     }
     if (changes.length > 0) {
-      const unconverted = aboutText(A * factor, code, strings, amountLocale);
+      const unconverted = aboutText(A * total, code, strings, amountLocale);
       say(
         changes.length === 1
           ? unit < 1
@@ -1088,7 +1138,27 @@ function computeAnswer(
     // year without "those 1 year" or an average equal to the total (#868).
     const fell = factor < 1;
     const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
-    sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
+    if (end) {
+      // Three lines, each over its own stretch: the whole rise to the month,
+      // the yearly average over full years only (a part year is never made
+      // into a yearly rate), and the step from the last year's average on.
+      sentences.push(t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(Math.abs(total - 1) * 100, numberLocale, 0), from, inMonth: endPhrase }));
+      if (span > 1) sentences.push(t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
+      sentences.push(t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(Math.abs(end.factor - 1) * 100, numberLocale, 1), to, inMonth: endPhrase }));
+      // Prices published by quarter: the month named is one of three that share a figure.
+      if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
+    } else {
+      sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
+      sentences.push(t(r.latestYearNote, { to }));
+      // A country with a monthly index that is not joined is told why.
+      if (join && 'withheld' in join) {
+        const why = join.withheld === 'mismatch' || join.withheld === 'listed' ? r.withheldMismatch : join.withheld === 'stale' ? r.withheldStale : r.withheldIncomplete;
+        sentences.push(t(why, { country: country!.name, to }));
+      }
+    }
+    // True with or without a month at the end: the start is a year's average.
+    sentences.push(t(r.startCaveat, { from }));
+    const points = historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value / unit }));
     return {
       headline: aboutText(value, code, strings, amountLocale),
       value,
@@ -1096,7 +1166,10 @@ function computeAnswer(
       announceMore,
       band: [],
       method: r.methodHistory,
-      points: historyPath(series, from, A).map((p) => ({ x: p.year, value: p.value / unit })),
+      // Which two sources are joined is method, not answer: it follows the method line.
+      methodNotes: end ? [t(r.joinNote, { to, source: r.monthlySource[end.source] })] : undefined,
+      points,
+      monthPoint: end ? { month: end.month, x: monthOnYearAxis(end.month), value, source: end.source } : undefined,
       calendar: true,
       chartTitle: t(strings.chart.title.past, { amount: shownAmount }),
       axis: strings.chart.axis.pastCountry,
@@ -1157,11 +1230,14 @@ function Results({
   country,
   series,
   historyStatus,
+  join = null,
   narrow,
   numberLocale,
 }: {
   strings: Strings;
   state: ToolState;
+  /** The month the country's answer may end at, or why not. */
+  join?: MonthlyJoin | null;
   withheld: boolean;
   /** Invalid now, which is announced; `withheld` lasts until the corrected answer is there. */
   invalid: boolean;
@@ -1172,7 +1248,7 @@ function Results({
   numberLocale: string;
 }) {
   const { amountLocale } = useMoney();
-  const result = computeAnswer(state, strings, country, series, historyStatus, numberLocale, amountLocale);
+  const result = computeAnswer(state, strings, country, series, historyStatus, numberLocale, amountLocale, join);
 
   // Each recalculation is announced once it has settled: the rounded headline
   // and its sentence, in a polite live region that is otherwise invisible. Not
@@ -1218,9 +1294,13 @@ function Results({
               </p>
             )}
             <p className="ifc-method"><Amounts>{result.method}</Amounts></p>
+            {result.methodNotes?.map((note, i) => (
+              <p key={i} className="ifc-method"><Amounts>{note}</Amounts></p>
+            ))}
           </div>
           <LineChart
             points={result.points}
+            monthPoint={result.monthPoint}
             calendar={result.calendar}
             code={state.currency}
             title={result.chartTitle}
@@ -1237,6 +1317,7 @@ function Results({
 
 function LineChart({
   points,
+  monthPoint,
   calendar,
   code,
   title,
@@ -1245,6 +1326,8 @@ function LineChart({
   narrow,
 }: {
   points: { x: number; value: number }[];
+  /** The answer's end when it is a month after the last year: drawn apart from the yearly points. */
+  monthPoint?: MonthPoint;
   calendar: boolean;
   code: string;
   title: string;
@@ -1266,6 +1349,7 @@ function LineChart({
   const BASE = narrow ? { top: 14, right: 18, bottom: 54 } : { top: 18, right: 28, bottom: 58 };
   const plotH = (narrow ? 210 : 300) - BASE.top - BASE.bottom;
   const values = points.map((p) => p.value);
+  if (monthPoint) values.push(monthPoint.value);
   const maxV = Math.max(0, ...values);
   const drawn = points.length >= 2 && Number.isFinite(maxV) && maxV < DISPLAY_CEILING;
   const { top, step, count } = niceSteps(drawn ? maxV : 1, Math.min(narrow ? 4 : 5, plotH / (1.8 * fs)));
@@ -1304,15 +1388,21 @@ function LineChart({
   const H = PAD.top + plotH + PAD.bottom;
   const plotW = W - PAD.left - PAD.right;
   const x0 = points[0].x;
-  const x1 = points[points.length - 1].x;
+  const lastYear = points[points.length - 1];
+  // The axis runs on to the month, which sits between two year marks.
+  const x1 = monthPoint ? monthPoint.x : lastYear.x;
   const span = Math.max(1, x1 - x0);
   const px = (x: number) => PAD.left + ((x - x0) / span) * plotW;
   const py = (v: number) => PAD.top + (1 - v / top) * plotH;
   const r1 = (n: number) => Math.round(n * 10) / 10;
   const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${r1(px(p.x))},${r1(py(p.value))}`).join(' ');
-  const area = `${line} L${r1(px(x1))},${r1(py(0))} L${r1(px(x0))},${r1(py(0))} Z`;
+  // The last step, from a year's average to one month, is another kind of
+  // figure: its own dashed segment, and a square where the years have dots.
+  const monthAt = monthPoint ? { x: r1(px(monthPoint.x)), y: r1(py(monthPoint.value)) } : null;
+  const monthLine = monthAt ? `M${r1(px(lastYear.x))},${r1(py(lastYear.value))} L${monthAt.x},${monthAt.y}` : '';
+  const area = `${line}${monthAt ? ` L${monthAt.x},${monthAt.y}` : ''} L${r1(px(x1))},${r1(py(0))} L${r1(px(x0))},${r1(py(0))} Z`;
   const maxTicks = narrow ? 4 : 8;
-  const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(x1), fs) + fs) ?? 100;
+  const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(lastYear.x), fs) + fs) ?? 100;
   const xCandidates: number[] = [];
   for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xCandidates.push(x);
   // Labels that would touch, or run past the drawing, are left out.
@@ -1322,13 +1412,20 @@ function LineChart({
   const titleX = Math.round(Math.min(Math.max(PAD.left + plotW / 2, titleHalf), W - titleHalf));
   const xLabel = (x: number) => (calendar ? String(x) : t(strings.chart.yearsFrom, { n: x }));
   const start = points[0];
-  const end = points[points.length - 1];
-  const desc = t(strings.chart.desc, {
-    start: aboutText(start.value, code, strings, amountLocale),
-    end: aboutText(end.value, code, strings, amountLocale),
-    from: xLabel(start.x),
-    to: xLabel(end.x),
-  });
+  const end = lastYear;
+  const desc = monthPoint
+    ? t(strings.chart.descMonth, {
+        start: aboutText(start.value, code, strings, amountLocale),
+        end: aboutText(monthPoint.value, code, strings, amountLocale),
+        from: xLabel(start.x),
+        inMonth: inMonth(monthPoint.month, strings.results),
+      })
+    : t(strings.chart.desc, {
+        start: aboutText(start.value, code, strings, amountLocale),
+        end: aboutText(end.value, code, strings, amountLocale),
+        from: xLabel(start.x),
+        to: xLabel(end.x),
+      });
   return (
     <figure className="ifc-figure">
       <figcaption className="ifc-chartTitle" id={titleId}><Amounts>{title}</Amounts></figcaption>
@@ -1354,9 +1451,19 @@ function LineChart({
         </text>
         <path className="ifc-area" d={area} />
         <path className="ifc-line" d={line} />
+        {monthAt && <path className="ifc-line ifc-line--month" d={monthLine} />}
         <circle className="ifc-dot" cx={r1(px(start.x))} cy={r1(py(start.value))} r="5" />
         <circle className="ifc-dot" cx={r1(px(end.x))} cy={r1(py(end.value))} r="5" />
+        {monthAt && <rect className="ifc-dot ifc-dot--month" x={r1(monthAt.x - 5)} y={r1(monthAt.y - 5)} width="10" height="10" />}
       </svg>
+      {monthPoint && (
+        // Said in words under the drawing, where it wraps at any text size:
+        // which mark is a year's average and which is one month.
+        <p className="ifc-legend ifc-legend--line">
+          <span><i className="ifc-key ifc-key--year" aria-hidden="true" />{strings.chart.legendYear}</span>
+          <span><i className="ifc-key ifc-key--month" aria-hidden="true" />{t(strings.chart.legendMonth, monthName(monthPoint.month, strings.results))}</span>
+        </p>
+      )}
     </figure>
   );
 }

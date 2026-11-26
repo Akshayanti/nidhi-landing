@@ -40,6 +40,31 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-26',
+    items: [
+      {
+        id: 'inflation-answers-to-latest-month',
+        text: {
+          en: 'The inflation calculator no longer stops at the last full year for 123 countries. Where a monthly price index is published that matches the yearly figures, an answer from a country’s history now ends at the latest month with a figure, September 2026 for many and July 2026 for most of the rest, and says which figures it joins: the World Bank’s yearly ones up to the last full year, then a monthly index from the BIS or from the World Bank itself. Other countries still end at their last full year, and the answer now says so. Every such answer also says that the starting amount is taken as that year’s average.',
+          hi: 'महँगाई कैलकुलेटर अब 123 देशों के लिए आख़िरी पूरे साल पर नहीं रुकता। जहाँ कोई ऐसा मासिक मूल्य सूचकांक प्रकाशित होता है जो सालाना आँकड़ों से मेल खाता है, वहाँ देश के इतिहास से निकला जवाब अब आँकड़े वाले सबसे नए महीने तक जाता है, कई देशों के लिए सितंबर 2026 तक और बाकी में से ज़्यादातर के लिए जुलाई 2026 तक, और बताता है कि इसमें कौन-से आँकड़े जोड़े गए हैं: आख़िरी पूरे साल तक World Bank के सालाना आँकड़े, और उसके बाद BIS का या ख़ुद World Bank का मासिक सूचकांक। बाकी देशों के जवाब अब भी आख़िरी पूरे साल पर रुकते हैं, और जवाब में अब यह लिखा होता है। ऐसे हर जवाब में यह भी लिखा होता है कि शुरुआती रकम को उस साल का औसत माना गया है।',
+          es: 'La calculadora de inflación ya no se detiene en el último año completo para 123 países. Donde se publica un índice mensual de precios que coincide con las cifras anuales, la respuesta basada en el historial de un país llega ahora hasta el último mes con cifra, septiembre de 2026 para muchos y julio de 2026 para la mayoría de los demás, y dice qué cifras une: las anuales del Banco Mundial hasta el último año completo y, después, un índice mensual del BIS o del propio Banco Mundial. Los demás países siguen terminando en su último año completo, y la respuesta ahora lo dice. Cada una de estas respuestas dice también que la cantidad inicial se toma como la media de ese año.',
+          cs: 'Inflační kalkulačka se u\u00a0123 zemí už nezastavuje u\u00a0posledního celého roku. Kde se zveřejňuje měsíční cenový index, který se shoduje s\u00a0ročními údaji, končí teď odpověď z\u00a0historie země posledním měsícem s\u00a0údajem, u\u00a0mnoha zemí zářím 2026 a\u00a0u\u00a0většiny ostatních červencem 2026, a\u00a0uvádí, které údaje spojuje: roční údaje Světové banky do posledního celého roku a\u00a0poté měsíční index BIS nebo samotné Světové banky. Ostatní země dál končí posledním celým rokem a\u00a0odpověď to teď říká. Každá taková odpověď také uvádí, že se výchozí částka bere jako průměr daného roku.',
+          mr: 'महागाई कॅल्क्युलेटर आता 123 देशांसाठी शेवटच्या पूर्ण वर्षावर थांबत नाही. जिथे वार्षिक आकड्यांशी जुळणारा मासिक किंमत निर्देशांक प्रकाशित होतो, तिथे देशाच्या इतिहासावरून काढलेले उत्तर आता आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंत जाते, अनेक देशांसाठी सप्टेंबर 2026\u00a0पर्यंत आणि उरलेल्यांपैकी बहुतेकांसाठी जुलै 2026\u00a0पर्यंत, आणि कोणते आकडे जोडले आहेत ते सांगते: शेवटच्या पूर्ण वर्षापर्यंत World Bank\u00a0चे वार्षिक आकडे, आणि त्यानंतर BIS\u00a0चा किंवा खुद्द World Bank\u00a0चा मासिक निर्देशांक. इतर देशांची उत्तरे अजूनही शेवटच्या पूर्ण वर्षावर थांबतात, आणि उत्तरात आता तसे सांगितलेले असते. अशा प्रत्येक उत्तरात हेही सांगितलेले असते की सुरुवातीची रक्कम त्या वर्षाची सरासरी मानली आहे.',
+        },
+      },
+      {
+        id: 'home-planner-button-cookie-answers',
+        text: {
+          en: 'The home page gives the planner a button again, right after “Read lesson 1”, and both buttons now come before the introduction, so they are easier to find on a small phone. The cookie question’s two answers are easier to reach too: on most screens they stay at the bottom of the panel while its words scroll above them, and on a phone the panel is a little shorter.',
+          hi: 'होम पेज पर प्लानर को फिर से अपना बटन मिला है, “पाठ 1 पढ़ें” के ठीक बाद, और दोनों बटन अब परिचय से पहले आते हैं, ताकि छोटे फोन पर वे आसानी से दिखें। कुकी वाले सवाल के दोनों जवाबों तक पहुँचना भी अब आसान है: ज़्यादातर स्क्रीन पर वे सवाल वाले हिस्से में सबसे नीचे टिके रहते हैं और उसके शब्द उनके ऊपर स्क्रॉल होते हैं, और फोन पर यह हिस्सा थोड़ा छोटा भी है।',
+          es: 'La página de inicio vuelve a dar al planificador un botón propio, justo después de «Leer la lección 1», y los dos botones van ahora antes de la introducción, para que sea más fácil verlos en un teléfono pequeño. También es más fácil llegar a las dos respuestas de la pregunta sobre cookies: en la mayoría de las pantallas se quedan en la parte de abajo del panel mientras el texto se desplaza por encima, y en un teléfono el panel es un poco más bajo.',
+          cs: 'Na úvodní stránce má plánovač znovu vlastní tlačítko, hned za „Přečíst lekci 1“, a\u00a0obě tlačítka jsou teď před úvodním textem, aby byla na malém telefonu lépe vidět. Snáz se teď dostanete i\u00a0k\u00a0oběma odpovědím na otázku na cookies: na většině obrazovek zůstávají u\u00a0spodního okraje panelu, zatímco se text posouvá nad nimi, a\u00a0na telefonu je panel o\u00a0něco nižší.',
+          mr: 'मुख्यपृष्ठावर प्लॅनरला पुन्हा स्वतःचे बटण मिळाले आहे, “धडा 1 वाचा” नंतर लगेच, आणि दोन्ही बटणे आता प्रस्तावनेच्या आधी येतात, जेणेकरून लहान फोनवर ती सहज दिसतील. कुकीविषयीच्या प्रश्नाच्या दोन्ही उत्तरांपर्यंत पोहोचणेही आता सोपे झाले आहे: बहुतेक स्क्रीनवर ती प्रश्नाच्या भागात सर्वात खाली राहतात आणि त्याचा मजकूर त्यांच्या वर सरकतो, आणि फोनवर हा भाग थोडा लहान आहे.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-25',
     items: [
       {

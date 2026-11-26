@@ -10,7 +10,7 @@
  * Tools Keep Inputs Out of URLs").
  */
 import {
-  t, island, fill, COUNTRIES, events, eventNames, published, shared, copied, printed, downloads, asked, answerFetch, waitingRequests, historyArrives, arriveWith, clipboard,
+  t, island, fill, COUNTRIES, HISTORY, events, eventNames, published, shared, copied, printed, downloads, asked, answerFetch, waitingRequests, historyArrives, arriveWith, clipboard,
   page, mount, turn, settle, all, text, one, none, tab, selectedTab, box, choice, type, choose, headline, sentences, question, example, withheld, reason, said,
   shareButton, xlsxButton, pdfButton, copyLabel, disabled, errorOf, reportLines, reportEntered, reportMethod, fileText,
 } from '../../test/inflationParts.page.tsx';
@@ -453,7 +453,7 @@ describe('the inflation calculator on its page', () => {
     none('.ifc-note--warn');
     settle();
     // 10,000 x 1.5.
-    assert.equal(sentences()[0], 'In Testland, $10,000 in 2018 bought what about $15,000 bought in 2019.');
+    assert.equal(sentences()[0], 'In Testland, $10,000 at average prices in 2018 bought what about $15,000 bought at average prices in 2019.');
   });
 
   it('a country’s history: asked for once chosen, said to be loading, said to have failed, asked for again, and then used', async () => {
@@ -560,7 +560,7 @@ describe('the inflation calculator on its page', () => {
       none('.ifc-history .ifc-note');
       settle();
       // 10,000 x 1.1^5 = 16,105.
-      assert.deepEqual(sentences(), ['In Testland, $10,000 in 2015 bought what about $16,100 bought in 2020.', 'Prices rose about 61% in total over those 5 years, an average of 10% a year.']);
+      assert.deepEqual(sentences(), ['In Testland, $10,000 at average prices in 2015 bought what about $16,100 bought at average prices in 2020.', 'Prices rose about 61% in total over those 5 years, an average of 10% a year.', '2020 is the latest year with a figure here. Price changes after it are not included.', 'The starting amount is treated as the average for 2015. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.']);
       choose(f.from, '2018');
       assert.equal(choice(f.from).value, '2018');
       settle();
@@ -570,12 +570,12 @@ describe('the inflation calculator on its page', () => {
     }
     {
       // the report and the spreadsheet say which history and which years were used
-      assert.deepEqual(reportLines(), ['about $12,100', 'In Testland, $10,000 in 2018 bought what about $12,100 bought in 2020.', 'Prices rose about 21% in total over those 2 years, an average of 10% a year.']);
+      assert.deepEqual(reportLines(), ['about $12,100', 'In Testland, $10,000 at average prices in 2018 bought what about $12,100 bought at average prices in 2020.', 'Prices rose about 21% in total over those 2 years, an average of 10% a year.', '2020 is the latest year with a figure here. Price changes after it are not included.', 'The starting amount is treated as the average for 2018. If your pay or a price was set in a particular month, prices since then may have risen more or less than this.']);
       assert.deepEqual(reportEntered(), [['Question', island.tabs.past], [f.amount.past, '10,000.00'], [island.export.country, 'Testland'], [f.from, '2018']]);
       assert.deepEqual(reportMethod(), [island.results.methodHistory]);
       fireEvent.click(xlsxButton());
       const file = await fileText(downloads[0].blob);
-      assert.ok(file.includes('>What is an amount from the past worth today in Testland, using its actual yearly inflation?</t>'));
+      assert.ok(file.includes('>What is an amount from the past worth in Testland now, using its recorded inflation?</t>'));
       assert.ok(file.includes('>Testland</t>'));
       assert.ok(file.includes('>2018 to 2020</t>'));
       assert.ok(!file.includes(`>${island.questions.past}</t>`));
@@ -631,6 +631,45 @@ describe('the inflation calculator on its page', () => {
     }
   });
 
+  it('a country whose history carries a month ends there on the page, in the report and in the spreadsheet', async () => {
+    // 0% in 2018, 50% in 2019, and March 2020 another 20% above the 2019 average: 10,000 x 1.5 x 1.2 = 18,000.
+    mount({ defaultCurrency: 'INR', defaultCountry: 'TST', initialHistory: { code: 'TST', series: [2018, [0, 50], ['2020-03', 1.2, 'bis']] } });
+    fireEvent.click(tab('past'));
+    settle();
+    assert.equal(headline(), 'about ₹18,000');
+    assert.deepEqual(sentences().slice(0, 3), [
+      'In Testland, ₹10,000 at average prices in 2018 bought what about ₹18,000 bought at prices in March 2020.',
+      'Prices were about 80% higher in March 2020 than on average in 2018.',
+      'Prices were 20% higher in March 2020 than on average in 2019.',
+    ]);
+    assert.equal(all('rect.ifc-dot--month').length, 1);
+    assert.deepEqual(reportLines()?.slice(0, 2), ['about ₹18,000', 'In Testland, ₹10,000 at average prices in 2018 bought what about ₹18,000 bought at prices in March 2020.']);
+    assert.deepEqual(reportMethod(), [island.results.methodHistory, fill(island.results.joinNote, { to: 2019, source: island.results.monthlySource.bis }), island.export.monthRow]);
+    fireEvent.click(xlsxButton());
+    const file = await fileText(downloads[0].blob);
+    assert.ok(file.includes('>2020-03</t>'));
+    assert.ok(file.includes(`>${island.export.monthEnd}</t>`));
+    assert.ok(file.includes('>2018 to 2019</t>'));
+    assert.ok(file.includes(`>${island.export.sourceText} ${island.export.sourceTextMonthly.bis}</t>`));
+    {
+      // a country fetched later brings its own join with it: 0%, 10%, 0% from 1998, and June 2001 50% above the 2000 average
+      const euro = HISTORY.countries.EMU;
+      HISTORY.countries.EMU = [1998, [0, 10, 0], ['2001-06', 1.5, 'worldBank']];
+      try {
+        choose(island.history.label, 'EMU');
+        await historyArrives();
+        settle();
+        // 10,000 x 1.1 x 1.5 = 16,500.
+        assert.equal(sentences()[0], 'In the euro area, 10,000 at average prices in 1998 bought what about €16,500 bought at prices in June 2001.');
+        assert.equal(all('rect.ifc-dot--month').length, 1);
+        // The method names the World Bank's own monthly index for this one.
+        assert.equal(text('.ifc-answer > p.ifc-method')[1], fill(island.results.joinNote, { to: 2000, source: island.results.monthlySource.worldBank }));
+      } finally {
+        HISTORY.countries.EMU = euro;
+      }
+    }
+  });
+
   it('a page that starts with a country shows it from its own figures, keeps them when the rest arrives, and resets to them', async () => {
     // As the Hindi page does: rupees and one country, whose figures come with the page (0% in 2018, 50% in 2019).
     const view = mount({ defaultCurrency: 'INR', defaultCountry: 'TST', initialHistory: { code: 'TST', series: [2018, [0, 50]] } });
@@ -645,7 +684,7 @@ describe('the inflation calculator on its page', () => {
     fireEvent.click(tab('past'));
     settle();
     // 10,000 x 1.5.
-    assert.equal(sentences()[0], 'In Testland, ₹10,000 in 2018 bought what about ₹15,000 bought in 2019.');
+    assert.equal(sentences()[0], 'In Testland, ₹10,000 at average prices in 2018 bought what about ₹15,000 bought at average prices in 2019.');
     assert.equal(shared(), 'm=p&c=INR&n=TST');
     {
       // the other countries arrive, and the page's own figures for its country stand
