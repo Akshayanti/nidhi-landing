@@ -7,9 +7,15 @@ import { t, island, w, shared, STARTING_RESULT, settle, events, mountWith, openP
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { monteCarloHi } from '../i18n/strings/tools/monteCarlo.ts';
 import { DEFAULTS, SHARED_STATE_GLOBAL, decodeState, encodeState } from '../utils/monte-carlo/url.ts';
 import MonteCarloSimulator from './MonteCarloSimulator.tsx';
+
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  hi: { monteCarlo: monteCarloHi },
+};
 
 const copyButton = () => screen.getByRole('button', { name: island.actions.copy });
 /** What the copy button says to a reader: its other label is kept only for its width. */
@@ -19,7 +25,7 @@ const type = (label: string, value: string) => fireEvent.change(screen.getByLabe
 describe('the form on the page', () => {
   it('names currencies and choices, says each box’s range, runs a plan once typing stops, and lets go of the window', async () => {
     // A catalog with its own names for the currencies, and none for one of them.
-    const hindi = dict('hi').tools.monteCarlo.island.currencies;
+    const hindi = TOOL_STRINGS.hi.monteCarlo.island.currencies;
     const { INR: _none, ...named } = hindi;
     const strings = { ...island, currencies: named as typeof island.currencies };
     const keys = { added: [] as unknown[], removed: [] as unknown[] };

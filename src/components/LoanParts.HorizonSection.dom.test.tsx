@@ -16,14 +16,21 @@ import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import { useState } from 'react';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { dear, invalid, long, neverPaid, plain, resultsOf, withFee } from '../../test/loanParts.refinance.ts';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import type { VendorInput } from '../utils/loan/url.ts';
 import { HorizonSection } from './LoanCompare.tsx';
 import { ErrorLeadContext, UnreadableContext } from './toolShared.tsx';
 
-const s = dict('en').tools.loanComparison.island;
-const common = dict('en').tools.export;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
+const common = TOOL_STRINGS.en.export;
 const UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
 
 const win = window as unknown as { posthog?: unknown };

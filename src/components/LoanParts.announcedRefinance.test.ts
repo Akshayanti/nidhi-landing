@@ -11,12 +11,18 @@
  */
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import { formatMoney } from '../utils/loan/math.ts';
 import { dear, long, plain, refinanced, withPenalty } from '../../test/loanParts.refinance.ts';
 import { announcedRefinance, spokenMonths } from './LoanCompare.tsx';
 
-const s = dict('en').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
 const g = globalThis as unknown as { document?: unknown };
 
 /** The page's language, as the browser gives it: the only thing `spokenMonths` reads from the page. */

@@ -9,12 +9,18 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import { formatMoney } from '../utils/loan/math.ts';
 import { dear, large, neverLess, plain } from '../../test/loanParts.comparedOffers.ts';
 import { announcedResult } from './LoanCompare.tsx';
 
-const s = dict('en').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
 
 /** The sentence for these paid-off offers out of `validCount` valid ones, in euros. */
 const said = (paidOff: ReturnType<typeof plain>[], validCount: number, currency = 'EUR') =>

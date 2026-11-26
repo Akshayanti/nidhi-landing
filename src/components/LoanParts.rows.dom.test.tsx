@@ -16,14 +16,20 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import { clock } from '../../test/windowClock.ts';
 import { window } from '../../test/dom.ts';
 import { dear, neverLess, plain } from '../../test/loanParts.comparedOffers.ts';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { amountLength } from '../utils/shared/amountUnits.ts';
 import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredMark, ResultRow } from './LoanCompare.tsx';
 import { WITHHELD_SAID_AFTER, type Notice } from './toolShared.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
-const s = dict('en').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
 
 afterEach(cleanup);
 

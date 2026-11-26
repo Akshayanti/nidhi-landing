@@ -9,11 +9,18 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { DICTS } from '../i18n/index.ts';
+import { multiCurrencyNetWorthEn, multiCurrencyNetWorthHi } from '../i18n/strings/tools/multiCurrencyNetWorth.ts';
 import { aggregate, type AssetRow } from '../utils/multi-currency-net-worth/math.ts';
 import { buildPreviewResult, getFactor, riskBadge, riskLabel } from './MultiCurrencyNetWorth.tsx';
 
-const island = DICTS.en.tools.multiCurrencyNetWorth.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { multiCurrencyNetWorth: multiCurrencyNetWorthEn },
+  hi: { multiCurrencyNetWorth: multiCurrencyNetWorthHi },
+};
+
+const island = TOOL_STRINGS.en.multiCurrencyNetWorth.island;
 const RATES = { EUR: 1, USD: 2, JPY: 200, CZK: 25 };
 const own = (value: string, currency: string): AssetRow => ({ name: '', value, currency, type: 'asset' });
 const owe = (value: string, currency: string): AssetRow => ({ name: '', value, currency, type: 'liability' });
@@ -41,7 +48,7 @@ describe('the words for a share band', () => {
   });
 
   it('the words come from the page’s own language', () => {
-    const hi = DICTS.hi.tools.multiCurrencyNetWorth.island;
+    const hi = TOOL_STRINGS.hi.multiCurrencyNetWorth.island;
     assert.equal(riskLabel(hi, 'elevated'), hi.results.labelElevated);
     assert.notEqual(riskLabel(hi, 'elevated'), 'Elevated exposure');
     assert.equal(riskBadge(hi, 'net-debt'), hi.results.badgeNetDebt);

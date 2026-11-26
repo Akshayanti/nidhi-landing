@@ -17,7 +17,7 @@ import {
   allFee, aprOfLevelLoan, beyondLimit, dear, invalid, keptEarlier, keptLater, keptOnTerm, large, neverEqual, neverLess,
   paidBeforeChange, plain, stepped, steppedEarly, steppedLast, withFee,
 } from '../../test/loanParts.comparedOffers.ts';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import { CHART_SERIES } from '../styles/palette.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { amountLength } from '../utils/shared/amountUnits.ts';
@@ -26,7 +26,13 @@ import { Amount } from './Amounts.tsx';
 import { DeltaRow, DeltaSummary } from './LoanCompare.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
-const s = dict('en').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
 const d = s.delta;
 const KEPT = 'The payment stays the same after the rate change.';
 const NO_RANGE = 'Fewer than two of these offers are paid off, so there is no range of totals to compare.';

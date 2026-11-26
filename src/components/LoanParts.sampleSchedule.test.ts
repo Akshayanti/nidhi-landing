@@ -6,8 +6,15 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn, loanComparisonEs } from '../i18n/strings/tools/loanComparison.ts';
 import { formatYearLabel, sampleSchedule } from './LoanCompare.tsx';
+
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+  es: { loanComparison: loanComparisonEs },
+};
 
 /** A schedule of `n` months whose balance in month m is `first - m`. */
 const falling = (n: number, first: number) => Array.from({ length: n }, (_, i) => ({ month: i + 1, balance: first - (i + 1) }));
@@ -56,7 +63,7 @@ describe('the months the balance table lists', () => {
 });
 
 describe('what a sampled month is called', () => {
-  const en = dict('en').tools.loanComparison.island;
+  const en = TOOL_STRINGS.en.loanComparison.island;
 
   it('calls the first month the first year', () => {
     assert.equal(formatYearLabel(1, en), 'Year 1');
@@ -82,7 +89,7 @@ describe('what a sampled month is called', () => {
   });
 
   it("uses the page's own words", () => {
-    const es = dict('es').tools.loanComparison.island;
+    const es = TOOL_STRINGS.es.loanComparison.island;
     assert.equal(formatYearLabel(1, es), es.balance.year.replace('{y}', '1'));
     assert.equal(formatYearLabel(9, es), es.balance.month.replace('{m}', '9'));
     assert.notEqual(formatYearLabel(9, es), formatYearLabel(9, en));

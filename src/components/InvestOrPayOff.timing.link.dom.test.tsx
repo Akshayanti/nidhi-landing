@@ -7,14 +7,21 @@ import '../../test/dom.ts';
 import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach, describe, it } from 'node:test';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { dict } from '../i18n/index.ts';
+import { investOrPayOffEn } from '../i18n/strings/tools/investOrPayOff.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import data from '../data/inflation/worldbank.json';
 import { HISTORY_URL, toCompactSeries, type CompactHistory, type WorldBankFile } from '../utils/inflation/history.ts';
 import { SHARED_STATE_GLOBAL, defaultState, encodeState } from '../utils/invest-or-pay-off/url.ts';
 import { clock } from '../../test/windowClock.ts';
 import InvestOrPayOff from './InvestOrPayOff.tsx';
 
-const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { investOrPayOff: investOrPayOffEn, export: exportEn },
+};
+
+const t = TOOL_STRINGS.en;
 const island = t.investOrPayOff.island;
 const w = window as unknown as Record<string, unknown>;
 

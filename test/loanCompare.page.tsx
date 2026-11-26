@@ -18,11 +18,18 @@ import assert from 'node:assert/strict';
 import { after, afterEach, beforeEach } from 'node:test';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { clock } from './windowClock.ts';
-import { dict } from '../src/i18n/index.ts';
+import { loanComparisonEn } from '../src/i18n/strings/tools/loanComparison.ts';
+import { exportEn } from '../src/i18n/strings/tools/export.ts';
 import { SHARED_STATE_GLOBAL, encodeToQueryString, makeAddedVendor, defaultGlobalState, type GlobalState, type VendorInput } from '../src/utils/loan/url.ts';
 import LoanCompare from '../src/components/LoanCompare.tsx';
 
-export const t = dict('en').tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn, export: exportEn },
+};
+
+export const t = TOOL_STRINGS.en;
 export const island = t.loanComparison.island;
 export const w = window as unknown as Record<string, unknown>;
 export { clock };

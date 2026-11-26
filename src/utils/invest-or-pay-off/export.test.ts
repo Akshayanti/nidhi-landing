@@ -5,11 +5,18 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { DICTS } from '../../i18n/index.ts';
+import { investOrPayOffEn } from '../../i18n/strings/tools/investOrPayOff.ts';
+import { exportEn } from '../../i18n/strings/tools/export.ts';
 import type { Inputs, Result } from './math.ts';
 import { investOrPayOffSheets, type ShownComparison } from './export.ts';
 
-const tools = DICTS.en.tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { investOrPayOff: investOrPayOffEn, export: exportEn },
+};
+
+const tools = TOOL_STRINGS.en;
 const island = tools.investOrPayOff.island;
 const common = tools.export;
 

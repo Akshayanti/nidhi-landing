@@ -13,15 +13,22 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { inflationEn, inflationCs } from '../i18n/strings/tools/inflation.ts';
 import { format } from '../i18n/format.ts';
 import type { Series } from '../utils/inflation/math.ts';
 import { defaultState, type ToolState } from '../utils/inflation/url.ts';
 import type { MonthlyJoin } from '../utils/inflation/monthly.ts';
 import { computeAnswer, monthOnYearAxis, type CountryOption } from './InflationCalculator.tsx';
 
-const en = dict('en').tools.inflation.island;
-const cs = dict('cs').tools.inflation.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn },
+  cs: { inflation: inflationCs },
+};
+
+const en = TOOL_STRINGS.en.inflation.island;
+const cs = TOOL_STRINGS.cs.inflation.island;
 const r = en.results;
 
 const METHOD = 'Compounded once a year, at the same rate every year. A scenario, not a forecast.';

@@ -12,10 +12,16 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { clock } from '../../test/windowClock.ts';
-import { dict } from '../i18n/index.ts';
+import { exportEn } from '../i18n/strings/tools/export.ts';
 import { ToolExport } from './ToolExport.tsx';
 
-const strings = dict('en').tools.export;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { export: exportEn },
+};
+
+const strings = TOOL_STRINGS.en.export;
 const realAgent = window.navigator.userAgent;
 const browseWith = (userAgent: string) => Object.defineProperty(window.navigator, 'userAgent', { value: userAgent, configurable: true });
 

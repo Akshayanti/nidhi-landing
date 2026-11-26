@@ -7,14 +7,21 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DICTS } from '../../i18n/index.ts';
+import { monteCarloEn } from '../../i18n/strings/tools/monteCarlo.ts';
+import { exportEn } from '../../i18n/strings/tools/export.ts';
 import { format } from '../../i18n/format.ts';
 import { QUOTED_RATES, type SimulationResult } from './math.ts';
 import { defaultState, type ToolState } from './url.ts';
 import { monteCarloSheets } from './export.ts';
 import { monteCarloReport } from './report.ts';
 
-const t = DICTS.en.tools;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn, export: exportEn },
+};
+
+const t = TOOL_STRINGS.en;
 const island = t.monteCarlo.island;
 const common = t.export;
 const x = island.export;

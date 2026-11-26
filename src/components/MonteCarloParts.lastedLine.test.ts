@@ -5,10 +5,16 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { monteCarloEn } from '../i18n/strings/tools/monteCarlo.ts';
 import { inTen, lastedLine } from './MonteCarloSimulator.tsx';
 
-const island = dict('en').tools.monteCarlo.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { monteCarlo: monteCarloEn },
+};
+
+const island = TOOL_STRINGS.en.monteCarlo.island;
 
 describe('a share of the paths, in tenths', () => {
   it('rounds to the nearest tenth in the middle of the range', () => {

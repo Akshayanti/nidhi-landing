@@ -10,7 +10,7 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { loanComparisonEn, loanComparisonHi, loanComparisonEs } from '../i18n/strings/tools/loanComparison.ts';
 import { computeLoan, type LoanResult, type RateSpec } from '../utils/loan/math.ts';
 import {
   ENGINE_PHRASES,
@@ -24,9 +24,17 @@ import {
   shownName,
 } from './LoanCompare.tsx';
 
-const s = dict('en').tools.loanComparison.island;
-const es = dict('es').tools.loanComparison.island;
-const hi = dict('hi').tools.loanComparison.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { loanComparison: loanComparisonEn },
+  hi: { loanComparison: loanComparisonHi },
+  es: { loanComparison: loanComparisonEs },
+};
+
+const s = TOOL_STRINGS.en.loanComparison.island;
+const es = TOOL_STRINGS.es.loanComparison.island;
+const hi = TOOL_STRINGS.hi.loanComparison.island;
 
 const over12 = { kind: 'term' as const, months: 12 };
 /** A rate that changes after `initialMonths`, the payment kept. */

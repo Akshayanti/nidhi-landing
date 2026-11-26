@@ -9,7 +9,7 @@
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dict } from '../i18n/index.ts';
+import { inflationEn, inflationCs } from '../i18n/strings/tools/inflation.ts';
 import {
   aboutText,
   allYears,
@@ -23,8 +23,15 @@ import {
   yearsPhrase,
 } from './InflationCalculator.tsx';
 
-const en = dict('en').tools.inflation.island;
-const cs = dict('cs').tools.inflation.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { inflation: inflationEn },
+  cs: { inflation: inflationCs },
+};
+
+const en = TOOL_STRINGS.en.inflation.island;
+const cs = TOOL_STRINGS.cs.inflation.island;
 
 const close = (actual: number, expected: number) =>
   assert.ok(Math.abs(actual - expected) <= 1e-9 * Math.max(1, Math.abs(expected)), `${actual} is not close to ${expected}`);

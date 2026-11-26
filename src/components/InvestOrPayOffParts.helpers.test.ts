@@ -10,13 +10,20 @@
  */
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { DICTS } from '../i18n/index.ts';
+import { investOrPayOffEn, investOrPayOffCs } from '../i18n/strings/tools/investOrPayOff.ts';
 import { DEFAULTS, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import type { Result } from '../utils/invest-or-pay-off/math.ts';
 import { loadHistory, pct, resultLines, toInputs, track, whenText } from './InvestOrPayOff.tsx';
 
-const en = DICTS.en.tools.investOrPayOff.island;
-const cs = DICTS.cs.tools.investOrPayOff.island;
+// This tool's own strings, from the modules that define them: not the whole catalog,
+// which would tie this file to every tool's strings (#904).
+const TOOL_STRINGS = {
+  en: { investOrPayOff: investOrPayOffEn },
+  cs: { investOrPayOff: investOrPayOffCs },
+};
+
+const en = TOOL_STRINGS.en.investOrPayOff.island;
+const cs = TOOL_STRINGS.cs.investOrPayOff.island;
 /** Czech keeps a short word on the next one with a no-break space; compared as plain spaces. */
 const plain = (s: string) => s.replace(/\u00a0/g, ' ');
 const g = globalThis as unknown as Record<string, unknown>;

@@ -56,7 +56,9 @@ describe('the compact inflation history', () => {
 
   it('is fetched from the address the site serves it at', () => {
     assert.equal(HISTORY_URL, '/data/inflation-history.json');
-    assert.ok(existsSync(new URL(`../../pages${HISTORY_URL}.ts`, import.meta.url)), 'no page writes the history file at that address');
+    // The page is named in full, beside the address it must match: a path built from
+    // HISTORY_URL is one the mutation cache cannot work out from the source (#904).
+    assert.ok(existsSync(new URL('../../pages/data/inflation-history.json.ts', import.meta.url)), 'no page writes the history file at that address');
     assert.equal(INFLATION_URL, '/free/inflation-calculator/');
   });
 });
