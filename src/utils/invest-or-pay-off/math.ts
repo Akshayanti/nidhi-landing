@@ -56,7 +56,7 @@ export type TodayBasis = 'month' | 'end';
 export const HORIZONS: readonly Horizon[] = ['payoff', 'plus5', 'plus10'];
 const HORIZON_EXTRA_MONTHS: Record<Horizon, number> = { payoff: 0, plus5: 60, plus10: 120 };
 
-/** The top and bottom of the after-inflation range the model and the lessons use for world stocks. */
+/** The optimistic and cautious after-inflation rates the model sets either side of the world stock record (about 5.3% compound, 1900 to 2025). */
 export const REAL_RETURN_TOP = 6;
 export const REAL_RETURN_BOTTOM = 4;
 

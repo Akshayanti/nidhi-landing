@@ -79,7 +79,9 @@ export default {
   // run (scripts/lib/checks/stryker-ordered-tap.mjs). Appended, so the
   // plugins Stryker loads by itself (the tap runner among them) still load.
   testRunner: 'tap-ordered',
-  appendPlugins: ['./scripts/lib/checks/stryker-ordered-tap.mjs'],
+  // Beside it, the reporter that writes which mutants a run ran itself, for
+  // the recheck after the run (scripts/lib/checks/stryker-run-plan.mjs).
+  appendPlugins: ['./scripts/lib/checks/stryker-ordered-tap.mjs', './scripts/lib/checks/stryker-run-plan.mjs'],
   tap: {
     // Tests that read the source as text (the privacy surface, the tool
     // privacy rules) cannot judge a mutant: under Stryker they read the
@@ -94,7 +96,7 @@ export default {
   coverageAnalysis: 'perTest',
   mutate,
   concurrency: Number(process.env.STRYKER_CONCURRENCY ?? 4),
-  reporters: ['clear-text', 'json', 'progress'],
+  reporters: ['clear-text', 'json', 'progress', 'run-plan'],
   jsonReporter: { fileName: `reports/mutation/${name}.json` },
   incremental: true,
   incrementalFile: `reports/stryker-incremental/${name}.json`,

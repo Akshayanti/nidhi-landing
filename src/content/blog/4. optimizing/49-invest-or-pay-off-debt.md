@@ -32,8 +32,10 @@ glossary:
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
 pubDate: 2026-11-04
-updatedDate: 2026-11-21
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "The lesson described 4 to 6% a year after inflation as the historical return range for developed-market shares since 1900. Country returns vary widely, so that description was misleading. It now gives the world figure, 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with US and UK examples. The before-inflation figure of 6 to 8% is now about 7%, the figure the examples already used; the bands and the order are unchanged."
   - date: 2026-11-21
     note: "The summary said the rate, not the size, sets a debt's cost; the cost depends on both, and the summary now describes how the rate affects what an extra euro repaid saves."
   - date: 2026-11-17
@@ -45,7 +47,7 @@ personas: ["eva", "petra", "marcus", "jiri"]
 tags: ["optimizing", "debt", "investing"]
 faq:
   - question: "What is the simplest version of the rule?"
-    answer: "The simplest version compares the interest rate on the debt with an expected investment return. Paying off a debt is a guaranteed return equal to the interest rate (you no longer pay that interest). If the debt's rate is higher than the expected investment return, paying off comes out ahead on paper; if the investment return is higher, investing comes out ahead on expected value, but without the guarantee. Diversified equity portfolios across developed markets have returned about 4 to 6% a year after inflation since 1900 (Dimson, Marsh and Staunton). A debt's interest rate includes inflation, so the like-for-like figure is the return before inflation: about 6 to 8% if inflation runs around 2%. In low-inflation economies, that is why debt above roughly 8 to 10% (credit cards at 18 to 24%) has usually come first for many people, very low-rate debt (mortgages at 3% or below) has usually lost to investing, and the 4 to 8% middle is a judgement call. Where inflation is higher, the bands move up, so the comparison is made against local inflation and returns."
+    answer: "The simplest version compares the interest rate on the debt with an expected investment return. Paying off a debt is a guaranteed return equal to the interest rate (you no longer pay that interest). If the debt's rate is higher than the expected investment return, paying off comes out ahead on paper; if the investment return is higher, investing comes out ahead on expected value, but without the guarantee. World shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025). Single countries differed: the US returned 6.6% and the UK 5.4% over the same years, both above the world figure, while Italy, Belgium and Austria returned under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). A debt's interest rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs around 2%. In low-inflation economies, that is why debt above roughly 8 to 10% (credit cards at 18 to 24%) has usually come first for many people, very low-rate debt (mortgages at 3% or below) has usually lost to investing, and the 4 to 8% middle is a judgement call. Where inflation is higher, the bands move up, so the comparison is made against local inflation and returns."
   - question: "Why does employer match change the picture so much?"
     answer: "Because an employer may add 50 cents or €1 for every euro you contribute, up to the scheme's cap. That creates an immediate 50% or 100% uplift before market movement. The comparison with a card's annual rate is not perfectly like for like, because the pension money may be locked up or subject to vesting, but the uplift is large enough that many people capture the available match while also reducing expensive debt. This is why many people take the match early, often alongside paying down high-interest debt, even though the common default order lists high-interest debt first. The caveats: matched money is usually locked until retirement age, some matches vest only after a period of service, and someone struggling to meet minimum payments may need the cash now. A match that goes unclaimed in a given year is usually gone for good, which is the main reason it rarely waits long."
   - question: "What about tax deductions on debt interest?"
@@ -62,6 +64,12 @@ relatedTool:
 reelPromise: "Why many people take an employer match early, a seven step default order for several debts, and the mental accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "Opportunity Cost"
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Opportunity_cost"
@@ -72,7 +80,7 @@ Eva, 31, has €500 a month to spare. She has a €280,000 mortgage at 3.4%, a �
 
 ## The rate sets a debt's cost, not its size
 
-Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing earns an [expected return](#term-expected-return) that is higher on average and not certain. Diversified developed-market shares have returned about 4 to 6% a year after inflation since 1900 (Dimson, Marsh and Staunton). A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 6 to 8% a year if inflation runs near 2%. The examples here use 7%.
+Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing has an [expected return](#term-expected-return), but the actual return is uncertain and may be higher or lower than the debt's rate. Diversified world shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that. A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs near 2%. The examples here use 7%, an illustration rather than a forecast.
 
 For Eva, €500 extra on the mortgage avoids about €17 of interest in a year. The same €500 on the card avoids about €110. Size does not set the cost; the rate does.
 
@@ -89,7 +97,7 @@ Where inflation is higher, mortgages at 8 to 9% can be normal and the bands move
   <title id="fig-debt-invest-title">Debt payoff versus investment return: where the crossover sits</title>
   <desc id="fig-debt-invest-desc">A horizontal number line from 0 to 25 percent, drawn to scale. A blue band from 0 to 4 percent labelled "investing usually wins". A pale band from 4 to 8 percent labelled "judgement call". An orange band from 8 percent onwards labelled "debt payoff usually wins". Example debts placed along the line: a mortgage at 3 percent in the blue band, a student loan at 5.5 percent and an auto loan at 6.5 percent in the judgement-call band, a personal loan at 12 percent and a credit card at 22 percent in the orange band.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">Where the crossover sits</text>
-  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">Illustrative bands for a low-inflation economy. Expected return about 6 to 8% before inflation.</text>
+  <text class="fig-subtitle" x="360" y="68" text-anchor="middle"><tspan x="360" y="68">Illustrative bands for a low-inflation economy, </tspan><tspan x="360" y="90">assuming a share return of about 7% a year before inflation.</tspan></text>
   <line x1="80" y1="200" x2="680" y2="200" class="fig-stroke-muted" stroke-width="2" />
   <rect x="80" y="185" width="96" height="30" class="fig-fill-blue" opacity="0.18" />
   <rect x="176" y="185" width="96" height="30" class="fig-fill-warn" opacity="0.25" />
@@ -174,7 +182,7 @@ Some steps run in parallel; the order sets where the main flow of cash goes.
 
 ## In the 4 to 8% band, either choice is defensible
 
-Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. Diversified shares have averaged about 7% a year before inflation in this lesson's example (the 4 to 6% after-inflation range plus about 2% inflation), with bad years inside that average. That is close enough for either choice to be reasonable. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
+Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. This lesson assumes shares return 7% a year before inflation: world shares' 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), combined with an assumed 2% inflation, gives about 7.3%, rounded here to 7%. Actual returns include bad years and bad decades. At 6.5% against an assumed 7%, the rates are close enough that either choice can be reasonable, though only the interest saving is certain. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
 
 <details class="lesson-depth">
 <summary class="disclosure">When peace of mind outweighs the arithmetic</summary>

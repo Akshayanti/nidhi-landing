@@ -1,6 +1,6 @@
 /**
  * The invest or pay off calculator's spreadsheet: what was entered, the
- * result in words and as numbers, and the historical range beside the
+ * result in words and as numbers, and the cautious and optimistic settings beside the
  * reader's own return when the page shows it.
  *
  * It is built from the inputs and the result the page is showing, so the

@@ -41,7 +41,7 @@ export const investOrPayOffEn = {
       'Net wealth on that date: investments, less tax on gains, less any debt still owed',
       "Results in today's money, using a country's recent inflation from the World Bank or your own figure",
       '{paths} paired simulations of world stock returns, so the gap comes from the choice, not from luck',
-      'A note when your own return is above the {top}% a year after inflation the model uses, with results shown beside the historical range',
+      'A note when your own return is above the model\'s optimistic setting of {top}% a year after inflation, with results shown beside the cautious and optimistic settings',
       'Optional tax relief on the interest, a yearly fund fee and tax on gains',
       'Runs in your browser: nothing you type is sent anywhere',
     ],
@@ -77,7 +77,7 @@ export const investOrPayOffEn = {
       items: {
         paths: { lead: 'Two paths. ', rest: 'In one, the extra money goes to the debt until it is paid, then the old payment and the extra are invested every month. In the other, the debt runs its normal course and the extra money is invested; once the debt ends, its payment is invested too.' },
         date: { lead: 'The same date. ', rest: 'Both are compared on the date you choose. Net wealth is what the investments are worth, less any tax on gains, less any debt still owed.' },
-        returns: { lead: 'The investment. ', rest: 'A diversified world stock portfolio. Its yearly returns are drawn from the history of world stocks since 1900 (Dimson, Marsh and Staunton): about {low}% to {top}% a year after inflation, with large swings from year to year.' },
+        returns: { lead: 'The investment. ', rest: 'A diversified world stock portfolio. Its yearly returns are drawn from a model fitted to world stock history from 1900 to 2025 (Dimson, Marsh and Staunton), with large swings from year to year. World stocks returned about {historical} a year after inflation, compounded, over that period. The cautious and optimistic settings put the model\'s compound yearly return at {low}% and {top}%, below and above that historical return.' },
         paired: { lead: 'Paired scenarios. ', rest: 'Each of {paths} scenarios runs both paths through the same market years, so the difference between them comes from the choice, not from luck.' },
         money: { lead: "Today's money. ", rest: 'The debt is charged at its own rate; the investment returns are turned into returns before inflation with your inflation figure; every result is then shown in today\'s money.' },
         timing: { lead: 'Timing. ', rest: 'Interest is charged and payments made at the end of each month. Relief on the interest is counted as money back each month and invested in the same path.' },
@@ -113,7 +113,7 @@ export const investOrPayOffEn = {
         },
         {
           q: 'What happens if I enter a high return?',
-          a: 'Your figure is used as you entered it. If it is more than {top}% a year after inflation, the top of the long-run range used in this model and in the lessons, a note says so and the results are also shown with the historical range, side by side. Nothing is capped.',
+          a: 'Your figure is used as you entered it. If it is more than {top}% a year after inflation, the model\'s optimistic setting, a note says so and the results are also shown with the cautious and optimistic settings, side by side. Nothing is capped.',
         },
         {
           q: 'Where does the inflation figure come from?',
@@ -188,10 +188,10 @@ export const investOrPayOffEn = {
     returns: {
       legend: 'Returns',
       cautious: { label: 'Cautious', desc: '{rate} a year after inflation' },
-      historical: { label: 'Historical', desc: '{rate} a year after inflation, world stocks since 1900' },
+      historical: { label: 'Historical', desc: '{rate} a year after inflation in the model fitted to world stock returns from 1900 to 2025' },
       optimistic: { label: 'Optimistic', desc: '{rate} a year after inflation' },
       own: { label: 'My own figure', desc: 'Before inflation, as funds quote it' },
-      above: 'This is {real} a year after inflation, above the top of the long-run range used in this model and in the lessons ({low}% to {top}% a year after inflation for world stocks since 1900, Dimson, Marsh and Staunton; mostly developed markets). The results below use your figure and also show the historical range beside it.',
+      above: 'This is {real} a year after inflation, above {top}%, the model\'s optimistic setting. World stocks\' compound return was about {historical} a year after inflation from 1900 to 2025 (Dimson, Marsh and Staunton; mostly developed markets), and the model\'s cautious and optimistic settings sit either side of that. The results below use your figure and also show the cautious and optimistic settings beside it.',
       below: 'This is {real} a year after inflation: the investment would lose buying power.',
       realIs: 'After inflation: {real} a year.',
       /** Under the reader's own figure: the swings stay those of world stocks. */
@@ -244,7 +244,7 @@ export const investOrPayOffEn = {
       },
       rates: 'The debt costs {debt} a year after relief and inflation; the investment\'s compound return in this setting is {invest} a year after inflation, before fees.',
       side: {
-        heading: 'Your figure beside the historical range',
+        heading: 'Your figure beside the cautious and optimistic settings',
         caption: 'The same debt and extra money, with three return figures',
         figure: 'Return',
         invest: 'Investing ahead, of 100',
@@ -304,7 +304,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       'उस तारीख़ की शुद्ध संपत्ति: निवेश, मुनाफ़े पर कर घटाकर, बाक़ी कर्ज़ घटाकर',
       'नतीजे आज के पैसे में, World Bank से किसी देश की हाल की महँगाई या आपके अपने आँकड़े के साथ',
       'दुनिया के शेयरों के रिटर्न के {paths} जोड़ीदार सिम्युलेशन, ताकि फ़र्क़ चुनाव से आए, क़िस्मत से नहीं',
-      'जब आपका अपना रिटर्न महँगाई के बाद मॉडल के {top}% सालाना से ऊपर हो, तो एक नोट, और नतीजे ऐतिहासिक दायरे के साथ',
+      'जब आपका अपना रिटर्न मॉडल की आशावादी सेटिंग (महँगाई के बाद सालाना {top}%) से ऊपर हो, तो एक नोट, और नतीजे सतर्क और आशावादी सेटिंग के बगल में',
       'ब्याज पर कर छूट, सालाना फंड शुल्क और मुनाफ़े पर कर, सब वैकल्पिक',
       'आपके ब्राउज़र में चलता है: आप जो लिखते हैं, वह कहीं नहीं भेजा जाता',
     ],
@@ -340,7 +340,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       items: {
         paths: { lead: 'दो रास्ते। ', rest: 'एक में अतिरिक्त पैसा कर्ज़ चुकने तक कर्ज़ में जाता है, फिर पुरानी किस्त और अतिरिक्त रकम हर महीने निवेश होती है। दूसरे में कर्ज़ अपने सामान्य तरीक़े से चलता है और अतिरिक्त पैसा निवेश होता है; कर्ज़ ख़त्म होने पर उसकी किस्त भी निवेश होती है।' },
         date: { lead: 'एक ही तारीख़। ', rest: 'दोनों की तुलना आपकी चुनी तारीख़ पर होती है। शुद्ध संपत्ति यानी निवेश की उस दिन की क़ीमत, उसमें से मुनाफ़े पर कर और बाक़ी कर्ज़ घटाकर।' },
-        returns: { lead: 'निवेश। ', rest: 'दुनिया भर के शेयरों का एक विविध पोर्टफ़ोलियो। उसके सालाना रिटर्न 1900 से दुनिया के शेयरों के इतिहास (Dimson, Marsh और Staunton) से लिए गए हैं: महँगाई के बाद सालाना लगभग {low}% से {top}%, और साल-दर-साल बड़े उतार-चढ़ाव।' },
+        returns: { lead: 'निवेश। ', rest: 'दुनिया भर के शेयरों का एक विविध पोर्टफ़ोलियो। उसके सालाना रिटर्न एक ऐसे मॉडल से निकाले जाते हैं जिसे दुनिया के शेयरों के 1900 से 2025 तक के इतिहास (Dimson, Marsh और Staunton) के मुताबिक़ ढाला गया है, और इनमें साल-दर-साल बड़े उतार-चढ़ाव होते हैं। उस दौर में दुनिया के शेयरों ने महँगाई के बाद, चक्रवृद्धि (compounding) के हिसाब से, सालाना लगभग {historical} रिटर्न दिया। सतर्क और आशावादी सेटिंग मॉडल के चक्रवृद्धि सालाना रिटर्न को {low}% और {top}% पर रखती हैं, यानी उस ऐतिहासिक रिटर्न से नीचे और ऊपर।' },
         paired: { lead: 'जोड़ीदार परिदृश्य। ', rest: '{paths} में से हर परिदृश्य दोनों रास्तों को बाज़ार के उन्हीं सालों से गुज़ारता है, ताकि दोनों का फ़र्क़ चुनाव से आए, क़िस्मत से नहीं।' },
         money: { lead: 'आज का पैसा। ', rest: 'कर्ज़ पर उसकी अपनी दर से ब्याज लगता है; निवेश के रिटर्न को आपके महँगाई के आँकड़े से महँगाई से पहले के रिटर्न में बदला जाता है; फिर हर नतीजा आज के पैसे में दिखाया जाता है।' },
         timing: { lead: 'समय। ', rest: 'ब्याज और किस्त हर महीने के आख़िर में लगते हैं। ब्याज पर छूट को हर महीने वापस मिलने वाला पैसा माना गया है, जो उसी रास्ते में निवेश होता है।' },
@@ -376,7 +376,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
         },
         {
           q: 'अगर मैं ऊँचा रिटर्न लिखूँ तो क्या होगा?',
-          a: 'आपका आँकड़ा वैसा ही इस्तेमाल होता है जैसा आपने लिखा। अगर वह महँगाई के बाद सालाना {top}% से ज़्यादा है, जो इस मॉडल और पाठों में इस्तेमाल लंबी अवधि के दायरे का ऊपरी सिरा है, तो एक नोट यह बताता है और नतीजे ऐतिहासिक दायरे के साथ, बगल में भी दिखते हैं। कोई ऊपरी सीमा नहीं लगाई जाती।',
+          a: 'आपका आँकड़ा वैसा ही इस्तेमाल होता है जैसा आपने लिखा। अगर वह महँगाई के बाद सालाना {top}% से ज़्यादा है, जो मॉडल की आशावादी सेटिंग है, तो एक नोट यह बताता है और नतीजे सतर्क और आशावादी सेटिंग के साथ, बगल में भी दिखते हैं। कोई ऊपरी सीमा नहीं लगाई जाती।',
         },
         {
           q: 'महँगाई का आँकड़ा कहाँ से आता है?',
@@ -451,10 +451,10 @@ export const investOrPayOffHi: InvestOrPayOff = {
     returns: {
       legend: 'रिटर्न',
       cautious: { label: 'सतर्क', desc: 'महँगाई के बाद सालाना {rate}' },
-      historical: { label: 'ऐतिहासिक', desc: 'महँगाई के बाद सालाना {rate}, 1900 से दुनिया के शेयर' },
+      historical: { label: 'ऐतिहासिक', desc: '1900 से 2025 तक दुनिया के शेयरों के रिटर्न के मुताबिक़ ढाले गए मॉडल में महँगाई के बाद सालाना {rate}' },
       optimistic: { label: 'आशावादी', desc: 'महँगाई के बाद सालाना {rate}' },
       own: { label: 'मेरा अपना आँकड़ा', desc: 'महँगाई से पहले, जैसा फंड बताते हैं' },
-      above: 'यह महँगाई के बाद सालाना {real} है, जो इस मॉडल और पाठों में इस्तेमाल लंबी अवधि के दायरे के ऊपरी सिरे से ज़्यादा है (1900 से दुनिया के शेयरों के लिए महँगाई के बाद सालाना {low}% से {top}%, Dimson, Marsh और Staunton; ज़्यादातर विकसित बाज़ार)। नीचे के नतीजे आपका आँकड़ा इस्तेमाल करते हैं और बगल में ऐतिहासिक सीमा भी दिखाते हैं।',
+      above: 'यह महँगाई के बाद सालाना {real} है, जो मॉडल की आशावादी सेटिंग, यानी {top}%, से ज़्यादा है। 1900 से 2025 तक दुनिया के शेयरों ने महँगाई के बाद, चक्रवृद्धि के हिसाब से, सालाना लगभग {historical} रिटर्न दिया है (Dimson, Marsh और Staunton; ज़्यादातर विकसित बाज़ार), और मॉडल की सतर्क और आशावादी सेटिंग इसके दोनों ओर हैं। नीचे के नतीजे आपका आँकड़ा इस्तेमाल करते हैं और बगल में सतर्क और आशावादी सेटिंग के नतीजे भी दिखाते हैं।',
       below: 'यह महँगाई के बाद सालाना {real} है: ऐसा रहा तो निवेश की क्रय शक्ति घटेगी।',
       realIs: 'महँगाई के बाद: सालाना {real}।',
       ownSwings: 'आप जो भी आँकड़ा भरें, मॉडल दुनिया भर के शेयरों का साल-दर-साल उतार-चढ़ाव वैसा ही रखता है। बॉन्ड फंड के लिए असल दायरा यहाँ दिखाए गए दायरे से संकरा होगा, और बचत खाते के लिए काफ़ी ज़्यादा संकरा।',
@@ -506,7 +506,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       },
       rates: 'छूट और महँगाई के बाद कर्ज़ की लागत सालाना {debt} है; इस सेटिंग में निवेश का चक्रवृद्धि रिटर्न महँगाई के बाद और शुल्क से पहले सालाना {invest} है।',
       side: {
-        heading: 'आपका आँकड़ा, ऐतिहासिक दायरे के बगल में',
+        heading: 'आपका आँकड़ा, सतर्क और आशावादी सेटिंग के बगल में',
         caption: 'वही कर्ज़ और वही अतिरिक्त पैसा, रिटर्न के तीन आँकड़ों के साथ',
         figure: 'रिटर्न',
         invest: '100 में निवेश आगे',
@@ -562,7 +562,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       'त्या तारखेची निव्वळ संपत्ती: गुंतवणूक, नफ्यावरील कर वजा, बाकी कर्ज वजा',
       'निकाल आजच्या पैशात, World Bank कडील एखाद्या देशाच्या अलीकडच्या महागाईनुसार किंवा तुमच्या स्वतःच्या आकड्यानुसार',
       'जागतिक शेअरच्या परताव्यांचे {paths} जोडीदार सिम्युलेशन, म्हणजे फरक निवडीमुळे येतो, नशिबामुळे नाही',
-      'तुमचा स्वतःचा परतावा महागाईनंतर मॉडेलच्या दरवर्षी {top}% पेक्षा जास्त असेल तर एक टीप, आणि निकाल ऐतिहासिक पल्ल्याशेजारी',
+      'तुमचा स्वतःचा परतावा मॉडेलच्या आशावादी सेटिंगपेक्षा (महागाईनंतर दरवर्षी {top}%) जास्त असेल तर एक टीप, आणि निकाल सावध आणि आशावादी सेटिंग्जशेजारी',
       'व्याजावरील कर सवलत, वार्षिक फंड शुल्क आणि नफ्यावरील कर, सगळे ऐच्छिक',
       'तुमच्या ब्राउझरमध्ये चालतो: तुम्ही लिहिलेले काहीही कुठेही पाठवले जात नाही',
     ],
@@ -598,7 +598,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       items: {
         paths: { lead: 'दोन मार्ग. ', rest: 'एकात जादा पैसे कर्ज फिटेपर्यंत कर्जात जातात, मग जुना हप्ता आणि जादा रक्कम दर महिन्याला गुंतवली जाते. दुसऱ्यात कर्ज नेहमीप्रमाणे चालते आणि जादा पैसे गुंतवले जातात; कर्ज संपल्यावर त्याचा हप्ताही गुंतवला जातो.' },
         date: { lead: 'एकच तारीख. ', rest: 'दोघांची तुलना तुम्ही निवडलेल्या तारखेला होते. निव्वळ संपत्ती म्हणजे गुंतवणुकीचे त्या दिवशीचे मूल्य, नफ्यावरील कर आणि बाकी कर्ज वजा करून.' },
-        returns: { lead: 'गुंतवणूक. ', rest: 'जगभरातील शेअरचा एक वैविध्यपूर्ण पोर्टफोलिओ. त्याचे वार्षिक परतावे 1900 पासूनच्या जागतिक शेअरच्या इतिहासातून (Dimson, Marsh आणि Staunton) घेतले आहेत: महागाईनंतर दरवर्षी सुमारे {low}% ते {top}%, आणि वर्षागणिक मोठे चढ-उतार.' },
+        returns: { lead: 'गुंतवणूक. ', rest: 'जगभरातील शेअरचा एक वैविध्यपूर्ण पोर्टफोलिओ. त्याचे वार्षिक परतावे 1900 ते 2025 मधील जागतिक शेअरच्या इतिहासाशी (Dimson, Marsh आणि Staunton) जुळवलेल्या मॉडेलमधून घेतले जातात, आणि त्यांत वर्षागणिक मोठे चढ-उतार असतात. त्या काळात जागतिक शेअरनी महागाईनंतर, चक्रवाढीच्या (compounding) हिशेबाने, दरवर्षी सुमारे {historical} परतावा दिला. सावध आणि आशावादी सेटिंग्ज मॉडेलचा चक्रवाढ वार्षिक परतावा {low}% आणि {top}% वर ठेवतात, म्हणजे त्या ऐतिहासिक परताव्याच्या खाली आणि वर.' },
         paired: { lead: 'जोडीदार परिदृश्ये. ', rest: '{paths} पैकी प्रत्येक परिदृश्य दोन्ही मार्गांना बाजाराच्या त्याच वर्षांतून नेते, म्हणजे दोघांतील फरक निवडीमुळे येतो, नशिबामुळे नाही.' },
         money: { lead: 'आजचा पैसा. ', rest: 'कर्जावर त्याच्या स्वतःच्या दराने व्याज लागते; गुंतवणुकीचे परतावे तुमच्या महागाईच्या आकड्याने महागाईपूर्वीच्या परताव्यांत बदलले जातात; मग प्रत्येक निकाल आजच्या पैशात दाखवला जातो.' },
         timing: { lead: 'वेळ. ', rest: 'व्याज आणि हप्ता प्रत्येक महिन्याच्या शेवटी लागतात. व्याजावरील सवलत दर महिन्याला परत मिळणारे पैसे म्हणून धरली आहे आणि त्याच मार्गात गुंतवली जाते.' },
@@ -634,7 +634,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
         },
         {
           q: 'मी जास्त परतावा लिहिला तर काय होते?',
-          a: 'तुमचा आकडा तुम्ही लिहिला तसाच वापरला जातो. तो महागाईनंतर दरवर्षी {top}% पेक्षा जास्त असेल, म्हणजे या मॉडेलमध्ये आणि धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या वरच्या टोकापेक्षा जास्त, तर एक टीप तसे सांगते आणि निकाल ऐतिहासिक पल्ल्याशेजारीही दिसतात. कोणतीही वरची मर्यादा लावली जात नाही.',
+          a: 'तुमचा आकडा तुम्ही लिहिला तसाच वापरला जातो. तो महागाईनंतर दरवर्षी {top}% पेक्षा, म्हणजे मॉडेलच्या आशावादी सेटिंगपेक्षा, जास्त असेल तर एक टीप तसे सांगते आणि निकाल सावध आणि आशावादी सेटिंग्जशेजारीही दिसतात. कोणतीही वरची मर्यादा लावली जात नाही.',
         },
         {
           q: 'महागाईचा आकडा कुठून येतो?',
@@ -709,10 +709,10 @@ export const investOrPayOffMr: InvestOrPayOff = {
     returns: {
       legend: 'परतावा',
       cautious: { label: 'सावध', desc: 'महागाईनंतर दरवर्षी {rate}' },
-      historical: { label: 'ऐतिहासिक', desc: 'महागाईनंतर दरवर्षी {rate}, 1900 पासूनचे जागतिक शेअर' },
+      historical: { label: 'ऐतिहासिक', desc: '1900 ते 2025 मधील जागतिक शेअरच्या परताव्यांशी जुळवलेल्या मॉडेलनुसार महागाईनंतर दरवर्षी {rate}' },
       optimistic: { label: 'आशावादी', desc: 'महागाईनंतर दरवर्षी {rate}' },
       own: { label: 'माझा स्वतःचा आकडा', desc: 'महागाईपूर्वी, फंड सांगतात तसा' },
-      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे या मॉडेलमध्ये आणि धड्यांमध्ये वापरलेल्या दीर्घकालीन पल्ल्याच्या वरच्या टोकापेक्षा जास्त (1900 पासूनच्या जागतिक शेअरसाठी महागाईनंतर दरवर्षी {low}% ते {top}%, Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार). खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी ऐतिहासिक पल्लाही दाखवतात.',
+      above: 'हे महागाईनंतर दरवर्षी {real} आहे, म्हणजे मॉडेलच्या आशावादी सेटिंगपेक्षा, {top}% पेक्षा, जास्त. 1900 ते 2025 या काळात जागतिक शेअरनी महागाईनंतर, चक्रवाढीच्या हिशेबाने, दरवर्षी सुमारे {historical} परतावा दिला आहे (Dimson, Marsh आणि Staunton; बहुतांश विकसित बाजार), आणि मॉडेलच्या सावध आणि आशावादी सेटिंग्ज त्याच्या दोन्ही बाजूंना आहेत. खालचे निकाल तुमचा आकडा वापरतात आणि शेजारी सावध आणि आशावादी सेटिंग्जचे निकालही दाखवतात.',
       below: 'हे महागाईनंतर दरवर्षी {real} आहे: असे राहिल्यास गुंतवणुकीची क्रयशक्ती कमी होईल.',
       realIs: 'महागाईनंतर: दरवर्षी {real}.',
       ownSwings: 'तुम्ही कोणताही आकडा भरला तरी मॉडेल जागतिक शेअर्सचे वर्षागणिक चढ-उतार तसेच ठेवते. बाँड फंडासाठी प्रत्यक्ष कक्षा इथे दाखवलेल्यापेक्षा अरुंद असेल, आणि बचत खात्यासाठी बरीच अरुंद.',
@@ -764,7 +764,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       },
       rates: 'सवलत आणि महागाईनंतर कर्जाचा खर्च दरवर्षी {debt} आहे; या सेटिंगमध्ये गुंतवणुकीचा चक्रवाढ परतावा महागाईनंतर आणि शुल्कापूर्वी दरवर्षी {invest} आहे.',
       side: {
-        heading: 'तुमचा आकडा, ऐतिहासिक पल्ल्याशेजारी',
+        heading: 'तुमचा आकडा, सावध आणि आशावादी सेटिंग्जशेजारी',
         caption: 'तेच कर्ज आणि तेच जादा पैसे, परताव्याच्या तीन आकड्यांसह',
         figure: 'परतावा',
         invest: '100 पैकी गुंतवणूक पुढे',
@@ -820,7 +820,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       'Patrimonio neto en esa fecha: lo invertido, menos impuestos sobre la ganancia, menos la deuda pendiente',
       'Resultados en dinero de hoy, con la inflación reciente de un país según el Banco Mundial o con tu propia cifra',
       '{paths} simulaciones emparejadas de la rentabilidad de las bolsas mundiales, para que la diferencia venga de la decisión y no de la suerte',
-      'Un aviso cuando tu propia rentabilidad supera el {top} % anual descontada la inflación que usa el modelo, con los resultados junto al rango histórico',
+      'Un aviso cuando tu propia rentabilidad supera la opción optimista del modelo, del {top} % anual descontada la inflación, con los resultados junto a las opciones prudente y optimista',
       'Desgravación opcional de los intereses, comisión anual del fondo e impuesto sobre la ganancia',
       'Funciona en tu navegador: nada de lo que escribes se envía a ninguna parte',
     ],
@@ -856,7 +856,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       items: {
         paths: { lead: 'Dos caminos. ', rest: 'En uno, el dinero extra va a la deuda hasta pagarla, y después la cuota anterior y el extra se invierten cada mes. En el otro, la deuda sigue su curso normal y el dinero extra se invierte; cuando la deuda termina, su cuota también se invierte.' },
         date: { lead: 'La misma fecha. ', rest: 'Ambos se comparan en la fecha que elijas. El patrimonio neto es lo que valen las inversiones, menos el impuesto sobre la ganancia, menos la deuda pendiente.' },
-        returns: { lead: 'La inversión. ', rest: 'Una cartera diversificada de acciones mundiales. Sus rentabilidades anuales salen de la historia de las bolsas mundiales desde 1900 (Dimson, Marsh y Staunton): entre el {low} % y el {top} % anual aproximadamente, descontada la inflación, con grandes vaivenes de un año a otro.' },
+        returns: { lead: 'La inversión. ', rest: 'Una cartera diversificada de acciones mundiales. Sus rentabilidades anuales salen de un modelo ajustado a la historia de las bolsas mundiales de 1900 a 2025 (Dimson, Marsh y Staunton), con grandes vaivenes de un año a otro. En ese periodo, las acciones mundiales rindieron alrededor de un {historical} anual compuesto, descontada la inflación. Las opciones prudente y optimista fijan la rentabilidad anual compuesta del modelo en el {low} % y el {top} %, por debajo y por encima de esa rentabilidad histórica.' },
         paired: { lead: 'Escenarios emparejados. ', rest: 'Cada uno de los {paths} escenarios hace pasar los dos caminos por los mismos años de mercado, así que la diferencia entre ellos viene de la decisión, no de la suerte.' },
         money: { lead: 'Dinero de hoy. ', rest: 'La deuda se cobra a su propia tasa de interés; las rentabilidades de la inversión se convierten en rentabilidades antes de inflación con tu cifra de inflación; después, cada resultado se muestra en dinero de hoy.' },
         timing: { lead: 'Momentos. ', rest: 'Los intereses se cobran y las cuotas se pagan al final de cada mes. La desgravación de los intereses cuenta como dinero devuelto cada mes y se invierte en el mismo camino.' },
@@ -892,7 +892,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
         },
         {
           q: '¿Qué pasa si escribo una rentabilidad alta?',
-          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top} % anual descontada la inflación, el extremo alto del rango a largo plazo que usan este modelo y las lecciones, un aviso lo dice y los resultados se muestran también con el rango histórico, uno al lado del otro. No hay ningún tope.',
+          a: 'Se usa tu cifra tal como la escribiste. Si supera el {top} % anual descontada la inflación, la opción optimista del modelo, un aviso lo dice y los resultados se muestran también, al lado, con las opciones prudente y optimista. No hay ningún tope.',
         },
         {
           q: '¿De dónde sale la cifra de inflación?',
@@ -967,10 +967,10 @@ export const investOrPayOffEs: InvestOrPayOff = {
     returns: {
       legend: 'Rentabilidad',
       cautious: { label: 'Prudente', desc: '{rate} anual descontada la inflación' },
-      historical: { label: 'Histórico', desc: '{rate} anual descontada la inflación, acciones mundiales desde 1900' },
+      historical: { label: 'Histórico', desc: '{rate} anual descontada la inflación, según el modelo ajustado a la rentabilidad de las acciones mundiales de 1900 a 2025' },
       optimistic: { label: 'Optimista', desc: '{rate} anual descontada la inflación' },
       own: { label: 'Mi propia cifra', desc: 'Antes de inflación, como la indican los fondos' },
-      above: 'Esto es un {real} anual descontada la inflación, por encima del extremo alto del rango a largo plazo que usan este modelo y las lecciones (del {low} % al {top} % anual descontada la inflación para las acciones mundiales desde 1900, Dimson, Marsh y Staunton; sobre todo mercados desarrollados). Los resultados de abajo usan tu cifra y muestran también el rango histórico al lado.',
+      above: 'Esto es un {real} anual descontada la inflación, por encima del {top} %, la opción optimista del modelo. Las acciones mundiales han tenido una rentabilidad compuesta de alrededor de un {historical} anual de 1900 a 2025, descontada la inflación (Dimson, Marsh y Staunton; sobre todo mercados desarrollados), y las opciones prudente y optimista del modelo quedan a uno y otro lado de esa cifra. Los resultados de abajo usan tu cifra y muestran también, al lado, los de las opciones prudente y optimista.',
       below: 'Esto es un {real} anual descontada la inflación: la inversión perdería poder adquisitivo.',
       realIs: 'Descontada la inflación: {real} anual.',
       ownSwings: 'El modelo mantiene los altibajos anuales de la bolsa mundial sea cual sea la cifra que escribas. Para un fondo de bonos, el rango real sería más estrecho que el mostrado, y para una cuenta de ahorro, mucho más estrecho.',
@@ -1022,7 +1022,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       },
       rates: 'La deuda cuesta un {debt} anual tras la desgravación y la inflación; la rentabilidad compuesta de la inversión con esta opción es un {invest} anual descontada la inflación, antes de comisiones.',
       side: {
-        heading: 'Tu cifra junto al rango histórico',
+        heading: 'Tu cifra junto a las opciones prudente y optimista',
         caption: 'La misma deuda y el mismo dinero extra, con tres cifras de rentabilidad',
         figure: 'Rentabilidad',
         invest: 'Invertir por delante, de 100',
@@ -1078,7 +1078,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'Čisté jmění k tomu datu: investice, minus daň ze zisku, minus dluh, který zbývá',
       'Výsledky v dnešních penězích, s nedávnou inflací země podle Světové banky nebo s vaším vlastním číslem',
       '{paths} spárovaných simulací výnosů světových akcií, aby rozdíl vycházel z rozhodnutí, ne ze štěstí',
-      'Upozornění, když je váš vlastní výnos po očištění o inflaci vyšší než {top} % ročně, se kterými model počítá, a výsledky vedle historického rozpětí',
+      'Upozornění, když je váš vlastní výnos vyšší než optimistické nastavení modelu ({top} % ročně po očištění o inflaci), a výsledky vedle opatrného a optimistického nastavení',
       'Volitelně daňová úleva na úrocích, roční poplatek fondu a daň ze zisku',
       'Běží ve vašem prohlížeči: nic z toho, co napíšete, se nikam neposílá',
     ],
@@ -1114,7 +1114,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       items: {
         paths: { lead: 'Dvě cesty. ', rest: 'V jedné jdou peníze navíc na dluh, dokud není splacený, a pak se splátka i peníze navíc každý měsíc investují. Ve druhé dluh běží normálně a peníze navíc se investují; když dluh skončí, investuje se i jeho splátka.' },
         date: { lead: 'Stejné datum. ', rest: 'Obě cesty se porovnávají k datu, které zvolíte. Čisté jmění je hodnota investic, minus daň ze zisku, minus dluh, který zbývá.' },
-        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy vycházejí z historie světových akcií od roku 1900 (Dimson, Marsh a Staunton): po očištění o inflaci zhruba {low} % až {top} % ročně, s velkými výkyvy z roku na rok.' },
+        returns: { lead: 'Investice. ', rest: 'Diverzifikované portfolio světových akcií. Jeho roční výnosy se losují z modelu sestaveného podle historie světových akcií v letech 1900 až 2025 (Dimson, Marsh a Staunton), s velkými výkyvy z roku na rok. Za toto období činil složený roční výnos světových akcií po očištění o inflaci zhruba {historical}. Opatrné a optimistické nastavení posouvají složený roční výnos modelu na {low} % a {top} %, tedy pod tento historický výnos a nad něj.' },
         paired: { lead: 'Spárované scénáře. ', rest: 'Každý z {paths} scénářů provede obě cesty stejnými roky na trhu, takže rozdíl mezi nimi vychází z rozhodnutí, ne ze štěstí.' },
         money: { lead: 'Dnešní peníze. ', rest: 'Dluh se úročí svou vlastní úrokovou sazbou; výnosy investice se vaší inflací převedou na výnosy před inflací; každý výsledek se pak ukáže v dnešních penězích.' },
         timing: { lead: 'Načasování. ', rest: 'Úroky se účtují a splátky se platí na konci každého měsíce. Úleva na úrocích se počítá jako peníze vrácené každý měsíc a investuje se ve stejné cestě.' },
@@ -1150,7 +1150,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
         },
         {
           q: 'Co když zadám vysoký výnos?',
-          a: 'Použije se vaše číslo tak, jak ho zadáte. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy horní konec dlouhodobého rozpětí, se kterým počítá tento model i lekce, upozornění to řekne a výsledky se ukážou i s historickým rozpětím vedle sebe. Žádný strop se nepoužívá.',
+          a: 'Použije se vaše číslo tak, jak ho zadáte. Pokud je po očištění o inflaci vyšší než {top} % ročně, tedy než optimistické nastavení modelu, upozornění to řekne a výsledky se ukážou i s opatrným a optimistickým nastavením vedle sebe. Žádný strop se nepoužívá.',
         },
         {
           q: 'Odkud se bere inflace?',
@@ -1225,10 +1225,10 @@ export const investOrPayOffCs: InvestOrPayOff = {
     returns: {
       legend: 'Výnos',
       cautious: { label: 'Opatrný', desc: '{rate} ročně po očištění o inflaci' },
-      historical: { label: 'Historický', desc: '{rate} ročně po očištění o inflaci, světové akcie od roku 1900' },
+      historical: { label: 'Historický', desc: '{rate} ročně po očištění o inflaci v modelu sestaveném podle výnosů světových akcií v letech 1900 až 2025' },
       optimistic: { label: 'Optimistický', desc: '{rate} ročně po očištění o inflaci' },
       own: { label: 'Moje vlastní číslo', desc: 'Před inflací, jak ho uvádějí fondy' },
-      above: 'To je {real} ročně po očištění o inflaci, nad horním koncem dlouhodobého rozpětí, se kterým počítá tento model i lekce ({low} % až {top} % ročně po očištění o inflaci pro světové akcie od roku 1900, Dimson, Marsh a Staunton; hlavně rozvinuté trhy). Výsledky níže používají vaše číslo a vedle ukazují i historické rozpětí.',
+      above: 'To je {real} ročně po očištění o inflaci, tedy nad {top} %, optimistickým nastavením modelu. V letech 1900 až 2025 činil složený roční výnos světových akcií po očištění o inflaci zhruba {historical} (Dimson, Marsh a Staunton; hlavně rozvinuté trhy) a opatrné a optimistické nastavení modelu leží pod touto hodnotou a nad ní. Výsledky níže používají vaše číslo a vedle ukazují i výsledky opatrného a optimistického nastavení.',
       below: 'To je {real} ročně po očištění o inflaci: investice by ztrácela kupní sílu.',
       realIs: 'Po očištění o inflaci: {real} ročně.',
       ownSwings: 'Model zachovává meziroční výkyvy světových akcií, ať zadáte jakékoli číslo. U dluhopisového fondu by skutečné rozpětí bylo užší, než jaké se zde zobrazuje, a u spořicího účtu mnohem užší.',
@@ -1280,7 +1280,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       },
       rates: 'Dluh stojí {debt} ročně po úlevě a očištění o inflaci; složený výnos investice v tomto nastavení je {invest} ročně po očištění o inflaci, před poplatky.',
       side: {
-        heading: 'Vaše číslo vedle historického rozpětí',
+        heading: 'Vaše číslo vedle opatrného a optimistického nastavení',
         caption: 'Stejný dluh a stejné peníze navíc, se třemi čísly výnosu',
         figure: 'Výnos',
         invest: 'Investování napřed, ze 100',

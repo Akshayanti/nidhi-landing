@@ -34,9 +34,9 @@ describe('a box that is not valid arrives invalid (#789)', () => {
     }
   }
 
-  it('one that another page would read as valid is marked, not mended', () => {
+  it('years typed in another script arrive as the same number, on every page', () => {
     const arrived = carried(formWith({ years: '१२' }, 'hi'), 'hi', 'en');
-    assert.equal(arrived.years, '?');
+    assert.equal(arrived.years, '12');
   });
 
   it('several at once, and none as typed', () => {

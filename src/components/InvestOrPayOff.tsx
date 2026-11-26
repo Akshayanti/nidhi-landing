@@ -30,6 +30,7 @@ import {
   type Result,
   type TodayBasis,
 } from '../utils/invest-or-pay-off/math.ts';
+import { QUOTED_RATES } from '../utils/monte-carlo/math.ts';
 import { SHARED_STATE_GLOBAL, decodeState, defaultState, isPristineState, type ToolState } from '../utils/invest-or-pay-off/url.ts';
 import { fieldErrors, formFromLink, parseField, publishableForm, toForm, toState, type FormState, type TextKey } from '../utils/invest-or-pay-off/form.ts';
 import { format } from '../i18n/format.ts';
@@ -511,7 +512,7 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), low: REAL_RETURN_BOTTOM, top: REAL_RETURN_TOP })}</p>}
+                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
                 {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
                 {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>
@@ -724,25 +725,26 @@ function Results({
       {range && ownReal !== null && (
         <div className="iop-side">
           <h3 className="iop-pathName">{s.side.heading}</h3>
-          <table className="iop-table">
+          {/* Records where three columns do not fit (tool-recordTable); the roles keep it a table for screen readers. */}
+          <table className="iop-table tool-recordTable" role="table">
             <caption className="ifc-hint">{s.side.caption}</caption>
-            <thead>
-              <tr>
-                <th scope="col">{s.side.figure}</th>
-                <th scope="col">{s.side.invest}</th>
-                <th scope="col">{s.side.gap}</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">{s.side.figure}</th>
+                <th scope="col" role="columnheader">{s.side.invest}</th>
+                <th scope="col" role="columnheader">{s.side.gap}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {[
                 { label: t(s.side.yours, { rate: pct(ownReal, numberLocale) }), res: r },
                 { label: t(s.side.cautious, { rate: pct(REAL_RETURN_BOTTOM, numberLocale) }), res: range.cautious },
                 { label: t(s.side.optimistic, { rate: pct(REAL_RETURN_TOP, numberLocale) }), res: range.optimistic },
               ].map((row) => (
-                <tr key={row.label}>
-                  <th scope="row">{row.label}</th>
-                  <td>{Math.round(row.res.bAhead * 100)}</td>
-                  <td><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
+                <tr key={row.label} role="row">
+                  <th scope="row" role="rowheader">{row.label}</th>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.invest}</span>{Math.round(row.res.bAhead * 100)}</td>
+                  <td role="cell"><span className="tool-recordLabel" aria-hidden="true">{s.side.gap}</span><Amount>{money(wordedResult(row.res).diff.p50)}</Amount></td>
                 </tr>
               ))}
             </tbody>

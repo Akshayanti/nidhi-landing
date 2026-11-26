@@ -12,6 +12,9 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { chartLabel as chartLabelIn } from '../utils/shared/chartAmounts.ts';
 
+/** A cell's own text, without the column name it shows where the table is drawn as records. */
+const cellText = (c: Element) => { const x = c.cloneNode(true) as Element; x.querySelectorAll('.tool-recordLabel').forEach((l) => l.remove()); return x.textContent; };
+
 // Mounting the page is the dearest step of every test, so each test below
 // mounts once and checks all that one plan shows.
 
@@ -181,7 +184,7 @@ describe('the chart, on a wide screen', () => {
     {
       // a plan of a multiple of five years ends its table on it once
       await settle(20);
-      assert.deepEqual(text('.mcs-table tbody th'), ['0', '5', '10', '15', '20', '25', '30']);
+      assert.deepEqual([...document.querySelectorAll('.mcs-table tbody th')].map(cellText), ['0', '5', '10', '15', '20', '25', '30']);
     }
   });
 

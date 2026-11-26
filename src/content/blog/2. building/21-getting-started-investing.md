@@ -14,8 +14,10 @@ takeaways:
   - "Why starting small and early beats starting big and late"
 order: 21
 pubDate: 2026-06-03
-updatedDate: 2026-11-17
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "The lesson said stocks have historically delivered 4 to 6% a year after inflation. The cited data gives about 5% a year for world shares from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below it, so the doubling time after inflation is now about 14 years, with 12 and 18 years shown for 6% and 4%."
   - date: 2026-11-17
     note: "The dollar-cost averaging example gave the average price paid as €95.38; it is €95.36. The lesson also presented that price, below the simple average of €97.50, as an advantage; it is a property of buying a fixed amount each time, and it does not show that spreading purchases beats investing a lump sum at once."
 localRules: [tax, pensions]
@@ -37,6 +39,12 @@ faq:
 reelPromise: "The three account types side by side, a worked dollar-cost-averaging example, and the Rule of 72 for doubling your money"
 relatedSlugs: ["investing-101-asset-classes", "diversification", "understanding-risk", "emergency-fund", "budgeting"]
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "Dollar-Cost Averaging"
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Dollar_cost_averaging"
@@ -193,7 +201,7 @@ If you want a fast way to reason about compounding without opening a spreadsheet
 | 7% (illustrative equity-heavy, nominal) | ~10 years |
 | 10% (optimistic nominal) | ~7 years |
 
-So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. After inflation, at the 4-6% real returns stocks have historically delivered, each doubling takes closer to 12 to 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
+So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. World shares returned about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). At a constant real return of 5% a year, money doubles in about 14 years; at 6%, about 12 years; at 4%, about 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
 
 It's a shortcut, not a formula, but it's close enough for most mental-math decisions about when money will double, how inflation will erode purchasing power, or whether a given rate is worth chasing.
 

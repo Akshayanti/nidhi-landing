@@ -43,6 +43,36 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-26',
     items: [
       {
+        id: 'tools-name-their-settings',
+        text: {
+          en: 'The invest or pay off tool and the Monte Carlo simulator now say plainly that their cautious and optimistic rates are settings, chosen either side of the long-run record of world markets (for stocks, about 5.3% a year after inflation from 1900 to 2025, Dimson, Marsh and Staunton), and not the record itself. The rates are the same as before.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल और मोंटे कार्लो सिम्युलेटर अब साफ़ बताते हैं कि उनकी सतर्क और आशावादी दरें सेटिंग हैं, जो दुनिया के बाज़ारों के लंबे रिकॉर्ड (शेयरों में 1900 से 2025 तक महँगाई के बाद सालाना लगभग 5.3%, Dimson, Marsh और Staunton) के दोनों ओर चुनी गई हैं, ख़ुद वह रिकॉर्ड नहीं। दरें पहले जैसी ही हैं।',
+          es: 'La herramienta Invertir o pagar deuda y el simulador Monte Carlo dicen ahora con claridad que sus tasas prudente y optimista son opciones elegidas a uno y otro lado del historial a largo plazo de los mercados mundiales (en acciones, alrededor de un 5,3\u00a0% anual descontada la inflación de 1900 a 2025, Dimson, Marsh y Staunton), y no ese historial en sí. Las tasas son las mismas que antes.',
+          cs: 'Nástroj Investovat, nebo splatit dluh a\u00a0simulátor Monte Carlo teď jasně říkají, že jejich opatrné a\u00a0optimistické hodnoty výnosu jsou nastavení zvolená pod dlouhodobým historickým výnosem světových trhů a\u00a0nad ním (u\u00a0akcií zhruba 5,3\u00a0% ročně po očištění o\u00a0inflaci v\u00a0letech 1900 až 2025, Dimson, Marsh a\u00a0Staunton), ne tento výnos sám. Hodnoty jsou stejné jako dřív.',
+          mr: 'गुंतवणूक की कर्जफेड हे साधन आणि मॉन्टे कार्लो सिम्युलेटर आता स्पष्ट सांगतात की त्यांचे सावध आणि आशावादी दर म्हणजे जागतिक बाजारांच्या दीर्घकालीन नोंदीच्या (शेअरसाठी 1900 ते 2025 या काळात महागाईनंतर दरवर्षी सुमारे 5.3%, Dimson, Marsh आणि Staunton) दोन्ही बाजूंना निवडलेल्या सेटिंग्ज आहेत, ती नोंद स्वतः नव्हे. दर पूर्वीइतकेच आहेत.',
+        },
+      },
+      {
+        id: 'inflation-years-own-digits',
+        text: {
+          en: 'In the inflation calculator, the years box now reads Devanagari digits too, like every other box in the free tools: type १० and it counts ten years. Before, that box would not take them at all.',
+          hi: 'महँगाई कैलकुलेटर में सालों वाला बॉक्स भी अब देवनागरी अंक पढ़ लेता है, जैसे मुफ़्त टूल के बाकी सभी बॉक्स पढ़ते हैं: १० लिखें तो यह दस साल गिनता है। पहले यह बॉक्स इन अंकों को लेता ही नहीं था।',
+          es: 'En la calculadora de inflación, la casilla de los años ya lee también las cifras devanagari, como todas las demás casillas de las herramientas gratuitas: si escribes १०, cuenta diez años. Antes, esa casilla no las aceptaba.',
+          cs: 'V\u00a0inflační kalkulačce teď i\u00a0pole s\u00a0počtem let čte dévanágarské číslice, stejně jako všechna ostatní pole v\u00a0nástrojích zdarma: když napíšete १०, počítá s\u00a0deseti lety. Dřív je toto pole vůbec nepřijímalo.',
+          mr: 'महागाई कॅल्क्युलेटरमधील वर्षांचा रकानाही आता देवनागरी अंक वाचतो, मोफत साधनांमधील इतर सर्व रकान्यांसारखेच: १० लिहिले तर तो दहा वर्षे मोजतो. आधी हा रकाना हे अंक स्वीकारतच नव्हता.',
+        },
+      },
+      {
+        id: 'own-return-table-fits-large-text',
+        text: {
+          en: 'In the invest or pay off tool, the table that sets your own return figure beside the cautious and optimistic settings no longer pushes the page sideways at very large text sizes. Where its three columns would be cramped, each row now becomes a short list, with every value on its own line.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल में, आपके अपने रिटर्न के आँकड़े को सतर्क और आशावादी सेटिंग के बगल में रखने वाली तालिका अब बहुत बड़े अक्षरों में पेज को बाहर नहीं धकेलती, इसलिए दाएँ-बाएँ स्क्रोल नहीं करना पड़ता। जहाँ उसके तीन कॉलम के लिए जगह कम हो, वहाँ हर पंक्ति अब एक छोटी सूची बन जाती है, जिसमें हर आँकड़ा अपनी अलग पंक्ति में होता है।',
+          es: 'En la herramienta Invertir o pagar deuda, la tabla que pone tu propia cifra de rentabilidad junto a las opciones prudente y optimista ya no obliga a desplazar la página de lado con el texto muy grande. Donde sus tres columnas quedarían apretadas, cada fila se convierte ahora en una lista corta, con cada valor en su propia línea.',
+          cs: 'V nástroji Investovat, nebo splatit dluh už tabulka, která staví vaše vlastní číslo výnosu vedle opatrného a\u00a0optimistického nastavení, při velmi velkém písmu nenutí posouvat stránku do stran. Kde by se její tři sloupce tísnily, změní se teď každý řádek v krátký seznam a každá hodnota má vlastní řádek.',
+          mr: 'गुंतवणूक की कर्जफेड या साधनात, तुमचा परताव्याचा आकडा सावध आणि आशावादी सेटिंग्जशेजारी ठेवणाऱ्या तक्त्यामुळे आता खूप मोठ्या अक्षरांत पान आडवे सरकवावे लागत नाही. जिथे त्याच्या तीन स्तंभांना जागा अपुरी पडते, तिथे प्रत्येक ओळ आता एक छोटी यादी बनते, आणि प्रत्येक आकडा स्वतःच्या वेगळ्या ओळीत दिसतो.',
+        },
+      },
+      {
         id: 'inflation-answers-to-latest-month',
         text: {
           en: 'The inflation calculator no longer stops at the last full year for 123 countries. Where a monthly price index is published that matches the yearly figures, an answer from a country’s history now ends at the latest month with a figure, September 2026 for many and July 2026 for most of the rest, and says which figures it joins: the World Bank’s yearly ones up to the last full year, then a monthly index from the BIS or from the World Bank itself. Other countries still end at their last full year, and the answer now says so. Every such answer also says that the starting amount is taken as that year’s average.',

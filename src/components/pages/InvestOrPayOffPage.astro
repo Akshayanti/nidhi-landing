@@ -33,6 +33,7 @@ import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
 import { countryNamer } from '../../utils/inflation/countryNames.ts';
 import { HISTORY_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
 import { PATHS, REAL_RETURN_BOTTOM, REAL_RETURN_TOP } from '../../utils/invest-or-pay-off/math.ts';
+import { QUOTED_RATES } from '../../utils/monte-carlo/math.ts';
 import { INVEST_OR_PAY_OFF_URL } from '../../utils/invest-or-pay-off/url.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/invest-or-pay-off/url.ts';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
@@ -87,6 +88,7 @@ const figures = {
   paths: proseNumber(PATHS),
   low: proseNumber(REAL_RETURN_BOTTOM),
   top: proseNumber(REAL_RETURN_TOP),
+  historical: new Intl.NumberFormat(PROSE_NUMBER_LOCALE[locale], { style: 'percent', maximumFractionDigits: 1 }).format(QUOTED_RATES.historical.stocks),
 };
 
 const siteUrl = 'https://nidhi.today';

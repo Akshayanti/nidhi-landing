@@ -9,6 +9,11 @@ import { describe, it } from 'node:test';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { roundedResult, simulate } from '../utils/monte-carlo/math.ts';
 
+/** A cell's own text, without the column name it shows where the table is drawn as records. */
+const cellText = (c: Element) => { const x = c.cloneNode(true) as Element; x.querySelectorAll('.tool-recordLabel').forEach((l) => l.remove()); return x.textContent; };
+/** The column name a cell shows where the table is drawn as records. */
+const cellLabel = (c: Element) => c.querySelector('.tool-recordLabel')?.textContent ?? null;
+
 describe('the results in words: saving', () => {
   it('saving and then withdrawing: the quick answer, the cards, both answers and the printed report', async () => {
     const { plan } = openPlan({ saveYears: 7, withdrawal: 30_000, withdrawYears: 20, paths: 1_000 });
@@ -48,9 +53,9 @@ describe('the results in words: saving', () => {
       await retype(island.fields.saveYears, '12');
       const worded = roundedResult(simulate({ ...plan, saveYears: 12 }));
       const rows = [...document.querySelectorAll('.mcs-table tbody tr')];
-      assert.deepEqual(rows.map((r) => r.querySelector('th')?.textContent), ['0', '5', '10', '12']);
-      assert.deepEqual([...rows[1].querySelectorAll('td')].map((c) => c.textContent), [worded.bands[5].p10, worded.bands[5].p50, worded.bands[5].p90, worded.straightLine[5]].map((v) => money(v)));
-      assert.deepEqual([...rows[1].querySelectorAll('td')].map((c) => c.getAttribute('data-label')), [island.results.tableLow, island.results.tableMedian, island.results.tableHigh, island.results.tableStraight]);
+      assert.deepEqual(rows.map((r) => cellText(r.querySelector('th')!)), ['0', '5', '10', '12']);
+      assert.deepEqual([...rows[1].querySelectorAll('td')].map(cellText), [worded.bands[5].p10, worded.bands[5].p50, worded.bands[5].p90, worded.straightLine[5]].map((v) => money(v)));
+      assert.deepEqual([...rows[1].querySelectorAll('td')].map(cellLabel), [island.results.tableLow, island.results.tableMedian, island.results.tableHigh, island.results.tableStraight]);
       assert.deepEqual(text('.mcs-table thead th'), [island.results.tableYear, island.results.tableLow, island.results.tableMedian, island.results.tableHigh, island.results.tableStraight]);
       assert.equal(one('.mcs-table caption').textContent, island.results.tableCaption);
     }

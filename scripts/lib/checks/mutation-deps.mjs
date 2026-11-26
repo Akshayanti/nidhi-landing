@@ -43,8 +43,12 @@ import { dirname, isAbsolute, join, normalize, posix, relative, resolve } from '
 import { parse } from '@babel/parser';
 import { isInput, WORKFLOWS } from './check-inputs.mjs';
 
-/** Raised when the rule changes, so no fingerprint made under an older rule matches. */
-export const DEPS_SCHEMA = 1;
+/**
+ * Raised when the rule changes, so no fingerprint made under an older rule
+ * matches. 2: a path that may not be there is hashed as a file, a folder or
+ * nothing; under 1 a folder and nothing were the same (#904).
+ */
+export const DEPS_SCHEMA = 2;
 
 /** What a file depending on everything is recorded as. */
 export const EVERYTHING = '*';
@@ -602,6 +606,24 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
   const readable = readablePaths(sortedTracked);
   const cache = new Map();
   const exists = (rel) => trackedSet.has(rel) || (!rel.startsWith('..') && existsSync(join(root, rel)) && statSync(join(root, rel)).isFile());
+  // Every folder a tracked file lies in, at any depth.
+  const trackedFolders = new Set();
+  for (const p of tracked) {
+    for (let cut = p.lastIndexOf('/'); cut > 0; cut = p.lastIndexOf('/', cut - 1)) trackedFolders.add(p.slice(0, cut));
+  }
+  /**
+   * What is at a path that may not be there: 'a file', 'a folder' or
+   * 'nothing'. A folder is one a tracked file lies in, or one on disk. A
+   * name looked for and not found can later be either (a test that asks
+   * "is it there" gets another answer when a file is added INSIDE it), so
+   * the three are told apart (council, Codex).
+   */
+  const whatIsAt = (rel) => {
+    if (exists(rel)) return 'a file';
+    if (trackedFolders.has(rel)) return 'a folder';
+    if (!rel.startsWith('..') && existsSync(join(root, rel)) && statSync(join(root, rel)).isDirectory()) return 'a folder';
+    return 'nothing';
+  };
   const toRel = (abs) => normalize(relative(root, abs)).split('\\').join('/');
 
   const resolveImport = (fromRel, spec) => {
@@ -755,7 +777,7 @@ export function createGraph({ root, tracked, read = (p) => readFileSync(join(roo
         h.update(`${entry}\0`);
       } else if (entry.startsWith('?')) {
         const p = entry.slice(1);
-        h.update(`${entry}\0${exists(p) ? 'there' : 'not there'}\0`);
+        h.update(`${entry}\0${whatIsAt(p)}\0`);
       } else {
         h.update(`${entry}\0${contentHash(entry)}\0`);
       }
