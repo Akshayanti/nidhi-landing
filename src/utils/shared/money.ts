@@ -80,6 +80,7 @@ function resolveFactor(code: string): number {
       style: 'currency',
       currency: code,
     });
+    // Stryker disable next-line LogicalOperator: equivalent. Every currency in the list has 0 or 2 decimals, and for those `&& 2` gives the same digits as `?? 2`.
     const digits = fmt.resolvedOptions().minimumFractionDigits ?? 2;
     return Math.pow(10, digits);
   } catch {
@@ -167,6 +168,7 @@ function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] 
     if (part.type === 'integer' || part.type === 'group') {
       if (at < 0) {
         at = out.length;
+        // Stryker disable next-line ObjectLiteral,StringLiteral: equivalent. This placeholder is always replaced at the end by the grouped digits, so what it holds is never read.
         out.push({ type: 'integer', value: '' });
       }
       if (part.type === 'integer') digits += part.value;

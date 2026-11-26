@@ -1671,6 +1671,13 @@ describe('the points row tells a saving from a loss (issues 526 and 528)', () =>
   it('points that cost nothing break even at once', () => {
     assert.equal(pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0.0025).months, 0);
   });
+
+  it('points that come out even over the loan are not called a loss', () => {
+    const be = pair(250_000, 0.065, { kind: 'term', months: 360 }, 0, 0);
+    assert.equal(be.months, 0);
+    assert.equal(be.lifetimeSavingsMinor, 0);
+    assert.equal(pointsVerdict(be), 'saves');
+  });
 });
 
 describe('rateChange: the payment after a fixed period', () => {
