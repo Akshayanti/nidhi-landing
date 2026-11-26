@@ -14,6 +14,34 @@ const graphOf = (files) => createGraph({ root: FAKE, tracked: Object.keys(files)
 const depsOf = (files, rel) => graphOf(files).dependencies(rel);
 const fp = (files, rel) => graphOf(files).fingerprintOf(rel).fingerprint;
 
+// A path a test looks for and does not find is in its fingerprint as
+// "nothing is there". It can become a file, or a folder with a file in it:
+// either way a test that asks whether it is there gets another answer.
+describe('a path that may not be there is a file, a folder or nothing (#904)', () => {
+  const TEST = "import { f } from '../public/helper';\ntest('t', () => f());\n";
+  const base = { 'src/a.test.ts': TEST, 'public/helper/index.ts': 'export const f = () => 1;\n' };
+
+  it('is on record for the lookups of an import', () => {
+    const { files, all } = depsOf(base, 'src/a.test.ts');
+    assert.deepEqual(all, []);
+    assert.ok(files.includes('?public/helper.ts') && files.includes('public/helper/index.ts'), files.join(' '));
+  });
+
+  it('changes the fingerprint when the name becomes a file, and when it becomes a folder with a file in it', () => {
+    const before = fp(base, 'src/a.test.ts');
+    assert.equal(fp({ ...base }, 'src/a.test.ts'), before);
+    const asFile = fp({ ...base, 'public/helper.ts': 'export const f = () => 2;\n' }, 'src/a.test.ts');
+    const asFolder = fp({ ...base, 'public/helper.ts/disable.txt': '' }, 'src/a.test.ts');
+    assert.notEqual(asFile, before);
+    assert.notEqual(asFolder, before, 'a folder is not nothing');
+    assert.notEqual(asFolder, asFile, 'and not a file');
+  });
+
+  it('has a schema number of its own, raised with this rule', () => {
+    assert.equal(DEPS_SCHEMA, 2);
+  });
+});
+
 describe('what a file reaches, from its syntax tree (#891)', () => {
   const at = (text, file = 'src/a.test.ts') => analyse(text, `${FAKE}/${file}`, FAKE);
 

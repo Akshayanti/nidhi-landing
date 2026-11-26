@@ -12,10 +12,10 @@ lines, and its tests are the test files beside it or importing it.
 | Script | What it does | Run by | Tests |
 |---|---|---|---|
 | `audit-mobile.mjs` | Phone-width audit of every site page. | `npm run audit:mobile`, workflow "PR Checks" | none |
-| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `repo-hygiene.test.mjs` |
+| `audit-text-size.mjs` | Large-text audit of the free tools, run against a dev or preview server. | `npm run audit:text-size`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `lib/checks/mutation-fingerprint.test.mjs`, `repo-hygiene.test.mjs` |
 | `check-dist.mjs` | Checks the built site in dist/ (#361): canonical and hreflang links, the sitemap, internal links, leftover template text and the feeds. | `npm run check:dist`, workflow "PR Checks" | none |
 | `check-gs-versions.mjs` | Compares each deployed Apps Script with main (#443): asks its health action for the VERSION it runs and checks it against the hash of the file here. | workflow "Apps Script versions" | `gs-version.test.mjs` |
-| `check-mutation-deps.mjs` | Checks the static dependency analysis of the mutation cache against what the tests really do (#891, condition 1: static analysis and run-time tracing together). | workflow "Free tools suite" | none |
+| `check-mutation-deps.mjs` | Checks the static dependency analysis of the mutation cache against what the tests really do (#891, condition 1: static analysis and run-time tracing together). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs`, `lib/checks/mutation-trace.test.mjs` |
 | `deploy-trigger.gs` | Nidhi daily deploy trigger: Google Apps Script (no Web App). | pasted into Google Apps Script | `deploy-trigger.test.mjs` |
 | `fetch-inflation-monthly.mjs` | Refreshes a monthly consumer price index the inflation calculator joins to a country's yearly history. | workflow "Inflation data refresh" | `fetch-inflation-monthly.test.mjs` |
 | `fetch-inflation.mjs` | Refreshes the inflation calculator's history: World Bank indicator FP.CPI.TOTL.ZG (consumer price inflation, annual %) for every country. | workflow "Inflation data refresh" | `fetch-inflation.test.mjs` |
@@ -24,10 +24,10 @@ lines, and its tests are the test files beside it or importing it.
 | `lint-figures.mjs` | Lint blog figures (the prebuild gate). | `npm run lint:figures`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs`, `lint-figures.test.mjs` |
 | `lint-scoped-styles.mjs` | Fail on a scoped style rule that can never match. | `npm run lint:scoped-styles`, `npm run build` (prebuild), workflow "Deploy to GitHub Pages", workflow "Free tools suite", workflow "PR Checks" | `lib/checks/check-inputs.test.mjs` |
 | `lint.mjs` | Lightweight lint pass. | `npm run lint`, workflow "PR Checks" | none |
-| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools suite" | none |
-| `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every reused kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools suite" | `repo-hygiene.test.mjs` |
-| `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools suite" | none |
-| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | none |
+| `mutation-floors.mjs` | Checks one scope's mutation reports against its floors (#790). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
+| `mutation-recheck.mjs` | Takes out of a shard's results, after a Stryker run, every reused kill that a new or edited test file covers, so a second run tests those mutants in full (#854; the rule and the reason are in lib/checks/mutation-recheck.mjs). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs`, `lib/checks/mutation-trace.test.mjs`, `repo-hygiene.test.mjs` |
+| `mutation-shard-report.mjs` | Trims one shard's mutation report to the mutants that shard holds (#846). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
+| `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
 | `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
 | `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
@@ -38,7 +38,7 @@ lines, and its tests are the test files beside it or importing it.
 | `render-figures.mjs` | Rasterise blog figures into Instagram-ready PNGs. | `npm run render-figures` | none |
 | `render-guide-cards.mjs` | Renders each How-to guide's share image (the og:image a link preview shows) to public/brand/social/how-to/<slug>.png, 1200×630. | by hand | none |
 | `render-ig.js` | Unified Instagram renderer. | `npm run render-ig` | none |
-| `render-kit.mjs` | Instagram content kit renderer: one source file per blog post, two days, one angle per day. | by hand | none |
+| `render-kit.mjs` | Instagram content kit renderer: one source file per blog post, two days, one angle per day. | by hand | `lib/checks/mutation-fingerprint.test.mjs` |
 | `render-logo-with-url.mjs` | Composes merchandise-oriented logo variants that include the website URL beneath the existing wordmark and tagline. | by hand | none |
 | `render-reels.mjs` | Reel render orchestrator (v2). | `npm run reels:plan-only`, `npm run render-reels`, `npm run render-reels:building`, `npm run render-reels:discovery` | none |
 | `render-slides.js` | Renders Instagram carousel slides (1080x1080) from docs/instagram/ posts with scripts/templates/slide-template.html. | by hand | none |
@@ -64,7 +64,7 @@ lines, and its tests are the test files beside it or importing it.
 The modules the entry points import, each with its tests beside it, kept in
 one folder per purpose:
 
-- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `check-inputs.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-deps.mjs`, `mutation-fingerprint.mjs`, `mutation-floors.mjs`, `mutation-recheck.mjs`, `mutation-reuse.mjs`, `mutation-shards.mjs`, `mutation-stale-results.mjs`, `mutation-test-order.mjs`, `serve-dist.mjs`, `stryker-ordered-tap.mjs`, `stryker-run-plan.mjs`, `tool-privacy-checks.mjs`, `trace-deps-hook.mjs`.
+- `lib/checks/`: What gates a pull request or verifies the build: the post-build checks, the privacy check's rules, mutation floors, known failures, audit exceptions, the figure lint and the local server the browser checks use. Modules: `audit-exceptions.mjs`, `check-dist.mjs`, `check-inputs.mjs`, `known-failures.mjs`, `lint-figures.mjs`, `mutation-deps.mjs`, `mutation-fingerprint.mjs`, `mutation-floors.mjs`, `mutation-recheck.mjs`, `mutation-reuse.mjs`, `mutation-shards.mjs`, `mutation-stale-results.mjs`, `mutation-test-order.mjs`, `mutation-trace.mjs`, `serve-dist.mjs`, `stryker-ordered-tap.mjs`, `stryker-run-plan.mjs`, `tool-privacy-checks.mjs`, `trace-deps-hook.mjs`.
 - `lib/publishing/`: The site build and its data: the short-link pages and inline-script minifier astro.config.mjs runs, the inflation history and the Apps Script version stamp. Modules: `gs-version.mjs`, `inflation-data.mjs`, `inflation-monthly-wb.mjs`, `inflation-monthly.mjs`, `minify-inline-scripts.mjs`, `short-link-stub.mjs`.
 - `lib/media/`: The reel, caption and Instagram pipeline: lesson and post parsers, the script writer, the scrubber and its maths check, speech, music, figures and captions. Modules: `generate-tts.mjs`, `llm-script-writer.mjs`, `math-consistency.mjs`, `parse-blog-meta.mjs`, `parse-markdown.js`, `parse-vtt.mjs`, `pick-music.mjs`, `prepare-figures.mjs`, `render-platform-caption.mjs`, `scrub-output.mjs`.
 

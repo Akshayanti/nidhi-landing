@@ -8,21 +8,29 @@
 // file-system functions that read a path, sync, callback and promise forms,
 // and records each path given to them. Every record is one absolute path per
 // line, appended to TRACE_DEPS_OUT; what is outside the project is sorted out
-// by the reader.
+// by the reader. A path whose folder was LISTED (readdir, opendir, glob) is
+// written with `>` before it: every process looks at the project folder
+// itself, and only a listing of it depends on what is added to it.
 import { appendFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { isMainThread } from 'node:worker_threads';
 
 let out = process.env.TRACE_DEPS_OUT;
+let unwritten = false;
 
-const record = (path) => {
+/** The functions that list a folder: what they return changes when a file is added to it. */
+const LISTS = new Set(['readdirSync', 'readdir', 'opendirSync', 'opendir', 'globSync', 'glob']);
+
+const record = (path, listed = false) => {
   if (!out || typeof path !== 'string' || path === '') return;
   try {
-    appendFileSync(out, `${path}\n`);
+    appendFileSync(out, `${listed ? '>' : ''}${path}\n`);
   } catch {
-    // A record that cannot be written is a missing record: the reader then
-    // finds less, never more, so the check stays on the safe side only if
-    // writes work; they do, the file is the process's own.
+    // A record that cannot be written is a missing record, and the reader
+    // would find less than was read. It is told, once, and fails the check
+    // (scripts/check-mutation-deps.mjs, UNWRITTEN).
+    if (!unwritten) process.stderr.write('trace-deps-hook: a record could not be written\n');
+    unwritten = true;
   }
 };
 const asPath = (p) => {
@@ -61,11 +69,11 @@ if (isMainThread && process.env.TRACE_DEPS_OUT && !globalThis.__traceDepsInstall
       if (name === 'globSync' || name === 'glob') {
         const cwd = rest[0]?.cwd ? asPath(rest[0].cwd) : process.cwd();
         for (const pattern of Array.isArray(first) ? first : [first]) {
-          if (typeof pattern === 'string') record(`${cwd}/${pattern.replace(/[*?{[].*$/, '')}`);
+          if (typeof pattern === 'string') record(`${cwd}/${pattern.replace(/[*?{[].*$/, '')}`, true);
         }
       } else {
         const p = asPath(first);
-        if (p !== null) record(p.startsWith('/') ? p : `${process.cwd()}/${p}`);
+        if (p !== null) record(p.startsWith('/') ? p : `${process.cwd()}/${p}`, LISTS.has(name));
       }
       return original.call(this, first, ...rest);
     };

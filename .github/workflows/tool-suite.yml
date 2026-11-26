@@ -294,14 +294,16 @@ jobs:
           if [ "$run" = "false" ]; then echo "Only files no mutation run reads changed: the shards are skipped."; else echo "Every shard runs."; fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
 
-      # Whether the pull request changes the dependency analysis or its
-      # trace (#891, council round 2): then the trace job runs on it too.
+      # Whether the pull request changes the dependency analysis, its trace,
+      # or what the shared fingerprint and the suite's inputs hold, which the
+      # trace is judged against (#891, council round 2; #904): then the trace
+      # job runs on it too.
       - name: Whether the pull request changes the dependency analysis
         id: trace
         if: github.event_name == 'pull_request'
         run: |
           trace=false
-          if git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi
+          if git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/mutation-fingerprint.mjs scripts/lib/checks/check-inputs.mjs scripts/lib/checks/mutation-trace.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi
           echo "trace=$trace" >> "$GITHUB_OUTPUT"
 
       # The same question for a merge to main (tool-mutation.yml's push
