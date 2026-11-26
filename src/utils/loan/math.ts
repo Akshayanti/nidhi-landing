@@ -710,10 +710,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       // Payment-mode + hybrid is ill-defined: we don't know what term
       // the user is contracting for, and recasting requires that. The
       // UI gates this; we double-belt here.
-      return emptyResult(
-        feeMinor,
-        'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.',
-      );
+      return rateChangeNeedsTerm(feeMinor);
     }
     scheduledPayment = roundMinor(mode.monthlyMinor);
     // For payment-mode fixed loans we don't have a contractual term;
@@ -876,6 +873,15 @@ export function shownMonths(results: LoanResult[], index: number): number {
     .filter((o, i) => i !== index && !o.error && o.keptPayment?.outcome !== 'never')
     .map((o) => o.schedule.length);
   return Math.min(r.schedule.length, Math.max(r.keptPayment.termMonths, ...others));
+}
+
+/**
+ * The result for a rate that changes on a loan set by its payment: there is
+ * no term to work the new payment out over. One function, so the page's own
+ * check (`computeFromInput`) says it in the engine's words.
+ */
+export function rateChangeNeedsTerm(feeMinor: number): LoanResult {
+  return emptyResult(feeMinor, 'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.');
 }
 
 /** A result that carries only an error: nothing was computed. */

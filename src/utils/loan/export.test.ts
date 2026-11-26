@@ -78,6 +78,13 @@ describe('loan spreadsheet: its sheets', () => {
     assert.deepEqual(sheets.map((s) => s.name), [common.sheets.about, x.sheets.summary, common.sheets.inputs, 'Bank A', 'Bank C']);
   });
 
+  it('give an offer whose rate changes, with its later rate left out, no schedule sheet (issue 818)', () => {
+    const noLaterRate = offer({ rateKind: 'hybrid', initialFixedMonths: '1', subsequentRatePct: '' });
+    assert.ok(result(noLaterRate).error);
+    const sheets = loanSheets(exportOf([['Bank A', FIXED], ['Bank B', noLaterRate]]));
+    assert.deepEqual(sheets.map((s) => s.name), [common.sheets.about, x.sheets.summary, common.sheets.inputs, 'Bank A']);
+  });
+
   it('have no schedule sheets when no offer can be worked out', () => {
     assert.equal(loanSheets(exportOf([['Bank A', BROKEN], ['Bank B', BROKEN]])).length, 3);
   });

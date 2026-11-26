@@ -704,6 +704,9 @@ describe('the offer card: the rows of optional boxes', () => {
     const cases: [title: string, good: Partial<VendorInput>, bad: Partial<VendorInput>][] = [
       [c.rateStructure.title, HYBRID, { ...HYBRID, initialFixedMonths: 'six' }],
       [c.rateStructure.title, HYBRID, { ...HYBRID, subsequentRatePct: '-2' }],
+      // A box of a changing rate that is left out is marked the same way.
+      [c.rateStructure.title, HYBRID, { ...HYBRID, subsequentRatePct: '' }],
+      [c.rateStructure.title, HYBRID, { ...HYBRID, initialFixedMonths: '' }],
       [c.costs.title, { feeMajor: '60' }, { feeMajor: '€60' }],
       [c.costs.title, { feeMajor: '60' }, { feeMajor: '60', pointsCostMajor: 'x' }],
       [c.costs.title, { feeMajor: '60' }, { feeMajor: '60', pointsRateReductionPct: 'x' }],
@@ -775,6 +778,32 @@ describe('the offer card: the optional boxes', () => {
     assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
   });
 
+  it('marks the box of a changing rate that is left out, says both are needed, and leaves the required boxes alone (issue 818)', () => {
+    const cases: [patch: Partial<VendorInput>, months: ReturnType<typeof wiring>, later: ReturnType<typeof wiring>][] = [
+      [{ subsequentRatePct: '' }, UNMARKED, MARKED],
+      [{ initialFixedMonths: '' }, MARKED, UNMARKED],
+      [{ initialFixedMonths: '0' }, MARKED, UNMARKED],
+      [{ initialFixedMonths: '', subsequentRatePct: '' }, MARKED, MARKED],
+    ];
+    for (const [patch, months, later] of cases) {
+      const { card, unmount } = show(loan({ ...HYBRID, ...patch }));
+      const at = JSON.stringify(patch);
+      assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.rateChangeIncomplete}`, at);
+      assert.deepEqual(wiring(card, box(card, c.initialFixed)), months, at);
+      assert.deepEqual(wiring(card, box(card, c.subsequentRate)), later, at);
+      for (const label of [LABELS.principal, LABELS.rate, LABELS.term, `${c.fee} (EUR)`]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, `${label} with ${at}`);
+      // No result rows while a box is missing: the offer is not worked out at its starting rate.
+      assert.deepEqual(rows(card), [], at);
+      assert.deepEqual(openFolds(card), [c.rateStructure.title], at);
+      unmount();
+    }
+    // Both filled: nothing is marked and the offer is worked out.
+    const { card } = show(loan(HYBRID));
+    assert.equal(errorOf(card), null);
+    assert.deepEqual(wiring(card, box(card, c.subsequentRate)), UNMARKED);
+    assert.ok(rows(card).length > 0);
+  });
+
   it('hands back each box as a plain number under its own field, however the page writes numbers', () => {
     const { card } = show(loan(HYBRID), { locale: 'es' });
     for (const field of OPTIONAL) {
@@ -843,6 +872,13 @@ describe('the offer card: a rate that changes', () => {
     assert.ok(!asks(card, c.initialFixed));
     assert.ok(!asks(card, c.subsequentRate));
     assert.ok(!asks(card, c.atChange.payment));
+
+    // The offer is not worked out as a fixed rate while its choice says the rate changes (issue 818).
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.hybridMode}`);
+    cleanup();
+    const empty = show(loan({ rateKind: 'hybrid', initialFixedMonths: '', subsequentRatePct: '', modeKind: 'payment', monthlyPayment: '100' }));
+    assert.equal(errorOf(empty.card)?.textContent, `Error: ${s.engine.errors.hybridMode}`);
+    assert.deepEqual(rows(empty.card), []);
 
     cleanup();
     // The reason is there before the choice is ever made.

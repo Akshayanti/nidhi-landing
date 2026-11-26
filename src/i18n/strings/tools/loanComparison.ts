@@ -715,6 +715,8 @@ export const loanComparisonEn = {
         optionalUnreadable: 'One of the optional boxes cannot be read. Use digits only, or clear the box.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'The points cost is more than the fee above. The fee includes the points, so it cannot be smaller. Enter a larger fee or a smaller points cost.',
+        /** A rate that changes, with the month of the change or the later rate left out. Names the two boxes and the other choice by their labels. */
+        rateChangeIncomplete: 'This offer’s rate is fixed, then variable, so it needs both an initial fixed period of at least one month and a subsequent rate. Enter both, or choose “Fixed” under “Rate structure”.',
         refiMonth: 'Refinance month must be at least 1.',
         refiMonthEnd: 'Refinance month must be before the original loan ends.',
         refiRate: 'New rate must be non-negative.',
@@ -1359,6 +1361,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         optionalUnreadable: 'वैकल्पिक बॉक्सों में से एक पढ़ा नहीं जा सका। सिर्फ़ अंक लिखें, या बॉक्स खाली कर दें।',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'पॉइंट्स की लागत ऊपर के शुल्क से ज़्यादा है। शुल्क में पॉइंट्स शामिल होते हैं, इसलिए वह इससे कम नहीं हो सकता। बड़ा शुल्क या पॉइंट्स की कम लागत भरें।',
+        rateChangeIncomplete: 'इस लोन ऑफ़र की दर पहले तय, फिर बदलती है, इसलिए इसमें शुरुआत की तय अवधि (कम से कम एक महीना) और बाद की दर, दोनों चाहिए। दोनों भरें, या “दर का ढाँचा” में “तय” चुनें।',
         refiMonth: 'रीफ़ाइनेंस का महीना कम से कम 1 होना चाहिए।',
         refiMonthEnd: 'रीफ़ाइनेंस का महीना पुराने लोन के ख़त्म होने से पहले होना चाहिए।',
         refiRate: 'नई दर शून्य या उससे ज़्यादा होनी चाहिए।',
@@ -1996,6 +1999,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         optionalUnreadable: 'No se pudo leer una de las casillas opcionales. Usa solo cifras o deja la casilla vacía.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'El costo de los puntos es mayor que la comisión de arriba. La comisión incluye los puntos, así que no puede ser menor. Escribe una comisión mayor o un costo de puntos menor.',
+        rateChangeIncomplete: 'La tasa de esta oferta es fija y luego variable, así que necesita las dos cosas: un periodo fijo inicial de al menos un mes y una tasa posterior. Escribe las dos, o elige «Fija» en «Estructura de la tasa».',
         refiMonth: 'El mes de refinanciación debe ser al menos 1.',
         refiMonthEnd: 'El mes de refinanciación debe ser anterior al final del préstamo original.',
         refiRate: 'La nueva tasa no puede ser negativa.',
@@ -2631,6 +2635,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         optionalUnreadable: 'Jedno z nepovinných polí se nepodařilo přečíst. Použijte jen číslice, nebo pole vymažte.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'Cena bodů je vyšší než poplatek výše. Poplatek body zahrnuje, takže nemůže být nižší. Zadejte vyšší poplatek nebo nižší cenu bodů.',
+        rateChangeIncomplete: 'Sazba této nabídky je pevná, pak pohyblivá, takže potřebuje obojí: počáteční období fixace v\u00a0délce alespoň jednoho měsíce a\u00a0následnou sazbu. Zadejte obojí, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
         refiMonth: 'Měsíc refinancování musí být alespoň 1.',
         refiMonthEnd: 'Měsíc refinancování musí být před koncem původního úvěru.',
         refiRate: 'Nová sazba nesmí být záporná.',
@@ -3239,6 +3244,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         optionalUnreadable: 'पर्यायी चौकटींपैकी एक वाचता आली नाही. फक्त अंक भरा, किंवा चौकट रिकामी करा.',
         /** The points cost is larger than the fee it is part of. Never quotes what was typed. */
         pointsAboveFee: 'पॉइंट्सचा खर्च वरील शुल्कापेक्षा जास्त आहे. शुल्कात पॉइंट्स धरलेले असतात, त्यामुळे ते यापेक्षा कमी असू शकत नाही. जास्त शुल्क किंवा कमी पॉइंट्स खर्च भरा.',
+        rateChangeIncomplete: 'या ऑफरचा दर आधी ठरावीक, मग बदलता आहे, त्यामुळे सुरुवातीचा ठरावीक कालावधी (किमान एक महिना) आणि नंतरचा दर, दोन्ही लागतात. दोन्ही भरा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
         refiMonth: 'पुनर्वित्ताचा महिना किमान 1 असायला हवा.',
         refiMonthEnd: 'पुनर्वित्ताचा महिना मूळ कर्ज संपण्यापूर्वीचा असायला हवा.',
         refiRate: 'नवीन दर उणे असू शकत नाही.',

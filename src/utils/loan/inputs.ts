@@ -6,6 +6,7 @@ import {
   OPTIONAL_UNREADABLE,
   computeLoan,
   emptyResult,
+  rateChangeNeedsTerm,
   toMinor,
   type LoanResult,
   type LoanInputs,
@@ -72,6 +73,36 @@ export function pointsCostAboveFee(v: VendorInput): boolean {
   const cost = parseNumber(v.pointsCostMajor);
   if (!Number.isFinite(cost) || cost <= 0) return false;
   return cost > (parseNumber(v.feeMajor) || 0);
+}
+
+/**
+ * The message for an offer whose rate changes, with the month of the change
+ * or the later rate left out. Only the page's phrase list reads it
+ * (`ENGINE_PHRASES`): the reader sees the catalog's sentence, which names the
+ * two boxes by their labels. Those labels hold the word "rate", which the
+ * tool's analytics would file as a rate that is missing, so this sentence is
+ * written without it, to be filed under "other" like the two above.
+ */
+export const RATE_CHANGE_INCOMPLETE = 'A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.';
+
+/** The two boxes of a rate that changes. */
+export type RateChangeField = 'initialFixedMonths' | 'subsequentRatePct';
+
+/**
+ * The boxes of a changing rate that are left out: an empty later rate, and a
+ * month of the change that is empty or rounds to zero. Both are on the page
+ * only for a loan with a term and a rate that changes, and both are needed
+ * there. Without either, the offer used to be worked out at its starting
+ * rate for the whole term, with no word of it, and could be named the lowest
+ * total because a box was empty (#818). A box that holds something
+ * unreadable is not listed here: `unreadableOptionalFields` has it.
+ */
+export function missingRateChangeFields(v: VendorInput): RateChangeField[] {
+  if (v.rateKind !== 'hybrid' || v.modeKind !== 'term') return [];
+  const out: RateChangeField[] = [];
+  if (v.initialFixedMonths.trim() === '' || Math.round(parseNumber(v.initialFixedMonths)) === 0) out.push('initialFixedMonths');
+  if (v.subsequentRatePct.trim() === '') out.push('subsequentRatePct');
+  return out;
 }
 
 /**
@@ -164,9 +195,16 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   // An optional box that cannot be read is an error, like a required one:
   // a result that quietly left it out would look complete and be wrong.
   if (unreadableOptionalFields(v).length > 0) return emptyResult(0, OPTIONAL_UNREADABLE);
+  if (missingRateChangeFields(v).length > 0) return emptyResult(0, RATE_CHANGE_INCOMPLETE);
   if (pointsCostAboveFee(v)) return emptyResult(0, POINTS_ABOVE_FEE);
   const { inputs, mode } = loanFromInput(v, currency);
-  return computeLoan(inputs, mode);
+  const result = computeLoan(inputs, mode);
+  // A changing rate on a loan set by its payment: the two boxes are not on
+  // the page, so with them empty the engine was handed a fixed rate and the
+  // offer was worked out as one, while its rate choice still said it changes.
+  // With them filled the engine already refuses; this says the same (#818).
+  if (v.rateKind === 'hybrid' && v.modeKind === 'payment' && !result.error) return rateChangeNeedsTerm(result.feeMinor);
+  return result;
 }
 
 /**

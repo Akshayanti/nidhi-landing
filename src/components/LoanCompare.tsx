@@ -56,6 +56,7 @@ import {
   OPTIONAL_UNREADABLE,
   parseNumber,
   pointsCostAboveFee,
+  missingRateChangeFields,
   unreadableOptionalFields,
   type OptionalField,
   comparisonWithheld,
@@ -213,6 +214,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   // `computeFromInput` (src/utils/loan/inputs.ts).
   ['optional boxes cannot be read', 'optionalUnreadable'],
   ['points cost is more than the fee', 'pointsAboveFee'],
+  ['changing offer needs both of its boxes', 'rateChangeIncomplete'],
 ];
 
 /** The two messages that carry a count of months, which goes back in as `{months}`. */
@@ -1642,6 +1644,8 @@ function VendorCard({
     ...unreadableOptionalFields(vendor),
     // A points cost above the fee it is part of is marked the same way.
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
+    // So is a box of a changing rate that is left out: both are needed.
+    ...missingRateChangeFields(vendor),
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   const requiredError = hasError && badOptional.size === 0;

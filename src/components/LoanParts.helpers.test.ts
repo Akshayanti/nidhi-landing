@@ -287,6 +287,7 @@ const ENGINE_MESSAGES: [raw: string, key: keyof typeof s.engine.errors][] = [
   ['Original loan is invalid; cannot compute refinance.', 'refiOriginal'],
   ['One of the optional boxes cannot be read. Use digits only, or clear the box.', 'optionalUnreadable'],
   ['The points cost is more than the fee above. The fee includes the points, so it cannot be smaller. Enter a larger fee or a smaller points cost.', 'pointsAboveFee'],
+  ['A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', 'rateChangeIncomplete'],
 ];
 
 describe('the engine\'s messages, in the reader\'s language', () => {
@@ -296,6 +297,16 @@ describe('the engine\'s messages, in the reader\'s language', () => {
       assert.notEqual(es.engine.errors[key], raw, `${key} is not translated, so this proves nothing`);
       assert.equal(engineError(raw, s), s.engine.errors[key], raw);
     }
+  });
+
+  it('names the two boxes of a changing rate by their labels, and the other choice by its own', () => {
+    // The sentence the tool works with names no box (the tool's analytics would file "rate" as a missing rate); the reader's does.
+    const shown = engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', s);
+    assert.equal(shown, 'This offer’s rate is fixed, then variable, so it needs both an initial fixed period of at least one month and a subsequent rate. Enter both, or choose “Fixed” under “Rate structure”.');
+    for (const label of [s.card.hybrid.toLowerCase(), 'initial fixed period', 'subsequent rate', `“${s.card.fixed}”`, `“${s.card.rateStructure.title}”`]) assert.ok(shown.includes(label), label);
+    assert.ok(s.card.initialFixed.toLowerCase().startsWith('initial fixed period'));
+    assert.ok(s.card.subsequentRate.toLowerCase().startsWith('subsequent rate'));
+    assert.equal(engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', hi), hi.engine.errors.rateChangeIncomplete);
   });
 
   it('shows the message of a real loan with no amount', () => {
