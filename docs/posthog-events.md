@@ -110,7 +110,7 @@ All events prefixed `free_multi_currency_net_worth_`. Uses the same `track()` wr
 
 ### Monte Carlo simulator: `src/components/MonteCarloSimulator.tsx`
 
-All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No event carries the amounts, years or mix the user typed. The tool is built only once post 43 (financial-projections) is published (`src/utils/monte-carlo/release.ts`).
+All events prefixed `free_monte_carlo_`. Same `track()` wrapper pattern. No event carries the amounts, years or mix the user typed.
 
 | Event | Properties | Trigger |
 |---|---|---|

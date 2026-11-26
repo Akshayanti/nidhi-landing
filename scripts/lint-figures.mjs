@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
  * Lint blog figures (the prebuild gate). The checks and why each exists are in
- * scripts/lib/lint-figures.mjs, where scripts/lint-figures.test.mjs tests them
+ * scripts/lib/checks/lint-figures.mjs, where scripts/lint-figures.test.mjs tests them
  * on fixtures; this reads the lessons, the BlogPost layout and global.css and
  * exits non-zero on any violation so the build fails fast.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { lintFigures } from "./lib/lint-figures.mjs";
+import { lintFigures } from "./lib/checks/lint-figures.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const BLOG_DIR = join(ROOT, "src/content/blog");

@@ -89,7 +89,7 @@ export function tableOf(sheet: Sheet, opts: { caption?: string; note?: string | 
 
 /** True when a row has a label and nothing else worth printing (empty, or zero). */
 export function isEmptyRow(row: Cell[]): boolean {
-  return row.slice(1).every((c) => c === null || c === '' || (typeof c === 'object' && c !== null && 'n' in c && c.n === 0));
+  return row.slice(1).every((c) => c === null || c === '' || (typeof c === 'object' && 'n' in c && c.n === 0));
 }
 
 /**

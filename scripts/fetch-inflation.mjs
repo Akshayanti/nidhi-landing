@@ -48,7 +48,7 @@ import {
   serializeDataset,
   splitPage,
   summarizeComparison,
-} from './lib/inflation-data.mjs';
+} from './lib/publishing/inflation-data.mjs';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(repoRoot, 'src/data/inflation/worldbank.json');

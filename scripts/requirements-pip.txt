@@ -1,0 +1,17 @@
+# pip itself, at one exact version, for the Python steps of CI (the Tests job
+# of pr-checks.yml and the newsletter send in newsletter.yml). The Python
+# that actions/setup-python installs (.python-version) brings a pip of its
+# own, which changes with the runner image; this file replaces it before
+# anything else is installed:
+#
+#   python -m pip install --require-hashes -r scripts/requirements-pip.txt
+#   python -m pip install --require-hashes -r scripts/requirements.txt
+#
+# Every file of the release is listed by its sha256, as PyPI publishes it
+# (https://pypi.org/pypi/pip/<version>/json), so a file that differs is
+# refused. Until Dependabot (pip, /scripts) is seen proposing an update for
+# this file, it is bumped by hand: a new version and its hashes from that
+# address, in a pull request of its own.
+pip==26.3 \
+    --hash=sha256:6c36ae7da8695be67e3cd9f7d87919667ced53f57ce2ede75d89b5912ed2bc4c \
+    --hash=sha256:f3b60b20ffaadd4415ed7957212a38ac63fa4c5fa375bd0f4a797777940fad13

@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | Net varlığınız, sahip olduklarınızdan borçlarınızın çıkarılmasıyla bulunur. | Net varlığın, sahip olduklarından borçlarının çıkarılmasıyla bulunur. | Net varlık, sahip olunanlardan borçların çıkarılmasıyla bulunur. |
 | A tool instruction | Enter the amount you borrowed. | Borç aldığınız tutarı girin. | Borç aldığın tutarı gir. | Borç alınan tutar girilmelidir. |
 | An error message | The rate you entered must be between 0% and 100%. | Girdiğiniz faiz oranı %0 ile %100 arasında olmalıdır. | Girdiğin faiz oranı %0 ile %100 arasında olmalı. | Faiz oranı %0 ile %100 arasında olmalıdır. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | Ödemelerinizde gecikme varsa yalnız değilsiniz ve yardım almanın yolları var. | Ödemelerinde gecikme varsa yalnız değilsin ve yardım almanın yolları var. | Ödemelerde gecikme pek çok kişinin başına gelir ve yardım almanın yolları var. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Ödemelerinizdeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. | Ödemelerindeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. | Ödemelerdeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. |
 
 Turkish verbs do not mark gender, so none of the forms gives the reader one.
 

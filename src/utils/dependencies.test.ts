@@ -39,6 +39,7 @@ interface PackageJson {
   engines?: Record<string, string>;
   scripts?: Record<string, string>;
   allowScripts?: Record<string, boolean>;
+  overrides?: Record<string, Record<string, string>>;
 }
 
 interface Lockfile {
@@ -70,8 +71,22 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
-  // (scripts/lib/llm-script-writer.mjs). Nothing under src/ imports it.
+  // (scripts/lib/media/llm-script-writer.mjs). Nothing under src/ imports it.
   '@anthropic-ai/sdk': '^1.10.0',
+  // Mutation testing (#790): run in CI on every pull request, so pinned
+  // exactly, like tsx. Nothing under src/ imports them.
+  // Reads the tools' top-level statements to cut the mutation shards
+  // (scripts/lib/checks/mutation-shards.mjs, #846), as Stryker reads them.
+  '@babel/parser': '7.29.9',
+  '@stryker-mutator/core': '10.1.1',
+  '@stryker-mutator/tap-runner': '10.1.1',
+  // Component tests (*.dom.test.tsx): the five tools mounted in a test
+  // browser. Pinned exactly, as test gates.
+  '@testing-library/dom': '10.4.2',
+  '@testing-library/react': '16.3.3',
+  '@testing-library/user-event': '14.6.8',
+  // Types for test/dom.ts, which `astro check` and `tsc` read.
+  '@types/jsdom': '30.0.0',
   '@types/react': '^19.3.0',
   '@types/react-dom': '^19.3.0',
   // The accessibility pass of scripts/smoke-pages.mjs: injected into the
@@ -82,6 +97,8 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // build gives them. Astro brings it too; named here so the test does not
   // depend on that.
   'github-slugger': '^2.0.0',
+  // The test browser of the component tests (test/dom.ts). Pinned exactly.
+  jsdom: '31.0.0',
   puppeteer: '^25.18.1',
   // Imported by scripts/render-logo-with-url.mjs. It was there only because
   // astro lists it as optional, so an astro update could have removed it.
@@ -142,6 +159,23 @@ describe('package.json: dependencies snapshot', () => {
       EXPECTED_NODE_ENGINE,
       `package.json "engines.node" changed (got "${pkg.engines?.node}", expected "${EXPECTED_NODE_ENGINE}"). If this is intentional, update EXPECTED_NODE_ENGINE in src/utils/dependencies.test.ts.`,
     );
+  });
+
+  it('overrides exactly the expected packages, each to one exact version', () => {
+    // Stryker 10.1.1, the latest, pins versions of these three that have
+    // security advisories (moderate, development only: neither reaches the
+    // site). Each override forces the patched release, and only inside Stryker's own
+    // tree, so a future dependency that pulls these in is not touched. Drop an
+    // override once Stryker's own dependencies reach the patched version
+    // (npm ls qs minimatch), and never add one without a reason here.
+    //   qs 6.16.1: typed-rest-client 2.3 pins 6.15.1 (GHSA advisories on
+    //     qs.stringify crashes).
+    //   minimatch 11.0.9: Stryker pins ~10.2.4, and only 11.0.1 and later
+    //     fix the pattern-expansion denial of service.
+    //   glob 14.0.6: the tap runner pins 13, and only 14.0.2 and later fix
+    //     the AbortSignal cancellation bypass (GHSA-3g3m-2fjr-6pw4).
+    const pins = { qs: '6.16.1', minimatch: '11.0.9', glob: '14.0.6' };
+    assert.deepEqual(pkg.overrides ?? {}, { '@stryker-mutator/core': pins, '@stryker-mutator/tap-runner': pins });
   });
 
   it('does not declare optionalDependencies, peerDependencies, or bundleDependencies', () => {

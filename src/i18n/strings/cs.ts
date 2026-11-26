@@ -41,7 +41,7 @@ export const cs: Dict = {
     homeLabel: 'úvodní stránka',
     tagline: 'Peníze srozumitelně',
     newTabHint: ' (otevře se na nové kartě)',
-    groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O nás', language: 'Jazyk' },
+    groups: { learn: 'Lekce', tools: 'Nástroje zdarma', about: 'O webu', language: 'Jazyk' },
     buttons: { tools: 'Nástroje zdarma', learn: 'Lekce' },
     items: {
       blog: 'Vzdělávací cesta',
@@ -79,7 +79,7 @@ export const cs: Dict = {
     columns: {
       learn: 'Lekce',
       tools: 'Nástroje zdarma',
-      about: 'O nás',
+      about: 'O webu',
       connect: 'Kontakt',
     },
     links: {
@@ -96,7 +96,7 @@ export const cs: Dict = {
       beliefs: 'Čemu věřím',
       volunteers: 'Dobrovolná pomoc',
       beta: "Beta plánovače",
-      editorialPolicy: 'Jak se lekce píšou',
+      editorialPolicy: 'Jak lekce vznikají',
       changes: 'Co se změnilo',
       accessibility: 'Přístupnost',
       privacy: 'Soukromí',
@@ -135,8 +135,8 @@ export const cs: Dict = {
   // The feed is English, and every page names it in English (see `BaseHead`);
   // these values are what a Czech page would show if that ever changed.
   rss: {
-    linkTitle: 'nidhi | Blog o osobních financích',
-    feedTitle: 'nidhi: blog o osobních financích',
+    linkTitle: 'nidhi | Lekce o osobních financích',
+    feedTitle: 'nidhi: lekce o osobních financích',
     feedDescription:
       'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem.',
     guidesLinkTitle: 'nidhi | Návody Jak na to',
@@ -149,14 +149,14 @@ export const cs: Dict = {
     meta: {
       title: 'O nidhi: kdo to píše a proč tomu můžete věřit | nidhi',
       description:
-        'Kdo píše nidhi, jaká kvalifikace stojí za texty a jak se každý článek o osobních financích zkoumá a dokládá zdroji.',
+        'Kdo píše nidhi, jaká kvalifikace stojí za texty a jak se každá lekce o osobních financích zkoumá a dokládá zdroji.',
     },
     schema: {
       name: 'O nidhi',
       description:
-        'Kdo píše nidhi, proč lze textům věřit a jak se každý článek zkoumá a dokládá zdroji.',
+        'Kdo píše nidhi, proč lze textům věřit a jak se každá lekce zkoumá a dokládá zdroji.',
       organization:
-        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých články píší, a\u00a0v\u00a0každém článku uvádí zdroje.',
+        'Vzdělávání v osobních financích na nidhi.today, založené na praxi a výzkumu, se věnuje čistému jmění, správě peněz ve více měnách a finanční nezávislosti. nidhi staví nástroje, o kterých lekce píší, a\u00a0v každé lekci uvádí zdroje.',
       knowsAbout: {
         personalFinance: 'Osobní finance',
         financialLiteracy: 'Finanční gramotnost',
@@ -166,7 +166,7 @@ export const cs: Dict = {
         moneyManagement: 'Správa peněz',
       },
       breadcrumbHome: 'Domů',
-      breadcrumbAbout: 'O nás',
+      breadcrumbAbout: 'O nidhi',
     },
     title: 'O nidhi',
     intro:
@@ -174,14 +174,14 @@ export const cs: Dict = {
     sections: {
       whoIsWriting: 'Kdo píše',
       whyYouCanTrustIt: 'Proč tomu můžete věřit',
-      howPostsAreMade: 'Jak články vznikají',
+      howPostsAreMade: 'Jak lekce vznikají',
       whatNidhiKnowsAbout: 'Čemu nidhi rozumí',
     },
     body: {
       whoIsWriting:
-        'Každý článek na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
+        'Každá lekce na tomto webu vychází pod jedním jménem: nidhi. Projekt vznikl, protože žádný finanční nástroj nezvládal obyčejný život s penězi ve více než jedné měně, dluhy v jiné a budoucností, která překračuje hranice. Lekce vycházejí ze stejného místa: ze skutečných otázek, na které musím odpovídat i já, a vysvětluji je tak, jak by mi je kdysi měl někdo vysvětlit.',
       whyYouCanTrustIt1:
-        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých články píší, takže texty stojí na skutečném počítání, ne na opakování frází. Pokud článek vychází ze studie nebo datového souboru, uvádí jejich název. Knihy, referenční stránky a\u00a0primární materiály, ze kterých čerpá, jsou u\u00a0každého článku uvedeny v\u00a0části „Suggested Reading“ (k dalšímu čtení).',
+        'Důvěryhodnost tu vychází z praxe a výzkumu, ne z množství titulů za jménem. nidhi staví nástroje, o kterých lekce píší, takže texty stojí na skutečném počítání, ne na opakování frází. Pokud lekce vychází ze studie nebo datového souboru, uvádí jejich název. Knihy, referenční stránky a\u00a0primární materiály, ze kterých čerpá, jsou u každé lekce uvedeny v\u00a0části „Suggested Reading“ (k dalšímu čtení).',
       sourcesCount:
         'Seznamy doporučené četby u zveřejněných lekcí (počet lekcí: {lessons}) odkazují na různé knihy, studie a referenční stránky. Počet různých zdrojů: {sources}. Zdroje citované jen v textu lekce tu započítané nejsou.',
       correctionsCount: {
@@ -192,10 +192,10 @@ export const cs: Dict = {
         after: '.',
       },
       whyYouCanTrustIt2:
-        'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí patička každé stránky.',
+        'Co to není: finanční poradenství s příslušným oprávněním. nidhi vysvětluje, jak peníze fungují, aby rozhodnutí zůstalo na vás. Neřekne vám, který fond koupit, a nikdy to dělat nebude. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, je správnou volbou kvalifikovaný odborník. Tato hranice je záměrná a je stejná jako ta, kterou uvádí zápatí každé stránky.',
       howPostsAreMade: {
         before:
-          'Každý článek začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
+          'Každá lekce začíná konkrétní otázkou, kterou rozebírá pomocí skutečných čísel a propočítaných příkladů, a před zveřejněním se ověřuje podle citovaných zdrojů. Nástroje AI pomáhají lekce zkoumat, psát, upravovat a kontrolovat, včetně zpochybňování jejich finančních úvah, a pomáhají stavět web a jeho nástroje zdarma. Výstup AI je koncept, nikdy zdroj: člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Celý postup, pravidla pro zdroje a způsob oprav najdete na stránce ',
         link: 'redakčních zásad',
         after: '.',
       },
@@ -289,7 +289,7 @@ export const cs: Dict = {
       },
       rulesOfThumb: {
         text: 'Od každé lekce chci, aby řekla, proč pravidlo existuje, o jaké doklady se opírá, kde přestává platit a co závisí na vás.',
-        link: 'Přečtěte si, jak se lekce píšou a opravují',
+        link: 'Přečtěte si, jak lekce vznikají a jak se opravují',
       },
       noAds: {
         text: 'Analytika, která by mohla propojit vaše návštěvy, čeká na váš souhlas, a co napíšete do nástroje, zůstává ve vašem prohlížeči.',
@@ -335,7 +335,7 @@ export const cs: Dict = {
     },
     works: {
       textSize: 'Text se zvětšuje s velikostí textu nastavenou v prohlížeči a se zvětšením stránky.',
-      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, abyste se k nim dostali klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
+      keyboard: 'Odkazy, tlačítka a pole formulářů jsou navržené tak, aby byly dostupné klávesnicí, prvek, na kterém právě jste, je orámovaný a každá stránka začíná odkazem, který přeskočí na hlavní obsah. Výjimky uvádí seznam překážek níže.',
       motion: 'Pokud vaše zařízení žádá omezený pohyb, animace a plynulé posouvání se vypnou.',
       theme: 'Web má světlý a tmavý motiv; vyberete ho přepínačem nahoře na stránce, nebo se převezme z vašeho zařízení.',
       charts: 'V nástrojích zdarma se čáry grafu liší vzorem i barvou a grafy se dají číst klávesnicí.',
@@ -360,7 +360,7 @@ export const cs: Dict = {
     report: {
       before: 'Napište na ',
       between: ' nebo pošlete zprávu účtu ',
-      after: ' na Instagramu a napište, o kterou stránku jde a o co jste se pokoušeli.',
+      after: ' na Instagramu a napište, o kterou stránku jde a co se vám nedařilo.',
       diagnosis: 'Diagnózu sdílet nemusíte.',
       setting: 'Pokud by vám pomohlo nějaké nastavení na stránce, napište mi které.',
     },
@@ -386,7 +386,7 @@ export const cs: Dict = {
       howALessonIsBuilt: 'Jak lekce vzniká',
       anyCountry: 'Psáno pro kteroukoli zemi',
       sourcesAndFigures: 'Zdroje a čísla',
-      ai: 'Jak používáme AI',
+      ai: 'Jak se používá AI',
       advice: 'Vzdělávání, ne poradenství',
       corrections: 'Opravy',
       whoIsBehind: 'Kdo za tím stojí',
@@ -421,12 +421,12 @@ export const cs: Dict = {
       anyCountry:
         'Lekce jsou psané pro čtenáře kdekoli, ne pro jednu zemi. Myšlenky, které učí, například čisté jmění, diverzifikace nebo to, jak inflace ukrajuje z úspor, fungují všude stejně. Pravidla kolem nich ne: daně, důchodové a daňově zvýhodněné účty, státní důchody a dávky, úvěrové skóre, pojištění vkladů a spotřebitelské právo se liší země od země a někdy i uvnitř jedné země. Lekce vysvětlují obecnou myšlenku záměrně. Kde něco na takových pravidlech závisí, řeknou to, a poznámka „Where to check locally“ (kde si to ověřit u vás) na konci lekce jmenuje obvyklá místa, kde si je ověřit tam, kde žijete, například finanční úřad, regulátora finančního trhu nebo kvalifikovaného místního poradce. Příklady bývají v eurech; je to volba měny, ne znamení, že jde o evropské pravidlo. Kde doklady pocházejí z dat jedné země, například z historie amerického akciového trhu, lekce to také řekne, spolu s tím, co vám tato data nemusejí říct o jiných trzích.',
       sourcesAndFigures:
-        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „Suggested Reading“ (k dalšímu čtení), aby šlo stopu sledovat, místo věřit nám na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
+        'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „Suggested Reading“ (k dalšímu čtení), aby šlo stopu sledovat, místo věřit mi na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
       aiUsed1:
-        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Výstupy různých agentů AI necháváme záměrně vzájemně kontrolovat, aby zachytili to, co některý z nich přehlédne.',
+        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Různí agenti AI si záměrně kontrolují práci navzájem, aby zachytili to, co některý z nich přehlédne.',
       aiUsed2: {
         before:
-          'Výstup AI je koncept, nikdy zdroj. Člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Model AI, který má uvažovat jako finanční poradce, je kontrolou úvahy, ne radou od odborníka s příslušným oprávněním. Web sám neposílá nic z toho, co napíšete nebo uděláte, žádné službě AI; co sbíráme, popisují ',
+          'Výstup AI je koncept, nikdy zdroj. Člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Model AI, který má uvažovat jako finanční poradce, je kontrolou úvahy, ne radou od odborníka s příslušným oprávněním. Web sám neposílá nic z toho, co napíšete nebo uděláte, žádné službě AI; co web sbírá, popisují ',
         link: 'zásady ochrany soukromí',
         after: '.',
       },
@@ -434,7 +434,7 @@ export const cs: Dict = {
         'nidhi není finanční poradce s příslušným oprávněním a nic na tomto webu není osobní finanční, investiční ani daňové poradenství. Lekce nedoporučují konkrétní produkty, fondy ani cenné papíry. Minulá výkonnost žádné investice nezaručuje budoucí výsledky. U rozhodnutí, která závisí na vaší daňové rezidenci, právní situaci nebo toleranci k riziku, může tyto myšlenky na vaši situaci uplatnit kvalifikovaný odborník.',
       corrections: {
         before:
-          'Pokud je něco špatně, chceme to opravit. Když narazíte na chybu, zastaralé číslo nebo tvrzení, které už neplatí, napište na ',
+          'Pokud je něco špatně, chci to opravit. Když narazíte na chybu, zastaralé číslo nebo tvrzení, které už neplatí, napište na ',
         after:
           '. Podstatné opravy se provádějí přímo v lekci a promítnou se do jejího data „Updated“ (aktualizováno), aby byla změna vidět, místo aby se tiše vyměnila. Drobnosti, jako jsou překlepy, se opravují bez změny data.',
       },
@@ -496,7 +496,7 @@ export const cs: Dict = {
   beta: {
     meta: {
       title: "Beta osobního finančního plánovače zdarma | nidhi",
-      description: "Beta plánovače nidhi je zdarma a jen na pozvánku. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
+      description: "Beta plánovače nidhi je zdarma a jen na pozvánku z čekací listiny. Placené funkce zůstanou zdarma 12 měsíců po spuštění.",
     },
     title: "Beta plánovače",
     lead: "Stavím plánovač pro skutečné životy: co vlastníte, dlužíte, vyděláváte a očekáváte, že utratíte, na jednom místě, v jedné měně i ve více měnách, promítnuté do budoucnosti s viditelnými předpoklady. Beta je zdarma a otevřít se má v lednu 2027. Přístup se může otevírat i dřív, postupně.",
@@ -577,7 +577,7 @@ export const cs: Dict = {
       loanComparison: {
         kicker: 'Rozhodování o půjčkách',
         title: 'Srovnání úvěrů',
-        desc: 'Porovnejte dvě nebo tři nabídky úvěru vedle sebe. APR (roční procentní sazba), celkové náklady úvěru, scénáře refinancování a splátkový kalendář pro každého poskytovatele, bez tabulky.',
+        desc: 'Porovnejte dvě nebo tři nabídky úvěru vedle sebe. APR (roční procentní sazba), celkové náklady úvěru, scénáře refinancování a splátkový kalendář pro každou nabídku, bez tabulky.',
       },
       monteCarlo: {
         kicker: 'Projekce a důchod',
@@ -587,11 +587,11 @@ export const cs: Dict = {
       inflation: {
         kicker: 'Ceny v čase',
         title: 'Inflační kalkulačka',
-        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co byste si za své peníze mohli koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
+        desc: 'Ceny obvykle každý rok trochu rostou a časem se to sčítá. Podívejte se, co by se za vaše peníze dalo koupit později při zvolené míře inflace, kolik mohou věci stát, jakou hodnotu má dnes dřívější částka a zda vaše zvýšení platu drží krok. U částek z minulosti může použít skutečnou roční inflaci vaší země od Světové banky, pro většinu zemí.',
       },
       investOrPayOff: {
         kicker: 'Dluh, nebo investice',
-        title: 'Kalkulačka: investovat, nebo splatit dluh',
+        title: 'Investovat, nebo splatit dluh',
         desc:
           'Porovná předčasné splacení dluhu s investováním stejné částky každý měsíc, ke stejnému datu a očištěně o inflaci ve vaší zemi. Rozpětí výsledků podle historie světových akcií, ne jeden předpokládaný výnos.',
       },
@@ -676,7 +676,7 @@ export const cs: Dict = {
       },
       freeTools: {
         before:
-          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u poskytovatele přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že jste přidali nebo odebrali poskytovatele (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy jeho název); kterou záložku výsledků otevřete a kterého poskytovatele tam zvolíte nebo u kterého otevřete podrobnosti; že jste změnili časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika poskytovatelů, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik poskytovatelů obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce na stránkách nástrojů zdarma. V kalkulačce pro srovnání úvěrů: kterou měnu zvolíte; zda u nabídky přepnete mezi výpočtem doby splatnosti a výpočtem měsíční splátky nebo mezi pevnou a proměnlivou sazbou; že přidáte nebo odeberete nabídku (s tím, kolik jich je a o kterou pozici jde, A až E, nikdy její název); kterou záložku výsledků otevřete a kterou nabídku tam zvolíte nebo u které otevřete podrobnosti; že změníte časový horizont nebo některé nastavení refinancování (které nastavení, nikdy jeho hodnotu); že některé pole zůstalo neplatné (u kolika nabídek, na které pozici a o jaký druh problému jde); zda otevřete dialog pro sdílení, zkopírujete odkaz ke sdílení nebo otevřete sdílené zobrazení (s tím, kolik nabídek obsahuje, a se zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Finanční hodnoty, které zadáte, se nikdy neposílají',
         after:
           ': ani výše úvěru, ani úroková sazba, ani poplatky, ani název poskytovatele. Celý smysl kalkulačky je v tom, že se výpočet provádí ve vašem prohlížeči.',
@@ -684,10 +684,10 @@ export const cs: Dict = {
       toolAddresses:
         'U žádného nástroje zdarma adresa stránky nenese to, co zadáte, takže to nemůže nést ani adresa URL, kterou zaznamenává webová analytika. Nástroje vaše údaje při používání do adresy nezapisují. Odkaz ke sdílení je nese za znakem #, v části adresy, kterou prohlížeče nikdy neposílají na server, a stránka je z adresního řádku přesune dřív, než se spustí webová analytika. Jako pojistka skript webové analytiky před odesláním jakékoli události odstraní z adresy každého nástroje zdarma vše kromě parametrů kampaní (utm_source a podobně).',
       toolExports:
-        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje hodnoty, které jste zadali, a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, kterou z nich jste použili.',
+        'Každý nástroj zdarma umí stáhnout tabulku s výsledky nebo vytvořit zprávu v PDF: krátké shrnutí výsledků, které tiskový dialog vašeho prohlížeče vytiskne nebo uloží jako PDF. Obojí vzniká ve vašem prohlížeči a nikdy se nikam nenahrává. Soubor nebo výtisk obsahuje zadané hodnoty a po uložení je mimo náš dosah (vaše složka stažených souborů, synchronizované složky, zálohy, jiné aplikace), takže ho nemůžeme vidět ani smazat. Prohlížeč může do záhlaví nebo zápatí výtisku přidat adresu stránky a datum; v tiskovém dialogu to můžete vypnout. Použití kterékoli z obou možností odešle jednu událost, která říká jen to, o kterou z nich šlo.',
       netWorth: {
         before:
-          'Události interakce v kalkulačce čistého jmění: kterou měnu výdajů zvolíte; že jste přidali nebo odebrali řádek nebo nahráli či stáhli soubor CSV (s počtem řádků; u souboru, který se nepodařilo přečíst celý, kolik řádků selhalo a jaký druh problému měl první z nich); že se nepodařilo načíst kurzy (s měnou výdajů a jedním z několika pevných důvodů) a zda to zkusíte znovu; zda otevřete dialog pro sdílení, jaký druh odkazu zkopírujete (s částkami, nebo bez nich) a zda otevřete sdílené zobrazení (s jeho druhem, počtem měn, které obsahuje, a zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
+          'Události interakce v kalkulačce čistého jmění: kterou měnu výdajů zvolíte; že přidáte nebo odeberete řádek nebo nahrajete či stáhnete soubor CSV (s počtem řádků; u souboru, který se nepodařilo přečíst celý, kolik řádků selhalo a jaký druh problému měl první z nich); že se nepodařilo načíst kurzy (s měnou výdajů a jedním z několika pevných důvodů) a zda to zkusíte znovu; zda otevřete dialog pro sdílení, jaký druh odkazu zkopírujete (s částkami, nebo bez nich) a zda otevřete sdílené zobrazení (s jeho druhem, počtem měn, které obsahuje, a zdrojem kampaně); a zda formulář vrátíte do výchozího stavu. ',
         strong: 'Názvy, částky a součty, které zadáte, se nikdy neposílají.',
       },
       monteCarlo: {
@@ -713,12 +713,12 @@ export const cs: Dict = {
       lessonShare:
         'Sdílení nebo uložení lekce: systémová nabídka sdílení se otevře, jen když klepnete na Share, a odkaz s názvem dostane aplikace, kterou si vyberete. Odkazy na WhatsApp a e-mail se s těmito službami spojí, jen když na ně klepnete. Odkaz sdílený nebo zkopírovaný těmito tlačítky nese parametry kampaní, které říkají jen to, že byl sdílen a jak, nic o vás, a když ho někdo otevře, jeho událost zobrazení stránky je obsahuje. Save as PDF používá okno tisku vašeho prohlížeče ve vašem zařízení a nic nenahrává. Aby stránka v prohlížeči aplikace, který neumí tisknout, mohla vysvětlit další postup, přečte ve vašem zařízení název prohlížeče a výsledek nikam neposílá.',
       consentClicks:
-        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co jste zadali.',
+        'Teplotní mapy kliknutí a automaticky zachycené události: v podstatě na které prvky stránky se kliká, včetně kliknutí na věci, které nereagují („mrtvá kliknutí“). Pomáhá nám to najít nefunkční odkazy a matoucí rozvržení. Měření rychlosti stránek ani chyby prohlížeče nezaznamenáváme vůbec. Kliknutí je popsáno jen štítkem, který prvku dává web (jeho data-attr), druhem prvku a jeho pozicí na stránce: nikdy jeho textem, štítkem pro přístupnost ani jiným atributem, který by mohl obsahovat to, co zadáte.',
       consentVisitorId:
         'Náhodné ID návštěvníka, které PostHog ukládá ve vašem prohlížeči (localStorage), aby propojil vaše návštěvy. Neobsahuje jméno ani e-mail, ale protože propojuje vaše návštěvy v čase, odliší váš prohlížeč od ostatních. Proto je pseudonymní, ne anonymní, a čeká na váš souhlas. Když později souhlas odmítnete, smaže se; potom ID platí jen pro stránku, na které právě jste, takže pozdější události se s dřívějšími nepropojí.',
       planner: {
         anonymous:
-          'Dokud na cookie liště nedáte souhlas: zobrazení stránek a události používání, například kterou obrazovku jste otevřeli nebo že jste přidali účet, spustili projekci nebo uložili scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
+          'Dokud na cookie liště nedáte souhlas: zobrazení stránek a události používání, například kterou obrazovku otevřete nebo že přidáte účet, spustíte projekci nebo uložíte scénář „co kdyby“. Tyto události zaznamenávají částky jen jako hrubá rozpětí. Neobsahují jméno, e-mail ani ID účtu a každé ID účtu nebo položky v adrese stránky se před odesláním nahradí. Kvůli nim se ve vašem prohlížeči nic neukládá.',
         consented:
           'Jen pokud souhlasíte: tytéž události, propojené s kódem vytvořeným z vašeho účtu, abychom viděli, kde se jeden člověk napříč návštěvami zasekává. Kód neobsahuje vaše jméno, e-mail ani ID účtu a nedá se na ně převést zpět, ale když nás požádáte o dohledání nebo smazání vašich událostí, dokážeme ho s vaším účtem spárovat. PostHog pak ve vašem prohlížeči ukládá náhodné ID návštěvníka, aby propojil vaše návštěvy.',
       },
@@ -739,7 +739,7 @@ export const cs: Dict = {
       analytics:
         'Vlastní události newsletteru (přihlášení, potvrzení nebo odhlášení) se v PostHogu zaznamenávají pod kódem vytvořeným z vaší e-mailové adresy (hash SHA-256), abychom viděli, kolik lidí odběr potvrdí. Jen pokud na cookie liště souhlasíte, propojí přihlášení k odběru s tímto kódem i zobrazení stránek v tomto prohlížeči, abychom viděli, které stránky vedou lidi k přihlášení.',
       total:
-        'Pokud se přihlásí a odběr potvrdí dost lidí, web může ukázat celkový počet potvrzených odběratelů zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda odebírá konkrétní člověk.',
+        'Pokud se přihlásí a odběr potvrdí dost lidí, web může ukázat celkový počet potvrzených odběrů zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda odebírá konkrétní člověk.',
       from: {
         before: 'E-maily newsletteru chodí z adresy ',
         after: '. Přidejte si ji do kontaktů, aby upozornění na nové články došla do vaší schránky.',
@@ -751,7 +751,7 @@ export const cs: Dict = {
       timestamp: 'Datum a čas zápisu.',
       singleOptIn: 'Potvrzovací e-mail není potřeba. Pokud vás pozveme, plánovač zaznamená stav pozvánky, jak je popsáno níže.',
       invites:
-        'Aby správce nidhi vybral, koho pozvat do bety plánovače, čte tento seznam v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a správci ho nikdy nedostanou. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které jste se přihlásili, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
+        'Aby bylo možné vybrat, koho pozvat do bety plánovače, čte tento seznam člověk s administrátorským přístupem v nidhi, a to v administračních nástrojích plánovače. Nástroje se k tabulce dostanou přes chráněný odkaz, s tajným klíčem, který zůstává na serveru plánovače a nikdo s administrátorským přístupem ho nikdy nedostane. Toto čtení předá plánovači jen vaši e-mailovou adresu, stránku, ze které přihlášení proběhlo, a čas přihlášení. Samotné zapsání na seznam nikoho nepozve: o každém pozvání rozhoduje člověk. Z čekací listiny vám stále přijde jen jeden e-mail: pozvánka do bety.',
       total:
         'Web může ukázat, kolik lidí čeká na pozvánku do bety: lidé z této čekací listiny a dobrovolníci, kteří zaškrtli políčko pro betu plánovače, každý započtený jen jednou, i když je na obou seznamech. Číslo se spočítá uvnitř našeho účtu Google a ven z něj odchází jen samotné číslo. Pod 20 je přesné, takže změnu o jednoho člověka lze zaznamenat mezi dvěma sestaveními webu. Od 20 se zaokrouhluje dolů, do 49 na násobek 5 a od 50 na násobek 10. Žádná e-mailová adresa se nezobrazuje. Kdo už má informace o konkrétním přihlášení nebo zaškrtnutí políčka pro betu, může je ze změny celkového počtu odvodit.',
       from: {
@@ -781,9 +781,9 @@ export const cs: Dict = {
       followUp:
         'V soukromé tabulce s vašimi odpověďmi z formuláře si také zapisujeme stav vyřízení, datum našeho posledního kontaktu s vámi a kód každé revizní kopie, kterou vám pošleme, abychom mohli odpovídat a dodržet dobu uchování uvedenou níže. Nová odpověď nám pošle upozornění, které neobsahuje žádnou z vašich odpovědí. Každou odpověď čte člověk a nic se neděje automaticky: žádná odpověď, rozhodnutí, uvedení na webu ani přihlášení do bety.',
       invites:
-        'Pokud jste zaškrtli políčko pro betu plánovače, správce nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby vybral, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
+        'Pokud máte zaškrtnuté políčko pro betu plánovače, člověk s administrátorským přístupem v nidhi může v administračních nástrojích plánovače, které používají stejný druh chráněného odkazu, přečíst vaši e-mailovou adresu a čas odeslání formuláře, aby se dalo vybrat, koho pozvat. Plánovači se předají jen tyto dvě věci, a jen u lidí, kteří políčko zaškrtli; vaše ostatní odpovědi zůstávají v tabulce. Zaškrtnutí nikoho samo nepozve: o každém pozvání rozhoduje člověk a pozvánka je jediný e-mail, který z toho plyne.',
       total:
-        'Pokud jste zaškrtli políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
+        'Pokud máte zaškrtnuté políčko pro betu plánovače, počítáte se i do celkového počtu lidí čekajících na pozvánku do bety, který web může ukázat (popsán výše u čekací listiny), a to jen jednou, i když jste také na čekací listině. Zobrazuje se jen číslo, nikdy vaše adresa. I zde platí výše popsaná možnost odvození.',
       google:
         'Samotná stránka formuláře patří Googlu, takže při vyplňování platí podmínky a zásady ochrany soukromí Googlu.',
     },
@@ -797,7 +797,7 @@ export const cs: Dict = {
       reading: {
         before: 'Které lekce máte přečtené (',
         after:
-          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé trase v části „Co z toho se týká vás?“.',
+          '), abychom příště mohli zobrazit nenápadné označení „přečteno“ a navrhnout vám další lekci na úvodní stránce a na vzdělávací cestě, včetně dalšího kroku na každé cestě v části „Co z toho se týká vás?“.',
       },
       subscription: {
         before: 'Zda je váš odběr newsletteru potvrzený (',
@@ -852,12 +852,12 @@ export const cs: Dict = {
           before: ' (regiony Google Cloud v EU): naše e-mailové adresy (',
           middle: ' pro obecný kontakt a podporu, ',
           after:
-            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uloženi odběratelé newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tyto tabulky jsou soukromé: správci nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo. Revizní kopie dobrovolníků jsou ve stejném účtu, ale soukromé v tomto smyslu nejsou: kdokoli s odkazem na kopii ji může otevřít a upravit, jak je popsáno u formuláře pro dobrovolníky. Uložené dávky, naše poznámky k nim a záznam zveřejněných textů jsou soukromé.',
+            ' pro automatické e-maily o produktu, jako jsou pozvánky do bety a rozesílání newsletteru) a tabulka Google, ve které jsou uložené odběry newsletteru a registrace na čekací listinu (na samostatných listech), a formulář Google pro dobrovolnou pomoc s překlady spolu s tabulkou, kam se ukládají odpovědi. Tyto tabulky jsou soukromé: lidé s administrátorským přístupem v nidhi je mohou číst přímo a server plánovače z nich může získat jen údaje popsané u čekací listiny a formuláře pro dobrovolníky. Skript čekací listiny také otevírá tabulku dobrovolníků, uvnitř našeho účtu Google, aby spočítal celkový počet lidí čekajících na pozvánku do bety; ven odchází jen toto číslo. Revizní kopie dobrovolníků jsou ve stejném účtu, ale soukromé v tomto smyslu nejsou: kdokoli s odkazem na kopii ji může otevřít a upravit, jak je popsáno u formuláře pro dobrovolníky. Uložené dávky, naše poznámky k nim a záznam zveřejněných textů jsou soukromé.',
         },
         planner: {
           name: 'DigitalOcean',
           rest:
-            ' (Frankfurt, Německo; region FRA1, v EU): hostuje databázi plánovače, která obsahuje jen e-mailové adresy, které správce pozve, a záznamy o pozvánkách popsané v části „Jak dlouho to uchováváme“. Údaje o účtu pokrývají vlastní zásady ochrany soukromí plánovače.',
+            ' (Frankfurt, Německo; region FRA1, v EU): hostuje databázi plánovače, která obsahuje jen e-mailové adresy, které pozve někdo s administrátorským přístupem, a záznamy o pozvánkách popsané v části „Jak dlouho to uchováváme“. Údaje o účtu pokrývají vlastní zásady ochrany soukromí plánovače.',
         },
         github: {
           name: 'GitHub Pages',
@@ -883,7 +883,7 @@ export const cs: Dict = {
         'Nesledujeme vás na webech jiných firem. Žádný Facebook pixel, žádný tag Google Ads, žádný LinkedIn Insight, žádný TikTok pixel, žádný retargeting jakéhokoli druhu.',
       screen: 'Nepoužíváme nahrávání relací ani analytiku k zachycení vaší obrazovky, stisků kláves, hodnot formulářů ani průběžného posouvání stránky, na tomto webu ani v plánovači.',
       replies: 'Odpovědi na e-maily newsletteru dostane člověk na adrese hello@nidhi.today, který je čte. Nikdy je nevkládáme do žádného systému webové analytiky ani reklamního systému.',
-      imports: 'Seznam odběratelů newsletteru neimportujeme do žádných jiných nástrojů ani rozesílacích systémů. Když o to správce požádá, plánovač čte omezené údaje z čekací listiny a ze seznamu zájemců o betu mezi dobrovolníky, popsané výše, aby pomohl vybrat, koho pozvat. V jeho databázi se ukládají jen adresy, které správce pozve, spolu se záznamy o pozvánkách.',
+      imports: 'Seznam odběrů newsletteru neimportujeme do žádných jiných nástrojů ani rozesílacích systémů. Když o to požádá někdo s administrátorským přístupem, plánovač čte omezené údaje z čekací listiny a ze seznamu zájemců o betu mezi dobrovolníky, popsané výše, aby pomohl vybrat, koho pozvat. V jeho databázi se ukládají jen adresy, které pozve někdo s administrátorským přístupem, spolu se záznamy o pozvánkách.',
     },
 
     retention: {
@@ -892,7 +892,7 @@ export const cs: Dict = {
         rest: ' 12 měsíců (výchozí doba uchování ve službě PostHog; neprodloužili jsme ji), potom se automaticky smažou. Týká se to i událostí z plánovače.',
       },
       newsletter: {
-        lead: 'Odběratelé newsletteru:',
+        lead: 'Odběry newsletteru:',
         rest: ' po dobu odběru a až 30 dní po odhlášení, abychom měli jistotu, že vám omylem nepřijde ještě jeden e-mail. Potom se řádek smaže.',
       },
       waitlist: {
@@ -901,12 +901,12 @@ export const cs: Dict = {
       },
       volunteers: {
         lead: 'Odpovědi z formuláře pro dobrovolnou pomoc:',
-        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Totéž platí pro vaše revizní kopie, uložené dávky a naše poznámky k nim i pro samostatné tabulky, které vaše návrhy ukázaly ostatním dobrovolníkům: odeslaná dávka se počítá jako kontakt, vše starší než dva roky kontrolujeme každý měsíc a na vaši žádost tyto soubory smažeme do 30 dnů. Revizní kopii smažeme také ve chvíli, kdy jsou změny z jejího kola na webu. Smazáním celého souboru zmizí i jeho historie verzí. Po vysypání koše na Disku Google našemu správci umožní obnovit smazaný soubor ještě až 25 dní; potom zmizí nadobro. Kopie, které si někdo s odkazem sám vytvořil, zpět vzít nemůžeme. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků. U vašich textů, které jsme zveřejnili, záznam uvádí také, o jaké znění šlo, z jaké dávky pochází a kdy k nám dorazilo, s odkazem na vaši odpověď se svolením; zbytek dávky se neuchovává.',
+        rest: ' dokud nás nepožádáte o jejich smazání, nebo dva roky od našeho posledního kontaktu, podle toho, co nastane dřív. Totéž platí pro vaše revizní kopie, uložené dávky a naše poznámky k nim i pro samostatné tabulky, které vaše návrhy ukázaly ostatním dobrovolníkům: odeslaná dávka se počítá jako kontakt, vše starší než dva roky kontrolujeme každý měsíc a na vaši žádost tyto soubory smažeme do 30 dnů. Revizní kopii smažeme také ve chvíli, kdy jsou změny z jejího kola na webu. Smazáním celého souboru zmizí i jeho historie verzí. Po vysypání koše na Disku Google člověku s naším administrátorským přístupem umožní obnovit smazaný soubor ještě až 25 dní; potom zmizí nadobro. Kopie, které si někdo s odkazem sám vytvořil, zpět vzít nemůžeme. Uvedení na webu zůstane, dokud nás nepožádáte o jeho odstranění. Záznam vašeho svolení uchováváme po dobu, kdy vaši práci používáme, a potom jen po dobu přiměřeně nutnou k uplatnění, výkonu nebo obhajobě právních nároků. U vašich textů, které jsme zveřejnili, záznam uvádí také, o jaké znění šlo, z jaké dávky pochází a kdy k nám dorazilo, s odkazem na vaši odpověď se svolením; zbytek dávky se neuchovává.',
       },
       invites: {
         lead: 'Pozvánky do bety plánovače:',
         rest:
-          ' pokud vás správce pozve z kterékoli ze dvou listin, plánovač uloží vaši e-mailovou adresu, kdy pozvánka vznikla, kdy vyprší, zda byla odvolána nebo použita a jaký účet ji použil. Záznamy o nepoužitých pozvánkách se mažou 30 dní po vypršení nebo odvolání. Pozvánka bez data konce zůstává, dokud není odvolána nebo použita. Záznamy o použitých pozvánkách se mažou spolu s účtem. Chcete-li je odstranit dříve, napište na hello@nidhi.today: týká se to záznamu v tabulce i záznamu v plánovači.',
+          ' pokud vás někdo s administrátorským přístupem pozve z kterékoli ze dvou listin, plánovač uloží vaši e-mailovou adresu, kdy pozvánka vznikla, kdy vyprší, zda byla odvolána nebo použita a jaký účet ji použil. Záznamy o nepoužitých pozvánkách se mažou 30 dní po vypršení nebo odvolání. Pozvánka bez data konce zůstává, dokud není odvolána nebo použita. Záznamy o použitých pozvánkách se mažou spolu s účtem. Chcete-li je odstranit dříve, napište na hello@nidhi.today: týká se to záznamu v tabulce i záznamu v plánovači.',
       },
       bounced: {
         lead: 'Nedoručitelné nebo neplatné e-maily:',
@@ -914,7 +914,7 @@ export const cs: Dict = {
       },
       sendRetry: {
         lead: 'E-maily s lekcí, které se nepodařilo odeslat:',
-        rest: ' když vám e-mail s lekcí nelze odeslat, skript newsletteru si uloží krátký kód vytvořený z vaší adresy (část hashe SHA-256, nikdy adresu samotnou), kolikrát to zkusil a druh chyby. Při neznámé chybě skript odeslání zopakuje při dalších spuštěních, celkem nejvýše třikrát; na adresy odmítnuté e-mailovou službou už odeslání neopakuje. Tyto záznamy se smažou, jakmile lekce dojde všem odběratelům, kterým ji lze doručit.',
+        rest: ' když vám e-mail s lekcí nelze odeslat, skript newsletteru si uloží krátký kód vytvořený z vaší adresy (část hashe SHA-256, nikdy adresu samotnou), kolikrát to zkusil a druh chyby. Při neznámé chybě skript odeslání zopakuje při dalších spuštěních, celkem nejvýše třikrát; na adresy odmítnuté e-mailovou službou už odeslání neopakuje. Tyto záznamy se smažou, jakmile lekce dojde všem, komu ji lze doručit.',
       },
       visitorId: {
         lead: 'Vaše ID návštěvníka v PostHogu (jen s vaším souhlasem):',
@@ -937,7 +937,7 @@ export const cs: Dict = {
         'U newsletteru je odhlášení odběru jedním kliknutím na odkaz v každém e-mailu, který posíláme, a tím se také naplánuje smazání popsané výše. U čekací listiny a formuláře pro dobrovolnou pomoc i u revizních tabulek nám napište a vyřadíme vás i s vašimi revizními soubory, i s případným uvedením na webu. Pokud od vás máme příspěvek, uchováváme jen záznam vašeho svolení, jak je popsáno výše. Ve všech těchto případech to uděláme ručně.',
       analytics: {
         before:
-          'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud jste na cookie liště souhlasili; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',
+          'Na tomto webu nejsou události webové analytiky propojené s vaším jménem ani účtem, takže „vaše“ události dohledat nemůžeme. Výjimkou jsou události newsletteru a zobrazení stránek propojená s vaším kódem z newsletteru: ty na požádání dohledáme a smažeme. V plánovači jsou události propojené s vámi, jen pokud máte na cookie liště udělený souhlas; pak je na požádání také dohledáme a smažeme. Odmítnutí nesmaže události, které už byly odeslány. Odmítnutí ani blokátor obsahu na žádném z obou webů nic nerozbije. Odpověď můžete kdykoli změnit přes ',
         strong: 'Nastavení cookies',
         after: ' v dolní části každé stránky; když tam odmítnete, okamžitě se zastaví zaznamenávání kliknutí i ukládání ID návštěvníka ve vašem prohlížeči a v plánovači se nové události přestanou propojovat s vámi.',
       },
@@ -1022,11 +1022,12 @@ export const cs: Dict = {
 
   subscribe: {
     region: 'Odběr newsletteru',
-    title: 'Nové články přímo do vaší schránky',
+    title: 'Nové lekce přímo do vaší schránky',
     text: 'Jeden e-mail, když vyjde něco nového. Žádný spam, odhlásit se jde kdykoli.',
     inEnglish: 'Lekce i e-maily jsou v angličtině.',
-    readers: 'Nové lekce už e-mailem dostává {n}+ čtenářů.',
+    readers: 'Nové lekce už e-mailem dostává {n}+ lidí.',
     emailLabel: 'E-mailová adresa',
+    emailPlaceholder: 'E-mail',
     button: 'Odebírat',
     privacyBefore: 'Dvojí potvrzení. Odhlásit se jde kdykoli. ',
     privacyLink: 'Zásady ochrany soukromí',
@@ -1035,7 +1036,7 @@ export const cs: Dict = {
     alreadySubscribed: 'Už odebírám',
     notNow: 'Teď ne',
     successTitle: 'Zkontrolujte svou schránku',
-    successBefore: 'Poslali jsme potvrzovací odkaz na adresu ',
+    successBefore: 'Potvrzovací odkaz je na cestě na adresu ',
     successAfter: '. Odběr dokončíte kliknutím na tlačítko v tom e-mailu. Zabere to vteřinu.',
     yourEmail: 'váš e-mail',
     hintBefore: 'Ani po minutě nepřišel žádný e-mail? Pokud tato adresa už odběr má, nic se nemění a nový e-mail nepřijde. Jinak zkontrolujte spam, nebo ',
@@ -1049,8 +1050,8 @@ export const cs: Dict = {
     confirmChange: 'Změnit',
     noScript: 'K přihlášení je potřeba JavaScript, který je v tomto prohlížeči vypnutý nebo blokovaný. Můžete také napsat na hello@nidhi.today.',
     undo: 'Vrátit zpět',
-    dismissedPermanent: 'Děkujeme za odběr! Na tomto zařízení už tento banner neukážeme.',
-    dismissedLater: 'Vrátíme se k tomu později.',
+    dismissedPermanent: 'Díky za odběr! Na tomto zařízení se už tento banner nezobrazí.',
+    dismissedLater: 'Tento banner se později zase zobrazí.',
     sending: 'Odesílání…',
     notConfigured: 'Odběr zatím není nastavený. Zkuste to brzy znovu, nebo použijte kanál RSS.',
     error: 'Nepodařilo se zjistit, jestli to prošlo. Zkuste to prosím znovu; druhý pokus nic nepokazí.',
@@ -1067,12 +1068,13 @@ export const cs: Dict = {
     waitingAtLeast: 'Na pozvánku do bety čeká {n}+ lidí.',
     beta: { before: "Kdo se zapojí do bety, má placené funkce 12 měsíců po spuštění zdarma. ", link: "Jak beta funguje" },
     emailLabel: 'E-mailová adresa',
+    emailPlaceholder: 'E-mail',
     cta: 'Dejte mi vědět',
     privacyBefore: 'Jeden e-mail, až se přístup otevře. ',
     privacyLink: 'Zásady ochrany soukromí',
     privacyAfter: '.',
     successTitle: 'Jste na seznamu',
-    successBody: 'Až se přístup otevře, pošleme vám jeden e-mail. Nic víc. Pokud už adresa na seznamu je, zůstane na něm jen jednou.',
+    successBody: 'Až se přístup otevře, přijde vám jeden e-mail. Nic víc. Pokud už adresa na seznamu je, zůstane na něm jen jednou.',
     rememberedBody: 'Tento prohlížeč si pamatuje vaši registraci, proto místo formuláře ukazuje tuto poznámku. V jiném prohlížeči nebo zařízení se formulář zobrazí znovu; znovu se registrovat není potřeba.',
     confirmPrompt: 'Je tato adresa správná?',
     confirmYes: 'Ano, dejte mi vědět',
@@ -1152,7 +1154,7 @@ export const cs: Dict = {
       /** Replaces `start` for a route the reader has already begun. */
       doorContinue: 'Pokračovat: ',
       /** Replaces it once every lesson on the route is read. */
-      doorRead: 'Trasa dokončena. ',
+      doorRead: 'Cesta dokončena. ',
       doorPath: 'Pokračovat na vzdělávací cestě',
       inclusiveGo: 'Prozkoumat',
     },
@@ -1231,7 +1233,7 @@ export const cs: Dict = {
       netWorth: { question: '„Jaké je moje čisté jmění napříč měnami?“', name: 'Kalkulačka čistého jmění', desc: 'Jedna měna i více.' },
       loanComparison: { question: '„Který úvěr mě vyjde levněji?“', name: 'Srovnání úvěrů', desc: 'Nabídky úvěrů vedle sebe.' },
       monteCarlo: { question: '„Jaké rozpětí výsledků může můj plán mít?“', name: 'Simulátor Monte Carlo', desc: 'Rozpětí výsledků, ne jedna čára.' },
-      inflation: { question: '„Drží moje peníze krok s cenami?“', name: 'Inflační kalkulačka', desc: 'Minulost, budoucnost a vaše zvýšení platu, po zohlednění inflace.' },
+      inflation: { question: '„Drží moje peníze krok s cenami?“', name: 'Inflační kalkulačka', desc: 'Minulost, budoucnost a vaše zvýšení platu, očištěno o inflaci.' },
       investOrPayOff: { question: '„Mám nejdřív investovat, nebo splatit dluh?“', name: 'Investovat, nebo splatit dluh', desc: 'Dvě cesty, stejné datum, očištěno o inflaci.' },
     },
   },

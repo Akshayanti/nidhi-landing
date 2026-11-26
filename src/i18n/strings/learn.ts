@@ -103,14 +103,14 @@ export const learnEn = {
       'discovery': {
         name: 'Discovery',
         title: 'Discovery Series: Personal Finance Fundamentals | nidhi',
-        description: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner guides meant to be read in order.',
-        card: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner guides meant to be read in order.',
+        description: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner lessons meant to be read in order.',
+        card: 'The first level of the nidhi learning path: net worth, assets, debt, cash flow, budgeting, and saving. Beginner lessons meant to be read in order.',
       },
       'building': {
         name: 'Building',
         title: 'Building Series: Investing, Taxes, and Planning | nidhi',
-        description: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Guides for putting the basics to work.',
-        card: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Guides for putting the basics to work.',
+        description: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Lessons for putting the basics to work.',
+        card: 'The second level of the nidhi learning path: risk, investing, taxes, financial independence, loans, and goals. Lessons for putting the basics to work.',
       },
       'psychology': {
         name: 'Psychology',
@@ -121,8 +121,8 @@ export const learnEn = {
       'optimizing': {
         name: 'Optimizing',
         title: 'Optimizing Series: Projections, Fees, and Taxes | nidhi',
-        description: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Guides for tuning a plan that already works.',
-        card: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Guides for tuning a plan that already works.',
+        description: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Lessons for tuning a plan that already works.',
+        card: 'The fourth level of the nidhi learning path: projections, cash management, refinancing, fees, and tax efficiency. Lessons for tuning a plan that already works.',
       },
       'inclusive-finances': {
         name: 'Inclusive Finances',
@@ -163,14 +163,14 @@ export const learnEn = {
       'saving': {
         name: 'Saving',
         title: 'Saving Money: Personal Finance Basics | nidhi',
-        description: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy guides from nidhi.',
-        card: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy guides from nidhi.',
+        description: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy lessons from nidhi.',
+        card: 'How to save effectively: emergency funds, savings rates, and when saving beats investing. Personal finance literacy lessons from nidhi.',
       },
       'investing': {
         name: 'Investing',
         title: 'Investing Basics: Financial Literacy | nidhi',
-        description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
-        card: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing guides for personal finance literacy.',
+        description: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing lessons for personal finance literacy.',
+        card: 'Learn to invest: asset classes, risk, compound interest, and when to start. Beginner-friendly investing lessons for personal finance literacy.',
       },
       'risk': {
         name: 'Risk',
@@ -181,32 +181,32 @@ export const learnEn = {
       'planning': {
         name: 'Planning',
         title: 'Financial Planning: Accounts, Taxes, and Tracking | nidhi',
-        description: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning guides from nidhi.',
-        card: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning guides from nidhi.',
+        description: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning lessons from nidhi.',
+        card: 'How to turn financial knowledge into a plan: accounts, taxes, rebalancing, goals, and what to track. Practical financial planning lessons from nidhi.',
       },
       'goals': {
         name: 'Goals',
         title: 'Financial Goals and Tracking Your Progress | nidhi',
-        description: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning guides from nidhi.',
-        card: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning guides from nidhi.',
+        description: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning lessons from nidhi.',
+        card: 'How to set concrete financial goals and know if you are on track: target amounts, health metrics, and a simple dashboard. Planning lessons from nidhi.',
       },
       'fire': {
-        name: 'Fire',
+        name: 'FIRE',
         title: 'Financial Independence (FIRE): The Basics | nidhi',
-        description: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest guides from nidhi.',
-        card: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest guides from nidhi.',
+        description: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest lessons from nidhi.',
+        card: 'What financial independence means, how the FIRE number and safe withdrawal rates work, and what passive income really takes. Honest lessons from nidhi.',
       },
       'taxes': {
         name: 'Taxes',
         title: 'Taxes and Investing: Personal Finance Literacy | nidhi',
-        description: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational guides with a country-by-country reference table.',
-        card: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational guides with a country-by-country reference table.',
+        description: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational lessons with a country-by-country reference table.',
+        card: 'How taxes shape every financial decision, and where tax-advantaged accounts fit. Educational lessons with a country-by-country reference table.',
       },
       'currency': {
         name: 'Currency',
         title: 'Multi-Currency Money: Exchange Rates and Risk | nidhi',
-        description: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Guides for a cross-border life.',
-        card: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Guides for a cross-border life.',
+        description: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Lessons for a cross-border life.',
+        card: 'Managing money across currencies: exchange rates, purchasing power, and currency risk when your finances cross borders. Lessons for a cross-border life.',
       },
       'real-estate': {
         name: 'Real Estate',
@@ -263,7 +263,7 @@ export const learnEn = {
   blogIndex: {
     meta: {
       title: 'Learn About Your Money: Free Personal Finance Lessons | nidhi',
-      description: 'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical guides.',
+      description: 'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step with practical lessons.',
     },
     schema: {
       breadcrumbLearn: 'Learn',
@@ -402,7 +402,7 @@ export const learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: Personal Finance Literacy | nidhi',
-      descriptionFallback: 'Articles about {tag}: practical personal finance literacy and financial education from nidhi.',
+      descriptionFallback: 'Lessons on {tag}: practical personal finance literacy and financial education from nidhi.',
     },
     schema: {
       itemListName: '{tag} lessons',
@@ -431,7 +431,7 @@ export const learnEn = {
   topics: {
     meta: {
       title: 'Browse by topic | nidhi',
-      description: 'Every topic on the nidhi blog: net worth, budgeting, debt, investing, risk, and more. Pick a topic to read every post in that area.',
+      description: 'Every topic on nidhi: net worth, budgeting, debt, investing, risk, and more. Pick a topic to read every lesson in that area.',
     },
     schema: {
       collectionName: 'Lesson topics',
@@ -440,7 +440,7 @@ export const learnEn = {
     subtitle: 'Every topic on the learning path, with a lesson count for each. Pick one to read every lesson in that area.',
     empty: 'No topics yet.',
     /** A tag with no curated entry still gets a card, with this line. */
-    fallbackCard: 'Articles tagged "{tag}".',
+    fallbackCard: 'Lessons tagged “{tag}”.',
     countOne: '{count} lesson',
     countMany: '{count} lessons',
     countFew: '{count} lessons',
@@ -450,7 +450,7 @@ export const learnEn = {
   inclusiveFinances: {
     eyebrow: 'No prerequisite, relevant at any stage',
     h1: 'When the default plan does not fit you',
-    lede1: 'Most financial advice quietly assumes one kind of household: a legally married couple or a single adult, a steady employer, a family the law recognises, a life lived in one country. Survivor benefits, joint tax filing, inheritance rules, and workplace pensions are all built around that shape.',
+    lede1: 'Most financial advice quietly assumes one kind of household: a legally married couple or a single adult, a steady employer, a family the law recognizes, a life lived in one country. Survivor benefits, joint tax filing, inheritance rules, and workplace pensions are all built around that shape.',
     lede2: 'These guides are for everyone else. Each one takes a single default, shows what breaks when it does not hold for you, and walks through the deliberate choices that replace it. You do not need to have read anything else on this site first.',
     scope: 'These guides teach what to check and what to ask. The legal details differ by country, so they never tell you what the law where you live says. For that, speak to a local professional.',
     situations: {
@@ -514,7 +514,7 @@ export const learnHi: typeof learnEn = {
       },
       optimizing: {
         description: 'जो चल रहा है उसे निखारना। कर दक्षता, पोर्टफ़ोलियो रीबैलेंसिंग, और उन्नत रणनीतियाँ।',
-        covered: 'टैक्स-लॉस हार्वेस्टिंग, पोर्टफ़ोलियो रीबैलेंसिंग, एसेट लोकेशन (कौन-सा निवेश किस खाते में), विविधीकरण (diversification)',
+        covered: 'टैक्स-लॉस हार्वेस्टिंग (घाटे से कर घटाना), पोर्टफ़ोलियो रीबैलेंसिंग, एसेट लोकेशन (कौन-सा निवेश किस खाते में), विविधीकरण (diversification)',
       },
       mastery: {
         description: 'लंबी अवधि की सोच। पीढ़ियों की संपत्ति, एस्टेट योजना (वसीयत और उत्तराधिकार), और वित्तीय स्वतंत्रता।',
@@ -529,14 +529,14 @@ export const learnHi: typeof learnEn = {
       'discovery': {
         name: 'शुरुआत',
         title: 'शुरुआत श्रृंखला: पर्सनल फाइनेंस की बुनियाद | nidhi',
-        description: 'nidhi सीखने के रास्ते का पहला स्तर: शुद्ध संपत्ति, संपत्तियाँ, कर्ज़, कैश फ़्लो, बजट और बचत। क्रम में पढ़ने के लिए शुरुआती मार्गदर्शिकाएँ।',
-        card: 'nidhi सीखने के रास्ते का पहला स्तर: शुद्ध संपत्ति, संपत्तियाँ, कर्ज़, कैश फ़्लो, बजट और बचत। क्रम में पढ़ने के लिए शुरुआती मार्गदर्शिकाएँ।',
+        description: 'nidhi सीखने के रास्ते का पहला स्तर: शुद्ध संपत्ति, संपत्तियाँ, कर्ज़, कैश फ़्लो, बजट और बचत। क्रम में पढ़ने के लिए शुरुआती पाठ।',
+        card: 'nidhi सीखने के रास्ते का पहला स्तर: शुद्ध संपत्ति, संपत्तियाँ, कर्ज़, कैश फ़्लो, बजट और बचत। क्रम में पढ़ने के लिए शुरुआती पाठ।',
       },
       'building': {
         name: 'निर्माण',
         title: 'निर्माण श्रृंखला: निवेश, कर और योजना | nidhi',
-        description: 'nidhi सीखने के रास्ते का दूसरा स्तर: जोखिम, निवेश, कर, वित्तीय स्वतंत्रता, लोन और लक्ष्य। बुनियाद को काम पर लगाने की मार्गदर्शिकाएँ।',
-        card: 'nidhi सीखने के रास्ते का दूसरा स्तर: जोखिम, निवेश, कर, वित्तीय स्वतंत्रता, लोन और लक्ष्य। बुनियाद को काम पर लगाने की मार्गदर्शिकाएँ।',
+        description: 'nidhi सीखने के रास्ते का दूसरा स्तर: जोखिम, निवेश, कर, वित्तीय स्वतंत्रता, लोन और लक्ष्य। बुनियाद को काम पर लगाने के पाठ।',
+        card: 'nidhi सीखने के रास्ते का दूसरा स्तर: जोखिम, निवेश, कर, वित्तीय स्वतंत्रता, लोन और लक्ष्य। बुनियाद को काम पर लगाने के पाठ।',
       },
       'psychology': {
         name: 'मनोविज्ञान',
@@ -547,8 +547,8 @@ export const learnHi: typeof learnEn = {
       'optimizing': {
         name: 'निखार',
         title: 'निखार श्रृंखला: अनुमान, शुल्क और कर | nidhi',
-        description: 'nidhi सीखने के रास्ते का चौथा स्तर: अनुमान, कैश प्रबंधन, रीफ़ाइनेंस, शुल्क और कर दक्षता। जो योजना चल रही है उसे निखारने की मार्गदर्शिकाएँ।',
-        card: 'nidhi सीखने के रास्ते का चौथा स्तर: अनुमान, कैश प्रबंधन, रीफ़ाइनेंस, शुल्क और कर दक्षता। जो योजना चल रही है उसे निखारने की मार्गदर्शिकाएँ।',
+        description: 'nidhi सीखने के रास्ते का चौथा स्तर: अनुमान, कैश प्रबंधन, रीफ़ाइनेंस, शुल्क और कर दक्षता। जो योजना चल रही है उसे निखारने के पाठ।',
+        card: 'nidhi सीखने के रास्ते का चौथा स्तर: अनुमान, कैश प्रबंधन, रीफ़ाइनेंस, शुल्क और कर दक्षता। जो योजना चल रही है उसे निखारने के पाठ।',
       },
       'inclusive-finances': {
         name: 'सबके लिए वित्त',
@@ -589,14 +589,14 @@ export const learnHi: typeof learnEn = {
       'saving': {
         name: 'बचत',
         title: 'पैसा बचाना: पर्सनल फाइनेंस की मूल बातें | nidhi',
-        description: 'बचत कैसे असरदार बनाएँ: आपातकालीन कोष, बचत दरें, और बचत कब निवेश से बेहतर है। nidhi से वित्तीय साक्षरता मार्गदर्शिकाएँ।',
-        card: 'बचत कैसे असरदार बनाएँ: आपातकालीन कोष, बचत दरें, और बचत कब निवेश से बेहतर है। nidhi से वित्तीय साक्षरता मार्गदर्शिकाएँ।',
+        description: 'बचत कैसे असरदार बनाएँ: आपातकालीन कोष, बचत दरें, और बचत कब निवेश से बेहतर है। nidhi से वित्तीय साक्षरता के पाठ।',
+        card: 'बचत कैसे असरदार बनाएँ: आपातकालीन कोष, बचत दरें, और बचत कब निवेश से बेहतर है। nidhi से वित्तीय साक्षरता के पाठ।',
       },
       'investing': {
         name: 'निवेश',
         title: 'निवेश की मूल बातें: वित्तीय साक्षरता | nidhi',
-        description: 'निवेश करना सीखें: एसेट क्लास, जोखिम, चक्रवृद्धि ब्याज, और कब शुरू करें। शुरुआती पाठकों के लिए निवेश की आसान मार्गदर्शिकाएँ, वित्तीय साक्षरता के लिए।',
-        card: 'निवेश करना सीखें: एसेट क्लास, जोखिम, चक्रवृद्धि ब्याज, और कब शुरू करें। शुरुआती पाठकों के लिए निवेश की आसान मार्गदर्शिकाएँ, वित्तीय साक्षरता के लिए।',
+        description: 'निवेश करना सीखें: एसेट क्लास, जोखिम, चक्रवृद्धि ब्याज, और कब शुरू करें। शुरुआती पाठकों के लिए निवेश के आसान पाठ, वित्तीय साक्षरता के लिए।',
+        card: 'निवेश करना सीखें: एसेट क्लास, जोखिम, चक्रवृद्धि ब्याज, और कब शुरू करें। शुरुआती पाठकों के लिए निवेश के आसान पाठ, वित्तीय साक्षरता के लिए।',
       },
       'risk': {
         name: 'जोखिम',
@@ -607,32 +607,32 @@ export const learnHi: typeof learnEn = {
       'planning': {
         name: 'योजना',
         title: 'वित्तीय योजना: खाते, कर और प्रगति पर नज़र | nidhi',
-        description: 'वित्तीय ज्ञान को योजना में कैसे बदलें: खाते, कर, रीबैलेंसिंग, लक्ष्य, और किन बातों पर नज़र रखें। nidhi से व्यावहारिक वित्तीय योजना मार्गदर्शिकाएँ।',
-        card: 'वित्तीय ज्ञान को योजना में कैसे बदलें: खाते, कर, रीबैलेंसिंग, लक्ष्य, और किन बातों पर नज़र रखें। nidhi से व्यावहारिक वित्तीय योजना मार्गदर्शिकाएँ।',
+        description: 'वित्तीय ज्ञान को योजना में कैसे बदलें: खाते, कर, रीबैलेंसिंग, लक्ष्य, और किन बातों पर नज़र रखें। nidhi से व्यावहारिक वित्तीय योजना के पाठ।',
+        card: 'वित्तीय ज्ञान को योजना में कैसे बदलें: खाते, कर, रीबैलेंसिंग, लक्ष्य, और किन बातों पर नज़र रखें। nidhi से व्यावहारिक वित्तीय योजना के पाठ।',
       },
       'goals': {
         name: 'लक्ष्य',
         title: 'वित्तीय लक्ष्य और प्रगति पर नज़र | nidhi',
-        description: 'ठोस वित्तीय लक्ष्य कैसे तय करें और पता करें कि आप सही रास्ते पर हैं या नहीं: लक्ष्य राशि, वित्तीय सेहत के पैमाने, और एक सरल डैशबोर्ड। nidhi से योजना मार्गदर्शिकाएँ।',
-        card: 'ठोस वित्तीय लक्ष्य कैसे तय करें और पता करें कि आप सही रास्ते पर हैं या नहीं: लक्ष्य राशि, वित्तीय सेहत के पैमाने, और एक सरल डैशबोर्ड। nidhi से योजना मार्गदर्शिकाएँ।',
+        description: 'ठोस वित्तीय लक्ष्य कैसे तय करें और पता करें कि आप सही रास्ते पर हैं या नहीं: लक्ष्य राशि, वित्तीय सेहत के पैमाने, और एक सरल डैशबोर्ड। nidhi से योजना के पाठ।',
+        card: 'ठोस वित्तीय लक्ष्य कैसे तय करें और पता करें कि आप सही रास्ते पर हैं या नहीं: लक्ष्य राशि, वित्तीय सेहत के पैमाने, और एक सरल डैशबोर्ड। nidhi से योजना के पाठ।',
       },
       'fire': {
         name: 'FIRE',
         title: 'वित्तीय स्वतंत्रता और जल्दी रिटायरमेंट (FIRE): मूल बातें | nidhi',
-        description: 'वित्तीय स्वतंत्रता का मतलब क्या है, FIRE संख्या और सुरक्षित निकासी दरें कैसे काम करती हैं, और निष्क्रिय आय में असल में क्या लगता है। nidhi से ईमानदार मार्गदर्शिकाएँ।',
-        card: 'वित्तीय स्वतंत्रता का मतलब क्या है, FIRE संख्या और सुरक्षित निकासी दरें कैसे काम करती हैं, और निष्क्रिय आय में असल में क्या लगता है। nidhi से ईमानदार मार्गदर्शिकाएँ।',
+        description: 'वित्तीय स्वतंत्रता का मतलब क्या है, FIRE संख्या और सुरक्षित निकासी दरें कैसे काम करती हैं, और निष्क्रिय आय में असल में क्या लगता है। nidhi से ईमानदार पाठ।',
+        card: 'वित्तीय स्वतंत्रता का मतलब क्या है, FIRE संख्या और सुरक्षित निकासी दरें कैसे काम करती हैं, और निष्क्रिय आय में असल में क्या लगता है। nidhi से ईमानदार पाठ।',
       },
       'taxes': {
         name: 'कर',
         title: 'कर और निवेश: वित्तीय साक्षरता | nidhi',
-        description: 'कर हर वित्तीय फ़ैसले को कैसे आकार देते हैं, और कर-बचत खाते कहाँ फ़िट होते हैं। देश-दर-देश संदर्भ तालिका के साथ शैक्षिक मार्गदर्शिकाएँ।',
-        card: 'कर हर वित्तीय फ़ैसले को कैसे आकार देते हैं, और कर-बचत खाते कहाँ फ़िट होते हैं। देश-दर-देश संदर्भ तालिका के साथ शैक्षिक मार्गदर्शिकाएँ।',
+        description: 'कर हर वित्तीय फ़ैसले को कैसे आकार देते हैं, और कर-बचत खाते कहाँ फ़िट होते हैं। देश-दर-देश संदर्भ तालिका के साथ शैक्षिक पाठ।',
+        card: 'कर हर वित्तीय फ़ैसले को कैसे आकार देते हैं, और कर-बचत खाते कहाँ फ़िट होते हैं। देश-दर-देश संदर्भ तालिका के साथ शैक्षिक पाठ।',
       },
       'currency': {
         name: 'मुद्रा',
         title: 'कई मुद्राओं में पैसा: विनिमय दरें और जोखिम | nidhi',
-        description: 'एक से ज़्यादा मुद्राओं में पैसा संभालना: विनिमय दरें, क्रय शक्ति, और मुद्रा जोखिम जब आपका पैसा सीमाओं के पार हो। सीमा-पार जीवन के लिए मार्गदर्शिकाएँ।',
-        card: 'एक से ज़्यादा मुद्राओं में पैसा संभालना: विनिमय दरें, क्रय शक्ति, और मुद्रा जोखिम जब आपका पैसा सीमाओं के पार हो। सीमा-पार जीवन के लिए मार्गदर्शिकाएँ।',
+        description: 'एक से ज़्यादा मुद्राओं में पैसा संभालना: विनिमय दरें, क्रय शक्ति, और मुद्रा जोखिम जब आपका पैसा सीमाओं के पार हो। सीमा-पार जीवन के लिए पाठ।',
+        card: 'एक से ज़्यादा मुद्राओं में पैसा संभालना: विनिमय दरें, क्रय शक्ति, और मुद्रा जोखिम जब आपका पैसा सीमाओं के पार हो। सीमा-पार जीवन के लिए पाठ।',
       },
       'real-estate': {
         name: 'रियल एस्टेट',
@@ -654,7 +654,7 @@ export const learnHi: typeof learnEn = {
      */
     lessonsInEnglish: 'पाठ अंग्रेज़ी में हैं। आपका ब्राउज़र पढ़ते समय इनका अनुवाद कर सकता है।',
     island: {
-      minRead: 'मिनट का पठन',
+      minRead: 'मिनट में पढ़ें',
       startHere: 'यहाँ से शुरू करें',
       new: 'नया',
       markRead: 'पढ़ा हुआ चिह्नित करें',
@@ -675,7 +675,7 @@ export const learnHi: typeof learnEn = {
   blogIndex: {
     meta: {
       title: 'अपने पैसे के बारे में सीखें: पर्सनल फाइनेंस के मुफ़्त पाठ | nidhi',
-      description: 'मुफ़्त पर्सनल फाइनेंस शिक्षा: शुद्ध संपत्ति, बजट, बचत, निवेश और कर्ज़ प्रबंधन। व्यावहारिक मार्गदर्शिकाओं के साथ कदम-दर-कदम वित्तीय साक्षरता बनाएँ।',
+      description: 'मुफ़्त पर्सनल फाइनेंस शिक्षा: शुद्ध संपत्ति, बजट, बचत, निवेश और कर्ज़ प्रबंधन। व्यावहारिक पाठों के साथ कदम-दर-कदम वित्तीय साक्षरता बनाएँ।',
     },
     schema: {
       breadcrumbLearn: 'सीखें',
@@ -695,7 +695,7 @@ export const learnHi: typeof learnEn = {
       guideMany: 'गाइडें',
     },
     island: {
-      minRead: 'मिनट का पठन',
+      minRead: 'मिनट में पढ़ें',
       finishedEyebrow: 'सभी पाठ पढ़ लिए',
       finishedHeading: 'आपने रास्ते के अब तक के सभी {count} पाठ पढ़ लिए हैं',
       finishedSub: 'नए पाठ प्रकाशित होते ही यहाँ दिखते हैं। सबके लिए वित्त और विषय सूची वापस आने के दूसरे तरीक़े हैं।',
@@ -761,8 +761,8 @@ export const learnHi: typeof learnEn = {
         'rebalancing': 'पोर्टफ़ोलियो अपने तय अनुपात से क्यों खिसकता है, और उसे रीबैलेंस क्यों किया जाता है',
         'fees': '1% सालाना शुल्क (fee) दशकों में कितना बड़ा हो जाता है',
         'real-returns': 'असली रिटर्न (real\u00A0return) क्या है, महँगाई और लागत के बाद',
-        'tax-loss': 'टैक्स-लॉस हार्वेस्टिंग और एसेट लोकेशन',
-        'glide-path': 'ग्लाइड पाथ क्या है',
+        'tax-loss': 'टैक्स-लॉस हार्वेस्टिंग (घाटे से कर घटाना) और एसेट लोकेशन (कौन-सा निवेश किस खाते में)',
+        'glide-path': 'ग्लाइड पाथ (सालों के साथ जोखिम घटाने का तय क्रम) क्या है',
       },
       goals: {
         picture: { label: 'साफ़ देखना कि मेरा पैसा कहाँ खड़ा है', topic: 'शुद्ध संपत्ति, कैश फ़्लो और बजट' },
@@ -825,7 +825,7 @@ export const learnHi: typeof learnEn = {
   topics: {
     meta: {
       title: 'विषय से देखें | nidhi',
-      description: 'nidhi ब्लॉग के सभी विषय: शुद्ध संपत्ति, बजट, कर्ज़, निवेश, जोखिम, और बहुत कुछ। किसी विषय को चुनकर उस क्षेत्र के सभी पाठ पढ़ें।',
+      description: 'nidhi के सभी विषय: शुद्ध संपत्ति, बजट, कर्ज़, निवेश, जोखिम, और बहुत कुछ। किसी विषय को चुनकर उस क्षेत्र के सभी पाठ पढ़ें।',
     },
     schema: {
       collectionName: 'पाठ के विषय',
@@ -833,7 +833,7 @@ export const learnHi: typeof learnEn = {
     h1: 'विषय से देखें',
     subtitle: 'सीखने के रास्ते के सभी विषय, हर एक के पाठ की गिनती के साथ। किसी एक को चुनकर उस क्षेत्र के सभी पाठ पढ़ें।',
     empty: 'अभी कोई विषय नहीं।',
-    fallbackCard: '"{tag}" टैग वाले पाठ।',
+    fallbackCard: '“{tag}” टैग वाले पाठ।',
     countOne: '{count} पाठ',
     countMany: '{count} पाठ',
     countFew: '{count} पाठ',
@@ -920,14 +920,14 @@ export const learnEs: typeof learnEn = {
       'discovery': {
         name: 'Descubrimiento',
         title: 'Descubrimiento: fundamentos de finanzas personales | nidhi',
-        description: 'El primer nivel de la ruta de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Guías para empezar, en orden de lectura.',
-        card: 'El primer nivel de la ruta de aprendizaje de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Guías para quien empieza, pensadas para leerse en orden.',
+        description: 'El primer nivel de la ruta de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Lecciones para empezar, en orden de lectura.',
+        card: 'El primer nivel de la ruta de aprendizaje de nidhi: patrimonio neto, activos, deuda, flujo de efectivo, presupuesto y ahorro. Lecciones para quien empieza, pensadas para leerse en orden.',
       },
       'building': {
         name: 'Construcción',
         title: 'Construcción: inversión, impuestos y planificación | nidhi',
-        description: 'El segundo nivel de la ruta de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Guías para aplicar lo básico.',
-        card: 'El segundo nivel de la ruta de aprendizaje de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Guías para poner en práctica lo básico.',
+        description: 'El segundo nivel de la ruta de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Lecciones para aplicar lo básico.',
+        card: 'El segundo nivel de la ruta de aprendizaje de nidhi: riesgo, inversión, impuestos, independencia financiera, préstamos y objetivos. Lecciones para poner en práctica lo básico.',
       },
       'psychology': {
         name: 'Psicología',
@@ -939,7 +939,7 @@ export const learnEs: typeof learnEn = {
         name: 'Optimización',
         title: 'Optimización: proyecciones, comisiones e impuestos | nidhi',
         description: 'Cuarto nivel de la ruta de nidhi: proyecciones, efectivo, refinanciación, comisiones y eficiencia fiscal, para afinar un plan que ya funciona.',
-        card: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Guías para afinar un plan que ya funciona.',
+        card: 'El cuarto nivel de la ruta de aprendizaje de nidhi: proyecciones, gestión del efectivo, refinanciación, comisiones y eficiencia fiscal. Lecciones para afinar un plan que ya funciona.',
       },
       'inclusive-finances': {
         name: 'Finanzas inclusivas',
@@ -980,14 +980,14 @@ export const learnEs: typeof learnEn = {
       'saving': {
         name: 'Ahorro',
         title: 'Ahorrar dinero: nociones de finanzas personales | nidhi',
-        description: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Guías de educación financiera de nidhi.',
-        card: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Guías de educación financiera de nidhi.',
+        description: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Lecciones de educación financiera de nidhi.',
+        card: 'Cómo ahorrar de forma eficaz: fondos de emergencia, tasas de ahorro y cuándo ahorrar es mejor que invertir. Lecciones de educación financiera de nidhi.',
       },
       'investing': {
         name: 'Inversión',
         title: 'Nociones de inversión: educación financiera | nidhi',
-        description: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para principiantes y educación financiera.',
-        card: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Guías de inversión para quien empieza, como parte de la educación financiera.',
+        description: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Lecciones de inversión para quien empieza y educación financiera.',
+        card: 'Aprende a invertir: clases de activos, riesgo, interés compuesto y cuándo empezar. Lecciones de inversión para quien empieza, como parte de la educación financiera.',
       },
       'risk': {
         name: 'Riesgo',
@@ -998,32 +998,32 @@ export const learnEs: typeof learnEn = {
       'planning': {
         name: 'Planificación',
         title: 'Planificación financiera: cuentas, impuestos y control | nidhi',
-        description: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Guías prácticas de planificación.',
-        card: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Guías prácticas de planificación financiera de nidhi.',
+        description: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Lecciones prácticas de planificación.',
+        card: 'Cómo convertir el conocimiento financiero en un plan: cuentas, impuestos, reequilibrio, objetivos y qué seguir de cerca. Lecciones prácticas de planificación financiera de nidhi.',
       },
       'goals': {
         name: 'Objetivos',
         title: 'Objetivos financieros y seguimiento de tu progreso | nidhi',
         description: 'Cómo fijar objetivos financieros concretos y saber si vas por buen camino: cantidades objetivo, indicadores de salud financiera y un panel sencillo.',
-        card: 'Cómo fijar objetivos financieros concretos y saber si vas por buen camino: cantidades objetivo, indicadores de salud financiera y un panel sencillo. Guías de planificación de nidhi.',
+        card: 'Cómo fijar objetivos financieros concretos y saber si vas por buen camino: cantidades objetivo, indicadores de salud financiera y un panel sencillo. Lecciones de planificación de nidhi.',
       },
       'fire': {
         name: 'FIRE',
         title: 'Independencia financiera (FIRE): lo básico | nidhi',
         description: 'Qué significa la independencia financiera, cómo funcionan la cifra FIRE y las tasas de retiro seguras, y qué exigen de verdad los ingresos pasivos.',
-        card: 'Qué significa la independencia financiera, cómo funcionan la cifra FIRE y las tasas de retiro seguras, y qué exigen de verdad los ingresos pasivos. Guías honestas de nidhi.',
+        card: 'Qué significa la independencia financiera, cómo funcionan la cifra FIRE y las tasas de retiro seguras, y qué exigen de verdad los ingresos pasivos. Lecciones honestas de nidhi.',
       },
       'taxes': {
         name: 'Impuestos',
         title: 'Impuestos e inversión: educación financiera | nidhi',
-        description: 'Cómo influyen los impuestos en cada decisión financiera y qué papel tienen las cuentas con ventajas fiscales. Guías con una tabla de referencia por país.',
-        card: 'Cómo los impuestos influyen en cada decisión financiera y qué lugar ocupan las cuentas con ventajas fiscales. Guías educativas con una tabla de referencia país por país.',
+        description: 'Cómo influyen los impuestos en cada decisión financiera y qué papel tienen las cuentas con ventajas fiscales. Lecciones con una tabla de referencia por país.',
+        card: 'Cómo los impuestos influyen en cada decisión financiera y qué lugar ocupan las cuentas con ventajas fiscales. Lecciones educativas con una tabla de referencia país por país.',
       },
       'currency': {
         name: 'Monedas',
         title: 'Dinero en varias monedas: tipos de cambio y riesgo | nidhi',
         description: 'Gestionar el dinero en varias monedas: tipos de cambio, poder adquisitivo y riesgo cambiario cuando tus finanzas cruzan fronteras. Para vivir entre países.',
-        card: 'Gestionar el dinero en varias monedas: tipos de cambio, poder adquisitivo y riesgo cambiario cuando tus finanzas cruzan fronteras. Guías para una vida entre países.',
+        card: 'Gestionar el dinero en varias monedas: tipos de cambio, poder adquisitivo y riesgo cambiario cuando tus finanzas cruzan fronteras. Lecciones para una vida entre países.',
       },
       'real-estate': {
         name: 'Inmuebles',
@@ -1061,7 +1061,7 @@ export const learnEs: typeof learnEn = {
   blogIndex: {
     meta: {
       title: 'Aprende sobre tu dinero: finanzas personales gratis | nidhi',
-      description: 'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Aprende paso a paso con guías prácticas.',
+      description: 'Educación gratuita en finanzas personales: patrimonio neto, presupuesto, ahorro, inversión y gestión de deudas. Aprende paso a paso con lecciones prácticas.',
     },
     schema: {
       breadcrumbLearn: 'Aprende',
@@ -1188,7 +1188,7 @@ export const learnEs: typeof learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: educación en finanzas personales | nidhi',
-      descriptionFallback: 'Artículos sobre {tag}: finanzas personales y educación financiera prácticas, de nidhi.',
+      descriptionFallback: 'Lecciones sobre {tag}: finanzas personales y educación financiera prácticas, de nidhi.',
     },
     schema: {
       itemListName: 'Lecciones sobre {tag}',
@@ -1214,7 +1214,7 @@ export const learnEs: typeof learnEn = {
   topics: {
     meta: {
       title: 'Explorar por tema | nidhi',
-      description: 'Todos los temas del blog de nidhi: patrimonio neto, presupuesto, deuda, inversión, riesgo y más. Elige un tema para leer todos los artículos de esa área.',
+      description: 'Todos los temas de nidhi: patrimonio neto, presupuesto, deuda, inversión, riesgo y más. Elige un tema para leer todas las lecciones de esa área.',
     },
     schema: {
       collectionName: 'Temas de las lecciones',
@@ -1222,7 +1222,7 @@ export const learnEs: typeof learnEn = {
     h1: 'Explorar por tema',
     subtitle: 'Todos los temas de la ruta de aprendizaje, con el número de lecciones de cada uno. Elige uno para leer todas las lecciones de esa área.',
     empty: 'Aún no hay temas.',
-    fallbackCard: 'Artículos con la etiqueta «{tag}».',
+    fallbackCard: 'Lecciones con la etiqueta «{tag}».',
     countOne: '{count} lección',
     countMany: '{count} lecciones',
     countFew: '{count} lecciones',
@@ -1317,14 +1317,14 @@ export const learnCs: typeof learnEn = {
       'discovery': {
         name: 'Objevování',
         title: 'Série Objevování: základy osobních financí | nidhi',
-        description: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní průvodci určení ke čtení v pořadí.',
-        card: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní průvodci určení ke čtení v pořadí.',
+        description: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní lekce určené ke čtení v pořadí.',
+        card: 'První úroveň vzdělávací cesty nidhi: čisté jmění, aktiva, dluh, peněžní tok, rozpočet a spoření. Úvodní lekce určené ke čtení v pořadí.',
       },
       'building': {
         name: 'Budování',
         title: 'Série Budování: investování, daně a plánování | nidhi',
-        description: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Průvodci, jak základy uvést do praxe.',
-        card: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Průvodci, jak základy uvést do praxe.',
+        description: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Lekce, jak základy uvést do praxe.',
+        card: 'Druhá úroveň vzdělávací cesty nidhi: riziko, investování, daně, finanční nezávislost, úvěry a cíle. Lekce, jak základy uvést do praxe.',
       },
       'psychology': {
         name: 'Psychologie',
@@ -1335,8 +1335,8 @@ export const learnCs: typeof learnEn = {
       'optimizing': {
         name: 'Optimalizace',
         title: 'Série Optimalizace: projekce, poplatky a daně | nidhi',
-        description: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Průvodci pro doladění plánu, který už funguje.',
-        card: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Průvodci pro doladění plánu, který už funguje.',
+        description: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Lekce pro doladění plánu, který už funguje.',
+        card: 'Čtvrtá úroveň vzdělávací cesty nidhi: projekce, správa hotovosti, refinancování, poplatky a daňová efektivita. Lekce pro doladění plánu, který už funguje.',
       },
       'inclusive-finances': {
         name: 'Inkluzivní finance',
@@ -1377,14 +1377,14 @@ export const learnCs: typeof learnEn = {
       'saving': {
         name: 'Spoření',
         title: 'Spoření: základy osobních financí | nidhi',
-        description: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Průvodci finanční gramotností na webu nidhi.',
-        card: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Průvodci finanční gramotností na webu nidhi.',
+        description: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Lekce finanční gramotnosti na webu nidhi.',
+        card: 'Jak efektivně spořit: finanční rezerva, míra úspor a kdy má spoření před investováním přednost. Lekce finanční gramotnosti na webu nidhi.',
       },
       'investing': {
         name: 'Investování',
         title: 'Základy investování: finanční gramotnost | nidhi',
-        description: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní průvodci investováním pro rozvoj finanční gramotnosti.',
-        card: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní průvodci investováním pro rozvoj finanční gramotnosti.',
+        description: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní lekce investování pro rozvoj finanční gramotnosti.',
+        card: 'Jak investování funguje: třídy aktiv, riziko, složené úročení a otázka, kdy začít. Úvodní lekce investování pro rozvoj finanční gramotnosti.',
       },
       'risk': {
         name: 'Riziko',
@@ -1395,32 +1395,32 @@ export const learnCs: typeof learnEn = {
       'planning': {
         name: 'Plánování',
         title: 'Finanční plánování: účty, daně a sledování | nidhi',
-        description: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktičtí průvodci finančním plánováním na webu nidhi.',
-        card: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktičtí průvodci finančním plánováním na webu nidhi.',
+        description: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktické lekce finančního plánování na webu nidhi.',
+        card: 'Jak z finančních znalostí udělat plán: účty, daně, rebalancování, cíle a co sledovat. Praktické lekce finančního plánování na webu nidhi.',
       },
       'goals': {
         name: 'Cíle',
         title: 'Finanční cíle a sledování pokroku | nidhi',
-        description: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Průvodci plánováním na webu nidhi.',
-        card: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Průvodci plánováním na webu nidhi.',
+        description: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Lekce plánování na webu nidhi.',
+        card: 'Jak si stanovit konkrétní finanční cíle a poznat, zda jste na dobré cestě: cílové částky, ukazatele finančního zdraví a jednoduchý přehled. Lekce plánování na webu nidhi.',
       },
       'fire': {
         name: 'FIRE',
         title: 'Finanční nezávislost (FIRE): základy | nidhi',
-        description: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Průvodci bez příkras na webu nidhi.',
-        card: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Průvodci bez příkras na webu nidhi.',
+        description: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Lekce bez příkras na webu nidhi.',
+        card: 'Co znamená finanční nezávislost, jak funguje číslo FIRE a takzvaná bezpečná míra čerpání a co pasivní příjem opravdu obnáší. Lekce bez příkras na webu nidhi.',
       },
       'taxes': {
         name: 'Daně',
         title: 'Daně a investování: finanční gramotnost | nidhi',
-        description: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací průvodci s přehledovou tabulkou podle zemí.',
-        card: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací průvodci s přehledovou tabulkou podle zemí.',
+        description: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací lekce s přehledovou tabulkou podle zemí.',
+        card: 'Jak daně ovlivňují každé finanční rozhodnutí a kam zapadají daňově zvýhodněné účty. Vzdělávací lekce s přehledovou tabulkou podle zemí.',
       },
       'currency': {
         name: 'Měna',
         title: 'Peníze ve více měnách: kurzy a riziko | nidhi',
-        description: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Průvodci pro život přes hranice.',
-        card: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Průvodci pro život přes hranice.',
+        description: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Lekce pro život přes hranice.',
+        card: 'Správa peněz ve více měnách: směnné kurzy, kupní síla a měnové riziko, když vaše finance překračují hranice. Lekce pro život přes hranice.',
       },
       'real-estate': {
         name: 'Nemovitosti',
@@ -1462,7 +1462,7 @@ export const learnCs: typeof learnEn = {
   blogIndex: {
     meta: {
       title: 'Porozumějte svým penězům: lekce osobních financí zdarma | nidhi',
-      description: 'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem s praktickými průvodci.',
+      description: 'Vzdělávání v osobních financích zdarma: čisté jmění, rozpočet, spoření, investování a správa dluhů. Finanční gramotnost krok za krokem s praktickými lekcemi.',
     },
     schema: {
       breadcrumbLearn: 'Lekce',
@@ -1546,7 +1546,7 @@ export const learnCs: typeof learnEn = {
         'diversification': 'Co diverzifikace dělá a co ne',
         'tax-accounts': 'Co je daňově zvýhodněný účet',
         'rebalancing': 'Proč se portfolio odchyluje a rebalancuje',
-        'fees': 'Kolik dělá roční poplatek 1 % za desítky let',
+        'fees': 'Kolik dělá roční poplatek 1 % za desítky let',
         'real-returns': 'Co je reálný výnos po inflaci a nákladech',
         'tax-loss': 'Daňové využití ztrát a rozložení investic mezi účty',
         'glide-path': 'Co je postupné snižování rizika portfolia (glide path)',
@@ -1586,7 +1586,7 @@ export const learnCs: typeof learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: finanční gramotnost | nidhi',
-      descriptionFallback: 'Články na téma {tag}: praktická finanční gramotnost a vzdělávání v osobních financích na webu nidhi.',
+      descriptionFallback: 'Lekce na téma {tag}: praktická finanční gramotnost a vzdělávání v osobních financích na webu nidhi.',
     },
     schema: {
       itemListName: 'Lekce na téma {tag}',
@@ -1612,7 +1612,7 @@ export const learnCs: typeof learnEn = {
   topics: {
     meta: {
       title: 'Procházet podle tématu | nidhi',
-      description: 'Všechna témata blogu nidhi: čisté jmění, rozpočet, dluh, investování, riziko a další. Vyberte téma a čtěte všechny články z dané oblasti.',
+      description: 'Všechna témata na nidhi: čisté jmění, rozpočet, dluh, investování, riziko a další. Vyberte téma a čtěte všechny lekce z dané oblasti.',
     },
     schema: {
       collectionName: 'Témata lekcí',
@@ -1620,7 +1620,7 @@ export const learnCs: typeof learnEn = {
     h1: 'Procházet podle tématu',
     subtitle: 'Všechna témata vzdělávací cesty s počtem lekcí u každého. Vyberte jedno a čtěte všechny lekce z dané oblasti.',
     empty: 'Zatím žádná témata.',
-    fallbackCard: 'Články se štítkem „{tag}“.',
+    fallbackCard: 'Lekce se štítkem „{tag}“.',
     countOne: '{count} lekce',
     countMany: '{count} lekcí',
     countFew: '{count} lekce',
@@ -1708,14 +1708,14 @@ export const learnMr: typeof learnEn = {
       discovery: {
         name: 'ओळख',
         title: 'ओळख मालिका: वैयक्तिक वित्ताच्या मूलभूत गोष्टी | nidhi',
-        description: 'nidhi च्या शिकण्याच्या मार्गाची पहिली पातळी: निव्वळ संपत्ती, मालमत्ता, कर्ज, रोख प्रवाह, बजेट आणि बचत. क्रमाने वाचायच्या, नवशिक्यांसाठीच्या मार्गदर्शिका.',
-        card: 'nidhi च्या शिकण्याच्या मार्गाची पहिली पातळी: निव्वळ संपत्ती, मालमत्ता, कर्ज, रोख प्रवाह, बजेट आणि बचत. क्रमाने वाचायच्या, नवशिक्यांसाठीच्या मार्गदर्शिका.',
+        description: 'nidhi च्या शिकण्याच्या मार्गाची पहिली पातळी: निव्वळ संपत्ती, मालमत्ता, कर्ज, रोख प्रवाह, बजेट आणि बचत. क्रमाने वाचायचे, नवशिक्यांसाठीचे धडे.',
+        card: 'nidhi च्या शिकण्याच्या मार्गाची पहिली पातळी: निव्वळ संपत्ती, मालमत्ता, कर्ज, रोख प्रवाह, बजेट आणि बचत. क्रमाने वाचायचे, नवशिक्यांसाठीचे धडे.',
       },
       building: {
         name: 'उभारणी',
         title: 'उभारणी मालिका: गुंतवणूक, कर आणि नियोजन | nidhi',
-        description: 'nidhi च्या शिकण्याच्या मार्गाची दुसरी पातळी: जोखीम, गुंतवणूक, कर, आर्थिक स्वातंत्र्य, कर्जे आणि उद्दिष्टे. मूलभूत गोष्टी कामाला लावण्यासाठी मार्गदर्शिका.',
-        card: 'nidhi च्या शिकण्याच्या मार्गाची दुसरी पातळी: जोखीम, गुंतवणूक, कर, आर्थिक स्वातंत्र्य, कर्जे आणि उद्दिष्टे. मूलभूत गोष्टी कामाला लावण्यासाठी मार्गदर्शिका.',
+        description: 'nidhi च्या शिकण्याच्या मार्गाची दुसरी पातळी: जोखीम, गुंतवणूक, कर, आर्थिक स्वातंत्र्य, कर्जे आणि उद्दिष्टे. मूलभूत गोष्टी कामाला लावण्यासाठी धडे.',
+        card: 'nidhi च्या शिकण्याच्या मार्गाची दुसरी पातळी: जोखीम, गुंतवणूक, कर, आर्थिक स्वातंत्र्य, कर्जे आणि उद्दिष्टे. मूलभूत गोष्टी कामाला लावण्यासाठी धडे.',
       },
       psychology: {
         name: 'मानसशास्त्र',
@@ -1726,8 +1726,8 @@ export const learnMr: typeof learnEn = {
       optimizing: {
         name: 'सुधारणा',
         title: 'सुधारणा मालिका: अंदाज, शुल्क आणि कर | nidhi',
-        description: 'nidhi च्या शिकण्याच्या मार्गाची चौथी पातळी: अंदाज, रोख व्यवस्थापन, पुनर्वित्त, शुल्क आणि कर-कार्यक्षमता. आधीच चालणारी योजना नेमकी करण्यासाठी मार्गदर्शिका.',
-        card: 'nidhi च्या शिकण्याच्या मार्गाची चौथी पातळी: अंदाज, रोख व्यवस्थापन, पुनर्वित्त, शुल्क आणि कर-कार्यक्षमता. आधीच चालणारी योजना नेमकी करण्यासाठी मार्गदर्शिका.',
+        description: 'nidhi च्या शिकण्याच्या मार्गाची चौथी पातळी: अंदाज, रोख व्यवस्थापन, पुनर्वित्त, शुल्क आणि कर-कार्यक्षमता. आधीच चालणारी योजना नेमकी करण्यासाठी धडे.',
+        card: 'nidhi च्या शिकण्याच्या मार्गाची चौथी पातळी: अंदाज, रोख व्यवस्थापन, पुनर्वित्त, शुल्क आणि कर-कार्यक्षमता. आधीच चालणारी योजना नेमकी करण्यासाठी धडे.',
       },
       'inclusive-finances': {
         name: 'सर्वसमावेशक वित्त',
@@ -1768,14 +1768,14 @@ export const learnMr: typeof learnEn = {
       saving: {
         name: 'बचत',
         title: 'पैशांची बचत: वैयक्तिक वित्ताच्या मूलभूत गोष्टी | nidhi',
-        description: 'परिणामकारक बचत कशी करायची: आपत्कालीन निधी, बचतीचा दर, आणि गुंतवणुकीपेक्षा बचत कधी सरस ठरते. nidhi कडून वैयक्तिक वित्त साक्षरतेच्या मार्गदर्शिका.',
-        card: 'परिणामकारक बचत कशी करायची: आपत्कालीन निधी, बचतीचा दर, आणि गुंतवणुकीपेक्षा बचत कधी सरस ठरते. nidhi कडून वैयक्तिक वित्त साक्षरतेच्या मार्गदर्शिका.',
+        description: 'परिणामकारक बचत कशी करायची: आपत्कालीन निधी, बचतीचा दर, आणि गुंतवणुकीपेक्षा बचत कधी सरस ठरते. nidhi कडून वैयक्तिक वित्त साक्षरतेचे धडे.',
+        card: 'परिणामकारक बचत कशी करायची: आपत्कालीन निधी, बचतीचा दर, आणि गुंतवणुकीपेक्षा बचत कधी सरस ठरते. nidhi कडून वैयक्तिक वित्त साक्षरतेचे धडे.',
       },
       investing: {
         name: 'गुंतवणूक',
         title: 'गुंतवणुकीच्या मूलभूत गोष्टी: आर्थिक साक्षरता | nidhi',
-        description: 'गुंतवणूक शिका: मालमत्ता प्रकार, जोखीम, चक्रवाढ व्याज, आणि सुरुवात कधी करायची. वैयक्तिक वित्त साक्षरतेसाठी नवशिक्यांना सोप्या गुंतवणूक मार्गदर्शिका.',
-        card: 'गुंतवणूक शिका: मालमत्ता प्रकार, जोखीम, चक्रवाढ व्याज, आणि सुरुवात कधी करायची. वैयक्तिक वित्त साक्षरतेसाठी नवशिक्यांना सोप्या गुंतवणूक मार्गदर्शिका.',
+        description: 'गुंतवणूक शिका: मालमत्ता प्रकार, जोखीम, चक्रवाढ व्याज, आणि सुरुवात कधी करायची. वैयक्तिक वित्त साक्षरतेसाठी नवशिक्यांना सोपे गुंतवणुकीचे धडे.',
+        card: 'गुंतवणूक शिका: मालमत्ता प्रकार, जोखीम, चक्रवाढ व्याज, आणि सुरुवात कधी करायची. वैयक्तिक वित्त साक्षरतेसाठी नवशिक्यांना सोपे गुंतवणुकीचे धडे.',
       },
       risk: {
         name: 'जोखीम',
@@ -1786,32 +1786,32 @@ export const learnMr: typeof learnEn = {
       planning: {
         name: 'नियोजन',
         title: 'आर्थिक नियोजन: खाती, कर आणि मागोवा | nidhi',
-        description: 'आर्थिक ज्ञानाचे योजनेत रूपांतर कसे करायचे: खाती, कर, पुनर्संतुलन, उद्दिष्टे, आणि कशाचा मागोवा ठेवायचा. nidhi कडून व्यवहारोपयोगी आर्थिक नियोजनाच्या मार्गदर्शिका.',
-        card: 'आर्थिक ज्ञानाचे योजनेत रूपांतर कसे करायचे: खाती, कर, पुनर्संतुलन, उद्दिष्टे, आणि कशाचा मागोवा ठेवायचा. nidhi कडून व्यवहारोपयोगी आर्थिक नियोजनाच्या मार्गदर्शिका.',
+        description: 'आर्थिक ज्ञानाचे योजनेत रूपांतर कसे करायचे: खाती, कर, पुनर्संतुलन, उद्दिष्टे, आणि कशाचा मागोवा ठेवायचा. nidhi कडून व्यवहारोपयोगी आर्थिक नियोजनाचे धडे.',
+        card: 'आर्थिक ज्ञानाचे योजनेत रूपांतर कसे करायचे: खाती, कर, पुनर्संतुलन, उद्दिष्टे, आणि कशाचा मागोवा ठेवायचा. nidhi कडून व्यवहारोपयोगी आर्थिक नियोजनाचे धडे.',
       },
       goals: {
         name: 'उद्दिष्टे',
         title: 'आर्थिक उद्दिष्टे आणि प्रगतीचा मागोवा | nidhi',
-        description: 'ठोस उद्दिष्टे कशी ठरवायची आणि तुम्ही योग्य मार्गावर आहात का हे कसे ओळखायचे: लक्ष्य रकमा, आर्थिक आरोग्याचे निर्देशक, सोपा डॅशबोर्ड. नियोजनाच्या मार्गदर्शिका.',
-        card: 'ठोस उद्दिष्टे कशी ठरवायची आणि तुम्ही योग्य मार्गावर आहात का हे कसे ओळखायचे: लक्ष्य रकमा, आर्थिक आरोग्याचे निर्देशक, सोपा डॅशबोर्ड. नियोजनाच्या मार्गदर्शिका.',
+        description: 'ठोस उद्दिष्टे कशी ठरवायची आणि तुम्ही योग्य मार्गावर आहात का हे कसे ओळखायचे: लक्ष्य रकमा, आर्थिक आरोग्याचे निर्देशक, सोपा डॅशबोर्ड. नियोजनाचे धडे.',
+        card: 'ठोस उद्दिष्टे कशी ठरवायची आणि तुम्ही योग्य मार्गावर आहात का हे कसे ओळखायचे: लक्ष्य रकमा, आर्थिक आरोग्याचे निर्देशक, सोपा डॅशबोर्ड. नियोजनाचे धडे.',
       },
       fire: {
         name: 'FIRE',
         title: 'आर्थिक स्वातंत्र्य (FIRE): मूलभूत गोष्टी | nidhi',
-        description: 'आर्थिक स्वातंत्र्य म्हणजे काय, FIRE आकडा आणि पैसे काढण्याचा सुरक्षित दर कसे काम करतात, आणि निष्क्रिय उत्पन्नासाठी काय लागते. nidhi च्या प्रामाणिक मार्गदर्शिका.',
-        card: 'आर्थिक स्वातंत्र्य म्हणजे काय, FIRE आकडा आणि पैसे काढण्याचा सुरक्षित दर कसे काम करतात, आणि निष्क्रिय उत्पन्नासाठी काय लागते. nidhi च्या प्रामाणिक मार्गदर्शिका.',
+        description: 'आर्थिक स्वातंत्र्य म्हणजे काय, FIRE आकडा आणि पैसे काढण्याचा सुरक्षित दर कसे काम करतात, आणि निष्क्रिय उत्पन्नासाठी काय लागते. nidhi चे प्रामाणिक धडे.',
+        card: 'आर्थिक स्वातंत्र्य म्हणजे काय, FIRE आकडा आणि पैसे काढण्याचा सुरक्षित दर कसे काम करतात, आणि निष्क्रिय उत्पन्नासाठी काय लागते. nidhi चे प्रामाणिक धडे.',
       },
       taxes: {
         name: 'कर',
         title: 'कर आणि गुंतवणूक: वैयक्तिक वित्त साक्षरता | nidhi',
-        description: 'कर प्रत्येक आर्थिक निर्णयाला कसा आकार देतात, आणि करसवलतीची खाती कुठे बसतात. देशनिहाय संदर्भ तक्त्यासह शैक्षणिक मार्गदर्शिका.',
-        card: 'कर प्रत्येक आर्थिक निर्णयाला कसा आकार देतात, आणि करसवलतीची खाती कुठे बसतात. देशनिहाय संदर्भ तक्त्यासह शैक्षणिक मार्गदर्शिका.',
+        description: 'कर प्रत्येक आर्थिक निर्णयाला कसा आकार देतात, आणि करसवलतीची खाती कुठे बसतात. देशनिहाय संदर्भ तक्त्यासह शैक्षणिक धडे.',
+        card: 'कर प्रत्येक आर्थिक निर्णयाला कसा आकार देतात, आणि करसवलतीची खाती कुठे बसतात. देशनिहाय संदर्भ तक्त्यासह शैक्षणिक धडे.',
       },
       currency: {
         name: 'चलन',
         title: 'अनेक चलनांमधील पैसा: विनिमय दर आणि जोखीम | nidhi',
-        description: 'अनेक चलनांमधील पैशांचे व्यवस्थापन: तुमचे आर्थिक व्यवहार सीमा ओलांडतात तेव्हा विनिमय दर, क्रयशक्ती आणि चलन जोखीम. सीमेपलीकडील आयुष्यासाठी मार्गदर्शिका.',
-        card: 'अनेक चलनांमधील पैशांचे व्यवस्थापन: तुमचे आर्थिक व्यवहार सीमा ओलांडतात तेव्हा विनिमय दर, क्रयशक्ती आणि चलन जोखीम. सीमेपलीकडील आयुष्यासाठी मार्गदर्शिका.',
+        description: 'अनेक चलनांमधील पैशांचे व्यवस्थापन: तुमचे आर्थिक व्यवहार सीमा ओलांडतात तेव्हा विनिमय दर, क्रयशक्ती आणि चलन जोखीम. सीमेपलीकडील आयुष्यासाठी धडे.',
+        card: 'अनेक चलनांमधील पैशांचे व्यवस्थापन: तुमचे आर्थिक व्यवहार सीमा ओलांडतात तेव्हा विनिमय दर, क्रयशक्ती आणि चलन जोखीम. सीमेपलीकडील आयुष्यासाठी धडे.',
       },
       'real-estate': {
         name: 'स्थावर मालमत्ता',
@@ -1848,7 +1848,7 @@ export const learnMr: typeof learnEn = {
   blogIndex: {
     meta: {
       title: 'तुमच्या पैशांबद्दल शिका: वैयक्तिक वित्ताचे मोफत धडे | nidhi',
-      description: 'वैयक्तिक वित्ताचे मोफत शिक्षण: निव्वळ संपत्ती, बजेट, बचत, गुंतवणूक आणि कर्जाचे व्यवस्थापन. व्यवहारोपयोगी मार्गदर्शिकांनी आर्थिक साक्षरता टप्प्याटप्प्याने वाढवा.',
+      description: 'वैयक्तिक वित्ताचे मोफत शिक्षण: निव्वळ संपत्ती, बजेट, बचत, गुंतवणूक आणि कर्जाचे व्यवस्थापन. व्यवहारोपयोगी धड्यांनी आर्थिक साक्षरता टप्प्याटप्प्याने वाढवा.',
     },
     schema: {
       breadcrumbLearn: 'शिका',
@@ -1987,7 +1987,7 @@ export const learnMr: typeof learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: वैयक्तिक वित्त साक्षरता | nidhi',
-      descriptionFallback: '{tag} विषयीचे लेख: nidhi कडून व्यवहारोपयोगी वैयक्तिक वित्त साक्षरता आणि आर्थिक शिक्षण.',
+      descriptionFallback: '{tag} विषयीचे धडे: nidhi कडून व्यवहारोपयोगी वैयक्तिक वित्त साक्षरता आणि आर्थिक शिक्षण.',
     },
     schema: {
       itemListName: '{tag} विषयीचे धडे',
@@ -2012,7 +2012,7 @@ export const learnMr: typeof learnEn = {
   topics: {
     meta: {
       title: 'विषयानुसार पाहा | nidhi',
-      description: 'nidhi ब्लॉगवरील प्रत्येक विषय: निव्वळ संपत्ती, बजेट, कर्ज, गुंतवणूक, जोखीम आणि बरेच काही. त्या क्षेत्रातील सर्व लेख वाचण्यासाठी एक विषय निवडा.',
+      description: 'nidhi वरील प्रत्येक विषय: निव्वळ संपत्ती, बजेट, कर्ज, गुंतवणूक, जोखीम आणि बरेच काही. त्या क्षेत्रातील सर्व धडे वाचण्यासाठी एक विषय निवडा.',
     },
     schema: {
       collectionName: 'धड्यांचे विषय',
@@ -2020,7 +2020,7 @@ export const learnMr: typeof learnEn = {
     h1: 'विषयानुसार पाहा',
     subtitle: 'शिकण्याच्या मार्गावरील प्रत्येक विषय, प्रत्येकातील धड्यांच्या संख्येसह. त्या क्षेत्रातील सर्व धडे वाचण्यासाठी एक विषय निवडा.',
     empty: 'अजून कोणतेही विषय नाहीत.',
-    fallbackCard: '“{tag}” असा टॅग असलेले लेख.',
+    fallbackCard: '“{tag}” असा टॅग असलेले धडे.',
     countOne: '{count} धडा',
     countMany: '{count} धडे',
     countFew: '{count} धडे',
@@ -2028,7 +2028,7 @@ export const learnMr: typeof learnEn = {
   inclusiveFinances: {
     eyebrow: 'पूर्वज्ञानाची गरज नाही, कोणत्याही टप्प्यावर उपयोगी',
     h1: 'पूर्वनिश्चित योजना तुम्हाला बसत नाही तेव्हा',
-    lede1: 'बहुतेक आर्थिक सल्ला शांतपणे एकाच प्रकारचे घर गृहीत धरतो: कायदेशीर विवाहित जोडपे किंवा एकटी प्रौढ व्यक्ती, स्थिर नोकरी देणारा नियोक्ता, कायद्याने मान्य केलेले कुटुंब, आणि एकाच देशात जगलेले आयुष्य. वारसांना मिळणारे लाभ, संयुक्त कर विवरण, वारसा नियम आणि कामाच्या ठिकाणची पेन्शन हे सगळे त्याच साच्याभोवती बांधलेले आहेत.',
+    lede1: 'बहुतेक आर्थिक सल्ला न सांगता एकाच प्रकारचे घर गृहीत धरतो: कायदेशीर विवाहित जोडपे किंवा एकटी प्रौढ व्यक्ती, स्थिर नोकरी देणारा नियोक्ता, कायद्याने मान्य केलेले कुटुंब, आणि एकाच देशात जगलेले आयुष्य. वारसांना मिळणारे लाभ, संयुक्त कर विवरण, वारसा नियम आणि कामाच्या ठिकाणची पेन्शन हे सगळे त्याच साच्याभोवती बांधलेले आहेत.',
     lede2: 'या मार्गदर्शिका बाकी सगळ्यांसाठी आहेत. प्रत्येक मार्गदर्शिका एक पूर्वनिश्चित गृहीतक घेते, ते तुमच्या बाबतीत लागू पडत नाही तेव्हा काय बिघडते ते दाखवते, आणि त्याची जागा घेणारे विचारपूर्वक निवडलेले पर्याय समजावते. यासाठी या साइटवरचे इतर काहीही आधी वाचलेले असण्याची गरज नाही.',
     scope: 'या मार्गदर्शिका काय तपासायचे आणि काय विचारायचे ते शिकवतात. कायदेशीर तपशील देशानुसार बदलतात, त्यामुळे तुम्ही राहता तिथला कायदा काय सांगतो हे त्या कधीच सांगत नाहीत. त्यासाठी स्थानिक तज्ज्ञाशी बोला.',
     situations: {

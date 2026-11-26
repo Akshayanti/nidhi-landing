@@ -4,9 +4,7 @@
  * Browser-safe on purpose (no catalog, no content collections): the page's
  * script imports it. Every path here exists in every language under its locale
  * prefix; `destinations.test.ts` checks each one against the page files, so
- * the list cannot offer an address that does not exist. Two tools launch with
- * a lesson and are offered only once released (`gate`), decided at build time
- * by the page.
+ * the list cannot offer an address that does not exist.
  */
 
 export const SITE_ORIGIN = 'https://nidhi.today';
@@ -15,7 +13,6 @@ export interface Destination {
   /** Site-absolute path without a locale prefix, with its trailing slash. */
   path: string;
   label: string;
-  gate?: 'monteCarlo' | 'investOrPayOff';
 }
 
 export const DESTINATIONS: readonly Destination[] = [
@@ -23,9 +20,9 @@ export const DESTINATIONS: readonly Destination[] = [
   { path: '/free/', label: 'Free tools' },
   { path: '/free/loan-comparison/', label: 'Loan comparison' },
   { path: '/free/multi-currency-net-worth/', label: 'Net worth calculator' },
-  { path: '/free/monte-carlo-simulator/', label: 'Monte Carlo simulator', gate: 'monteCarlo' },
+  { path: '/free/monte-carlo-simulator/', label: 'Monte Carlo simulator' },
   { path: '/free/inflation-calculator/', label: 'Inflation calculator' },
-  { path: '/free/invest-or-pay-off/', label: 'Invest or pay off', gate: 'investOrPayOff' },
+  { path: '/free/invest-or-pay-off/', label: 'Invest or pay off' },
   { path: '/blog/', label: 'Learning path' },
   { path: '/about/', label: 'About' },
   { path: '/volunteers/', label: 'Volunteers' },

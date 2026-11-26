@@ -3,6 +3,7 @@ import { lastChanged, modifiedAfterPublication } from '../utils/lessonDates.ts';
 import { formatEnglishDate } from '../utils/longDate.ts';
 import BaseLayout from './BaseLayout.astro';
 import LevelBadge from '../components/LevelBadge.astro';
+import type { CollectionEntry } from 'astro:content';
 import SubscribeSection from '../components/SubscribeSection.astro';
 import WaitlistSection from '../components/WaitlistSection.astro';
 import { LADDER_LEVELS } from '../utils/home/startingPoints';
@@ -15,6 +16,8 @@ import LessonShare from '../components/LessonShare.astro';
 import lessonPageScript from '../utils/shared/lessonPage.js?raw';
 import termTipsScript from '../utils/shared/termTips.js?raw';
 
+type LessonLevel = CollectionEntry<'blog'>['data']['level'];
+
 interface Props {
   title: string;
   seoTitle?: string;
@@ -24,7 +27,7 @@ interface Props {
   updatedDate?: Date;
   /** Substantive corrections, oldest first, as the frontmatter lists them. */
   corrections?: Array<{ date: Date; note: string }>;
-  level: string;
+  level: LessonLevel;
   tags: string[];
   /** Main path, optional detail and their sum, from getLayeredReadingTime. */
   readingTime?: LayeredReadingTime;
@@ -110,7 +113,7 @@ const blogPostingSchema = {
     name: 'nidhi',
     url: `${siteUrl}/about/`,
     description:
-      'Practitioner and research-led personal finance education. Builds the tools the posts describe and sources every article against cited references.',
+      'Practitioner and research-led personal finance education. Builds the tools the lessons describe and sources every lesson against cited references.',
     sameAs: ['https://www.instagram.com/nidhi.today'],
   },
   publisher: {
@@ -166,7 +169,7 @@ const faqSchema = faq && faq.length > 0 ? {
   })),
 } : null;
 
-const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boolean);
+const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((schema) => schema !== null);
 ---
 
 <BaseLayout
@@ -324,7 +327,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
 
       {regulatoryNote === 'danger' && (
         <div class="notice-danger">
-          <strong>Important:</strong> This article touches on tax-related concepts to help you understand how they work. Tax rules vary by country and situation. Talk to a qualified tax professional before making decisions based on what you read here.
+          <strong>Important:</strong> This lesson touches on tax-related concepts to help you understand how they work. Tax rules vary by country and situation. Talk to a qualified tax professional before making decisions based on what you read here.
         </div>
       )}
     </div>
@@ -469,7 +472,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter(Boole
         )}
 
         <div class="disclaimer">
-          <strong>A quick note:</strong> This article is educational content, not investment advice or a personal recommendation under MiFID II. Examples, historical figures, and any projections are illustrative and don't predict future results. Tax treatment depends on your country and personal situation. For decisions that meaningfully affect your finances, a qualified or regulated adviser can help apply these ideas to your circumstances.
+          <strong>A quick note:</strong> This lesson is educational content, not investment advice or a personal recommendation under MiFID II. Examples, historical figures, and any projections are illustrative and don't predict future results. Tax treatment depends on your country and personal situation. For decisions that meaningfully affect your finances, a qualified or regulated adviser can help apply these ideas to your circumstances.
         </div>
 
         <LessonShare slug={slug} title={title} labelled />

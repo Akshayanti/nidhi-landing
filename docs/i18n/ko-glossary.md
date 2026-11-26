@@ -39,7 +39,7 @@ question; they are not site strings yet.
 | An explanation | Your net worth is what you own minus what you owe. | 순자산은 가진 것에서 갚아야 할 것을 뺀 금액입니다. | 순자산은 가진 것에서 갚아야 할 것을 뺀 금액이에요. |
 | A tool instruction | Enter the amount you borrowed. | 빌린 금액을 입력하십시오. | 빌린 금액을 입력하세요. |
 | An error message | The rate you entered must be between 0% and 100%. | 입력한 금리는 0%에서 100% 사이여야 합니다. | 입력한 금리는 0%에서 100% 사이여야 해요. |
-| A sensitive money topic | If you are behind on payments, you are not alone, and there are ways to get help. | 상환이 밀려 있어도 혼자가 아닙니다. 도움을 받을 방법이 있습니다. | 상환이 밀려 있어도 혼자가 아니에요. 도움을 받을 방법이 있어요. |
+| A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | 상환이 밀리면 버겁게 느껴질 수 있습니다. 도움을 받을 방법이 있습니다. | 상환이 밀리면 버겁게 느껴질 수 있어요. 도움을 받을 방법이 있어요. |
 
 Neither column uses *당신*.
 

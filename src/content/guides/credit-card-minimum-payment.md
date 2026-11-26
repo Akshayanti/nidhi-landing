@@ -25,7 +25,7 @@ steps:
   - action: "Look for a line about paying only the minimum."
     why: "Many statements show how long the balance would take to clear at the minimum, and what it would cost in total. Some countries require it."
   - action: "If it isn't there, ask the card company."
-    why: "\"If I pay only the minimum, how long will it take to clear and how much interest will I pay?\" Card companies can answer this, and many have a calculator in the app."
+    why: "“If I pay only the minimum, how long will it take to clear and how much interest will I pay?” Card companies can answer this, and many have a calculator in the app."
 visual:
   kind: annotated
   caption: "A simplified, made-up statement. Interest is the balance × 22% ÷ 12; the minimum is 1% of that balance plus the interest, or €25 if higher. No fees, new purchases or rate changes. Minimum rules differ by card and by country."

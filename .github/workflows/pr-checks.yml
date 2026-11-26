@@ -1,207 +1,91 @@
 name: PR Checks
 
-# Runs the install, lint, type check, test, audit, and build gates whenever a
-# PR touches files that power the site's tools, pages, lessons or build.
-# Unrelated PRs (plans and docs, for example) don't pay the cost of running the
-# full suite. A separate "Remotion" job checks the reel renderer when a PR
-# touches remotion/.
+# Every check a pull request gets, whatever it touches, in one run and in
+# this order. Each stage starts only when the one before it has passed:
 #
-# Every job is a REQUIRED status check on `main` (Settings -> Branches). That
-# is why the path filter lives in the "Detect changes" job below rather than
-# under `on.pull_request.paths`: a workflow that a path filter stops from
-# starting never reports, and GitHub then waits for its required checks
-# forever, blocking the merge. A job skipped by `if:` reports "skipped", which
-# satisfies a required check. Required checks, by job name:
+#   1. Detect changes
+#   2. Install (lockfile integrity)
+#   3. Lint, Type check, Tests, npm audit (high+) and Remotion, side by side
+#   4. Build (static), with the browser checks of the built site
+#   5. The free tools: privacy, mutation and text size, side by side
+#      (tool-suite.yml, one leg per suite)
+#   6. No typed value reaches analytics, Free tools: mutation and Free
+#      tools: text size, which report the free tools' result
+#
+# One failure stops the run. Stages 3 and 5 are fail-fast matrices: a
+# failed leg cancels its siblings, and a failed tool or shard inside a suite
+# cancels the rest of that suite and then the other two suites. A failed
+# stage never starts the next one. So a pull request that will not merge
+# does not hold runners for the checks after the failure. Nothing here needs
+# a write token to cancel, so Dependabot's pull requests stop the same way.
+#
+# This is the only workflow a pull request starts. The free tools workflows
+# (tool-privacy.yml, tool-mutation.yml, tool-text-size.yml) run the same
+# suites every night, by hand and (mutation) on every merge to main.
+#
+# Required status checks on `main` (Settings -> Branches), by job name:
 #   Detect changes, Install (lockfile integrity), Lint, Type check, Tests,
 #   npm audit (high+), Build (static), Remotion (required from Nov 2026,
-#   council round 20). Renaming or removing a job means changing that list
-#   in the same breath, or every PR waits for a check that never reports.
-# One more required check lives in tool-privacy.yml: No typed value reaches
-# analytics (required from Nov 2026), skipped the same way when a PR touches
-# no tool or analytics file.
+#   council round 20), No typed value reaches analytics (required from Nov
+#   2026) and Free tools: mutation. Free tools: text size is written as
+#   required but is not yet (#851). Renaming or removing a job means
+#   changing that list in the same breath, or every PR waits for a check
+#   that never reports. scripts/repo-hygiene.test.mjs holds the names and
+#   the rules below.
+#
+# No job is chosen by what changed: a job skipped by `if:` reports
+# "skipped", which satisfies a required check. A job here is skipped only
+# when a stage before it failed or was cancelled, and that stage's own
+# required check is then red. The three free tools checks run every time
+# (`always()`) and pass only when the whole tool stage passed, so a
+# cancelled or skipped stage never reads as a pass. A suite with nothing to
+# check (a pull request that changes only docs, say) decides so itself,
+# after its plan job, and then succeeds.
 #
 # No branch filter: the checks run on a pull request into any branch. A stacked
 # pull request targets the branch below it, not `main`, and with a filter that
 # named `main` (and, once, the Hindi edition's branches) it merged into its
-# stack with no CI at all. The path filter in "Detect changes" still decides
-# whether the jobs have anything to do.
+# stack with no CI at all.
 #
 # Every job has a time limit, a few times its usual run, so a hung step fails
-# in minutes instead of holding a runner for GitHub's six hours (#328).
+# in minutes instead of holding a runner for GitHub's six hours (#328). The
+# tool stage's legs take theirs from the jobs of tool-suite.yml: GitHub
+# allows none on a job that calls another workflow.
 on:
   pull_request:
-  # Allow manual runs for debugging.
+  # Allow manual runs for debugging. A manual run is a manual run of the
+  # free tools too: mutation retests everything and text size measures the
+  # whole range, as their own manual runs do.
   workflow_dispatch:
 
+# The called suites get no more than this either.
 permissions:
   contents: read
 
-# A second push to the same PR cancels the previous in-flight run.
+# A second push to the same PR cancels the previous in-flight run, the free
+# tools suites with it.
 concurrency:
-  group: pr-checks-${{ github.event.pull_request.number || github.ref }}
+  group: pr-checks-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 # Install scripts: every `npm ci` here fails if a dependency has an install
 # script that the project's package.json `allowScripts` does not cover (for
 # example a puppeteer bump whose pinned approval has not been updated). Only
 # CI is strict: in .npmrc it would stop Dependabot from opening those PRs at
-# all. See README "Install scripts".
+# all. See README "Install scripts". (tool-suite.yml sets it for itself.)
 env:
   NPM_CONFIG_STRICT_ALLOW_SCRIPTS: 'true'
 
 jobs:
-  # ---------------------------------------------------------------------------
-  # Which files the PR touches. The other jobs run only when one of them
-  # matches a pattern here (a manual run always runs everything). Patterns are
-  # bash globs, where `*` also matches `/`, so `src/utils/loan/*` covers the
-  # whole tree under it.
-  # ---------------------------------------------------------------------------
+  # The name is a required check, so the job stays. It selects nothing: every
+  # job below runs on every pull request.
   changes:
     name: Detect changes
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    outputs:
-      run: ${{ steps.filter.outputs.run }}
-      remotion: ${{ steps.filter.outputs.remotion }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          # The PR's merge commit and its first parent, the base it merges
-          # into, so `HEAD^1 HEAD` is exactly what the PR changes.
-          fetch-depth: 2
-
-      - name: Match changed files
-        id: filter
-        env:
-          EVENT: ${{ github.event_name }}
-        run: |
-          if [ "$EVENT" != "pull_request" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            echo "remotion=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          patterns=(
-            # The /free/* pages and any utility/component they pull in.
-            'src/pages/free/*'
-            'src/pages/privacy.astro'
-            'src/components/pages/PrivacyPage.astro'
-            'src/utils/privacyChangelogEntries.ts'
-            'src/components/LoanCompare.tsx'
-            'src/components/MultiCurrencyNetWorth.tsx'
-            'src/components/MonteCarloSimulator.tsx'
-            'src/components/ToolStateGuard.astro'
-            'src/components/chart/*'
-            # The header carries a tool's state across a language switch, and the
-            # helpers both sides use live in shared utils.
-            'src/components/Header.astro'
-            'src/components/LangPicker.astro'
-            'src/components/Analytics.astro'
-            # The inflation calculator's World Bank data, refreshed monthly by
-            # inflation-data.yml on a branch whose pull request should run the suite.
-            'src/data/*'
-            # Global type declarations the type check reads.
-            'src/types/*'
-            # Every utility and its tests: the tools' math and URL state, the
-            # shared helpers, the glossary and home helpers, the dependency
-            # snapshot. One glob, because the list of subdirectories it replaced
-            # (Nov 2026) had fallen behind: glossary.mjs, home/ and
-            # invest-or-pay-off/ were tested but never triggered the checks.
-            'src/utils/*'
-            'scripts/*'
-            # IndexNow build-pipeline tooling. A bad edit to indexnow.mjs
-            # would silently break the deploy workflow's post-deploy step;
-            # gating it on the same checks the rest of the deploy depends on
-            # is the cheapest way to catch regressions before merge.
-            'scripts/indexnow.mjs'
-            'scripts/indexnow.test.mjs'
-            # Anything that affects the build or dep graph.
-            'package.json'
-            'package-lock.json'
-            # The root tests hold the Remotion project's pins too
-            # (src/utils/dependencies.test.ts), so a change to its manifests
-            # runs them, not only the Remotion job.
-            'remotion/package.json'
-            'remotion/package-lock.json'
-            'remotion/.npmrc'
-            'astro.config.mjs'
-            'tsconfig.json'
-            # What decides the Node and npm every job and the deploy run on:
-            # a pull request that only moved Node to a new version used to
-            # skip every check and merge green (#318).
-            '.nvmrc'
-            '.npmrc'
-            # The newsletter's templates. scripts/test_send_newsletter.py,
-            # in the Tests job, is the only check on them before the send.
-            'emails/*'
-            # The lint script, and every workflow: this one, the deploy, the
-            # newsletter send, the data refresh and the privacy check. The
-            # lint reads them, and repo-hygiene.test.mjs checks their pins,
-            # permissions and alerts.
-            'scripts/lint.mjs'
-            'scripts/lint-figures.mjs'
-            'scripts/lint-scoped-styles.mjs'
-            '.github/workflows/*'
-            # Site-wide base components and public assets that affect every page.
-            'src/components/BaseHead.astro'
-            'src/layouts/*'
-            # Page bodies. Since the Hindi edition, a page's markup lives in a
-            # component here and `src/pages/` holds only the thin routes that render
-            # it, so a PR that edits a page's copy or layout touches this directory
-            # and nothing else. Without the glob those PRs would merge with no CI at
-            # all, which is the opposite of what this workflow is for.
-            'src/components/pages/*'
-            # String catalogs and locale plumbing. Every page reads from them, and
-            # the test job's catalog tests live here, so a copy fix that touches
-            # nothing else still gets the suite run over it.
-            'src/i18n/*'
-            'public/robots.txt'
-            # Everything else the build compiles. Once these checks are
-            # required, a skipped run counts as a pass, so any file that can
-            # break the build has to be listed: every route (including the
-            # `[locale]` mirror), every component and style, the content
-            # schema and the public assets.
-            'src/pages/*'
-            'src/components/*'
-            'src/styles/*'
-            'src/content.config.ts'
-            'public/*'
-            # Lessons. They were left out once, on the grounds that the deploy
-            # builds them anyway, but the build leaves out lessons dated in the
-            # future, so a mistake in a scheduled lesson surfaced only on its
-            # publish day, as a failed deploy. Here the type check validates
-            # every lesson's frontmatter (astro sync), and the tests read every
-            # lesson file, future-dated ones included (Nov 2026).
-            'src/content/*'
-          )
-          run=false
-          remotion=false
-          while IFS= read -r file; do
-            # The reel renderer has its own package and lockfile, checked by
-            # the Remotion job, not by the site's.
-            if [[ "$file" == remotion/* ]]; then
-              echo "remotion: $file"
-              remotion=true
-              # Its manifests are the exception: the root tests hold the
-              # Remotion pins as well (see the patterns above), so those
-              # three files go on to be matched; everything else stops here.
-              case "$file" in
-                remotion/package.json|remotion/package-lock.json|remotion/.npmrc) ;;
-                *) continue ;;
-              esac
-            fi
-            if [ "$run" = true ]; then continue; fi
-            for pattern in "${patterns[@]}"; do
-              # Unquoted on purpose: the pattern is a glob.
-              if [[ "$file" == $pattern ]]; then
-                echo "matched: $file ($pattern)"
-                run=true
-                break
-              fi
-            done
-          done < <(git diff --name-only HEAD^1 HEAD)
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "remotion=$remotion" >> "$GITHUB_OUTPUT"
+      - name: Every check runs
+        run: echo "Every check runs on every pull request."
 
   # ---------------------------------------------------------------------------
   # Lockfile + dependency integrity. `npm ci` fails fast if package.json and
@@ -210,15 +94,14 @@ jobs:
   # ---------------------------------------------------------------------------
   install:
     name: Install (lockfile integrity)
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # Every other job needs this one, so when it is skipped they are skipped
-    # too, and all of them report "skipped" to branch protection.
-    needs: changes
-    if: needs.changes.outputs.run == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -233,148 +116,161 @@ jobs:
         run: npm ci
 
   # ---------------------------------------------------------------------------
-  # Static / code-quality lint. Custom Node script, zero new deps.
+  # The checks that read the code, side by side, each a required check under
+  # its own name (`name: ${{ matrix.name }}`). One matrix, so one failure
+  # cancels the others (fail-fast) and the build never starts. Each leg runs
+  # only its own steps, chosen by `if:` on its name; the leg's time limit is
+  # in the list.
+  #
+  # Lint: the static and code-quality lint, a custom Node script with no new
+  # deps.
+  #
+  # Type check: every .ts and .tsx file. The string catalogs are typed as one
+  # shape (`Dict`), and the islands take their copy as typed props, so this
+  # is what catches a missing key or a component reading text it was never
+  # given (the loan comparison's Refinance tab once shipped reading an
+  # undefined `strings`, which throws in the browser). `astro sync` writes
+  # the content collection types the check reads. Then the .astro templates.
+  #
+  # Tests: the unit tests and the dependency-snapshot test. The snapshot test
+  # fails any PR that adds, removes, or version-bumps a dep without updating
+  # the inline EXPECTED_* maps in src/utils/dependencies.test.ts, making dep
+  # changes an explicit, code-reviewable event. Then the Python tests.
+  #
+  # npm audit (high+): lets a freshly-introduced known-vulnerable transitive
+  # dep block the merge.
+  #
+  # Remotion: the reel renderer (remotion/), with its own package.json and
+  # lockfile. Runs on every pull request, Dependabot's Remotion bumps
+  # included. It installs strictly and type-checks; it renders nothing, since
+  # that needs a browser download and a real reel plan (the layout guard
+  # rejects the composition's placeholder props). No npm audit: Remotion
+  # never reaches readers. The site's audit leaves out its devDependencies
+  # on the same ground; its step says what that does and does not cover.
   # ---------------------------------------------------------------------------
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  validation:
+    name: ${{ matrix.name }}
     needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.timeout }}
+    strategy:
+      # One failed check cancels the others: the pull request cannot merge
+      # either way.
+      fail-fast: true
+      matrix:
+        include:
+          - name: Lint
+            timeout: 10
+          - name: Type check
+            timeout: 10
+          - name: Tests
+            timeout: 15
+            # The merge commit and its first parent, the base: the newsletter
+            # id test compares the lessons with it (src/utils/newsletterIds.test.ts),
+            # and the privacy guard the notice (src/utils/privacyNoticeGuard.test.ts).
+            fetch-depth: 2
+          - name: npm audit (high+)
+            timeout: 10
+          - name: Remotion
+            timeout: 10
+            lockfile: remotion/package-lock.json
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: ${{ matrix.fetch-depth || 1 }}
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
+          cache-dependency-path: ${{ matrix.lockfile || 'package-lock.json' }}
 
       - name: Install
+        if: matrix.name != 'Remotion'
         run: npm ci
 
+      # Lint.
       - name: Lint
+        if: matrix.name == 'Lint'
         run: npm run lint
 
-  # ---------------------------------------------------------------------------
-  # Type check of every .ts and .tsx file. The string catalogs are typed as one
-  # shape (`Dict`), and the islands take their copy as typed props, so this is
-  # what catches a missing key or a component reading text it was never given
-  # (the loan comparison's Refinance tab once shipped reading an undefined
-  # `strings`, which throws in the browser). `astro sync` writes the content
-  # collection types the check reads. Astro templates are not covered.
-  # ---------------------------------------------------------------------------
-  typecheck:
-    name: Type check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: install
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
+      # Type check.
       - name: Type check
+        if: matrix.name == 'Type check'
         run: npm run typecheck
 
-  # ---------------------------------------------------------------------------
-  # Unit tests + dependency-snapshot test. The snapshot test fails any PR
-  # that adds, removes, or version-bumps a dep without updating the inline
-  # EXPECTED_* maps in src/utils/dependencies.test.ts, making dep changes
-  # an explicit, code-reviewable event.
-  # ---------------------------------------------------------------------------
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: install
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          # The merge commit and its first parent, the base: the newsletter
-          # id test compares the lessons with it (src/utils/newsletterIds.test.ts).
-          fetch-depth: 2
+      # The .astro templates, which tsc does not read (#791). @astrojs/check
+      # needs TypeScript 5 or 6 and the site pins 7, so it has an install of
+      # its own, pinned by tools/astro-check/package-lock.json.
+      - name: Install astro check
+        if: matrix.name == 'Type check'
+        run: npm ci --prefix tools/astro-check
 
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
+      - name: Type check the Astro templates
+        if: matrix.name == 'Type check'
+        run: npm run typecheck:astro
 
-      - name: Install
-        run: npm ci
-
+      # Tests.
       - name: Run tests
+        if: matrix.name == 'Tests'
         env:
           NEWSLETTER_ID_BASE: HEAD^1
+          PRIVACY_NOTICE_BASE: HEAD^1
+          FLOORS_BASE: HEAD^1
         run: npm test
 
-      # The newsletter script is Python, so npm test does not reach it. The same
-      # pinned packages as the newsletter.yml send step (scripts/requirements.txt).
+      # The Python scripts (the newsletter sender, the QR code generator), which
+      # npm test does not reach. Found, not listed (#791): every
+      # scripts/test_*.py runs, with the same pinned packages as the
+      # newsletter.yml send step. The interpreter is the exact version in
+      # .python-version; pip is first replaced by the pinned one
+      # (scripts/requirements-pip.txt), then the packages are installed
+      # (scripts/requirements.txt), both by their hashes.
       - name: Setup Python
+        if: matrix.name == 'Tests'
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.12'
+          python-version-file: .python-version
 
-      - name: Run newsletter tests
+      - name: Run Python tests
+        if: matrix.name == 'Tests'
         run: |
-          pip install -r scripts/requirements.txt
-          python -m unittest scripts/test_send_newsletter.py
-          python -m unittest scripts/test_newsletter_sender.py
+          python -m pip install --require-hashes -r scripts/requirements-pip.txt
+          python -m pip install --require-hashes -r scripts/requirements.txt
+          python -m unittest discover -s scripts -p 'test_*.py' -v
 
-      # The QR code generator for print material (standard library only).
-      - name: Run QR code tests
-        run: python -m unittest scripts/test_qr_svg.py
-
-  # ---------------------------------------------------------------------------
-  # Vulnerability audit. Lets a freshly-introduced known-vulnerable
-  # transitive dep block the merge.
-  # ---------------------------------------------------------------------------
-  audit:
-    name: npm audit (high+)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: install
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
+      # npm audit (high+).
       - name: Audit
+        if: matrix.name == 'npm audit (high+)'
         # Only fail on `high` and `critical`. `npm audit` is noisy in the
         # JS ecosystem and lower-severity findings often have no available
         # fix; gating on every advisory leads to dismissal fatigue.
         #
-        # Scope: `--omit=dev` audits `dependencies` only, the packages
-        # whose code is built into the site (astro, react and what they pull
-        # in). It does not audit devDependencies, and some of those run in
-        # every build and deploy without reaching a reader: puppeteer (the
-        # figure renders), tsx and typescript. Dependabot's alerts cover
-        # both lists.
+        # Scope: every lockfile in the repository (INSTALLS in the script):
+        # the site with its build and test tools, the video renders
+        # (remotion/) and astro check (tools/astro-check/). The build, test
+        # and render tools run in CI with the repository checked out, so they
+        # block as the shipped packages do (#791).
         #
-        # The script runs `npm audit --omit=dev` and fails on those two
-        # levels, as the plain command did, except for an advisory with a
-        # dated exception in scripts/lib/audit-exceptions.mjs: one published
-        # before its fix, which would otherwise hold every pull request. An
+        # It fails on those two levels except for an advisory with a dated
+        # exception in scripts/lib/checks/audit-exceptions.mjs: one published before
+        # its fix, which would otherwise hold every pull request. An
         # exception names one advisory and ends on its date.
         run: node scripts/npm-audit.mjs
+
+      # Remotion, in its own folder.
+      - name: Install (strict)
+        if: matrix.name == 'Remotion'
+        working-directory: remotion
+        run: npm ci
+
+      - name: Type check
+        if: matrix.name == 'Remotion'
+        working-directory: remotion
+        run: npx --no-install tsc --noEmit -p .
 
   # ---------------------------------------------------------------------------
   # Final build. Catches any regressions that only surface during the static
@@ -389,10 +285,12 @@ jobs:
     runs-on: ubuntu-latest
     # The build is about 4 minutes, the browser checks about 8 more.
     timeout-minutes: 30
-    needs: [lint, typecheck, test, audit]
+    needs: validation
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -408,14 +306,14 @@ jobs:
         run: npm run build
 
       # Canonical and hreflang links, the sitemap, internal links, leftover
-      # template text and the feeds, read from dist/ (scripts/lib/check-dist.mjs).
+      # template text and the feeds, read from dist/ (scripts/lib/checks/check-dist.mjs).
       - name: Check the built site
         run: npm run check:dist
 
       # Every tool in every language in a browser: the island mounts with no
       # console error and shows a default result, and axe finds no WCAG A or
       # AA violation in either theme. Known failures, each with its issue and
-      # a date it ends, are in scripts/lib/known-failures.mjs.
+      # a date it ends, are in scripts/lib/checks/known-failures.mjs.
       - name: Tool smoke test and accessibility pass
         # Runs when an earlier check failed, so one run reports them all.
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
@@ -428,36 +326,90 @@ jobs:
         run: npm run audit:mobile
 
   # ---------------------------------------------------------------------------
-  # The reel renderer (remotion/): its own package.json and lockfile. Runs only
-  # when a PR touches remotion/, Dependabot's Remotion bumps included. It
-  # installs strictly and type-checks; it renders nothing, since that needs a
-  # browser download and a real reel plan (the layout guard rejects the
-  # composition's placeholder props). No npm audit: Remotion never reaches
-  # readers. The site's audit leaves out its devDependencies on the same
-  # ground; its step says what that does and does not cover.
+  # The free tools, once the build has passed: the privacy check, mutation
+  # testing and the text-size audit, one leg each, side by side. Each leg
+  # runs one suite of tool-suite.yml; its jobs show here as
+  # "Tool stage: <suite> / <job>". The matrix is fail-fast, and so is each
+  # suite's own matrix on a pull request: the first failure anywhere cancels
+  # every other tool job of the run. (A cancelled mutation shard still keeps
+  # the results it had finished.)
   # ---------------------------------------------------------------------------
-  remotion:
-    name: Remotion
+  tools:
+    name: 'Tool stage: ${{ matrix.suite }}'
+    needs: build
+    strategy:
+      fail-fast: true
+      matrix:
+        suite: [privacy, mutation, text-size]
+    # The suite's mutation jobs read, on a merge, the pull request's runs and
+    # artifacts (tool-suite.yml, mutation-plan and mutation-seed); a called
+    # workflow can ask for no more than its caller grants.
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    uses: ./.github/workflows/tool-suite.yml
+    with:
+      suite: ${{ matrix.suite }}
+
+  # ---------------------------------------------------------------------------
+  # The free tools' required checks, under the names branch protection waits
+  # for. Each passes only when the whole tool stage succeeded: every leg, so
+  # every suite, passed (a suite with nothing to check passes on its own).
+  # Anything else fails: a failed or cancelled leg, a tool stage skipped
+  # because an earlier stage failed, or a run cancelled before it started.
+  #
+  # `always()` matters: a skipped job satisfies a required check. Without a
+  # status function GitHub would skip these when the tool stage failed or
+  # never ran, and the pull request would read as passing.
+  # ---------------------------------------------------------------------------
+  privacy:
+    name: No typed value reaches analytics
+    needs: tools
+    if: ${{ always() }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: changes
-    if: needs.changes.outputs.remotion == 'true'
-    defaults:
-      run:
-        working-directory: remotion
+    timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: The tool stage passed
+        env:
+          TOOLS: ${{ needs.tools.result }}
+        run: |
+          echo "tool stage: $TOOLS"
+          if [ "$TOOLS" != "success" ]; then
+            echo "::error::The free tools did not all pass (or did not run). See the 'Tool stage: privacy' jobs, or the stage that failed before them."
+            exit 1
+          fi
 
-      - name: Setup Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-          cache-dependency-path: remotion/package-lock.json
+  mutation:
+    name: 'Free tools: mutation'
+    needs: tools
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: The tool stage passed
+        env:
+          TOOLS: ${{ needs.tools.result }}
+        run: |
+          echo "tool stage: $TOOLS"
+          if [ "$TOOLS" != "success" ]; then
+            echo "::error::The free tools did not all pass (or did not run). See the 'Tool stage: mutation' jobs, or the stage that failed before them."
+            exit 1
+          fi
 
-      - name: Install (strict)
-        run: npm ci
-
-      - name: Type check
-        run: npx --no-install tsc --noEmit -p .
+  text-size:
+    name: 'Free tools: text size'
+    needs: tools
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: The tool stage passed
+        env:
+          TOOLS: ${{ needs.tools.result }}
+        run: |
+          echo "tool stage: $TOOLS"
+          if [ "$TOOLS" != "success" ]; then
+            echo "::error::The free tools did not all pass (or did not run). See the 'Tool stage: text-size' jobs, or the stage that failed before them."
+            exit 1
+          fi

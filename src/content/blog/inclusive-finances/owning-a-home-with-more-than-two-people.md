@@ -26,7 +26,7 @@ glossary:
   - term: "Co-ownership agreement"
     definition: "A contract among the owners of a property recording contributions, how a share is bought out, and what happens on non-payment, sale, death or dispute."
   - term: "Housing co-operative"
-    definition: "An organisation that owns a building for its members, who hold a share or membership right entitling them to a home rather than owning it directly."
+    definition: "An organization that owns a building for its members, who hold a share or membership right entitling them to a home rather than owning it directly."
   - term: "Community land trust"
     definition: "A non-profit that owns the land while residents own or lease the homes, usually with resale limits that keep them affordable."
 order: 58.6
@@ -49,7 +49,7 @@ faq:
   - question: "How do we value a share when someone wants to leave?"
     answer: "Groups that avoid disputes usually agree the method before anyone wants to leave. Common choices are an independent valuation paid for jointly, the average of two valuations, or a formula based on the purchase price and an agreed index. The agreement should also say how long the remaining owners have to raise the money, whether they have first refusal before the share is offered to an outsider, and what happens if they cannot buy it. Deciding this in advance avoids a negotiation at the worst possible moment."
   - question: "What is a housing co-operative?"
-    answer: "It is an organisation that owns a building on behalf of its members. A member does not own a flat directly. They hold a share or a membership right that entitles them to live in one. The co-operative's rules decide what that right can be sold for, who can buy it, and what happens when a member dies or leaves. In some co-operatives the share tracks the market value of the home, and in others it is fixed or capped to keep housing affordable."
+    answer: "It is an organization that owns a building on behalf of its members. A member does not own a flat directly. They hold a share or a membership right that entitles them to live in one. The co-operative's rules decide what that right can be sold for, who can buy it, and what happens when a member dies or leaves. In some co-operatives the share tracks the market value of the home, and in others it is fixed or capped to keep housing affordable."
   - question: "How do I count a shared home in my own net worth?"
     answer: "A common approach is to count your own share: if you own 40% of a house, 40% of its value and the share of the debt the owners have agreed among themselves. On a joint mortgage, the lender can still pursue any borrower for the whole balance. If you have contributed to a home you are not on the title of, what you hold is a claim and not an asset, and it is worth only what you could enforce. That is a strong reason to get contributions recorded in writing."
 reelPromise: "Why joint ownership in a group hands the whole house to the last survivor, and the six clauses a co-ownership agreement needs"

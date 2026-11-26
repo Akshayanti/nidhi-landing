@@ -10,6 +10,7 @@
 // after printing, the page goes back to how the reader left it. The light
 // colours on paper come from BaseLayout.astro, for every page.
 (function() {
+  // Stryker disable next-line ArrayDeclaration: equivalent. The mutant starts the list with a string; afterprint would set .open on it, which does nothing to a string in a non-strict script.
   var closed = [];
   var saved = document.querySelector('[data-print-saved]');
   window.addEventListener('beforeprint', function() {
@@ -21,6 +22,7 @@
   });
   window.addEventListener('afterprint', function() {
     closed.forEach(function(d) { d.open = false; });
+    // Stryker disable next-line ArrayDeclaration: equivalent, for the same reason as the first list above.
     closed = [];
   });
 })();

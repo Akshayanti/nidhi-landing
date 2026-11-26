@@ -35,13 +35,15 @@ import ToolPageShell from '../ToolPageShell.astro';
 import ToolWaitlist from '../ToolWaitlist.astro';
 import { getCollection } from 'astro:content';
 import data from '../../data/inflation/worldbank.json';
+import bisData from '../../data/inflation/bis-monthly.json';
+import worldBankMonthlyData from '../../data/inflation/worldbank-monthly.json';
 import { COUNTRY_CURRENCY } from '../../utils/inflation/countries.ts';
 import { countryNamer } from '../../utils/inflation/countryNames.ts';
-import { HISTORY_URL, INFLATION_URL, toCompactSeries, type WorldBankFile } from '../../utils/inflation/history.ts';
+import { HISTORY_URL, INFLATION_URL, joinFromCompact, monthlySeriesFor, toCompact, toCompactSeries, type MonthlyFile, type MonthlyFiles, type WorldBankFile } from '../../utils/inflation/history.ts';
 import { MAX_RATE, MIN_RATE } from '../../utils/inflation/math.ts';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/inflation/url.ts';
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
-import { CURRENCIES } from '../../utils/loan/math.ts';
+import { CURRENCIES } from '../../utils/shared/money.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
 
@@ -63,6 +65,11 @@ const island = inflation.island;
 const t = format;
 const htmlLang = LOCALE_META[locale].htmlLang;
 const file = data as WorldBankFile;
+// The monthly indices, for the countries whose answers end at a month: the
+// BIS's, and the World Bank's own for countries the BIS has none for.
+const monthly: MonthlyFiles = { bis: bisData as MonthlyFile, worldBank: worldBankMonthlyData as MonthlyFile };
+// The day of this build: a month's age is measured from it (monthly.ts), as in the history file the page serves.
+const builtOn = new Date().toISOString().slice(0, 10);
 
 // The select's countries, named in the page's language from their ISO codes.
 // The euro area has no ISO code, so its name is the catalog's.
@@ -81,7 +88,9 @@ const countries: CountryOption[] = Object.entries(file.countries)
   .sort((a, b) => a.name.localeCompare(b.name, htmlLang));
 
 const defaultCountry = DEFAULT_COUNTRY[locale];
-const defaultSeries = defaultCountry ? toCompactSeries(file.countries[defaultCountry]?.years ?? {}) : null;
+const defaultSeries = defaultCountry
+  ? toCompactSeries(file.countries[defaultCountry]?.years ?? {}, defaultCountry, monthlySeriesFor(defaultCountry, monthly, builtOn))
+  : null;
 const initialHistory = defaultCountry && defaultSeries ? { code: defaultCountry, series: defaultSeries } : null;
 
 const proseNumber = (n: number) => n.toLocaleString(PROSE_NUMBER_LOCALE[locale]);
@@ -89,8 +98,23 @@ const updated = new Intl.DateTimeFormat(DATE_LOCALE[locale], { dateStyle: 'long'
   new Date(`${file.lastUpdated}T00:00:00Z`),
 );
 
+const longDate = (day: string) =>
+  new Intl.DateTimeFormat(DATE_LOCALE[locale], { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${day}T00:00:00Z`));
+// How many countries' answers end at a month, by the source of the month:
+// counted from the file the page serves.
+const joinedBy = { bis: 0, worldBank: 0 };
+for (const entry of Object.values(toCompact(file, monthly, builtOn).countries)) {
+  const join = joinFromCompact(entry);
+  if (join !== null && !('withheld' in join)) joinedBy[join.source] += 1;
+}
+
 // Everything the page's copy quotes, in one place.
 const figures = {
+  joined: proseNumber(joinedBy.bis),
+  joinedWorldBank: proseNumber(joinedBy.worldBank),
+  joinedAll: proseNumber(joinedBy.bis + joinedBy.worldBank),
+  fetched: longDate(monthly.bis!.fetchedAt),
+  monthlyUpdated: longDate(monthly.worldBank!.lastUpdated!),
   countries: proseNumber(Object.keys(file.countries).filter((c) => c !== 'EMU').length),
   minRate: proseNumber(MIN_RATE),
   maxRate: proseNumber(MAX_RATE),
@@ -212,6 +236,12 @@ const faqSchema = {
       <h2 id="toolp-source-h" class="toolp-sectionTitle">{strings.source.heading}</h2>
       <p class="toolp-source">
         {strings.source.before}<a href="https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG" target="_blank" rel="noopener noreferrer">{strings.source.link}</a>{t(strings.source.after, figures)}
+      </p>
+      <p class="toolp-source">
+        {t(strings.sourceMonthly.before, figures)}<a href="https://data.bis.org/topics/CPI" target="_blank" rel="noopener noreferrer">{strings.sourceMonthly.link}</a>{t(strings.sourceMonthly.after, figures)}
+      </p>
+      <p class="toolp-source">
+        {t(strings.sourceMonthlyWorldBank.before, figures)}<a href="https://datacatalog.worldbank.org/search/dataset/0037798/global-economic-monitor" target="_blank" rel="noopener noreferrer" lang="en">Global Economic Monitor</a>{t(strings.sourceMonthlyWorldBank.after, figures)}
       </p>
     </section>
   </ToolPageShell>

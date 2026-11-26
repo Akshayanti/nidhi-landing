@@ -20,7 +20,7 @@ glossary:
   - term: "Default assumption"
     definition: "The guess a rule or product makes about who you are when you make no choice, such as “the beneficiary is the spouse”."
   - term: "Recognition gap"
-    definition: "The distance between how your household works and what the law or an institution recognises, such as a partner who is family in practice but a stranger on paper."
+    definition: "The distance between how your household works and what the law or an institution recognizes, such as a partner who is family in practice but a stranger on paper."
   - term: "Forced heirship"
     definition: "Rules reserving part of an estate for children or other relatives, whatever a will says."
   - term: "Beneficiary form"
@@ -47,7 +47,7 @@ tags: ["inclusive-finances", "relationships", "planning"]
 regulatoryNote: "danger"
 faq:
   - question: "Does living together for long enough make us common-law spouses?"
-    answer: "In most places, no. The belief that a couple acquires the rights of marriage after a certain number of years is widespread and mostly wrong. England and Wales have no such status. Only a small number of states in the United States recognise common-law marriage, and they require more than simply living together. Some countries do give long-term cohabiting couples real rights after a set period, including Australia, New Zealand, and several Canadian provinces, but the rights and the qualifying period vary. Check the rule for where you live and do not assume."
+    answer: "In most places, no. The belief that a couple acquires the rights of marriage after a certain number of years is widespread and mostly wrong. England and Wales have no such status. Only a small number of states in the United States recognize common-law marriage, and they require more than simply living together. Some countries do give long-term cohabiting couples real rights after a set period, including Australia, New Zealand, and several Canadian provinces, but the rights and the qualifying period vary. Check the rule for where you live and do not assume."
   - question: "If my partner dies without a will, do I inherit anything?"
     answer: "In many jurisdictions an unmarried partner inherits nothing under the default rules. The estate goes to the dead partner's children, parents, or siblings in a fixed order. In some places a surviving partner can ask a court for provision from the estate, which is slow, uncertain, and expensive. A will is the direct fix. In countries with forced heirship, where children or other relatives are entitled to a fixed share, a will still helps but cannot override those shares."
   - question: "What is the difference between joint tenancy and tenancy in common?"
@@ -75,7 +75,7 @@ Sofia and Lena have been together for twelve years. They live in a flat Lena bou
 
 In many countries, this is what happens next. If the local inheritance order puts Lena's parents next, the flat may pass to them, and Sofia may have no automatic right to stay. She might try to prove a claim from twelve years of mortgage payments, but without anything in writing the result is uncertain and expensive, and the payments can look, legally, like a gift. Lena's pension pays nothing, because its rules name a spouse. Depending on local law and hospital rules, staff may turn to Lena's mother rather than Sofia. If Lena's parents give Sofia a share of the flat, it may be taxed as a gift between unrelated people. Nobody intended any of this; it is what the defaults produce when a couple is not married.
 
-The [insurance optimisation post](/blog/insurance-optimization/) noted in passing that a spouse is often the default beneficiary while an unmarried partner has to be named. This post is the full version of that sentence, for couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and force in every country, so it teaches the categories; for the documents themselves, a local professional is the usual route.
+The [insurance optimization post](/blog/insurance-optimization/) noted in passing that a spouse is often the default beneficiary while an unmarried partner has to be named. This post is the full version of that sentence, for couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and force in every country, so it teaches the categories; for the documents themselves, a local professional is the usual route.
 
 ## What marriage switches on automatically
 
@@ -96,7 +96,7 @@ A wedding is a legal event as well as a personal one. On that day a set of defau
 
 ## Living together rarely creates the rights of marriage
 
-Many couples believe that living together long enough creates the rights of marriage. In most places it does not. England and Wales have no such status, however long a couple has lived together. In the United States, only a small number of states recognise common-law marriage, and they require more than living together. Australia, New Zealand and several Canadian provinces do give long-term cohabiting couples substantial rights after a qualifying period. Registered and civil partnerships, where they exist, cover varying parts of the bundle: some give joint tax treatment but no automatic inheritance.
+Many couples believe that living together long enough creates the rights of marriage. In most places it does not. England and Wales have no such status, however long a couple has lived together. In the United States, only a small number of states recognize common-law marriage, and they require more than living together. Australia, New Zealand and several Canadian provinces do give long-term cohabiting couples substantial rights after a qualifying period. Registered and civil partnerships, where they exist, cover varying parts of the bundle: some give joint tax treatment but no automatic inheritance.
 
 The distance between how a couple lives and what the law sees is a [recognition gap](#term-recognition-gap). The way to find yours is to check each row of the table for the country you live in.
 
@@ -156,16 +156,16 @@ Whether the saving from marrying or registering a partnership outweighs a couple
 - **Germany, Italy, Spain.** Forced heirship limits how much a will can leave to a partner, and tax allowances for unmarried partners are far smaller than for spouses.
 - **Australia, New Zealand, parts of Canada.** De facto partners gain significant property and inheritance rights after a qualifying period. Documents still help, because they remove the need to prove the relationship.
 - **United States.** Rules are set state by state. Beneficiary forms carry particular weight because so much wealth sits in retirement accounts.
-- **Brazil.** A stable union (união estável) is a recognised status, and since a 2017 Supreme Court ruling a partner inherits as a spouse does.
+- **Brazil.** A stable union (união estável) is a recognized status, and since a 2017 Supreme Court ruling a partner inherits as a spouse does.
 - **Japan.** An unmarried partner is not a legal heir, so leaving assets to a partner generally needs a will. Survivor pensions can still be paid if the relationship and financial dependence are proven.
 - **South Africa.** Cohabitation has no general legal status, and a Domestic Partnerships Bill is still a draft. Since a 2021 Constitutional Court ruling, a surviving permanent life partner can inherit when there is no will and can claim maintenance from the estate.
 
 </details>
 
 <details class="lesson-depth">
-<summary class="disclosure">Marriage unavailable or unrecognised</summary>
+<summary class="disclosure">Marriage unavailable or unrecognized</summary>
 
-Where marriage is available, the choice is the same for any couple. Where it is not, or where a marriage made elsewhere is not recognised, every item in this post matters much more, because no route switches the bundle on. A later post in this series is devoted to that situation.
+Where marriage is available, the choice is the same for any couple. Where it is not, or where a marriage made elsewhere is not recognized, every item in this post matters much more, because no route switches the bundle on. A later post in this series is devoted to that situation.
 
 </details>
 

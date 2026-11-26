@@ -7,6 +7,7 @@ import type { Cell } from '../utils/shared/xlsx.ts';
 import { amountScale, axisHeading, axisTick, type ChartWords } from '../utils/shared/chartAmounts.ts';
 import { NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { useMoney } from './useMoney.ts';
+import { trueMinus } from '../utils/shared/formatAmount.ts';
 
 /**
  * The free tools' "Save or share these results" block, placed right after a
@@ -52,6 +53,7 @@ export function ToolExport({
   xlsxAttr,
   pdfAttr,
   ready,
+  settling = false,
   onSpreadsheet,
   onPrint,
 }: {
@@ -73,6 +75,11 @@ export function ToolExport({
   pdfAttr: string;
   /** False while there are no results to keep; the buttons stay focusable and say why. */
   ready: boolean;
+  /**
+   * Not ready only for the moment a keystroke takes to settle: nothing is
+   * said, as a note that came and went with each key moved the page (#793).
+   */
+  settling?: boolean;
   onSpreadsheet: () => void;
   onPrint: () => void;
 }) {
@@ -92,6 +99,7 @@ export function ToolExport({
   // aria-disabled, not disabled: a disabled button leaves the tab order, and
   // focus on it would drop to the page whenever a keystroke makes the results
   // pending for a moment.
+  const saysNotReady = !ready && !settling;
   const guarded = (action: () => void) => () => {
     if (ready) action();
   };
@@ -105,7 +113,7 @@ export function ToolExport({
           className="btn btn--outline tool-exportBtn"
           onClick={guarded(() => { onSpreadsheet(); setMade(true); })}
           aria-disabled={!ready || undefined}
-          aria-describedby={ready ? undefined : reasonId}
+          aria-describedby={saysNotReady ? reasonId : undefined}
           data-attr={xlsxAttr}
         >
           {strings.spreadsheet}
@@ -115,7 +123,7 @@ export function ToolExport({
           className="btn btn--outline tool-exportBtn"
           onClick={guarded(onPrint)}
           aria-disabled={!ready || undefined}
-          aria-describedby={ready ? undefined : reasonId}
+          aria-describedby={saysNotReady ? reasonId : undefined}
           data-attr={pdfAttr}
         >
           {strings.print}
@@ -124,7 +132,7 @@ export function ToolExport({
       </div>
       <p className="tool-exportNote">{strings.note}</p>
       {inApp && <p className="tool-exportNote tool-exportNote--app">{strings.inApp}</p>}
-      {!ready && <p id={reasonId} className="tool-exportNote">{strings.notReady}</p>}
+      {saysNotReady && <p id={reasonId} className="tool-exportNote">{strings.notReady}</p>}
       <p className="tool-exportStatus" role="status">{made ? strings.downloaded : ''}</p>
     </section>
   );
@@ -134,18 +142,21 @@ export function ToolExport({
 // The report
 // ---------------------------------------------------------------------------
 
-/** A number cell in the reader's locale, as the spreadsheet formats it. */
-function cellText(c: Cell, locale: string): string {
+/**
+ * A number cell in the reader's locale, as the spreadsheet formats it, with
+ * the true minus sign the report's answer above it uses (#883).
+ */
+export function cellText(c: Cell, locale: string): string {
   if (c === null || c === undefined) return '';
   if (typeof c === 'string') return c;
-  if (typeof c === 'number') return new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c);
+  if (typeof c === 'number') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c));
   if ('t' in c) return c.t;
   const fmt = c.fmt ?? 'general';
-  if (fmt === 'general') return new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n);
+  if (fmt === 'general') return trueMinus(new Intl.NumberFormat(locale, { maximumSignificantDigits: 6 }).format(c.n));
   const digits = fmt === 'amount2' || fmt === 'decimal2' ? 2 : fmt === 'amount3' ? 3 : 0;
   // A year or a month count is not grouped; a count of thousands is.
   const useGrouping = fmt !== 'integer' || Math.abs(c.n) >= 10_000;
-  return new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(c.n);
+  return trueMinus(new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping }).format(c.n));
 }
 
 const isNumber = (c: Cell) => typeof c === 'number' || (typeof c === 'object' && c !== null && 'n' in c);
@@ -199,7 +210,7 @@ function Table({ table, locale, names }: { table: ReportTable; locale: string; n
   );
 }
 
-/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most five. */
+/** Round gridline steps (1, 2, 2.5 or 5 times a power of ten), at most five steps: up to six gridlines, counting zero. */
 function niceTop(v: number): { top: number; step: number } {
   if (v <= 0) return { top: 1, step: 0.25 };
   const raw = v / 5;
@@ -262,8 +273,9 @@ function Chart({ chart, locale, currency, words }: { chart: ReportChart; locale:
   const path = (pts: ReportPoint[]) => pts.map((p, i) => `${i ? 'L' : 'M'}${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join('');
   const ticks: number[] = [];
   for (let v = 0; v <= top + step / 2; v += step) ticks.push(yMin + v);
-  // Whole, evenly spaced ticks (years, or calendar years), never a fraction.
-  const xStep = Math.max(1, niceTop(xMax - xMin).step);
+  // Whole, evenly spaced ticks (years, or calendar years), never a fraction:
+  // a step of 2.5 would be rounded to marks 3 and 2 apart, so it becomes 2 (#862).
+  const xStep = Math.max(1, Math.floor(niceTop(xMax - xMin).step));
   const xTicks: number[] = [];
   for (let x = Math.ceil(xMin / xStep) * xStep; x <= xMax + 1e-9; x += xStep) xTicks.push(Math.round(x));
   const scale = amountScale(Math.max(Math.abs(yMin), Math.abs(yMin + top)), currency, amountLocale, numberLocale);

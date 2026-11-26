@@ -5,10 +5,10 @@
  */
 import PrivacyChangelogPage from '../../../components/pages/PrivacyChangelogPage.astro';
 import { changelogYears } from '../../../utils/privacyChangelog.ts';
-import { privacyChangelog } from '../../../utils/privacyChangelogSource.ts';
+import { writtenChangelog } from '../../../utils/privacyChangelogEntries.ts';
 
 export async function getStaticPaths() {
-  return changelogYears(await privacyChangelog()).map(({ year }) => ({ params: { year } }));
+  return changelogYears(writtenChangelog).map(({ year }) => ({ params: { year } }));
 }
 
 const year = Astro.params.year as string;

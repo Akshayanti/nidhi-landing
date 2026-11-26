@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { DEFAULTS, decodeState, defaultState, encodeState, isPristineState, publishableState } from './url.ts';
+import { DEFAULTS, MONTE_CARLO_URL, SHARED_STATE_GLOBAL, STATE_KEYS, STATE_KEY_PATTERN, decodeState, defaultState, encodeState, isPristineState, publishableState } from './url.ts';
 
 describe('encodeState', () => {
   it('encodes the defaults as an empty string', () => {
@@ -128,6 +128,17 @@ describe('numbers in a link are plain decimals only (#354)', () => {
     assert.equal(decodeState('n=1e3')?.paths, DEFAULTS.paths);
   });
 
+  it('an empty, blank or malformed number is the default, the other keys still read', async () => {
+    const { decodeState, DEFAULTS } = await import('./url.ts');
+    for (const raw of ['', '%20', '+', '%20%20', '%09', '%0A', '.', '-', '1.', '.5', '1..2', '--1', 'null', 'abc']) {
+      const s = decodeState(`s=${raw}&y=25`);
+      assert.equal(s?.start, DEFAULTS.start, JSON.stringify(raw));
+      assert.equal(s?.saveYears, 25);
+    }
+    assert.equal(decodeState('s&y=25')?.start, DEFAULTS.start, 'a key without a value');
+    assert.equal(decodeState('y=25')?.start, DEFAULTS.start, 'a key left out');
+  });
+
   it('caps what a link can ask for', async () => {
     const { decodeState } = await import('./url.ts');
     const { MAX_START, MAX_MONTHLY, MAX_WITHDRAWAL } = await import('./math.ts');
@@ -143,5 +154,78 @@ describe('numbers in a link are plain decimals only (#354)', () => {
       assert.equal(decodeState(`s=5&e=${e}`)?.returns, DEFAULTS.returns, e);
     }
     assert.equal(decodeState('e=c')?.returns, 'cautious');
+  });
+});
+
+describe('return settings and odd links, in detail', () => {
+  it('each setting has its own code, both ways', () => {
+    for (const [returns, code] of [['cautious', 'c'], ['historical', ''], ['optimistic', 'o']] as const) {
+      const encoded = encodeState({ ...DEFAULTS, returns });
+      assert.equal(encoded, code ? `e=${code}` : '');
+      if (code) assert.equal(decodeState(encoded)?.returns, returns);
+    }
+  });
+
+  it('a link that names no setting, or one it does not know, has the default; e=h is the default too', () => {
+    for (const link of ['s=5', 's=5&e=', 's=5&e=h', 's=5&e=C', 's=5&e=O', 's=5&e=cautious', 's=5&e=c&e=o']) {
+      const expected = link.endsWith('e=c&e=o') ? 'cautious' : DEFAULTS.returns;
+      assert.equal(decodeState(link)?.returns, expected, link);
+    }
+    assert.equal(decodeState('s=5&e=o')?.returns, 'optimistic');
+    assert.equal(DEFAULTS.returns, 'historical');
+  });
+
+  it('a currency is read whatever its case, and one it does not know is the default', () => {
+    assert.equal(decodeState('s=5')?.currency, DEFAULTS.currency);
+    assert.equal(decodeState('c=usd')?.currency, 'USD');
+    assert.equal(decodeState('c=Inr')?.currency, 'INR');
+    for (const c of ['', 'xyz', 'EURO', ' EUR', 'constructor', 'null']) {
+      assert.equal(decodeState(`s=5&c=${c}`)?.currency, DEFAULTS.currency, c);
+    }
+  });
+
+  it('only a ? or # at the very start is a prefix', () => {
+    assert.equal(decodeState('s=20000&f=?')?.start, 20_000);
+  });
+});
+
+describe('what the page head and the site read from here', () => {
+  it('the tool has one address, under the free tools, ending in a slash', () => {
+    assert.equal(MONTE_CARLO_URL, '/free/monte-carlo-simulator/');
+  });
+
+  it('shared state waits in a window property of the simulator’s own', () => {
+    assert.equal(SHARED_STATE_GLOBAL, '__nidhiMonteCarloShared');
+  });
+
+  it('the guard’s pattern matches each state key and no other name', () => {
+    const one = new RegExp(`^${STATE_KEY_PATTERN}$`);
+    for (const key of STATE_KEYS) assert.match(key, one);
+    const keys: readonly string[] = STATE_KEYS;
+    for (let code = 32; code < 127; code++) {
+      const name = String.fromCharCode(code);
+      assert.equal(one.test(name), keys.includes(name), JSON.stringify(name));
+    }
+    for (const name of ['', 'cs', 'utm_source', 'S']) assert.equal(one.test(name), false, name);
+  });
+});
+
+describe('a withdrawal amount carried with withdrawals off', () => {
+  it('o=1 beside it means the plan has no withdrawal, and the years go back to their start', () => {
+    const s = decodeState('w=45000&r=12&o=1');
+    assert.equal(s?.withdrawal, 0);
+    assert.equal(s?.withdrawYears, DEFAULTS.withdrawYears);
+  });
+
+  it('only o=1 says so: any other value, or none, leaves the withdrawal on', () => {
+    for (const link of ['w=45000&r=12', 'w=45000&r=12&o=', 'w=45000&r=12&o=0', 'w=45000&r=12&o=true', 'w=45000&r=12&o=11']) {
+      const s = decodeState(link);
+      assert.equal(s?.withdrawal, 45_000, link);
+      assert.equal(s?.withdrawYears, 12, link);
+    }
+  });
+
+  it('o on its own is tool state: the link opens the starting plan', () => {
+    assert.deepEqual(decodeState('o=1'), DEFAULTS);
   });
 });

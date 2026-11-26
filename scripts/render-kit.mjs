@@ -1426,8 +1426,10 @@ async function main() {
     const browserPage = await browser.newPage();
     const open = async (html, path, height, width = W, scale = 2) => {
       await browserPage.setViewport({ width, height, deviceScaleFactor: scale });
-      await browserPage.setContent(html, { waitUntil: 'domcontentloaded', timeout: 10000 });
-      await browserPage.evaluate(() => document.fonts.ready);
+      // 'load' waits for the font stylesheet; without it the first page of a run could be captured in the
+      // fallback font, because document.fonts.ready resolves at once when no font face is known yet.
+      await browserPage.setContent(html, { waitUntil: 'load', timeout: 30000 });
+      await browserPage.evaluate(() => { void document.body.offsetHeight; return document.fonts.ready; });
       await mkdir(dirname(path), { recursive: true });
       return path;
     };

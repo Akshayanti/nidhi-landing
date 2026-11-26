@@ -19,18 +19,18 @@ form: steps
 steps:
   - action: "Gather every place you might owe money."
     why: "The list may take more than one sitting, and anything missing can be added later. Bank and card apps, recent statements and emails from lenders cover most of it; where your country has credit reports, one can show accounts you had forgotten."
-    example: "Credit and store cards, an overdraft, personal, car or student loans, buy now pay later, a phone or furniture paid in instalments, a mortgage, unpaid bills, and money owed to family or friends."
+    example: "Credit and store cards, an overdraft (spending below zero that the bank allows), personal, car or student loans, buy now pay later, a phone or furniture paid in instalments, a mortgage, unpaid bills, and money owed to family or friends."
   - action: "For each debt, write down who you owe, the balance, the interest rate and the minimum monthly payment."
     why: "Together these say what the debt costs and what it asks of you every month. A due date is worth noting too."
   - action: "Find each interest rate on the statement or contract."
-    why: "A statement may show both an interest rate and an APR (annual percentage rate); depending on local rules, the APR can include fees. For the rough sum in step 5, the interest rate is the one to use. If you can't find it, you can ask the lender: \"What is my balance, my interest rate and my minimum monthly payment?\""
+    why: "A statement may show both an interest rate and an APR (annual percentage rate); depending on local rules, the APR can include fees. For the rough sum in step 5, the interest rate is the one to use. If you can't find it, you can ask the lender: “What is my balance, my interest rate and my minimum monthly payment?”"
     caution: "A 0% offer usually ends on a set date, after which a higher rate applies. Write that date down too."
   - action: "Add up two totals: everything you owe, and all the minimum payments."
     why: "The monthly total shows your scheduled debt payments, to set beside your essential living costs. The overall total shows the balances you've recorded."
   - action: "Work out a rough monthly interest cost for each debt."
     why: "Balance × yearly rate ÷ 12 gives an approximate cost of carrying each debt for a month. It shows which debts cost the most to keep."
     example: "A €6,500 card balance at 22% a year: 6,500 × 0.22 ÷ 12 ≈ €119 a month."
-    caution: "This estimate suits simple balances that charge interest. Flat-rate loans, deferred interest, subsidised loans and other arrangements can work differently, and fees aren't included."
+    caution: "This estimate suits simple balances that charge interest. Flat-rate loans (interest on the whole amount borrowed for the whole term), deferred interest (interest that is held back and may be charged later), subsidized loans (someone else, often a government, pays part of the cost) and other arrangements can work differently, and fees aren't included."
 visual:
   kind: table
   caption: "A made-up example, the same debts as in the lesson on getting out of debt. Interest a month is the rough figure from step 5."

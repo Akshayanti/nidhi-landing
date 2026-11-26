@@ -2,17 +2,17 @@
 /**
  * Checks the built site in dist/ (#361): canonical and hreflang links, the
  * sitemap, internal links, leftover template text and the feeds. The checks
- * live in scripts/lib/check-dist.mjs, which says what each one asks.
+ * live in scripts/lib/checks/check-dist.mjs, which says what each one asks.
  *
  *   npm run build && node scripts/check-dist.mjs [distDir]
  *
  * Exits 1 on any problem. Every finding here is about a page as a whole, so
- * none can be excused by a known-failure entry (scripts/lib/known-failures.mjs):
+ * none can be excused by a known-failure entry (scripts/lib/checks/known-failures.mjs):
  * it is fixed, or the check fails. Run in the Build job of
  * .github/workflows/pr-checks.yml, after the build.
  */
 import { join } from 'node:path';
-import { CHECKS, loadDist } from './lib/check-dist.mjs';
+import { CHECKS, loadDist } from './lib/checks/check-dist.mjs';
 
 const dir = process.argv[2] ?? join(import.meta.dirname, '..', 'dist');
 const site = loadDist(dir);

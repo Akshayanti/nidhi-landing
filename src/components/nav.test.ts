@@ -6,7 +6,7 @@ import { LOCALES, dict } from '../i18n';
 const { DESKTOP_DROPDOWNS, navGroups, navHref, navLabel } = await import('./nav.ts');
 type Entry = ReturnType<typeof navGroups>[number]['entries'][number];
 
-const all = navGroups({ showMonteCarlo: true, showInvestOrPayOff: true });
+const all = navGroups();
 const links = (groups: ReturnType<typeof navGroups>) =>
   groups.flatMap((g) => g.entries.flatMap((e: Entry) => ('children' in e ? e.children : [e])));
 
@@ -15,15 +15,6 @@ describe('the header\'s destinations', () => {
     assert.deepEqual(all.map((g) => g.key), ['learn', 'tools', 'about']);
     assert.deepEqual([...DESKTOP_DROPDOWNS], ['tools', 'learn']);
     for (const key of DESKTOP_DROPDOWNS) assert.ok(all.find((g) => g.key === key)?.button, key);
-  });
-
-  it('a tool that has not launched has no link, and nothing else moves', () => {
-    const none = links(navGroups({ showMonteCarlo: false, showInvestOrPayOff: false })).map((l) => l.key);
-    assert.ok(!none.includes('monteCarloSimulator') && !none.includes('investOrPayOff'));
-    const full = links(all).map((l) => l.key);
-    assert.deepEqual(full.filter((k) => k !== 'monteCarloSimulator' && k !== 'investOrPayOff'), none);
-    assert.ok(links(navGroups({ showMonteCarlo: true, showInvestOrPayOff: false })).some((l) => l.key === 'monteCarloSimulator'));
-    assert.ok(links(navGroups({ showMonteCarlo: false, showInvestOrPayOff: true })).some((l) => l.key === 'investOrPayOff'));
   });
 
   // These are the click labels analytics tells links apart by, and the privacy

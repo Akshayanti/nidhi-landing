@@ -30,7 +30,7 @@
  * starting point (rupees and India on the Hindi page) applies only when no
  * state arrived; see `publishableState`.
  */
-import { CURRENCIES, DEFAULT_CURRENCY } from '../loan/math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY } from '../shared/money.ts';
 import { serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { MAX_AMOUNT, MAX_DEBT_RATE, MAX_FEE_PCT, MAX_INFLATION, type Horizon, type ReturnChoice, type TodayBasis } from './math.ts';
 
@@ -75,6 +75,9 @@ const RETURN_CODES: Record<ReturnChoice, string> = { cautious: 'c', historical: 
 const RETURN_BY_CODE: Record<string, ReturnChoice> = { c: 'cautious', h: 'historical', o: 'optimistic', w: 'own' };
 const HORIZON_CODES: Record<Horizon, string> = { payoff: 'p', plus5: '5', plus10: '0' };
 const HORIZON_BY_CODE: Record<string, Horizon> = { p: 'payoff', '5': 'plus5', '0': 'plus10' };
+
+/** The tool's own address, for the nav, the hub, the home page and its lesson. */
+export const INVEST_OR_PAY_OFF_URL = '/free/invest-or-pay-off/';
 
 export const STATE_KEYS = ['c', 'b', 'r', 'p', 'x', 'l', 'n', 'i', 's', 'o', 'f', 't', 'h', 'a'] as const;
 

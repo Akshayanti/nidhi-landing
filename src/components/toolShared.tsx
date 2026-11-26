@@ -13,11 +13,13 @@
  * 2. The lead-in of a field error ("Error: …"), so an error is told apart
  *    from help text by more than its colour, in every language.
  */
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
+import { resultGate } from '../utils/shared/settle.ts';
 
 /** False in the server-rendered page and on the first render; true once the island runs. */
 export function useToolReady(): boolean {
   const [ready, setReady] = useState(false);
+  // Stryker disable next-line ArrayDeclaration: any list that never changes runs the effect once, as the empty one does
   useEffect(() => setReady(true), []);
   return ready;
 }
@@ -29,6 +31,9 @@ export function heldUntilReady(ready: boolean): { inert?: boolean; 'aria-busy'?:
 
 /** The translated pattern `Error: {message}`, handed down by each island. */
 export const ErrorLeadContext = createContext('');
+
+/** What is said under a box that arrived holding the mark of an unreadable value. */
+export const UnreadableContext = createContext('');
 
 /** A field's error message with the lead-in in front. */
 export function useErrorText(message: string): string {
@@ -47,6 +52,7 @@ export interface Notice { text: string; n: number }
 /** Says a notice through `say`: the region is emptied first, so a repeat is a change. */
 function useNotice(notice: Notice | undefined, say: (text: string) => void) {
   const n = notice?.n ?? 0;
+  // Stryker disable next-line StringLiteral: the fallback is for no notice, whose count is 0, and a count of 0 says nothing
   const text = notice?.text ?? '';
   useEffect(() => {
     // A notice taken back (a dialog reopened, another kind of link chosen) empties the region.
@@ -73,12 +79,21 @@ function useNotice(notice: Notice | undefined, say: (text: string) => void) {
  * and together with `text` when one keystroke changed both (#608).
  *
  * `notice` is said at once, each time its count rises (a link was copied).
+ *
+ * `quiet` is for the page still arriving (a shared link not yet read): while
+ * it holds, nothing is said, and the text it ends on is the one the page
+ * loaded with, so a link's own result is not read out on opening (#880).
  */
-export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: string; also?: string; notice?: Notice; delay?: number }) {
+export function ResultAnnouncement({ text, also, notice, delay = 600, quiet = false }: { text: string; also?: string; notice?: Notice; delay?: number; quiet?: boolean }) {
   const [said, setSaid] = useState('');
   const heard = useRef<{ text: string; also: string | undefined } | null>(null);
+  const wasQuiet = useRef(false);
   useEffect(() => {
-    if (!heard.current) { heard.current = { text, also }; return undefined; }
+    if (!heard.current || wasQuiet.current) {
+      heard.current = { text, also };
+      wasQuiet.current = quiet;
+      return undefined;
+    }
     // The part opening or closing is not a result to say, and it is the baseline
     // at once: an edit made before the delay has passed is then heard as a change.
     if ((also === undefined) !== (heard.current.also === undefined)) {
@@ -94,7 +109,7 @@ export function ResultAnnouncement({ text, also, notice, delay = 600 }: { text: 
       }
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [text, also, delay]);
+  }, [text, also, delay, quiet]);
   useNotice(notice, setSaid);
   return <span className="chart-srOnly" aria-live="polite" aria-atomic="true">{said}</span>;
 }
@@ -108,4 +123,76 @@ export function NoticeRegion({ notice }: { notice: Notice }) {
   const [said, setSaid] = useState('');
   useNotice(notice, setSaid);
   return <span className="chart-srOnly" role="status" aria-atomic="true">{said}</span>;
+}
+
+/** How long after typing pauses a screen reader hears why there is no result. */
+export const WITHHELD_SAID_AFTER = 1000;
+
+/**
+ * A tool's results, or the reason there are none. While a box is wrong every
+ * result that depends on it goes at once, from the screen, from paper and
+ * from assistive technology, and the reason takes its place (#793). The
+ * space stays, so the box being typed in does not move. The reason is not a
+ * live region: the tool announces it once, after `WITHHELD_SAID_AFTER`.
+ * `unsaid` is a part that goes with another, which shows the one reason.
+ */
+export function Withheld({ reason, reasonId, unsaid = false, children }: { reason: string | null; reasonId?: string; unsaid?: boolean; children: React.ReactNode }) {
+  return (
+    <div className="tool-result">
+      {/* An empty reason withholds too: a corrected box has nothing to fix while its result settles. */}
+      <div className={`tool-resultBody${reason !== null ? ' tool-withheld' : ''}`} inert={reason !== null}>{children}</div>
+      {reason && !unsaid && <p id={reasonId} className="tool-resultReason">{reason}</p>}
+    </div>
+  );
+}
+
+/**
+ * A box holding nothing but "?", the mark of a value that could not be read,
+ * is selected, so typing replaces it (#789). On the click as well as on
+ * focus: the mouse coming up puts the caret where it was pressed.
+ */
+export function selectMarker(e: { currentTarget: HTMLInputElement }): void {
+  if (e.currentTarget.value === '?') e.currentTarget.select();
+}
+
+/** Props for every box that can show the mark. */
+export const markerSelect = { onFocus: selectMarker, onClick: selectMarker };
+
+/** The results' gate (utils/shared/settle.ts): withheld from an invalid form until the corrected one's result is on screen. */
+export function useResultGate(invalid: boolean, current: boolean): { withheld: boolean; waiting: boolean } {
+  const [held, setHeld] = useState(false);
+  const gate = resultGate({ invalid, held, current });
+  // Set while rendering, so that no frame shows what is held.
+  if (gate.withheld !== held) setHeld(gate.withheld);
+  return gate;
+}
+
+type LinkFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'readOnly' | 'ref'> & {
+  /** The share link to show and select. */
+  link: string;
+  ref?: Ref<HTMLInputElement>;
+};
+
+/**
+ * A read-only box holding a share link. The link is set as the field's value
+ * property, never as its `value` attribute (which React writes for a
+ * controlled input), so the page's markup never carries a link's state: no
+ * attribute should hold what a reader typed (CLAUDE.md, free tools rule 4).
+ */
+export function LinkField({ link, ref, ...rest }: LinkFieldProps) {
+  const own = useRef<HTMLInputElement | null>(null);
+  useLayoutEffect(() => {
+    if (own.current && own.current.value !== link) own.current.value = link;
+  }, [link]);
+  return (
+    <input
+      {...rest}
+      readOnly
+      ref={(el) => {
+        own.current = el;
+        if (typeof ref === 'function') ref(el);
+        else if (ref) ref.current = el;
+      }}
+    />
+  );
 }

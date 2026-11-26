@@ -31,7 +31,7 @@ scripts/__pycache__/
 # are deleted after a successful render and only ever exist mid-pipeline.
 remotion/outputs/
 remotion/public/audio/
-# Lesson figures rendered for reels: scripts/lib/prepare-figures.mjs copies
+# Lesson figures rendered for reels: scripts/lib/media/prepare-figures.mjs copies
 # them here for each render, and they stay on the machine. Four are tracked
 # on purpose and named below, so git does not hold a file it also ignores:
 # renders of the site's own figures, kept as examples of what the reel
@@ -53,3 +53,9 @@ logs/
 # Security and privacy weaknesses of the site: kept on the machine, never in
 # this public repository (CLAUDE.md, "Two Projects").
 docs/curr_bugs.md
+
+# Mutation testing (stryker.config.mjs): its sandboxes and reports.
+.stryker-tmp*/
+reports/mutation/
+# astro check's own install (tools/astro-check): its lockfile is tracked.
+tools/astro-check/node_modules/

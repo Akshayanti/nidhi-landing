@@ -37,12 +37,15 @@ const repoRoot = join(here, '..');
 // is an error, not a silent skip: the list once named three files that had
 // moved, and the loan engine went unlinted with nobody told (#319).
 //
-// scripts/ is not here. The lint script itself documents the rules in prose
-// (it names console.log, debugger and the dash) and would flag itself, and
-// the render and pipeline scripts log to the console by design.
+// scripts/ is linted too (#791): the gates themselves live there. Two rules
+// stay off for it (SITE_ONLY below): the render and pipeline scripts log to
+// the console by design, and the dash rule is about the site's own words,
+// while scripts hold dash-matching patterns and model prompts (the scripts
+// that write copy check it for dashes themselves, in scrub-output.mjs).
 const TARGETS = [
   'src',
   '.github/workflows',
+  'scripts',
 ];
 
 // What is left out of those paths, each with its reason. A path ending in
@@ -58,7 +61,18 @@ const EXCLUDES = [
   // Data files written by a script (the World Bank history, country names),
   // not by hand.
   'src/data/',
+  // The linter names its own rules in prose (debugger, TODO) and would
+  // flag itself.
+  'scripts/lint.mjs',
+  // Test fixtures compared byte for byte (a signed request body): a trailing
+  // newline added to one would change what is signed.
+  'scripts/fixtures/',
 ];
+
+/** Whether a file is under scripts/, where the console and dash rules do not apply. */
+function inScripts(file) {
+  return relative(repoRoot, file).split('\\').join('/').startsWith('scripts/');
+}
 
 // Only text files a person writes are read; images and fonts are skipped.
 const LINTED_EXTENSIONS = /\.(ts|tsx|astro|mjs|js|css|md|json|yml|yaml)$/;
@@ -122,7 +136,7 @@ const LINE_RULES = [
       !/scripts\//.test(line),
     message:
       "left-over console.* call (use a real error path or remove before committing)",
-    appliesTo: (file) => /\.(ts|tsx|astro|mjs|js)$/.test(file) && !/\/scripts\//.test(file),
+    appliesTo: (file) => /\.(ts|tsx|astro|mjs|js)$/.test(file) && !inScripts(file),
   },
   {
     name: 'no-debugger',
@@ -169,7 +183,7 @@ const LINE_RULES = [
     name: 'no-em-dash',
     test: (line) => /\u2014|&mdash;|&#8212;|&#x2014;/i.test(line),
     message: 'em-dash (U+2014 or &mdash; / &#8212; / &#x2014;) is not allowed; use a colon, semicolon, or restructure',
-    appliesTo: (file) => /\.(ts|tsx|astro|css|mjs|js|md|yml|yaml)$/.test(file),
+    appliesTo: (file) => /\.(ts|tsx|astro|css|mjs|js|md|yml|yaml)$/.test(file) && !inScripts(file),
   },
 ];
 

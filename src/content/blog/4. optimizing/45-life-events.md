@@ -37,7 +37,7 @@ personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "planning", "goals"]
 faq:
   - question: "What counts as a life event in a financial planning sense?"
-    answer: "A life event, in this context, is anything that changes your income, your expenses, or your household composition materially and for a durable period. That includes: having a child, adopting, marrying or partnering, separating or divorcing, a career break (parental leave, sabbatical, extended education), a job change, a relocation, a home purchase or sale, the death or serious illness of a family member, and taking on care responsibility for an aging parent. Some are joyful, some are painful. Financially, they share a structure: a shift in one or more of the projection's inputs that lasts long enough to reshape the trajectory."
+    answer: "A life event, in this context, is anything that changes your income, your expenses, or your household composition materially and for a durable period. That includes: having a child, adopting, marrying or partnering, separating or divorcing, a career break (parental leave, sabbatical, extended education), a job change, a relocation, a home purchase or sale, the death or serious illness of a family member, and taking on care responsibility for an ageing parent. Some are joyful, some are painful. Financially, they share a structure: a shift in one or more of the projection's inputs that lasts long enough to reshape the trajectory."
   - question: "Which life events are foreseeable and which are not?"
     answer: "Many planned events become visible months or years ahead: trying for a child, looking for a home, arranging a career break or preparing a voluntary move. Their timing can still change. Accidents, sudden illness, redundancy, forced moves and family emergencies may arrive with little or no warning. A common approach is to model events that can be roughly dated and use buffers for events that cannot."
   - question: "How much does having a child actually cost?"
@@ -94,7 +94,7 @@ Families also often move to a bigger home or a particular school area. A €300,
 <details class="lesson-depth">
 <summary class="disclosure">How childcare costs differ by country</summary>
 
-Early years are dominated by childcare, roughly €6,000 to €20,000 a year depending on country and format if both parents work; the national averages above already include a typical level, so your own number can sit well above or below them. Middle years are activities, clothing, food and school costs; later years education, transport and possibly university. Nordic countries heavily subsidise childcare and university, which lowers the direct-cost line but not the income-shift line. Japan has waived fees for eligible kindergarten and nursery services for children aged 3 to 5 since October 2019, with a monthly cap for some services. The US and UK have expensive childcare and mixed university costs. India has low-cost state schooling but often significant private-school costs for middle-class households, and university costs are meaningful. Australia and New Zealand sit somewhere in between. Your own country's figures say more than a headline number from a US study.
+Early years are dominated by childcare, roughly €6,000 to €20,000 a year depending on country and format if both parents work; the national averages above already include a typical level, so your own number can sit well above or below them. Middle years are activities, clothing, food and school costs; later years education, transport and possibly university. Nordic countries heavily subsidize childcare and university, which lowers the direct-cost line but not the income-shift line. Japan has waived fees for eligible kindergarten and nursery services for children aged 3 to 5 since October 2019, with a monthly cap for some services. The US and UK have expensive childcare and mixed university costs. India has low-cost state schooling but often significant private-school costs for middle-class households, and university costs are meaningful. Australia and New Zealand sit somewhere in between. Your own country's figures say more than a headline number from a US study.
 
 </details>
 
@@ -158,7 +158,7 @@ For the unforeseeable, planning works by category. Three buffers do most of the 
 None of the three covers everything, and the right size of each depends on the household.
 
 <details class="quick-check">
-<summary class="disclosure">Quick check: your employer announces a reorganisation. Does a possible redundancy go in the plan or get a buffer?</summary>
+<summary class="disclosure">Quick check: your employer announces a reorganization. Does a possible redundancy go in the plan or get a buffer?</summary>
 
 Usually a buffer: you cannot name when, or whether, it will happen. A planned career break or a house purchase, which you can roughly date, goes in the plan.
 

@@ -1,5 +1,5 @@
 /**
- * Fixture tests for scripts/lib/lint-figures.mjs, the prebuild gate on lesson
+ * Fixture tests for scripts/lib/checks/lint-figures.mjs, the prebuild gate on lesson
  * figures (#364). Each check is shown passing on a good figure and failing on
  * the mistake it exists for. The stylesheet is the real one unless a test
  * needs a broken one.
@@ -10,7 +10,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { lintFigures } from './lib/lint-figures.mjs';
+import { lintFigures } from './lib/checks/lint-figures.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const CSS = readFileSync(join(ROOT, 'src/styles/global.css'), 'utf8');

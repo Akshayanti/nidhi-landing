@@ -25,14 +25,6 @@
 import '../../styles/global.css';
 import { LOCALES, LOCALE_META, localePrefix } from '../../i18n';
 import { DEFAULT_CONTENT, DEFAULT_MEDIUM, DEFAULT_SOURCE, DESTINATIONS, MIN_CAMPAIGN_LENGTH } from '../../utils/qr/destinations.ts';
-import { isMonteCarloReleased } from '../../utils/monte-carlo/release.ts';
-import { isInvestOrPayOffReleased } from '../../utils/invest-or-pay-off/release.ts';
-
-const released = {
-  monteCarlo: await isMonteCarloReleased(),
-  investOrPayOff: await isInvestOrPayOffReleased(),
-};
-const destinations = DESTINATIONS.filter((d) => !d.gate || released[d.gate]);
 const languages = LOCALES.map((locale) => ({
   locale,
   prefix: localePrefix(locale).replace(/^\//, ''),
@@ -71,7 +63,7 @@ const languages = LOCALES.map((locale) => ({
         <div class="field">
           <label for="qr-path">Page</label>
           <select id="qr-path" name="path">
-            {destinations.map((d) => <option value={d.path}>{d.label}</option>)}
+            {DESTINATIONS.map((d) => <option value={d.path}>{d.label}</option>)}
           </select>
         </div>
 

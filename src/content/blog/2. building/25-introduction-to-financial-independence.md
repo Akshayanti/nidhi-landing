@@ -35,7 +35,7 @@ faq:
   - question: "Why does savings rate matter more than income for reaching financial independence?"
     answer: "Savings rate is income minus expenses divided by income, and it controls two things at once: how much you contribute and how much you eventually need. High spending raises your FIRE target while leaving less to invest, so a low saver is squeezed from both sides. The classic table shows that two people on very different salaries but the same savings rate reach independence in roughly the same number of years. A 20% saver is about 37 years away; a 50% saver is about 17 years away, regardless of the underlying paycheck. Expenses, not salary, set the pace."
   - question: "What are the four common types of FIRE?"
-    answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Many people pick the flavor they can imagine sustaining for decades rather than the one that sounds most impressive."
+    answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Many people pick the flavour they can imagine sustaining for decades rather than the one that sounds most impressive."
   - question: "Is the 4% rule a guarantee that my money will last?"
     answer: "No. The 4% rule comes from the Trinity Study, which used US historical data over a 30-year horizon for a specific stock and bond mix. It found that portfolio survived 4% inflation-adjusted withdrawals in most tested scenarios, but it is a rule of thumb, not a promise. Longer retirements, lower-return environments, and different markets all weaken it: one study of 38 developed countries found that a 65-year-old couple accepting a 5% chance of running out could withdraw only about 2.3% a year, well under 4%. Lower starting points of 3 to 3.5%, roughly 28 to 33 times annual expenses, are more cautious illustrations, though the cited study does not establish them as suitable for any particular reader. Treat 4% as a starting point for thinking, and remember that sequence-of-returns risk and drawdown strategy matter as much as the headline rate."
   - question: "What is the crossover point in financial independence?"
@@ -58,7 +58,7 @@ Most people think of retirement as a date. An age you reach, a birthday the stat
 
 When your investments can cover your expenses for as long as you need them to, without you adding another euro to them, you are financially independent. Work becomes optional. You might still work, because you enjoy it, because it has meaning, because you like your colleagues. But you no longer have to.
 
-This post is an introduction. It explains what financial independence is, the simple math behind it, the four flavors that cover most goals, and why the lever that matters most is your savings rate, not your salary. The deeper mechanics of living off your portfolio (safe withdrawal rates, sequence of returns, drawdown strategies) come later in the Mastery level.
+This post is an introduction. It explains what financial independence is, the simple math behind it, the four flavours that cover most goals, and why the lever that matters most is your savings rate, not your salary. The deeper mechanics of living off your portfolio (safe withdrawal rates, sequence of returns, drawdown strategies) come later in the Mastery level.
 
 ## The core idea
 
@@ -103,7 +103,7 @@ Two things should jump out of that table. First, the numbers are large but not u
 
 ## The four common flavors
 
-FIRE isn't a single target. People usually pick a flavor that matches their preferred lifestyle and timeline.
+FIRE isn't a single target. People usually pick a flavour that matches their preferred lifestyle and timeline.
 
 **Lean FIRE.** Minimal comfortable lifestyle. Small home (or none), modest travel, careful spending. FIRE number correspondingly small. Reached fastest. Requires long-term comfort with a lean lifestyle.
 
@@ -111,9 +111,9 @@ FIRE isn't a single target. People usually pick a flavor that matches their pref
 
 **Fat FIRE.** Current lifestyle plus comfortable margin: nicer travel, less cost sensitivity, bigger buffer for unexpected expenses. Takes longer to reach because the portfolio requirement is larger.
 
-**Coast FIRE.** A different shape of the same idea. You've invested enough that, even if you never add another euro, compounding alone will grow your portfolio to a full FIRE number by a target retirement age. You still need to cover current expenses with work income, but you no longer need to save. Coast FIRE is often much closer than people realise, because compounding does most of the heavy lifting if you start early.
+**Coast FIRE.** A different shape of the same idea. You've invested enough that, even if you never add another euro, compounding alone will grow your portfolio to a full FIRE number by a target retirement age. You still need to cover current expenses with work income, but you no longer need to save. Coast FIRE is often much closer than people realize, because compounding does most of the heavy lifting if you start early.
 
-| Flavor | Annual spending assumption | FIRE number (25×) | Typical shape |
+| Flavour | Annual spending assumption | FIRE number (25×) | Typical shape |
 |---|---|---|---|
 | Lean FIRE | €20,000 | €500,000 | Fastest, leanest lifestyle |
 | Traditional FIRE | €35,000 | €875,000 | Current lifestyle, indefinitely |
@@ -210,7 +210,7 @@ We'll return to each in the Mastery level. For now, the goal is to understand wh
 1. **Estimate your current annual expenses.** Not your salary, not your take-home. What you actually spend. Twelve months of cash flow is the right window if you've been tracking [cash flow](/blog/cash-flow-101/) or [budgeting](/blog/budgeting/)
 2. **Multiply by 25.** That's a rough traditional FIRE number at today's spending, based on the 4% rule. It's a directional figure, not a promise; at 3-3.5% the multiple is closer to 28-33
 3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage is one of the strongest levers on how far you are from FI
-4. **Notice which flavor fits your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. The one people tend to sustain is the one they can imagine living with for decades
+4. **Notice which flavour fits your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. The one people tend to sustain is the one they can imagine living with for decades
 5. **Raises are an easy lever.** A raise saved before it becomes lifestyle lifts the savings rate without cutting anything. Some people commit a share, often half, in advance; how much is realistic depends on your budget
 6. **Irreversible moves need more than this post.** Actual early retirement involves sequence risk, drawdown planning, tax, healthcare and lifestyle questions that aren't covered here. This post is the map, not the journey
 
