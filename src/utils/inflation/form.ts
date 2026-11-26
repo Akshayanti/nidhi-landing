@@ -73,8 +73,8 @@ export function boxErrors(f: FormState, locale: string): Record<BoxField, boolea
 
 /**
  * A bad box as a link has it. A number only if it is still bad read plainly:
- * years typed in Devanagari digits are an error here, and as "12" would
- * arrive as a valid answer.
+ * one that the receiving page could read as valid arrives marked unreadable
+ * instead, so an error never turns into an answer on the way.
  */
 function carriedBox(field: BoxField, text: string, locale: string): string {
   const value = boxValue(text, locale);
