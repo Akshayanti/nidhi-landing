@@ -63,8 +63,8 @@ const lock: Lockfile = JSON.parse(readFileSync(lockPath, 'utf8'));
 const EXPECTED_DEPENDENCIES: Record<string, string> = {
   '@astrojs/react': '^7.1.9',
   '@astrojs/rss': '^4.0.18',
-  '@astrojs/sitemap': '^3.7.5',
-  astro: '^7.4.12',
+  '@astrojs/sitemap': '^3.7.6',
+  astro: '^7.4.13',
   react: '^19.3.1',
   'react-dom': '^19.3.1',
 };
@@ -72,7 +72,7 @@ const EXPECTED_DEPENDENCIES: Record<string, string> = {
 const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // Used by one offline script, the reel script writer
   // (scripts/lib/media/llm-script-writer.mjs). Nothing under src/ imports it.
-  '@anthropic-ai/sdk': '^1.10.0',
+  '@anthropic-ai/sdk': '^1.13.0',
   // Mutation testing (#790): run in CI on every pull request, so pinned
   // exactly, like tsx. Nothing under src/ imports them.
   // Reads the tools' top-level statements to cut the mutation shards
@@ -84,7 +84,7 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // browser. Pinned exactly, as test gates.
   '@testing-library/dom': '10.4.2',
   '@testing-library/react': '16.3.3',
-  '@testing-library/user-event': '14.6.8',
+  '@testing-library/user-event': '14.6.13',
   // Types for test/dom.ts, which `astro check` and `tsc` read.
   '@types/jsdom': '30.0.0',
   '@types/react': '^19.3.0',
@@ -92,13 +92,13 @@ const EXPECTED_DEV_DEPENDENCIES: Record<string, string> = {
   // The accessibility pass of scripts/smoke-pages.mjs: injected into the
   // test browser, never into a page a visitor is served. Pinned exactly: it
   // gates the Build job, and a new axe version can add failures on its own.
-  'axe-core': '4.14.0',
+  'axe-core': '4.14.1',
   // Imported by src/utils/lessonRules.test.ts, to give headings the ids the
   // build gives them. Astro brings it too; named here so the test does not
   // depend on that.
   'github-slugger': '^2.0.0',
   // The test browser of the component tests (test/dom.ts). Pinned exactly.
-  jsdom: '31.0.0',
+  jsdom: '31.0.1',
   puppeteer: '^25.18.1',
   // Imported by scripts/render-logo-with-url.mjs. It was there only because
   // astro lists it as optional, so an astro update could have removed it.
