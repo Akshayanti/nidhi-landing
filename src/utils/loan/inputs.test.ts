@@ -955,6 +955,11 @@ describe('a lump sum in a month the loan does not have (issue 796)', () => {
     assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: many(1200) })), true);
     assert.equal(computeFromInput(vendor({ ...base, lumpSumsEncoded: many(1201) }), 'EUR').error, OPTIONAL_UNREADABLE);
     assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: many(1201) })), false);
+    // Separators with nothing, or only spaces, between them are not lump sums and are not counted.
+    for (const padded of [`${many(1200)};`, `${many(1200)}; ;`, `; ;${many(1200)}`]) {
+      assert.equal(computeFromInput(vendor({ ...base, lumpSumsEncoded: padded }), 'EUR').error, LUMP_MONTH, padded.slice(-12));
+      assert.equal(lumpMonthFault(vendor({ ...base, lumpSumsEncoded: padded })), true, padded.slice(-12));
+    }
   });
 
   it('a whole month up to 1,200 is fine: 5,000 in month 12 ends the loan in month 113, for 129,796.70', () => {

@@ -250,6 +250,9 @@ describe('loan spreadsheet: the Inputs sheet', () => {
     it('are left as typed when the text does not read as lump sums', () => {
       assert.equal(lumpCell('soon'), 'soon');
       assert.equal(lumpCell(' 12 5000 '), ' 12 5000 ');
+      // Separators with nothing between them are text too, not an empty box.
+      assert.equal(lumpCell(';'), ';');
+      assert.equal(lumpCell(' ; ;'), ' ; ;');
     });
 
     it('are left as typed, whole, when only part of the text reads: nothing is left out of the record', () => {
