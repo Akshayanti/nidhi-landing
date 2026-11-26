@@ -94,6 +94,9 @@ describe('what a mutation shard’s earlier results depend on', () => {
       assert.equal(isFingerprinted(path), true, path);
       assert.notEqual(of({ ...FILES, [path]: '{"type":"commonjs"}' }), BASE, path);
     }
+    // Under such a name too, were one ever a folder.
+    assert.equal(isFingerprinted('src/package.json/a'), true);
+    assert.equal(isFingerprinted('remotion/package.json/a'), false);
     // And never for what no mutation run reads, whatever its name.
     for (const path of ['docs/package.json', '.claude/tsconfig.json', '.github/workflows/deploy.yml', '.github/package.json']) assert.equal(isFingerprinted(path), false, path);
   });

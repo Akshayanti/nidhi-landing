@@ -30,7 +30,7 @@ import { availableParallelism, tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
 import { createGraph } from './lib/checks/mutation-deps.mjs';
 import { isFingerprinted, isSelectedTest, trackedPaths } from './lib/checks/mutation-fingerprint.mjs';
-import { UNWRITTEN, covered, heldByEverything, inSharedFingerprint, outside } from './lib/checks/mutation-trace.mjs';
+import { UNWRITTEN, covered, heldByEverything, inSharedFingerprint, kindOf, outside } from './lib/checks/mutation-trace.mjs';
 
 const root = process.cwd();
 const tracked = trackedPaths(execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
@@ -93,11 +93,16 @@ for (const { test, code, stderr, lines, traced } of results.sort((a, b) => a.tes
   if (everything) wide += 1;
   const files = everything ? null : new Set(graph.dependencies(test).files);
   const missing = new Set();
-  for (const abs of lines) {
-    const rel = relative(root, abs).split('\\').join('/').replace(/\/$/, '');
-    if (outside(rel) || inSharedFingerprint(rel, isFingerprinted, trackedSet, isFile)) continue;
-    const held = everything ? heldByEverything(rel, trackedSet, isFile) : covered(rel, files, isFile);
-    if (!held) missing.add(rel);
+  for (const line of lines) {
+    // `>` before a path: the folder was listed (trace-deps-hook.mjs).
+    const listed = line.startsWith('>');
+    const rel = relative(root, listed ? line.slice(1) : line).split('\\').join('/').replace(/\/$/, '');
+    // Every process looks at the project folder itself; only a listing of it is compared.
+    if (outside(rel) || (rel === '' && !listed)) continue;
+    const kind = kindOf(() => statSync(join(root, rel)));
+    if (inSharedFingerprint(rel, isFingerprinted, trackedSet, kind)) continue;
+    const held = everything ? heldByEverything(rel, trackedSet, kind) : covered(rel, files, isFile);
+    if (!held) missing.add(rel === '' ? '. (the project folder, listed)' : rel);
   }
   if (missing.size > 0) {
     misses += missing.size;

@@ -381,7 +381,7 @@ describe('the free tools suites are written once, in tool-suite.yml', () => {
         // The trace runs on a pull request only when it changes the analysis, the hook or the trace script.
         assert.ok(plan.includes("        id: trace\n        if: github.event_name == 'pull_request'\n"));
         // The three paths named to git diff, not a pattern: scripts-index.test.mjs checks every path a run line names exists.
-        assert.ok(plan.includes("git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/mutation-fingerprint.mjs scripts/lib/checks/check-inputs.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi\n"));
+        assert.ok(plan.includes("git diff --name-only --no-renames HEAD^1 HEAD -- scripts/lib/checks/mutation-deps.mjs scripts/lib/checks/mutation-fingerprint.mjs scripts/lib/checks/check-inputs.mjs scripts/lib/checks/mutation-trace.mjs scripts/lib/checks/trace-deps-hook.mjs scripts/check-mutation-deps.mjs | grep -q .; then trace=true; fi\n"));
       }
       if (suite === 'mutation') {
         assert.ok(plan.includes("        id: reuse\n        if: github.event_name == 'push' && steps.pushed.outputs.run != 'false'\n"), 'reuse only on a merge that changed what mutation reads');

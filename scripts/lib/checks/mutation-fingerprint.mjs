@@ -87,6 +87,8 @@ export function isSelectedTest(path) {
 /** Files Node or tsx look up in each folder of a module's path (check-mutation-deps.mjs sees the lookups). */
 export const PACKAGE_SCOPE = /(^|\/)(package\.json|tsconfig[^/]*\.json)$/;
 
+const UNDER_PACKAGE_SCOPE = /(^|\/)(package\.json|tsconfig[^/]*\.json)\//;
+
 /** Folders that hold what runs and judges a mutation run: all of each is fingerprinted. */
 export const MACHINERY_FOLDERS = ['test/', 'scripts/lib/checks/'];
 
@@ -107,7 +109,8 @@ export function isFingerprinted(path) {
   // What Node and tsx look for in every folder while they load a module (a
   // package.json says how a folder's files load, a tsconfig how tsx compiles
   // them): added or changed, it changes every run that loads from there.
-  if (PACKAGE_SCOPE.test(path)) return !SEPARATE_PROJECTS.some((folder) => path.startsWith(folder));
+  // Under such a name too: were one ever a folder, what is in it changes whether the name is there.
+  if (PACKAGE_SCOPE.test(path) || UNDER_PACKAGE_SCOPE.test(path)) return !SEPARATE_PROJECTS.some((folder) => path.startsWith(folder));
   if (path.startsWith('src/')) return false;
   // At the root: the dependencies, Node, Stryker's settings, the shards.
   if (!path.includes('/')) return true;
