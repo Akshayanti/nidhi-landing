@@ -14,15 +14,18 @@ import { fileURLToPath } from 'node:url';
 import { isMainThread } from 'node:worker_threads';
 
 let out = process.env.TRACE_DEPS_OUT;
+let unwritten = false;
 
 const record = (path) => {
   if (!out || typeof path !== 'string' || path === '') return;
   try {
     appendFileSync(out, `${path}\n`);
   } catch {
-    // A record that cannot be written is a missing record: the reader then
-    // finds less, never more, so the check stays on the safe side only if
-    // writes work; they do, the file is the process's own.
+    // A record that cannot be written is a missing record, and the reader
+    // would find less than was read. It is told, once, and fails the check
+    // (scripts/check-mutation-deps.mjs, UNWRITTEN).
+    if (!unwritten) process.stderr.write('trace-deps-hook: a record could not be written\n');
+    unwritten = true;
   }
 };
 const asPath = (p) => {

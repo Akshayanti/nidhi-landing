@@ -4,7 +4,9 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, globSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { SCHEMA, SOURCE_READERS, fingerprint, isFingerprinted, isSelectedTest, trackedPaths } from './mutation-fingerprint.mjs';
+import { isInput, WORKFLOWS } from './check-inputs.mjs';
+import { createGraph, readablePaths } from './mutation-deps.mjs';
+import { MACHINERY_FOLDERS, MACHINERY_SCRIPTS, SCHEMA, SEPARATE_PROJECTS, SOURCE_READERS, fingerprint, isFingerprinted, isSelectedTest, trackedPaths } from './mutation-fingerprint.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
@@ -60,7 +62,7 @@ describe('what a mutation shard’s earlier results depend on', () => {
     for (const path of ['src/data/package.json.ts', 'src/apackage.json', 'src/i18n/strings/tsconfigs.ts']) assert.equal(isFingerprinted(path), false, path);
   });
 
-  it('changes with anything else: helpers, settings, the dependencies, the workflow, a new or a moved file', () => {
+  it('changes with the machinery: helpers, settings, the dependencies, the workflow, a new or a moved file', () => {
     for (const path of Object.keys(FILES).filter(isFingerprinted)) {
       assert.notEqual(of({ ...FILES, [path]: `${FILES[path]} changed` }), BASE, path);
       const { [path]: gone, ...rest } = FILES;
@@ -71,9 +73,29 @@ describe('what a mutation shard’s earlier results depend on', () => {
       '.github/workflows/pr-checks.yml', '.github/workflows/tool-mutation.yml', '.github/workflows/tool-suite.yml', '.nvmrc', 'package-lock.json', 'scripts/lib/checks/mutation-shards.mjs',
       'stryker.config.mjs', 'test/dom.ts', 'tsconfig.json',
     ]);
-    for (const path of ['package.json', 'public/new.svg', 'emails/post.html.j2', 'a-new-file.txt', 'scripts/new.mjs']) {
+    for (const path of ['package.json', '.npmrc', 'a-new-file.txt', 'astro.config.mjs', 'stryker.shards.json', 'test/new.ts', 'test/deep/new.mjs',
+      'scripts/lib/checks/new.mjs', 'scripts/lib/checks/stryker-run-plan.mjs', 'scripts/mutation-recheck.mjs', 'scripts/mutation-new.mjs', 'scripts/check-mutation-deps.mjs']) {
+      assert.equal(isFingerprinted(path), true, path);
       assert.notEqual(of({ ...FILES, [path]: 'new' }), BASE, path);
     }
+  });
+
+  it('stays the same for what is outside src/ and is not the machinery: a test that reads it fingerprints it for itself (#904)', () => {
+    for (const path of ['public/new.svg', 'public/third-party-notices.txt', 'emails/post.html.j2', 'scripts/new.mjs', 'scripts/audit-text-size.mjs', 'scripts/render-kit.mjs',
+      'scripts/lib/media/reel.mjs', 'scripts/lib/publishing/inflation-monthly.mjs', 'scripts/lib/new/a.mjs', 'scripts/mutation-recheck.test.txt/a', 'scripts/deep/mutation-a.mjs',
+      'remotion/src/Reel.tsx', 'remotion/package.json', 'remotion/package-lock.json', 'remotion/tsconfig.json', 'tools/astro-check/package.json', 'tools/astro-check/index.mjs']) {
+      assert.equal(isFingerprinted(path), false, path);
+      assert.equal(of({ ...FILES, [path]: 'new' }), BASE, path);
+    }
+  });
+
+  it('changes with a package.json or tsconfig in any folder a test may load code from, outside src/ too', () => {
+    for (const path of ['scripts/package.json', 'scripts/lib/publishing/package.json', 'public/tsconfig.json', 'emails/package.json', 'test/package.json']) {
+      assert.equal(isFingerprinted(path), true, path);
+      assert.notEqual(of({ ...FILES, [path]: '{"type":"commonjs"}' }), BASE, path);
+    }
+    // And never for what no mutation run reads, whatever its name.
+    for (const path of ['docs/package.json', '.claude/tsconfig.json', '.github/workflows/deploy.yml', '.github/package.json']) assert.equal(isFingerprinted(path), false, path);
   });
 
   it('does not take content for a name, or two files for one', () => {
@@ -94,8 +116,103 @@ describe('what a mutation shard’s earlier results depend on', () => {
   });
 
   it('has a schema number, part of every fingerprint', () => {
-    assert.equal(SCHEMA, 4);
+    assert.equal(SCHEMA, 5);
     assert.match(read('scripts/lib/checks/mutation-fingerprint.mjs'), /update\(`schema \$\{SCHEMA\}\\0`\)/);
+  });
+});
+
+// The rule on the real tree (#904): what is kept is the machinery, nothing
+// the machinery needs is left out, and what is left out is held elsewhere.
+describe('the shared fingerprint on this repository', () => {
+  const tracked = trackedPaths(execFileSync('git', ['ls-files', '-z'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })).filter((p) => existsSync(join(ROOT, p)));
+  const kept = tracked.filter(isFingerprinted);
+  // The memory guard every test process loads first. Written in two parts: another test
+  // (mutation-memory-guard.test.mjs) lists the files that name it as a module to load.
+  const GUARD = `test/mutationMemoryGuard${'.mjs'}`;
+
+  it('holds the root files, test/, the checks, the mutation scripts and the three workflows, and nothing else', () => {
+    const where = (p) => {
+      if (!p.includes('/')) return 'root';
+      if (p.startsWith('.github/workflows/')) return 'workflows';
+      return MACHINERY_FOLDERS.find((folder) => p.startsWith(folder)) ?? (MACHINERY_SCRIPTS.test(p) ? 'scripts' : p);
+    };
+    const groups = Object.groupBy(kept, where);
+    assert.deepEqual(Object.keys(groups).sort(), ['root', 'scripts', 'scripts/lib/checks/', 'test/', 'workflows']);
+    assert.deepEqual(groups.workflows.sort(), ['.github/workflows/pr-checks.yml', '.github/workflows/tool-mutation.yml', '.github/workflows/tool-suite.yml']);
+    for (const path of ['package.json', 'package-lock.json', '.npmrc', '.nvmrc', 'tsconfig.json', 'astro.config.mjs', 'stryker.config.mjs', 'stryker.shards.json', 'stryker.shard-weights.json', 'stryker.floors.json']) {
+      assert.ok(groups.root.includes(path), path);
+    }
+    for (const path of ['scripts/mutation-stale-results.mjs', 'scripts/mutation-recheck.mjs', 'scripts/mutation-floors.mjs', 'scripts/mutation-shard-report.mjs', 'scripts/check-mutation-deps.mjs']) {
+      assert.ok(groups.scripts.includes(path), path);
+    }
+    for (const path of [GUARD, 'scripts/lib/checks/stryker-ordered-tap.mjs', 'scripts/lib/checks/stryker-run-plan.mjs', 'scripts/lib/checks/mutation-deps.mjs', 'scripts/lib/checks/trace-deps-hook.mjs']) {
+      assert.ok(kept.includes(path), path);
+    }
+    assert.ok(kept.length < 120, `${kept.length} files: far fewer than the 284 of everything outside src/`);
+    for (const folder of ['public/', 'emails/', 'remotion/', 'tools/', 'scripts/lib/media/', 'scripts/lib/publishing/', 'src/']) {
+      assert.deepEqual(kept.filter((p) => p.startsWith(folder)), [], folder);
+      assert.ok(tracked.some((p) => p.startsWith(folder)), `${folder} is still there`);
+    }
+  });
+
+  // What a mutation run executes besides the tests: Stryker's configuration
+  // and what it names, and the scripts the shard runs around Stryker. Every
+  // repository file they import, however far down, must be kept: a change to
+  // one left out would change a run and start no shard afresh.
+  it('holds every file the machinery imports, all the way down', () => {
+    const config = read('stryker.config.mjs');
+    const named = [...config.matchAll(/'(\.\/(?:scripts|test)\/[^']+\.m?[jt]s)'/g)].map((m) => m[1].slice(2));
+    assert.ok(named.includes(GUARD) && named.includes('scripts/lib/checks/stryker-ordered-tap.mjs') && named.includes('scripts/lib/checks/stryker-run-plan.mjs'), named.join(', '));
+    const roots = ['stryker.config.mjs', ...named, ...tracked.filter((p) => MACHINERY_SCRIPTS.test(p))];
+    const resolve = (from, spec) => {
+      const base = join(dirname(from), spec);
+      return [base, `${base}.mjs`, `${base}.js`, `${base}.ts`, join(base, 'index.mjs')].find((c) => existsSync(join(ROOT, c)) && statSync(join(ROOT, c)).isFile()) ?? `${base} (not found)`;
+    };
+    const imports = (file) => [...read(file).matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)].map((m) => resolve(file, m[1]));
+    const seen = new Set();
+    const walk = (file) => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      if (/\.(mjs|js|ts)$/.test(file) && existsSync(join(ROOT, file))) for (const next of imports(file)) walk(next);
+    };
+    for (const root of roots) walk(root);
+    assert.ok(seen.size > roots.length, 'the walk follows imports');
+    assert.ok(seen.has('scripts/lib/checks/mutation-deps.mjs') && seen.has('scripts/lib/checks/check-inputs.mjs') && seen.has('scripts/lib/checks/mutation-shards.mjs'));
+    assert.deepEqual([...seen].filter((p) => !isFingerprinted(p)).sort(), []);
+    // The same walk does find a file that is left out, when one is imported.
+    assert.equal(isFingerprinted(resolve('scripts/mutation-recheck.mjs', './lib/publishing/inflation-monthly.mjs')), false);
+  });
+
+  // A package.json or tsconfig counts as data only in a project no test
+  // loads code from. Imports are followed for every test, the ones that
+  // depend on everything included.
+  it('no test loads code from a separate project, so their package files are data', () => {
+    assert.deepEqual(SEPARATE_PROJECTS, ['remotion/', 'tools/']);
+    for (const folder of SEPARATE_PROJECTS) assert.ok(tracked.some((p) => p.startsWith(folder) && /(^|\/)package\.json$/.test(p)), `${folder} has a package of its own`);
+    const graph = createGraph({ root: ROOT, tracked });
+    const CODE = /\.(ts|tsx|mts|cts|js|mjs|cjs|jsx)$/;
+    const loaded = [];
+    const tests = tracked.filter(isSelectedTest);
+    assert.ok(tests.length > 200);
+    for (const test of tests) {
+      for (const file of graph.dependencies(test).files) {
+        if (CODE.test(file) && SEPARATE_PROJECTS.some((folder) => file.replace(/^[?>]/, '').startsWith(folder))) loaded.push(`${test} reaches ${file}`);
+      }
+    }
+    assert.deepEqual(loaded, []);
+    // The one read of a separate project's file: as data, by name, so it is in that test's own fingerprint.
+    assert.ok(graph.dependencies('src/utils/dependencies.test.ts').files.includes('remotion/package.json'));
+    assert.deepEqual(graph.dependencies('src/utils/dependencies.test.ts').all, []);
+  });
+
+  it('leaves out no file a mutation run can read without the tests that depend on everything hashing it', () => {
+    const readable = new Set(readablePaths(tracked));
+    for (const path of tracked) {
+      if (isFingerprinted(path)) assert.ok(isInput(path, WORKFLOWS[0]), `${path}: kept, so it is an input`);
+      else if (isInput(path, WORKFLOWS[0])) assert.ok(readable.has(path), `${path}: left out, so it is in the hash of everything`);
+    }
+    assert.ok(kept.every((p) => readable.has(p)));
+    assert.ok(tracked.filter((p) => !isFingerprinted(p) && readable.has(p) && !p.startsWith('src/')).length > 150, 'the files that left the shared fingerprint');
   });
 });
 
