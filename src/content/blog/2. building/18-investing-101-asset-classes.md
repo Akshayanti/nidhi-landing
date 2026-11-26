@@ -13,8 +13,10 @@ takeaways:
   - "What a fund is, and what funds are called where you live"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-11-17
+updatedDate: 2026-11-22
 corrections:
+  - date: 2026-11-22
+    note: "The lesson gave stocks 4 to 6% a year after inflation across developed markets, with the US at about 6.5%. Country returns vary widely; the US returned 6.6% a year after inflation from 1900 to 2024. The lesson now gives the world figure, about 5% a year after inflation (Dimson, Marsh and Staunton), and the emerging-market comparison now cites the 2026 Yearbook's public summary."
   - date: 2026-11-17
     note: "The lesson said emerging markets have had similar returns to developed markets with more volatility; summaries of the long-run yearbook it cites report that they returned less over the full period since 1900, though they led in some later decades. Cash is now about 0 to 1% a year after inflation over the long run, not 0 to 2%, matching the yearbook's figure of about 0.5% for Treasury bills in the US and world index, and stocks are described as among the highest-returning assets, since some long-run housing studies put housing level with them."
 localRules: [deposit-protection, tax, investments]
@@ -23,6 +25,12 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "fundamentals"]
 referentialReading:
+  - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
+    url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
+    type: "paper"
+  - title: "Report: stocks have far outperformed over the past 125 years (Cambridge Judge Business School, on the 2025 Yearbook)"
+    url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
+    type: "blog"
   - title: "Stocks have far outperformed over the past 125 years (Global Investment Returns Yearbook 2025)"
     url: "https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/"
     type: "paper"
@@ -78,7 +86,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 - **Capital appreciation**: The stock price rises over time as the company grows
 - **Dividends**: Regular cash payments from company profits (not all companies pay dividends)
 
-**Historical returns**: Broad stock markets have historically returned approximately 4-6% per year after inflation across major developed markets over long periods (US data sits at the higher end, about 6.5% since 1900; emerging markets have been more volatile and, as press summaries of the 2026 Dimson, Marsh and Staunton yearbook report, returned less than developed markets over the full period since 1900, though they led from around 1960). That has been higher than bonds and cash over the long run, though not in every decade; estimates for housing differ widely, as the [real estate post](/blog/real-estate-as-investment/) explains.
+**Historical returns**: World shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that: the US at 6.6% over the same years, and several European markets under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). Emerging markets have been more volatile and returned less than developed markets over the full period since 1900, though they led from 1960 (UBS Global Investment Returns Yearbook 2026, public summary). Over 1900 to 2024 as a whole, world shares returned more than world bonds and Treasury bills. This does not mean shares outperform in every decade. Estimates for housing differ widely, as the [real estate post](/blog/real-estate-as-investment/) explains.
 
 **Volatility**: High. In any given year, a diversified stock portfolio might gain 25% or lose 30%. Individual stocks can swing far more. Broad stock indices (the S&P 500 in the US, the FTSE All-Share in the UK, the STOXX Europe 600 across Europe, the Nifty 50 in India, the MSCI World for a global developed-market view) have historically had negative years roughly one out of every four.
 
@@ -87,7 +95,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 | Feature | Detail |
 |---------|--------|
 | Return type | Capital gains + dividends |
-| Historical real return | ~4-6% per year (developed markets) |
+| Historical real return | About 5% a year (world shares, 1900 to 2024); single countries well above or below |
 | Volatility | High (15-25% annual swings typical) |
 | Liquidity | High (traded daily on exchanges) |
 | Time horizon | Commonly 5+ years, often 10+ |
@@ -181,7 +189,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 | Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
-| **Historical real return** | 4-6% (developed markets) | ~1-2% | Low single digits + rental yield | About 0-1% (Treasury bills, US and world) |
+| **Historical real return** | About 5% (world shares, 1900 to 2024) | ~1-2% | Low single digits + rental yield | About 0-1% (Treasury bills, US and world) |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |
