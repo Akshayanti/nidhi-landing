@@ -30,7 +30,7 @@ lines, and its tests are the test files beside it or importing it.
 | `mutation-stale-results.mjs` | Makes a shard's restored results ready for Stryker (#855, #854). | workflow "Free tools suite" | `lib/checks/mutation-fingerprint.test.mjs` |
 | `mutation-weights.mjs` | Measures what each statement costs to test, for stryker.shard-weights.json (#846). | by hand | none |
 | `mutation-wide-coverage.mjs` | Prints what the test files that depend on everything cover in a mutation run (#904). | workflow "Free tools suite" | none |
-| `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
+| `newsletter.gs` | Nidhi blog newsletter: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-shared.test.mjs`, `newsletter.test.mjs`, `server-events.test.mjs`, `src/utils/subscriberId.test.ts` |
 | `npm-audit.mjs` | The audit check: fails on a high or critical advisory in any install the repository runs, except an advisory that has a dated exception in scripts/lib/checks/audit-exceptions.mjs. | workflow "PR Checks" | `repo-hygiene.test.mjs` |
 | `preview_transactional_emails.py` | Render HTML previews of the two transactional emails built by scripts/newsletter.gs, the confirmation email (`sendConfirmationEmail_`) and the welcome email (`sendWelcomeEmail_`). | by hand | none |
 | `qr_svg.py` | Make a QR code for one URL, as a deterministic SVG file. | by hand | `test_qr_svg.py`, `src/utils/qr/encode.test.ts` |
@@ -57,8 +57,8 @@ lines, and its tests are the test files beside it or importing it.
 | `smoke-render.mjs` | End-to-end smoke test for the reel pipeline minus the LLM call. | by hand | none |
 | `verify-tool-privacy.mjs` | The browser check of CLAUDE.md, "Free tools keep inputs out of URLs", rule 6, as a script: nothing a reader types into a free tool may reach PostHog. | `npm run verify:tool-privacy`, workflow "Free tools suite" | `lib/checks/check-inputs.test.mjs`, `lib/checks/tool-privacy-checks.test.mjs` |
 | `volunteer-form.gs` | Nidhi volunteer translators: Google Form builder (Google Apps Script). | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `review/review-text.test.mjs`, `volunteer-form.test.mjs` |
-| `volunteer-list.gs` | Nidhi volunteer beta-interest list: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs` |
-| `waitlist.gs` | Nidhi product-launch waitlist: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `server-events.test.mjs` |
+| `volunteer-list.gs` | Nidhi volunteer beta-interest list: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `apps-script-shared.test.mjs` |
+| `waitlist.gs` | Nidhi product-launch waitlist: Google Apps Script Web App. | pasted into Google Apps Script | `apps-script-lists.test.mjs`, `apps-script-shared.test.mjs`, `server-events.test.mjs` |
 
 ## Modules in `lib/`
 
