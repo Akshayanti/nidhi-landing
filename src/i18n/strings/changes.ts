@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-26',
     items: [
       {
+        id: 'tools-name-their-settings',
+        text: {
+          en: 'The invest or pay off tool and the Monte Carlo simulator now say plainly that their cautious and optimistic rates are settings, chosen either side of the long-run record of world markets (for stocks, about 5.3% a year after inflation from 1900 to 2025, Dimson, Marsh and Staunton), and not the record itself. The rates are the same as before.',
+          hi: 'निवेश या कर्ज़ चुकाना टूल और मोंटे कार्लो सिम्युलेटर अब साफ़ बताते हैं कि उनकी सतर्क और आशावादी दरें सेटिंग हैं, जो दुनिया के बाज़ारों के लंबे रिकॉर्ड (शेयरों में 1900 से 2025 तक महँगाई के बाद सालाना लगभग 5.3%, Dimson, Marsh और Staunton) के दोनों ओर चुनी गई हैं, ख़ुद वह रिकॉर्ड नहीं। दरें पहले जैसी ही हैं।',
+          es: 'La herramienta Invertir o pagar deuda y el simulador Monte Carlo dicen ahora con claridad que sus tasas prudente y optimista son opciones elegidas a uno y otro lado del historial a largo plazo de los mercados mundiales (en acciones, alrededor de un 5,3\u00a0% anual descontada la inflación de 1900 a 2025, Dimson, Marsh y Staunton), y no ese historial en sí. Las tasas son las mismas que antes.',
+          cs: 'Nástroj Investovat, nebo splatit dluh a\u00a0simulátor Monte Carlo teď jasně říkají, že jejich opatrné a\u00a0optimistické hodnoty výnosu jsou nastavení zvolená pod dlouhodobým historickým výnosem světových trhů a\u00a0nad ním (u\u00a0akcií zhruba 5,3\u00a0% ročně po očištění o\u00a0inflaci v\u00a0letech 1900 až 2025, Dimson, Marsh a\u00a0Staunton), ne tento výnos sám. Hodnoty jsou stejné jako dřív.',
+          mr: 'गुंतवणूक की कर्जफेड हे साधन आणि मॉन्टे कार्लो सिम्युलेटर आता स्पष्ट सांगतात की त्यांचे सावध आणि आशावादी दर म्हणजे जागतिक बाजारांच्या दीर्घकालीन नोंदीच्या (शेअरसाठी 1900 ते 2025 या काळात महागाईनंतर दरवर्षी सुमारे 5.3%, Dimson, Marsh आणि Staunton) दोन्ही बाजूंना निवडलेल्या सेटिंग्ज आहेत, ती नोंद स्वतः नव्हे. दर पूर्वीइतकेच आहेत.',
+        },
+      },
+      {
         id: 'inflation-years-own-digits',
         text: {
           en: 'In the inflation calculator, the years box now reads Devanagari digits too, like every other box in the free tools: type १० and it counts ten years. Before, that box would not take them at all.',
@@ -197,16 +207,6 @@ export const CHANGE_DAYS: ChangeDay[] = [
   {
     date: '2026-11-22',
     items: [
-      {
-        id: 'tools-name-their-settings',
-        text: {
-          en: 'The invest or pay off tool and the Monte Carlo simulator now say plainly that their cautious and optimistic rates are settings, chosen either side of the long-run record of world markets (for stocks, about 5.3% a year after inflation from 1900 to 2025, Dimson, Marsh and Staunton), and not the record itself. The rates are the same as before.',
-          hi: 'निवेश या कर्ज़ चुकाना टूल और मोंटे कार्लो सिम्युलेटर अब साफ़ बताते हैं कि उनकी सतर्क और आशावादी दरें सेटिंग हैं, जो दुनिया के बाज़ारों के लंबे रिकॉर्ड (शेयरों में 1900 से 2025 तक महँगाई के बाद सालाना लगभग 5.3%, Dimson, Marsh और Staunton) के दोनों ओर चुनी गई हैं, ख़ुद वह रिकॉर्ड नहीं। दरें पहले जैसी ही हैं।',
-          es: 'La herramienta Invertir o pagar deuda y el simulador Monte Carlo dicen ahora con claridad que sus tasas prudente y optimista son opciones elegidas a uno y otro lado del historial a largo plazo de los mercados mundiales (en acciones, alrededor de un 5,3\u00a0% anual descontada la inflación de 1900 a 2025, Dimson, Marsh y Staunton), y no ese historial en sí. Las tasas son las mismas que antes.',
-          cs: 'Nástroj Investovat, nebo splatit dluh a\u00a0simulátor Monte Carlo teď jasně říkají, že jejich opatrné a\u00a0optimistické hodnoty výnosu jsou nastavení zvolená pod dlouhodobým historickým výnosem světových trhů a\u00a0nad ním (u\u00a0akcií zhruba 5,3\u00a0% ročně po očištění o\u00a0inflaci v\u00a0letech 1900 až 2025, Dimson, Marsh a\u00a0Staunton), ne tento výnos sám. Hodnoty jsou stejné jako dřív.',
-          mr: 'गुंतवणूक की कर्जफेड हे साधन आणि मॉन्टे कार्लो सिम्युलेटर आता स्पष्ट सांगतात की त्यांचे सावध आणि आशावादी दर म्हणजे जागतिक बाजारांच्या दीर्घकालीन नोंदीच्या (शेअरसाठी 1900 ते 2025 या काळात महागाईनंतर दरवर्षी सुमारे 5.3%, Dimson, Marsh आणि Staunton) दोन्ही बाजूंना निवडलेल्या सेटिंग्ज आहेत, ती नोंद स्वतः नव्हे. दर पूर्वीइतकेच आहेत.',
-        },
-      },
       {
         id: 'learning-path-lists-every-lesson',
         text: {
