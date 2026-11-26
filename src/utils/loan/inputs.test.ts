@@ -21,7 +21,7 @@ import {
   missingRateChangeFields,
   pointsCostAboveFee,
 } from './inputs.ts';
-import { decodeFromQueryString, makeDefaultVendor, type VendorInput } from './url.ts';
+import { canonicalLumpSums, decodeFromQueryString, makeDefaultVendor, type VendorInput } from './url.ts';
 import { pointsBreakEven } from './math.ts';
 
 /** Compose a fully-populated VendorInput by spreading the slot-0 default
@@ -913,5 +913,49 @@ describe('a rate that changes needs the month of the change and the later rate (
       assert.equal(r.error, undefined);
       assert.equal(r.months, 210);
     });
+  });
+});
+
+describe('a lump sum in a month the loan does not have (issue 796)', () => {
+  // 100,000 at 6% over 120 months: 133,224.33 in all.
+  const base = { principal: '100000', annualRatePct: '6', modeKind: 'term' as const, termMonths: '120' };
+
+  it('part of a month, or a month past 1,200, makes the box unreadable: the lump sum is never moved or dropped', () => {
+    for (const lumpSumsEncoded of ['12.5:5000', '1300:5000', '1201:5000', '12:5000;12.5:5000', '12:5000;1300:5000']) {
+      const offer = vendor({ ...base, lumpSumsEncoded });
+      assert.deepEqual(unreadableOptionalFields(offer), ['lumpSumsEncoded'], lumpSumsEncoded);
+      const r = computeFromInput(offer, 'EUR');
+      assert.equal(r.error, OPTIONAL_UNREADABLE, lumpSumsEncoded);
+      assert.equal(r.schedule.length, 0, lumpSumsEncoded);
+    }
+  });
+
+  it('a whole month up to 1,200 is fine: 5,000 in month 12 ends the loan in month 113, for 129,796.70', () => {
+    const r = computeFromInput(vendor({ ...base, lumpSumsEncoded: '12:5000' }), 'EUR');
+    assert.equal(r.error, undefined);
+    assert.equal(r.months, 113);
+    assert.equal(r.totalPaidMinor, 12_979_670);
+    assert.deepEqual(unreadableOptionalFields(vendor({ ...base, lumpSumsEncoded: '1200:5000' })), []);
+  });
+
+  it('a lump sum after the loan is paid off, within 1,200 months, is still no error and changes nothing', () => {
+    const r = computeFromInput(vendor({ ...base, lumpSumsEncoded: '130:5000' }), 'EUR');
+    assert.equal(r.error, undefined);
+    assert.equal(r.months, 120);
+    assert.equal(r.totalPaidMinor, 13_322_433);
+  });
+
+  it('holds as each page writes numbers', () => {
+    for (const [typed, locale] of [['12,5:5000', 'es'], ['12,5:5000', 'cs'], ['1.300:5000', 'es'], ['1 300:5000', 'cs'], ['12.5:5000', 'en-US'], ['1,300:5000', 'en-US'], ['१२.५:५०००', 'hi'], ['१३००:५०००', 'mr']] as const) {
+      const offer = vendor({ ...base, lumpSumsEncoded: canonicalLumpSums(typed, locale) });
+      assert.deepEqual(unreadableOptionalFields(offer), ['lumpSumsEncoded'], `${typed} (${locale})`);
+    }
+    assert.deepEqual(unreadableOptionalFields(vendor({ ...base, lumpSumsEncoded: canonicalLumpSums('12:5.000,50', 'es') })), []);
+  });
+
+  it('a link that carries such a month opens with the box in error', () => {
+    const { vendors } = decodeFromQueryString('v1=A~100000~6~~120~~0~0&v1_ls=12.5:5000');
+    assert.deepEqual(unreadableOptionalFields(vendors[0]), ['lumpSumsEncoded']);
+    assert.equal(computeFromInput(vendors[0], 'EUR').error, OPTIONAL_UNREADABLE);
   });
 });

@@ -629,6 +629,12 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     ...(penalty ? [penalty.pctOfBalance, penalty.untilMonth, penalty.flatMinor ?? 0] : []),
   ];
   if (optional.some((v) => !Number.isFinite(v) || v < 0)) return emptyResult(0, OPTIONAL_UNREADABLE);
+  // A lump sum is paid in a month of the loan: a whole one, from the first to
+  // the last the tool counts. Month 12.5 used to be moved to month 12 and
+  // month 1,300 was never paid, both without a word (#796).
+  if ((inputs.lumpSums ?? []).some((l) => !Number.isInteger(l.month) || l.month < 1 || l.month > MAX_TERM_MONTHS)) {
+    return emptyResult(0, OPTIONAL_UNREADABLE);
+  }
 
   // Every amount is a whole number of minor units from here on, so the
   // schedule's sums are exact. A fraction of a cent is rounded away once.

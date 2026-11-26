@@ -46,7 +46,7 @@
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
-import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
@@ -268,8 +268,15 @@ const V_IDX = {
 // ---------------------------------------------------------------------------
 
 /**
- * Malformed pairs are silently skipped so the caller gets the salvageable subset of a mistyped
- * link rather than an outright failure. Format: "12:5000;36:3000".
+ * The pairs that read, in the format "12:5000;36:3000". A pair that does not
+ * read is left out, and the page counts the pairs against what was written,
+ * so a box with one left out is an error (`unreadableOptionalFields`), never
+ * a smaller list used without a word.
+ *
+ * A month is a whole one, from 1 to the last the tool counts. "12.5:5000"
+ * used to be read as month 12, and "1300:5000" was read and then never paid,
+ * since no schedule runs past month 1,200 (#796): both are left out here, so
+ * both are errors on the page.
  */
 export function parseLumpSums(encoded: string): LumpSumEntry[] {
   if (!encoded) return [];
@@ -283,9 +290,9 @@ export function parseLumpSums(encoded: string): LumpSumEntry[] {
     if (colon <= 0 || colon === trimmed.length - 1) continue;
     const month = Number(trimmed.slice(0, colon).trim());
     const amount = Number(trimmed.slice(colon + 1).trim());
-    if (!Number.isFinite(month) || month < 1) continue;
+    if (!Number.isInteger(month) || month < 1 || month > MAX_TERM_MONTHS) continue;
     if (!Number.isFinite(amount) || amount <= 0) continue;
-    out.push({ month: Math.floor(month), amountMajor: amount });
+    out.push({ month, amountMajor: amount });
   }
   return out;
 }

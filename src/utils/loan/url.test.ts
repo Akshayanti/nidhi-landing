@@ -496,8 +496,23 @@ describe('parseLumpSums', () => {
     ]);
   });
 
-  it('floors fractional months', () => {
-    assert.deepEqual(parseLumpSums('12.9:5000'), [{ month: 12, amountMajor: 5000 }]);
+  it('leaves out a month that is not a whole one, where it used to move it to the month before (issue 796)', () => {
+    assert.deepEqual(parseLumpSums('12.9:5000'), []);
+    assert.deepEqual(parseLumpSums('12.5:5000;36:3000'), [{ month: 36, amountMajor: 3000 }]);
+    // Whole, however it is written.
+    assert.deepEqual(parseLumpSums('12.0:5000'), [{ month: 12, amountMajor: 5000 }]);
+  });
+
+  it('leaves out a month past the last one the tool counts, which no schedule reaches (issue 796)', () => {
+    assert.deepEqual(parseLumpSums('1200:5000'), [{ month: 1200, amountMajor: 5000 }]);
+    assert.deepEqual(parseLumpSums('1201:5000'), []);
+    assert.deepEqual(parseLumpSums('1300:5000;24:100'), [{ month: 24, amountMajor: 100 }]);
+  });
+
+  it('a link with such a month arrives with it as written, for the page to refuse', () => {
+    const { vendors } = decodeFromQueryString('v1=A~250000~6.5~~360~~0~0&v1_ls=12.5:5000;1300:5000');
+    assert.equal(vendors[0].lumpSumsEncoded, '12.5:5000;1300:5000');
+    assert.deepEqual(parseLumpSums(vendors[0].lumpSumsEncoded), []);
   });
 });
 

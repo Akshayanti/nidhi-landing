@@ -770,6 +770,20 @@ describe('the offer card: the optional boxes', () => {
     }
   });
 
+  it('marks the lump-sum box for part of a month or a month past 1,200, where the lump sum used to be moved or dropped (issue 796)', () => {
+    for (const lumpSumsEncoded of ['3.5:100', '1300:100']) {
+      const { card, unmount } = show(loan({ lumpSumsEncoded }));
+      assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`, lumpSumsEncoded);
+      assert.deepEqual(wiring(card, box(card, c.lumps)), MARKED, lumpSumsEncoded);
+      assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED, lumpSumsEncoded);
+      assert.deepEqual(rows(card), [], lumpSumsEncoded);
+      unmount();
+    }
+    const { card } = show(loan({ lumpSumsEncoded: '3:100' }));
+    assert.equal(errorOf(card), null);
+    assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
+  });
+
   it('marks the points cost, not the fee, when the points cost is more than the fee they are part of', () => {
     const { card } = show(loan({ feeMajor: '5', pointsCostMajor: '10' }));
     assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.pointsAboveFee}`);
