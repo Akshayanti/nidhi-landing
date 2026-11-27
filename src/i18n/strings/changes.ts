@@ -66,7 +66,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
         id: 'net-worth-share-rate-unavailable',
         text: {
           en: 'When the net worth calculator has no exchange rates, the spending currency’s share now reads “Rate unavailable” on its card, in the spreadsheet and in the report, where it used to read 0%.',
-          hi: 'जब शुद्ध संपत्ति कैलकुलेटर के पास विनिमय दरें नहीं होतीं, तो ख़र्च की मुद्रा का हिस्सा अब उसके कार्ड, स्प्रेडशीट और रिपोर्ट में “दर नहीं मिली” दिखता है, जहाँ पहले 0% दिखता था।',
+          hi: 'जब शुद्ध संपत्ति कैलकुलेटर के पास विनिमय दरें नहीं होतीं, तो खर्च की मुद्रा का हिस्सा अब उसके कार्ड, स्प्रेडशीट और रिपोर्ट में “दर नहीं मिली” दिखता है, जहाँ पहले 0% दिखता था।',
           es: 'Cuando la calculadora de patrimonio neto no tiene tipos de cambio, la parte de la moneda de gasto se lee ahora «Tipo no disponible» en su tarjeta, en la hoja de cálculo y en el informe, donde antes se leía 0\u00a0%.',
           cs: 'Když kalkulačka čistého jmění nemá kurzy, podíl měny výdajů se teď na její kartě, v\u00a0tabulce i\u00a0ve zprávě čte „Kurz chybí“, kde dřív stálo 0\u00a0%.',
           mr: 'निव्वळ संपत्ती कॅल्क्युलेटरकडे विनिमय दर नसतात तेव्हा खर्चाच्या चलनाचा हिस्सा आता त्याच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात “दर उपलब्ध नाही” असा दिसतो, जिथे आधी 0% दिसत होते.',
