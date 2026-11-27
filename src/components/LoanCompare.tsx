@@ -74,7 +74,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { loanSheets } from '../utils/loan/export.ts';
 import { engineNote } from '../utils/loan/notes.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useSteadyAbove, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -1332,6 +1332,10 @@ export default function LoanCompare({
   };
 
   const toolReady = useToolReady();
+  // The offers' tabs and the example note sit above every box, and change as
+  // one is typed in: a name grows its tab, the note goes at the first key (#827).
+  const tabsRow = useSteadyAbove<HTMLDivElement>();
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
@@ -1418,7 +1422,7 @@ export default function LoanCompare({
           in here. Choosing one fires no event of its own. "+ Add" is the
           same action as the dashed card on wider screens, with the same
           label and event. */}
-      <div className="lc-vendorTabs" role="group" aria-label={strings.phoneTabs.groupAria}>
+      <div className="lc-vendorTabs" ref={tabsRow} role="group" aria-label={strings.phoneTabs.groupAria}>
         {vendors.map((v, i) => (
           <button
             key={i}
@@ -1463,7 +1467,11 @@ export default function LoanCompare({
       </p>
 
       {/* The starting offers are an example until one of them is changed. */}
-      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example" ref={exampleRef} tabIndex={-1}>{strings.example}</p>}
+      {/* The note goes at the first key; its row keeps the note's height while
+          the reader is in the box that key was typed in (#827). */}
+      <div className="lc-exampleRow" ref={exampleRow}>
+        {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example" ref={exampleRef} tabIndex={-1}>{strings.example}</p>}
+      </div>
 
       <h2 className="lc-srOnly" id={`${aprDocsId}-h`}>{strings.cardsHeading}</h2>
       {/* Why the APR here can read lower than the one on a lender's document. */}
@@ -1680,6 +1688,11 @@ function VendorCard({
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
   const hasError = Boolean(result.error);
+  // The results sit above the optional boxes, and change as those are typed
+  // in (an error in their place, a note more or less): the box stays put (#827).
+  const results = useSteadyAbove<HTMLDivElement>();
+  // So does the card's heading, which shows the name as it is typed.
+  const header = useSteadyAbove<HTMLElement>();
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
   const [typed, setTyped] = useState(false);
@@ -1754,7 +1767,7 @@ function VendorCard({
       style={{ '--lc-color': color } as React.CSSProperties}
       aria-labelledby={headingId}
     >
-      <header className="lc-cardHeader">
+      <header className="lc-cardHeader" ref={header}>
         {/*
           h3 (not h2): an h2 per vendor card padded the document outline
           with up to five "Vendor A / B / C…" entries that contributed
@@ -1916,7 +1929,7 @@ function VendorCard({
       )}
 
       {/* Not a live region: the tool's one announcement says the settled result. */}
-      <div className="lc-results">
+      <div className="lc-results" ref={results}>
         {hasError ? (
           <p className="lc-error" id={errorId}>
             <ErrorText>{arrived ? unreadableText : engineError(result.error ?? '', strings)}</ErrorText>

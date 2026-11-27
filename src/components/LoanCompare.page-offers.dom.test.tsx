@@ -180,3 +180,61 @@ describe('the loan comparison: the currency, the reset and the tabs', () => {
     assert.ok(addressUntouched());
   });
 });
+
+describe('the loan comparison: the box being typed in stays where it is (#827)', () => {
+  /** jsdom lays nothing out: a part is as tall as `natural` says, or as the height it was given to keep. */
+  const measured = (el: HTMLElement, natural: () => number) => {
+    el.getBoundingClientRect = () => ({ height: Math.max(natural(), Number.parseFloat(el.style.minHeight) || 0) }) as DOMRect;
+  };
+
+  it('keeps the height of the example note, of the offer\'s results and of its heading while a box below them is typed in, and lets go when the focus leaves', () => {
+    mount();
+    const card = cards()[0];
+    const note = one('.lc-exampleRow');
+    const results = one('.lc-results', card);
+    const heading = one('.lc-cardHeader', card);
+    const tabsRow = one('.lc-vendorTabs');
+    // The note is the row's one child, so the row is empty once the note goes.
+    assert.ok(one('.lc-example').parentElement === note);
+    assert.equal(note.childNodes.length, 1);
+    measured(note, () => (note.childNodes.length > 0 ? 60 : 0));
+    measured(results, () => (results.querySelector('.lc-error') ? 40 : 300));
+    measured(heading, () => 30);
+    measured(tabsRow, () => 50);
+
+    const fee = [...card.querySelectorAll('input')].find((input) => input.labels?.[0]?.textContent?.startsWith(c.fee)) as HTMLInputElement;
+    fee.focus();
+    // A fee that cannot be read: the note goes, and the results give way to the error.
+    fireEvent.change(fee, { target: { value: 'x' } });
+    assert.equal(note.childNodes.length, 0);
+    assert.ok(results.querySelector('.lc-error') !== null, 'the error shows at once');
+    assert.equal(note.style.minHeight, '60px');
+    assert.equal(results.style.minHeight, '300px');
+    // What did not change holds nothing.
+    assert.equal(heading.style.minHeight, '');
+    assert.equal(tabsRow.style.minHeight, '');
+
+    fee.blur();
+    assert.equal(note.style.minHeight, '');
+    assert.equal(results.style.minHeight, '');
+  });
+
+  it('keeps the heading and the tabs for the name box, which sits below both', () => {
+    mount();
+    const card = cards()[0];
+    const heading = one('.lc-cardHeader', card);
+    const tabsRow = one('.lc-vendorTabs');
+    let tall = true;
+    measured(heading, () => (tall ? 80 : 30));
+    measured(tabsRow, () => (tall ? 90 : 50));
+    const name = [...card.querySelectorAll('input')].find((input) => input.labels?.[0]?.textContent === c.name) as HTMLInputElement;
+    name.focus();
+    tall = false;
+    fireEvent.change(name, { target: { value: 'Zephyr' } });
+    assert.equal(heading.style.minHeight, '80px');
+    assert.equal(tabsRow.style.minHeight, '90px');
+    name.blur();
+    assert.equal(heading.style.minHeight, '');
+    assert.equal(tabsRow.style.minHeight, '');
+  });
+});

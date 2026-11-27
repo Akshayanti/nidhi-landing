@@ -90,6 +90,16 @@
   line-height: 1.45;
   color: var(--color-text-secondary);
 }
+/* The row the example note sits in. It is always there, so the note's height
+   can be kept while a reader types (#827); empty, it takes no room: it gives
+   back the gap the column put before it, and has that gap as its own padding
+   only while the note is in it. */
+.lc-exampleRow {
+  margin-top: calc(-1 * var(--space-6));
+}
+.lc-exampleRow:not(:empty) {
+  padding-top: var(--space-6);
+}
 /* A link that did not arrive whole: one sentence and one button, in place of
    the tool (#820). The button is as wide as its words, and wraps. */
 .lc-linkDamaged {
