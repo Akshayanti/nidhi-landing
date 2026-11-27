@@ -59,6 +59,8 @@ const DOLLAR = 'US Dollar (USD)';
 const YEN = 'Japanese Yen (JPY)';
 const KORUNA = 'Czech Koruna (CZK)';
 const NO_RATE = 'Rate unavailable';
+/** The spending currency with no rates at all: its rate is 1, its share is what is unknown (#922). */
+const NO_SHARE = 'Share unknown: no exchange rates';
 
 /** A position as a link without amounts gives it: a share and a band, nothing else. */
 const shareOnly = (code: string, pctOfTotal: number, riskLevel: CurrencyPosition['riskLevel'], more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
@@ -366,10 +368,10 @@ describe('net worth spreadsheet: a shared view that hides amounts', () => {
     assert.deepEqual(hidden(unrated)[1].rows, [
       head('Currency', 'Code', 'Concentration, %', 'Exposure, % of net worth', 'Share band'),
       [KORUNA, 'CZK', NO_RATE, NO_RATE, 'band:low'],
-      [EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'],
+      [EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'],
     ]);
     const unflagged = hidden({ ...result, hasRates: 'none', positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
-    assert.deepEqual(unflagged[1].rows.slice(1), [[EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
+    assert.deepEqual(unflagged[1].rows.slice(1), [[EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
     // The cells are text, not a number: nothing to add up or chart as zero.
     for (const row of hidden(unrated)[1].rows.slice(1)) assert.deepEqual([typeof row[2], typeof row[3]], ['string', 'string']);
     // With the amounts shown there is no share column at all, as before.

@@ -326,8 +326,9 @@ describe('a currency missing its rate', () => {
 
   it('a view without amounts or rates gives the spending currency no share either: words, and no sentence about 0% (#887)', () => {
     panel(worked([own('1000'), own('2000', 'USD')], 'EUR', null), { hideAmounts: true });
-    assert.deepEqual(heads(), [`${name.USD} · Rate unavailable`, `${name.EUR} · Rate unavailable`]);
-    assert.deepEqual(cards()[1], { band: 'functional', head: `${name.EUR} · Rate unavailable`, badge: ['Spending currency', 'var(--risk-functional)'], label: 'Your spending currency', sentences: 0 });
+    // The euro's own rate is 1: what is not known is its share, and its card says that (#922).
+    assert.deepEqual(heads(), [`${name.USD} · Rate unavailable`, `${name.EUR} · Share unknown: no exchange rates`]);
+    assert.deepEqual(cards()[1], { band: 'functional', head: `${name.EUR} · Share unknown: no exchange rates`, badge: ['Spending currency', 'var(--risk-functional)'], label: 'Your spending currency', sentences: 0 });
     assert.ok(!document.body.textContent!.includes('0%'), 'no share of nothing');
     // The dollar's sentence says once why it is left out, as before.
     assert.equal(cards()[0].sentences, 1);

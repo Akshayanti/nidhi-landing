@@ -99,8 +99,10 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   const unknown = sharesUnknown(result, fc);
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
     const noShare = p.rateUnavailable || unknown;
-    const pctCell = noShare ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
-    const exposureCell = noShare ? island.results.rateUnavailable : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
+    // The spending currency's own rate is 1: with no rates at all, what is unknown is its share (#922).
+    const why = p.isFunctional ? island.results.shareUnknown : island.results.rateUnavailable;
+    const pctCell = noShare ? why : share(concentration.get(p.code) ?? 0);
+    const exposureCell = noShare ? why : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
     const shareCells: Cell[] = gap ? [] : [pctCell, exposureCell, e.riskLabel(p.riskLevel)];
     if (!showAmounts) return [name(p.code), p.code, ...shareCells];
     return [
