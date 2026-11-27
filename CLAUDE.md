@@ -189,7 +189,7 @@ A test that never settles can take the whole machine with it. On Nov 27, 2026 a 
 1. **Every local run has a memory cap and a time limit.** A test file, `npm test`, Stryker, a build, an audit or a script is started in its own scope: `systemd-run --user --scope -q -p MemoryMax=4G -p MemorySwapMax=0 timeout 60 npx tsx --test <file>`. A larger cap and a longer limit suit `npm test`, a build or Stryker (6 to 8 GB), but there is always a cap, and the limit is close to what a healthy run takes: the time limits of 170 and 300 seconds used that night were too long to help.
 2. **Mutants are Stryker's, never hand-made.** No source line is broken with `sed` or an edit to see whether a test fails. Stryker limits each mutant's time and leaves nothing in the working tree.
 3. **After an interrupted run, the working tree is checked** for anything a run left behind, before work goes on. Work in progress is committed often, so an interruption loses little.
-4. **A test never hands a page element to `assert.equal`, `deepEqual` or their opposites.** That was the cause: when such a comparison fails, Node writes the element out to build its message, an element leads to the whole document, and the write-out never ends. Compare with `assert.ok(a === b)`.
+4. **A test never hands a page element to `assert.equal`, `strictEqual`, `deepEqual`, `deepStrictEqual` or their opposites.** That was the cause: when such a comparison fails, Node writes the element out to build its message, an element leads to the whole document, and the write-out never ends. Compare with `assert.ok(a === b)`.
 5. **An agent's brief says this.** Every brief that lets an agent run tests carries rules 1 and 2.
 
 ## Style Rules
