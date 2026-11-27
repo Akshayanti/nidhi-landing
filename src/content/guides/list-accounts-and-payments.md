@@ -37,7 +37,7 @@ visual:
     - ["Current account", "Bank A", "€1,200", "", "Salary arrives here"]
     - ["Savings account", "Bank A", "€2,500", "", ""]
     - ["Old savings account", "Bank B", "€310", "", "Not used since 2022; €3 monthly fee"]
-    - ["Credit card (…4821)", "Bank A", "€900 owed", "Due on the 25th", ""]
+    - ["Credit card (…⁠4821)", "Bank A", "€900 owed", "Due on the 25th", ""]
     - ["Workplace pension", "Pension provider", "€8,300", "", "From a previous job"]
     - ["Rent", "From current account", "€750", "1st of the month", "Standing order"]
     - ["Gym", "From credit card", "€35", "3rd of the month", "Not used since spring"]

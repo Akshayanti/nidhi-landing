@@ -363,7 +363,7 @@ const EXPECTED_MENTIONS = [
   'layouts/BlogPost.astro: cookie x1',
   'layouts/BlogPost.astro: createElement x1',
   'layouts/BlogPost.astro: location x3',
-  'layouts/BlogPost.astro: setAttribute x11',
+  'layouts/BlogPost.astro: setAttribute x12',
   'pages/404.astro: cookie x1',
   'pages/404.astro: location x1',
   'pages/confirm.astro: capture x2',
