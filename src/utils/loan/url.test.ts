@@ -39,7 +39,9 @@ import {
   displayLumpSums,
   STATE_KEY_PATTERN,
   SHARED_STATE_GLOBAL,
+  boxNumber,
 } from './url.ts';
+import { parseNumber } from './inputs.ts';
 import { checkOf, openState, pairsOf, sealState } from '../shared/checkedLink.ts';
 import { canonicalNumber } from '../shared/parseLocaleNumber.ts';
 
@@ -1060,18 +1062,33 @@ describe('a checked link carries only numbers its writer could have written (#82
     }
   });
 
-  it('a box still holding what a lenient older link left in it is written as the marker, so the link the tool writes is always read', () => {
-    for (const left of ['1,2,3', '1 2', '1..2', '+5', '-5', '१२३', "1'234", '5.', '.5', '-']) {
+  it('a box still holding what a lenient older link left in it is written as the number the tool reads there, or as the marker when it reads none', () => {
+    // What the engine makes of each (parseNumber): the same number goes into the link, so a
+    // comparison that opened as 123 is still 123 after a language switch.
+    const LEFT: Record<string, string> = {
+      '1,2,3': '123', '1 2': '12', '+5': '5', '5.': '5', '.5': '0.5', '1,234,5.5': '12345.5',
+      '1..2': 'NaN', '-5': 'NaN', '१२३': 'NaN', "1'234": 'NaN', '-': 'NaN', '+': 'NaN', '1e5': 'NaN', '0x10': 'NaN', '5.5.': 'NaN',
+    };
+    for (const [left, kept] of Object.entries(LEFT)) {
       const [vendors, global] = filled(left, `12:${left};${left}:500`);
       const link = encodeSharedState(vendors, global);
       const read = readSharedState(link);
       assert.ok(read, `${left}: ${link}`);
-      assert.equal(read.global.horizonMonths, 'NaN', left);
-      assert.equal(read.global.refiNewFeeMajor, 'NaN', left);
-      assert.equal(read.vendors[0].principal, 'NaN', left);
-      assert.equal(read.vendors[2].prepayPenaltyUntilMonth, 'NaN', left);
+      assert.equal(read.global.horizonMonths, kept, left);
+      assert.equal(read.global.refiNewFeeMajor, kept, left);
+      assert.equal(read.vendors[0].principal, kept, left);
+      assert.equal(read.vendors[2].prepayPenaltyUntilMonth, kept, left);
+      // The lump-sum box reads its own pairs more strictly, and is written as before.
       assert.equal(read.vendors[1].lumpSumsEncoded, '12:NaN;NaN:500', left);
+      // Held to the engine's own reader: the same number, or none in both.
+      const engine = parseNumber(left);
+      assert.equal(boxNumber(left), kept === 'NaN' ? null : kept, left);
+      if (kept === 'NaN') assert.ok(Number.isNaN(engine) || engine < 0, `${left}: ${engine}`);
+      else assert.equal(engine, Number(kept), left);
     }
+    // A number too long for a link is the marker, not a link its reader refuses.
+    assert.equal(boxNumber(`+${'9'.repeat(400)}`), null);
+    assert.equal(boxNumber('+0.0000001'), '0.0000001');
   });
 
   it('and one holding an older link\'s number in one of the site\'s styles is written as it is', () => {

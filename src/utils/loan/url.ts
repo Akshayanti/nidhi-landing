@@ -60,7 +60,7 @@ import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
 import { CHECK_KEY, FORMAT_KEY, openState, sealState } from '../shared/checkedLink.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { UNREADABLE, fitsLinkNumber, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
-import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
+import { canonicalNumber, displayNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
 /**
  * Where a shared link's state lives. Links carry it after the #, which
@@ -387,15 +387,32 @@ export function encodeLumpSums(entries: LumpSumEntry[]): string {
 const CLEARED = '-';
 
 /**
+ * The number the tool itself reads in a box's text, as plain digits, or null
+ * when it reads none. A box holds a plain number or the marker; anything else
+ * can only have come in with a link from before the check, which was read
+ * leniently ("1,2,3", "+5"). The engine reads such text with spaces and
+ * commas taken out (`parseNumber` in inputs.ts, which a test holds this to),
+ * so "1,2,3" is the 123 the reader has been looking at.
+ */
+export function boxNumber(value: string): string | null {
+  const cleaned = value.replace(/[\s,]/g, '');
+  if (!/^\+?(\d+\.?\d*|\.\d+)$/.test(cleaned)) return null;
+  const digits = plainDigits(Number(cleaned));
+  return fitsLinkNumber(digits) ? digits : null;
+}
+
+/**
  * `value` as the link writes it: the mark when it was emptied and its default
- * is not empty. A box holds a plain number or the marker, so that is all a
- * link is written with. Anything else can only have come in with a link from
- * before the check, which was read leniently ("1,2,3", "+5"), and is written
- * as the marker: the link's own reader takes nothing else (#821).
+ * is not empty. What a lenient older link left in a box is written as the
+ * number the tool reads there (council, Nov 27, 2026: a comparison that opened
+ * as 123 must not become an unreadable box on a language switch), and as the
+ * marker only when the tool reads no number in it: the link's own reader
+ * takes nothing but the site's own ways of writing a number (#821).
  */
 function written(value: string, dflt: string): string {
   if (value === '') return dflt === '' ? '' : CLEARED;
-  return fitsLinkNumber(value) ? value : UNREADABLE;
+  if (fitsLinkNumber(value)) return value;
+  return boxNumber(value) ?? UNREADABLE;
 }
 
 /** A lump-sum list as the link writes it: each side a number as the site writes one, or the marker. */
