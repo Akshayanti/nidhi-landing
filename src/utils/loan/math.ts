@@ -295,6 +295,15 @@ export const MAX_PRINCIPAL_MINOR = 1e14;
  */
 export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
 
+/**
+ * The message for a lump sum whose month is not a whole one from 1 to
+ * `MAX_TERM_MONTHS`. The advice above ("use digits only") is wrong for it:
+ * the dot taken out of 12.5 gives month 125. Only the page's phrase list
+ * reads this sentence; the reader sees the catalog's. Written, like the one
+ * above, so that the tool's analytics files it under "other".
+ */
+export const LUMP_MONTH = 'A lump sum needs a whole month from 1 to 1200, written as month:amount. Correct it, or clear the box.';
+
 export function computeScheduledPaymentMinor(
   principalMinor: number,
   annualRate: number,
@@ -629,6 +638,12 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     ...(penalty ? [penalty.pctOfBalance, penalty.untilMonth, penalty.flatMinor ?? 0] : []),
   ];
   if (optional.some((v) => !Number.isFinite(v) || v < 0)) return emptyResult(0, OPTIONAL_UNREADABLE);
+  // A lump sum is paid in a month of the loan: a whole one, from the first to
+  // the last the tool counts. Month 12.5 used to be moved to month 12 and
+  // month 1,300 was never paid, both without a word (#796).
+  if ((inputs.lumpSums ?? []).some((l) => !Number.isInteger(l.month) || l.month < 1 || l.month > MAX_TERM_MONTHS)) {
+    return emptyResult(0, LUMP_MONTH);
+  }
 
   // Every amount is a whole number of minor units from here on, so the
   // schedule's sums are exact. A fraction of a cent is rounded away once.
@@ -710,10 +725,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       // Payment-mode + hybrid is ill-defined: we don't know what term
       // the user is contracting for, and recasting requires that. The
       // UI gates this; we double-belt here.
-      return emptyResult(
-        feeMinor,
-        'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.',
-      );
+      return rateChangeNeedsTerm(feeMinor);
     }
     scheduledPayment = roundMinor(mode.monthlyMinor);
     // For payment-mode fixed loans we don't have a contractual term;
@@ -876,6 +888,15 @@ export function shownMonths(results: LoanResult[], index: number): number {
     .filter((o, i) => i !== index && !o.error && o.keptPayment?.outcome !== 'never')
     .map((o) => o.schedule.length);
   return Math.min(r.schedule.length, Math.max(r.keptPayment.termMonths, ...others));
+}
+
+/**
+ * The result for a rate that changes on a loan set by its payment: there is
+ * no term to work the new payment out over. One function, so the page's own
+ * check (`computeFromInput`) says it in the engine's words.
+ */
+export function rateChangeNeedsTerm(feeMinor: number): LoanResult {
+  return emptyResult(feeMinor, 'Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.');
 }
 
 /** A result that carries only an error: nothing was computed. */

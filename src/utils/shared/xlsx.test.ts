@@ -11,7 +11,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { inflateRawSync } from 'node:zlib';
 
-import { amountFormat, buildXlsx, columnName, crc32, escapeXml, sheetNames, typedRate, workbookParts, XLSX_TYPE, zipStore, type Sheet } from './xlsx.ts';
+import { CUT_MARK, MAX_CELL_TEXT, amountFormat, buildXlsx, cellText, columnName, crc32, escapeXml, sheetNames, typedRate, workbookParts, XLSX_TYPE, zipStore, type Sheet } from './xlsx.ts';
 
 /** Read a stored zip back: path to text. Fails on anything but what zipStore writes. */
 function unzip(bytes: Uint8Array): Map<string, string> {
@@ -292,6 +292,28 @@ describe('a sheet\'s cells', () => {
     const cells = cellsOf({ name: 'S', rows: [['x'.repeat(40_000), 'y'.repeat(32_767)]] });
     assert.equal(cells.A1.value.length, 32_767);
     assert.equal(cells.B1.value.length, 32_767);
+  });
+
+  it('ends a text it had to cut in a mark, so the cut is seen, and leaves a text that fits as it is (issue 819)', () => {
+    const cells = cellsOf({ name: 'S', rows: [['x'.repeat(40_000), 'y'.repeat(32_767), 'z'.repeat(32_768), { t: 'w'.repeat(32_768), bold: true }]] });
+    assert.equal(cells.A1.value, `${'x'.repeat(32_766)}…`);
+    assert.equal(cells.B1.value, 'y'.repeat(32_767));
+    assert.equal(cells.C1.value, `${'z'.repeat(32_766)}…`);
+    assert.equal(cells.D1.value, `${'w'.repeat(32_766)}…`);
+    assert.equal(cellText('short'), 'short');
+    assert.equal(cellText(''), '');
+    assert.equal(MAX_CELL_TEXT, 32_767);
+    assert.equal(CUT_MARK, '…');
+  });
+
+  it('counts the limit as Excel does, in UTF-16 units of the text before it is escaped', () => {
+    // 32,767 ampersands are five times as long once escaped, and still fit.
+    assert.equal(cellText('&'.repeat(32_767)), '&'.repeat(32_767));
+    assert.equal(cellsOf({ name: 'S', rows: [['&'.repeat(32_767)]] }).A1.value, '&amp;'.repeat(32_767));
+    // An emoji is two units: 16,383 of them fit, 16,384 do not.
+    assert.equal(cellText('😀'.repeat(16_383)).length, 32_766);
+    assert.equal(cellText('😀'.repeat(16_384)).length, 32_767);
+    assert.ok(cellText('😀'.repeat(16_384)).endsWith('…'));
   });
 
   it('keeps the spaces of a text cell', () => {

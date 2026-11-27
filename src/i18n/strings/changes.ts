@@ -40,6 +40,21 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-27',
+    items: [
+      {
+        id: 'loan-changing-rate-needs-both-boxes',
+        text: {
+          en: 'In the loan comparison, an offer with a “Fixed, then variable” rate now needs both its initial fixed period and its subsequent rate. If the subsequent rate was left empty, the offer used to be worked out at its starting rate for the whole term, without any warning, and could be named the lowest total. A lump sum now needs a whole month from 1 to 1,200: month 12.5 used to be moved to month 12, and a month past 1,200 was never paid. The spreadsheet also no longer cuts a very long list of lump sums short.',
+          hi: 'लोन तुलना में, “पहले तय, फिर बदलती” दर वाले ऑफ़र के लिए अब शुरुआत की तय अवधि और बाद की दर, दोनों ज़रूरी हैं। पहले बाद की दर खाली छोड़ने पर ऑफ़र का हिसाब बिना बताए पूरी अवधि के लिए शुरुआती दर पर ही लगा दिया जाता था, और वह सबसे कम कुल वाला ऑफ़र कहला सकता था। एकमुश्त राशि के लिए अब 1 से 1,200 तक का पूरा महीना चाहिए: पहले महीना 12.5 बिना बताए महीना 12 बन जाता था, और 1,200 के बाद के महीने की राशि कभी चुकाई ही नहीं जाती थी। साथ ही, स्प्रेडशीट अब एकमुश्त राशियों की बहुत लंबी सूची को बीच में नहीं काटती।',
+          es: 'En el comparador de préstamos, una oferta con tasa «Fija y luego variable» necesita ahora tanto el periodo fijo inicial como la tasa posterior. Antes, si la tasa posterior quedaba vacía, la oferta se calculaba sin avisar con la tasa inicial durante todo el plazo, y podía aparecer como la de menor total. Un pago extraordinario necesita ahora un mes entero del 1 al 1200: antes, el mes 12,5 pasaba al mes 12 y un mes posterior al 1200 no se pagaba nunca. Además, la hoja de cálculo ya no corta una lista muy larga de pagos extraordinarios.',
+          cs: 'Ve srovnání úvěrů teď nabídka se sazbou „Pevná, pak pohyblivá“ potřebuje počáteční období fixace i\u00a0následnou sazbu. Dřív se nabídka s\u00a0prázdnou následnou sazbou bez upozornění spočítala s\u00a0počáteční sazbou na celou dobu splatnosti a\u00a0mohla vyjít jako ta s\u00a0nejnižším součtem. Jednorázová splátka teď potřebuje celý měsíc od 1 do 1\u00a0200: dřív se měsíc 12,5 přesunul na měsíc 12 a\u00a0splátka v\u00a0měsíci po 1\u00a0200 se nezaplatila nikdy. Tabulka ke stažení už také nezkracuje velmi dlouhý seznam jednorázových splátek.',
+          mr: 'कर्जांची तुलना या साधनात, “आधी ठरावीक, मग बदलता” दर असलेल्या ऑफरसाठी आता सुरुवातीचा ठरावीक कालावधी आणि नंतरचा दर, दोन्ही आवश्यक आहेत. आधी नंतरचा दर रिकामा ठेवल्यास ऑफरचा हिशेब न सांगता पूर्ण मुदतीसाठी सुरुवातीच्या दरानेच केला जात होता, आणि ती सर्वांत कमी एकूण रकमेची ऑफर ठरू शकत होती. एकरकमी रकमेसाठी आता 1 ते 1,200 मधला पूर्ण महिना लागतो: आधी महिना 12.5 न सांगता महिना 12 केला जात होता, आणि 1,200 नंतरच्या महिन्यातील रक्कम कधीच भरली जात नव्हती. तसेच, स्प्रेडशीट आता एकरकमी रकमांची खूप लांब यादी मध्येच तोडत नाही.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-26',
     items: [
       {

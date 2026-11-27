@@ -46,7 +46,7 @@
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
-import { CURRENCIES, DEFAULT_CURRENCY } from './math.ts';
+import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
@@ -268,26 +268,50 @@ const V_IDX = {
 // ---------------------------------------------------------------------------
 
 /**
- * Malformed pairs are silently skipped so the caller gets the salvageable subset of a mistyped
- * link rather than an outright failure. Format: "12:5000;36:3000".
+ * One written pair, read. A month is a whole one, from 1 to the last the
+ * tool counts: "12.5:5000" used to be read as month 12, and "1300:5000" was
+ * read and then never paid, since no schedule runs past month 1,200 (#796).
+ * Such a pair reads as numbers but names no month of a loan, which is
+ * `'month'`; one that does not read at all is `null`.
+ */
+function readLumpSum(pair: string): LumpSumEntry | 'month' | null {
+  const trimmed = pair.trim();
+  const colon = trimmed.indexOf(':');
+  if (colon <= 0) return null;
+  // `Number` leaves out the spaces around each side, and reads an empty amount as 0, which is no amount.
+  const month = Number(trimmed.slice(0, colon));
+  const amount = Number(trimmed.slice(colon + 1));
+  if (!Number.isFinite(month) || !Number.isFinite(amount) || amount <= 0) return null;
+  if (!Number.isInteger(month) || month < 1 || month > MAX_TERM_MONTHS) return 'month';
+  return { month, amountMajor: amount };
+}
+
+/** The pairs that are written: an empty one (a last ";", spaces) is nothing typed. */
+const writtenPairs = (encoded: string) => encoded.split(';').filter((pair) => pair.trim() !== '');
+
+/**
+ * The pairs that read, in the format "12:5000;36:3000". A pair that does not
+ * read is left out, and the page counts the pairs against what was written,
+ * so a box with one left out is an error (`unreadableOptionalFields`), never
+ * a smaller list used without a word.
  */
 export function parseLumpSums(encoded: string): LumpSumEntry[] {
-  if (!encoded) return [];
-  const out: LumpSumEntry[] = [];
-  for (const pair of encoded.split(';')) {
-    // Stryker disable next-line MethodExpression: equivalent. Each side of the pair is trimmed again below, and a pair that is only spaces has no colon, so it is skipped either way.
-    const trimmed = pair.trim();
-    if (!trimmed) continue;
-    const colon = trimmed.indexOf(':');
-    // Stryker disable next-line ArithmeticOperator: equivalent. A colon at the end leaves an empty amount, which reads as 0 and is skipped by the amount check below.
-    if (colon <= 0 || colon === trimmed.length - 1) continue;
-    const month = Number(trimmed.slice(0, colon).trim());
-    const amount = Number(trimmed.slice(colon + 1).trim());
-    if (!Number.isFinite(month) || month < 1) continue;
-    if (!Number.isFinite(amount) || amount <= 0) continue;
-    out.push({ month: Math.floor(month), amountMajor: amount });
-  }
-  return out;
+  return writtenPairs(encoded).flatMap((pair) => {
+    const read = readLumpSum(pair);
+    return read === null || read === 'month' ? [] : [read];
+  });
+}
+
+/**
+ * What is wrong with the lump-sum box, if anything. A pair that does not read
+ * comes first: `'unreadable'` whenever there is one. `'month'` is a box whose
+ * pairs all read as numbers, with a month among them that is not a whole one
+ * from 1 to 1,200, which has a message of its own.
+ */
+export function lumpSumFault(encoded: string): 'unreadable' | 'month' | null {
+  const read = writtenPairs(encoded).map(readLumpSum);
+  if (read.includes(null)) return 'unreadable';
+  return read.includes('month') ? 'month' : null;
 }
 
 /**
