@@ -43,6 +43,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-27',
     items: [
       {
+        id: 'no-minus-zero-flat-prices',
+        text: {
+          en: 'The tools no longer show “−0%” for a figure too small to register, and the inflation calculator now says prices changed by less than 0.5% instead of “rose about 0%”. When amounts cancel out in the net worth calculator, the total is now a plain zero, with no shares of over 999%.',
+          hi: 'टूल अब बहुत छोटे आँकड़े के लिए “−0%” नहीं दिखाते, और महँगाई कैलकुलेटर अब “लगभग 0% बढ़ीं” की जगह बताता है कि क़ीमतें 0.5% से कम बदलीं। शुद्ध संपत्ति कैलकुलेटर में जब रकमें आपस में कटकर शून्य हो जाती हैं, तो कुल अब सीधा शून्य दिखता है, और 999% से ज़्यादा के हिस्से नहीं दिखते।',
+          es: 'Las herramientas ya no muestran «−0\u00a0%» cuando una cifra es demasiado pequeña para notarse, y la calculadora de inflación dice ahora que los precios variaron menos de un 0,5\u00a0% en lugar de «subieron alrededor de un 0\u00a0%». Cuando los importes se compensan en la calculadora de patrimonio neto, el total es ahora un cero sin más, sin porcentajes de más del 999\u00a0%.',
+          cs: 'Nástroje už neukazují „−0\u00a0%“ u\u00a0čísla, které je příliš malé na to, aby se projevilo, a\u00a0inflační kalkulačka teď místo „vzrostly zhruba o\u00a00\u00a0%“ říká, že se ceny změnily o\u00a0méně než 0,5\u00a0%. Když se částky v\u00a0kalkulačce čistého jmění navzájem vyruší, je teď součet prostá nula, bez podílů přes 999\u00a0%.',
+          mr: 'साधने आता अगदी लहान आकड्यासाठी “−0%” दाखवत नाहीत, आणि महागाई कॅल्क्युलेटर आता “सुमारे 0% वाढल्या” ऐवजी किमती 0.5%\u00a0पेक्षा कमी बदलल्या असे सांगतो. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये रकमा एकमेकांना रद्द करतात तेव्हा एकूण आता साधे शून्य दिसते, आणि 999%\u00a0पेक्षा जास्त हिस्से दिसत नाहीत.',
+        },
+      },
+      {
         id: 'loan-changing-rate-needs-both-boxes',
         text: {
           en: 'In the loan comparison, an offer with a “Fixed, then variable” rate now needs both its initial fixed period and its subsequent rate. If the subsequent rate was left empty, the offer used to be worked out at its starting rate for the whole term, without any warning, and could be named the lowest total. A lump sum now needs a whole month from 1 to 1,200: month 12.5 used to be moved to month 12, and a month past 1,200 was never paid. The spreadsheet also no longer cuts a very long list of lump sums short.',
