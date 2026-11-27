@@ -1071,7 +1071,12 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       if ((await address()) !== `${path}${utm}`) problems.push(`a link cut short left state in the address: ${await address()}`);
       if (!(await visible(page, tool.sealed.damaged)).length) problems.push('a link cut short was not refused: the page did not say the link is incomplete');
       if (await restored()) problems.push('a link cut short brought the typed amount back');
-      if ((await page.evaluate((g) => window[g] || '', tool.global)) !== cut) problems.push('a link cut short was not kept as it arrived for the language switch');
+      // The guard keeps the state as pairs, so a cut that falls inside a
+      // percent escape comes back written out in full, and a last key with no
+      // name the tool knows is left out: the pairs are compared, not the text.
+      const keptPairs = JSON.stringify([...new URLSearchParams(await page.evaluate((g) => window[g] || '', tool.global))]);
+      const cutPairs = [...new URLSearchParams(cut)];
+      if (keptPairs !== JSON.stringify(cutPairs) && keptPairs !== JSON.stringify(cutPairs.slice(0, -1))) problems.push('a link cut short was not kept as it arrived for the language switch');
       note.step = 'pressing the button of the incomplete-link notice';
       if (!(await click(page, tool.sealed.startNew))) problems.push('the incomplete-link notice has no button to press');
       await sleep(400);
