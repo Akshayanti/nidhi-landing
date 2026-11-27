@@ -57,6 +57,16 @@ describe('the number boxes', () => {
       await settle();
       assert.equal(heading().textContent, 'After 20 years of saving');
       assert.ok(!one('.mcs-quick').classList.contains('tool-withheld'));
+      // once the corrected plan's results are on screen, that is said once (#822)
+      await settle(1_050);
+      assert.equal(one('.mcs-actions .chart-srOnly').textContent, island.actions.back);
+      // and an ordinary edit after it says nothing new
+      await typeInto(island.fields.saveYears, '21');
+      await settle(1_050);
+      assert.equal(heading().textContent, 'After 21 years of saving');
+      assert.equal(one('.mcs-actions .chart-srOnly').textContent, '', 'nothing new said: the region only empties');
+      await typeInto(island.fields.saveYears, '20');
+      await settle();
     }
     {
       // a corrected box shows its result once it settles, the old one never

@@ -349,6 +349,8 @@ export const monteCarloEn = {
       shareStatus: 'Link copied to the clipboard.',
       reset: 'Reset',
       fix: 'Fix the highlighted fields to see the results.',
+      /** Said once when a corrected plan's results are on screen again (#822). */
+      back: 'The results are shown again.',
       running: 'Running {paths} paths…',
     },
     /**
@@ -703,6 +705,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       reset: 'रीसेट करें',
       fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
+      back: 'नतीजे फिर से दिख रहे हैं।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
     quick: {
@@ -1039,6 +1042,7 @@ export const monteCarloEs: typeof monteCarloEn = {
       shareStatus: 'Enlace copiado al portapapeles.',
       reset: 'Restablecer',
       fix: 'Corrige los campos marcados para ver los resultados.',
+      back: 'Los resultados vuelven a mostrarse.',
       running: 'Simulando {paths} trayectorias…',
     },
     quick: {
@@ -1377,6 +1381,7 @@ export const monteCarloCs: typeof monteCarloEn = {
       shareStatus: 'Odkaz zkopírován do schránky.',
       reset: 'Obnovit výchozí',
       fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledky.',
+      back: 'Výsledky se znovu zobrazují.',
       running: 'Probíhá simulace, počet trajektorií: {paths}…',
     },
     quick: {
@@ -1697,6 +1702,7 @@ export const monteCarloMr: typeof monteCarloEn = {
       shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       reset: 'रीसेट करा',
       fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
+      back: 'निकाल पुन्हा दिसत आहेत.',
       running: '{paths} मार्ग चालवत आहे…',
     },
     quick: {

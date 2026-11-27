@@ -342,6 +342,18 @@ export default function MonteCarloSimulator({
   const pending = running || settled !== shownState;
   // Waiting from the keystroke, so Copy can never share a plan not shown yet.
   const { withheld, waiting } = useResultGate(hasErrors, form === settledForm && !pending);
+  // After "Fix the highlighted fields", a screen reader hears once that the
+  // corrected plan's results are back, and nothing on the edits after it
+  // (#822). The simulator says no result on ordinary edits: it runs again on
+  // every one.
+  const [recovery, setRecovery] = useState<'none' | 'fixing' | 'back'>('none');
+  useEffect(() => {
+    // Back once the result on screen is the corrected plan's; the next edit
+    // starts waiting again, and the line is taken back unsaid if not yet said.
+    if (hasErrors) setRecovery('fixing');
+    else if (!waiting && recovery === 'fixing') setRecovery('back');
+    else if (waiting && recovery === 'back') setRecovery('none');
+  }, [hasErrors, waiting, recovery]);
 
   // A number box hands over a plain number string, whatever the page's language wrote.
   const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -612,7 +624,7 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          <ResultAnnouncement text={hasErrors ? strings.actions.fix : ''} delay={WITHHELD_SAID_AFTER} notice={share.notice} />
+          <ResultAnnouncement text={hasErrors ? strings.actions.fix : recovery === 'back' ? strings.actions.back : ''} delay={WITHHELD_SAID_AFTER} notice={share.notice} />
           <span className="mcs-hint" role="status" aria-live="polite">
             {!hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : ''}
           </span>

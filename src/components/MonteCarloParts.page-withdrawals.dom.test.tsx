@@ -112,7 +112,7 @@ describe('the form: withdrawals, and a wrong box', () => {
       assert.ok(document.querySelector('.tool-report'));
       assert.equal(one('.mcs-quick').className, 'mcs-quick');
       await settle(1_050);
-      assert.equal(one('.mcs-actions .chart-srOnly').textContent, '', 'and nothing more is said');
+      assert.equal(one('.mcs-actions .chart-srOnly').textContent, island.actions.back, 'that the results are back, once (#822)');
     }
     {
       // off again: counted, the boxes gone and the line back
