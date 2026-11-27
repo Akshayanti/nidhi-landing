@@ -381,8 +381,9 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((sche
           function markScrollers() {
             for (var f = 0; f < figures.length; f++) {
               var fig = figures[f];
-              if (fig.scrollWidth > fig.clientWidth + 1) fig.tabIndex = 0;
-              else fig.removeAttribute('tabindex');
+              // data-scrolls shows the "scroll sideways" hint (global.css).
+              if (fig.scrollWidth > fig.clientWidth + 1) { fig.tabIndex = 0; fig.setAttribute('data-scrolls', ''); }
+              else { fig.removeAttribute('tabindex'); fig.removeAttribute('data-scrolls'); }
             }
           }
           markScrollers();

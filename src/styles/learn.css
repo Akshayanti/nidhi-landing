@@ -158,13 +158,6 @@
   line-height: 1.3;
 }
 
-/* The badge rises 10px above the card; the rest of it is kept clear of the
-   title at any text size (#839): its height (13px text at a line height of
-   1.3, so 1.06rem, and 2px of padding), less those 10px, and a gap. */
-.lp-nodeCard:has(> .lp-cardBadges) {
-  padding-top: max(var(--space-4), calc(1.06rem + 2px - 10px + var(--space-2)));
-}
-
 /* Room under the badge, in em so it grows with the badge's text when a reader
    raises their text size, instead of the badge landing on the step number. */
 .lp-nodeCard:has(.lp-cardBadges) {

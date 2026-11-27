@@ -44,6 +44,13 @@ const TOPIC_ALONE = new Set(['money', 'dinero', 'penize', 'पैसे', 'प�
  * left also matches the words on its right.
  */
 const SYNONYMS: Record<string, string[]> = {
+  // "money" in the other languages: the lessons are indexed in English (#778).
+  dinero: ['money'],
+  penize: ['money'],
+  'पैसे': ['money'],
+  'पैसों': ['money'],
+  'पैसा': ['money'],
+  'पैशांचा': ['money'],
   owe: ['debt', 'loan', 'credit'],
   owing: ['debt', 'loan'],
   debt: ['owe', 'loan', 'credit'],

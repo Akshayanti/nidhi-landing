@@ -1583,6 +1583,26 @@ details[open] > .disclosure::after,
     overscroll-behavior-x: contain;
   }
   .prose figure:has(> svg) > figcaption { max-width: min(92%, 42rem); }
+  /* While a figure scrolls (BlogPost.astro marks it), it says so, and its
+     caption stays at the left edge, as on a phone. A hidden scroll bar would
+     otherwise make a cut-off chart look whole. */
+  .prose figure[data-scrolls]::before {
+    content: "Scroll sideways to see the whole chart \2192";
+    position: sticky;
+    left: 0;
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: left;
+  }
+  .prose figure[data-scrolls] > figcaption {
+    position: sticky;
+    left: 0;
+    margin-left: 0;
+    text-align: left;
+  }
 }
 
 /* Regulatory notice boxes */

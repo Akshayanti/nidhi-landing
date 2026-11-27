@@ -624,10 +624,14 @@ const confirmTextId = `subscribe-confirm-text-${variant}`;
   .subscribe-label {
     flex: 1 0 100%;
     margin: 0;
+    text-align: start;
     font-size: var(--text-small);
     font-weight: 600;
     line-height: var(--leading-snug);
   }
+  /* White on the full form's blue box, as its headings are (8.6:1); the
+     compact form keeps the page's text colour. */
+  .subscribe--full .subscribe-label { color: white; }
   .subscribe-input-group {
     display: flex;
     flex-direction: column;

@@ -208,11 +208,13 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
   /* Annotated document */
   .gv-doc-title { font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-3); font-family: var(--font-heading); }
   .gv-doc-lines { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-bg); }
-  .gv-doc-line { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-light); }
+  .gv-doc-line { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--space-3); row-gap: var(--space-1); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-light); }
   .gv-doc-line:last-child { border-bottom: none; }
-  /* A long address wraps inside the line instead of widening the page (#633). */
-  .gv-doc-line dt { display: flex; align-items: baseline; min-width: 0; overflow-wrap: anywhere; }
-  .gv-doc-line dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; }
+  /* A long address still breaks inside the line (#633); a label keeps its
+     words whole, and the value drops under it, to the right, when the two do
+     not fit side by side, so an amount stays whole (#841). */
+  .gv-doc-line dt { display: flex; align-items: baseline; flex: 1 1 10em; min-width: 0; overflow-wrap: break-word; }
+  .gv-doc-line dd { margin: 0 0 0 auto; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; max-width: 100%; }
 
   /* Message */
   .gv-msg-from { margin: 0 0 var(--space-2); font-size: var(--text-small); color: var(--color-text-secondary); }

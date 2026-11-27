@@ -26,6 +26,8 @@ describe('site search', () => {
     assert.deepEqual(queryWords('Money?'), ['money']);
     assert.deepEqual(queryWords('how do I make money'), ['make']);
     assert.deepEqual(queryWords('how do I'), []);
+    // "money" in the other languages reaches the English lessons through "money".
+    for (const word of ['dinero', 'peníze', 'पैसे', 'पैसा']) assert.ok(ids(word).length > 0, word);
     assert.equal(ids('What does the minimum payment on my credit card mean?')[0], 'minimum-payment');
     assert.equal(ids('is this message a scam?')[0], 'scam-message');
   });

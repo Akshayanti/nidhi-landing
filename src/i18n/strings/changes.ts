@@ -47,7 +47,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
         text: {
           en: 'Searching the lessons for just “money” now finds them, where it used to find nothing, and the line above the results counts lessons and guides apart, such as “10 lessons, 1 guide”, so it agrees with the “Show all” button. When only guides match, the count says so too, for screen readers as well.',
           hi: 'पाठों में सिर्फ़ “money” खोजने पर अब पाठ मिलते हैं; पहले कुछ नहीं मिलता था। नतीजों के ऊपर की पंक्ति अब पाठ और गाइड अलग-अलग गिनती है, जैसे “10 पाठ, 1 गाइड”, इसलिए वह “सभी … दिखाएँ” बटन से मेल खाती है। जब सिर्फ़ गाइड मिलती हैं, तब भी गिनती यह बताती है, स्क्रीन रीडर के लिए भी।',
-          es: 'Buscar solo «money» entre las lecciones ahora las encuentra, cuando antes no encontraba nada, y la línea sobre los resultados cuenta por separado lecciones y guías, como «10 lecciones, 1 guía», así que coincide con el botón «Mostrar las…». Cuando solo coinciden guías, el recuento también lo dice, también para lectores de pantalla.',
+          es: 'Buscar solo «money» entre las lecciones ahora las encuentra, cuando antes no encontraba nada, y la línea sobre los resultados cuenta por separado lecciones y guías, como «10 lecciones, 1 guía», así que coincide con el botón «Mostrar las…». Cuando solo coinciden guías, el recuento también lo indica, incluso para lectores de pantalla.',
           cs: 'Hledání samotného slova „money“ v\u00a0lekcích teď lekce najde, dřív nenašlo nic, a\u00a0řádek nad výsledky počítá zvlášť lekce a\u00a0návody, například „10 lekcí, 1 návod“, takže souhlasí s\u00a0tlačítkem „Zobrazit vše (…)“. Když odpovídají jen návody, počet to řekne také, i\u00a0pro čtečky obrazovky.',
           mr: 'धड्यांमध्ये फक्त “money” शोधल्यावर आता धडे सापडतात; आधी काहीच सापडत नसे. निकालांच्या वरची ओळ आता धडे आणि मार्गदर्शिका वेगवेगळ्या मोजते, जसे “10 धडे, 1 मार्गदर्शिका”, त्यामुळे ती “सर्व … दाखवा” बटणाशी जुळते. फक्त मार्गदर्शिका जुळतात तेव्हाही मोजणी तसे सांगते, स्क्रीन रीडरसाठीही.',
         },
@@ -75,11 +75,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'cookie-answers-first-large-text',
         text: {
-          en: 'With very large text on a phone, the cookie question now shows its two answers right after its title, before the explanation, so neither has to be found far down the sheet.',
-          hi: 'फ़ोन पर बहुत बड़े अक्षरों में कुकी वाला सवाल अब अपने शीर्षक के ठीक बाद, समझाने वाले हिस्से से पहले, अपने दोनों जवाब दिखाता है, ताकि किसी को भी नीचे दूर तक ढूँढना न पड़े।',
-          es: 'Con el texto muy grande en un móvil, el aviso de cookies muestra ahora sus dos respuestas justo después del título, antes de la explicación, para que ninguna haya que buscarla muy abajo.',
-          cs: 'Při velmi velkém písmu na telefonu teď cookie lišta ukazuje obě odpovědi hned pod nadpisem, před vysvětlením, takže ani jednu není třeba hledat hluboko dole.',
-          mr: 'फोनवर खूप मोठ्या अक्षरांत कुकी सूचना आता आपल्या शीर्षकानंतर लगेच, स्पष्टीकरणाच्या आधी, दोन्ही उत्तरे दाखवते, त्यामुळे कोणतेही उत्तर खाली दूरवर शोधावे लागत नाही.',
+          en: 'When the screen is short for its text, as with very large text on a phone, the cookie question now shows its two answers right after its title, before the explanation, so neither has to be found far down the sheet.',
+          hi: 'जब स्क्रीन अपने अक्षरों के हिसाब से छोटी पड़ती है, जैसे फ़ोन पर बहुत बड़े अक्षरों में, तो कुकी वाला सवाल अब अपने शीर्षक के ठीक बाद, समझाने वाले हिस्से से पहले, अपने दोनों जवाब दिखाता है, ताकि दोनों में से किसी को भी नीचे दूर तक ढूँढना न पड़े।',
+          es: 'Cuando la pantalla se queda corta para su texto, como con el texto muy grande en un móvil, el aviso de cookies muestra ahora sus dos respuestas justo después del título, antes de la explicación, y no hace falta buscar ninguna muy abajo.',
+          cs: 'Když je obrazovka na své písmo krátká, třeba při velmi velkém písmu na telefonu, cookie lišta teď ukazuje obě odpovědi hned pod nadpisem, před vysvětlením, takže ani jednu není třeba hledat hluboko dole.',
+          mr: 'स्क्रीन तिच्या अक्षरांसाठी लहान पडते तेव्हा, जसे फोनवर खूप मोठ्या अक्षरांत, कुकी सूचना आता आपल्या शीर्षकानंतर लगेच, स्पष्टीकरणाच्या आधी, दोन्ही उत्तरे दाखवते, त्यामुळे कोणतेही उत्तर खाली दूरवर शोधावे लागत नाही.',
         },
       },
       {
