@@ -45,6 +45,7 @@
 import { STOCKS, lognormalParams, returnModel, type ReturnSetting } from '../monte-carlo/math.ts';
 import { geometricAverage, type Series } from '../inflation/math.ts';
 import { roundRow } from '../shared/noiseRounding.ts';
+import { shownNumber } from '../shared/money.ts';
 
 export type ReturnChoice = ReturnSetting | 'own';
 export const RETURN_CHOICES: readonly ReturnChoice[] = ['cautious', 'historical', 'optimistic', 'own'];
@@ -252,17 +253,29 @@ export function rates(raw: Inputs): Rates {
 }
 
 /**
- * The note under the reader's own return: strictly above the top of the
- * range used in the model and the lessons, or strictly below zero after
- * inflation. Exactly 0% keeps buying power before fees and taxes: no note.
+ * The note for a return after inflation, by the figure as the page writes it,
+ * to one decimal: above the top of the range used in the model and the
+ * lessons, or below zero. A return of 6.03% is written "6%", and a figure of
+ * 6% is not said to be above 6%, nor one of 0% to lose buying power (#888).
+ * The form's note and the table beside the result both ask here, so the two
+ * cannot disagree.
+ */
+export function realReturnNote(real: number): ReturnNote {
+  const shown = shownNumber(real, 1);
+  if (shown > REAL_RETURN_TOP) return 'above-range';
+  if (shown < 0) return 'below-zero';
+  return null;
+}
+
+/**
+ * The note under the reader's own return: above the top of the range, or
+ * below zero after inflation, as written. Exactly 0% keeps buying power
+ * before fees and taxes: no note.
  */
 export function returnNote(raw: Inputs): ReturnNote {
   const i = sanitizeInputs(raw);
   if (i.returns !== 'own') return null;
-  const real = toReal(i.ownReturn, i.inflation);
-  if (real > REAL_RETURN_TOP + 1e-9) return 'above-range';
-  if (real < -1e-9) return 'below-zero';
-  return null;
+  return realReturnNote(toReal(i.ownReturn, i.inflation));
 }
 
 export function inputProblem(raw: Inputs): InputProblem | null {

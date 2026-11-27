@@ -24,6 +24,7 @@ import {
   inflationDefault,
   inputProblem,
   rates,
+  realReturnNote,
   returnNote,
   toReal,
   type Inputs,
@@ -391,10 +392,8 @@ export default function InvestOrPayOff({
     const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
-  // Below zero by the figure as written: a return a hair under inflation is
-  // written "0%", and a figure of 0% is not said to lose buying power (#888).
-  const formNote =
-    form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : shownNumber(ownReal, 1) < 0 ? 'below' : null) : null;
+  // By the figure as written, as the table beside the result is (#888).
+  const formNote = form.returns === 'own' && ownReal !== null ? realReturnNote(ownReal) : null;
   const num = (n: number) => n.toLocaleString(numberLocale);
 
   // What the folded taxes and fees hold, in words and never in figures.
@@ -518,8 +517,8 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
-                {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
+                {formNote === 'above-range' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
+                {formNote === 'below-zero' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
                 {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
               </div>
               <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>

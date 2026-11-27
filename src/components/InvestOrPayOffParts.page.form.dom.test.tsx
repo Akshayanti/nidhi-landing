@@ -170,6 +170,17 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     type('inflation', '0');
     type('ownReturn', '6');
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '6%' })]);
+    // 6.04% is written "6%": no note saying it is above 6%, and no table for a gap the figure does not show (#888).
+    type('ownReturn', '6.04');
+    assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '6%' })]);
+    assert.equal(one('.iop-returnNote p').className, 'ifc-hint');
+    clock.pass(250);
+    assert.equal(has('.iop-side'), false);
+    // 6.06% is written "6.1%": the note and the table are both there.
+    type('ownReturn', '6.06');
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: '6.1%', historical: '5.3%', top: 6 })]);
+    clock.pass(250);
+    assert.equal(has('.iop-side'), true);
     type('ownReturn', '0');
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '0%' })]);
     // A figure that cannot be read: marked, and no note.
