@@ -393,7 +393,8 @@ export default function InvestOrPayOff({
     return own === null || inf === null ? null : toReal(own, inf);
   })();
   // By the figure as written, as the table beside the result is (#888).
-  const formNote = form.returns === 'own' && ownReal !== null ? realReturnNote(ownReal) : null;
+  // Read only where the reader's own return is asked for.
+  const formNote = ownReal === null ? null : { kind: realReturnNote(ownReal), real: pct(ownReal, numberLocale) };
   const num = (n: number) => n.toLocaleString(numberLocale);
 
   // What the folded taxes and fees hold, in words and never in figures.
@@ -517,9 +518,9 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above-range' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
-                {formNote === 'below-zero' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
-                {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
+                {formNote?.kind === 'above-range' && <p className="iop-note">{t(strings.returns.above, { real: formNote.real, historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
+                {formNote?.kind === 'below-zero' && <p className="iop-note">{t(strings.returns.below, { real: formNote.real })}</p>}
+                {formNote?.kind === null && <p className="ifc-hint">{t(strings.returns.realIs, { real: formNote.real })}</p>}
               </div>
               <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>
             </>
