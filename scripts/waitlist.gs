@@ -289,7 +289,7 @@ function doGet(e) {
     var action = (e && e.parameter && e.parameter.action) || '';
     if (action === 'health') return handleHealth_();
     return htmlResponse_(
-      '<html><body style="font-family:sans-serif;text-align:center;padding:3rem">' +
+      '<html lang="en"><body style="font-family:sans-serif;text-align:center;padding:3rem">' +
       '<h2>Nothing here</h2>' +
       '<p>This address handles the planner waitlist for nidhi.today.</p>' +
       '<a href="' + safeSiteUrl_() + '/">Go to nidhi</a>' +
