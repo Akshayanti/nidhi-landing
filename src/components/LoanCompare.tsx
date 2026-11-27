@@ -1815,7 +1815,7 @@ function VendorCard({
 
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          {strings.card.principal} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+          {strings.card.principal}<RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
         </label>
         <LocaleNumberInput
           id={id('principal')}
@@ -1832,7 +1832,7 @@ function VendorCard({
 
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('rate')}>
-          {strings.card.rate} <RequiredMark title={strings.card.requiredTitle} />
+          {strings.card.rate}<RequiredMark title={strings.card.requiredTitle} />
         </label>
         <LocaleNumberInput
           id={id('rate')}
@@ -1848,7 +1848,7 @@ function VendorCard({
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">{strings.card.solveFor} <RequiredMark title={strings.card.requiredTitle} /></legend>
+        <legend className="lc-fieldLabel">{strings.card.solveFor}<RequiredMark title={strings.card.requiredTitle} /></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1882,7 +1882,7 @@ function VendorCard({
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('term')}>
-            {strings.card.term} <RequiredMark title={strings.card.requiredTitle} />
+            {strings.card.term}<RequiredMark title={strings.card.requiredTitle} />
           </label>
           <LocaleNumberInput
             id={id('term')}
@@ -1899,7 +1899,7 @@ function VendorCard({
       ) : (
         <div className="lc-field">
           <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            {strings.card.monthly} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+            {strings.card.monthly}<RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
           </label>
           <LocaleNumberInput
             id={id('monthly')}
@@ -2140,7 +2140,7 @@ function VendorCard({
           <>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed} <RequiredMark title={strings.card.requiredTitle} />
+                {strings.card.initialFixed}<RequiredMark title={strings.card.requiredTitle} />
               </label>
               <LocaleNumberInput
                 id={id('initialFixedMonths')}
@@ -2157,7 +2157,7 @@ function VendorCard({
             </div>
             <div className="lc-field">
               <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate} <RequiredMark title={strings.card.requiredTitle} />
+                {strings.card.subsequentRate}<RequiredMark title={strings.card.requiredTitle} />
               </label>
               <LocaleNumberInput
                 id={id('subsequentRatePct')}
@@ -2337,15 +2337,26 @@ function VendorCard({
 
 // ---- Form helpers ----------------------------------------------------------
 
+/**
+ * What joins the mark to the last word of its label. With a plain space the
+ * asterisk went to a line of its own under a long label at large text, away
+ * from the label it marks (#917). The mark brings the joiner itself, so a
+ * label is written with nothing between its text and the mark.
+ */
+const NO_BREAK_SPACE = '\u00a0';
+
 /** A small red asterisk used to mark required fields. The asterisk is
  *  presentational; the real semantic signal is the `aria-required` on
  *  the input itself. We hide the asterisk character from screen readers
  *  via aria-hidden so they don't read "required asterisk". */
 function RequiredMark({ title }: { title: string }) {
   return (
-    <span className="lc-required" aria-hidden="true" title={title}>
-      *
-    </span>
+    <>
+      {NO_BREAK_SPACE}
+      <span className="lc-required" aria-hidden="true" title={title}>
+        *
+      </span>
+    </>
   );
 }
 

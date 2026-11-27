@@ -47,6 +47,14 @@ describe('the mark on a required box', () => {
     assert.equal(mark.getAttribute('title'), 'Required');
     assert.equal(mark.getAttribute('aria-hidden'), 'true');
   });
+
+  it('brings a no-break space in front of it, so it never goes to a line of its own away from its label (#917)', () => {
+    const { container } = render(<label>Initial fixed period (months)<RequiredMark title={s.card.requiredTitle} /></label>);
+    assert.equal(container.textContent, 'Initial fixed period (months)\u00a0*');
+    // The joiner is outside the mark: the asterisk alone is coloured and hidden from a screen reader.
+    assert.equal(container.querySelector('.lc-required')?.textContent, '*');
+    assert.equal(container.querySelector('.lc-required')?.previousSibling?.textContent, '\u00a0');
+  });
 });
 
 describe('a row of optional boxes', () => {

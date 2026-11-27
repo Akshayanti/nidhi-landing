@@ -273,6 +273,22 @@ describe('the offer card: its heading, name and remove button', () => {
 });
 
 describe('the offer card: the required boxes', () => {
+  it('keeps each mark with the last word of its label: a no-break space before it, never a plain one (#917)', () => {
+    /** The text of whatever carries each mark, with the mark in it. */
+    const marked = (card: HTMLElement) => [...card.querySelectorAll('.lc-required')].map((mark) => {
+      const before = mark.previousSibling;
+      assert.ok(before !== null && before.nodeType === 3, 'the mark follows text');
+      return `${before.previousSibling?.textContent ?? ''}${before.textContent}${mark.textContent}`;
+    });
+    const j = '\u00a0';
+    assert.deepEqual(marked(show(loan({ ...HYBRID })).card), [
+      `${c.principal}${j}*`, `${c.rate}${j}*`, `${c.solveFor}${j}*`, `${c.term}${j}*`, `${c.initialFixed}${j}*`, `${c.subsequentRate}${j}*`,
+    ]);
+    assert.deepEqual(marked(show(loan({ modeKind: 'payment', monthlyPayment: '100' })).card), [
+      `${c.principal}${j}*`, `${c.rate}${j}*`, `${c.solveFor}${j}*`, `${c.monthly}${j}*`,
+    ]);
+  });
+
   it('labels each with its mark and currency, shows the offer as typed, and marks none while the offer is valid', () => {
     const { card } = show(loan({ principal: '1200', annualRatePct: '4.5', termMonths: '24' }));
     const principal = box(card, LABELS.principal);
@@ -368,7 +384,7 @@ describe('the offer card: solving for the payment or for the months', () => {
     assert.equal(monthsChoice.value, 'payment');
     assert.deepEqual([...(payment.closest('label') as Element).classList], ['lc-modeOption', 'lc-modeOptionActive']);
     assert.deepEqual([...(monthsChoice.closest('label') as Element).classList], ['lc-modeOption']);
-    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor} *`);
+    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor}\u00a0*`);
     // One group per question and per card: the arrow keys stay inside it.
     const rateType = choice(card, c.fixed);
     assert.notEqual(payment.name, '');
