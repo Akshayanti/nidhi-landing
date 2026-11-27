@@ -387,9 +387,16 @@ export default function InvestOrPayOff({
   const formDefault = formSeries ? inflationDefault(formSeries, latestYear) : null;
   const formCountry = form.country ? countryByCode.get(form.country) ?? null : null;
   const formHistory = historyState(form.country);
+  // The note under the reader's own return is worked out from the form once
+  // typing has paused (settledForm), not on every keystroke: it sits in a
+  // live region, and a note that changed with each character was read out
+  // again and again (#786, #902). While the box holds an error there is none.
+  const noteSeries = seriesFor(settledForm.country);
+  const noteDefault = noteSeries ? inflationDefault(noteSeries, latestYear) : null;
   const ownReal = (() => {
-    const own = parseField('ownReturn', form.ownReturn, numberLocale);
-    const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
+    if (errors.ownReturn) return null;
+    const own = parseField('ownReturn', settledForm.ownReturn, numberLocale);
+    const inf = settledForm.inflation.trim() === '' ? noteDefault?.average ?? null : parseField('inflation', settledForm.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
   // By the figure as written, as the table beside the result is (#888).
@@ -844,7 +851,8 @@ function Field(props: {
           placeholder={props.placeholder}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}

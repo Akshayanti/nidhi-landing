@@ -719,7 +719,8 @@ function Field(props: {
           value={props.value}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
