@@ -29,6 +29,10 @@ glossary:
     definition: "A return that strips out the timing of contributions and withdrawals, so it shows how the investments themselves did; the standard for comparing funds."
 order: 54
 pubDate: 2026-11-27
+updatedDate: 2026-11-27
+corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
 level: "optimizing"
 primaryPersona: "eva"
 personas: ["eva", "petra", "marcus", "jiri"]
@@ -71,7 +75,7 @@ It might have been a good year or a poor one, and the €50,000 alone cannot say
 
 ## The statement shows nominal growth, not real return
 
-The [purchasing power lesson](/blog/purchasing-power/) explained real return, what is left after inflation, and the [projections lesson](/blog/financial-projections/) used it for long-run assumptions. Two refinements matter when measuring a portfolio. When inflation is high, the exact formula, (1 + [nominal return](#term-nominal-return)) ÷ (1 + inflation) − 1, matters: a 12% year during 15% inflation is a 2.6% loss of purchasing power, roughly what many investors lived through in the 1970s. And the long-run yardsticks are real ones: about 5% a year for world shares from 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026); and, from 1900 to 2024, 6.6% in the US and 5.4% in the UK, a little under 2% for bonds and about 0.5% for cash in Treasury bills (Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with long stretches well below those averages and single countries well above or below them.
+The [purchasing power lesson](/blog/purchasing-power/) explained real return, what is left after inflation, and the [projections lesson](/blog/financial-projections/) used it for long-run assumptions. Two refinements matter when measuring a portfolio. When inflation is high, the exact formula, (1 + [nominal return](#term-nominal-return)) ÷ (1 + inflation) − 1, matters: a 12% year during 15% inflation is a 2.6% loss of purchasing power, roughly what many investors lived through in the 1970s. And the long-run yardsticks are real ones: about 5% a year for world shares, measured in US dollars, from 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026); and, from 1900 to 2024, 6.6% in the US and 5.4% in the UK, each in its own currency, a little under 2% for bonds and about 0.5% for cash in Treasury bills (Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with long stretches well below those averages and single countries well above or below them.
 
 Inflation also depends on what you buy. Official figures use a national basket; a housing-heavy budget in a city with rising rents can run well above it. For measuring a portfolio the national figure is the usual choice; for retirement planning, your own basket can matter more.
 

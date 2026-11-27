@@ -17,7 +17,7 @@ pubDate: 2026-06-03
 updatedDate: 2026-11-27
 corrections:
   - date: 2026-11-27
-    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
+    note: "The world stock return now cites the 2026 figures: about 5% a year after inflation, 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it cited 1900 to 2024; the rounded figure is unchanged."
   - date: 2026-11-22
     note: "The lesson said stocks have historically delivered 4 to 6% a year after inflation. The cited data gives about 5% a year for world shares from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below it, so the doubling time after inflation is now about 14 years, with 12 and 18 years shown for 6% and 4%."
   - date: 2026-11-17
