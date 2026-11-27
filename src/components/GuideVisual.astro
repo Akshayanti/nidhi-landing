@@ -83,7 +83,7 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
       <dl class="gv-doc-lines">
         {docLines.map((l) => (
           <div class="gv-doc-line">
-            <dt>{l.n > 0 && <span class="gv-mark" aria-hidden="true">{l.n}</span>}{l.label}</dt>
+            <dt>{l.n > 0 && <span class="gv-mark" aria-hidden="true">{l.n}</span>}<span>{l.label}</span></dt>
             <dd>{l.value}</dd>
           </div>
         ))}
@@ -214,7 +214,8 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
      words whole, and the value drops under it, to the right, when the two do
      not fit side by side, so an amount stays whole (#841). */
   .gv-doc-line dt { display: flex; align-items: baseline; flex: 1 1 10em; min-width: 0; overflow-wrap: break-word; }
-  .gv-doc-line dd { margin: 0 0 0 auto; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; max-width: 100%; }
+  .gv-doc-line dt > * { min-width: 0; }
+  .gv-doc-line dd { margin: 0 0 0 auto; min-width: 0; max-width: 100%; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; overflow-wrap: break-word; }
 
   /* Message */
   .gv-msg-from { margin: 0 0 var(--space-2); font-size: var(--text-small); color: var(--color-text-secondary); }
