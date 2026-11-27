@@ -127,6 +127,8 @@ const foldCount = (id: string, n: number) => (id === GUIDES
   : `${n} ${plural(lang, n, s.lessonOne, s.lessonFew, s.lessonMany)}`);
 const foldPill = (id: string) => (id === GUIDES ? howTo.label : id === INCLUSIVE ? s.inclusivePill : learn.levels[id] ?? id);
 const foldColour = (id: string) => (id === GUIDES ? 'var(--color-teal-dark, var(--color-teal))' : `var(--level-${id})`);
+/** A level's colour as text: 8:1 or more on every surface (#761). */
+const foldText = (id: string) => (id === GUIDES ? 'var(--color-teal-dark, var(--color-teal))' : `var(--level-${id}-text)`);
 
 // What the controllers need beyond the markup: words with a value to fill in,
 // and the helper's rule. Lesson titles and addresses are read from the rows.
@@ -353,7 +355,7 @@ const pageData = {
             <a
               class="learn-level"
               href={level.href}
-              style={`--lc: var(--level-${level.id})`}
+              style={`--lc: var(--level-${level.id}); --lct: var(--level-${level.id}-text)`}
               data-attr={`blog-level-${level.id}`}
               data-level-card={level.id}
             >
@@ -380,7 +382,7 @@ const pageData = {
         <a
           class="learn-level"
           href={inclusiveHref}
-          style="--lc: var(--level-inclusive-finances)"
+          style="--lc: var(--level-inclusive-finances); --lct: var(--level-inclusive-finances-text)"
           data-attr="blog-index-inclusive-hub"
         >
           <span class="learn-num learn-numRoute" aria-hidden="true">
@@ -447,7 +449,7 @@ const pageData = {
       {groups.map((g) => {
         const List = g.id === GUIDES || g.id === INCLUSIVE ? 'ul' : 'ol';
         return (
-          <details class="learn-fold" open={g.id === openFold} data-fold={g.id} data-pill={foldPill(g.id)} style={`--lc: ${foldColour(g.id)}`}>
+          <details class="learn-fold" open={g.id === openFold} data-fold={g.id} data-pill={foldPill(g.id)} style={`--lc: ${foldColour(g.id)}; --lct: ${foldText(g.id)}`}>
             <summary class="learn-foldSummary disclosure">
               <span class="learn-foldName">{foldName(g.id)}</span>{' '}
               <span class="learn-foldCount">{foldCount(g.id, g.rows.length)}</span>
@@ -666,7 +668,7 @@ const pageData = {
         const name = level?.label ?? sug.level;
         const heading = result.querySelector<HTMLElement>('[data-result-heading]')!;
         heading.textContent = format(w.resultHeading, { level: name });
-        heading.style.color = `var(--level-${sug.level})`;
+        heading.style.color = `var(--level-${sug.level}-text)`;
         const goalTopic = goal ? data!.helper.topics[goal] : undefined;
         result.querySelector<HTMLElement>('[data-result-reason]')!.textContent = `${helperReason(sug, name, w, goalTopic || undefined)} ${w.resultSuffix}`;
 

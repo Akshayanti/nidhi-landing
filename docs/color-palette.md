@@ -106,6 +106,18 @@ Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.
 
 Hue identity: `teal → blue → amber → red → purple`, and green for the inclusive finances section, which sits beside the path rather than on it.
 
+### Level colour as text: 8:1 on every surface (#761)
+
+A level's name, its number in a badge and other level-coloured text use `--level-<level>-text`. Lines, dots, rings, bars and borders keep the identity colour above. Two levels needed their own text shade; the others are their identity colour. Numbers sit on the plain surface, not a tint of the level colour: a 12% tint took every level below 8:1.
+
+| Level | Light text | On white / on `#F8F9FA` | Dark text | On `#1E1E1E` / on `#121212` |
+|---|---|---|---|---|
+| discovery | `#004D40` (`--palette-teal-deep`) | 9.8 / 9.3:1 | `#80CBC4` (`--palette-teal-dark`) | 8.9 / 10.0:1 |
+| psychology | `#5C3D00` (`--palette-amber-deep`) | 9.9 / 9.4:1 | `#FFCC80` (identity) | 11.3 / 12.7:1 |
+| the other four | identity | 8.6:1 or more | identity | 8.3:1 or more |
+
+Discovery's dark text is the paler teal the section below keeps off text, because on its own it looked like Building's blue. It is used only beside Discovery's `#26A69A` ring or line and its name, so the two levels still differ in lightness where the colour carries the level, and in words. **In the planner:** where it shows a level's colour as text, it uses these text shades too.
+
 ---
 
 ## Dark mode: lightness, not just hue

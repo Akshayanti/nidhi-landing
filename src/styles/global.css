@@ -107,9 +107,11 @@ html:is([lang="hi"], [lang="mr"]) {
   --palette-red:              #991100;
   --palette-deep-orange:      #8B2E00;
   --palette-amber:            #6B4800;
+  --palette-amber-deep:       #5C3D00;  /* Psychology's badge text (#761) */
   --palette-olive:            #4A4A00;
   --palette-green:            #004D1A;
   --palette-teal:             #005B4F;
+  --palette-teal-deep:        #004D40;  /* Discovery's badge text (#761) */
   --palette-cyan:             #005566;
   --palette-blue:             #0A3D8F;
   --palette-indigo:           #1A237E;
@@ -396,6 +398,16 @@ html:is([lang="hi"], [lang="mr"]) {
   --level-optimizing:       var(--palette-red);
   --level-mastery:          var(--palette-purple);
   --level-inclusive-finances: var(--palette-green);
+  /* Level text on a badge (#761): 8:1 or more on white, the light page and
+     the dark surfaces. Two levels need a deeper (light) or paler (dark)
+     shade than their identity colour; the rest are their identity colour.
+     Lines, dots and rings keep the identity colour. */
+  --level-discovery-text:   var(--palette-teal-deep);
+  --level-building-text:    var(--level-building);
+  --level-psychology-text:  var(--palette-amber-deep);
+  --level-optimizing-text:  var(--level-optimizing);
+  --level-mastery-text:     var(--level-mastery);
+  --level-inclusive-finances-text: var(--level-inclusive-finances);
 
   /* Solid CTA background that always pairs with white foreground. */
   --color-cta-bg:           var(--semantic-cta-bg-light);
@@ -495,6 +507,10 @@ html:is([lang="hi"], [lang="mr"]) {
   --level-optimizing:       var(--palette-red-dark);
   --level-mastery:          var(--palette-purple-dark);
   --level-inclusive-finances: var(--palette-green-dark);
+  /* Badge text, dark (#761): Discovery's ring stays #26A69A, apart from
+     Building's blue in lightness; its number and name are the paler teal. */
+  --level-discovery-text:   var(--palette-teal-dark);
+  --level-psychology-text:  var(--level-psychology);
 
   /* CTA bg stays a saturated dark teal so white text keeps WCAG AA. */
   --color-cta-bg:           var(--semantic-cta-bg-dark);
