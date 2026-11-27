@@ -477,11 +477,15 @@ export function rateGap(result: AggregationResult, functionalCurrency: string, s
  * (#887): several currencies, nothing converted and no share carried. The
  * spending currency then has a share of 0 that is not a share: the sheet, the
  * report and the card say the rate is unavailable, never "0%". A link without
- * amounts that carries its shares is not this, nor is one currency alone,
- * nor nothing entered.
+ * amounts that carries its shares is not this, nor is one whose total was
+ * zero or less (it carries that instead), nor one currency alone, nor
+ * nothing entered.
  */
 export function sharesUnknown(result: AggregationResult, functionalCurrency: string): boolean {
   return result.hasRates === 'none'
+    // A link without amounts whose total was zero or less says so itself: its
+    // rates were known, and its shares are withheld, not unknown.
+    && result.noShares !== true
     && result.positions.length > 0
     && !isSingleCurrency(result, functionalCurrency)
     && result.positions.every((p) => p.netAmountFunctional === 0 && p.pctOfTotal === 0);

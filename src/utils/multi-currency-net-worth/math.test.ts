@@ -1167,6 +1167,12 @@ describe('sharesUnknown (#887)', () => {
   const result = (hasRates: AggregationResult['hasRates'], ...positions: CurrencyPosition[]): AggregationResult => ({ positions, totalNetWorthFunctional: 0, hasRates });
   const row = (value: string, currency: string): AssetRow => ({ name: '', value, currency, type: 'asset' });
 
+  it('a link without amounts whose total was zero or less had its rates: its shares are withheld, not unknown', () => {
+    const withheld = { ...result('none', position('EUR'), position('USD')), noShares: true };
+    assert.equal(sharesUnknown(withheld, 'EUR'), false);
+    assert.equal(sharesUnknown({ ...withheld, noShares: false }, 'EUR'), true);
+  });
+
   it('several currencies, no rates, nothing converted and no share carried: no share can be worked out', () => {
     assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { rateUnavailable: true })), 'EUR'), true);
     assert.equal(sharesUnknown(aggregate([row('1000', 'EUR'), row('2000', 'USD')], 'EUR', null), 'EUR'), true);
