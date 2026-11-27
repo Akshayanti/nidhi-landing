@@ -217,6 +217,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['original loan is invalid', 'refiOriginal'],
   // `computeFromInput` (src/utils/loan/inputs.ts).
   ['optional boxes cannot be read', 'optionalUnreadable'],
+  ['loan amount could not be read', 'amountUnreadable'],
+  ['monthly payment could not be read', 'paymentUnreadable'],
   ['points cost is more than the fee', 'pointsAboveFee'],
   ['changing offer needs both of its boxes', 'rateChangeIncomplete'],
   // `computeLoan` and `computeFromInput`.
@@ -281,6 +283,9 @@ export const VALIDATION_REASONS = {
   hybridMode: 'rate_structure',
   rateChangeIncomplete: 'rate_structure',
   optionalUnreadable: 'optional_field',
+  // The same reasons as before #898, when these were "greater than zero".
+  amountUnreadable: 'missing_principal',
+  paymentUnreadable: 'missing_payment',
   pointsAboveFee: 'optional_field',
   lumpMonth: 'optional_field',
   refiMonth: 'other',

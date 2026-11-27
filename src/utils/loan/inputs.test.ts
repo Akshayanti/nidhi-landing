@@ -25,7 +25,7 @@ import {
   pointsCostAboveFee,
 } from './inputs.ts';
 import { canonicalLumpSums, decodeFromQueryString, makeDefaultVendor, type VendorInput } from './url.ts';
-import { INITIAL_FIXED_MONTHS, RATE_NEVER_CHANGES, pointsBreakEven } from './math.ts';
+import { AMOUNT_UNREADABLE, INITIAL_FIXED_MONTHS, PAYMENT_UNREADABLE, RATE_NEVER_CHANGES, pointsBreakEven } from './math.ts';
 
 /** Compose a fully-populated VendorInput by spreading the slot-0 default
  *  and overriding the fields we care about. Keeps each test focused. */
@@ -272,6 +272,17 @@ describe('buildAdvancedFields', () => {
 // ---------------------------------------------------------------------------
 
 describe('computeFromInput', () => {
+  it('says an amount or payment that is not a number could not be read, and an empty one is asked for (#898)', () => {
+    for (const bad of ['abc', '1,234\u066B5', 'NaN']) {
+      assert.equal(computeFromInput(vendor({ principal: bad }), 'EUR').error, AMOUNT_UNREADABLE, bad);
+      assert.equal(computeFromInput(vendor({ modeKind: 'payment', monthlyPayment: bad }), 'EUR').error, PAYMENT_UNREADABLE, bad);
+    }
+    assert.equal(computeFromInput(vendor({ principal: '' }), 'EUR').error, 'Enter a loan amount greater than zero.');
+    assert.equal(computeFromInput(vendor({ principal: '0' }), 'EUR').error, 'Enter a loan amount greater than zero.');
+    // A payment box that is not used (the term sets the payment) is not read.
+    assert.notEqual(computeFromInput(vendor({ modeKind: 'term', monthlyPayment: 'abc' }), 'EUR').error, PAYMENT_UNREADABLE);
+  });
+
   // Reference figures below were cross-checked with a Python reproduction
   // of the engine's integer-cent amortization to ensure the assertions
   // are exact, not approximate.

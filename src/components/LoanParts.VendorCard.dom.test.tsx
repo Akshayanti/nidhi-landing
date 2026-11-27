@@ -380,9 +380,10 @@ describe('the offer card: the required boxes', () => {
     assert.deepEqual(wiring(card, box(card, LABELS.term)), UNMARKED);
     fireEvent.change(box(card, LABELS.name), { target: { value: 'Bank' } });
     assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
-    // Typing in the box that holds the ? names the fault.
+    // Typing in the box that holds the ? names the fault: the offer here still
+    // holds what cannot be read, so it is said as that, not as "greater than zero" (#898).
     fireEvent.change(box(card, LABELS.principal), { target: { value: '' } });
-    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amount}`);
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amountUnreadable}`);
   });
 
   it('leaves a ? box the reader has typed in unmarked while another ? keeps the message', () => {

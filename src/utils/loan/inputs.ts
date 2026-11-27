@@ -3,9 +3,11 @@
  * Extracted from the component so it's testable without React or a DOM.
  */
 import {
+  AMOUNT_UNREADABLE,
   INITIAL_FIXED_MONTHS,
   LUMP_MONTH,
   OPTIONAL_UNREADABLE,
+  PAYMENT_UNREADABLE,
   computeLoan,
   emptyResult,
   toMinor,
@@ -223,6 +225,9 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   // a result that quietly left it out would look complete and be wrong.
   // A lump sum in a month no loan has is said in its own words, when that is
   // all that is wrong: any box that does not read at all is said first.
+  // A required amount that is not a number is said as that first (#898).
+  if (isUnreadable(v.principal)) return emptyResult(0, AMOUNT_UNREADABLE);
+  if (v.modeKind === 'payment' && isUnreadable(v.monthlyPayment)) return emptyResult(0, PAYMENT_UNREADABLE);
   const unreadable = unreadableOptionalFields(v);
   if (unreadable.length > 0) return emptyResult(0, unreadable.length === 1 && lumpMonthFault(v) ? LUMP_MONTH : OPTIONAL_UNREADABLE);
   if (missingRateChangeFields(v).length > 0) return emptyResult(0, RATE_CHANGE_INCOMPLETE);
