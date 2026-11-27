@@ -51,6 +51,7 @@ export const CHANGE_DAYS: ChangeDay[] = [
           cs: 'Nástroje už neukazují „−0\u00a0%“ u\u00a0čísla, které je příliš malé na to, aby se projevilo, a\u00a0inflační kalkulačka teď místo „vzrostly zhruba o\u00a00\u00a0%“ říká, že se ceny změnily o\u00a0méně než 0,5\u00a0%. Když se částky v\u00a0kalkulačce čistého jmění navzájem vyruší, je teď součet prostá nula, bez podílů přes 999\u00a0%.',
           mr: 'साधने आता अगदी लहान आकड्यासाठी “−0%” दाखवत नाहीत, आणि महागाई कॅल्क्युलेटर आता “सुमारे 0% वाढल्या” ऐवजी किमती 0.5%\u00a0पेक्षा कमी बदलल्या असे सांगतो. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये रकमा एकमेकांना रद्द करतात तेव्हा एकूण आता साधे शून्य दिसते, आणि 999%\u00a0पेक्षा जास्त हिस्से दिसत नाहीत.',
         },
+      },
       {
         id: 'inflation-small-amounts-two-figures',
         text: {
@@ -70,7 +71,6 @@ export const CHANGE_DAYS: ChangeDay[] = [
           cs: 'Když kalkulačka čistého jmění nemá kurzy, podíl měny výdajů se teď na její kartě, v\u00a0tabulce i\u00a0ve zprávě čte „Kurz chybí“, kde dřív stálo 0\u00a0%.',
           mr: 'निव्वळ संपत्ती कॅल्क्युलेटरकडे विनिमय दर नसतात तेव्हा खर्चाच्या चलनाचा हिस्सा आता त्याच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात “दर उपलब्ध नाही” असा दिसतो, जिथे आधी 0% दिसत होते.',
         },
-      },
       },
       {
         id: 'loan-changing-rate-needs-both-boxes',
