@@ -56,10 +56,11 @@ export interface CurrencyPosition {
   /** Arrived in a link from before links said whether a rate was known (#795). */
   rateUnknown?: boolean;
   /**
-   * Everything held plus everything owed in this currency, converted, before
-   * the two cancel: the size `netTotal` measures float error against (#824).
-   * Nothing for a currency with no rate, which is in no total. Absent on a
-   * position that arrived in a link, which carries the net amount only.
+   * Only for a currency whose rows had to be added as floats (#918):
+   * everything held plus everything owed in it, converted, before the two
+   * cancel, which is the size `netTotal` then measures float error against
+   * (#824). Absent where the rows added exactly, for a currency with no rate,
+   * and on a position that arrived in a link: the net amount is the measure.
    */
   grossFunctional?: number;
 }
@@ -131,6 +132,46 @@ export function parseAmount(s: string): number {
 }
 
 /**
+ * The digits of an amount `parseAmount` reads, before and after the point, as
+ * typed: "500,000.30" is 500000 and 3. Zeros that end the decimals say
+ * nothing and are left off, so the smallest unit typed is the last digit kept.
+ */
+function typedDigits(s: string): [whole: string, decimals: string] {
+  const [whole, decimals = ''] = s.replace(/[\s,]/g, '').split('.');
+  return [whole, decimals.replace(/0+$/, '')];
+}
+
+/** Powers of ten are exact floats up to this one, so dividing by one rounds once. */
+const EXACT_POWER_OF_TEN = 22;
+
+/**
+ * What one currency holds less what it owes, added without float error (#918)
+ * and so off by one rounding at most, or null where
+ * that cannot be done. Each is counted in whole units of the smallest decimal
+ * place typed in that currency (cents for "500000.30" and "499000.1",
+ * thousandths if one row says "0.125": what the reader typed is never
+ * rounded), and whole numbers add exactly while every sum stays a safe
+ * integer, under 2^53: about 9.007e13 for amounts in cents, 9.007e15 for whole
+ * units. Past that, or with decimals no float power of ten can carry, the
+ * caller adds the floats as before.
+ */
+function exactNet(amounts: readonly { value: string; owed: boolean }[]): number | null {
+  const digits = amounts.map(({ value }) => typedDigits(value));
+  const places = Math.max(...digits.map(([, decimals]) => decimals.length));
+  if (places > EXACT_POWER_OF_TEN) return null;
+  let held = 0;
+  let owed = 0;
+  digits.forEach(([whole, decimals], i) => {
+    const units = Number(whole + decimals.padEnd(places, '0'));
+    if (amounts[i].owed) owed += units;
+    else held += units;
+  });
+  // Nothing is below zero, so a sum that ends a safe integer passed through safe integers only.
+  if (!Number.isSafeInteger(held) || !Number.isSafeInteger(owed)) return null;
+  return (held - owed) / 10 ** places;
+}
+
+/**
  * Whether a row's amount box holds something that is not an amount: text
  * the parser cannot read ("€150,000", "150 000 EUR", "-150000", "1.5e5").
  * Such a row is left out of every total, so the tool has to say so; an
@@ -183,7 +224,7 @@ export function aggregate(
   const funcCode = functionalCurrency.toUpperCase();
 
   // Sum assets and liabilities per currency (in original currency units).
-  const byCurrency = new Map<string, { assets: number; liabilities: number }>();
+  const byCurrency = new Map<string, { assets: number; liabilities: number; typed: { value: string; owed: boolean }[] }>();
 
   for (const row of rows) {
     const code = row.currency.toUpperCase();
@@ -191,7 +232,8 @@ export function aggregate(
     if (!Number.isFinite(amount) || amount === 0) continue;
     if (!getCurrencyInfo(code)) continue;
 
-    const bucket = byCurrency.get(code) ?? { assets: 0, liabilities: 0 };
+    const bucket = byCurrency.get(code) ?? { assets: 0, liabilities: 0, typed: [] };
+    bucket.typed.push({ value: row.value, owed: row.type === 'liability' });
     if (row.type === 'liability') {
       bucket.liabilities += amount;
     } else {
@@ -210,8 +252,14 @@ export function aggregate(
 
   // Build positions in original currency.
   const positions: CurrencyPosition[] = [];
+  // A currency whose rows add exactly has a net amount that is the true one,
+  // rounded once. One that does not is the floats added, and says how large
+  // its rows were before they cancelled, for `netTotal` to measure by (#824).
+  const floatGross = new Map<string, number>();
   for (const [code, bucket] of byCurrency) {
-    const netAmountOriginal = bucket.assets - bucket.liabilities;
+    const exact = exactNet(bucket.typed);
+    if (exact === null) floatGross.set(code, bucket.assets + bucket.liabilities);
+    const netAmountOriginal = exact ?? bucket.assets - bucket.liabilities;
     const isFunctional = code === funcCode;
 
     positions.push({
@@ -224,11 +272,6 @@ export function aggregate(
       riskLabel: '',
     });
   }
-  /** What a currency holds and owes together, in its own units: the size of its rows before they cancel. */
-  const grossOriginal = (code: string) => {
-    const bucket = byCurrency.get(code)!;
-    return bucket.assets + bucket.liabilities;
-  };
 
   if (!rates) {
     // No conversion rates available; sort by absolute original amount.
@@ -249,7 +292,7 @@ export function aggregate(
   for (const pos of positions) {
     if (pos.code === funcCode) {
       pos.netAmountFunctional = pos.netAmountOriginal;
-      pos.grossFunctional = grossOriginal(pos.code);
+      if (floatGross.has(pos.code)) pos.grossFunctional = floatGross.get(pos.code);
     } else {
       const rate = rates[pos.code];
       if (rate === undefined || rate === 0) {
@@ -258,14 +301,13 @@ export function aggregate(
         // because the user shouldn't see a "total" that silently omits part
         // of their portfolio. The UI surfaces this via `hasRates === 'partial'`.
         pos.netAmountFunctional = 0;
-        pos.grossFunctional = 0;
         pos.rateUnavailable = true;
         missingRateCount++;
       } else {
         // rate is "1 funcCurrency = rate units of pos.code"
         // So pos.netAmountOriginal / rate = amount in funcCurrency
         pos.netAmountFunctional = pos.netAmountOriginal / rate;
-        pos.grossFunctional = grossOriginal(pos.code) / rate;
+        if (floatGross.has(pos.code)) pos.grossFunctional = floatGross.get(pos.code)! / rate;
       }
     }
   }
@@ -317,16 +359,25 @@ export function aggregate(
  * the tool refused as its own (#795). A fixed fraction of the gross would not
  * do: a trillionth of 1e15 is a real 1,000.
  *
- * The gross is everything held plus everything owed, converted, before any of
- * it cancels (`grossFunctional`), not the size of each currency's net
- * position: €500,000.30 held against €499,000.10 owed leaves a net of 1,000.20
- * that carries the float error of amounts of half a million, and measured
- * against 1,000.20 that error (1.2e-11) passed for a net worth, with shares of
- * 8.5e15% (#824). Amounts are floats of whole units (euros, not cents), so
- * each row is already off by up to half a step of its own size. The count
- * stays the number of currencies, never the number of rows: 500 rows at a
- * gross of 1e15 would then take a real 222 for zero. A position from a link
- * has only its net amount, rounded to the cent, and is measured by that.
+ * A currency's own rows are added as whole numbers of the smallest unit
+ * typed, which is exact (`exactNet`, #918), so its net amount is the true one
+ * rounded once, its rate is a float (one rounding of the rate published),
+ * converting rounds once more, and adding the currencies rounds once for each
+ * after the first: the total is off by about (currencies + 2) x epsilon / 2
+ * of the net positions' size at most, and the bound
+ * below, 2 x (currencies + 1) x epsilon of it, is never less. A real total is
+ * never inside it by accident of its rows: one currency alone is measured
+ * against its own net amount.
+ *
+ * Where the rows could only be added as floats (sums past 2^53 of the smallest
+ * unit typed), the net amount carries the error of amounts far larger than
+ * itself: €500,000.30 held against €499,000.10 owed left 1.2e-11 on a net of
+ * 1,000.20, and shares of 8.5e15% (#824). Such a position says how large its
+ * rows were before they cancelled (`grossFunctional`) and is measured by that.
+ * The count stays the number of currencies, never the number of rows: 500
+ * rows at a gross of 1e15 would then take a real 222 for zero. A position
+ * from a link has only its net amount, rounded to the cent, and is measured
+ * by that.
  */
 export function netTotal(positions: readonly Pick<CurrencyPosition, 'netAmountFunctional' | 'grossFunctional'>[]): number {
   let total = 0;
