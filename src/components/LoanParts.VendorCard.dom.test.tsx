@@ -905,8 +905,22 @@ describe('the offer card: the optional boxes', () => {
     assert.equal(several.card.querySelectorAll('.lc-warning').length, 1);
     assert.equal(several.card.querySelector('.lc-warning')?.textContent, 'This loan is paid off in month 12, before the lump sums from month 13 on would be paid, so they are not used.');
     cleanup();
-    // Used, even in part: nothing to say.
-    assert.ok(show(loan({ lumpSumsEncoded: '11:500' })).card.querySelector('.lc-warning') === null);
+    // Used whole: nothing to say.
+    assert.ok(show(loan({ lumpSumsEncoded: '11:100' })).card.querySelector('.lc-warning') === null);
+  });
+
+  it('says under the result that a lump sum larger than what is owed is used in part, before the note on any after it (issue 925)', () => {
+    // 1,200 at 0% over 12 months: 100 is owed after month 11.
+    const { card } = show(loan({ lumpSumsEncoded: '11:500' }));
+    assert.ok(errorOf(card) === null);
+    assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
+    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 11 is more than is owed then, so only part of it is used.']);
+    cleanup();
+    const both = show(loan({ lumpSumsEncoded: '20:50;11:500' }));
+    assert.deepEqual([...both.card.querySelectorAll('.lc-warning')].map((n) => n.textContent), [
+      'The lump sum in month 11 is more than is owed then, so only part of it is used.',
+      'This loan is paid off in month 11, before the lump sum in month 20 would be paid, so it is not used.',
+    ]);
   });
 
   it('hands back each box as a plain number under its own field, however the page writes numbers', () => {

@@ -15,7 +15,7 @@ import {
   loanComparisonHi,
   loanComparisonMr,
 } from '../../i18n/strings/tools/loanComparison.ts';
-import { RATE_NEVER_CHANGES, computeLoan, lumpsUnusedNote, type LoanInputs } from './math.ts';
+import { RATE_NEVER_CHANGES, computeLoan, lumpPartUsedNote, lumpsUnusedNote, type LoanInputs } from './math.ts';
 import { engineNote, resultNotes } from './notes.ts';
 
 const en = loanComparisonEn.island.engine.warnings;
@@ -49,6 +49,22 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
       assert.ok(shown.includes('130') && shown.includes('120') && !shown.includes('{'), `${lang}: ${shown}`);
       assert.ok(shown.indexOf('120') < shown.indexOf('130'), `${lang}: the payoff month is read first`);
     }
+  });
+
+  it('a lump sum larger than what is owed, with its month put back and no amount (issue 925)', () => {
+    const raw = lumpPartUsedNote(118);
+    assert.equal(engineNote(raw, en), 'The lump sum in month 118 is more than is owed then, so only part of it is used.');
+    for (const [lang, notes] of Object.entries(ALL)) {
+      const shown = engineNote(raw, notes);
+      assert.equal(shown, notes.lumpPartUsed.replace('{month}', '118'), lang);
+      assert.ok(shown.includes('118') && !shown.includes('{'), `${lang}: ${shown}`);
+      assert.deepEqual(shown.match(/\d+/g), ['118'], `${lang}: the month is the one number in it`);
+      if (lang !== 'en') assert.notEqual(shown, raw, lang);
+      assert.notEqual(notes.lumpPartUsed, notes.lumpUnused, lang);
+    }
+    // One that only looks like it comes through as written.
+    assert.equal(engineNote('The lump sum in month x is more than is owed then.', ALL.es), 'The lump sum in month x is more than is owed then.');
+    assert.equal(engineNote('The lump sum in month 12 is more than you planned.', ALL.es), 'The lump sum in month 12 is more than you planned.');
   });
 
   it('several lump sums after the payoff, named by the first of them', () => {
@@ -98,6 +114,15 @@ describe('the notes of a result, as the card lists them', () => {
       'This loan is paid off in month 12, before the lump sums from month 13 on would be paid, so they are not used.',
     ]);
     assert.deepEqual(resultNotes(r, ALL.cs), [ALL.cs.rateNeverChanges, ALL.cs.lumpsUnused.replace('{month}', '13').replace('{payoffMonth}', '12')]);
+  });
+
+  it('a lump sum used in part first, then the ones after it that are not used', () => {
+    const r = flat({ lumpSums: [{ month: 20, amountMinor: 5000 }, { month: 11, amountMinor: 50000 }] });
+    assert.deepEqual(resultNotes(r, en), [
+      'The lump sum in month 11 is more than is owed then, so only part of it is used.',
+      'This loan is paid off in month 11, before the lump sum in month 20 would be paid, so it is not used.',
+    ]);
+    assert.deepEqual(resultNotes(r, ALL.mr), [ALL.mr.lumpPartUsed.replace('{month}', '11'), ALL.mr.lumpUnused.replace('{month}', '20').replace('{payoffMonth}', '11')]);
   });
 
   it('none for an offer that was not worked out, whatever it still carries', () => {

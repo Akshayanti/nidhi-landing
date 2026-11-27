@@ -140,6 +140,17 @@ describe('loan printed report: the notes the card shows under a result (issues 9
     ]);
   });
 
+  it('carry the note on a lump sum larger than what is owed, before the note on the ones after it (issue 925)', () => {
+    // 1,200.00 at 12% over 3 months: 804.01 is owed after month 1.
+    const r = report([['Part', offer({ lumpSumsEncoded: '5:100;1:900' })]]);
+    assert.deepEqual(r.tables[0].note, [
+      island.delta.aprNote,
+      x.schedulesNote,
+      'Part: The lump sum in month 1 is more than is owed then, so only part of it is used.',
+      'Part: This loan is paid off in month 1, before the lump sum in month 5 would be paid, so it is not used.',
+    ]);
+  });
+
   it('stay under the comparison when a payment changes with its rate, and out of both tables', () => {
     const r = report([['Reset', RESET], ['Late', LATE]]);
     const [comparison, payments] = r.tables;

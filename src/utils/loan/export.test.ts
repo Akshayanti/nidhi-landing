@@ -98,6 +98,14 @@ describe('loan spreadsheet: the notes the card shows under a result (issues 914,
     for (const row of summary.rows) assert.equal(row.length, summary.widths.length);
   });
 
+  it('carries the note on a lump sum larger than what is owed, before the note on the ones after it (issue 925)', () => {
+    // 1,200.00 at 12% over 3 months: 804.01 is owed after month 1.
+    const summary = loanSheets(exportOf([['Part', offer({ lumpSumsEncoded: '1:900' })], ['Part and late', offer({ lumpSumsEncoded: '5:100;1:900' })]]))[1];
+    const part = 'The lump sum in month 1 is more than is owed then, so only part of it is used.';
+    assert.equal(summary.rows[1].at(-1), part);
+    assert.equal(summary.rows[2].at(-1), `${part} This loan is paid off in month 1, before the lump sum in month 5 would be paid, so it is not used.`);
+  });
+
   it('comes after the payment columns too, when a payment changes with its rate', () => {
     const summary = loanSheets(exportOf([['Reset', RESET], ['Late', LATE]]))[1];
     assert.deepEqual(summary.rows[0], [...summaryHead(...laterHead), ...head(x.notes)]);

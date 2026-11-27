@@ -326,6 +326,15 @@ export const RATE_NEVER_CHANGES = 'The rate does not change within this term, so
  * are named by it. A lump sum in the payoff month itself is one of them when
  * that month's payment already cleared the loan: it is paid after the payment.
  */
+/**
+ * A note, not an error: a lump sum larger than what is owed in its month pays
+ * what is owed and no more (#925). No amount is named: the reader typed one,
+ * and the total paid already shows what was used.
+ */
+export function lumpPartUsedNote(month: number): string {
+  return `The lump sum in month ${month} is more than is owed then, so only part of it is used.`;
+}
+
 export function lumpsUnusedNote(unused: { fromMonth: number; count: number }, payoffMonth: number): string {
   return unused.count === 1
     ? `The lump sum in month ${unused.fromMonth} comes after this loan is paid off in month ${payoffMonth}, so it is not used.`
@@ -469,6 +478,8 @@ export function buildScheduleAdvanced(spec: {
   unpaid?: { outcome: 'never' | 'limit'; covers?: 'equal' | 'less'; fromMonth?: number };
   /** Only for a loan that is paid off with lump sums left over: the first month whose lump sums were not paid, and how many there are from it on. */
   unusedLumps?: { fromMonth: number; count: number };
+  /** Only when a month's lump sums came to more than was owed then: that month. It is the loan's last. */
+  partLumpMonth?: number;
 } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
@@ -493,6 +504,7 @@ export function buildScheduleAdvanced(spec: {
   const lumpByMonth = new Map<number, number>();
   // How many lump sums each month holds, for the note on the ones never paid.
   const lumpCount = new Map<number, number>();
+  let partLumpMonth: number | undefined;
   for (const ls of lumpSums) {
     if (!Number.isFinite(ls.month) || ls.month < 1) continue;
     if (!Number.isFinite(ls.amountMinor) || ls.amountMinor <= 0) continue;
@@ -606,9 +618,9 @@ export function buildScheduleAdvanced(spec: {
     // is principal-only; it doesn't accrue interest the same month
     // because interest was already computed on the pre-payment balance.
     const lump = lumpByMonth.get(month) ?? 0;
-    // Stryker disable next-line LogicalOperator: equivalent. When the lump sum or the balance is 0, the amount applied is the smaller of the two, 0, so nothing changes.
     if (lump > 0 && balance > 0) {
       const applied = Math.min(lump, balance);
+      if (lump > balance) partLumpMonth = month;
       balance -= applied;
       payment += applied;
       principal += applied;
@@ -653,7 +665,7 @@ export function buildScheduleAdvanced(spec: {
   const unusedCount = [...lumpCount.values()].reduce((sum, n) => sum + n, 0);
   const unusedLumps = unusedCount > 0 ? { fromMonth: Math.min(...lumpCount.keys()), count: unusedCount } : undefined;
 
-  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}) };
+  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}), ...(partLumpMonth === undefined ? {} : { partLumpMonth }) };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -783,7 +795,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps, partLumpMonth } = buildScheduleAdvanced({
     principalMinor,
     rateSpec: scheduleSpec,
     totalMonths,
@@ -894,6 +906,8 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     // A fixed period that lasts the whole term: the later rate is never charged.
     warnings.push(RATE_NEVER_CHANGES);
   }
+  // In the order they happen: the lump sum that ended the loan, then the ones after it.
+  if (partLumpMonth !== undefined) warnings.push(lumpPartUsedNote(partLumpMonth));
   if (unusedLumps) warnings.push(lumpsUnusedNote(unusedLumps, schedule.length));
 
   return {

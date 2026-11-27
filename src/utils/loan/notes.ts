@@ -18,6 +18,9 @@ import type { LoanResult } from './math.ts';
 
 type Notes = Dict['tools']['loanComparison']['island']['engine']['warnings'];
 
+/** The month of a lump sum that was more than was owed. */
+const LUMP_PART = /lump sum in month (\d+) is more than is owed/;
+
 /** The two months of a lump-sum note: the first lump sum left unused, and the payoff. */
 const LUMP_MONTHS = /month (\d+) (on )?comes? after this loan is paid off in month (\d+)/;
 
@@ -28,6 +31,8 @@ export function engineNote(raw: string, notes: Notes): string {
   }
   if (/recast payment barely covers/i.test(raw)) return notes.subsequentRate;
   if (/rate does not change within this term/i.test(raw)) return notes.rateNeverChanges;
+  const part = LUMP_PART.exec(raw);
+  if (part) return notes.lumpPartUsed.replace('{month}', part[1]);
   const lump = LUMP_MONTHS.exec(raw);
   if (lump) return (lump[2] ? notes.lumpsUnused : notes.lumpUnused).replace('{month}', lump[1]).replace('{payoffMonth}', lump[3]);
   return raw;

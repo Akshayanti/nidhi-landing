@@ -30,6 +30,7 @@ import {
   INITIAL_FIXED_MONTHS,
   OPTIONAL_UNREADABLE,
   RATE_NEVER_CHANGES,
+  lumpPartUsedNote,
   lumpsUnusedNote,
   computeApr,
   computeLoan,
@@ -64,6 +65,9 @@ const HAND_ROWS = [
 ];
 const HAND: LoanInputs = { principalMinor: 100000, annualRate: 0.12 };
 const hand = (more: Partial<LoanInputs> = {}, mode: LoanMode = term(3)) => computeLoan({ ...HAND, ...more }, mode);
+
+/** After month 11 of the loan below 100.00 is owed: a lump sum of 500.00 that month is used in part. */
+const PART_11 = lumpPartUsedNote(11);
 
 /** 1,200.00 at 0% over 12 months: 100.00 a month. */
 const FLAT: LoanInputs = { principalMinor: 120000, annualRate: 0 };
@@ -193,6 +197,61 @@ describe('the month a rate changes in is a whole month, from the first (issue 91
   });
 });
 
+describe('a lump sum larger than what is owed is said: only what is owed is paid (issue 925)', () => {
+  it('names the month, and no amount', () => {
+    assert.equal(PART_11, 'The lump sum in month 11 is more than is owed then, so only part of it is used.');
+    assert.equal(lumpPartUsedNote(7), 'The lump sum in month 7 is more than is owed then, so only part of it is used.');
+  });
+
+  it('one cent more than is owed is more; exactly what is owed is all used, and gets no note', () => {
+    // 100.00 a month leaves 600.00 after month 6.
+    const exact = flat({ lumpSums: [{ month: 6, amountMinor: 60000 }] });
+    assert.equal(exact.months, 6);
+    assert.deepEqual(exact.warnings, []);
+    const more = flat({ lumpSums: [{ month: 6, amountMinor: 60001 }] });
+    assert.equal(more.months, 6);
+    assert.equal(more.totalPaidMinor, 120000);
+    assert.deepEqual(more.schedule, exact.schedule);
+    assert.deepEqual(more.warnings, [lumpPartUsedNote(6)]);
+    // One cent less is all used too, and the loan runs a month longer.
+    const less = flat({ lumpSums: [{ month: 6, amountMinor: 59999 }] });
+    assert.equal(less.months, 7);
+    assert.deepEqual(less.warnings, []);
+  });
+
+  it('counts the lump sums of one month together, and says it once', () => {
+    // 300.00 and 400.00 in month 6 are 700.00 against the 600.00 owed; neither alone is more.
+    const r = flat({ lumpSums: [{ month: 6, amountMinor: 30000 }, { month: 6, amountMinor: 40000 }] });
+    assert.equal(r.months, 6);
+    assert.deepEqual(r.warnings, [lumpPartUsedNote(6)]);
+  });
+
+  it('comes before the note on the lump sums after it, which are not used at all', () => {
+    const r = flat({ lumpSums: [{ month: 14, amountMinor: 5000 }, { month: 11, amountMinor: 50000 }] });
+    assert.deepEqual(r.warnings, [PART_11, 'The lump sum in month 14 comes after this loan is paid off in month 11, so it is not used.']);
+    const several = flat({ lumpSums: [{ month: 11, amountMinor: 50000 }, { month: 12, amountMinor: 1 }, { month: 20, amountMinor: 1 }] });
+    assert.deepEqual(several.warnings, [PART_11, 'The lump sums from month 12 on come after this loan is paid off in month 11, so they are not used.']);
+  });
+
+  it('comes after the note on a rate that never changes', () => {
+    // 1,200.00 at 12% over 3 months: 804.01 is owed after month 1.
+    const r = hand({ rateSpec: changing(undefined, 3), lumpSums: [{ month: 1, amountMinor: 200000 }, { month: 9, amountMinor: 5000 }] });
+    assert.equal(r.months, 1);
+    assert.deepEqual(r.warnings, [RATE_NEVER_CHANGES, lumpPartUsedNote(1), 'The lump sum in month 9 comes after this loan is paid off in month 1, so it is not used.']);
+  });
+
+  it('is said on a loan set by its payment too', () => {
+    // 1,200.00 at 0% with 200.00 a month: 800.00 is owed after month 2.
+    const r = flat({ lumpSums: [{ month: 2, amountMinor: 80001 }] }, byPayment(20000));
+    assert.equal(r.months, 2);
+    assert.deepEqual(r.warnings, [lumpPartUsedNote(2)]);
+  });
+
+  it('is not said of a lump sum in the payoff month that the payment left nothing for: that one is not used at all', () => {
+    assert.deepEqual(flat({ lumpSums: [{ month: 12, amountMinor: 5000 }] }).warnings, ['The lump sum in month 12 comes after this loan is paid off in month 12, so it is not used.']);
+  });
+});
+
 describe('a lump sum dated after the loan is paid off is said, not dropped in silence (issue 915)', () => {
   const NOTE_13 = 'The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.';
 
@@ -214,12 +273,12 @@ describe('a lump sum dated after the loan is paid off is said, not dropped in si
     assert.deepEqual(r.warnings, ['The lump sum in month 8 comes after this loan is paid off in month 6, so it is not used.']);
   });
 
-  it('a lump sum used in part is used: no note, and only what was owed is paid', () => {
+  it('a lump sum used in part is not one of the unused: only what was owed is paid, and its own note says so', () => {
     // After month 11 100.00 is owed; of a lump sum of 500.00 that month, 100.00 is paid.
     const r = flat({ lumpSums: [{ month: 11, amountMinor: 50000 }] });
     assert.equal(r.months, 11);
     assert.equal(r.totalPaidMinor, 120000);
-    assert.deepEqual(r.warnings, []);
+    assert.deepEqual(r.warnings, [PART_11]);
   });
 
   it('a lump sum in the payoff month, when that month\'s payment already cleared the loan, is not used either', () => {
