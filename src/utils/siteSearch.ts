@@ -36,6 +36,9 @@ const STOP = new Set([
   'मी', 'माझा', 'माझी', 'माझे', 'काय', 'कसे', 'कसा', 'कशी', 'आहे', 'आहेत', 'चा', 'ची', 'चे', 'ला', 'मध्ये', 'आणि', 'किंवा', 'हे', 'पैसे', 'पैशांचा', 'माझ्या', 'आपल्या', 'तुमच्या', 'करू', 'करायचे',
 ]);
 
+/** Stop words that are a topic when nothing else is typed: "money" in each language. */
+const TOPIC_ALONE = new Set(['money', 'dinero', 'penize', 'पैसे', 'पैसों', 'पैशांचा']);
+
 /**
  * Everyday words → words the lessons use. One direction only: a word on the
  * left also matches the words on its right.
@@ -96,7 +99,11 @@ function stem(w: string): string {
 
 /** The query's meaningful words, stemmed and without repeats. */
 export function queryWords(query: string): string[] {
-  return [...new Set(words(query).filter((w) => !STOP.has(w)).map(stem))];
+  const all = words(query);
+  const meant = all.filter((w) => !STOP.has(w));
+  // "money" is filler beside another word ("save money"), but on its own it
+  // is the topic, likely a newcomer's first search, so it is searched (#778).
+  return [...new Set((meant.length ? meant : all.filter((w) => TOPIC_ALONE.has(w))).map(stem))];
 }
 
 function matchesWord(haystack: string[], phraseText: string, needle: string): boolean {

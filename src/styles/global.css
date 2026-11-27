@@ -1473,8 +1473,8 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-subtitle { font: 400 15px var(--font-heading); fill: var(--color-text-secondary); }
 .prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
-/* The two smallest labels are 13 units: a figure drawn 880 wide shows at about
-   0.78 of its size in the lesson column, and 13 keeps them at 10px or more. */
+/* The two smallest labels are 13 units. A figure is never drawn below the
+   minimum width set further down, so they stay at 12px or more (#813). */
 .prose figure svg .fig-tick { font: 400 13px var(--font-heading); fill: var(--color-text-muted); }
 .prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--fig-on-fill); }
 .prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--fig-on-fill); }
@@ -1508,9 +1508,8 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
 
 /* Mobile: charts keep their desktop layout at a readable size and scroll
-   sideways. Each figure is the scroller; its chart gets a minimum width that
-   keeps the smallest label (11 to 12 units) at about 10px on screen, so
-   min-width is about 0.92 of the viewBox width plus padding. The swipe hint
+   sideways. Each figure is the scroller; its chart's minimum width is set
+   below, for every screen width. The swipe hint
    and the caption stay pinned to the left edge while the chart scrolls. */
 @media (width < 640px) {
   .prose figure:has(> svg) {
@@ -1519,10 +1518,6 @@ details[open] > .disclosure::after,
     -webkit-overflow-scrolling: touch;
   }
   .prose figure svg { padding: var(--space-3) var(--space-1); max-width: none; width: 100%; }
-  .prose figure svg[viewBox^="0 0 600 "] { min-width: 564px; }
-  .prose figure svg[viewBox^="0 0 720 "] { min-width: 676px; }
-  .prose figure svg[viewBox^="0 0 800 "] { min-width: 748px; }
-  .prose figure svg[viewBox^="0 0 880 "] { min-width: 822px; }
   .prose figure:has(> svg)::before {
     content: "Swipe to see the whole chart \2192";
     position: sticky;
@@ -1542,6 +1537,27 @@ details[open] > .disclosure::after,
     margin-left: 0;
     text-align: left;
   }
+}
+
+/* Every width (#813): a figure is drawn at least as wide as keeps its
+   smallest label (13 units) at 0.8 of the reader's text size, so it grows
+   with that size. Where the screen has room, a figure wider than the lesson
+   column reaches past it on both sides, never past the screen's edge less a
+   margin; where it has not, the figure scrolls sideways (the phone rule
+   above, and here from 640px). */
+.prose figure:has(> svg[viewBox^="0 0 600 "]) { --fig-vbw: 600; }
+.prose figure:has(> svg[viewBox^="0 0 720 "]) { --fig-vbw: 720; }
+.prose figure:has(> svg[viewBox^="0 0 800 "]) { --fig-vbw: 800; }
+.prose figure:has(> svg[viewBox^="0 0 880 "]) { --fig-vbw: 880; }
+.prose figure:has(> svg) > svg { min-width: calc(var(--fig-vbw, 0) * 0.8rem / 13); }
+@media (width >= 640px) {
+  .prose figure:has(> svg) {
+    --fig-out: max(0px, min(calc((var(--fig-vbw, 0) * 0.8rem / 13 - 100%) / 2), calc((100vw - 100%) / 2 - var(--space-4))));
+    margin-inline: calc(-1 * var(--fig-out));
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .prose figure:has(> svg) > figcaption { max-width: min(92%, 42rem); }
 }
 
 /* Regulatory notice boxes */

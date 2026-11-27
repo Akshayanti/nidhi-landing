@@ -21,6 +21,9 @@ export interface ResultWords {
   lessonOne: string;
   lessonFew: string;
   lessonMany: string;
+  guideOne: string;
+  guideFew: string;
+  guideMany: string;
 }
 
 export interface ResultView<M> {
@@ -45,12 +48,14 @@ export function resultView<M extends { kind: 'lesson' | 'guide' }>(
   if (!trimmed) return { shown: [], countLine: '', none: false, more: 0 };
   const shown = showAll ? [...matches] : matches.slice(0, RESULT_LIMIT);
   const lessons = matches.filter((m) => m.kind === 'lesson').length;
-  // Only guides matched: the guides speak for themselves, so no count.
-  const countLine = matches.length === 0
-    ? words.noMatches
-    : lessons === 0
-      ? ''
-      : `${lessons} ${plural(lang, lessons, words.lessonOne, words.lessonFew, words.lessonMany)}`;
+  const guides = matches.length - lessons;
+  // Each kind is counted, so the line agrees with "show all" and a match of
+  // guides alone is said too (#778).
+  const parts = [
+    lessons ? `${lessons} ${plural(lang, lessons, words.lessonOne, words.lessonFew, words.lessonMany)}` : '',
+    guides ? `${guides} ${plural(lang, guides, words.guideOne, words.guideFew, words.guideMany)}` : '',
+  ].filter(Boolean);
+  const countLine = matches.length === 0 ? words.noMatches : parts.join(', ');
   return {
     shown,
     countLine,
