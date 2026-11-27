@@ -173,6 +173,7 @@ function aboutText(v: number, code: string, strings: Strings, amountLocale: stri
   if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code, false, amountLocale) });
   const rounded = roundAbout(v);
   if (v > 0 && rounded < DISPLAY_FLOOR) return t(strings.results.lessThan, { amount: smallAmount(DISPLAY_FLOOR, code, amountLocale) });
+  // Stryker disable next-line EqualityOperator: equivalent. At exactly 10 both formats write the same whole amount.
   return t(strings.results.about, { amount: rounded < 10 ? smallAmount(rounded, code, amountLocale) : formatAmount(rounded, code, false, amountLocale) });
 }
 

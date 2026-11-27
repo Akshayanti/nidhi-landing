@@ -111,6 +111,7 @@ export function round2(v: number): number {
 export function roundAbout(v: number): number {
   if (!Number.isFinite(v)) return v;
   const abs = Math.abs(v);
+  // Stryker disable next-line EqualityOperator: equivalent. At exactly 10 both branches give 10.
   if (abs < 10) return Number(v.toPrecision(2));
   if (abs < 100) return Math.round(v);
   const mag = Math.pow(10, Math.floor(Math.log10(abs)) - 2);
