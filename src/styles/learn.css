@@ -150,10 +150,21 @@
 
 .lp-cardBadges {
   position: absolute;
-  top: -10px;
+  top: 0;
   left: var(--space-3);
   display: flex;
   gap: 6px;
+  /* Centred on the card's top edge, whatever the text size (#839). */
+  transform: translateY(-50%);
+  font-size: var(--text-caption);
+  line-height: 1.3;
+}
+
+/* The half of a badge inside the card is kept clear of the title: half its
+   height (13px text at a line height of 1.3, so 0.53rem, and 1px of
+   padding) and a gap, at any text size (#839). */
+.lp-nodeCard:has(> .lp-cardBadges) {
+  padding-top: max(var(--space-4), calc(0.53rem + 1px + var(--space-2)));
 }
 
 /* Room under the badge, in em so it grows with the badge's text when a reader

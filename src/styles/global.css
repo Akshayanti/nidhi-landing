@@ -1383,6 +1383,15 @@ details[open] > .disclosure::after,
   margin: 0;
 }
 
+/* A cell's words keep the cell at least as wide as the longest of them, so
+   "3%" or "(…4821)" never splits where it would fit; a table wider than its
+   box scrolls in it instead (#814). The body's `anywhere` would let a cell
+   shrink below its words. A word longer than the whole box still breaks. */
+.prose th,
+.prose td {
+  overflow-wrap: break-word;
+}
+
 .prose th {
   text-align: left;
   font-family: var(--font-heading);
