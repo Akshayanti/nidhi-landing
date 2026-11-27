@@ -20,7 +20,7 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import { clock } from './windowClock.ts';
 import { loanComparisonEn } from '../src/i18n/strings/tools/loanComparison.ts';
 import { exportEn } from '../src/i18n/strings/tools/export.ts';
-import { SHARED_STATE_GLOBAL, encodeToQueryString, makeAddedVendor, defaultGlobalState, type GlobalState, type VendorInput } from '../src/utils/loan/url.ts';
+import { SHARED_STATE_GLOBAL, encodeSharedState, encodeToQueryString, makeAddedVendor, defaultGlobalState, type GlobalState, type VendorInput } from '../src/utils/loan/url.ts';
 import LoanCompare from '../src/components/LoanCompare.tsx';
 
 // This tool's own strings, from the modules that define them: not the whole catalog,
@@ -45,8 +45,12 @@ export const fill = (pattern: string, values: Record<string, string | number>) =
 /** An offer as the page's "Add" makes it for slot `i`, with `patch` typed over it. */
 export const offer = (i: number, patch: Partial<VendorInput> = {}): VendorInput => ({ ...makeAddedVendor(i), ...patch });
 
-/** A share link's state (what follows the `#`) for these offers and settings. */
+/** A share link's state (what follows the `#`) for these offers and settings, as the tool writes it now: with its check (#820). */
 export const link = (vendors: VendorInput[], global: Partial<GlobalState> = {}) =>
+  encodeSharedState(vendors, { ...defaultGlobalState('EUR'), ...global });
+
+/** The same state as a link written before the check carried it: no `f`, no `z`. */
+export const oldLink = (vendors: VendorInput[], global: Partial<GlobalState> = {}) =>
   encodeToQueryString(vendors, { ...defaultGlobalState('EUR'), ...global });
 
 /** The address a copied link has, for this state. */

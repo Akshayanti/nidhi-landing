@@ -25,14 +25,15 @@ import {
   MIN_VENDORS,
   VENDOR_LABELS,
   canonicalLumpSums,
-  decodeFromQueryString,
   displayLumpSums,
   defaultGlobalState,
-  encodeToQueryString,
+  decodeFromQueryString,
+  encodeSharedState,
   isPristineState,
   makeAddedVendor,
   makeDefaultVendor,
   publishableState,
+  readSharedState,
   SHARED_STATE_GLOBAL,
   type AnalysisTab,
   type GlobalState,
@@ -1041,6 +1042,14 @@ export default function LoanCompare({
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
   const [hydrated, setHydrated] = useState(false);
+  // A link written with a check that did not arrive whole (#820): its state as
+  // it arrived, which is shown to nobody and used for nothing. While it is
+  // set the page shows one notice in place of the tool: no offer, example or
+  // result, and nothing to copy or save. `null` on every other visit.
+  const [damagedLink, setDamagedLink] = useState<string | null>(null);
+  // Where the keyboard goes when the notice gives way to the tool.
+  const exampleRef = useRef<HTMLParagraphElement>(null);
+  const startedNew = useRef(false);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   // The browser would not copy: the bar asks the reader to copy the address by hand.
@@ -1079,8 +1088,15 @@ export default function LoanCompare({
     // Stryker disable next-line StringLiteral: equivalent. Effects run only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
-    const shared = typeof raw === 'string' ? raw : '';
-    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(shared);
+    const arrived = typeof raw === 'string' ? raw : '';
+    const read = readSharedState(arrived);
+    // A link that did not arrive whole: nothing of it is loaded, and no event
+    // is sent, since no comparison was opened. Behind the notice the tool is
+    // what it is with no link at all, unseen until the reader asks for a new
+    // comparison.
+    if (!read) setDamagedLink(arrived);
+    const shared = read ? arrived : '';
+    const { vendors: decoded, global: decodedGlobal } = read ?? decodeFromQueryString('');
     setVendors(decoded);
     // No shared state: start in this page's currency. A shared state keeps
     // the codec's reading (no `c` means EUR), so links mean the same anywhere.
@@ -1118,9 +1134,25 @@ export default function LoanCompare({
   useEffect(() => {
     if (!hydrated) return;
     // Untouched publishes '' so the other language opens with its own
-    // starting currency; anything changed carries as encoded.
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(vendors, globalState, defaultCurrency));
-  }, [hydrated, vendors, globalState, defaultCurrency]);
+    // starting currency; anything changed carries as encoded. A link that did
+    // not arrive whole is carried as it arrived, so the other language shows
+    // the same notice and never a link made valid again from the examples.
+    publishToolState(SHARED_STATE_GLOBAL, damagedLink ?? publishableState(vendors, globalState, defaultCurrency));
+  }, [hydrated, damagedLink, vendors, globalState, defaultCurrency]);
+
+  // "Start a new comparison": the notice goes and the tool opens as it does
+  // with no link at all. The button goes with the notice, so the keyboard is
+  // put on the line that says what is now on the page, the example offers.
+  const startNew = () => {
+    startedNew.current = true;
+    setDamagedLink(null);
+  };
+  useEffect(() => {
+    // Only after the button: a page that opens with the tool leaves the keyboard where it is.
+    if (!startedNew.current) return;
+    // Stryker disable next-line OptionalChaining: equivalent. The notice has just given way to the untouched starting offers, which always show the example line.
+    exampleRef.current?.focus();
+  }, [damagedLink]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -1249,7 +1281,7 @@ export default function LoanCompare({
     if (typeof window === 'undefined') return;
     if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
-    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
+    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeSharedState(vendors, globalState)}`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
@@ -1311,6 +1343,16 @@ export default function LoanCompare({
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
+      {damagedLink !== null ? (
+        // The whole tool gives way to this (#820). An alert: it takes the place
+        // of what the link was opened for, and is said once, as it appears.
+        // The button has no click label: it sends no event of its own.
+        <div className="lc-linkDamaged">
+          <p className="tool-resultReason" role="alert">{strings.link.damaged}</p>
+          <button type="button" className="btn btn--outline" onClick={startNew}>{strings.link.startNew}</button>
+        </div>
+      ) : (
+      <>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
@@ -1425,7 +1467,7 @@ export default function LoanCompare({
       </p>
 
       {/* The starting offers are an example until one of them is changed. */}
-      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
+      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example" ref={exampleRef} tabIndex={-1}>{strings.example}</p>}
 
       <h2 className="lc-srOnly" id={`${aprDocsId}-h`}>{strings.cardsHeading}</h2>
       {/* Why the APR here can read lower than the one on a lender's document. */}
@@ -1550,6 +1592,8 @@ export default function LoanCompare({
       </details>
 
       {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />}
+      </>
+      )}
     </div>
     </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>

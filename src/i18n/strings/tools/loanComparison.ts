@@ -316,6 +316,11 @@ export const loanComparisonEn = {
     /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
     cardsHeading: 'Loan offers',
     example: 'Example offers. Replace the figures with your own.',
+    /** In place of the tool, when a link written with a check did not arrive whole (#820): one sentence, one button. */
+    link: {
+      damaged: 'This comparison link is incomplete or has changed. Ask the sender for the full link, or start a new comparison.',
+      startNew: 'Start a new comparison',
+    },
     phoneTabs: {
       groupAria: 'Offer to show',
       tabName: 'Offer {label}',
@@ -1018,6 +1023,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     cardsHeading: 'लोन ऑफ़र',
     example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
+    link: {
+      damaged: 'तुलना का यह लिंक अधूरा है या बदल गया है। भेजने वाले से पूरा लिंक माँगें, या नई तुलना शुरू करें।',
+      startNew: 'नई तुलना शुरू करें',
+    },
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -1657,6 +1666,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Ofertas de préstamo',
     example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
+    link: {
+      damaged: 'Este enlace de comparación está incompleto o ha cambiado. Pide el enlace completo a quien te lo envió, o empieza una comparación nueva.',
+      startNew: 'Empezar una comparación nueva',
+    },
     phoneTabs: {
       groupAria: 'Oferta que se muestra',
       tabName: 'Oferta {label}',
@@ -2295,6 +2308,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Nabídky úvěrů',
     example: 'Ukázkové nabídky. Nahraďte čísla svými.',
+    link: {
+      damaged: 'Tento odkaz na srovnání je neúplný nebo se změnil. Požádejte odesílatele o\u00a0celý odkaz, nebo začněte nové srovnání.',
+      startNew: 'Začít nové srovnání',
+    },
     phoneTabs: {
       groupAria: 'Zobrazená nabídka',
       tabName: 'Nabídka {label}',
@@ -2915,6 +2932,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     cardsHeading: 'कर्जाच्या ऑफर',
     example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
+    link: {
+      damaged: 'तुलनेची ही लिंक अपूर्ण आहे किंवा बदलली आहे. पाठवणाऱ्याकडून पूर्ण लिंक मागवा, किंवा नवीन तुलना सुरू करा.',
+      startNew: 'नवीन तुलना सुरू करा',
+    },
     phoneTabs: {
       groupAria: 'दाखवायची ऑफर',
       tabName: 'ऑफर {label}',

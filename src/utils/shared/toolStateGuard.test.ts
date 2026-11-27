@@ -18,6 +18,7 @@ import * as netWorth from '../multi-currency-net-worth/url.ts';
 import * as monteCarlo from '../monte-carlo/url.ts';
 import * as inflation from '../inflation/url.ts';
 import * as investOrPayOff from '../invest-or-pay-off/url.ts';
+import { openState } from './checkedLink.ts';
 
 const SOURCE = readFileSync(join(import.meta.dirname, 'toolStateGuard.js'), 'utf8');
 const COMPONENT = readFileSync(join(import.meta.dirname, '../../components/ToolStateGuard.astro'), 'utf8');
@@ -62,6 +63,37 @@ function visit(path: string, keyPattern: string, globalName = GLOBAL): Visit {
 
 const PATTERN = loan.STATE_KEY_PATTERN;
 const PAGE = '/hi/free/loan-comparison/';
+
+describe('toolStateGuard: a link with a check on it (#820)', () => {
+  const offers = [{ ...loan.makeDefaultVendor(0), name: 'North Bank & Co', principal: '73191' }, loan.makeDefaultVendor(1)];
+  const sealed = loan.encodeSharedState(offers, { ...loan.defaultGlobalState('INR'), horizonMonths: '84' });
+
+  it('hands the tool a state whose check still holds, from after the # and from an old-style ?', () => {
+    for (const address of [`${PAGE}?utm_source=share#${sealed}`, `${PAGE}?${sealed}&utm_source=share`, `${PAGE}?utm_source=share&${sealed}`]) {
+      const v = visit(address, PATTERN);
+      assert.equal(v.address, `${PAGE}?utm_source=share`, address);
+      assert.equal(openState(v.state ?? '', loan.LINK_FORMAT), 'whole', address);
+      assert.deepEqual(loan.readSharedState(v.state ?? ''), loan.decodeFromQueryString(loan.encodeToQueryString(offers, { ...loan.defaultGlobalState('INR'), horizonMonths: '84' })), address);
+    }
+  });
+
+  it('takes both keys of the envelope out of the address', () => {
+    const v = visit(`${PAGE}?utm_source=share#${sealed}`, PATTERN);
+    assert.doesNotMatch(v.address, /[?&#](f|z)=/);
+    assert.match(v.state ?? '', /^f=2&.*&z=[0-9a-f]{8}$/);
+  });
+
+  it('hands over a link that was cut as it arrived, pairs in order and doubled keys kept, so the tool can refuse it', () => {
+    const cut = sealed.slice(0, sealed.indexOf('v2=') + 10);
+    assert.equal(loan.readSharedState(visit(`${PAGE}#${cut}`, PATTERN).state ?? ''), null);
+    // A pair said twice stays twice, and a pair moved stays moved.
+    assert.equal(visit(`${PAGE}#f=2&n=3&n=3&z=00000000`, PATTERN).state, 'f=2&n=3&n=3&z=00000000');
+    assert.equal(visit(`${PAGE}#n=3&z=00000000&f=2`, PATTERN).state, 'n=3&z=00000000&f=2');
+    // Something a messaging app added after the link is not state, and does not break the check.
+    const tagged = visit(`${PAGE}#${sealed}&fbclid=abc`, PATTERN);
+    assert.equal(openState(tagged.state ?? '', loan.LINK_FORMAT), 'whole');
+  });
+});
 
 describe('toolStateGuard: moving state out of the address', () => {
   it('moves # state into the window property and clears the address', () => {

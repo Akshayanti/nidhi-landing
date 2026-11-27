@@ -41,12 +41,23 @@
  *   - `h=120`     horizon months
  *   - `rv` `ra` `rr` `rt` `rf` `rl`: refinance scenario fields
  *
+ * The envelope (#820)
+ * -------------------
+ * Every link the tool writes is the state above inside an envelope,
+ * `f=2&<state>&z=<check>` (`src/utils/shared/checkedLink.ts`), so a link that
+ * arrives cut short or altered is refused whole and never filled with the
+ * example values. A state with no `f` is a link written before the envelope
+ * and is read exactly as it always was. Accepted limit: a link cut so that no
+ * `f` survives, and any older link that was cut, cannot be told from an older
+ * link that arrived whole, and is read as one.
+ *
  * Hard cutover: the previous `cur=`, `v{i}_principal=`-style keys are NOT
  * decoded. The tool is new (no shared URLs in the wild) and v5.2 of the
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
 import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
+import { CHECK_KEY, FORMAT_KEY, openState, sealState } from '../shared/checkedLink.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
 import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
@@ -60,8 +71,11 @@ import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
  */
 export const SHARED_STATE_GLOBAL = '__nidhiLoanCompareShared';
 
-/** Matches one state parameter name, for ToolStateGuard. */
-export const STATE_KEY_PATTERN = 'c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?';
+/** Matches one state parameter name, for ToolStateGuard: the envelope's two keys, then the state's own. */
+export const STATE_KEY_PATTERN = `${FORMAT_KEY}|${CHECK_KEY}|c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?`;
+
+/** The format of the links the tool writes now: the state inside an envelope with a check (#820). */
+export const LINK_FORMAT = '2';
 
 export type ModeKind = 'term' | 'payment';
 export type RateKind = 'fixed' | 'hybrid';
@@ -507,12 +521,21 @@ export function isPristineState(vendors: VendorInput[], global: GlobalState, pag
 }
 
 /**
+ * What follows the `#` of a link the tool writes: the state inside the
+ * envelope, whose check lets the page that opens it tell that it arrived
+ * whole (`readSharedState`).
+ */
+export function encodeSharedState(vendors: VendorInput[], global: GlobalState): string {
+  return sealState(encodeToQueryString(vendors, global), LINK_FORMAT);
+}
+
+/**
  * What the tool publishes for the language switch: nothing while it is
  * untouched, so the other page opens with its own starting currency, and the
- * encoded state (the share-link encoding, unchanged) once anything changed.
+ * share link's own state once anything changed.
  */
 export function publishableState(vendors: VendorInput[], global: GlobalState, pageCurrency: string): string {
-  return isPristineState(vendors, global, pageCurrency) ? '' : encodeToQueryString(vendors, global);
+  return isPristineState(vendors, global, pageCurrency) ? '' : encodeSharedState(vendors, global);
 }
 
 const KNOWN_CURRENCIES: ReadonlySet<string> = new Set(CURRENCIES.map((c) => c.code));
@@ -603,4 +626,20 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   };
 
   return { vendors, currency, global };
+}
+
+/**
+ * A state that arrived (a share link, the language switch), read: the offers
+ * and settings it carries, or `null` for a link written with the envelope
+ * that did not arrive whole. Nothing of such a link is used: the page shows
+ * neither its values nor the examples in their place (#820).
+ *
+ * A state with no `f` key was written before the envelope and is read as it
+ * always was. One cut so that no `f` survives looks the same and is read the
+ * same way: that limit is accepted. The decoder knows neither `f` nor `z`,
+ * so a whole link reads as the state inside it; with every other value left
+ * out, that is each offer's slot template, which is what the writer left out.
+ */
+export function readSharedState(state: string): DecodeResult | null {
+  return openState(state, LINK_FORMAT) === 'damaged' ? null : decodeFromQueryString(state);
 }

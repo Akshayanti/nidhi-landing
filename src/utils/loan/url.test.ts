@@ -30,6 +30,9 @@ import {
   makeDefaultVendor,
   parseLumpSums,
   publishableState,
+  encodeSharedState,
+  readSharedState,
+  LINK_FORMAT,
   type GlobalState,
   type VendorInput,
   canonicalLumpSums,
@@ -37,6 +40,7 @@ import {
   STATE_KEY_PATTERN,
   SHARED_STATE_GLOBAL,
 } from './url.ts';
+import { checkOf, openState, pairsOf, sealState } from '../shared/checkedLink.ts';
 
 /** Test helper: build a GlobalState that differs from default only in
  *  the listed fields. Keeps the test cases focused on what they're
@@ -809,8 +813,85 @@ describe('page starting currency and the language switch', () => {
     const typed = fresh();
     typed[0] = { ...typed[0], principal: '123456' };
     const inr = publishableState(typed, defaultGlobalState('INR'), 'INR');
-    assert.equal(inr, encodeToQueryString(typed, defaultGlobalState('INR')));
+    // The share link's own state: the codec's, inside the envelope with its check (#820).
+    assert.equal(inr, encodeSharedState(typed, defaultGlobalState('INR')));
+    assert.equal(inr, sealState(encodeToQueryString(typed, defaultGlobalState('INR')), '2'));
     assert.equal(decodeFromQueryString(inr).global.currency, 'INR');
+  });
+});
+
+describe('a link carries a check, and one that did not arrive whole is not read (issue 820)', () => {
+  const offers = (): VendorInput[] => [
+    { ...makeDefaultVendor(0), name: 'North Bank', principal: '73191' },
+    makeDefaultVendor(1),
+    { ...makeDefaultVendor(2), principal: '90000', rateKind: 'hybrid', subsequentRatePct: '9', lumpSumsEncoded: '12:5000;24:2500' },
+  ];
+  const global = (): GlobalState => ({ ...defaultGlobalState('INR'), activeTab: 'refi', refiAtMonth: '48', refiNewRatePct: '5.5', refiNewTermMonths: '240', horizonMonths: '84' });
+  const sealed = () => encodeSharedState(offers(), global());
+
+  it('writes the state the codec writes, between the format and the check', () => {
+    const inner = encodeToQueryString(offers(), global());
+    assert.equal(LINK_FORMAT, '2');
+    assert.equal(sealed(), `f=2&${inner}&z=${checkOf(pairsOf(`f=2&${inner}`))}`);
+    assert.match(sealed(), /^f=2&.*&z=[0-9a-f]{8}$/);
+    assert.equal(openState(sealed(), LINK_FORMAT), 'whole');
+  });
+
+  it('a whole link reads as the state inside it: every offer, the currency, the tab, the refinance boxes and the horizon', () => {
+    const read = readSharedState(sealed());
+    assert.ok(read);
+    assert.deepEqual(read, decodeFromQueryString(encodeToQueryString(offers(), global())));
+    assert.deepEqual(read.vendors, offers());
+    assert.deepEqual(read.global, global());
+  });
+
+  it('the check covers every key: change any one value and the link is not read', () => {
+    const pairs = pairsOf(sealed());
+    // Offers, their advanced fields, the currency, the tab, the refinance boxes and the horizon are all in it.
+    const keys = pairs.map(([k]) => k);
+    for (const k of ['f', 'c', 't', 'h', 'ra', 'rr', 'rt', 'v1', 'v3', 'v3_rk', 'v3_sr', 'v3_ls', 'z']) assert.ok(keys.includes(k), `${k} in ${keys.join(' ')}`);
+    for (let i = 0; i < pairs.length - 1; i++) {
+      const changed = pairs.map(([k, v], j) => [k, j === i ? `${v}1` : v]);
+      assert.equal(readSharedState(new URLSearchParams(changed).toString()), null, pairs[i][0]);
+    }
+  });
+
+  it('cut anywhere after the format, it is not read: nothing of it, and no example in its place', () => {
+    const link = sealed();
+    for (let end = 3; end < link.length; end++) assert.equal(readSharedState(link.slice(0, end)), null, link.slice(0, end));
+  });
+
+  it('a link written before the envelope is read exactly as it always was', () => {
+    const old = encodeToQueryString(offers(), global());
+    assert.deepEqual(readSharedState(old), decodeFromQueryString(old));
+    assert.deepEqual(readSharedState(''), decodeFromQueryString(''));
+    // Cut, it cannot be told from a shorter old link, and reads as one: the accepted limit.
+    const cut = old.slice(0, old.indexOf('v3='));
+    assert.deepEqual(readSharedState(cut), decodeFromQueryString(cut));
+    // So does a new link whose start was lost with its f.
+    const headless = sealed().slice('f=2&'.length);
+    assert.deepEqual(readSharedState(headless), decodeFromQueryString(headless));
+  });
+
+  it('a link of another format is not read, whatever its check', () => {
+    assert.equal(readSharedState(sealState(encodeToQueryString(offers(), global()), '3')), null);
+    assert.equal(readSharedState(sealState(encodeToQueryString(offers(), global()), '1')), null);
+  });
+
+  it('a whole link with nothing else in it reads as each offer\'s own starting values, which is what its writer left out', () => {
+    const empty = sealState('', LINK_FORMAT);
+    assert.equal(empty, 'f=2&z=43ef7d0d');
+    const read = readSharedState(empty);
+    assert.ok(read);
+    assert.deepEqual(read.vendors, decodeFromQueryString('n=2').vendors);
+    assert.equal(read.global.currency, 'EUR');
+  });
+
+  it('the guard takes both keys of the envelope out of the address with the rest', () => {
+    const isKey = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    for (const [k] of pairsOf(sealed())) assert.ok(isKey.test(k), k);
+    assert.ok(isKey.test('f') && isKey.test('z'));
+    for (const not of ['ff', 'zz', 'fz', 'utm_source', 'F', 'Z', '']) assert.ok(!isKey.test(not), not);
   });
 });
 

@@ -47,6 +47,9 @@
 // - The distinctive values go into the amount and name fields listed in
 //   TOOLS. Rates, terms, years and the other fields are clicked but hold no
 //   distinctive value, so a leak of one of those would not be recognised.
+// - The loan comparison's links carry a check (#820). One link written before
+//   the check and one link cut in half are opened; other ways a link can be
+//   damaged are covered by unit tests, not here.
 // - A link, the language switch and the old link are judged to have brought
 //   the state back when the first typed amount is on the page again; the
 //   other values are not compared.
@@ -118,6 +121,10 @@ const TOOLS = {
     ownEvents: /^free_loan_comparison_/,
     mustSend: ['vendor_added', 'vendor_removed', 'details_toggled', 'tab_changed', 'share_modal_opened', 'share_copied', 'exported:xlsx', 'exported:pdf', 'reset'],
     sharedView: 'shared_view_opened',
+    // Its links carry a check (`f` first, `z` last, #820): a link written
+    // before the check and one cut short are opened as well. `damaged` is
+    // what the page shows in place of the tool for the cut one.
+    sealed: { damaged: '.lc-linkDamaged', startNew: '.lc-linkDamaged button', tool: '.lc-grid' },
   },
   'multi-currency-net-worth': {
     global: '__nidhiNetWorthShared',
@@ -1039,6 +1046,38 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       await open(`${path}?${state}&utm_source=share`, 'old');
       if ((await address()) !== `${path}?utm_source=share`) problems.push(`an old ? link left state in the address: ${await address()}`);
       if (!(await restored())) problems.push('an old ? link did not bring the typed amount back');
+      await leave();
+    }
+    if (state && tool.sealed) {
+      const pairs = [...new URLSearchParams(state)];
+      if (pairs[0]?.[0] !== 'f' || pairs[pairs.length - 1]?.[0] !== 'z') problems.push('the state the tool published carries no check: f is not its first key or z is not its last');
+
+      // 5. A link written before the check: the same state with no f and no z.
+      // It is read as it always was.
+      const plain = new URLSearchParams(pairs.filter(([k]) => k !== 'f' && k !== 'z')).toString();
+      await open(`${path}${utm}#${plain}`, 'plain');
+      if ((await address()) !== `${path}${utm}`) problems.push(`a link written before the check left state in the address: ${await address()}`);
+      if ((await visible(page, tool.sealed.damaged)).length) problems.push('a link written before the check was refused as damaged');
+      if (!(await restored())) problems.push('a link written before the check did not bring the typed amount back');
+      await leave();
+
+      // 6. The tool's own link, cut short as a messaging app cuts one: the
+      // state is still moved out of the address, none of it is shown, and the
+      // page says so in place of the tool. The state it could not use stays
+      // in the window for the language switch, so what this page sends is
+      // judged like any other part of the run.
+      const cut = state.slice(0, Math.ceil(state.length / 2));
+      await open(`${path}${utm}#${cut}`, 'cut');
+      if ((await address()) !== `${path}${utm}`) problems.push(`a link cut short left state in the address: ${await address()}`);
+      if (!(await visible(page, tool.sealed.damaged)).length) problems.push('a link cut short was not refused: the page did not say the link is incomplete');
+      if (await restored()) problems.push('a link cut short brought the typed amount back');
+      if ((await page.evaluate((g) => window[g] || '', tool.global)) !== cut) problems.push('a link cut short was not kept as it arrived for the language switch');
+      note.step = 'pressing the button of the incomplete-link notice';
+      if (!(await click(page, tool.sealed.startNew))) problems.push('the incomplete-link notice has no button to press');
+      await sleep(400);
+      if (!(await visible(page, tool.sealed.tool)).length) problems.push('the button of the incomplete-link notice did not open the tool');
+      if (await restored()) problems.push('a new comparison started from a link cut short shows the typed amount');
+      if ((await address()) !== `${path}${utm}`) problems.push(`starting a new comparison changed the address: ${await address()}`);
       await leave();
     }
   } catch (err) {
