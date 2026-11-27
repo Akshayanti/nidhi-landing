@@ -278,6 +278,14 @@ describe('past to today with a country’s history', () => {
     assert.equal(line({ 2020: 1, 2021: 0.3, 2022: 0.3 }, 2020), 'Prices rose about 1% in total over those 2 years, an average of 0.3% a year.');
     assert.equal(line({ 2021: 1, 2022: -0.6 }, 2021), 'Prices fell about 1% in that one year.');
     assert.equal(line({ 2021: 1, 2022: 0.6 }, 2021), 'Prices rose about 1% in that one year.');
+    // Over 20 years a rise of 1% is 0.04% a year: written with a second decimal, never "an average of 0% a year".
+    const twenty = (rate: number): Series => Object.fromEntries(Array.from({ length: 21 }, (_, i) => [2000 + i, rate]));
+    assert.equal(line(twenty(0.04), 2000), 'Prices rose about 1% in total over those 20 years, an average of 0.04% a year.');
+    assert.equal(line(twenty(-0.04), 2000), 'Prices fell about 1% in total over those 20 years, an average of 0.04% a year.');
+    assert.equal(line(twenty(0.04), 2000, 'cs'), 'Prices rose about 1\u00a0% in total over those 20 years, an average of 0,04\u00a0% a year.');
+    // An average that one decimal can write keeps one: 0.06% a year is 0.1%, and 0.26% is 0.3%.
+    assert.equal(line(twenty(0.06), 2000), 'Prices rose about 1% in total over those 20 years, an average of 0.1% a year.');
+    assert.equal(line(twenty(-0.26), 2000), 'Prices fell about 5% in total over those 20 years, an average of 0.3% a year.');
     // The limit is written the page's way.
     assert.equal(line({ 2020: 1, 2021: -0.2, 2022: -0.2 }, 2020, 'cs'), 'Prices changed by less than 0,5\u00a0% in total over those 2 years.');
   });
@@ -696,7 +704,7 @@ describe('an answer that ends at a month, where the country has one to join', ()
 
   it('a month level with the last year’s average is said as neither higher nor lower (#888), and a tenth of a percent is kept', () => {
     const level = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1, source: 'bis' });
-    assert.equal(level.sentences[3], 'Prices in March 2023 were within 0.05% of their average in 2022.');
+    assert.equal(level.sentences[3], 'Prices in March 2023 differed from their average in 2022 by less than 0.05%.');
     close(level.value, 1650);
     const tenth = joined(USA, rising(2019), 1000, 2019, { month: '2023-03', factor: 1.0263, source: 'bis' });
     assert.equal(tenth.sentences[3], 'Prices were 2.6% higher in March 2023 than on average in 2022.');
@@ -704,9 +712,9 @@ describe('an answer that ends at a month, where the country has one to join', ()
 
   it('a line whose change is written as 0% claims neither a rise nor a fall, each of the three on its own (#888)', () => {
     const lines = (series: Series, factor: number) => joined(USA, series, 1000, 2020, { month: '2023-03', factor, source: 'bis' }).sentences.slice(1, 4);
-    const TOTAL = 'Prices in March 2023 were within 0.5% of their average in 2020.';
+    const TOTAL = 'Prices in March 2023 differed from their average in 2020 by less than 0.5%.';
     const AVERAGE = 'From 2020 to 2022, they changed by less than 0.05% a year on average.';
-    const MORE = 'Prices in March 2023 were within 0.05% of their average in 2022.';
+    const MORE = 'Prices in March 2023 differed from their average in 2022 by less than 0.05%.';
     // 1.001 x 1.001 x 1.0002 = 1.0022: 0.22% in all, 0.1% a year, 0.02% since the last year.
     assert.deepEqual(lines({ 2020: 1, 2021: 0.1, 2022: 0.1 }, 1.0002), [TOTAL, 'From 2020 to 2022, they rose 0.1% a year on average.', MORE]);
     // The same downwards: 0.999 x 0.999 x 0.9998 = 0.9978.
@@ -718,18 +726,18 @@ describe('an answer that ends at a month, where the country has one to join', ()
     assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 1), [TOTAL, AVERAGE, MORE]);
     // From half of the last digit shown, it is a rise or a fall again: 0.6% in all, 0.06% a year, 0.06% since.
     assert.deepEqual(lines({ 2020: 1, 2021: 0.06, 2022: 0.06 }, 1.0048), ['Prices were about 1% higher in March 2023 than on average in 2020.', 'From 2020 to 2022, they rose 0.1% a year on average.', 'Prices were 0.5% higher in March 2023 than on average in 2022.']);
-    assert.deepEqual(lines({ 2020: 1, 2021: -0.06, 2022: -0.06 }, 0.9994), ['Prices in March 2023 were within 0.5% of their average in 2020.', 'From 2020 to 2022, they fell 0.1% a year on average.', 'Prices were 0.1% lower in March 2023 than on average in 2022.']);
+    assert.deepEqual(lines({ 2020: 1, 2021: -0.06, 2022: -0.06 }, 0.9994), ['Prices in March 2023 differed from their average in 2020 by less than 0.5%.', 'From 2020 to 2022, they fell 0.1% a year on average.', 'Prices were 0.1% lower in March 2023 than on average in 2022.']);
     assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 1.0006), [TOTAL, AVERAGE, 'Prices were 0.1% higher in March 2023 than on average in 2022.']);
     assert.deepEqual(lines({ 2020: 1, 2021: 0, 2022: 0 }, 0.994), ['Prices were about 1% lower in March 2023 than on average in 2020.', AVERAGE, 'Prices were 0.6% lower in March 2023 than on average in 2022.']);
     // Over one full year there is no yearly average line, and the two that remain are judged the same way.
     assert.deepEqual(joined(USA, { 2021: 1, 2022: 0.1 }, 1000, 2021, { month: '2023-03', factor: 0.9999, source: 'bis' }).sentences.slice(1, 3), [
-      'Prices in March 2023 were within 0.5% of their average in 2021.',
-      'Prices in March 2023 were within 0.05% of their average in 2022.',
+      'Prices in March 2023 differed from their average in 2021 by less than 0.5%.',
+      'Prices in March 2023 differed from their average in 2022 by less than 0.05%.',
     ]);
     // The limit is written the page's way.
     assert.deepEqual(
       joined(USA, { 2020: 1, 2021: 0, 2022: 0 }, 1000, 2020, { month: '2023-03', factor: 1, source: 'bis' }, 'USD', 'cs').sentences.slice(1, 4),
-      ['Prices in March 2023 were within 0,5\u00a0% of their average in 2020.', 'From 2020 to 2022, they changed by less than 0,05\u00a0% a year on average.', 'Prices in March 2023 were within 0,05\u00a0% of their average in 2022.'],
+      ['Prices in March 2023 differed from their average in 2020 by less than 0,5\u00a0%.', 'From 2020 to 2022, they changed by less than 0,05\u00a0% a year on average.', 'Prices in March 2023 differed from their average in 2022 by less than 0,05\u00a0%.'],
     );
   });
 

@@ -1141,7 +1141,11 @@ function computeAnswer(
     // no sentence turns on where exactly 1 falls.
     const fellBy = (f: number) => Math.sign(f - 1) === -1;
     const fell = fellBy(factor);
-    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
+    // Over many years a small total is an average under 0.05% a year, which
+    // one decimal wrote as "an average of 0% a year" beside a rise of 1%: it
+    // then gets a second decimal (#888).
+    const averageDigits = shownNumber(average, 1) === 0 ? 2 : 1;
+    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, averageDigits) };
     // A change written as 0% is neither a rise nor a fall: "fell about 0%"
     // said more than the figure does (#888). It is said as less than half of
     // the last digit shown, which is all the rounding tells.

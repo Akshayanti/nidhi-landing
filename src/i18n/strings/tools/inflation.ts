@@ -331,7 +331,7 @@ export const inflationEn = {
       pastMonthFurtherRise: 'Prices were {more} higher {inMonth} than on average in {to}.',
       pastMonthFurtherFall: 'Prices were {more} lower {inMonth} than on average in {to}.',
       /** When a change is written as 0% at the digits shown, it is neither a rise nor a fall (#888): `{limit}` is half of the last digit shown, "0.5%" for the total and "0.05%" for a yearly average or the step to the month. `{year}` is the year the month is compared with. */
-      pastMonthFlat: 'Prices {inMonth} were within {limit} of their average in {year}.',
+      pastMonthFlat: 'Prices {inMonth} differed from their average in {year} by less than {limit}.',
       pastMonthAverageFlat: 'From {from} to {to}, they changed by less than {limit} a year on average.',
       /** Under a month-ended answer whose index repeats a value within each recent quarter (`isQuarterly`): says what is seen, not how the country publishes. */
       quarterNote: 'For {country}, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.',
