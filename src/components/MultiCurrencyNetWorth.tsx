@@ -594,6 +594,7 @@ export default function MultiCurrencyNetWorth({
             <select
               id={functionalCurrencySelectId}
               className="mcnw-select"
+              aria-describedby={`${functionalCurrencySelectId}-help`}
               value={functionalCurrency}
               onChange={(e) => {
                 const next = e.target.value;
@@ -608,7 +609,7 @@ export default function MultiCurrencyNetWorth({
                 </option>
               ))}
             </select>
-            <p className="mcnw-fieldHelp">
+            <p id={`${functionalCurrencySelectId}-help`} className="mcnw-fieldHelp">
               {strings.toolbar.currencyHelp}
             </p>
           </div>

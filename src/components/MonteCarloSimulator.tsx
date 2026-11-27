@@ -463,8 +463,9 @@ export default function MonteCarloSimulator({
             step={5}
             value={errors.stockPct ? DEFAULTS.stockPct : form.stockPct}
             onChange={update('stockPct')}
+            aria-describedby={`${ids.stockPct}-hint`}
           />
-          <span className="mcs-hint">
+          <span className="mcs-hint" id={`${ids.stockPct}-hint`}>
             {strings.fields.mixHint}
             {!errors.stockPct && Number(form.stockPct) === DEFAULTS.stockPct && <> {t(strings.fields.mixExample, { pct: DEFAULTS.stockPct })}</>}
           </span>
