@@ -67,7 +67,7 @@ Eva, 31, could [refinance](#term-refinancing) her mortgage, which means swapping
 
 The question is whether she keeps the new loan long enough to win that €4,000 back. She might move in two years. Rates might also fall further.
 
-The [understanding loan terms post](/blog/understanding-loan-terms/) covered how to compare loan offers. This post takes a loan you already have and asks when replacing it pays.
+The [understanding loan terms lesson](/blog/understanding-loan-terms/) covered how to compare loan offers. This lesson takes a loan you already have and asks when replacing it pays.
 
 ## A refinance pays only after its break-even month
 
@@ -186,6 +186,6 @@ Closing costs are also money that could have been invested: €5,000 at 6% a yea
 
 </details>
 
-The next post covers how much an income can carry in loans, the question that comes before borrowing at all.
+The next lesson covers how much an income can carry in loans, the question that comes before borrowing at all.
 
 If you refinanced today, how many months would you need to keep the loan to come out ahead, and how sure are you of that?

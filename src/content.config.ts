@@ -47,10 +47,16 @@ const blog = defineCollection({
      * definitions folded under a summary; each term has the anchor
      * `#term-<slug>`, and /blog/glossary/ collects them across published
      * lessons. Plain text, one or two sentences each.
+     *
+     * `anchor` keeps an address already published when a term is respelled
+     * (#804): the term as it was first written. The lesson page keeps its
+     * `#term-<slug>` as a second id on the entry, so old links still land.
+     * Set it once to the old wording and never change it afterwards.
      */
     glossary: z.array(z.object({
       term: z.string().min(1),
       definition: z.string().min(1),
+      anchor: z.string().min(1).optional(),
     })).optional(),
     order: z.number().default(99),
     pubDate: z.coerce.date(),

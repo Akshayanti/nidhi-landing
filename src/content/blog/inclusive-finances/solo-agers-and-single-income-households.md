@@ -69,11 +69,11 @@ Two households follow the same rule: six months of spending saved as an emergenc
 
 The couple's income falls to €2,500, so they are €1,100 a month short, and their €21,600 fund lasts nearly **20 months**. The single earner is short the full €2,400, and her €14,400 fund lasts **6 months**. Same rule, more than three times the runway.
 
-The [income replacement ratio post](/blog/income-replacement-ratio/), like most retirement writing, spoke of households in the plural. Some people live alone by choice, some after a separation or a death, some raise children on one income, and many grow older without a partner or family nearby (a [solo ager](#term-solo-ager)). For them the formulas still work; the inputs change, and one part of the plan couples get for free has to be built by hand.
+The [income replacement ratio lesson](/blog/income-replacement-ratio/), like most retirement writing, spoke of households in the plural. Some people live alone by choice, some after a separation or a death, some raise children on one income, and many grow older without a partner or family nearby (a [solo ager](#term-solo-ager)). For them the formulas still work; the inputs change, and one part of the plan couples get for free has to be built by hand.
 
 ## Adjusting common rules of thumb for one income
 
-The same six months can mean very different runway: for the couple, another income keeps covering part of the spending; for the single earner, the fund covers all of it. That second income is a [default assumption](#term-default-assumption), the unstated guess about who you are that [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) described, and it sits inside several other rules:
+The same six months can mean very different runway: for the couple, another income keeps covering part of the spending; for the single earner, the fund covers all of it. That second income is a [default assumption](#term-default-assumption), the unstated guess about who you are that [the first lesson in this series](/blog/when-the-default-plan-does-not-fit-you/) described, and it sits inside several other rules:
 
 | Rule of thumb | What it quietly assumes | The single-income adjustment |
 |---|---|---|
@@ -88,7 +88,7 @@ How far to move each depends on how stable the income is, the local safety net, 
 
 ## One income changes how long an emergency fund lasts
 
-The [emergency fund post](/blog/emergency-fund/) gave three to six months as a common guideline. On one income the shortfall is all of your spending, so the same reasoning points higher. How much higher depends on two things: how stable the income is, and how long it would realistically take to replace it. A civil servant in a secure post and a contractor in a volatile industry are both single earners with very different answers.
+The [emergency fund lesson](/blog/emergency-fund/) gave three to six months as a common guideline. On one income the shortfall is all of your spending, so the same reasoning points higher. How much higher depends on two things: how stable the income is, and how long it would realistically take to replace it. A civil servant in a secure post and a contractor in a volatile industry are both single earners with very different answers.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: a single earner spends €2,000 a month and has €9,000 saved. How long does it last if the job goes?</summary>
@@ -97,7 +97,7 @@ About four and a half months, because the shortfall is the whole €2,000. A cou
 
 </details>
 
-**Insurance points two ways.** Life insurance exists to protect people who depend on your income; with no dependants and no shared debts, there may be nobody to insure for. For a single parent it is the reverse: the only income a child has. Income protection, which pays monthly if illness or injury stops you working (the [insurance basics post](/blog/insurance-basics/) called it one of the most overlooked kinds of cover), protects the one engine the plan rests on, and its value depends on the benefit, exclusions, waiting period, savings already available and whether any other income could carry the household. **Fixed costs** follow the same logic: a couple can lose one income and still pay the rent, a single earner cannot, so a common response is to set housing, loans and hard-to-cancel contracts at a level one income covers with margin, and to count that margin as part of the safety plan.
+**Insurance points two ways.** Life insurance exists to protect people who depend on your income; with no dependants and no shared debts, there may be nobody to insure for. For a single parent it is the reverse: the only income a child has. Income protection, which pays monthly if illness or injury stops you working (the [insurance basics lesson](/blog/insurance-basics/) called it one of the most overlooked kinds of cover), protects the one engine the plan rests on, and its value depends on the benefit, exclusions, waiting period, savings already available and whether any other income could carry the household. **Fixed costs** follow the same logic: a couple can lose one income and still pay the rent, a single earner cannot, so a common response is to set housing, loans and hard-to-cancel contracts at a level one income covers with margin, and to count that margin as part of the safety plan.
 
 ## One person needs about 70% of a couple's budget, not 50%
 
@@ -129,7 +129,7 @@ A partner is often the first person contacted in an emergency, though marriage d
 
 Beneficiary or nomination forms on pensions and insurance belong on the same list; whether they override a will, and whether the provider must follow them, depends on the product and local law.
 
-The person can be a friend who knows your wishes, a relative you trust, or in many countries a professional such as a solicitor, notary or licensed fiduciary, for a fee. Many people also name a substitute in case the first cannot act, and choose someone younger than themselves where they can. A later post in this series goes further into friends and chosen family where the law expects relatives.
+The person can be a friend who knows your wishes, a relative you trust, or in many countries a professional such as a solicitor, notary or licensed fiduciary, for a fee. Many people also name a substitute in case the first cannot act, and choose someone younger than themselves where they can. A later lesson in this series goes further into friends and chosen family where the law expects relatives.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: which of the five documents has no legal force, and why does it matter anyway?</summary>

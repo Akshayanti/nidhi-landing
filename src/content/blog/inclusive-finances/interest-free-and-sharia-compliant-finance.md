@@ -54,7 +54,7 @@ faq:
     answer: "The closest commonly used alternative is sukuk: certificates structured around assets, services or ventures rather than an interest-bearing loan. Their legal rights and risks vary; some provide meaningful exposure to assets, while others depend heavily on the issuer's payment promise and behave economically much like a loan to the issuer. Sukuk are used in some portfolios for the stabilizing role bonds play in conventional ones, though the market is smaller and less liquid than the conventional bond market. Other options for the lower-risk part of a portfolio include profit-sharing deposit accounts and some property funds, though property can be less liquid and is not a bond substitute."
   - question: "What is takaful?"
     answer: "Takaful is cooperative insurance. Members contribute to a shared pool and agree to cover each other's losses from it, with an operator paid a fee or a share of the surplus for managing the pool. It is designed to avoid the elements of conventional insurance that some scholars object to, namely uncertainty in the contract and interest on the insurer's investments. Views differ on whether conventional insurance is permissible where takaful is not available, particularly where cover is legally required."
-  - question: "Is this post religious guidance?"
+  - question: "Is this lesson religious guidance?"
     answer: "No. It describes how the main structures work and how to evaluate them financially. Whether a specific product is acceptable is a question of religious judgement on which qualified scholars differ, and standards vary between countries and institutions. If compliance matters to you, check who certified the product and consult a scholar whose judgement you trust."
 reelPromise: "How the three main interest-free home finance structures work, side by side, and the questions to ask before signing any of them"
 relatedSlugs: ["understanding-loan-terms", "refinancing-timing", "investing-101-asset-classes", "diversification"]
@@ -71,7 +71,7 @@ referentialReading:
 
 A home buyer has found a flat for €250,000. Every mortgage advert they see quotes a rate, and every comparison site sorts by it. For them, interest is ruled out, so none of that applies as written.
 
-The [refinancing post](/blog/refinancing-timing/) and the [invest or pay off debt post](/blog/invest-or-pay-off-debt/) both assumed you are willing to pay and receive interest. Many people are not. For observant Muslims, interest is prohibited outright, and some Christians, Jews and secular readers hold related ethical objections. This post describes the alternative as a complete system with its own logic, then shows how the planning tools from the rest of this blog carry over. It is a financial explanation, not religious guidance: scholars differ on details, standards differ between institutions and countries, and which products exist depends heavily on where you live.
+The [refinancing lesson](/blog/refinancing-timing/) and the [invest or pay off debt lesson](/blog/invest-or-pay-off-debt/) both assumed you are willing to pay and receive interest. Many people are not. For observant Muslims, interest is prohibited outright, and some Christians, Jews and secular readers hold related ethical objections. This lesson describes the alternative as a complete system with its own logic, then shows how the planning tools from the rest of this blog carry over. It is a financial explanation, not religious guidance: scholars differ on details, standards differ between institutions and countries, and which products exist depends heavily on where you live.
 
 ## Money is not for rent
 
@@ -79,7 +79,7 @@ The prohibition centres on [riba](#term-riba): a guaranteed increase on a loan o
 
 ## Buying a home through a sale, a lease or a partnership
 
-A conventional mortgage is a loan of money secured on a property (the [loan terms post](/blog/understanding-loan-terms/) covered it). Interest-free home finance reaches the same end, you live in the home now and own it later, through one of three structures:
+A conventional mortgage is a loan of money secured on a property (the [loan terms lesson](/blog/understanding-loan-terms/) covered it). Interest-free home finance reaches the same end, you live in the home now and own it later, through one of three structures:
 
 | Structure | Common name | How it works | What you pay |
 |---|---|---|---|
@@ -102,7 +102,7 @@ The loan-terms tools still work once translated. Five questions are common befor
 1. **What is the [total amount payable](#term-total-amount-payable)?** For a fixed-price structure, the contractual total; where rent or another charge can change, the current projected total, the assumptions behind it and the rule for future reviews. Many regulators also require an annualized cost figure; using it to compare offers is arithmetic, not an endorsement of interest. It is also worth checking whether transfer tax or stamp duty sits outside that total, because a sale can sometimes be taxed as two purchases (below).
 2. **What happens if I settle early?** In a cost-plus sale the price is fixed at the start, so paying early does not automatically reduce it. Providers often give a discount, but it may be at their discretion rather than a right, which is why many buyers ask for the answer in writing. In a shrinking partnership, buying the remaining share early is normally straightforward.
 3. **What happens if I pay late?** A financier cannot profit from a late fee, since that would be interest on a debt; many charge one as a deterrent and give it to charity.
-4. **Can the cost change?** The agreed sale price in a cost-plus sale is fixed, though taxes, service charges or other contract costs may still vary. Rent in a lease or partnership can commonly be reviewed at dates set by the contract. The refinancing post's break-even test applies to switching providers in the same way.
+4. **Can the cost change?** The agreed sale price in a cost-plus sale is fixed, though taxes, service charges or other contract costs may still vary. Rent in a lease or partnership can commonly be reviewed at dates set by the contract. The refinancing lesson's break-even test applies to switching providers in the same way.
 5. **Who certified it?** Products may be reviewed by a Sharia supervisory board, an external adviser or another governance process; the useful questions are who reviewed it, to which standard, and whether that is published.
 
 <details class="quick-check">
@@ -114,7 +114,7 @@ No. The price was fixed at the start, so any early-settlement discount depends o
 
 ## Screened investing: owning shares is allowed, the screen is the work
 
-A share is part ownership of a business, with profit and loss shared, which is why owning shares is generally considered permissible (the [asset classes post](/blog/investing-101-asset-classes/) introduced them). What matters is which businesses, and the screen has two layers.
+A share is part ownership of a business, with profit and loss shared, which is why owning shares is generally considered permissible (the [asset classes lesson](/blog/investing-101-asset-classes/) introduced them). What matters is which businesses, and the screen has two layers.
 
 **What the company does.** Excluded activities typically include conventional banking and insurance, alcohol, gambling, pork products and adult entertainment; many screens also exclude tobacco and weapons.
 
@@ -122,7 +122,7 @@ A share is part ownership of a business, with profit and loss shared, which is w
 
 Index providers publish screened versions of the major indices, and funds track them, so fund investors can usually rely on the provider to run the screens; which standard a fund follows, how often it rescreens and how it handles purification are still worth checking. The usual evidence still applies: over long periods, low cost and broad coverage have tended to matter more than picking winners.
 
-Screening also changes what a diversified portfolio holds. Removing conventional banks and insurers takes out a large slice of most markets, so screened indices usually hold more technology, healthcare and industrial companies, and will sometimes beat and sometimes trail the broad market. Fewer companies pass, so the portfolio is somewhat more concentrated. And bonds pay interest, so the usual stabilizer is out; the closest commonly used replacement is [sukuk](#term-sukuk), certificates structured around assets, services or ventures rather than an interest-bearing loan; their legal ownership and risk vary, and some behave much like a loan to the issuer. Sukuk markets are smaller and less liquid than bond markets, and access for ordinary investors varies by country. The [diversification post](/blog/diversification/)'s check, spread across regions and sectors, applies just as much to a screened portfolio.
+Screening also changes what a diversified portfolio holds. Removing conventional banks and insurers takes out a large slice of most markets, so screened indices usually hold more technology, healthcare and industrial companies, and will sometimes beat and sometimes trail the broad market. Fewer companies pass, so the portfolio is somewhat more concentrated. And bonds pay interest, so the usual stabilizer is out; the closest commonly used replacement is [sukuk](#term-sukuk), certificates structured around assets, services or ventures rather than an interest-bearing loan; their legal ownership and risk vary, and some behave much like a loan to the issuer. Sukuk markets are smaller and less liquid than bond markets, and access for ordinary investors varies by country. The [diversification lesson](/blog/diversification/)'s check, spread across regions and sectors, applies just as much to a screened portfolio.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: why does a screened index usually hold more technology and healthcare companies?</summary>
@@ -140,7 +140,7 @@ Because conventional banks and insurers, a large slice of most markets, are scre
 
 **Cash.** An emergency fund in an ordinary savings account earns interest. The alternatives are a current account that pays nothing, or a profit-sharing deposit, where the bank invests the money in permitted activities and shares the profit; the return is expected, not guaranteed, which is the point.
 
-**Retirement accounts.** The [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) described them as wrappers that hold investments. The wrapper and what is inside are separate choices: the tax benefit is not interest, and an employer's contribution is part of pay. The question is whether the wrapper offers a compliant fund. Many workplace schemes now do; where one does not, people ask for one or use a personal account they choose themselves.
+**Retirement accounts.** The [tax-advantaged accounts lesson](/blog/tax-advantaged-accounts/) described them as wrappers that hold investments. The wrapper and what is inside are separate choices: the tax benefit is not interest, and an employer's contribution is part of pay. The question is whether the wrapper offers a compliant fund. Many workplace schemes now do; where one does not, people ask for one or use a personal account they choose themselves.
 
 **Zakat,** the recurring obligation to give a share of qualifying wealth when its conditions are met, can have its own line in the [cash flow forecast](/blog/cash-flow-forecasting/). The amount depends on qualifying assets, debts, thresholds, timing and the scholarly method followed, rather than simply on total savings.
 
@@ -177,7 +177,7 @@ In a cost-plus sale or a lease to own, the financier buys the property and then 
 <details class="lesson-depth">
 <summary class="disclosure">When no compliant option exists</summary>
 
-Where no compliant home finance is available, people rent for longer, save a larger share of the price, buy through family or community arrangements, or follow a scholarly opinion that permits conventional finance out of necessity. Those are personal and religious decisions, and this post takes no position on them.
+Where no compliant home finance is available, people rent for longer, save a larger share of the price, buy through family or community arrangements, or follow a scholarly opinion that permits conventional finance out of necessity. Those are personal and religious decisions, and this lesson takes no position on them.
 
 </details>
 

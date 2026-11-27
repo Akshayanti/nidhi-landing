@@ -26,6 +26,17 @@ import { assertOneEntryPerDate, type ChangelogEntry } from './privacyChangelog.t
 // One entry per date (CLAUDE.md). Add a day's changes to its existing entry.
 export const writtenChangelog: ChangelogEntry[] = [
   {
+    date: 'Nov 27, 2026',
+    iso: '2026-11-27',
+    material: false,
+    summary: 'The notice now says the newsletter emails you about new lessons and guides, where it said "posts", the site\'s older word. What the newsletter sends, and what is stored or recorded, is unchanged.',
+    details: [
+      'Wording only, in every language: the newsletter section and the reasons for analytics and for the newsletter now say "lesson or guide" (or "lessons and guides") where they said "post" or "blog post". The newsletter has always sent the site\'s how-to guides as well as its lessons, so "lesson" alone would have said less than it does.',
+      'Also wording only: the analytics section calls the loan tool by its name, the loan comparison, where it said the loan-comparison calculator, and the English notice says "maths" where it said "math".',
+      'Nothing about the newsletter, analytics, cookies, browser storage or outside requests changed.',
+    ],
+  },
+  {
     date: 'Nov 26, 2026',
     iso: '2026-11-26',
     material: true,

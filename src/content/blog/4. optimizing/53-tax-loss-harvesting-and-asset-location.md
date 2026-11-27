@@ -18,7 +18,8 @@ takeaways:
 glossary:
   - term: "Tax-loss harvesting"
     definition: "Selling an investment below its purchase price to book a loss that offsets gains, then buying something similar to stay invested."
-  - term: "Unrealised loss"
+  - term: "Unrealized loss"
+    anchor: "Unrealised loss"
     definition: "A fall in value on paper that has not yet been sold, so it has not yet been booked for tax."
   - term: "Cost basis"
     definition: "What you paid for an investment, used to work out the taxable gain or loss when you sell."
@@ -49,7 +50,7 @@ faq:
     answer: "Asset allocation is what you hold: the mix of stocks, bonds, cash, and other asset classes in your portfolio. Asset location is where you hold each piece: which account type (taxable, tax-deferred retirement, tax-free retirement, health savings) each asset sits in. The same overall allocation can produce different after-tax returns depending on location, because different assets generate different types of taxable events. High-yield bonds generate ordinary-income coupons, which are taxed annually at high rates; placing them in a tax-advantaged retirement account defers or eliminates the tax. Broad equity index funds generate mostly qualified dividends, taxed at lower rates, and long-term capital gains only when sold; placing them in a taxable account preserves the tax efficiency. Estimates of the gain from location are usually in the range of 0.1 to 0.3% a year of after-tax return, depending on tax rates and the size of the taxable account, without changing what you hold. The examples here use US-style rules; the categories and rates differ by country."
   - question: "How much does this actually matter?"
     answer: "For someone in a low-tax bracket with a small taxable portfolio, both techniques matter less than getting the asset allocation and fee structure right first. For someone in a high-tax bracket with a large taxable portfolio, both techniques compound to meaningful money over decades. Estimates for each technique usually run to a few tenths of a percent a year of after-tax return, depending on tax bracket, portfolio size, market conditions, and asset mix, and can be close to zero for small taxable portfolios. On a €500,000 portfolio over 20 years at 7% a year before inflation, each 0.1 percentage point a year is worth roughly €35,000. This is usually not the largest optimization available (fees and asset allocation typically matter more), but it can be a meaningful refinement that needs only annual attention once set up."
-reelPromise: "The one-paragraph tax-loss harvesting idea, the wash-sale trap that nullifies careless harvesting, and the asset-location math that can add a few tenths of a percent to after-tax returns"
+reelPromise: "The one-paragraph tax-loss harvesting idea, the wash-sale trap that nullifies careless harvesting, and the asset-location maths that can add a few tenths of a percent to after-tax returns"
 relatedSlugs: ["taxes-and-your-financial-plan", "tax-advantaged-accounts", "rebalancing-your-portfolio", "investing-101-asset-classes", "fee-optimization"]
 referentialReading:
   - title: "Asset Location"
@@ -62,7 +63,7 @@ Eva has a taxable investment account. This year she sold one fund at a €10,000
 
 ## Tax-loss harvesting defers tax; it does not add return
 
-[Tax-loss harvesting](#term-tax-loss-harvesting) means selling an investment in a taxable account that is below its purchase price, realizing what had been an [unrealized loss](#term-unrealised-loss), and at once reinvesting in something similar but not identical, so market exposure barely changes. The realized loss offsets gains, or part of ordinary income up to a local cap, or carries forward.
+[Tax-loss harvesting](#term-tax-loss-harvesting) means selling an investment in a taxable account that is below its purchase price, realizing what had been an [unrealized loss](#term-unrealized-loss), and at once reinvesting in something similar but not identical, so market exposure barely changes. The realized loss offsets gains, or part of ordinary income up to a local cap, or carries forward.
 
 It does not raise the investment's pre-tax return. Its possible value is deferral: tax that would otherwise be paid now stays invested. Using US-style rates for illustration, Eva's €10,000 gain taxed at 25% would mean €2,500 of tax now. If €10,000 of harvested losses offsets it, the €2,500 can stay invested, growing to about €9,700 at 7% a year over 20 years. That €9,700 is not the net benefit: the replacement has a lower [cost basis](#term-cost-basis), so a later sale may owe more tax. The eventual benefit depends on future tax rates, the holding period, trading costs and whether the gain is ever realized. The benefit rises with the tax rate, with how volatile the holdings are, with how often someone looks, and with the years of deferral.
 
@@ -117,7 +118,7 @@ The deduction is disallowed because she bought a substantially identical securit
 
 ## Asset location: the same portfolio, placed differently
 
-[Asset allocation](#term-asset-allocation) is what you hold; [asset location](#term-asset-location) is which account holds each piece. Assets create different kinds of tax: some pay interest taxed every year at high rates, others pay lower-taxed dividends, and some create little tax until they are sold. Accounts are taxed differently too: taxable accounts as income and gains arise, tax-deferred accounts on withdrawal, tax-free accounts not at all (the [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the categories).
+[Asset allocation](#term-asset-allocation) is what you hold; [asset location](#term-asset-location) is which account holds each piece. Assets create different kinds of tax: some pay interest taxed every year at high rates, others pay lower-taxed dividends, and some create little tax until they are sold. Accounts are taxed differently too: taxable accounts as income and gains arise, tax-deferred accounts on withdrawal, tax-free accounts not at all (the [tax-advantaged accounts lesson](/blog/tax-advantaged-accounts/) covered the categories).
 
 The usual heuristic puts assets that create a lot of yearly tax inside tax-advantaged accounts, and tax-efficient assets in taxable ones, keeping the overall mix the same. Under US-style rules:
 
@@ -154,7 +155,7 @@ The bond fund, because the example assumes its interest would otherwise be taxed
 A rough order many planners describe:
 
 1. **[Asset allocation](/blog/investing-101-asset-classes/),** widely regarded as the largest driver of return and risk.
-2. **Low fees.** Moving from a high-cost to a low-cost fund can be worth 0.5 to 1% a year, usually more than either technique here (the [fees post](/blog/fee-optimization/) covered it).
+2. **Low fees.** Moving from a high-cost to a low-cost fund can be worth 0.5 to 1% a year, usually more than either technique here (the [fees lesson](/blog/fee-optimization/) covered it).
 3. **Tax-advantaged accounts,** whose structure usually saves more than placement within them.
 4. **Asset location,** typically around 0.1 to 0.3% a year.
 5. **Tax-loss harvesting,** another 0.1 to 0.3% in typical conditions, more in volatile years.
@@ -189,6 +190,6 @@ The ideas are similar everywhere; the rules change often, and a licensed tax pro
 
 </details>
 
-The next post covers real returns and benchmarking: once fees, taxes and allocation are in order, how to tell whether the portfolio is doing what it should.
+The next lesson covers real returns and benchmarking: once fees, taxes and allocation are in order, how to tell whether the portfolio is doing what it should.
 
 Which of your holdings creates tax every year, and which account is it sitting in?

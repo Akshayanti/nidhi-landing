@@ -1,7 +1,7 @@
 ---
 slug: "how-to-get-out-of-debt"
 title: "How to Get Out of Debt: Snowball vs. Avalanche"
-description: "Two well-known strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes math. How each works and what each one suits."
+description: "Two well-known strategies for paying off debt: snowball prioritizes motivation; avalanche prioritizes maths. How each works and what each one suits."
 tldr:
   - "Paying off the smallest balance first brings quick wins."
   - "Paying off the highest rate first costs the least interest, though the difference is often modest."
@@ -138,7 +138,7 @@ Once the credit card is gone, you roll the full €460 into the store card at 12
 It depends on what drives a person, and on how far apart their interest rates are:
 
 - **Snowball** tends to suit people motivated by visible progress. Seeing debts disappear one by one keeps them going. The extra interest is the cost of that motivation, and it is small when rates are similar
-- **Avalanche** tends to suit people who want to minimize total cost and can live with slower visible progress. The math is clear: it pays the least interest, and the gap grows when one debt is far more expensive than the others
+- **Avalanche** tends to suit people who want to minimize total cost and can live with slower visible progress. The maths is clear: it pays the least interest, and the gap grows when one debt is far more expensive than the others
 - **Hybrid approach:** Some people start with snowball to build momentum (one or two small debts), then switch to avalanche. There's no rule that says you have to stick with one method forever
 
 ## Common mistakes
@@ -152,4 +152,4 @@ It depends on what drives a person, and on how far apart their interest rates ar
 
 Getting out of debt is not the finish line, it's the starting line. Once your high-interest [liabilities](/blog/liabilities/) are gone, that monthly payment doesn't disappear. It becomes money you can redirect toward [assets](/blog/assets/) that appreciate over time.
 
-In the next post, we'll look at why some assets grow your net-worth while others shrink it, the difference between appreciation and depreciation, and the force of compound interest behind both.
+The next lesson looks at why some assets grow your net-worth while others shrink it, the difference between appreciation and depreciation, and the force of compound interest behind both.

@@ -79,7 +79,7 @@ referentialReading:
 
 Marcus, 34, earns €54,000 a year before tax, about €3,300 a month after it, and pays €300 a month on a car loan. His bank says he can borrow €330,000 for a flat. A colleague says no more than about €280,000. A friend in Mumbai says closer to €120,000. All three are using a real rule. They are answering different questions.
 
-The [understanding loan terms post](/blog/understanding-loan-terms/) covered how to compare loan offers by their total cost. This post asks the question before that one: how large a loan an income can carry.
+The [understanding loan terms lesson](/blog/understanding-loan-terms/) covered how to compare loan offers by their total cost. This lesson asks the question before that one: how large a loan an income can carry.
 
 ## A lender's maximum is not your budget
 
@@ -135,7 +135,7 @@ Commonly described stress checks include:
 - **Rate up by 2 to 3 points**, or to the rate at the next reset if the rate is fixed for only a few years.
 - **Income down by a fifth**, or by the amount of a second income if a couple borrows on two salaries.
 - **Room left over:** saving and an emergency fund still fit, which matters more with [uneven income](/blog/gig-and-informal-economy-work/).
-- **Currency:** a loan in a currency other than the one you earn in moves with the exchange rate, as the [currencies post](/blog/managing-money-across-currencies/) covered.
+- **Currency:** a loan in a currency other than the one you earn in moves with the exchange rate, as the [currencies lesson](/blog/managing-money-across-currencies/) covered.
 
 If a loan passes on today's numbers but fails these checks, whether it stays affordable depends on rates, income and other costs staying favourable for 25 or 30 years.
 
@@ -181,6 +181,6 @@ In many other countries there is no binding cap, and the lender's own model deci
 
 </details>
 
-The next post covers 0% instalments.
+The next lesson covers 0% instalments.
 
 If your rate rose by two points and your income fell by a fifth in the same year, which loan, of the size you are considering, would you still want to be repaying?

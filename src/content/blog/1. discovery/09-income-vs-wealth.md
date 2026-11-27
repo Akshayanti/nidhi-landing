@@ -39,7 +39,7 @@ faq:
   - question: "What is the difference between income and wealth?"
     answer: "Income is a flow: the money that moves into your accounts over a period, such as salary, freelance fees, or rent received. Wealth is a stock: what you have accumulated and kept, measured as your net worth, everything you own minus everything you owe. Income answers how much is coming in. Wealth answers how much is staying. A person earning 3,000 euros who saves 1,000 a month will be wealthier after five years than someone earning 6,000 who saves 200. High income does not automatically create wealth; the gap between earning and spending does."
   - question: "Why does a higher salary not always make you wealthier?"
-    answer: "Because spending often rises to match income, a pattern called lifestyle inflation. When a raise arrives, the bigger apartment, newer car, and more frequent dinners out absorb it. The income went up, but the gap between income and spending stayed the same or shrank, so net worth stayed flat. If your spending always matches your income, you build zero wealth regardless of how much you earn. Wealth comes from the difference between income and spending over time, not from the size of the paycheck alone. A modest salary with discipline beats a large salary with no margin."
+    answer: "Because spending often rises to match income, a pattern called lifestyle inflation. When a raise arrives, the bigger apartment, newer car, and more frequent dinners out absorb it. The income went up, but the gap between income and spending stayed the same or shrank, so net worth stayed flat. If your spending always matches your income, you build zero wealth regardless of how much you earn. Wealth comes from the difference between income and spending over time, not from the size of the pay alone. A modest salary with discipline beats a large salary with no margin."
   - question: "What is a savings rate and why does it matter?"
     answer: "Your savings rate is the share of income you keep rather than spend, calculated as (income minus expenses) times 100, divided by income. If you earn 3,000 euros and spend 2,400, you save 600, a 20 percent savings rate. It matters because, for any given salary, it is one of the biggest levers you control over how fast wealth builds. Someone earning 6,000 euros at a 5 percent savings rate builds wealth slower than someone earning 3,000 at 20 percent. Tracking this single number shows whether your wealth engine is accelerating or stalling, no matter what your income does."
   - question: "How do I shift from income thinking to wealth thinking?"
@@ -62,7 +62,7 @@ It does not answer the more important question: how much is staying?
 
 ## What wealth actually is
 
-Wealth is a stock. It's what you've accumulated over time, i.e., your [net worth](/blog/what-is-net-worth/). As we covered in the net worth post, wealth is the gap between everything you [own](/blog/assets/) and everything you [owe](/blog/liabilities/).
+Wealth is a stock. It's what you've accumulated over time, i.e., your [net worth](/blog/what-is-net-worth/). As the net worth lesson covered, wealth is the gap between everything you [own](/blog/assets/) and everything you [owe](/blog/liabilities/).
 
 Wealth answers: what do you have to show for all your earning years?
 
@@ -74,7 +74,7 @@ It's easy to fall into the trap of thinking a higher salary solves everything. W
 
 This pattern has a name: lifestyle inflation. When your income rises, your spending rises with it. A bigger apartment, a newer car, more frequent dinners out. The income went up, but the wealth gap stayed the same, or even shrank.
 
-**The math is simple:** if your spending always matches your income, your net worth stays flat regardless of how much you earn.
+**The maths is simple:** if your spending always matches your income, your net worth stays flat regardless of how much you earn.
 
 ## The wealth formula
 
@@ -109,7 +109,7 @@ You can grow wealth by increasing income. You can grow it by reducing spending. 
     <text x="428" y="153" text-anchor="start" class="fig-tick">with a gentle 3% real return</text>
     <text x="440" y="438" text-anchor="middle" class="fig-tick" style="font-style: italic;">Illustrative 3% real return, after inflation. Not a forecast. Returns are not guaranteed and can be negative.</text>
   </svg>
-  <figcaption>Identical paychecks, very different outcomes. The taller bars add a gentle 3% real return (growth left after inflation, the rise in prices); even with zero growth, the saver who keeps more pulls far ahead. The gap was never the salary. It was the spending.</figcaption>
+  <figcaption>Identical pay, very different outcomes. The taller bars add a gentle 3% real return (growth left after inflation, the rise in prices); even with zero growth, the saver who keeps more pulls far ahead. The gap was never the salary. It was the spending.</figcaption>
 </figure>
 
 ## How to shift from income thinking to wealth thinking?

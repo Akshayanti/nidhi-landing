@@ -9,7 +9,7 @@ tldr:
   - "A six-question check before moving tests the destination, and ownership and contract protections may help where status does not, subject to that country's law."
 takeaways:
   - text: "How to check that your marriage is recognized where you move"
-    href: "#checking-that-your-marriage-is-recognised-where-you-move"
+    href: "#checking-that-your-marriage-is-recognized-where-you-move"
   - text: "How the recognition check tests a destination before you move"
     href: "#the-recognition-check-tests-a-destination-before-you-move"
   - text: "Why ownership and contract can protect you where status does not"
@@ -50,7 +50,7 @@ faq:
     answer: "Not reliably. A will made in one country is often accepted in another, but local rules on who must inherit can override it, and the process is slower with a foreign document. Powers of attorney are frequently not accepted across borders at all, because banks and hospitals want the local form. A common approach is to make fresh documents under local law after you move, keep the originals from home for assets that remain there, and make sure the two sets do not cancel each other."
   - question: "Which protections can depend less on marital status?"
     answer: "Protections based on a named person, a contract or recorded ownership can depend less on marital status, but none is universal. A pension nomination may be binding or advisory; insurance terms may restrict who can be named; joint ownership may or may not include survivorship; and wills and powers of attorney remain subject to local law and whether institutions accept them."
-  - question: "Does this post say which countries recognize same-sex marriage?"
+  - question: "Does this lesson say which countries recognize same-sex marriage?"
     answer: "No, on purpose. The list changes as laws and court rulings change, and recognition is often partial in ways a simple list cannot show. For your own destination, check an official government source, your own country's embassy or consulate, and a local lawyer. Organizations that support LGBTQ+ people, and expatriate groups, usually know how the rules work in practice, which can differ from how they read."
 reelPromise: "The six-question recognition check to run before an international move, and what makes a will or power of attorney hold up across a border"
 relatedSlugs: ["unmarried-and-cohabiting-couples", "geographic-arbitrage", "immigrants-expats-and-cross-border-households", "managing-money-across-currencies"]
@@ -69,9 +69,9 @@ Jonas and David married eight years ago in a country where that is an ordinary t
 
 Nothing happened to their relationship. But there, David is not Jonas's next of kin. He would not inherit by default, cannot join Jonas's employer health plan, and is in the country on a separate visa that depends on his own job. If Jonas is taken to hospital, staff may not tell David anything.
 
-The [geographic arbitrage post](/blog/geographic-arbitrage/) treated a move as a question of prices, taxes and visas, assuming the household that arrives is the household that left. For some couples it is not, because a marriage is a legal status and a border can change it. Same-sex couples meet this most often; it also reaches couples married only under religious or customary rites, and some couples of different nationalities. This post does not list which countries recognize which marriages, because the list changes and recognition is often partial in ways a list hides.
+The [geographic arbitrage lesson](/blog/geographic-arbitrage/) treated a move as a question of prices, taxes and visas, assuming the household that arrives is the household that left. For some couples it is not, because a marriage is a legal status and a border can change it. Same-sex couples meet this most often; it also reaches couples married only under religious or customary rites, and some couples of different nationalities. This lesson does not list which countries recognize which marriages, because the list changes and recognition is often partial in ways a list hides.
 
-## Checking that your marriage is recognised where you move
+## Checking that your marriage is recognized where you move<span id="checking-that-your-marriage-is-recognised-where-you-move"></span>
 
 A destination does one of three things with a marriage made elsewhere:
 
@@ -83,7 +83,7 @@ A destination does one of three things with a marriage made elsewhere:
 
 The middle case needs care: [partnership recognition](#term-partnership-recognition) is not marriage recognition. A registered partnership may give inheritance rights but not a survivor pension, or tax treatment but no immigration rights; the list of rights tells you more than the name. Recognition can also differ by purpose within one country: a marriage may count for residency, because a court ruling requires it, and not for inheritance or parentage.
 
-Where a marriage is not recognized, everything the [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) listed can switch off: inheritance without a will, survivor pensions, medical decisions and information, joint tax treatment and tax-free transfers, cover on an employer's health plan, the right to live in the country as a spouse, and legal parentage of a child. This is a [recognition gap](#term-recognition-gap), and what makes this version dangerous is that it opens without anyone doing anything. There is no letter; the rights may simply not be there when you reach for them.
+Where a marriage is not recognized, everything the [unmarried couples lesson](/blog/unmarried-and-cohabiting-couples/) listed can switch off: inheritance without a will, survivor pensions, medical decisions and information, joint tax treatment and tax-free transfers, cover on an employer's health plan, the right to live in the country as a spouse, and legal parentage of a child. This is a [recognition gap](#term-recognition-gap), and what makes this version dangerous is that it opens without anyone doing anything. There is no letter; the rights may simply not be there when you reach for them.
 
 ## The recognition check tests a destination before you move
 
@@ -108,13 +108,13 @@ Only for the rights that partnership carries there. It may include inheritance b
 <details class="lesson-depth">
 <summary class="disclosure">Why the visa is a financial question</summary>
 
-A [reunification visa](#term-reunification-visa) lets a family member join a resident, and depends on how the destination defines family. Where the marriage is not recognized, the trailing spouse needs their own route, with consequences beyond paperwork: their right to stay depends on their own job or funds; they may not be allowed to work, turning two incomes into one for the posting; and their time in the country may not count toward long-term residency as a spouse's would. A one-income household with a partner who has no independent right to stay is fragile. The [solo agers post](/blog/solo-agers-and-single-income-households/) covered sizing the emergency fund on one income; couples in this position often also size it to cover both of them leaving at short notice. Some countries have a separate route for unmarried or durable partners.
+A [reunification visa](#term-reunification-visa) lets a family member join a resident, and depends on how the destination defines family. Where the marriage is not recognized, the trailing spouse needs their own route, with consequences beyond paperwork: their right to stay depends on their own job or funds; they may not be allowed to work, turning two incomes into one for the posting; and their time in the country may not count toward long-term residency as a spouse's would. A one-income household with a partner who has no independent right to stay is fragile. The [solo agers lesson](/blog/solo-agers-and-single-income-households/) covered sizing the emergency fund on one income; couples in this position often also size it to cover both of them leaving at short notice. Some countries have a separate route for unmarried or durable partners.
 
 </details>
 
 ## Ownership and contract can protect you where status does not
 
-Rights that come from status can vanish when the status does. Rights based on ownership or contract may depend less on marital status, though their effect still depends on the document and local law: a beneficiary form may be binding or advisory, and joint ownership does not necessarily include survivorship. A common planning exercise is to identify which protections can be documented independently of marital status, using the five documents from the unmarried couples post: a will, beneficiary forms, a clear record of how the home is owned, an agreement between partners, and powers of attorney for money and health. They are worth having even where the marriage is recognized today, since they can help after a future move or a change in the law.
+Rights that come from status can vanish when the status does. Rights based on ownership or contract may depend less on marital status, though their effect still depends on the document and local law: a beneficiary form may be binding or advisory, and joint ownership does not necessarily include survivorship. A common planning exercise is to identify which protections can be documented independently of marital status, using the five documents from the unmarried couples lesson: a will, beneficiary forms, a clear record of how the home is owned, an agreement between partners, and powers of attorney for money and health. They are worth having even where the marriage is recognized today, since they can help after a future move or a change in the law.
 
 - **Private pensions and life insurance:** many couples name each other on every form by name, not as "my spouse", and check whether the scheme pays survivor benefits to a partner it does not recognize as married; where it does not, life insurance is a common way to fill the gap.
 - **Where assets sit:** assets kept in a country that recognizes the marriage stay under rules that treat the couple as married, weighed against tax, currency and access trade-offs.

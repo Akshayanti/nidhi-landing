@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | Girdiğiniz faiz oranı %0 ile %100 arasında olmalıdır. | Girdiğin faiz oranı %0 ile %100 arasında olmalı. | Faiz oranı %0 ile %100 arasında olmalıdır. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Ödemelerinizdeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. | Ödemelerindeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. | Ödemelerdeki gecikme bunaltıcı gelebilir ve yardım almanın yolları var. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 Turkish verbs do not mark gender, so none of the forms gives the reader one.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),

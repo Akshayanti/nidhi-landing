@@ -103,7 +103,7 @@ export const es: Dict = {
       thirdParty: 'Licencias de terceros',
     },
     disclaimerShort:
-      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un servicio de asesoría financiera con licencia.',
     disclaimerLong:
       'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
     copyright: '© {year} nidhi. Todos los derechos reservados.',
@@ -456,7 +456,7 @@ export const es: Dict = {
         after: '.',
       },
       advice:
-        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+        'nidhi no es un servicio de asesoría financiera con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
           'Si algo está mal, quiero corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
@@ -767,7 +767,7 @@ export const es: Dict = {
 
     newsletter: {
       email: 'Tu dirección de correo electrónico.',
-      page: 'La página desde la que te suscribiste (para saber si te trajo el índice del blog o una entrada concreta).',
+      page: 'La página desde la que te suscribiste (para saber si te trajo la lista de lecciones o una lección o guía concreta).',
       timestamps: 'La fecha y hora en que te suscribiste, confirmaste y (si lo haces) cancelaste la suscripción.',
       status: 'El estado de tu suscripción: pendiente, confirmada o cancelada.',
       analytics:
@@ -776,7 +776,7 @@ export const es: Dict = {
         'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscripciones confirmadas, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
         before: 'Los correos del boletín llegan desde ',
-        after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
+        after: '. Añádela a tus contactos para que los avisos de nuevas lecciones y guías lleguen a tu bandeja de entrada.',
       },
     },
     waitlist: {
@@ -854,12 +854,12 @@ export const es: Dict = {
     why: {
       analytics: {
         lead: 'Analítica:',
-        rest: ' para averiguar qué entradas ayudan de verdad a la gente y en cuáles se pierde a mitad de camino. No podemos arreglar lo que no vemos.',
+        rest: ' para averiguar qué lecciones y guías ayudan de verdad a la gente y en cuáles se pierde a mitad de camino. No podemos arreglar lo que no vemos.',
       },
       newsletter: {
         lead: 'Boletín:',
         rest:
-          ' para enviarte un correo cuando se publica una nueva entrada del blog, más un recordatorio si empiezas a suscribirte pero no confirmas en 3 días (enviado entre las 9:00 y las 12:00, hora de Praga). Ningún otro correo. Sin promociones, sin secuencias de «te echamos de menos», sin promoción cruzada de otros productos.',
+          ' para enviarte un correo cuando se publica una nueva lección o guía, más un recordatorio si empiezas a suscribirte pero no confirmas en 3 días (enviado entre las 9:00 y las 12:00, hora de Praga). Ningún otro correo. Sin promociones, sin secuencias de «te echamos de menos», sin promoción cruzada de otros productos.',
       },
       waitlist: {
         lead: 'Lista de espera:',
@@ -1239,7 +1239,7 @@ export const es: Dict = {
         },
         {
           q: '¿Esto es asesoramiento financiero?',
-          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un servicio de asesoría financiera con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
       ],
     },

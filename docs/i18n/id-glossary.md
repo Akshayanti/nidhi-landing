@@ -44,6 +44,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | Suku bunga yang Anda masukkan harus berada di antara 0% dan 100%. | Suku bunga yang kamu masukkan harus berada di antara 0% dan 100%. | Suku bunga yang dimasukkan harus berada di antara 0% dan 100%. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Keterlambatan pembayaran Anda bisa terasa berat, dan ada cara untuk mendapatkan bantuan. | Keterlambatan pembayaranmu bisa terasa berat, dan ada cara untuk mendapatkan bantuan. | Keterlambatan pembayaran bisa terasa berat, dan ada cara untuk mendapatkan bantuan. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 Who the site is for and how it speaks are in [`../brand-identity.md`](../brand-identity.md): the same page has to work for someone in their first job and for a retired reader who would send it to their family. Things to weigh: warmth against respect; whether one form reads well across
 ages and regions; consistency, since a page that switches forms reads as
 careless; and whether leaving the pronoun out sounds natural or stiff in each

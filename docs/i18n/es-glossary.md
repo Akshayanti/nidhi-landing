@@ -276,6 +276,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | balance (of a loan) | saldo pendiente | |
 | balance (of a portfolio) | valor de la cartera | Not *saldo*, which reads as money owed. |
 | lender | entidad financiera | *Prestamista* reads as a private moneylender. |
+| licensed financial adviser (what nidhi is not) | servicio de asesoría financiera con licencia | Not *un asesor financiero*: a masculine noun for a person, where nidhi is a site. |
 | offer (a card in the loan tool) | oferta | *Oferta A*, *Añadir oferta*. The name field is *Nombre de la entidad*. |
 | recast | recalcular la cuota | Where the tool defines it: on the remaining balance, keeping the rate and the end date. |
 | apply to principal | aplicar al capital | *Reduce el capital* is fine for the effect. Never *sumar al capital*, which says the debt grows. |
@@ -301,7 +302,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | box (on a page) | recuadro | *Cuadro* only for a dialog (*cuadro de impresión*). |
 | starting routes (home) | rutas iniciales | Not *puntos de partida*, which the site keeps for a starting point. |
 | Full / Redacted (share options) | Versión completa / Versión con datos ocultos | Never *anónima*: the link still carries the currencies and each one's share. |
-| Cautious / Historical / Optimistic | Prudente / Histórico / Optimista | The return settings. |
+| Cautious / Historical / Optimistic | Prudente / Histórico / Optimista | The return settings. A setting is *opción* in both tools (*la opción prudente*, *las opciones prudente y optimista*); not *escenario*, which is *scenario*. *Opción* is feminine: *la opción «Histórico»*. |
 | lump sums | pagos extraordinarios | |
 | prepayment penalty | penalización por pago anticipado | |
 | months to payoff | meses hasta liquidar | |

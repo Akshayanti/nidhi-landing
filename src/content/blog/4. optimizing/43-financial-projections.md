@@ -34,8 +34,10 @@ glossary:
     definition: "The risk that bad market years arrive just as you start drawing money out, which does more lasting damage than the same years later on."
 order: 43
 pubDate: 2026-10-12
-updatedDate: "2026-11-21"
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024, so a steady line at that rate now ends near €1.10 million, not €1.07 million."
   - date: 2026-11-21
     note: "The lesson called 6% after inflation the central rate of its three, gave developed markets a 4 to 6% range without a source, and treated the simulation's 6% as the same figure as the middle line. 6% is the middle of three chosen rates and sits above the long-run world figure of 5.2%, with individual markets varying around it (the US at 6.6% and the UK at 5.4% are both above it); the simulation's 6% is a simple average of yearly returns, which compounds at about 4.9%. The 4%, 6% and 8% figures are unchanged; the lesson now adds the 5% and 5.2% comparisons and the US gap between its average year (8.5%) and its compounded rate (6.6%)."
 level: "optimizing"
@@ -54,7 +56,7 @@ faq:
   - question: "Real return or nominal return: which should the projection use?"
     answer: "Both are useful, but real returns (the return after inflation, close to nominal return minus inflation when both are low) are the ones most planners lean on because they tell you what your money will actually buy. Nominal projections look bigger and feel more satisfying, but they overstate what the future dollar or euro is worth. A projection that says you will have €1,200,000 in 30 years at 7% nominal growth with 2% inflation is really telling you the purchasing power of roughly €660,000 in today's terms. That is still a meaningful number, but it is a very different number. A common practice is to run the projection in nominal terms so contribution amounts stay recognizable, and to display the real (inflation-adjusted) version so the outcome is honest."
   - question: "How do I set assumptions without falling into overconfidence?"
-    answer: "A very common projection failure is not the model. It is the person setting the growth-rate assumption too high, usually by anchoring to recent market performance or to the highest number they have read. Three defences. First, use a range: run the projection with a cautious, a middle and an optimistic growth rate and show all three. Second, use long-run figures that span multiple market environments (about 5.2% a year after inflation, compounded, for world equities from 1900 to 2024 in Dimson, Marsh and Staunton's data, with individual markets varying around it), not the last five years. Third, revisit and update annually rather than defending a projection built during a moment of enthusiasm. The Psychology series covers the underlying bias (overconfidence) in more depth; the practical answer is to build the projection so it has to survive its own assumptions."
+    answer: "A very common projection failure is not the model. It is the person setting the growth-rate assumption too high, usually by anchoring to recent market performance or to the highest number they have read. Three defences. First, use a range: run the projection with a cautious, a middle and an optimistic growth rate and show all three. Second, use long-run figures that span multiple market environments (about 5.3% a year after inflation, compounded, for world equities from 1900 to 2025 in Dimson, Marsh and Staunton's data, with individual markets varying around it), not the last five years. Third, revisit and update annually rather than defending a projection built during a moment of enthusiasm. The Psychology series covers the underlying bias (overconfidence) in more depth; the practical answer is to build the projection so it has to survive its own assumptions."
   - question: "What is a Monte Carlo simulation, and do I need one?"
     answer: "A Monte Carlo simulation runs your projection thousands of times, each time with a different sequence of yearly returns drawn from a realistic range, and shows how the outcomes spread out. The 10th percentile is the bad-luck path, the median the middle, the 90th the good-luck path. It also shows something a single line hides: uneven returns compound to less than their simple average delivered smoothly, so when the single line is drawn at that simple average, the middle outcome usually lands below it. While you are saving, many people find a simple fan of three growth rates enough to reason with. Close to retirement, when money starts coming out, a simulation adds much more, because the order of good and bad years starts to matter. Whether you need one depends on your horizon and how much rides on the answer."
   - question: "Why say 'in 90% of simulations' rather than 'a 90% chance'?"
@@ -71,6 +73,9 @@ referentialReading:
     author: "Wikipedia"
     url: "https://en.wikipedia.org/wiki/Compound_interest"
     type: "blog"
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -161,14 +166,14 @@ A quick way to sketch the fan for any plan, 30 years out, in today's money: mult
 A common approach has four parts:
 
 - **Use a range, not one number:** a cautious, a middle and an optimistic rate.
-- **Anchor on long-run history across many markets.** The Global Investment Returns Yearbook (Dimson, Marsh and Staunton) puts world equities at 5.2% a year after inflation, compounded, from 1900 to 2024. Individual markets vary around it: the US at 6.6% and the UK at 5.4% over the same years, both above it. The three rates in this post are set two points apart for comparison, not taken from that history: 4% is below the world figure, 6% is above it, and 8% is optimistic against the long-run average, though some markets and periods did better. At 5%, closer to the world figure, Eva's plan reaches about €1.03 million. Bonds sit lower; cash lower still.
-- **Work in real returns,** with inflation already taken off, so the numbers show what the money will buy. The [purchasing power post](/blog/purchasing-power/) covered why. A projection using [nominal returns](#term-nominal-return) over decades overstates what you can afford by a wide margin; the inflation figure is itself an assumption that differs by country.
+- **Anchor on long-run history across many markets.** Dimson, Marsh and Staunton's data puts world equities at 5.3% a year after inflation, compounded, from 1900 to 2025 (as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026). Individual markets vary around it: the US at 6.6% and the UK at 5.4% from 1900 to 2024 (Global Investment Returns Yearbook 2025), both above it. The three rates in this lesson are set two points apart for comparison, not taken from that history: 4% is below the world figure, 6% is above it, and 8% is optimistic against the long-run average, though some markets and periods did better. At 5%, closer to the world figure, Eva's plan reaches about €1.03 million. Bonds sit lower; cash lower still.
+- **Work in real returns,** with inflation already taken off, so the numbers show what the money will buy. The [purchasing power lesson](/blog/purchasing-power/) covered why. A projection using [nominal returns](#term-nominal-return) over decades overstates what you can afford by a wide margin; the inflation figure is itself an assumption that differs by country.
 - **Take off the fees you pay.** A 7% market return is 6.5% after a 0.5% [expense ratio](#term-expense-ratio) and 6% after 1%.
 
 <details class="lesson-depth">
 <summary class="disclosure">Why growth rates get set too high</summary>
 
-The [overconfidence post](/blog/overconfidence-and-the-planning-fallacy/) explains the bias; in projections it shows up three ways.
+The [overconfidence lesson](/blog/overconfidence-and-the-planning-fallacy/) explains the bias; in projections it shows up three ways.
 
 **Anchoring on the best recent decade.** US shares from 2010 to 2020 did exceptionally well by long-run standards. Using that decade as the baseline for the next 30 years extrapolates from a lucky sample; some decades are much better and some much worse.
 
@@ -224,7 +229,7 @@ Here is Eva's plan run 10,000 times. Each year's return is drawn at random from 
 
 **Reading the [percentiles](#term-percentile).** The 10th percentile is the bad-luck path: only one run in ten did worse. The 50th is the middle; the 90th the good-luck path. For Eva they land at about €510,000, €1.08 million and €2.2 million. So in 90% of runs her pot passed about €510,000.
 
-**Why the middle sits below the single line.** About three in five runs (61%) finish below the €1.26 million a steady 6% produces. A 20% loss followed by a 20% gain leaves you 4% down, so a simple average compounds to less when the years arrive unevenly: these years average 6% but compound at about 4.9%. The Yearbook shows a similar gap for US shares from 1900 to 2024: 8.5% after inflation in an average year, but 6.6% a year compounded. Long-run figures given as a yearly rate over a whole period, such as the world's 5.2%, are already compounded, so this drag is inside them and is not taken off again: in this example, a steady 5.2% line ends near €1.07 million, close to the median here.
+**Why the middle sits below the single line.** About three in five runs (61%) finish below the €1.26 million a steady 6% produces. A 20% loss followed by a 20% gain leaves you 4% down, so a simple average compounds to less when the years arrive unevenly: these years average 6% but compound at about 4.9%. The Yearbook shows a similar gap for US shares from 1900 to 2024: 8.5% after inflation in an average year, but 6.6% a year compounded. Long-run figures given as a yearly rate over a whole period, such as the world's 5.3%, are already compounded, so this drag is inside them and is not taken off again: in this example, a steady 5.3% line ends near €1.10 million, close to the median here.
 
 **Saying it honestly.** "In 90% of runs the pot passed €510,000" is what the model says. "A 90% chance" drops the assumptions and turns an estimate into a promise about the future, which it cannot be: inflation, growth and how markets move together can all differ from the past. A common way to read it: look at the 10th percentile and ask whether you could live with it.
 
@@ -257,6 +262,6 @@ No. That is what the model produced from its assumptions, built on past returns.
 
 **A yearly update.** A projection built at 30 with assumptions from one year stops being useful a decade later if it is never touched. Many people update it once a year: the real starting balance, any scheduled events, and how far the last projection drifted from what happened, which shows how tight the assumptions were. A rerun that moves a few points is noise; a change in your situation is information.
 
-Testing a decision before you make it, by changing one input and comparing, is the subject of the next post.
+Testing a decision before you make it, by changing one input and comparing, is the subject of the next lesson.
 
 If your plan only works on the highest of the three lines, which of the levers would you reach for first?

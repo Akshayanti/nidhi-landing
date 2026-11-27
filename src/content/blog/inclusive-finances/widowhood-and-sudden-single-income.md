@@ -58,7 +58,7 @@ referentialReading:
 
 A retired couple have pensions of €1,400 and €1,100 a month and spend €2,300 together. The partner with the larger pension dies. On a rough equivalence-scale illustration, the survivor's comparable spending is about €1,600, roughly 70% of what the two spent, though their actual bills could be higher or lower. Their income falls to €1,870 if the scheme pays a 55% survivor pension, or to €1,100 if it pays nothing, which leaves them €500 a month short.
 
-Losing a partner is two events at once. One is grief. The other is a financial restructuring: a household built on two people, often two incomes, rebuilt around one, arriving in the worst year of a life. The [windfalls post](/blog/windfall-management/) noted that money arriving with a loss is the hardest money to handle well. What helps most is knowing in advance how the tasks divide: a few have deadlines, and most do not. [Survivor benefits](#term-survivor-benefit), inheritance procedure and tax differ in every country and between married and unmarried partners, so this post teaches what to check rather than what anyone is entitled to.
+Losing a partner is two events at once. One is grief. The other is a financial restructuring: a household built on two people, often two incomes, rebuilt around one, arriving in the worst year of a life. The [windfalls lesson](/blog/windfall-management/) noted that money arriving with a loss is the hardest money to handle well. What helps most is knowing in advance how the tasks divide: a few have deadlines, and most do not. [Survivor benefits](#term-survivor-benefit), inheritance procedure and tax differ in every country and between married and unmarried partners, so this lesson teaches what to check rather than what anyone is entitled to.
 
 ## Which tasks after a death have deadlines and which can wait
 
@@ -79,13 +79,13 @@ Usually the wait list, unless the loan terms, arrears or an expiring option crea
 
 ## Why many advisers suggest waiting six to twelve months for major decisions
 
-A common bereavement guideline is to postpone large, hard-to-reverse decisions when no real deadline applies. Six to twelve months is a rule of thumb, not a requirement: grief affects people differently, affecting concentration, memory and judgement, and housing, immigration, debt or care needs may make earlier action necessary. The windfalls post described pausing before deciding on a large sum; after a death, some people keep a payout in a simple, accessible account while they work out what it must cover. Deposit protection, inflation, tax, currency and provider risk are local, so the temporary arrangement and any protection limit need checking.
+A common bereavement guideline is to postpone large, hard-to-reverse decisions when no real deadline applies. Six to twelve months is a rule of thumb, not a requirement: grief affects people differently, affecting concentration, memory and judgement, and housing, immigration, debt or care needs may make earlier action necessary. The windfalls lesson described pausing before deciding on a large sum; after a death, some people keep a payout in a simple, accessible account while they work out what it must cover. Deposit protection, inflation, tax, currency and provider risk are local, so the temporary arrangement and any protection limit need checking.
 
 When relatives, advisers or salespeople push, one sentence covers all of them: *"I am not making any financial decisions until next spring."* People who have the survivor's interests at heart usually accept it.
 
 ## Why income often falls further than costs after a partner dies
 
-Two people do not spend twice what one does: rent, heating, internet, a car and home insurance cost about the same. Common statistical equivalence scales, such as the one the [solo agers post](/blog/solo-agers-and-single-income-households/) described, put one adult's needs at roughly two-thirds to **70%** of a couple's for the same standard of living; they compare households and do not predict a particular survivor's bills. Income can fall much further, depending on where it came from and whether the relationship was legally recognized:
+Two people do not spend twice what one does: rent, heating, internet, a car and home insurance cost about the same. Common statistical equivalence scales, such as the one the [solo agers lesson](/blog/solo-agers-and-single-income-households/) described, put one adult's needs at roughly two-thirds to **70%** of a couple's for the same standard of living; they compare households and do not predict a particular survivor's bills. Income can fall much further, depending on where it came from and whether the relationship was legally recognized:
 
 | The survivor's position | Income after the death | Monthly costs | Surplus or shortfall |
 |---|---|---|---|
@@ -93,7 +93,7 @@ Two people do not spend twice what one does: rent, heating, internet, a car and 
 | Married, scheme pays no survivor pension | €1,100 | €1,600 | -€500 |
 | Not married, no survivor benefit | €1,100 | €1,600 | -€500 |
 
-The figures are illustrative; survivor pensions range from nothing to the full amount. The same couple and the same loss differ by €770 a month for life, decided by a pension scheme rule and a line on a certificate; the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [marriage not recognized](/blog/when-your-marriage-is-not-recognised-abroad/) posts cover what to put in place while both partners are alive. For a younger survivor the pattern is sharper: a salary stops completely, children's costs continue, and childcare the couple shared may have to be bought.
+The figures are illustrative; survivor pensions range from nothing to the full amount. The same couple and the same loss differ by €770 a month for life, decided by a pension scheme rule and a line on a certificate; the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [marriage not recognized](/blog/when-your-marriage-is-not-recognised-abroad/) lessons cover what to put in place while both partners are alive. For a younger survivor the pattern is sharper: a salary stops completely, children's costs continue, and childcare the couple shared may have to be bought.
 
 <details class="lesson-depth">
 <summary class="disclosure">What to check, and rebuilding the plan after the first year</summary>
@@ -108,7 +108,7 @@ The figures are illustrative; survivor pensions range from nothing to the full a
 
 ## Protecting yourself from scams aimed at the bereaved
 
-Deaths are published, a payout may be on the way, and the survivor is exhausted and often handling money alone for the first time. The [scams post](/blog/recognizing-and-avoiding-financial-scams-and-fraud/) covers the general warning signs; the expander below lists approaches common after a bereavement.
+Deaths are published, a payout may be on the way, and the survivor is exhausted and often handling money alone for the first time. The [scams lesson](/blog/recognizing-and-avoiding-financial-scams-and-fraud/) covers the general warning signs; the expander below lists approaches common after a bereavement.
 
 Three habits many survivors use to make themselves hard to reach: **nothing is decided on the day it is proposed** (the spring sentence works here too); **you make the call,** on a number you looked up yourself, never one supplied by whoever got in touch; and **one other person knows** about any request for money before acting on it, because fraud depends on secrecy.
 

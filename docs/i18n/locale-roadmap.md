@@ -74,6 +74,10 @@ is an owner decision (owner and council, November 9, 2026).
 - **Keeping it current:** each time a glossary is worked on, it is checked
   against the current English and its source commit and "last checked" date
   are updated, so the material cannot drift silently before an edition.
+- **Rows marked "Read before this language starts"** are read by the
+  volunteer first (owner, November 27, 2026, #812): they were drafted after
+  the glossary was last reviewed, and nothing else in that language is
+  settled until they are.
 - **What a volunteer is told:** there is no launch date and no obligation to
   continue. They work through the same review sheets as the published
   languages (`docs/plans/volunteer-review-material.md`), with the same

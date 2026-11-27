@@ -47,7 +47,7 @@ faq:
 
 You know that [net worth equals assets minus liabilities](/blog/what-is-net-worth/). But how do you actually sit down and figure out your number?
 
-Here's a method that takes about ten minutes. Grab a pen, open your banking apps, and let's go.
+Here's a method that takes about ten minutes. Grab a pen and open your banking apps.
 
 ## Step 1: List your assets
 
@@ -86,7 +86,7 @@ Now list everything you owe.
 
 Use the current outstanding balance, not the monthly payment. If your mortgage has €180,000 remaining, that's your liability, regardless of what you pay each month.
 
-## Step 3: Do the math
+## Step 3: Do the maths<span id="step-3-do-the-math"></span>
 
 Add up all assets. Add up all liabilities. Subtract.
 

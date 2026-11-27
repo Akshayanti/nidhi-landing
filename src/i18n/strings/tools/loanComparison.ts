@@ -48,8 +48,9 @@ export const loanComparisonEn = {
    * shows a reader is here.
    */
   schema: {
-    name: 'nidhi Loan Comparison Calculator',
+    name: 'nidhi loan comparison',
     alternateNames: [
+      'nidhi Loan Comparison Calculator',
       'nidhi Loan Comparator',
       'nidhi Loan Calculator',
       'nidhi Multi-Currency Loan Comparator',
@@ -84,7 +85,7 @@ export const loanComparisonEn = {
     eyebrow: 'Free tools',
     /** Split around the `<span class="lc-wideOnly">`, which phones hide. */
     title: {
-      lead: 'Loan comparison calculator',
+      lead: 'Loan comparison',
       wide: ': compare loan offers side by side',
     },
     /** Three parts, for the same phone-only span. The spaces are the markup's. */
@@ -102,7 +103,7 @@ export const loanComparisonEn = {
           title: 'Getting started',
           items: [
             {
-              q: 'How does this loan comparison calculator work?',
+              q: 'How does this loan comparison work?',
               a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for each lender you want to compare. You can compare two to five loan offers side by side. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, APR (which folds the fee into the rate), and total amount paid.',
             },
             {
@@ -225,7 +226,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What does “multi-currency” mean here?',
-              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
+              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The maths itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
         },
@@ -375,7 +376,7 @@ export const loanComparisonEn = {
         after: ' to enable these fields.',
       },
       initialFixed: 'Initial fixed period (months)',
-      initialFixedHelp: 'Common: 60, 84 or 120 months (5, 7 or 10 years).',
+      initialFixedHelp: 'It varies by country: 2 or 5 years (24 or 60 months) are common in the UK, for example, and 5, 7 or 10 years (60, 84 or 120 months) in the US.',
       subsequentRate: 'Subsequent rate (%)',
       subsequentRateHelp:
         'Rate after the fixed period ends. Real adjustable loans follow a reference rate; this is your own assumption, not a forecast.',
@@ -785,8 +786,9 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'मुफ़्त लोन तुलना कैलकुलेटर। दो से पाँच ऑफ़र साथ-साथ रखें: मासिक किस्त, चुकाने का समय, कुल ब्याज, APR और कुल लागत। कई मुद्राओं में।',
   },
   schema: {
-    name: 'nidhi लोन तुलना कैलकुलेटर',
+    name: 'nidhi लोन की तुलना',
     alternateNames: [
+      'nidhi लोन तुलना कैलकुलेटर',
       'nidhi लोन तुलना टूल',
       'nidhi लोन कैलकुलेटर',
       'nidhi कई मुद्राओं वाला लोन तुलना टूल',
@@ -819,7 +821,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     eyebrow: 'मुफ़्त टूल',
     title: {
-      lead: 'लोन तुलना कैलकुलेटर',
+      lead: 'लोन की तुलना',
       wide: ': लोन के ऑफ़र साथ-साथ रखकर देखें',
     },
     lead: {
@@ -835,7 +837,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           title: 'शुरुआत कैसे करें',
           items: [
             {
-              q: 'यह लोन तुलना कैलकुलेटर कैसे काम करता है?',
+              q: 'लोन की तुलना का यह टूल कैसे काम करता है?',
               a: 'जिन लोन ऑफ़र की तुलना करनी है, उनमें से हर एक के लिए लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त भर दें। आप दो से पाँच लोन ऑफ़र की साथ-साथ तुलना कर सकते हैं। कैलकुलेटर हर लोन का पूरा किस्तों का शेड्यूल बनाता है और मासिक किस्त, चुकाने के महीने, कुल ब्याज, APR (जो शुल्क को दर में जोड़ देता है) और कुल चुकाई जाने वाली राशि दिखाता है।',
             },
             {
@@ -1091,7 +1093,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         after: ' पर बदल दें।',
       },
       initialFixed: 'शुरुआत की तय अवधि (महीने)',
-      initialFixedHelp: 'आम: 60, 84 या 120 महीने (5, 7 या 10 साल)।',
+      initialFixedHelp: 'यह देश के हिसाब से बदलता है: जैसे ब्रिटेन में 2 या 5 साल (24 या 60 महीने) आम हैं, और अमेरिका में 5, 7 या 10 साल (60, 84 या 120 महीने)।',
       subsequentRate: 'बाद की दर (%)',
       subsequentRateHelp:
         'तय अवधि ख़त्म होने के बाद की दर। असली बदलती दर वाले लोन किसी संदर्भ दर के साथ चलते हैं; यह आपका अपना अनुमान है, कोई पूर्वानुमान नहीं।',
@@ -1437,6 +1439,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
   schema: {
     name: 'Comparador de préstamos de nidhi',
     alternateNames: [
+      'Calculadora de comparación de préstamos de nidhi',
       'Calculadora para comparar préstamos de nidhi',
       'Calculadora de préstamos de nidhi',
       'Comparador de préstamos en varias monedas de nidhi',
@@ -1515,7 +1518,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento de la entidad antes de compararlo con esta cifra.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
@@ -1741,7 +1744,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         after: ' para activar estos campos.',
       },
       initialFixed: 'Periodo fijo inicial (meses)',
-      initialFixedHelp: 'Habituales: 60, 84 o 120 meses (5, 7 o 10 años).',
+      initialFixedHelp: 'Depende del país: en el Reino Unido, por ejemplo, son habituales 2 o 5 años (24 o 60 meses), y en EE. UU., 5, 7 o 10 años (60, 84 o 120 meses).',
       subsequentRate: 'Tasa posterior (%)',
       subsequentRateHelp:
         'Tasa cuando termina el periodo fijo. Los préstamos de tasa variable reales siguen una tasa de referencia; esta es tu propia suposición, no un pronóstico.',
@@ -2084,8 +2087,9 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       'Kalkulačka pro srovnání úvěrů zdarma. Porovnejte dvě až pět nabídek vedle sebe: měsíční splátka, doba splácení, úroky celkem, APR a celkové náklady. Více měn.',
   },
   schema: {
-    name: 'Kalkulačka pro srovnání úvěrů nidhi',
+    name: 'Srovnání úvěrů nidhi',
     alternateNames: [
+      'Kalkulačka pro srovnání úvěrů nidhi',
       'Srovnávač úvěrů nidhi',
       'Úvěrová kalkulačka nidhi',
       'Srovnávač úvěrů ve více měnách nidhi',
@@ -2390,7 +2394,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         after: ' a tato pole budou dostupná.',
       },
       initialFixed: 'Počáteční období fixace (měsíce)',
-      initialFixedHelp: 'Obvykle: 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
+      initialFixedHelp: 'Liší se podle země: například ve Spojeném království jsou obvyklé 2 nebo 5 let (24 nebo 60 měsíců), v USA 5, 7 nebo 10 let (60, 84 nebo 120 měsíců).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
         'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
@@ -2716,8 +2720,9 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     description: 'मोफत कॅल्क्युलेटर: कर्जाच्या दोन ते पाच ऑफरची शेजारी शेजारी तुलना करा: मासिक हप्ता, परतफेडीचा काळ, एकूण व्याज, APR आणि एकूण खर्च. अनेक चलनांमध्ये.',
   },
   schema: {
-    name: 'nidhi कर्जांची तुलना करणारा कॅल्क्युलेटर',
+    name: 'nidhi कर्जांची तुलना',
     alternateNames: [
+      'nidhi कर्जांची तुलना करणारा कॅल्क्युलेटर',
       'nidhi कर्ज तुलना साधन',
       'nidhi कर्ज कॅल्क्युलेटर',
       'nidhi अनेक चलनांतील कर्ज तुलना साधन',
@@ -2750,7 +2755,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     eyebrow: 'मोफत साधने',
     title: {
-      lead: 'कर्जांची तुलना करणारा कॅल्क्युलेटर',
+      lead: 'कर्जांची तुलना',
       wide: ': कर्जाच्या ऑफरची शेजारी शेजारी तुलना करा',
     },
     lead: {
@@ -2765,7 +2770,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           title: 'सुरुवात',
           items: [
             {
-              q: 'हा कर्जांची तुलना करणारा कॅल्क्युलेटर कसा काम करतो?',
+              q: 'कर्जांच्या तुलनेचे हे साधन कसे काम करते?',
               a: 'तुम्हाला ज्या प्रत्येक कर्जदात्याची तुलना करायची आहे त्याच्यासाठी कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता यांपैकी एक भरा. कर्जाच्या दोन ते पाच ऑफरची शेजारी शेजारी तुलना करता येते. कॅल्क्युलेटर प्रत्येक कर्जासाठी कर्जफेडीचे संपूर्ण वेळापत्रक तयार करतो आणि मासिक हप्ता, परतफेडीपर्यंतचे एकूण महिने, एकूण व्याज, APR (जो शुल्क व्याजदरात सामावून घेतो) आणि भरलेली एकूण रक्कम दाखवतो.',
             },
             {
@@ -3021,7 +3026,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         after: ' वर बदला, म्हणजे हे रकाने वापरता येतील.',
       },
       initialFixed: 'सुरुवातीचा ठरावीक कालावधी (महिने)',
-      initialFixedHelp: 'नेहमीचे: 60, 84 किंवा 120 महिने (5, 7 किंवा 10 वर्षे).',
+      initialFixedHelp: 'हे देशानुसार बदलते: उदाहरणार्थ, UK मध्ये 2 किंवा 5 वर्षे (24 किंवा 60 महिने) नेहमीची आहेत, आणि अमेरिकेत 5, 7 किंवा 10 वर्षे (60, 84 किंवा 120 महिने).',
       subsequentRate: 'नंतरचा दर (%)',
       subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या संदर्भ दरानुसार बदलतात; हा तुमचा स्वतःचा अंदाज आहे, भाकीत नाही.',
       costs: {

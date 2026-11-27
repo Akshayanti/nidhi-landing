@@ -87,4 +87,4 @@ There's no universal "good" number. It depends on your age, location, and goals.
 
 Knowing your net worth, even if it's not where you want it to be, is the first step toward changing it.
 
-In the next post, we'll walk through how to calculate your net worth in about ten minutes. No spreadsheet wizardry required.
+The next lesson walks through how to calculate your net worth in about ten minutes. No spreadsheet wizardry required.

@@ -70,7 +70,7 @@ Jiri, 38, has €5,000 of [net pay](#term-net-pay) landing every month. His regu
 
 ## A monthly average hides the months that come up short
 
-The [Cash Flow 101 post](/blog/cash-flow-101/) treated cash flow as a monthly average, which is the right starting point. A [cash flow forecast](#term-cash-flow-forecast) goes one layer down: what actually lands in each month. Jiri's regular €4,000 is joined by five [lumpy expenses](#term-lumpy-expense):
+The [Cash Flow 101 lesson](/blog/cash-flow-101/) treated cash flow as a monthly average, which is the right starting point. A [cash flow forecast](#term-cash-flow-forecast) goes one layer down: what actually lands in each month. Jiri's regular €4,000 is joined by five [lumpy expenses](#term-lumpy-expense):
 
 | Month | Regular costs | Once-a-year cost | Total |
 |---|---|---|---|
@@ -135,7 +135,7 @@ Because the average spreads the €1,800 insurance across the year, but the bill
 
 ## A forecast and a projection answer different questions
 
-The [financial projections post](/blog/financial-projections/) asks how big your wealth will be in 20 years; it runs yearly, on long-run averages. A forecast asks whether, in February, the current account will cover the insurance after the mortgage has gone out; it runs monthly, and cares about timing. The two work as a pair: a good projection with no forecast can still hit a bad month that forces a sale of investments at the wrong time, and a good forecast with no projection says nothing about retirement.
+The [financial projections lesson](/blog/financial-projections/) asks how big your wealth will be in 20 years; it runs yearly, on long-run averages. A forecast asks whether, in February, the current account will cover the insurance after the mortgage has gone out; it runs monthly, and cares about timing. The two work as a pair: a good projection with no forecast can still hit a bad month that forces a sale of investments at the wrong time, and a good forecast with no projection says nothing about retirement.
 
 A forecast also shows the large one-offs coming: a car in three years, a deposit in five, a wedding in eighteen months. Each is a scheduled draw on liquid money, and each is easier to plan for years ahead than in the month it lands.
 
@@ -162,7 +162,7 @@ For a forecast, money falls into three tiers by how soon it can be spent:
 - **A safety buffer, one to six months of costs:** easy-access savings or a money-market fund you can move within a couple of days without penalty. Single-income households in unsteady fields often hold more; two steady incomes often less.
 - **Goal money, six months and beyond:** cash earmarked for a known cost inside the forecast window, such as a deposit or tuition.
 
-Pensions, invested capital and property sit outside all three. The [liquidity post](/blog/liquidity/) set out the full spectrum, and the cash management post later in this series covers which accounts suit each tier.
+Pensions, invested capital and property sit outside all three. The [liquidity lesson](/blog/liquidity/) set out the full spectrum, and the cash management lesson later in this series covers which accounts suit each tier.
 
 ## How to build a 12 month forecast in a spreadsheet
 

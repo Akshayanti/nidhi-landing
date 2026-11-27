@@ -35,11 +35,13 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 type Source = { definition: string; title: string; href: string };
-const byTerm = new Map<string, { term: string; id: string; sources: Source[] }>();
+const byTerm = new Map<string, { term: string; id: string; oldId?: string; sources: Source[] }>();
 for (const post of posts) {
-  for (const { term, definition } of post.data.glossary ?? []) {
+  for (const { term, definition, anchor } of post.data.glossary ?? []) {
     const id = termId(term);
     const entry = byTerm.get(id) ?? { term, id, sources: [] };
+    // A respelled term keeps its old anchor too, so links to it still land (#804).
+    if (anchor && termId(anchor) !== id) entry.oldId = termId(anchor);
     // One anchor, one spelling: lessons that define the same term must name
     // it the same way, or the page would merge two different words.
     if (entry.term !== term) {
@@ -105,7 +107,7 @@ const jsonLd = [{
         <dl>
           {terms.filter((x) => x.term[0].toUpperCase() === l).map((x) => (
             <div class="glossary-entry" id={x.id}>
-              <dt lang="en">{x.term}</dt>
+              <dt lang="en">{x.oldId && <span id={x.oldId}></span>}{x.term}</dt>
               {x.sources.map((s) => (
                 <dd>
                   <span lang="en">{s.definition}</span>

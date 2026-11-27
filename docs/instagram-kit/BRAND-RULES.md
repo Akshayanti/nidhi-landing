@@ -7,7 +7,7 @@ One page checklist for anyone producing nidhi content (people, Claude, Codex). I
 This is the Instagram audience. The site's audience is wider (every life stage) and is set in [`../brand-identity.md`](../brand-identity.md), which also holds the voice rules.
 
 - Global expats from anywhere, living anywhere except North America. Europe is the largest segment, money in €, examples rotate across expat hubs. No US or Canada targeting, no US-only products, tax or culture. Don't frame the account as single-country (EU-only or India-only). [PLAYBOOK §1]
-- Write for a reader new to the topic, often anxious about money ("Eva-type"). Problem first, plain words, one idea at a time. A chart that reads as math homework makes things worse. [PLAYBOOK §8, blog-content-plan Rule 9]
+- Write for the brand guide's four readers, with the first of them in front: on Instagram the most common reader is new to the topic, often starting out and often anxious about money, while the retired reader should still find a post sound enough to forward. Problem first, plain words, one idea at a time. A chart that reads as maths homework makes things worse. [PLAYBOOK §8, blog-content-plan Rule 9]
 
 ## Honesty
 
@@ -40,5 +40,5 @@ This is the Instagram audience. The site's audience is wider (every life stage) 
 
 - No em dashes, en dashes, hyphens or double hyphens anywhere a reader sees: slides, captions, stories, on-screen text. Use commas, colons or "to" for ranges. [PLAYBOOK §8]
 - No links in Instagram captions; say "link in bio". [PLAYBOOK §6]
-- Hashtags: at most 5, always #nidhi, none from the banned list, none repeated between consecutive posts. Keywords: 18 to 24 on carousels, 13 to 18 on reels, never duplicating a hashtag. [PLAYBOOK §3, §6]
+- Hashtags: at most 5, always #nidhi, none from the banned list, none repeated between consecutive posts. Keywords: 18 to 24 on carousels and reels alike, never duplicating a hashtag. [PLAYBOOK §3, §6]
 - Carousels 4:5 at up to 8 slides; stories 9:16 with content clear of the top 260px and bottom 360px; reels 9:16 at about −14 LUFS. [PLAYBOOK §2.1, §5, §7; REELS-PIPELINE]

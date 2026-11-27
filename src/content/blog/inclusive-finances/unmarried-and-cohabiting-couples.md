@@ -75,7 +75,7 @@ Sofia and Lena have been together for twelve years. They live in a flat Lena bou
 
 In many countries, this is what happens next. If the local inheritance order puts Lena's parents next, the flat may pass to them, and Sofia may have no automatic right to stay. She might try to prove a claim from twelve years of mortgage payments, but without anything in writing the result is uncertain and expensive, and the payments can look, legally, like a gift. Lena's pension pays nothing, because its rules name a spouse. Depending on local law and hospital rules, staff may turn to Lena's mother rather than Sofia. If Lena's parents give Sofia a share of the flat, it may be taxed as a gift between unrelated people. Nobody intended any of this; it is what the defaults produce when a couple is not married.
 
-The [insurance optimization post](/blog/insurance-optimization/) noted in passing that a spouse is often the default beneficiary while an unmarried partner has to be named. This post is the full version of that sentence, for couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and force in every country, so it teaches the categories; for the documents themselves, a local professional is the usual route.
+The [insurance optimization lesson](/blog/insurance-optimization/) noted in passing that a spouse is often the default beneficiary while an unmarried partner has to be named. This lesson is the full version of that sentence, for couples who have chosen not to marry and couples for whom marriage is not available. The legal instruments have different names and force in every country, so it teaches the categories; for the documents themselves, a local professional is the usual route.
 
 ## What marriage switches on automatically
 
@@ -92,7 +92,7 @@ A wedding is a legal event as well as a personal one. On that day a set of defau
 | A framework for dividing assets if the relationship ends | No framework; ordinary property and contract law |
 | A route to residency in a partner's country | Frequently none |
 
-[The first post in this series](/blog/when-the-default-plan-does-not-fit-you/) argued that every [default assumption](#term-default-assumption) carries a guess about who you are. Here the guess is simple: a couple is a married couple.
+[The first lesson in this series](/blog/when-the-default-plan-does-not-fit-you/) argued that every [default assumption](#term-default-assumption) carries a guess about who you are. Here the guess is simple: a couple is a married couple.
 
 ## Living together rarely creates the rights of marriage
 
@@ -165,11 +165,11 @@ Whether the saving from marrying or registering a partnership outweighs a couple
 <details class="lesson-depth">
 <summary class="disclosure">Marriage unavailable or unrecognized</summary>
 
-Where marriage is available, the choice is the same for any couple. Where it is not, or where a marriage made elsewhere is not recognized, every item in this post matters much more, because no route switches the bundle on. A later post in this series is devoted to that situation.
+Where marriage is available, the choice is the same for any couple. Where it is not, or where a marriage made elsewhere is not recognized, every item in this lesson matters much more, because no route switches the bundle on. A later lesson in this series is devoted to that situation.
 
 </details>
 
-Two companion posts extend this to households of more than two: owning a home as a group of three or more, and households with more than two partners.
+Two companion lessons extend this to households of more than two: owning a home as a group of three or more, and households with more than two partners.
 
 Marriage is one way to get these protections. It is not the only way; it is the only one that happens without anyone deciding.
 

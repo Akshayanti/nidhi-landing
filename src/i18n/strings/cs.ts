@@ -423,7 +423,7 @@ export const cs: Dict = {
       sourcesAndFigures:
         'Tvrzení stojí na primárních a důvěryhodných sekundárních zdrojích: na uznávaných knihách, referenčních materiálech a veřejných datech. Kde lekce čerpá z konkrétních zdrojů, jsou uvedené přímo u ní v části „Suggested Reading“ (k dalšímu čtení), aby šlo stopu sledovat, místo věřit mi na slovo. U\u00a0čísel, podle kterých by se čtenář mohl rozhodovat, je uvedeno, odkud pocházejí a\u00a0co zahrnují, a\u00a0lekce se porovnávají mezi sebou, aby stejná veličina měla všude stejnou hodnotu. Orientační pravidla, která nemají jeden konkrétní zdroj, jsou označená jako orientační pravidla. Pokud najdete číslo bez zdroje i\u00a0bez takového označení nebo dvě lekce, které si odporují, podívejte se níže do části „Opravy“. Propočítané příklady používají realistická čísla, a kde je číslo ukázkové, ne prognóza, lekce to řekne. Směnné kurzy v nástrojích zdarma jsou referenční kurzy centrálních bank a dalších oficiálních zdrojů, s datem na obrazovce.',
       aiUsed1:
-        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Různí agenti AI si záměrně kontrolují práci navzájem, aby zachytili to, co některý z nich přehlédne.',
+        'nidhi při své práci používá nástroje AI, včetně Claude od společnosti Anthropic a dalších agentů AI. Pomáhají zkoumat, psát a upravovat lekce; kontrolovat lekce podle této stránky; zpochybňovat finanční úvahy v lekci nebo nástroji z pohledu zkušeného poradce; a stavět web a jeho nástroje zdarma. Jednotliví agenti AI jsou záměrně nasazeni na kontrolu práce ostatních, aby zachytili to, co některý z nich přehlédne.',
       aiUsed2: {
         before:
           'Výstup AI je koncept, nikdy zdroj. Člověk je zapojený v každé fázi a každou lekci před zveřejněním čte a schvaluje. Model AI, který má uvažovat jako finanční poradce, je kontrolou úvahy, ne radou od odborníka s příslušným oprávněním. Web sám neposílá nic z toho, co napíšete nebo uděláte, žádné službě AI; co web sbírá, popisují ',
@@ -733,7 +733,7 @@ export const cs: Dict = {
 
     newsletter: {
       email: 'Vaše e-mailová adresa.',
-      page: 'Stránka, ze které přihlášení proběhlo (abychom věděli, zda vás přivedl přehled blogu, nebo konkrétní článek).',
+      page: 'Stránka, ze které přihlášení proběhlo (abychom věděli, zda vás přivedl přehled lekcí, nebo konkrétní lekce či návod).',
       timestamps: 'Datum a čas přihlášení, potvrzení a (pokud k tomu dojde) odhlášení.',
       status: 'Stav vašeho odběru: čekající na potvrzení, potvrzený nebo odhlášený.',
       analytics:
@@ -742,7 +742,7 @@ export const cs: Dict = {
         'Pokud se přihlásí a odběr potvrdí dost lidí, web může ukázat celkový počet potvrzených odběrů zaokrouhlený dolů. Nikdy neukazuje žádnou e-mailovou adresu ani to, zda odebírá konkrétní člověk.',
       from: {
         before: 'E-maily newsletteru chodí z adresy ',
-        after: '. Přidejte si ji do kontaktů, aby upozornění na nové články došla do vaší schránky.',
+        after: '. Přidejte si ji do kontaktů, aby upozornění na nové lekce a návody došla do vaší schránky.',
       },
     },
     waitlist: {
@@ -820,12 +820,12 @@ export const cs: Dict = {
     why: {
       analytics: {
         lead: 'Webová analytika:',
-        rest: ' abychom zjistili, které články lidem opravdu pomáhají a u kterých lidé v polovině odpadnou. Co nevidíme, to neopravíme.',
+        rest: ' abychom zjistili, které lekce a návody lidem opravdu pomáhají a u kterých lidé v polovině odpadnou. Co nevidíme, to neopravíme.',
       },
       newsletter: {
         lead: 'Newsletter:',
         rest:
-          ' abychom vám poslali e-mail, když vyjde nový článek na blogu, a jednu připomínku, pokud odběr začnete, ale do 3 dnů ho nepotvrdíte (odesílá se mezi 9. a 12. hodinou pražského času). Žádné jiné e-maily. Žádné akce, žádné série „chybíte nám“, žádná propagace jiných produktů.',
+          ' abychom vám poslali e-mail, když vyjde nová lekce nebo návod, a jednu připomínku, pokud odběr začnete, ale do 3 dnů ho nepotvrdíte (odesílá se mezi 9. a 12. hodinou pražského času). Žádné jiné e-maily. Žádné akce, žádné série „chybíte nám“, žádná propagace jiných produktů.',
       },
       waitlist: {
         lead: 'Čekací listina:',

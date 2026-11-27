@@ -33,7 +33,7 @@ faq:
   - question: "What is a FIRE number and how do I calculate mine?"
     answer: "Your FIRE number is the portfolio size that has historically let withdrawals cover your living costs through a long retirement; the studies behind it tested 30 years. The starting formula is annual expenses divided by your safe withdrawal rate. At a 4% withdrawal rate this simplifies to roughly 25 times your annual spending: €30,000 of yearly expenses implies a €750,000 target. The figure is driven entirely by what you spend, not what you earn, so trimming €10,000 of recurring spending lowers your target by €250,000. A study using 38 countries' data, not only the US, finds a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, which moves the target closer to 28 to 33 times annual expenses; that study's own figure is lower still."
   - question: "Why does savings rate matter more than income for reaching financial independence?"
-    answer: "Savings rate is income minus expenses divided by income, and it controls two things at once: how much you contribute and how much you eventually need. High spending raises your FIRE target while leaving less to invest, so a low saver is squeezed from both sides. The classic table shows that two people on very different salaries but the same savings rate reach independence in roughly the same number of years. A 20% saver is about 37 years away; a 50% saver is about 17 years away, regardless of the underlying paycheck. Expenses, not salary, set the pace."
+    answer: "Savings rate is income minus expenses divided by income, and it controls two things at once: how much you contribute and how much you eventually need. High spending raises your FIRE target while leaving less to invest, so a low saver is squeezed from both sides. The classic table shows that two people on very different salaries but the same savings rate reach independence in roughly the same number of years. A 20% saver is about 37 years away; a 50% saver is about 17 years away, regardless of the underlying pay. Expenses, not salary, set the pace."
   - question: "What are the four common types of FIRE?"
     answer: "Lean FIRE covers a minimal comfortable lifestyle, so the target is smallest and reached fastest. Traditional FIRE funds your current lifestyle indefinitely, adjusted for retirement changes like no commute. Fat FIRE adds a comfortable margin for nicer travel and bigger buffers, which lengthens the timeline because the portfolio requirement is larger. Coast FIRE is different in shape: you invest enough early that compounding alone will reach a full FIRE number by your target age, so you still work to cover current costs but no longer need to save. Many people pick the flavour they can imagine sustaining for decades rather than the one that sounds most impressive."
   - question: "Is the 4% rule a guarantee that my money will last?"
@@ -58,7 +58,7 @@ Most people think of retirement as a date. An age you reach, a birthday the stat
 
 When your investments can cover your expenses for as long as you need them to, without you adding another euro to them, you are financially independent. Work becomes optional. You might still work, because you enjoy it, because it has meaning, because you like your colleagues. But you no longer have to.
 
-This post is an introduction. It explains what financial independence is, the simple math behind it, the four flavours that cover most goals, and why the lever that matters most is your savings rate, not your salary. The deeper mechanics of living off your portfolio (safe withdrawal rates, sequence of returns, drawdown strategies) come later in the Mastery level.
+This lesson is an introduction. It explains what financial independence is, the simple maths behind it, the four flavours that cover most goals, and why the lever that matters most is your savings rate, not your salary. The deeper mechanics of living off your portfolio (safe withdrawal rates, sequence of returns, drawdown strategies) come later in the Mastery level.
 
 ## The core idea
 
@@ -71,15 +71,15 @@ The uncomfortable-but-freeing insight is that financial independence depends on 
 1. How much you spend each year
 2. How much you've invested
 
-Income matters less than you might think; what counts is how much of it you keep. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next paycheck forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
+Income matters less than you might think; what counts is how much of it you keep. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next month's pay forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
 
-## The simple math
+## The simple maths<span id="the-simple-math"></span>
 
 The most commonly cited starting formula:
 
 **FIRE number = annual expenses ÷ safe withdrawal rate**
 
-A "safe withdrawal rate" (SWR) is the percentage of your portfolio you can take out each year with historically high odds that the money lasts through a long retirement. The number most commonly cited in financial literature is 4%, based on the Trinity Study. That study used US historical data and found a portfolio of stocks and bonds could sustain 4% annual inflation-adjusted withdrawals for 30 years in most tested scenarios. It's a rule of thumb, not a guarantee. We'll come back to its limits in Mastery.
+A "safe withdrawal rate" (SWR) is the percentage of your portfolio you can take out each year with historically high odds that the money lasts through a long retirement. The number most commonly cited in financial literature is 4%, based on the Trinity Study. That study used US historical data and found a portfolio of stocks and bonds could sustain 4% annual inflation-adjusted withdrawals for 30 years in most tested scenarios. It's a rule of thumb, not a guarantee. The Mastery level comes back to its limits.
 
 At 4%, the formula simplifies to:
 
@@ -101,7 +101,7 @@ Two things should jump out of that table. First, the numbers are large but not u
 
 > **Public pensions change the number.** The 25× target assumes the portfolio pays for everything, for the whole retirement. In many countries a state or mandatory workplace pension starts at a set age and covers part of your spending from then on, so the portfolio only has to cover the gap. The OECD's *Pensions at a Glance 2025* models the net replacement rate from mandatory schemes for someone on average earnings who works a full career from age 22 at about 63% of previous earnings on average, from under 35% in Ireland and Lithuania to 96% in the Netherlands. Someone stopping work before pension age needs enough to bridge the years until it starts, and less after; how much depends on your country's rules and your contribution record.
 
-## The four common flavors
+## The four common flavours<span id="the-four-common-flavors"></span>
 
 FIRE isn't a single target. People usually pick a flavour that matches their preferred lifestyle and timeline.
 
@@ -195,7 +195,7 @@ You don't have to aim for extreme early retirement to benefit from the framework
 
 ## What this introduction is not
 
-This post is deliberately the beginning of a longer conversation. Several important topics come later:
+This lesson is deliberately the beginning of a longer conversation. Several important topics come later:
 
 - **Sequence of returns risk.** Poor market years early in retirement are far more damaging than later ones. Not every 25× portfolio survives every sequence
 - **Healthcare and insurance gaps.** In some countries, such as the US, health cover is largely tied to employment, so early retirees who leave work face a gap until public provisions begin; in others, cover is public or residence-based
@@ -203,7 +203,7 @@ This post is deliberately the beginning of a longer conversation. Several import
 - **Inflation and long horizons.** The 4% rule was built on a 30-year horizon. A 50-year retirement is a different maths problem
 - **Variable spending.** Flexible retirees who cut spending in bad years sustain lower starting portfolios than rigid-spending ones
 
-We'll return to each in the Mastery level. For now, the goal is to understand what FIRE *is*, so the rest of the Building level (multi-currency planning, real estate, goals, dashboards) has a target to point at.
+The Mastery level returns to each. For now, the goal is to understand what FIRE *is*, so the rest of the Building level (multi-currency planning, real estate, goals, dashboards) has a target to point at.
 
 ## What you can do
 
@@ -212,8 +212,8 @@ We'll return to each in the Mastery level. For now, the goal is to understand wh
 3. **Compute your current savings rate.** (Income - expenses) ÷ income. That percentage is one of the strongest levers on how far you are from FI
 4. **Notice which flavour fits your life.** Lean, Traditional, Fat, or Coast. There is no single right answer. The one people tend to sustain is the one they can imagine living with for decades
 5. **Raises are an easy lever.** A raise saved before it becomes lifestyle lifts the savings rate without cutting anything. Some people commit a share, often half, in advance; how much is realistic depends on your budget
-6. **Irreversible moves need more than this post.** Actual early retirement involves sequence risk, drawdown planning, tax, healthcare and lifestyle questions that aren't covered here. This post is the map, not the journey
+6. **Irreversible moves need more than this lesson.** Actual early retirement involves sequence risk, drawdown planning, tax, healthcare and lifestyle questions that aren't covered here. This lesson is the map, not the journey
 
 Financial independence is not a cliff you jump off. It's a line you cross, after which your choices widen dramatically. Most of what happens on the way there is the same as what you're doing already: earning, saving carefully, investing broadly, waiting patiently. The difference, once you have a FIRE number, is that there's a finish line, and you can see how close you are.
 
-The FIRE math leans heavily on the idea of withdrawing a small percentage of a portfolio each year. The natural follow-up question is what those withdrawals actually look like in real life: which assets pay you, how much, and how reliably. That's the territory of passive income, and it's where we head next.
+The FIRE maths leans heavily on the idea of withdrawing a small percentage of a portfolio each year. The natural follow-up question is what those withdrawals actually look like in real life: which assets pay you, how much, and how reliably. That's the territory of passive income, and the subject of the next lesson.

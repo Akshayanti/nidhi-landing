@@ -71,11 +71,11 @@ function buildDeepDiveBlock({ slug, relatedTool, reelPromise, platform = "tiktok
   // Always link the blog post — it's the canonical home for the reel content
   // and the only way to give a viewer a clear "what's deeper" pathway.
   if (ig) {
-    lines.push(reelPromise ? `Read the full post · ${reelPromise}. Link in bio.` : "Read the full post. Link in bio.");
+    lines.push(reelPromise ? `Read the full lesson · ${reelPromise}. Link in bio.` : "Read the full lesson. Link in bio.");
   } else if (reelPromise) {
-    lines.push(`Read the full post · ${reelPromise}: ${SITE_BASE}/blog/${slug}/`);
+    lines.push(`Read the full lesson · ${reelPromise}: ${SITE_BASE}/blog/${slug}/`);
   } else {
-    lines.push(`Read the full post: ${SITE_BASE}/blog/${slug}/`);
+    lines.push(`Read the full lesson: ${SITE_BASE}/blog/${slug}/`);
   }
   return lines.join("\n");
 }
@@ -132,7 +132,7 @@ function replaceFirstLine(body, hookText) {
  *   line above the disclosure, fully qualified (nidhi.today/free/…).
  * @param {string} [args.reelPromise] - one-line concrete promise of what
  *   the blog adds beyond the reel (worked example, country-specific table,
- *   etc.). Rendered as the "Read the full post · {promise}: …" line.
+ *   etc.). Rendered as the "Read the full lesson · {promise}: …" line.
  *   MUST be backed by content actually present in the post body.
  */
 export async function writePlatformCaptions({

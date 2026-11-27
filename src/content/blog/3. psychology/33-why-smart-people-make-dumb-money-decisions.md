@@ -1,7 +1,7 @@
 ---
 slug: "why-smart-people-make-dumb-money-decisions"
 title: "Why Smart People Make Predictable Money Mistakes"
-description: "You can know the math perfectly and still panic-sell at the bottom. Your brain runs two systems, and the fast one takes charge when money is on the line."
+description: "You can know the maths perfectly and still panic-sell at the bottom. Your brain runs two systems, and the fast one takes charge when money is on the line."
 tldr:
   - "Knowing what to do and doing it are different skills."
   - "Kahneman described fast, emotional thinking and slow, deliberate thinking, and many money mistakes happen when the fast kind takes over where slow thinking is needed."
@@ -19,7 +19,7 @@ personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["psychology", "fundamentals"]
 faq:
   - question: "Why do intelligent people still make bad money decisions?"
-    answer: "Because knowing about money and behaving with money draw on different modes of thinking. Daniel Kahneman, the psychologist awarded the 2002 Nobel Prize in economics for bringing psychological research into economics, popularized a distinction between two modes of thought. System 1 is fast, automatic, and emotional: it reacts before you have consciously decided anything. System 2 is slow, deliberate, and effortful: it does arithmetic, weighs trade-offs, and plans. Knowing the math is a System 2 skill. But in the moments that matter most, a market crash, a hot tip from a friend, a limited-time offer, System 1 reacts first and System 2 arrives late, often just in time to invent a reason for what System 1 already did. Intelligence does not switch this off. A brilliant person panic-sells for the same reason anyone does: the fear arrived before the spreadsheet."
+    answer: "Because knowing about money and behaving with money draw on different modes of thinking. Daniel Kahneman, the psychologist awarded the 2002 Nobel Prize in economics for bringing psychological research into economics, popularized a distinction between two modes of thought. System 1 is fast, automatic, and emotional: it reacts before you have consciously decided anything. System 2 is slow, deliberate, and effortful: it does arithmetic, weighs trade-offs, and plans. Knowing the maths is a System 2 skill. But in the moments that matter most, a market crash, a hot tip from a friend, a limited-time offer, System 1 reacts first and System 2 arrives late, often just in time to invent a reason for what System 1 already did. Intelligence does not switch this off. A brilliant person panic-sells for the same reason anyone does: the fear arrived before the spreadsheet."
   - question: "What are System 1 and System 2 thinking?"
     answer: "They are two modes of thinking described by psychologist Daniel Kahneman. System 1 is automatic and fast: recognizing a face, reacting to a loud noise, sensing that a deal feels urgent. It runs constantly, costs almost no effort, and is usually right about everyday things. System 2 is deliberate and slow: multiplying 17 by 24, comparing two mortgages, deciding whether an investment fits your plan. It is accurate but lazy, and it tires quickly, so the brain defaults to System 1 whenever it can. Money decisions are risky precisely because they often feel like System 1 territory, urgent and emotional, while the considered answer usually needs System 2."
   - question: "Can you train yourself out of cognitive biases?"
@@ -55,7 +55,7 @@ This series is about why.
 
 ## The thing intelligence does not fix
 
-We tend to assume bad money decisions come from not knowing enough. Learn the math, the theory goes, and the behaviour follows. So we read the books, build the spreadsheets, understand [risk](/blog/understanding-risk/) and [diversification](/blog/diversification/), and feel prepared.
+We tend to assume bad money decisions come from not knowing enough. Learn the maths, the theory goes, and the behaviour follows. So we read the books, build the spreadsheets, understand [risk](/blog/understanding-risk/) and [diversification](/blog/diversification/), and feel prepared.
 
 Then a real decision arrives, with real money and real fear attached, and the knowledge sits uselessly in one part of the brain while a much older part does something else entirely.
 
@@ -119,7 +119,7 @@ You cannot out-discipline a system that acts before discipline wakes up.
 
 What does work is design. The brain can change slowly, through years of practice, and neuroplasticity is real. But you cannot count on rewiring a fast, evolved instinct in the few seconds of a real money decision, while the fear is live. So the practical move is not to retrain the brain in the moment but to rearrange the situations it operates in, so the right decision is the automatic one and the wrong decision is the one you would have to go out of your way to make.
 
-A few examples make the idea concrete. When saving happens automatically, willpower never has to be summoned. When the portfolio is reviewed quarterly rather than checked daily, there are simply fewer heated moments to survive. When the rules are decided in advance, in a calm room, a stressful day only has to follow a plan rather than invent one. None of these ask you to feel differently. They quietly arrange things so the feeling matters less. The final post in this series gathers these into a full toolkit; for now, the point is just that the lever is the situation, not the willpower.
+A few examples make the idea concrete. When saving happens automatically, willpower never has to be summoned. When the portfolio is reviewed quarterly rather than checked daily, there are simply fewer heated moments to survive. When the rules are decided in advance, in a calm room, a stressful day only has to follow a plan rather than invent one. None of these ask you to feel differently. They quietly arrange things so the feeling matters less. The final lesson in this series gathers these into a full toolkit; for now, the point is just that the lever is the situation, not the willpower.
 
 That is the whole strategy of this series, stated once up front: stop fighting your brain and start designing around it.
 
@@ -140,7 +140,7 @@ And finally, a capstone: how to assemble everything into a financial life that q
 
 ## What you can do
 
-You do not need to act on all of this yet. The biases come one post at a time. But three things are worth carrying in from the start:
+You do not need to act on all of this yet. The biases come one lesson at a time. But three things are worth carrying in from the start:
 
 1. **Intelligence is rarely the problem.** When you or someone you know makes a money mistake, the question is not "how could they be so dumb." It is "which fast instinct beat the slow plan." That reframing is more accurate and far more useful.
 2. **Notice the heated moments.** A market drop, a hot tip, a ticking-clock offer, a purchase that suddenly feels urgent: these are System 1 events. The feeling of urgency is itself the warning sign.
@@ -148,4 +148,4 @@ You do not need to act on all of this yet. The biases come one post at a time. B
 
 My friend who sold in March 2020 changed one thing afterward. She set her investments to buy automatically every month and deleted the app from her phone. She has not made the same mistake since, not because she became smarter, but because she stopped relying on being smart in the worst possible moment.
 
-The first and most expensive of those instincts is the one that drove her to sell: the fact that losses hurt far more than gains feel good. That is loss aversion, and it is where we go next.
+The first and most expensive of those instincts is the one that drove her to sell: the fact that losses hurt far more than gains feel good. That is loss aversion, and it is the subject of the next lesson.

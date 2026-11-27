@@ -14,8 +14,10 @@ takeaways:
   - "Why starting small and early beats starting big and late"
 order: 21
 pubDate: 2026-06-03
-updatedDate: 2026-11-22
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
   - date: 2026-11-22
     note: "The lesson said stocks have historically delivered 4 to 6% a year after inflation. The cited data gives about 5% a year for world shares from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below it, so the doubling time after inflation is now about 14 years, with 12 and 18 years shown for 6% and 4%."
   - date: 2026-11-17
@@ -39,6 +41,9 @@ faq:
 reelPromise: "The three account types side by side, a worked dollar-cost-averaging example, and the Rule of 72 for doubling your money"
 relatedSlugs: ["investing-101-asset-classes", "diversification", "understanding-risk", "emergency-fund", "budgeting"]
 referentialReading:
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -57,7 +62,7 @@ referentialReading:
 
 Almost everyone who fails to start investing has the same story. They read a book, watched a video, got excited. Then they hit the wall of practical questions: which account? which fund? how much? when? The excitement fades. Six months pass. Nothing happens.
 
-This post is the bridge. You already know [what the asset classes are](/blog/investing-101-asset-classes/) and how each generates returns. You've understood that [risk and time are connected](/blog/understanding-risk/). What's left is the mechanics: how accounts differ, what people commonly hold inside them, and how money can flow in without a decision every month.
+This lesson is the bridge. You already know [what the asset classes are](/blog/investing-101-asset-classes/) and how each generates returns. You've understood that [risk and time are connected](/blog/understanding-risk/). What's left is the mechanics: how accounts differ, what people commonly hold inside them, and how money can flow in without a decision every month.
 
 ## The three kinds of accounts
 
@@ -148,7 +153,7 @@ A typical automation setup looks like this:
 3. The investment account buys your chosen fund on a schedule
 4. You look at it once a month, maybe less
 
-This is why pay-yourself-first, which we covered in the [budgeting post](/blog/budgeting/), is so powerful. When saving and investing come out first, before discretionary spending, they happen whether or not you feel motivated that month.
+This is why pay-yourself-first, covered in the [budgeting lesson](/blog/budgeting/), is so powerful. When saving and investing come out first, before discretionary spending, they happen whether or not you feel motivated that month.
 
 ## Why starting small and early beats starting big and late
 
@@ -188,7 +193,7 @@ The other thing that stops people is the feeling that €50 or €100 a month "i
 
 The early saver contributes less total money than either of the later ones, and ends up with more than both. The difference isn't willpower or income. It's time.
 
-This is the same compound growth we saw in the [appreciation vs depreciation post](/blog/appreciation-vs-depreciation/), made concrete. Small amounts, left alone for decades, outgrow larger amounts left alone for years.
+This is the same compound growth shown in the [appreciation vs depreciation lesson](/blog/appreciation-vs-depreciation/), made concrete. Small amounts, left alone for decades, outgrow larger amounts left alone for years.
 
 ### A quick mental shortcut: the Rule of 72
 
@@ -201,9 +206,9 @@ If you want a fast way to reason about compounding without opening a spreadsheet
 | 7% (illustrative equity-heavy, nominal) | ~10 years |
 | 10% (optimistic nominal) | ~7 years |
 
-So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. World shares returned about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). At a constant real return of 5% a year, money doubles in about 14 years; at 6%, about 12 years; at 4%, about 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
+So €10,000 growing at 7% a year doubles to roughly €20,000 in 10 years, €40,000 in 20 years, €80,000 in 30 years, €160,000 in 40 years, in nominal terms. That's four doublings over a working career; each one adds more in absolute euros than the last. World shares returned about 5% a year after inflation from 1900 to 2025 (Dimson, Marsh and Staunton). At a constant real return of 5% a year, money doubles in about 14 years; at 6%, about 12 years; at 4%, about 18 years. The same rule in reverse also works for debt: a credit card balance at 18% doubles in about 4 years if ignored.
 
-It's a shortcut, not a formula, but it's close enough for most mental-math decisions about when money will double, how inflation will erode purchasing power, or whether a given rate is worth chasing.
+It's a shortcut, not a formula, but it's close enough for most mental-maths decisions about when money will double, how inflation will erode purchasing power, or whether a given rate is worth chasing.
 
 Small amounts can be increased later. What can't be recovered is the years before starting.
 
@@ -237,4 +242,4 @@ This is a description of what many people do first, not a final portfolio or a p
 
 Getting started is less about choosing the perfect investment and more about removing the friction between intention and a monthly transfer. The account is a tool. The fund is a container. The automation is what makes it actually work.
 
-With money flowing into a portfolio each month, the next layer is the one most personal finance writing skips because it's jurisdiction-heavy and dry: tax. Income tax, capital gains, withholding on dividends, the long-term cost of an unsheltered portfolio. None of those numbers move every day, but they quietly determine how much of your returns you actually keep over decades. That's where we go next.
+With money flowing into a portfolio each month, the next layer is the one most personal finance writing skips because it's jurisdiction-heavy and dry: tax. Income tax, capital gains, withholding on dividends, the long-term cost of an unsheltered portfolio. None of those numbers move every day, but they quietly determine how much of your returns you actually keep over decades. That's the subject of the next lesson.

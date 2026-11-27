@@ -57,7 +57,7 @@ interface Props {
    *  one with `href` links to the part of the lesson that delivers it. */
   takeaways?: (string | { text: string; href: string })[];
   /** Terms from the post's `glossary`, shown collapsed under "In this lesson". */
-  glossary?: { term: string; definition: string }[];
+  glossary?: { term: string; definition: string; anchor?: string }[];
   /** Rule areas the lesson depends on; shows "Where to check locally". */
   localRules?: LocalRuleArea[];
   /** Place within the level among published lessons; null outside the ladder. */
@@ -301,7 +301,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((sche
               <dl class="post-glossary-list">
                 {glossary.map((g) => (
                   <div class="post-glossary-item" id={termId(g.term)}>
-                    <dt>{g.term}</dt>
+                    {/* A term respelled after it was published keeps its first address as a second id (#804). */}
+                    <dt>{g.anchor && <span id={termId(g.anchor)}></span>}{g.term}</dt>
                     <dd>{g.definition}</dd>
                   </div>
                 ))}

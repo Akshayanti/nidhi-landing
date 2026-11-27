@@ -124,7 +124,7 @@ Higher net worth doesn't always mean better financial position. Liquidity matter
 
 ## When illiquidity is appropriate
 
-This doesn't make all-cash the answer. Cash is liquid but it loses value to inflation over time, as we'll discuss later. Illiquid assets serve a purpose:
+This doesn't make all-cash the answer. Cash is liquid but it loses value to inflation over time, as a later lesson explains. Illiquid assets serve a purpose:
 
 - **Real estate** builds equity over the long term and can [appreciate](/blog/appreciation-vs-depreciation/) significantly
 - **Retirement accounts**, where they exist, have tax advantages that often make the lock-up period worthwhile, though the tax treatment and early-access rules are set nationally
@@ -136,7 +136,7 @@ The underlying idea is matching liquidity to timeline. Money needed in the next 
 
 There's no single correct ratio, but many people think in three tiers:
 
-1. **Emergency fund.** Enough in a savings account to cover a few months of essential expenses, often three to six. This is the liquidity baseline. As we'll cover in the next post, it exists so a crisis doesn't force a sale of investments at a loss or a high-interest loan
+1. **Emergency fund.** Enough in a savings account to cover a few months of essential expenses, often three to six. This is the liquidity baseline. As the next lesson explains, it exists so a crisis doesn't force a sale of investments at a loss or a high-interest loan
 2. **Medium-term savings.** Money needed in 1-5 years (a house deposit, a car, a wedding) is usually kept in relatively safe, accessible places: high-yield savings, short-term bonds (loans to governments or companies that are repaid within a few years), or term deposits (savings left for a fixed time at an agreed rate)
 3. **Long-term investments.** Money not needed for 5+ years is where people typically use index funds and other growth assets. The volatility, and in some accounts the lock-up, is the trade-off for higher expected returns (what they might earn on average, with no guarantee)
 
@@ -165,8 +165,8 @@ The same balance can count as a last-resort reserve in one country and be out of
 
 ## How this connects to net worth
 
-In the [assets post](/blog/assets/), we looked at asset quality. Liquidity is one of the most important dimensions of that quality. Your net worth tells you what you have. Liquidity tells you what you can actually use.
+The [assets lesson](/blog/assets/) looked at asset quality. Liquidity is one of the most important dimensions of that quality. Your net worth tells you what you have. Liquidity tells you what you can actually use.
 
 A financial plan that ignores liquidity is like a car with a powerful engine but no fuel gauge. It runs great until it doesn't.
 
-Now that you understand how accessible your money is, the next question is: how much should you keep liquid? That's where the emergency fund comes in: the practical application of everything we've covered here.
+Now that you understand how accessible your money is, the next question is: how much should you keep liquid? That's where the emergency fund comes in: the practical application of everything in this lesson.

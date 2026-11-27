@@ -333,6 +333,7 @@ version, and the changelog stays in English in every edition (see `CLAUDE.md`).
 | refinancing scenario | scénář refinancování | |
 | n/a | není k dispozici | *Nevztahuje se* where the value does not apply; *neuvedeno* only where it was not entered. |
 | input prompt (Enter...) | Zadejte... | *Zadejte částku*. |
+| Reset (button) | Obnovit výchozí | The loan tool's longer "Reset to defaults" is *Obnovit výchozí hodnoty*. Invest or pay off's "Start again" is *Začít znovu*, which is not used for Reset. |
 | Add (button) | Přidat | *Přidat poskytovatele*, *+ Přidat aktivum*. |
 | simulation, path | simulace, trajektorie | *Simulovaný průběh* in plain prose. |
 | raise (in pay) | zvýšení platu | |

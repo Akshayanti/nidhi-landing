@@ -256,7 +256,7 @@ Rule of thumb when picking hashtags: pick the community someone *follows*. When 
 
 **Reels parity (added May 2026).** The same keyword surface applies to IG Reels: the topic classifier reads the Reels caption identically to feed posts. Kit reels take their keywords from the kit (`keywords_day1`, `keywords_day2`), and the kit lint (`scripts/render-kit.mjs`) enforces 18 to 24 per day. Per-reel audience-angle notes from the earlier series are in [done/IG-KEYWORDS.md](done/IG-KEYWORDS.md).
 
-Open question for the owner: how many keywords a reel caption carries. This section said 13 to 18 for reels (May 2026), and `REELS-PIPELINE.md` says the same for its LLM route; the kit lint enforces 18 to 24, and the current reels follow the lint.
+Reels carry 18 to 24 keywords, like every other post (owner, #802), which is what the kit lint enforces. This section said 13 to 18 for reels until then (May 2026).
 
 **TikTok equivalent (added May 2026).** TikTok 2026 weights caption text + on-screen text + audio transcript with roughly equal weight; bracketed multilingual blocks read as spam there, and TikTok auto-translates so multilingual stuffing wastes characters. The TikTok-equivalent of the keyword block has two parts:
 

@@ -59,7 +59,7 @@ Economists call the underlying mechanism hyperbolic discounting, which is a heav
 
 So the gap between today and next week feels enormous, while the gap between week fifty-two and week fifty-three feels like nothing. Same seven days. Wildly different weight. The cliff is right at the edge of now.
 
-This is why saving feels so hard in the moment and so obvious in hindsight. The reward of spending is sitting right at the top of the cliff, fully felt. The reward of saving is parked far down the gentle slope, barely felt at all. Your brain is not making a math error. It is correctly reporting how it feels, and how it feels is rigged against the future.
+This is why saving feels so hard in the moment and so obvious in hindsight. The reward of spending is sitting right at the top of the cliff, fully felt. The reward of saving is parked far down the gentle slope, barely felt at all. Your brain is not making a maths error. It is correctly reporting how it feels, and how it feels is rigged against the future.
 
 ## Your future self is a stranger
 
@@ -119,4 +119,4 @@ Notice the common thread: every one of these removes the daily decision. That is
 - **Think about your next raise before it arrives.** Deciding in advance where some of it goes keeps lifestyle from claiming all of it by default.
 - **Make the stranger real.** Write down one specific future goal with a number and a date, and look at a simple projection of where your current saving leads. The clearer that future self becomes, the less you will rob them.
 
-Present bias is about how the brain misjudges time, overvaluing now and discounting later. The next bias is about how the brain misjudges itself, specifically the widespread conviction that we are better investors than most people and that our plans will go better than other people's. That is overconfidence, and it is where we go next.
+Present bias is about how the brain misjudges time, overvaluing now and discounting later. The next bias is about how the brain misjudges itself, specifically the widespread conviction that we are better investors than most people and that our plans will go better than other people's. That is overconfidence, and it is the subject of the next lesson.

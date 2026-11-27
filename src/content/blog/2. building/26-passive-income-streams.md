@@ -54,7 +54,7 @@ You've seen the promises. "Earn €5,000 a month in passive income." "Make money
 
 Real passive income is quieter. It's the dividend paid on shares you've held for years. The interest on a bond. The rent on a property your management company handles. The royalty cheque from something you wrote a decade ago. It is not a get-rich-quick scheme. It is the reward for having built [income-producing assets](/blog/assets/) that now work without you.
 
-This post is about the honest version: what passive income actually is, where it comes from, how much capital it takes, and what changes when it finally covers your expenses.
+This lesson is about the honest version: what passive income actually is, where it comes from, how much capital it takes, and what changes when it finally covers your expenses.
 
 ## What "passive" actually means
 
@@ -78,7 +78,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 **Interest.** Bonds pay interest on their face value. Savings and money market accounts pay interest on the balance. Interest rates vary with prevailing market rates and with credit risk. Lower-risk government bonds pay less; higher-risk corporate bonds pay more.
 
-**Rental income.** Property you own but don't live in, rented to tenants. Gross yields typically sit in the 3-6% of property value range depending on the market; net yields (after maintenance, vacancy, taxes, and management) are lower. A later post in this series covers the full picture of costs.
+**Rental income.** Property you own but don't live in, rented to tenants. Gross yields typically sit in the 3-6% of property value range depending on the market; net yields (after maintenance, vacancy, taxes, and management) are lower. A later lesson in this series covers the full picture of costs.
 
 **Royalties.** Income from a creative or intellectual asset someone else uses: books, music, patents, software licences. Usually small for most people; occasionally life-changing for a few.
 
@@ -101,7 +101,7 @@ Most of the honest personal-finance path runs through the top two categories. Th
 
 ## How much capital it actually takes
 
-The uncomfortable truth in the passive income space is that meaningful amounts of truly passive income require substantial capital. The rough math:
+The uncomfortable truth in the passive income space is that meaningful amounts of truly passive income require substantial capital. The rough maths:
 
 To generate €1,000 per month (€12,000 per year) of passive income at different yield assumptions:
 
@@ -119,13 +119,13 @@ A few observations:
 - Higher yields usually come with higher risk or higher management load. "8% passive" is rarely as passive or as safe as "2% passive"
 - Yield is not the same as total return. A 2% dividend yield on a fund that appreciates 5% per year delivers a 7% total return; a 6% dividend yield on a fund that stagnates delivers a 6% total return. Total return is the fuller measure, not yield alone
 
-This is why the FIRE framing from the [financial independence post](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate expresses a capital target for portfolio withdrawals, which can include income payments and sales of assets; it is not a requirement for a 4% income yield. The 4% figure is a US-historical anchor; a study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, though that study does not establish them as suitable for any particular reader, which moves the target to roughly 28-33× annual expenses.
+This is why the FIRE framing from the [financial independence lesson](/blog/introduction-to-financial-independence/) is so useful. "25× annual expenses" at a 4% withdrawal rate expresses a capital target for portfolio withdrawals, which can include income payments and sales of assets; it is not a requirement for a 4% income yield. The 4% figure is a US-historical anchor; a study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, though that study does not establish them as suitable for any particular reader, which moves the target to roughly 28-33× annual expenses.
 
 ## The crossover point
 
 The idea, popularized in *Your Money or Your Life*, is beautifully concrete: the crossover point is the month your passive income first exceeds your expenses.
 
-Before it: work income is what keeps your life going. After it: investment income can keep your life going, even if you keep working, as long as the income counted is one the portfolio can keep paying. Summaries of the book describe its measure as the capital multiplied by a long-term interest rate, which differs from a portfolio withdrawal rule; the [financial independence post](/blog/introduction-to-financial-independence/) uses the portfolio times a withdrawal rate. Counted the second way, the crossover comes when the portfolio reaches the FIRE number. Counted as one year's total return, the lines can cross in a good year and cross back in a bad one.
+Before it: work income is what keeps your life going. After it: investment income can keep your life going, even if you keep working, as long as the income counted is one the portfolio can keep paying. Summaries of the book describe its measure as the capital multiplied by a long-term interest rate, which differs from a portfolio withdrawal rule; the [financial independence lesson](/blog/introduction-to-financial-independence/) uses the portfolio times a withdrawal rate. Counted the second way, the crossover comes when the portfolio reaches the FIRE number. Counted as one year's total return, the lines can cross in a good year and cross back in a bad one.
 
 For many people, tracking it changes behaviour. A monthly line chart of two numbers, total monthly expenses and total monthly passive income, becomes a tangible progress bar for financial independence. Every month the gap narrows is a month work has shifted a little further from obligation toward choice.
 
@@ -178,7 +178,7 @@ The path many people follow looks like this, though the order and mix vary with 
 
 1. **A broad investment portfolio as the base.** Dividends and interest from diversified index funds are the backbone for many, because they need little upkeep
 2. **Reinvestment during accumulation.** Reinvested dividends and interest remain part of the portfolio, whose growth depends on new contributions and total return
-3. **Rental property for some, with open eyes.** Direct real estate brings real costs and operational load. We cover the math in a later post in this series
+3. **Rental property for some, with open eyes.** Direct real estate brings real costs and operational load. A later lesson in this series covers the maths.
 4. **Other streams as supplements.** Royalties, business distributions, and lending platforms can add income, but carry more risk to be a foundation
 5. **Tracking the crossover.** Monthly expenses vs. monthly passive income, watching the gap close
 
@@ -194,4 +194,4 @@ The path many people follow looks like this, though the order and mix vary with 
 
 Passive income isn't magic. It's the steady drip from assets you already built. The interesting thing is not any single source. It's the compounding of a portfolio's total return with its income reinvested, the way contributions and growth turn small streams into real coverage over a decade or two, and the shift many people describe when their life starts being funded by things they own rather than hours they sell.
 
-Passive income is the income side of the equation. The other side, where money flows out of your pocket every month for years, is debt: mortgages, car loans, student loans, consumer credit. Most people sign loan contracts without understanding how they're priced, how interest is paid, or how prepayment changes the math. The next post fixes that.
+Passive income is the income side of the equation. The other side, where money flows out of your pocket every month for years, is debt: mortgages, car loans, student loans, consumer credit. Most people sign loan contracts without understanding how they're priced, how interest is paid, or how prepayment changes the maths. The next lesson fixes that.

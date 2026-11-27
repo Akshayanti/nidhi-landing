@@ -111,7 +111,7 @@ In the first case a household has months of partial income to lean on; in the la
 
 ## Where to keep it?
 
-As we covered in the [liquidity post](/blog/liquidity/), the emergency fund has two requirements: accessible and stable. That rules out stocks (they can fall 30% or more within weeks, as in early 2020), real estate (takes months to sell), and cash under the mattress (inflation eats it). The [liquidity spectrum](/blog/liquidity/) shows exactly how quickly each asset type converts to cash.
+As the [liquidity lesson](/blog/liquidity/) covered, the emergency fund has two requirements: accessible and stable. That rules out stocks (they can fall 30% or more within weeks, as in early 2020), real estate (takes months to sell), and cash under the mattress (inflation eats it). The [liquidity spectrum](/blog/liquidity/) shows exactly how quickly each asset type converts to cash.
 
 Common places people keep it (names and protections vary by country):
 
@@ -119,7 +119,7 @@ Common places people keep it (names and protections vary by country):
 - A high-yield savings account (an online savings account that pays a higher interest rate than a traditional bank)
 - A money market account, a US bank product (a savings account that typically offers slightly higher rates in exchange for a higher minimum balance). A money market fund, more common elsewhere, is an investment rather than a bank deposit, so deposit protection does not cover it
 
-Many countries guarantee bank deposits up to a limit through a deposit guarantee scheme: €100,000 per depositor per bank in the EU, £120,000 in the UK, $250,000 in the US and ₹5 lakh in India, for example. These are standard limits per depositor and bank; joint accounts, ownership categories and temporary high balances follow each scheme's own rules, and the [cash management post](/blog/cash-management/) lists more countries.
+Many countries guarantee bank deposits up to a limit through a deposit guarantee scheme: €100,000 per depositor per bank in the EU, £120,000 in the UK, $250,000 in the US and ₹5 lakh in India, for example. These are standard limits per depositor and bank; joint accounts, ownership categories and temporary high balances follow each scheme's own rules, and the [cash management lesson](/blog/cash-management/) lists more countries.
 
 Separation is what makes it work for many people. Money in the everyday account tends to get spent; money somewhere visible but not casually tappable tends to stay put.
 
@@ -144,4 +144,4 @@ If you're using the fund for non-emergencies, it won't be there when you actuall
 
 Many plans treat the emergency fund as their foundation. Without it, every other step, from [paying off debt](/blog/how-to-get-out-of-debt/) to investing to building wealth, rests on unstable ground. One unexpected expense can push the whole plan into debt. With it, you have the stability to make long-term decisions instead of reactive ones.
 
-With a safety net in view, the next question is what drives your finances month to month. In the next post, we'll explore the relationship between income and wealth, and why earning more doesn't automatically mean being wealthier.
+With a safety net in view, the next question is what drives your finances month to month. The next lesson explores the relationship between income and wealth, and why earning more doesn't automatically mean being wealthier.

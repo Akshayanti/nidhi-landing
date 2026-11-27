@@ -121,4 +121,4 @@ The hardest part is emotional, not technical: accepting in advance that you will
 - **Let your plan run on autopilot.** Automated contributions and scheduled reviews give a wave of crowd enthusiasm nothing to act on in the moment.
 - **Ask what the story leaves out.** Behind every boast about a quick win are the quiet losses nobody mentions. Picture them. They are part of the truth you are reacting to.
 
-Herd behaviour is the crowd acting on you in the moment. But crowds do not stampede over nothing. They stampede over a story, a compelling reason that "this time is different." The next bias is about how those stories take on a life of their own and move markets more than the facts beneath them. That is narrative economics, and it is where we go next.
+Herd behaviour is the crowd acting on you in the moment. But crowds do not stampede over nothing. They stampede over a story, a compelling reason that "this time is different." The next bias is about how those stories take on a life of their own and move markets more than the facts beneath them. That is narrative economics, and it is the subject of the next lesson.

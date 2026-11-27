@@ -20,9 +20,10 @@ function files(dir: string): string[] {
 // Heading ids the way Astro makes them (github-slugger): inline markdown
 // reduced to its words, lowercased, punctuation dropped, spaces to hyphens,
 // and a repeated heading numbered. Written out here rather than importing
-// Astro's own dependency.
+// Astro's own dependency. Inline HTML is dropped too: a respelled heading
+// keeps its old anchor in an empty `<span id>` at its end (#804).
 function plain(text: string): string {
-  return text.replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '').trim();
+  return text.replace(/<[^>]*>/g, '').replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '').trim();
 }
 
 function slugger() {
@@ -41,14 +42,21 @@ const lessons = files(ROOT).map((file) => {
   const slug = fm.match(/^slug:\s*"?([^"\n]+)"?/m)?.[1] ?? '';
   const nextId = slugger();
   const ids = new Set(TEMPLATE_IDS);
-  for (const m of body.matchAll(/^#{2,6}\s+(.+?)\s*$/gm)) ids.add(nextId(plain(m[1])));
-  const terms = [...fm.matchAll(/^\s*-?\s*term:\s*"?([^"\n]+)"?/gm)].map((m) => termId(m[1]));
+  for (const m of body.matchAll(/^#{2,6}\s+(.+?)\s*$/gm)) {
+    ids.add(nextId(plain(m[1])));
+    for (const old of m[1].matchAll(/<span id="([^"]+)"><\/span>/g)) ids.add(old[1]);
+  }
+  const terms = [...fm.matchAll(/^\s*-?\s*(?:term|anchor):\s*"?([^"\n]+)"?/gm)].map((m) => termId(m[1]));
   if (terms.length) [GLOSSARY_CARD_ID, ...terms].forEach((id) => ids.add(id));
   return { file, slug, raw, ids };
 });
 const bySlug = new Map(lessons.map((l) => [l.slug, l]));
 
 describe('links between lessons', () => {
+  it('reads a respelled heading without its old-anchor span', () => {
+    assert.equal(plain('Amortization: how a loan gets paid<span id="amortisation-how-a-loan-gets-paid"></span>'), 'Amortization: how a loan gets paid');
+  });
+
   it('land on a heading, the glossary or a template section of the target lesson', () => {
     const broken: string[] = [];
     for (const { file, raw } of lessons) {

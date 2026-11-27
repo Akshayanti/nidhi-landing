@@ -61,7 +61,7 @@ referentialReading:
 
 Eva sits down for an hour and writes one line for each thing her plan takes for granted. "My partner inherits my share of the home": no, they are not married and have no wills. "My pension pays my partner if I die": unknown, she has never read the scheme rules. "Someone could pay my bills if I were in hospital": no, nobody has authority. None of these was ever decided. They were simply assumed.
 
-This series opened with [two households with identical money](/blog/when-the-default-plan-does-not-fit-you/) and different outcomes, and three questions: what is this assuming about me, does that hold, and if not, what do I put in its place on purpose? Since then it has applied them to shared homes, work, borrowing, borders, living alone, partnership, separation, care, disability, recognition, friendship, parents, stepfamilies and loss. This closing post hands the method over: a map of the assumptions, and a practice for keeping them checked.
+This series opened with [two households with identical money](/blog/when-the-default-plan-does-not-fit-you/) and different outcomes, and three questions: what is this assuming about me, does that hold, and if not, what do I put in its place on purpose? Since then it has applied them to shared homes, work, borrowing, borders, living alone, partnership, separation, care, disability, recognition, friendship, parents, stepfamilies and loss. This closing lesson hands the method over: a map of the assumptions, and a practice for keeping them checked.
 
 ## Six families of assumption most financial plans rest on
 
@@ -80,7 +80,7 @@ Many people sit outside at least one row. The International Labour Organization 
 
 ## The series uses three kinds of response
 
-Read across the posts, most responses used in the series fit three broad groups:
+Read across the lessons, most responses used in the series fit three broad groups:
 
 - **A [designation](#term-designation):** a will, a beneficiary form, a power of attorney or an agreement. A pension scheme may treat its form as binding or only as a guide, and its survivor pension may follow different rules from a lump sum. Most designations are cheap, and several are free.
 - **A structure:** a different way of holding money so a rule does not bite, such as joint ownership, a trust, a protected account, a pension in the carer's own name, or a holding account that turns uneven income into a salary.
@@ -97,7 +97,7 @@ A workaround: no form changes who the scheme pays, so the gap is covered another
 
 ## An assumption register keeps your plan checked over time
 
-The [financial dashboard post](/blog/financial-dashboard/) described a few numbers worth tracking; an [assumption register](#term-assumption-register) is its companion for things that are not numbers. It is one page, with five parts to each line:
+The [financial dashboard lesson](/blog/financial-dashboard/) described a few numbers worth tracking; an [assumption register](#term-assumption-register) is its companion for things that are not numbers. It is one page, with five parts to each line:
 
 | Assumption | True today? | How I know | If it fails | Last checked |
 |---|---|---|---|---|
@@ -115,7 +115,7 @@ A register is built by going through the six families in turn. **Relationship:**
 <details class="lesson-depth">
 <summary class="disclosure">When to review it: yearly, and after life events</summary>
 
-The [anti-bias post](/blog/building-an-anti-bias-financial-life/) argued for scheduled reviews over decisions made in the moment, and the register belongs in that schedule. Once a year, reading down the page finds the one line that has changed among the many that have not. Straight away after any of these: a new relationship, a marriage, or the end of either; a birth, an adoption, a new stepchild; a death in the family; a new job, a redundancy or a move to self-employment; a move to another country; a new diagnosis, for you or someone you support; an inheritance or other large sum. These are the moments a default changes without announcing it.
+The [anti-bias lesson](/blog/building-an-anti-bias-financial-life/) argued for scheduled reviews over decisions made in the moment, and the register belongs in that schedule. Once a year, reading down the page finds the one line that has changed among the many that have not. Straight away after any of these: a new relationship, a marriage, or the end of either; a birth, an adoption, a new stepchild; a death in the family; a new job, a redundancy or a move to self-employment; a move to another country; a new diagnosis, for you or someone you support; an inheritance or other large sum. These are the moments a default changes without announcing it.
 
 </details>
 
