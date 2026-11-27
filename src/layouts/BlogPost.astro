@@ -302,7 +302,7 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((sche
                 {glossary.map((g) => (
                   <div class="post-glossary-item" id={termId(g.term)}>
                     {/* A term respelled after it was published keeps its first address as a second id (#804). */}
-                    <dt>{g.anchor && <span id={termId(g.anchor)}></span>}{g.term}</dt>
+                    <dt>{g.anchor && termId(g.anchor) !== termId(g.term) && <span id={termId(g.anchor)}></span>}{g.term}</dt>
                     <dd>{g.definition}</dd>
                   </div>
                 ))}

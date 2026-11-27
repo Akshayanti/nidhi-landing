@@ -49,8 +49,9 @@ const blog = defineCollection({
      * lessons. Plain text, one or two sentences each.
      *
      * `anchor` keeps an address already published when a term is respelled
-     * (#804): the term as it was first written. The lesson page keeps its
-     * `#term-<slug>` as a second id on the entry, so old links still land.
+     * (#804): the term as it was first written. The lesson page and
+     * /blog/glossary/ keep its `#term-<slug>` on an empty span inside the
+     * term's `<dt>`, so old links still land.
      * Set it once to the old wording and never change it afterwards.
      */
     glossary: z.array(z.object({
