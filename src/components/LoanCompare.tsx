@@ -1260,8 +1260,9 @@ export default function LoanCompare({
   // effect re-runs on every keystroke because `results` is a fresh
   // reference, but the timer collapses bursts into one event 600ms after
   // the user stops typing. We never ship the error message; only the
-  // count and a coarse `firstReason` bucket, read from which engine message
-  // it is (`validationReason`), never from its words or its numbers.
+  // count and a coarse `firstReason` bucket selected through the fixed
+  // engine-message phrase table (`validationReason`); no message text or
+  // numbers are sent.
   const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!hydrated) return;
