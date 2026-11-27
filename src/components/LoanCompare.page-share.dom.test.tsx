@@ -224,6 +224,32 @@ describe('the loan comparison: the validation event', () => {
     }
   });
 
+  it('files a changing rate that arrives without its later rate under "other", and holds the comparison back (issue 818)', () => {
+    mock.timers.enable({ apis: ['setTimeout'] });
+    try {
+      arriveWith(link([offer(0, { rateKind: 'hybrid' }), offer(1)]));
+      mount();
+      events.length = 0;
+      act(() => { mock.timers.tick(600); });
+      assert.deepEqual(events, [['free_loan_comparison_validation_error', { count: 1, firstReason: 'other', firstVendor: 'A' }]]);
+      assert.equal(cards()[0].querySelector('.lc-error')?.textContent, `Error: ${island.engine.errors.rateChangeIncomplete}`);
+      assert.equal(cards()[1].querySelector('.lc-error'), null);
+      assert.equal(withheld(), true);
+      assert.equal(ariaDisabled(xlsxButton()), true);
+      assert.equal(has('.tool-report'), false);
+
+      // The later rate typed in: worked out, and nothing more is sent.
+      events.length = 0;
+      type(0, c.subsequentRate, '9');
+      act(() => { mock.timers.tick(600); });
+      assert.deepEqual(events, []);
+      assert.equal(cards()[0].querySelector('.lc-error'), null);
+      assert.equal(withheld(), false);
+    } finally {
+      mock.timers.reset();
+    }
+  });
+
   it('says nothing about a link that cannot be worked out until it settles, and then once', () => {
     mock.timers.enable({ apis: ['setTimeout'] });
     try {

@@ -79,8 +79,26 @@ export function amountFormat(decimals: number): NumFmt {
 // from somewhere odd must not make the whole file unreadable.
 const INVALID_XML = /[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
 
-// The longest text a cell may hold in Excel.
-const MAX_CELL_TEXT = 32_767;
+/**
+ * The longest text a cell may hold in Excel, counted as Excel counts it: in
+ * UTF-16 code units, which is what a string's `length` is, before the text is
+ * escaped for XML.
+ */
+export const MAX_CELL_TEXT = 32_767;
+
+/** What a text that was cut ends in, so the cut can be seen in the file. */
+export const CUT_MARK = '…';
+
+/**
+ * A text as one cell can hold it. A longer one is cut, and ends in the mark:
+ * it used to be cut without a sign, in the middle of whatever it held (#819).
+ * A tool with a list that can grow this long spreads it over several cells
+ * instead (the loan comparison's lump sums); what can still reach the cut is
+ * one name of more than 32,767 characters.
+ */
+export function cellText(text: string): string {
+  return text.length > MAX_CELL_TEXT ? `${text.slice(0, MAX_CELL_TEXT - CUT_MARK.length)}${CUT_MARK}` : text;
+}
 
 export function escapeXml(text: string): string {
   return text
@@ -111,7 +129,7 @@ function cellXml(cell: Cell, ref: string): string {
     const style = STYLE[cell.fmt ?? 'general'];
     return `<c r="${ref}"${style ? ` s="${style}"` : ''}><v>${cell.n}</v></c>`;
   }
-  const text = escapeXml(cell.t.slice(0, MAX_CELL_TEXT));
+  const text = escapeXml(cellText(cell.t));
   return `<c r="${ref}" t="inlineStr"${cell.bold ? ` s="${STYLE.bold}"` : ''}><is><t xml:space="preserve">${text}</t></is></c>`;
 }
 
