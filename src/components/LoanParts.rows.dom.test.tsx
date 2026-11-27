@@ -1,6 +1,6 @@
 /**
  * The small parts of the loan comparison's cards and results, each mounted on
- * its own: the mark on a required box (`RequiredMark`), a row of optional
+ * its own: the label of a required box (`RequiredLabel`), a row of optional
  * boxes that opens (`FieldGroup`), one row of an offer's results
  * (`ResultRow`), a payment that changes once (`PaymentSteps`) and the tool's
  * one announcement (`LoanAnnouncement`).
@@ -19,7 +19,7 @@ import { dear, neverLess, plain } from '../../test/loanParts.comparedOffers.ts';
 import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { amountLength } from '../utils/shared/amountUnits.ts';
-import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredMark, ResultRow } from './LoanCompare.tsx';
+import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredLabel, ResultRow, announcedNotes } from './LoanCompare.tsx';
 import { WITHHELD_SAID_AFTER, type Notice } from './toolShared.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
@@ -39,13 +39,44 @@ const sizedAs = (amount: Element) => (amount as HTMLElement).style.getPropertyVa
 /** The amounts drawn whole inside an element, as text. */
 const amountsIn = (el: Element) => [...el.querySelectorAll('.amt')].map((a) => a.textContent);
 
-describe('the mark on a required box', () => {
-  it('is an asterisk with its meaning as a tooltip, hidden from a screen reader', () => {
-    const { container } = render(<RequiredMark title={s.card.requiredTitle} />);
-    const mark = container.querySelector('.lc-required') as HTMLElement;
+describe('the label of a required box', () => {
+  const shown = (text: string) => render(<label><RequiredLabel title={s.card.requiredTitle}>{text}</RequiredLabel></label>).container;
+
+  it('ends in an asterisk with its meaning as a tooltip, hidden from a screen reader', () => {
+    const mark = shown('Term (months)').querySelector('.lc-required') as HTMLElement;
     assert.equal(mark.textContent, '*');
     assert.equal(mark.getAttribute('title'), 'Required');
     assert.equal(mark.getAttribute('aria-hidden'), 'true');
+  });
+
+  it('makes one unit of the last word and the mark, so the asterisk never goes to a line of its own (#917)', () => {
+    const label = shown('Initial fixed period (months)').querySelector('label') as HTMLElement;
+    assert.equal(label.textContent, 'Initial fixed period (months)*');
+    // The words before the last one are plain text, free to wrap; the space stays with them.
+    assert.equal(label.childNodes.length, 2);
+    assert.equal(label.firstChild?.nodeType, 3);
+    assert.equal(label.firstChild?.textContent, 'Initial fixed period ');
+    const pair = label.querySelector('.lc-requiredPair') as HTMLElement;
+    assert.ok(label.lastChild === pair);
+    assert.equal(pair.textContent, '(months)*');
+    // The mark is the unit's last piece, straight after the word.
+    assert.equal(pair.childNodes.length, 2);
+    assert.equal(pair.firstChild?.textContent, '(months)');
+    assert.ok(pair.lastChild === pair.querySelector('.lc-required'));
+  });
+
+  it('tells the CSS how long the unit is, the mark counted, so it can be drawn to fit its line', () => {
+    const length = (text: string) => (shown(text).querySelector('.lc-requiredPair') as HTMLElement).style.getPropertyValue('--pair-len');
+    assert.equal(length('Initial fixed period (months)'), '9');
+    assert.equal(length('Loan amount'), '7');
+    assert.equal(length('Rate'), '5');
+  });
+
+  it('takes a label of one word whole, with nothing before the unit', () => {
+    const label = shown('Calcular').querySelector('label') as HTMLElement;
+    assert.equal(label.childNodes.length, 1);
+    assert.equal(label.firstElementChild?.className, 'lc-requiredPair');
+    assert.equal(label.textContent, 'Calcular*');
   });
 });
 
@@ -208,6 +239,7 @@ describe('the announcement of the loan results', () => {
     withheld?: boolean;
     paidOff: LoanResult[];
     validCount: number;
+    noted?: { name: string; notes: string[] }[];
     also?: string;
     notice?: Notice;
     currency?: string;
@@ -220,6 +252,7 @@ describe('the announcement of the loan results', () => {
         withheld={p.withheld ?? false}
         paidOff={p.paidOff}
         validCount={p.validCount}
+        noted={p.noted ?? []}
         currency={p.currency ?? 'EUR'}
         strings={s}
         also={p.also}
@@ -317,6 +350,72 @@ describe('the announcement of the loan results', () => {
     change({ withheld: true, paidOff: [plain()], validCount: 1, also: 'Refinancing saves €20.00.' });
     clock.pass(5000);
     assert.equal(said(), '');
+  });
+
+  it('says one offer\'s notes after its figures, in the card\'s order, and not before the pause', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ paidOff: [dear()], validCount: 1, noted: [{ name: 'Offer A', notes: ['First note.', 'Second note.'] }] });
+    clock.pass(599);
+    assert.equal(said(), '');
+    clock.pass(1);
+    // One offer needs no name before its notes.
+    assert.equal(said(), 'Monthly payment €609.01. Total paid €1,218.03. First note. Second note.');
+  });
+
+  it('says a note that came or changed with the figures as they were: the result is said again, whole and once', () => {
+    const { said, region, change } = announce({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: [] }] });
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['First note.'] }] });
+    clock.pass(600);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. First note.');
+    assert.equal(region.childNodes.length, 1);
+    // Each digit of a month being typed changes the note: only the one the typing stops on is said.
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['Note for month 1.'] }] });
+    clock.pass(300);
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['Note for month 12.'] }] });
+    clock.pass(599);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. First note.');
+    clock.pass(1);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. Note for month 12.');
+  });
+
+  it('says nothing more for offers with no notes: the figures end the sentence', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ paidOff: [plain(), dear()], validCount: 2, noted: [{ name: 'Offer A', notes: [] }, { name: 'Offer B', notes: [] }] });
+    clock.pass(600);
+    assert.equal(said(), 'Total cost ranges from €1,200.00 to €1,218.03 across the offers below: a spread of €18.03.');
+  });
+
+  it('names each offer before its notes when there are several offers, after the range', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({
+      paidOff: [plain(), dear(), plain()],
+      validCount: 3,
+      noted: [{ name: 'Offer A', notes: ['First note.', 'Second note.'] }, { name: 'North Bank', notes: [] }, { name: 'Offer C', notes: ['Third note.'] }],
+    });
+    clock.pass(600);
+    assert.equal(said(), 'Total cost ranges from €1,200.00 to €1,218.03 across the offers below: a spread of €18.03. Offer A: First note. Second note. Offer C: Third note.');
+  });
+
+  it('names the one offer that has notes, too, when another offer is beside it', () => {
+    assert.equal(announcedNotes([{ name: 'Offer A', notes: [] }, { name: 'North Bank', notes: ['A note.'] }]), 'North Bank: A note.');
+    assert.equal(announcedNotes([{ name: 'North Bank', notes: ['A note.'] }]), 'A note.');
+    assert.equal(announcedNotes([{ name: 'North Bank', notes: [] }]), '');
+    assert.equal(announcedNotes([]), '');
+  });
+
+  it('says the notes alone for an offer that has no figures to say', () => {
+    // One valid offer that is never paid off has no payment and total to say.
+    const { said, change } = announce({ paidOff: [], validCount: 1 });
+    change({ paidOff: [], validCount: 1, noted: [{ name: 'Offer A', notes: ['A note.'] }] });
+    clock.pass(600);
+    assert.equal(said(), 'A note.');
+  });
+
+  it('leaves the notes out while the offers are withheld: only the reason is said', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ withheld: true, paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['A note.'] }] });
+    clock.pass(1000);
+    assert.equal(said(), 'Fix the highlighted fields to compare the offers.');
   });
 
   it('says a notice at once, without waiting for typing to pause', () => {

@@ -13,8 +13,9 @@
  * 2. The lead-in of a field error ("Error: …"), so an error is told apart
  *    from help text by more than its colour, in every language.
  */
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
 import { resultGate } from '../utils/shared/settle.ts';
+import { steadyAbove, type Steady } from '../utils/shared/steadyAbove.ts';
 
 /** False in the server-rendered page and on the first render; true once the island runs. */
 export function useToolReady(): boolean {
@@ -195,4 +196,22 @@ export function LinkField({ link, ref, ...rest }: LinkFieldProps) {
       }}
     />
   );
+}
+
+/**
+ * For a part of a tool that changes height as a reader types in a box below
+ * it: the ref to put on that part. The box then stays where it is on the
+ * screen (#827, `steadyAbove`). The part is looked at again after every
+ * render of the component that calls this, so call it where the part's
+ * content is decided.
+ */
+export function useSteadyAbove<T extends HTMLElement>(): (el: T | null) => void {
+  const steady = useRef<Steady | null>(null);
+  useLayoutEffect(() => {
+    steady.current?.settle();
+  });
+  return useCallback((el: T | null) => {
+    steady.current?.stop();
+    steady.current = el === null ? null : steadyAbove(el);
+  }, []);
 }

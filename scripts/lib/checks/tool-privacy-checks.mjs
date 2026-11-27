@@ -372,7 +372,7 @@ export function addressProblems(event, origin) {
   return out;
 }
 
-const PHASES = { use: 'while the tool was used', share: 'on the # share link', switch: 'on the page the language was switched from', arrived: 'on the page the language switch arrived at', old: 'on the old ? link' };
+const PHASES = { use: 'while the tool was used', share: 'on the # share link', switch: 'on the page the language was switched from', arrived: 'on the page the language switch arrived at', old: 'on the old ? link', plain: 'on the link written before the check', cut: 'on the link cut short' };
 
 /**
  * Judges one run. `decoded` is every PostHog request body with the part of

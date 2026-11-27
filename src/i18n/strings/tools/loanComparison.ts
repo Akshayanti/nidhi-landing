@@ -283,6 +283,8 @@ export const loanComparisonEn = {
       monthlyAfterChange: 'Monthly payment after rate change',
       fromMonth: 'From month',
       paymentNote: 'Payment note',
+      /** The summary's last column, there only when an offer has a note: what the card says under its result. */
+      notes: 'Notes',
       noPaymentChange: 'No payment change',
       keptPaid: 'From month {month}, the scheduled payment stays the same. The loan pays off in month {payoffMonth}.',
       keptNever: 'From month {month}, the scheduled payment stays the same. The loan is not paid off.',
@@ -316,6 +318,13 @@ export const loanComparisonEn = {
     /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
     cardsHeading: 'Loan offers',
     example: 'Example offers. Replace the figures with your own.',
+    /** In place of the tool, when a link written with a check did not arrive whole (#820): one sentence, one button. */
+    link: {
+      /** The heading of the notice below, for a reader who moves by headings. Not shown. */
+      damagedHeading: 'This link cannot be opened',
+      damaged: 'This comparison link is incomplete or has changed. Ask the sender for the full link, or start a new comparison.',
+      startNew: 'Start a new comparison',
+    },
     phoneTabs: {
       groupAria: 'Offer to show',
       tabName: 'Offer {label}',
@@ -705,7 +714,8 @@ export const loanComparisonEn = {
         /** A term was typed, not a payment: the message names the boxes this reader filled in. */
         interestOnly: 'With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.',
         rate: 'Enter a non-negative interest rate.',
-        initialFixed: 'Initial fixed period must be a positive number of months.',
+        /** A month of the rate change that is not a whole one from 1 up. Names the box and the other choice by their labels; never quotes what was typed. */
+        initialFixed: 'The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.',
         termMin: 'Enter a term of at least one month.',
         termMax: 'Term cannot exceed {months} months.',
         paymentEnter: 'Enter a monthly payment greater than zero.',
@@ -731,6 +741,14 @@ export const loanComparisonEn = {
           'Internal precision check: principal sum {sum} ≠ {expected}. Please report this.',
         subsequentRate:
           'After the initial fixed period, the subsequent rate is so high that the recast payment barely covers interest.',
+        /** A note, not a fault: the fixed period is as long as the term or longer, so the loan is worked out at one rate. */
+        rateNeverChanges: 'The rate does not change within this term, so the subsequent rate is not used.',
+        /** A note: a lump sum dated after the payoff changes nothing. One sentence for one, one for several, which names the first month. */
+        lumpUnused: 'This loan is paid off in month {payoffMonth}, before the lump sum in month {month} would be paid, so it is not used.',
+        lumpsUnused: 'This loan is paid off in month {payoffMonth}, before the lump sums from month {month} on would be paid, so they are not used.',
+        /** A note: a lump sum larger than what is owed in its month. No amount in it. */
+        lumpPartUsed: 'The lump sum in month {month} is more than is owed then, so only part of it is used.',
+        lumpsPartUsed: 'The lump sums in month {month} are more than is owed then, so only part of them is used.',
       },
     },
   },
@@ -994,6 +1012,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       monthlyAfterChange: 'दर बदलने के बाद मासिक किस्त',
       fromMonth: 'किस महीने से',
       paymentNote: 'किस्त पर टिप्पणी',
+      notes: 'टिप्पणियाँ',
       noPaymentChange: 'किस्त नहीं बदलती',
       keptPaid: 'महीना {month} से तय किस्त वही रहती है। लोन महीना {payoffMonth} में चुक जाता है।',
       keptNever: 'महीना {month} से तय किस्त वही रहती है। लोन नहीं चुकता।',
@@ -1018,6 +1037,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     cardsHeading: 'लोन ऑफ़र',
     example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
+    link: {
+      damagedHeading: 'यह लिंक नहीं खुल सकता',
+      damaged: 'तुलना का यह लिंक अधूरा है या बदल गया है। भेजने वाले से पूरा लिंक माँगें, या नई तुलना शुरू करें।',
+      startNew: 'नई तुलना शुरू करें',
+    },
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -1354,7 +1378,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         tooSmall: 'इस अवधि के लिए लोन बहुत छोटा है। बड़ी राशि या छोटी अवधि भरें।',
         interestOnly: 'इस राशि, ब्याज दर और अवधि पर मासिक किस्त सिर्फ़ ब्याज भर पाती है, इसलिए लोन कभी नहीं चुकता। कम ब्याज दर, छोटी अवधि या बड़ी राशि भरें।',
         rate: 'ब्याज दर शून्य या उससे ज़्यादा भरें।',
-        initialFixed: 'शुरुआत की तय अवधि शून्य से ज़्यादा महीनों की होनी चाहिए।',
+        initialFixed: 'शुरुआत की तय अवधि पूरे महीनों में होती है, 1 महीने या उससे ज़्यादा। इसे ठीक करें, या “दर का ढाँचा” में “तय” चुनें।',
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
@@ -1377,6 +1401,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
+        rateNeverChanges: 'इस अवधि के भीतर दर नहीं बदलती, इसलिए बाद की दर इस्तेमाल नहीं होती।',
+        lumpUnused: 'यह लोन महीना {payoffMonth} में चुक जाता है, महीना {month} की एकमुश्त राशि चुकाए जाने से पहले ही, इसलिए वह इस्तेमाल नहीं होती।',
+        lumpsUnused: 'यह लोन महीना {payoffMonth} में चुक जाता है, महीना {month} से आगे की एकमुश्त राशियाँ चुकाए जाने से पहले ही, इसलिए वे इस्तेमाल नहीं होतीं।',
+        lumpPartUsed: 'महीना {month} की एकमुश्त राशि उस समय के बकाया से ज़्यादा है, इसलिए उसका एक हिस्सा ही इस्तेमाल होता है।',
+        lumpsPartUsed: 'महीना {month} की एकमुश्त राशियाँ उस समय के बकाया से ज़्यादा हैं, इसलिए उनका एक हिस्सा ही इस्तेमाल होता है।',
       },
     },
   },
@@ -1633,6 +1662,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       monthlyAfterChange: 'Cuota mensual tras el cambio de tasa',
       fromMonth: 'Desde el mes',
       paymentNote: 'Nota sobre la cuota',
+      notes: 'Notas',
       noPaymentChange: 'La cuota no cambia',
       keptPaid: 'Desde el mes {month}, la cuota programada se mantiene. El préstamo se liquida en el mes {payoffMonth}.',
       keptNever: 'Desde el mes {month}, la cuota programada se mantiene. El préstamo no se liquida.',
@@ -1657,6 +1687,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Ofertas de préstamo',
     example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
+    link: {
+      damagedHeading: 'Este enlace no se puede abrir',
+      damaged: 'Este enlace de comparación está incompleto o ha cambiado. Pide el enlace completo a quien te lo envió, o empieza una comparación nueva.',
+      startNew: 'Empezar una comparación nueva',
+    },
     phoneTabs: {
       groupAria: 'Oferta que se muestra',
       tabName: 'Oferta {label}',
@@ -1992,7 +2027,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         tooSmall: 'El préstamo es demasiado pequeño para este plazo. Escribe una cantidad mayor o un plazo más corto.',
         interestOnly: 'Con esta cantidad, esta tasa y este plazo, la cuota mensual solo cubre los intereses, así que el préstamo nunca se liquida. Escribe una tasa más baja, un plazo más corto o una cantidad mayor.',
         rate: 'Escribe una tasa de interés que no sea negativa.',
-        initialFixed: 'El periodo fijo inicial debe ser un número positivo de meses.',
+        initialFixed: 'El periodo fijo inicial es un número entero de meses, de 1 en adelante. Corrígelo, o elige «Fija» en «Estructura de la tasa».',
         termMin: 'Escribe un plazo de al menos un mes.',
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
@@ -2016,6 +2051,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avisa del error, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
+        rateNeverChanges: 'La tasa no cambia dentro de este plazo, así que la tasa posterior no se usa.',
+        lumpUnused: 'Este préstamo se liquida en el mes {payoffMonth}, antes de que se haga el pago extraordinario del mes {month}, así que no se usa.',
+        lumpsUnused: 'Este préstamo se liquida en el mes {payoffMonth}, antes de que se hagan los pagos extraordinarios a partir del mes {month}, así que no se usan.',
+        lumpPartUsed: 'El pago extraordinario del mes {month} es mayor que el saldo pendiente en ese momento, así que solo se usa una parte.',
+        lumpsPartUsed: 'Los pagos extraordinarios del mes {month} suman más que el saldo pendiente en ese momento, así que solo se usa una parte.',
       },
     },
   },
@@ -2271,6 +2311,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       monthlyAfterChange: 'Měsíční splátka po změně sazby',
       fromMonth: 'Od měsíce',
       paymentNote: 'Poznámka ke splátce',
+      notes: 'Poznámky',
       noPaymentChange: 'Splátka se nemění',
       keptPaid: 'Od měsíce {month} zůstává pravidelná splátka stejná. Úvěr je splacen v měsíci {payoffMonth}.',
       keptNever: 'Od měsíce {month} zůstává pravidelná splátka stejná. Úvěr není splacen.',
@@ -2295,6 +2336,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Nabídky úvěrů',
     example: 'Ukázkové nabídky. Nahraďte čísla svými.',
+    link: {
+      damagedHeading: 'Tento odkaz nelze otevřít',
+      damaged: 'Tento odkaz na srovnání je neúplný nebo se změnil. Požádejte odesílatele o\u00a0celý odkaz, nebo začněte nové srovnání.',
+      startNew: 'Začít nové srovnání',
+    },
     phoneTabs: {
       groupAria: 'Zobrazená nabídka',
       tabName: 'Nabídka {label}',
@@ -2630,7 +2676,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         tooSmall: 'Úvěr je na tuto dobu splatnosti příliš malý. Zadejte vyšší částku nebo kratší dobu splatnosti.',
         interestOnly: 'Při této částce, sazbě a\u00a0době splatnosti pokryje měsíční splátka jen úrok, takže se úvěr nikdy nesplatí. Zadejte nižší sazbu, kratší dobu splatnosti nebo vyšší částku.',
         rate: 'Zadejte nezápornou úrokovou sazbu.',
-        initialFixed: 'Počáteční období fixace musí být kladný počet měsíců.',
+        initialFixed: 'Počáteční období fixace je celý počet měsíců, od 1 výše. Opravte ho, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
         termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
         termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
         paymentEnter: 'Zadejte měsíční splátku větší než nula.',
@@ -2653,6 +2699,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste to prosím.',
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
+        rateNeverChanges: 'Sazba se během této doby splatnosti nezmění, takže se následná sazba nepoužije.',
+        lumpUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišla jednorázová mimořádná splátka v\u00a0měsíci {month}, takže se nepoužije.',
+        lumpsUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišly jednorázové mimořádné splátky od měsíce {month}, takže se nepoužijí.',
+        lumpPartUsed: 'Jednorázová mimořádná splátka v\u00a0měsíci {month} je vyšší než tehdy zbývající jistina, takže se z\u00a0ní použije jen část.',
+        lumpsPartUsed: 'Jednorázové mimořádné splátky v\u00a0měsíci {month} jsou vyšší než tehdy zbývající jistina, takže se z\u00a0nich použije jen část.',
       },
     },
   },
@@ -2891,6 +2942,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       monthlyAfterChange: 'दर बदलल्यानंतरचा मासिक हप्ता',
       fromMonth: 'कोणत्या महिन्यापासून',
       paymentNote: 'हप्त्याबद्दल टीप',
+      notes: 'टिपा',
       noPaymentChange: 'हप्ता बदलत नाही',
       keptPaid: 'महिना {month} पासून ठरलेला हप्ता तोच राहतो. कर्ज महिना {payoffMonth} मध्ये फिटते.',
       keptNever: 'महिना {month} पासून ठरलेला हप्ता तोच राहतो. कर्ज फिटत नाही.',
@@ -2915,6 +2967,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     cardsHeading: 'कर्जाच्या ऑफर',
     example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
+    link: {
+      damagedHeading: 'ही लिंक उघडता येत नाही',
+      damaged: 'तुलनेची ही लिंक अपूर्ण आहे किंवा बदलली आहे. पाठवणाऱ्याकडून पूर्ण लिंक मागवा, किंवा नवीन तुलना सुरू करा.',
+      startNew: 'नवीन तुलना सुरू करा',
+    },
     phoneTabs: {
       groupAria: 'दाखवायची ऑफर',
       tabName: 'ऑफर {label}',
@@ -3240,7 +3297,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         tooSmall: 'या मुदतीसाठी कर्ज फार लहान आहे. मोठी रक्कम किंवा कमी मुदत भरा.',
         interestOnly: 'या रकमेवर, व्याजदरावर आणि मुदतीवर मासिक हप्त्यात फक्त व्याज भागते, त्यामुळे कर्ज कधीच फिटत नाही. कमी व्याजदर, कमी मुदत किंवा मोठी रक्कम भरा.',
         rate: 'उणे नसलेला व्याजदर भरा.',
-        initialFixed: 'सुरुवातीचा ठरावीक कालावधी शून्यापेक्षा जास्त महिन्यांचा असायला हवा.',
+        initialFixed: 'सुरुवातीचा ठरावीक कालावधी पूर्ण महिन्यांचा असतो, 1 महिना किंवा त्याहून जास्त. तो दुरुस्त करा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
         termMin: 'किमान एक महिन्याची मुदत भरा.',
         termMax: 'मुदत {months} महिन्यांपेक्षा जास्त असू शकत नाही.',
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
@@ -3261,6 +3318,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       warnings: {
         precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे कळवा.',
         subsequentRate: 'सुरुवातीच्या ठरावीक कालावधीनंतरचा दर इतका जास्त आहे की पुनर्गणना केलेल्या हप्त्यात व्याजही कसेबसे भागते.',
+        rateNeverChanges: 'या मुदतीत दर बदलत नाही, त्यामुळे नंतरचा दर वापरला जात नाही.',
+        lumpUnused: 'हे कर्ज महिना {payoffMonth}\u00a0मध्ये फिटते, महिना {month}\u00a0मधील एकरकमी रक्कम भरण्याआधीच, त्यामुळे ती वापरली जात नाही.',
+        lumpsUnused: 'हे कर्ज महिना {payoffMonth}\u00a0मध्ये फिटते, महिना {month} पासूनच्या एकरकमी रकमा भरण्याआधीच, त्यामुळे त्या वापरल्या जात नाहीत.',
+        lumpPartUsed: 'महिना {month}\u00a0मधील एकरकमी रक्कम त्या वेळच्या बाकी कर्जापेक्षा जास्त आहे, त्यामुळे तिचा काही भागच वापरला जातो.',
+        lumpsPartUsed: 'महिना {month}\u00a0मधील एकरकमी रकमा त्या वेळच्या बाकी कर्जापेक्षा जास्त आहेत, त्यामुळे त्यांचा काही भागच वापरला जातो.',
       },
     },
   },

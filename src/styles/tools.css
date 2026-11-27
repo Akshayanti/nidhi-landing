@@ -90,6 +90,35 @@
   line-height: 1.45;
   color: var(--color-text-secondary);
 }
+/* The row the example note sits in. It is always there, so the note's height
+   can be kept while a reader types (#827); empty, it takes no room: it gives
+   back the gap the column put before it, and has that gap as its own padding
+   only while the note is in it. */
+.lc-exampleRow {
+  margin-top: calc(-1 * var(--space-6));
+}
+.lc-exampleRow:not(:empty) {
+  padding-top: var(--space-6);
+}
+/* A link that did not arrive whole: one sentence and one button, in place of
+   the tool (#820). The button is as wide as its words, and wraps. */
+.lc-linkDamaged {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+.lc-linkDamaged .btn {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* A word wider than the button at large text breaks with a hyphen, in the
+   languages that hyphenate (global.css has the rule for running text). */
+.lc-linkDamaged .btn:is(:lang(en), :lang(es), :lang(cs)) {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 /* Phones only: a way from the offer tabs to the side-by-side table. */
 .lc-jump {
   display: none;
@@ -560,6 +589,27 @@
   color: var(--color-danger);
   font-weight: 700;
   margin-left: 2px;
+}
+/* The mark and the last word of its label: one unit that cannot break, so
+   the asterisk never sits on a line of its own (#917). A label may break
+   anywhere when a word is wider than its line, and a no-break space does not
+   stop that. Where the unit is wider than the label's line it is drawn
+   smaller, by just enough to fit, the way an amount is (.amt): the label's
+   width over the unit's length in characters (set inline) times the width of
+   a character in em. The label itself is the box it is fitted to. */
+.lc-fieldLabel--required {
+  display: block;
+  container-type: inline-size;
+}
+/* A legend is as wide as its words; with its size contained that is nothing. */
+legend.lc-fieldLabel--required {
+  width: 100%;
+  box-sizing: border-box;
+}
+.lc-requiredPair {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: min(1em, calc(100cqi / (var(--pair-len, 1) * var(--pair-k, 0.62))));
 }
 
 /* Field group: a visually-grouped section of optional fields inside a

@@ -163,13 +163,13 @@ const MARKED = { invalid: 'true', describes: true };
 
 const LABELS = {
   name: c.name,
-  principal: `${c.principal} * (EUR)`,
-  rate: `${c.rate} *`,
-  term: `${c.term} *`,
-  monthly: `${c.monthly} * (EUR)`,
+  principal: `${c.principal}* (EUR)`,
+  rate: `${c.rate}*`,
+  term: `${c.term}*`,
+  monthly: `${c.monthly}* (EUR)`,
   // The two boxes of a rate that changes are required while they are shown.
-  initialFixed: `${c.initialFixed} *`,
-  subsequentRate: `${c.subsequentRate} *`,
+  initialFixed: `${c.initialFixed}*`,
+  subsequentRate: `${c.subsequentRate}*`,
 };
 
 /** The optional boxes: the field each one edits, its label, and whether it shows only for a rate that changes. */
@@ -273,6 +273,30 @@ describe('the offer card: its heading, name and remove button', () => {
 });
 
 describe('the offer card: the required boxes', () => {
+  it('keeps each mark in one unit with the last word of its label, on a label that is the box the unit is fitted to (#917)', () => {
+    /** The text of each label that carries a mark, and the unit inside it. */
+    const marked = (card: HTMLElement) => [...card.querySelectorAll('.lc-required')].map((mark) => {
+      const pair = mark.parentElement as HTMLElement;
+      assert.equal(pair.className, 'lc-requiredPair');
+      const label = pair.parentElement as HTMLElement;
+      assert.equal(label.className, 'lc-fieldLabel lc-fieldLabel--required');
+      const words = (label.firstChild?.nodeType === 3 ? label.firstChild.textContent : '') ?? '';
+      return `${words}[${pair.textContent}]`;
+    });
+    /** A label as it is drawn: its last word and the mark in brackets. */
+    const unit = (text: string) => {
+      const cut = text.lastIndexOf(' ') + 1;
+      return `${text.slice(0, cut)}[${text.slice(cut)}*]`;
+    };
+    assert.equal(unit(c.term), 'Term [(months)*]');
+    assert.deepEqual(marked(show(loan({ ...HYBRID })).card), [c.principal, c.rate, c.solveFor, c.term, c.initialFixed, c.subsequentRate].map(unit));
+    assert.deepEqual(marked(show(loan({ modeKind: 'payment', monthlyPayment: '100' })).card), [c.principal, c.rate, c.solveFor, c.monthly].map(unit));
+    // No other label is a box of its own: only the seven that hold a unit.
+    const card = show(loan({ ...HYBRID })).card;
+    assert.equal(card.querySelectorAll('.lc-fieldLabel--required').length, 6);
+    assert.equal(card.querySelectorAll('.lc-requiredPair').length, 6);
+  });
+
   it('labels each with its mark and currency, shows the offer as typed, and marks none while the offer is valid', () => {
     const { card } = show(loan({ principal: '1200', annualRatePct: '4.5', termMonths: '24' }));
     const principal = box(card, LABELS.principal);
@@ -368,7 +392,7 @@ describe('the offer card: solving for the payment or for the months', () => {
     assert.equal(monthsChoice.value, 'payment');
     assert.deepEqual([...(payment.closest('label') as Element).classList], ['lc-modeOption', 'lc-modeOptionActive']);
     assert.deepEqual([...(monthsChoice.closest('label') as Element).classList], ['lc-modeOption']);
-    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor} *`);
+    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor}*`);
     // One group per question and per card: the arrow keys stay inside it.
     const rateType = choice(card, c.fixed);
     assert.notEqual(payment.name, '');
@@ -553,7 +577,7 @@ describe('the offer card: the result rows', () => {
     assert.deepEqual(rows(card)[1], { label: r.apr, value: r.aprNa, hints: [r.aprFees, r.aprBasis] });
   });
 
-  it('shows the engine warnings under the result, in the reader language, as status messages', () => {
+  it('shows the engine warnings under the result, in the reader language, as lines that are not live regions', () => {
     const vendor = loan(HYBRID);
     const result = {
       ...computeFromInput(vendor, 'EUR'),
@@ -565,7 +589,8 @@ describe('the offer card: the result rows', () => {
     const { card } = show(vendor, { result });
     const warnings = [...card.querySelectorAll('.lc-warning')];
     assert.deepEqual(warnings.map((w) => w.textContent), [s.engine.warnings.subsequentRate, 'A sentence the tool does not know.']);
-    assert.deepEqual(warnings.map((w) => w.getAttribute('role')), ['status', 'status']);
+    // Not live regions: the tool's one announcement says them, after a pause.
+    assert.deepEqual(warnings.map((w) => w.getAttribute('role')), [null, null]);
     assert.equal(rows(card).length, 5);
   });
 
@@ -798,7 +823,7 @@ describe('the offer card: the optional boxes', () => {
     assert.equal(errorOf(mixed.card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`);
     mixed.unmount();
     const { card } = show(loan({ lumpSumsEncoded: '3:100' }));
-    assert.equal(errorOf(card), null);
+    assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
   });
 
@@ -831,9 +856,78 @@ describe('the offer card: the optional boxes', () => {
     }
     // Both filled: nothing is marked and the offer is worked out.
     const { card } = show(loan(HYBRID));
-    assert.equal(errorOf(card), null);
+    assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, LABELS.subsequentRate)), UNMARKED);
     assert.ok(rows(card).length > 0);
+  });
+
+  it('marks the month of the change, and no other box, when it is part of a month: 60.4 used to be worked out as 60 (issue 914)', () => {
+    for (const initialFixedMonths of ['6.4', '0.5', '0.4']) {
+      const { card, unmount } = show(loan({ ...HYBRID, initialFixedMonths }));
+      assert.equal(errorOf(card)?.textContent, 'Error: The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.', initialFixedMonths);
+      assert.deepEqual(wiring(card, box(card, LABELS.initialFixed)), MARKED, initialFixedMonths);
+      for (const label of [LABELS.subsequentRate, LABELS.principal, LABELS.rate, LABELS.term, `${c.fee} (EUR)`]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, `${label} with ${initialFixedMonths}`);
+      assert.deepEqual(rows(card), [], initialFixedMonths);
+      assert.deepEqual(openFolds(card), [c.rateStructure.title], initialFixedMonths);
+      unmount();
+    }
+    // With the amount missing as well, it is still this box that is said and marked.
+    const { card } = show(loan({ ...HYBRID, initialFixedMonths: '6.4', principal: '' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.initialFixed}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.initialFixed)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
+  });
+
+  it('works out a fixed period as long as the term, or far longer, as a fixed rate, and says the later rate is not used (issue 914)', () => {
+    for (const initialFixedMonths of ['12', '13', '1200', '5000']) {
+      const { card, unmount } = show(loan({ ...HYBRID, initialFixedMonths }));
+      assert.ok(errorOf(card) === null, initialFixedMonths);
+      const notes = [...card.querySelectorAll('.lc-warning')];
+      assert.deepEqual(notes.map((n) => n.textContent), ['The rate does not change within this term, so the subsequent rate is not used.'], initialFixedMonths);
+      assert.deepEqual(notes.map((n) => n.getAttribute('role')), [null]);
+      for (const label of [LABELS.initialFixed, LABELS.subsequentRate, LABELS.term]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, label);
+      // 1,200 at 0% over 12 months: the fixed loan's rows.
+      assert.deepEqual(rows(card).map((row) => row.label), rows(show(loan()).card).map((row) => row.label), initialFixedMonths);
+      unmount();
+      cleanup();
+    }
+    // One month short of the term: a payment is made at the later rate, and there is nothing to note.
+    assert.ok(show(loan({ ...HYBRID, initialFixedMonths: '11' })).card.querySelector('.lc-warning') === null);
+  });
+
+  it('keeps a lump sum dated after the payoff valid, and says under the result that it is not used (issue 915)', () => {
+    // 1,200 at 0% over 12 months is paid off in month 12.
+    const { card } = show(loan({ lumpSumsEncoded: '13:50' }));
+    assert.ok(errorOf(card) === null);
+    assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
+    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['This loan is paid off in month 12, before the lump sum in month 13 would be paid, so it is not used.']);
+    cleanup();
+    const several = show(loan({ lumpSumsEncoded: '20:50;13:50' }));
+    assert.equal(several.card.querySelectorAll('.lc-warning').length, 1);
+    assert.equal(several.card.querySelector('.lc-warning')?.textContent, 'This loan is paid off in month 12, before the lump sums from month 13 on would be paid, so they are not used.');
+    cleanup();
+    // Used whole: nothing to say.
+    assert.ok(show(loan({ lumpSumsEncoded: '11:100' })).card.querySelector('.lc-warning') === null);
+  });
+
+  it('says under the result that a lump sum larger than what is owed is used in part, before the note on any after it (issue 925)', () => {
+    // 1,200 at 0% over 12 months: 100 is owed after month 11.
+    const { card } = show(loan({ lumpSumsEncoded: '11:500' }));
+    assert.ok(errorOf(card) === null);
+    assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
+    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 11 is more than is owed then, so only part of it is used.']);
+    cleanup();
+    const both = show(loan({ lumpSumsEncoded: '20:50;11:500' }));
+    // The lines are read where they stand, and said by the tool's one announcement:
+    // none is a live region of its own, or inside one.
+    for (const line of both.card.querySelectorAll('.lc-warning')) {
+      assert.equal(line.tagName, 'P');
+      assert.ok(line.closest('[role="status"], [role="alert"], [aria-live]') === null, line.textContent ?? '');
+    }
+    assert.deepEqual([...both.card.querySelectorAll('.lc-warning')].map((n) => n.textContent), [
+      'The lump sum in month 11 is more than is owed then, so only part of it is used.',
+      'This loan is paid off in month 11, before the lump sum in month 20 would be paid, so it is not used.',
+    ]);
   });
 
   it('hands back each box as a plain number under its own field, however the page writes numbers', () => {
@@ -920,6 +1014,15 @@ describe('the offer card: a rate that changes', () => {
     for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(noPayment.card, box(noPayment.card, label)), MARKED, label);
 
     cleanup();
+    // Whatever the two boxes, which are not on the page, still hold, and however small the payment: the message is the same (issue 914).
+    // 1,200 at 12% is 12 of interest in the first month, so a payment of 5 never pays it off.
+    for (const hidden of [{ initialFixedMonths: '0.5' }, { initialFixedMonths: 'five', subsequentRatePct: 'abc' }, { initialFixedMonths: '5000' }]) {
+      const low = show(loan({ ...HYBRID, ...hidden, annualRatePct: '12', modeKind: 'payment', monthlyPayment: '5' }));
+      assert.equal(errorOf(low.card)?.textContent, `Error: ${s.engine.errors.hybridMode}`, JSON.stringify(hidden));
+      for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(low.card, box(low.card, label)), UNMARKED, label);
+      cleanup();
+    }
+
     // The reason is there before the choice is ever made.
     const fixed = show(loan({ modeKind: 'payment', monthlyPayment: '100' }));
     assert.ok(choice(fixed.card, c.hybrid).disabled);

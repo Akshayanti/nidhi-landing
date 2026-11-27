@@ -46,6 +46,10 @@ describe('the guard’s key pattern covers every key the encoder can emit', () =
     assert.equal(keys.length, 10 + loan.MAX_VENDORS * 10, keys.join(' '));
     // Older links carried an APR convention as `ac`; nothing writes it now, and the guard still removes it.
     assert.ok(isKey.test('ac'));
+    // The link the tool writes carries the same keys inside its envelope: the format first, the check last (#820).
+    const sealed = keysOf(loan.encodeSharedState(vendors, global as unknown as loan.GlobalState));
+    assert.deepEqual(sealed, ['f', ...keys, 'z']);
+    for (const k of sealed) assert.ok(isKey.test(k), `the pattern misses ${k}`);
   });
 
   const rows: AssetRow[] = Array.from({ length: 60 }, (_, i) => ({

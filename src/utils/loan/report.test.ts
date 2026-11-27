@@ -114,6 +114,55 @@ describe('loan printed report: the comparison table when no payment changes', ()
   });
 });
 
+describe('loan printed report: the notes the card shows under a result (issues 914, 915)', () => {
+  // Paid off in month 3: a lump sum in month 5 is never paid.
+  const LATE = offer({ lumpSumsEncoded: '5:100' });
+  const BOTH = offer({ rateKind: 'hybrid', initialFixedMonths: '3', subsequentRatePct: '24', lumpSumsEncoded: '7:100;5:100' });
+  const figures = [amount(408.03), whole(3), amount(24.08), amount(0), amount(0), amount(1224.08), pct(12.0002), common.yes];
+  const plainHead = [c.name, island.delta.monthlyPayment, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, x.aprPct, x.computed];
+
+  it('are lines under the comparison, each after its offer\'s name, and the table has no column for them', () => {
+    const r = report([['Plain', offer()], ['Late', LATE], ['Both', BOTH], ['Broken', BROKEN]]);
+    assert.equal(r.tables.length, 1);
+    assert.deepEqual(r.tables[0].head, plainHead);
+    assert.deepEqual(r.tables[0].rows, [
+      ['Plain', ...figures],
+      ['Late', ...figures],
+      ['Both', ...figures],
+      ['Broken', null, null, null, null, null, null, null, common.no],
+    ]);
+    assert.deepEqual(r.tables[0].note, [
+      island.delta.aprNote,
+      x.schedulesNote,
+      'Late: This loan is paid off in month 3, before the lump sum in month 5 would be paid, so it is not used.',
+      'Both: The rate does not change within this term, so the subsequent rate is not used.',
+      'Both: This loan is paid off in month 3, before the lump sums from month 5 on would be paid, so they are not used.',
+    ]);
+  });
+
+  it('carry the note on a lump sum larger than what is owed, before the note on the ones after it (issue 925)', () => {
+    // 1,200.00 at 12% over 3 months: 804.01 is owed after month 1.
+    const r = report([['Part', offer({ lumpSumsEncoded: '5:100;1:900' })]]);
+    assert.deepEqual(r.tables[0].note, [
+      island.delta.aprNote,
+      x.schedulesNote,
+      'Part: The lump sum in month 1 is more than is owed then, so only part of it is used.',
+      'Part: This loan is paid off in month 1, before the lump sum in month 5 would be paid, so it is not used.',
+    ]);
+  });
+
+  it('stay under the comparison when a payment changes with its rate, and out of both tables', () => {
+    const r = report([['Reset', RESET], ['Late', LATE]]);
+    const [comparison, payments] = r.tables;
+    assert.deepEqual(comparison.head, [c.name, x.monthlyAtStart, ...plainHead.slice(2)]);
+    assert.deepEqual(comparison.rows[1], ['Late', ...figures]);
+    assert.deepEqual(payments.head, [c.name, x.monthlyAtStart, x.monthlyAfterChange, x.fromMonth, x.paymentNote]);
+    assert.deepEqual(payments.rows[1], ['Late', amount(408.03), null, null, x.noPaymentChange]);
+    assert.deepEqual(comparison.note, [island.delta.aprNote, x.schedulesNote, 'Late: This loan is paid off in month 3, before the lump sum in month 5 would be paid, so it is not used.']);
+    assert.equal(payments.note, undefined);
+  });
+});
+
 describe('loan printed report: the tables when a payment changes with its rate', () => {
   const r = report([['Fixed', FIXED], ['Reset', RESET], ['Kept', KEPT], ['Never', NEVER], ['Early', EARLY], ['Broken', BROKEN]]);
   const [comparison, payments] = r.tables;

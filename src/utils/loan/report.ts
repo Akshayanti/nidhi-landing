@@ -10,7 +10,8 @@
  * Pure: no DOM, no analytics.
  */
 import { isEmptyRow, tableOf, thin, type Report } from '../shared/report.ts';
-import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets, type LoanExport } from './export.ts';
+import { hasLaterPayment, hasNotes, LATER_PAYMENT_COLUMNS, loanSheets, type LoanExport } from './export.ts';
+import { resultNotes } from './notes.ts';
 import { fromMinor, shownMonths } from './math.ts';
 
 /** Dash patterns that tell offers apart without colour, A to E (as the page's chart). */
@@ -20,7 +21,13 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
   const { island, currency, results, names, answer } = e;
   const x = island.export;
   // Stryker disable next-line StringLiteral: equivalent. The date and the page appear only on the about sheet, which the report leaves out.
-  const [, summary, inputs] = loanSheets({ ...e, date: '', page: '', worded: true });
+  const [, sheet, inputs] = loanSheets({ ...e, date: '', page: '', worded: true });
+  // The spreadsheet's notes column is a sentence wide. On paper each note is
+  // a line under the comparison, after its offer's name, as the card has it
+  // under the result.
+  const noted = hasNotes(results);
+  const summary = noted ? { ...sheet, rows: sheet.rows.map((row) => row.slice(0, -1)) } : sheet;
+  const noteLines = results.flatMap((r, i) => resultNotes(r, island.engine.warnings).map((text) => `${names[i]}: ${text}`));
   const series = results.flatMap((r, i) => {
     if (r.error || r.schedule.length === 0) return [];
     const first = r.schedule[0];
@@ -37,7 +44,7 @@ export function loanReport(e: Omit<LoanExport, 'date' | 'page'> & { answer: stri
   // and a second, short table carries the payments by period.
   // The basis of the APR is a line under the table, as on the page: in the
   // column heading it stacked six lines deep on narrow paper (#646).
-  const note = [island.delta.aprNote, x.schedulesNote];
+  const note = [island.delta.aprNote, x.schedulesNote, ...noteLines];
   let tables = [tableOf(summary, { caption: island.delta.heading, note, stack: true })];
   if (hasLaterPayment(results)) {
     const cut = (from: number, to: number) => ({ ...summary, rows: summary.rows.map((row) => [row[0], ...row.slice(from, to)]) });

@@ -600,3 +600,30 @@ describe('buildScheduleAdvanced: a rate that changes, with the payment kept', ()
     assert.deepEqual(result.schedule[1199], row(1200, 1000, 1000, 0, 1_000_000));
   });
 });
+
+describe('buildScheduleAdvanced: a lump sum larger than what is owed (issue 925)', () => {
+  const flat = (lumpSums: { month: number; amountMinor: number }[]) =>
+    buildScheduleAdvanced({ principalMinor: 120000, rateSpec: { kind: 'fixed', annualRate: 0 }, totalMonths: 12, basePaymentMinor: 10000, lumpSums });
+
+  it('pays what is owed and no more, and hands back the month', () => {
+    // 1,200.00 at 0%, 100.00 a month: 900.00 is owed after month 3.
+    const result = flat([{ month: 3, amountMinor: 90001 }]);
+    assert.equal(result.partLumpMonth, 3);
+    assert.ok(result.partLumpSeveral === false);
+    // Two typed for that month are several; two in another month do not make this one several.
+    assert.ok(flat([{ month: 3, amountMinor: 50000 }, { month: 3, amountMinor: 40001 }]).partLumpSeveral === true);
+    assert.ok(flat([{ month: 1, amountMinor: 1 }, { month: 1, amountMinor: 1 }, { month: 3, amountMinor: 90001 }]).partLumpSeveral === false);
+    assert.deepEqual(result.schedule.at(-1), row(3, 100000, 0, 100000, 0));
+    assert.equal(result.schedule.length, 3);
+  });
+
+  it('hands back no month, not even an empty one, when every lump sum is used whole or none is', () => {
+    for (const lumpSums of [[], [{ month: 3, amountMinor: 90000 }], [{ month: 3, amountMinor: 5000 }], [{ month: 13, amountMinor: 5000 }], [{ month: 12, amountMinor: 5000 }]]) {
+      const result = flat(lumpSums);
+      assert.ok(!('partLumpMonth' in result), JSON.stringify(lumpSums));
+      assert.ok(!('partLumpSeveral' in result), JSON.stringify(lumpSums));
+      assert.equal(result.error, undefined);
+    }
+  });
+});
+

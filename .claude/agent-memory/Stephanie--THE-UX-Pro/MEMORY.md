@@ -28,4 +28,5 @@
 - [Loan rate change review 26 Nov](loan-rate-change-review-2026-11-26.md) — required box vs FAQ; error far above fold; comma-decimal lump month; orphaned "*" at 400%
 - [Inflation month review 25 Nov](inflation-month-review-2026-11-25.md) — legend lacked the month despite brief; 12k px answer at 400%; hi/mr desc postposition clash
 - [Number edges review 27 Nov](number-edges-review-2026-11-27.md) — flat 0% sentences, U+2212, nw zero; real-data probe countries; rates intercept recipe
+- [Loan links and notes 27 Nov](loan-links-notes-review-2026-11-27.md) — NBSP mark still drops alone at 400%/320 (emergency breaks); damaged-link view sound; probe recipe
 - [Number edges round 2 27 Nov](number-edges-round2-2026-11-27.md) — 2-sig-fig amounts per locale via one Intl call; #887 donut empty state; straddling-10 ranges

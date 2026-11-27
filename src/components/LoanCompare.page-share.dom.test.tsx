@@ -34,7 +34,7 @@ describe('the loan comparison: copying a link', () => {
   it('copies the comparison after the #, says so once per copy, and drops the address once it changes', async () => {
     clipboard();
     mount();
-    assert.equal(bar(), null);
+    assert.ok(bar() === null);
     assert.equal(shareLabel(), tb.share);
     assert.equal(shareButton().hasAttribute('aria-disabled'), false);
     const start = link([offer(0), offer(1)]);
@@ -66,7 +66,7 @@ describe('the loan comparison: copying a link', () => {
     assert.equal(barLink(), shareAddress(start));
 
     type(0, c.principal, '73191');
-    assert.equal(bar(), null);
+    assert.ok(bar() === null);
     await copy();
     assert.equal(decodeFromQueryString(copied[2].split('#')[1]).vendors[0].principal, '73191');
     assert.deepEqual(eventNames(), [
@@ -233,7 +233,7 @@ describe('the loan comparison: the validation event', () => {
       act(() => { mock.timers.tick(600); });
       assert.deepEqual(events, [['free_loan_comparison_validation_error', { count: 1, firstReason: 'other', firstVendor: 'A' }]]);
       assert.equal(cards()[0].querySelector('.lc-error')?.textContent, `Error: ${island.engine.errors.rateChangeIncomplete}`);
-      assert.equal(cards()[1].querySelector('.lc-error'), null);
+      assert.ok(cards()[1].querySelector('.lc-error') === null);
       assert.equal(withheld(), true);
       assert.equal(ariaDisabled(xlsxButton()), true);
       assert.equal(has('.tool-report'), false);
@@ -243,7 +243,7 @@ describe('the loan comparison: the validation event', () => {
       type(0, c.subsequentRate, '9');
       act(() => { mock.timers.tick(600); });
       assert.deepEqual(events, []);
-      assert.equal(cards()[0].querySelector('.lc-error'), null);
+      assert.ok(cards()[0].querySelector('.lc-error') === null);
       assert.equal(withheld(), false);
     } finally {
       mock.timers.reset();

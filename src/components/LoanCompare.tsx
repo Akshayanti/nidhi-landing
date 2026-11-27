@@ -25,14 +25,15 @@ import {
   MIN_VENDORS,
   VENDOR_LABELS,
   canonicalLumpSums,
-  decodeFromQueryString,
   displayLumpSums,
   defaultGlobalState,
-  encodeToQueryString,
+  decodeFromQueryString,
+  encodeSharedState,
   isPristineState,
   makeAddedVendor,
   makeDefaultVendor,
   publishableState,
+  readSharedState,
   SHARED_STATE_GLOBAL,
   type AnalysisTab,
   type GlobalState,
@@ -56,6 +57,7 @@ import {
   OPTIONAL_UNREADABLE,
   parseNumber,
   pointsCostAboveFee,
+  fixedPeriodFault,
   missingRateChangeFields,
   unreadableOptionalFields,
   type OptionalField,
@@ -70,8 +72,9 @@ import type { Dict } from '../i18n/strings/types.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
+import { engineNote } from '../utils/loan/notes.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useSteadyAbove, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -198,7 +201,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['loan is too small for this term', 'tooSmall'],
   ['monthly payment only covers the interest', 'interestOnly'],
   ['enter a non-negative interest rate', 'rate'],
-  ['initial fixed period must be a positive number', 'initialFixed'],
+  ['initial fixed period must be a whole number', 'initialFixed'],
   ['enter a term of at least one month', 'termMin'],
   ['term cannot exceed', 'termMax'],
   ['enter a monthly payment greater than zero', 'paymentEnter'],
@@ -247,17 +250,11 @@ export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] |
 }
 
 /**
- * The engine's warnings, addressed the same way. There are two, both rare: one
- * is an internal invariant that should never fire, the other a rate so high the
- * recast payment barely covers interest.
+ * The engine's notes on a result, addressed the same way. The exports carry
+ * the same sentences, so the reading of them is theirs too (`notes.ts`).
  */
 function engineWarning(raw: string, s: Strings): string {
-  if (/precision check/i.test(raw)) {
-    const m = /principal sum (\S+) ≠ (\S+)/.exec(raw);
-    return format(s.engine.warnings.precision, { sum: m?.[1] ?? '', expected: m?.[2] ?? '' });
-  }
-  if (/recast payment barely covers/i.test(raw)) return s.engine.warnings.subsequentRate;
-  return raw;
+  return engineNote(raw, s.engine.warnings);
 }
 
 // -----------------------------------------------------------------------------
@@ -1041,6 +1038,14 @@ export default function LoanCompare({
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
   const [hydrated, setHydrated] = useState(false);
+  // A link written with a check that did not arrive whole (#820): its state as
+  // it arrived, which is shown to nobody and used for nothing. While it is
+  // set the page shows one notice in place of the tool: no offer, example or
+  // result, and nothing to copy or save. `null` on every other visit.
+  const [damagedLink, setDamagedLink] = useState<string | null>(null);
+  // Where the keyboard goes when the notice gives way to the tool.
+  const exampleRef = useRef<HTMLParagraphElement>(null);
+  const startedNew = useRef(false);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   // The browser would not copy: the bar asks the reader to copy the address by hand.
@@ -1079,8 +1084,15 @@ export default function LoanCompare({
     // Stryker disable next-line StringLiteral: equivalent. Effects run only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
-    const shared = typeof raw === 'string' ? raw : '';
-    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(shared);
+    const arrived = typeof raw === 'string' ? raw : '';
+    const read = readSharedState(arrived);
+    // A link that did not arrive whole: nothing of it is loaded, and no event
+    // is sent, since no comparison was opened. Behind the notice the tool is
+    // what it is with no link at all, unseen until the reader asks for a new
+    // comparison.
+    if (!read) setDamagedLink(arrived);
+    const shared = read ? arrived : '';
+    const { vendors: decoded, global: decodedGlobal } = read ?? decodeFromQueryString('');
     setVendors(decoded);
     // No shared state: start in this page's currency. A shared state keeps
     // the codec's reading (no `c` means EUR), so links mean the same anywhere.
@@ -1118,9 +1130,25 @@ export default function LoanCompare({
   useEffect(() => {
     if (!hydrated) return;
     // Untouched publishes '' so the other language opens with its own
-    // starting currency; anything changed carries as encoded.
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(vendors, globalState, defaultCurrency));
-  }, [hydrated, vendors, globalState, defaultCurrency]);
+    // starting currency; anything changed carries as encoded. A link that did
+    // not arrive whole is carried as it arrived, so the other language shows
+    // the same notice and never a link made valid again from the examples.
+    publishToolState(SHARED_STATE_GLOBAL, damagedLink ?? publishableState(vendors, globalState, defaultCurrency));
+  }, [hydrated, damagedLink, vendors, globalState, defaultCurrency]);
+
+  // "Start a new comparison": the notice goes and the tool opens as it does
+  // with no link at all. The button goes with the notice, so the keyboard is
+  // put on the line that says what is now on the page, the example offers.
+  const startNew = () => {
+    startedNew.current = true;
+    setDamagedLink(null);
+  };
+  useEffect(() => {
+    // Only after the button: a page that opens with the tool leaves the keyboard where it is.
+    if (!startedNew.current) return;
+    // Stryker disable next-line OptionalChaining: equivalent. The notice has just given way to the untouched starting offers, which always show the example line.
+    exampleRef.current?.focus();
+  }, [damagedLink]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -1249,7 +1277,7 @@ export default function LoanCompare({
     if (typeof window === 'undefined') return;
     if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
-    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
+    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeSharedState(vendors, globalState)}`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
@@ -1304,6 +1332,10 @@ export default function LoanCompare({
   };
 
   const toolReady = useToolReady();
+  // The offers' tabs and the example note sit above every box, and change as
+  // one is typed in: a name grows its tab, the note goes at the first key (#827).
+  const tabsRow = useSteadyAbove<HTMLDivElement>();
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
@@ -1311,6 +1343,18 @@ export default function LoanCompare({
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
+      {damagedLink !== null ? (
+        // The whole tool gives way to this (#820). An alert: it takes the place
+        // of what the link was opened for, and is said once, as it appears.
+        // The button has no click label: it sends no event of its own.
+        <div className="lc-linkDamaged">
+          {/* For a reader who moves by headings; the sentence below says it to everyone. */}
+          <h2 className="lc-srOnly">{strings.link.damagedHeading}</h2>
+          <p className="tool-resultReason" role="alert">{strings.link.damaged}</p>
+          <button type="button" className="btn btn--outline" onClick={startNew}>{strings.link.startNew}</button>
+        </div>
+      ) : (
+      <>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
@@ -1380,7 +1424,7 @@ export default function LoanCompare({
           in here. Choosing one fires no event of its own. "+ Add" is the
           same action as the dashed card on wider screens, with the same
           label and event. */}
-      <div className="lc-vendorTabs" role="group" aria-label={strings.phoneTabs.groupAria}>
+      <div className="lc-vendorTabs" ref={tabsRow} role="group" aria-label={strings.phoneTabs.groupAria}>
         {vendors.map((v, i) => (
           <button
             key={i}
@@ -1425,7 +1469,11 @@ export default function LoanCompare({
       </p>
 
       {/* The starting offers are an example until one of them is changed. */}
-      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
+      {/* The note goes at the first key; its row keeps the note's height while
+          the reader is in the box that key was typed in (#827). */}
+      <div className="lc-exampleRow" ref={exampleRow}>
+        {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example" ref={exampleRef} tabIndex={-1}>{strings.example}</p>}
+      </div>
 
       <h2 className="lc-srOnly" id={`${aprDocsId}-h`}>{strings.cardsHeading}</h2>
       {/* Why the APR here can read lower than the one on a lender's document. */}
@@ -1474,6 +1522,7 @@ export default function LoanCompare({
         withheld={withheld}
         paidOff={withTotal.map((x) => x.r)}
         validCount={validResults.length}
+        noted={validResults.map(({ r, i }) => ({ name: shownName(vendors[i].name, i, strings), notes: r.warnings.map((w) => engineWarning(w, strings)) }))}
         currency={currency}
         strings={strings}
         also={refiSaid}
@@ -1550,6 +1599,8 @@ export default function LoanCompare({
       </details>
 
       {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />}
+      </>
+      )}
     </div>
     </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
@@ -1640,6 +1691,11 @@ function VendorCard({
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
   const hasError = Boolean(result.error);
+  // The results sit above the optional boxes, and change as those are typed
+  // in (an error in their place, a note more or less): the box stays put (#827).
+  const results = useSteadyAbove<HTMLDivElement>();
+  // So does the card's heading, which shows the name as it is typed.
+  const header = useSteadyAbove<HTMLElement>();
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
   const [typed, setTyped] = useState(false);
@@ -1653,6 +1709,8 @@ function VendorCard({
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
     // So is a box of a changing rate that is left out: both are needed.
     ...missingRateChangeFields(vendor),
+    // And a month of the change that is part of a month (#914).
+    ...(fixedPeriodFault(vendor) ? (['initialFixedMonths'] as const) : []),
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   // Nor for a changing rate on a loan set by its payment: the message says
@@ -1712,7 +1770,7 @@ function VendorCard({
       style={{ '--lc-color': color } as React.CSSProperties}
       aria-labelledby={headingId}
     >
-      <header className="lc-cardHeader">
+      <header className="lc-cardHeader" ref={header}>
         {/*
           h3 (not h2): an h2 per vendor card padded the document outline
           with up to five "Vendor A / B / C…" entries that contributed
@@ -1772,8 +1830,8 @@ function VendorCard({
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          {strings.card.principal} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('principal')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.principal}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
         </label>
         <LocaleNumberInput
           id={id('principal')}
@@ -1789,8 +1847,8 @@ function VendorCard({
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('rate')}>
-          {strings.card.rate} <RequiredMark title={strings.card.requiredTitle} />
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('rate')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.rate}</RequiredLabel>
         </label>
         <LocaleNumberInput
           id={id('rate')}
@@ -1806,7 +1864,7 @@ function VendorCard({
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">{strings.card.solveFor} <RequiredMark title={strings.card.requiredTitle} /></legend>
+        <legend className="lc-fieldLabel lc-fieldLabel--required"><RequiredLabel title={strings.card.requiredTitle}>{strings.card.solveFor}</RequiredLabel></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1839,8 +1897,8 @@ function VendorCard({
 
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('term')}>
-            {strings.card.term} <RequiredMark title={strings.card.requiredTitle} />
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('term')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.term}</RequiredLabel>
           </label>
           <LocaleNumberInput
             id={id('term')}
@@ -1856,8 +1914,8 @@ function VendorCard({
         </div>
       ) : (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            {strings.card.monthly} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('monthly')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.monthly}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
           </label>
           <LocaleNumberInput
             id={id('monthly')}
@@ -1874,7 +1932,7 @@ function VendorCard({
       )}
 
       {/* Not a live region: the tool's one announcement says the settled result. */}
-      <div className="lc-results">
+      <div className="lc-results" ref={results}>
         {hasError ? (
           <p className="lc-error" id={errorId}>
             <ErrorText>{arrived ? unreadableText : engineError(result.error ?? '', strings)}</ErrorText>
@@ -2029,7 +2087,10 @@ function VendorCard({
           </>
         )}
         {result.warnings.map((w, i) => (
-          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
+          // Not a live region: typing a lump sum's month digit by digit would have a
+          // screen reader speak every change. The tool's one announcement says an
+          // offer's notes with its figures, once typing has paused (`announcedNotes`).
+          <p key={i} className="lc-warning">{engineWarning(w, strings)}</p>
         ))}
       </div>
 
@@ -2097,8 +2158,8 @@ function VendorCard({
         {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
           <>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed} <RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('initialFixedMonths')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.initialFixed}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('initialFixedMonths')}
@@ -2114,8 +2175,8 @@ function VendorCard({
               <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
             </div>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate} <RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('subsequentRatePct')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.subsequentRate}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('subsequentRatePct')}
@@ -2295,15 +2356,29 @@ function VendorCard({
 
 // ---- Form helpers ----------------------------------------------------------
 
-/** A small red asterisk used to mark required fields. The asterisk is
- *  presentational; the real semantic signal is the `aria-required` on
- *  the input itself. We hide the asterisk character from screen readers
- *  via aria-hidden so they don't read "required asterisk". */
-function RequiredMark({ title }: { title: string }) {
+/**
+ * The text of a required box's label, with its mark. The mark and the last
+ * word of the label are one unit that cannot break: with a space between
+ * them, or a no-break space, the asterisk still went to a line of its own
+ * under a long label at large text, because a label may break anywhere when
+ * a word is wider than its line (#917). Where the unit is wider than the
+ * label's line, the CSS draws it smaller by just enough to fit
+ * (`.lc-requiredPair`), from its length in characters, as an amount is.
+ *
+ * The asterisk is presentational: the real signal is `aria-required` on the
+ * box, so the character is hidden from screen readers.
+ */
+function RequiredLabel({ children, title }: { children: string; title: string }) {
+  const cut = children.lastIndexOf(' ') + 1;
+  const word = children.slice(cut);
   return (
-    <span className="lc-required" aria-hidden="true" title={title}>
-      *
-    </span>
+    <>
+      {children.slice(0, cut)}
+      <span className="lc-requiredPair" style={{ '--pair-len': word.length + 1 } as React.CSSProperties}>
+        {word}
+        <span className="lc-required" aria-hidden="true" title={title}>*</span>
+      </span>
+    </>
   );
 }
 
@@ -2396,12 +2471,34 @@ function announcedResult(
     : `${d.rangeBefore}${formatMoney(low, currency)}${d.rangeTo}${formatMoney(high, currency)}${d.rangeAcross}${formatMoney(high - low, currency)}${d.rangeAfter}`;
 }
 
+/** A valid offer as the announcement names it, with the notes under its result, in the card's order. */
+interface NotedOffer {
+  name: string;
+  notes: string[];
+}
+
+/**
+ * The notes under the offers' results, as they are said after the figures:
+ * each offer's notes in the card's order, the offers in theirs. With one
+ * offer the notes are its own; with several, each offer's notes follow its
+ * name, as in the printed report. Nothing for offers with no notes.
+ */
+function announcedNotes(noted: NotedOffer[]): string {
+  const several = noted.length > 1;
+  return noted
+    .filter((offer) => offer.notes.length > 0)
+    .map((offer) => `${several ? `${offer.name}: ` : ''}${offer.notes.join(' ')}`)
+    .join(' ');
+}
+
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
+function LoanAnnouncement({ withheld, paidOff, validCount, noted, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; noted: NotedOffer[]; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
+  // The figures, then the notes: one text, so a keystroke that changes both is said once.
+  const result = [announcedResult(paidOff, validCount, currency, strings, formatMoney), announcedNotes(noted)].filter(Boolean).join(' ');
   return (
     <ResultAnnouncement
-      text={withheld ? strings.delta.fix : announcedResult(paidOff, validCount, currency, strings, formatMoney)}
+      text={withheld ? strings.delta.fix : result}
       delay={withheld ? WITHHELD_SAID_AFTER : undefined}
       also={withheld ? undefined : also}
       notice={notice}
@@ -3589,7 +3686,7 @@ function RefinanceSection({
 // default export.
 export {
   AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
-  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredMark, ResultRow, SplitChart, VendorCard,
-  analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredLabel, ResultRow, SplitChart, VendorCard,
+  analysisTabs, announcedNotes, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
   noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
 };

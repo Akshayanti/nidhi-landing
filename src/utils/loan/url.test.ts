@@ -30,13 +30,20 @@ import {
   makeDefaultVendor,
   parseLumpSums,
   publishableState,
+  encodeSharedState,
+  readSharedState,
+  LINK_FORMAT,
   type GlobalState,
   type VendorInput,
   canonicalLumpSums,
   displayLumpSums,
   STATE_KEY_PATTERN,
   SHARED_STATE_GLOBAL,
+  boxNumber,
 } from './url.ts';
+import { parseNumber } from './inputs.ts';
+import { checkOf, openState, pairsOf, sealState } from '../shared/checkedLink.ts';
+import { canonicalNumber } from '../shared/parseLocaleNumber.ts';
 
 /** Test helper: build a GlobalState that differs from default only in
  *  the listed fields. Keeps the test cases focused on what they're
@@ -809,8 +816,307 @@ describe('page starting currency and the language switch', () => {
     const typed = fresh();
     typed[0] = { ...typed[0], principal: '123456' };
     const inr = publishableState(typed, defaultGlobalState('INR'), 'INR');
-    assert.equal(inr, encodeToQueryString(typed, defaultGlobalState('INR')));
+    // The share link's own state: the codec's, inside the envelope with its check (#820).
+    assert.equal(inr, encodeSharedState(typed, defaultGlobalState('INR')));
+    assert.equal(inr, sealState(encodeToQueryString(typed, defaultGlobalState('INR')), '2'));
     assert.equal(decodeFromQueryString(inr).global.currency, 'INR');
+  });
+});
+
+describe('a link carries a check, and one that did not arrive whole is not read (issue 820)', () => {
+  const offers = (): VendorInput[] => [
+    { ...makeDefaultVendor(0), name: 'North Bank', principal: '73191' },
+    makeDefaultVendor(1),
+    { ...makeDefaultVendor(2), principal: '90000', rateKind: 'hybrid', subsequentRatePct: '9', lumpSumsEncoded: '12:5000;24:2500' },
+  ];
+  const global = (): GlobalState => ({ ...defaultGlobalState('INR'), activeTab: 'refi', refiAtMonth: '48', refiNewRatePct: '5.5', refiNewTermMonths: '240', horizonMonths: '84' });
+  const sealed = () => encodeSharedState(offers(), global());
+
+  it('writes the state the codec writes, between the format and the check', () => {
+    const inner = encodeToQueryString(offers(), global());
+    assert.equal(LINK_FORMAT, '2');
+    assert.equal(sealed(), `f=2&${inner}&z=${checkOf(pairsOf(`f=2&${inner}`))}`);
+    assert.match(sealed(), /^f=2&.*&z=[0-9a-f]{8}$/);
+    assert.equal(openState(sealed(), LINK_FORMAT), 'whole');
+  });
+
+  it('a whole link reads as the state inside it: every offer, the currency, the tab, the refinance boxes and the horizon', () => {
+    const read = readSharedState(sealed());
+    assert.ok(read);
+    assert.deepEqual(read, decodeFromQueryString(encodeToQueryString(offers(), global())));
+    assert.deepEqual(read.vendors, offers());
+    assert.deepEqual(read.global, global());
+  });
+
+  it('the check covers every key: change any one value and the link is not read', () => {
+    const pairs = pairsOf(sealed());
+    // Offers, their advanced fields, the currency, the tab, the refinance boxes and the horizon are all in it.
+    const keys = pairs.map(([k]) => k);
+    for (const k of ['f', 'c', 't', 'h', 'ra', 'rr', 'rt', 'v1', 'v3', 'v3_rk', 'v3_sr', 'v3_ls', 'z']) assert.ok(keys.includes(k), `${k} in ${keys.join(' ')}`);
+    for (let i = 0; i < pairs.length - 1; i++) {
+      const changed = pairs.map(([k, v], j) => [k, j === i ? `${v}1` : v]);
+      assert.equal(readSharedState(new URLSearchParams(changed).toString()), null, pairs[i][0]);
+    }
+  });
+
+  it('cut anywhere after the format, it is not read: nothing of it, and no example in its place', () => {
+    const link = sealed();
+    for (let end = 3; end < link.length; end++) assert.equal(readSharedState(link.slice(0, end)), null, link.slice(0, end));
+  });
+
+  it('a link written before the envelope is read exactly as it always was', () => {
+    const old = encodeToQueryString(offers(), global());
+    assert.deepEqual(readSharedState(old), decodeFromQueryString(old));
+    assert.deepEqual(readSharedState(''), decodeFromQueryString(''));
+    // Cut, it cannot be told from a shorter old link, and reads as one: the accepted limit.
+    const cut = old.slice(0, old.indexOf('v3='));
+    assert.deepEqual(readSharedState(cut), decodeFromQueryString(cut));
+    // So does a new link whose start was lost with its f.
+    const headless = sealed().slice('f=2&'.length);
+    assert.deepEqual(readSharedState(headless), decodeFromQueryString(headless));
+  });
+
+  it('a link of another format is not read, whatever its check', () => {
+    assert.equal(readSharedState(sealState(encodeToQueryString(offers(), global()), '3')), null);
+    assert.equal(readSharedState(sealState(encodeToQueryString(offers(), global()), '1')), null);
+  });
+
+  it('a whole link with nothing else in it reads as each offer\'s own starting values, which is what its writer left out', () => {
+    const empty = sealState('', LINK_FORMAT);
+    assert.equal(empty, 'f=2&z=43ef7d0d');
+    const read = readSharedState(empty);
+    assert.ok(read);
+    assert.deepEqual(read.vendors, decodeFromQueryString('n=2').vendors);
+    assert.equal(read.global.currency, 'EUR');
+  });
+
+  it('the guard takes both keys of the envelope out of the address with the rest', () => {
+    const isKey = new RegExp(`^(?:${STATE_KEY_PATTERN})$`);
+    for (const [k] of pairsOf(sealed())) assert.ok(isKey.test(k), k);
+    assert.ok(isKey.test('f') && isKey.test('z'));
+    for (const not of ['ff', 'zz', 'fz', 'utm_source', 'F', 'Z', '']) assert.ok(!isKey.test(not), not);
+  });
+});
+
+describe('a checked link carries only numbers its writer could have written (#821)', () => {
+  /** A link with a check that holds, around a state written by hand. */
+  const checked = (state: string) => sealState(state, LINK_FORMAT);
+  /** Every place a typed number sits in a link, as a state with `value` there. */
+  const places = (value: string): [string, string][] => {
+    const v = encodeURIComponent(value);
+    return [
+      ['the horizon', `h=${v}`],
+      ['the refinance month', `ra=${v}`],
+      ['the refinance rate', `rr=${v}`],
+      ['the refinance term', `rt=${v}`],
+      ['the refinance fee', `rf=${v}`],
+      ['the amount', `v1=A~${v}`],
+      ['the rate', `v1=A~1000~${v}`],
+      ['the term', `v1=A~1000~5~~${v}`],
+      ['the payment', `v1=A~1000~5~payment~~${v}`],
+      ['the fee', `v1=A~1000~5~~360~~${v}`],
+      ['the extra payment', `v1=A~1000~5~~360~~0~${v}`],
+      ['the second offer', `v1=A~1000&v2=B~${v}`],
+      ['the fifth offer', `n=5&v5=E~${v}`],
+      ['the fixed period', `v1=A&v1_if=${v}`],
+      ['the later rate', `v1=A&v1_sr=${v}`],
+      ['the points cost', `v1=A&v1_pc=${v}`],
+      ['the points reduction', `v1=A&v1_pr=${v}`],
+      ['the penalty', `v1=A&v1_pp=${v}`],
+      ['the penalty month', `v2=B&v2_pu=${v}`],
+      ['a lump sum\'s month', `v1=A&v1_ls=${v}:500`],
+      ['a lump sum\'s amount', `v1=A&v1_ls=12:${v}`],
+      ['a later lump sum', `v1=A&v1_ls=12:500;24:${v}`],
+    ];
+  };
+  const SLOPPY = ['1,2,3', '1 2', '1..2', '+5', '-5', '--', ',', '.', '5.', '१२३', "1'234", 'abc'];
+
+  it('a value that is no number of the site\'s makes the link damaged, wherever it sits', () => {
+    for (const value of SLOPPY) {
+      for (const [place, state] of places(value)) {
+        assert.equal(openState(checked(state), LINK_FORMAT), 'whole', `${place}: ${value}`);
+        assert.equal(readSharedState(checked(state)), null, `${place}: ${value}`);
+      }
+    }
+  });
+
+  it('the same values in a link from before the check are read as leniently as ever', () => {
+    for (const value of SLOPPY) {
+      for (const [place, state] of places(value)) {
+        assert.deepEqual(readSharedState(state), decodeFromQueryString(state), `${place}: ${value}`);
+      }
+    }
+    assert.equal(readSharedState('h=1%2C2%2C3')?.global.horizonMonths, '1,2,3');
+    assert.equal(readSharedState('v1=A~%2B5')?.vendors[0].principal, '+5');
+  });
+
+  it('a number in any of the site\'s styles is read, and so is the marker of an unreadable box', () => {
+    for (const value of ['250000', '6.5', '6,5', '1,234,567.5', '10,00,000', '1.234.567,5', '1 234 567,5', '1 234', 'NaN']) {
+      for (const [place, state] of places(value)) {
+        const read = readSharedState(checked(state));
+        assert.ok(read, `${place}: ${value}`);
+        assert.deepEqual(read, decodeFromQueryString(state), `${place}: ${value}`);
+      }
+    }
+  });
+
+  it('the mark of an emptied box is read where a box sits, and is no side of a lump sum', () => {
+    for (const [place, state] of places('-')) {
+      const read = readSharedState(checked(state));
+      if (place.includes('lump sum')) assert.equal(read, null, place);
+      else assert.deepEqual(read, decodeFromQueryString(state), place);
+    }
+    assert.equal(readSharedState(checked('v1=A&v1_ls=-'))?.vendors[0].lumpSumsEncoded, '');
+  });
+
+  it('an empty value is "not given" inside an offer and nothing a writer writes anywhere else', () => {
+    const read = readSharedState(checked('v1=A~~~~~~~&v2=B'));
+    assert.deepEqual(read?.vendors[0], { ...makeDefaultVendor(0), name: 'A' });
+    for (const state of ['h=', 'ra=', 'rr=', 'rt=', 'rf=', 'v1=A&v1_if=', 'v1=A&v1_sr=', 'v1=A&v1_pc=', 'v1=A&v1_pr=', 'v1=A&v1_pp=', 'v1=A&v1_pu=', 'v1=A&v1_ls=']) {
+      assert.equal(readSharedState(checked(state)), null, state);
+      assert.ok(readSharedState(state), state);
+    }
+  });
+
+  it('a lump-sum list is pairs of two sides: one side, three sides, an empty pair or a last ";" is not what the writer writes', () => {
+    for (const list of ['12:500', '12:500;24:250.5', 'NaN', 'NaN:500', '12:NaN', '12:500;NaN;NaN:NaN', '12:1,000']) {
+      const state = `v1=A&v1_ls=${encodeURIComponent(list)}`;
+      assert.deepEqual(readSharedState(checked(state)), decodeFromQueryString(state), list);
+    }
+    for (const list of ['12', '12:', ':500', '1:2:3', '12:500;', ';12:500', '12:500;;24:250', ';', ':', ' 12:500', '12: 500', '12:500;24', '12:500;x']) {
+      const state = `v1=A&v1_ls=${encodeURIComponent(list)}`;
+      assert.equal(readSharedState(checked(state)), null, list);
+      assert.ok(readSharedState(state), list);
+    }
+  });
+
+  it('asks only the typed numbers: a name, a choice, a key the tool does not know and the other settings are read as before', () => {
+    for (const state of [
+      'v1=1%2C2%2C3~1000',
+      'v1=A~1000~5~1%2C2%2C3',
+      'v1=A&v1_rk=hybrid&v1_rc=p',
+      'v1=A&v1_rk=1%2C2%2C3&v1_rc=1%2C2%2C3',
+      'v1=A&v1_zz=1%2C2%2C3',
+      'c=1%2C2%2C3&t=1%2C2%2C3&n=1%2C2%2C3&rv=1%2C2%2C3&rl=1%2C2%2C3&ac=1%2C2%2C3',
+      'x=1%2C2%2C3&vv=1%2C2%2C3&v=1%2C2%2C3&v1x=1%2C2%2C3&hh=1%2C2%2C3',
+      'xv1=A~1%2C2%2C3&v1x=A~1%2C2%2C3&v1_i=1%2C2%2C3&v1_iff=1%2C2%2C3&v1_IF=1%2C2%2C3&xv1_if=1%2C2%2C3&v_if=1%2C2%2C3',
+    ]) {
+      const read = readSharedState(checked(state));
+      assert.ok(read, state);
+      assert.deepEqual(read, decodeFromQueryString(state), state);
+    }
+    const hybrid = readSharedState(checked('v1=A&v1_rk=hybrid&v1_rc=p'));
+    assert.equal(hybrid?.vendors[0].rateKind, 'hybrid');
+    assert.equal(hybrid?.vendors[0].rateChangeKeeps, 'payment');
+  });
+
+  it('one value that does not fit refuses the link, whatever comes after it', () => {
+    assert.equal(readSharedState(checked('h=1%2C2%2C3&ra=48')), null);
+    assert.equal(readSharedState(checked('ra=48&h=1%2C2%2C3')), null);
+    assert.equal(readSharedState(checked('v1=A~1%2C2%2C3~5&v2=B~1000')), null);
+    assert.equal(readSharedState(checked('v1=A~1000~5~~360~~0~1%2C2%2C3&v1_if=60')), null);
+    assert.equal(readSharedState(checked('v1=A&v1_ls=12:1%2C2%2C3&v1_if=60')), null);
+    assert.equal(readSharedState(checked('v1=A&v1_if=1%2C2%2C3&v1_sr=5')), null);
+    // An offer past the fifth is never read, and still is not what the writer writes.
+    assert.equal(readSharedState(checked('v12=L~1%2C2%2C3')), null);
+    assert.equal(readSharedState(checked('v12=L&v12_if=1%2C2%2C3')), null);
+  });
+
+  /** An offer and settings with `value` in every box that holds a typed number. */
+  const filled = (value: string, lumps: string): [VendorInput[], GlobalState] => {
+    const offer = (i: number): VendorInput => ({
+      ...makeDefaultVendor(i),
+      principal: value, annualRatePct: value, termMonths: value, monthlyPayment: value, feeMajor: value, extraMonthly: value,
+      rateKind: 'hybrid', rateChangeKeeps: 'payment', initialFixedMonths: value, subsequentRatePct: value, pointsCostMajor: value,
+      pointsRateReductionPct: value, lumpSumsEncoded: lumps, prepayPenaltyPct: value, prepayPenaltyUntilMonth: value,
+    });
+    return [
+      [offer(0), offer(1), offer(2)],
+      { ...defaultGlobalState('INR'), horizonMonths: value, refiAtMonth: value, refiNewRatePct: value, refiNewTermMonths: value, refiNewFeeMajor: value },
+    ];
+  };
+
+  it('everything the writer writes is read back: what each language\'s page hands the tool for numbers typed its way', () => {
+    const typed: Record<string, string[]> = {
+      en: ['250000', '1,234,567.89', '0.5', '6.5', '0.0000001', '9'.repeat(25), '9'.repeat(400), '१२३', 'abc', '1,2,3', '-5', ''],
+      hi: ['10,00,000', '12,34,567.5', '१०,००,०००', '१२३.५', '6.5', 'abc', '1 2', ''],
+      mr: ['10,00,000', '1,00,000.25', '१२३', '6.5', '..', ''],
+      es: ['250000', '1.234.567,89', '0,5', '6,5', '1.000', '1..2', '+5', ''],
+      cs: ['250000', '1 234 567,89', '1 234 567', '1 234,5', '0,5', '1 2', ','],
+    };
+    for (const [locale, boxes] of Object.entries(typed)) {
+      for (const box of boxes) {
+        const value = canonicalNumber(box, locale);
+        const lumps = canonicalLumpSums(`12:${box};${box}:${box};7`, locale);
+        const [vendors, global] = filled(value, lumps);
+        const link = encodeSharedState(vendors, global);
+        const read = readSharedState(link);
+        assert.ok(read, `${locale} ${box}: ${link}`);
+        // A number longer than a link carries (past 200 digits) arrives as the marker, as it did before.
+        const [arrived, arrivedGlobal] = filled(value.length > 200 ? 'NaN' : value, lumps);
+        assert.deepEqual(read.global, arrivedGlobal, `${locale} ${box}`);
+        assert.deepEqual(read.vendors, arrived.map((v) => ({ ...v, lumpSumsEncoded: read.vendors[0].lumpSumsEncoded })), `${locale} ${box}`);
+        // The list arrives as written: no empty pair, every side a number or the marker.
+        assert.match(read.vendors[0].lumpSumsEncoded, /^(?:(?:\d+(?:\.\d+)?|NaN)(?::(?:\d+(?:\.\d+)?|NaN))?)(?:;(?:\d+(?:\.\d+)?|NaN)(?::(?:\d+(?:\.\d+)?|NaN))?)*$/, `${locale} ${box}`);
+      }
+    }
+  });
+
+  it('a box still holding what a lenient older link left in it is written as the number the tool reads there, or as the marker when it reads none', () => {
+    // What the engine makes of each (parseNumber): the same number goes into the link, so a
+    // comparison that opened as 123 is still 123 after a language switch.
+    const LEFT: Record<string, string> = {
+      '1,2,3': '123', '1 2': '12', '+5': '5', '5.': '5', '.5': '0.5', '1,234,5.5': '12345.5', '-0': '0', '-0.0': '0', ' 7 ': '7',
+      '1..2': 'NaN', '-5': 'NaN', '-0.01': 'NaN', '१२३': 'NaN', "1'234": 'NaN', '-': 'NaN', '+': 'NaN', '1e5': 'NaN', '0x10': 'NaN', '5.5.': 'NaN',
+    };
+    // The lump-sum box reads each side with Number, so it keeps what that reads: no grouping, no spaces inside.
+    const SIDE: Record<string, string> = { '+5': '5', '5.': '5', '.5': '0.5', '-0': '0', '-0.0': '0', ' 7 ': '7' };
+    for (const [left, kept] of Object.entries(LEFT)) {
+      const [vendors, global] = filled(left, `12:${left};${left}:500`);
+      const link = encodeSharedState(vendors, global);
+      const read = readSharedState(link);
+      assert.ok(read, `${left}: ${link}`);
+      assert.equal(read.global.horizonMonths, kept, left);
+      assert.equal(read.global.refiNewFeeMajor, kept, left);
+      assert.equal(read.vendors[0].principal, kept, left);
+      assert.equal(read.vendors[2].prepayPenaltyUntilMonth, kept, left);
+      const side = SIDE[left] ?? 'NaN';
+      assert.equal(read.vendors[1].lumpSumsEncoded, `12:${side};${side}:500`, left);
+      // Held to the engine's own reader: the same number, or none in both.
+      const engine = parseNumber(left);
+      assert.equal(boxNumber(left), kept === 'NaN' ? null : kept, left);
+      if (kept === 'NaN') assert.ok(Number.isNaN(engine) || engine < 0, `${left}: ${engine}`);
+      else assert.ok(engine === Number(kept), `${left}: ${engine}`); // ===, so the engine's -0 is the 0 written
+    }
+    // A box of spaces alone is an empty box to the tool, and is written as one.
+    assert.equal(encodeSharedState(...filled('   ', '')), encodeSharedState(...filled('', '')));
+    assert.notEqual(encodeSharedState(...filled('   ', '')), encodeSharedState(...filled('abc', '')));
+    // A number too long for a link is the marker, not a link its reader refuses.
+    assert.equal(boxNumber(`+${'9'.repeat(400)}`), null);
+    assert.equal(boxNumber('+0.0000001'), '0.0000001');
+  });
+
+  it('and one holding an older link\'s number in one of the site\'s styles is written as it is', () => {
+    for (const left of ['1,000', '10,00,000', '1.234,5', '1 234']) {
+      const [vendors, global] = filled(left, `12:${left}`);
+      const read = readSharedState(encodeSharedState(vendors, global));
+      assert.ok(read, left);
+      assert.deepEqual(read.vendors, vendors, left);
+      assert.deepEqual(read.global, global, left);
+    }
+  });
+
+  it('writes no lump-sum key for an empty list, and the list as it is when every side is a plain number', () => {
+    const [vendors, global] = filled('5', '');
+    assert.ok(!encodeToQueryString(vendors, global).includes('_ls='));
+    // Nor for a box with nothing but the marks between pairs in it: no pair was written.
+    for (const nothing of [';', ' ', ' ; ;']) {
+      const [blank, settings] = filled('5', nothing);
+      assert.ok(!encodeToQueryString(blank, settings).includes('_ls='), JSON.stringify(nothing));
+      assert.ok(readSharedState(encodeSharedState(blank, settings)), JSON.stringify(nothing));
+    }
+    const [withList, g] = filled('5', '12:500;24:250.5');
+    assert.equal(new URLSearchParams(encodeToQueryString(withList, g)).get('v1_ls'), '12:500;24:250.5');
   });
 });
 

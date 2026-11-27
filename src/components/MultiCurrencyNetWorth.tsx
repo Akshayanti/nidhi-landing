@@ -1204,7 +1204,8 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
                 {pos.rateUnavailable || (unknown && gap !== 'all') ? (
-                  !pendingRates && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                  // The spending currency's own rate is 1: what is not known is its share (#922).
+                  !pendingRates && <> · <span className="mcnw-riskHidden">{pos.isFunctional ? strings.results.shareUnknown : strings.results.rateUnavailable}</span></>
                 ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (

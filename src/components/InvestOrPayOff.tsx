@@ -42,7 +42,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -404,13 +404,17 @@ export default function InvestOrPayOff({
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
   const toolReady = useToolReady();
+  // The example note goes at the first key, and the fold's status line hides
+  // when a box inside it is wrong: the box being typed in stays put (#827).
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
+  const moreRow = useSteadyAbove<HTMLElement>();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root iop-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
-        <div className="iop-formHead">
+        <div className="iop-formHead" ref={exampleRow}>
           <p className="iop-example">{pristine ? strings.example : ''}</p>
           <button type="button" className="btn btn--quiet iop-reset" onClick={reset}>
             {strings.actions.reset}
@@ -528,7 +532,7 @@ export default function InvestOrPayOff({
         </fieldset>
 
         <details className="iop-more" open={moreOpen || moreError} onToggle={(e) => { if (moreError && !e.currentTarget.open) e.currentTarget.open = true; else setMoreOpen(e.currentTarget.open); }}>
-          <summary className="iop-moreSummary disclosure">
+          <summary className="iop-moreSummary disclosure" ref={moreRow}>
             <span className="iop-moreTitle">{strings.more.title}</span>
             {!moreError && <span className="iop-moreStatus">{moreStatus}</span>}
           </summary>

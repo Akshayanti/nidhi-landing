@@ -51,7 +51,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -499,6 +499,8 @@ export default function InflationCalculator({
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
   const toolReady = useToolReady();
+  // The example note goes at the first key: the box being typed in stays put (#827).
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <NumberLocaleContext.Provider value={numberLocale}>
@@ -507,7 +509,7 @@ export default function InflationCalculator({
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
-        <div className="ifc-formHead">
+        <div className="ifc-formHead" ref={exampleRow}>
           <p className="ifc-example">{pristine ? strings.example : ''}</p>
           <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-inflation-reset">
             {strings.actions.reset}

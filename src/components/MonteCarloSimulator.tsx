@@ -33,7 +33,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -403,6 +403,8 @@ export default function MonteCarloSimulator({
   const pristine = !hasErrors && isPristineState(toState(form), defaultCurrency);
 
   const toolReady = useToolReady();
+  // The example note goes at the first key: the box being typed in stays put (#827).
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <ChartWordsContext.Provider value={exportStrings.chart}>
@@ -412,7 +414,7 @@ export default function MonteCarloSimulator({
     <div className="mcs-root" {...heldUntilReady(toolReady)}>
       <form className="mcs-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
         {/* The example line and Reset share the first row, as in the other tools. */}
-        <div className="ifc-formHead">
+        <div className="ifc-formHead" ref={exampleRow}>
           <p className="ifc-example">{pristine ? strings.example : ''}</p>
           <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-monte-carlo-reset">
             {strings.actions.reset}

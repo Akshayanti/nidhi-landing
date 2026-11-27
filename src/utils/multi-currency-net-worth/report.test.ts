@@ -55,6 +55,8 @@ const DOLLAR = 'US Dollar (USD)';
 const YEN = 'Japanese Yen (JPY)';
 const KORUNA = 'Czech Koruna (CZK)';
 const NO_RATE = 'Rate unavailable';
+/** The spending currency with no rates at all: its rate is 1, its share is what is unknown (#922). */
+const NO_SHARE = 'Share unknown: no exchange rates';
 
 const MEANING = 'Net worth is what you own minus what you owe.';
 const SHARES = 'Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in.';
@@ -295,7 +297,7 @@ describe('net worth report: a shared view that hides amounts', () => {
       head: ['Currency', 'Code', 'Concentration, %', 'Exposure, % of net worth', 'Share band'],
       rows: [
         [KORUNA, 'CZK', NO_RATE, NO_RATE, 'band:low'],
-        [EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'],
+        [EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'],
       ],
       note: undefined,
       stack: true,
@@ -304,7 +306,7 @@ describe('net worth report: a shared view that hides amounts', () => {
     assert.equal(report.meaning, MEANING);
     // A link from before links said which rates were missing: the same.
     const older = hidden({ ...result, positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
-    assert.deepEqual(older.tables[0].rows, [[EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
+    assert.deepEqual(older.tables[0].rows, [[EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
     assert.ok(older.chart === null);
     assert.equal(older.meaning, MEANING);
   });

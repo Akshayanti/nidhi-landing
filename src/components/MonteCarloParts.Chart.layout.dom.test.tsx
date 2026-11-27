@@ -438,7 +438,7 @@ import { fireEvent } from '@testing-library/react';
       press('ArrowRight');
       assert.equal(yearRead(), 0);
       assert.equal(tag(), null);
-      assert.equal(document.querySelector('rect.mcs-phase'), null);
+      assert.ok(document.querySelector('rect.mcs-phase') === null);
     });
 
     it('is not named when withdrawals are set for no years', () => {
