@@ -324,6 +324,20 @@ describe('a currency missing its rate', () => {
     assert.deepEqual(cards()[0], { band: 'unbanded', head: `${name.USD} · Rate unavailable`, badge: ['No band', 'var(--risk-unbanded)'], label: null, sentences: 1 });
   });
 
+  it('a view without amounts or rates gives the spending currency no share either: words, and no sentence about 0% (#887)', () => {
+    panel(worked([own('1000'), own('2000', 'USD')], 'EUR', null), { hideAmounts: true });
+    assert.deepEqual(heads(), [`${name.USD} · Rate unavailable`, `${name.EUR} · Rate unavailable`]);
+    assert.deepEqual(cards()[1], { band: 'functional', head: `${name.EUR} · Rate unavailable`, badge: ['Spending currency', 'var(--risk-functional)'], label: 'Your spending currency', sentences: 0 });
+    assert.ok(!document.body.textContent!.includes('0%'), 'no share of nothing');
+    // The dollar's sentence says once why it is left out, as before.
+    assert.equal(cards()[0].sentences, 1);
+  });
+
+  it('the same view while its rates are still on the way calls nothing unavailable yet (#887)', () => {
+    panel(worked([own('1000'), own('2000', 'USD')], 'EUR', null), { hideAmounts: true, pendingRates: true });
+    assert.deepEqual(heads(), [name.USD, name.EUR]);
+  });
+
   it('a link without amounts or rates still gives the shares it carried', () => {
     const shared = withoutAmounts(worked([own('1000'), own('2000', 'USD'), own('400000', 'JPY')]));
     panel(shared, { hideAmounts: true });

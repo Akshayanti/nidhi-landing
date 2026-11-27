@@ -8,6 +8,7 @@ import {
   rateGap,
   ratesPending,
   ratesFailureShown,
+  sharesUnknown,
   concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
@@ -1151,6 +1152,9 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
   // A currency without a rate is in no total: what is left is a subtotal, and
   // no share, band or chart can be drawn from it (#795).
   const partial = gap === 'some';
+  // With no rates at all the spending currency has no share either: its card
+  // says so, as the sheet does, and has no sentence about "0%" (#887).
+  const unknown = sharesUnknown(result, functionalCurrency);
   const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
   // Without a band to say "debt", the amount carries its sign.
   const cardMoney = (value: number, code: string) =>
@@ -1199,7 +1203,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
-                {pos.rateUnavailable ? (
+                {pos.rateUnavailable || (unknown && gap !== 'all') ? (
                   !pendingRates && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
                 ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
@@ -1224,7 +1228,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
             {/* With no rate, the paragraph below says so once (#618); the head
                 already reads "Rate unavailable". */}
             {!gap && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
-            {(!gap || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
+            {((!gap && !(unknown && !pos.rateUnavailable)) || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
           </div>
         ))}
       </div>

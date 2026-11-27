@@ -22,6 +22,7 @@ import {
   getCurrencyLabel,
   netTotal,
   rateGap,
+  sharesUnknown,
   type AggregationResult,
   type AssetRow,
   type CurrencyPosition,
@@ -1156,6 +1157,38 @@ describe('a currency’s rows are added in whole units of the smallest decimal t
     const result = aggregate([asset('1000', 'EUR'), asset('9007199254740992', 'GBP'), debt('200', 'GBP')], 'EUR', { EUR: 1 });
     assert.equal('grossFunctional' in byCode(result, 'GBP'), false);
     assert.equal(result.totalNetWorthFunctional, 1000);
+  });
+});
+
+describe('sharesUnknown (#887)', () => {
+  const position = (code: string, more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
+    code, netAmountOriginal: 100, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: code === 'EUR', riskLevel: 'low', riskLabel: '', ...more,
+  });
+  const result = (hasRates: AggregationResult['hasRates'], ...positions: CurrencyPosition[]): AggregationResult => ({ positions, totalNetWorthFunctional: 0, hasRates });
+  const row = (value: string, currency: string): AssetRow => ({ name: '', value, currency, type: 'asset' });
+
+  it('several currencies, no rates, nothing converted and no share carried: no share can be worked out', () => {
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { rateUnavailable: true })), 'EUR'), true);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR'), row('2000', 'USD')], 'EUR', null), 'EUR'), true);
+    // No spending currency among them at all.
+    assert.equal(sharesUnknown(aggregate([row('1000', 'GBP'), row('2000', 'USD')], 'EUR', null), 'EUR'), true);
+  });
+
+  it('is not so with any rate, with one currency alone, or with nothing entered', () => {
+    assert.equal(sharesUnknown(result('full', position('EUR'), position('USD')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('partial', position('EUR'), position('USD', { rateUnavailable: true })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none'), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([], 'EUR', null), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR')], 'EUR', null), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR'), row('2000', 'USD')], 'EUR', { USD: 1.1 }), 'EUR'), false);
+  });
+
+  it('a link that carries a share or an amount for any currency has shares to show', () => {
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { pctOfTotal: 100 })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR', { pctOfTotal: -20 }), position('USD')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { netAmountFunctional: 5 })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR', { netAmountFunctional: -5 }), position('USD')), 'EUR'), false);
   });
 });
 

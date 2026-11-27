@@ -472,6 +472,21 @@ export function rateGap(result: AggregationResult, functionalCurrency: string, s
   return result.hasRates === 'partial' ? 'some' : null;
 }
 
+/**
+ * True when no share can be worked out because there are no rates at all
+ * (#887): several currencies, nothing converted and no share carried. The
+ * spending currency then has a share of 0 that is not a share: the sheet, the
+ * report and the card say the rate is unavailable, never "0%". A link without
+ * amounts that carries its shares is not this, nor is one currency alone,
+ * nor nothing entered.
+ */
+export function sharesUnknown(result: AggregationResult, functionalCurrency: string): boolean {
+  return result.hasRates === 'none'
+    && result.positions.length > 0
+    && !isSingleCurrency(result, functionalCurrency)
+    && result.positions.every((p) => p.netAmountFunctional === 0 && p.pctOfTotal === 0);
+}
+
 /** What decides whether the rates are still to come, and whether their failure is this view's. */
 interface RatesView {
   loading: boolean;

@@ -10,7 +10,7 @@
  */
 import { cellLabel, tableOf, type Report, type ReportTable } from '../shared/report.ts';
 import { netWorthSheets, type NetWorthExport } from './export.ts';
-import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap } from './math.ts';
+import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, sharesUnknown } from './math.ts';
 
 export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answer: string[] }): Report {
   const { island, functionalCurrency, result, rows, answer } = e;
@@ -33,7 +33,9 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
   const gap = rateGap(result, functionalCurrency, e.showAmounts);
   // It explains only what is shown: shares, and converted amounts.
   const converted = e.showAmounts && gap !== 'all' && !isSingleCurrency(result, functionalCurrency) && result.hasRates !== 'none';
-  const meaning = [x.meaning, ...(gap ? [] : [x.meaningShares]), ...(converted ? [x.meaningRates] : [])].join(' ');
+  // With no rates at all there is no share to explain or draw: the table says so in words (#887).
+  const unknown = sharesUnknown(result, functionalCurrency);
+  const meaning = [x.meaning, ...(gap || unknown ? [] : [x.meaningShares]), ...(converted ? [x.meaningRates] : [])].join(' ');
 
   // Nothing entered yet: the answer says so, and there is nothing to tabulate.
   if (result.positions.length === 0) {
@@ -47,7 +49,7 @@ export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answ
     meaning,
     entered: inputs ? tableOf(inputs) : null,
     // No bars of a subtotal: they would be read as shares of the whole (#795).
-    chart: !isSingleCurrency(result, functionalCurrency) && !gap && bars.length > 0 ? { kind: 'bars', title: island.chart.heading, bars } : null,
+    chart: !isSingleCurrency(result, functionalCurrency) && !gap && !unknown && bars.length > 0 ? { kind: 'bars', title: island.chart.heading, bars } : null,
     tables: [tableOf(byCurrency, { caption: x.sheets.byCurrency, stack: true }), ...(rates ? [rates] : [])],
     assumptions: [...(rates ? [x.ratesText] : []), island.results.disclaimer],
   };
