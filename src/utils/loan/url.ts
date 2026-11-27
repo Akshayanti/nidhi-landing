@@ -396,8 +396,19 @@ const CLEARED = '-';
  */
 export function boxNumber(value: string): string | null {
   const cleaned = value.replace(/[\s,]/g, '');
-  if (!/^\+?(\d+\.?\d*|\.\d+)$/.test(cleaned)) return null;
-  const digits = plainDigits(Number(cleaned));
+  if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(cleaned)) return null;
+  return linkDigits(Number(cleaned));
+}
+
+/**
+ * A number the tool has read, as a link carries it: plain digits, or null for
+ * one a link cannot carry. No box takes a number below zero, so there is no
+ * way to write one, and it stays the error it was; "-0" is the zero the tool
+ * reads it as.
+ */
+function linkDigits(n: number): string | null {
+  if (!(n >= 0)) return null;
+  const digits = plainDigits(n);
   return fitsLinkNumber(digits) ? digits : null;
 }
 
@@ -410,9 +421,22 @@ export function boxNumber(value: string): string | null {
  * takes nothing but the site's own ways of writing a number (#821).
  */
 function written(value: string, dflt: string): string {
-  if (value === '') return dflt === '' ? '' : CLEARED;
+  // Spaces alone are an empty box to the tool, so they are one to the link.
+  if (value.trim() === '') return dflt === '' ? '' : CLEARED;
   if (fitsLinkNumber(value)) return value;
   return boxNumber(value) ?? UNREADABLE;
+}
+
+/**
+ * One side of a lump-sum pair as the link writes it. The lump-sum box reads
+ * each side with `Number` (`readLumpSum`), so a side an older link left as
+ * "+500", "500." or ".5" is the 500 or 0.5 the tool has been using, and is
+ * written as that; the marker is for a side the tool reads no number in.
+ */
+function writtenSide(side: string): string {
+  if (fitsLinkNumber(side)) return side;
+  // Never an empty side: `linkLumpSums` has already made that the marker, which `Number` reads no number in.
+  return linkDigits(Number(side)) ?? UNREADABLE;
 }
 
 /** A lump-sum list as the link writes it: each side a number as the site writes one, or the marker. */
@@ -421,7 +445,7 @@ function writtenLumpSums(text: string): string {
   if (list === '') return '';
   return list
     .split(';')
-    .map((pair) => pair.split(':').map((side) => (fitsLinkNumber(side) ? side : UNREADABLE)).join(':'))
+    .map((pair) => pair.split(':').map(writtenSide).join(':'))
     .join(';');
 }
 

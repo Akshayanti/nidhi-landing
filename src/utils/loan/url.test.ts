@@ -1066,9 +1066,11 @@ describe('a checked link carries only numbers its writer could have written (#82
     // What the engine makes of each (parseNumber): the same number goes into the link, so a
     // comparison that opened as 123 is still 123 after a language switch.
     const LEFT: Record<string, string> = {
-      '1,2,3': '123', '1 2': '12', '+5': '5', '5.': '5', '.5': '0.5', '1,234,5.5': '12345.5',
-      '1..2': 'NaN', '-5': 'NaN', '१२३': 'NaN', "1'234": 'NaN', '-': 'NaN', '+': 'NaN', '1e5': 'NaN', '0x10': 'NaN', '5.5.': 'NaN',
+      '1,2,3': '123', '1 2': '12', '+5': '5', '5.': '5', '.5': '0.5', '1,234,5.5': '12345.5', '-0': '0', '-0.0': '0', ' 7 ': '7',
+      '1..2': 'NaN', '-5': 'NaN', '-0.01': 'NaN', '१२३': 'NaN', "1'234": 'NaN', '-': 'NaN', '+': 'NaN', '1e5': 'NaN', '0x10': 'NaN', '5.5.': 'NaN',
     };
+    // The lump-sum box reads each side with Number, so it keeps what that reads: no grouping, no spaces inside.
+    const SIDE: Record<string, string> = { '+5': '5', '5.': '5', '.5': '0.5', '-0': '0', '-0.0': '0', ' 7 ': '7' };
     for (const [left, kept] of Object.entries(LEFT)) {
       const [vendors, global] = filled(left, `12:${left};${left}:500`);
       const link = encodeSharedState(vendors, global);
@@ -1078,13 +1080,13 @@ describe('a checked link carries only numbers its writer could have written (#82
       assert.equal(read.global.refiNewFeeMajor, kept, left);
       assert.equal(read.vendors[0].principal, kept, left);
       assert.equal(read.vendors[2].prepayPenaltyUntilMonth, kept, left);
-      // The lump-sum box reads its own pairs more strictly, and is written as before.
-      assert.equal(read.vendors[1].lumpSumsEncoded, '12:NaN;NaN:500', left);
+      const side = SIDE[left] ?? 'NaN';
+      assert.equal(read.vendors[1].lumpSumsEncoded, `12:${side};${side}:500`, left);
       // Held to the engine's own reader: the same number, or none in both.
       const engine = parseNumber(left);
       assert.equal(boxNumber(left), kept === 'NaN' ? null : kept, left);
       if (kept === 'NaN') assert.ok(Number.isNaN(engine) || engine < 0, `${left}: ${engine}`);
-      else assert.equal(engine, Number(kept), left);
+      else assert.ok(engine === Number(kept), `${left}: ${engine}`); // ===, so the engine's -0 is the 0 written
     }
     // A number too long for a link is the marker, not a link its reader refuses.
     assert.equal(boxNumber(`+${'9'.repeat(400)}`), null);
