@@ -51,7 +51,7 @@ faq:
     answer: "Waiting is a bet against the rate market. The professional bond market already prices expected cuts into current rates, so waiting only pays if rates fall by more than the market expects; assuming you know that is a form of overconfidence. If today's refinance passes the break-even test with a comfortable margin, refinancing now starts the payment reduction, and a later refinance remains possible if further drops clear a second round of closing costs. If rates rise instead, waiting has given up the payment savings available from the earlier offer while postponing its closing costs; the full result also depends on how the two loan balances change. That is why many advisers see waiting as a weak trade when the break-even is comfortably inside the hold period, though someone close to a planned move or with very high closing costs faces different arithmetic."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare keeping your loan against refinancing, with the break-even month"
   idea: "A refinance tends to pay when the break-even on closing costs falls well inside how long you keep the loan."
 reelPromise: "The break even calculation that beats rules of thumb, why waiting for lower rates is a bet against the market, and the student loan refi trap that trades protection for a small rate cut"
@@ -96,7 +96,7 @@ The quick sum is costs ÷ monthly saving. For Eva, €4,000 ÷ €200 = 20 month
 <figcaption>Illustrative net-savings trajectory. Below the horizontal axis means you have not yet recouped closing costs; above means you are in net savings. Break-even is the crossing point.</figcaption>
 </figure>
 
-So what decides it is how long she keeps the new loan: her [hold period](#term-hold-period), from the switch until she sells, pays it off or refinances again. People often keep a loan for less time than they expect, so a common rule of thumb is a hold period of at least twice the break-even month: a margin of safety that practitioners use, not a figure from research. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> sets a current loan against a refinanced one and shows the break-even month.
+So what decides it is how long she keeps the new loan: her [hold period](#term-hold-period), from the switch until she sells, pays it off or refinances again. People often keep a loan for less time than they expect, so a common rule of thumb is a hold period of at least twice the break-even month: a margin of safety that practitioners use, not a figure from research. The free <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison</a> sets a current loan against a refinanced one and shows the break-even month.
 
 The estimate is only as good as what goes into it:
 

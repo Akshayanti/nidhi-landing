@@ -21,7 +21,8 @@ function files(dir: string): string[] {
 // reduced to its words, lowercased, punctuation dropped, spaces to hyphens,
 // and a repeated heading numbered. Written out here rather than importing
 // Astro's own dependency. Inline HTML is dropped too: a respelled heading
-// keeps its old anchor in an empty `<span id>` at its end (#804).
+// keeps its old anchor in an empty `<span id>` at its start (#804), so an
+// old link lands on the heading's first line.
 function plain(text: string): string {
   return text.replace(/<[^>]*>/g, '').replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '').trim();
 }
@@ -54,7 +55,7 @@ const bySlug = new Map(lessons.map((l) => [l.slug, l]));
 
 describe('links between lessons', () => {
   it('reads a respelled heading without its old-anchor span', () => {
-    assert.equal(plain('Amortization: how a loan gets paid<span id="amortisation-how-a-loan-gets-paid"></span>'), 'Amortization: how a loan gets paid');
+    assert.equal(plain('<span id="amortisation-how-a-loan-gets-paid"></span>Amortization: how a loan gets paid'), 'Amortization: how a loan gets paid');
   });
 
   it('land on a heading, the glossary or a template section of the target lesson', () => {

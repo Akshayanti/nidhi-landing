@@ -47,7 +47,7 @@ faq:
     answer: "Yes, when the price is the same as for paying in full, there is no fee, no tax on hidden interest, and every payment is made on time. Shops often fund these plans because they sell more. The plan then simply spreads a cost you had already decided on, and the money left in your account a little longer can even earn interest."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare the total cost of paying in instalments with paying in full"
   idea: "Comparing totals, including fees and any lost discount, shows whether an instalment plan is free."
 reelPromise: "Who pays when 0% is free, why twelve month-end payments of €100 over a €1,140 cash price cost about 10% a year, and the deferred-interest trap that charges interest back to day one"

@@ -123,7 +123,7 @@ Three: unsolicited contact (the bank called her), time pressure (before it is to
 
 </details>
 
-## Cheap structural defences can block common attack routes<span id="cheap-structural-defenses-can-block-common-attack-routes"></span>
+## <span id="cheap-structural-defenses-can-block-common-attack-routes"></span>Cheap structural defences can block common attack routes
 
 A few defences, many of them set up once, can block common routes into an account or make fraud easier to spot:
 

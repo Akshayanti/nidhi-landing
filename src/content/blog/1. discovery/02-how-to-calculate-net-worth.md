@@ -86,7 +86,7 @@ Now list everything you owe.
 
 Use the current outstanding balance, not the monthly payment. If your mortgage has €180,000 remaining, that's your liability, regardless of what you pay each month.
 
-## Step 3: Do the maths<span id="step-3-do-the-math"></span>
+## <span id="step-3-do-the-math"></span>Step 3: Do the maths
 
 Add up all assets. Add up all liabilities. Subtract.
 

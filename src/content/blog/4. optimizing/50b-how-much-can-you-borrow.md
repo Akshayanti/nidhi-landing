@@ -65,7 +65,7 @@ faq:
     answer: "A lender's maximum answers a different question: how much it can lend you within its own risk limits and the regulator's caps. It does not know your other goals, how secure your income is, or what else you want your money to do. Many people treat the approval as a ceiling and decide separately how much of it to use."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare what two loan offers cost in total, side by side"
   idea: "Comparing offers by total cost shows what a loan costs; this lesson's ratios show whether your income can carry it."
 reelPromise: "How the same salary gets mortgage answers from about €120,000 to €430,000, where the 28/36 and 20-30-40 rules come from, and the stress test many people run before signing"

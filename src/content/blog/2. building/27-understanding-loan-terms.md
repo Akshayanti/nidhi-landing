@@ -46,7 +46,7 @@ faq:
     answer: "Refinancing replaces an existing loan with a new one, usually for a lower rate, a different term, or a switch between fixed and variable. It makes sense when rates have dropped meaningfully, your credit has improved, or your loan type no longer fits. The test is break-even analysis: divide the new loan's fees by the monthly payment savings to get the number of months to recoup the cost, then compare that to how long you will actually hold the loan. Two cautions: some loans charge prepayment or early-termination penalties, and refinancing restarts the amortization clock, so a fresh 25-year loan can lower the payment while increasing total interest paid."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare any two offers including fees"
   idea: "Compare loans by APR and total cost of borrowing, not by the advertised rate."
 reelPromise: "How APR hides fees, why amortization matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
@@ -136,7 +136,7 @@ A hybrid common in many markets: fixed for an initial period (e.g. 5 or 10 years
 
 The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for payment shock. "Cheaper on paper right now" is not the same as "cheaper over the loan's life."
 
-## Amortization: how a loan actually gets paid<span id="amortisation-how-a-loan-actually-gets-paid"></span>
+## <span id="amortisation-how-a-loan-actually-gets-paid"></span>Amortization: how a loan actually gets paid
 
 When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realize how extreme the early-years skew is.
 
@@ -266,7 +266,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 
 *Illustrative.*
 
-If you'd rather not work the table by hand, the <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> runs the maths for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
+If you'd rather not work the table by hand, the <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison</a> runs the maths for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
 
 The best offer is not always the one with the lowest rate. It's the one whose total cost, APR, and contractual terms align best with your actual plan.
 

@@ -183,9 +183,13 @@ const jsonLd = [{
 
   .glossary-group dl { margin: 0; display: grid; gap: var(--space-5); }
 
-  .glossary-entry { scroll-margin-top: 80px; }
+  /* A respelled term's old id is a span in its dt (#804): it lands and is
+     highlighted like the entry itself. */
+  .glossary-entry,
+  .glossary-entry dt > span[id] { scroll-margin-top: 80px; }
 
-  .glossary-entry:target {
+  .glossary-entry:target,
+  .glossary-entry:has(> dt > span:target) {
     outline: 2px solid var(--color-teal);
     outline-offset: 6px;
     border-radius: var(--radius-sm);

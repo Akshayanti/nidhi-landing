@@ -71,7 +71,7 @@ Nothing happened to their relationship. But there, David is not Jonas's next of 
 
 The [geographic arbitrage lesson](/blog/geographic-arbitrage/) treated a move as a question of prices, taxes and visas, assuming the household that arrives is the household that left. For some couples it is not, because a marriage is a legal status and a border can change it. Same-sex couples meet this most often; it also reaches couples married only under religious or customary rites, and some couples of different nationalities. This lesson does not list which countries recognize which marriages, because the list changes and recognition is often partial in ways a list hides.
 
-## Checking that your marriage is recognized where you move<span id="checking-that-your-marriage-is-recognised-where-you-move"></span>
+## <span id="checking-that-your-marriage-is-recognised-where-you-move"></span>Checking that your marriage is recognized where you move
 
 A destination does one of three things with a marriage made elsewhere:
 

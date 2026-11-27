@@ -183,7 +183,7 @@ export const monteCarloEn = {
           a: "All returns are real returns, after inflation. A result of 500,000 means 500,000 of today's purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.",
         },
         {
-          q: 'What does “the money lasted in 8 of 10 paths” mean?',
+          q: 'What does it mean that the money lasted in 8 of 10 paths?',
           a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
         },
         {

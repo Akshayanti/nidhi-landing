@@ -73,7 +73,7 @@ The uncomfortable-but-freeing insight is that financial independence depends on 
 
 Income matters less than you might think; what counts is how much of it you keep. This is the distinction between [income and wealth](/blog/income-vs-wealth/): a high earner who spends everything stays dependent on the next month's pay forever, while a moderate earner who spends carefully and invests the rest eventually stops depending on one.
 
-## The simple maths<span id="the-simple-math"></span>
+## <span id="the-simple-math"></span>The simple maths
 
 The most commonly cited starting formula:
 
@@ -101,7 +101,7 @@ Two things should jump out of that table. First, the numbers are large but not u
 
 > **Public pensions change the number.** The 25× target assumes the portfolio pays for everything, for the whole retirement. In many countries a state or mandatory workplace pension starts at a set age and covers part of your spending from then on, so the portfolio only has to cover the gap. The OECD's *Pensions at a Glance 2025* models the net replacement rate from mandatory schemes for someone on average earnings who works a full career from age 22 at about 63% of previous earnings on average, from under 35% in Ireland and Lithuania to 96% in the Netherlands. Someone stopping work before pension age needs enough to bridge the years until it starts, and less after; how much depends on your country's rules and your contribution record.
 
-## The four common flavours<span id="the-four-common-flavors"></span>
+## <span id="the-four-common-flavors"></span>The four common flavours
 
 FIRE isn't a single target. People usually pick a flavour that matches their preferred lifestyle and timeline.
 

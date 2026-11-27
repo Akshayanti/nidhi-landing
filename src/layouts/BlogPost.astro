@@ -913,7 +913,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((sche
     border-radius: var(--radius-sm);
   }
 
-  .post-glossary-item:target {
+  .post-glossary-item:target,
+  .post-glossary-item:has(> dt > span:target) {
     outline: 2px solid var(--color-teal);
     outline-offset: 4px;
   }

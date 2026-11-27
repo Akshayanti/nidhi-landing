@@ -376,7 +376,7 @@ export const loanComparisonEn = {
         after: ' to enable these fields.',
       },
       initialFixed: 'Initial fixed period (months)',
-      initialFixedHelp: 'It varies by country: 2 or 5 years (24 or 60 months) are common in the UK, for example, and 5, 7 or 10 years (60, 84 or 120 months) in the US.',
+      initialFixedHelp: 'It varies by country: 24 or 60 months (2 or 5 years) are common in the UK, for example, and 60, 84 or 120 months (5, 7 or 10 years) in the US.',
       subsequentRate: 'Subsequent rate (%)',
       subsequentRateHelp:
         'Rate after the fixed period ends. Real adjustable loans follow a reference rate; this is your own assumption, not a forecast.',
@@ -1093,7 +1093,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         after: ' पर बदल दें।',
       },
       initialFixed: 'शुरुआत की तय अवधि (महीने)',
-      initialFixedHelp: 'यह देश के हिसाब से बदलता है: जैसे ब्रिटेन में 2 या 5 साल (24 या 60 महीने) आम हैं, और अमेरिका में 5, 7 या 10 साल (60, 84 या 120 महीने)।',
+      initialFixedHelp: 'यह देश के हिसाब से बदलता है: जैसे ब्रिटेन में 24 या 60 महीने (2 या 5 साल) आम हैं, और अमेरिका में 60, 84 या 120 महीने (5, 7 या 10 साल)।',
       subsequentRate: 'बाद की दर (%)',
       subsequentRateHelp:
         'तय अवधि ख़त्म होने के बाद की दर। असली बदलती दर वाले लोन किसी संदर्भ दर के साथ चलते हैं; यह आपका अपना अनुमान है, कोई पूर्वानुमान नहीं।',
@@ -1744,7 +1744,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         after: ' para activar estos campos.',
       },
       initialFixed: 'Periodo fijo inicial (meses)',
-      initialFixedHelp: 'Depende del país: en el Reino Unido, por ejemplo, son habituales 2 o 5 años (24 o 60 meses), y en EE. UU., 5, 7 o 10 años (60, 84 o 120 meses).',
+      initialFixedHelp: 'Depende del país: en el Reino Unido, por ejemplo, son habituales 24 o 60 meses (2 o 5 años), y en EE. UU., 60, 84 o 120 meses (5, 7 o 10 años).',
       subsequentRate: 'Tasa posterior (%)',
       subsequentRateHelp:
         'Tasa cuando termina el periodo fijo. Los préstamos de tasa variable reales siguen una tasa de referencia; esta es tu propia suposición, no un pronóstico.',
@@ -2394,7 +2394,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         after: ' a tato pole budou dostupná.',
       },
       initialFixed: 'Počáteční období fixace (měsíce)',
-      initialFixedHelp: 'Liší se podle země: například ve Spojeném království jsou obvyklé 2 nebo 5 let (24 nebo 60 měsíců), v USA 5, 7 nebo 10 let (60, 84 nebo 120 měsíců).',
+      initialFixedHelp: 'Liší se podle země: například ve Spojeném království jsou obvyklé 24 nebo 60 měsíců (2 nebo 5 let), v USA 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
         'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
@@ -3026,7 +3026,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         after: ' वर बदला, म्हणजे हे रकाने वापरता येतील.',
       },
       initialFixed: 'सुरुवातीचा ठरावीक कालावधी (महिने)',
-      initialFixedHelp: 'हे देशानुसार बदलते: उदाहरणार्थ, UK मध्ये 2 किंवा 5 वर्षे (24 किंवा 60 महिने) नेहमीची आहेत, आणि अमेरिकेत 5, 7 किंवा 10 वर्षे (60, 84 किंवा 120 महिने).',
+      initialFixedHelp: 'हे देशानुसार बदलते: उदाहरणार्थ, UK मध्ये 24 किंवा 60 महिने (2 किंवा 5 वर्षे) नेहमीचे आहेत, आणि अमेरिकेत 60, 84 किंवा 120 महिने (5, 7 किंवा 10 वर्षे).',
       subsequentRate: 'नंतरचा दर (%)',
       subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या संदर्भ दरानुसार बदलतात; हा तुमचा स्वतःचा अंदाज आहे, भाकीत नाही.',
       costs: {

@@ -30,3 +30,4 @@
 - [Number edges review 27 Nov](number-edges-review-2026-11-27.md) — flat 0% sentences, U+2212, nw zero; real-data probe countries; rates intercept recipe
 - [Loan links and notes 27 Nov](loan-links-notes-review-2026-11-27.md) — NBSP mark still drops alone at 400%/320 (emergency breaks); damaged-link view sound; probe recipe
 - [Number edges round 2 27 Nov](number-edges-round2-2026-11-27.md) — 2-sig-fig amounts per locale via one Intl call; #887 donut empty state; straddling-10 ranges
+- [Old-anchor spans 27 Nov](old-anchor-spans-review-2026-11-27.md) — span at heading end lands mid-heading; dt span loses :target/scroll-margin; worktree dev islands 403
