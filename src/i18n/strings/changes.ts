@@ -47,10 +47,30 @@ export const CHANGE_DAYS: ChangeDay[] = [
         text: {
           en: 'The tools no longer show “−0%” for a figure too small to register, and the inflation calculator now says prices changed by less than 0.5% instead of “rose about 0%”. When amounts cancel out in the net worth calculator, the total is now a plain zero, with no shares of over 999%.',
           hi: 'टूल अब बहुत छोटे आँकड़े के लिए “−0%” नहीं दिखाते, और महँगाई कैलकुलेटर अब “लगभग 0% बढ़ीं” की जगह बताता है कि क़ीमतें 0.5% से कम बदलीं। शुद्ध संपत्ति कैलकुलेटर में जब रकमें आपस में कटकर शून्य हो जाती हैं, तो कुल अब सीधा शून्य दिखता है, और 999% से ज़्यादा के हिस्से नहीं दिखते।',
-          es: 'Las herramientas ya no muestran «−0\u00a0%» cuando una cifra es demasiado pequeña para notarse, y la calculadora de inflación dice ahora que los precios variaron menos de un 0,5\u00a0% en lugar de «subieron alrededor de un 0\u00a0%». Cuando los importes se compensan en la calculadora de patrimonio neto, el total es ahora un cero sin más, sin porcentajes de más del 999\u00a0%.',
+          es: 'Las herramientas ya no muestran «−0\u00a0%» cuando una cifra es demasiado pequeña para notarse, y la calculadora de inflación dice ahora que los precios variaron menos de un 0,5\u00a0% en lugar de «subieron alrededor de un 0\u00a0%». Cuando las cantidades se compensan en la calculadora de patrimonio neto, el total es ahora un cero sin más, sin porcentajes de más del 999\u00a0%.',
           cs: 'Nástroje už neukazují „−0\u00a0%“ u\u00a0čísla, které je příliš malé na to, aby se projevilo, a\u00a0inflační kalkulačka teď místo „vzrostly zhruba o\u00a00\u00a0%“ říká, že se ceny změnily o\u00a0méně než 0,5\u00a0%. Když se částky v\u00a0kalkulačce čistého jmění navzájem vyruší, je teď součet prostá nula, bez podílů přes 999\u00a0%.',
           mr: 'साधने आता अगदी लहान आकड्यासाठी “−0%” दाखवत नाहीत, आणि महागाई कॅल्क्युलेटर आता “सुमारे 0% वाढल्या” ऐवजी किमती 0.5%\u00a0पेक्षा कमी बदलल्या असे सांगतो. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये रकमा एकमेकांना रद्द करतात तेव्हा एकूण आता साधे शून्य दिसते, आणि 999%\u00a0पेक्षा जास्त हिस्से दिसत नाहीत.',
         },
+      {
+        id: 'inflation-small-amounts-two-figures',
+        text: {
+          en: 'The inflation calculator now keeps two figures for a result under 10: €1 at 3% for ten years reads “about €0.74”, where it used to read “about €1”.',
+          hi: 'महँगाई कैलकुलेटर अब 10 से कम के नतीजे में दो अंक रखता है: 3% पर दस साल बाद €1 अब “लगभग €0.74” दिखता है, जहाँ पहले “लगभग €1” दिखता था।',
+          es: 'La calculadora de inflación conserva ahora dos cifras en un resultado inferior a 10: 1\u00a0€ al 3\u00a0% durante diez años se lee «alrededor de 0,74\u00a0€», donde antes se leía «alrededor de 1\u00a0€».',
+          cs: 'Inflační kalkulačka teď u\u00a0výsledku pod 10 ponechává dvě číslice: 1\u00a0€ při 3\u00a0% za deset let se čte „zhruba 0,74\u00a0€“, kde dřív stálo „zhruba 1\u00a0€“.',
+          mr: 'महागाई कॅल्क्युलेटर आता 10\u00a0पेक्षा कमी निकालात दोन अंक ठेवतो: 3% दराने दहा वर्षांनी €1 आता “सुमारे €0.74” असे दिसते, जिथे आधी “सुमारे €1” दिसत होते.',
+        },
+      },
+      {
+        id: 'net-worth-share-rate-unavailable',
+        text: {
+          en: 'When the net worth calculator has no exchange rates, the spending currency’s share now reads “Rate unavailable” on its card, in the spreadsheet and in the report, where it used to read 0%.',
+          hi: 'जब शुद्ध संपत्ति कैलकुलेटर के पास विनिमय दरें नहीं होतीं, तो ख़र्च की मुद्रा का हिस्सा अब उसके कार्ड, स्प्रेडशीट और रिपोर्ट में “दर नहीं मिली” दिखता है, जहाँ पहले 0% दिखता था।',
+          es: 'Cuando la calculadora de patrimonio neto no tiene tipos de cambio, la parte de la moneda de gasto se lee ahora «Tipo no disponible» en su tarjeta, en la hoja de cálculo y en el informe, donde antes se leía 0\u00a0%.',
+          cs: 'Když kalkulačka čistého jmění nemá kurzy, podíl měny výdajů se teď na její kartě, v\u00a0tabulce i\u00a0ve zprávě čte „Kurz chybí“, kde dřív stálo 0\u00a0%.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरकडे विनिमय दर नसतात तेव्हा खर्चाच्या चलनाचा हिस्सा आता त्याच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात “दर उपलब्ध नाही” असा दिसतो, जिथे आधी 0% दिसत होते.',
+        },
+      },
       },
       {
         id: 'loan-changing-rate-needs-both-boxes',
