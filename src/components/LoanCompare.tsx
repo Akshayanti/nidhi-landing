@@ -47,6 +47,7 @@ import { FIT_FLOOR, niceSteps, placeLabels, textWidth, useChartRem, wrapWords } 
 import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { readsAsZero } from '../utils/shared/chartAmounts.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
+import { UNREADABLE } from '../utils/shared/linkInput.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
 import {
@@ -1767,7 +1768,7 @@ function VendorCard({
   // marked: the message says "this value", and a reader moving through the
   // boxes should not hear it on the one they just typed in (#825 review).
   const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
-    arrived ? holdsMarker(unedited({ [field]: vendor[field] } as VendorInput, edited)) : requiredError;
+    arrived ? !edited.has(field) && String(vendor[field]).split(/[;:]/).includes(UNREADABLE) : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
