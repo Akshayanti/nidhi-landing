@@ -42,7 +42,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -144,6 +144,7 @@ export default function InvestOrPayOff({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -312,13 +313,19 @@ export default function InvestOrPayOff({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=invest_or_pay_off';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      share.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      share.refused(url);
+      window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_invest_or_pay_off_share_copied');
   }
 
@@ -577,6 +584,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
+        notice={share.notice}
         quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
@@ -623,6 +631,7 @@ export default function InvestOrPayOff({
             <span className="ifc-hint">{strings.actions.shareNote}</span>
           </span>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} />}
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
         ready={!waiting && shownNow !== null}

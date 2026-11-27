@@ -79,9 +79,18 @@ describe('the invest or pay off calculator: copying, starting again and saving',
     await turn();
     assert.deepEqual(prompted, [[island.actions.copyPrompt, `${SHARE}#${LINK}`]]);
     assert.equal(label(), island.actions.copy);
+    // The address stays under the buttons, to copy by hand (#711).
+    assert.equal(document.querySelector('.lc-shareUrlLabel')?.textContent, island.actions.copyPrompt);
+    const field = document.querySelector<HTMLInputElement>('.lc-shareUrlInput');
+    assert.ok(field !== null && field.value === `${SHARE}#${LINK}` && field.readOnly);
+    assert.equal(field.getAttribute('aria-label'), island.actions.shareUrlAria);
+    assert.equal(field.hasAttribute('value'), false, 'the address is never an attribute');
+    // A change to the form makes it the address of something else: it goes.
+    type('balance', '12345');
+    assert.equal(document.querySelector('.lc-shareUrlBar'), null);
     assert.equal(eventNames().at(-1), 'free_invest_or_pay_off_share_copied');
     view.unmount();
-    // No clipboard at all: still counted, nothing thrown; the untouched example sends no "calculated" (#882).
+    // No clipboard at all: still counted, nothing thrown, the address offered by hand (#711); the untouched example sends no "calculated" (#882).
     delete (navigator as unknown as Record<string, unknown>).clipboard;
     events.length = 0;
     arriveWith(undefined);
@@ -89,7 +98,8 @@ describe('the invest or pay off calculator: copying, starting again and saving',
     fireEvent.click(shareButton());
     await turn();
     assert.deepEqual(eventNames(), ['free_invest_or_pay_off_share_copied']);
-    assert.equal(prompted.length, 1);
+    assert.equal(prompted.length, 2);
+    assert.equal(document.querySelector('.lc-shareUrlLabel')?.textContent, island.actions.copyPrompt);
   });
 
   it('starts again from the example at once, folds "Taxes and fees" and says it was reset', () => {

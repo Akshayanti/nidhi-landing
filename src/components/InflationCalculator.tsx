@@ -51,7 +51,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -244,6 +244,7 @@ export default function InflationCalculator({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -413,13 +414,19 @@ export default function InflationCalculator({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      share.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      share.refused(url);
+      window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_inflation_share_copied');
   }
 
@@ -671,6 +678,7 @@ export default function InflationCalculator({
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} />}
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
@@ -679,6 +687,8 @@ export default function InflationCalculator({
         onPrint={printPage}
       />
 
+      {/* The copied link is said here: the result's own announcement is inside Results (#711). */}
+      <ResultAnnouncement text="" notice={share.notice} />
       {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </UnreadableContext.Provider>

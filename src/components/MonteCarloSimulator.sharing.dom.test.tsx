@@ -51,6 +51,11 @@ describe('sharing and saving', () => {
         await settle(20);
         assert.ok(button.textContent?.includes(island.actions.copied));
         assert.equal(button.getAttribute('data-attr'), 'free-monte-carlo-share');
+        // Said once, and kept under the buttons (#711).
+        assert.equal(document.querySelector('.lc-shareUrlLabel')?.textContent, island.actions.copiedBar);
+        assert.ok(document.querySelector<HTMLInputElement>('.lc-shareUrlInput')?.value === written[0]);
+        await settle(60);
+        assert.ok([...document.querySelectorAll('[aria-live]')].some((r) => r.textContent === island.actions.shareStatus));
       }
       {
         // offers the link to copy by hand when the clipboard refuses
@@ -58,6 +63,7 @@ describe('sharing and saving', () => {
         fireEvent.click(button);
         await settle(20);
         assert.deepEqual(prompted, [[island.actions.copyPrompt, written[1]]]);
+        assert.equal(document.querySelector('.lc-shareUrlLabel')?.textContent, island.actions.copyPrompt);
       }
       // user-event puts its own clipboard in place, so it is set up after the copying.
       const user = reader();

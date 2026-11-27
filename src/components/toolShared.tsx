@@ -199,6 +199,49 @@ export function LinkField({ link, ref, ...rest }: LinkFieldProps) {
 }
 
 /**
+ * A copied share link, as the loan comparison and the net worth calculator
+ * have it (#711): said once through the tool's announcement (`notice`), and
+ * shown in a bar under the buttons, where it can be copied by hand when the
+ * clipboard is refused. The address goes as soon as `stale` changes (the
+ * form), when it stops being the address of what is on the page. It sits in
+ * a read-only box's value, set from script, never in an attribute (CLAUDE.md,
+ * free tools rule 4).
+ */
+export function useShareLink(stale: unknown, words: { status: string; prompt: string }) {
+  const [url, setUrl] = useState('');
+  const [failed, setFailed] = useState(false);
+  const [notice, setNotice] = useState<Notice>({ text: '', n: 0 });
+  useEffect(() => { setUrl(''); }, [stale]);
+  const copied = useCallback((link: string) => {
+    setUrl(link);
+    setFailed(false);
+    setNotice((was) => ({ text: words.status, n: was.n + 1 }));
+  }, [words.status]);
+  const refused = useCallback((link: string) => {
+    setUrl(link);
+    setFailed(true);
+    setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));
+  }, [words.prompt]);
+  return { url, failed, notice, copied, refused };
+}
+
+/** The bar under a tool's buttons that holds a copied share link (`useShareLink`). Not a live region: the notice says it. */
+export function ShareUrlBar({ url, failed, label, failedLabel, aria }: { url: string; failed: boolean; label: string; failedLabel: string; aria: string }) {
+  if (!url) return null;
+  return (
+    <div className="lc-shareUrlBar">
+      <span className="lc-shareUrlLabel">{failed ? failedLabel : label}</span>
+      <LinkField
+        className="lc-shareUrlInput"
+        link={url}
+        onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
+        aria-label={aria}
+      />
+    </div>
+  );
+}
+
+/**
  * For a part of a tool that changes height as a reader types in a box below
  * it: the ref to put on that part. The box then stays where it is on the
  * screen (#827, `steadyAbove`). The part is looked at again after every
