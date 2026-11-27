@@ -16,3 +16,5 @@ Review of branch fix/site-pages-a11y on 2026-11-27 (OBJECT).
 **Tooling:** Chrome fails with "Socket path too long" when the profile is under the session scratchpad. Symlink `/tmp/claude-1000/stx -> <scratchpad>/tmp` and use `TMPDIR=/tmp/claude-1000/stx`; profiles still live in the scratchpad. Puppeteer import by absolute path from the worktree's node_modules target (resolve with `node -e "require.resolve('puppeteer')"`), so scratch scripts can live in the scratchpad.
 
 Related: [[contrast-pr-review-2026-11-14]], [[forms-pr-review-2026-11-14]].
+
+**Recheck at a5a5d8f (2026-11-28): SIGN OFF.** Labels 8.6:1+, guide lines wrap whole words, scroll hint and sticky caption from 640px, "money" synonyms work. Left open: at 400% on 320-375 px a guide amount wider than its box still breaks ("€3,000.0 / 0") and labels break beside the number disc ("Balan/ce"); the audit counts these as "wider than their line", not as failures, because outside /free/ no amount rule applies.
