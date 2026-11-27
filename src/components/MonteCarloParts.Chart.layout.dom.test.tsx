@@ -673,12 +673,15 @@ import { fireEvent } from '@testing-library/react';
   const yearLines = () => all('line.mcs-grid').filter((l) => l.getAttribute('x1') === l.getAttribute('x2')).map((l) => num(l, 'x1'));
 
   describe('the years the chart labels', () => {
-    it('every year up to ten years, every fifth up to thirty, every tenth beyond', () => {
+    // The horizon's own year is always labelled (#757): past the last step it
+    // is added, or takes the last step's place when less than half a step on.
+    it('every year up to ten years, every fifth up to thirty, every tenth beyond, and always the last year', () => {
       assert.deepEqual(labelsFor(8), ['0', '1', '2', '3', '4', '5', '6', '7', '8']);
       assert.deepEqual(labelsFor(10), ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
-      assert.deepEqual(labelsFor(11), ['0', '5', '10']);
+      assert.deepEqual(labelsFor(11), ['0', '5', '11']);
       assert.deepEqual(labelsFor(30), ['0', '5', '10', '15', '20', '25', '30']);
-      assert.deepEqual(labelsFor(31), ['0', '10', '20', '30']);
+      assert.deepEqual(labelsFor(31), ['0', '10', '20', '31']);
+      assert.deepEqual(labelsFor(35), ['0', '10', '20', '30', '35']);
       assert.deepEqual(labelsFor(60), ['0', '10', '20', '30', '40', '50', '60']);
     });
 
@@ -693,7 +696,7 @@ import { fireEvent } from '@testing-library/react';
 
     it('a plan of saving and living off it is labelled over all its years', () => {
       drawChart({ saveYears: 10, withdrawal: 20_000, withdrawYears: 25 });
-      assert.deepEqual(yearLabels(), ['0', '10', '20', '30']);
+      assert.deepEqual(yearLabels(), ['0', '10', '20', '30', '35']);
     });
 
     it('on a phone, labels that would touch are thinned: every other year of ten', () => {
@@ -718,7 +721,8 @@ import { fireEvent } from '@testing-library/react';
       clear();
       atTextSize(40);
       drawChart({ saveYears: 60, withdrawal: 20_000, withdrawYears: 60 });
-      assert.deepEqual(yearLabels(), ['0', '25', '50', '75', '100']);
+      // The end year takes the place of the label it would touch.
+      assert.deepEqual(yearLabels(), ['0', '25', '50', '75', '120']);
       clear();
       atTextSize(32);
       clear();
@@ -727,18 +731,18 @@ import { fireEvent } from '@testing-library/react';
       assert.deepEqual(labelsFor(60), ['0', '20', '40', '60']);
     });
 
-    it('when even fifty years apart is too tight, every fiftieth year is kept', () => {
+    it('when even fifty years apart is too tight, the start and the end are kept, and the years between give way', () => {
       onPhone();
       atTextSize(64);
       drawChart({ saveYears: 60, withdrawal: 20_000, withdrawYears: 60 });
-      assert.deepEqual(yearLabels(), ['0', '50', '100']);
+      assert.deepEqual(yearLabels(), ['0', '120']);
     });
   });
 
   describe('the lighter lines for the years between', () => {
     it('every year between labels five years apart, and none past the last year', () => {
       drawChart({ saveYears: 12 });
-      assert.deepEqual(yearLabels(), ['0', '5', '10']);
+      assert.deepEqual(yearLabels(), ['0', '5', '12']);
       assert.deepEqual(minorYears(12), [1, 2, 3, 4, 6, 7, 8, 9, 11]);
       const p = plot();
       for (const l of all('line.mcs-gridMinor').filter((m) => m.getAttribute('x1') === m.getAttribute('x2'))) assert.deepEqual([num(l, 'y1'), num(l, 'y2')], [p.y, p.bottom]);
