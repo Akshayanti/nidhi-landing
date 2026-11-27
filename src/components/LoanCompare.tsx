@@ -243,12 +243,12 @@ export function engineError(raw: string, s: Strings): string {
   return s.engine.errors[key];
 }
 
-/** Which of the engine's messages this is, by the catalog key of its translation. */
 /** The offer with the boxes edited on this card left out, for `holdsMarker`. */
 export function unedited(vendor: VendorInput, edited: ReadonlySet<string>): VendorInput {
   return Object.fromEntries(Object.entries(vendor).filter(([key]) => !edited.has(key))) as VendorInput;
 }
 
+/** Which of the engine's messages this is, by the catalog key of its translation. */
 export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] | undefined {
   const lower = raw.toLowerCase();
   return ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase))?.[1];
@@ -1763,6 +1763,11 @@ function VendorCard({
   // where to go, and the amount, rate and payment are not what is wrong.
   const errorKey = result.error ? engineErrorKey(result.error) : undefined;
   const requiredError = hasError && badOptional.size === 0 && errorKey !== 'hybridMode';
+  // While a ? that arrived is still unedited, only the box holding it is
+  // marked: the message says "this value", and a reader moving through the
+  // boxes should not hear it on the one they just typed in (#825 review).
+  const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
+    arrived ? holdsMarker(unedited({ [field]: vendor[field] } as VendorInput, edited)) : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
@@ -1885,9 +1890,9 @@ function VendorCard({
           className="lc-input"
           value={vendor.principal}
           onValueChange={(v) => onChange({ principal: v })}
-          aria-invalid={requiredError || undefined}
+          aria-invalid={marked('principal') || undefined}
           aria-required="true"
-          aria-describedby={requiredError ? errorId : undefined}
+          aria-describedby={marked('principal') ? errorId : undefined}
           autoComplete="off"
         />
       </div>
@@ -1902,9 +1907,9 @@ function VendorCard({
           className="lc-input"
           value={vendor.annualRatePct}
           onValueChange={(v) => onChange({ annualRatePct: v })}
-          aria-invalid={requiredError || undefined}
+          aria-invalid={marked('annualRatePct') || undefined}
           aria-required="true"
-          aria-describedby={requiredError ? errorId : undefined}
+          aria-describedby={marked('annualRatePct') ? errorId : undefined}
           autoComplete="off"
         />
       </div>
@@ -1952,9 +1957,9 @@ function VendorCard({
             className="lc-input"
             value={vendor.termMonths}
             onValueChange={(v) => onChange({ termMonths: v })}
-            aria-invalid={requiredError || undefined}
+            aria-invalid={marked('termMonths') || undefined}
             aria-required="true"
-            aria-describedby={requiredError ? errorId : undefined}
+            aria-describedby={marked('termMonths') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
@@ -1969,9 +1974,9 @@ function VendorCard({
             className="lc-input"
             value={vendor.monthlyPayment}
             onValueChange={(v) => onChange({ monthlyPayment: v })}
-            aria-invalid={requiredError || undefined}
+            aria-invalid={marked('monthlyPayment') || undefined}
             aria-required="true"
-            aria-describedby={requiredError ? errorId : undefined}
+            aria-describedby={marked('monthlyPayment') ? errorId : undefined}
             autoComplete="off"
           />
         </div>

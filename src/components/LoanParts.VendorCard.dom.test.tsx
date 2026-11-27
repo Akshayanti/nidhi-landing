@@ -374,6 +374,10 @@ describe('the offer card: the required boxes', () => {
     fireEvent.change(box(card, LABELS.rate), { target: { value: '3' } });
     assert.deepEqual(patches, [{ annualRatePct: '3' }]);
     assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
+    // Only the box holding the ? is marked, not the one just typed in.
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), UNMARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.term)), UNMARKED);
     fireEvent.change(box(card, LABELS.name), { target: { value: 'Bank' } });
     assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
     // Typing in the box that holds the ? names the fault.
