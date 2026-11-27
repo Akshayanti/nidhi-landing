@@ -74,8 +74,8 @@ describe('loan spreadsheet: the notes the card shows under a result (issues 914,
   const LATE = offer({ lumpSumsEncoded: '5:100' });
   // The rate would change after month 3, the last one, and two lump sums come after it.
   const BOTH = offer({ rateKind: 'hybrid', initialFixedMonths: '3', subsequentRatePct: '24', lumpSumsEncoded: '7:100;5:100' });
-  const LATE_NOTE = 'The lump sum in month 5 comes after this loan is paid off in month 3, so it is not used.';
-  const BOTH_NOTES = 'The rate does not change within this term, so the subsequent rate is not used. The lump sums from month 5 on come after this loan is paid off in month 3, so they are not used.';
+  const LATE_NOTE = 'This loan is paid off in month 3, before the lump sum in month 5 would be paid, so it is not used.';
+  const BOTH_NOTES = 'The rate does not change within this term, so the subsequent rate is not used. This loan is paid off in month 3, before the lump sums from month 5 on would be paid, so they are not used.';
   const figures = [amount(408.03), whole(3), amount(24.08), amount(0), amount(0), amount(1224.08), pct(12.0002), common.yes];
 
   it('there are none with no offers, with offers that have nothing to note, or on an offer that was not worked out', () => {

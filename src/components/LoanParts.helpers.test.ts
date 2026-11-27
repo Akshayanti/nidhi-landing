@@ -431,7 +431,7 @@ describe('the engine\'s warnings, in the reader\'s language', () => {
     );
     assert.deepEqual(r.warnings.map((w) => engineWarning(w, s)), [
       'The rate does not change within this term, so the subsequent rate is not used.',
-      'The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.',
+      'This loan is paid off in month 12, before the lump sum in month 13 would be paid, so it is not used.',
     ]);
     assert.deepEqual(r.warnings.map((w) => engineWarning(w, es)), [
       es.engine.warnings.rateNeverChanges,

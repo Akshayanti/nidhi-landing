@@ -134,9 +134,9 @@ describe('loan printed report: the notes the card shows under a result (issues 9
     assert.deepEqual(r.tables[0].note, [
       island.delta.aprNote,
       x.schedulesNote,
-      'Late: The lump sum in month 5 comes after this loan is paid off in month 3, so it is not used.',
+      'Late: This loan is paid off in month 3, before the lump sum in month 5 would be paid, so it is not used.',
       'Both: The rate does not change within this term, so the subsequent rate is not used.',
-      'Both: The lump sums from month 5 on come after this loan is paid off in month 3, so they are not used.',
+      'Both: This loan is paid off in month 3, before the lump sums from month 5 on would be paid, so they are not used.',
     ]);
   });
 
@@ -147,7 +147,7 @@ describe('loan printed report: the notes the card shows under a result (issues 9
     assert.deepEqual(comparison.rows[1], ['Late', ...figures]);
     assert.deepEqual(payments.head, [c.name, x.monthlyAtStart, x.monthlyAfterChange, x.fromMonth, x.paymentNote]);
     assert.deepEqual(payments.rows[1], ['Late', amount(408.03), null, null, x.noPaymentChange]);
-    assert.deepEqual(comparison.note, [island.delta.aprNote, x.schedulesNote, 'Late: The lump sum in month 5 comes after this loan is paid off in month 3, so it is not used.']);
+    assert.deepEqual(comparison.note, [island.delta.aprNote, x.schedulesNote, 'Late: This loan is paid off in month 3, before the lump sum in month 5 would be paid, so it is not used.']);
     assert.equal(payments.note, undefined);
   });
 });

@@ -215,7 +215,7 @@ export const inflationEn = {
       meaning: 'Inflation is the rise in prices over time. Unless a country’s actual inflation was used, the figures assume the same rate every year; real inflation changes from year to year, and the prices you pay may rise faster or slower than the average.',
       moneyLabel: 'Amounts',
       /** True of every amount cell: one the unit cannot show (JPY 1.3, EUR 0.074, #922) holds two figures, never the unit's rounding. */
-      moneyText: "To the currency's smallest unit. The page rounds its results; these are the exact figures behind them. An amount too small to show at that unit is given to two figures instead.",
+      moneyText: "To the currency's smallest unit. The page rounds its results; these are the exact figures behind them. A small amount that the unit cannot show to two significant figures is given to two significant figures instead.",
       sheets: { answer: 'Answer', byYear: 'By year' },
       question: 'Question',
       country: 'Inflation history',
@@ -587,7 +587,7 @@ export const inflationHi: typeof inflationEn = {
     export: {
       meaning: 'महँगाई का मतलब है समय के साथ क़ीमतों का बढ़ना। जब तक किसी देश की असल महँगाई इस्तेमाल न हुई हो, ये आँकड़े हर साल एक ही दर मानते हैं; असल महँगाई साल-दर-साल बदलती है, और आप जो क़ीमतें चुकाते हैं वे औसत से तेज़ या धीमी बढ़ सकती हैं।',
       moneyLabel: 'रकम',
-      moneyText: 'मुद्रा की सबसे छोटी इकाई तक। पेज अपने नतीजे गोल करके दिखाता है; ये उनके पीछे के सटीक आँकड़े हैं। जो रकम इतनी छोटी हो कि उस इकाई में दिख न सके, वह दो अंकों तक दी गई है।',
+      moneyText: 'मुद्रा की सबसे छोटी इकाई तक। पेज अपने नतीजे गोल करके दिखाता है; ये उनके पीछे के सटीक आँकड़े हैं। जो छोटी रकम उस इकाई में दो सार्थक अंकों तक न दिख सके, वह दो सार्थक अंकों तक दी गई है।',
       sheets: { answer: 'जवाब', byYear: 'हर साल' },
       question: 'सवाल',
       country: 'महँगाई का इतिहास',
@@ -929,7 +929,7 @@ export const inflationEs: typeof inflationEn = {
     export: {
       meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
       moneyLabel: 'Cantidades',
-      moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea sus resultados; estas son las cifras exactas que hay detrás. Una cantidad demasiado pequeña para verse en esa unidad se da con dos cifras.',
+      moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea sus resultados; estas son las cifras exactas que hay detrás. Una cantidad pequeña que esa unidad no puede mostrar con dos cifras significativas se da con dos cifras significativas.',
       sheets: { answer: 'Respuesta', byYear: 'Por año' },
       question: 'Pregunta',
       country: 'Historia de la inflación',
@@ -1274,7 +1274,7 @@ export const inflationCs: typeof inflationEn = {
     export: {
       meaning: 'Inflace je růst cen v průběhu času. Pokud nebyla použita skutečná inflace dané země, výpočet vychází ze stejné sazby v každém roce; skutečná inflace se rok od roku mění a ceny, které platíte, mohou růst rychleji i pomaleji než průměr.',
       moneyLabel: 'Částky',
-      moneyText: 'Na nejmenší jednotku měny. Stránka výsledky zaokrouhluje; tady jsou přesná čísla, ze kterých vycházejí. Částka tak malá, že by v této jednotce nebyla vidět, je uvedena na dvě platné číslice.',
+      moneyText: 'Na nejmenší jednotku měny. Stránka výsledky zaokrouhluje; tady jsou přesná čísla, ze kterých vycházejí. Malá částka, kterou tato jednotka nedokáže ukázat na dvě platné číslice, je uvedena na dvě platné číslice.',
       sheets: { answer: 'Odpověď', byYear: 'Po letech' },
       question: 'Otázka',
       country: 'Historie inflace',
@@ -1610,7 +1610,7 @@ export const inflationMr: typeof inflationEn = {
     export: {
       meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
       moneyLabel: 'रक्कम',
-      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान आपले निकाल जवळच्या आकड्यापर्यंत आणून दाखवते; हे त्यामागचे नेमके आकडे आहेत. जी रक्कम इतकी लहान आहे की त्या एककात दिसू शकत नाही, ती दोन अंकांपर्यंत दिली आहे.',
+      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान आपले निकाल जवळच्या आकड्यापर्यंत आणून दाखवते; हे त्यामागचे नेमके आकडे आहेत. जी लहान रक्कम त्या एककात दोन सार्थक अंकांपर्यंत दाखवता येत नाही, ती दोन सार्थक अंकांपर्यंत दिली आहे.',
       sheets: { answer: 'उत्तर', byYear: 'दरवर्षी' },
       question: 'प्रश्न',
       country: 'महागाईचा इतिहास',

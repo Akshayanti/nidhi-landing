@@ -42,18 +42,18 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
 
   it('one lump sum after the payoff, with its month and the payoff month put back (issue 915)', () => {
     const raw = lumpsUnusedNote({ fromMonth: 130, count: 1 }, 120);
-    assert.equal(engineNote(raw, en), 'The lump sum in month 130 comes after this loan is paid off in month 120, so it is not used.');
+    assert.equal(engineNote(raw, en), 'This loan is paid off in month 120, before the lump sum in month 130 would be paid, so it is not used.');
     for (const [lang, notes] of Object.entries(ALL)) {
       const shown = engineNote(raw, notes);
       assert.equal(shown, notes.lumpUnused.replace('{month}', '130').replace('{payoffMonth}', '120'), lang);
       assert.ok(shown.includes('130') && shown.includes('120') && !shown.includes('{'), `${lang}: ${shown}`);
-      assert.ok(shown.indexOf('130') < shown.indexOf('120'), `${lang}: the lump sum's month is read first`);
+      assert.ok(shown.indexOf('120') < shown.indexOf('130'), `${lang}: the payoff month is read first`);
     }
   });
 
   it('several lump sums after the payoff, named by the first of them', () => {
     const raw = lumpsUnusedNote({ fromMonth: 15, count: 2 }, 12);
-    assert.equal(engineNote(raw, en), 'The lump sums from month 15 on come after this loan is paid off in month 12, so they are not used.');
+    assert.equal(engineNote(raw, en), 'This loan is paid off in month 12, before the lump sums from month 15 on would be paid, so they are not used.');
     for (const [lang, notes] of Object.entries(ALL)) {
       const shown = engineNote(raw, notes);
       assert.equal(shown, notes.lumpsUnused.replace('{month}', '15').replace('{payoffMonth}', '12'), lang);
@@ -95,7 +95,7 @@ describe('the notes of a result, as the card lists them', () => {
     });
     assert.deepEqual(resultNotes(r, en), [
       'The rate does not change within this term, so the subsequent rate is not used.',
-      'The lump sums from month 13 on come after this loan is paid off in month 12, so they are not used.',
+      'This loan is paid off in month 12, before the lump sums from month 13 on would be paid, so they are not used.',
     ]);
     assert.deepEqual(resultNotes(r, ALL.cs), [ALL.cs.rateNeverChanges, ALL.cs.lumpsUnused.replace('{month}', '13').replace('{payoffMonth}', '12')]);
   });

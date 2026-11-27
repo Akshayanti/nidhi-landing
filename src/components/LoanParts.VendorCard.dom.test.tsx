@@ -891,11 +891,11 @@ describe('the offer card: the optional boxes', () => {
     const { card } = show(loan({ lumpSumsEncoded: '13:50' }));
     assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
-    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.']);
+    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['This loan is paid off in month 12, before the lump sum in month 13 would be paid, so it is not used.']);
     cleanup();
     const several = show(loan({ lumpSumsEncoded: '20:50;13:50' }));
     assert.equal(several.card.querySelectorAll('.lc-warning').length, 1);
-    assert.equal(several.card.querySelector('.lc-warning')?.textContent, 'The lump sums from month 13 on come after this loan is paid off in month 12, so they are not used.');
+    assert.equal(several.card.querySelector('.lc-warning')?.textContent, 'This loan is paid off in month 12, before the lump sums from month 13 on would be paid, so they are not used.');
     cleanup();
     // Used, even in part: nothing to say.
     assert.ok(show(loan({ lumpSumsEncoded: '11:500' })).card.querySelector('.lc-warning') === null);
