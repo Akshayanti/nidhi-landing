@@ -1875,6 +1875,7 @@ function VendorCard({
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('name')}>{strings.card.name}</label>
         <input
+          enterKeyHint="done"
           id={id('name')}
           type="text"
           className="lc-input"

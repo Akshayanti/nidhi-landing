@@ -850,6 +850,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          enterKeyHint="done"
           {...markerSelect}
           id={props.id}
           className="ifc-input"

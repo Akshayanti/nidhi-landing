@@ -4669,8 +4669,17 @@ button.mcnw-legendItem:focus-visible {
 /* A share link's copied-address bar takes its own line under the buttons.
    It comes after them in the markup too (ToolExport's shareResult), so the
    buttons do not move under a finger when it appears and goes (#491). */
-.tool-exportButtons > [role='status'] {
+.tool-exportButtons > .lc-shareUrlBar {
   flex-basis: 100%;
+}
+/* Below 360 px (in em, so a larger text size counts too) the buttons stack,
+   each the full width: three long labels side by side (Hindi on a small
+   phone) wrapped to tall, narrow buttons (#488). */
+@media (max-width: 22.5em) {
+  .tool-exportButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 /* See SwapLabel in ToolExport.tsx: the two labels share one cell, and the
    shorter one sits in the middle of the room the longer one needs. */
