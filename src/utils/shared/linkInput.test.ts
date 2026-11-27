@@ -5,7 +5,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { MAX_LINK_NAME_LENGTH, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from './linkInput.ts';
+import { MAX_LINK_NAME_LENGTH, fitsLinkNumber, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from './linkInput.ts';
 
 const KNOWN = new Set(['EUR', 'USD', 'INR']);
 
@@ -126,5 +126,108 @@ describe('the edges of what a link may carry', () => {
     assert.equal(linkWholeNumber('007', 1, 10, 'f'), '7');
     assert.equal(linkWholeNumber('1234567890', 0, 1e12, 'f'), 'f', 'ten digits are too many');
     assert.equal(linkWholeNumber('123456789', 0, 1e12, 'f'), '123456789');
+  });
+});
+
+describe('a number as the site writes one: all a checked link may carry (#821)', () => {
+  const NBSP = '\u00a0';
+  const NARROW = '\u202f';
+
+  it('takes digits alone or with one decimal mark, which is what the tools write', () => {
+    for (const value of ['0', '5', '250000', '007', '6.5', '6,5', '0.0000001', '12345.678901', '1,25', '1.25']) {
+      assert.equal(fitsLinkNumber(value), true, value);
+    }
+  });
+
+  it('takes comma groups of three with a point for decimals: the English, Hindi and Marathi pages', () => {
+    for (const value of ['1,234,567', '12,345,678', '123,456,789', '1,234.5', '12,345.67', '123,456.789', '1,234,567.5']) {
+      assert.equal(fitsLinkNumber(value), true, value);
+    }
+  });
+
+  it('takes the Indian grouping, twos before the last three', () => {
+    for (const value of ['1,00,000', '10,00,000', '1,00,00,000', '12,34,567', '12,34,567.5', '10,00,000.75']) {
+      assert.equal(fitsLinkNumber(value), true, value);
+    }
+  });
+
+  it('takes point groups with a comma for decimals: the Spanish page', () => {
+    for (const value of ['1.234.567', '12.345.678', '123.456.789', '1.234,5', '12.345,67', '123.456,789', '1.234.567,5']) {
+      assert.equal(fitsLinkNumber(value), true, value);
+    }
+  });
+
+  it('takes space groups with a comma for decimals: the Czech page, with a plain, a no-break or a narrow no-break space', () => {
+    for (const space of [' ', NBSP, NARROW]) {
+      for (const value of ['1_234', '12_345', '123_456', '1_234_567', '12_345_678,5', '1_234,56']) {
+        const written = value.replaceAll('_', space);
+        assert.equal(fitsLinkNumber(written), true, JSON.stringify(written));
+      }
+    }
+  });
+
+  it('refuses what is not a number anyone writes: marks alone, marks at an end, a sign, a letter, nothing', () => {
+    for (const value of ['', '-', '+', '.', ',', ' ', '..', ',,', '-.', '.5', ',5', '5.', '5,', '1..2', '1,,2', '1.,2', '+5', '5-', '5+', '1e5', '0x10', 'NaN', 'abc', '5 ', ' 5', '1\t234', "1'234", '1’234', '1/2', '5%']) {
+      assert.equal(fitsLinkNumber(value), false, JSON.stringify(value));
+    }
+  });
+
+  it('refuses groups that are no grouping: "1,2,3", "1 2", a group of the wrong size, a zero in front', () => {
+    for (const value of [
+      '1,2,3', '1 2', '1 23', '1 2345', '1.2.3', '1,23,45', '1,2345,678', '1,234,5678', '1234,567,890', '0,123,456', '01,234,567',
+      '1,00,00', '1,00,0000', '100,00,000', '0,00,000', '1,000,00', '10,00,000,75',
+      '1.23.456', '1.234.5678', '1234.567.890', '0.123.456', '1.2345.678',
+      '1234 567', '0 123', '1  234', '1 234 ', ' 1 234', '1 234 56', '12 34 567',
+    ]) {
+      assert.equal(fitsLinkNumber(value), false, JSON.stringify(value));
+    }
+  });
+
+  it('refuses a style with another style\'s marks: two kinds of space, a point after spaces, a second decimal', () => {
+    for (const value of [
+      `1 234${NBSP}567`, `1${NBSP}234${NARROW}567`, '1 234.5', `1${NBSP}234.5`, '1,234,567,5', '1,234,567.', '1,234,567.5.5', '1,234.5,5',
+      '1.234.567.', '1.234.567,', '1.234,5,5', '1.234,5.5', '1 234,', '1 234,5,5', '10,00,000.', '1,234 567', '1.234 567',
+    ]) {
+      assert.equal(fitsLinkNumber(value), false, JSON.stringify(value));
+    }
+  });
+
+  it('refuses anything before or after a number of every style', () => {
+    for (const whole of ['5', '6.5', '1,234,567', '1,234.5', '10,00,000', '1.234.567', '1.234,5', '1 234 567', '1 234,5']) {
+      assert.equal(fitsLinkNumber(whole), true, whole);
+      for (const [before, after] of [['x', ''], ['', 'x'], ['', '\n'], ['\n', ''], ['', '%'], ['€', '']]) {
+        const value = `${before}${whole}${after}`;
+        assert.equal(fitsLinkNumber(value), false, JSON.stringify(value));
+      }
+    }
+  });
+
+  it('refuses digits of another script: the tools write Latin ones and the tool that reads these knows no others', () => {
+    for (const value of ['१२३', '१,२३४', '١٢٣', '۱۲۳', '1२3']) assert.equal(fitsLinkNumber(value), false, value);
+  });
+
+  it('takes a minus only where the field takes one, and only one, in front of a number', () => {
+    for (const value of ['-5', '-6.5', '-1,234.5', '-10,00,000', '-1.234,5', '-1 234']) {
+      assert.equal(fitsLinkNumber(value), false, value);
+      assert.equal(fitsLinkNumber(value, {}), false, value);
+      assert.equal(fitsLinkNumber(value, { negative: false }), false, value);
+      assert.equal(fitsLinkNumber(value, { negative: true }), true, value);
+    }
+    for (const value of ['5', '57', '6.5', '1,234.5']) assert.equal(fitsLinkNumber(value, { negative: true }), true, value);
+    for (const value of ['-', '--5', '5-', '+5', '- 5', '−5', '-', '-.5', '']) assert.equal(fitsLinkNumber(value, { negative: true }), false, JSON.stringify(value));
+  });
+
+  it('takes a number of 200 characters and refuses one of 201, minus included', () => {
+    assert.equal(fitsLinkNumber('9'.repeat(200)), true);
+    assert.equal(fitsLinkNumber('9'.repeat(201)), false);
+    assert.equal(fitsLinkNumber(`-${'9'.repeat(199)}`, { negative: true }), true);
+    assert.equal(fitsLinkNumber(`-${'9'.repeat(200)}`, { negative: true }), false);
+  });
+
+  it('leaves the reader of older links as lenient as it was', () => {
+    for (const value of ['1,2,3', '1 2', '1..2', '-', '+5', ',', '१२३', "1'234"]) {
+      assert.equal(fitsLinkNumber(value), false, value);
+      assert.equal(linkNumber(value, '60'), value, value);
+    }
   });
 });

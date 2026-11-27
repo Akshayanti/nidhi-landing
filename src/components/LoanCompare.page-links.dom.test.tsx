@@ -186,6 +186,21 @@ describe('the loan comparison: a link that did not arrive whole (issue 820)', ()
     assert.ok(addressUntouched());
   });
 
+  it('and for a link whose check holds, with a number in it the tool never writes (#821)', () => {
+    const body = pairsOf(whole()).slice(0, -1);
+    for (const [kind, extra] of [['a number', ['h', '1,2,3']], ['a lump sum', ['v1_ls', '12:1 2']]] as const) {
+      const state = checked([...body, extra]);
+      assert.equal(openState(state, '2'), 'whole', kind);
+      arriveWith(state);
+      const view = mount({ defaultCurrency: 'INR' });
+      showsOnlyTheNotice(kind);
+      assert.deepEqual(events, [], kind);
+      assert.equal(shared(), state, kind);
+      view.unmount();
+    }
+    assert.ok(addressUntouched());
+  });
+
   it('shows the same notice after a language switch, which carried the link as it arrived', () => {
     cameFrom('https://nidhi.today/hi/free/');
     const cut = whole().slice(0, 40);

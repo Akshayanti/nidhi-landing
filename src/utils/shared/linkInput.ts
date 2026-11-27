@@ -43,6 +43,44 @@ export function linkNumber(value: string | null, fallback: string): string {
 }
 
 /**
+ * The ways the site writes a number, which is all a link in a checked format
+ * may carry (#821, the owner's choice of Nov 27, 2026: strict in the new
+ * format only). The whole value fits one of them or it does not: no sign, no
+ * space around it, no mark at either end.
+ *   - digits alone, or with one decimal mark, a point or a comma: what the
+ *     tools write themselves ("250000", "6.5");
+ *   - comma groups of three with a point for decimals (the English, Hindi
+ *     and Marathi pages): "1,234,567.5";
+ *   - the Indian grouping, twos before the last three: "10,00,000";
+ *   - point groups with a comma for decimals (the Spanish page): "1.234,5";
+ *   - space groups with a comma for decimals (the Czech page), the space
+ *     being a plain, a no-break or a narrow no-break one, the same throughout.
+ * A grouped number does not start with a zero. Digits are Latin: the tools
+ * write no others, and the loan comparison, the one tool that reads these,
+ * cannot read any others.
+ */
+const LINK_NUMBER_STYLES: readonly RegExp[] = [
+  /^\d+([.,]\d+)?$/,
+  /^[1-9]\d{0,2}(,\d{3})+(\.\d+)?$/,
+  /^[1-9]\d?(,\d{2})*,\d{3}(\.\d+)?$/,
+  /^[1-9]\d{0,2}(\.\d{3})+(,\d+)?$/,
+  /^[1-9]\d{0,2}([ \u00a0\u202f])\d{3}(\1\d{3})*(,\d+)?$/,
+];
+
+/**
+ * Whether `value` is a number as the site writes one (the styles above). A
+ * minus leads only where the field takes one (`negative`). "1,2,3", "1 2",
+ * "1..2", a lone "-", a "+", marks alone and nothing at all do not fit. The
+ * lenient `linkNumber` stays what a link written before the checked format
+ * is read with.
+ */
+export function fitsLinkNumber(value: string, options: { negative?: boolean } = {}): boolean {
+  if (value.length > MAX_LINK_NUMBER_LENGTH) return false;
+  const body = options.negative && value.startsWith('-') ? value.slice(1) : value;
+  return LINK_NUMBER_STYLES.some((style) => style.test(body));
+}
+
+/**
  * A list of lump sums ("12:5000;36:3000"). What cannot be read is marked in
  * its place, so the good pairs stay and none is dropped without a word. A
  * list that is too long is marked whole, never cut.

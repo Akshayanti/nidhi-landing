@@ -59,7 +59,7 @@
 import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
 import { CHECK_KEY, FORMAT_KEY, openState, sealState } from '../shared/checkedLink.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
-import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
+import { UNREADABLE, fitsLinkNumber, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
 import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
 
 /**
@@ -386,11 +386,39 @@ export function encodeLumpSums(entries: LumpSumEntry[]): string {
  */
 const CLEARED = '-';
 
-/** `value` as the link writes it: the mark when it was emptied and its default is not empty. */
+/**
+ * `value` as the link writes it: the mark when it was emptied and its default
+ * is not empty. A box holds a plain number or the marker, so that is all a
+ * link is written with. Anything else can only have come in with a link from
+ * before the check, which was read leniently ("1,2,3", "+5"), and is written
+ * as the marker: the link's own reader takes nothing else (#821).
+ */
 function written(value: string, dflt: string): string {
   if (value === '') return dflt === '' ? '' : CLEARED;
-  // A hyphen in the box is not the mark of an emptied one.
-  return value === CLEARED ? UNREADABLE : linkNumber(value, dflt);
+  return fitsLinkNumber(value) ? value : UNREADABLE;
+}
+
+/** A lump-sum list as the link writes it: each side a number as the site writes one, or the marker. */
+function writtenLumpSums(text: string): string {
+  const list = linkLumpSums(text, '');
+  if (list === '') return '';
+  return list
+    .split(';')
+    .map((pair) => pair.split(':').map((side) => (fitsLinkNumber(side) ? side : UNREADABLE)).join(':'))
+    .join(';');
+}
+
+/** Whether a checked link's value is what `written` writes: a number as the site writes one, or one of the two marks. */
+const fits = (value: string) => value === CLEARED || value === UNREADABLE || fitsLinkNumber(value);
+
+/** The same for a lump-sum list: the mark of an emptied box, or pairs as `writtenLumpSums` writes them. */
+function lumpSumsFit(value: string): boolean {
+  if (value === CLEARED) return true;
+  return value.split(';').every((pair) => {
+    if (pair === UNREADABLE) return true;
+    const sides = pair.split(':');
+    return sides.length === 2 && sides.every((side) => side === UNREADABLE || fitsLinkNumber(side));
+  });
 }
 
 /** What a link's value says about a box: emptied on purpose, or the value itself. */
@@ -494,7 +522,7 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       const text = String(value);
       const out =
         field === 'rateKind' ? text
-        : field === 'lumpSumsEncoded' ? linkLumpSums(text, '')
+        : field === 'lumpSumsEncoded' ? writtenLumpSums(text)
         : written(text, String(dflt));
       if (out !== '') params.set(`v${idx}_${key}`, out);
     }
@@ -628,6 +656,49 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   return { vendors, currency, global };
 }
 
+/** The keys of the settings that are typed numbers: the horizon and the refinance boxes. */
+const NUMBER_KEYS: ReadonlySet<string> = new Set(['h', 'ra', 'rr', 'rt', 'rf']);
+/** The positions of an offer's tuple that are typed numbers. */
+const NUMBER_POSITIONS: readonly number[] = [
+  V_IDX.PRINCIPAL, V_IDX.ANNUAL_RATE_PCT, V_IDX.TERM_MONTHS, V_IDX.MONTHLY_PAYMENT, V_IDX.FEE_MAJOR, V_IDX.EXTRA_MONTHLY,
+];
+/** The advanced fields that are choices, not typed numbers. */
+const NOT_NUMBERS: ReadonlySet<string> = new Set(['rk', 'rc']);
+/** The advanced keys that are typed numbers (the lump-sum list has its own shape and is asked first). */
+const ADVANCED_NUMBER_KEYS: ReadonlySet<string> = new Set(ADVANCED_KEY_MAP.map(({ key }) => key).filter((key) => !NOT_NUMBERS.has(key)));
+
+/**
+ * Whether every typed number of a checked link is one the tool's own writer
+ * could have written (#821): a number in one of the site's styles, the mark
+ * of an emptied box or the marker of an unreadable one. The writer writes
+ * nothing else, so in a link whose check holds a value outside that was
+ * never in a sender's box: the link is not what anyone saw, and it is refused
+ * whole, like a link that arrived damaged, rather than opened with a box
+ * the sender never had. An empty position in an offer's tuple is "not
+ * given" and fits. Links from before the check are not asked: they are read
+ * as leniently as ever.
+ */
+function numbersFit(state: string): boolean {
+  for (const [key, value] of new URLSearchParams(state)) {
+    if (NUMBER_KEYS.has(key)) {
+      if (!fits(value)) return false;
+      continue;
+    }
+    const offer = /^v\d+(?:_([a-z]{2}))?$/.exec(key);
+    if (!offer) continue;
+    const field = offer[1];
+    if (field === undefined) {
+      const fields = decodeTuple(value, SIMPLE_FIELD_COUNT);
+      if (!NUMBER_POSITIONS.every((at) => fields[at] === '' || fits(fields[at]))) return false;
+    } else if (field === 'ls') {
+      if (!lumpSumsFit(value)) return false;
+    } else if (ADVANCED_NUMBER_KEYS.has(field) && !fits(value)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
  * A state that arrived (a share link, the language switch), read: the offers
  * and settings it carries, or `null` for a link written with the envelope
@@ -639,7 +710,12 @@ export function decodeFromQueryString(qs: string): DecodeResult {
  * same way: that limit is accepted. The decoder knows neither `f` nor `z`,
  * so a whole link reads as the state inside it; with every other value left
  * out, that is each offer's slot template, which is what the writer left out.
+ *
+ * A whole link is also refused when one of its numbers is not one the writer
+ * could have written (`numbersFit`, #821).
  */
 export function readSharedState(state: string): DecodeResult | null {
-  return openState(state, LINK_FORMAT) === 'damaged' ? null : decodeFromQueryString(state);
+  const arrived = openState(state, LINK_FORMAT);
+  if (arrived === 'damaged' || (arrived === 'whole' && !numbersFit(state))) return null;
+  return decodeFromQueryString(state);
 }
