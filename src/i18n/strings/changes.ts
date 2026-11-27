@@ -43,6 +43,66 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-27',
     items: [
       {
+        id: 'search-finds-money-and-guides',
+        text: {
+          en: 'Searching the lessons for just “money” now finds them, where it used to find nothing, and the line above the results counts lessons and guides apart, such as “10 lessons, 1 guide”, so it agrees with the “Show all” button. When only guides match, the count says so too, for screen readers as well.',
+          hi: 'पाठों में सिर्फ़ “money” खोजने पर अब पाठ मिलते हैं; पहले कुछ नहीं मिलता था। नतीजों के ऊपर की पंक्ति अब पाठ और गाइड अलग-अलग गिनती है, जैसे “10 पाठ, 1 गाइड”, इसलिए वह “सभी दिखाएँ” बटन से मेल खाती है। जब सिर्फ़ गाइड मिलती हैं, तब भी गिनती यह बताती है, स्क्रीन रीडर के लिए भी।',
+          es: 'Buscar solo «money» entre las lecciones ahora las encuentra, cuando antes no encontraba nada, y la línea sobre los resultados cuenta por separado lecciones y guías, como «10 lecciones, 1 guía», así que coincide con el botón «Mostrar todas». Cuando solo coinciden guías, el recuento también lo dice, también para lectores de pantalla.',
+          cs: 'Hledání samotného slova „money“ v\u00a0lekcích teď lekce najde, dřív nenašlo nic, a\u00a0řádek nad výsledky počítá zvlášť lekce a\u00a0návody, například „10 lekcí, 1 návod“, takže souhlasí s\u00a0tlačítkem „Zobrazit vše“. Když odpovídají jen návody, počet to řekne také, i\u00a0pro čtečky obrazovky.',
+          mr: 'धड्यांमध्ये फक्त “money” शोधल्यावर आता धडे सापडतात; आधी काहीच सापडत नसे. निकालांच्या वरची ओळ आता धडे आणि मार्गदर्शिका वेगवेगळ्या मोजते, जसे “10 धडे, 1 मार्गदर्शिका”, त्यामुळे ती “सर्व दाखवा” बटणाशी जुळते. फक्त मार्गदर्शिका जुळतात तेव्हाही मोजणी तसे सांगते, स्क्रीन रीडरसाठीही.',
+        },
+      },
+      {
+        id: 'email-fields-keep-their-name',
+        text: {
+          en: 'The newsletter and waitlist forms now show “Email address” above the box, so the box keeps its name once you start typing. It used to be named only by the grey word inside it, which disappears as you type.',
+          hi: 'न्यूज़लेटर और वेटलिस्ट के फ़ॉर्म में अब बॉक्स के ऊपर “ईमेल पता” लिखा दिखता है, इसलिए टाइप करना शुरू करने के बाद भी बॉक्स का नाम दिखता रहता है। पहले उसका नाम सिर्फ़ उसके अंदर का धूसर शब्द था, जो टाइप करते ही ग़ायब हो जाता है।',
+          es: 'Los formularios del boletín y de la lista de espera muestran ahora «Dirección de correo» sobre el recuadro, así que el recuadro conserva su nombre cuando empiezas a escribir. Antes solo lo nombraba la palabra gris de dentro, que desaparece al escribir.',
+          cs: 'Formuláře newsletteru a\u00a0čekací listiny teď nad rámečkem ukazují „E-mailová adresa“, takže rámeček má název i\u00a0poté, co začnete psát. Dřív ho pojmenovávalo jen šedé slovo uvnitř, které při psaní zmizí.',
+          mr: 'न्यूजलेटर आणि प्रतीक्षा यादीच्या फॉर्ममध्ये आता चौकटीच्या वर “ईमेल पत्ता” दिसतो, त्यामुळे टाइप करायला सुरुवात केल्यावरही चौकटीचे नाव दिसत राहते. आधी तिचे नाव फक्त आतला राखाडी शब्द होता, जो टाइप करताच नाहीसा होतो.',
+        },
+      },
+      {
+        id: 'lesson-drawings-readable',
+        text: {
+          en: 'The drawings in lessons now keep their smallest words readable on every screen and at every text size you set: a wide drawing reaches past the column of text, or scrolls sideways, instead of shrinking. Tables in lessons and guides no longer split a short figure such as “3%” across two lines.',
+          hi: 'पाठों के चित्र अब हर स्क्रीन पर और आपके चुने हर अक्षर-आकार पर अपने सबसे छोटे शब्द भी पढ़ने लायक रखते हैं: चौड़ा चित्र छोटा होने की जगह लेख के कॉलम से बाहर तक फैलता है, या बग़ल में स्क्रॉल होता है। पाठों और गाइड की तालिकाएँ अब “3%” जैसे छोटे आँकड़े को दो पंक्तियों में नहीं तोड़तीं।',
+          es: 'Los dibujos de las lecciones mantienen ahora legibles hasta sus palabras más pequeñas en cualquier pantalla y con cualquier tamaño de texto que elijas: un dibujo ancho se extiende más allá de la columna de texto, o se desplaza de lado, en lugar de encogerse. Las tablas de lecciones y guías ya no parten una cifra corta como «3\u00a0%» en dos líneas.',
+          cs: 'Obrázky v\u00a0lekcích teď mají i\u00a0nejmenší slova čitelná na každé obrazovce a\u00a0při každé velikosti písma, kterou si nastavíte: široký obrázek se místo zmenšení roztáhne za sloupec textu, nebo se posouvá do strany. Tabulky v\u00a0lekcích a\u00a0návodech už nerozdělí krátké číslo jako „3\u00a0%“ na dva řádky.',
+          mr: 'धड्यांमधील चित्रे आता प्रत्येक स्क्रीनवर आणि तुम्ही निवडलेल्या प्रत्येक अक्षर-आकारात आपले सर्वात लहान शब्दही वाचता येतील असे ठेवतात: रुंद चित्र लहान होण्याऐवजी मजकुराच्या स्तंभाबाहेर पसरते, किंवा बाजूला स्क्रोल होते. धडे आणि मार्गदर्शिकांमधील तक्ते आता “3%” सारखा लहान आकडा दोन ओळींत तोडत नाहीत.',
+        },
+      },
+      {
+        id: 'cookie-answers-first-large-text',
+        text: {
+          en: 'With very large text on a phone, the cookie question now shows its two answers right after its title, before the explanation, so neither has to be found far down the sheet.',
+          hi: 'फ़ोन पर बहुत बड़े अक्षरों में कुकी वाला सवाल अब अपने शीर्षक के ठीक बाद, समझाने वाले हिस्से से पहले, अपने दोनों जवाब दिखाता है, ताकि किसी को भी नीचे दूर तक ढूँढना न पड़े।',
+          es: 'Con el texto muy grande en un móvil, el aviso de cookies muestra ahora sus dos respuestas justo después del título, antes de la explicación, para que ninguna haya que buscarla muy abajo.',
+          cs: 'Při velmi velkém písmu na telefonu teď cookie lišta ukazuje obě odpovědi hned pod nadpisem, před vysvětlením, takže ani jednu není třeba hledat hluboko dole.',
+          mr: 'फोनवर खूप मोठ्या अक्षरांत कुकी सूचना आता आपल्या शीर्षकानंतर लगेच, स्पष्टीकरणाच्या आधी, दोन्ही उत्तरे दाखवते, त्यामुळे कोणतेही उत्तर खाली दूरवर शोधावे लागत नाही.',
+        },
+      },
+      {
+        id: 'level-colours-easier-to-read',
+        text: {
+          en: 'Level names and numbers are easier to read: Discovery’s teal and Psychology’s amber are darker as text in light mode, Discovery’s is paler in dark mode, and the numbers sit on a plain background instead of a tint. On a topic page with large text on a phone, the “Start here” label no longer covers the first lesson’s title.',
+          hi: 'स्तरों के नाम और नंबर अब पढ़ने में आसान हैं: हल्के मोड में ‘शुरुआत’ का हरा-नीला और ‘मनोविज्ञान’ का पीला-भूरा रंग लिखावट में गहरा है, गहरे मोड में ‘शुरुआत’ का रंग हल्का है, और नंबर रंगीन परत की जगह सादी पृष्ठभूमि पर हैं। फ़ोन पर बड़े अक्षरों में विषय वाले पेज पर “यहाँ से शुरू करें” लेबल अब पहले पाठ का शीर्षक नहीं ढकता।',
+          es: 'Los nombres y números de los niveles se leen mejor: el turquesa de Descubrimiento y el ámbar de Psicología son más oscuros como texto en el modo claro, el de Descubrimiento es más claro en el modo oscuro, y los números están sobre un fondo liso en lugar de uno teñido. En una página de tema con el texto grande en un móvil, la etiqueta «Empieza aquí» ya no tapa el título de la primera lección.',
+          cs: 'Názvy a\u00a0čísla úrovní se čtou snáz: tyrkysová úrovně Objevování a\u00a0jantarová úrovně Psychologie jsou ve světlém režimu jako text tmavší, tyrkysová Objevování je v\u00a0tmavém režimu světlejší a\u00a0čísla stojí na čistém pozadí místo zabarveného. Na stránce tématu s\u00a0velkým písmem na telefonu už štítek „Začít tady“ nezakrývá název první lekce.',
+          mr: 'पातळ्यांची नावे आणि क्रमांक आता वाचायला सोपे आहेत: फिकट मोडमध्ये ‘ओळख’चा निळसर हिरवा आणि ‘मानसशास्त्र’चा पिवळसर तपकिरी रंग अक्षरांत गडद आहे, गडद मोडमध्ये ‘ओळख’चा रंग फिकट आहे, आणि क्रमांक रंगीत छटेऐवजी साध्या पार्श्वभूमीवर आहेत. फोनवर मोठ्या अक्षरांत विषयाच्या पानावर “इथून सुरुवात करा” लेबल आता पहिल्या धड्याचे शीर्षक झाकत नाही.',
+        },
+      },
+      {
+        id: 'start-card-and-retry-keep-their-place',
+        text: {
+          en: 'On the lessons page, a returning reader’s “Continue where you left off” card now shows the next lesson’s title at once, where it was empty until its script loaded, and a reader of Inclusive Finances lessons alone is no longer shown it. If confirming or ending a subscription fails, the button now keeps keyboard focus, so you can try again from where you are.',
+          hi: 'पाठों वाले पेज पर लौटकर आने वाले पाठक का “जहाँ छोड़ा था वहीं से” कार्ड अब अगले पाठ का शीर्षक तुरंत दिखाता है; पहले वह अपनी स्क्रिप्ट लोड होने तक ख़ाली रहता था। सिर्फ़ ‘सबके लिए वित्त’ के पाठ पढ़ने वाले को अब यह कार्ड नहीं दिखता। सदस्यता की पुष्टि करना या उसे ख़त्म करना विफल हो, तो बटन अब कीबोर्ड फ़ोकस नहीं खोता, ताकि आप वहीं से फिर कोशिश कर सकें।',
+          es: 'En la página de lecciones, la tarjeta «Sigue donde lo dejaste» de quien vuelve muestra ahora enseguida el título de la siguiente lección, cuando antes estaba vacía hasta que cargaba su script, y ya no se muestra a quien solo ha leído lecciones de Finanzas inclusivas. Si falla la confirmación o la baja de una suscripción, el botón conserva ahora el foco del teclado, para que puedas volver a intentarlo desde donde estás.',
+          cs: 'Na stránce lekcí teď karta „Pokračujte, kde jste skončili“ vracejícímu se čtenáři hned ukazuje název další lekce, dřív byla prázdná, dokud se nenačetl její skript, a\u00a0čtenáři jen lekcí Inkluzivní finance se už neukazuje. Když se nepodaří potvrdit nebo zrušit odběr, tlačítko teď podrží fokus klávesnice, takže to můžete zkusit znovu tam, kde jste.',
+          mr: 'धड्यांच्या पानावर परत आलेल्या वाचकाचे “जिथे थांबलात तिथून पुढे” कार्ड आता पुढच्या धड्याचे शीर्षक लगेच दाखवते; आधी त्याची स्क्रिप्ट लोड होईपर्यंत ते रिकामे राहत असे. फक्त ‘सर्वसमावेशक वित्त’चे धडे वाचणाऱ्याला आता हे कार्ड दिसत नाही. सदस्यत्वाची पुष्टी करणे किंवा ते बंद करणे अयशस्वी झाले, तर बटण आता कीबोर्डचा फोकस गमावत नाही, त्यामुळे तुम्ही तिथूनच पुन्हा प्रयत्न करू शकता.',
+        },
+      },
+      {
         id: 'loan-link-carries-a-check',
         text: {
           en: 'A link to a loan comparison now carries a check. If a link you open is incomplete or has changed on the way, the tool says so and offers a new comparison, where it used to fill the gaps with example figures and show a full result. Links copied before today open as they always did, so a damaged one of those cannot always be caught.',

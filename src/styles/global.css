@@ -1962,7 +1962,9 @@ body[data-page="landing"] .site-footer {
   .disclaimer,
   .faq-item p,
   .faq-item summary,
-  .privacy-container p,
+  /* Not the page's two meta lines (#770): the changelog's eyebrow and the
+     "last updated" line keep their small print on a phone. */
+  .privacy-container p:not(.eyebrow, .privacy-updated),
   .privacy-container li,
   .privacy-intro,
   .changelog-intro,
