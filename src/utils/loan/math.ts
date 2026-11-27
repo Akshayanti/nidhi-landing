@@ -304,6 +304,21 @@ export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Us
  */
 export const LUMP_MONTH = 'A lump sum needs a whole month from 1 to 1200, written as month:amount. Correct it, or clear the box.';
 
+/**
+ * The message for a fixed period that is not a whole number of months from 1
+ * up. Half a month used to be counted as one and 60.4 as 60, without a word
+ * (#914). Only the page's phrase list reads this sentence; the reader sees
+ * the catalog's. Written, like the ones above, to be filed under "other".
+ */
+export const INITIAL_FIXED_MONTHS = 'Initial fixed period must be a whole number of months, from 1 up.';
+
+/**
+ * A note, not an error: the fixed period is as long as the term or longer, so
+ * every payment is made at the first rate and the later rate the reader typed
+ * changes nothing (#914). The loan is worked out as a fixed one, and says so.
+ */
+export const RATE_NEVER_CHANGES = 'The rate does not change within this term, so the subsequent rate is not used.';
+
 export function computeScheduledPaymentMinor(
   principalMinor: number,
   annualRate: number,
@@ -671,14 +686,11 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       return emptyResult(feeMinor, 'Enter a non-negative interest rate.');
     }
   }
-  if (rateSpec.kind === 'hybrid') {
-    if (
-      !Number.isFinite(rateSpec.initialMonths) ||
-      rateSpec.initialMonths <= 0 ||
-      rateSpec.initialMonths >= MAX_TERM_MONTHS
-    ) {
-      return emptyResult(feeMinor, 'Initial fixed period must be a positive number of months.');
-    }
+  // The month of the change is a whole one, from the first. No upper limit:
+  // a period longer than any term is one that outlasts this term, and the
+  // loan is then worked out at its first rate, with a note (#914).
+  if (rateSpec.kind === 'hybrid' && (!Number.isInteger(rateSpec.initialMonths) || rateSpec.initialMonths < 1)) {
+    return emptyResult(feeMinor, INITIAL_FIXED_MONTHS);
   }
 
   // Keeping the payment only means something when a payment is made at a
@@ -843,6 +855,9 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       else paymentMinor = recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
     }
     rateChange = { month, paymentMinor, ...(row && schedule.length === month ? { last: true } : {}) };
+  } else if (rateSpec.kind === 'hybrid') {
+    // A fixed period that lasts the whole term: the later rate is never charged.
+    warnings.push(RATE_NEVER_CHANGES);
   }
 
   return {

@@ -836,6 +836,40 @@ describe('the offer card: the optional boxes', () => {
     assert.ok(rows(card).length > 0);
   });
 
+  it('marks the month of the change, and no other box, when it is part of a month: 60.4 used to be worked out as 60 (issue 914)', () => {
+    for (const initialFixedMonths of ['6.4', '0.5', '0.4']) {
+      const { card, unmount } = show(loan({ ...HYBRID, initialFixedMonths }));
+      assert.equal(errorOf(card)?.textContent, 'Error: The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.', initialFixedMonths);
+      assert.deepEqual(wiring(card, box(card, LABELS.initialFixed)), MARKED, initialFixedMonths);
+      for (const label of [LABELS.subsequentRate, LABELS.principal, LABELS.rate, LABELS.term, `${c.fee} (EUR)`]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, `${label} with ${initialFixedMonths}`);
+      assert.deepEqual(rows(card), [], initialFixedMonths);
+      assert.deepEqual(openFolds(card), [c.rateStructure.title], initialFixedMonths);
+      unmount();
+    }
+    // With the amount missing as well, it is still this box that is said and marked.
+    const { card } = show(loan({ ...HYBRID, initialFixedMonths: '6.4', principal: '' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.initialFixed}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.initialFixed)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
+  });
+
+  it('works out a fixed period as long as the term, or far longer, as a fixed rate, and says the later rate is not used (issue 914)', () => {
+    for (const initialFixedMonths of ['12', '13', '1200', '5000']) {
+      const { card, unmount } = show(loan({ ...HYBRID, initialFixedMonths }));
+      assert.equal(errorOf(card), null, initialFixedMonths);
+      const notes = [...card.querySelectorAll('.lc-warning')];
+      assert.deepEqual(notes.map((n) => n.textContent), ['The rate does not change within this term, so the subsequent rate is not used.'], initialFixedMonths);
+      assert.deepEqual(notes.map((n) => n.getAttribute('role')), ['status']);
+      for (const label of [LABELS.initialFixed, LABELS.subsequentRate, LABELS.term]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, label);
+      // 1,200 at 0% over 12 months: the fixed loan's rows.
+      assert.deepEqual(rows(card).map((row) => row.label), rows(show(loan()).card).map((row) => row.label), initialFixedMonths);
+      unmount();
+      cleanup();
+    }
+    // One month short of the term: a payment is made at the later rate, and there is nothing to note.
+    assert.ok(show(loan({ ...HYBRID, initialFixedMonths: '11' })).card.querySelector('.lc-warning') === null);
+  });
+
   it('hands back each box as a plain number under its own field, however the page writes numbers', () => {
     const { card } = show(loan(HYBRID), { locale: 'es' });
     for (const field of OPTIONAL) {
@@ -920,6 +954,15 @@ describe('the offer card: a rate that changes', () => {
     for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(noPayment.card, box(noPayment.card, label)), MARKED, label);
 
     cleanup();
+    // Whatever the two boxes, which are not on the page, still hold, and however small the payment: the message is the same (issue 914).
+    // 1,200 at 12% is 12 of interest in the first month, so a payment of 5 never pays it off.
+    for (const hidden of [{ initialFixedMonths: '0.5' }, { initialFixedMonths: 'five', subsequentRatePct: 'abc' }, { initialFixedMonths: '5000' }]) {
+      const low = show(loan({ ...HYBRID, ...hidden, annualRatePct: '12', modeKind: 'payment', monthlyPayment: '5' }));
+      assert.equal(errorOf(low.card)?.textContent, `Error: ${s.engine.errors.hybridMode}`, JSON.stringify(hidden));
+      for (const label of [LABELS.principal, LABELS.rate, LABELS.monthly]) assert.deepEqual(wiring(low.card, box(low.card, label)), UNMARKED, label);
+      cleanup();
+    }
+
     // The reason is there before the choice is ever made.
     const fixed = show(loan({ modeKind: 'payment', monthlyPayment: '100' }));
     assert.ok(choice(fixed.card, c.hybrid).disabled);

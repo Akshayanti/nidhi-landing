@@ -3,11 +3,11 @@
  * Extracted from the component so it's testable without React or a DOM.
  */
 import {
+  INITIAL_FIXED_MONTHS,
   LUMP_MONTH,
   OPTIONAL_UNREADABLE,
   computeLoan,
   emptyResult,
-  rateChangeNeedsTerm,
   toMinor,
   type LoanResult,
   type LoanInputs,
@@ -91,19 +91,34 @@ export type RateChangeField = 'initialFixedMonths' | 'subsequentRatePct';
 
 /**
  * The boxes of a changing rate that are left out: an empty later rate, and a
- * month of the change that is empty or rounds to zero. Both are on the page
+ * month of the change that is empty or zero. Both are on the page
  * only for a loan with a term and a rate that changes, and both are needed
  * there. Without either, the offer used to be worked out at its starting
  * rate for the whole term, with no word of it, and could be named the lowest
  * total because a box was empty (#818). A box that holds something
- * unreadable is not listed here: `unreadableOptionalFields` has it.
+ * unreadable is not listed here: `unreadableOptionalFields` has it, and a
+ * month that is part of one ("0.4", "60.5") is `fixedPeriodFault`'s.
  */
 export function missingRateChangeFields(v: VendorInput): RateChangeField[] {
   if (v.rateKind !== 'hybrid' || v.modeKind !== 'term') return [];
   const out: RateChangeField[] = [];
-  if (v.initialFixedMonths.trim() === '' || Math.round(parseNumber(v.initialFixedMonths)) === 0) out.push('initialFixedMonths');
+  if (v.initialFixedMonths.trim() === '' || parseNumber(v.initialFixedMonths) === 0) out.push('initialFixedMonths');
   if (v.subsequentRatePct.trim() === '') out.push('subsequentRatePct');
   return out;
+}
+
+/**
+ * Whether the month of the rate change is part of a month: "60.4", "0.5".
+ * These used to be rounded without a word, so half a month was worked out as
+ * one and 60.4 as 60 (#914). It is an error on that box, said in its own
+ * words. Zero and an empty box are "left out" (`missingRateChangeFields`),
+ * and a negative or unreadable one is `unreadableOptionalFields`'s.
+ */
+export function fixedPeriodFault(v: VendorInput): boolean {
+  if (v.rateKind !== 'hybrid' || v.modeKind !== 'term') return false;
+  const months = parseNumber(v.initialFixedMonths);
+  // Stryker disable next-line EqualityOperator: equivalent. Zero is a whole number, so `>= 0` answers the same for it.
+  return months > 0 && !Number.isInteger(months);
 }
 
 /**
@@ -159,7 +174,8 @@ export function buildAdvancedFields(
   const out: ReturnType<typeof buildAdvancedFields> = {};
 
   if (v.rateKind === 'hybrid') {
-    const initialMonths = Math.round(parseNumber(v.initialFixedMonths));
+    // As typed: part of a month is the engine's to refuse, never rounded here (#914).
+    const initialMonths = parseNumber(v.initialFixedMonths);
     const subsequent = parseNumber(v.subsequentRatePct) / 100;
     if (Number.isFinite(initialMonths) && initialMonths > 0 && Number.isFinite(subsequent)) {
       out.rateSpec = {
@@ -210,15 +226,21 @@ export function computeFromInput(v: VendorInput, currency: string): LoanResult {
   const unreadable = unreadableOptionalFields(v);
   if (unreadable.length > 0) return emptyResult(0, unreadable.length === 1 && lumpMonthFault(v) ? LUMP_MONTH : OPTIONAL_UNREADABLE);
   if (missingRateChangeFields(v).length > 0) return emptyResult(0, RATE_CHANGE_INCOMPLETE);
+  if (fixedPeriodFault(v)) return emptyResult(0, INITIAL_FIXED_MONTHS);
   if (pointsCostAboveFee(v)) return emptyResult(0, POINTS_ABOVE_FEE);
   const { inputs, mode } = loanFromInput(v, currency);
-  const result = computeLoan(inputs, mode);
-  // A changing rate on a loan set by its payment: the two boxes are not on
-  // the page, so with them empty the engine was handed a fixed rate and the
-  // offer was worked out as one, while its rate choice still said it changes.
-  // With them filled the engine already refuses; this says the same (#818).
-  if (v.rateKind === 'hybrid' && v.modeKind === 'payment' && !result.error) return rateChangeNeedsTerm(result.feeMinor);
-  return result;
+  // A changing rate on a loan set by its payment has no term to change the
+  // rate in, and that is what the offer says: whatever its two boxes, which
+  // are not on the page, still hold, and whatever the payment would come to
+  // (one too small to pay the loan off used to say that first, #914). The
+  // engine is handed a changing rate of its own making, so it checks the
+  // amount, the rate and the payment, says what is wrong with those, and
+  // otherwise refuses for the term before it works anything out (#818).
+  if (v.rateKind === 'hybrid' && v.modeKind === 'payment') {
+    const rateSpec: RateSpec = { kind: 'hybrid', initialAnnualRate: inputs.annualRate, initialMonths: 1, subsequentAnnualRate: inputs.annualRate };
+    return computeLoan({ ...inputs, rateSpec }, mode);
+  }
+  return computeLoan(inputs, mode);
 }
 
 /**

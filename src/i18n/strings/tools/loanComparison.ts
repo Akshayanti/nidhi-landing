@@ -710,7 +710,8 @@ export const loanComparisonEn = {
         /** A term was typed, not a payment: the message names the boxes this reader filled in. */
         interestOnly: 'With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.',
         rate: 'Enter a non-negative interest rate.',
-        initialFixed: 'Initial fixed period must be a positive number of months.',
+        /** A month of the rate change that is not a whole one from 1 up. Names the box and the other choice by their labels; never quotes what was typed. */
+        initialFixed: 'The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.',
         termMin: 'Enter a term of at least one month.',
         termMax: 'Term cannot exceed {months} months.',
         paymentEnter: 'Enter a monthly payment greater than zero.',
@@ -736,6 +737,8 @@ export const loanComparisonEn = {
           'Internal precision check: principal sum {sum} ≠ {expected}. Please report this.',
         subsequentRate:
           'After the initial fixed period, the subsequent rate is so high that the recast payment barely covers interest.',
+        /** A note, not a fault: the fixed period is as long as the term or longer, so the loan is worked out at one rate. */
+        rateNeverChanges: 'The rate does not change within this term, so the subsequent rate is not used.',
       },
     },
   },
@@ -1363,7 +1366,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         tooSmall: 'इस अवधि के लिए लोन बहुत छोटा है। बड़ी राशि या छोटी अवधि भरें।',
         interestOnly: 'इस राशि, ब्याज दर और अवधि पर मासिक किस्त सिर्फ़ ब्याज भर पाती है, इसलिए लोन कभी नहीं चुकता। कम ब्याज दर, छोटी अवधि या बड़ी राशि भरें।',
         rate: 'ब्याज दर शून्य या उससे ज़्यादा भरें।',
-        initialFixed: 'शुरुआत की तय अवधि शून्य से ज़्यादा महीनों की होनी चाहिए।',
+        initialFixed: 'शुरुआत की तय अवधि पूरे महीनों में होती है, 1 महीने या उससे ज़्यादा। इसे ठीक करें, या “दर का ढाँचा” में “तय” चुनें।',
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
@@ -1386,6 +1389,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
+        rateNeverChanges: 'इस अवधि के भीतर दर नहीं बदलती, इसलिए बाद की दर इस्तेमाल नहीं होती।',
       },
     },
   },
@@ -2005,7 +2009,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         tooSmall: 'El préstamo es demasiado pequeño para este plazo. Escribe una cantidad mayor o un plazo más corto.',
         interestOnly: 'Con esta cantidad, esta tasa y este plazo, la cuota mensual solo cubre los intereses, así que el préstamo nunca se liquida. Escribe una tasa más baja, un plazo más corto o una cantidad mayor.',
         rate: 'Escribe una tasa de interés que no sea negativa.',
-        initialFixed: 'El periodo fijo inicial debe ser un número positivo de meses.',
+        initialFixed: 'El periodo fijo inicial es un número entero de meses, de 1 en adelante. Corrígelo, o elige «Fija» en «Estructura de la tasa».',
         termMin: 'Escribe un plazo de al menos un mes.',
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
@@ -2029,6 +2033,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avisa del error, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
+        rateNeverChanges: 'La tasa no cambia dentro de este plazo, así que la tasa posterior no se usa.',
       },
     },
   },
@@ -2647,7 +2652,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         tooSmall: 'Úvěr je na tuto dobu splatnosti příliš malý. Zadejte vyšší částku nebo kratší dobu splatnosti.',
         interestOnly: 'Při této částce, sazbě a\u00a0době splatnosti pokryje měsíční splátka jen úrok, takže se úvěr nikdy nesplatí. Zadejte nižší sazbu, kratší dobu splatnosti nebo vyšší částku.',
         rate: 'Zadejte nezápornou úrokovou sazbu.',
-        initialFixed: 'Počáteční období fixace musí být kladný počet měsíců.',
+        initialFixed: 'Počáteční období fixace je celý počet měsíců, od 1 výše. Opravte ho, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
         termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
         termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
         paymentEnter: 'Zadejte měsíční splátku větší než nula.',
@@ -2670,6 +2675,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste to prosím.',
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
+        rateNeverChanges: 'Sazba se během této doby splatnosti nezmění, takže se následná sazba nepoužije.',
       },
     },
   },
@@ -3261,7 +3267,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         tooSmall: 'या मुदतीसाठी कर्ज फार लहान आहे. मोठी रक्कम किंवा कमी मुदत भरा.',
         interestOnly: 'या रकमेवर, व्याजदरावर आणि मुदतीवर मासिक हप्त्यात फक्त व्याज भागते, त्यामुळे कर्ज कधीच फिटत नाही. कमी व्याजदर, कमी मुदत किंवा मोठी रक्कम भरा.',
         rate: 'उणे नसलेला व्याजदर भरा.',
-        initialFixed: 'सुरुवातीचा ठरावीक कालावधी शून्यापेक्षा जास्त महिन्यांचा असायला हवा.',
+        initialFixed: 'सुरुवातीचा ठरावीक कालावधी पूर्ण महिन्यांचा असतो, 1 महिना किंवा त्याहून जास्त. तो दुरुस्त करा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
         termMin: 'किमान एक महिन्याची मुदत भरा.',
         termMax: 'मुदत {months} महिन्यांपेक्षा जास्त असू शकत नाही.',
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
@@ -3282,6 +3288,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       warnings: {
         precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे कळवा.',
         subsequentRate: 'सुरुवातीच्या ठरावीक कालावधीनंतरचा दर इतका जास्त आहे की पुनर्गणना केलेल्या हप्त्यात व्याजही कसेबसे भागते.',
+        rateNeverChanges: 'या मुदतीत दर बदलत नाही, त्यामुळे नंतरचा दर वापरला जात नाही.',
       },
     },
   },

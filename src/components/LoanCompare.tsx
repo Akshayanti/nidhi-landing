@@ -57,6 +57,7 @@ import {
   OPTIONAL_UNREADABLE,
   parseNumber,
   pointsCostAboveFee,
+  fixedPeriodFault,
   missingRateChangeFields,
   unreadableOptionalFields,
   type OptionalField,
@@ -71,6 +72,7 @@ import type { Dict } from '../i18n/strings/types.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
+import { engineNote } from '../utils/loan/notes.ts';
 import { loanReport } from '../utils/loan/report.ts';
 import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
@@ -199,7 +201,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['loan is too small for this term', 'tooSmall'],
   ['monthly payment only covers the interest', 'interestOnly'],
   ['enter a non-negative interest rate', 'rate'],
-  ['initial fixed period must be a positive number', 'initialFixed'],
+  ['initial fixed period must be a whole number', 'initialFixed'],
   ['enter a term of at least one month', 'termMin'],
   ['term cannot exceed', 'termMax'],
   ['enter a monthly payment greater than zero', 'paymentEnter'],
@@ -248,17 +250,11 @@ export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] |
 }
 
 /**
- * The engine's warnings, addressed the same way. There are two, both rare: one
- * is an internal invariant that should never fire, the other a rate so high the
- * recast payment barely covers interest.
+ * The engine's notes on a result, addressed the same way. The exports carry
+ * the same sentences, so the reading of them is theirs too (`notes.ts`).
  */
 function engineWarning(raw: string, s: Strings): string {
-  if (/precision check/i.test(raw)) {
-    const m = /principal sum (\S+) ≠ (\S+)/.exec(raw);
-    return format(s.engine.warnings.precision, { sum: m?.[1] ?? '', expected: m?.[2] ?? '' });
-  }
-  if (/recast payment barely covers/i.test(raw)) return s.engine.warnings.subsequentRate;
-  return raw;
+  return engineNote(raw, s.engine.warnings);
 }
 
 // -----------------------------------------------------------------------------
@@ -1697,6 +1693,8 @@ function VendorCard({
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
     // So is a box of a changing rate that is left out: both are needed.
     ...missingRateChangeFields(vendor),
+    // And a month of the change that is part of a month (#914).
+    ...(fixedPeriodFault(vendor) ? (['initialFixedMonths'] as const) : []),
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   // Nor for a changing rate on a loan set by its payment: the message says

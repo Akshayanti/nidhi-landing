@@ -275,7 +275,7 @@ const ENGINE_MESSAGES: [raw: string, key: keyof typeof s.engine.errors][] = [
   ['The loan is too small for this term. Enter a larger amount or a shorter term.', 'tooSmall'],
   ['With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.', 'interestOnly'],
   ['Enter a non-negative interest rate.', 'rate'],
-  ['Initial fixed period must be a positive number of months.', 'initialFixed'],
+  ['Initial fixed period must be a whole number of months, from 1 up.', 'initialFixed'],
   ['Enter a term of at least one month.', 'termMin'],
   ['Enter a monthly payment greater than zero.', 'paymentEnter'],
   ['Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.', 'hybridMode'],
@@ -309,6 +309,24 @@ describe('the engine\'s messages, in the reader\'s language', () => {
     assert.ok(s.card.initialFixed.toLowerCase().startsWith('initial fixed period'));
     assert.ok(s.card.subsequentRate.toLowerCase().startsWith('subsequent rate'));
     assert.equal(engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', hi), hi.engine.errors.rateChangeIncomplete);
+  });
+
+  it('says what the month of a rate change has to be, naming its box and the other choice by their labels (issue 914)', () => {
+    // What the engine writes for 60.4 months, which used to be worked out as 60.
+    const raw = computeLoan(
+      { principalMinor: 120_000, annualRate: 0, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 60.4, subsequentAnnualRate: 0.12 } },
+      { kind: 'term', months: 120 },
+    ).error ?? '';
+    const shown = engineError(raw, s);
+    assert.equal(shown, 'The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.');
+    for (const label of ['initial fixed period', `“${s.card.fixed}”`, `“${s.card.rateStructure.title}”`]) assert.ok(shown.includes(label), label);
+    assert.equal(engineErrorKey(raw), 'initialFixed');
+    for (const island of [es, hi]) {
+      assert.equal(engineError(raw, island), island.engine.errors.initialFixed);
+      for (const label of [island.card.fixed, island.card.rateStructure.title]) assert.ok(island.engine.errors.initialFixed.includes(label), label);
+    }
+    // The sentence it replaced is no longer one the engine writes.
+    assert.equal(engineErrorKey('Initial fixed period must be a positive number of months.'), undefined);
   });
 
   it('says how a lump sum is written, in the words of the box: the format as its help names it', () => {
@@ -404,4 +422,5 @@ describe('the engine\'s warnings, in the reader\'s language', () => {
   it('passes a warning it does not know through unchanged', () => {
     assert.equal(engineWarning('Something else to know.', es), 'Something else to know.');
   });
+
 });

@@ -20,11 +20,12 @@ import {
   POINTS_ABOVE_FEE,
   lumpMonthFault,
   RATE_CHANGE_INCOMPLETE,
+  fixedPeriodFault,
   missingRateChangeFields,
   pointsCostAboveFee,
 } from './inputs.ts';
 import { canonicalLumpSums, decodeFromQueryString, makeDefaultVendor, type VendorInput } from './url.ts';
-import { pointsBreakEven } from './math.ts';
+import { INITIAL_FIXED_MONTHS, RATE_NEVER_CHANGES, pointsBreakEven } from './math.ts';
 
 /** Compose a fully-populated VendorInput by spreading the slot-0 default
  *  and overriding the fields we care about. Keeps each test focused. */
@@ -151,14 +152,15 @@ describe('buildAdvancedFields', () => {
       assert.equal(out.rateSpec, undefined);
     });
 
-    it('floors a fractional initialFixedMonths to a whole month', () => {
-      const out = buildAdvancedFields(
-        vendor({ rateKind: 'hybrid', initialFixedMonths: '60.7', subsequentRatePct: '7' }),
-        'USD',
-      );
-      assert.equal(out.rateSpec?.kind, 'hybrid');
-      if (out.rateSpec?.kind === 'hybrid') {
-        assert.equal(out.rateSpec.initialMonths, 61); // Math.round
+    it('hands on a fractional initialFixedMonths as typed, where it used to round it (issue 914)', () => {
+      for (const [typed, months] of [['60.7', 60.7], ['60.4', 60.4], ['0.5', 0.5], ['0.4', 0.4]] as const) {
+        const out = buildAdvancedFields(
+          vendor({ rateKind: 'hybrid', initialFixedMonths: typed, subsequentRatePct: '7' }),
+          'USD',
+        );
+        assert.equal(out.rateSpec?.kind, 'hybrid', typed);
+        // The engine refuses part of a month; rounding here would hide it.
+        if (out.rateSpec?.kind === 'hybrid') assert.equal(out.rateSpec.initialMonths, months, typed);
       }
     });
   });
@@ -802,6 +804,70 @@ describe('either sign of an invalid offer withholds the comparison', () => {
   });
 });
 
+describe('the month of a rate change is a whole month, and one at or past the term is said (issue 914)', () => {
+  // 250,000 at 6.5% over 360 months: 568,861.58 in all at a fixed rate, 683,995.09 with 9% after 60 months.
+  const changing = { principal: '250000', annualRatePct: '6.5', modeKind: 'term' as const, termMonths: '360', rateKind: 'hybrid' as const, initialFixedMonths: '60', subsequentRatePct: '9' };
+
+  it('part of a month is an error with no schedule, where 60.4 used to be worked out as 60 and 0.5 as 1', () => {
+    for (const initialFixedMonths of ['60.4', '60.5', '0.5', '0.4', '359.9', '1 200.5']) {
+      const r = computeFromInput(vendor({ ...changing, initialFixedMonths }), 'EUR');
+      assert.equal(r.error, INITIAL_FIXED_MONTHS, initialFixedMonths);
+      assert.equal(r.schedule.length, 0, initialFixedMonths);
+      assert.equal(r.totalPaidMinor, 0, initialFixedMonths);
+    }
+    assert.equal(INITIAL_FIXED_MONTHS, 'Initial fixed period must be a whole number of months, from 1 up.');
+  });
+
+  it('names that box as the one at fault, and no other kind of offer', () => {
+    assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: '60.4' })), true);
+    assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: '0.5' })), true);
+    assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: '0.4' })), true);
+    // Whole months, however long, are no fault.
+    for (const whole of ['1', '60', '60.0', '360', '1200', '5000']) assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: whole })), false, whole);
+    // Empty, zero and unreadable have their own messages.
+    for (const other of ['', '0', 'five', '-0.5', '-60.4']) assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: other })), false, other);
+    // The box is on the page only for a rate that changes on a loan with a term.
+    assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: '60.4', rateKind: 'fixed' })), false);
+    assert.equal(fixedPeriodFault(vendor({ ...changing, initialFixedMonths: '60.4', modeKind: 'payment', monthlyPayment: '2000' })), false);
+    assert.equal(computeFromInput(vendor({ ...changing, initialFixedMonths: '60.4', rateKind: 'fixed' }), 'EUR').totalPaidMinor, 56_886_158);
+  });
+
+  it('is said after a box that is left out or unreadable, and before a points cost above the fee', () => {
+    assert.equal(computeFromInput(vendor({ ...changing, initialFixedMonths: '60.4', subsequentRatePct: '' }), 'EUR').error, RATE_CHANGE_INCOMPLETE);
+    assert.equal(computeFromInput(vendor({ ...changing, initialFixedMonths: '60.4', feeMajor: '€5' }), 'EUR').error, OPTIONAL_UNREADABLE);
+    assert.equal(computeFromInput(vendor({ ...changing, initialFixedMonths: '60.4', feeMajor: '100', pointsCostMajor: '200' }), 'EUR').error, INITIAL_FIXED_MONTHS);
+    // And before the required boxes: the amount is not what this message is about.
+    assert.equal(computeFromInput(vendor({ ...changing, initialFixedMonths: '60.4', principal: '' }), 'EUR').error, INITIAL_FIXED_MONTHS);
+  });
+
+  it('a fixed period as long as the term, or longer, is worked out at the first rate with a note', () => {
+    for (const initialFixedMonths of ['360', '361', '1199', '1200', '1201', '5000']) {
+      const r = computeFromInput(vendor({ ...changing, initialFixedMonths }), 'EUR');
+      assert.equal(r.error, undefined, initialFixedMonths);
+      assert.equal(r.schedule.length, 360, initialFixedMonths);
+      assert.equal(r.totalPaidMinor, 56_886_158, initialFixedMonths);
+      assert.deepEqual(r.warnings, [RATE_NEVER_CHANGES], initialFixedMonths);
+      assert.equal(r.rateChange, undefined, initialFixedMonths);
+    }
+    assert.equal(RATE_NEVER_CHANGES, 'The rate does not change within this term, so the subsequent rate is not used.');
+  });
+
+  it('a fixed period one month short of the term has a payment at the later rate, and no note', () => {
+    const r = computeFromInput(vendor({ ...changing, initialFixedMonths: '359' }), 'EUR');
+    assert.equal(r.error, undefined);
+    assert.deepEqual(r.warnings, []);
+    assert.equal(r.rateChange?.month, 360);
+    // A fixed rate has no later rate to leave unused.
+    assert.deepEqual(computeFromInput(vendor({ ...changing, rateKind: 'fixed' }), 'EUR').warnings, []);
+  });
+
+  it('the message is filed under "other" by the analytics classifier, and carries the phrase the page finds its translation by', () => {
+    const lower = INITIAL_FIXED_MONTHS.toLowerCase();
+    for (const word of ['principal', 'payment', 'interest', 'rate', 'term', 'range']) assert.ok(!lower.includes(word), word);
+    assert.ok(lower.includes('initial fixed period must be a whole number'), INITIAL_FIXED_MONTHS);
+  });
+});
+
 describe('a rate that changes needs the month of the change and the later rate (issue 818)', () => {
   // The first example offer: 250,000 at 6.5% over 360 months, 568,861.58 in all at a fixed rate.
   const changing = { principal: '250000', annualRatePct: '6.5', modeKind: 'term' as const, termMonths: '360', rateKind: 'hybrid' as const, initialFixedMonths: '60', subsequentRatePct: '9' };
@@ -823,8 +889,8 @@ describe('a rate that changes needs the month of the change and the later rate (
     assert.equal(r.totalPaidMinor, 68_399_509);
   });
 
-  it('a month of the change that is empty, zero or rounds to zero is an error too', () => {
-    for (const initialFixedMonths of ['', '  ', '0', '0.4', '0,0']) {
+  it('a month of the change that is empty or zero is an error too', () => {
+    for (const initialFixedMonths of ['', '  ', '0', '0.0', '0,0']) {
       const r = computeFromInput(vendor({ ...changing, initialFixedMonths }), 'EUR');
       assert.equal(r.error, RATE_CHANGE_INCOMPLETE, JSON.stringify(initialFixedMonths));
       assert.equal(r.schedule.length, 0, JSON.stringify(initialFixedMonths));
@@ -838,11 +904,13 @@ describe('a rate that changes needs the month of the change and the later rate (
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '' })), ['initialFixedMonths']);
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: ' ' })), ['initialFixedMonths']);
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '0' })), ['initialFixedMonths']);
-    assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '0.4' })), ['initialFixedMonths']);
+    assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '0.0' })), ['initialFixedMonths']);
+    // Part of a month is not "left out": it has its own message (issue 914).
+    assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '0.4' })), []);
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '', subsequentRatePct: '' })), ['initialFixedMonths', 'subsequentRatePct']);
   });
 
-  it('half a month rounds to one, and a later rate of zero is a rate: neither is left out', () => {
+  it('half a month is typed, and a later rate of zero is a rate: neither is left out', () => {
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, initialFixedMonths: '0.5' })), []);
     assert.deepEqual(missingRateChangeFields(vendor({ ...changing, subsequentRatePct: '0' })), []);
     // 60 months at 6.5%, then 300 months at 0%.
@@ -908,6 +976,33 @@ describe('a rate that changes needs the month of the change and the later rate (
     it('says what is wrong with a required box first', () => {
       const r = computeFromInput(vendor({ ...byPayment, subsequentRatePct: '', monthlyPayment: '' }), 'EUR');
       assert.equal(r.error, 'Enter a monthly payment greater than zero.');
+      assert.equal(computeFromInput(vendor({ ...byPayment, principal: '' }), 'EUR').error, 'Enter a loan amount greater than zero.');
+      assert.equal(computeFromInput(vendor({ ...byPayment, annualRatePct: 'six' }), 'EUR').error, 'Enter a non-negative interest rate.');
+    });
+
+    it('says it whatever the two boxes, which are not on the page, still hold (issue 914)', () => {
+      // Each of these used to reach the engine as the offer's rate: a fixed
+      // one, or a changing one it refused in other words.
+      for (const initialFixedMonths of ['', '0', '0.5', '60.4', '5000', 'five', '-3']) {
+        for (const subsequentRatePct of ['', '9', 'abc', '-1']) {
+          const r = computeFromInput(vendor({ ...byPayment, initialFixedMonths, subsequentRatePct }), 'EUR');
+          assert.equal(r.error, NEEDS_TERM, JSON.stringify([initialFixedMonths, subsequentRatePct]));
+          assert.equal(r.feeMinor, 50_000);
+        }
+      }
+    });
+
+    it('says it before the payment is worked out: one too small to pay the loan off used to be said first (issue 914)', () => {
+      // 250,000 at 6.5% is 1,354.17 of interest in the first month.
+      for (const monthlyPayment of ['1000', '1354.17', '1355']) {
+        for (const boxes of [{}, { initialFixedMonths: '', subsequentRatePct: '' }]) {
+          const r = computeFromInput(vendor({ ...byPayment, ...boxes, monthlyPayment }), 'EUR');
+          assert.equal(r.error, NEEDS_TERM, monthlyPayment);
+          assert.equal(r.schedule.length, 0);
+        }
+      }
+      // The same payment at a fixed rate is still told it is too small.
+      assert.match(computeFromInput(vendor({ ...byPayment, rateKind: 'fixed', monthlyPayment: '1000' }), 'EUR').error ?? '', /does not even cover/);
     });
 
     it('a fixed rate set by its payment is worked out: 250,000 at 6.5% with 2,000 a month is paid off in 210 months', () => {

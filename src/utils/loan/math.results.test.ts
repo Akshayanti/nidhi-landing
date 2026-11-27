@@ -27,7 +27,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  INITIAL_FIXED_MONTHS,
   OPTIONAL_UNREADABLE,
+  RATE_NEVER_CHANGES,
   computeApr,
   computeLoan,
   emptyResult,
@@ -122,9 +124,16 @@ describe('the limits on a term and on a fixed period', () => {
     assert.equal(over.months, 0);
   });
 
-  it('a fixed period of 1200 months, the whole of the longest term, is refused', () => {
-    const r = computeLoan({ ...FLAT, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 1200, subsequentAnnualRate: 0.12 } }, term(1200));
-    assert.equal(r.error, 'Initial fixed period must be a positive number of months.');
+  it('a fixed period of 1200 months or more is taken, where it used to be refused: the rate never changes, and the result says so (issue 914)', () => {
+    for (const initialMonths of [1200, 1201, 5000]) {
+      const r = computeLoan({ ...FLAT, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths, subsequentAnnualRate: 0.12 } }, term(1200));
+      assert.equal(r.error, undefined, String(initialMonths));
+      assert.equal(r.months, 1200);
+      // 1.00 a month at 0%: nothing is paid at the later rate.
+      assert.equal(r.totalPaidMinor, 120000);
+      assert.deepEqual(r.warnings, [RATE_NEVER_CHANGES]);
+      assert.equal(r.rateChange, undefined);
+    }
   });
 
   it('a fixed period of 1199 months leaves one payment at the new rate', () => {
@@ -134,6 +143,52 @@ describe('the limits on a term and on a fixed period', () => {
     assert.equal(r.months, 1200);
     assert.equal(r.totalPaidMinor, 120001);
     assert.deepEqual(r.rateChange, { month: 1200, paymentMinor: 101, last: true });
+  });
+});
+
+describe('the month a rate changes in is a whole month, from the first (issue 914)', () => {
+  const spec = (initialMonths: number, keeps?: 'payment'): RateSpec => changing(keeps, initialMonths);
+
+  it('part of a month, zero, a negative month and a month that is no number are refused in words of their own', () => {
+    for (const initialMonths of [0.5, 1.5, 60.4, 0, -1, -0.5, NaN, Infinity, -Infinity]) {
+      const r = hand({ rateSpec: spec(initialMonths), feeMinor: 700 });
+      assert.equal(r.error, INITIAL_FIXED_MONTHS, String(initialMonths));
+      assert.deepEqual(r.schedule, []);
+      assert.equal(r.feeMinor, 700);
+    }
+    assert.equal(INITIAL_FIXED_MONTHS, 'Initial fixed period must be a whole number of months, from 1 up.');
+  });
+
+  it('the first month is taken: the payment is worked out again from month 2, as in the header', () => {
+    const r = hand({ rateSpec: spec(1) });
+    assert.equal(r.error, undefined);
+    assert.deepEqual(r.warnings, []);
+    assert.deepEqual(r.rateChange, { month: 2, paymentMinor: 34507 });
+  });
+
+  it('a change one month before the end leaves a payment at the later rate, and no note', () => {
+    const r = hand({ rateSpec: spec(2) });
+    assert.deepEqual(r.warnings, []);
+    assert.equal(r.rateChange?.month, 3);
+  });
+
+  it('a change in the last month of the term or after it never comes: the loan is the fixed one, with a note', () => {
+    for (const initialMonths of [3, 4, 1200, 1201]) {
+      for (const keeps of [undefined, 'payment'] as const) {
+        const r = hand({ rateSpec: spec(initialMonths, keeps) });
+        assert.equal(r.error, undefined);
+        assert.deepEqual(r.schedule, HAND_ROWS, String(initialMonths));
+        assert.equal(r.totalPaidMinor, 102007);
+        assert.deepEqual(r.warnings, [RATE_NEVER_CHANGES], String(initialMonths));
+        assert.equal(r.rateChange, undefined);
+        assert.equal(r.keptPayment, undefined);
+      }
+    }
+    assert.equal(RATE_NEVER_CHANGES, 'The rate does not change within this term, so the subsequent rate is not used.');
+  });
+
+  it('a fixed rate has no later rate, so no note', () => {
+    assert.deepEqual(hand().warnings, []);
   });
 });
 
