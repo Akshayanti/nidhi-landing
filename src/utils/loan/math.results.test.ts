@@ -266,6 +266,25 @@ describe('a lump sum dated after the loan is paid off is said, not dropped in si
     assert.deepEqual(r.warnings, [RATE_NEVER_CHANGES, 'The lump sum in month 9 comes after this loan is paid off in month 3, so it is not used.']);
   });
 
+  it('charges no month the later rate when the fixed period covers the term, even a month past the term (issue 925)', () => {
+    // 1,000,000.00 at 50% a year over 360 months: the rounding of the payment
+    // leaves more than one payment owed at the term, so the loan runs to month 368.
+    const loan = { principalMinor: 100_000_000, annualRate: 0.5, feeMinor: 0 };
+    const fixed = computeLoan(loan, { kind: 'term', months: 360 });
+    assert.equal(fixed.months, 368);
+    for (const extra of [{}, { extraMonthlyMinor: 100 }]) {
+      const plain = computeLoan({ ...loan, ...extra }, { kind: 'term', months: 360 });
+      const whole = computeLoan(
+        { ...loan, ...extra, rateSpec: { kind: 'hybrid', initialAnnualRate: 0.5, subsequentAnnualRate: 0, initialMonths: 360, keeps: 'term' } },
+        { kind: 'term', months: 360 },
+      );
+      assert.deepEqual(whole.schedule, plain.schedule);
+      assert.equal(whole.totalPaidMinor, plain.totalPaidMinor);
+      assert.equal(whole.aprNominal, plain.aprNominal);
+      assert.deepEqual(whole.warnings, [RATE_NEVER_CHANGES]);
+    }
+  });
+
   it('a loan that is not paid off has no payoff to come after: no note', () => {
     // The payment is kept at 340.02 while the rate goes to 1200% a year: the balance grows.
     const r = hand({ rateSpec: changing('payment', 1, 12), lumpSums: [{ month: 1200, amountMinor: 1 }] });
@@ -396,9 +415,10 @@ describe('the payment after a rate change, by hand', () => {
 
   it('a change that falls at the end of the term is no change: keeping the payment means nothing then', () => {
     // 1,000.00 at 10% a month over 84 months: the payment, rounded to the cent, falls behind, and the
-    // loan runs past its term. With a rate change after month 84 and the payment worked out again, the
-    // one month left takes everything owed; at 0% that is the balance itself. Kept, the payment of
-    // 100.03 would go on for another month.
+    // loan runs past its term. A rate change after month 84 never comes: the months past the term are
+    // charged the one rate the loan has, exactly as the fixed loan is (issue 925), whatever was chosen
+    // for the payment.
+    const fixed = computeLoan({ principalMinor: 100000, annualRate: 1.2 }, term(84));
     const r = computeLoan(
       { principalMinor: 100000, annualRate: 1.2, rateSpec: { kind: 'hybrid', initialAnnualRate: 1.2, initialMonths: 84, subsequentAnnualRate: 0, keeps: 'payment' } },
       term(84),
@@ -406,8 +426,9 @@ describe('the payment after a rate change, by hand', () => {
     assert.equal(r.monthlyPaymentMinor, 10003);
     const owedAtTerm = r.schedule[83].balance;
     assert.ok(owedAtTerm > 10003, `the loan must run past its term for this test: ${owedAtTerm}`);
-    assert.equal(r.months, 85);
-    assert.deepEqual(r.schedule[84], row(85, owedAtTerm, 0, owedAtTerm, 0));
+    assert.equal(r.months, 86);
+    assert.ok(r.schedule[84].interest > 0, 'the month after the term is charged the loan\'s own rate, not 0%');
+    assert.deepEqual(r.schedule, fixed.schedule);
     assert.equal(r.keptPayment, undefined);
     assert.equal(r.rateChange, undefined);
   });

@@ -770,12 +770,22 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     totalMonths = MAX_TERM_MONTHS;
   }
 
+  // A fixed period as long as the term is a fixed loan: no month is charged
+  // the later rate, not even a closing month past the term, where the rounding
+  // of a very long loan at a very high rate leaves more than one payment owed
+  // (#925). The note below still says the later rate went unused.
+  const scheduleSpec: RateSpec =
+    // Stryker disable next-line ConditionalExpression: equivalent. A fixed rate has no initial months, so the comparison after it is already false for one.
+    rateSpec.kind === 'hybrid' && rateSpec.initialMonths >= totalMonths
+      ? { kind: 'fixed', annualRate: rateSpec.initialAnnualRate }
+      : rateSpec;
+
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
   const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps } = buildScheduleAdvanced({
     principalMinor,
-    rateSpec,
+    rateSpec: scheduleSpec,
     totalMonths,
     basePaymentMinor: scheduledPayment,
     extraMonthlyMinor,
@@ -815,7 +825,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   const contract = hasVoluntaryActions
     ? buildScheduleAdvanced({
         principalMinor,
-        rateSpec,
+        rateSpec: scheduleSpec,
         totalMonths,
         basePaymentMinor: scheduledPayment,
         extraMonthlyMinor: 0,
