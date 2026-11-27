@@ -137,8 +137,10 @@ export function parseAmount(s: string): number {
  * nothing and are left off, so the smallest unit typed is the last digit kept.
  */
 function typedDigits(s: string): [whole: string, decimals: string] {
-  const [whole, decimals = ''] = s.replace(/[\s,]/g, '').split('.');
-  return [whole, decimals.replace(/0+$/, '')];
+  const cleaned = s.replace(/[\s,]/g, '');
+  const point = cleaned.indexOf('.');
+  if (point === -1) return [cleaned, ''];
+  return [cleaned.slice(0, point), cleaned.slice(point + 1).replace(/0+$/, '')];
 }
 
 /** Powers of ten are exact floats up to this one, so dividing by one rounds once. */

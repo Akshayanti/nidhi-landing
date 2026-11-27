@@ -1109,6 +1109,7 @@ describe('a currency’s rows are added in whole units of the smallest decimal t
     assert.notEqual(0.125 - 0.1, 0.025);
     // Grouping and spaces as the amount box takes them, a point with nothing before or after it.
     assert.equal(net(asset('1,000.50', 'EUR'), asset(' 2 000.25 ', 'EUR')), 3000.75);
+    assert.deepEqual(exact(asset('1,000.50', 'EUR'), asset(' 2 000.25 ', 'EUR')), [undefined], 'added exactly, grouped or not');
     assert.equal(net(asset('.5', 'EUR'), asset('5.', 'EUR'), debt('0.7', 'EUR')), 4.8);
     // A debt larger than what is held is a net amount below zero.
     assert.equal(net(asset('0.1', 'EUR'), debt('0.3', 'EUR')), -0.2);
