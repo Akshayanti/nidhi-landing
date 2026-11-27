@@ -1814,8 +1814,8 @@ function VendorCard({
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          {strings.card.principal}<RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('principal')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.principal}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
         </label>
         <LocaleNumberInput
           id={id('principal')}
@@ -1831,8 +1831,8 @@ function VendorCard({
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('rate')}>
-          {strings.card.rate}<RequiredMark title={strings.card.requiredTitle} />
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('rate')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.rate}</RequiredLabel>
         </label>
         <LocaleNumberInput
           id={id('rate')}
@@ -1848,7 +1848,7 @@ function VendorCard({
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">{strings.card.solveFor}<RequiredMark title={strings.card.requiredTitle} /></legend>
+        <legend className="lc-fieldLabel lc-fieldLabel--required"><RequiredLabel title={strings.card.requiredTitle}>{strings.card.solveFor}</RequiredLabel></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1881,8 +1881,8 @@ function VendorCard({
 
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('term')}>
-            {strings.card.term}<RequiredMark title={strings.card.requiredTitle} />
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('term')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.term}</RequiredLabel>
           </label>
           <LocaleNumberInput
             id={id('term')}
@@ -1898,8 +1898,8 @@ function VendorCard({
         </div>
       ) : (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            {strings.card.monthly}<RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('monthly')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.monthly}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
           </label>
           <LocaleNumberInput
             id={id('monthly')}
@@ -2139,8 +2139,8 @@ function VendorCard({
         {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
           <>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed}<RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('initialFixedMonths')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.initialFixed}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('initialFixedMonths')}
@@ -2156,8 +2156,8 @@ function VendorCard({
               <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
             </div>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate}<RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('subsequentRatePct')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.subsequentRate}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('subsequentRatePct')}
@@ -2338,23 +2338,26 @@ function VendorCard({
 // ---- Form helpers ----------------------------------------------------------
 
 /**
- * What joins the mark to the last word of its label. With a plain space the
- * asterisk went to a line of its own under a long label at large text, away
- * from the label it marks (#917). The mark brings the joiner itself, so a
- * label is written with nothing between its text and the mark.
+ * The text of a required box's label, with its mark. The mark and the last
+ * word of the label are one unit that cannot break: with a space between
+ * them, or a no-break space, the asterisk still went to a line of its own
+ * under a long label at large text, because a label may break anywhere when
+ * a word is wider than its line (#917). Where the unit is wider than the
+ * label's line, the CSS draws it smaller by just enough to fit
+ * (`.lc-requiredPair`), from its length in characters, as an amount is.
+ *
+ * The asterisk is presentational: the real signal is `aria-required` on the
+ * box, so the character is hidden from screen readers.
  */
-const NO_BREAK_SPACE = '\u00a0';
-
-/** A small red asterisk used to mark required fields. The asterisk is
- *  presentational; the real semantic signal is the `aria-required` on
- *  the input itself. We hide the asterisk character from screen readers
- *  via aria-hidden so they don't read "required asterisk". */
-function RequiredMark({ title }: { title: string }) {
+function RequiredLabel({ children, title }: { children: string; title: string }) {
+  const cut = children.lastIndexOf(' ') + 1;
+  const word = children.slice(cut);
   return (
     <>
-      {NO_BREAK_SPACE}
-      <span className="lc-required" aria-hidden="true" title={title}>
-        *
+      {children.slice(0, cut)}
+      <span className="lc-requiredPair" style={{ '--pair-len': word.length + 1 } as React.CSSProperties}>
+        {word}
+        <span className="lc-required" aria-hidden="true" title={title}>*</span>
       </span>
     </>
   );
@@ -3642,7 +3645,7 @@ function RefinanceSection({
 // default export.
 export {
   AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
-  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredMark, ResultRow, SplitChart, VendorCard,
+  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredLabel, ResultRow, SplitChart, VendorCard,
   analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
   noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
 };

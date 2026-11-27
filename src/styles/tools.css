@@ -574,6 +574,27 @@
   font-weight: 700;
   margin-left: 2px;
 }
+/* The mark and the last word of its label: one unit that cannot break, so
+   the asterisk never sits on a line of its own (#917). A label may break
+   anywhere when a word is wider than its line, and a no-break space does not
+   stop that. Where the unit is wider than the label's line it is drawn
+   smaller, by just enough to fit, the way an amount is (.amt): the label's
+   width over the unit's length in characters (set inline) times the width of
+   a character in em. The label itself is the box it is fitted to. */
+.lc-fieldLabel--required {
+  display: block;
+  container-type: inline-size;
+}
+/* A legend is as wide as its words; with its size contained that is nothing. */
+legend.lc-fieldLabel--required {
+  width: 100%;
+  box-sizing: border-box;
+}
+.lc-requiredPair {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: min(1em, calc(100cqi / (var(--pair-len, 1) * var(--pair-k, 0.62))));
+}
 
 /* Field group: a visually-grouped section of optional fields inside a
    vendor card. The title and short hint are always visible (no

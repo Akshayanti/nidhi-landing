@@ -163,13 +163,13 @@ const MARKED = { invalid: 'true', describes: true };
 
 const LABELS = {
   name: c.name,
-  principal: `${c.principal} * (EUR)`,
-  rate: `${c.rate} *`,
-  term: `${c.term} *`,
-  monthly: `${c.monthly} * (EUR)`,
+  principal: `${c.principal}* (EUR)`,
+  rate: `${c.rate}*`,
+  term: `${c.term}*`,
+  monthly: `${c.monthly}* (EUR)`,
   // The two boxes of a rate that changes are required while they are shown.
-  initialFixed: `${c.initialFixed} *`,
-  subsequentRate: `${c.subsequentRate} *`,
+  initialFixed: `${c.initialFixed}*`,
+  subsequentRate: `${c.subsequentRate}*`,
 };
 
 /** The optional boxes: the field each one edits, its label, and whether it shows only for a rate that changes. */
@@ -273,20 +273,28 @@ describe('the offer card: its heading, name and remove button', () => {
 });
 
 describe('the offer card: the required boxes', () => {
-  it('keeps each mark with the last word of its label: a no-break space before it, never a plain one (#917)', () => {
-    /** The text of whatever carries each mark, with the mark in it. */
+  it('keeps each mark in one unit with the last word of its label, on a label that is the box the unit is fitted to (#917)', () => {
+    /** The text of each label that carries a mark, and the unit inside it. */
     const marked = (card: HTMLElement) => [...card.querySelectorAll('.lc-required')].map((mark) => {
-      const before = mark.previousSibling;
-      assert.ok(before !== null && before.nodeType === 3, 'the mark follows text');
-      return `${before.previousSibling?.textContent ?? ''}${before.textContent}${mark.textContent}`;
+      const pair = mark.parentElement as HTMLElement;
+      assert.equal(pair.className, 'lc-requiredPair');
+      const label = pair.parentElement as HTMLElement;
+      assert.equal(label.className, 'lc-fieldLabel lc-fieldLabel--required');
+      const words = (label.firstChild?.nodeType === 3 ? label.firstChild.textContent : '') ?? '';
+      return `${words}[${pair.textContent}]`;
     });
-    const j = '\u00a0';
-    assert.deepEqual(marked(show(loan({ ...HYBRID })).card), [
-      `${c.principal}${j}*`, `${c.rate}${j}*`, `${c.solveFor}${j}*`, `${c.term}${j}*`, `${c.initialFixed}${j}*`, `${c.subsequentRate}${j}*`,
-    ]);
-    assert.deepEqual(marked(show(loan({ modeKind: 'payment', monthlyPayment: '100' })).card), [
-      `${c.principal}${j}*`, `${c.rate}${j}*`, `${c.solveFor}${j}*`, `${c.monthly}${j}*`,
-    ]);
+    /** A label as it is drawn: its last word and the mark in brackets. */
+    const unit = (text: string) => {
+      const cut = text.lastIndexOf(' ') + 1;
+      return `${text.slice(0, cut)}[${text.slice(cut)}*]`;
+    };
+    assert.equal(unit(c.term), 'Term [(months)*]');
+    assert.deepEqual(marked(show(loan({ ...HYBRID })).card), [c.principal, c.rate, c.solveFor, c.term, c.initialFixed, c.subsequentRate].map(unit));
+    assert.deepEqual(marked(show(loan({ modeKind: 'payment', monthlyPayment: '100' })).card), [c.principal, c.rate, c.solveFor, c.monthly].map(unit));
+    // No other label is a box of its own: only the seven that hold a unit.
+    const card = show(loan({ ...HYBRID })).card;
+    assert.equal(card.querySelectorAll('.lc-fieldLabel--required').length, 6);
+    assert.equal(card.querySelectorAll('.lc-requiredPair').length, 6);
   });
 
   it('labels each with its mark and currency, shows the offer as typed, and marks none while the offer is valid', () => {
@@ -384,7 +392,7 @@ describe('the offer card: solving for the payment or for the months', () => {
     assert.equal(monthsChoice.value, 'payment');
     assert.deepEqual([...(payment.closest('label') as Element).classList], ['lc-modeOption', 'lc-modeOptionActive']);
     assert.deepEqual([...(monthsChoice.closest('label') as Element).classList], ['lc-modeOption']);
-    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor}\u00a0*`);
+    assert.equal(payment.closest('fieldset')?.querySelector('legend')?.textContent, `${c.solveFor}*`);
     // One group per question and per card: the arrow keys stay inside it.
     const rateType = choice(card, c.fixed);
     assert.notEqual(payment.name, '');

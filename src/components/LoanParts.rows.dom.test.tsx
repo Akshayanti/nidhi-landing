@@ -1,6 +1,6 @@
 /**
  * The small parts of the loan comparison's cards and results, each mounted on
- * its own: the mark on a required box (`RequiredMark`), a row of optional
+ * its own: the label of a required box (`RequiredLabel`), a row of optional
  * boxes that opens (`FieldGroup`), one row of an offer's results
  * (`ResultRow`), a payment that changes once (`PaymentSteps`) and the tool's
  * one announcement (`LoanAnnouncement`).
@@ -19,7 +19,7 @@ import { dear, neverLess, plain } from '../../test/loanParts.comparedOffers.ts';
 import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { amountLength } from '../utils/shared/amountUnits.ts';
-import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredMark, ResultRow } from './LoanCompare.tsx';
+import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredLabel, ResultRow } from './LoanCompare.tsx';
 import { WITHHELD_SAID_AFTER, type Notice } from './toolShared.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
@@ -39,21 +39,44 @@ const sizedAs = (amount: Element) => (amount as HTMLElement).style.getPropertyVa
 /** The amounts drawn whole inside an element, as text. */
 const amountsIn = (el: Element) => [...el.querySelectorAll('.amt')].map((a) => a.textContent);
 
-describe('the mark on a required box', () => {
-  it('is an asterisk with its meaning as a tooltip, hidden from a screen reader', () => {
-    const { container } = render(<RequiredMark title={s.card.requiredTitle} />);
-    const mark = container.querySelector('.lc-required') as HTMLElement;
+describe('the label of a required box', () => {
+  const shown = (text: string) => render(<label><RequiredLabel title={s.card.requiredTitle}>{text}</RequiredLabel></label>).container;
+
+  it('ends in an asterisk with its meaning as a tooltip, hidden from a screen reader', () => {
+    const mark = shown('Term (months)').querySelector('.lc-required') as HTMLElement;
     assert.equal(mark.textContent, '*');
     assert.equal(mark.getAttribute('title'), 'Required');
     assert.equal(mark.getAttribute('aria-hidden'), 'true');
   });
 
-  it('brings a no-break space in front of it, so it never goes to a line of its own away from its label (#917)', () => {
-    const { container } = render(<label>Initial fixed period (months)<RequiredMark title={s.card.requiredTitle} /></label>);
-    assert.equal(container.textContent, 'Initial fixed period (months)\u00a0*');
-    // The joiner is outside the mark: the asterisk alone is coloured and hidden from a screen reader.
-    assert.equal(container.querySelector('.lc-required')?.textContent, '*');
-    assert.equal(container.querySelector('.lc-required')?.previousSibling?.textContent, '\u00a0');
+  it('makes one unit of the last word and the mark, so the asterisk never goes to a line of its own (#917)', () => {
+    const label = shown('Initial fixed period (months)').querySelector('label') as HTMLElement;
+    assert.equal(label.textContent, 'Initial fixed period (months)*');
+    // The words before the last one are plain text, free to wrap; the space stays with them.
+    assert.equal(label.childNodes.length, 2);
+    assert.equal(label.firstChild?.nodeType, 3);
+    assert.equal(label.firstChild?.textContent, 'Initial fixed period ');
+    const pair = label.querySelector('.lc-requiredPair') as HTMLElement;
+    assert.ok(label.lastChild === pair);
+    assert.equal(pair.textContent, '(months)*');
+    // The mark is the unit's last piece, straight after the word.
+    assert.equal(pair.childNodes.length, 2);
+    assert.equal(pair.firstChild?.textContent, '(months)');
+    assert.ok(pair.lastChild === pair.querySelector('.lc-required'));
+  });
+
+  it('tells the CSS how long the unit is, the mark counted, so it can be drawn to fit its line', () => {
+    const length = (text: string) => (shown(text).querySelector('.lc-requiredPair') as HTMLElement).style.getPropertyValue('--pair-len');
+    assert.equal(length('Initial fixed period (months)'), '9');
+    assert.equal(length('Loan amount'), '7');
+    assert.equal(length('Rate'), '5');
+  });
+
+  it('takes a label of one word whole, with nothing before the unit', () => {
+    const label = shown('Calcular').querySelector('label') as HTMLElement;
+    assert.equal(label.childNodes.length, 1);
+    assert.equal(label.firstElementChild?.className, 'lc-requiredPair');
+    assert.equal(label.textContent, 'Calcular*');
   });
 });
 
