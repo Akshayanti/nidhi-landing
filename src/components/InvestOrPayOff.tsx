@@ -391,8 +391,10 @@ export default function InvestOrPayOff({
     const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
+  // Below zero by the figure as written: a return a hair under inflation is
+  // written "0%", and a figure of 0% is not said to lose buying power (#888).
   const formNote =
-    form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : ownReal < -1e-9 ? 'below' : null) : null;
+    form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : shownNumber(ownReal, 1) < 0 ? 'below' : null) : null;
   const num = (n: number) => n.toLocaleString(numberLocale);
 
   // What the folded taxes and fees hold, in words and never in figures.

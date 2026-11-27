@@ -155,6 +155,17 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     type('ownReturn', '1');
     assert.deepEqual(returnNoteText(), [fill(island.returns.below, { real: pctText(toReal(1, 2)) })]);
     assert.equal(one('.iop-returnNote p').className, 'iop-note');
+    // A return a hair under inflation is written as 0%, and a figure of 0% is not said to lose
+    // buying power (#888): 3% with 3.03% inflation is -0.03% after inflation.
+    type('inflation', '3.03');
+    type('ownReturn', '3');
+    assert.ok(toReal(3, 3.03) < -0.02);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '0%' })]);
+    assert.equal(one('.iop-returnNote p').className, 'ifc-hint');
+    // The first figure written below zero is said as a loss: 3% with 3.11% is -0.1%.
+    type('inflation', '3.11');
+    assert.deepEqual(returnNoteText(), [fill(island.returns.below, { real: `${String.fromCodePoint(0x2212)}0.1%` })]);
+    assert.equal(one('.iop-returnNote p').className, 'iop-note');
     // At the edges, with no inflation: exactly the top of the range, and exactly nothing, are inside it.
     type('inflation', '0');
     type('ownReturn', '6');
