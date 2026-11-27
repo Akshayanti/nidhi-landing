@@ -2312,7 +2312,7 @@ function sendConfirmationEmail_(email, confirmToken) {
 
 /**
  * Fires from handleConfirm_ on a successful opt-in click. Short, warm, sets
- * expectations: one email per new lesson, reply-to works, unsubscribe in every
+ * expectations: one email per new lesson or guide, reply-to works, unsubscribe in every
  * email. Shares the same MIME builder / list-unsubscribe plumbing as the
  * newsletter and confirmation emails.
  */
