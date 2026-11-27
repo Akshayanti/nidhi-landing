@@ -52,13 +52,13 @@ So I sweeten it. Heads you still lose 100, but tails you now win 150. Better tha
 
 I have to get the win up to around 200 euros, twice the possible loss, before the average person will shrug and flip the coin. Read that back: the prospect of losing 100 has to be matched by the prospect of winning 200 just to reach "maybe."
 
-That ratio is a useful number to carry through this series. In many studies, losses hurt roughly twice as much as equivalent gains feel good, though the size varies by person, stakes and context. Most of this post falls out of it.
+That ratio is a useful number to carry through this series. In many studies, losses hurt roughly twice as much as equivalent gains feel good, though the size varies by person, stakes and context. Most of this lesson falls out of it.
 
 ## The asymmetry, and where it came from
 
 Daniel Kahneman and Amos Tversky measured this carefully and called it loss aversion. In their studies, the pain of losing a given amount was roughly double the pleasure of gaining the same amount. It is not a quirk of a few nervous people. Versions of it show up across many cultures and in real markets, though researchers still debate how large it is for small, everyday amounts.
 
-And like most of the instincts in [the opening post of this series](/blog/why-smart-people-make-dumb-money-decisions/), it made perfect sense for the brain that evolved it. For an ancestor living close to the edge, a loss could mean not eating, while a gain was merely a good day. A mind that treated those two outcomes as equal would have been gambling with its life. Fearing loss more than you crave gain was excellent survival policy.
+And like most of the instincts in [the opening lesson of this series](/blog/why-smart-people-make-dumb-money-decisions/), it made perfect sense for the brain that evolved it. For an ancestor living close to the edge, a loss could mean not eating, while a gain was merely a good day. A mind that treated those two outcomes as equal would have been gambling with its life. Fearing loss more than you crave gain was excellent survival policy.
 
 It is terrible portfolio policy.
 
@@ -70,7 +70,7 @@ Picture two people, each with 10,000 euros invested. The market falls 20%. On pa
 
 The first person feels the 2,000 as something close to physical pain, doubled by loss aversion, and the urge to make it stop is overwhelming. So they sell. The pain stops, briefly. Broad markets have usually recovered, sometimes within months and sometimes over many years, though not every market has (Japan's took decades). When it does, they are sitting in cash watching it climb back without them. They have converted a temporary paper loss into a permanent real one.
 
-The second person feels the same pain but has arranged their life so the feeling cannot reach the sell button. We will come to how.
+The second person feels the same pain but has arranged their life so the feeling cannot reach the sell button. The rest of this lesson shows how.
 
 This is not a story about courage. Both people feel identical fear. The difference is entirely in the structure around the feeling.
 
@@ -100,7 +100,7 @@ It may never get back to even. Meanwhile you have sold your winner, which often 
   <text class="fig-sublabel" x="460" y="170" text-anchor="middle">hurts</text>
   <text class="fig-quote-small" x="360" y="344" text-anchor="middle">Roughly a 2-to-1 ratio. The fear of the lower bar drives most panic-selling.</text>
 </svg>
-<figcaption>In many studies, the pain of a loss is about twice the pleasure of an equal gain, though the ratio varies from person to person. That asymmetry, not bad math, is what pushes people to sell at the bottom and cling to their mistakes.</figcaption>
+<figcaption>In many studies, the pain of a loss is about twice the pleasure of an equal gain, though the ratio varies from person to person. That asymmetry, not bad maths, is what pushes people to sell at the bottom and cling to their mistakes.</figcaption>
 </figure>
 
 ## Why looking more often makes it worse
@@ -115,7 +115,7 @@ This is why looking less often is such a cheap change for a long-term investor.
 
 ## You cannot delete the feeling. You can defuse the moment.
 
-Notice what does not appear anywhere in this post: the advice to "stay calm" or "be disciplined." That advice fails, because loss aversion is a System 1 reaction that arrives before discipline does. Telling a frightened person to feel less fear is not a strategy.
+Notice what does not appear anywhere in this lesson: the advice to "stay calm" or "be disciplined." That advice fails, because loss aversion is a System 1 reaction that arrives before discipline does. Telling a frightened person to feel less fear is not a strategy.
 
 What works is removing the moments where the fear can do damage:
 
@@ -131,4 +131,4 @@ What works is removing the moments where the fear can do damage:
 - **Automate so the plan survives your moods.** Set contributions to happen on their own, so the scary months get invested in exactly like the calm ones.
 - **Name the disposition effect when you feel it.** If you are tempted to sell a winner while clinging to a loser "until it recovers," that is loss aversion choosing for you. A question many people find more useful is which investment they would buy today, not which one would let them avoid admitting a mistake.
 
-Loss aversion is about money that is genuinely yours, gained or lost. The next bias is subtler: it is about how your brain secretly files money into different mental folders and treats each one by different rules, even though every euro is identical. That is mental accounting, and it is where we go next.
+Loss aversion is about money that is genuinely yours, gained or lost. The next bias is subtler: it is about how your brain secretly files money into different mental folders and treats each one by different rules, even though every euro is identical. That is mental accounting, and it is the subject of the next lesson.

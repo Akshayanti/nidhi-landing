@@ -41,7 +41,7 @@ faq:
     answer: "Cash feels safe because its number does not fall, but when it earns less than inflation, an all-cash position erodes in real terms. The opposite extreme, holding everything in stocks, exposes you to volatility that can hurt when you need the money. That is why many people hold a mix: cash and liquid savings for emergencies and short-term needs, and growth assets like index funds for money they will not need for years. The right balance depends on your timeline and how much fluctuation you can tolerate."
 ---
 
-Your [net worth](/blog/what-is-net-worth/) is the gap between what you own and what you owe. We [calculated that number](/blog/how-to-calculate-net-worth/) in the previous post. Now let's look at the first side of that equation: assets.
+Your [net worth](/blog/what-is-net-worth/) is the gap between what you own and what you owe. The previous lesson [calculated that number](/blog/how-to-calculate-net-worth/). This one looks at the first side of that equation: assets.
 
 ## What counts as an asset
 
@@ -73,7 +73,7 @@ Two people with €100,000 in assets are not necessarily in the same position. W
 
 **Liquidity**: how quickly can you convert the asset to cash without losing value? A savings account is fully liquid. A house is not. You can't pay for an emergency with your front door.
 
-**Direction**: does the asset tend to grow in value (appreciate) or shrink (depreciate) over time? We'll dig into this in the next post, but the short version: index funds tend to appreciate. Cars depreciate. Fast.
+**Direction**: does the asset tend to grow in value (appreciate) or shrink (depreciate) over time? The next lesson goes into this, but the short version: index funds tend to appreciate. Cars depreciate. Fast.
 
 **Stability**: how predictable is the asset's value? Cash is stable. Stocks fluctuate. Cryptocurrency can swing wildly.
 
@@ -100,4 +100,4 @@ When you look at your assets, ask yourself:
 2. **What is each one doing?** Cash in a low-yield account is stable and accessible but grows slowly; investments can grow more but move around. Knowing which job each asset does is the point
 3. **How is the mix balanced?** All cash tends to erode slowly with inflation. All stocks means volatility that can be hard to live with. Many people hold some of each; the right blend depends on your timeline, income stability and how much fluctuation you can tolerate
 
-Understanding what you own and how well it's actually performing is half the net worth equation. The other half is what you owe, which we'll cover next.
+Understanding what you own and how well it's actually performing is half the net worth equation. The other half is what you owe, which the next lesson covers.

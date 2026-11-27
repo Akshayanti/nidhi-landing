@@ -164,7 +164,7 @@ What did that accomplish? You didn't "miss out" on any gains; you still have the
 
 Selling appreciated investments in a regular brokerage account can trigger capital gains tax. That's a real cost, and it shapes *where* people usually rebalance.
 
-**In tax-advantaged accounts (per the [previous post](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA or RRSP typically don't trigger any current tax event (Australian super is an exception: realized gains are taxed inside the fund before retirement), which is why many investors rebalance there first and most often.
+**In tax-advantaged accounts (per the [previous lesson](/blog/tax-advantaged-accounts/)): trades are usually tax-free.** Trades inside a 401(k), IRA, SIPP, NPS, ISA or RRSP typically don't trigger any current tax event (Australian super is an exception: realized gains are taxed inside the fund before retirement), which is why many investors rebalance there first and most often.
 
 **In taxable accounts: contribution-based rebalancing is the common approach.** New money avoids selling. When selling is unavoidable, a few factors shape the tax cost:
 
@@ -217,4 +217,4 @@ A few scenarios where the usual rules are less relevant:
 5. **New contributions do much of the work.** Directing them to under-weight assets handles most of the rebalancing need while someone is actively saving.
 6. **The target itself changes slowly.** Not every month, but life changes (marriage, children, major income change, approaching retirement) can shift what allocation fits.
 
-The next posts in this series move beyond the mechanics of accumulation and into the goals accumulation is for: financial independence, passive income, loan decisions, and real estate.
+The next lessons in this series move beyond the mechanics of accumulation and into the goals accumulation is for: financial independence, passive income, loan decisions, and real estate.

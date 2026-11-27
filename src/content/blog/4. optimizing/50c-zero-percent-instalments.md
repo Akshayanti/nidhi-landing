@@ -47,7 +47,7 @@ faq:
     answer: "Yes, when the price is the same as for paying in full, there is no fee, no tax on hidden interest, and every payment is made on time. Shops often fund these plans because they sell more. The plan then simply spreads a cost you had already decided on, and the money left in your account a little longer can even earn interest."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare the total cost of paying in instalments with paying in full"
   idea: "Comparing totals, including fees and any lost discount, shows whether an instalment plan is free."
 reelPromise: "Who pays when 0% is free, why twelve month-end payments of €100 over a €1,140 cash price cost about 10% a year, and the deferred-interest trap that charges interest back to day one"
@@ -65,7 +65,7 @@ referentialReading:
 
 Jiri, 38, needs a €1,200 laptop. The shop offers twelve payments of €100 at 0%, or €1,140 if he pays now. The instalments look free, and the payment fits his month easily. They are not free: paying twelve €100 instalments at the end of each month instead of €1,140 now costs him €60, about 10% a year on the money he is effectively borrowing.
 
-The [how much can you borrow post](/blog/how-much-can-you-borrow/) looked at large loans and the checks lenders run. Depending on the country and provider, small instalment plans may involve lighter checks than large loans, so the arithmetic is still worth doing yourself.
+The [how much can you borrow lesson](/blog/how-much-can-you-borrow/) looked at large loans and the checks lenders run. Depending on the country and provider, small instalment plans may involve lighter checks than large loans, so the arithmetic is still worth doing yourself.
 
 ## When it is free, someone else pays
 
@@ -92,7 +92,7 @@ Even when the price is the same, several costs can turn a free plan into an expe
 - **Payments that fail.** Instalments taken automatically from a card or account can fail on a thin month, and a failed payment can trigger a fee, depending on the provider.
 - **Several plans at once.** Small plans are easy to stack. In a US regulator's 2025 report, 63% of [buy now pay later](#term-buy-now-pay-later) borrowers had several loans running at the same time at some point in a year, and a third had them with several providers.
 - **Refunds and returns.** A returned item can take time to cancel the plan, and payments may still fall due meanwhile.
-- **Your credit record.** Some providers report to credit bureaus, some do not, and a later lender may still ask about them. The [credit scores post](/blog/credit-and-credit-scores/) covered how records are built.
+- **Your credit record.** Some providers report to credit bureaus, some do not, and a later lender may still ask about them. The [credit scores lesson](/blog/credit-and-credit-scores/) covered how records are built.
 
 ## Paying later makes it easier to spend more
 
@@ -102,7 +102,7 @@ The arithmetic is only half of it. Several studies find that the option to pay l
 - A study of merchants found that offering it raised sales by about 20%, driven by customers with weaker credit (Berg, Burg, Keil and Puri, Journal of Financial Economics, 2025).
 - In an experiment by the Central Bank of Ireland, participants spent on average 4.39% more when they could pay later than when they paid by debit card (2025).
 
-The evidence has limits: the studies come from a few countries and a few years, and they do not show that every user spends more or that the effect is the same in every market. The mechanism is the one the [mental accounting post](/blog/mental-accounting/) described: €100 a month feels smaller than €1,200, even when it adds up to more.
+The evidence has limits: the studies come from a few countries and a few years, and they do not show that every user spends more or that the effect is the same in every market. The mechanism is the one the [mental accounting lesson](/blog/mental-accounting/) described: €100 a month feels smaller than €1,200, even when it adds up to more.
 
 ## A check before choosing instalments
 
@@ -143,6 +143,6 @@ Elsewhere, the questions above work the same way, whatever the local name for th
 
 </details>
 
-The next post covers windfalls, the opposite problem: a lump sum that lands and has to be placed.
+The next lesson covers windfalls, the opposite problem: a lump sum that lands and has to be placed.
 
 When you last paid in instalments, what was the price for paying the whole amount that day?

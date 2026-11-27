@@ -42,8 +42,8 @@ tags: ["optimizing", "saving", "risk"]
 faq:
   - question: "Where should I keep my emergency fund?"
     answer: "A common choice is a high-yield savings account or a money-market fund: both usually pay close to the short-term interest rate and let you reach the money within a day or so. Many people keep only about one month of costs in their current account for everyday spending. Which accounts are available, how they are protected and how their interest is taxed depends on your country."
-  - question: "What is wrong with holding my emergency fund in a checking account?"
-    answer: "Most checking accounts pay 0% or close to it, so the balance loses purchasing power to inflation every year: at 2% inflation, about €600 a year on €30,000. Savings accounts and money-market funds are usually reachable the same or next day, so moving the buffer rarely costs much access. Whether the difference is worth the effort depends on the balance and the rates available where you live."
+  - question: "What is wrong with holding my emergency fund in a current account?"
+    answer: "Most current accounts pay 0% or close to it, so the balance loses purchasing power to inflation every year: at 2% inflation, about €600 a year on €30,000. Savings accounts and money-market funds are usually reachable the same or next day, so moving the buffer rarely costs much access. Whether the difference is worth the effort depends on the balance and the rates available where you live."
   - question: "Is a money-market fund safer than a savings account?"
     answer: "They are safe in different ways. A savings account is covered by deposit protection up to the local limit (€100,000 per person per bank in the EU, for example). A money-market fund is not covered by that scheme, but it holds very short, high-quality loans and is regulated for liquidity and diversification and is usually easy to sell, although its value is not guaranteed and some funds have a value that varies a little. For amounts above the deposit-protection limit at one bank, some people use a money-market fund or government bills for the excess."
   - question: "What is the difference between a savings account, a money-market fund and a Treasury bill?"
@@ -76,11 +76,11 @@ Eva, 32, lives in Lisbon and keeps all €30,000 of her cash in her current acco
 
 The loss is still real. At 2% inflation, €30,000 at 0% loses about €600 of [purchasing power](#term-purchasing-power) a year: about €3,000 over five years, before counting what the money could have earned. Savings accounts do not always beat inflation either, but they usually narrow the gap.
 
-The [Emergency Fund post](/blog/emergency-fund/) covered how much cash people hold, and the [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) how that amount meets month-by-month bills. This post is about where the cash sits, and what each choice trades off.
+The [Emergency Fund lesson](/blog/emergency-fund/) covered how much cash people hold, and the [Cash Flow Forecasting lesson](/blog/cash-flow-forecasting/) how that amount meets month-by-month bills. This lesson is about where the cash sits, and what each choice trades off.
 
 ## Each pile of cash has one job
 
-The [Cash Flow Forecasting post](/blog/cash-flow-forecasting/) sorted cash by when you might need it. A common structure gives each of those piles one job, and keeps each where that job fits:
+The [Cash Flow Forecasting lesson](/blog/cash-flow-forecasting/) sorted cash by when you might need it. A common structure gives each of those piles one job, and keeps each where that job fits:
 
 | Job | How much | Often kept in |
 |---|---|---|
@@ -177,7 +177,7 @@ In the EU, €100,000 per person per bank under national schemes. In the UK, £1
 
 </details>
 
-**Treating interest as tax-free.** Interest from cash held outside a tax-advantaged account is usually taxed as income in many countries, sometimes above an allowance, which lowers the real yield. A tax-advantaged account may shelter the interest, but its contribution, withdrawal and access rules vary widely by account and country. The later post on tax-loss harvesting and asset location covers which holdings sit better on which side.
+**Treating interest as tax-free.** Interest from cash held outside a tax-advantaged account is usually taxed as income in many countries, sometimes above an allowance, which lowers the real yield. A tax-advantaged account may shelter the interest, but its contribution, withdrawal and access rules vary widely by account and country. The later lesson on tax-loss harvesting and asset location covers which holdings sit better on which side.
 
 **Chasing sign-up bonuses.** A bonus for opening an account is real money, but the rate often drops back after a few months. For people willing to keep switching, bonuses add up; for everyone else, a couple of solid accounts and staying put is the lower-effort path.
 
@@ -202,6 +202,6 @@ The three jobs and the kinds of account are the same almost everywhere; the loca
 
 ## A one-off review, then a yearly check
 
-For many households this is a weekend of work, once: a list of every account and what it pays, and a check of whether any of the buffer sits at 0%. Many people then check once a year and move money only when the gap to a better option has grown to about a percentage point, since switching has its own costs. The next post, on account consolidation, is often what makes that review easy: once every account is in one list, deciding what stays where is simpler.
+For many households this is a weekend of work, once: a list of every account and what it pays, and a check of whether any of the buffer sits at 0%. Many people then check once a year and move money only when the gap to a better option has grown to about a percentage point, since switching has its own costs. The next lesson, on account consolidation, is often what makes that review easy: once every account is in one list, deciding what stays where is simpler.
 
 Which of your piles of cash is sitting somewhere that does not fit its job?

@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | 金利は0%から100%の間で入力してください。 | 金利は0%から100%の間で入力する。 |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | 返済が遅れていると、重荷に感じることがあります。助けを得る方法があります。 | 返済が遅れていると、重荷に感じることがある。助けを得る方法がある。 |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 Neither column uses *あなた*.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),

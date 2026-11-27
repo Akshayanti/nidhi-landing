@@ -28,7 +28,7 @@ faq:
   - question: "Which financial health metrics should I actually track?"
     answer: "Six cover most of what matters for individuals. Debt-to-asset ratio, total liabilities divided by total assets, shows how leveraged you are. Liquid asset percentage shows how flexible you are, how much you could access within days. Emergency fund coverage shows how many months of essential expenses your cash would cover. Savings rate, income minus expenses divided by income, is one of the biggest levers you control over long-term outcomes. Debt-to-income ratio shows how much income is committed to debt service. Expense coverage ratio, the income your investments can keep paying divided by expenses, shows how close you are to financial independence. None is a target to optimize to a single number; each has a healthy zone."
   - question: "What is a healthy savings rate?"
-    answer: "Savings rate is income minus expenses, divided by income, and it is one of the main drivers of how quickly wealth builds. Rough zones, which are rules of thumb rather than standards: under 10% is minimal, with very slow accumulation; 10 to 20% is a common baseline, which may be enough over a long career if public or workplace pensions do much of the work; 20 to 35% is strong and accelerates retirement; 35 to 50% is high and puts financial independence within a couple of decades; 50% and above is very high, with FI in roughly 17 years or less under the classic assumptions in the financial independence post. Because the metric is volatile month to month, track it as a rolling three- or six-month average rather than reacting to single months. A sustained drop is usually the earliest visible sign of lifestyle creep."
+    answer: "Savings rate is income minus expenses, divided by income, and it is one of the main drivers of how quickly wealth builds. Rough zones, which are rules of thumb rather than standards: under 10% is minimal, with very slow accumulation; 10 to 20% is a common baseline, which may be enough over a long career if public or workplace pensions do much of the work; 20 to 35% is strong and accelerates retirement; 35 to 50% is high and puts financial independence within a couple of decades; 50% and above is very high, with FI in roughly 17 years or less under the classic assumptions in the financial independence lesson. Because the metric is volatile month to month, track it as a rolling three- or six-month average rather than reacting to single months. A sustained drop is usually the earliest visible sign of lifestyle creep."
   - question: "How do I interpret the debt-to-asset ratio?"
     answer: "Divide total liabilities by total assets. Under 20% is very low leverage with lots of flexibility; 20 to 40% is moderate and common for homeowners with a mortgage; 40 to 60% is high but manageable with stable income and fixed rates; 60 to 80% is concerning, especially with variable rates or unstable income; 80% and above is highly stressed, where a modest asset drop can push you underwater. A young person with a 90% loan-to-value mortgage naturally starts near 0.9, which is the expected shape, not automatically bad. It falls over time as the mortgage is paid down and other assets accumulate. For young homeowners, the direction matters more than the absolute level."
   - question: "Should I aim to hit the ideal zone on every metric?"
@@ -49,7 +49,7 @@ Your net worth is €150,000. Is that good? It's impossible to say without conte
 
 Net worth is a snapshot. Ratios are the diagnosis. A handful of them, together, tell you whether your finances are healthy, where they're drifting, and what to adjust while the fix is still small.
 
-This post goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator: Ireland limits most first-time buyer mortgages to 4 times gross income, and in the UK, mortgages at 4.5 times income or more are limited to about 15% of new lending across the market.
+This lesson goes through the six metrics that do most of the work for individuals, plus how to interpret them. None of these are targets to optimize toward a single number. They're rough zones: a healthy range, a cautionary range, a range that should trigger action. They are rules of thumb rather than official standards, and they shift with age, country and income stability. Some countries set debt-to-income or loan-to-income caps through the financial regulator: Ireland limits most first-time buyer mortgages to 4 times gross income, and in the UK, mortgages at 4.5 times income or more are limited to about 15% of new lending across the market.
 
 ## Why ratios beat single numbers
 
@@ -108,13 +108,13 @@ A high-net-worth homeowner with 90% of net worth in property and 10% liquid is s
 
 | Coverage | Interpretation |
 |---|---|
-| Under 1 month | Highly fragile; a single paycheck gap creates real risk |
+| Under 1 month | Highly fragile; a single gap in pay creates real risk |
 | 1-3 months | Building; adequate for most short shocks |
 | 3-6 months | The most commonly cited range |
 | 6-12 months | Conservative; common for single-earner households, variable income, or industries with longer unemployment durations |
 | 12+ months | Very conservative; beyond this, extra cash often has a real opportunity cost |
 
-The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail. Worth noting: coverage is a moving metric. Expenses drift upward as life expands, and an emergency fund that covered six months a year ago may cover four today. The ratio, not the absolute amount, is what to track.
+The [emergency fund lesson](/blog/emergency-fund/) goes into sizing in more detail. Worth noting: coverage is a moving metric. Expenses drift upward as life expands, and an emergency fund that covered six months a year ago may cover four today. The ratio, not the absolute amount, is what to track.
 
 **Common responses if it's drifting down:** Many people rebuild the fund before resuming aggressive investing, and look at what's driving expense growth.
 
@@ -122,7 +122,7 @@ The [emergency fund post](/blog/emergency-fund/) goes into sizing in more detail
 
 **Formula:** (Income - expenses) ÷ income
 
-**What it measures:** How fast you are building, and one of the biggest levers you control, as the [FIRE post](/blog/introduction-to-financial-independence/) covered. It sets the pace of wealth building alongside returns, taxes, pensions and time, and it is hardest to move on a low income.
+**What it measures:** How fast you are building, and one of the biggest levers you control, as the [FIRE lesson](/blog/introduction-to-financial-independence/) covered. It sets the pace of wealth building alongside returns, taxes, pensions and time, and it is hardest to move on a low income.
 
 **Rough zones:**
 
@@ -155,7 +155,7 @@ This metric is also the most volatile month to month, so track it as a rolling 3
 
 This metric becomes especially important before considering large new borrowing, like a new [mortgage](/blog/real-estate-as-investment/) or other major loan. Lenders and self-check alike should weigh the *total* picture after the new obligation, not the current one.
 
-**Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms post](/blog/understanding-loan-terms/) on amortization and prepayment power).
+**Common responses if it's drifting up:** Slowing new borrowing and prepaying high-interest debt where the loan allows it (see the [understanding loan terms lesson](/blog/understanding-loan-terms/) on amortization and prepayment power).
 
 ## Metric 6: Expense coverage ratio
 
@@ -163,7 +163,7 @@ This metric becomes especially important before considering large new borrowing,
 
 The income counted is a cautious one, usually the portfolio times the withdrawal rate you plan around (4% of €250,000 is €10,000 a year). One good year's total return overstates it. It is not the same as the income replacement ratio, a retirement-planning term for the share of pre-retirement income needed in retirement.
 
-**What it measures:** How close your existing asset base is to funding your current lifestyle without work. It is the "crossover point" from the [passive income post](/blog/passive-income-streams/) expressed as a ratio, and at 100% it matches the FIRE number from the [financial independence post](/blog/introduction-to-financial-independence/).
+**What it measures:** How close your existing asset base is to funding your current lifestyle without work. It is the "crossover point" from the [passive income lesson](/blog/passive-income-streams/) expressed as a ratio, and at 100% it matches the FIRE number from the [financial independence lesson](/blog/introduction-to-financial-independence/).
 
 **Rough zones:**
 
@@ -177,7 +177,7 @@ The income counted is a cautious one, usually the portfolio times the withdrawal
 
 This metric grows slowly and is easy to miss without deliberate tracking. It's also enormously motivating over long periods. A chart that rises from 3% to 30% over a decade tells a more concrete story than any single-point net worth number.
 
-> The 100% threshold is only as sound as the withdrawal rate behind it. 4% is the US-derived anchor from the Trinity Study, tested over 30 years. A study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, which that study does not establish as suitable for any particular reader (the [financial independence post](/blog/introduction-to-financial-independence/) gives the evidence); that study's own figure is lower still. At 3 to 3.5%, 100% coverage needs a portfolio of roughly 28-33× annual expenses rather than 25×.
+> The 100% threshold is only as sound as the withdrawal rate behind it. 4% is the US-derived anchor from the Trinity Study, tested over 30 years. A study using 38 countries' data found a lower rate, and more cautious starting points of 3 to 3.5% are used as illustrations, which that study does not establish as suitable for any particular reader (the [financial independence lesson](/blog/introduction-to-financial-independence/) gives the evidence); that study's own figure is lower still. At 3 to 3.5%, 100% coverage needs a portfolio of roughly 28-33× annual expenses rather than 25×.
 
 ## A simple health snapshot
 
@@ -229,4 +229,4 @@ The metrics tell you where to look. They don't tell you what to do. The combinat
 
 A dashboard tells you what's happening. Health metrics tell you what it means. Together they're the operational layer of personal finance: the monthly and annual habit that catches problems early, marks progress clearly, and quietly converts good intentions into compound outcomes.
 
-The metrics are only useful if you actually look at them, on a regular schedule, in a format that surfaces drift instead of noise. That's the job of a financial dashboard: a small set of numbers, reviewed at known cadences, designed to catch problems early without inviting daily checking. The final Building post covers how to design and run one without it taking over your life.
+The metrics are only useful if you actually look at them, on a regular schedule, in a format that surfaces drift instead of noise. That's the job of a financial dashboard: a small set of numbers, reviewed at known cadences, designed to catch problems early without inviting daily checking. The final Building lesson covers how to design and run one without it taking over your life.

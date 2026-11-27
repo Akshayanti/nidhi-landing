@@ -47,9 +47,9 @@ You earn €60,000 gross. You see €42,000 hit your account. You invest €10,0
 
 Every one of those gaps is tax. It's one of the most predictable drags on financial outcomes, and also the one most financial content skips, because the specifics vary so much between countries that anything concrete runs the risk of being wrong for most readers.
 
-This post stays deliberately generic. No specific rates, no jurisdiction-specific products, no "do X because of Y rule." The goal is to make sure you understand the structural role taxes play in your plan, so when you look up the actual rules in your country, you know what to look for.
+This lesson stays deliberately generic. No specific rates, no jurisdiction-specific products, no "do X because of Y rule." The goal is to make sure you understand the structural role taxes play in your plan, so when you look up the actual rules in your country, you know what to look for.
 
-> **Rules vary by country.** Anything written here is conceptual. Before making decisions with real money, confirm how your country treats each category of income, each account type, and each asset class. This post tells you which questions to ask, not the answers.
+> **Rules vary by country.** Anything written here is conceptual. Before making decisions with real money, confirm how your country treats each category of income, each account type, and each asset class. This lesson tells you which questions to ask, not the answers.
 
 ## The four places taxes touch your plan
 
@@ -71,13 +71,13 @@ Most personal finance planning works best when done in "net" terms: money after 
 
 - **Expenses are in after-tax euros.** When you calculate that your lifestyle costs €30,000 a year, you're spending already-taxed money
 - **Savings rate is best calculated on after-tax income.** Because the money you can actually save, the gap that drives [saving and investing](/blog/saving-vs-investing/), is what's left after income tax
-- **Long-term retirement numbers are in after-tax terms.** A target portfolio (the amount of investments large enough to live off indefinitely) has to generate enough *after-tax* income to cover *after-tax* expenses. We come back to this in a later post in this series
+- **Long-term retirement numbers are in after-tax terms.** A target portfolio (the amount of investments large enough to live off indefinitely) has to generate enough *after-tax* income to cover *after-tax* expenses. A later lesson in this series comes back to this.
 
 The mental model people slip into (gross salary times years of work, compounded somehow) is almost always too optimistic, because it ignores the layers of tax between gross income and actual lifestyle funding.
 
 ## How taxes erode investment returns
 
-A central concept in this post is the difference between a nominal return and an after-tax return.
+A central concept in this lesson is the difference between a nominal return and an after-tax return.
 
 Imagine an investment earning 7% per year (a hypothetical figure used for illustration, not a return you should expect; actual returns vary and can be negative). If the returns are taxed at 25% as they accrue, the effective compounding rate drops to 5.25%. That sounds small. Over decades, it's not.
 
@@ -119,10 +119,10 @@ In many countries, employers offer some form of retirement plan, sometimes with 
 
 Two principles tend to hold regardless of jurisdiction:
 
-- An employer match is often a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules (how long you must stay before the employer's money is fully yours) or a need for liquidity can change the picture. A later post covers common priority orders across account types
+- An employer match is often a 50% or 100% immediate uplift on your own contribution, which is why most frameworks rank capturing it highly. It is not always *the* first action: [very-high-interest debt](/blog/how-to-get-out-of-debt/) and a [starter emergency fund](/blog/emergency-fund/) often come first, and vesting rules (how long you must stay before the employer's money is fully yours) or a need for liquidity can change the picture. A later lesson covers common priority orders across account types
 - Default contribution settings are often set low. Many plans allow contributing more than the default, and every extra euro inside the shelter grows tax-advantaged for decades, at the cost of locking it up
 
-The [getting started post](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.
+The [getting started lesson](/blog/getting-started-investing/) covered the account hierarchy; taxes are the main reason the hierarchy matters.
 
 ## Capital gains: the cost of selling a winner
 
@@ -178,7 +178,7 @@ Things that depend on your specific country, and are worth looking up or getting
 - Whether certain insurance products are tax-advantaged
 - Any treaty implications if you earn or invest across borders
 
-The general rule: no blog post can replace jurisdiction-specific advice for large decisions. What a blog can do is give you the conceptual map so those conversations are productive.
+The general rule: no lesson can replace jurisdiction-specific advice for large decisions. What a lesson can do is give you the conceptual map so those conversations are productive.
 
 ## What this means in practice
 
@@ -194,4 +194,4 @@ The general rule: no blog post can replace jurisdiction-specific advice for larg
 
 Tax isn't glamorous. It's also one of the most consistent forces shaping long-term outcomes, alongside savings rate and time. Every gross number you see in financial content hides a net number underneath; every projection that ignores tax is optimistic by a predictable amount. Planning in net terms, using tax-advantaged accounts where they fit, and understanding the structural differences between account types closes most of the gap.
 
-This post stayed deliberately abstract: patterns and principles, no jurisdiction-specific products. The next post gets concrete. Every developed economy has purpose-built accounts that put those patterns into practice (401(k), ISA, SIPP, NPS, Roth IRA, TFSA, RRSP, EPF, Superannuation, ELSS, and many more). Which ones exist where you live, and the order people commonly fill them in, can be one of the larger tax decisions a new investor makes.
+This lesson stayed deliberately abstract: patterns and principles, no jurisdiction-specific products. The next lesson gets concrete. Every developed economy has purpose-built accounts that put those patterns into practice (401(k), ISA, SIPP, NPS, Roth IRA, TFSA, RRSP, EPF, Superannuation, ELSS, and many more). Which ones exist where you live, and the order people commonly fill them in, can be one of the larger tax decisions a new investor makes.

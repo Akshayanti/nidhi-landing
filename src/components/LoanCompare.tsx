@@ -1690,6 +1690,9 @@ function VendorCard({
   const id = (suffix: string) => `${baseId}-${suffix}`;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
+  // A field's help is always part of its description, and its error joins it
+  // while the field holds one (#916 review): a screen reader hears both.
+  const describedBy = (field: string, bad: boolean) => (bad ? `${id(`${field}-help`)} ${errorId}` : id(`${field}-help`));
   const hasError = Boolean(result.error);
   // The results sit above the optional boxes, and change as those are typed
   // in (an error in their place, a note more or less): the box stays put (#827).
@@ -2169,10 +2172,10 @@ function VendorCard({
                 onValueChange={(v) => onChange({ initialFixedMonths: v })}
                 aria-invalid={badOptional.has('initialFixedMonths') || undefined}
                 aria-required="true"
-                aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
+                aria-describedby={describedBy('initialFixedMonths', badOptional.has('initialFixedMonths'))}
                 autoComplete="off"
               />
-              <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
+              <p id={id('initialFixedMonths-help')} className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
             </div>
             <div className="lc-field">
               <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('subsequentRatePct')}>
@@ -2186,10 +2189,10 @@ function VendorCard({
                 onValueChange={(v) => onChange({ subsequentRatePct: v })}
                 aria-invalid={badOptional.has('subsequentRatePct') || undefined}
                 aria-required="true"
-                aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
+                aria-describedby={describedBy('subsequentRatePct', badOptional.has('subsequentRatePct'))}
                 autoComplete="off"
               />
-              <p className="lc-fieldHelp">
+              <p id={id('subsequentRatePct-help')} className="lc-fieldHelp">
                 {strings.card.subsequentRateHelp}
               </p>
             </div>
@@ -2247,10 +2250,10 @@ function VendorCard({
             value={vendor.pointsCostMajor}
             onValueChange={(v) => onChange({ pointsCostMajor: v })}
             aria-invalid={badOptional.has('pointsCostMajor') || undefined}
-            aria-describedby={badOptional.has('pointsCostMajor') ? errorId : undefined}
+            aria-describedby={describedBy('pointsCost', badOptional.has('pointsCostMajor'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('pointsCost-help')} className="lc-fieldHelp">
             {strings.card.pointsCostHelp}
           </p>
         </div>
@@ -2265,10 +2268,10 @@ function VendorCard({
             value={vendor.pointsRateReductionPct}
             onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
             aria-invalid={badOptional.has('pointsRateReductionPct') || undefined}
-            aria-describedby={badOptional.has('pointsRateReductionPct') ? errorId : undefined}
+            aria-describedby={describedBy('pointsReduction', badOptional.has('pointsRateReductionPct'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
+          <p id={id('pointsReduction-help')} className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
         </div>
       </FieldGroup>
 
@@ -2300,12 +2303,12 @@ function VendorCard({
             value={vendor.lumpSumsEncoded}
             onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
             aria-invalid={badOptional.has('lumpSumsEncoded') || undefined}
-            aria-describedby={badOptional.has('lumpSumsEncoded') ? errorId : undefined}
+            aria-describedby={describedBy('lumpSums', badOptional.has('lumpSumsEncoded'))}
             autoComplete="off"
             spellCheck={false}
             placeholder="12:5000;36:3000"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('lumpSums-help')} className="lc-fieldHelp">
             {strings.card.lumpsHelp.before}
             <code>{strings.card.lumpsHelp.format}</code>
             {strings.card.lumpsHelp.mid}
@@ -2342,10 +2345,10 @@ function VendorCard({
             value={vendor.prepayPenaltyUntilMonth}
             onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
             aria-invalid={badOptional.has('prepayPenaltyUntilMonth') || undefined}
-            aria-describedby={badOptional.has('prepayPenaltyUntilMonth') ? errorId : undefined}
+            aria-describedby={describedBy('prepayUntil', badOptional.has('prepayPenaltyUntilMonth'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('prepayUntil-help')} className="lc-fieldHelp">
             {strings.card.penaltyUntilHelp}
           </p>
         </div>

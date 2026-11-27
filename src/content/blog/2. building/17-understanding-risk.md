@@ -13,8 +13,10 @@ takeaways:
   - "Why keeping everything in cash carries its own risk"
 order: 17
 pubDate: 2026-05-25
-updatedDate: 2026-11-22
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024, so the 20-year example at that rate is now about €28,100, not €27,600."
   - date: 2026-11-22
     note: "The risk table gave diversified stocks a historical range of 4 to 6% a year after inflation across developed markets. Country returns vary widely, so that description was misleading. It now gives the world figure, about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton). The 20-year example keeps its €21,900 to €32,100, now labelled as a scenario of 4% to 6% a year, and adds about €27,600 at the world figure."
   - date: 2026-11-17
@@ -24,6 +26,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "risk", "investing"]
 referentialReading:
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -138,17 +143,17 @@ Over 20 to 30 years, US stocks have ended ahead in every period in this table be
 
 The pattern is clear: the longer you hold, the narrower the range of outcomes, and the more likely those outcomes are positive. Time doesn't eliminate risk, but it dramatically changes its character.
 
-This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction from the previous post maps directly to time horizons. Short-term money, for which volatility is a real risk, is usually kept in savings. Long-term money, which can wait out downturns, is where investing is most common.
+This is why the [saving vs. investing](/blog/saving-vs-investing/) distinction from the previous lesson maps directly to time horizons. Short-term money, for which volatility is a real risk, is usually kept in savings. Long-term money, which can wait out downturns, is where investing is most common.
 
 ## The risk you don't see: doing nothing
 
 Most people intuitively understand the risk of investing: your portfolio might go down. Fewer people recognize the risk of not investing: your money goes down in real terms whenever it earns less than inflation, which cash often does.
 
-As we covered in the [purchasing power post](/blog/purchasing-power/), inflation erodes the value of cash every year. A savings account earning 1% with inflation at 2.5% loses 1.5% of its real value annually. Over 20 years, that adds up to roughly 26% lost.
+As the [purchasing power lesson](/blog/purchasing-power/) covered, inflation erodes the value of cash every year. A savings account earning 1% with inflation at 2.5% loses 1.5% of its real value annually. Over 20 years, that adds up to roughly 26% lost.
 
 | Action | Risk Type | Probability | Impact Over 20 Years |
 |---|---|---|---|
-| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms in a scenario of 4% to 6% a year (about €27,600 at world shares' 5.2% a year), not guaranteed |
+| Invest in diversified stocks | Volatility; potential short-term loss | Certain short-term swings, historically positive long-term | €10,000 becomes ~€21,900 to €32,100 in real terms in a scenario of 4% to 6% a year (about €28,100 at world shares' 5.3% a year), not guaranteed |
 | Keep in savings | Purchasing power erosion | Certain while the rate stays below inflation | €10,000 becomes ~€7,400 in real terms |
 | Keep as cash | Inflation + no interest | Certain | €10,000 becomes ~€6,100 in real terms |
 
@@ -160,7 +165,7 @@ Not all risks are equal or come from the same place.
 
 **Market risk**: The entire market moves against you. A recession, a financial crisis, a pandemic. Every investor faces this. It's the price of being in the market.
 
-**Concentration risk**: You put too much into one thing. One stock, one sector, one country. If that specific thing fails, you lose disproportionately. This is avoidable through diversification (which we'll cover in a later post).
+**Concentration risk**: You put too much into one thing. One stock, one sector, one country. If that specific thing fails, you lose disproportionately. This is avoidable through diversification (which a later lesson covers).
 
 **Inflation risk**: Your money's purchasing power erodes over time. Affects cash and low-yield investments most severely. (Yield here means the annual cash an investment pays out as a percentage of its price: a bond paying €30 a year on a €1,000 bond has a 3% yield.)
 
@@ -176,10 +181,10 @@ Here's the fundamental relationship: risk and return are linked. Higher potentia
 
 | Asset Type | Historical annual return after inflation (long run) | Volatility (typical annual range) |
 |---|---|---|
-| Cash / savings | About 0-1% (Treasury bills, US and world index; lower in some countries, negative in high-inflation periods) | Near zero |
+| Cash / savings | About 0-1% (Treasury bills, short-term loans to a government; US and world index; lower in some countries, negative in high-inflation periods) | Near zero |
 | Government bonds | ~1-2% | Low (5-10%) |
 | Corporate bonds | A little above government bonds | Moderate (5-15%) |
-| Diversified stocks | About 5% (world shares, 1900 to 2024; single countries well above or below) | High (15-25%) |
+| Diversified stocks | About 5% (world shares, 1900 to 2025; single countries well above or below) | High (15-25%) |
 | Individual stocks | Varies widely | Very high (30%+) |
 
 *Long-run historical averages after inflation (purchasing-power change, not paper change), based on Dimson, Marsh and Staunton's data since 1900; the same figures as the [asset classes lesson](/blog/investing-101-asset-classes/). Past performance is not indicative of future results.*
@@ -192,7 +197,7 @@ The right amount of risk isn't maximum and it isn't zero. Planners usually judge
 
 1. **Time horizon.** Money needed in 2 years usually carries little risk. Money untouched for 20 years has more room to absorb volatility
 2. **Risk capacity.** A full emergency fund, stable income and no high-interest debt add capacity. Missing any of those reduces it
-3. **Temperament.** If checking a portfolio causes real anxiety, the risk may be too high for that person, even if the math says they can handle it
+3. **Temperament.** If checking a portfolio causes real anxiety, the risk may be too high for that person, even if the maths says they can handle it
 4. **Erosion.** Money held entirely in cash or low-yield savings tends to lose purchasing power, so zero market risk is not the same as safety
 
 ## What this means in practice
@@ -203,4 +208,4 @@ The right amount of risk isn't maximum and it isn't zero. Planners usually judge
 4. **The lower of tolerance and capacity tends to set the limit.** High tolerance with low capacity still points to low risk; low tolerance with high capacity does too
 5. **Risk can't be eliminated, only chosen.** The question is which type, and how much fits your situation and timeline
 
-Risk isn't something to avoid. It's something to understand, calibrate, and use intentionally. Every investment decision is a trade-off between uncertainty now and growth over time. The next post will make this concrete: what exactly are the main investment types, how does each generate returns, and how do they work together?
+Risk isn't something to avoid. It's something to understand, calibrate, and use intentionally. Every investment decision is a trade-off between uncertainty now and growth over time. The next lesson will make this concrete: what exactly are the main investment types, how does each generate returns, and how do they work together?

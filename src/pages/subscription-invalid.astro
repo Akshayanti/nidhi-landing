@@ -7,7 +7,7 @@ import { DEFAULT_LOCALE } from '../i18n';
 
 <BaseLayout
   title="Link not valid | nidhi"
-  description="This subscription link is no longer valid. It may have expired, or been cancelled by unsubscribing. Try subscribing again from the homepage."
+  description="This subscription link is no longer valid. It may have expired, or stopped working after an unsubscribe. You can subscribe again from the learning path."
   robots="noindex,nofollow"
   alternates={[DEFAULT_LOCALE]}
 >
@@ -23,8 +23,8 @@ import { DEFAULT_LOCALE } from '../i18n';
 
       <h1 class="transactional-title">This link isn&rsquo;t valid.</h1>
       <p class="transactional-body" id="invalid-copy">
-        It may have expired, been cancelled by unsubscribing, or got mangled
-        in transit. Nothing on your account has changed.
+        It may have expired, stopped working after an unsubscribe, or been
+        cut short when it was copied. Opening it changed nothing.
       </p>
 
       <div class="transactional-actions">
@@ -48,7 +48,7 @@ import { DEFAULT_LOCALE } from '../i18n';
     if (!copy) return;
     var reason = new URLSearchParams(window.location.search).get('reason') || '';
     if (reason === 'confirm') {
-      copy.textContent = 'This confirmation link has expired or is no longer valid. If you meant to subscribe, pop your email back into the form on the learning path and a new confirmation link will be on its way.';
+      copy.textContent = 'This confirmation link has expired or is no longer valid. If you meant to subscribe, enter your email in the form on the learning path again, and a new confirmation link will be sent.';
     } else if (reason === 'unsubscribe') {
       copy.textContent = 'This unsubscribe link isn\u2019t valid anymore. If you want to stop getting emails from nidhi, reply to any of them and I\u2019ll remove you by hand.';
     }

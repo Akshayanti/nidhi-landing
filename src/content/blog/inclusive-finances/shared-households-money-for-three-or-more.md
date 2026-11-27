@@ -67,9 +67,9 @@ referentialReading:
 
 Alma, Ben, Chidi and Dana share a flat. Their monthly net incomes are €5,000, €3,000, €2,000 and €1,000, and their shared costs are €3,200 a month: €2,400 rent, €300 utilities and €500 food. They split everything equally, because that was the number someone suggested in the first week.
 
-The [account consolidation post](/blog/account-consolidation-and-financial-data-hygiene/) treated a household's money as having one owner, or two who are legally a pair. Many households have more: flatmates, a housing co-operative, a cohousing community, a long-running shared house, three or more partners. Their money is tied together, while tenancy, partnership and co-operative law may give them very different rights from a married couple, depending on the arrangement and the country. In the language of the [first post in this series](/blog/when-the-default-plan-does-not-fit-you/), that is a [default assumption](#term-default-assumption) that does not fit.
+The [account consolidation lesson](/blog/account-consolidation-and-financial-data-hygiene/) treated a household's money as having one owner, or two who are legally a pair. Many households have more: flatmates, a housing co-operative, a cohousing community, a long-running shared house, three or more partners. Their money is tied together, while tenancy, partnership and co-operative law may give them very different rights from a married couple, depending on the arrangement and the country. In the language of the [first lesson in this series](/blog/when-the-default-plan-does-not-fit-you/), that is a [default assumption](#term-default-assumption) that does not fit.
 
-This post covers the money that moves every month: the split, the shared account, the lease, and what happens when someone leaves. Two companion pieces go further, into owning a home as a group and households with more than two partners. Tenancy law differs in every country, so this post teaches the categories to check.
+This lesson covers the money that moves every month: the split, the shared account, the lease, and what happens when someone leaves. Two companion pieces go further, into owning a home as a group and households with more than two partners. Tenancy law differs in every country, so this lesson teaches the categories to check.
 
 ## An equal split weighs very differently on each income
 
@@ -141,7 +141,7 @@ Five times: €800 is 80% of Dana's €1,000 and 16% of Alma's €5,000.
 
 A common structure is separate personal accounts plus one shared account for the bills, which each person tops up by [standing order](#term-standing-order) on payday. The risk sits in the shared account itself: depending on the account's rules, one holder may be able to withdraw the whole balance, and holders may share liability for an overdraft. Many households keep only the month's expected bills in it, with a small buffer, which limits what one person could do or lose. Some banks allow only two holders on a joint account, so it is worth asking before assuming it will work for four.
 
-The consolidation post argued that fewer accounts are easier to track. A shared bills account is one many households choose, because it keeps the household's money visibly apart from anyone's own.
+The consolidation lesson argued that fewer accounts are easier to track. A shared bills account is one many households choose, because it keeps the household's money visibly apart from anyone's own.
 
 <details class="lesson-depth">
 <summary class="disclosure">When money habits clash in a group</summary>
@@ -156,7 +156,7 @@ A household of four shares fixed costs well, and is exposed to more people leavi
 
 With all four, the €3,200 is 29% of their income. If Alma leaves, the other three earn €6,000. Rent and utilities stay at €2,700; food falls by about a quarter, to €375. Shared costs become €3,075, which is 51% of their income. Under the income-based split Alma was paying €1,455, so the others save €125 on food and have to find €1,330 a month for as long as the room is empty.
 
-That gives the [emergency fund](/blog/emergency-fund/) a second job in a shared household: it covers your own loss of income, and the months after someone else leaves. It is the cash runway question from the [cash flow forecasting post](/blog/cash-flow-forecasting/), asked of the group.
+That gives the [emergency fund](/blog/emergency-fund/) a second job in a shared household: it covers your own loss of income, and the months after someone else leaves. It is the cash runway question from the [cash flow forecasting lesson](/blog/cash-flow-forecasting/), asked of the group.
 
 Running the test usually shows whose departure hurts most (often the person paying the largest share, whose plans matter most to everyone else), how long a replacement takes to find, whether the lease allows one, and what notice period would give the others time to adjust.
 

@@ -247,7 +247,7 @@ a promise costs the reader more than it teaches.
 
 | English | Hindi | Notes |
 | --- | --- | --- |
-| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति, which the Hindi page reserves for the sentence about "हमने अपनी प्राइवेसी नीति बदली है" emails: a notice is what this page is, a policy is what such an email says the site has. The "Privacy policy" links in the subscribe box, the waitlist box and the home page's trust line also say प्राइवेसी नोटिस, because they open this page; नीति stays only in that email sentence and for another company's own privacy policy (Google की प्राइवेसी नीति). |
+| privacy notice | प्राइवेसी नोटिस | Decided against प्राइवेसी नीति: a notice is what this page is. The “Privacy policy” links in the subscribe box, the waitlist box and the home page’s trust line also say प्राइवेसी नोटिस, because they open this page, and so does the sentence about “हमने अपनी प्राइवेसी नोटिस बदली है” emails. नीति stays only for another company’s own privacy policy (Google की प्राइवेसी नीति). |
 | analytics | एनालिटिक्स | |
 | processor | प्रोसेसर | The GDPR's own word, and the one `privacyChangelog.ts` uses in English. |
 | consent | सहमति | "Cookie consent" is कुकी सहमति. |
@@ -329,12 +329,13 @@ and do translate.
 | penalty | जुर्माना | |
 | assumption (a model's) | मान्यता, मान्यताएँ | Never अनुमान (an estimate) or धारणा, which the site keeps for आम धारणा (a default belief). |
 | highlighted fields | चिह्नित खाने | No colour: the English names none. |
+| Reset (button) | रीसेट करें | Polite imperative, like the other buttons; never bare रीसेट. The loan tool's longer "Reset to defaults" keeps शुरुआती हालत पर लौटें, and invest or pay off's "Start again" is फिर से शुरू करें. |
 | negative (a figure) | शून्य से कम (माइनस) | माइनस alone once it is clear. |
 | disclosure (of an APR) | लोन के काग़ज़ों में बताया गया APR | Not प्रकटीकरण, which reads as a form. |
 | indicator (World Bank) | संकेतक | |
 | net worth | शुद्ध संपत्ति | Glossary. |
 | assets, liabilities | संपत्तियाँ, देनदारियाँ | Glossary. The row toggle reads संपत्ति and देनदारी, which is what fits the switch. |
-| spending currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. The short form, in prose, table headings and the badge alike, is खर्च की मुद्रा (2026-11-22, #504). Not मुख्य मुद्रा: मुख्य can read as "the currency I hold most of", which is exactly the distinction the tool draws. |
+| spending currency | जिस मुद्रा में आप खर्च करते हैं | Spelled out rather than transliterated, and used as the field label the first time, because the whole risk feature turns on the difference between this currency and the others. The short form, in prose, table headings and the badge alike, is खर्च की मुद्रा (2026-11-22, #504). Not मुख्य मुद्रा: मुख्य can read as “the currency I hold most of”, which is exactly the distinction the tool draws. |
 | currency concentration | पैसे का किसी एक मुद्रा में जमाव | Spelled out: एकाग्रता is a chemistry word. Prose and the table caption say जमाव; the chart itself (its heading, aria label, legend and the feature list naming it) keeps मुद्रा मिश्रण. |
 | exchange rate | विनिमय दर | **Bracket** (exchange rate; plural exchange rates), except in the privacy notice. Standard in Hindi news. |
 | ECB reference rates | ECB की संदर्भ दरें | `ECB` stays Latin. |
@@ -346,7 +347,7 @@ and do translate.
 | stress-test guess | दर बढ़ने की स्थिति का अनुमान | |
 | about (an approximate figure) | लगभग | One word across the tools. |
 | fixed and one-off charges | तय और एकबारगी शुल्क | |
-| loan comparison (before a noun) | लोन तुलना | लोन तुलना कैलकुलेटर. The standalone nav label stays लोन की तुलना, which cannot stand before a noun. |
+| loan comparison (before a noun) | लोन तुलना | लोन तुलना टूल; लोन तुलना कैलकुलेटर only in the page's search title and description and as a schema alternate name. The standalone name (nav, the page's heading, the schema name) is लोन की तुलना, which cannot stand before a noun. "In the loan comparison" is लोन तुलना टूल में, since लोन की तुलना में reads as "compared with the loan". |
 | horizon (the loan tool's tab) | हॉराइज़न | Glossed हॉराइज़न (किस महीने तक का हिसाब) on first use in the FAQ. Not अवधि, which the same tool uses for the term. |
 | middle half (25th to 75th percentile) | बीच के आधे रास्ते | Never बीच का आधा: beside the median label बीच का it reads as half of the median. |
 | everything runs in your browser | सारी गणना आपके ब्राउज़र में होती है | Not पूरा हिसाब, which is the full share mode's label. |

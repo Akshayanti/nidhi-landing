@@ -158,7 +158,7 @@ Insurance and your emergency fund are two sides of the same coin: both exist to 
 | Moderate (health and property, no disability) | 4-6 months is a common guideline |
 | Minimal (health only) | 6+ months, and even that may not be enough for a major event |
 
-This is why the [emergency fund post](/blog/emergency-fund/) said "3-6 months" rather than giving a single number. The right amount depends on how much risk you've already transferred to insurers.
+This is why the [emergency fund lesson](/blog/emergency-fund/) said "3-6 months" rather than giving a single number. The right amount depends on how much risk you've already transferred to insurers.
 
 ## When insurance is and isn't worth it
 
@@ -233,4 +233,4 @@ Think of insurance as the defensive layer around your net worth. It doesn't grow
 
 Insurance isn't exciting. It doesn't grow your wealth or move your net worth chart upward. But it prevents a single bad day from undoing years of progress. The best insurance is the kind you never need to use, and having it lets you take the right financial risks knowing your downside is contained.
 
-This completes the Discovery level. You now have the full foundation: net worth, assets, liabilities, debt, cash flow, compound growth, inflation, purchasing power, time value of money, saving versus investing, credit, and insurance. Next, we move to the Building level, where you start turning knowledge into a working system, beginning with what risk actually means once you stop avoiding it and start using it.
+This completes the Discovery level. You now have the full foundation: net worth, assets, liabilities, debt, cash flow, compound growth, inflation, purchasing power, time value of money, saving versus investing, credit, and insurance. Next comes the Building level, where you start turning knowledge into a working system, beginning with what risk actually means once you stop avoiding it and start using it.

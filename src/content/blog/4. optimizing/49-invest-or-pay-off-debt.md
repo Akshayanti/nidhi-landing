@@ -32,8 +32,10 @@ glossary:
     definition: "Paying minimums on every debt and putting extra money on the highest-rate debt first."
 order: 49
 pubDate: 2026-11-04
-updatedDate: 2026-11-22
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024; with 2% inflation that is about 7.4% before inflation, still rounded to 7%."
   - date: 2026-11-22
     note: "The lesson described 4 to 6% a year after inflation as the historical return range for developed-market shares since 1900. Country returns vary widely, so that description was misleading. It now gives the world figure, 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with US and UK examples. The before-inflation figure of 6 to 8% is now about 7%, the figure the examples already used; the bands and the order are unchanged."
   - date: 2026-11-21
@@ -47,15 +49,15 @@ personas: ["eva", "petra", "marcus", "jiri"]
 tags: ["optimizing", "debt", "investing"]
 faq:
   - question: "What is the simplest version of the rule?"
-    answer: "The simplest version compares the interest rate on the debt with an expected investment return. Paying off a debt is a guaranteed return equal to the interest rate (you no longer pay that interest). If the debt's rate is higher than the expected investment return, paying off comes out ahead on paper; if the investment return is higher, investing comes out ahead on expected value, but without the guarantee. World shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025). Single countries differed: the US returned 6.6% and the UK 5.4% over the same years, both above the world figure, while Italy, Belgium and Austria returned under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). A debt's interest rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs around 2%. In low-inflation economies, that is why debt above roughly 8 to 10% (credit cards at 18 to 24%) has usually come first for many people, very low-rate debt (mortgages at 3% or below) has usually lost to investing, and the 4 to 8% middle is a judgement call. Where inflation is higher, the bands move up, so the comparison is made against local inflation and returns."
+    answer: "The simplest version compares the interest rate on the debt with an expected investment return. Paying off a debt is a guaranteed return equal to the interest rate (you no longer pay that interest). If the debt's rate is higher than the expected investment return, paying off comes out ahead on paper; if the investment return is higher, investing comes out ahead on expected value, but without the guarantee. World shares returned about 5% a year after inflation, measured in US dollars, from 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026). Single countries, each measured in its own currency, differed: the US returned 6.6% and the UK 5.4% from 1900 to 2024 (UBS Global Investment Returns Yearbook 2025), both above the world figure, while Italy, Belgium and Austria returned under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). A debt's interest rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs around 2%. In low-inflation economies, that is why debt above roughly 8 to 10% (credit cards at 18 to 24%) has usually come first for many people, very low-rate debt (mortgages at 3% or below) has usually lost to investing, and the 4 to 8% middle is a judgement call. Where inflation is higher, the bands move up, so the comparison is made against local inflation and returns."
   - question: "Why does employer match change the picture so much?"
     answer: "Because an employer may add 50 cents or €1 for every euro you contribute, up to the scheme's cap. That creates an immediate 50% or 100% uplift before market movement. The comparison with a card's annual rate is not perfectly like for like, because the pension money may be locked up or subject to vesting, but the uplift is large enough that many people capture the available match while also reducing expensive debt. This is why many people take the match early, often alongside paying down high-interest debt, even though the common default order lists high-interest debt first. The caveats: matched money is usually locked until retirement age, some matches vest only after a period of service, and someone struggling to meet minimum payments may need the cash now. A match that goes unclaimed in a given year is usually gone for good, which is the main reason it rarely waits long."
   - question: "What about tax deductions on debt interest?"
     answer: "In some jurisdictions, certain debts (most commonly mortgages) carry tax deductibility on the interest paid. This lowers the after-tax debt rate for calculation purposes. A mortgage at 4% with a 30% marginal-tax deduction on interest has an after-tax rate closer to 2.8%. The like-for-like comparison is the after-tax debt rate against the after-tax investment return. Details vary by jurisdiction (the US mortgage-interest deduction has been capped, the UK restricted relief for buy-to-let, India has specific rules, etc.); the concept travels, the numbers are local. Deductibility is worth checking rather than assuming; when it applies, it can swing a marginal decision by a percentage point or two."
   - question: "How should I handle multiple debts at different rates?"
-    answer: "A common default order, after minimum payments on everything: a starter emergency fund of about one month of expenses; then high-interest debt (in low-inflation economies, roughly anything above 8 to 10% after tax), with any employer match often taken alongside because of its instant return; then a full emergency fund of three to six months; then tax-advantaged investing; then remaining debt in order of rate, highest first (the avalanche approach from the [get out of debt post](/blog/how-to-get-out-of-debt/)); then taxable investing. It is a default, not a rule. Income-driven student loan repayment, a planned near-term purchase, unstable income, high local inflation or a strong preference for being debt-free can all justify a different order. Its value is having a deliberate priority rather than sending cash to whichever balance feels most urgent."
-  - question: "Isn't there a psychological benefit to paying off debt regardless of the math?"
-    answer: "Yes, and it is worth respecting even when the math says otherwise. The [mental accounting post](/blog/mental-accounting/) covered how debt often carries emotional weight beyond its pure cash-flow cost: a mortgage that is technically low-rate can still feel like a burden that limits life choices. If paying off a low-rate debt aggressively gives you materially more risk tolerance in the rest of your life (able to take a lower-paying job you would love, able to weather income disruption, able to sleep well), that is a real benefit and can justify the expected-value cost. What helps is knowing what the arithmetic says first, so that any departure from it is a deliberate choice rather than a default. A costly pattern is paying down the debt that feels scariest while a more expensive one keeps compounding."
+    answer: "A common default order, after minimum payments on everything: a starter emergency fund of about one month of expenses; then high-interest debt (in low-inflation economies, roughly anything above 8 to 10% after tax), with any employer match often taken alongside because of its instant return; then a full emergency fund of three to six months; then tax-advantaged investing; then remaining debt in order of rate, highest first (the avalanche approach from the [get out of debt lesson](/blog/how-to-get-out-of-debt/)); then taxable investing. It is a default, not a rule. Income-driven student loan repayment, a planned near-term purchase, unstable income, high local inflation or a strong preference for being debt-free can all justify a different order. Its value is having a deliberate priority rather than sending cash to whichever balance feels most urgent."
+  - question: "Isn't there a psychological benefit to paying off debt regardless of the maths?"
+    answer: "Yes, and it is worth respecting even when the maths says otherwise. The [mental accounting lesson](/blog/mental-accounting/) covered how debt often carries emotional weight beyond its pure cash-flow cost: a mortgage that is technically low-rate can still feel like a burden that limits life choices. If paying off a low-rate debt aggressively gives you materially more risk tolerance in the rest of your life (able to take a lower-paying job you would love, able to weather income disruption, able to sleep well), that is a real benefit and can justify the expected-value cost. What helps is knowing what the arithmetic says first, so that any departure from it is a deliberate choice rather than a default. A costly pattern is paying down the debt that feels scariest while a more expensive one keeps compounding."
 relatedTool:
   url: "/free/invest-or-pay-off"
   label: "Invest or pay off calculator"
@@ -64,6 +66,9 @@ relatedTool:
 reelPromise: "Why many people take an employer match early, a seven step default order for several debts, and the mental accounting trap that quietly costs households thousands"
 relatedSlugs: ["liabilities", "how-to-get-out-of-debt", "investing-101-asset-classes", "mental-accounting", "getting-started-investing"]
 referentialReading:
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -80,7 +85,7 @@ Eva, 31, has €500 a month to spare. She has a €280,000 mortgage at 3.4%, a �
 
 ## The rate sets a debt's cost, not its size
 
-Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing has an [expected return](#term-expected-return), but the actual return is uncertain and may be higher or lower than the debt's rate. Diversified world shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that. A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs near 2%. The examples here use 7%, an illustration rather than a forecast.
+Paying down a debt avoids the interest you would otherwise pay, so it earns a return equal to the debt's rate: certain and immediate. Investing has an [expected return](#term-expected-return), but the actual return is uncertain and may be higher or lower than the debt's rate. Diversified world shares returned about 5% a year after inflation from 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026), with single countries well above or below that. A debt's rate includes inflation, so the like-for-like figure is the return before inflation: about 7% a year if inflation runs near 2%. The examples here use 7%, an illustration rather than a forecast.
 
 For Eva, €500 extra on the mortgage avoids about €17 of interest in a year. The same €500 on the card avoids about €110. Size does not set the cost; the rate does.
 
@@ -158,8 +163,8 @@ Most households have several debts at once. A common default order, after minimu
 2. **High-interest debt,** roughly above 8 to 10% after tax in low-inflation economies.
 3. **The employer match,** often taken alongside step 2 or before it.
 4. **A full [emergency fund](/blog/emergency-fund/),** commonly three to six months of costs.
-5. **Tax-advantaged investing,** up to the yearly limit or what is realistic (the [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covers the categories).
-6. **Remaining debt by rate, highest first:** the [avalanche method](#term-avalanche-method) from the [get out of debt post](/blog/how-to-get-out-of-debt/).
+5. **Tax-advantaged investing,** up to the yearly limit or what is realistic (the [tax-advantaged accounts lesson](/blog/tax-advantaged-accounts/) covers the categories).
+6. **Remaining debt by rate, highest first:** the [avalanche method](#term-avalanche-method) from the [get out of debt lesson](/blog/how-to-get-out-of-debt/).
 7. **Taxable investing** with what is left.
 
 It is a default, not a rule. Income-based student loan repayment, a purchase in the next year or two, unstable income, high local inflation or a strong wish to be debt-free can all justify another order. Its value is having a deliberate priority rather than paying whichever balance feels most urgent.
@@ -182,18 +187,18 @@ Some steps run in parallel; the order sets where the main flow of cash goes.
 
 ## In the 4 to 8% band, either choice is defensible
 
-Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. This lesson assumes shares return 7% a year before inflation: world shares' 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), combined with an assumed 2% inflation, gives about 7.3%, rounded here to 7%. Actual returns include bad years and bad decades. At 6.5% against an assumed 7%, the rates are close enough that either choice can be reasonable, though only the interest saving is certain. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
+Overpaying a 6.5% car loan saves 6.5% on every overpaid euro, for certain. This lesson assumes shares return 7% a year before inflation: world shares' 5.3% a year after inflation from 1900 to 2025 (Dimson, Marsh and Staunton), combined with an assumed 2% inflation, gives about 7.4%, rounded here to 7%. Actual returns include bad years and bad decades. At 6.5% against an assumed 7%, the rates are close enough that either choice can be reasonable, though only the interest saving is certain. Common tie-breakers are certainty against expected return, then tax treatment, how much risk the household can carry, and peace of mind.
 
 <details class="lesson-depth">
 <summary class="disclosure">When peace of mind outweighs the arithmetic</summary>
 
-Sometimes the arithmetic says invest and a household prepays debt anyway, and that is not always wrong. A paid-off mortgage can make a lower-paid job you would love, fewer hours with a young child, or a spell without income easier to face. Reducing debt against a home that holds most of your net worth reduces leverage. In the five to ten years before retirement, a bad run of markets hurts more while debt is outstanding (the [financial independence post](/blog/introduction-to-financial-independence/) covers sequence risk), so some households shift toward paying debt down. And fewer moving parts has value for someone who dislikes complexity. Knowing what the arithmetic says first makes any departure a deliberate choice.
+Sometimes the arithmetic says invest and a household prepays debt anyway, and that is not always wrong. A paid-off mortgage can make a lower-paid job you would love, fewer hours with a young child, or a spell without income easier to face. Reducing debt against a home that holds most of your net worth reduces leverage. In the five to ten years before retirement, a bad run of markets hurts more while debt is outstanding (the [financial independence lesson](/blog/introduction-to-financial-independence/) covers sequence risk), so some households shift toward paying debt down. And fewer moving parts has value for someone who dislikes complexity. Knowing what the arithmetic says first makes any departure a deliberate choice.
 
 </details>
 
 ## The traps that cost the most
 
-The [mental accounting post](/blog/mental-accounting/) covered how people sort money into mental boxes. Two mirror-image traps follow. **Paying the biggest debt first:** sending spare cash to a 3.4% mortgage because it feels heavier, while a 22% card keeps compounding. **Investing while a card revolves:** 22% a year is certain; 7% before inflation is a long-run average with large swings, so investing while carrying a 22% card is very likely to lose money against clearing it.
+The [mental accounting lesson](/blog/mental-accounting/) covered how people sort money into mental boxes. Two mirror-image traps follow. **Paying the biggest debt first:** sending spare cash to a 3.4% mortgage because it feels heavier, while a 22% card keeps compounding. **Investing while a card revolves:** 22% a year is certain; 7% before inflation is a long-run average with large swings, so investing while carrying a 22% card is very likely to lose money against clearing it.
 
 <details class="lesson-depth">
 <summary class="disclosure">The debt-free-first school, and the "safe" mortgage overpayment</summary>
@@ -221,6 +226,6 @@ The [mental accounting post](/blog/mental-accounting/) covered how people sort m
 
 </details>
 
-The next post covers refinancing timing, the same question applied over time.
+The next lesson covers refinancing timing, the same question applied over time.
 
 Which of your debts would you pay first if you sorted them by rate rather than by size?

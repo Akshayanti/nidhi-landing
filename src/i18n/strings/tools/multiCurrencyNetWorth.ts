@@ -164,7 +164,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'What\'s the difference between the “Full” and “Redacted” share modes?',
           a:
-            'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the math. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
+            'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the maths. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
         },
         {
           q: 'How are exchange rates sourced?',
@@ -949,8 +949,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
 };
 
 /**
- * "Functional currency" is *moneda de referencia* throughout, the glossary's
- * term for the home currency; the risk badge shortens it to *Referencia*.
+ * The home currency is *la moneda en la que gastas*, the glossary's term
+ * (es-glossary.md, "spending currency"); the risk badge shortens it to
+ * *Moneda de gasto*.
  */
 export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   meta: {
@@ -1604,7 +1605,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         'Vaše čisté jmění se zobrazuje v této měně. Vše v jiné měně se převede podle nejnovějších oficiálních kurzů.',
       share: 'Sdílet',
       shareTitle: 'Sdílet čisté jmění',
-      reset: 'Začít znovu',
+      reset: 'Obnovit výchozí',
       resetTitle: 'Smazat všechna data a začít znovu',
       copiedLabel: 'Odkaz zkopírován do schránky',
       /** Above the address when the browser would not copy it: the reader copies it by hand. */

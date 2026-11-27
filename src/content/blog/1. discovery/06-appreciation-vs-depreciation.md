@@ -13,8 +13,10 @@ takeaways:
   - "Why time is often the most powerful lever in compounding"
 order: 6
 pubDate: 2026-04-29
-updatedDate: 2026-11-22
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
   - date: 2026-11-22
     note: "The lesson gave developed-market shares a range of 4 to 6% a year after inflation and said some countries were nearer 3%. Country returns vary widely, so describing 4 to 6% as the historical range for developed-market shares was misleading. The lesson now leads with the world figure, about 5.2% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with country examples."
   - date: 2026-11-17
@@ -25,6 +27,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["discovery", "fundamentals", "investing"]
 referentialReading:
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -50,7 +55,7 @@ faq:
   - question: "Is a car an asset or a depreciating expense?"
     answer: "A car is an asset on your net worth statement, but it is a depreciating one, so in practice it behaves more like an expense that happens to be a physical object. A new car loses roughly 15 to 20% of its value in the first year and is worth about 40% of the purchase price after five years, a common estimate in European and US used-car markets that varies by model and country. You count it at current market value, but it does not build wealth. Ways people limit the hit include buying a reliable used car rather than new, since much of the depreciation has already happened, and not financing it at a high rate, which stacks interest on top of falling value. Reliability, warranty and budget shape which trade-off makes sense."
   - question: "What kinds of assets typically appreciate?"
-    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. World shares returned about 5% a year after inflation from 1900 to 2024 (Dimson, Marsh and Staunton), with single countries well above or below that, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. That is why many people direct long-term money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
+    answer: "Historically, broad stock market index funds, real estate in growing areas, retirement accounts, and education that raises your earning power tend to appreciate. World shares returned about 5% a year after inflation from 1900 to 2025 (Dimson, Marsh and Staunton), with single countries well above or below that, while house prices have usually beaten inflation only modestly, with big differences by country and city. These are long-term trends, not guarantees: individual countries have endured decade-plus stretches well below average. That is why many people direct long-term money into appreciating assets and let compounding work, while being clear-eyed that returns vary and patience is what unlocks the growth."
 ---
 
 You've got [assets](/blog/assets/) on one side and [liabilities](/blog/liabilities/) on the other. But the story doesn't end at the snapshot. Over time, some assets grow and some shrink. Some liabilities stay manageable and some snowball. The force behind both? Compound interest.
@@ -63,7 +68,7 @@ Appreciation is when something increases in value over time.
 - An index fund purchased for €5,000 that grows to €12,000 has appreciated
 - Even a savings account appreciates (slowly) when it earns interest
 
-Dimson, Marsh and Staunton's long-run data puts world shares at about 5.2% a year after inflation from 1900 to 2024 (UBS Global Investment Returns Yearbook 2025). Single countries spread widely around that: the US returned 6.6% a year over the same years, while Italy, Belgium and Austria returned under 3% a year after their own inflation from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). Residential property prices have tended to rise a little faster than inflation over long periods in many markets, with very large differences by country and city. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
+Dimson, Marsh and Staunton's long-run data puts world shares at about 5.3% a year after inflation, measured in US dollars, from 1900 to 2025 (as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026). Single countries, each measured in its own currency, spread widely around that: the US returned 6.6% a year from 1900 to 2024 (UBS Global Investment Returns Yearbook 2025), while Italy, Belgium and Austria returned under 3% a year after their own inflation from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). Residential property prices have tended to rise a little faster than inflation over long periods in many markets, with very large differences by country and city. These aren't guarantees and individual countries have had decade-plus periods well below these averages, but they're the long-term trend.
 
 The key insight: appreciation rewards patience. The longer you hold an appreciating asset, the more it compounds.
 
@@ -138,7 +143,7 @@ None of this means depreciating things are bad buys. Most people need a car to g
 
 1. **Where compounding works for people.** Broad index funds, retirement accounts and, for some, real estate are the most common ways people let compounding work over long periods, each with its own risks, costs and tax rules depending on your country.
 2. **How depreciation shows up.** A used car loses value more slowly than a new one, and financing a depreciating item at a high rate stacks interest on top of the falling value. Whether that trade-off is worth it depends on reliability, warranty and your budget.
-3. **Why high-interest debt matters here.** As we covered in the [liabilities post](/blog/liabilities/), clearing high-interest debt is a guaranteed return equal to its rate, which is hard for any investment to match.
+3. **Why high-interest debt matters here.** As the [liabilities lesson](/blog/liabilities/) covered, clearing high-interest debt is a guaranteed return equal to its rate, which is hard for any investment to match.
 4. **Why timing matters.** Time is often the most powerful lever in compounding, and it's the one you can't get back, which is why the start date matters so much in the examples above.
 
-Understanding appreciation and depreciation; and the compound interest that drives both; changes how you see every financial decision. In the next post, we'll look at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.
+Understanding appreciation and depreciation; and the compound interest that drives both; changes how you see every financial decision. The next lesson looks at another dimension of asset quality: liquidity, and why being unable to access your money when you need it can be just as dangerous as not having any.

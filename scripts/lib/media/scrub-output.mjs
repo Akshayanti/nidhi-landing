@@ -590,12 +590,12 @@ export function scrubPlan(plan) {
     ).filter(k => k.length > 0);
     const kws = cleaned.caption.instagramKeywords;
 
-    if (kws.length < 13 || kws.length > 18) {
+    if (kws.length < 18 || kws.length > 24) {
       violations.push({
         field: "caption.instagramKeywords",
         rule: "keyword-count-out-of-range",
         quote: `${kws.length}`,
-        suggestion: "PLAYBOOK §6 sweet spot is 13–18 keywords per post. Below 13 leaves reach on the table; above ~30 triggers the IG spam filter; above 60 drops the post out of recommended-to-non-followers.",
+        suggestion: "PLAYBOOK §6 range is 18–24 keywords per post, as the kit lint enforces. Below 18 leaves reach on the table; above ~30 triggers the IG spam filter; above 60 drops the post out of recommended-to-non-followers.",
       });
     }
 

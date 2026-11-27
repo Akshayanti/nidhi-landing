@@ -46,7 +46,7 @@ faq:
     answer: "Refinancing replaces an existing loan with a new one, usually for a lower rate, a different term, or a switch between fixed and variable. It makes sense when rates have dropped meaningfully, your credit has improved, or your loan type no longer fits. The test is break-even analysis: divide the new loan's fees by the monthly payment savings to get the number of months to recoup the cost, then compare that to how long you will actually hold the loan. Two cautions: some loans charge prepayment or early-termination penalties, and refinancing restarts the amortization clock, so a fresh 25-year loan can lower the payment while increasing total interest paid."
 relatedTool:
   url: "/free/loan-comparison"
-  label: "Loan comparison calculator"
+  label: "Loan comparison"
   cta: "Compare any two offers including fees"
   idea: "Compare loans by APR and total cost of borrowing, not by the advertised rate."
 reelPromise: "How APR hides fees, why amortization matters for refinancing, and a side-by-side calculator that surfaces the real total cost"
@@ -73,7 +73,7 @@ Two lenders offer you a mortgage. Bank A advertises 3.2%. Bank B advertises 3.1%
 
 Except Bank B charges €3,000 in arrangement fees, requires insurance costing €2,500 over the term, and switches to a variable rate after the first 5 years. Bank A has no fees, a rate fixed for the whole term, and free prepayment. For the €250,000 loan over 25 years shown below, total payments including those costs are about €363,510 for A and €365,070 for B if B's rate stays at 3.1% throughout. Under that assumption, A costs about €1,560 less. B's actual total depends on its rate after year 5.
 
-A common way people overpay on loans is comparing the wrong number. The [liabilities post](/blog/liabilities/) covered why the interest rate matters most when evaluating existing debt. This post is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
+A common way people overpay on loans is comparing the wrong number. The [liabilities lesson](/blog/liabilities/) covered why the interest rate matters most when evaluating existing debt. This lesson is the other side: how to actually compare offers *before* you borrow, so you don't sign something you'll regret for twenty years.
 
 ## Why the advertised rate is misleading
 
@@ -112,7 +112,7 @@ The loan with the lowest rate (D) is not the cheapest once its fee and bundled i
 
 *Those compounded EU and UK figures are [effective annual rates](#term-effective-annual-rate), which count compounding within the year. For example, a stated (nominal) annual interest rate of 12%, compounded monthly with no fees, gives an effective annual rate of about 12.7%. Whether a disclosed loan rate also includes fees depends on the disclosure rules.*
 
-*The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product. The APR counts each cost when it is paid: the fee at the start, and the insurance spread evenly over the 300 monthly payments (about €8 a month for B, about €43 for D). They're representative numbers chosen so the math reproduces. Real quotes vary by lender and borrower profile.*
+*The "bundled insurance" figures above are the lifetime cost of the mandatory insurance product. The APR counts each cost when it is paid: the fee at the start, and the insurance spread evenly over the 300 monthly payments (about €8 a month for B, about €43 for D). They're representative numbers chosen so the maths reproduces. Real quotes vary by lender and borrower profile.*
 
 > **Check what's included locally.** APR calculation rules differ by country. Two lenders may quote APR slightly differently. Ask what's included. What an APR must include is set by consumer-credit law, which differs by country. If something is excluded (like life insurance mandated alongside the loan), build it into your own comparison.
 
@@ -136,11 +136,11 @@ A hybrid common in many markets: fixed for an initial period (e.g. 5 or 10 years
 
 The right choice depends on your cash flow stability, how long you expect to hold the loan, and your honest tolerance for payment shock. "Cheaper on paper right now" is not the same as "cheaper over the loan's life."
 
-## Amortisation: how a loan actually gets paid
+## <span id="amortisation-how-a-loan-actually-gets-paid"></span>Amortization: how a loan actually gets paid
 
 When you make a monthly mortgage payment, a portion goes to interest and a portion goes to principal (the amount you still owe, distinct from the interest you pay on it each period). The split changes over the life of the loan. Most borrowers don't realize how extreme the early-years skew is.
 
-Illustrative (a separate example from the APR table above; we round the rate to a clean 3% here so the amortization maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment of €1,185.53.
+Illustrative (a separate example from the APR table above; the rate is rounded to a clean 3% here so the amortization maths reproduce easily): €250,000 mortgage, 3% fixed rate, 25-year term. Monthly payment of €1,185.53.
 
 | Payment number | Interest portion | Principal portion | Balance after |
 |---|---|---|---|
@@ -243,7 +243,7 @@ Example: the €250,000, 3%, 25-year mortgage above has total interest of about 
 
 The interest avoided through prepayment works like a return on the money used. On a fixed-rate loan, with no prepayment charge or tax relief on interest, that rate is known: about 3% a year for a 3% loan, or 7% for a 7% loan, while the debt would otherwise remain outstanding.
 
-On a variable-rate loan, the saving changes with the rate. Tax relief can reduce it too: if every euro of interest on a 3% loan reduces tax by 30 cents, the net saving is about 2.1% a year. Comparisons with investing use returns after fees and taxes and treat inflation consistently on both sides. Access to cash matters as well. Unless the loan has a redraw or similar facility, recovering prepaid money generally requires new borrowing on the terms available then. That makes prepayment different from an accessible emergency fund. Many people therefore prioritize expensive debt, while the choice for a low-rate loan depends more on taxes, cash reserves, investment risk and personal preferences. The [saving vs. investing post](/blog/saving-vs-investing/) explores that comparison.
+On a variable-rate loan, the saving changes with the rate. Tax relief can reduce it too: if every euro of interest on a 3% loan reduces tax by 30 cents, the net saving is about 2.1% a year. Comparisons with investing use returns after fees and taxes and treat inflation consistently on both sides. Access to cash matters as well. Unless the loan has a redraw or similar facility, recovering prepaid money generally requires new borrowing on the terms available then. That makes prepayment different from an accessible emergency fund. Many people therefore prioritize expensive debt, while the choice for a low-rate loan depends more on taxes, cash reserves, investment risk and personal preferences. The [saving vs. investing lesson](/blog/saving-vs-investing/) explores that comparison.
 
 Important: some loans, especially fixed-rate mortgages in certain markets, charge prepayment penalties. Check your specific loan before planning a prepayment strategy. Any right to repay early, and any cap on early-repayment fees, is set by consumer-credit law where you live, and the lender can say what your contract allows. A few examples of how much the rules differ: in India, lenders may not charge prepayment or foreclosure fees on floating-rate loans to individuals for non-business purposes (RBI rules in force from January 2026); in Germany, a fixed-rate mortgage can be ended without compensation with six months' notice once ten years have passed since the loan was fully disbursed, that is, since the lender handed over the whole amount (a later agreement on the repayment timing or the interest rate can restart the clock), while earlier repayment usually costs a Vorfälligkeitsentschädigung; in the UK, early repayment charges of a few percent are common during a fixed-rate period; in the US, most mortgages carry no prepayment penalty.
 
@@ -266,7 +266,7 @@ Here's a side-by-side comparison framework that won't mislead you:
 
 *Illustrative.*
 
-If you'd rather not work the table by hand, the <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison calculator</a> runs the math for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
+If you'd rather not work the table by hand, the <a href="/free/loan-comparison/" data-attr="post-inline-tool-loan-comparison">loan comparison</a> runs the maths for up to five offers side by side: monthly payment, time to payoff, total interest, and total amount paid, with origination fees and extra-monthly-principal modelling included. It supports multiple currencies and uses the right local conventions, so an INR comparison reads with proper lakh/crore grouping.
 
 The best offer is not always the one with the lowest rate. It's the one whose total cost, APR, and contractual terms align best with your actual plan.
 
@@ -287,9 +287,9 @@ The best offer is not always the one with the lowest rate. It's the one whose to
 3. **Read the variable-rate clause carefully.** What index? What margin? How often can it reset? What's the maximum it can rise to?
 4. **Check prepayment rules before signing.** Free prepayment is a valuable option even if you never use it
 5. **Model the worst case.** For any variable-rate loan, model the highest realistic rate and confirm you can live with the payment
-6. **Do the break-even math on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
+6. **Do the break-even maths on points and refinancing.** Fees divided by monthly savings = months to recoup. Compare to how long you'll actually hold
 7. **The case for prepaying rises with the rate.** A higher borrowing rate increases the interest avoided by repaying principal. For a fixed-rate loan, that saving can be calculated in advance under the loan's terms; investment returns remain uncertain. With a low-rate loan, taxes, investment fees and risk, the time horizon, access to cash and personal preferences can matter more to the comparison. See [saving vs. investing](/blog/saving-vs-investing/) for the framing
 
 Loans are contracts. The rate on the billboard is the invitation. The APR, the total cost, the amortization schedule, and the fine print are the actual deal. Knowing what to compare is most of the battle; the rest is discipline to keep comparing until the cheapest honest offer is clear.
 
-The single largest loan most people will ever take is a mortgage, and the asset that loan buys is real estate. The next post zooms in on real estate as an asset class: how it actually generates returns once you net out maintenance, taxes, and transaction costs, why leverage cuts both ways, and how to run an honest rent-vs-buy comparison instead of the sloppy one.
+The single largest loan most people will ever take is a mortgage, and the asset that loan buys is real estate. The next lesson zooms in on real estate as an asset class: how it actually generates returns once you net out maintenance, taxes, and transaction costs, why leverage cuts both ways, and how to run an honest rent-vs-buy comparison instead of the sloppy one.

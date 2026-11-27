@@ -183,7 +183,7 @@ export const monteCarloEn = {
           a: "All returns are real returns, after inflation. A result of 500,000 means 500,000 of today's purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.",
         },
         {
-          q: 'What does “the money lasted in 8 in 10 paths” mean?',
+          q: 'What does it mean that the money lasted in 8 of 10 paths?',
           a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
         },
         {
@@ -694,7 +694,7 @@ export const monteCarloHi: typeof monteCarloEn = {
       copy: 'इस योजना का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
-      reset: 'रीसेट',
+      reset: 'रीसेट करें',
       fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
@@ -808,7 +808,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     browserRequirements: 'Requiere JavaScript. Navegador moderno.',
     featureList: [
       'De {minPaths} a {maxPaths} trayectorias simuladas de rentabilidades anuales',
-      'Supuestos de rentabilidad basados en los mercados mundiales de acciones y bonos de 1900 a 2025, con escenarios prudente y optimista',
+      'Supuestos de rentabilidad basados en los mercados mundiales de acciones y bonos de 1900 a 2025, con opciones prudente y optimista',
       'Comisiones anuales',
       'Fase de ahorro y fase de retiros opcional',
       'Combinación de acciones y bonos, con reequilibrio anual',
@@ -883,7 +883,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿De dónde salen los supuestos de rentabilidad?',
-          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en una tasa prudente y otra optimista, a uno y otro lado de la rentabilidad compuesta de ese historial (alrededor del 5,3 % anual en acciones y del 1,7 % en bonos): acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
+          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. La opción «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en una tasa prudente y otra optimista, a uno y otro lado de la rentabilidad compuesta de ese historial (alrededor del 5,3 % anual en acciones y del 1,7 % en bonos): acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
         },
         {
           q: '¿Cuántas trayectorias conviene simular?',
@@ -999,11 +999,11 @@ export const monteCarloEs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario prudente, por debajo de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: una opción prudente, por debajo de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
       historical:
         'Los mercados mundiales de 1900 a 2025: las acciones crecieron alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}, con los altibajos que tuvieron en realidad.',
       optimistic:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario optimista, por encima de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: una opción optimista, por encima de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
     },
     settings: {
       toggle: 'Comisiones y trayectorias simuladas',

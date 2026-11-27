@@ -103,7 +103,7 @@ export const es: Dict = {
       thirdParty: 'Licencias de terceros',
     },
     disclaimerShort:
-      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un asesor financiero con licencia.',
+      'nidhi ofrece información y herramientas educativas para ayudarte a entender tu dinero. No es un servicio de asesoría financiera con licencia.',
     disclaimerLong:
       'El contenido y las herramientas son educativos y no deben tomarse como asesoramiento profesional financiero, de inversión ni fiscal. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones importantes, consulta a un profesional acreditado.',
     copyright: '© {year} nidhi. Todos los derechos reservados.',
@@ -355,6 +355,7 @@ export const es: Dict = {
       motion: 'Si tu dispositivo pide movimiento reducido, las animaciones y el desplazamiento suave se desactivan.',
       theme: 'Hay un tema claro y uno oscuro, que se elige con el selector de la parte superior de la página o se toma de tu dispositivo.',
       charts: 'En las herramientas gratuitas, las líneas de un gráfico se distinguen por su trazo además de por el color, y los gráficos se pueden leer con el teclado.',
+      screenReader: 'En las herramientas gratuitas, un lector de pantalla oye el resultado en una frase breve cuando dejas de escribir, y la ayuda de cada campo al llegar a él.',
       lessons: 'Cada lección empieza con un resumen breve, dice cuánto se tarda en leerla e indica su nivel, para que puedas decidir qué leer antes de empezar.',
       languages: 'Las páginas propias del sitio están en cinco idiomas. Las lecciones están solo en inglés.',
     },
@@ -363,13 +364,10 @@ export const es: Dict = {
       limits: 'Es una revisión, no una garantía. No incluyó pruebas con personas con discapacidad, con un lector de pantalla, en un teléfono real ni en Windows High Contrast, así que no puede demostrar que el sitio funcione para todo el mundo.',
     },
     barriers: {
-      intro: 'Estas siguen abiertas a 18 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
+      intro: 'Estas siguen abiertas a 27 de noviembre de 2026. Un punto sale de la lista cuando se arregla, y entra uno nuevo cuando me entero de él.',
       items: {
-        refinanceResults: 'En el comparador de préstamos, cambiar los datos de la refinanciación cambia los totales, el ahorro y el punto de equilibrio sin que el lector de pantalla anuncie esos cambios. Los resultados principales sí se anuncian.',
-        toolQuestions: 'En las páginas de las herramientas, las preguntas del final tienen un título visible, pero el lector de pantalla lo omite al ir de encabezado en encabezado.',
-        copiedLink: 'Después de copiar un enlace para compartir, un lector de pantalla puede anunciar la confirmación dos veces, o ninguna. En el comparador de préstamos, la dirección copiada desaparece a los pocos segundos, y en la calculadora de patrimonio neto, en una pantalla de poca altura, puede quedar por debajo de la parte visible de la ventana.',
-        chartsTouch: 'En un teléfono, si empiezas a desplazarte con el dedo sobre un gráfico del comparador de préstamos o del simulador Monte Carlo, se abre el recuadro con las cifras de ese punto y la página da un salto. Arrastrar el dedo hacia los lados no muestra las cifras de otros puntos: hay que tocar cada punto por separado.',
-        smallText: 'En un teléfono, algunos textos tienen un tamaño inferior al mínimo que el sitio fija para la lectura: el aviso, en las páginas traducidas, de que las lecciones están en inglés, la dirección copiada para compartir y las indicaciones bajo los campos del comparador de préstamos.',
+        copiedLink: 'En la calculadora de patrimonio neto, en una pantalla de poca altura, la barra con la dirección copiada para compartir puede quedar por debajo de la parte visible de la ventana de compartir.',
+        chartsTouch: 'En un teléfono, el gráfico del saldo del comparador de préstamos muestra las cifras de un punto por cada toque: arrastrar el dedo sobre él desplaza el gráfico en lugar de pasar de un punto a otro. El gráfico del simulador Monte Carlo sí sigue el dedo hacia los lados.',
         legendButton: 'En el gráfico de la calculadora de patrimonio neto, un botón de la leyenda indica que está pulsado, pero volver a pulsarlo no lo desactiva.',
       },
     },
@@ -456,7 +454,7 @@ export const es: Dict = {
         after: '.',
       },
       advice:
-        'nidhi no es un asesor financiero con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
+        'nidhi no es un servicio de asesoría financiera con licencia, y nada de lo que hay en el sitio es asesoramiento financiero personal, de inversión ni fiscal. Las lecciones no recomiendan productos, fondos ni valores concretos. La rentabilidad pasada de cualquier inversión no es indicativa de resultados futuros. Para las decisiones que dependen de tu residencia fiscal, tu situación legal o tu tolerancia al riesgo, un profesional acreditado puede aplicar estas ideas a tus circunstancias.',
       corrections: {
         before:
           'Si algo está mal, quiero corregirlo. Si ves un error, una cifra desactualizada o una afirmación que ya no se sostiene, escribe a ',
@@ -767,7 +765,7 @@ export const es: Dict = {
 
     newsletter: {
       email: 'Tu dirección de correo electrónico.',
-      page: 'La página desde la que te suscribiste (para saber si te trajo el índice del blog o una entrada concreta).',
+      page: 'La página desde la que te suscribiste (para saber si te trajo la lista de lecciones o una lección o guía concreta).',
       timestamps: 'La fecha y hora en que te suscribiste, confirmaste y (si lo haces) cancelaste la suscripción.',
       status: 'El estado de tu suscripción: pendiente, confirmada o cancelada.',
       analytics:
@@ -776,7 +774,7 @@ export const es: Dict = {
         'Si se suscribe y confirma suficiente gente, el sitio puede mostrar el total de suscripciones confirmadas, redondeado hacia abajo. Nunca muestra ninguna dirección de correo ni si una persona concreta se ha suscrito.',
       from: {
         before: 'Los correos del boletín llegan desde ',
-        after: '. Añádela a tus contactos para que los avisos de nuevas entradas lleguen a tu bandeja de entrada.',
+        after: '. Añádela a tus contactos para que los avisos de nuevas lecciones y guías lleguen a tu bandeja de entrada.',
       },
     },
     waitlist: {
@@ -854,12 +852,12 @@ export const es: Dict = {
     why: {
       analytics: {
         lead: 'Analítica:',
-        rest: ' para averiguar qué entradas ayudan de verdad a la gente y en cuáles se pierde a mitad de camino. No podemos arreglar lo que no vemos.',
+        rest: ' para averiguar qué lecciones y guías ayudan de verdad a la gente y en cuáles se pierde a mitad de camino. No podemos arreglar lo que no vemos.',
       },
       newsletter: {
         lead: 'Boletín:',
         rest:
-          ' para enviarte un correo cuando se publica una nueva entrada del blog, más un recordatorio si empiezas a suscribirte pero no confirmas en 3 días (enviado entre las 9:00 y las 12:00, hora de Praga). Ningún otro correo. Sin promociones, sin secuencias de «te echamos de menos», sin promoción cruzada de otros productos.',
+          ' para enviarte un correo cuando se publica una nueva lección o guía, más un recordatorio si empiezas a suscribirte pero no confirmas en 3 días (enviado entre las 9:00 y las 12:00, hora de Praga). Ningún otro correo. Sin promociones, sin secuencias de «te echamos de menos», sin promoción cruzada de otros productos.',
       },
       waitlist: {
         lead: 'Lista de espera:',
@@ -1239,7 +1237,7 @@ export const es: Dict = {
         },
         {
           q: '¿Esto es asesoramiento financiero?',
-          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un asesor financiero con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
+          a: 'No. nidhi es educativo: explica cómo funciona el dinero y te permite modelar tu propia situación. No es un servicio de asesoría financiera con licencia. Para las decisiones importantes, consulta a un profesional acreditado.',
         },
       ],
     },

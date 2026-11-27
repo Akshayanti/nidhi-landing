@@ -34,7 +34,7 @@ faq:
   - question: "Why does currency matter for my finances?"
     answer: "If you earn, spend, save, invest, and retire entirely in one currency, currency is a non-issue. The moment any two of those live in different currencies, the exchange rate between them becomes part of your financial life whether you engage with it or not. Common cases: you earn in euros but send money to family in rupees, your employer grants stock in US dollars, or you hold a pension in pounds from a previous job. The amount on your balance sheet is not literally what you will spend. What you will spend is what those euros translate to at an unknown future exchange rate, at the moment you actually need them in another currency."
   - question: "Which three currencies should I focus on?"
-    answer: "Rather than tracking every currency you touch, focus on three. Your income currency is the one you earn in, usually your main paycheck, say EUR. Your expense currency is the one you actually spend in day to day, which may differ if you live somewhere your employer does not pay you in the local money. Your planning currency is the one your major future goals are denominated in: retirement in India in INR, a property in the US in USD, or family support abroad. The key question is how well these three match. If all three are EUR, you have no real exposure. If they diverge, one or more dimensions of your life is exchange-rate sensitive."
+    answer: "Rather than tracking every currency you touch, focus on three. Your income currency is the one you earn in, usually the currency of your main pay, say EUR. Your expense currency is the one you actually spend in day to day, which may differ if you live somewhere your employer does not pay you in the local money. Your planning currency is the one your major future goals are denominated in: retirement in India in INR, a property in the US in USD, or family support abroad. The key question is how well these three match. If all three are EUR, you have no real exposure. If they diverge, one or more dimensions of your life is exchange-rate sensitive."
   - question: "What is currency concentration and why is it risky?"
     answer: "Currency concentration is holding most of your wealth in a single currency, and it is an easy-to-miss form of under-diversification. Imagine you earn in euros, spend in euros, save in a euro account, hold euro bonds, and expect a pension paid in euros: you are heavily euro-concentrated. (Shares change the picture: even euro-area companies earn part of their money abroad, and a global fund priced in euros, unless it is hedged, still holds dollar, yen and other currencies underneath.) That is fine if all your future expenses are also in euros, because assets and liabilities match. But if you plan to retire in India or send ongoing support in INR, a weaker euro in your retirement years quietly shrinks your effective wealth in the currency that matters. The usual way to reduce that risk is to roughly match the currency mix of assets to the currency mix of future obligations."
   - question: "Why does higher inflation tend to weaken a currency?"
@@ -58,7 +58,7 @@ You live in Berlin. You earn in euros. But your parents are in Bangalore and you
 
 On paper you have a single net worth. In reality, you have five currencies quietly pulling in different directions. Some years they all help. Some years one of them drops 15% and your "pound pension" loses 15% of its value in euro terms without anyone changing a single line on a balance sheet.
 
-This is the normal shape of expat, diaspora, and cross-border lives. Most general personal finance advice skips it. This post is about handling it without turning into a currency trader.
+This is the normal shape of expat, diaspora, and cross-border lives. Most general personal finance advice skips it. This lesson is about handling it without turning into a currency trader.
 
 ## Why currency matters at all
 
@@ -77,7 +77,7 @@ In all of these, the euros on your balance sheet are not literally what you'll s
 
 ## Nominal vs. real, across currencies
 
-We covered in the [purchasing power post](/blog/purchasing-power/) that inflation changes what your money can buy over time. Currencies add a second layer: your money can buy different amounts depending on *where* you spend it.
+The [purchasing power lesson](/blog/purchasing-power/) covered how inflation changes what your money can buy over time. Currencies add a second layer: your money can buy different amounts depending on *where* you spend it.
 
 | Scenario | Amount | What it buys |
 |---|---|---|
@@ -115,7 +115,7 @@ Most expat or diaspora readers are in the second case. Most international profes
 
 ## Currency concentration: the invisible under-diversification
 
-The [diversification post](/blog/diversification/) covered six dimensions of spreading risk. Currency was one of them, and it's one of the easiest to miss.
+The [diversification lesson](/blog/diversification/) covered six dimensions of spreading risk. Currency was one of them, and it's one of the easiest to miss.
 
 Consider a typical situation: you earn in euros, spend in euros, save in a euro-denominated bank account, hold euro bonds, and expect a pension paid in euros. Your life is heavily euro-concentrated. (Shares change the picture: even euro-area companies earn part of their money abroad, and a global fund priced in euros, unless it is hedged back to euros, holds mostly other currencies underneath.)
 
@@ -238,4 +238,4 @@ If you'd rather not assemble the holdings side by hand, the [multi-currency net 
 
 Multi-currency life isn't a complication. It's a feature of international careers and diaspora families. It only becomes a problem when it's invisible. Once you've mapped it, the rest is steady maintenance, the same way you maintain asset allocation or emergency fund sizing.
 
-Financial independence takes a slightly different shape when your income is in one currency and your planned life in another, but the core math still holds. We'll cover a practical planning technique that leverages this gap, geographic arbitrage, in the Optimizing level. For now, every concept covered so far (risk, asset classes, diversification, accounts, taxes, FIRE, passive income, loans, real estate, currencies) has been a *capability*. The remaining question is what you actually want to do with all of it. That's where goals come in, and it's where we go next.
+Financial independence takes a slightly different shape when your income is in one currency and your planned life in another, but the core maths still holds. The Optimizing level covers a practical planning technique that leverages this gap: geographic arbitrage. For now, every concept covered so far (risk, asset classes, diversification, accounts, taxes, FIRE, passive income, loans, real estate, currencies) has been a *capability*. The remaining question is what you actually want to do with all of it. That's where goals come in, and they are the subject of the next lesson.

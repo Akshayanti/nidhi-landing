@@ -198,7 +198,7 @@ export const en = {
    */
   rss: {
     linkTitle: 'nidhi | Lessons on personal finance',
-    feedTitle: 'nidhi: Lessons on personal finance',
+    feedTitle: 'nidhi: lessons on personal finance',
     feedDescription:
       'Free personal finance education: net worth, budgeting, saving, investing, and debt management. Build your financial literacy step by step.',
     /** The how-to guides' own feed, at /how-to/rss.xml: the lesson feed is what the newsletter mails from, so guides are kept out of it. */
@@ -435,6 +435,7 @@ export const en = {
       motion: 'If your device asks for reduced motion, animations and smooth scrolling are switched off.',
       theme: 'There is a light and a dark theme, chosen with the switch at the top of the page or taken from your device.',
       charts: 'In the free tools, the lines of a chart differ by pattern as well as colour, and the charts can be read with a keyboard.',
+      screenReader: 'In the free tools, a screen reader hears a result in one short sentence once you stop typing, and the help under a box when you reach it.',
       lessons: 'Every lesson opens with a short summary, says how long it takes to read, and is marked with a level, so you can decide what to read before you start.',
       languages: 'The site’s own pages are in five languages. The lessons are in English only.',
     },
@@ -443,13 +444,10 @@ export const en = {
       limits: 'That is a review, not a guarantee. It did not include testing with disabled readers, with a screen reader, on a real phone or in Windows High Contrast, so it cannot show that the site works for everyone.',
     },
     barriers: {
-      intro: 'These are open as of 18 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
+      intro: 'These are open as of 27 November 2026. An item leaves this list when it is fixed, and a new one joins when I learn of it.',
       items: {
-        refinanceResults: 'In the loan comparison, changing the refinance figures changes the totals, the saving and the break-even point without a screen reader being told. The main results are announced.',
-        toolQuestions: 'On the tool pages, the questions at the end have a visible title, but a screen reader skips that title when moving from heading to heading.',
-        copiedLink: 'After a share link is copied, a screen reader may announce the confirmation twice, or not at all. In the loan comparison, the copied address disappears after a few seconds, and in the net worth calculator on a short screen it can appear below the part of the window you can see.',
-        chartsTouch: 'On a phone, starting a scroll with your finger on a chart in the loan comparison or the Monte Carlo simulator opens the box showing the figures for that point and makes the page jump. Dragging sideways does not show the figures for other points: each point needs a new tap.',
-        smallText: 'On a phone, some text is smaller than the site’s minimum reading size: the note on translated pages that lessons are in English, the copied share address, and the hints under the loan comparison’s fields.',
+        copiedLink: 'In the net worth calculator on a short screen, the bar with the copied share address can appear below the part of the share window you can see.',
+        chartsTouch: 'On a phone, the loan comparison’s balance chart shows the figures for one point per tap: dragging a finger along it scrolls the chart instead of moving between points. The Monte Carlo chart follows a sideways drag.',
         legendButton: 'In the net worth calculator’s chart, a legend button reports that it is pressed, but pressing it again does not turn it off.',
       },
     },
@@ -762,7 +760,7 @@ export const en = {
       },
       education: {
         strong: 'Educational, not advice.',
-        rest: ' Each tool shows you the math behind the answer and the assumptions it makes, so you can apply the same logic to your own situation. For decisions that matter, talk to a qualified professional.',
+        rest: ' Each tool shows you the maths behind the answer and the assumptions it makes, so you can apply the same logic to your own situation. For decisions that matter, talk to a qualified professional.',
       },
     },
     footer: {
@@ -863,10 +861,10 @@ export const en = {
       // precedes it and `after` begins with the colon that follows it.
       freeTools: {
         before:
-          'Interaction events on the Free tools pages. On the loan-comparison calculator: which currency you pick; whether you switch an offer between solving for term and monthly payment, or between a fixed and a changing rate; that you add or remove an offer (with how many there are and which slot, A to E, never its name); which results tab you open, and which offer you pick there or open the details of; that you changed the time horizon or a refinance setting (which setting, never its value); that a field was left invalid (how many offers, which slot and which kind of problem); whether you open the share dialog, copy the shareable link or open a shared view (with how many offers it holds and its campaign source); and whether you reset the form. ',
+          'Interaction events on the Free tools pages. On the loan comparison: which currency you pick; whether you switch an offer between solving for term and monthly payment, or between a fixed and a changing rate; that you add or remove an offer (with how many there are and which slot, A to E, never its name); which results tab you open, and which offer you pick there or open the details of; that you changed the time horizon or a refinance setting (which setting, never its value); that a field was left invalid (how many offers, which slot and which kind of problem); whether you open the share dialog, copy the shareable link or open a shared view (with how many offers it holds and its campaign source); and whether you reset the form. ',
         strong: 'The financial values you type are never sent',
         after:
-          ': not the loan amount, not the interest rate, not the fees, not the lender’s name. The whole point of the calculator is that the math runs in your browser.',
+          ': not the loan amount, not the interest rate, not the fees, not the lender’s name. The whole point of the calculator is that the maths runs in your browser.',
       },
       toolAddresses:
         'On every free tool, the page address never carries what you type, so the page URL that analytics records cannot either. The tools do not write your inputs into the address while you use them. A share link carries them after the # sign, a part of the address browsers never send to a server, and the page moves them out of the address bar before analytics start. As a backstop, the analytics script removes everything except campaign parameters (utm_source and the like) from any free-tool address before an event is sent.',
@@ -922,7 +920,7 @@ export const en = {
 
     newsletter: {
       email: 'Your email address.',
-      page: 'The page you subscribed from (so we know whether the blog index or a specific post got you there).',
+      page: 'The page you subscribed from (so we know whether the list of lessons or a specific lesson or guide got you there).',
       timestamps: 'Timestamps for when you subscribed, confirmed, and (if you do) unsubscribed.',
       status: 'Your subscription status: pending, confirmed, or unsubscribed.',
       analytics:
@@ -932,7 +930,7 @@ export const en = {
       // The address itself is a `<code>` in the component.
       from: {
         before: 'Newsletter emails come from ',
-        after: '. Add it to your contacts so new-post notifications reach your inbox.',
+        after: '. Add it to your contacts so the emails about new lessons and guides reach your inbox.',
       },
     },
     waitlist: {
@@ -1015,12 +1013,12 @@ export const en = {
     why: {
       analytics: {
         lead: 'Analytics:',
-        rest: ' to figure out which posts actually help people and which ones lose them halfway through. We can’t fix what we can’t see.',
+        rest: ' to figure out which lessons and guides actually help people and which ones lose them halfway through. We can’t fix what we can’t see.',
       },
       newsletter: {
         lead: 'Newsletter:',
         rest:
-          ' to email you when a new blog post is published, plus one reminder if you start subscribing but do not confirm within 3 days (sent between 9 AM and 12 PM Prague time). No other emails. No promos, no “we miss you” sequences, no cross-promoting other products.',
+          ' to email you when a new lesson or guide is published, plus one reminder if you start subscribing but do not confirm within 3 days (sent between 9 AM and 12 PM Prague time). No other emails. No promos, no “we miss you” sequences, no cross-promoting other products.',
       },
       waitlist: {
         lead: 'Waitlist:',

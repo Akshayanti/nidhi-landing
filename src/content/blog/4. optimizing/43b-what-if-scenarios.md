@@ -28,8 +28,10 @@ glossary:
     definition: "The scenario with the less favourable inputs: lower growth, lower income or an unplanned cost. Running it first shows whether a plan still holds."
 order: 43.3
 pubDate: 2026-10-14
-updatedDate: 2026-11-21
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
   - date: 2026-11-21
     note: "The summary, takeaway and FAQ question said a monthly cost outweighs a one-off purchase; that depends on the amounts and period compared, and they now say it can. The lesson also claimed, without a source, that most people would guess a figure nearer €50,000. That claim has been replaced with the €54,000 contributed before growth."
 level: "optimizing"
@@ -38,7 +40,7 @@ personas: ["eva", "petra", "jiri", "marcus"]
 tags: ["optimizing", "planning", "goals"]
 faq:
   - question: "How much does a monthly expense cost over 30 years?"
-    answer: "If the money were invested instead at a 6% real return, a monthly amount grows to very roughly 1,000 times itself over 30 years: €150 a month is about €146,000, €50 a month about €50,000. A one-time cost grows to roughly 6 times itself: a €4,000 holiday is about €23,000. These are rough illustrations under one growth assumption, not predictions. The 6% rate is an illustrative assumption matching the middle scenario in the projections post. At 4% real growth, €150 a month invested at each month's end becomes about €103,000 over 30 years."
+    answer: "If the money were invested instead at a 6% real return, a monthly amount grows to very roughly 1,000 times itself over 30 years: €150 a month is about €146,000, €50 a month about €50,000. A one-time cost grows to roughly 6 times itself: a €4,000 holiday is about €23,000. These are rough illustrations under one growth assumption, not predictions. The 6% rate is an illustrative assumption matching the middle scenario in the projections lesson. At 4% real growth, €150 a month invested at each month's end becomes about €103,000 over 30 years."
   - question: "What is a what-if scenario and how does it relate to a projection?"
     answer: "A what-if scenario is a projection with one variable changed to answer a specific question. The baseline projection uses your current inputs. A scenario asks: what if my savings rate went up by €200 per month? What if I retired five years earlier? What if I moved countries? The scenario re-runs the projection with the changed input and shows the new trajectory alongside the baseline. The value is not the ending number in the alternate; it is the delta between the two, which tells you how much the change actually matters. Change one variable at a time so you can attribute the effect. Model the downside case before the upside so you know whether the plan is robust or fragile."
   - question: "Why can a monthly cost matter more than a bigger one-off purchase?"
@@ -67,11 +69,11 @@ Eva took a €4,000 holiday last year and felt guilty about it for months. The s
 
 Her projection has an opinion about which of those mattered. Over 30 years, invested at a 6% [real return](#term-real-return) instead of spent, the holiday would have become about €23,000. The rent would have become about €146,000.
 
-The 6% assumption matches the middle scenario in the [projections post](/blog/financial-projections/); it is not a forecast or a typical return for every portfolio. For context, the [Global Investment Returns Yearbook 2025](https://www.jbs.cam.ac.uk/2025/report-stocks-have-far-outperformed-over-the-past-125-years/) reports an annualized real return of 5.2% for world equities over 1900 to 2024. At an assumed 4%, the holiday and rent figures are about €13,000 and €103,000. Under either assumption, the rent has the larger projected investment opportunity cost. These calculations express amounts in today's purchasing power, keep the monthly amount constant after inflation, and assume investment at each month's end. They apply a steady return without separately deducting investment fees or taxes.
+The 6% assumption matches the middle scenario in the [projections lesson](/blog/financial-projections/); it is not a forecast or a typical return for every portfolio. For context, Dimson, Marsh and Staunton's data, as reprinted in [Exponential Wealth](https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf) (CFA Institute Research Foundation, 2026), gives an annualized real return of 5.3% for world equities over 1900 to 2025. At an assumed 4%, the holiday and rent figures are about €13,000 and €103,000. Under either assumption, the rent has the larger projected investment opportunity cost. These calculations express amounts in today's purchasing power, keep the monthly amount constant after inflation, and assume investment at each month's end. They apply a steady return without separately deducting investment fees or taxes.
 
 The decision she worried about was the small one.
 
-That comparison is a [what-if scenario](#term-what-if-scenario). The [post on financial projections](/blog/financial-projections/) built the [baseline](#term-baseline): today's numbers, played forward under a range of growth assumptions. This post uses that baseline to test decisions before you make them.
+That comparison is a [what-if scenario](#term-what-if-scenario). The [lesson on financial projections](/blog/financial-projections/) built the [baseline](#term-baseline): today's numbers, played forward under a range of growth assumptions. This lesson uses that baseline to test decisions before you make them.
 
 ## Look at the gap from your baseline, not the end balance
 
@@ -81,11 +83,11 @@ A scenario is your projection with one input changed to answer one question. The
 
 **Costs that repeat are much bigger than they look.** €150 a month (a nicer flat, a car payment, higher childcare) over 30 years at 6% real is worth around €146,000. €150 × 360 months is €54,000 before any growth; at 6% after inflation, growth multiplies that by nearly three.
 
-**One-off costs are much smaller than they feel.** Eva's €4,000 holiday is worth about €23,000 at year 30: real money, but a sixth of what the rent costs. Guilt tracks how noticeable a purchase is; the arithmetic tracks how often it repeats. The [mental accounting post](/blog/mental-accounting/) covers why the two come apart.
+**One-off costs are much smaller than they feel.** Eva's €4,000 holiday is worth about €23,000 at year 30: real money, but a sixth of what the rent costs. Guilt tracks how noticeable a purchase is; the arithmetic tracks how often it repeats. The [mental accounting lesson](/blog/mental-accounting/) covers why the two come apart.
 
-A rough test for any cost over 30 years at 6% real: a one-time cost times about 6, a monthly cost times about 1,000. The holiday: €4,000 × 6, about €24,000. The rent: €150 × 1,000, about €150,000. It is a sketch for comparing choices, not a precise figure. At 4% real growth over the same 30 years, the corresponding rough multipliers are 3 for a one-time amount and 700 for a monthly amount, as in the projections post.
+A rough test for any cost over 30 years at 6% real: a one-time cost times about 6, a monthly cost times about 1,000. The holiday: €4,000 × 6, about €24,000. The rent: €150 × 1,000, about €150,000. It is a sketch for comparing choices, not a precise figure. At 4% real growth over the same 30 years, the corresponding rough multipliers are 3 for a one-time amount and 700 for a monthly amount, as in the projections lesson.
 
-**Time is lopsided.** The projections post showed the cost of starting late. It applies to every scenario: €200 a month more, started five years late, produces roughly 30% less by year 30, because the lost years are the ones with the most time to compound.
+**Time is lopsided.** The projections lesson showed the cost of starting late. It applies to every scenario: €200 a month more, started five years late, produces roughly 30% less by year 30, because the lost years are the ones with the most time to compound.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: over 30 years at 6% real, which costs more, a €6,000 car upgrade once or €50 a month more insurance?</summary>
@@ -102,7 +104,7 @@ Most scenarios turn on a handful of inputs:
 - **The growth assumption.** Scenarios often show that the decision depends more on the growth rate assumed than on the decision itself, which is why many people run each scenario at a low and a middle rate.
 - **A large one-off event:** a house, a wedding, a child's university, a career break.
 - **The retirement date.** Five years earlier or later is usually much larger than intuition suggests, because those are often the highest-contribution and highest-compounding years of the plan.
-- **Where you live,** which is really a bundle: cost of living, currency, tax and which tax-advantaged accounts you can use. A later post treats it in depth.
+- **Where you live,** which is really a bundle: cost of living, currency, tax and which tax-advantaged accounts you can use. A later lesson treats it in depth.
 
 Smaller items (a €30 subscription, a modest side income) matter for this year's cash flow but rarely change the 30-year picture much.
 

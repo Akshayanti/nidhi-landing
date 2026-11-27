@@ -58,7 +58,7 @@ referentialReading:
 
 Arjun and Meera take home €4,500 a month and send €500 to Arjun's parents. Their budget plans €700 of saving, and the €500 comes out of it, so they actually save €200: about 4% of their income, not the 16% on paper. They feel they are failing at something everyone else manages.
 
-In much of South and East Asia, Africa, Latin America, the Middle East and southern and eastern Europe, and in many migrant families, several generations sharing money is ordinary: income is pooled, a grandmother raises the children so both parents can work, a son abroad pays for his father's medicines. The United Nations reports that older people in most of Asia, Africa and Latin America usually live with their children or extended family. The [cash flow post](/blog/cash-flow-101/) pictured one couple and their children. When the real household is wider, that picture misleads in two ways, and this post takes them in turn.
+In much of South and East Asia, Africa, Latin America, the Middle East and southern and eastern Europe, and in many migrant families, several generations sharing money is ordinary: income is pooled, a grandmother raises the children so both parents can work, a son abroad pays for his father's medicines. The United Nations reports that older people in most of Asia, Africa and Latin America usually live with their children or extended family. The [cash flow lesson](/blog/cash-flow-101/) pictured one couple and their children. When the real household is wider, that picture misleads in two ways, and this lesson takes them in turn.
 
 ## Support for parents can work as a fixed cost at the top of the budget
 
@@ -75,7 +75,7 @@ The same household, budgeted with support as a fixed cost:
 | Saving, protected | €400 |
 | Everything else | €500 |
 
-Their income and support did not change, but the budget now shows the trade-off. To save €400 rather than €200, they have allocated €200 less to everything else. Putting support near the top stops it being mistaken for spare money, while the saving amount stays a choice they make. The [goals post](/blog/setting-financial-goals/) argued that a goal needs an amount and a date, and the same applies here: "we help when we can" cannot be budgeted; "€500 a month, reviewed each January" can.
+Their income and support did not change, but the budget now shows the trade-off. To save €400 rather than €200, they have allocated €200 less to everything else. Putting support near the top stops it being mistaken for spare money, while the saving amount stays a choice they make. The [goals lesson](/blog/setting-financial-goals/) argued that a goal needs an amount and a date, and the same applies here: "we help when we can" cannot be budgeted; "€500 a month, reviewed each January" can.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: where did Arjun and Meera's extra €200 of saving come from?</summary>
@@ -89,7 +89,7 @@ Moving the line did not create money. The revised budget saves €200 more becau
 Advice written for nuclear households sees the wider family only as a cost. A [joint family household](#term-joint-family-household), several adult generations or adult siblings living together or pooling much of their money, has real strengths:
 
 - **Shared housing.** One suitably sized home can cost less per person than several homes, though care needs, location and overcrowding can change that.
-- **Childcare inside the family.** The [life events post](/blog/life-events/) put formal childcare at thousands of euros a year; a grandparent at home can remove that and let both parents keep working, protecting two incomes and two pensions.
+- **Childcare inside the family.** The [life events lesson](/blog/life-events/) put formal childcare at thousands of euros a year; a grandparent at home can remove that and let both parents keep working, protecting two incomes and two pensions.
 - **Pooled risk.** When one earner loses a job, others carry the household: insurance older than insurance.
 - **Finance from within** for a deposit, a business, a wedding or a migration that a bank would charge heavily for or refuse.
 
@@ -98,7 +98,7 @@ For many families the arrangement is a net gain in the early and middle years an
 <details class="lesson-depth">
 <summary class="disclosure">Money that moves in both directions</summary>
 
-In these families, inheritance is not one event at the end of a life. Parents fund a child's education and first home, the child later funds the parents' old age, and both contribute to the next generation. Two consequences follow. **Big transfers are worth recording:** who paid for the house, whose name is on it, whether money for a sibling's business was a gift or a loan. Families that never write these down are more likely to fall out when a parent dies. **Whose name an asset is in matters more, not less:** shared money often sits in the name of the eldest, the earner or the son, and ownership follows title (the [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) explains how). The people left exposed are typically daughters-in-law, widows and whoever provided care.
+In these families, inheritance is not one event at the end of a life. Parents fund a child's education and first home, the child later funds the parents' old age, and both contribute to the next generation. Two consequences follow. **Big transfers are worth recording:** who paid for the house, whose name is on it, whether money for a sibling's business was a gift or a loan. Families that never write these down are more likely to fall out when a parent dies. **Whose name an asset is in matters more, not less:** shared money often sits in the name of the eldest, the earner or the son, and ownership follows title (the [unmarried couples lesson](/blog/unmarried-and-cohabiting-couples/) explains how). The people left exposed are typically daughters-in-law, widows and whoever provided care.
 
 </details>
 
@@ -113,7 +113,7 @@ An open-ended commitment with no retirement saving is the version that does the 
 - **A floor under their own saving:** a minimum put away for retirement whatever happens. Where an employer contributes in response to employee contributions, the amount given up below the matching threshold is one cost to weigh in choosing a floor; vesting, contribution limits, tax and access rules matter too.
 - **A ceiling on support:** an amount they can sustain for decades without breaking the floor, rising with income, written as a number.
 
-Between the two there is room to be generous when possible and pull back when necessary. Where there are siblings, an explicit agreement keeps the cost from settling on whoever is nearest, eldest or least able to refuse, often a daughter. Equal shares are simple; shares in proportion to income are often seen as fairer; and time counts as well as money, because the sibling who does daily care pays in hours and often in career (the [caregiving post](/blog/caregiving-and-the-career-break-wealth-gap/) showed how large that cost is). Money from the others toward that sibling's pension is one way to even it out. Many families write the agreement down and review it yearly.
+Between the two there is room to be generous when possible and pull back when necessary. Where there are siblings, an explicit agreement keeps the cost from settling on whoever is nearest, eldest or least able to refuse, often a daughter. Equal shares are simple; shares in proportion to income are often seen as fairer; and time counts as well as money, because the sibling who does daily care pays in hours and often in career (the [caregiving lesson](/blog/caregiving-and-the-career-break-wealth-gap/) showed how large that cost is). Money from the others toward that sibling's pension is one way to even it out. Many families write the agreement down and review it yearly.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: an employer matches pension contributions 100% up to 4% of salary. What does contributing 3% instead of 4% give up?</summary>
@@ -129,7 +129,7 @@ Under those invented terms, each euro below 4% also gives up a euro from the emp
 
 **What parents have.** Planning without knowing your parents' position is guesswork, and the conversation is uncomfortable in most cultures: what pension, savings or property they have, what debts, whether the home is owned and in whose name, whether there is a will, and what they want if one needs full-time care. Sometimes the answer reveals an asset, such as a home that could be downsized or an unclaimed pension, that changes the picture.
 
-**Across a border.** When parents live in another country, the cost of sending the money is part of the obligation; the [moving countries post](/blog/immigrants-expats-and-cross-border-households/) showed how fees can add up and how to compare providers.
+**Across a border.** When parents live in another country, the cost of sending the money is part of the obligation; the [moving countries lesson](/blog/immigrants-expats-and-cross-border-households/) showed how fees can add up and how to compare providers.
 
 </details>
 

@@ -132,8 +132,8 @@ A common benchmark is 20%, matching the savings/debt slice in the guideline abov
 
 ## The connection to net worth
 
-Cash flow and net worth are linked. As we discussed in the [income vs. wealth post](/blog/income-vs-wealth/), the gap between what you earn and what you spend is what feeds your [net worth](/blog/what-is-net-worth/) over time.
+Cash flow and net worth are linked. As the [income vs. wealth lesson](/blog/income-vs-wealth/) explained, the gap between what you earn and what you spend is what feeds your [net worth](/blog/what-is-net-worth/) over time.
 
 Positive cash flow each month means your [assets](/blog/assets/) grow (or your [liabilities](/blog/liabilities/) shrink). Negative cash flow means the opposite. Track one, and you're already managing the other.
 
-That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, a starter cushion is usually the first place it goes: your financial safety net. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) we covered earlier. Many plans follow the same order: stabilize first, then optimize.
+That surplus is the fuel for everything else. If you don't have an [emergency fund](/blog/emergency-fund/) yet, a starter cushion is usually the first place it goes: your financial safety net. If you're carrying high-interest debt, your surplus is also what powers the [snowball or avalanche strategies](/blog/how-to-get-out-of-debt/) from an earlier lesson. Many plans follow the same order: stabilize first, then optimize.

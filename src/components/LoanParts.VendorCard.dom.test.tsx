@@ -154,7 +154,7 @@ function wiring(card: HTMLElement, input: HTMLInputElement): { invalid: string |
   const error = errorOf(card);
   return {
     invalid: input.getAttribute('aria-invalid'),
-    describes: describedBy !== null && error !== null && error.id !== '' && describedBy === error.id,
+    describes: describedBy !== null && error !== null && error.id !== '' && describedBy.split(' ').includes(error.id),
   };
 }
 
@@ -762,6 +762,16 @@ describe('the offer card: the rows of optional boxes', () => {
 });
 
 describe('the offer card: the optional boxes', () => {
+  it('describes each box of a changing rate by the help below it', () => {
+    const { card } = show(loan({ ...HYBRID }));
+    const helped: [string, string][] = [[LABELS.initialFixed, c.initialFixedHelp], [LABELS.subsequentRate, c.subsequentRateHelp]];
+    for (const [label, help] of helped) {
+      const ids = (box(card, label).getAttribute('aria-describedby') ?? '').split(' ');
+      assert.ok(ids.length === 1, label);
+      assert.ok(card.ownerDocument.getElementById(ids[0])?.textContent?.trim() === help.trim(), label);
+    }
+  });
+
   it('labels each box, shows its value and its help, and marks none while they can be read', () => {
     const vendor = loan({
       ...HYBRID, feeMajor: '60', pointsCostMajor: '6', pointsRateReductionPct: '0.25', extraMonthly: '50',
@@ -772,7 +782,10 @@ describe('the offer card: the optional boxes', () => {
       const input = box(card, field.label);
       assert.equal(input.value, vendor[field.key], field.key);
       assert.deepEqual(wiring(card, input), UNMARKED, field.key);
-      assert.ok(!input.hasAttribute('aria-describedby'), field.key);
+      // A box with help below it is described by that help, and only by it while it can be read.
+      const described = (input.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean);
+      assert.ok(described.length <= 1, field.key);
+      assert.ok(described.every((d) => card.ownerDocument.getElementById(d)?.classList.contains('lc-fieldHelp') === true), field.key);
       // The two boxes of a changing rate are needed while they are shown; the rest are optional.
       assert.equal(input.getAttribute('aria-required'), field.hybrid ? 'true' : null, field.key);
     }

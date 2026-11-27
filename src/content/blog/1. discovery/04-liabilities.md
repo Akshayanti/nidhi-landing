@@ -42,7 +42,7 @@ faq:
     answer: "It depends on the country, and the rules change. Some still allow it: the Netherlands at a capped rate (37.56% in 2026), and India up to 2 lakh rupees a year on a self-occupied home, under the old tax regime only. Others have ended it for homeowners, such as the UK in 2000, and Spain's national deduction for homes bought from 2013 (earlier buyers keep a transitional relief). Where it exists, relief lowers the effective cost of the loan. Many people treat a tax break as a secondary factor rather than a reason to borrow, because the rules can change during a 25-year loan. A mortgage already tends to carry the lowest rate and buys an asset that may appreciate, with or without a deduction."
 ---
 
-We've looked at [what you own](/blog/assets/). Now let's look at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth/) equation. And for most people, they're the side that hurts.
+The previous lesson looked at [what you own](/blog/assets/). This one looks at what you owe. Liabilities are the other side of the [net worth](/blog/what-is-net-worth/) equation. And for most people, they're the side that hurts.
 
 ## What is a liability?
 
@@ -102,4 +102,4 @@ Every liability subtracts from your net worth. But the way debts are handled mak
 - Low-interest debt is where people differ: some prefer to invest the difference for a higher expected return (what it might earn on average, with no guarantee), others prefer the certainty of being debt-free
 - Missing minimum payments is costly almost everywhere: lenders add fees and penalties, and it damages your credit record
 
-In the next post, we'll look at two well-known strategies for paying off debt, and what each one suits.
+The next lesson looks at two well-known strategies for paying off debt, and what each one suits.

@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | Le taux que vous avez saisi doit être compris entre 0 % et 100 %. | Le taux que tu as saisi doit être compris entre 0 % et 100 %. | Le taux doit être compris entre 0 % et 100 %. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Avoir du retard dans vos remboursements peut sembler accablant, et il existe des moyens d’obtenir de l’aide. | Avoir du retard dans tes remboursements peut sembler accablant, et il existe des moyens d’obtenir de l’aide. | Un retard de remboursement peut sembler accablant, et il existe des moyens d’obtenir de l’aide. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 The examples avoid *seul* or *seule*, which would give the reader a gender.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),

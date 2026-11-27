@@ -40,7 +40,7 @@ personas: ["eva", "petra", "marcus", "jiri"]
 tags: ["optimizing", "risk", "planning"]
 faq:
   - question: "How do I decide what insurance I actually need?"
-    answer: "The common framework asks two questions for each risk type: what is the maximum plausible loss, and could I absorb that loss from cash and portfolio without material harm? Where the answer is yes, people often self-insure, skipping the cover or choosing a high deductible. Where it is no, insurance covers the portion they cannot absorb. The answer changes as net worth grows: a household with €20,000 in savings cannot self-insure a €50,000 medical event or a €200,000 liability claim, so insurance does real work. A household with €500,000 in liquid assets can absorb a moderate loss but not a catastrophic one; coverage narrows to the catastrophic scenarios. A household with €5 million in assets and no dependants can self-insure most standard events; coverage narrows further to specific-catastrophic-only. The insurance basics post covered the five types generically; this post is about right-sizing as your ability to self-insure grows."
+    answer: "The common framework asks two questions for each risk type: what is the maximum plausible loss, and could I absorb that loss from cash and portfolio without material harm? Where the answer is yes, people often self-insure, skipping the cover or choosing a high deductible. Where it is no, insurance covers the portion they cannot absorb. The answer changes as net worth grows: a household with €20,000 in savings cannot self-insure a €50,000 medical event or a €200,000 liability claim, so insurance does real work. A household with €500,000 in liquid assets can absorb a moderate loss but not a catastrophic one; coverage narrows to the catastrophic scenarios. A household with €5 million in assets and no dependants can self-insure most standard events; coverage narrows further to specific-catastrophic-only. The insurance basics lesson covered the five types generically; this lesson is about right-sizing as your ability to self-insure grows."
   - question: "Should I ever buy whole life insurance?"
     answer: "For pure protection, the case is usually weak. Whole life insurance combines a term-life death benefit with a savings component (cash value that grows over time). The combined product can carry substantial fees and commissions. Whether it finishes behind term insurance plus separate investing depends on the policy's guarantees, illustrated values, tax treatment, investment return and whether the premium difference is actually invested. The exceptions are narrow: specific estate-planning strategies for large estates in jurisdictions where the tax treatment of whole life provides unique benefits, or specific situations where forced savings through the insurance premium is the only way to accumulate savings for a specific person. For most buyers whose goal is protection, term-and-invest-the-difference has come out ahead on the numbers, provided the difference actually gets invested. Whole life is often sold with large commissions, which is a reason to ask how the seller is paid. Products and tax treatment differ by country (endowment and unit-linked plans in India, for example), so the comparison is worth running on local terms."
   - question: "How much liability insurance do I need, and why is it so cheap?"
@@ -64,7 +64,7 @@ referentialReading:
 
 Eva set up her insurance at 25, with a €5,000 emergency fund and a starter salary. At 45 she has a €500,000 portfolio and her children are grown, and she still has the same policies, plus a few added when someone offered them. Like many mid-career households, she is over-insured in some places and under-insured in others.
 
-The [insurance basics post](/blog/insurance-basics/) covered the main kinds of cover. This post covers fitting them to a growing net worth, using one question for each type: what is the largest plausible loss, and could savings and investments absorb it without serious harm? Products, legal minimums and public safety nets differ a lot by country, so the answers depend on where you live and who depends on you.
+The [insurance basics lesson](/blog/insurance-basics/) covered the main kinds of cover. This lesson covers fitting them to a growing net worth, using one question for each type: what is the largest plausible loss, and could savings and investments absorb it without serious harm? Products, legal minimums and public safety nets differ a lot by country, so the answers depend on where you live and who depends on you.
 
 ## The losses you can self-insure grow with your net worth
 
@@ -110,7 +110,7 @@ The person with €3,000: losing €1,500 would take half their savings. For the
 
 Health insurance has an extreme tail in some countries: in the US private system, one serious illness can produce six-figure bills, and out-of-network rules can leave large costs even for insured patients. Very few net worths can absorb that, which is why people rarely go without. Where public healthcare covers most costs, the difference between more and less private top-up cover is much smaller.
 
-There is still room to choose within health cover: the deductible, the type of plan, high-deductible plans with a US health savings account, and separate dental or vision cover. The riskiest moment is a gap between old cover ending and new cover starting, such as leaving an employer plan before US Medicare at 65 (the [income replacement ratio post](/blog/income-replacement-ratio/) covered it) or moving between countries ([geographic arbitrage](/blog/geographic-arbitrage/) covered that). People switching systems usually arrange the overlap in advance.
+There is still room to choose within health cover: the deductible, the type of plan, high-deductible plans with a US health savings account, and separate dental or vision cover. The riskiest moment is a gap between old cover ending and new cover starting, such as leaving an employer plan before US Medicare at 65 (the [income replacement ratio lesson](/blog/income-replacement-ratio/) covered it) or moving between countries ([geographic arbitrage](/blog/geographic-arbitrage/) covered that). People switching systems usually arrange the overlap in advance.
 
 ## Term life usually costs less than whole life for protection
 
@@ -184,6 +184,6 @@ A common routine takes about an hour a year: list every policy (life, disability
 
 </details>
 
-A later post covers scams and fraud: instead of passing remaining risk to an insurer, lowering the chance a fraud happens at all.
+A later lesson covers scams and fraud: instead of passing remaining risk to an insurer, lowering the chance a fraud happens at all.
 
 What is the liability limit on your home or personal liability policy, and how does it compare with what you own?

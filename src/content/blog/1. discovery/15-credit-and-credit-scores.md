@@ -106,7 +106,7 @@ Applying for multiple new credit lines in a short period suggests financial pres
   <figcaption>The exact weights are FICO's (payment history about 35%, its largest category); most other systems publish less and weigh things differently. Missed payments, though, are recorded by positive and negative-data systems alike, which is why paying on time travels well.</figcaption>
 </figure>
 
-**A note on how systems differ:** In some countries (like the US), a score is built from a record of borrowing and repaying, so someone who has never borrowed has little to show. Others (like France, whose central register lists only repayment problems) focus on negative data, so a clean record with no defaults is itself a strong indicator. Germany's SCHUFA sits in between, using both positive and negative information. Some countries don't have consumer credit scores at all; lenders pull reports and make their own assessment (Japan, for example, has several credit bureaus and no single universal score). The advice in this post, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
+**A note on how systems differ:** In some countries (like the US), a score is built from a record of borrowing and repaying, so someone who has never borrowed has little to show. Others (like France, whose central register lists only repayment problems) focus on negative data, so a clean record with no defaults is itself a strong indicator. Germany's SCHUFA sits in between, using both positive and negative information. Some countries don't have consumer credit scores at all; lenders pull reports and make their own assessment (Japan, for example, has several credit bureaus and no single universal score). The advice in this lesson, to pay on time, keep utilization low, avoid unnecessary applications, works well regardless of which system your country uses.
 
 ## How it affects you: the interest rate gap
 
@@ -157,7 +157,7 @@ Building credit is mostly about consistency and time. Points 1 to 4 matter most 
 
 Your credit score doesn't appear on your balance sheet. It's not an [asset](/blog/assets/) and it's not a [liability](/blog/liabilities/). But it directly affects how much your liabilities cost you. A better score means lower [interest rates](/blog/liabilities/), which means less money going to the bank and more staying with you, directly improving your [cash flow](/blog/cash-flow-101/).
 
-As we covered in the [liabilities post](/blog/liabilities/), the interest rate is one of the most important numbers on any debt, and your credit record is one of the things that shapes it. Think of it as the meta-number behind your borrowing costs.
+As the [liabilities lesson](/blog/liabilities/) covered, the interest rate is one of the most important numbers on any debt, and your credit record is one of the things that shapes it. Think of it as the meta-number behind your borrowing costs.
 
 ## What this means in practice
 
@@ -168,4 +168,4 @@ As we covered in the [liabilities post](/blog/liabilities/), the interest rate i
 
 Your credit record is the invisible thread connecting your past financial behaviour to your future borrowing costs. Looked after early, it quietly works in your favour for decades.
 
-Your credit score is one piece of your financial defence. The other is protecting what you've already built from sudden, unexpected loss. Next, we'll cover the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.
+Your credit score is one piece of your financial defence. The other is protecting what you've already built from sudden, unexpected loss. The next lesson covers the basics of insurance: what it protects, what it costs, and how it works together with your emergency fund to keep your financial plan intact.

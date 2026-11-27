@@ -38,19 +38,19 @@ describe('render-platform-caption: links', () => {
   it('prints no address in the Instagram caption: it points to the bio', async () => {
     const { ig } = await captions({ relatedTool: TOOL, reelPromise: PROMISE });
     assert.doesNotMatch(ig, /nidhi\.today|https?:|\/blog\/|\/free\//);
-    assert.match(ig, /^Free tool · Compare two loan offers\. Link in bio\.\nRead the full post · A worked example for three incomes\. Link in bio\.$/m);
+    assert.match(ig, /^Free tool · Compare two loan offers\. Link in bio\.\nRead the full lesson · A worked example for three incomes\. Link in bio\.$/m);
   });
 
   it('prints the full address of the tool and of the lesson in the TikTok caption', async () => {
     const { tt } = await captions({ relatedTool: TOOL, reelPromise: PROMISE });
-    assert.match(tt, /^Free tool · Compare two loan offers: nidhi\.today\/free\/loan-comparison\/\nRead the full post · A worked example for three incomes: nidhi\.today\/blog\/emergency-fund-basics\/$/m);
+    assert.match(tt, /^Free tool · Compare two loan offers: nidhi\.today\/free\/loan-comparison\/\nRead the full lesson · A worked example for three incomes: nidhi\.today\/blog\/emergency-fund-basics\/$/m);
     assert.doesNotMatch(tt, /Link in bio/);
   });
 
   it('always links the lesson, with or without a promise and a tool', async () => {
     const { ig, tt } = await captions();
-    assert.match(ig, /^Read the full post\. Link in bio\.$/m);
-    assert.match(tt, /^Read the full post: nidhi\.today\/blog\/emergency-fund-basics\/$/m);
+    assert.match(ig, /^Read the full lesson\. Link in bio\.$/m);
+    assert.match(tt, /^Read the full lesson: nidhi\.today\/blog\/emergency-fund-basics\/$/m);
     assert.doesNotMatch(ig + tt, /Free tool/);
   });
 
@@ -192,7 +192,7 @@ describe('render-platform-caption: the files', () => {
     const { tt } = await captions({ reelPromise: 'A step-by-step table' });
     assert.equal(warn.mock.callCount(), 1);
     assert.match(warn.mock.calls[0].arguments[0], /reelPromise has a dash or hyphen/);
-    assert.match(tt, /Read the full post · A step-by-step table: nidhi\.today/);
+    assert.match(tt, /Read the full lesson · A step-by-step table: nidhi\.today/);
 
     await captions({ reelPromise: PROMISE });
     assert.equal(warn.mock.callCount(), 1);

@@ -68,7 +68,7 @@ Klontz grouped the beliefs into four broad patterns. Almost nobody is a pure sin
 
 **Money status: "I am what I own."** The belief that your worth as a person is measured by your net worth, or at least by how it looks to others. It can motivate. But it leads to spending to impress, hiding debt behind appearances, and taking risky bets to keep up, because being seen to fall behind feels like a threat to the self, not just the wallet. Much of the [herd-chasing and FOMO](/blog/herd-behavior-and-fomo/) from earlier is money status looking for a scoreboard.
 
-**Money vigilance: "Watch it carefully."** A careful, alert, often private and slightly anxious relationship with money. In Klontz's studies it is the one script linked to better financial health rather than worse, and to actually saving. But pushed too far it becomes its own prison: excessive frugality, secrecy even with a partner, an inability to ever relax or enjoy what has been built, and worry that no balance can soothe. Petra, from the start of this post, runs a strong money vigilance script.
+**Money vigilance: "Watch it carefully."** A careful, alert, often private and slightly anxious relationship with money. In Klontz's studies it is the one script linked to better financial health rather than worse, and to actually saving. But pushed too far it becomes its own prison: excessive frugality, secrecy even with a partner, an inability to ever relax or enjoy what has been built, and worry that no balance can soothe. Petra, from the start of this lesson, runs a strong money vigilance script.
 
 <figure>
 <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-ms-title fig-ms-desc">
@@ -108,7 +108,7 @@ This is why money arguments feel so disproportionately charged, and why a spread
 
 ## Why awareness matters as much as arithmetic here
 
-There is a striking implication in Klontz's work, and it is the reason this post sits near the end of the series rather than the beginning.
+There is a striking implication in Klontz's work, and it is the reason this lesson sits near the end of the series rather than the beginning.
 
 Klontz's research links money scripts to real financial behaviour, which suggests self-awareness of your script can matter as much as financial knowledge. Two people can read the same books, learn the same biases, build the same spreadsheets. The one whose script quietly says "money is bad" may never apply any of it, sabotaging themselves just below the level of awareness. The one who recognizes their own script can catch it in the act and choose differently.
 
@@ -130,4 +130,4 @@ You probably cannot delete a belief installed in childhood. But you can drag it 
 - **If you share finances, compare scripts.** Sit down with your partner and name each other's scripts without judgement. Many couples find the conflict eases once both see they are arguing beliefs, not numbers.
 - **Let awareness do the work.** You do not need to fix the script overnight. Simply catching it in the moment, "that is my script talking, not the situation," is often enough to choose differently.
 
-You have now met the whole cast: the fast brain, loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, the herd, the seductive story, and the scripts you inherited. Knowing them, as this series has said from the start, is not enough to beat them. The final post pulls everything together into the approach that tends to work better than willpower: a financial life designed so the right choice happens by default and your biases never get the wheel. That is building an anti-bias financial life, and it is where we finish.
+You have now met the whole cast: the fast brain, loss aversion, mental accounting, present bias, overconfidence, framing and anchoring, the herd, the seductive story, and the scripts you inherited. Knowing them, as this series has said from the start, is not enough to beat them. The final lesson pulls everything together into the approach that tends to work better than willpower: a financial life designed so the right choice happens by default and your biases never get the wheel. That is building an anti-bias financial life, and it is the subject of the final lesson.

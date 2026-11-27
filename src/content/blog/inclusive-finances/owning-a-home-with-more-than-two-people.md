@@ -69,7 +69,7 @@ Mira and Tobias are married, and Kai has been their partner for six years. The t
 
 Mira dies suddenly. Under a [joint tenancy](#term-joint-tenancy), Tobias now owns the whole house automatically. Kai is not on the title. Depending on local law, Kai may be able to claim a share or repayment from the contributions, but proving it with nothing in writing is hard and expensive; the payments might be treated as rent, household costs, a loan or a gift. If Tobias then dies without a will, the house goes to his relatives. Nobody planned that; it is what the defaults produce when the paperwork sees two owners and the household has three.
 
-The same happens to friends, siblings and any group pooling money for a home. This companion to the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [shared households](/blog/shared-households-money-for-three-or-more/) posts covers the title, the mortgage, the agreement and the structures that hold property for a group. Property law differs in every country, so it teaches the questions; for the documents, a local professional is the usual route.
+The same happens to friends, siblings and any group pooling money for a home. This companion to the [unmarried couples](/blog/unmarried-and-cohabiting-couples/) and [shared households](/blog/shared-households-money-for-three-or-more/) lessons covers the title, the mortgage, the agreement and the structures that hold property for a group. Property law differs in every country, so it teaches the questions; for the documents, a local professional is the usual route.
 
 ## Choosing joint tenancy or tenancy in common: who inherits your share?
 
@@ -88,7 +88,7 @@ The two survivors, between them. The first two owners' shares passed to the othe
 
 ## Being on the title and being on the mortgage are separate
 
-The title says who owns the house. The loan says who owes the money. They do not have to match, and the mismatches are where people get hurt. Lenders often limit borrowers to between two and four, and some count only the two highest incomes. Everyone named on the loan owes the whole debt, not a share of it ([joint and several liability](#term-joint-and-several-liability)): if one stops paying, the lender can pursue any of the others for all of it (the [loan terms post](/blog/understanding-loan-terms/) covers how mortgages work). And paying is not owning: someone who contributes without being on the loan or the title, as Kai did, carries the cost without the ownership.
+The title says who owns the house. The loan says who owes the money. They do not have to match, and the mismatches are where people get hurt. Lenders often limit borrowers to between two and four, and some count only the two highest incomes. Everyone named on the loan owes the whole debt, not a share of it ([joint and several liability](#term-joint-and-several-liability)): if one stops paying, the lender can pursue any of the others for all of it (the [loan terms lesson](/blog/understanding-loan-terms/) covers how mortgages work). And paying is not owning: someone who contributes without being on the loan or the title, as Kai did, carries the cost without the ownership.
 
 | On the title | On the loan | Position |
 |---|---|---|
@@ -135,7 +135,7 @@ Some communal households do not hold property personally: a structure holds it f
 
 Each structure changes the answers to the same questions. What do you actually own: a share, a membership right or a lease? Can you sell it, to whom, and at what price? What happens on a death or a departure? The founding documents answer them; the label alone does not.
 
-Two things differ from owning directly. A membership right may not rise with the housing market, which matters for anyone counting on the home as an investment (the [property as an investment post](/blog/real-estate-as-investment/) covers the distinction). And lenders treat co-operative shares differently from ordinary property, so financing can be harder to find.
+Two things differ from owning directly. A membership right may not rise with the housing market, which matters for anyone counting on the home as an investment (the [property as an investment lesson](/blog/real-estate-as-investment/) covers the distinction). And lenders treat co-operative shares differently from ordinary property, so financing can be harder to find.
 
 </details>
 

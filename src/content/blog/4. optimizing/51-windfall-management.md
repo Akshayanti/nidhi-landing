@@ -66,7 +66,7 @@ referentialReading:
 
 Petra, 38, has received €50,000 from the sale of her late mother's flat. She is grieving, the money feels like it needs a decision now, and she is tempted by a bigger car on a €400-a-month lease.
 
-A [windfall](#term-windfall), whether a bonus, an inheritance, sale proceeds, vested shares or an insurance payout, is structurally the same as a monthly surplus: cash for the highest-priority use. In practice it brings its own problems. It is too big to slip into the usual default, it feels urgent, it can land in a single asset all at once, money labelled "bonus" or "inheritance" tends to be spent more freely than money labelled "salary" (the [mental accounting post](/blog/mental-accounting/) covered why), and a one-time inflow can commit the household to permanently higher costs.
+A [windfall](#term-windfall), whether a bonus, an inheritance, sale proceeds, vested shares or an insurance payout, is structurally the same as a monthly surplus: cash for the highest-priority use. In practice it brings its own problems. It is too big to slip into the usual default, it feels urgent, it can land in a single asset all at once, money labelled "bonus" or "inheritance" tends to be spent more freely than money labelled "salary" (the [mental accounting lesson](/blog/mental-accounting/) covered why), and a one-time inflow can commit the household to permanently higher costs.
 
 ## Many people park a windfall before deciding anything
 
@@ -109,13 +109,13 @@ The pause has an uncertain cost. Petra's €50,000 parked for 90 days at an illu
 <figcaption>Illustrative windfall framework. The parking period does most of the decision-quality work; deployment and monitoring are the mechanics.</figcaption>
 </figure>
 
-During the pause, the [invest or pay off debt post](/blog/invest-or-pay-off-debt/)'s seven-step order applies at the scale of the windfall, adapted to the household. Two details change with a lump sum: an employer match still comes through payroll, so a windfall can cover living costs while the payroll contribution rises; and the tax-advantaged step is capped by this year's remaining room, often less than the windfall. A moderate windfall usually runs through several steps rather than landing in one, and many people write the plan down before moving any money.
+During the pause, the [invest or pay off debt lesson](/blog/invest-or-pay-off-debt/)'s seven-step order applies at the scale of the windfall, adapted to the household. Two details change with a lump sum: an employer match still comes through payroll, so a windfall can cover living costs while the payroll contribution rises; and the tax-advantaged step is capped by this year's remaining room, often less than the windfall. A moderate windfall usually runs through several steps rather than landing in one, and many people write the plan down before moving any money.
 
 ## Lump sum against spreading it out
 
 For money going into investments anyway, history has favoured investing it at once. Vanguard's 2023 study, using global stocks from 1976 to 2022 with shorter checks for the US, UK, Canada, Europe and Australia, found [lump-sum investing](#term-lump-sum-investing) beat spreading the money over three months ([dollar-cost averaging](#term-dollar-cost-averaging)) roughly two-thirds of the time over rolling one-year periods, because shares and bonds have beaten cash most of the time. The other third are the times the money went in just before a fall. The data covers about 50 years at most, shorter for single markets, mostly developed ones: a tendency, not a promise.
 
-Spreading usually gives up some expected return because money waits in cash, while reducing how much depends on the market just after one investment date. That trade-off can matter behaviourally. People confident they would stay invested through a 30% drop often go lump-sum; people who might sell in a panic (the [loss aversion post](/blog/loss-aversion-and-the-disposition-effect/) covered why) often spread it over six to twelve months. Beyond about a year, spreading mostly delays investing rather than reducing risk.
+Spreading usually gives up some expected return because money waits in cash, while reducing how much depends on the market just after one investment date. That trade-off can matter behaviourally. People confident they would stay invested through a 30% drop often go lump-sum; people who might sell in a panic (the [loss aversion lesson](/blog/loss-aversion-and-the-disposition-effect/) covered why) often spread it over six to twelve months. Beyond about a year, spreading mostly delays investing rather than reducing risk.
 
 <details class="quick-check">
 <summary class="disclosure">Quick check: in Vanguard's study, why did investing at once win about two-thirds of the time?</summary>
@@ -139,7 +139,7 @@ About ten and a half years: €400 × 12 is €4,800 a year, and €50,000 ÷ �
 
 ## Concentration in the familiar
 
-One failure can happen inside a perfectly written plan: putting most of the sum into what you already know. Employer shares, because you trust the company. Your own home, as a big prepayment or renovation. A single sector you follow closely. The [diversification post](/blog/diversification/) explained why [concentration risk](#term-concentration-risk) adds risk without a matching rise in expected return. A windfall is a chance to spread holdings wider, not to deepen what is already there, so it helps to check where each euro lands, not only which step it funds. After deploying, a look at the overall allocation shows whether a [rebalance](/blog/rebalancing-your-portfolio/) is needed, with any tax cost weighed in.
+One failure can happen inside a perfectly written plan: putting most of the sum into what you already know. Employer shares, because you trust the company. Your own home, as a big prepayment or renovation. A single sector you follow closely. The [diversification lesson](/blog/diversification/) explained why [concentration risk](#term-concentration-risk) adds risk without a matching rise in expected return. A windfall is a chance to spread holdings wider, not to deepen what is already there, so it helps to check where each euro lands, not only which step it funds. After deploying, a look at the overall allocation shows whether a [rebalance](/blog/rebalancing-your-portfolio/) is needed, with any tax cost weighed in.
 
 ## Inheritance, a business sale and other special cases
 
@@ -192,6 +192,6 @@ For **tax refunds and smaller bonuses,** from €500 to €5,000, a short pause 
 
 </details>
 
-The next post covers fees, the mirror image: many small ongoing decisions whose effect over decades can rival a large windfall.
+The next lesson covers fees, the mirror image: many small ongoing decisions whose effect over decades can rival a large windfall.
 
 If a windfall landed tomorrow, where would it sit for the first 30 days?

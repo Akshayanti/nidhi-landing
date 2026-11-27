@@ -12,7 +12,7 @@ takeaways:
   - "Why a goal needs an amount, a date, a path and a place"
   - "How time horizon decides where a goal's money belongs"
   - "Why delaying a long-term goal costs more than it seems"
-  - "How to prioritize goals by math and timeline, not feeling"
+  - "How to prioritize goals by maths and timeline, not feeling"
 order: 30
 pubDate: 2026-06-24
 updatedDate: 2026-11-17
@@ -36,7 +36,7 @@ faq:
   - question: "Why is delaying a long-term goal so expensive?"
     answer: "Because compounding does most of its work in the final decade, the cost of delay is not linear. For a 500,000 euro retirement goal at age 65 assuming an illustrative 7% a year before inflation, starting at 25 needs about 190 euros a month; starting at 35 needs about 410 euros; starting at 45 needs about 960 euros; starting at 55 needs about 2,890 euros. Those 500,000 euros are future euros; to have 500,000 in today's buying power, at about 5% a year after inflation, starting at 25 needs about 330 euros a month. Waiting from 25 to 35 more than doubles the monthly cost. Waiting from 25 to 45 increases it fivefold. The late starter contributes hundreds of thousands more in total and still ends with the same number. Short-term goals are roughly linear in delay; long-term goals are brutal."
   - question: "How should I prioritize competing financial goals?"
-    answer: "Most frameworks set priority by math and timelines rather than by whichever goal feels loudest. A commonly used order: a starter emergency fund of about one month of expenses first. Then high-interest debt: a rule of thumb for low-inflation economies says debt above roughly 8 to 10% has usually cost more than diversified investments have earned, while 4 to 8% is a judgement call; where inflation is higher, the line sits higher too, and there is no universal cutoff. Then any employer retirement match, an immediate uplift on your contribution, often taken alongside the debt step or before it. Then a full emergency fund of three to six months. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
+    answer: "Most frameworks set priority by maths and timelines rather than by whichever goal feels loudest. A commonly used order: a starter emergency fund of about one month of expenses first. Then high-interest debt: a rule of thumb for low-inflation economies says debt above roughly 8 to 10% has usually cost more than diversified investments have earned, while 4 to 8% is a judgement call; where inflation is higher, the line sits higher too, and there is no universal cutoff. Then any employer retirement match, an immediate uplift on your contribution, often taken alongside the debt step or before it. Then a full emergency fund of three to six months. Then long-term retirement or FI contributions, because starting late is expensive. Then medium-term goals like a house deposit, and finally short-term discretionary goals like travel. The exact ordering depends on your situation, but the principle holds: too many active goals competing for one monthly surplus usually means none of them hit."
 reelPromise: "The full monthly-cost tables by timeline and start age, the three time-horizon buckets, and the order to fund competing goals"
 relatedSlugs: ["introduction-to-financial-independence", "saving-vs-investing", "budgeting", "cash-flow-101", "emergency-fund"]
 referentialReading:
@@ -63,17 +63,17 @@ referentialReading:
 
 The difference between a wish and a goal is a number and a date. "Buy a house" is a wish. "Have €40,000 saved for a deposit by June 2031" is a goal. A goal can be measured, tracked, adjusted, and eventually hit. A wish can only be hoped for.
 
-This post is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), [diversification](/blog/diversification/), and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
+This lesson is about how to turn the wishes into goals. Specifically, goals that connect to everything else you've been building: [cash flow](/blog/cash-flow-101/), [budgeting](/blog/budgeting/), [saving vs. investing](/blog/saving-vs-investing/), [diversification](/blog/diversification/), and the financial independence framework. By the end, you'll be able to translate any "someday" into a monthly number that either fits your current finances or explicitly doesn't.
 
 ## What money costs, and what it's for
 
-Before the numbers, a step back. Money works as a multiplier: it turns into options, time, security and help for the people around you. But it has to come from somewhere. For most people it comes from hours of work, and earning it can also cost sleep, health, time with family, or a lifestyle given up today for one later. Every goal in this post has that cost behind it.
+Before the numbers, a step back. Money works as a multiplier: it turns into options, time, security and help for the people around you. But it has to come from somewhere. For most people it comes from hours of work, and earning it can also cost sleep, health, time with family, or a lifestyle given up today for one later. Every goal in this lesson has that cost behind it.
 
 That is why many people start goal setting with purpose rather than amounts: what is this money for? A goal with a clear purpose ("a deposit so we can stop moving every two years") makes it possible to judge whether its cost is worth paying. Without a purpose or a stopping point, "more savings" can become an open-ended target: no amount is obviously enough, and the cost keeps being paid without anyone deciding it was worth it.
 
 The studies below do not test purpose-first goal setting directly, but they look at what money can provide. In surveys of 6,271 people across the US, Canada, Denmark and the Netherlands (Whillans and colleagues, 2017), people who spent money to free up time, such as paying for chores they disliked, reported higher life satisfaction, across income levels. In the same paper, a small experiment with 60 working adults in Canada found better end-of-day mood and less time pressure after a time-saving purchase than after a material one. These studies measured how people felt, not long-run outcomes, and the participants lived in four high-income countries. Research on income and well-being finds that more money tends to go with higher well-being on average, but the link is weaker for some people than others: in one US study, for the least happy fifth of people, well-being stopped rising above about $100,000 a year (Killingsworth, Kahneman and Mellers, 2023). Income explains only part of how people feel.
 
-Where it breaks: for someone whose income only just covers rent, food and debts, the purpose is not a question. It is the next bill, and the cost of earning more is often not a choice. And people weigh these costs very differently: for some, long hours now for an early retirement is a fair trade, for others it is not. That depends on your health, your family, how secure your work is and what you value, which is why the rest of this post leaves the "what for" to you and focuses on the "how much and when".
+Where it breaks: for someone whose income only just covers rent, food and debts, the purpose is not a question. It is the next bill, and the cost of earning more is often not a choice. And people weigh these costs very differently: for some, long hours now for an early retirement is a fair trade, for others it is not. That depends on your health, your family, how secure your work is and what you value, which is why the rest of this lesson leaves the "what for" to you and focuses on the "how much and when".
 
 ## What a financial goal actually needs
 
@@ -94,7 +94,7 @@ Example: "I want to buy a house someday."
 
 - What kind of house, in what area? → A 2-bedroom flat in your city, currently ~€250,000 average
 - What deposit? → 15-20%, a common range in many markets (minimum deposits are set by lenders and, in some countries, by the regulator: Ireland's central bank caps most first-time buyer mortgages at 90% of the price, India's RBI at 75 to 90% depending on the loan size, while the Netherlands allows up to 100%), so roughly €40,000-€50,000
-- When? → Let's say 5 years
+- When? → Say 5 years
 - So the goal: save/invest to have €45,000 in 5 years
 
 Now the path. If you assume a 5% annual return, which is optimistic for the cash-heavy mix a 5-year goal usually calls for, the monthly contribution required is approximately:
@@ -124,7 +124,7 @@ Examples: house deposit, starting a business, career break, child's near-term ed
 
 **Long-term (7+ years).** The timeline is long enough that market volatility has tended to average out in historical data, and inflation becomes the bigger enemy. This is where investing is most common, often in broadly diversified, stock-heavy portfolios, with the exact mix depending on risk capacity.
 
-These buckets draw the long-term line at seven years, later than the five years used in the [saving vs. investing post](/blog/saving-vs-investing/). Both are rules of thumb, not guarantees against loss. A goal with a fixed date has less room to wait out a fall than money with a flexible date, which is why goal planning often uses the longer line: in US data since 1928, even some 5-year periods lost money, as the [risk post](/blog/understanding-risk/) shows.
+These buckets draw the long-term line at seven years, later than the five years used in the [saving vs. investing lesson](/blog/saving-vs-investing/). Both are rules of thumb, not guarantees against loss. A goal with a fixed date has less room to wait out a fall than money with a flexible date, which is why goal planning often uses the longer line: in US data since 1928, even some 5-year periods lost money, as the [risk lesson](/blog/understanding-risk/) shows.
 
 Examples: retirement, [FIRE](/blog/introduction-to-financial-independence/), child's university, generational wealth.
 
@@ -196,7 +196,7 @@ A priority framework commonly used in personal finance literature:
 6. **Medium-term goals.** House deposit, specific life events
 7. **Short-term discretionary goals.** Travel, lifestyle, hobbies
 
-This is an illustrative framework: the exact ordering depends on your situation, including liquidity, taxes, any match terms and what each debt costs. The [invest or pay off debt post](/blog/invest-or-pay-off-debt/) sets out the same order for debts in more detail. High-interest debt usually wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from math and timelines, not from whichever goal currently feels most exciting.
+This is an illustrative framework: the exact ordering depends on your situation, including liquidity, taxes, any match terms and what each debt costs. The [invest or pay off debt lesson](/blog/invest-or-pay-off-debt/) sets out the same order for debts in more detail. High-interest debt usually wins against investing. Medium-term goals sometimes jump ahead of full retirement contributions if a specific life event is coming. The *principle* is that priorities come from maths and timelines, not from whichever goal currently feels most exciting.
 
 ## The "number and a date" check
 
@@ -237,7 +237,7 @@ An annual review is enough for most goals. Life changes; assumptions change; mar
 
 ## Common mistakes
 
-- **Setting goals without running the monthly math.** Without a monthly contribution number, the goal is still a wish
+- **Setting goals without running the monthly maths.** Without a monthly contribution number, the goal is still a wish
 - **Using the wrong time horizon container.** Long-term goals in savings accounts, short-term goals in the stock market. Both predictable ways to underperform or panic
 - **Ignoring inflation on long-horizon goals.** €500,000 in 30 years is not worth €500,000 today. A more honest target is the inflation-adjusted amount you actually need
 - **Too many goals at once.** Five active goals competing for a single monthly surplus usually means none of them hit. Finishing two in sequence often gets further than splitting across five
@@ -250,11 +250,11 @@ An annual review is enough for most goals. Life changes; assumptions change; mar
 1. **Write down every financial goal you actually have.** Three to five is usually the honest answer. More than seven means some are wishes, not goals
 2. **Put a number and a date on each.** This is the minimum bar for calling it a goal
 3. **Classify by time horizon.** Short, medium, long. Each bucket points to a different kind of container, as the table above shows
-4. **Run the monthly math.** Present value / future value calculations or a simple online calculator. What does this actually cost per month?
+4. **Run the monthly maths.** Present value / future value calculations or a simple online calculator. What does this actually cost per month?
 5. **Sum the required monthly contributions.** Compare to your real monthly surplus. If the sum exceeds surplus, something has to give: amount, date, or selection
-6. **Priorities tend to follow math and timeline.** The common framework above puts an emergency cushion and high-interest debt early because they protect everything else, and long-term goals before late-starting ones because delay is expensive; your own order may differ
+6. **Priorities tend to follow maths and timeline.** The common framework above puts an emergency cushion and high-interest debt early because they protect everything else, and long-term goals before late-starting ones because delay is expensive; your own order may differ
 7. **Goals drift.** Life and markets change, which is why many people revisit goals once a year
 
 A goal with a number and a date becomes something your monthly system can actually serve. Without that translation, every financial decision is made in the dark, comparing abstract priorities. With it, you have a map: here's where I am, here's where I want to be, here's what that costs in monthly terms.
 
-Once goals exist, the next question is whether you're actually on track for them. Net worth alone doesn't answer that. A handful of ratios (debt-to-asset, liquid percentage, savings rate, emergency-fund coverage, debt-to-income, expense coverage) does. Those are the financial health metrics, and they're where we go next.
+Once goals exist, the next question is whether you're actually on track for them. Net worth alone doesn't answer that. A handful of ratios (debt-to-asset, liquid percentage, savings rate, emergency-fund coverage, debt-to-income, expense coverage) does. Those are the financial health metrics, and they are the subject of the next lesson.

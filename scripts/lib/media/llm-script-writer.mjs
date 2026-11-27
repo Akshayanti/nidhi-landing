@@ -268,14 +268,14 @@ The hook and every body beat must work COLD, for a viewer who landed on this sin
 After the hashtag line, the IG caption carries a bracketed multilingual keyword array that feeds IG's topic classifier and powers multilingual search. Hashtags = community-follow surface; keywords = search-query index. The two surfaces overlap in the topic classifier, so duplicating terms across both wastes a slot. Split the work:
 
 - Hashtags = communities someone FOLLOWS (English, 5 cap).
-- Keywords = phrases someone TYPES into IG search (multilingual, 13–18 items).
+- Keywords = phrases someone TYPES into IG search (multilingual, 18–24 items).
 
-Emit "caption.instagramKeywords" as an array of 13–18 strings:
-- 4–6 topic concepts grounded in this post's actual content (not generic filler).
-- 2–3 audience anchors that vary per post (PLAYBOOK §6 distinct sub-audience rule). Not the same cluster on every post.
-- 1–2 geo anchors ("europe", "eurozone", "eu expats").
-- 1–2 money anchors ("personal finance", "money basics", "household finance").
-- 3–5 multilingual variants in DE / FR / ES / IT / NL / PT / PL / SV / DA / NO — ONLY where the native word is meaningfully different from English (skip cognates: "inflation", "budget", "euro" already cover cross-lingual search). Lead the array with English; let multilingual terms tail. EN must dominate the count vs any single non-EN language (PLAYBOOK §3 cohort-fight cohort-balance rule).
+Emit "caption.instagramKeywords" as an array of 18–24 strings:
+- 5–7 topic concepts grounded in this post's actual content (not generic filler).
+- 3–4 audience anchors that vary per post (PLAYBOOK §6 distinct sub-audience rule). Not the same cluster on every post.
+- 2–3 geo anchors ("europe", "eurozone", "eu expats").
+- 2–3 money anchors ("personal finance", "money basics", "household finance").
+- 6–7 multilingual variants in DE / FR / ES / IT / NL / PT / PL / SV / DA / NO — ONLY where the native word is meaningfully different from English (skip cognates: "inflation", "budget", "euro" already cover cross-lingual search). Lead the array with English; let multilingual terms tail. EN must dominate the count vs any single non-EN language (PLAYBOOK §3 cohort-fight cohort-balance rule).
 
 HARD rules for instagramKeywords:
 - NO \`#\` symbols. These are keywords, not tags.
@@ -283,7 +283,7 @@ HARD rules for instagramKeywords:
 - NO banned terms (US-only finance terms, India-only terms — same ban list as hashtags).
 - Each keyword must pass the searchability test: would a real person type this phrase into IG search, in this language? No filler.
 - Vary anchors per post within the series. Do not anchor every post to the same audience cluster.
-- 13–18 items per post (tight side of the 18–24 sweet spot from PLAYBOOK §6).
+- 18–24 items per post (the PLAYBOOK §6 range, which the kit lint enforces).
 
 # TikTok extras (May 2026 — different platform, different mechanics)
 TikTok 2026 reads caption text + on-screen text + audio transcript with roughly equal weight. Bracketed multilingual blocks read as spam there. TikTok auto-translates and serves cross-language audiences via the subtitle track + translation layer, so multilingual keywords waste characters. The TikTok-equivalent of the IG keyword block has two parts:

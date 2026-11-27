@@ -1189,7 +1189,7 @@ function storyHtml(kit, frame) {
   return page(`<div class="story">${chrome}<div class="story-label">${rich(frame.label)}</div>
     <div class="story-title">${rich(frame.title)}</div>
     ${frame.body ? `<div class="story-body">${rich(frame.body)}</div>` : ''}
-    <div class="story-foot">${rich(frame.foot || 'Read the full post · link below')}</div></div>`);
+    <div class="story-foot">${rich(frame.foot || 'Read the full lesson · link below')}</div></div>`);
 }
 
 // Reels only (owner, Oct 28 and 30, 2026): each day is the reel and its tool
@@ -1233,7 +1233,7 @@ function reelsOnlySheet(kit, frames) {
       ...(tool.caption ? [`      Caption field: ${tool.caption}`] : []),
     );
     if (extra) lines.push(
-      '    Beyond this post (schedule at 19:00 IST on Instagram and Facebook, each with a link to the blog post: on Instagram a link sticker below "Read the full post", through the story media Edit > More stickers > Link)',
+      '    Beyond this post (schedule at 19:00 IST on Instagram and Facebook, each with a link to the lesson: on Instagram a link sticker below "Read the full lesson", through the story media Edit > More stickers > Link)',
       `      Image: stories/${extra.id}-${extra.kind}.png`,
       `      Alt text: ${extra.alt}`,
       ...(extra.caption ? [`      Caption field: ${extra.caption}`] : []),

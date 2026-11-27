@@ -54,7 +54,7 @@ faq:
     answer: "Career capital, in Cal Newport's framing, is the accumulated set of skills, relationships, credentials, and reputation that make you valuable to employers or clients. It is an appreciating personal asset: unlike money in a savings account, it typically grows in value over time as you refine and demonstrate it. Building it deliberately means: identifying skills that are both scarce and valuable in your market (not just interesting to you), practising them at the difficulty level where you are consistently just outside your comfort zone (deliberate practice), building a network by giving value first (introductions, useful information, honest feedback), and putting evidence of your work in public where employers or clients can see it. The payoff can be slow and uneven: some skills and relationships create a later step change in pay or options, while others remain valuable without producing a clear salary jump."
   - question: "What about side income?"
     answer: "Side income (freelance work, consulting, small business, content royalties, small-scale rental income) is worth considering for three reasons: it diversifies earning power (a job loss does not zero out all income), it lets you test career pivots at low risk (build side capability before making it the main thing), and it often has different tax treatment (in some jurisdictions, business income allows deductions unavailable to salaried income). The catch: side work has real setup cost (finding clients, learning to invoice, tracking business expenses, filing separately) and often pays less per hour than the primary job in the early stages. Side income tends to work best when the primary job is stable and there is surplus time and energy, or when it is deliberately building toward a career pivot. It tends to backfire when it displaces primary-job performance or rest. Tax and registration rules for side work vary a lot by country."
-reelPromise: "Why income growth beats expense cutting after a certain point, the four-step salary negotiation script, and the career-capital math that quietly pays out for decades"
+reelPromise: "Why income growth beats expense cutting after a certain point, the four-step salary negotiation script, and the career-capital maths that quietly pays out for decades"
 relatedSlugs: ["cash-flow-101", "income-vs-wealth", "life-events", "present-bias-and-your-future-self", "overconfidence-and-the-planning-fallacy"]
 referentialReading:
   - title: "So Good They Can't Ignore You"
@@ -158,7 +158,7 @@ A commonly described pattern is moving deliberately every few years early in a c
 
 ## When side income helps, and when it costs more than it pays
 
-[Side income](#term-side-income) (freelancing, consulting, teaching, a small business) can spread earning risk, test a career change cheaply, and in some countries allow business deductions a salary does not. It tends to help when the main job is stable, the side rate respects your time, and the work builds toward something you want. It tends to backfire when it eats into rest or main-job performance, pays far below your main hourly rate, or costs more to set up than it earns in a year or two. Self-employment can also bring its own taxes and contributions that an employer would otherwise handle; the [taxes post](/blog/taxes-and-your-financial-plan/) covers how to think about that without the local detail.
+[Side income](#term-side-income) (freelancing, consulting, teaching, a small business) can spread earning risk, test a career change cheaply, and in some countries allow business deductions a salary does not. It tends to help when the main job is stable, the side rate respects your time, and the work builds toward something you want. It tends to backfire when it eats into rest or main-job performance, pays far below your main hourly rate, or costs more to set up than it earns in a year or two. Self-employment can also bring its own taxes and contributions that an employer would otherwise handle; the [taxes lesson](/blog/taxes-and-your-financial-plan/) covers how to think about that without the local detail.
 
 ## The habits that keep people from asking
 
@@ -185,6 +185,6 @@ The principles travel; the pay structures do not.
 
 ## Before the next salary conversation
 
-A common preparation is a market range from several sources, a counter-offer written out for the whole package, one practice run of saying the number out loud, and one skill chosen to work on deliberately over the next year. The next post covers whether to invest or pay off debt, a decision that is usually easier when income is growing.
+A common preparation is a market range from several sources, a counter-offer written out for the whole package, one practice run of saying the number out loud, and one skill chosen to work on deliberately over the next year. The next lesson covers whether to invest or pay off debt, a decision that is usually easier when income is growing.
 
 What would Eva's €5,000 be worth in your field, and what would it take to ask for it?
