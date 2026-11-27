@@ -2394,7 +2394,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         after: ' a tato pole budou dostupná.',
       },
       initialFixed: 'Počáteční období fixace (měsíce)',
-      initialFixedHelp: 'Liší se podle země: například ve Spojeném království jsou obvyklé 24 nebo 60 měsíců (2 nebo 5 let), v USA 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
+      initialFixedHelp: 'Liší se podle země: například ve Spojeném království je běžná fixace na 24 nebo 60 měsíců (2 nebo 5 let), v USA na 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
         'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
