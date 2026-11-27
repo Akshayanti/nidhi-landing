@@ -291,7 +291,7 @@ function doGet(e) {
     return htmlResponse_(
       '<html><body style="font-family:sans-serif;text-align:center;padding:3rem">' +
       '<h2>Nothing here</h2>' +
-      '<p>This endpoint powers the product-launch waitlist on nidhi.today.</p>' +
+      '<p>This address handles the planner waitlist for nidhi.today.</p>' +
       '<a href="' + safeSiteUrl_() + '/">Go to nidhi</a>' +
       '</body></html>'
     );

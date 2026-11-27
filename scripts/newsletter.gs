@@ -517,7 +517,7 @@ function doGet(e) {
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
       'Nothing here',
-      'This endpoint powers newsletter signups on nidhi.today.',
+      'This address handles newsletter sign-ups for nidhi.today.',
       'Read the lessons',
       config_().siteUrl + '/blog/'
     ));
@@ -1220,7 +1220,7 @@ function sendReminderEmail_(email, confirmToken) {
     cfg.fromName + ', reminder\r\n\r\n' +
     'Hi,\r\n\r\n' +
     'You started subscribing to the ' + cfg.fromName + ' newsletter a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
-    'If you still want in, click below:\r\n\r\n' +
+    'If you still want to subscribe, click below:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
     'Changed your mind? No worries, ignore this email and nothing more will follow.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
@@ -1244,7 +1244,7 @@ function sendReminderEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> newsletter a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
+              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> newsletter a few days ago but didn’t click the confirmation link yet. If you still want to subscribe, tap the button below to finish.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Or copy and paste this link:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
@@ -2336,10 +2336,10 @@ function sendWelcomeEmail_(email, unsubToken) {
 
   var text =
     cfg.fromName + ', you\u2019re in.\r\n\r\n' +
-    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' whenever a new lesson goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
-    'While you wait for the next one, the lessons so far are all here:\r\n' +
+    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' whenever a new lesson goes up, nothing else. No digests, no surprises, no \u201cspecial offers\u201d.\r\n\r\n' +
+    'While you wait for the next one, the lessons so far are all on the site:\r\n' +
     blogUrl + '\r\n\r\n' +
-    'Reply to this email if anything ever lands wrong, a real person reads it.\r\n\r\n' +
+    'If anything is unclear or wrong, reply to this email. I read every reply.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
     withUtm_(cfg.siteUrl + '/', campaign) + '\r\n\r\n' +
     '---\r\n' +
@@ -2365,10 +2365,10 @@ function sendWelcomeEmail_(email, unsubToken) {
             banner +
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new lesson goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
-              '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far are all here:</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong, a real person reads it.</p>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new lesson goes up, nothing else. No digests, no surprises, no \u201cspecial offers\u201d.</p>' +
+              '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far are all on the site:</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Read the lessons &rarr;</a></p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If anything is unclear or wrong, reply to this email. I read every reply.</p>' +
               '<p style="margin:24px 0 0;color:' + EMAIL.text2 + ';font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in
