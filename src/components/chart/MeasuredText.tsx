@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import { flushSync } from 'react-dom';
 import { textWidth } from './useChartRem.ts';
 
 /** One piece of chart text to measure: the class it is drawn with, its words, and its size in drawing units. */
@@ -59,8 +60,9 @@ export function useMeasuredText(svg: RefObject<SVGSVGElement | null>, samples: S
   };
   useLayoutEffect(() => {
     // Inside its own SVG the hook runs before the SVG's ref is attached (#876).
+    // The second look is drawn at once, before the browser paints (#889).
     if (svg.current) measure.current();
-    else queueMicrotask(() => measure.current());
+    else queueMicrotask(() => flushSync(() => measure.current()));
   });
   useLayoutEffect(() => {
     let live = true;

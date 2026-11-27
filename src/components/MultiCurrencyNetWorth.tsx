@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/shared/money.ts';
 import {
   aggregate,
@@ -332,20 +332,22 @@ export default function MultiCurrencyNetWorth({
   // double-fire under React 18 StrictMode (the dev-mode invariant
   // double-invokes updaters); production wouldn't see it, but anyone
   // running `npm run dev` against a real PostHog key would.
+  // The row count as of the last Add, ahead of the redraw: two Adds handled
+  // before the page draws again would both see the old `rows` (#826).
+  const rowCount = useRef(rows.length);
+  useLayoutEffect(() => { rowCount.current = rows.length; }, [rows.length]);
   const addRow = useCallback(() => {
-    if (rows.length >= MAX_ROWS) return;
+    if (rowCount.current >= MAX_ROWS) return;
     if (endsSharedView(sharedRedacted, 'add')) leaveSharedView();
+    rowCount.current += 1;
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
     ]);
-    // Read length from a functional set via a microtask-stable closure:
-    // we already know the new length is `rows.length + 1` because the
-    // updater appends exactly one row. Using `rows.length + 1` here is
-    // safe because StrictMode does not double-invoke the *enclosing*
-    // callback, only the updater.
-    track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length, defaultCurrency, sharedRedacted, leaveSharedView]);
+    // The count is the ref's, not the updater's: StrictMode runs an updater
+    // twice, never this callback.
+    track('free_multi_currency_net_worth_asset_added', { count: rowCount.current });
+  }, [defaultCurrency, sharedRedacted, leaveSharedView]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;

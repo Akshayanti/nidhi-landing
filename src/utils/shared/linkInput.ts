@@ -26,10 +26,12 @@ const MAX_LINK_NUMBER_LENGTH = 200;
 
 /**
  * Characters a typed number is made of: digits in any script, the
- * separators people group and split numbers with, and a sign. No letters,
- * so no free text.
+ * separators people group and split numbers with (the Arabic decimal and
+ * thousands marks, U+066B and U+066C, among them), and a sign, the Unicode
+ * minus U+2212 too (#792), as the number boxes take them. No letters, so no
+ * free text.
  */
-const NUMBER_TEXT = /^[\p{Nd}\s.,'’+\-]*$/u;
+const NUMBER_TEXT = /^[\p{Nd}\s.,'’\u066B\u066C+\-\u2212]*$/u;
 
 /** `code` if it is one of `known`, else `fallback`. The comparison is exact: codes are upper case. */
 export function linkCurrency<T extends string | null>(code: string | null, known: ReadonlySet<string>, fallback: T): string | T {

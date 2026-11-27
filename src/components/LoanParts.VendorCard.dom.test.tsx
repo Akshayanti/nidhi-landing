@@ -364,15 +364,35 @@ describe('the offer card: the required boxes', () => {
     assert.deepEqual(patches, [{ monthlyPayment: '1050.25' }]);
   });
 
-  it('says a value that arrived unreadable could not be read, and names the fault once the reader types', () => {
+  it('says a value that arrived unreadable could not be read, and names the fault once the reader types in that box', () => {
     const vendor = loan({ principal: UNREADABLE });
     const { card } = show(vendor);
     assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
     assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
     // The page keeps the offer as it is here, so only the card knows that typing began.
+    // Typing in another box, or the name, leaves the ? explained as it arrived (#825).
     fireEvent.change(box(card, LABELS.rate), { target: { value: '3' } });
     assert.deepEqual(patches, [{ annualRatePct: '3' }]);
+    assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
+    // Only the box holding the ? is marked, not the one just typed in.
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), UNMARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.term)), UNMARKED);
+    fireEvent.change(box(card, LABELS.name), { target: { value: 'Bank' } });
+    assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
+    // Typing in the box that holds the ? names the fault.
+    fireEvent.change(box(card, LABELS.principal), { target: { value: '' } });
     assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amount}`);
+  });
+
+  it('leaves a ? box the reader has typed in unmarked while another ? keeps the message', () => {
+    const { card } = show(loan({ principal: UNREADABLE, annualRatePct: UNREADABLE }));
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), MARKED);
+    // The page keeps the offer as it is here, so the rate still holds the ? it arrived with.
+    fireEvent.change(box(card, LABELS.rate), { target: { value: '5' } });
+    assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), UNMARKED);
   });
 
   it('names the fault at once for a wrong value that carries no mark of having arrived', () => {

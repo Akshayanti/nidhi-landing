@@ -179,6 +179,22 @@ describe('a label measured from inside its own drawing (#876)', () => {
     await act(async () => {});
     assert.equal(seen.width(tick('2030')), 31.5);
   });
+
+  it('is drawn measured as soon as that second look runs, not a frame later (#889)', async () => {
+    drawnWidth = { 2030: 31.5 };
+    render(<Framed samples={[tick('2030')]} />);
+    // Only the microtask itself: no act, no scheduler turn. React is told this
+    // is not a test of act, so the update it is meant to see is not queued.
+    const env = globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean };
+    const before = env.IS_REACT_ACT_ENVIRONMENT;
+    env.IS_REACT_ACT_ENVIRONMENT = false;
+    try {
+      await Promise.resolve();
+      assert.equal(seen.width(tick('2030')), 31.5);
+    } finally {
+      env.IS_REACT_ACT_ENVIRONMENT = before;
+    }
+  });
 });
 
 describe('a label measured again', () => {

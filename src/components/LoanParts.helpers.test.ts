@@ -17,6 +17,8 @@ import {
   aprText,
   engineError,
   engineErrorKey,
+  VALIDATION_REASONS,
+  validationReason,
   engineWarning,
   isTypedName,
   months,
@@ -435,5 +437,25 @@ describe('the engine\'s warnings, in the reader\'s language', () => {
       es.engine.warnings.rateNeverChanges,
       es.engine.warnings.lumpUnused.replace('{month}', '13').replace('{payoffMonth}', '12'),
     ]);
+  });
+});
+
+describe('the reason the validation event sends (#895)', () => {
+  const ALLOWED = new Set([
+    'missing_principal', 'principal_out_of_range', 'missing_rate', 'missing_term', 'term_out_of_range',
+    'missing_payment', 'payment_below_interest', 'rate_structure', 'optional_field', 'other',
+  ]);
+  it('gives every engine message one of a fixed set of kinds', () => {
+    for (const [, key] of ENGINE_PHRASES) assert.ok(ALLOWED.has(VALIDATION_REASONS[key]), key);
+    assert.deepEqual(Object.keys(VALIDATION_REASONS).sort(), [...new Set(ENGINE_PHRASES.map(([, key]) => key))].sort());
+  });
+  it('reads the kind from the message, not from its words or numbers', () => {
+    assert.equal(validationReason('Enter a loan amount greater than zero.'), 'missing_principal');
+    assert.equal(validationReason('This loan amount is too large for the tool.'), 'principal_out_of_range');
+    assert.equal(validationReason('Term cannot exceed 1200 months.'), 'term_out_of_range');
+    assert.equal(validationReason('Enter a term of at least one month.'), 'missing_term');
+    assert.equal(validationReason('Enter a monthly payment greater than zero.'), 'missing_payment');
+    assert.equal(validationReason('Something the engine grew later.'), 'other');
+    assert.equal(validationReason(''), 'other');
   });
 });

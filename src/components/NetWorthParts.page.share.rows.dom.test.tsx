@@ -11,7 +11,7 @@
 import { fill, events, island, mount, one, all, addButton, ariaDisabled, upload } from '../../test/netWorthParts.page.tsx';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { fireEvent } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 
 const tb = island.table;
 const csvLines = (n: number, from = 1) => Array.from({ length: n }, (_, i) => `Item ${from + i},${10 + i},EUR,Asset`).join('\n');
@@ -28,5 +28,18 @@ describe('the net worth calculator on its page: the row limit', () => {
     fireEvent.click(add);
     assert.equal(all('.mcnw-tableBody .mcnw-tableRow').length, 500);
     assert.deepEqual(events, [['free_multi_currency_net_worth_csv_uploaded', { count: 500 }]]);
+  });
+
+  it('two Adds handled before the page redraws still stop at five hundred, and count one row (#826)', async () => {
+    mount();
+    await upload(csvLines(499));
+    events.length = 0;
+    const add = addButton();
+    act(() => {
+      add.click();
+      add.click();
+    });
+    assert.equal(all('.mcnw-tableBody .mcnw-tableRow').length, 500);
+    assert.deepEqual(events, [['free_multi_currency_net_worth_asset_added', { count: 500 }]]);
   });
 });
