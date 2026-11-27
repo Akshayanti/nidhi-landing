@@ -84,8 +84,9 @@ export function axisTick(value: number, scale: AmountScale, code: string, amount
   const locale = amountNumberLocale(code, amountLocale);
   const v = value / SCALE_DIVISOR[scale];
   // Up to two decimals, so neighbouring gridlines never round to one figure
-  // ("0.25", "0.5", "0.75"), and none that are not needed.
-  return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(shownNumber(v, 2));
+  // ("0.25", "0.5", "0.75"), and none that are not needed. Rounded first, so
+  // a figure that rounds to nothing is "0" and never "-0" (#888).
+  return new Intl.NumberFormat(locale).format(shownNumber(v, 2));
 }
 
 /**

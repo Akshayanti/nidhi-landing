@@ -1137,7 +1137,10 @@ function computeAnswer(
     }
     // Said as a fall when prices fell, never "rose about -28%", and over one
     // year without "those 1 year" or an average equal to the total (#868).
-    const fell = factor < 1;
+    // Only the direction is asked: a level factor is said as flat below, so
+    // no sentence turns on where exactly 1 falls.
+    const fellBy = (f: number) => Math.sign(f - 1) === -1;
+    const fell = fellBy(factor);
     const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
     // A change written as 0% is neither a rise nor a fall: "fell about 0%"
     // said more than the figure does (#888). It is said as less than half of
@@ -1152,7 +1155,7 @@ function computeAnswer(
       const more = Math.abs(end.factor - 1) * 100;
       sentences.push(flat(whole, 0)
         ? t(r.pastMonthFlat, { limit: limit(0), inMonth: endPhrase, year: from })
-        : t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(whole, numberLocale, 0), from, inMonth: endPhrase }));
+        : t(fellBy(total) ? r.pastMonthFall : r.pastMonthRise, { total: pct(whole, numberLocale, 0), from, inMonth: endPhrase }));
       if (span > 1) {
         sentences.push(flat(average, 1)
           ? t(r.pastMonthAverageFlat, { from, to, limit: limit(1) })
@@ -1160,7 +1163,7 @@ function computeAnswer(
       }
       sentences.push(flat(more, 1)
         ? t(r.pastMonthFlat, { limit: limit(1), inMonth: endPhrase, year: to })
-        : t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(more, numberLocale, 1), to, inMonth: endPhrase }));
+        : t(fellBy(end.factor) ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(more, numberLocale, 1), to, inMonth: endPhrase }));
       // Prices published by quarter: the month named is one of three that share a figure.
       if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
     } else {
