@@ -130,13 +130,47 @@ describe('a result said in words', () => {
     assert.equal(aboutText(9.99e14, 'EUR', en, null), 'about €999,000,000,000,000');
   });
 
-  it('is "less than" one unit for an amount that rounds to nothing, but zero is zero', () => {
-    assert.equal(aboutText(0.3, 'EUR', en, null), 'less than €1');
-    assert.equal(aboutText(0.49, 'EUR', en, null), 'less than €1');
-    assert.equal(aboutText(0.5, 'EUR', en, null), 'about €1');
+  it('below 10 keeps two significant figures, where whole units said "about €1" for everything from 0.6 to 1.4 (#868)', () => {
+    assert.equal(aboutText(0.6, 'EUR', en, null), 'about €0.6');
+    assert.equal(aboutText(0.7441, 'EUR', en, null), 'about €0.74');
     assert.equal(aboutText(1, 'EUR', en, null), 'about €1');
-    assert.equal(aboutText(1.4, 'EUR', en, null), 'about €1');
+    assert.equal(aboutText(1.3439, 'EUR', en, null), 'about €1.3');
+    assert.equal(aboutText(1.4, 'EUR', en, null), 'about €1.4');
+    assert.equal(aboutText(7.02, 'EUR', en, null), 'about €7');
+    assert.equal(aboutText(9.94, 'EUR', en, null), 'about €9.9');
+    assert.equal(aboutText(0.07441, 'EUR', en, null), 'about €0.074');
+    assert.equal(aboutText(0.3, 'EUR', en, null), 'about €0.3');
+    // From 10 up nothing changes: whole units.
+    assert.equal(aboutText(9.96, 'EUR', en, null), 'about €10');
+    assert.equal(aboutText(10.4, 'EUR', en, null), 'about €10');
+    assert.equal(aboutText(13.6, 'EUR', en, null), 'about €14');
+  });
+
+  it('is "less than" the smallest amount that can be typed below it, but zero is zero', () => {
+    assert.equal(aboutText(0.01, 'EUR', en, null), 'about €0.01');
+    assert.equal(aboutText(0.00996, 'EUR', en, null), 'about €0.01');
+    assert.equal(aboutText(0.0099, 'EUR', en, null), 'less than €0.01');
+    assert.equal(aboutText(0.0001, 'EUR', en, null), 'less than €0.01');
+    assert.equal(aboutText(1e-200, 'EUR', en, null), 'less than €0.01');
     assert.equal(aboutText(0, 'EUR', en, null), 'about €0');
+  });
+
+  it('a currency with no smaller unit keeps the two figures too: the amount measures buying power', () => {
+    assert.equal(aboutText(1.3439, 'JPY', en, null), 'about ￥1.3');
+    assert.equal(aboutText(0.7441, 'JPY', en, null), 'about ￥0.74');
+    assert.equal(aboutText(0.001, 'JPY', en, null), 'less than ￥0.01');
+    assert.equal(aboutText(134.39, 'JPY', en, null), 'about ￥134');
+  });
+
+  it('small amounts are written in the page’s number style', () => {
+    assert.equal(aboutText(1.3439, 'USD', en, 'cs'), 'about 1,3 $');
+    assert.equal(aboutText(0.7441, 'EUR', cs, 'cs'), 'zhruba 0,74 €');
+    assert.equal(aboutText(0.7441, 'USD', en, 'es'), 'about 0,74 $');
+    assert.equal(aboutText(0.0001, 'USD', en, 'es'), 'less than 0,01 $');
+    // The Hindi and Marathi pages write amounts the Indian English way.
+    assert.equal(aboutText(1.3439, 'INR', en, 'en-IN'), 'about ₹1.3');
+    assert.equal(aboutText(0.07441, 'INR', en, 'en-IN'), 'about ₹0.074');
+    assert.equal(aboutText(0.7441, 'CZK', en, null), 'about 0.74 Kč');
   });
 
   it('is "more than" the ceiling from a thousand million million up, and for a number too large to hold', () => {
@@ -148,9 +182,9 @@ describe('a result said in words', () => {
 
   it('uses the page’s words and the page’s amount style', () => {
     assert.equal(aboutText(1343.9, 'EUR', cs, 'cs'), 'zhruba 1 340 €');
-    assert.equal(aboutText(0.3, 'USD', en, 'cs'), 'less than 1 $');
+    assert.equal(aboutText(0.003, 'USD', en, 'cs'), 'less than 0,01 $');
     assert.equal(aboutText(1e15, 'USD', en, 'cs'), 'more than 1 000 000 000 000 000 $');
-    assert.equal(aboutText(0.3, 'USD', en, 'es'), 'less than 1 $');
+    assert.equal(aboutText(0.003, 'USD', en, 'es'), 'less than 0,01 $');
   });
 });
 

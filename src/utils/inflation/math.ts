@@ -34,6 +34,12 @@ export const MAX_AMOUNT = 1e12;
 export const BAND_POINTS = 1;
 /** Above this, a result is shown as "more than" it rather than as a number. */
 export const DISPLAY_CEILING = 1e15;
+/**
+ * The smallest result written as a figure: the smallest amount that can be
+ * typed. Below it two significant figures would need a fourth decimal, and
+ * the result is said as "less than" this.
+ */
+export const DISPLAY_FLOOR = 0.01;
 
 /** Growth over `years` years at `ratePct` percent a year, compounded yearly. */
 export function growthFactor(ratePct: number, years: number): number {
@@ -95,14 +101,17 @@ export function round2(v: number): number {
 }
 
 /**
- * Rounds a result for display as "about ...": whole units below 100, three
+ * Rounds a result for display as "about ...": two significant figures below
+ * 10 (1.34 -> 1.3, 0.744 -> 0.74), whole units from there to 100, three
  * significant figures from there up (740.19 -> 740, 13,439 -> 13,400). The
  * inputs are a guess at an average rate, so a figure to the cent would
- * promise a precision the rate cannot carry.
+ * promise a precision the rate cannot carry; whole units below 10 hid the
+ * answer instead, every amount from 0.6 to 1.4 reading "about 1" (#868).
  */
 export function roundAbout(v: number): number {
   if (!Number.isFinite(v)) return v;
   const abs = Math.abs(v);
+  if (abs < 10) return Number(v.toPrecision(2));
   if (abs < 100) return Math.round(v);
   const mag = Math.pow(10, Math.floor(Math.log10(abs)) - 2);
   return Math.round(v / mag) * mag;

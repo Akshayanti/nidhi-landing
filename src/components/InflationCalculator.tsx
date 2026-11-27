@@ -12,6 +12,7 @@ import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   DISPLAY_CEILING,
+  DISPLAY_FLOOR,
   MAX_AMOUNT,
   MAX_GROWTH,
   MAX_RATE,
@@ -156,11 +157,23 @@ function typedAmount(v: number, code: string, amountLocale: string | null): stri
   }).format(v);
 }
 
+/**
+ * An amount below 10 as `roundAbout` leaves it, to two significant figures:
+ * "€1.3", "€0.74", "€0.074", and "€7" without a zero after it. The same in a
+ * currency with no smaller unit ("¥1.3"): the figure measures buying power,
+ * it is not a sum to be paid, and "¥1" for everything from 0.6 to 1.4 hid it.
+ */
+function smallAmount(v: number, code: string, amountLocale: string | null): string {
+  const { display } = amountStyle(code, amountLocale);
+  return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 2 }).format(v);
+}
+
 /** A result, rounded and said as "about", "more than" or "less than". */
 function aboutText(v: number, code: string, strings: Strings, amountLocale: string | null): string {
   if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code, false, amountLocale) });
-  if (v > 0 && roundAbout(v) < 1) return t(strings.results.lessThan, { amount: formatAmount(1, code, false, amountLocale) });
-  return t(strings.results.about, { amount: formatAmount(roundAbout(v), code, false, amountLocale) });
+  const rounded = roundAbout(v);
+  if (v > 0 && rounded < DISPLAY_FLOOR) return t(strings.results.lessThan, { amount: smallAmount(DISPLAY_FLOOR, code, amountLocale) });
+  return t(strings.results.about, { amount: rounded < 10 ? smallAmount(rounded, code, amountLocale) : formatAmount(rounded, code, false, amountLocale) });
 }
 
 function yearsPhrase(n: number, strings: Strings, numberLocale: string): string {

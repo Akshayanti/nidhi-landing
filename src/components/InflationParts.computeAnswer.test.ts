@@ -108,8 +108,11 @@ describe('what an amount buys later, at a typed rate', () => {
 
   it('has no lower side at 0% and no higher side at the largest rate', () => {
     assert.deepEqual(answerOf(state({ mode: 'buy', rate: 0 })).band, ['At 1%: about €980']);
-    // 1,000 / 100^2 = 0.1
-    assert.deepEqual(answerOf(state({ mode: 'buy', rate: 10_000 })).band, ['At 9,999%: less than €1']);
+    // 1,000 / 101^2 = 0.098, and at 9,999%, 1,000 / 100.99^2 = 0.098.
+    assert.equal(answerOf(state({ mode: 'buy', rate: 10_000 })).headline, 'about €0.098');
+    assert.deepEqual(answerOf(state({ mode: 'buy', rate: 10_000 })).band, ['At 9,999%: about €0.098']);
+    // A year more: 1,000 / 101^3 = 0.00097, under the smallest amount that can be typed.
+    assert.equal(answerOf(state({ mode: 'buy', rate: 10_000, years: 3 })).headline, 'less than €0.01');
   });
 
   it('says one year in the singular, and shows the cents that were typed', () => {
@@ -129,6 +132,45 @@ describe('what an amount buys later, at a typed rate', () => {
     assert.equal(czech.chartTitle, format(cs.chart.title.buy, { amount: '1 000 €' }));
     assert.equal(czech.axis, cs.chart.axis.buy);
     assert.equal(czech.method, cs.results.method);
+  });
+});
+
+describe('a small amount keeps two significant figures in every mode (#868)', () => {
+  // €1 at 3% for 10 years: 1 / 1.03^10 = 0.744, 1 x 1.03^10 = 1.344. At 2%: 0.820 and 1.219; at 4%: 0.676 and 1.480.
+  const one = { amount: 1, rate: 3, years: 10 };
+
+  it('buying power later: the headline, the sentence and both ends of the range', () => {
+    const a = answerOf(state({ mode: 'buy', ...one }));
+    assert.equal(a.headline, 'about €0.74');
+    assert.deepEqual(a.sentences, ['If inflation averages 3% a year, €1 in 10 years buys what about €0.74 buys today.']);
+    assert.deepEqual(a.band, ['At 2%: about €0.82', 'At 4%: about €0.68']);
+  });
+
+  it('cost later', () => {
+    const a = answerOf(state({ mode: 'cost', ...one }));
+    assert.equal(a.headline, 'about €1.3');
+    assert.deepEqual(a.sentences, ['If prices rise 3% a year on average, something that costs €1 today costs about €1.3 in 10 years.']);
+    assert.deepEqual(a.band, ['At 2%: about €1.2', 'At 4%: about €1.5']);
+  });
+
+  it('keeping up: what the amount buys after the years', () => {
+    // 1 x (1.05 / 1.03)^10 = 1.212.
+    const a = answerOf(state({ mode: 'keep', growth: 5, ...one }));
+    assert.equal(a.sentences[1], 'After 10 years, €1 growing at 5% a year buys what about €1.2 buys today.');
+  });
+
+  it('past to today, with a history', () => {
+    // 1 x 1.1 x 1.2 x 1.25 = 1.65.
+    const a = past(USA, rising(2019), 1, 2019);
+    assert.equal(a.headline, 'about $1.7');
+    assert.ok(a.sentences[0].includes('bought what about $1.7 bought'), a.sentences[0]);
+  });
+
+  it('in the page’s number style, and from 10 up as before', () => {
+    assert.equal(answerOf(state({ mode: 'buy', ...one }), null, null, 'none', 'cs', 'cs', cs).headline, 'zhruba 0,74\u00a0€');
+    // 13 / 1.03^10 = 9.67 is "9.7"; 14 / 1.03^10 = 10.4 is whole units.
+    assert.equal(answerOf(state({ mode: 'buy', ...one, amount: 13 })).headline, 'about €9.7');
+    assert.equal(answerOf(state({ mode: 'buy', ...one, amount: 14 })).headline, 'about €10');
   });
 });
 
@@ -380,8 +422,9 @@ describe('a history that crosses several changes of currency', () => {
     const more = format(r.currencyChangedMore, { country: 'Bulgaria', years: '1999, 2026', ratio: '1,955.83', from: 1998, unconverted: 'about €1,650' });
     assert.match(more, /^Bulgaria changed its currency more than once after 1998 \(1999, 2026\): in all, 1,955\.83 units of the 1998 money became 1 unit of today's\./);
     close(a.value, 1650 / 1955.83);
-    assert.equal(a.headline, 'about €1');
-    assert.deepEqual(a.sentences, ['In Bulgaria, 1,000 in the money of 1998, at that year’s average prices, bought what about €1 bought at average prices in 2001.', more, RISE_3, LATEST(2001), START(1998)]);
+    // 1,650 / 1,955.83 = 0.84: two significant figures, where whole units said "about €1" (#868).
+    assert.equal(a.headline, 'about €0.84');
+    assert.deepEqual(a.sentences, ['In Bulgaria, 1,000 in the money of 1998, at that year’s average prices, bought what about €0.84 bought at average prices in 2001.', more, RISE_3, LATEST(2001), START(1998)]);
     assert.equal(a.announceMore, more);
     samePoints(a.points, [[1998, 1000 / 1955.83], [1999, 1100 / 1955.83], [2000, 1320 / 1955.83], [2001, 1650 / 1955.83]]);
   });
