@@ -1458,6 +1458,9 @@ function ShareModal({
   const urlField = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (copyFailed && shareUrl) urlField.current?.focus();
+    // On a short screen (a phone held sideways) the bar can open below the
+    // part of the dialog in view: it is brought into view, the least way (#639).
+    if (shareUrl) urlField.current?.closest('.mcnw-shareUrlBar')?.scrollIntoView?.({ block: 'nearest' });
   }, [copyFailed, shareUrl, notice.n]);
 
   // The parent passes a new `onClose` on every render. Kept in a ref, it
