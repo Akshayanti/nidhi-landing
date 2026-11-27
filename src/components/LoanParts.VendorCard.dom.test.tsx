@@ -814,7 +814,7 @@ describe('the offer card: the optional boxes', () => {
     assert.equal(errorOf(mixed.card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`);
     mixed.unmount();
     const { card } = show(loan({ lumpSumsEncoded: '3:100' }));
-    assert.equal(errorOf(card), null);
+    assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
   });
 
@@ -847,7 +847,7 @@ describe('the offer card: the optional boxes', () => {
     }
     // Both filled: nothing is marked and the offer is worked out.
     const { card } = show(loan(HYBRID));
-    assert.equal(errorOf(card), null);
+    assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, LABELS.subsequentRate)), UNMARKED);
     assert.ok(rows(card).length > 0);
   });
@@ -872,7 +872,7 @@ describe('the offer card: the optional boxes', () => {
   it('works out a fixed period as long as the term, or far longer, as a fixed rate, and says the later rate is not used (issue 914)', () => {
     for (const initialFixedMonths of ['12', '13', '1200', '5000']) {
       const { card, unmount } = show(loan({ ...HYBRID, initialFixedMonths }));
-      assert.equal(errorOf(card), null, initialFixedMonths);
+      assert.ok(errorOf(card) === null, initialFixedMonths);
       const notes = [...card.querySelectorAll('.lc-warning')];
       assert.deepEqual(notes.map((n) => n.textContent), ['The rate does not change within this term, so the subsequent rate is not used.'], initialFixedMonths);
       assert.deepEqual(notes.map((n) => n.getAttribute('role')), ['status']);
@@ -889,7 +889,7 @@ describe('the offer card: the optional boxes', () => {
   it('keeps a lump sum dated after the payoff valid, and says under the result that it is not used (issue 915)', () => {
     // 1,200 at 0% over 12 months is paid off in month 12.
     const { card } = show(loan({ lumpSumsEncoded: '13:50' }));
-    assert.equal(errorOf(card), null);
+    assert.ok(errorOf(card) === null);
     assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
     assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.']);
     cleanup();

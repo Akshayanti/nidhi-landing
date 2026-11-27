@@ -36,10 +36,10 @@ describe('LinkField', () => {
   it('gives its field to a ref object and to a ref function', () => {
     const object = createRef<HTMLInputElement>();
     const view = render(<LinkField link={LINK} ref={object} />);
-    assert.equal(object.current, field());
+    assert.ok(object.current === field());
     view.unmount();
     let given: HTMLInputElement | null = null;
     render(<LinkField link={LINK} ref={(el) => { given = el; }} />);
-    assert.equal(given, field());
+    assert.ok(given === field());
   });
 });

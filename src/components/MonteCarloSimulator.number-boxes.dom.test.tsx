@@ -21,7 +21,7 @@ describe('the number boxes', () => {
       const box = screen.getByLabelText(island.fields.start);
       await user.type(box, '1');
       assert.equal(xlsx.getAttribute('aria-disabled'), 'true');
-      assert.equal(screen.queryByText(t.export.notReady), null, 'settling says nothing');
+      assert.ok(screen.queryByText(t.export.notReady) === null, 'settling says nothing');
       await user.type(box, 'x');
       assert.ok(screen.getByText(t.export.notReady));
       await retype(island.fields.start, '50000');

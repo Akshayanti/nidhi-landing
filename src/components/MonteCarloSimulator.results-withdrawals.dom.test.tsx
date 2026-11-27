@@ -16,7 +16,7 @@ describe('the results in words: withdrawals', () => {
       assert.equal(one('.mcs-lastedHead strong').textContent, '6 in 10');
       assert.equal(one('.mcs-lasted .mcs-note').textContent, 'Among the paths where it ran out, the median year it did so was year 21 of 30.');
       assert.equal(one('.mcs-quick .mcs-quickRange').textContent, 'The money lasted all 30 years in 6 in 10 paths.');
-      assert.equal(document.querySelector('.mcs-quickTitle'), null, 'no saving, no median of it');
+      assert.ok(document.querySelector('.mcs-quickTitle') === null, 'no saving, no median of it');
       assert.ok(document.querySelector('.mcs-cards') === null);
     }
     {
@@ -36,7 +36,7 @@ describe('the results in words: withdrawals', () => {
       await retype(island.withdraw.amountLabel, '1000');
       assert.equal(one('.mcs-lastedHead').textContent, `Taking ${money(1_000)} a year, the money lasted all 30 years in every simulated path.`);
       assert.equal(one('.mcs-quick .mcs-quickRange').textContent, 'The money lasted all 30 years in every path.');
-      assert.equal(document.querySelector('.mcs-lasted .mcs-note'), null, 'no year it ran out');
+      assert.ok(document.querySelector('.mcs-lasted .mcs-note') === null, 'no year it ran out');
       await retype(island.withdraw.amountLabel, '200000');
       assert.equal(one('.mcs-lastedHead').textContent, `Taking ${money(200_000)} a year, the money ran out before the 30 years were over in every simulated path.`);
       assert.equal(one('.mcs-quick .mcs-quickRange').textContent, 'The money ran out before the 30 years were over in every path.');

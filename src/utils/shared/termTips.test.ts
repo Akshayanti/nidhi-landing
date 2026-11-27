@@ -202,7 +202,7 @@ describe('termTips.js', () => {
     assert.ok(tip.hasAttribute('data-open'), 'only Escape closes');
     fire('keydown', { key: 'Escape' });
     assert.ok(!tip.hasAttribute('data-open'));
-    assert.equal(document.activeElement, trigger, 'focus returns to the term');
+    assert.ok(document.activeElement === trigger, 'focus returns to the term');
   });
 
   it('stays open on a tap inside the bubble, and closes on a tap on the page itself', () => {

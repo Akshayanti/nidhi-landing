@@ -64,7 +64,7 @@ describe('the invest or pay off calculator on its page', () => {
     assert.equal(doc.querySelector('.iop-example')?.textContent, island.example);
     assert.equal(doc.querySelector('.iop-headline')?.textContent, linesFor()[1]);
     assert.equal(doc.querySelector('span[aria-live="polite"]')?.textContent, '');
-    assert.equal(doc.querySelector('.tool-report'), null);
+    assert.ok(doc.querySelector('.tool-report') === null);
     assert.equal(doc.querySelector('input[value="historical"]')?.hasAttribute('checked'), true);
     assert.equal(doc.querySelector('input[value="plus5"]')?.hasAttribute('checked'), true);
     // A page whose country's history is not in it yet says it is loading, not that it failed.

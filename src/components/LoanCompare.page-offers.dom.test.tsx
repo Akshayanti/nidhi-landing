@@ -61,8 +61,8 @@ describe('the loan comparison: adding and removing offers', () => {
     fireEvent.click(addCard()!);
     assert.equal(cards().length, 5);
     assert.equal(shownOffer(), 4);
-    assert.equal(addCard(), null);
-    assert.equal(addTab(), null);
+    assert.ok(addCard() === null);
+    assert.ok(addTab() === null);
     assert.deepEqual(events, [
       ['free_loan_comparison_vendor_added', { count: 3 }],
       ['free_loan_comparison_vendor_added', { count: 4 }],

@@ -69,7 +69,7 @@ beforeEach(() => {
     return { width: shown, height: 0, top: 0, left: 0, right: shown, bottom: 0, x: 0, y: 0, toJSON: () => ({}) };
   };
   g.getComputedStyle = (el: Element) => {
-    assert.equal(el, document.documentElement, 'the text size is read from the page, not the chart');
+    assert.ok(el === document.documentElement, 'the text size is read from the page, not the chart');
     return { fontSize: rootSize };
   };
   g.ResizeObserver = Watcher;
