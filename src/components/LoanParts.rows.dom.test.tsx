@@ -19,7 +19,7 @@ import { dear, neverLess, plain } from '../../test/loanParts.comparedOffers.ts';
 import { loanComparisonEn } from '../i18n/strings/tools/loanComparison.ts';
 import type { LoanResult } from '../utils/loan/math.ts';
 import { amountLength } from '../utils/shared/amountUnits.ts';
-import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredLabel, ResultRow } from './LoanCompare.tsx';
+import { FieldGroup, LoanAnnouncement, PaymentSteps, RequiredLabel, ResultRow, announcedNotes } from './LoanCompare.tsx';
 import { WITHHELD_SAID_AFTER, type Notice } from './toolShared.tsx';
 import { AmountLocaleContext } from './useMoney.ts';
 
@@ -239,6 +239,7 @@ describe('the announcement of the loan results', () => {
     withheld?: boolean;
     paidOff: LoanResult[];
     validCount: number;
+    noted?: { name: string; notes: string[] }[];
     also?: string;
     notice?: Notice;
     currency?: string;
@@ -251,6 +252,7 @@ describe('the announcement of the loan results', () => {
         withheld={p.withheld ?? false}
         paidOff={p.paidOff}
         validCount={p.validCount}
+        noted={p.noted ?? []}
         currency={p.currency ?? 'EUR'}
         strings={s}
         also={p.also}
@@ -348,6 +350,72 @@ describe('the announcement of the loan results', () => {
     change({ withheld: true, paidOff: [plain()], validCount: 1, also: 'Refinancing saves €20.00.' });
     clock.pass(5000);
     assert.equal(said(), '');
+  });
+
+  it('says one offer\'s notes after its figures, in the card\'s order, and not before the pause', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ paidOff: [dear()], validCount: 1, noted: [{ name: 'Offer A', notes: ['First note.', 'Second note.'] }] });
+    clock.pass(599);
+    assert.equal(said(), '');
+    clock.pass(1);
+    // One offer needs no name before its notes.
+    assert.equal(said(), 'Monthly payment €609.01. Total paid €1,218.03. First note. Second note.');
+  });
+
+  it('says a note that came or changed with the figures as they were: the result is said again, whole and once', () => {
+    const { said, region, change } = announce({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: [] }] });
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['First note.'] }] });
+    clock.pass(600);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. First note.');
+    assert.equal(region.childNodes.length, 1);
+    // Each digit of a month being typed changes the note: only the one the typing stops on is said.
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['Note for month 1.'] }] });
+    clock.pass(300);
+    change({ paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['Note for month 12.'] }] });
+    clock.pass(599);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. First note.');
+    clock.pass(1);
+    assert.equal(said(), 'Monthly payment €100.00. Total paid €1,200.00. Note for month 12.');
+  });
+
+  it('says nothing more for offers with no notes: the figures end the sentence', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ paidOff: [plain(), dear()], validCount: 2, noted: [{ name: 'Offer A', notes: [] }, { name: 'Offer B', notes: [] }] });
+    clock.pass(600);
+    assert.equal(said(), 'Total cost ranges from €1,200.00 to €1,218.03 across the offers below: a spread of €18.03.');
+  });
+
+  it('names each offer before its notes when there are several offers, after the range', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({
+      paidOff: [plain(), dear(), plain()],
+      validCount: 3,
+      noted: [{ name: 'Offer A', notes: ['First note.', 'Second note.'] }, { name: 'North Bank', notes: [] }, { name: 'Offer C', notes: ['Third note.'] }],
+    });
+    clock.pass(600);
+    assert.equal(said(), 'Total cost ranges from €1,200.00 to €1,218.03 across the offers below: a spread of €18.03. Offer A: First note. Second note. Offer C: Third note.');
+  });
+
+  it('names the one offer that has notes, too, when another offer is beside it', () => {
+    assert.equal(announcedNotes([{ name: 'Offer A', notes: [] }, { name: 'North Bank', notes: ['A note.'] }]), 'North Bank: A note.');
+    assert.equal(announcedNotes([{ name: 'North Bank', notes: ['A note.'] }]), 'A note.');
+    assert.equal(announcedNotes([{ name: 'North Bank', notes: [] }]), '');
+    assert.equal(announcedNotes([]), '');
+  });
+
+  it('says the notes alone for an offer that has no figures to say', () => {
+    // One valid offer that is never paid off has no payment and total to say.
+    const { said, change } = announce({ paidOff: [], validCount: 1 });
+    change({ paidOff: [], validCount: 1, noted: [{ name: 'Offer A', notes: ['A note.'] }] });
+    clock.pass(600);
+    assert.equal(said(), 'A note.');
+  });
+
+  it('leaves the notes out while the offers are withheld: only the reason is said', () => {
+    const { said, change } = announce({ paidOff: [plain()], validCount: 1 });
+    change({ withheld: true, paidOff: [plain()], validCount: 1, noted: [{ name: 'Offer A', notes: ['A note.'] }] });
+    clock.pass(1000);
+    assert.equal(said(), 'Fix the highlighted fields to compare the offers.');
   });
 
   it('says a notice at once, without waiting for typing to pause', () => {

@@ -577,7 +577,7 @@ describe('the offer card: the result rows', () => {
     assert.deepEqual(rows(card)[1], { label: r.apr, value: r.aprNa, hints: [r.aprFees, r.aprBasis] });
   });
 
-  it('shows the engine warnings under the result, in the reader language, as status messages', () => {
+  it('shows the engine warnings under the result, in the reader language, as lines that are not live regions', () => {
     const vendor = loan(HYBRID);
     const result = {
       ...computeFromInput(vendor, 'EUR'),
@@ -589,7 +589,8 @@ describe('the offer card: the result rows', () => {
     const { card } = show(vendor, { result });
     const warnings = [...card.querySelectorAll('.lc-warning')];
     assert.deepEqual(warnings.map((w) => w.textContent), [s.engine.warnings.subsequentRate, 'A sentence the tool does not know.']);
-    assert.deepEqual(warnings.map((w) => w.getAttribute('role')), ['status', 'status']);
+    // Not live regions: the tool's one announcement says them, after a pause.
+    assert.deepEqual(warnings.map((w) => w.getAttribute('role')), [null, null]);
     assert.equal(rows(card).length, 5);
   });
 
@@ -883,7 +884,7 @@ describe('the offer card: the optional boxes', () => {
       assert.ok(errorOf(card) === null, initialFixedMonths);
       const notes = [...card.querySelectorAll('.lc-warning')];
       assert.deepEqual(notes.map((n) => n.textContent), ['The rate does not change within this term, so the subsequent rate is not used.'], initialFixedMonths);
-      assert.deepEqual(notes.map((n) => n.getAttribute('role')), ['status']);
+      assert.deepEqual(notes.map((n) => n.getAttribute('role')), [null]);
       for (const label of [LABELS.initialFixed, LABELS.subsequentRate, LABELS.term]) assert.deepEqual(wiring(card, box(card, label)), UNMARKED, label);
       // 1,200 at 0% over 12 months: the fixed loan's rows.
       assert.deepEqual(rows(card).map((row) => row.label), rows(show(loan()).card).map((row) => row.label), initialFixedMonths);
@@ -917,6 +918,12 @@ describe('the offer card: the optional boxes', () => {
     assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 11 is more than is owed then, so only part of it is used.']);
     cleanup();
     const both = show(loan({ lumpSumsEncoded: '20:50;11:500' }));
+    // The lines are read where they stand, and said by the tool's one announcement:
+    // none is a live region of its own, or inside one.
+    for (const line of both.card.querySelectorAll('.lc-warning')) {
+      assert.equal(line.tagName, 'P');
+      assert.ok(line.closest('[role="status"], [role="alert"], [aria-live]') === null, line.textContent ?? '');
+    }
     assert.deepEqual([...both.card.querySelectorAll('.lc-warning')].map((n) => n.textContent), [
       'The lump sum in month 11 is more than is owed then, so only part of it is used.',
       'This loan is paid off in month 11, before the lump sum in month 20 would be paid, so it is not used.',

@@ -1522,6 +1522,7 @@ export default function LoanCompare({
         withheld={withheld}
         paidOff={withTotal.map((x) => x.r)}
         validCount={validResults.length}
+        noted={validResults.map(({ r, i }) => ({ name: shownName(vendors[i].name, i, strings), notes: r.warnings.map((w) => engineWarning(w, strings)) }))}
         currency={currency}
         strings={strings}
         also={refiSaid}
@@ -2086,7 +2087,10 @@ function VendorCard({
           </>
         )}
         {result.warnings.map((w, i) => (
-          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
+          // Not a live region: typing a lump sum's month digit by digit would have a
+          // screen reader speak every change. The tool's one announcement says an
+          // offer's notes with its figures, once typing has paused (`announcedNotes`).
+          <p key={i} className="lc-warning">{engineWarning(w, strings)}</p>
         ))}
       </div>
 
@@ -2467,12 +2471,34 @@ function announcedResult(
     : `${d.rangeBefore}${formatMoney(low, currency)}${d.rangeTo}${formatMoney(high, currency)}${d.rangeAcross}${formatMoney(high - low, currency)}${d.rangeAfter}`;
 }
 
+/** A valid offer as the announcement names it, with the notes under its result, in the card's order. */
+interface NotedOffer {
+  name: string;
+  notes: string[];
+}
+
+/**
+ * The notes under the offers' results, as they are said after the figures:
+ * each offer's notes in the card's order, the offers in theirs. With one
+ * offer the notes are its own; with several, each offer's notes follow its
+ * name, as in the printed report. Nothing for offers with no notes.
+ */
+function announcedNotes(noted: NotedOffer[]): string {
+  const several = noted.length > 1;
+  return noted
+    .filter((offer) => offer.notes.length > 0)
+    .map((offer) => `${several ? `${offer.name}: ` : ''}${offer.notes.join(' ')}`)
+    .join(' ');
+}
+
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
+function LoanAnnouncement({ withheld, paidOff, validCount, noted, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; noted: NotedOffer[]; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
+  // The figures, then the notes: one text, so a keystroke that changes both is said once.
+  const result = [announcedResult(paidOff, validCount, currency, strings, formatMoney), announcedNotes(noted)].filter(Boolean).join(' ');
   return (
     <ResultAnnouncement
-      text={withheld ? strings.delta.fix : announcedResult(paidOff, validCount, currency, strings, formatMoney)}
+      text={withheld ? strings.delta.fix : result}
       delay={withheld ? WITHHELD_SAID_AFTER : undefined}
       also={withheld ? undefined : also}
       notice={notice}
@@ -3661,6 +3687,6 @@ function RefinanceSection({
 export {
   AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
   LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredLabel, ResultRow, SplitChart, VendorCard,
-  analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  analysisTabs, announcedNotes, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
   noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
 };

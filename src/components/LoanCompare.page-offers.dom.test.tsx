@@ -10,7 +10,7 @@
  */
 import {
   island, events, arriveWith, mount, offer, link, cards, phoneTabs, shownOffer, names, type, c, fill, one, all, has, byId,
-  currencySelect, chooseCurrency, button, sentText, addressUntouched,
+  currencySelect, chooseCurrency, button, sentText, addressUntouched, said, clock,
 } from '../../test/loanCompare.page.tsx';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
@@ -238,3 +238,38 @@ describe('the loan comparison: the box being typed in stays where it is (#827)',
     assert.equal(tabsRow.style.minHeight, '');
   });
 });
+
+describe('the loan comparison: the notes under a result are said with the result, once typing has paused', () => {
+  /** How many times `part` occurs in `text`. */
+  const times = (text: string, part: string) => text.split(part).length - 1;
+
+  it('says an offer\'s note once, after its name and the figures, not while the month is being typed, and nowhere else', () => {
+    mount();
+    // Month 1200 is past any payoff: the lump sum is never paid, and the card says so.
+    type(0, c.lumps, '1200:100');
+    const line = one('.lc-warning', cards()[0]);
+    const note = line.textContent ?? '';
+    assert.match(note, /month 1200/);
+    assert.ok(line.closest('[role="status"], [role="alert"], [aria-live]') === null);
+    assert.equal(said(), '', 'nothing before the pause');
+    clock.pass(599);
+    assert.equal(said(), '');
+    clock.pass(1);
+    assert.equal(times(said() ?? '', note), 1);
+    assert.ok((said() ?? '').endsWith(` Offer A: ${note}`), said() ?? '');
+    assert.ok(!(said() ?? '').startsWith(' '));
+    // The announcement is the only live part of the page that holds the note.
+    assert.deepEqual(all('[aria-live], [role="status"], [role="alert"]').filter((el) => (el.textContent ?? '').includes(note)).length, 1);
+
+    // A name the reader typed is the one said.
+    type(0, c.name, 'North Bank');
+    clock.pass(600);
+    assert.ok((said() ?? '').endsWith(` North Bank: ${note}`), said() ?? '');
+    // The note gone, the result is said without it.
+    type(0, c.lumps, '');
+    clock.pass(600);
+    assert.equal(times(said() ?? '', 'month 1200'), 0);
+    assert.notEqual(said(), '');
+  });
+});
+
