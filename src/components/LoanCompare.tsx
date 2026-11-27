@@ -3265,7 +3265,12 @@ function HorizonSection({
   const { formatMoney } = useMoney();
   const horizonId = useId();
   const horizonErrorId = useId();
-  const badHorizon = isUnreadable(horizonMonths);
+  // A horizon box left empty is flagged and holds the panel back, as one
+  // that cannot be read does: it used to show results at 60 months while
+  // the box was blank (#823, owner, Nov 27, 2026).
+  const emptyHorizon = horizonMonths.trim() === '';
+  const badHorizon = isUnreadable(horizonMonths) || emptyHorizon;
+  const horizonFault = emptyHorizon ? strings.horizon.required : null;
   // Debounced engagement signal. We don't want to fire one event per
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
@@ -3335,7 +3340,7 @@ function HorizonSection({
           onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
-          aria-valuetext={badHorizon ? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
+          aria-valuetext={badHorizon ? horizonFault ?? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
         <LocaleNumberInput
@@ -3350,7 +3355,7 @@ function HorizonSection({
       </div>
 
       {badHorizon ? (
-        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{horizonFault ?? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText)}</ErrorText></p>
       ) : validRows.length === 0 ? (
         <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
@@ -3544,7 +3549,14 @@ function RefinanceSection({
   const badRate = isUnreadable(state.refiNewRatePct);
   const badTerm = isUnreadable(state.refiNewTermMonths);
   const badFee = isUnreadable(state.refiNewFeeMajor);
-  const badRefi = badAtMonth || badRate || badTerm || badFee;
+  // A required box left empty (the month, the rate, the term) is flagged and
+  // holds the scenario back, as one that cannot be read does (#823). An
+  // empty fee is none paid.
+  const emptyAt = state.refiAtMonth.trim() === '';
+  const emptyRate = state.refiNewRatePct.trim() === '';
+  const emptyTerm = state.refiNewTermMonths.trim() === '';
+  const unreadableRefi = badAtMonth || badRate || badTerm || badFee;
+  const badRefi = unreadableRefi || emptyAt || emptyRate || emptyTerm;
 
   const cmp =
     !badRefi && original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
@@ -3597,8 +3609,8 @@ function RefinanceSection({
             id={atMonthId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badAtMonth || undefined}
-            aria-describedby={badAtMonth ? refiErrorId : undefined}
+            aria-invalid={badAtMonth || emptyAt || undefined}
+            aria-describedby={badAtMonth || emptyAt ? refiErrorId : undefined}
             value={state.refiAtMonth}
             onValueChange={(v) => {
               onChange({ refiAtMonth: v });
@@ -3613,8 +3625,8 @@ function RefinanceSection({
             id={newRateId}
             inputMode="decimal"
             className="lc-input"
-            aria-invalid={badRate || undefined}
-            aria-describedby={badRate ? refiErrorId : undefined}
+            aria-invalid={badRate || emptyRate || undefined}
+            aria-describedby={badRate || emptyRate ? refiErrorId : undefined}
             value={state.refiNewRatePct}
             onValueChange={(v) => {
               onChange({ refiNewRatePct: v });
@@ -3629,8 +3641,8 @@ function RefinanceSection({
             id={newTermId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badTerm || undefined}
-            aria-describedby={badTerm ? refiErrorId : undefined}
+            aria-invalid={badTerm || emptyTerm || undefined}
+            aria-describedby={badTerm || emptyTerm ? refiErrorId : undefined}
             value={state.refiNewTermMonths}
             onValueChange={(v) => {
               onChange({ refiNewTermMonths: v });
@@ -3674,7 +3686,7 @@ function RefinanceSection({
       </div>
 
       {badRefi ? (
-        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{unreadableRefi ? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText) : strings.refi.required}</ErrorText></p>
       ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}
