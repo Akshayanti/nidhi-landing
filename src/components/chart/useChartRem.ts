@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import { flushSync } from 'react-dom';
 
 /**
  * How many of a chart's drawing units make one `rem` on screen, so the text
@@ -52,9 +53,12 @@ export function useChartRem(svg: RefObject<SVGSVGElement | null>, width: number)
   useLayoutEffect(() => {
     // A hook drawn inside its own SVG (a donut's centre, say) runs before the
     // SVG's ref is attached: React attaches a parent's ref after its
-    // children's effects. Look again once the drawing is committed (#876).
+    // children's effects. Look again once the drawing is committed (#876),
+    // and draw that measure at once: the microtask runs before the browser
+    // paints, but an update scheduled from it may not, so the text would show
+    // unsized for a frame (#889).
     watch();
-    if (!svg.current) queueMicrotask(watch);
+    if (!svg.current) queueMicrotask(() => flushSync(watch));
   });
   useLayoutEffect(() => {
     let live = true;
@@ -85,7 +89,10 @@ export function textWidth(text: string, size: number): number {
 
 /**
  * Round steps for an axis (1, 2, 2.5 or 5 times a power of ten) covering `v`
- * in at most `max` steps: fewer gridlines as the text grows.
+ * in at most `max` steps: fewer gridlines as the text grows. Below about 1e-12
+ * the tolerance in the step search is larger than the value, and more than
+ * `max` steps can come back (`niceSteps(1e-13, 5)` gives 10); chart values are
+ * never that small (#863).
  */
 export function niceSteps(v: number, max: number): { top: number; step: number; count: number } {
   const n = Math.max(1, Math.floor(max));

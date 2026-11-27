@@ -29,7 +29,9 @@ export function roundToStep(value: number, step: number): number {
   // Halves go away from zero on both sides: -5 to -10 as 5 to 10.
   const rounded = Math.sign(value) * Math.round(Math.abs(value) / step) * step;
   // A step below 1 leaves binary dust (0.30000000000000004): cut it at the step's own decimals.
-  // (For a step of 1 or more this is zero or less, and nothing is cut.)
+  // (For a step of 1 or more this is zero or less, and nothing is cut.) The cut
+  // stops at 12 decimals, so a step finer than 1e-12 rounds the value to 0;
+  // money never has such a step (#863).
   const decimals = Math.min(12, Math.ceil(-Math.log10(step)));
   const clean = decimals > 0 ? Number(rounded.toFixed(decimals)) : rounded;
   return Object.is(clean, -0) ? 0 : clean;

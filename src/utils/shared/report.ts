@@ -87,7 +87,11 @@ export function tableOf(sheet: Sheet, opts: { caption?: string; note?: string | 
   };
 }
 
-/** True when a row has a label and nothing else worth printing (empty, or zero). */
+/**
+ * True when a row has a label and nothing else worth printing: every other
+ * cell is `null`, an empty text or a number cell of zero (`{ n: 0 }`). A plain
+ * number, a plain `0` included, and an `undefined` cell count as content (#863).
+ */
 export function isEmptyRow(row: Cell[]): boolean {
   return row.slice(1).every((c) => c === null || c === '' || (typeof c === 'object' && 'n' in c && c.n === 0));
 }
@@ -107,7 +111,11 @@ export function byYearTable(head: Cell[], rows: Cell[][], caption: string | unde
   };
 }
 
-/** At most `max` points of a long line, always keeping its first and last. */
+/**
+ * About `max` points of a long line, always keeping its first and last:
+ * every `step`-th point plus the last, so up to `max + 1` (360 points with a
+ * `max` of 120 give 121) (#863).
+ */
 export function thin<T>(points: T[], max = 120): T[] {
   if (points.length <= max) return points;
   const step = Math.ceil(points.length / max);

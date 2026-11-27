@@ -24,7 +24,7 @@ describe('linkCurrency', () => {
 
 describe('linkNumber', () => {
   it('keeps numbers the way people type them', () => {
-    for (const typed of ['', '0', '250000', '4.5', '1,234.56', '1.234,56', '1 234,56', '1\u00a0234,56', '1\u202f234', "1'234", '1’234', '-5', '+5', '१२३']) {
+    for (const typed of ['', '0', '250000', '4.5', '1,234.56', '1.234,56', '1 234,56', '1\u00a0234,56', '1\u202f234', "1'234", '1’234', '-5', '+5', '१२३', '\u22125', '٢٫٥', '١٬٢٣٤', '1٬234٫5']) {
       assert.equal(linkNumber(typed, 'fallback'), typed, typed);
     }
   });

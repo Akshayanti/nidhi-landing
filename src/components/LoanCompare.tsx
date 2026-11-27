@@ -244,9 +244,58 @@ export function engineError(raw: string, s: Strings): string {
 }
 
 /** Which of the engine's messages this is, by the catalog key of its translation. */
+/** The offer with the boxes edited on this card left out, for `holdsMarker`. */
+export function unedited(vendor: VendorInput, edited: ReadonlySet<string>): VendorInput {
+  return Object.fromEntries(Object.entries(vendor).filter(([key]) => !edited.has(key))) as VendorInput;
+}
+
 export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] | undefined {
   const lower = raw.toLowerCase();
   return ENGINE_PHRASES.find(([phrase]) => lower.includes(phrase))?.[1];
+}
+
+/**
+ * The coarse kind of problem the validation event sends as `firstReason`
+ * (#895). It is read from which engine message an offer has, so every message
+ * lands in one bucket whatever its wording; the `Record` makes the compiler
+ * ask for a bucket when the engine grows a message. A choice, never a value:
+ * no amount, rate or month goes with it. Refinance messages never reach an
+ * offer card, so they share `other` with a message no phrase knows.
+ */
+export const VALIDATION_REASONS = {
+  amount: 'missing_principal',
+  principal: 'missing_principal',
+  amountMax: 'principal_out_of_range',
+  tooSmall: 'principal_out_of_range',
+  rate: 'missing_rate',
+  term: 'missing_term',
+  termMin: 'missing_term',
+  termMax: 'term_out_of_range',
+  payment: 'missing_payment',
+  paymentEnter: 'missing_payment',
+  belowInterest: 'payment_below_interest',
+  interestOnly: 'payment_below_interest',
+  notAmortizing: 'payment_below_interest',
+  initialFixed: 'rate_structure',
+  hybridMode: 'rate_structure',
+  rateChangeIncomplete: 'rate_structure',
+  optionalUnreadable: 'optional_field',
+  pointsAboveFee: 'optional_field',
+  lumpMonth: 'optional_field',
+  refiMonth: 'other',
+  refiMonthEnd: 'other',
+  refiRate: 'other',
+  refiTerm: 'other',
+  refiBalance: 'other',
+  newLoan: 'other',
+  refiOriginal: 'other',
+} as const satisfies Record<keyof Strings['engine']['errors'], string>;
+
+export type ValidationReason = (typeof VALIDATION_REASONS)[keyof typeof VALIDATION_REASONS];
+
+export function validationReason(raw: string): ValidationReason {
+  const key = engineErrorKey(raw);
+  return key ? VALIDATION_REASONS[key] : 'other';
 }
 
 /**
@@ -1210,7 +1259,8 @@ export default function LoanCompare({
   // effect re-runs on every keystroke because `results` is a fresh
   // reference, but the timer collapses bursts into one event 600ms after
   // the user stops typing. We never ship the error message; only the
-  // count and a coarse `firstReason` bucket inferred from keywords.
+  // count and a coarse `firstReason` bucket, read from which engine message
+  // it is (`validationReason`), never from its words or its numbers.
   const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!hydrated) return;
@@ -1222,20 +1272,7 @@ export default function LoanCompare({
         .filter((x) => Boolean(x.r.error));
       if (errored.length === 0) return;
       // Stryker disable next-line StringLiteral: equivalent. Only offers with an error are here, so the fallback for a missing message is never used.
-      const firstMsg = (errored[0].r.error ?? '').toLowerCase();
-      let firstReason:
-        | 'missing_principal'
-        | 'missing_rate'
-        | 'missing_term'
-        | 'payment_below_interest'
-        | 'rate_out_of_range'
-        | 'term_out_of_range'
-        | 'other' = 'other';
-      if (firstMsg.includes('principal')) firstReason = 'missing_principal';
-      else if (firstMsg.includes('payment') && firstMsg.includes('interest')) firstReason = 'payment_below_interest';
-      else if (firstMsg.includes('rate') && firstMsg.includes('range')) firstReason = 'rate_out_of_range';
-      else if (firstMsg.includes('rate')) firstReason = 'missing_rate';
-      else if (firstMsg.includes('term')) firstMsg.includes('range') ? (firstReason = 'term_out_of_range') : (firstReason = 'missing_term');
+      const firstReason = validationReason(errored[0].r.error ?? '');
       track('free_loan_comparison_validation_error', {
         count: errored.length,
         firstReason,
@@ -1701,9 +1738,15 @@ function VendorCard({
   const header = useSteadyAbove<HTMLElement>();
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
-  const [typed, setTyped] = useState(false);
-  const arrived = !typed && holdsMarker(vendor);
-  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => { setTyped(true); onEdit(patch); };
+  // Kept per box (#825): editing the name or another box leaves a ? that
+  // arrived explained as one that could not be read; editing that box itself
+  // turns it into text being typed here.
+  const [edited, setEdited] = useState<ReadonlySet<string>>(() => new Set());
+  const arrived = holdsMarker(unedited(vendor, edited));
+  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => {
+    setEdited((before) => new Set([...before, ...Object.keys(patch)]));
+    onEdit(patch);
+  };
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
   const badOptional = new Set<OptionalField>([
