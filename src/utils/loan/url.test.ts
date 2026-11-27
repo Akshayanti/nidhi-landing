@@ -1088,6 +1088,9 @@ describe('a checked link carries only numbers its writer could have written (#82
       if (kept === 'NaN') assert.ok(Number.isNaN(engine) || engine < 0, `${left}: ${engine}`);
       else assert.ok(engine === Number(kept), `${left}: ${engine}`); // ===, so the engine's -0 is the 0 written
     }
+    // A box of spaces alone is an empty box to the tool, and is written as one.
+    assert.equal(encodeSharedState(...filled('   ', '')), encodeSharedState(...filled('', '')));
+    assert.notEqual(encodeSharedState(...filled('   ', '')), encodeSharedState(...filled('abc', '')));
     // A number too long for a link is the marker, not a link its reader refuses.
     assert.equal(boxNumber(`+${'9'.repeat(400)}`), null);
     assert.equal(boxNumber('+0.0000001'), '0.0000001');
