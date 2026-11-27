@@ -47,7 +47,6 @@ import { FIT_FLOOR, niceSteps, placeLabels, textWidth, useChartRem, wrapWords } 
 import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { readsAsZero } from '../utils/shared/chartAmounts.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
-import { UNREADABLE } from '../utils/shared/linkInput.ts';
 import { LocaleNumberInput, NumberLocaleContext } from './LocaleNumberInput.tsx';
 import { ChartReadout, ReadoutSlot, useChartPointer, useEscapeToClose, useReadoutPlacement, useReadoutSlot } from './chart/ChartReadout.tsx';
 import {
@@ -64,6 +63,7 @@ import {
   type OptionalField,
   comparisonWithheld,
   holdsMarker,
+  valueHoldsMarker,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, CHART_SERIES_ON } from '../styles/palette.ts';
 import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
@@ -245,7 +245,7 @@ export function engineError(raw: string, s: Strings): string {
 }
 
 /** The offer with the boxes edited on this card left out, for `holdsMarker`. */
-export function unedited(vendor: VendorInput, edited: ReadonlySet<string>): VendorInput {
+function unedited(vendor: VendorInput, edited: ReadonlySet<string>): VendorInput {
   return Object.fromEntries(Object.entries(vendor).filter(([key]) => !edited.has(key))) as VendorInput;
 }
 
@@ -1768,7 +1768,7 @@ function VendorCard({
   // marked: the message says "this value", and a reader moving through the
   // boxes should not hear it on the one they just typed in (#825 review).
   const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
-    arrived ? !edited.has(field) && String(vendor[field]).split(/[;:]/).includes(UNREADABLE) : requiredError;
+    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);

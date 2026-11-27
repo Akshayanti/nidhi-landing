@@ -385,6 +385,16 @@ describe('the offer card: the required boxes', () => {
     assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amount}`);
   });
 
+  it('leaves a ? box the reader has typed in unmarked while another ? keeps the message', () => {
+    const { card } = show(loan({ principal: UNREADABLE, annualRatePct: UNREADABLE }));
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), MARKED);
+    // The page keeps the offer as it is here, so the rate still holds the ? it arrived with.
+    fireEvent.change(box(card, LABELS.rate), { target: { value: '5' } });
+    assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), UNMARKED);
+  });
+
   it('names the fault at once for a wrong value that carries no mark of having arrived', () => {
     const { card } = show(loan({ annualRatePct: '-1' }));
     assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.rate}`);

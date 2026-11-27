@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/shared/money.ts';
 import {
   aggregate,
@@ -335,15 +335,15 @@ export default function MultiCurrencyNetWorth({
   // The row count as of the last Add, ahead of the redraw: two Adds handled
   // before the page draws again would both see the old `rows` (#826).
   const rowCount = useRef(rows.length);
-  rowCount.current = rows.length;
+  useLayoutEffect(() => { rowCount.current = rows.length; }, [rows.length]);
   const addRow = useCallback(() => {
     if (rowCount.current >= MAX_ROWS) return;
     if (endsSharedView(sharedRedacted, 'add')) leaveSharedView();
     rowCount.current += 1;
-    setRows((prev) => (prev.length >= MAX_ROWS ? prev : [
+    setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
-    ]));
+    ]);
     // The count is the ref's, not the updater's: StrictMode runs an updater
     // twice, never this callback.
     track('free_multi_currency_net_worth_asset_added', { count: rowCount.current });

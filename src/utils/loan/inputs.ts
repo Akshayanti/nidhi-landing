@@ -301,6 +301,11 @@ export function comparisonWithheld(results: LoanResult[]): boolean {
 }
 
 /** Whether a box of this offer holds the mark of a value that could not be read. */
+/** Whether one box's value holds the marker (a lump-sum list holds it in one of its parts). */
+export function valueHoldsMarker(value: unknown): boolean {
+  return String(value).split(/[;:]/).includes(UNREADABLE);
+}
+
 export function holdsMarker(v: VendorInput): boolean {
-  return Object.entries(v).some(([key, value]) => key !== 'name' && String(value).split(/[;:]/).includes(UNREADABLE));
+  return Object.entries(v).some(([key, value]) => key !== 'name' && valueHoldsMarker(value));
 }

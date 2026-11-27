@@ -1228,7 +1228,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       historical: { label: 'Historický', desc: '{rate} ročně po očištění o inflaci v modelu sestaveném podle výnosů světových akcií v letech 1900 až 2025' },
       optimistic: { label: 'Optimistický', desc: '{rate} ročně po očištění o inflaci' },
       own: { label: 'Moje vlastní číslo', desc: 'Před inflací, jak ho uvádějí fondy' },
-      above: 'To je {real} ročně po očištění o inflaci, tedy nad {top} %, optimistickým nastavením modelu. V letech 1900 až 2025 činil složený roční výnos světových akcií po očištění o inflaci zhruba {historical} (Dimson, Marsh a Staunton; hlavně rozvinuté trhy) a opatrné a optimistické nastavení modelu leží pod touto hodnotou a nad ní. Jakmile je lze spočítat, výsledky níže používají vaše číslo a vedle ukazují i výsledky opatrného a optimistického nastavení.',
+      above: 'To je {real} ročně po očištění o inflaci, tedy nad {top} %, optimistickým nastavením modelu. V letech 1900 až 2025 činil složený roční výnos světových akcií po očištění o inflaci zhruba {historical} (Dimson, Marsh a Staunton; hlavně rozvinuté trhy) a opatrné a optimistické nastavení modelu leží pod touto hodnotou a nad ní. Kdykoli je lze spočítat, výsledky níže používají vaše číslo a vedle ukazují i výsledky opatrného a optimistického nastavení.',
       below: 'To je {real} ročně po očištění o inflaci: investice by ztrácela kupní sílu.',
       realIs: 'Po očištění o inflaci: {real} ročně.',
       ownSwings: 'Model zachovává meziroční výkyvy světových akcií, ať zadáte jakékoli číslo. U dluhopisového fondu by skutečné rozpětí bylo užší, než jaké se zde zobrazuje, a u spořicího účtu mnohem užší.',
