@@ -2254,7 +2254,7 @@ function sendConfirmationEmail_(email, confirmToken) {
   var text =
     cfg.fromName + ', confirm your subscription\r\n\r\n' +
     'Hi,\r\n\r\n' +
-    'Click the link below to confirm you\u2019d like an email from ' + cfg.fromName + ' when a new lesson is published:\r\n\r\n' +
+    'Click the link below to confirm you\u2019d like an email from ' + cfg.fromName + ' when a new lesson or guide is published:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
     // At most one reminder follows (handleRemindPending), so the mail says so (#474).
     'If you didn\u2019t sign up, ignore this email. You\u2019ll get at most one reminder, and nothing after that.\r\n\r\n' +
@@ -2279,7 +2279,7 @@ function sendConfirmationEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like an email from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> when a new lesson is published.</p>' +
+              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like an email from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> when a new lesson or guide is published.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
@@ -2336,7 +2336,7 @@ function sendWelcomeEmail_(email, unsubToken) {
 
   var text =
     cfg.fromName + ', you\u2019re subscribed.\r\n\r\n' +
-    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' when a new lesson is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.\r\n\r\n' +
+    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' when a new lesson or guide is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.\r\n\r\n' +
     'While you wait for the next one, the lessons so far are all on the site:\r\n' +
     blogUrl + '\r\n\r\n' +
     'If anything is unclear or wrong, reply to this email. I read every reply.\r\n\r\n' +
@@ -2365,7 +2365,7 @@ function sendWelcomeEmail_(email, unsubToken) {
             banner +
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re subscribed.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> when a new lesson is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.</p>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> when a new lesson or guide is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.</p>' +
               '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far are all on the site:</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Read the lessons <span aria-hidden="true">&rarr;</span></a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If anything is unclear or wrong, reply to this email. I read every reply.</p>' +
