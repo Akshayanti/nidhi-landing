@@ -389,16 +389,14 @@ describe('the engine\'s messages, in the reader\'s language', () => {
 
 describe('the engine\'s warnings, in the reader\'s language', () => {
   it('puts the two sums back into the precision warning', () => {
-    // As the code reads it today, the second sum takes the engine's full stop
-    // with it, so the sentence ends "120000.. Please": reported with #790, and
-    // to be corrected here when the reading is.
+    // The second sum is read without the engine's full stop: the sentence used to end "120000.. Please".
     assert.equal(
       engineWarning('Internal precision check: principal sum 119999 ≠ 120000. Please report this.', s),
-      'Internal precision check: principal sum 119999 ≠ 120000.. Please report this.',
+      'Internal precision check: principal sum 119999 ≠ 120000. Please report this.',
     );
     assert.equal(
       engineWarning('Internal precision check: principal sum 119999 ≠ 120000. Please report this.', es),
-      es.engine.warnings.precision.replace('{sum}', '119999').replace('{expected}', '120000.'),
+      es.engine.warnings.precision.replace('{sum}', '119999').replace('{expected}', '120000'),
     );
     assert.notEqual(es.engine.warnings.precision, s.engine.warnings.precision);
   });

@@ -223,7 +223,10 @@ describe('a lump sum larger than what is owed is said: only what is owed is paid
     // 300.00 and 400.00 in month 6 are 700.00 against the 600.00 owed; neither alone is more.
     const r = flat({ lumpSums: [{ month: 6, amountMinor: 30000 }, { month: 6, amountMinor: 40000 }] });
     assert.equal(r.months, 6);
-    assert.deepEqual(r.warnings, [lumpPartUsedNote(6)]);
+    assert.deepEqual(r.warnings, ['The lump sums in month 6 are more than is owed then, so only part of them is used.']);
+    // One lump sum there, with two in an earlier month that were used whole, is still one.
+    const one = flat({ lumpSums: [{ month: 2, amountMinor: 100 }, { month: 2, amountMinor: 100 }, { month: 6, amountMinor: 70000 }] });
+    assert.deepEqual(one.warnings, ['The lump sum in month 6 is more than is owed then, so only part of it is used.']);
   });
 
   it('comes before the note on the lump sums after it, which are not used at all', () => {

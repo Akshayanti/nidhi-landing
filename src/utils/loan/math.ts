@@ -331,8 +331,11 @@ export const RATE_NEVER_CHANGES = 'The rate does not change within this term, so
  * what is owed and no more (#925). No amount is named: the reader typed one,
  * and the total paid already shows what was used.
  */
-export function lumpPartUsedNote(month: number): string {
-  return `The lump sum in month ${month} is more than is owed then, so only part of it is used.`;
+export function lumpPartUsedNote(month: number, several?: boolean): string {
+  // Two or more typed for one month are paid as one sum, and are named as the several they are.
+  return several
+    ? `The lump sums in month ${month} are more than is owed then, so only part of them is used.`
+    : `The lump sum in month ${month} is more than is owed then, so only part of it is used.`;
 }
 
 export function lumpsUnusedNote(unused: { fromMonth: number; count: number }, payoffMonth: number): string {
@@ -480,6 +483,8 @@ export function buildScheduleAdvanced(spec: {
   unusedLumps?: { fromMonth: number; count: number };
   /** Only when a month's lump sums came to more than was owed then: that month. It is the loan's last. */
   partLumpMonth?: number;
+  /** Whether that month holds more than one lump sum. Present with `partLumpMonth`. */
+  partLumpSeveral?: boolean;
 } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
@@ -505,6 +510,7 @@ export function buildScheduleAdvanced(spec: {
   // How many lump sums each month holds, for the note on the ones never paid.
   const lumpCount = new Map<number, number>();
   let partLumpMonth: number | undefined;
+  let partLumpSeveral = false;
   for (const ls of lumpSums) {
     if (!Number.isFinite(ls.month) || ls.month < 1) continue;
     if (!Number.isFinite(ls.amountMinor) || ls.amountMinor <= 0) continue;
@@ -620,7 +626,10 @@ export function buildScheduleAdvanced(spec: {
     const lump = lumpByMonth.get(month) ?? 0;
     if (lump > 0 && balance > 0) {
       const applied = Math.min(lump, balance);
-      if (lump > balance) partLumpMonth = month;
+      if (lump > balance) {
+        partLumpMonth = month;
+        partLumpSeveral = (lumpCount.get(month) as number) > 1;
+      }
       balance -= applied;
       payment += applied;
       principal += applied;
@@ -665,7 +674,7 @@ export function buildScheduleAdvanced(spec: {
   const unusedCount = [...lumpCount.values()].reduce((sum, n) => sum + n, 0);
   const unusedLumps = unusedCount > 0 ? { fromMonth: Math.min(...lumpCount.keys()), count: unusedCount } : undefined;
 
-  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}), ...(partLumpMonth === undefined ? {} : { partLumpMonth }) };
+  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}), ...(partLumpMonth === undefined ? {} : { partLumpMonth, partLumpSeveral }) };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -795,7 +804,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps, partLumpMonth } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps, partLumpMonth, partLumpSeveral } = buildScheduleAdvanced({
     principalMinor,
     rateSpec: scheduleSpec,
     totalMonths,
@@ -907,7 +916,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     warnings.push(RATE_NEVER_CHANGES);
   }
   // In the order they happen: the lump sum that ended the loan, then the ones after it.
-  if (partLumpMonth !== undefined) warnings.push(lumpPartUsedNote(partLumpMonth));
+  if (partLumpMonth !== undefined) warnings.push(lumpPartUsedNote(partLumpMonth, partLumpSeveral));
   if (unusedLumps) warnings.push(lumpsUnusedNote(unusedLumps, schedule.length));
 
   return {

@@ -64,6 +64,16 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
     }
     // One that only looks like it comes through as written.
     assert.equal(engineNote('The lump sum in month x is more than is owed then.', ALL.es), 'The lump sum in month x is more than is owed then.');
+    // Two typed for one month are named as several, in every language, and never by the sentence for one.
+    const both = lumpPartUsedNote(118, true);
+    assert.equal(both, 'The lump sums in month 118 are more than is owed then, so only part of them is used.');
+    assert.equal(lumpPartUsedNote(118, false), raw);
+    for (const [lang, notes] of Object.entries(ALL)) {
+      assert.equal(engineNote(both, notes), notes.lumpsPartUsed.replace('{month}', '118'), lang);
+      assert.notEqual(notes.lumpsPartUsed, notes.lumpPartUsed, lang);
+      assert.ok(notes.lumpsPartUsed.includes('{month}'), lang);
+    }
+    assert.equal(engineNote('The lump sums in month x are more than is owed then.', ALL.es), 'The lump sums in month x are more than is owed then.');
     assert.equal(engineNote('The lump sum in month 12 is more than you planned.', ALL.es), 'The lump sum in month 12 is more than you planned.');
   });
 
@@ -81,7 +91,7 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
   it('the two it already wrote: the sums of the precision check, and a later rate that swallows the payment', () => {
     assert.equal(
       engineNote('Internal precision check: principal sum 119999 ≠ 120000. Please report this.', en),
-      'Internal precision check: principal sum 119999 ≠ 120000.. Please report this.',
+      'Internal precision check: principal sum 119999 ≠ 120000. Please report this.',
     );
     assert.equal(engineNote('PRECISION CHECK failed', en), 'Internal precision check: principal sum  ≠ . Please report this.');
     assert.equal(
