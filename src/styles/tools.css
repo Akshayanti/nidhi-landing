@@ -113,6 +113,12 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+/* A word wider than the button at large text breaks with a hyphen, in the
+   languages that hyphenate (global.css has the rule for running text). */
+.lc-linkDamaged .btn:is(:lang(en), :lang(es), :lang(cs)) {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 /* Phones only: a way from the offer tabs to the side-by-side table. */
 .lc-jump {
   display: none;

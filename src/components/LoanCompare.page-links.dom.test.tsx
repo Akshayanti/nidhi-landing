@@ -142,6 +142,13 @@ describe('the loan comparison: a link that did not arrive whole (issue 820)', ()
     const sentence = one('.lc-linkDamaged > p');
     assert.equal(sentence.textContent, 'This comparison link is incomplete or has changed. Ask the sender for the full link, or start a new comparison.');
     assert.equal(sentence.getAttribute('role'), 'alert');
+    // A heading first, for a reader who moves by headings: in the page, not on the screen.
+    assert.deepEqual([...one('.lc-linkDamaged').children].map((el) => el.tagName), ['H2', 'P', 'BUTTON']);
+    const heading = one('.lc-linkDamaged > h2');
+    assert.equal(heading.textContent, 'This link cannot be opened');
+    assert.equal(heading.className, 'lc-srOnly');
+    // The sentence is the alert, whole: the heading is not said with it.
+    assert.ok(heading.getAttribute('role') === null && !sentence.contains(heading));
     assert.equal(all('.lc-linkDamaged button').length, 1);
     assert.equal(startButton().textContent, 'Start a new comparison');
     assert.equal(startButton().type, 'button');
@@ -205,8 +212,9 @@ describe('the loan comparison: a link that did not arrive whole (issue 820)', ()
     cameFrom('https://nidhi.today/hi/free/');
     const cut = whole().slice(0, 40);
     arriveWith(cut);
-    mount({ strings: { ...island, link: { damaged: 'यह लिंक अधूरा है।', startNew: 'नई तुलना' } } });
+    mount({ strings: { ...island, link: { damagedHeading: 'यह लिंक नहीं खुल सकता', damaged: 'यह लिंक अधूरा है।', startNew: 'नई तुलना' } } });
     showsOnlyTheNotice('after the switch');
+    assert.equal(one('.lc-linkDamaged > h2').textContent, 'यह लिंक नहीं खुल सकता');
     assert.equal(one('.lc-linkDamaged > p').textContent, 'यह लिंक अधूरा है।');
     assert.equal(startButton().textContent, 'नई तुलना');
     assert.deepEqual(published, [cut]);

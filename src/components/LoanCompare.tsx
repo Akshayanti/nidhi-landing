@@ -1348,6 +1348,8 @@ export default function LoanCompare({
         // of what the link was opened for, and is said once, as it appears.
         // The button has no click label: it sends no event of its own.
         <div className="lc-linkDamaged">
+          {/* For a reader who moves by headings; the sentence below says it to everyone. */}
+          <h2 className="lc-srOnly">{strings.link.damagedHeading}</h2>
           <p className="tool-resultReason" role="alert">{strings.link.damaged}</p>
           <button type="button" className="btn btn--outline" onClick={startNew}>{strings.link.startNew}</button>
         </div>

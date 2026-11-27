@@ -320,6 +320,8 @@ export const loanComparisonEn = {
     example: 'Example offers. Replace the figures with your own.',
     /** In place of the tool, when a link written with a check did not arrive whole (#820): one sentence, one button. */
     link: {
+      /** The heading of the notice below, for a reader who moves by headings. Not shown. */
+      damagedHeading: 'This link cannot be opened',
       damaged: 'This comparison link is incomplete or has changed. Ask the sender for the full link, or start a new comparison.',
       startNew: 'Start a new comparison',
     },
@@ -1035,6 +1037,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     cardsHeading: 'लोन ऑफ़र',
     example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
     link: {
+      damagedHeading: 'यह लिंक नहीं खुल सकता',
       damaged: 'तुलना का यह लिंक अधूरा है या बदल गया है। भेजने वाले से पूरा लिंक माँगें, या नई तुलना शुरू करें।',
       startNew: 'नई तुलना शुरू करें',
     },
@@ -1683,6 +1686,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     cardsHeading: 'Ofertas de préstamo',
     example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
     link: {
+      damagedHeading: 'Este enlace no se puede abrir',
       damaged: 'Este enlace de comparación está incompleto o ha cambiado. Pide el enlace completo a quien te lo envió, o empieza una comparación nueva.',
       startNew: 'Empezar una comparación nueva',
     },
@@ -2330,6 +2334,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     cardsHeading: 'Nabídky úvěrů',
     example: 'Ukázkové nabídky. Nahraďte čísla svými.',
     link: {
+      damagedHeading: 'Tento odkaz nelze otevřít',
       damaged: 'Tento odkaz na srovnání je neúplný nebo se změnil. Požádejte odesílatele o\u00a0celý odkaz, nebo začněte nové srovnání.',
       startNew: 'Začít nové srovnání',
     },
@@ -2692,8 +2697,8 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
         rateNeverChanges: 'Sazba se během této doby splatnosti nezmění, takže se následná sazba nepoužije.',
-        lumpUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišla jednorázová splátka v\u00a0měsíci {month}, takže se nepoužije.',
-        lumpsUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišly jednorázové splátky od měsíce {month}, takže se nepoužijí.',
+        lumpUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišla jednorázová mimořádná splátka v\u00a0měsíci {month}, takže se nepoužije.',
+        lumpsUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišly jednorázové mimořádné splátky od měsíce {month}, takže se nepoužijí.',
         lumpPartUsed: 'Jednorázová mimořádná splátka v\u00a0měsíci {month} je vyšší než tehdy zbývající jistina, takže se z\u00a0ní použije jen část.',
       },
     },
@@ -2959,6 +2964,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     cardsHeading: 'कर्जाच्या ऑफर',
     example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
     link: {
+      damagedHeading: 'ही लिंक उघडता येत नाही',
       damaged: 'तुलनेची ही लिंक अपूर्ण आहे किंवा बदलली आहे. पाठवणाऱ्याकडून पूर्ण लिंक मागवा, किंवा नवीन तुलना सुरू करा.',
       startNew: 'नवीन तुलना सुरू करा',
     },
