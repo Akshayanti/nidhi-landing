@@ -53,13 +53,23 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
+        id: 'typing-box-stays-in-place',
+        text: {
+          en: 'When a figure you are typing turns out to be one a tool cannot use, the box you are typing in now stays where it is. A note or a result above it used to disappear or change size at that moment and push the box up or down the screen, by a long way at large text sizes.',
+          hi: 'टाइप करते समय अगर कोई आँकड़ा ऐसा निकले जिसे टूल इस्तेमाल नहीं कर सकता, तो जिस बॉक्स में टाइप हो रहा है वह अब अपनी जगह पर ही रहता है। पहले उसी पल ऊपर की कोई टिप्पणी या नतीजा हट जाता या उसका आकार बदल जाता था, और बॉक्स स्क्रीन पर ऊपर या नीचे खिसक जाता था; बड़े अक्षरों में बहुत ज़्यादा।',
+          es: 'Cuando una cifra que estás escribiendo resulta ser una que la herramienta no puede usar, el recuadro en el que escribes se queda ahora en su sitio. Antes, una nota o un resultado de más arriba desaparecía o cambiaba de tamaño en ese momento y movía el recuadro por la pantalla, mucho con el texto grande.',
+          cs: 'Když se při psaní ukáže, že nástroj zadané číslo nemůže použít, rámeček, do kterého píšete, teď zůstává na místě. Dřív v\u00a0tu chvíli zmizela nebo změnila velikost poznámka či výsledek nad ním a\u00a0rámeček se na obrazovce posunul, při velkém písmu o\u00a0hodně.',
+          mr: 'टाइप करताना एखादा आकडा साधनाला वापरता येत नाही असे दिसले, तर ज्या चौकटीत टाइप होत आहे ती आता जागची हलत नाही. आधी त्याच क्षणी वरची एखादी टीप किंवा निकाल नाहीसा होत असे किंवा त्याचा आकार बदलत असे, आणि चौकट स्क्रीनवर वर किंवा खाली सरकत असे; मोठ्या अक्षरांत खूपच.',
+        },
+      },
+      {
         id: 'loan-says-what-is-not-used',
         text: {
-          en: 'The loan comparison now tells you when something you entered is not used: a subsequent rate that would only start after the term ends, or a lump sum dated after the loan is paid off. The note is on the offer’s card, in the spreadsheet and in the report. An initial fixed period now has to be a whole number of months: 60.4 used to be rounded without a word.',
-          hi: 'लोन तुलना अब बताती है कि भरी गई कौन-सी चीज़ इस्तेमाल नहीं हुई: बाद की वह दर जो अवधि ख़त्म होने के बाद ही शुरू होती, या वह एकमुश्त राशि जिसकी तारीख़ लोन चुक जाने के बाद की है। यह टिप्पणी ऑफ़र के कार्ड, स्प्रेडशीट और रिपोर्ट में दिखती है। शुरुआत की तय अवधि अब पूरे महीनों में होनी चाहिए: पहले 60.4 को बिना बताए गोल कर दिया जाता था।',
-          es: 'El comparador de préstamos avisa ahora cuando algo que has escrito no se usa: una tasa posterior que solo empezaría después de terminar el plazo, o un pago extraordinario con fecha posterior a la liquidación del préstamo. La nota aparece en la tarjeta de la oferta, en la hoja de cálculo y en el informe. El periodo fijo inicial tiene que ser ahora un número entero de meses: antes 60,4 se redondeaba sin avisar.',
-          cs: 'Srovnání úvěrů teď řekne, když se něco ze zadaných údajů nepoužije: následná sazba, která by začala platit až po konci doby splatnosti, nebo jednorázová splátka s\u00a0datem po splacení úvěru. Poznámka je na kartě nabídky, v\u00a0tabulce i\u00a0ve zprávě. Počáteční období fixace teď musí být celý počet měsíců: dřív se 60,4 bez upozornění zaokrouhlilo.',
-          mr: 'कर्जांची तुलना आता सांगते की भरलेली कोणती गोष्ट वापरली गेली नाही: मुदत संपल्यानंतरच सुरू झाला असता असा नंतरचा दर, किंवा कर्ज फिटल्यानंतरच्या तारखेची एकरकमी रक्कम. ही टीप ऑफरच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात दिसते. सुरुवातीचा ठरावीक कालावधी आता पूर्ण महिन्यांचा असावा लागतो: आधी 60.4 न सांगता जवळच्या पूर्ण आकड्यावर आणला जात असे.',
+          en: 'The loan comparison now tells you when something you entered is not used: a subsequent rate that would only start after the term ends, a lump sum dated after the loan is paid off, or the part of a lump sum beyond what is owed. The note is on the offer’s card, in the spreadsheet and in the report. An initial fixed period now has to be a whole number of months: 60.4 used to be rounded without a word.',
+          hi: 'लोन तुलना अब बताती है कि भरी गई कौन-सी चीज़ इस्तेमाल नहीं हुई: बाद की वह दर जो अवधि ख़त्म होने के बाद ही शुरू होती, वह एकमुश्त राशि जिसकी तारीख़ लोन चुक जाने के बाद की है, या एकमुश्त राशि का वह हिस्सा जो बकाया से ज़्यादा है। यह टिप्पणी ऑफ़र के कार्ड, स्प्रेडशीट और रिपोर्ट में दिखती है। शुरुआत की तय अवधि अब पूरे महीनों में होनी चाहिए: पहले 60.4 को बिना बताए गोल कर दिया जाता था।',
+          es: 'El comparador de préstamos avisa ahora cuando algo que has escrito no se usa: una tasa posterior que solo empezaría después de terminar el plazo, un pago extraordinario con fecha posterior a la liquidación del préstamo, o la parte de un pago extraordinario que supera el saldo pendiente. La nota aparece en la tarjeta de la oferta, en la hoja de cálculo y en el informe. El periodo fijo inicial tiene que ser ahora un número entero de meses: antes 60,4 se redondeaba sin avisar.',
+          cs: 'Srovnání úvěrů teď řekne, když se něco ze zadaných údajů nepoužije: následná sazba, která by začala platit až po konci doby splatnosti, jednorázová mimořádná splátka s\u00a0datem po splacení úvěru, nebo ta část mimořádné splátky, která přesahuje zbývající jistinu. Poznámka je na kartě nabídky, v\u00a0tabulce i\u00a0ve zprávě. Počáteční období fixace teď musí být celý počet měsíců: dřív se 60,4 bez upozornění zaokrouhlilo.',
+          mr: 'कर्जांची तुलना आता सांगते की भरलेली कोणती गोष्ट वापरली गेली नाही: मुदत संपल्यानंतरच सुरू झाला असता असा नंतरचा दर, कर्ज फिटल्यानंतरच्या तारखेची एकरकमी रक्कम, किंवा एकरकमी रकमेचा बाकी कर्जापेक्षा जास्त असलेला भाग. ही टीप ऑफरच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात दिसते. सुरुवातीचा ठरावीक कालावधी आता पूर्ण महिन्यांचा असावा लागतो: आधी 60.4 न सांगता जवळच्या पूर्ण आकड्यावर आणला जात असे.',
         },
       },
       {
