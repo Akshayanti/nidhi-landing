@@ -115,6 +115,11 @@ describe('the report chart of shares', () => {
     assert.equal(shares[0].hasAttribute('text-anchor'), false);
   });
 
+  it('writes a share that rounds to nothing as 0%, never "-0%" (#888)', () => {
+    const { all } = draw({ kind: 'bars', title: 'Where it sits', bars: [{ label: 'Cash', share: 99.96 }, { label: 'Debt', share: -0.04 }, { label: 'Loan', share: -0.05 }] });
+    assert.deepEqual(all(':scope > g').map((g) => g.querySelectorAll('text')[1].textContent), ['100%', '0%', '-0.1%']);
+  });
+
   it('tells a share below zero apart by an empty bar, not by colour alone', () => {
     const bars = draw(BARS).all('rect');
     assert.deepEqual(bars.map((b) => b.getAttribute('fill')), ['#555', '#fff', '#555', '#555']);

@@ -3,7 +3,7 @@
  * illustrative figures the site quotes in its own writing. The two are not the
  * same rule; see `formatProseAmount` for the second.
  */
-import { amountFormat, amountNumberLocale, amountStyle } from './money.ts';
+import { amountFormat, amountNumberLocale, amountStyle, shownNumber } from './money.ts';
 import { DEFAULT_LOCALE, PROSE_NUMBER_LOCALE, type Locale } from '../../i18n/config.ts';
 
 /**
@@ -62,7 +62,8 @@ export function trueMinus(text: string): string {
  */
 export function formatPercent(pct: number, code: string, digits = 1, amountLocale?: string | null): string {
   const locale = amountNumberLocale(code, amountLocale);
-  const v = Number.isFinite(pct) ? pct / 100 : 0;
+  // A share that rounds to nothing is "0.0%", never "-0.0%" (#888).
+  const v = Number.isFinite(pct) ? shownNumber(pct, digits) / 100 : 0;
   return new Intl.NumberFormat(locale, { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
 }
 

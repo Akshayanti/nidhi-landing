@@ -41,6 +41,18 @@ describe('a percentage as the page writes it', () => {
     assert.equal(pct(-1.25, 'en'), '−1.3%');
   });
 
+  it('a rate that rounds to nothing is 0%, never “−0%” (#888)', () => {
+    // A 3% loan with 3.03% inflation: a real rate of about −0.03%.
+    assert.equal(pct((1.03 / 1.0303 - 1) * 100, 'en'), '0%');
+    assert.equal(pct(-0.04, 'en'), '0%');
+    assert.equal(pct(-0.004, 'en', 2), '0%');
+    assert.equal(pct(-0.4, 'en', 0), '0%');
+    assert.equal(pct(-0.04, 'cs').replace(/\s/g, ' '), '0 %');
+    // The digits shown still decide: −0.05 is −0.1 at one decimal, and −0.04 is itself at two.
+    assert.equal(pct(-0.05, 'en'), '−0.1%');
+    assert.equal(pct(-0.04, 'en', 2), '−0.04%');
+  });
+
   it('as many decimals as asked for, in the page’s own marks', () => {
     assert.equal(pct(6.789, 'en', 2), '6.79%');
     assert.equal(pct(6.789, 'en', 0), '7%');

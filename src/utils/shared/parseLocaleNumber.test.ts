@@ -127,6 +127,14 @@ describe('what is rejected rather than guessed', () => {
     it(`"${raw}" on ${locale}`, () => assert.equal(parseLocaleNumber(raw, locale), null));
   }
 
+  it('refuses a plus sign, with or without negatives allowed: every box and the CSV import read it one way (#888)', () => {
+    for (const raw of ['+5000', '+5', '+2,5', '+0']) {
+      assert.equal(parseLocaleNumber(raw, EN), null, raw);
+      assert.equal(parseLocaleNumber(raw, ES), null, raw);
+      assert.equal(parseLocaleNumber(raw, EN, { allowNegative: true }), null, raw);
+    }
+  });
+
   it('refuses a minus sign unless negatives are allowed', () => {
     assert.equal(parseLocaleNumber('-2,5', ES), null);
     assert.equal(parseLocaleNumber('-2,5', ES, { allowNegative: true }), -2.5);

@@ -19,6 +19,7 @@ import {
   inflationDefault,
   inputProblem,
   rates,
+  realReturnNote,
   returnNote,
   sanitizeInputs,
   toNominal,
@@ -68,10 +69,23 @@ describe('real and nominal rates', () => {
 });
 
 describe('return notes', () => {
-  it('notes only a figure strictly above the range after inflation', () => {
-    const at = toNominal(REAL_RETURN_TOP, 2);
-    assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: at }), null);
-    assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: at + 0.01 }), 'above-range');
+  it('notes only a figure written above the range after inflation', () => {
+    const own = (real: number) => returnNote({ ...BASE, returns: 'own', ownReturn: toNominal(real, 2), inflation: 2 });
+    assert.equal(own(REAL_RETURN_TOP), null);
+    // 6.04% is written "6%", and a figure of 6% is not above 6% (#888); 6.06% is written "6.1%".
+    assert.equal(own(6.04), null);
+    assert.equal(own(6.06), 'above-range');
+    assert.equal(own(6.1), 'above-range');
+  });
+
+  it('the form and the result ask one rule, by the figure written to one decimal', () => {
+    assert.equal(realReturnNote(6), null);
+    assert.equal(realReturnNote(6.04), null);
+    assert.equal(realReturnNote(6.06), 'above-range');
+    assert.equal(realReturnNote(0), null);
+    assert.equal(realReturnNote(-0.04), null, 'written "0%"');
+    assert.equal(realReturnNote(-0.06), 'below-zero');
+    assert.equal(realReturnNote(3), null);
   });
 
   it('judges the figure after the country inflation, so a high-inflation figure is not flagged', () => {
@@ -82,6 +96,9 @@ describe('return notes', () => {
   it('notes strictly below zero, and nothing at exactly zero', () => {
     assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: 2, inflation: 2 }), null);
     assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: 1.9, inflation: 2 }), 'below-zero');
+    // 3% with 3.03% inflation is -0.03%, written "0%": no note. With 3.11% it is -0.1%.
+    assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: 3, inflation: 3.03 }), null);
+    assert.equal(returnNote({ ...BASE, returns: 'own', ownReturn: 3, inflation: 3.11 }), 'below-zero');
   });
 
   it('gives no note for the three settings', () => {

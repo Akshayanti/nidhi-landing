@@ -132,7 +132,28 @@ describe('inflation spreadsheet', () => {
   it('gives "keeping up" as a percent a year, not as an amount', () => {
     const answer: InflationAnswer = { ...ANSWER, value: 1.4563107 };
     assert.deepEqual(sheets({ ...STATE, mode: 'keep' }, answer, 0)[2].rows[2], ['Buying power, % a year', { n: 1.4563107, fmt: 'decimal2' }]);
-    assert.deepEqual(sheets({ ...STATE, mode: 'cost' }, answer, 0)[2].rows[2], ['Result', { n: 1, fmt: 'amount0' }]);
+    // As an amount in a currency with no smaller unit it is what the page writes, "about ¥1.5" (#868), not 1.
+    assert.deepEqual(sheets({ ...STATE, mode: 'cost' }, answer, 0)[2].rows[2], ['Result', { n: 1.5, fmt: 'general' }]);
+  });
+
+  it('gives a small amount as the page writes it where the currency’s smallest unit would say less (#868)', () => {
+    const result = (value: number, decimals: number) => sheets({ ...STATE, mode: 'cost' }, { ...ANSWER, value }, decimals)[2].rows[2][1];
+    // The page says "about €0.074" and "about ¥0.74": to the cent, or the yen, the file would say 0.07 and 1.
+    assert.deepEqual(result(0.07441, 2), { n: 0.074, fmt: 'general' });
+    assert.deepEqual(result(0.7441, 0), { n: 0.74, fmt: 'general' });
+    assert.deepEqual(result(0.001234, 2), { n: 0.0012, fmt: 'general' });
+    // Where the smallest unit carries the page's figure, the exact amount stays: 0.7441 to the cent, 1.3439 to the cent.
+    assert.deepEqual(result(0.7441, 2), { n: 0.74, fmt: 'amount2' });
+    assert.deepEqual(result(1.3439, 2), { n: 1.34, fmt: 'amount2' });
+    assert.deepEqual(result(7.02, 0), { n: 7, fmt: 'amount0' });
+    assert.deepEqual(result(0, 0), { n: 0, fmt: 'amount0' });
+    // From 10 up, always to the smallest unit: 9.96 is "about €10" on the page, and 12.34 has decimals the yen has not.
+    assert.deepEqual(result(9.96, 0), { n: 10, fmt: 'amount0' });
+    assert.deepEqual(result(12.34, 0), { n: 12, fmt: 'amount0' });
+    assert.deepEqual(result(12.345, 2), { n: 12.35, fmt: 'amount2' });
+    // The path the chart draws is written the same way.
+    const path = sheets({ ...STATE, mode: 'cost' }, { ...ANSWER, points: [{ x: 0, value: 1 }, { x: 1, value: 1.03 }, { x: 2, value: 1.0609 }] }, 0)[3].rows;
+    assert.deepEqual(path.slice(2), [[whole(0), { n: 1, fmt: 'amount0' }], [whole(1), { n: 1, fmt: 'amount0' }], [whole(2), { n: 1.1, fmt: 'general' }]]);
   });
 
   it('with a country, adds the years used and the source of the figures', () => {
