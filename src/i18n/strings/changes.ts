@@ -43,6 +43,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
     date: '2026-11-27',
     items: [
       {
+        id: 'loan-link-carries-a-check',
+        text: {
+          en: 'A link to a loan comparison now carries a check. If a link you open is incomplete or has changed on the way, the tool says so and offers a new comparison, where it used to fill the gaps with example figures and show a full result. Links copied before today open as they always did, so a damaged one of those cannot always be caught.',
+          hi: 'लोन तुलना के लिंक में अब एक जाँच जुड़ी रहती है। खोला गया लिंक अधूरा हो या रास्ते में बदल गया हो, तो टूल यह बताता है और नई तुलना शुरू करने का विकल्प देता है; पहले वह खाली जगहें उदाहरण के आँकड़ों से भरकर पूरा नतीजा दिखा देता था। आज से पहले कॉपी किए गए लिंक पहले की तरह ही खुलते हैं, इसलिए उनमें से कोई बिगड़ा हुआ लिंक हर बार पकड़ में नहीं आता।',
+          es: 'Un enlace a una comparación de préstamos lleva ahora una comprobación. Si el enlace que abres está incompleto o ha cambiado por el camino, la herramienta lo dice y ofrece empezar una comparación nueva; antes rellenaba los huecos con cifras de ejemplo y mostraba un resultado completo. Los enlaces copiados antes de hoy se abren como siempre, así que uno de esos que llegue dañado no siempre se puede detectar.',
+          cs: 'Odkaz na srovnání úvěrů teď obsahuje kontrolu. Když je otevřený odkaz neúplný nebo se cestou změnil, nástroj to řekne a\u00a0nabídne nové srovnání; dřív mezery doplnil ukázkovými čísly a\u00a0ukázal celý výsledek. Odkazy zkopírované před dneškem se otevírají jako dosud, takže poškozený starší odkaz nejde vždy poznat.',
+          mr: 'कर्जांच्या तुलनेच्या लिंकमध्ये आता एक तपासणी असते. उघडलेली लिंक अपूर्ण असेल किंवा वाटेत बदलली असेल, तर साधन तसे सांगते आणि नवीन तुलना सुरू करण्याचा पर्याय देते; आधी ते रिकाम्या जागा उदाहरणाच्या आकड्यांनी भरून पूर्ण निकाल दाखवत असे. आजच्या आधी कॉपी केलेल्या लिंक पूर्वीसारख्याच उघडतात, त्यामुळे त्यांपैकी बिघडलेली लिंक दर वेळी ओळखता येत नाही.',
+        },
+      },
+      {
+        id: 'loan-says-what-is-not-used',
+        text: {
+          en: 'The loan comparison now tells you when something you entered is not used: a subsequent rate that would only start after the term ends, or a lump sum dated after the loan is paid off. The note is on the offer’s card, in the spreadsheet and in the report. An initial fixed period now has to be a whole number of months: 60.4 used to be rounded without a word.',
+          hi: 'लोन तुलना अब बताती है कि भरी गई कौन-सी चीज़ इस्तेमाल नहीं हुई: बाद की वह दर जो अवधि ख़त्म होने के बाद ही शुरू होती, या वह एकमुश्त राशि जिसकी तारीख़ लोन चुक जाने के बाद की है। यह टिप्पणी ऑफ़र के कार्ड, स्प्रेडशीट और रिपोर्ट में दिखती है। शुरुआत की तय अवधि अब पूरे महीनों में होनी चाहिए: पहले 60.4 को बिना बताए गोल कर दिया जाता था।',
+          es: 'El comparador de préstamos avisa ahora cuando algo que has escrito no se usa: una tasa posterior que solo empezaría después de terminar el plazo, o un pago extraordinario con fecha posterior a la liquidación del préstamo. La nota aparece en la tarjeta de la oferta, en la hoja de cálculo y en el informe. El periodo fijo inicial tiene que ser ahora un número entero de meses: antes 60,4 se redondeaba sin avisar.',
+          cs: 'Srovnání úvěrů teď řekne, když se něco ze zadaných údajů nepoužije: následná sazba, která by začala platit až po konci doby splatnosti, nebo jednorázová splátka s\u00a0datem po splacení úvěru. Poznámka je na kartě nabídky, v\u00a0tabulce i\u00a0ve zprávě. Počáteční období fixace teď musí být celý počet měsíců: dřív se 60,4 bez upozornění zaokrouhlilo.',
+          mr: 'कर्जांची तुलना आता सांगते की भरलेली कोणती गोष्ट वापरली गेली नाही: मुदत संपल्यानंतरच सुरू झाला असता असा नंतरचा दर, किंवा कर्ज फिटल्यानंतरच्या तारखेची एकरकमी रक्कम. ही टीप ऑफरच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात दिसते. सुरुवातीचा ठरावीक कालावधी आता पूर्ण महिन्यांचा असावा लागतो: आधी 60.4 न सांगता जवळच्या पूर्ण आकड्यावर आणला जात असे.',
+        },
+      },
+      {
         id: 'no-minus-zero-flat-prices',
         text: {
           en: 'The tools no longer show “−0%” for a figure too small to register, and the inflation calculator now says prices changed by less than 0.5% instead of “rose about 0%”. When amounts cancel out in the net worth calculator, the total is now a plain zero, with no shares of over 999%.',
@@ -65,11 +85,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'net-worth-share-rate-unavailable',
         text: {
-          en: 'When the net worth calculator has no exchange rates, the spending currency’s share now reads “Rate unavailable” on its card, in the spreadsheet and in the report, where it used to read 0%.',
-          hi: 'जब शुद्ध संपत्ति कैलकुलेटर के पास विनिमय दरें नहीं होतीं, तो खर्च की मुद्रा का हिस्सा अब उसके कार्ड, स्प्रेडशीट और रिपोर्ट में “दर नहीं मिली” दिखता है, जहाँ पहले 0% दिखता था।',
-          es: 'Cuando la calculadora de patrimonio neto no tiene tipos de cambio, la parte de la moneda de gasto se lee ahora «Tipo no disponible» en su tarjeta, en la hoja de cálculo y en el informe, donde antes se leía 0\u00a0%.',
-          cs: 'Když kalkulačka čistého jmění nemá kurzy, podíl měny výdajů se teď na její kartě, v\u00a0tabulce i\u00a0ve zprávě čte „Kurz chybí“, kde dřív stálo 0\u00a0%.',
-          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरकडे विनिमय दर नसतात तेव्हा खर्चाच्या चलनाचा हिस्सा आता त्याच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात “दर उपलब्ध नाही” असा दिसतो, जिथे आधी 0% दिसत होते.',
+          en: 'When the net worth calculator has no exchange rates, the spending currency’s share now reads “Share unknown: no exchange rates” on its card, in the spreadsheet and in the report, where it used to read 0%.',
+          hi: 'जब शुद्ध संपत्ति कैलकुलेटर के पास विनिमय दरें नहीं होतीं, तो खर्च की मुद्रा का हिस्सा अब उसके कार्ड, स्प्रेडशीट और रिपोर्ट में “हिस्सा पता नहीं: विनिमय दरें नहीं मिलीं” दिखता है, जहाँ पहले 0% दिखता था।',
+          es: 'Cuando la calculadora de patrimonio neto no tiene tipos de cambio, la parte de la moneda de gasto se lee ahora «Parte desconocida: sin tipos de cambio» en su tarjeta, en la hoja de cálculo y en el informe, donde antes se leía 0\u00a0%.',
+          cs: 'Když kalkulačka čistého jmění nemá kurzy, podíl měny výdajů se teď na její kartě, v\u00a0tabulce i\u00a0ve zprávě čte „Podíl neznámý: chybí směnné kurzy“, kde dřív stálo 0\u00a0%.',
+          mr: 'निव्वळ संपत्ती कॅल्क्युलेटरकडे विनिमय दर नसतात तेव्हा खर्चाच्या चलनाचा हिस्सा आता त्याच्या कार्डवर, स्प्रेडशीटमध्ये आणि अहवालात “हिस्सा माहीत नाही: विनिमय दर मिळाले नाहीत” असा दिसतो, जिथे आधी 0% दिसत होते.',
         },
       },
       {
