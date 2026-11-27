@@ -319,6 +319,19 @@ export const INITIAL_FIXED_MONTHS = 'Initial fixed period must be a whole number
  */
 export const RATE_NEVER_CHANGES = 'The rate does not change within this term, so the subsequent rate is not used.';
 
+/**
+ * A note, not an error: lump sums dated after the loan is paid off change
+ * nothing, since a loan that is paid off cannot be prepaid (#915). `fromMonth`
+ * is the first such month; every lump sum from it on is unused, so several
+ * are named by it. A lump sum in the payoff month itself is one of them when
+ * that month's payment already cleared the loan: it is paid after the payment.
+ */
+export function lumpsUnusedNote(unused: { fromMonth: number; count: number }, payoffMonth: number): string {
+  return unused.count === 1
+    ? `The lump sum in month ${unused.fromMonth} comes after this loan is paid off in month ${payoffMonth}, so it is not used.`
+    : `The lump sums from month ${unused.fromMonth} on come after this loan is paid off in month ${payoffMonth}, so they are not used.`;
+}
+
 export function computeScheduledPaymentMinor(
   principalMinor: number,
   annualRate: number,
@@ -454,6 +467,8 @@ export function buildScheduleAdvanced(spec: {
   recastPaymentMinor?: number;
   /** Only when the payment is kept at the rate change and the loan is not paid off within the limit. */
   unpaid?: { outcome: 'never' | 'limit'; covers?: 'equal' | 'less'; fromMonth?: number };
+  /** Only for a loan that is paid off with lump sums left over: the first month whose lump sums were not paid, and how many there are from it on. */
+  unusedLumps?: { fromMonth: number; count: number };
 } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
@@ -476,11 +491,14 @@ export function buildScheduleAdvanced(spec: {
   // month by summing them (rather than rejecting); the user's intent is
   // unambiguous and rejecting would be needlessly strict.
   const lumpByMonth = new Map<number, number>();
+  // How many lump sums each month holds, for the note on the ones never paid.
+  const lumpCount = new Map<number, number>();
   for (const ls of lumpSums) {
     if (!Number.isFinite(ls.month) || ls.month < 1) continue;
     if (!Number.isFinite(ls.amountMinor) || ls.amountMinor <= 0) continue;
     const m = Math.floor(ls.month);
     lumpByMonth.set(m, (lumpByMonth.get(m) ?? 0) + Math.floor(ls.amountMinor));
+    lumpCount.set(m, (lumpCount.get(m) ?? 0) + 1);
   }
 
   // Initial-month interest sanity: payment must cover at least the first
@@ -594,6 +612,8 @@ export function buildScheduleAdvanced(spec: {
       balance -= applied;
       payment += applied;
       principal += applied;
+      // Paid, in part at least: what is left in `lumpCount` at the end was never paid.
+      lumpCount.delete(month);
     }
 
     schedule.push({ month, payment, interest, principal, balance });
@@ -628,7 +648,12 @@ export function buildScheduleAdvanced(spec: {
     );
   }
 
-  return { schedule, warnings, recastPaymentMinor };
+  // The lump sums the loan was paid off before: none of their months came, or
+  // the payoff month's own payment had already cleared the balance.
+  const unusedCount = [...lumpCount.values()].reduce((sum, n) => sum + n, 0);
+  const unusedLumps = unusedCount > 0 ? { fromMonth: Math.min(...lumpCount.keys()), count: unusedCount } : undefined;
+
+  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}) };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -748,7 +773,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error, recastPaymentMinor, unpaid } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps } = buildScheduleAdvanced({
     principalMinor,
     rateSpec,
     totalMonths,
@@ -859,6 +884,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     // A fixed period that lasts the whole term: the later rate is never charged.
     warnings.push(RATE_NEVER_CHANGES);
   }
+  if (unusedLumps) warnings.push(lumpsUnusedNote(unusedLumps, schedule.length));
 
   return {
     monthlyPaymentMinor: scheduledPayment,

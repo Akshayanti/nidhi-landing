@@ -870,6 +870,21 @@ describe('the offer card: the optional boxes', () => {
     assert.ok(show(loan({ ...HYBRID, initialFixedMonths: '11' })).card.querySelector('.lc-warning') === null);
   });
 
+  it('keeps a lump sum dated after the payoff valid, and says under the result that it is not used (issue 915)', () => {
+    // 1,200 at 0% over 12 months is paid off in month 12.
+    const { card } = show(loan({ lumpSumsEncoded: '13:50' }));
+    assert.equal(errorOf(card), null);
+    assert.deepEqual(wiring(card, box(card, c.lumps)), UNMARKED);
+    assert.deepEqual([...card.querySelectorAll('.lc-warning')].map((n) => n.textContent), ['The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.']);
+    cleanup();
+    const several = show(loan({ lumpSumsEncoded: '20:50;13:50' }));
+    assert.equal(several.card.querySelectorAll('.lc-warning').length, 1);
+    assert.equal(several.card.querySelector('.lc-warning')?.textContent, 'The lump sums from month 13 on come after this loan is paid off in month 12, so they are not used.');
+    cleanup();
+    // Used, even in part: nothing to say.
+    assert.ok(show(loan({ lumpSumsEncoded: '11:500' })).card.querySelector('.lc-warning') === null);
+  });
+
   it('hands back each box as a plain number under its own field, however the page writes numbers', () => {
     const { card } = show(loan(HYBRID), { locale: 'es' });
     for (const field of OPTIONAL) {

@@ -1,6 +1,7 @@
 /**
  * The engine's notes on a result, in the reader's language (notes.ts): what
- * the card shows under a result.
+ * the card shows under a result, and what the spreadsheet and the printed
+ * report carry beside it.
  *
  * The sentences read are the ones the real engine writes for loans small
  * enough to work by hand; the words shown are the real catalog's.
@@ -14,8 +15,8 @@ import {
   loanComparisonHi,
   loanComparisonMr,
 } from '../../i18n/strings/tools/loanComparison.ts';
-import { RATE_NEVER_CHANGES } from './math.ts';
-import { engineNote } from './notes.ts';
+import { RATE_NEVER_CHANGES, computeLoan, lumpsUnusedNote, type LoanInputs } from './math.ts';
+import { engineNote, resultNotes } from './notes.ts';
 
 const en = loanComparisonEn.island.engine.warnings;
 const ALL = {
@@ -26,6 +27,9 @@ const ALL = {
   mr: loanComparisonMr.island.engine.warnings,
 };
 
+/** 1,200.00 at 0% over 12 months: 100.00 a month. */
+const flat = (more: Partial<LoanInputs> = {}) => computeLoan({ principalMinor: 120_000, annualRate: 0, ...more }, { kind: 'term', months: 12 });
+
 describe('a note the engine writes is shown in the reader\'s language', () => {
   it('a rate that never changes within the term (issue 914)', () => {
     assert.equal(engineNote(RATE_NEVER_CHANGES, en), 'The rate does not change within this term, so the subsequent rate is not used.');
@@ -33,6 +37,28 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
     for (const [lang, notes] of Object.entries(ALL)) {
       assert.equal(engineNote(RATE_NEVER_CHANGES, notes), notes.rateNeverChanges, lang);
       if (lang !== 'en') assert.notEqual(notes.rateNeverChanges, RATE_NEVER_CHANGES, lang);
+    }
+  });
+
+  it('one lump sum after the payoff, with its month and the payoff month put back (issue 915)', () => {
+    const raw = lumpsUnusedNote({ fromMonth: 130, count: 1 }, 120);
+    assert.equal(engineNote(raw, en), 'The lump sum in month 130 comes after this loan is paid off in month 120, so it is not used.');
+    for (const [lang, notes] of Object.entries(ALL)) {
+      const shown = engineNote(raw, notes);
+      assert.equal(shown, notes.lumpUnused.replace('{month}', '130').replace('{payoffMonth}', '120'), lang);
+      assert.ok(shown.includes('130') && shown.includes('120') && !shown.includes('{'), `${lang}: ${shown}`);
+      assert.ok(shown.indexOf('130') < shown.indexOf('120'), `${lang}: the lump sum's month is read first`);
+    }
+  });
+
+  it('several lump sums after the payoff, named by the first of them', () => {
+    const raw = lumpsUnusedNote({ fromMonth: 15, count: 2 }, 12);
+    assert.equal(engineNote(raw, en), 'The lump sums from month 15 on come after this loan is paid off in month 12, so they are not used.');
+    for (const [lang, notes] of Object.entries(ALL)) {
+      const shown = engineNote(raw, notes);
+      assert.equal(shown, notes.lumpsUnused.replace('{month}', '15').replace('{payoffMonth}', '12'), lang);
+      assert.notEqual(notes.lumpsUnused, notes.lumpUnused, lang);
+      assert.ok(!shown.includes('{'), `${lang}: ${shown}`);
     }
   });
 
@@ -49,8 +75,32 @@ describe('a note the engine writes is shown in the reader\'s language', () => {
     assert.equal(engineNote('THE RECAST PAYMENT BARELY COVERS', ALL.es), ALL.es.subsequentRate);
   });
 
-  it('a sentence it does not know comes through as written', () => {
+  it('a sentence it does not know comes through as written, and so does one that only looks like a lump-sum note', () => {
     assert.equal(engineNote('Something else to know.', ALL.es), 'Something else to know.');
     assert.equal(engineNote('', ALL.es), '');
+    assert.equal(engineNote('The lump sum in month x comes after this loan is paid off in month 12.', ALL.es), 'The lump sum in month x comes after this loan is paid off in month 12.');
+    assert.equal(engineNote('month 13 comes after this loan is paid off in month y', ALL.es), 'month 13 comes after this loan is paid off in month y');
+  });
+});
+
+describe('the notes of a result, as the card lists them', () => {
+  it('none for a loan with nothing to note', () => {
+    assert.deepEqual(resultNotes(flat(), en), []);
+  });
+
+  it('each of a real loan\'s notes, in the engine\'s order', () => {
+    const r = flat({
+      rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 12, subsequentAnnualRate: 0.12 },
+      lumpSums: [{ month: 13, amountMinor: 5000 }, { month: 20, amountMinor: 5000 }],
+    });
+    assert.deepEqual(resultNotes(r, en), [
+      'The rate does not change within this term, so the subsequent rate is not used.',
+      'The lump sums from month 13 on come after this loan is paid off in month 12, so they are not used.',
+    ]);
+    assert.deepEqual(resultNotes(r, ALL.cs), [ALL.cs.rateNeverChanges, ALL.cs.lumpsUnused.replace('{month}', '13').replace('{payoffMonth}', '12')]);
+  });
+
+  it('none for an offer that was not worked out, whatever it still carries', () => {
+    assert.deepEqual(resultNotes({ ...flat({ lumpSums: [{ month: 13, amountMinor: 5000 }] }), error: 'Enter a loan amount greater than zero.' }, en), []);
   });
 });

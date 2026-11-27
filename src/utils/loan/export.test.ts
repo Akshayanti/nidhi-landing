@@ -12,8 +12,9 @@ import assert from 'node:assert/strict';
 import { format } from '../../i18n/format.ts';
 import type { Cell } from '../shared/xlsx.ts';
 import type { LoanResult } from './math.ts';
-import { hasLaterPayment, LATER_PAYMENT_COLUMNS, loanSheets, packCells } from './export.ts';
+import { hasLaterPayment, hasNotes, LATER_PAYMENT_COLUMNS, loanSheets, packCells } from './export.ts';
 import { buildXlsx, MAX_CELL_TEXT } from '../shared/xlsx.ts';
+import { loanComparisonEs } from '../../i18n/strings/tools/loanComparison.ts';
 import {
   amount, BROKEN, BY_PAYMENT, common, EARLY, exportOf, FIXED, head, island, KEPT, NEVER, offer, pct, RESET, result, whole, worthToday,
 } from '../../../test/loanParts.exportOffers.ts';
@@ -66,6 +67,58 @@ describe('whether any offer has a payment after its rate changes', () => {
   });
 
   it('gives the payment four columns when it changes', () => assert.equal(LATER_PAYMENT_COLUMNS, 4));
+});
+
+describe('loan spreadsheet: the notes the card shows under a result (issues 914, 915)', () => {
+  // 1,200.00 at 12% over 3 months is paid off in month 3: a lump sum in month 5 is never paid.
+  const LATE = offer({ lumpSumsEncoded: '5:100' });
+  // The rate would change after month 3, the last one, and two lump sums come after it.
+  const BOTH = offer({ rateKind: 'hybrid', initialFixedMonths: '3', subsequentRatePct: '24', lumpSumsEncoded: '7:100;5:100' });
+  const LATE_NOTE = 'The lump sum in month 5 comes after this loan is paid off in month 3, so it is not used.';
+  const BOTH_NOTES = 'The rate does not change within this term, so the subsequent rate is not used. The lump sums from month 5 on come after this loan is paid off in month 3, so they are not used.';
+  const figures = [amount(408.03), whole(3), amount(24.08), amount(0), amount(0), amount(1224.08), pct(12.0002), common.yes];
+
+  it('there are none with no offers, with offers that have nothing to note, or on an offer that was not worked out', () => {
+    assert.equal(hasNotes([]), false);
+    assert.equal(hasNotes([result(FIXED), result(RESET), result(BROKEN)]), false);
+    assert.equal(hasNotes([{ ...result(LATE), error: 'Enter a loan amount greater than zero.' }]), false);
+    assert.equal(hasNotes([result(FIXED), result(LATE)]), true);
+    assert.equal(hasNotes([result(BOTH)]), true);
+  });
+
+  it('the summary ends with a notes column when an offer has one: its sentences in the card\'s order, and an empty cell for the others', () => {
+    const summary = loanSheets(exportOf([['Plain', offer()], ['Late', LATE], ['Both', BOTH], ['Broken', BROKEN]]))[1];
+    assert.deepEqual(summary.rows[0], [...summaryHead(island.delta.monthlyPayment), ...head('Notes')]);
+    assert.equal(x.notes, 'Notes');
+    assert.deepEqual(summary.rows[1], ['Plain', ...figures, null]);
+    assert.deepEqual(summary.rows[2], ['Late', ...figures, LATE_NOTE]);
+    assert.deepEqual(summary.rows[3], ['Both', ...figures, BOTH_NOTES]);
+    assert.deepEqual(summary.rows[4], ['Broken', null, null, null, null, null, null, null, common.no, null]);
+    assert.deepEqual(summary.widths, [22, 16, 12, 16, 16, 14, 16, 34, 12, 60]);
+    for (const row of summary.rows) assert.equal(row.length, summary.widths.length);
+  });
+
+  it('comes after the payment columns too, when a payment changes with its rate', () => {
+    const summary = loanSheets(exportOf([['Reset', RESET], ['Late', LATE]]))[1];
+    assert.deepEqual(summary.rows[0], [...summaryHead(...laterHead), ...head(x.notes)]);
+    assert.equal(summary.rows[1].at(-1), null);
+    assert.equal(summary.rows[2].at(-1), LATE_NOTE);
+    assert.deepEqual(summary.widths, [22, 18, 22, 12, 34, 12, 16, 16, 14, 16, 34, 12, 60]);
+  });
+
+  it('with no note anywhere the summary is as it always was: no column', () => {
+    const summary = loanSheets(exportOf([['Bank A', FIXED], ['Broken', BROKEN]]))[1];
+    assert.deepEqual(summary.rows[0], summaryHead(island.delta.monthlyPayment));
+    assert.deepEqual(summary.rows[2], ['Broken', null, null, null, null, null, null, null, common.no]);
+    assert.deepEqual(summary.widths, [22, 16, 12, 16, 16, 14, 16, 34, 12]);
+  });
+
+  it('is written in the language of the page', () => {
+    const es = loanComparisonEs.island;
+    const summary = loanSheets(exportOf([['Late', LATE]], { island: es }))[1];
+    assert.equal(summary.rows[1].at(-1), es.engine.warnings.lumpUnused.replace('{month}', '5').replace('{payoffMonth}', '3'));
+    assert.deepEqual(summary.rows[0].at(-1), { t: es.export.notes, bold: true });
+  });
 });
 
 describe('loan spreadsheet: its sheets', () => {

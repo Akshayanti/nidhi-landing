@@ -423,4 +423,19 @@ describe('the engine\'s warnings, in the reader\'s language', () => {
     assert.equal(engineWarning('Something else to know.', es), 'Something else to know.');
   });
 
+  it('shows the two notes of a real loan in the reader\'s language: a rate that never changes, a lump sum after the payoff', () => {
+    // 1,200.00 at 0% over 12 months, the rate to change after 12, a lump sum in month 13.
+    const r = computeLoan(
+      { principalMinor: 120_000, annualRate: 0, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 12, subsequentAnnualRate: 0.12 }, lumpSums: [{ month: 13, amountMinor: 5000 }] },
+      over12,
+    );
+    assert.deepEqual(r.warnings.map((w) => engineWarning(w, s)), [
+      'The rate does not change within this term, so the subsequent rate is not used.',
+      'The lump sum in month 13 comes after this loan is paid off in month 12, so it is not used.',
+    ]);
+    assert.deepEqual(r.warnings.map((w) => engineWarning(w, es)), [
+      es.engine.warnings.rateNeverChanges,
+      es.engine.warnings.lumpUnused.replace('{month}', '13').replace('{payoffMonth}', '12'),
+    ]);
+  });
 });
