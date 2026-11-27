@@ -6,7 +6,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { CURRENCIES } from './money.ts';
+import { CURRENCIES, shownNumber } from './money.ts';
 import { formatAmount, formatPercent, formatProseAmount, formatProsePercent, trueMinus } from './formatAmount.ts';
 
 // Words the browser's compact notation uses in other languages.
@@ -268,6 +268,37 @@ describe('formatAmount: an amount that rounds to zero (#885)', () => {
       assert.equal(formatAmount(v, 'JPY', true), '￥0', String(v));
     }
     assert.equal(formatAmount(-0.6, 'EUR'), '-€1');
+  });
+});
+
+describe('shownNumber: a number rounded to the digits it is written with (#888)', () => {
+  it('is never minus zero, which every formatter writes with a sign', () => {
+    for (const [v, digits] of [[-0.03, 1], [-0.004, 2], [-0.4, 0], [-0, 2]] as const) {
+      assert.ok(Object.is(shownNumber(v, digits), 0), `${v} at ${digits}`);
+    }
+  });
+
+  it('rounds half away from zero, as the formatters do, and keeps what is not a number', () => {
+    assert.equal(shownNumber(-0.05, 1), -0.1);
+    assert.equal(shownNumber(-1.25, 1), -1.3);
+    assert.equal(shownNumber(12.25, 1), 12.3);
+    assert.equal(shownNumber(6.789, 2), 6.79);
+    assert.equal(shownNumber(0.4, 0), 0);
+    assert.ok(Number.isNaN(shownNumber(NaN, 1)));
+  });
+});
+
+describe('formatPercent: a share that rounds to zero (#888)', () => {
+  it('is written as zero, with no sign, in every style', () => {
+    for (const v of [-0.04, -0.0001, -0]) {
+      assert.equal(formatPercent(v, 'EUR'), '0.0%', String(v));
+      assert.equal(formatPercent(v, 'EUR', 1, 'cs').replace(/\s/g, ' '), '0,0 %', String(v));
+      assert.equal(formatPercent(v, 'INR', 0), '0%', String(v));
+    }
+    assert.equal(formatPercent(-0.4, 'INR', 0), '0%');
+    assert.equal(formatPercent(-0.05, 'EUR'), '-0.1%');
+    assert.equal(formatPercent(-0.004, 'EUR', 2), '0.00%');
+    assert.equal(formatPercent(-0.006, 'EUR', 2), '-0.01%');
   });
 });
 

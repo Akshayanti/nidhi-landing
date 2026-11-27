@@ -114,6 +114,19 @@ describe('the answer of the inflation calculator', () => {
     assert.equal(one('figcaption').textContent, 'What $5,000 becomes each year');
   });
 
+  it('keeping up, behind: the headline, the range and the announcement carry one true minus sign, each rate whole (#888)', () => {
+    // (1.02 / 1.04 - 1) = -1.92% a year; either side 1.02 / 1.03 = -0.97% and 1.02 / 1.05 = -2.86%.
+    const again = results();
+    again({ state: { ...DEFAULTS, mode: 'keep', growth: 2, rate: 4 } });
+    assert.equal(headline(), '\u22121.92% a year');
+    // The sign is inside the unit that never breaks, as on the other tools.
+    assert.deepEqual(text('.ifc-headline .amt'), ['\u22121.92%']);
+    assert.deepEqual(band(), ['At 3% inflation: \u22120.97% a year', ' · At 5% inflation: \u22122.86% a year']);
+    assert.ok(!one('.ifc-answer').textContent!.includes('-'), 'no hyphen stands in for a minus sign');
+    // What is announced is the headline itself, as on the other tools.
+    assert.equal(said(), 'Updated answer: \u22121.92% a year. With a raise or return of 2% a year and inflation averaging 4%, buying power shrinks about 1.92% a year.');
+  });
+
   it('keeping up: the real rate as the headline, and the real rate either side', () => {
     // (1.05 / 1.03 - 1) = 1.94% a year; over ten years 10,000 x 1.019417^10 = 12,120.
     results({ state: { ...DEFAULTS, mode: 'keep' } });

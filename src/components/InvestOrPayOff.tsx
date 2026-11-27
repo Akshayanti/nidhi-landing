@@ -1,5 +1,5 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES } from '../utils/shared/money.ts';
+import { CURRENCIES, shownNumber } from '../utils/shared/money.ts';
 import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
@@ -24,6 +24,7 @@ import {
   inflationDefault,
   inputProblem,
   rates,
+  realReturnNote,
   returnNote,
   toReal,
   type Inputs,
@@ -84,9 +85,13 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
-/** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
+/**
+ * A rate in the page's marks, below zero with the true minus sign the amounts
+ * use (#884). A rate that rounds to nothing is "0%", never "−0%": a 3% loan
+ * with 3.03% inflation has a real rate of −0.03% (#888).
+ */
 function pct(v: number, locale: string, digits = 1): string {
-  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
+  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(shownNumber(v, digits) / 100));
 }
 
 /** "in 2 years and 4 months", from a month count. */
@@ -387,8 +392,9 @@ export default function InvestOrPayOff({
     const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
-  const formNote =
-    form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : ownReal < -1e-9 ? 'below' : null) : null;
+  // By the figure as written, as the table beside the result is (#888).
+  // Read only where the reader's own return is asked for.
+  const formNote = ownReal === null ? null : { kind: realReturnNote(ownReal), real: pct(ownReal, numberLocale) };
   const num = (n: number) => n.toLocaleString(numberLocale);
 
   // What the folded taxes and fees hold, in words and never in figures.
@@ -512,9 +518,9 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
-                {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
-                {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
+                {formNote?.kind === 'above-range' && <p className="iop-note">{t(strings.returns.above, { real: formNote.real, historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
+                {formNote?.kind === 'below-zero' && <p className="iop-note">{t(strings.returns.below, { real: formNote.real })}</p>}
+                {formNote?.kind === null && <p className="ifc-hint">{t(strings.returns.realIs, { real: formNote.real })}</p>}
               </div>
               <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>
             </>

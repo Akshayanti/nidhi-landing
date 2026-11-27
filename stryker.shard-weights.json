@@ -1168,7 +1168,7 @@
     "src/utils/multi-currency-net-worth/report.ts": {
       "import { cellLabel, tableOf, type Report, type ReportTable } from '../shared/report.ts';": 0,
       "import { netWorthSheets, type NetWorthExport } from './export.ts';": 0,
-      "import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap } from './math.ts';": 0,
+      "import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, sharesUnknown } from './math.ts';": 0,
       "export function netWorthReport(e: Omit<NetWorthExport, 'date' | 'page'> & { answer: string[] }): Report {": 34.8
     },
     "src/utils/multi-currency-net-worth/url.ts": {

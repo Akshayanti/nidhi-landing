@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, amountFormat, amountStyle } from '../utils/shared/money.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { CURRENCIES, amountFormat, amountStyle, shownNumber } from '../utils/shared/money.ts';
+import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
@@ -12,6 +12,7 @@ import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   DISPLAY_CEILING,
+  DISPLAY_FLOOR,
   MAX_AMOUNT,
   MAX_GROWTH,
   MAX_RATE,
@@ -132,15 +133,16 @@ function loadHistory(url: string): Promise<CompactHistory> {
 /**
  * A percentage in the page's own number style ("1.94%", "1,94 %"), since it
  * sits in the page's sentences. Amounts follow `amountStyle`, as on the other
- * tools.
+ * tools. Below zero it carries the true minus sign the other tools write, and
+ * a rate that rounds to nothing is "0%", never "-0%" (#888).
  */
 function pct(v: number, locale: string, digits = 2, signed = false): string {
-  return new Intl.NumberFormat(locale, {
+  return trueMinus(new Intl.NumberFormat(locale, {
     style: 'percent',
     maximumFractionDigits: digits,
     minimumFractionDigits: 0,
     signDisplay: signed ? 'exceptZero' : 'auto',
-  }).format(v / 100);
+  }).format(shownNumber(v, digits) / 100));
 }
 
 /** What the reader typed, to the cent where they typed cents. */
@@ -155,11 +157,24 @@ function typedAmount(v: number, code: string, amountLocale: string | null): stri
   }).format(v);
 }
 
+/**
+ * An amount below 10 as `roundAbout` leaves it, to two significant figures:
+ * "€1.3", "€0.74", "€0.074", and "€7" without a zero after it. The same in a
+ * currency with no smaller unit ("¥1.3"): the figure measures buying power,
+ * it is not a sum to be paid, and "¥1" for everything from 0.6 to 1.4 hid it.
+ */
+function smallAmount(v: number, code: string, amountLocale: string | null): string {
+  const { display } = amountStyle(code, amountLocale);
+  return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 2 }).format(v);
+}
+
 /** A result, rounded and said as "about", "more than" or "less than". */
 function aboutText(v: number, code: string, strings: Strings, amountLocale: string | null): string {
   if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code, false, amountLocale) });
-  if (v > 0 && roundAbout(v) < 1) return t(strings.results.lessThan, { amount: formatAmount(1, code, false, amountLocale) });
-  return t(strings.results.about, { amount: formatAmount(roundAbout(v), code, false, amountLocale) });
+  const rounded = roundAbout(v);
+  if (v > 0 && rounded < DISPLAY_FLOOR) return t(strings.results.lessThan, { amount: smallAmount(DISPLAY_FLOOR, code, amountLocale) });
+  // Stryker disable next-line EqualityOperator: equivalent. At exactly 10 both formats write the same whole amount.
+  return t(strings.results.about, { amount: rounded < 10 ? smallAmount(rounded, code, amountLocale) : formatAmount(rounded, code, false, amountLocale) });
 }
 
 function yearsPhrase(n: number, strings: Strings, numberLocale: string): string {
@@ -1136,19 +1151,43 @@ function computeAnswer(
     }
     // Said as a fall when prices fell, never "rose about -28%", and over one
     // year without "those 1 year" or an average equal to the total (#868).
-    const fell = factor < 1;
-    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
+    // Only the direction is asked: a level factor is said as flat below, so
+    // no sentence turns on where exactly 1 falls.
+    const fellBy = (f: number) => Math.sign(f - 1) === -1;
+    const fell = fellBy(factor);
+    // Over many years a small total is an average under 0.05% a year, which
+    // one decimal wrote as "an average of 0% a year" beside a rise of 1%: it
+    // then gets a second decimal (#888).
+    const averageDigits = shownNumber(average, 1) === 0 ? 2 : 1;
+    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, averageDigits) };
+    // A change written as 0% is neither a rise nor a fall: "fell about 0%"
+    // said more than the figure does (#888). It is said as less than half of
+    // the last digit shown, which is all the rounding tells.
+    const flat = (v: number, digits: number) => shownNumber(v, digits) === 0;
+    const limit = (digits: number) => pct(0.5 / 10 ** digits, numberLocale, digits + 1);
     if (end) {
       // Three lines, each over its own stretch: the whole rise to the month,
       // the yearly average over full years only (a part year is never made
       // into a yearly rate), and the step from the last year's average on.
-      sentences.push(t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(Math.abs(total - 1) * 100, numberLocale, 0), from, inMonth: endPhrase }));
-      if (span > 1) sentences.push(t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
-      sentences.push(t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(Math.abs(end.factor - 1) * 100, numberLocale, 1), to, inMonth: endPhrase }));
+      const whole = Math.abs(total - 1) * 100;
+      const more = Math.abs(end.factor - 1) * 100;
+      sentences.push(flat(whole, 0)
+        ? t(r.pastMonthFlat, { limit: limit(0), inMonth: endPhrase, year: from })
+        : t(fellBy(total) ? r.pastMonthFall : r.pastMonthRise, { total: pct(whole, numberLocale, 0), from, inMonth: endPhrase }));
+      if (span > 1) {
+        sentences.push(flat(average, 1)
+          ? t(r.pastMonthAverageFlat, { from, to, limit: limit(1) })
+          : t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
+      }
+      sentences.push(flat(more, 1)
+        ? t(r.pastMonthFlat, { limit: limit(1), inMonth: endPhrase, year: to })
+        : t(fellBy(end.factor) ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(more, numberLocale, 1), to, inMonth: endPhrase }));
       // Prices published by quarter: the month named is one of three that share a figure.
       if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
     } else {
-      sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
+      sentences.push(flat((factor - 1) * 100, 0)
+        ? t(span === 1 ? r.pastCountryFlatOneYear : r.pastCountryFlat, { limit: limit(0), years: change.years })
+        : t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
       sentences.push(t(r.latestYearNote, { to }));
       // A country with a monthly index that is not joined is told why.
       if (join && 'withheld' in join) {

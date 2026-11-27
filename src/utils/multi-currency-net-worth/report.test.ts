@@ -287,6 +287,28 @@ describe('net worth report: a shared view that hides amounts', () => {
     assert.deepEqual(report.chart.bars, [{ label: EURO, share: 75 }, { label: DOLLAR, share: 25 }]);
   });
 
+  it('with no rates at all: both share cells say so for every currency, with no bar of 0% and no sentence about shares (#887)', () => {
+    const rows: AssetRow[] = [{ name: '', value: '1000', currency: 'EUR', type: 'asset' }, { name: '', value: '3000', currency: 'CZK', type: 'asset' }];
+    const report = hidden(aggregate(rows, 'EUR', null));
+    assert.deepEqual(report.tables, [{
+      caption: 'By currency',
+      head: ['Currency', 'Code', 'Concentration, %', 'Exposure, % of net worth', 'Share band'],
+      rows: [
+        [KORUNA, 'CZK', NO_RATE, NO_RATE, 'band:low'],
+        [EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'],
+      ],
+      note: undefined,
+      stack: true,
+    }]);
+    assert.ok(report.chart === null);
+    assert.equal(report.meaning, MEANING);
+    // A link from before links said which rates were missing: the same.
+    const older = hidden({ ...result, positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
+    assert.deepEqual(older.tables[0].rows, [[EURO, 'EUR', NO_RATE, NO_RATE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
+    assert.ok(older.chart === null);
+    assert.equal(older.meaning, MEANING);
+  });
+
   it('draws no chart at all when no currency has a share to draw', () => {
     const report = hidden({ ...result, positions: [shareOnly('USD', 0, 'low', { rateUnavailable: true }), shareOnly('JPY', 0, 'low', { rateUnavailable: true })] });
     assert.ok(report.chart === null);

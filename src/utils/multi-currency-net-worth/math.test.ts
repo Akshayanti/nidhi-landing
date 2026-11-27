@@ -22,6 +22,7 @@ import {
   getCurrencyLabel,
   netTotal,
   rateGap,
+  sharesUnknown,
   type AggregationResult,
   type AssetRow,
   type CurrencyPosition,
@@ -552,6 +553,13 @@ describe('formatPct', () => {
     assert.equal(formatPct(0), '0.0%');
   });
 
+  it('writes a share that rounds to nothing as zero, never "-0.0%" (#888)', () => {
+    assert.equal(formatPct(-0.04), '0.0%');
+    assert.equal(formatPct(-0), '0.0%');
+    assert.equal(formatPct(-0.05), '-0.1%');
+    assert.equal(formatPct(-12.34), '-12.3%');
+  });
+
   it('handles non-finite values', () => {
     assert.equal(formatPct(NaN), '0%');
     assert.equal(formatPct(Infinity), '0%');
@@ -663,6 +671,17 @@ describe('CSV amounts are read strictly (issue 340)', () => {
     const { rows, errors } = parseCSV('A,0x10,EUR\nB,1e3,EUR\nC,€100,EUR\nD,-5,EUR\nE,"1,23,4",EUR\nF,12,EUR');
     assert.deepEqual(rows.map((r) => r.name), ['F']);
     assert.deepEqual(errors.map((e) => [e.line, e.reason]), [[1, 'invalidValue'], [2, 'invalidValue'], [3, 'invalidValue'], [4, 'invalidValue'], [5, 'invalidValue']]);
+  });
+
+  it('refuses a plus sign, as the amount box does: the two read one amount one way (#888)', () => {
+    // A comma file, a semicolon file (a decimal comma) and the two-column form.
+    for (const [file, value] of [['Cash,+5000,EUR,asset\nGold,5000,EUR,asset', '+5000'], ['Cash;+5000,50;EUR;asset\nGold;5000,50;EUR;asset', '+5000,50'], ['+5000,EUR\n5000,EUR', '+5000']] as const) {
+      const { rows, errors } = parseCSV(file);
+      assert.deepEqual(errors.map((e) => [e.line, e.reason, e.values]), [[1, 'invalidValue', { value }]], file);
+      assert.equal(rows.length, 1, file);
+      // The same text typed into a row's amount box is not an amount there either.
+      assert.equal(isUnreadableAmount(value), true, value);
+    }
   });
 
   it('a lower-case code in the two-column form is the currency it names', () => {
@@ -986,6 +1005,196 @@ describe('netTotal', () => {
 
   it('keeps a small difference that is real', () => {
     assert.equal(total(1e15, -(1e15 - 1000)), 1000);
+  });
+
+  it('measures the bound against what was held and owed before it cancelled, where a position says it (#824)', () => {
+    const one = (netAmountFunctional: number, grossFunctional?: number) => netTotal([{ netAmountFunctional, grossFunctional }]);
+    // One currency, so the bound is 2 x 2 x epsilon x the gross: four epsilons of a gross of 1.
+    assert.equal(one(4 * Number.EPSILON, 1), 0, 'the bound itself');
+    assert.equal(one(-4 * Number.EPSILON, 1), 0, 'below zero too');
+    assert.equal(one(6 * Number.EPSILON, 1), 6 * Number.EPSILON, 'outside it');
+    // The same net amount is a net worth by its own size, and residue beside the million it was left by.
+    assert.equal(one(1e-11), 1e-11);
+    assert.equal(one(1e-11, 1e6), 0);
+    // A gross of nothing leaves no room: a currency with no rate adds none.
+    assert.equal(netTotal([{ netAmountFunctional: 1e-11 }, { netAmountFunctional: 0, grossFunctional: 0 }]), 1e-11);
+    // Each position by what it says, the others by their own size: 1 + 0.5 + 0.5, three currencies, 16 epsilons.
+    const mixed = (residue: number) => netTotal([{ netAmountFunctional: residue, grossFunctional: 1 }, { netAmountFunctional: 0.5 }, { netAmountFunctional: -0.5 }]);
+    assert.equal(mixed(16 * Number.EPSILON), 0);
+    assert.equal(mixed(18 * Number.EPSILON), 18 * Number.EPSILON);
+  });
+});
+
+describe('amounts that cancel inside one currency (#824, #918)', () => {
+  const RATES = { EUR: 1, USD: 1.1 };
+
+  it('€500,000.30 held, €499,000.10 and $1,100.22 owed at 1.1: what the floats leave is a net worth of zero, with no shares', () => {
+    assert.ok(Math.abs(500000.30 - 499000.10 - 1100.22 / 1.1) > 1e-11, 'the plain sum leaves a residue');
+    for (const rows of orders([asset('500000.30', 'EUR'), debt('499000.10', 'EUR'), debt('1100.22', 'USD')])) {
+      const result = aggregate(rows, 'EUR', RATES);
+      assert.equal(result.totalNetWorthFunctional, 0);
+      assert.equal(result.noShares, true);
+      assert.deepEqual(result.positions.map((p) => [p.code, p.pctOfTotal, p.riskLevel]), [['EUR', 0, 'functional'], ['USD', 0, 'net-debt']]);
+      // The euros are added in cents, 50,000,030 less 49,900,010: the net is 1,000.20 itself, not the floats' 1000.2000000000116.
+      assert.equal(byCode(result, 'EUR').netAmountOriginal, 1000.2);
+      assert.notEqual(500000.30 - 499000.10, 1000.2);
+      // Added exactly, a currency is measured by its net amount and names no gross.
+      assert.deepEqual(result.positions.map((p) => 'grossFunctional' in p), [false, false]);
+    }
+  });
+
+  it('a cent more is a real net worth of a cent, and is kept', () => {
+    const result = aggregate([asset('500000.31', 'EUR'), debt('499000.10', 'EUR'), debt('1100.22', 'USD')], 'EUR', RATES);
+    assert.ok(Math.abs(result.totalNetWorthFunctional - 0.01) < 1e-10, String(result.totalNetWorthFunctional));
+    assert.equal(result.noShares, false);
+    // The smallest total kept beside these: 2 x 3 x epsilon x the net positions' 2,000.41, under 3e-12.
+    assert.ok(2 * 3 * Number.EPSILON * 2000.41 < 3e-12);
+  });
+
+  it('one currency alone: 0.1 and 0.2 held against 0.3 owed is nothing', () => {
+    assert.notEqual(0.1 + 0.2 - 0.3, 0);
+    const result = aggregate([asset('0.1', 'EUR'), asset('0.2', 'EUR'), debt('0.3', 'EUR')], 'EUR', RATES);
+    assert.equal(result.positions[0].netAmountOriginal, 0);
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.noShares, true);
+  });
+
+  it('500 rows at a gross of 1e15 keep a real 222, which a count of rows would take for zero', () => {
+    // 250 holdings and 250 debts of two million million each, and 222 more held.
+    const rows = [...Array.from({ length: 250 }, (_, i) => asset(i === 0 ? '2000000000222' : '2000000000000', 'EUR')), ...Array.from({ length: 250 }, () => debt('2000000000000', 'EUR'))];
+    const result = aggregate(rows, 'EUR', RATES);
+    assert.equal(result.totalNetWorthFunctional, 222);
+    assert.equal(result.noShares, false);
+    // Counting the 500 rows, the bound at a gross of 1e15 would be over 222.
+    assert.ok(2 * 501 * Number.EPSILON * 1e15 > 222);
+  });
+});
+
+describe('a currency’s rows are added in whole units of the smallest decimal typed (#918)', () => {
+  const RATES = { EUR: 1, USD: 1.1 };
+  const net = (...rows: AssetRow[]) => aggregate(rows, 'EUR', RATES).positions[0].netAmountOriginal;
+  const exact = (...rows: AssetRow[]) => aggregate(rows, 'EUR', RATES).positions.map((p) => p.grossFunctional);
+
+  it('500 rows of differing amounts that cancel, about 4.45e13 a side in cents: nothing, where the floats left 0.09', () => {
+    // A fixed list: 250 amounts from a multiplying sequence, and as debts the same amounts with a
+    // sum moved from each to its neighbour, so no debt equals a holding and the two sides are equal.
+    const cents: number[] = [];
+    for (let i = 0, x = 314; i < 250; i++) {
+      x = (x * 48271) % 2147483647;
+      cents.push(x * 16001 + (x % 977));
+    }
+    const written = (c: number) => `${Math.floor(c / 100)}.${String(c % 100).padStart(2, '0')}`;
+    const held = cents.map(written);
+    const owed = cents.flatMap((c, i) => (i % 2 === 0 ? [written(c - (c % 1000003) - 1), written(cents[i + 1] + (c % 1000003) + 1)] : []));
+    assert.equal(cents.reduce((sum, c) => sum + c, 0), 4452167724800097, 'in cents, inside the safe integers');
+    assert.equal(new Set([...held, ...owed]).size, 500);
+    // The floats, added in the order typed, leave more than the bound allowed at that gross.
+    const sum = (list: string[]) => list.reduce((total, v) => total + Number(v), 0);
+    assert.equal(sum(held) - sum(owed), 0.0859375);
+    assert.ok(0.0859375 > 2 * 2 * Number.EPSILON * (sum(held) + sum(owed)));
+    const result = aggregate([...held.map((v) => asset(v, 'EUR')), ...owed.map((v) => debt(v, 'EUR'))], 'EUR', RATES);
+    assert.equal(result.positions[0].netAmountOriginal, 0);
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.noShares, true);
+    // And a cent more on one row is a cent, with shares.
+    const more = aggregate([asset('0.01', 'EUR'), ...held.map((v) => asset(v, 'EUR')), ...owed.map((v) => debt(v, 'EUR'))], 'EUR', RATES);
+    assert.equal(more.totalNetWorthFunctional, 0.01);
+    assert.equal(more.noShares, false);
+  });
+
+  it('what is typed is never rounded: the unit is the last decimal typed, whatever the currency has', () => {
+    // Thousandths of a euro beside tenths: 125 + 100 less 225.
+    assert.equal(net(asset('0.125', 'EUR'), asset('0.1', 'EUR'), debt('0.225', 'EUR')), 0);
+    assert.equal(net(asset('0.105', 'EUR')), 0.105);
+    assert.equal(net(asset('0.125', 'EUR'), debt('0.1', 'EUR')), 0.025);
+    assert.notEqual(0.125 - 0.1, 0.025);
+    // Grouping and spaces as the amount box takes them, a point with nothing before or after it.
+    assert.equal(net(asset('1,000.50', 'EUR'), asset(' 2 000.25 ', 'EUR')), 3000.75);
+    assert.deepEqual(exact(asset('1,000.50', 'EUR'), asset(' 2 000.25 ', 'EUR')), [undefined], 'added exactly, grouped or not');
+    assert.equal(net(asset('.5', 'EUR'), asset('5.', 'EUR'), debt('0.7', 'EUR')), 4.8);
+    // A debt larger than what is held is a net amount below zero.
+    assert.equal(net(asset('0.1', 'EUR'), debt('0.3', 'EUR')), -0.2);
+  });
+
+  it('whole numbers add exactly up to 2^53 - 1 of that unit on each side; past it the floats are added, and say their gross', () => {
+    const TOP = String(Number.MAX_SAFE_INTEGER);
+    assert.equal(TOP, '9007199254740991');
+    assert.deepEqual(exact(asset(TOP, 'EUR')), [undefined]);
+    assert.deepEqual(exact(asset(TOP, 'EUR'), debt(TOP, 'EUR')), [undefined]);
+    assert.deepEqual(exact(asset('9007199254740992', 'EUR')), [9007199254740992]);
+    assert.deepEqual(exact(asset('1', 'EUR'), debt('9007199254740992', 'EUR')), [9007199254740993]);
+    assert.deepEqual(exact(asset('9007199254740990', 'EUR'), asset('2', 'EUR')), [9007199254740992]);
+    // In cents the same count of units is a hundredth of it; zeros that end the decimals are no unit.
+    assert.deepEqual(exact(asset('90071992547409.91', 'EUR')), [undefined]);
+    assert.deepEqual(exact(asset('90071992547409.92', 'EUR')), [90071992547409.92]);
+    assert.deepEqual(exact(asset(`${TOP}.000`, 'EUR')), [undefined]);
+    assert.deepEqual(exact(asset('900719925474099.10', 'EUR')), [undefined]);
+    // Each currency by itself: the dollars here are exact, the euros are not, and a gross is converted.
+    assert.deepEqual(exact(asset('9007199254740992', 'EUR'), asset('110', 'USD')), [9007199254740992, undefined]);
+    assert.deepEqual(exact(asset('1', 'EUR'), asset('9907919180215091', 'USD'), debt('1', 'USD')), [undefined, 9907919180215092 / 1.1]);
+  });
+
+  it('decimals past the twenty-second are past what a power of ten can carry: the floats are added', () => {
+    assert.deepEqual(exact(asset('0.0000000000000000000001', 'EUR')), [undefined]);
+    assert.deepEqual(exact(asset('0.00000000000000000000001', 'EUR')), [1e-23]);
+    assert.equal(net(asset('0.0000000000000000000001', 'EUR')), 1e-22);
+  });
+
+  it('past the exact range the rule of #824 holds: residue of amounts that cancel is measured against their gross', () => {
+    // 91,000,000,000,000.31 euros held, 90,999,999,999,000.11 owed, and 1,100.22 dollars owed at 1.1: nothing in all.
+    const rows = [asset('91000000000000.31', 'EUR'), debt('90999999999000.11', 'EUR'), debt('1100.22', 'USD')];
+    assert.ok(Math.abs(91000000000000.31 - 90999999999000.11 - 1100.22 / 1.1) > 0.003, 'the floats leave a third of a cent');
+    const result = aggregate(rows, 'EUR', RATES);
+    assert.equal(byCode(result, 'EUR').grossFunctional, 91000000000000.31 + 90999999999000.11);
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.noShares, true);
+    // A thousand more is a thousand, to the float's step at that size.
+    const real = aggregate([asset('91000000000000.31', 'EUR'), debt('90999999998000.11', 'EUR'), debt('1100.22', 'USD')], 'EUR', RATES);
+    assert.ok(Math.abs(real.totalNetWorthFunctional - 1000) < 0.05, String(real.totalNetWorthFunctional));
+  });
+
+  it('a currency with no rate is in no total and names no gross, exact or not', () => {
+    const result = aggregate([asset('1000', 'EUR'), asset('9007199254740992', 'GBP'), debt('200', 'GBP')], 'EUR', { EUR: 1 });
+    assert.equal('grossFunctional' in byCode(result, 'GBP'), false);
+    assert.equal(result.totalNetWorthFunctional, 1000);
+  });
+});
+
+describe('sharesUnknown (#887)', () => {
+  const position = (code: string, more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
+    code, netAmountOriginal: 100, netAmountFunctional: 0, pctOfTotal: 0, isFunctional: code === 'EUR', riskLevel: 'low', riskLabel: '', ...more,
+  });
+  const result = (hasRates: AggregationResult['hasRates'], ...positions: CurrencyPosition[]): AggregationResult => ({ positions, totalNetWorthFunctional: 0, hasRates });
+  const row = (value: string, currency: string): AssetRow => ({ name: '', value, currency, type: 'asset' });
+
+  it('a link without amounts whose total was zero or less had its rates: its shares are withheld, not unknown', () => {
+    const withheld = { ...result('none', position('EUR'), position('USD')), noShares: true };
+    assert.equal(sharesUnknown(withheld, 'EUR'), false);
+    assert.equal(sharesUnknown({ ...withheld, noShares: false }, 'EUR'), true);
+  });
+
+  it('several currencies, no rates, nothing converted and no share carried: no share can be worked out', () => {
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { rateUnavailable: true })), 'EUR'), true);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR'), row('2000', 'USD')], 'EUR', null), 'EUR'), true);
+    // No spending currency among them at all.
+    assert.equal(sharesUnknown(aggregate([row('1000', 'GBP'), row('2000', 'USD')], 'EUR', null), 'EUR'), true);
+  });
+
+  it('is not so with any rate, with one currency alone, or with nothing entered', () => {
+    assert.equal(sharesUnknown(result('full', position('EUR'), position('USD')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('partial', position('EUR'), position('USD', { rateUnavailable: true })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none'), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([], 'EUR', null), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR')], 'EUR', null), 'EUR'), false);
+    assert.equal(sharesUnknown(aggregate([row('1000', 'EUR'), row('2000', 'USD')], 'EUR', { USD: 1.1 }), 'EUR'), false);
+  });
+
+  it('a link that carries a share or an amount for any currency has shares to show', () => {
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { pctOfTotal: 100 })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR', { pctOfTotal: -20 }), position('USD')), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR'), position('USD', { netAmountFunctional: 5 })), 'EUR'), false);
+    assert.equal(sharesUnknown(result('none', position('EUR', { netAmountFunctional: -5 }), position('USD')), 'EUR'), false);
   });
 });
 
