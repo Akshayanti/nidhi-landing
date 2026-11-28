@@ -79,7 +79,7 @@ describe('a gridline carries a bare number', () => {
     assert.equal(axisTick(-0.001, 'none', 'EUR'), '0');
     assert.equal(axisTick(-4, 'thousand', 'EUR'), '0');
     assert.equal(axisTick(-0.001, 'none', 'CZK', 'cs'), '0');
-    assert.equal(axisTick(-5, 'thousand', 'EUR'), '-0.01');
+    assert.equal(axisTick(-5, 'thousand', 'EUR'), '−0.01');
     assert.equal(axisTick(333_333, 'million', 'EUR'), '0.33');
   });
 });
@@ -97,7 +97,7 @@ describe('a label that stands alone carries its own unit', () => {
     assert.equal(chartLabel(-0.3, 'EUR', exportEn.chart), '€0');
     assert.equal(chartLabel(-0, 'EUR', exportEn.chart), '€0');
     assert.equal(chartLabel(-0.3, 'CZK', exportCs.chart, 'cs'), `0${NBSP}Kč`);
-    assert.equal(chartLabel(-0.6, 'EUR', exportEn.chart), '-€1');
+    assert.equal(chartLabel(-0.6, 'EUR', exportEn.chart), '−€1');
   });
 
   it('chooses the unit after rounding, so no label reads a thousand of the unit below', () => {
@@ -168,14 +168,14 @@ describe('chart labels and ticks at their edges', () => {
   it('rounds an amount under a thousand to a whole unit, a half upwards', () => {
     assert.equal(chartLabel(12.4, 'EUR', exportEn.chart), '€12');
     assert.equal(chartLabel(12.5, 'EUR', exportEn.chart), '€13');
-    assert.equal(chartLabel(-12.5, 'EUR', exportEn.chart), '-€12');
+    assert.equal(chartLabel(-12.5, 'EUR', exportEn.chart), '−€12');
     assert.equal(chartLabel(999.4, 'EUR', exportEn.chart), '€999');
   });
 
   it('writes an amount that rounds to a thousand as one, on either side of zero', () => {
     assert.equal(chartLabel(999.5, 'EUR', exportEn.chart), '€1K');
-    assert.equal(chartLabel(-999.5, 'EUR', exportEn.chart), '-€1K');
-    assert.equal(chartLabel(-999.4, 'EUR', exportEn.chart), '-€999');
+    assert.equal(chartLabel(-999.5, 'EUR', exportEn.chart), '−€1K');
+    assert.equal(chartLabel(-999.4, 'EUR', exportEn.chart), '−€999');
   });
 
   it('writes a thousand million in millions for any Spanish page style, and as B elsewhere', () => {

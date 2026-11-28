@@ -46,6 +46,7 @@ import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/to
 import { CURRENCIES } from '../../utils/shared/money.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import { DATE_LOCALE, LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
+import { shareCard } from '../../utils/shareCard.ts';
 
 interface Props {
   locale: Locale;
@@ -181,10 +182,15 @@ const faqSchema = {
   inLanguage: htmlLang,
   mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
+// The English page shows the tool's own share image; a translated page keeps
+// the English brand card (#743, docs/brand-identity.md).
+const card = locale === 'en' ? shareCard('tools', 'inflation-calculator', dict('en').freeHub.tools.inflation.title, 'A free tool from nidhi.') : undefined;
 ---
 
 <BaseLayout
   locale={locale}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   sheets={['tools']}
   alternates={LOCALES}
   title={inflation.meta.title}

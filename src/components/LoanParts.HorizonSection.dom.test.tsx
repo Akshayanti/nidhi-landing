@@ -166,7 +166,7 @@ describe('where each offer stands at the horizon', () => {
 
   it('writes the amounts in the currency chosen', () => {
     const { section } = show([plain()], '5', { results: resultsOf([plain()], 'USD'), currency: 'USD' });
-    assert.deepEqual(table(section)['Balance remaining'], ['$700.00 USD']);
+    assert.deepEqual(table(section)['Balance remaining'], ['$700.00\u00a0USD']);
   });
 
   it('names an offer as its card does, by its typed name or its letter', () => {

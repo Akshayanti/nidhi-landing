@@ -152,6 +152,36 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे रुंद स्क्रीनवरही एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील आणि उदाहरणांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
         },
       },
+      {
+        id: 'amounts-true-minus-and-yen',
+        text: {
+          en: 'Amounts below zero now start with a true minus sign in every tool and chart, so an amount owed in Swiss francs reads “−CHF\u00a01,650”, not “CHF\u20111,650”. The yen is written “¥”, like the page’s other symbols, and the currency code after a dollar amount no longer drops onto a line of its own.',
+          hi: 'शून्य से कम राशियाँ अब हर टूल और चार्ट में असली माइनस चिह्न से शुरू होती हैं, इसलिए स्विस फ़्रैंक में बकाया राशि “−CHF\u00a01,650” लिखी जाती है, “CHF\u20111,650” नहीं। येन अब “¥” लिखा जाता है, पेज के बाक़ी चिह्नों की तरह, और डॉलर की राशि के बाद का मुद्रा कोड अब अकेले अगली पंक्ति पर नहीं जाता।',
+          es: 'Las cantidades por debajo de cero llevan ahora un auténtico signo menos (−) en todas las herramientas y gráficos, no un guion, y siempre delante de la cantidad. El yen se escribe «¥», como los demás símbolos de la página, y el código que sigue a una cantidad en dólares ya no puede quedarse solo en otra línea.',
+          cs: 'Částky pod nulou mají teď ve všech nástrojích a\u00a0grafech skutečné znaménko minus (−), ne spojovník, a\u00a0vždy před částkou. Japonský jen se píše „¥“ jako ostatní symboly na stránce a\u00a0kód měny za částkou v\u00a0dolarech už nemůže zůstat sám na dalším řádku.',
+          mr: 'शून्यापेक्षा कमी रकमा आता प्रत्येक साधनात आणि आलेखात खऱ्या मायनस चिन्हाने सुरू होतात, त्यामुळे स्विस फ्रँकमधील देणे असलेली रक्कम “−CHF\u00a01,650” अशी लिहिली जाते, “CHF\u20111,650” नाही. येन आता “¥” असे लिहिले जाते, पानावरील इतर चिन्हांसारखे, आणि डॉलरमधील रकमेनंतरचा चलन कोड आता एकटा पुढच्या ओळीवर जात नाही.',
+        },
+      },
+      {
+        id: 'lessons-and-tools-share-cards',
+        text: {
+          en: 'When you share a lesson or a free tool, the link preview now shows its title, as it already did for the guides. A tool shared from a page in another language keeps the nidhi card in English.',
+          hi: 'किसी पाठ या मुफ़्त टूल का लिंक शेयर करने पर, लिंक के पूर्वावलोकन में अब उसका शीर्षक दिखता है, जैसा गाइड के लिए पहले से होता था। किसी दूसरी भाषा के पेज से शेयर किए गए टूल पर nidhi का अंग्रेज़ी कार्ड ही दिखता है।',
+          es: 'Cuando compartes una lección o una herramienta gratuita, la vista previa del enlace muestra ahora su título, como ya pasaba con las guías. Una herramienta compartida desde una página en otro idioma mantiene la tarjeta de nidhi en inglés.',
+          cs: 'Když sdílíte lekci nebo nástroj zdarma, náhled odkazu teď ukazuje jejich název, jako už tomu bylo u\u00a0návodů. Nástroj sdílený ze stránky v\u00a0jiném jazyce si ponechává kartu nidhi v\u00a0angličtině.',
+          mr: 'एखादा धडा किंवा मोफत साधन शेअर केल्यावर, लिंकच्या पूर्वावलोकनात आता त्याचे शीर्षक दिसते, जसे मार्गदर्शकांसाठी आधीपासून होत होते. दुसऱ्या भाषेतील पानावरून शेअर केलेल्या साधनासाठी nidhi\u00a0चे इंग्रजी कार्डच दिसते.',
+        },
+      },
+      {
+        id: 'loan-sheet-cents-and-payment-chart-names',
+        text: {
+          en: 'In the loan comparison, the spreadsheet now writes a typed amount as the results count it: 1,000.005 was written as 1,000.00 while the results used 1,000.01. The chart of where each payment goes now names each bar once, by its month on a loan of up to three years and by its year on a longer one, where two bars could both say “Year\u00a03”.',
+          hi: 'लोन तुलना टूल में, स्प्रेडशीट अब लिखी गई राशि को उसी तरह लिखती है जैसे नतीजे उसे गिनते हैं: 1,000.005 को 1,000.00 लिखा जाता था, जबकि नतीजे 1,000.01 मानते थे। हर किस्त कहाँ जाती है, यह दिखाने वाला चार्ट अब हर बार को एक ही नाम देता है: तीन साल तक के लोन पर उसके महीने से, और लंबे लोन पर उसके साल से, जहाँ पहले दो बार पर “साल\u00a03” लिखा हो सकता था।',
+          es: 'En el comparador de préstamos, la hoja de cálculo escribe ahora una cantidad tecleada tal como la cuentan los resultados: 1.000,005 se escribía 1.000,00 mientras los resultados usaban 1.000,01. El gráfico de a dónde va cada cuota da ahora un nombre distinto a cada barra: su mes en un préstamo de hasta tres años y su año en uno más largo, donde antes dos barras podían decir «Año\u00a03».',
+          cs: 'Ve srovnání úvěrů teď tabulka zapisuje zadanou částku tak, jak ji počítají výsledky: 1\u00a0000,005 se zapsalo jako 1\u00a0000,00, zatímco výsledky počítaly s\u00a01\u00a0000,01. Graf toho, kam jde každá splátka, teď pojmenuje každý sloupec jen jednou: u\u00a0úvěru do tří let měsícem, u\u00a0delšího rokem, kde dřív mohly dva sloupce nést „Rok\u00a03“.',
+          mr: 'कर्जांच्या तुलनेत, स्प्रेडशीट आता लिहिलेली रक्कम निकाल जशी मोजतात तशीच लिहिते: 1,000.005 ही रक्कम 1,000.00 अशी लिहिली जात होती, तर निकाल 1,000.01 वापरत होते. प्रत्येक हप्ता कुठे जातो हे दाखवणारा आलेख आता प्रत्येक स्तंभाला एकदाच नाव देतो: तीन वर्षांपर्यंतच्या कर्जावर त्याच्या महिन्याने आणि जास्त काळाच्या कर्जावर त्याच्या वर्षाने, जिथे आधी दोन स्तंभांवर “वर्ष\u00a03” असू शकत होते.',
+        },
+      },
     ],
   },
   {

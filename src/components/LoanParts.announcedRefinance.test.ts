@@ -126,7 +126,7 @@ describe('what is announced for a refinance', () => {
     pageIn('en');
     assert.equal(
       said(refinanced(plain(), 6, 0, 12, 10_000), 'USD'),
-      'Refinancing costs $100.00 USD more in total. Time to break even: 2 months.',
+      'Refinancing costs $100.00\u00a0USD more in total. Time to break even: 2 months.',
     );
   });
 

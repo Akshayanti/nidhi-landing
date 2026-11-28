@@ -42,10 +42,10 @@ describe('the total, said', () => {
     assert.equal(heard({ result: nothing }, { result: worked([own('1500'), owe('200.50')]) }), 'Total net worth: €1,299.50.');
   });
 
-  it('a debt in Swiss francs is said with a true minus, which screen readers speak after a code', () => {
-    // Francs are written "CHF-1,500.00" with no amount style: a hyphen after
+  it('a debt in Swiss francs is said with a true minus, before the code (#691)', () => {
+    // Francs were written "CHF-1,500.00" with no amount style: a hyphen after
     // letters is not spoken by NVDA by default, so the debt would sound owned.
-    assert.equal(heard({ result: nothing }, { result: worked([own('1000', 'CHF'), owe('2500', 'CHF')], 'CHF', null), currency: 'CHF' }), 'Total net worth: CHF\u22121,500.00.');
+    assert.equal(heard({ result: nothing }, { result: worked([own('1000', 'CHF'), owe('2500', 'CHF')], 'CHF', null), currency: 'CHF' }), 'Total net worth: \u2212CHF\u00a01,500.00.');
   });
 
   it('everything in the spending currency needs no rates', () => {
@@ -53,7 +53,7 @@ describe('the total, said', () => {
   });
 
   it('in a currency with no smaller unit, in whole yen', () => {
-    assert.equal(heard({ result: nothing, currency: 'JPY' }, { result: worked([own('5000', 'JPY')], 'JPY', { JPY: 1 }), currency: 'JPY' }), 'Total net worth: ￥5,000.');
+    assert.equal(heard({ result: nothing, currency: 'JPY' }, { result: worked([own('5000', 'JPY')], 'JPY', { JPY: 1 }), currency: 'JPY' }), 'Total net worth: ¥5,000.');
   });
 
   it('in several currencies: the converted total', () => {
@@ -64,7 +64,7 @@ describe('the total, said', () => {
   it('converted into yen, in whole yen', () => {
     // 5,000 yen and 100 euros (20,000 yen at 200 to the euro).
     const result = worked([own('5000', 'JPY'), own('100')], 'JPY', { JPY: 1, EUR: 1 / 200 });
-    assert.equal(heard({ result: nothing, currency: 'JPY' }, { result, currency: 'JPY' }), 'Total net worth: ￥25,000.');
+    assert.equal(heard({ result: nothing, currency: 'JPY' }, { result, currency: 'JPY' }), 'Total net worth: ¥25,000.');
   });
 
   it('with a currency missing its rate: named as the total without it', () => {

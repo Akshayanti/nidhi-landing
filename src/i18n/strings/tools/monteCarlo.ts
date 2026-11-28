@@ -118,7 +118,7 @@ export const monteCarloEn = {
         },
         extremes: {
           lead: 'Calmer extremes than history.',
-          rest: ' Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks -42.9% after inflation) are rarer here than they were in reality.',
+          rest: ' Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks −42.9% after inflation) are rarer here than they were in reality.',
         },
       },
       more: 'Why each one matters',
@@ -519,7 +519,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'इतिहास की तुलना में कम तीखे चरम नतीजे।',
-          rest: ' हर साल का रिटर्न दूसरे सालों से स्वतंत्र रूप से, एक सहज, बिना अचानक झटकों वाले वितरण से निकाला जाता है, इसलिए लगातार ख़राब सालों की लंबी कतारें और 2008 जैसी गिरावटें (दुनिया के शेयर महँगाई के बाद -42.9%) यहाँ असल इतिहास से कम आती हैं।',
+          rest: ' हर साल का रिटर्न दूसरे सालों से स्वतंत्र रूप से, एक सहज, बिना अचानक झटकों वाले वितरण से निकाला जाता है, इसलिए लगातार ख़राब सालों की लंबी कतारें और 2008 जैसी गिरावटें (दुनिया के शेयर महँगाई के बाद −42.9%) यहाँ असल इतिहास से कम आती हैं।',
         },
       },
       more: 'हर एक क्यों मायने रखता है',
@@ -1526,7 +1526,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'इतिहासापेक्षा सौम्य टोके.',
-          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाईनंतर जागतिक शेअर -42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
+          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाईनंतर जागतिक शेअर −42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
         },
       },
       more: 'प्रत्येक गोष्ट का महत्त्वाची आहे',

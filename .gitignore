@@ -59,3 +59,7 @@ docs/curr_bugs.md
 reports/mutation/
 # astro check's own install (tools/astro-check): its lockfile is tracked.
 tools/astro-check/node_modules/
+
+# The newsletter workflow keeps the record of sent lessons on the
+# newsletter-state branch; a local run of scripts/send_newsletter.py writes it here.
+/.last-sent-guid.txt

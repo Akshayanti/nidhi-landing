@@ -22,7 +22,7 @@
  * way (Hindi and Marathi, `PROSE_NUMBER_LOCALE`; the owner's choice, #678):
  * "€18.7 लाख", never "€1.87M".
  */
-import { amountFormat, amountNumberLocale, amountStyle, shownNumber } from './money.ts';
+import { amountFormat, amountNumberLocale, amountStyle, sharedSigns, shownNumber } from './money.ts';
 
 export type AmountScale = 'none' | 'thousand' | 'lakh' | 'crore' | 'million' | 'billion';
 
@@ -68,7 +68,7 @@ export function amountScale(value: number, code: string, amountLocale?: string |
 /** The currency as the page writes it beside a figure: "€", "Kč", "₹", "US$". */
 export function currencyMark(code: string, amountLocale?: string | null): string {
   const { locale, display } = amountStyle(code, amountLocale);
-  const parts = new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display }).formatToParts(1);
+  const parts = sharedSigns(new Intl.NumberFormat(locale, { style: 'currency', currency: code, currencyDisplay: display }).formatToParts(1));
   return parts.find((p) => p.type === 'currency')?.value ?? code;
 }
 
@@ -86,7 +86,7 @@ export function axisTick(value: number, scale: AmountScale, code: string, amount
   // Up to two decimals, so neighbouring gridlines never round to one figure
   // ("0.25", "0.5", "0.75"), and none that are not needed. Rounded first, so
   // a figure that rounds to nothing is "0" and never "-0" (#888).
-  return new Intl.NumberFormat(locale).format(shownNumber(v, 2));
+  return sharedSigns(new Intl.NumberFormat(locale).formatToParts(shownNumber(v, 2))).map((p) => p.value).join('');
 }
 
 /**

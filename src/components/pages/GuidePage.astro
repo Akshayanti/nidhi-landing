@@ -11,7 +11,7 @@
  * No analytics labels here: the section launched without any, and the privacy
  * changelog records it under Nov 10, 2026. Links carry no data-attr on purpose.
  */
-import { existsSync } from 'node:fs';
+import { shareCard } from '../../utils/shareCard.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GuideVisual from '../../components/GuideVisual.astro';
 import AmountText from '../../components/AmountText.astro';
@@ -33,8 +33,8 @@ const minutes = guideReadingMinutes(g);
 const siteUrl = 'https://nidhi.today';
 const url = `${siteUrl}${guidePath(g.slug)}`;
 const groupName = howTo.groups[g.group];
-const shareImage = `/brand/social/how-to/${g.slug}.png`;
-const hasShareImage = existsSync(`public${shareImage}`);
+// The guide's own share image, or the site's default card (#420).
+const card = shareCard('how-to', g.slug, g.title, 'A short guide from nidhi.');
 const visualFirst = g.form === 'example';
 
 const articleSchema = {
@@ -47,7 +47,7 @@ const articleSchema = {
   inLanguage: 'en',
   author: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/about/` },
   publisher: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/` },
-  image: `${siteUrl}${hasShareImage ? shareImage : '/brand/social/og-image.png'}`,
+  image: `${siteUrl}${card?.image ?? '/brand/social/og-image.png'}`,
   url,
   mainEntityOfPage: { '@type': 'WebPage', '@id': url },
 };
@@ -64,8 +64,8 @@ const breadcrumbSchema = {
 <BaseLayout
   title={`${g.seoTitle ?? g.title} | nidhi`}
   description={g.description}
-  image={hasShareImage ? shareImage : undefined}
-  imageAlt={hasShareImage ? `${g.title} A short guide from nidhi.` : undefined}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   article={{ publishedTime: g.pubDate, modifiedTime: g.lastChecked, tags: [] }}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >

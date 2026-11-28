@@ -28,6 +28,7 @@ const ENGLISH_ONLY: Record<string, string> = {
   'how-to/rss.xml.ts': 'the guides feed: guides are English',
   'llms.txt.ts': 'the one summary for AI assistants, at the site root; it names every edition itself',
   'data/inflation-history.json.ts': 'data, with no words in it',
+  'brand/social/lessons/[slug].png.ts': 'the share cards of published lessons, which are English (#743)',
   'studio/qr.astro': 'an internal tool, not a page for readers',
   'confirm.astro': 'the newsletter flow: the lessons it sends, and its emails, are English',
   'subscription-confirmed.astro': 'the newsletter flow: the lessons it sends, and its emails, are English',

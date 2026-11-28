@@ -10,6 +10,8 @@ export const READ_THE_SOURCE = [
   'src/utils/glossaryLinks.test.ts', 'src/utils/guides.test.ts', 'src/utils/learnPosts.test.ts', 'src/utils/lessonDates.test.ts',
   'src/utils/lessonLinks.test.ts', 'src/utils/lessonRules.test.ts', 'src/utils/levelHelper.test.ts', 'src/utils/longDate.test.ts',
   'src/utils/newsletterIds.test.ts', 'src/utils/privacyNoticeGuard.test.ts', 'src/utils/qr/destinations.test.ts', 'src/utils/qr/encode.test.ts',
+  // Reads the drawn share cards under public/ (#743); reaches no tool code.
+  'src/utils/shareCard.test.ts',
   'src/utils/shared/cleanElements.registry.test.ts', 'src/utils/shared/devanagariHeadings.test.ts', 'src/utils/shared/jsonForScript.pages.test.ts',
   'src/utils/shared/toolPrivacy.test.ts', 'src/utils/sitemap.test.ts', 'src/utils/situationFiles.test.ts', 'src/utils/spelling.test.ts',
   'src/utils/styleRules.test.ts', 'src/utils/tags.test.ts', 'src/utils/thirdPartyNotices.test.ts',

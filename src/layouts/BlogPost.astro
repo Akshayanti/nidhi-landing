@@ -11,6 +11,7 @@ import LocalRules from '../components/LocalRules.astro';
 import type { LocalRuleArea } from '../utils/localRules';
 import type { LayeredReadingTime } from '../utils/readingTime';
 import { DEFAULT_LOCALE, dict } from '../i18n';
+import { shareCard } from '../utils/shareCard.ts';
 import { GLOSSARY_CARD_ID, termId } from '../utils/glossary.mjs';
 import LessonShare from '../components/LessonShare.astro';
 import lessonPageScript from '../utils/shared/lessonPage.js?raw';
@@ -97,6 +98,8 @@ const updatedStr = showUpdated && updatedDate
   : '';
 const siteUrl = 'https://nidhi.today';
 const slug = Astro.url.pathname.split('/').filter(Boolean).pop() || '';
+// The lesson's own share image, or the site's default card (#743).
+const card = shareCard('lessons', slug, title, 'A lesson from nidhi.');
 
 const blogPostingSchema = {
   '@context': 'https://schema.org',
@@ -121,11 +124,10 @@ const blogPostingSchema = {
     name: 'nidhi',
     url: `${siteUrl}/`,
   },
-  // Point at the generic site OG image for now. PR16 will repoint this
-  // at a per-post OG image generator and emit the real dims dynamically.
+  // The lesson's own card where it has one (#743); both are 1200×630.
   image: {
     '@type': 'ImageObject',
-    url: `${siteUrl}/brand/social/og-image.png`,
+    url: `${siteUrl}${card?.image ?? '/brand/social/og-image.png'}`,
     width: 1200,
     height: 630,
   },
@@ -184,6 +186,8 @@ const allSchemas = [blogPostingSchema, breadcrumbSchema, faqSchema].filter((sche
     author: '/about/',
     section: levelLabel,
   }}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   prevUrl={prevSlug ? `/blog/${prevSlug}/` : null}
   nextUrl={nextSlug ? `/blog/${nextSlug}/` : null}
   jsonLd={allSchemas}

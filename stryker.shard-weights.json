@@ -395,7 +395,7 @@
     "src/utils/loan/export.ts": {
       "import type { Dict } from '../../i18n/strings/types.ts';": 0.0,
       "import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';": 0.0,
-      "import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';": 0.0,
+      "import { fromMinor, getCurrency, toMinor, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';": 0.0,
       "import { parseNumber } from './inputs.ts';": 0.0,
       "import { parseLumpSums, type VendorInput } from './url.ts';": 0.0,
       "type Island = Dict['tools']['loanComparison']['island'];": 0.0,

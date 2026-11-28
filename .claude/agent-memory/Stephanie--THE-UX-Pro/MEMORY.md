@@ -34,3 +34,4 @@
 - [Tool loose ends 27 Nov](toolcode-loose-ends-review-2026-11-27.md) — c3012bf: arrived ? marks all required boxes with one "This value" message; useChartRem flushSync untested
 - [Site pages a11y 27 Nov](sitepages-review-2026-11-27.md) — email label 1.87:1 on blue boxes; #841 still letter-breaks; dead :has padding; Chrome socket path symlink
 - [Tools a11y 28 Nov](toolsa11y-review-2026-11-28.md) — loan chart ring clipped by scroller (pre-existing); export stack <640 already on main; guide notes disc column
+- [Share cards + signs 28 Nov](share-cards-signs-review-2026-11-28.md) — e905ee9: sharedSigns sound in all currencies; card teal 7.6:1, guide footer collision, empty tool card
