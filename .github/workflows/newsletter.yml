@@ -37,9 +37,10 @@ on:
   schedule:
     # Daily safety-net run. The cron says 07:03 UTC, but GitHub starts this
     # repository's scheduled workflows hours late (see the schedule comment
-    # in deploy.yml, #329): since late Aug 2026 this has started between
-    # about 11:20 and 17:10 UTC. The deploy's own schedule carries the same
-    # lag on a given day, so this still comes about three hours after it.
+    # in deploy.yml, #329): in Nov 2026 this run started between 13:43 and
+    # 17:08 UTC (`gh run list --workflow newsletter.yml --event schedule`).
+    # The deploy's own schedule carries a similar lag on a given day, so this
+    # still comes two to four hours after it.
     # It needs no deploy: if the day's deploy failed, this still gives us a
     # daily bounce scan and a chance to pick up any partial-send resumes.
     - cron: '03 7 * * *'

@@ -152,6 +152,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे रुंद स्क्रीनवरही एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील आणि उदाहरणांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
         },
       },
+      {
+        id: 'confirmation-mail-mentions-reminder',
+        text: {
+          en: 'The email that asks you to confirm your newsletter sign-up now says that if you ignore it, you’ll get at most one reminder and nothing after that. It used to promise no more email at all, though one reminder could follow. The sign-up emails also say “I” instead of “we” now, and “lesson” instead of “post”.',
+          hi: 'न्यूज़लेटर के साइनअप की पुष्टि माँगने वाला ईमेल अब बताता है कि उसे अनदेखा करने पर ज़्यादा से ज़्यादा एक रिमाइंडर आएगा और उसके बाद कुछ नहीं। पहले उसमें वादा था कि आगे कोई ईमेल नहीं आएगा, जबकि एक रिमाइंडर आ सकता था। साथ ही, साइनअप के ईमेल (जो अंग्रेज़ी में हैं) अब “we” की जगह “I” और “post” की जगह “lesson” कहते हैं।',
+          es: 'El correo que te pide confirmar tu suscripción al boletín ahora dice que, si no le haces caso, recibirás como mucho un recordatorio y nada más después. Antes prometía que no recibirías ningún otro correo, aunque podía llegarte un recordatorio. Los correos de suscripción, que están en inglés, ahora dicen además «I» en lugar de «we» y «lesson» en lugar de «post».',
+          cs: 'E-mail s\u00a0žádostí o\u00a0potvrzení odběru newsletteru teď říká, že pokud na něj nezareagujete, přijde nanejvýš jedna připomínka a\u00a0potom už nic. Dřív sliboval, že žádný další e-mail nepřijde, i\u00a0když jedna připomínka přijít mohla. E-maily k\u00a0přihlášení, které jsou v\u00a0angličtině, teď navíc říkají „I“ místo „we“ a\u00a0„lesson“ místo „post“.',
+          mr: 'न्यूजलेटरच्या सदस्यत्वाची पुष्टी मागणारा ईमेल आता सांगतो की त्याकडे दुर्लक्ष केल्यास जास्तीत जास्त आठवणीचा एक ईमेल येईल आणि त्यानंतर काहीही येणार नाही. आधी पुढे कोणताही ईमेल येणार नाही असे त्यात आश्वासन होते, पण आठवणीचा एक ईमेल येऊ शकत होता. सदस्यत्वाचे ईमेल, जे इंग्रजीत आहेत, आता “we” ऐवजी “I” आणि “post” ऐवजी “lesson” असेही म्हणतात.',
+        },
+      },
     ],
   },
   {

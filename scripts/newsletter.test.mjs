@@ -104,14 +104,17 @@ function load(dataRows = []) {
     },
     LockService: {
       getScriptLock: () => ({
-        // The real waitLock throws on a timeout. This one returns quietly when
-        // told to refuse, so the handlers' own hasLock check is what is tested.
-        waitLock: () => {
-          if (rec.refuseLock) return;
+        // Like the real tryLock, false when the wait runs out (refuseLock
+        // true). refuseLock 'quietly' answers true without the lock, so the
+        // handlers' own hasLock check is tested too.
+        tryLock: () => {
+          if (rec.refuseLock === 'quietly') return true;
+          if (rec.refuseLock) return false;
           if (rec.locked) throw new Error('lock taken twice');
           rec.locked = true;
           rec.readInLock = false;
           rec.lockTakes++;
+          return true;
         },
         hasLock: () => rec.locked,
         releaseLock: () => {
@@ -201,17 +204,19 @@ describe('newsletter.gs: sheet writes hold the lock', () => {
     assert.equal(ctx.rec.lockTakes, 1);
   });
 
-  it('a request that cannot take the lock fails without touching the sheet', () => {
-    const ctx = load([row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
-    const before = JSON.stringify(ctx.rec.rows);
-    ctx.rec.refuseLock = true;
-    assert.equal(json(ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }))).ok, false);
-    assert.equal(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('2') }))).ok, false);
-    ctx.doPost(req({ action: 'confirm', t: tok('1') }));
-    assert.throws(() => ctx.handleRemindPending());
-    assert.equal(JSON.stringify(ctx.rec.rows), before);
-    assert.deepEqual(ctx.rec.mails, []);
-  });
+  for (const refuse of [true, 'quietly']) {
+    it(`a request that cannot take the lock (${refuse === true ? 'timed out' : 'no lock held'}) answers locked and touches nothing (#444)`, () => {
+      const ctx = load([row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+      const before = JSON.stringify(ctx.rec.rows);
+      ctx.rec.refuseLock = refuse;
+      assert.deepEqual(json(ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }))), { ok: false, error: 'locked' });
+      assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('2') }))), { ok: false, error: 'locked' });
+      assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('1') }))), { ok: false, error: 'locked' });
+      assert.throws(() => ctx.handleRemindPending(), /script lock/);
+      assert.equal(JSON.stringify(ctx.rec.rows), before);
+      assert.deepEqual(ctx.rec.mails, []);
+    });
+  }
 
   it('a second subscribe for the same address reuses the row', () => {
     const ctx = load([row('old@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
@@ -668,6 +673,58 @@ describe('newsletter.gs: the mail itself (issue 439)', () => {
     assert.doesNotMatch(mail.raw, /null|undefined/);
   });
 
+  // astro.config.mjs sets trailingSlash: 'always'. A page link without its
+  // slash (/confirm?t=, /blog?utm=) works only through the host's redirect
+  // keeping the query, so every link to the site is in the canonical form
+  // (#448). A file (/rss.xml, the logo) keeps its name.
+  const siteLinks = (text) => [...text.matchAll(/https:\/\/nidhi\.today(\/[^\s"'<>?#&]*)?/g)].map((m) => m[1] || '');
+  const assertCanonical = (text, what) => {
+    const links = siteLinks(text);
+    assert.ok(links.length > 0, `${what}: no links to the site`);
+    for (const path of links) {
+      if (/\.[a-z0-9]+$/i.test(path)) continue;
+      assert.ok(path.endsWith('/'), `${what}: a link without its slash: ${path || '(the bare host)'}`);
+    }
+  };
+
+  it('every link to the site in the confirmation, welcome and reminder mails has its slash (#448)', () => {
+    const ctx = load([row('due@x.io', 'pending', 4, { confirm: tok('3'), unsub: tok('4') })]);
+    ctx.rec.props.SITE_URL = 'https://nidhi.today';
+    const mails = [];
+    ctx.rec.onSend = (_to, mime) => mails.push(read(mime));
+    ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }));
+    ctx.handleRemindPending();
+    ctx.doPost(req({ action: 'confirm', t: tok('3') }));
+    assert.equal(mails.length, 3, 'confirmation, reminder and welcome');
+    for (const [i, mail] of mails.entries()) {
+      for (const part of mail.parts) assertCanonical(part.text, `mail ${i + 1}`);
+    }
+    assert.ok(mails[0].parts.every((p) => p.text.includes('https://nidhi.today/confirm/?t=')));
+    assert.ok(mails[2].parts.every((p) => p.text.includes('https://nidhi.today/unsubscribe/?t=')));
+  });
+
+  it('the confirmation mail promises at most one reminder, in both parts (#474)', () => {
+    const ctx = load();
+    let mail;
+    ctx.rec.onSend = (_to, mime) => { mail = read(mime); };
+    ctx.doPost(req({ action: 'subscribe', email: 'new@x.io' }));
+    for (const part of mail.parts) {
+      assert.match(part.text, /ignore this email\. You’ll get at most one reminder, and nothing after that\./);
+      assert.doesNotMatch(part.text, /hear from us again/);
+    }
+  });
+
+  it('the pages a link redirects to are at their canonical address (#448)', () => {
+    const ctx = load([row('a@x.io', 'pending', 1, { confirm: tok('1'), unsub: tok('2') })]);
+    ctx.rec.props.SITE_URL = 'https://nidhi.today';
+    for (const [action, t] of [['unsubscribe', tok('2')], ['unsubscribe', 'not-a-token'], ['unsubscribe', tok('9')], ['confirm', tok('9')], ['confirm', tok('1')]]) {
+      const page = ctx.doGet(req({ action, t }));
+      assertCanonical(page.html, `GET ${action}`);
+    }
+    assert.equal(ctx.doPost(req({ action: 'unsubscribe', t: tok('2') })).s, JSON.stringify({ ok: true }));
+    assertCanonical(ctx.doGet(req({ action: 'unsubscribe', t: tok('2') })).html, 'GET unsubscribe, already done');
+  });
+
   it('a lesson carries the one-click headers, with the reader’s own address to post to', () => {
     const mails = sendLesson(load(readers()));
     assert.equal(mails.length, 2);
@@ -693,10 +750,10 @@ describe('newsletter.gs: the mail itself (issue 439)', () => {
       for (const line of part.lines) assert.ok(line.length <= 76, `a line of ${line.length} characters`);
     }
     assert.match(mail.parts[0].head, /text\/plain; charset="UTF-8"/);
-    assert.equal(mail.parts[0].text, `Everyone’s money. Leave: https://nidhi.today/unsubscribe?t=${tok('1')}`);
+    assert.equal(mail.parts[0].text, `Everyone’s money. Leave: https://nidhi.today/unsubscribe/?t=${tok('1')}`);
     assert.match(mail.parts[1].head, /text\/html; charset="UTF-8"/);
     assert.ok(mail.parts[1].text.startsWith('<p>Everyone’s money: word word'));
-    assert.ok(mail.parts[1].text.includes(`href="https://nidhi.today/unsubscribe?t=${tok('1')}"`));
+    assert.ok(mail.parts[1].text.includes(`href="https://nidhi.today/unsubscribe/?t=${tok('1')}"`));
     // No line of the whole message is over the 998 characters a mail line may have.
     for (const line of mail.raw.split('\r\n')) assert.ok(line.length <= 998, `a line of ${line.length} characters`);
   });
@@ -705,7 +762,7 @@ describe('newsletter.gs: the mail itself (issue 439)', () => {
     const ctx = load(readers());
     const out = ctx.doGet(req({ action: 'unsubscribe', t: tok('1') }));
     assert.equal(find(ctx, 'a@x.io')[1], 'confirmed', 'a scanner following the link unsubscribes nobody');
-    assert.ok(out.html.includes(`https://nidhi.today/unsubscribe?t=${tok('1')}`));
+    assert.ok(out.html.includes(`https://nidhi.today/unsubscribe/?t=${tok('1')}`));
     // A token that is not one goes nowhere useful.
     assert.match(ctx.doGet(req({ action: 'unsubscribe', t: '"><script>' })).html, /subscription-invalid/);
     // The POST still unsubscribes.
@@ -734,6 +791,12 @@ describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)
     assert.match(ctx.doGet(req({ action: 'confirm', t: tok('2') })).html, /Something went wrong/);
     assert.deepEqual(json(ctx.doPost(req({ action: 'send_post', sig: sign(lesson) }, lesson))), { ok: false, error: 'error' });
     assert.throws(() => ctx.handleRemindPending(), /header row mismatch/);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'confirm', t: tok('2') }))), { ok: false, error: 'error' });
+    vm.runInContext(`COUNT_TOKEN_SHA256_ = '${crypto.createHash('sha256').update('token').digest('hex')}';`, ctx);
+    assert.deepEqual(json(ctx.doPost(req({ action: 'count' }, 'action=count&token=token'))), { ok: false, error: 'error' });
+    const ts = String(Math.floor(NOW / 1000));
+    assert.deepEqual(json(ctx.doPost(req({ action: 'scan_bounces', ts, sig: sign(`scan_bounces:${ts}`) }))), { ok: false, error: 'error' });
+    assert.equal(json(ctx.doGet(req({ action: 'health' }))).checks.sheet_access.ok, false);
     assert.equal(JSON.stringify(ctx.rec.rows), before);
     assert.deepEqual(ctx.rec.mails, []);
     // The reason is in the log, for the owner; the caller is told nothing.
@@ -752,6 +815,7 @@ describe('newsletter.gs: a sheet whose columns have moved is refused (issue 441)
   it('headers are compared without regard to case or stray spaces', () => {
     const ctx = load(people());
     ctx.rec.rows[0] = ctx.rec.rows[0].map((h) => ` ${h.toUpperCase()} `);
+    assert.equal(json(ctx.doGet(req({ action: 'health' }))).checks.sheet_access.ok, true, 'health follows the same rule');
     assert.deepEqual(json(ctx.doPost(req({ action: 'unsubscribe', t: tok('1') }))), { ok: true });
   });
 
@@ -1249,7 +1313,7 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     const lock = ctx.LockService.getScriptLock;
     let clock = midnight - 1000;
     vm.runInContext('Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(clock()); } static now() { return clock(); } };', Object.assign(ctx, { clock: () => clock }));
-    ctx.LockService.getScriptLock = () => { const l = lock(); const wait = l.waitLock; l.waitLock = () => { clock = midnight + 1000; wait(); }; return l; };
+    ctx.LockService.getScriptLock = () => { const l = lock(); const take = l.tryLock; l.tryLock = (ms) => { clock = midnight + 1000; return take(ms); }; return l; };
     ctx.rec.props['confirm_mails:2026-11-11'] = '1'; // someone was already counted today
     sub(ctx, { email: 'late@x.io' });
     assert.equal(ctx.rec.props['confirm_mails:2026-11-11'], '2', 'counted against the day the lock was taken');
@@ -1380,6 +1444,7 @@ describe('newsletter.gs: what a request can make it write, send or say', () => {
     assert.doesNotMatch(JSON.stringify(health), /someone-else|updates@|alias/i);
 
     delete ctx.rec.props.SHEET_ID;
+    ctx.CONFIG_CACHE_ = null; // as the next execution would read it
     const post = ctx.doPost(req({ action: 'subscribe', email: 'a@x.io' }));
     assert.deepEqual(json(post), { ok: false, error: 'error' });
     const get = ctx.doGet(req({ action: 'confirm', t: tok('1') }));

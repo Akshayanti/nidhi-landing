@@ -60,6 +60,14 @@ describe('tokenGuard', () => {
     assert.deepEqual(w.replaced, ['/confirm/']);
   });
 
+  it('reads the links the mails send, in the canonical slash form (#448)', () => {
+    for (const page of ['/confirm/', '/unsubscribe/']) {
+      const w = open(page, '?t=abc123&utm_source=newsletter&utm_medium=email&utm_campaign=confirm');
+      assert.equal(w.nidhiToken, 'abc123');
+      assert.deepEqual(w.replaced, [page]);
+    }
+  });
+
   it('leaves the address alone when there is no token', () => {
     for (const search of ['', '?utm_source=email', '?t=']) {
       const w = open('/confirm', search);

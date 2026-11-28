@@ -54,7 +54,7 @@ def _brand_banner(site_url: str, from_name: str, campaign: str) -> str:
     so this preview can run offline; update both if one changes.
     """
     logo_url = f"{site_url}/brand/logo/full/logo-full-400-light.png"
-    banner_href = _with_utm(f"{site_url}/blog", campaign)
+    banner_href = _with_utm(f"{site_url}/blog/", campaign)
     return (
         '<tr><td style="padding:0;">'
         '<div style="background:#0A3D8F;height:4px;line-height:4px;font-size:0;">&nbsp;</div>'
@@ -73,8 +73,8 @@ def _footer_html(
     site_url: str, unsub_page_url: str, is_newsletter: bool, campaign: str
 ) -> str:
     """Mirrors footerHtml_ in scripts/newsletter.gs, with UTMs everywhere."""
-    blog_href = _with_utm(f"{site_url}/blog", campaign)
-    privacy_href = _with_utm(f"{site_url}/privacy", campaign)
+    blog_href = _with_utm(f"{site_url}/blog/", campaign)
+    privacy_href = _with_utm(f"{site_url}/privacy/", campaign)
     rss_href = _with_utm(f"{site_url}/rss.xml", campaign)
     host = site_url.replace("https://", "").replace("http://", "")
     if is_newsletter:
@@ -110,10 +110,10 @@ def render_confirmation_email(
 ) -> str:
     """Mirrors sendConfirmationEmail_ in scripts/newsletter.gs."""
     campaign = "confirm"
-    confirm_page_url = _with_utm(f"{site_url}/confirm?t={token}", campaign)
+    confirm_page_url = _with_utm(f"{site_url}/confirm/?t={token}", campaign)
     # In the real flow, Apps Script grabs the subscriber's own unsub token
     # and uses it as the List-Unsubscribe target. For preview we just stub it.
-    unsub_page_url = _with_utm(f"{site_url}/unsubscribe?t={token}", campaign)
+    unsub_page_url = _with_utm(f"{site_url}/unsubscribe/?t={token}", campaign)
 
     subject = f"Confirm your subscription to {from_name}"
     banner = _brand_banner(site_url, from_name, campaign)
@@ -122,9 +122,9 @@ def render_confirmation_email(
         '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#212121;">'
         '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0A3D8F;font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>'
         '<p style="margin:0 0 16px;">Hi,</p>'
-        f'<p style="margin:0 0 20px;">Click the button below to confirm you’d like a '
-        f'heads-up from <strong style="color:#0A3D8F;">{_escape(from_name)}</strong> '
-        'whenever a new post goes up.</p>'
+        f'<p style="margin:0 0 20px;">Click the button below to confirm you’d like an '
+        f'email from <strong style="color:#0A3D8F;">{_escape(from_name)}</strong> '
+        'when a new lesson or guide is published.</p>'
         f'<p style="margin:0 0 24px;"><a href="{_escape(confirm_page_url)}" '
         'style="display:inline-block;padding:12px 28px;background:#00796B;color:#FFFFFF;'
         'text-decoration:none;border-radius:8px;font-weight:600;font-size:15px;">'
@@ -135,7 +135,7 @@ def render_confirmation_email(
         f'<a href="{_escape(confirm_page_url)}" style="color:#005B4F;text-decoration:underline;">'
         f'{_escape(confirm_page_url)}</a></p>'
         '<p style="margin:0;color:#616161;font-size:14px;">If you didn’t sign up, ignore this '
-        'email and you won’t hear from us again.</p>'
+        'email. You’ll get at most one reminder, and nothing after that.</p>'
         '</td></tr>'
     )
     footer = _footer_html(site_url, unsub_page_url, is_newsletter=False, campaign=campaign)
@@ -171,8 +171,8 @@ def render_welcome_email(
 ) -> str:
     """Mirrors sendWelcomeEmail_ in scripts/newsletter.gs."""
     campaign = "welcome"
-    blog_url = _with_utm(f"{site_url}/blog", campaign)
-    unsub_page_url = _with_utm(f"{site_url}/unsubscribe?t={unsub_token}", campaign)
+    blog_url = _with_utm(f"{site_url}/blog/", campaign)
+    unsub_page_url = _with_utm(f"{site_url}/unsubscribe/?t={unsub_token}", campaign)
 
     subject = f"You’re subscribed to {from_name}"
     banner = _brand_banner(site_url, from_name, campaign)
@@ -180,18 +180,18 @@ def render_welcome_email(
     body = (
         '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:#212121;">'
         '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0A3D8F;'
-        'font-weight:700;letter-spacing:-0.01em;">You’re in.</h1>'
-        f'<p style="margin:0 0 16px;">Thanks for confirming. We’ll ping you from '
-        f'<strong style="color:#0A3D8F;">{_escape(from_email)}</strong> whenever a new '
-        'post goes up, nothing else. No digests, no surprises, no "special offers".</p>'
-        '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts '
-        'are all on the blog:</p>'
+        'font-weight:700;letter-spacing:-0.01em;">You’re subscribed.</h1>'
+        f'<p style="margin:0 0 16px;">Thanks for confirming. I’ll email you from '
+        f'<strong style="color:#0A3D8F;">{_escape(from_email)}</strong> when a new '
+        'lesson or guide is published, and nothing else. No weekly summaries, no surprises, no “special offers”.</p>'
+        '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far '
+        'are all on the site:</p>'
         f'<p style="margin:0 0 24px;"><a href="{_escape(blog_url)}" '
         'style="display:inline-block;padding:12px 24px;background:#00796B;color:#FFFFFF;'
         'text-decoration:none;border-radius:8px;font-weight:600;font-size:15px;">'
-        'Start reading →</a></p>'
-        '<p style="margin:0 0 12px;color:#616161;font-size:14px;">Reply to this email if '
-        'anything ever lands wrong, a real person reads it.</p>'
+        'Read the lessons <span aria-hidden="true">→</span></a></p>'
+        '<p style="margin:0 0 12px;color:#616161;font-size:14px;">If anything is unclear '
+        'or wrong, reply to this email. I read every reply.</p>'
         f'<p style="margin:24px 0 0;color:#616161;font-size:14px;">- {_escape(from_name)}</p>'
         '</td></tr>'
     )

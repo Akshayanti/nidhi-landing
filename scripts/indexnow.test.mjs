@@ -27,7 +27,7 @@ describe('urlToDistPath', () => {
     assert.equal(urlToDistPath('https://nidhi.today/'), 'index.html');
   });
 
-  it('maps a content page to <path>/index.html (Astro trailingSlash:never)', () => {
+  it('maps a content page to <path>/index.html, with or without its slash', () => {
     assert.equal(
       urlToDistPath('https://nidhi.today/free/loan-comparison'),
       'free/loan-comparison/index.html',

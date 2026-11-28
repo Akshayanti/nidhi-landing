@@ -164,7 +164,7 @@ describe('waitlist.gs count action', () => {
   });
 
   it('finds the volunteer columns by header text, wherever they are', () => {
-    const volunteers = [['Planner beta (optional)', 'Email'], [BETA, 'c@x.io']];
+    const volunteers = [['Planner beta (optional)', 'Email', 'Timestamp'], [BETA, 'c@x.io', WHEN]];
     assert.deepEqual(count(waitlist, volunteers), { ok: true, count: 3 });
   });
 
@@ -289,10 +289,8 @@ describe('volunteer-list.gs', () => {
     const choice = /setChoiceValues\(\[('(?:[^'\\]|\\.)*')\]\)/g;
     const literals = [...form.matchAll(choice)].map((m) => vm.runInNewContext(m[1]));
     // waitlist.gs holds its own copy of the contract for its count.
-    const copies = [
-      ['scripts/volunteer-list.gs', { choice: 'BETA_CHOICE_', email: 'HEADER_EMAIL_', timestamp: 'HEADER_TIMESTAMP_', beta: 'HEADER_BETA_' }],
-      ['scripts/waitlist.gs', { choice: 'VOLUNTEER_BETA_CHOICE_', email: 'VOLUNTEER_HEADER_EMAIL_', beta: 'VOLUNTEER_HEADER_BETA_' }],
-    ];
+    const names = { choice: 'VOLUNTEER_BETA_CHOICE_', email: 'VOLUNTEER_HEADER_EMAIL_', timestamp: 'VOLUNTEER_HEADER_TIMESTAMP_', beta: 'VOLUNTEER_HEADER_BETA_' };
+    const copies = [['scripts/volunteer-list.gs', names], ['scripts/waitlist.gs', names]];
     for (const [file, names] of copies) {
       const get = (name) => vm.runInContext(name, load(file, rows));
       assert.ok(literals.includes(get(names.choice)), `${file}: the beta choice text differs from the form`);
@@ -337,7 +335,7 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
       deleteProperty: (k) => { delete store[k]; },
       getProperties: () => ({ ...store }),
     }) };
-    c.LockService = { getScriptLock: () => ({ waitLock: () => { state.locked = true; }, releaseLock: () => { state.locked = false; } }) };
+    c.LockService = { getScriptLock: () => ({ tryLock: () => { if (state.refuseLock) return false; state.locked = true; return true; }, releaseLock: () => { state.locked = false; } }) };
     c.Utilities.formatDate = (d) => d.toISOString().slice(0, 10);
     c.UrlFetchApp = { fetch: (_u, o) => { state.tracked.push(JSON.parse(o.payload)); } };
     return { c, rows, store, state };
@@ -397,6 +395,34 @@ describe('waitlist.gs sign-up: what a request can make it write', () => {
     for (const email of ['c@x.io', 'a@x.io']) assert.deepEqual(signup(c, { email }), { ok: false, error: 'busy' });
     assert.equal(rows.slice(1).map((r) => r[0]).join(), 'a@x.io,b@x.io');
     assert.equal(Object.keys(store).filter((k) => k.startsWith('signups:')).length, 1, 'earlier days are dropped');
+  });
+
+  it('a sign-up that cannot take the lock in time answers locked and writes nothing (#444)', () => {
+    const { c, rows, state } = loadWritable([header.slice()]);
+    state.refuseLock = true;
+    assert.deepEqual(signup(c, { email: 'a@x.io' }), { ok: false, error: 'locked' });
+    assert.equal(rows.length, 1);
+    assert.equal(state.tracked.length, 0);
+  });
+
+  it('a sign-up refuses a tab whose columns moved and writes nothing', () => {
+    for (const moved of [['source', 'email', 'created_at'], ['email', 'created_at', 'source'], ['Timestamp', 'email', 'source']]) {
+      const { c, rows, store, state } = loadWritable([moved.slice()]);
+      assert.deepEqual(signup(c, { email: 'a@x.io', source: '/' }), { ok: false, error: 'schema' }, moved.join());
+      assert.equal(rows.length, 1, moved.join());
+      assert.equal(state.tracked.length, 0);
+      assert.equal(Object.keys(store).filter((k) => k.startsWith('signups:')).length, 0, 'no slot of the day is taken');
+      // The one-time dedupe deletes rows by position, so it must not run either.
+      delete store.waitlist_deduped_v1;
+      rows.push(['a@x.io', '/', '']);
+      assert.deepEqual(signup(c, { email: 'a@x.io' }), { ok: false, error: 'schema' }, 'the same for an address already there');
+      assert.equal(store.waitlist_deduped_v1, undefined, 'the dedupe did not run');
+      assert.equal(answer(c.doGet({ parameter: { action: 'health' } })).checks.sheet.ok, false, 'health refuses it too');
+    }
+    // Header case and spaces do not matter, as for count and list.
+    const { c, rows } = loadWritable([[' Email', 'SOURCE', 'created_at ']]);
+    assert.deepEqual(signup(c, { email: 'a@x.io' }), { ok: true });
+    assert.equal(rows.length, 2);
   });
 
   it('a repeat sign-up takes no slot of the day', () => {

@@ -58,7 +58,7 @@
  *
  *   GET  ?action=unsubscribe&t=...  Never unsubscribes: a link can be
  *                                   followed by a mail scanner. Redirects
- *                                   to {SITE_URL}/unsubscribe?t=..., whose
+ *                                   to {SITE_URL}/unsubscribe/?t=..., whose
  *                                   button sends the POST below.
  *
  *   POST ?action=unsubscribe&t=...  Same behaviour but JSON response,
@@ -116,7 +116,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '3eb874111676';
+var VERSION = '44c9553259f5';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
@@ -156,8 +156,15 @@ function requireProp_(key) {
   return v;
 }
 
+// Read once per execution: the reminder and lesson loops call config_() for
+// every mail, and each property read is a call to Google's store (#444). A
+// global lives only as long as one execution, so a changed property is seen
+// by the next request or trigger run.
+var CONFIG_CACHE_ = null;
+
 function config_() {
-  return {
+  if (CONFIG_CACHE_) return CONFIG_CACHE_;
+  CONFIG_CACHE_ = {
     sheetId:        requireProp_('SHEET_ID'),
     sheetName:      requireProp_('SHEET_NAME'),
     fromName:       prop_('FROM_NAME', 'nidhi'),
@@ -168,6 +175,7 @@ function config_() {
     posthogHost:    prop_('POSTHOG_HOST', 'https://eu.i.posthog.com').replace(/\/$/, ''),
     webAppUrl:      ScriptApp.getService().getUrl(),
   };
+  return CONFIG_CACHE_;
 }
 
 // ============================================================================
@@ -210,20 +218,13 @@ function hmacHex_(secret, data) {
   }).join('');
 }
 
-function constantTimeEquals_(a, b) {
-  if (a.length !== b.length) return false;
-  var diff = 0;
-  for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
 /** Verify GH-Actions-signed send_post request. Signature format: hex-only. */
 function verifyRequestSignature_(rawBody, signatureHex) {
   if (!signatureHex) return false;
   if (!/^[0-9a-f]{64}$/i.test(String(signatureHex))) return false;
   var cfg = config_();
   var expected = hmacHex_(cfg.hmacSecret, rawBody);
-  return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
+  return sameString_(expected, String(signatureHex).toLowerCase());
 }
 
 // How far a scan_bounces request's time may be from this script's clock.
@@ -241,7 +242,7 @@ function verifyScanBouncesSig_(signatureHex, ts) {
   if (!/^[0-9]{9,11}$/.test(String(ts || ''))) return false;
   if (Math.abs(Date.now() - Number(ts) * 1000) > SCAN_SIGNATURE_WINDOW_MS_) return false;
   var expected = hmacHex_(config_().hmacSecret, 'scan_bounces:' + ts);
-  return constantTimeEquals_(expected, String(signatureHex).toLowerCase());
+  return sameString_(expected, String(signatureHex).toLowerCase());
 }
 
 // ============================================================================
@@ -322,6 +323,13 @@ function sheetUnchecked_() {
 // How long a request waits for the lock before it gives up with an error.
 var LOCK_WAIT_MS_ = 20000;
 
+/** The error withSheetLock_ throws when the lock could not be taken in time. */
+function lockTimeout_() {
+  var err = new Error('Could not take the script lock within ' + LOCK_WAIT_MS_ + ' ms: nothing was read or written.');
+  err.lockTimeout = true;
+  return err;
+}
+
 /**
  * Runs `fn` while holding the script lock, so no other execution of this
  * script can change the Sheet between a handler finding a row and writing to
@@ -335,10 +343,12 @@ var LOCK_WAIT_MS_ = 20000;
  */
 function withSheetLock_(fn) {
   var lock = LockService.getScriptLock();
-  // waitLock throws when the wait runs out. hasLock is checked as well, so
-  // nothing below can ever run without the lock.
-  lock.waitLock(LOCK_WAIT_MS_);
-  if (!lock.hasLock()) throw new Error('Could not take the script lock.');
+  // tryLock answers false when the wait runs out (waitLock would throw a
+  // generic error). hasLock is checked as well, so nothing below can ever
+  // run without the lock. The error is marked, so a web request answers
+  // `locked` rather than a bare `error`, and the log says what happened
+  // (#444).
+  if (!lock.tryLock(LOCK_WAIT_MS_) || !lock.hasLock()) throw lockTimeout_();
   try {
     return fn();
   } finally {
@@ -377,7 +387,7 @@ function findRowByToken_(sh, colIndex, token) {
   var values = sh.getRange(2, colIndex, last - 1, 1).getValues();
   for (var i = 0; i < values.length; i++) {
     var cell = String(values[i][0] || '').trim();
-    if (cell && constantTimeEquals_(cell, token)) return i + 2;
+    if (cell && sameString_(cell, token)) return i + 2;
   }
   return 0;
 }
@@ -507,8 +517,8 @@ function doGet(e) {
     if (action === 'scan_bounces')    return handleScanBounces_(e);
     return htmlResponse_(pageTemplate_(
       'Nothing here',
-      'This endpoint powers newsletter signups on nidhi.today.',
-      'Go to the blog',
+      'This address handles newsletter sign-ups for nidhi.today.',
+      'Read the lessons',
       config_().siteUrl + '/blog/'
     ));
   } catch (err) {
@@ -518,7 +528,7 @@ function doGet(e) {
     return htmlResponse_(pageTemplate_(
       'Something went wrong',
       'Please try again in a little while.',
-      'Go to the blog',
+      'Read the lessons',
       safeSiteUrl_() + '/blog/'
     ));
   }
@@ -535,31 +545,20 @@ function doPost(e) {
     if (action === 'count')           return handleCount_(e);
     return jsonResponse_({ ok: false, error: 'unknown_action' });
   } catch (err) {
+    if (err && err.lockTimeout) {
+      // Another execution held the sheet for the whole wait: a burst of
+      // sign-ups, or a long reminder run. The step that needed the sheet did
+      // not run, and every action here is safe to repeat. The site's forms
+      // read any answer but ok as "try again" (formReply.js).
+      console.warn('[newsletter] POST gave up waiting for the lock: ' + err);
+      return jsonResponse_({ ok: false, error: 'locked' });
+    }
     console.error('[newsletter] POST failed: ' + err);
     return jsonResponse_({ ok: false, error: 'error' });
   }
 }
 
-/**
- * The form-encoded POST body as an object. e.parameter also carries the query
- * string, so a credential must come from here to be sure it was not sent in
- * the URL, where it would end up in logs.
- */
-function formBody_(e) {
-  var out = {};
-  var raw = (e && e.postData && e.postData.contents) || '';
-  if (raw.length > 4096) return out;
-  raw.split('&').forEach(function (pair) {
-    if (!pair) return;
-    var at = pair.indexOf('=');
-    try {
-      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
-      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
-      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
-    } catch (_) { /* a malformed pair is dropped */ }
-  });
-  return out;
-}
+// formBody_ is with the shared helpers, under Utilities.
 
 // Longest token the count action will hash: the real one is 64 characters, so
 // anything longer is not it and is not worth hashing.
@@ -582,7 +581,7 @@ var COUNT_TOKEN_SHA256_ = 'cdf92fa17035c66fef3933ee54661e0bf3422fa8ead803f1818bc
 function handleCount_(e) {
   // From the body only: a token in the address would end up in logs.
   var given = String(formBody_(e).token || '');
-  if (!given || given.length > MAX_TOKEN_LENGTH_ || !constantTimeEquals_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
+  if (!given || given.length > MAX_TOKEN_LENGTH_ || !sameString_(sha256Hex_(given), COUNT_TOKEN_SHA256_)) {
     return jsonResponse_({ ok: false, error: 'forbidden' });
   }
   var seen = {};
@@ -667,19 +666,8 @@ function handleHealth_() {
 
   check('sheet_access', function () {
     var cfg = config_();
+    // sheet_() checks the headers, by the rule every handler uses.
     var sh = sheet_();
-    var headers = sh.getRange(1, 1, 1, EXPECTED_HEADERS.length).getValues()[0];
-    var mismatched = EXPECTED_HEADERS.filter(function (h, i) {
-      return String(headers[i] || '').toLowerCase() !== h;
-    });
-    if (mismatched.length) {
-      throw new Error(
-        'Sheet header row mismatch. Expected ' + EXPECTED_HEADERS.length + ' columns: ' +
-        EXPECTED_HEADERS.join(' | ') +
-        '. Got: ' + headers.join(' | ') +
-        '. Missing/wrong: ' + mismatched.join(', ')
-      );
-    }
     return { sheet_name: cfg.sheetName, rows: sh.getLastRow() };
   });
 
@@ -808,9 +796,9 @@ var RESEND_COOLDOWN_MS_ = 6 * 60 * 60 * 1000;
 // Confirmation mails this script will send in one UTC day. Past it, a
 // request changes nothing at all: no row is added (each would be owed a
 // reminder mail three days on) and no existing row is touched (its link must
-// keep working). The site cannot read this script's reply, so a real reader
-// who signs up after the limit is hit sees the usual message and gets no mail
-// that day; the limit is logged as an error so the owner sees it. That is the
+// keep working). The answer is 'busy', so a real reader who signs up after
+// the limit is hit is told sign-ups are paused for the day, and gets no mail
+// (#342); the limit is logged as an error so the owner sees it. That is the
 // price of not letting a script send mail without end from this address.
 //
 // Why 100. Google counts recipients over a moving 24 hours, 1,500 for this
@@ -1223,7 +1211,7 @@ function sendReminderEmail_(email, confirmToken) {
   var cfg = config_();
   var campaign = 'remind';
 
-  var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
+  var confirmPageUrlRaw = cfg.siteUrl + '/confirm/?t=' + confirmToken;
   var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
 
   var subject = 'Finish subscribing to ' + cfg.fromName + '?';
@@ -1231,12 +1219,12 @@ function sendReminderEmail_(email, confirmToken) {
   var text =
     cfg.fromName + ', reminder\r\n\r\n' +
     'Hi,\r\n\r\n' +
-    'You started subscribing to the ' + cfg.fromName + ' blog a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
-    'If you still want in, click below:\r\n\r\n' +
+    'You started subscribing to the ' + cfg.fromName + ' newsletter a few days ago but didn’t click the confirmation link yet.\r\n\r\n' +
+    'If you still want to subscribe, click below:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'Changed your mind? No worries, ignore this email and we won’t email you again.\r\n\r\n' +
+    'Changed your mind? No worries, ignore this email and nothing more will follow.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
-    withUtm_(cfg.siteUrl, campaign) + '\r\n';
+    withUtm_(cfg.siteUrl + '/', campaign) + '\r\n';
 
   var html =
     '<!doctype html><html lang="en"><head>' +
@@ -1256,13 +1244,13 @@ function sendReminderEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Finish subscribing?</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> blog a few days ago but didn’t click the confirmation link yet. If you still want in, tap the button below to finish.</p>' +
+              '<p style="margin:0 0 20px;">You started subscribing to the <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> newsletter a few days ago but didn’t click the confirmation link yet. If you still want to subscribe, use the button below to finish.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Finish subscribing</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Or copy and paste this link:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and we won’t email you again.</p>' +
+              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">Changed your mind? No worries, ignore this email and nothing more will follow.</p>' +
             '</td></tr>' +
-            footerHtml_(cfg, null, /* isNewsletter */ false, campaign) +
+            footerHtml_(cfg, /* isNewsletter */ false, campaign) +
           '</table>' +
           '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
@@ -1328,11 +1316,11 @@ function handleConfirm_(e, method) {
 
   if (!found) {
     if (method === 'POST') return jsonResponse_({ ok: false, error: 'invalid_token' });
-    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=confirm');
+    return redirectResponse_(cfg.siteUrl + '/subscription-invalid/?reason=confirm');
   }
   if (found.already) {
     if (method === 'POST') return jsonResponse_({ ok: true });
-    return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
+    return redirectResponse_(cfg.siteUrl + '/subscription-confirmed/');
   }
   var email = found.email;
   var unsubToken = found.unsubToken;
@@ -1356,7 +1344,7 @@ function handleConfirm_(e, method) {
 
   trackPosthog_('blog_subscribe_confirmed', distinctIdForEmail_(email), {});
   if (method === 'POST') return jsonResponse_({ ok: true });
-  return redirectResponse_(cfg.siteUrl + '/subscription-confirmed');
+  return redirectResponse_(cfg.siteUrl + '/subscription-confirmed/');
 }
 
 // ============================================================================
@@ -1374,9 +1362,9 @@ function handleUnsubscribe_(e, method) {
   // POST when the reader presses the button.
   if (method === 'GET') {
     if (!/^[A-Za-z0-9_-]{16,128}$/.test(String(token))) {
-      return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+      return redirectResponse_(cfg.siteUrl + '/subscription-invalid/?reason=unsubscribe');
     }
-    return redirectResponse_(cfg.siteUrl + '/unsubscribe?t=' + encodeURIComponent(token));
+    return redirectResponse_(cfg.siteUrl + '/unsubscribe/?t=' + encodeURIComponent(token));
   }
 
   // Idempotency: a second unsubscribe for the same token is a no-op. This
@@ -1405,7 +1393,7 @@ function handleUnsubscribe_(e, method) {
     if (method === 'POST') {
       return jsonResponse_({ ok: false, error: 'invalid_token' });
     }
-    return redirectResponse_(cfg.siteUrl + '/subscription-invalid?reason=unsubscribe');
+    return redirectResponse_(cfg.siteUrl + '/subscription-invalid/?reason=unsubscribe');
   }
   if (result.changed) {
     trackPosthog_('blog_unsubscribe', distinctIdForEmail_(result.email), { method: method });
@@ -1421,7 +1409,7 @@ function handleUnsubscribe_(e, method) {
   if (method === 'POST') {
     return jsonResponse_({ ok: true });
   }
-  return redirectResponse_(cfg.siteUrl + '/unsubscribed');
+  return redirectResponse_(cfg.siteUrl + '/unsubscribed/');
 }
 
 // ============================================================================
@@ -1769,7 +1757,7 @@ function sendPostFanOut_(cfg, payload, seenKeys) {
       // User-facing unsubscribe link shown in the email body, goes to the
       // branded landing page on nidhi.today (not Apps Script) so subscribers
       // never see script.google.com URLs and preview bots don't trigger it.
-      var unsubPageUrl = cfg.siteUrl + '/unsubscribe?t=' + sub.unsubToken;
+      var unsubPageUrl = cfg.siteUrl + '/unsubscribe/?t=' + sub.unsubToken;
       var mime = buildMimeMessage_({
         from: cfg.fromEmail,
         fromName: cfg.fromName,
@@ -1976,7 +1964,7 @@ function mailRef_(email, seconds) {
 function mailRefTime_(ref, email) {
   var m = /^([0-9]{9,11})\.([0-9a-f]{40})$/.exec(String(ref || '').trim());
   if (!m) return 0;
-  return constantTimeEquals_(mailRef_(email, m[1]), m[1] + '.' + m[2]) ? Number(m[1]) * 1000 : 0;
+  return sameString_(mailRef_(email, m[1]), m[1] + '.' + m[2]) ? Number(m[1]) * 1000 : 0;
 }
 
 /**
@@ -2243,9 +2231,10 @@ function sendConfirmationEmail_(email, confirmToken) {
   // POSTs to Apps Script on explicit user click, same pattern as
   // unsubscribe, so subscribers never see script.google.com and preview
   // bots don't auto-confirm.
-  // No trailing slash before `?`: astro.config.mjs sets trailingSlash:'never'
-  // and the previous `/confirm/?t=...` form 404s on strict static hosts.
-  var confirmPageUrlRaw = cfg.siteUrl + '/confirm?t=' + confirmToken;
+  // The page's canonical address, with the slash: astro.config.mjs sets
+  // trailingSlash: 'always', so `/confirm?t=` would rest on the host's
+  // redirect keeping the query (#448).
+  var confirmPageUrlRaw = cfg.siteUrl + '/confirm/?t=' + confirmToken;
   var confirmPageUrl = withUtm_(confirmPageUrlRaw, campaign);
 
   // For the List-Unsubscribe header on this email we don't have an unsub
@@ -2261,16 +2250,16 @@ function sendConfirmationEmail_(email, confirmToken) {
 
   var subject = 'Confirm your subscription to ' + cfg.fromName;
   var banner = brandBannerHtml_(cfg, campaign);
-  var logoAlt = cfg.fromName;
 
   var text =
     cfg.fromName + ', confirm your subscription\r\n\r\n' +
     'Hi,\r\n\r\n' +
-    'Click the link below to confirm you\u2019d like a heads-up from ' + cfg.fromName + ' whenever a new post goes up:\r\n\r\n' +
+    'Click the link below to confirm you\u2019d like an email from ' + cfg.fromName + ' when a new lesson or guide is published:\r\n\r\n' +
     confirmPageUrl + '\r\n\r\n' +
-    'If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.\r\n\r\n' +
+    // At most one reminder follows (handleRemindPending), so the mail says so (#474).
+    'If you didn\u2019t sign up, ignore this email. You\u2019ll get at most one reminder, and nothing after that.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
-    withUtm_(cfg.siteUrl, campaign) + '\r\n';
+    withUtm_(cfg.siteUrl + '/', campaign) + '\r\n';
 
   var html =
     '<!doctype html><html lang="en"><head>' +
@@ -2290,13 +2279,13 @@ function sendConfirmationEmail_(email, confirmToken) {
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
               '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">Confirm your subscription</h1>' +
               '<p style="margin:0 0 16px;">Hi,</p>' +
-              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like a heads-up from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> whenever a new post goes up.</p>' +
+              '<p style="margin:0 0 20px;">Click the button below to confirm you\u2019d like an email from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromName) + '</strong> when a new lesson or guide is published.</p>' +
               '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="display:inline-block;padding:12px 28px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Confirm subscription</a></p>' +
               '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If the button doesn\u2019t work, copy and paste this link into your browser:</p>' +
               '<p style="margin:0 0 20px;color:' + EMAIL.text2 + ';font-size:14px;word-break:break-all;"><a href="' + escapeHtml_(confirmPageUrl) + '" style="color:' + EMAIL.link + ';text-decoration:underline;">' + escapeHtml_(confirmPageUrl) + '</a></p>' +
-              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">If you didn\u2019t sign up, ignore this email and you won\u2019t hear from us again.</p>' +
+              '<p style="margin:0;color:' + EMAIL.text2 + ';font-size:14px;">If you didn\u2019t sign up, ignore this email. You\u2019ll get at most one reminder, and nothing after that.</p>' +
             '</td></tr>' +
-            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ false, campaign) +
+            footerHtml_(cfg, /* isNewsletter */ false, campaign) +
           '</table>' +
           '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
@@ -2323,7 +2312,7 @@ function sendConfirmationEmail_(email, confirmToken) {
 
 /**
  * Fires from handleConfirm_ on a successful opt-in click. Short, warm, sets
- * expectations: one email per new post, reply-to works, unsubscribe in every
+ * expectations: one email per new lesson or guide, reply-to works, unsubscribe in every
  * email. Shares the same MIME builder / list-unsubscribe plumbing as the
  * newsletter and confirmation emails.
  */
@@ -2331,13 +2320,13 @@ function sendWelcomeEmail_(email, unsubToken) {
   var cfg = config_();
   var campaign = 'welcome';
 
-  var blogUrl = withUtm_(cfg.siteUrl + '/blog', campaign);
+  var blogUrl = withUtm_(cfg.siteUrl + '/blog/', campaign);
   // Bare per-recipient unsubscribe page. This one is substituted into the
   // `{{UNSUBSCRIBE_URL}}` placeholder that footerHtml_ already pairs with
   // `&utm_...`. Appending UTMs here would double-stamp them on the final
   // href; keep this variant bare and use `unsubPageUrlTracked` when we need
   // a plain-text "Unsubscribe: <url>" line.
-  var unsubPageUrlBare = cfg.siteUrl + '/unsubscribe?t=' + encodeURIComponent(unsubToken);
+  var unsubPageUrlBare = cfg.siteUrl + '/unsubscribe/?t=' + encodeURIComponent(unsubToken);
   var unsubPageUrlTracked = withUtm_(unsubPageUrlBare, campaign);
   // List-Unsubscribe *header* stays UTM-free (machine-parsed, not clicked).
   var listUnsubPostUrl = cfg.webAppUrl + '?action=unsubscribe&t=' + encodeURIComponent(unsubToken);
@@ -2346,18 +2335,18 @@ function sendWelcomeEmail_(email, unsubToken) {
   var banner = brandBannerHtml_(cfg, campaign);
 
   var text =
-    cfg.fromName + ', you\u2019re in.\r\n\r\n' +
-    'Thanks for confirming. We\u2019ll ping you from ' + cfg.fromEmail + ' whenever a new post goes up, nothing else. No digests, no "special offers".\r\n\r\n' +
-    'While you wait for the next one, the existing posts are all on the blog:\r\n' +
+    cfg.fromName + ', you\u2019re subscribed.\r\n\r\n' +
+    'Thanks for confirming. I\u2019ll email you from ' + cfg.fromEmail + ' when a new lesson or guide is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.\r\n\r\n' +
+    'While you wait for the next one, the lessons so far are all on the site:\r\n' +
     blogUrl + '\r\n\r\n' +
-    'Reply to this email if anything ever lands wrong, a real person reads it.\r\n\r\n' +
+    'If anything is unclear or wrong, reply to this email. I read every reply.\r\n\r\n' +
     '- ' + cfg.fromName + '\r\n' +
-    withUtm_(cfg.siteUrl, campaign) + '\r\n\r\n' +
+    withUtm_(cfg.siteUrl + '/', campaign) + '\r\n\r\n' +
     '---\r\n' +
     // Text body shows the clickable URL with UTMs inline (the footerHtml_
     // template path uses the bare variant since it appends UTMs itself).
     'Unsubscribe: ' + unsubPageUrlTracked + '\r\n' +
-    'Privacy:     ' + withUtm_(cfg.siteUrl + '/privacy', campaign) + '\r\n';
+    'Privacy:     ' + withUtm_(cfg.siteUrl + '/privacy/', campaign) + '\r\n';
 
   var html =
     '<!doctype html><html lang="en"><head>' +
@@ -2375,17 +2364,17 @@ function sendWelcomeEmail_(email, unsubToken) {
           '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;table-layout:fixed;background:' + EMAIL.white + ';border-radius:8px;overflow:hidden;">' +
             banner +
             '<tr><td class="nm-px" style="padding:28px 28px 8px;font-size:16px;line-height:1.65;color:' + EMAIL.text + ';">' +
-              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re in.</h1>' +
-              '<p style="margin:0 0 16px;">Thanks for confirming. We\u2019ll ping you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> whenever a new post goes up, nothing else. No digests, no surprises, no "special offers".</p>' +
-              '<p style="margin:0 0 20px;">While you wait for the next one, the existing posts are all on the blog:</p>' +
-              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Start reading &rarr;</a></p>' +
-              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">Reply to this email if anything ever lands wrong, a real person reads it.</p>' +
+              '<h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:' + EMAIL.blue + ';font-weight:700;letter-spacing:-0.01em;">You\u2019re subscribed.</h1>' +
+              '<p style="margin:0 0 16px;">Thanks for confirming. I\u2019ll email you from <strong style="color:' + EMAIL.blue + ';">' + escapeHtml_(cfg.fromEmail) + '</strong> when a new lesson or guide is published, and nothing else. No weekly summaries, no surprises, no \u201cspecial offers\u201d.</p>' +
+              '<p style="margin:0 0 20px;">While you wait for the next one, the lessons so far are all on the site:</p>' +
+              '<p style="margin:0 0 24px;"><a href="' + escapeHtml_(blogUrl) + '" style="display:inline-block;padding:12px 24px;background:' + EMAIL.button + ';color:' + EMAIL.white + ';text-decoration:none;border-radius:' + EMAIL.buttonRadius + ';font-weight:600;font-size:15px;">Read the lessons <span aria-hidden="true">&rarr;</span></a></p>' +
+              '<p style="margin:0 0 12px;color:' + EMAIL.text2 + ';font-size:14px;">If anything is unclear or wrong, reply to this email. I read every reply.</p>' +
               '<p style="margin:24px 0 0;color:' + EMAIL.text2 + ';font-size:14px;">- ' + escapeHtml_(cfg.fromName) + '</p>' +
             '</td></tr>' +
             // footerHtml_ renders `{{UNSUBSCRIBE_URL}}&utm_...`, so swap in
             // the BARE unsub URL. Using the tracked variant here would
             // double-stamp the UTM params on the final href.
-            footerHtml_(cfg, listUnsubPostUrl, /* isNewsletter */ true, campaign).replace('{{UNSUBSCRIBE_URL}}', escapeHtml_(unsubPageUrlBare)) +
+            footerHtml_(cfg, /* isNewsletter */ true, campaign).replace('{{UNSUBSCRIBE_URL}}', escapeHtml_(unsubPageUrlBare)) +
           '</table>' +
           '<!--[if mso]></td></tr></table><![endif]-->' +
         '</td></tr>' +
@@ -2418,7 +2407,7 @@ function brandBannerHtml_(cfg, campaign) {
   // "Money, understood.": don't repeat the tagline as text below.
   // Source image is 400px wide; we display at 200px for a crisp 2x on retina.
   var logoUrl = cfg.siteUrl + '/brand/logo/full/logo-full-400-light.png';
-  var bannerHref = withUtm_(cfg.siteUrl + '/blog', campaign);
+  var bannerHref = withUtm_(cfg.siteUrl + '/blog/', campaign);
   return (
     '<tr><td style="padding:0;">' +
       '<div style="background:' + EMAIL.blue + ';height:4px;line-height:4px;font-size:0;">&nbsp;</div>' +
@@ -2431,17 +2420,16 @@ function brandBannerHtml_(cfg, campaign) {
   );
 }
 
-function footerHtml_(cfg, listUnsubPostUrl, isNewsletter, campaign) {
+function footerHtml_(cfg, isNewsletter, campaign) {
   // Newsletter path: the body contains the literal `{{UNSUBSCRIBE_URL}}`
   // placeholder which Apps Script (or sendWelcomeEmail_) swaps in per
   // recipient. UTMs are appended after the placeholder so the final URL
-  // ends up `…/unsubscribe?t=TOKEN&utm_…` without breaking the token.
-  var unsubLink = isNewsletter
-    ? '{{UNSUBSCRIBE_URL}}&' + utmQuery_(campaign)
-    : withUtm_(cfg.siteUrl + '/unsubscribe?t=__N/A__', campaign);
+  // ends up `…/unsubscribe/?t=TOKEN&utm_…` without breaking the token.
+  // The confirmation and reminder mails have no unsubscribe link here.
+  var unsubLink = '{{UNSUBSCRIBE_URL}}&' + utmQuery_(campaign);
 
-  var blogHref    = withUtm_(cfg.siteUrl + '/blog',    campaign);
-  var privacyHref = withUtm_(cfg.siteUrl + '/privacy', campaign);
+  var blogHref    = withUtm_(cfg.siteUrl + '/blog/',    campaign);
+  var privacyHref = withUtm_(cfg.siteUrl + '/privacy/', campaign);
   var rssHref     = withUtm_(cfg.siteUrl + '/rss.xml', campaign);
 
   return (
@@ -2633,6 +2621,14 @@ function pageTemplate_(title, message, ctaText, ctaHref) {
 // Utilities
 // ============================================================================
 
+// ============================================================================
+// Shared helpers: begin
+// The same text in newsletter.gs, waitlist.gs and volunteer-list.gs. Each
+// file is pasted into its own Apps Script project, so they cannot share a
+// file: scripts/apps-script-shared.test.mjs fails when the copies differ.
+// Change all three together, then run `npm run gs:version`.
+// ============================================================================
+
 function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 
 // An address is written into a spreadsheet cell, where a value that starts
@@ -2641,8 +2637,55 @@ function normalizeEmail_(s) { return String(s || '').toLowerCase().trim(); }
 // the marks that separate addresses in a list. Letters of any script, and an
 // apostrophe (o'brien@...), are fine.
 function isValidEmail_(s) {
+  s = String(s || '');
   return s.length <= 254 && /^[^\s@=+\-"()<>,;:\\\[\]][^\s@"()<>,;:\\\[\]]*@[^\s@'"()<>,;:\\\[\]=+]+\.[^\s@'"()<>,;:\\\[\]=+]+$/.test(s) && !/[\r\n]/.test(s);
 }
+
+/** The SHA-256 of the text's UTF-8 bytes, as 64 lowercase hex characters. */
+function sha256Hex_(s) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(s), Utilities.Charset.UTF_8);
+  // Apps Script gives signed bytes (-128..127); & 0xFF makes them unsigned.
+  return bytes.map(function (b) { var h = (b & 0xFF).toString(16); return h.length === 1 ? '0' + h : h; }).join('');
+}
+
+/**
+ * Whether two strings are equal, comparing every character rather than
+ * returning at the first difference, so the time taken says nothing about
+ * how much of a secret was right. Used for digests, tokens and signatures.
+ */
+function sameString_(a, b) {
+  a = String(a);
+  b = String(b);
+  var len = Math.max(a.length, b.length);
+  var diff = a.length ^ b.length;
+  for (var i = 0; i < len; i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return diff === 0;
+}
+
+/**
+ * The form-encoded POST body as an object. e.parameter also carries the query
+ * string, so a credential must come from here to be sure it was not sent in
+ * the URL, where it would end up in logs.
+ */
+function formBody_(e) {
+  var out = {};
+  var raw = (e && e.postData && e.postData.contents) || '';
+  if (raw.length > 4096) return out;
+  raw.split('&').forEach(function (pair) {
+    if (!pair) return;
+    var at = pair.indexOf('=');
+    try {
+      var key = decodeURIComponent((at < 0 ? pair : pair.slice(0, at)).replace(/\+/g, ' '));
+      var value = at < 0 ? '' : decodeURIComponent(pair.slice(at + 1).replace(/\+/g, ' '));
+      if (!Object.prototype.hasOwnProperty.call(out, key)) out[key] = value;
+    } catch (_) { /* a malformed pair is dropped */ }
+  });
+  return out;
+}
+
+// ============================================================================
+// Shared helpers: end
+// ============================================================================
 
 /**
  * The page a sign-up came from, as the site sends it: a path on the site.
@@ -2729,21 +2772,4 @@ function trackPosthog_(event, distinctId, properties) {
 // what makes the PostHog funnel actually stitch across client + server.
 function distinctIdForEmail_(email) {
   return sha256Hex_(String(email).toLowerCase().trim());
-}
-
-function sha256Hex_(str) {
-  var bytes = Utilities.computeDigest(
-    Utilities.DigestAlgorithm.SHA_256,
-    String(str),
-    Utilities.Charset.UTF_8
-  );
-  var hex = '';
-  for (var i = 0; i < bytes.length; i++) {
-    // Apps Script returns signed bytes (-128..127). Convert to unsigned
-    // before hex formatting so we get the canonical 64-char lowercase digest.
-    var b = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-    var h = b.toString(16);
-    hex += h.length === 1 ? '0' + h : h;
-  }
-  return hex;
 }
