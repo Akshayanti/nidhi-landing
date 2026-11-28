@@ -1037,7 +1037,8 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
           <tbody>
             {tableRows.map((r) => (
               <tr key={r.month}>
-                <th scope="row">{formatYearLabel(r.month, strings, byYear)}</th>
+                {/* The exact month, under the table's "Month" heading; the drawing names years. */}
+                <th scope="row">{format(strings.balance.month, { m: r.month })}</th>
                 <td><Amount>{formatMoney(r.payment, currency)}</Amount></td>
                 <td><Amount>{formatMoney(r.interest, currency)}</Amount></td>
                 <td><Amount>{formatMoney(r.principal, currency)}</Amount></td>
