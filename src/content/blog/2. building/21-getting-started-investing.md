@@ -171,8 +171,8 @@ The other thing that stops people is the feeling that €50 or €100 a month "i
   <desc id="fig-early-desc">Two savers compared. The one who starts at 25 contributes 48,000 euros total and ends with roughly 262,000 euros at 65. The one who starts at 40 contributes 75,000 euros total, more money in, yet ends with only about 203,000 euros. Starting earlier wins despite paying in less.</desc>
   <text class="fig-title" x="360" y="44" text-anchor="middle">Less money in. More money out.</text>
   <text class="fig-subtitle" x="360" y="72" text-anchor="middle">Same goal, two start ages, at an illustrative 7% a year</text>
-  <text class="fig-eyebrow" x="200" y="120" text-anchor="middle">Starts at 25</text>
-  <text class="fig-eyebrow" x="520" y="120" text-anchor="middle">Starts at 40</text>
+  <text class="fig-eyebrow" x="200" y="106" text-anchor="middle">Starts at 25</text>
+  <text class="fig-eyebrow" x="520" y="106" text-anchor="middle">Starts at 40</text>
   <line x1="60" y1="360" x2="660" y2="360" class="fig-stroke-rule" />
   <rect x="120" y="320" width="70" height="40" class="fig-fill-muted" />
   <text class="fig-sublabel" x="155" y="386" text-anchor="middle">Paid in</text>

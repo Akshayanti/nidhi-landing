@@ -49,10 +49,10 @@ describe('lint-figures', () => {
     assert.equal(text.split('\n')[line - 1].trim(), '', 'the line named is the blank one');
   });
 
-  it('reports a viewBox width that has no phone min-width rule', () => {
+  it('reports a viewBox width that has no minimum width rule', () => {
     const errors = lint(GOOD.replace('0 0 720 360', '0 0 613 360'));
     assert.equal(errors.length, 1);
-    assert.match(errors[0], /figure viewBox width 613 has no phone min-width/);
+    assert.match(errors[0], /figure viewBox width 613 has no minimum width/);
   });
 
   it('reports figure CSS in a scoped style block of the layout, but not in a global one or a comment', () => {

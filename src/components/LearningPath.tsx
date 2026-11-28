@@ -60,6 +60,11 @@ const LEVEL_COLORS: Record<string, string> = {
   'inclusive-finances': 'var(--level-inclusive-finances)',
 };
 
+/** Each level's colour as text, 8:1 or more on every surface (#761); lines and rings keep LEVEL_COLORS. */
+const LEVEL_TEXT_COLORS: Record<string, string> = Object.fromEntries(
+  Object.keys(LEVEL_COLORS).map((level) => [level, `var(--level-${level}-text)`]),
+);
+
 /** Inclusive Finances is not a step of the ladder: its posts sit inside the levels. */
 const INCLUSIVE = 'inclusive-finances';
 /** Inclusive posts are optional follow-ups: shown on the path, never counted toward progress. */
@@ -132,6 +137,8 @@ interface PostNodeProps extends CardContext {
   isRead: boolean;
   isStartHere: boolean;
   levelColor: string;
+  /** The level's colour as text (#761); the level colour when not given. */
+  levelText?: string;
   onToggleRead: (id: string) => void;
   /**
    * Position of the post in its level's reading order (1-based) and the
@@ -145,7 +152,7 @@ interface PostNodeProps extends CardContext {
   onPath?: boolean;
 }
 
-function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath = true, step, stepCount, strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale }: PostNodeProps) {
+function PostNode({ post, isRead, isStartHere, levelColor, levelText = levelColor, onToggleRead, onPath = true, step, stepCount, strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale }: PostNodeProps) {
   const ctx: CardContext = { strings, tagHrefs, tagLabels, inclusiveLabel, dateLocale };
   const d = new Date(post.pubDate);
   // One Intl call, so each language puts the day and month in its own order
@@ -190,7 +197,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
         <div className="lp-cardTop">
           <div className="lp-cardMeta">
             {step !== undefined && (
-              <span className="lp-cardStep" style={{ color: levelColor, borderColor: levelColor }} aria-label={format(strings.step, { step, count: stepCount ?? '' })}>
+              <span className="lp-cardStep" style={{ color: levelText, borderColor: levelColor }} aria-label={format(strings.step, { step, count: stepCount ?? '' })}>
                 {step}
               </span>
             )}
@@ -202,7 +209,7 @@ function PostNode({ post, isRead, isStartHere, levelColor, onToggleRead, onPath 
           <ReadToggle isRead={isRead} onToggle={() => onToggleRead(post.id)} label={isRead ? strings.markUnread : strings.markRead} />
         </div>
         {isInclusive && (
-          <p className="lp-cardCompanion" style={{ color: levelColor }}>
+          <p className="lp-cardCompanion" style={{ color: levelText }}>
             <CompassIcon size={13} />
             <span>{companionLine(post, onPath, ctx)}</span>
           </p>
@@ -264,6 +271,7 @@ export function CollectionList({ posts, ...ctx }: { posts: PostData[] } & CardCo
           isRead={readPosts.has(post.id)}
           isStartHere={false}
           levelColor={LEVEL_COLORS[post.level]}
+          levelText={LEVEL_TEXT_COLORS[post.level]}
           onToggleRead={toggleRead}
           onPath={false}
         />
@@ -318,7 +326,7 @@ export function LevelLessons({ level, posts, ...ctx }: { level: string; posts: P
   const steps = new Map(core.map((p, i) => [p.id, i + 1]));
 
   return (
-    <div className="lp-pathContainer lp-levelPage" style={{ '--level-color': color } as React.CSSProperties}>
+    <div className="lp-pathContainer lp-levelPage" style={{ '--level-color': color, '--level-text-color': LEVEL_TEXT_COLORS[level] } as React.CSSProperties}>
       <div className="lp-levelPageProgress">
         <span>{format(ctx.strings.readCount, { read: readCount, total: core.length })}</span>
         <div className="lp-levelPageBar">
@@ -336,7 +344,7 @@ export function LevelLessons({ level, posts, ...ctx }: { level: string; posts: P
           </button>
         )}
       </div>
-      <p className="lp-orderHint" style={{ color }}>{ctx.strings.orderHint}</p>
+      <p className="lp-orderHint" style={{ color: LEVEL_TEXT_COLORS[level] }}>{ctx.strings.orderHint}</p>
       <div className="lp-levelPosts">
         {posts.map((post) => (
           <PostNode
@@ -348,6 +356,7 @@ export function LevelLessons({ level, posts, ...ctx }: { level: string; posts: P
             isRead={readPosts.has(post.id)}
             isStartHere={post.id === firstUnreadId}
             levelColor={post.level === INCLUSIVE ? LEVEL_COLORS[INCLUSIVE] : color}
+            levelText={LEVEL_TEXT_COLORS[post.level === INCLUSIVE ? INCLUSIVE : level]}
             onToggleRead={toggleRead}
           />
         ))}
@@ -407,10 +416,10 @@ export function TopicLessons({ groups, ...ctx }: { groups: TopicGroup[] } & Card
             key={group.level}
             className="lp-topicGroup"
             aria-labelledby={`topic-${group.level}`}
-            style={{ '--level-color': color } as React.CSSProperties}
+            style={{ '--level-color': color, '--level-text-color': LEVEL_TEXT_COLORS[group.level] } as React.CSSProperties}
           >
             <div className="lp-topicGroupHead">
-              <h2 id={`topic-${group.level}`} style={{ color }}>{group.label}</h2>
+              <h2 id={`topic-${group.level}`} style={{ color: LEVEL_TEXT_COLORS[group.level] }}>{group.label}</h2>
               <a href={group.href} data-attr={`topic-level-${group.level}`}>
                 {format(inclusive ? ctx.strings.allGuides : ctx.strings.allLessons, { level: group.label })} ({group.levelTotal})
               </a>
@@ -426,6 +435,7 @@ export function TopicLessons({ groups, ...ctx }: { groups: TopicGroup[] } & Card
                   isRead={readPosts.has(post.id)}
                   isStartHere={post.id === firstUnreadId}
                   levelColor={color}
+                  levelText={LEVEL_TEXT_COLORS[group.level]}
                   onToggleRead={toggleRead}
                   onPath={!inclusive}
                 />

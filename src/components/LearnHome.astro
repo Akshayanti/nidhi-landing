@@ -110,6 +110,14 @@ const StartH = band ? 'h3' : 'h2';
 const goals = goalsFor(helperLevels);
 
 const groups: DirectoryGroup[] = directoryGroups(levels.map((l) => l.id), lessons, guides);
+// The ladder in reading order, for the start card's early script (#779):
+// it shows the returning card only when the page's own script will, with the
+// next lesson's title already in it.
+const ladder: [string, string][] = groups
+  .flatMap((g) => g.rows)
+  .filter((r) => r.seq !== undefined)
+  .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0))
+  .map((r) => [r.id, r.title]);
 // Without a script, Discovery is the open fold (or the first one, should a
 // language ever list no Discovery lesson).
 const openFold = groups.some((g) => g.id === 'discovery') ? 'discovery' : groups[0]?.id;
@@ -119,6 +127,8 @@ const foldCount = (id: string, n: number) => (id === GUIDES
   : `${n} ${plural(lang, n, s.lessonOne, s.lessonFew, s.lessonMany)}`);
 const foldPill = (id: string) => (id === GUIDES ? howTo.label : id === INCLUSIVE ? s.inclusivePill : learn.levels[id] ?? id);
 const foldColour = (id: string) => (id === GUIDES ? 'var(--color-teal-dark, var(--color-teal))' : `var(--level-${id})`);
+/** A level's colour as text: 8:1 or more on every surface (#761). */
+const foldText = (id: string) => (id === GUIDES ? 'var(--color-teal-dark, var(--color-teal))' : `var(--level-${id}-text)`);
 
 // What the controllers need beyond the markup: words with a value to fill in,
 // and the helper's rule. Lesson titles and addresses are read from the rows.
@@ -146,6 +156,9 @@ const pageData = {
     lessonOne: s.lessonOne,
     lessonFew: s.lessonFew,
     lessonMany: s.lessonMany,
+    guideOne: dir.guideOne,
+    guideFew: dir.guideFew,
+    guideMany: dir.guideMany,
     showAll: s.showAll,
   },
   helper: {
@@ -219,17 +232,26 @@ const pageData = {
           and the helper's button keeps its place until its script starts.
           Reads the same local key as the progress script; nothing leaves
           the browser. */}
-      <script is:inline>
+      <script is:inline define:vars={{ ladder }}>
         (function () {
           var card = document.getElementById('level-helper');
           if (!card) return;
           var read = [];
           try { read = JSON.parse(localStorage.getItem('nidhi-reading-progress') || '[]'); } catch (e) { read = []; }
+          if (!Array.isArray(read)) read = [];
+          // Only lessons on the ladder count, as in the page's module: a reader
+          // of Inclusive Finances alone is still a new reader.
+          var seen = {};
+          read.forEach(function (id) { seen[String(id)] = true; });
+          var done = ladder.filter(function (l) { return seen[l[0]]; }).length;
+          var next = ladder.filter(function (l) { return !seen[l[0]]; })[0];
           var newer = card.querySelector('[data-start-state="new"]');
           var back = card.querySelector('[data-start-state="returning"]');
-          if (newer && back && Array.isArray(read) && read.length > 0) {
+          if (newer && back && done > 0 && next) {
             newer.hidden = true;
             back.hidden = false;
+            var title = back.querySelector('[data-start-title]');
+            if (title) title.textContent = next[1];
           }
           var toggle = card.querySelector('[data-helper-toggle]');
           if (toggle) { toggle.hidden = false; toggle.style.visibility = 'hidden'; }
@@ -333,7 +355,7 @@ const pageData = {
             <a
               class="learn-level"
               href={level.href}
-              style={`--lc: var(--level-${level.id})`}
+              style={`--lc: var(--level-${level.id}); --lct: var(--level-${level.id}-text)`}
               data-attr={`blog-level-${level.id}`}
               data-level-card={level.id}
             >
@@ -360,7 +382,7 @@ const pageData = {
         <a
           class="learn-level"
           href={inclusiveHref}
-          style="--lc: var(--level-inclusive-finances)"
+          style="--lc: var(--level-inclusive-finances); --lct: var(--level-inclusive-finances-text)"
           data-attr="blog-index-inclusive-hub"
         >
           <span class="learn-num learn-numRoute" aria-hidden="true">
@@ -427,7 +449,7 @@ const pageData = {
       {groups.map((g) => {
         const List = g.id === GUIDES || g.id === INCLUSIVE ? 'ul' : 'ol';
         return (
-          <details class="learn-fold" open={g.id === openFold} data-fold={g.id} data-pill={foldPill(g.id)} style={`--lc: ${foldColour(g.id)}`}>
+          <details class="learn-fold" open={g.id === openFold} data-fold={g.id} data-pill={foldPill(g.id)} style={`--lc: ${foldColour(g.id)}; --lct: ${foldText(g.id)}`}>
             <summary class="learn-foldSummary disclosure">
               <span class="learn-foldName">{foldName(g.id)}</span>{' '}
               <span class="learn-foldCount">{foldCount(g.id, g.rows.length)}</span>
@@ -613,7 +635,15 @@ const pageData = {
         steps.forEach((el) => { el.hidden = Number(el.dataset.step) !== step; });
         // Focus moves to the new question or the suggestion, so keyboard and
         // screen reader users follow along.
-        if (open) panel.querySelector<HTMLElement>(`[data-step="${step}"] [data-helper-focus]`)?.focus();
+        // A question taller than the screen (very large text) starts at its
+        // top, not wherever focus would scroll it to (#779).
+        const target = open ? panel.querySelector<HTMLElement>(`[data-step="${step}"] [data-helper-focus]`) : null;
+        if (target) {
+          target.focus({ preventScroll: true });
+          const box = target.closest<HTMLElement>('[data-step]') ?? target;
+          const r = box.getBoundingClientRect();
+          box.scrollIntoView({ block: r.top < 0 || r.height > window.innerHeight ? 'start' : 'nearest' });
+        }
       };
       const restart = () => {
         ticked.clear();
@@ -638,7 +668,7 @@ const pageData = {
         const name = level?.label ?? sug.level;
         const heading = result.querySelector<HTMLElement>('[data-result-heading]')!;
         heading.textContent = format(w.resultHeading, { level: name });
-        heading.style.color = `var(--level-${sug.level})`;
+        heading.style.color = `var(--level-${sug.level}-text)`;
         const goalTopic = goal ? data!.helper.topics[goal] : undefined;
         result.querySelector<HTMLElement>('[data-result-reason]')!.textContent = `${helperReason(sug, name, w, goalTopic || undefined)} ${w.resultSuffix}`;
 
@@ -740,6 +770,7 @@ const pageData = {
       const draw = () => {
         const v = resultView(search(index, input.value.trim().toLowerCase()), input.value, showAll, {
           noMatches: w.noMatches, lessonOne: w.lessonOne, lessonFew: w.lessonFew, lessonMany: w.lessonMany,
+          guideOne: w.guideOne, guideFew: w.guideFew, guideMany: w.guideMany,
         }, data.lang);
         results.querySelectorAll('.learn-result').forEach((el) => el.remove());
         const links = v.shown.map((m) => resultFor(m.id)).filter((a): a is HTMLAnchorElement => Boolean(a));

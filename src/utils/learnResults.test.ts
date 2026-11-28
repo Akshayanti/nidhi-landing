@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { RESULT_LIMIT, queryFromAddress, resultView } from './learnResults.ts';
 
-const WORDS = { noMatches: 'No lessons match.', lessonOne: 'lesson', lessonFew: 'lessons', lessonMany: 'lessons' };
-const CS = { noMatches: 'Nic.', lessonOne: 'lekce', lessonFew: 'lekce', lessonMany: 'lekcí' };
+const WORDS = { noMatches: 'No lessons match.', lessonOne: 'lesson', lessonFew: 'lessons', lessonMany: 'lessons', guideOne: 'guide', guideFew: 'guides', guideMany: 'guides' };
+const CS = { noMatches: 'Nic.', lessonOne: 'lekce', lessonFew: 'lekce', lessonMany: 'lekcí', guideOne: 'návod', guideFew: 'návody', guideMany: 'návodů' };
 const lessons = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `l${i}`, kind: 'lesson' as const }));
 const guides = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `guide:g${i}`, kind: 'guide' as const }));
 
@@ -33,15 +33,17 @@ describe('resultView', () => {
     assert.equal(resultView(lessons(8), 'x', false, WORDS, 'en').more, 0);
   });
 
-  it('counts lessons only, in the language\'s own plural', () => {
-    assert.equal(resultView([...guides(2), ...lessons(1)], 'x', false, WORDS, 'en').countLine, '1 lesson');
+  it('counts lessons and guides, each in the language\'s own plural (#778)', () => {
+    assert.equal(resultView([...guides(2), ...lessons(1)], 'x', false, WORDS, 'en').countLine, '1 lesson, 2 guides');
+    assert.equal(resultView([...lessons(10), ...guides(1)], 'x', false, WORDS, 'en').countLine, '10 lessons, 1 guide');
+    assert.equal(resultView(guides(5), 'x', false, CS, 'cs').countLine, '5 návodů');
     assert.equal(resultView(lessons(3), 'x', false, CS, 'cs').countLine, '3 lekce');
     assert.equal(resultView(lessons(5), 'x', false, CS, 'cs').countLine, '5 lekcí');
   });
 
-  it('has no count line when only guides match', () => {
+  it('counts guides when only guides match, so a screen reader hears it', () => {
     const v = resultView(guides(2), 'x', false, WORDS, 'en');
-    assert.equal(v.countLine, '');
+    assert.equal(v.countLine, '2 guides');
     assert.equal(v.none, false);
     assert.equal(v.shown.length, 2);
   });

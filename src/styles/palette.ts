@@ -31,6 +31,9 @@ export const PALETTE = {
   blue:        '#0A3D8F',
   indigo:      '#1A237E',
   purple:      '#311B92',
+  // Deeper shades for level text on a badge (#761): 8:1 on the light page.
+  tealDeep:    '#004D40',
+  amberDeep:   '#5C3D00',
 
   // On-#1E1E1E (dark-mode foreground / on-dark-bg). Same hue identity.
   redDark:        '#FF9E80',

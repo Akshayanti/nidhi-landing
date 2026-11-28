@@ -58,14 +58,16 @@ export function lintFigures({ files, layout: layoutFile, css }) {
     }
   }
 
-  // --- Check 1b: figure width must have a phone minimum width in global.css ---
-  // On phones, charts scroll sideways at a readable size. src/styles/global.css
-  // sets a min-width per viewBox width; a chart with any other width would
-  // shrink to an unreadable size on phones. The allowed widths are read from
-  // those CSS rules so the lint and the stylesheet cannot drift apart.
+  // --- Check 1b: figure width must have a minimum width in global.css ---
+  // Charts keep their smallest label readable at every size (#813): they
+  // scroll sideways where the screen is too narrow. src/styles/global.css
+  // names each viewBox width (--fig-vbw), from which the minimum width is
+  // worked out; a chart with any other width would shrink to an unreadable
+  // size. The allowed widths are read from those CSS rules so the lint and
+  // the stylesheet cannot drift apart.
   const PHONE_WIDTHS = new Set(
     Array.from(
-      css.matchAll(/\.prose figure svg\[viewBox\^="0 0 (\d+) "\]\s*\{\s*min-width:/g),
+      css.matchAll(/\.prose figure:has\(> svg\[viewBox\^="0 0 (\d+) "\]\)\s*\{\s*--fig-vbw:\s*\1;/g),
       (m) => m[1],
     ),
   );
@@ -75,8 +77,8 @@ export function lintFigures({ files, layout: layoutFile, css }) {
       if (!PHONE_WIDTHS.has(m[1])) {
         const line = text.slice(0, m.index).split("\n").length;
         errors.push(
-          `${file}:${line}: figure viewBox width ${m[1]} has no phone min-width. ` +
-            `Use one of ${phoneWidthList}, or add a matching rule to the phone block in src/styles/global.css.`,
+          `${file}:${line}: figure viewBox width ${m[1]} has no minimum width. ` +
+            `Use one of ${phoneWidthList}, or add a matching --fig-vbw rule in src/styles/global.css.`,
         );
       }
     }

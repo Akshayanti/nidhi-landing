@@ -115,10 +115,11 @@ function measure(CHECK_FILL) {
     return null;
   };
 
-  // Whether a line of text is inside every box above it that hides what
-  // runs past its top or bottom (a table that scrolls inside its own box).
+  // Whether a line of text is inside every box around it that hides what
+  // runs past its top or bottom (a table that scrolls inside its own box, or
+  // the text's own element clamped to two lines: its third line is not drawn).
   const inView = (el, r) => {
-    for (let p = el.parentElement; p && p !== document.documentElement; p = p.parentElement) {
+    for (let p = el; p && p !== document.documentElement; p = p.parentElement) {
       if (!/(auto|scroll|hidden|clip)/.test(getComputedStyle(p).overflowY)) continue;
       const b = p.getBoundingClientRect();
       if (r.bottom <= b.top + 1 || r.top >= b.bottom - 1) return false;
@@ -339,8 +340,10 @@ function measure(CHECK_FILL) {
     }
   }
   if (CHECK_FILL) for (const g of reduced.values()) if (g.fill < 0.85) out.amount.push(`fills ${Math.round(g.fill * 100)}% of its line "${g.text}"`);
-  // An amount in a tool's results that is not drawn as a unit.
-  for (const p of pieces) {
+  // An amount in a tool's results that is not drawn as a unit. Only on a
+  // tool's page: the learning path is an island too, and a lesson title that
+  // names "€1,000" is a title, not a result.
+  if (/\/free\//.test(location.pathname)) for (const p of pieces) {
     if (!p.el.closest('astro-island') || p.el.closest('.amt, input, textarea, select, button, label, legend, table.chart-srOnly, [aria-hidden="true"]')) continue;
     const m = p.n.textContent.match(RAW);
     if (m) out.amount.push(`not a unit "${m[0]}" in ${name(p.el)}`);

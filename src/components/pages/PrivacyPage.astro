@@ -526,7 +526,9 @@ const archiveRange = earliest && first
     border-radius: var(--radius-sm);
   }
 
-  .privacy-updated {
+  /* Prefixed, as the changelog's rules are below: the general
+     .privacy-container p rule otherwise outweighs it (#770). */
+  .privacy-container .privacy-updated {
     font-size: var(--text-caption);
     color: var(--color-text-muted);
     font-family: var(--font-heading);
