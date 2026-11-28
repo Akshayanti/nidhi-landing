@@ -102,6 +102,66 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'धड्यांच्या पानावर परत आलेल्या वाचकाचे “मागच्या वेळी जिथे वाचन थांबले, तिथून पुढे वाचा” कार्ड आता पुढच्या धड्याचे शीर्षक लगेच दाखवते; आधी त्याची स्क्रिप्ट लोड होईपर्यंत ते रिकामे राहत असे. फक्त ‘सर्वसमावेशक वित्त’चे धडे वाचणाऱ्याला आता हे कार्ड दिसत नाही. सदस्यत्वाची पुष्टी करणे किंवा ते बंद करणे अयशस्वी झाले, तर बटण आता कीबोर्डचा फोकस गमावत नाही, त्यामुळे तुम्ही तिथूनच पुन्हा प्रयत्न करू शकता.',
         },
       },
+      {
+        id: 'loan-says-what-is-missing',
+        text: {
+          en: 'In the loan comparison, a loan amount or monthly payment that is not a number now says it could not be read and how to write it. A horizon, refinance month, rate or term left empty is marked and holds its results back until it is filled in; an empty box used to show results for a value you had not chosen.',
+          hi: 'लोन की तुलना में, अगर लोन राशि या मासिक किस्त संख्या नहीं है, तो अब बताया जाता है कि उसे पढ़ा नहीं जा सका और उसे कैसे लिखें। हॉराइज़न, रीफ़ाइनेंस का महीना, दर या अवधि ख़ाली छोड़ने पर वह बॉक्स चिह्नित होता है और भरे जाने तक नतीजे रोके रखता है; पहले ख़ाली बॉक्स ऐसे मान के नतीजे दिखाता था जो आपने चुना ही नहीं था।',
+          es: 'En la comparación de préstamos, una cantidad o una cuota mensual que no es un número dice ahora que no se pudo leer y cómo escribirla. Un horizonte, un mes de refinanciación, una tasa o un plazo que se dejan vacíos se marcan y retienen sus resultados hasta que se rellenan; antes, un recuadro vacío mostraba resultados para un valor que no habías elegido.',
+          cs: 'V\u00a0porovnání úvěrů teď výše úvěru nebo měsíční splátka, která není číslo, řekne, že ji nešlo přečíst, a\u00a0jak ji napsat. Prázdný horizont, měsíc refinancování, sazba nebo doba splatnosti se označí a\u00a0zadrží své výsledky, dokud je nevyplníte; dřív prázdný rámeček ukazoval výsledky pro hodnotu, která nebyla vaší volbou.',
+          mr: 'कर्जांच्या तुलनेत, कर्जाची रक्कम किंवा मासिक हप्ता संख्या नसेल तर आता ती वाचता आली नाही आणि ती कशी लिहायची हे सांगितले जाते. कालावधी, पुनर्वित्ताचा महिना, दर किंवा मुदत रिकामी ठेवल्यास ती चौकट चिन्हांकित होते आणि भरेपर्यंत निकाल थांबवून ठेवते; आधी रिकामी चौकट तुम्ही न निवडलेल्या मूल्याचे निकाल दाखवत असे.',
+        },
+      },
+      {
+        id: 'copied-link-stays-in-view',
+        text: {
+          en: 'The Monte Carlo simulator, the invest-or-pay-off calculator and the inflation calculator now keep a copied link in a box under the buttons, as the loan comparison does, and a screen reader hears that it was copied. Where the browser does not let the page copy, the link is there to copy by hand. In the net worth calculator, that box now comes into view in a short share window.',
+          hi: 'मोंटे कार्लो सिम्युलेटर, निवेश या कर्ज़ चुकाना कैलकुलेटर और महँगाई कैलकुलेटर अब कॉपी किया गया लिंक बटनों के नीचे एक बॉक्स में रखते हैं, जैसे लोन की तुलना रखती है, और स्क्रीन रीडर को सुनाई देता है कि लिंक कॉपी हो गया। जहाँ ब्राउज़र पेज को कॉपी नहीं करने देता, वहाँ लिंक हाथ से कॉपी करने के लिए मौजूद रहता है। शुद्ध संपत्ति कैलकुलेटर में, छोटी शेयर विंडो में भी यह बॉक्स अब नज़र के सामने आ जाता है।',
+          es: 'El simulador de Monte Carlo, la calculadora de invertir o pagar deuda y la calculadora de inflación guardan ahora el enlace copiado en un recuadro bajo los botones, como ya hace la comparación de préstamos, y un lector de pantalla oye que se ha copiado. Si el navegador no deja copiar a la página, el enlace queda ahí para copiarlo a mano. En la calculadora de patrimonio neto, ese recuadro aparece ahora a la vista aunque la ventana para compartir sea baja.',
+          cs: 'Simulátor Monte Carlo, kalkulačka investovat, nebo splatit dluh a\u00a0inflační kalkulačka teď nechávají zkopírovaný odkaz v\u00a0rámečku pod tlačítky, jako to dělá porovnání úvěrů, a\u00a0čtečka obrazovky ohlásí, že byl zkopírován. Kde prohlížeč stránce kopírování nedovolí, je odkaz připravený ke zkopírování ručně. V\u00a0kalkulačce čistého jmění se ten rámeček teď posune do zobrazení i\u00a0v\u00a0nízkém okně pro sdílení.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटर, गुंतवणूक की कर्जफेड कॅल्क्युलेटर आणि महागाई कॅल्क्युलेटर आता कॉपी केलेली लिंक बटणांखालील चौकटीत ठेवतात, जसे कर्जांची तुलना ठेवते, आणि स्क्रीन रीडरला लिंक कॉपी झाल्याचे ऐकू येते. ब्राउझर पानाला कॉपी करू देत नाही तिथे लिंक हाताने कॉपी करण्यासाठी उपलब्ध राहते. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये, कमी उंचीच्या शेअर खिडकीतही ही चौकट आता नजरेसमोर येते.',
+        },
+      },
+      {
+        id: 'screen-readers-hear-it-once',
+        text: {
+          en: 'With a screen reader, a box with a mistake in the invest-or-pay-off and inflation calculators now names the mistake once instead of twice, the note about your own return waits until you stop typing, and the Monte Carlo simulator now says when the results are back after you correct a box. The net worth chart’s legend no longer says an entry is pressed when a second tap could not release it.',
+          hi: 'स्क्रीन रीडर के साथ, निवेश या कर्ज़ चुकाना और महँगाई कैलकुलेटर में ग़लती वाला बॉक्स अब ग़लती दो बार की जगह एक बार बताता है, आपके अपने रिटर्न वाला नोट आपके टाइप करना रोकने तक इंतज़ार करता है, और मोंटे कार्लो सिम्युलेटर अब बताता है कि बॉक्स ठीक करने के बाद नतीजे वापस आ गए हैं। शुद्ध संपत्ति चार्ट की लेजेंड अब किसी हिस्से को दबा हुआ नहीं बताती, जब दूसरी बार टैप करने से वह छूट ही नहीं सकता था।',
+          es: 'Con un lector de pantalla, un recuadro con un error en las calculadoras de invertir o pagar deuda y de inflación nombra ahora el error una vez en lugar de dos, la nota sobre tu propia rentabilidad espera a que dejes de escribir, y el simulador de Monte Carlo avisa de que los resultados han vuelto cuando corriges un recuadro. La leyenda del gráfico de patrimonio neto ya no dice que una entrada está pulsada cuando un segundo toque no podía soltarla.',
+          cs: 'Se čtečkou obrazovky teď rámeček s\u00a0chybou v\u00a0kalkulačce investovat, nebo splatit dluh a\u00a0v\u00a0inflační kalkulačce pojmenuje chybu jednou místo dvakrát, poznámka o\u00a0vašem vlastním výnosu počká, až přestanete psát, a\u00a0simulátor Monte Carlo teď řekne, že jsou výsledky zpět, když rámeček opravíte. Legenda grafu čistého jmění už neříká, že je položka stisknutá, když ji druhé klepnutí nemohlo uvolnit.',
+          mr: 'स्क्रीन रीडर वापरताना, गुंतवणूक की कर्जफेड आणि महागाई कॅल्क्युलेटरमधील चूक असलेली चौकट आता चूक दोनदा नव्हे तर एकदाच सांगते, तुमच्या स्वतःच्या परताव्याची टीप तुम्ही टाइप करणे थांबवेपर्यंत थांबते, आणि चौकट दुरुस्त केल्यावर निकाल परत आल्याचे मॉन्टे कार्लो सिम्युलेटर आता सांगतो. निव्वळ संपत्तीच्या आलेखाची सूची आता एखादी नोंद दाबलेली आहे असे सांगत नाही, जेव्हा दुसऱ्या टॅपने ती सोडवताच येत नव्हती.',
+        },
+      },
+      {
+        id: 'charts-on-small-screens',
+        text: {
+          en: 'On a phone, the loan comparison’s balance chart now keeps its amounts at the left while you scroll the chart sideways. The Monte Carlo chart always shows the last year of the plan, and its explanations of the return settings sit over the setting they describe, or at a large text size stay in the line under the switch. The inflation chart’s first year no longer touches its “0”.',
+          hi: 'फ़ोन पर, लोन की तुलना का बकाया वाला चार्ट अब बग़ल में स्क्रॉल करते समय अपनी रकमें बाईं ओर रखता है। मोंटे कार्लो चार्ट अब हमेशा योजना का आख़िरी साल दिखाता है, और रिटर्न की सेटिंग्स की व्याख्याएँ उसी सेटिंग के ऊपर दिखती हैं जिसके बारे में हैं, या बड़े अक्षरों में स्विच के नीचे वाली पंक्ति में रहती हैं। महँगाई चार्ट का पहला साल अब उसके “0” से नहीं टकराता।',
+          es: 'En un teléfono, el gráfico del saldo de la comparación de préstamos mantiene ahora sus cantidades a la izquierda mientras lo desplazas de lado. El gráfico de Monte Carlo muestra siempre el último año del plan, y las explicaciones de los ajustes de rentabilidad aparecen sobre el ajuste que describen o, con un texto grande, se quedan en la línea bajo el selector. El primer año del gráfico de inflación ya no toca su «0».',
+          cs: 'Na telefonu teď graf zůstatku v\u00a0porovnání úvěrů drží své částky vlevo, zatímco ho posouváte do strany. Graf Monte Carlo vždy ukazuje poslední rok plánu a\u00a0vysvětlení nastavení výnosů se objeví nad nastavením, které popisují, nebo při velkém písmu zůstanou v\u00a0řádku pod přepínačem. První rok v\u00a0inflačním grafu se už nedotýká jeho „0“.',
+          mr: 'फोनवर, कर्जांच्या तुलनेतील शिल्लक दाखवणारा आलेख बाजूला स्क्रोल करताना आता आपल्या रकमा डावीकडे ठेवतो. मॉन्टे कार्लो आलेख आता नेहमी योजनेचे शेवटचे वर्ष दाखवतो, आणि परताव्याच्या सेटिंग्जची स्पष्टीकरणे ज्या सेटिंगबद्दल आहेत तिच्यावर दिसतात, किंवा मोठ्या अक्षरांत स्विचखालच्या ओळीत राहतात. महागाई आलेखाचे पहिले वर्ष आता त्याच्या “0” ला भिडत नाही.',
+        },
+      },
+      {
+        id: 'grey-text-easier-to-read',
+        text: {
+          en: 'Grey help text across the site, and the text on yellow warnings, is now darker, so it is easier to read in the light and the dark theme.',
+          hi: 'पूरी साइट पर मदद वाला धूसर टेक्स्ट, और पीली चेतावनियों का टेक्स्ट, अब ज़्यादा गहरा है, इसलिए हल्की और गहरी दोनों थीम में पढ़ना आसान है।',
+          es: 'El texto gris de ayuda de todo el sitio, y el texto de los avisos amarillos, es ahora más oscuro, así que se lee mejor con el tema claro y con el oscuro.',
+          cs: 'Šedý pomocný text na celém webu a\u00a0text na žlutých upozorněních je teď tmavší, takže se lépe čte ve světlém i\u00a0tmavém motivu.',
+          mr: 'संपूर्ण साइटवरील मदतीचा राखाडी मजकूर, आणि पिवळ्या इशाऱ्यांवरील मजकूर, आता अधिक गडद आहे, त्यामुळे फिकट आणि गडद दोन्ही थीममध्ये वाचायला सोपा आहे.',
+        },
+      },
+      {
+        id: 'small-screens-large-text',
+        text: {
+          en: 'On a small screen or with large text, the spreadsheet, PDF and link buttons under a tool stack one under another, amounts in the How-to guides’ drawings stay whole on one line, and long amounts in the loan comparison’s table are drawn as large as they fit. A phone keyboard’s return key now says “done” in the tools and “send” in the email forms.',
+          hi: 'छोटी स्क्रीन पर या बड़े अक्षरों में, टूल के नीचे स्प्रेडशीट, PDF और लिंक वाले बटन एक के नीचे एक आते हैं, “कैसे करें” गाइड के चित्रों में रकमें एक पंक्ति में पूरी रहती हैं, और लोन की तुलना की तालिका में लंबी रकमें जितनी बड़ी समा सकें उतनी बड़ी दिखती हैं। फ़ोन के कीबोर्ड का रिटर्न बटन अब टूल में “हो गया” और ईमेल फ़ॉर्म में “भेजें” बताता है।',
+          es: 'En una pantalla pequeña o con texto grande, los botones de hoja de cálculo, PDF y enlace bajo una herramienta se apilan uno debajo de otro, las cantidades de los dibujos de las guías prácticas se quedan enteras en una línea y las cantidades largas de la tabla de la comparación de préstamos se muestran tan grandes como caben. La tecla de retorno del teclado del teléfono dice ahora «listo» en las herramientas y «enviar» en los formularios de correo.',
+          cs: 'Na malé obrazovce nebo s\u00a0velkým písmem se tlačítka pro tabulku, PDF a\u00a0odkaz pod nástrojem skládají pod sebe, částky v\u00a0obrázcích návodů zůstávají celé na jednom řádku a\u00a0dlouhé částky v\u00a0tabulce porovnání úvěrů jsou tak velké, jak se vejdou. Klávesa Enter na klávesnici telefonu teď v\u00a0nástrojích říká „hotovo“ a\u00a0v\u00a0e-mailových formulářích „odeslat“.',
+          mr: 'लहान स्क्रीनवर किंवा मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
+        },
+      },
     ],
   },
   {
