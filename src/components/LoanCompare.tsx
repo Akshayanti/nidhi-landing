@@ -1772,9 +1772,13 @@ function VendorCard({
     setEdited((before) => new Set([...before, ...Object.keys(patch)]));
     onEdit(patch);
   };
+  // An amount or payment that cannot be read is named by itself, and only
+  // its box is marked: not an optional box, nor the rate or term (#898, council).
+  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
+  const unreadableRequired = errorKey === 'amountUnreadable' ? 'principal' : errorKey === 'paymentUnreadable' ? 'monthlyPayment' : null;
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
-  const badOptional = new Set<OptionalField>([
+  const badOptional = unreadableRequired ? new Set<OptionalField>() : new Set<OptionalField>([
     ...unreadableOptionalFields(vendor),
     // A points cost above the fee it is part of is marked the same way.
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
@@ -1786,13 +1790,12 @@ function VendorCard({
   // When that is what is wrong, the required boxes are not marked as well.
   // Nor for a changing rate on a loan set by its payment: the message says
   // where to go, and the amount, rate and payment are not what is wrong.
-  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
   const requiredError = hasError && badOptional.size === 0 && errorKey !== 'hybridMode';
   // While a ? that arrived is still unedited, only the box holding it is
   // marked: the message says "this value", and a reader moving through the
   // boxes should not hear it on the one they just typed in (#825 review).
   const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
-    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : requiredError;
+    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : unreadableRequired ? field === unreadableRequired : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
