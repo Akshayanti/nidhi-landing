@@ -347,13 +347,18 @@ export default function MonteCarloSimulator({
   // (#822). The simulator says no result on ordinary edits: it runs again on
   // every one.
   const [recovery, setRecovery] = useState<'none' | 'fixing' | 'back'>('none');
+  // "Again" only where a result was on screen before: a shared link that
+  // arrived with a wrong box has shown none.
+  const shownBefore = useRef(false);
   useEffect(() => {
     // Back once the result on screen is the corrected plan's; the next edit
     // starts waiting again, and the line is taken back unsaid if not yet said.
-    if (hasErrors) setRecovery('fixing');
+    // Counted once the page has read any link: before that it shows its example.
+    if (hydrated && !hasErrors && !waiting) shownBefore.current = true;
+    if (hasErrors) setRecovery(shownBefore.current ? 'fixing' : 'none');
     else if (!waiting && recovery === 'fixing') setRecovery('back');
     else if (waiting && recovery === 'back') setRecovery('none');
-  }, [hasErrors, waiting, recovery]);
+  }, [hydrated, hasErrors, waiting, recovery]);
 
   // A number box hands over a plain number string, whatever the page's language wrote.
   const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -371,15 +376,16 @@ export default function MonteCarloSimulator({
     const state = publishableForm(form, defaultCurrency);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=monte_carlo';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
+    const answer = share.start();
     const done = () => {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2500);
-      share.copied(url);
+      answer.copied(url);
     };
     // Refused, or no clipboard at all (an in-app browser): the address is
     // offered to copy by hand, and stays in the bar under the buttons (#711).
     const refuse = () => {
-      share.refused(url);
+      answer.refused(url);
       window.prompt(strings.actions.copyPrompt, url);
     };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);

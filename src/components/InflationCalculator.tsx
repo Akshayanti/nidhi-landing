@@ -414,15 +414,16 @@ export default function InflationCalculator({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
+    const answer = share.start();
     const done = () => {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2500);
-      share.copied(url);
+      answer.copied(url);
     };
     // Refused, or no clipboard at all (an in-app browser): the address is
     // offered to copy by hand, and stays in the bar under the buttons (#711).
     const refuse = () => {
-      share.refused(url);
+      answer.refused(url);
       window.prompt(strings.actions.copyPrompt, url);
     };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);

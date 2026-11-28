@@ -211,18 +211,33 @@ export function useShareLink(stale: unknown, words: { status: string; prompt: st
   const [url, setUrl] = useState('');
   const [failed, setFailed] = useState(false);
   const [notice, setNotice] = useState<Notice>({ text: '', n: 0 });
-  useEffect(() => { setUrl(''); }, [stale]);
-  const copied = useCallback((link: string) => {
-    setUrl(link);
-    setFailed(false);
-    setNotice((was) => ({ text: words.status, n: was.n + 1 }));
-  }, [words.status]);
-  const refused = useCallback((link: string) => {
-    setUrl(link);
-    setFailed(true);
-    setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));
-  }, [words.prompt]);
-  return { url, failed, notice, copied, refused };
+  // Each change to the form starts a new generation. The clipboard answers
+  // later: an answer for a form that has changed since is dropped, so the bar
+  // never brings back the address of something no longer on the page.
+  const generation = useRef(0);
+  useEffect(() => {
+    generation.current += 1;
+    setUrl('');
+  }, [stale]);
+  /** Call when a copy starts; the answers it returns count only while the form is unchanged. */
+  const start = useCallback(() => {
+    const at = generation.current;
+    return {
+      copied: (link: string) => {
+        if (at !== generation.current) return;
+        setUrl(link);
+        setFailed(false);
+        setNotice((was) => ({ text: words.status, n: was.n + 1 }));
+      },
+      refused: (link: string) => {
+        if (at !== generation.current) return;
+        setUrl(link);
+        setFailed(true);
+        setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));
+      },
+    };
+  }, [words.status, words.prompt]);
+  return { url, failed, notice, start };
 }
 
 /** The bar under a tool's buttons that holds a copied share link (`useShareLink`). Not a live region: the notice says it. */
