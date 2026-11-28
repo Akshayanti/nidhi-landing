@@ -86,7 +86,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = 'c70b3585946b';
+var VERSION = '34ec44f7f4f7';
 
 // ============================================================================
 // Config

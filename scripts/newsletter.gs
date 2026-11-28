@@ -116,7 +116,7 @@
 // Which source this is: a hash of this file, written by `npm run gs:version`
 // and checked by a test. The health answer reports it, so the deployed
 // script can be compared with main (docs/operations.md, #443).
-var VERSION = '513538776a7e';
+var VERSION = '44c9553259f5';
 
 /**
  * The mails' colours, each named for the site token it copies (:root in
