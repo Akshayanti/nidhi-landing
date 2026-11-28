@@ -25,8 +25,9 @@
 // without and with cookie consent, it types distinctive amounts and a
 // distinctive name, clicks inputs, buttons, result cards and charts (three
 // quick clicks for a rage click, one where nothing responds for a dead click),
-// uses every export, leaves the page, opens a # share link and an old ? link,
-// and switches language from a share link. Then it decodes every PostHog
+// uses every export, clicks into each share link field it shows, leaves the
+// page, opens a # share link, an old ? link and (net worth) a first-version
+// link, and switches language from a share link. Then it decodes every PostHog
 // request the page tried to send and fails if any of them holds a typed
 // value, a file name, a blob: or data: address, a tool address with state in
 // it, or an element attribute other than data-attr and positions.
@@ -134,6 +135,12 @@ const TOOLS = {
     files: ['.csv'],
     // Its share link opens a read-only view, which has an event of its own.
     sharedView: 'shared_view_opened',
+    // A link from the first version (May 2026) kept its state in the query
+    // string under keys of its own (#890). It must leave the address and be
+    // refused, never read: the banner says the link is too old.
+    firstLink: { query: () => `mode=full&func=EUR&a0_name=${encodeURIComponent(N2)}&amt_EUR=${A1}&c_EUR=1`, refused: '.mcnw-bannerWarn' },
+    // Its link shows only in the share window, once Copy is pressed there.
+    showLink: ['[data-attr="mcnw-share-open"]', '[data-attr="mcnw-share-copy"]'],
   },
   'monte-carlo-simulator': {
     global: '__nidhiMonteCarloShared',
@@ -779,6 +786,20 @@ async function useTool(page, tool, note, downloads, sent) {
   const pressed = new Set();
   await pressButtons(page, note, pressed);
   await sleep(500);
+  // The link a share window shows, clicked into as a reader does to select
+  // it (three quick clicks, a rage click), while it holds the typed state.
+  note.step = 'clicking the share link fields';
+  note.linkFields = 0;
+  for (const selector of tool.showLink || []) {
+    if (await click(page, `${island} ${selector}`)) await sleep(500);
+  }
+  for (const el of await visible(page, `${island} input[readonly]`)) {
+    if (await press(page, el, 3)) note.linkFields++;
+    await sleep(300);
+  }
+  // A tool whose share window shows its link must have had one to click.
+  if (tool.mustSend.includes('share_modal_opened') && !note.linkFields) failed.push('no share link field could be clicked: the share window showed no link');
+  if (tool.showLink) { await page.keyboard.press('Escape').catch(() => {}); await sleep(400); }
 
 
   const inputs = await makeChoices(page, note);
@@ -1046,6 +1067,15 @@ async function run(browser, base, { slug, locale, viewport, consent }) {
       await open(`${path}?${state}&utm_source=share`, 'old');
       if ((await address()) !== `${path}?utm_source=share`) problems.push(`an old ? link left state in the address: ${await address()}`);
       if (!(await restored())) problems.push('an old ? link did not bring the typed amount back');
+      await leave();
+    }
+    if (tool.firstLink) {
+      // 4b. A first-version link: its keys leave the address with the rest of
+      // the state, and the page refuses it rather than show what it held.
+      await open(`${path}?${tool.firstLink.query()}&utm_source=share`, 'first');
+      if ((await address()) !== `${path}?utm_source=share`) problems.push(`a first-version link left state in the address: ${await address()}`);
+      if (!(await visible(page, tool.firstLink.refused)).length) problems.push('a first-version link was not refused as too old');
+      if (await restored()) problems.push('a first-version link brought the typed amount back');
       await leave();
     }
     if (state && tool.sealed) {
