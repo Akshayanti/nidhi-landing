@@ -172,6 +172,16 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'एखादा धडा किंवा मोफत साधन शेअर केल्यावर, लिंकच्या पूर्वावलोकनात आता त्याचे शीर्षक दिसते, जसे मार्गदर्शकांसाठी आधीपासून होत होते. दुसऱ्या भाषेतील पानावरून शेअर केलेल्या साधनासाठी nidhi\u00a0चे इंग्रजी कार्डच दिसते.',
         },
       },
+      {
+        id: 'loan-sheet-cents-and-payment-chart-names',
+        text: {
+          en: 'In the loan comparison, the spreadsheet now writes a typed amount as the results count it: 1,000.005 was written as 1,000.00 while the results used 1,000.01. The chart of where each payment goes now names each bar once, by its month on a loan of up to three years and by its year on a longer one, where two bars could both say “Year\u00a03”.',
+          hi: 'लोन तुलना टूल में, स्प्रेडशीट अब लिखी गई राशि को उसी तरह लिखती है जैसे नतीजे उसे गिनते हैं: 1,000.005 को 1,000.00 लिखा जाता था, जबकि नतीजे 1,000.01 मानते थे। हर किस्त कहाँ जाती है, यह दिखाने वाला चार्ट अब हर बार को एक ही नाम देता है: तीन साल तक के लोन पर उसके महीने से, और लंबे लोन पर उसके साल से, जहाँ पहले दो बार पर “साल\u00a03” लिखा हो सकता था।',
+          es: 'En el comparador de préstamos, la hoja de cálculo escribe ahora una cantidad tecleada tal como la cuentan los resultados: 1.000,005 se escribía 1.000,00 mientras los resultados usaban 1.000,01. El gráfico de a dónde va cada cuota da ahora un nombre distinto a cada barra: su mes en un préstamo de hasta tres años y su año en uno más largo, donde antes dos barras podían decir «Año\u00a03».',
+          cs: 'Ve srovnání úvěrů teď tabulka zapisuje zadanou částku tak, jak ji počítají výsledky: 1\u00a0000,005 se zapsalo jako 1\u00a0000,00, zatímco výsledky počítaly s\u00a01\u00a0000,01. Graf toho, kam jde každá splátka, teď pojmenuje každý sloupec jen jednou: u\u00a0úvěru do tří let měsícem, u\u00a0delšího rokem, kde dřív mohly dva sloupce nést „Rok\u00a03“.',
+          mr: 'कर्जांच्या तुलनेत, स्प्रेडशीट आता लिहिलेली रक्कम निकाल जशी मोजतात तशीच लिहिते: 1,000.005 ही रक्कम 1,000.00 अशी लिहिली जात होती, तर निकाल 1,000.01 वापरत होते. प्रत्येक हप्ता कुठे जातो हे दाखवणारा आलेख आता प्रत्येक स्तंभाला एकदाच नाव देतो: तीन वर्षांपर्यंतच्या कर्जावर त्याच्या महिन्याने आणि जास्त काळाच्या कर्जावर त्याच्या वर्षाने, जिथे आधी दोन स्तंभांवर “वर्ष\u00a03” असू शकत होते.',
+        },
+      },
     ],
   },
   {

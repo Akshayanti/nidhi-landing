@@ -692,6 +692,10 @@ describe('the newsletter workflow says so when something went wrong', () => {
     assert.equal((load.match(/\n\s+exit 1\n/g) ?? []).length, 2, 'a missing branch and an unreadable one both fail');
     assert.match(step('newsletter'), /steps\.load_marker\.outcome == 'success'/, 'nothing is sent without the record');
     assert.doesNotMatch(step('marker'), /2>\/dev\/null; then\n\s+git worktree add --detach "\$STATE" origin\/newsletter-state\n\s+else\n\s+git worktree add --detach "\$STATE" HEAD/);
+    // main keeps no copy and ignores the file, so a first run starts an empty
+    // record and has to add it by force, or its record is never saved.
+    assert.match(step('load_marker'), /: > \.last-sent-guid\.txt/);
+    assert.match(step('marker'), /git -C "\$STATE" add -f \.last-sent-guid\.txt/);
   });
 
   it('a run that alerted is red: the last step fails whenever the alert ran', () => {

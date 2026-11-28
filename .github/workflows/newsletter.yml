@@ -248,7 +248,9 @@ jobs:
               echo "No marker changes to commit."
               exit 0
             fi
-            git -C "$STATE" add .last-sent-guid.txt
+            # -f: the file is ignored on main (.gitignore), so a first run, whose
+            # worktree starts from main, has to add it by force.
+            git -C "$STATE" add -f .last-sent-guid.txt
             git -C "$STATE" commit --allow-empty -m "chore(newsletter): record sent post GUIDs"
             if git -C "$STATE" push origin HEAD:refs/heads/newsletter-state; then
               echo "Marker pushed on attempt $attempt"
