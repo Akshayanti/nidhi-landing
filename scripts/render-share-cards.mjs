@@ -1,7 +1,9 @@
 /**
  * Renders the share images (the og:image a link preview shows), 1200×630:
- * each How-to guide's, each lesson's and each free tool's, to
- * public/brand/social/{how-to,lessons,tools}/<slug>.png.
+ * each How-to guide's and each free tool's to
+ * public/brand/social/{how-to,tools}/<slug>.png, and each lesson's to
+ * src/share-cards/lessons/<slug>.png, from where only published lessons'
+ * cards are served (src/pages/brand/social/lessons/[slug].png.ts).
  *
  * A card shows what the link is (a guide, a lesson, a tool), its title and a
  * line about it, in the site's fonts, colours and brand mark (#420, #743):
@@ -144,10 +146,12 @@ const browser = await puppeteer.launch({ headless: 'new' });
 const page = await browser.newPage();
 await page.setViewport({ width: 1200, height: 630 });
 for (const c of cards) {
-  mkdirSync(join(SOCIAL, c.kind), { recursive: true });
+  // A lesson's card stays out of public/ until its lesson is published.
+  const dir = c.kind === 'lessons' ? join(ROOT, 'src/share-cards/lessons') : join(SOCIAL, c.kind);
+  mkdirSync(dir, { recursive: true });
   await page.setContent(html(c), { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: join(SOCIAL, c.kind, `${c.slug}.png`) });
+  await page.screenshot({ path: join(dir, `${c.slug}.png`) });
   console.log(`${c.kind}/${c.slug}.png`);
 }
 await browser.close();

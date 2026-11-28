@@ -793,7 +793,8 @@ async function useTool(page, tool, note, downloads, sent) {
   for (const selector of tool.showLink || []) {
     if (await click(page, `${island} ${selector}`)) await sleep(500);
   }
-  for (const el of await visible(page, `${island} input[readonly]`)) {
+  // The share link fields themselves (LinkField: lc-shareUrlInput, mcnw-shareUrlInput).
+  for (const el of await visible(page, `${island} input[readonly][class*="shareUrlInput"]`)) {
     if (await press(page, el, 3)) note.linkFields++;
     await sleep(300);
   }

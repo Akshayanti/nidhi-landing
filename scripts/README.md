@@ -41,7 +41,7 @@ lines, and its tests are the test files beside it or importing it.
 | `render-kit.mjs` | Instagram content kit renderer: one source file per blog post, two days, one angle per day. | by hand | `lib/checks/mutation-fingerprint.test.mjs` |
 | `render-logo-with-url.mjs` | Composes merchandise-oriented logo variants that include the website URL beneath the existing wordmark and tagline. | by hand | none |
 | `render-reels.mjs` | Reel render orchestrator (v2). | `npm run reels:plan-only`, `npm run render-reels`, `npm run render-reels:building`, `npm run render-reels:discovery` | none |
-| `render-share-cards.mjs` | Renders the share images (the og:image a link preview shows), 1200×630: each How-to guide's, each lesson's and each free tool's, to public/brand/social/{how-to,lessons,tools}/<slug>.png. | by hand | none |
+| `render-share-cards.mjs` | Renders the share images (the og:image a link preview shows), 1200×630: each How-to guide's and each free tool's to public/brand/social/{how-to,tools}/<slug>.png, and each lesson's to src/share-cards/lessons/<slug>.png, from where only published lessons' cards are served (src/pages/brand/social/lessons/[slug].png.ts). | by hand | none |
 | `render-slides.js` | Renders Instagram carousel slides (1080x1080) from docs/instagram/ posts with scripts/templates/slide-template.html. | by hand | none |
 | `render-stories.js` | Renders Instagram story frames (1080x1920) from docs/instagram/ posts with scripts/templates/story-template.html. | by hand | none |
 | `render-thumbnails.mjs` | Backfill / batch render reel cover thumbnails from saved plan JSONs. | `npm run render-thumbnails` | none |

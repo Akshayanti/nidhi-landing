@@ -23,10 +23,22 @@ export function shareCardAlt(title: string, what: string): string {
   return `${t}${/[.?!]$/.test(t) ? '' : '.'} ${what}`;
 }
 
+/**
+ * Where a lesson's card is kept: outside public/, so that only the cards of
+ * published lessons are served (src/pages/brand/social/lessons/[slug].png.ts).
+ * Null when it has not been drawn.
+ */
+export function lessonCardFile(slug: string): string | null {
+  const file = `src/share-cards/lessons/${slug}.png`;
+  return existsSync(file) ? file : null;
+}
+
 /** The page's card, or undefined when it has none and the default card applies. */
 export function shareCard(kind: ShareCardKind, slug: string, title: string, what: string): ShareCard | undefined {
   // Read from where the build runs, as GuidePage reads its card: a path with
-  // a known start, so the mutation analysis ties it to these cards only.
+  // a known start. Guide and tool cards are in public/; a lesson's is served
+  // by its own endpoint, at the same kind of address.
   const image = `/brand/social/${kind}/${slug}.png`;
-  return existsSync(`public/brand/social/${kind}/${slug}.png`) ? { image, imageAlt: shareCardAlt(title, what) } : undefined;
+  const drawn = kind === 'lessons' ? lessonCardFile(slug) !== null : existsSync(`public/brand/social/${kind}/${slug}.png`);
+  return drawn ? { image, imageAlt: shareCardAlt(title, what) } : undefined;
 }
