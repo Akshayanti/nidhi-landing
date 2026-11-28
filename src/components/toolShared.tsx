@@ -226,12 +226,20 @@ export function useShareLink(stale: unknown, words: { status: string; prompt: st
 }
 
 /** The bar under a tool's buttons that holds a copied share link (`useShareLink`). Not a live region: the notice says it. */
-export function ShareUrlBar({ url, failed, label, failedLabel, aria }: { url: string; failed: boolean; label: string; failedLabel: string; aria: string }) {
+export function ShareUrlBar({ url, failed, label, failedLabel, aria, count = 0 }: { url: string; failed: boolean; label: string; failedLabel: string; aria: string; count?: number }) {
+  // A refused copy takes focus to the address, which is selected, so "Copy
+  // this link:" does not point at a box still to be found; each refusal (its
+  // notice's `count`) moves it again. A copy that worked leaves focus alone.
+  const field = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (failed && url) field.current?.focus();
+  }, [failed, url, count]);
   if (!url) return null;
   return (
     <div className="lc-shareUrlBar">
       <span className="lc-shareUrlLabel">{failed ? failedLabel : label}</span>
       <LinkField
+        ref={field}
         className="lc-shareUrlInput"
         link={url}
         onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}

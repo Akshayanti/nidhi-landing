@@ -85,6 +85,8 @@ describe('the invest or pay off calculator: copying, starting again and saving',
     assert.ok(field !== null && field.value === `${SHARE}#${LINK}` && field.readOnly);
     assert.equal(field.getAttribute('aria-label'), island.actions.shareUrlAria);
     assert.equal(field.hasAttribute('value'), false, 'the address is never an attribute');
+    // Focus goes to it, so "Copy this link:" points at a box already found.
+    assert.ok(document.activeElement === field);
     // A change to the form makes it the address of something else: it goes.
     type('balance', '12345');
     assert.equal(document.querySelector('.lc-shareUrlBar'), null);

@@ -3576,6 +3576,9 @@ function RefinanceSection({
   const emptyTerm = state.refiNewTermMonths.trim() === '';
   const unreadableRefi = badAtMonth || badRate || badTerm || badFee;
   const badRefi = unreadableRefi || emptyAt || emptyRate || emptyTerm;
+  // One empty box is named by itself; two or three, together.
+  const emptyCount = [emptyAt, emptyRate, emptyTerm].filter(Boolean).length;
+  const emptyMessage = emptyCount > 1 ? strings.refi.required : emptyAt ? strings.refi.requiredMonth : emptyRate ? strings.refi.requiredRate : strings.refi.requiredTerm;
 
   const cmp =
     !badRefi && original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
@@ -3705,7 +3708,7 @@ function RefinanceSection({
       </div>
 
       {badRefi ? (
-        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{unreadableRefi ? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText) : strings.refi.required}</ErrorText></p>
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{unreadableRefi ? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText) : emptyMessage}</ErrorText></p>
       ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}

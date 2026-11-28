@@ -3816,6 +3816,8 @@ legend.lc-fieldLabel--required {
   left: 0;
   align-self: start;
   z-index: 1;
+  /* A tap on the plot under it reaches the chart. */
+  pointer-events: none;
 }
 .lc-yPin text {
   font-family: var(--font-body);
@@ -3827,7 +3829,8 @@ legend.lc-fieldLabel--required {
 }
 .lc-chartBox:focus-visible {
   outline: 2px solid var(--color-teal);
-  outline-offset: 4px;
+  /* Inside the box: the scroller around it clipped a ring drawn outside. */
+  outline-offset: -2px;
 }
 /* Chart text is set from the reader's text size by the chart (#676). */
 .lc-chart text {

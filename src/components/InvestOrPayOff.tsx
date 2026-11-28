@@ -631,7 +631,7 @@ export default function InvestOrPayOff({
             <span className="ifc-hint">{strings.actions.shareNote}</span>
           </span>
         }
-        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} />}
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
         ready={!waiting && shownNow !== null}

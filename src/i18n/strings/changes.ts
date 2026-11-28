@@ -143,23 +143,13 @@ export const CHANGE_DAYS: ChangeDay[] = [
         },
       },
       {
-        id: 'grey-text-easier-to-read',
-        text: {
-          en: 'Grey help text across the site, and the text on yellow warnings, is now darker, so it is easier to read in the light and the dark theme.',
-          hi: 'पूरी साइट पर मदद वाला धूसर टेक्स्ट, और पीली चेतावनियों का टेक्स्ट, अब ज़्यादा गहरा है, इसलिए हल्की और गहरी दोनों थीम में पढ़ना आसान है।',
-          es: 'El texto gris de ayuda de todo el sitio, y el texto de los avisos amarillos, es ahora más oscuro, así que se lee mejor con el tema claro y con el oscuro.',
-          cs: 'Šedý pomocný text na celém webu a\u00a0text na žlutých upozorněních je teď tmavší, takže se lépe čte ve světlém i\u00a0tmavém motivu.',
-          mr: 'संपूर्ण साइटवरील मदतीचा राखाडी मजकूर, आणि पिवळ्या इशाऱ्यांवरील मजकूर, आता अधिक गडद आहे, त्यामुळे फिकट आणि गडद दोन्ही थीममध्ये वाचायला सोपा आहे.',
-        },
-      },
-      {
         id: 'small-screens-large-text',
         text: {
-          en: 'On a small screen or with large text, the spreadsheet, PDF and link buttons under a tool stack one under another, amounts in the How-to guides’ drawings stay whole on one line, and long amounts in the loan comparison’s table are drawn as large as they fit. A phone keyboard’s return key now says “done” in the tools and “send” in the email forms.',
-          hi: 'छोटी स्क्रीन पर या बड़े अक्षरों में, टूल के नीचे स्प्रेडशीट, PDF और लिंक वाले बटन एक के नीचे एक आते हैं, “कैसे करें” गाइड के चित्रों में रकमें एक पंक्ति में पूरी रहती हैं, और लोन की तुलना की तालिका में लंबी रकमें जितनी बड़ी समा सकें उतनी बड़ी दिखती हैं। फ़ोन के कीबोर्ड का रिटर्न बटन अब टूल में “हो गया” और ईमेल फ़ॉर्म में “भेजें” बताता है।',
-          es: 'En una pantalla pequeña o con texto grande, los botones de hoja de cálculo, PDF y enlace bajo una herramienta se apilan uno debajo de otro, las cantidades de los dibujos de las guías prácticas se quedan enteras en una línea y las cantidades largas de la tabla de la comparación de préstamos se muestran tan grandes como caben. La tecla de retorno del teclado del teléfono dice ahora «listo» en las herramientas y «enviar» en los formularios de correo.',
-          cs: 'Na malé obrazovce nebo s\u00a0velkým písmem se tlačítka pro tabulku, PDF a\u00a0odkaz pod nástrojem skládají pod sebe, částky v\u00a0obrázcích návodů zůstávají celé na jednom řádku a\u00a0dlouhé částky v\u00a0tabulce porovnání úvěrů jsou tak velké, jak se vejdou. Klávesa Enter na klávesnici telefonu teď v\u00a0nástrojích říká „hotovo“ a\u00a0v\u00a0e-mailových formulářích „odeslat“.',
-          mr: 'लहान स्क्रीनवर किंवा मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
+          en: 'With large text, the spreadsheet, PDF and link buttons under a tool stack one under another on a wider screen too, amounts in the How-to guides’ drawings and examples stay whole on one line, and long amounts in the loan comparison’s table are drawn as large as they fit. A phone keyboard’s return key now says “done” in the tools and “send” in the email forms.',
+          hi: 'बड़े अक्षरों में, टूल के नीचे स्प्रेडशीट, PDF और लिंक वाले बटन चौड़ी स्क्रीन पर भी एक के नीचे एक आते हैं, “कैसे करें” गाइड के चित्रों और उदाहरणों में रकमें एक पंक्ति में पूरी रहती हैं, और लोन की तुलना की तालिका में लंबी रकमें जितनी बड़ी समा सकें उतनी बड़ी दिखती हैं। फ़ोन के कीबोर्ड का रिटर्न बटन अब टूल में “हो गया” और ईमेल फ़ॉर्म में “भेजें” बताता है।',
+          es: 'Con texto grande, los botones de hoja de cálculo, PDF y enlace bajo una herramienta se apilan uno debajo de otro también en una pantalla más ancha, las cantidades de los dibujos y ejemplos de las guías prácticas se quedan enteras en una línea y las cantidades largas de la tabla de la comparación de préstamos se muestran tan grandes como caben. La tecla de retorno del teclado del teléfono dice ahora «listo» en las herramientas y «enviar» en los formularios de correo.',
+          cs: 'S\u00a0velkým písmem se tlačítka pro tabulku, PDF a\u00a0odkaz pod nástrojem skládají pod sebe i\u00a0na širší obrazovce, částky v\u00a0obrázcích a\u00a0příkladech návodů zůstávají celé na jednom řádku a\u00a0dlouhé částky v\u00a0tabulce porovnání úvěrů jsou tak velké, jak se vejdou. Klávesa Enter na klávesnici telefonu teď v\u00a0nástrojích říká „hotovo“ a\u00a0v\u00a0e-mailových formulářích „odeslat“.',
+          mr: 'मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे रुंद स्क्रीनवरही एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील आणि उदाहरणांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
         },
       },
     ],

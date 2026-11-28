@@ -163,8 +163,10 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
     gap: var(--space-2);
     font-size: var(--text-ui);
   }
+  /* A note flows under its number, as a label does: a column beside the
+     number was narrower than a word at a large text size. */
   .gv-notes li {
-    display: flex; gap: var(--space-1); align-items: baseline;
+    display: block;
     /* The note's number sits beside its amounts on the line. */
     container-type: inline-size;
     --amt-beside: calc(1.9em + var(--space-1));

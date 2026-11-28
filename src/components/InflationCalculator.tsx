@@ -678,7 +678,7 @@ export default function InflationCalculator({
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
-        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} />}
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
