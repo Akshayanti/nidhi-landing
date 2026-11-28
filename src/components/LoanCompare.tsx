@@ -217,6 +217,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['original loan is invalid', 'refiOriginal'],
   // `computeFromInput` (src/utils/loan/inputs.ts).
   ['optional boxes cannot be read', 'optionalUnreadable'],
+  ['loan amount could not be read', 'amountUnreadable'],
+  ['monthly payment could not be read', 'paymentUnreadable'],
   ['points cost is more than the fee', 'pointsAboveFee'],
   ['changing offer needs both of its boxes', 'rateChangeIncomplete'],
   // `computeLoan` and `computeFromInput`.
@@ -281,6 +283,9 @@ export const VALIDATION_REASONS = {
   hybridMode: 'rate_structure',
   rateChangeIncomplete: 'rate_structure',
   optionalUnreadable: 'optional_field',
+  // The same reasons as before #898, when these were "greater than zero".
+  amountUnreadable: 'missing_principal',
+  paymentUnreadable: 'missing_payment',
   pointsAboveFee: 'optional_field',
   lumpMonth: 'optional_field',
   refiMonth: 'other',
@@ -631,6 +636,24 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               </g>
             )}
           </svg>
+          {/* On a phone the chart scrolls sideways, and at a large text size
+              its amounts took most of what was in view: a copy of the
+              amounts stays at the left while the plot scrolls under it
+              (#758, owner, Nov 27 2026). Drawn to the chart's own scale;
+              the chart says the amounts to a screen reader, so this does not. */}
+          {!margin.inside && (
+            <svg
+              className="lc-yPin"
+              aria-hidden="true"
+              viewBox={`0 0 ${BPAD.left} ${Math.ceil(BH)}`}
+              style={{ width: `${(100 * BPAD.left) / BW}%`, '--chart-fs': `${fs}px` } as React.CSSProperties}
+            >
+              <rect className="lc-yPinBg" x={0} y={0} width={BPAD.left} height={Math.ceil(BH)} />
+              {yTicks.map((t) => (
+                <text key={`yp${t}`} className="lc-chartTick" x={BPAD.left - 0.75 * fs} y={y(t) + 0.35 * fs} textAnchor="end">{unit.tick(t)}</text>
+              ))}
+            </svg>
+          )}
           <span className="chart-srOnly" aria-live="polite">{announce}</span>
         </div>
       </div>
@@ -1749,9 +1772,13 @@ function VendorCard({
     setEdited((before) => new Set([...before, ...Object.keys(patch)]));
     onEdit(patch);
   };
+  // An amount or payment that cannot be read is named by itself, and only
+  // its box is marked: not an optional box, nor the rate or term (#898, council).
+  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
+  const unreadableRequired = errorKey === 'amountUnreadable' ? 'principal' : errorKey === 'paymentUnreadable' ? 'monthlyPayment' : null;
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
-  const badOptional = new Set<OptionalField>([
+  const badOptional = unreadableRequired ? new Set<OptionalField>() : new Set<OptionalField>([
     ...unreadableOptionalFields(vendor),
     // A points cost above the fee it is part of is marked the same way.
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
@@ -1763,13 +1790,12 @@ function VendorCard({
   // When that is what is wrong, the required boxes are not marked as well.
   // Nor for a changing rate on a loan set by its payment: the message says
   // where to go, and the amount, rate and payment are not what is wrong.
-  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
   const requiredError = hasError && badOptional.size === 0 && errorKey !== 'hybridMode';
   // While a ? that arrived is still unedited, only the box holding it is
   // marked: the message says "this value", and a reader moving through the
   // boxes should not hear it on the one they just typed in (#825 review).
   const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
-    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : requiredError;
+    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : unreadableRequired ? field === unreadableRequired : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
@@ -1870,6 +1896,7 @@ function VendorCard({
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('name')}>{strings.card.name}</label>
         <input
+          enterKeyHint="done"
           id={id('name')}
           type="text"
           className="lc-input"
@@ -3260,7 +3287,12 @@ function HorizonSection({
   const { formatMoney } = useMoney();
   const horizonId = useId();
   const horizonErrorId = useId();
-  const badHorizon = isUnreadable(horizonMonths);
+  // A horizon box left empty is flagged and holds the panel back, as one
+  // that cannot be read does: it used to show results at 60 months while
+  // the box was blank (#823, owner, Nov 27, 2026).
+  const emptyHorizon = horizonMonths.trim() === '';
+  const badHorizon = isUnreadable(horizonMonths) || emptyHorizon;
+  const horizonFault = emptyHorizon ? strings.horizon.required : null;
   // Debounced engagement signal. We don't want to fire one event per
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
@@ -3330,7 +3362,7 @@ function HorizonSection({
           onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
-          aria-valuetext={badHorizon ? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
+          aria-valuetext={badHorizon ? horizonFault ?? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
         <LocaleNumberInput
@@ -3345,7 +3377,7 @@ function HorizonSection({
       </div>
 
       {badHorizon ? (
-        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{horizonFault ?? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText)}</ErrorText></p>
       ) : validRows.length === 0 ? (
         <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
@@ -3539,7 +3571,17 @@ function RefinanceSection({
   const badRate = isUnreadable(state.refiNewRatePct);
   const badTerm = isUnreadable(state.refiNewTermMonths);
   const badFee = isUnreadable(state.refiNewFeeMajor);
-  const badRefi = badAtMonth || badRate || badTerm || badFee;
+  // A required box left empty (the month, the rate, the term) is flagged and
+  // holds the scenario back, as one that cannot be read does (#823). An
+  // empty fee is none paid.
+  const emptyAt = state.refiAtMonth.trim() === '';
+  const emptyRate = state.refiNewRatePct.trim() === '';
+  const emptyTerm = state.refiNewTermMonths.trim() === '';
+  const unreadableRefi = badAtMonth || badRate || badTerm || badFee;
+  const badRefi = unreadableRefi || emptyAt || emptyRate || emptyTerm;
+  // One empty box is named by itself; two or three, together.
+  const emptyCount = [emptyAt, emptyRate, emptyTerm].filter(Boolean).length;
+  const emptyMessage = emptyCount > 1 ? strings.refi.required : emptyAt ? strings.refi.requiredMonth : emptyRate ? strings.refi.requiredRate : strings.refi.requiredTerm;
 
   const cmp =
     !badRefi && original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
@@ -3592,8 +3634,8 @@ function RefinanceSection({
             id={atMonthId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badAtMonth || undefined}
-            aria-describedby={badAtMonth ? refiErrorId : undefined}
+            aria-invalid={badAtMonth || emptyAt || undefined}
+            aria-describedby={badAtMonth || emptyAt ? refiErrorId : undefined}
             value={state.refiAtMonth}
             onValueChange={(v) => {
               onChange({ refiAtMonth: v });
@@ -3608,8 +3650,8 @@ function RefinanceSection({
             id={newRateId}
             inputMode="decimal"
             className="lc-input"
-            aria-invalid={badRate || undefined}
-            aria-describedby={badRate ? refiErrorId : undefined}
+            aria-invalid={badRate || emptyRate || undefined}
+            aria-describedby={badRate || emptyRate ? refiErrorId : undefined}
             value={state.refiNewRatePct}
             onValueChange={(v) => {
               onChange({ refiNewRatePct: v });
@@ -3624,8 +3666,8 @@ function RefinanceSection({
             id={newTermId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badTerm || undefined}
-            aria-describedby={badTerm ? refiErrorId : undefined}
+            aria-invalid={badTerm || emptyTerm || undefined}
+            aria-describedby={badTerm || emptyTerm ? refiErrorId : undefined}
             value={state.refiNewTermMonths}
             onValueChange={(v) => {
               onChange({ refiNewTermMonths: v });
@@ -3669,7 +3711,7 @@ function RefinanceSection({
       </div>
 
       {badRefi ? (
-        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{unreadableRefi ? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText) : emptyMessage}</ErrorText></p>
       ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}

@@ -254,7 +254,8 @@ export const copyLabel = () => one('[data-attr="free-inflation-share"] .tool-swa
 export const disabled = (el: Element) => el.getAttribute('aria-disabled') === 'true';
 /** The error under a box, or null. */
 export const errorOf = (label: string) => {
-  const id = box(label).getAttribute('aria-errormessage');
+  // The error is named once, first in aria-describedby (#899).
+  const id = (box(label).getAttribute('aria-describedby') ?? '').split(' ').find((part) => part.endsWith('-error'));
   return id ? document.getElementById(id)?.textContent ?? null : null;
 };
 /** The printed report's answer lines, or null when there is no report. */

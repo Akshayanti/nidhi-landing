@@ -296,6 +296,15 @@ export const MAX_PRINCIPAL_MINOR = 1e14;
 export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
 
 /**
+ * The loan amount or the monthly payment holds something that is not a
+ * number ("abc", or Arabic and Latin marks mixed). Said as that, not as "a
+ * loan amount greater than zero", which is untrue of a reader who typed a
+ * number in their own digits (#898). Never quotes what was typed.
+ */
+export const AMOUNT_UNREADABLE = 'The loan amount could not be read. Use digits only, such as 250000.';
+export const PAYMENT_UNREADABLE = 'The monthly payment could not be read. Use digits only, such as 1500.';
+
+/**
  * The message for a lump sum whose month is not a whole one from 1 to
  * `MAX_TERM_MONTHS`. The advice above ("use digits only") is wrong for it:
  * the dot taken out of 12.5 gives month 125. Only the page's phrase list

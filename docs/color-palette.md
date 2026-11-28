@@ -195,6 +195,19 @@ Two non-CSS surfaces also keep literal copies because they cannot consume CSS va
 
 The edge of a text field, select or checkbox is a neutral of its own, `--color-control-edge`: `#858585` on light (3.7:1 on white) and `#7A7A7A` on dark (3.9:1 on `#1E1E1E`), so a field's outline passes the 3:1 non-text minimum, where the card border (`--color-border`) is decorative and does not. Only things a reader can type into or tick take it.
 
+### Grey text and warning text: 8:1 (#788, #828)
+
+Secondary and muted grey text, and the text on a warning panel, are held to the same 8:1 as the palette. They were AA only (the secondary grey `#616161` was 5.9:1 on the page; the warning text `#856404` was 5.0:1 on its tint).
+
+| Token | Light | On the page / its surface | Dark | On `#1E1E1E` |
+|---|---|---|---|---|
+| `--color-text-secondary` | `#4A4A4A` (`--neutral-700`) | 8.4:1 on `#F8F9FA`, 8.9:1 on white | `#BABABA` (`--neutral-text-dark-secondary`) | 8.6:1 |
+| `--color-text-muted` | `#474747` (`--neutral-600`) | 8.8:1 on `#F8F9FA` | `#B8B8B8` (`--neutral-text-dark-muted`) | 8.4:1 |
+| `--color-warning-text` | `#5A4100` (`--warning-light-text-strong`) | 8.7:1 on `#fff3cd` | `#ffc107` (unchanged) | 8.7:1 on `#332b00` |
+| `--warning-light-text` | `#5C4300` | 8.4:1 on `#fff3cd`, 9.3:1 on white | | |
+
+`--neutral-500` and `--neutral-800` keep their values for the borders and lines that use them; dark-mode text has tokens of its own. **In the planner:** its secondary text and warning text should meet the same 8:1.
+
 ### Material Design and Off-Palette Colors
 
 The codebase contains a small set of off-palette literals, defined as named constants in `global.css` and `palette.ts`. They are **intentional** and serve specific purposes outside the brand identity:

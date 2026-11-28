@@ -1200,6 +1200,9 @@ legend.lc-fieldLabel--required {
   font-size: var(--text-small);
   font-variant-numeric: tabular-nums;
   min-width: 30rem; /* keeps columns legible; outer wrap scrolls if needed */
+  /* Its amounts are in the body font, at every width: with the heading
+     font's factor a long amount came out smaller than it needed to (#751). */
+  --amt-k: 0.57;
 }
 
 .lc-deltaTable th,
@@ -3367,9 +3370,8 @@ legend.lc-fieldLabel--required {
 /* Three equal options on one row while their names fit; at a large text size
    they wrap onto rows of their own instead of running past the edge (#745). */
 .mcs-switchRow {
-  /* The tooltips are placed against the whole row, not one option: once the
-     options wrap, an option can sit anywhere, and a tip placed against it ran
-     past the edge of a phone (#745). */
+  /* The row holds the tips where the options can wrap; there they are not
+     shown (#745, #756, below). */
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -3456,6 +3458,28 @@ legend.lc-fieldLabel--required {
 }
 /* Escape hides the tooltips (WCAG 1.4.13) until the pointer or focus leaves. */
 .mcs-switch--tipsOff .mcs-tip {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+/* Where the options sit on one line (a wide screen at the usual text size)
+   each tip is placed above its own option again. Below that, or at a larger
+   text size (the query is in em), a tip placed anywhere sat far from the
+   option it describes or over the legend, so it is not shown: the chosen
+   option's description is under the switch, and a screen reader hears each
+   option's from aria-describedby, which a hidden tip still gives (#756).
+   The chosen option's own tip would repeat that line, so it is never shown. */
+@media (min-width: 48.01em) {
+  .mcs-switchOpt {
+    position: relative;
+  }
+}
+@media (max-width: 48em) {
+  .mcs-tip {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+.mcs-switchOpt--on .mcs-tip {
   visibility: hidden !important;
   opacity: 0 !important;
 }
@@ -3780,10 +3804,38 @@ legend.lc-fieldLabel--required {
 }
 .lc-chartBox {
   border-radius: var(--radius-md);
+  /* The chart and its pinned amounts (.lc-yPin) share one cell. */
+  display: grid;
 }
+.lc-chartBox > svg {
+  grid-area: 1 / 1;
+}
+.lc-yPin {
+  display: none;
+  position: sticky;
+  left: 0;
+  align-self: start;
+  z-index: 1;
+  /* A tap on the plot under it reaches the chart. */
+  pointer-events: none;
+}
+.lc-yPin text {
+  font-family: var(--font-body);
+  font-size: var(--chart-fs, 14px);
+  fill: var(--color-text-muted);
+}
+.lc-yPinBg {
+  fill: var(--color-bg-white);
+}
+/* The ring is drawn on the scroller, whose four sides are always in view: on
+   the box, the scroller clipped it, and on a phone the box runs past the
+   screen and the pinned amounts cover its left side. */
 .lc-chartBox:focus-visible {
+  outline: none;
+}
+.lc-chartScroll:has(> .lc-chartBox:focus-visible) {
   outline: 2px solid var(--color-teal);
-  outline-offset: 4px;
+  outline-offset: 2px;
 }
 /* Chart text is set from the reader's text size by the chart (#676). */
 .lc-chart text {
@@ -3827,6 +3879,14 @@ legend.lc-fieldLabel--required {
 }
 @media (width < 640px) {
   .lc-chart {
+    min-width: 600px;
+  }
+  .lc-yPin {
+    display: block;
+  }
+  /* As wide as the chart it scrolls, so the pinned amounts can stay at the
+     left the whole way across: a sticky part cannot leave its box. */
+  .lc-chartBox {
     min-width: 600px;
   }
 }
@@ -4669,8 +4729,17 @@ button.mcnw-legendItem:focus-visible {
 /* A share link's copied-address bar takes its own line under the buttons.
    It comes after them in the markup too (ToolExport's shareResult), so the
    buttons do not move under a finger when it appears and goes (#491). */
-.tool-exportButtons > [role='status'] {
+.tool-exportButtons > .lc-shareUrlBar {
   flex-basis: 100%;
+}
+/* Below 360 px (in em, so a larger text size counts too) the buttons stack,
+   each the full width: three long labels side by side (Hindi on a small
+   phone) wrapped to tall, narrow buttons (#488). */
+@media (max-width: 22.5em) {
+  .tool-exportButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 /* See SwapLabel in ToolExport.tsx: the two labels share one cell, and the
    shorter one sits in the middle of the room the longer one needs. */

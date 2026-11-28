@@ -957,6 +957,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         <input
           id={nameId}
           type="text"
+          enterKeyHint="done"
           className="mcnw-input"
           value={row.name}
           onChange={(e) => onChange({ name: e.target.value })}
@@ -1458,6 +1459,9 @@ function ShareModal({
   const urlField = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (copyFailed && shareUrl) urlField.current?.focus();
+    // On a short screen (a phone held sideways) the bar can open below the
+    // part of the dialog in view: it is brought into view, the least way (#639).
+    if (shareUrl) urlField.current?.closest('.mcnw-shareUrlBar')?.scrollIntoView?.({ block: 'nearest' });
   }, [copyFailed, shareUrl, notice.n]);
 
   // The parent passes a new `onClose` on every render. Kept in a ref, it
@@ -1906,14 +1910,15 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           />
         </svg>
 
-        {/* Legend: each entry highlights its slice on hover, focus or tap. */}
+        {/* Legend: each entry highlights its slice on hover, focus or tap. Not a
+            toggle (no aria-pressed): focus picks an entry, so a second tap could
+            never release it; the region below says what is picked (#488). */}
         <ul className="mcnw-legend" id={legendId} aria-label={strings.chart.legendAria}>
           {arcs.map((arc) => (
             <li key={arc.pos.code}>
               <button
                 type="button"
                 className={`mcnw-legendItem${arc.pos.code === active ? ' mcnw-legendItem--on' : ''}`}
-                aria-pressed={arc.pos.code === active}
                 onMouseEnter={() => setActive(arc.pos.code)}
                 onFocus={() => setActive(arc.pos.code)}
                 onBlur={() => setActive(null)}

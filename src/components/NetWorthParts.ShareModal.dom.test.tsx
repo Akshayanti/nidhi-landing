@@ -251,6 +251,20 @@ describe('the share dialog', () => {
     assert.equal(box.scrollLeft, 0);
   });
 
+  it('brings the copied link into view, the least way, on a short screen (#639)', () => {
+    const real = window.HTMLElement.prototype.scrollIntoView;
+    const asked: (ScrollIntoViewOptions | boolean | undefined)[] = [];
+    window.HTMLElement.prototype.scrollIntoView = function (this: HTMLElement, o?: ScrollIntoViewOptions | boolean) { if (this.classList.contains('mcnw-shareUrlBar')) asked.push(o); };
+    try {
+      const { update } = open();
+      assert.deepEqual(asked, []);
+      update({ shareUrl: linkFor(ROWS, 'full'), copied: true, notice: { text: island.toolbar.copiedLabel, n: 1 } });
+      assert.deepEqual(asked, [{ block: 'nearest' }]);
+    } finally {
+      window.HTMLElement.prototype.scrollIntoView = real;
+    }
+  });
+
   it('before a copy there is no link to show', () => {
     open();
     assert.ok(urlBox() === null);

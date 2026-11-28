@@ -12,6 +12,7 @@
  * The values come from the guide's frontmatter, where they are written once.
  */
 import type { CollectionEntry } from 'astro:content';
+import AmountText from './AmountText.astro';
 
 type Visual = CollectionEntry<'guides'>['data']['visual'];
 interface Props { visual: Visual }
@@ -42,15 +43,15 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
         <span class="gv-tl-day">{visual.start.label}</span>
         <span class="gv-tl-what">Balance</span>
         <span class="gv-tl-amt"></span>
-        <span class="gv-tl-bal">{visual.currency}{fmt(visual.start.balance)}</span>
+        <span class="gv-tl-bal"><AmountText text={`${visual.currency}${fmt(visual.start.balance)}`} /></span>
         <span class="gv-tl-bar" aria-hidden="true"><i style={`width:${(visual.start.balance / peak) * 100}%`}></i></span>
       </li>
       {timeline.map((t) => (
         <li class:list={['gv-tl-row', { 'gv-tl-neg': t.balance < 0 }]}>
           <span class="gv-tl-day">{t.day}</span>
           <span class="gv-tl-what">{t.label}</span>
-          <span class="gv-tl-amt">{t.amount < 0 ? '−' : '+'}{visual.currency}{fmt(t.amount)}</span>
-          <span class="gv-tl-bal">{t.balance < 0 ? `${visual.currency}${fmt(t.balance)} below zero` : `${visual.currency}${fmt(t.balance)}`}</span>
+          <span class="gv-tl-amt"><AmountText text={`${t.amount < 0 ? '−' : '+'}${visual.currency}${fmt(t.amount)}`} /></span>
+          <span class="gv-tl-bal"><AmountText text={t.balance < 0 ? `${visual.currency}${fmt(t.balance)} below zero` : `${visual.currency}${fmt(t.balance)}`} /></span>
           <span class="gv-tl-bar" aria-hidden="true"><i style={`width:${(Math.max(t.balance, 0) / peak) * 100}%`}></i></span>
         </li>
       ))}
@@ -58,7 +59,7 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
         <span class="gv-tl-day">{visual.end.label}</span>
         <span class="gv-tl-what">Left over</span>
         <span class="gv-tl-amt"></span>
-        <span class="gv-tl-bal"><strong>{lastBalance < 0 ? `${visual.currency}${fmt(lastBalance)} short` : `${visual.currency}${fmt(lastBalance)}`}</strong></span>
+        <span class="gv-tl-bal"><strong><AmountText text={lastBalance < 0 ? `${visual.currency}${fmt(lastBalance)} short` : `${visual.currency}${fmt(lastBalance)}`} /></strong></span>
       </li>
     </ol>
   )}
@@ -68,10 +69,10 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
       <table class="gv-table">
         <thead><tr>{visual.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead>
         <tbody>
-          {visual.rows.map((r) => <tr>{r.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}
+          {visual.rows.map((r) => <tr>{r.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td><AmountText text={cell} /></td>)}</tr>)}
         </tbody>
         {visual.total && (
-          <tfoot><tr>{visual.total.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr></tfoot>
+          <tfoot><tr>{visual.total.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td><AmountText text={cell} /></td>)}</tr></tfoot>
         )}
       </table>
     </div>
@@ -84,13 +85,13 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
         {docLines.map((l) => (
           <div class="gv-doc-line">
             <dt>{l.n > 0 && <span class="gv-mark" aria-hidden="true">{l.n}</span>}<span>{l.label}</span></dt>
-            <dd>{l.value}</dd>
+            <dd><AmountText text={l.value} /></dd>
           </div>
         ))}
       </dl>
       <ol class="gv-notes" role="list">
         {docLines.filter((l) => l.n > 0).map((l) => (
-          <li><span class="gv-mark" aria-hidden="true">{l.n}</span><span><strong>{l.label}.</strong> {l.note}</span></li>
+          <li><span class="gv-mark" aria-hidden="true">{l.n}</span><span><strong>{l.label}.</strong> <AmountText text={l.note ?? ''} /></span></li>
         ))}
       </ol>
     </div>
@@ -109,7 +110,7 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
         </p>
         <ol class="gv-notes" role="list">
           {numbered.filter((p) => p.sign).map((p) => (
-            <li><span class="gv-mark" aria-hidden="true">{p.n}</span><span><strong>“{p.text}”</strong> {p.sign}</span></li>
+            <li><span class="gv-mark" aria-hidden="true">{p.n}</span><span><strong>“{p.text}”</strong> <AmountText text={String(p.sign)} /></span></li>
           ))}
         </ol>
       </div>
@@ -121,6 +122,10 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
 
 <style>
   .gv {
+    /* Amounts are fitted to the line they sit on (AmountText, .amt), in the
+       body font; one wider than its line is drawn smaller, never broken. */
+    container-type: inline-size;
+    --amt-k: 0.57;
     margin: var(--space-6) 0;
     padding: var(--space-4);
     border: 1px solid var(--color-border);
@@ -158,7 +163,14 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
     gap: var(--space-2);
     font-size: var(--text-ui);
   }
-  .gv-notes li { display: flex; gap: var(--space-1); align-items: baseline; }
+  /* A note flows under its number, as a label does: a column beside the
+     number was narrower than a word at a large text size. */
+  .gv-notes li {
+    display: block;
+    /* The note's number sits beside its amounts on the line. */
+    container-type: inline-size;
+    --amt-beside: calc(1.9em + var(--space-1));
+  }
   /* A long address wraps inside its note at a large text size (#486). */
   .gv-notes li > * { min-width: 0; overflow-wrap: anywhere; }
 
@@ -208,13 +220,14 @@ const docLines = visual.kind === 'annotated' ? visual.lines.map((l) => ({ ...l, 
   /* Annotated document */
   .gv-doc-title { font-weight: 700; color: var(--color-text-primary); margin: 0 0 var(--space-3); font-family: var(--font-heading); }
   .gv-doc-lines { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--color-bg); }
-  .gv-doc-line { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--space-3); row-gap: var(--space-1); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-light); }
+  .gv-doc-line { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--space-3); row-gap: var(--space-1); padding: var(--space-2) 0; container-type: inline-size; border-bottom: 1px solid var(--color-border-light); }
   .gv-doc-line:last-child { border-bottom: none; }
   /* A long address still breaks inside the line (#633); a label keeps its
      words whole, and the value drops under it, to the right, when the two do
-     not fit side by side, so an amount stays whole (#841). */
-  .gv-doc-line dt { display: flex; align-items: baseline; flex: 1 1 10em; min-width: 0; overflow-wrap: break-word; }
-  .gv-doc-line dt > * { min-width: 0; }
+     not fit side by side, so an amount stays whole (#841). The label flows
+     under its number rather than in a column beside it: at a large text size
+     that column was narrower than a word, which broke mid-word. */
+  .gv-doc-line dt { display: block; flex: 1 1 10em; min-width: 0; overflow-wrap: break-word; }
   .gv-doc-line dd { margin: 0 0 0 auto; min-width: 0; max-width: 100%; font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; overflow-wrap: break-word; }
 
   /* Message */

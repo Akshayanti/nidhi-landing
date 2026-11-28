@@ -261,6 +261,10 @@ export const investOrPayOffEn = {
       copy: 'Copy a link to these results',
       copied: 'Link copied',
       copyPrompt: 'Copy this link:',
+      /** Over the copied address, kept under the buttons until the form changes (#711). */
+      copiedBar: 'Link copied. You can also copy it from here:',
+      shareUrlAria: 'Link to these results',
+      shareStatus: 'Link copied to the clipboard.',
       shareNote: 'The link contains the numbers you entered, after the # in the address.',
     },
     export: {
@@ -523,6 +527,9 @@ export const investOrPayOffHi: InvestOrPayOff = {
       copy: 'इन नतीजों का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
+      copiedBar: 'लिंक कॉपी हो गया। आप इसे यहाँ से भी कॉपी कर सकते हैं:',
+      shareUrlAria: 'इन नतीजों का लिंक',
+      shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       shareNote: 'लिंक में आपके लिखे आँकड़े होते हैं, पते में # के बाद।',
     },
     export: {
@@ -781,6 +788,9 @@ export const investOrPayOffMr: InvestOrPayOff = {
       copy: 'या निकालांची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
+      copiedBar: 'लिंक कॉपी झाली. तुम्ही ती इथूनही कॉपी करू शकता:',
+      shareUrlAria: 'या निकालांची लिंक',
+      shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       shareNote: 'लिंकमध्ये तुम्ही लिहिलेले आकडे असतात, पत्त्यातील # नंतर.',
     },
     export: {
@@ -1039,6 +1049,9 @@ export const investOrPayOffEs: InvestOrPayOff = {
       copy: 'Copiar un enlace a estos resultados',
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
+      copiedBar: 'Enlace copiado. También puedes copiarlo desde aquí:',
+      shareUrlAria: 'Enlace a estos resultados',
+      shareStatus: 'Enlace copiado al portapapeles.',
       shareNote: 'El enlace contiene las cifras que escribiste, tras el # de la dirección.',
     },
     export: {
@@ -1297,6 +1310,9 @@ export const investOrPayOffCs: InvestOrPayOff = {
       copy: 'Zkopírovat odkaz na tyto výsledky',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
+      copiedBar: 'Odkaz zkopírován. Můžete ho zkopírovat i\u00a0odsud:',
+      shareUrlAria: 'Odkaz na tyto výsledky',
+      shareStatus: 'Odkaz zkopírován do schránky.',
       shareNote: 'Odkaz obsahuje zadaná čísla za znakem # v adrese.',
     },
     export: {

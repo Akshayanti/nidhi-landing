@@ -256,17 +256,15 @@ describe('the horizon the section settles on', () => {
     assert.equal(chosen(show([plain()], '2.4').section), '2 mo');
   });
 
-  it('is five years while the box is empty', () => {
+  it('is flagged and holds the panel back while the box is empty (#823)', () => {
     const { section } = show([long()], '');
-    assert.equal(chosen(section), '5 yr');
-    assert.equal(slider(section).value, '60');
-    // Sixty payments of 100.00 on 12,000.00.
-    assert.deepEqual(table(section), {
-      'Principal repaid': ['€6,000.00'],
-      'Interest paid': ['€0.00'],
-      'Balance remaining': ['€6,000.00'],
-      'Total cash out': ['€6,000.00'],
-    });
+    assert.equal(section.querySelectorAll('.lc-deltaTable').length, 0);
+    const error = section.querySelector('.lc-error');
+    assert.ok(error !== null);
+    assert.equal(error.textContent, `Error: ${s.horizon.required}`);
+    assert.equal(box(section).getAttribute('aria-invalid'), 'true');
+    assert.equal(box(section).getAttribute('aria-describedby'), error.id);
+    assert.equal(slider(section).getAttribute('aria-valuetext'), s.horizon.required);
   });
 });
 
@@ -325,7 +323,7 @@ describe('the number box', () => {
   });
 
   it('is not marked invalid, and points at no error, while it can be read', () => {
-    for (const horizon of ['5', '']) {
+    for (const horizon of ['5', '60']) {
       const { section } = show([plain()], horizon);
       assert.ok(!box(section).hasAttribute('aria-invalid'));
       assert.ok(!box(section).hasAttribute('aria-describedby'));

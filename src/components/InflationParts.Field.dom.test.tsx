@@ -53,7 +53,8 @@ describe('a box of the inflation calculator', () => {
   it('an error marks the box, is said with its lead-in, and comes before the hint', () => {
     draw(<Field id="yrs" label="Years" value="0" onChange={() => {}} hint="1 to 100" error="Enter 1 to 100." inputMode="numeric" />);
     assert.equal(attr('aria-invalid'), 'true');
-    assert.equal(attr('aria-errormessage'), 'yrs-error');
+    // Named once, through aria-describedby (#899).
+    assert.equal(box().hasAttribute('aria-errormessage'), false);
     assert.equal(attr('aria-describedby'), 'yrs-error yrs-hint');
     assert.equal(one('.ifc-error').id, 'yrs-error');
     assert.equal(one('.ifc-error').textContent, 'Error: Enter 1 to 100.');

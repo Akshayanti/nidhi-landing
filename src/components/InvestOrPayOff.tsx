@@ -42,7 +42,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -144,6 +144,7 @@ export default function InvestOrPayOff({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -269,6 +270,18 @@ export default function InvestOrPayOff({
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
   const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
+  // The form as the own-return note reads it: the same pause as the result,
+  // whatever the other boxes hold. A form set all at once (a link, a reset)
+  // is taken at once, as the result takes it.
+  const [noteForm, setNoteForm] = useState(form);
+  useEffect(() => {
+    if (form === settledForm) {
+      setNoteForm(form);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setNoteForm(form), 250);
+    return () => window.clearTimeout(timer);
+  }, [form, settledForm]);
 
   // The inflation the comparison uses: what the reader typed, else the
   // country's ten-year figure. Null means there is none yet.
@@ -312,13 +325,19 @@ export default function InvestOrPayOff({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=invest_or_pay_off';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const answer = share.start();
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      answer.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_invest_or_pay_off_share_copied');
   }
 
@@ -387,9 +406,18 @@ export default function InvestOrPayOff({
   const formDefault = formSeries ? inflationDefault(formSeries, latestYear) : null;
   const formCountry = form.country ? countryByCode.get(form.country) ?? null : null;
   const formHistory = historyState(form.country);
+  // The note under the reader's own return is worked out from the form once
+  // typing has paused (noteForm), not on every keystroke: it sits in a live
+  // region, and a note that changed with each character was read out again
+  // and again (#786, #902). It pauses on its own: the result's settled form
+  // waits for every box to be right, and a wrong box elsewhere left the note
+  // describing an old return. While its own box holds an error there is none.
+  const noteSeries = seriesFor(noteForm.country);
+  const noteDefault = noteSeries ? inflationDefault(noteSeries, latestYear) : null;
   const ownReal = (() => {
-    const own = parseField('ownReturn', form.ownReturn, numberLocale);
-    const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
+    if (errors.ownReturn) return null;
+    const own = parseField('ownReturn', noteForm.ownReturn, numberLocale);
+    const inf = noteForm.inflation.trim() === '' ? noteDefault?.average ?? null : parseField('inflation', noteForm.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
   // By the figure as written, as the table beside the result is (#888).
@@ -570,6 +598,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
+        notice={share.notice}
         quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
@@ -616,6 +645,7 @@ export default function InvestOrPayOff({
             <span className="ifc-hint">{strings.actions.shareNote}</span>
           </span>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
         ready={!waiting && shownNow !== null}
@@ -834,6 +864,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          enterKeyHint="done"
           {...markerSelect}
           id={props.id}
           className="ifc-input"
@@ -844,7 +875,8 @@ function Field(props: {
           placeholder={props.placeholder}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
