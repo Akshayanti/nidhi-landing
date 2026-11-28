@@ -14,3 +14,5 @@ Review of fix/tools-a11y on 2026-11-28 (SIGN OFF, non-blocking findings).
 - Probe recipe: MutationObserver on closest([role=status],[aria-live]) catches region text changes but not inserted role=alert nodes (target is the parent). Typing into LocaleNumberInput: select with Ctrl+A, triple-click + Backspace left stale digits.
 
 Related: [[sitepages-review-2026-11-27]], [[pr752-review-2026-11-21]].
+
+**Recheck at f08f50e (same day): SIGN OFF.** Ring now drawn inside (offset -2px): on phones only its top and bottom show, since the 600px box sides are scrolled out and the pin covers the left edge. Pin pointer-events none. Unreadable amount marks only its own box.

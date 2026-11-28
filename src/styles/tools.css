@@ -3827,10 +3827,15 @@ legend.lc-fieldLabel--required {
 .lc-yPinBg {
   fill: var(--color-bg-white);
 }
+/* The ring is drawn on the scroller, whose four sides are always in view: on
+   the box, the scroller clipped it, and on a phone the box runs past the
+   screen and the pinned amounts cover its left side. */
 .lc-chartBox:focus-visible {
+  outline: none;
+}
+.lc-chartScroll:has(> .lc-chartBox:focus-visible) {
   outline: 2px solid var(--color-teal);
-  /* Inside the box: the scroller around it clipped a ring drawn outside. */
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 /* Chart text is set from the reader's text size by the chart (#676). */
 .lc-chart text {
