@@ -141,10 +141,12 @@ html:is([lang="hi"], [lang="mr"]) {
   --neutral-50:               #F0F0F0;  /* subtle borders, code bg */
   --neutral-100:              #E8E8E8;  /* light bg-dark surface */
   --neutral-200:              #E0E0E0;  /* default light border */
-  --neutral-500:              #9A9A9A;  /* dark-mode muted text */
-  --neutral-600:              #5A5A5A;  /* light-mode muted text */
-  --neutral-700:              #616161;  /* light-mode secondary text */
-  --neutral-800:              #B0B0B0;  /* dark-mode secondary text (lighter for contrast) */
+  --neutral-500:              #9A9A9A;  /* dark-mode borders, the QR studio's muted text */
+  --neutral-600:              #474747;  /* light-mode muted text: 8.8:1 on the page (#788) */
+  --neutral-700:              #4A4A4A;  /* light-mode secondary text: 8.4:1 on the page, 8.9:1 on white (#788) */
+  --neutral-800:              #B0B0B0;  /* dark-mode borders and lines (text: --neutral-text-dark-secondary) */
+  --neutral-text-dark-secondary: #BABABA; /* dark-mode secondary text: 8.6:1 on #1E1E1E (#788) */
+  --neutral-text-dark-muted:  #B8B8B8;  /* dark-mode muted text: 8.4:1 on #1E1E1E (#788) */
   --neutral-850:              #3D3D3D;  /* light-mode quiet button text */
   --neutral-900:              #212121;  /* light-mode primary text */
   --neutral-near-black:       #0D0D0D;  /* dark mode bg-dark */
@@ -211,8 +213,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --warning-light-bg:         #fff3cd;
   --warning-light-border:     #ffe082;
   --warning-light-border-strong: #ffc107;
-  --warning-light-text:       #665100;
-  --warning-light-text-strong: #856404;
+  --warning-light-text:       #5C4300;  /* 8.4:1 on the warning tint, 9.3:1 on white (#828) */
+  --warning-light-text-strong: #5A4100;  /* 8.7:1 on the warning tint (#828) */
   --warning-dark-text:        #ffc107;
   --warning-dark-bg:          #332b00;
   --warning-dark-border:      #664d00;
@@ -475,8 +477,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --color-info:             var(--semantic-info-dark);
 
   --color-text-primary:     var(--neutral-white);
-  --color-text-secondary:   var(--neutral-800);
-  --color-text-muted:       var(--neutral-500);
+  --color-text-secondary:   var(--neutral-text-dark-secondary);
+  --color-text-muted:       var(--neutral-text-dark-muted);
   --color-bg:               var(--neutral-page-bg-dark);
   --color-bg-white:         var(--neutral-surface-dark);
   --color-bg-dark:          var(--neutral-near-black);
