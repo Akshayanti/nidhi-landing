@@ -48,7 +48,9 @@ describe('useShareLink', () => {
     const late = share.start();
     view.rerender(<Tool form="b" />);
     act(() => late.copied(LINK));
-    act(() => late.refused(LINK));
+    let counted = true;
+    act(() => { counted = late.refused(LINK); });
+    assert.equal(counted, false, 'so the tool opens no prompt for it');
     assert.ok(field() === null);
     assert.equal(share.notice.n, 0);
     // Nothing is said for it either.

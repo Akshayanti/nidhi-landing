@@ -270,6 +270,18 @@ export default function InvestOrPayOff({
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
   const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
+  // The form as the own-return note reads it: the same pause as the result,
+  // whatever the other boxes hold. A form set all at once (a link, a reset)
+  // is taken at once, as the result takes it.
+  const [noteForm, setNoteForm] = useState(form);
+  useEffect(() => {
+    if (form === settledForm) {
+      setNoteForm(form);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setNoteForm(form), 250);
+    return () => window.clearTimeout(timer);
+  }, [form, settledForm]);
 
   // The inflation the comparison uses: what the reader typed, else the
   // country's ten-year figure. Null means there is none yet.
@@ -322,8 +334,7 @@ export default function InvestOrPayOff({
     // Refused, or no clipboard at all (an in-app browser): the address is
     // offered to copy by hand, and stays in the bar under the buttons (#711).
     const refuse = () => {
-      answer.refused(url);
-      window.prompt(strings.actions.copyPrompt, url);
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
     };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
     else refuse();
@@ -396,15 +407,17 @@ export default function InvestOrPayOff({
   const formCountry = form.country ? countryByCode.get(form.country) ?? null : null;
   const formHistory = historyState(form.country);
   // The note under the reader's own return is worked out from the form once
-  // typing has paused (settledForm), not on every keystroke: it sits in a
-  // live region, and a note that changed with each character was read out
-  // again and again (#786, #902). While the box holds an error there is none.
-  const noteSeries = seriesFor(settledForm.country);
+  // typing has paused (noteForm), not on every keystroke: it sits in a live
+  // region, and a note that changed with each character was read out again
+  // and again (#786, #902). It pauses on its own: the result's settled form
+  // waits for every box to be right, and a wrong box elsewhere left the note
+  // describing an old return. While its own box holds an error there is none.
+  const noteSeries = seriesFor(noteForm.country);
   const noteDefault = noteSeries ? inflationDefault(noteSeries, latestYear) : null;
   const ownReal = (() => {
     if (errors.ownReturn) return null;
-    const own = parseField('ownReturn', settledForm.ownReturn, numberLocale);
-    const inf = settledForm.inflation.trim() === '' ? noteDefault?.average ?? null : parseField('inflation', settledForm.inflation, numberLocale);
+    const own = parseField('ownReturn', noteForm.ownReturn, numberLocale);
+    const inf = noteForm.inflation.trim() === '' ? noteDefault?.average ?? null : parseField('inflation', noteForm.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
   // By the figure as written, as the table beside the result is (#888).

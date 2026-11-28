@@ -386,6 +386,19 @@ describe('the offer card: the required boxes', () => {
     assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amountUnreadable}`);
   });
 
+  it('marks the box whose fault it names when an amount and an optional box both cannot be read (council)', () => {
+    const { card } = show(loan({ principal: 'abc', feeMajor: 'abc' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, `${c.fee} (EUR)`)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
+  });
+
+  it('names and marks an amount that cannot be read when it is the only fault (#898)', () => {
+    const { card } = show(loan({ principal: 'abc' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amountUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+  });
+
   it('leaves a ? box the reader has typed in unmarked while another ? keeps the message', () => {
     const { card } = show(loan({ principal: UNREADABLE, annualRatePct: UNREADABLE }));
     assert.deepEqual(wiring(card, box(card, LABELS.rate)), MARKED);

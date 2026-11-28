@@ -279,7 +279,11 @@ describe('computeFromInput', () => {
     }
     assert.equal(computeFromInput(vendor({ principal: '' }), 'EUR').error, 'Enter a loan amount greater than zero.');
     assert.equal(computeFromInput(vendor({ principal: '0' }), 'EUR').error, 'Enter a loan amount greater than zero.');
+    // With an optional box that cannot be read as well, that box is said first,
+    // since it is the one the page marks (council).
+    assert.equal(computeFromInput(vendor({ principal: 'abc', feeMajor: 'abc' }), 'EUR').error, OPTIONAL_UNREADABLE);
     // A payment box that is not used (the term sets the payment) is not read.
+
     assert.notEqual(computeFromInput(vendor({ modeKind: 'term', monthlyPayment: 'abc' }), 'EUR').error, PAYMENT_UNREADABLE);
   });
 

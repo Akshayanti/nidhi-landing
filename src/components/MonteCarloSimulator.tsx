@@ -385,8 +385,7 @@ export default function MonteCarloSimulator({
     // Refused, or no clipboard at all (an in-app browser): the address is
     // offered to copy by hand, and stays in the bar under the buttons (#711).
     const refuse = () => {
-      answer.refused(url);
-      window.prompt(strings.actions.copyPrompt, url);
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
     };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
     else refuse();

@@ -229,11 +229,13 @@ export function useShareLink(stale: unknown, words: { status: string; prompt: st
         setFailed(false);
         setNotice((was) => ({ text: words.status, n: was.n + 1 }));
       },
-      refused: (link: string) => {
-        if (!Object.is(at, latest.current)) return;
+      /** Whether the refusal still counts: a late one is dropped, prompt and all. */
+      refused: (link: string): boolean => {
+        if (!Object.is(at, latest.current)) return false;
         setUrl(link);
         setFailed(true);
         setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));
+        return true;
       },
     };
   }, [words.status, words.prompt]);

@@ -224,6 +224,16 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(12, 2)), historical: '5.3%', top: 6 })]);
   });
 
+  it('follows a new own return while another box is wrong (council)', () => {
+    mount();
+    pick('returns', 'own');
+    clock.pass(250);
+    type('balance', '');
+    type('ownReturn', '12');
+    clock.pass(250);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(12, 2)), historical: '5.3%', top: 6 })]);
+  });
+
   it('works an own return out against the country\'s figure until one is typed, and with none says nothing', () => {
     mount({ defaultCountry: '', initialHistory: null });
     pick('returns', 'own');
