@@ -225,6 +225,15 @@ describe('loan spreadsheet: the Inputs sheet', () => {
     assert.deepEqual(inputRow(rows, c.atChange.label), [null, c.atChange.term]);
   });
 
+  it('writes a typed amount as the results count it, a half cent upwards, never a cent short', () => {
+    // 1000.005 is stored a hair under the half: toFixed would write 1,000.00,
+    // while the tool works the loan out on 1,000.01.
+    const { rows } = inputs(['Bank A', offer({ principal: '1000.005', feeMajor: '2.675', lumpSumsEncoded: '2:10.125' })]);
+    assert.deepEqual(inputRow(rows, c.principal), [amount(1000.01)]);
+    assert.deepEqual(inputRow(rows, c.fee), [amount(2.68)]);
+    assert.ok(String(inputRow(rows, c.lumps)[0]).endsWith('10.13'), String(inputRow(rows, c.lumps)[0]));
+  });
+
   it('writes only the box the offer is worked out from, term or payment, when the other still holds a value', () => {
     const byTerm = offer({ monthlyPayment: '500' });
     const byPayment = offer({ modeKind: 'payment', monthlyPayment: '408.03', termMonths: '36' });

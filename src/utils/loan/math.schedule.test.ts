@@ -165,7 +165,7 @@ describe('rounding to the minor unit', () => {
 describe('formatMoney around zero', () => {
   it('writes exactly half a minor unit as one unit, and anything less as zero without a sign', () => {
     assert.equal(formatMoney(0.5, 'EUR'), '€0.01');
-    assert.equal(formatMoney(-0.5, 'EUR'), '-€0.01');
+    assert.equal(formatMoney(-0.5, 'EUR'), '−€0.01');
     assert.equal(formatMoney(0.49, 'EUR'), '€0.00');
     assert.equal(formatMoney(-0.49, 'EUR'), '€0.00');
   });

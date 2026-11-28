@@ -311,7 +311,7 @@ describe('the announcement of the loan results', () => {
     const dollars = announce({ paidOff: [plain()], validCount: 1, currency: 'USD' });
     dollars.change({ paidOff: [dear()], validCount: 1, currency: 'USD' });
     clock.pass(600);
-    assert.equal(dollars.said(), 'Monthly payment $609.01 USD. Total paid $1,218.03 USD.');
+    assert.equal(dollars.said(), 'Monthly payment $609.01\u00a0USD. Total paid $1,218.03\u00a0USD.');
   });
 
   it('says why there is no result a full second after a box goes wrong, and not sooner', () => {

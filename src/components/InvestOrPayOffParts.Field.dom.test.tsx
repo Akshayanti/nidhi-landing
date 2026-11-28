@@ -52,7 +52,7 @@ describe('a box of the form', () => {
     draw(field({ error: 'Enter an amount.', hint: 'What you owe today', alsoDescribedBy: 'iop-note' }));
     const input = box();
     assert.equal(input.getAttribute('aria-invalid'), 'true');
-    assert.equal(input.getAttribute('aria-errormessage'), 'iop-balance-error');
+    assert.equal(input.hasAttribute('aria-errormessage'), false, 'named once, through aria-describedby (#899)');
     assert.equal(input.getAttribute('aria-describedby'), 'iop-balance-error iop-balance-hint iop-note');
     const error = one('#iop-balance-error');
     assert.equal(error.className, 'ifc-error');

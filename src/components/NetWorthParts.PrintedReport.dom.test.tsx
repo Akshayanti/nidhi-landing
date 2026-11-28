@@ -42,13 +42,13 @@ describe('the answer the report leads with', () => {
   it('a debt in Swiss francs keeps a true minus in the report, as on the page', () => {
     const rows = [own('1000', 'CHF'), owe('2500', 'CHF')];
     report(worked(rows, 'CHF', null), rows, { currency: 'CHF', rates: null });
-    assert.deepEqual(answer(), ['Total net worth: CHF\u22121,500.00']);
+    assert.deepEqual(answer(), ['Total net worth: \u2212CHF\u00a01,500.00']);
   });
 
   it('in yen, whole yen', () => {
     const rows = [own('5000', 'JPY'), owe('1200', 'JPY')];
     report(worked(rows, 'JPY', null), rows, { currency: 'JPY', rates: null });
-    assert.deepEqual(answer(), ['Total net worth: ￥3,800']);
+    assert.deepEqual(answer(), ['Total net worth: ¥3,800']);
   });
 
   it('several currencies: the converted total', () => {
@@ -63,7 +63,7 @@ describe('the answer the report leads with', () => {
     const rows = [own('5000', 'JPY'), own('100')];
     const rates = { JPY: 1, EUR: 1 / 200 };
     report(worked(rows, 'JPY', rates), rows, { currency: 'JPY', rates });
-    assert.deepEqual(answer(), ['Total net worth: ￥25,000']);
+    assert.deepEqual(answer(), ['Total net worth: ¥25,000']);
   });
 
   it('a currency missing its rate: the subtotal, named as one, and why', () => {

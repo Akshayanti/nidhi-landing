@@ -37,10 +37,11 @@
  *
  *      ?m=r&f=EUR&p_USD=28.5~moderate&p_EUR=71.5~functional
  *
- * Hard cutover: legacy `mode=full|redacted` and `a1_name`-style keys are NOT
- * decoded. v5.2 of the free-tools plan documents the rationale (the tool is
- * new, no shared URLs are in the wild yet, and carrying legacy paths
- * indefinitely would erode the simplicity gain).
+ * Hard cutover: the first links' `mode=full|redacted` and `a1_name`-style
+ * keys (May 2026) are NOT decoded: such a link is refused as too old
+ * (`decodeFromQueryString`), and its keys still leave the address
+ * (`STATE_KEY_PATTERN`). v5.2 of the free-tools plan documents why no alias
+ * layer was kept.
  */
 
 import type { AggregationResult, AssetRow, CurrencyPosition, RiskLevel } from './math.ts';

@@ -2,12 +2,23 @@
  * The Monte Carlo simulator's number boxes (#790): what each says when it is
  * wrong, and how the results and the exports wait until it is corrected.
  */
-import { t, island, settle, mountWith, heading, one, describedBy, reader, typeInto, retype } from '../../test/monteCarloPage.tsx';
+import { t, island, settle, mountWith, openPlan, heading, one, describedBy, reader, typeInto, retype } from '../../test/monteCarloPage.tsx';
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { screen } from '@testing-library/react';
 
 describe('the number boxes', () => {
+  it('does not say the results are shown again when a link arrived with a wrong box and none was shown (#822)', async () => {
+    openPlan({ saveYears: 61, paths: 100 });
+    await settle(1_050);
+    assert.equal(one('.mcs-results .tool-resultReason').textContent, island.actions.fix);
+    await typeInto(island.fields.saveYears, '20');
+    await settle();
+    assert.equal(heading().textContent, 'After 20 years of saving');
+    await settle(1_050);
+    assert.notEqual(one('.mcs-actions .chart-srOnly').textContent, island.actions.back);
+  });
+
   it('say what is wrong, hold the results and the exports back, and let go once corrected', async () => {
     // A hundred paths: every correction below works the plan out again.
     mountWith();
@@ -57,6 +68,16 @@ describe('the number boxes', () => {
       await settle();
       assert.equal(heading().textContent, 'After 20 years of saving');
       assert.ok(!one('.mcs-quick').classList.contains('tool-withheld'));
+      // once the corrected plan's results are on screen, that is said once (#822)
+      await settle(1_050);
+      assert.equal(one('.mcs-actions .chart-srOnly').textContent, island.actions.back);
+      // and an ordinary edit after it says nothing new
+      await typeInto(island.fields.saveYears, '21');
+      await settle(1_050);
+      assert.equal(heading().textContent, 'After 21 years of saving');
+      assert.equal(one('.mcs-actions .chart-srOnly').textContent, '', 'nothing new said: the region only empties');
+      await typeInto(island.fields.saveYears, '20');
+      await settle();
     }
     {
       // a corrected box shows its result once it settles, the old one never

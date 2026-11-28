@@ -11,9 +11,10 @@
  * No analytics labels here: the section launched without any, and the privacy
  * changelog records it under Nov 10, 2026. Links carry no data-attr on purpose.
  */
-import { existsSync } from 'node:fs';
+import { shareCard } from '../../utils/shareCard.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GuideVisual from '../../components/GuideVisual.astro';
+import AmountText from '../../components/AmountText.astro';
 import { GUIDE_HUB, guidePath, guideReadingMinutes, type Guide } from '../../utils/guides';
 import { DEFAULT_LOCALE, dict } from '../../i18n';
 import { formatEnglishDate } from '../../utils/longDate.ts';
@@ -32,8 +33,8 @@ const minutes = guideReadingMinutes(g);
 const siteUrl = 'https://nidhi.today';
 const url = `${siteUrl}${guidePath(g.slug)}`;
 const groupName = howTo.groups[g.group];
-const shareImage = `/brand/social/how-to/${g.slug}.png`;
-const hasShareImage = existsSync(`public${shareImage}`);
+// The guide's own share image, or the site's default card (#420).
+const card = shareCard('how-to', g.slug, g.title, 'A short guide from nidhi.');
 const visualFirst = g.form === 'example';
 
 const articleSchema = {
@@ -46,7 +47,7 @@ const articleSchema = {
   inLanguage: 'en',
   author: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/about/` },
   publisher: { '@type': 'Organization', name: 'nidhi', url: `${siteUrl}/` },
-  image: `${siteUrl}${hasShareImage ? shareImage : '/brand/social/og-image.png'}`,
+  image: `${siteUrl}${card?.image ?? '/brand/social/og-image.png'}`,
   url,
   mainEntityOfPage: { '@type': 'WebPage', '@id': url },
 };
@@ -63,8 +64,8 @@ const breadcrumbSchema = {
 <BaseLayout
   title={`${g.seoTitle ?? g.title} | nidhi`}
   description={g.description}
-  image={hasShareImage ? shareImage : undefined}
-  imageAlt={hasShareImage ? `${g.title} A short guide from nidhi.` : undefined}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   article={{ publishedTime: g.pubDate, modifiedTime: g.lastChecked, tags: [] }}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
@@ -135,7 +136,7 @@ const breadcrumbSchema = {
               <div>
                 <h3 class="guide-step-action">{s.action}</h3>
                 <p>{s.why}</p>
-                {s.example && <p class="guide-step-example"><span>Example:</span> {s.example}</p>}
+                {s.example && <p class="guide-step-example"><span>Example:</span> <AmountText text={s.example} /></p>}
                 {s.caution && <p class="guide-step-caution"><span>Careful:</span> {s.caution}</p>}
               </div>
             </li>
@@ -309,6 +310,8 @@ const breadcrumbSchema = {
   .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
   .guide-step-example, .guide-step-caution { font-size: var(--text-ui); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
   .guide-step-example { border-inline-start: 3px solid var(--color-border); border-radius: 0; }
+  /* Its amounts are one unit each, fitted to the line (AmountText, .amt). */
+  .guide-step-example { container-type: inline-size; --amt-k: 0.57; }
   .guide-step-caution { border-inline-start: 3px solid var(--color-warning); border-radius: 0; }
   .guide-step-example span, .guide-step-caution span { font-weight: 700; }
 

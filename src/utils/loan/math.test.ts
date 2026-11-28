@@ -130,8 +130,8 @@ describe('formatMoney on a page with its own amount style', () => {
   });
 
   it('still names the dollar it means', () => {
-    assert.equal(formatMoney(toMinor(1234.5, 'USD'), 'USD', 'es'), '1234,50\u00a0$ USD');
-    assert.equal(formatMoney(toMinor(1234.5, 'CAD'), 'CAD', 'es'), '1234,50\u00a0$ CAD');
+    assert.equal(formatMoney(toMinor(1234.5, 'USD'), 'USD', 'es'), '1234,50\u00a0$\u00a0USD');
+    assert.equal(formatMoney(toMinor(1234.5, 'CAD'), 'CAD', 'es'), '1234,50\u00a0$\u00a0CAD');
   });
 
   it('keeps the currency\'s own style without one', () => {
@@ -145,7 +145,7 @@ describe('formatMoney on a page with its own amount style', () => {
     assert.equal(plain(formatMoney(toMinor(1234567.89, 'BRL'), 'BRL')), 'R$ 1,234,567.89');
     assert.equal(plain(formatMoney(toMinor(1234567.89, 'CZK'), 'CZK')), '1,234,567.89 Kč');
     assert.equal(plain(formatMoney(toMinor(1234567.89, 'INR'), 'INR')), '₹12,34,567.89');
-    assert.equal(plain(formatMoney(toMinor(1234567, 'JPY'), 'JPY')), '￥1,234,567');
+    assert.equal(plain(formatMoney(toMinor(1234567, 'JPY'), 'JPY')), '¥1,234,567');
   });
 });
 
@@ -159,37 +159,37 @@ describe('formatMoney', () => {
     const s = formatMoney(toMinor(1234567.89, 'USD'), 'USD');
     assert.match(s, /\$/);
     assert.ok(/1,234,567\.89/.test(s), `got: ${s}`);
-    assert.ok(s.endsWith(' USD'), `expected USD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0USD'), `expected USD suffix, got: ${s}`);
   });
 
   it('formats CAD with code appended (shares $ symbol)', () => {
     const s = formatMoney(toMinor(1234567.89, 'CAD'), 'CAD');
     assert.match(s, /\$/);
-    assert.ok(s.endsWith(' CAD'), `expected CAD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0CAD'), `expected CAD suffix, got: ${s}`);
   });
 
   it('formats AUD with code appended (shares $ symbol)', () => {
     const s = formatMoney(toMinor(1234567.89, 'AUD'), 'AUD');
     assert.match(s, /\$/);
-    assert.ok(s.endsWith(' AUD'), `expected AUD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0AUD'), `expected AUD suffix, got: ${s}`);
   });
 
   it('formats SGD with code appended (shares $ symbol)', () => {
     const s = formatMoney(toMinor(1234567.89, 'SGD'), 'SGD');
     assert.match(s, /\$/);
-    assert.ok(s.endsWith(' SGD'), `expected SGD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0SGD'), `expected SGD suffix, got: ${s}`);
   });
 
   it('formats HKD with code appended (shares $ symbol)', () => {
     const s = formatMoney(toMinor(1234567.89, 'HKD'), 'HKD');
     assert.match(s, /\$/);
-    assert.ok(s.endsWith(' HKD'), `expected HKD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0HKD'), `expected HKD suffix, got: ${s}`);
   });
 
   it('formats NZD with code appended (shares $ symbol)', () => {
     const s = formatMoney(toMinor(1234567.89, 'NZD'), 'NZD');
     assert.match(s, /\$/);
-    assert.ok(s.endsWith(' NZD'), `expected NZD suffix, got: ${s}`);
+    assert.ok(s.endsWith('\u00a0NZD'), `expected NZD suffix, got: ${s}`);
   });
 
   it('formats INR with Indian (lakh/crore) grouping, no code appended', () => {

@@ -272,7 +272,7 @@ describe('what refinancing comes to', () => {
 
   it('writes the amounts in the currency chosen', () => {
     const { section } = show([plain()], { refiNewFeeMajor: '100' }, { currency: 'USD' });
-    assert.deepEqual(row(section, r.costsMore)?.slice(0, 2), [r.costsMore, '$100.00 USD']);
+    assert.deepEqual(row(section, r.costsMore)?.slice(0, 2), [r.costsMore, '$100.00\u00a0USD']);
   });
 
   it('shows the early repayment penalty as a row of its own, with what it means', () => {
@@ -408,6 +408,30 @@ describe('a box that cannot be read', () => {
       assert.equal(section.querySelectorAll('.lc-refiResults, p.lc-deltaEmpty').length, 0);
     });
   }
+
+  const alone = { refiAtMonth: s.refi.requiredMonth, refiNewRatePct: s.refi.requiredRate, refiNewTermMonths: s.refi.requiredTerm } as Record<string, string>;
+  for (const [key, box] of boxes.slice(0, 3)) {
+    it(`flags a required box left empty, names it, and holds the scenario back (#823) (${key})`, () => {
+      const { section } = show([plain()], { [key]: '' });
+      const alert = section.querySelector('p.lc-error') as HTMLElement;
+      assert.equal(alert.getAttribute('role'), 'alert');
+      assert.equal(alert.textContent, `Error: ${alone[key]}`);
+      assert.equal(box(section).getAttribute('aria-invalid'), 'true');
+      assert.equal(box(section).getAttribute('aria-describedby'), alert.id);
+      for (const [, other] of boxes.filter(([k]) => k !== key)) assert.ok(!other(section).hasAttribute('aria-invalid'));
+      assert.equal(section.querySelectorAll('.lc-refiResults, p.lc-deltaEmpty').length, 0);
+    });
+  }
+
+  it('names two or more empty boxes together', () => {
+    const { section } = show([plain()], { refiAtMonth: '', refiNewTermMonths: '' });
+    assert.equal(section.querySelector('p.lc-error')?.textContent, `Error: ${s.refi.required}`);
+  });
+
+  it('says a box that cannot be read before an empty one', () => {
+    const { section } = show([plain()], { refiAtMonth: '', refiNewRatePct: 'abc' });
+    assert.notEqual(section.querySelector('p.lc-error')?.textContent, `Error: ${s.refi.required}`);
+  });
 
   it('marks no box while every box can be read', () => {
     const { section } = show([plain()]);

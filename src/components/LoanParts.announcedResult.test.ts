@@ -33,7 +33,7 @@ describe('what is announced for one offer', () => {
   });
 
   it('says the amounts in the currency chosen', () => {
-    assert.equal(said([dear()], 1, 'USD'), 'Monthly payment $609.01 USD. Total paid $1,218.03 USD.');
+    assert.equal(said([dear()], 1, 'USD'), 'Monthly payment $609.01\u00a0USD. Total paid $1,218.03\u00a0USD.');
   });
 
   it('says the payment a reader makes each month, extra included', () => {
@@ -97,7 +97,7 @@ describe('what is announced for several offers', () => {
   it('says the range in the currency chosen', () => {
     assert.equal(
       said([plain(), dear()], 2, 'USD'),
-      'Total cost ranges from $1,200.00 USD to $1,218.03 USD across the offers below: a spread of $18.03 USD.',
+      'Total cost ranges from $1,200.00\u00a0USD to $1,218.03\u00a0USD across the offers below: a spread of $18.03\u00a0USD.',
     );
   });
 });

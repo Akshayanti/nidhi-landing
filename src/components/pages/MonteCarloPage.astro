@@ -39,6 +39,7 @@ import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/monte-carlo/
 import { TOOL_AMOUNT_LOCALE, TOOL_DEFAULT_CURRENCY } from '../../utils/shared/toolState.ts';
 import { PROSE_NUMBER_LOCALE } from '../../i18n/config.ts';
 import { LOCALE_META, LOCALES, dict, localizedPath, lessonPath, format, type Locale } from '../../i18n';
+import { shareCard } from '../../utils/shareCard.ts';
 
 interface Props {
   locale: Locale;
@@ -138,10 +139,15 @@ const faqSchema = {
   inLanguage: LOCALE_META[locale].htmlLang,
   mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
+// The English page shows the tool's own share image; a translated page keeps
+// the English brand card (#743, docs/brand-identity.md).
+const card = locale === 'en' ? shareCard('tools', 'monte-carlo-simulator', dict('en').freeHub.tools.monteCarlo.title, 'A free tool from nidhi.') : undefined;
 ---
 
 <BaseLayout
   locale={locale}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   sheets={['tools']}
   alternates={LOCALES}
   title={mc.meta.title}

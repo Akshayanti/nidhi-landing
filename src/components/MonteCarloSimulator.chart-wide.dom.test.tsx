@@ -195,9 +195,9 @@ describe('the chart, on a wide screen', () => {
     await retype(island.fields.saveYears, '10');
     assert.equal(yearLabels().length, 11);
     await retype(island.fields.saveYears, '31');
-    assert.deepEqual(yearLabels(), ['0', '10', '20', '30']);
+    assert.deepEqual(yearLabels(), ['0', '10', '20', '31']); // the last year is labelled (#757)
     await retype(island.fields.saveYears, '11');
-    assert.deepEqual(yearLabels(), ['0', '5', '10']);
+    assert.deepEqual(yearLabels(), ['0', '5', '11']);
   });
 
   it('spreads end labels that would overlap, with a line back to their point', async () => {

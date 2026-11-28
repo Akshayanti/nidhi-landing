@@ -118,7 +118,7 @@ export const monteCarloEn = {
         },
         extremes: {
           lead: 'Calmer extremes than history.',
-          rest: ' Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks -42.9% after inflation) are rarer here than they were in reality.',
+          rest: ' Years are drawn independently from a smooth distribution, so long runs of bad years and crashes like 2008 (world stocks −42.9% after inflation) are rarer here than they were in reality.',
         },
       },
       more: 'Why each one matters',
@@ -343,8 +343,14 @@ export const monteCarloEn = {
       copied: 'Link copied',
       /** The fallback prompt when the clipboard is unavailable. */
       copyPrompt: 'Copy this link:',
+      /** Over the copied address, kept under the buttons until the form changes (#711). */
+      copiedBar: 'Link copied. You can also copy it from here:',
+      shareUrlAria: 'Link to this plan',
+      shareStatus: 'Link copied to the clipboard.',
       reset: 'Reset',
       fix: 'Fix the highlighted fields to see the results.',
+      /** Said once when a corrected plan's results are on screen again (#822). */
+      back: 'The results are shown again.',
       running: 'Running {paths} paths…',
     },
     /**
@@ -513,7 +519,7 @@ export const monteCarloHi: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'इतिहास की तुलना में कम तीखे चरम नतीजे।',
-          rest: ' हर साल का रिटर्न दूसरे सालों से स्वतंत्र रूप से, एक सहज, बिना अचानक झटकों वाले वितरण से निकाला जाता है, इसलिए लगातार ख़राब सालों की लंबी कतारें और 2008 जैसी गिरावटें (दुनिया के शेयर महँगाई के बाद -42.9%) यहाँ असल इतिहास से कम आती हैं।',
+          rest: ' हर साल का रिटर्न दूसरे सालों से स्वतंत्र रूप से, एक सहज, बिना अचानक झटकों वाले वितरण से निकाला जाता है, इसलिए लगातार ख़राब सालों की लंबी कतारें और 2008 जैसी गिरावटें (दुनिया के शेयर महँगाई के बाद −42.9%) यहाँ असल इतिहास से कम आती हैं।',
         },
       },
       more: 'हर एक क्यों मायने रखता है',
@@ -694,8 +700,12 @@ export const monteCarloHi: typeof monteCarloEn = {
       copy: 'इस योजना का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
+      copiedBar: 'लिंक कॉपी हो गया। आप इसे यहाँ से भी कॉपी कर सकते हैं:',
+      shareUrlAria: 'इस योजना का लिंक',
+      shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       reset: 'रीसेट करें',
       fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
+      back: 'नतीजे फिर से दिख रहे हैं।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
     quick: {
@@ -1027,8 +1037,12 @@ export const monteCarloEs: typeof monteCarloEn = {
       copy: 'Copiar un enlace a este plan',
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
+      copiedBar: 'Enlace copiado. También puedes copiarlo desde aquí:',
+      shareUrlAria: 'Enlace a este plan',
+      shareStatus: 'Enlace copiado al portapapeles.',
       reset: 'Restablecer',
       fix: 'Corrige los campos marcados para ver los resultados.',
+      back: 'Los resultados vuelven a mostrarse.',
       running: 'Simulando {paths} trayectorias…',
     },
     quick: {
@@ -1362,8 +1376,12 @@ export const monteCarloCs: typeof monteCarloEn = {
       copy: 'Kopírovat odkaz na tento plán',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
+      copiedBar: 'Odkaz zkopírován. Můžete ho zkopírovat i\u00a0odsud:',
+      shareUrlAria: 'Odkaz na tento plán',
+      shareStatus: 'Odkaz zkopírován do schránky.',
       reset: 'Obnovit výchozí',
       fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledky.',
+      back: 'Výsledky se znovu zobrazují.',
       running: 'Probíhá simulace, počet trajektorií: {paths}…',
     },
     quick: {
@@ -1508,7 +1526,7 @@ export const monteCarloMr: typeof monteCarloEn = {
         },
         extremes: {
           lead: 'इतिहासापेक्षा सौम्य टोके.',
-          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाईनंतर जागतिक शेअर -42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
+          rest: ' प्रत्येक वर्ष एका सुरळीत वितरणातून स्वतंत्रपणे निवडले जाते, त्यामुळे वाईट वर्षांच्या दीर्घ मालिका आणि 2008 सारख्या घसरणी (महागाईनंतर जागतिक शेअर −42.9%) इथे प्रत्यक्षापेक्षा कमी वेळा येतात.',
         },
       },
       more: 'प्रत्येक गोष्ट का महत्त्वाची आहे',
@@ -1679,8 +1697,12 @@ export const monteCarloMr: typeof monteCarloEn = {
       copy: 'या योजनेची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
+      copiedBar: 'लिंक कॉपी झाली. तुम्ही ती इथूनही कॉपी करू शकता:',
+      shareUrlAria: 'या योजनेची लिंक',
+      shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       reset: 'रीसेट करा',
       fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
+      back: 'निकाल पुन्हा दिसत आहेत.',
       running: '{paths} मार्ग चालवत आहे…',
     },
     quick: {

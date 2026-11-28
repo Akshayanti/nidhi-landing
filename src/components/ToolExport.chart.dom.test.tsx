@@ -294,7 +294,7 @@ describe('the report chart axis', () => {
 
   it('starts below zero when an amount is below zero, and at zero otherwise', () => {
     const below = draw(lines([line([[2020, -50000], [2025, 150000]])]));
-    assert.deepEqual(below.gridlines(), ['-50', '0', '50', '100', '150']);
+    assert.deepEqual(below.gridlines(), ['−50', '0', '50', '100', '150']);
     near(nums(below.all(':scope > g > line'), 'y1'), [256, 195, 134, 73, 12], 'gridlines');
     assert.equal(below.all(':scope > path')[0].getAttribute('d'), 'M76.0,256.0L664.0,12.0');
     assert.equal(below.figure!.querySelector('p')!.textContent, 'Amounts in thousands of €');

@@ -273,6 +273,8 @@ const ENGINE_MESSAGES: [raw: string, key: keyof typeof s.engine.errors][] = [
   ["Monthly payment is too low to ever pay off the loan; it does not even cover the first month's interest.", 'belowInterest'],
   ['Term must be at least one month.', 'term'],
   ['Enter a loan amount greater than zero.', 'amount'],
+  ['The loan amount could not be read. Use digits only, such as 250000.', 'amountUnreadable'],
+  ['The monthly payment could not be read. Use digits only, such as 1500.', 'paymentUnreadable'],
   ['This loan amount is too large for the tool. Enter a smaller amount.', 'amountMax'],
   ['The loan is too small for this term. Enter a larger amount or a shorter term.', 'tooSmall'],
   ['With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.', 'interestOnly'],

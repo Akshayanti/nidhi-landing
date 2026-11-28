@@ -31,6 +31,9 @@ export const PALETTE = {
   blue:        '#0A3D8F',
   indigo:      '#1A237E',
   purple:      '#311B92',
+  // Deeper shades for level text on a badge (#761): 8:1 on the light page.
+  tealDeep:    '#004D40',
+  amberDeep:   '#5C3D00',
 
   // On-#1E1E1E (dark-mode foreground / on-dark-bg). Same hue identity.
   redDark:        '#FF9E80',
@@ -59,10 +62,12 @@ export const NEUTRAL = {
   n50:           '#F0F0F0',  // subtle borders, code bg
   n100:          '#E8E8E8',  // light bg-dark surface
   n200:          '#E0E0E0',  // default light border
-  n500:          '#9A9A9A',  // dark-mode muted text
-  n600:          '#5A5A5A',  // light-mode muted text
-  n700:          '#616161',  // light-mode secondary text
-  n800:          '#B0B0B0',  // dark-mode secondary text
+  n500:          '#9A9A9A',  // dark-mode borders and the QR studio's muted text
+  n600:          '#474747',  // light-mode muted text
+  n700:          '#4A4A4A',  // light-mode secondary text
+  n800:          '#B0B0B0',  // dark-mode borders and lines
+  textDarkSecondary: '#BABABA', // dark-mode secondary text
+  textDarkMuted: '#B8B8B8',  // dark-mode muted text
   n850:          '#3D3D3D',  // light-mode quiet button text
   n900:          '#212121',  // light-mode primary text
   nearBlack:     '#0D0D0D',
@@ -125,8 +130,8 @@ export const SEMANTIC = {
   warningLightBg:           '#fff3cd',
   warningLightBorder:       '#ffe082',
   warningLightBorderStrong: '#ffc107',
-  warningLightText:         '#665100',
-  warningLightTextStrong:   '#856404',
+  warningLightText:         '#5C4300',
+  warningLightTextStrong:   '#5A4100',
   warningDarkText:          '#ffc107',
   warningDarkBg:            '#332b00',
   warningDarkBorder:        '#664d00',

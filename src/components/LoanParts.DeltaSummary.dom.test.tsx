@@ -219,9 +219,9 @@ describe('three and more offers', () => {
 
   it('writes amounts and percentages the way the page and the currency write them', () => {
     const dollars = show([plain(), dear()], { currency: 'USD' });
-    assert.equal(hero(dollars), 'Total cost ranges from $1,200.00 USD to $1,218.03 USD across the offers below: a spread of $18.03 USD.');
-    assert.deepEqual(row(dollars, 'Monthly payment').values, ['$100.00 USD', '$609.01 USD']);
-    assert.deepEqual(differences(dollars).values, ['baseline', '+$18.03 USD']);
+    assert.equal(hero(dollars), 'Total cost ranges from $1,200.00\u00a0USD to $1,218.03\u00a0USD across the offers below: a spread of $18.03\u00a0USD.');
+    assert.deepEqual(row(dollars, 'Monthly payment').values, ['$100.00\u00a0USD', '$609.01\u00a0USD']);
+    assert.deepEqual(differences(dollars).values, ['baseline', '+$18.03\u00a0USD']);
     cleanup();
     const spanish = show([plain(), dear()], { amountLocale: 'es' });
     const euros = (value: number) => new Intl.NumberFormat('es', { style: 'currency', currency: 'EUR' }).format(value);
@@ -281,6 +281,7 @@ describe('fewer than two offers to compare', () => {
   /** What the section shows in place of the table. */
   const emptied = (section: HTMLElement) => ({
     heading: section.querySelector('h2#lc-delta-h')?.textContent,
+    named: section.getAttribute('aria-labelledby'),
     focusable: section.querySelector('h2')?.getAttribute('tabindex'),
     message: section.querySelector('p.lc-deltaEmpty')?.textContent,
     tables: section.querySelectorAll('table').length,
@@ -288,6 +289,8 @@ describe('fewer than two offers to compare', () => {
   });
   const EMPTY = {
     heading: 'Side-by-side',
+    // The same landmark, named by its heading, as when it compares offers.
+    named: 'lc-delta-h',
     focusable: '-1',
     message: 'Enter valid inputs for at least two offers to see how they compare.',
     tables: 0,

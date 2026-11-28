@@ -124,21 +124,21 @@ describe('everything in the spending currency', () => {
     assert.deepEqual([...document.querySelectorAll('.mcnw-split dd')].map((d) => d.textContent), ['€1,500.00', '€0.00']);
   });
 
-  it('Swiss francs, whose sign follows the code, still get a true minus', () => {
-    // With no amount style of the page, francs are written "CHF-1,500.00":
-    // the sign comes after the code, not first.
+  it('Swiss francs, whose sign Intl puts after the code, get a true minus before it (#691)', () => {
+    // With no amount style of the page, Intl writes francs "CHF-1,500.00":
+    // the sign is moved to the front, as on every other amount.
     const francs = [own('1000', 'CHF'), owe('2500', 'CHF')];
     panel(worked(francs, 'CHF', null), { rows: francs, currency: 'CHF' });
-    assert.equal(total()?.value, `CHF${MINUS}1,500.00`);
-    assert.deepEqual([...document.querySelectorAll('.mcnw-split dd')].map((d) => d.textContent), ['CHF\u00a01,000.00', `CHF${MINUS}2,500.00`]);
+    assert.equal(total()?.value, `${MINUS}CHF\u00a01,500.00`);
+    assert.deepEqual([...document.querySelectorAll('.mcnw-split dd')].map((d) => d.textContent), ['CHF\u00a01,000.00', `${MINUS}CHF\u00a02,500.00`]);
     assert.ok(!document.body.textContent?.includes('-'), 'no hyphen in place of a minus');
   });
 
   it('needs no rates, and counts yen whole', () => {
     const yen = [own('5000', 'JPY'), owe('1200', 'JPY')];
     panel(worked(yen, 'JPY', null), { rows: yen, currency: 'JPY' });
-    assert.equal(total()?.value, '￥3,800');
-    assert.deepEqual([...document.querySelectorAll('.mcnw-split dd')].map((d) => d.textContent), ['￥5,000', `${MINUS}￥1,200`]);
+    assert.equal(total()?.value, '¥3,800');
+    assert.deepEqual([...document.querySelectorAll('.mcnw-split dd')].map((d) => d.textContent), ['¥5,000', `${MINUS}¥1,200`]);
     assert.equal(document.querySelector('.mcnw-singleNote')?.textContent, r.singleNote.replace('{currency}', name.JPY));
   });
 
@@ -257,8 +257,8 @@ describe('several currencies, all with rates', () => {
   it('in the spending currency of the page, in its minor units', () => {
     // In yen: 5,000 yen and 100 euros (20,000 yen).
     panel(worked([own('5000', 'JPY'), own('100')], 'JPY', { JPY: 1, EUR: 1 / 200 }), { currency: 'JPY' });
-    assert.equal(total()?.value, '￥25,000');
-    assert.deepEqual(heads(), [`${name.JPY} · 20.0% of net worth · ￥5,000`, `${name.EUR} · 80.0% of net worth · ￥20,000`]);
+    assert.equal(total()?.value, '¥25,000');
+    assert.deepEqual(heads(), [`${name.JPY} · 20.0% of net worth · ¥5,000`, `${name.EUR} · 80.0% of net worth · ¥20,000`]);
   });
 
   it('withheld: the reason once, for the total, with the actions still in reach', () => {
@@ -315,7 +315,7 @@ describe('a currency missing its rate', () => {
     // 1,000 euros and 2,000 dollars, unconverted.
     panel(worked([own('1000'), own('2000', 'USD')], 'EUR', null));
     assert.ok(total() === null);
-    assert.deepEqual(heads(), [`${name.USD} · Rate unavailable · $2,000.00 USD`, `${name.EUR} · €1,000.00`]);
+    assert.deepEqual(heads(), [`${name.USD} · Rate unavailable · $2,000.00\u00a0USD`, `${name.EUR} · €1,000.00`]);
   });
 
   it('a view without amounts or rates bands a currency with no rate as no band, never low', () => {

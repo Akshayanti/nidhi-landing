@@ -26,6 +26,13 @@ describe('LocaleNumberInput', () => {
     assert.deepEqual(got, ['1000.5']);
   });
 
+  it('says on a phone\'s return key that the box is done, unless told otherwise (#488)', () => {
+    render(<LocaleNumberInput value="1" onValueChange={() => {}} aria-label="Done box" />);
+    assert.equal(screen.getByLabelText('Done box').getAttribute('enterkeyhint'), 'done');
+    render(<LocaleNumberInput value="1" onValueChange={() => {}} aria-label="Next box" enterKeyHint="next" />);
+    assert.equal(screen.getByLabelText('Next box').getAttribute('enterkeyhint'), 'next');
+  });
+
   it('reads and shows numbers the way the page writes them', () => {
     const got: string[] = [];
     render(

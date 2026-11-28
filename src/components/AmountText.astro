@@ -1,0 +1,14 @@
+---
+/**
+ * A line of text with each amount in it drawn as one unit, as the tools'
+ * Amounts.tsx does: an amount never breaks across lines, and where it is
+ * wider than its box (the nearest size container) it is drawn smaller, by
+ * just enough to fit (`.amt` in global.css). For text built at build time,
+ * such as a How-to guide's visual.
+ */
+import { splitAmounts } from '../utils/shared/amountUnits.ts';
+
+interface Props { text: string }
+const parts = splitAmounts(Astro.props.text);
+---
+{parts.map((p) => (typeof p === 'string' ? p : <span class="amt" style={`--amt-len: ${p.length}`}>{p.amount}</span>))}

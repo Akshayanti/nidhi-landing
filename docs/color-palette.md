@@ -41,6 +41,8 @@ The tagline is "Money, understood". Each language has one approved line, kept in
 
 The logo files under `public/brand/` and the social images under `public/brand/social/` carry the English line only.
 
+Guides, lessons and the English tool pages also have a share card of their own, with the page's English title (`scripts/render-share-cards.mjs`, owner, 2026-11-28, #743). A translated tool page keeps the brand card.
+
 ---
 
 ## Buttons
@@ -105,6 +107,18 @@ Used in: `src/styles/global.css` (`--level-*`), `LearningPath.tsx`, `LevelBadge.
 | 6 | inclusive finances | `#004D1A` | 10.1:1 | `#81C784` | 8.3:1 |
 
 Hue identity: `teal → blue → amber → red → purple`, and green for the inclusive finances section, which sits beside the path rather than on it.
+
+### Level colour as text: 8:1 on every surface (#761)
+
+A level's name, its number in a badge and other level-coloured text use `--level-<level>-text`. Lines, dots, rings, bars and borders keep the identity colour above. Two levels needed their own text shade; the others are their identity colour. Numbers sit on the plain surface, not a tint of the level colour: a 12% tint took every level below 8:1.
+
+| Level | Light text | On white / on `#F8F9FA` | Dark text | On `#1E1E1E` / on `#121212` |
+|---|---|---|---|---|
+| discovery | `#004D40` (`--palette-teal-deep`) | 9.8 / 9.3:1 | `#80CBC4` (`--palette-teal-dark`) | 8.9 / 10.0:1 |
+| psychology | `#5C3D00` (`--palette-amber-deep`) | 9.9 / 9.4:1 | `#FFCC80` (identity) | 11.3 / 12.7:1 |
+| the other four | identity | 8.1:1 or more | identity | 8.3:1 or more |
+
+Discovery's dark text is the paler teal the section below keeps off text, because on its own it looked like Building's blue. It is used only beside Discovery's `#26A69A` ring or line and its name, so the two levels still differ in lightness where the colour carries the level, and in words. **In the planner:** where it shows a level's colour as text, it uses these text shades too.
 
 ---
 
@@ -182,6 +196,19 @@ Two non-CSS surfaces also keep literal copies because they cannot consume CSS va
 ### Control edges
 
 The edge of a text field, select or checkbox is a neutral of its own, `--color-control-edge`: `#858585` on light (3.7:1 on white) and `#7A7A7A` on dark (3.9:1 on `#1E1E1E`), so a field's outline passes the 3:1 non-text minimum, where the card border (`--color-border`) is decorative and does not. Only things a reader can type into or tick take it.
+
+### Grey text and warning text: 8:1 (#788, #828)
+
+Secondary and muted grey text, and the text on a warning panel, are held to the same 8:1 as the palette. They were AA only (the secondary grey `#616161` was 5.9:1 on the page; the warning text `#856404` was 5.0:1 on its tint).
+
+| Token | Light | On the page / its surface | Dark | On `#1E1E1E` |
+|---|---|---|---|---|
+| `--color-text-secondary` | `#4A4A4A` (`--neutral-700`) | 8.4:1 on `#F8F9FA`, 8.9:1 on white | `#BABABA` (`--neutral-text-dark-secondary`) | 8.6:1 |
+| `--color-text-muted` | `#474747` (`--neutral-600`) | 8.8:1 on `#F8F9FA` | `#B8B8B8` (`--neutral-text-dark-muted`) | 8.4:1 |
+| `--color-warning-text` | `#5A4100` (`--warning-light-text-strong`) | 8.7:1 on `#fff3cd` | `#ffc107` (unchanged) | 8.7:1 on `#332b00` |
+| `--warning-light-text` | `#5C4300` | 8.4:1 on `#fff3cd`, 9.3:1 on white | | |
+
+`--neutral-500` and `--neutral-800` keep their values for the borders and lines that use them; dark-mode text has tokens of its own. **In the planner:** its secondary text and warning text should meet the same 8:1.
 
 ### Material Design and Off-Palette Colors
 

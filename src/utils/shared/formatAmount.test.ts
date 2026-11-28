@@ -198,28 +198,28 @@ describe('formatAmount: short forms it abbreviates itself', () => {
   const spanish = (v: number) => nbsp(formatAmount(v, 'EUR', true, 'es'));
 
   it('writes an amount under a thousand in full', () => {
-    assert.equal(yen(7), '￥7');
-    assert.equal(yen(999), '￥999');
+    assert.equal(yen(7), '¥7');
+    assert.equal(yen(999), '¥999');
     assert.equal(spanish(999), '999 €');
     assert.equal(spanish(0), '0 €');
   });
 
   it('starts each abbreviation at its round figure exactly', () => {
-    assert.equal(yen(1_000), '￥1K');
-    assert.equal(yen(1_000_000), '￥1M');
-    assert.equal(yen(1_000_000_000), '￥1B');
+    assert.equal(yen(1_000), '¥1K');
+    assert.equal(yen(1_000_000), '¥1M');
+    assert.equal(yen(1_000_000_000), '¥1B');
     assert.equal(spanish(1_000), '1K €');
     assert.equal(spanish(1_000_000), '1M €');
     assert.equal(spanish(1_000_000_000), '1 mil M €');
   });
 
   it('abbreviates an amount below zero by its size', () => {
-    assert.equal(yen(-1_500), '-￥1.5K');
-    assert.equal(spanish(-2.5e9), '-2,5 mil M €');
+    assert.equal(yen(-1_500), '−¥1.5K');
+    assert.equal(spanish(-2.5e9), '−2,5 mil M €');
   });
 
   it('writes "B" for billions wherever the page is not Spanish', () => {
-    assert.equal(yen(2.5e9), '￥2.5B');
+    assert.equal(yen(2.5e9), '¥2.5B');
     assert.equal(nbsp(formatAmount(2.5e9, 'PLN', true)), '2.5B zł');
     assert.equal(nbsp(formatAmount(2.5e9, 'EUR', true, 'de')), '2,5B €');
   });
@@ -235,7 +235,7 @@ describe('formatAmount: short forms it abbreviates itself', () => {
 
   it('adds no abbreviation where there is no figure to abbreviate', () => {
     assert.equal(spanish(Infinity), '∞ €');
-    assert.equal(yen(Infinity), '￥∞');
+    assert.equal(yen(Infinity), '¥∞');
   });
 });
 
@@ -246,14 +246,14 @@ describe('formatAmount: just under a round figure (#861)', () => {
     assert.equal(nbsp(formatAmount(999_999_999, 'EUR', true, 'es')), '1 mil M €');
     assert.equal(formatAmount(999_999, 'EUR', true, 'hi'), '€1M');
     assert.equal(formatAmount(999_999_999, 'EUR', true, 'hi'), '€1B');
-    assert.equal(formatAmount(999_999, 'JPY', true), '￥1M');
-    assert.equal(formatAmount(999_500, 'JPY', true), '￥1M');
-    assert.equal(formatAmount(-999_999, 'JPY', true), '-￥1M');
-    assert.equal(formatAmount(999.6, 'JPY', true), '￥1K');
+    assert.equal(formatAmount(999_999, 'JPY', true), '¥1M');
+    assert.equal(formatAmount(999_500, 'JPY', true), '¥1M');
+    assert.equal(formatAmount(-999_999, 'JPY', true), '−¥1M');
+    assert.equal(formatAmount(999.6, 'JPY', true), '¥1K');
   });
 
   it('stays in the smaller unit when the figure does not round up', () => {
-    assert.equal(formatAmount(999_499, 'JPY', true), '￥999K');
+    assert.equal(formatAmount(999_499, 'JPY', true), '¥999K');
     assert.equal(nbsp(formatAmount(999_499, 'EUR', true, 'es')), '999K €');
     assert.ok(!formatAmount(999_999, 'EUR', true, 'mr').includes('K'));
   });
@@ -265,9 +265,9 @@ describe('formatAmount: an amount that rounds to zero (#885)', () => {
       assert.equal(formatAmount(v, 'EUR'), '€0', String(v));
       assert.equal(formatAmount(v, 'EUR', true), '€0', String(v));
       assert.equal(formatAmount(v, 'CHF', false, 'es').replace(/\s/g, ' '), '0 CHF', String(v));
-      assert.equal(formatAmount(v, 'JPY', true), '￥0', String(v));
+      assert.equal(formatAmount(v, 'JPY', true), '¥0', String(v));
     }
-    assert.equal(formatAmount(-0.6, 'EUR'), '-€1');
+    assert.equal(formatAmount(-0.6, 'EUR'), '−€1');
   });
 });
 

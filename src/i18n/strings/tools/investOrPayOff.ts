@@ -207,7 +207,7 @@ export const investOrPayOffEn = {
       'no-balance': 'Enter what you owe.',
       'payment-too-low': 'The monthly payment does not cover the interest, so the debt would never be paid. Enter a larger payment.',
       'too-long': 'At this payment the debt would take more than {years} years to pay. Enter a larger payment.',
-      'impossible-rate': 'A rate of -100% or less is not possible.',
+      'impossible-rate': 'A rate of −100% or less is not possible.',
     },
     results: {
       heading: 'How the two paths compared',
@@ -261,6 +261,10 @@ export const investOrPayOffEn = {
       copy: 'Copy a link to these results',
       copied: 'Link copied',
       copyPrompt: 'Copy this link:',
+      /** Over the copied address, kept under the buttons until the form changes (#711). */
+      copiedBar: 'Link copied. You can also copy it from here:',
+      shareUrlAria: 'Link to these results',
+      shareStatus: 'Link copied to the clipboard.',
       shareNote: 'The link contains the numbers you entered, after the # in the address.',
     },
     export: {
@@ -469,7 +473,7 @@ export const investOrPayOffHi: InvestOrPayOff = {
       'no-balance': 'लिखें कि आप पर कितना बकाया है।',
       'payment-too-low': 'मासिक किस्त ब्याज भी पूरा नहीं करती, इसलिए कर्ज़ कभी नहीं चुकेगा। बड़ी किस्त लिखें।',
       'too-long': 'इस किस्त से कर्ज़ चुकाने में {years} साल से ज़्यादा लगेंगे। बड़ी किस्त लिखें।',
-      'impossible-rate': '-100% या उससे कम दर संभव नहीं है।',
+      'impossible-rate': '−100% या उससे कम दर संभव नहीं है।',
     },
     results: {
       heading: 'दोनों रास्तों की तुलना',
@@ -523,6 +527,9 @@ export const investOrPayOffHi: InvestOrPayOff = {
       copy: 'इन नतीजों का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
+      copiedBar: 'लिंक कॉपी हो गया। आप इसे यहाँ से भी कॉपी कर सकते हैं:',
+      shareUrlAria: 'इन नतीजों का लिंक',
+      shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       shareNote: 'लिंक में आपके लिखे आँकड़े होते हैं, पते में # के बाद।',
     },
     export: {
@@ -727,7 +734,7 @@ export const investOrPayOffMr: InvestOrPayOff = {
       'no-balance': 'तुमचे किती कर्ज बाकी आहे ते भरा.',
       'payment-too-low': 'मासिक हप्त्यातून व्याजही भरत नाही, त्यामुळे कर्ज कधीच फिटणार नाही. मोठा हप्ता भरा.',
       'too-long': 'या हप्त्याने कर्ज फेडायला {years} वर्षांपेक्षा जास्त लागतील. मोठा हप्ता भरा.',
-      'impossible-rate': '-100% किंवा त्याहून कमी दर शक्य नाही.',
+      'impossible-rate': '−100% किंवा त्याहून कमी दर शक्य नाही.',
     },
     results: {
       heading: 'दोन मार्गांची तुलना',
@@ -781,6 +788,9 @@ export const investOrPayOffMr: InvestOrPayOff = {
       copy: 'या निकालांची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
+      copiedBar: 'लिंक कॉपी झाली. तुम्ही ती इथूनही कॉपी करू शकता:',
+      shareUrlAria: 'या निकालांची लिंक',
+      shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       shareNote: 'लिंकमध्ये तुम्ही लिहिलेले आकडे असतात, पत्त्यातील # नंतर.',
     },
     export: {
@@ -985,7 +995,7 @@ export const investOrPayOffEs: InvestOrPayOff = {
       'no-balance': 'Escribe lo que debes.',
       'payment-too-low': 'La cuota mensual no cubre los intereses, así que la deuda nunca se pagaría. Escribe una cuota mayor.',
       'too-long': 'Con esta cuota la deuda tardaría más de {years} años en pagarse. Escribe una cuota mayor.',
-      'impossible-rate': 'Una tasa de interés del -100 % o menos no es posible.',
+      'impossible-rate': 'Una tasa de interés del −100 % o menos no es posible.',
     },
     results: {
       heading: 'Cómo se compararon los dos caminos',
@@ -1039,6 +1049,9 @@ export const investOrPayOffEs: InvestOrPayOff = {
       copy: 'Copiar un enlace a estos resultados',
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
+      copiedBar: 'Enlace copiado. También puedes copiarlo desde aquí:',
+      shareUrlAria: 'Enlace a estos resultados',
+      shareStatus: 'Enlace copiado al portapapeles.',
       shareNote: 'El enlace contiene las cifras que escribiste, tras el # de la dirección.',
     },
     export: {
@@ -1243,7 +1256,7 @@ export const investOrPayOffCs: InvestOrPayOff = {
       'no-balance': 'Zadejte, kolik dlužíte.',
       'payment-too-low': 'Měsíční splátka nepokryje ani úroky, takže by dluh nebyl nikdy splacen. Zadejte vyšší splátku.',
       'too-long': 'S touto splátkou by splacení trvalo déle než {years} let. Zadejte vyšší splátku.',
-      'impossible-rate': 'Úroková sazba -100 % nebo nižší není možná.',
+      'impossible-rate': 'Úroková sazba −100 % nebo nižší není možná.',
     },
     results: {
       heading: 'Jak si obě cesty vedly',
@@ -1297,6 +1310,9 @@ export const investOrPayOffCs: InvestOrPayOff = {
       copy: 'Zkopírovat odkaz na tyto výsledky',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
+      copiedBar: 'Odkaz zkopírován. Můžete ho zkopírovat i\u00a0odsud:',
+      shareUrlAria: 'Odkaz na tyto výsledky',
+      shareStatus: 'Odkaz zkopírován do schránky.',
       shareNote: 'Odkaz obsahuje zadaná čísla za znakem # v adrese.',
     },
     export: {

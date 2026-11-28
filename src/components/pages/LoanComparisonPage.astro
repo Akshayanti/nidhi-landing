@@ -35,6 +35,7 @@ import ToolWaitlist from '../../components/ToolWaitlist.astro';
 import { SHARED_STATE_GLOBAL, STATE_KEY_PATTERN } from '../../utils/loan/url.ts';
 import { getCollection } from 'astro:content';
 import { LOCALE_META, LOCALES, dict, lessonPath, localizedPath, type Locale } from '../../i18n';
+import { shareCard } from '../../utils/shareCard.ts';
 
 interface Props {
   locale: Locale;
@@ -161,10 +162,15 @@ const faqSchema = {
     },
   })),
 };
+// The English page shows the tool's own share image; a translated page keeps
+// the English brand card (#743, docs/brand-identity.md).
+const card = locale === 'en' ? shareCard('tools', 'loan-comparison', dict('en').freeHub.tools.loanComparison.title, 'A free tool from nidhi.') : undefined;
 ---
 
 <BaseLayout
   locale={locale}
+  image={card?.image}
+  imageAlt={card?.imageAlt}
   sheets={['tools']}
   alternates={LOCALES}
   toolStateGlobal={SHARED_STATE_GLOBAL}

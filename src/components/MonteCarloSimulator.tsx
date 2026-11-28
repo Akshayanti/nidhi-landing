@@ -6,7 +6,7 @@ import { AmountLocaleContext, useMoney } from './useMoney.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
-import { FIT_FLOOR, edgeAnchor, labelStep, niceSteps, textWidth, useChartRem, wrapWords } from './chart/useChartRem.ts';
+import { FIT_FLOOR, labelStep, niceSteps, placeLabels, textWidth, useChartRem, wrapWords } from './chart/useChartRem.ts';
 import { MeasureSamples, useMeasuredText } from './chart/MeasuredText.tsx';
 import { plural } from '../i18n/plural.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
@@ -33,7 +33,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { monteCarloSheets } from '../utils/monte-carlo/export.ts';
 import { monteCarloReport } from '../utils/monte-carlo/report.ts';
 import type { Dict } from '../i18n/strings/types.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ---------------------------------------------------------------------------
 // Copy
@@ -249,6 +249,7 @@ export default function MonteCarloSimulator({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [tipsDismissed, setTipsDismissed] = useState(false);
   // Fees and paths start folded behind one row that says what they are set
   // to. View state only: never shared, stored or tracked.
@@ -341,6 +342,23 @@ export default function MonteCarloSimulator({
   const pending = running || settled !== shownState;
   // Waiting from the keystroke, so Copy can never share a plan not shown yet.
   const { withheld, waiting } = useResultGate(hasErrors, form === settledForm && !pending);
+  // After "Fix the highlighted fields", a screen reader hears once that the
+  // corrected plan's results are back, and nothing on the edits after it
+  // (#822). The simulator says no result on ordinary edits: it runs again on
+  // every one.
+  const [recovery, setRecovery] = useState<'none' | 'fixing' | 'back'>('none');
+  // "Again" only where a result was on screen before: a shared link that
+  // arrived with a wrong box has shown none.
+  const shownBefore = useRef(false);
+  useEffect(() => {
+    // Back once the result on screen is the corrected plan's; the next edit
+    // starts waiting again, and the line is taken back unsaid if not yet said.
+    // Counted once the page has read any link: before that it shows its example.
+    if (hydrated && !hasErrors && !waiting) shownBefore.current = true;
+    if (hasErrors) setRecovery(shownBefore.current ? 'fixing' : 'none');
+    else if (!waiting && recovery === 'fixing') setRecovery('back');
+    else if (waiting && recovery === 'back') setRecovery('none');
+  }, [hydrated, hasErrors, waiting, recovery]);
 
   // A number box hands over a plain number string, whatever the page's language wrote.
   const setField = (key: keyof FormState) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -358,13 +376,19 @@ export default function MonteCarloSimulator({
     const state = publishableForm(form, defaultCurrency);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=monte_carlo';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const answer = share.start();
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      answer.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_monte_carlo_share_copied');
   }
 
@@ -605,7 +629,7 @@ export default function MonteCarloSimulator({
         </fieldset>
 
         <div className="mcs-actions">
-          <ResultAnnouncement text={hasErrors ? strings.actions.fix : ''} delay={WITHHELD_SAID_AFTER} />
+          <ResultAnnouncement text={hasErrors ? strings.actions.fix : recovery === 'back' ? strings.actions.back : ''} delay={WITHHELD_SAID_AFTER} notice={share.notice} />
           <span className="mcs-hint" role="status" aria-live="polite">
             {!hasErrors && running ? t(strings.actions.running, { paths: grouped(settled.paths, numberLocale) }) : ''}
           </span>
@@ -632,6 +656,7 @@ export default function MonteCarloSimulator({
                 <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
               </button>
             }
+            shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
             xlsxAttr="free-monte-carlo-export-xlsx"
             pdfAttr="free-monte-carlo-export-pdf"
             ready={!waiting}
@@ -1060,6 +1085,18 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
   );
   const xTicks: number[] = [];
   for (let y = 0; y <= years; y += xStep) xTicks.push(y);
+  // The horizon's own year is labelled even where the step passes it by, and
+  // the labels are chosen as the other charts choose them: the end is kept,
+  // and an inner label gives way (#757). At 400% text on a phone the axis
+  // read "0, 20" for 30 years.
+  // An end year less than half a step past the last label takes its place
+  // ("0, 5, 11", not "0, 5, 10, 11").
+  const lastTick = xTicks[xTicks.length - 1];
+  const xLabelled = lastTick === years
+    ? xTicks
+    : years - lastTick < xStep / 2 && xTicks.length > 1 ? [...xTicks.slice(0, -1), years] : [...xTicks, years];
+  const xLabels = placeLabels(xLabelled.map((v) => x(v)), xLabelled.map((v) => textWidth(String(v), fs)), 0, W, fs)
+    .map(({ i, anchor }) => ({ v: xLabelled[i], anchor }));
   const xMinorStep = minor && xStep / 5 >= 1 ? xStep / 5 : 0;
   const xMinor: number[] = [];
   if (xMinorStep) for (let y = xMinorStep; y < years; y += xMinorStep) if (y % xStep !== 0) xMinor.push(y);
@@ -1221,12 +1258,15 @@ function Chart({ result, worded, state, code, strings }: { result: SimulationRes
                   : <text className="mcs-axis mcs-axisAmount" x={r1(PAD.left - 0.6 * fs)} y={r1(yPx(v) + 0.35 * fs)} textAnchor="end">{axis.tick(v)}</text>}
               </g>
             ))}
-            {xTicks.map((v) => (
-              <g key={`x${v}`}>
-                {v > 0 && <line className="mcs-grid" x1={x(v)} x2={x(v)} y1={PAD.top} y2={H - PAD.bottom} />}
-                <text className="mcs-axis" x={x(v)} y={r1(H - PAD.bottom + 1.4 * fs)} textAnchor={edgeAnchor(x(v), textWidth(String(v), fs), 0, W)}>{v}</text>
-              </g>
-            ))}
+            {[...new Set([...xTicks, ...xLabels.map((l) => l.v)])].sort((a, b) => a - b).map((v) => {
+              const label = xLabels.find((l) => l.v === v);
+              return (
+                <g key={`x${v}`}>
+                  {v > 0 && xTicks.includes(v) && <line className="mcs-grid" x1={x(v)} x2={x(v)} y1={PAD.top} y2={H - PAD.bottom} />}
+                  {label && <text className="mcs-axis" x={x(v)} y={r1(H - PAD.bottom + 1.4 * fs)} textAnchor={label.anchor}>{v}</text>}
+                </g>
+              );
+            })}
             <text className="mcs-axis mcs-axisTitle" x={titleX} y={r1(H - PAD.bottom + 3.0 * fs)} textAnchor="middle" style={titleFit < 1 ? { fontSize: `${fs * titleFit}px` } : undefined} visibility={titleFit < FIT_FLOOR ? 'hidden' : undefined}>
               {titleLines.map((l, i) => <tspan key={i} x={titleX} dy={i === 0 ? 0 : r1(1.2 * fs)}>{l}</tspan>)}
             </text>

@@ -36,12 +36,12 @@ const step = (LADDER_LEVELS as readonly string[]).indexOf(level) + 1;
   /* Each level resolves its identity color via a CSS variable that flips
      between light and dark themes (see :root and [data-theme="dark"] in
      global.css). This keeps the badge readable in both modes. */
-  .level-badge--discovery { --badge-color: var(--level-discovery); }
-  .level-badge--building { --badge-color: var(--level-building); }
-  .level-badge--psychology { --badge-color: var(--level-psychology); }
-  .level-badge--optimizing { --badge-color: var(--level-optimizing); }
-  .level-badge--mastery { --badge-color: var(--level-mastery); }
-  .level-badge--inclusive-finances { --badge-color: var(--level-inclusive-finances); }
+  .level-badge--discovery { --badge-color: var(--level-discovery); --badge-text: var(--level-discovery-text); }
+  .level-badge--building { --badge-color: var(--level-building); --badge-text: var(--level-building-text); }
+  .level-badge--psychology { --badge-color: var(--level-psychology); --badge-text: var(--level-psychology-text); }
+  .level-badge--optimizing { --badge-color: var(--level-optimizing); --badge-text: var(--level-optimizing-text); }
+  .level-badge--mastery { --badge-color: var(--level-mastery); --badge-text: var(--level-mastery-text); }
+  .level-badge--inclusive-finances { --badge-color: var(--level-inclusive-finances); --badge-text: var(--level-inclusive-finances-text); }
 
   .level-badge {
     display: inline-flex;
@@ -52,7 +52,7 @@ const step = (LADDER_LEVELS as readonly string[]).indexOf(level) + 1;
     font-size: var(--text-caption);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--badge-color);
+    color: var(--badge-text, var(--badge-color));
   }
 
   .level-num {
@@ -63,7 +63,8 @@ const step = (LADDER_LEVELS as readonly string[]).indexOf(level) + 1;
     height: 1.75em;
     border: 1.5px solid var(--badge-color);
     border-radius: 50%;
-    background: color-mix(in srgb, var(--badge-color) 12%, var(--color-bg-white));
+    /* No tint behind the number: a tint took every level below 8:1 (#761). */
+    background: var(--color-bg-white);
     letter-spacing: normal;
     line-height: 1;
   }

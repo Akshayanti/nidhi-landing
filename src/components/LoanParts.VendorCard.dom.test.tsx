@@ -380,9 +380,35 @@ describe('the offer card: the required boxes', () => {
     assert.deepEqual(wiring(card, box(card, LABELS.term)), UNMARKED);
     fireEvent.change(box(card, LABELS.name), { target: { value: 'Bank' } });
     assert.equal(errorOf(card)?.textContent, `Error: ${t.export.fieldUnreadable}`);
-    // Typing in the box that holds the ? names the fault.
+    // Typing in the box that holds the ? names the fault: the offer here still
+    // holds what cannot be read, so it is said as that, not as "greater than zero" (#898).
     fireEvent.change(box(card, LABELS.principal), { target: { value: '' } });
-    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amount}`);
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amountUnreadable}`);
+  });
+
+  it('names and marks only a monthly payment that cannot be read (#898, council)', () => {
+    const { card } = show(loan({ modeKind: 'payment', monthlyPayment: 'abc', termMonths: '' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.paymentUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, LABELS.monthly)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.rate)), UNMARKED);
+  });
+
+  it('marks the box whose fault it names when an amount and an optional box both cannot be read (council)', () => {
+    const { card } = show(loan({ principal: 'abc', feeMajor: 'abc' }));
+    assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.optionalUnreadable}`);
+    assert.deepEqual(wiring(card, box(card, `${c.fee} (EUR)`)), MARKED);
+    assert.deepEqual(wiring(card, box(card, LABELS.principal)), UNMARKED);
+  });
+
+  it('names and marks only the amount that cannot be read, even beside another fault (#898, council)', () => {
+    for (const vendor of [loan({ principal: 'abc' }), loan({ principal: 'abc', feeMajor: '100', pointsCostMajor: '200' })]) {
+      const { card } = show(vendor);
+      assert.equal(errorOf(card)?.textContent, `Error: ${s.engine.errors.amountUnreadable}`);
+      assert.deepEqual(wiring(card, box(card, LABELS.principal)), MARKED);
+      for (const other of [LABELS.rate, LABELS.term, `${c.pointsCost} (EUR)`, `${c.fee} (EUR)`]) assert.deepEqual(wiring(card, box(card, other)), UNMARKED, other);
+      cleanup();
+    }
   });
 
   it('leaves a ? box the reader has typed in unmarked while another ? keeps the message', () => {

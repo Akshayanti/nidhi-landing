@@ -278,7 +278,7 @@ describe('the inflation calculator on its page', () => {
       choose(f.currency, 'JPY');
       assert.deepEqual(events.at(-1), ['free_inflation_currency_changed', { currency: 'JPY' }]);
       settle();
-      assert.equal(headline(), 'about ￥1,550');
+      assert.equal(headline(), 'about ¥1,550');
       assert.deepEqual(reportEntered()[1], [f.amount.buy, '6,000']);
       assert.equal(shared(), 'c=JPY&a=6000&r=7&y=20');
     }

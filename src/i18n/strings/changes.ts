@@ -40,6 +40,151 @@ export interface ChangeDay {
 
 export const CHANGE_DAYS: ChangeDay[] = [
   {
+    date: '2026-11-28',
+    items: [
+      {
+        id: 'search-finds-money-and-guides',
+        text: {
+          en: 'Searching the lessons for just “money” now finds them, where it used to find nothing, and the line above the results counts lessons and guides apart, such as “10 lessons, 1 guide”, so it agrees with the “Show all” button. When only guides match, the count says so too, for screen readers as well.',
+          hi: 'पाठों में सिर्फ़ “money” खोजने पर अब पाठ मिलते हैं; पहले कुछ नहीं मिलता था। नतीजों के ऊपर की पंक्ति अब पाठ और गाइड अलग-अलग गिनती है, जैसे “10 पाठ, 1 गाइड”, इसलिए वह “सभी … दिखाएँ” बटन से मेल खाती है। जब सिर्फ़ गाइड मिलती हैं, तब भी गिनती यह बताती है, स्क्रीन रीडर के लिए भी।',
+          es: 'Buscar solo «money» entre las lecciones ahora las encuentra, cuando antes no encontraba nada, y la línea sobre los resultados cuenta por separado lecciones y guías, como «10 lecciones, 1 guía», así que coincide con el botón «Mostrar las…». Cuando solo coinciden guías, el recuento también lo indica, incluso para lectores de pantalla.',
+          cs: 'Hledání samotného slova „money“ v\u00a0lekcích teď lekce najde, dřív nenašlo nic, a\u00a0řádek nad výsledky počítá zvlášť lekce a\u00a0návody, například „10 lekcí, 1 návod“, takže souhlasí s\u00a0tlačítkem „Zobrazit vše (…)“. Když odpovídají jen návody, počet to řekne také, i\u00a0pro čtečky obrazovky.',
+          mr: 'धड्यांमध्ये फक्त “money” शोधल्यावर आता धडे सापडतात; आधी काहीच सापडत नसे. निकालांच्या वरची ओळ आता धडे आणि मार्गदर्शिका वेगवेगळ्या मोजते, जसे “10 धडे, 1 मार्गदर्शिका”, त्यामुळे ती “सर्व … दाखवा” बटणाशी जुळते. फक्त मार्गदर्शिका जुळतात तेव्हाही मोजणी तसे सांगते, स्क्रीन रीडरसाठीही.',
+        },
+      },
+      {
+        id: 'email-fields-keep-their-name',
+        text: {
+          en: 'The newsletter and waitlist forms now show “Email address” above the box, so the box keeps its name once you start typing. It used to be named only by the grey word inside it, which disappears as you type.',
+          hi: 'न्यूज़लेटर और वेटलिस्ट के फ़ॉर्म में अब बॉक्स के ऊपर “ईमेल पता” लिखा दिखता है, इसलिए टाइप करना शुरू करने के बाद भी बॉक्स का नाम दिखता रहता है। पहले उसका नाम सिर्फ़ उसके अंदर का धूसर शब्द था, जो टाइप करते ही ग़ायब हो जाता है।',
+          es: 'Los formularios del boletín y de la lista de espera muestran ahora «Correo electrónico» sobre el recuadro, así que el recuadro conserva su nombre cuando empiezas a escribir. Antes solo lo nombraba la palabra gris de dentro, que desaparece al escribir.',
+          cs: 'Formuláře newsletteru a\u00a0čekací listiny teď nad rámečkem ukazují „E-mailová adresa“, takže rámeček má název i\u00a0poté, co začnete psát. Dřív ho pojmenovávalo jen šedé slovo uvnitř, které při psaní zmizí.',
+          mr: 'न्यूजलेटर आणि प्रतीक्षा यादीच्या फॉर्ममध्ये आता चौकटीच्या वर “ईमेल पत्ता” दिसतो, त्यामुळे टाइप करायला सुरुवात केल्यावरही चौकटीचे नाव दिसत राहते. आधी तिचे नाव फक्त आतला राखाडी शब्द होता, जो टाइप करताच नाहीसा होतो.',
+        },
+      },
+      {
+        id: 'lesson-drawings-readable',
+        text: {
+          en: 'The drawings in lessons now keep their smallest words readable on every screen and at every text size you set: a wide drawing reaches past the column of text, or scrolls sideways, instead of shrinking. Tables in lessons and guides no longer split a short figure such as “3%” across two lines.',
+          hi: 'पाठों के चित्र अब हर स्क्रीन पर और आपके चुने हर अक्षर-आकार पर अपने सबसे छोटे शब्द भी पढ़ने लायक रखते हैं: चौड़ा चित्र छोटा होने की जगह लेख के कॉलम से बाहर तक फैलता है, या बग़ल में स्क्रॉल होता है। पाठों और गाइड की तालिकाएँ अब “3%” जैसे छोटे आँकड़े को दो पंक्तियों में नहीं तोड़तीं।',
+          es: 'Los dibujos de las lecciones mantienen ahora legibles hasta sus palabras más pequeñas en cualquier pantalla y con cualquier tamaño de texto que elijas: un dibujo ancho se extiende más allá de la columna de texto, o se desplaza de lado, en lugar de encogerse. Las tablas de lecciones y guías ya no parten una cifra corta como «3\u00a0%» en dos líneas.',
+          cs: 'Obrázky v\u00a0lekcích teď mají i\u00a0nejmenší slova čitelná na každé obrazovce a\u00a0při každé velikosti písma, kterou si nastavíte: široký obrázek se místo zmenšení roztáhne za sloupec textu, nebo se posouvá do strany. Tabulky v\u00a0lekcích a\u00a0návodech už nerozdělí krátké číslo jako „3\u00a0%“ na dva řádky.',
+          mr: 'धड्यांमधील चित्रे आता प्रत्येक स्क्रीनवर आणि तुम्ही निवडलेल्या प्रत्येक अक्षर-आकारात आपले सर्वात लहान शब्दही वाचता येतील असे ठेवतात: रुंद चित्र लहान होण्याऐवजी मजकुराच्या स्तंभाबाहेर पसरते, किंवा बाजूला स्क्रोल होते. धडे आणि मार्गदर्शिकांमधील तक्ते आता “3%” सारखा लहान आकडा दोन ओळींत तोडत नाहीत.',
+        },
+      },
+      {
+        id: 'cookie-answers-first-large-text',
+        text: {
+          en: 'When the screen is short for its text, as with very large text on a phone, the cookie question now shows its two answers right after its title, before the explanation, so neither has to be found far down the sheet.',
+          hi: 'जब स्क्रीन अपने अक्षरों के हिसाब से छोटी पड़ती है, जैसे फ़ोन पर बहुत बड़े अक्षरों में, तो कुकी वाला सवाल अब अपने शीर्षक के ठीक बाद, समझाने वाले हिस्से से पहले, अपने दोनों जवाब दिखाता है, ताकि दोनों में से किसी को भी नीचे दूर तक ढूँढना न पड़े।',
+          es: 'Cuando la pantalla se queda corta para su texto, como con el texto muy grande en un teléfono, el aviso de cookies muestra ahora sus dos respuestas justo después del título, antes de la explicación, y no hace falta buscar ninguna muy abajo.',
+          cs: 'Když je obrazovka na své písmo krátká, třeba při velmi velkém písmu na telefonu, cookie lišta teď ukazuje obě odpovědi hned pod nadpisem, před vysvětlením, takže ani jednu není třeba hledat hluboko dole.',
+          mr: 'स्क्रीन तिच्या अक्षरांसाठी लहान पडते तेव्हा, जसे फोनवर खूप मोठ्या अक्षरांत, कुकी सूचना आता आपल्या शीर्षकानंतर लगेच, स्पष्टीकरणाच्या आधी, दोन्ही उत्तरे दाखवते, त्यामुळे कोणतेही उत्तर खाली दूरवर शोधावे लागत नाही.',
+        },
+      },
+      {
+        id: 'level-colours-easier-to-read',
+        text: {
+          en: 'Level names and numbers are easier to read: Discovery’s teal and Psychology’s amber are darker as text in light mode, Discovery’s is paler in dark mode, and the numbers sit on a plain background instead of a tint. On a topic page with large text on a phone, the “Start here” label no longer covers the first lesson’s title.',
+          hi: 'स्तरों के नाम और नंबर अब पढ़ने में आसान हैं: हल्के मोड में ‘शुरुआत’ का हरा-नीला और ‘मनोविज्ञान’ का पीला-भूरा रंग लिखावट में गहरा है, गहरे मोड में ‘शुरुआत’ का रंग हल्का है, और नंबर रंगीन परत की जगह सादी पृष्ठभूमि पर हैं। फ़ोन पर बड़े अक्षरों में विषय वाले पेज पर “यहाँ से शुरू करें” लेबल अब पहले पाठ का शीर्षक नहीं ढकता।',
+          es: 'Los nombres y números de los niveles se leen mejor: el turquesa de Descubrimiento y el ámbar de Psicología son más oscuros como texto en el modo claro, el de Descubrimiento es más claro en el modo oscuro, y los números están sobre un fondo liso en lugar de uno teñido. En una página de tema con el texto grande en un teléfono, la etiqueta «Empieza aquí» ya no tapa el título de la primera lección.',
+          cs: 'Názvy a\u00a0čísla úrovní se čtou snáz: tyrkysová barva úrovně Objevování a\u00a0jantarová barva úrovně Psychologie jsou ve světlém režimu jako text tmavší, tyrkysová barva Objevování je v\u00a0tmavém režimu světlejší a\u00a0čísla stojí na čistém pozadí místo zabarveného. Na stránce tématu s\u00a0velkým písmem na telefonu už štítek „Začít tady“ nezakrývá název první lekce.',
+          mr: 'पातळ्यांची नावे आणि क्रमांक आता वाचायला सोपे आहेत: फिकट मोडमध्ये ‘ओळख’चा निळसर हिरवा आणि ‘मानसशास्त्र’चा पिवळसर तपकिरी रंग अक्षरांत गडद आहे, गडद मोडमध्ये ‘ओळख’चा रंग फिकट आहे, आणि क्रमांक रंगीत छटेऐवजी साध्या पार्श्वभूमीवर आहेत. फोनवर मोठ्या अक्षरांत विषयाच्या पानावर “इथून सुरुवात करा” लेबल आता पहिल्या धड्याचे शीर्षक झाकत नाही.',
+        },
+      },
+      {
+        id: 'start-card-and-retry-keep-their-place',
+        text: {
+          en: 'On the lessons page, a returning reader’s “Continue where you left off” card now shows the next lesson’s title at once, where it was empty until its script loaded, and a reader of Inclusive Finances lessons alone is no longer shown it. If confirming or ending a subscription fails, the button now keeps keyboard focus, so you can try again from where you are.',
+          hi: 'पाठों वाले पेज पर लौटकर आने वाले पाठक का “जहाँ छोड़ा था वहीं से जारी रखें” कार्ड अब अगले पाठ का शीर्षक तुरंत दिखाता है; पहले वह अपनी स्क्रिप्ट लोड होने तक ख़ाली रहता था। सिर्फ़ ‘सबके लिए वित्त’ के पाठ पढ़ने वाले को अब यह कार्ड नहीं दिखता। सदस्यता की पुष्टि करना या उसे ख़त्म करना विफल हो, तो बटन अब कीबोर्ड फ़ोकस नहीं खोता, ताकि आप वहीं से फिर कोशिश कर सकें।',
+          es: 'En la página de lecciones, la tarjeta «Sigue donde lo dejaste» de quien vuelve muestra ahora enseguida el título de la siguiente lección, cuando antes estaba vacía hasta que cargaba su script, y ya no se muestra a quien solo ha leído lecciones de Finanzas inclusivas. Si falla la confirmación o la baja de una suscripción, el botón conserva ahora el foco del teclado, para que puedas volver a intentarlo desde donde estás.',
+          cs: 'Na stránce lekcí teď karta „Pokračujte tam, kde to máte rozečtené“ vracejícímu se čtenáři hned ukazuje název další lekce, dřív byla prázdná, dokud se nenačetl její skript, a\u00a0čtenáři jen lekcí Inkluzivní finance se už neukazuje. Když se nepodaří potvrdit nebo zrušit odběr, tlačítko teď podrží fokus klávesnice, takže to můžete zkusit znovu tam, kde jste.',
+          mr: 'धड्यांच्या पानावर परत आलेल्या वाचकाचे “मागच्या वेळी जिथे वाचन थांबले, तिथून पुढे वाचा” कार्ड आता पुढच्या धड्याचे शीर्षक लगेच दाखवते; आधी त्याची स्क्रिप्ट लोड होईपर्यंत ते रिकामे राहत असे. फक्त ‘सर्वसमावेशक वित्त’चे धडे वाचणाऱ्याला आता हे कार्ड दिसत नाही. सदस्यत्वाची पुष्टी करणे किंवा ते बंद करणे अयशस्वी झाले, तर बटण आता कीबोर्डचा फोकस गमावत नाही, त्यामुळे तुम्ही तिथूनच पुन्हा प्रयत्न करू शकता.',
+        },
+      },
+      {
+        id: 'loan-says-what-is-missing',
+        text: {
+          en: 'In the loan comparison, a loan amount or monthly payment that is not a number now says it could not be read and how to write it. A horizon, refinance month, rate or term left empty is marked and holds its results back until it is filled in; an empty box used to show results for a value you had not chosen.',
+          hi: 'लोन की तुलना में, अगर लोन राशि या मासिक किस्त संख्या नहीं है, तो अब बताया जाता है कि उसे पढ़ा नहीं जा सका और उसे कैसे लिखें। हॉराइज़न, रीफ़ाइनेंस का महीना, दर या अवधि ख़ाली छोड़ने पर वह बॉक्स चिह्नित होता है और भरे जाने तक नतीजे रोके रखता है; पहले ख़ाली बॉक्स ऐसे मान के नतीजे दिखाता था जो आपने चुना ही नहीं था।',
+          es: 'En la comparación de préstamos, una cantidad o una cuota mensual que no es un número dice ahora que no se pudo leer y cómo escribirla. Un horizonte, un mes de refinanciación, una tasa o un plazo que se dejan vacíos se marcan y retienen sus resultados hasta que se rellenan; antes, un recuadro vacío mostraba resultados para un valor que no habías elegido.',
+          cs: 'V\u00a0porovnání úvěrů teď výše úvěru nebo měsíční splátka, která není číslo, řekne, že ji nešlo přečíst, a\u00a0jak ji napsat. Prázdný horizont, měsíc refinancování, sazba nebo doba splatnosti se označí a\u00a0zadrží své výsledky, dokud je nevyplníte; dřív prázdný rámeček ukazoval výsledky pro hodnotu, která nebyla vaší volbou.',
+          mr: 'कर्जांच्या तुलनेत, कर्जाची रक्कम किंवा मासिक हप्ता संख्या नसेल तर आता ती वाचता आली नाही आणि ती कशी लिहायची हे सांगितले जाते. कालावधी, पुनर्वित्ताचा महिना, दर किंवा मुदत रिकामी ठेवल्यास ती चौकट चिन्हांकित होते आणि भरेपर्यंत निकाल थांबवून ठेवते; आधी रिकामी चौकट तुम्ही न निवडलेल्या मूल्याचे निकाल दाखवत असे.',
+        },
+      },
+      {
+        id: 'copied-link-stays-in-view',
+        text: {
+          en: 'The Monte Carlo simulator, the invest-or-pay-off calculator and the inflation calculator now keep a copied link in a box under the buttons, as the loan comparison does, and a screen reader hears that it was copied. Where the browser does not let the page copy, the link is there to copy by hand. In the net worth calculator, that box now comes into view in a short share window.',
+          hi: 'मोंटे कार्लो सिम्युलेटर, निवेश या कर्ज़ चुकाना कैलकुलेटर और महँगाई कैलकुलेटर अब कॉपी किया गया लिंक बटनों के नीचे एक बॉक्स में रखते हैं, जैसे लोन की तुलना रखती है, और स्क्रीन रीडर को सुनाई देता है कि लिंक कॉपी हो गया। जहाँ ब्राउज़र पेज को कॉपी नहीं करने देता, वहाँ लिंक हाथ से कॉपी करने के लिए मौजूद रहता है। शुद्ध संपत्ति कैलकुलेटर में, छोटी शेयर विंडो में भी यह बॉक्स अब नज़र के सामने आ जाता है।',
+          es: 'El simulador de Monte Carlo, la calculadora de invertir o pagar deuda y la calculadora de inflación guardan ahora el enlace copiado en un recuadro bajo los botones, como ya hace la comparación de préstamos, y un lector de pantalla oye que se ha copiado. Si el navegador no deja copiar a la página, el enlace queda ahí para copiarlo a mano. En la calculadora de patrimonio neto, ese recuadro aparece ahora a la vista aunque la ventana para compartir sea baja.',
+          cs: 'Simulátor Monte Carlo, kalkulačka „Investovat, nebo splatit dluh“ a\u00a0inflační kalkulačka teď nechávají zkopírovaný odkaz v\u00a0rámečku pod tlačítky, jako to dělá porovnání úvěrů, a\u00a0čtečka obrazovky ohlásí, že byl zkopírován. Kde prohlížeč stránce kopírování nedovolí, je odkaz připravený ke zkopírování ručně. V\u00a0kalkulačce čistého jmění se ten rámeček teď posune do zobrazení i\u00a0v\u00a0nízkém okně pro sdílení.',
+          mr: 'मॉन्टे कार्लो सिम्युलेटर, गुंतवणूक की कर्जफेड कॅल्क्युलेटर आणि महागाई कॅल्क्युलेटर आता कॉपी केलेली लिंक बटणांखालील चौकटीत ठेवतात, जसे कर्जांची तुलना ठेवते, आणि स्क्रीन रीडरला लिंक कॉपी झाल्याचे ऐकू येते. ब्राउझर पानाला कॉपी करू देत नाही तिथे लिंक हाताने कॉपी करण्यासाठी उपलब्ध राहते. निव्वळ संपत्ती कॅल्क्युलेटरमध्ये, कमी उंचीच्या शेअर खिडकीतही ही चौकट आता नजरेसमोर येते.',
+        },
+      },
+      {
+        id: 'screen-readers-hear-it-once',
+        text: {
+          en: 'With a screen reader, a box with a mistake in the invest-or-pay-off and inflation calculators now names the mistake once instead of twice, the note about your own return waits until you stop typing, and the Monte Carlo simulator now says when the results are back after you correct a box. The net worth chart’s legend no longer says an entry is pressed when a second tap could not release it.',
+          hi: 'स्क्रीन रीडर के साथ, निवेश या कर्ज़ चुकाना कैलकुलेटर और महँगाई कैलकुलेटर में ग़लती वाला बॉक्स अब ग़लती दो बार की जगह एक बार बताता है, आपके अपने रिटर्न वाला नोट आपके टाइप करना रोकने तक इंतज़ार करता है, और मोंटे कार्लो सिम्युलेटर अब बताता है कि बॉक्स ठीक करने के बाद नतीजे वापस आ गए हैं। शुद्ध संपत्ति चार्ट की लेजेंड अब किसी हिस्से को दबा हुआ नहीं बताती, जब दूसरी बार टैप करने से वह छूट ही नहीं सकता था।',
+          es: 'Con un lector de pantalla, un recuadro con un error en las calculadoras de invertir o pagar deuda y de inflación nombra ahora el error una vez en lugar de dos, la nota sobre tu propia rentabilidad espera a que dejes de escribir, y el simulador de Monte Carlo avisa de que los resultados han vuelto cuando corriges un recuadro. La leyenda del gráfico de patrimonio neto ya no dice que una entrada está pulsada cuando un segundo toque no podía soltarla.',
+          cs: 'Se čtečkou obrazovky teď rámeček s\u00a0chybou v\u00a0kalkulačce „Investovat, nebo splatit dluh“ a\u00a0v\u00a0inflační kalkulačce pojmenuje chybu jednou místo dvakrát, poznámka o\u00a0vašem vlastním výnosu počká, až přestanete psát, a\u00a0simulátor Monte Carlo teď řekne, že jsou výsledky zpět, když rámeček opravíte. Legenda grafu čistého jmění už neříká, že je položka stisknutá, když ji druhé klepnutí nemohlo uvolnit.',
+          mr: 'स्क्रीन रीडर वापरताना, गुंतवणूक की कर्जफेड कॅल्क्युलेटर आणि महागाई कॅल्क्युलेटरमधील चूक असलेली चौकट आता चूक दोनदा नव्हे तर एकदाच सांगते, तुमच्या स्वतःच्या परताव्याची टीप तुम्ही टाइप करणे थांबवेपर्यंत थांबते, आणि चौकट दुरुस्त केल्यावर निकाल परत आल्याचे मॉन्टे कार्लो सिम्युलेटर आता सांगतो. निव्वळ संपत्तीच्या आलेखाची सूची आता एखादी नोंद दाबलेली आहे असे सांगत नाही, जेव्हा दुसऱ्या टॅपने ती सोडवताच येत नव्हती.',
+        },
+      },
+      {
+        id: 'charts-on-small-screens',
+        text: {
+          en: 'On a phone, the loan comparison’s balance chart now keeps its amounts at the left while you scroll the chart sideways. The Monte Carlo chart always shows the last year of the plan, and its explanations of the return settings sit over the setting they describe, or at a large text size stay in the line under the switch. The inflation chart’s first year no longer touches its “0”.',
+          hi: 'फ़ोन पर, लोन की तुलना का बकाया वाला चार्ट अब बग़ल में स्क्रॉल करते समय अपनी रकमें बाईं ओर रखता है। मोंटे कार्लो चार्ट अब हमेशा योजना का आख़िरी साल दिखाता है, और रिटर्न की सेटिंग्स की व्याख्याएँ उसी सेटिंग के ऊपर दिखती हैं जिसके बारे में हैं, या बड़े अक्षरों में स्विच के नीचे वाली पंक्ति में रहती हैं। महँगाई चार्ट का पहला साल अब उसके “0” से नहीं टकराता।',
+          es: 'En un teléfono, el gráfico del saldo de la comparación de préstamos mantiene ahora sus cantidades a la izquierda mientras lo desplazas de lado. El gráfico de Monte Carlo muestra siempre el último año del plan, y las explicaciones de los ajustes de rentabilidad aparecen sobre el ajuste que describen o, con un texto grande, se quedan en la línea bajo las opciones. El primer año del gráfico de inflación ya no toca su «0».',
+          cs: 'Na telefonu teď graf zůstatku v\u00a0porovnání úvěrů drží své částky vlevo, zatímco ho posouváte do strany. Graf Monte Carlo vždy ukazuje poslední rok plánu a\u00a0vysvětlení nastavení výnosů se objeví nad nastavením, které popisují, nebo při velkém písmu zůstanou v\u00a0řádku pod přepínačem. První rok v\u00a0inflačním grafu se už nedotýká jeho „0“.',
+          mr: 'फोनवर, कर्जांच्या तुलनेतील शिल्लक दाखवणारा आलेख बाजूला स्क्रोल करताना आता आपल्या रकमा डावीकडे ठेवतो. मॉन्टे कार्लो आलेख आता नेहमी योजनेचे शेवटचे वर्ष दाखवतो, आणि परताव्याच्या सेटिंग्जची स्पष्टीकरणे ज्या सेटिंगबद्दल आहेत तिच्यावर दिसतात, किंवा मोठ्या अक्षरांत स्विचखालच्या ओळीत राहतात. महागाई आलेखाचे पहिले वर्ष आता त्याच्या “0” ला भिडत नाही.',
+        },
+      },
+      {
+        id: 'small-screens-large-text',
+        text: {
+          en: 'With large text, the spreadsheet, PDF and link buttons under a tool stack one under another on a wider screen too, amounts in the How-to guides’ drawings and examples stay whole on one line, and long amounts in the loan comparison’s table are drawn as large as they fit. A phone keyboard’s return key now says “done” in the tools and “send” in the email forms.',
+          hi: 'बड़े अक्षरों में, टूल के नीचे स्प्रेडशीट, PDF और लिंक वाले बटन चौड़ी स्क्रीन पर भी एक के नीचे एक आते हैं, “कैसे करें” गाइड के चित्रों और उदाहरणों में रकमें एक पंक्ति में पूरी रहती हैं, और लोन की तुलना की तालिका में लंबी रकमें जितनी बड़ी समा सकें उतनी बड़ी दिखती हैं। फ़ोन के कीबोर्ड का रिटर्न बटन अब टूल में “हो गया” और ईमेल फ़ॉर्म में “भेजें” बताता है।',
+          es: 'Con texto grande, los botones de hoja de cálculo, PDF y enlace bajo una herramienta se apilan uno debajo de otro también en una pantalla más ancha, las cantidades de los dibujos y ejemplos de las guías prácticas se quedan enteras en una línea y las cantidades largas de la tabla de la comparación de préstamos se muestran tan grandes como caben. La tecla de retorno del teclado del teléfono dice ahora «listo» en las herramientas y «enviar» en los formularios de correo.',
+          cs: 'S\u00a0velkým písmem se tlačítka pro tabulku, PDF a\u00a0odkaz pod nástrojem skládají pod sebe i\u00a0na širší obrazovce, částky v\u00a0obrázcích a\u00a0příkladech návodů zůstávají celé na jednom řádku a\u00a0dlouhé částky v\u00a0tabulce porovnání úvěrů jsou tak velké, jak se vejdou. Klávesa Enter na klávesnici telefonu teď v\u00a0nástrojích říká „hotovo“ a\u00a0v\u00a0e-mailových formulářích „odeslat“.',
+          mr: 'मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे रुंद स्क्रीनवरही एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील आणि उदाहरणांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
+        },
+      },
+      {
+        id: 'amounts-true-minus-and-yen',
+        text: {
+          en: 'Amounts below zero now start with a true minus sign in every tool and chart, so an amount owed in Swiss francs reads “−CHF\u00a01,650”, not “CHF\u20111,650”. The yen is written “¥”, like the page’s other symbols, and the currency code after a dollar amount no longer drops onto a line of its own.',
+          hi: 'शून्य से कम राशियाँ अब हर टूल और चार्ट में असली माइनस चिह्न से शुरू होती हैं, इसलिए स्विस फ़्रैंक में बकाया राशि “−CHF\u00a01,650” लिखी जाती है, “CHF\u20111,650” नहीं। येन अब “¥” लिखा जाता है, पेज के बाक़ी चिह्नों की तरह, और डॉलर की राशि के बाद का मुद्रा कोड अब अकेले अगली पंक्ति पर नहीं जाता।',
+          es: 'Las cantidades por debajo de cero llevan ahora un auténtico signo menos (−) en todas las herramientas y gráficos, no un guion, y siempre delante de la cantidad. El yen se escribe «¥», como los demás símbolos de la página, y el código que sigue a una cantidad en dólares ya no puede quedarse solo en otra línea.',
+          cs: 'Částky pod nulou mají teď ve všech nástrojích a\u00a0grafech skutečné znaménko minus (−), ne spojovník, a\u00a0vždy před částkou. Japonský jen se píše „¥“ jako ostatní symboly na stránce a\u00a0kód měny za částkou v\u00a0dolarech už nemůže zůstat sám na dalším řádku.',
+          mr: 'शून्यापेक्षा कमी रकमा आता प्रत्येक साधनात आणि आलेखात खऱ्या मायनस चिन्हाने सुरू होतात, त्यामुळे स्विस फ्रँकमधील देणे असलेली रक्कम “−CHF\u00a01,650” अशी लिहिली जाते, “CHF\u20111,650” नाही. येन आता “¥” असे लिहिले जाते, पानावरील इतर चिन्हांसारखे, आणि डॉलरमधील रकमेनंतरचा चलन कोड आता एकटा पुढच्या ओळीवर जात नाही.',
+        },
+      },
+      {
+        id: 'lessons-and-tools-share-cards',
+        text: {
+          en: 'When you share a lesson or a free tool, the link preview now shows its title, as it already did for the guides. A tool shared from a page in another language keeps the nidhi card in English.',
+          hi: 'किसी पाठ या मुफ़्त टूल का लिंक शेयर करने पर, लिंक के पूर्वावलोकन में अब उसका शीर्षक दिखता है, जैसा गाइड के लिए पहले से होता था। किसी दूसरी भाषा के पेज से शेयर किए गए टूल पर nidhi का अंग्रेज़ी कार्ड ही दिखता है।',
+          es: 'Cuando compartes una lección o una herramienta gratuita, la vista previa del enlace muestra ahora su título, como ya pasaba con las guías. Una herramienta compartida desde una página en otro idioma mantiene la tarjeta de nidhi en inglés.',
+          cs: 'Když sdílíte lekci nebo nástroj zdarma, náhled odkazu teď ukazuje jejich název, jako už tomu bylo u\u00a0návodů. Nástroj sdílený ze stránky v\u00a0jiném jazyce si ponechává kartu nidhi v\u00a0angličtině.',
+          mr: 'एखादा धडा किंवा मोफत साधन शेअर केल्यावर, लिंकच्या पूर्वावलोकनात आता त्याचे शीर्षक दिसते, जसे मार्गदर्शकांसाठी आधीपासून होत होते. दुसऱ्या भाषेतील पानावरून शेअर केलेल्या साधनासाठी nidhi\u00a0चे इंग्रजी कार्डच दिसते.',
+        },
+      },
+      {
+        id: 'loan-sheet-cents-and-payment-chart-names',
+        text: {
+          en: 'In the loan comparison, the spreadsheet now writes a typed amount as the results count it: 1,000.005 was written as 1,000.00 while the results used 1,000.01. The chart of where each payment goes now names each bar once, by its month on a loan of up to three years and by its year on a longer one, where two bars could both say “Year\u00a03”.',
+          hi: 'लोन तुलना टूल में, स्प्रेडशीट अब लिखी गई राशि को उसी तरह लिखती है जैसे नतीजे उसे गिनते हैं: 1,000.005 को 1,000.00 लिखा जाता था, जबकि नतीजे 1,000.01 मानते थे। हर किस्त कहाँ जाती है, यह दिखाने वाला चार्ट अब हर बार को एक ही नाम देता है: तीन साल तक के लोन पर उसके महीने से, और लंबे लोन पर उसके साल से, जहाँ पहले दो बार पर “साल\u00a03” लिखा हो सकता था।',
+          es: 'En el comparador de préstamos, la hoja de cálculo escribe ahora una cantidad tecleada tal como la cuentan los resultados: 1.000,005 se escribía 1.000,00 mientras los resultados usaban 1.000,01. El gráfico de a dónde va cada cuota da ahora un nombre distinto a cada barra: su mes en un préstamo de hasta tres años y su año en uno más largo, donde antes dos barras podían decir «Año\u00a03».',
+          cs: 'Ve srovnání úvěrů teď tabulka zapisuje zadanou částku tak, jak ji počítají výsledky: 1\u00a0000,005 se zapsalo jako 1\u00a0000,00, zatímco výsledky počítaly s\u00a01\u00a0000,01. Graf toho, kam jde každá splátka, teď pojmenuje každý sloupec jen jednou: u\u00a0úvěru do tří let měsícem, u\u00a0delšího rokem, kde dřív mohly dva sloupce nést „Rok\u00a03“.',
+          mr: 'कर्जांच्या तुलनेत, स्प्रेडशीट आता लिहिलेली रक्कम निकाल जशी मोजतात तशीच लिहिते: 1,000.005 ही रक्कम 1,000.00 अशी लिहिली जात होती, तर निकाल 1,000.01 वापरत होते. प्रत्येक हप्ता कुठे जातो हे दाखवणारा आलेख आता प्रत्येक स्तंभाला एकदाच नाव देतो: तीन वर्षांपर्यंतच्या कर्जावर त्याच्या महिन्याने आणि जास्त काळाच्या कर्जावर त्याच्या वर्षाने, जिथे आधी दोन स्तंभांवर “वर्ष\u00a03” असू शकत होते.',
+        },
+      },
+    ],
+  },
+  {
     date: '2026-11-27',
     items: [
       {

@@ -51,7 +51,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -244,6 +244,7 @@ export default function InflationCalculator({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -413,13 +414,19 @@ export default function InflationCalculator({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const answer = share.start();
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      answer.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_inflation_share_copied');
   }
 
@@ -671,6 +678,7 @@ export default function InflationCalculator({
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
@@ -679,6 +687,8 @@ export default function InflationCalculator({
         onPrint={printPage}
       />
 
+      {/* The copied link is said here: the result's own announcement is inside Results (#711). */}
+      <ResultAnnouncement text="" notice={share.notice} />
       {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </UnreadableContext.Provider>
@@ -708,6 +718,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          enterKeyHint="done"
           {...markerSelect}
           id={props.id}
           className="ifc-input"
@@ -719,7 +730,8 @@ function Field(props: {
           value={props.value}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
@@ -1446,8 +1458,11 @@ function LineChart({
   const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(lastYear.x), fs) + fs) ?? 100;
   const xCandidates: number[] = [];
   for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xCandidates.push(x);
-  // Labels that would touch, or run past the drawing, are left out.
-  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), 2, W - 2, 0.6 * fs)
+  // Labels that would touch, or run past the drawing, are left out. Where the
+  // amounts stand left of the plot, a year keeps clear of their column: the
+  // first year, centred on the plot's edge, reached under the "0" once a
+  // fallback font drew it wider than measured (#815).
+  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), margin.inside ? 2 : PAD.left - 0.3 * fs, W - 2, 0.6 * fs)
     .map(({ i, anchor }) => ({ x: xCandidates[i], anchor }));
   const titleHalf = (titleFit * Math.max(1, ...titleLines.map(titleWidth))) / 2 + 2;
   const titleX = Math.round(Math.min(Math.max(PAD.left + plotW / 2, titleHalf), W - titleHalf));

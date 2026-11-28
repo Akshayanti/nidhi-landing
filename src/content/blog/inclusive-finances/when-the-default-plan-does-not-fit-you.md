@@ -146,17 +146,17 @@ The audit does not tell you what to decide. It shows which decisions are current
   <rect x="140" y="164" width="320" height="50" rx="10" class="fig-stroke-blue" stroke-width="2" />
   <text class="fig-label" x="300" y="195" text-anchor="middle">Does that hold for my household?</text>
   <polyline points="300,216 300,236 155,236 155,264" class="fig-stroke-muted" stroke-width="2" marker-end="url(#fig-audit-arrow-muted)" />
-  <polyline points="300,236 445,236 445,264" class="fig-stroke-teal" stroke-width="2.5" marker-end="url(#fig-audit-arrow-teal)" />
+  <polyline points="300,236 454,236 454,264" class="fig-stroke-teal" stroke-width="2.5" marker-end="url(#fig-audit-arrow-teal)" />
   <text class="fig-sublabel" x="143" y="258" text-anchor="end">Yes</text>
   <text class="fig-sublabel" x="457" y="258" text-anchor="start">No</text>
   <rect x="30" y="272" width="250" height="68" rx="10" class="fig-fill-card" />
   <rect x="30" y="272" width="250" height="68" rx="10" class="fig-stroke-muted" stroke-width="1.5" />
   <text class="fig-label" x="155" y="301" text-anchor="middle">Keep the default</text>
   <text class="fig-sublabel" x="155" y="323" text-anchor="middle">and recheck it each year</text>
-  <rect x="320" y="272" width="250" height="68" rx="10" class="fig-fill-teal-soft" />
-  <rect x="320" y="272" width="250" height="68" rx="10" class="fig-stroke-teal" stroke-width="2" />
-  <text class="fig-label" x="445" y="301" text-anchor="middle">What do I put in its place?</text>
-  <text class="fig-sublabel" x="445" y="323" text-anchor="middle" style="font-size: 12px;">designation, structure, or workaround</text>
+  <rect x="316" y="272" width="276" height="68" rx="10" class="fig-fill-teal-soft" />
+  <rect x="316" y="272" width="276" height="68" rx="10" class="fig-stroke-teal" stroke-width="2" />
+  <text class="fig-label" x="454" y="301" text-anchor="middle">What do I put in its place?</text>
+  <text class="fig-sublabel" x="454" y="323" text-anchor="middle">designation, structure, or workaround</text>
 </svg>
 <figcaption>The first two questions find the defaults that do not fit. The third finds what could replace them.</figcaption>
 </figure>
