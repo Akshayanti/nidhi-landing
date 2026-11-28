@@ -43,7 +43,7 @@ Answer first. Terms explained at first use. One clearly fictional example person
 
 ## Visuals (`src/components/GuideVisual.astro`)
 
-One per guide, from a reusable set: a timeline with a running balance, a filled table, a document with numbered notes, a message with its warning signs marked. Built from HTML text and tables, never an image; meaning never rests on colour alone. Values are written once, in the guide's frontmatter. Each guide also has a share image (`scripts/render-guide-cards.mjs`, output in `public/brand/social/how-to/`); run it after adding a guide or changing a title. Instagram panels can be adapted from a guide's own example and are reviewed alongside it.
+One per guide, from a reusable set: a timeline with a running balance, a filled table, a document with numbered notes, a message with its warning signs marked. Built from HTML text and tables, never an image; meaning never rests on colour alone. Values are written once, in the guide's frontmatter. Each guide also has a share image (`scripts/render-share-cards.mjs`, output in `public/brand/social/how-to/`; lessons and tools have theirs in `lessons/` and `tools/`); run it after adding a guide or changing a title. Instagram panels can be adapted from a guide's own example and are reviewed alongside it.
 
 ## Search and SEO
 

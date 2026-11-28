@@ -95,7 +95,7 @@ describe('the invest or pay off calculator: taxes and fees, amounts, today\'s mo
     nothingTypedSent('1000', 'USD');
   });
 
-  it('gives a negative amount in Swiss francs a true minus, though its sign follows the code', () => {
+  it('gives a negative amount in Swiss francs a true minus, before the code (#691)', () => {
     // With no amount style, francs are written "CHF-1,650": a hyphen after
     // letters, which screen readers do not speak by default.
     mount();
@@ -103,7 +103,7 @@ describe('the invest or pay off calculator: taxes and fees, amounts, today\'s mo
     clock.pass(250);
     assert.equal(currencySelect().value, 'CHF');
     const answer = text('.iop-answer p').join(' ');
-    assert.ok(answer.includes('CHF−'), answer);
+    assert.ok(answer.includes('−CHF\u00a0'), answer);
     assert.ok(!/CHF-/.test(document.body.textContent ?? ''), 'no hyphen in place of a minus');
     nothingTypedSent();
   });

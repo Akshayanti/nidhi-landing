@@ -99,7 +99,7 @@ describe('the payment split chart goes by what the browser draws', () => {
       { month: 3, payment: 300, interest: -120, principal: 420, balance: 6060 },
       { month: 4, payment: 2400, interest: -364, principal: 2764, balance: 3296 },
     ]);
-    assert.deepEqual(c.interestLabels, ['0', '-1', '-1', '-4']);
+    assert.deepEqual(c.interestLabels, ['0', '−1', '−1', '−4']);
     assert.deepEqual(c.principalLabels, ['24', '25', null, null]);
     near(c.bars[0].principalLabel!.y, 56 + 1.3 * 14, 'the first, clear of everything, on its first line');
     near(c.bars[1].principal.y, 44, 'the second principal part starts above the plot');
@@ -141,7 +141,7 @@ describe('the payment split chart goes by what the browser draws', () => {
       { month: 2, payment: 4800, interest: -98, principal: 4898, balance: 4102 },
       { month: 3, payment: 4800, interest: 0, principal: 4800, balance: 0 },
     ]);
-    assert.equal(c.interestLabels[1], '-1');
+    assert.equal(c.interestLabels[1], '−1');
     near(c.bars[1].principal.y, 56 - 4.9, 'the second principal part starts above the plot');
     near(c.bars[1].principalLabel!.y, 56 - 4.9 + 1.3 * 14, 'its figure on its first line', 1e-9);
   });

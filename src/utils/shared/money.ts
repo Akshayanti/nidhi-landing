@@ -193,6 +193,35 @@ function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] 
   return out;
 }
 
+// Written by code point, so no invisible character sits in this file.
+const TRUE_MINUS = String.fromCodePoint(0x2212);
+const FULL_WIDTH_YEN = String.fromCodePoint(0xffe5);
+const YEN = String.fromCodePoint(0x00a5);
+const NBSP = String.fromCodePoint(0x00a0);
+
+/**
+ * The signs every amount shares with the planner, in every language (owner,
+ * Nov 28, 2026, #691). The minus is the true minus sign (U+2212), which some
+ * screen readers read as "minus" where they read a hyphen as "dash", and it
+ * comes first: "−CHF 1,234", not the Swiss "CHF-1,234" that reads as a
+ * code joined to a figure. The yen is "¥", not the full-width form that
+ * Japanese text uses and that stands out beside the page's other symbols.
+ */
+export function sharedSigns(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] {
+  const at = parts.findIndex((p) => p.type === 'minusSign');
+  const out: Intl.NumberFormatPart[] = [];
+  parts.forEach((p, i) => {
+    if (i === at) {
+      // Where the minus stood between a code and its figure ("CHF-1,234"),
+      // the code keeps the space it has on a positive amount.
+      if (parts[i - 1]?.type === 'currency' && /\p{L}$/u.test(parts[i - 1].value)) out.push({ type: 'literal', value: NBSP });
+      return;
+    }
+    out.push(p.type === 'currency' && p.value === FULL_WIDTH_YEN ? { type: 'currency', value: YEN } : p);
+  });
+  return at >= 0 ? [{ type: 'minusSign', value: TRUE_MINUS }, ...out] : out;
+}
+
 /**
  * A formatter for an amount in a tool (council, Nov 18, 2026, #619).
  *
@@ -207,8 +236,8 @@ function withPageMarks(parts: Intl.NumberFormatPart[]): Intl.NumberFormatPart[] 
 export function amountFormat(code: string, amountLocale: string | null | undefined, options: Intl.NumberFormatOptions): { format: (v: number) => string; formatToParts: (v: number) => Intl.NumberFormatPart[] } {
   const { locale } = amountStyle(code, amountLocale);
   const own = new Intl.NumberFormat(locale, options);
-  if (amountLocale || locale === 'en-IN') return { format: (v) => own.format(v), formatToParts: (v) => own.formatToParts(v) };
-  const formatToParts = (v: number) => withPageMarks(own.formatToParts(v));
+  const pageMarks = !(amountLocale || locale === 'en-IN');
+  const formatToParts = (v: number) => sharedSigns(pageMarks ? withPageMarks(own.formatToParts(v)) : own.formatToParts(v));
   return { format: (v) => formatToParts(v).map((p) => p.value).join(''), formatToParts };
 }
 
@@ -231,5 +260,6 @@ export function formatMoney(units: number, currencyCode: string, amountLocale?: 
     currency: code,
     currencyDisplay: display,
   }).format(value);
-  return DOLLAR_CURRENCIES.has(code) ? `${formatted} ${code}` : formatted;
+  // A no-break space keeps the code on the amount's line (#691).
+  return DOLLAR_CURRENCIES.has(code) ? `${formatted}${String.fromCodePoint(0x00a0)}${code}` : formatted;
 }

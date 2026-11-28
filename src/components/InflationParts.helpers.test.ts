@@ -107,7 +107,7 @@ describe('the amount as it was typed', () => {
   });
 
   it('keeps typed cents in a currency that has none of its own', () => {
-    assert.equal(typedAmount(1234.5, 'JPY', null), '￥1,234.5');
+    assert.equal(typedAmount(1234.5, 'JPY', null), '¥1,234.5');
   });
 
   it('is written the currency’s way on a page with no number style of its own', () => {
@@ -156,10 +156,10 @@ describe('a result said in words', () => {
   });
 
   it('a currency with no smaller unit keeps the two figures too: the amount measures buying power', () => {
-    assert.equal(aboutText(1.3439, 'JPY', en, null), 'about ￥1.3');
-    assert.equal(aboutText(0.7441, 'JPY', en, null), 'about ￥0.74');
-    assert.equal(aboutText(0.001, 'JPY', en, null), 'less than ￥0.01');
-    assert.equal(aboutText(134.39, 'JPY', en, null), 'about ￥134');
+    assert.equal(aboutText(1.3439, 'JPY', en, null), 'about ¥1.3');
+    assert.equal(aboutText(0.7441, 'JPY', en, null), 'about ¥0.74');
+    assert.equal(aboutText(0.001, 'JPY', en, null), 'less than ¥0.01');
+    assert.equal(aboutText(134.39, 'JPY', en, null), 'about ¥134');
   });
 
   it('small amounts are written in the page’s number style', () => {

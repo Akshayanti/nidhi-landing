@@ -43,8 +43,8 @@ const SYMBOL = `(?:\\p{Sc}|%|[A-Z]{1,3}\\$|[A-Z]{2,4}(?=${SIGN}|\\d)|(?:[${LATIN
 const NUMBER = `\\d(?:[\\d.,'${APOSTROPHE}${NBSP}${NNBSP}]*\\d)?`;
 /** What may follow, attached or joined by a no-break space: "%", "Kč", "M", "mil.", "Cr". */
 const SUFFIX = `(?:${JOIN}?(?:%|\\p{Sc}|[${LATIN}]{1,4}\\.?)(?![\\p{L}\\p{M}\\d]))`;
-/** The loan comparison names a dollar currency after its amount: "$1,000.00 CAD". */
-const CODE = '(?: [A-Z]{3}(?![\\p{L}\\p{M}\\d]))';
+/** The loan comparison names a dollar currency after its amount: "$1,000.00 CAD", joined by a no-break space. */
+const CODE = `(?:[ ${NBSP}][A-Z]{3}(?![\\p{L}\\p{M}\\d]))`;
 
 /** A Spanish page writes billions as "2,5 mil M €", with ordinary spaces. */
 const THOUSAND_MILLION = '(?: mil M)';

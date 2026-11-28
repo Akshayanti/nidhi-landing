@@ -41,6 +41,8 @@ The tagline is "Money, understood". Each language has one approved line, kept in
 
 The logo files under `public/brand/` and the social images under `public/brand/social/` carry the English line only.
 
+Guides, lessons and the English tool pages also have a share card of their own, with the page's English title (`scripts/render-share-cards.mjs`, owner, 2026-11-28, #743). A translated tool page keeps the brand card.
+
 ---
 
 ## Buttons

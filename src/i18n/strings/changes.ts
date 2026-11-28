@@ -152,6 +152,26 @@ export const CHANGE_DAYS: ChangeDay[] = [
           mr: 'मोठ्या अक्षरांत, साधनाखालील स्प्रेडशीट, PDF आणि लिंकची बटणे रुंद स्क्रीनवरही एकाखाली एक येतात, “कसे करावे” मार्गदर्शिकांच्या चित्रांमधील आणि उदाहरणांमधील रकमा एका ओळीत पूर्ण राहतात, आणि कर्जांच्या तुलनेच्या तक्त्यातील लांब रकमा मावतील तितक्या मोठ्या दिसतात. फोनच्या कीबोर्डची रिटर्न की आता साधनांमध्ये “झाले” आणि ईमेल फॉर्ममध्ये “पाठवा” सांगते.',
         },
       },
+      {
+        id: 'amounts-true-minus-and-yen',
+        text: {
+          en: 'Amounts below zero now start with a true minus sign in every tool and chart, so an amount owed in Swiss francs reads “−CHF\u00a01,650”, not “CHF-1,650”. The yen is written “¥”, like the page’s other symbols, and the currency code after a dollar amount no longer drops onto a line of its own.',
+          hi: 'शून्य से कम राशियाँ अब हर टूल और चार्ट में असली माइनस चिह्न से शुरू होती हैं, इसलिए स्विस फ़्रैंक में बकाया राशि “−CHF\u00a01,650” लिखी जाती है, “CHF-1,650” नहीं। येन अब “¥” लिखा जाता है, जैसे पेज बाक़ी चिह्न लिखता है, और डॉलर की राशि के बाद का मुद्रा कोड अब अकेले अगली पंक्ति पर नहीं जाता।',
+          es: 'Las cantidades por debajo de cero llevan ahora un signo menos de verdad (−) en todas las herramientas y gráficos, no un guion, y siempre delante de la cantidad. El yen se escribe «¥», como los demás símbolos de la página, y el código que sigue a una cantidad en dólares ya no puede quedarse solo en otra línea.',
+          cs: 'Částky pod nulou mají teď ve všech nástrojích a\u00a0grafech skutečné znaménko minus (−), ne spojovník, a\u00a0vždy před částkou. Japonský jen se píše „¥“ jako ostatní symboly na stránce a\u00a0kód měny za částkou v\u00a0dolarech už nemůže zůstat sám na dalším řádku.',
+          mr: 'शून्यापेक्षा कमी रकमा आता प्रत्येक साधनात आणि आलेखात खऱ्या मायनस चिन्हाने सुरू होतात, त्यामुळे स्विस फ्रँकमधील देणे असलेली रक्कम “−CHF\u00a01,650” अशी लिहिली जाते, “CHF-1,650” नाही. येन आता “¥” असे लिहिले जाते, पानावरील इतर चिन्हांसारखे, आणि डॉलरमधील रकमेनंतरचा चलन कोड आता एकटा पुढच्या ओळीवर जात नाही.',
+        },
+      },
+      {
+        id: 'lessons-and-tools-share-cards',
+        text: {
+          en: 'When you share a lesson or a free tool, the link preview now shows its title, as it already did for the guides. A tool shared from a page in another language keeps the nidhi card in English.',
+          hi: 'किसी पाठ या मुफ़्त टूल का लिंक शेयर करने पर, लिंक के पूर्वावलोकन में अब उसका शीर्षक दिखता है, जैसा गाइड के लिए पहले से होता था। किसी दूसरी भाषा के पेज से शेयर किए गए टूल पर nidhi का अंग्रेज़ी कार्ड ही दिखता है।',
+          es: 'Cuando compartes una lección o una herramienta gratuita, la vista previa del enlace muestra ahora su título, como ya pasaba con las guías. Una herramienta compartida desde una página en otro idioma mantiene la tarjeta de nidhi en inglés.',
+          cs: 'Když sdílíte lekci nebo nástroj zdarma, náhled odkazu teď ukazuje jejich název, jako už tomu bylo u\u00a0návodů. Nástroj sdílený ze stránky v\u00a0jiném jazyce si ponechává kartu nidhi v\u00a0angličtině.',
+          mr: 'एखादा धडा किंवा मोफत साधन शेअर केल्यावर, लिंकच्या पूर्वावलोकनात आता त्याचे शीर्षक दिसते, जसे मार्गदर्शकांसाठी आधीपासून होत होते. दुसऱ्या भाषेतील पानावरून शेअर केलेल्या साधनासाठी nidhi\u00a0चे इंग्रजी कार्डच दिसते.',
+        },
+      },
     ],
   },
   {

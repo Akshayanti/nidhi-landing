@@ -272,7 +272,7 @@ describe('what refinancing comes to', () => {
 
   it('writes the amounts in the currency chosen', () => {
     const { section } = show([plain()], { refiNewFeeMajor: '100' }, { currency: 'USD' });
-    assert.deepEqual(row(section, r.costsMore)?.slice(0, 2), [r.costsMore, '$100.00 USD']);
+    assert.deepEqual(row(section, r.costsMore)?.slice(0, 2), [r.costsMore, '$100.00\u00a0USD']);
   });
 
   it('shows the early repayment penalty as a row of its own, with what it means', () => {
