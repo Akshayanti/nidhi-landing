@@ -1458,8 +1458,11 @@ function LineChart({
   const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(lastYear.x), fs) + fs) ?? 100;
   const xCandidates: number[] = [];
   for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xCandidates.push(x);
-  // Labels that would touch, or run past the drawing, are left out.
-  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), 2, W - 2, 0.6 * fs)
+  // Labels that would touch, or run past the drawing, are left out. Where the
+  // amounts stand left of the plot, a year keeps clear of their column: the
+  // first year, centred on the plot's edge, reached under the "0" once a
+  // fallback font drew it wider than measured (#815).
+  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), margin.inside ? 2 : PAD.left - 0.3 * fs, W - 2, 0.6 * fs)
     .map(({ i, anchor }) => ({ x: xCandidates[i], anchor }));
   const titleHalf = (titleFit * Math.max(1, ...titleLines.map(titleWidth))) / 2 + 2;
   const titleX = Math.round(Math.min(Math.max(PAD.left + plotW / 2, titleHalf), W - titleHalf));
